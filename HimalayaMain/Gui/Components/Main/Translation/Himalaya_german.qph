@@ -1,0 +1,2098 @@
+<!DOCTYPE QPH>
+<QPH language="de">
+<phrase>
+    <source>About</source>
+    <target>Info*</target>
+</phrase>
+<phrase>
+    <source>access key</source>
+    <target>Zugriffstaste</target>
+</phrase>
+<phrase>
+    <source>accessibility</source>
+    <target>Eingabehilfe</target>
+</phrase>
+<phrase>
+    <source>action handle</source>
+    <target>Aktionspunkt</target>
+</phrase>
+<phrase>
+    <source>active</source>
+    <target>Aktiv</target>
+</phrase>
+<phrase>
+    <source>active end</source>
+    <target>Aktives Ende</target>
+</phrase>
+<phrase>
+    <source>active object</source>
+    <target>Aktives Objekt</target>
+</phrase>
+<phrase>
+    <source>active window</source>
+    <target>Aktives Fenster</target>
+</phrase>
+<phrase>
+    <source>adornment</source>
+    <target>Zubehör</target>
+</phrase>
+<phrase>
+    <source>Always on Top</source>
+    <target>Immer im Vordergrund</target>
+</phrase>
+<phrase>
+    <source>anchor point</source>
+    <target>Ankerpunkt</target>
+</phrase>
+<phrase>
+    <source>auto-exit</source>
+    <target>Textfeld mit automatischer Freigabe</target>
+</phrase>
+<phrase>
+    <source>auto-repeat</source>
+    <target>Automatische Wiederholung</target>
+</phrase>
+<phrase>
+    <source>automatic link</source>
+    <target>Automatische OLE-Verknüpfung</target>
+</phrase>
+<phrase>
+    <source>automatic scrolling</source>
+    <target>Automatischer Bildlauf</target>
+</phrase>
+<phrase>
+    <source>autoscroll</source>
+    <target>Automatischer Bildlauf</target>
+</phrase>
+<phrase>
+    <source>Back</source>
+    <target>Zurück</target>
+</phrase>
+<phrase>
+    <source>barrel button</source>
+    <target>Pen-Knopf</target>
+    <definition>pen</definition>
+</phrase>
+<phrase>
+    <source>barrel-tap</source>
+    <target>Tippen mit Pen-Knopf</target>
+</phrase>
+<phrase>
+    <source>boxed edit</source>
+    <target>Texteditor</target>
+    <definition>control/Steuerelement</definition>
+</phrase>
+<phrase>
+    <source>Browse</source>
+    <target>Durchsuchen</target>
+</phrase>
+<phrase>
+    <source>Cancel</source>
+    <target>Abbrechen</target>
+</phrase>
+<phrase>
+    <source>cascading menu</source>
+    <target>Überlappendes Menü</target>
+</phrase>
+<phrase>
+    <source>check box</source>
+    <target>Kontrollkästchen</target>
+</phrase>
+<phrase>
+    <source>check mark</source>
+    <target>Markierung</target>
+    <definition>Kontrollkästchen</definition>
+</phrase>
+<phrase>
+    <source>child window</source>
+    <target>Untergeordnetes Fenster</target>
+</phrase>
+<phrase>
+    <source>choose</source>
+    <target>Wählen</target>
+</phrase>
+<phrase>
+    <source>click</source>
+    <target>Klicken</target>
+</phrase>
+<phrase>
+    <source>Clipboard</source>
+    <target>Zwischenablage</target>
+</phrase>
+<phrase>
+    <source>Close</source>
+    <target>Schließen</target>
+</phrase>
+<phrase>
+    <source>Close button</source>
+    <target>Schließen</target>
+    <definition>Schaltfläche</definition>
+</phrase>
+<phrase>
+    <source>collapse</source>
+    <target>Ausblenden</target>
+    <definition>outline/Gliederung</definition>
+</phrase>
+<phrase>
+    <source>column heading</source>
+    <target>Spaltenüberschrift</target>
+    <definition>control/Steuerelement</definition>
+</phrase>
+<phrase>
+    <source>combo box</source>
+    <target>Kombinationsfeld</target>
+</phrase>
+<phrase>
+    <source>command button</source>
+    <target>Schaltfläche</target>
+</phrase>
+<phrase>
+    <source>container</source>
+    <target>Container</target>
+</phrase>
+<phrase>
+    <source>context-sensitive Help</source>
+    <target>Kontextbezogene Hilfe</target>
+</phrase>
+<phrase>
+    <source>contextual</source>
+    <target>Kontextbezogen</target>
+</phrase>
+<phrase>
+    <source>control</source>
+    <target>Steuerelement</target>
+</phrase>
+<phrase>
+    <source>Copy</source>
+    <target>Kopieren</target>
+</phrase>
+<phrase>
+    <source>Copy here</source>
+    <target>Hierher kopieren</target>
+</phrase>
+<phrase>
+    <source>Create Shortcut</source>
+    <target>Verknüpfung erstellen</target>
+</phrase>
+<phrase>
+    <source>Create Shortcut Here</source>
+    <target>Hiermit verknüpfen</target>
+</phrase>
+<phrase>
+    <source>Cut</source>
+    <target>Ausschneiden</target>
+</phrase>
+<phrase>
+    <source>default button</source>
+    <target>Standardschaltfläche</target>
+</phrase>
+<phrase>
+    <source>Delete</source>
+    <target>Löschen</target>
+</phrase>
+<phrase>
+    <source>desktop</source>
+    <target>Desktop*</target>
+</phrase>
+<phrase>
+    <source>destination</source>
+    <target>Ziel</target>
+</phrase>
+<phrase>
+    <source>dialog box</source>
+    <target>Dialogfeld</target>
+</phrase>
+<phrase>
+    <source>disability</source>
+    <target>Behinderung</target>
+</phrase>
+<phrase>
+    <source>disjoint selection</source>
+    <target>Nichtzusammenhängende Auswahl</target>
+</phrase>
+<phrase>
+    <source>dock</source>
+    <target>Verankern</target>
+</phrase>
+<phrase>
+    <source>document</source>
+    <target>Dokument</target>
+</phrase>
+<phrase>
+    <source>double-click</source>
+    <target>Doppelklicken</target>
+</phrase>
+<phrase>
+    <source>double-tap</source>
+    <target>Doppeltippen</target>
+</phrase>
+<phrase>
+    <source>drag</source>
+    <target>Ziehen</target>
+</phrase>
+<phrase>
+    <source>drag-and-drop</source>
+    <target>Drag &amp; Drop</target>
+</phrase>
+<phrase>
+    <source>drop-down combo box</source>
+    <target>Dropdown-Kombinationsfeld</target>
+</phrase>
+<phrase>
+    <source>drop-down list box</source>
+    <target>Dropdown-Listenfeld</target>
+</phrase>
+<phrase>
+    <source>drop-down menu</source>
+    <target>Dropdown-Menü</target>
+</phrase>
+<phrase>
+    <source>Edit</source>
+    <target>Bearbeiten</target>
+    <definition>menu/Menü</definition>
+</phrase>
+<phrase>
+    <source>ellipsis</source>
+    <target>Auslassungspunkte</target>
+</phrase>
+<phrase>
+    <source>embedded object</source>
+    <target>Eingebettetes</target>
+</phrase>
+<phrase>
+    <source>Exit</source>
+    <target>Beenden</target>
+</phrase>
+<phrase>
+    <source>expand</source>
+    <target>Einblenden</target>
+    <definition>an outline/einer Struktur</definition>
+</phrase>
+<phrase>
+    <source>Explore</source>
+    <target>Explorer</target>
+    <definition>Befehl</definition>
+</phrase>
+<phrase>
+    <source>extended selection</source>
+    <target>Erweiterte Auswahl</target>
+</phrase>
+<phrase>
+    <source>extended selection list box</source>
+    <target>Listenfeld für erweiterte Auswahl</target>
+</phrase>
+<phrase>
+    <source>File</source>
+    <target>Datei</target>
+    <definition>menu</definition>
+</phrase>
+<phrase>
+    <source>file</source>
+    <target>Datei</target>
+</phrase>
+<phrase>
+    <source>Find</source>
+    <target>Suchen</target>
+</phrase>
+<phrase>
+    <source>Find Next</source>
+    <target>Weitersuchen</target>
+</phrase>
+<phrase>
+    <source>Find What</source>
+    <target>Suchen nach</target>
+</phrase>
+<phrase>
+    <source>folder</source>
+    <target>Ordner</target>
+</phrase>
+<phrase>
+    <source>font</source>
+    <target>Schriftart</target>
+</phrase>
+<phrase>
+    <source>font size</source>
+    <target>Schriftgrad</target>
+</phrase>
+<phrase>
+    <source>font style</source>
+    <target>Schriftschnitt</target>
+</phrase>
+<phrase>
+    <source>function key</source>
+    <target>Funktionstaste</target>
+</phrase>
+<phrase>
+    <source>gesture</source>
+    <target>Schriftzug</target>
+</phrase>
+<phrase>
+    <source>glyph</source>
+    <target>Zeichen</target>
+</phrase>
+<phrase>
+    <source>group box</source>
+    <target>Gruppenfeld</target>
+</phrase>
+<phrase>
+    <source>handle</source>
+    <target>Ziehpunkt</target>
+</phrase>
+<phrase>
+    <source>Help</source>
+    <target>?</target>
+    <definition>menu</definition>
+</phrase>
+<phrase>
+    <source>Help</source>
+    <target>Hilfe</target>
+</phrase>
+<phrase>
+    <source>Hide</source>
+    <target>Ausblenden</target>
+</phrase>
+<phrase>
+    <source>hierarchical selection</source>
+    <target>Hierarchische Auswahl</target>
+</phrase>
+<phrase>
+    <source>hold</source>
+    <target>Halten</target>
+</phrase>
+<phrase>
+    <source>hot spot</source>
+    <target>Hot Spot</target>
+</phrase>
+<phrase>
+    <source>hot zone</source>
+    <target>Hot Zone</target>
+</phrase>
+<phrase>
+    <source>icon</source>
+    <target>Symbol</target>
+</phrase>
+<phrase>
+    <source>inactive</source>
+    <target>Inaktiv</target>
+</phrase>
+<phrase>
+    <source>inactive window</source>
+    <target>Inaktives Fenster</target>
+</phrase>
+<phrase>
+    <source>ink</source>
+    <target>Ink</target>
+</phrase>
+<phrase>
+    <source>ink edit</source>
+    <target>Inkeditor</target>
+</phrase>
+<phrase>
+    <source>input focus</source>
+    <target>Eingabefokus</target>
+</phrase>
+<phrase>
+    <source>Insert</source>
+    <target>Einfügen</target>
+    <definition>Menü</definition>
+</phrase>
+<phrase>
+    <source>Insert Object</source>
+    <target>Objekt einfügen</target>
+</phrase>
+<phrase>
+    <source>insertion point</source>
+    <target>Einfügemarke</target>
+</phrase>
+<phrase>
+    <source>italic</source>
+    <target>Kursiv</target>
+</phrase>
+<phrase>
+    <source>label</source>
+    <target>Bezeichnung</target>
+</phrase>
+<phrase>
+    <source>landscape</source>
+    <target>Querformat</target>
+</phrase>
+<phrase>
+    <source>lasso-tap</source>
+    <target>Lasso-tippen</target>
+</phrase>
+<phrase>
+    <source>lens</source>
+    <target>Lupe</target>
+    <definition>control</definition>
+</phrase>
+<phrase>
+    <source>link</source>
+    <target>Verknüpfung</target>
+    <definition>noun</definition>
+</phrase>
+<phrase>
+    <source>link</source>
+    <target>Verknüpfen</target>
+    <definition>verb</definition>
+</phrase>
+<phrase>
+    <source>Link Here</source>
+    <target>Hiermit verknüpfen</target>
+</phrase>
+<phrase>
+    <source>list box</source>
+    <target>Listenfeld</target>
+</phrase>
+<phrase>
+    <source>list view</source>
+    <target>Listenansicht</target>
+    <definition>control</definition>
+</phrase>
+<phrase>
+    <source>manual link</source>
+    <target>Manuelle OLE-Verknüpfung</target>
+</phrase>
+<phrase>
+    <source>Maximize</source>
+    <target>Maximieren</target>
+</phrase>
+<phrase>
+    <source>maximize button</source>
+    <target>Maximieren</target>
+    <definition>Schaltfläche</definition>
+</phrase>
+<phrase>
+    <source>MDI</source>
+    <target>MDI</target>
+</phrase>
+<phrase>
+    <source>menu</source>
+    <target>Menü</target>
+</phrase>
+<phrase>
+    <source>menu bar</source>
+    <target>Menüleiste</target>
+</phrase>
+<phrase>
+    <source>menu button</source>
+    <target>Menü</target>
+    <definition>Schaltfläche</definition>
+</phrase>
+<phrase>
+    <source>menu item</source>
+    <target>Menüelement</target>
+</phrase>
+<phrase>
+    <source>menu title</source>
+    <target>Menütitel</target>
+</phrase>
+<phrase>
+    <source>message box</source>
+    <target>Meldungsfeld</target>
+</phrase>
+<phrase>
+    <source>Minimize</source>
+    <target>Minimieren</target>
+</phrase>
+<phrase>
+    <source>minimize button</source>
+    <target>Minimieren</target>
+    <definition>Schaltfläche</definition>
+</phrase>
+<phrase>
+    <source>mixed-value</source>
+    <target>Gemischt</target>
+</phrase>
+<phrase>
+    <source>modal</source>
+    <target>Modal</target>
+</phrase>
+<phrase>
+    <source>mode</source>
+    <target>Modus</target>
+</phrase>
+<phrase>
+    <source>modeless</source>
+    <target>Interaktiv</target>
+</phrase>
+<phrase>
+    <source>modifier key</source>
+    <target>Zusatztaste</target>
+</phrase>
+<phrase>
+    <source>mouse</source>
+    <target>Maus</target>
+</phrase>
+<phrase>
+    <source>Move</source>
+    <target>Verschieben</target>
+</phrase>
+<phrase>
+    <source>Move Here</source>
+    <target>Hierher verschieben</target>
+</phrase>
+<phrase>
+    <source>Multiple Document Interface</source>
+    <target>MDI</target>
+    <definition>Multiple Document Interface</definition>
+</phrase>
+<phrase>
+    <source>multiple selection list box</source>
+    <target>Listenfeld für Mehrfachauswahl</target>
+</phrase>
+<phrase>
+    <source>My Computer</source>
+    <target>Arbeitsplatz</target>
+    <definition>icon/Symbol</definition>
+</phrase>
+<phrase>
+    <source>Network Neighborhood</source>
+    <target>Netzwerk Nachbarschaft</target>
+    <definition>icon/Symbol</definition>
+</phrase>
+<phrase>
+    <source>New</source>
+    <target>Neu</target>
+</phrase>
+<phrase>
+    <source>Next</source>
+    <target>Weiter</target>
+</phrase>
+<phrase>
+    <source>object</source>
+    <target>Objekt</target>
+</phrase>
+<phrase>
+    <source>OK</source>
+    <target>OK*</target>
+</phrase>
+<phrase>
+    <source>OLE</source>
+    <target>OLE</target>
+</phrase>
+<phrase>
+    <source>OLE drag and drop</source>
+    <target>OLE-Drag &amp; Drop</target>
+</phrase>
+<phrase>
+    <source>OLE embedded object</source>
+    <target>Eingebettetes OLE-Objekt</target>
+</phrase>
+<phrase>
+    <source>OLE linked object</source>
+    <target>Verknüpftes OLE-Objekt</target>
+</phrase>
+<phrase>
+    <source>OLE nondefault drag and drop</source>
+    <target>Vom Standard abweichendes OLE-Drag &amp; Drop</target>
+</phrase>
+<phrase>
+    <source>Open</source>
+    <target>Öffnen</target>
+</phrase>
+<phrase>
+    <source>Open With</source>
+    <target>Öffnen mit</target>
+</phrase>
+<phrase>
+    <source>option button</source>
+    <target>Optionsfeld</target>
+</phrase>
+<phrase>
+    <source>option-set</source>
+    <target>Aktivierte Option</target>
+</phrase>
+<phrase>
+    <source>package</source>
+    <target>Paket</target>
+</phrase>
+<phrase>
+    <source>Page Setup</source>
+    <target>Seite einrichten</target>
+</phrase>
+<phrase>
+    <source>palette window</source>
+    <target>Palettenfenster</target>
+</phrase>
+<phrase>
+    <source>pane</source>
+    <target>Fensterbereich</target>
+</phrase>
+<phrase>
+    <source>parent window</source>
+    <target>Übergeordnetes Fenster</target>
+</phrase>
+<phrase>
+    <source>password</source>
+    <target>Passwort</target>
+</phrase>
+<phrase>
+    <source>Paste</source>
+    <target>Einfügen</target>
+</phrase>
+<phrase>
+    <source>Paste Link</source>
+    <target>Verknüpfung einfügen</target>
+</phrase>
+<phrase>
+    <source>Paste Shortcut</source>
+    <target>Verknüpfung einfügen</target>
+</phrase>
+<phrase>
+    <source>Paste Special</source>
+    <target>Inhalte einfügen</target>
+</phrase>
+<phrase>
+    <source>path</source>
+    <target>Pfad</target>
+</phrase>
+<phrase>
+    <source>Pause</source>
+    <target>Anhalten</target>
+</phrase>
+<phrase>
+    <source>pen</source>
+    <target>Stift</target>
+</phrase>
+<phrase>
+    <source>Play</source>
+    <target>Wiedergeben</target>
+</phrase>
+<phrase>
+    <source>Plug and Play</source>
+    <target>Plug &amp; Play*</target>
+</phrase>
+<phrase>
+    <source>point</source>
+    <target>Zeigen</target>
+</phrase>
+<phrase>
+    <source>pointer</source>
+    <target>Zeiger</target>
+</phrase>
+<phrase>
+    <source>pop-up menu</source>
+    <target>Kontextmenü</target>
+</phrase>
+<phrase>
+    <source>pop-up window</source>
+    <target>Popup-Fenster</target>
+</phrase>
+<phrase>
+    <source>portrait</source>
+    <target>Hochformat</target>
+</phrase>
+<phrase>
+    <source>press</source>
+    <target>Drücken</target>
+    <definition>a key/einer Taste</definition>
+</phrase>
+<phrase>
+    <source>primary container</source>
+    <target>Primär-Container</target>
+</phrase>
+<phrase>
+    <source>primary window</source>
+    <target>Primärfenster</target>
+</phrase>
+<phrase>
+    <source>Print</source>
+    <target>Drucken</target>
+</phrase>
+<phrase>
+    <source>printer</source>
+    <target>Drucker</target>
+</phrase>
+<phrase>
+    <source>progress indicator</source>
+    <target>Statusanzeige</target>
+    <definition>control</definition>
+</phrase>
+<phrase>
+    <source>project</source>
+    <target>Projekt</target>
+</phrase>
+<phrase>
+    <source>Properties</source>
+    <target>Eigenschaften</target>
+</phrase>
+<phrase>
+    <source>property inspector</source>
+    <target>Eigenschaftenanzeige</target>
+</phrase>
+<phrase>
+    <source>property page</source>
+    <target>Eigenschaftengruppe</target>
+</phrase>
+<phrase>
+    <source>property sheet</source>
+    <target>Eigenschaftenfenster</target>
+</phrase>
+<phrase>
+    <source>property sheet control</source>
+    <target>Eigenschaftenfenster-Steuerelement</target>
+</phrase>
+<phrase>
+    <source>Quick View</source>
+    <target>Schnellansicht</target>
+</phrase>
+<phrase>
+    <source>read-only</source>
+    <target>Schreibgeschützt</target>
+</phrase>
+<phrase>
+    <source>recognition</source>
+    <target>Schrifterkennung</target>
+</phrase>
+<phrase>
+    <source>Recycle Bin</source>
+    <target>Papierkorb</target>
+    <definition>Icon/Symbol</definition>
+</phrase>
+<phrase>
+    <source>Redo</source>
+    <target>Wiederherstellen</target>
+</phrase>
+<phrase>
+    <source>region selection</source>
+    <target>Bereichsauswahl</target>
+</phrase>
+<phrase>
+    <source>registry</source>
+    <target>Registrierung</target>
+</phrase>
+<phrase>
+    <source>Repeat</source>
+    <target>Wiederholen</target>
+</phrase>
+<phrase>
+    <source>Replace</source>
+    <target>Ersetzen</target>
+</phrase>
+<phrase>
+    <source>Restore button</source>
+    <target>Wiederherstellen </target>
+    <definition>Schaltfläche</definition>
+</phrase>
+<phrase>
+    <source>Resume</source>
+    <target>Fortsetzen</target>
+</phrase>
+<phrase>
+    <source>Retry</source>
+    <target>Wiederholen</target>
+</phrase>
+<phrase>
+    <source>rich-text box</source>
+    <target>RTF-Textfeld</target>
+</phrase>
+<phrase>
+    <source>Run</source>
+    <target>Ausführen</target>
+</phrase>
+<phrase>
+    <source>Save</source>
+    <target>Speichern</target>
+</phrase>
+<phrase>
+    <source>Save as</source>
+    <target>Speichern unter</target>
+</phrase>
+<phrase>
+    <source>scroll</source>
+    <target>Bildlauf durchführen</target>
+</phrase>
+<phrase>
+    <source>scroll arrow</source>
+    <target>Bildlaufpfeil</target>
+</phrase>
+<phrase>
+    <source>scroll bar</source>
+    <target>Bildlaufleiste</target>
+</phrase>
+<phrase>
+    <source>scroll box</source>
+    <target>Bildlauffeld</target>
+</phrase>
+<phrase>
+    <source>secondary window</source>
+    <target>Sekundärfenster</target>
+</phrase>
+<phrase>
+    <source>select</source>
+    <target>Auswählen</target>
+</phrase>
+<phrase>
+    <source>Select All</source>
+    <target>Alle markieren</target>
+</phrase>
+<phrase>
+    <source>selection</source>
+    <target>Auswahl</target>
+</phrase>
+<phrase>
+    <source>selection handle</source>
+    <target>Auswahlpunkt</target>
+</phrase>
+<phrase>
+    <source>Send To</source>
+    <target>Senden an</target>
+</phrase>
+<phrase>
+    <source>separator</source>
+    <target>Trennelement</target>
+</phrase>
+<phrase>
+    <source>Settings</source>
+    <target>Einstellungen</target>
+</phrase>
+<phrase>
+    <source>Setup</source>
+    <target>Einrichten</target>
+</phrase>
+<phrase>
+    <source>shortcut</source>
+    <target>Verknüpfung</target>
+</phrase>
+<phrase>
+    <source>shortcut button</source>
+    <target>Verknüpfte Schaltfläche</target>
+</phrase>
+<phrase>
+    <source>shortcut icon</source>
+    <target>Verknüpfungssymbol</target>
+</phrase>
+<phrase>
+    <source>shortcut key</source>
+    <target>Tastenkombination</target>
+</phrase>
+<phrase>
+    <source>shortcut key control</source>
+    <target>Steuerelement für Tastenbelegung</target>
+</phrase>
+<phrase>
+    <source>Show</source>
+    <target>Anzeigen</target>
+</phrase>
+<phrase>
+    <source>Shutdown</source>
+    <target>Beenden</target>
+</phrase>
+<phrase>
+    <source>single selection list box</source>
+    <target>Listenfeld für Einfachauswahl</target>
+</phrase>
+<phrase>
+    <source>Size</source>
+    <target>Größe ändern</target>
+</phrase>
+<phrase>
+    <source>size grip</source>
+    <target>Element für Größenänderung</target>
+</phrase>
+<phrase>
+    <source>slider</source>
+    <target>Schieber</target>
+</phrase>
+<phrase>
+    <source>spin box</source>
+    <target>Drehfeld</target>
+</phrase>
+<phrase>
+    <source>Split</source>
+    <target>Teilen</target>
+</phrase>
+<phrase>
+    <source>split bar</source>
+    <target>Fensterteiler</target>
+</phrase>
+<phrase>
+    <source>split box</source>
+    <target>Teilungsfeld</target>
+</phrase>
+<phrase>
+    <source>Start button</source>
+    <target>Starttaste</target>
+    <definition>Schaltfläche</definition>
+</phrase>
+<phrase>
+    <source>StartUp folder</source>
+    <target>Autostart</target>
+    <definition>Ordner</definition>
+</phrase>
+<phrase>
+    <source>status bar</source>
+    <target>Statusleiste</target>
+</phrase>
+<phrase>
+    <source>Stop</source>
+    <target>Stop</target>
+</phrase>
+<phrase>
+    <source>tab control</source>
+    <target>Register</target>
+</phrase>
+<phrase>
+    <source>tap</source>
+    <target>Tippen</target>
+</phrase>
+<phrase>
+    <source>task bar</source>
+    <target>Task-Leiste</target>
+</phrase>
+<phrase>
+    <source>task-oriented Help</source>
+    <target>Vorgangsbezogene Hilfe</target>
+</phrase>
+<phrase>
+    <source>template</source>
+    <target>Vorlage</target>
+</phrase>
+<phrase>
+    <source>text box</source>
+    <target>Textfeld</target>
+</phrase>
+<phrase>
+    <source>title bar</source>
+    <target>Titelleiste</target>
+</phrase>
+<phrase>
+    <source>title text</source>
+    <target>Titeltext</target>
+</phrase>
+<phrase>
+    <source>toggle key</source>
+    <target>Ein-/Aus-Taste</target>
+</phrase>
+<phrase>
+    <source>toolbar</source>
+    <target>Symbolleiste</target>
+</phrase>
+<phrase>
+    <source>tooltip</source>
+    <target>QuickInfo</target>
+</phrase>
+<phrase>
+    <source>tree view control</source>
+    <target>Strukturansicht</target>
+</phrase>
+<phrase>
+    <source>type</source>
+    <target>Eingeben</target>
+    <definition>verb</definition>
+</phrase>
+<phrase>
+    <source>type</source>
+    <target>Typ</target>
+    <definition>noun</definition>
+</phrase>
+<phrase>
+    <source>unavailable</source>
+    <target>Nicht verfügbar</target>
+</phrase>
+<phrase>
+    <source>Undo</source>
+    <target>Rückgängig</target>
+</phrase>
+<phrase>
+    <source>Uninstall</source>
+    <target>Deinstallieren</target>
+</phrase>
+<phrase>
+    <source>View</source>
+    <target>Ansicht</target>
+    <definition>Menü</definition>
+</phrase>
+<phrase>
+    <source>visual editing</source>
+    <target>Direkte Bearbeitung</target>
+</phrase>
+<phrase>
+    <source>well control</source>
+    <target>Steuerelement zur Grafikanzeige</target>
+</phrase>
+<phrase>
+    <source>What&apos;s This?</source>
+    <target>Direkthilfe</target>
+</phrase>
+<phrase>
+    <source>Window</source>
+    <target>Fenster</target>
+    <definition>Menü</definition>
+</phrase>
+<phrase>
+    <source>window</source>
+    <target>Fenster</target>
+</phrase>
+<phrase>
+    <source>Windows Explorer</source>
+    <target>Explorer</target>
+</phrase>
+<phrase>
+    <source>wizard</source>
+    <target>Assistent</target>
+</phrase>
+<phrase>
+    <source>workbook</source>
+    <target>Arbeitsmappe</target>
+</phrase>
+<phrase>
+    <source>workgroup</source>
+    <target>Arbeitsgruppe</target>
+</phrase>
+<phrase>
+    <source>workspace</source>
+    <target>Arbeitsbereich</target>
+</phrase>
+<phrase>
+    <source>Yes</source>
+    <target>Ja</target>
+</phrase>
+<phrase>
+    <source>Time</source>
+    <target>Zeit</target>
+</phrase>
+<phrase>
+    <source>Date</source>
+    <target>Datum</target>
+</phrase>
+<phrase>
+    <source>Year</source>
+    <target>Jahr</target>
+</phrase>
+<phrase>
+    <source>Minute</source>
+    <target>Minute</target>
+</phrase>
+<phrase>
+    <source>Apply</source>
+    <target>Übernehmen</target>
+</phrase>
+<phrase>
+    <source>Invalide</source>
+    <target>Ungültig</target>
+</phrase>
+<phrase>
+    <source>Invalide Date</source>
+    <target>Ungültiges Datum</target>
+</phrase>
+<phrase>
+    <source>Reagent name</source>
+    <target>Reagenzienname</target>
+</phrase>
+<phrase>
+    <source>Edit Reagent</source>
+    <target>Reagenzie editieren</target>
+</phrase>
+<phrase>
+    <source>Service</source>
+    <target>Service</target>
+</phrase>
+<phrase>
+    <source>Change Password</source>
+    <target>Passwort ändern</target>
+</phrase>
+<phrase>
+    <source>User</source>
+    <target>Benutzer</target>
+</phrase>
+<phrase>
+    <source>Administrator</source>
+    <target>Administrator</target>
+</phrase>
+<phrase>
+    <source>Access level</source>
+    <target>Zugriffsebene</target>
+</phrase>
+<phrase>
+    <source>Please assign correct grip color:</source>
+    <target>Bitte richtige Bügelfarbe zuordnen</target>
+</phrase>
+<phrase>
+    <source>Rack Grip Color</source>
+    <target>Bügelfarbe</target>
+</phrase>
+<phrase>
+    <source>Bathlayout</source>
+    <target>Stationsbelegung</target>
+</phrase>
+<phrase>
+    <source>Agitation</source>
+    <target>Agitation</target>
+</phrase>
+<phrase>
+    <source>Off</source>
+    <target>Aus</target>
+</phrase>
+<phrase>
+    <source>On</source>
+    <target>An</target>
+</phrase>
+<phrase>
+    <source>Change Administrator Password</source>
+    <target>Administratorpasswort ändern</target>
+</phrase>
+<phrase>
+    <source>Enter Old Password </source>
+    <target>Altes Passwort eingeben</target>
+</phrase>
+<phrase>
+    <source>Enter New Password</source>
+    <target>Neues Passwort eingeben</target>
+</phrase>
+<phrase>
+    <source>Confirm New Password</source>
+    <target>Neues Passwort bestätigen</target>
+</phrase>
+<phrase>
+    <source>Short name:</source>
+    <target>Kurzname</target>
+</phrase>
+<phrase>
+    <source>Edit Reagent</source>
+    <target>Reagenzie editieren</target>
+</phrase>
+<phrase>
+    <source>Water Stations: Group of 4</source>
+    <target>Wasserstationen: 4-er Gruppe</target>
+</phrase>
+<phrase>
+    <source>Step</source>
+    <target>Schritt</target>
+</phrase>
+<phrase>
+    <source>Duration</source>
+    <target>Dauer</target>
+</phrase>
+<phrase>
+    <source>Tolerance</source>
+    <target>Toleranz</target>
+</phrase>
+<phrase>
+    <source>Excl.</source>
+    <target>Exkl.</target>
+</phrase>
+<phrase>
+    <source>Heat.</source>
+    <target>Beh.</target>
+</phrase>
+<phrase>
+    <source>Edit Program Step</source>
+    <target>Programschritt editieren</target>
+</phrase>
+<phrase>
+    <source>New Program Step</source>
+    <target>Neuer Programmschritt</target>
+</phrase>
+<phrase>
+    <source>Copy Program Step</source>
+    <target>Programmschritt kopieren</target>
+</phrase>
+<phrase>
+    <source>Edit Program</source>
+    <target>Programm editieren</target>
+</phrase>
+<phrase>
+    <source>Program Name:</source>
+    <target>Programmname</target>
+</phrase>
+<phrase>
+    <source>Abbreviation:</source>
+    <target>Abkürzung:</target>
+</phrase>
+<phrase>
+    <source>Color</source>
+    <target>Farbe</target>
+</phrase>
+<phrase>
+    <source>Information</source>
+    <target>Information*</target>
+</phrase>
+<phrase>
+    <source>Warning</source>
+    <target>Warnung</target>
+</phrase>
+<phrase>
+    <source>Error</source>
+    <target>Fehler</target>
+</phrase>
+<phrase>
+    <source>Message</source>
+    <target>Nachricht</target>
+</phrase>
+<phrase>
+    <source>Speed</source>
+    <target>Geschwindigkeit</target>
+</phrase>
+<phrase>
+    <source>Parameter Set: %1</source>
+    <target>Parametersatz: %1</target>
+</phrase>
+<phrase>
+    <source>Parameter Set</source>
+    <target>Parametersatz</target>
+</phrase>
+<phrase>
+    <source>Mountant name:</source>
+    <target>Eindeckmittelname:</target>
+</phrase>
+<phrase>
+    <source>Coverslip line:</source>
+    <target>Eindeckmodul</target>
+</phrase>
+<phrase>
+    <source>Coverglass length:</source>
+    <target>Deckglasslänge</target>
+</phrase>
+<phrase>
+    <source>Coverglass offset:</source>
+    <target>Deckglassoffset</target>
+</phrase>
+<phrase>
+    <source>Mountant volume:</source>
+    <target>Eindeckmittelvolumen:</target>
+</phrase>
+<phrase>
+    <source>Volume</source>
+    <target>Lautstärke</target>
+</phrase>
+<phrase>
+    <source>Test</source>
+    <target>Test*</target>
+</phrase>
+<phrase>
+    <source>Alarm Type 2 - Error</source>
+    <target>Alarmtyp 2 - Fehler</target>
+</phrase>
+<phrase>
+    <source>Temperature:</source>
+    <target>Temperatur</target>
+</phrase>
+<phrase>
+    <source>Operating Mode:</source>
+    <target>Betriebsart</target>
+</phrase>
+<phrase>
+    <source>Oven</source>
+    <target>Ofen</target>
+</phrase>
+<phrase>
+    <source>Finish</source>
+    <target>Beenden</target>
+</phrase>
+<phrase>
+    <source>Dry Station:</source>
+    <target>Trockenstation</target>
+</phrase>
+<phrase>
+    <source>Reagent name:</source>
+    <target>Reagenzienname:</target>
+</phrase>
+<phrase>
+    <source>Reagent Status:</source>
+    <target>Reagenzienstatus:</target>
+</phrase>
+<phrase>
+    <source>Lot no:</source>
+    <target>Lot Nr.</target>
+</phrase>
+<phrase>
+    <source>Shelf life time:</source>
+    <target>Haltbarkeit:</target>
+</phrase>
+<phrase>
+    <source>Expiry Date:</source>
+    <target>Ablaufdatum:</target>
+</phrase>
+<phrase>
+    <source>Slide counter:</source>
+    <target>Objektträgerzähler:</target>
+</phrase>
+<phrase>
+    <source>Slides max:</source>
+    <target>Max Objektträger:</target>
+</phrase>
+<phrase>
+    <source>5-Slide rack:</source>
+    <target>Korb für 5 Objekträger:</target>
+</phrase>
+<phrase>
+    <source>No</source>
+    <target>Nein</target>
+</phrase>
+<phrase>
+    <source>Exclusive:</source>
+    <target>Exklusiv:</target>
+</phrase>
+<phrase>
+    <source>Temperature:</source>
+    <target>Temperatur:</target>
+</phrase>
+<phrase>
+    <source>Specified:</source>
+    <target>Spezifiziert:</target>
+</phrase>
+<phrase>
+    <source>Delete Reagent from Bathlayout</source>
+    <target>Reagenzienstation löschen</target>
+</phrase>
+<phrase>
+    <source>Update Reagent</source>
+    <target>Reagenzie aktualisieren</target>
+</phrase>
+<phrase>
+    <source>Lot No:</source>
+    <target>Lot Nr.</target>
+</phrase>
+<phrase>
+    <source>Form</source>
+    <target>Form</target>
+</phrase>
+<phrase>
+    <source>Temperature Specified:</source>
+    <target>Solltemperatur:</target>
+</phrase>
+<phrase>
+    <source>Operating mode:</source>
+    <target>Betriebsart:</target>
+</phrase>
+<phrase>
+    <source>Dialog</source>
+    <target>Dialog*</target>
+</phrase>
+<phrase>
+    <source>Reagent Station:</source>
+    <target>Reagenzienstation:</target>
+</phrase>
+<phrase>
+    <source>Reagent status:</source>
+    <target>Reagenzienstatus:</target>
+</phrase>
+<phrase>
+    <source>5-Slides rack:</source>
+    <target>Korb für 5 Objekträger:</target>
+</phrase>
+<phrase>
+    <source>Slide Counter: SID</source>
+    <target>Objektträgerzähler: SID</target>
+</phrase>
+<phrase>
+    <source>Unload Station:</source>
+    <target>Entladestation:</target>
+</phrase>
+<phrase>
+    <source>Water Station: W36 and W37</source>
+    <target>Wasserstation: W36 und W37</target>
+</phrase>
+<phrase>
+    <source>DI Water</source>
+    <target>Destilliertes Wasser</target>
+</phrase>
+<phrase>
+    <source>Tap Water</source>
+    <target>Wasser</target>
+</phrase>
+<phrase>
+    <source>Water Station: W08, W09, W22 and W23</source>
+    <target>Wasserstation: W08, W09, W22 und W23</target>
+</phrase>
+<phrase>
+    <source>Data Management</source>
+    <target>Datenmangement</target>
+</phrase>
+<phrase>
+    <source>Date/Time</source>
+    <target>Datum/Zeit</target>
+</phrase>
+<phrase>
+    <source>Day</source>
+    <target>Tag</target>
+</phrase>
+<phrase>
+    <source>Month</source>
+    <target>Monat</target>
+</phrase>
+<phrase>
+    <source>Hour</source>
+    <target>Stunde</target>
+</phrase>
+<phrase>
+    <source>°C</source>
+    <target>°C*</target>
+</phrase>
+<phrase>
+    <source>°F</source>
+    <target>°F*</target>
+</phrase>
+<phrase>
+    <source>Export</source>
+    <target>Export*</target>
+</phrase>
+<phrase>
+    <source>Import</source>
+    <target>Import*</target>
+</phrase>
+<phrase>
+    <source>MainWindow</source>
+    <target>MainWindow</target>
+</phrase>
+<phrase>
+    <source>PushButton</source>
+    <target>PushButton</target>
+</phrase>
+<phrase>
+    <source>TextLabel</source>
+    <target>Text</target>
+</phrase>
+<phrase>
+    <source>Abort</source>
+    <target>Abbrechen</target>
+</phrase>
+<phrase>
+    <source>    1. Change reagent cuvette</source>
+    <target>1. Reagenzienküvette wechseln</target>
+</phrase>
+<phrase>
+    <source>Start</source>
+    <target>Start*</target>
+</phrase>
+<phrase>
+    <source>Program ready to start</source>
+    <target>Programm ist startfähig</target>
+</phrase>
+<phrase>
+    <source>Staining Intensity</source>
+    <target>Färbeintensität</target>
+</phrase>
+<phrase>
+    <source>Brighter</source>
+    <target>Heller</target>
+</phrase>
+<phrase>
+    <source>Standard</source>
+    <target>Standard*</target>
+</phrase>
+<phrase>
+    <source>Darker</source>
+    <target>Dunkler</target>
+</phrase>
+<phrase>
+    <source>Program name:</source>
+    <target>Programmname:</target>
+</phrase>
+<phrase>
+    <source>0 %</source>
+    <target>0 %*</target>
+</phrase>
+<phrase>
+    <source>Show only Bathlayout Reagents</source>
+    <target>Nur Reagenzien der Stationsbelegung zeigen</target>
+</phrase>
+<phrase>
+    <source>25 %</source>
+    <target>25 %*</target>
+</phrase>
+<phrase>
+    <source>50 %</source>
+    <target>50 %*</target>
+</phrase>
+<phrase>
+    <source>Exclusive</source>
+    <target>Exklusiv</target>
+</phrase>
+<phrase>
+    <source>100 %</source>
+    <target>100 %*</target>
+</phrase>
+<phrase>
+    <source>75 %</source>
+    <target>75 %*</target>
+</phrase>
+<phrase>
+    <source>Generate Bathlayout</source>
+    <target>Stationsbelegung generieren</target>
+</phrase>
+<phrase>
+    <source>Prioritize Programs</source>
+    <target>Programme priorisieren</target>
+</phrase>
+<phrase>
+    <source>Please assign rack grip color to program</source>
+    <target>Bitte Bügelfarbe zuordnen</target>
+</phrase>
+<phrase>
+    <source>Operating Mode</source>
+    <target>Betreibsart</target>
+</phrase>
+<phrase>
+    <source>Use Heated Cuvette</source>
+    <target>Beheizte Küvette verwenden</target>
+</phrase>
+<phrase>
+    <source>Per-
+manent</source>
+    <target>Per- manent</target>
+</phrase>
+<phrase>
+    <source>Program
+Start</source>
+    <target>Programmstart</target>
+</phrase>
+<phrase>
+    <source>5-Slide rack</source>
+    <target>Korb für 5 Objektträger</target>
+</phrase>
+<phrase>
+    <source>Slides max</source>
+    <target>Max Objektträger</target>
+</phrase>
+<phrase>
+    <source>Days max</source>
+    <target>Max Tage</target>
+</phrase>
+<phrase>
+    <source>Process Class</source>
+    <target>Prozessklasse</target>
+</phrase>
+<phrase>
+    <source>no class</source>
+    <target>Keine Klasse</target>
+</phrase>
+<phrase>
+    <source>dewaxing</source>
+    <target>entparaffinierend</target>
+</phrase>
+<phrase>
+    <source>neutralising</source>
+    <target>neutralisierend</target>
+</phrase>
+<phrase>
+    <source>staining</source>
+    <target>färbend</target>
+</phrase>
+<phrase>
+    <source>differentiating</source>
+    <target>differenzierend</target>
+</phrase>
+<phrase>
+    <source>dehydrating</source>
+    <target>dehydrierend</target>
+</phrase>
+<phrase>
+    <source>RMS</source>
+    <target>RMS*</target>
+</phrase>
+<phrase>
+    <source>Heated Cuvette</source>
+    <target>Beheizte Küvette</target>
+</phrase>
+<phrase>
+    <source>Speed:</source>
+    <target>Geschwindigkeit:</target>
+</phrase>
+<phrase>
+    <source>Sound</source>
+    <target>Melodie</target>
+</phrase>
+<phrase>
+    <source>Alarm Type 1 - Note</source>
+    <target>Alarmtyp 1 - Hinweis</target>
+</phrase>
+<phrase>
+    <source>Language</source>
+    <target>Sprache</target>
+</phrase>
+<phrase>
+    <source>Regional Settings</source>
+    <target>Länderspezifische Einstellungen</target>
+</phrase>
+<phrase>
+    <source>Alarm</source>
+    <target>Alarm*</target>
+</phrase>
+<phrase>
+    <source>Data Mgm.</source>
+    <target>Datenmgm.</target>
+</phrase>
+<phrase>
+    <source>Event View</source>
+    <target>Ereignisansicht</target>
+</phrase>
+<phrase>
+    <source>Network</source>
+    <target>Netzwerk</target>
+</phrase>
+<phrase>
+    <source>CV 8010</source>
+    <target>Eindecker</target>
+</phrase>
+<phrase>
+    <source>Temperature Unit:</source>
+    <target>Temperatureinheit:</target>
+</phrase>
+<phrase>
+    <source>24h</source>
+    <target>24h*</target>
+</phrase>
+<phrase>
+    <source>12h</source>
+    <target>12h*</target>
+</phrase>
+<phrase>
+    <source>Time Format:</source>
+    <target>Zeitformat:</target>
+</phrase>
+<phrase>
+    <source>Date Format:</source>
+    <target>Datumsformat:</target>
+</phrase>
+<phrase>
+    <source>International: dd.mm.yyyy</source>
+    <target>International: dd::mm:jjjj</target>
+</phrase>
+<phrase>
+    <source>ISO: yyyy-mm-dd</source>
+    <target>ISO: jjjj-mm-dd</target>
+</phrase>
+<phrase>
+    <source>US: mm/dd/yyyy</source>
+    <target>US: mm/dd/jjjj</target>
+</phrase>
+<phrase>
+    <source>Abort Program</source>
+    <target>Programm abbrechen</target>
+</phrase>
+<phrase>
+    <source>13:05:00 o&apos; clock</source>
+    <target>??</target>
+</phrase>
+<phrase>
+    <source>Run end time</source>
+    <target>Endzeit</target>
+</phrase>
+<phrase>
+    <source>Run remaining time</source>
+    <target>Restzeit</target>
+</phrase>
+<phrase>
+    <source>Station remaining time </source>
+    <target>Stationsrestzeit</target>
+</phrase>
+<phrase>
+    <source>Coverslip Module:</source>
+    <target>Eindeckstrasse:</target>
+</phrase>
+<phrase>
+    <source>Coverglass Length:</source>
+    <target>Deckglasslänge:</target>
+</phrase>
+<phrase>
+    <source>Start Service Application</source>
+    <target>Serviceapplikation starten</target>
+</phrase>
+<phrase>
+    <source>ST 8200</source>
+    <target>Endecker</target>
+</phrase>
+<phrase>
+    <source>Supervisor</source>
+    <target>Administrator</target>
+</phrase>
+<phrase>
+    <source>Remote Care</source>
+    <target>Remote Care *</target>
+</phrase>
+<phrase>
+    <source>Enable Remote Care</source>
+    <target>Remote Care aktivieren</target>
+</phrase>
+<phrase>
+    <source>The User Name</source>
+    <target>Benutzername</target>
+</phrase>
+<phrase>
+    <source>Proxy User Name</source>
+    <target>Proxy Benutzername</target>
+</phrase>
+<phrase>
+    <source>Proxy Password</source>
+    <target>Proxy Passwort</target>
+</phrase>
+<phrase>
+    <source>****************</source>
+    <target>*******************</target>
+</phrase>
+<phrase>
+    <source>Proxy IP Address</source>
+    <target>Proxy IP Adresse</target>
+</phrase>
+<phrase>
+    <source>123.456.789.012</source>
+    <target>123.123.*</target>
+</phrase>
+<phrase>
+    <source>Proxy Port</source>
+    <target>Proxy Port **</target>
+</phrase>
+<phrase>
+    <source>Edit Alarm Type 2 - Error</source>
+    <target>Bearbeiten Alarmtyp 2 - Fehler</target>
+</phrase>
+<phrase>
+    <source>Edit Alarm Type 1 - Note</source>
+    <target>Bearbeiten Alarmtyp 1 - Hinweis</target>
+</phrase>
+<phrase>
+    <source>Volume:  %1</source>
+    <target>Lautstärke: %1</target>
+</phrase>
+<phrase>
+    <source>Bathlayout Changes</source>
+    <target>Änderungen Stationsbelegung</target>
+</phrase>
+<phrase>
+    <source>Information Message</source>
+    <target>Informations Meldung</target>
+</phrase>
+<phrase>
+    <source>Each step in the GUI must be reproduced in parallel manually</source>
+    <target>Jeder Schritt in der GUI muss parallel manuell ausgeführt werden</target>
+</phrase>
+<phrase>
+    <source>Confirmation Message</source>
+    <target>Bestätigungsmeldung</target>
+</phrase>
+<phrase>
+    <source>Changing the defined bathlayout will affect the throughput and 
+ possibly the quality of the reagents being used.</source>
+    <target>Veränderungen der definierten Stationsbelgung können den Durchsatz und die Qualität der Färbung beienträchtigen</target>
+</phrase>
+<phrase>
+    <source>Cannot move station to a non-empty target station</source>
+    <target>Die Station kann nicht zu einer nicht leeren Station verschoben werden</target>
+</phrase>
+<phrase>
+    <source>No free position available in clipboard</source>
+    <target>Keine freie Staion auf dem Clipboard vorhanden</target>
+</phrase>
+<phrase>
+    <source>No free position available in clipboard</source>
+    <target>Keine freie Staion auf dem Clipboard vorhanden</target>
+</phrase>
+<phrase>
+    <source>No station selected to move</source>
+    <target>keine station zum verschieben ausgewählt</target>
+</phrase>
+<phrase>
+    <source>Station selected cannot be moved</source>
+    <target>Die ausgewählte Station kann nicht verschoben werden</target>
+</phrase>
+<phrase>
+    <source>Exporting data ...</source>
+    <target>Exportiere Daten ...</target>
+</phrase>
+<phrase>
+    <source>Importing data ...</source>
+    <target>Importiere Daten ...</target>
+</phrase>
+<phrase>
+    <source>EventView</source>
+    <target>Ereignisansicht</target>
+</phrase>
+<phrase>
+    <source>Temp.</source>
+    <target>Temp.</target>
+</phrase>
+<phrase>
+    <source>Station Details</source>
+    <target>Stationsdetails</target>
+</phrase>
+<phrase>
+    <source>Heated Cuvette Station:%1</source>
+    <target>Beheizte Küvette: %1</target>
+</phrase>
+<phrase>
+    <source>Device start</source>
+    <target>Gerätestart</target>
+</phrase>
+<phrase>
+    <source>The text you entered is too short. The length must be at least %1.</source>
+    <target>Der eingegebene Text ist zu kurz. Die Länge ist mindestens: %1</target>
+</phrase>
+<phrase>
+    <source>The text you entered is too long. The length must not be greater than %1.</source>
+    <target>Der eingegebene Text ist zu lang. Die Länge ist maximal: %1</target>
+</phrase>
+<phrase>
+    <source>Dummy</source>
+    <target>xxx</target>
+</phrase>
+<phrase>
+    <source>Manual Program Start</source>
+    <target>Manueller Programmstart</target>
+</phrase>
+<phrase>
+    <source>Please choose the program for rack in station %1</source>
+    <target>Wählen Sie ein Program für den Korb in Station %1</target>
+</phrase>
+<phrase>
+    <source>Menu</source>
+    <target>Menü</target>
+</phrase>
+<phrase>
+    <source>Edit Leica Program</source>
+    <target>Leica Programm editieren</target>
+</phrase>
+<phrase>
+    <source>Sound: Sound N %1</source>
+    <target>Melodie: Melodie N%1</target>
+</phrase>
+<phrase>
+    <source>Sound: Sound E %1</source>
+    <target>Melodie: Melodie E%1</target>
+</phrase>
+<phrase>
+    <source>Enter Program Name</source>
+    <target>Programmname eingeben</target>
+</phrase>
+<phrase>
+    <source>Enter Program Short Name</source>
+    <target>Programmkurzname eingeben</target>
+</phrase>
+<phrase>
+    <source>Please select a reagent from the list</source>
+    <target>Eine Reagenz der Liste auswählen</target>
+</phrase>
+<phrase>
+    <source>Enter Reagent Name</source>
+    <target>Reagenzienname eingeben</target>
+</phrase>
+<phrase>
+    <source>Enter Reagent Short Name</source>
+    <target>Reagenzienkurzname eingeben</target>
+</phrase>
+<phrase>
+    <source>The rack information currently displayed is not upto date anymore. 
+The dialog will be closed.</source>
+    <target>Die Information, die gezeigt wird ist nicht mehr aktuell. Der Dialog wird geschlossen.</target>
+</phrase>
+<phrase>
+    <source>Oven Station:%1</source>
+    <target>Ofenstation: %1</target>
+</phrase>
+<phrase>
+    <source>Program start</source>
+    <target>Programmstart</target>
+</phrase>
+<phrase>
+    <source>Parameter</source>
+    <target>Einstellungen</target>
+</phrase>
+<phrase>
+    <source>Staining Programs</source>
+    <target>Färbeprogramme</target>
+</phrase>
+<phrase>
+    <source>View Program</source>
+    <target>Programm ansehen</target>
+</phrase>
+<phrase>
+    <source>View Leica Program</source>
+    <target>Leica Programm ansehen</target>
+</phrase>
+<phrase>
+    <source>New Program</source>
+    <target>Neues Programm</target>
+</phrase>
+<phrase>
+    <source>Assign Rack Grip Color</source>
+    <target>Bügelfarbe zuordnen</target>
+</phrase>
+<phrase>
+    <source>Do you really want to replace the color of &quot;%1&quot;%2</source>
+    <target>Möchten Sie wiklich die Farbe von %1 durch %2 ersetzen?</target>
+</phrase>
+<phrase>
+    <source>Reagent List</source>
+    <target>Reagenzienliste</target>
+</phrase>
+<phrase>
+    <source>Reagent Station:%1</source>
+    <target>Reagenzienstation: %1</target>
+</phrase>
+<phrase>
+    <source>Expired</source>
+    <target>Abgelaufen</target>
+</phrase>
+<phrase>
+    <source>Reagentlist</source>
+    <target>Reagenzienliste</target>
+</phrase>
+<phrase>
+    <source>New Reagent</source>
+    <target>Neue Reagenzie</target>
+</phrase>
+<phrase>
+    <source>Enter Password</source>
+    <target>Passwort eingeben</target>
+</phrase>
+<phrase>
+    <source>Saving Settings ...</source>
+    <target>Einstellungen speichern ...</target>
+</phrase>
+<phrase>
+    <source>Disconnect</source>
+    <target>Trennen</target>
+</phrase>
+<phrase>
+    <source>Startup</source>
+    <target>Starten</target>
+</phrase>
+<phrase>
+    <source>Device Communication</source>
+    <target>Geräte Kommunikation</target>
+</phrase>
+<phrase>
+    <source>Reinitializing device communication ...</source>
+    <target>Re-Initialisiere Geräte Kommunikation ...</target>
+</phrase>
+<phrase>
+    <source>Communication Error</source>
+    <target>Kummunikationsfehler</target>
+</phrase>
+<phrase>
+    <source>The changes could not be saved.</source>
+    <target>Die Änderungen können nicht gespeichert werden.</target>
+</phrase>
+<phrase>
+    <source>Intensity</source>
+    <target>Intensität</target>
+</phrase>
+<phrase>
+    <source>Nr.</source>
+    <target>Nr*</target>
+</phrase>
+<phrase>
+    <source>Abbr.</source>
+    <target>Abk.</target>
+</phrase>
+<phrase>
+    <source>Reagent</source>
+    <target>Reagenzie</target>
+</phrase>
+<phrase>
+    <source>Short</source>
+    <target>Abk.</target>
+</phrase>
+<phrase>
+    <source>Class</source>
+    <target>Klasse</target>
+</phrase>
+<phrase>
+    <source>Slides</source>
+    <target>Obj.Tr.</target>
+</phrase>
+<phrase>
+    <source>Days</source>
+    <target>Tage</target>
+</phrase>
+<phrase>
+    <source>Use</source>
+    <target>Verw.</target>
+</phrase>
+<phrase>
+    <source>Use</source>
+    <target>Verw</target>
+</phrase>
+<phrase>
+    <source>5-Sl</source>
+    <target>5-Ot</target>
+</phrase>
+<phrase>
+    <source>Step</source>
+    <target>Schr.</target>
+</phrase>
+<phrase>
+    <source>Duplicate</source>
+    <target>Duplizieren</target>
+</phrase>
+<phrase>
+    <source>Vial shelf life:</source>
+    <target>Haltbarkeit:</target>
+</phrase>
+<phrase>
+    <source>Remaining slides:</source>
+    <target>Verbleibende Objekträger:</target>
+</phrase>
+<phrase>
+    <source>Clear</source>
+    <target>Löschen</target>
+</phrase>
+<phrase>
+    <source>Warning Message</source>
+    <target>Warnmeldung</target>
+</phrase>
+<phrase>
+    <source>Error Message</source>
+    <target>Fehlermeldung</target>
+</phrase>
+<phrase>
+    <source>Continue</source>
+    <target>Weiter</target>
+</phrase>
+<phrase>
+    <source>Enter Proxy User Name</source>
+    <target>Proxy Benutzernamen eingeben</target>
+</phrase>
+<phrase>
+    <source>Enter Proxy Password</source>
+    <target>Proxy Passwort eingeben</target>
+</phrase>
+<phrase>
+    <source>Enter Proxy IP Address</source>
+    <target>Proxy IP-Adresse eingeben</target>
+</phrase>
+<phrase>
+    <source>Log Files</source>
+    <target>Logdateien</target>
+</phrase>
+<phrase>
+    <source>Load Station:%1</source>
+    <target>Beladestation: %1</target>
+</phrase>
+<phrase>
+    <source>Station not available</source>
+    <target>Station nicht verfügbar
+</target>
+</phrase>
+<phrase>
+    <source>Staining Process has started, editing is no longer possible.
+Please close the dialog with &quot;Close&quot;</source>
+    <target>Der Färbeprozeß wurde gestarted, editieren nicht mehr möglich.
+Bitte schließen Sie den Dialog mit Schließen.</target>
+</phrase>
+<phrase>
+    <source>Bathlayout Generation Result</source>
+    <target>Ergebnis der Stationsbelegungs Berechnung</target>
+</phrase>
+<phrase>
+    <source>Direct Connection</source>
+    <target>Direkte Verbindung</target>
+</phrase>
+<phrase>
+    <source>2. Press station to confirm program abortion</source>
+    <target>2. Station drücken, Programmabbruch zu bestätigen</target>
+</phrase>
+<phrase>
+    <source></source>
+    <target></target>
+</phrase>
+<phrase>
+    <source>Regional Settings</source>
+    <target>Länderspez. Einstellungen</target>
+</phrase>
+<phrase>
+    <source>Water - Group of Two</source>
+    <target>Wasser - Zweiergruppe</target>
+</phrase>
+</QPH>

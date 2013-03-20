@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Stations Version="1">
+    <Station ID="S1" Name="1" ParaffinBath="false">
+        <Reagent ID="L1" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="S2" Name="2" ParaffinBath="false">
+        <Reagent ID="U102" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="S3" Name="3" ParaffinBath="false">
+        <Reagent ID="U103" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="S4" Name="4" ParaffinBath="false">
+        <Reagent ID="L4" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="S5" Name="5" ParaffinBath="false">
+        <Reagent ID="L5" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="S6" Name="6" ParaffinBath="false">
+        <Reagent ID="L6" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="S7" Name="7" ParaffinBath="false">
+        <Reagent ID="L6" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="S8" Name="8" ParaffinBath="false">
+        <Reagent ID="U107" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="S9" Name="9" ParaffinBath="false">
+        <Reagent ID="U107" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="S10" Name="10" ParaffinBath="false">
+        <Reagent ID="U107" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="S11" Name="11" ParaffinBath="false">
+        <Reagent ID="L12" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="S12" Name="12" ParaffinBath="false">
+        <Reagent ID="L13" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="S13" Name="13" ParaffinBath="false">
+        <Reagent ID="L14" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="P1" Name="Paraffin (1)" ParaffinBath="true">
+        <Reagent ID="U108" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+    <Station ID="P2" Name="Paraffin (2)" ParaffinBath="true">
+        <Reagent ID="U108" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Empty"/>
+    </Station>
+    <Station ID="P3" Name="Paraffin (3)" ParaffinBath="true">
+        <Reagent ID="L8" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+    </Station>
+</Stations>
+

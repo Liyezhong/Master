@@ -1,0 +1,106 @@
+/****************************************************************************/
+/*! \file ReagentWidget.h
+ *
+ *  \brief ReagentWidget definition.
+ *
+ *   $Version: $ 0.2
+ *   $Date:    $ 2011-08-22, 2013-01-17
+ *   $Author:  $ M.Scherer, C.Adaragunchi, Swati Tiwari
+ *
+ *  \b Company:
+ *
+ *       Leica Microsystems Ltd. Shanghai.
+ *
+ *  (C) Copyright 2012 by Leica Microsystems Shanghai. All rights reserved.
+ *  This is unpublished proprietary source code of Leica. The copyright notice
+ *  does not evidence any actual or intended publication.
+ *
+ */
+/****************************************************************************/
+
+#ifndef REAGENTS_REAGENTWIDGET_H
+#define REAGENTS_REAGENTWIDGET_H
+
+#include "Core/Include/ReagentModel.h"
+#include "Core/Include/DataConnector.h"
+#include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
+#include "Global/Include/Utils.h"
+#include "MainMenu/Include/BaseTable.h"
+#include "MainMenu/Include/SliderControl.h"
+#include "MainMenu/Include/PanelFrame.h"
+#include "MainMenu/Include/MainWindow.h"
+#include "DataManager/Containers/UserSettings/Include/UserSettings.h"
+
+#include "KeyBoard/Include/KeyBoard.h"
+
+namespace Reagents {
+
+namespace Ui {
+    class CReagentWidget;
+}
+
+/****************************************************************************/
+/**
+ * \brief Main  reagents widget listing all reagents available
+ */
+/****************************************************************************/
+class CReagentWidget : public QWidget
+{
+    Q_OBJECT
+
+
+private:
+    Ui::CReagentWidget *mp_Ui;                     //!< User interface
+    Core::CDataConnector *mp_DataConnector;          //!< Data object
+    Core::CReagentModel m_ReagentModel;             //!< Model for the table
+    DataManager::CDataReagentList *mp_ReagentList;  //!< Reagent list
+    DataManager::CReagent m_SelectedReagent;        //!< Currently selected reagent
+    MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
+    MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
+    bool m_UserRoleChanged;                         //!< True if user Role changed else false
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //! < Current user role
+    bool m_ProcessRunning;                          //!< Process running state
+    bool m_ShowMessageDialog;                       //!< To show Information Message Dialog
+    DataManager::CReagent const *mp_Reagent;        //!< Reagent object
+    DataManager::CUserSettings *mp_UserSettings;    //!< Data object
+    KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Keyboard object
+    MainMenu::CMainWindow *p_Parent;
+
+protected:
+//    void showEvent(QShowEvent *);
+      void changeEvent(QEvent *p_Event);
+
+public:
+      explicit CReagentWidget(Core::CDataConnector *p_DataConnector,
+                               MainMenu::CMainWindow *p_Parent = NULL,
+                               KeyBoard::CKeyBoard *p_KeyBoard = NULL);
+    ~CReagentWidget();
+    void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
+
+
+private:
+    void PopulateReagentList();
+    void ResizeHorizontalSection();
+    //void ResetButtons();
+    void RetranslateUI();
+
+signals:
+    /****************************************************************************/
+    /*!
+     *  \brief This signal is emitted when UserSettings are changed.
+     *
+     */
+    /****************************************************************************/
+    void SettingsChanged(DataManager::CUserSettings &Settings);
+
+
+private slots:
+    void OnUserRoleChanged();
+    void PanelSelected(int Index);
+
+
+};
+
+} // end namespace Reagents
+
+#endif // REAGENTS_REAGENTWIDGET_H

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Reagents>
+<Reagents Version="1" NextUserReagentID="U14">
+    <Reagent ID="L1" Name="Formalin" Group="RG1" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="L2" Name="Ethanol 70%" Group="RG2" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="L3" Name="Ethanol 80%" Group="RG2" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="L4" Name="Ethanol 90%" Group="RG2" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="L5" Name="Ethanol 95%" Group="RG2" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="L6" Name="Ethanol 100%" Group="RG3" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="L7" Name="Xylene" Group="RG4" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="L8" Name="Paraffin" Group="RG5" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="L9" Name="Ethanol 100%" Group="RG3" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="L10" Name="Xylene" Group="RG4" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="L11" Name="Paraffin" Group="RG5" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="L12" Name="Cleaning xylene" Group="RG6" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="L13" Name="Cleaning alcohol" Group="RG7" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="L14" Name="Cleaning water" Group="RG8" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="U101" Name="Formalin" Group="RG1" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="U102" Name="Ethanol 70%" Group="RG2" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="U103" Name="Ethanol 80%" Group="RG2" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="U104" Name="Ethanol 90%" Group="RG2" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="U105" Name="Ethanol 95%" Group="RG2" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="U106" Name="Ethanol 100%" Group="RG3" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="U107" Name="Xylene" Group="RG4" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="U108" Name="Paraffin" Group="RG5" CassettesUntilChange="500" CyclesUntilChange="10" DaysUntilChange="0s"/>
+    <Reagent ID="110" Name="vajdvjkavd" Group="RG4" CassettesUntilChange="50" CyclesUntilChange="0" DaysUntilChange="0s"/>
+    <Reagent ID="U11" Name="abc" Group="RG1" CassettesUntilChange="340" CyclesUntilChange="0" DaysUntilChange="0s"/>
+</Reagents>

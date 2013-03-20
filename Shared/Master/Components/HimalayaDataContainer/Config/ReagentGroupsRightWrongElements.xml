@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ReagentGroups Version="1">
+    <ReagentGroup1 ID="RG1" Name="Fixing" Color="5FC603" />
+    <ReagentGroup/>
+    <ReagentGroup ID="RG3"/>
+    <ReagentGroup ID="RG4" Name="Clearing"/>
+    <ReagentGroup ID="" Name="Paraffin" Color="FFCF4F" />
+    <ReagentGroup ID="RG6" Name="" Color="7CDAFF" />
+    <ReagentGroup ID="RG7" Name="Clearing alcohol" Color="" />
+    <ReagentGroup ID="RG8" Name="Cleaning water" Color="E1D8B3" />
+</ReagentGroups>
