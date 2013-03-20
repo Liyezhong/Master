@@ -210,7 +210,9 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
             && (p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]])))){
         QDate t_Date;
         int Days_Overdue =t_Date.currentDate().dayOfYear()-p_Station->GetDashboardReagentExcahngeDate().dayOfYear();
-        int Expired = p_Reagent->GetMaxCassettes()-p_Station->GetDashboardReagentActualCassettes();
+        int Expired = 9999;
+        if (p_Reagent)
+            Expired = p_Reagent->GetMaxCassettes()-p_Station->GetDashboardReagentActualCassettes();
 
         if (Role == (int)Qt::DisplayRole) {
             switch (Index.column()) {

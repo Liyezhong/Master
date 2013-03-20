@@ -33,8 +33,6 @@
 #include <Global/Include/Commands/CmdEventUpdate.h>
 
 #include <HimalayaDataManager/Include/DataManager.h>
-#include <HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationUpdate.h>
-#include <HimalayaDataContainer/Containers/Stations/Commands/Include/CmdUpdateRMSForecast.h>
 
 #include "ImportExport/Include/ImportExportThreadController.h"
 #include <EventHandler/Include/StateHandler.h>
@@ -133,7 +131,7 @@ private:
     Threads::CommandChannel         m_CommandChannelExport;                 ///< Command channel for Export
     Threads::CommandChannel         m_CommandChannelImportExport;           ///< Command channel for Import Export thread
     Global::tRefType                m_ImportExportCommandRef;               ///< Store the command reference to return the command data once export process is exited
-    DataManager::CDataManager       *mp_ObDataManager;                        ///< The himalaya DataManager
+    DataManager::CDataManager       *mp_DataManager;                        ///< The himalaya DataManager
     HimalayaRMS::CRMSManager        *mp_RMSManager;                           ///< RMS Manager instance of the Master
     Threads::CommandChannel*        mp_ImportExportAckChannel;              ///< Store the command reference to return the command channel data once export process is exited
     bool                            m_ExportProcessIsFinished;              ///< Store export process flag value
@@ -208,7 +206,7 @@ private:
 
             // create and connect scheduler controller
             ImportExport::ImportExportThreadController *ImportExportThreadController
-                    = new ImportExport::ImportExportThreadController(HEARTBEAT_SOURCE_IMPORTEXPORT, *mp_ObDataManager,
+                    = new ImportExport::ImportExportThreadController(HEARTBEAT_SOURCE_IMPORTEXPORT, *mp_DataManager,
                                                                      CommandData::NAME,
                                                                      (const_cast<CommandData&>(Cmd)).GetCommandData());
             try {
@@ -306,8 +304,6 @@ private:
         return true;
     }
 
-    void RMSForecastHandler(Global::tRefType Ref, const MsgClasses::CmdUpdateRMSForecast &Cmd,
-                            Threads::CommandChannel &AckCommandChannel);
 
     /****************************************************************************/
     /**
@@ -378,15 +374,6 @@ private:
      */
     /****************************************************************************/
     void ExternalProcessConnectionHandler(Global::tRefType Ref, const NetCommands::CmdExternalProcessState &Cmd, Threads::CommandChannel &AckCommandChannel);
-    /****************************************************************************/
-    /*!
-     *  \brief  Inform scheduler when rack is inserted.
-     *  \iparam Program ID = Program Id associated with the Rack
-     *  \iparam p_ProgarmList = The Program Container
-     *  \iparam Rack = Rack inserted
-     */
-    /****************************************************************************/
-    void InformSchedulerRackInserted(const QString ProgramID, DataManager::CDataProgramList *p_ProgramList, DataManager::CRack &Rack);
 
     /****************************************************************************/
     /*!
@@ -529,7 +516,7 @@ public:
                 return m_CommandChannelGui;
         }
     }
-   const DataManager::CDataManagerBase *GetDataManager() { return mp_ObDataManager; }
+   const DataManager::CDataManagerBase *GetDataManager() { return mp_DataManager; }
 
    /****************************************************************************/
     /**

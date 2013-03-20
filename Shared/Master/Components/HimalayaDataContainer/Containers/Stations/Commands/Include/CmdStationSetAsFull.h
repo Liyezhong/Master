@@ -21,23 +21,16 @@
 #ifndef MSGCLASSES_CMDSTATIONSETASFULL_H
 #define MSGCLASSES_CMDSTATIONSETASFULL_H
 
-#include "HimalayaDataContainer/Containers/ContainerBase/Commands/Include/CommandBase.h"
+#include "Global/Include/Commands/Command.h"
 
 namespace MsgClasses {
 
-/****************************************************************************/
-/*!
- *  \brief  Command for setting the station as full.
- *          The content should be in xml format:
- *          <Station ID="XXX"/>
- *          Attribute ID is mandatory, and should be valid.
- *          this content will set station XXX as full;
- */
-/****************************************************************************/
-class CmdStationSetAsFull : public CommandBase
+class CmdStationSetAsFull : public Global::Command
 {
+    friend QDataStream & operator << (QDataStream &, const CmdStationSetAsFull &);
+    friend QDataStream & operator >> (QDataStream &, CmdStationSetAsFull &);
 public:
-    CmdStationSetAsFull(int, const QDataStream &);
+    CmdStationSetAsFull(int TimeOut, const QString& StationID);
     CmdStationSetAsFull(void);
 
     ~CmdStationSetAsFull(void);
@@ -45,13 +38,30 @@ public:
     virtual QString GetName(void) const;
 
     static QString NAME;
-
+    inline const QString StationID() const { return m_StationID; }
 private:
     CmdStationSetAsFull(const CmdStationSetAsFull &);
     const CmdStationSetAsFull &operator = (const CmdStationSetAsFull &);
-
+    QString m_StationID;
 }; // end class CmdStationSetAsFull
 
+inline QDataStream & operator << (QDataStream &Stream, const CmdStationSetAsFull &Cmd)
+{
+    // copy base class data
+    Cmd.CopyToStream(Stream);
+    // copy internal data
+    Stream << Cmd.m_StationID;
+    return Stream;
+}
+
+inline QDataStream & operator >> (QDataStream &Stream, CmdStationSetAsFull &Cmd)
+{
+    // copy base class data
+    Cmd.CopyFromStream(Stream);
+    // copy internal data
+    Stream >> Cmd.m_StationID;
+    return Stream;
+}
 } // end namespace MsgClasses
 
 #endif // MSGCLASSES_CMDSTATIONSETASFULL_H

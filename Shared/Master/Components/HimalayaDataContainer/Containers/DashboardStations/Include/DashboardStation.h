@@ -64,7 +64,7 @@ public:
     friend QDataStream& operator <<(QDataStream& OutDataStream, const CDashboardStation& Station);
     friend QDataStream& operator >>(QDataStream& InDataStream, CDashboardStation& Station);
     CDashboardStation& operator=(const CDashboardStation&);
-
+    void ResetData(void);
 
 //    /******************** INLINE FuNCTIONS **************************************/
     /****************************************************************************/

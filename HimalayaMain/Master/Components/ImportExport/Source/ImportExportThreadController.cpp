@@ -40,10 +40,12 @@
 namespace ImportExport {
 
 // constants for the different files
-const QString FILENAME_REAGENTS             = "Reagents.xml"; ///< const for the reagent file name
-const QString FILENAME_PROGRAMS             = "Programs.xml"; ///< const for the programs file name
-const QString FILENAME_PROGRAMSEQUENCE      = "ProgramsSequence.xml"; ///< const for the programssequence file name
-const QString FILENAME_STATIONS             = "Stations.xml"; ///< const for the stations file name
+const QString FILENAME_REAGENTS             = "HimalayaReagents.xml"; ///< const for the reagent file name
+const QString FILENAME_PROGRAMS             = "HimalayaPrograms.xml"; ///< const for the programs file name
+const QString FILENAME_REAGENT_GROUPS       = "HimalayaReagentGroups.xml"; ///< const for the reagent groups file name
+const QString FILENAME_REAGENT_GROUP_COLORS = "HimalayaReagentGroupColors.xml"; ///< const for the reagent groups file name
+const QString FILENAME_ICONS                = "HimalayaIcons.xml"; ///< const for the programssequence file name
+const QString FILENAME_STATIONS             = "HimalayaStations.xml"; ///< const for the stations file name
 const QString FILENAME_USERSETTINGS         = "UserSettings.xml"; ///< const for the user settings file name
 const QString FILENAME_SWVERSION            = "SW_Version.xml"; ///< const for the user settings file name
 const QString FILENAME_QM                   = "Himalaya_*.qm"; ///< const for the QM file name
@@ -389,11 +391,12 @@ bool ImportExportThreadController::DoPretasks() {
             QString ExportDirPath = Global::SystemPaths::Instance().GetTempPath() + QDir::separator() + DIRECTORY_EXPORT;
 
             // create RMS file
+/*
             if (!CreateRMSFile(ExportDirPath + QDir::separator() + FILENAME_RMSSTATUS)) {
                 Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_RMS_STATUS);
                 return false;
             }            
-
+*/
             if (!WriteTempExportConfigurationAndFiles()) {
                 return false;
             }
@@ -899,12 +902,12 @@ bool ImportExportThreadController::AddFilesForImportType(const QString &TypeOfIm
     if (TypeOfImport.compare(TYPEOFIMPORT_SERVICE, Qt::CaseInsensitive) == 0 ||
             TypeOfImport.compare(TYPEOFIMPORT_SERVICE, Qt::CaseInsensitive) == 0) {
         // for the type of import "user" or "Service"
-        FileList << FILENAME_PROGRAMS << FILENAME_REAGENTS << FILENAME_USERSETTINGS
-                 << FILENAME_PROGRAMSEQUENCE;
+        FileList << FILENAME_REAGENTS << FILENAME_REAGENT_GROUPS << FILENAME_REAGENT_GROUP_COLORS
+                 << FILENAME_PROGRAMS << FILENAME_ICONS << FILENAME_STATIONS << FILENAME_USERSETTINGS;
     }
     else if (TypeOfImport.compare(TYPEOFIMPORT_LEICA, Qt::CaseInsensitive) == 0) {
         // for the type of import "Leica"
-        FileList << FILENAME_PROGRAMS << FILENAME_REAGENTS << FILENAME_USERSETTINGS;
+        FileList << FILENAME_REAGENTS << FILENAME_REAGENT_GROUPS << FILENAME_REAGENT_GROUP_COLORS << FILENAME_USERSETTINGS;
     }
     else if (TypeOfImport.compare(TYPEOFIMPORT_LANGUAGE, Qt::CaseInsensitive) == 0) {
         // for the type of import "Language"
@@ -1001,6 +1004,7 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
             return false;
         }
         // initialize the Programs container
+/*
         DataManager::CDataProgramList ImportProgramList;
         DataManager::CDataProgramListVerifier ImportProgramListVerifier;
         // check whether container initialized with all the data properly or not
@@ -1009,21 +1013,26 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
             qDebug() << "Initialization failed - Programs";
             return false;
         }
+*/
         // initialize the program sequence container
-        DataManager::CProgramSequenceList ImportPSList;
+/*        DataManager::CProgramSequenceList ImportPSList;
         // for the type of Leica import Program sequence is not required
         if ((TypeOfImport.compare(TYPEOFIMPORT_LEICA, Qt::CaseInsensitive) != 0)) {
 
             // initialize the program sequence container
             DataManager::CProgramSequenceListVerifier ImportPSListVerifier;
             // check whether container initialized with all the data properly or not
+
             if (!InitializeAndVerifyContainer(ImportPSList, ImportPSListVerifier, FilePath + QDir::separator() +
                                      FILENAME_PROGRAMSEQUENCE)) {
                 qDebug() << "Initialization failed - Program Sequence";
                 return false;
             }
+
         }
+*/
         // initialize the User settings container
+/*
         DataManager::CUserSettingsInterface ImportUSInterface;
         DataManager::CUserSettingsVerifier ImportUSInterfaceVerifier;
         // check whether container initialized with all the data properly or not
@@ -1046,11 +1055,11 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
             UserSettings.SetValue("Leica_OvenTemp", ImportUSInterface.GetUserSettings(false)->GetValue("Leica_OvenTemp").toInt());
             // set the Leica agitation speed
             UserSettings.SetValue("Leica_AgitationSpeed", ImportUSInterface.GetUserSettings(false)->GetValue("Leica_AgitationSpeed"));
-        }        
+        }
+*/
         // before updating take a back-up of the configuration files
         QStringList FileList;
-        FileList << FILENAME_PROGRAMS << FILENAME_PROGRAMSEQUENCE << FILENAME_REAGENTS << FILENAME_STATIONS
-                 << FILENAME_USERSETTINGS;
+        AddFilesForImportType(TypeOfImport,FileList);
 
         // save the data containers before copying to "Rollback" folder
         if (!WriteFilesInSettingsFolder()) {
@@ -1066,6 +1075,7 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
         }
         /// \todo need to write code for the special verfiers
         // for the type of Leica import Program sequence is not required
+/*
         if ((TypeOfImport.compare(TYPEOFIMPORT_LEICA, Qt::CaseInsensitive) != 0)) {
             // replace the data with the imported data
             *(m_DataManager.GetReagentList()) = ImportReagentList;
@@ -1082,12 +1092,15 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
                 return false;
             }
         }
+*/
         // update the user settings in the Main container
+/*
         if (!m_DataManager.GetUserSettingsInterface()->UpdateUserSettings(&UserSettings)) {
             return false;
         }
+*/
         // reset the stations and Program sequence data
-        ResetTheStationPSContainers(TypeOfImport);
+//        ResetTheStationPSContainers(TypeOfImport);
         // check for the files updation error
         if (!CheckForFilesUpdateError()) {
             return false;
@@ -1167,10 +1180,12 @@ bool ImportExportThreadController::CheckForFilesUpdateError() {
         Rollback = true;
     }
     // short circuit evaluation - evaluates the first one if false then exits from the if statement
+/*
     if (!Rollback && !(m_DataManager.GetProgramSequenceList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
                                                                      + QDir::separator() + FILENAME_PROGRAMSEQUENCE))) {
         Rollback = true;
     }
+*/
     // short circuit evaluation - evaluates the first one if false then exits from the if statement
     if (!Rollback && !(m_DataManager.GetStationList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
                                                              + QDir::separator() + FILENAME_STATIONS))) {
@@ -1197,8 +1212,8 @@ bool ImportExportThreadController::UpdateSettingsWithRollbackFolder() {
 
     QStringList FileList;
 
-    FileList << FILENAME_PROGRAMS << FILENAME_PROGRAMSEQUENCE << FILENAME_REAGENTS
-             << FILENAME_USERSETTINGS << FILENAME_STATIONS;
+    AddFilesForImportType(QString("Service"), FileList);
+
     // update the settings folder with the rollback folder files
     if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator(),
                                Global::SystemPaths::Instance().GetRollbackPath() + QDir::separator()
@@ -1218,11 +1233,13 @@ bool ImportExportThreadController::UpdateSettingsWithRollbackFolder() {
         /// this never happens, but if the xml is having some problem
         return false;
     }
+/*
     if (!m_DataManager.GetProgramSequenceList()->Read(Global::SystemPaths::Instance().GetSettingsPath()
                                                       + QDir::separator() + FILENAME_PROGRAMSEQUENCE)) {
         /// this never happens, but if the xml is having some problem
         return false;
     }
+*/
     if (!m_DataManager.GetStationList()->Read(Global::SystemPaths::Instance().GetSettingsPath()
                                               + QDir::separator() + FILENAME_STATIONS)) {
         /// this never happens, but if the xml is having some problem
@@ -1239,6 +1256,7 @@ bool ImportExportThreadController::UpdateSettingsWithRollbackFolder() {
 
 /****************************************************************************/
 bool ImportExportThreadController::CompareSoftwareVersions() {
+
     // initialize the SW version container
     DataManager::CSWVersionList ImportSWVersionList;
     DataManager::CSWVersionListVerifier ImportSWVLVerifier;
@@ -1545,12 +1563,14 @@ bool ImportExportThreadController::WriteFilesInSettingsFolder() {
         //ErrorString = "Unable to write the file in Settings folder";
         return false;
     }
+/*
     if (!m_DataManager.GetProgramSequenceList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
                                                        + QDir::separator() + FILENAME_PROGRAMSEQUENCE)) {
         /// this may happen if the flash does not have more space or flash is having some problem
         //ErrorString = "Unable to write the file in Settings folder";
         return false;
     }
+*/
     if (!m_DataManager.GetStationList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
                                                + QDir::separator() + FILENAME_STATIONS)) {
         /// this may happen if the flash does not have more space or flash is having some problem
@@ -1639,6 +1659,7 @@ bool ImportExportThreadController::ImportLanguageFiles() {
 void ImportExportThreadController::UnMountTheDevice() {
     // store the current directory path otherwise if we change the
     // directory path then export process cannot start it
+    return;
     QString CurrentDir = QDir::currentPath();
 
     // check the USB directory exists or not  "/mnt/USB"

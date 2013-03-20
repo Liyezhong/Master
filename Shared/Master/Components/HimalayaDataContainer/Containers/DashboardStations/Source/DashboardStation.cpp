@@ -98,7 +98,6 @@ void CDashboardStation::CopyFromOther(const CDashboardStation& Station)
     m_ReagentExchangeDate = OtherStation.GetDashboardReagentExcahngeDate();
     m_ReagentActualCassettes = OtherStation.GetDashboardReagentActualCassettes();
     m_ReagentActualCycles = OtherStation.GetDashboardReagentActualCycles();
-    m_ReagentStatus = OtherStation.GetDashboardReagentStatus();
 
 }
 
@@ -145,7 +144,7 @@ QDataStream& operator >>(QDataStream& InDataStream, CDashboardStation& Station)
     XmlStreamReader.setDevice(InDataStream.device());
 
     if (!Helper::ReadNode(XmlStreamReader, QString("Station"))) {
-        qDebug() << "CStation::Operator Streaming (DeSerializeContent) Node not found: Reagent";
+        qDebug() << "CDashboardStation::Operator Streaming (DeSerializeContent) Node not found: Reagent";
         THROWARG(Global::EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
     }
 
@@ -299,6 +298,22 @@ CDashboardStation& CDashboardStation::operator=(const CDashboardStation& SourceS
 {
     CopyFromOther(SourceStation);
     return (*this);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief  Resets actual cassettes, actual cycles,
+ *          actual days, and exchange date.
+ *
+ *  \return true, if succeed to reset data;
+ *          false, if cannot reset data.
+ */
+/****************************************************************************/
+void CDashboardStation::ResetData(void)
+{
+    m_ReagentActualCassettes = 0;
+    m_ReagentActualCycles    = 0;
+    m_ReagentExchangeDate    = QDate::currentDate();
 }
 
 } // end of namespace DataManager

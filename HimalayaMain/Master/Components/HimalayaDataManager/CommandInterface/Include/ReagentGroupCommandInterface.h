@@ -20,8 +20,8 @@
 #ifndef DATAMANAGER_REAGENTGROUPCOMMANDINTERFACE_H
 #define DATAMANAGER_REAGENTGROUPCOMMANDINTERFACE_H
 
-#include "CommandInterfaceBase.h"
-
+#include "../../../../../../Platform/Master/Components/DataManager/CommandInterface/Include/CommandInterfaceBase.h"
+#include "HimalayaDataManager/Include/DataManager.h"
 #include "Global/Include/GlobalDefines.h"
 
 namespace Threads
@@ -29,7 +29,7 @@ namespace Threads
     class CommandChannel;
 }
 
-namespace MsgClassesNew
+namespace MsgClasses
 {
     class CmdReagentGroupUpdate;
 }
@@ -41,18 +41,17 @@ namespace DataManager {
  * \brief  Reagent group command interface definition
  */
 /****************************************************************************/
-class ReagentGroupCommandInterface:public CommandInterfaceBase
+class CReagentGroupCommandInterface: public CCommandInterfaceBase
 {
     Q_OBJECT
 public:
-    explicit ReagentGroupCommandInterface(Threads::MasterThreadController &,
-                                     DataContainer &);
+    CReagentGroupCommandInterface(CDataManager *p_DataManager, Threads::MasterThreadController *p_MasterThreadController, CDataContainer *p_DataContainer);
 
 private:
     virtual void RegisterCommands(void);
 
     void UpdateReagentGroup(Global::tRefType,
-                            const MsgClassesNew::CmdReagentGroupUpdate &,
+                            const MsgClasses::CmdReagentGroupUpdate &,
                             Threads::CommandChannel &);
 };
 

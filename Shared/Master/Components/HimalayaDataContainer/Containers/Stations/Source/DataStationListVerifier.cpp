@@ -22,7 +22,7 @@
 #include <QFile>
 
 #include "HimalayaDataContainer/Containers/Stations/Include/DataStationListVerifier.h"
-#include "HimalayaDataContainer/Containers/Stations/Include/DataStationList.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 
 
 namespace DataManager {

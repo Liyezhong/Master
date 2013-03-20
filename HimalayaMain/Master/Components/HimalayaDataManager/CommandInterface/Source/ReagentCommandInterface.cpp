@@ -109,8 +109,11 @@ void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses
 void CReagentCommandInterface::DeleteReagent(Global::tRefType Ref, const MsgClasses::CmdReagentRemove &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
     bool Result = true;
+    bool ResultUpdateStation = true;
+    //Also the Station should be updated
+    ResultUpdateStation = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->StationList->UpdateStationsByReagentDelete(Cmd.GetReagentID());
     Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->DeleteReagent(Cmd.GetReagentID());
-    if (!Result) {
+    if (!Result || !ResultUpdateStation) {
         // If error occurs , get errors and send errors to GUI
         ListOfErrors_t &ErrorList = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->GetErrorList();
         QString ErrorString;
@@ -119,17 +122,13 @@ void CReagentCommandInterface::DeleteReagent(Global::tRefType Ref, const MsgClas
              qDebug()<<"\n\n Delete Reagent Failed";
     }
     else {
-         mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-     //   QByteArray BA;
-     //   QDataStream ReagentDataStream(&BA, QIODevice::ReadWrite);
-     //   ReagentDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
-     //   ReagentDataStream << *(mp_DataContainer->ReagentList);
-    //    NetCommands::CmdConfigurationFile* p_Command = new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENT, ReagentDataStream);
+        mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
         MsgClasses::CmdReagentRemove* p_Command = new MsgClasses::CmdReagentRemove(5000, Cmd.GetReagentID());
         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
         qDebug()<<"\n\n Delete Reagent Success";
     }
     static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
+    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->StationList->Write();
 }
 
 /****************************************************************************/

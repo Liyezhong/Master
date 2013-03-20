@@ -41,10 +41,9 @@
 #include <NetCommands/Include/CmdEventReport.h>
 #include <HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramUpdate.h>
 #include <DataManager/Containers/UserSettings/Commands/Include/CmdRmsOnOff.h>
-#include <DataManager/Containers/UserSettings/Commands/Include/CmdSetWaterStations.h>
 #include <NetCommands/Include/CmdSwitchToService.h>
 #include <NetCommands/Include/CmdConfigurationFile.h>
-#include <HimalayaDataContainer/Containers/Stations/Include/Station.h>
+#include <HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h>
 
 #include <DataManager/Containers/Stations/Include/StationBase.h>
 #include <HimalayaDataManager/Commands/Include/CmdStationDataContainer.h>
@@ -95,7 +94,7 @@ HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     m_CommandChannelEventHandler(this, "EventHandler", Global::EVENTSOURCE_EVENTHANDLER),
     m_CommandChannelExport(this, "Export", Global::EVENTSOURCE_EXPORT),
     m_CommandChannelImportExport(this, "ImportExport", Global::EVENTSOURCE_IMPORTEXPORT),
-    mp_ObDataManager(NULL),
+    mp_DataManager(NULL),
     mp_RMSManager(NULL),
     mp_ImportExportAckChannel(NULL),
     m_ExportProcessIsFinished(false),
@@ -154,15 +153,15 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
      *  just created, and would not have read EventConfig.csv.
      */
 
-    mp_ObDataManager = new DataManager::CDataManager(this);
+    mp_DataManager = new DataManager::CDataManager(this);
     //initialize the DataManagerBase pointer in MasterThread
-    mp_DataManagerBase = mp_ObDataManager;
+    mp_DataManagerBase = mp_DataManager;
 
     //! \todo Do this when a rack is inserted
-    mp_ObDataManager->RefreshPossibleStationList();
+    mp_DataManager->RefreshPossibleStationList();
 
     //Create RMS manager
-    mp_RMSManager = new HimalayaRMS::CRMSManager(this, mp_ObDataManager);
+    mp_RMSManager = new HimalayaRMS::CRMSManager(this, mp_DataManager);
     //Initialize program Startable manager
     m_ProgramStartableManager.Init();
     //Initialize objects in Master and base threads.
@@ -189,9 +188,9 @@ void HimalayaMasterThreadController::CreateControllersAndThreads() {
     // let base class create controllers and threads
     MasterThreadController::CreateControllersAndThreads();
 
-    CHECKPTR(mp_ObDataManager);
-    CHECKPTR(mp_ObDataManager->GetDeviceConfigurationInterface());
-    DataManager::CDeviceConfiguration *p_DeviceConfiguration = mp_ObDataManager->GetDeviceConfigurationInterface()->GetDeviceConfiguration();
+    CHECKPTR(mp_DataManager);
+    CHECKPTR(mp_DataManager->GetDeviceConfigurationInterface());
+    DataManager::CDeviceConfiguration *p_DeviceConfiguration = mp_DataManager->GetDeviceConfigurationInterface()->GetDeviceConfiguration();
     CHECKPTR(p_DeviceConfiguration);
 
     // create and connect scheduler main controller
@@ -223,7 +222,7 @@ void HimalayaMasterThreadController::OnPowerFail() {
 void HimalayaMasterThreadController::OnGoReceived() {
     CreateAndInitializeObjects();
     MasterThreadController::OnGoReceived();
-    DataManager::CDeviceConfigurationInterface *deviceConfigInterface = mp_ObDataManager->GetDeviceConfigurationInterface();
+    DataManager::CDeviceConfigurationInterface *deviceConfigInterface = mp_DataManager->GetDeviceConfigurationInterface();
     QString SerialNumber;
     QString DeviceName;
     if (deviceConfigInterface) {
@@ -290,9 +289,6 @@ void HimalayaMasterThreadController::RegisterCommands() {
     // so far the only registration with real function:
     RegisterCommandForProcessing<Global::CmdDateAndTime, HimalayaMasterThreadController>(&HimalayaMasterThreadController::SetDateTime, this);
 
-
-    RegisterCommandForProcessing<MsgClasses::CmdUpdateRMSForecast, HimalayaMasterThreadController>
-            (&HimalayaMasterThreadController::RMSForecastHandler, this);
 
     RegisterCommandForProcessing<NetCommands::CmdExportDayRunLogReply, HimalayaMasterThreadController>
             (&HimalayaMasterThreadController::ExportDayRunLogHandler, this);
@@ -430,7 +426,7 @@ void HimalayaMasterThreadController::SendXML() {
     // after parse station.xml.
     p_ByteArray->clear();
     (void)XmlStream.device()->reset();
-    DataManager::CDashboardDataStationList *p_StationList = mp_ObDataManager->GetStationList();
+    DataManager::CDashboardDataStationList *p_StationList = mp_DataManager->GetStationList();
     if (p_StationList) {
         XmlStream << *p_StationList;
         SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::STATION, XmlStream)), m_CommandChannelGui);
@@ -439,7 +435,7 @@ void HimalayaMasterThreadController::SendXML() {
     // send reagent group list in xml ---------------------------------
     p_ByteArray->clear();
     (void)XmlStream.device()->reset();
-    DataManager::CDataReagentGroupList *p_ReagentGroupList = mp_ObDataManager->GetReagentGroupList() ;
+    DataManager::CDataReagentGroupList *p_ReagentGroupList = mp_DataManager->GetReagentGroupList() ;
     if (p_ReagentGroupList) {
         XmlStream << *p_ReagentGroupList;
         SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENTGROUP , XmlStream)), m_CommandChannelGui);
@@ -447,29 +443,40 @@ void HimalayaMasterThreadController::SendXML() {
 
     p_ByteArray->clear();
     (void)XmlStream.device()->reset();
-    DataManager::CDataReagentList *p_ReagentList = mp_ObDataManager->GetReagentList() ;
+    DataManager::CDataReagentList *p_ReagentList = mp_DataManager->GetReagentList() ;
     if (p_ReagentList) {
         XmlStream << *p_ReagentList;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENT , XmlStream)), m_CommandChannelGui);
+        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENT, XmlStream)), m_CommandChannelGui);
     }
 
     p_ByteArray->clear();
     (void)XmlStream.device()->reset();
-    DataManager::CDataProgramList *p_ProgramList =  mp_ObDataManager->GetProgramList();
+
+    DataManager::CReagentGroupColorList *p_ReagentGroupColorList = mp_DataManager->GetReagentGroupColorList() ;
+    if (p_ReagentGroupColorList) {
+        XmlStream << *p_ReagentGroupColorList;
+        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENTGROUPCOLOR , XmlStream)), m_CommandChannelGui);
+    }
+
+    p_ByteArray->clear();
+    (void)XmlStream.device()->reset();
+
+    DataManager::CDataProgramList *p_ProgramList =  mp_DataManager->GetProgramList();
+
     if (p_ProgramList) {
         XmlStream << *p_ProgramList;
         SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM , XmlStream)), m_CommandChannelGui);
     }
     p_ByteArray->clear();
     (void)XmlStream.device()->reset();
-    DataManager::CProgramSequenceList *p_ProgramSequenceList = mp_ObDataManager->GetProgramSequenceList();
+    DataManager::CProgramSequenceList *p_ProgramSequenceList = mp_DataManager->GetProgramSequenceList();
     if (p_ProgramSequenceList) {
         XmlStream << *p_ProgramSequenceList;
         SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM_SEQUENCE , XmlStream)), m_CommandChannelGui);
     }
     p_ByteArray->clear();
     (void)XmlStream.device()->reset();
-    DataManager::CUserSettingsInterface *p_SettingsInterface = mp_ObDataManager->GetUserSettingsInterface();
+    DataManager::CUserSettingsInterface *p_SettingsInterface = mp_DataManager->GetUserSettingsInterface();
     if (p_SettingsInterface) {
         XmlStream << *p_SettingsInterface;
         SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::USER_SETTING, XmlStream)), m_CommandChannelGui);
@@ -497,7 +504,7 @@ void HimalayaMasterThreadController::SendXML() {
     //Update Supported Languages
     (void)UpdateSupportedGUILanguages();
 
-    DataManager::CDeviceConfigurationInterface *p_DeviceConfigurationInterface = mp_ObDataManager->GetDeviceConfigurationInterface();
+    DataManager::CDeviceConfigurationInterface *p_DeviceConfigurationInterface = mp_DataManager->GetDeviceConfigurationInterface();
     if (p_DeviceConfigurationInterface ) {
         XmlStream << *p_DeviceConfigurationInterface;
         SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::DEVICE_CONFIGURATION, XmlStream)), m_CommandChannelGui);
@@ -515,27 +522,6 @@ void HimalayaMasterThreadController::SendXML() {
     delete p_ByteArray;
 }
 
-/****************************************************************************/
-void HimalayaMasterThreadController::RMSForecastHandler(Global::tRefType Ref,
-                                                        const MsgClasses::CmdUpdateRMSForecast &Cmd,
-                                                        Threads::CommandChannel &AckCommandChannel) {
-    ListOfForecastValues_t ForecastValues;
-    QDataStream ForecastDataStream(&const_cast<QByteArray &>(Cmd.GetRMSForecastData()), QIODevice::ReadWrite);
-    ForecastDataStream >> ForecastValues;
-    if (!(mp_ObDataManager->SetRMSForecast(ForecastValues))) {
-            SendAcknowledgeNOK(Ref, AckCommandChannel);
-    }
-    else {
-        SendAcknowledgeOK(Ref, AckCommandChannel);
-        QByteArray  StationData;
-        QDataStream StationDataStream(&StationData, QIODevice::ReadWrite);
-        //Stream in station data
-        StationDataStream << *mp_ObDataManager->GetStationList();
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::STATION, StationDataStream)), m_CommandChannelGui);
-    }
-}
-
-
 
 bool HimalayaMasterThreadController::IsCommandAllowed(const Global::CommandShPtr_t &Cmd) {
 
@@ -545,8 +531,8 @@ bool HimalayaMasterThreadController::IsCommandAllowed(const Global::CommandShPtr
 
 void HimalayaMasterThreadController::SendContainersTo(Threads::CommandChannel &rCommandChannel) {
 
-    SendCommand(Global::CommandShPtr_t(new DataManager::CmdStationDataContainer(*mp_ObDataManager->GetStationList(),
-                                                                                *mp_ObDataManager->GetReagentList())), rCommandChannel);
+    SendCommand(Global::CommandShPtr_t(new DataManager::CmdStationDataContainer(*mp_DataManager->GetStationList(),
+                                                                                *mp_DataManager->GetReagentList())), rCommandChannel);
 }
 
 
@@ -733,31 +719,34 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
         // check the type of Impor
         if ((TypeOfImport.compare("User") == 0) || (TypeOfImport.compare("Service") == 0) || (TypeOfImport.compare("Leica") == 0)) {
             // Special verification
-            if (mp_ObDataManager->GetUserSettingsInterface()->VerifyData(true)) {
+            if (mp_DataManager->GetUserSettingsInterface()->VerifyData(true)) {
                 Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
             }
 
             // Special verification
-            if (mp_ObDataManager->GetProgramList()->VerifyData(true)) {
+/*
+            if (mp_DataManager->GetProgramList()->VerifyData(true)) {
                 Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
             }
-
+*/
             // Special verification
-            if (mp_ObDataManager->GetStationList()->VerifyData(true)) {
+/*
+            if (mp_DataManager->GetStationList()->VerifyData(true)) {
                 Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
             }
-
+*/
             // Special verification
-            if (mp_ObDataManager->GetProgramSequenceList()->VerifyData(true)) {
+/*
+            if (mp_DataManager->GetProgramSequenceList()->VerifyData(true)) {
                 Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
             }
-
+*/
             // send configuration files to GUI
-            SendConfigurationFile(mp_ObDataManager->GetUserSettingsInterface(), NetCommands::USER_SETTING, m_CommandChannelGui);
-            SendConfigurationFile(mp_ObDataManager->GetReagentList(), NetCommands::REAGENT, m_CommandChannelGui);
-            SendConfigurationFile(mp_ObDataManager->GetProgramList(), NetCommands::PROGRAM, m_CommandChannelGui);
-            SendConfigurationFile(mp_ObDataManager->GetProgramSequenceList(), NetCommands::PROGRAM_SEQUENCE, m_CommandChannelGui);
-            SendConfigurationFile(mp_ObDataManager->GetStationList(), NetCommands::STATION, m_CommandChannelGui);
+//            SendConfigurationFile(mp_DataManager->GetUserSettingsInterface(), NetCommands::USER_SETTING, m_CommandChannelGui);
+            SendConfigurationFile(mp_DataManager->GetReagentList(), NetCommands::REAGENT, m_CommandChannelGui);
+//            SendConfigurationFile(mp_DataManager->GetReagentGroupList, NetCommands::REAGENTGROUP, m_CommandChannelGui);
+//            SendConfigurationFile(mp_DataManager->GetProgramList(), NetCommands::PROGRAM, m_CommandChannelGui);
+//            SendConfigurationFile(mp_DataManager->GetStationList(), NetCommands::STATION, m_CommandChannelGui);
             // inform the event handler
             Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_SUCCESS);
             // send ack OK
@@ -772,11 +761,11 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
             }
             // if current language file updated by the import then this needs a send command to GUI
             if (UpdatedCurrentLanguage) {
-                if (mp_ObDataManager->GetUserSettingsInterface() != NULL) {
-                    if (mp_ObDataManager->GetUserSettingsInterface()->GetUserSettings(false) != NULL) {
+                if (mp_DataManager->GetUserSettingsInterface() != NULL) {
+                    if (mp_DataManager->GetUserSettingsInterface()->GetUserSettings(false) != NULL) {
                         // get the current language
                         QLocale::Language CurrentLanguage =
-                                mp_ObDataManager->GetUserSettingsInterface()->GetUserSettings(false)->GetLanguage();
+                                mp_DataManager->GetUserSettingsInterface()->GetUserSettings(false)->GetLanguage();
 
                         // store the langauge name de_DE
                         QString LanguageName(QLocale(CurrentLanguage).name());
@@ -816,7 +805,7 @@ bool HimalayaMasterThreadController::UpdateSupportedGUILanguages() {
 
     QDir TheDir(Global::SystemPaths::Instance().GetTranslationsPath());
     QStringList FileNames = TheDir.entryList(QStringList("Himalaya_*.qm"));
-    DataManager::CDeviceConfigurationInterface *p_DeviceConfigInterface = mp_ObDataManager->GetDeviceConfigurationInterface();
+    DataManager::CDeviceConfigurationInterface *p_DeviceConfigInterface = mp_DataManager->GetDeviceConfigurationInterface();
     if (p_DeviceConfigInterface) {
         DataManager::CDeviceConfiguration *p_DeviceConfiguration = p_DeviceConfigInterface->GetDeviceConfiguration();
     if (p_DeviceConfiguration) {
@@ -893,9 +882,9 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
             break;
         case Global::SERVICE:            
 
-            if (mp_ObDataManager->GetDeviceConfigurationInterface() != NULL) {
+            if (mp_DataManager->GetDeviceConfigurationInterface() != NULL) {
 
-                DataManager::CDeviceConfiguration *p_DeviceConfiguration = mp_ObDataManager->GetDeviceConfigurationInterface()
+                DataManager::CDeviceConfiguration *p_DeviceConfiguration = mp_DataManager->GetDeviceConfigurationInterface()
                         ->GetDeviceConfiguration(false);
 
                 if (p_DeviceConfiguration != NULL) {
@@ -1063,7 +1052,7 @@ void HimalayaMasterThreadController::ContainerFileHandler(Global::tRefType Ref, 
     mp_RMSManager->AbortLeicaConsumablesScanProcess();
 
     //Replacing Original container back
-    const DataManager::CDataContainer *p_DataContainerReplace = mp_ObDataManager->GetDataContainer();
+    const DataManager::CDataContainer *p_DataContainerReplace = mp_DataManager->GetDataContainer();
     switch (Command.GetFileType()) {
 
         case NetCommands::PROGRAM_SEQUENCE:

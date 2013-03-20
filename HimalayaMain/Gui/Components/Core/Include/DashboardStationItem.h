@@ -24,7 +24,7 @@
 #include <QGraphicsItem>
 #include "Core/Include/DataConnector.h"
 #include "MainMenu/Include/MessageDlg.h"
-#include "HimalayaDataContainer/Containers/Stations/Include/Station.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QObject>

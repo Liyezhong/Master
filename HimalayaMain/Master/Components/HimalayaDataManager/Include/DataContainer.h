@@ -25,16 +25,16 @@
 #include <QIODevice>
 
 #include "HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupList.h"
+#include "HimalayaDataContainer/Containers/ReagentGroupColor/Include/ReagentGroupColorList.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
-#include "HimalayaDataContainer/Containers/Stations/Include/DataStationList.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "HimalayaDataContainer/Containers/ProgramSequence/Include/ProgramSequenceList.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
-#include "DataManager/Containers/Racks/Include/RackList.h"
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationInterface.h"
-#include "DataManager/Containers/Adjustment/Include/Adjustment.h"
 #include "DataManager/Include/DataContainerCollectionBase.h"
+
 
 namespace Himalaya {
     class HimalayaMasterThreadController;
@@ -50,21 +50,14 @@ private:
     bool DeinitContainers();
     bool ResetDCReagentGroupList();
     bool ResetDCReagentList();
+    bool ResetDCReagentGroupColorList();
     bool ResetDCProgramList();
     bool ResetDCStationList();
     bool ResetDCProgramSequenceList();
-    bool ResetDCRackList();
-    bool ResetDCStationGrid();
-    bool ResetDCAdjustment();
+
     bool AddStepsToExpandedStepList(CProgram *p_Program);
     bool CompareSteps(CProgramStep& CurrentProgramStep, CProgramStep& NextProgramStep, bool& OK);
-    void AddUnloadingStations();
-    void AddLoadingStations();
-    void AddWaterStations();
-    void AddDryStationToContainer();
     void AddStation(QString StationID, QString ReagentID,CDashboardStation &Station);
-    void AddOvenStations();
-    void AddSlideCounterStation();
 
 public:
     CDataContainer(Threads::MasterThreadController *p_HimalayaMasterThreadController);
@@ -78,10 +71,8 @@ public:
     CDashboardDataStationList* StationList;  //!< Container for stations
     CDataReagentGroupList* ReagentGroupList;  //!< Container for reagent groups
     CDataReagentList* ReagentList;  //!< Container for reagents
-
-    CRackList* RackList;        //!< Container for racks
+    CReagentGroupColorList* ReagentGroupColorList; //!<//!< Container for reagentGroupColor
     CProgramSequenceList* ProgramSequenceList;  //!< Container for additional program information
-    CAdjustment *AdjustmentList; //!< Container for Adjusment module
     IVerifierInterface* SpecialVerifierGroupA; //!< Special verifier for group A
     IVerifierInterface* SpecialVerifierGroupB; //!< Special verifier for group B
     IVerifierInterface* SpecialVerifierGroupC; //!< Special verifier for group C

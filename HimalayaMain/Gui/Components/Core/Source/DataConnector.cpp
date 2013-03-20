@@ -35,6 +35,7 @@
 #include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramUpdate.h"
 #include "HimalayaDataContainer/Containers/Stations/Include/StationXmlDefinitions.h"
 
+
 #include <QApplication>
 #include <QHash>
 #include "Global/Include/UITranslator.h"
@@ -70,9 +71,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
 
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdReagentGroupUpdate>(&CDataConnector::UpdateReagentGroupHandler, this);
 
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdReagentGroupUpdate>(&CDataConnector::UpdateReagentGroupHandler, this);
-
-//    //newly added commands
+    //newly added commands
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationChangeReagent>(&CDataConnector::UpdateStationChangeReagentHandler, this);
 
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationResetData>(&CDataConnector::UpdateStationResetData, this);
@@ -339,18 +338,7 @@ void CDataConnector::SendStationChangeReagent(QString StationId, QString Reagent
 }
 void CDataConnector::SendStationResetData(QString StationId)
 {
-    QByteArray ByteArray;
-    QDataStream StationDataStream(&ByteArray,QIODevice::ReadWrite);
-
-    QXmlStreamWriter Writer;
-    Writer.setDevice(StationDataStream.device());
-    Writer.writeStartDocument();
-    Writer.writeStartElement("Station");
-    Writer.writeAttribute("ID", StationId);
-    Writer.writeEndElement();
-    Writer.writeEndDocument();
-
-    MsgClasses::CmdStationResetData Command(1000, StationDataStream);
+    MsgClasses::CmdStationResetData Command(1000, StationId);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
     mp_WaitDialog->SetText(tr("Saving Settings ..."));
@@ -360,18 +348,7 @@ void CDataConnector::SendStationResetData(QString StationId)
 
 void CDataConnector::SendStationSetAsEmpty(QString StationId)
 {
-    QByteArray ByteArray;
-    QDataStream StationDataStream(&ByteArray,QIODevice::ReadWrite);
-
-    QXmlStreamWriter Writer;
-    Writer.setDevice(StationDataStream.device());
-    Writer.writeStartDocument();
-    Writer.writeStartElement("Station");
-    Writer.writeAttribute("ID", StationId);
-    Writer.writeEndElement();
-    Writer.writeEndDocument();
-
-    MsgClasses::CmdStationSetAsEmpty Command(1000, StationDataStream);
+    MsgClasses::CmdStationSetAsEmpty Command(1000, StationId);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
     mp_WaitDialog->SetText(tr("Saving Settings ..."));
@@ -381,18 +358,7 @@ void CDataConnector::SendStationSetAsEmpty(QString StationId)
 
 void CDataConnector::SendStationSetAsFull(QString StationId)
 {
-    QByteArray ByteArray;
-    QDataStream StationDataStream(&ByteArray,QIODevice::ReadWrite);
-
-    QXmlStreamWriter Writer;
-    Writer.setDevice(StationDataStream.device());
-    Writer.writeStartDocument();
-    Writer.writeStartElement("Station");
-    Writer.writeAttribute("ID", StationId);
-    Writer.writeEndElement();
-    Writer.writeEndDocument();
-
-    MsgClasses::CmdStationSetAsFull Command(1000, StationDataStream);
+    MsgClasses::CmdStationSetAsFull Command(1000, StationId);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
     mp_WaitDialog->SetText(tr("Saving Settings ..."));
@@ -409,10 +375,7 @@ void CDataConnector::SendStationSetAsFull(QString StationId)
 /****************************************************************************/
 void CDataConnector::SendReagentGroupUpdate(DataManager::CReagentGroup &ReagentGroup)
 {
-    QByteArray ByteArray;
-    QDataStream ReagentGroupDataStream(&ByteArray,QIODevice::ReadWrite);
-    ReagentGroupDataStream << ReagentGroup;
-    MsgClasses::CmdReagentGroupUpdate Command(1000, ReagentGroupDataStream);
+    MsgClasses::CmdReagentGroupUpdate Command(1000, ReagentGroup.GetGroupID(), ReagentGroup.GetGroupColor());
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
     mp_WaitDialog->SetText(tr("Saving Settings ..."));
@@ -760,11 +723,11 @@ void CDataConnector::UpdateReagentHandler(Global::tRefType Ref, const MsgClasses
 void CDataConnector::UpdateReagentGroupHandler(Global::tRefType Ref, const MsgClasses::CmdReagentGroupUpdate &Command)
 {
     bool Result = true;
-    DataManager::CReagentGroup ReagentGroup;
-    QDataStream ReagentGroupDataStream(&const_cast<QByteArray &>(Command.GetData()), QIODevice::ReadWrite);
-    ReagentGroupDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
-    ReagentGroupDataStream >> ReagentGroup;
-    Result = ReagentGroupList->UpdateReagentGroup(&ReagentGroup);
+    DataManager::CReagentGroup* pReagentGroup = ReagentGroupList->GetReagentGroup(Command.GroupId());
+    if (pReagentGroup)
+        pReagentGroup->SetGroupColor(Command.GroupColor());
+    else
+        Result = false;
     if(Result){
         mp_WaitDialog->accept();
         emit ReagentGroupUpdated();
@@ -788,7 +751,10 @@ void CDataConnector::UpdateStationChangeReagentHandler(Global::tRefType Ref,
     bool Result = true;
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
     if (pDashboardStation)
+    {
         pDashboardStation->SetDashboardReagentID(Command.ReagentID());
+        pDashboardStation->ResetData();
+    }
     else
         Result = false;
     if(Result){
@@ -801,15 +767,52 @@ void CDataConnector::UpdateStationChangeReagentHandler(Global::tRefType Ref,
 
 void CDataConnector::UpdateStationResetData(Global::tRefType Ref, const MsgClasses::CmdStationResetData &Command)
 {
-
+    bool Result = true;
+    DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
+    if (pDashboardStation)
+        pDashboardStation->ResetData();
+    else
+        Result = false;
+    if(Result){
+        mp_WaitDialog->accept();
+        emit DashboardStationChangeReagent();
+    }
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }
+
 void CDataConnector::UpdateStationSetAsEmpty(Global::tRefType Ref, const MsgClasses::CmdStationSetAsEmpty &Command)
 {
-
+    bool Result = true;
+    DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
+    if (pDashboardStation)
+    {
+        pDashboardStation->SetDashboardReagentStatus("Empty");
+    }
+    else
+        Result = false;
+    if(Result){
+        mp_WaitDialog->accept();
+        emit DashboardStationChangeReagent();
+    }
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }
+
 void CDataConnector::UpdateStationSetAsFull(Global::tRefType Ref, const MsgClasses::CmdStationSetAsFull &Command)
 {
-
+    bool Result = true;
+    DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
+    if (pDashboardStation)
+    {
+        pDashboardStation->SetDashboardReagentStatus("Full");
+        pDashboardStation->ResetData();
+    }
+    else
+        Result = false;
+    if(Result){
+        mp_WaitDialog->accept();
+        emit DashboardStationChangeReagent();
+    }
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }
 
 /****************************************************************************/
@@ -824,10 +827,12 @@ void CDataConnector::ReagentRemoveHandler(Global::tRefType Ref,
                                        const MsgClasses::CmdReagentRemove &Command)
 {
     bool Result = false;
-
-
+    bool ResultUpdateStation = false;
+    ResultUpdateStation = DashboardStationList->UpdateStationsByReagentDelete(Command.GetReagentID());
     Result = ReagentList->DeleteReagent(Command.GetReagentID());
-    if (Result) {
+    if (Result && ResultUpdateStation) {
+        mp_WaitDialog->accept();
+        emit DashboardStationsUpdated();
         emit ReagentsUpdated();
     }
     else {

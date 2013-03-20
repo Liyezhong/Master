@@ -31,6 +31,7 @@ namespace DataManager {
 class CProgramCommandInterface;
 class CReagentCommandInterface;
 class CStationCommandInterface;
+class CReagentGroupCommandInterface;
 class CUserSettingsCommandInterface;
 
 class CDataManager : public CDataManagerBase
@@ -41,7 +42,7 @@ private:
     CDataContainer* mp_DataContainer;
     CStationCommandInterface *mp_StationCommandInterface; //!< handles commands related to  Station container
     CReagentCommandInterface *mp_ReagentCommandInterface; //!< handles commands related to reagent container
-
+    CReagentGroupCommandInterface *mp_ReagentGroupCommandInterface;
 protected:
     virtual bool DeinitDataContainer();
 
@@ -59,14 +60,13 @@ public:
     CDataReagentGroupList* GetReagentGroupList();
     bool GetReagentGroupList(CDataReagentGroupList *p_ReagentGroupList);
 
+    CReagentGroupColorList* GetReagentGroupColorList();
+
     bool GetStationList(CDashboardDataStationList *p_StationList);
     CDashboardDataStationList* GetStationList();
 
     bool GetReagentList(CDataReagentList *p_ReagentList);
     CDataReagentList* GetReagentList();
-
-    bool UpdateStation(CDashboardStation* p_Station);
-    bool SetRMSForecast(ListOfForecastValues_t &RMSForecastValues);
 
     CProgramSequenceList* GetProgramSequenceList();
     CUserSettingsInterface* GetUserSettingsInterface();

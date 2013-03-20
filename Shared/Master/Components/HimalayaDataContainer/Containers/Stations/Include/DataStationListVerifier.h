@@ -24,7 +24,7 @@
 #include <QXmlStreamReader>
 
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"
-#include "HimalayaDataContainer/Containers/Stations/Include/DataStationList.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 #include "DataManager/Containers/ContainerBase/Include/VerifierInterface.h"
 
 namespace DataManager {

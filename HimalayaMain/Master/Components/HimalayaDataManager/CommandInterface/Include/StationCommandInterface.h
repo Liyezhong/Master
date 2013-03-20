@@ -46,7 +46,7 @@ private:
                                  const MsgClasses::CmdStationChangeReagent &,
                                  Threads::CommandChannel &);
 
-    /* void ResetStationData(Global::tRefType,
+     void ResetStationData(Global::tRefType,
                            const MsgClasses::CmdStationResetData &,
                            Threads::CommandChannel &);
 
@@ -56,7 +56,7 @@ private:
 
      void SetStationAsEmpty(Global::tRefType,
                             const MsgClasses::CmdStationSetAsEmpty &Cmd,
-                            Threads::CommandChannel &);*/
+                            Threads::CommandChannel &);
 };
 
 }// end of namespace DataManager

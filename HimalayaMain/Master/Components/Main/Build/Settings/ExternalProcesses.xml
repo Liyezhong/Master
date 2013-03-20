@@ -76,7 +76,7 @@
         executed to start the process. -->
         <name>Platform Export</name>
         <!-- Start commando is empty for Sepia -->
-        <startcmd>nice -n 5 ./PlatformExport 127.0.0.21 8801 &amp;</startcmd>
+        <startcmd>nice -n 5 ./Export 127.0.0.21 8801 &amp;</startcmd>
         <!-- Sepia is never started by Master, remotelogin for Sepia shall always be "Yes". -->
         <remotelogin>No</remotelogin>
         <!-- Timeout for remote login option, in seconds.

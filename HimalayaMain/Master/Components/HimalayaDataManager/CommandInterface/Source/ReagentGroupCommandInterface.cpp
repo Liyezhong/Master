@@ -23,10 +23,9 @@
 
 #include "Threads/Include/MasterThreadController.h"
 #include "Threads/Include/CommandChannel.h"
-
-//#include "HimalayaDataContainer/Containers/ReagentGroup/Commands/Include/CmdReagentGroupUpdateNew.h"
-
 #include "HimalayaDataManager/Include/DataContainer.h"
+#include "HimalayaDataContainer/Containers/ReagentGroups/Commands/Include/CmdReagentGroupUpdate.h"
+
 
 namespace DataManager {
 
@@ -38,10 +37,11 @@ namespace DataManager {
  *  \param[in] dataContainer          reference to data container
  */
 /****************************************************************************/
-ReagentGroupCommandInterface::ReagentGroupCommandInterface(
-        Threads::MasterThreadController &masterThreadController,
-        DataContainer                   &dataContainer)
-    : CommandInterfaceBase(masterThreadController, dataContainer)
+
+CReagentGroupCommandInterface::CReagentGroupCommandInterface(CDataManager *p_DataManager,
+                                                           Threads::MasterThreadController *p_MasterThreadController,
+                                                           CDataContainer *p_DataContainer):
+                        CCommandInterfaceBase(p_DataManager, p_MasterThreadController, p_DataContainer)
 {
     this->RegisterCommands();
 }
@@ -51,10 +51,10 @@ ReagentGroupCommandInterface::ReagentGroupCommandInterface(
  * \brief Register Commands related to Reagent Container
  */
 /****************************************************************************/
-void ReagentGroupCommandInterface::RegisterCommands(void)
+void CReagentGroupCommandInterface::RegisterCommands(void)
 {
-    //m_MasterThreadController->RegisterCommandForProcessing<MsgClassesNew::CmdReagentGroupUpdate, DataManager::ReagentGroupCommandInterface>
-      //      (&ReagentGroupCommandInterface::UpdateReagentGroup, this);
+    mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdReagentGroupUpdate, DataManager::CReagentGroupCommandInterface>
+            (&CReagentGroupCommandInterface::UpdateReagentGroup, this);
 }
 
 /****************************************************************************/
@@ -62,40 +62,35 @@ void ReagentGroupCommandInterface::RegisterCommands(void)
  * \brief Function which handles CmdReagentGroupUpdate
  */
 /****************************************************************************/
-void ReagentGroupCommandInterface::UpdateReagentGroup(
+void CReagentGroupCommandInterface::UpdateReagentGroup(
         Global::tRefType ref,
-        const MsgClassesNew::CmdReagentGroupUpdate &cmd,
+        const MsgClasses::CmdReagentGroupUpdate &cmd,
         Threads::CommandChannel &ackCommandChannel)
 {
-    /*QByteArray data = cmd.GetData();
-    QDataStream stream(&data, QIODevice::ReadWrite);
-    stream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
-
-    const QString &id = m_DataContainer->GetReagentGroupList()->UpdateReagentGroup(stream);
-    if (id.isEmpty())
+    bool Result = true;
+    CReagentGroup* pReagentGroup = static_cast<CDataContainer*>(mp_DataContainer)->ReagentGroupList->GetReagentGroup(cmd.GroupId());
+    if (pReagentGroup)
+        pReagentGroup->SetGroupColor(cmd.GroupColor());
+    else
+        Result = false;
+    if (!Result)
     {
         // If error occurs , get errors and send errors to GUI
-        m_MasterThreadController->SendAcknowledgeNOK(ref, ackCommandChannel);
+        mp_MasterThreadController->SendAcknowledgeNOK(ref, ackCommandChannel);
         qDebug()<<"\n\n Update Reagent Failed";
     }
     else
     {
         //BroadCast Command
-        m_MasterThreadController->SendAcknowledgeOK(ref, ackCommandChannel);
-
-        ReagentGroupPtr_t p_ReagentGroup = m_DataContainer->GetReagentGroupList()->Find(id);
-
-        data.clear();
-        stream.device()->reset();
-        stream << *p_ReagentGroup;
-
-        MsgClassesNew::CmdReagentGroupUpdate* p_Command =
-                new MsgClassesNew::CmdReagentGroupUpdate(1000, stream);
-        m_MasterThreadController->BroadcastCommand(
+        mp_MasterThreadController->SendAcknowledgeOK(ref, ackCommandChannel);
+        MsgClasses::CmdReagentGroupUpdate* p_Command =
+                new MsgClasses::CmdReagentGroupUpdate(1000, cmd.GroupId(), cmd.GroupColor());
+        mp_MasterThreadController->BroadcastCommand(
                     Global::CommandShPtr_t(p_Command));
 
         qDebug()<<"\n\n Update Reagent Success";
-    }*/
+    }
+    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentGroupList->Write();
 }
 
 

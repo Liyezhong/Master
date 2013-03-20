@@ -22,7 +22,7 @@
 
 #include <QTimer>
 #include "../../HimalayaDataManager/Include/DataManager.h"
-#include "HimalayaDataContainer/Containers/Stations/Include/DataStationList.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "RMS/Include/LeicaReagentKit.h"
 #include "RMS/Include/RMSGlobalTypes.h"

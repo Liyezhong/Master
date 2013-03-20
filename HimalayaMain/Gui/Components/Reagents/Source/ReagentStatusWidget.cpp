@@ -140,7 +140,6 @@ void CReagentStatusWidget::OnSetAsEmpty()
 void CReagentStatusWidget::OnResetData()
 {
     if (mp_DashStation) {
-        mp_DashStation->SetDashboardReagentStatus("Empty");
         mp_DashStation->SetDashboardReagentActualCassettes(0);
         mp_DashStation->SetDashboardReagentActualCycles(0);
         mp_DashStation->SetDashboardReagentActualCassettes(0);

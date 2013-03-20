@@ -26,22 +26,15 @@ namespace MsgClasses {
 
 QString CmdStationResetData::NAME = "MsgClasses::CmdStationResetData";
 
-/****************************************************************************/
-/*!
- *  \brief   Constructor for sending
- *
- * \param[in]   Timeout     Timeout for command.
- * \param[in]   ReagentID   Unique reagent id.
- */
-/****************************************************************************/
-CmdStationResetData::CmdStationResetData(int timeout,
-                                             const QDataStream &dataStream)
-    : CommandBase(timeout, dataStream)
+
+CmdStationResetData::CmdStationResetData(int TimeOut, const QString& StationID)
+    : Command(TimeOut)
+    , m_StationID(StationID)
 {
 }
 
 CmdStationResetData::CmdStationResetData(void)
-    : CommandBase()
+    : Command(0)
 {
 }
 

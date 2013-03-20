@@ -86,8 +86,10 @@ void CModifyReagentStatusDlg::SetDashboardStation(DataManager::CDashboardStation
 {
     m_DashboardStation = *p_Station;
     m_ReagentEditModel.UpdateReagentList();
-    QString ReagentName = mp_DataConnector->ReagentList->GetReagent(m_DashboardStation.GetDashboardReagentID())->GetReagentName();
-    int Value = m_ReagentEditModel.GetReagentPosition(ReagentName);
+    const DataManager::CReagent* pReagent = mp_DataConnector->ReagentList->GetReagent(m_DashboardStation.GetDashboardReagentID());
+    QString ReagentName("");
+    if (pReagent)
+        QString ReagentName = mp_DataConnector->ReagentList->GetReagent(m_DashboardStation.GetDashboardReagentID())->GetReagentName();
     mp_TableWidget->selectRow(m_ReagentEditModel.GetReagentPosition(ReagentName));
 }
 

@@ -23,7 +23,6 @@
 
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupList.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 #include <QAbstractTableModel>
 #include <QMap>

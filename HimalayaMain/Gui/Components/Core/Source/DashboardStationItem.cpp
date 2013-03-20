@@ -426,6 +426,8 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
     {
 
         QString ReagentID = mp_DashboardStation->GetDashboardReagentID();
+        if ("" == ReagentID)
+            return;
         DataManager::CReagent const *p_Reagent = mp_DataConnector->ReagentList->GetReagent(ReagentID);
         QString ReagentGroupId = p_Reagent->GetGroupID();
         DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupId);

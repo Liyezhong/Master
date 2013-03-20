@@ -1,7 +1,7 @@
 #ifndef CMDSTATIONDATACONTAINER_H
 #define CMDSTATIONDATACONTAINER_H
 #include <Global/Include/Commands/Command.h>
-#include "HimalayaDataContainer/Containers/Stations/Include/DataStationList.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 namespace DataManager {
 

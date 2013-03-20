@@ -21,24 +21,17 @@
 #ifndef MSGCLASSES_CMDREAGENTGROUPUPDATE_H
 #define MSGCLASSES_CMDREAGENTGROUPUPDATE_H
 
-#include "HimalayaDataContainer/Containers/ContainerBase/Commands/Include/CommandBase.h"
+#include "Global/Include/Commands/Command.h"
 
 namespace MsgClasses {
 
-/****************************************************************************/
-/*!
- *  \brief  Command for updating a existing reagent group.
- *          The content should be in xml format:
- *          <ReagentGroup ID="***" Color="******"/>
- *          Attributes ID and Color are mandatory
- *          ID value should be valid Reagent Group ID to be updated,
- *          and Color should be a Hex number.
- */
-/****************************************************************************/
-class CmdReagentGroupUpdate : public CommandBase
+
+class CmdReagentGroupUpdate : public Global::Command
 {
+    friend QDataStream & operator << (QDataStream &, const CmdReagentGroupUpdate &);
+    friend QDataStream & operator >> (QDataStream &, CmdReagentGroupUpdate &);
 public:
-    CmdReagentGroupUpdate(int, const QDataStream &);
+    CmdReagentGroupUpdate(int TimeOut, const QString& GroupId, const QString& color);
     CmdReagentGroupUpdate(void);
 
     ~CmdReagentGroupUpdate(void);
@@ -46,12 +39,52 @@ public:
     virtual QString GetName(void) const;
 
     static QString NAME;
-
+    inline const QString& GroupId()const {return m_GroupId;}
+    inline const QString& GroupColor()const {return m_Color;}
 private:
     CmdReagentGroupUpdate(const CmdReagentGroupUpdate &);
     const CmdReagentGroupUpdate &operator = (const CmdReagentGroupUpdate &);
-
+    QString m_Color;
+    QString m_GroupId;
 }; // end class CmdReagentGroupUpdate
+
+/****************************************************************************/
+/**
+ * \brief Streaming operator.
+ *
+ * \param[in,out]   Stream      Stream to stream into.
+ * \param[in]       Cmd         The command to stream.
+ * \return                      Stream.
+ */
+/****************************************************************************/
+inline QDataStream & operator << (QDataStream &Stream, const CmdReagentGroupUpdate &Cmd)
+{
+    // copy base class data
+    Cmd.CopyToStream(Stream);
+    // copy internal data
+    Stream << Cmd.m_Color;
+    Stream << Cmd.m_GroupId;
+    return Stream;
+}
+
+/****************************************************************************/
+/**
+ * \brief Streaming operator.
+ *
+ * \param[in,out]   Stream      Stream to stream from.
+ * \param[in]       Cmd         The command to stream.
+ * \return                      Stream.
+ */
+/****************************************************************************/
+inline QDataStream & operator >> (QDataStream &Stream, CmdReagentGroupUpdate &Cmd)
+{
+    // copy base class data
+    Cmd.CopyFromStream(Stream);
+    // copy internal data
+    Stream >> Cmd.m_Color;
+    Stream >> Cmd.m_GroupId;
+    return Stream;
+}
 
 } // end namespace MsgClasses
 

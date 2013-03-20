@@ -27,7 +27,7 @@
 #include "RMS/Include/RMSHandler.h"
 #include "../../HimalayaDataManager/Include/DataManager.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
-#include "HimalayaDataContainer/Containers/Stations/Include/DataStationList.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 #include "HimalayaDataContainer/Containers/Stations/Include/DataStationListVerifier.h"
 #include "HimalayaDataContainer/Containers/ProgramSequence/Include/ProgramSequenceVerifier.h"
 #include <Global/Include/EventObject.h>

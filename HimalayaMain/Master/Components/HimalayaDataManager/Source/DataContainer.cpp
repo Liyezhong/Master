@@ -48,6 +48,7 @@ namespace DataManager {
 CDataContainer::CDataContainer(Threads::MasterThreadController *p_MasterThreadController) :
     DataManager::CDataContainerCollectionBase(p_MasterThreadController),
     ReagentGroupList(NULL),
+    ReagentGroupColorList(NULL),
     ProgramList(NULL),
     ReagentList(NULL),
     StationList(NULL),
@@ -76,15 +77,15 @@ bool CDataContainer::InitContainers()
         return false;
     }
 
-    ProgramList = new CDataProgramList();
-    if (!ResetDCProgramList()) {
-        qDebug() << "CDataContainer::InitContainers failed, because ResetDCProgramList failed.";
+    ReagentGroupList = new CDataReagentGroupList();
+    if (!ResetDCReagentGroupList()) {
+        qDebug() << "CDataContainer::InitContainers failed, because ResetDCReagentGroupList failed.";
         return false;
     }
 
-    ReagentGroupList = new CDataReagentGroupList();
-    if (!ResetDCReagentGroupList()) {
-        qDebug() << "CDataContainer::InitContainers failed, because ResetDCProgramList failed.";
+    ReagentGroupColorList = new CReagentGroupColorList();
+    if (!ResetDCReagentGroupColorList()) {
+        qDebug() << "CDataContainer::InitContainers failed, because ResetDCReagentGroupColorList failed.";
         return false;
     }
 
@@ -100,23 +101,15 @@ bool CDataContainer::InitContainers()
         return false;
     }
 
+    ProgramList = new CDataProgramList();
+    if (!ResetDCProgramList()) {
+        qDebug() << "CDataContainer::InitContainers failed, because ResetDCProgramList failed.";
+        return false;
+    }
+
     ProgramSequenceList = new CProgramSequenceList();
     if (!ResetDCProgramSequenceList()) {
         qDebug() << "CDataContainer::InitContainers failed, because ResetProgramSequenceList failed.";
-        return false;
-    }
-
-    RackList = new CRackList();
-    if (!ResetDCRackList()) {
-        qDebug() << "CDataContainer::InitContainers failed, because ResetDCRackList failed.";
-        return false;
-    }
-
-
-
-    AdjustmentList = new CAdjustment();
-    if (!ResetDCAdjustment()) {
-        qDebug() << "CDataContainer::InitContainers failed, because ResetDCAdjustment failed.";
         return false;
     }
 
@@ -169,12 +162,12 @@ bool CDataContainer::DeinitContainers()
     if (CDataContainerCollectionBase::DeinitContainers()) {
 
     }
-    delete RackList;
     delete ProgramSequenceList;
     delete StationList;
     delete ProgramList;
     delete ReagentList;
     delete ReagentGroupList;
+    delete ReagentGroupColorList;
     delete SpecialVerifierGroupA;
     delete SpecialVerifierGroupB;
     delete SpecialVerifierGroupC;
@@ -239,6 +232,18 @@ bool CDataContainer::ResetDCReagentGroupList()
     return true;
 }
 
+bool CDataContainer::ResetDCReagentGroupColorList()
+{
+    if (m_IsInitialized == true) {
+        qDebug() << "CDataContainer::ResetDCReagentGroupColorList was already called";
+        return false;
+    }
+
+    // init reagent list
+    ReagentGroupColorList->Init();
+    return true;
+}
+
 bool CDataContainer::ResetDCReagentList()
 {
     if (m_IsInitialized == true) {
@@ -260,24 +265,6 @@ bool CDataContainer::ResetDCReagentList()
     return true;
 }
 
-bool CDataContainer::ResetDCRackList()
-{
-    if (m_IsInitialized) {
-        qDebug() << "CDataContainer::ResetDCReagentList was already called";
-        return false;
-    }
-
-    // create a verifier object for this data container, if not done before
-    static IVerifierInterface *p_RackListVerifier = NULL;
-    if (p_RackListVerifier == NULL) {
-        p_RackListVerifier = new CRackListVerifier();
-    }
-    // register this verifier object in the data container (=> dependency injection)
-    RackList->AddVerifier(p_RackListVerifier);
-
-     return true;
-}
-
 bool CDataContainer::ResetDCStationList()
 {
     /*
@@ -297,39 +284,6 @@ bool CDataContainer::ResetDCStationList()
     StationList->AddVerifier(p_DataStationListVerifier);
 */
       return true;
-}
-
-
-
-
-bool CDataContainer::ResetDCStationGrid()
-{
-    if (m_IsInitialized == true) {
-        qDebug() << "CDataContainer::ResetDCStationGrid was already called";
-        return false;
-    }
-
-
-
-    return true;
-}
-
-bool CDataContainer::ResetDCAdjustment()
-{
-    if (m_IsInitialized == true) {
-        qDebug() << "CDataContainer::ResetDCAdjustment was already called";
-        return false;
-    }
-
-    // create a verifier object for this data container, if not done before
-    static IVerifierInterface *p_AdjustmentVerifier = NULL;
-    if (p_AdjustmentVerifier == NULL) {
-        p_AdjustmentVerifier = new CAdjustmentVerifier();
-    }
-    // register this verifier object in the data container (=> dependency injection)
-    AdjustmentList->AddVerifier(p_AdjustmentVerifier);
-
-    return true;
 }
 
 bool CDataContainer::RefreshProgramStepStationlist()

@@ -4,9 +4,12 @@
   <Destination Directory="" Filename="" />
   <ServiceConfig>
     <List Encryption="active" Certified="active" Compressed="active" PackageType="native">
-      <!--File Path="HimalayaPrograms.xml" /-->
       <File Path="HimalayaReagents.xml" />
 	  <File Path="HimalayaReagentGroups.xml" />
+	  <File Path="HimalayaReagentGroupColors.xml" />
+	  <File Path="HimalayaPrograms.xml" />
+	  <File Path="HimalayaIcons.xml" />
+	  <File Path="HimalayaStations.xml" />
       <File Path="UserSettings.xml" />
       <File Path="SW_Version.xml" />
       <File Path="hw_specification.xml" />
@@ -16,9 +19,12 @@
   </ServiceConfig>
   <UserConfig>
     <List Encryption="active" Certified="active" Compressed="active" PackageType="native">
-      <!--File Path="HimalayaPrograms.xml" /-->
       <File Path="HimalayaReagents.xml" />
 	  <File Path="HimalayaReagentGroups.xml" />
+	  <File Path="HimalayaReagentGroupColors.xml" />
+	  <File Path="HimalayaPrograms.xml" />
+	  <File Path="HimalayaIcons.xml" />
+	  <File Path="HimalayaStations.xml" />
       <File Path="UserSettings.xml" />
       <File Path="SW_Version.xml" />
     </List>

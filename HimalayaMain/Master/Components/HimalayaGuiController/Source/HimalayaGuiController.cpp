@@ -30,7 +30,6 @@
 #include <HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdDashboardStationUpdate.h>
 //#include <HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdDashboardStationChangeReagent.h>
 #include <HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentUpdate.h>
-#include <HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationUpdate.h>
 #include <HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentAdd.h>
 #include <HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentRemove.h>
 #include <DataManager/Containers/UserSettings/Commands/Include/CmdChangeUserSettings.h>
@@ -69,9 +68,9 @@
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdAlarmToneTest.h"
 
 #include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationChangeReagent.h"
-//#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationResetData.h"
-//#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsFull.h"
-//#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsEmpty.h"
+#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationResetData.h"
+#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsFull.h"
+#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsEmpty.h"
 
 //#include <HimalayaDataManager/Containers/DashboardStations/Commands/Include/CmdDashboardStationResetData.h>
 //#include <HimalayaDataManager/Containers/DashboardStations/Commands/Include/CmdDashboardStationSetAsEmpty.h>
@@ -150,9 +149,6 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     RegisterAcknowledgeForProcessing<Global::AckOKNOK, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendAckToExternalProcess<Global::AckOKNOK>, this);
 
-    RegisterCommandForProcessing<MsgClasses::CmdStationUpdate, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdStationUpdate>, this);
-
     RegisterCommandForProcessing<NetCommands::CmdProcessState, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<NetCommands::CmdProcessState>, this);
 
@@ -191,6 +187,8 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
 
 
     // reagent group
+    RegisterExternalMessage<MsgClasses::CmdReagentGroupUpdate, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdReagentGroupUpdate>, this);
     RegisterCommandForProcessing<MsgClasses::CmdReagentGroupUpdate, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdReagentGroupUpdate>, this);
 
@@ -215,28 +213,40 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     RegisterCommandForProcessing<MsgClasses::CmdStationChangeReagent, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdStationChangeReagent>, this);
 
- /*   RegisterExternalMessage<MsgClasses::CmdStationResetData, HimalayaGui::HimalayaGuiController>
+    RegisterExternalMessage<MsgClasses::CmdStationResetData, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdStationResetData>, this);
 
+    RegisterCommandForProcessing<MsgClasses::CmdStationResetData, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdStationResetData>, this);
+
     RegisterExternalMessage<MsgClasses::CmdStationSetAsFull, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::SetStationAsFull>, this);
+            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdStationSetAsFull>, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdStationSetAsFull, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdStationSetAsFull>, this);
 
     RegisterExternalMessage<MsgClasses::CmdStationSetAsEmpty, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::SetStationAsEmpty>, this);
-*/
+            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdStationSetAsEmpty>, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdStationSetAsEmpty, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdStationSetAsEmpty>, this);
 
     //  Reagents
     RegisterExternalMessage<MsgClasses::CmdReagentAdd, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdReagentAdd>, this);
-
     RegisterCommandForProcessing<MsgClasses::CmdReagentAdd, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdReagentAdd>, this);
 
     RegisterExternalMessage<MsgClasses::CmdReagentRemove, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdReagentRemove>, this);
+    RegisterCommandForProcessing<MsgClasses::CmdReagentRemove, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdReagentRemove>, this);
+
 
     RegisterExternalMessage<MsgClasses::CmdReagentUpdate, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdReagentUpdate>, this);
+    RegisterCommandForProcessing<MsgClasses::CmdReagentUpdate, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdReagentUpdate>, this);
 
 
   

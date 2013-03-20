@@ -26,6 +26,7 @@
 namespace DataManager {
 
 const QString REAGENT_GROUPS_XML ("HimalayaReagentGroups.xml");
+const QString REAGENT_GROUPS_COLOR_XML  ("HimalayaReagentGroupColors.xml");
 const QString REAGENTS_XML       ("HimalayaReagents.xml");
 const QString STATIONS_XML       ("HimalayaStations.xml");
 const QString PROGRAMS_XML       ("HimalayaPrograms.xml");

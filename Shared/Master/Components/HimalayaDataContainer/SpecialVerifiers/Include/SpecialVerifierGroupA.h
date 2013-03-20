@@ -29,7 +29,7 @@
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
-#include "HimalayaDataContainer/Containers/Stations/Include/DataStationList.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 
 namespace DataManager {
 

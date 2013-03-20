@@ -26,22 +26,16 @@ namespace MsgClasses {
 
 QString CmdStationSetAsFull::NAME = "MsgClasses::CmdStationSetAsFull";
 
-/****************************************************************************/
-/*!
- *  \brief   Constructor for sending
- *
- * \param[in]   Timeout     Timeout for command.
- * \param[in]   ReagentID   Unique reagent id.
- */
-/****************************************************************************/
-CmdStationSetAsFull::CmdStationSetAsFull(int timeout,
-                                             const QDataStream &dataStream)
-    : CommandBase(timeout, dataStream)
+
+CmdStationSetAsFull::CmdStationSetAsFull(int TimeOut,
+                                            const QString& StationID)
+    : Command(TimeOut)
+    , m_StationID(StationID)
 {
 }
 
 CmdStationSetAsFull::CmdStationSetAsFull(void)
-    : CommandBase()
+    : Command(0)
 {
 }
 

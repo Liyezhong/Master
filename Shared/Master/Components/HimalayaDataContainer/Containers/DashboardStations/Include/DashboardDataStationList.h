@@ -138,7 +138,8 @@ public:
     bool DeleteDashboardStation(const QString DashboardStationID);   // uses unique reagent ID
     bool DeleteDashboardStation(const unsigned int Index);  // uses order index
 
-    /******************** INLINE FuNCTIONS **************************************/
+    bool UpdateStationsByReagentDelete(const QString& ReagentID);
+    /******************** INLINE FUNCTIONS **************************************/
     /****************************************************************************/
     /*!
      *  \brief Get's the fileName of the dashboard station list

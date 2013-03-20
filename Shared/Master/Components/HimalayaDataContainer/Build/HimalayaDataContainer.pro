@@ -16,7 +16,9 @@ HEADERS += ../Containers/ContainerBase/Include/*.h \
  ../Containers/ReagentGroupColor/Include/*.h \
  ../Containers/ProgramSequence/Include/*.h \
  ../SpecialVerifiers/Include/*h \
- ../Containers/DashboardStations/Commands/Include/*h
+ ../Containers/DashboardStations/Commands/Include/*h \
+ ../Containers/DashboardStations/Include/*h
+
 
 # source file location
 SOURCES += ../Containers/ContainerBase/Source/*.cpp \
@@ -32,7 +34,8 @@ SOURCES += ../Containers/ContainerBase/Source/*.cpp \
  ../Containers/ReagentGroupColor/Source/*.cpp \
  ../Containers/ProgramSequence/Source/*.cpp \
  ../SpecialVerifiers/Source/*.cpp \
- ../Containers/DashboardStations/Commands/Source/*.cpp
+ ../Containers/DashboardStations/Commands/Source/*.cpp \
+ ../Containers/DashboardStations/Source/*.cpp
 # Resource file location
 RESOURCES += ../Containers/Programs/Resources/ProgramsXml.qrc \
  ../Containers/Reagents/Resources/ReagentsXml.qrc \

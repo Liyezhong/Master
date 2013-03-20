@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Stations>
 <Stations Version="1">
     <Station ID="S1" Name="1" ParaffinBath="false">
         <Reagent ID="L1" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
@@ -49,4 +50,3 @@
         <Reagent ID="L8" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
     </Station>
 </Stations>
-

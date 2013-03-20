@@ -21,23 +21,17 @@
 #ifndef MSGCLASSES_CMDSTATIONSETASEMPTY_H
 #define MSGCLASSES_CMDSTATIONSETASEMPTY_H
 
-#include "HimalayaDataContainer/Containers/ContainerBase/Commands/Include/CommandBase.h"
+#include "Global/Include/Commands/Command.h"
 
 namespace MsgClasses {
 
-/****************************************************************************/
-/*!
- *  \brief  Command for setting the station as empty.
- *          The content should be in xml format:
- *          <Station ID="XXX"/>
- *          Attribute ID is mandatory, and should be valid.
- *          this content will set station XXX as emtpy;
- */
-/****************************************************************************/
-class CmdStationSetAsEmpty : public CommandBase
+
+class CmdStationSetAsEmpty : public Global::Command
 {
+    friend QDataStream & operator << (QDataStream &, const CmdStationSetAsEmpty &);
+    friend QDataStream & operator >> (QDataStream &, CmdStationSetAsEmpty &);
 public:
-    CmdStationSetAsEmpty(int, const QDataStream &);
+    CmdStationSetAsEmpty(int TimeOut, const QString& StationID);
     CmdStationSetAsEmpty(void);
 
     ~CmdStationSetAsEmpty(void);
@@ -45,12 +39,30 @@ public:
     virtual QString GetName(void) const;
 
     static QString NAME;
-
+    inline const QString StationID() const { return m_StationID; }
 private:
     CmdStationSetAsEmpty(const CmdStationSetAsEmpty &);
     const CmdStationSetAsEmpty &operator = (const CmdStationSetAsEmpty &);
-
+    QString m_StationID;
 }; // end class CmdStationSetAsEmpty
+
+inline QDataStream & operator << (QDataStream &Stream, const CmdStationSetAsEmpty &Cmd)
+{
+    // copy base class data
+    Cmd.CopyToStream(Stream);
+    // copy internal data
+    Stream << Cmd.m_StationID;
+    return Stream;
+}
+
+inline QDataStream & operator >> (QDataStream &Stream, CmdStationSetAsEmpty &Cmd)
+{
+    // copy base class data
+    Cmd.CopyFromStream(Stream);
+    // copy internal data
+    Stream >> Cmd.m_StationID;
+    return Stream;
+}
 
 } // end namespace MsgClasses
 

@@ -31,7 +31,6 @@
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include "HimalayaDataContainer/Helper/Include/HimalayaDataManagerEventCodes.h"
 
@@ -646,6 +645,24 @@ bool CDashboardDataStationList::UpdateDashboardStation(const CDashboardStation* 
     QWriteLocker locker(mp_ReadWriteLock);
     // do a deep copy
     *m_DashboardStationList[ID] = *p_DashboardStation;
+    return true;
+}
+
+bool CDashboardDataStationList::UpdateStationsByReagentDelete(const QString& ReagentID)
+{
+    ListOfDashboardStation_t::const_iterator i = m_DashboardStationList.constBegin();
+    while (i != m_DashboardStationList.constEnd()) {
+        CDashboardStation*  pDashboardStation = i.value();
+        if (pDashboardStation->GetDashboardReagentID() == ReagentID)
+        {
+            pDashboardStation->SetDashboardReagentID("");
+            pDashboardStation->SetDashboardReagentActualCassettes(0);
+            pDashboardStation->SetDashboardReagentActualCycles(0);
+            pDashboardStation->SetDashboardReagentExcahngeDate(QDate::fromString("1986-01-01", "yyyy-MM-dd"));
+            pDashboardStation->SetDashboardReagentStatus("Empty");
+        }
+        ++i;
+     }
     return true;
 }
 

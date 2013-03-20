@@ -24,6 +24,7 @@
 #include "HimalayaDataManager/CommandInterface/Include/ProgramCommandInterface.h"
 #include "HimalayaDataManager/CommandInterface/Include/ReagentCommandInterface.h"
 #include "HimalayaDataManager/CommandInterface/Include/StationCommandInterface.h"
+#include "HimalayaDataManager/CommandInterface/Include/ReagentGroupCommandInterface.h"
 #include "DataManager/CommandInterface/Include/UserSettingsCommandInterface.h"
 #include "HimalayaDataManager/Include/DataManagerDefinitions.h"
 
@@ -33,7 +34,8 @@ CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThre
     mp_DataContainer(NULL),
     mp_ReagentCommandInterface(NULL),
     mp_StationCommandInterface(NULL),
-    mp_ProgramCommandInterface(NULL)
+    mp_ProgramCommandInterface(NULL),
+    mp_ReagentGroupCommandInterface(NULL)
 {
     quint32 ReturnCode  = InitDataContainer();
     if (ReturnCode != INIT_OK) {
@@ -46,7 +48,8 @@ CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThre
     mp_DataContainer(NULL),
     mp_ProgramCommandInterface(NULL),
     mp_ReagentCommandInterface(NULL),
-    mp_StationCommandInterface(NULL)
+    mp_StationCommandInterface(NULL),
+    mp_ReagentGroupCommandInterface(NULL)
 {
     quint32 ReturnCode = InitDataContainer();
     if (ReturnCode != INIT_OK) {
@@ -76,6 +79,13 @@ quint32 CDataManager::InitDataContainer()
     QString FilenameReagentGroupList = Global::SystemPaths::Instance().GetSettingsPath() + "/" + REAGENT_GROUPS_XML;
     if (!mp_DataContainer->ReagentGroupList->Read(FilenameReagentGroupList)) {
         qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ReagentGroupList->Read failed with filename: " << FilenameReagentGroupList;
+        return EVENT_DM_PROGRAM_XML_READ_FAILED;
+    }
+
+    mp_DataContainer->ReagentGroupColorList->SetDataVerificationMode(false);
+    QString FilenameReagentGroupColorList = Global::SystemPaths::Instance().GetSettingsPath() + "/" + REAGENT_GROUPS_COLOR_XML;
+    if (!mp_DataContainer->ReagentGroupColorList->Read(FilenameReagentGroupColorList)) {
+        qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ReagentGroupColorList->Read failed with filename: " << FilenameReagentGroupColorList;
         return EVENT_DM_PROGRAM_XML_READ_FAILED;
     }
 
@@ -155,7 +165,7 @@ quint32 CDataManager::InitDataContainer()
     mp_ProgramCommandInterface = new CProgramCommandInterface(this, mp_MasterThreadController, mp_DataContainer);
     mp_StationCommandInterface = new CStationCommandInterface(this, mp_MasterThreadController, mp_DataContainer);
     mp_ReagentCommandInterface = new CReagentCommandInterface(this, mp_MasterThreadController, mp_DataContainer);
-
+    mp_ReagentGroupCommandInterface = new CReagentGroupCommandInterface(this, mp_MasterThreadController, mp_DataContainer);
     m_IsInitialized = true;
     return INIT_OK;
 }
@@ -165,7 +175,7 @@ bool CDataManager::DeinitDataContainer()
     delete mp_ProgramCommandInterface;
     delete mp_StationCommandInterface;
     delete mp_ReagentCommandInterface;
-
+    delete mp_ReagentGroupCommandInterface;
     delete mp_DataContainer;
     return true;
 }
@@ -196,23 +206,21 @@ CDashboardDataStationList* CDataManager::GetStationList()
     return mp_DataContainer->StationList;
 }
 
-bool CDataManager::SetRMSForecast(ListOfForecastValues_t &RMSForecastValues)
-{
-    if (m_IsInitialized != true) {
-        qDebug() << "CDataManager::UpdateStation failed. Not initialized!";
-        return false;
-    }
-    return false;
-    //return mp_DataContainer->StationList->SetForecastValues(RMSForecastValues);
-
-}
-
 CDataReagentGroupList* CDataManager::GetReagentGroupList() {
     if (m_IsInitialized != true) {
         qDebug() << "CDataManager::GetReagentGroupList failed. Not initialized!";
         return NULL;
     }
     return mp_DataContainer->ReagentGroupList;
+}
+
+CReagentGroupColorList* CDataManager::GetReagentGroupColorList()
+{
+    if (m_IsInitialized != true) {
+        qDebug() << "CDataManager::GetReagentGroupColorList failed. Not initialized!";
+        return NULL;
+    }
+    return mp_DataContainer->ReagentGroupColorList;
 }
 
 bool CDataManager::GetReagentGroupList(CDataReagentGroupList *p_ReagentGroupList)

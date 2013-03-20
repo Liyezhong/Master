@@ -35,13 +35,14 @@ QString CmdStationSetAsEmpty::NAME = "MsgClasses::CmdStationSetAsEmpty";
  */
 /****************************************************************************/
 CmdStationSetAsEmpty::CmdStationSetAsEmpty(int timeout,
-                                             const QDataStream &dataStream)
-    : CommandBase(timeout, dataStream)
+                                             const QString& StationID)
+    : Command(timeout)
+    , m_StationID(StationID)
 {
 }
 
 CmdStationSetAsEmpty::CmdStationSetAsEmpty(void)
-    : CommandBase()
+    : Command(0)
 {
 }
 
