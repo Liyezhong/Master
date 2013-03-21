@@ -37,7 +37,8 @@ namespace DataManager {
 CProgramStep::CProgramStep():
     m_StepID("INVALID"), m_ReagentID("0"),
     m_MinDuration(0), m_MaxDuration(0), m_Exclusive(false),
-    m_NumberOfParallelStations(0), m_Intensity(0), m_NumberOfSteps(9), m_RangeLow(30), m_RangeHigh(60)
+    m_NumberOfParallelStations(0), m_Intensity(0), m_NumberOfSteps(9), m_RangeLow(30), m_RangeHigh(60),
+    m_Duration("0s"),m_Temperature("0"),m_Pressure("Off"),m_Vacuum("On")
 {
     m_StationIDList.clear();
 }
@@ -51,11 +52,25 @@ CProgramStep::CProgramStep():
 CProgramStep::CProgramStep(QString StepID):
     m_StepID(StepID), m_ReagentID("0"),
     m_MinDuration(0), m_MaxDuration(0), m_Exclusive(false), m_NumberOfParallelStations(0), m_Intensity(0),
-    m_NumberOfSteps(9), m_RangeLow(30), m_RangeHigh(60)
+    m_NumberOfSteps(9), m_RangeLow(30), m_RangeHigh(60),
+    m_Duration("0s"),m_Temperature("0"),m_Pressure("Off"),m_Vacuum("On")
 {
     m_StationIDList.clear();
 }
 
+/****************************************************************************/
+/*!
+ *  \brief Constructor
+ *  \iparam StepID
+ */
+/****************************************************************************/
+CProgramStep::CProgramStep(const QString StepID, const QString ReagentID, const QString Duration,
+                           const QString Temperature, const QString Pressure, const QString Vacuum):
+    m_StepID(StepID), m_ReagentID(ReagentID),m_Duration(Duration),m_Temperature(Temperature),
+    m_Pressure(Pressure), m_Vacuum(Vacuum)
+{
+     m_StationIDList.clear();
+}
 /****************************************************************************/
 /*!
  *  \brief Constructor
@@ -80,7 +95,8 @@ CProgramStep::CProgramStep(QString StepID, QString ReagentID, int MinDuration, i
     m_Intensity(Intensity),
     m_NumberOfSteps(9),
     m_RangeLow(30),
-    m_RangeHigh(60)
+    m_RangeHigh(60),
+    m_Duration("0s"),m_Temperature("0"),m_Pressure("Off"),m_Vacuum("On")
 {
     m_StationIDList.clear();
 }
@@ -293,32 +309,11 @@ bool CProgramStep::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Comp
     XmlStreamWriter.writeAttribute("ID", GetStepID());
     XmlStreamWriter.writeAttribute("ReagentID", GetReagentID());
 
-    if (GetExclusive()) {
-        XmlStreamWriter.writeAttribute("Exclusive", "true");
-    } else {
-        XmlStreamWriter.writeAttribute("Exclusive", "false");
-    }
+    XmlStreamWriter.writeAttribute("Duration", GetDuration());
+    XmlStreamWriter.writeAttribute("Temperature", GetTemperature());
+    XmlStreamWriter.writeAttribute("Pressure", GetPressure());
+    XmlStreamWriter.writeAttribute("Vacuum", GetVacuum());
 
-    XmlStreamWriter.writeAttribute("ParallelStations",QString::number(GetNumberOfParallelStations()));
-    XmlStreamWriter.writeAttribute("MinDuration", GetMinDuration());
-
-    QString StringValue;
-    (void)StringValue.setNum(GetMaxDurationInPercent()); //to suppress lint-534
-    StringValue.append("%");
-    XmlStreamWriter.writeAttribute("MaxDuration", StringValue);
-    XmlStreamWriter.writeAttribute("Intensity",QString::number(GetIntensity()));
-    XmlStreamWriter.writeAttribute("NumberOfSteps",QString::number(GetNumberOfSteps()));
-    XmlStreamWriter.writeAttribute("RangeLow",GetRangeLowInString());
-    XmlStreamWriter.writeAttribute("RangeHigh",GetRangeHighInString());
-
-    if (CompleteData) {
-        QString StationIDs;
-        for (qint32 I = 0; I < m_StationIDList.count(); I++) {
-            StationIDs.append(m_StationIDList.at(I));
-            StationIDs.append(",");
-        }
-        XmlStreamWriter.writeAttribute("StationIDList", StationIDs);
-    }
     XmlStreamWriter.writeEndElement(); //Step
     return Result;
 }
@@ -349,69 +344,36 @@ bool CProgramStep::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Co
     }
     SetReagentID(XmlStreamReader.attributes().value("ReagentID").toString());
 
-    // Exclusive
-    if (!XmlStreamReader.attributes().hasAttribute("Exclusive")) {
-        qDebug() << "### attribute <Exclusive> is missing => abort reading";
+
+    // get Duration
+    if (!XmlStreamReader.attributes().hasAttribute("Duration")) {
+        qDebug() << "### attribute <Duration> is missing => abort reading";
         return false;
     }
-    if (XmlStreamReader.attributes().value("Exclusive").toString().toUpper() == "TRUE") {
-        SetExclusive(true);
-    } else {
-        SetExclusive(false);
-    }
+    SetDuration(XmlStreamReader.attributes().value("Duration").toString());
 
-    if (!XmlStreamReader.attributes().hasAttribute("ParallelStations")) {
-        qDebug() << "### attribute <ParallelStations> is missing => abort reading";
+
+    // get Temperature
+    if (!XmlStreamReader.attributes().hasAttribute("Temperature")) {
+        qDebug() << "### attribute <Temperature> is missing => abort reading";
         return false;
     }
-    SetNumberOfParallelStations(XmlStreamReader.attributes().value("ParallelStations").toString().toInt());
+    SetTemperature(XmlStreamReader.attributes().value("Temperature").toString());
 
-    // MinDuration
-    if (!XmlStreamReader.attributes().hasAttribute("MinDuration")) {
-        qDebug() << "### attribute <MinDuration> is missing => abort reading";
+
+    // get Pressure
+    if (!XmlStreamReader.attributes().hasAttribute("Pressure")) {
+        qDebug() << "### attribute <Pressure> is missing => abort reading";
         return false;
     }
-    SetMinDuration(XmlStreamReader.attributes().value("MinDuration").toString());
+    SetPressure(XmlStreamReader.attributes().value("Pressure").toString());
 
-    // MaxDuration
-    if (!XmlStreamReader.attributes().hasAttribute("MaxDuration")) {
-        qDebug() << "### attribute <MaxDuration> is missing => abort reading";
+    // get Vacuum
+    if (!XmlStreamReader.attributes().hasAttribute("Vacuum")) {
+        qDebug() << "### attribute <Vacuum> is missing => abort reading";
         return false;
     }
-    SetMaxDurationInPercent(XmlStreamReader.attributes().value("MaxDuration").toString());
-
-    if (!XmlStreamReader.attributes().hasAttribute("Intensity")) {
-        qDebug() << "### attribute <Intensity> is missing => abort reading";
-        return false;
-    }
-    SetIntensity(XmlStreamReader.attributes().value("Intensity").toString().toInt());
-
-    if (!XmlStreamReader.attributes().hasAttribute("NumberOfSteps")) {
-        qDebug() << "### attribute <NumberOfSteps> is missing => abort reading";
-        return false;
-    }
-    SetNumberOfSteps(XmlStreamReader.attributes().value("NumberOfSteps").toString().toInt());
-
-    // Range Low
-    if (!XmlStreamReader.attributes().hasAttribute("RangeLow")) {
-        qDebug() << "### attribute <RangeLow> is missing => abort reading";
-        return false;
-    }
-    SetRangeLow(XmlStreamReader.attributes().value("RangeLow").toString());
-
-    // Range High
-    if (!XmlStreamReader.attributes().hasAttribute("RangeHigh")) {
-        qDebug() << "### attribute <RangeHigh> is missing => abort reading";
-        return false;
-    }
-    SetRangeHigh(XmlStreamReader.attributes().value("RangeHigh").toString());
-
-    if (CompleteData) {
-        // read complete data from the xml
-        if (!ReadCompleteData(XmlStreamReader)) {
-            return false;
-        }
-    }
+    SetVacuum(XmlStreamReader.attributes().value("Vacuum").toString());
 
     return true;
 }

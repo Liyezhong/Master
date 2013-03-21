@@ -74,7 +74,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdNewProgram &Cmd)
     // copy base class data
     Cmd.CopyToStream(Stream);
     // copy internal data
-    Stream << Cmd.m_ProgramByteArray << Cmd.m_ProgramSequenceByteArray;
+    Stream << Cmd.m_ProgramByteArray;// << Cmd.m_ProgramSequenceByteArray;
     return Stream;
 }
 
@@ -92,7 +92,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdNewProgram &Cmd)
     // copy base class data
     Cmd.CopyFromStream(Stream);
     // copy internal data
-    Stream >> Cmd.m_ProgramByteArray >> Cmd.m_ProgramSequenceByteArray ;
+    Stream >> Cmd.m_ProgramByteArray;// >> Cmd.m_ProgramSequenceByteArray ;
     return Stream;
 }
 } // end namespace MsgClasses

@@ -80,7 +80,7 @@ inline QDataStream & operator << (QDataStream &Stream,const CmdProgramUpdate &Cm
     // copy base class data
     Cmd.CopyToStream(Stream);
     // copy internal data
-    Stream << Cmd.m_ProgramByteArray << Cmd.m_ColorAssignedProgramByteArray << Cmd.m_ProgramColorReplaced;
+    Stream << Cmd.m_ProgramByteArray;// << Cmd.m_ColorAssignedProgramByteArray << Cmd.m_ProgramColorReplaced;
 
     return Stream;
 }
@@ -99,7 +99,7 @@ inline QDataStream & operator >> (QDataStream &Stream,CmdProgramUpdate &Cmd)
     // copy base class data
     Cmd.CopyFromStream(Stream);
     // copy internal data
-    Stream >> Cmd.m_ProgramByteArray >> Cmd.m_ColorAssignedProgramByteArray >> Cmd.m_ProgramColorReplaced;
+    Stream >> Cmd.m_ProgramByteArray;// >> Cmd.m_ColorAssignedProgramByteArray >> Cmd.m_ProgramColorReplaced;
     return Stream;
 }
 

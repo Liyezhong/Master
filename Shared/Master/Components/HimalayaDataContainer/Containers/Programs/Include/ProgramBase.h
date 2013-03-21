@@ -38,6 +38,8 @@ class CProgramBase
 {
 
 protected:
+    QString m_Name;                     //!<  program name
+
     ListOfIDs_t m_OrderedListOfStepIDs; //!< Ordered list of step id's
     QString m_ID;                               //!< program ID
     QString m_ShortName;                        //!< Program short name
@@ -86,6 +88,7 @@ protected:
 public:
     CProgramBase();
     CProgramBase(const QString ID, const QString ShortName, const QString LongName);
+    CProgramBase(const QString ID, const QString Name);
     virtual ~CProgramBase();
 
     void Init();
@@ -109,6 +112,23 @@ public:
      */
     /****************************************************************************/
     void SetID(const QString Value){m_ID = Value;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Retrieve the program name
+     *
+     *  \return  name
+     */
+    /****************************************************************************/
+    QString GetName() const {return m_Name;}
+    /****************************************************************************/
+    /*!
+     *  \brief Sets the program name
+     *
+     *  \iparam Value = Program name
+     */
+    /****************************************************************************/
+    void SetName(const QString Value){m_Name = Value;}
 
     /****************************************************************************/
     /*!

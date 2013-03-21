@@ -72,10 +72,10 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
     ProgramDataStream >> Program;
 
     // Create DS for Program Sequence
-    CProgramSequence ProgramSequence(Program.GetID(), false , 0 , false, "-1");
-    QByteArray BA;
-    QDataStream ProgSequenceDataStream(&BA, QIODevice::ReadWrite);
-    ProgSequenceDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
+//    CProgramSequence ProgramSequence(Program.GetID(), false , 0 , false, "-1");
+//    QByteArray BA;
+//    QDataStream ProgSequenceDataStream(&BA, QIODevice::ReadWrite);
+//    ProgSequenceDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
     bool Result = true;
     Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->AddProgram(&Program);
 
@@ -97,7 +97,7 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
         mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel, ErrorString, Global::GUIMSGTYPE_INFO);
         return;
     }
-    Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->AddProgramSequenceStep(&ProgramSequence);
+//    Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->AddProgramSequenceStep(&ProgramSequence);
     if (!Result) {
         // If error occurs , get errors and send errors to GUI
 
@@ -110,17 +110,18 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
         mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
         ProgramDataStream.device()->reset();
         ProgramDataStream << Program ;
-        ProgSequenceDataStream << ProgramSequence;
-        MsgClasses::CmdNewProgram* p_Command = new MsgClasses::CmdNewProgram(1000, ProgramDataStream, ProgSequenceDataStream);
+//        ProgSequenceDataStream << ProgramSequence;
+//        MsgClasses::CmdNewProgram* p_Command = new MsgClasses::CmdNewProgram(1000, ProgramDataStream, ProgSequenceDataStream);
+         MsgClasses::CmdNewProgram* p_Command = new MsgClasses::CmdNewProgram(1000, ProgramDataStream);
         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
         qDebug()<<"\n\n\n Adding New Program Success";
     }
     static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
-    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->Write();
+//    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->Write();
 
-    if (static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->VerifyData(true)) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
-    }
+//    if (static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->VerifyData(true)) {
+//        Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
+//    }
 }
 
 /****************************************************************************/
@@ -136,7 +137,7 @@ void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClas
     bool Result = true;
 
     Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->DeleteProgram(Cmd.GetItemId());
-    Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->DeleteProgramSequenceStep(Cmd.GetItemId());
+//    Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->DeleteProgramSequenceStep(Cmd.GetItemId());
     if (!Result) {
         // If error occurs , get errors and send errors to GUI
         ListOfErrors_t &ErrorList = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->GetErrorList();
@@ -161,11 +162,11 @@ void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClas
         qDebug()<<"\n\n Delete Program Success";
     }
     static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
-    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->Write();
+//    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->Write();
 
-    if (static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->VerifyData(true)) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
-    }
+//    if (static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->VerifyData(true)) {
+//        Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
+//    }
 
 }
 
@@ -182,7 +183,7 @@ void CProgramCommandInterface::UpdateProgram(Global::tRefType Ref, const MsgClas
     //Program for which white color is assigned
     CProgram Program;
     //Program with modified color.This program uses the color previously assigned to above program
-    CProgram ProgramWithNewColor;
+//    CProgram ProgramWithNewColor;
 
     // we work on Temporary copy of program list , when Color was modified.
     DataManager::CDataProgramList TempProgramList;
@@ -195,6 +196,28 @@ void CProgramCommandInterface::UpdateProgram(Global::tRefType Ref, const MsgClas
 
 
     bool Result = true;
+    TempProgramList = *(static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList);
+    // Update program
+    Result = TempProgramList.UpdateProgram(&Program);
+    if (!Result) {
+        // If error occurs , get errors and send errors to GUI
+        mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel);
+        return;
+    }
+    else
+    {
+        *(static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList) = TempProgramList;
+        //Send Ack
+        mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
+        ProgramDataStream.device()->reset();
+        ProgramDataStream << Program ;
+        MsgClasses::CmdProgramUpdate* p_ProgramCommand = new MsgClasses::CmdProgramUpdate(1000, ProgramDataStream);
+        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_ProgramCommand));
+        qDebug()<<"\n\n Update Program Success";
+        emit StartableProgramEdited(Program.GetID());
+    }
+
+/*
     bool ColorReplacedFlag = false;
     ColorReplacedFlag = (Cmd.GetProgramColorReplaced());
     if (ColorReplacedFlag == true) {
@@ -267,7 +290,7 @@ void CProgramCommandInterface::UpdateProgram(Global::tRefType Ref, const MsgClas
             emit StartableProgramEdited(Program.GetID());
             qDebug()<<"\n\n Update Program Success";
         }
-    }
+    }*/
     static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
 }
 

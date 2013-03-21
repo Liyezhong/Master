@@ -66,6 +66,20 @@ CProgram::CProgram(const QString Color, const bool ProgramIsLocked, const QStrin
 
 /****************************************************************************/
 /*!
+ *  \brief Constructor
+ *  \iparam ID = program ID
+ */
+/****************************************************************************/
+CProgram::CProgram(const QString ID, const QString Name, bool IsLeicaProgram, QString Icon):
+    CProgramBase(ID, Name),
+    m_LeicaProgram(IsLeicaProgram),
+    m_Icon(Icon)
+{
+    Init();
+}
+
+/****************************************************************************/
+/*!
  *  \brief Initialize object
  */
 /****************************************************************************/
@@ -159,26 +173,16 @@ bool CProgram::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Complete
 
     XmlStreamWriter.writeStartElement("Program");
     XmlStreamWriter.writeAttribute("ID", GetID());
-    XmlStreamWriter.writeAttribute("ShortName", GetShortName());
-    XmlStreamWriter.writeAttribute("LongName", GetLongName());
-    XmlStreamWriter.writeAttribute("Color", GetColor());
-    if (IsLocked()) {
-        XmlStreamWriter.writeAttribute("Locked", "true");
+    XmlStreamWriter.writeAttribute("Name", GetName());
+    XmlStreamWriter.writeAttribute("Icon", GetIcon());
+    if (IsLeicaProgram()) {
+        XmlStreamWriter.writeAttribute("LeicaProgram", "true");
     } else {
-        XmlStreamWriter.writeAttribute("Locked", "false");
+        XmlStreamWriter.writeAttribute("LeicaProgram", "false");
     }
 
     XmlStreamWriter.writeStartElement("StepList");
     XmlStreamWriter.writeAttribute("NextStepID", GetNextFreeStepID(false));
-
-    if (CompleteData) {
-        if (m_Modified) {
-            XmlStreamWriter.writeAttribute("Modified", "true");
-        }
-        else {
-            XmlStreamWriter.writeAttribute("Modified", "false");
-        }
-    }
 
 
     for (int i = 0; i < GetNumberOfStepsInExpandedList() ; i++) {
@@ -216,37 +220,30 @@ bool CProgram::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
     }
 
     SetID(XmlStreamReader.attributes().value("ID").toString());
-    // ShortName
-    if (!XmlStreamReader.attributes().hasAttribute("ShortName")) {
-        qDebug() << "### attribute <ShortName> is missing => abort reading";
+    // Name
+    if (!XmlStreamReader.attributes().hasAttribute("Name")) {
+        qDebug() << "### attribute <Name> is missing => abort reading";
         return false;
     }
-    SetShortName(XmlStreamReader.attributes().value("ShortName").toString());
+    SetName(XmlStreamReader.attributes().value("Name").toString());
 
-    // LongName
-    if (!XmlStreamReader.attributes().hasAttribute("LongName")) {
-        qDebug() << "### attribute <LongName> is missing => abort reading";
+    // Icon
+    if (!XmlStreamReader.attributes().hasAttribute("Icon")) {
+        qDebug() << "### attribute <Icon> is missing => abort reading";
         return false;
     }
-    SetLongName(XmlStreamReader.attributes().value("LongName").toString());
+    SetIcon(XmlStreamReader.attributes().value("Icon").toString());
 
-    // Color
-    if (!XmlStreamReader.attributes().hasAttribute("Color")) {
-        qDebug() << "### attribute <Color> is missing => abort reading";
+    // LeicaProgram
+    if (!XmlStreamReader.attributes().hasAttribute("LeicaProgram")) {
+        qDebug() << "### attribute <LeicaProgram> is missing => abort reading";
         return false;
     }
-    SetColor(XmlStreamReader.attributes().value("Color").toString());
-
-    // Locked
-    if (!XmlStreamReader.attributes().hasAttribute("Locked")) {
-        qDebug() << "### attribute <Locked> is missing => abort reading";
-        return false;
-    }
-    if (XmlStreamReader.attributes().value("Locked").toString().toUpper() == "TRUE") {
-        LockProgram();
+    if (XmlStreamReader.attributes().value("LeicaProgram").toString().toUpper() == "TRUE") {
+        m_LeicaProgram = true;
     }
     else {
-        m_Locked = false;
+        m_LeicaProgram = false;
     }
     // Look for node <StepList>
     if (!Helper::ReadNode(XmlStreamReader, "StepList")) {
@@ -262,18 +259,6 @@ bool CProgram::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
         SetNextFreeStepID(XmlStreamReader.attributes().value("NextStepID").toString());
     }
 
-    if (CompleteData) {
-        if (!XmlStreamReader.attributes().hasAttribute("Modified")) {
-            qDebug() << "### attribute <Modified> is missing => abort reading";
-            return false;
-        }
-        if (XmlStreamReader.attributes().value("Modified").toString().toUpper() == "TRUE") {
-            m_Modified = true;
-        }
-        else {
-            m_Modified = false;
-        }
-    }
 
     //Delete program steps
     (void)DeleteAllProgramSteps();
@@ -295,30 +280,7 @@ bool CProgram::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
                         delete p_NewProgramStep;
                         return false;
                     }
-                    //Before adding the step to program , check if its a special step , e.g. SID, DRY station.
-                    if ((p_NewProgramStep->GetReagentID() != SLIDE_ID_SPECIAL_REAGENT )
-                            && (p_NewProgramStep->GetReagentID() != "S9")) {
-                        CProgramStep* p_OriginalProgramStep = new CProgramStep(*p_NewProgramStep);
-                        m_ExpandedStepList.append(p_NewProgramStep);
-                        if (m_Modified) {
-                            if (p_NewProgramStep->GetReagentID() == "S7") {
-                                p_OriginalProgramStep->SetReagentID("S8");
-                            }
-                            else if (p_NewProgramStep->GetReagentID() == "S8") {
-                                p_OriginalProgramStep->SetReagentID("S7");
-                            }
-                        }
-                        // Now add this Step
-                        if (!CProgramBase::AddProgramStep(p_OriginalProgramStep)) {
-                            qDebug() << "CProgram::Add ProgramStep failed!";
-                            delete p_NewProgramStep;
-                            delete p_OriginalProgramStep;
-                            return false;
-                        }
-                    }
-                    else {
-                        m_ExpandedStepList.append(p_NewProgramStep);
-                    }
+                    m_ExpandedStepList.append(p_NewProgramStep);
                     m_ReagentIDList.append(p_NewProgramStep->GetReagentID());
                 }
             }

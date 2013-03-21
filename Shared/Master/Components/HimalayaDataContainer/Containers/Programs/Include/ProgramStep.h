@@ -27,6 +27,7 @@
 #include <QXmlStreamWriter>
 
 #include "DataManager/Helper/Include/Types.h"
+#include "DataManager/Helper/Include/Helper.h"
 
 namespace DataManager {
 //!< Forward declartion
@@ -43,6 +44,10 @@ class CProgramStep
 private:
     QString m_StepID;               //!< Step Id
     QString m_ReagentID;            //!< Reagent ID
+    QString m_Duration;             //!< duration of the step
+    QString m_Temperature;              //!< temperature of the step
+    QString m_Pressure;             //!< pressure status: on or off
+    QString m_Vacuum;               //!< vacuum status: on or off
     int m_MinDuration;              //!< Minimum duration of the program step [s]
     int m_MaxDuration;              //!< Maximum duration of program step [%] related to m_MinDuration
     QString m_MaxDurationString;    //!< Maximum duration string; include "%"
@@ -73,6 +78,8 @@ private:
 public:
     CProgramStep();
     CProgramStep(const QString StepID);
+    CProgramStep(const QString StepID, const QString ReagentID, const QString Duration, const QString Temperature,
+                 const QString Pressure, const QString Vacuum);
     CProgramStep(const QString StepID, const QString ReagentID, const int MinDuration, const int MaxDuration,
                  const bool Exclusive, const int ParallelStations, const int Intensity);
     CProgramStep(const CProgramStep&);
@@ -119,6 +126,95 @@ public:
     /****************************************************************************/
     void SetReagentID(const QString Value){m_ReagentID = Value;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief Retrieves duration of the step
+     *
+     *  \return duration string
+     */
+    /****************************************************************************/
+    QString GetDuration() const {return m_Duration;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief Sets  duration of the program step
+     *
+     *  \iparam Value =  duration value
+     */
+    /****************************************************************************/
+    void SetDuration(const QString Value){m_Duration = Value;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief Retrieves duration of the step in seconds
+     *
+     *  \return duration string
+     */
+    /****************************************************************************/
+    int GetDurationInSeconds() const {return Helper::ConvertTimeStringToSeconds(m_Duration);}
+
+    /****************************************************************************/
+    /*!
+     *  \brief Sets  duration of the program step in seconds
+     *
+     *  \iparam Value =  duration value
+     */
+    /****************************************************************************/
+    void SetDurationInSeconds(const int Value){m_Duration = Helper::ConvertSecondsToTimeString(Value);}
+
+    /****************************************************************************/
+    /*!
+     *  \brief Retrieves Temperature of the step
+     *
+     *  \return Temperature
+     */
+    /****************************************************************************/
+    QString GetTemperature() const {return m_Temperature;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief Sets  Temperature of the program step
+     *
+     *  \iparam Value =  Temperature
+     */
+    /****************************************************************************/
+    void SetTemperature(const QString Value){m_Temperature = Value;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief Retrieves Pressure of the step
+     *
+     *  \return Pressure string
+     */
+    /****************************************************************************/
+    QString GetPressure() const {return m_Pressure;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief Sets  Pressure of the program step
+     *
+     *  \iparam Value =  Pressure value
+     */
+    /****************************************************************************/
+    void SetPressure(const QString Value){m_Pressure = Value;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief Retrieves Vacuum of the step
+     *
+     *  \return Vacuum string
+     */
+    /****************************************************************************/
+    QString GetVacuum() const {return m_Vacuum;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief Sets  Vacuum of the program step
+     *
+     *  \iparam Value =  Vacuum value
+     */
+    /****************************************************************************/
+    void SetVacuum(const QString Value){m_Vacuum = Value;}
 
     QString GetMinDuration() ; // {return ConvertSecondsToTimeString(m_MinDuration);}
     /****************************************************************************/

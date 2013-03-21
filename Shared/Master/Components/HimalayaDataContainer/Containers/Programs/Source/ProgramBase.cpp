@@ -30,11 +30,24 @@ namespace DataManager {
  */
 /****************************************************************************/
 CProgramBase::CProgramBase()
-    : m_ID(""), m_ShortName(""), m_LongName(""), m_NextFreeStepID(0)
+    : m_ID(""), m_Name(""),m_ShortName(""), m_LongName(""), m_NextFreeStepID(0)
 {
     Init();
 }
 
+/****************************************************************************/
+/*!
+ *  \brief Constructor
+ *  \iparam ID = program ID
+ *  \iparam Name = program short name
+ *
+ */
+/****************************************************************************/
+CProgramBase::CProgramBase(const QString ID, const QString Name)
+              : m_ID(ID), m_Name(Name),m_NextFreeStepID(0)
+{
+    Init();
+}
 /****************************************************************************/
 /*!
  *  \brief Constructor

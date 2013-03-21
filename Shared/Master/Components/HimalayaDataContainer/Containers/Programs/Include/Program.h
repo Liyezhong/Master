@@ -56,6 +56,8 @@ class CProgram : public CProgramBase
 {
     friend class CDataProgramList;
 private:
+    bool m_LeicaProgram;                        //!< leica program or not
+    QString m_Icon;                             //!< program icon
     QString m_Color;                            //!< program color
     bool m_Locked;                              //!< True - Leica program, else user defined program
     ListOfExpandedSteps_t m_ExpandedStepList;   //!< Normal steps + Macro steps
@@ -76,6 +78,7 @@ public:
     CProgram();
     CProgram(const QString ID);
     CProgram(const QString Color, const bool IsLocked, const QString ID, const QString ShortName, const QString LongName);
+    CProgram(const QString ID, const QString Name, bool IsLeicaProgram, QString Icon);
     CProgram(const CProgram&);
     ~CProgram();
 
@@ -180,6 +183,41 @@ public:
             return NULL;
         }
     }
+
+    /****************************************************************************/
+    /*!
+     *  \brief Sets the status of Leica Program
+     *
+     *  \iparam value = true - Leica Program , false - not Lecia Program
+     */
+    /****************************************************************************/
+    void SetLeicaProgram(const bool value){m_LeicaProgram = value;}
+    /****************************************************************************/
+    /*!
+     *  \brief Checks if Leica Program
+     *
+     *  \return true - Leica Program , false - not Lecia Program
+     */
+    /****************************************************************************/
+    bool IsLeicaProgram() const {return m_LeicaProgram;}
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief Sets Program icon
+     *
+     *  \iparam value icon ID
+     */
+    /****************************************************************************/
+    void SetIcon(const QString value){m_Icon = value;}
+    /****************************************************************************/
+    /*!
+     *  \brief Get Program Icon
+     *
+     *  \return Program Icon ID
+     */
+    /****************************************************************************/
+    QString GetIcon() const {return m_Icon;}
 
     /****************************************************************************/
     /*!
