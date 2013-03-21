@@ -97,7 +97,7 @@ quint32 CDataManager::InitDataContainer()
     }
 
     mp_DataContainer->ProgramList->SetDataVerificationMode(false);
-    QString FilenameProgramList = Global::SystemPaths::Instance().GetSettingsPath() + "/Programs.xml";
+    QString FilenameProgramList = Global::SystemPaths::Instance().GetSettingsPath() + "/" + PROGRAMS_XML;
     if (!mp_DataContainer->ProgramList->Read(FilenameProgramList)) {
         qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ProgramList->Read failed with filename: " << FilenameProgramList;
         return EVENT_DM_PROGRAM_XML_READ_FAILED;
