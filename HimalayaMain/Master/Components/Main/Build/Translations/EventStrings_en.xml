@@ -7,7 +7,7 @@
         <string id="513040013" text1="No %1 Bottle or the liquid path of this bottle should be blockaged! Pls have a check about the bottle and recovery the ERR! If still fail" text2=""/>
         <string id="513040101" text1="Pretest  - Sealing function-Pressure Failed! Please check the Retort lid is closed correctly and retry. If still fail" text2=""/>
         <string id="512040102" text1="Sealing function-Pressure failed in %1 protocol!. Please confirm the status and make your choice. The usual way to lead sealing function Failed are Retort sealing issue or the Liquid Air path sealing issue!." text2=""/>
-        <string id="513040151" text1="Pretest  - Sealing function-Pressure Failed! Please check the Retort lid is closed correctly and retry. If still fail"/>
+        <string id="513040151" text1="Pretest  - Sealing function-Pressure Failed! Please check the Retort lid is closed correctly and retry. If still fail" text2=""/>
         <string id="512040152" text1="Sealing function-vacuum failed in %1 protocol! Please confirm the status and make your choice. The usual way to lead sealing function Failed are Retort sealing issue or the Liquid&amp;Air path sealing issue! " text2=""/>
         <string id="511040201" text1="Sucking time of Fixation protocol - Bottle %1 exceed 2 min which always means there is some blockage in this path. Please pay attention to the reagent of this path!" text2=""/>
         <string id="511040202" text1="Sucking time of Dehydration protocol - Bottle %1 exceed 2 min which always means there is some blockage in this path. Please pay attention to the reagent of this path!" text2=""/>
