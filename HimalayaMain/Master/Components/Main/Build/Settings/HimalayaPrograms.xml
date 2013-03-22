@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE StainingPrograms>
 <StainingPrograms Version="2">
-	<ProgramList NextProgramID="U33">
-		<Program ID="L01" Name="Leica Overnight" LeicaProgram="true" Icon="IconFile">
-			<StepList NextStepID="13">
-				<Step ID="0" ReagentID="L01" Duration ="44m" Temperature="37" Pressure ="On" Vacuum="On" />
-				<Step ID="1" ReagentID="L02" Duration ="30m" Temperature="45" Pressure ="Off" Vacuum="Off"/>
-				<Step ID="2" ReagentID="L04" Duration ="30m" Temperature="45" Pressure ="Off" Vacuum="Off"/>
-				<Step ID="3" ReagentID="L06" Duration ="30m" Temperature="45" Pressure ="Off" Vacuum="Off"/>
-				<Step ID="4" ReagentID="L06" Duration ="30m" Temperature="45" Pressure ="Off" Vacuum="Off"/>
-				<Step ID="5" ReagentID="L06" Duration ="1h" Temperature="45" Pressure ="Off" Vacuum ="Off"/>
-				<Step ID="6" ReagentID="L06" Duration ="1h 30m" Temperature="45" Pressure ="Off" Vacuum ="Off"/>
-				<Step ID="7" ReagentID="L07" Duration ="45m" Temperature="45" Pressure ="Off" Vacuum ="Off"/>
-				<Step ID="8" ReagentID="L07" Duration ="45m" Temperature="45" Pressure ="Off" Vacuum ="Off"/>
-				<Step ID="9" ReagentID="L07" Duration ="1h 30m" Temperature="45" Pressure ="Off" Vacuum ="Off"/>
-				<Step ID="10" ReagentID="L08" Duration ="1h" Temperature="65" Pressure ="Off" Vacuum ="Off"/>
-				<Step ID="11" ReagentID="L08" Duration ="1h" Temperature="65" Pressure ="Off" Vacuum ="Off"/>
-				<Step ID="12" ReagentID="L08" Duration ="1h" Temperature="65" Pressure ="Off" Vacuum ="Off"/>
-			</StepList>
-		</Program>
-		<Program ID="C1" Name="Cleaning program" LeicaProgram="true" Icon="IconFile">
-			<StepList NextStepID="3">
-				<Step ID="0" ReagentID="L12" Duration ="12m" Temperature="67" Pressure ="Off" Vacuum ="Off"/>
-				<Step ID="1" ReagentID="L13" Duration ="6m" Temperature="62" Pressure ="Off" Vacuum ="Off"/>
-				<Step ID="2" ReagentID="L14" Duration ="1m" Temperature="65" Pressure ="Off" Vacuum ="Off"/>
-			</StepList>
-		</Program>
-		<Program ID="U37" Name="biopsy protocol" LeicaProgram="false" Icon="IconFile">
-			<StepList NextStepID="4">
-				<Step ID="0" ReagentID="L01" Duration ="15m" Temperature="37" Pressure ="On" Vacuum="On"/>
-				<Step ID="1" ReagentID="U02" Duration ="2m" Temperature="0" Pressure ="Off" Vacuum="Off"/>
-				<Step ID="2" ReagentID="U32" Duration ="5m" Temperature="45" Pressure ="Off" Vacuum="Off"/>
-				<Step ID="3" ReagentID="U16" Duration ="5m" Temperature="45" Pressure ="Off" Vacuum="Off"/>
-			</StepList>
-		</Program>
-	</ProgramList>
+    <ProgramList NextProgramID="U33">
+        <Program ID="L01" Name="Leica Overnight" Icon="IconFile" LeicaProgram="true">
+            <StepList NextStepID="13">
+                <Step ID="0" ReagentID="L01" Duration="44m" Temperature="37" Pressure="On" Vacuum="On"/>
+                <Step ID="1" ReagentID="L02" Duration="30m" Temperature="45" Pressure="Off" Vacuum="Off"/>
+                <Step ID="2" ReagentID="L04" Duration="30m" Temperature="45" Pressure="Off" Vacuum="Off"/>
+                <Step ID="3" ReagentID="L06" Duration="30m" Temperature="45" Pressure="Off" Vacuum="Off"/>
+                <Step ID="4" ReagentID="L06" Duration="30m" Temperature="45" Pressure="Off" Vacuum="Off"/>
+                <Step ID="5" ReagentID="L06" Duration="1h" Temperature="45" Pressure="Off" Vacuum="Off"/>
+                <Step ID="6" ReagentID="L06" Duration="1h 30m" Temperature="45" Pressure="Off" Vacuum="Off"/>
+                <Step ID="7" ReagentID="L07" Duration="45m" Temperature="45" Pressure="Off" Vacuum="Off"/>
+                <Step ID="8" ReagentID="L07" Duration="45m" Temperature="45" Pressure="Off" Vacuum="Off"/>
+                <Step ID="9" ReagentID="L07" Duration="1h 30m" Temperature="45" Pressure="Off" Vacuum="Off"/>
+                <Step ID="10" ReagentID="L08" Duration="1h" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="11" ReagentID="L08" Duration="1h" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="12" ReagentID="L08" Duration="1h" Temperature="65" Pressure="Off" Vacuum="Off"/>
+            </StepList>
+        </Program>
+        <Program ID="L02" Name="Cleaning program" Icon="IconFile" LeicaProgram="true">
+            <StepList NextStepID="3">
+                <Step ID="0" ReagentID="L12" Duration="12m" Temperature="67" Pressure="Off" Vacuum="Off"/>
+                <Step ID="1" ReagentID="L13" Duration="6m" Temperature="62" Pressure="Off" Vacuum="Off"/>
+                <Step ID="2" ReagentID="L14" Duration="1m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+            </StepList>
+        </Program>
+        <Program ID="U37" Name="biopsy protocol" Icon="IconFile" LeicaProgram="false">
+            <StepList NextStepID="4">
+                <Step ID="0" ReagentID="L01" Duration="15m" Temperature="37" Pressure="On" Vacuum="On"/>
+                <Step ID="1" ReagentID="U02" Duration="2m" Temperature="0" Pressure="Off" Vacuum="Off"/>
+                <Step ID="2" ReagentID="U32" Duration="5m" Temperature="45" Pressure="Off" Vacuum="Off"/>
+                <Step ID="3" ReagentID="U16" Duration="5m" Temperature="45" Pressure="Off" Vacuum="Off"/>
+            </StepList>
+        </Program>
+    </ProgramList>
 </StainingPrograms>

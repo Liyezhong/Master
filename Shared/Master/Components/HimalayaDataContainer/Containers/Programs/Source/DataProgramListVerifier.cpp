@@ -180,15 +180,15 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
                 CheckLeicaProgramSteps(p_Program, VerifiedData);
                 //for leica program the count of Leica  Special Reagent must be equal to 2
                 //not less or greater
-                if (LeicaSplReagentCount != 2) {
-                    Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_EDITED_LEICA_REAGENT_COUNT_INVALID,
-                                                               Global::tTranslatableStringList() << p_Program->GetLongName()
-                                                               << LeicaSplReagentCount,
-                                                               Global::GUI_MSG_BOX);
-                    qDebug("### Leica Special Reagent Count must be equal to 2");
-                    qDebug()<<"Program Name"<<p_Program->GetLongName();
-                    VerifiedData = false;
-                }
+//                if (LeicaSplReagentCount != 2) {
+//                    Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_EDITED_LEICA_REAGENT_COUNT_INVALID,
+//                                                               Global::tTranslatableStringList() << p_Program->GetLongName()
+//                                                               << LeicaSplReagentCount,
+//                                                               Global::GUI_MSG_BOX);
+//                    qDebug("### Leica Special Reagent Count must be equal to 2");
+//                    qDebug()<<"Program Name"<<p_Program->GetLongName();
+//                    VerifiedData = false;
+//                }
             }
             else if (p_Program->GetID().at(0) == 'U') {
                 // check program steps and update the verifier flags and error description
@@ -598,15 +598,15 @@ void CDataProgramListVerifier::CheckUserProgramSteps(CProgram* p_Program, bool &
                 // all other cases are covered in the CheckProgramStep function
                 case 'L':
 
-                    m_ErrorsHash.insert(EVENT_DM_USER_PROGRAM_CONTAINS_LEICA_REAGENT,
-                                        Global::tTranslatableStringList() << p_Program->GetID()
-                                        << p_Program->GetReagentIDList().value(ReagentIDCount));
-                    Global::EventObject::Instance().RaiseEvent(EVENT_DM_USER_PROGRAM_CONTAINS_LEICA_REAGENT,
-                                                               Global::tTranslatableStringList() << p_Program->GetID()
-                                                               << p_Program->GetReagentIDList().value(ReagentIDCount));
-                    qDebug() << "##### User program" << p_Program->GetID() << "is having the Leica reagent"
-                             << p_Program->GetReagentIDList().value(ReagentIDCount);
-                    VerifiedData = false;
+//                    m_ErrorsHash.insert(EVENT_DM_USER_PROGRAM_CONTAINS_LEICA_REAGENT,
+//                                        Global::tTranslatableStringList() << p_Program->GetID()
+//                                        << p_Program->GetReagentIDList().value(ReagentIDCount));
+//                    Global::EventObject::Instance().RaiseEvent(EVENT_DM_USER_PROGRAM_CONTAINS_LEICA_REAGENT,
+//                                                               Global::tTranslatableStringList() << p_Program->GetID()
+//                                                               << p_Program->GetReagentIDList().value(ReagentIDCount));
+//                    qDebug() << "##### User program" << p_Program->GetID() << "is having the Leica reagent"
+//                             << p_Program->GetReagentIDList().value(ReagentIDCount);
+//                    VerifiedData = false;
                     break;
             }
         }// End of for loop
