@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE StainingPrograms>
-<StainingPrograms Version="2">
+<!DOCTYPE TissuePrograms>
+<TissuePrograms Version="1">
     <ProgramList NextProgramID="U33">
         <Program ID="L01" Name="Leica Overnight" Icon="IconFile" LeicaProgram="true">
             <StepList NextStepID="13">
@@ -35,4 +35,4 @@
             </StepList>
         </Program>
     </ProgramList>
-</StainingPrograms>
+</TissuePrograms>

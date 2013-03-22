@@ -797,9 +797,9 @@ bool CDataProgramList::DeserializeContent(QIODevice& IODevice, bool CompleteData
 
     XmlStreamReader.setDevice(&IODevice);
 
-    // look for node <StainingPrograms>
-    if (!Helper::ReadNode(XmlStreamReader, "StainingPrograms")) {
-        qDebug() << "DeserializeContent: abort reading. Node not found: StainingPrograms";
+    // look for node <TissuePrograms>
+    if (!Helper::ReadNode(XmlStreamReader, "TissuePrograms")) {
+        qDebug() << "DeserializeContent: abort reading. Node not found: TissuePrograms";
         return false;
     }
 
@@ -886,8 +886,8 @@ bool CDataProgramList::SerializeContent(QIODevice& IODevice, bool CompleteData)
     //XmlStreamWriter.setAutoFormattingIndent(4);
     XmlStreamWriter.writeStartDocument();
 
-    XmlStreamWriter.writeDTD("<!DOCTYPE StainingPrograms>");
-    XmlStreamWriter.writeStartElement("StainingPrograms");
+    XmlStreamWriter.writeDTD("<!DOCTYPE TissuePrograms>");
+    XmlStreamWriter.writeStartElement("TissuePrograms");
 
     // write attribute version
     (void)StringValue.setNum(GetVersion()); //to suppress lint-534
