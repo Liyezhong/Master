@@ -27,7 +27,13 @@
 namespace DataManager {
 
 namespace Global {
-
+ 
+ typedef enum  {
+        PROGRAM_START = 0,
+        PROGRAM_PAUSE,
+        PROGRAM_ABORT
+    } ProgramActionType_t;
+    
 const QString LEICA("leica");
 
 /****************************************************************************/

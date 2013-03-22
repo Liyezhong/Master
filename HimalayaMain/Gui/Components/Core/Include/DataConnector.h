@@ -30,7 +30,6 @@
 
 /************************** Commands ***********************************************/
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdChangeUserSettings.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdDashboardStationUpdate.h"
 #include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramUpdate.h"
 #include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdNewProgram.h"
 #include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdDeleteItem.h"

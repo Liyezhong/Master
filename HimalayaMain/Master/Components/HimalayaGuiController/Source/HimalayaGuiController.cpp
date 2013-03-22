@@ -27,7 +27,6 @@
 #include <Global/Include/Commands/CmdDateAndTime.h>
 #include <NetCommands/Include/CmdConfigurationFile.h>
 #include <HimalayaDataContainer/Containers/ReagentGroups/Commands/Include/CmdReagentGroupUpdate.h>
-#include <HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdDashboardStationUpdate.h>
 #include <HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentUpdate.h>
 #include <HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentAdd.h>
 #include <HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentRemove.h>
@@ -189,13 +188,6 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     RegisterCommandForProcessing<MsgClasses::CmdReagentGroupUpdate, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdReagentGroupUpdate>, this);
 
-    // dash board station
-   /* RegisterCommandForProcessing<MsgClasses::CmdDashboardStationUpdate, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdDashboardStationUpdate>, this);
-    RegisterCommandForProcessing<MsgClasses::CmdDashboardStationChangeReagent, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdDashboardStationChangeReagent>, this);
-
-*/
 
     //Staions
     RegisterExternalMessage<MsgClasses::CmdStationChangeReagent, HimalayaGui::HimalayaGuiController>
