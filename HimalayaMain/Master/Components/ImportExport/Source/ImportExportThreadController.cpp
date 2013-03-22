@@ -268,9 +268,9 @@ void ImportExportThreadController::OnGoReceived() {
                 IsImported = ImportArchiveFiles(TypeOfImport);
             }
             // if the event is not raised then display an error due to any reason
-            if (!m_EventRaised) {
-                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_FAILED);
-            }
+//            if (!m_EventRaised) {
+//                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_FAILED);
+//            }
             // emit the thread finished flag
             emit ThreadFinished(IsImported, TypeOfImport, m_CurrentLanguageUpdated, m_NewLanguageAdded);
         }
@@ -1075,15 +1075,15 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
         }
         /// \todo need to write code for the special verfiers
         // for the type of Leica import Program sequence is not required
-/*
+
         if ((TypeOfImport.compare(TYPEOFIMPORT_LEICA, Qt::CaseInsensitive) != 0)) {
             // replace the data with the imported data
             *(m_DataManager.GetReagentList()) = ImportReagentList;
-            *(m_DataManager.GetProgramList()) = ImportProgramList;
-            *(m_DataManager.GetProgramSequenceList()) = ImportPSList;
+//            *(m_DataManager.GetProgramList()) = ImportProgramList;
+//            *(m_DataManager.GetProgramSequenceList()) = ImportPSList;
         }
         else {
-            if (ImportLeicaPrograms(ImportProgramList)) {
+/*            if (ImportLeicaPrograms(ImportProgramList)) {
                 if (!ImportLeicaUserReagents(ImportReagentList)) {
                     return false;
                 }
@@ -1091,8 +1091,9 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
             else {
                 return false;
             }
-        }
 */
+        }
+
         // update the user settings in the Main container
 /*
         if (!m_DataManager.GetUserSettingsInterface()->UpdateUserSettings(&UserSettings)) {
