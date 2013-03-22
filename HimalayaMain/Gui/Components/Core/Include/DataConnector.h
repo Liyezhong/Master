@@ -62,6 +62,8 @@
 #include <HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationResetData.h>
 #include <HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsEmpty.h>
 #include <HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsFull.h>
+#include <HimalayaDataContainer/Containers/Stations/Commands/Include/CmdUpdateStationReagentStatus.h>
+
 
 //namespace MainMenu {
 //    class CMsgBoxManager;
@@ -121,10 +123,11 @@ public slots:
     void SendDateTime(QDateTime DateTime);
     void SendReagentUpdate(DataManager::CReagent &Reagent);
     void SendReagentGroupUpdate(DataManager::CReagentGroup &ReagentGroup);
-    void SendStationChangeReagent(QString StationId, QString ReagentId);
-    void SendStationResetData(QString StationId);
-    void SendStationSetAsEmpty(QString StationId);
-    void SendStationSetAsFull(QString StationId);
+    void SendStationChangeReagent(const QString& StationId, const QString& ReagentId);
+    void SendStationResetData(const QString& StationId);
+    void SendStationSetAsEmpty(const QString StationId);
+    void SendStationSetAsFull(const QString& StationId);
+    void SendRMSChanged(Global::RMSOptions_t);
     void SendUpdatedSettings(DataManager::CUserSettings &Settings);
     void SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, bool Type);
     void SendReagentAdd(DataManager::CReagent &Reagent);
@@ -298,7 +301,7 @@ private:
     void UpdateStationResetData(Global::tRefType Ref, const MsgClasses::CmdStationResetData &Command);
     void UpdateStationSetAsEmpty(Global::tRefType Ref, const MsgClasses::CmdStationSetAsEmpty &Command);
     void UpdateStationSetAsFull(Global::tRefType Ref, const MsgClasses::CmdStationSetAsFull &Command);
-
+    void UpdateStationReagentStatus(Global::tRefType Ref, const MsgClasses::CmdUpdateStationReagentStatus &Command);
 
     void EventStringHandler(Global::tRefType ref, const NetCommands::CmdEventStrings &Command);
     void ReagentRemoveHandler(Global::tRefType Ref, const MsgClasses::CmdReagentRemove &Command);

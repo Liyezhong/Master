@@ -101,6 +101,8 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), mp_Ui->pageReagentStatus, OnUserRoleChanged());
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), mp_Ui->pageReagentStatus, OnProcessStateChanged());
     CONNECTSIGNALSLOT(mp_Ui->pageReagents, RMSChanged(const Global::RMSOptions_t), mp_Ui->pageReagentStatus, RMSChanged(const Global::RMSOptions_t));
+    CONNECTSIGNALSLOT(mp_Ui->pageReagents, RMSChanged(const Global::RMSOptions_t),
+                      mp_DataConnector, SendRMSChanged(const Global::RMSOptions_t));
 }
 
 /****************************************************************************/

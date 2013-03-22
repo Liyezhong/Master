@@ -26,6 +26,7 @@
 #include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationResetData.h"
 #include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsFull.h"
 #include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsEmpty.h"
+#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdUpdateStationReagentStatus.h"
 
 namespace DataManager {
 /****************************************************************************/
@@ -57,6 +58,11 @@ private:
      void SetStationAsEmpty(Global::tRefType,
                             const MsgClasses::CmdStationSetAsEmpty &Cmd,
                             Threads::CommandChannel &);
+
+     void UpdateStationReagentStatus(Global::tRefType,
+                            const MsgClasses::CmdUpdateStationReagentStatus& Cmd,
+                            Threads::CommandChannel &);
+
 };
 
 }// end of namespace DataManager

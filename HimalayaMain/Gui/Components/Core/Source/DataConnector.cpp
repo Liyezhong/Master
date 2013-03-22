@@ -77,6 +77,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationResetData>(&CDataConnector::UpdateStationResetData, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationSetAsEmpty>(&CDataConnector::UpdateStationSetAsEmpty, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationSetAsFull>(&CDataConnector::UpdateStationSetAsFull, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdUpdateStationReagentStatus>(&CDataConnector::UpdateStationReagentStatus, this);
 
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdEventStrings>(&CDataConnector::EventStringHandler, this);
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdExecutionStateChanged>(&CDataConnector::ExecutionStateHandler, this);
@@ -326,7 +327,7 @@ void CDataConnector::SendDateTime(QDateTime DateTime)
  *  \iparam p_Reagent = Reagent data object
  */
 /****************************************************************************/
-void CDataConnector::SendStationChangeReagent(QString StationId, QString ReagentId)
+void CDataConnector::SendStationChangeReagent(const QString& StationId, const QString& ReagentId)
 {
     MsgClasses::CmdStationChangeReagent Command(1000, StationId, ReagentId);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
@@ -336,7 +337,7 @@ void CDataConnector::SendStationChangeReagent(QString StationId, QString Reagent
     mp_WaitDialog->show();
 
 }
-void CDataConnector::SendStationResetData(QString StationId)
+void CDataConnector::SendStationResetData(const QString& StationId)
 {
     MsgClasses::CmdStationResetData Command(1000, StationId);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
@@ -346,7 +347,7 @@ void CDataConnector::SendStationResetData(QString StationId)
     mp_WaitDialog->show();
 }
 
-void CDataConnector::SendStationSetAsEmpty(QString StationId)
+void CDataConnector::SendStationSetAsEmpty(const QString StationId)
 {
     MsgClasses::CmdStationSetAsEmpty Command(1000, StationId);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
@@ -356,7 +357,7 @@ void CDataConnector::SendStationSetAsEmpty(QString StationId)
     mp_WaitDialog->show();
 }
 
-void CDataConnector::SendStationSetAsFull(QString StationId)
+void CDataConnector::SendStationSetAsFull(const QString& StationId)
 {
     MsgClasses::CmdStationSetAsFull Command(1000, StationId);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
@@ -364,6 +365,11 @@ void CDataConnector::SendStationSetAsFull(QString StationId)
     mp_WaitDialog->SetText(tr("Saving Settings ..."));
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
+}
+
+void CDataConnector::SendRMSChanged(Global::RMSOptions_t rmsOption)
+{
+
 }
 
 /****************************************************************************/
@@ -731,6 +737,7 @@ void CDataConnector::UpdateReagentGroupHandler(Global::tRefType Ref, const MsgCl
     if(Result){
         mp_WaitDialog->accept();
         emit ReagentGroupUpdated();
+        emit ReagentsUpdated();
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
     return;
@@ -754,6 +761,7 @@ void CDataConnector::UpdateStationChangeReagentHandler(Global::tRefType Ref,
     {
         pDashboardStation->SetDashboardReagentID(Command.ReagentID());
         pDashboardStation->ResetData();
+        pDashboardStation->SetDashboardReagentStatus("Empty");
     }
     else
         Result = false;
@@ -813,6 +821,11 @@ void CDataConnector::UpdateStationSetAsFull(Global::tRefType Ref, const MsgClass
         emit DashboardStationChangeReagent();
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
+}
+
+void CDataConnector::UpdateStationReagentStatus(Global::tRefType Ref, const MsgClasses::CmdUpdateStationReagentStatus &Command)
+{
+
 }
 
 /****************************************************************************/

@@ -54,6 +54,10 @@ void CStationCommandInterface::RegisterCommands()
 
     mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdStationSetAsEmpty, CStationCommandInterface>
             (&CStationCommandInterface::SetStationAsEmpty, this);
+
+    mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdUpdateStationReagentStatus, CStationCommandInterface>
+            (&CStationCommandInterface::UpdateStationReagentStatus, this);
+
 }
 
 void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
@@ -66,6 +70,7 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
     {
         pDashboardStation->SetDashboardReagentID(cmd.ReagentID());
         pDashboardStation->ResetData();
+        pDashboardStation->SetDashboardReagentStatus("Empty");
     }
     else
       Result = false;
@@ -165,10 +170,16 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
          mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
          MsgClasses::CmdStationResetData* p_Command = new MsgClasses::CmdStationResetData(1000, Cmd.StationID());
          mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
-         qDebug()<<"\n\n SetStationAsFull Success";
+         qDebug()<<"\n\n SetStationAsEmpty Success";
      }
      static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
  }
 
 
+ void CStationCommandInterface::UpdateStationReagentStatus(Global::tRefType Ref,
+                        const MsgClasses::CmdUpdateStationReagentStatus &Cmd,
+                        Threads::CommandChannel& AckCommandChannel)
+ {
+
+ }
 }
