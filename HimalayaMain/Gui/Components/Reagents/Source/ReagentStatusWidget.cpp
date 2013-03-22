@@ -127,6 +127,7 @@ void CReagentStatusWidget::OnSetAsEmpty()
     if (mp_DashStation) {
         mp_DashStation->SetDashboardReagentStatus("Empty");
         emit UpdateStationSetAsEmpty(mp_DashStation->GetDashboardStationID());
+        m_ReagentStatusModel.ResetAndUpdateModel();
         ResetButtons();
     }
 }
@@ -148,7 +149,7 @@ void CReagentStatusWidget::OnResetData()
         mp_DashStation->SetDashboardReagentExcahngeDate(SetCurrentDate);
 
         emit UpdateStationResetData(mp_DashStation->GetDashboardStationID());
-
+        m_ReagentStatusModel.ResetAndUpdateModel();
         ResetButtons();
     }
 }
@@ -163,6 +164,7 @@ void CReagentStatusWidget::OnSetAsFull()
     if (mp_DashStation) {
         mp_DashStation->SetDashboardReagentStatus("Full");
         emit UpdateStationSetAsFull(mp_DashStation->GetDashboardStationID());
+        m_ReagentStatusModel.ResetAndUpdateModel();
         ResetButtons();
     }
 }
