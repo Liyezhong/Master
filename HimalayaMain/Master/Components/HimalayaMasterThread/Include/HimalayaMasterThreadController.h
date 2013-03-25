@@ -25,21 +25,14 @@
 #include <PasswordManager/Include/PasswordManager.h>
 #include <DataManager/Containers/UserSettings/Include/UserSettings.h>
 #include <../Include/DataLoggingSources.h>
-
 #include <Global/Include/Commands/CmdDateAndTime.h>
 #include <Global/Include/AlarmHandler.h>
 #include <Global/Include/GlobalExitCodes.h>
 #include <Global/Include/Commands/AckOKNOK.h>
 #include <Global/Include/Commands/CmdEventUpdate.h>
-
 #include <HimalayaDataManager/Include/DataManager.h>
-
 #include "ImportExport/Include/ImportExportThreadController.h"
 #include <EventHandler/Include/StateHandler.h>
-
-#include <RMS/Include/RMSManager.h>
-
-
 #include <NetCommands/Include/CmdSystemAction.h>
 #include <NetCommands/Include/CmdChangeAdminPassword.h>
 #include <NetCommands/Include/CmdChangeAdminPasswordReply.h>
@@ -54,8 +47,8 @@
 #include <NetCommands/Include/CmdEventStrings.h>
 #include <NetCommands/Include/CmdDataUpdate.h>
 #include <NetCommands/Include/CmdGuiInit.h>
-
 #include <HimalayaMasterThread/Include/ProgramStartableFlagManager.h>
+#include <NetCommands/Include/CmdConfigurationFile.h>
 
 
 namespace EventHandler {
@@ -117,7 +110,6 @@ private:
     Threads::CommandChannel         m_CommandChannelImportExport;           ///< Command channel for Import Export thread
     Global::tRefType                m_ImportExportCommandRef;               ///< Store the command reference to return the command data once export process is exited
     DataManager::CDataManager       *mp_DataManager;                        ///< The himalaya DataManager
-    HimalayaRMS::CRMSManager        *mp_RMSManager;                           ///< RMS Manager instance of the Master
     Threads::CommandChannel*        mp_ImportExportAckChannel;              ///< Store the command reference to return the command channel data once export process is exited
     bool                            m_ExportProcessIsFinished;              ///< Store export process flag value
     bool                            m_ImportExportThreadIsRunning;          ///< Store ImportExport thread flag value

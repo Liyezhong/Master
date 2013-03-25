@@ -36,15 +36,6 @@
 #include <HimalayaDataContainer/Containers/Programs/Commands/Include/CmdNewProgram.h>
 #include <HimalayaDataContainer/Containers/Programs/Commands/Include/CmdDeleteItem.h>
 
-#include <RMSCommands/Include/CmdScanLeicaKit.h>
-#include <RMSCommands/Include/CmdScanLeicaBottle.h>
-#include <RMSCommands/Include/CmdConfirmLeicaReagent.h>
-#include <RMSCommands/Include/CmdConfirmBathLayout.h>
-#include <RMSCommands/Include/CmdUpdateLeicaReagent.h>
-#include <RMSCommands/Include/CmdResetStationRms.h>
-#include <RMSCommands/Include/CmdFillLeicaReagent.h>
-#include "RMSCommands/Include/CmdUpdateRmsStatusToGui.h"
-
 #include <NetCommands/Include/CmdEventStrings.h>
 #include <NetCommands/Include/CmdExecutionStateChanged.h>
 #include <NetCommands/Include/CmdLanguageFile.h>
@@ -283,29 +274,6 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
 
     RegisterCommandForProcessing<NetCommands::CmdEventReport, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<NetCommands::CmdEventReport>,this);
-
-
-    //RMS-GUI Commands
-    RegisterExternalMessage<MsgClasses::CmdScanLeicaKit, HimalayaGui::HimalayaGuiController>
-                (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdScanLeicaKit>, this);
-
-    RegisterExternalMessage<MsgClasses::CmdScanLeicaBottle, HimalayaGui::HimalayaGuiController>
-                (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdScanLeicaBottle>, this);
-
-    RegisterExternalMessage<MsgClasses::CmdConfirmLeicaReagent, HimalayaGui::HimalayaGuiController>
-                (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdConfirmLeicaReagent>, this);
-
-    RegisterExternalMessage<MsgClasses::CmdUpdateLeicaReagent, HimalayaGui::HimalayaGuiController>
-                (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdUpdateLeicaReagent>, this);
-
-    RegisterExternalMessage<MsgClasses::CmdResetStationRms, HimalayaGui::HimalayaGuiController>
-                (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdResetStationRms>, this);
-
-    RegisterExternalMessage<MsgClasses::CmdFillLeicaReagent, HimalayaGui::HimalayaGuiController>
-                (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdFillLeicaReagent>, this);
-
-	RegisterCommandForProcessing<MsgClasses::CmdUpdateRmsStatusToGui, HimalayaGui::HimalayaGuiController>
-                (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdUpdateRmsStatusToGui>, this);
 
 
     RegisterExternalMessage<NetCommands::CmdConfigurationFile, HimalayaGui::HimalayaGuiController>

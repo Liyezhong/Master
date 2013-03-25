@@ -95,7 +95,6 @@ HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     m_CommandChannelExport(this, "Export", Global::EVENTSOURCE_EXPORT),
     m_CommandChannelImportExport(this, "ImportExport", Global::EVENTSOURCE_IMPORTEXPORT),
     mp_DataManager(NULL),
-    mp_RMSManager(NULL),
     mp_ImportExportAckChannel(NULL),
     m_ExportProcessIsFinished(false),
     m_ImportExportThreadIsRunning(false),
@@ -160,8 +159,6 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
     //! \todo Do this when a rack is inserted
     mp_DataManager->RefreshPossibleStationList();
 
-    //Create RMS manager
-    mp_RMSManager = new HimalayaRMS::CRMSManager(this, mp_DataManager);
     //Initialize program Startable manager
     m_ProgramStartableManager.Init();
     //Initialize objects in Master and base threads.
@@ -407,11 +404,7 @@ void HimalayaMasterThreadController:: OnCmdGuiInitHandler(Global::tRefType Ref, 
 
 /****************************************************************************/
 void HimalayaMasterThreadController::SendXML() {
-
     SendCommand(Global::CommandShPtr_t(new NetCommands::CmdGuiInit(2000, false)), m_CommandChannelGui);
-
-    //To ensure GUI is up and running before RMS polling for reagent expiry status
-    mp_RMSManager->PollReagentExpiryStatus();
 
     QByteArray *p_ByteArray = new QByteArray();
     p_ByteArray->clear();
@@ -1043,9 +1036,6 @@ void HimalayaMasterThreadController::ContainerFileHandler(Global::tRefType Ref, 
 
     QDataStream DataStream(const_cast<QByteArray *>(&Command.GetFileContent()), QIODevice::ReadWrite);
    // (void)DataStream.device()->reset();
-
-    //Cancel all timers related to Leica consumables scan process
-    mp_RMSManager->AbortLeicaConsumablesScanProcess();
 
     //Replacing Original container back
     const DataManager::CDataContainer *p_DataContainerReplace = mp_DataManager->GetDataContainer();

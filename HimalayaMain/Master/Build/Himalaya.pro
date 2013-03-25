@@ -26,13 +26,11 @@ SUBDIRS  = \
            ../../../../Platform/Master/Components/PasswordManager/Build/PasswordManager.pro \
            ../../../../Platform/Master/Components/SoftSwitchManager/Build/SoftSwitchManager.pro \
            ../../../Shared/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro \
-           ../../../Shared/Master/Components/RMSCommands/Build/RMSCommands.pro \
            ../Components/HimalayaMasterThread/Build/HimalayaMasterThread.pro \
            ../Components/HimalayaGuiController/Build/HimalayaGuiController.pro \
            ../Components/HimalayaErrorHandler/Build/HimalayaErrorHandler.pro \
            ../Components/Scheduler/Build/Scheduler.pro \
            ../Components/ExportController/Build/ExportController.pro \
-            ../Components/RMS/Build/RMS.pro \
            ../Components/Main/Build/Main.pro
 
 CONFIG += ordered

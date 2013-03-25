@@ -36,8 +36,7 @@ PLATFORM_COMPONENTS = DataLogging \
 
 ################# list himalaya shared libraries #################
 HIMALAYA_SHAREDCOMPONENTS_DIR = ../../../../../Shared/Master/Components
-HIMALAYA_SHAREDCOMPONENTS = HimalayaDataContainer \
-                            RMSCommands
+HIMALAYA_SHAREDCOMPONENTS = HimalayaDataContainer
 ###########################################################
 
 
@@ -46,7 +45,6 @@ HIMALAYA_COMPONENTS_DIR = ../..
 HIMALAYA_COMPONENTS = HimalayaGuiController \
                       HimalayaMasterThread \
                       ExportController \
-                      RMS \
                       Scheduler \
                       HimalayaErrorHandler
 ###########################################################
