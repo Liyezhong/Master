@@ -48,14 +48,14 @@ namespace Scheduler {
     void SchedulerMainThreadController::RegisterCommands()
     {
         // register commands
-        RegisterCommandForProcessing<
-            HimalayaErrorHandler::CmdRaiseAlarm,
-            SchedulerMainThreadController
-        >(&SchedulerMainThreadController::OnRaiseAlarmLocalRemote, this);
+        RegisterCommandForProcessing<HimalayaErrorHandler::CmdRaiseAlarm,
+            SchedulerMainThreadController>(&SchedulerMainThreadController::OnRaiseAlarmLocalRemote, this);
 
         RegisterCommandForProcessing<MsgClasses::CmdProgramAction,
                 SchedulerMainThreadController>(&SchedulerMainThreadController::OnProgramAction, this);
 
+        RegisterCommandForProcessing<MsgClasses::CmdRetortLock,
+                SchedulerMainThreadController>(&SchedulerMainThreadController::OnOnRetortLock, this);
 
     }
 
@@ -136,7 +136,15 @@ namespace Scheduler {
                                                         const MsgClasses::CmdProgramAction &Cmd)
     {
         Q_UNUSED(Ref);
+        Q_UNUSED(Cmd);
     }
+
+    void SchedulerMainThreadController::OnOnRetortLock(Global::tRefType Ref, const MsgClasses::CmdRetortLock &Cmd)
+    {
+        Q_UNUSED(Ref);
+        Q_UNUSED(Cmd);
+    }
+
 
 } // EONS ::Scheduler
 

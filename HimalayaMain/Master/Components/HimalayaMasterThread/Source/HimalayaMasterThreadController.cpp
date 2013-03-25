@@ -76,7 +76,7 @@
 #include <EventHandler/Include/CrisisEventHandler.h>
 #include <HimalayaErrorHandler/Include/HimalayaAlarmHandler.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
-
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 
 namespace Himalaya {
 const quint32 ERROR_CODE_HIMALAYA_CONSTRUCTION_FAILED = 1;
@@ -85,8 +85,6 @@ const Global::gSubComponentType SUBCOMPONENT_ERRORHANDLER   = 0x0001;   ///< Sub
 /****************************************************************************/
 HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     MasterThreadController(HEARTBEAT_SOURCE_MASTERTHREAD, HEARTBEAT_SOURCE_DATALOGGING, HEARTBEAT_SOURCE_EVENTHANDLER, "HimalayaShutdown"),
-    m_ExpectedDCRef(Global::RefManager<Global::tRefType>::INVALID),
-    m_ExpectedShutDownRef(Global::RefManager<Global::tRefType>::INVALID),
     /// \todo hash of master password (now master password is "Himalaya")
     m_PasswordManager("6C7F722B0C5AC1BD70BE4ECC6FC0653E"),
     m_CommandChannelGui(this, "Gui", Global::EVENTSOURCE_NONE),
@@ -269,10 +267,10 @@ void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Glo
 
 /****************************************************************************/
 void HimalayaMasterThreadController::RegisterCommands() {
-
     RegisterCommandForRouting<MsgClasses::CmdProgramAction>(&m_CommandChannelSchedulerMain);
+    RegisterCommandForRouting<MsgClasses::CmdRetortLock>(&m_CommandChannelSchedulerMain);
+    RegisterCommandForRouting<MsgClasses::CmdRetortLock>(&m_CommandChannelGui);
 
-    // -> GPIO threadController
     RegisterCommandForRouting<NetCommands::CmdCriticalActionStatus>(&m_CommandChannelSoftSwitch);
 
     // -> Datalogging
@@ -310,11 +308,6 @@ void HimalayaMasterThreadController::RegisterCommands() {
     //GUI - Sent by Scheduler
     RegisterCommandForRouting<NetCommands::CmdEventReport>(&m_CommandChannelGui);
 
-
-
-    // RMS Manager
-    RegisterCommandForProcessing<NetCommands::CmdConfigurationFile, HimalayaMasterThreadController>
-                (&HimalayaMasterThreadController::ContainerFileHandler, this);
 
     //Update and keep the current system state
     /*RegisterCommandForProcessing<NetCommands::CmdSystemState, HimalayaMasterThreadController>
@@ -1026,38 +1019,6 @@ void HimalayaMasterThreadController::OnDataUpdate(Global::tRefType Ref, const Ne
         {
          }
     }
-
-}
-void HimalayaMasterThreadController::ContainerFileHandler(Global::tRefType Ref, const NetCommands::CmdConfigurationFile &Command, Threads::CommandChannel &AckCommandChannel)
-{
-
-    DataManager::CDashboardDataStationList StationList;  //!< Container for stations
-    DataManager::CProgramSequenceList ProgramSequenceList;  //!< Container program sequence
-
-    QDataStream DataStream(const_cast<QByteArray *>(&Command.GetFileContent()), QIODevice::ReadWrite);
-   // (void)DataStream.device()->reset();
-
-    //Replacing Original container back
-    const DataManager::CDataContainer *p_DataContainerReplace = mp_DataManager->GetDataContainer();
-    switch (Command.GetFileType()) {
-
-        case NetCommands::PROGRAM_SEQUENCE:
-        {
-            DataStream >> ProgramSequenceList;
-            *(p_DataContainerReplace->ProgramSequenceList) = ProgramSequenceList;
-        }
-            break;
-        case NetCommands::STATION:
-        {
-           DataStream >> StationList;
-           *(p_DataContainerReplace->StationList) = StationList;
-        }
-            break;
-        default:
-            break;
-    }
-    SendAcknowledgeOK(Ref, AckCommandChannel);
-    return;
 
 }
 

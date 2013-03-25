@@ -99,8 +99,6 @@ typedef enum  {
 class HimalayaMasterThreadController : public Threads::MasterThreadController {
     Q_OBJECT
 private:
-    Global::tRefType                m_ExpectedDCRef;                        ///< Expected DC acknowledge reference.
-    Global::tRefType                m_ExpectedShutDownRef;                  ///< Expected Shutdown acknowledge reference.
     PasswordManager::CPasswordManager    m_PasswordManager;                      ///< The password manager.
 
     Threads::CommandChannel         m_CommandChannelGui;                    ///< Command channel for Gui thread controller.
@@ -361,17 +359,6 @@ private:
      */
     /****************************************************************************/
     void OnCmdGuiInitHandler(Global::tRefType Ref, const NetCommands::CmdGuiInit &Cmd, Threads::CommandChannel &AckCommandChannel);
-/****************************************************************************/
-    /*!
-     *  \brief  Replaces Program Sequence and Stations containers.
-     *  \iparam Ref = Command reference
-     *  \iparam Cmd = Command
-     *  \AckCommandChannel = Command channel to send acknowledged
-     */
-    /****************************************************************************/
-    void ContainerFileHandler(Global::tRefType Ref, const NetCommands::CmdConfigurationFile &Command,
-                              Threads::CommandChannel &AckCommandChannel);
-
 
     /****************************************************************************/
     /*!

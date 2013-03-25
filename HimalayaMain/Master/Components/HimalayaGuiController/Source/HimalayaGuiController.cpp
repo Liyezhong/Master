@@ -62,6 +62,7 @@
 #include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsEmpty.h"
 #include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdUpdateStationReagentStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 
 namespace HimalayaGui {
 
@@ -177,6 +178,13 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     //Start,Pause,Abort program
     RegisterExternalMessage<MsgClasses::CmdProgramAction, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdProgramAction>, this);
+
+   //Retort Lock/Unlock
+   RegisterExternalMessage<MsgClasses::CmdRetortLock, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdRetortLock>, this);
+
+   RegisterCommandForProcessing<MsgClasses::CmdRetortLock, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdRetortLock>, this);
 
     //  Staions
     RegisterExternalMessage<MsgClasses::CmdStationChangeReagent, HimalayaGui::HimalayaGuiController>
