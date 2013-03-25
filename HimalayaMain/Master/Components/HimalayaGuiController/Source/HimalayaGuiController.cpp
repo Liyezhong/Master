@@ -70,7 +70,7 @@
 #include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsFull.h"
 #include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsEmpty.h"
 #include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdUpdateStationReagentStatus.h"
-
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 
 namespace HimalayaGui {
 
@@ -182,14 +182,12 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdChangeUserSettings>, this);
 
 
-    // reagent group
-    RegisterExternalMessage<MsgClasses::CmdReagentGroupUpdate, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdReagentGroupUpdate>, this);
-    RegisterCommandForProcessing<MsgClasses::CmdReagentGroupUpdate, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdReagentGroupUpdate>, this);
+    //Dashboard
+    //Start,Pause,Abort program
+    RegisterExternalMessage<MsgClasses::CmdProgramAction, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdProgramAction>, this);
 
-
-    //Staions
+    //  Staions
     RegisterExternalMessage<MsgClasses::CmdStationChangeReagent, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdStationChangeReagent>, this);
 
@@ -214,7 +212,13 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     RegisterCommandForProcessing<MsgClasses::CmdStationSetAsEmpty, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdStationSetAsEmpty>, this);
 
-    //Update reagent status
+    //  reagent group
+    RegisterExternalMessage<MsgClasses::CmdReagentGroupUpdate, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdReagentGroupUpdate>, this);
+    RegisterCommandForProcessing<MsgClasses::CmdReagentGroupUpdate, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdReagentGroupUpdate>, this);
+
+    //  Update reagent status
     RegisterExternalMessage<MsgClasses::CmdUpdateStationReagentStatus, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdUpdateStationReagentStatus>, this);
 
@@ -232,12 +236,10 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     RegisterCommandForProcessing<MsgClasses::CmdReagentRemove, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdReagentRemove>, this);
 
-
     RegisterExternalMessage<MsgClasses::CmdReagentUpdate, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdReagentUpdate>, this);
     RegisterCommandForProcessing<MsgClasses::CmdReagentUpdate, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdReagentUpdate>, this);
-
 
   
     //  Program
@@ -249,11 +251,13 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
 
     RegisterExternalMessage<MsgClasses::CmdDeleteItem, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdDeleteItem>, this);
-        // commands for Import and Export
+
+    // commands for Import and Export
     RegisterExternalMessage<MsgClasses::CmdDataExport, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdDataExport>, this);
     RegisterExternalMessage<MsgClasses::CmdDataImport, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdDataImport>, this);
+
     // User level functions for the different users
     RegisterExternalMessage<NetCommands::CmdChangeAdminPassword, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<NetCommands::CmdChangeAdminPassword>, this);

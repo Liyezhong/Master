@@ -106,21 +106,6 @@ typedef enum  {
 class HimalayaMasterThreadController : public Threads::MasterThreadController {
     Q_OBJECT
 private:
-    /****************************************************************************/
-    /**
-     * \brief \todo Replace with correct brain functionality
-     */
-    /****************************************************************************/
-    enum ProtoBrainState {
-        PBS_Started,                    ///< ProtoBrain was started.
-        PBS_WaitingForDCInit,           ///< Waiting for device control init.
-        PBS_WaitingForGrappler1RefRun,  ///< Waiting for grappler 1 reference run.
-        PBS_WaitingForGrappler2RefRun,  ///< Waiting for grappler 2 reference run.
-        PBS_WaitingForLoaderRefRun,     ///< Waiting for loader reference run.
-        PBS_WaitingForUnloaderRefRun,   ///< Waiting for unloader reference run.
-        PBS_NormalOperation            ///< Waiting for grappler 2 reference run.
-    };
-    ProtoBrainState                 m_eProtoBrainState;                     ///< Current proto brain state.
     Global::tRefType                m_ExpectedDCRef;                        ///< Expected DC acknowledge reference.
     Global::tRefType                m_ExpectedShutDownRef;                  ///< Expected Shutdown acknowledge reference.
     PasswordManager::CPasswordManager    m_PasswordManager;                      ///< The password manager.
@@ -139,7 +124,6 @@ private:
 
 
     bool m_Simulation;  //!  Enable/disable simulation thread controller. \todo Remove later
-    QString m_WhiteRackProgID;
     ProgramStartableManager         m_ProgramStartableManager;              ///< Object Managing Program Startablity
     Global::GuiUserLevel            m_AuthenticatedLevel;                   ///< The current user authenticated level
     bool                            m_ControllerCreationFlag;               ///< True if controllers are created, False if not

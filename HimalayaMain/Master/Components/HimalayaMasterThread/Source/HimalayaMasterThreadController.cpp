@@ -75,6 +75,7 @@
 #include <NetCommands/Include/CmdCriticalActionStatus.h>
 #include <EventHandler/Include/CrisisEventHandler.h>
 #include <HimalayaErrorHandler/Include/HimalayaAlarmHandler.h>
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 
 
 namespace Himalaya {
@@ -84,7 +85,6 @@ const Global::gSubComponentType SUBCOMPONENT_ERRORHANDLER   = 0x0001;   ///< Sub
 /****************************************************************************/
 HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     MasterThreadController(HEARTBEAT_SOURCE_MASTERTHREAD, HEARTBEAT_SOURCE_DATALOGGING, HEARTBEAT_SOURCE_EVENTHANDLER, "HimalayaShutdown"),
-    m_eProtoBrainState(PBS_Started),
     m_ExpectedDCRef(Global::RefManager<Global::tRefType>::INVALID),
     m_ExpectedShutDownRef(Global::RefManager<Global::tRefType>::INVALID),
     /// \todo hash of master password (now master password is "Himalaya")
@@ -273,7 +273,7 @@ void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Glo
 /****************************************************************************/
 void HimalayaMasterThreadController::RegisterCommands() {
 
-
+    RegisterCommandForRouting<MsgClasses::CmdProgramAction>(&m_CommandChannelSchedulerMain);
 
     // -> GPIO threadController
     RegisterCommandForRouting<NetCommands::CmdCriticalActionStatus>(&m_CommandChannelSoftSwitch);
@@ -329,11 +329,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
 void HimalayaMasterThreadController::StartStatemachine() {
     // start own state machine and start to work.
     /// \todo implement
-/*
-    m_eProtoBrainState = PBS_WaitingForDCInit;
-    m_ExpectedDCRef = SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdDeviceProcessingInit()),
-                                  m_CommandChannelDeviceCommandProcessor);
-*/
+
 }
 
 

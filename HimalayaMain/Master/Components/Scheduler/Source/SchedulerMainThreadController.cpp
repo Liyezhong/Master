@@ -52,6 +52,11 @@ namespace Scheduler {
             HimalayaErrorHandler::CmdRaiseAlarm,
             SchedulerMainThreadController
         >(&SchedulerMainThreadController::OnRaiseAlarmLocalRemote, this);
+
+        RegisterCommandForProcessing<MsgClasses::CmdProgramAction,
+                SchedulerMainThreadController>(&SchedulerMainThreadController::OnProgramAction, this);
+
+
     }
 
     void SchedulerMainThreadController::CreateAndInitializeObjects()
@@ -126,5 +131,12 @@ namespace Scheduler {
         m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(const_cast<HimalayaErrorHandler::CmdRaiseAlarm*>(&Cmd)));
         m_Mutex.unlock();
     }
+
+    void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
+                                                        const MsgClasses::CmdProgramAction &Cmd)
+    {
+        Q_UNUSED(Ref);
+    }
+
 } // EONS ::Scheduler
 

@@ -25,7 +25,7 @@
 #include <HimalayaDataContainer/Helper/Include/Global.h>
 
 namespace MsgClasses {
-using namespace DataManager::Global;
+
 /****************************************************************************/
 /*!
  *  \brief  This class implements a CmdProgramAction command.
@@ -41,18 +41,18 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdProgramAction(int Timeout, int& ProgramID, ProgramActionType_t ActionType);
+    CmdProgramAction(int Timeout, int ProgramID, DataManager::ProgramActionType_t ActionType);
     ~CmdProgramAction();
     virtual QString GetName() const;
     int GetProgramID() const {return m_ProgramID;}
-    inline ProgramActionType_t ProgramActionType() const {return m_ActionType;}
+    inline DataManager::ProgramActionType_t ProgramActionType() const {return m_ActionType;}
 
 private:
     CmdProgramAction(const CmdProgramAction &);                     ///< Not implemented.
     const CmdProgramAction & operator = (const CmdProgramAction &); ///< Not implemented.
 private:
     int      m_ProgramID;
-    ProgramActionType_t m_ActionType;
+    DataManager::ProgramActionType_t m_ActionType;
 }; // end class CmdProgramAction
 
 /****************************************************************************/
@@ -91,7 +91,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdProgramAction &Cmd)
     Stream >> Cmd.m_ProgramID;
     int temp;
     Stream >> temp;
-    Cmd.m_ActionType = (ProgramActionType_t)temp;
+    Cmd.m_ActionType = (DataManager::ProgramActionType_t)temp;
     return Stream;
 }
 } // end namespace MsgClasses

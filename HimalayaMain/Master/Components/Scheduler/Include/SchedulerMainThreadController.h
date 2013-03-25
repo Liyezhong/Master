@@ -30,7 +30,7 @@
 #include "Threads/Include/ThreadController.h"
 #include <HimalayaErrorHandler/Include/Commands/CmdRaiseAlarm.h>
 #include <Global/Include/Commands/Command.h>
-
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 namespace Scheduler {
 
 class SchedulerCommandProcessor;
@@ -97,6 +97,8 @@ class SchedulerCommandProcessor;
          */
         /****************************************************************************/
         void OnRaiseAlarmLocalRemote(Global::tRefType Ref, const HimalayaErrorHandler::CmdRaiseAlarm &Cmd);
+
+        void OnProgramAction(Global::tRefType Ref, const MsgClasses::CmdProgramAction &Cmd);
     public:
         /****************************************************************************/
         /**
