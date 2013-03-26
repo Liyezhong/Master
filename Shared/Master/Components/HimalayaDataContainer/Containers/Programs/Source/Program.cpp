@@ -280,6 +280,14 @@ bool CProgram::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
                         delete p_NewProgramStep;
                         return false;
                     }
+                    CProgramStep* OriginalProgramStep = CreateProgramStep("Dummy");
+                    * OriginalProgramStep = *p_NewProgramStep;
+                    if (!CProgramBase::AddProgramStep(OriginalProgramStep)) {
+                        qDebug() << "CProgram::Add ProgramStep failed!";
+                        delete p_NewProgramStep;
+                        delete OriginalProgramStep;
+                        return false;
+                    }
                     m_ExpandedStepList.append(p_NewProgramStep);
                     m_ReagentIDList.append(p_NewProgramStep->GetReagentID());
                 }
