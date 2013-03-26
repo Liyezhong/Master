@@ -8,7 +8,6 @@
 	  <File Path="HimalayaReagentGroups.xml" />
 	  <File Path="HimalayaReagentGroupColors.xml" />
 	  <File Path="HimalayaPrograms.xml" />
-	  <File Path="HimalayaIcons.xml" />
 	  <File Path="HimalayaStations.xml" />
       <File Path="UserSettings.xml" />
       <File Path="SW_Version.xml" />
@@ -23,7 +22,6 @@
 	  <File Path="HimalayaReagentGroups.xml" />
 	  <File Path="HimalayaReagentGroupColors.xml" />
 	  <File Path="HimalayaPrograms.xml" />
-	  <File Path="HimalayaIcons.xml" />
 	  <File Path="HimalayaStations.xml" />
       <File Path="UserSettings.xml" />
       <File Path="SW_Version.xml" />

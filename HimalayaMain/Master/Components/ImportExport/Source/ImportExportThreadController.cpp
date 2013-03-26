@@ -44,7 +44,6 @@ const QString FILENAME_REAGENTS             = "HimalayaReagents.xml"; ///< const
 const QString FILENAME_PROGRAMS             = "HimalayaPrograms.xml"; ///< const for the programs file name
 const QString FILENAME_REAGENT_GROUPS       = "HimalayaReagentGroups.xml"; ///< const for the reagent groups file name
 const QString FILENAME_REAGENT_GROUP_COLORS = "HimalayaReagentGroupColors.xml"; ///< const for the reagent groups file name
-const QString FILENAME_ICONS                = "HimalayaIcons.xml"; ///< const for the programssequence file name
 const QString FILENAME_STATIONS             = "HimalayaStations.xml"; ///< const for the stations file name
 const QString FILENAME_USERSETTINGS         = "UserSettings.xml"; ///< const for the user settings file name
 const QString FILENAME_SWVERSION            = "SW_Version.xml"; ///< const for the user settings file name
@@ -903,7 +902,7 @@ bool ImportExportThreadController::AddFilesForImportType(const QString &TypeOfIm
             TypeOfImport.compare(TYPEOFIMPORT_SERVICE, Qt::CaseInsensitive) == 0) {
         // for the type of import "user" or "Service"
         FileList << FILENAME_REAGENTS << FILENAME_REAGENT_GROUPS << FILENAME_REAGENT_GROUP_COLORS
-                 << FILENAME_PROGRAMS << FILENAME_ICONS << FILENAME_STATIONS << FILENAME_USERSETTINGS;
+                 << FILENAME_PROGRAMS << FILENAME_STATIONS << FILENAME_USERSETTINGS;
     }
     else if (TypeOfImport.compare(TYPEOFIMPORT_LEICA, Qt::CaseInsensitive) == 0) {
         // for the type of import "Leica"
