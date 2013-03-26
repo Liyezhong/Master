@@ -77,6 +77,8 @@
 #include <HimalayaErrorHandler/Include/HimalayaAlarmHandler.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
+
 
 namespace Himalaya {
 const quint32 ERROR_CODE_HIMALAYA_CONSTRUCTION_FAILED = 1;
@@ -269,7 +271,7 @@ void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Glo
 void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<MsgClasses::CmdProgramAction>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdRetortLock>(&m_CommandChannelSchedulerMain);
-    //RegisterCommandForRouting<MsgClasses::CmdRetortLock>(&m_CommandChannelGui);
+    RegisterCommandForRouting<MsgClasses::CmdRetortLockStatus>(&m_CommandChannelGui);
 
     RegisterCommandForRouting<NetCommands::CmdCriticalActionStatus>(&m_CommandChannelSoftSwitch);
 
@@ -283,7 +285,6 @@ void HimalayaMasterThreadController::RegisterCommands() {
 
     // so far the only registration with real function:
     RegisterCommandForProcessing<Global::CmdDateAndTime, HimalayaMasterThreadController>(&HimalayaMasterThreadController::SetDateTime, this);
-
 
     RegisterCommandForProcessing<NetCommands::CmdExportDayRunLogReply, HimalayaMasterThreadController>
             (&HimalayaMasterThreadController::ExportDayRunLogHandler, this);

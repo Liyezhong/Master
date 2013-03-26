@@ -57,6 +57,9 @@ namespace Scheduler {
         RegisterCommandForProcessing<MsgClasses::CmdRetortLock,
                 SchedulerMainThreadController>(&SchedulerMainThreadController::OnOnRetortLock, this);
 
+        RegisterCommandForProcessing<NetCommands::CmdSystemAction,
+                SchedulerMainThreadController>(&SchedulerMainThreadController::OnActionCommandReceived, this);
+
     }
 
     void SchedulerMainThreadController::CreateAndInitializeObjects()
@@ -94,7 +97,7 @@ namespace Scheduler {
 
     void SchedulerMainThreadController::OnGoReceived()
     {
-       m_TickTimer.start();
+        m_TickTimer.start();
     }
 
     void SchedulerMainThreadController::OnStopReceived()
@@ -145,6 +148,11 @@ namespace Scheduler {
         Q_UNUSED(Cmd);
     }
 
+    void SchedulerMainThreadController::OnActionCommandReceived(Global::tRefType Ref, const NetCommands::CmdSystemAction &Cmd)    // todo: should be of type CmdAction
+    {
+        Q_UNUSED(Ref)
+
+    }
 
 } // EONS ::Scheduler
 

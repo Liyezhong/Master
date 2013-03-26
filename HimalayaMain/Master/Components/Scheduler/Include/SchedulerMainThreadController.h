@@ -32,6 +32,7 @@
 #include <Global/Include/Commands/Command.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
+#include "NetCommands/Include/CmdSystemAction.h"
 
 namespace Scheduler {
 
@@ -135,6 +136,8 @@ class SchedulerCommandProcessor;
          */
         /****************************************************************************/
         virtual void CleanupAndDestroyObjects();
+
+        void OnActionCommandReceived(Global::tRefType Ref, const NetCommands::CmdSystemAction &Cmd);
 
     public slots:
 
