@@ -269,7 +269,7 @@ void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Glo
 void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<MsgClasses::CmdProgramAction>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdRetortLock>(&m_CommandChannelSchedulerMain);
-    RegisterCommandForRouting<MsgClasses::CmdRetortLock>(&m_CommandChannelGui);
+    //RegisterCommandForRouting<MsgClasses::CmdRetortLock>(&m_CommandChannelGui);
 
     RegisterCommandForRouting<NetCommands::CmdCriticalActionStatus>(&m_CommandChannelSoftSwitch);
 
