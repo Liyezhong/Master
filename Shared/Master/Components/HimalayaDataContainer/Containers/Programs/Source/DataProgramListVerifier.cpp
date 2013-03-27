@@ -121,7 +121,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
             //Verify short name & long name constraints
             if ((p_Program->GetName().length() < NAME_LENGTH_MIN) ||
                     (p_Program->GetName().length() > NAME_LENGTH_MAX) ||
-                    p_Program->GetName().contains("LEICA",Qt::CaseInsensitive)) {
+                    (p_Program->GetName().contains("LEICA",Qt::CaseInsensitive) && p_Program->GetID().at(0) != 'L')) {
                 qDebug()<<"###Short name length check failed"<<p_Program->GetName();
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROGSHORT_NAME_LENGTH_CHECK_FAILED,
                                                            Global::tTranslatableStringList() << p_Program->GetName()
@@ -170,6 +170,7 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
             switch(ReagentID.at(0).toAscii()) {
                 case 'U':
                 case 'L':
+                case 'C':
                     break;
                 default:
                     m_ErrorsHash.insert(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,

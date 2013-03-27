@@ -2,7 +2,7 @@
 <!DOCTYPE TissuePrograms>
 <TissuePrograms Version="1">
     <ProgramList NextProgramID="U33">
-        <Program ID="U01" Name="Leica Overnight" Icon="IconFile" LeicaProgram="true" Favorite="true">
+        <Program ID="L01" Name="Leica Overnight" Icon="IconFile" LeicaProgram="true" Favorite="true">
             <StepList NextStepID="13">
                 <Step ID="0" ReagentID="L1" Duration="44m" Temperature="37" Pressure="On" Vacuum="On"/>
                 <Step ID="1" ReagentID="L2" Duration="30m" Temperature="45" Pressure="Off" Vacuum="Off"/>
@@ -19,7 +19,7 @@
                 <Step ID="12" ReagentID="L14" Duration="1h" Temperature="65" Pressure="Off" Vacuum="Off"/>
             </StepList>
         </Program>
-        <Program ID="L02" Name="Cleaning program" Icon="IconFile" LeicaProgram="true" Favorite="true">
+        <Program ID="C01" Name="Cleaning program" Icon="IconFile" LeicaProgram="true" Favorite="true">
             <StepList NextStepID="3">
                 <Step ID="0" ReagentID="L12" Duration="12m" Temperature="67" Pressure="Off" Vacuum="Off"/>
                 <Step ID="1" ReagentID="L13" Duration="6m" Temperature="62" Pressure="Off" Vacuum="Off"/>
