@@ -40,7 +40,8 @@ CReagentsWidget::CReagentsWidget(QWidget *p_Parent):
     mp_Ui(new Ui::CReagentsWidget),
     mp_DataConnector(NULL),
     mp_ReagentList(NULL),
-    mp_Reagent(NULL)
+    mp_Reagent(NULL),
+    mp_ModifiyReagentDlg(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Reagents"));
