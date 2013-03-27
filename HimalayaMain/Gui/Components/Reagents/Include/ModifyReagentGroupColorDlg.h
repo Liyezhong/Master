@@ -51,27 +51,27 @@ private:
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object
     DataManager::CReagentGroup m_ReagentGroup;
+    QMap<int, QPushButton*> m_QPushButtonMap;
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
     bool m_UserRoleChanged;                         //!< True if user Role changed else false
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
-    MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
-    QStandardItemModel m_ReagentStatusColorModel;   //!< Model for the table
     QStringList m_ColorNames;                       //!< store color names
+    QButtonGroup m_ButtonGroup;
+    void SetButtonGroup();
 
 
-    void AddEmptyRows();
 
 public:
     explicit CModifyReagentGroupColorDlg(QWidget *p_Parent = NULL,
                                MainMenu::CMainWindow *p_MainWindow = NULL);
     virtual ~CModifyReagentGroupColorDlg();
-    void SetReagentGroupList(DataManager::CReagentGroupColorList &mp_CReagentGroupColorList,const DataManager::CDataReagentGroupList &ReagentGroupList, const DataManager::CReagentGroup &ReagentGroup);
+    void SetReagentGroupList(DataManager::CReagentGroupColorList &mp_CReagentGroupColorList, DataManager::CDataReagentGroupList &ReagentGroupList, const DataManager::CReagentGroup &ReagentGroup);
 private slots:
     void OnOk();
     void OnCancel();
-    void SelectionChanged(QModelIndex Index);
+    void OnButtonGroup(int Id);
     void OnProcessStateChanged();
 protected:
     void changeEvent(QEvent *p_Event);

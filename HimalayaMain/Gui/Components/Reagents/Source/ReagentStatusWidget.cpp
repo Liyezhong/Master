@@ -29,7 +29,7 @@ CReagentStatusWidget::CReagentStatusWidget(QWidget *p_Parent):
                                            mp_Reagent(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
-    SetPanelTitle(tr("Reagent Satus"));
+    SetPanelTitle(tr("Status"));
 
     m_ShowMessageDialog = false;
     m_ProcessRunning = false;
@@ -37,20 +37,17 @@ CReagentStatusWidget::CReagentStatusWidget(QWidget *p_Parent):
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->setModel(&m_ReagentStatusModel);
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    //mp_ModifiyReagentStatusDlg = new CModifyReagentStatusDlg();    
 
     mp_UserSettings = new DataManager::CUserSettings();
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
 
     PopulateReagentList();
     CONNECTSIGNALSLOT(mp_TableWidget, pressed(QModelIndex), this, SelectionChanged(QModelIndex));
-    CONNECTSIGNALSLOT(mp_Ui->btnEdit, clicked(), this, OnEdit());
     CONNECTSIGNALSLOT(mp_Ui->btnEmpty, clicked(), this, OnSetAsEmpty());
     CONNECTSIGNALSLOT(mp_Ui->btnFull, clicked(), this, OnSetAsFull());
     CONNECTSIGNALSLOT(mp_Ui->btnReset, clicked(), this, OnResetData());
     CONNECTSIGNALSLOT(this, UpdateReagentList(), &m_ReagentStatusModel, UpdateReagentList());
     CONNECTSIGNALSLOT(mp_Ui->scrollTable,Scrolled(), this, OnContentScrolled());
-
 }
 
 /****************************************************************************/
@@ -63,7 +60,7 @@ CReagentStatusWidget::~CReagentStatusWidget()
     try {
         delete mp_TableWidget;
         delete mp_Ui;
-
+        delete mp_UserSettings;
     }
     catch (...) {
         // to please Lint.
@@ -108,26 +105,21 @@ void CReagentStatusWidget::SetUserSettings(DataManager::CUserSettings *p_UserSet
  *  \brief Displays a dialog for the modification of a staining reagent
  */
 /****************************************************************************/
-void CReagentStatusWidget::OnEdit()
-{
-    m_MessageDlg.SetText(tr("Select Reagent"));
-    mp_ModifiyReagentStatusDlg->SetDialogTitle(tr("Select Reagent"));
-    mp_ModifiyReagentStatusDlg->SetDashboardStation(mp_DashStation);
-    mp_ModifiyReagentStatusDlg->move(96,70);
-    mp_ModifiyReagentStatusDlg->show();
-}
-
-/****************************************************************************/
-/*!
- *  \brief Displays a dialog for the modification of a staining reagent
- */
-/****************************************************************************/
 void CReagentStatusWidget::OnSetAsEmpty()
 {
     if (mp_DashStation) {
         mp_DashStation->SetDashboardReagentStatus("Empty");
+
+        if(m_RMSOptions == Global::RMS_CASSETTES)
+            mp_DashStation->SetDashboardReagentActualCassettes(0);
+        else if(m_RMSOptions == Global::RMS_CYCLES)
+            mp_DashStation->SetDashboardReagentActualCycles(0);
+
+        //QDate SetCurrentDate(QDate ::currentDate());
+        //mp_DashStation->SetDashboardReagentExcahngeDate(SetCurrentDate);
         emit UpdateStationSetAsEmpty(mp_DashStation->GetDashboardStationID());
         m_ReagentStatusModel.ResetAndUpdateModel();
+
         ResetButtons();
     }
 }
@@ -141,15 +133,19 @@ void CReagentStatusWidget::OnSetAsEmpty()
 void CReagentStatusWidget::OnResetData()
 {
     if (mp_DashStation) {
-        mp_DashStation->SetDashboardReagentActualCassettes(0);
-        mp_DashStation->SetDashboardReagentActualCycles(0);
-        mp_DashStation->SetDashboardReagentActualCassettes(0);
+        mp_DashStation->SetDashboardReagentStatus("Empty");
 
-        QDate SetCurrentDate(QDate ::currentDate());
-        mp_DashStation->SetDashboardReagentExcahngeDate(SetCurrentDate);
+        if(m_RMSOptions == Global::RMS_CASSETTES)
+            mp_DashStation->SetDashboardReagentActualCassettes(0);
+        else if(m_RMSOptions == Global::RMS_CYCLES)
+            mp_DashStation->SetDashboardReagentActualCycles(0);
+
+       // QDate SetCurrentDate(QDate ::currentDate());
+       // mp_DashStation->SetDashboardReagentExcahngeDate(SetCurrentDate);
 
         emit UpdateStationResetData(mp_DashStation->GetDashboardStationID());
         m_ReagentStatusModel.ResetAndUpdateModel();
+
         ResetButtons();
     }
 }
@@ -163,6 +159,15 @@ void CReagentStatusWidget::OnSetAsFull()
 {
     if (mp_DashStation) {
         mp_DashStation->SetDashboardReagentStatus("Full");
+
+        if(m_RMSOptions == Global::RMS_CASSETTES)
+            mp_DashStation->SetDashboardReagentActualCassettes(0);
+        else if(m_RMSOptions == Global::RMS_CYCLES)
+            mp_DashStation->SetDashboardReagentActualCycles(0);
+
+       // QDate SetCurrentDate(QDate ::currentDate());
+      //  mp_DashStation->SetDashboardReagentExcahngeDate(SetCurrentDate);
+
         emit UpdateStationSetAsFull(mp_DashStation->GetDashboardStationID());
         m_ReagentStatusModel.ResetAndUpdateModel();
         ResetButtons();
@@ -177,6 +182,7 @@ void CReagentStatusWidget::OnSetAsFull()
 void CReagentStatusWidget::RMSChanged(const Global::RMSOptions_t RMSValue)
 {
     m_ReagentStatusModel.SetRMSOption(RMSValue);
+    m_RMSOptions = RMSValue;
 
     switch (RMSValue) {
         case Global::RMS_OFF:
@@ -239,11 +245,16 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
         if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
              m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
                 (!m_ProcessRunning)) {
-            //Edit Mode
-            mp_Ui->btnEdit->setEnabled(true);
             mp_Ui->btnFull->setEnabled(true);
             mp_Ui->btnEmpty->setEnabled(true);
             mp_Ui->btnReset->setEnabled(true);
+            if(mp_DashStation->GetDashboardReagentID().compare("",Qt::CaseInsensitive) == 0) {
+
+                mp_Ui->btnFull->setEnabled(false);
+                mp_Ui->btnEmpty->setEnabled(false);
+                mp_Ui->btnReset->setEnabled(false);
+            }
+
             if (mp_DashStation->GetDashboardReagentStatus().compare("Full", Qt::CaseInsensitive) == 0) {
                 mp_Ui->btnFull->setEnabled(false);                
             }
@@ -253,7 +264,6 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
             }
         }
         else {
-            mp_Ui->btnEdit->setEnabled(false);
             mp_Ui->btnFull->setEnabled(false);
             mp_Ui->btnEmpty->setEnabled(false);
             mp_Ui->btnReset->setEnabled(false);
@@ -287,20 +297,17 @@ void CReagentStatusWidget::OnProcessStateChanged()
         //Edit Mode
         bool m_IsLeicaReagent = m_SelectedReagent.IsLeicaReagent();
         if(m_IsLeicaReagent) {
-            mp_Ui->btnEdit->setEnabled(false);
             mp_Ui->btnFull->setEnabled(false);
             mp_Ui->btnEmpty->setEnabled(false);
             mp_Ui->btnReset->setEnabled(false);
         }
         else {
-            mp_Ui->btnEdit->setEnabled(true);
             mp_Ui->btnFull->setEnabled(true);
             mp_Ui->btnEmpty->setEnabled(true);
             mp_Ui->btnReset->setEnabled(true);
         }
     }
     else {
-        mp_Ui->btnEdit->setEnabled(false);
         mp_Ui->btnFull->setEnabled(false);
         mp_Ui->btnEmpty->setEnabled(false);
         mp_Ui->btnReset->setEnabled(false);
@@ -323,7 +330,7 @@ void CReagentStatusWidget::OnProcessStateChanged()
 void CReagentStatusWidget::RetranslateUI()
 {
     MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagent Status::CReagentStatusWidget",
-                                                                 "Reagents", 0, QApplication::UnicodeUTF8));
+                                                                 "Status", 0, QApplication::UnicodeUTF8));
     (void) m_ReagentStatusModel.setHeaderData(0, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
                                                                                  "Station", 0, QApplication::UnicodeUTF8),0);
 
@@ -391,10 +398,6 @@ void CReagentStatusWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnec
     m_ReagentStatusModel.SetRequiredContainers(mp_ReagentList, mp_DataConnector->ReagentGroupList,
                                                mp_DataConnector->DashboardStationList, 6);
     ResizeHorizontalSection();
-    mp_ModifiyReagentStatusDlg = new CModifyReagentStatusDlg(this, p_MainWindow, p_DataConnector);
-    mp_ModifiyReagentStatusDlg->setModal(true);
-    CONNECTSIGNALSIGNAL(mp_ModifiyReagentStatusDlg, UpdateStationChangeReagent(QString,QString),
-                        this, UpdateStationChangeReagent(QString,QString));
 }
 
 
@@ -405,16 +408,18 @@ void CReagentStatusWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnec
 /****************************************************************************/
 void CReagentStatusWidget::ResetButtons()
 {
-    mp_Ui->btnEdit->setEnabled(false);
     mp_Ui->btnFull->setEnabled(false);
     mp_Ui->btnEmpty->setEnabled(false);
     mp_Ui->btnReset->setEnabled(false);
 }
 
+void CReagentStatusWidget:: StationReagentUpdated()
+{
+    m_ReagentStatusModel.UpdateReagentList();
+    m_ReagentStatusModel.ResetAndUpdateModel();
+}
 void CReagentStatusWidget:: OnContentScrolled()
 {
-    ResetButtons();
-    mp_TableWidget->clearSelection();
 
 }
 

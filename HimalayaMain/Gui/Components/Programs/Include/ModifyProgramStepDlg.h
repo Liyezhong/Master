@@ -5,7 +5,7 @@
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2011-09-28
- *   $Author:  $ M.Scherer, C.Adaragunchi1234
+ *   $Author:  $ M.Scherer, C.Adaragunchi1234, Swati Tiwari
  *
  *  \b Company:
  *
@@ -95,10 +95,8 @@ public:
     void SetButtonType(ButtonType_t ButtonType) { m_ModifyProgramDlgButtonType = ButtonType;}
 
     void SetProgramStep(DataManager::CProgramStep *p_ProgramStep,
-                        DataManager::CDataReagentList *p_ReagentList,
-                        DataManager::CDashboardDataStationList *p_DashboardStationList);
-    void NewProgramStep(DataManager::CDataReagentList *p_ReagentList,
-                        DataManager::CDashboardDataStationList *p_StationList);
+                        DataManager::CDataReagentList *p_ReagentList);
+    void NewProgramStep(DataManager::CDataReagentList *p_ReagentList);
     void SelectRow(qint32 Row);
 
     void ShowSelectReagentPopup();

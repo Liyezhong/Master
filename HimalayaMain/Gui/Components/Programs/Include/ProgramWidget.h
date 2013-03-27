@@ -29,6 +29,7 @@
 #include "Programs/Include/RackGripColorDlg.h"
 #include "KeyBoard/Include/KeyBoard.h"
 #include "MainMenu/Include/MainWindow.h"
+#include "HimalayaDataContainer/Containers/Programs/Include/ProgramBase.h"
 
 
 namespace Programs {
@@ -63,7 +64,7 @@ private:
     Ui::CProgramWidget *mp_Ui;                  //!< User interface
     MainMenu::CBaseTable *mp_TableWidget;       //!< Table for the program list
     Core::CDataConnector *mp_DataConnector;     //!< Global data container
-    DataManager::CProgram const *mp_Program;        //!< Currently selected program
+    DataManager::CProgram const *mp_Program;    //!< Currently selected program
     CProgramModel m_ProgramModel;               //!< Model of the program table
     CRackGripColorDlg *mp_DlgRackGripColor;     //!< Color selection dialog
     CModifyProgramDlg *mp_ModifyProgramDlg;     //!< Modify program dialog
@@ -80,6 +81,9 @@ private:
     bool m_ColorReplaced;                       //!< Flag for program color change.
     QMap<QString,QString> m_NonStartableProgramErrorMap;    //!< Error Map for non-startable programs
     QString m_ID;                               //!< Program ID
+    QModelIndex m_CurrentIndex;
+    bool m_UserChanged;
+    int m_UserProgramCount;
 
 protected:
     void showEvent(QShowEvent *);
@@ -88,6 +92,8 @@ public:
     explicit CProgramWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL,
                             KeyBoard::CKeyBoard *p_KeyBoard = NULL);
     ~CProgramWidget();
+    bool IsFlagSet() { if(m_UserChanged == true) return true; else return false;}
+    int GetNumberOfUserPrograms();
 
 private:
     void PopulateProgramList();
@@ -100,7 +106,6 @@ private slots:
     void OnNew();
     void OnCopy();
     void OnDelete();
-    void OnColor();
     void SelectionChanged(QModelIndex Index);
     void OnUserRoleChanged();
     void OnProcessStateChanged();
@@ -136,7 +141,7 @@ signals:
      *  Program model to update the program list data.
      */
     /****************************************************************************/
-    void UpdateProgramList();
+//    void UpdateProgramList();
 
     /****************************************************************************/
     /*!

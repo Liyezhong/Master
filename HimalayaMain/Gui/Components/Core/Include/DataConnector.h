@@ -38,6 +38,10 @@
 #include "HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentRemove.h"
 #include "HimalayaDataContainer/Containers/ReagentGroups/Commands/Include/CmdReagentGroupUpdate.h"
 #include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationChangeReagent.h"
+#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationResetData.h"
+#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsEmpty.h"
+#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsFull.h"
+#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdUpdateStationReagentStatus.h"
 
 /********************** Net Commands ************************************************/
 #include "NetCommands/Include/CmdConfigurationFile.h"
@@ -58,11 +62,6 @@
 #include <NetCommands/Include/CmdGuiInit.h>
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/MsgBoxManager.h"
-#include <HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationResetData.h>
-#include <HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsEmpty.h>
-#include <HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsFull.h>
-#include <HimalayaDataContainer/Containers/Stations/Commands/Include/CmdUpdateStationReagentStatus.h>
-
 
 //namespace MainMenu {
 //    class CMsgBoxManager;
@@ -156,12 +155,48 @@ signals:
     void ReagentGroupUpdated();
     /****************************************************************************/
     /*!
-     *  \brief
+     *  \brief Emit this signal when Stations XML sent has been sent by Main SW
      */
     /****************************************************************************/
     void DashboardStationsUpdated();
-   	void ReagentColorGrioupUpdated();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Emit this signal when the reagent is changed in the Station
+     */
+    /****************************************************************************/
     void DashboardStationChangeReagent();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Emit this signal when the reset data command has been invoked
+     *  from reagent screen
+     */
+    /****************************************************************************/
+    void DashboardStationResetData();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Emit this signal when the set as empty command has been invoked
+     *  from reagent screen
+     */
+    /****************************************************************************/
+    void DashboardStationSetAsEmpty();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Emit this signal when the set as full command has been invoked
+     *  from reagent screen
+     */
+    /****************************************************************************/
+    void DashboardStationSetAsFull();
+
+    /****************************************************************************/
+    /*!
+     *  \brief
+     */
+    /****************************************************************************/
+    void ReagentColorGroupUpdated();
     /****************************************************************************/
     /*!
      *  \brief
@@ -297,9 +332,9 @@ private:
     void UpdateReagentHandler(Global::tRefType Ref, const MsgClasses::CmdReagentUpdate &Command);
     void UpdateReagentGroupHandler(Global::tRefType Ref, const MsgClasses::CmdReagentGroupUpdate &Command);
     void UpdateStationChangeReagentHandler(Global::tRefType Ref, const MsgClasses::CmdStationChangeReagent &Command);
-    void UpdateStationResetData(Global::tRefType Ref, const MsgClasses::CmdStationResetData &Command);
-    void UpdateStationSetAsEmpty(Global::tRefType Ref, const MsgClasses::CmdStationSetAsEmpty &Command);
-    void UpdateStationSetAsFull(Global::tRefType Ref, const MsgClasses::CmdStationSetAsFull &Command);
+    void UpdateStationResetDataHandler(Global::tRefType Ref, const MsgClasses::CmdStationResetData &Command);
+    void UpdateStationSetAsEmptyHandler(Global::tRefType Ref, const MsgClasses::CmdStationSetAsEmpty &Command);
+    void UpdateStationSetAsFullHandler(Global::tRefType Ref, const MsgClasses::CmdStationSetAsFull &Command);
     void UpdateStationReagentStatus(Global::tRefType Ref, const MsgClasses::CmdUpdateStationReagentStatus &Command);
 
     void EventStringHandler(Global::tRefType ref, const NetCommands::CmdEventStrings &Command);

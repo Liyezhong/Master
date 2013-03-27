@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Threads/Source/ThreadController.cpp
+/*! \file StubThreads/Source/ThreadController.cpp
  *
  *  \brief Implementation file for class ThreadController.
  *
@@ -18,11 +18,11 @@
  */
 /****************************************************************************/
 
-#include <Threads/Include/ThreadController.h>
+#include <StubThreads/Include/ThreadController.h>
 #include <Global/Include/Commands/AckOKNOK.h>
 #include <QDebug>
 
-namespace Threads {
+namespace StubThreads {
 
 static const CommandExecuteFunctorShPtr_t          NullCommandExecuteFunctor(NULL);        ///< NULL functor for command execution.
 
@@ -190,4 +190,4 @@ void ThreadController::SendAcknowledgeNOK(Global::tRefType Ref, const QString &T
     SendAcknowledge(Ref, Global::AcknowledgeShPtr_t(new Global::AckOKNOK(false, Text, Type)));
 }
 
-} // end namespace Threads
+} // end namespace StubThreads

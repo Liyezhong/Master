@@ -89,8 +89,6 @@ private:
     QMap<QString, QString> m_Identifiers;               //!< Identifiers of reagents currently displayed
     QStringList m_ReagentGroupNames;                         //!< Long names of reagents currently displayed
     QStringList m_ReagentNamesCache;                    //!< Back up of Reagent names
-    QStringList m_ReagentsInStation;                    //!< Reagents present in Stations
-    QStringList m_SpecialReagentList;                   //!< List of special reagents
     qint32 m_Columns;                                   //!< Number of table columns
     QString m_CurrentReagentName;                       //!< Current Reagent Name
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table

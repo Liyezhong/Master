@@ -70,6 +70,7 @@ private:
     Core::CReagentGroupModel m_ReagentGroupModel;             //!< Model for the table
     DataManager::CDataReagentGroupList *mp_ReagentGroupList;  //!< Reagent list
     Global::RMSOptions_t m_RMSOption;
+    bool m_SelectionFlag;
 
 
 public:

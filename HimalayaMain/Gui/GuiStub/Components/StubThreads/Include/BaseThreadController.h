@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Threads/Include/BaseThreadController.h
+/*! \file StubThreads/Include/BaseThreadController.h
  *
  *  \brief Definition file for class ThreadController.
  *
@@ -18,15 +18,15 @@
  */
 /****************************************************************************/
 
-#ifndef THREADS_BASETHREADCONTROLLER_H
-#define THREADS_BASETHREADCONTROLLER_H
+#ifndef STUBTHREADS_BASETHREADCONTROLLER_H
+#define STUBTHREADS_BASETHREADCONTROLLER_H
 
 #include <Global/Include/RefManager.h>
 #include <Global/Include/Commands/CmdDataChanged.h>
 #include <Global/Include/Commands/CmdPowerFail.h>
 #include <Global/Include/Commands/PendingCmdDescriptor.h>
-#include <Threads/Include/CommandFunctors.h>
 #include <Global/Include/EventObject.h>
+#include "CommandFunctors.h"
 #include <QSet>
 
 #include <QThread>
@@ -42,7 +42,7 @@
  * official Qt documentation.
  */
 /****************************************************************************/
-namespace Threads {
+namespace StubThreads {
 
 typedef Global::SharedPointer<AcknowledgeProcessorFunctor>      AcknowledgeProcessorFunctorShPtr_t; ///< Typedef or a shared pointer of AcknowledgeProcessorFunctor.
 typedef Global::SharedPointer<TimeoutProcessorFunctor>          TimeoutProcessorFunctorShPtr_t;     ///< Typedef or a shared pointer of TimeoutProcessorFunctor.
@@ -504,6 +504,6 @@ public slots:
     void SetHeartbeatTimeout(int Timeout);
 }; // end class BaseThreadController
 
-} // end namespace Threads
+} // end namespace StubThreads
 
-#endif // THREADS_BASETHREADCONTROLLER_H
+#endif // STUBTHREADS_BASETHREADCONTROLLER_H

@@ -60,14 +60,17 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
     if (p_Settings) {
         mp_Ui->pageReagentStatus->SetUserSettings(p_Settings);
         mp_Ui->pageReagentGroup->SetUserSettings(p_Settings);
+        mp_Ui->pageReagentStation->SetUserSettings(p_Settings);
         mp_Ui->pageReagents->SetUserSettings(p_Settings);
         mp_Ui->pageReagentStatus->SetPtrToMainWindow(mp_DataConnector, mp_DataConnector->ReagentList, mp_MainWindow, mp_KeyBoardWidget);
+        mp_Ui->pageReagentStation->SetPtrToMainWindow(mp_DataConnector, mp_DataConnector->ReagentList, mp_MainWindow, mp_KeyBoardWidget);
         mp_Ui->pageReagentGroup->SetPtrToMainWindow(mp_DataConnector->ReagentGroupColorList,mp_DataConnector->ReagentGroupList, mp_MainWindow);
         mp_Ui->pageReagents->SetPtrToMainWindow(mp_DataConnector, mp_DataConnector->ReagentList, mp_MainWindow, mp_KeyBoardWidget);
     }
     // call when reagents are updated
     CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentsUpdated(), mp_Ui->pageReagents, UpdateReagentList());
     CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentsUpdated(), mp_Ui->pageReagentStatus, UpdateReagentList());
+        CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentsUpdated(), mp_Ui->pageReagentStation, UpdateReagentList());
     // call when Reagent group is updated, since the color is changed
     CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentGroupUpdated(), mp_Ui->pageReagents, UpdateReagentList());
     // for the reagent group
@@ -77,10 +80,19 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentGroupUpdated(), mp_Ui->pageReagentStatus, UpdateReagentList());
     CONNECTSIGNALSIGNAL(mp_DataConnector, DashboardStationsUpdated(), mp_Ui->pageReagentStatus, UpdateReagentList());
 
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentsUpdated(), mp_Ui->pageReagentStation, UpdateReagentList());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentGroupUpdated(), mp_Ui->pageReagentStation, UpdateReagentList());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, DashboardStationsUpdated(), mp_Ui->pageReagentStation, UpdateReagentList());
+
+
     CONNECTSIGNALSLOT(mp_Ui->pageReagentGroup, UpdateReagentGroup(DataManager::CReagentGroup &), mp_DataConnector,
                         SendReagentGroupUpdate(DataManager::CReagentGroup &));
-    CONNECTSIGNALSLOT(mp_Ui->pageReagentStatus, UpdateStationChangeReagent(QString,QString),
+
+
+    CONNECTSIGNALSLOT(mp_Ui->pageReagentStation, UpdateStationChangeReagent(QString,QString),
                       mp_DataConnector, SendStationChangeReagent(QString,QString));
+    CONNECTSIGNALSLOT(mp_Ui->pageReagentStation, UpdateStationSetAsEmpty(QString),
+                      mp_DataConnector, SendStationSetAsEmpty(QString));
 
     CONNECTSIGNALSLOT(mp_Ui->pageReagentStatus, UpdateStationResetData(QString),
                       mp_DataConnector, SendStationResetData(QString));
@@ -100,9 +112,13 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), mp_Ui->pageReagentGroup, OnProcessStateChanged());
     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), mp_Ui->pageReagentStatus, OnUserRoleChanged());
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), mp_Ui->pageReagentStatus, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), mp_Ui->pageReagentStation, OnUserRoleChanged());
+    CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), mp_Ui->pageReagentStation, OnProcessStateChanged());
+
     CONNECTSIGNALSLOT(mp_Ui->pageReagents, RMSChanged(const Global::RMSOptions_t), mp_Ui->pageReagentStatus, RMSChanged(const Global::RMSOptions_t));
-    CONNECTSIGNALSLOT(mp_Ui->pageReagents, RMSChanged(const Global::RMSOptions_t),
-                      mp_DataConnector, SendRMSChanged(const Global::RMSOptions_t));
+    CONNECTSIGNALSLOT(mp_DataConnector,DashboardStationChangeReagent(),mp_Ui->pageReagentStatus,StationReagentUpdated());
+    CONNECTSIGNALSLOT(mp_DataConnector,DashboardStationChangeReagent(),mp_Ui->pageReagentStation,StationReagentUpdated());
+
 }
 
 /****************************************************************************/

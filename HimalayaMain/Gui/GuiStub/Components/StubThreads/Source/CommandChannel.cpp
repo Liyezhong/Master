@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Threads/Source/CommandChannel.cpp
+/*! \file StubThreads/Source/CommandChannel.cpp
  *
  *  \brief Implementation file for class CommandChannel.
  *
@@ -18,12 +18,12 @@
  */
 /****************************************************************************/
 
-#include <Threads/Include/CommandChannel.h>
-#include <Threads/Include/BaseThreadController.h>
+#include <StubThreads/Include/CommandChannel.h>
+#include <StubThreads/Include/BaseThreadController.h>
 #include <Global/Include/EventTranslator.h>
 #include <QDebug>
 
-namespace Threads {
+namespace StubThreads {
 
 /****************************************************************************/
 CommandChannel::CommandChannel(BaseThreadController *pParent, QString name) :
@@ -96,4 +96,4 @@ void CommandChannel::CommandChannelTxAck(Global::tRefType Ref, const Global::Ack
     }
 }
 
-} // end namespace Threads
+} // end namespace StubThreads

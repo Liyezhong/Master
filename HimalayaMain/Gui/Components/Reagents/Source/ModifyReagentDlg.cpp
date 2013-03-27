@@ -46,6 +46,7 @@ CModifyReagentDlg::CModifyReagentDlg(QWidget *p_Parent, KeyBoard::CKeyBoard *p_K
     m_ProcessRunning = false ;
     mp_NewReagent = NULL;
     mp_ReagentGroupList = NULL;
+    m_SelectionFlag = false;
 
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->setModel(&m_ReagentGroupModel);
@@ -99,6 +100,9 @@ void CModifyReagentDlg::ResizeHorizontalSection()
 /****************************************************************************/
 void CModifyReagentDlg::SelectionChanged(QModelIndex Index)
 {
+     if (m_ButtonType == Reagents::NEW_BTN_CLICKED)
+        m_SelectionFlag = true;
+
     QString Id = m_ReagentGroupModel.data(Index, (int)Qt::UserRole).toString();
     m_Reagent.SetGroupID(Id);
 }
@@ -155,7 +159,7 @@ void CModifyReagentDlg::InitDialog(DataManager::CReagent const *p_Reagent,
         m_ReagentGroupModel.SetReagentGroupList(mp_ReagentGroupList, 2);
         ResizeHorizontalSection();
         // always select the first one
-        mp_TableWidget->selectRow(0);
+        //mp_TableWidget->selectRow(0);
     }
     m_RMSOption = Option;
     if (p_Reagent != NULL) {
@@ -185,7 +189,6 @@ void CModifyReagentDlg::InitDialog(DataManager::CReagent const *p_Reagent,
                     mp_Ui->labelRMSStaticName->setVisible(false);
                     break;
             }
-
             mp_TableWidget->selectRow(mp_ReagentGroupList->GetReagentGroupIndex(m_Reagent.GetGroupID()));
         }
 
@@ -219,7 +222,7 @@ void CModifyReagentDlg::NewReagent()
     mp_Ui->buttonReagentName->setText("--");
     mp_Ui->buttonValue->setEnabled(true);
     mp_Ui->buttonValue->setText("--");
-    mp_TableWidget->selectRow(0);
+   // mp_TableWidget->selectRow(0);
 
 }
 
@@ -267,17 +270,20 @@ void CModifyReagentDlg::OnOk()
 
     if (mp_Ui->buttonReagentName->text()=="--") {
         m_MessageDlg.SetText(tr("Please enter valid Reagent Long Name"));
+        m_MessageDlg.SetButtonText(1, tr("Ok"));
         (void) m_MessageDlg.exec();
         return;
     }
     if (mp_Ui->buttonValue->text()=="--") {
         m_MessageDlg.SetText(tr("Please enter valid data"));
+        m_MessageDlg.SetButtonText(1, tr("Ok"));
         (void) m_MessageDlg.exec();
         return;
     }
 
     // Check if Edit button was clicked in ReagentWidget
     if (m_ButtonType == Reagents::EDIT_BTN_CLICKED) {
+        m_SelectionFlag = false;
         m_Reagent.SetReagentName(mp_Ui->buttonReagentName->text());
         switch (m_RMSOption) {
             case Global::RMS_CASSETTES:
@@ -307,6 +313,16 @@ void CModifyReagentDlg::OnOk()
     // Else New/Copy button is clicked in ReagentWidget
     else {
         // GetNextFreeReagentId for New/Copied Reagent.
+        if(m_SelectionFlag != true)
+        {
+            m_MessageDlg.SetText(tr("Please Select ReagentGroup"));
+            m_MessageDlg.SetButtonText(1, tr("Ok"));
+            (void) m_MessageDlg.exec();
+            return;
+        }
+        else
+            m_SelectionFlag = false;
+
         QString Id = m_ReagentCloneList.GetNextFreeReagentID(true);
         m_Reagent.SetReagentID(Id);
         m_Reagent.SetReagentName(mp_Ui->buttonReagentName->text());

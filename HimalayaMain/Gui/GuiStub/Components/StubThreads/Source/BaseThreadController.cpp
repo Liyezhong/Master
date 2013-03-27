@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Threads/Source/BaseThreadController.cpp
+/*! \file StubThreads/Source/BaseThreadController.cpp
  *
  *  \brief Implementation file for class BaseThreadController.
  *
@@ -18,14 +18,14 @@
  */
 /****************************************************************************/
 
-#include <Threads/Include/BaseThreadController.h>
-#include <Threads/Include/ThreadsEventCodes.h>
+#include <StubThreads/Include/BaseThreadController.h>
+#include <StubThreads/Include/ThreadsEventCodes.h>
 
 #include <QThread>
 #include <QDebug>
 #include <QMetaType>
 
-namespace Threads {
+namespace StubThreads {
 
 const Global::gSubComponentType SUBCOMPONENT_THREADCONTROLLER = 0x0000; ///< Subcomponent type for thread controller.
 
@@ -368,4 +368,4 @@ void BaseThreadController::DispatchDataChangedCommand(const Global::CmdDataChang
     }
 }
 
-} // end namespace Threads
+} // end namespace StubThreads

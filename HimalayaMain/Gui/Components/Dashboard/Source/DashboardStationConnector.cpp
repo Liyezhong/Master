@@ -92,7 +92,6 @@ void CDashboardStationConnector:: InitializePipePointsPositions()
 
 void CDashboardStationConnector::paint(QPainter *p_Painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    //p_Painter->setPen(QPen(Qt::black, 2, Qt::SolidLine));
     p_Painter->setPen(QPen(Qt::black));
     p_Painter->setBrush(QBrush(Qt::gray));
     p_Painter->drawPolyline(m_PipePoints);

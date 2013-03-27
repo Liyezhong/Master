@@ -55,4 +55,4 @@ public slots:
 
 } // end namespace Dashboard
 
-#endif // MAINMENU_COMBOBOX_H
+#endif // DASHBOARD_DASHBOARDCOMBOBOX_H

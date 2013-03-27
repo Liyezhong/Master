@@ -209,11 +209,19 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
     if (Index.row() < m_ReagentNames.count()
             && (p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]])))){
         QDate t_Date;
-        int Days_Overdue =t_Date.currentDate().dayOfYear()-p_Station->GetDashboardReagentExcahngeDate().dayOfYear();
+        int Days_Overdue = t_Date.currentDate().dayOfYear()-p_Station->GetDashboardReagentExcahngeDate().dayOfYear();
         int Expired = 9999;
         if (p_Reagent)
             Expired = p_Reagent->GetMaxCassettes()-p_Station->GetDashboardReagentActualCassettes();
 
+        if( 0 > Expired && Role == (int) Qt::TextColorRole)
+        {
+            switch (Index.column()) {
+            case 2:
+            case 3:
+                return QVariant(Qt::red);
+            }
+        }
         if (Role == (int)Qt::DisplayRole) {
             switch (Index.column()) {
             case 0:
@@ -223,7 +231,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                     return p_Reagent->GetReagentName();
                 }
                 else {
-                    return QString("");
+                    return QString("None");
                 }
             case 2:
                 if (p_Reagent) {
@@ -248,51 +256,63 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                              }
                      }
                 }
-                else {
-                    return 0;
-                }
+                else
+                   return QString("");
+
             case 3:
-                switch (m_RMSOptions) {
+                if (p_Reagent) {
+                    switch (m_RMSOptions) {
+                        default:
+                            return QString("");
+                        case Global::RMS_CASSETTES:
+                        if(0>Expired)
+                             return p_Station->GetDashboardReagentActualCassettes()-p_Reagent->GetMaxCassettes();
+                        else
+                          return 0;
+                        case Global::RMS_CYCLES:
+                        if(0>Expired)
+                            return p_Station->GetDashboardReagentActualCycles()-p_Reagent->GetMaxCycles();
+                        else
+                            return 0;
+                        case Global::RMS_DAYS:
+                        if(0>Expired)
+                            return Days_Overdue;
+                        else
+                            return 0;
+                     }
+                 }
+                 else
+                    return QString("");
+
+            case 4:
+                if (p_Reagent) {
+                    switch(m_DateFormat){
                     default:
                         return QString("");
-                    case Global::RMS_CASSETTES:
-                    if(0>Expired)
-                         return p_Station->GetDashboardReagentActualCassettes()-p_Reagent->GetMaxCassettes();
-                    else
-                      return 0;
-                    case Global::RMS_CYCLES:
-                    if(0>Expired)
-                        return p_Station->GetDashboardReagentActualCycles()-p_Reagent->GetMaxCycles();
-                    else
-                        return 0;
-                    case Global::RMS_DAYS:
-                    if(0>Expired)
-                        return Days_Overdue;
-                    else
-                        return 0;
-                }                
-            case 4:
-                switch(m_DateFormat){
-                default:
-                    return QString("");
-                case Global::DATE_INTERNATIONAL:
-                    return p_Station->GetDashboardReagentExcahngeDate().toString("dd.MM.yyyy");
-                case Global::DATE_ISO:
-                    return p_Station->GetDashboardReagentExcahngeDate().toString("yyyy-MM-dd");
-                case Global::DATE_US:
-                    return p_Station->GetDashboardReagentExcahngeDate().toString("MM/dd/yyyy");
-               }
+                    case Global::DATE_INTERNATIONAL:
+                        return p_Station->GetDashboardReagentExcahngeDate().toString("dd.MM.yyyy");
+                    case Global::DATE_ISO:
+                        return p_Station->GetDashboardReagentExcahngeDate().toString("yyyy-MM-dd");
+                    case Global::DATE_US:
+                        return p_Station->GetDashboardReagentExcahngeDate().toString("MM/dd/yyyy");
+                    }
+                 }
+                 else
+                   return QString("");
             case 5:
-                return p_Station->GetDashboardReagentStatus();
+                if (p_Reagent)
+                     return p_Station->GetDashboardReagentStatus();
+                else
+                     return QString("");
             }
+
         }
-        if (Role == (int)Qt::UserRole) {
+        if (Role == (int)Qt::UserRole)
             return p_Station->GetDashboardStationID();
-        }
-    }
-    else if (Role == (int)Qt::BackgroundRole) {
-        QPalette Palette;
-        return QVariant(Palette.color(QPalette::Window));
+     }
+     else if (Role == (int)Qt::BackgroundRole) {
+         QPalette Palette;
+         return QVariant(Palette.color(QPalette::Window));
     }
     return QVariant();
 }

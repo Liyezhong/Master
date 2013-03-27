@@ -11,7 +11,7 @@
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2011-09-16
- *   $Author:  $ M.Scherer, C.Adaragunchi1234
+ *   $Author:  $ M.Scherer, C.Adaragunchi1234, Swati Tiwari
  *
  *  \b Company:
  *
@@ -43,28 +43,30 @@ namespace Programs {
 CModifyLeicaHne::CModifyLeicaHne(QWidget *p_Parent,
                                  MainMenu::CMainWindow *p_MainWindow,Core::CDataConnector *p_DataConnector) :
                                  MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyLeicaHne),
-                                 mp_MainWindow(p_MainWindow), mp_DataConnector(p_DataConnector),
-                                 mp_ScrollWheelHaemotoxylin(NULL), mp_ScrollWheelEosin(NULL),
-                                 mp_DlgRackGripColor(NULL), mp_ProgramList(NULL),
-                                 m_ColorReplaced(false), m_ProcessRunning(false)
+                                 mp_MainWindow(p_MainWindow), mp_DataConnector(p_DataConnector), m_ProcessRunning(false),
+                                 m_ColorReplaced(false)
 {
     mp_Ui->setupUi(GetContentFrame());
     SetDialogTitle(tr("Edit Leica Program"));
+    mp_ScrollWheelHaemotoxylin = NULL;
+    mp_ScrollWheelEosin = NULL;
+    mp_DlgRackGripColor = NULL;
+    mp_ProgramList = NULL;
 
     mp_DlgRackGripColor = new CRackGripColorDlg(this,mp_MainWindow);
     mp_DlgRackGripColor->setModal(true);
 
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, reject());
-    CONNECTSIGNALSLOT(mp_Ui->btnColor, clicked(), this, OnColor());
+//    CONNECTSIGNALSLOT(mp_Ui->btnColor, clicked(), this, OnColor());
     CONNECTSIGNALSLOT(mp_Ui->btnSave, clicked(), this, OnSave());
 
     CONNECTSIGNALSLOT(mp_DlgRackGripColor, UpdateProgramColor(DataManager::CProgram &,bool),
-                      this, OnUpdateProgramColor(DataManager::CProgram &,bool));
+                      this,OnUpdateProgramColor(DataManager::CProgram &,bool));
 
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     mp_Ui->btnAbbreviation->setEnabled(false);
     mp_Ui->btnProgramName->setEnabled(false);
-    mp_Ui->btnColor->setEnabled(false);
+//    mp_Ui->btnColor->setEnabled(false);
     mp_Ui->btnSave->setEnabled(false);
 }
 
@@ -97,12 +99,12 @@ void CModifyLeicaHne::changeEvent(QEvent *p_Event)
 {
     MainMenu::CDialogFrame::changeEvent(p_Event);
     switch (p_Event->type()) {
-    case QEvent::LanguageChange:
-        mp_Ui->retranslateUi(this);
-        RetranslateUI();
-        break;
-    default:
-        break;
+        case QEvent::LanguageChange:
+            mp_Ui->retranslateUi(this);
+            RetranslateUI();
+            break;
+        default:
+            break;
     }
 }
 
@@ -129,41 +131,30 @@ void CModifyLeicaHne::InitDailog(DataManager::CProgram const *p_Program,
     p_Reagent = mp_DataConnector->ReagentList->GetReagent(FirstProgramStep.GetReagentID());
     p_ReagentSecond = mp_DataConnector->ReagentList->GetReagent(SecondProgramStep.GetReagentID());
 
-    mp_Ui->btnProgramName->setText(tr("%1").arg(m_Program.GetLongName()));
-    mp_Ui->btnAbbreviation->setText(tr("%1").arg(m_Program.GetShortName()));
+//    mp_Ui->groupBox->setTitle(p_Reagent->GetShortName());
+//    mp_Ui->groupBox_2->setTitle(p_ReagentSecond->GetShortName());
+//    mp_Ui->btnProgramName->setText(tr("%1").arg(m_Program.GetLongName()));
+//    mp_Ui->btnAbbreviation->setText(tr("%1").arg(m_Program.GetShortName()));
 
-    mp_Ui->btnColor->SetColor(m_Program.GetColor());
+//    mp_Ui->btnColor->SetColor(m_Program.GetColor());
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
 
     mp_ScrollWheelEosin = new MainMenu::CScrollWheel();
     mp_ScrollWheelHaemotoxylin = new MainMenu::CScrollWheel();
 
-    for (qint32 StepCnt = 1; StepCnt <= FirstProgramStep.GetNumberOfSteps(); StepCnt++) {
-        mp_ScrollWheelHaemotoxylin->AddItem(QString::number(StepCnt), StepCnt);
+    for (qint32 I = 1; I <= FirstProgramStep.GetNumberOfSteps(); I++) {
+        mp_ScrollWheelHaemotoxylin->AddItem(QString::number(I), I);
     }
     mp_ScrollWheelHaemotoxylin->SetNonContinuous();
 
-    for (qint32 StepCnt = 1; StepCnt <= SecondProgramStep.GetNumberOfSteps(); StepCnt++) {
-        mp_ScrollWheelEosin->AddItem(QString::number(StepCnt), StepCnt);
+    for (qint32 I = 1; I <= SecondProgramStep.GetNumberOfSteps(); I++) {
+        mp_ScrollWheelEosin->AddItem(QString::number(I), I);
     }
     mp_ScrollWheelEosin->SetNonContinuous();
     mp_Ui->eosinScrollPanel->Init(1);
     mp_Ui->haemotoxylinScrollPanel->Init(1);
     mp_Ui->eosinScrollPanel->AddScrollWheel(mp_ScrollWheelEosin, 0);
     mp_Ui->haemotoxylinScrollPanel->AddScrollWheel(mp_ScrollWheelHaemotoxylin, 0);
-}
-
-/****************************************************************************/
-/*!
- *  \brief Opens the rack color selection dialog
- */
-/****************************************************************************/
-void CModifyLeicaHne::OnColor()
-{
-    if (mp_DlgRackGripColor->Init(&m_ProgramListClone, &m_Program) == true) {
-        mp_DlgRackGripColor->SetSaveButton(tr("Ok"));
-        mp_DlgRackGripColor->show();
-    }
 }
 
 /****************************************************************************/
@@ -176,7 +167,6 @@ void CModifyLeicaHne::SetReadyProgram (QString ReadyProgramString)
 {
     mp_Ui->label_3->setText(ReadyProgramString);
 }
-
 /****************************************************************************/
 /*!
  *  \brief This slot is called when Process Running state changes
@@ -187,19 +177,15 @@ void CModifyLeicaHne::OnProcessStateChanged()
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-            (!m_ProcessRunning)) {
+         (!m_ProcessRunning)) {
         //Edit Mode
         mp_Ui->btnCancel->setText(tr("Cancel"));
-        mp_Ui->btnColor->SetColor("white");
-        mp_Ui->btnColor->setEnabled(true);
         mp_Ui->btnSave->setEnabled(true);
         mp_Ui->eosinScrollPanel->SetDisabled(false);
         mp_Ui->haemotoxylinScrollPanel->SetDisabled(false);
     }
     else {
         mp_Ui->btnCancel->setText(tr("Close"));
-        mp_Ui->btnColor->SetColor("black");
-        mp_Ui->btnColor->setEnabled(false);
         mp_Ui->btnSave->setEnabled(false);
         mp_Ui->eosinScrollPanel->SetDisabled(true);
         mp_Ui->haemotoxylinScrollPanel->SetDisabled(true);
@@ -223,15 +209,15 @@ void CModifyLeicaHne::showEvent(QShowEvent *p_Event)
             (!m_ProcessRunning)) {
         //Edit Mode
         mp_Ui->btnCancel->setText(tr("Cancel"));
-        mp_Ui->btnColor->setEnabled(true);
+//        mp_Ui->btnColor->setEnabled(true);
         mp_Ui->btnSave->setEnabled(true);
         mp_Ui->eosinScrollPanel->SetDisabled(false);
         mp_Ui->haemotoxylinScrollPanel->SetDisabled(false);
     }
     else {
         mp_Ui->btnCancel->setText(tr("Close"));
-        mp_Ui->btnColor->SetColor("black");
-        mp_Ui->btnColor->setEnabled(false);
+//        mp_Ui->btnColor->SetColor("black");
+//        mp_Ui->btnColor->setEnabled(false);
         mp_Ui->btnSave->setEnabled(false);
         mp_Ui->eosinScrollPanel->SetDisabled(true);
         mp_Ui->haemotoxylinScrollPanel->SetDisabled(true);
@@ -241,18 +227,17 @@ void CModifyLeicaHne::showEvent(QShowEvent *p_Event)
 /********************************************************************************/
 /*!
  *  \brief Sets the intensity of Leica Reagents.
- *
- *  \iparam FirstReagentIntensity = Intensity of First Leica reagent.
- *  \iparam SecondReagentIntensity = Intensity of Second Leica reagent.
+ *  \iparam Reagent1Intensity = Intensity of First Leica reagent.
+ *  \iparam Reagent2Intensity = Intensity of Second Leica reagent.
  */
 /********************************************************************************/
-void CModifyLeicaHne::SetIntensity(int FirstReagentIntensity, int SecondReagentIntensity)
+void CModifyLeicaHne::SetIntensity(int Reagent1Intensity, int Reagent2Intensity)
 {
     if (mp_ScrollWheelHaemotoxylin) {
-        mp_ScrollWheelHaemotoxylin->SetCurrentData(FirstReagentIntensity);
+        mp_ScrollWheelHaemotoxylin->SetCurrentData(Reagent1Intensity);
     }
     if (mp_ScrollWheelEosin) {
-        mp_ScrollWheelEosin->SetCurrentData(SecondReagentIntensity);
+        mp_ScrollWheelEosin->SetCurrentData(Reagent2Intensity);
     }
 }
 

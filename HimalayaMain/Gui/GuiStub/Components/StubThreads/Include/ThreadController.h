@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Threads/Include/ThreadController.h
+/*! \file StubThreads/Include/ThreadController.h
  *
  *  \brief Definition file for class ThreadController.
  *
@@ -18,12 +18,12 @@
  */
 /****************************************************************************/
 
-#ifndef THREADS_THREADCONTROLLER_H
-#define THREADS_THREADCONTROLLER_H
+#ifndef STUBTHREADS_THREADCONTROLLER_H
+#define STUBTHREADS_THREADCONTROLLER_H
 
-#include <Threads/Include/BaseThreadController.h>
+#include "BaseThreadController.h"
 
-namespace Threads {
+namespace StubThreads {
 
 typedef Global::SharedPointer<CommandExecuteFunctor>    CommandExecuteFunctorShPtr_t;   ///< Typedef or a shared pointer of CommandExecuteFunctor.
 typedef QHash<QString, CommandExecuteFunctorShPtr_t>    CommandExecuteFunctorHash_t;    ///< Typedef for the CommandExecuteFunctorShPtr_t functor hash.
@@ -207,6 +207,6 @@ public:
 
 }; // end class ThreadController
 
-} // end namespace Threads
+} // end namespace StubThreads
 
-#endif // THREADS_THREADCONTROLLER_H
+#endif // STUBTHREADS_THREADCONTROLLER_H

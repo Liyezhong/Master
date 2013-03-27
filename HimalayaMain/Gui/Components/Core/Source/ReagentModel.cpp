@@ -95,6 +95,7 @@ void CReagentModel::UpdateReagentList()
     m_Identifiers.clear();
     m_ReagentNames.clear();
     m_ReagentNameMap.clear();
+    m_ReagentID.clear();
     if (mp_ReagentList) {
         for(qint32 i = 0; i < mp_ReagentList->GetNumberOfReagents(); i++) {
             DataManager::CReagent *p_Reagent = NULL;
@@ -102,12 +103,13 @@ void CReagentModel::UpdateReagentList()
             if (p_Reagent) {
                 if (p_Reagent->GetReagentType() == USER_REAGENT) {
                     m_ReagentNames << p_Reagent->GetReagentName();
+                    m_ReagentID<<p_Reagent->GetReagentID();
                 }
                 if (p_Reagent->GetReagentType() == LEICA_REAGENT && (!m_FilterLeicaReagent)) {
                     m_ReagentNames << p_Reagent->GetReagentName();
+                    m_ReagentID<<p_Reagent->GetReagentID();
                 }
                 m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
-
                 if(p_Reagent->GetVisibleState()== true){
                     m_VisibleReagentIds << p_Reagent->GetReagentName();
                 }
@@ -176,7 +178,7 @@ QVariant CReagentModel::data(const QModelIndex &Index, int Role) const
         return QVariant();
     }
 
-    if (Index.row() < m_ReagentNames.count() && (p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_Identifiers[m_ReagentNames[Index.row()]])))){
+    if (Index.row() < m_ReagentNames.count() && (p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_ReagentID[Index.row()])))){
         if (Role == (int)Qt::DisplayRole) {
             switch (Index.column()) {
             case 0:

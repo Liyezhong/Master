@@ -129,42 +129,47 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
 
     if ((p_Program = const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(Index.row())))) {
         if (Role == (int)Qt::DisplayRole) {
-            switch (NUMBER_OF_COLUMNS - m_Columns + Index.column()) {
+            switch (5 - m_Columns + Index.column()) {
             case -1:
                 return Index.row() + 1;
-            case 2:
-                return p_Program->GetShortName();
-            case 3:
-                return p_Program->GetLongName();
-            }
-        }
-        else if (Role == (int)Qt::DecorationRole) {
-            switch (NUMBER_OF_COLUMNS - m_Columns + Index.column()) {
             case 0:
-            {
-                break;
-            }
-            case 1:
-            {
-                QString Color = p_Program->GetColor();
-                QPixmap Pixmap(44, 26);
-                QPainter Painter(&Pixmap);
-                Pixmap.fill(Qt::white);
-                Painter.drawPixmap(1, 1, QPixmap(":/Rack/RackColor/RackColor_" +
-                                                 Color + ".png").copy(1, 1, 24, 33).scaled(42, 24));
-                return Pixmap;
-            }
-            case 4:
-                if (p_Program->GetID().at(0) == 'L') {
-                    return QPixmap(":/Large/Icons/MISC/Icon_Leica.png");
-                }
-                else {
-                    return QVariant();
-                }
+                return Index.row() + 1;
+            case 2:
+                return p_Program->GetName();
+            case 3:
+                 if (p_Program->GetID().at(0) == 'L') {
+                 return QPixmap(":/Small/CheckBox/CheckBox-CheckedPressed.png");
+                  }
+                  else {
+                          return QVariant();
+                  }
             }
         }
+            else if(Role ==(int)Qt::DecorationRole)
+            {
+                switch (5 - m_Columns + Index.column()) {
+            case 1:
+                    if (m_CurrentUserRole == MainMenu::CMainWindow::Admin
+                        || m_CurrentUserRole == MainMenu::CMainWindow::Service)
+                    {
+                        if(m_CurrentIndex)
+                            return QPixmap(":/Small/CheckBox/CheckBox-Checked.png");
+
+                        else
+                        return QPixmap(":/Small/CheckBox/CheckBox-Enabled.png");
+
+                    }
+
+                    else
+                    {
+                        return QPixmap(":/Small/CheckBox/CheckBox-Disabled.png");
+                    }
+            }
+        }
+
         else if (Role == (int)Qt::CheckStateRole) {
             if (m_Columns == 6 && NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0) {
+                // TODO test code
                 if (p_Program->GetID().at(0) == 'L') {
                     return (int)Qt::Checked;
                 }
@@ -176,10 +181,6 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
         else if (Role == (int)Qt::UserRole) {
             return p_Program->GetID();
         }
-    }
-    else if (Role == (int)Qt::BackgroundRole) {
-        QPalette Palette;
-        return QVariant(Palette.color(QPalette::Window));
     }
     return QVariant();
 }
@@ -221,18 +222,16 @@ QVariant CProgramModel::headerData(int Section, Qt::Orientation Orientation, int
 {
     if (Role == (int)Qt::DisplayRole && Orientation == Qt::Horizontal) {
         switch (NUMBER_OF_COLUMNS - m_Columns + Section) {
-        case -1:
-            return tr("Nr.");
         case 0:
-            return (m_Columns == 5) ? tr("Ready"): tr("Use");
+            return tr("Number");
         case 1:
-            return tr("Color");
+            return tr("Use");
         case 2:
-            return tr("Abbr.");
+            return tr("Name");
         case 3:
-            return tr("Program Name");
+            return tr("Duration");
         case 4:
-            return tr("Leica");
+            return tr("Icon");
         }
     }
     return QVariant();
@@ -258,7 +257,7 @@ bool CProgramModel::setData(const QModelIndex &Index, const QVariant &Value, int
         return false;
     }
     if (Role == (int)Qt::CheckStateRole) {
-        if (mp_ProgramList->GetProgram(Index.row(), Program) == true) {
+       if (mp_ProgramList->GetProgram(Index.row(), Program) == true) {
             if (NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0) {
                 Program.LockProgram();
                 return mp_ProgramList->UpdateProgram(&Program);
@@ -277,6 +276,31 @@ void CProgramModel::UpdateProgramList()
 {
     beginResetModel();
     endResetModel();
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Sets the User Role to Current User Role
+ */
+/****************************************************************************/
+void CProgramModel ::SetUserRole(MainMenu::CMainWindow::UserRole_t UserRole)
+{
+    m_CurrentUserRole = UserRole;
+}
+
+void CProgramModel :: SelectedRowIndex(int Index)
+{
+    m_CurrentIndex = Index;
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Calls the function to Update the model
+ */
+/****************************************************************************/
+void CProgramModel:: ResetandUpdateModel()
+{
+    UpdateProgramList();
 }
 
 } // end namespace Programs

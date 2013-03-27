@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Threads/Include/ThreadsEventCodes.h
+/*! \file StubThreads/Include/ThreadsEventCodes.h
  *
  *  \brief All event codes used by thread stuff.
  *
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef THREADS_THREADSEVENTCODES_H
-#define THREADS_THREADSEVENTCODES_H
+#ifndef STUBTHREADS_THREADSEVENTCODES_H
+#define STUBTHREADS_THREADSEVENTCODES_H
 
 #include <../Include/PlatformEventCodes.h>
 
@@ -28,7 +28,7 @@
  * \brief Namespace containing all classes thread stuff.
  */
 /****************************************************************************/
-namespace Threads {
+namespace StubThreads {
 
 const quint32 EVENT_THREADS_ERROR_MASTERTHREAD_STARTUP                      = EVENT_GROUP_PLATFORM_THREADS + 0x0001;    ///< Error starting up master thread.
 const quint32 EVENT_THREADS_ERROR_THREAD_STOP_ARGS                          = EVENT_GROUP_PLATFORM_THREADS + 0x0002;    ///< Thread %1 did not stop within %2 milliseconds.
@@ -47,6 +47,6 @@ const quint32 EVENT_THREADS_ERROR_COMMAND_TIMEOUT                           = EV
 const quint32 EVENT_THREADS_INFO_STARTING_STATE_MACHINE                     = EVENT_GROUP_PLATFORM_THREADS + 0x000F;    ///< Starting master state machine.
 const quint32 EVENT_THREADS_ERROR_COMMAND_HAS_TIMEOUT                       = EVENT_GROUP_PLATFORM_THREADS + 0x0010;    ///< Error: Command %1 has a timeout.
 
-} // end namespace Threads
+} // end namespace StubThreads
 
-#endif // THREADS_THREADSEVENTCODES_H
+#endif // STUBTHREADS_THREADSEVENTCODES_H

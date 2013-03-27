@@ -90,6 +90,17 @@ private:
     QPixmap m_Image;                                     //!< Background image.
     QString m_ReagentId;                                 //!< Reagent ID
     QString m_StationItemLabel;                          //!< Station Label
+    const int m_RetortBoundingRectWidth;                 //!< Retort Bounding Rect Width
+    const int m_RetortBoundingRectHeight;                //!< Retort Bounding Rect Height
+    const int m_ParaffinbathBoundingRectWidth;           //!< Paraffinbath Bounding Rect Width
+    const int m_ParaffinbathBoundingRectHeight;          //!< Paraffinbath Bounding Rect Height
+    const int m_BottleBoundingRectWidth;                 //!< Bottle Bounding Rect Width
+    const int m_BottleBoundingRectHeight;                //!< Bottle Bounding Rect Height
+
+    QTimer *mp_BlinkTimer;                               //!< timer for blinking effect of reagent status (RMS >= 100)
+    bool m_ReagentBlinking;                              //!< for blinking effect of expired reagents
+    bool m_ReagentTimeStarted;                           //!< for checking whether the timer has started or not
+    bool m_ReagentExpiredFlag;                           //!< Indicates if the reagent in a station is expired.
 
 public:
     explicit CDashboardStationItem(Core::CDataConnector *p_DataConnector,                                   
@@ -172,10 +183,11 @@ signals:
 
 public slots:
     void UpdateImage();
+    void ShowBlinkingEffect();
 
 
 private slots:
-    void Animate();
+
     void UpdateDashboardStationItemReagent();
 };
 

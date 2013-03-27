@@ -5,7 +5,7 @@
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2011-09-28
- *   $Author:  $ M.Scherer, C.Adaragunchi
+ *   $Author:  $ M.Scherer, C.Adaragunchi, Swati Tiwari
  *
  *  \b Company:
  *
@@ -25,6 +25,7 @@
 #include "MainMenu/Include/BaseTable.h"
 #include "MainMenu/Include/DialogFrame.h"
 #include "Programs/Include/ModifyProgramStepDlg.h"
+#include "Core/Include/ReagentModel.h"
 #include "Programs/Include/RackGripColorDlg.h"
 #include "Programs/Include/StepModel.h"
 #include "KeyBoard/Include/KeyBoard.h"
@@ -33,6 +34,7 @@
 #include "MainMenu/Include/MainWindow.h"
 #include "Core/Include/DataContainer.h"
 #include "MainMenu/Include/ContentScroller.h"
+#include "Programs/Include/ModifyProgramIconDlg.h"
 
 namespace Programs {
     #define MAX_PROGRAM_STEPS 50 //!< Maximum number of program steps
@@ -77,6 +79,7 @@ private:
     QString m_TempColor;                            //!< String to store program color for temperory
     bool m_TempColorFlag;                           //!< True if process is running or User is a Standard user
     CProgramModel m_ProgramModel;                   //!< Program model object
+    MainMenu::CMessageDlg *mp_MessageDlg;             //!< Message Dialog object
     DataManager::CProgramStep m_LastProgramStep;    //!< ProgramStep object
     QString m_DeviceMode;                           //!< Stores device mode
     DataManager::CDataProgramList m_ProgramListClone;   //!< ProgramList object
@@ -85,6 +88,10 @@ private:
     bool m_ColorReplaced;                           //!< True if program color is replaced
     QList<DataManager::CProgramStep *> m_ListOfProgramSteps; //!< Container for Program Step pointers.
     MainMenu::CContentScroller m_ContentScroller;       //!< ContentScroller object
+    DataManager::CReagentGroup m_ReagentGroup;
+    MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
+    CModifyProgramIconDlg *mp_ModifyProgramIconDlg;     //!< Edit Program Icon dialog
+
 
 protected:
     void showEvent(QShowEvent *p_Event);
@@ -118,7 +125,7 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Sets device mode.
-`       +-     *
+     *
      *  \iparam DeviceMode - Standalone/Workstation
      */
     /****************************************************************************/
@@ -135,15 +142,16 @@ private:
     void ResizeHorizontalSection();
     DataManager::CProgramStep *SelectedStep();
     void OnOkClicked();
+    void EscClicked();
     void RetranslateUI();
     void ResetButtons(DataManager::CProgram &CurrentProgram, bool SelectionChanged);
     bool VerifyLastStepForHimalayaMode(DataManager::CProgram* p_SelectedProgram);
     bool VerifyLastStepForWorkStationMode(DataManager::CProgram* p_SelectedProgram);
 
 private slots:
-    void OnEditShortName();
+//    void OnEditShortName();
     void OnEditName();
-    void OnColor();
+//    void OnColor();
     void OnEdit();
     void OnNew();
     void OnCopy();
@@ -157,10 +165,10 @@ private slots:
     void OnUpdateProgramColor(DataManager::CProgram &Program,bool ColorReplaced);
     void UpdateUserSettings();
     void OnEndButtonClicked();
-    void OnBeginButtonClicked();
     void OnUpButtonClicked();
     void OnDownButtonClicked();
-    void UpdateProgramList();
+    void OnIconClicked();
+
 
 signals:
     /****************************************************************************/

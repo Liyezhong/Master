@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Threads/Source/MasterThreadController.cpp
+/*! \file StubThreads/Source/MasterThreadController.cpp
  *
  *  \brief Implementation file for class MasterThreadController.
  *
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#include <Threads/Include/MasterThreadController.h>
-#include <Threads/Include/ThreadsEventCodes.h>
+#include <StubThreads/Include/MasterThreadController.h>
+#include <StubThreads/Include/ThreadsEventCodes.h>
 
 #include <Global/Include/Utils.h>
 #include <Global/Include/SystemPaths.h>
@@ -47,7 +47,7 @@
 #include <QSharedMemory>
 #include <QDebug>
 
-namespace Threads {
+namespace StubThreads {
 
 static const unsigned long THREAD_WAIT_TIME = 2000;             ///< Time to wait when stopping thread.
 static const QString TimeOffsetFileName = "TimeOffset.xml";     ///< Name of file in which time offset is stored.
@@ -71,7 +71,7 @@ MasterThreadController::MasterThreadController(Global::gSourceType HeartBeatSour
     m_ShutdownSharedMemTimer(this),
     mp_UserSettings(NULL),
     mp_DataManagerBase(NULL),
-    mp_alarmHandler(new Global::AlarmHandler(5000))
+    mp_alarmHandler(new Global::AlarmHandler(5000, this))
 {
     // register the metytype for gSourceType
     qRegisterMetaType<Global::gSourceType>("Global::gSourceType");
@@ -149,7 +149,7 @@ void MasterThreadController::ConnectDataLoggingSignals(const BaseThreadControlle
 }
 
 /****************************************************************************/
-void MasterThreadController::AddAndConnectController(ThreadController *pController, Threads::CommandChannel *pCommandChannel, int ControllerNumber, bool BasicThreadController) {
+void MasterThreadController::AddAndConnectController(ThreadController *pController, StubThreads::CommandChannel *pCommandChannel, int ControllerNumber, bool BasicThreadController) {
     // check pointers
     CHECKPTR(pController);
     CHECKPTR(pCommandChannel);
@@ -382,7 +382,7 @@ CommandChannel *MasterThreadController::GetCommandRouteChannel(const QString &Co
 // it will throw lots of 613 warnings when accessing Cmd, so we disable 613 for
 // this method. Remember that 613 is disabled forr all pointers in this function!
 /****************************************************************************/
-void MasterThreadController::OnExecuteCommand(Global::tRefType Ref, const Global::CommandShPtr_t &Cmd, Threads::CommandChannel &AckCommandChannel)
+void MasterThreadController::OnExecuteCommand(Global::tRefType Ref, const Global::CommandShPtr_t &Cmd, StubThreads::CommandChannel &AckCommandChannel)
 {
     try {
 //        qDebug() << "MasterThreadController::OnExecuteCommand" << Ref << Cmd.GetPointerToUserData()->GetName();
@@ -1145,4 +1145,4 @@ void MasterThreadController::StartSpecificThreadController(const int ControllerN
 //}
 
 
-} // end namespace Threads
+} // end namespace StubThreads

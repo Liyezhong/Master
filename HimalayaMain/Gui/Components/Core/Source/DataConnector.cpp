@@ -29,12 +29,7 @@
 #include "Global/Include/GlobalEventCodes.h"
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
-#include "HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentAdd.h"
-#include "HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentRemove.h"
-#include "HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentUpdate.h"
-#include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramUpdate.h"
 #include "HimalayaDataContainer/Containers/Stations/Include/StationXmlDefinitions.h"
-
 
 #include <QApplication>
 #include <QHash>
@@ -73,10 +68,9 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
 
     //newly added commands
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationChangeReagent>(&CDataConnector::UpdateStationChangeReagentHandler, this);
-
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationResetData>(&CDataConnector::UpdateStationResetData, this);
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationSetAsEmpty>(&CDataConnector::UpdateStationSetAsEmpty, this);
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationSetAsFull>(&CDataConnector::UpdateStationSetAsFull, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationResetData>(&CDataConnector::UpdateStationResetDataHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationSetAsEmpty>(&CDataConnector::UpdateStationSetAsEmptyHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationSetAsFull>(&CDataConnector::UpdateStationSetAsFullHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdUpdateStationReagentStatus>(&CDataConnector::UpdateStationReagentStatus, this);
 
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdEventStrings>(&CDataConnector::EventStringHandler, this);
@@ -773,7 +767,7 @@ void CDataConnector::UpdateStationChangeReagentHandler(Global::tRefType Ref,
 }
 
 
-void CDataConnector::UpdateStationResetData(Global::tRefType Ref, const MsgClasses::CmdStationResetData &Command)
+void CDataConnector::UpdateStationResetDataHandler(Global::tRefType Ref, const MsgClasses::CmdStationResetData &Command)
 {
     bool Result = true;
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
@@ -788,7 +782,7 @@ void CDataConnector::UpdateStationResetData(Global::tRefType Ref, const MsgClass
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }
 
-void CDataConnector::UpdateStationSetAsEmpty(Global::tRefType Ref, const MsgClasses::CmdStationSetAsEmpty &Command)
+void CDataConnector::UpdateStationSetAsEmptyHandler(Global::tRefType Ref, const MsgClasses::CmdStationSetAsEmpty &Command)
 {
     bool Result = true;
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
@@ -805,7 +799,7 @@ void CDataConnector::UpdateStationSetAsEmpty(Global::tRefType Ref, const MsgClas
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }
 
-void CDataConnector::UpdateStationSetAsFull(Global::tRefType Ref, const MsgClasses::CmdStationSetAsFull &Command)
+void CDataConnector::UpdateStationSetAsFullHandler(Global::tRefType Ref, const MsgClasses::CmdStationSetAsFull &Command)
 {
     bool Result = true;
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());

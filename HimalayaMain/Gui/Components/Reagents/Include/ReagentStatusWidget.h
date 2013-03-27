@@ -56,11 +56,12 @@ private:
     DataManager::CDashboardStation *mp_DashStation;        //!< Station object
     DataManager::CUserSettings *mp_UserSettings;    //!< Data object
     ButtonGroup_t m_ButtonType;                      //!< Informs which button was clicked
-    CModifyReagentStatusDlg *mp_ModifiyReagentStatusDlg;        //!< Edit reagent dialog
     QStringList m_ReagentList;                      //!< List of Reagents
     MainMenu::CFileView *mp_ReagentStatusWidgetView;     //!< Content of this widget
     QString m_Status;                               //!< Current Staus of Reagent
     KeyBoard::CKeyBoard *mp_KeyBoard;
+    Global::RMSOptions_t m_RMSOptions;
+
 
 protected:
     void showEvent(QShowEvent *);
@@ -80,7 +81,6 @@ public:
                             MainMenu::CMainWindow *p_MainWindow,
                             KeyBoard::CKeyBoard *p_KeyBoard = NULL);
 private slots:
-    void OnEdit();
     void OnSetAsEmpty();
     void OnSetAsFull();
     void OnResetData();
@@ -88,6 +88,7 @@ private slots:
     void OnProcessStateChanged();
     void OnUserRoleChanged();
     void OnContentScrolled();
+    void StationReagentUpdated();
 
 public slots:
     void RMSChanged(const Global::RMSOptions_t RMSValue);

@@ -227,9 +227,9 @@ QVariant CStepModel::headerData(int Section, Qt::Orientation Orientation, int Ro
         case 2:
             return tr("Duration");
         case 3:
-            return tr("Tol.");
+            return tr("Temperature");
         case 4:
-            return tr("Excl.");
+            return tr("P/V");
         }
     }
     return QVariant();

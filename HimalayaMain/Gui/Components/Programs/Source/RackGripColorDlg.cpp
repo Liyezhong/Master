@@ -178,7 +178,7 @@ void CRackGripColorDlg::OnButtonGroup(int Id)
         MainMenu::CMessageDlg MessageDlg(this);
         MessageDlg.SetTitle(tr("Information Message"));
         MessageDlg.SetText(tr
-                           ("Do you really want to replace the color of \"%1\"%2").arg(m_Programs[m_Colors[Id]].GetLongName()).arg("?"));
+                           ("Do you really want to replace the color of \"%1\"%2").arg(m_Programs[m_Colors[Id]].GetName()).arg("?"));
         MessageDlg.SetIcon(QMessageBox::Information);
         MessageDlg.SetButtonText(1, tr("Ok"));
         MessageDlg.SetButtonText(3, tr("Cancel"));

@@ -24,9 +24,16 @@
 #include "Core/Include/ReagentModel.h"
 #include "Core/Include/DashboardStationItem.h"
 #include "Dashboard/Include/DashboardStationConnector.h"
+#include "Dashboard/Include/DashboardEndTimeWidget.h"
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/MainWindow.h"
 #include <QGraphicsScene>
+#include <QGraphicsProxyWidget>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QFormLayout>
 #include <QPushButton>
 #include <QSignalMapper>
 
@@ -60,17 +67,22 @@ private:
     Core::CDataConnector *mp_DataConnector;                                          //!< Global data container
     MainMenu::CMainWindow *mp_MainWindow;                                            //!< Reference to main window.
     QList<Core::CDashboardStationItem *> mp_DashboardStationItems;                   //!< list of station items
+    Core::CDashboardStationItem *mp_DashboardStationRetort;
     QList<Dashboard::CDashboardStationConnector *> mp_DashboardStationConnectors;    //!< list of station connectors
     QList<QPointF> m_DashboardStationItemPositions;                                  //!< list of station item positions
     QList<QPointF> m_DashboardStationConnectorsPositions;                             //!< list of station connectors positions
     QList<int> m_DashboardStationConnectorsWidths;                                    //!< list of station connectors (pipe) width
     QList<int> m_DashboardStationConnectorsHeights;                                   //!< list of station connectors (pipe) height
+    QPoint    m_DashboardEndTimeWidgetPos;
     QHash<QString, DataManager::CDashboardStation*> m_DashboardStationList;          //!< Hash table of Stations
     QStringList m_DashboardStationIDs;                                               //!< StationIds list
     QList<StationGroupType_t> m_DashboardStationGroup;                               //!< StationGroup list
     QList<QString> m_DashboardStationLabels;
     Dashboard::CDashboardStationConnector *mp_DashboardStationConnector;
-    Core::CDashboardStationItem *mp_DashboardStationRetort;
+    Dashboard::CDashboardEndTimeWidget *mp_DashboardEndTimeWidget;
+    QGraphicsProxyWidget *mp_GraphicsProxyWidget;
+
+
     DataManager::CDashboardDataStationList *mp_DashboardStationListClone;            //!< Cloned DataManager StationList
     bool m_CloneDashboardStationList;                                                //!< True if DataManager StationList has to be cloned.
 
@@ -82,7 +94,9 @@ private:
     void InitDashboardStationConnectorsPositions();
     void InitDashboardStationConnectorsWidths();
     void InitDashboardStationConnectorsHeights();
+    void InitDashboardEndTimeWidgetPosition();
     void AddDashboardStationItemsToScene();
+    void AddGraphicsProxyWidgetsToScene();
 
 private slots:
     void UpdateDashboardStations();

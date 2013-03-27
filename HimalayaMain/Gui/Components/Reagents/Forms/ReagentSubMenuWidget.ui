@@ -123,6 +123,15 @@
      </item>
      <item>
       <property name="text">
+       <string>Reagent Station</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
+        <normaloff>:/Large/Icons/Configuration/Configuration_Water.png</normaloff>:/Large/Icons/Configuration/Configuration_Water.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>Reagents</string>
       </property>
       <property name="icon">

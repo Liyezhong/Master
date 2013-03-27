@@ -24,6 +24,7 @@
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include "MainMenu/Include/TableMoving.h"
 #include <QAbstractTableModel>
+#include "MainMenu/Include/MainWindow.h"
 #include <QMap>
 #include <QStringList>
 
@@ -49,11 +50,18 @@ public:
     bool setData(const QModelIndex &Index, const QVariant &Value, int Role);
     void SetVisibleRowCount(int RowCount);
 
+    void SetColumnNumber(qint32 value) {  m_Columns = value; }
+    void ResetandUpdateModel();
+    void SetUserRole(MainMenu::CMainWindow::UserRole_t UserRole);
+
+    void SelectedRowIndex(int Index);
 private:
-    DataManager::CDataProgramList *mp_ProgramList;   //!< Reagent list
+    DataManager::CDataProgramList *mp_ProgramList;   //!< Program list
     qint32 m_Columns;                               //!< Number of table columns
     qint32 m_VisibleRowCount;                       //!< Number of rows visible in the table
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
 
+    int m_CurrentIndex;
 private slots:
     void UpdateProgramList();
 

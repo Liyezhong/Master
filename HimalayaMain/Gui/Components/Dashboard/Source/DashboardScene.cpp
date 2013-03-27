@@ -58,7 +58,8 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     InitDashboardStationLabels();
     InitDashboardStationConnectorsPositions();
     InitDashboardStationConnectorsWidths();
-    InitDashboardStationConnectorsHeights();    
+    InitDashboardStationConnectorsHeights();
+    InitDashboardEndTimeWidgetPosition();
     AddDashboardStationItemsToScene();
 
 
@@ -91,6 +92,7 @@ CDashboardScene::~CDashboardScene()
         }
 **/
         delete mp_DashboardStationConnector;
+        delete mp_DashboardEndTimeWidget;
 
     } catch(...) {
         // Please the PC-Lint
@@ -235,6 +237,18 @@ void CDashboardScene::InitDashboardStationConnectorsHeights()
                                         << 8;
 }
 
+
+/****************************************************************************/
+/*!
+ *  \brief Initialize Dashboard Station End Time Widget Position on the Scene
+ */
+/****************************************************************************/
+void CDashboardScene::InitDashboardEndTimeWidgetPosition()
+{
+    //m_DashboardEndTimeWidgetPos = QPoint(520, 90);
+}
+
+
 /****************************************************************************/
 /*!
  *  \brief Add Dashboard Station Items to Scene
@@ -275,6 +289,12 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     // Draw the Pipe Over here (582, 289) (width, height) of bounding rectangle
     mp_DashboardStationConnector = new Dashboard::CDashboardStationConnector(582, 289, false );
     addItem(mp_DashboardStationConnector);
+
+    // Show the End Time Widget
+    mp_DashboardEndTimeWidget = new Dashboard::CDashboardEndTimeWidget();
+    mp_GraphicsProxyWidget = this->addWidget(mp_DashboardEndTimeWidget);
+    mp_GraphicsProxyWidget->setPos(QPoint(520, 78));
+    addItem(mp_GraphicsProxyWidget);
 
 
 /**

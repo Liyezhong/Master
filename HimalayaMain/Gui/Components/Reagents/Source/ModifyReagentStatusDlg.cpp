@@ -45,8 +45,7 @@ CModifyReagentStatusDlg::CModifyReagentStatusDlg(QWidget *p_Parent, MainMenu::CM
 
     mp_TableWidget->SetVisibleRows(8);
     m_ReagentEditModel.SetVisibleRowCount(8);
-    m_ReagentEditModel.SetReagentList(mp_DataConnector->ReagentList, 2);
-    m_ReagentEditModel.SetReagentGroupList(mp_DataConnector->ReagentGroupList);
+    m_ReagentEditModel.SetRequiredContainers(mp_DataConnector->ReagentList,mp_DataConnector->ReagentGroupList,mp_DataConnector->DashboardStationList, 2);
     mp_TableWidget->horizontalHeader()->show();
     ResizeHorizontalSection();
 
@@ -85,12 +84,15 @@ CModifyReagentStatusDlg::~CModifyReagentStatusDlg()
 void CModifyReagentStatusDlg::SetDashboardStation(DataManager::CDashboardStation* p_Station)
 {
     m_DashboardStation = *p_Station;
+    m_ReagentEditModel.SetReagentTypeParaffin(p_Station->GetDashboardParaffinBath());
     m_ReagentEditModel.UpdateReagentList();
+
     const DataManager::CReagent* pReagent = mp_DataConnector->ReagentList->GetReagent(m_DashboardStation.GetDashboardReagentID());
-    QString ReagentName("");
+    QString ReagentID("");
     if (pReagent)
-        QString ReagentName = mp_DataConnector->ReagentList->GetReagent(m_DashboardStation.GetDashboardReagentID())->GetReagentName();
-    mp_TableWidget->selectRow(m_ReagentEditModel.GetReagentPosition(ReagentName));
+    ReagentID = mp_DataConnector->ReagentList->GetReagent(m_DashboardStation.GetDashboardReagentID())->GetReagentID();
+    mp_TableWidget->selectRow(m_ReagentEditModel.GetReagentPositionOfReagent(ReagentID));
+
 }
 
 /****************************************************************************/
@@ -125,7 +127,6 @@ void CModifyReagentStatusDlg::ResizeHorizontalSection()
     }
     mp_TableWidget->horizontalHeader()->resizeSection(0, 120);
     mp_TableWidget->horizontalHeader()->resizeSection(1, 150);
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 160);
 
 }
 
@@ -151,9 +152,8 @@ void CModifyReagentStatusDlg::OnCancel()
 void CModifyReagentStatusDlg::SelectionChanged(QModelIndex Index)
 {
     QString Id = m_ReagentEditModel.data(Index, (int)Qt::UserRole).toString();
-    m_DashboardStation.SetDashboardReagentID(Id);    
+    m_DashboardStation.SetDashboardReagentID(Id);
 }
-
 /****************************************************************************/
 /*!
  *  \brief Saves the changes in the dialog
@@ -161,8 +161,10 @@ void CModifyReagentStatusDlg::SelectionChanged(QModelIndex Index)
 /****************************************************************************/
 void CModifyReagentStatusDlg::OnOk()
 {    
+    m_DashboardStation.SetDashboardReagentStatus("Empty");
     emit UpdateStationChangeReagent(m_DashboardStation.GetDashboardStationID(),
                                     m_DashboardStation.GetDashboardReagentID());
+    emit UpdateStationSetAsEmpty(m_DashboardStation.GetDashboardStationID());
     accept();
 }
 
@@ -199,7 +201,6 @@ void CModifyReagentStatusDlg::RetranslateUI()
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8), 0);
     (void)m_ReagentEditModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentStatusEditModel",
                                                                                  "Group", 0, QApplication::UnicodeUTF8),0);
-
 }
 
 

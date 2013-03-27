@@ -60,7 +60,7 @@ CStartup::CStartup() : QObject()
 //                      mp_DataConnector, SendReagentAdd(DataManager::CReagent &));
 //    CONNECTSIGNALSLOT(mp_Reagents, RemoveReagent(QString), mp_DataConnector, SendReagentRemove(QString));
 
-    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsUpdated(), mp_Programs, UpdateProgramList());
+//    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsUpdated(), mp_Programs, UpdateProgramList());
 
     CONNECTSIGNALSLOT(mp_Programs, UpdateProgram(DataManager::CProgram &),
                       mp_DataConnector, SendProgramUpdate(DataManager::CProgram &));

@@ -23,6 +23,7 @@
 
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupList.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 #include <QAbstractTableModel>
 #include <QMap>
@@ -46,8 +47,10 @@ class CReagentStatusEditModel : public QAbstractTableModel
 
 public:
     CReagentStatusEditModel(QObject *p_Parent = NULL);
-    void SetReagentList(DataManager::CDataReagentList *p_ReagentList, qint32 Columns);
-    void SetReagentGroupList(DataManager::CDataReagentGroupList *p_ReagentGroupList);
+    void SetRequiredContainers(DataManager::CDataReagentList *p_ReagentList,
+                               DataManager::CDataReagentGroupList *p_ReagentGroupList,
+                               DataManager::CDashboardDataStationList *p_DashboardDataStationList, qint32 Columns);
+
     int rowCount(const QModelIndex &) const;
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &Index, int Role) const;  //data Reagent SubMenu
@@ -68,12 +71,33 @@ public:
 
     /****************************************************************************/
     /**
+     * \brief Returns the position of Reagent to be selected
+     * \iparam ReagentName
+     * \return m_ReagentNames = Position of Reagent in the table
+     */
+    /****************************************************************************/
+    int GetReagentPositionOfReagent(QString ReagentID){
+        return m_ReagentID.indexOf(ReagentID, 0);
+    }
+
+    /****************************************************************************/
+    /**
      * \brief Sets the currently selected reagent in the table
      * \iparam ReagentName
      */
     /****************************************************************************/
     void SetCurrentReagent(QString ReagentName){
         m_CurrentReagentName = ReagentName;
+    }
+
+    /****************************************************************************/
+    /**
+     * \brief Sets the currently selected reagent in the table
+     * \iparam ReagentName
+     */
+    /****************************************************************************/
+    void SetReagentTypeParaffin(bool Value){
+        m_ParaffinReagent = Value;
     }
 
     /****************************************************************************/
@@ -104,24 +128,22 @@ private:
 
     DataManager::CDataReagentList *mp_ReagentList;      //!< Reagent list
     DataManager::CDataReagentGroupList *mp_ReagentGroupList; //!< Reagent group list
+    DataManager::CDashboardDataStationList *mp_DashboardDataStationList; //!< DashboardDataStationList
     QMap<QString, QString> m_Identifiers;               //!< Identifiers of reagents currently displayed
     QStringList m_ReagentNames;                         //!< Long names of reagents currently displayed
-    QStringList m_ReagentNamesCache;                    //!< Back up of Reagent names
-    QStringList m_ReagentsInStation;                    //!< Reagents present in Stations
-    QStringList m_SpecialReagentList;                   //!< List of special reagents
+    QStringList m_ReagentID;
     qint32 m_Columns;                                   //!< Number of table columns
     QString m_CurrentReagentName;                       //!< Current Reagent Name
     Programs::CModifyProgramStepDlg *mp_Parent;         //!< Reference to ModifyProgramStep Dialog
-    bool m_HideSpecialReagents;                         //!< Hides the special reagents if true.
     bool m_FilterLeicaReagent;                          //!< Filter Leica Reagent if set to true
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
     QMap<QString, QString> m_ReagentNameMap;            //!< Sorts Reagent Longnames
-    QMap<QString, QString> m_SpecialReagentNameMap;     //!< Sorts Special Reagents
     bool m_BLFlag;                                      //!< Flag for reagents in BathLayout
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     QPixmap m_PixmapTickOk;                             //!< Pixmap for TickOk png
     QString m_DeviceMode;                               //!< Device mode
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object    
+    bool m_ParaffinReagent;                                 //!< Type of Reagent;
 };
 
 } // end namespace Core

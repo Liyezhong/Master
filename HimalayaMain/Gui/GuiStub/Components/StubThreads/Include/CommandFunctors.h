@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Threads/Include/CommandFunctors.h
+/*! \file StubThreads/Include/CommandFunctors.h
  *
  *  \brief Definition file for functors needed by command classes.
  *
@@ -18,16 +18,16 @@
  */
 /****************************************************************************/
 
-#ifndef THREADS_COMMANDFUNCTORS_H
-#define THREADS_COMMANDFUNCTORS_H
+#ifndef STUBTHREADS_COMMANDFUNCTORS_H
+#define STUBTHREADS_COMMANDFUNCTORS_H
 
-#include<Threads/Include/CommandChannel.h>
-#include<Threads/Include/ThreadsEventCodes.h>
-#include<Global/Include/Utils.h>
+#include "CommandChannel.h"
+#include "ThreadsEventCodes.h"
+#include <Global/Include/Utils.h>
 #include <QDebug>
 #include <Global/Include/EventObject.h>
 
-namespace Threads {
+namespace StubThreads {
 
 /****************************************************************************/
 /**
@@ -531,6 +531,6 @@ public:
     }
 }; // end class TemplateCreatorFunctor
 
-} // end namespace Threads
+} // end namespace StubThreads
 
-#endif // THREADS_COMMANDFUNCTORS_H
+#endif // STUBTHREADS_COMMANDFUNCTORS_H

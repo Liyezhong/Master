@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Threads/Include/CommandChannel.h
+/*! \file StubThreads/Include/CommandChannel.h
  *
  *  \brief Definition file for class CommandChannel.
  *
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef THREADS_COMMANDCHANNEL_H
-#define THREADS_COMMANDCHANNEL_H
+#ifndef STUBTHREADS_COMMANDCHANNEL_H
+#define STUBTHREADS_COMMANDCHANNEL_H
 
 #include <Global/Include/Commands/Acknowledge.h>
 #include <Global/Include/Commands/Command.h>
@@ -27,7 +27,7 @@
 
 #include <QObject>
 
-namespace Threads {
+namespace StubThreads {
 
 class BaseThreadController;
 
@@ -145,6 +145,6 @@ public slots:
     void CommandChannelTxAck(Global::tRefType Ref, const Global::AcknowledgeShPtr_t &Ack);
 }; // end class CommandChannel
 
-} // end namespace Threads
+} // end namespace StubThreads
 
-#endif // THREADS_COMMANDCHANNEL_H
+#endif // STUBTHREADS_COMMANDCHANNEL_H

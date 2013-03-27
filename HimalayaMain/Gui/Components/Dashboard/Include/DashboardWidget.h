@@ -24,6 +24,7 @@
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "Dashboard/Include/DashboardScene.h"
+#include "Dashboard/Include/DashboardEndTimeWidget.h"
 #include "Dashboard/Include/DashboardComboBox.h"
 #include <QFrame>
 #include <QGridLayout>

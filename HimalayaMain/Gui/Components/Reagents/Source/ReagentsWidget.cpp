@@ -43,7 +43,7 @@ CReagentsWidget::CReagentsWidget(QWidget *p_Parent):
     mp_Reagent(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
-    SetPanelTitle(tr("Reagents"));    
+    SetPanelTitle(tr("Reagents"));
 
     m_ProcessRunning = false;
     m_ShowMessageDialog = false;
@@ -54,6 +54,7 @@ CReagentsWidget::CReagentsWidget(QWidget *p_Parent):
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_ReagentModel.SetRMSOption(Global::RMS_CASSETTES);
     mp_Ui->radioCassettes->setChecked(true);
+    mp_Ui->radioOff1->setChecked(true);
 
     CONNECTSIGNALSLOT(mp_Ui->btnEdit, clicked(), this, OnEdit());
     CONNECTSIGNALSLOT(mp_Ui->btnNew, clicked(), this, OnNew());
@@ -132,9 +133,11 @@ void CReagentsWidget::ResizeHorizontalSection()
 /****************************************************************************/
 void CReagentsWidget::PopulateReagentList()
 {
-    mp_TableWidget->SetVisibleRows(7);
+    mp_TableWidget->SetVisibleRows(7,28,32);
     m_ReagentModel.SetVisibleRowCount(7);
     mp_TableWidget->horizontalHeader()->show();
+    mp_TableWidget->verticalHeader()->setDefaultSectionSize(32);
+
     ResizeHorizontalSection();
 }
 /****************************************************************************/
@@ -301,9 +304,7 @@ void CReagentsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings
 void CReagentsWidget::SelectionChanged(QModelIndex Index)
 {
     QString Id = m_ReagentModel.data(Index, (int)Qt::UserRole).toString();
-
     // change the background color when the row is selected for the reagent group column
-
 
     mp_Reagent = mp_ReagentList->GetReagent(Id);
     if (mp_Reagent) {
@@ -498,10 +499,6 @@ void CReagentsWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnector,
 /****************************************************************************/
 void CReagentsWidget:: OnContentScrolled()
 {
-    mp_Ui->btnEdit->setEnabled(false);
-    mp_Ui->btnDelete->setEnabled(false);
-    mp_Ui->btnNew->setEnabled(false);
-    mp_TableWidget->clearSelection();
 
 }
 

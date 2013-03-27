@@ -50,6 +50,15 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_StationItemLabel(StationLabel),
     m_Animate(Animation),
     mp_DashboardStation(p_DashboardStation),
+    m_RetortBoundingRectWidth(125),
+    m_RetortBoundingRectHeight(78),
+    m_ParaffinbathBoundingRectWidth(122),
+    m_ParaffinbathBoundingRectHeight(60),
+    m_BottleBoundingRectWidth(79),
+    m_BottleBoundingRectHeight(97),
+    m_ReagentBlinking(true),
+    m_ReagentTimeStarted(false),
+    m_ReagentExpiredFlag(false),
     m_Enabled(true),
     m_Pressed(false),
     m_Selected(false)
@@ -60,11 +69,14 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     setCacheMode(QGraphicsItem::ItemCoordinateCache);
 
     if(m_DashboardStationGroup == STATIONS_GROUP_RETORT) {
-        m_Image = QPixmap(125, 78);
+        //m_Image = QPixmap(125, 78);
+        m_Image = QPixmap(m_RetortBoundingRectWidth, m_RetortBoundingRectHeight);
     } else if(m_DashboardStationGroup == STATIONS_GROUP_PARAFFINBATH) {
-        m_Image = QPixmap(122, 60);
+        //m_Image = QPixmap(122, 60);
+        m_Image = QPixmap(m_ParaffinbathBoundingRectWidth, m_ParaffinbathBoundingRectHeight);
     } else {
-        m_Image = QPixmap(79, 97);
+        //m_Image = QPixmap(79, 97);
+        m_Image = QPixmap(m_BottleBoundingRectWidth, m_BottleBoundingRectHeight);
     }
 
     UpdateImage();
@@ -94,11 +106,14 @@ CDashboardStationItem::~CDashboardStationItem()
 QRectF CDashboardStationItem::boundingRect() const
 {
     if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
-        return QRectF(0, 0, 125, 78);
+        //return QRectF(0, 0, 125, 78);
+        return QRectF(0, 0, m_RetortBoundingRectWidth, m_RetortBoundingRectHeight);
     } else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
-        return QRectF(0, 0, 122, 60);
+        //return QRectF(0, 0, 122, 60);
+        return QRectF(0, 0, m_ParaffinbathBoundingRectWidth, m_ParaffinbathBoundingRectHeight);
     } else {
-        return QRectF(0, 0, 79, 97);
+        //return QRectF(0, 0, 79, 97);
+        return QRectF(0, 0, m_BottleBoundingRectWidth, m_BottleBoundingRectHeight);
     }
 }
 
@@ -233,16 +248,6 @@ void CDashboardStationItem::SetDashboardStation(DataManager::CDashboardStation* 
     }
 }
 
-/****************************************************************************/
-/*!
- *  \brief Water flow animation
- */
-/****************************************************************************/
-void CDashboardStationItem::Animate()
-{
-    update();
-
-}
 
 /****************************************************************************/
 /*!
@@ -346,7 +351,6 @@ void CDashboardStationItem::LoadStationImages(QPainter& Painter)
     QFont TextFont;
     Painter.setRenderHint(QPainter::Antialiasing);
     Painter.setPen(Qt::black);
-    Painter.setBrush(QColor(Qt::black));
     TextFont.setPointSize(10);
     TextFont.setBold(true);
     Painter.setFont(TextFont);
@@ -377,13 +381,28 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
 {
     QPainter Painter(&m_Image);
 
+    Painter.eraseRect(boundingRect());
+    LoadStationImages(Painter);
+    FillReagentColor(Painter);
+
     if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
     {
-        Painter.eraseRect(boundingRect());
-        LoadStationImages(Painter);
-        FillReagentColor(Painter);
-        DrawReagentName(Painter);
         Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover.png"));
+        Painter.drawPixmap((m_BottleBoundingRectWidth - 72) , (m_BottleBoundingRectHeight - 75), QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Large.png"));
+        DrawReagentName(Painter);
+    } else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
+    {
+
+        Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover.png"));
+        Painter.drawPixmap((m_ParaffinbathBoundingRectWidth - 90), 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Small.png"));
+        QFont TextFont;
+        Painter.setRenderHint(QPainter::Antialiasing);
+        Painter.setPen(Qt::black);
+        TextFont.setPointSize(10);
+        TextFont.setBold(true);
+        Painter.setFont(TextFont);
+        Painter.drawText(QRectF(13,7,67,15), Qt::AlignCenter, m_StationItemLabel);
+
     }
     update();
 }
@@ -406,6 +425,11 @@ void CDashboardStationItem::DrawReagentName(QPainter & Painter)
 
     if (mp_DashboardStation)
     {
+        qDebug() << "************" <<mp_DashboardStation->GetDashboardReagentStatus();
+
+        //if(mp_DashboardStation->GetDashboardReagentStatus() > 100) {
+            m_ReagentExpiredFlag = true;
+        //}
         //Now Paint Reagent Names
         QString ReagentID = mp_DashboardStation->GetDashboardReagentID();
         DataManager::CReagent const *p_Reagent = mp_DataConnector->ReagentList->GetReagent(ReagentID);
@@ -421,6 +445,10 @@ void CDashboardStationItem::DrawReagentName(QPainter & Painter)
 
 void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 {
+    int fillBottleWidth;
+    int fillBottleHeight;
+    int fillParaffinbathWidth;
+    int fillParafinbathHeight;
 
     if(mp_DashboardStation)
     {
@@ -433,16 +461,76 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupId);
 
         QString ReagentStatus = mp_DashboardStation->GetDashboardReagentStatus();
+        qDebug() << "Reagent Status" << ReagentStatus;
         QString ReagentColorValue = p_ReagentGroup->GetGroupColor();
         ReagentColorValue.prepend("#");
 
+        Painter.setRenderHint(QPainter::Antialiasing);
         Painter.setPen(QColor(ReagentColorValue));
         Painter.setBrush(QColor(ReagentColorValue));
+
         Painter.rotate(270.0);
-        Painter.drawRoundedRect(QRect(-95, 2, 72, 48), 8, 8);
+
+        if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
+        {
+
+            //Painter.drawRoundedRect(QRect(-95, 2, 72, 48), 8, 8);
+            // Since the Painter is rotated, Width and Height Axis Changes.
+            fillBottleWidth = (m_BottleBoundingRectHeight - 25);  // Manual Pixel Calculation
+            fillBottleHeight = (m_BottleBoundingRectWidth - 31);  // Manual Pixel Calculation
+            Painter.drawRoundedRect(QRect(-95, 2, fillBottleWidth, fillBottleHeight), 8, 8);
+        }
+        else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
+        {
+            // Painter.drawRoundedRect(QRect(-57, 3, 52, 90), 8, 4);
+            /**
+             *QPainterPath path;
+             *path.setFillRule( Qt.WindingFill );
+             *path.addRoundedRect( QRect(50,50, 200, 100), 20, 20 );
+             *path.addRect( QRect( 200, 50, 50, 50 ) ); // Top right corner not rounded
+             *path.addRect( QRect( 50, 100, 50, 50 ) ); // Bottom left corner not rounded
+             *painter.drawPath( path.simplified() ); // Only Top left & bottom right corner
+            **/
+
+            //            QPainterPath path;
+            //            path.setFillRule( Qt::WindingFill );
+            //            path.addRoundedRect(QRect(-57, 3, 52, 90), 8, 8);
+            //            path.addRect(QRect((-57 + 52 - 8), 3, 8, 8));// Top left corner not rounded
+            //            path.addRect(QRect((-57 + 52 - 8), (3 + 90 - 8), 8, 8));// Top right corner not rounded
+            //            Painter.drawPath(path.simplified());  // Only the Bottome Left and Bottom Right Corner
+
+            fillParaffinbathWidth = (m_ParaffinbathBoundingRectHeight - 8);
+            fillParafinbathHeight = (m_ParaffinbathBoundingRectWidth - 32);
+
+            QPainterPath path;
+            path.setFillRule( Qt::WindingFill );
+            path.addRoundedRect(QRect(-57, 3, fillParaffinbathWidth, fillParafinbathHeight), 8, 4);
+            path.addRect(QRect((-57 + fillParaffinbathWidth - 8), 3, 8, 8));// Top left corner not rounded
+            path.addRect(QRect((-57 + fillParaffinbathWidth - 8), (3 + fillParafinbathHeight - 8), 8, 8));// Top right corner not rounded
+            Painter.drawPath(path.simplified());  // Only the Bottome Left and Bottom Right Corner
+
+            qDebug() << "Height ==>" << boundingRect().height();
+            qDebug() << "Width ==>" << boundingRect().width();
+
+        }
+
+
         Painter.rotate(-270.0);
     }
     update();
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Blinking Effect for the Station
+ */
+/****************************************************************************/
+void CDashboardStationItem::ShowBlinkingEffect()
+{
+    if(m_ReagentExpiredFlag ) {
+
+        update();
+    }
 }
 
 } // end namespace Core

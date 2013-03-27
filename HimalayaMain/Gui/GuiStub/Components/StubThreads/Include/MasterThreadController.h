@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Threads/Include/MasterThreadController.h
+/*! \file StubThreads/Include/MasterThreadController.h
  *
  *  \brief Definition file for class MasterThreadController.
  *
@@ -18,12 +18,12 @@
  */
 /****************************************************************************/
 
-#ifndef THREADS_MASTERTHREADCONTROLLER_H
-#define THREADS_MASTERTHREADCONTROLLER_H
+#ifndef STUBTHREADS_MASTERTHREADCONTROLLER_H
+#define STUBTHREADS_MASTERTHREADCONTROLLER_H
 
-#include <Threads/Include/BaseThreadController.h>
-#include <Threads/Include/CommandFunctors.h>
-#include <Threads/Include/ThreadController.h>
+#include "BaseThreadController.h"
+#include "CommandFunctors.h"
+#include "ThreadController.h"
 //#include <EventHandler/Include/EventHandlerThreadController.h>
 //#include <DataLogging/Include/DataLoggingThreadController.h>
 //#include <EventHandler/Include/ErrorHandler.h>
@@ -42,7 +42,7 @@ namespace DataManager {
     class CUserSettings;
 }
 
-namespace Threads {
+namespace StubThreads {
 
 typedef enum {
     UNDEFINED_BASIC_THREAD,
@@ -286,7 +286,7 @@ protected:
     //CommandChannel                              m_CommandChannelDataLogging;        ///< Command channel for DataLogging.
     CommandChannel                              m_CommandChannelEventThread;        ///< Command channel for EventHandler.
     //EventHandler::EventHandlerThreadController  *mp_EventThreadController;          ///< Pointer to the system event handling object.
-    QHash<QString, Threads::CommandChannel*>    m_channelList;                      ///< Hash of command channels connected related to its name
+    QHash<QString, StubThreads::CommandChannel*>    m_channelList;                      ///< Hash of command channels connected related to its name
     DataManager::CDataManagerBase               *mp_DataManagerBase; //!< The DataManager.\warning Dont delete this, Pointer points to address in stack.
     DataManager::CUserSettings                  *mp_UserSettings;                        ///< The user settings.
     /****************************************************************************/
@@ -411,7 +411,7 @@ protected:
      * \param[in]   pCommandChannel     Pointer to command channel.
      */
     /****************************************************************************/
-    void AddAndConnectController(ThreadController *pController, CommandChannel *pCommandChannel, int ControllerNumber, bool BasicThreadController = false);
+    void AddAndConnectController(ThreadController *pController, StubThreads::CommandChannel *pCommandChannel, int ControllerNumber, bool BasicThreadController = false);
     /****************************************************************************/
     /**
      * \brief Set system ErrorHandler's parent and connect it.
@@ -809,6 +809,6 @@ public slots:
     void HeartbeatSlot(const Global::gSourceType &TheHeartBeatSource);
 }; // end class MasterThreadController
 
-} // end namespace Threads
+} // end namespace StubThreads
 
-#endif // THREADS_MASTERTHREADCONTROLLER_H
+#endif // STUBTHREADS_MASTERTHREADCONTROLLER_H

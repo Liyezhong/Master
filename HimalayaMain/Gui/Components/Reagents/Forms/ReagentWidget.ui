@@ -59,6 +59,7 @@
       </property>
      </widget>
      <widget class="Reagents::CReagentGroupWidget" name="pageReagentGroup"/>
+     <widget class="Reagents::CReagentStationWidget" name="pageReagentStation"/>
      <widget class="Reagents::CReagentsWidget" name="pageReagents"/>
     </widget>
    </item>
@@ -87,6 +88,12 @@
    <class>CReagentSubMenuWidget</class>
    <extends>QWidget</extends>
    <header>Reagents/Include/ReagentSubMenuWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Reagents::CReagentStationWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">Reagents/Include/ReagentStationWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

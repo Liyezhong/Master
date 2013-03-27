@@ -11,7 +11,7 @@
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2011-09-28
- *   $Author:  $ M.Scherer, N.Kamath, C.Adaragunchi1234
+ *   $Author:  $ M.Scherer, N.Kamath, C.Adaragunchi1234, Swati Tiwari
  *
  *  \b Company:
  *
@@ -32,12 +32,13 @@
 #include "DataManager/Helper/Include/Types.h"
 #include "ui_ModifyProgramDlg.h"
 #include <QDebug>
+#include <QPainter>
 
 namespace Programs {
 
 const QString UNLOADER_STEP_ID = "S7";  //!< Unloader step id
 const QString TRANSFER_STEP_ID = "S8";  //!< Transfer step id
-
+const int USER_PROGRAM_COUNT =    10;   //!< Number of User Program in a table
 /****************************************************************************/
 /*!
  *  \brief Constructor
@@ -48,29 +49,35 @@ const QString TRANSFER_STEP_ID = "S8";  //!< Transfer step id
  *  \iparam p_DataConnector = Reference to DataConnector
  */
 /****************************************************************************/
-CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent, KeyBoard::CKeyBoard *p_KeyBoard,
-                                     MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector):
-                                     MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyProgramDlg),
-                                     mp_MainWindow(p_MainWindow), mp_DataConnector(p_DataConnector),
+CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
+                                     KeyBoard::CKeyBoard *p_KeyBoard,
+                                     MainMenu::CMainWindow *p_MainWindow,
+                                     Core::CDataConnector *p_DataConnector) :
+                                     MainMenu::CDialogFrame(p_Parent),
+                                     mp_Ui(new Ui::CModifyProgramDlg),
+                                     mp_MainWindow(p_MainWindow),
+                                     mp_DataConnector(p_DataConnector),mp_NewProgram(NULL),
                                      m_ProgNameBtnClicked(false), m_ProgShortNameBtnClicked(false),
                                      m_ProcessRunning(false), m_TempColor(" "), m_TempColorFlag(false),
-                                     mp_NewProgram(NULL), m_ColorReplaced(false)
+                                     mp_MessageDlg(NULL), m_ColorReplaced(false)
 {
     mp_Ui->setupUi(GetContentFrame());
+    mp_ModifyProgramIconDlg = new Programs::CModifyProgramIconDlg(this, mp_MainWindow);
     mp_KeyBoardWidget = p_KeyBoard;
     mp_TableWidget = new MainMenu::CBaseTable;
+    mp_Program = new DataManager::CProgram;
     mp_TableWidget->horizontalHeader()->show();
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
     mp_TableWidget->SetVisibleRows(6);
-
-    mp_ModifyProgStepDlg = new CModifyProgramStepDlg(this, p_MainWindow);
+  
+    mp_ModifyProgStepDlg = new Programs::CModifyProgramStepDlg(this, p_MainWindow);
     mp_ModifyProgStepDlg->setModal(true);
     mp_ModifyProgStepDlg->SetUserSettings(mp_DataConnector->SettingsInterface->GetUserSettings());
 
     mp_DlgRackGripColor = new CRackGripColorDlg(this,p_MainWindow);
     mp_DlgRackGripColor->setModal(true);
 
-    CONNECTSIGNALSLOT(mp_Ui->btnColor, clicked(), this, OnColor());
+//    CONNECTSIGNALSLOT(mp_Ui->btnColor, clicked(), this, OnColor());
     CONNECTSIGNALSLOT(mp_Ui->btnEdit, clicked(), this, OnEdit());
     CONNECTSIGNALSLOT(mp_Ui->btnNew, clicked(), this, OnNew());
     CONNECTSIGNALSLOT(mp_Ui->btnCopy, clicked(), this, OnCopy());
@@ -79,7 +86,7 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent, KeyBoard::CKeyBoard *p_K
     CONNECTSIGNALSLOT(mp_Ui->btnSave, clicked(), this, OnSave());
     CONNECTSIGNALSLOT(mp_TableWidget,clicked(QModelIndex), this, OnSelectionChanged(QModelIndex));
     CONNECTSIGNALSLOT(mp_Ui->btnPrgName, clicked(), this, OnEditName());
-    CONNECTSIGNALSLOT(mp_Ui->btnPrgShortName, clicked(), this, OnEditShortName());
+    CONNECTSIGNALSLOT(mp_Ui->btnPrgIcon, clicked(), this, OnIconClicked());
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
     CONNECTSIGNALSIGNAL(this, ReagentsUpdated(), mp_ModifyProgStepDlg, ReagentsUpdated());
     CONNECTSIGNALSLOT(this, UpdateStepModel(), &m_StepModel, UpdateStepModel());
@@ -91,14 +98,13 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent, KeyBoard::CKeyBoard *p_K
     CONNECTSIGNALSLOT(mp_DlgRackGripColor, UpdateProgramColor(DataManager::CProgram &,bool),
                       this,OnUpdateProgramColor(DataManager::CProgram &,bool));
 
-    CONNECTSIGNALSLOT(mp_Ui->groupBox, OnBeginButtonClicked(), this,OnBeginButtonClicked());
-    CONNECTSIGNALSLOT(mp_Ui->groupBox, OnEndButtonClicked(), this, OnEndButtonClicked());
-    CONNECTSIGNALSLOT(mp_Ui->groupBox, OnUpButtonClicked(), this, OnUpButtonClicked());
-    CONNECTSIGNALSLOT(mp_Ui->groupBox, OnDownButtonClicked(), this, OnDownButtonClicked());
+//    CONNECTSIGNALSLOT(mp_Ui->groupBox, OnEndButtonClicked(), this, OnEndButtonClicked());
+//    CONNECTSIGNALSLOT(mp_Ui->groupBox, OnUpButtonClicked(), this, OnUpButtonClicked());
+//    CONNECTSIGNALSLOT(mp_Ui->groupBox, OnDownButtonClicked(), this, OnDownButtonClicked());
 
-    m_StepModel.ConnectTableMoving(mp_Ui->groupBox);
+//    m_StepModel.ConnectTableMoving(mp_Ui->groupBox);
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    OnProcessStateChanged();
+    OnProcessStateChanged();   
 }
 
 /****************************************************************************/
@@ -114,6 +120,7 @@ CModifyProgramDlg::~CModifyProgramDlg()
         delete mp_TableWidget;
         delete mp_Ui;
         delete mp_NewProgram;
+        delete mp_ModifyProgramIconDlg;
     }
     catch (...) {
         // to please Lint.
@@ -160,8 +167,8 @@ void CModifyProgramDlg::ResizeHorizontalSection()
     mp_TableWidget->horizontalHeader()->resizeSection(0, 45);
     mp_TableWidget->horizontalHeader()->resizeSection(1, 180);
     mp_TableWidget->horizontalHeader()->resizeSection(2, 70);
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 70);
-    mp_TableWidget->horizontalHeader()->resizeSection(4, 40);
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 100);
+    mp_TableWidget->horizontalHeader()->resizeSection(4, 10);
 }
 
 /****************************************************************************/
@@ -183,37 +190,43 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
     m_StepModel.SetModifyProgramDlgPtr(this);
     ResizeHorizontalSection();
 
-    QString LongName = m_Program.GetLongName();
+    QString LongName = m_Program.GetName();
 
     if (m_ButtonType == EDIT_BTN_CLICKED) {
-        mp_Ui->btnPrgName->setText(QString("%1").arg(LongName));
-        mp_Ui->btnPrgShortName->setText(QString("%1").arg(m_Program.GetShortName()));
-        mp_Ui->btnColor->SetColor(m_Program.GetColor());
-        mp_Ui->btnColor->setEnabled(false);
+        mp_Ui->btnPrgName->setText(tr("%1").arg(LongName));
+//        mp_Ui->btnPrgIcon->setText(tr("%1").arg(m_Program.GetShortName()));
+//        mp_Ui->btnColor->SetColor(m_Program.GetColor());
+//        mp_Ui->btnColor->setEnabled(false);
         // Pass a value same as the one passed to SetVisibleRows()
+
+        if (mp_Program->GetID().at(0) != 'L') {
+            mp_Ui->btnPrgIcon->setStyleSheet(QString::fromUtf8("border-image: url(:/HimalayaImages/Icons/MISC/Icon_Leica.png);background-color:black;"));
+        }
+        else
+        {
+            mp_Ui->btnPrgIcon->setStyleSheet(QString::fromUtf8("border-image: url(:/HimalayaImages/Icons/MISC/Icon_Leica.png);background-color:black;"));
+
+        }
         m_StepModel.SetVisibleRowCount(6);
         m_StepModel.SetProgram(&m_Program, mp_DataConnector->ReagentList, 5);
         mp_TableWidget->setModel(&m_StepModel);
     }
     else if (m_ButtonType == COPY_BTN_CLICKED) {
         switch (LongName.length()) {
-        case 32:
-            LongName.replace(29, 3, "_cp");
-            break;
-        case 31:
-            LongName.replace(28, 3, "_cp");
-            break;
-        case 30:
-            LongName.replace(27, 3, "_cp");
-            break;
-        default:
-            LongName.append("_cp");
-            break;
+            case 32:
+                LongName.replace(29, 3, "_cp");
+                break;
+            case 31:
+                LongName.replace(28, 3, "_cp");
+                break;
+            case 30:
+                LongName.replace(27, 3, "_cp");
+                break;
+            default:
+                LongName.append("_cp");
+                break;
         }
-        mp_Ui->btnPrgName->setText(QString("%1").arg(LongName));
-        mp_Ui->btnPrgShortName->setText("--");
-        mp_Ui->btnColor->SetColor("black");
-        mp_Ui->btnColor->setEnabled(false);
+        mp_Ui->btnPrgName->setText(tr("%1").arg(LongName));
         m_Program.SetColor("white");
         // Pass a value same as the one passed to SetVisibleRows()
         m_StepModel.SetVisibleRowCount(6);
@@ -232,22 +245,16 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
 /****************************************************************************/
 void CModifyProgramDlg::NewProgram()
 {
-    if (mp_NewProgram != NULL) {
-        delete mp_NewProgram;
-        mp_NewProgram = NULL;
-    }
-
+    mp_NewProgram = NULL;
     mp_NewProgram = new DataManager::CProgram();
-    //Pass a value same as the one passed to SetVisibleRows()
+   //Pass a value same as the one passed to SetVisibleRows()
     m_StepModel.SetVisibleRowCount(6);
     m_StepModel.SetProgram(NULL, NULL, 5);
     mp_TableWidget->setModel(&m_StepModel);
     m_StepModel.SetModifyProgramDlgPtr(this);
     ResizeHorizontalSection();
     mp_Ui->btnPrgName->setText("--");
-    mp_Ui->btnPrgShortName->setText("--");
-    mp_Ui->btnColor->SetColor("black");
-    mp_Ui->btnColor->setEnabled(false);
+//    mp_Ui->btnPrgIcon->setText("--");
     mp_NewProgram->SetColor("white");
     mp_Ui->label_3->setText(tr("Program not ready to start"));
 }
@@ -300,8 +307,7 @@ void CModifyProgramDlg::Update()
 /****************************************************************************/
 void CModifyProgramDlg::UpdateOnESC()
 {
-    m_ProgNameBtnClicked = false;
-    m_ProgShortNameBtnClicked = false;
+    EscClicked();
 }
 
 /****************************************************************************/
@@ -330,27 +336,27 @@ void CModifyProgramDlg::OnEditName()
     m_ProgNameBtnClicked  = true;
 }
 
-/****************************************************************************/
-/*!
- *  \brief Shows the on screen keyboard to edit the program short name
- */
-/****************************************************************************/
-void CModifyProgramDlg::OnEditShortName()
-{
-    mp_KeyBoardWidget->Attach(this);
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Program Short Name"));
-    mp_KeyBoardWidget->SetPasswordMode(false);
+///****************************************************************************/
+///*!
+// *  \brief Shows the on screen keyboard to edit the program short name
+// */
+///****************************************************************************/
+//void CModifyProgramDlg::OnEditShortName()
+//{
+//    mp_KeyBoardWidget->Attach(this);
+//    mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Program Short Name"));
+//    mp_KeyBoardWidget->SetPasswordMode(false);
 
-    if (mp_Ui->btnPrgShortName->text() != "--") {
-        mp_KeyBoardWidget->SetLineEditContent(mp_Ui->btnPrgShortName->text());
-    }
-    m_ValidationType = KeyBoard::VALIDATION_2;
-    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
-    mp_KeyBoardWidget->SetMaxCharLength(MAX_SHORTNAME_LENGTH);
-    mp_KeyBoardWidget->SetMinCharLength(MIN_SHORTNAME_LENGTH);
-    mp_KeyBoardWidget->show();
-    m_ProgShortNameBtnClicked = true;
-}
+//    if (mp_Ui->btnPrgIcon->text() != "--") {
+//        mp_KeyBoardWidget->SetLineEditContent(mp_Ui->btnPrgIcon->text());
+//    }
+//    m_ValidationType = KeyBoard::VALIDATION_2;
+//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
+//    mp_KeyBoardWidget->SetMaxCharLength(MAX_SHORTNAME_LENGTH);
+//    mp_KeyBoardWidget->SetMinCharLength(MIN_SHORTNAME_LENGTH);
+//    mp_KeyBoardWidget->show();
+//    m_ProgShortNameBtnClicked = true;
+//}
 
 /****************************************************************************/
 /*!
@@ -361,11 +367,10 @@ void CModifyProgramDlg::OnEdit()
 {
     mp_ModifyProgStepDlg->SetDialogTitle(tr("Edit Program Step"));
     mp_ModifyProgStepDlg->SetDeviceMode(m_DeviceMode);
-    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep(), mp_DataConnector->ReagentList,
-                                         mp_DataConnector->DashboardStationList);
+//    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep(), mp_DataConnector->ReagentList);
     mp_ModifyProgStepDlg ->SetButtonType(EDIT_BTN_CLICKED);
     mp_ModifyProgStepDlg->move(80,50);
-    mp_ModifyProgStepDlg->ShowSelectReagentPopup();
+//     mp_ModifyProgStepDlg->ShowSelectReagentPopup();
     mp_ModifyProgStepDlg->show();
 }
 
@@ -378,8 +383,7 @@ void CModifyProgramDlg::OnNew()
 {
     mp_ModifyProgStepDlg->SetDialogTitle(tr("New Program Step"));
     mp_ModifyProgStepDlg->SetDeviceMode(m_DeviceMode);
-    mp_ModifyProgStepDlg->NewProgramStep(mp_DataConnector->ReagentList,
-                                         mp_DataConnector->DashboardStationList);
+//    mp_ModifyProgStepDlg->NewProgramStep(mp_DataConnector->ReagentList);
     mp_ModifyProgStepDlg ->SetButtonType(NEW_BTN_CLICKED);
     mp_ModifyProgStepDlg->move(80,50);
     mp_ModifyProgStepDlg->show();
@@ -395,11 +399,10 @@ void CModifyProgramDlg::OnCopy()
     mp_ModifyProgStepDlg->SetDialogTitle(tr("Edit Program Step"));
     mp_ModifyProgStepDlg->SetButtonType(COPY_BTN_CLICKED);
     mp_ModifyProgStepDlg->SetDeviceMode(m_DeviceMode);
-    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep(), mp_DataConnector->ReagentList,
-                                         mp_DataConnector->DashboardStationList);
-    mp_ModifyProgStepDlg->move(80,50);
+//    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep(), mp_DataConnector->ReagentList);
+    mp_ModifyProgStepDlg->move(80,50);   
     mp_ModifyProgStepDlg->show();
-    mp_ModifyProgStepDlg->ShowSelectReagentPopup();
+//    mp_ModifyProgStepDlg->ShowSelectReagentPopup();
 }
 
 /****************************************************************************/
@@ -409,31 +412,34 @@ void CModifyProgramDlg::OnCopy()
 /****************************************************************************/
 void CModifyProgramDlg::OnDelete()
 {
-    MainMenu::CMessageDlg MessageDlg;
-    MessageDlg.SetTitle(tr("Confirmation Message"));
-    MessageDlg.SetIcon(QMessageBox::Question);
-    MessageDlg.SetButtonText(1, tr("Yes"));
-    MessageDlg.SetButtonText(3, tr("Cancel"));
-    MessageDlg.HideCenterButton();
-    MessageDlg.SetText(tr("Do you really want to delete the selected program step?"));
+    if (mp_MessageDlg) {
+        delete mp_MessageDlg;
+    }
+    mp_MessageDlg = new MainMenu::CMessageDlg();
+    mp_MessageDlg->SetTitle(tr("Confirmation Message"));
+    mp_MessageDlg->SetIcon(QMessageBox::Question);
+    mp_MessageDlg->SetButtonText(1, tr("Yes"));
+    mp_MessageDlg->SetButtonText(3,tr("Cancel"));
+    mp_MessageDlg->HideCenterButton();
+    mp_MessageDlg->SetText(tr("Do you really want to delete the selected program step?"));
 
-    if (MessageDlg.exec() == (int)QDialog::Accepted) {
+    if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
         if (m_ButtonType == NEW_BTN_CLICKED) {
             DeleteSelectedStep(mp_NewProgram);
-            if (mp_NewProgram->GetNumberOfSteps() == 0) {
+            if(mp_NewProgram->GetNumberOfSteps()== 0){
                 mp_Ui->btnDelete->setEnabled(false);
                 mp_Ui->btnCopy->setEnabled(false);
                 mp_Ui->btnEdit->setEnabled(false);
-                mp_Ui->groupBox->setEnabled(false);
+//                mp_Ui->groupBox->setEnabled(false);
             }
         }
         else {
             DeleteSelectedStep(&m_Program);
-            if (m_Program.GetNumberOfSteps() == 0) {
+            if (m_Program.GetNumberOfSteps()== 0) {
                 mp_Ui->btnDelete->setEnabled(false);
                 mp_Ui->btnCopy->setEnabled(false);
                 mp_Ui->btnEdit->setEnabled(false);
-                mp_Ui->groupBox->setEnabled(false);
+//                mp_Ui->groupBox->setEnabled(false);
             }
         }
     }
@@ -463,26 +469,24 @@ void CModifyProgramDlg::DeleteSelectedStep(DataManager::CProgram* p_CurrentProgr
 /****************************************************************************/
 void CModifyProgramDlg::OnSave()
 {
-    MainMenu::CMessageDlg MessageDlg;
-    MessageDlg.SetTitle(tr("Information Message"));
-    MessageDlg.SetIcon(QMessageBox::Information);
-    MessageDlg.SetButtonText(1, tr("Ok"));
-    MessageDlg.HideButtons();
-    if (mp_Ui->btnPrgName->text() == "--") {
-        MessageDlg.SetText(tr("Please enter a valid Program Name"));
-        (void) MessageDlg.exec();
+    if (mp_MessageDlg) {
+        delete mp_MessageDlg;
+    }
+    mp_MessageDlg = new MainMenu::CMessageDlg();
+    mp_MessageDlg->SetTitle(tr("Information Message"));
+    mp_MessageDlg->SetIcon(QMessageBox::Information);
+    mp_MessageDlg->SetButtonText(1, tr("Ok"));
+    mp_MessageDlg->HideButtons();
+    if(mp_Ui->btnPrgName->text() == "--"){
+        mp_MessageDlg->SetText(tr("Please enter a valid Program Name"));
+        (void) mp_MessageDlg->exec();
         return;
     }
-    else if (mp_Ui->btnPrgShortName->text() == "--") {
-        MessageDlg.SetText(tr("Please enter a valid Abbreviation"));
-        (void) MessageDlg.exec();
-        return;
-    }
-    m_Program.SetLongName(mp_Ui->btnPrgName->text());
-    m_Program.SetShortName(mp_Ui->btnPrgShortName->text());
+
+    m_Program.SetName(mp_Ui->btnPrgName->text());
     if (m_ButtonType == EDIT_BTN_CLICKED) {
         if ((VerifyLastProgramStep(&m_Program, m_DeviceMode))) {
-            if (m_ProgramListClone.UpdateProgram(&m_Program) == true) {
+            if (m_ProgramListClone.UpdateProgram(&m_Program)== true){
                 if (m_ColorReplaced == true) {
                     emit ProgramColorReplaced(m_ColorReplacedProgram, m_Program);
                 }
@@ -494,13 +498,13 @@ void CModifyProgramDlg::OnSave()
                 ListOfErrors_t &ErrorList = m_ProgramListClone.GetErrorList();
                 QString ErrorString;
                 DataManager::Helper::ErrorIDToString(ErrorList, ErrorString);
-                MessageDlg.SetText(ErrorString);
-                (void) MessageDlg.exec();
+                mp_MessageDlg->SetText(ErrorString);
+                (void) mp_MessageDlg->exec();
             }
         }
     }
     else if (m_ButtonType == COPY_BTN_CLICKED) {
-        if ((VerifyLastProgramStep(&m_Program, m_DeviceMode)) == true) {
+        if ((VerifyLastProgramStep(&m_Program, m_DeviceMode))== true) {
             m_Program.SetID(m_ProgramListClone.GetNextFreeProgID(true));
             if (m_ProgramListClone.AddProgram(&m_Program) == true) {
                 emit AddProgram(m_Program);
@@ -509,25 +513,25 @@ void CModifyProgramDlg::OnSave()
                 ListOfErrors_t &ErrorList = m_ProgramListClone.GetErrorList();
                 QString ErrorString;
                 DataManager::Helper::ErrorIDToString(ErrorList, ErrorString);
-                MessageDlg.SetText(ErrorString);
-                (void) MessageDlg.exec();
+                mp_MessageDlg->SetText(ErrorString);
+                (void) mp_MessageDlg->exec();
             }
         }
     }
     else {
-        mp_NewProgram->SetLongName(mp_Ui->btnPrgName->text());
-        mp_NewProgram->SetShortName(mp_Ui->btnPrgShortName->text());
-        if ((VerifyLastProgramStep(mp_NewProgram, m_DeviceMode)) == true) {
+        mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
+//        mp_NewProgram->SetShortName(mp_Ui->btnPrgIcon->text());
+        if ((VerifyLastProgramStep(mp_NewProgram, m_DeviceMode))== true) {
             mp_NewProgram->SetID(m_ProgramListClone.GetNextFreeProgID(true));
-            if (m_ProgramListClone.AddProgram(mp_NewProgram) == true) {
+            if (m_ProgramListClone.AddProgram(mp_NewProgram)== true) {
                 emit AddProgram(*mp_NewProgram);
             }
             else {
                 ListOfErrors_t &ErrorList = m_ProgramListClone.GetErrorList();
                 QString ErrorString;
                 DataManager::Helper::ErrorIDToString(ErrorList, ErrorString);
-                MessageDlg.SetText(ErrorString);
-                (void) MessageDlg.exec();
+                mp_MessageDlg->SetText(ErrorString);
+                (void) mp_MessageDlg->exec();
             }
         }
     }
@@ -545,19 +549,6 @@ void CModifyProgramDlg::OnCancel()
     reject();
 }
 
-/****************************************************************************/
-/*!
- *  \brief Opens the program color selection dialog
- */
-/****************************************************************************/
-void CModifyProgramDlg::OnColor()
-{
-    if (mp_DlgRackGripColor->Init(&m_ProgramListClone, &m_Program) == true) {
-        mp_DlgRackGripColor->SetSaveButton(tr("Ok"));
-        mp_DlgRackGripColor->move(220,150);
-        mp_DlgRackGripColor->show();
-    }
-}
 
 /****************************************************************************/
 /*!
@@ -576,7 +567,7 @@ void CModifyProgramDlg::OnSelectionChanged(QModelIndex Index)
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-            (!m_ProcessRunning)) {
+        (!m_ProcessRunning)) {
         if (m_ButtonType == NEW_BTN_CLICKED){
 
             if ((SelectedIndex+1) > mp_NewProgram->GetNumberOfSteps()) {
@@ -588,7 +579,7 @@ void CModifyProgramDlg::OnSelectionChanged(QModelIndex Index)
             }
         }
         else {
-            //Edit Mode
+            //Edit Mode            
             if ((SelectedIndex+1) > m_Program.GetNumberOfSteps()) {
                 ResetButtons(m_Program, false);
                 mp_TableWidget->clearSelection();
@@ -610,21 +601,21 @@ void CModifyProgramDlg::OnProcessStateChanged()
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-            (!m_ProcessRunning)) {
+        (!m_ProcessRunning)) {
         //Edit Mode
         mp_Ui->btnPrgName->setEnabled(true);
-        mp_Ui->btnPrgShortName->setEnabled(true);
+        mp_Ui->btnPrgIcon->setEnabled(true);
         if (m_ButtonType == NEW_BTN_CLICKED || m_ButtonType == COPY_BTN_CLICKED) {
-            mp_Ui->btnColor->SetColor("black");
-            mp_Ui->btnColor->setEnabled(false);
+//            mp_Ui->btnColor->SetColor("black");
+//            mp_Ui->btnColor->setEnabled(false);
         }
         else {
-            mp_Ui->btnColor->setEnabled(true);
-            if(m_TempColorFlag == true ){
-                mp_Ui->btnColor->SetColor(m_TempColor);
-            } else{
-                mp_Ui->btnColor->SetColor("white");
-            }
+//           mp_Ui->btnColor->setEnabled(true);
+           if(m_TempColorFlag == true ){
+//               mp_Ui->btnColor->SetColor(m_TempColor);
+           } else{
+//               mp_Ui->btnColor->SetColor("white");
+           }
         }
         mp_Ui->btnNew->setEnabled(true);
         mp_Ui->btnCancel->setEnabled(true);
@@ -638,17 +629,29 @@ void CModifyProgramDlg::OnProcessStateChanged()
         else {
             //View Mode
             mp_Ui->btnPrgName->setEnabled(false);
-            mp_Ui->btnPrgShortName->setEnabled(false);
-            mp_Ui->btnCancel->setEnabled(true);
-            mp_Ui->btnColor->SetColor("black");
-            mp_Ui->btnColor->setEnabled(false);
+            mp_Ui->btnPrgIcon->setEnabled(false);
+            mp_Ui->btnCancel->setEnabled(true);           
+//            mp_Ui->btnColor->SetColor("black");
+//            mp_Ui->btnColor->setEnabled(false);
             mp_Ui->btnDelete->setEnabled(false);
             mp_Ui->btnNew->setEnabled(false);
             mp_Ui->btnEdit->setEnabled(false);
             mp_Ui->btnCopy->setEnabled(false);
-            mp_Ui->groupBox->setEnabled(false);
+//            mp_Ui->groupBox->setEnabled(false);
         }
     }
+}
+/****************************************************************************/
+/*!
+ *  \brief This slot is called when Esc button on Keyboard is clicked.
+ */
+/****************************************************************************/
+void CModifyProgramDlg::EscClicked()
+{
+
+    m_ProgNameBtnClicked = false;
+    m_ProgShortNameBtnClicked = false;
+    mp_KeyBoardWidget->Detach();
 }
 
 /****************************************************************************/
@@ -663,12 +666,12 @@ void CModifyProgramDlg::OnOkClicked()
     if (m_ProgNameBtnClicked) {
         m_ProgNameBtnClicked = false;
         LineEditString = mp_KeyBoardWidget->GetLineEditString();
-        mp_Ui->btnPrgName->setText(QString("%1").arg(LineEditString));
+        mp_Ui->btnPrgName->setText(tr("%1").arg(LineEditString));
     }
     else if (m_ProgShortNameBtnClicked) {
         m_ProgShortNameBtnClicked = false;
-        LineEditString = mp_KeyBoardWidget->GetLineEditString();
-        mp_Ui->btnPrgShortName->setText(QString("%1").arg(LineEditString));
+//        LineEditString = mp_KeyBoardWidget->GetLineEditString();
+//        mp_Ui->btnPrgIcon->setText(tr("%1").arg(LineEditString));
     }
     mp_KeyBoardWidget->Detach();
 }
@@ -693,28 +696,26 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
         //Edit Mode
         if (m_ButtonType == NEW_BTN_CLICKED) {
             mp_Ui->btnPrgName->setEnabled(true);
-            mp_Ui->btnPrgShortName->setEnabled(true);
-            mp_Ui->btnColor->SetColor("black");
-            mp_Ui->btnColor->setEnabled(false);
+            mp_Ui->btnPrgIcon->setEnabled(true);
+
             mp_Ui->btnNew->setEnabled(true);
             mp_Ui->btnCancel->setEnabled(true);
             mp_Ui->btnSave->setEnabled(true);
             mp_Ui->btnDelete->setEnabled(false);
             mp_Ui->btnCopy->setEnabled(false);
             mp_Ui->btnEdit->setEnabled(false);
-            mp_Ui->groupBox->setEnabled(false);
         }
         else {
             m_TempColorFlag = true ;
             m_TempColor = m_Program.GetColor();
             mp_Ui->btnPrgName->setEnabled(true);
-            mp_Ui->btnPrgShortName->setEnabled(true);
+            mp_Ui->btnPrgIcon->setEnabled(false);
             if (m_ButtonType == COPY_BTN_CLICKED) {
-                mp_Ui->btnColor->SetColor("black");
-                mp_Ui->btnColor->setEnabled(false);
+//                mp_Ui->btnColor->SetColor("black");
+//                mp_Ui->btnColor->setEnabled(false);
             }
             else {
-                mp_Ui->btnColor->setEnabled(true);
+//                mp_Ui->btnColor->setEnabled(true);
             }
             mp_Ui->btnNew->setEnabled(true);
             mp_Ui->btnCancel->setEnabled(true);
@@ -722,21 +723,21 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
             mp_Ui->btnDelete->setEnabled(false);
             mp_Ui->btnCopy->setEnabled(false);
             mp_Ui->btnEdit->setEnabled(false);
-            mp_Ui->groupBox->setEnabled(false);
+//            mp_Ui->groupBox->setEnabled(false);
         }
     }
     else {
         //View Mode
         mp_Ui->btnPrgName->setEnabled(false);
-        mp_Ui->btnPrgShortName->setEnabled(false);
+        mp_Ui->btnPrgIcon->setEnabled(false);
         mp_Ui->btnCancel->setEnabled(true);
-        mp_Ui->btnColor->setEnabled(false);
-        mp_Ui->btnColor->SetColor("black");
+//        mp_Ui->btnColor->setEnabled(false);
+//        mp_Ui->btnColor->SetColor("black");
         mp_Ui->btnCopy->setEnabled(false);
         mp_Ui->btnDelete->setEnabled(false);
         mp_Ui->btnNew->setEnabled(false);
         mp_Ui->btnEdit->setEnabled(false);
-        mp_Ui->groupBox->setEnabled(false);
+//        mp_Ui->groupBox->setEnabled(false);
         mp_Ui->btnSave->setEnabled(false);
         mp_Ui->btnCancel->setText("Close");
     }
@@ -770,7 +771,7 @@ void CModifyProgramDlg::ResetButtons(DataManager::CProgram &CurrentProgram, bool
             mp_Ui->btnDelete->setEnabled(true);
             mp_Ui->btnCopy->setEnabled(true);
             mp_Ui->btnEdit->setEnabled(true);
-            mp_Ui->groupBox->setEnabled(true);
+//            mp_Ui->groupBox->setEnabled(true);
             mp_Ui->btnNew->setEnabled(true);
         }
         else {
@@ -782,7 +783,7 @@ void CModifyProgramDlg::ResetButtons(DataManager::CProgram &CurrentProgram, bool
                 mp_Ui->btnDelete->setEnabled(false);
                 mp_Ui->btnCopy->setEnabled(false);
                 mp_Ui->btnEdit->setEnabled(false);
-                mp_Ui->groupBox->setEnabled(false);
+//                mp_Ui->groupBox->setEnabled(false);
                 mp_Ui->btnNew->setEnabled(true);
             }
         }
@@ -791,7 +792,7 @@ void CModifyProgramDlg::ResetButtons(DataManager::CProgram &CurrentProgram, bool
         mp_Ui->btnDelete->setEnabled(false);
         mp_Ui->btnCopy->setEnabled(false);
         mp_Ui->btnEdit->setEnabled(false);
-        mp_Ui->groupBox->setEnabled(false);
+//        mp_Ui->groupBox->setEnabled(false);
         mp_Ui->btnNew->setEnabled(true);
         int NumOfSteps = CurrentProgram.GetNumberOfSteps();
         if (NumOfSteps >= MAX_PROGRAM_STEPS) {
@@ -816,13 +817,11 @@ void CModifyProgramDlg::UpdateProgramStepTable(DataManager::CProgramStep *p_Prgm
     // Store the pointer in container , so that Destructor can delete them later
     m_ListOfProgramSteps << p_ProgramStep;
     *p_ProgramStep = *p_PrgmStep;
-    static bool SetNextFreeStepId = true;
-
-    //Check if new program is being added else update the selected program
+    static bool setNextFreeStepId = true;
     if (m_ButtonType == NEW_BTN_CLICKED) {
-        if(SetNextFreeStepId) {
+        if(setNextFreeStepId) {
             mp_NewProgram->SetNextFreeStepID("0");
-            SetNextFreeStepId = false;
+            setNextFreeStepId = false;
         }
         if (!AddNewProgramStep) {
             (void) mp_NewProgram->UpdateProgramStep(p_ProgramStep);
@@ -893,8 +892,9 @@ void CModifyProgramDlg::OnUpdateProgramColor(DataManager::CProgram &Program,
     }
     else {
         m_Program.SetColor(Program.GetColor());
-        (void) m_ProgramListClone.UpdateProgram(&m_Program);
-        mp_Ui->btnColor->SetColor(Program.GetColor());
+       (void) m_ProgramListClone.UpdateProgram(&m_Program);
+//        mp_Ui->btnColor->SetColor(Program.GetColor());
+
     }
 }
 
@@ -911,8 +911,7 @@ void CModifyProgramDlg::UpdateUserSettings()
 /********************************************************************************/
 /*!
  *  \brief Verifies last step of the program step when device is in Himalaya mode.
- *
- *  \iparam p_SelectedProgram = Selected/New Program
+ *  \iparam p_CurrentProgram = Selected/New Program
  *
  *  \return True if verification is success else False
  */
@@ -923,41 +922,35 @@ bool CModifyProgramDlg::VerifyLastStepForHimalayaMode(DataManager::CProgram* p_S
     int NumberOfUnloaders = 0;
     int LastStepIndex = 0;
     bool Unloader = false;
-
-    MainMenu::CMessageDlg MessageDlg;
-    MessageDlg.SetTitle(tr("Information Message"));
-    MessageDlg.SetIcon(QMessageBox::Information);
-    MessageDlg.SetButtonText(1, tr("Ok"));
-    MessageDlg.HideButtons();
-    MessageDlg.SetText(tr("Please check:"
-                          "\n 1.Unloader station should be the last step."
-                          "\n 2.Program cannot have more than one Unloader station"));
-    // Iterate over all program steps
-    for (int StepCount = 0; StepCount < p_Program->GetNumberOfSteps(); StepCount++) {
-        (void) p_Program->GetProgramStep(StepCount, m_LastProgramStep);
-        // Check for UNLOADER step
-        if (m_LastProgramStep.GetReagentID() == UNLOADER_STEP_ID) {
+    if (mp_MessageDlg) {
+        delete mp_MessageDlg;
+    }
+    mp_MessageDlg = new MainMenu::CMessageDlg();
+    mp_MessageDlg->SetTitle(tr("Information Message"));
+    mp_MessageDlg->SetIcon(QMessageBox::Information);
+    mp_MessageDlg->SetButtonText(1, tr("Ok"));
+    mp_MessageDlg->HideButtons();
+    mp_MessageDlg->SetText(tr("Please check""\n 1.Unloader station should be the last step."
+                              "\n 2.Program cannot have more than one Unloader station"));
+    for (int i = 0;i < p_Program->GetNumberOfSteps(); i++) {
+        (void) p_Program->GetProgramStep(i,m_LastProgramStep);
+        if (m_LastProgramStep.GetReagentID() == "S7") {
             Unloader = true;
-            NumberOfUnloaders += 1;
-            // Check if there are more than one UNLOADER steps
-            if (NumberOfUnloaders > 1) {
-                if (MessageDlg.exec() == (int)QDialog::Accepted) {
-                    return false;
-                }
+            NumberOfUnloaders+= 1;
+            if(NumberOfUnloaders > 1) {
+                if(mp_MessageDlg->exec() == (int)QDialog::Accepted) return false;
             }
-            else LastStepIndex = StepCount;
+            else LastStepIndex = i;
         }
     }
-    // Check if UNLOADER is last step.
-    if (LastStepIndex != (p_Program->GetNumberOfSteps() - 1)) {
-        // Check if atleast one UNLOADER is present in the program steps.
+    if (LastStepIndex!= p_Program->GetNumberOfSteps()-1) {
         if (Unloader) {
-            if(MessageDlg.exec() == (int)QDialog::Accepted) {
+            if(mp_MessageDlg->exec() == (int)QDialog::Accepted) {
                 return false;
             }
         }
         else {
-            if(MessageDlg.exec() == (int)QDialog::Accepted) {
+            if(mp_MessageDlg->exec() == (int)QDialog::Accepted) {
                 return false;
             }
         }
@@ -965,7 +958,7 @@ bool CModifyProgramDlg::VerifyLastStepForHimalayaMode(DataManager::CProgram* p_S
     // Check if only UNLOADER step is added.
     else if ((LastStepIndex == 0)) {
         if (!Unloader) {
-            if(MessageDlg.exec() == (int)QDialog::Accepted) {
+            if(mp_MessageDlg->exec() == (int)QDialog::Accepted) {
                 return false;
             }
         }
@@ -990,68 +983,66 @@ bool CModifyProgramDlg::VerifyLastStepForWorkStationMode(DataManager::CProgram* 
     int LastStepIndex = 0;
     bool Unloader = false;
     bool Transfer = false;
-
-    MainMenu::CMessageDlg MessageDlg;
-    MessageDlg.SetTitle(tr("Information Message"));
-    MessageDlg.SetIcon(QMessageBox::Information);
-    MessageDlg.SetButtonText(1, tr("Ok"));
-    MessageDlg.HideButtons();
-    MessageDlg.SetText(tr("Please check:"
-                          "\n 1.Unloader or Transfer station should be the last step."
-                          "\n 2.Program cannot have more than one Unloader or Transfer station"));
-
-     // Iterate over all program steps
-    for (int StepCount = 0; StepCount < p_Program->GetNumberOfSteps(); StepCount++) {
-        (void) p_Program->GetProgramStep(StepCount, m_LastProgramStep);
-         // Check for UNLOADER step
-        if (m_LastProgramStep.GetReagentID() == UNLOADER_STEP_ID) {
+    if (mp_MessageDlg) {
+        delete mp_MessageDlg;
+    }
+    mp_MessageDlg = new MainMenu::CMessageDlg();
+    mp_MessageDlg->SetTitle(tr("Information Message"));
+    mp_MessageDlg->SetIcon(QMessageBox::Information);
+    mp_MessageDlg->SetButtonText(1, tr("Ok"));
+    mp_MessageDlg->HideButtons();
+    mp_MessageDlg->SetText(tr("Please check"
+                              "\n 1.Unloader or Transfer station should be the last step."
+                              "\n 2.Program cannot have more than one Unloader or Transfer station"));
+    for (int i = 0;i < p_Program->GetNumberOfSteps();i++) {
+        (void) p_Program->GetProgramStep(i,m_LastProgramStep);
+        if (m_LastProgramStep.GetReagentID() == "S7") {
             Unloader = true;
             NumberOfUnloaders+= 1;
             // Check if there are more than one UNLOADER steps
             if (NumberOfUnloaders > 1) {
-                if (MessageDlg.exec()== (int)QDialog::Accepted) {
+                if (mp_MessageDlg->exec()== (int)QDialog::Accepted) {
                     return false;
                 }
             }
-            else LastStepIndex = StepCount;
+            else LastStepIndex = i;
         }
-         // Check for TRANSFER step
-        else if (m_LastProgramStep.GetReagentID() == TRANSFER_STEP_ID) {
+        else if (m_LastProgramStep.GetReagentID() == "S8") {
             Transfer = true;
             NumberOfTransfer+= 1;
             // Check if there are more than one TRANSFER steps
             if (NumberOfTransfer > 1) {
-                if(MessageDlg.exec() == (int)QDialog::Accepted) {
+                if(mp_MessageDlg->exec() == (int)QDialog::Accepted) {
                     return false;
                 }
             }
-            else LastStepIndex = StepCount;
+            else LastStepIndex = i;
         }
         // Check if both UNLOADER and TRANSFER steps are added into the program steps.
         if (Unloader && Transfer) {
-            MessageDlg.SetText(tr("Please check:"
-                                  "\n 1.Program cannot have both Unloader and Transfer in program steps."
-                                  "\n 2.Please select either Unloader or Transfer."));
-            if (MessageDlg.exec() == (int)QDialog::Accepted) {
+            mp_MessageDlg->SetText(tr("Please check"
+                                      "\n Program cannot have both Unloader and Transfer in program steps."
+                                      "\n Please select either Unloader or Transfer."));
+            if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
                 return false;
             }
         }
     }
-    if (LastStepIndex != (p_Program->GetNumberOfSteps() - 1)) {
-         // Check if atleast one UNLOADER step is present in the program steps.
+    if (LastStepIndex!= p_Program->GetNumberOfSteps()-1) {
+        // LastStationFound = true;
         if (Unloader) {
-            if (MessageDlg.exec() == (int)QDialog::Accepted) {
+            if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
                 return false;
             }
         }
          // Check if atleast one TRANSFER step is present in the program steps.
         else if (Transfer) {
-            if (MessageDlg.exec() == (int)QDialog::Accepted) {
+            if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
                 return false;
             }
         }
         else {
-            if (MessageDlg.exec() == (int)QDialog::Accepted) {
+            if(mp_MessageDlg->exec() == (int)QDialog::Accepted) {
                 return false;
             }
         }
@@ -1059,7 +1050,7 @@ bool CModifyProgramDlg::VerifyLastStepForWorkStationMode(DataManager::CProgram* 
     // Check if only UNLOADER or TRANSFER step is added.
     else if ((LastStepIndex == 0)) {
         if (!(Unloader || Transfer)) {
-            if (MessageDlg.exec() == (int)QDialog::Accepted) {
+            if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
                 return false;
             }
         }
@@ -1075,16 +1066,6 @@ bool CModifyProgramDlg::VerifyLastStepForWorkStationMode(DataManager::CProgram* 
 void CModifyProgramDlg::OnEndButtonClicked()
 {
     mp_Ui->scrollTable->ScrollContent(3);
-}
-
-/****************************************************************************/
-/*!
- *  \brief This slot is called when Begin button in moving table is clicked.
- */
-/****************************************************************************/
-void CModifyProgramDlg::OnBeginButtonClicked()
-{
-    mp_Ui->scrollTable->ScrollContent(2);
 }
 
 /****************************************************************************/
@@ -1107,7 +1088,7 @@ void CModifyProgramDlg::OnDownButtonClicked()
 /****************************************************************************/
 void CModifyProgramDlg::OnUpButtonClicked()
 {
-    if (m_StepModel.GetIndex() <= 1)
+    if(m_StepModel.GetIndex() <= 1)
     {
         mp_Ui->scrollTable->ScrollContent(2);
     }
@@ -1115,12 +1096,17 @@ void CModifyProgramDlg::OnUpButtonClicked()
 
 /****************************************************************************/
 /*!
- *  \brief This slot is called when a Program/ProgramList is updated.
+ *  \brief Displays a dialog for the modification of Program Icon
  */
 /****************************************************************************/
-void CModifyProgramDlg::UpdateProgramList()
+void CModifyProgramDlg::OnIconClicked()
 {
-    m_ProgramListClone = *(mp_DataConnector->ProgramList);
+    m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
+                            "\nPlease close the dialog with \"Close\""));
+    mp_ModifyProgramIconDlg->SetDialogTitle(tr("Select Icon"));
+   // mp_ModifyProgramIconDlg->SetReagentGroupList(*mp_CReagentGroupColorList,*mp_ReagentGroupList, *mp_ReagentGroup);
+    mp_ModifyProgramIconDlg->move(96,70);
+    mp_ModifyProgramIconDlg->show();
 }
 
 /****************************************************************************/
@@ -1130,26 +1116,17 @@ void CModifyProgramDlg::UpdateProgramList()
 /****************************************************************************/
 void CModifyProgramDlg::RetranslateUI()
 {
-    MainMenu::CDialogFrame::SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg",
-                                            "Edit Program Step", 0, QApplication::UnicodeUTF8));
-    MainMenu::CDialogFrame::SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg",
-                                            "New Program Step", 0, QApplication::UnicodeUTF8));
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg",
-                                            "Enter Program Name", 0, QApplication::UnicodeUTF8));
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg",
-                                            "Enter Program Short Name", 0, QApplication::UnicodeUTF8));
+   MainMenu::CDialogFrame::SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Edit Program Step", 0, QApplication::UnicodeUTF8));
+   MainMenu::CDialogFrame::SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "New Program Step", 0, QApplication::UnicodeUTF8));
+   mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Enter Program Name", 0, QApplication::UnicodeUTF8));
+   mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Enter Program Short Name", 0, QApplication::UnicodeUTF8));
 
-    // Added void to please lint
-    (void) m_StepModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Programs::CStepModel",
-                                    "Step", 0, QApplication::UnicodeUTF8),0);
-    (void) m_StepModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Programs::CStepModel",
-                                    "Reagent", 0, QApplication::UnicodeUTF8),0);
-    (void) m_StepModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Programs::CStepModel",
-                                    "Duration", 0, QApplication::UnicodeUTF8),0);
-    (void) m_StepModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Programs::CStepModel",
-                                    "Tol.", 0, QApplication::UnicodeUTF8),0);
-    (void) m_StepModel.setHeaderData(4,Qt::Horizontal,QApplication::translate("Programs::CStepModel",
-                                    "Excl.", 0, QApplication::UnicodeUTF8),0);
+   // Added void to please lint
+   (void) m_StepModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Step", 0, QApplication::UnicodeUTF8),0);
+   (void) m_StepModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Reagent", 0, QApplication::UnicodeUTF8),0);
+   (void) m_StepModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Duration", 0, QApplication::UnicodeUTF8),0);
+   (void) m_StepModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Temperature", 0, QApplication::UnicodeUTF8),0);
+   (void) m_StepModel.setHeaderData(4,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "P/V", 0, QApplication::UnicodeUTF8),0);
 }
 
 } // end namespace Programs

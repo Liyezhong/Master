@@ -5,7 +5,7 @@
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2011-09-16
- *   $Author:  $ M.Scherer, N.Kamath, C.Adaragunchi1234
+ *   $Author:  $ M.Scherer, N.Kamath, C.Adaragunchi1234, Swati Tiwari
  *
  *  \b Company:
  *
@@ -43,16 +43,18 @@ class CModifyLeicaHne : public MainMenu::CDialogFrame
     Q_OBJECT
 
 public:
-    explicit CModifyLeicaHne(QWidget *p_Parent = 0, MainMenu::CMainWindow *p_MainWindow = NULL,
-                             Core::CDataConnector *p_DataConnector = NULL);
+    explicit CModifyLeicaHne(QWidget *p_Parent = 0,
+                             MainMenu::CMainWindow *p_MainWindow = NULL,Core::CDataConnector *p_DataConnector = NULL);
     ~CModifyLeicaHne();
-    void InitDailog(DataManager::CProgram const *p_Program, DataManager::CProgramStep FirstProgramStep,
+    void InitDailog(DataManager::CProgram const *p_Program,DataManager::CProgramStep FirstProgramStep,
                     DataManager::CProgramStep SecondProgramStep);
-    void SetIntensity(int FirstReagentIntensity, int SecondReagentIntensity);
+    void SetIntensity(int Intensity,int SecondReagentIntensity);
     void SetReadyProgram(QString ReadyString);
 
 private:
     Ui::CModifyLeicaHne *mp_Ui;                     //!< User interface
+    DataManager::CDataProgramList *mp_ProgramList;  //!< Program list
+    DataManager::CDataProgramList m_ProgramListClone; //!< Program list clone
     DataManager::CProgram m_Program;                //!< Currently selected program
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
@@ -60,15 +62,12 @@ private:
     MainMenu::CScrollWheel *mp_ScrollWheelHaemotoxylin; //!< Scroll wheel object
     MainMenu::CScrollWheel *mp_ScrollWheelEosin;         //!< Scroll wheel object
     CRackGripColorDlg *mp_DlgRackGripColor;         //!< Rack color selection dialog
-    DataManager::CDataProgramList *mp_ProgramList;  //!< Program list
-    DataManager::CDataProgramList m_ProgramListClone; //!< Program list clone
     DataManager::CProgram m_ColorReplacedProgram;       //!< Program object
-    DataManager::CProgramStep m_LeicaProgramStepOne;    //!< ProgramStep object
-    DataManager::CProgramStep m_LeicaProgramStepTwo;    //!< ProgramStep object
+    DataManager::CProgramStep m_LeicaProgramStepOne;           //!< ProgramStep object
+    DataManager::CProgramStep m_LeicaProgramStepTwo;           //!< ProgramStep object
     bool m_ColorReplaced;                               //!< Flag for color change
     bool m_ProcessRunning;                          //!< Process running state
     void RetranslateUI();
-
 
 protected:
     void showEvent(QShowEvent *p_Event);
@@ -76,7 +75,7 @@ protected:
 
 private slots:
     void OnSave();
-    void OnColor();
+//    void OnColor();
     void OnProcessStateChanged();
     void OnUpdateProgramColor(DataManager::CProgram &Program, bool ColorReplaced);
 

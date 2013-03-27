@@ -37,31 +37,52 @@ CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, Main
 {
     mp_Ui->setupUi(GetContentFrame());
     m_ProcessRunning = false ;
+    SetButtonGroup();
 
-    mp_TableWidget = new MainMenu::CBaseTable;
-    mp_TableWidget->setModel(&m_ReagentStatusColorModel);
-    // Set horizontal header item
-    m_ReagentStatusColorModel.setHorizontalHeaderItem(0, new QStandardItem(tr("Color")));
-
-    mp_Ui->scrollTable->SetContent(mp_TableWidget);
-    mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    mp_TableWidget->SetVisibleRows(8);
-    mp_TableWidget->horizontalHeader()->show();
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 100);
-    mp_TableWidget->selectRow(0);
-    // add empty items
-    AddEmptyRows();
-
-    CONNECTSIGNALSLOT(mp_TableWidget, pressed(QModelIndex), this, SelectionChanged(QModelIndex));
+    CONNECTSIGNALSLOT(&m_ButtonGroup, buttonClicked(int), this, OnButtonGroup(int));
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
-//    CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
-    // Init Message dialog
-    m_MessageDlg.SetTitle(tr("Information Message"));
+
     m_MessageDlg.SetIcon(QMessageBox::Information);
     m_MessageDlg.SetButtonText(1, tr("Ok"));
     m_MessageDlg.HideButtons();
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Constructor
+ *
+ *  \Function to create Map of PushButton and Creation of Button Group.
+ */
+/****************************************************************************/
+void CModifyReagentGroupColorDlg ::SetButtonGroup()
+{
+        m_ButtonGroup.addButton(mp_Ui->GroupColor_1, 0);
+        m_ButtonGroup.addButton(mp_Ui->GroupColor_2, 1);
+        m_ButtonGroup.addButton(mp_Ui->GroupColor_3, 2);
+        m_ButtonGroup.addButton(mp_Ui->GroupColor_4, 3);
+        m_ButtonGroup.addButton(mp_Ui->GroupColor_5, 4);
+        m_ButtonGroup.addButton(mp_Ui->GroupColor_6, 5);
+        m_ButtonGroup.addButton(mp_Ui->GroupColor_7, 6);
+        m_ButtonGroup.addButton(mp_Ui->GroupColor_8, 7);
+        m_ButtonGroup.addButton(mp_Ui->GroupColor_9, 8);
+        m_ButtonGroup.addButton(mp_Ui->GroupColor_10,9);
+        m_ButtonGroup.addButton(mp_Ui->GroupColor_11,10);
+        m_ButtonGroup.addButton(mp_Ui->GroupColor_12,11);
+
+        m_QPushButtonMap[0] = mp_Ui->GroupColor_1;
+        m_QPushButtonMap[1] = mp_Ui->GroupColor_2;
+        m_QPushButtonMap[2] = mp_Ui->GroupColor_3;
+        m_QPushButtonMap[3] = mp_Ui->GroupColor_4;
+        m_QPushButtonMap[4] = mp_Ui->GroupColor_5;
+        m_QPushButtonMap[5] = mp_Ui->GroupColor_6;
+        m_QPushButtonMap[6] = mp_Ui->GroupColor_7;
+        m_QPushButtonMap[7] = mp_Ui->GroupColor_8;
+        m_QPushButtonMap[8] = mp_Ui->GroupColor_9;
+        m_QPushButtonMap[9] = mp_Ui->GroupColor_10;
+        m_QPushButtonMap[10] = mp_Ui->GroupColor_11;
+        m_QPushButtonMap[11] = mp_Ui->GroupColor_12;
+
 }
 
 /****************************************************************************/
@@ -71,17 +92,7 @@ CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, Main
 /****************************************************************************/
 CModifyReagentGroupColorDlg::~CModifyReagentGroupColorDlg()
 {
-    try {
-        // delete all the items in the table
-        for (qint32 RowCount = 0; RowCount < m_ReagentStatusColorModel.rowCount(); RowCount++) {
-            delete m_ReagentStatusColorModel.takeItem(RowCount);
-        }
-        delete mp_TableWidget;
-        delete mp_Ui;
-    }
-    catch (...) {
-        // to please Lint.
-    }
+       delete mp_Ui;
 }
 
 
@@ -118,22 +129,6 @@ void CModifyReagentGroupColorDlg::OnCancel()
 
 /****************************************************************************/
 /*!
- *  \brief Called when the selection of the table is changed
- *
- *  \iparam Index = Model Index
- */
-/****************************************************************************/
-void CModifyReagentGroupColorDlg::SelectionChanged(QModelIndex Index)
-{
-    m_ReagentGroup.SetGroupColor(m_ColorNames.value(Index.row()));
-    // use style sheet to highlight the border
-    mp_TableWidget->setStyleSheet("QTableView::item:selected { background-color:#" + m_ColorNames.value(Index.row()) + "; border-color:red; "
-                                  "border-style:outset; border-width:2px; color:black;}");
-
-}
-
-/****************************************************************************/
-/*!
  *  \brief Saves the changes in the dialog
  */
 /****************************************************************************/
@@ -165,22 +160,13 @@ void CModifyReagentGroupColorDlg::OnProcessStateChanged()
 
 /****************************************************************************/
 /**
- * \brief Add empty rows in the model
+ * \brief Slot will be called when ButtonGroup is clicked
  */
 /****************************************************************************/
-void CModifyReagentGroupColorDlg::AddEmptyRows()
+
+void CModifyReagentGroupColorDlg:: OnButtonGroup(int Id)
 {
-    if (m_ReagentStatusColorModel.rowCount() < 9) {
-        // display all the file names
-        for (qint32 RowCount = m_ReagentStatusColorModel.rowCount(); RowCount < 8; RowCount++) {
-            QStandardItem *p_Item = new QStandardItem();
-            p_Item->setSelectable(false);
-            // append the row in tables
-            m_ReagentStatusColorModel.appendRow(p_Item);
-            QPalette Palette;
-            m_ReagentStatusColorModel.setData(m_ReagentStatusColorModel.index(RowCount, 0), Palette.color(QPalette::Window), Qt::BackgroundColorRole);
-        }
-    }
+     m_ReagentGroup.SetGroupColor(m_ColorNames.value(Id));
 }
 
 /****************************************************************************/
@@ -190,50 +176,44 @@ void CModifyReagentGroupColorDlg::AddEmptyRows()
  *  \iparam FileNames = List of file names
  */
 /****************************************************************************/
-void CModifyReagentGroupColorDlg::SetReagentGroupList(DataManager::CReagentGroupColorList &mp_CReagentGroupColorList,const DataManager::CDataReagentGroupList &ReagentGroupList, const DataManager::CReagentGroup &ReagentGroup)
+void CModifyReagentGroupColorDlg::SetReagentGroupList(DataManager::CReagentGroupColorList &mp_CReagentGroupColorList, DataManager::CDataReagentGroupList &ReagentGroupList, const DataManager::CReagentGroup &ReagentGroup)
 {   
     // copy the data to local
     m_ReagentGroup = ReagentGroup;
-    // check the number of rows
-    if (m_ReagentStatusColorModel.rowCount() > 0) {
-        // delete all the items in the table
-        for (qint32 RowCount = 0; RowCount < m_ReagentStatusColorModel.rowCount(); RowCount++) {
-            delete m_ReagentStatusColorModel.takeItem(RowCount);
+    m_ColorNames.clear();
+
+    int Count = 0;
+    QAbstractButton *p_Button;
+
+      foreach(p_Button, m_ButtonGroup.buttons()) {
+          QPixmap Pixmap;//(30, 30);
+         Pixmap.load(":/HimalayaImages/Color/Color_"+mp_CReagentGroupColorList.GetCReagentGroupColor(Count)->GetColorID()+ ".png");
+
+         QSize size;
+         size.setWidth(50);
+         size.setHeight(50);
+         p_Button->setIconSize(size);
+         p_Button->setIcon(QIcon(Pixmap));
+         Count++;
+      }
+
+      for (qint32 ColorCount = 0; ColorCount < const_cast<DataManager::CReagentGroupColorList&>(mp_CReagentGroupColorList).GetNumberOfReagentGroupColor(); ColorCount++) {
+            QString ColorName = const_cast<DataManager::CReagentGroupColorList&>(mp_CReagentGroupColorList).GetCReagentGroupColor(ColorCount)->GetColorValue();
+             m_ColorNames << ColorName;
+          }
+
+      for(int ButtonIndex = 0; ButtonIndex < m_ColorNames.count();ButtonIndex++ )
+                 m_QPushButtonMap[ButtonIndex]->setEnabled(true);
+
+       const DataManager::CReagentGroup * Temp_ReagentGroup;
+
+       for(int Index = 0;Index<ReagentGroupList.GetNumberOfReagentGroups();Index++){
+           Temp_ReagentGroup =ReagentGroupList.GetReagentGroup(Index);
+
+           if(m_ColorNames.contains(Temp_ReagentGroup->GetGroupColor())){
+               int index = m_ColorNames.indexOf(Temp_ReagentGroup->GetGroupColor());
+               m_QPushButtonMap[index]->setDisabled(true);
+           }
         }
-        //clear the table
-        m_ReagentStatusColorModel.clear();
-        // Set horizontal header item
-        m_ReagentStatusColorModel.setHorizontalHeaderItem(0, new QStandardItem(tr("Color")));
-    }
-
-    // display all the file names
-    for (qint32 ColorCount = 0; ColorCount < const_cast<DataManager::CReagentGroupColorList&>(mp_CReagentGroupColorList).GetNumberOfReagentGroupColor(); ColorCount++) {
-        // for (qint32 ColorCount = 0; ColorCount < const_cast<DataManager::CDataReagentGroupList&>(ReagentGroupList).GetNumberOfReagentGroups(); ColorCount++) {
-
-        //QString ColorName1 = const_cast<DataManager::CDataReagentGroupList&>(ReagentGroupList).GetReagentGroup(ColorCount)->GetGroupColor();
-
-        QString ColorName = const_cast<DataManager::CReagentGroupColorList&>(mp_CReagentGroupColorList).GetCReagentGroupColor(ColorCount)->GetColorValue();
-
-        m_ColorNames << ColorName;
-
-        QStandardItem *p_Item = new QStandardItem();
-        // append the row in tables
-        m_ReagentStatusColorModel.appendRow(p_Item);
-        QColor Color;
-        // add '#' to hex value to change to color value
-        Color.setNamedColor("#" + ColorName.trimmed());
-        QPalette Palette(Color);
-        m_ReagentStatusColorModel.setData(m_ReagentStatusColorModel.index(ColorCount, 0), Palette.color(QPalette::Window), Qt::BackgroundColorRole);
-    }
-
-    // use style sheet to highlight the border
-    mp_TableWidget->setStyleSheet("QTableView::item:selected { background-color:#" + m_ColorNames.value(m_ColorNames.indexOf(m_ReagentGroup.GetGroupColor())) + "; border-color:red; "
-                                  "border-style:outset; border-width:2px; color:black; }");
-    mp_TableWidget->selectRow(m_ColorNames.indexOf(m_ReagentGroup.GetGroupColor()));
-
-
-    // add empty rows if required
-    AddEmptyRows();
-
 }
 }

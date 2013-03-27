@@ -51,6 +51,7 @@ private:
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object
     DataManager::CDashboardStation m_DashboardStation;
+    DataManager::CDashboardStation *mp_DashboardStation;
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
     bool m_UserRoleChanged;                         //!< True if user Role changed else false
@@ -92,11 +93,11 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief This signal is emitted when DashboardStationList is updated.
+     *  \brief This signal is emitted when Station Reagent changed to empty
      *
      */
     /****************************************************************************/
-    void UpdateStation(DataManager::CDashboardStation& Station);
+    void UpdateStationSetAsEmpty(const QString&);
 
     /****************************************************************************/
     /*!

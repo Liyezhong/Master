@@ -137,18 +137,13 @@ private:
     QMap<QString, QString> m_StationIdentifiers;               //!< Identifiers of stations currently displayed
     QStringList m_ReagentNames;                         //!< Long names of reagents currently displayed
     QStringList m_StationNames;                         //!< sttion names
-    QStringList m_ReagentNamesCache;                    //!< Back up of Reagent names
-    QStringList m_ReagentsInStation;                    //!< Reagents present in Stations
-    QStringList m_SpecialReagentList;                   //!< List of special reagents
     qint32 m_Columns;                                   //!< Number of table columns
     QString m_CurrentReagentName;                       //!< Current Reagent Name
     Programs::CModifyProgramStepDlg *mp_Parent;         //!< Reference to ModifyProgramStep Dialog
-    bool m_HideSpecialReagents;                         //!< Hides the special reagents if true.
     bool m_FilterLeicaReagent;                          //!< Filter Leica Reagent if set to true
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
     QMap<QString, QString> m_ReagentNameMap;            //!< Sorts Reagent Longnames
     QMap<QString, QString> m_StationNameMap;            //!< Sorts Station names
-    QMap<QString, QString> m_SpecialReagentNameMap;     //!< Sorts Special Reagents
     bool m_BLFlag;                                      //!< Flag for reagents in BathLayout
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     QPixmap m_PixmapTickOk;                             //!< Pixmap for TickOk png

@@ -25,7 +25,7 @@ CReagentGroupWidget::CReagentGroupWidget(QWidget *p_Parent):
                      mp_Ui(new Ui::CReagentGroupWidget)
 {
     mp_Ui->setupUi(GetContentFrame());
-    SetPanelTitle(tr("Reagent Groups"));
+    SetPanelTitle(tr("Groups"));
 
     m_ShowMessageDialog = false;
 
@@ -180,7 +180,7 @@ void CReagentGroupWidget::SelectionChanged(QModelIndex Index)
 void CReagentGroupWidget::RetranslateUI()
 {
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagents::CReagentsWidget",
-                                                        "Reagent Group", 0, QApplication::UnicodeUTF8));
+                                                        "Group", 0, QApplication::UnicodeUTF8));
    (void) m_ReagentGroupModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentModel",
                                                         "Reagent Group", 0, QApplication::UnicodeUTF8),0);
    (void) m_ReagentGroupModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentModel",

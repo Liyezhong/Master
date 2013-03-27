@@ -46,6 +46,7 @@ CReagentStatusEditModel::CReagentStatusEditModel(QObject *p_Parent) : QAbstractT
     mp_ReagentList = NULL;
     mp_Parent = NULL;
     m_FilterLeicaReagent = false;
+    m_ParaffinReagent = false;
     m_Columns = 0;
     m_VisibleRowCount = 7;
 }
@@ -59,26 +60,17 @@ CReagentStatusEditModel::CReagentStatusEditModel(QObject *p_Parent) : QAbstractT
  *  \iparam BLCheck = True for displaying reagents in bathlayout else False.
  */
  /****************************************************************************/
-void CReagentStatusEditModel::SetReagentList(DataManager::CDataReagentList *p_ReagentList, qint32 Columns)
+void CReagentStatusEditModel :: SetRequiredContainers(DataManager::CDataReagentList *p_ReagentList,
+                           DataManager::CDataReagentGroupList *p_ReagentGroupList,
+                           DataManager::CDashboardDataStationList *p_DashboardDataStationList, qint32 Columns)
 {
     mp_ReagentList = p_ReagentList;
+    mp_ReagentGroupList = p_ReagentGroupList;
+    mp_DashboardDataStationList = p_DashboardDataStationList;
     m_Columns = Columns;
     UpdateReagentList();
 }
 
-/****************************************************************************/
-/*!
- *  \brief Initializes the reagent group data
- *
- *  \iparam p_ReagentGroupList = Reagent data
- */
- /****************************************************************************/
-void CReagentStatusEditModel::SetReagentGroupList(DataManager::CDataReagentGroupList *p_ReagentGroupList)
-{
-    mp_ReagentGroupList = p_ReagentGroupList;
-    UpdateReagentList();
-
-}
 
 /****************************************************************************/
 /*!
@@ -94,24 +86,50 @@ void CReagentStatusEditModel::UpdateReagentList()
     m_Identifiers.clear();
     m_ReagentNames.clear();
     m_ReagentNameMap.clear();
+    m_ReagentID.clear();
+
     if (mp_ReagentList) {
         for(qint32 i = 0; i < mp_ReagentList->GetNumberOfReagents(); i++) {
             DataManager::CReagent *p_Reagent = NULL;
             p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(i));
             if (p_Reagent) {
                 if (p_Reagent->GetReagentType() == USER_REAGENT) {
-                    m_ReagentNames << p_Reagent->GetReagentName();
+                    if(m_ParaffinReagent == true && p_Reagent->GetReagentName().toLower() == QString("Paraffin").toLower()){
+                        m_ReagentNames << p_Reagent->GetReagentName();
+                        m_ReagentID << p_Reagent->GetReagentID();
+                        m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
+                    }
+                    else if(m_ParaffinReagent == false && p_Reagent->GetReagentName().toLower() != QString("Paraffin").toLower()) {
+                        m_ReagentNames << p_Reagent->GetReagentName();
+                        m_ReagentID << p_Reagent->GetReagentID();
+                        m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
+                    }
+                    if(p_Reagent->GetVisibleState()== true){
+                        m_VisibleReagentIds << p_Reagent->GetReagentName();
+                    }
                 }
-                if (p_Reagent->GetReagentType() == LEICA_REAGENT && (!m_FilterLeicaReagent)) {
-                    m_ReagentNames << p_Reagent->GetReagentName();
-                }
-                m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
 
-                if(p_Reagent->GetVisibleState()== true){
-                    m_VisibleReagentIds << p_Reagent->GetReagentName();
+                if (p_Reagent->GetReagentType() == LEICA_REAGENT && (!m_FilterLeicaReagent)) {
+
+                    if(m_ParaffinReagent == true && p_Reagent->GetReagentName().toLower() == QString("Paraffin").toLower()){
+                        m_ReagentNames << p_Reagent->GetReagentName();
+                        m_ReagentID << p_Reagent->GetReagentID();
+                        m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
+                    }
+                    else if(m_ParaffinReagent == false && p_Reagent->GetReagentName().toLower() != QString("Paraffin").toLower()) {
+                        m_ReagentNames << p_Reagent->GetReagentName();
+                        m_ReagentID << p_Reagent->GetReagentID();
+                        m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
+                    }
+
+                    if(p_Reagent->GetVisibleState()== true){
+                        m_VisibleReagentIds << p_Reagent->GetReagentName();
+                    }
                 }
             }
         }
+        m_ReagentNames.append("");
+        m_ReagentID.append("");
     }
     foreach (const QString str, m_ReagentNames)
         (void)m_ReagentNameMap.insertMulti(str.toLower(), str);
@@ -145,7 +163,7 @@ void CReagentStatusEditModel::SetVisibleRowCount(int RowCount)
 /****************************************************************************/
 int CReagentStatusEditModel::rowCount(const QModelIndex &) const
 {
-    return ((m_ReagentNames.count() < m_VisibleRowCount) ? m_VisibleRowCount : m_ReagentNames.count());
+    return ((m_ReagentID.count() < m_VisibleRowCount) ? m_VisibleRowCount : m_ReagentID.count());
 }
 
 /****************************************************************************/
@@ -177,60 +195,75 @@ QVariant CReagentStatusEditModel::data(const QModelIndex &Index, int Role) const
         return QVariant();
     }
 
-    if (Index.row() < m_ReagentNames.count() && (p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_Identifiers[m_ReagentNames[Index.row()]])))){
-        if (Role == (int)Qt::DisplayRole) {
-            switch (Index.column()) {
-            case 0:
-                return p_Reagent->GetReagentName();
-            case 1:
-                if (mp_ReagentGroupList) {
-                    DataManager::CReagentGroup *p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID()));
-                    if (p_ReagentGroup) {
-                        return p_ReagentGroup->GetReagentGroupName();
-                    }
-                    else {
-                        return QString("");
-                    }
+        if (Index.row() < m_ReagentID.count()){
+
+            if(m_ReagentID[Index.row()] != QString(""))
+                p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_ReagentID[Index.row()]));
+            else
+                p_Reagent = NULL;
+
+            if (Role == (int)Qt::DisplayRole) {
+                switch (Index.column()) {
+                case 0:
+                    if(p_Reagent == NULL)
+                        return QString("None");
+                    else
+                        return p_Reagent->GetReagentName();
+                case 1:
+                     if (mp_ReagentGroupList) {
+                        if(p_Reagent){
+                            DataManager::CReagentGroup *p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID()));
+                            if (p_ReagentGroup) {
+                                return p_ReagentGroup->GetReagentGroupName();
+                            }
+                         }
+                         else {
+                             return QString("");
+                          }
+                      }
+                  }
+              }
+
+            if (Role == (int)Qt::UserRole) {
+                return m_ReagentID[Index.row()];
+            }
+
+            if (Role == (int)Qt::TextColorRole) {
+                if (Index.column() == 1) {
+                    QColor Color;
+                    QPalette Palete(Color.black());
+                    return QVariant(Palete.color(QPalette::Window));
+                }
+            }
+
+            if (Role == (int)Qt::BackgroundColorRole) {
+                if (Index.column() == 1) {
+                    if (mp_ReagentGroupList) {
+                        if(p_Reagent) {
+                            DataManager::CReagentGroup *p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID()));
+                              if (p_ReagentGroup) {
+                                    QColor Color;
+                                    // add '#' to hex value to change to color value
+                                    Color.setNamedColor("#" + p_ReagentGroup->GetGroupColor().trimmed());
+                                    QPalette Palete(Color);
+                                    return QVariant(Palete.color(QPalette::Window));
+                               }
+                         }
+                         else {
+                            QPalette Palette;
+                            return QVariant(Palette.color(QPalette::Window));
+                         }
+
+                     }
                 }
             }
         }
+        else if (Role == (int)Qt::BackgroundRole) {
+              QPalette Palette;
+              return QVariant(Palette.color(QPalette::Window));
+         }
 
-        if (Role == (int)Qt::UserRole) {
-            return p_Reagent->GetReagentID();
-        }
-
-        if (Role == (int)Qt::TextColorRole) {
-            if (Index.column() == 1) {
-                QColor Color;
-                QPalette Palete(Color.black());
-                return QVariant(Palete.color(QPalette::Window));
-            }
-        }
-
-        if (Role == (int)Qt::BackgroundColorRole) {
-            if (Index.column() == 1) {
-                if (mp_ReagentGroupList) {
-                    DataManager::CReagentGroup *p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID()));
-                    if (p_ReagentGroup) {
-                        QColor Color;
-                        // add '#' to hex value to change to color value
-                        Color.setNamedColor("#" + p_ReagentGroup->GetGroupColor().trimmed());
-                        QPalette Palete(Color);
-                        return QVariant(Palete.color(QPalette::Window));
-                    }
-                    else {
-                        QPalette Palette;
-                        return QVariant(Palette.color(QPalette::Window));
-                    }
-                }
-            }
-        }
-    }
-    else if (Role == (int)Qt::BackgroundRole) {
-        QPalette Palette;
-        return QVariant(Palette.color(QPalette::Window));
-    }
-    return QVariant();
+      return QVariant();
 }
 
 /****************************************************************************/
