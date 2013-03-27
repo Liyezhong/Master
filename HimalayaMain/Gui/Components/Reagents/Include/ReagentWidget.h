@@ -89,6 +89,14 @@ signals:
     /****************************************************************************/
     void SettingsChanged(DataManager::CUserSettings &Settings);
 
+    /****************************************************************************/
+    /*!
+     *  \brief This signal is emitted when RMS Mode is Changed.
+     *
+     */
+    /****************************************************************************/
+    void RMSValueChanged(Global::RMSOptions_t);
+
 
 private slots:
     void OnUserRoleChanged();

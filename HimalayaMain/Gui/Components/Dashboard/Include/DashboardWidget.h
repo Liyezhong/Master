@@ -24,8 +24,8 @@
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "Dashboard/Include/DashboardScene.h"
-#include "Dashboard/Include/DashboardEndTimeWidget.h"
 #include "Dashboard/Include/DashboardComboBox.h"
+#include "Dashboard/Include/DashboardDataTypes.h"
 #include <QFrame>
 #include <QGridLayout>
 
@@ -46,20 +46,44 @@ class CDashboardWidget : public MainMenu::CPanelFrame
 
 private:
     Ui::CDashboardWidget *mp_Ui;                                //!< User interface
-    MainMenu::CMainWindow *mp_Parent;                           //!< Reference to MainWindow.
+    MainMenu::CMainWindow *mp_MainWindow;                           //!< Reference to MainWindow.
     Core::CDataConnector *mp_DataConnector;                     //!< Global data container
     CDashboardScene *mp_DashboardScene;                         //!< Displays the station items
     QFrame *mp_Separator;                                       //!< Separator Line between View & Operation
+    Dashboard::DashboardOperation_t m_Operation;                //!< Operation to be performed in Dashboatrd
+    QButtonGroup m_btnGroup;                                    //!< Button Group
+    Global::RMSOptions_t m_RMSState;                            //!< Current RMS State
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
+    bool m_UserRoleChanged;                                     //!< Flag to Verify the Change in User Role
+    MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
+
+    void RunProgram();
+    void PauseProgram();
+    void AbortProgram();
 
 public:
     explicit CDashboardWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL);
-
     ~CDashboardWidget();
+
+    void CheckPreConditionsToRunProgram();
+    void CheckPreConditionsToPauseProgram();
+    void CheckPreConditionsToAbortProgram();
 
 protected:
     void DrawSeparatorLine();
     void AddItemsToComboBox();
 
+signals:
+
+public slots:
+    void OnUserRoleChanged();
+    void OnButtonClicked(int whichBtn);
+    void OnRMSValueChanged(Global::RMSOptions_t);
+
+    // Warning Message Slots
+    void OnPressYes();
+    void OnPressNo();
+    void OnPressCancel();
 };
 
 }

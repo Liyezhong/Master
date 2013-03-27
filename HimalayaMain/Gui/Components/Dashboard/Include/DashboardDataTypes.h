@@ -24,32 +24,36 @@
 
 namespace Dashboard {
 
-QPoint FrameStartPosPt;
-QPoint RetortStartOffsetPt;
-QPoint ParaffinbathStartOffsetPt;
-QPoint Row1BottleStartOffsetPt;
-QPoint Row2BottleStartOffsetPt;
+//QPoint FrameStartPosPt;
+//QPoint RetortStartOffsetPt;
+//QPoint ParaffinbathStartOffsetPt;
+//QPoint Row1BottleStartOffsetPt;
+//QPoint Row2BottleStartOffsetPt;
 
-qint8 BottleImageWidth;
-qint8 BottleImageHeight;
-qint8 BottleBoundingRectWidth;
-qint8 BottleBoundingRectHeight;
-qint8 ParaffinbathImageWidth;
-qint8 ParaffinbathImageHeight;
-qint8 ParaffinbathBoundingRectWidth;
-qint8 ParaffinbathBoundingRectHeight;
-qint8 RetortImageWidth;
-qint8 RetortImageHeight;
-qint8 RetortBoundingRectWidth;
-qint8 RetortBoundingRectHeight;
+//qint8 BottleImageWidth;
+//qint8 BottleImageHeight;
+//qint8 BottleBoundingRectWidth;
+//qint8 BottleBoundingRectHeight;
+//qint8 ParaffinbathImageWidth;
+//qint8 ParaffinbathImageHeight;
+//qint8 ParaffinbathBoundingRectWidth;
+//qint8 ParaffinbathBoundingRectHeight;
+//qint8 RetortImageWidth;
+//qint8 RetortImageHeight;
+//qint8 RetortBoundingRectWidth;
+//qint8 RetortBoundingRectHeight;
+
+const int firstButton = 1;
+const int secondButton = 2;
 
 typedef enum
 {
-    OP_ABORT = -1,
-    OP_STOP,
+    OP_NONE = -1,
+    OP_ABORT,
     OP_PAUSE,
     OP_PLAY
 } DashboardOperation_t;
+
 }
 
 

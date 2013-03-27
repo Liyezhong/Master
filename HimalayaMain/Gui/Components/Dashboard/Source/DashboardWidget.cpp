@@ -26,8 +26,10 @@ namespace Dashboard {
 
 CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    MainMenu::CMainWindow *p_Parent): MainMenu::CPanelFrame(p_Parent),
-                                   mp_Ui(new Ui::CDashboardWidget),mp_Parent(p_Parent),
-                                   mp_DataConnector(p_DataConnector)
+                                   mp_Ui(new Ui::CDashboardWidget),mp_MainWindow(p_Parent),
+                                   mp_DataConnector(p_DataConnector),
+                                   m_Operation(Dashboard::OP_PLAY),
+                                   m_UserRoleChanged(false)
 {
      mp_Ui->setupUi(GetContentFrame());
      SetPanelTitle(tr("Dashboard"));
@@ -38,17 +40,26 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      Palette.setColor(QPalette::Base, BaseColor);
      mp_Ui->dashboardView->setPalette(Palette);
 
-     mp_DashboardScene = new CDashboardScene(mp_DataConnector, this, mp_Parent);
+     mp_DashboardScene = new CDashboardScene(mp_DataConnector, this, mp_MainWindow);
      mp_Ui->dashboardView->setScene(mp_DashboardScene);
 
      mp_Separator = new QFrame();
      mp_Separator->setParent(this);  // Set Parent of this Frame as the Dashboard Widget.
      DrawSeparatorLine();
 
+     m_btnGroup.addButton(mp_Ui->playButton, Dashboard::firstButton);
+     m_btnGroup.addButton(mp_Ui->abortButton, Dashboard::secondButton);
+
+     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+     mp_MessageDlg = new MainMenu::CMessageDlg();
+
      AddItemsToComboBox();
 
 
+     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
      CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, currentIndexChanged(int), mp_Ui->pgmsComboBox, handleSelectionChanged(int));
+
+     CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
 
 }
 
@@ -75,13 +86,126 @@ void CDashboardWidget::DrawSeparatorLine()
 
 void CDashboardWidget::AddItemsToComboBox()
 {
-    mp_Ui->pgmsComboBox->insertItem(0, QIcon(QPixmap(QString(":/HimalayaImages/Icons/MISC/Icon_Leica.png"))), "LeicaPrgm1");
-    mp_Ui->pgmsComboBox->insertItem(1, QIcon(QPixmap(QString(":/HimalayaImages/Icons/MISC/Icon_Leica.png"))), "LeicaPrgm2");
-    mp_Ui->pgmsComboBox->insertItem(2, QIcon(QPixmap(QString(":/HimalayaImages/Icons/MISC/Icon_Leica.png"))), "LeicaPrgm3");
-    mp_Ui->pgmsComboBox->insertItem(3, QIcon(QPixmap(QString(":/HimalayaImages/Icons/MISC/TickOk.png"))), "UserPrgm1");
-    mp_Ui->pgmsComboBox->insertItem(4, QIcon(QPixmap(QString(":/HimalayaImages/Icons/MISC/TickOk.png"))), "UserPrgm2");
-    mp_Ui->pgmsComboBox->insertItem(5, QIcon(QPixmap(QString(":/HimalayaImages/Icons/MISC/TickOk.png"))), "UserPrgm3");
+    mp_Ui->pgmsComboBox->insertItem(0, QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png"), "LeicaPrgm1");
+    mp_Ui->pgmsComboBox->insertItem(1, QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png"), "LeicaPrgm2");
+    mp_Ui->pgmsComboBox->insertItem(2, QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png"), "LeicaPrgm3");
+    mp_Ui->pgmsComboBox->insertItem(3, QIcon(":/HimalayaImages/Icons/MISC/TickOk.png"), "UserPrgm1");
+    mp_Ui->pgmsComboBox->insertItem(4, QIcon(":/HimalayaImages/Icons/MISC/TickOk.png"), "UserPrgm2");
+    mp_Ui->pgmsComboBox->insertItem(5, QIcon(":/HimalayaImages/Icons/MISC/TickOk.png"), "UserPrgm3");
 }
 
+/****************************************************************************/
+/*!
+ *  \brief This slot is called when User Role changes
+ */
+/****************************************************************************/
+void CDashboardWidget::OnUserRoleChanged()
+{
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    m_UserRoleChanged = true;
+}
+
+
+void CDashboardWidget::OnButtonClicked(int whichBtn)
+{
+    if ( whichBtn == Dashboard::firstButton ) {
+        switch(m_Operation)
+        {
+            case Dashboard::OP_PLAY:
+            {
+                qDebug() << " I am at Play";
+                mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
+                m_Operation = Dashboard::OP_PAUSE;
+                CheckPreConditionsToRunProgram();
+            }
+            break;
+            case Dashboard::OP_PAUSE:
+            {
+                qDebug() << " I am at Pause";
+
+                mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
+                m_Operation = Dashboard::OP_PLAY;
+                CheckPreConditionsToPauseProgram();
+
+            }
+            break;
+        }
+    }
+    else if (whichBtn == Dashboard::secondButton)
+    {
+        qDebug() << " I am at Abort";
+        CheckPreConditionsToAbortProgram();
+    }
+
+}
+
+void CDashboardWidget::OnRMSValueChanged(Global::RMSOptions_t state)
+{
+    m_RMSState = state;
+}
+
+void CDashboardWidget::CheckPreConditionsToRunProgram()
+{
+    if((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
+        m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
+            Global::RMS_OFF != m_RMSState)
+    {
+        qDebug() << "RMS IS ON && User = Admin | Service";
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(tr("Warning"));
+        mp_MessageDlg->SetText(tr("Do you want to Start the Program with Expired Reagents."));
+        mp_MessageDlg->SetButtonText(3, tr("Yes"));
+        mp_MessageDlg->SetButtonText(2, tr("No"));
+        mp_MessageDlg->SetButtonText(1, tr("Cancel"));
+        mp_MessageDlg->Show();
+        CONNECTSIGNALSLOT(mp_MessageDlg, ButtonLeftClicked(), this, OnPressYes());
+        CONNECTSIGNALSLOT(mp_MessageDlg, ButtonCenterClicked(), this, OnPressNo());
+        CONNECTSIGNALSLOT(mp_MessageDlg, ButtonRightClicked(), this, OnPressCancel());
+
+    }
+
+}
+
+void CDashboardWidget::CheckPreConditionsToPauseProgram()
+{
+
+}
+
+
+void CDashboardWidget::CheckPreConditionsToAbortProgram()
+{
+
+}
+
+void CDashboardWidget::RunProgram()
+{
+    // Send command to Master
+}
+
+void CDashboardWidget::PauseProgram()
+{
+    // Send command to Master
+}
+
+void CDashboardWidget::AbortProgram()
+{
+    // Send command to Master
+}
+
+void CDashboardWidget::OnPressYes()
+{
+    qDebug() << " Start the Program"; // to do
+    RunProgram();
+}
+
+void CDashboardWidget::OnPressNo()
+{
+    qDebug() << " On NO "; // to do
+}
+
+void CDashboardWidget::OnPressCancel()
+{
+    qDebug() << " On Cancel"; // to do
+}
 
 } // End of namespace Dashboard

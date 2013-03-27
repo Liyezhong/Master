@@ -36,10 +36,12 @@ CDashboardEndTimeWidget::CDashboardEndTimeWidget(QWidget *p_Parent) :QWidget(p_P
     m_btnPixmap.load(":/HimalayaImages/LongButton/LongButton_Enabled.png");
     m_progBarPixmap.load(":/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png");
 
-
-
     setMinimumSize(QSize(250, 170));
     InitializeEndTimeWidgetItems();
+
+
+    CONNECTSIGNALSLOT(mp_btnEndTime, clicked(), this, OnButtonClicked());
+    CONNECTSIGNALSLOT(mp_wdgtDateTime->GetContent(), ApplyData(QDateTime), this, OnDateTimeSelected(QDateTime));
 
 }
 
@@ -52,6 +54,7 @@ CDashboardEndTimeWidget::~CDashboardEndTimeWidget()
         delete mp_lblReagentName;
         delete mp_lblTime;
         delete mp_lblTimeValue;
+        delete mp_wdgtDateTime;
 
     } catch(...) {
 
@@ -80,6 +83,8 @@ void CDashboardEndTimeWidget::InitializeEndTimeWidgetItems()
     mp_lblTimeValue = new QLabel("00:00", this);
     mp_lblTimeValue->setGeometry(QRect(110, 100, 110, 20));
 
+    mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget();
+
     update();
 
 }
@@ -94,5 +99,20 @@ void CDashboardEndTimeWidget::paintEvent(QPaintEvent *)
 
 
 }
+
+void CDashboardEndTimeWidget::OnButtonClicked()
+{
+    mp_wdgtDateTime->GetContent()->RefreshDateTime(Global::TIME_24);
+    mp_wdgtDateTime->show();
+}
+
+void CDashboardEndTimeWidget::OnDateTimeSelected(QDateTime selDateTime)
+{
+    //mp_btnEndTime->setText(selDateTime.toString());
+}
+
+
+
+
 
 }    // end of namespace Dashboard

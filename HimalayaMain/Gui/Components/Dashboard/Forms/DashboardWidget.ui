@@ -78,7 +78,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pauseButton">
+      <widget class="QPushButton" name="abortButton">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -90,7 +90,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normalon>:/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png</normalon>
+         <normalon>:/HimalayaImages/Icons/Dashboard/Operation/Operation_Abort.png</normalon>
         </iconset>
        </property>
        <property name="iconSize">

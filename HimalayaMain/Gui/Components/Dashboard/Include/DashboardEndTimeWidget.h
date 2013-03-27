@@ -35,6 +35,8 @@
 //#include <QHBoxLayout>
 #include <QVBoxLayout>
 
+#include "Dashboard/Include/DashboardDateTimeWidget.h"
+
 namespace Dashboard {
 
 /****************************************************************************/
@@ -56,6 +58,10 @@ public:
 protected:
     void paintEvent(QPaintEvent *);
 
+public slots:
+    void OnButtonClicked();
+    void OnDateTimeSelected(QDateTime selDateTime);
+
 
 private:
     QPushButton     *mp_btnEndTime;
@@ -66,6 +72,7 @@ private:
 
     QPixmap         m_btnPixmap;
     QPixmap         m_progBarPixmap;
+    Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
 
 
     void InitializeEndTimeWidgetItems();
