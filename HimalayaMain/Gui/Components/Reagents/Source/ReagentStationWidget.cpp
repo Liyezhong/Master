@@ -4,7 +4,7 @@
 #include "MainMenu/Include/ScrollWheel.h"
 #include "MainMenu/Include/SliderControl.h"
 #include "Reagents/Include/ReagentStationWidget.h"
-#include "Reagents/Include/ModifyReagentStatusDlg.h"
+#include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "Reagents/Build/ui_ReagentStationWidget.h"
 
 
@@ -45,7 +45,6 @@ CReagentStationWidget::CReagentStationWidget(QWidget *p_Parent):
     CONNECTSIGNALSLOT(mp_TableWidget, pressed(QModelIndex), this, SelectionChanged(QModelIndex));
     CONNECTSIGNALSLOT(mp_Ui->btnEdit, clicked(), this, OnEdit());
     CONNECTSIGNALSLOT(this, UpdateReagentList(), &m_ReagentStationModel, UpdateReagentList());
-    CONNECTSIGNALSLOT(mp_Ui->scrollTable,Scrolled(), this, OnContentScrolled());
 }
 
 /****************************************************************************/
@@ -58,7 +57,7 @@ CReagentStationWidget::~CReagentStationWidget()
     try {
         delete mp_TableWidget;
         delete mp_Ui;
-
+        delete mp_ModifiyReagentStationDlg;
     }
     catch (...) {
         // to please Lint.
@@ -106,10 +105,10 @@ void CReagentStationWidget::SetUserSettings(DataManager::CUserSettings *p_UserSe
 void CReagentStationWidget::OnEdit()
 {
     m_MessageDlg.SetText(tr("Select Reagent"));
-    mp_ModifiyReagentStatusDlg->SetDialogTitle(tr("Select Reagent"));
-    mp_ModifiyReagentStatusDlg->SetDashboardStation(mp_DashStation);
-    mp_ModifiyReagentStatusDlg->move(96,70);
-    mp_ModifiyReagentStatusDlg->show();
+    mp_ModifiyReagentStationDlg->SetDialogTitle(tr("Select Reagent"));
+    mp_ModifiyReagentStationDlg->SetDashboardStation(mp_DashStation);
+    mp_ModifiyReagentStationDlg->move(96,70);
+    mp_ModifiyReagentStationDlg->show();
 }
 
 /****************************************************************************/
@@ -261,12 +260,13 @@ void CReagentStationWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConne
     m_ReagentStationModel.SetRequiredContainers(mp_ReagentList, mp_DataConnector->ReagentGroupList,
                                                mp_DataConnector->DashboardStationList, 2);
     ResizeHorizontalSection();
-    mp_ModifiyReagentStatusDlg = new CModifyReagentStatusDlg(this, p_MainWindow, p_DataConnector);
-    mp_ModifiyReagentStatusDlg->setModal(true);
-    CONNECTSIGNALSIGNAL(mp_ModifiyReagentStatusDlg, UpdateStationChangeReagent(QString,QString),
+    mp_ModifiyReagentStationDlg = new CModifyReagentStationDlg(this, p_MainWindow, p_DataConnector);
+    mp_ModifiyReagentStationDlg->setModal(true);
+    CONNECTSIGNALSIGNAL(mp_ModifiyReagentStationDlg, UpdateStationChangeReagent(QString,QString),
                         this, UpdateStationChangeReagent(QString,QString));
-    CONNECTSIGNALSIGNAL(mp_ModifiyReagentStatusDlg, UpdateStationSetAsEmpty(QString),
+    CONNECTSIGNALSIGNAL(mp_ModifiyReagentStationDlg, UpdateStationSetAsEmpty(QString),
                         this, UpdateStationSetAsEmpty(QString));
+
 }
 
 
@@ -280,14 +280,15 @@ void CReagentStationWidget::ResetButtons()
     mp_Ui->btnEdit->setEnabled(false);
 }
 
+/****************************************************************************/
+/*!
+ *  \brief This Slot Called when Reagent is updated in station
+ */
+/****************************************************************************/
 void CReagentStationWidget:: StationReagentUpdated()
 {
     m_ReagentStationModel.UpdateReagentList();
     m_ReagentStationModel.ResetAndUpdateModel();
-}
-void CReagentStationWidget:: OnContentScrolled()
-{
-
 }
 
 }

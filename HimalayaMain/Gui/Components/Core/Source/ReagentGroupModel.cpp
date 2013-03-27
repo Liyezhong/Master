@@ -253,35 +253,6 @@ void CReagentGroupModel::SetUserSettings(DataManager::CUserSettings *p_UserSetti
 }
 
 /****************************************************************************/
-QVariant CReagentGroupModel::dataStatus(const QModelIndex &Index, int Role) const
-{
-    DataManager::CReagentGroup *p_ReagentGroup = NULL;
-    if (mp_ReagentGroupList == NULL) {
-        return QVariant();
-    }
-
-    if (Index.row() < m_ReagentGroupNames.count() && (p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(m_Identifiers[m_ReagentGroupNames[Index.row()]])))){
-        if (Role == (int)Qt::DisplayRole) {
-            switch (Index.column()) {
-
-            case 0:
-                return p_ReagentGroup->GetReagentGroupName();
-
-            }
-        }
-
-        if (Role == (int)Qt::UserRole) {
-            return p_ReagentGroup->GetReagentGroupName();
-        }
-    }
-    else if (Role == (int)Qt::BackgroundRole) {
-        QPalette Palette;
-        return QVariant(Palette.color(QPalette::Window));
-    }
-    return QVariant();
-}
-
-/****************************************************************************/
 /*!
  *  \brief Returns item model flags of a cell
  *

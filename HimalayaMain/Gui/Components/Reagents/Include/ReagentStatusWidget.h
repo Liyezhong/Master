@@ -10,7 +10,7 @@
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 #include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/FileView.h"
-#include "Reagents/Include/ModifyReagentStatusDlg.h"
+
 
 #include "KeyBoard/Include/KeyBoard.h"
 
@@ -20,7 +20,7 @@ namespace Ui {
     class CReagentStatusWidget;
 }
 
-class CModifyReagentStatusDlg;
+
 
 //!< Button Type -Edit, New or Copy
 typedef enum {
@@ -87,7 +87,6 @@ private slots:
     void SelectionChanged(QModelIndex Index);
     void OnProcessStateChanged();
     void OnUserRoleChanged();
-    void OnContentScrolled();
     void StationReagentUpdated();
 
 public slots:

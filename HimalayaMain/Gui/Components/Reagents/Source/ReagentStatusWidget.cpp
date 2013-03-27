@@ -4,7 +4,7 @@
 #include "MainMenu/Include/ScrollWheel.h"
 #include "MainMenu/Include/SliderControl.h"
 #include "Reagents/Include/ReagentStatusWidget.h"
-#include "Reagents/Include/ModifyReagentStatusDlg.h"
+#include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "ui_ReagentStatusWidget.h"
 
 #include <QDebug>
@@ -46,7 +46,6 @@ CReagentStatusWidget::CReagentStatusWidget(QWidget *p_Parent):
     CONNECTSIGNALSLOT(mp_Ui->btnFull, clicked(), this, OnSetAsFull());
     CONNECTSIGNALSLOT(mp_Ui->btnReset, clicked(), this, OnResetData());
     CONNECTSIGNALSLOT(this, UpdateReagentList(), &m_ReagentStatusModel, UpdateReagentList());
-    CONNECTSIGNALSLOT(mp_Ui->scrollTable,Scrolled(), this, OnContentScrolled());
 }
 
 /****************************************************************************/
@@ -411,14 +410,16 @@ void CReagentStatusWidget::ResetButtons()
     mp_Ui->btnReset->setEnabled(false);
 }
 
+/****************************************************************************/
+/*!
+ *  \brief This Slot Called when StationList updated
+ */
+/****************************************************************************/
+
 void CReagentStatusWidget:: StationReagentUpdated()
 {
     m_ReagentStatusModel.UpdateReagentList();
     m_ReagentStatusModel.ResetAndUpdateModel();
-}
-void CReagentStatusWidget:: OnContentScrolled()
-{
-
 }
 
 }

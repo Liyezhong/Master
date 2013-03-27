@@ -259,7 +259,7 @@ bool CProgramModel::setData(const QModelIndex &Index, const QVariant &Value, int
     if (Role == (int)Qt::CheckStateRole) {
        if (mp_ProgramList->GetProgram(Index.row(), Program) == true) {
             if (NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0) {
-                Program.LockProgram();
+                //vinay Program.LockProgram();
                 return mp_ProgramList->UpdateProgram(&Program);
             }
         }

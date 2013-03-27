@@ -259,10 +259,10 @@ void CModifyLeicaHne::OnUpdateProgramColor(DataManager::CProgram &Program,
         m_ColorReplaced = true;
     }
     else {
-        m_Program.SetColor(Program.GetColor());
+        //vinay m_Program.SetColor(Program.GetColor());
         (void) m_ProgramListClone.UpdateProgram(&m_Program);
     }
-    mp_Ui->btnColor->SetColor(Program.GetColor());
+ //vinay    mp_Ui->btnColor->SetColor(Program.GetColor());
 }
 
 /****************************************************************************/
@@ -273,12 +273,12 @@ void CModifyLeicaHne::OnUpdateProgramColor(DataManager::CProgram &Program,
 void CModifyLeicaHne::OnSave()
 {
     if (mp_ScrollWheelHaemotoxylin) {
-        m_LeicaProgramStepOne.SetIntensity(mp_ScrollWheelHaemotoxylin->
-                                           GetCurrentData().toInt());
+     //vinay    m_LeicaProgramStepOne.SetIntensity(mp_ScrollWheelHaemotoxylin->
+     //vinay                                      GetCurrentData().toInt());
     }
 
     if (mp_ScrollWheelEosin) {
-        m_LeicaProgramStepTwo.SetIntensity(mp_ScrollWheelEosin->GetCurrentData().toInt());
+     //vinay    m_LeicaProgramStepTwo.SetIntensity(mp_ScrollWheelEosin->GetCurrentData().toInt());
     }
 
     (void) m_Program.UpdateProgramStep(&m_LeicaProgramStepOne);

@@ -21,7 +21,7 @@
 #ifndef REAGENTS_REAGENTWIDGET_H
 #define REAGENTS_REAGENTWIDGET_H
 
-#include "Core/Include/ReagentModel.h"
+#include "Core/Include/ReagentRMSModel.h"
 #include "Core/Include/DataConnector.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "Global/Include/Utils.h"
@@ -52,7 +52,7 @@ class CReagentWidget : public QWidget
 private:
     Ui::CReagentWidget *mp_Ui;                     //!< User interface
     Core::CDataConnector *mp_DataConnector;          //!< Data object
-    Core::CReagentModel m_ReagentModel;             //!< Model for the table
+    Core::CReagentRMSModel m_ReagentRMSModel;             //!< Model for the table
     DataManager::CDataReagentList *mp_ReagentList;  //!< Reagent list
     DataManager::CReagent m_SelectedReagent;        //!< Currently selected reagent
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
@@ -67,7 +67,6 @@ private:
     MainMenu::CMainWindow *p_Parent;
 
 protected:
-//    void showEvent(QShowEvent *);
       void changeEvent(QEvent *p_Event);
 
 public:
@@ -79,9 +78,6 @@ public:
 
 
 private:
-    void PopulateReagentList();
-    void ResizeHorizontalSection();
-    //void ResetButtons();
     void RetranslateUI();
 
 signals:

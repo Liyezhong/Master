@@ -34,7 +34,6 @@ void changeEvent(QEvent *p_Event);
 public:
     explicit CReagentSubMenuWidget(QWidget *p_Parent = 0);
     virtual ~CReagentSubMenuWidget();
-   // void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
 
 signals:
     /****************************************************************************/

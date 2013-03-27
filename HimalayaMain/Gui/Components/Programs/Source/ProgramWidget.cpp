@@ -227,8 +227,8 @@ void CProgramWidget::OnEdit()
         }
         else {
             mp_ModifyLeicaHne->SetDialogTitle(tr("View Leica Program"));
-        }
-        bool LeicaReagentsFound;
+    }
+ /* //vinay     bool LeicaReagentsFound;
         LeicaReagentsFound = const_cast <DataManager::CProgram *>
                 (mp_Program)->GetLeicaReagents(FirstProgramStepWithLeicaReagent, SecondProgramStepWithLeicaReagent);
 
@@ -248,7 +248,7 @@ void CProgramWidget::OnEdit()
             m_MessageDlg.HideButtons();
             m_MessageDlg.SetText(tr("Leica Reagents not found"));
             (void) m_MessageDlg.exec();
-        }
+        }*/
     }
 }
 

@@ -32,7 +32,6 @@ CReagentGroupWidget::CReagentGroupWidget(QWidget *p_Parent):
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->setModel(&m_ReagentGroupModel);
 
-
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
 
@@ -55,11 +54,9 @@ CReagentGroupWidget::CReagentGroupWidget(QWidget *p_Parent):
 CReagentGroupWidget::~CReagentGroupWidget()
 {
     try {
-
         delete mp_TableWidget;
         delete mp_ModifyReagentColorDlg;
         delete mp_Ui;
-
     }
     catch (...) {
         // to please Lint.
@@ -92,9 +89,11 @@ void CReagentGroupWidget::SetPtrToMainWindow(DataManager::CReagentGroupColorList
     m_ReagentGroupModel.SetReagentGroupList(mp_ReagentGroupList, 2);
     ResizeHorizontalSection();
     mp_ModifyReagentColorDlg = new CModifyReagentGroupColorDlg(this, p_MainWindow);
+    mp_ModifyReagentColorDlg->SetReagentGroupColorListptr(mp_CReagentGroupColorList);
     mp_ModifyReagentColorDlg->setModal(true);
     CONNECTSIGNALSLOT(mp_ModifyReagentColorDlg, UpdateReagentGroup(DataManager::CReagentGroup&),
                         this, OnUpdateReagentGroup(DataManager::CReagentGroup&));
+    CONNECTSIGNALSLOT(this,ReagentGroupColorUpdated(),mp_ModifyReagentColorDlg,UpdateReagentGroupColor());
 
 }
 
@@ -181,11 +180,11 @@ void CReagentGroupWidget::SelectionChanged(QModelIndex Index)
 /****************************************************************************/
 void CReagentGroupWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagents::CReagentsWidget",
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagents::CReagentRMSWidget",
                                                         "Group", 0, QApplication::UnicodeUTF8));
-   (void) m_ReagentGroupModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentModel",
+   (void) m_ReagentGroupModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                         "Reagent Group", 0, QApplication::UnicodeUTF8),0);
-   (void) m_ReagentGroupModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentModel",
+   (void) m_ReagentGroupModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                           "Color", 0, QApplication::UnicodeUTF8),0);
 
 }
@@ -200,7 +199,7 @@ void CReagentGroupWidget::OnEdit()
     m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
                             "\nPlease close the dialog with \"Close\""));
     mp_ModifyReagentColorDlg->SetDialogTitle(tr("Select Color"));
-    mp_ModifyReagentColorDlg->SetReagentGroupList(*mp_CReagentGroupColorList,*mp_ReagentGroupList, *mp_ReagentGroup);
+    mp_ModifyReagentColorDlg->SetReagentGroupList(*mp_ReagentGroupList, *mp_ReagentGroup);
     mp_ModifyReagentColorDlg->move(96,70);
     mp_ModifyReagentColorDlg->show();
 

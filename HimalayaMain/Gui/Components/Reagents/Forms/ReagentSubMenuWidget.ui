@@ -103,7 +103,9 @@
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
-        <normaloff>:/HimalayaImages/Icons/Configuration/Configuration_Agitation.png</normaloff>:/HimalayaImages/Icons/Configuration/Configuration_Agitation.png</iconset>
+        <normaloff>:/HimalayaImages/Icons/Configuration/Configuration_Agitation.png</normaloff>
+        <selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_Agitation_act.png</selectedoff>
+        <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Agitation_act.png</selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Agitation.png</iconset>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
@@ -115,7 +117,8 @@
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
-        <normaloff>:/HimalayaImages/Icons/Configuration/Configuration_Alarm.png</normaloff>:/HimalayaImages/Icons/Configuration/Configuration_Alarm.png</iconset>
+        <normaloff>:/HimalayaImages/Icons/Configuration/Configuration_Alarm.png</normaloff>
+        <selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_Alarm_act.png</selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_Alarm.png</iconset>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
@@ -127,16 +130,23 @@
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
-        <normaloff>:/Large/Icons/Configuration/Configuration_Water.png</normaloff>:/Large/Icons/Configuration/Configuration_Water.png</iconset>
+        <normaloff>:/Large/Icons/Configuration/Configuration_Water.png</normaloff>
+        <selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_Water_act.png</selectedoff>
+        <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Water_act.png</selectedon>:/Large/Icons/Configuration/Configuration_Water.png</iconset>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Reagents</string>
+       <string>RMS</string>
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
-        <normaloff>:/HimalayaImages/Icons/Configuration/Configuration_CountrySpecific.png</normaloff>:/HimalayaImages/Icons/Configuration/Configuration_CountrySpecific.png</iconset>
+        <normaloff>:/HimalayaImages/Icons/Configuration/Configuration_CountrySpecific.png</normaloff>
+        <selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_CountrySpecific_act.png</selectedoff>
+        <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_CountrySpecific_act.png</selectedon>:/HimalayaImages/Icons/Configuration/Configuration_CountrySpecific.png</iconset>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>

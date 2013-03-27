@@ -21,7 +21,7 @@
 #ifndef DASHBOARD_DASHBOARDSCENE_H
 #define DASHBOARD_DASHBOARDSCENE_H
 
-#include "Core/Include/ReagentModel.h"
+#include "Core/Include/ReagentRMSModel.h"
 #include "Core/Include/DashboardStationItem.h"
 #include "Dashboard/Include/DashboardStationConnector.h"
 #include "Dashboard/Include/DashboardEndTimeWidget.h"

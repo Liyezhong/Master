@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ReagentModel.cpp
+/*! \file ReagentStationModel.cpp
  *
  *  \brief ReagentStationModel Implementation.
  *
@@ -304,42 +304,6 @@ void CReagentStationModel::SetUserSettings(DataManager::CUserSettings *p_UserSet
         m_UserSettings = *p_UserSettings;
 }
 
-/****************************************************************************/
-QVariant CReagentStationModel::dataStatus(const QModelIndex &Index, int Role) const
-{
-    DataManager::CReagent *p_Reagent = NULL;
-    if (mp_ReagentList == NULL) {
-        return QVariant();
-    }
-
-    if (Index.row() < m_ReagentNames.count() && (p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_Identifiers[m_ReagentNames[Index.row()]])))){
-        if (Role == (int)Qt::DisplayRole) {
-            switch (Index.column()) {
-//            case 0:
-//                return p_Reagent->GetReagentStation();
-            case 1:
-                return p_Reagent->GetReagentName();
-//            case 2:
-//                return p_Reagent->GetCassetteUntilChange();
-//            case 3:
-//                return p_Reagent->GetcassetteOverdue();
-//            case 4:
-//                return p_Reagent->GetExpirayDate();
-//            case 5:
-//                return p_Reagent->GetStatus();
-            }
-        }
-
-        if (Role == (int)Qt::UserRole) {
-            return p_Reagent->GetReagentName();
-        }
-    }
-    else if (Role == (int)Qt::BackgroundRole) {
-        QPalette Palette;
-        return QVariant(Palette.color(QPalette::Window));
-    }
-    return QVariant();
-}
 /****************************************************************************/
 /*!
  *  \brief Returns item model flags of a cell

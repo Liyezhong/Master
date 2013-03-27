@@ -178,7 +178,7 @@ bool CDataContainer::ResetDCDashboardStationList()
 bool CDataContainer:: ResetDCReagentGroupColorList()
 {
     if (m_IsInitialized == true) {
-        qDebug() << "CDataContainer::ResetDCDashboardStationList was already called";
+        qDebug() << "CDataContainer::ResetDCReagentGroupColorList was already called";
         return false;
     }
 

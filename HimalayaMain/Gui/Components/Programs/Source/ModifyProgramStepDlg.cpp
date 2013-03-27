@@ -162,16 +162,16 @@ void CModifyProgramStepDlg::SetProgramStep(DataManager::CProgramStep *p_ProgramS
     mp_ReagentList = p_ReagentList;
 //    mp_DashboardStationList = p_DashboardStationList;
 
-    Percent = mp_ProgramStep->GetMaxDurationInPercent() / 25;
+  /* //vinay Percent = mp_ProgramStep->GetMaxDurationInPercent() / 25;
     if (Percent > 4) {
         Percent = 4;
-    }
+    }*/
     m_ButtonGroup.button(Percent)->setChecked(true);
 
 //    mp_Ui->checkBoxExclusive->setChecked(mp_ProgramStep->GetExclusive());
 //    mp_Ui->checkBoxShow->setChecked(false);
 
-    Duration = Duration.addSecs(mp_ProgramStep->GetMinDurationInSeconds());
+ //vinay   Duration = Duration.addSecs(mp_ProgramStep->GetMinDurationInSeconds());
     mp_ScrollWheelHour->SetCurrentData(Duration.hour());
     mp_ScrollWheelMin->SetCurrentData(Duration.minute());
     mp_ScrollWheelSec->SetCurrentData(Duration.second());
@@ -337,8 +337,8 @@ void CModifyProgramStepDlg::OnOk()
             else {
                 m_NewProgramStep = true ;
 //                ProgramStep.SetExclusive(mp_Ui->checkBoxExclusive->isChecked());
-                ProgramStep.SetMaxDurationInPercent(MaxDurationValueInPercent);
-                ProgramStep.SetMinDurationInSeconds(MinDurationInSec);
+ //vinay               ProgramStep.SetMaxDurationInPercent(MaxDurationValueInPercent);
+ //vinay               ProgramStep.SetMinDurationInSeconds(MinDurationInSec);
                 ProgramStep.SetReagentID(ReagentId);
                 emit AddProgramStep(&ProgramStep, m_NewProgramStep);
                 accept();
@@ -348,8 +348,8 @@ void CModifyProgramStepDlg::OnOk()
             if (m_ModifyProgramDlgButtonType == NEW_BTN_CLICKED) {
                 m_NewProgramStep = true ;
 //                ProgramStep.SetExclusive(mp_Ui->checkBoxExclusive->isChecked());
-                ProgramStep.SetMaxDurationInPercent(MaxDurationValueInPercent);
-                ProgramStep.SetMinDurationInSeconds(MinDurationInSec);
+ //vinay               ProgramStep.SetMaxDurationInPercent(MaxDurationValueInPercent);
+ //vinay               ProgramStep.SetMinDurationInSeconds(MinDurationInSec);
                 ProgramStep.SetReagentID(ReagentId);
                 emit AddProgramStep(&ProgramStep, m_NewProgramStep);
             }
@@ -357,8 +357,8 @@ void CModifyProgramStepDlg::OnOk()
                 m_NewProgramStep = false ;
                 ProgramStep = *mp_ProgramStep;
 //                ProgramStep.SetExclusive(mp_Ui->checkBoxExclusive->isChecked());
-                ProgramStep.SetMaxDurationInPercent(MaxDurationValueInPercent);
-                ProgramStep.SetMinDurationInSeconds(MinDurationInSec);
+  //vinay              ProgramStep.SetMaxDurationInPercent(MaxDurationValueInPercent);
+  //vinay              ProgramStep.SetMinDurationInSeconds(MinDurationInSec);
                 ProgramStep.SetReagentID(ReagentId);
                 emit AddProgramStep(&ProgramStep, m_NewProgramStep);
             }
@@ -624,15 +624,15 @@ void CModifyProgramStepDlg::RetranslateUI()
                                             "Duration", 0, QApplication::UnicodeUTF8));
 
     // Added void to please lint
-    (void) m_ReagentModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentModel",
+    (void) m_ReagentModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                         "Program Name", 0, QApplication::UnicodeUTF8),0);
-    (void) m_ReagentModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentModel",
+    (void) m_ReagentModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                         "Nr.", 0, QApplication::UnicodeUTF8),0);
-    (void) m_ReagentModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Core::CReagentModel",
+    (void) m_ReagentModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                         "Color", 0, QApplication::UnicodeUTF8),0);
-    (void) m_ReagentModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Core::CReagentModel",
+    (void) m_ReagentModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                         "Abbr.", 0, QApplication::UnicodeUTF8),0);
-    (void) m_ReagentModel.setHeaderData(4,Qt::Horizontal,QApplication::translate("Core::CReagentModel",
+    (void) m_ReagentModel.setHeaderData(4,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                         "Leica", 0, QApplication::UnicodeUTF8),0);
 }
 

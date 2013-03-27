@@ -28,7 +28,7 @@
 #include "KeyBoard/Include/KeyBoard.h"
 #include "Reagents/Include/ReagentStatusWidget.h"
 #include "MainMenu/Include/ScrollTable.h"
-#include "Core/Include/ReagentStatusEditModel.h"
+#include "Core/Include/ReagentStationEditModel.h"
 #include <QButtonGroup>
 
 namespace Reagents {
@@ -51,6 +51,7 @@ private:
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object
     DataManager::CReagentGroup m_ReagentGroup;
+    DataManager::CReagentGroupColorList *mp_CReagentGroupColorList;
     QMap<int, QPushButton*> m_QPushButtonMap;
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
@@ -67,12 +68,16 @@ public:
     explicit CModifyReagentGroupColorDlg(QWidget *p_Parent = NULL,
                                MainMenu::CMainWindow *p_MainWindow = NULL);
     virtual ~CModifyReagentGroupColorDlg();
-    void SetReagentGroupList(DataManager::CReagentGroupColorList &mp_CReagentGroupColorList, DataManager::CDataReagentGroupList &ReagentGroupList, const DataManager::CReagentGroup &ReagentGroup);
+    void SetReagentGroupList(DataManager::CDataReagentGroupList &ReagentGroupList, const DataManager::CReagentGroup &ReagentGroup);
+    void SetReagentGroupColorListptr(DataManager::CReagentGroupColorList  *p_CReagentGroupColorList);
 private slots:
     void OnOk();
     void OnCancel();
     void OnButtonGroup(int Id);
     void OnProcessStateChanged();
+
+public slots:
+    void UpdateReagentGroupColor();
 protected:
     void changeEvent(QEvent *p_Event);
 

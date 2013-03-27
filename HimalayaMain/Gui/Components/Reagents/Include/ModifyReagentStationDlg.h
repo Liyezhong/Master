@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file ModifyReagentStatusDlg.cpp
+/*! \file ModifyReagentStationDlg.cpp
  *
- *  \brief ModifyReagentStatusDlg Implementation.
+ *  \brief ModifyReagentStationDlg Implementation.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2013-01-29
@@ -17,8 +17,8 @@
  *
  */
 /****************************************************************************/
-#ifndef MODIFYREAGENTSTATUSDLG_H
-#define MODIFYREAGENTSTATUSDLG_H
+#ifndef MODIFYREAGENTSTATIONDLG_H
+#define MODIFYREAGENTSTATIONDLG_H
 
 
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
@@ -28,13 +28,13 @@
 #include "KeyBoard/Include/KeyBoard.h"
 #include "Reagents/Include/ReagentStatusWidget.h"
 #include "MainMenu/Include/ScrollTable.h"
-#include "Core/Include/ReagentStatusEditModel.h"
+#include "Core/Include/ReagentStationEditModel.h"
 #include <QButtonGroup>
 
 namespace Reagents {
 
 namespace Ui {
-    class CModifyReagentStatusDlg;
+    class CModifyReagentStationDlg;
 }
 
 /****************************************************************************/
@@ -42,12 +42,12 @@ namespace Ui {
  * \brief Edit dialog for  reagents of the user
  */
 /****************************************************************************/
-class CModifyReagentStatusDlg : public MainMenu::CDialogFrame
+class CModifyReagentStationDlg : public MainMenu::CDialogFrame
 {
     Q_OBJECT
 
 private:
-    Ui::CModifyReagentStatusDlg *mp_Ui;                   //!< User interface    
+    Ui::CModifyReagentStationDlg *mp_Ui;                   //!< User interface
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object
     DataManager::CDashboardStation m_DashboardStation;
@@ -58,14 +58,14 @@ private:
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
-    Core::CReagentStatusEditModel m_ReagentEditModel;             //!< Model for the table
+    Core::CReagentStationEditModel m_ReagentEditModel;             //!< Model for the table
     Core::CDataConnector *mp_DataConnector;         //!< Global data container
 
 public:
-    explicit CModifyReagentStatusDlg(QWidget *p_Parent = NULL,
+    explicit CModifyReagentStationDlg(QWidget *p_Parent = NULL,
                                MainMenu::CMainWindow *p_MainWindow = NULL,
                                Core::CDataConnector *p_DataConnector= NULL);
-    virtual ~CModifyReagentStatusDlg();
+    virtual ~CModifyReagentStationDlg();
 
     void SetDashboardStation(DataManager::CDashboardStation* p_Station);
 

@@ -143,11 +143,11 @@ void CRackGripColorDlg::UpdateButtons()
 
     for(qint32 i = 0; i < m_ProgramList.GetNumberOfPrograms(); i++) {
         DataManager::CProgram Program;
-        if (m_ProgramList.GetProgram(i, Program) == true) {
+   /*  //vinay    if (m_ProgramList.GetProgram(i, Program) == true) {
             if (Program.GetColor() != "white") {
                 m_Programs[Program.GetColor()] = Program;
             }
-        }
+        }*/
     }
     foreach(p_Button, m_ButtonGroup.buttons()) {
         QPixmap Pixmap(45, 35);
@@ -156,7 +156,7 @@ void CRackGripColorDlg::UpdateButtons()
         Painter.drawPixmap(0, 0, QPixmap(":/Rack/RackColor/RackColor_" +
                                          m_Colors[m_ButtonGroup.id(p_Button)] + ".png"));
         Painter.setPen(Qt::white);
-        Painter.drawText(12, 21, m_Programs[m_Colors[m_ButtonGroup.id(p_Button)]].GetShortName());
+    //vinay    Painter.drawText(12, 21, m_Programs[m_Colors[m_ButtonGroup.id(p_Button)]].GetShortName());
         p_Button->setIcon(QIcon(Pixmap));
     }
 }
@@ -173,7 +173,7 @@ void CRackGripColorDlg::OnButtonGroup(int Id)
     if (mp_Program == NULL) {
         return;
     }
-    if (m_Programs[m_Colors[Id]].GetColor() == m_Colors[Id] && m_Programs[m_Colors[Id]].GetID()
+   /* //vinay if (m_Programs[m_Colors[Id]].GetColor() == m_Colors[Id] && m_Programs[m_Colors[Id]].GetID()
             != mp_Program->GetID()) {
         MainMenu::CMessageDlg MessageDlg(this);
         MessageDlg.SetTitle(tr("Information Message"));
@@ -204,7 +204,7 @@ void CRackGripColorDlg::OnButtonGroup(int Id)
             return;
         }
     }
-    UpdateButtons();
+    UpdateButtons();*/
 }
 
 /****************************************************************************/

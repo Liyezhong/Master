@@ -10,7 +10,7 @@
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 #include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/FileView.h"
-#include "Reagents/Include/ModifyReagentStatusDlg.h"
+#include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "KeyBoard/Include/KeyBoard.h"
 
 namespace Reagents {
@@ -18,7 +18,7 @@ namespace Ui{
     class CReagentStationWidget;
 }
 
-class CModifyReagentStatusDlg;
+class CModifyReagentStationDlg;
 
 /**********************************************************/
 /**
@@ -48,8 +48,7 @@ private:
     DataManager::CDashboardStation *mp_DashStation;        //!< Station object
     DataManager::CUserSettings *mp_UserSettings;    //!< Data object
     ButtonGroup_t m_ButtonType;                      //!< Informs which button was clicked
-    CModifyReagentStatusDlg *mp_ModifiyReagentStatusDlg;        //!< Edit reagent dialog
-    QStringList m_ReagentList;                      //!< List of Reagents
+    CModifyReagentStationDlg *mp_ModifiyReagentStationDlg;        //!< Edit reagent dialog
     MainMenu::CFileView *mp_ReagentStatusWidgetView;     //!< Content of this widget
     QString m_Status;                               //!< Current Staus of Reagent
     KeyBoard::CKeyBoard *mp_KeyBoard;
@@ -75,17 +74,11 @@ public:
                             KeyBoard::CKeyBoard *p_KeyBoard = NULL);
 private slots:
     void OnEdit();
-   // void OnSetAsEmpty();
-   // void OnSetAsFull();
-   // void OnResetData();
     void SelectionChanged(QModelIndex Index);
     void OnProcessStateChanged();
     void OnUserRoleChanged();
-    void OnContentScrolled();
     void StationReagentUpdated();
 
-public slots:
-   // void RMSChanged(const Global::RMSOptions_t RMSValue);
 signals:
     /****************************************************************************/
     /*!
@@ -96,8 +89,6 @@ signals:
     void UpdateReagentList();
     void UpdateStationChangeReagent(const QString&, const QString&);
     void UpdateStationSetAsEmpty(const QString&);
-   // void UpdateStationSetAsFull(const QString&);
-    //void UpdateStationResetData(const QString&);
 
 };
 

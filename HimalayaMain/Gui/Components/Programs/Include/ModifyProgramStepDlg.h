@@ -21,7 +21,7 @@
 #ifndef PROGRAMS_MODIFYPROGRAMSTEPDLG_H
 #define PROGRAMS_MODIFYPROGRAMSTEPDLG_H
 
-#include "Core/Include/ReagentModel.h"
+#include "Core/Include/ReagentRMSModel.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramStep.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
@@ -63,7 +63,7 @@ private:
     DataManager::CDataReagentList *mp_ReagentList;      //!< Global reagent list
     DataManager::CDashboardDataStationList *mp_DashboardStationList;      //!< Global Station list
     QButtonGroup m_ButtonGroup;                         //!< Group combining tolerance radio buttons
-    Core::CReagentModel m_ReagentModel;                 //!< Data model of the reagent table
+    Core::CReagentRMSModel m_ReagentModel;                 //!< Data model of the reagent table
     qint32 m_RowSelected;                               //!< Row selected in table
     bool m_RowNotSelected;                              //!< True - row not selected else selected
     bool m_NewProgramStep;                              //!< True if dialog popped up for New Program Step.

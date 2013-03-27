@@ -25,7 +25,7 @@
 #include "MainMenu/Include/BaseTable.h"
 #include "MainMenu/Include/DialogFrame.h"
 #include "Programs/Include/ModifyProgramStepDlg.h"
-#include "Core/Include/ReagentModel.h"
+#include "Core/Include/ReagentRMSModel.h"
 #include "Programs/Include/RackGripColorDlg.h"
 #include "Programs/Include/StepModel.h"
 #include "KeyBoard/Include/KeyBoard.h"

@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ReagentModel.h
+/*! \file ReagentStatusModel.h
  *
  *  \brief Definition file for class CReagentStatusModel.
  *
@@ -54,9 +54,6 @@ public:
     int rowCount(const QModelIndex &) const;
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &Index, int Role) const;  //data Reagent SubMenu
-    QVariant dataStatus(const QModelIndex &Index, int Role) const; //data Reagent Staus SubMenu
-
-
     QVariant headerData(int Section, Qt::Orientation Orientation, int Role) const;
     void ResetAndUpdateModel();
 

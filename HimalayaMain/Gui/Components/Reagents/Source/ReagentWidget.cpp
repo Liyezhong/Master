@@ -22,7 +22,7 @@
 #include "Global/Include/Utils.h"
 #include "Global/Include/Exception.h"
 #include "Reagents/Include/ReagentWidget.h"
-#include "Reagents/Include/ModifyReagentDlg.h"
+#include "Reagents/Include/ModifyReagentRMSDlg.h"
 #include "ui_ReagentWidget.h"
 #include <QDebug>
 
@@ -51,10 +51,8 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
 
 {
     mp_Ui->setupUi(this);
-   // SetPanelTitle(tr("Reagents"));
     m_ProcessRunning = false;
     m_ShowMessageDialog = false;
-    //m_ReagentModel.SetReagentList(mp_ReagentList, 3);
 
     DataManager::CUserSettings *p_Settings = mp_DataConnector->SettingsInterface->GetUserSettings();
     if (p_Settings) {
@@ -87,7 +85,7 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSLOT(mp_Ui->pageReagentGroup, UpdateReagentGroup(DataManager::CReagentGroup &), mp_DataConnector,
                         SendReagentGroupUpdate(DataManager::CReagentGroup &));
-
+    CONNECTSIGNALSIGNAL(mp_DataConnector,ReagentGroupColorUpdated(),mp_Ui->pageReagentGroup,ReagentGroupColorUpdated());
 
     CONNECTSIGNALSLOT(mp_Ui->pageReagentStation, UpdateStationChangeReagent(QString,QString),
                       mp_DataConnector, SendStationChangeReagent(QString,QString));
@@ -100,10 +98,6 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
                       mp_DataConnector, SendStationSetAsEmpty(QString));
     CONNECTSIGNALSLOT(mp_Ui->pageReagentStatus, UpdateStationSetAsFull(QString),
                       mp_DataConnector, SendStationSetAsFull(QString));
-
-
-    //CONNECTSIGNALSLOT(mp_Ui->pageReagentStatus, UpdateDashboardStationChangeReagent(DataManager::CDashboardStation&),
-    //                  mp_DataConnector, SendDashboardStationChangeReagent(DataManager::CDashboardStation&));
 
     CONNECTSIGNALSLOT(mp_Ui->reagentsubmenuPanel, CurrentRowChanged(int), mp_Ui->reagentsStack, setCurrentIndex(int));
     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), mp_Ui->pageReagents, OnUserRoleChanged());
@@ -159,17 +153,6 @@ void CReagentWidget::changeEvent(QEvent *p_Event)
     }
 }
 
-///****************************************************************************/
-///*!
-// *  \brief This slot is used to close all open dialogs of this widget
-// */
-///****************************************************************************/
-//void CReagentWidget::CloseDialogs()
-//{
-//    //ResetButtons();
-//    mp_ModifiyReagentDlg->accept();
-//}
-
 /****************************************************************************/
 /*!
  *  \brief This slot is called when User Role changes
@@ -178,16 +161,9 @@ void CReagentWidget::changeEvent(QEvent *p_Event)
 void CReagentWidget::OnUserRoleChanged()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-//    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service)) //&&
-//         (!m_ProcessRunning)) //{
-        //Edit Mode
-//        mp_Ui->btnNew->setEnabled(true);
-//    }
-//    else {
-//        mp_Ui->btnNew->setEnabled(false);
-//    }
+
     m_UserRoleChanged = true;
 }
 

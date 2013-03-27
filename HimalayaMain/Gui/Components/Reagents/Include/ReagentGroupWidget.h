@@ -3,7 +3,7 @@
 
 
 /****************************************************************************/
-/*! \file ReagentsWidget.h
+/*! \file ReagentRMSWidget.h
  *
  *  \brief ReagentsWidget definition.
  *
@@ -72,13 +72,22 @@ private:
     CModifyReagentGroupColorDlg *mp_ModifyReagentColorDlg;        //!< Edit reagent dialog
 
 signals:
+
+    /****************************************************************************/
+    /*!
+     *  \brief This signal is emitted when GroupColor is updated.
+     *
+     */
+    /****************************************************************************/
+    void ReagentGroupColorUpdated();
+
     /****************************************************************************/
     /*!
      *  \brief This signal is emitted when ReagentList is updated.
      *
      */
     /****************************************************************************/
-    void UpdateReagentGroupList();
+     void UpdateReagentGroupList();
 
     /****************************************************************************/
     /*!

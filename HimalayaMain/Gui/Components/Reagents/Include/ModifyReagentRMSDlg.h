@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ModifyReagentDlg.h
+/*! \file ModifyReagentRMSDlg.h
  *
  *  \brief ModifyReagentDlg definition.
  *
@@ -18,26 +18,26 @@
  */
 /****************************************************************************/
 
-#ifndef REAGENTS_MODIFYREAGENTDLG_H
-#define REAGENTS_MODIFYREAGENTDLG_H
+#ifndef REAGENTS_MODIFYREAGENTRMSDLG_H
+#define REAGENTS_MODIFYREAGENTRMSDLG_H
 
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
 #include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/ScrollWheel.h"
 #include "KeyBoard/Include/KeyBoardObserver.h"
 #include "KeyBoard/Include/KeyBoard.h"
-#include "Reagents/Include/ReagentsWidget.h"
+#include "Reagents/Include/ReagentRMSWidget.h"
 #include "Core/Include/ReagentGroupModel.h"
 #include <QButtonGroup>
 
-//lint -sem(Reagents::CModifyReagentDlg::Init,initializer)
+//lint -sem(Reagents::CModifyReagentRMSDlg::Init,initializer)
 //lint -e1565
 namespace Reagents {
         #define MAX_LONGNAME_LENGTH 32  //!< Maximum length reagent long name
         #define MIN_LONGNAME_LENGTH 2   //!< Manimum length reagent long name
 
 namespace Ui {
-    class CModifyReagentDlg;
+    class CModifyReagentRMSDlg;
 }
 
 
@@ -46,13 +46,13 @@ namespace Ui {
  * \brief Edit dialog for  reagents of the user
  */
 /****************************************************************************/
-class CModifyReagentDlg : public MainMenu::CDialogFrame, public KeyBoard::CKeyBoardObserver
+class CModifyReagentRMSDlg : public MainMenu::CDialogFrame, public KeyBoard::CKeyBoardObserver
 {
     Q_OBJECT
     friend class CTestReagents;
 
 private:
-    Ui::CModifyReagentDlg *mp_Ui;                   //!< User interface
+    Ui::CModifyReagentRMSDlg *mp_Ui;                   //!< User interface
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Reference to Keyboard widget
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     Core::CDataConnector *mp_DataConnector;         //!< DataConnector local object
@@ -63,8 +63,6 @@ private:
     Reagents::ButtonType_t m_ButtonType;            //!< Informs which button was clicked
     bool m_ProcessRunning;                          //!< Process running state
     DataManager::CDataReagentList m_ReagentCloneList;   //!< ReagentList local object
-    DataManager::CReagent *mp_NewReagent;           //! Reagent local object
-    
     MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object
     MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
     Core::CReagentGroupModel m_ReagentGroupModel;             //!< Model for the table
@@ -74,10 +72,10 @@ private:
 
 
 public:
-    explicit CModifyReagentDlg(QWidget *p_Parent = NULL, KeyBoard::CKeyBoard *p_KeyBoard = NULL,
+    explicit CModifyReagentRMSDlg(QWidget *p_Parent = NULL, KeyBoard::CKeyBoard *p_KeyBoard = NULL,
                                MainMenu::CMainWindow *p_MainWindow = NULL,
                                Core::CDataConnector *p_DataConnector= NULL);
-    virtual ~CModifyReagentDlg();
+    virtual ~CModifyReagentRMSDlg();
     void InitDialog(DataManager::CReagent const *p_Reagent,
                     const DataManager::CDataReagentGroupList *p_ReagentGroupList,
                     Global::RMSOptions_t Option);
@@ -85,7 +83,6 @@ public:
     void UpdateOnESC();
     void NewReagent();
     void EnableElements(bool m_Enable);
-    void SetReagentContents(DataManager::CReagent &Reagent);
 
     /****************************************************************************/
     /*!
@@ -107,7 +104,6 @@ private slots:
     void OnEditName();
     void OnEditCassetteValue();
     void OnOkClicked();
-    void OnProcessStateChanged();
     void SelectionChanged(QModelIndex Index);
 
 protected:

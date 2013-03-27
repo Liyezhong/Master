@@ -176,22 +176,22 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
                     return QVariant();
                 }
             }
-            case 2:
+     /*  //vinay     case 2:
                 return DurationString(Step->GetMinDurationInSeconds());
             case 3:
-                return QString("%1%2").arg(Step->GetMaxDurationInPercent()).arg("%");
+                return QString("%1%2").arg(Step->GetMaxDurationInPercent()).arg("%");*/
             }
         }
         else if (Role == (int)Qt::DecorationRole) {
-            switch (Index.column()) {
+          /*   switch (Index.column()) {
             case 4:
-                if (Step->GetExclusive() == true) {
+            //vinay   if (Step->GetExclusive() == true) {
                     return QPixmap(":/Large/Icons/MISC/TickOk.png");
                 }
                 else {
                     return QVariant();
                 }
-            }
+            }*/
         }
         else if (Role == (int)Qt::UserRole) {
             return Step->GetStepID();

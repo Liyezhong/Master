@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ReagentModel.h
+/*! \file ReagentStationModel.h
  *
  *  \brief Definition file for class CReagentStatusModel.
  *
@@ -54,9 +54,6 @@ public:
     int rowCount(const QModelIndex &) const;
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &Index, int Role) const;  //data Reagent SubMenu
-    QVariant dataStatus(const QModelIndex &Index, int Role) const; //data Reagent Staus SubMenu
-
-
     QVariant headerData(int Section, Qt::Orientation Orientation, int Role) const;
     void ResetAndUpdateModel();
 
@@ -115,10 +112,10 @@ private:
     QMap<QString, QString> m_Identifiers;               //!< Identifiers of reagents currently displayed
     QMap<QString, QString> m_StationIdentifiers;               //!< Identifiers of stations currently displayed
     QStringList m_ReagentNames;                         //!< Long names of reagents currently displayed
-    QStringList m_ReagentID;
-    QStringList m_StationNames;                         //!< sttion names
+    QStringList m_ReagentID;                            //!< List of reagent ID
+    QStringList m_StationNames;                         //!< station names
+    QString m_CurrentReagentName;
     qint32 m_Columns;                                   //!< Number of table columns
-    QString m_CurrentReagentName;                       //!< Current Reagent Name
     Programs::CModifyProgramStepDlg *mp_Parent;         //!< Reference to ModifyProgramStep Dialog
     bool m_FilterLeicaReagent;                          //!< Filter Leica Reagent if set to true
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table

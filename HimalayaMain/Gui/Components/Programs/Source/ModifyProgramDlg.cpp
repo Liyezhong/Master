@@ -227,7 +227,7 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
                 break;
         }
         mp_Ui->btnPrgName->setText(tr("%1").arg(LongName));
-        m_Program.SetColor("white");
+     //vinay     m_Program.SetColor("white");
         // Pass a value same as the one passed to SetVisibleRows()
         m_StepModel.SetVisibleRowCount(6);
         m_StepModel.SetProgram(&m_Program, mp_DataConnector->ReagentList, 5);
@@ -255,7 +255,7 @@ void CModifyProgramDlg::NewProgram()
     ResizeHorizontalSection();
     mp_Ui->btnPrgName->setText("--");
 //    mp_Ui->btnPrgIcon->setText("--");
-    mp_NewProgram->SetColor("white");
+//vinay      mp_NewProgram->SetColor("white");
     mp_Ui->label_3->setText(tr("Program not ready to start"));
 }
 
@@ -707,7 +707,7 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
         }
         else {
             m_TempColorFlag = true ;
-            m_TempColor = m_Program.GetColor();
+ //vinay            m_TempColor = m_Program.GetColor();
             mp_Ui->btnPrgName->setEnabled(true);
             mp_Ui->btnPrgIcon->setEnabled(false);
             if (m_ButtonType == COPY_BTN_CLICKED) {
@@ -891,7 +891,7 @@ void CModifyProgramDlg::OnUpdateProgramColor(DataManager::CProgram &Program,
         m_ColorReplaced = true;
     }
     else {
-        m_Program.SetColor(Program.GetColor());
+ //vinay        m_Program.SetColor(Program.GetColor());
        (void) m_ProgramListClone.UpdateProgram(&m_Program);
 //        mp_Ui->btnColor->SetColor(Program.GetColor());
 

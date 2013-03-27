@@ -42,7 +42,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="Reagents::CReagentStatusWidget" name="pageReagentStatus">
       <property name="minimumSize">
@@ -60,7 +60,7 @@
      </widget>
      <widget class="Reagents::CReagentGroupWidget" name="pageReagentGroup"/>
      <widget class="Reagents::CReagentStationWidget" name="pageReagentStation"/>
-     <widget class="Reagents::CReagentsWidget" name="pageReagents"/>
+     <widget class="Reagents::CReagentRMSWidget" name="pageReagents"/>
     </widget>
    </item>
   </layout>
@@ -79,12 +79,6 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>Reagents::CReagentsWidget</class>
-   <extends>QWidget</extends>
-   <header>Reagents/Include/ReagentsWidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>CReagentSubMenuWidget</class>
    <extends>QWidget</extends>
    <header>Reagents/Include/ReagentSubMenuWidget.h</header>
@@ -93,7 +87,13 @@
   <customwidget>
    <class>Reagents::CReagentStationWidget</class>
    <extends>QWidget</extends>
-   <header location="global">Reagents/Include/ReagentStationWidget.h</header>
+   <header>Reagents/Include/ReagentStationWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Reagents::CReagentRMSWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">Reagents/Include/ReagentRMSWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

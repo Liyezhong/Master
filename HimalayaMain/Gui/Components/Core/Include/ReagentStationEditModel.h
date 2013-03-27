@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file ReagentStatusEditModel.h
+/*! \file ReagentStationEditModel.h
  *
- *  \brief Definition file for class CReagentStatusEditModel.
+ *  \brief Definition file for class CReagentStationEditModel.
  *
  *   $Version: $ 0.2
  *   $Date:    $ 2011-08-23, 2013-01-17
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef CORE_ReagentStatusEditModel_H
-#define CORE_ReagentStatusEditModel_H
+#ifndef CORE_REAGENTSTATIONEDITMODEL_H
+#define CORE_REAGENTSTATIONEDITMODEL_H
 
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupList.h"
@@ -41,12 +41,12 @@ namespace Core {
  * \brief This is the data model for the reagent tables
  */
 /****************************************************************************/
-class CReagentStatusEditModel : public QAbstractTableModel
+class CReagentStationEditModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    CReagentStatusEditModel(QObject *p_Parent = NULL);
+    CReagentStationEditModel(QObject *p_Parent = NULL);
     void SetRequiredContainers(DataManager::CDataReagentList *p_ReagentList,
                                DataManager::CDataReagentGroupList *p_ReagentGroupList,
                                DataManager::CDashboardDataStationList *p_DashboardDataStationList, qint32 Columns);
@@ -148,4 +148,4 @@ private:
 
 } // end namespace Core
 
-#endif // CORE_ReagentStatusEditModel_H
+#endif // CORE_REAGENTSTATIONEDITMODEL_H

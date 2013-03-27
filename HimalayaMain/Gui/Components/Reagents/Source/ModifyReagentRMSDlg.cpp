@@ -20,7 +20,7 @@
 
 #include "Global/Include/Utils.h"
 #include "Global/Include/Exception.h"
-#include "Reagents/Include/ModifyReagentDlg.h"
+#include "Reagents/Include/ModifyReagentRMSDlg.h"
 #include "ui_ModifyReagentDlg.h"
 #include <QDebug>
 
@@ -37,21 +37,18 @@ const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,5}$"; //!< Reg expression fo
  *  \iparam p_DataConnector = Reference to DataConnector
  */
 /****************************************************************************/
-CModifyReagentDlg::CModifyReagentDlg(QWidget *p_Parent, KeyBoard::CKeyBoard *p_KeyBoard, MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector) :
-    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyReagentDlg), mp_MainWindow(p_MainWindow), mp_DataConnector(p_DataConnector)
+CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoard *p_KeyBoard, MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector) :
+    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyReagentRMSDlg), mp_MainWindow(p_MainWindow), mp_DataConnector(p_DataConnector)
 {
     mp_Ui->setupUi(GetContentFrame());
     m_ReagentNameBtnClicked = false;
     m_CassetteValueBtnClicked = false;
     m_ProcessRunning = false ;
-    mp_NewReagent = NULL;
     mp_ReagentGroupList = NULL;
     m_SelectionFlag = false;
 
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->setModel(&m_ReagentGroupModel);
-
-    //m_ReagentModel.SetReagentList(mp_ReagentGroupList, 2);
 
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
 
@@ -65,7 +62,6 @@ CModifyReagentDlg::CModifyReagentDlg(QWidget *p_Parent, KeyBoard::CKeyBoard *p_K
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
     CONNECTSIGNALSLOT(mp_Ui->buttonReagentName, clicked(), this, OnEditName());
     CONNECTSIGNALSLOT(mp_Ui->buttonValue, clicked(), this, OnEditCassetteValue());
-    //CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
     mp_KeyBoardWidget = p_KeyBoard;
 
     // Init Message dialog
@@ -81,7 +77,7 @@ CModifyReagentDlg::CModifyReagentDlg(QWidget *p_Parent, KeyBoard::CKeyBoard *p_K
  *  \brief Resizes the columns in the reagents table
  */
 /****************************************************************************/
-void CModifyReagentDlg::ResizeHorizontalSection()
+void CModifyReagentRMSDlg::ResizeHorizontalSection()
 {
     if (mp_TableWidget == NULL)
     {
@@ -98,7 +94,7 @@ void CModifyReagentDlg::ResizeHorizontalSection()
  *  \iparam Index = Currently selected cell
  */
 /****************************************************************************/
-void CModifyReagentDlg::SelectionChanged(QModelIndex Index)
+void CModifyReagentRMSDlg::SelectionChanged(QModelIndex Index)
 {
      if (m_ButtonType == Reagents::NEW_BTN_CLICKED)
         m_SelectionFlag = true;
@@ -113,11 +109,10 @@ void CModifyReagentDlg::SelectionChanged(QModelIndex Index)
  *  \brief Destructor
  */
 /****************************************************************************/
-CModifyReagentDlg::~CModifyReagentDlg()
+CModifyReagentRMSDlg::~CModifyReagentRMSDlg()
 {
     try {        
         delete mp_Ui;
-        delete mp_NewReagent;
     }
     catch (...) {
         // to please Lint.
@@ -131,7 +126,7 @@ CModifyReagentDlg::~CModifyReagentDlg()
  *  \iparam p_Event = Change event
  */
 /****************************************************************************/
-void CModifyReagentDlg::changeEvent(QEvent *p_Event)
+void CModifyReagentRMSDlg::changeEvent(QEvent *p_Event)
 {
     QDialog::changeEvent(p_Event);
     switch (p_Event->type()) {
@@ -151,7 +146,7 @@ void CModifyReagentDlg::changeEvent(QEvent *p_Event)
  *  \iparam p_Reagent = Reference of the reagent to be edited
  */
 /****************************************************************************/
-void CModifyReagentDlg::InitDialog(DataManager::CReagent const *p_Reagent,
+void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
                                    DataManager::CDataReagentGroupList const *p_ReagentGroupList, Global::RMSOptions_t Option)
 {
     if (p_ReagentGroupList != NULL) {
@@ -201,29 +196,16 @@ void CModifyReagentDlg::InitDialog(DataManager::CReagent const *p_Reagent,
 
 /****************************************************************************/
 /*!
- *  \brief Sets the content of the dialog for Selected/Copied Reagent
- *  \iparam Reagent = Reagent object
- */
-/****************************************************************************/
-void CModifyReagentDlg::SetReagentContents(DataManager::CReagent &Reagent)
-{
-
-}
-
-/****************************************************************************/
-/*!
  *  \brief Sets the content of the dialog for New Reagent
  *
  */
 /****************************************************************************/
-void CModifyReagentDlg::NewReagent()
+void CModifyReagentRMSDlg::NewReagent()
 {
     mp_Ui->buttonReagentName->setEnabled(true);    
     mp_Ui->buttonReagentName->setText("--");
     mp_Ui->buttonValue->setEnabled(true);
     mp_Ui->buttonValue->setText("--");
-   // mp_TableWidget->selectRow(0);
-
 }
 
 /****************************************************************************/
@@ -231,7 +213,7 @@ void CModifyReagentDlg::NewReagent()
  *  \brief This function is called when Ok button on keyboard is clicked
  */
 /****************************************************************************/
-void CModifyReagentDlg::Update()
+void CModifyReagentRMSDlg::Update()
 {
     OnOkClicked();
 }
@@ -241,7 +223,7 @@ void CModifyReagentDlg::Update()
  *  \brief This function is called when ESC button on keyboard is clicked
  */
 /****************************************************************************/
-void CModifyReagentDlg::UpdateOnESC()
+void CModifyReagentRMSDlg::UpdateOnESC()
 {
     m_ReagentNameBtnClicked = false;
 }
@@ -251,7 +233,7 @@ void CModifyReagentDlg::UpdateOnESC()
  *  \brief Cancels the changes in the dialog
  */
 /****************************************************************************/
-void CModifyReagentDlg::OnCancel()
+void CModifyReagentRMSDlg::OnCancel()
 {
     emit CancelPressed();
     mp_TableWidget->reset();
@@ -263,7 +245,7 @@ void CModifyReagentDlg::OnCancel()
  *  \brief Saves the changes in the dialog
  */
 /****************************************************************************/
-void CModifyReagentDlg::OnOk()
+void CModifyReagentRMSDlg::OnOk()
 {
     // Clone the DataManager ReagentList
      m_ReagentCloneList = *(mp_DataConnector->ReagentList);
@@ -351,7 +333,7 @@ void CModifyReagentDlg::OnOk()
  *  \brief Shows the on screen keyboard to edit the program name
  */
 /****************************************************************************/
-void CModifyReagentDlg::OnEditName()
+void CModifyReagentRMSDlg::OnEditName()
 {
     mp_KeyBoardWidget->Attach(this);
     m_ReagentNameBtnClicked = true;
@@ -376,7 +358,7 @@ void CModifyReagentDlg::OnEditName()
  *  \brief Shows the on screen keyboard to edit the program name
  */
 /****************************************************************************/
-void CModifyReagentDlg::OnEditCassetteValue()
+void CModifyReagentRMSDlg::OnEditCassetteValue()
 {
     mp_KeyBoardWidget->Attach(this);
     m_CassetteValueBtnClicked = true;
@@ -410,7 +392,7 @@ void CModifyReagentDlg::OnEditCassetteValue()
  *  \brief This slot is called when OK button on Keyboard is clicked.
  */
 /****************************************************************************/
-void CModifyReagentDlg::OnOkClicked()
+void CModifyReagentRMSDlg::OnOkClicked()
 {
     QString LineEditString;
     mp_KeyBoardWidget->hide();
@@ -428,35 +410,14 @@ void CModifyReagentDlg::OnOkClicked()
     mp_KeyBoardWidget->Detach();
 }
 
-
-/****************************************************************************/
-/*!
- *  \brief This slot is called when Process Running state changes
- */
-/****************************************************************************/
-void CModifyReagentDlg::OnProcessStateChanged()
-{  
-    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
-    if (!m_ProcessRunning) {
-        //Edit Mode
-        mp_Ui->btnOk->setEnabled(true);
-        mp_Ui->btnCancel->setText(tr("Cancel"));
-    }
-    else {
-        //View Mode
-        mp_Ui->btnOk->setEnabled(false);
-        mp_Ui->btnCancel->setText(tr("Close"));
-    }
-}
-
 /****************************************************************************/
 /*!
  *  \brief Translates the strings in UI to the selected language
  */
 /****************************************************************************/
-void CModifyReagentDlg::RetranslateUI()
+void CModifyReagentRMSDlg::RetranslateUI()
 {
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Reagents::CModifyReagentDlg",
+    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                               "Enter Reagent Name", 0, QApplication::UnicodeUTF8));
 }
 

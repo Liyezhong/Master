@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file ReagentModel.h
+/*! \file ReagentRMSModel.h
  *
- *  \brief Definition file for class CReagentModel.
+ *  \brief Definition file for class CReagentRMSModel.
  *
  *   $Version: $ 0.2
  *   $Date:    $ 2011-08-23, 2013-01-17
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef CORE_REAGENTMODEL_H
-#define CORE_REAGENTMODEL_H
+#ifndef CORE_REAGENTRMSMODEL_H
+#define CORE_REAGENTRMSMODEL_H
 
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupList.h"
@@ -41,12 +41,12 @@ namespace Core {
  * \brief This is the data model for the reagent tables
  */
 /****************************************************************************/
-class CReagentModel : public QAbstractTableModel
+class CReagentRMSModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    CReagentModel(QObject *p_Parent = NULL);
+    CReagentRMSModel(QObject *p_Parent = NULL);
     void SetReagentList(DataManager::CDataReagentList *p_ReagentList, qint32 Columns);
     void SetReagentGroupList(DataManager::CDataReagentGroupList *p_ReagentGroupList);
     int rowCount(const QModelIndex &) const;
@@ -163,4 +163,4 @@ private:
 
 } // end namespace Core
 
-#endif // CORE_REAGENTMODEL_H
+#endif // CORE_ReagentRMSModel_H

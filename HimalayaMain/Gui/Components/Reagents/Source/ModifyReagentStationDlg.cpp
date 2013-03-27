@@ -20,7 +20,7 @@
 
 #include "Global/Include/Utils.h"
 #include "Global/Include/Exception.h"
-#include "Reagents/Include/ModifyReagentStatusDlg.h"
+#include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "ui_ModifyReagentStatusDlg.h"
 #include <QDebug>
 
@@ -32,8 +32,8 @@ namespace Reagents {
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CModifyReagentStatusDlg::CModifyReagentStatusDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector) :
-    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyReagentStatusDlg), mp_MainWindow(p_MainWindow), mp_DataConnector(p_DataConnector)
+CModifyReagentStationDlg::CModifyReagentStationDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector) :
+    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyReagentStationDlg), mp_MainWindow(p_MainWindow), mp_DataConnector(p_DataConnector)
 {
     mp_Ui->setupUi(GetContentFrame());
     m_ProcessRunning = false ;
@@ -65,7 +65,7 @@ CModifyReagentStatusDlg::CModifyReagentStatusDlg(QWidget *p_Parent, MainMenu::CM
      *  \brief Destructor
      */
 /****************************************************************************/
-CModifyReagentStatusDlg::~CModifyReagentStatusDlg()
+CModifyReagentStationDlg::~CModifyReagentStationDlg()
 {
     try {
         delete mp_TableWidget;
@@ -81,7 +81,7 @@ CModifyReagentStatusDlg::~CModifyReagentStatusDlg()
      *  \brief Destructor
      */
 /****************************************************************************/
-void CModifyReagentStatusDlg::SetDashboardStation(DataManager::CDashboardStation* p_Station)
+void CModifyReagentStationDlg::SetDashboardStation(DataManager::CDashboardStation* p_Station)
 {
     m_DashboardStation = *p_Station;
     m_ReagentEditModel.SetReagentTypeParaffin(p_Station->GetDashboardParaffinBath());
@@ -102,7 +102,7 @@ void CModifyReagentStatusDlg::SetDashboardStation(DataManager::CDashboardStation
  *  \iparam p_Event = Change event
  */
 /****************************************************************************/
-void CModifyReagentStatusDlg::changeEvent(QEvent *p_Event)
+void CModifyReagentStationDlg::changeEvent(QEvent *p_Event)
 {
     QWidget::changeEvent(p_Event);
     switch (p_Event->type()) {
@@ -119,7 +119,7 @@ void CModifyReagentStatusDlg::changeEvent(QEvent *p_Event)
  *  \brief Resizes the columns in the reagents table
  */
 /****************************************************************************/
-void CModifyReagentStatusDlg::ResizeHorizontalSection()
+void CModifyReagentStationDlg::ResizeHorizontalSection()
 {
     if (mp_TableWidget == NULL)
     {
@@ -136,7 +136,7 @@ void CModifyReagentStatusDlg::ResizeHorizontalSection()
  *  \brief This slot is called when Cancel button in ModifyReagentDlg is pressed.
  */
 /****************************************************************************/
-void CModifyReagentStatusDlg::OnCancel()
+void CModifyReagentStationDlg::OnCancel()
 {
     emit CancelPressed();
     reject();
@@ -149,7 +149,7 @@ void CModifyReagentStatusDlg::OnCancel()
  *  \iparam Index = Model Index
  */
 /****************************************************************************/
-void CModifyReagentStatusDlg::SelectionChanged(QModelIndex Index)
+void CModifyReagentStationDlg::SelectionChanged(QModelIndex Index)
 {
     QString Id = m_ReagentEditModel.data(Index, (int)Qt::UserRole).toString();
     m_DashboardStation.SetDashboardReagentID(Id);
@@ -159,7 +159,7 @@ void CModifyReagentStatusDlg::SelectionChanged(QModelIndex Index)
  *  \brief Saves the changes in the dialog
  */
 /****************************************************************************/
-void CModifyReagentStatusDlg::OnOk()
+void CModifyReagentStationDlg::OnOk()
 {    
     m_DashboardStation.SetDashboardReagentStatus("Empty");
     emit UpdateStationChangeReagent(m_DashboardStation.GetDashboardStationID(),
@@ -174,7 +174,7 @@ void CModifyReagentStatusDlg::OnOk()
  *  \brief This slot is called when Process state changes
  */
 /****************************************************************************/
-void CModifyReagentStatusDlg::OnProcessStateChanged()
+void CModifyReagentStationDlg::OnProcessStateChanged()
 {
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if (!m_ProcessRunning) {
@@ -189,17 +189,16 @@ void CModifyReagentStatusDlg::OnProcessStateChanged()
     }
 }
 
-
 /*****************************************************************************/
 /*!
   *  \brief Translates the strings in UI to the selected language
   */
 /****************************************************************************/
-void CModifyReagentStatusDlg::RetranslateUI()
+void CModifyReagentStationDlg::RetranslateUI()
 {
-    (void)m_ReagentEditModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentStatusEditModel",
+    (void)m_ReagentEditModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentStationEditModel",
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8), 0);
-    (void)m_ReagentEditModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentStatusEditModel",
+    (void)m_ReagentEditModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentStationEditModel",
                                                                                  "Group", 0, QApplication::UnicodeUTF8),0);
 }
 

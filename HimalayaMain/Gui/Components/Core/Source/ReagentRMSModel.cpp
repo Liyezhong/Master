@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file ReagentModel.cpp
+/*! \file ReagentRMSModel.cpp
  *
- *  \brief ReagentModel Implementation.
+ *  \brief ReagentRMSModel Implementation.
  *
  *   $Version: $ 0.2
  *   $Date:    $ 2011-08-23, 2013-01-17 ,2013-02-26
@@ -20,7 +20,7 @@
 
 #include "Global/Include/Utils.h"
 #include "Global/Include/Exception.h"
-#include "Core/Include/ReagentModel.h"
+#include "Core/Include/ReagentRMSModel.h"
 #include "MainMenu/Include/BaseTable.h"
 #include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/MessageDlg.h"
@@ -42,7 +42,7 @@ namespace Core {
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CReagentModel::CReagentModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
+CReagentRMSModel::CReagentRMSModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
 {
     mp_ReagentList = NULL;
     mp_Parent = NULL;
@@ -63,7 +63,7 @@ CReagentModel::CReagentModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
  *  \iparam BLCheck = True for displaying reagents in bathlayout else False.
  */
 /****************************************************************************/
-void CReagentModel::SetReagentList(DataManager::CDataReagentList *p_ReagentList, qint32 Columns)
+void CReagentRMSModel::SetReagentList(DataManager::CDataReagentList *p_ReagentList, qint32 Columns)
 {
     mp_ReagentList = p_ReagentList;
     m_Columns = Columns;
@@ -77,7 +77,7 @@ void CReagentModel::SetReagentList(DataManager::CDataReagentList *p_ReagentList,
  *  \iparam p_ReagentGroupList = Reagent data
  */
  /****************************************************************************/
-void CReagentModel::SetReagentGroupList(DataManager::CDataReagentGroupList *p_ReagentGroupList)
+void CReagentRMSModel::SetReagentGroupList(DataManager::CDataReagentGroupList *p_ReagentGroupList)
 {
     mp_ReagentGroupList = p_ReagentGroupList;
     UpdateReagentList();
@@ -89,7 +89,7 @@ void CReagentModel::SetReagentGroupList(DataManager::CDataReagentGroupList *p_Re
  *  the content of the reagent list is changed.
  */
 /****************************************************************************/
-void CReagentModel::UpdateReagentList()
+void CReagentRMSModel::UpdateReagentList()
 {
     beginResetModel();
     m_Identifiers.clear();
@@ -130,7 +130,7 @@ void CReagentModel::UpdateReagentList()
  *  \iparam RowCount = Visible row count
  */
 /****************************************************************************/
-void CReagentModel::SetVisibleRowCount(int RowCount)
+void CReagentRMSModel::SetVisibleRowCount(int RowCount)
 {
     beginResetModel();
     m_VisibleRowCount = RowCount;
@@ -144,7 +144,7 @@ void CReagentModel::SetVisibleRowCount(int RowCount)
  *  \return Row count
  */
 /****************************************************************************/
-int CReagentModel::rowCount(const QModelIndex &) const
+int CReagentRMSModel::rowCount(const QModelIndex &) const
 {
     return ((m_ReagentNames.count() < m_VisibleRowCount) ? m_VisibleRowCount : m_ReagentNames.count());
 }
@@ -156,7 +156,7 @@ int CReagentModel::rowCount(const QModelIndex &) const
  *  \return Columns count
  */
 /****************************************************************************/
-int CReagentModel::columnCount(const QModelIndex &) const
+int CReagentRMSModel::columnCount(const QModelIndex &) const
 {
     return m_Columns;
 }
@@ -171,7 +171,7 @@ int CReagentModel::columnCount(const QModelIndex &) const
  *  \return Data item
  */
 /****************************************************************************/
-QVariant CReagentModel::data(const QModelIndex &Index, int Role) const
+QVariant CReagentRMSModel::data(const QModelIndex &Index, int Role) const
 {
     DataManager::CReagent *p_Reagent = NULL;
     if (mp_ReagentList == NULL) {
@@ -256,7 +256,7 @@ QVariant CReagentModel::data(const QModelIndex &Index, int Role) const
  *  \return Header data
  */
 /****************************************************************************/
-QVariant CReagentModel::headerData(int Section, Qt::Orientation Orientation, int Role) const
+QVariant CReagentRMSModel::headerData(int Section, Qt::Orientation Orientation, int Role) const
 {
     if (Role == (int)Qt::DisplayRole && Orientation == Qt::Horizontal) {
         switch (Section) {
@@ -287,7 +287,7 @@ QVariant CReagentModel::headerData(int Section, Qt::Orientation Orientation, int
  *  \iparam ReagentName
  */
 /****************************************************************************/
-QString CReagentModel::GetReagentID(const QString ReagentName)
+QString CReagentRMSModel::GetReagentID(const QString ReagentName)
 {
     return m_Identifiers.value(ReagentName);
 
@@ -302,7 +302,7 @@ QString CReagentModel::GetReagentID(const QString ReagentName)
    * \return  m_ReagentNames = Reagent Name
    */
 /****************************************************************************/
-QString CReagentModel::GetReagentLongName(int Row)
+QString CReagentRMSModel::GetReagentLongName(int Row)
 {
     if (!m_ReagentNames.isEmpty()) {
         return m_ReagentNames[Row];
@@ -322,7 +322,7 @@ QString CReagentModel::GetReagentLongName(int Row)
   * \return  True = If reagent exists in the list else False.
   */
 /****************************************************************************/
-bool CReagentModel::ContainsReagent(QString ReagentID)
+bool CReagentRMSModel::ContainsReagent(QString ReagentID)
 {
     if (m_VisibleReagentIds.isEmpty()) {
         return false;
@@ -341,7 +341,7 @@ bool CReagentModel::ContainsReagent(QString ReagentID)
  *  \iparam DeviceMode = Himalaya/Worskstation
  */
 /****************************************************************************/
-void CReagentModel::OnDeviceModeChanged(QString DeviceMode)
+void CReagentRMSModel::OnDeviceModeChanged(QString DeviceMode)
 {
     m_DeviceMode = DeviceMode;
 }
@@ -352,13 +352,13 @@ void CReagentModel::OnDeviceModeChanged(QString DeviceMode)
  *  \iparam p_UserSettings = UserSettings
  */
 /****************************************************************************/
-void CReagentModel::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
+void CReagentRMSModel::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
 {
         m_UserSettings = *p_UserSettings;
 }
 
 /****************************************************************************/
-QVariant CReagentModel::dataStatus(const QModelIndex &Index, int Role) const
+QVariant CReagentRMSModel::dataStatus(const QModelIndex &Index, int Role) const
 {
     DataManager::CReagent *p_Reagent = NULL;
     if (mp_ReagentList == NULL) {
@@ -403,7 +403,7 @@ QVariant CReagentModel::dataStatus(const QModelIndex &Index, int Role) const
  *  \return Flags of the cell
  */
 /****************************************************************************/
-Qt::ItemFlags CReagentModel::flags(const QModelIndex &Index) const
+Qt::ItemFlags CReagentRMSModel::flags(const QModelIndex &Index) const
 {
     if (Index.column() == 1) {
         return Qt::NoItemFlags;
@@ -425,7 +425,7 @@ Qt::ItemFlags CReagentModel::flags(const QModelIndex &Index) const
  *  \return Flags of the cell
  */
 /****************************************************************************/
-QModelIndex CReagentModel::CreateIndex(int Row, int Column)
+QModelIndex CReagentRMSModel::CreateIndex(int Row, int Column)
 {
     return createIndex(Row, Column);
 }
@@ -438,7 +438,7 @@ QModelIndex CReagentModel::CreateIndex(int Row, int Column)
  *  \return Flags of the cell
  */
 /****************************************************************************/
-void CReagentModel::ResetAndUpdateModel()
+void CReagentRMSModel::ResetAndUpdateModel()
 {
     beginResetModel();
     endResetModel();

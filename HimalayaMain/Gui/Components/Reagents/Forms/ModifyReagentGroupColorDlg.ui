@@ -12,16 +12,16 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
+    <width>300</width>
     <height>0</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <spacer name="verticalSpacer_2">
        <property name="orientation">
@@ -51,9 +51,9 @@
         </spacer>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout_2">
+        <layout class="QGridLayout" name="gridLayout">
          <item row="3" column="2">
-          <widget class="QPushButton" name="GroupColor_12">
+          <widget class="QPushButton" name="pbdarkblue">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -66,7 +66,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QPushButton" name="GroupColor_3">
+          <widget class="QPushButton" name="pbpink">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -79,7 +79,7 @@
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QPushButton" name="GroupColor_10">
+          <widget class="QPushButton" name="pbrackley">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -92,7 +92,7 @@
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QPushButton" name="GroupColor_11">
+          <widget class="QPushButton" name="pbblue">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -105,7 +105,7 @@
           </widget>
          </item>
          <item row="2" column="2">
-          <widget class="QPushButton" name="GroupColor_9">
+          <widget class="QPushButton" name="pbdarkgreen">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -118,7 +118,7 @@
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QPushButton" name="GroupColor_7">
+          <widget class="QPushButton" name="pbcarmine">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -131,7 +131,7 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QPushButton" name="GroupColor_4">
+          <widget class="QPushButton" name="pbdarkred">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -144,7 +144,7 @@
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QPushButton" name="GroupColor_8">
+          <widget class="QPushButton" name="pbred">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -157,7 +157,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QPushButton" name="GroupColor_1">
+          <widget class="QPushButton" name="pbwhite">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -170,7 +170,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QPushButton" name="GroupColor_2">
+          <widget class="QPushButton" name="pbyellow">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -183,7 +183,7 @@
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QPushButton" name="GroupColor_6">
+          <widget class="QPushButton" name="pbgray">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -196,7 +196,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QPushButton" name="GroupColor_5">
+          <widget class="QPushButton" name="pbgreen">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -226,6 +226,19 @@
       </layout>
      </item>
      <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>50</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QPushButton" name="btnCancel">
@@ -233,6 +246,19 @@
           <string>Cancel</string>
          </property>
         </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item>
         <widget class="QPushButton" name="btnOk">

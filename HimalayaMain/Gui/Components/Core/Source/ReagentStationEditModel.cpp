@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file ReagentStatusEditModel.cpp
+/*! \file ReagentStationEditModel.cpp
  *
- *  \brief ReagentStatusEditModel Implementation.
+ *  \brief ReagentStationEditModel Implementation.
  *
  *   $Version: $ 0.2
  *   $Date:    $ 2011-08-23, 2013-01-17
@@ -20,7 +20,7 @@
 
 #include "Global/Include/Utils.h"
 #include "Global/Include/Exception.h"
-#include "Core/Include/ReagentStatusEditModel.h"
+#include "Core/Include/ReagentStationEditModel.h"
 #include "MainMenu/Include/BaseTable.h"
 #include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/MessageDlg.h"
@@ -41,7 +41,7 @@ namespace Core {
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CReagentStatusEditModel::CReagentStatusEditModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
+CReagentStationEditModel::CReagentStationEditModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
 {
     mp_ReagentList = NULL;
     mp_Parent = NULL;
@@ -60,7 +60,7 @@ CReagentStatusEditModel::CReagentStatusEditModel(QObject *p_Parent) : QAbstractT
  *  \iparam BLCheck = True for displaying reagents in bathlayout else False.
  */
  /****************************************************************************/
-void CReagentStatusEditModel :: SetRequiredContainers(DataManager::CDataReagentList *p_ReagentList,
+void CReagentStationEditModel :: SetRequiredContainers(DataManager::CDataReagentList *p_ReagentList,
                            DataManager::CDataReagentGroupList *p_ReagentGroupList,
                            DataManager::CDashboardDataStationList *p_DashboardDataStationList, qint32 Columns)
 {
@@ -80,7 +80,7 @@ void CReagentStatusEditModel :: SetRequiredContainers(DataManager::CDataReagentL
  *  changed.
  */
 /****************************************************************************/
-void CReagentStatusEditModel::UpdateReagentList()
+void CReagentStationEditModel::UpdateReagentList()
 {
     beginResetModel();
     m_Identifiers.clear();
@@ -147,7 +147,7 @@ void CReagentStatusEditModel::UpdateReagentList()
  *  \iparam RowCount
  */
 /****************************************************************************/
-void CReagentStatusEditModel::SetVisibleRowCount(int RowCount)
+void CReagentStationEditModel::SetVisibleRowCount(int RowCount)
 {
     beginResetModel();
     m_VisibleRowCount = RowCount;
@@ -161,7 +161,7 @@ void CReagentStatusEditModel::SetVisibleRowCount(int RowCount)
  *  \return Row count
  */
 /****************************************************************************/
-int CReagentStatusEditModel::rowCount(const QModelIndex &) const
+int CReagentStationEditModel::rowCount(const QModelIndex &) const
 {
     return ((m_ReagentID.count() < m_VisibleRowCount) ? m_VisibleRowCount : m_ReagentID.count());
 }
@@ -173,7 +173,7 @@ int CReagentStatusEditModel::rowCount(const QModelIndex &) const
  *  \return Columns count
  */
 /****************************************************************************/
-int CReagentStatusEditModel::columnCount(const QModelIndex &) const
+int CReagentStationEditModel::columnCount(const QModelIndex &) const
 {
     return m_Columns;
 }
@@ -188,7 +188,7 @@ int CReagentStatusEditModel::columnCount(const QModelIndex &) const
  *  \return Data item
  */
 /****************************************************************************/
-QVariant CReagentStatusEditModel::data(const QModelIndex &Index, int Role) const
+QVariant CReagentStationEditModel::data(const QModelIndex &Index, int Role) const
 {
     DataManager::CReagent *p_Reagent = NULL;
     if (mp_ReagentList == NULL) {
@@ -277,7 +277,7 @@ QVariant CReagentStatusEditModel::data(const QModelIndex &Index, int Role) const
  *  \return Header data
  */
 /****************************************************************************/
-QVariant CReagentStatusEditModel::headerData(int Section, Qt::Orientation Orientation, int Role) const
+QVariant CReagentStationEditModel::headerData(int Section, Qt::Orientation Orientation, int Role) const
 {
     if (Role == (int)Qt::DisplayRole && Orientation == Qt::Horizontal) {
         switch (Section) {
@@ -296,7 +296,7 @@ QVariant CReagentStatusEditModel::headerData(int Section, Qt::Orientation Orient
  *  \iparam ReagentLongName
  */
 /****************************************************************************/
-QString CReagentStatusEditModel::GetReagentID(const QString ReagentName)
+QString CReagentStationEditModel::GetReagentID(const QString ReagentName)
 {
     return m_Identifiers.value(ReagentName);
 
@@ -309,7 +309,7 @@ QString CReagentStatusEditModel::GetReagentID(const QString ReagentName)
    * \return  m_ReagentNames = Reagent Long Name
    */
 /****************************************************************************/
-QString CReagentStatusEditModel::GetReagentLongName(int Row)
+QString CReagentStationEditModel::GetReagentLongName(int Row)
 {
     if (!m_ReagentNames.isEmpty()) {
         return m_ReagentNames[Row];
@@ -327,7 +327,7 @@ QString CReagentStatusEditModel::GetReagentLongName(int Row)
   * \return  ReagentID = Reagent ID
   */
 /****************************************************************************/
-bool CReagentStatusEditModel::ContainsReagent(QString ReagentID)
+bool CReagentStationEditModel::ContainsReagent(QString ReagentID)
 {
     if (m_VisibleReagentIds.isEmpty()) {
         return false;
@@ -350,7 +350,7 @@ bool CReagentStatusEditModel::ContainsReagent(QString ReagentID)
  *  \return Flags of the cell
  */
 /****************************************************************************/
-Qt::ItemFlags CReagentStatusEditModel::flags(const QModelIndex &Index) const
+Qt::ItemFlags CReagentStationEditModel::flags(const QModelIndex &Index) const
 {
     if (Index.column() == 1) {
         return Qt::NoItemFlags;
@@ -368,7 +368,7 @@ Qt::ItemFlags CReagentStatusEditModel::flags(const QModelIndex &Index) const
  *  \return Flags of the cell
  */
 /****************************************************************************/
-QModelIndex CReagentStatusEditModel::CreateIndex(int Row, int Column)
+QModelIndex CReagentStationEditModel::CreateIndex(int Row, int Column)
 {
     return createIndex(Row, Column);
 }

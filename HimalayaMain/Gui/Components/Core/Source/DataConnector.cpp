@@ -855,7 +855,7 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
 
         case NetCommands::REAGENTGROUPCOLOR:
               DataStream >> *ReagentGroupColorList;
-             // emit ReagentColorGrioupUpdated();
+              emit ReagentGroupColorUpdated();
               break;
 
         case NetCommands::USER_SETTING:

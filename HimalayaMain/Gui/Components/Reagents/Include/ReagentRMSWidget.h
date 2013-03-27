@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file ReagentsWidget.h
+/*! \file ReagentRMSWidget.h
  *
- *  \brief ReagentsWidget definition.
+ *  \brief ReagentRMSWidget definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2011-08-22,  2011-09-29
@@ -18,14 +18,14 @@
  */
 /****************************************************************************/
 
-#ifndef REAGENTS_REAGENTSWIDGET_H
-#define REAGENTS_REAGENTSWIDGET_H
+#ifndef REAGENTS_REAGENTRMSWIDGET_H
+#define REAGENTS_REAGENTRMSWIDGET_H
 
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/ScrollWheel.h"
 #include "MainMenu/Include/MainWindow.h"
-#include "Core/Include/ReagentModel.h"
+#include "Core/Include/ReagentRMSModel.h"
 #include "Core/Include/DataConnector.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "Global/Include/Utils.h"
@@ -38,10 +38,10 @@
 namespace Reagents {
 
 namespace Ui {
-    class CReagentsWidget;
+    class CReagentRMSWidget;
 }
 
-class CModifyReagentDlg;
+class CModifyReagentRMSDlg;
 
 //!< Button Type -Edit, New or Copy
 typedef enum {
@@ -55,13 +55,13 @@ typedef enum {
  * \brief This class displays all settings related to the reagents of Himalaya
  */
 /****************************************************************************/
-class CReagentsWidget : public MainMenu::CPanelFrame
+class CReagentRMSWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
     friend class CTestReagents;
 
 private:
-    Ui::CReagentsWidget *mp_Ui;                     //!< User interface
+    Ui::CReagentRMSWidget *mp_Ui;                     //!< User interface
     DataManager::CUserSettings *mp_UserSettings;    //!< Data object
     DataManager::CUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
@@ -71,11 +71,11 @@ private:
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
-    Core::CReagentModel m_ReagentModel;             //!< Model for the table
+    Core::CReagentRMSModel m_ReagentRMSModel;             //!< Model for the table
     Core::CDataConnector *mp_DataConnector;         //!< Global data container
     DataManager::CDataReagentList *mp_ReagentList;  //!< Reagent list
     DataManager::CReagent m_SelectedReagent;        //!< Currently selected reagent
-    CModifyReagentDlg *mp_ModifiyReagentDlg;        //!< Edit reagent dialog
+    CModifyReagentRMSDlg *mp_ModifiyReagentRMSDlg;        //!< Edit reagent dialog
     MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
     ButtonType_t m_ButtonType;                      //!< Informs which button was clicked
     bool m_ShowMessageDialog;                       //!< To show Information Message Dialog
@@ -83,8 +83,8 @@ private:
     KeyBoard::CKeyBoard *mp_KeyBoard;
 
 public:
-    explicit CReagentsWidget(QWidget *p_Parent = 0);
-    ~CReagentsWidget();
+    explicit CReagentRMSWidget(QWidget *p_Parent = 0);
+    ~CReagentRMSWidget();
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
     void SetPtrToMainWindow(Core::CDataConnector *p_DataConnector,
                             DataManager::CDataReagentList *p_ReagentList,
@@ -157,10 +157,8 @@ private slots:
     void OnRMSCassettes();
     void OnRMSCycles();
     void OnRMSDays();
-//    void OnCurrentTabChanged(int CurrentIndex);
-//    void UpdateUserSettings();
     void OnCancelPressed();
-    void OnContentScrolled();
+
 
 };
 

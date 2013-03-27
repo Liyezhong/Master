@@ -57,31 +57,31 @@ CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, Main
 /****************************************************************************/
 void CModifyReagentGroupColorDlg ::SetButtonGroup()
 {
-        m_ButtonGroup.addButton(mp_Ui->GroupColor_1, 0);
-        m_ButtonGroup.addButton(mp_Ui->GroupColor_2, 1);
-        m_ButtonGroup.addButton(mp_Ui->GroupColor_3, 2);
-        m_ButtonGroup.addButton(mp_Ui->GroupColor_4, 3);
-        m_ButtonGroup.addButton(mp_Ui->GroupColor_5, 4);
-        m_ButtonGroup.addButton(mp_Ui->GroupColor_6, 5);
-        m_ButtonGroup.addButton(mp_Ui->GroupColor_7, 6);
-        m_ButtonGroup.addButton(mp_Ui->GroupColor_8, 7);
-        m_ButtonGroup.addButton(mp_Ui->GroupColor_9, 8);
-        m_ButtonGroup.addButton(mp_Ui->GroupColor_10,9);
-        m_ButtonGroup.addButton(mp_Ui->GroupColor_11,10);
-        m_ButtonGroup.addButton(mp_Ui->GroupColor_12,11);
+        m_ButtonGroup.addButton(mp_Ui->pbwhite, 0);
+        m_ButtonGroup.addButton(mp_Ui->pbyellow, 1);
+        m_ButtonGroup.addButton(mp_Ui->pbpink, 2);
+        m_ButtonGroup.addButton(mp_Ui->pbdarkred, 3);
+        m_ButtonGroup.addButton(mp_Ui->pbgreen, 4);
+        m_ButtonGroup.addButton(mp_Ui->pbgray, 5);
+        m_ButtonGroup.addButton(mp_Ui->pbcarmine, 6);
+        m_ButtonGroup.addButton(mp_Ui->pbred, 7);
+        m_ButtonGroup.addButton(mp_Ui->pbdarkgreen, 8);
+        m_ButtonGroup.addButton(mp_Ui->pbrackley,9);
+        m_ButtonGroup.addButton(mp_Ui->pbblue,10);
+        m_ButtonGroup.addButton(mp_Ui->pbdarkblue,11);
 
-        m_QPushButtonMap[0] = mp_Ui->GroupColor_1;
-        m_QPushButtonMap[1] = mp_Ui->GroupColor_2;
-        m_QPushButtonMap[2] = mp_Ui->GroupColor_3;
-        m_QPushButtonMap[3] = mp_Ui->GroupColor_4;
-        m_QPushButtonMap[4] = mp_Ui->GroupColor_5;
-        m_QPushButtonMap[5] = mp_Ui->GroupColor_6;
-        m_QPushButtonMap[6] = mp_Ui->GroupColor_7;
-        m_QPushButtonMap[7] = mp_Ui->GroupColor_8;
-        m_QPushButtonMap[8] = mp_Ui->GroupColor_9;
-        m_QPushButtonMap[9] = mp_Ui->GroupColor_10;
-        m_QPushButtonMap[10] = mp_Ui->GroupColor_11;
-        m_QPushButtonMap[11] = mp_Ui->GroupColor_12;
+        m_QPushButtonMap[0] = mp_Ui->pbwhite;
+        m_QPushButtonMap[1] = mp_Ui->pbyellow;
+        m_QPushButtonMap[2] = mp_Ui->pbpink;
+        m_QPushButtonMap[3] = mp_Ui->pbdarkred;
+        m_QPushButtonMap[4] = mp_Ui->pbgreen;
+        m_QPushButtonMap[5] = mp_Ui->pbgray;
+        m_QPushButtonMap[6] = mp_Ui->pbcarmine;
+        m_QPushButtonMap[7] = mp_Ui->pbred;
+        m_QPushButtonMap[8] = mp_Ui->pbdarkgreen;
+        m_QPushButtonMap[9] = mp_Ui->pbrackley;
+        m_QPushButtonMap[10] = mp_Ui->pbblue;
+        m_QPushButtonMap[11] = mp_Ui->pbdarkblue;
 
 }
 
@@ -95,6 +95,16 @@ CModifyReagentGroupColorDlg::~CModifyReagentGroupColorDlg()
        delete mp_Ui;
 }
 
+
+/****************************************************************************/
+/*!
+     *  \Set pointer to CReagentGroupColorList
+     */
+/****************************************************************************/
+void CModifyReagentGroupColorDlg:: SetReagentGroupColorListptr(DataManager::CReagentGroupColorList  *p_CReagentGroupColorList)
+{
+    mp_CReagentGroupColorList = p_CReagentGroupColorList;
+}
 
 /****************************************************************************/
 /*!
@@ -166,7 +176,36 @@ void CModifyReagentGroupColorDlg::OnProcessStateChanged()
 
 void CModifyReagentGroupColorDlg:: OnButtonGroup(int Id)
 {
+     mp_Ui->btnOk->setEnabled(true);
      m_ReagentGroup.SetGroupColor(m_ColorNames.value(Id));
+}
+
+/****************************************************************************/
+/**
+ * \brief Slot will be called when ReagentGroupColorUpdated Signal emitted
+ */
+/****************************************************************************/
+void CModifyReagentGroupColorDlg:: UpdateReagentGroupColor()
+{
+    m_ColorNames.clear();
+
+    int Count = 0;
+    QAbstractButton *p_Button;
+
+      foreach(p_Button, m_ButtonGroup.buttons()) {
+          QPixmap Pixmap;
+         Pixmap.load(":/HimalayaImages/Color/Color_"+mp_CReagentGroupColorList->GetCReagentGroupColor(Count)->GetColorID()+ ".png");
+
+         p_Button->setIconSize(QSize(50,50));
+         p_Button->setIcon(QIcon(Pixmap));
+         Count++;
+      }
+
+      for (qint32 ColorCount = 0; ColorCount < const_cast<DataManager::CReagentGroupColorList*>(mp_CReagentGroupColorList)->GetNumberOfReagentGroupColor(); ColorCount++) {
+            QString ColorName = const_cast<DataManager::CReagentGroupColorList*>(mp_CReagentGroupColorList)->GetCReagentGroupColor(ColorCount)->GetColorValue();
+             m_ColorNames << ColorName;
+      }
+
 }
 
 /****************************************************************************/
@@ -176,37 +215,16 @@ void CModifyReagentGroupColorDlg:: OnButtonGroup(int Id)
  *  \iparam FileNames = List of file names
  */
 /****************************************************************************/
-void CModifyReagentGroupColorDlg::SetReagentGroupList(DataManager::CReagentGroupColorList &mp_CReagentGroupColorList, DataManager::CDataReagentGroupList &ReagentGroupList, const DataManager::CReagentGroup &ReagentGroup)
+void CModifyReagentGroupColorDlg::SetReagentGroupList(DataManager::CDataReagentGroupList &ReagentGroupList, const DataManager::CReagentGroup &ReagentGroup)
 {   
     // copy the data to local
-    m_ReagentGroup = ReagentGroup;
-    m_ColorNames.clear();
-
-    int Count = 0;
-    QAbstractButton *p_Button;
-
-      foreach(p_Button, m_ButtonGroup.buttons()) {
-          QPixmap Pixmap;//(30, 30);
-         Pixmap.load(":/HimalayaImages/Color/Color_"+mp_CReagentGroupColorList.GetCReagentGroupColor(Count)->GetColorID()+ ".png");
-
-         QSize size;
-         size.setWidth(50);
-         size.setHeight(50);
-         p_Button->setIconSize(size);
-         p_Button->setIcon(QIcon(Pixmap));
-         Count++;
-      }
-
-      for (qint32 ColorCount = 0; ColorCount < const_cast<DataManager::CReagentGroupColorList&>(mp_CReagentGroupColorList).GetNumberOfReagentGroupColor(); ColorCount++) {
-            QString ColorName = const_cast<DataManager::CReagentGroupColorList&>(mp_CReagentGroupColorList).GetCReagentGroupColor(ColorCount)->GetColorValue();
-             m_ColorNames << ColorName;
-          }
+      m_ReagentGroup = ReagentGroup;
+      mp_Ui->btnOk->setEnabled(false);
 
       for(int ButtonIndex = 0; ButtonIndex < m_ColorNames.count();ButtonIndex++ )
                  m_QPushButtonMap[ButtonIndex]->setEnabled(true);
 
        const DataManager::CReagentGroup * Temp_ReagentGroup;
-
        for(int Index = 0;Index<ReagentGroupList.GetNumberOfReagentGroups();Index++){
            Temp_ReagentGroup =ReagentGroupList.GetReagentGroup(Index);
 
@@ -214,6 +232,7 @@ void CModifyReagentGroupColorDlg::SetReagentGroupList(DataManager::CReagentGroup
                int index = m_ColorNames.indexOf(Temp_ReagentGroup->GetGroupColor());
                m_QPushButtonMap[index]->setDisabled(true);
            }
-        }
+       }
 }
+
 }

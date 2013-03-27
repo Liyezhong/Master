@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file ReagentModel.cpp
+/*! \file ReagentStatusModel.cpp
  *
- *  \brief ReagentModel Implementation.
+ *  \brief ReagentStatusModel Implementation.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2013-02-11 , 2013-02-23
@@ -114,31 +114,6 @@ void CReagentStatusModel::UpdateReagentList()
             }
         }
     }
-//    if (mp_ReagentList) {
-//        for(qint32 i = 0; i < mp_ReagentList->GetNumberOfReagents(); i++) {
-//            DataManager::CReagent *p_Reagent = NULL;
-//            p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(i));
-//            if (p_Reagent) {
-//                if (mp_StationList) {
-//                    for (qint32 StationCounter = 0; StationCounter < mp_StationList->GetNumberOfDashboardStations(); StationCounter++) {
-//                        DataManager::CDashboardStation* p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(StationCounter));
-//                        if (p_Station) {
-//                            if (p_Station->GetDashboardReagentID() == p_Reagent->GetReagentID()) {
-//                                // store the station id for the reagent name
-//                                m_StationIdentifiers[p_Station->GetDashboardStationName()] = p_Station->GetDashboardStationID();
-//                                m_ReagentNames << p_Reagent->GetReagentName();
-//                                m_StationNames << p_Station->GetDashboardStationName();
-//                                m_Identifiers[p_Station->GetDashboardStationName()] = p_Reagent->GetReagentID();
-//                                if(p_Reagent->GetVisibleState()== true){
-//                                    m_VisibleReagentIds << p_Reagent->GetReagentName();
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
     foreach (const QString str, m_StationNames)
         (void)m_StationNameMap.insertMulti(str.toLower(), str);
     //m_StationNames = m_StationNameMap.values();
@@ -280,9 +255,9 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                         else
                             return 0;
                      }
-                 }
-                 else
-                    return QString("");
+                }
+                else
+                   return QString("");
 
             case 4:
                 if (p_Reagent) {
@@ -433,42 +408,6 @@ void CReagentStatusModel::SetUserSettings(DataManager::CUserSettings *p_UserSett
         m_UserSettings = *p_UserSettings;
 }
 
-/****************************************************************************/
-QVariant CReagentStatusModel::dataStatus(const QModelIndex &Index, int Role) const
-{
-    DataManager::CReagent *p_Reagent = NULL;
-    if (mp_ReagentList == NULL) {
-        return QVariant();
-    }
-
-    if (Index.row() < m_ReagentNames.count() && (p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_Identifiers[m_ReagentNames[Index.row()]])))){
-        if (Role == (int)Qt::DisplayRole) {
-            switch (Index.column()) {
-//            case 0:
-//                return p_Reagent->GetReagentStation();
-            case 1:
-                return p_Reagent->GetReagentName();
-//            case 2:
-//                return p_Reagent->GetCassetteUntilChange();
-//            case 3:
-//                return p_Reagent->GetcassetteOverdue();
-//            case 4:
-//                return p_Reagent->GetExpirayDate();
-//            case 5:
-//                return p_Reagent->GetStatus();
-            }
-        }
-
-        if (Role == (int)Qt::UserRole) {
-            return p_Reagent->GetReagentName();
-        }
-    }
-    else if (Role == (int)Qt::BackgroundRole) {
-        QPalette Palette;
-        return QVariant(Palette.color(QPalette::Window));
-    }
-    return QVariant();
-}
 /****************************************************************************/
 /*!
  *  \brief Returns item model flags of a cell
