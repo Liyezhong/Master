@@ -67,6 +67,9 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdParaffinBathStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndDateTime.h"
+
 
 namespace HimalayaGui {
 
@@ -190,6 +193,15 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
 
     RegisterCommandForProcessing<MsgClasses::CmdStationStatus, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdStationStatus>, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdProgramEndDateTime, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdProgramEndDateTime>, this);
+
+    RegisterExternalMessage<MsgClasses::CmdProgramEndDateTime, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdProgramEndDateTime>, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdCurrentProgramStepInfor, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdCurrentProgramStepInfor>, this);
 
     //Retort Lock/Unlock
     RegisterExternalMessage<MsgClasses::CmdRetortLock, HimalayaGui::HimalayaGuiController>
