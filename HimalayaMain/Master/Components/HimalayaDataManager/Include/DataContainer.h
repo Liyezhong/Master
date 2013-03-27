@@ -30,7 +30,6 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
-#include "HimalayaDataContainer/Containers/ProgramSequence/Include/ProgramSequenceList.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationInterface.h"
 #include "DataManager/Include/DataContainerCollectionBase.h"
@@ -53,17 +52,13 @@ private:
     bool ResetDCReagentGroupColorList();
     bool ResetDCProgramList();
     bool ResetDCStationList();
-    bool ResetDCProgramSequenceList();
 
-    bool AddStepsToExpandedStepList(CProgram *p_Program);
-    bool CompareSteps(CProgramStep& CurrentProgramStep, CProgramStep& NextProgramStep, bool& OK);
     void AddStation(QString StationID, QString ReagentID,CDashboardStation &Station);
 
 public:
     CDataContainer(Threads::MasterThreadController *p_HimalayaMasterThreadController);
     ~CDataContainer();
     bool InitContainers();
-    bool RefreshProgramStepStationlist();
     QString GetReagentName(QString ReagentID);
 
     // prefix mp_ left because members are intentially accessible from outside (public)
@@ -72,7 +67,6 @@ public:
     CDataReagentGroupList* ReagentGroupList;  //!< Container for reagent groups
     CDataReagentList* ReagentList;  //!< Container for reagents
     CReagentGroupColorList* ReagentGroupColorList; //!<//!< Container for reagentGroupColor
-    CProgramSequenceList* ProgramSequenceList;  //!< Container for additional program information
     IVerifierInterface* SpecialVerifierGroupA; //!< Special verifier for group A
     IVerifierInterface* SpecialVerifierGroupB; //!< Special verifier for group B
     IVerifierInterface* SpecialVerifierGroupC; //!< Special verifier for group C

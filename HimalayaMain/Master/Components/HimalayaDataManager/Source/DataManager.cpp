@@ -103,12 +103,6 @@ quint32 CDataManager::InitDataContainer()
         return EVENT_DM_PROGRAM_XML_READ_FAILED;
     }
 
-    mp_DataContainer->ProgramSequenceList->SetDataVerificationMode(false);
-    QString FilenameProgramSequenceList = Global::SystemPaths::Instance().GetSettingsPath() + "/ProgramsSequence.xml";
-    if (!mp_DataContainer->ProgramSequenceList->Read(FilenameProgramSequenceList)) {
-        qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ProgramSequenceList->Read failed with filename: " << FilenameProgramList;
-        return EVENT_DM_PROG_SEQ_XML_READ_FAILED;
-    }
 
 
     mp_DataContainer->StationList->SetDataVerificationMode(false);
@@ -123,17 +117,12 @@ quint32 CDataManager::InitDataContainer()
 
     // when all containers are loaded, activate verification mode and verify there initial content
     mp_DataContainer->ProgramList->SetDataVerificationMode(true);
-    mp_DataContainer->ProgramSequenceList->SetDataVerificationMode(false);
     mp_DataContainer->ReagentList->SetDataVerificationMode(true);
     mp_DataContainer->StationList->SetDataVerificationMode(true);
 
     if (!mp_DataContainer->ProgramList->VerifyData()) {
         qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ProgramList->VerifyData failed.";
         return EVENT_DM_PROGRAM_VERIFICATION_FAILED;
-    }
-    if (!mp_DataContainer->ProgramSequenceList->VerifyData()) {
-        qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ProgramSequenceList->VerifyData failed.";
-        return EVENT_DM_PROG_SEQ_VERIFICATION_FAILED;
     }
     if (!mp_DataContainer->ReagentList->VerifyData()) {
         qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ReagentList->VerifyData failed.";
@@ -150,9 +139,6 @@ quint32 CDataManager::InitDataContainer()
         Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
     }
 
-    if (!mp_DataContainer->ProgramSequenceList->VerifyData(true)) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
-    }
 
     if (!mp_DataContainer->ProgramList->VerifyData(true)) {
         Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
@@ -284,14 +270,6 @@ bool CDataManager::GetStationList(CDashboardDataStationList *p_StationList)
     return false;
 }
 
-CProgramSequenceList* CDataManager::GetProgramSequenceList()
-{
-    if (m_IsInitialized != true) {
-        qDebug() << "CDataManager::GetProgramSequenceList failed. Not initialized!";
-        return NULL;
-    }
-    return mp_DataContainer->ProgramSequenceList;
-}
 
 CUserSettingsInterface *CDataManager::GetUserSettingsInterface()
 {

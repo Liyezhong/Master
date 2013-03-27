@@ -151,11 +151,11 @@ bool CSpecialVerifierGroupA::CheckData()
 {
     bool Result = true;
     // check required to avoid lint warning
-   // if (mp_DReagentList && mp_DProgramList && mp_DStationList ) {
+    if (mp_DReagentList && mp_DProgramList) {
         // check each program has a valid reagent ID or not
-       // for (qint32 Counter = 0; Counter < mp_DProgramList->GetReagentIDList().count(); Counter++) {
+        for (qint32 Counter = 0; Counter < mp_DProgramList->GetReagentIDList().count(); Counter++) {
             // check the Program Reagent ID exists in ReagentID List
-           /* if (!(mp_DReagentList->ReagentExists(mp_DProgramList->GetReagentIDList().at(Counter)) ||
+            if (!(mp_DReagentList->ReagentExists(mp_DProgramList->GetReagentIDList().at(Counter)) ||
                   (mp_DProgramList->GetReagentIDList().at(Counter) == "-1"))) {
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_GV_REAGENTID_EXIST_IN_PROG_NOT_IN_REAGENT_LIST,
                                                            Global::FmtArgs() << mp_DProgramList->GetReagentIDList().at(Counter));
@@ -165,7 +165,7 @@ bool CSpecialVerifierGroupA::CheckData()
                 break;
             }
         }
-
+/*
         for (int StationCount = 0; StationCount < mp_DStationList->GetNumberOfStations(); StationCount++) {
             CStation* p_Station = const_cast<CStation*> (mp_DStationList->GetStation(StationCount));
             if (p_Station != NULL) {
@@ -180,8 +180,9 @@ bool CSpecialVerifierGroupA::CheckData()
                 }
             }
         }
-    }    
 */
+    }    
+
     // if everything goes well then Special verifier verified all the data
     return Result;
 }

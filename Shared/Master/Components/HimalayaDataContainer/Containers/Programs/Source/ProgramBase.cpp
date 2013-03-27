@@ -30,7 +30,7 @@ namespace DataManager {
  */
 /****************************************************************************/
 CProgramBase::CProgramBase()
-    : m_ID(""), m_Name(""),m_ShortName(""), m_LongName(""), m_NextFreeStepID(0)
+    : m_ID(""), m_Name(""), m_LongName(""), m_NextFreeStepID(0)
 {
     Init();
 }
@@ -56,8 +56,8 @@ CProgramBase::CProgramBase(const QString ID, const QString Name)
  *  \iparam LongName = program long name
  */
 /****************************************************************************/
-CProgramBase::CProgramBase(const QString ID, const QString ShortName, const QString LongName)
-              : m_ID(ID), m_ShortName(ShortName), m_LongName(LongName), m_NextFreeStepID(0)
+CProgramBase::CProgramBase(const QString ID, const QString Name, const QString LongName)
+              : m_ID(ID), m_Name(Name), m_LongName(LongName), m_NextFreeStepID(0)
 {
     Init();
 }
@@ -112,47 +112,6 @@ void CProgramBase::SetNextFreeStepID(const QString Value)
     m_NextFreeStepID = Value.toUInt();
 }
 
-/****************************************************************************/
-/*!
- *  \brief Gets the program Step Reference of Leica Reagents
- *
- *  \iparam ProgramStep1 = Reference of Program Step
- *  \iparam ProgramStep2 = Reference of Program Step
- *
- *  \return true (Successful)
- */
-/****************************************************************************/
-bool CProgramBase::GetLeicaReagents(CProgramStep &ProgramStep1, CProgramStep &ProgramStep2)
-{
-    // check if the Program is Leica program
-    QString ProgramID= GetID();
-    if (ProgramID.at(0) != 'L') {
-        qDebug() << "The program is not a Leica Program";
-        return false;
-    }
-    CProgramStep ProgramStep;
-    int CountLeicaReagents = 0;
-    QHash<QString, CProgramStep*>::const_iterator ICount;
-    for (ICount = m_StepList.constBegin(); ICount != m_StepList.constEnd(); ++ICount) {
-        ProgramStep = *ICount.value();
-        if (ProgramStep.GetIntensity() != 0) {
-            if (CountLeicaReagents) {
-                ProgramStep2 = ProgramStep;
-            }
-            else {
-                ProgramStep1 = ProgramStep;
-            }
-            CountLeicaReagents++;
-        }
-    }// end of for loop
-    // checking if the leica reagents are only two
-    if (CountLeicaReagents == 2) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
 
 
 /****************************************************************************/

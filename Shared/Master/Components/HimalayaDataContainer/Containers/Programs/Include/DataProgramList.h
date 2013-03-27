@@ -134,29 +134,6 @@ public:
     /****************************************************************************/
     QString GetFilename() {return m_Filename;}
 
-    /****************************************************************************/
-    /*!
-     *  \brief Returns Program Id associated with the color
-     *  \iparam Color = Program Color
-     *  \return Program ID
-     */
-    /****************************************************************************/
-    QString GetProgramIDForColour(QString Color)
-    {
-        QString ProgramId = "";
-        if (m_OrderedListOfProgramIDs.count() == 0) {
-            return ProgramId;
-        }
-        for (qint32 I = 0; I < m_OrderedListOfProgramIDs.count(); I++) {
-            CProgram* p_Program = m_ProgramList.value(m_OrderedListOfProgramIDs.at(I), NULL);
-            if (p_Program) {
-                if (p_Program->GetColor() == Color) {
-                    ProgramId = p_Program->GetID();
-                }
-            }
-        }
-        return ProgramId;
-    }
 
     //SECTION PROGRAMS//
     /****************************************************************************/
@@ -210,15 +187,11 @@ public:
     bool DeleteProgram(const QString ProgramID);   // uses unique program ID
     bool DeleteProgram(const unsigned int Index);  // uses order index
     bool DeleteAllPrograms();
-    //END OF SECTION PROGRAMS//
 
-    void RefreshExpandedStepList(const QString ProgramID)
-    {
-        CProgram* p_Program = const_cast<CProgram*>(GetProgram(ProgramID));
-        if(p_Program){
-            p_Program->RefreshExpandedStepList();
-        }
-    }
+    QStringList GetFavoriteProgramIDs(); // get five favorite Programs' ID
+
+
+    //END OF SECTION PROGRAMS//
 
     bool ProgramExists(const QString ProgramID);
     /****************************************************************************/
@@ -242,7 +215,6 @@ private:
     QReadWriteLock* mp_ReadWriteLock; //!< Lock for thread safety
 
     QStringList m_ProgramListLongNames;     //!< List of Program long names
-    QStringList m_ProgramListShortNames;    //!< List of Program short names
     QStringList m_ProgramListNames;         //!< List of Program names
 
     ErrorHash_t m_ErrorHash;    //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator
@@ -254,7 +226,7 @@ private:
     bool ReadAllPrograms(QXmlStreamReader& XmlStreamReader, bool CompleteData);
 
 
-    bool CheckForUniqueName(QString ID, QString ShortName, QString LongName);
+    bool CheckForUniqueName(QString ID, QString Name, QString LongName);
     bool UpdateReagentIDList();
 
     /****************************************************************************/

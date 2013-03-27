@@ -272,6 +272,26 @@ bool CDataProgramList::GetProgram(const QString ProgramID, CProgram& Program)
 
 /****************************************************************************/
 /*!
+ *  \brief  Retreive 5  favorite program's IDs
+ *  \return List Program IDs.
+ */
+/****************************************************************************/
+QStringList CDataProgramList::GetFavoriteProgramIDs()
+{
+    QStringList ids;
+    int count  = 0;
+    for (qint32 I = 0; I < m_ProgramList.count() && count < 5; I++) {
+        CProgram *p_Program = GetProgram(I);
+        if (p_Program && p_Program->IsFavorite()) {
+            ids.append(p_Program->GetID());
+            count++;
+        }
+    }
+    return ids;
+}
+
+/****************************************************************************/
+/*!
  *  \brief Checks program exists in the list
  *  \iparam ProgramID = Program ID
  *
@@ -330,9 +350,6 @@ bool CDataProgramList::AddProgram(const CProgram* p_Program)
     }
 
     CProgram *p_TempProgram = new CProgram();
-    if (p_Program->GetNumberOfStepsInExpandedList() == 0) {
-        const_cast<CProgram*>(p_Program)->RefreshExpandedStepList();
-    }
     *p_TempProgram = *p_Program;
 
     Result = true;
@@ -440,9 +457,6 @@ bool CDataProgramList::AddLeicaProgram(const CProgram* p_Program)
         return Result;
     }
     CProgram *p_TempProgram = new CProgram();
-    if (p_Program->GetNumberOfStepsInExpandedList() == 0) {
-        const_cast<CProgram*>(p_Program)->RefreshExpandedStepList();
-    }
     *p_TempProgram = *p_Program;
 
     Result = true;
@@ -658,7 +672,7 @@ bool CDataProgramList::DeleteProgram(const QString ProgramID)
         if (MatchIndex != -1) {
             m_OrderedListOfProgramIDs.removeAt(MatchIndex);
             m_ProgramListLongNames.removeAt(MatchIndex);
-            m_ProgramListShortNames.removeAt(MatchIndex);
+            m_ProgramListNames.removeAt(MatchIndex);
         }
         else {
             Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROGRAM_INVALID_INDEX,
@@ -724,7 +738,7 @@ bool CDataProgramList::DeleteAllPrograms()
     m_ProgramList.clear();
     m_OrderedListOfProgramIDs.clear();
     m_ProgramListLongNames.clear();
-    m_ProgramListShortNames.clear();
+    m_ProgramListNames.clear();
     m_ReagentIDList.clear();
     return Result;
 }
@@ -832,33 +846,9 @@ bool CDataProgramList::DeserializeContent(QIODevice& IODevice, bool CompleteData
 
     Result = ReadAllPrograms(XmlStreamReader, CompleteData);
     UpdateReagentIDList();
-    //if completedata
-//    if (CompleteData && Result) {
-//        if (!Helper::ReadNode(XmlStreamReader, "NonXmlData")) {
-//            return false;
-//        }
 
-//        if (!XmlStreamReader.attributes().hasAttribute("VerificationMode")) {
-//            qDebug() << "### attribute <VerificationMode> is missing";
-//            return false;
-//        }
-
-//        if (XmlStreamReader.attributes().value("VerificationMode").toString() == "true") {
-//            SetDataVerificationMode(true);
-//        }
-//        else {
-//            SetDataVerificationMode(false);
-//        }
-
-//        if (!XmlStreamReader.attributes().hasAttribute("FileName")) {
-//            qDebug() << "### attribute <FileName> is missing";
-//            return false;
-//        }
-//        SetFilename(XmlStreamReader.attributes().value("FileName").toString());
-
-//	}
     (void)XmlStreamReader.device()->reset();
-//    qDebug()<<"\n\n\n PROGRAM LIST"<<XmlStreamReader.device()->readAll();
+
     return Result;
 }
 
@@ -913,30 +903,6 @@ bool CDataProgramList::SerializeContent(QIODevice& IODevice, bool CompleteData)
     }
     XmlStreamWriter.writeEndElement(); // ProgramList
 
-     //======NODE=======Temporary Data Variables=========================
-//    if (CompleteData) {
-//        XmlStreamWriter.writeStartElement("NonXmlData");
-//        if (GetDataVerificationMode()) {
-//            XmlStreamWriter.writeAttribute("VerificationMode", "true");
-//        }
-//        else {
-//            XmlStreamWriter.writeAttribute("VerificationMode", "false");
-//        }
-
-//        XmlStreamWriter.writeAttribute("FileName", GetFilename());
-
-////        XmlStreamWriter.writeAttribute("VerifierCount", QString::number(m_VerifierList.count()));
-////        for (qint32 I = 0; I < m_VerifierList.count(); I++) {
-////            QString VerifierPtr;
-////            QTextStream VerifierPointer(&VerifierPtr);
-////            VerifierPointer << m_VerifierList.at(I);
-////            qDebug()<<"\n\n Real Verifier Pointer"<<m_VerifierList.at(I);
-////            XmlStreamWriter.writeAttribute(QString("Verifier%1Pointer").arg(I + 1), VerifierPointer.readAll());
-////        }
-//        XmlStreamWriter.writeEndElement();
-//     }
-     //======NODE=END====Temporary Data Variables=========================
-    // The above Result has to be true to write the end element
     XmlStreamWriter.writeEndElement(); // for Staining Programss
     XmlStreamWriter.writeEndDocument(); // End of Document
 
@@ -1030,32 +996,22 @@ CDataProgramList& CDataProgramList::operator = (const CDataProgramList& SourcePr
  *  \return On Successful (True) or not (False)
  */
 /****************************************************************************/
-bool CDataProgramList::CheckForUniqueName(QString ID, QString ShortName, QString LongName)
+bool CDataProgramList::CheckForUniqueName(QString ID, QString Name, QString LongName)
 {
     bool Result = true;
 
     const CProgram *p_Program = GetProgram(ID);
     if (p_Program) {
-        if (p_Program->GetName() != ShortName) {
+        if (p_Program->GetName() != Name) {
             // check for the Short name existence in the Program list
-            if (m_ProgramListShortNames.contains(ShortName, Qt::CaseInsensitive)) {
+            if (m_ProgramListNames.contains(Name, Qt::CaseInsensitive)) {
                 qDebug() << "CDataProgramList::CheckForUniqueName() - Program short name already exists :";
-                m_ErrorHash.insert(EVENT_DM_SHORT_NAME_NOT_UNIQUE, Global::tTranslatableStringList() << ShortName);
+                m_ErrorHash.insert(EVENT_DM_SHORT_NAME_NOT_UNIQUE, Global::tTranslatableStringList() << Name);
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_SHORT_NAME_NOT_UNIQUE,
-                                                           Global::tTranslatableStringList() << ShortName);
+                                                           Global::tTranslatableStringList() << Name);
                 Result = false;
             }
         }
-//        if (p_Program->GetLongName() != LongName) {
-//            // check for the Long name existence in the Program list
-//            if (m_ProgramListLongNames.contains(LongName, Qt::CaseInsensitive)) {
-//                qDebug() << "CDataProgramList::CheckForUniqueName() - Program long name already exists :";
-//                Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROGRAM_NAME_NOT_UNIQUE
-//                                                           , Global::tTranslatableStringList() << LongName);
-//                m_ErrorHash.insert(EVENT_DM_PROGRAM_NAME_NOT_UNIQUE, Global::tTranslatableStringList() << LongName);
-//                Result = false;
-//            }
-//        }
     }
     else {
         Result = false;

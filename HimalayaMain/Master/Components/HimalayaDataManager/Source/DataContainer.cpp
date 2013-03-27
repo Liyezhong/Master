@@ -23,8 +23,6 @@
 
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramListVerifier.h"
 
-#include "HimalayaDataContainer/Containers/ProgramSequence/Include/ProgramSequenceVerifier.h"
-
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentListVerifier.h"
 
 #include "HimalayaDataContainer/Containers/Stations/Include/DataStationListVerifier.h"
@@ -38,7 +36,6 @@
 #include "DataManager/Containers/Racks/Include/RackListVerifier.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsVerifier.h"
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupA.h"
-#include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupB.h"
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupC.h"
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupD.h"
 
@@ -52,7 +49,6 @@ CDataContainer::CDataContainer(Threads::MasterThreadController *p_MasterThreadCo
     ProgramList(NULL),
     ReagentList(NULL),
     StationList(NULL),
-    ProgramSequenceList(NULL),
     SpecialVerifierGroupA(NULL),
     SpecialVerifierGroupB(NULL),
     SpecialVerifierGroupC(NULL),
@@ -107,11 +103,6 @@ bool CDataContainer::InitContainers()
         return false;
     }
 
-    ProgramSequenceList = new CProgramSequenceList();
-    if (!ResetDCProgramSequenceList()) {
-        qDebug() << "CDataContainer::InitContainers failed, because ResetProgramSequenceList failed.";
-        return false;
-    }
 
 
       // create special verifier for reagents and programs
@@ -131,9 +122,6 @@ bool CDataContainer::InitContainers()
         SpecialVerifierGroupA = new CSpecialVerifierGroupA(ProgramList, ReagentList, StationList);
     }
 
-    if (SpecialVerifierGroupB == NULL) {
-        SpecialVerifierGroupB = new CSpecialVerifierGroupB(ProgramList, ProgramSequenceList);
-    }
 
     if (SpecialVerifierGroupC == NULL) {
         SpecialVerifierGroupC = new CSpecialVerifierGroupC(ReagentList, SettingsInterface);
@@ -149,7 +137,6 @@ bool CDataContainer::InitContainers()
     StationList->AddVerifier(SpecialVerifierGroupA);
     StationList->AddVerifier(SpecialVerifierGroupD);
 
-    ProgramSequenceList->AddVerifier(SpecialVerifierGroupB);
     SettingsInterface->AddVerifier(SpecialVerifierGroupC);
 
 
@@ -162,7 +149,6 @@ bool CDataContainer::DeinitContainers()
     if (CDataContainerCollectionBase::DeinitContainers()) {
 
     }
-    delete ProgramSequenceList;
     delete StationList;
     delete ProgramList;
     delete ReagentList;
@@ -198,27 +184,6 @@ bool CDataContainer::ResetDCProgramList()
     return true;
 }
 
-bool CDataContainer::ResetDCProgramSequenceList()
-{
-    if (m_IsInitialized == true) {
-        qDebug() << "CDataContainer::ResetDCProgramList was already called";
-        return false;
-    }
-
-    // init program list
-    ProgramSequenceList->Init();
-
-
-    // create a verifier object for this data container, if not done before
-    static IVerifierInterface *p_ProgramSequenceListVerifier = NULL;
-    if (p_ProgramSequenceListVerifier == NULL) {
-        p_ProgramSequenceListVerifier = new CProgramSequenceListVerifier();
-    }
-    // register this verifier object in the data container (=> dependency injection)
-    ProgramSequenceList->AddVerifier(p_ProgramSequenceListVerifier);
-
-    return true;
-}
 
 bool CDataContainer::ResetDCReagentGroupList()
 {
@@ -286,144 +251,6 @@ bool CDataContainer::ResetDCStationList()
       return true;
 }
 
-bool CDataContainer::RefreshProgramStepStationlist()
-{
-    bool Result = true;
-
-    //Get Program ID's of Programs which are startable and used flag is set
-    //from program sequence list
-    QStringList StartableProgramList;
-    StartableProgramList = ProgramSequenceList->GetStartableProgramIDList();
-    CProgram* p_Program = NULL;
-    CProgramStep* p_ProgStep = NULL;
-    //For all the steps in the above programs generate possible station list
-    for (qint32 I = 0; I < StartableProgramList.count(); I++) {
-        p_Program = const_cast<CProgram*>(ProgramList->GetProgram(StartableProgramList.at(I)));
-        if (p_Program) {
-            p_ProgStep = p_Program->GetProgramStepExpanded(0);
-            if (p_ProgStep->GetReagentID() != SLIDE_ID_SPECIAL_REAGENT) {
-                //Will add SID step to expanded step list
-                (void)p_Program->CreateSIDStationStep(p_Program->GetNextFreeStepID(true));
-            }
-            for (qint32 J = 0; J < p_Program->GetNumberOfStepsInExpandedList(); J++) {
-                p_ProgStep = p_Program->GetProgramStepExpanded(J);
-                if (p_ProgStep) {
-                    QString ReagentID = p_ProgStep->GetReagentID();
-                    QString ProgramID = p_Program->GetID();
-                    QString StepID = p_ProgStep->GetStepID();
-                    QStringList PossibleStations;
-                    if (ReagentID == SLIDE_ID_SPECIAL_REAGENT) {
-                        ProgramID = "-1";
-                        StepID = "-1";
-                    }
-                    //PossibleStations = StationList->GetPossibleStations(ReagentID, ProgramID, StepID);
-                    //Todo Abe
-                    p_ProgStep->SetStationIDList(PossibleStations);
-                }
-                else {
-                    return false;
-                }
-            }//End of prog step for loop
-        }
-        else {
-            Result = false;
-        }
-        Result = AddStepsToExpandedStepList(p_Program);
-    }// end of program for loop
-
-    return Result;
-}
-
-
-
-bool CDataContainer::AddStepsToExpandedStepList(CProgram *p_Program)
-{
-    /*if (!p_Program)
-        return false;
-
-    ListOfExpandedSteps_t* p_ExpandedStepList = const_cast<ListOfExpandedSteps_t *>(p_Program->GetExpandedStepList());
-
-    if (p_ExpandedStepList->count() == 0) {
-        return false;
-    }
-    for (int I = 0; I < p_Program->GetNumberOfStepsInExpandedList(); I++) {
-        CProgramStep* p_CurrentProgStep = NULL;
-        CProgramStep* p_NextProgStep = NULL;
-        p_CurrentProgStep = p_Program->GetProgramStepExpanded(I);
-        if (p_CurrentProgStep) {
-            qDebug()<<"\nCurrent PRogram"<<p_Program->GetID();
-            qDebug()<<"\n\n p_CurrentProgStep StationID List"<< p_CurrentProgStep->GetStationIDList();
-
-            /* I am not worrying about Index crossing the maximum , since GetProgramStep checks validity of index */
-           /* p_NextProgStep = const_cast<CProgramStep *>(p_Program->GetProgramStepExpanded(I + 1));
-            if (p_NextProgStep) {
-                bool OK = true;
-                //if the current step(i.e Next Prog Step) and previous step(i.e Current Prog Step) is in different zone
-                //insert an dry station step inbetween
-                if (!CompareSteps(*p_CurrentProgStep, *p_NextProgStep, OK)) {
-                    if (OK) {
-                        QString ID = p_Program->GetID();
-                        QStringList PossibleStations = StationList->GetPossibleStations(DRY_STATION_TYPE, "-1", "-1");
-                        CProgramStep *p_ExpandedStep = p_Program->CreateDryStationStep(p_Program->GetNextFreeStepID(true), PossibleStations);
-                        p_ExpandedStepList->insert(I + 1, p_ExpandedStep);
-                        //this makes sure index is pointing to the correct program step for comparision
-                        I++;
-                    }
-                    else {
-                        return false;
-                    }
-                }
-                //else no need to add dry station steps
-            }
-        }
-    }*///End of for loop
-    return true;
-}
-
-bool CDataContainer::CompareSteps(CProgramStep& CurrentProgramStep, CProgramStep& NextProgramStep, bool& OK)
-{
-   /* QStringList StationIDList = CurrentProgramStep.GetStationIDList();
-    StationZoneType_t CurrentZone = INVALID_ZONE;
-    StationZoneType_t TemporaryCurrentZone = INVALID_ZONE;
-    StationZoneType_t NextStepZone = INVALID_ZONE;
-    //To make sure that all the stations in the list are in the same zone.
-    //Else the stations xml generated by BLG has a bug
-    for (qint32 I = 0; I < StationIDList.count(); I++) {
-        CurrentZone = StationMatrix->GetStationZone(StationIDList.at(I));
-        if ((I != 0) && CurrentZone != TemporaryCurrentZone) {
-            qDebug("### FATAL ERROR Possible Stations for program step in different zone ");
-            //! \todo Inform event Handler
-            OK = false;
-            return false;
-        }
-        TemporaryCurrentZone = CurrentZone;
-    }
-    StationIDList.clear();
-
-    StationIDList = NextProgramStep.GetStationIDList();
-    //To make sure that all the stations in the list are in the same zone.
-    //Else the stations xml generated by BLG has a bug
-    for (qint32 I = 0; I < StationIDList.count(); I++) {
-        NextStepZone = StationMatrix->GetStationZone(StationIDList.at(I));
-        if ((I != 0) && NextStepZone != TemporaryCurrentZone) {
-            qDebug("### FATAL ERROR Possible Stations for program step in different zone ");
-            OK = false;
-            return false;
-        }
-        TemporaryCurrentZone = NextStepZone;
-    }
-
-
-    //if zones are different , need to insert dry station step
-    if ((CurrentZone == LEFT_ZONE && NextStepZone == RIGHT_ZONE) ||
-        (CurrentZone == RIGHT_ZONE && NextStepZone == LEFT_ZONE))  {
-        return false;
-    }
-    else {
-        return true;
-    }*/
-    return false;
-}
 
 QString CDataContainer::GetReagentName(QString ReagentID)
 {

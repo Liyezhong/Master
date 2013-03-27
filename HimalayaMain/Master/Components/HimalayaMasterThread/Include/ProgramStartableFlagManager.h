@@ -33,7 +33,6 @@ namespace Threads {
 
 namespace DataManager {
     class CDataManager;
-    class CProgramSequenceList;
     class CUserSettingsInterface;
     class CUserSettings;
     class CDataProgramList;
@@ -41,9 +40,6 @@ namespace DataManager {
 
 namespace Himalaya {
 class HimalayaMasterThreadController;
-static const QString UNLOADER_STEP = "S7";
-static const QString TRANSFER_STEP = "S8";
-static const QString DISTILLED_WATER_STEP = "S6";
 
 /****************************************************************************/
 /**
@@ -65,7 +61,6 @@ private:
     // doesnt have to retrieve it every time. The below pointers are initialized
     // in constructor and can be used throughout the class.
     DataManager::CDataManager *mp_DataManager; //!< The DataManager
-    DataManager::CProgramSequenceList *mp_ProgramSequenceList; //!< ProgramSequence List
     DataManager::CUserSettings *mp_UserSettings; //!< User settings
     DataManager::CUserSettingsInterface *mp_UserSettingsInterface; //!< User settings interface
     DataManager::CDataProgramList *mp_ProgramList; //!< ProgramList

@@ -42,7 +42,6 @@ protected:
 
     ListOfIDs_t m_OrderedListOfStepIDs; //!< Ordered list of step id's
     QString m_ID;                               //!< program ID
-    QString m_ShortName;                        //!< Program short name
     QString m_LongName;                         //!< Program long name
     unsigned int m_NextFreeStepID;              //!< Next available program ID
     ListOfProgramSteps_t m_StepList;            //!< Step List
@@ -87,14 +86,13 @@ protected:
     }
 public:
     CProgramBase();
-    CProgramBase(const QString ID, const QString ShortName, const QString LongName);
+    CProgramBase(const QString ID, const QString Name, const QString LongName);
     CProgramBase(const QString ID, const QString Name);
     virtual ~CProgramBase();
 
     void Init();
 
     void SetNextFreeStepID(const QString Value);
-    bool GetLeicaReagents(CProgramStep &ProgramStep1, CProgramStep &ProgramStep2);
 
     /****************************************************************************/
     /*!
@@ -130,22 +128,6 @@ public:
     /****************************************************************************/
     void SetName(const QString Value){m_Name = Value;}
 
-    /****************************************************************************/
-    /*!
-     *  \brief  Retrieve the program short name
-     *
-     *  \return Short name
-     */
-    /****************************************************************************/
-    QString GetShortName() const {return m_ShortName;}
-    /****************************************************************************/
-    /*!
-     *  \brief Sets the program short name
-     *
-     *  \iparam Value = Program short name
-     */
-    /****************************************************************************/
-    void SetShortName(const QString Value){m_ShortName = Value;}
     /****************************************************************************/
     /*!
      *  \brief  Retrieve the program long name

@@ -35,8 +35,8 @@ class CDataContainer;
 // constraints
 const int PROGRAMS_MAX = 50;                //!< Max program allowed
 const int NEXT_STEP_ID_MIN = 1;             //!< Minimum value of step Id
-const int SHORT_NAME_LENGTH_MIN = 1;        //!< Short name length Min
-const int SHORT_NAME_LENGTH_MAX = 3;        //!< Short name length Max
+const int NAME_LENGTH_MIN = 1;        //!< name length Min
+const int NAME_LENGTH_MAX = 20;        //!< name length Max
 const int LONG_NAME_LENGTH_MIN = 1;         //!< Long name length Min
 const int LONG_NAME_LENGTH_MAX = 32;        //!< Long name length Max
 const int OVEN_TEMPERATURE_MAX = 70;        //!< Oven temperature Max
@@ -87,10 +87,9 @@ private:
     ErrorHash_t m_ErrorsHash;           //!< To store Error ID and any arguments associated
     QStringList m_LeicaReagentIDList;   //!< To store the Leica reagent IDs
     CDataContainer *mp_DataContainer;   //!< DataContainer
-    void CheckProgramStep(CProgram* p_Program, int &LeicaReagentCount, bool &VerifiedData);
+    void CheckProgramStep(CProgram* p_Program,bool &VerifiedData);
     void CheckDurationFormat(QStringList SplitList, bool &VerifiedData, QString ProgramName);
-    void CheckUserProgramSteps(CProgram* p_Program, bool &VerifiedData);
-    void CheckLeicaProgramSteps(CProgram* p_Program, bool &VerifiedData);
+
 };
 
 } // namespace DataManager

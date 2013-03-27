@@ -57,7 +57,6 @@
 #include <QLocale>
 
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramListVerifier.h"
-#include "HimalayaDataContainer/Containers/ProgramSequence/Include/ProgramSequenceVerifier.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentListVerifier.h"
 #include "HimalayaDataContainer/Containers/Stations/Include/DataStationListVerifier.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsVerifier.h"
@@ -163,7 +162,7 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
     mp_DataManagerBase = mp_DataManager;
 
     //! \todo Do this when a rack is inserted
-    mp_DataManager->RefreshPossibleStationList();
+//    mp_DataManager->RefreshPossibleStationList();
 
     //Initialize program Startable manager
     m_ProgramStartableManager.Init();
@@ -462,13 +461,7 @@ void HimalayaMasterThreadController::SendXML() {
         XmlStream << *p_ProgramList;
         SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM , XmlStream)), m_CommandChannelGui);
     }
-    p_ByteArray->clear();
-    (void)XmlStream.device()->reset();
-    DataManager::CProgramSequenceList *p_ProgramSequenceList = mp_DataManager->GetProgramSequenceList();
-    if (p_ProgramSequenceList) {
-        XmlStream << *p_ProgramSequenceList;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM_SEQUENCE , XmlStream)), m_CommandChannelGui);
-    }
+
     p_ByteArray->clear();
     (void)XmlStream.device()->reset();
     DataManager::CUserSettingsInterface *p_SettingsInterface = mp_DataManager->GetUserSettingsInterface();

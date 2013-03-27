@@ -68,20 +68,10 @@ public:
     bool GetReagentList(CDataReagentList *p_ReagentList);
     CDataReagentList* GetReagentList();
 
-    CProgramSequenceList* GetProgramSequenceList();
     CUserSettingsInterface* GetUserSettingsInterface();
     CDeviceConfigurationInterface* GetDeviceConfigurationInterface();
     CProgramCommandInterface *mp_ProgramCommandInterface; //!< Handles commands related to program container
 
-
-    void RefreshPossibleStationList()
-    {
-        if (m_IsInitialized) {
-            if (mp_DataContainer) {
-                mp_DataContainer->RefreshProgramStepStationlist();
-            }
-        }
-    }
 
 signals:
     void StationUpdate(CDashboardStation &Station);

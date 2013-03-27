@@ -32,7 +32,8 @@ namespace DataManager {
  *  \brief Default Constructor
  */
 /****************************************************************************/
-CProgram::CProgram() : CProgramBase("0","",""), m_Color(""), m_Locked(false), m_ExpandedListUpToDate(false), mp_DryStationStep(NULL), mp_SIDStationStep(NULL), m_Modified(false)
+CProgram::CProgram() : CProgramBase("0","",""),
+    m_Icon(""), m_LeicaProgram(false), m_Favorite(false)
 {
     Init();
 }
@@ -43,26 +44,12 @@ CProgram::CProgram() : CProgramBase("0","",""), m_Color(""), m_Locked(false), m_
  *  \iparam ID = program ID
  */
 /****************************************************************************/
-CProgram::CProgram(const QString ID) : CProgramBase(ID,"",""), m_Color(""), m_Locked(false), m_ExpandedListUpToDate(false), mp_DryStationStep(NULL), mp_SIDStationStep(NULL), m_Modified(false)
+CProgram::CProgram(const QString ID) : CProgramBase(ID,"",""),
+     m_Icon(""), m_LeicaProgram(false), m_Favorite(false)
 {
     Init();
 }
 
-/****************************************************************************/
-/*!
- *  \brief Constructor
- *  \iparam Color = Color associated with the program
- *  \iparam ProgramIsLocked = True for Leica program, false for user defined program
- *  \iparam ID = program ID
- *  \iparam ShortName = program short name
- *  \iparam LongName = program long name
- */
-/****************************************************************************/
-CProgram::CProgram(const QString Color, const bool ProgramIsLocked, const QString ID, const QString ShortName, const QString LongName)
-    : CProgramBase(ID, ShortName, LongName), m_Color(Color), m_Locked(ProgramIsLocked), m_ExpandedListUpToDate(false), mp_DryStationStep(NULL), mp_SIDStationStep(NULL), m_Modified(false)
-{
-    Init();
-}
 
 /****************************************************************************/
 /*!
@@ -70,10 +57,11 @@ CProgram::CProgram(const QString Color, const bool ProgramIsLocked, const QStrin
  *  \iparam ID = program ID
  */
 /****************************************************************************/
-CProgram::CProgram(const QString ID, const QString Name, bool IsLeicaProgram, QString Icon):
-    CProgramBase(ID, Name),
+CProgram::CProgram(const QString ID, const QString Name, const QString LongName, bool IsLeicaProgram, QString Icon, bool Favorite):
+    CProgramBase(ID, Name, LongName),
     m_LeicaProgram(IsLeicaProgram),
-    m_Icon(Icon)
+    m_Icon(Icon),
+    m_Favorite(Favorite)
 {
     Init();
 }
@@ -85,7 +73,6 @@ CProgram::CProgram(const QString ID, const QString Name, bool IsLeicaProgram, QS
 /****************************************************************************/
 void CProgram::Init()
 {
-    m_ExpandedStepList.clear();
     m_ReagentIDList.clear();
 }
 
@@ -97,9 +84,7 @@ void CProgram::Init()
  *
  */
 /****************************************************************************/
-CProgram::CProgram(const CProgram& SourceProgram):CProgramBase(SourceProgram),
-    mp_DryStationStep(NULL),
-    mp_SIDStationStep(NULL)
+CProgram::CProgram(const CProgram& SourceProgram):CProgramBase(SourceProgram)
 {
     Init();
     try {
@@ -120,9 +105,6 @@ CProgram::~CProgram()
 {
     try {
         m_ReagentIDList.clear();
-        for (qint32 I = 0; I < m_ExpandedStepList.size(); I++) {
-            delete m_ExpandedStepList.at(I);
-        }
     }
     catch (...){
         //to please lint.
@@ -132,27 +114,20 @@ CProgram::~CProgram()
 
 /****************************************************************************/
 /*!
- *  \brief Refreshes the expanded step list
- *  \return true - refresh success , false - refresh failure
+ *  \brief  Retreive program duration in second
+ *  \return unsigned int
  */
 /****************************************************************************/
-bool CProgram::RefreshExpandedStepList()
+quint32 CProgram::GetProgramDurationInSeconds() const
 {
-    SetExpandedListState(false);
-    for (qint32 I = 0; I < m_ExpandedStepList.size(); I++) {
-        delete m_ExpandedStepList.at(I);
+    quint32 duration = 0;
+    for (qint32 I = 0; I < GetNumberOfSteps(); I++) {
+        const CProgramStep *step = GetProgramStep(I);
+        if (step) {
+            duration += step->GetDurationInSeconds();
+        }
     }
-    m_ExpandedStepList.clear();
-
-
-
-    for (qint32 i = 0; i < GetNumberOfSteps(); i++) {
-        CProgramStep* p_NewPStep = new CProgramStep();
-        *p_NewPStep = *GetProgramStep(i);
-         m_ExpandedStepList.append(p_NewPStep);
-    }
-
-    return true;
+    return duration;
 }
 
 /****************************************************************************/
@@ -181,14 +156,21 @@ bool CProgram::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Complete
         XmlStreamWriter.writeAttribute("LeicaProgram", "false");
     }
 
+    if (IsFavorite()) {
+        XmlStreamWriter.writeAttribute("Favorite", "true");
+    } else {
+        XmlStreamWriter.writeAttribute("Favorite", "false");
+    }
+
     XmlStreamWriter.writeStartElement("StepList");
     XmlStreamWriter.writeAttribute("NextStepID", GetNextFreeStepID(false));
 
 
-    for (int i = 0; i < GetNumberOfStepsInExpandedList() ; i++) {
-        CProgramStep *p_ProgStep = GetProgramStepExpanded(i);
-        if (p_ProgStep != NULL) {
-            if (!p_ProgStep->SerializeContent(XmlStreamWriter, CompleteData)) {
+    for (int i = 0; i < GetNumberOfSteps() ; i++) {
+        CProgramStep p_ProgStep;
+        Result = GetProgramStep(i, p_ProgStep);
+        if (Result) {
+            if (!p_ProgStep.SerializeContent(XmlStreamWriter, CompleteData)) {
                 qDebug("DataManager::CProgramStep SerializeContent failed ");
                 return false;
             }
@@ -245,6 +227,18 @@ bool CProgram::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
     else {
         m_LeicaProgram = false;
     }
+
+    // Favorite
+    if (!XmlStreamReader.attributes().hasAttribute("Favorite")) {
+        qDebug() << "### attribute <Favorite> is missing => abort reading";
+        return false;
+    }
+    if (XmlStreamReader.attributes().value("Favorite").toString().toUpper() == "TRUE") {
+        m_Favorite = true;
+    }
+    else {
+        m_Favorite = false;
+    }
     // Look for node <StepList>
     if (!Helper::ReadNode(XmlStreamReader, "StepList")) {
         qDebug() << "DeserializeContent: abort reading. Node not found: StepList";
@@ -262,7 +256,6 @@ bool CProgram::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
 
     //Delete program steps
     (void)DeleteAllProgramSteps();
-    m_ExpandedStepList.clear();
     m_ReagentIDList.clear();
     while(!XmlStreamReader.atEnd()) {
         if (static_cast<int>(XmlStreamReader.readNext()) == 1) {
@@ -280,15 +273,11 @@ bool CProgram::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
                         delete p_NewProgramStep;
                         return false;
                     }
-                    CProgramStep* OriginalProgramStep = CreateProgramStep("Dummy");
-                    * OriginalProgramStep = *p_NewProgramStep;
-                    if (!CProgramBase::AddProgramStep(OriginalProgramStep)) {
+                    if (!AddProgramStep(p_NewProgramStep)) {
                         qDebug() << "CProgram::Add ProgramStep failed!";
                         delete p_NewProgramStep;
-                        delete OriginalProgramStep;
                         return false;
                     }
-                    m_ExpandedStepList.append(p_NewProgramStep);
                     m_ReagentIDList.append(p_NewProgramStep->GetReagentID());
                 }
             }
@@ -385,211 +374,14 @@ CProgram& CProgram::operator = (const CProgram& SourceProgram)
             DataStream << SourceProgram;
             (void)DataStream.device()->reset();
             DataStream >> *this;
-            SetExpandedListState(true);
         }
         catch(...) {
             //! \todo re-throw or Just log ? delete memory allocated ?
             (void)DeleteAllProgramSteps();
-            delete mp_DryStationStep;
-            delete mp_SIDStationStep;
             qDebug()<<"CProgram::Assignment failed";
         }
     }
     return *this;
-}
-
-/****************************************************************************/
-/*!
- *  \brief  Retrieves all the stations used by the program
- *
- *  \return Station ID list
- */
-/****************************************************************************/
-QStringList const & CProgram::GetStationsUsedByProgram()
-{
-    for(qint32 I = 0; I < m_ExpandedStepList.count(); I++) {
-        CProgramStep *p_Step = m_ExpandedStepList.value(I, NULL);
-        if (p_Step) {
-            m_StationList.append(p_Step->GetStationIDList());
-        }
-        m_StationList.removeDuplicates();
-    }
-    return m_StationList;
-}
-
-/****************************************************************************/
-/*!
- *  \brief  Updates Expanded steps
- *
- *  \iparam SourceProgram
- */
-/****************************************************************************/
-void CProgram::UpdateExpandedSteps(const CProgram& SourceProgram)
-{
-    try {
-        if (RefreshExpandedStepList() && (&SourceProgram != this)) {
-            if (!SourceProgram.m_ExpandedStepList.isEmpty()) {
-                CProgramStep *p_StepSource = NULL;
-                p_StepSource = const_cast<CProgramStep *>(SourceProgram.m_ExpandedStepList.at(0));
-                CHECKPTR(p_StepSource);
-                //We dont create SID step for the first time. We add SID step only when rack is inserted in the device.
-                //Hence , for the first time Expanded step contains only Normal steps , it wont contain
-                // SID /dry station steps
-                if (p_StepSource->GetReagentID() == SLIDE_ID_SPECIAL_REAGENT) {
-                    //Internally added to expanded step list
-                    CProgramStep * p_SIDStep = CreateSIDStationStep(p_StepSource->GetStepID());
-                    CHECKPTR(p_SIDStep);
-                    p_SIDStep->SetStationIDList(p_StepSource->GetStationIDList());
-                }
-                //Now check if Dry station was inserted. If so, insert Dry steps.
-                for (qint32 I = 0; I < m_ExpandedStepList.count(); I++) {
-                    CProgramStep *p_ExpandedStepSource = NULL;
-                    p_ExpandedStepSource = SourceProgram.GetProgramStepExpanded(I);
-                    CHECKPTR(p_ExpandedStepSource);
-                    if (p_ExpandedStepSource->GetReagentID() == "S9") {
-                        CProgramStep* p_DryStationStep = CreateDryStationStep(p_ExpandedStepSource->GetStepID(),
-                                                                              p_ExpandedStepSource->GetStationIDList());
-                        m_ExpandedStepList.insert(I, p_DryStationStep);
-                    }
-                }
-            }
-        }
-    }
-    catch (...) {
-        qDebug()<<"### Update Expanded Step Failed";
-    }
-
-    SetExpandedListState(true);
-}
-
-/****************************************************************************/
-/*!
- *  \brief  Create Dry Station Step
- *
- *  \iparam StepID
- *  \iparam StationIDList
- *
- *  \return DryStationStep
- */
-/****************************************************************************/
-CProgramStep* CProgram::CreateDryStationStep(QString StepID, QStringList StationIDList)
-{
-    mp_DryStationStep = new CProgramStep();
-    mp_DryStationStep->SetStepID(StepID);
-    mp_DryStationStep->SetReagentID("S9");
-    mp_DryStationStep->SetMinDurationInSeconds(1);
-    mp_DryStationStep->SetMaxDurationInPercent(MAX_DURATION_PERCENTAGE_DRY_STATION_STEP);
-    mp_DryStationStep->SetNumberOfParallelStations(0);
-    mp_DryStationStep->SetStationIDList(StationIDList);
-    mp_DryStationStep->SetIntensity(0);
-    return mp_DryStationStep;
-}
-
-/****************************************************************************/
-/*!
- *  \brief  Create SID Station Step
- *
- *  \iparam StepID
- *
- *  \return SIDStationStep
- */
-/****************************************************************************/
-CProgramStep* CProgram::CreateSIDStationStep(QString StepID)
-{
-    mp_SIDStationStep = new CProgramStep(StepID, SLIDE_ID_SPECIAL_REAGENT, 1,
-                                         MAX_DURATION_PERCENTAGE_SID_STATION_STEP,
-                                         false, 0, 0);
-    m_ExpandedStepList.insert(0, mp_SIDStationStep);
-    return mp_SIDStationStep;
-
-}
-
-/****************************************************************************/
-/*!
- *  \brief  Deletes the progarm step
- *  \iparam Index
- *  \return true - delete success , false - delete failure
- */
-/****************************************************************************/
-bool CProgram::DeleteProgramStep(const unsigned int Index)
-{
-    const CProgramStep *p_ProgramStep = GetProgramStep(Index);
-    QString ReagentId = p_ProgramStep->GetReagentID();
-    bool Result = CProgramBase::DeleteProgramStep(Index);
-    for (qint32 I = 0; I < m_ExpandedStepList.size(); I++) {
-        CProgramStep *p_ExpandedStep = m_ExpandedStepList.at(I);
-        if (p_ExpandedStep && (p_ExpandedStep->GetReagentID() == ReagentId)) {
-            delete m_ExpandedStepList.takeAt(I);
-            break;
-        }
-    }
-    return Result;
-}
-
-/****************************************************************************/
-/*!
- *  \brief Adds program step to program
- *  \iparam p_ProgramStep = Program step to add
- *
- *  \return true = add success , false - add failed
- */
-/****************************************************************************/
-bool CProgram::AddProgramStep(CProgramStep* p_ProgramStep)
-{
-    bool Result = CProgramBase::AddProgramStep(p_ProgramStep);
-    CProgramStep *p_NewProgramStep = new CProgramStep(*p_ProgramStep);
-    //insert step in expanded StepList. Expanded Step list will be having only original steps when this
-    // function is called.
-    m_ExpandedStepList.append(p_NewProgramStep);
-    return Result;
-}
-
-bool CProgram::MoveProgramStep(qint32 FromIndex, qint32 ToIndex)
-{
-    if (FromIndex >= 0 && FromIndex < m_ExpandedStepList.size() && ToIndex >= 0 && ToIndex < m_ExpandedStepList.size()) {
-        //First we need to change order in Expanded step list
-        CProgramStep const *p_ProgramStepFrom = GetProgramStep(FromIndex);
-        CProgramStep const *p_ProgramStepTo = GetProgramStep(ToIndex);
-        QString FromReagentId = p_ProgramStepFrom->GetReagentID();
-        QString ToReagentId = p_ProgramStepTo->GetReagentID();
-        qint32 FromIndexExpanded = -1;
-        qint32 ToIndexExpanded = -1;
-        CProgramStep *p_ExpandedStep = NULL;
-        for (qint32 I = 0 ; I < m_ExpandedStepList.count(); I++) {
-            p_ExpandedStep = m_ExpandedStepList.at(I);
-            if (p_ExpandedStep) {
-                if (p_ExpandedStep->GetReagentID() == FromReagentId) {
-                    FromIndexExpanded = I;
-                }
-                else if (p_ExpandedStep->GetReagentID() == ToReagentId) {
-                    ToIndexExpanded = I;
-                }
-            }
-            else {
-                return false;
-            }
-        }
-        if (FromIndexExpanded != -1 && ToIndexExpanded != -1) {
-            m_ExpandedStepList.move(FromIndexExpanded, ToIndexExpanded);
-        }
-
-        return (CProgramBase::MoveProgramStep(FromIndex, ToIndex));
-    }
-    //Should never come here
-    return false;
-}
-
-bool CProgram::UpdateProgramStep(CProgramStep *p_ProgramStep)
-{
-    const CProgramStep *p_ExistingStep = GetProgramStep(p_ProgramStep->GetStepID());
-    for (qint32 I = 0; I < m_ExpandedStepList.size(); I++) {
-        CProgramStep *p_ExpandedProgramStep = m_ExpandedStepList.at(I);
-        if (QString::compare(p_ExpandedProgramStep->GetReagentID(), p_ExistingStep->GetReagentID()) == 0) {
-            *p_ExpandedProgramStep = *p_ProgramStep;
-        }
-    }
-    bool Result = CProgramBase::UpdateProgramStep(p_ProgramStep);
-    return Result;
 }
 
 }  // namespace DataManager

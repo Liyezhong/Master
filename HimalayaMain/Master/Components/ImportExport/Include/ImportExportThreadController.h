@@ -29,7 +29,6 @@
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImport.h"
 #include "DataManager/Containers/ExportConfiguration/Include/ExportConfigurationVerifier.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramListVerifier.h"
-#include "HimalayaDataContainer/Containers/ProgramSequence/Include/ProgramSequenceVerifier.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentListVerifier.h"
 #include "HimalayaDataContainer/Containers/Stations/Include/DataStationListVerifier.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsVerifier.h"
@@ -284,16 +283,6 @@ private:
     /****************************************************************************/
     bool UpdateSettingsWithRollbackFolder();
 
-    /****************************************************************************/
-    /**
-     * \brief Resets the station and program sequence containers data.
-     *        Reset the StartCapablefalg and BLGResult in Program sequence container
-     *        Reset the Actual slides, Program ID, step ID and Reagent ID(Except for
-     *        the Loader stations) in stations container
-     * \param[in] TypeOfImport  Type of Import
-     */
-    /****************************************************************************/
-    void ResetTheStationPSContainers(const QString TypeOfImport);
 
     /****************************************************************************/
     /**
@@ -334,34 +323,6 @@ private:
         return true;
     }    
 
-    /****************************************************************************/
-    /**
-     * \brief Imports Leica programs.
-     *        Imports the new Leica programs to Program and program sequence
-     *        container and updates for an existing Leica program which is present
-     *        in program container
-     *
-     * \param[in,out] ProgramList  Program list Container class
-     *
-     * \return On successful (true) or not (false)
-     */
-    /****************************************************************************/
-    bool ImportLeicaPrograms(const DataManager::CDataProgramList &ProgramList);
-
-    /****************************************************************************/
-    /**
-     * \brief Imports Leica reagents and User Leica Reagents.
-     *        Imports the new Leica reagents and new Leica user reagents to Reagent
-     *        container and updates for an existing Leica reagent and new Leica reagent
-     *        which is present in reagent container. Leica user reagents range is from
-     *        U1 to U99
-     *
-     * \param[in,out] ReagentList  Reagent list Container class
-     *
-     * \return On successful (true) or not (false)
-     */
-    /****************************************************************************/
-    bool ImportLeicaUserReagents(const DataManager::CDataReagentList &ReagentList);
 
     /****************************************************************************/
     /**

@@ -38,7 +38,6 @@ namespace Himalaya {
 ProgramStartableManager::ProgramStartableManager(HimalayaMasterThreadController *p_HimalayaMasterThreadController)
     :mp_HimalayaMasterThreadController(p_HimalayaMasterThreadController),
     mp_DataManager(NULL),
-    mp_ProgramSequenceList(NULL),
     mp_UserSettings(NULL),
     mp_UserSettingsInterface(NULL),
     mp_ProgramList(NULL) {
@@ -63,8 +62,6 @@ void ProgramStartableManager::Init() {
     CHECKPTR(mp_UserSettingsInterface)
     mp_UserSettings = mp_UserSettingsInterface->GetUserSettings();
     CHECKPTR(mp_UserSettings);
-    mp_ProgramSequenceList = mp_DataManager->GetProgramSequenceList();
-    CHECKPTR(mp_ProgramSequenceList);
     mp_ProgramList = mp_DataManager->GetProgramList();
     CHECKPTR(mp_ProgramList);
     ConnectSignals();
@@ -95,7 +92,7 @@ void ProgramStartableManager::ConnectSignals() {
 /****************************************************************************/
 void ProgramStartableManager::RMSStatusHandler(const QString ProgramID, const bool ExpiryStatus, const QString ReagentName) {
     try {
-        CHECKPTR(mp_ProgramSequenceList);
+/*
         DataManager::CProgramSequence *p_ProgramSequence = const_cast<DataManager::CProgramSequence*>(mp_ProgramSequenceList->GetProgramSequenceStep(ProgramID));
         CHECKPTR(p_ProgramSequence);
         if (ExpiryStatus) {
@@ -116,6 +113,7 @@ void ProgramStartableManager::RMSStatusHandler(const QString ProgramID, const bo
             //Set BLG result back to success.
             p_ProgramSequence->SetStartCapableResult("0");
         }
+*/
         UpdateGUI();
     }
     catch(...) {
@@ -153,6 +151,7 @@ void ProgramStartableManager::OnReadLiquidLevelComplete(QStringList DefectiveSta
  */
 /****************************************************************************/
 void ProgramStartableManager::OnUserSettingsChanged() {
+/*
     Global::WaterType CurrentWaterType = Global::StringToWaterType(mp_UserSettings->GetValue("Water_Type"));
     QStringList NonStartableProgramIDs;
     QStringList StartableProgramIDList =  mp_ProgramSequenceList->GetStartableProgramIDList();
@@ -186,7 +185,7 @@ void ProgramStartableManager::OnUserSettingsChanged() {
         Global::EventObject::Instance().RaiseEvent(EVENT_DI_WATER_NOT_AVAILABLE);
         UpdateGUI();
     }
-
+*/
 
     if (mp_DataManager->GetUserSettingsInterface()->GetUserSettings(false) != NULL) {
         // get the current language
@@ -212,6 +211,7 @@ void ProgramStartableManager::OnUserSettingsChanged() {
  */
 /****************************************************************************/
 void ProgramStartableManager::StationDefectHandler(QStringList DefectiveStationList) {
+/*
     QStringList NonStartableProgramIDs;
     if (mp_ProgramList && mp_ProgramSequenceList) {
         QStringList StartableProgramIDList = mp_ProgramSequenceList->GetStartableProgramIDList();
@@ -261,6 +261,7 @@ void ProgramStartableManager::StationDefectHandler(QStringList DefectiveStationL
     //For all the stations above send CmdStationDefect , and then finally the updated
     mp_HimalayaMasterThreadController->SendCommand(Global::CommandShPtr_t(new NetCommands::CmdStationsDefect(2000, DefectiveStationList)), mp_HimalayaMasterThreadController->GetCommandChannel(Himalaya::GUI));
     UpdateGUI();
+*/
  }
 
 /****************************************************************************/
@@ -269,6 +270,7 @@ void ProgramStartableManager::StationDefectHandler(QStringList DefectiveStationL
  */
 /****************************************************************************/
 void ProgramStartableManager::UpdateGUI() const {
+/*
     QByteArray BA;
     QDataStream ProgramSequeneStream(&BA, QIODevice::ReadWrite);
     ProgramSequeneStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
@@ -278,6 +280,7 @@ void ProgramStartableManager::UpdateGUI() const {
         mp_HimalayaMasterThreadController->SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM_SEQUENCE , ProgramSequeneStream)),
                                                        mp_HimalayaMasterThreadController->GetCommandChannel(Himalaya::GUI));
     }
+*/
 }
 
 /****************************************************************************/
@@ -290,7 +293,7 @@ void ProgramStartableManager::UpdateGUI() const {
 /****************************************************************************/
 bool ProgramStartableManager::IsProgramStartable(const QString &ProgramID) const {
     try {
-        CHECKPTR(mp_ProgramSequenceList);
+/*        CHECKPTR(mp_ProgramSequenceList);
         QStringList StartableProgramIDList = mp_ProgramSequenceList->GetStartableProgramIDList();
         if (StartableProgramIDList.contains(ProgramID)) {
             return true;
@@ -298,6 +301,8 @@ bool ProgramStartableManager::IsProgramStartable(const QString &ProgramID) const
         else {
             return false;
         }
+        */
+        return true;
     }
     catch (...) {
         //Raise exception ->LOG

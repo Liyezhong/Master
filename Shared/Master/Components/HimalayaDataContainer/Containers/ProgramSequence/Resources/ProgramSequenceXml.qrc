@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/Xml">
-        <file>ProgramSequence.xml</file>
-    </qresource>
-</RCC>
