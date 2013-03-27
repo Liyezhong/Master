@@ -84,8 +84,6 @@ CReagentsWidget::~CReagentsWidget()
         delete mp_TableWidget;
         delete mp_Ui;
         delete mp_ModifiyReagentDlg;
-        delete mp_KeyBoard;
-        delete mp_MainWindow;
     }
     catch (...) {
         // to please Lint.

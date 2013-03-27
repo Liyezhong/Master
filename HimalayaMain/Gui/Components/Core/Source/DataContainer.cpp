@@ -110,14 +110,19 @@ bool CDataContainer::DeinitContainers()
         // nothing to do
         return true;
     }
-    delete ProgramList;
-    delete ReagentGroupColorList;
-    delete ReagentGroupList;
-    delete ReagentList;
-    delete DashboardStationList;
-    delete SettingsInterface;
-    delete DeviceConfigurationInterface;
-    return true;
+    try {
+        delete ProgramList;
+        delete ReagentGroupColorList;
+        delete ReagentGroupList;
+        delete ReagentList;
+        delete DashboardStationList;
+        delete SettingsInterface;
+        delete DeviceConfigurationInterface;
+        return true;
+    } catch (...) {
+        return false;
+    }
+
 }
 
 

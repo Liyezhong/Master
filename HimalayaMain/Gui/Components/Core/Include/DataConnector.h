@@ -138,7 +138,7 @@ public slots:
     void SendProgramColorUpdate(DataManager::CProgram &ColorReplacedProgram,
                                 DataManager::CProgram &ColorAssignedProgram);
 
-    void LeicaConsumablesScanMessages(QString Message,QString Title,QMessageBox::Icon Type);
+
 
     void SendUserLevel(QDataStream &DataStream);
     void SendChangepassword(QDataStream &DataStream);

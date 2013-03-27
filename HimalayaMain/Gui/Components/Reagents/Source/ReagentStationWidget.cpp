@@ -38,9 +38,7 @@ CReagentStationWidget::CReagentStationWidget(QWidget *p_Parent):
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->setModel(&m_ReagentStationModel);
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    //mp_ModifiyReagentStatusDlg = new CModifyReagentStatusDlg();
 
-    mp_UserSettings = new DataManager::CUserSettings();
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
 
     PopulateReagentList();

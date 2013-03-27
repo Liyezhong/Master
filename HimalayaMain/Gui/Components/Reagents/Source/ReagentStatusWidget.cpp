@@ -38,7 +38,6 @@ CReagentStatusWidget::CReagentStatusWidget(QWidget *p_Parent):
     mp_TableWidget->setModel(&m_ReagentStatusModel);
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
 
-    mp_UserSettings = new DataManager::CUserSettings();
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
 
     PopulateReagentList();
@@ -60,7 +59,6 @@ CReagentStatusWidget::~CReagentStatusWidget()
     try {
         delete mp_TableWidget;
         delete mp_Ui;
-        delete mp_UserSettings;
     }
     catch (...) {
         // to please Lint.

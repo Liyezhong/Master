@@ -140,13 +140,7 @@ CDataConnector::~CDataConnector()
         delete mp_WaitDialog;
         delete mp_BlgScanWaitDialog;
         delete mp_MessageDlg;
-        qDebug()<<"Language file Name \n\n\n" << mp_LanguageFile->fileName();
-        mp_LanguageFile->remove();
         delete mp_LanguageFile;
-        if (mp_RmsMessageDlg) { 
-            delete mp_RmsMessageDlg;
-            mp_RmsMessageDlg = NULL;
-        }
     }
     catch (...) {
         //To please lint warnings
@@ -383,31 +377,6 @@ void CDataConnector::SendReagentGroupUpdate(DataManager::CReagentGroup &ReagentG
     mp_WaitDialog->show();
 }
 
-/****************************************************************************/
-/*!
- *  \brief LeicaConsumablesScanMessages displays messages
- *  \iparam Message = Message to display
- *  \iparam Title   = Message box title
- *  \iparam Type   = Message type
- */
-/****************************************************************************/
-void CDataConnector::LeicaConsumablesScanMessages(QString Message, QString Title, QMessageBox::Icon Type)
-{
-    if (mp_RmsMessageDlg) {
-        delete mp_RmsMessageDlg;
-        mp_RmsMessageDlg=NULL;
-    }
-    // Display RMS-GUI scan status messages
-    mp_RmsMessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
-    mp_RmsMessageDlg->SetTitle(Title);
-    mp_RmsMessageDlg->SetIcon(Type);
-    mp_RmsMessageDlg->SetButtonText(1, tr("OK"));
-    mp_RmsMessageDlg->SetText(Message);
-    mp_RmsMessageDlg->HideButtons();
-    if (mp_RmsMessageDlg->exec() == (int)QDialog::Accepted) {
-        OnCancelMessageBoxDisplay();
-    }
-}
 /****************************************************************************/
 /*!
  *  \brief Auto hide message box

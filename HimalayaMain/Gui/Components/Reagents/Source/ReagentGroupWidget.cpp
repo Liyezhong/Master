@@ -32,7 +32,7 @@ CReagentGroupWidget::CReagentGroupWidget(QWidget *p_Parent):
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->setModel(&m_ReagentGroupModel);
 
-    mp_UserSettings = new DataManager::CUserSettings();
+
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
 
@@ -56,6 +56,8 @@ CReagentGroupWidget::~CReagentGroupWidget()
 {
     try {
 
+        delete mp_TableWidget;
+        delete mp_ModifyReagentColorDlg;
         delete mp_Ui;
 
     }
