@@ -1,10 +1,10 @@
 /****************************************************************************/
-/*! \file CmdRetortLockStatus.h
+/*! \file CmdParaffinBathStatus.h
  *
- *  \brief CmdRetortLockStatus command definition.
+ *  \brief CmdParaffinBathStatus command definition.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 26.03.2013
+ *   $Date:    $ 27.03.2013
  *   $Author:  $ Abe Yang
  *
  *  \b Company:
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef MSGCLASSES_CMDRETORTLOCKSTATUS_H
-#define MSGCLASSES_CMDRETORTLOCKSTATUS_H
+#ifndef MSGCLASSES_CMDPARAFFINBATHSTATUS_H
+#define MSGCLASSES_CMDPARAFFINBATHSTATUS_H
 
 #include <Global/Include/Commands/Command.h>
 #include <HimalayaDataContainer/Helper/Include/Global.h>
@@ -28,31 +28,32 @@ namespace MsgClasses {
 
 /****************************************************************************/
 /*!
- *  \brief  This class implements a CmdRetortLockStatus command.
+ *  \brief  This class implements a CmdParaffinBathStatus command.
  *
  * \todo implement
  */
 /****************************************************************************/
-class CmdRetortLockStatus : public Global::Command {
-    friend QDataStream & operator << (QDataStream &, const CmdRetortLockStatus &);
-    friend QDataStream & operator >> (QDataStream &, CmdRetortLockStatus &);
+class CmdParaffinBathStatus : public Global::Command {
+    friend QDataStream & operator << (QDataStream &, const CmdParaffinBathStatus &);
+    friend QDataStream & operator >> (QDataStream &, CmdParaffinBathStatus &);
 public:
-    CmdRetortLockStatus();                                             ///< Not implemented.
+    CmdParaffinBathStatus();                                             ///< Not implemented.
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdRetortLockStatus(int Timeout, bool IsLocked);
-    ~CmdRetortLockStatus();
+    CmdParaffinBathStatus(int Timeout, const QString& ParaffinBathID, DataManager::ParaffinBathStatusType_t ParaffinBathStatusType);
+    ~CmdParaffinBathStatus();
     virtual QString GetName() const;
-    inline bool IsLocked() const {return m_Locked;}
-    
+    inline DataManager::ParaffinBathStatusType_t ParaffinBathStatusType() const {return m_ParaffinBathStatusType;} 
+    inline const QString& ParaffinBathID()const {return m_ParaffinBathID;}
 private:
-    CmdRetortLockStatus(const CmdRetortLockStatus &);                     ///< Not implemented.
-    const CmdRetortLockStatus & operator = (const CmdRetortLockStatus &); ///< Not implemented.
+    CmdParaffinBathStatus(const CmdParaffinBathStatus &);                     ///< Not implemented.
+    const CmdParaffinBathStatus & operator = (const CmdParaffinBathStatus &); ///< Not implemented.
 private:
-    bool m_Locked;
+    QString m_ParaffinBathID;
+    DataManager::ParaffinBathStatusType_t m_ParaffinBathStatusType;
     
-}; // end class CmdRetortLockStatus
+}; // end class CmdParaffinBathStatus
 
 /****************************************************************************/
 /**
@@ -63,12 +64,13 @@ private:
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator << (QDataStream &Stream, const CmdRetortLockStatus &Cmd)
+inline QDataStream & operator << (QDataStream &Stream, const CmdParaffinBathStatus &Cmd)
 {
     // copy base class data
     Cmd.CopyToStream(Stream);
     // copy internal data
-    Stream << Cmd.m_Locked;
+    Stream << Cmd.m_ParaffinBathID;
+    Stream << Cmd.m_ParaffinBathStatusType;
     return Stream;
 }
 
@@ -81,14 +83,17 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdRetortLockStatus
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator >> (QDataStream &Stream, CmdRetortLockStatus &Cmd)
+inline QDataStream & operator >> (QDataStream &Stream, CmdParaffinBathStatus &Cmd)
 {
     // copy base class data
     Cmd.CopyFromStream(Stream);
     // copy internal data
-    Stream >> Cmd.m_Locked;
+    Stream >> Cmd.m_ParaffinBathID;
+    int temp;
+    Stream >> temp;
+    Cmd.m_ParaffinBathStatusType = (DataManager::ParaffinBathStatusType_t)temp;
     return Stream;
 }
 } // end namespace MsgClasses
 
-#endif // MSGCLASSES_CMDRETORTLOCKSTATUS_H
+#endif // MSGCLASSES_CMDPARAFFINBATHSTATUS_H

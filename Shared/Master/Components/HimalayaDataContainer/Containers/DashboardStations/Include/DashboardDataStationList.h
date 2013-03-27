@@ -11,7 +11,7 @@
  *
  *       Leica Microsystems Ltd. Shanghai.
  *
- *  (C) Copyright 2012 by Leica Microsystems Shanghai. All rights reserved.
+ *  (C) Copyright 2013 by Leica Microsystems Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *

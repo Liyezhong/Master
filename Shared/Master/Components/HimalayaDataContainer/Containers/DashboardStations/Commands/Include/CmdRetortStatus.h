@@ -1,10 +1,10 @@
 /****************************************************************************/
-/*! \file CmdRetortLockStatus.h
+/*! \file CmdRetortStatus.h
  *
- *  \brief CmdRetortLockStatus command definition.
+ *  \brief CmdRetortStatus command definition.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 26.03.2013
+ *   $Date:    $ 27.03.2013
  *   $Author:  $ Abe Yang
  *
  *  \b Company:
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef MSGCLASSES_CMDRETORTLOCKSTATUS_H
-#define MSGCLASSES_CMDRETORTLOCKSTATUS_H
+#ifndef MSGCLASSES_CMDRETORTSTATUS_H
+#define MSGCLASSES_CMDRETORTSTATUS_H
 
 #include <Global/Include/Commands/Command.h>
 #include <HimalayaDataContainer/Helper/Include/Global.h>
@@ -28,31 +28,31 @@ namespace MsgClasses {
 
 /****************************************************************************/
 /*!
- *  \brief  This class implements a CmdRetortLockStatus command.
+ *  \brief  This class implements a CmdRetortStatus command.
  *
  * \todo implement
  */
 /****************************************************************************/
-class CmdRetortLockStatus : public Global::Command {
-    friend QDataStream & operator << (QDataStream &, const CmdRetortLockStatus &);
-    friend QDataStream & operator >> (QDataStream &, CmdRetortLockStatus &);
+class CmdRetortStatus : public Global::Command {
+    friend QDataStream & operator << (QDataStream &, const CmdRetortStatus &);
+    friend QDataStream & operator >> (QDataStream &, CmdRetortStatus &);
 public:
-    CmdRetortLockStatus();                                             ///< Not implemented.
+    CmdRetortStatus();                                             ///< Not implemented.
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdRetortLockStatus(int Timeout, bool IsLocked);
-    ~CmdRetortLockStatus();
+    CmdRetortStatus(int Timeout, DataManager::RetortStatusType_t RetortStatusType);
+    ~CmdRetortStatus();
     virtual QString GetName() const;
-    inline bool IsLocked() const {return m_Locked;}
+    inline DataManager::RetortStatusType_t RetortStatusType() const {return m_RetortStatusType;} 
     
 private:
-    CmdRetortLockStatus(const CmdRetortLockStatus &);                     ///< Not implemented.
-    const CmdRetortLockStatus & operator = (const CmdRetortLockStatus &); ///< Not implemented.
+    CmdRetortStatus(const CmdRetortStatus &);                     ///< Not implemented.
+    const CmdRetortStatus & operator = (const CmdRetortStatus &); ///< Not implemented.
 private:
-    bool m_Locked;
+    DataManager::RetortStatusType_t m_RetortStatusType;
     
-}; // end class CmdRetortLockStatus
+}; // end class CmdRetortStatus
 
 /****************************************************************************/
 /**
@@ -63,12 +63,12 @@ private:
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator << (QDataStream &Stream, const CmdRetortLockStatus &Cmd)
+inline QDataStream & operator << (QDataStream &Stream, const CmdRetortStatus &Cmd)
 {
     // copy base class data
     Cmd.CopyToStream(Stream);
     // copy internal data
-    Stream << Cmd.m_Locked;
+    Stream << Cmd.m_RetortStatusType;
     return Stream;
 }
 
@@ -81,14 +81,16 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdRetortLockStatus
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator >> (QDataStream &Stream, CmdRetortLockStatus &Cmd)
+inline QDataStream & operator >> (QDataStream &Stream, CmdRetortStatus &Cmd)
 {
     // copy base class data
     Cmd.CopyFromStream(Stream);
     // copy internal data
-    Stream >> Cmd.m_Locked;
+    int temp;
+    Stream >> temp;
+    Cmd.m_RetortStatusType = (DataManager::RetortStatusType_t)temp;
     return Stream;
 }
 } // end namespace MsgClasses
 
-#endif // MSGCLASSES_CMDRETORTLOCKSTATUS_H
+#endif // MSGCLASSES_CMDRETORTSTATUS_H

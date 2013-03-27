@@ -1,10 +1,10 @@
 /****************************************************************************/
-/*! \file CmdRetortLockStatus.h
+/*! \file CmdStationStatus.h
  *
- *  \brief CmdRetortLockStatus command definition.
+ *  \brief CmdStationStatus command definition.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 26.03.2013
+ *   $Date:    $ 27.03.2013
  *   $Author:  $ Abe Yang
  *
  *  \b Company:
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef MSGCLASSES_CMDRETORTLOCKSTATUS_H
-#define MSGCLASSES_CMDRETORTLOCKSTATUS_H
+#ifndef MSGCLASSES_CMDSTATIONSTATUS_H
+#define MSGCLASSES_CMDSTATIONSTATUS_H
 
 #include <Global/Include/Commands/Command.h>
 #include <HimalayaDataContainer/Helper/Include/Global.h>
@@ -28,31 +28,32 @@ namespace MsgClasses {
 
 /****************************************************************************/
 /*!
- *  \brief  This class implements a CmdRetortLockStatus command.
+ *  \brief  This class implements a CmdStationStatus command.
  *
  * \todo implement
  */
 /****************************************************************************/
-class CmdRetortLockStatus : public Global::Command {
-    friend QDataStream & operator << (QDataStream &, const CmdRetortLockStatus &);
-    friend QDataStream & operator >> (QDataStream &, CmdRetortLockStatus &);
+class CmdStationStatus : public Global::Command {
+    friend QDataStream & operator << (QDataStream &, const CmdStationStatus &);
+    friend QDataStream & operator >> (QDataStream &, CmdStationStatus &);
 public:
-    CmdRetortLockStatus();                                             ///< Not implemented.
+    CmdStationStatus();                                             ///< Not implemented.
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdRetortLockStatus(int Timeout, bool IsLocked);
-    ~CmdRetortLockStatus();
+    CmdStationStatus(int Timeout, const QString& StationID, DataManager::StationStatusType_t StationStatusType);
+    ~CmdStationStatus();
     virtual QString GetName() const;
-    inline bool IsLocked() const {return m_Locked;}
-    
+    inline DataManager::StationStatusType_t StationStatusType() const {return m_StationStatusType;} 
+    inline const QString& StationID()const {return m_StationID;}
 private:
-    CmdRetortLockStatus(const CmdRetortLockStatus &);                     ///< Not implemented.
-    const CmdRetortLockStatus & operator = (const CmdRetortLockStatus &); ///< Not implemented.
+    CmdStationStatus(const CmdStationStatus &);                     ///< Not implemented.
+    const CmdStationStatus & operator = (const CmdStationStatus &); ///< Not implemented.
 private:
-    bool m_Locked;
+    DataManager::StationStatusType_t m_StationStatusType;
+    QString m_StationID;
     
-}; // end class CmdRetortLockStatus
+}; // end class CmdStationStatus
 
 /****************************************************************************/
 /**
@@ -63,12 +64,13 @@ private:
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator << (QDataStream &Stream, const CmdRetortLockStatus &Cmd)
+inline QDataStream & operator << (QDataStream &Stream, const CmdStationStatus &Cmd)
 {
     // copy base class data
     Cmd.CopyToStream(Stream);
     // copy internal data
-    Stream << Cmd.m_Locked;
+    Stream << Cmd.m_StationID;
+    Stream << Cmd.m_StationStatusType;
     return Stream;
 }
 
@@ -81,14 +83,17 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdRetortLockStatus
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator >> (QDataStream &Stream, CmdRetortLockStatus &Cmd)
+inline QDataStream & operator >> (QDataStream &Stream, CmdStationStatus &Cmd)
 {
     // copy base class data
     Cmd.CopyFromStream(Stream);
     // copy internal data
-    Stream >> Cmd.m_Locked;
+    Stream >> Cmd.m_StationID;
+    int temp;
+    Stream >> temp;
+    Cmd.m_StationStatusType = (DataManager::StationStatusType_t)temp;
     return Stream;
 }
 } // end namespace MsgClasses
 
-#endif // MSGCLASSES_CMDRETORTLOCKSTATUS_H
+#endif // MSGCLASSES_CMDSTATIONSTATUS_H

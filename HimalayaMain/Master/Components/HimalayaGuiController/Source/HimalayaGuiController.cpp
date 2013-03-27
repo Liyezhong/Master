@@ -64,7 +64,9 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
-
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdParaffinBathStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationStatus.h"
 
 namespace HimalayaGui {
 
@@ -177,9 +179,17 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
 
 
     //Dashboard
-    //Start,Pause,Abort program
     RegisterExternalMessage<MsgClasses::CmdProgramAction, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdProgramAction>, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdRetortStatus, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdRetortStatus>, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdParaffinBathStatus, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdParaffinBathStatus>, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdStationStatus, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdStationStatus>, this);
 
     //Retort Lock/Unlock
     RegisterExternalMessage<MsgClasses::CmdRetortLock, HimalayaGui::HimalayaGuiController>

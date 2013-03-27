@@ -1,10 +1,10 @@
 /****************************************************************************/
-/*! \file CmdRetortLockStatus.cpp
+/*! \file CmdParaffinBathStatus.cpp
  *
- *  \brief CmdRetortLockStatus command implementation.
+ *  \brief CmdParaffinBathStatus command implementation.
  *
  *   $Version: $ 0.1
-*   $Date:    $ 26.03.2013
+*   $Date:    $ 27.03.2013
  *   $Author:  $ Abe Yang
  *
  *  \b Company:
@@ -18,19 +18,21 @@
  */
 /****************************************************************************/
 
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdParaffinBathStatus.h"
 namespace MsgClasses {
 
-QString CmdRetortLockStatus::NAME = "MsgClasses::CmdRetortLockStatus";
+QString CmdParaffinBathStatus::NAME = "MsgClasses::CmdParaffinBathStatus";
 
 
-CmdRetortLockStatus::CmdRetortLockStatus(int Timeout, bool IsLocked) :
+CmdParaffinBathStatus::CmdParaffinBathStatus(int Timeout, const QString& ParaffinBathID,
+                                    DataManager::ParaffinBathStatusType_t ParaffinBathStatusType) :
     Command(Timeout),
-    m_Locked(IsLocked)
+    m_ParaffinBathID(ParaffinBathID),
+    m_ParaffinBathStatusType(ParaffinBathStatusType)
 {
 }
 
-CmdRetortLockStatus::CmdRetortLockStatus()
+CmdParaffinBathStatus::CmdParaffinBathStatus()
     : Command(0)
 {
 }
@@ -40,7 +42,7 @@ CmdRetortLockStatus::CmdRetortLockStatus()
  *  \brief   Destructor
  */
 /****************************************************************************/
-CmdRetortLockStatus::~CmdRetortLockStatus()
+CmdParaffinBathStatus::~CmdParaffinBathStatus()
 {
 }
 
@@ -51,7 +53,7 @@ CmdRetortLockStatus::~CmdRetortLockStatus()
  *  \return  command name as string
  */
 /****************************************************************************/
-QString CmdRetortLockStatus::GetName() const
+QString CmdParaffinBathStatus::GetName() const
 {
     return NAME;
 }
