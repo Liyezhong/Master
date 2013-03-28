@@ -1004,30 +1004,6 @@ void HimalayaMasterThreadController::ExternalProcessConnectionHandler(Global::tR
 }
 
 
-
-void HimalayaMasterThreadController::OnDataUpdate(Global::tRefType Ref, const NetCommands::CmdDataUpdate &Cmd, Threads::CommandChannel &AckCommandChannel)
-{
-    // check for station update,  figure out if transfer station is occupied and inform scheduler (Mantis 3429)
-//    qDebug() << "------------- HimalayaSepiaController::OnDataUpdate -------------------";
-     SendAcknowledgeOK(Ref, AckCommandChannel);
-
-    NetCommands::CmdDataUpdate* Command = const_cast<NetCommands::CmdDataUpdate*>(&Cmd);
-
-    if (Command->GetCmdType() == NetCommands::CmdDataUpdate::StationBase)
-    {
-        DataManager::CStationBase Station;
-
-        QDataStream StationDataStream(&const_cast<QByteArray&>(Cmd.GetDataUpdate()), QIODevice::ReadWrite);
-        StationDataStream >> Station;
-
-        // if transfer station is disabled, we can't use it -> inform scheduler
-        if (Station.GetStationType() == TRANSFER)     // todo: get Transfer station shortcut from datacontainer
-        {
-         }
-    }
-
-}
-
 /****************************************************************************/
 void HimalayaMasterThreadController::ExportDayRunLogHandler(Global::tRefType Ref, const NetCommands::CmdExportDayRunLogReply &Cmd,
                                                             Threads::CommandChannel &AckCommandChannel) {

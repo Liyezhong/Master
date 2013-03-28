@@ -450,15 +450,6 @@ public:
 
     /****************************************************************************/
     /**
-     * \brief Handler for Sepia data.
-     *
-     * Whenever Sepia sends information wrt Station, Rack etc. we handle it here
-     */
-    /****************************************************************************/
-    void OnDataUpdate(Global::tRefType, const NetCommands::CmdDataUpdate &Cmd, Threads::CommandChannel &AckCommandChannel);
-
-    /****************************************************************************/
-    /**
      * \brief Return the command channel object requested
      * \iparam CommandChannelSelector = Command channel to return
      * \return CommandChannel object
