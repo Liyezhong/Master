@@ -29,7 +29,7 @@
 #include "Global/Include/GlobalEventCodes.h"
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
-#include "HimalayaDataContainer/Containers/Stations/Include/StationXmlDefinitions.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Include/StationXmlDefinitions.h"
 
 #include <QApplication>
 #include <QHash>

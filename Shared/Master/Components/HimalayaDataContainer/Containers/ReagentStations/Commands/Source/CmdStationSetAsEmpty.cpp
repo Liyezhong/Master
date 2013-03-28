@@ -18,7 +18,7 @@
  */
 /****************************************************************************/
 
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsEmpty.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsEmpty.h"
 
 #include <QBuffer>
 

@@ -25,7 +25,7 @@
 
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentListVerifier.h"
 
-#include "HimalayaDataContainer/Containers/Stations/Include/DataStationListVerifier.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Include/DataStationListVerifier.h"
 
 
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationVerifier.h"

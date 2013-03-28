@@ -56,11 +56,11 @@
 #include <NetCommands/Include/CmdGuiInit.h>
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdAlarmToneTest.h"
 
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationChangeReagent.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationResetData.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsFull.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsEmpty.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdUpdateStationReagentStatus.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationChangeReagent.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationResetData.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsFull.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsEmpty.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"

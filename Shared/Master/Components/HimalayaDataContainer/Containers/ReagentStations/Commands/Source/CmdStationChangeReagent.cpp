@@ -18,7 +18,7 @@
  */
 /****************************************************************************/
 
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationChangeReagent.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationChangeReagent.h"
 
 #include <QBuffer>
 

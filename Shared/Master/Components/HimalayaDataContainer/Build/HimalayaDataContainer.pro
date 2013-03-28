@@ -11,8 +11,8 @@ HEADERS += ../Containers/ContainerBase/Include/*.h \
  ../Containers/Reagents/Commands/Include/*.h \
  ../Containers/ReagentGroups/Include/*.h \
  ../Containers/ReagentGroups/Commands/Include/*.h \
- ../Containers/Stations/Include/*.h \
- ../Containers/Stations/Commands/Include/*.h \
+ ../Containers/ReagentStations/Include/*.h \
+ ../Containers/ReagentStations/Commands/Include/*.h \
  ../Containers/ReagentGroupColor/Include/*.h \
  ../SpecialVerifiers/Include/*h \
  ../Containers/DashboardStations/Commands/Include/*h \
@@ -28,8 +28,8 @@ SOURCES += ../Containers/ContainerBase/Source/*.cpp \
  ../Containers/Reagents/Commands/Source/*.cpp \
  ../Containers/ReagentGroups/Source/*.cpp \
  ../Containers/ReagentGroups/Commands/Source/*.cpp \
- ../Containers/Stations/Source/*.cpp \
- ../Containers/Stations/Commands/Source/*.cpp \
+ ../Containers/ReagentStations/Source/*.cpp \
+ ../Containers/ReagentStations/Commands/Source/*.cpp \
  ../Containers/ReagentGroupColor/Source/*.cpp \
  ../SpecialVerifiers/Source/*.cpp \
  ../Containers/DashboardStations/Commands/Source/*.cpp \
@@ -38,5 +38,5 @@ SOURCES += ../Containers/ContainerBase/Source/*.cpp \
 RESOURCES += ../Containers/Programs/Resources/ProgramsXml.qrc \
  ../Containers/Reagents/Resources/ReagentsXml.qrc \
  ../Containers/ReagentGroups/Resources/ReagentGroupsXml.qrc \
- ../Containers/Stations/Resources/StationsXml.qrc \
+ ../Containers/ReagentStations/Resources/StationsXml.qrc \
  ../Containers/DashboardStations/Resources/DashboardStationsXml.qrc

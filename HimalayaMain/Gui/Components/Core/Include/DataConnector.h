@@ -37,11 +37,11 @@
 #include "HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentUpdate.h"
 #include "HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentRemove.h"
 #include "HimalayaDataContainer/Containers/ReagentGroups/Commands/Include/CmdReagentGroupUpdate.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationChangeReagent.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationResetData.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsEmpty.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsFull.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdUpdateStationReagentStatus.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationChangeReagent.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationResetData.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsEmpty.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsFull.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
 
 /********************** Net Commands ************************************************/
 #include "NetCommands/Include/CmdConfigurationFile.h"

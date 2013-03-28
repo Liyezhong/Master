@@ -22,11 +22,11 @@
 
 #include "../../../../../../Platform/Master/Components/DataManager/CommandInterface/Include/CommandInterfaceBase.h"
 #include "HimalayaDataManager/Include/DataManager.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationChangeReagent.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationResetData.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsFull.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdStationSetAsEmpty.h"
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdUpdateStationReagentStatus.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationChangeReagent.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationResetData.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsFull.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsEmpty.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
 
 namespace DataManager {
 /****************************************************************************/

@@ -18,7 +18,7 @@
  */
 /****************************************************************************/
 
-#include "HimalayaDataContainer/Containers/Stations/Commands/Include/CmdUpdateStationReagentStatus.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
 
 #include <QBuffer>
 
