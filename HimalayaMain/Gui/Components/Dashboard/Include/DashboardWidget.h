@@ -57,9 +57,6 @@ private:
     bool m_UserRoleChanged;                                     //!< Flag to Verify the Change in User Role
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
 
-    void RunProgram();
-    void PauseProgram();
-    void AbortProgram();
 
 public:
     explicit CDashboardWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL);
@@ -74,6 +71,7 @@ protected:
     void AddItemsToComboBox();
 
 signals:
+    void ProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
 
 public slots:
     void OnUserRoleChanged();

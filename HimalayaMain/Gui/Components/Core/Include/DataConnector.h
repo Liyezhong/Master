@@ -42,6 +42,8 @@
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsEmpty.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsFull.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
+
 
 /********************** Net Commands ************************************************/
 #include "NetCommands/Include/CmdConfigurationFile.h"
@@ -138,7 +140,7 @@ public slots:
     void SendProgramColorUpdate(DataManager::CProgram &ColorReplacedProgram,
                                 DataManager::CProgram &ColorAssignedProgram);
 
-
+    void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
 
     void SendUserLevel(QDataStream &DataStream);
     void SendChangepassword(QDataStream &DataStream);

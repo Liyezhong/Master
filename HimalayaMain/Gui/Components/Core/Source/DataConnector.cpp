@@ -1342,6 +1342,16 @@ void CDataConnector::SendSelectedDayRunLogFile(const QString &FileName)
     mp_WaitDialog->show();
 }
 
+void CDataConnector::SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType)
+{
+    MsgClasses::CmdProgramAction Command(1000, ProgramID, ActionType);
+    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
+    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetTimeout(10000);
+    mp_WaitDialog->show();
+}
+
 /****************************************************************************/
 /*!
  *  \brief RequestDayRunLogFileNames

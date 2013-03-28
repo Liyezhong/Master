@@ -60,6 +60,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, currentIndexChanged(int), mp_Ui->pgmsComboBox, handleSelectionChanged(int));
 
      CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
+     CONNECTSIGNALSLOT(this, ProgramAction(const QString&, DataManager::ProgramActionType_t),
+                       mp_DataConnector, SendProgramAction(const QString&, DataManager::ProgramActionType_t));
 
 }
 
@@ -177,25 +179,11 @@ void CDashboardWidget::CheckPreConditionsToAbortProgram()
 
 }
 
-void CDashboardWidget::RunProgram()
-{
-    // Send command to Master
-}
-
-void CDashboardWidget::PauseProgram()
-{
-    // Send command to Master
-}
-
-void CDashboardWidget::AbortProgram()
-{
-    // Send command to Master
-}
-
 void CDashboardWidget::OnPressYes()
 {
     qDebug() << " Start the Program"; // to do
-    RunProgram();
+    QString ProgID;
+    emit ProgramAction(ProgID, DataManager::PROGRAM_START);
 }
 
 void CDashboardWidget::OnPressNo()

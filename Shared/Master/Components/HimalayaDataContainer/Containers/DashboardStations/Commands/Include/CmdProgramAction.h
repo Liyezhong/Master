@@ -41,17 +41,17 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdProgramAction(int Timeout, int ProgramID, DataManager::ProgramActionType_t ActionType);
+    CmdProgramAction(int Timeout, const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
     ~CmdProgramAction();
     virtual QString GetName() const;
-    int GetProgramID() const {return m_ProgramID;}
+    inline const QString& GetProgramID()const {return m_ProgramID;}
     inline DataManager::ProgramActionType_t ProgramActionType() const {return m_ActionType;}
 
 private:
     CmdProgramAction(const CmdProgramAction &);                     ///< Not implemented.
     const CmdProgramAction & operator = (const CmdProgramAction &); ///< Not implemented.
 private:
-    int      m_ProgramID;
+    QString      m_ProgramID;
     DataManager::ProgramActionType_t m_ActionType;
 }; // end class CmdProgramAction
 
