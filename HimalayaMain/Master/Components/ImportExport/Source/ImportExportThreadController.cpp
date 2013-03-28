@@ -179,7 +179,7 @@ ImportExportThreadController::~ImportExportThreadController() {
 void ImportExportThreadController::CreateAndInitializeObjects() {
     // initialize the station list and reagent list
     // Station list and reagent list requires only when the Export functionality is called by Main
-#ifndef HIMALAYA_IMPORT_EXPORT
+
     if (!m_CommandName.contains(COMMAND_NAME_IMPORT)) {
         // do a deep copy of the data container
         if (mp_StationList == NULL) {
@@ -194,7 +194,7 @@ void ImportExportThreadController::CreateAndInitializeObjects() {
         }
         *mp_ReagentList = *m_DataManager.GetReagentList();
     }
-#endif
+
     // get the device configuration so that we can use the device name
     // and serial number of the device for the Export component
     DataManager::CDeviceConfigurationInterface *p_DeviceInterface = NULL;
@@ -387,7 +387,7 @@ bool ImportExportThreadController::DoPretasks() {
             TargetFileName += m_SerialNumber + DELIMITER_STRING_UNDERSCORE + STRING_PERCENTNUMBER;
             mp_ExportConfiguration->SetTargetFileName(TargetFileName);
 
-            QString ExportDirPath = Global::SystemPaths::Instance().GetTempPath() + QDir::separator() + DIRECTORY_EXPORT;
+//            QString ExportDirPath = Global::SystemPaths::Instance().GetTempPath() + QDir::separator() + DIRECTORY_EXPORT;
 
             // create RMS file
 /*
@@ -555,7 +555,8 @@ QStringList ImportExportThreadController::SortedStationIDs() {
     QStringList StationIDList;
     // check whether station list exists or not
     // this is prerequiste to create sorted station ids
-    /*if (mp_StationList != NULL) {
+#ifndef HIMALAYA_IMPORT_EXPORT
+    if (mp_StationList != NULL) {
         QStringList StringNames;
         // store the station ID starting letters so it is easy to sort the data
         StringNames << STRING_H << STRING_R << STRING_L << STRING_U;
@@ -575,7 +576,8 @@ QStringList ImportExportThreadController::SortedStationIDs() {
             StationIDList << SortedIDs;
             SortedIDs.clear();
         }
-    }*/
+    }
+#endif
     return StationIDList;
 }
 
@@ -833,9 +835,9 @@ bool ImportExportThreadController::ImportArchiveFiles(const QString &ImportType)
     QStringList DirFileNames;
     QDir Dir;
     // set the current directory path   "/mnt/USB/Import"
-    (void)Dir.setCurrent(DIRECTORY_MNT + QDir::separator() + DIRECTORY_USB + QDir::separator() + DIRECTORY_IMPORT); //to avoid lint-534
+    (void)Dir.setCurrent(DIRECTORY_MNT + QDir::separator() + DIRECTORY_USB);// + QDir::separator() + DIRECTORY_IMPORT); //to avoid lint-534
     // get the lpkg files from the directory
-    DirFileNames = Dir.entryList(QStringList(FILETYPE_LPKG));
+    DirFileNames = Dir.entryList(QStringList(FILETYPE_LPKG),QDir::NoFilter,QDir::Time);
 
     if (DirFileNames.count() > 0) {
         // check the file format - consider the first file
@@ -1002,8 +1004,27 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
             qDebug() << "Initialization failed - Reagents";
             return false;
         }
+
+        //check Regent Group container
+        DataManager::CDataReagentGroupList ImportReagentGroupList;
+        DataManager::CDataReagentListVerifier ImportReagentGroupListVerifier;
+        if (!InitializeAndVerifyContainer(ImportReagentGroupList, ImportReagentGroupListVerifier, FilePath + QDir::separator() +
+                                 FILENAME_REAGENT_GROUPS)) {
+            qDebug() << "Initialization failed - Reagent Groups";
+            return false;
+        }
+
+        //check Regent Group color container
+        DataManager::CReagentGroupColorList ImportReagentGroupColorList;
+        ImportReagentGroupColorList.SetDataVerificationMode(false);
+        ImportReagentGroupColorList.Read(FilePath + QDir::separator() + FILENAME_REAGENT_GROUP_COLORS);
+
+        //check Station container
+        DataManager::CDashboardDataStationList ImportDashboardDataStationList;
+        ImportDashboardDataStationList.SetDataVerificationMode(false);
+        ImportDashboardDataStationList.Read(FilePath + QDir::separator() + FILENAME_STATIONS);
+
         // initialize the Programs container
-/*
         DataManager::CDataProgramList ImportProgramList;
         DataManager::CDataProgramListVerifier ImportProgramListVerifier;
         // check whether container initialized with all the data properly or not
@@ -1012,26 +1033,8 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
             qDebug() << "Initialization failed - Programs";
             return false;
         }
-*/
-        // initialize the program sequence container
-/*        DataManager::CProgramSequenceList ImportPSList;
-        // for the type of Leica import Program sequence is not required
-        if ((TypeOfImport.compare(TYPEOFIMPORT_LEICA, Qt::CaseInsensitive) != 0)) {
 
-            // initialize the program sequence container
-            DataManager::CProgramSequenceListVerifier ImportPSListVerifier;
-            // check whether container initialized with all the data properly or not
-
-            if (!InitializeAndVerifyContainer(ImportPSList, ImportPSListVerifier, FilePath + QDir::separator() +
-                                     FILENAME_PROGRAMSEQUENCE)) {
-                qDebug() << "Initialization failed - Program Sequence";
-                return false;
-            }
-
-        }
-*/
         // initialize the User settings container
-/*
         DataManager::CUserSettingsInterface ImportUSInterface;
         DataManager::CUserSettingsVerifier ImportUSInterfaceVerifier;
         // check whether container initialized with all the data properly or not
@@ -1040,22 +1043,8 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
             qDebug() << "Initialization failed - User settings";
             return false;
         }
-        DataManager::CUserSettings UserSettings;
-        // do a deep copy of the existing user settings
-        UserSettings = *(m_DataManager.GetUserSettingsInterface()->GetUserSettings(false));
-        // for the type of Leica import Program sequence is not required
-        if ((TypeOfImport.compare(TYPEOFIMPORT_LEICA, Qt::CaseInsensitive) != 0)) {            
-            // need to update the water type
-            ImportUSInterface.GetUserSettings(false)->SetValue("Water_Type", UserSettings.GetValue("Water_Type"));
-            // do a deep copy of the User settings
-            UserSettings = *(ImportUSInterface.GetUserSettings(false));
-        }
-        else {
-            UserSettings.SetValue("Leica_OvenTemp", ImportUSInterface.GetUserSettings(false)->GetValue("Leica_OvenTemp").toInt());
-            // set the Leica agitation speed
-            UserSettings.SetValue("Leica_AgitationSpeed", ImportUSInterface.GetUserSettings(false)->GetValue("Leica_AgitationSpeed"));
-        }
-*/
+
+
         // before updating take a back-up of the configuration files
         QStringList FileList;
         AddFilesForImportType(TypeOfImport,FileList);
@@ -1075,32 +1064,17 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
         /// \todo need to write code for the special verfiers
         // for the type of Leica import Program sequence is not required
 
-        if ((TypeOfImport.compare(TYPEOFIMPORT_LEICA, Qt::CaseInsensitive) != 0)) {
-            // replace the data with the imported data
-            *(m_DataManager.GetReagentList()) = ImportReagentList;
-//            *(m_DataManager.GetProgramList()) = ImportProgramList;
-//            *(m_DataManager.GetProgramSequenceList()) = ImportPSList;
-        }
-        else {
-/*            if (ImportLeicaPrograms(ImportProgramList)) {
-                if (!ImportLeicaUserReagents(ImportReagentList)) {
-                    return false;
-                }
-            }
-            else {
-                return false;
-            }
-*/
-        }
-
+        *(m_DataManager.GetReagentList()) = ImportReagentList;
+        *(m_DataManager.GetReagentGroupList()) = ImportReagentGroupList;
+        *(m_DataManager.GetReagentGroupColorList()) = ImportReagentGroupColorList;
+        *(m_DataManager.GetStationList()) = ImportDashboardDataStationList;
+        *(m_DataManager.GetProgramList()) = ImportProgramList;
+        *(m_DataManager.GetUserSettingsInterface()->GetUserSettings()) = *(ImportUSInterface.GetUserSettings());
         // update the user settings in the Main container
-/*
-        if (!m_DataManager.GetUserSettingsInterface()->UpdateUserSettings(&UserSettings)) {
-            return false;
-        }
-*/
-        // reset the stations and Program sequence data
-//        ResetTheStationPSContainers(TypeOfImport);
+//        if (!m_DataManager.GetUserSettingsInterface()->UpdateUserSettings(&UserSettings)) {
+//            return false;
+//        }
+
         // check for the files updation error
         if (!CheckForFilesUpdateError()) {
             return false;
@@ -1130,18 +1104,25 @@ bool ImportExportThreadController::CheckForFilesUpdateError() {
                                                              + QDir::separator() + FILENAME_REAGENTS))) {
         Rollback = true;
     }
+
+    //
+    if (!(m_DataManager.GetReagentGroupList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
+                                                             + QDir::separator() + FILENAME_REAGENT_GROUPS))) {
+        Rollback = true;
+    }
+
+    //
+    if (!(m_DataManager.GetReagentGroupColorList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
+                                                             + QDir::separator() + FILENAME_REAGENT_GROUP_COLORS))) {
+        Rollback = true;
+    }
+
     // short circuit evaluation - evaluates the first one if false then exits from the if statement
     if (!Rollback && !(m_DataManager.GetProgramList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
                                                              + QDir::separator() + FILENAME_PROGRAMS))) {
         Rollback = true;
     }
-    // short circuit evaluation - evaluates the first one if false then exits from the if statement
-/*
-    if (!Rollback && !(m_DataManager.GetProgramSequenceList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
-                                                                     + QDir::separator() + FILENAME_PROGRAMSEQUENCE))) {
-        Rollback = true;
-    }
-*/
+
     // short circuit evaluation - evaluates the first one if false then exits from the if statement
     if (!Rollback && !(m_DataManager.GetStationList()->Write(Global::SystemPaths::Instance().GetSettingsPath()
                                                              + QDir::separator() + FILENAME_STATIONS))) {

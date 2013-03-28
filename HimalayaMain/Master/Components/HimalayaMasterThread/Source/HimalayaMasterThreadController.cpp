@@ -706,35 +706,14 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
     if (IsImport) {
         // check the type of Impor
         if ((TypeOfImport.compare("User") == 0) || (TypeOfImport.compare("Service") == 0) || (TypeOfImport.compare("Leica") == 0)) {
-            // Special verification
-            if (mp_DataManager->GetUserSettingsInterface()->VerifyData(true)) {
-                Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
-            }
 
-            // Special verification
-/*
-            if (mp_DataManager->GetProgramList()->VerifyData(true)) {
-                Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
-            }
-*/
-            // Special verification
-/*
-            if (mp_DataManager->GetStationList()->VerifyData(true)) {
-                Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
-            }
-*/
-            // Special verification
-/*
-            if (mp_DataManager->GetProgramSequenceList()->VerifyData(true)) {
-                Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
-            }
-*/
             // send configuration files to GUI
-//            SendConfigurationFile(mp_DataManager->GetUserSettingsInterface(), NetCommands::USER_SETTING, m_CommandChannelGui);
+            SendConfigurationFile(mp_DataManager->GetUserSettingsInterface(), NetCommands::USER_SETTING, m_CommandChannelGui);
             SendConfigurationFile(mp_DataManager->GetReagentList(), NetCommands::REAGENT, m_CommandChannelGui);
-//            SendConfigurationFile(mp_DataManager->GetReagentGroupList, NetCommands::REAGENTGROUP, m_CommandChannelGui);
-//            SendConfigurationFile(mp_DataManager->GetProgramList(), NetCommands::PROGRAM, m_CommandChannelGui);
-//            SendConfigurationFile(mp_DataManager->GetStationList(), NetCommands::STATION, m_CommandChannelGui);
+            SendConfigurationFile(mp_DataManager->GetReagentGroupList(), NetCommands::REAGENTGROUP, m_CommandChannelGui);
+            SendConfigurationFile(mp_DataManager->GetReagentGroupColorList(), NetCommands::REAGENTGROUPCOLOR, m_CommandChannelGui);
+            SendConfigurationFile(mp_DataManager->GetProgramList(), NetCommands::PROGRAM, m_CommandChannelGui);
+            SendConfigurationFile(mp_DataManager->GetStationList(), NetCommands::STATION, m_CommandChannelGui);
             // inform the event handler
             Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_SUCCESS);
             // send ack OK
