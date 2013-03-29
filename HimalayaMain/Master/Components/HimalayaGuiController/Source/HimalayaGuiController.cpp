@@ -278,10 +278,10 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     RegisterCommandForProcessing<MsgClasses::CmdProgramUpdate, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdProgramUpdate>, this);
 
-    RegisterExternalMessage<MsgClasses::CmdNewProgram, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdNewProgram>, this);
-    RegisterCommandForProcessing<MsgClasses::CmdProgramUpdate, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdProgramUpdate>, this);
+    RegisterCommandForProcessing<MsgClasses::CmdNewProgram, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdNewProgram>, this);
+    RegisterCommandForProcessing<MsgClasses::CmdDeleteItem, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdDeleteItem>, this);
 
 
     // commands for Import and Export
