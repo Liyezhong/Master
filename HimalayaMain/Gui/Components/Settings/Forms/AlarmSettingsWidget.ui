@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>253</width>
-    <height>210</height>
+    <width>601</width>
+    <height>453</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>30</height>
       </size>
      </property>
     </spacer>
@@ -30,9 +30,16 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Alarm Type 1 - Note</string>
+      <string>Information</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="0">
+       <widget class="QLabel" name="informationperiodic">
+        <property name="text">
+         <string>Periodic : Off</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="noteSound">
         <property name="text">
@@ -60,7 +67,7 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="2">
+      <item row="0" column="2" rowspan="3">
        <widget class="QPushButton" name="noteButton">
         <property name="text">
          <string>Edit</string>
@@ -86,7 +93,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>AlarmType 2 - Error</string>
+      <string>Warning</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -116,7 +123,14 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="2">
+      <item row="2" column="0">
+       <widget class="QLabel" name="warningperiodic">
+        <property name="text">
+         <string>Periodic : Off</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" rowspan="3">
        <widget class="QPushButton" name="errorButton">
         <property name="text">
          <string>Edit</string>
@@ -135,6 +149,69 @@
       <size>
        <width>20</width>
        <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Error</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="1">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>3</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="errorSound_2">
+        <property name="text">
+         <string>Sound: Sound E5</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="errorVolume_2">
+        <property name="text">
+         <string>Volume: 7</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="informationperiodic_3">
+        <property name="text">
+         <string>Periodic : Off</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" rowspan="3">
+       <widget class="QPushButton" name="errorButton_2">
+        <property name="text">
+         <string>Edit</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_4">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>18</height>
       </size>
      </property>
     </spacer>

@@ -80,25 +80,6 @@ public:
     void SetCurrentReagent(QString ReagentName){
         m_CurrentReagentName = ReagentName;
     }
-    /****************************************************************************/
-    /**
-     * \brief Returns the position of Reagent to be selected
-     * \iparam ReagentName
-     * \return m_ReagentNames = Position of Reagent in the table
-     */
-    /****************************************************************************/
-    Global::RMSOptions_t GetRMSOption(){
-        return m_RMSOptions;
-    }
-    /****************************************************************************/
-    /**
-     * \brief Sets the currently selected reagent in the table
-     * \iparam ReagentName
-     */
-    /****************************************************************************/
-    void SetRMSOption(Global::RMSOptions_t Value){
-        m_RMSOptions = Value;
-    }
 
     /****************************************************************************/
     /**
@@ -140,7 +121,6 @@ public slots:
     void OnDeviceModeChanged(QString DeviceMode);
 
 private:
-    QString ConvertClassString(QString ClassNumber) const;
     DataManager::CDataReagentList *mp_ReagentList;      //!< Reagent list
     DataManager::CDataReagentGroupList *mp_ReagentGroupList; //!< Reagent group list
     QMap<QString, QString> m_Identifiers;               //!< Identifiers of reagents currently displayed
@@ -153,12 +133,10 @@ private:
     bool m_FilterLeicaReagent;                          //!< Filter Leica Reagent if set to true
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
     QMap<QString, QString> m_ReagentNameMap;            //!< Sorts Reagent Longnames
-    bool m_BLFlag;                                      //!< Flag for reagents in BathLayout
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     QPixmap m_PixmapTickOk;                             //!< Pixmap for TickOk png
     QString m_DeviceMode;                               //!< Device mode
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
-    Global::RMSOptions_t m_RMSOptions;
 };
 
 } // end namespace Core

@@ -114,7 +114,7 @@ void CAlarmSettingsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSet
 /****************************************************************************/
 void CAlarmSettingsWidget::UpdateLabels()
 {
-	mp_Ui->noteSound->setText(tr("Sound: Sound N %1").arg(QString::number(m_UserSettings.GetSoundNumberWarning())));
+    mp_Ui->noteSound->setText(tr("Sound: Sound N %1").arg(QString::number(m_UserSettings.GetSoundNumberWarning())));
     mp_Ui->noteVolume->setText(tr("Volume:  %1").arg(QString::number(m_UserSettings.GetSoundLevelWarning())));
     mp_Ui->errorSound->setText(tr("Sound: Sound E %1").arg(QString::number(m_UserSettings.GetSoundNumberError())));
     mp_Ui->errorVolume->setText(tr("Volume:  %1").arg( QString::number(m_UserSettings.GetSoundLevelError())));

@@ -88,12 +88,10 @@ private:
     DataManager::CDataReagentGroupList *mp_ReagentGroupList; //!< Reagent group list
     QMap<QString, QString> m_Identifiers;               //!< Identifiers of reagents currently displayed
     QStringList m_ReagentGroupNames;                         //!< Long names of reagents currently displayed
-    QStringList m_ReagentNamesCache;                    //!< Back up of Reagent names
     qint32 m_Columns;                                   //!< Number of table columns
     QString m_CurrentReagentName;                       //!< Current Reagent Name
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
-    QString m_DeviceMode;                               //!< Device mode
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object    
 };
 

@@ -141,13 +141,9 @@ private:
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
     QMap<QString, QString> m_ReagentNameMap;            //!< Sorts Reagent Longnames
     QMap<QString, QString> m_StationNameMap;            //!< Sorts Station names
-    bool m_BLFlag;                                      //!< Flag for reagents in BathLayout
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
-    QPixmap m_PixmapTickOk;                             //!< Pixmap for TickOk png
-    QString m_DeviceMode;                               //!< Device mode
-    DataManager::CUserSettings m_UserSettings;          //!< UserSettings object    
+    DataManager::CUserSettings *mp_UserSettings;          //!< UserSettings object
     Global::RMSOptions_t m_RMSOptions;
-    Global::DateFormat  m_DateFormat;
 };
 
 } // end namespace Core

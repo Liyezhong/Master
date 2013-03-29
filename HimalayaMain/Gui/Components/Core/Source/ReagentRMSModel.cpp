@@ -29,6 +29,8 @@
 #include "Programs/Include/ProgramWidget.h"
 #include "Application/Include/LeicaStyle.h"
 #include "Programs/Include/ModifyProgramStepDlg.h"
+#include "Reagents/Include/ReagentRMSWidget.h"
+
 
 #include <QPixmap>
 #include <QDebug>
@@ -50,7 +52,6 @@ CReagentRMSModel::CReagentRMSModel(QObject *p_Parent) : QAbstractTableModel(p_Pa
     m_FilterLeicaReagent = false;
     m_Columns = 0;
     m_VisibleRowCount = 7;
-    m_RMSOptions = Global::RMS_OFF;
     (void)m_PixmapTickOk.load(QString(":/%1/Icons/MISC/TickOk.png").arg(Application::CLeicaStyle::GetProjectNameString()));
 }
 
@@ -194,7 +195,7 @@ QVariant CReagentRMSModel::data(const QModelIndex &Index, int Role) const
                     }
                 }
             case 2:
-                switch (m_RMSOptions) {
+                switch (Reagents:: CReagentRMSWidget::m_RMSOption) {
                     default:
                         return QString("");
                     case Global::RMS_CASSETTES:
@@ -265,7 +266,7 @@ QVariant CReagentRMSModel::headerData(int Section, Qt::Orientation Orientation, 
         case 1:
             return tr("Reagent Group");
         case 2:
-            switch (m_RMSOptions) {
+            switch (Reagents:: CReagentRMSWidget::m_RMSOption) {
                 default:
                     return QString("");
                 case Global::RMS_CASSETTES:

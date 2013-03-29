@@ -123,9 +123,7 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
 CReagentWidget::~CReagentWidget()
 {
     try {
-
         delete mp_Ui;
-
     }
     catch (...) {
         // to please Lint.

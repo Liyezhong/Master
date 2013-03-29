@@ -29,6 +29,7 @@
 #include "Global/Include/GlobalEventCodes.h"
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
+#include "Reagents/Include/ReagentRMSWidget.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Include/StationXmlDefinitions.h"
 
 #include <QApplication>
@@ -66,7 +67,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
 
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdReagentGroupUpdate>(&CDataConnector::UpdateReagentGroupHandler, this);
 
-    //newly added commands
+    //Reagent Station Commands
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationChangeReagent>(&CDataConnector::UpdateStationChangeReagentHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationResetData>(&CDataConnector::UpdateStationResetDataHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationSetAsEmpty>(&CDataConnector::UpdateStationSetAsEmptyHandler, this);
@@ -740,15 +741,27 @@ void CDataConnector::UpdateStationResetDataHandler(Global::tRefType Ref, const M
 {
     bool Result = true;
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
-    if (pDashboardStation)
-        pDashboardStation->ResetData();
-    else
+     if (pDashboardStation) {
+        pDashboardStation->SetDashboardReagentStatus("Empty");
+        pDashboardStation->SetDashboardReagentExcahngeDate(QDate::currentDate()) ;
+        switch (Reagents::CReagentRMSWidget::m_RMSOption) {
+            default:
+                 QString("");
+            case Global::RMS_CASSETTES:
+                pDashboardStation->SetDashboardReagentActualCassettes(0);
+                break;
+            case Global::RMS_CYCLES:
+                pDashboardStation->SetDashboardReagentActualCycles(0);
+                break;
+         }
+     }
+     else
         Result = false;
-    if(Result){
+     if(Result){
         mp_WaitDialog->accept();
         emit DashboardStationChangeReagent();
-    }
-    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
+     }
+     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }
 
 void CDataConnector::UpdateStationSetAsEmptyHandler(Global::tRefType Ref, const MsgClasses::CmdStationSetAsEmpty &Command)
@@ -772,10 +785,19 @@ void CDataConnector::UpdateStationSetAsFullHandler(Global::tRefType Ref, const M
 {
     bool Result = true;
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
-    if (pDashboardStation)
-    {
+    if (pDashboardStation){
         pDashboardStation->SetDashboardReagentStatus("Full");
-        pDashboardStation->ResetData();
+        pDashboardStation->SetDashboardReagentExcahngeDate(QDate::currentDate()) ;
+        switch (Reagents::CReagentRMSWidget::m_RMSOption) {
+            default:
+                 QString("");
+            case Global::RMS_CASSETTES:
+                pDashboardStation->SetDashboardReagentActualCassettes(0);
+                break;
+            case Global::RMS_CYCLES:
+                 pDashboardStation->SetDashboardReagentActualCycles(0);
+                 break;
+         }
     }
     else
         Result = false;

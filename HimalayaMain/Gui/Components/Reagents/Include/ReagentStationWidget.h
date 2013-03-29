@@ -47,10 +47,8 @@ private:
     DataManager::CReagent *mp_Reagent;              //!< Reagent object
     DataManager::CDashboardStation *mp_DashStation;        //!< Station object
     DataManager::CUserSettings *mp_UserSettings;    //!< Data object
-    ButtonGroup_t m_ButtonType;                      //!< Informs which button was clicked
     CModifyReagentStationDlg *mp_ModifiyReagentStationDlg;        //!< Edit reagent dialog
     MainMenu::CFileView *mp_ReagentStatusWidgetView;     //!< Content of this widget
-    QString m_Status;                               //!< Current Staus of Reagent
     KeyBoard::CKeyBoard *mp_KeyBoard;
     Global::RMSOptions_t m_RMSOptions;
 

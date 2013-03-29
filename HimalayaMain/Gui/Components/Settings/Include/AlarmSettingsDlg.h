@@ -72,6 +72,9 @@ public:
 private:
     Ui::CAlarmSettingsDlg *mp_Ui;   //!< User interface
     MainMenu::CScrollWheel *mp_ScrollWheel; //!< Volume scroll wheel
+    MainMenu::CScrollWheel *mp_SoundScrollWheel; //!< Volume scroll wheel
+    MainMenu::CScrollWheel *mp_SecondWheel;   //!< Second scroll wheel
+    MainMenu::CScrollWheel *mp_MinWheel;        //!< Minut scroll wheel
     QButtonGroup m_ButtonGroup; //!< Groups radio buttons for sound selection
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     DataManager::CUserSettings *mp_UserSettings;    //!< Data object

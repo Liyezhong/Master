@@ -138,10 +138,7 @@ private:
     bool m_FilterLeicaReagent;                          //!< Filter Leica Reagent if set to true
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
     QMap<QString, QString> m_ReagentNameMap;            //!< Sorts Reagent Longnames
-    bool m_BLFlag;                                      //!< Flag for reagents in BathLayout
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
-    QPixmap m_PixmapTickOk;                             //!< Pixmap for TickOk png
-    QString m_DeviceMode;                               //!< Device mode
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object    
     bool m_ParaffinReagent;                                 //!< Type of Reagent;
 };

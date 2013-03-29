@@ -47,10 +47,10 @@ CReagentStatusModel::CReagentStatusModel(QObject *p_Parent) : QAbstractTableMode
     mp_Parent = NULL;
     mp_StationList = NULL;
     m_FilterLeicaReagent = false;
+    mp_UserSettings = NULL;
     m_Columns = 0;
     m_VisibleRowCount = 7;
     m_RMSOptions = Global::RMS_CASSETTES;
-    m_DateFormat = Global::DATE_INTERNATIONAL;
 }
 
 /****************************************************************************/
@@ -58,6 +58,8 @@ CReagentStatusModel::CReagentStatusModel(QObject *p_Parent) : QAbstractTableMode
  *  \brief Initializes the reagent data
  *
  *  \iparam p_ReagentList = Reagent data
+ *  \iparam p_ReagentGroupList = ReagentGroup data
+ *  \iparam p_StationList = Station data
  *  \iparam Columns = Table columns
  *  \iparam BLCheck = True for displaying reagents in bathlayout else False.
  */
@@ -185,11 +187,12 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
             && (p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]])))){
         QDate t_Date;
         int Days_Overdue = t_Date.currentDate().dayOfYear()-p_Station->GetDashboardReagentExcahngeDate().dayOfYear();
-        int Expired = 9999;
+        bool Expired = false;
         if (p_Reagent)
-            Expired = p_Reagent->GetMaxCassettes()-p_Station->GetDashboardReagentActualCassettes();
+             if(p_Reagent->GetMaxCassettes() < p_Station->GetDashboardReagentActualCassettes())
+                 Expired = true;
 
-        if( 0 > Expired && Role == (int) Qt::TextColorRole)
+        if( true == Expired && Role == (int) Qt::TextColorRole)
         {
             switch (Index.column()) {
             case 2:
@@ -201,6 +204,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
             switch (Index.column()) {
             case 0:
                 return p_Station->GetDashboardStationName();
+
             case 1:
                 if (p_Reagent) {
                     return p_Reagent->GetReagentName();
@@ -219,7 +223,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                             return p_Station->GetDashboardReagentActualCycles();
                         case Global::RMS_DAYS:
                            QDate Tem_QDate = p_Station->GetDashboardReagentExcahngeDate();
-                               switch(m_DateFormat){
+                               switch(mp_UserSettings->GetDateFormat()){
                                default:
                                    return QString("");
                                case Global::DATE_INTERNATIONAL:
@@ -240,17 +244,17 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                         default:
                             return QString("");
                         case Global::RMS_CASSETTES:
-                        if(0>Expired)
+                        if(true == Expired)
                              return p_Station->GetDashboardReagentActualCassettes()-p_Reagent->GetMaxCassettes();
                         else
                           return 0;
                         case Global::RMS_CYCLES:
-                        if(0>Expired)
+                        if(true == Expired)
                             return p_Station->GetDashboardReagentActualCycles()-p_Reagent->GetMaxCycles();
                         else
                             return 0;
                         case Global::RMS_DAYS:
-                        if(0>Expired)
+                        if(true == Expired)
                             return Days_Overdue;
                         else
                             return 0;
@@ -261,7 +265,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
 
             case 4:
                 if (p_Reagent) {
-                    switch(m_DateFormat){
+                    switch(mp_UserSettings->GetDateFormat()){
                     default:
                         return QString("");
                     case Global::DATE_INTERNATIONAL:
@@ -405,7 +409,7 @@ bool CReagentStatusModel::ContainsReagent(QString ReagentID)
 /****************************************************************************/
 void CReagentStatusModel::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
 {
-        m_UserSettings = *p_UserSettings;
+        mp_UserSettings = p_UserSettings;
 }
 
 /****************************************************************************/

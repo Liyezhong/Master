@@ -39,7 +39,7 @@ CReagentStatusWidget::CReagentStatusWidget(QWidget *p_Parent):
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
 
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
-
+    m_RMSOptions = Global::RMS_CASSETTES;
     PopulateReagentList();
     CONNECTSIGNALSLOT(mp_TableWidget, pressed(QModelIndex), this, SelectionChanged(QModelIndex));
     CONNECTSIGNALSLOT(mp_Ui->btnEmpty, clicked(), this, OnSetAsEmpty());
@@ -94,6 +94,7 @@ void CReagentStatusWidget::changeEvent(QEvent *p_Event)
 void CReagentStatusWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
 {
     mp_UserSettings = p_UserSettings;
+    m_ReagentStatusModel.SetUserSettings(p_UserSettings);
 }
 
 
@@ -104,23 +105,11 @@ void CReagentStatusWidget::SetUserSettings(DataManager::CUserSettings *p_UserSet
 /****************************************************************************/
 void CReagentStatusWidget::OnSetAsEmpty()
 {
-    if (mp_DashStation) {
-        mp_DashStation->SetDashboardReagentStatus("Empty");
-
-        if(m_RMSOptions == Global::RMS_CASSETTES)
-            mp_DashStation->SetDashboardReagentActualCassettes(0);
-        else if(m_RMSOptions == Global::RMS_CYCLES)
-            mp_DashStation->SetDashboardReagentActualCycles(0);
-
-        //QDate SetCurrentDate(QDate ::currentDate());
-        //mp_DashStation->SetDashboardReagentExcahngeDate(SetCurrentDate);
         emit UpdateStationSetAsEmpty(mp_DashStation->GetDashboardStationID());
-        m_ReagentStatusModel.ResetAndUpdateModel();
-
-        ResetButtons();
-    }
+         m_ReagentStatusModel.UpdateReagentList();
+         ResetButtons();
+    
 }
-
 
 /****************************************************************************/
 /*!
@@ -129,22 +118,9 @@ void CReagentStatusWidget::OnSetAsEmpty()
 /****************************************************************************/
 void CReagentStatusWidget::OnResetData()
 {
-    if (mp_DashStation) {
-        mp_DashStation->SetDashboardReagentStatus("Empty");
-
-        if(m_RMSOptions == Global::RMS_CASSETTES)
-            mp_DashStation->SetDashboardReagentActualCassettes(0);
-        else if(m_RMSOptions == Global::RMS_CYCLES)
-            mp_DashStation->SetDashboardReagentActualCycles(0);
-
-       // QDate SetCurrentDate(QDate ::currentDate());
-       // mp_DashStation->SetDashboardReagentExcahngeDate(SetCurrentDate);
-
         emit UpdateStationResetData(mp_DashStation->GetDashboardStationID());
         m_ReagentStatusModel.ResetAndUpdateModel();
-
         ResetButtons();
-    }
 }
 
 /****************************************************************************/
@@ -154,21 +130,9 @@ void CReagentStatusWidget::OnResetData()
 /****************************************************************************/
 void CReagentStatusWidget::OnSetAsFull()
 {
-    if (mp_DashStation) {
-        mp_DashStation->SetDashboardReagentStatus("Full");
-
-        if(m_RMSOptions == Global::RMS_CASSETTES)
-            mp_DashStation->SetDashboardReagentActualCassettes(0);
-        else if(m_RMSOptions == Global::RMS_CYCLES)
-            mp_DashStation->SetDashboardReagentActualCycles(0);
-
-       // QDate SetCurrentDate(QDate ::currentDate());
-      //  mp_DashStation->SetDashboardReagentExcahngeDate(SetCurrentDate);
-
         emit UpdateStationSetAsFull(mp_DashStation->GetDashboardStationID());
         m_ReagentStatusModel.ResetAndUpdateModel();
-        ResetButtons();
-    }
+        ResetButtons();   
 }
 
 /****************************************************************************/
@@ -239,32 +203,42 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
     mp_DashStation = const_cast<DataManager::CDashboardStation*>(mp_DataConnector->DashboardStationList->GetDashboardStation(Id));
 
     if (mp_DashStation) {
-        if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
-             m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-                (!m_ProcessRunning)) {
-            mp_Ui->btnFull->setEnabled(true);
-            mp_Ui->btnEmpty->setEnabled(true);
-            mp_Ui->btnReset->setEnabled(true);
-            if(mp_DashStation->GetDashboardReagentID().compare("",Qt::CaseInsensitive) == 0) {
 
+            mp_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(mp_DashStation->GetDashboardReagentID()));
+
+            if(mp_Reagent){
+                if(mp_Reagent->GetMaxCassettes() < mp_DashStation->GetDashboardReagentActualCassettes())
+                    mp_TableWidget->setStyleSheet("QTableView::item:selected {background-color:#D43032;""border-style:default;color:yellow}""QHeaderView {color:black;}");
+                else
+                    mp_TableWidget->setStyleSheet("QHeaderView {color:black;}");
+             }
+
+            if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
+                 m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
+                    (!m_ProcessRunning)) {
+                mp_Ui->btnFull->setEnabled(true);
+                mp_Ui->btnEmpty->setEnabled(true);
+                mp_Ui->btnReset->setEnabled(true);
+                if(mp_DashStation->GetDashboardReagentID().compare("",Qt::CaseInsensitive) == 0) {
+
+                    mp_Ui->btnFull->setEnabled(false);
+                    mp_Ui->btnEmpty->setEnabled(false);
+                    mp_Ui->btnReset->setEnabled(false);
+                }
+
+                if (mp_DashStation->GetDashboardReagentStatus().compare("Full", Qt::CaseInsensitive) == 0) {
+                    mp_Ui->btnFull->setEnabled(false);
+                }
+                else if (mp_DashStation->GetDashboardReagentStatus().compare("Empty", Qt::CaseInsensitive) == 0) {
+                    mp_Ui->btnEmpty->setEnabled(false);
+                    mp_Ui->btnReset->setEnabled(false);
+                }
+            }
+            else {
                 mp_Ui->btnFull->setEnabled(false);
                 mp_Ui->btnEmpty->setEnabled(false);
                 mp_Ui->btnReset->setEnabled(false);
             }
-
-            if (mp_DashStation->GetDashboardReagentStatus().compare("Full", Qt::CaseInsensitive) == 0) {
-                mp_Ui->btnFull->setEnabled(false);                
-            }
-            else if (mp_DashStation->GetDashboardReagentStatus().compare("Empty", Qt::CaseInsensitive) == 0) {
-                mp_Ui->btnEmpty->setEnabled(false);
-                mp_Ui->btnReset->setEnabled(false);
-            }
-        }
-        else {
-            mp_Ui->btnFull->setEnabled(false);
-            mp_Ui->btnEmpty->setEnabled(false);
-            mp_Ui->btnReset->setEnabled(false);
-        }
     }
 }
 

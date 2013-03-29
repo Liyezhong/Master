@@ -252,9 +252,8 @@ QVariant CReagentStationEditModel::data(const QModelIndex &Index, int Role) cons
                          else {
                             QPalette Palette;
                             return QVariant(Palette.color(QPalette::Window));
-                         }
-
-                     }
+                        }
+                    }
                 }
             }
         }

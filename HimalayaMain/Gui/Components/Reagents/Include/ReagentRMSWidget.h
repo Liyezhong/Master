@@ -59,11 +59,9 @@ class CReagentRMSWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
     friend class CTestReagents;
-
 private:
     Ui::CReagentRMSWidget *mp_Ui;                     //!< User interface
     DataManager::CUserSettings *mp_UserSettings;    //!< Data object
-    DataManager::CUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
@@ -90,6 +88,7 @@ public:
                             DataManager::CDataReagentList *p_ReagentList,
                             MainMenu::CMainWindow *p_MainWindow,
                             KeyBoard::CKeyBoard *p_KeyBoard = NULL);
+    static Global::RMSOptions_t m_RMSOption;
 private:
     void PopulateReagentList();
     void ResizeHorizontalSection();

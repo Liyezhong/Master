@@ -41,19 +41,23 @@ CAlarmSettingsDlg::CAlarmSettingsDlg(bool Error, QWidget *p_Parent) :
     mp_Ui->setupUi(GetContentFrame());
 
     mp_ScrollWheel = new MainMenu::CScrollWheel;
-    mp_Ui->scrollPanel->Init(1);
-//    for (qint32 i = 0; i <= 9; i++) {
-//        mp_ScrollWheel->AddItem(QString::number(i), i);
-//    }
-//    mp_ScrollWheel->SetNonContinuous();
-//    mp_Ui->scrollPanel->AddScrollWheel(mp_ScrollWheel, 0);
+    mp_SoundScrollWheel = new MainMenu::CScrollWheel;
+    mp_SecondWheel = new MainMenu::CScrollWheel();
+    mp_MinWheel = new MainMenu::CScrollWheel();
 
-    m_ButtonGroup.addButton(mp_Ui->soundButton0, 0);
-    m_ButtonGroup.addButton(mp_Ui->soundButton1, 1);
-    m_ButtonGroup.addButton(mp_Ui->soundButton2, 2);
-    m_ButtonGroup.addButton(mp_Ui->soundButton3, 3);
-    m_ButtonGroup.addButton(mp_Ui->soundButton4, 4);
-    m_ButtonGroup.addButton(mp_Ui->soundButton5, 5);
+    mp_Ui->scrollPanel->Init(1);
+    mp_Ui->sound_scrollpanel->Init(1);
+    mp_Ui->sound_scrollpanel->SetTitle("Sound");
+    mp_Ui->scrollPanel->SetTitle("Volume");
+
+    mp_Ui->periodictime_scrolltable->Init(2);
+    mp_Ui->periodictime_scrolltable->SetTitle(tr("Periodi Time"));
+    mp_Ui->periodictime_scrolltable->AddScrollWheel(mp_MinWheel, 0);
+    mp_Ui->periodictime_scrolltable->SetSubtitle(tr("Minute"), 0);
+    mp_Ui->periodictime_scrolltable->AddSeparator(MainMenu::CWheelPanel::COLON, 0);
+    mp_Ui->periodictime_scrolltable->AddScrollWheel(mp_SecondWheel,1);
+    mp_Ui->periodictime_scrolltable->SetSubtitle(tr("Second"), 1);
+
 
     if (Error == true) {
         SetDialogTitle(tr("Edit Alarm Type 2 - Error"));
@@ -62,9 +66,6 @@ CAlarmSettingsDlg::CAlarmSettingsDlg(bool Error, QWidget *p_Parent) :
     else {
         SetDialogTitle(tr("Edit Alarm Type 1 - Note"));
         TypeLetter = 'N';
-    }
-    for (qint32 i = 0; i < 6; i++) {
-        m_ButtonGroup.button(i)->setText(QString("Sound %1%2").arg(TypeLetter).arg(i + 1));
     }
 
     CONNECTSIGNALSLOT(mp_Ui->cancelButton, clicked(), this, reject());
@@ -82,6 +83,9 @@ CAlarmSettingsDlg::~CAlarmSettingsDlg()
 {
     try {
         delete mp_ScrollWheel;
+        delete mp_SoundScrollWheel;
+        delete mp_SecondWheel ;
+        delete mp_MinWheel ;
         delete mp_Ui;
     }
     catch (...) {
@@ -135,27 +139,57 @@ void CAlarmSettingsDlg::showEvent(QEvent *p_Event)
 void CAlarmSettingsDlg::UpdateDisplay(qint32 Volume, qint32 Sound)
 {
     mp_ScrollWheel->SetCurrentData(Volume);
-    m_ButtonGroup.button(Sound - 1)->setChecked(true);
+    mp_SoundScrollWheel->SetCurrentData(Sound);
+    QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+    // Minute
+    for (int i = 0; i < 60; i++) {
+        mp_MinWheel->AddItem(QString("%1").arg(i, 2, 10, QChar('0')), i);
+    }
+
+    //Second
+    for (int i = 0; i < 60; i++) {
+         mp_SecondWheel->AddItem(QString("%1").arg(i, 2, 10, QChar('0')), i);
+    }
+
+        mp_MinWheel->SetCurrentData(DateTime.time().minute());
+        mp_SecondWheel->SetCurrentData(DateTime.time().second());
 
     if (m_ErrorAlarmScreen == true) {
         SetDialogTitle(tr("Edit Alarm Type 2 - Error"));
-        for (qint32 i = 2; i <= 9; i++) {
+       for (qint32 i = 0; i <= 9; i++) {
             mp_ScrollWheel->AddItem(QString::number(i), i);
         }
         mp_ScrollWheel->SetNonContinuous();
         mp_Ui->scrollPanel->AddScrollWheel(mp_ScrollWheel, 0);
         mp_ScrollWheel->SetCurrentData(mp_UserSettings->GetSoundLevelError());
+
+        for (qint32 i = 0; i <= 6; i++) {
+            mp_SoundScrollWheel->AddItem(QString::number(i), i);
+        }
+        mp_SoundScrollWheel->SetNonContinuous();
+        mp_Ui->sound_scrollpanel->AddScrollWheel(mp_SoundScrollWheel, 0);
+        mp_SoundScrollWheel->SetCurrentData(mp_UserSettings->GetSoundNumberError());
+
        // m_ButtonGroup.
     }
     else {
         SetDialogTitle(tr("Edit Alarm Type 1 - Note"));
-        for (qint32 i = 0; i <= 9; i++) {
+          for (qint32 i = 0; i <= 9; i++) {
             mp_ScrollWheel->AddItem(QString::number(i), i);
         }
         mp_ScrollWheel->SetNonContinuous();
         mp_Ui->scrollPanel->AddScrollWheel(mp_ScrollWheel, 0);
         mp_ScrollWheel->SetCurrentData(mp_UserSettings->GetSoundLevelWarning());
+
+      for (qint32 i = 0; i <= 6; i++) {
+            mp_SoundScrollWheel->AddItem(QString::number(i), i);
+        }
+        mp_SoundScrollWheel->SetNonContinuous();
+        mp_Ui->sound_scrollpanel->AddScrollWheel(mp_SoundScrollWheel, 0);
+        mp_SoundScrollWheel->SetCurrentData(mp_UserSettings->GetSoundNumberWarning());
+
     }
+
 
 }
 
@@ -221,13 +255,12 @@ void CAlarmSettingsDlg::OnApply()
     if (!m_ErrorAlarmScreen) {
         mp_UserSettings->SetSoundLevelWarning(mp_ScrollWheel->GetCurrentData().toInt());
         //Adding one to checkedId  because , the id starts from zero
-        mp_UserSettings->SetSoundNumberWarning(m_ButtonGroup.checkedId() + 1);
-
+        mp_UserSettings->SetSoundNumberWarning(mp_SoundScrollWheel->GetCurrentData().toInt());
     }
     else {
         mp_UserSettings->SetSoundLevelError(mp_ScrollWheel->GetCurrentData().toInt());
         //Adding one to checkedId  because , the id starts from zero
-        mp_UserSettings->SetSoundNumberError(m_ButtonGroup.checkedId() + 1);
+        mp_UserSettings->SetSoundNumberError(mp_SoundScrollWheel->GetCurrentData().toInt());
     }
     emit AlarmSettingsChanged(*mp_UserSettings);
     //close();
