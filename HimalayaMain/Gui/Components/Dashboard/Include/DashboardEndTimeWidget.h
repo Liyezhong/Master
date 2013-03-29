@@ -21,23 +21,15 @@
 #ifndef DASHBOARD_DASHBOARDENDTIMEWIDGET_H
 #define DASHBOARD_DASHBOARDENDTIMEWIDGET_H
 
-#include <QObject>
-#include <QWidget>
-#include <QGraphicsItem>
-#include <QFormLayout>
-#include <QGraphicsItem>
-#include <QPainter>
-#include <QPushButton>
-#include <QLabel>
-#include <QProgressBar>
-#include <QTextEdit>
-#include <QLineEdit>
-//#include <QHBoxLayout>
-#include <QVBoxLayout>
 
+#include <QWidget>
 #include "Dashboard/Include/DashboardDateTimeWidget.h"
 
 namespace Dashboard {
+
+namespace Ui {
+    class CDashboardEndTimeWidget;
+}
 
 /****************************************************************************/
 /**
@@ -51,7 +43,7 @@ class CDashboardEndTimeWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit CDashboardEndTimeWidget(QWidget *p_Parent = NULL);
+    explicit CDashboardEndTimeWidget(QString & ProgramName, QWidget *p_Parent = NULL);
     ~CDashboardEndTimeWidget();
 
 
@@ -59,23 +51,17 @@ protected:
     void paintEvent(QPaintEvent *);
 
 public slots:
-    void OnButtonClicked();
-    void OnDateTimeSelected(QDateTime selDateTime);
+    void OnEndTimeButtonClicked();
+    void UpdateDateTime(QDateTime & selDateTime);
 
 
 private:
-    QPushButton     *mp_btnEndTime;
-    QLabel          *mp_lblReagent;
-    QLabel          *mp_lblReagentName;
-    QLabel          *mp_lblTime;
-    QLabel          *mp_lblTimeValue;
-
+    Ui::CDashboardEndTimeWidget *mp_Ui;
     QPixmap         m_btnPixmap;
     QPixmap         m_progBarPixmap;
+    QPixmap         m_backgroundPixmap;
     Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
 
-
-    void InitializeEndTimeWidgetItems();
 };
 
 } // end namespace Dashboard

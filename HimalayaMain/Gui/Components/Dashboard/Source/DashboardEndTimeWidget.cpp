@@ -18,6 +18,8 @@
  */
 /****************************************************************************/
 
+#include "ui_DashboardEndTimeWidget.h"
+#include <QPainter>
 #include "Dashboard/Include/DashboardEndTimeWidget.h"
 
 namespace Dashboard {
@@ -30,89 +32,70 @@ namespace Dashboard {
  */
 /****************************************************************************/
 
-CDashboardEndTimeWidget::CDashboardEndTimeWidget(QWidget *p_Parent) :QWidget(p_Parent)
+CDashboardEndTimeWidget::CDashboardEndTimeWidget(QString & ProgramName, QWidget *p_Parent) : QWidget(p_Parent),
+    mp_Ui(new Ui::CDashboardEndTimeWidget)
 
 {
+    mp_Ui->setupUi(this);
+
+    m_backgroundPixmap.load(":/HimalayaImages/Icons/Dashboard/EndTime/EndTime_Background.png");
     m_btnPixmap.load(":/HimalayaImages/LongButton/LongButton_Enabled.png");
     m_progBarPixmap.load(":/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png");
 
-    setMinimumSize(QSize(250, 170));
-    InitializeEndTimeWidgetItems();
 
+    mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget(ProgramName);
+    mp_wdgtDateTime->setWindowFlags(Qt::CustomizeWindowHint);
 
-    CONNECTSIGNALSLOT(mp_btnEndTime, clicked(), this, OnButtonClicked());
-    CONNECTSIGNALSLOT(mp_wdgtDateTime->GetContent(), ApplyData(QDateTime), this, OnDateTimeSelected(QDateTime));
-
+    CONNECTSIGNALSLOT(mp_Ui->btnEndTime, clicked(), this, OnEndTimeButtonClicked());
 }
 
 CDashboardEndTimeWidget::~CDashboardEndTimeWidget()
 {
     try {
-
-        delete mp_btnEndTime;
-        delete mp_lblReagent;
-        delete mp_lblReagentName;
-        delete mp_lblTime;
-        delete mp_lblTimeValue;
-        delete mp_wdgtDateTime;
-
+        delete mp_Ui;
     } catch(...) {
 
     }
 
 }
 
-void CDashboardEndTimeWidget::InitializeEndTimeWidgetItems()
+void CDashboardEndTimeWidget::paintEvent(QPaintEvent *)
 {
-    mp_btnEndTime = new QPushButton(this);
-    mp_btnEndTime->setGeometry(QRect(5, 2, 225, 70));
-    mp_btnEndTime->setFlat(true);
-    mp_btnEndTime->setIconSize(QSize(225, 70));
-    mp_btnEndTime->setIcon(QIcon(m_btnPixmap));
 
+    QPainter        Painter(this);
+    Painter.drawPixmap(rect(), m_backgroundPixmap);
 
-    mp_lblReagent = new QLabel("Reagent :", this);
-    mp_lblReagent->setGeometry(QRect(10, 60, 100, 30));
+    //m_Painter.fillRect(QRect(10, 140, m_progBarPixmap.width(), m_progBarPixmap.height()), QBrush(Qt::green));
 
-    mp_lblReagentName = new QLabel("<Reagent Name>", this);
-    mp_lblReagentName->setGeometry(QRect(110, 60, 140, 20));
+}
 
-    mp_lblTime = new QLabel("Step Time :", this);
-    mp_lblTime->setGeometry((QRect(10, 100, 100, 20)));
+void CDashboardEndTimeWidget::OnEndTimeButtonClicked()
+{
 
-    mp_lblTimeValue = new QLabel("00:00", this);
-    mp_lblTimeValue->setGeometry(QRect(110, 100, 110, 20));
+    mp_wdgtDateTime->show();
 
-    mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget();
+    CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(QDateTime &), this, UpdateDateTime(QDateTime &));
 
     update();
 
 }
 
-void CDashboardEndTimeWidget::paintEvent(QPaintEvent *)
+
+void CDashboardEndTimeWidget::UpdateDateTime(QDateTime &selDateTime)
 {
-    QPainter        m_Painter(this);    
-    m_Painter.drawPixmap(rect(), QPixmap(":/HimalayaImages/Icons/Dashboard/EndTime/EndTime_Background.png"));
 
-    m_Painter.drawPixmap(10, 140, m_progBarPixmap);
-    //m_Painter.fillRect(QRect(10, 140, m_progBarPixmap.width(), m_progBarPixmap.height()), QBrush(Qt::green));
+    QString TimeStr = QString(tr("%1").arg(selDateTime.time().toString()));
+    QString DateStr = QString(tr("%1").arg(selDateTime.date().toString()));
 
+    QString DateTimeStr;
+    DateTimeStr.append(tr("End Time :"));
+    DateTimeStr.append(TimeStr);
+    DateTimeStr.append("\n");
+    DateTimeStr.append("\t\t\t");
+    DateTimeStr.append(DateStr);
+
+    mp_Ui->btnEndTime->setText(DateTimeStr);
 
 }
-
-void CDashboardEndTimeWidget::OnButtonClicked()
-{
-    mp_wdgtDateTime->GetContent()->RefreshDateTime(Global::TIME_24);
-    mp_wdgtDateTime->show();
-}
-
-void CDashboardEndTimeWidget::OnDateTimeSelected(QDateTime selDateTime)
-{
-    //mp_btnEndTime->setText(selDateTime.toString());
-}
-
-
-
-
 
 }    // end of namespace Dashboard

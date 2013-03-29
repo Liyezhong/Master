@@ -21,38 +21,47 @@
 #ifndef DASHBOARD_DATETIMEWIDGET_H
 #define DASHBOARD_DATETIMEWIDGET_H
 
-#include  "DataManager/Containers/UserSettings/Include/UserSettings.h"
+
 #include "MainMenu/Include/MainWindow.h"
-#include "MainMenu/Include/DateTime.h"
 #include "MainMenu/Include/PanelFrame.h"
-#include <QShowEvent>
+#include "MainMenu/Include/DateTime.h"
+#include "Application/Include/LeicaStyle.h"
 
 namespace Dashboard {
+
+namespace Ui {
+    class CDashboardDateTimeWidget;
+}
 
 /****************************************************************************/
 /**
  * \brief Frame for the date and time widget
  */
 /****************************************************************************/
-class CDashboardDateTimeWidget : public MainMenu::CPanelFrame {
+class CDashboardDateTimeWidget : public MainMenu::CPanelFrame
+{
     Q_OBJECT
 
 public:
-    explicit CDashboardDateTimeWidget(QWidget *p_Parent = 0);
+    explicit CDashboardDateTimeWidget(QString ProgramName, QWidget *p_Parent = 0);
     virtual ~CDashboardDateTimeWidget();
-    //void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
-    //void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
-    MainMenu::CDateTime *GetContent();
+    QDateTime & GetChosenProgamEndTime();
 
-protected:
-    //void showEvent(QShowEvent *p_Event);
-    //void changeEvent(QEvent *p_Event);
 
 private:
-    MainMenu::CDateTime *mp_DateTime;   //!< Content of this widget
-    DataManager::CUserSettings *mp_UserSettings;  //!< Data object
-    //MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
-   // void RetranslateUI();
+
+    Ui::CDashboardDateTimeWidget *mp_Ui;            //!< User interface
+    //Flags
+    bool m_ProcessRunning;                  //!< Process running state
+    QDateTime m_selDateTime;
+
+public slots:
+    void OnOK();
+    void OnCancel();
+
+signals:
+    void OnSelectDateTime(QDateTime& selDateTime);
+
 };
 
 } // end namespace Dashboard

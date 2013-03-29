@@ -18,12 +18,13 @@
  */
 /****************************************************************************/
 
-#include "Global/Include/Utils.h"
-#include "Global/Include/Exception.h"
 #include "Dashboard/Include/DashboardDateTimeWidget.h"
-#include <QDateTime>
-#include <QApplication>
-#include <QEvent>
+#include <Global/Include/AdjustedTime.h>
+#include "Application/Include/LeicaStyle.h"
+
+#include "ui_DashboardDateTimeWidget.h"
+#include <QDebug>
+#include <QPainter>
 
 namespace Dashboard {
 
@@ -34,11 +35,26 @@ namespace Dashboard {
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent), mp_UserSettings(NULL)
+CDashboardDateTimeWidget::CDashboardDateTimeWidget(QString ProgramName, QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
+    mp_Ui(new Ui::CDashboardDateTimeWidget)
 {
-    mp_DateTime = new MainMenu::CDateTime();
-    SetPanelTitle(tr("Date/Time"));
-    SetContent(mp_DateTime->layout());
+
+    mp_Ui->setupUi(GetContentFrame());
+    mp_Ui->wdgtDateTime->DisableApplyButton();
+    mp_Ui->wdgtDateTime->RefreshDateTime(Global::TIME_24);
+
+    m_selDateTime = mp_Ui->wdgtDateTime->GetDateTime();
+
+    QString PanelTitle = QString(tr("End Time for Program \"%1\"").arg(ProgramName));
+    SetPanelTitle(PanelTitle);
+    SetTitleCenter();
+
+    mp_Ui->lblDateTimeDisplay->setText(m_selDateTime.toString());
+
+
+    CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
+    CONNECTSIGNALSLOT(mp_Ui->btnASAP, clicked(), this, close()); // to do
+    CONNECTSIGNALSLOT(mp_Ui->btnOK, clicked(), this, OnOK());
 }
 
 /****************************************************************************/
@@ -49,96 +65,32 @@ CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent) : MainMenu
 CDashboardDateTimeWidget::~CDashboardDateTimeWidget()
 {
     try {
-        delete mp_DateTime;
+       delete mp_Ui;
     }
     catch (...) {
         // to please Lint.
     }
 }
-#if 0
 
-/****************************************************************************/
-/*!
- *  \brief Event handler for change events
- *
- *  \iparam p_Event = Change event
- */
-/****************************************************************************/
-
-void CDashboardDateTimeWidget::changeEvent(QEvent *p_Event)
+void CDashboardDateTimeWidget::OnOK()
 {
-    QWidget::changeEvent(p_Event);
-    switch (p_Event->type()) {
-        case QEvent::LanguageChange:
-            RetranslateUI();
-            break;
-        default:
-            break;
-    }
+   m_selDateTime = mp_Ui->wdgtDateTime->GetDateTime();
+   emit OnSelectDateTime(m_selDateTime);
+   close();
 }
 
-#endif
-/****************************************************************************/
-/*!
- *  \brief  Returns the content of this panel
- *
- *  \return A pointer to the content
- */
-/****************************************************************************/
-MainMenu::CDateTime *CDashboardDateTimeWidget::GetContent()
+
+
+QDateTime & CDashboardDateTimeWidget::GetChosenProgamEndTime()
 {
-    return mp_DateTime;
+    return m_selDateTime;
 }
 
-#if 0
-/****************************************************************************/
-/*!
- *  \brief Sets the settings data object for this class
- *
- *  \iparam p_UserSettings = Global user settings data
- */
-/****************************************************************************/
-void CDashboardDateTimeWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
+
+void CDashboardDateTimeWidget::OnCancel()
 {
-    mp_UserSettings = p_UserSettings;
+    close();
 }
 
-/****************************************************************************/
-/*!
- *  \brief Updates the widget content everytime it is displayed
- *
- *  \iparam p_Event = Show event
- */
-/****************************************************************************/
-void CDashboardDateTimeWidget::showEvent(QShowEvent *p_Event) {
-    if((mp_DateTime != NULL) && (mp_UserSettings != NULL) && (p_Event != NULL) && !p_Event->spontaneous()) {
-        // widget is quite before to be shown (again) Refresh contents.
-        mp_DateTime->RefreshDateTime(mp_UserSettings->GetTimeFormat());
-        mp_DateTime->ResetButtons();
-    }
-}
-
-/****************************************************************************/
-/*!
- *  \brief Translates the strings in UI to the selected language
- */
-/****************************************************************************/
-void CDashboardDateTimeWidget::RetranslateUI()
-{
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CDashboardDateTimeWidget", "Date/Time", 0, QApplication::UnicodeUTF8));
-}
-
-/****************************************************************************/
-/*!
- *  \brief Used to set pointer to mainwindow, used to retreive user role and
- *         process state changed.
- */
-/****************************************************************************/
-void CDashboardDateTimeWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)
-{
-    mp_MainWindow = p_MainWindow;
-    mp_DateTime->SetPtrToMainWindow(mp_MainWindow);
-}
-#endif
 
 } // end namespace Dashboard

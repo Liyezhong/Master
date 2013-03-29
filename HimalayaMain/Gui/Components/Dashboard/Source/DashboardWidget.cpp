@@ -179,6 +179,21 @@ void CDashboardWidget::CheckPreConditionsToAbortProgram()
 
 }
 
+void CDashboardWidget::RunProgram()
+{
+    // Send command to Master
+}
+
+void CDashboardWidget::PauseProgram()
+{
+    // Send command to Master
+}
+
+void CDashboardWidget::AbortProgram()
+{
+    // Send command to Master
+}
+
 void CDashboardWidget::OnPressYes()
 {
     qDebug() << " Start the Program"; // to do

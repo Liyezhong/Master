@@ -245,7 +245,7 @@ void CDashboardScene::InitDashboardStationConnectorsHeights()
 /****************************************************************************/
 void CDashboardScene::InitDashboardEndTimeWidgetPosition()
 {
-    //m_DashboardEndTimeWidgetPos = QPoint(520, 90);
+    m_DashboardEndTimeWidgetPos = QPoint(520, 78);
 }
 
 
@@ -290,10 +290,12 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     mp_DashboardStationConnector = new Dashboard::CDashboardStationConnector(582, 289, false );
     addItem(mp_DashboardStationConnector);
 
-    // Show the End Time Widget
-    mp_DashboardEndTimeWidget = new Dashboard::CDashboardEndTimeWidget();
+    // Add the End Time Widget
+    QString ProgramName = QString(tr("Test Protocol 1"));
+    mp_DashboardEndTimeWidget = new Dashboard::CDashboardEndTimeWidget(ProgramName);
     mp_GraphicsProxyWidget = this->addWidget(mp_DashboardEndTimeWidget);
-    mp_GraphicsProxyWidget->setPos(QPoint(520, 78));
+    mp_GraphicsProxyWidget->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+    mp_GraphicsProxyWidget->setPos(m_DashboardEndTimeWidgetPos);
     addItem(mp_GraphicsProxyWidget);
 
 
