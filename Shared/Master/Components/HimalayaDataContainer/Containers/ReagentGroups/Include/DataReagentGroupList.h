@@ -153,7 +153,7 @@ public:
     bool DeleteReagentGroup(const QString StepID);   // uses unique step ID
     bool DeleteReagentGroup(const unsigned int Index);  // uses order index
 
-    qint32 GetReagentGroupIndex(const QString GroupID) { return m_OrderedListOfReagentGroupIDs.indexOf(GroupID); }   // uses unique group ID
+    qint32 GetReagentGroupIndex(const QString& GroupID) { return m_OrderedListOfReagentGroupIDs.indexOf(GroupID); }   // uses unique group ID
 
 
 private:
@@ -162,8 +162,8 @@ private:
     QString m_Filename;             //!< XML File name
 
 
-    ListOfReagentGroups_t m_ReagentGroupsList;   //!< A list containg the program sequence steps
-    ListOfIDs_t m_OrderedListOfReagentGroupIDs;  //!< A List in which program sequence ids are stored in order
+    ListOfReagentGroups_t m_ReagentGroupsList;   //!< A list containg the reagent groups
+    ListOfIDs_t m_OrderedListOfReagentGroupIDs;  //!< A List in which reagent group are stored in order
 
     QReadWriteLock* mp_ReadWriteLock;//!< File read write protection
 

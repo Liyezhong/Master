@@ -35,10 +35,9 @@ QString CmdUpdateStationReagentStatus::NAME = "MsgClasses::CmdUpdateStationReage
  * \param[in]   CassetteCount   if RMS os Cassete, we should give CassetteCount
  */
 /****************************************************************************/
-CmdUpdateStationReagentStatus::CmdUpdateStationReagentStatus(int TimeOut, const QString& StationID, int CassetteCount, bool bUpdateCycle)
+CmdUpdateStationReagentStatus::CmdUpdateStationReagentStatus(int TimeOut, const QStringList& StationIDs, int CassetteCount)
     : Command(TimeOut)
-    , m_StationID(StationID)
-    , m_IsUpdateCycle(bUpdateCycle)
+    , m_StationIDs(StationIDs)
     , m_CassetteCount(CassetteCount)
 {
 }

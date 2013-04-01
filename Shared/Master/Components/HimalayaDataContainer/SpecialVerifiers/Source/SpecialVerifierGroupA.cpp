@@ -33,7 +33,9 @@ namespace DataManager {
  *  \brief Constructor
  */
 /****************************************************************************/
-CSpecialVerifierGroupA::CSpecialVerifierGroupA() : mp_DProgramList(NULL), mp_DReagentList(NULL), mp_DStationList(NULL)
+CSpecialVerifierGroupA::CSpecialVerifierGroupA() :
+        mp_DProgramList(NULL), mp_DReagentList(NULL),
+        mp_DStationList(NULL), m_pDataReagentGroupList(NULL)
 {
 }
 
@@ -47,10 +49,12 @@ CSpecialVerifierGroupA::CSpecialVerifierGroupA() : mp_DProgramList(NULL), mp_DRe
  */
 /****************************************************************************/
 CSpecialVerifierGroupA::CSpecialVerifierGroupA(CDataProgramList* p_DataProgramList, CDataReagentList* p_DataReagentList,
-                                               CDashboardDataStationList* p_DataStationList)
+                                               CDashboardDataStationList* p_DataStationList, CDataReagentGroupList* pDataReagentGroupList)
     : mp_DProgramList(p_DataProgramList),
       mp_DReagentList(p_DataReagentList),
-      mp_DStationList(p_DataStationList)
+      mp_DStationList(p_DataStationList),
+      m_pDataReagentGroupList(pDataReagentGroupList)
+
 {
 }
 
@@ -186,6 +190,46 @@ bool CSpecialVerifierGroupA::CheckData()
     // if everything goes well then Special verifier verified all the data
     return Result;
 }
+
+ bool CSpecialVerifierGroupA::IsCompatible(const QString& currentReagentGroupID, const QString& NextReagentGroupID)
+ {
+    if (currentReagentGroupID.isEmpty()||NextReagentGroupID.isEmpty())
+        return true;
+
+    if(!m_pDataReagentGroupList)
+        return false;
+
+     int i = m_pDataReagentGroupList->GetReagentGroupIndex(currentReagentGroupID);
+     int j = m_pDataReagentGroupList->GetReagentGroupIndex(NextReagentGroupID);
+
+     if (i > j)//swap
+     {
+         int temp = i;
+         i = j;
+         j= temp;
+     }
+
+     int arr[]={1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1,
+                   1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1,
+                      1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1,
+                         1, 1, 1, 1, 0, 0, 0, 1, 1, 0,
+                            1, 1, 0, 0, 0, 0, 0, 1, 0,      //paraffin
+                               1, 1, 0, 0, 0, 1, 1, 0,
+                                  1, 1, 1, 1, 1, 0, 1,      //Cleaning alcohol
+                                     1, 1, 1, 1, 0, 1,
+                                        1, 1, 1, 0, 1,
+                                           1, 1, 0, 1,      //water
+                                              1, 1, 1,
+                                                 1, 0,
+                                                    1};
+
+     int index = 0;
+     index = (28 - i) * i / 2 + (j - i);//[(n + 1) + (n - i + 1)] * i / 2 + (j - i);int n = 13;//the dimention of array
+    if (1 == arr[index])
+       return true;
+    else
+        return false;
+ }
 
 }  // namespace DataManager
 

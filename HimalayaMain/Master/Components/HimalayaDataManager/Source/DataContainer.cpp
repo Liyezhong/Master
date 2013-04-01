@@ -119,7 +119,7 @@ bool CDataContainer::InitContainers()
 
     // create special verfiers
     if (SpecialVerifierGroupA == NULL) {
-        SpecialVerifierGroupA = new CSpecialVerifierGroupA(ProgramList, ReagentList, StationList);
+        SpecialVerifierGroupA = new CSpecialVerifierGroupA(ProgramList, ReagentList, StationList, ReagentGroupList);
     }
 
 

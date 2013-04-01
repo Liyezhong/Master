@@ -175,11 +175,41 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
  }
 
-
+//Based on the RMS mode to send CmdUpdateStationReagentStatus
  void CStationCommandInterface::UpdateStationReagentStatus(Global::tRefType Ref,
                         const MsgClasses::CmdUpdateStationReagentStatus &Cmd,
                         Threads::CommandChannel& AckCommandChannel)
  {
+     const QStringList& Ids = Cmd.StationIDs();
+     for (int i = 0; i < Ids.count(); i++)
+     {
+         CDashboardStation* pDashboardStation = static_cast<CDataContainer*>(mp_DataContainer)->StationList->GetDashboardStation(Ids[i]);
+         if (pDashboardStation)
+         {
+             if(Cmd.CassetteCount() > 0)
+             {
 
+                 pDashboardStation->SetDashboardReagentActualCassettes(
+                             pDashboardStation->GetDashboardReagentActualCassettes() + Cmd.CassetteCount());
+
+             }
+             else
+             {
+                 pDashboardStation->SetDashboardReagentActualCycles(
+                             pDashboardStation->GetDashboardReagentActualCycles() + 1);
+             }
+
+         }
+         else
+         {
+             qDebug() << "UpdateStationReagentStatus Failed.";
+         }
+     }
+
+     mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
+     MsgClasses::CmdUpdateStationReagentStatus* p_Command = new MsgClasses::CmdUpdateStationReagentStatus(1000, Cmd.StationIDs(),
+                                                                                                Cmd.CassetteCount());
+     mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
+     static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
  }
 }

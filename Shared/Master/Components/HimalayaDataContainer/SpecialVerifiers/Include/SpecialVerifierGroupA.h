@@ -30,6 +30,8 @@
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
+#include "HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupList.h"
+
 
 namespace DataManager {
 
@@ -45,7 +47,7 @@ public:
     // instead of sending all the arguments please put all class objects in a Hash table with a Key
     // so that, in feature if it adds up new arguments and function will not be changed.
     CSpecialVerifierGroupA(CDataProgramList* p_DataProgramList, CDataReagentList* p_DataReagentList
-                           , CDashboardDataStationList* p_StationList);
+                           , CDashboardDataStationList* p_StationList, CDataReagentGroupList* pDataReagentGroupList);
 
     bool VerifyData(CDataContainerBase* p_ContainerBase);
 
@@ -62,8 +64,10 @@ private:
     CDataProgramList* mp_DProgramList; ///< Container for the Program list
     CDataReagentList* mp_DReagentList; ///< Container for the Reagent list
     CDashboardDataStationList* mp_DStationList; ///< Container for the Station list
+    CDataReagentGroupList* m_pDataReagentGroupList;
     ErrorHash_t m_ErrorsHash;          //!< To store Error ID and any arguments associated
-    bool CheckData();
+	bool CheckData();
+    bool IsCompatible(const QString& currentReagentGroupID, const QString& NextReagentGroupID);
 };
 
 } // namespace DataManager

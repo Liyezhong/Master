@@ -810,6 +810,35 @@ void CDataConnector::UpdateStationSetAsFullHandler(Global::tRefType Ref, const M
 
 void CDataConnector::UpdateStationReagentStatus(Global::tRefType Ref, const MsgClasses::CmdUpdateStationReagentStatus &Command)
 {
+    const QStringList& Ids = Command.StationIDs();
+    for (int i = 0; i < Ids.count(); i++)
+    {
+        DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Ids[i]);
+        if (pDashboardStation)
+        {
+            if(Command.CassetteCount() > 0)
+            {
+
+                pDashboardStation->SetDashboardReagentActualCassettes(
+                            pDashboardStation->GetDashboardReagentActualCassettes() + Command.CassetteCount());
+
+            }
+            else
+            {
+                pDashboardStation->SetDashboardReagentActualCycles(
+                            pDashboardStation->GetDashboardReagentActualCycles() + 1);
+            }
+        }
+        else
+        {
+            qDebug() << "UpdateStationReagentStatus Failed.";
+        }
+    }
+
+    mp_WaitDialog->accept();
+    emit DashboardStationChangeReagent();
+
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
 
 }
 
