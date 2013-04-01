@@ -23,9 +23,12 @@
 
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/MainWindow.h"
+#include "MainMenu/Include/MessageDlg.h"
 #include "Dashboard/Include/DashboardScene.h"
 #include "Dashboard/Include/DashboardComboBox.h"
 #include "Dashboard/Include/DashboardDataTypes.h"
+#include "HimalayaDataContainer/Helper/Include/Global.h"
+#include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include <QFrame>
 #include <QGridLayout>
 
@@ -50,14 +53,18 @@ private:
     Core::CDataConnector *mp_DataConnector;                     //!< Global data container
     CDashboardScene *mp_DashboardScene;                         //!< Displays the station items
     QFrame *mp_Separator;                                       //!< Separator Line between View & Operation
-    Dashboard::DashboardOperation_t m_Operation;                //!< Operation to be performed in Dashboatrd
+    DataManager::ProgramActionType_t m_ProgramCurrentAction;    //!< Program Current Action
+    DataManager::ProgramActionType_t m_ProgramNextAction;       //!< Program Next Action
+    DataManager::CDataProgramList *mp_ProgramList;              //!< Programs List
+    DataManager::ListOfFavoriteProgramIDs m_FavProgramList;
+    QString m_SelectedProgramId;
     QButtonGroup m_btnGroup;                                    //!< Button Group
     Global::RMSOptions_t m_RMSState;                            //!< Current RMS State
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
     bool m_UserRoleChanged;                                     //!< Flag to Verify the Change in User Role
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
 
-    void RunProgram();
+    void PlayProgram();
     void PauseProgram();
     void AbortProgram();
 
@@ -65,13 +72,13 @@ public:
     explicit CDashboardWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL);
     ~CDashboardWidget();
 
-    void CheckPreConditionsToRunProgram();
-    void CheckPreConditionsToPauseProgram();
-    void CheckPreConditionsToAbortProgram();
+    bool CheckPreConditionsToRunProgram();
+    bool CheckPreConditionsToPauseProgram();
+    bool CheckPreConditionsToAbortProgram();
 
 protected:
     void DrawSeparatorLine();
-    void AddItemsToComboBox();
+
 
 signals:
     void ProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
@@ -80,11 +87,14 @@ public slots:
     void OnUserRoleChanged();
     void OnButtonClicked(int whichBtn);
     void OnRMSValueChanged(Global::RMSOptions_t);
+    void AddItemsToComboBox();
+    void OnProgramActionStarted(DataManager::ProgramActionType_t ActionType);
 
     // Warning Message Slots
-    void OnPressYes();
-    void OnPressNo();
-    void OnPressCancel();
+    void OnProgramStartConfirmation();
+public slots:
+    void OnSelectionChanged(int);
+
 };
 
 }

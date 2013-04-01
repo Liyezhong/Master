@@ -45,11 +45,6 @@ public:
 
 private:
     QWidget *mp_Popup;
-    QMessageBox *mp_Msg;
-
-public slots:
-    void handleSelectionChanged(int);
-
 
 };
 

@@ -57,6 +57,7 @@ CStartup::CStartup() : QObject()
 
     // Dashboard Signals & Slots
     CONNECTSIGNALSLOT(mp_Reagents, RMSValueChanged(Global::RMSOptions_t), mp_Dashboard, OnRMSValueChanged(Global::RMSOptions_t));
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramsUpdated(), mp_Dashboard, AddItemsToComboBox())
 
 //    CONNECTSIGNALSLOT(mp_Reagents, UpdateReagent(DataManager::CReagent &),
 //                      mp_DataConnector, SendReagentUpdate(DataManager::CReagent &));

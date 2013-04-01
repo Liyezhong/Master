@@ -55,6 +55,8 @@ typedef enum  {
         STATION_EXPIRED,
         STATION_NOTUSED
     } StationStatusType_t;    
+
+typedef QList<QString> ListOfFavoriteProgramIDs;
     
     
 const QString LEICA("leica");

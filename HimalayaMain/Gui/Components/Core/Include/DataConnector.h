@@ -42,7 +42,15 @@
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsEmpty.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsFull.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
+
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdParaffinBathStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndDateTime.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationStatus.h"
 
 
 /********************** Net Commands ************************************************/
@@ -140,7 +148,14 @@ public slots:
     void SendProgramColorUpdate(DataManager::CProgram &ColorReplacedProgram,
                                 DataManager::CProgram &ColorAssignedProgram);
 
+    void SendCurrentProgramStepInfo(const QString& StepName, const QTime& CurRemainingTime);
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
+    void SendParaffinBathStatus(const QString& ParaffinBathID, DataManager::ParaffinBathStatusType_t StatusType);
+    void SendProgramEndDateTime(const QDateTime& EndDateTime);
+    void SendRetortLock(bool IsLock);
+    void SendRetortLockStatus(bool IsLocked);
+    void SendRetortStatus(DataManager::RetortStatusType_t RetortStatusType);
+    void SendStationStatus(const QString &StationID, DataManager::StationStatusType_t StationStatusType);
 
     void SendUserLevel(QDataStream &DataStream);
     void SendChangepassword(QDataStream &DataStream);
@@ -323,6 +338,12 @@ signals:
      */
     /****************************************************************************/
     void RevertChangedReagent();
+    /****************************************************************************/
+    /*!
+     *  \brief
+     */
+    /****************************************************************************/
+    void StartProgramAction(DataManager::ProgramActionType_t ActionType);
 
 private:
     void ConfFileHandler(Global::tRefType Ref, const NetCommands::CmdConfigurationFile &Command);
@@ -338,6 +359,15 @@ private:
     void UpdateStationSetAsEmptyHandler(Global::tRefType Ref, const MsgClasses::CmdStationSetAsEmpty &Command);
     void UpdateStationSetAsFullHandler(Global::tRefType Ref, const MsgClasses::CmdStationSetAsFull &Command);
     void UpdateStationReagentStatus(Global::tRefType Ref, const MsgClasses::CmdUpdateStationReagentStatus &Command);
+
+    void CurrentProgramStepInfoHandler(Global::tRefType Ref, const MsgClasses::CmdCurrentProgramStepInfor & Command);
+    void ProgramActionHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAction & Command);
+    void ParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdParaffinBathStatus & Command);
+    void ProgramEndDateTimeHandler(Global::tRefType Ref, MsgClasses::CmdProgramEndDateTime & Command);
+    void RetortLockHandler(Global::tRefType Ref, MsgClasses::CmdRetortLock & Command);
+    void RetortLockStatusHandler(Global::tRefType Ref, MsgClasses::CmdRetortLockStatus & Command);
+    void RetortStatusHandler(Global::tRefType Ref, MsgClasses::CmdRetortStatus & Command);
+    void StationStatusHandler(Global::tRefType Ref, MsgClasses::CmdStationStatus & Command);
 
     void EventStringHandler(Global::tRefType ref, const NetCommands::CmdEventStrings &Command);
     void ReagentRemoveHandler(Global::tRefType Ref, const MsgClasses::CmdReagentRemove &Command);

@@ -28,7 +28,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    MainMenu::CMainWindow *p_Parent): MainMenu::CPanelFrame(p_Parent),
                                    mp_Ui(new Ui::CDashboardWidget),mp_MainWindow(p_Parent),
                                    mp_DataConnector(p_DataConnector),
-                                   m_Operation(Dashboard::OP_PLAY),
+                                   m_ProgramNextAction(DataManager::PROGRAM_START),
                                    m_UserRoleChanged(false)
 {
      mp_Ui->setupUi(GetContentFrame());
@@ -53,11 +53,13 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
      mp_MessageDlg = new MainMenu::CMessageDlg();
 
-     AddItemsToComboBox();
+     mp_ProgramList = mp_DataConnector->ProgramList;
+
+     //AddItemsToComboBox();
 
 
      CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
-     CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, currentIndexChanged(int), mp_Ui->pgmsComboBox, handleSelectionChanged(int));
+     CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, currentIndexChanged(int), this, OnSelectionChanged(int));
 
      CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
      CONNECTSIGNALSLOT(this, ProgramAction(const QString&, DataManager::ProgramActionType_t),
@@ -70,6 +72,7 @@ CDashboardWidget::~CDashboardWidget()
     try {
         delete mp_Separator;
         delete mp_DashboardScene;
+        delete mp_MessageDlg;
         delete mp_Ui;
     } catch(...) {
 
@@ -88,12 +91,29 @@ void CDashboardWidget::DrawSeparatorLine()
 
 void CDashboardWidget::AddItemsToComboBox()
 {
-    mp_Ui->pgmsComboBox->insertItem(0, QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png"), "LeicaPrgm1");
-    mp_Ui->pgmsComboBox->insertItem(1, QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png"), "LeicaPrgm2");
-    mp_Ui->pgmsComboBox->insertItem(2, QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png"), "LeicaPrgm3");
-    mp_Ui->pgmsComboBox->insertItem(3, QIcon(":/HimalayaImages/Icons/MISC/TickOk.png"), "UserPrgm1");
-    mp_Ui->pgmsComboBox->insertItem(4, QIcon(":/HimalayaImages/Icons/MISC/TickOk.png"), "UserPrgm2");
-    mp_Ui->pgmsComboBox->insertItem(5, QIcon(":/HimalayaImages/Icons/MISC/TickOk.png"), "UserPrgm3");
+    if(mp_ProgramList->GetNumberOfPrograms() != 0) {
+
+       for( int i = 0; i < 3; i++) {
+            QString ProgramId = mp_ProgramList->GetProgram(i)->GetID();
+           if(ProgramId.at(0) == 'L')
+               m_FavProgramList.push_front(ProgramId); // Insert at the front
+           else
+                m_FavProgramList.push_back(ProgramId);
+       }
+   }
+
+    for ( int i = 0; i < m_FavProgramList.count(); i++)
+    {
+        QString ProgramId = mp_ProgramList->GetProgram(i)->GetID();
+        QString ProgramName = mp_ProgramList->GetProgram(ProgramId)->GetName();
+        QIcon ProgramIcon;
+        if(ProgramId.at(0) == 'L') {
+            ProgramIcon = QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png");
+        } else {
+            ProgramIcon = QIcon(":/HimalayaImages/Icons/MISC/TickOk.png");
+        }
+        mp_Ui->pgmsComboBox->insertItem(i, ProgramIcon, ProgramName);
+    }
 }
 
 /****************************************************************************/
@@ -111,32 +131,37 @@ void CDashboardWidget::OnUserRoleChanged()
 void CDashboardWidget::OnButtonClicked(int whichBtn)
 {
     if ( whichBtn == Dashboard::firstButton ) {
-        switch(m_Operation)
+        switch(m_ProgramNextAction)
         {
-            case Dashboard::OP_PLAY:
+            case DataManager::PROGRAM_START:
             {
-                qDebug() << " I am at Play";
-                mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
-                m_Operation = Dashboard::OP_PAUSE;
-                CheckPreConditionsToRunProgram();
+                if (CheckPreConditionsToRunProgram()) {
+                    m_ProgramCurrentAction = DataManager::PROGRAM_START;
+                } else {
+                    // Take Necessary Action
+                }
             }
             break;
-            case Dashboard::OP_PAUSE:
+            case DataManager::PROGRAM_PAUSE:
             {
-                qDebug() << " I am at Pause";
+                if(CheckPreConditionsToPauseProgram())
+                {
+                    m_ProgramCurrentAction = DataManager::PROGRAM_PAUSE;
 
-                mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
-                m_Operation = Dashboard::OP_PLAY;
-                CheckPreConditionsToPauseProgram();
-
+                } else {
+                    // Take Necessary Action
+                }
             }
             break;
         }
     }
     else if (whichBtn == Dashboard::secondButton)
     {
-        qDebug() << " I am at Abort";
-        CheckPreConditionsToAbortProgram();
+
+        if(CheckPreConditionsToAbortProgram()) {
+            m_ProgramCurrentAction = DataManager::PROGRAM_ABORT;
+
+        }
     }
 
 }
@@ -146,8 +171,15 @@ void CDashboardWidget::OnRMSValueChanged(Global::RMSOptions_t state)
     m_RMSState = state;
 }
 
-void CDashboardWidget::CheckPreConditionsToRunProgram()
+void CDashboardWidget::OnSelectionChanged(int index)
 {
+    m_SelectedProgramId =  m_FavProgramList.at(index);
+    qDebug() << "Program Id =" <<m_SelectedProgramId;
+}
+
+bool CDashboardWidget::CheckPreConditionsToRunProgram()
+{
+
     if((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
         m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
             Global::RMS_OFF != m_RMSState)
@@ -156,59 +188,79 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         mp_MessageDlg->SetTitle(tr("Warning"));
         mp_MessageDlg->SetText(tr("Do you want to Start the Program with Expired Reagents."));
-        mp_MessageDlg->SetButtonText(3, tr("Yes"));
-        mp_MessageDlg->SetButtonText(2, tr("No"));
-        mp_MessageDlg->SetButtonText(1, tr("Cancel"));
+        mp_MessageDlg->SetButtonText(1, tr("OK"));
+        mp_MessageDlg->HideButtons();    // Hiding First Two Buttons in the Message Dialog
         mp_MessageDlg->Show();
-        CONNECTSIGNALSLOT(mp_MessageDlg, ButtonLeftClicked(), this, OnPressYes());
-        CONNECTSIGNALSLOT(mp_MessageDlg, ButtonCenterClicked(), this, OnPressNo());
-        CONNECTSIGNALSLOT(mp_MessageDlg, ButtonRightClicked(), this, OnPressCancel());
+        CONNECTSIGNALSLOT(mp_MessageDlg, ButtonRightClicked(), this, OnProgramStartConfirmation());
+        return true;
 
     }
 
-}
+    return false;
 
-void CDashboardWidget::CheckPreConditionsToPauseProgram()
-{
-
-}
-
-
-void CDashboardWidget::CheckPreConditionsToAbortProgram()
-{
 
 }
 
-void CDashboardWidget::RunProgram()
+bool CDashboardWidget::CheckPreConditionsToPauseProgram()
 {
-    // Send command to Master
+    return false;
+
+}
+
+
+bool CDashboardWidget::CheckPreConditionsToAbortProgram()
+{
+    return false;
+
+}
+
+void CDashboardWidget::PlayProgram()
+{
+    qDebug() << "Playing The Program";
+    // To Do
+    // Do Animation
+
 }
 
 void CDashboardWidget::PauseProgram()
 {
-    // Send command to Master
+    // To Do
+    // Take Necessary Action When Program is Paused
 }
 
 void CDashboardWidget::AbortProgram()
 {
-    // Send command to Master
+    // To Do
+    // Take Necessary Action When Program is Stoped/Aborted
 }
 
-void CDashboardWidget::OnPressYes()
+void CDashboardWidget::OnProgramStartConfirmation()
 {
-    qDebug() << " Start the Program"; // to do
-    QString ProgID;
-    emit ProgramAction(ProgID, DataManager::PROGRAM_START);
+    qDebug() << " On Confirmation";
+    // Send Command to Master
+    mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction);
+
 }
 
-void CDashboardWidget::OnPressNo()
+void CDashboardWidget::OnProgramActionStarted(DataManager::ProgramActionType_t ActionType)
 {
-    qDebug() << " On NO "; // to do
-}
+    switch(ActionType)
+    {
+    case DataManager::PROGRAM_START:
+        mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
+        m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
+        PlayProgram();
+        break;
+    case DataManager::PROGRAM_PAUSE:
+        mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
+        m_ProgramNextAction = DataManager::PROGRAM_START;
+        PauseProgram();
+        break;
+    case DataManager::PROGRAM_ABORT:
+        m_ProgramNextAction = DataManager::PROGRAM_START;
+        AbortProgram();
 
-void CDashboardWidget::OnPressCancel()
-{
-    qDebug() << " On Cancel"; // to do
+    }
 }
 
 } // End of namespace Dashboard
