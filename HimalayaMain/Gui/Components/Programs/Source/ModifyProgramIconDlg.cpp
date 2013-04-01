@@ -66,6 +66,7 @@ CModifyProgramIconDlg::CModifyProgramIconDlg(QWidget *p_Parent, MainMenu::CMainW
 //    m_ProgramIconModel.setHorizontalHeaderItem(0, new QStandardItem(tr("Icon")));
     // Connecting Signal and Slots
 //    CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(&m_ButtonGroup, buttonClicked(int), this, OnIconGroup(int));
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
 
@@ -75,6 +76,30 @@ CModifyProgramIconDlg::CModifyProgramIconDlg(QWidget *p_Parent, MainMenu::CMainW
     m_MessageDlg.HideButtons();
 }
 
+/****************************************************************************/
+/*!
+ *  \brief Constructor
+ *
+ *  \Function to create Map of PushButton and Creation of Button Group.
+ */
+/****************************************************************************/
+void CModifyProgramIconDlg ::SetButtonGroup()
+{
+        m_ButtonGroup.addButton(mp_Ui->IconButton_1, 0);
+        m_ButtonGroup.addButton(mp_Ui->IconButton_2, 1);
+        m_ButtonGroup.addButton(mp_Ui->IconButton_3, 2);
+        m_ButtonGroup.addButton(mp_Ui->IconButton_4, 3);
+        m_ButtonGroup.addButton(mp_Ui->IconButton_5, 4);
+        m_ButtonGroup.addButton(mp_Ui->IconButton_6, 5);
+
+        m_QPushButtonMap[0] = mp_Ui->IconButton_1;
+        m_QPushButtonMap[1] = mp_Ui->IconButton_2;
+        m_QPushButtonMap[2] = mp_Ui->IconButton_3;
+        m_QPushButtonMap[3] = mp_Ui->IconButton_4;
+        m_QPushButtonMap[4] = mp_Ui->IconButton_5;
+        m_QPushButtonMap[5] = mp_Ui->IconButton_6;
+
+}
 /****************************************************************************/
 /*!
      *  \brief Destructor
@@ -143,6 +168,17 @@ void CModifyProgramIconDlg::OnOk()
 }
 /****************************************************************************/
 /*!
+ *  \brief Selects the Icon in the Widget
+ */
+/****************************************************************************/
+ void CModifyProgramIconDlg::OnIconGroup(int Id)
+ {
+     mp_Ui->btnOk->setEnabled(true);
+     m_Program.SetIcon(m_IconName.value(Id));
+ }
+
+/****************************************************************************/
+/*!
  *  \brief This slot is called when Process state changes
  */
 /****************************************************************************/
@@ -160,26 +196,6 @@ void CModifyProgramIconDlg::OnProcessStateChanged()
         mp_Ui->btnCancel->setText(tr("Close"));
     }
 }
-
-/****************************************************************************/
-/**
- * \brief Add empty rows in the model
- */
-/****************************************************************************/
-//void CModifyProgramIconDlg::AddEmptyRows()
-//{
-//    if (m_ProgramIconModel.rowCount() < 9) {
-//        // display all the file names
-//        for (qint32 RowCount = m_ProgramIconModel.rowCount(); RowCount < 8; RowCount++) {
-//            QStandardItem *p_Item = new QStandardItem();
-//            p_Item->setSelectable(false);
-//            // append the row in tables
-//            m_ProgramIconModel.appendRow(p_Item);
-//            QPalette Palette;
-//            m_ProgramIconModel.setData(m_ProgramIconModel.index(RowCount, 0), Palette.color(QPalette::Window), Qt::BackgroundColorRole);
-//        }
-//    }
-//}
 
 /****************************************************************************/
 ///*!

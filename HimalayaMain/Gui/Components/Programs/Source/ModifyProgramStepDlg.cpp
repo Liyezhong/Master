@@ -37,6 +37,14 @@ const QString OVEN_STEP_ID = "S4";               //!< Oven station id
 const QString DISTILLED_WATER_STEP_ID = "S6";    //!< DI water id
 const QString TAP_WATER_STEP_ID = "S5";          //!< TAP water id
 const QString UNLOADER_STEP_ID = "S7";           //!< Unloader id
+//! Minimal scroll wheel temperature in degree Celsius
+#define MIN_CENTIGRADE_TEMP   35
+//! Maximal scroll wheel temperature in degree Celsius
+#define MAX_CENTIGRADE_TEMP   75
+//! Minimal scroll wheel temperature in degree Fahrenheit
+#define MIN_FARENHEIT_TEMP    104
+//! Maximal scroll wheel temperature in degree Fahrenheit
+#define MAX_FARENHEIT_TEMP    158
 
 /****************************************************************************/
 /*!
@@ -46,40 +54,51 @@ const QString UNLOADER_STEP_ID = "S7";           //!< Unloader id
  *  \iparam p_MainWindow = MainWindow widget
  */
 /****************************************************************************/
-CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow) :
+CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector) :
                                             MainMenu::CDialogFrame(p_Parent),
                                             mp_Ui(new Ui::CModifyProgramStepDlg), mp_TableWidget(NULL),
                                             mp_ScrollWheelHour(NULL), mp_ScrollWheelMin(NULL),
-                                            mp_ScrollWheelSec(NULL), mp_MessageBox(new MainMenu::CMessageDlg),
+                                            mp_ScrollWheelTemp(NULL), mp_MessageBox(new MainMenu::CMessageDlg),
                                             mp_MainWindow(p_MainWindow), mp_ProgramStep(NULL),
                                             mp_ReagentList(NULL), m_RowSelected(-1),
                                             m_RowNotSelected(true), m_NewProgramStep(false),
                                             m_ProcessRunning(false), m_ReagentExists(true),
-                                            m_DeviceMode("")
+                                            m_DeviceMode(""),mp_UserSettings(NULL),mp_DataConnector(p_DataConnector)
 {
     mp_Ui->setupUi(GetContentFrame());
     mp_TableWidget = new MainMenu::CBaseTable;
+    mp_TableWidget->setModel(&m_ReagentEditModel);
+
     mp_TableWidget->horizontalHeader()->show();
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
-    mp_TableWidget->SetVisibleRows(7);
-    mp_ProgramStep = new DataManager::CProgramStep;
+    mp_TableWidget->SetVisibleRows(8);
+
+    mp_ProgramStep =     new DataManager::CProgramStep;
     mp_ScrollWheelHour = new MainMenu::CScrollWheel();
-    mp_ScrollWheelMin = new MainMenu::CScrollWheel();
-    mp_ScrollWheelSec = new MainMenu::CScrollWheel();
+    mp_ScrollWheelMin =  new MainMenu::CScrollWheel();
+    mp_ScrollWheelTemp = new MainMenu ::CScrollWheel();
+    mp_UserSettings = new  DataManager::CUserSettings();
+    mp_Program = new DataManager::CProgram();
+
+    mp_TableWidget->SetVisibleRows(8);
+    m_ReagentEditModel.SetVisibleRowCount(8);
+    m_ReagentEditModel.SetRequiredContainers(mp_DataConnector->ReagentList,mp_DataConnector->ReagentGroupList,mp_DataConnector->DashboardStationList, 2);
 
     InitDurationWidget();
+    InitTemperatureWidget();
 
     m_ButtonGroup.addButton(mp_Ui->radioButton_0, 0);
     m_ButtonGroup.addButton(mp_Ui->radioButton_25, 1);
     m_ButtonGroup.addButton(mp_Ui->radioButton_50, 2);
     m_ButtonGroup.addButton(mp_Ui->radioButton_75, 3);
-//    m_ButtonGroup.addButton(mp_Ui->radioButton_100, 4);
 
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
     CONNECTSIGNALSLOT(mp_TableWidget,clicked(QModelIndex), this, OnSelectionChanged(QModelIndex));
     CONNECTSIGNALSLOT(p_Parent, ReagentsUpdated(), this, ReagentTableUpdate());
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(mp_TableWidget,clicked(QModelIndex), this, OnSelectionChanged(QModelIndex));
+
 }
 
 /****************************************************************************/
@@ -92,8 +111,10 @@ CModifyProgramStepDlg::~CModifyProgramStepDlg()
     try {
         delete mp_ScrollWheelHour;
         delete mp_ScrollWheelMin;
-        delete mp_ScrollWheelSec;
+        delete mp_ScrollWheelTemp;
         delete mp_TableWidget;
+        delete mp_Program;
+        delete mp_DataConnector;
         delete mp_Ui;
     }
     catch (...) {
@@ -108,10 +129,8 @@ CModifyProgramStepDlg::~CModifyProgramStepDlg()
 /****************************************************************************/
 void CModifyProgramStepDlg::ResizeHorizontalSection()
 {
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 185);
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 90);
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 50);
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 30);
+    mp_TableWidget->horizontalHeader()->resizeSection(0, 134);
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 165);
 }
 
 /****************************************************************************/
@@ -121,7 +140,7 @@ void CModifyProgramStepDlg::ResizeHorizontalSection()
 /****************************************************************************/
 void CModifyProgramStepDlg::InitDurationWidget()
 {
-    for (int HourItemCnt = 0; HourItemCnt <= 23; HourItemCnt++) {
+    for (int HourItemCnt = 0; HourItemCnt <= 99; HourItemCnt++) {
         mp_ScrollWheelHour->AddItem(QString("%1").arg(HourItemCnt, 2, 10, QChar('0')), HourItemCnt);
     }
 
@@ -129,21 +148,45 @@ void CModifyProgramStepDlg::InitDurationWidget()
         mp_ScrollWheelMin->AddItem(QString("%1").arg(MinItemCnt, 2, 10, QChar('0')), MinItemCnt);
     }
 
-//    for (int SecItemCnt = 0; SecItemCnt <= 59; SecItemCnt++) {
-//        mp_ScrollWheelSec->AddItem(QString("%1").arg(SecItemCnt, 2, 10, QChar('0')), SecItemCnt);
-//    }
-    mp_Ui->scrollPanelWidget->Init(2);
-    mp_Ui->scrollPanelWidget->SetTitle(tr("Duration"));
-    mp_Ui->scrollPanelWidget->AddScrollWheel(mp_ScrollWheelHour, 0);
-    mp_Ui->scrollPanelWidget->SetSubtitle("Hour", 0);
-    mp_Ui->scrollPanelWidget->AddSeparator(MainMenu::CWheelPanel::COLON, 0);
-    mp_Ui->scrollPanelWidget->AddScrollWheel(mp_ScrollWheelMin, 1);
-    mp_Ui->scrollPanelWidget->SetSubtitle("Minute", 1);
-//    mp_Ui->scrollPanelWidget->AddSeparator(MainMenu::CWheelPanel::COLON, 1);
-//    mp_Ui->scrollPanelWidget->AddScrollWheel(mp_ScrollWheelSec, 2);
-//    mp_Ui->scrollPanelWidget->SetSubtitle("ss", 2);
-}
+    mp_Ui->scrollPanelWidgetTime->Init(2);
+    mp_Ui->scrollPanelWidgetTime->SetTitle(tr("Time"));
+    mp_Ui->scrollPanelWidgetTime->AddScrollWheel(mp_ScrollWheelHour, 0);
+    mp_Ui->scrollPanelWidgetTime->SetSubtitle(tr("Hour"), 0);
+    mp_Ui->scrollPanelWidgetTime->AddSeparator(MainMenu::CWheelPanel::COLON, 0);
+    mp_Ui->scrollPanelWidgetTime->AddScrollWheel(mp_ScrollWheelMin, 1);
+    mp_Ui->scrollPanelWidgetTime->SetSubtitle(tr("Minute"), 1);
 
+}
+/****************************************************************************/
+/*!
+ *  \brief Initializes the temperature scroll wheel
+ */
+/****************************************************************************/
+void CModifyProgramStepDlg::InitTemperatureWidget()
+{
+    mp_Ui->scrollPanelWidgetTemperature->Init(1);
+    mp_Ui->scrollPanelWidgetTemperature->AddScrollWheel(mp_ScrollWheelTemp, 0);
+    if (!mp_UserSettings) {
+        return;
+    }
+    mp_ScrollWheelTemp->ClearItems();
+
+    // Temperature Control
+    if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
+        for (int i = MIN_CENTIGRADE_TEMP; i <= MAX_CENTIGRADE_TEMP; i += 5) {
+            mp_ScrollWheelTemp->AddItem(QString::number(i).rightJustified(2, '0'), i);
+        }
+        mp_Ui->scrollPanelWidgetTemperature->SetSubtitle(QApplication::translate("CModifyProgramStepDlg", "\302\260C", 0, QApplication::UnicodeUTF8), 0);
+    }
+    else {
+        for (int i = MIN_FARENHEIT_TEMP; i <= MAX_FARENHEIT_TEMP; i += 9) {
+            mp_ScrollWheelTemp->AddItem(QString::number(i).rightJustified(2, '0'), i);
+        }
+        mp_Ui->scrollPanelWidgetTemperature->SetSubtitle(QApplication::translate("CModifyProgramStepDlg", "\302\260F", 0, QApplication::UnicodeUTF8), 0);
+    }
+
+    mp_ScrollWheelTemp->SetNonContinuous();
+}
 /****************************************************************************/
 /*!
  *  \brief Sets the data displayed in the dialog
@@ -156,54 +199,38 @@ void CModifyProgramStepDlg::InitDurationWidget()
 void CModifyProgramStepDlg::SetProgramStep(DataManager::CProgramStep *p_ProgramStep, DataManager::CDataReagentList *p_ReagentList)
 
 {
-    qint32 Percent;
+
+    m_ReagentEditModel.UpdateReagentList();
+   qint32 Percent;
     QTime Duration;
     mp_ProgramStep = p_ProgramStep;
     mp_ReagentList = p_ReagentList;
 //    mp_DashboardStationList = p_DashboardStationList;
-
-  /* //vinay Percent = mp_ProgramStep->GetMaxDurationInPercent() / 25;
-    if (Percent > 4) {
-        Percent = 4;
-    }*/
-    m_ButtonGroup.button(Percent)->setChecked(true);
-
-//    mp_Ui->checkBoxExclusive->setChecked(mp_ProgramStep->GetExclusive());
-//    mp_Ui->checkBoxShow->setChecked(false);
+//    m_ButtonGroup.button(Percent)->setChecked(true);
 
  //vinay   Duration = Duration.addSecs(mp_ProgramStep->GetMinDurationInSeconds());
     mp_ScrollWheelHour->SetCurrentData(Duration.hour());
     mp_ScrollWheelMin->SetCurrentData(Duration.minute());
-    mp_ScrollWheelSec->SetCurrentData(Duration.second());
-
+    if (m_UserSettingsTemp.GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT) {
+        qint32 TemperatureCelsius = ((mp_ScrollWheelTemp->GetCurrentData().toInt() - 32) * 5) / 9;
+    }
+    mp_ScrollWheelTemp->SetCurrentData(tr("%1").arg((((mp_UserSettings->GetValue("Oven_Temp").toInt() - 40) / 5) * 9) + 104));
     m_ReagentModel.FilterLeicaReagents(true);
     m_ReagentModel.SetUserSettings(&m_UserSettings);
-    m_ReagentModel.SetReagentList(mp_ReagentList, 4);
+    //m_ReagentModel.SetReagentList(mp_ReagentList,2 );
     m_ReagentModel.OnDeviceModeChanged(m_DeviceMode);
     m_ReagentModel.SetParentPtr(this);
-    mp_TableWidget->setModel(&m_ReagentModel);
+    //mp_TableWidget->setModel(&m_ReagentModel);
 
-    DataManager::CReagent Reagent;
-    if ((mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID(), Reagent) == true)
-            && (m_ReagentModel.rowCount(QModelIndex()) > 0)) {
-        if (m_ReagentModel.ContainsReagent(Reagent.GetReagentID())) {
-            mp_TableWidget->selectRow(m_ReagentModel.GetReagentPosition(Reagent.GetReagentName()));
+    const DataManager::CReagent *Reagent = mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID());
+
+    if ((Reagent!=NULL) && (m_ReagentModel.rowCount(QModelIndex()) > 0)) {
+        if (m_ReagentModel.ContainsReagent(Reagent->GetReagentID())) {
+            mp_TableWidget->selectRow(m_ReagentModel.GetReagentPosition(Reagent->GetReagentName()));
             m_ReagentExists = true;
         }
-        if (Reagent.GetReagentID() == TRANSFER_STEP_ID || Reagent.GetReagentID() == UNLOADER_STEP_ID) {
-            mp_Ui->scrollPanelWidget->setEnabled(false);
-            mp_Ui->radioButton_0->setEnabled(false);
-            mp_Ui->radioButton_25->setEnabled(false);
-            mp_Ui->radioButton_50->setEnabled(false);
-            mp_Ui->radioButton_75->setEnabled(false);
-//            mp_Ui->checkBoxExclusive->setEnabled(false);
-        }
-//        else if (Reagent.GetReagentID() == OVEN_STEP_ID || Reagent.GetReagentID() == DISTILLED_WATER_STEP_ID ||
-//                 Reagent.GetReagentID() == TAP_WATER_STEP_ID) {
-//            mp_Ui->checkBoxExclusive->setEnabled(false);
-//        }
     }
-    m_ReagentModel.SetCurrentReagent(Reagent.GetReagentName());
+    m_ReagentModel.SetCurrentReagent(Reagent->GetReagentName());
     ResizeHorizontalSection();
     m_NewProgramStep = false;
 }
@@ -218,30 +245,28 @@ void CModifyProgramStepDlg::SetProgramStep(DataManager::CProgramStep *p_ProgramS
 /****************************************************************************/
 void CModifyProgramStepDlg::NewProgramStep(DataManager::CDataReagentList *p_ReagentList)
 {
-    QTime Duration;
-    mp_ProgramStep = NULL;
-    mp_ReagentList = p_ReagentList;
+
+    m_ReagentEditModel.UpdateReagentList();
+//    QTime Duration;
+//    mp_ProgramStep = NULL;
+//    mp_ReagentList = p_ReagentList;
 //    mp_DashboardStationList = p_StationList;
 
-    mp_Ui->radioButton_50->setChecked(true);
-//    mp_Ui->checkBoxExclusive->setChecked(false);
-//    mp_Ui->checkBoxShow->setChecked(false);
+//    mp_Ui->radioButton_50->setChecked(true);
 
-    Duration = Duration.addSecs(0);
-    mp_ScrollWheelHour->SetCurrentData(Duration.hour());
-    mp_ScrollWheelMin->SetCurrentData(Duration.minute());
-    mp_ScrollWheelSec->SetCurrentData(Duration.second());
+//    Duration = Duration.addSecs(0);
+//    mp_ScrollWheelHour->SetCurrentData(Duration.hour());
+//    mp_ScrollWheelMin->SetCurrentData(Duration.minute());
 
-    m_ReagentModel.FilterLeicaReagents(true);
-    m_ReagentModel.HideSpecialReagents(false);
-    m_ReagentModel.OnDeviceModeChanged(m_DeviceMode);
-    m_ReagentModel.SetUserSettings(&m_UserSettings);
-    m_ReagentModel.SetReagentList(mp_ReagentList, 4);
-    m_ReagentModel.SetParentPtr(this);
-    mp_TableWidget->setModel(&m_ReagentModel);
-    ResizeHorizontalSection();
-    m_NewProgramStep = true;
-    m_ReagentExists = true;
+//    m_ReagentModel.FilterLeicaReagents(true);
+//    m_ReagentModel.OnDeviceModeChanged(m_DeviceMode);
+//    m_ReagentModel.SetUserSettings(&m_UserSettings);
+//    m_ReagentModel.SetReagentList(mp_ReagentList, 4);
+//    m_ReagentModel.SetParentPtr(this);
+//    mp_TableWidget->setModel(&m_ReagentModel);
+//    ResizeHorizontalSection();
+//    m_NewProgramStep = true;
+//    m_ReagentExists = true;
 }
 
 /****************************************************************************/
@@ -298,7 +323,6 @@ void CModifyProgramStepDlg::OnOk()
     if(m_ReagentExists) {
         MinDurationInSec = mp_ScrollWheelHour->GetCurrentData().toInt()*60*60;
         MinDurationInSec+= mp_ScrollWheelMin->GetCurrentData().toInt()*60;
-        MinDurationInSec+= mp_ScrollWheelSec->GetCurrentData().toInt();
 
         QString MaxDurationValueInPercent;
         if (mp_Ui->radioButton_0->isChecked()) {
@@ -406,46 +430,46 @@ void CModifyProgramStepDlg::ReagentTableUpdate()
 void CModifyProgramStepDlg::OnSelectionChanged(QModelIndex Index)
 {
     if (Index.isValid() && (!m_ProcessRunning)) {
-        QString ReagentLongName = m_ReagentModel.GetReagentLongName(Index.row());
-        QString ReagentId = m_ReagentModel.GetReagentID(ReagentLongName);
+        QString ReagentLongName = m_ReagentEditModel.GetReagentLongName(Index.row());
+        QString ReagentGroup = m_ReagentEditModel.GetReagentID(ReagentLongName);
         if (!ReagentLongName.isEmpty()) {
             m_ReagentModel.SetCurrentReagent(ReagentLongName);
             m_RowNotSelected = false;
 //            mp_Ui->checkBoxExclusive->setChecked(false);
-            if (ReagentId == TRANSFER_STEP_ID || ReagentId == UNLOADER_STEP_ID) {
-                QTime Duration;
-                Duration = Duration.addSecs(0);
-                mp_ScrollWheelHour->SetCurrentData(Duration.hour());
-                mp_ScrollWheelMin->SetCurrentData(Duration.minute());
-                mp_ScrollWheelSec->SetCurrentData(Duration.second());
-                mp_Ui->scrollPanelWidget->SetDisabled(true);
-                mp_Ui->radioButton_0->setChecked(false);
-                mp_Ui->radioButton_25->setChecked(false);
-                mp_Ui->radioButton_50->setChecked(false);
-                mp_Ui->radioButton_75->setChecked(false);
+//            if (ReagentId == TRANSFER_STEP_ID || ReagentId == UNLOADER_STEP_ID) {
+//                QTime Duration;
+//                Duration = Duration.addSecs(0);
+//                mp_ScrollWheelHour->SetCurrentData(Duration.hour());
+//                mp_ScrollWheelMin->SetCurrentData(Duration.minute());
+//                mp_ScrollWheelSec->SetCurrentData(Duration.second());
+//                mp_Ui->scrollPanelWidgetTime->SetDisabled(true);
+//                mp_Ui->radioButton_0->setChecked(false);
+//                mp_Ui->radioButton_25->setChecked(false);
+//                mp_Ui->radioButton_50->setChecked(false);
+//                mp_Ui->radioButton_75->setChecked(false);
 
-                mp_Ui->radioButton_25->setEnabled(false);
-                mp_Ui->radioButton_50->setEnabled(false);
-                mp_Ui->radioButton_75->setEnabled(false);
-//                mp_Ui->checkBoxExclusive->setEnabled(false);
-            }
-            else if (ReagentId == OVEN_STEP_ID || ReagentId == DISTILLED_WATER_STEP_ID||
-                     ReagentLongName == TAP_WATER_STEP_ID) {
-//                mp_Ui->checkBoxExclusive->setEnabled(false);
-                mp_Ui->scrollPanelWidget->SetDisabled(false);
-                mp_Ui->radioButton_0->setEnabled(true);
-                mp_Ui->radioButton_25->setEnabled(true);
-                mp_Ui->radioButton_50->setEnabled(true);
-                mp_Ui->radioButton_75->setEnabled(true);
-            }
-            else {
-                mp_Ui->scrollPanelWidget->SetDisabled(false);
-                mp_Ui->radioButton_0->setEnabled(true);
-                mp_Ui->radioButton_25->setEnabled(true);
-                mp_Ui->radioButton_50->setEnabled(true);
-                mp_Ui->radioButton_75->setEnabled(true);
-//                mp_Ui->checkBoxExclusive->setEnabled(true);
-            }
+//                mp_Ui->radioButton_25->setEnabled(false);
+//                mp_Ui->radioButton_50->setEnabled(false);
+//                mp_Ui->radioButton_75->setEnabled(false);
+////                mp_Ui->checkBoxExclusive->setEnabled(false);
+//            }
+//            else if (ReagentId == OVEN_STEP_ID || ReagentId == DISTILLED_WATER_STEP_ID||
+//                     ReagentLongName == TAP_WATER_STEP_ID) {
+////                mp_Ui->checkBoxExclusive->setEnabled(false);
+//                mp_Ui->scrollPanelWidgetTime->SetDisabled(false);
+//                mp_Ui->radioButton_0->setEnabled(true);
+//                mp_Ui->radioButton_25->setEnabled(true);
+//                mp_Ui->radioButton_50->setEnabled(true);
+//                mp_Ui->radioButton_75->setEnabled(true);
+//            }
+//            else {
+//                mp_Ui->scrollPanelWidget->SetDisabled(false);
+//                mp_Ui->radioButton_0->setEnabled(true);
+//                mp_Ui->radioButton_25->setEnabled(true);
+//                mp_Ui->radioButton_50->setEnabled(true);
+//                mp_Ui->radioButton_75->setEnabled(true);
+////                mp_Ui->checkBoxExclusive->setEnabled(true);
+//            }
             mp_Ui->btnOk->setEnabled(true);
         }
     }
@@ -502,30 +526,13 @@ void CModifyProgramStepDlg::showEvent(QShowEvent *p_Event)
             DataManager::CReagent Reagent;
             if ((mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID(), Reagent) == true)
                     && (m_ReagentModel.rowCount(QModelIndex()) > 0)) {
-                if (Reagent.GetReagentID() == TRANSFER_STEP_ID || Reagent.GetReagentID() == UNLOADER_STEP_ID) {
-                    mp_Ui->scrollPanelWidget->SetDisabled(true);
-                    mp_Ui->radioButton_0->setEnabled(false);
-                    mp_Ui->radioButton_25->setEnabled(false);
-                    mp_Ui->radioButton_50->setEnabled(false);
-                    mp_Ui->radioButton_75->setEnabled(false);
-//                    mp_Ui->checkBoxExclusive->setEnabled(false);
-                }
-                else if (Reagent.GetReagentID() == OVEN_STEP_ID || Reagent.GetReagentID() == DISTILLED_WATER_STEP_ID ||
-                         Reagent.GetReagentID() == TAP_WATER_STEP_ID) {
-//                    mp_Ui->checkBoxExclusive->setEnabled(false);
+
+                    mp_Ui->scrollPanelWidgetTime->SetDisabled(false);
+                    mp_Ui->scrollPanelWidgetTemperature->SetDisabled(false);
                     mp_Ui->radioButton_0->setEnabled(true);
                     mp_Ui->radioButton_25->setEnabled(true);
                     mp_Ui->radioButton_50->setEnabled(true);
                     mp_Ui->radioButton_75->setEnabled(true);
-                }
-                else {
-                    mp_Ui->scrollPanelWidget->SetDisabled(false);
-                    mp_Ui->radioButton_0->setEnabled(true);
-                    mp_Ui->radioButton_25->setEnabled(true);
-                    mp_Ui->radioButton_50->setEnabled(true);
-                    mp_Ui->radioButton_75->setEnabled(true);
-//                    mp_Ui->checkBoxExclusive->setEnabled(true);
-                }
             }
         }
     }
@@ -534,15 +541,14 @@ void CModifyProgramStepDlg::showEvent(QShowEvent *p_Event)
         mp_Ui->btnOk->setEnabled(false);
         mp_TableWidget->clearSelection();
         mp_Ui->scrollTable->Reset();
-        mp_Ui->scrollPanelWidget->SetDisabled(false);
+        mp_Ui->scrollPanelWidgetTime->SetDisabled(false);
+        mp_Ui->scrollPanelWidgetTemperature->SetDisabled(false);
         mp_Ui->radioButton_0->setEnabled(true);
         mp_Ui->radioButton_25->setEnabled(true);
         mp_Ui->radioButton_50->setEnabled(true);
         mp_Ui->radioButton_75->setEnabled(true);
         mp_Ui->radioButton_50->setChecked(true);
-//        mp_Ui->checkBoxExclusive->setEnabled(true);
     }
-
 }
 
 /****************************************************************************/
@@ -602,10 +608,11 @@ void CModifyProgramStepDlg::ShowSelectReagentPopup()
 /****************************************************************************/
 void CModifyProgramStepDlg::ResetButtons(bool Disable)
 {
-//    mp_Ui->checkBoxExclusive->setEnabled(Disable);
     mp_Ui->groupBox->setEnabled(Disable);
     mp_Ui->scrollTable->setEnabled(Disable);
-    mp_Ui->scrollPanelWidget->SetDisabled(!Disable);
+    mp_Ui->scrollPanelWidgetTime->SetDisabled(!Disable);
+    mp_Ui->scrollPanelWidgetTemperature->SetDisabled(!Disable);
+
 }
 /****************************************************************************/
 /*!
@@ -620,9 +627,10 @@ void CModifyProgramStepDlg::RetranslateUI()
                                             "Information Message", 0, QApplication::UnicodeUTF8));
     mp_MessageBox->SetText(QApplication::translate("Programs::CModifyProgramStepDlg",
                             "Please select a reagent from the list", 0, QApplication::UnicodeUTF8));
-    mp_Ui->scrollPanelWidget->SetTitle(QApplication::translate("Programs::CModifyProgramStepDlg",
+    mp_Ui->scrollPanelWidgetTime->SetTitle(QApplication::translate("Programs::CModifyProgramStepDlg",
                                             "Duration", 0, QApplication::UnicodeUTF8));
-
+    mp_Ui->scrollPanelWidgetTemperature->SetTitle(QApplication::translate("Programs::CModifyProgramStepDlg",
+                                            "Temp", 0, QApplication::UnicodeUTF8));
     // Added void to please lint
     (void) m_ReagentModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                         "Program Name", 0, QApplication::UnicodeUTF8),0);

@@ -70,14 +70,10 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
     mp_TableWidget->SetVisibleRows(6);
   
-    mp_ModifyProgStepDlg = new Programs::CModifyProgramStepDlg(this, p_MainWindow);
+    mp_ModifyProgStepDlg = new Programs::CModifyProgramStepDlg(this, p_MainWindow, p_DataConnector);
     mp_ModifyProgStepDlg->setModal(true);
     mp_ModifyProgStepDlg->SetUserSettings(mp_DataConnector->SettingsInterface->GetUserSettings());
 
-    mp_DlgRackGripColor = new CRackGripColorDlg(this,p_MainWindow);
-    mp_DlgRackGripColor->setModal(true);
-
-//    CONNECTSIGNALSLOT(mp_Ui->btnColor, clicked(), this, OnColor());
     CONNECTSIGNALSLOT(mp_Ui->btnEdit, clicked(), this, OnEdit());
     CONNECTSIGNALSLOT(mp_Ui->btnNew, clicked(), this, OnNew());
     CONNECTSIGNALSLOT(mp_Ui->btnCopy, clicked(), this, OnCopy());
@@ -93,16 +89,7 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
 
     CONNECTSIGNALSLOT(mp_ModifyProgStepDlg, AddProgramStep(DataManager::CProgramStep*,bool),
                       this, UpdateProgramStepTable(DataManager::CProgramStep*,bool));
-    CONNECTSIGNALSIGNAL(mp_DlgRackGripColor, UpdateProgram(DataManager::CProgram &),
-                        this, UpdateProgram(DataManager::CProgram &));
-    CONNECTSIGNALSLOT(mp_DlgRackGripColor, UpdateProgramColor(DataManager::CProgram &,bool),
-                      this,OnUpdateProgramColor(DataManager::CProgram &,bool));
 
-//    CONNECTSIGNALSLOT(mp_Ui->groupBox, OnEndButtonClicked(), this, OnEndButtonClicked());
-//    CONNECTSIGNALSLOT(mp_Ui->groupBox, OnUpButtonClicked(), this, OnUpButtonClicked());
-//    CONNECTSIGNALSLOT(mp_Ui->groupBox, OnDownButtonClicked(), this, OnDownButtonClicked());
-
-//    m_StepModel.ConnectTableMoving(mp_Ui->groupBox);
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     OnProcessStateChanged();   
 }
@@ -115,7 +102,6 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
 CModifyProgramDlg::~CModifyProgramDlg()
 {
     try {
-        delete mp_DlgRackGripColor;
         delete mp_ModifyProgStepDlg;
         delete mp_TableWidget;
         delete mp_Ui;
@@ -194,17 +180,15 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
 
     if (m_ButtonType == EDIT_BTN_CLICKED) {
         mp_Ui->btnPrgName->setText(tr("%1").arg(LongName));
-//        mp_Ui->btnPrgIcon->setText(tr("%1").arg(m_Program.GetShortName()));
-//        mp_Ui->btnColor->SetColor(m_Program.GetColor());
-//        mp_Ui->btnColor->setEnabled(false);
         // Pass a value same as the one passed to SetVisibleRows()
-
         if (mp_Program->GetID().at(0) != 'L') {
-            mp_Ui->btnPrgIcon->setStyleSheet(QString::fromUtf8("border-image: url(:/HimalayaImages/Icons/MISC/Icon_Leica.png);background-color:black;"));
+
+            mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/Status_Bar/RemoteCare_small.png"));
+
         }
         else
         {
-            mp_Ui->btnPrgIcon->setStyleSheet(QString::fromUtf8("border-image: url(:/HimalayaImages/Icons/MISC/Icon_Leica.png);background-color:black;"));
+            mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png"));
 
         }
         m_StepModel.SetVisibleRowCount(6);
@@ -254,8 +238,6 @@ void CModifyProgramDlg::NewProgram()
     m_StepModel.SetModifyProgramDlgPtr(this);
     ResizeHorizontalSection();
     mp_Ui->btnPrgName->setText("--");
-//    mp_Ui->btnPrgIcon->setText("--");
-//vinay      mp_NewProgram->SetColor("white");
     mp_Ui->label_3->setText(tr("Program not ready to start"));
 }
 
@@ -367,10 +349,10 @@ void CModifyProgramDlg::OnEdit()
 {
     mp_ModifyProgStepDlg->SetDialogTitle(tr("Edit Program Step"));
     mp_ModifyProgStepDlg->SetDeviceMode(m_DeviceMode);
-//    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep(), mp_DataConnector->ReagentList);
+    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep(), mp_DataConnector->ReagentList);
     mp_ModifyProgStepDlg ->SetButtonType(EDIT_BTN_CLICKED);
     mp_ModifyProgStepDlg->move(80,50);
-//     mp_ModifyProgStepDlg->ShowSelectReagentPopup();
+//    mp_ModifyProgStepDlg->ShowSelectReagentPopup();
     mp_ModifyProgStepDlg->show();
 }
 
@@ -383,7 +365,7 @@ void CModifyProgramDlg::OnNew()
 {
     mp_ModifyProgStepDlg->SetDialogTitle(tr("New Program Step"));
     mp_ModifyProgStepDlg->SetDeviceMode(m_DeviceMode);
-//    mp_ModifyProgStepDlg->NewProgramStep(mp_DataConnector->ReagentList);
+    mp_ModifyProgStepDlg->NewProgramStep(mp_DataConnector->ReagentList);
     mp_ModifyProgStepDlg ->SetButtonType(NEW_BTN_CLICKED);
     mp_ModifyProgStepDlg->move(80,50);
     mp_ModifyProgStepDlg->show();
@@ -605,18 +587,6 @@ void CModifyProgramDlg::OnProcessStateChanged()
         //Edit Mode
         mp_Ui->btnPrgName->setEnabled(true);
         mp_Ui->btnPrgIcon->setEnabled(true);
-        if (m_ButtonType == NEW_BTN_CLICKED || m_ButtonType == COPY_BTN_CLICKED) {
-//            mp_Ui->btnColor->SetColor("black");
-//            mp_Ui->btnColor->setEnabled(false);
-        }
-        else {
-//           mp_Ui->btnColor->setEnabled(true);
-           if(m_TempColorFlag == true ){
-//               mp_Ui->btnColor->SetColor(m_TempColor);
-           } else{
-//               mp_Ui->btnColor->SetColor("white");
-           }
-        }
         mp_Ui->btnNew->setEnabled(true);
         mp_Ui->btnCancel->setEnabled(true);
         mp_Ui->btnSave->setEnabled(true);
@@ -631,13 +601,10 @@ void CModifyProgramDlg::OnProcessStateChanged()
             mp_Ui->btnPrgName->setEnabled(false);
             mp_Ui->btnPrgIcon->setEnabled(false);
             mp_Ui->btnCancel->setEnabled(true);           
-//            mp_Ui->btnColor->SetColor("black");
-//            mp_Ui->btnColor->setEnabled(false);
             mp_Ui->btnDelete->setEnabled(false);
             mp_Ui->btnNew->setEnabled(false);
             mp_Ui->btnEdit->setEnabled(false);
             mp_Ui->btnCopy->setEnabled(false);
-//            mp_Ui->groupBox->setEnabled(false);
         }
     }
 }
@@ -666,6 +633,10 @@ void CModifyProgramDlg::OnOkClicked()
     if (m_ProgNameBtnClicked) {
         m_ProgNameBtnClicked = false;
         LineEditString = mp_KeyBoardWidget->GetLineEditString();
+        if (LineEditString == "Leica")
+        {
+            return;
+        }
         mp_Ui->btnPrgName->setText(tr("%1").arg(LineEditString));
     }
     else if (m_ProgShortNameBtnClicked) {
@@ -697,7 +668,6 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
         if (m_ButtonType == NEW_BTN_CLICKED) {
             mp_Ui->btnPrgName->setEnabled(true);
             mp_Ui->btnPrgIcon->setEnabled(true);
-
             mp_Ui->btnNew->setEnabled(true);
             mp_Ui->btnCancel->setEnabled(true);
             mp_Ui->btnSave->setEnabled(true);
@@ -707,9 +677,8 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
         }
         else {
             m_TempColorFlag = true ;
- //vinay            m_TempColor = m_Program.GetColor();
             mp_Ui->btnPrgName->setEnabled(true);
-            mp_Ui->btnPrgIcon->setEnabled(false);
+            mp_Ui->btnPrgIcon->setEnabled(true);
             if (m_ButtonType == COPY_BTN_CLICKED) {
 //                mp_Ui->btnColor->SetColor("black");
 //                mp_Ui->btnColor->setEnabled(false);

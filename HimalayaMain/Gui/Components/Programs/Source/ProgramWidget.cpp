@@ -80,9 +80,6 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
     mp_ModifyProgramDlg = new CModifyProgramDlg(this, p_KeyBoard , p_Parent, mp_DataConnector);
     mp_ModifyProgramDlg->setModal(true);
 
-    mp_DlgRackGripColor = new CRackGripColorDlg(this,p_Parent);
-    mp_DlgRackGripColor->setModal(true);
-
     //mp_ManualProgramDlg = new CManualProgramDlg(this, p_Parent);
     //mp_ManualProgramDlg->setModal(true);
 
@@ -96,8 +93,8 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
     CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), this, OnCurrentTabChanged(int));
     CONNECTSIGNALSIGNAL(this, ReagentsUpdated(), mp_ModifyProgramDlg, ReagentsUpdated());
-//    CONNECTSIGNALSLOT(this, UpdateProgramList(), &m_ProgramModel, UpdateProgramList());
-//    CONNECTSIGNALSIGNAL(this, UpdateProgramList(), mp_ModifyProgramDlg, UpdateStepModel());
+    CONNECTSIGNALSLOT(this, UpdateProgramList(), &m_ProgramModel, OnUpdateProgramList());
+    CONNECTSIGNALSIGNAL(this, UpdateProgramList(), mp_ModifyProgramDlg, UpdateStepModel());
     CONNECTSIGNALSIGNAL(mp_ModifyProgramDlg, UpdateProgram(DataManager::CProgram &),
                         this, UpdateProgram(DataManager::CProgram &));
     CONNECTSIGNALSIGNAL(mp_ModifyLeicaHne, UpdateProgram(DataManager::CProgram &),
@@ -115,9 +112,6 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), mp_ModifyProgramDlg, UpdateUserSettings());
     //CONNECTSIGNALSLOT(mp_ManualProgramDlg, ProgramSelected(QString), mp_DataConnector,
       //                onProgramSelected(QString));
-    CONNECTSIGNALSLOT(mp_DlgRackGripColor, UpdateProgramColor(DataManager::CProgram &, bool),this,
-                      OnUpdateProgramColor(DataManager::CProgram &, bool));
-//    CONNECTSIGNALSLOT(mp_DataConnector, RevertChangedProgram(), mp_ModifyProgramDlg, UpdateProgramList());
 
     PopulateProgramList();
     OnUserRoleChanged();
@@ -131,7 +125,6 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
 CProgramWidget::~CProgramWidget()
 {
     try {
-        delete mp_DlgRackGripColor;
         delete mp_ModifyProgramDlg;
         delete mp_ModifyLeicaHne;
         delete mp_ManualProgramDlg;
@@ -198,11 +191,8 @@ void CProgramWidget::PopulateProgramList()
 /****************************************************************************/
 void CProgramWidget::OnEdit()
 {
-    DataManager::CProgramStep FirstProgramStepWithLeicaReagent;
-    DataManager::CProgramStep SecondProgramStepWithLeicaReagent;
     m_MessageDlg.SetText(tr("Staining Process has started, editing is no longer possible."
                             "\nPlease close the dialog."));
-    if (mp_Program->GetID().at(0) != 'L') {
         if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
              m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
                 (!m_ProcessRunning)) {
@@ -217,39 +207,6 @@ void CProgramWidget::OnEdit()
         mp_ModifyProgramDlg->InitDialog(mp_Program);
         mp_ModifyProgramDlg->move(88, 50);
         mp_ModifyProgramDlg->show();
-    }
-    else {
-        if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
-             m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-                (!m_ProcessRunning)) {
-            //Edit Mode
-            mp_ModifyLeicaHne->SetDialogTitle(tr("Edit Leica Program"));
-        }
-        else {
-            mp_ModifyLeicaHne->SetDialogTitle(tr("View Leica Program"));
-    }
- /* //vinay     bool LeicaReagentsFound;
-        LeicaReagentsFound = const_cast <DataManager::CProgram *>
-                (mp_Program)->GetLeicaReagents(FirstProgramStepWithLeicaReagent, SecondProgramStepWithLeicaReagent);
-
-        if(LeicaReagentsFound) {
-
-            mp_ModifyLeicaHne->InitDailog(mp_Program, FirstProgramStepWithLeicaReagent,
-                                          SecondProgramStepWithLeicaReagent);
-            mp_ModifyLeicaHne->SetIntensity(FirstProgramStepWithLeicaReagent.GetIntensity(),
-                                            SecondProgramStepWithLeicaReagent.GetIntensity());
-            mp_ModifyLeicaHne->move(88, 50);
-            mp_ModifyLeicaHne->show();
-        }
-        else {
-            m_MessageDlg.SetTitle(tr("Information Message"));
-            m_MessageDlg.SetIcon(QMessageBox::Information);
-            m_MessageDlg.SetButtonText(1, tr("Ok"));
-            m_MessageDlg.HideButtons();
-            m_MessageDlg.SetText(tr("Leica Reagents not found"));
-            (void) m_MessageDlg.exec();
-        }*/
-    }
 }
 
 /****************************************************************************/
@@ -307,24 +264,9 @@ void CProgramWidget::OnDelete()
     if (ConfirmationMessageDlg.exec() == (int)QDialog::Accepted) {
         QString ProgramID = mp_Program->GetID();
         emit DeleteProgram(ProgramID);
+//        m_ProgramModel.ResetandUpdateModel();
     }
 }
-
-/****************************************************************************/
-/*!
- *  \brief Shows the color selection dialog
- */
-/****************************************************************************/
-//void CProgramWidget::OnColor()
-//{
-//    m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
-//                            "\nPlease close the dialog."));
-//    if (mp_DlgRackGripColor->Init(mp_DataConnector->ProgramList, const_cast<DataManager::CProgram*>
-//                                  (mp_Program)) == true) {
-//        mp_DlgRackGripColor->SetSaveButton(tr("Save"));
-//        mp_DlgRackGripColor->show();
-//    }
-//}
 
 /****************************************************************************/
 /*!

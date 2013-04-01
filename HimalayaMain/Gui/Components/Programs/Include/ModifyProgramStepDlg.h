@@ -22,15 +22,18 @@
 #define PROGRAMS_MODIFYPROGRAMSTEPDLG_H
 
 #include "Core/Include/ReagentRMSModel.h"
+#include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramStep.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
+#include "Core/Include/ReagentStationEditModel.h"
 #include "MainMenu/Include/BaseTable.h"
 #include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/ScrollWheel.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "Programs/Include/ProgramWidget.h"
+#include "Programs/Include/StepModel.h"
 #include <QButtonGroup>
 
 //lint -sem(Programs::CModifyProgramStepDlg::InitDurationWidget, initializer)
@@ -55,7 +58,7 @@ private:
     MainMenu::CBaseTable *mp_TableWidget;               //!< Reagent table
     MainMenu::CScrollWheel *mp_ScrollWheelHour;         //!< Time of the program step (hours)
     MainMenu::CScrollWheel *mp_ScrollWheelMin;          //!< Time of the program step (minutes)
-    MainMenu::CScrollWheel *mp_ScrollWheelSec;          //!< Time of the program step (seconds)
+    MainMenu::CScrollWheel *mp_ScrollWheelTemp;         //!< Temperature of the program step
     MainMenu::CMessageDlg *mp_MessageBox;               //!< Message dialog object
     MainMenu::CMainWindow *mp_MainWindow;               //!< Reference to main window.
     DataManager::CProgramStep *mp_ProgramStep;          //!< The data of the dialog
@@ -73,6 +76,12 @@ private:
     bool m_ReagentExists;                               //!< True if Reagent exists in the reagent model
     QString m_DeviceMode;                               //!< To store device mode( Standalone/WorkstationMode)
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
+    DataManager::CUserSettings *mp_UserSettings;        //!< Data object
+    CStepModel m_StepModel;                             //!< Model of the program table
+    Core::CDataConnector *mp_DataConnector;             //!< Global data container
+    DataManager::CUserSettings m_UserSettingsTemp;      //!< Temporary copy of User Settings
+    DataManager::CProgram *mp_Program;
+    Core::CReagentStationEditModel m_ReagentEditModel;  //!< Model for the table
 
 
 
@@ -81,7 +90,8 @@ private:
     void RetranslateUI();
 
 public:
-    explicit CModifyProgramStepDlg(QWidget *p_Parent = NULL, MainMenu::CMainWindow *p_MainWindow = NULL);
+    explicit CModifyProgramStepDlg(QWidget *p_Parent = NULL, MainMenu::CMainWindow *p_MainWindow = NULL,
+                                   Core::CDataConnector *p_DataConnector= NULL);
 
     ~CModifyProgramStepDlg();
 
@@ -123,7 +133,7 @@ public:
 private:
     void InitDurationWidget();
     void ResizeHorizontalSection();
-
+    void InitTemperatureWidget();
 protected:
     void changeEvent(QEvent *p_Event);
 
@@ -152,7 +162,6 @@ signals:
      */
     /****************************************************************************/
     void AddProgramStep(DataManager::CProgramStep *p_ProgramStep, bool AddProgramStep);
-
 };
 
 } // end namespace Programs

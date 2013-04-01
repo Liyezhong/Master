@@ -27,6 +27,8 @@
 #include "MainMenu/Include/MainWindow.h"
 #include <QMap>
 #include <QStringList>
+#include <QStyleOption>
+#include <QStandardItem>
 
 namespace Programs {
 
@@ -60,10 +62,11 @@ private:
     qint32 m_Columns;                               //!< Number of table columns
     qint32 m_VisibleRowCount;                       //!< Number of rows visible in the table
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
-
     int m_CurrentIndex;
+    QStringList m_ProgramID;
+
 private slots:
-    void UpdateProgramList();
+    void OnUpdateProgramList();
 
 };
 

@@ -44,7 +44,6 @@ public:
     CStepModel(QObject *p_Parent = NULL);
     void SetProgram(DataManager::CProgram *p_Program, DataManager::CDataReagentList *p_ReagentList,
                     qint32 Columns);
-    void ConnectTableMoving(MainMenu::CTableMoving *p_TableMoving);
     int rowCount(const QModelIndex &) const;
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &Index, int Role) const;
@@ -66,10 +65,7 @@ private:
 
 
 private slots:
-    void OnBeginButtonClicked();
-    void OnUpButtonClicked();
-    void OnDownButtonClicked();
-    void OnEndButtonClicked();
+
     void UpdateStepModel();
 };
 

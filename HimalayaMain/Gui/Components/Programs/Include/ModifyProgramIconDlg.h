@@ -54,9 +54,8 @@ private:
     QStringList m_ProgramIconNames;                 //!< store Icon List names
     DataManager::CProgram m_Program;
     QButtonGroup m_ButtonGroup;
-
-
-//    void AddEmptyRows();
+    QMap<int, QPushButton*> m_QPushButtonMap;
+    QStringList m_IconName;                          //!< store Icon name
 
 public:
     explicit CModifyProgramIconDlg(QWidget *p_Parent = NULL,
@@ -67,6 +66,8 @@ private slots:
     void OnOk();
     void OnCancel();
     void OnProcessStateChanged();
+    void OnIconGroup(int Id);
+    void SetButtonGroup();
 
 protected:
     void changeEvent(QEvent *p_Event);

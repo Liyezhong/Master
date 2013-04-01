@@ -60,7 +60,6 @@ class CModifyProgramDlg : public MainMenu::CDialogFrame,
 
 private:
     Ui::CModifyProgramDlg *mp_Ui;                   //!< User interface
-    CRackGripColorDlg *mp_DlgRackGripColor;         //!< Rack color selection dialog
     CModifyProgramStepDlg *mp_ModifyProgStepDlg;    //!< Program step edit dialog
     MainMenu::CBaseTable *mp_TableWidget;           //!< Program step table
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
@@ -91,6 +90,8 @@ private:
     DataManager::CReagentGroup m_ReagentGroup;
     MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
     CModifyProgramIconDlg *mp_ModifyProgramIconDlg;     //!< Edit Program Icon dialog
+    DataManager::CProgramStep m_LeicaProgramStepOne;           //!< ProgramStep object
+
 
 
 protected:

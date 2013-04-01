@@ -221,7 +221,7 @@
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-image: url(:/HimalayaImages/Icons/MISC/Icon_Leica.png);</string>
+        <string notr="true">border-image: url(:/HimalayaImages/IconPushButton/IconPushButton-Enabled.png);</string>
        </property>
        <property name="text">
         <string/>

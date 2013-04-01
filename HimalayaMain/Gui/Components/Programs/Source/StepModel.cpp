@@ -96,21 +96,6 @@ void CStepModel::SetVisibleRowCount(int RowCount) {
 
 /****************************************************************************/
 /*!
- *  \brief Connect a table move widget to be able to move table rows
- *
- *  \iparam p_TableMoving = Table move widget
- */
-/****************************************************************************/
-void CStepModel::ConnectTableMoving(MainMenu::CTableMoving *p_TableMoving)
-{
-    CONNECTSIGNALSLOT(p_TableMoving, OnBeginButtonClicked(), this, OnBeginButtonClicked());
-    CONNECTSIGNALSLOT(p_TableMoving, OnUpButtonClicked(), this, OnUpButtonClicked());
-    CONNECTSIGNALSLOT(p_TableMoving, OnDownButtonClicked(), this, OnDownButtonClicked());
-    CONNECTSIGNALSLOT(p_TableMoving, OnEndButtonClicked(), this, OnEndButtonClicked());
-}
-
-/****************************************************************************/
-/*!
  *  \brief Returns the number of rows in the table
  *
  *  \return Row count
@@ -176,22 +161,30 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
                     return QVariant();
                 }
             }
-     /*  //vinay     case 2:
-                return DurationString(Step->GetMinDurationInSeconds());
-            case 3:
-                return QString("%1%2").arg(Step->GetMaxDurationInPercent()).arg("%");*/
+            case 2:
+            {
+                QTime Time;
+                return Time.addSecs(Step->GetDurationInSeconds());
             }
-        }
-        else if (Role == (int)Qt::DecorationRole) {
-          /*   switch (Index.column()) {
+            case 3:
+                return Step->GetTemperature();
             case 4:
-            //vinay   if (Step->GetExclusive() == true) {
-                    return QPixmap(":/Large/Icons/MISC/TickOk.png");
+            {
+                if (Step->GetVacuum() == "On")
+                    return QString("V");
+
+                else if (Step->GetPressure() == "On")
+                    return QString("P");
+                else if( Step->GetVacuum() == "Off" && Step->GetPressure() == "Off")
+                {
+                    return QString("-");
                 }
-                else {
-                    return QVariant();
+                else if (Step->GetVacuum() == "On" && Step->GetPressure() == "On")
+                {
+                    return QString("P/V");
                 }
-            }*/
+            }
+            }
         }
         else if (Role == (int)Qt::UserRole) {
             return Step->GetStepID();
@@ -293,74 +286,6 @@ void CStepModel::SetIndex(QModelIndex Index)
 qint32 CStepModel::GetIndex()
 {
     return  m_CurrentRow;
-}
-/****************************************************************************/
-/*!
- *  \brief Moves the selected row to the beginnig of a table
- */
-/****************************************************************************/
-void CStepModel::OnBeginButtonClicked()
-{
-    if (mp_Program && mp_ModifyProgramDlg) {
-        beginResetModel();
-        (void)mp_Program->MoveProgramStep(m_CurrentRow, 0);
-        endResetModel();
-        m_CurrentRow = 0;
-        mp_ModifyProgramDlg->SetRowFocus(m_CurrentRow);
-    }
-}
-
-/****************************************************************************/
-/*!
- *  \brief Moves the selected row one item up
- */
-/****************************************************************************/
-void CStepModel::OnUpButtonClicked()
-{
-    if(m_CurrentRow > 0 && mp_ModifyProgramDlg) {
-        if (mp_Program) {
-            beginResetModel();
-            (void)mp_Program->MoveProgramStep(m_CurrentRow, m_CurrentRow -1);
-            endResetModel();
-            m_CurrentRow -= 1;
-            mp_ModifyProgramDlg->SetRowFocus(m_CurrentRow);
-        }
-    }
-}
-
-/****************************************************************************/
-/*!
- *  \brief Moves the selected row one item down
- */
-/****************************************************************************/
-void CStepModel::OnDownButtonClicked()
-{
-    if (mp_Program && mp_ModifyProgramDlg) {
-        if(m_CurrentRow < mp_Program->GetNumberOfSteps()- 1) {
-            beginResetModel();
-            (void)mp_Program->MoveProgramStep(m_CurrentRow, m_CurrentRow + 1);
-            endResetModel();
-            m_CurrentRow += 1;
-            mp_ModifyProgramDlg->SetRowFocus(m_CurrentRow);
-        }
-    }
-}
-
-/****************************************************************************/
-/*!
- *  \brief Moves the selected row to the end of a table
- */
-/****************************************************************************/
-void CStepModel::OnEndButtonClicked()
-{
-    if (mp_Program && mp_ModifyProgramDlg) {
-        beginResetModel();
-        int MoveToRow = mp_Program->GetNumberOfSteps() - 1;
-        (void)mp_Program->MoveProgramStep(m_CurrentRow, MoveToRow);
-        m_CurrentRow = MoveToRow;
-        endResetModel();
-        mp_ModifyProgramDlg->SetRowFocus(m_CurrentRow);
-    }
 }
 
 /****************************************************************************/

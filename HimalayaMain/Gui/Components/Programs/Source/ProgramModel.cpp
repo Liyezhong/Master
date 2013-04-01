@@ -128,7 +128,7 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
     }
 
     if ((p_Program = const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(Index.row())))) {
-        if (Role == (int)Qt::DisplayRole) {
+        if (Role == (int)Qt::DisplayRole) {     
             switch (5 - m_Columns + Index.column()) {
             case -1:
                 return Index.row() + 1;
@@ -137,52 +137,58 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
             case 2:
                 return p_Program->GetName();
             case 3:
-                 if (p_Program->GetID().at(0) == 'L') {
-                 return QPixmap(":/Small/CheckBox/CheckBox-CheckedPressed.png");
-                  }
-                  else {
-                          return QVariant();
-                  }
+                QTime Time;
+                Time =  Time.addSecs(p_Program->GetProgramDurationInSeconds());
+                return Time.toString("hh:mm");
             }
         }
-            else if(Role ==(int)Qt::DecorationRole)
+            else if (Role ==(int)Qt::DecorationRole)
             {
                 switch (5 - m_Columns + Index.column()) {
-            case 1:
+                case 1:
                     if (m_CurrentUserRole == MainMenu::CMainWindow::Admin
                         || m_CurrentUserRole == MainMenu::CMainWindow::Service)
                     {
                         if(m_CurrentIndex)
                             return QPixmap(":/Small/CheckBox/CheckBox-Checked.png");
-
                         else
                         return QPixmap(":/Small/CheckBox/CheckBox-Enabled.png");
-
                     }
 
                     else
                     {
                         return QPixmap(":/Small/CheckBox/CheckBox-Disabled.png");
                     }
+
+                case 4:
+                    QString Icon = p_Program->GetIcon();
+                    return QPixmap(":/Settings/icons" + Icon + ".png");
+
             }
         }
 
-        else if (Role == (int)Qt::CheckStateRole) {
-            if (m_Columns == 6 && NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0) {
-                // TODO test code
-                if (p_Program->GetID().at(0) == 'L') {
-                    return (int)Qt::Checked;
-                }
-                else {
-                    return (int)Qt::Unchecked;
-                }
-            }
-        }
+//        else if (Role == (int)Qt::CheckStateRole) {
+//            if (m_Columns == 6 && NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0) {
+//                // TODO test code
+//                if (p_Program->GetID().at(0) == 'L') {
+//                    return (int)Qt::Checked;
+//                }
+//                else {
+//                    return (int)Qt::Unchecked;
+//                }
+//            }
+//        }
         else if (Role == (int)Qt::UserRole) {
             return p_Program->GetID();
         }
     }
+    else if (Role == (int)Qt::BackgroundRole) {
+        //Grays the empty lines
+        QPalette Palette;
+        return QVariant(Palette.color(QPalette::Window));
+    }
     return QVariant();
+
 }
 
 /****************************************************************************/
@@ -259,7 +265,6 @@ bool CProgramModel::setData(const QModelIndex &Index, const QVariant &Value, int
     if (Role == (int)Qt::CheckStateRole) {
        if (mp_ProgramList->GetProgram(Index.row(), Program) == true) {
             if (NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0) {
-                //vinay Program.LockProgram();
                 return mp_ProgramList->UpdateProgram(&Program);
             }
         }
@@ -272,7 +277,7 @@ bool CProgramModel::setData(const QModelIndex &Index, const QVariant &Value, int
  *  \brief Updates the model whenever GUI receives an updated XML from Master
  */
 /****************************************************************************/
-void CProgramModel::UpdateProgramList()
+void CProgramModel::OnUpdateProgramList()
 {
     beginResetModel();
     endResetModel();
@@ -300,7 +305,7 @@ void CProgramModel :: SelectedRowIndex(int Index)
 /****************************************************************************/
 void CProgramModel:: ResetandUpdateModel()
 {
-    UpdateProgramList();
+    OnUpdateProgramList();
 }
 
 } // end namespace Programs

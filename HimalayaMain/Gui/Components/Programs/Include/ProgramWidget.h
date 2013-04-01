@@ -66,8 +66,8 @@ private:
     Core::CDataConnector *mp_DataConnector;     //!< Global data container
     DataManager::CProgram const *mp_Program;    //!< Currently selected program
     CProgramModel m_ProgramModel;               //!< Model of the program table
-    CRackGripColorDlg *mp_DlgRackGripColor;     //!< Color selection dialog
     CModifyProgramDlg *mp_ModifyProgramDlg;     //!< Modify program dialog
+    MainMenu::CMessageDlg ConfirmationMessageDlg;
     CModifyLeicaHne *mp_ModifyLeicaHne;         //!< Edit dialog for the Leica H&E program
     CManualProgramDlg *mp_ManualProgramDlg;     //!< Manual program dialog
     MainMenu::CMainWindow *mp_MainWindow;       //!< Reference to main window
@@ -141,7 +141,7 @@ signals:
      *  Program model to update the program list data.
      */
     /****************************************************************************/
-//    void UpdateProgramList();
+    void UpdateProgramList();
 
     /****************************************************************************/
     /*!
