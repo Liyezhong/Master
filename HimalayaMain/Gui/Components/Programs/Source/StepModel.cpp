@@ -170,15 +170,17 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
                 return Step->GetTemperature();
             case 4:
             {
-                if (Step->GetVacuum() == "On")
+                if (Step->GetVacuum() == "On" && Step->GetPressure() == "Off")
                     return QString("V");
 
-                else if (Step->GetPressure() == "On")
+                else if (Step->GetPressure() == "On" && Step->GetVacuum() == "Off")
                     return QString("P");
+
                 else if( Step->GetVacuum() == "Off" && Step->GetPressure() == "Off")
                 {
                     return QString("-");
                 }
+
                 else if (Step->GetVacuum() == "On" && Step->GetPressure() == "On")
                 {
                     return QString("P/V");

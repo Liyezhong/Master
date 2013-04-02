@@ -39,6 +39,8 @@ namespace Programs {
 const QString UNLOADER_STEP_ID = "S7";  //!< Unloader step id
 const QString TRANSFER_STEP_ID = "S8";  //!< Transfer step id
 const int USER_PROGRAM_COUNT =    10;   //!< Number of User Program in a table
+const int NAME_LENGTH_MIN = 1;          //!< name length Min
+const int NAME_LENGTH_MAX = 20;         //!< name length Max
 /****************************************************************************/
 /*!
  *  \brief Constructor
@@ -197,21 +199,20 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
     }
     else if (m_ButtonType == COPY_BTN_CLICKED) {
         switch (LongName.length()) {
-            case 32:
-                LongName.replace(29, 3, "_cp");
+            case 20:
+                LongName.replace(17, 3, "_cp");
                 break;
-            case 31:
-                LongName.replace(28, 3, "_cp");
+            case 19:
+                LongName.replace(17, 3, "_cp");
                 break;
-            case 30:
-                LongName.replace(27, 3, "_cp");
+            case 18:
+                LongName.replace(17, 3, "_cp");
                 break;
             default:
                 LongName.append("_cp");
                 break;
         }
         mp_Ui->btnPrgName->setText(tr("%1").arg(LongName));
-     //vinay     m_Program.SetColor("white");
         // Pass a value same as the one passed to SetVisibleRows()
         m_StepModel.SetVisibleRowCount(6);
         m_StepModel.SetProgram(&m_Program, mp_DataConnector->ReagentList, 5);
@@ -381,7 +382,7 @@ void CModifyProgramDlg::OnCopy()
     mp_ModifyProgStepDlg->SetDialogTitle(tr("Edit Program Step"));
     mp_ModifyProgStepDlg->SetButtonType(COPY_BTN_CLICKED);
     mp_ModifyProgStepDlg->SetDeviceMode(m_DeviceMode);
-//    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep(), mp_DataConnector->ReagentList);
+    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep(), mp_DataConnector->ReagentList);
     mp_ModifyProgStepDlg->move(80,50);   
     mp_ModifyProgStepDlg->show();
 //    mp_ModifyProgStepDlg->ShowSelectReagentPopup();
@@ -412,7 +413,6 @@ void CModifyProgramDlg::OnDelete()
                 mp_Ui->btnDelete->setEnabled(false);
                 mp_Ui->btnCopy->setEnabled(false);
                 mp_Ui->btnEdit->setEnabled(false);
-//                mp_Ui->groupBox->setEnabled(false);
             }
         }
         else {
@@ -421,7 +421,6 @@ void CModifyProgramDlg::OnDelete()
                 mp_Ui->btnDelete->setEnabled(false);
                 mp_Ui->btnCopy->setEnabled(false);
                 mp_Ui->btnEdit->setEnabled(false);
-//                mp_Ui->groupBox->setEnabled(false);
             }
         }
     }
@@ -467,14 +466,8 @@ void CModifyProgramDlg::OnSave()
 
     m_Program.SetName(mp_Ui->btnPrgName->text());
     if (m_ButtonType == EDIT_BTN_CLICKED) {
-        if ((VerifyLastProgramStep(&m_Program, m_DeviceMode))) {
             if (m_ProgramListClone.UpdateProgram(&m_Program)== true){
-                if (m_ColorReplaced == true) {
-                    emit ProgramColorReplaced(m_ColorReplacedProgram, m_Program);
-                }
-                else {
                     emit UpdateProgram(m_Program);
-                }
             }
             else {
                 ListOfErrors_t &ErrorList = m_ProgramListClone.GetErrorList();
@@ -483,27 +476,26 @@ void CModifyProgramDlg::OnSave()
                 mp_MessageDlg->SetText(ErrorString);
                 (void) mp_MessageDlg->exec();
             }
-        }
     }
     else if (m_ButtonType == COPY_BTN_CLICKED) {
-        if ((VerifyLastProgramStep(&m_Program, m_DeviceMode))== true) {
+
             m_Program.SetID(m_ProgramListClone.GetNextFreeProgID(true));
             if (m_ProgramListClone.AddProgram(&m_Program) == true) {
                 emit AddProgram(m_Program);
-            }
+                accept();
+        }
             else {
                 ListOfErrors_t &ErrorList = m_ProgramListClone.GetErrorList();
                 QString ErrorString;
                 DataManager::Helper::ErrorIDToString(ErrorList, ErrorString);
                 mp_MessageDlg->SetText(ErrorString);
                 (void) mp_MessageDlg->exec();
+
             }
-        }
     }
     else {
         mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
-//        mp_NewProgram->SetShortName(mp_Ui->btnPrgIcon->text());
-        if ((VerifyLastProgramStep(mp_NewProgram, m_DeviceMode))== true) {
+
             mp_NewProgram->SetID(m_ProgramListClone.GetNextFreeProgID(true));
             if (m_ProgramListClone.AddProgram(mp_NewProgram)== true) {
                 emit AddProgram(*mp_NewProgram);
@@ -515,7 +507,7 @@ void CModifyProgramDlg::OnSave()
                 mp_MessageDlg->SetText(ErrorString);
                 (void) mp_MessageDlg->exec();
             }
-        }
+
     }
 }
 

@@ -31,7 +31,6 @@
 #include <QApplication>
 #include <QEvent>
 
-
 namespace Programs {
 const int VISIBLE_ROW_COUNT = 8;    //!< Number of rows visible in a table
 const int NUMBER_OF_COLUMNS = 5;    //!< Number of columns in a table
@@ -128,7 +127,7 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
     }
 
     if ((p_Program = const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(Index.row())))) {
-        if (Role == (int)Qt::DisplayRole) {     
+        if (Role == (int)Qt::DisplayRole) {
             switch (5 - m_Columns + Index.column()) {
             case -1:
                 return Index.row() + 1;

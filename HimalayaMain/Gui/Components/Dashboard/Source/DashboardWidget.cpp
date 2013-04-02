@@ -91,16 +91,16 @@ void CDashboardWidget::DrawSeparatorLine()
 
 void CDashboardWidget::AddItemsToComboBox()
 {
-    if(mp_ProgramList->GetNumberOfPrograms() != 0) {
+//    if(mp_ProgramList->GetNumberOfPrograms() != 0) {
 
-       for( int i = 0; i < 3; i++) {
-            QString ProgramId = mp_ProgramList->GetProgram(i)->GetID();
-           if(ProgramId.at(0) == 'L')
-               m_FavProgramList.push_front(ProgramId); // Insert at the front
-           else
-                m_FavProgramList.push_back(ProgramId);
-       }
-   }
+//       for( int i = 0; i < 3; i++) {
+//            QString ProgramId = mp_ProgramList->GetProgram(i)->GetID();
+//           if(ProgramId.at(0) == 'L')
+//               m_FavProgramList.push_front(ProgramId); // Insert at the front
+//           else
+//                m_FavProgramList.push_back(ProgramId);
+//       }
+//   }
 
     for ( int i = 0; i < m_FavProgramList.count(); i++)
     {

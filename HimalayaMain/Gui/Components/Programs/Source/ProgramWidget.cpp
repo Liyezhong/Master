@@ -110,8 +110,8 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, UpdateMode(QString), this, OnDeviceModeChanged(QString));
     CONNECTSIGNALSLOT(mp_DataConnector, ShowManualProgramDlg(QString),this , OnShowManualProgramDlg(QString));
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), mp_ModifyProgramDlg, UpdateUserSettings());
-    //CONNECTSIGNALSLOT(mp_ManualProgramDlg, ProgramSelected(QString), mp_DataConnector,
-      //                onProgramSelected(QString));
+//    CONNECTSIGNALSLOT(mp_ManualProgramDlg, ProgramSelected(QString), mp_DataConnector,
+//                      onProgramSelected(QString));
 
     PopulateProgramList();
     OnUserRoleChanged();
@@ -127,7 +127,6 @@ CProgramWidget::~CProgramWidget()
     try {
         delete mp_ModifyProgramDlg;
         delete mp_ModifyLeicaHne;
-        delete mp_ManualProgramDlg;
         delete mp_TableWidget;
         delete mp_Ui;
     }

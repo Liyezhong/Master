@@ -314,6 +314,9 @@ void CModifyProgramStepDlg::SelectRow(qint32 Row)
 void CModifyProgramStepDlg::OnOk()
 {
     int MinDurationInSec;
+    QString Temperature;
+    QString Pressure;
+    QString Vaccum;
     MainMenu::CMessageDlg MessageDlg(this);
     MessageDlg.SetTitle(tr("Information Message"));
     MessageDlg.SetIcon(QMessageBox::Information);
@@ -323,35 +326,27 @@ void CModifyProgramStepDlg::OnOk()
     if(m_ReagentExists) {
         MinDurationInSec = mp_ScrollWheelHour->GetCurrentData().toInt()*60*60;
         MinDurationInSec+= mp_ScrollWheelMin->GetCurrentData().toInt()*60;
+        Temperature = mp_ScrollWheelTemp->GetCurrentData().toString();
 
-        QString MaxDurationValueInPercent;
+
         if (mp_Ui->radioButton_0->isChecked()) {
-            MaxDurationValueInPercent = "0";
+            Pressure = "On";
+             Vaccum = "Off";
         }
         else if(mp_Ui->radioButton_25->isChecked()) {
-            MaxDurationValueInPercent = "25";
+            Vaccum = "On";
+            Pressure = "Off";
         }
         else if(mp_Ui->radioButton_50->isChecked()) {
-            MaxDurationValueInPercent = "50";
+            Vaccum = "On";
+            Pressure = "On";
         }
         else if(mp_Ui->radioButton_75->isChecked()) {
-            MaxDurationValueInPercent = "75";
+            Vaccum = "Off";
+            Pressure = "Off";
         }
-        else {
-            MaxDurationValueInPercent = "100";
-        }
-        MaxDurationValueInPercent.append("%");
-        QString ReagentLongName = m_ReagentModel.GetReagentLongName(mp_TableWidget->currentIndex().row());
-        QString ReagentId = m_ReagentModel.GetReagentID(ReagentLongName);
 
-        if (ReagentId != UNLOADER_STEP_ID && ReagentId != TRANSFER_STEP_ID) {
-            if(MinDurationInSec == 0) {
-                MessageDlg.SetText(tr("Minimum duration for selected reagent is 0."
-                                      "\nPlease select duration greater than 0."));
-                (void) MessageDlg.exec();
-                return;
-            }
-        }
+        QString ReagentId = m_ReagentModel.GetReagentID(m_ReagentLongName);
         DataManager::CProgramStep ProgramStep;
         if (m_ModifyProgramDlgButtonType == COPY_BTN_CLICKED) {
 
@@ -360,10 +355,11 @@ void CModifyProgramStepDlg::OnOk()
             }
             else {
                 m_NewProgramStep = true ;
-//                ProgramStep.SetExclusive(mp_Ui->checkBoxExclusive->isChecked());
- //vinay               ProgramStep.SetMaxDurationInPercent(MaxDurationValueInPercent);
- //vinay               ProgramStep.SetMinDurationInSeconds(MinDurationInSec);
+                ProgramStep.SetDurationInSeconds(MinDurationInSec);
                 ProgramStep.SetReagentID(ReagentId);
+                ProgramStep.SetTemperature(Temperature);
+                    ProgramStep.SetPressure(Pressure);
+                     ProgramStep.SetVacuum(Vaccum);
                 emit AddProgramStep(&ProgramStep, m_NewProgramStep);
                 accept();
             }
@@ -371,20 +367,21 @@ void CModifyProgramStepDlg::OnOk()
         else {
             if (m_ModifyProgramDlgButtonType == NEW_BTN_CLICKED) {
                 m_NewProgramStep = true ;
-//                ProgramStep.SetExclusive(mp_Ui->checkBoxExclusive->isChecked());
- //vinay               ProgramStep.SetMaxDurationInPercent(MaxDurationValueInPercent);
- //vinay               ProgramStep.SetMinDurationInSeconds(MinDurationInSec);
-                ProgramStep.SetReagentID(ReagentId);
-                emit AddProgramStep(&ProgramStep, m_NewProgramStep);
+
+               ProgramStep.SetDurationInSeconds(MinDurationInSec);
+               ProgramStep.SetReagentID(m_ReagentID);
+               ProgramStep.SetTemperature(Temperature);
+               ProgramStep.SetPressure(Pressure);
+               ProgramStep.SetVacuum(Vaccum);
+
+               emit AddProgramStep(&ProgramStep, m_NewProgramStep);
             }
             else {
                 m_NewProgramStep = false ;
-                ProgramStep = *mp_ProgramStep;
-//                ProgramStep.SetExclusive(mp_Ui->checkBoxExclusive->isChecked());
-  //vinay              ProgramStep.SetMaxDurationInPercent(MaxDurationValueInPercent);
-  //vinay              ProgramStep.SetMinDurationInSeconds(MinDurationInSec);
-                ProgramStep.SetReagentID(ReagentId);
-                emit AddProgramStep(&ProgramStep, m_NewProgramStep);
+               ProgramStep = *mp_ProgramStep;
+
+               ProgramStep.SetReagentID(m_ReagentID);
+               emit AddProgramStep(&ProgramStep, m_NewProgramStep);
             }
             accept();
         }
@@ -429,11 +426,14 @@ void CModifyProgramStepDlg::ReagentTableUpdate()
 /****************************************************************************/
 void CModifyProgramStepDlg::OnSelectionChanged(QModelIndex Index)
 {
+    m_ReagentLongName = m_ReagentEditModel.GetReagentLongName(Index.row());
+    m_ReagentID= m_ReagentEditModel.GetReagentID(m_ReagentLongName);
+
     if (Index.isValid() && (!m_ProcessRunning)) {
-        QString ReagentLongName = m_ReagentEditModel.GetReagentLongName(Index.row());
-        QString ReagentGroup = m_ReagentEditModel.GetReagentID(ReagentLongName);
-        if (!ReagentLongName.isEmpty()) {
-            m_ReagentModel.SetCurrentReagent(ReagentLongName);
+        m_ReagentLongName = m_ReagentEditModel.GetReagentLongName(Index.row());
+        m_ReagentID= m_ReagentEditModel.GetReagentID(m_ReagentLongName);
+        if (!m_ReagentLongName.isEmpty()) {
+            m_ReagentModel.SetCurrentReagent(m_ReagentLongName);
             m_RowNotSelected = false;
 //            mp_Ui->checkBoxExclusive->setChecked(false);
 //            if (ReagentId == TRANSFER_STEP_ID || ReagentId == UNLOADER_STEP_ID) {

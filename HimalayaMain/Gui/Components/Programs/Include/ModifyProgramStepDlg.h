@@ -82,7 +82,8 @@ private:
     DataManager::CUserSettings m_UserSettingsTemp;      //!< Temporary copy of User Settings
     DataManager::CProgram *mp_Program;
     Core::CReagentStationEditModel m_ReagentEditModel;  //!< Model for the table
-
+    QString m_ReagentLongName;
+    QString m_ReagentID;
 
 
 private:

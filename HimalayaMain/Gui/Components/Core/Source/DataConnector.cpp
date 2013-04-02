@@ -534,6 +534,7 @@ void CDataConnector::SendProgramAdd(DataManager::CProgram &Program)
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
     mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
     mp_WaitDialog->SetText(tr("Saving Settings ..."));
+
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }

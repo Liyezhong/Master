@@ -57,7 +57,7 @@ CStartup::CStartup() : QObject()
 
     // Dashboard Signals & Slots
     CONNECTSIGNALSLOT(mp_Reagents, RMSValueChanged(Global::RMSOptions_t), mp_Dashboard, OnRMSValueChanged(Global::RMSOptions_t));
-    CONNECTSIGNALSLOT(mp_DataConnector, ProgramsUpdated(), mp_Dashboard, AddItemsToComboBox())
+//    CONNECTSIGNALSLOT(mp_DataConnector, ProgramsUpdated(), mp_Dashboard, AddItemsToComboBox())
 
 //    CONNECTSIGNALSLOT(mp_Reagents, UpdateReagent(DataManager::CReagent &),
 //                      mp_DataConnector, SendReagentUpdate(DataManager::CReagent &));
@@ -65,7 +65,7 @@ CStartup::CStartup() : QObject()
 //                      mp_DataConnector, SendReagentAdd(DataManager::CReagent &));
 //    CONNECTSIGNALSLOT(mp_Reagents, RemoveReagent(QString), mp_DataConnector, SendReagentRemove(QString));
 
-//    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsUpdated(), mp_Programs, UpdateProgramList());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsUpdated(), mp_Programs, UpdateProgramList());
 
     CONNECTSIGNALSLOT(mp_Programs, UpdateProgram(DataManager::CProgram &),
                       mp_DataConnector, SendProgramUpdate(DataManager::CProgram &));
