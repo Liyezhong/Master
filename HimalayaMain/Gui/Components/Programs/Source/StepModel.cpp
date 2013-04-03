@@ -43,7 +43,8 @@ namespace Programs {
 CStepModel::CStepModel(QObject *p_Parent) : QAbstractTableModel(p_Parent),
                                              mp_Program(NULL), mp_ReagentList(NULL),
                                              m_Columns(0), m_CurrentRow(0),
-                                             mp_ModifyProgramDlg(NULL), m_VisibleRowCount(6)
+                                             mp_ModifyProgramDlg(NULL), m_VisibleRowCount(6),
+                                             mp_ReagentGroupList(NULL)
 
 {
 
@@ -58,12 +59,13 @@ CStepModel::CStepModel(QObject *p_Parent) : QAbstractTableModel(p_Parent),
  *  \iparam Columns = Table columns
  */
 /****************************************************************************/
-void CStepModel::SetProgram(DataManager::CProgram *p_Program, DataManager::CDataReagentList *p_ReagentList,
+void CStepModel::SetProgram(DataManager::CProgram *p_Program, DataManager:: CDataReagentGroupList *p_ReagentGroupList, DataManager::CDataReagentList *p_ReagentList,
                             qint32 Columns)
 {
     beginResetModel();
     mp_Program = p_Program;
     mp_ReagentList = p_ReagentList;
+    mp_ReagentGroupList = p_ReagentGroupList;
     m_Columns = Columns;
     m_CurrentRow = 0;
     endResetModel();
@@ -137,6 +139,7 @@ int CStepModel::columnCount(const QModelIndex &) const
 QVariant CStepModel::data(const QModelIndex &Index, int Role) const
 {
     DataManager::CProgramStep *Step;
+    DataManager::CReagent *p_Reagent = NULL;
 
     if (mp_Program == NULL || mp_ReagentList == NULL) {
         if (Role == (int)Qt::BackgroundRole) {
@@ -145,8 +148,10 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
         }
         return QVariant();
     }
+    Step = const_cast<DataManager::CProgramStep*>(mp_Program->GetProgramStep(Index.row()));
 
-    if ((Step = const_cast<DataManager::CProgramStep*>(mp_Program->GetProgramStep(Index.row()))) != NULL) {
+    //if ((Step = const_cast<DataManager::CProgramStep*>(mp_Program->GetProgramStep(Index.row()))) != NULL) {
+      if (Step != NULL) {
         if (Role == (int)Qt::DisplayRole) {
             switch (Index.column()) {
             case 0:
@@ -155,7 +160,7 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
             {
                 DataManager::CReagent Reagent;
                 if (mp_ReagentList->GetReagent(Step->GetReagentID(), Reagent) == true) {
-                    return Reagent.GetReagentName();
+                  return Reagent.GetReagentName();
                 }
                 else {
                     return QVariant();
@@ -190,6 +195,29 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
         }
         else if (Role == (int)Qt::UserRole) {
             return Step->GetStepID();
+        }
+        else if (Role == (int)Qt::BackgroundColorRole) {
+
+            p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(Step->GetReagentID()));
+
+            if (Index.column() == 0) {
+                if (mp_ReagentGroupList) {
+                    if(p_Reagent) {
+                        DataManager::CReagentGroup *p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID()));
+                          if (p_ReagentGroup) {
+                                QColor Color;
+                                // add '#' to hex value to change to color value
+                                Color.setNamedColor("#" + p_ReagentGroup->GetGroupColor().trimmed());
+                                QPalette Palete(Color);
+                                return QVariant(Palete.color(QPalette::Window));
+                           }
+                     }
+                     else {
+                        QPalette Palette;
+                        return QVariant(Palette.color(QPalette::Window));
+                    }
+                }
+            }
         }
     }
     else if (Role == (int)Qt::BackgroundRole) {

@@ -199,7 +199,6 @@ void CModifyProgramStepDlg::InitTemperatureWidget()
 void CModifyProgramStepDlg::SetProgramStep(DataManager::CProgramStep *p_ProgramStep, DataManager::CDataReagentList *p_ReagentList)
 
 {
-
     m_ReagentEditModel.UpdateReagentList();
    qint32 Percent;
     QTime Duration;
@@ -261,7 +260,7 @@ void CModifyProgramStepDlg::NewProgramStep(DataManager::CDataReagentList *p_Reag
 //    m_ReagentModel.FilterLeicaReagents(true);
 //    m_ReagentModel.OnDeviceModeChanged(m_DeviceMode);
 //    m_ReagentModel.SetUserSettings(&m_UserSettings);
-//    m_ReagentModel.SetReagentList(mp_ReagentList, 4);
+//      m_ReagentModel.SetReagentList(mp_ReagentList, 2);
 //    m_ReagentModel.SetParentPtr(this);
 //    mp_TableWidget->setModel(&m_ReagentModel);
 //    ResizeHorizontalSection();
@@ -346,7 +345,9 @@ void CModifyProgramStepDlg::OnOk()
             Pressure = "Off";
         }
 
-        QString ReagentId = m_ReagentModel.GetReagentID(m_ReagentLongName);
+        m_ReagentEditModel.UpdateReagentList();
+        QString ReagentId = m_ReagentEditModel.GetReagentID(m_ReagentLongName);
+//        QString Name = m_ReagentEditModel.GetReagentLongName();
         DataManager::CProgramStep ProgramStep;
         if (m_ModifyProgramDlgButtonType == COPY_BTN_CLICKED) {
 
@@ -357,6 +358,7 @@ void CModifyProgramStepDlg::OnOk()
                 m_NewProgramStep = true ;
                 ProgramStep.SetDurationInSeconds(MinDurationInSec);
                 ProgramStep.SetReagentID(ReagentId);
+
                 ProgramStep.SetTemperature(Temperature);
                     ProgramStep.SetPressure(Pressure);
                      ProgramStep.SetVacuum(Vaccum);
@@ -369,7 +371,7 @@ void CModifyProgramStepDlg::OnOk()
                 m_NewProgramStep = true ;
 
                ProgramStep.SetDurationInSeconds(MinDurationInSec);
-               ProgramStep.SetReagentID(m_ReagentID);
+               ProgramStep.SetReagentID(ReagentId);
                ProgramStep.SetTemperature(Temperature);
                ProgramStep.SetPressure(Pressure);
                ProgramStep.SetVacuum(Vaccum);
@@ -380,7 +382,7 @@ void CModifyProgramStepDlg::OnOk()
                 m_NewProgramStep = false ;
                ProgramStep = *mp_ProgramStep;
 
-               ProgramStep.SetReagentID(m_ReagentID);
+               ProgramStep.SetReagentID(ReagentId);
                emit AddProgramStep(&ProgramStep, m_NewProgramStep);
             }
             accept();
@@ -426,9 +428,6 @@ void CModifyProgramStepDlg::ReagentTableUpdate()
 /****************************************************************************/
 void CModifyProgramStepDlg::OnSelectionChanged(QModelIndex Index)
 {
-    m_ReagentLongName = m_ReagentEditModel.GetReagentLongName(Index.row());
-    m_ReagentID= m_ReagentEditModel.GetReagentID(m_ReagentLongName);
-
     if (Index.isValid() && (!m_ProcessRunning)) {
         m_ReagentLongName = m_ReagentEditModel.GetReagentLongName(Index.row());
         m_ReagentID= m_ReagentEditModel.GetReagentID(m_ReagentLongName);

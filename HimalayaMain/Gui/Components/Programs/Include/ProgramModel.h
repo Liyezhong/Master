@@ -64,10 +64,13 @@ private:
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     int m_CurrentIndex;
     QStringList m_ProgramID;
-
+    int m_SelectedProgramCount;                     //!< Count of Favorite Programs
+    qint32 m_Favcount;
 private slots:
     void OnUpdateProgramList();
 
+signals:
+    void FavoriteProgramListUpdated();
 };
 
 } // end namespace Programs

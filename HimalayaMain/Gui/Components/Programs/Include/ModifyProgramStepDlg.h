@@ -26,6 +26,7 @@
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramStep.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
+#include "Programs/Include/ModifyProgramDlg.h"
 #include "Core/Include/ReagentStationEditModel.h"
 #include "MainMenu/Include/BaseTable.h"
 #include "MainMenu/Include/DialogFrame.h"

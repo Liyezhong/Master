@@ -108,11 +108,10 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(&m_ProgramModel, modelReset(), this, CloseDialogs());
     CONNECTSIGNALSLOT(mp_ModifyProgramDlg, CancelClicked(), this, OnCancelClicked());
     CONNECTSIGNALSLOT(mp_DataConnector, UpdateMode(QString), this, OnDeviceModeChanged(QString));
-    CONNECTSIGNALSLOT(mp_DataConnector, ShowManualProgramDlg(QString),this , OnShowManualProgramDlg(QString));
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), mp_ModifyProgramDlg, UpdateUserSettings());
 //    CONNECTSIGNALSLOT(mp_ManualProgramDlg, ProgramSelected(QString), mp_DataConnector,
 //                      onProgramSelected(QString));
-
+    CONNECTSIGNALSIGNAL(&m_ProgramModel, FavoriteProgramListUpdated(), this, FavoriteProgramListUpdated());
     PopulateProgramList();
     OnUserRoleChanged();
 }
@@ -542,6 +541,28 @@ void CProgramWidget::OnUpdateProgramColor(DataManager::CProgram &Program, bool C
 
 /****************************************************************************/
 /*!
+ *  \brief Calculates the number of User Programs
+ *
+ */
+/****************************************************************************/
+
+int CProgramWidget::GetNumberOfUserPrograms()
+{
+    int Count;
+    int ProgramCount = 0;
+    for (Count=0; Count<mp_DataConnector->ProgramList->GetNumberOfPrograms(); Count++)
+    {
+        mp_Program = mp_DataConnector->ProgramList->GetProgram(Count);
+
+        if(mp_Program->GetID().at(0) != 'L')
+        {
+            ProgramCount += 1;
+        }
+    }
+    return ProgramCount;
+}
+/****************************************************************************/
+/*!
  *  \brief Translates the strings in UI to the selected language
  */
 /****************************************************************************/
@@ -575,32 +596,5 @@ void CProgramWidget::RetranslateUI()
     }
 }
 
-/****************************************************************************/
-/*!
- *  \brief Diaplying Startable programs list When White Racks Inserted
- *
- *  \iparam m_RackStationID = Station Id in which Rack is present.
- */
-/****************************************************************************/
-void CProgramWidget::OnShowManualProgramDlg(QString m_RackStationID)
-{
-    //(void) mp_ManualProgramDlg->SetProgramList(mp_DataConnector->ProgramList);
-    //emit ManualProgramShow(m_RackStationID);
-}
 
-int CProgramWidget::GetNumberOfUserPrograms()
-{
-    int Count;
-    int ProgramCount = 0;
-    for (Count=0; Count<mp_DataConnector->ProgramList->GetNumberOfPrograms(); Count++)
-    {
-        mp_Program = mp_DataConnector->ProgramList->GetProgram(Count);
-
-        if(mp_Program->GetID().at(0) != 'L')
-        {
-            ProgramCount += 1;
-        }
-    }
-    return ProgramCount;
-}
 } // end namespace Programs

@@ -114,13 +114,12 @@ private slots:
     void OnDeviceModeChanged(QString);
     void OnUpdateProgramColor(DataManager::CProgram &Program,bool ColorReplaced);
     void OnCancelClicked();
-    void OnShowManualProgramDlg(QString);
 
 protected:
     void changeEvent(QEvent *p_Event);
 
 signals:
-
+    void FavoriteProgramListUpdated();
     /****************************************************************************/
     /*!
      *  \brief This siganl is emitted when a white rack is inserted into the loading station.

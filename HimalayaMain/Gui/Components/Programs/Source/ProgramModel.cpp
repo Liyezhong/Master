@@ -34,7 +34,7 @@
 namespace Programs {
 const int VISIBLE_ROW_COUNT = 8;    //!< Number of rows visible in a table
 const int NUMBER_OF_COLUMNS = 5;    //!< Number of columns in a table
-
+const int MAX_FAVORITE_PROGRAM_COUNT = 5; //!< Maxiimum number of favourite Programs
 /****************************************************************************/
 /*!
  *  \brief Constructor
@@ -46,6 +46,7 @@ CProgramModel::CProgramModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
 {
     mp_ProgramList = NULL;
     m_Columns = 0;
+    m_Favcount = 0;
     m_VisibleRowCount = VISIBLE_ROW_COUNT;
 }
 
@@ -144,20 +145,20 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
             else if (Role ==(int)Qt::DecorationRole)
             {
                 switch (5 - m_Columns + Index.column()) {
-                case 1:
-                    if (m_CurrentUserRole == MainMenu::CMainWindow::Admin
-                        || m_CurrentUserRole == MainMenu::CMainWindow::Service)
-                    {
-                        if(m_CurrentIndex)
-                            return QPixmap(":/Small/CheckBox/CheckBox-Checked.png");
-                        else
-                        return QPixmap(":/Small/CheckBox/CheckBox-Enabled.png");
-                    }
+//                case 1:
+//                    if (m_CurrentUserRole == MainMenu::CMainWindow::Admin
+//                        || m_CurrentUserRole == MainMenu::CMainWindow::Service)
+//                    {
+//                        if(m_CurrentIndex)
+//                            return QPixmap(":/Small/CheckBox/CheckBox-Checked.png");
+//                        else
+//                            return QPixmap(":/Small/CheckBox/CheckBox-Enabled.png");
+//                    }
 
-                    else
-                    {
-                        return QPixmap(":/Small/CheckBox/CheckBox-Disabled.png");
-                    }
+//                    else
+//                    {
+//                        return QPixmap(":/Small/CheckBox/CheckBox-Disabled.png");
+//                    }
 
                 case 4:
                     QString Icon = p_Program->GetIcon();
@@ -166,17 +167,22 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
             }
         }
 
-//        else if (Role == (int)Qt::CheckStateRole) {
-//            if (m_Columns == 6 && NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0) {
-//                // TODO test code
-//                if (p_Program->GetID().at(0) == 'L') {
-//                    return (int)Qt::Checked;
-//                }
-//                else {
-//                    return (int)Qt::Unchecked;
-//                }
-//            }
-//        }
+        else if (Role == (int)Qt::CheckStateRole) {
+/*            if (m_Columns == 6 && NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0)*/
+            if (m_CurrentUserRole == MainMenu::CMainWindow::Admin
+                || m_CurrentUserRole == MainMenu::CMainWindow::Service){
+                if (Index.column() == 1)
+                {
+                // TODO test code
+                if (p_Program->IsFavorite() ) {
+                    return (int)Qt::Checked;
+                }
+                else {
+                    return (int)Qt::Unchecked;
+                }
+                }
+            }
+        }
         else if (Role == (int)Qt::UserRole) {
             return p_Program->GetID();
         }
@@ -201,6 +207,9 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
 /****************************************************************************/
 Qt::ItemFlags CProgramModel::flags(const QModelIndex &Index) const
 {
+    if (Index.column() == 1) {
+        return QAbstractItemModel::flags((Index)) | Qt::ItemIsUserCheckable;
+    }
     if (NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0) {
         return QAbstractItemModel::flags(Index) | Qt::ItemIsUserCheckable;
     }
@@ -255,22 +264,46 @@ QVariant CProgramModel::headerData(int Section, Qt::Orientation Orientation, int
 /****************************************************************************/
 bool CProgramModel::setData(const QModelIndex &Index, const QVariant &Value, int Role)
 {
-    Q_UNUSED(Value);
-    DataManager::CProgram Program;
-
+    bool UpdateStat = false;
     if (mp_ProgramList == NULL) {
         return false;
     }
     if (Role == (int)Qt::CheckStateRole) {
-       if (mp_ProgramList->GetProgram(Index.row(), Program) == true) {
-            if (NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0) {
-                return mp_ProgramList->UpdateProgram(&Program);
-            }
+        DataManager::CProgram *p_Program = mp_ProgramList->GetProgram(Index.row());
+       if (p_Program) {
+           if (Index.column() == 1) {
+               m_SelectedProgramCount = mp_ProgramList->GetFavoriteProgramIDs().count();
+               qDebug() <<"\n Selected Program Count:-> "<< m_SelectedProgramCount;
+               if (m_SelectedProgramCount < MAX_FAVORITE_PROGRAM_COUNT && Value.toBool() == true)
+               {
+                   p_Program->SetFavorite(Value.toBool());
+                   UpdateStat = mp_ProgramList->UpdateProgram(p_Program);
+                   OnUpdateProgramList();
+                   emit FavoriteProgramListUpdated();
+                   return true;
+               }
+               else if(Value.toBool() == 0)
+               {
+                   p_Program->SetFavorite(false);
+                   OnUpdateProgramList();
+                   emit FavoriteProgramListUpdated();
+                   return false;
+               }
+               else
+               {
+                   OnUpdateProgramList();
+                   emit FavoriteProgramListUpdated();
+                   return false;
+               }
+//            if (NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0) {
+//                return mp_ProgramList->UpdateProgram(p_Program);
+//            }
         }
     }
+    }
     return false;
-}
 
+}
 /****************************************************************************/
 /*!
  *  \brief Updates the model whenever GUI receives an updated XML from Master

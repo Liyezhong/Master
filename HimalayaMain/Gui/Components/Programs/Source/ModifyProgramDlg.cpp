@@ -117,6 +117,13 @@ CModifyProgramDlg::~CModifyProgramDlg()
 
 /****************************************************************************/
 /*!
+ *  \brief Closes ModifyProgramStep dialog
+ *
+ */
+/****************************************************************************/
+ void CModifyProgramDlg::CloseDialogModifyStepDlg() { mp_ModifyProgStepDlg->accept(); }
+/****************************************************************************/
+/*!
  *  \brief Event handler for change events
  *
  *  \iparam p_Event = Change event
@@ -194,7 +201,7 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
 
         }
         m_StepModel.SetVisibleRowCount(6);
-        m_StepModel.SetProgram(&m_Program, mp_DataConnector->ReagentList, 5);
+        m_StepModel.SetProgram(&m_Program, mp_DataConnector->ReagentGroupList,mp_DataConnector->ReagentList, 5);
         mp_TableWidget->setModel(&m_StepModel);
     }
     else if (m_ButtonType == COPY_BTN_CLICKED) {
@@ -215,7 +222,7 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
         mp_Ui->btnPrgName->setText(tr("%1").arg(LongName));
         // Pass a value same as the one passed to SetVisibleRows()
         m_StepModel.SetVisibleRowCount(6);
-        m_StepModel.SetProgram(&m_Program, mp_DataConnector->ReagentList, 5);
+        m_StepModel.SetProgram(&m_Program, mp_DataConnector->ReagentGroupList, mp_DataConnector->ReagentList, 5);
         mp_TableWidget->setModel(&m_StepModel);
     }
     else {
@@ -234,7 +241,7 @@ void CModifyProgramDlg::NewProgram()
     mp_NewProgram = new DataManager::CProgram();
    //Pass a value same as the one passed to SetVisibleRows()
     m_StepModel.SetVisibleRowCount(6);
-    m_StepModel.SetProgram(NULL, NULL, 5);
+    m_StepModel.SetProgram(NULL, NULL, NULL, 5);
     mp_TableWidget->setModel(&m_StepModel);
     m_StepModel.SetModifyProgramDlgPtr(this);
     ResizeHorizontalSection();
@@ -350,7 +357,7 @@ void CModifyProgramDlg::OnEdit()
 {
     mp_ModifyProgStepDlg->SetDialogTitle(tr("Edit Program Step"));
     mp_ModifyProgStepDlg->SetDeviceMode(m_DeviceMode);
-    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep(), mp_DataConnector->ReagentList);
+    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep(),  mp_DataConnector->ReagentList);
     mp_ModifyProgStepDlg ->SetButtonType(EDIT_BTN_CLICKED);
     mp_ModifyProgStepDlg->move(80,50);
 //    mp_ModifyProgStepDlg->ShowSelectReagentPopup();
@@ -478,7 +485,7 @@ void CModifyProgramDlg::OnSave()
             }
     }
     else if (m_ButtonType == COPY_BTN_CLICKED) {
-
+    m_Program.SetFavorite(false);
             m_Program.SetID(m_ProgramListClone.GetNextFreeProgID(true));
             if (m_ProgramListClone.AddProgram(&m_Program) == true) {
                 emit AddProgram(m_Program);
@@ -790,7 +797,7 @@ void CModifyProgramDlg::UpdateProgramStepTable(DataManager::CProgramStep *p_Prgm
         else {
             p_ProgramStep->SetStepID(mp_NewProgram->GetNextFreeStepID(true));
             (void) mp_NewProgram->AddProgramStep(p_ProgramStep);
-            m_StepModel.SetProgram(mp_NewProgram, mp_DataConnector->ReagentList, 5);
+            m_StepModel.SetProgram(mp_NewProgram, mp_DataConnector->ReagentGroupList, mp_DataConnector->ReagentList, 5);
             m_StepModel.SetModifyProgramDlgPtr(this);
             mp_TableWidget->setModel(&m_StepModel);
             ResetButtons(*mp_NewProgram, false);
@@ -801,7 +808,7 @@ void CModifyProgramDlg::UpdateProgramStepTable(DataManager::CProgramStep *p_Prgm
         if (AddNewProgramStep) {
             p_ProgramStep->SetStepID(m_Program.GetNextFreeStepID(true));
             (void) m_Program.AddProgramStep(p_ProgramStep);
-            m_StepModel.SetProgram(&m_Program, mp_DataConnector->ReagentList, 5);
+            m_StepModel.SetProgram(&m_Program, mp_DataConnector->ReagentGroupList, mp_DataConnector->ReagentList, 5);
             m_StepModel.SetModifyProgramDlgPtr(this);
             mp_TableWidget->setModel(&m_StepModel);
             ResetButtons(m_Program, false);

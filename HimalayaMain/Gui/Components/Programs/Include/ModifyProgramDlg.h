@@ -121,7 +121,7 @@ public:
      *
      */
     /****************************************************************************/
-    void CloseDialogModifyStepDlg() { mp_ModifyProgStepDlg->accept(); }
+    void CloseDialogModifyStepDlg();
 
     /****************************************************************************/
     /*!
