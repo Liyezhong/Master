@@ -65,6 +65,7 @@ private:
     Ui::CAlarmSettingsWidget *mp_Ui;    //!< User interface
     Settings::CAlarmSettingsDlg *mp_Error;  //!< Error alarm dialog
     Settings::CAlarmSettingsDlg *mp_Note;   //!< Note alarm dialog
+    Settings::CAlarmSettingsDlg *mp_Warning;   //!< Note alarm dialog
     DataManager::CUserSettings m_UserSettings;  //!< Data object
     Core::CDataConnector *mp_DataConnector; //!< DataConnector object
     void RetranslateUI();
@@ -77,9 +78,11 @@ private:
 
 private slots:
     void OnNoteEdit();
+    void OnWarningEdit();
     void OnErrorEdit();
     void OnProcessStateChanged();
     void UpdateLabels();
+    void AlarmSettingsChange(DataManager::CUserSettings &Settings);
 
 protected:
     void changeEvent(QEvent *p_Event);

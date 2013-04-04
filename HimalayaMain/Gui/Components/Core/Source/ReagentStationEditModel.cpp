@@ -94,12 +94,12 @@ void CReagentStationEditModel::UpdateReagentList()
             p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(i));
             if (p_Reagent) {
                 if (p_Reagent->GetReagentType() == USER_REAGENT) {
-                    if(m_ParaffinReagent == true && p_Reagent->GetReagentName().toLower() == QString("Paraffin").toLower()){
+                    if(m_ParaffinReagent == true && mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->GetReagentGroupName() .toLower() == QString("Paraffin").toLower()){
                         m_ReagentNames << p_Reagent->GetReagentName();
                         m_ReagentID << p_Reagent->GetReagentID();
                         m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
                     }
-                    else if(m_ParaffinReagent == false && p_Reagent->GetReagentName().toLower() != QString("Paraffin").toLower()) {
+                    else if(m_ParaffinReagent == false && mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->GetReagentGroupName().toLower() != QString("Paraffin").toLower()) {
                         m_ReagentNames << p_Reagent->GetReagentName();
                         m_ReagentID << p_Reagent->GetReagentID();
                         m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
@@ -111,12 +111,12 @@ void CReagentStationEditModel::UpdateReagentList()
 
                 if (p_Reagent->GetReagentType() == LEICA_REAGENT && (!m_FilterLeicaReagent)) {
 
-                    if(m_ParaffinReagent == true && p_Reagent->GetReagentName().toLower() == QString("Paraffin").toLower()){
+                    if(m_ParaffinReagent == true && mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->GetReagentGroupName().toLower() == QString("Paraffin").toLower()){
                         m_ReagentNames << p_Reagent->GetReagentName();
                         m_ReagentID << p_Reagent->GetReagentID();
                         m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
                     }
-                    else if(m_ParaffinReagent == false && p_Reagent->GetReagentName().toLower() != QString("Paraffin").toLower()) {
+                    else if(m_ParaffinReagent == false && mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->GetReagentGroupName().toLower() != QString("Paraffin").toLower()) {
                         m_ReagentNames << p_Reagent->GetReagentName();
                         m_ReagentID << p_Reagent->GetReagentID();
                         m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
@@ -133,7 +133,7 @@ void CReagentStationEditModel::UpdateReagentList()
     }
     foreach (const QString str, m_ReagentNames)
         (void)m_ReagentNameMap.insertMulti(str.toLower(), str);
-    m_ReagentNames = m_ReagentNameMap.values();
+    //m_ReagentNames = m_ReagentNameMap.values();
 
     endResetModel();
 }

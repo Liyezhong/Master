@@ -41,14 +41,14 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="noteSound">
+       <widget class="QLabel" name="informationSound">
         <property name="text">
          <string>Sound: Sound N3</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="noteVolume">
+       <widget class="QLabel" name="informationVolume">
         <property name="text">
          <string>Volume: 3</string>
         </property>
@@ -68,7 +68,7 @@
        </spacer>
       </item>
       <item row="0" column="2" rowspan="3">
-       <widget class="QPushButton" name="noteButton">
+       <widget class="QPushButton" name="informationButton">
         <property name="text">
          <string>Edit</string>
         </property>
@@ -91,20 +91,20 @@
     </spacer>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBox_1">
      <property name="title">
       <string>Warning</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="QLabel" name="errorSound">
+       <widget class="QLabel" name="warningSound">
         <property name="text">
          <string>Sound: Sound E5</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="errorVolume">
+       <widget class="QLabel" name="warningVolume">
         <property name="text">
          <string>Volume: 7</string>
         </property>
@@ -131,7 +131,7 @@
        </widget>
       </item>
       <item row="0" column="2" rowspan="3">
-       <widget class="QPushButton" name="errorButton">
+       <widget class="QPushButton" name="warningButton">
         <property name="text">
          <string>Edit</string>
         </property>
@@ -154,7 +154,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_3">
+    <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
       <string>Error</string>
      </property>
@@ -173,28 +173,28 @@
        </spacer>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="errorSound_2">
+       <widget class="QLabel" name="errorSound">
         <property name="text">
          <string>Sound: Sound E5</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="errorVolume_2">
+       <widget class="QLabel" name="errorVolume">
         <property name="text">
          <string>Volume: 7</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="informationperiodic_3">
+       <widget class="QLabel" name="errorperiodic">
         <property name="text">
          <string>Periodic : Off</string>
         </property>
        </widget>
       </item>
       <item row="0" column="2" rowspan="3">
-       <widget class="QPushButton" name="errorButton_2">
+       <widget class="QPushButton" name="errorButton">
         <property name="text">
          <string>Edit</string>
         </property>

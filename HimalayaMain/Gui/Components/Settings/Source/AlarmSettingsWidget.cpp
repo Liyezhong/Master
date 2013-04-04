@@ -46,12 +46,18 @@ CAlarmSettingsWidget::CAlarmSettingsWidget(QWidget *p_Parent) :
     mp_Error = new Settings::CAlarmSettingsDlg(true, this);
     mp_Error->setModal(true);
 
-    CONNECTSIGNALSLOT(mp_Ui->noteButton, clicked(), this, OnNoteEdit());
+    mp_Warning = new Settings::CAlarmSettingsDlg(true, this);
+    mp_Warning->setModal(true);
+
+    CONNECTSIGNALSLOT(mp_Ui->informationButton, clicked(), this, OnNoteEdit());
+    CONNECTSIGNALSLOT(mp_Ui->warningButton, clicked(), this, OnWarningEdit());
     CONNECTSIGNALSLOT(mp_Ui->errorButton, clicked(), this, OnErrorEdit());
-    CONNECTSIGNALSIGNAL(mp_Error, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChanged(DataManager::CUserSettings &));
-    CONNECTSIGNALSIGNAL(mp_Note, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChanged(DataManager::CUserSettings &));
+    CONNECTSIGNALSLOT(mp_Error, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
+    CONNECTSIGNALSLOT(mp_Note, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
+    CONNECTSIGNALSLOT(mp_Warning, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
     CONNECTSIGNALSIGNAL(mp_Error, PlayTestTone(quint8, quint8, bool ), this, PlayTestTone(quint8, quint8, bool ));
     CONNECTSIGNALSIGNAL(mp_Note, PlayTestTone(quint8, quint8, bool ), this, PlayTestTone(quint8, quint8, bool ));
+    CONNECTSIGNALSIGNAL(mp_Warning, PlayTestTone(quint8, quint8, bool ), this, PlayTestTone(quint8, quint8, bool ));
 }
 
 /****************************************************************************/
@@ -64,6 +70,7 @@ CAlarmSettingsWidget::~CAlarmSettingsWidget()
     try {
         delete mp_Error;
         delete mp_Note;
+        delete mp_Warning;
         delete mp_Ui;
     }
     catch (...) {
@@ -104,6 +111,7 @@ void CAlarmSettingsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSet
     m_UserSettings = *p_UserSettings;
     mp_Note->SetUserSettings(&m_UserSettings);
     mp_Error->SetUserSettings(&m_UserSettings);
+    mp_Warning->SetUserSettings(&m_UserSettings);
     UpdateLabels();
 }
 
@@ -114,12 +122,18 @@ void CAlarmSettingsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSet
 /****************************************************************************/
 void CAlarmSettingsWidget::UpdateLabels()
 {
-    mp_Ui->noteSound->setText(tr("Sound: Sound N %1").arg(QString::number(m_UserSettings.GetSoundNumberWarning())));
-    mp_Ui->noteVolume->setText(tr("Volume:  %1").arg(QString::number(m_UserSettings.GetSoundLevelWarning())));
-    mp_Ui->errorSound->setText(tr("Sound: Sound E %1").arg(QString::number(m_UserSettings.GetSoundNumberError())));
-    mp_Ui->errorVolume->setText(tr("Volume:  %1").arg( QString::number(m_UserSettings.GetSoundLevelError())));
-}
+    mp_Ui->informationSound->setText(tr("Sound: Sound  %1").arg(QString::number(m_UserSettings.GetSoundNumberWarning())));
+    mp_Ui->informationVolume->setText(tr("Volume:  %1").arg(QString::number(m_UserSettings.GetSoundLevelWarning())));
+    mp_Ui->informationperiodic->setText(tr("Periodic: %1").arg("OFF"));
 
+    mp_Ui->warningSound->setText(tr("Sound: Sound  %1").arg(QString::number(m_UserSettings.GetSoundNumberWarning())));
+    mp_Ui->warningVolume->setText(tr("Volume:  %1").arg(QString::number(m_UserSettings.GetSoundLevelWarning())));
+    mp_Ui->warningperiodic->setText(tr("Periodic: %1").arg("OFF"));
+
+    mp_Ui->errorSound->setText(tr("Sound: Sound  %1").arg(QString::number(m_UserSettings.GetSoundNumberError())));
+    mp_Ui->errorVolume->setText(tr("Volume:  %1").arg( QString::number(m_UserSettings.GetSoundLevelError())));
+    mp_Ui->errorperiodic->setText(tr("Periodic: %1").arg("OFF"));
+}
 /****************************************************************************/
 /*!
  *  \brief Updates the widget content everytime it is displayed
@@ -143,9 +157,21 @@ void CAlarmSettingsWidget::showEvent(QShowEvent *p_Event)
 void CAlarmSettingsWidget::OnNoteEdit()
 {
     mp_Note->SetDialogType(false);
-    mp_Note->UpdateDisplay(m_UserSettings.GetSoundLevelWarning(), m_UserSettings.GetSoundNumberWarning());
+    mp_Note->UpdateDisplay(m_UserSettings.GetSoundLevelWarning(), m_UserSettings.GetSoundNumberWarning()); 
     mp_Note->show();
 }
+/****************************************************************************/
+/*!
+ *  \brief Opens the warning alarm editing dialog
+ */
+/****************************************************************************/
+void CAlarmSettingsWidget::OnWarningEdit()
+{
+    mp_Warning->SetDialogType(false);
+    mp_Warning->UpdateDisplay(m_UserSettings.GetSoundLevelWarning(), m_UserSettings.GetSoundNumberWarning());
+    mp_Warning->show();
+}
+
 
 /****************************************************************************/
 /*!
@@ -171,6 +197,15 @@ void CAlarmSettingsWidget::OnProcessStateChanged()
 
 /****************************************************************************/
 /*!
+ *  \brief This slot is called when Alarm Setting changes
+ */
+/****************************************************************************/
+void CAlarmSettingsWidget:: AlarmSettingsChange(DataManager::CUserSettings &Settings)
+{
+    emit AlarmSettingsChanged(Settings);
+}
+/****************************************************************************/
+/*!
  *  \brief Enables/Disables the apply button based on the user role/process
  *         running status
  */
@@ -180,11 +215,14 @@ void CAlarmSettingsWidget::ResetButtons()
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if (!m_ProcessRunning) {
         //Edit Mode
-        mp_Ui->noteButton->setEnabled(true);
+        mp_Ui->informationButton->setEnabled(true);
+        mp_Ui->warningButton->setEnabled(true);
         mp_Ui->errorButton->setEnabled(true);
+
     }
     else {
-        mp_Ui->noteButton->setEnabled(false);
+        mp_Ui->informationButton->setEnabled(false);
+        mp_Ui->warningButton->setEnabled(true);
         mp_Ui->errorButton->setEnabled(false);
     }
 }
@@ -198,8 +236,10 @@ void CAlarmSettingsWidget::RetranslateUI()
 {
     MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Alarm", 0, QApplication::UnicodeUTF8));
     mp_Ui->groupBox->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Alarm Type 1 - Note", 0, QApplication::UnicodeUTF8));
-    mp_Ui->noteButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));
-    mp_Ui->groupBox_2->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "AlarmType 2 - Error", 0, QApplication::UnicodeUTF8));
+    mp_Ui->informationButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));
+    mp_Ui->groupBox_1->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Alarm Type 2 - Warning", 0, QApplication::UnicodeUTF8));
+    mp_Ui->warningButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));
+    mp_Ui->groupBox_2->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "AlarmType 3 - Error", 0, QApplication::UnicodeUTF8));
     mp_Ui->errorButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));
 }
 
@@ -215,6 +255,7 @@ void CAlarmSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindo
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
     mp_Note->SetPtrToMainWindow(mp_MainWindow);
     mp_Error->SetPtrToMainWindow(mp_MainWindow);
+    mp_Warning->SetPtrToMainWindow(mp_MainWindow);
 }
 
 } // end namespace Settings
