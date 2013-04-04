@@ -21,6 +21,7 @@
 #include "Settings/Include/DataManagementWidget.h"
 #include "Global/Include/Utils.h"
 #include "Global/Include/Exception.h"
+#include "ui_DataManagementWidget.h"
 #include <QEvent>
 #include <QApplication>
 
@@ -31,12 +32,16 @@
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CDataManagementWidget::CDataManagementWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent)
+CDataManagementWidget::CDataManagementWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),mp_Ui(new Ui::CDataManagementWidget)
 {
-    mp_DataManagement = new MainMenu::CDataManagement(this);
-    SetContent(mp_DataManagement->layout());
+    mp_Ui->setupUi(GetContentFrame());
+    // mp_DataManagement = new MainMenu::CDataManagement(this);
+    //SetContent(mp_DataManagement->layout());
     SetPanelTitle(tr("Data Management"));
-    CONNECTSIGNALSIGNAL(mp_DataManagement, ExecSending(const QString, const QStringList &), this, ExecSending(const QString, const QStringList &));
+    //CONNECTSIGNALSIGNAL(mp_DataManagement, ExecSending(const QString, const QStringList &), this, ExecSending(const QString, const QStringList &));
+    CONNECTSIGNALSLOT(mp_Ui->importButton,clicked(),this,ImportDialog());
+    CONNECTSIGNALSLOT(mp_Ui->saveusbButton,clicked(),this,SaveUSBDialog());
+    CONNECTSIGNALSLOT(mp_Ui->serviceExportButton,clicked(),this,ExportDialog());
 }
 
 /****************************************************************************/
@@ -47,7 +52,7 @@ CDataManagementWidget::CDataManagementWidget(QWidget *p_Parent) : MainMenu::CPan
 CDataManagementWidget::~CDataManagementWidget()
 {
     try {
-        delete mp_DataManagement;
+      //  delete mp_DataManagement;
     }
     catch (...) {
         // to please Lint.
@@ -75,6 +80,25 @@ void CDataManagementWidget::changeEvent(QEvent *p_Event)
     }
 }
 
+void CDataManagementWidget:: ExportDialog()
+{
+    QStringList Type;
+    Type << "User";
+    emit ExecSending("DataExport", Type);
+}
+void CDataManagementWidget:: SaveUSBDialog()
+{
+    QStringList Type;
+    Type << "User";
+    emit ExecSending("SaveUSB", Type);
+}
+void CDataManagementWidget:: ImportDialog()
+{
+    QStringList Type;
+    Type << "User";
+    emit ExecSending("DataImport", Type);
+}
+
 /****************************************************************************/
 /*!
  *  \brief Translates the strings in UI to the selected language
@@ -94,5 +118,5 @@ void CDataManagementWidget::RetranslateUI()
 void CDataManagementWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)
 {
     mp_MainWindow = p_MainWindow;
-    mp_DataManagement->SetPtrToMainWindow(mp_MainWindow);
+   // mp_DataManagement->SetPtrToMainWindow(mp_MainWindow);
 }

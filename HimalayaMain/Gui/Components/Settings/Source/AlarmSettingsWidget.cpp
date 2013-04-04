@@ -40,8 +40,8 @@ CAlarmSettingsWidget::CAlarmSettingsWidget(QWidget *p_Parent) :
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Alarm"));
 
-    mp_Note = new Settings::CAlarmSettingsDlg(false, this);
-    mp_Note->setModal(true);
+    mp_Information = new Settings::CAlarmSettingsDlg(false, this);
+    mp_Information->setModal(true);
 
     mp_Error = new Settings::CAlarmSettingsDlg(true, this);
     mp_Error->setModal(true);
@@ -53,10 +53,10 @@ CAlarmSettingsWidget::CAlarmSettingsWidget(QWidget *p_Parent) :
     CONNECTSIGNALSLOT(mp_Ui->warningButton, clicked(), this, OnWarningEdit());
     CONNECTSIGNALSLOT(mp_Ui->errorButton, clicked(), this, OnErrorEdit());
     CONNECTSIGNALSLOT(mp_Error, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
-    CONNECTSIGNALSLOT(mp_Note, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
+    CONNECTSIGNALSLOT(mp_Information, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Warning, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
     CONNECTSIGNALSIGNAL(mp_Error, PlayTestTone(quint8, quint8, bool ), this, PlayTestTone(quint8, quint8, bool ));
-    CONNECTSIGNALSIGNAL(mp_Note, PlayTestTone(quint8, quint8, bool ), this, PlayTestTone(quint8, quint8, bool ));
+    CONNECTSIGNALSIGNAL(mp_Information, PlayTestTone(quint8, quint8, bool ), this, PlayTestTone(quint8, quint8, bool ));
     CONNECTSIGNALSIGNAL(mp_Warning, PlayTestTone(quint8, quint8, bool ), this, PlayTestTone(quint8, quint8, bool ));
 }
 
@@ -69,7 +69,7 @@ CAlarmSettingsWidget::~CAlarmSettingsWidget()
 {
     try {
         delete mp_Error;
-        delete mp_Note;
+        delete mp_Information;
         delete mp_Warning;
         delete mp_Ui;
     }
@@ -109,7 +109,7 @@ void CAlarmSettingsWidget::changeEvent(QEvent *p_Event)
 void CAlarmSettingsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
 {
     m_UserSettings = *p_UserSettings;
-    mp_Note->SetUserSettings(&m_UserSettings);
+    mp_Information->SetUserSettings(&m_UserSettings);
     mp_Error->SetUserSettings(&m_UserSettings);
     mp_Warning->SetUserSettings(&m_UserSettings);
     UpdateLabels();
@@ -156,9 +156,9 @@ void CAlarmSettingsWidget::showEvent(QShowEvent *p_Event)
 /****************************************************************************/
 void CAlarmSettingsWidget::OnNoteEdit()
 {
-    mp_Note->SetDialogType(false);
-    mp_Note->UpdateDisplay(m_UserSettings.GetSoundLevelWarning(), m_UserSettings.GetSoundNumberWarning()); 
-    mp_Note->show();
+    mp_Information->SetDialogType(CAlarmSettingsDlg ::Information);
+    mp_Information->UpdateDisplay(m_UserSettings.GetSoundLevelWarning(), m_UserSettings.GetSoundNumberWarning());
+    mp_Information->show();
 }
 /****************************************************************************/
 /*!
@@ -167,7 +167,7 @@ void CAlarmSettingsWidget::OnNoteEdit()
 /****************************************************************************/
 void CAlarmSettingsWidget::OnWarningEdit()
 {
-    mp_Warning->SetDialogType(false);
+    mp_Warning->SetDialogType(CAlarmSettingsDlg :: Warning);
     mp_Warning->UpdateDisplay(m_UserSettings.GetSoundLevelWarning(), m_UserSettings.GetSoundNumberWarning());
     mp_Warning->show();
 }
@@ -180,7 +180,7 @@ void CAlarmSettingsWidget::OnWarningEdit()
 /****************************************************************************/
 void CAlarmSettingsWidget::OnErrorEdit()
 {  
-     mp_Error->SetDialogType(true);
+     mp_Error->SetDialogType(CAlarmSettingsDlg ::Error);
      mp_Error->UpdateDisplay(m_UserSettings.GetSoundLevelError(), m_UserSettings.GetSoundNumberError());
      mp_Error->show();
 }
@@ -253,7 +253,7 @@ void CAlarmSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindo
 {
     mp_MainWindow = p_MainWindow;
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
-    mp_Note->SetPtrToMainWindow(mp_MainWindow);
+    mp_Information->SetPtrToMainWindow(mp_MainWindow);
     mp_Error->SetPtrToMainWindow(mp_MainWindow);
     mp_Warning->SetPtrToMainWindow(mp_MainWindow);
 }

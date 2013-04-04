@@ -25,6 +25,11 @@
 #include "MainMenu/Include/DataManagement.h"
 #include "MainMenu/Include/PanelFrame.h"
 
+
+namespace Ui {
+    class CDataManagementWidget;
+}
+
 /****************************************************************************/
 /**
  * \brief Frame for the data import / export widget
@@ -42,12 +47,19 @@ public:
 private:
     MainMenu::CDataManagement *mp_DataManagement;   //!< Content of this widget
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
+    Ui::CDataManagementWidget *mp_Ui;
     void RetranslateUI();
 
 protected:
     void changeEvent(QEvent *p_Event);
 
+private slots:
+    void ExportDialog();
+    void SaveUSBDialog();
+    void ImportDialog();
+
 signals:
+
     void ExecSending(const QString, const QStringList &);
 
 };

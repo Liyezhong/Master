@@ -212,7 +212,6 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
                 else
                     mp_TableWidget->setStyleSheet("QHeaderView {color:black;}");
              }
-
             if (!m_ProcessRunning) {
                 mp_Ui->btnFull->setEnabled(true);
                 mp_Ui->btnEmpty->setEnabled(true);

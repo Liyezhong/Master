@@ -64,7 +64,7 @@ public:
 private:
     Ui::CAlarmSettingsWidget *mp_Ui;    //!< User interface
     Settings::CAlarmSettingsDlg *mp_Error;  //!< Error alarm dialog
-    Settings::CAlarmSettingsDlg *mp_Note;   //!< Note alarm dialog
+    Settings::CAlarmSettingsDlg *mp_Information;   //!< Note alarm dialog
     Settings::CAlarmSettingsDlg *mp_Warning;   //!< Note alarm dialog
     DataManager::CUserSettings m_UserSettings;  //!< Data object
     Core::CDataConnector *mp_DataConnector; //!< DataConnector object

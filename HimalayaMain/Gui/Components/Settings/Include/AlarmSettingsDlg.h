@@ -45,7 +45,14 @@ class CAlarmSettingsDlg : public MainMenu::CDialogFrame
 public:
     explicit CAlarmSettingsDlg(bool Error, QWidget *p_Parent = 0);
 
-   CAlarmSettingsDlg();
+    CAlarmSettingsDlg();
+
+    typedef enum {
+        Information = 0,
+        Warning = 1,
+        Error
+    } AlarmDialogType;
+
 
     ~CAlarmSettingsDlg();
     void UpdateDisplay(qint32 Volume, qint32 Sound);
@@ -67,7 +74,7 @@ public:
      *  \iparam DialogType = True - error, False - warning
      */
     /****************************************************************************/
-    void SetDialogType(bool DialogType) { m_ErrorAlarmScreen = DialogType; }
+    void SetDialogType(AlarmDialogType DialogType) { m_AlarmScreen = DialogType; }
 
 private:
     Ui::CAlarmSettingsDlg *mp_Ui;   //!< User interface
@@ -81,7 +88,7 @@ private:
     DataManager::CUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
     //Flags
     bool m_ProcessRunning;  //!< Process running state
-    bool m_ErrorAlarmScreen;  //!< Tells if the screen shown is error alarm setting.
+    AlarmDialogType m_AlarmScreen;  //!< Tells if the screen shown is error alarm setting.
     void RetranslateUI();
     void ResetButtons();
 

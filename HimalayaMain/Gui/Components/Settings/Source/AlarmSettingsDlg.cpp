@@ -139,61 +139,64 @@ void CAlarmSettingsDlg::UpdateDisplay(qint32 Volume, qint32 Sound)
 {
     mp_ScrollWheel->SetCurrentData(Volume);
     mp_SoundScrollWheel->SetCurrentData(Sound);
-    QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+    //QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
     // Minute
-    for (int i = 0; i <= 10; i++) {
+    for (int i = 0; i <= 9; i++) {
         mp_MinWheel->AddItem(QString("%1").arg(i, 2, 10, QChar('0')), i);
     }
-          mp_MinWheel->SetNonContinuous();
+    mp_MinWheel->SetNonContinuous();
+    mp_MinWheel->SetCurrentData(0);
 
     //Second
     for (int i = 0; i < 60; i++) {
-         mp_SecondWheel->AddItem(QString("%1").arg(i, 2, 10, QChar('0')), i);
+        mp_SecondWheel->AddItem(QString("%1").arg(i, 2, 10, QChar('0')), i);
     }
-      mp_SecondWheel->SetNonContinuous();
+    mp_SecondWheel->SetNonContinuous();
+    mp_SecondWheel->SetCurrentData(0);
 
-        mp_MinWheel->SetCurrentData(DateTime.time().minute());
-        mp_SecondWheel->SetCurrentData(DateTime.time().second());
-
-    if (m_ErrorAlarmScreen == true) {
-        SetDialogTitle(tr("Edit Alarm Type 2 - Error"));
-       for (qint32 i = 0; i <= 9; i++) {
-            mp_ScrollWheel->AddItem(QString::number(i), i);
-        }
-        mp_ScrollWheel->SetNonContinuous();
-        mp_Ui->scrollPanel->AddScrollWheel(mp_ScrollWheel, 0);
-        mp_ScrollWheel->SetCurrentData(mp_UserSettings->GetSoundLevelError());
-
-        for (qint32 i = 0; i <= 6; i++) {
-            mp_SoundScrollWheel->AddItem(QString::number(i), i);
-        }
-        mp_SoundScrollWheel->SetNonContinuous();
-        mp_Ui->sound_scrollpanel->AddScrollWheel(mp_SoundScrollWheel, 0);
-        mp_SoundScrollWheel->SetCurrentData(mp_UserSettings->GetSoundNumberError());
-
-       // m_ButtonGroup.
+    for (qint32 i = 0; i <= 9; i++) {
+        mp_ScrollWheel->AddItem(QString::number(i), i);
     }
-    else {
-        SetDialogTitle(tr("Edit Alarm Type 1 - Note"));
-          for (qint32 i = 0; i <= 9; i++) {
-            mp_ScrollWheel->AddItem(QString::number(i), i);
-        }
-        mp_ScrollWheel->SetNonContinuous();
-        mp_Ui->scrollPanel->AddScrollWheel(mp_ScrollWheel, 0);
+    mp_ScrollWheel->SetNonContinuous();
+    mp_Ui->scrollPanel->AddScrollWheel(mp_ScrollWheel, 0);
+
+    for (qint32 i = 0; i <= 6; i++) {
+        mp_SoundScrollWheel->AddItem(QString::number(i), i);
+    }
+    mp_SoundScrollWheel->SetNonContinuous();
+    mp_Ui->sound_scrollpanel->AddScrollWheel(mp_SoundScrollWheel, 0);
+
+
+    if(m_AlarmScreen == Information)  {
+        SetDialogTitle(tr("Edit Alarm Type 1 - Information"));
         mp_ScrollWheel->SetCurrentData(mp_UserSettings->GetSoundLevelWarning());
-
-      for (qint32 i = 0; i <= 6; i++) {
-            mp_SoundScrollWheel->AddItem(QString::number(i), i);
-        }
-        mp_SoundScrollWheel->SetNonContinuous();
-        mp_Ui->sound_scrollpanel->AddScrollWheel(mp_SoundScrollWheel, 0);
         mp_SoundScrollWheel->SetCurrentData(mp_UserSettings->GetSoundNumberWarning());
+        if (mp_Ui->periodic_onoffslider->GetPosition() == MainMenu::CSliderControl::PosRight)
+            mp_Ui->periodictime_scrolltable->hide();
+        else
+            mp_Ui->periodictime_scrolltable->show();
     }
 
-    if (mp_Ui->periodic_onoffslider->GetPosition() == MainMenu::CSliderControl::PosRight)
-        mp_Ui->periodictime_scrolltable->hide();
-    else
-        mp_Ui->periodictime_scrolltable->show();
+    else if(m_AlarmScreen == Warning){
+        SetDialogTitle(tr("Edit Alarm Type 2 - Warning"));
+        mp_ScrollWheel->SetCurrentData(mp_UserSettings->GetSoundLevelWarning());
+        mp_SoundScrollWheel->SetCurrentData(mp_UserSettings->GetSoundNumberWarning());
+        if (mp_Ui->periodic_onoffslider->GetPosition() == MainMenu::CSliderControl::PosRight)
+            mp_Ui->periodictime_scrolltable->hide();
+        else
+            mp_Ui->periodictime_scrolltable->show();
+    }
+
+    else if (m_AlarmScreen == Error) {
+        SetDialogTitle(tr("Edit Alarm Type 3 - Error"));
+        mp_ScrollWheel->SetCurrentData(mp_UserSettings->GetSoundLevelError());
+        mp_SoundScrollWheel->SetCurrentData(mp_UserSettings->GetSoundNumberError());
+        mp_Ui->periodic_onoffslider->hide();
+        mp_Ui->label_periodic_2->hide();
+        mp_Ui->label_periodicoff_2->hide();
+        mp_Ui->label_periodicon_2->hide();
+        // m_ButtonGroup.
+    }
 
 }
 
@@ -257,17 +260,20 @@ void CAlarmSettingsDlg::OnApply()
 {
     qDebug()<<"calling the slot play tone"<<endl;
     // m_UserSettingsTemp = *mp_UserSettings;
-    if (!m_ErrorAlarmScreen) {
+    if (m_AlarmScreen == Information) {
         mp_UserSettings->SetSoundLevelWarning(mp_ScrollWheel->GetCurrentData().toInt());
         //Adding one to checkedId  because , the id starts from zero
         mp_UserSettings->SetSoundNumberWarning(mp_SoundScrollWheel->GetCurrentData().toInt());
     }
-    else {
+    if (m_AlarmScreen == Warning) {
+        mp_UserSettings->SetSoundLevelWarning(mp_ScrollWheel->GetCurrentData().toInt());
+        //Adding one to checkedId  because , the id starts from zero
+        mp_UserSettings->SetSoundNumberWarning(mp_SoundScrollWheel->GetCurrentData().toInt());
+    }
+    else if(m_AlarmScreen == Error){
         mp_UserSettings->SetSoundLevelError(mp_ScrollWheel->GetCurrentData().toInt());
         //Adding one to checkedId  because , the id starts from zero
         mp_UserSettings->SetSoundNumberError(mp_SoundScrollWheel->GetCurrentData().toInt());
-        if (mp_Ui->periodic_onoffslider->GetPosition() == MainMenu::CSliderControl::PosRight)
-            mp_Ui->periodictime_scrolltable->hide();
     }
     emit AlarmSettingsChanged(*mp_UserSettings);
     //close();
@@ -283,11 +289,15 @@ void CAlarmSettingsDlg::OnPlayTone()
 {
     qDebug()<<"calling the slot play tone"<<endl;
 
-    if (!m_ErrorAlarmScreen){
+    if (m_AlarmScreen == Information){
 
         m_Type=true;
     }
-    else{
+    else if (m_AlarmScreen == Error){
+
+        m_Type=true;
+    }
+    else if(m_AlarmScreen == Warning){
         m_Type=false;
     }
     emit PlayTestTone(mp_ScrollWheel->GetCurrentData().toInt(),(mp_SoundScrollWheel->GetCurrentData().toInt()), m_Type);

@@ -92,7 +92,7 @@ void CReagentStationEditModel::UpdateReagentList()
         for(qint32 i = 0; i < mp_ReagentList->GetNumberOfReagents(); i++) {
             DataManager::CReagent *p_Reagent = NULL;
             p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(i));
-            if (p_Reagent) {
+            if (p_Reagent && mp_ReagentGroupList) {
                 if (p_Reagent->GetReagentType() == USER_REAGENT) {
                     if(m_ParaffinReagent == true && mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->GetReagentGroupName() .toLower() == QString("Paraffin").toLower()){
                         m_ReagentNames << p_Reagent->GetReagentName();
@@ -131,9 +131,6 @@ void CReagentStationEditModel::UpdateReagentList()
         m_ReagentNames.append("");
         m_ReagentID.append("");
     }
-    foreach (const QString str, m_ReagentNames)
-        (void)m_ReagentNameMap.insertMulti(str.toLower(), str);
-    //m_ReagentNames = m_ReagentNameMap.values();
 
     endResetModel();
 }

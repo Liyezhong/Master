@@ -113,7 +113,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Group</string>
+       <string> Groups</string>
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
@@ -126,7 +126,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Station</string>
+       <string> Stations</string>
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
@@ -140,7 +140,7 @@
      </item>
      <item>
       <property name="text">
-       <string>RMS</string>
+       <string> RMS</string>
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
