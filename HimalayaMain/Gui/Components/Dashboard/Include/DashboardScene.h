@@ -82,7 +82,6 @@ private:
     Dashboard::CDashboardEndTimeWidget *mp_DashboardEndTimeWidget;
     QGraphicsProxyWidget *mp_GraphicsProxyWidget;
 
-
     DataManager::CDashboardDataStationList *mp_DashboardStationListClone;            //!< Cloned DataManager StationList
     bool m_CloneDashboardStationList;                                                //!< True if DataManager StationList has to be cloned.
 

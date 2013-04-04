@@ -291,8 +291,7 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     addItem(mp_DashboardStationConnector);
 
     // Add the End Time Widget
-    QString ProgramName = QString(tr("Test Protocol 1"));
-    mp_DashboardEndTimeWidget = new Dashboard::CDashboardEndTimeWidget(ProgramName);
+    mp_DashboardEndTimeWidget = new Dashboard::CDashboardEndTimeWidget();
     mp_GraphicsProxyWidget = this->addWidget(mp_DashboardEndTimeWidget);
     mp_GraphicsProxyWidget->setFlag(QGraphicsItem::ItemIgnoresTransformations);
     mp_GraphicsProxyWidget->setPos(m_DashboardEndTimeWidgetPos);

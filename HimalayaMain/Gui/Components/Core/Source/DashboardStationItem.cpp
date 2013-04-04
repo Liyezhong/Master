@@ -383,7 +383,12 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
 
     Painter.eraseRect(boundingRect());
     LoadStationImages(Painter);
-    FillReagentColor(Painter);
+    QString ReagentStatus = mp_DashboardStation->GetDashboardReagentStatus();
+
+    // If Reagent Status is Empty Do not Fill the Reagent Color
+    if(0 != ReagentStatus.compare("Empty", Qt::CaseInsensitive)) {
+        FillReagentColor(Painter);
+    }
 
     if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
     {

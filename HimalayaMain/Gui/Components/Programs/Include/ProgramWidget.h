@@ -119,7 +119,13 @@ protected:
     void changeEvent(QEvent *p_Event);
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief Emit this Signal when Favorite Program List is updated
+     */
+    /****************************************************************************/
     void FavoriteProgramListUpdated();
+
     /****************************************************************************/
     /*!
      *  \brief This siganl is emitted when a white rack is inserted into the loading station.

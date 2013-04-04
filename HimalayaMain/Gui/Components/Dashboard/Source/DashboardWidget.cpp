@@ -47,19 +47,21 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      mp_Separator->setParent(this);  // Set Parent of this Frame as the Dashboard Widget.
      DrawSeparatorLine();
 
+     mp_ProgramList = mp_DataConnector->ProgramList;
+
+//     mp_ComboBoxModel = new Dashboard::CDashboardComboBoxModel();
+//     mp_ComboBoxModel->SetProgramListContainer(mp_ProgramList);
+//     mp_ComboBoxModel->ResetAndUpdateModel();
+//     mp_Ui->pgmsComboBox->setModel(mp_ComboBoxModel);
+
      m_btnGroup.addButton(mp_Ui->playButton, Dashboard::firstButton);
      m_btnGroup.addButton(mp_Ui->abortButton, Dashboard::secondButton);
 
      m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
      mp_MessageDlg = new MainMenu::CMessageDlg();
 
-     mp_ProgramList = mp_DataConnector->ProgramList;
-
-     //AddItemsToComboBox();
-
-
      CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
-     CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, currentIndexChanged(int), this, OnSelectionChanged(int));
+     CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, currentIndexChanged(int), this, OnProgramSelected(int));
 
      CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
      CONNECTSIGNALSLOT(this, ProgramAction(const QString&, DataManager::ProgramActionType_t),
@@ -91,29 +93,31 @@ void CDashboardWidget::DrawSeparatorLine()
 
 void CDashboardWidget::AddItemsToComboBox()
 {
-//    if(mp_ProgramList->GetNumberOfPrograms() != 0) {
+   //m_FavProgramIDs.clear();
+    mp_Ui->pgmsComboBox->clear();
 
-//       for( int i = 0; i < 3; i++) {
-//            QString ProgramId = mp_ProgramList->GetProgram(i)->GetID();
-//           if(ProgramId.at(0) == 'L')
-//               m_FavProgramList.push_front(ProgramId); // Insert at the front
-//           else
-//                m_FavProgramList.push_back(ProgramId);
-//       }
-//   }
+    if(m_UserRoleChanged) {
+        if((m_CurrentUserRole == MainMenu::CMainWindow::Admin) ||
+                (m_CurrentUserRole == MainMenu::CMainWindow::Service))
+        {
 
-    for ( int i = 0; i < m_FavProgramList.count(); i++)
-    {
-        QString ProgramId = mp_ProgramList->GetProgram(i)->GetID();
-        QString ProgramName = mp_ProgramList->GetProgram(ProgramId)->GetName();
-        QIcon ProgramIcon;
-        if(ProgramId.at(0) == 'L') {
-            ProgramIcon = QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png");
-        } else {
-            ProgramIcon = QIcon(":/HimalayaImages/Icons/MISC/TickOk.png");
+            m_FavProgramIDs = mp_ProgramList->GetFavoriteProgramIDs(); // get five favorite Programs' ID
+            for ( int i = 0; i < m_FavProgramIDs.count(); i++)
+            {
+                QString ProgramId = m_FavProgramIDs.at(i);
+                QString ProgramName = mp_ProgramList->GetProgram(ProgramId)->GetName();
+                QIcon ProgramIcon;
+                if(ProgramId.at(0) == 'L') {
+                    ProgramIcon = QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png");
+                } else {
+                    ProgramIcon = QIcon(":/HimalayaImages/Icons/MISC/TickOk.png");
+                }
+                mp_Ui->pgmsComboBox->insertItem(i, ProgramIcon, ProgramName);
+            }
+
         }
-        mp_Ui->pgmsComboBox->insertItem(i, ProgramIcon, ProgramName);
     }
+    //mp_ComboBoxModel->ResetAndUpdateModel();
 }
 
 /****************************************************************************/
@@ -125,6 +129,7 @@ void CDashboardWidget::OnUserRoleChanged()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_UserRoleChanged = true;
+    AddItemsToComboBox();
 }
 
 
@@ -171,10 +176,14 @@ void CDashboardWidget::OnRMSValueChanged(Global::RMSOptions_t state)
     m_RMSState = state;
 }
 
-void CDashboardWidget::OnSelectionChanged(int index)
+void CDashboardWidget::OnProgramSelected(int index)
 {
-    m_SelectedProgramId =  m_FavProgramList.at(index);
-    qDebug() << "Program Id =" <<m_SelectedProgramId;
+    qDebug() << "Index Recieved : " << index;
+    if(-1 != index) {
+        m_SelectedProgramId = m_FavProgramIDs.at(index);
+        CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_SelectedProgramId)->GetName();
+    }
+
 }
 
 bool CDashboardWidget::CheckPreConditionsToRunProgram()
@@ -197,7 +206,6 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
     }
 
     return false;
-
 
 }
 

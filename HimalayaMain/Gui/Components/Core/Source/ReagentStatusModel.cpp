@@ -186,7 +186,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
     if (Index.row() < m_ReagentNames.count()
             && (p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]])))){
         QDate t_Date;
-        int Days_Overdue = t_Date.currentDate().dayOfYear()-p_Station->GetDashboardReagentExcahngeDate().dayOfYear();
+        int Days_Overdue = t_Date.currentDate().dayOfYear()-p_Station->GetDashboardReagentExchangeDate().dayOfYear();
         bool Expired = false;
         if (p_Reagent)
              if(p_Reagent->GetMaxCassettes() < p_Station->GetDashboardReagentActualCassettes())
@@ -222,7 +222,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                         case Global::RMS_CYCLES:
                             return p_Station->GetDashboardReagentActualCycles();
                         case Global::RMS_DAYS:
-                           QDate Tem_QDate = p_Station->GetDashboardReagentExcahngeDate();
+                           QDate Tem_QDate = p_Station->GetDashboardReagentExchangeDate();
                                switch(mp_UserSettings->GetDateFormat()){
                                default:
                                    return QString("");
@@ -269,11 +269,11 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                     default:
                         return QString("");
                     case Global::DATE_INTERNATIONAL:
-                        return p_Station->GetDashboardReagentExcahngeDate().toString("dd.MM.yyyy");
+                        return p_Station->GetDashboardReagentExchangeDate().toString("dd.MM.yyyy");
                     case Global::DATE_ISO:
-                        return p_Station->GetDashboardReagentExcahngeDate().toString("yyyy-MM-dd");
+                        return p_Station->GetDashboardReagentExchangeDate().toString("yyyy-MM-dd");
                     case Global::DATE_US:
-                        return p_Station->GetDashboardReagentExcahngeDate().toString("MM/dd/yyyy");
+                        return p_Station->GetDashboardReagentExchangeDate().toString("MM/dd/yyyy");
                     }
                  }
                  else

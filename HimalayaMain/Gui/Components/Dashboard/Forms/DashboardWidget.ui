@@ -37,9 +37,6 @@
          <height>53</height>
         </size>
        </property>
-       <property name="currentIndex">
-        <number>-1</number>
-       </property>
        <property name="maxVisibleItems">
         <number>5</number>
        </property>

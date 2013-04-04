@@ -218,7 +218,7 @@ public:
      *  \return Station Name String
      */
     /****************************************************************************/
-    QDate  GetDashboardReagentExcahngeDate()
+    QDate  GetDashboardReagentExchangeDate()
     {
         return m_ReagentExchangeDate;
     }
@@ -232,7 +232,7 @@ public:
      *  \return
      */
     /****************************************************************************/
-    void SetDashboardReagentExcahngeDate(const QDate Value)
+    void SetDashboardReagentExchangeDate(const QDate Value)
     {
         m_ReagentExchangeDate = Value;
     }

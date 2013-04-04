@@ -57,7 +57,8 @@ CStartup::CStartup() : QObject()
 
     // Dashboard Signals & Slots
     CONNECTSIGNALSLOT(mp_Reagents, RMSValueChanged(Global::RMSOptions_t), mp_Dashboard, OnRMSValueChanged(Global::RMSOptions_t));
-//    CONNECTSIGNALSLOT(mp_DataConnector, ProgramsUpdated(), mp_Dashboard, AddItemsToComboBox())
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramsUpdated(), mp_Dashboard, AddItemsToComboBox());  // To Populate the ComboBox Items in the initial stage
+    CONNECTSIGNALSLOT(mp_Programs, FavoriteProgramListUpdated(), mp_Dashboard, AddItemsToComboBox()); // To Populate the ComboBox when User Changes the List
 
 //    CONNECTSIGNALSLOT(mp_Reagents, UpdateReagent(DataManager::CReagent &),
 //                      mp_DataConnector, SendReagentUpdate(DataManager::CReagent &));

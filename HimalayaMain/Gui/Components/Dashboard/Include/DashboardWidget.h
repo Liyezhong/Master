@@ -55,8 +55,10 @@ private:
     QFrame *mp_Separator;                                       //!< Separator Line between View & Operation
     DataManager::ProgramActionType_t m_ProgramCurrentAction;    //!< Program Current Action
     DataManager::ProgramActionType_t m_ProgramNextAction;       //!< Program Next Action
-    DataManager::CDataProgramList *mp_ProgramList;              //!< Programs List
-    DataManager::ListOfFavoriteProgramIDs m_FavProgramList;
+    DataManager::CDataProgramList *mp_ProgramList;
+    QStringList m_FavProgramIDs;
+
+    Dashboard::CDashboardComboBoxModel *mp_ComboBoxModel;
     QString m_SelectedProgramId;
     QButtonGroup m_btnGroup;                                    //!< Button Group
     Global::RMSOptions_t m_RMSState;                            //!< Current RMS State
@@ -82,6 +84,7 @@ protected:
 
 signals:
     void ProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
+    void UpdateProgramName(QString SelectedProgramName);
 
 public slots:
     void OnUserRoleChanged();
@@ -93,7 +96,7 @@ public slots:
     // Warning Message Slots
     void OnProgramStartConfirmation();
 public slots:
-    void OnSelectionChanged(int);
+    void OnProgramSelected(int);
 
 };
 

@@ -26,6 +26,7 @@
 #include <QFrame>
 #include <QMouseEvent>
 
+#include "Dashboard/Include/DashboardComboBoxModel.h"
 
 namespace Dashboard {
 

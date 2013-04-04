@@ -24,10 +24,16 @@
     <widget class="QWidget" name="wdgtDisplay" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QLabel" name="lblDateTimeDisplay">
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
+       <widget class="QGroupBox" name="groupBox">
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="lblDateTimeDisplay">
+           <property name="text">
+            <string>Selected Time</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
@@ -54,7 +60,78 @@
     </widget>
    </item>
    <item>
-    <widget class="MainMenu::CDateTime" name="wdgtDateTime" native="true"/>
+    <widget class="QWidget" name="wdgtDateTime" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="MainMenu::CWheelPanel" name="scrollPanelDate" native="true"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblDateTime">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>38</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="MainMenu::CWheelPanel" name="scrollPanelTime" native="true"/>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="QWidget" name="widget" native="true">
@@ -93,9 +170,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>MainMenu::CDateTime</class>
+   <class>MainMenu::CWheelPanel</class>
    <extends>QWidget</extends>
-   <header>MainMenu/Include/DateTime.h</header>
+   <header>MainMenu/Include/WheelPanel.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

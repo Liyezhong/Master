@@ -43,7 +43,7 @@ class CDashboardEndTimeWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit CDashboardEndTimeWidget(QString & ProgramName, QWidget *p_Parent = NULL);
+    explicit CDashboardEndTimeWidget(QWidget *p_Parent = NULL);
     ~CDashboardEndTimeWidget();
 
 
@@ -53,7 +53,6 @@ protected:
 public slots:
     void OnEndTimeButtonClicked();
     void UpdateDateTime(QDateTime & selDateTime);
-
 
 private:
     Ui::CDashboardEndTimeWidget *mp_Ui;

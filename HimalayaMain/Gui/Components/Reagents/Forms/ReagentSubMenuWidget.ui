@@ -99,7 +99,7 @@
      </property>
      <item>
       <property name="text">
-       <string>Reagent Status</string>
+       <string>Status</string>
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
@@ -113,7 +113,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Reagent Group</string>
+       <string>Group</string>
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
@@ -126,7 +126,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Reagent Station</string>
+       <string>Station</string>
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">

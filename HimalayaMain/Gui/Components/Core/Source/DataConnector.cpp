@@ -753,7 +753,7 @@ void CDataConnector::UpdateStationResetDataHandler(Global::tRefType Ref, const M
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
      if (pDashboardStation) {
         pDashboardStation->SetDashboardReagentStatus("Empty");
-        pDashboardStation->SetDashboardReagentExcahngeDate(QDate::currentDate()) ;
+        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate()) ;
         switch (Reagents::CReagentRMSWidget::m_RMSOption) {
             default:
                  QString("");
@@ -797,7 +797,7 @@ void CDataConnector::UpdateStationSetAsFullHandler(Global::tRefType Ref, const M
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
     if (pDashboardStation){
         pDashboardStation->SetDashboardReagentStatus("Full");
-        pDashboardStation->SetDashboardReagentExcahngeDate(QDate::currentDate()) ;
+        pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate()) ;
         switch (Reagents::CReagentRMSWidget::m_RMSOption) {
             default:
                  QString("");

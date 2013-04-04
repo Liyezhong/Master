@@ -213,9 +213,7 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
                     mp_TableWidget->setStyleSheet("QHeaderView {color:black;}");
              }
 
-            if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
-                 m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-                    (!m_ProcessRunning)) {
+            if (!m_ProcessRunning) {
                 mp_Ui->btnFull->setEnabled(true);
                 mp_Ui->btnEmpty->setEnabled(true);
                 mp_Ui->btnReset->setEnabled(true);
@@ -262,9 +260,7 @@ void CReagentStatusWidget::OnUserRoleChanged()
 void CReagentStatusWidget::OnProcessStateChanged()
 {
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
-    if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
-         m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-            (!m_ProcessRunning)) {
+    if (!m_ProcessRunning) {
         //Edit Mode
         bool m_IsLeicaReagent = m_SelectedReagent.IsLeicaReagent();
         if(m_IsLeicaReagent) {

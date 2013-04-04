@@ -95,7 +95,7 @@ void CDashboardStation::CopyFromOther(const CDashboardStation& Station)
     m_DashboardStationStatus = OtherStation.GetDashboardStationStatus();
     m_DashboardStationType = OtherStation.GetDashboardStationType();
     m_ParaffinBath = OtherStation.GetDashboardParaffinBath();
-    m_ReagentExchangeDate = OtherStation.GetDashboardReagentExcahngeDate();
+    m_ReagentExchangeDate = OtherStation.GetDashboardReagentExchangeDate();
     m_ReagentActualCassettes = OtherStation.GetDashboardReagentActualCassettes();
     m_ReagentActualCycles = OtherStation.GetDashboardReagentActualCycles();
 
@@ -185,7 +185,7 @@ bool CDashboardStation::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool
 
     XmlStreamWriter.writeStartElement("Reagent");
     XmlStreamWriter.writeAttribute("ID", GetDashboardReagentID());
-    XmlStreamWriter.writeAttribute("ExchangeDate", GetDashboardReagentExcahngeDate().toString("yyyy-MM-dd"));
+    XmlStreamWriter.writeAttribute("ExchangeDate", GetDashboardReagentExchangeDate().toString("yyyy-MM-dd"));
     XmlStreamWriter.writeAttribute("ActualCassettes", QString::number(GetDashboardReagentActualCassettes()));
     XmlStreamWriter.writeAttribute("ActualCycles", QString::number(GetDashboardReagentActualCycles()));
     XmlStreamWriter.writeAttribute("Status", GetDashboardReagentStatus());
@@ -257,7 +257,7 @@ bool CDashboardStation::DeserializeContent(QXmlStreamReader& XmlStreamReader, bo
         return false;
     }
     QString Date = XmlStreamReader.attributes().value("ExchangeDate").toString();
-    SetDashboardReagentExcahngeDate(QDate::fromString(Date, "yyyy-MM-dd"));
+    SetDashboardReagentExchangeDate(QDate::fromString(Date, "yyyy-MM-dd"));
 
     // Reagent ActualCassettes
     if (!XmlStreamReader.attributes().hasAttribute("ActualCassettes")) {

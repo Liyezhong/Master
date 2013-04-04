@@ -26,6 +26,9 @@
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/DateTime.h"
 #include "Application/Include/LeicaStyle.h"
+#include "MainMenu/Include/ScrollWheel.h"
+#include "MainMenu/Include/WheelPanel.h"
+#include "MainMenu/Include/MessageDlg.h"
 
 namespace Dashboard {
 
@@ -43,21 +46,37 @@ class CDashboardDateTimeWidget : public MainMenu::CPanelFrame
     Q_OBJECT
 
 public:
-    explicit CDashboardDateTimeWidget(QString ProgramName, QWidget *p_Parent = 0);
+    explicit CDashboardDateTimeWidget(QWidget *p_Parent = 0);
     virtual ~CDashboardDateTimeWidget();
-    QDateTime & GetChosenProgamEndTime();
+    void RefreshDateTime(Global::TimeFormat TimeFormat = Global::TIME_24);
+    QDateTime& GetSelectedDateTime();
+    static QString SELECTED_PROGRAM_NAME;
 
 
 private:
 
     Ui::CDashboardDateTimeWidget *mp_Ui;            //!< User interface
+    MainMenu::CScrollWheel *mp_DayWheel;    //!< Day scroll wheel
+    MainMenu::CScrollWheel *mp_MonthWheel;  //!< Month scroll wheel
+    MainMenu::CScrollWheel *mp_YearWheel;   //!< Year scroll wheel
+    MainMenu::CScrollWheel *mp_HourWheel;   //!< Hour scroll wheel
+    MainMenu::CScrollWheel *mp_MinWheel;    //!< Minute scroll wheel
+    MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
+    MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
     //Flags
     bool m_ProcessRunning;                  //!< Process running state
-    QDateTime m_selDateTime;
+    QDateTime m_selDateTime;                //!< Selected Date and Time
+    QDateTime m_curTime;
+
+    void RetranslateUI();
+
+protected:
+    void changeEvent(QEvent *p_Event);
 
 public slots:
-    void OnOK();
+    void OnOK(bool Send = true);
     void OnCancel();
+    void UpdateProgramName();
 
 signals:
     void OnSelectDateTime(QDateTime& selDateTime);
