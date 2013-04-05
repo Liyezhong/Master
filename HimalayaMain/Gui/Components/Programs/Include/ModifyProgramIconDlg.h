@@ -68,7 +68,8 @@ private slots:
     void OnProcessStateChanged();
     void OnIconGroup(int Id);
     void SetButtonGroup();
-
+public slots:
+    void UpdateProgramIcon();
 protected:
     void changeEvent(QEvent *p_Event);
 
@@ -87,7 +88,7 @@ signals:
      *
      */
     /****************************************************************************/
-    void UpdateProgram(DataManager::CProgram& Program);
+    void UpdateProgram(DataManager::CProgram* Program);
 
 };
 }

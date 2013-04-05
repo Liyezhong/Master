@@ -142,44 +142,30 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
                 return Time.toString("hh:mm");
             }
         }
-            else if (Role ==(int)Qt::DecorationRole)
-            {
-                switch (5 - m_Columns + Index.column()) {
-//                case 1:
-//                    if (m_CurrentUserRole == MainMenu::CMainWindow::Admin
-//                        || m_CurrentUserRole == MainMenu::CMainWindow::Service)
-//                    {
-//                        if(m_CurrentIndex)
-//                            return QPixmap(":/Small/CheckBox/CheckBox-Checked.png");
-//                        else
-//                            return QPixmap(":/Small/CheckBox/CheckBox-Enabled.png");
-//                    }
-
-//                    else
-//                    {
-//                        return QPixmap(":/Small/CheckBox/CheckBox-Disabled.png");
-//                    }
-
-                case 4:
-                    QString Icon = p_Program->GetIcon();
-                    return QPixmap(":/Settings/icons" + Icon + ".png");
-
+        else if (Role ==(int)Qt::DecorationRole)
+        {
+            switch (5 - m_Columns + Index.column()) {
+            case 4:
+                QString Icon = p_Program->GetIcon();
+                if(Icon.compare("") == true)
+                    return QVariant();
+                else
+                    return QPixmap(":/HimalayaImages/CheckBox/CheckBox-"+Icon+".png");
             }
         }
-
         else if (Role == (int)Qt::CheckStateRole) {
-/*            if (m_Columns == 6 && NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0)*/
             if (m_CurrentUserRole == MainMenu::CMainWindow::Admin
-                || m_CurrentUserRole == MainMenu::CMainWindow::Service){
+                    || m_CurrentUserRole == MainMenu::CMainWindow::Service){
                 if (Index.column() == 1)
                 {
-                // TODO test code
-                if (p_Program->IsFavorite() ) {
-                    return (int)Qt::Checked;
-                }
-                else {
-                    return (int)Qt::Unchecked;
-                }
+                    // TODO test code
+                    if (p_Program->IsFavorite()) {
+                        return (int)Qt::Checked;
+                    }
+                    else
+                    {
+                        return (int)Qt::Unchecked;
+                    }
                 }
             }
         }
@@ -193,7 +179,6 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
         return QVariant(Palette.color(QPalette::Window));
     }
     return QVariant();
-
 }
 
 /****************************************************************************/
@@ -270,36 +255,33 @@ bool CProgramModel::setData(const QModelIndex &Index, const QVariant &Value, int
     }
     if (Role == (int)Qt::CheckStateRole) {
         DataManager::CProgram *p_Program = mp_ProgramList->GetProgram(Index.row());
-       if (p_Program) {
-           if (Index.column() == 1) {
-               m_SelectedProgramCount = mp_ProgramList->GetFavoriteProgramIDs().count();
-               qDebug() <<"\n Selected Program Count:-> "<< m_SelectedProgramCount;
-               if (m_SelectedProgramCount < MAX_FAVORITE_PROGRAM_COUNT && Value.toBool() == true)
-               {
-                   p_Program->SetFavorite(Value.toBool());
-                   UpdateStat = mp_ProgramList->UpdateProgram(p_Program);
-                   OnUpdateProgramList();
-                   emit FavoriteProgramListUpdated();
-                   return true;
-               }
-               else if(Value.toBool() == 0)
-               {
-                   p_Program->SetFavorite(false);
-                   OnUpdateProgramList();
-                   emit FavoriteProgramListUpdated();
-                   return false;
-               }
-               else
-               {
-                   OnUpdateProgramList();
-                   emit FavoriteProgramListUpdated();
-                   return false;
-               }
-//            if (NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0) {
-//                return mp_ProgramList->UpdateProgram(p_Program);
-//            }
+        if (p_Program) {
+            if (Index.column() == 1) {
+                m_SelectedProgramCount = mp_ProgramList->GetFavoriteProgramIDs().count();
+                qDebug() <<"\n Selected Program Count:-> "<< m_SelectedProgramCount;
+                if (m_SelectedProgramCount < MAX_FAVORITE_PROGRAM_COUNT && Value.toBool() == true)
+                {
+                    p_Program->SetFavorite(Value.toBool());
+                    UpdateStat = mp_ProgramList->UpdateProgram(p_Program);
+                    OnUpdateProgramList();
+                    emit FavoriteProgramListUpdated();
+                    return true;
+                }
+                else if(Value.toBool() == 0)
+                {
+                    p_Program->SetFavorite(false);
+                    OnUpdateProgramList();
+                    emit FavoriteProgramListUpdated();
+                    return false;
+                }
+                else
+                {
+                    OnUpdateProgramList();
+                    emit FavoriteProgramListUpdated();
+                    return false;
+                }
+            }
         }
-    }
     }
     return false;
 

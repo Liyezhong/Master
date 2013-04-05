@@ -56,7 +56,6 @@ typedef enum  {
         STATION_NOTUSED
     } StationStatusType_t;
 
-
 const QString LEICA("leica");
 
 /****************************************************************************/

@@ -216,8 +216,6 @@ void CModifyLeicaHne::showEvent(QShowEvent *p_Event)
     }
     else {
         mp_Ui->btnCancel->setText(tr("Close"));
-//        mp_Ui->btnColor->SetColor("black");
-//        mp_Ui->btnColor->setEnabled(false);
         mp_Ui->btnSave->setEnabled(false);
         mp_Ui->eosinScrollPanel->SetDisabled(true);
         mp_Ui->haemotoxylinScrollPanel->SetDisabled(true);

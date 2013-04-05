@@ -130,7 +130,11 @@ public:
      *  \iparam p_UserSettings - Pointer of UserSettings.
      */
     /****************************************************************************/
-    void SetUserSettings(DataManager::CUserSettings *p_UserSettings) { m_UserSettings = *p_UserSettings;}
+    void SetUserSettings(DataManager::CUserSettings *p_UserSettings)
+    {
+        m_UserSettings = *p_UserSettings;
+        InitTemperatureWidget();
+    }
 
 private:
     void InitDurationWidget();

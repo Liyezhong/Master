@@ -67,6 +67,8 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
     (void) m_NonStartableProgramErrorMap.insert("7", tr("Reagent not present in bathlayout"));
     (void) m_NonStartableProgramErrorMap.insert("8", tr("Reagent Expired"));
 
+    DataManager::CUserSettings *p_Settings = mp_DataConnector->SettingsInterface->GetUserSettings();
+
     mp_Ui->setupUi(GetContentFrame());
     m_ProgramModel.SetProgramList(mp_DataConnector->ProgramList,5);
     mp_TableWidget = new MainMenu::CBaseTable;
@@ -79,9 +81,6 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
 
     mp_ModifyProgramDlg = new CModifyProgramDlg(this, p_KeyBoard , p_Parent, mp_DataConnector);
     mp_ModifyProgramDlg->setModal(true);
-
-    //mp_ManualProgramDlg = new CManualProgramDlg(this, p_Parent);
-    //mp_ManualProgramDlg->setModal(true);
 
     CONNECTSIGNALSLOT(mp_Ui->btnEdit, clicked(), this, OnEdit());
     CONNECTSIGNALSLOT(mp_Ui->btnNew, clicked(), this, OnNew());
@@ -109,8 +108,7 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_ModifyProgramDlg, CancelClicked(), this, OnCancelClicked());
     CONNECTSIGNALSLOT(mp_DataConnector, UpdateMode(QString), this, OnDeviceModeChanged(QString));
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), mp_ModifyProgramDlg, UpdateUserSettings());
-//    CONNECTSIGNALSLOT(mp_ManualProgramDlg, ProgramSelected(QString), mp_DataConnector,
-//                      onProgramSelected(QString));
+
     CONNECTSIGNALSIGNAL(&m_ProgramModel, FavoriteProgramListUpdated(), this, FavoriteProgramListUpdated());
     PopulateProgramList();
     OnUserRoleChanged();
@@ -189,7 +187,7 @@ void CProgramWidget::PopulateProgramList()
 /****************************************************************************/
 void CProgramWidget::OnEdit()
 {
-    m_MessageDlg.SetText(tr("Staining Process has started, editing is no longer possible."
+    m_MessageDlg.SetText(tr("Process has started, editing is no longer possible."
                             "\nPlease close the dialog."));
         if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
              m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
@@ -222,7 +220,7 @@ void CProgramWidget::OnNew()
     mp_ModifyProgramDlg->InitDialog(NULL);
     mp_ModifyProgramDlg->move(88, 50);
     mp_ModifyProgramDlg->show();
-
+    ResetButtons();
 }
 
 /****************************************************************************/
@@ -232,13 +230,14 @@ void CProgramWidget::OnNew()
 /****************************************************************************/
 void CProgramWidget::OnCopy()
 {
-    m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
+    m_MessageDlg.SetText(tr("Process has started, Editing is no longer possible."
                             "\nPlease close the dialog."));
     mp_ModifyProgramDlg->SetDialogTitle(tr("Edit Program"));
     mp_ModifyProgramDlg->SetButtonType(COPY_BTN_CLICKED);
     mp_ModifyProgramDlg->InitDialog(mp_Program);
     mp_ModifyProgramDlg->move(88, 50);
     mp_ModifyProgramDlg->show();
+    ResetButtons();
 }
 
 /****************************************************************************/
@@ -248,7 +247,7 @@ void CProgramWidget::OnCopy()
 /****************************************************************************/
 void CProgramWidget::OnDelete()
 {
-    m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
+    m_MessageDlg.SetText(tr("Process has started, Editing is no longer possible."
                             "\nPlease close the dialog."));
 
     MainMenu::CMessageDlg ConfirmationMessageDlg;
@@ -262,7 +261,7 @@ void CProgramWidget::OnDelete()
     if (ConfirmationMessageDlg.exec() == (int)QDialog::Accepted) {
         QString ProgramID = mp_Program->GetID();
         emit DeleteProgram(ProgramID);
-//        m_ProgramModel.ResetandUpdateModel();
+        ResetButtons();
     }
 }
 
@@ -317,7 +316,15 @@ void CProgramWidget::OnProcessStateChanged()
         //Edit Mode
         mp_Ui->btnEdit->setText(tr("Edit"));
         mp_Ui->btnDelete->setEnabled(false);
+        m_UserProgramCount = GetNumberOfUserPrograms();
+        if(m_UserProgramCount<= MAX_USER_PROGRAMS)
+        {
         mp_Ui->btnNew->setEnabled(true);
+        }
+        else
+        {
+            mp_Ui->btnNew->setEnabled(true);
+        }
         mp_Ui->btnCopy->setEnabled(false);
         mp_Ui->btnEdit->setEnabled(false);
     }
@@ -400,6 +407,7 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
                 }
             }
         }
+        m_UserProgramCount = GetNumberOfUserPrograms();
         if (mp_DataConnector->ProgramList->GetNumberOfPrograms() >= MAX_PROGRAMS) {
             mp_Ui->btnNew->setEnabled(false);
             mp_Ui->btnCopy->setEnabled(false);
@@ -445,7 +453,9 @@ void CProgramWidget::ResetButtons()
         mp_Ui->btnEdit->setEnabled(false);
         mp_Ui->btnDelete->setEnabled(false);
         mp_Ui->btnCopy->setEnabled(false);
-        if (mp_DataConnector->ProgramList->GetNumberOfPrograms() < MAX_PROGRAMS) {
+        m_UserProgramCount = GetNumberOfUserPrograms();
+        if (mp_DataConnector->ProgramList->GetNumberOfPrograms() < MAX_PROGRAMS
+                &&  m_UserProgramCount <= MAX_USER_PROGRAMS) {
             mp_Ui->btnNew->setEnabled(true);
         }
         else {
@@ -545,21 +555,20 @@ void CProgramWidget::OnUpdateProgramColor(DataManager::CProgram &Program, bool C
  *
  */
 /****************************************************************************/
-
 int CProgramWidget::GetNumberOfUserPrograms()
 {
-    int Count;
-    int ProgramCount = 0;
-    for (Count=0; Count<mp_DataConnector->ProgramList->GetNumberOfPrograms(); Count++)
+    int ProgramCount;
+    int UserProgramCount = 0;
+    for (ProgramCount=0; ProgramCount< mp_DataConnector->ProgramList->GetNumberOfPrograms(); ProgramCount++)
     {
-        mp_Program = mp_DataConnector->ProgramList->GetProgram(Count);
+        DataManager::CProgram *p_Program = mp_DataConnector->ProgramList->GetProgram(ProgramCount);
 
-        if(mp_Program->GetID().at(0) != 'L')
+        if(!p_Program->IsLeicaProgram())
         {
-            ProgramCount += 1;
+            UserProgramCount += 1;
         }
     }
-    return ProgramCount;
+    return UserProgramCount;
 }
 /****************************************************************************/
 /*!
@@ -579,8 +588,7 @@ void CProgramWidget::RetranslateUI()
     "Duration", 0, QApplication::UnicodeUTF8),0);
     (void) m_ProgramModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
     "Icon.", 0, QApplication::UnicodeUTF8),0);
-//    (void) m_ProgramModel.setHeaderData(4,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
-//    "Leica", 0, QApplication::UnicodeUTF8),0);
+
     mp_ModifyProgramDlg->SetDialogTitle(QApplication::translate("Programs::CProgramWidget", "New Program",
     0, QApplication::UnicodeUTF8));
 

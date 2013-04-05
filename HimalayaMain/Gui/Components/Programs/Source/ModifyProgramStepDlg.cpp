@@ -63,7 +63,7 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
                                             mp_ReagentList(NULL), m_RowSelected(-1),
                                             m_RowNotSelected(true), m_NewProgramStep(false),
                                             m_ProcessRunning(false), m_ReagentExists(true),
-                                            m_DeviceMode(""),mp_UserSettings(NULL),mp_DataConnector(p_DataConnector)
+                                            m_DeviceMode(""),mp_DataConnector(p_DataConnector)
 {
     mp_Ui->setupUi(GetContentFrame());
     mp_TableWidget = new MainMenu::CBaseTable;
@@ -77,10 +77,8 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
     mp_ScrollWheelHour = new MainMenu::CScrollWheel();
     mp_ScrollWheelMin =  new MainMenu::CScrollWheel();
     mp_ScrollWheelTemp = new MainMenu ::CScrollWheel();
-    mp_UserSettings = new  DataManager::CUserSettings();
     mp_Program = new DataManager::CProgram();
 
-    mp_TableWidget->SetVisibleRows(8);
     m_ReagentEditModel.SetVisibleRowCount(8);
     m_ReagentEditModel.SetRequiredContainers(mp_DataConnector->ReagentList,mp_DataConnector->ReagentGroupList,mp_DataConnector->DashboardStationList, 2);
 
@@ -114,7 +112,6 @@ CModifyProgramStepDlg::~CModifyProgramStepDlg()
         delete mp_ScrollWheelTemp;
         delete mp_TableWidget;
         delete mp_Program;
-        delete mp_DataConnector;
         delete mp_Ui;
     }
     catch (...) {
@@ -130,7 +127,7 @@ CModifyProgramStepDlg::~CModifyProgramStepDlg()
 void CModifyProgramStepDlg::ResizeHorizontalSection()
 {
     mp_TableWidget->horizontalHeader()->resizeSection(0, 134);
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 165);
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 130);
 }
 
 /****************************************************************************/
@@ -166,13 +163,10 @@ void CModifyProgramStepDlg::InitTemperatureWidget()
 {
     mp_Ui->scrollPanelWidgetTemperature->Init(1);
     mp_Ui->scrollPanelWidgetTemperature->AddScrollWheel(mp_ScrollWheelTemp, 0);
-    if (!mp_UserSettings) {
-        return;
-    }
-    mp_ScrollWheelTemp->ClearItems();
 
+    mp_ScrollWheelTemp->ClearItems();
     // Temperature Control
-    if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
+    if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
         for (int i = MIN_CENTIGRADE_TEMP; i <= MAX_CENTIGRADE_TEMP; i += 5) {
             mp_ScrollWheelTemp->AddItem(QString::number(i).rightJustified(2, '0'), i);
         }
@@ -197,39 +191,32 @@ void CModifyProgramStepDlg::InitTemperatureWidget()
  */
 /****************************************************************************/
 void CModifyProgramStepDlg::SetProgramStep(DataManager::CProgramStep *p_ProgramStep, DataManager::CDataReagentList *p_ReagentList)
-
 {
     m_ReagentEditModel.UpdateReagentList();
-   qint32 Percent;
     QTime Duration;
     mp_ProgramStep = p_ProgramStep;
     mp_ReagentList = p_ReagentList;
-//    mp_DashboardStationList = p_DashboardStationList;
-//    m_ButtonGroup.button(Percent)->setChecked(true);
 
- //vinay   Duration = Duration.addSecs(mp_ProgramStep->GetMinDurationInSeconds());
+    Duration = Duration.addSecs(mp_ProgramStep->GetDurationInSeconds());
     mp_ScrollWheelHour->SetCurrentData(Duration.hour());
     mp_ScrollWheelMin->SetCurrentData(Duration.minute());
+
     if (m_UserSettingsTemp.GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT) {
         qint32 TemperatureCelsius = ((mp_ScrollWheelTemp->GetCurrentData().toInt() - 32) * 5) / 9;
+        m_UserSettingsTemp.SetValue("Temp", TemperatureCelsius);
     }
-    mp_ScrollWheelTemp->SetCurrentData(tr("%1").arg((((mp_UserSettings->GetValue("Oven_Temp").toInt() - 40) / 5) * 9) + 104));
+    else {
+        m_UserSettingsTemp.SetValue("Temp", mp_ScrollWheelTemp->GetCurrentData().toInt());
+    }
     m_ReagentModel.FilterLeicaReagents(true);
     m_ReagentModel.SetUserSettings(&m_UserSettings);
-    //m_ReagentModel.SetReagentList(mp_ReagentList,2 );
     m_ReagentModel.OnDeviceModeChanged(m_DeviceMode);
     m_ReagentModel.SetParentPtr(this);
-    //mp_TableWidget->setModel(&m_ReagentModel);
 
     const DataManager::CReagent *Reagent = mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID());
-
-    if ((Reagent!=NULL) && (m_ReagentModel.rowCount(QModelIndex()) > 0)) {
-        if (m_ReagentModel.ContainsReagent(Reagent->GetReagentID())) {
-            mp_TableWidget->selectRow(m_ReagentModel.GetReagentPosition(Reagent->GetReagentName()));
-            m_ReagentExists = true;
-        }
-    }
-    m_ReagentModel.SetCurrentReagent(Reagent->GetReagentName());
+    QString ID = mp_ProgramStep->GetReagentID();
+    int Index = m_ReagentEditModel.GetReagentPositionOfReagent(ID);
+    mp_TableWidget->selectRow(Index);
     ResizeHorizontalSection();
     m_NewProgramStep = false;
 }
@@ -246,26 +233,25 @@ void CModifyProgramStepDlg::NewProgramStep(DataManager::CDataReagentList *p_Reag
 {
 
     m_ReagentEditModel.UpdateReagentList();
-//    QTime Duration;
-//    mp_ProgramStep = NULL;
-//    mp_ReagentList = p_ReagentList;
-//    mp_DashboardStationList = p_StationList;
+    QTime Duration;
+    mp_ProgramStep = NULL;
+    mp_ReagentList = p_ReagentList;
 
-//    mp_Ui->radioButton_50->setChecked(true);
+    mp_Ui->radioButton_50->setChecked(true);
 
-//    Duration = Duration.addSecs(0);
-//    mp_ScrollWheelHour->SetCurrentData(Duration.hour());
-//    mp_ScrollWheelMin->SetCurrentData(Duration.minute());
+    Duration = Duration.addSecs(0);
+    mp_ScrollWheelHour->SetCurrentData(Duration.hour());
+    mp_ScrollWheelMin->SetCurrentData(Duration.minute());
 
-//    m_ReagentModel.FilterLeicaReagents(true);
-//    m_ReagentModel.OnDeviceModeChanged(m_DeviceMode);
-//    m_ReagentModel.SetUserSettings(&m_UserSettings);
-//      m_ReagentModel.SetReagentList(mp_ReagentList, 2);
-//    m_ReagentModel.SetParentPtr(this);
-//    mp_TableWidget->setModel(&m_ReagentModel);
-//    ResizeHorizontalSection();
-//    m_NewProgramStep = true;
-//    m_ReagentExists = true;
+    m_ReagentModel.FilterLeicaReagents(true);
+    m_ReagentModel.OnDeviceModeChanged(m_DeviceMode);
+    m_ReagentModel.SetUserSettings(&m_UserSettings);
+    m_ReagentModel.SetReagentList(mp_ReagentList, 2);
+    m_ReagentModel.SetParentPtr(this);
+    ResizeHorizontalSection();
+
+    m_NewProgramStep = true;
+    m_ReagentExists = true;
 }
 
 /****************************************************************************/
@@ -330,7 +316,7 @@ void CModifyProgramStepDlg::OnOk()
 
         if (mp_Ui->radioButton_0->isChecked()) {
             Pressure = "On";
-             Vaccum = "Off";
+            Vaccum = "Off";
         }
         else if(mp_Ui->radioButton_25->isChecked()) {
             Vaccum = "On";
@@ -347,7 +333,6 @@ void CModifyProgramStepDlg::OnOk()
 
         m_ReagentEditModel.UpdateReagentList();
         QString ReagentId = m_ReagentEditModel.GetReagentID(m_ReagentLongName);
-//        QString Name = m_ReagentEditModel.GetReagentLongName();
         DataManager::CProgramStep ProgramStep;
         if (m_ModifyProgramDlgButtonType == COPY_BTN_CLICKED) {
 
@@ -358,10 +343,9 @@ void CModifyProgramStepDlg::OnOk()
                 m_NewProgramStep = true ;
                 ProgramStep.SetDurationInSeconds(MinDurationInSec);
                 ProgramStep.SetReagentID(ReagentId);
-
                 ProgramStep.SetTemperature(Temperature);
-                    ProgramStep.SetPressure(Pressure);
-                     ProgramStep.SetVacuum(Vaccum);
+                ProgramStep.SetPressure(Pressure);
+                ProgramStep.SetVacuum(Vaccum);
                 emit AddProgramStep(&ProgramStep, m_NewProgramStep);
                 accept();
             }
@@ -370,20 +354,23 @@ void CModifyProgramStepDlg::OnOk()
             if (m_ModifyProgramDlgButtonType == NEW_BTN_CLICKED) {
                 m_NewProgramStep = true ;
 
-               ProgramStep.SetDurationInSeconds(MinDurationInSec);
-               ProgramStep.SetReagentID(ReagentId);
-               ProgramStep.SetTemperature(Temperature);
-               ProgramStep.SetPressure(Pressure);
-               ProgramStep.SetVacuum(Vaccum);
+                ProgramStep.SetDurationInSeconds(MinDurationInSec);
+                ProgramStep.SetReagentID(ReagentId);
+                ProgramStep.SetTemperature(Temperature);
+                ProgramStep.SetPressure(Pressure);
+                ProgramStep.SetVacuum(Vaccum);
 
-               emit AddProgramStep(&ProgramStep, m_NewProgramStep);
+                emit AddProgramStep(&ProgramStep, m_NewProgramStep);
             }
             else {
                 m_NewProgramStep = false ;
-               ProgramStep = *mp_ProgramStep;
-
-               ProgramStep.SetReagentID(ReagentId);
-               emit AddProgramStep(&ProgramStep, m_NewProgramStep);
+                ProgramStep = *mp_ProgramStep;
+                ProgramStep.SetDurationInSeconds(MinDurationInSec);
+                ProgramStep.SetReagentID(ReagentId);
+                ProgramStep.SetTemperature(Temperature);
+                ProgramStep.SetPressure(Pressure);
+                ProgramStep.SetVacuum(Vaccum);
+                emit AddProgramStep(&ProgramStep, m_NewProgramStep);
             }
             accept();
         }
@@ -434,41 +421,6 @@ void CModifyProgramStepDlg::OnSelectionChanged(QModelIndex Index)
         if (!m_ReagentLongName.isEmpty()) {
             m_ReagentModel.SetCurrentReagent(m_ReagentLongName);
             m_RowNotSelected = false;
-//            mp_Ui->checkBoxExclusive->setChecked(false);
-//            if (ReagentId == TRANSFER_STEP_ID || ReagentId == UNLOADER_STEP_ID) {
-//                QTime Duration;
-//                Duration = Duration.addSecs(0);
-//                mp_ScrollWheelHour->SetCurrentData(Duration.hour());
-//                mp_ScrollWheelMin->SetCurrentData(Duration.minute());
-//                mp_ScrollWheelSec->SetCurrentData(Duration.second());
-//                mp_Ui->scrollPanelWidgetTime->SetDisabled(true);
-//                mp_Ui->radioButton_0->setChecked(false);
-//                mp_Ui->radioButton_25->setChecked(false);
-//                mp_Ui->radioButton_50->setChecked(false);
-//                mp_Ui->radioButton_75->setChecked(false);
-
-//                mp_Ui->radioButton_25->setEnabled(false);
-//                mp_Ui->radioButton_50->setEnabled(false);
-//                mp_Ui->radioButton_75->setEnabled(false);
-////                mp_Ui->checkBoxExclusive->setEnabled(false);
-//            }
-//            else if (ReagentId == OVEN_STEP_ID || ReagentId == DISTILLED_WATER_STEP_ID||
-//                     ReagentLongName == TAP_WATER_STEP_ID) {
-////                mp_Ui->checkBoxExclusive->setEnabled(false);
-//                mp_Ui->scrollPanelWidgetTime->SetDisabled(false);
-//                mp_Ui->radioButton_0->setEnabled(true);
-//                mp_Ui->radioButton_25->setEnabled(true);
-//                mp_Ui->radioButton_50->setEnabled(true);
-//                mp_Ui->radioButton_75->setEnabled(true);
-//            }
-//            else {
-//                mp_Ui->scrollPanelWidget->SetDisabled(false);
-//                mp_Ui->radioButton_0->setEnabled(true);
-//                mp_Ui->radioButton_25->setEnabled(true);
-//                mp_Ui->radioButton_50->setEnabled(true);
-//                mp_Ui->radioButton_75->setEnabled(true);
-////                mp_Ui->checkBoxExclusive->setEnabled(true);
-//            }
             mp_Ui->btnOk->setEnabled(true);
         }
     }
@@ -510,17 +462,25 @@ void CModifyProgramStepDlg::showEvent(QShowEvent *p_Event)
     if (mp_ProgramStep && mp_ReagentList) {
         DataManager::CReagent const *p_Reagent = mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID());
         if (p_Reagent && m_ReagentModel.rowCount(QModelIndex()) > 0) {
-            mp_TableWidget->reset();
-            //Dont select row for a new program step
-            if (!m_NewProgramStep) {
-                mp_TableWidget->selectRow(m_ReagentModel.
-                                          GetReagentPosition(p_Reagent->GetReagentName()));
-            }
+
             if (!m_ProcessRunning) {
                 mp_Ui->btnOk->setEnabled(true);
             }
             else {
                 mp_Ui->btnOk->setEnabled(false);
+            }
+
+            if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
+                mp_ScrollWheelTemp->SetThreeDigitMode(false);
+                mp_Ui->scrollPanelWidgetTemperature->SetThreeDigitMode(false);
+                mp_ScrollWheelTemp->SetCurrentData(QString::number(m_UserSettings.GetValue("Temp").toInt()));
+                 qDebug()<<"\n\n Program widget Temp" << m_UserSettings.GetValue("Temp").toInt();
+            }
+            else {
+                mp_ScrollWheelTemp->SetThreeDigitMode(true);
+                mp_Ui->scrollPanelWidgetTemperature->SetThreeDigitMode(true);
+                mp_ScrollWheelTemp->SetCurrentData(tr("%1").arg((((m_UserSettings.GetValue("Temp").toInt() - 40) / 5) * 9) + 104));
+                qDebug()<<"\n\n Program widget Temp" << m_UserSettings.GetValue("Temp").toInt();
             }
             DataManager::CReagent Reagent;
             if ((mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID(), Reagent) == true)

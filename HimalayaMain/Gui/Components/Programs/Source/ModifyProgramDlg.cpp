@@ -60,7 +60,7 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
                                      mp_MainWindow(p_MainWindow),
                                      mp_DataConnector(p_DataConnector),mp_NewProgram(NULL),
                                      m_ProgNameBtnClicked(false), m_ProgShortNameBtnClicked(false),
-                                     m_ProcessRunning(false), m_TempColor(" "), m_TempColorFlag(false),
+                                     m_ProcessRunning(false), m_TempColor(" "),
                                      mp_MessageDlg(NULL), m_ColorReplaced(false)
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -71,7 +71,7 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     mp_TableWidget->horizontalHeader()->show();
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
     mp_TableWidget->SetVisibleRows(6);
-  
+    mp_NewProgram = new DataManager::CProgram;
     mp_ModifyProgStepDlg = new Programs::CModifyProgramStepDlg(this, p_MainWindow, p_DataConnector);
     mp_ModifyProgStepDlg->setModal(true);
     mp_ModifyProgStepDlg->SetUserSettings(mp_DataConnector->SettingsInterface->GetUserSettings());
@@ -91,7 +91,7 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
 
     CONNECTSIGNALSLOT(mp_ModifyProgStepDlg, AddProgramStep(DataManager::CProgramStep*,bool),
                       this, UpdateProgramStepTable(DataManager::CProgramStep*,bool));
-
+    CONNECTSIGNALSLOT(mp_ModifyProgramIconDlg, UpdateProgram(DataManager::CProgram *), this, UpdateProgramIcon(DataManager::CProgram *));
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     OnProcessStateChanged();   
 }
@@ -113,6 +113,12 @@ CModifyProgramDlg::~CModifyProgramDlg()
     catch (...) {
         // to please Lint.
     }
+}
+
+void CModifyProgramDlg::UpdateProgramIcon(DataManager::CProgram *Program)
+{
+    m_Icon = Program->GetIcon();
+    m_Program.SetIcon(m_Icon);
 }
 
 /****************************************************************************/
@@ -149,7 +155,7 @@ void CModifyProgramDlg::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CModifyProgramDlg::CloseDialogs()
 {
-    //  ResetButtons();
+//      ResetButtons();
 
 }
 /****************************************************************************/
@@ -187,37 +193,40 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
 
     QString LongName = m_Program.GetName();
 
+    if(m_Program.IsLeicaProgram()) {
+        mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png"));
+        mp_Ui->btnEdit->setEnabled(false);
+        mp_Ui->btnCopy->setEnabled(false);
+        mp_Ui->btnDelete->setEnabled(false);
+        mp_Ui->btnNew->setEnabled(false);
+        mp_Ui->btnPrgName->setEnabled(false);
+        mp_Ui->btnPrgIcon->setEnabled(true);
+    } else {
+        mp_Ui->btnPrgIcon->setIcon(QIcon(QString(":/HimalayaImages/CheckBox/CheckBox-"+m_Program.GetIcon()+".png")));
+    }
+
     if (m_ButtonType == EDIT_BTN_CLICKED) {
         mp_Ui->btnPrgName->setText(tr("%1").arg(LongName));
         // Pass a value same as the one passed to SetVisibleRows()
-        if (mp_Program->GetID().at(0) != 'L') {
 
-            mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/Status_Bar/RemoteCare_small.png"));
-
-        }
-        else
-        {
-            mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png"));
-
-        }
         m_StepModel.SetVisibleRowCount(6);
         m_StepModel.SetProgram(&m_Program, mp_DataConnector->ReagentGroupList,mp_DataConnector->ReagentList, 5);
         mp_TableWidget->setModel(&m_StepModel);
     }
     else if (m_ButtonType == COPY_BTN_CLICKED) {
         switch (LongName.length()) {
-            case 20:
-                LongName.replace(17, 3, "_cp");
-                break;
-            case 19:
-                LongName.replace(17, 3, "_cp");
-                break;
-            case 18:
-                LongName.replace(17, 3, "_cp");
-                break;
-            default:
-                LongName.append("_cp");
-                break;
+        case 20:
+            LongName.replace(17, 3, "_cp");
+            break;
+        case 19:
+            LongName.replace(17, 3, "_cp");
+            break;
+        case 18:
+            LongName.replace(17, 3, "_cp");
+            break;
+        default:
+            LongName.append("_cp");
+            break;
         }
         mp_Ui->btnPrgName->setText(tr("%1").arg(LongName));
         // Pass a value same as the one passed to SetVisibleRows()
@@ -327,28 +336,6 @@ void CModifyProgramDlg::OnEditName()
 }
 
 ///****************************************************************************/
-///*!
-// *  \brief Shows the on screen keyboard to edit the program short name
-// */
-///****************************************************************************/
-//void CModifyProgramDlg::OnEditShortName()
-//{
-//    mp_KeyBoardWidget->Attach(this);
-//    mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Program Short Name"));
-//    mp_KeyBoardWidget->SetPasswordMode(false);
-
-//    if (mp_Ui->btnPrgIcon->text() != "--") {
-//        mp_KeyBoardWidget->SetLineEditContent(mp_Ui->btnPrgIcon->text());
-//    }
-//    m_ValidationType = KeyBoard::VALIDATION_2;
-//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
-//    mp_KeyBoardWidget->SetMaxCharLength(MAX_SHORTNAME_LENGTH);
-//    mp_KeyBoardWidget->SetMinCharLength(MIN_SHORTNAME_LENGTH);
-//    mp_KeyBoardWidget->show();
-//    m_ProgShortNameBtnClicked = true;
-//}
-
-/****************************************************************************/
 /*!
  *  \brief Shows the edit program step dialog
  */
@@ -502,7 +489,7 @@ void CModifyProgramDlg::OnSave()
     }
     else {
         mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
-
+        mp_NewProgram->SetIcon(m_Icon);
             mp_NewProgram->SetID(m_ProgramListClone.GetNextFreeProgID(true));
             if (m_ProgramListClone.AddProgram(mp_NewProgram)== true) {
                 emit AddProgram(*mp_NewProgram);
@@ -525,7 +512,6 @@ void CModifyProgramDlg::OnSave()
 /****************************************************************************/
 void CModifyProgramDlg::OnCancel()
 {
-    m_TempColorFlag = false;
     emit CancelClicked();
     reject();
 }
@@ -540,6 +526,7 @@ void CModifyProgramDlg::OnCancel()
 /****************************************************************************/
 void CModifyProgramDlg::OnSelectionChanged(QModelIndex Index)
 {
+    QString Id = m_StepModel.data(Index, (int)Qt::UserRole).toString();
     //Inform the model about the current row.
     m_StepModel.SetIndex(Index);
     int SelectedIndex = Index.row();
@@ -562,10 +549,12 @@ void CModifyProgramDlg::OnSelectionChanged(QModelIndex Index)
         else {
             //Edit Mode            
             if ((SelectedIndex+1) > m_Program.GetNumberOfSteps()) {
+                if(!m_Program.IsLeicaProgram())
                 ResetButtons(m_Program, false);
                 mp_TableWidget->clearSelection();
             }
             else {
+                 if(!m_Program.IsLeicaProgram())
                 ResetButtons(m_Program, true);
             }
         }
@@ -589,7 +578,6 @@ void CModifyProgramDlg::OnProcessStateChanged()
         mp_Ui->btnNew->setEnabled(true);
         mp_Ui->btnCancel->setEnabled(true);
         mp_Ui->btnSave->setEnabled(true);
-
     }
     else {
         if (m_ProcessRunning) {
@@ -675,23 +663,17 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
             mp_Ui->btnEdit->setEnabled(false);
         }
         else {
-            m_TempColorFlag = true ;
-            mp_Ui->btnPrgName->setEnabled(true);
-            mp_Ui->btnPrgIcon->setEnabled(true);
-            if (m_ButtonType == COPY_BTN_CLICKED) {
-//                mp_Ui->btnColor->SetColor("black");
-//                mp_Ui->btnColor->setEnabled(false);
+            if(!m_Program.IsLeicaProgram())
+            {
+                mp_Ui->btnNew->setEnabled(true);
+                mp_Ui->btnCancel->setEnabled(true);
+                mp_Ui->btnSave->setEnabled(true);
+                mp_Ui->btnDelete->setEnabled(false);
+                mp_Ui->btnCopy->setEnabled(false);
+                mp_Ui->btnEdit->setEnabled(false);
+                mp_Ui->btnPrgName->setEnabled(true);
+                mp_Ui->btnPrgIcon->setEnabled(true);
             }
-            else {
-//                mp_Ui->btnColor->setEnabled(true);
-            }
-            mp_Ui->btnNew->setEnabled(true);
-            mp_Ui->btnCancel->setEnabled(true);
-            mp_Ui->btnSave->setEnabled(true);
-            mp_Ui->btnDelete->setEnabled(false);
-            mp_Ui->btnCopy->setEnabled(false);
-            mp_Ui->btnEdit->setEnabled(false);
-//            mp_Ui->groupBox->setEnabled(false);
         }
     }
     else {
@@ -699,13 +681,10 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
         mp_Ui->btnPrgName->setEnabled(false);
         mp_Ui->btnPrgIcon->setEnabled(false);
         mp_Ui->btnCancel->setEnabled(true);
-//        mp_Ui->btnColor->setEnabled(false);
-//        mp_Ui->btnColor->SetColor("black");
         mp_Ui->btnCopy->setEnabled(false);
         mp_Ui->btnDelete->setEnabled(false);
         mp_Ui->btnNew->setEnabled(false);
         mp_Ui->btnEdit->setEnabled(false);
-//        mp_Ui->groupBox->setEnabled(false);
         mp_Ui->btnSave->setEnabled(false);
         mp_Ui->btnCancel->setText("Close");
     }
@@ -739,7 +718,6 @@ void CModifyProgramDlg::ResetButtons(DataManager::CProgram &CurrentProgram, bool
             mp_Ui->btnDelete->setEnabled(true);
             mp_Ui->btnCopy->setEnabled(true);
             mp_Ui->btnEdit->setEnabled(true);
-//            mp_Ui->groupBox->setEnabled(true);
             mp_Ui->btnNew->setEnabled(true);
         }
         else {
@@ -751,7 +729,6 @@ void CModifyProgramDlg::ResetButtons(DataManager::CProgram &CurrentProgram, bool
                 mp_Ui->btnDelete->setEnabled(false);
                 mp_Ui->btnCopy->setEnabled(false);
                 mp_Ui->btnEdit->setEnabled(false);
-//                mp_Ui->groupBox->setEnabled(false);
                 mp_Ui->btnNew->setEnabled(true);
             }
         }
@@ -760,7 +737,6 @@ void CModifyProgramDlg::ResetButtons(DataManager::CProgram &CurrentProgram, bool
         mp_Ui->btnDelete->setEnabled(false);
         mp_Ui->btnCopy->setEnabled(false);
         mp_Ui->btnEdit->setEnabled(false);
-//        mp_Ui->groupBox->setEnabled(false);
         mp_Ui->btnNew->setEnabled(true);
         int NumOfSteps = CurrentProgram.GetNumberOfSteps();
         if (NumOfSteps >= MAX_PROGRAM_STEPS) {
@@ -1072,7 +1048,6 @@ void CModifyProgramDlg::OnIconClicked()
     m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
                             "\nPlease close the dialog with \"Close\""));
     mp_ModifyProgramIconDlg->SetDialogTitle(tr("Select Icon"));
-   // mp_ModifyProgramIconDlg->SetReagentGroupList(*mp_CReagentGroupColorList,*mp_ReagentGroupList, *mp_ReagentGroup);
     mp_ModifyProgramIconDlg->move(96,70);
     mp_ModifyProgramIconDlg->show();
 }

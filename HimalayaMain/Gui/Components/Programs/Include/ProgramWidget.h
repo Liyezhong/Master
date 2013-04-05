@@ -30,7 +30,7 @@
 #include "KeyBoard/Include/KeyBoard.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramBase.h"
-
+#include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 
 namespace Programs {
 
@@ -84,6 +84,7 @@ private:
     QModelIndex m_CurrentIndex;
     bool m_UserChanged;
     int m_UserProgramCount;
+    DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
 
 protected:
     void showEvent(QShowEvent *);
@@ -119,6 +120,12 @@ protected:
     void changeEvent(QEvent *p_Event);
 
 signals:
+/****************************************************************************/
+    /*!
+     *  \brief Emit this Signal when Program Icon is updated
+     */
+    /****************************************************************************/
+    void ProgramIconUpdated();
     /****************************************************************************/
     /*!
      *  \brief Emit this Signal when Favorite Program List is updated

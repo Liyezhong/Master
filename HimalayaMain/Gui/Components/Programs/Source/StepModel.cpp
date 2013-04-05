@@ -150,8 +150,7 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
     }
     Step = const_cast<DataManager::CProgramStep*>(mp_Program->GetProgramStep(Index.row()));
 
-    //if ((Step = const_cast<DataManager::CProgramStep*>(mp_Program->GetProgramStep(Index.row()))) != NULL) {
-      if (Step != NULL) {
+    if (Step != NULL) {
         if (Role == (int)Qt::DisplayRole) {
             switch (Index.column()) {
             case 0:
@@ -160,7 +159,7 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
             {
                 DataManager::CReagent Reagent;
                 if (mp_ReagentList->GetReagent(Step->GetReagentID(), Reagent) == true) {
-                  return Reagent.GetReagentName();
+                    return Reagent.GetReagentName();
                 }
                 else {
                     return QVariant();
@@ -204,15 +203,15 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
                 if (mp_ReagentGroupList) {
                     if(p_Reagent) {
                         DataManager::CReagentGroup *p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID()));
-                          if (p_ReagentGroup) {
-                                QColor Color;
-                                // add '#' to hex value to change to color value
-                                Color.setNamedColor("#" + p_ReagentGroup->GetGroupColor().trimmed());
-                                QPalette Palete(Color);
-                                return QVariant(Palete.color(QPalette::Window));
-                           }
-                     }
-                     else {
+                        if (p_ReagentGroup) {
+                            QColor Color;
+                            // add '#' to hex value to change to color value
+                            Color.setNamedColor("#" + p_ReagentGroup->GetGroupColor().trimmed());
+                            QPalette Palete(Color);
+                            return QVariant(Palete.color(QPalette::Window));
+                        }
+                    }
+                    else {
                         QPalette Palette;
                         return QVariant(Palette.color(QPalette::Window));
                     }

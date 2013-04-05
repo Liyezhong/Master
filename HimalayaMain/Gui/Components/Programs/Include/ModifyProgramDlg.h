@@ -76,7 +76,6 @@ private:
     bool m_ProcessRunning;                          //!< Process running state
     Programs::ButtonType_t m_ButtonType;            //!< Informs which button was clicked
     QString m_TempColor;                            //!< String to store program color for temperory
-    bool m_TempColorFlag;                           //!< True if process is running or User is a Standard user
     CProgramModel m_ProgramModel;                   //!< Program model object
     MainMenu::CMessageDlg *mp_MessageDlg;             //!< Message Dialog object
     DataManager::CProgramStep m_LastProgramStep;    //!< ProgramStep object
@@ -91,7 +90,8 @@ private:
     MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
     CModifyProgramIconDlg *mp_ModifyProgramIconDlg;     //!< Edit Program Icon dialog
     DataManager::CProgramStep m_LeicaProgramStepOne;           //!< ProgramStep object
-
+    QString m_Icon;                                   //!< Program Icon Name
+    DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
 
 
 protected:
@@ -169,9 +169,17 @@ private slots:
     void OnUpButtonClicked();
     void OnDownButtonClicked();
     void OnIconClicked();
+    void UpdateProgramIcon(DataManager::CProgram *Program);
 
 
 signals:
+
+    /****************************************************************************/
+    /*!
+     *  \brief This siganl is emitted when Program Icon is updated.
+     */
+    /****************************************************************************/
+    void ProgramIconUpdated();
     /****************************************************************************/
     /*!
      *  \brief This siganl is emitted when reagents are updated.
