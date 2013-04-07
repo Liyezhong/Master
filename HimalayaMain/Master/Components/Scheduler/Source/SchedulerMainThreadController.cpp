@@ -33,8 +33,10 @@ namespace Scheduler {
         , m_TickTimer(this)
         , m_SchedulerCommandProcessorThread(NULL)
         , m_SchedulerCommandProcessor(NULL)
+        , m_SchedulerMachine(new SchedulerMachine(this))
+        , mp_IDeviceProcessing(NULL)
     {
-  
+
     }
 
     SchedulerMainThreadController::~SchedulerMainThreadController()
@@ -43,6 +45,8 @@ namespace Scheduler {
         m_SchedulerCommandProcessorThread = NULL;
         delete m_SchedulerCommandProcessor;
         m_SchedulerCommandProcessor = NULL;
+        delete m_SchedulerMachine;
+        m_SchedulerMachine = NULL;
     }
 
     void SchedulerMainThreadController::RegisterCommands()
@@ -69,7 +73,7 @@ namespace Scheduler {
         m_SchedulerCommandProcessorThread = new QThread();
         DeviceControl::IDeviceProcessing* pIDeviceProcessing = NULL;//to do??
 
-        m_SchedulerCommandProcessor = new SchedulerCommandProcessor(pIDeviceProcessing, this);
+        m_SchedulerCommandProcessor = new SchedulerCommandProcessor(this);
         //CONNECTSIGNALSLOT(&m_TickTimer, timeout(), m_SchedulerCommandProcessor, run());
 
         m_SchedulerCommandProcessor->moveToThread(m_SchedulerCommandProcessorThread);
@@ -77,6 +81,8 @@ namespace Scheduler {
 
         //timer setting
         CONNECTSIGNALSLOT(&m_TickTimer, timeout(), this, OnTickTimer());
+        CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, DCLConfigurationFinished(ReturnCode_t, IDeviceProcessing*),
+                      this,OnDCLConfigurationFinished(ReturnCode_t, IDeviceProcessing*))
         m_TickTimer.setInterval(500);
         m_TickTimer.start();
 
@@ -97,7 +103,7 @@ namespace Scheduler {
 
     void SchedulerMainThreadController::OnGoReceived()
     {
-        m_TickTimer.start();
+       m_TickTimer.start();
     }
 
     void SchedulerMainThreadController::OnStopReceived()
@@ -123,6 +129,7 @@ namespace Scheduler {
            //send device control command
 
            //send scheduler command, like program status, request reply
+         HardwareMonitor();
 
     }
 
@@ -147,12 +154,45 @@ namespace Scheduler {
         Q_UNUSED(Ref);
         Q_UNUSED(Cmd);
     }
-
+	
     void SchedulerMainThreadController::OnActionCommandReceived(Global::tRefType Ref, const NetCommands::CmdSystemAction &Cmd)    // todo: should be of type CmdAction
     {
         Q_UNUSED(Ref)
 
     }
+	
+   void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetCode, IDeviceProcessing* pIDP)
+   {
+    if((RetCode == DCL_ERR_FCT_CALL_SUCCESS)|| (RetCode == DCL_ERR_TIMEOUT))
+    {
+        mp_IDeviceProcessing = pIDP;
+    }
+
+   }
+   void SchedulerMainThreadController::HardwareMonitor()
+   {
+       if(mp_IDeviceProcessing)
+       {
+           qreal TempALLevelSensor= mp_IDeviceProcessing->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
+           qreal TempALTube1= mp_IDeviceProcessing->ALGetRecentTemperature(AL_TUBE1,0);
+           qreal TempALTube2= mp_IDeviceProcessing->ALGetRecentTemperature(AL_TUBE2,0);
+           qreal TempRV = mp_IDeviceProcessing->RVGetRecentTemperature(0);
+           RVPosition_t PositionRV = mp_IDeviceProcessing->RVReqActRVPosition();
+           qreal TempRTBottom= mp_IDeviceProcessing->RTGetRecentTemperature(RT_BOTTOM,0);
+           qreal TempRTSide= mp_IDeviceProcessing->RTGetRecentTemperature(RT_SIDE,0);
+           qreal TempOvenBottom= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_BOTTOM,0);
+           qreal TempOvenTop= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_TOP,0);
+           qDebug()<<"Air liquid system level sensor's temp is" << TempALLevelSensor;
+           qDebug()<<"Air liquid system tube1's temp is" << TempALTube1;
+           qDebug()<<"Air liquid system tube2's temp is" << TempALTube2;
+           qDebug()<<"Rotary valve's temp is" << TempRV;
+           qDebug()<<"Rotary valve's position is" << PositionRV;
+           qDebug()<<"Retort bottom temp is" << TempRTBottom;
+           qDebug()<<"Retort side temp is" << TempRTSide;
+           qDebug()<<"Oven bottom temp is" << TempOvenBottom;
+           qDebug()<<"Oven top temp is" << TempOvenTop;
+       }
+   }
 
 } // EONS ::Scheduler
 

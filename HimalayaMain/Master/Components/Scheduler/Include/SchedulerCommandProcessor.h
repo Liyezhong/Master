@@ -29,11 +29,18 @@
 #include <QMutex>
 
 #include "Global/Include/Commands/Command.h"
+#include "DeviceControl/Include/Interface/IDeviceProcessing.h"
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "DeviceControl/Include/Devices/RotaryValveDevice.h"
+#include "DeviceControl/Include/Devices/AirLiquidDevice.h"
+#include "DeviceControl/Include/Devices/RetortDevice.h"
+#include "DeviceControl/Include/Devices/OvenDevice.h"
+#include "DeviceControl/Include/Devices/PeripheryDevice.h"
 
-namespace DeviceControl
-{
-    class IDeviceProcessing;
-}
+using namespace DeviceControl;
+//{
+//    class IDeviceProcessing;
+//}
 
 namespace Scheduler{
 
@@ -56,7 +63,7 @@ public:
      *
      */
     /****************************************************************************/
-    explicit SchedulerCommandProcessor(DeviceControl::IDeviceProcessing *IDP,SchedulerMainThreadController *controller);
+    explicit SchedulerCommandProcessor(SchedulerMainThreadController *controller);
 
     
 signals:
@@ -67,6 +74,7 @@ signals:
      */
     /****************************************************************************/
     void onCmdFinished(Global::CommandShPtr_t *cmd, bool result);
+    void DCLConfigurationFinished(ReturnCode_t RetCode, IDeviceProcessing* pIDP);
 
 
 public slots:
@@ -86,6 +94,12 @@ public slots:
     /****************************************************************************/
     void pushCmd(Global::CommandShPtr_t *cmd);
 
+    void DevProcInitialisationAckn(DevInstanceID_t instanceID, ReturnCode_t configResult);
+    void DevProcConfigurationAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo);
+    void DevProcStartNormalOpModeAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo);
+    void ThrowError(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp);
+    void DevProcDestroyAckn();
+
 private:
 
     /****************************************************************************/
@@ -100,15 +114,16 @@ private:
     SchedulerCommandProcessor(const SchedulerCommandProcessor&);                      ///< Not implemented.
     const SchedulerCommandProcessor& operator=(const SchedulerCommandProcessor&);     ///< Not implemented.
 
+
 private:
-    DeviceControl::IDeviceProcessing *m_IDP;
+    DeviceControl::IDeviceProcessing m_IDeviceProcessing;
     SchedulerMainThreadController *mp_SchedulerThreadController;
 
     QQueue<Global::CommandShPtr_t *> m_Cmds;
     Global::CommandShPtr_t * m_currentCmd;
     QMutex m_CmdMutex;
 
-    
+
 };
 
 } // end of namespace Scheduler

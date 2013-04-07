@@ -26,12 +26,24 @@
 namespace Scheduler{
 
 
-SchedulerCommandProcessor::SchedulerCommandProcessor(DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller) :
-    m_IDP(IDP),
+SchedulerCommandProcessor::SchedulerCommandProcessor(SchedulerMainThreadController *controller) :
     mp_SchedulerThreadController(controller)
 {
-}
 
+    qRegisterMetaType<ReturnCode_t>("ReturnCode_t");
+    qRegisterMetaType<DevInstanceID_t>("DevInstanceID_t");
+
+    CONNECTSIGNALSLOT(&m_IDeviceProcessing, ReportInitializationFinished(DevInstanceID_t, ReturnCode_t),
+                      this, DevProcInitialisationAckn(DevInstanceID_t, ReturnCode_t));
+    CONNECTSIGNALSLOT(&m_IDeviceProcessing, ReportConfigurationFinished(DevInstanceID_t, ReturnCode_t),
+                      this, DevProcConfigurationAckn(DevInstanceID_t, ReturnCode_t));
+    CONNECTSIGNALSLOT(&m_IDeviceProcessing, ReportStartNormalOperationMode(DevInstanceID_t, ReturnCode_t),
+                      this, DevProcStartNormalOpModeAckn(DevInstanceID_t, ReturnCode_t));
+    CONNECTSIGNALSLOT(&m_IDeviceProcessing, ReportError(DevInstanceID_t, quint16, quint16, quint16, const QDateTime &),
+                      this, ThrowError(DevInstanceID_t, quint16, quint16, quint16, const QDateTime &));
+    CONNECTSIGNALSLOT(&m_IDeviceProcessing, ReportDestroyFinished(), this, DevProcDestroyAckn());
+
+}
 
 void SchedulerCommandProcessor::run()
 {
@@ -67,6 +79,56 @@ bool SchedulerCommandProcessor::newCmdComing()
     m_CmdMutex.unlock();
     return ret;
 }
+void SchedulerCommandProcessor::DevProcInitialisationAckn(DevInstanceID_t instanceID, ReturnCode_t configResult)
+{
+    // interface implementation runs in DeviceControl-Thread
+    ReturnCode_t retCode;
 
+    qDebug()<< "Configurating DeviceControl Layer...";
 
+    qDebug() << "  CApplicationControl::DevProcInitialisationAckn" << " " << instanceID << " " << configResult;
+
+    QString SerialNo;
+    if (IDeviceProcessing::GetSerialNumber(SerialNo)) {
+        qDebug() << "  Serial number is " << SerialNo;
+    } else {
+        qDebug() << "  Error: getting serial number failed.";
+    }
+
+    retCode = m_IDeviceProcessing.StartConfigurationService();
+    if(retCode != DCL_ERR_FCT_CALL_SUCCESS)
+    {
+        qDebug() << "  Error starting configuration service: " << retCode;
+    }
+}
+void SchedulerCommandProcessor::DevProcConfigurationAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
+{
+    // interface implementation runs in DeviceControl-Thread
+    qDebug() << "  SchedulerCommandProcessor::DevProcConfigurationAckn" << instanceID << "ReturnCode" << hdlInfo;
+    if((hdlInfo == DCL_ERR_FCT_CALL_SUCCESS)|| (hdlInfo == DCL_ERR_TIMEOUT))
+    {
+        emit DCLConfigurationFinished(hdlInfo, &m_IDeviceProcessing);
+    }
+}
+void SchedulerCommandProcessor::DevProcStartNormalOpModeAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
+{
+    qDebug() << "  SchedulerCommandProcessor::DevProcStartNormalOpModeAckn " << instanceID << " " << hdlInfo;
+}
+void SchedulerCommandProcessor::ThrowError(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp)
+{
+    // Platform/Master/Components/DeviceControl/Include/Global/
+    //   DeviceControlError.h
+    //   DeviceControlGlobal.h
+    //WriteToLog(
+     //                       QString() + "Thrown DCL Error:" +
+     //                       "  Module:" +  QString().setNum(instanceID, 16) +
+     //                       ", Group:"  +  QString().setNum(usErrorGroup, 16) +
+     //                       ", ID:"     +  QString().setNum(usErrorID, 16) +
+     //                       ", Data:"   +  QString().setNum(usErrorData, 16) +
+     //                       ", TimeStamp:" + TimeStamp.toString()
+     //                       );
+}
+void SchedulerCommandProcessor::DevProcDestroyAckn()
+{
+}
 }// end of namespace Scheduler

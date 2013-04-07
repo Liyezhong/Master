@@ -3,8 +3,12 @@
 }
 
 TARGET = Scheduler
+INCLUDEPATH += ../../../../Common/Components
 SOURCES += ../Source/*.cpp
-HEADERS += ../Include/*.h*
+HEADERS += ../Include/*.h \
+           ../../../../../../Platform/Master/Components/DeviceControl/Include/Interface/*.h \
+           ../../../../../../Platform/Master/Components/DeviceControl/Include/Global/*.h
+
 
 RESOURCES +=
 

@@ -25,38 +25,38 @@
                 <CAN_message key="EventWarning" commandclass="0x2" commandcode="0x01" ms="0x0"/>
                 <CAN_message key="EventError" commandclass="0x2" commandcode="0x02" ms="0x0"/>
                 <CAN_message key="EventFatal" commandclass="0x2" commandcode="0x03" ms="0x0"/>                
-                <CAN_message key="CfgStatistics" commandclass="0x6" commandcode="0x00" ms="0x1"/>
-                <CAN_message key="Statistics" commandclass="0x6" commandcode="0x00" ms="0x0"/>
-                <CAN_message key="ReqDataReset" commandclass="0x6" commandcode="0x01" ms="0x1"/>
-                <CAN_message key="AcknDataReset" commandclass="0x6" commandcode="0x01" ms="0x0"/>
-                <CAN_message key="ReqMemoryFormat" commandclass="0x6" commandcode="0x05" ms="0x1"/>
-                <CAN_message key="AcknMemoryFormat" commandclass="0x6" commandcode="0x05" ms="0x0"/>
-                <CAN_message key="ReqSerialNumber" commandclass="0x6" commandcode="0x06" ms="0x1"/>
-                <CAN_message key="SerialNumber" commandclass="0x6" commandcode="0x06" ms="0x0"/>
-                <CAN_message key="ReqEndTestResult" commandclass="0x6" commandcode="0x07" ms="0x1"/>
-                <CAN_message key="EndTestResult" commandclass="0x6" commandcode="0x07" ms="0x0"/>
+                <CAN_message key="CfgStatistics" commandclass="0x4" commandcode="0x00" ms="0x1"/>
+                <CAN_message key="Statistics" commandclass="0x4" commandcode="0x00" ms="0x0"/>
+                <CAN_message key="ReqDataReset" commandclass="0x4" commandcode="0x01" ms="0x1"/>
+                <CAN_message key="AcknDataReset" commandclass="0x4" commandcode="0x01" ms="0x0"/>
+                <CAN_message key="ReqMemoryFormat" commandclass="0x4" commandcode="0x05" ms="0x1"/>
+                <CAN_message key="AcknMemoryFormat" commandclass="0x4" commandcode="0x05" ms="0x0"/>
+                <CAN_message key="ReqSerialNumber" commandclass="0x4" commandcode="0x06" ms="0x1"/>
+                <CAN_message key="SerialNumber" commandclass="0x4" commandcode="0x06" ms="0x0"/>
+                <CAN_message key="ReqEndTestResult" commandclass="0x4" commandcode="0x07" ms="0x1"/>
+                <CAN_message key="EndTestResult" commandclass="0x4" commandcode="0x07" ms="0x0"/>
                 <CAN_message key="ReqHWInfo" commandclass="0x6" commandcode="0x08" ms="0x1"/>
                 <CAN_message key="HWInfo" commandclass="0x6" commandcode="0x08" ms="0x0"/>
                 <CAN_message key="ReqSWInfo" commandclass="0x6" commandcode="0x09" ms="0x1"/>
                 <CAN_message key="SWInfo" commandclass="0x6" commandcode="0x09" ms="0x0"/>
-                <CAN_message key="ReqBootLoaderInfo" commandclass="0x6" commandcode="0x0a" ms="0x1"/>
-                <CAN_message key="BootLoaderInfo" commandclass="0x6" commandcode="0x0a" ms="0x0"/>
-                <CAN_message key="ReqLifeCycleData" commandclass="0x6" commandcode="0x0b" ms="0x1"/>
-                <CAN_message key="LifeCycleData" commandclass="0x6" commandcode="0x0b" ms="0x0"/>
-                <CAN_message key="ReqLaunchDate" commandclass="0x6" commandcode="0x0c" ms="0x1"/>
-                <CAN_message key="LaunchDate" commandclass="0x6" commandcode="0x0c" ms="0x0"/>
-                <CAN_message key="ReqBoardName" commandclass="0x6" commandcode="0x0d" ms="0x1"/>
-                <CAN_message key="BoardName" commandclass="0x6" commandcode="0x0d" ms="0x0"/>
-                <CAN_message key="ReqBoardOptions" commandclass="0x6" commandcode="0x0e" ms="0x1"/>
-                <CAN_message key="BoardOptions" commandclass="0x6" commandcode="0x0e" ms="0x0"/>
-                <CAN_message key="CfgVoltageMonitor" commandclass="0x6" commandcode="0x0f" ms="0x1"/>
-                <CAN_message key="ReqVoltageState" commandclass="0x6" commandcode="0x10" ms="0x1"/>
-                <CAN_message key="VoltageState" commandclass="0x6" commandcode="0x10" ms="0x0"/>
-                <CAN_message key="CfgCurrentMonitor" commandclass="0x6" commandcode="0x11" ms="0x1"/>
-                <CAN_message key="ReqCurrentState" commandclass="0x6" commandcode="0x12" ms="0x1"/>
-                <CAN_message key="CurrentState" commandclass="0x6" commandcode="0x12" ms="0x0"/>
-                <CAN_message key="ReqUniqueNumber" commandclass="0x6" commandcode="0x13" ms="0x1"/>
-                <CAN_message key="UniqueNumber" commandclass="0x6" commandcode="0x13" ms="0x0"/>
+                <CAN_message key="ReqBootLoaderInfo" commandclass="0x4" commandcode="0x0a" ms="0x1"/>
+                <CAN_message key="BootLoaderInfo" commandclass="0x4" commandcode="0x0a" ms="0x0"/>
+                <CAN_message key="ReqLifeCycleData" commandclass="0x4" commandcode="0x0b" ms="0x1"/>
+                <CAN_message key="LifeCycleData" commandclass="0x4" commandcode="0x0b" ms="0x0"/>
+                <CAN_message key="ReqLaunchDate" commandclass="0x4" commandcode="0x0c" ms="0x1"/>
+                <CAN_message key="LaunchDate" commandclass="0x4" commandcode="0x0c" ms="0x0"/>
+                <CAN_message key="ReqBoardName" commandclass="0x4" commandcode="0x0d" ms="0x1"/>
+                <CAN_message key="BoardName" commandclass="0x4" commandcode="0x0d" ms="0x0"/>
+                <CAN_message key="ReqBoardOptions" commandclass="0x4" commandcode="0x0e" ms="0x1"/>
+                <CAN_message key="BoardOptions" commandclass="0x4" commandcode="0x0e" ms="0x0"/>
+                <CAN_message key="CfgVoltageMonitor" commandclass="0x4" commandcode="0x0f" ms="0x1"/>
+                <CAN_message key="ReqVoltageState" commandclass="0x4" commandcode="0x10" ms="0x1"/>
+                <CAN_message key="VoltageState" commandclass="0x4" commandcode="0x10" ms="0x0"/>
+                <CAN_message key="CfgCurrentMonitor" commandclass="0x4" commandcode="0x11" ms="0x1"/>
+                <CAN_message key="ReqCurrentState" commandclass="0x4" commandcode="0x12" ms="0x1"/>
+                <CAN_message key="CurrentState" commandclass="0x4" commandcode="0x12" ms="0x0"/>
+                <CAN_message key="ReqUniqueNumber" commandclass="0x4" commandcode="0x13" ms="0x1"/>
+                <CAN_message key="UniqueNumber" commandclass="0x4" commandcode="0x13" ms="0x0"/>
                 <CAN_message key="UpdateRequired" commandclass="0x7" commandcode="0x00" ms="0x0"/>
                 <CAN_message key="UpdateModeRequest" commandclass="0x7" commandcode="0x01" ms="0x1"/>
                 <CAN_message key="UpdateModeAck" commandclass="0x7" commandcode="0x01" ms="0x0"/>
@@ -180,7 +180,6 @@
                 <CAN_message key="JoystickDisplacement" commandclass="0x4" commandcode="0x07" ms="0x0"/>
                 <CAN_message key="JoystickMechOffsetReq" commandclass="0x4" commandcode="0x08" ms="0x1"/>
                 <CAN_message key="JoystickMechOffset" commandclass="0x4" commandcode="0x08" ms="0x0"/>
-                <CAN_message key="JoystickVoltageRangeSet" commandclass="0x4" commandcode="0x09" ms="0x1"/>
             </CAN_messages>
         </function_module>
         <function_module type="RFID11785" moduleID="9">
@@ -191,7 +190,6 @@
                 <CAN_message key="EventError" commandclass="0x2" commandcode="0x02" ms="0x0"/>
                 <CAN_message key="EventFatalError" commandclass="0x2" commandcode="0x03" ms="0x0"/>
                 <CAN_message key="RFID11785Config" commandclass="0x4" commandcode="0x05" ms="0x1"/>
-                <CAN_message key="RFID11785ConfigAckn" commandclass="0x4" commandcode="0x05" ms="0x0"/>
                 <CAN_message key="RFID11785Login" commandclass="0x4" commandcode="0x06" ms="0x1"/>
                 <CAN_message key="RFID11785LoginAckn" commandclass="0x4" commandcode="0x06" ms="0x0"/>
                 <CAN_message key="RFID11785WriteUserData" commandclass="0x4" commandcode="0x07" ms="0x1"/>
@@ -253,6 +251,7 @@
                 <CAN_message key="TempCtrlHardware" commandclass="0x6" commandcode="0x0f" ms="0x0"/>
                 <CAN_message key="TempCtrlNotiInRange" commandclass="0x4" commandcode="0x11" ms="0x0"/>
                 <CAN_message key="TempCtrlNotiOutOfRange" commandclass="0x4" commandcode="0x12" ms="0x0"/>
+                <CAN_message key="TempCtrlLevelSensorState" commandclass="0x4" commandcode="0x13" ms="0x0"/>
             </CAN_messages>
         </function_module>
         <function_module type="UART" moduleID="12">
@@ -267,6 +266,36 @@
                 <CAN_message key="UARTDataAckn" commandclass="0x4" commandcode="0x06" ms="0x0"/>
                 <CAN_message key="UARTDataReq" commandclass="0x4" commandcode="0x07" ms="0x1"/>
                 <CAN_message key="UARTData" commandclass="0x4" commandcode="0x07" ms="0x0"/>
+            </CAN_messages>
+        </function_module>
+        <function_module type="pressure_control" moduleID="13">
+            <!-- this sections defines all CAN-message IDs used by the temperature control function module -->
+            <CAN_messages>
+                <CAN_message key="EventInfo" commandclass="0x2" commandcode="0x00" ms="0x0"/>
+                <CAN_message key="EventWarning" commandclass="0x2" commandcode="0x01" ms="0x0"/>
+                <CAN_message key="EventError" commandclass="0x2" commandcode="0x02" ms="0x0"/>
+                <CAN_message key="EventFatalError" commandclass="0x2" commandcode="0x03" ms="0x0"/>
+                <CAN_message key="PressureCtrlPressureSet" commandclass="0x4" commandcode="0x05" ms="0x1"/>
+                <CAN_message key="PressureCtrlFanWatchdogSet" commandclass="0x4" commandcode="0x06" ms="0x1"/>
+                <CAN_message key="PressureCtrlCurrentWatchdogSet" commandclass="0x4" commandcode="0x07" ms="0x1"/>
+                <CAN_message key="PressureCtrlPIDParamSet" commandclass="0x4" commandcode="0x08" ms="0x1"/>
+                <CAN_message key="PressureCtrlPumpTimeSet" commandclass="0x4" commandcode="0x09" ms="0x1"/>
+                <CAN_message key="PressureCtrlPressureReq" commandclass="0x4" commandcode="0x0a" ms="0x1"/>
+                <CAN_message key="PressureCtrlPressure" commandclass="0x4" commandcode="0x0a" ms="0x0"/>
+                <CAN_message key="PressureCtrlPIDParamReq" commandclass="0x4" commandcode="0x0b" ms="0x1"/>
+                <CAN_message key="PressureCtrlPIDParam" commandclass="0x4" commandcode="0x0b" ms="0x0"/>
+                <CAN_message key="PressureCtrlPumpTimeReq" commandclass="0x6" commandcode="0x0c" ms="0x1"/>
+                <CAN_message key="PressureCtrlPumpTime" commandclass="0x6" commandcode="0x0c" ms="0x0"/>
+                <CAN_message key="PressureCtrlServiceSensorReq" commandclass="0x6" commandcode="0x0d" ms="0x1"/>
+                <CAN_message key="PressureCtrlServiceSensor" commandclass="0x6" commandcode="0x0d" ms="0x0"/>
+                <CAN_message key="PressureCtrlServiceFanReq" commandclass="0x6" commandcode="0x0e" ms="0x1"/>
+                <CAN_message key="PressureCtrlServiceFan" commandclass="0x6" commandcode="0x0e" ms="0x0"/>
+                <CAN_message key="PressureCtrlHardwareReq" commandclass="0x6" commandcode="0x0f" ms="0x1"/>
+                <CAN_message key="PressureCtrlHardware" commandclass="0x6" commandcode="0x0f" ms="0x0"/>
+                <CAN_message key="PressureCtrlNotiInRange" commandclass="0x4" commandcode="0x11" ms="0x0"/>
+                <CAN_message key="PressureCtrlNotiOutOfRange" commandclass="0x4" commandcode="0x12" ms="0x0"/>
+                <CAN_message key="PressureCtrlValveSet" commandclass="0x4" commandcode="0x13" ms="0x1"/>
+                <CAN_message key="PressureCtrlCalibration" commandclass="0x4" commandcode="0x14" ms="0x1"/>
             </CAN_messages>
         </function_module>
     </function_modules>

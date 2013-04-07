@@ -33,10 +33,14 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "NetCommands/Include/CmdSystemAction.h"
-
+#include "SchedulerMachine.h"
+#include "DeviceControl/Include/Interface/IDeviceProcessing.h"
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+using namespace DeviceControl;
 namespace Scheduler {
 
 class SchedulerCommandProcessor;
+class SchedulerMachine;
 
     /****************************************************************************/
     /**
@@ -55,6 +59,8 @@ class SchedulerCommandProcessor;
 
         QThread* m_SchedulerCommandProcessorThread;
         SchedulerCommandProcessor* m_SchedulerCommandProcessor;
+        SchedulerMachine* m_SchedulerMachine;
+        DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
 
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -65,6 +71,7 @@ class SchedulerCommandProcessor;
          */
         /****************************************************************************/
         virtual void RegisterCommands();
+        void HardwareMonitor();
     protected:
 
         /****************************************************************************/
@@ -147,6 +154,8 @@ class SchedulerCommandProcessor;
          */
         /****************************************************************************/
         void OnTickTimer();
+    void OnDCLConfigurationFinished(ReturnCode_t RetCode, IDeviceProcessing* pIDP);
+        //void DeviceInitComplete();
 
     };
 

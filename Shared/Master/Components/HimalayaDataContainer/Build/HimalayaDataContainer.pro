@@ -3,8 +3,7 @@
 TARGET = HimalayaDataContainer # functional unit name
 
 # header file location
-HEADERS += ../Helper/Include/Global.h \
- ../Containers/ContainerBase/Include/*.h \
+HEADERS += ../Containers/ContainerBase/Include/*.h \
  ../Containers/ContainerBase/Commands/Include/*.h \
  ../Containers/Programs/Include/*.h \
  ../Containers/Programs/Commands/Include/*.h \
