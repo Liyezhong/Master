@@ -25,6 +25,7 @@
 #include "MainMenu/Include/DataManagement.h"
 #include "MainMenu/Include/PanelFrame.h"
 
+namespace Settings {
 
 namespace Ui {
     class CDataManagementWidget;
@@ -64,4 +65,5 @@ signals:
 
 };
 
+} //end of namespace
 #endif // DATAMANAGEMENTWIDGET_H

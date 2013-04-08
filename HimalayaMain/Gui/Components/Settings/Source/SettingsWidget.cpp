@@ -40,19 +40,20 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     mp_Ui->setupUi(this);
     DataManager::CUserSettings *p_Settings = mp_Data->SettingsInterface->GetUserSettings();
     if (p_Settings) {
-        mp_Ui->pageAgitation->SetUserSettings(p_Settings);
+        mp_Ui->pageSystemSetup->SetUserSettings(p_Settings);
         mp_Ui->pageAlarm->SetUserSettings(p_Settings);
         mp_Ui->pageDateTime->SetUserSettings(p_Settings);
-        mp_Ui->pageOven->SetUserSettings(p_Settings);
+        mp_Ui->pageInstallation->SetUserSettings(p_Settings);
+        mp_Ui->pageInstallation->SetKeyBoardInstance(mp_KeyBoardWidget);
         mp_Ui->pageRegionalSettings->SetUserSettings(p_Settings);
         mp_Ui->pageRegionalSettings->SetPtrToMainWindow(mp_MainWindow);
         mp_Ui->pageLanguage->SetPtrToMainWindow(mp_MainWindow,p_Data);
-        mp_Ui->pageAgitation->SetPtrToMainWindow(mp_MainWindow);
+        mp_Ui->pageSystemSetup->SetPtrToMainWindow(mp_MainWindow);
         mp_Ui->pageAlarm->SetPtrToMainWindow(mp_MainWindow);
         mp_Ui->pageAlarm->SetDataConnector(mp_Data);        
         mp_Ui->pageNetwork->SetPtrToMainWindow(mp_MainWindow);
         mp_Ui->pageNetwork->SetKeyBoardInstance(mp_KeyBoardWidget);
-        mp_Ui->pageOven->SetPtrToMainWindow(mp_MainWindow);
+        mp_Ui->pageInstallation->SetPtrToMainWindow(mp_MainWindow);
         mp_Ui->pageRegionalSettings->SetPtrToMainWindow(mp_MainWindow);
         mp_Ui->pageService->SetPtrToMainWindow(mp_MainWindow);
         mp_Ui->pageDateTime->SetPtrToMainWindow(mp_MainWindow);
@@ -63,9 +64,9 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     CONNECTSIGNALSLOT(mp_Data, DateTimeAcked(), this, PropagateDateTime());
     CONNECTSIGNALSLOT(mp_Ui->pageRegionalSettings, RegionalSettingsChanged(DataManager::CUserSettings &),
                       mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
-    CONNECTSIGNALSLOT(mp_Ui->pageOven, OvenTemperatureChanged(DataManager::CUserSettings &),
-            mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
-    CONNECTSIGNALSLOT(mp_Ui->pageAgitation,AgitationSettingsChanged(DataManager::CUserSettings &),
+   /* CONNECTSIGNALSLOT(mp_Ui->pageOven, OvenTemperatureChanged(DataManager::CUserSettings &),
+            mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));*/
+    CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup,TemperatureChanged(DataManager::CUserSettings &),
                       mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Ui->pageAlarm, AlarmSettingsChanged(DataManager::CUserSettings &),
             mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));

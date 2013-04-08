@@ -24,6 +24,7 @@
 #include "ui_DataManagementWidget.h"
 #include <QEvent>
 #include <QApplication>
+namespace Settings {
 
 /****************************************************************************/
 /*!
@@ -120,3 +121,5 @@ void CDataManagementWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWind
     mp_MainWindow = p_MainWindow;
    // mp_DataManagement->SetPtrToMainWindow(mp_MainWindow);
 }
+
+} //end of namespace

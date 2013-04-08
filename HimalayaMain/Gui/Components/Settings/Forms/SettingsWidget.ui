@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>26</width>
-    <height>16</height>
+    <width>594</width>
+    <height>516</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,15 +29,15 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="Settings::CLanguageWidget" name="pageLanguage"/>
      <widget class="Settings::CRegionalSettingsWidget" name="pageRegionalSettings"/>
      <widget class="Settings::CDateTimeWidget" name="pageDateTime"/>
      <widget class="Settings::CAlarmSettingsWidget" name="pageAlarm"/>
-     <widget class="Settings::COvenSettingsWidget" name="pageOven"/>
-     <widget class="CAgitationSettingsWidget" name="pageAgitation"/>
-     <widget class="CDataManagementWidget" name="pageDataManagement"/>
+     <widget class="Settings::CInstallationSettingsWidget" name="pageInstallation"/>
+     <widget class="CSystemSetupSettingsWidget" name="pageSystemSetup"/>
+     <widget class="Settings::CDataManagementWidget" name="pageDataManagement"/>
      <widget class="CServiceSettingsWidget" name="pageService"/>
      <widget class="CFileViewWidget" name="pageEventView"/>
      <widget class="Settings::CNetworkSettingsWidget" name="pageNetwork"/>
@@ -71,24 +71,6 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>Settings::COvenSettingsWidget</class>
-   <extends>QWidget</extends>
-   <header>Settings/Include/OvenSettingsWidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>CAgitationSettingsWidget</class>
-   <extends>QWidget</extends>
-   <header>Settings/Include/AgitationSettingsWidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>CDataManagementWidget</class>
-   <extends>QWidget</extends>
-   <header>Settings/Include/DataManagementWidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>CServiceSettingsWidget</class>
    <extends>QWidget</extends>
    <header>Settings/Include/ServiceSettingsWidget.h</header>
@@ -110,6 +92,24 @@
    <class>CFileViewWidget</class>
    <extends>QWidget</extends>
    <header>Settings/Include/FileViewWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Settings::CDataManagementWidget</class>
+   <extends>QWidget</extends>
+   <header>Settings/Include/DataManagementWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Settings::CInstallationSettingsWidget</class>
+   <extends>QWidget</extends>
+   <header>Settings/Include/InstallationSettingsWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CSystemSetupSettingsWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">Settings/Include/SystemSetupSettingsWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

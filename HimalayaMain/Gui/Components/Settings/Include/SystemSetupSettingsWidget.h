@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file OvenSettingsWidget.h
+/*! \file AgitationSettingsWidget.h
  *
- *  \brief OvenSettingsWidget definition.
+ *  \brief AgitationSettingsWidget definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2011-09-29
@@ -18,31 +18,32 @@
  */
 /****************************************************************************/
 
-#ifndef SETTINGS_OVENSETTINGSWIDGET_H
-#define SETTINGS_OVENSETTINGSWIDGET_H
+#ifndef SETTINGS_SYSTEMSETUPSETTINGSWIDGET_H
+#define SETTINGS_SYSTEMSETUPSETTINGSWIDGET_H
 
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
+#include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/ScrollWheel.h"
-#include "MainMenu/Include/MainWindow.h"
+#include <QShowEvent>
 
 namespace Settings {
 
 namespace Ui {
-    class COvenSettingsWidget;
+    class CSystemSetupSettingsWidget;
 }
 
 /****************************************************************************/
 /**
- * \brief This class displays all settings related to the oven of Himalaya
+ * \brief Setup panel for the agitation device of Himalaya
  */
 /****************************************************************************/
-class COvenSettingsWidget : public MainMenu::CPanelFrame
+class CSystemSetupSettingsWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
 
 private:
-    Ui::COvenSettingsWidget *mp_Ui;                 //!< User interface
+    Ui::CSystemSetupSettingsWidget *mp_Ui;                 //!< User interface
     MainMenu::CScrollWheel *mp_ScrollWheel;         //!< Temperature scroll wheel
     DataManager::CUserSettings *mp_UserSettings;    //!< Data object
     DataManager::CUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
@@ -53,8 +54,8 @@ private:
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
 
 public:
-    explicit COvenSettingsWidget(QWidget *p_Parent = NULL);
-    ~COvenSettingsWidget();
+    explicit CSystemSetupSettingsWidget(QWidget *p_Parent = NULL);
+    ~CSystemSetupSettingsWidget();
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
 
@@ -73,9 +74,10 @@ private slots:
     void OnApply();
 
 signals:
-    void OvenTemperatureChanged(DataManager::CUserSettings &Settings);
+    void TemperatureChanged(DataManager::CUserSettings &Settings);
 };
+
 
 } // end namespace Settings
 
-#endif // SETTINGS_OVENSETTINGSWIDGET_H
+#endif // SETTINGS_AGITATIONSETTINGSWIDGET_H

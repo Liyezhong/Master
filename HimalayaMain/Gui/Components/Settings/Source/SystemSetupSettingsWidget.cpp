@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file OvenSettingsWidget.cpp
+/*! \file AgitationSettingsWidget.cpp
  *
- *  \brief OvenSettingsWidget implementation.
+ *  \brief AgitationSettingsWidget implementation.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2011-09-29
@@ -21,22 +21,21 @@
 
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
-#include "MainMenu/Include/ScrollWheel.h"
-#include "MainMenu/Include/SliderControl.h"
-#include "Settings/Include/OvenSettingsWidget.h"
-#include "ui_OvenSettingsWidget.h"
-#include <QDebug>
+#include "Settings/Include/SystemSetupSettingsWidget.h"
+#include "ui_SystemSetupSettingsWidget.h"
 
 namespace Settings {
 
+
 //! Minimal scroll wheel temperature in degree Celsius
-#define MIN_CENTIGRADE_TEMP   40
+#define MIN_CENTIGRADE_TEMP   50
 //! Maximal scroll wheel temperature in degree Celsius
 #define MAX_CENTIGRADE_TEMP   70
 //! Minimal scroll wheel temperature in degree Fahrenheit
-#define MIN_FARENHEIT_TEMP    104
+#define MIN_FARENHEIT_TEMP    122
 //! Maximal scroll wheel temperature in degree Fahrenheit
 #define MAX_FARENHEIT_TEMP    158
+
 
 /****************************************************************************/
 /*!
@@ -45,8 +44,8 @@ namespace Settings {
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-COvenSettingsWidget::COvenSettingsWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
-    mp_Ui(new Ui::COvenSettingsWidget), mp_UserSettings(NULL)
+CSystemSetupSettingsWidget::CSystemSetupSettingsWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
+    mp_Ui(new Ui::CSystemSetupSettingsWidget), mp_UserSettings(NULL), mp_MainWindow(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Oven"));
@@ -55,7 +54,7 @@ COvenSettingsWidget::COvenSettingsWidget(QWidget *p_Parent) : MainMenu::CPanelFr
 
     mp_Ui->scrollPanelWidget->Init(1);
     mp_Ui->scrollPanelWidget->AddScrollWheel(mp_ScrollWheel, 0);
-    CONNECTSIGNALSLOT(mp_Ui->btnApply, clicked(), this, OnApply());
+    CONNECTSIGNALSLOT(mp_Ui->btnSave, clicked(), this, OnApply());
 }
 
 /****************************************************************************/
@@ -63,7 +62,7 @@ COvenSettingsWidget::COvenSettingsWidget(QWidget *p_Parent) : MainMenu::CPanelFr
  *  \brief Destructor
  */
 /****************************************************************************/
-COvenSettingsWidget::~COvenSettingsWidget()
+CSystemSetupSettingsWidget::~CSystemSetupSettingsWidget()
 {
     try {
         delete mp_ScrollWheel;
@@ -81,7 +80,8 @@ COvenSettingsWidget::~COvenSettingsWidget()
  *  \iparam p_Event = Change event
  */
 /****************************************************************************/
-void COvenSettingsWidget::changeEvent(QEvent *p_Event)
+
+void CSystemSetupSettingsWidget::changeEvent(QEvent *p_Event)
 {
     QWidget::changeEvent(p_Event);
     switch (p_Event->type()) {
@@ -94,40 +94,6 @@ void COvenSettingsWidget::changeEvent(QEvent *p_Event)
     }
 }
 
-/****************************************************************************/
-/*!
- *  \brief Updates the widget content everytime it is displayed
- *
- *  \iparam p_Event = Show event
- */
-/****************************************************************************/
-void COvenSettingsWidget::showEvent(QShowEvent *p_Event)
-{
-    if ((mp_UserSettings != NULL) && (p_Event != NULL) && !p_Event->spontaneous()) {
-        InitTemperatureWidget();
-
-        if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
-            mp_ScrollWheel->SetThreeDigitMode(false);
-            mp_Ui->scrollPanelWidget->SetThreeDigitMode(false);
-            mp_ScrollWheel->SetCurrentData(QString::number(mp_UserSettings->GetValue("Oven_Temp").toInt()));
-             qDebug()<<"\n\n Oven settings widget Temp" << mp_UserSettings->GetValue("Oven_Temp").toInt();
-        }
-        else {
-            mp_ScrollWheel->SetThreeDigitMode(true);
-            mp_Ui->scrollPanelWidget->SetThreeDigitMode(true);
-            mp_ScrollWheel->SetCurrentData(tr("%1").arg((((mp_UserSettings->GetValue("Oven_Temp").toInt() - 40) / 5) * 9) + 104));
-            qDebug()<<"\n\n Oven settings widget Temp" << mp_UserSettings->GetValue("Oven_Temp").toInt();
-        }
-
-        if (Global::StringToOvenStartMode(mp_UserSettings->GetValue("Oven_StartMode")) == Global::OVENSTART_BEFORE_PROGRAM) {
-            mp_Ui->horizontalSlider->SetPosition(MainMenu::CSliderControl::PosLeft);
-        }
-        else {
-            mp_Ui->horizontalSlider->SetPosition(MainMenu::CSliderControl::PosRight);
-        }
-        ResetButtons();
-    }
-}
 
 /****************************************************************************/
 /*!
@@ -136,7 +102,7 @@ void COvenSettingsWidget::showEvent(QShowEvent *p_Event)
  *  \iparam p_UserSettings = Global user settings data
  */
 /****************************************************************************/
-void COvenSettingsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
+void CSystemSetupSettingsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
 {
     mp_UserSettings = p_UserSettings;
 }
@@ -146,7 +112,7 @@ void COvenSettingsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSett
  *  \brief Initializes the temperature scroll wheel
  */
 /****************************************************************************/
-void COvenSettingsWidget::InitTemperatureWidget()
+void CSystemSetupSettingsWidget::InitTemperatureWidget()
 {
     if (mp_UserSettings == NULL) {
         return;
@@ -170,12 +136,41 @@ void COvenSettingsWidget::InitTemperatureWidget()
     mp_ScrollWheel->SetNonContinuous();
 }
 
+
+/****************************************************************************/
+/*!
+ *  \brief Updates the widget content everytime it is displayed
+ *
+ *  \iparam p_Event = Show event
+ */
+/****************************************************************************/
+void CSystemSetupSettingsWidget::showEvent(QShowEvent *p_Event)
+{
+    if ((mp_UserSettings != NULL) && (p_Event != NULL) && !p_Event->spontaneous()) {
+        InitTemperatureWidget();
+
+        if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
+            mp_ScrollWheel->SetThreeDigitMode(false);
+            mp_Ui->scrollPanelWidget->SetThreeDigitMode(false);
+            mp_ScrollWheel->SetCurrentData(QString::number(mp_UserSettings->GetValue("Oven_Temp").toInt()));
+             qDebug()<<"\n\n Oven settings widget Temp" << mp_UserSettings->GetValue("Oven_Temp").toInt();
+        }
+        else {
+            mp_ScrollWheel->SetThreeDigitMode(true);
+            mp_Ui->scrollPanelWidget->SetThreeDigitMode(true);
+            mp_ScrollWheel->SetCurrentData(tr("%1").arg((((mp_UserSettings->GetValue("Oven_Temp").toInt() - 50) / 5) * 9) + 122));
+            qDebug()<<"\n\n Oven settings widget Temp" << mp_UserSettings->GetValue("Oven_Temp").toInt();
+        }
+        ResetButtons();
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief This slot is called when User Role changes
  */
 /****************************************************************************/
-void COvenSettingsWidget::OnUserRoleChanged()
+void CSystemSetupSettingsWidget::OnUserRoleChanged()
 {
     ResetButtons();
 }
@@ -185,7 +180,7 @@ void COvenSettingsWidget::OnUserRoleChanged()
  *  \brief This slot is called when Process state changes
  */
 /****************************************************************************/
-void COvenSettingsWidget::OnProcessStateChanged()
+void CSystemSetupSettingsWidget::OnProcessStateChanged()
 {
     ResetButtons();
 }
@@ -196,7 +191,7 @@ void COvenSettingsWidget::OnProcessStateChanged()
  *         running status
  */
 /****************************************************************************/
-void COvenSettingsWidget::ResetButtons()
+void CSystemSetupSettingsWidget::ResetButtons()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
@@ -204,35 +199,11 @@ void COvenSettingsWidget::ResetButtons()
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
          (!m_ProcessRunning)) {
         //Edit Mode
-        mp_Ui->btnApply->setEnabled(true);
+        mp_Ui->btnSave->setEnabled(true);
     }
     else {
-        mp_Ui->btnApply->setEnabled(false);
+        mp_Ui->btnSave->setEnabled(false);
     }
-}
-
-/****************************************************************************/
-/*!
- *  \brief Called when the apply button is clicked
- */
-/****************************************************************************/
-void COvenSettingsWidget::OnApply()
-{
-    m_UserSettingsTemp = *mp_UserSettings;
-    if (m_UserSettingsTemp.GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT) {
-        qint32 TemperatureCelsius = ((mp_ScrollWheel->GetCurrentData().toInt() - 32) * 5) / 9;
-        m_UserSettingsTemp.SetValue("Oven_Temp", TemperatureCelsius);
-    }
-    else {
-        m_UserSettingsTemp.SetValue("Oven_Temp", mp_ScrollWheel->GetCurrentData().toInt());
-    }
-    if (mp_Ui->horizontalSlider->GetPosition() == MainMenu::CSliderControl::PosLeft) {
-        m_UserSettingsTemp.SetValue("Oven_StartMode", Global::OvenStartModeToString(Global::OVENSTART_BEFORE_PROGRAM));
-    }
-    else {
-        m_UserSettingsTemp.SetValue("Oven_StartMode", Global::OvenStartModeToString(Global::OVENSTART_AFTER_STARTUP));
-    }
-    emit OvenTemperatureChanged(m_UserSettingsTemp);
 }
 
 /****************************************************************************/
@@ -240,9 +211,9 @@ void COvenSettingsWidget::OnApply()
  *  \brief Translates the strings in UI to the selected language
  */
 /****************************************************************************/
-void COvenSettingsWidget::RetranslateUI()
+void CSystemSetupSettingsWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::COvenSettingsWidget", "Oven", 0, QApplication::UnicodeUTF8));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CSystemSetupSettingsWidget", "Agitation", 0, QApplication::UnicodeUTF8));
 }
 
 /****************************************************************************/
@@ -251,10 +222,31 @@ void COvenSettingsWidget::RetranslateUI()
  *         process state changed.
  */
 /****************************************************************************/
-void COvenSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)
+void CSystemSetupSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)
 {
     mp_MainWindow = p_MainWindow;
     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
 }
+
+/****************************************************************************/
+/*!
+ *  \brief Called when the Save button is clicked
+ */
+/****************************************************************************/
+
+void CSystemSetupSettingsWidget::OnApply()
+{
+    m_UserSettingsTemp = *mp_UserSettings;
+    if (m_UserSettingsTemp.GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT) {
+        qint32 TemperatureCelsius = ((mp_ScrollWheel->GetCurrentData().toInt() - 32) * 5) / 9;
+        m_UserSettingsTemp.SetValue("Oven_Temp", TemperatureCelsius);
+    }
+    else {
+        m_UserSettingsTemp.SetValue("Oven_Temp", mp_ScrollWheel->GetCurrentData().toInt());
+
+    emit TemperatureChanged(m_UserSettingsTemp);
+    }
+}
+
 } // end namespace Settings

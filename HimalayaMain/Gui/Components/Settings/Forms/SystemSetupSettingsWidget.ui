@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Settings::CAgitationSettingsWidget</class>
- <widget class="QWidget" name="Settings::CAgitationSettingsWidget">
+ <class>Settings::CSystemSetupSettingsWidget</class>
+ <widget class="QWidget" name="Settings::CSystemSetupSettingsWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>219</width>
-    <height>307</height>
+    <width>442</width>
+    <height>360</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,7 +43,7 @@
    <item row="1" column="1">
     <widget class="QLabel" name="labelSpeed">
      <property name="text">
-      <string>Speed:</string>
+      <string>Paraffin Bath Temperature:</string>
      </property>
     </widget>
    </item>
@@ -116,7 +116,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btnApply">
+      <widget class="QPushButton" name="btnSave">
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
@@ -128,6 +128,12 @@
     </layout>
    </item>
   </layout>
+  <zorder>labelSpeed</zorder>
+  <zorder>horizontalSpacer_5</zorder>
+  <zorder>horizontalSpacer_4</zorder>
+  <zorder>horizontalSpacer_3</zorder>
+  <zorder>verticalSpacer_2</zorder>
+  <zorder>verticalSpacer_3</zorder>
  </widget>
  <customwidgets>
   <customwidget>

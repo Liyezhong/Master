@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file AgitationSettingsWidget.h
+/*! \file OvenSettingsWidget.h
  *
- *  \brief AgitationSettingsWidget definition.
+ *  \brief OvenSettingsWidget definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2011-09-29
@@ -18,64 +18,71 @@
  */
 /****************************************************************************/
 
-#ifndef SETTINGS_AGITATIONSETTINGSWIDGET_H
-#define SETTINGS_AGITATIONSETTINGSWIDGET_H
+#ifndef SETTINGS_INSTALLATIONSETTINGSWIDGET_H
+#define SETTINGS_INSTALLATIONSETTINGSWIDGET_H
 
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
-#include "MainMenu/Include/MainWindow.h"
+#include "KeyBoard/Include/KeyBoardObserver.h"//!< User interface
+#include "KeyBoard/Include/KeyBoard.h"
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/ScrollWheel.h"
-#include <QShowEvent>
+#include "MainMenu/Include/MainWindow.h"
+
+#include "ui_InstallationSettingsWidget.h"
 
 namespace Settings {
 
 namespace Ui {
-    class CAgitationSettingsWidget;
+    class CInstallationSettingsWidget;
 }
 
 /****************************************************************************/
 /**
- * \brief Setup panel for the agitation device of Himalaya
+ * \brief This class displays all settings related to the oven of Himalaya
  */
 /****************************************************************************/
-class CAgitationSettingsWidget : public MainMenu::CPanelFrame
+class CInstallationSettingsWidget : public MainMenu::CPanelFrame,public KeyBoard::CKeyBoardObserver
 {
     Q_OBJECT
 
 private:
-    Ui::CAgitationSettingsWidget *mp_Ui;    //!< User interface
-    MainMenu::CScrollWheel *mp_ScrollWheel; //!< Agitation speed
-    DataManager::CUserSettings *mp_UserSettings;  //!< Data object
+    Ui::CInstallationSettingsWidget *mp_Ui;                 //!< User interface
+    KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Reference to Keyboard widget
+    KeyBoard::ValidationType_t m_ValidationType;    //!< Keyboard input type validation
+    DataManager::CUserSettings *mp_UserSettings;    //!< Data object
     DataManager::CUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
-    MainMenu::CMainWindow *mp_MainWindow;         //!< Pointer to MainWindow
+    MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     //Flags
-    bool m_ProcessRunning;                  //!< Process running state
+    bool m_ProcessRunning;                          //!< Process running state
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
 
 public:
-    explicit CAgitationSettingsWidget(QWidget *p_Parent = NULL);
-    ~CAgitationSettingsWidget();
+    explicit CInstallationSettingsWidget(QWidget *p_Parent = NULL);
+    ~CInstallationSettingsWidget();
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
+    void SetKeyBoardInstance(KeyBoard::CKeyBoard *p_KeyBoard);
+    void Update();
+
 
 private:
-    void InitSpeedWidget();
     void RetranslateUI();
     void ResetButtons();
+
 
 protected:
     void changeEvent(QEvent *p_Event);
     void showEvent(QShowEvent *p_Event);
+    void UpdateOnESC();
 
-private slots:
-    void OnProcessStateChanged();
-    void OnUserRoleChanged();
-    void OnSave();
-signals:
-    void AgitationSettingsChanged(DataManager::CUserSettings &Settings);
+ private slots:
+    void OnEditclicked();
+    void OnOkClicked();
+    void OnUpdateclicked();
+
 };
 
 } // end namespace Settings
 
-#endif // SETTINGS_AGITATIONSETTINGSWIDGET_H
+#endif // SETTINGS_OVENSETTINGSWIDGET_H
