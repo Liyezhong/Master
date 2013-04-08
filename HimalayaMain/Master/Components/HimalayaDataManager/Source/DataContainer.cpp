@@ -38,6 +38,7 @@
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupA.h"
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupC.h"
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupD.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaSettingsVerifier.h"
 
 
 namespace DataManager {
@@ -70,6 +71,11 @@ CDataContainer::~CDataContainer()
 bool CDataContainer::InitContainers()
 {
     if (!CDataContainerCollectionBase::InitContainers()) {
+        return false;
+    }
+
+    if (!ResetDCUserSettings()) {
+        qDebug() << "CDataContainer::InitializeContainers failed, because ResetDCSettings failed!";
         return false;
     }
 
@@ -249,6 +255,31 @@ bool CDataContainer::ResetDCStationList()
     StationList->AddVerifier(p_DataStationListVerifier);
 */
       return true;
+}
+
+bool CDataContainer::ResetDCUserSettings(void)
+{
+    if (m_IsInitialized == true) {
+        qDebug() << "CDataContainer::ResetDCUserSettings was already called";
+        return false;
+    }
+
+    // create a verifier object for this data container, if not done before
+    static IVerifierInterface *p_DataUserSettingVerifier = NULL;
+    if (p_DataUserSettingVerifier == NULL) {
+        p_DataUserSettingVerifier = new CHimalayaSettingsVerifier();
+    }
+
+    // register this verifier object in the data container (=> dependency injection)
+    if(SettingsInterface && p_DataUserSettingVerifier){
+        if(!SettingsInterface->AddVerifier(p_DataUserSettingVerifier)) {
+            qDebug() << "ResetDCUserSettings failed due to \
+                        SettingsInterface->AddVerifier(p_DataUserSettingVerifier)";
+            return false;
+        }
+    }
+
+    return true;
 }
 
 

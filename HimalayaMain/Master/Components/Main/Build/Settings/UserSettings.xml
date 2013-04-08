@@ -6,18 +6,18 @@
         <ErrorTone Number="1" Level="9"/>
         <WarningTone Number="2" Level="9"/>
     </Sound>
-    <Network RemoteCare="On" DirectConnection="Off" ProxyUserName="Colorado" ProxyPassword="Colorado" ProxyIPAddress="012.126.123.123" ProxyIPPort="1234"/>
-    <LEICA OVENTEMP="45"/>
-    <LOADER REAGENT3="U9"/>
+    <Network RemoteCare="On" DirectConnection="Off" ProxyUserName="Himalaya" ProxyPassword="Himalaya" ProxyIPAddress="012.126.123.123" ProxyIPPort="1234"/>
     <SETTINGS VERSION="1"/>
-    <AGITATION SPEED="2"/>
-    <LEICA AGITATIONSPEED="1"/>
-    <LOADER REAGENT4="U67"/>
-    <LOADER REAGENT5="U78"/>
-    <OVEN TEMP="70"/>
-    <WATER TYPE="Distilled"/>
-    <OVEN STARTMODE="BeforeProgram"/>
-    <RMS STATE="On"/>
-    <LOADER REAGENT1="U48"/>
-    <LOADER REAGENT2="U9"/>
+    <INFORMATIONTONE NUMBER="2"/>
+    <WARNINGTONE PERIODICTIME="10m"/>
+    <RMS PROCESSINGMODE="Off"/>
+    <ERRORTONE PERIODICTIME="10m"/>
+    <WARNINGTONE PERIODIC="on"/>
+    <PARAFFINBATH TEMPERATURE="70"/>
+    <RMS CLEANINGMODE="Off"/>
+    <INFORMATIONTONE PERIODICTIME="10m"/>
+    <ERRORTONE PERIODIC="on"/>
+    <INFORMATIONTONE LEVEL="9"/>
+    <PV FREQUENCY="1000"/>
+    <INFORMATIONTONE PERIODIC="on"/>
 </Settings>

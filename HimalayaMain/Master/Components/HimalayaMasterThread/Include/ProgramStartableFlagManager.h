@@ -73,7 +73,7 @@ private:
 private slots:
     void RMSStatusHandler(const QString ProgramID, const bool ExpiryStatus, const QString ReagentName);
     void OnStartableProgramEdited(const QString &ProgramID);
-    void OnUserSettingsChanged();
+    void OnUserSettingsChanged(const bool LanguangeChanged);
     void OnReadLiquidLevelComplete(QStringList DefectiveStations);
 
 public:
