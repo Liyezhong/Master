@@ -21,7 +21,7 @@
 #ifndef SETTINGS_LANGUAGEWIDGET_H
 #define SETTINGS_LANGUAGEWIDGET_H
 
-#include "DataManager/Containers/UserSettings/Include/UserSettings.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/BaseTable.h"
 #include "MainMenu/Include/PanelFrame.h"
@@ -46,10 +46,11 @@ class CLanguageWidget : public MainMenu::CPanelFrame
 private:
     Ui::CLanguageWidget *mp_Ui;                     //!< User interface
     MainMenu::CBaseTable *mp_TableWidget;           //!< Language table
-    DataManager::CUserSettings *mp_UserSettings;    //!< Data object
+    DataManager::CHimalayaUserSettings *mp_UserSettings;    //!< Data object
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     Settings::CLanguageModel m_LanguageModel;       //!< Language Model object
     Core::CDataConnector *mp_DataConnector;         //!< DataConnector object
     QStringList m_LanguageList;                     //!< List of Languages
@@ -60,7 +61,7 @@ private:
 public:
     explicit CLanguageWidget(QWidget *p_Parent = NULL);
     ~CLanguageWidget();
-    void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
+    void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector);
     void SetLanguages(QStringList LanguageList);
 

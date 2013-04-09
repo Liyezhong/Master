@@ -21,7 +21,7 @@
 #ifndef SETTINGS_ALARMSETTINGSDLG_H
 #define SETTINGS_ALARMSETTINGSDLG_H
 
-#include "DataManager/Containers/UserSettings/Include/UserSettings.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/ScrollWheel.h"
@@ -66,7 +66,7 @@ public:
      *  \iparam p_UserSettings
      */
     /****************************************************************************/
-    void SetUserSettings(DataManager::CUserSettings *p_UserSettings) { mp_UserSettings = p_UserSettings;}
+    void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings) { mp_UserSettings = p_UserSettings;}
     /****************************************************************************/
     /*!
      *  \brief Used by Alarm Settings widget to set the dialog type -warning/ error
@@ -81,11 +81,12 @@ private:
     MainMenu::CScrollWheel *mp_ScrollWheel; //!< Volume scroll wheel
     MainMenu::CScrollWheel *mp_SoundScrollWheel; //!< Volume scroll wheel
     MainMenu::CScrollWheel *mp_SecondWheel;   //!< Second scroll wheel
+     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     MainMenu::CScrollWheel *mp_MinWheel;        //!< Minut scroll wheel
     QButtonGroup m_ButtonGroup; //!< Groups radio buttons for sound selection
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
-    DataManager::CUserSettings *mp_UserSettings;    //!< Data object
-    DataManager::CUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
+    DataManager::CHimalayaUserSettings *mp_UserSettings;    //!< Data object
+    DataManager::CHimalayaUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
     //Flags
     bool m_ProcessRunning;  //!< Process running state
     AlarmDialogType m_AlarmScreen;  //!< Tells if the screen shown is error alarm setting.

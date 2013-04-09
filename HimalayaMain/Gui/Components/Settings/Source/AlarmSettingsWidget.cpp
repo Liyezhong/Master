@@ -106,7 +106,7 @@ void CAlarmSettingsWidget::changeEvent(QEvent *p_Event)
  *  \iparam p_UserSettings = Global user settings data
  */
 /****************************************************************************/
-void CAlarmSettingsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
+void CAlarmSettingsWidget::SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings)
 {
     m_UserSettings = *p_UserSettings;
     mp_Information->SetUserSettings(&m_UserSettings);
@@ -122,17 +122,20 @@ void CAlarmSettingsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSet
 /****************************************************************************/
 void CAlarmSettingsWidget::UpdateLabels()
 {
-    mp_Ui->informationSound->setText(tr("Sound: Sound  %1").arg(QString::number(m_UserSettings.GetSoundNumberWarning())));
-    mp_Ui->informationVolume->setText(tr("Volume:  %1").arg(QString::number(m_UserSettings.GetSoundLevelWarning())));
-    mp_Ui->informationperiodic->setText(tr("Periodic: %1").arg("OFF"));
+    qint32 PeriodicTime ;
+    mp_Ui->informationSound->setText(tr("Sound: Sound  %1").arg(QString::number(m_UserSettings.GetValue("InformationTone_Number").toInt())));
+    mp_Ui->informationVolume->setText(tr("Volume:  %1").arg(QString::number(m_UserSettings.GetValue("InformationTone_Level").toInt())));
+    mp_Ui->informationperiodic->setText(tr("Periodic: %1").arg(m_UserSettings.GetValue("InformationTone_Periodic")));
 
+    PeriodicTime = m_UserSettings.GetSoundPeriodicTimeWarning();
     mp_Ui->warningSound->setText(tr("Sound: Sound  %1").arg(QString::number(m_UserSettings.GetSoundNumberWarning())));
     mp_Ui->warningVolume->setText(tr("Volume:  %1").arg(QString::number(m_UserSettings.GetSoundLevelWarning())));
-    mp_Ui->warningperiodic->setText(tr("Periodic: %1").arg("OFF"));
+    mp_Ui->warningperiodic->setText(tr("Periodic time (MM:ss): %1: %2").arg(QString::number(PeriodicTime/60),QString::number(PeriodicTime%60)));
 
+    PeriodicTime = m_UserSettings.GetSoundPeriodicTimeError();
     mp_Ui->errorSound->setText(tr("Sound: Sound  %1").arg(QString::number(m_UserSettings.GetSoundNumberError())));
     mp_Ui->errorVolume->setText(tr("Volume:  %1").arg( QString::number(m_UserSettings.GetSoundLevelError())));
-    mp_Ui->errorperiodic->setText(tr("Periodic: %1").arg("OFF"));
+    mp_Ui->errorperiodic->setText(tr("Periodic time (MM:ss): %1: %2").arg(QString::number(PeriodicTime/60),QString::number(PeriodicTime%60)));
 }
 /****************************************************************************/
 /*!
@@ -212,8 +215,10 @@ void CAlarmSettingsWidget:: AlarmSettingsChange(DataManager::CUserSettings &Sett
 /****************************************************************************/
 void CAlarmSettingsWidget::ResetButtons()
 {
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
-    if (!m_ProcessRunning) {
+    if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
+         m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
         //Edit Mode
         mp_Ui->informationButton->setEnabled(true);
         mp_Ui->warningButton->setEnabled(true);
@@ -222,7 +227,7 @@ void CAlarmSettingsWidget::ResetButtons()
     }
     else {
         mp_Ui->informationButton->setEnabled(false);
-        mp_Ui->warningButton->setEnabled(true);
+        mp_Ui->warningButton->setEnabled(false);
         mp_Ui->errorButton->setEnabled(false);
     }
 }
@@ -235,7 +240,7 @@ void CAlarmSettingsWidget::ResetButtons()
 void CAlarmSettingsWidget::RetranslateUI()
 {
     MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Alarm", 0, QApplication::UnicodeUTF8));
-    mp_Ui->groupBox->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Alarm Type 1 - Note", 0, QApplication::UnicodeUTF8));
+    mp_Ui->groupBox->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Alarm Type 1 - Information", 0, QApplication::UnicodeUTF8));
     mp_Ui->informationButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));
     mp_Ui->groupBox_1->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Alarm Type 2 - Warning", 0, QApplication::UnicodeUTF8));
     mp_Ui->warningButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));

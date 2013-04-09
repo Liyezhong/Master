@@ -72,6 +72,16 @@ public:
 
     /****************************************************************************/
     /**
+     * \brief Sets the Reagent GroupType
+     * \iparam ReagentGroupType
+     */
+    /****************************************************************************/
+    void SetReagentGroupType(bool ReagentGroupType) {
+        m_CleaningReagent = ReagentGroupType;
+    }
+
+    /****************************************************************************/
+    /**
      * \brief Sets the currently selected reagent in the table
      *
      * \iparam ReagentName
@@ -116,6 +126,7 @@ public:
     bool ContainsReagent(QString ReagentID);
     bool IsReagentPresentInBL(QString ReagentID);
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
+    void UpdateList( DataManager::CReagent *p_Reagent);
 
 public slots:
     void UpdateReagentList();
@@ -127,6 +138,8 @@ private:
     QMap<QString, QString> m_Identifiers;               //!< Identifiers of reagents currently displayed
     QStringList m_ReagentNames;                         //!< Long names of reagents currently displayed
     QStringList m_ReagentID;
+    QStringList m_CleaningGroupReagentNames;                         //!< Long names of reagents currently displayed
+    QStringList m_CleaningGroupReagentID;
     qint32 m_Columns;                                   //!< Number of table columns
     QString m_CurrentReagentName;                       //!< Current Reagent Name
     Programs::CModifyProgramStepDlg *mp_Parent;         //!< Reference to ModifyProgramStep Dialog
@@ -138,6 +151,7 @@ private:
     QPixmap m_PixmapTickOk;                             //!< Pixmap for TickOk png
     QString m_DeviceMode;                               //!< Device mode
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
+    bool m_CleaningReagent;
 };
 
 } // end namespace Core

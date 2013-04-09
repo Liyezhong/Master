@@ -38,7 +38,7 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
                                  mp_KeyBoardWidget(p_Keyboard)
 {
     mp_Ui->setupUi(this);
-    DataManager::CUserSettings *p_Settings = mp_Data->SettingsInterface->GetUserSettings();
+    DataManager::CHimalayaUserSettings *p_Settings = mp_Data->SettingsInterface->GetUserSettings();
     if (p_Settings) {
         mp_Ui->pageSystemSetup->SetUserSettings(p_Settings);
         mp_Ui->pageAlarm->SetUserSettings(p_Settings);
@@ -146,7 +146,7 @@ void CSettingsWidget::RetranslateUI()
 /****************************************************************************/
 void CSettingsWidget::UserSettingsUpdated()
 {
-    DataManager::CUserSettings *p_Settings = mp_Data->SettingsInterface->GetUserSettings();
+    DataManager::CHimalayaUserSettings *p_Settings = mp_Data->SettingsInterface->GetUserSettings();
     if (p_Settings) {
         mp_MainWindow->SetDateTimeFormat(p_Settings->GetDateFormat(),
                                      p_Settings->GetTimeFormat());

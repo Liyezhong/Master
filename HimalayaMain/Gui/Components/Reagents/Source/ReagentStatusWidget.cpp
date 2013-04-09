@@ -106,9 +106,7 @@ void CReagentStatusWidget::SetUserSettings(DataManager::CUserSettings *p_UserSet
 void CReagentStatusWidget::OnSetAsEmpty()
 {
         emit UpdateStationSetAsEmpty(mp_DashStation->GetDashboardStationID());
-         m_ReagentStatusModel.UpdateReagentList();
-         ResetButtons();
-    
+         ResetButtons();   
 }
 
 /****************************************************************************/
@@ -119,7 +117,6 @@ void CReagentStatusWidget::OnSetAsEmpty()
 void CReagentStatusWidget::OnResetData()
 {
         emit UpdateStationResetData(mp_DashStation->GetDashboardStationID());
-        m_ReagentStatusModel.ResetAndUpdateModel();
         ResetButtons();
 }
 
@@ -131,7 +128,6 @@ void CReagentStatusWidget::OnResetData()
 void CReagentStatusWidget::OnSetAsFull()
 {
         emit UpdateStationSetAsFull(mp_DashStation->GetDashboardStationID());
-        m_ReagentStatusModel.ResetAndUpdateModel();
         ResetButtons();   
 }
 
@@ -199,6 +195,7 @@ void CReagentStatusWidget::ResizeHorizontalSection()
 /****************************************************************************/
 void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
 {
+    m_CurrentIndex = Index;
     QString Id = m_ReagentStatusModel.data(Index, (int)Qt::UserRole).toString();
     mp_DashStation = const_cast<DataManager::CDashboardStation*>(mp_DataConnector->DashboardStationList->GetDashboardStation(Id));
 
@@ -388,7 +385,7 @@ void CReagentStatusWidget::ResetButtons()
 void CReagentStatusWidget:: StationReagentUpdated(QString StationId)
 {
     m_ReagentStatusModel.UpdateReagentList();
-    m_ReagentStatusModel.ResetAndUpdateModel();
+    mp_TableWidget->selectRow(m_CurrentIndex.row());
 }
 
 }

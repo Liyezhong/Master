@@ -102,7 +102,7 @@ void CSystemSetupSettingsWidget::changeEvent(QEvent *p_Event)
  *  \iparam p_UserSettings = Global user settings data
  */
 /****************************************************************************/
-void CSystemSetupSettingsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
+void CSystemSetupSettingsWidget::SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings)
 {
     mp_UserSettings = p_UserSettings;
 }
@@ -122,16 +122,16 @@ void CSystemSetupSettingsWidget::InitTemperatureWidget()
 
     // Temperature Control
     if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
-        for (int i = MIN_CENTIGRADE_TEMP; i <= MAX_CENTIGRADE_TEMP; i += 5) {
+        for (int i = MIN_CENTIGRADE_TEMP; i <= MAX_CENTIGRADE_TEMP; i += 1) {
             mp_ScrollWheel->AddItem(QString::number(i).rightJustified(2, '0'), i);
         }
-        mp_Ui->scrollPanelWidget->SetSubtitle(QApplication::translate("COvenSettingsWidget", "\302\260C", 0, QApplication::UnicodeUTF8), 0);
+        mp_Ui->scrollPanelWidget->SetSubtitle(QApplication::translate("CSystemSetupSettingsWidget", "\302\260C", 0, QApplication::UnicodeUTF8), 0);
     }
     else {
-        for (int i = MIN_FARENHEIT_TEMP; i <= MAX_FARENHEIT_TEMP; i += 9) {
+        for (int i = MIN_FARENHEIT_TEMP; i <= MAX_FARENHEIT_TEMP; i += 1) {
             mp_ScrollWheel->AddItem(QString::number(i).rightJustified(2, '0'), i);
         }
-        mp_Ui->scrollPanelWidget->SetSubtitle(QApplication::translate("COvenSettingsWidget", "\302\260F", 0, QApplication::UnicodeUTF8), 0);
+        mp_Ui->scrollPanelWidget->SetSubtitle(QApplication::translate("CSystemSetupSettingsWidget", "\302\260F", 0, QApplication::UnicodeUTF8), 0);
     }
     mp_ScrollWheel->SetNonContinuous();
 }
@@ -146,20 +146,25 @@ void CSystemSetupSettingsWidget::InitTemperatureWidget()
 /****************************************************************************/
 void CSystemSetupSettingsWidget::showEvent(QShowEvent *p_Event)
 {
+      double Temp;
     if ((mp_UserSettings != NULL) && (p_Event != NULL) && !p_Event->spontaneous()) {
         InitTemperatureWidget();
 
         if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
             mp_ScrollWheel->SetThreeDigitMode(false);
             mp_Ui->scrollPanelWidget->SetThreeDigitMode(false);
-            mp_ScrollWheel->SetCurrentData(QString::number(mp_UserSettings->GetValue("Oven_Temp").toInt()));
-             qDebug()<<"\n\n Oven settings widget Temp" << mp_UserSettings->GetValue("Oven_Temp").toInt();
+
+            Temp = mp_UserSettings->GetValue("ParaffinBath_Temperature").toInt();
+            mp_ScrollWheel->SetCurrentData(qRound(Temp));
+             qDebug()<<"\n\n SystemSetup settings widget Temp " << mp_UserSettings->GetValue("ParaffinBath_Temperature").toInt();
         }
         else {
             mp_ScrollWheel->SetThreeDigitMode(true);
             mp_Ui->scrollPanelWidget->SetThreeDigitMode(true);
-            mp_ScrollWheel->SetCurrentData(tr("%1").arg((((mp_UserSettings->GetValue("Oven_Temp").toInt() - 50) / 5) * 9) + 122));
-            qDebug()<<"\n\n Oven settings widget Temp" << mp_UserSettings->GetValue("Oven_Temp").toInt();
+            qDebug()<<"Swaminarayan"<<mp_UserSettings->GetValue("ParaffinBath_Temperature").toDouble();
+            Temp = (((mp_UserSettings->GetValue("ParaffinBath_Temperature").toDouble() - 50) / 5) * 9) + 122;
+            mp_ScrollWheel->SetCurrentData(tr("%1").arg(qRound(Temp)));
+            qDebug()<<"\n\n SystemSetup settings widget Temp" << mp_UserSettings->GetValue("ParaffinBath_Temperature").toInt();
         }
         ResetButtons();
     }
@@ -239,14 +244,13 @@ void CSystemSetupSettingsWidget::OnApply()
 {
     m_UserSettingsTemp = *mp_UserSettings;
     if (m_UserSettingsTemp.GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT) {
-        qint32 TemperatureCelsius = ((mp_ScrollWheel->GetCurrentData().toInt() - 32) * 5) / 9;
-        m_UserSettingsTemp.SetValue("Oven_Temp", TemperatureCelsius);
+        double TemperatureCelsius = qRound(((mp_ScrollWheel->GetCurrentData().toDouble() - 32) * 5) / 9);
+        m_UserSettingsTemp.SetValue("ParaffinBath_Temperature", qRound(TemperatureCelsius));
     }
     else {
-        m_UserSettingsTemp.SetValue("Oven_Temp", mp_ScrollWheel->GetCurrentData().toInt());
-
-    emit TemperatureChanged(m_UserSettingsTemp);
+        m_UserSettingsTemp.SetValue("ParaffinBath_Temperature", mp_ScrollWheel->GetCurrentData().toInt());
     }
+        emit TemperatureChanged(m_UserSettingsTemp);
 }
 
 } // end namespace Settings

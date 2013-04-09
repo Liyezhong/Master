@@ -59,6 +59,7 @@ private:
     MainMenu::CFileView *mp_ReagentStatusWidgetView;     //!< Content of this widget
     KeyBoard::CKeyBoard *mp_KeyBoard;
     Global::RMSOptions_t m_RMSOptions;
+    QModelIndex m_CurrentIndex;
 
 
 protected:

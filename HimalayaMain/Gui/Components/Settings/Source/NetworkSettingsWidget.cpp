@@ -357,7 +357,7 @@ void CNetworkSettingsWidget::OnOkClicked()
  *  \iparam p_UserSettings = Global user settings data
  */
 /****************************************************************************/
-void CNetworkSettingsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
+void CNetworkSettingsWidget::SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings)
 {
     m_UserSettings = *p_UserSettings;
     ResetButtons();

@@ -347,28 +347,28 @@ void CHimalayaUserSettings::SetFrequencyPV(int FrequencyPV)
  *  \return RMS mode of processing reagents.
  */
 /****************************************************************************/
-RMSMode CHimalayaUserSettings::GetModeRMSProcessing(void)
+Global::RMSOptions_t CHimalayaUserSettings::GetModeRMSProcessing(void)
 {
     QString Value = GetValue(RMS_PROCESSING_MODE).toLower();
     if (RMS_CASSETTES_STRING == Value)
     {
-        return RMS_CASSETTES;
+        return Global::RMS_CASSETTES;
     }
     else if (RMS_CYCLES_STRING == Value)
     {
-        return RMS_CYCLES;
+        return Global::RMS_CYCLES;
     }
     else if (RMS_DAYS_STRING == Value)
     {
-        return RMS_DAYS;
+        return Global::RMS_DAYS;
     }
     else if (RMS_OFF_STRING == Value)
     {
-        return RMS_OFF;
+        return Global::RMS_OFF;
     }
     else
     {
-        return RMS_UNDEFINED;
+        return Global::RMS_UNDEFINED;
     }
 }
 
@@ -379,21 +379,21 @@ RMSMode CHimalayaUserSettings::GetModeRMSProcessing(void)
  *  \iparam ModeRMSProcessing = RMS mode of processing reagents.
  */
 /****************************************************************************/
-void CHimalayaUserSettings::SetModeRMSProcessing(RMSMode ModeRMSProcessing)
+void CHimalayaUserSettings::SetModeRMSProcessing(Global::RMSOptions_t ModeRMSProcessing)
 {
     QString Value;
     switch (ModeRMSProcessing)
     {
-    case RMS_CASSETTES:
+    case Global::RMS_CASSETTES:
         Value = RMS_CASSETTES_STRING;
         break;
-    case RMS_CYCLES:
+    case Global::RMS_CYCLES:
         Value = RMS_CYCLES_STRING;
         break;
-    case RMS_DAYS:
+    case Global::RMS_DAYS:
         Value = RMS_DAYS_STRING;
         break;
-    case RMS_OFF:
+    case Global::RMS_OFF:
         Value = RMS_OFF_STRING;
         break;
     default:
@@ -410,24 +410,24 @@ void CHimalayaUserSettings::SetModeRMSProcessing(RMSMode ModeRMSProcessing)
  *  \return RMS mode of cleaning reagents.
  */
 /****************************************************************************/
-RMSMode CHimalayaUserSettings::GetModeRMSCleaning(void)
+Global::RMSOptions_t CHimalayaUserSettings::GetModeRMSCleaning(void)
 {
     QString Value = GetValue(RMS_CLEANING_MODE).toLower();
     if (RMS_CYCLES_STRING == Value)
     {
-        return RMS_CYCLES;
+        return Global::RMS_CYCLES;
     }
     else if (RMS_DAYS_STRING == Value)
     {
-        return RMS_DAYS;
+        return Global::RMS_DAYS;
     }
     else if (RMS_OFF_STRING == Value)
     {
-        return RMS_OFF;
+        return Global::RMS_OFF;
     }
     else
     {
-        return RMS_UNDEFINED;
+        return Global::RMS_UNDEFINED;
     }
 }
 
@@ -438,18 +438,18 @@ RMSMode CHimalayaUserSettings::GetModeRMSCleaning(void)
  *  \iparam ModeRMSCleaning = RMS mode of cleaning reagents.
  */
 /****************************************************************************/
-void CHimalayaUserSettings::SetModeRMSCleaning(RMSMode ModeRMSCleaning)
+void CHimalayaUserSettings::SetModeRMSCleaning(Global::RMSOptions_t ModeRMSCleaning)
 {
     QString Value;
     switch (ModeRMSCleaning)
     {
-    case RMS_CYCLES:
+    case Global::RMS_CYCLES:
         Value = RMS_CYCLES_STRING;
         break;
-    case RMS_DAYS:
+    case Global::RMS_DAYS:
         Value = RMS_DAYS_STRING;
         break;
-    case RMS_OFF:
+    case Global::RMS_OFF:
         Value = RMS_OFF_STRING;
         break;
     default:

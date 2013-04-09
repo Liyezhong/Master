@@ -80,7 +80,6 @@ public:
         return m_ReagentID.indexOf(ReagentID, 0);
     }
 
-
     /****************************************************************************/
     /**
      * \brief Sets the ModifiedProgramStepDlg flag
@@ -91,8 +90,6 @@ public:
     {
       m_ModifiedProgramStepDlg = Status;
     }
-
-
     /****************************************************************************/
     /**
      * \brief Sets the currently selected reagent in the table

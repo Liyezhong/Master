@@ -46,7 +46,7 @@ class CAlarmSettingsWidget : public MainMenu::CPanelFrame
 public:
     explicit CAlarmSettingsWidget(QWidget *p_Parent = 0);
     ~CAlarmSettingsWidget();
-    void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
+    void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
     /****************************************************************************/
     /*!
@@ -66,7 +66,8 @@ private:
     Settings::CAlarmSettingsDlg *mp_Error;  //!< Error alarm dialog
     Settings::CAlarmSettingsDlg *mp_Information;   //!< Note alarm dialog
     Settings::CAlarmSettingsDlg *mp_Warning;   //!< Note alarm dialog
-    DataManager::CUserSettings m_UserSettings;  //!< Data object
+    DataManager::CHimalayaUserSettings m_UserSettings;  //!< Data object
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     Core::CDataConnector *mp_DataConnector; //!< DataConnector object
     void RetranslateUI();
     void ResetButtons();
@@ -74,7 +75,6 @@ private:
     //Flags
     bool m_ProcessRunning;                  //!< Process running state
     //UI related
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
 
 private slots:
     void OnNoteEdit();

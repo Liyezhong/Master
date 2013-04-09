@@ -28,6 +28,7 @@
 #include "Core/Include/ReagentRMSModel.h"
 #include "Core/Include/DataConnector.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "Global/Include/Utils.h"
 #include "MainMenu/Include/BaseTable.h"
 #include "MainMenu/Include/SliderControl.h"
@@ -69,7 +70,9 @@ private:
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
+    MainMenu::CBaseTable *mp_TableWidgetCleaning;           //!< Reagent table
     Core::CReagentRMSModel m_ReagentRMSModel;             //!< Model for the table
+    Core::CReagentRMSModel m_ReagentCleaningModel;             //!< Model for the table
     Core::CDataConnector *mp_DataConnector;         //!< Global data container
     DataManager::CDataReagentList *mp_ReagentList;  //!< Reagent list
     DataManager::CReagent m_SelectedReagent;        //!< Currently selected reagent
@@ -88,12 +91,15 @@ public:
                             DataManager::CDataReagentList *p_ReagentList,
                             MainMenu::CMainWindow *p_MainWindow,
                             KeyBoard::CKeyBoard *p_KeyBoard = NULL);
-    static Global::RMSOptions_t m_RMSOption;
+    static Global::RMSOptions_t RMSPROCESSINGOPTION;
+    static Global::RMSOptions_t RMSCLEANINGOPTIONS;
+
 private:
     void PopulateReagentList();
     void ResizeHorizontalSection();
     void ResetButtons();
     void RetranslateUI();
+    void UpdateButtons(QString Id);
 
 protected:
     void changeEvent(QEvent *p_Event);
@@ -149,6 +155,7 @@ private slots:
     void OnNew();
     void OnDelete();
     void SelectionChanged(QModelIndex Index);
+    void SelectionChangedCleaningTable(QModelIndex Index);
     void OnUserRoleChanged();
     void OnProcessStateChanged();
     void CloseDialogs();
@@ -157,8 +164,10 @@ private slots:
     void OnRMSCycles();
     void OnRMSDays();
     void OnCancelPressed();
-
-
+    void OnCleaningRMSOFF();
+    void OnCleaningRMSCycles();
+    void OnCleaningRMSDays();
+    //void UpdateUserSetting();
 };
 
 } // end namespace Reagents

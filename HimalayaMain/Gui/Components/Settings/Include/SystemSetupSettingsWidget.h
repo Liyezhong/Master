@@ -22,6 +22,7 @@
 #define SETTINGS_SYSTEMSETUPSETTINGSWIDGET_H
 
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/ScrollWheel.h"
@@ -45,8 +46,8 @@ class CSystemSetupSettingsWidget : public MainMenu::CPanelFrame
 private:
     Ui::CSystemSetupSettingsWidget *mp_Ui;                 //!< User interface
     MainMenu::CScrollWheel *mp_ScrollWheel;         //!< Temperature scroll wheel
-    DataManager::CUserSettings *mp_UserSettings;    //!< Data object
-    DataManager::CUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
+    DataManager::CHimalayaUserSettings *mp_UserSettings;    //!< Data object
+    DataManager::CHimalayaUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
@@ -56,7 +57,7 @@ private:
 public:
     explicit CSystemSetupSettingsWidget(QWidget *p_Parent = NULL);
     ~CSystemSetupSettingsWidget();
-    void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
+    void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
 
 private:

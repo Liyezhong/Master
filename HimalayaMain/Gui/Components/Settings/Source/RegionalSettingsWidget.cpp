@@ -119,7 +119,7 @@ void CRegionalSettingsWidget::showEvent(QShowEvent *p_Event)
  *  \iparam p_UserSettings = Global user settings data
  */
 /****************************************************************************/
-void CRegionalSettingsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
+void CRegionalSettingsWidget::SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings)
 {
     mp_UserSettings = p_UserSettings;
 }
@@ -177,7 +177,9 @@ void CRegionalSettingsWidget::OnProcessStateChanged()
 void CRegionalSettingsWidget::ResetButtons()
 {
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
-    if (!m_ProcessRunning) {
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
+         m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
         //Edit Mode
         mp_Ui->btnApply->setEnabled(true);
     }

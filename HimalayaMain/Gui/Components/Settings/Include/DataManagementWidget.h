@@ -49,10 +49,16 @@ private:
     MainMenu::CDataManagement *mp_DataManagement;   //!< Content of this widget
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     Ui::CDataManagementWidget *mp_Ui;
+    bool m_ProcessRunning;                          //!< Process running state
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+
     void RetranslateUI();
+    void ResetButtons();
 
 protected:
     void changeEvent(QEvent *p_Event);
+    void showEvent(QShowEvent *);
+
 
 private slots:
     void ExportDialog();

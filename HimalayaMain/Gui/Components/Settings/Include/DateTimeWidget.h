@@ -21,7 +21,7 @@
 #ifndef SETTINGS_DATETIMEWIDGET_H
 #define SETTINGS_DATETIMEWIDGET_H
 
-#include  "DataManager/Containers/UserSettings/Include/UserSettings.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/DateTime.h"
 #include "MainMenu/Include/PanelFrame.h"
@@ -40,7 +40,7 @@ class CDateTimeWidget : public MainMenu::CPanelFrame {
 public:
     explicit CDateTimeWidget(QWidget *p_Parent = 0);
     virtual ~CDateTimeWidget();
-    void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
+    void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
     MainMenu::CDateTime *GetContent();
 
@@ -50,7 +50,7 @@ protected:
 
 private:
     MainMenu::CDateTime *mp_DateTime;   //!< Content of this widget
-    DataManager::CUserSettings *mp_UserSettings;  //!< Data object
+    DataManager::CHimalayaUserSettings *mp_UserSettings;  //!< Data object
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     void RetranslateUI();
 };

@@ -91,7 +91,25 @@ void CInstallationSettingsWidget::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CInstallationSettingsWidget::showEvent(QShowEvent *p_Event)
 {
-
+    ResetButtons();
+}
+/****************************************************************************/
+/*!
+ *  \brief Enables/Disables the apply button based on the user role/process
+ *         running status
+ */
+/****************************************************************************/
+void CInstallationSettingsWidget::ResetButtons()
+{
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+    if (( m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
+            //Edit Mode
+          mp_Ui->btnUpdate->setEnabled(true);
+    }
+    else {
+         mp_Ui->btnUpdate->setEnabled(false);
+    }
 }
 
 /****************************************************************************/
@@ -104,8 +122,12 @@ void CInstallationSettingsWidget::RetranslateUI()
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CInstallationSettingsWidget", "Installation", 0, QApplication::UnicodeUTF8));
    mp_Ui->btnEdit->setText("Edit");
    mp_Ui->btnUpdate->setText("Update");
+   mp_Ui->instrumentname->setText("Unidentified Instrument");
+   mp_Ui->serialnumber->setText("00000000000000000000000");
+   mp_Ui->softwareversion->setText("SoftwareVersion: ");
+   mp_Ui->driverversion->setText("Driver Version : ");
+   mp_Ui->versionofprogram->setText("Version of write-Protected Program :");
 }
-
 
 /****************************************************************************/
 /*!
@@ -114,11 +136,10 @@ void CInstallationSettingsWidget::RetranslateUI()
  */
 /****************************************************************************/
 
-void CInstallationSettingsWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
+void CInstallationSettingsWidget::SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings)
 {
     mp_UserSettings = p_UserSettings;
 }
-
 
 /****************************************************************************/
 /*!

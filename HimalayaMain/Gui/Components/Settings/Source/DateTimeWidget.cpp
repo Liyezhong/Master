@@ -95,7 +95,7 @@ MainMenu::CDateTime *CDateTimeWidget::GetContent()
  *  \iparam p_UserSettings = Global user settings data
  */
 /****************************************************************************/
-void CDateTimeWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
+void CDateTimeWidget::SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings)
 {
     mp_UserSettings = p_UserSettings;
 }

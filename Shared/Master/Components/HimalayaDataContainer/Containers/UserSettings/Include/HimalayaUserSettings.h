@@ -112,13 +112,13 @@ public:
 
     void SetFrequencyPV(int FrequencyPV);
 
-    RMSMode GetModeRMSProcessing(void);
+    Global::RMSOptions_t GetModeRMSProcessing(void);
 
-    void SetModeRMSProcessing(RMSMode ModeRMSProcessing);
+    void SetModeRMSProcessing(Global::RMSOptions_t ModeRMSProcessing);
 
-    RMSMode GetModeRMSCleaning(void);
+    Global::RMSOptions_t GetModeRMSCleaning(void);
 
-    void SetModeRMSCleaning(RMSMode ModeRMSCleaning);
+    void SetModeRMSCleaning(Global::RMSOptions_t ModeRMSCleaning);
 
 }; // end class CUserSettings
 

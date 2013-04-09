@@ -60,7 +60,6 @@ CDataManagementWidget::~CDataManagementWidget()
     }
 }
 
-
 /****************************************************************************/
 /*!
  *  \brief Event handler for change events
@@ -98,6 +97,50 @@ void CDataManagementWidget:: ImportDialog()
     QStringList Type;
     Type << "User";
     emit ExecSending("DataImport", Type);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Enables/Disables the button based on the user role/process
+ *         running status
+ */
+/****************************************************************************/
+void CDataManagementWidget::ResetButtons()
+{
+    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin && (!m_ProcessRunning))) {
+        //Edit Mode
+        mp_Ui->saveusbButton->setEnabled(true);
+    }
+    else {
+        mp_Ui->saveusbButton->setEnabled(false);
+    }
+    if (( m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
+        mp_Ui->serviceExportButton->setEnabled(true);
+    }
+    else {
+        mp_Ui->serviceExportButton->setEnabled(false);
+    }
+    if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
+         m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
+        mp_Ui->importButton->setEnabled(true);
+    }
+    else {
+        mp_Ui->importButton->setEnabled(false);
+    }
+}
+
+
+/****************************************************************************/
+/*!
+ *  \brief Called when DataManagement widget is show
+ */
+/****************************************************************************/
+void CDataManagementWidget::showEvent(QShowEvent *p_Event)
+{
+    Q_UNUSED(p_Event);
+    ResetButtons();
 }
 
 /****************************************************************************/

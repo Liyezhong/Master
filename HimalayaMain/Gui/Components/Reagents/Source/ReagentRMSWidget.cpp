@@ -28,7 +28,9 @@
 
 namespace Reagents {
 
-Global::RMSOptions_t CReagentRMSWidget :: m_RMSOption = Global::RMS_CASSETTES;
+Global::RMSOptions_t CReagentRMSWidget :: RMSPROCESSINGOPTION = Global::RMS_CASSETTES;
+Global::RMSOptions_t CReagentRMSWidget :: RMSCLEANINGOPTIONS = Global::RMS_OFF;
+
 /****************************************************************************/
 /*!
  *  \brief Constructor
@@ -50,11 +52,18 @@ CReagentRMSWidget::CReagentRMSWidget(QWidget *p_Parent):
     m_ProcessRunning = false;
     m_ShowMessageDialog = false;
 
+    m_ReagentCleaningModel.SetReagentGroupType(true);
+    mp_TableWidgetCleaning = new MainMenu::CBaseTable;
+    mp_TableWidgetCleaning->setModel(&m_ReagentCleaningModel);
+    mp_Ui->scrolltable_cleaning->SetContent(mp_TableWidgetCleaning);
+
+    m_ReagentRMSModel.SetReagentGroupType(false);
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->setModel(&m_ReagentRMSModel);
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
+
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    m_RMSOption = Global::RMS_CASSETTES;
+
     mp_Ui->radioCassettes->setChecked(true);
     mp_Ui->radioOff_Cleaning->setChecked(true);
 
@@ -65,10 +74,18 @@ CReagentRMSWidget::CReagentRMSWidget(QWidget *p_Parent):
     CONNECTSIGNALSLOT(mp_Ui->radioCassettes, clicked(), this, OnRMSCassettes());
     CONNECTSIGNALSLOT(mp_Ui->radioCycles, clicked(), this, OnRMSCycles());
     CONNECTSIGNALSLOT(mp_Ui->radioDays, clicked(), this, OnRMSDays());
+    CONNECTSIGNALSLOT(mp_Ui->radioOff_Cleaning, clicked(), this, OnCleaningRMSOFF());
+    CONNECTSIGNALSLOT(mp_Ui->radioCycles_Cleaning, clicked(), this, OnCleaningRMSCycles());
+    CONNECTSIGNALSLOT(mp_Ui->radioDays_Cleaning, clicked(), this, OnCleaningRMSDays());
     CONNECTSIGNALSLOT(mp_TableWidget, pressed(QModelIndex), this, SelectionChanged(QModelIndex));
+    CONNECTSIGNALSLOT(mp_TableWidgetCleaning, pressed(QModelIndex), this, SelectionChangedCleaningTable(QModelIndex));
     CONNECTSIGNALSLOT(this, UpdateReagentList(), &m_ReagentRMSModel, UpdateReagentList());
+    CONNECTSIGNALSLOT(this, UpdateReagentList(), &m_ReagentCleaningModel, UpdateReagentList());
     CONNECTSIGNALSLOT(&m_ReagentRMSModel, modelReset(), this, CloseDialogs());
     PopulateReagentList();
+
+    mp_TableWidgetCleaning->setColumnHidden(2, true);
+    m_ReagentCleaningModel.ResetAndUpdateModel();
 }
 
 /****************************************************************************/
@@ -82,6 +99,7 @@ CReagentRMSWidget::~CReagentRMSWidget()
         delete mp_TableWidget;
         delete mp_Ui;
         delete mp_ModifiyReagentRMSDlg;
+        delete mp_TableWidgetCleaning;
     }
     catch (...) {
         // to please Lint.
@@ -114,13 +132,17 @@ void CReagentRMSWidget::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CReagentRMSWidget::ResizeHorizontalSection()
 {
-    if (mp_TableWidget == NULL)
+    if (mp_TableWidget == NULL && mp_TableWidgetCleaning == NULL)
     {
         return;
     }
     mp_TableWidget->horizontalHeader()->resizeSection(0, 120);
     mp_TableWidget->horizontalHeader()->resizeSection(1, 150);
     mp_TableWidget->horizontalHeader()->resizeSection(2, 140);
+
+    mp_TableWidgetCleaning->horizontalHeader()->resizeSection(0, 120);
+    mp_TableWidgetCleaning->horizontalHeader()->resizeSection(1, 150);
+    mp_TableWidgetCleaning->horizontalHeader()->resizeSection(2, 140);
 
 }
 /****************************************************************************/
@@ -130,12 +152,19 @@ void CReagentRMSWidget::ResizeHorizontalSection()
 /****************************************************************************/
 void CReagentRMSWidget::PopulateReagentList()
 {
-    mp_TableWidget->SetVisibleRows(7,28,32);
-    m_ReagentRMSModel.SetVisibleRowCount(7);
+    mp_TableWidget->SetVisibleRows(2,28,26);
+    m_ReagentRMSModel.SetVisibleRowCount(2);
     mp_TableWidget->horizontalHeader()->show();
-    mp_TableWidget->verticalHeader()->setDefaultSectionSize(32);
+    mp_TableWidget->verticalHeader()->setDefaultSectionSize(26);
+
+    mp_TableWidgetCleaning->SetVisibleRows(2,28,26);
+    m_ReagentCleaningModel.SetVisibleRowCount(2);
+    mp_TableWidgetCleaning->horizontalHeader()->show();
+    mp_TableWidgetCleaning->verticalHeader()->setDefaultSectionSize(26);
 
     ResizeHorizontalSection();
+    m_ReagentCleaningModel.ResetAndUpdateModel();
+    m_ReagentRMSModel.ResetAndUpdateModel();
 }
 /****************************************************************************/
 /*!
@@ -152,12 +181,12 @@ void CReagentRMSWidget::CloseDialogs()
 
 /****************************************************************************/
 /*!
- *  \brief Displays a dialog for the modification of a staining reagent
+ *  \brief Slot will be called when processing RMS mode changed to Off
  */
 /****************************************************************************/
 void CReagentRMSWidget::OnRMSOFF()
 {
-    m_RMSOption = Global::RMS_OFF;
+    RMSPROCESSINGOPTION = Global::RMS_OFF;
     mp_TableWidget->setColumnHidden(2, true);
     m_ReagentRMSModel.ResetAndUpdateModel();
     emit RMSChanged(Global::RMS_OFF);
@@ -165,12 +194,12 @@ void CReagentRMSWidget::OnRMSOFF()
 
 /****************************************************************************/
 /*!
- *  \brief Displays a dialog for the modification of a staining reagent
+ *  \brief Slot will be called when processing RMS mode changed to Cassettes
  */
 /****************************************************************************/
 void CReagentRMSWidget::OnRMSCassettes()
 {
-    m_RMSOption = Global::RMS_CASSETTES;
+    RMSPROCESSINGOPTION = Global::RMS_CASSETTES;
     mp_TableWidget->setColumnHidden(2, false);
     m_ReagentRMSModel.ResetAndUpdateModel();
     ResizeHorizontalSection();
@@ -179,12 +208,12 @@ void CReagentRMSWidget::OnRMSCassettes()
 
 /****************************************************************************/
 /*!
- *  \brief Displays a dialog for the modification of a staining reagent
+ *  \brief Slot will be called when processing RMS mode changed to Cycles
  */
 /****************************************************************************/
 void CReagentRMSWidget::OnRMSCycles()
 {
-    m_RMSOption = Global::RMS_CYCLES;
+    RMSPROCESSINGOPTION = Global::RMS_CYCLES;
     mp_TableWidget->setColumnHidden(2, false);
     m_ReagentRMSModel.ResetAndUpdateModel();
     ResizeHorizontalSection();
@@ -193,16 +222,57 @@ void CReagentRMSWidget::OnRMSCycles()
 
 /****************************************************************************/
 /*!
- *  \brief Displays a dialog for the modification of a staining reagent
+ *  \brief Slot will be called when processing RMS mode changed to Days
  */
 /****************************************************************************/
 void CReagentRMSWidget::OnRMSDays()
 {
-    m_RMSOption = Global::RMS_DAYS;
+    RMSPROCESSINGOPTION = Global::RMS_DAYS;
     mp_TableWidget->setColumnHidden(2, false);
     m_ReagentRMSModel.ResetAndUpdateModel();
     ResizeHorizontalSection();
     emit RMSChanged(Global::RMS_DAYS);
+}
+
+
+/****************************************************************************/
+/*!
+ *  \brief Slot will be called when Cleaning RMS mode changed to Off
+ */
+/****************************************************************************/
+void CReagentRMSWidget::OnCleaningRMSOFF()
+{
+    RMSCLEANINGOPTIONS = Global::RMS_OFF;
+    mp_TableWidgetCleaning->setColumnHidden(2, true);
+    m_ReagentCleaningModel.ResetAndUpdateModel();
+    ResetButtons();
+}
+/****************************************************************************/
+/*!
+ *  \brief Slot will be called when Cleaning RMS mode changed to Cycles
+ */
+/****************************************************************************/
+void CReagentRMSWidget::OnCleaningRMSCycles()
+{
+    RMSCLEANINGOPTIONS = Global::RMS_CYCLES;
+    mp_TableWidgetCleaning->setColumnHidden(2, false);
+    ResizeHorizontalSection();
+    m_ReagentCleaningModel.ResetAndUpdateModel();
+    ResetButtons();
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Slot will be called when Cleaning RMS mode changed to Days
+ */
+/****************************************************************************/
+void CReagentRMSWidget::OnCleaningRMSDays()
+{
+    RMSCLEANINGOPTIONS = Global::RMS_DAYS;
+    mp_TableWidgetCleaning->setColumnHidden(2, false);
+    ResizeHorizontalSection();
+    m_ReagentCleaningModel.ResetAndUpdateModel();
+    ResetButtons();
 }
 
 /****************************************************************************/
@@ -216,7 +286,7 @@ void CReagentRMSWidget::OnEdit()
                             "\nPlease close the dialog with \"Close\""));
     mp_ModifiyReagentRMSDlg->SetDialogTitle(tr("Edit Reagent"));
     mp_ModifiyReagentRMSDlg->SetButtonType(EDIT_BTN_CLICKED);
-    mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList, Reagents::CReagentRMSWidget::m_RMSOption);
+    mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList, Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION);
     mp_ModifiyReagentRMSDlg->show();
 }
 
@@ -232,7 +302,7 @@ void CReagentRMSWidget::OnNew()
     mp_ModifiyReagentRMSDlg->SetDialogTitle(tr("New Reagent"));
     mp_ModifiyReagentRMSDlg->SetButtonType(NEW_BTN_CLICKED);
     mp_Reagent = NULL;
-    mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList,Reagents::CReagentRMSWidget::m_RMSOption);
+    mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList,Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION);
     mp_ModifiyReagentRMSDlg->show();
 }
 
@@ -299,9 +369,38 @@ void CReagentRMSWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettin
 /****************************************************************************/
 void CReagentRMSWidget::SelectionChanged(QModelIndex Index)
 {
+    mp_TableWidgetCleaning->clearSelection();
     QString Id = m_ReagentRMSModel.data(Index, (int)Qt::UserRole).toString();
     // change the background color when the row is selected for the reagent group column
 
+    UpdateButtons(Id);
+}
+
+
+/****************************************************************************/
+/*!
+ *  \brief Called when the selection of the table is changed
+ *
+ *  \iparam Index = Model Index
+ */
+/****************************************************************************/
+void CReagentRMSWidget::SelectionChangedCleaningTable(QModelIndex Index)
+{
+    mp_TableWidget->clearSelection();
+    QString Id = m_ReagentCleaningModel.data(Index, (int)Qt::UserRole).toString();
+    // change the background color when the row is selected for the reagent group column
+    UpdateButtons(Id);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Called when the selection of the table is changed
+ *
+ *  \iparam Index = Reagent ID
+ */
+/****************************************************************************/
+void CReagentRMSWidget::UpdateButtons(QString Id)
+{
     mp_Reagent = mp_ReagentList->GetReagent(Id);
     if (mp_Reagent) {
         if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
@@ -356,6 +455,7 @@ void CReagentRMSWidget::OnUserRoleChanged()
 /****************************************************************************/
 void CReagentRMSWidget::OnProcessStateChanged()
 {
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
@@ -392,6 +492,7 @@ void CReagentRMSWidget::OnProcessStateChanged()
 /****************************************************************************/
 void CReagentRMSWidget::ResetButtons()
 {
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
         //Edit Mode
@@ -425,9 +526,8 @@ void CReagentRMSWidget::RetranslateUI()
     (void) m_ReagentRMSModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                                                  "ReagentGroup", 0, QApplication::UnicodeUTF8),0);
 
-
     QString SecondColumnName("");
-    switch(Reagents:: CReagentRMSWidget::m_RMSOption) {
+    switch(Reagents:: CReagentRMSWidget::RMSPROCESSINGOPTION) {
         case Global::RMS_CASSETTES:
             SecondColumnName = "Cassettes until change";
             break;
@@ -440,8 +540,14 @@ void CReagentRMSWidget::RetranslateUI()
     }
     (void) m_ReagentRMSModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                                                  SecondColumnName.toUtf8(), 0, QApplication::UnicodeUTF8),0);
-
 }
+
+/*
+void CReagentRMSWidget ::UpdateUserSetting()
+{
+    mp_UserSettings = mp_DataConnector->SettingsInterface->GetUserSettings();;
+    m_ReagentRMSModel.SetUserSettings(p_UserSettings);
+}*/
 
 /****************************************************************************/
 /*!
@@ -452,8 +558,14 @@ void CReagentRMSWidget::showEvent(QShowEvent *)
 {
     m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."));
     m_ShowMessageDialog = true ;
-    mp_TableWidget->clearSelection();
+    mp_TableWidget->clearSelection();  
     mp_Ui->scrollTable->Reset();
+    m_ReagentRMSModel.UpdateReagentList();
+
+    mp_TableWidgetCleaning->clearSelection();
+    m_ReagentCleaningModel.UpdateReagentList();
+    if(RMSCLEANINGOPTIONS == Global::RMS_OFF)
+        OnCleaningRMSOFF();
     ResetButtons();
 }
 
@@ -476,6 +588,9 @@ void CReagentRMSWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnector
     // set the reagent ist to the model
     m_ReagentRMSModel.SetReagentList(mp_ReagentList, 3);
     m_ReagentRMSModel.SetReagentGroupList(mp_DataConnector->ReagentGroupList);
+
+    m_ReagentCleaningModel.SetReagentList(mp_ReagentList, 3);
+    m_ReagentCleaningModel.SetReagentGroupList(mp_DataConnector->ReagentGroupList);
     ResizeHorizontalSection();
 
     mp_ModifiyReagentRMSDlg = new CModifyReagentRMSDlg(this, mp_KeyBoard, mp_MainWindow, mp_DataConnector);
@@ -487,7 +602,7 @@ void CReagentRMSWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnector
                         mp_DataConnector, SendReagentAdd(DataManager::CReagent &));
     CONNECTSIGNALSLOT(this, RemoveReagent(QString) ,
                       mp_DataConnector, SendReagentRemove(QString));
-
+    //CONNECTSIGNALSLOT(mp_DataConnector,UserSettingsUpdated(),this,UpdateUserSetting());
 
     CONNECTSIGNALSLOT(mp_ModifiyReagentRMSDlg, CancelPressed(), this, OnCancelPressed());
 }

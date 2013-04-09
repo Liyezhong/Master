@@ -23,6 +23,7 @@
 
 #include "Global/Include/Commands/CmdDateAndTime.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/PanelFrame.h"
 #include <QTranslator>
@@ -48,9 +49,10 @@ class CRegionalSettingsWidget : public MainMenu::CPanelFrame
 
 private:
     Ui::CRegionalSettingsWidget *mp_Ui;             //!< User interface
-    DataManager::CUserSettings *mp_UserSettings;  //!< Data object
-    DataManager::CUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
+    DataManager::CHimalayaUserSettings *mp_UserSettings;  //!< Data object
+    DataManager::CHimalayaUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
     MainMenu::CMainWindow *mp_MainWindow;           //!< Used to inform Mainwindow settings.
+     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     Global::DateFormat m_DateFormat;                //!< Date format
     Global::TimeFormat m_TimeFormat;                //!< Time Format
     Global::TemperatureFormat m_TemperatureFormat;  //!< Temperature Format
@@ -63,7 +65,7 @@ private:
 public:
     explicit CRegionalSettingsWidget(QWidget *p_Parent = 0);
     ~CRegionalSettingsWidget();
-    void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
+    void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
 
 protected:

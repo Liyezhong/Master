@@ -734,7 +734,16 @@ void CDataConnector::UpdateStationChangeReagentHandler(Global::tRefType Ref,
     if (pDashboardStation)
     {
         pDashboardStation->SetDashboardReagentID(Command.ReagentID());
-        pDashboardStation->ResetData();
+        switch (Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION) {
+            default:
+                 QString("");
+            case Global::RMS_CASSETTES:
+                pDashboardStation->SetDashboardReagentActualCassettes(0);
+                break;
+            case Global::RMS_CYCLES:
+                pDashboardStation->SetDashboardReagentActualCycles(0);
+                break;
+         }
         pDashboardStation->SetDashboardReagentStatus("Empty");
     }
     else
@@ -752,9 +761,8 @@ void CDataConnector::UpdateStationResetDataHandler(Global::tRefType Ref, const M
     bool Result = true;
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
      if (pDashboardStation) {
-        pDashboardStation->SetDashboardReagentStatus("Empty");
         pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate()) ;
-        switch (Reagents::CReagentRMSWidget::m_RMSOption) {
+        switch (Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION) {
             default:
                  QString("");
             case Global::RMS_CASSETTES:
@@ -798,7 +806,7 @@ void CDataConnector::UpdateStationSetAsFullHandler(Global::tRefType Ref, const M
     if (pDashboardStation){
         pDashboardStation->SetDashboardReagentStatus("Full");
         pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate()) ;
-        switch (Reagents::CReagentRMSWidget::m_RMSOption) {
+        switch (Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION) {
             default:
                  QString("");
             case Global::RMS_CASSETTES:

@@ -39,7 +39,7 @@ CLanguageWidget::CLanguageWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Pa
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Language"));
     mp_TableWidget = new MainMenu::CBaseTable;
-    mp_UserSettings = new DataManager::CUserSettings();
+    mp_UserSettings = new DataManager::CHimalayaUserSettings();
     m_LanguageModel.SetVisibleRowCount(8);
     mp_TableWidget->setModel(&m_LanguageModel);
     mp_Ui->tableWidget->SetContent(mp_TableWidget);
@@ -128,7 +128,7 @@ void CLanguageWidget::PopulateLanguageList()
  *  \iparam p_UserSettings = Global user settings data
  */
 /****************************************************************************/
-void CLanguageWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
+void CLanguageWidget::SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings)
 {
     *mp_UserSettings = *p_UserSettings;
 }
@@ -181,10 +181,12 @@ void CLanguageWidget::OnProcessStateChanged()
 /****************************************************************************/
 void CLanguageWidget::ResetButtons()
 {
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
-    if (!m_ProcessRunning) {
-        //Edit Mode
-        mp_Ui->btnApply->setEnabled(true);
+    if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
+         m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
+            //Edit Mode
+            mp_Ui->btnApply->setEnabled(true);
     }
     else {
         mp_Ui->btnApply->setEnabled(false);

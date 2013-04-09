@@ -50,6 +50,7 @@ CReagentRMSModel::CReagentRMSModel(QObject *p_Parent) : QAbstractTableModel(p_Pa
     mp_Parent = NULL;
     m_HideSpecialReagents = false;
     m_FilterLeicaReagent = false;
+    m_CleaningReagent = true;
     m_Columns = 0;
     m_VisibleRowCount = 7;
     (void)m_PixmapTickOk.load(QString(":/%1/Icons/MISC/TickOk.png").arg(Application::CLeicaStyle::GetProjectNameString()));
@@ -97,33 +98,45 @@ void CReagentRMSModel::UpdateReagentList()
     m_ReagentNames.clear();
     m_ReagentNameMap.clear();
     m_ReagentID.clear();
-    if (mp_ReagentList) {
+    m_CleaningGroupReagentNames.clear();
+    m_CleaningGroupReagentID.clear();
+
+    if (mp_ReagentList && mp_ReagentGroupList) {
         for(qint32 i = 0; i < mp_ReagentList->GetNumberOfReagents(); i++) {
             DataManager::CReagent *p_Reagent = NULL;
             p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(i));
+            DataManager::CReagentGroup *p_ReagentGroup=mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID());
+            QString GroupName  =p_ReagentGroup->GetReagentGroupName();
+            bool Check = false;
+             Check = (GroupName == QString("Cleaning solvent")  || \
+                           GroupName == QString("Clearing alcohol")  ||\
+                           GroupName == QString("Cleaning water"));
+
             if (p_Reagent) {
-                if (p_Reagent->GetReagentType() == USER_REAGENT) {
-                    m_ReagentNames << p_Reagent->GetReagentName();
-                    m_ReagentID<<p_Reagent->GetReagentID();
+                if ((p_Reagent->GetReagentType() != LEICA_REAGENT || (!m_FilterLeicaReagent)) \
+                       && Check == false && m_CleaningReagent == false){
+                     UpdateList(p_Reagent);
+                 }
+                else if ((p_Reagent->GetReagentType() != LEICA_REAGENT || (!m_FilterLeicaReagent)) \
+                    && Check == true && m_CleaningReagent == true) {
+                    UpdateList(p_Reagent);
                 }
-                if (p_Reagent->GetReagentType() == LEICA_REAGENT && (!m_FilterLeicaReagent)) {
-                    m_ReagentNames << p_Reagent->GetReagentName();
-                    m_ReagentID<<p_Reagent->GetReagentID();
-                }
-                m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
+
                 if(p_Reagent->GetVisibleState()== true){
                     m_VisibleReagentIds << p_Reagent->GetReagentName();
                 }
             }
         }
     }
-    foreach (const QString str, m_ReagentNames)
-        (void)m_ReagentNameMap.insertMulti(str.toLower(), str);
-    m_ReagentNames = m_ReagentNameMap.values();
-
     endResetModel();
 }
 
+void CReagentRMSModel ::UpdateList( DataManager::CReagent *p_Reagent)
+{
+     m_ReagentNames << p_Reagent->GetReagentName();
+     m_ReagentID<<p_Reagent->GetReagentID();
+     m_Identifiers[p_Reagent->GetReagentID()] = p_Reagent->GetReagentName();
+}
 /****************************************************************************/
 /*!
  *  \brief Sets the number of rows visible in the table
@@ -147,9 +160,8 @@ void CReagentRMSModel::SetVisibleRowCount(int RowCount)
 /****************************************************************************/
 int CReagentRMSModel::rowCount(const QModelIndex &) const
 {
-    return ((m_ReagentNames.count() < m_VisibleRowCount) ? m_VisibleRowCount : m_ReagentNames.count());
+    return ((m_Identifiers.count() < m_VisibleRowCount) ? m_VisibleRowCount : m_Identifiers.count());
 }
-
 /****************************************************************************/
 /*!
  *  \brief Returns the number of columns in the table
@@ -179,7 +191,7 @@ QVariant CReagentRMSModel::data(const QModelIndex &Index, int Role) const
         return QVariant();
     }
 
-    if (Index.row() < m_ReagentNames.count() && (p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_ReagentID[Index.row()])))){
+    if (Index.row() < m_Identifiers.count() && (p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_ReagentID[Index.row()])))){
         if (Role == (int)Qt::DisplayRole) {
             switch (Index.column()) {
             case 0:
@@ -195,7 +207,8 @@ QVariant CReagentRMSModel::data(const QModelIndex &Index, int Role) const
                     }
                 }
             case 2:
-                switch (Reagents:: CReagentRMSWidget::m_RMSOption) {
+                if(m_CleaningReagent == false){
+                    switch (Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION) {
                     default:
                         return QString("");
                     case Global::RMS_CASSETTES:
@@ -204,6 +217,21 @@ QVariant CReagentRMSModel::data(const QModelIndex &Index, int Role) const
                         return p_Reagent->GetMaxCycles();
                     case Global::RMS_DAYS:
                         return p_Reagent->GetMaxDays();
+                    case Global::RMS_OFF:
+                        return QString("");
+                    }
+                }
+                else {
+                    switch (Reagents::CReagentRMSWidget::RMSCLEANINGOPTIONS) {
+                    default:
+                        return QString("");
+                    case Global::RMS_CYCLES:
+                        return p_Reagent->GetMaxCycles();
+                    case Global::RMS_DAYS:
+                        return p_Reagent->GetMaxDays();
+                    case Global::RMS_OFF:
+                        return QString("");
+                    }
                 }
             }
         }
@@ -266,7 +294,8 @@ QVariant CReagentRMSModel::headerData(int Section, Qt::Orientation Orientation, 
         case 1:
             return tr("Reagent Group");
         case 2:
-            switch (Reagents:: CReagentRMSWidget::m_RMSOption) {
+            if(m_CleaningReagent == false){
+                switch (Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION) {
                 default:
                     return QString("");
                 case Global::RMS_CASSETTES:
@@ -275,8 +304,19 @@ QVariant CReagentRMSModel::headerData(int Section, Qt::Orientation Orientation, 
                     return tr("Cycles until change");
                 case Global::RMS_DAYS:
                     return tr("Days until change");
+                }
             }
-        }
+            else{
+                switch (Reagents::CReagentRMSWidget::RMSCLEANINGOPTIONS) {
+                default:
+                    return QString("");
+                case Global::RMS_CYCLES:
+                    return tr("Cycles until change");
+                case Global::RMS_DAYS:
+                    return tr("Days until change");
+                }
+             }
+         }
     }
     return QVariant();
 }

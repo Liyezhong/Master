@@ -49,7 +49,6 @@ CReagentStationModel::CReagentStationModel(QObject *p_Parent) : QAbstractTableMo
     m_FilterLeicaReagent = false;
     m_Columns = 0;
     m_VisibleRowCount = 7;
-    m_RMSOptions = Global::RMS_CASSETTES;
     m_DateFormat = Global::DATE_INTERNATIONAL;
 }
 

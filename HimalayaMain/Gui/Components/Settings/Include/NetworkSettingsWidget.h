@@ -25,6 +25,7 @@
 #include "MainMenu/Include/MainWindow.h"
 #include "KeyBoard/Include/KeyBoard.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include <QRegExpValidator>
 
 namespace Settings {
@@ -66,7 +67,7 @@ private:
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Reference to Keyboard widget
     KeyBoard::ValidationType_t m_ValidationType;    //!< Entered text validation type
     ButtonType_t m_ButtonType;                      //!< Button Type
-    DataManager::CUserSettings m_UserSettings;      //!< UserSettings object
+    DataManager::CHimalayaUserSettings m_UserSettings;      //!< UserSettings object
     QString m_Password;                             //!< String to hold Password
     void RetranslateUI();
     void ResetButtons();
@@ -78,7 +79,7 @@ protected:
     void UpdateOnESC();
 
 public:
-     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
+     void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
 
 private slots:    
     void OnOkClicked();
