@@ -741,7 +741,7 @@ void CDataConnector::UpdateStationChangeReagentHandler(Global::tRefType Ref,
         Result = false;
     if(Result){
         mp_WaitDialog->accept();
-        emit DashboardStationChangeReagent();
+        emit DashboardStationChangeReagent(Command.StationID());
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }
@@ -769,7 +769,7 @@ void CDataConnector::UpdateStationResetDataHandler(Global::tRefType Ref, const M
         Result = false;
      if(Result){
         mp_WaitDialog->accept();
-        emit DashboardStationChangeReagent();
+        emit DashboardStationChangeReagent(Command.StationID());
      }
      m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }
@@ -786,7 +786,7 @@ void CDataConnector::UpdateStationSetAsEmptyHandler(Global::tRefType Ref, const 
         Result = false;
     if(Result){
         mp_WaitDialog->accept();
-        emit DashboardStationChangeReagent();
+        emit DashboardStationChangeReagent(Command.StationID());
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }
@@ -813,7 +813,7 @@ void CDataConnector::UpdateStationSetAsFullHandler(Global::tRefType Ref, const M
         Result = false;
     if(Result){
         mp_WaitDialog->accept();
-        emit DashboardStationChangeReagent();
+        emit DashboardStationChangeReagent(Command.StationID());
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }
@@ -846,7 +846,7 @@ void CDataConnector::UpdateStationReagentStatus(Global::tRefType Ref, const MsgC
     }
 
     mp_WaitDialog->accept();
-    emit DashboardStationChangeReagent();
+    //emit DashboardStationChangeReagent(Command.StationID());
 
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
 

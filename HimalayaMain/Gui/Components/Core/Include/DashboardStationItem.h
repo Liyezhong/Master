@@ -69,10 +69,10 @@ private:
     DataManager::CDashboardStation *mp_DashboardStation; //!< Dashboard Station object
     QString m_ImageType;                                 //!< Containing the station type for the image filename
     QString m_BorderImage;                               //!< Containing the selection border image filename
+    bool m_Animation;                                    //!< Turns on animation of station blink when true.
     bool m_Enabled;                                      //!< Indicates if the station is enabled
     bool m_Pressed;                                      //!< Indicates if the station is pressed
-    bool m_Selected;                                     //!< Indicates if the station is selected for border
-    bool m_Animate;                                      //!< Turns on animation of Rack, Watertap and station blink when true.
+
     bool m_GridDrawn;                                    //!< Flag to verify whether the grid is drawn or not
     StationGroupType_t m_DashboardStationGroup;          //!< Dashboard StationGroup object
     QString m_DashboardStationID;                        //!< Dashboard Station ID
@@ -97,10 +97,11 @@ private:
     const int m_BottleBoundingRectWidth;                 //!< Bottle Bounding Rect Width
     const int m_BottleBoundingRectHeight;                //!< Bottle Bounding Rect Height
 
-    QTimer *mp_BlinkTimer;                               //!< timer for blinking effect of reagent status (RMS >= 100)
-    bool m_ReagentBlinking;                              //!< for blinking effect of expired reagents
-    bool m_ReagentTimeStarted;                           //!< for checking whether the timer has started or not
+
+    QTimer *mp_BlinkingTimer;                            //!< timer for blinking effect of station when reagent is expired
     bool m_ReagentExpiredFlag;                           //!< Indicates if the reagent in a station is expired.
+    qint32 m_BlinkingCounter;                            //!< Counter for animation
+    bool m_StationSelected;                              //!< Indicates if the station is selected for the program
 
 public:
     explicit CDashboardStationItem(Core::CDataConnector *p_DataConnector,                                   
@@ -122,6 +123,7 @@ public:
     void LoadStationImages(QPainter & Painter);
     void DrawBackgroundRectangle(QPainter & Painter);
     void DrawReagentName(QPainter & Painter);
+    void DrawStationItemLabel(QPainter & Painter);
     void FillReagentColor(QPainter & Painter);
     /****************************************************************************/
     /*!
@@ -130,7 +132,7 @@ public:
      *  \iparam Selected = True if station is selected else False.
      */
     /****************************************************************************/
-    void StationSelected(bool Selected){ m_Selected = Selected; }
+    void StationSelected(bool Selected){ m_StationSelected = Selected; }
 
 
     /****************************************************************************/
@@ -140,7 +142,7 @@ public:
      *  \oparam m_Selected = True if station is selected else False.
      */
     /****************************************************************************/
-    bool GetStationSelect(){return m_Selected;}
+    bool GetStationSelect(){return m_StationSelected;}
 
     /****************************************************************************/
     /*!
@@ -183,12 +185,13 @@ signals:
 
 public slots:
     void UpdateImage();
-    void ShowBlinkingEffect();
+    void UpdateDashboardScene(QString StationID);
 
 
 private slots:
 
     void UpdateDashboardStationItemReagent();
+    void DrawStationItemImage();
 };
 
 } // end namespace Core

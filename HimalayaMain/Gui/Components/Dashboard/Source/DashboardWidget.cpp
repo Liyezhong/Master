@@ -61,7 +61,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      mp_MessageDlg = new MainMenu::CMessageDlg();
 
      CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
-     CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, currentIndexChanged(int), this, OnProgramSelected(int));
+     CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, activated(int), this, OnProgramSelected(int));
 
      CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
      CONNECTSIGNALSLOT(this, ProgramAction(const QString&, DataManager::ProgramActionType_t),
@@ -182,8 +182,10 @@ void CDashboardWidget::OnProgramSelected(int index)
     if(-1 != index) {
         m_SelectedProgramId = m_FavProgramIDs.at(index);
         CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_SelectedProgramId)->GetName();
+        mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+    } else {
+        mp_Ui->pgmsComboBox->showPopup();
     }
-
 }
 
 bool CDashboardWidget::CheckPreConditionsToRunProgram()

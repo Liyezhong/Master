@@ -48,7 +48,7 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     mp_DataConnector(p_DataConnector),
     m_DashboardStationGroup(StationGroup),
     m_StationItemLabel(StationLabel),
-    m_Animate(Animation),
+    m_Animation(Animation),
     mp_DashboardStation(p_DashboardStation),
     m_RetortBoundingRectWidth(125),
     m_RetortBoundingRectHeight(78),
@@ -56,12 +56,11 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_ParaffinbathBoundingRectHeight(60),
     m_BottleBoundingRectWidth(79),
     m_BottleBoundingRectHeight(97),
-    m_ReagentBlinking(true),
-    m_ReagentTimeStarted(false),
     m_ReagentExpiredFlag(false),
+    m_BlinkingCounter(1),
     m_Enabled(true),
     m_Pressed(false),
-    m_Selected(false)
+    m_StationSelected(false)
 
 {
     setFlag(QGraphicsItem::ItemIsSelectable);
@@ -69,13 +68,10 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     setCacheMode(QGraphicsItem::ItemCoordinateCache);
 
     if(m_DashboardStationGroup == STATIONS_GROUP_RETORT) {
-        //m_Image = QPixmap(125, 78);
         m_Image = QPixmap(m_RetortBoundingRectWidth, m_RetortBoundingRectHeight);
     } else if(m_DashboardStationGroup == STATIONS_GROUP_PARAFFINBATH) {
-        //m_Image = QPixmap(122, 60);
         m_Image = QPixmap(m_ParaffinbathBoundingRectWidth, m_ParaffinbathBoundingRectHeight);
     } else {
-        //m_Image = QPixmap(79, 97);
         m_Image = QPixmap(m_BottleBoundingRectWidth, m_BottleBoundingRectHeight);
     }
 
@@ -90,6 +86,7 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
 CDashboardStationItem::~CDashboardStationItem()
 {
     try {
+        delete mp_BlinkingTimer;
     } catch(...) {
 
     }
@@ -106,13 +103,10 @@ CDashboardStationItem::~CDashboardStationItem()
 QRectF CDashboardStationItem::boundingRect() const
 {
     if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
-        //return QRectF(0, 0, 125, 78);
         return QRectF(0, 0, m_RetortBoundingRectWidth, m_RetortBoundingRectHeight);
     } else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
-        //return QRectF(0, 0, 122, 60);
         return QRectF(0, 0, m_ParaffinbathBoundingRectWidth, m_ParaffinbathBoundingRectHeight);
     } else {
-        //return QRectF(0, 0, 79, 97);
         return QRectF(0, 0, m_BottleBoundingRectWidth, m_BottleBoundingRectHeight);
     }
 }
@@ -129,6 +123,11 @@ void CDashboardStationItem::paint(QPainter *p_Painter, const QStyleOptionGraphic
 {
 
     p_Painter->drawPixmap(0, 0, m_Image);
+
+    m_BlinkingCounter++;
+    if (!(m_BlinkingCounter % ANIMATION_COUNT_MAX)) {
+        m_BlinkingCounter = 0;
+    }
 
     if (!mp_DashboardStation) {
         return;
@@ -160,6 +159,8 @@ void CDashboardStationItem::UpdateImage()
     }
 
     CONNECTSIGNALSLOT(mp_DataConnector, ReagentsUpdated(), this, UpdateDashboardStationItemReagent());
+    CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationChangeReagent(QString), this, UpdateDashboardScene(QString));
+
     update();
 
 }
@@ -348,25 +349,27 @@ void CDashboardStationItem::DrawBackgroundRectangle(QPainter & Painter)
 
 void CDashboardStationItem::LoadStationImages(QPainter& Painter)
 {
-    QFont TextFont;
-    Painter.setRenderHint(QPainter::Antialiasing);
-    Painter.setPen(Qt::black);
-    TextFont.setPointSize(10);
-    TextFont.setBold(true);
-    Painter.setFont(TextFont);
-
     if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
-        Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Enabled.png"));
-        Painter.drawText(QRectF(32,5,67,15), Qt::AlignCenter, m_StationItemLabel);
-    } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup){
-        Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png"));
-        Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover.png"));
-        Painter.drawText(QRectF(13,7,67,15), Qt::AlignCenter, m_StationItemLabel);
+        Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Enabled.png"));        
+    } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
+        if (m_StationSelected) {
+            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png"));
+            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover.png"));
+        } else {
+            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background_Grayed.png"));
+            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover_Grayed.png"));
+        }
     } else {
-        Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png"));
-        Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover.png"));
-        Painter.drawText(QRectF(10,1,33,16), Qt::AlignCenter, m_StationItemLabel);
+        if(m_StationSelected) {
+            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png"));
+            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover.png"));
+        } else {
+            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background_Grayed.png"));
+            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover_Grayed.png"));
+        }
+
     }
+    DrawStationItemLabel(Painter);
     update();
 }
 
@@ -379,36 +382,50 @@ void CDashboardStationItem::LoadStationImages(QPainter& Painter)
 
 void CDashboardStationItem::UpdateDashboardStationItemReagent()
 {
+    m_ReagentExpiredFlag = false; // To DO
+    m_StationSelected = false; // TO DO
+
+    if(true == m_ReagentExpiredFlag) {
+        mp_BlinkingTimer = new QTimer();
+        mp_BlinkingTimer->start(500);
+        CONNECTSIGNALSLOT(mp_BlinkingTimer, timeout(), this, DrawStationItemImage());
+    } else {
+        DrawStationItemImage(); // No Blinking
+    }
+}
+
+void CDashboardStationItem::DrawStationItemImage()
+{
     QPainter Painter(&m_Image);
 
     Painter.eraseRect(boundingRect());
+
     LoadStationImages(Painter);
+
     QString ReagentStatus = mp_DashboardStation->GetDashboardReagentStatus();
 
-    // If Reagent Status is Empty Do not Fill the Reagent Color
-    if(0 != ReagentStatus.compare("Empty", Qt::CaseInsensitive)) {
+    // If Reagent Status is Not Empty and Station Selected for the Program then fill the Reagent Color
+    if(0 != ReagentStatus.compare("Empty", Qt::CaseInsensitive) && m_StationSelected) {
         FillReagentColor(Painter);
     }
 
     if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
     {
-        Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover.png"));
-        Painter.drawPixmap((m_BottleBoundingRectWidth - 72) , (m_BottleBoundingRectHeight - 75), QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Large.png"));
+        if(true == m_ReagentExpiredFlag && (m_BlinkingCounter % 2))
+        {
+            //Painter.drawPixmap((m_BottleBoundingRectWidth - 72) , (m_BottleBoundingRectHeight - 75), QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Large.png"));
+            Painter.drawPixmap((m_BottleBoundingRectWidth - 67) , (m_BottleBoundingRectHeight - 65), QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Small.png"));
+        }
         DrawReagentName(Painter);
-    } else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
-    {
-
-        Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover.png"));
-        Painter.drawPixmap((m_ParaffinbathBoundingRectWidth - 90), 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Small.png"));
-        QFont TextFont;
-        Painter.setRenderHint(QPainter::Antialiasing);
-        Painter.setPen(Qt::black);
-        TextFont.setPointSize(10);
-        TextFont.setBold(true);
-        Painter.setFont(TextFont);
-        Painter.drawText(QRectF(13,7,67,15), Qt::AlignCenter, m_StationItemLabel);
-
     }
+    else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
+    {
+        if(true == m_ReagentExpiredFlag && (m_BlinkingCounter % 2))
+        {
+            Painter.drawPixmap((m_ParaffinbathBoundingRectWidth - 90), 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Small.png"));
+        }
+    }
+    DrawStationItemLabel(Painter);
     update();
 }
 
@@ -425,16 +442,15 @@ void CDashboardStationItem::DrawReagentName(QPainter & Painter)
     Painter.setRenderHint(QPainter::Antialiasing);
     Painter.setPen(Qt::black);
     TextFont.setPointSize(9);
-    TextFont.setBold(true);
+
+    if(m_StationSelected) {
+        TextFont.setBold(true);
+    }
+
     Painter.setFont(TextFont);
 
     if (mp_DashboardStation)
     {
-        qDebug() << "************" <<mp_DashboardStation->GetDashboardReagentStatus();
-
-        //if(mp_DashboardStation->GetDashboardReagentStatus() > 100) {
-            m_ReagentExpiredFlag = true;
-        //}
         //Now Paint Reagent Names
         QString ReagentID = mp_DashboardStation->GetDashboardReagentID();
         DataManager::CReagent const *p_Reagent = mp_DataConnector->ReagentList->GetReagent(ReagentID);
@@ -446,6 +462,37 @@ void CDashboardStationItem::DrawReagentName(QPainter & Painter)
         }
     }
     update();
+}
+
+void CDashboardStationItem::DrawStationItemLabel(QPainter &Painter)
+{
+    QFont TextFont;
+    Painter.setRenderHint(QPainter::Antialiasing);
+    Painter.setPen(Qt::black);
+    TextFont.setPointSize(10);
+
+    if(m_StationSelected) {
+        TextFont.setBold(true);
+    }
+
+    Painter.setFont(TextFont);
+
+   if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
+       Painter.drawText(QRectF(32,5,67,15), Qt::AlignCenter, m_StationItemLabel);
+   } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
+       // Load the Cover Image , because it will not be visible after filling the Color.
+       Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover.png"));
+       Painter.drawText(QRectF(13,7,67,15), Qt::AlignCenter, m_StationItemLabel);
+   } else {
+       if(m_StationSelected) {
+           Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover.png"));
+       } else {
+           Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover_Grayed.png"));
+       }
+
+       Painter.drawText(QRectF(10,1,33,16), Qt::AlignCenter, m_StationItemLabel);
+   }
+   update();
 }
 
 void CDashboardStationItem::FillReagentColor(QPainter & Painter)
@@ -465,8 +512,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         QString ReagentGroupId = p_Reagent->GetGroupID();
         DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupId);
 
-        QString ReagentStatus = mp_DashboardStation->GetDashboardReagentStatus();
-        qDebug() << "Reagent Status" << ReagentStatus;
         QString ReagentColorValue = p_ReagentGroup->GetGroupColor();
         ReagentColorValue.prepend("#");
 
@@ -478,8 +523,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 
         if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
         {
-
-            //Painter.drawRoundedRect(QRect(-95, 2, 72, 48), 8, 8);
             // Since the Painter is rotated, Width and Height Axis Changes.
             fillBottleWidth = (m_BottleBoundingRectHeight - 25);  // Manual Pixel Calculation
             fillBottleHeight = (m_BottleBoundingRectWidth - 31);  // Manual Pixel Calculation
@@ -487,23 +530,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         }
         else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
         {
-            // Painter.drawRoundedRect(QRect(-57, 3, 52, 90), 8, 4);
-            /**
-             *QPainterPath path;
-             *path.setFillRule( Qt.WindingFill );
-             *path.addRoundedRect( QRect(50,50, 200, 100), 20, 20 );
-             *path.addRect( QRect( 200, 50, 50, 50 ) ); // Top right corner not rounded
-             *path.addRect( QRect( 50, 100, 50, 50 ) ); // Bottom left corner not rounded
-             *painter.drawPath( path.simplified() ); // Only Top left & bottom right corner
-            **/
-
-            //            QPainterPath path;
-            //            path.setFillRule( Qt::WindingFill );
-            //            path.addRoundedRect(QRect(-57, 3, 52, 90), 8, 8);
-            //            path.addRect(QRect((-57 + 52 - 8), 3, 8, 8));// Top left corner not rounded
-            //            path.addRect(QRect((-57 + 52 - 8), (3 + 90 - 8), 8, 8));// Top right corner not rounded
-            //            Painter.drawPath(path.simplified());  // Only the Bottome Left and Bottom Right Corner
-
             fillParaffinbathWidth = (m_ParaffinbathBoundingRectHeight - 8);
             fillParafinbathHeight = (m_ParaffinbathBoundingRectWidth - 32);
 
@@ -514,11 +540,7 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
             path.addRect(QRect((-57 + fillParaffinbathWidth - 8), (3 + fillParafinbathHeight - 8), 8, 8));// Top right corner not rounded
             Painter.drawPath(path.simplified());  // Only the Bottome Left and Bottom Right Corner
 
-            qDebug() << "Height ==>" << boundingRect().height();
-            qDebug() << "Width ==>" << boundingRect().width();
-
         }
-
 
         Painter.rotate(-270.0);
     }
@@ -527,12 +549,25 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 
 /****************************************************************************/
 /*!
- *  \brief Blinking Effect for the Station
+ *  \brief Slot for handling StationChangeReagent(Station Set As Empty,
+ *  Set As Full, Reset Data , Change Reagent) Commands
+ *
+ *  \iparam StationID = Station ID
  */
 /****************************************************************************/
-void CDashboardStationItem::ShowBlinkingEffect()
+void CDashboardStationItem::UpdateDashboardScene(QString StationID)
 {
-    if(m_ReagentExpiredFlag ) {
+    mp_DashboardStation = mp_DataConnector->DashboardStationList->GetDashboardStation(m_DashboardStationID);
+
+    if (!mp_DashboardStation) {
+        return;
+    }
+    else {
+        if (mp_DashboardStation->GetDashboardStationID() == StationID) {
+            qDebug() << "Reagent Status : " << mp_DashboardStation->GetDashboardReagentStatus();
+        }
+
+        UpdateDashboardStationItemReagent();
 
         update();
     }

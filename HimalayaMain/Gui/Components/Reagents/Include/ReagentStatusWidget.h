@@ -85,7 +85,7 @@ private slots:
     void SelectionChanged(QModelIndex Index);
     void OnProcessStateChanged();
     void OnUserRoleChanged();
-    void StationReagentUpdated();
+    void StationReagentUpdated(QString);
 
 public slots:
     void RMSChanged(const Global::RMSOptions_t RMSValue);

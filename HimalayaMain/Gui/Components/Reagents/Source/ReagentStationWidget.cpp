@@ -285,7 +285,7 @@ void CReagentStationWidget::ResetButtons()
  *  \brief This Slot Called when Reagent is updated in station
  */
 /****************************************************************************/
-void CReagentStationWidget:: StationReagentUpdated()
+void CReagentStationWidget:: StationReagentUpdated(QString StationId)
 {
     m_ReagentStationModel.UpdateReagentList();
     m_ReagentStationModel.ResetAndUpdateModel();

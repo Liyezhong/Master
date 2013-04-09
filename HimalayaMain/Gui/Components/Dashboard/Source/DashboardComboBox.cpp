@@ -34,9 +34,14 @@ namespace Dashboard {
 CDashboardComboBox::CDashboardComboBox(QWidget *p_Parent): QComboBox(p_Parent)
 {
 
-    //setMinimumSize(0,53);
-    //setIconSize(QSize(300, 53));
-    //setCurrentIndex(0);
+    //mp_ListView = new QListView(this);
+    //mp_ListView->setStyleSheet("QListView::item { border-bottom: 5px solid white; margin:3px; }" \
+                               //"QListView::item:selected { border-bottom: 5px solid black; margin:3px;" \
+                               //"color: black;}"
+                                //);
+   // setView(mp_ListView);
+    m_SelProgName = tr("Program");
+
 }
 
 CDashboardComboBox::~CDashboardComboBox()
@@ -55,6 +60,30 @@ void CDashboardComboBox::showPopup()
     mp_Popup->move( mp_Popup->x(), mp_Popup->y() - this->height() - mp_Popup->height() );
 }
 
+void CDashboardComboBox::hidePopup()
+{
+    QComboBox::hidePopup();
+}
+
+void CDashboardComboBox::paintEvent(QPaintEvent *e)
+{
+    Q_UNUSED(e);
+    QPainter Painter(this);
+    QFont TextFont;
+    Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/ComboButton/ComboButton_Button_Enable.png"));
+    Painter.setRenderHint(QPainter::Antialiasing);
+    TextFont.setPointSize(14);
+    Painter.setFont(TextFont);
+    Painter.setPen(Qt::white);
+    Painter.drawText(rect(), Qt::AlignCenter, m_SelProgName);
+
+}
+
+void CDashboardComboBox::UpdateSelectedProgramName(QString &SelProgramName)
+{
+    m_SelProgName = SelProgramName;
+    update();
+}
 
 }
 

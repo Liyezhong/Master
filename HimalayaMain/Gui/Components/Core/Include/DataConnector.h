@@ -183,7 +183,7 @@ signals:
      *  \brief Emit this signal when the reagent is changed in the Station
      */
     /****************************************************************************/
-    void DashboardStationChangeReagent();
+    void DashboardStationChangeReagent(QString);
 
     /****************************************************************************/
     /*!

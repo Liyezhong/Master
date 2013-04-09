@@ -77,7 +77,7 @@ void ProgramStartableManager::Init() {
  */
 /****************************************************************************/
 void ProgramStartableManager::ConnectSignals() {
-    CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, UserSettingsChanged(), this , OnUserSettingsChanged());
+    CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, UserSettingsChanged(const bool), this , OnUserSettingsChanged(const bool));
     CONNECTSIGNALSLOT(mp_DataManager->mp_ProgramCommandInterface, StartableProgramEdited(const QString &), this , OnStartableProgramEdited(const QString &));
 }
 

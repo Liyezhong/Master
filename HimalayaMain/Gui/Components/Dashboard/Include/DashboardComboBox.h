@@ -22,6 +22,8 @@
 #define DASHBOARD_DASHBOARDCOMBOBOX_H
 
 #include <QComboBox>
+#include <QListView>
+#include <QPainter>
 #include <QMessageBox>
 #include <QFrame>
 #include <QMouseEvent>
@@ -43,9 +45,15 @@ public:
     explicit CDashboardComboBox(QWidget *p_Parent = 0);
     ~CDashboardComboBox();
     void showPopup();
+    void hidePopup();
+    void UpdateSelectedProgramName(QString & SelProgramName);
 
+protected:
+    void paintEvent(QPaintEvent *e);
 private:
     QWidget *mp_Popup;
+    QListView *mp_ListView;
+    QString m_SelProgName;
 
 };
 

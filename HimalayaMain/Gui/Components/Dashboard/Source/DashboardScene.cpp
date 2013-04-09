@@ -67,7 +67,6 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     // update the stations whenenver the stations.xml is sent
     CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationsUpdated(), this, UpdateDashboardStations());
 
-
 }
 
 /****************************************************************************/
