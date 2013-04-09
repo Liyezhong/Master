@@ -57,7 +57,6 @@ CModifyLeicaHne::CModifyLeicaHne(QWidget *p_Parent,
     mp_DlgRackGripColor->setModal(true);
 
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, reject());
-//    CONNECTSIGNALSLOT(mp_Ui->btnColor, clicked(), this, OnColor());
     CONNECTSIGNALSLOT(mp_Ui->btnSave, clicked(), this, OnSave());
 
     CONNECTSIGNALSLOT(mp_DlgRackGripColor, UpdateProgramColor(DataManager::CProgram &,bool),
@@ -66,7 +65,6 @@ CModifyLeicaHne::CModifyLeicaHne(QWidget *p_Parent,
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     mp_Ui->btnAbbreviation->setEnabled(false);
     mp_Ui->btnProgramName->setEnabled(false);
-//    mp_Ui->btnColor->setEnabled(false);
     mp_Ui->btnSave->setEnabled(false);
 }
 
@@ -131,12 +129,6 @@ void CModifyLeicaHne::InitDailog(DataManager::CProgram const *p_Program,
     p_Reagent = mp_DataConnector->ReagentList->GetReagent(FirstProgramStep.GetReagentID());
     p_ReagentSecond = mp_DataConnector->ReagentList->GetReagent(SecondProgramStep.GetReagentID());
 
-//    mp_Ui->groupBox->setTitle(p_Reagent->GetShortName());
-//    mp_Ui->groupBox_2->setTitle(p_ReagentSecond->GetShortName());
-//    mp_Ui->btnProgramName->setText(tr("%1").arg(m_Program.GetLongName()));
-//    mp_Ui->btnAbbreviation->setText(tr("%1").arg(m_Program.GetShortName()));
-
-//    mp_Ui->btnColor->SetColor(m_Program.GetColor());
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
 
     mp_ScrollWheelEosin = new MainMenu::CScrollWheel();
@@ -271,8 +263,6 @@ void CModifyLeicaHne::OnUpdateProgramColor(DataManager::CProgram &Program,
 void CModifyLeicaHne::OnSave()
 {
     if (mp_ScrollWheelHaemotoxylin) {
-     //vinay    m_LeicaProgramStepOne.SetIntensity(mp_ScrollWheelHaemotoxylin->
-     //vinay                                      GetCurrentData().toInt());
     }
 
     if (mp_ScrollWheelEosin) {

@@ -47,6 +47,7 @@ CReagentStationEditModel::CReagentStationEditModel(QObject *p_Parent) : QAbstrac
     mp_Parent = NULL;
     m_FilterLeicaReagent = false;
     m_ParaffinReagent = false;
+    m_ModifiedProgramStepDlg = false;
     m_Columns = 0;
     m_VisibleRowCount = 7;
 }
@@ -74,11 +75,11 @@ void CReagentStationEditModel :: SetRequiredContainers(DataManager::CDataReagent
 
 /****************************************************************************/
 /*!
- *  \brief Updates the reagent data
- *
- *  This slot needs to be called whenever the content of the reagent list is
- *  changed.
- */
+*  \brief Updates the reagent data
+*
+*  This slot needs to be called whenever the content of the reagent list is
+*  changed.
+*/
 /****************************************************************************/
 void CReagentStationEditModel::UpdateReagentList()
 {
@@ -93,49 +94,32 @@ void CReagentStationEditModel::UpdateReagentList()
             DataManager::CReagent *p_Reagent = NULL;
             p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(i));
             if (p_Reagent && mp_ReagentGroupList) {
-                if (p_Reagent->GetReagentType() == USER_REAGENT) {
-                    if(m_ParaffinReagent == true && mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->GetReagentGroupName() .toLower() == QString("Paraffin").toLower()){
+                if ((p_Reagent->GetReagentType() != LEICA_REAGENT)|| (!m_FilterLeicaReagent)) {
+                    if(m_ParaffinReagent == true && mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->GetReagentGroupName() .toLower() == QString("Paraffin").toLower() \
+                            || m_ModifiedProgramStepDlg){
                         m_ReagentNames << p_Reagent->GetReagentName();
                         m_ReagentID << p_Reagent->GetReagentID();
-                        m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
+                        m_Identifiers[p_Reagent->GetReagentID()] = p_Reagent->GetReagentName();
                     }
                     else if(m_ParaffinReagent == false && mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->GetReagentGroupName().toLower() != QString("Paraffin").toLower()) {
                         m_ReagentNames << p_Reagent->GetReagentName();
                         m_ReagentID << p_Reagent->GetReagentID();
-                        m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
+                        m_Identifiers[p_Reagent->GetReagentID()] = p_Reagent->GetReagentName();
                     }
-                    if(p_Reagent->GetVisibleState()== true){
-                        m_VisibleReagentIds << p_Reagent->GetReagentName();
-                    }
-                }
-
-                if (p_Reagent->GetReagentType() == LEICA_REAGENT && (!m_FilterLeicaReagent)) {
-
-                    if(m_ParaffinReagent == true && mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->GetReagentGroupName().toLower() == QString("Paraffin").toLower()){
-                        m_ReagentNames << p_Reagent->GetReagentName();
-                        m_ReagentID << p_Reagent->GetReagentID();
-                        m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
-                    }
-                    else if(m_ParaffinReagent == false && mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->GetReagentGroupName().toLower() != QString("Paraffin").toLower()) {
-                        m_ReagentNames << p_Reagent->GetReagentName();
-                        m_ReagentID << p_Reagent->GetReagentID();
-                        m_Identifiers[p_Reagent->GetReagentName()] = p_Reagent->GetReagentID();
-                    }
-
                     if(p_Reagent->GetVisibleState()== true){
                         m_VisibleReagentIds << p_Reagent->GetReagentName();
                     }
                 }
             }
         }
-        m_ReagentNames.append("");
-        m_ReagentID.append("");
+        if(!m_ModifiedProgramStepDlg) {
+            m_ReagentNames.append("");
+            m_ReagentID.append("");
+        }
     }
 
     endResetModel();
 }
-
-
 
 /****************************************************************************/
 /*!
@@ -305,16 +289,20 @@ QString CReagentStationEditModel::GetReagentID(const QString ReagentName)
    * \return  m_ReagentNames = Reagent Long Name
    */
 /****************************************************************************/
-QString CReagentStationEditModel::GetReagentLongName(int Row)
+QString CReagentStationEditModel::GetReagentID(int Row)
 {
-    if (!m_ReagentNames.isEmpty()) {
-        return m_ReagentNames[Row];
+    if (!m_ReagentID.isEmpty()) {
+        return m_ReagentID[Row];
     }
     else {
         return "";
     }
 }
 
+QString CReagentStationEditModel :: GetReagentLongName(QString ReagentId)
+{
+    return m_Identifiers.value(ReagentId);
+}
 /****************************************************************************/
 /*!
   * \brief Returns true if reagent is present in the reagent list else false

@@ -46,8 +46,9 @@ CProgramModel::CProgramModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
 {
     mp_ProgramList = NULL;
     m_Columns = 0;
-    m_Favcount = 0;
+    m_CurrentIndex = 0;
     m_VisibleRowCount = VISIBLE_ROW_COUNT;
+    m_SelectedProgramCount = 0;
 }
 
 /****************************************************************************/
@@ -122,11 +123,9 @@ int CProgramModel::columnCount(const QModelIndex &) const
 QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
 {
     DataManager::CProgram *p_Program = NULL;
-
     if (mp_ProgramList == NULL) {
         return QVariant();
     }
-
     if ((p_Program = const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(Index.row())))) {
         if (Role == (int)Qt::DisplayRole) {
             switch (5 - m_Columns + Index.column()) {
@@ -154,18 +153,15 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
             }
         }
         else if (Role == (int)Qt::CheckStateRole) {
-            if (m_CurrentUserRole == MainMenu::CMainWindow::Admin
-                    || m_CurrentUserRole == MainMenu::CMainWindow::Service){
-                if (Index.column() == 1)
-                {
-                    // TODO test code
-                    if (p_Program->IsFavorite()) {
-                        return (int)Qt::Checked;
-                    }
-                    else
-                    {
-                        return (int)Qt::Unchecked;
-                    }
+            if (Index.column() == 1)
+            {
+                // TODO test code
+                if (p_Program->IsFavorite()) {
+                    return (int)Qt::Checked;
+                }
+                else
+                {                    
+                    return (int)Qt::Unchecked;
                 }
             }
         }
@@ -193,7 +189,18 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
 Qt::ItemFlags CProgramModel::flags(const QModelIndex &Index) const
 {
     if (Index.column() == 1) {
-        return QAbstractItemModel::flags((Index)) | Qt::ItemIsUserCheckable;
+        if (m_CurrentUserRole == MainMenu::CMainWindow::Admin
+                || m_CurrentUserRole == MainMenu::CMainWindow::Service){
+            if (m_SelectedProgramCount == 4) {
+                if (data(Index, Qt::CheckStateRole) == Qt::Unchecked) {
+                    return Qt::ItemIsSelectable;
+                }
+            }
+            return QAbstractItemModel::flags(Index) | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
+        }
+        else {
+            return Qt::ItemIsSelectable;
+        }
     }
     if (NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0) {
         return QAbstractItemModel::flags(Index) | Qt::ItemIsUserCheckable;
@@ -284,7 +291,6 @@ bool CProgramModel::setData(const QModelIndex &Index, const QVariant &Value, int
         }
     }
     return false;
-
 }
 /****************************************************************************/
 /*!

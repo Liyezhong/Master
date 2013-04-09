@@ -70,14 +70,11 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
     DataManager::CUserSettings *p_Settings = mp_DataConnector->SettingsInterface->GetUserSettings();
 
     mp_Ui->setupUi(GetContentFrame());
-    m_ProgramModel.SetProgramList(mp_DataConnector->ProgramList,5);
+    m_ProgramModel.SetProgramList(mp_DataConnector->ProgramList,5);    
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->setModel(&m_ProgramModel);
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
     SetPanelTitle(tr("Programs"));
-
-    mp_ModifyLeicaHne = new CModifyLeicaHne(this, p_Parent, mp_DataConnector);
-    mp_ModifyLeicaHne->setModal(true);
 
     mp_ModifyProgramDlg = new CModifyProgramDlg(this, p_KeyBoard , p_Parent, mp_DataConnector);
     mp_ModifyProgramDlg->setModal(true);
@@ -96,12 +93,10 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSIGNAL(this, UpdateProgramList(), mp_ModifyProgramDlg, UpdateStepModel());
     CONNECTSIGNALSIGNAL(mp_ModifyProgramDlg, UpdateProgram(DataManager::CProgram &),
                         this, UpdateProgram(DataManager::CProgram &));
-    CONNECTSIGNALSIGNAL(mp_ModifyLeicaHne, UpdateProgram(DataManager::CProgram &),
-                        this, UpdateProgram(DataManager::CProgram &));
+
     CONNECTSIGNALSIGNAL(mp_ModifyProgramDlg, ProgramColorReplaced(DataManager::CProgram &,DataManager::CProgram &),
                         this, ProgramColorReplaced(DataManager::CProgram &,DataManager::CProgram &));
-    CONNECTSIGNALSIGNAL(mp_ModifyLeicaHne, ProgramColorReplaced(DataManager::CProgram &,DataManager::CProgram &),
-                        this, ProgramColorReplaced(DataManager::CProgram &,DataManager::CProgram &));
+
     CONNECTSIGNALSIGNAL(mp_ModifyProgramDlg, AddProgram(DataManager::CProgram &),
                         this, AddProgram(DataManager::CProgram &));
     CONNECTSIGNALSLOT(&m_ProgramModel, modelReset(), this, CloseDialogs());
@@ -123,7 +118,6 @@ CProgramWidget::~CProgramWidget()
 {
     try {
         delete mp_ModifyProgramDlg;
-        delete mp_ModifyLeicaHne;
         delete mp_TableWidget;
         delete mp_Ui;
     }
@@ -281,15 +275,16 @@ void CProgramWidget::OnUserRoleChanged()
             (!m_ProcessRunning)) {
         //Edit Mode
         mp_Ui->btnEdit->setText(tr("Edit"));
-
         m_UserProgramCount = GetNumberOfUserPrograms();
-        if(m_UserProgramCount > MAX_USER_PROGRAMS)
+        if(m_UserProgramCount >= MAX_USER_PROGRAMS)
         {
             mp_Ui->btnNew->setEnabled(false);
+            mp_Ui->btnCopy->setEnabled(false);
         }
         else
         {
             mp_Ui->btnNew->setEnabled(true);
+            mp_Ui->btnCopy->setEnabled(true);
         }
         m_ProgramModel.ResetandUpdateModel();
     }
@@ -317,15 +312,18 @@ void CProgramWidget::OnProcessStateChanged()
         mp_Ui->btnEdit->setText(tr("Edit"));
         mp_Ui->btnDelete->setEnabled(false);
         m_UserProgramCount = GetNumberOfUserPrograms();
-        if(m_UserProgramCount<= MAX_USER_PROGRAMS)
+        if(m_UserProgramCount< MAX_USER_PROGRAMS)
         {
         mp_Ui->btnNew->setEnabled(true);
+        mp_Ui->btnCopy->setEnabled(true);
+
         }
         else
         {
-            mp_Ui->btnNew->setEnabled(true);
+            mp_Ui->btnNew->setEnabled(false);
+            mp_Ui->btnCopy->setEnabled(false);
+
         }
-        mp_Ui->btnCopy->setEnabled(false);
         mp_Ui->btnEdit->setEnabled(false);
     }
     else {
@@ -368,10 +366,10 @@ void CProgramWidget::showEvent(QShowEvent *)
 /****************************************************************************/
 void CProgramWidget::SelectionChanged(QModelIndex Index)
 {
-    m_ID = m_ProgramModel.data(Index, (int)Qt::UserRole).toString();
+    m_ProgramID = m_ProgramModel.data(Index, (int)Qt::UserRole).toString();
     int SelectedIndex = Index.row();
     m_ProgramModel.SelectedRowIndex(SelectedIndex);
-    mp_Program = mp_DataConnector->ProgramList->GetProgram(m_ID);
+    mp_Program = mp_DataConnector->ProgramList->GetProgram(m_ProgramID);
     if (SelectedIndex + 1 > mp_DataConnector->ProgramList->GetNumberOfPrograms()) {
         mp_TableWidget->clearSelection();
         ResetButtons();
@@ -379,7 +377,7 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
     else {
         if (mp_Program) {
             bool IsLeicaProgram = false;
-            if (mp_Program->GetID().at(0) == 'L') {
+            if (mp_Program->IsLeicaProgram()) {
                 IsLeicaProgram = true;
                 if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
                      m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
@@ -387,7 +385,7 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
                     //Edit Mode
                     mp_Ui->btnEdit->setEnabled(IsLeicaProgram);
                     mp_Ui->btnDelete->setEnabled(!IsLeicaProgram);
-                    mp_Ui->btnCopy->setEnabled(!IsLeicaProgram);
+                    mp_Ui->btnCopy->setEnabled(IsLeicaProgram);
                 } else {
                     //View Mode
                     mp_Ui->btnEdit->setEnabled(IsLeicaProgram);
@@ -408,7 +406,7 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
             }
         }
         m_UserProgramCount = GetNumberOfUserPrograms();
-        if (mp_DataConnector->ProgramList->GetNumberOfPrograms() >= MAX_PROGRAMS) {
+        if (mp_DataConnector->ProgramList->GetNumberOfPrograms() >= MAX_PROGRAMS || m_UserProgramCount>=MAX_USER_PROGRAMS) {
             mp_Ui->btnNew->setEnabled(false);
             mp_Ui->btnCopy->setEnabled(false);
         }
@@ -423,7 +421,6 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
 void CProgramWidget::CloseDialogs()
 {
     ResetButtons();
-    mp_ModifyLeicaHne->accept();
     mp_ModifyProgramDlg->CloseDialogModifyStepDlg();
     mp_ModifyProgramDlg->accept();
 }
@@ -452,14 +449,15 @@ void CProgramWidget::ResetButtons()
         //Edit Mode
         mp_Ui->btnEdit->setEnabled(false);
         mp_Ui->btnDelete->setEnabled(false);
-        mp_Ui->btnCopy->setEnabled(false);
         m_UserProgramCount = GetNumberOfUserPrograms();
         if (mp_DataConnector->ProgramList->GetNumberOfPrograms() < MAX_PROGRAMS
-                &&  m_UserProgramCount <= MAX_USER_PROGRAMS) {
+                &&  m_UserProgramCount < MAX_USER_PROGRAMS) {
             mp_Ui->btnNew->setEnabled(true);
+            mp_Ui->btnCopy->setEnabled(true);
         }
         else {
             mp_Ui->btnNew->setEnabled(false);
+            mp_Ui->btnCopy->setEnabled(false);
         }
     }
     else {
@@ -497,56 +495,6 @@ void CProgramWidget::OnCurrentTabChanged(int CurrentIndex)
 void CProgramWidget::OnDeviceModeChanged(QString DeviceMode)
 {
     mp_ModifyProgramDlg->SetCurrentDeviceMode(DeviceMode);
-}
-
-/********************************************************************************/
-/*!
- *  \brief This slot is called when UpdateProgramColor in RackColorGrip is emitted.
- *
- *  \iparam Program = Selected/New Program
- *  \iparam ColorReplaced = True(Color of existing program replaced)/ False
- */
-/********************************************************************************/
-void CProgramWidget::OnUpdateProgramColor(DataManager::CProgram &Program, bool ColorReplaced)
-{
-    DataManager::CDataProgramList ProgramListClone;
-    ProgramListClone = *(mp_DataConnector->ProgramList);
-    bool Result;
-    bool UpdateResult;
-    m_MessageDlg.SetTitle(tr("Information Message"));
-    m_MessageDlg.SetIcon(QMessageBox::Information);
-    m_MessageDlg.SetButtonText(1, tr("Ok"));
-    m_MessageDlg.HideButtons();
-
-    if (ColorReplaced) {
-        m_ColorReplacedProgram = Program;
-        m_ColorReplaced = true ;
-    }
-    else {
-        if (m_ColorReplaced) {
-            Result = ProgramListClone.UpdateProgram(&m_ColorReplacedProgram);
-            UpdateResult = ProgramListClone.UpdateProgram(&Program);
-            if (Result && UpdateResult) {
-
-                emit ProgramColorReplaced(m_ColorReplacedProgram, Program);
-            }
-            else {
-                m_MessageDlg.SetText(tr("Program Color Update failed"));
-                m_MessageDlg.show();
-            }
-            m_ColorReplaced = false;
-        }
-        else {
-            Result = ProgramListClone.UpdateProgram(&Program);
-            if (Result) {
-                emit UpdateProgram(Program);
-            }
-            else {
-                m_MessageDlg.SetText(tr("Program Color Update failed"));
-                m_MessageDlg.show();
-            }
-        }
-    }
 }
 
 /****************************************************************************/

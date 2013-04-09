@@ -63,9 +63,8 @@ private:
     qint32 m_VisibleRowCount;                       //!< Number of rows visible in the table
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     int m_CurrentIndex;
-    QStringList m_ProgramID;
+    QStringList m_ProgramIDList;
     int m_SelectedProgramCount;                     //!< Count of Favorite Programs
-    qint32 m_Favcount;
 private slots:
     void OnUpdateProgramList();
 

@@ -26,7 +26,6 @@
 #include "MainMenu/Include/DialogFrame.h"
 #include "Programs/Include/ModifyProgramStepDlg.h"
 #include "Core/Include/ReagentRMSModel.h"
-#include "Programs/Include/RackGripColorDlg.h"
 #include "Programs/Include/StepModel.h"
 #include "KeyBoard/Include/KeyBoard.h"
 #include "Programs/Include/ProgramWidget.h"
@@ -81,7 +80,6 @@ private:
     DataManager::CProgramStep m_LastProgramStep;    //!< ProgramStep object
     QString m_DeviceMode;                           //!< Stores device mode
     DataManager::CDataProgramList m_ProgramListClone;   //!< ProgramList object
-    DataManager::CProgram m_ColorReplacedProgram;       //!< Program object
     DataManager::CProgram *mp_NewProgram;           //!< Program object
     bool m_ColorReplaced;                           //!< True if program color is replaced
     QList<DataManager::CProgramStep *> m_ListOfProgramSteps; //!< Container for Program Step pointers.
@@ -150,9 +148,7 @@ private:
     bool VerifyLastStepForWorkStationMode(DataManager::CProgram* p_SelectedProgram);
 
 private slots:
-//    void OnEditShortName();
     void OnEditName();
-//    void OnColor();
     void OnEdit();
     void OnNew();
     void OnCopy();
@@ -163,11 +159,7 @@ private slots:
     void OnProcessStateChanged();
     void UpdateProgramStepTable(DataManager::CProgramStep* ProgramStep, bool AddProgramStep);
     void CloseDialogs();
-    void OnUpdateProgramColor(DataManager::CProgram &Program,bool ColorReplaced);
     void UpdateUserSettings();
-    void OnEndButtonClicked();
-    void OnUpButtonClicked();
-    void OnDownButtonClicked();
     void OnIconClicked();
     void UpdateProgramIcon(DataManager::CProgram *Program);
 

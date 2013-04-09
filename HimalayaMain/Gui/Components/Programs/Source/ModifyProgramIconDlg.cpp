@@ -171,18 +171,4 @@ void CModifyProgramIconDlg::OnProcessStateChanged()
     }
 }
 
-/****************************************************************************/
-/**
- * \brief Slot will be called when ReagentGroupColorUpdated Signal emitted
- */
-/****************************************************************************/
-void CModifyProgramIconDlg:: UpdateProgramIcon()
-{
-    m_IconName.clear();
-
-    int Count = 0;
-    QAbstractButton *p_Button;
-
-}
-
 }

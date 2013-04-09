@@ -72,6 +72,7 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
     mp_TableWidget->horizontalHeader()->show();
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
     mp_TableWidget->SetVisibleRows(8);
+    m_ReagentEditModel.SetModifiedProgramStepDlg(true);
 
     mp_ProgramStep =     new DataManager::CProgramStep;
     mp_ScrollWheelHour = new MainMenu::CScrollWheel();
@@ -332,17 +333,16 @@ void CModifyProgramStepDlg::OnOk()
         }
 
         m_ReagentEditModel.UpdateReagentList();
-        QString ReagentId = m_ReagentEditModel.GetReagentID(m_ReagentLongName);
         DataManager::CProgramStep ProgramStep;
         if (m_ModifyProgramDlgButtonType == COPY_BTN_CLICKED) {
 
-            if (ReagentId == m_SelectedStepReagentID) {
+            if (m_ReagentID == m_SelectedStepReagentID) {
                 (void) mp_MessageBox->exec();
             }
             else {
                 m_NewProgramStep = true ;
                 ProgramStep.SetDurationInSeconds(MinDurationInSec);
-                ProgramStep.SetReagentID(ReagentId);
+                ProgramStep.SetReagentID(m_ReagentID);
                 ProgramStep.SetTemperature(Temperature);
                 ProgramStep.SetPressure(Pressure);
                 ProgramStep.SetVacuum(Vaccum);
@@ -355,7 +355,7 @@ void CModifyProgramStepDlg::OnOk()
                 m_NewProgramStep = true ;
 
                 ProgramStep.SetDurationInSeconds(MinDurationInSec);
-                ProgramStep.SetReagentID(ReagentId);
+                ProgramStep.SetReagentID(m_ReagentID);
                 ProgramStep.SetTemperature(Temperature);
                 ProgramStep.SetPressure(Pressure);
                 ProgramStep.SetVacuum(Vaccum);
@@ -366,7 +366,7 @@ void CModifyProgramStepDlg::OnOk()
                 m_NewProgramStep = false ;
                 ProgramStep = *mp_ProgramStep;
                 ProgramStep.SetDurationInSeconds(MinDurationInSec);
-                ProgramStep.SetReagentID(ReagentId);
+                ProgramStep.SetReagentID(m_ReagentID);
                 ProgramStep.SetTemperature(Temperature);
                 ProgramStep.SetPressure(Pressure);
                 ProgramStep.SetVacuum(Vaccum);
@@ -416,8 +416,8 @@ void CModifyProgramStepDlg::ReagentTableUpdate()
 void CModifyProgramStepDlg::OnSelectionChanged(QModelIndex Index)
 {
     if (Index.isValid() && (!m_ProcessRunning)) {
-        m_ReagentLongName = m_ReagentEditModel.GetReagentLongName(Index.row());
-        m_ReagentID= m_ReagentEditModel.GetReagentID(m_ReagentLongName);
+        m_ReagentID = m_ReagentEditModel.GetReagentID(Index.row());
+        m_ReagentLongName = m_ReagentEditModel.GetReagentLongName(m_ReagentID);
         if (!m_ReagentLongName.isEmpty()) {
             m_ReagentModel.SetCurrentReagent(m_ReagentLongName);
             m_RowNotSelected = false;
@@ -525,8 +525,8 @@ void CModifyProgramStepDlg::ShowSelectReagentPopup()
     }
     if (m_ModifyProgramDlgButtonType == COPY_BTN_CLICKED) {
         if (m_ReagentModel.ContainsReagent(mp_ProgramStep->GetReagentID())) {
+            m_SelectedStepReagentID = m_ReagentModel.GetReagentID(mp_TableWidget->currentIndex().row());
             QString ReagentLongName = m_ReagentModel.GetReagentLongName(mp_TableWidget->currentIndex().row());
-            m_SelectedStepReagentID = m_ReagentModel.GetReagentID(ReagentLongName);
             mp_MessageBox->SetText(tr("Please select a reagent other than \"%1\""
                                       "\nand which is not used in the selected program").arg(ReagentLongName));
             if (mp_MessageBox->exec()==(int)QDialog::Accepted) {

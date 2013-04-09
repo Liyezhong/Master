@@ -68,12 +68,16 @@ private slots:
     void OnProcessStateChanged();
     void OnIconGroup(int Id);
     void SetButtonGroup();
-public slots:
-    void UpdateProgramIcon();
 protected:
     void changeEvent(QEvent *p_Event);
 
 signals:
+//    /****************************************************************************/
+//    /*!
+//     *  \brief This siganl is emitted when Program Icon is updated.
+//     */
+//    /****************************************************************************/
+//    void ProgramIconUpdated();
     /****************************************************************************/
     /*!
      *  \brief This signal is emitted when Cancel button in the dailog is pressed.

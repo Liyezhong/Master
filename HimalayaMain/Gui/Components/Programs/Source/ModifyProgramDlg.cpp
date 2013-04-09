@@ -119,6 +119,8 @@ void CModifyProgramDlg::UpdateProgramIcon(DataManager::CProgram *Program)
 {
     m_Icon = Program->GetIcon();
     m_Program.SetIcon(m_Icon);
+    mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/CheckBox/CheckBox-"+m_Icon+".png"));
+
 }
 
 /****************************************************************************/
@@ -192,8 +194,11 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
     ResizeHorizontalSection();
 
     QString LongName = m_Program.GetName();
-
-    if(m_Program.IsLeicaProgram()) {
+    if (m_ButtonType == NEW_BTN_CLICKED)
+    {
+        mp_Ui->btnPrgIcon->setIcon(QIcon(""));
+    }
+    else if(m_Program.IsLeicaProgram()) {
         mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png"));
         mp_Ui->btnEdit->setEnabled(false);
         mp_Ui->btnCopy->setEnabled(false);
@@ -255,7 +260,7 @@ void CModifyProgramDlg::NewProgram()
     m_StepModel.SetModifyProgramDlgPtr(this);
     ResizeHorizontalSection();
     mp_Ui->btnPrgName->setText("--");
-    mp_Ui->label_3->setText(tr("Program not ready to start"));
+    mp_Ui->label_3->setText(tr("Program not ready to start- %1"));
 }
 
 /****************************************************************************/
@@ -628,8 +633,6 @@ void CModifyProgramDlg::OnOkClicked()
     }
     else if (m_ProgShortNameBtnClicked) {
         m_ProgShortNameBtnClicked = false;
-//        LineEditString = mp_KeyBoardWidget->GetLineEditString();
-//        mp_Ui->btnPrgIcon->setText(tr("%1").arg(LineEditString));
     }
     mp_KeyBoardWidget->Detach();
 }
@@ -820,30 +823,6 @@ bool CModifyProgramDlg::VerifyLastProgramStep(DataManager::CProgram *p_Program,
 
 /********************************************************************************/
 /*!
- *  \brief This slot is called when UpdateProgramColor in RackColorGrip is emitted.
- *
- *  \iparam Program = Selected/New Program
- *  \iparam ColorReplaced = True(Color of existing program replaced)/ False
- */
-/********************************************************************************/
-void CModifyProgramDlg::OnUpdateProgramColor(DataManager::CProgram &Program,
-                                             bool ColorReplaced)
-{
-    if (ColorReplaced) {
-        m_ColorReplacedProgram = Program;
-        (void) m_ProgramListClone.UpdateProgram(&m_ColorReplacedProgram);
-        m_ColorReplaced = true;
-    }
-    else {
- //vinay        m_Program.SetColor(Program.GetColor());
-       (void) m_ProgramListClone.UpdateProgram(&m_Program);
-//        mp_Ui->btnColor->SetColor(Program.GetColor());
-
-    }
-}
-
-/********************************************************************************/
-/*!
  *  \brief Sets the UserSettings for ModifyStep dialog.
  */
 /********************************************************************************/
@@ -1000,42 +979,6 @@ bool CModifyProgramDlg::VerifyLastStepForWorkStationMode(DataManager::CProgram* 
         }
     }
     return true;
-}
-
-/****************************************************************************/
-/*!
- *  \brief This slot is called when End button in moving table is clicked.
- */
-/****************************************************************************/
-void CModifyProgramDlg::OnEndButtonClicked()
-{
-    mp_Ui->scrollTable->ScrollContent(3);
-}
-
-/****************************************************************************/
-/*!
- *  \brief This slot is called when Down button in moving table is clicked.
- */
-/****************************************************************************/
-void CModifyProgramDlg::OnDownButtonClicked()
-{
-    if(m_StepModel.GetIndex() >= (qint32)m_Program.GetNumberOfSteps()-2)
-    {
-        mp_Ui->scrollTable->ScrollContent(3);
-    }
-}
-
-/****************************************************************************/
-/*!
- *  \brief This slot is called when Up button in moving table is clicked.
- */
-/****************************************************************************/
-void CModifyProgramDlg::OnUpButtonClicked()
-{
-    if(m_StepModel.GetIndex() <= 1)
-    {
-        mp_Ui->scrollTable->ScrollContent(2);
-    }
 }
 
 /****************************************************************************/

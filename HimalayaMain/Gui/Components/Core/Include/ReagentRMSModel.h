@@ -111,6 +111,7 @@ public:
 
     void SetVisibleRowCount(int RowCount);
     QString GetReagentID(const QString ReagentName);
+    QString GetReagentID(int Index);
     QString GetReagentLongName(int Row);
     bool ContainsReagent(QString ReagentID);
     bool IsReagentPresentInBL(QString ReagentID);

@@ -80,6 +80,19 @@ public:
         return m_ReagentID.indexOf(ReagentID, 0);
     }
 
+
+    /****************************************************************************/
+    /**
+     * \brief Sets the ModifiedProgramStepDlg flag
+     * \iparam Status
+     */
+    /****************************************************************************/
+    void SetModifiedProgramStepDlg(bool Status)
+    {
+      m_ModifiedProgramStepDlg = Status;
+    }
+
+
     /****************************************************************************/
     /**
      * \brief Sets the currently selected reagent in the table
@@ -119,7 +132,8 @@ public:
 
     void SetVisibleRowCount(int RowCount);
     QString GetReagentID(const QString ReagentName);
-    QString GetReagentLongName(int Row);
+    QString GetReagentID(int Row);
+    QString GetReagentLongName(QString ReagentId);
     bool ContainsReagent(QString ReagentID);
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
     void UpdateReagentList();
@@ -141,6 +155,7 @@ private:
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object    
     bool m_ParaffinReagent;                                 //!< Type of Reagent;
+    bool m_ModifiedProgramStepDlg;
 };
 
 } // end namespace Core

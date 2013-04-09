@@ -24,7 +24,6 @@
 #include "Core/Include/DataConnector.h"
 #include "MainMenu/Include/BaseTable.h"
 #include "MainMenu/Include/PanelFrame.h"
-#include "Programs/Include/ModifyLeicaHne.h"
 #include "Programs/Include/ProgramModel.h"
 #include "Programs/Include/RackGripColorDlg.h"
 #include "KeyBoard/Include/KeyBoard.h"
@@ -68,8 +67,6 @@ private:
     CProgramModel m_ProgramModel;               //!< Model of the program table
     CModifyProgramDlg *mp_ModifyProgramDlg;     //!< Modify program dialog
     MainMenu::CMessageDlg ConfirmationMessageDlg;
-    CModifyLeicaHne *mp_ModifyLeicaHne;         //!< Edit dialog for the Leica H&E program
-    CManualProgramDlg *mp_ManualProgramDlg;     //!< Manual program dialog
     MainMenu::CMainWindow *mp_MainWindow;       //!< Reference to main window
     MainMenu::CMessageDlg m_MessageDlg;         //!< Information Message Dialog
     bool m_UserRoleChanged;                     //!< True if user Role changed else false
@@ -77,13 +74,12 @@ private:
     bool m_ProcessRunning;                      //!< Process running state
     bool m_ShowMessageDialog;                   //!< To show Information Message Dialog
     ButtonType_t m_ButtonType;                  //!< Informs which button was clicked
-    DataManager::CProgram m_ColorReplacedProgram;   //!< Program object for color change
     bool m_ColorReplaced;                       //!< Flag for program color change.
     QMap<QString,QString> m_NonStartableProgramErrorMap;    //!< Error Map for non-startable programs
-    QString m_ID;                               //!< Program ID
+    QString m_ProgramID;                        //!< Program ID
     QModelIndex m_CurrentIndex;
     bool m_UserChanged;
-    int m_UserProgramCount;
+    int m_UserProgramCount;                     //!< Count of User Programs
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
 
 protected:
@@ -113,7 +109,6 @@ private slots:
     void CloseDialogs();
     void OnCurrentTabChanged(int CurrentIndex);
     void OnDeviceModeChanged(QString);
-    void OnUpdateProgramColor(DataManager::CProgram &Program,bool ColorReplaced);
     void OnCancelClicked();
 
 protected:

@@ -296,6 +296,18 @@ QString CReagentRMSModel::GetReagentID(const QString ReagentName)
 
 /****************************************************************************/
 /*!
+ *  \brief This Function Gets Reagent ID of given Reagent Long name.
+ *
+ *  \iparam ReagentName
+ */
+/****************************************************************************/
+QString CReagentRMSModel::GetReagentID(int Index)
+{
+    return m_ReagentID.value(Index);
+
+}
+/****************************************************************************/
+/*!
    * \brief Returns the Reagent long Name for the particular row.
    *
    * \iparam Row = Selected row
