@@ -207,8 +207,9 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
 
     }
 
-    //the following two lines for test purpose:
+    //the following three lines for test purpose:
     m_ProgramCurrentAction = DataManager::PROGRAM_START;
+    m_SelectedProgramId = "L01";
     OnProgramStartConfirmation();
 
     return false;
