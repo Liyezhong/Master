@@ -61,11 +61,14 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      mp_MessageDlg = new MainMenu::CMessageDlg();
 
      CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
-     CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, activated(int), this, OnProgramSelected(int));
+     CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, activated(int), this, OnActivated(int));
 
      CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
      CONNECTSIGNALSLOT(this, ProgramAction(const QString&, DataManager::ProgramActionType_t),
                        mp_DataConnector, SendProgramAction(const QString&, DataManager::ProgramActionType_t));
+
+     CONNECTSIGNALSLOT(this, ProgramSelected(QString&), 
+						mp_DashboardScene, UpdateDashboardSceneReagentsForProgram(QString &));
 
 }
 
@@ -93,20 +96,20 @@ void CDashboardWidget::DrawSeparatorLine()
 
 void CDashboardWidget::AddItemsToComboBox()
 {
-   //m_FavProgramIDs.clear();
+    m_FavProgramIDs.clear();
     mp_Ui->pgmsComboBox->clear();
 
     if(m_UserRoleChanged) {
         if((m_CurrentUserRole == MainMenu::CMainWindow::Admin) ||
                 (m_CurrentUserRole == MainMenu::CMainWindow::Service))
         {
-
             m_FavProgramIDs = mp_ProgramList->GetFavoriteProgramIDs(); // get five favorite Programs' ID
             for ( int i = 0; i < m_FavProgramIDs.count(); i++)
             {
                 QString ProgramId = m_FavProgramIDs.at(i);
                 QString ProgramName = mp_ProgramList->GetProgram(ProgramId)->GetName();
-                QIcon ProgramIcon;
+                // Replace this statement later
+                QIcon ProgramIcon; // = QIcon(mp_ProgramList->GetProgram(ProgramId)->GetIcon());
                 if(ProgramId.at(0) == 'L') {
                     ProgramIcon = QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png");
                 } else {
@@ -114,7 +117,6 @@ void CDashboardWidget::AddItemsToComboBox()
                 }
                 mp_Ui->pgmsComboBox->insertItem(i, ProgramIcon, ProgramName);
             }
-
         }
     }
     //mp_ComboBoxModel->ResetAndUpdateModel();
@@ -176,13 +178,14 @@ void CDashboardWidget::OnRMSValueChanged(Global::RMSOptions_t state)
     m_RMSState = state;
 }
 
-void CDashboardWidget::OnProgramSelected(int index)
+void CDashboardWidget::OnActivated(int index)
 {
     qDebug() << "Index Recieved : " << index;
     if(-1 != index) {
         m_SelectedProgramId = m_FavProgramIDs.at(index);
         CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_SelectedProgramId)->GetName();
         mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+        emit ProgramSelected(m_SelectedProgramId);
     } else {
         mp_Ui->pgmsComboBox->showPopup();
     }

@@ -85,19 +85,19 @@ protected:
 signals:
     void ProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
     void UpdateProgramName(QString SelectedProgramName);
+    void UpdateDashboardSceneReagentStations(QString& ProgramID);
+    void ProgramSelected(QString & ProgramId);
 
 public slots:
     void OnUserRoleChanged();
     void OnButtonClicked(int whichBtn);
     void OnRMSValueChanged(Global::RMSOptions_t);
     void AddItemsToComboBox();
+    void OnActivated(int);
     void OnProgramActionStarted(DataManager::ProgramActionType_t ActionType);
 
     // Warning Message Slots
     void OnProgramStartConfirmation();
-public slots:
-    void OnProgramSelected(int);
-
 };
 
 }

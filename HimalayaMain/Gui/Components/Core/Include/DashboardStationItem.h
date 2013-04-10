@@ -25,6 +25,8 @@
 #include "Core/Include/DataConnector.h"
 #include "MainMenu/Include/MessageDlg.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
+#include "Reagents/Include/ReagentRMSWidget.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QObject>
@@ -53,7 +55,7 @@ namespace Core {
 /****************************************************************************/
 /**
  * \brief This class is the graphicsm::UpdateImage,initializer)
-type
+ *
  */
 /****************************************************************************/
 class CDashboardStationItem : public QObject, public QGraphicsItem
@@ -66,6 +68,8 @@ private:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *p_Event);
 
     Core::CDataConnector *mp_DataConnector;              //!< Global data container
+    DataManager::CHimalayaUserSettings m_UserSettings;
+    Global::RMSOptions_t m_CurRMSMode;
     DataManager::CDashboardStation *mp_DashboardStation; //!< Dashboard Station object
     QString m_ImageType;                                 //!< Containing the station type for the image filename
     QString m_BorderImage;                               //!< Containing the selection border image filename
@@ -186,12 +190,14 @@ signals:
 public slots:
     void UpdateImage();
     void UpdateDashboardScene(QString StationID);
+    void UpdateDashboardStationItemReagent();
+
 
 
 private slots:
 
-    void UpdateDashboardStationItemReagent();
     void DrawStationItemImage();
+    void UpdateUserSettings();
 };
 
 } // end namespace Core

@@ -84,6 +84,8 @@ private:
 
     DataManager::CDashboardDataStationList *mp_DashboardStationListClone;            //!< Cloned DataManager StationList
     bool m_CloneDashboardStationList;                                                //!< True if DataManager StationList has to be cloned.
+    DataManager::CDataProgramList *mp_ProgramListClone;                              //!< Cloned DataManager ProgramList
+    bool m_CloneProgramList;                                                         //!< True if DataManager StationList has to be cloned.
 
 
     void InitDashboardStationIDs();
@@ -99,6 +101,7 @@ private:
 
 private slots:
     void UpdateDashboardStations();
+    void UpdateDashboardSceneReagentsForProgram(QString & ProgramId);
 
 
 };

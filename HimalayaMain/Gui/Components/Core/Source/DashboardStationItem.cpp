@@ -60,7 +60,8 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_BlinkingCounter(1),
     m_Enabled(true),
     m_Pressed(false),
-    m_StationSelected(false)
+    m_StationSelected(false),
+    m_CurRMSMode(Global::RMS_UNDEFINED)
 
 {
     setFlag(QGraphicsItem::ItemIsSelectable);
@@ -76,6 +77,7 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     }
 
     UpdateImage();
+
 }
 
 /****************************************************************************/
@@ -160,7 +162,7 @@ void CDashboardStationItem::UpdateImage()
 
     CONNECTSIGNALSLOT(mp_DataConnector, ReagentsUpdated(), this, UpdateDashboardStationItemReagent());
     CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationChangeReagent(QString), this, UpdateDashboardScene(QString));
-
+    CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, UpdateUserSettings());
     update();
 
 }
@@ -382,8 +384,56 @@ void CDashboardStationItem::LoadStationImages(QPainter& Painter)
 
 void CDashboardStationItem::UpdateDashboardStationItemReagent()
 {
-    m_ReagentExpiredFlag = false; // To DO
-    m_StationSelected = false; // TO DO
+    QString ReagentID = mp_DashboardStation->GetDashboardReagentID();
+    DataManager::CReagent *p_Reagent = const_cast<DataManager::CReagent*>(mp_DataConnector->ReagentList->GetReagent(ReagentID));
+
+    if (p_Reagent)
+    {
+        if(m_CurRMSMode != m_UserSettings.GetModeRMSProcessing())
+        {
+            m_CurRMSMode = m_UserSettings.GetModeRMSProcessing();
+            switch( m_UserSettings.GetModeRMSProcessing())
+            {
+                case Global::RMS_CASSETTES:
+                {
+                    qint32 ReagentActualCassettes = mp_DashboardStation->GetDashboardReagentActualCassettes();
+                    int ReagentMaxCassettes = p_Reagent->GetMaxCassettes();
+                    if((ReagentMaxCassettes - ReagentActualCassettes) < 0)
+                        m_ReagentExpiredFlag = true;
+                    else
+                        m_ReagentExpiredFlag = false;
+                }
+                break;
+                case Global::RMS_CYCLES:
+                {
+                    qint32 ReagentActualCycles = mp_DashboardStation->GetDashboardReagentActualCycles();
+                    int ReagentMaxCycles = p_Reagent->GetMaxCycles();
+                    if((ReagentMaxCycles - ReagentActualCycles) < 0)
+                        m_ReagentExpiredFlag = true;
+                    else
+                        m_ReagentExpiredFlag = false;
+                }
+                break;
+                case Global::RMS_DAYS:
+                {
+                    QDate curDate;
+                    QDate ReagentExchangeQDate = mp_DashboardStation->GetDashboardReagentExchangeDate();
+                    QDate ReagentExpiryQDate = ReagentExchangeQDate.addDays(p_Reagent->GetMaxDays());
+                    int Days_Overdue = curDate.currentDate().dayOfYear() - ReagentExpiryQDate.dayOfYear();
+
+                    if(Days_Overdue > 0)
+                        m_ReagentExpiredFlag = true;
+                    else
+                        m_ReagentExpiredFlag = false;
+                }
+                break;
+                default:
+                {
+                    qDebug() << "Do Nothing";
+                }
+            }
+        }
+    }
 
     if(true == m_ReagentExpiredFlag) {
         mp_BlinkingTimer = new QTimer();
@@ -405,13 +455,13 @@ void CDashboardStationItem::DrawStationItemImage()
     QString ReagentStatus = mp_DashboardStation->GetDashboardReagentStatus();
 
     // If Reagent Status is Not Empty and Station Selected for the Program then fill the Reagent Color
-    if(0 != ReagentStatus.compare("Empty", Qt::CaseInsensitive) && m_StationSelected) {
+    if(0 != ReagentStatus.compare("Empty", Qt::CaseInsensitive)) {
         FillReagentColor(Painter);
     }
 
     if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
     {
-        if(true == m_ReagentExpiredFlag && (m_BlinkingCounter % 2))
+        if(true == m_ReagentExpiredFlag && m_StationSelected && (m_BlinkingCounter % 2))
         {
             //Painter.drawPixmap((m_BottleBoundingRectWidth - 72) , (m_BottleBoundingRectHeight - 75), QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Large.png"));
             Painter.drawPixmap((m_BottleBoundingRectWidth - 67) , (m_BottleBoundingRectHeight - 65), QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Small.png"));
@@ -420,7 +470,7 @@ void CDashboardStationItem::DrawStationItemImage()
     }
     else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
     {
-        if(true == m_ReagentExpiredFlag && (m_BlinkingCounter % 2))
+        if(true == m_ReagentExpiredFlag && m_StationSelected && (m_BlinkingCounter % 2))
         {
             Painter.drawPixmap((m_ParaffinbathBoundingRectWidth - 90), 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Small.png"));
         }
@@ -504,7 +554,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 
     if(mp_DashboardStation)
     {
-
         QString ReagentID = mp_DashboardStation->GetDashboardReagentID();
         if ("" == ReagentID)
             return;
@@ -515,9 +564,15 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         QString ReagentColorValue = p_ReagentGroup->GetGroupColor();
         ReagentColorValue.prepend("#");
 
-        Painter.setRenderHint(QPainter::Antialiasing);
-        Painter.setPen(QColor(ReagentColorValue));
-        Painter.setBrush(QColor(ReagentColorValue));
+        if(m_StationSelected) {
+            Painter.setRenderHint(QPainter::Antialiasing);
+            Painter.setPen(QColor(ReagentColorValue));
+            Painter.setBrush(QColor(ReagentColorValue));
+        } else {
+            Painter.setRenderHint(QPainter::Antialiasing);
+            Painter.setPen(QColor(Qt::gray));
+            Painter.setBrush(QColor(Qt::gray));
+        }
 
         Painter.rotate(270.0);
 
@@ -571,6 +626,12 @@ void CDashboardStationItem::UpdateDashboardScene(QString StationID)
 
         update();
     }
+}
+void CDashboardStationItem::UpdateUserSettings()
+{
+    m_UserSettings = *(mp_DataConnector->SettingsInterface->GetUserSettings());
+    UpdateDashboardStationItemReagent();
+
 }
 
 } // end namespace Core

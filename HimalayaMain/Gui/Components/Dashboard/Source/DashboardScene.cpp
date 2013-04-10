@@ -45,12 +45,14 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
                        QGraphicsScene(p_Parent),
                        mp_DataConnector(p_DataConnector),                       
                        mp_MainWindow(p_MainWindow),
-                       m_CloneDashboardStationList(true)
+                       m_CloneDashboardStationList(true),
+                       m_CloneProgramList(true)
 
 {
     QRectF Rect;
 
     mp_DashboardStationListClone = new DataManager::CDashboardDataStationList();
+    mp_ProgramListClone = new DataManager::CDataProgramList();
 
     InitDashboardStationItemsPositions();
     InitDashboardStationGroups();
@@ -77,6 +79,8 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
 CDashboardScene::~CDashboardScene()
 {
     try {
+        delete mp_DashboardStationListClone;
+        delete mp_ProgramListClone;
 
         delete mp_DashboardStationRetort;
 
@@ -290,7 +294,8 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     addItem(mp_DashboardStationConnector);
 
     // Add the End Time Widget
-    mp_DashboardEndTimeWidget = new Dashboard::CDashboardEndTimeWidget();
+    mp_DashboardEndTimeWidget = new Dashboard::CDashboardEndTimeWidget(mp_DataConnector);
+    mp_DashboardEndTimeWidget->InitEndTimeWidgetItems();
     mp_GraphicsProxyWidget = this->addWidget(mp_DashboardEndTimeWidget);
     mp_GraphicsProxyWidget->setFlag(QGraphicsItem::ItemIgnoresTransformations);
     mp_GraphicsProxyWidget->setPos(m_DashboardEndTimeWidgetPos);
@@ -334,10 +339,53 @@ void CDashboardScene::UpdateDashboardStations()
                 static_cast<Core::CDashboardStationItem *>(mp_DashboardStationItems[i]);
 
         pListItem->SetDashboardStation(p_DashboardStation);
+        pListItem->StationSelected(true);
         pListItem->update();
-
     }
 
+}
+
+void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &ProgramId)
+{
+    QStringList SelectedStationIdList;
+    DataManager::CProgram const *p_Program = NULL;
+    QStringList ProgramReagentIdList;
+    QString StationReagentId;
+
+
+
+    if (m_CloneProgramList) {
+        *mp_ProgramListClone = *(mp_DataConnector->ProgramList);
+    }
+    p_Program = mp_ProgramListClone->GetProgram(ProgramId);
+    if(p_Program) {
+        mp_DashboardEndTimeWidget->UpdateEndTimeWidgetItems(p_Program);
+        ProgramReagentIdList = p_Program->GetReagentIDList();
+    }
+
+    for (int i = 0; i < m_DashboardStationList.count(); i++)
+    {
+        DataManager::CDashboardStation *p_DashboardStation = const_cast<DataManager::CDashboardStation*>(mp_DashboardStationListClone->GetDashboardStation(i));
+
+        StationReagentId = p_DashboardStation->GetDashboardReagentID();
+
+        if(ProgramReagentIdList.contains(StationReagentId))
+
+            SelectedStationIdList.append(p_DashboardStation->GetDashboardStationID());
+    }
+
+    for(int j = 0 ; j < m_DashboardStationList.count(); j++)
+    {
+         Core::CDashboardStationItem *pListItem =
+                static_cast<Core::CDashboardStationItem *>(mp_DashboardStationItems[j]);
+
+         if(SelectedStationIdList.contains(pListItem->GetDashboardStation()->GetDashboardStationID()))
+            pListItem->StationSelected(true);
+         else
+            pListItem->StationSelected(false);
+
+         pListItem->UpdateDashboardStationItemReagent();
+    }
 }
 
 } // end namespace Dashboard
