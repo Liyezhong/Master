@@ -96,6 +96,7 @@ typedef enum
         DataManager::CDataManager       *mp_DataManager;
         qint64 m_CurStepSoakStartTime;
         QString m_CurProgramStepID;
+        ProgramStepInfor m_CurProgramStepInfo;
         QString m_CurProgramID;
         QString m_NewProgramID;
         qreal m_PressureAL;
@@ -131,6 +132,8 @@ typedef enum
          bool PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd);
          bool GetNextProgramStepInformation(const QString& ProgramID, ProgramStepInfor& ProgramStepInfor);
          quint32 GetLeftProgramNeededTime(const QString& ProgramID);
+         RVPosition_t GetRVTubePositionByStationID(const QString stationID);
+         RVPosition_t GetRVSealPositionByStationID(const QString stationID);
 
 signals:
          void signalProgramStart(const QString& ProgramID);
@@ -154,6 +157,8 @@ private slots:
          void Fill();
          void Soak();
          void Drain();
+         void Pressure();
+         void Vaccum();
     protected:
 
         /****************************************************************************/

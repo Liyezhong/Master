@@ -23,6 +23,8 @@
 #include "Scheduler/Commands/Include/CmdALStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdALFilling.h"
 #include "Scheduler/Commands/Include/CmdALDraining.h"
+#include "Scheduler/Commands/Include/CmdALPressure.h"
+#include "Scheduler/Commands/Include/CmdALVaccum.h"
 #include "Scheduler/Commands/Include/CmdRVStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdRTStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdOvenStartTemperatureControlWithPID.h"
@@ -204,6 +206,10 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
     switch (ctrlCmd)
     {
     case CTRL_CMD_START:
+        m_CurProgramID = m_NewProgramID;
+        m_NewProgramID = "";
+        m_CurProgramStepID = "";
+        this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
         mp_ProgramStepStateMachine->Start();
         m_SchedulerMachine->SendRunSignal();
         break;
@@ -244,8 +250,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     }
     else if(PSSM_READY_TO_TUBE_BEFORE == stepState)
     {
-         //todo: get current step tube position here
-         if(m_PositionRV == RV_TUBE_2)
+         // get current step tube position here
+         RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+         if(m_PositionRV == targetPos)
          {
              mp_ProgramStepStateMachine->NotifyHitTubeBefore();
          }
@@ -264,7 +271,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     else if(PSSM_READY_TO_SEAL == stepState)
     {
          //todo: get current step seal position here
-         if(m_PositionRV == RV_SEAL_2)
+         RVPosition_t targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+         if(m_PositionRV == targetPos)
          {
              mp_ProgramStepStateMachine->NotifyHitSeal();
          }
@@ -272,16 +280,39 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     else if(PSSM_SOAK == stepState)
     {
         qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
-        //todo: get proper time here
-        if((now - m_CurStepSoakStartTime) > (10*1000))
+        static qint64 lastPVTime = 0;
+        //todo: 1/10 the time
+        //qint32 period = m_CurProgramStepInfo.durationInSeconds * 1000;
+        qint32 period = m_CurProgramStepInfo.durationInSeconds * 100;
+        if((now - m_CurStepSoakStartTime) > (period))
         {
             mp_ProgramStepStateMachine->NotifySoakFinished();
+        }
+        else
+        {
+            if(m_CurProgramStepInfo.isPressure && m_CurProgramStepInfo.isVacuum)
+            {
+                // P/V take turns in 1 minute
+                if((now - lastPVTime)>60000)
+                {
+                    if(((now - m_CurStepSoakStartTime)/60000)%2 == 0)
+                    {
+                        Pressure();
+                    }
+                    else
+                    {
+                        Vaccum();
+                    }
+                    lastPVTime = now;
+                }
+            }
         }
     }
     else if(PSSM_READY_TO_TUBE_AFTER == stepState)
     {
-         //todo: get current step tube position here
-         if(m_PositionRV == RV_TUBE_2)
+         //get current step tube position here
+         RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+         if(m_PositionRV == targetPos)
          {
              mp_ProgramStepStateMachine->NotifyHitTubeAfter();
          }
@@ -935,23 +966,51 @@ void SchedulerMainThreadController::MoveRV()
 
     if(PSSM_READY_TO_TUBE_BEFORE == stepState)
     {
-       //get target position here
-        cmd->SetRVPosition(RV_TUBE_2);
-        m_SchedulerCommandProcessor->pushCmd(cmd);
+        //get target position here
+        RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+        if(RV_UNDEF != targetPos)
+        {
+            cmd->SetRVPosition(targetPos);
+            m_SchedulerCommandProcessor->pushCmd(cmd);
+        }
+        else
+        {
+           //todo: error handling
+           qDebug()<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
+        }
     }
     else if(PSSM_READY_TO_TUBE_AFTER == stepState)
     {
-       //get target position here
-        cmd->SetRVPosition(RV_TUBE_2);
-        m_SchedulerCommandProcessor->pushCmd(cmd);
+        //get target position here
+        RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+        if(RV_UNDEF != targetPos)
+        {
+            cmd->SetRVPosition(targetPos);
+            m_SchedulerCommandProcessor->pushCmd(cmd);
+        }
+        else
+        {
+           //todo: error handling
+           qDebug()<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
+        }
     }
     else if(PSSM_READY_TO_SEAL == stepState)
     {
-       //get target position here
-        cmd->SetRVPosition(RV_SEAL_2);
-        m_SchedulerCommandProcessor->pushCmd(cmd);
+        //get target position here
+        RVPosition_t targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+        if(RV_UNDEF != targetPos)
+        {
+            cmd->SetRVPosition(targetPos);
+            m_SchedulerCommandProcessor->pushCmd(cmd);
+        }
+        else
+        {
+           //todo: error handling
+           qDebug()<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
+        }
     }
 }
+
 void SchedulerMainThreadController::Fill()
 {
     CmdALFilling* cmd  = new CmdALFilling(500, mp_IDeviceProcessing, this);
@@ -959,11 +1018,24 @@ void SchedulerMainThreadController::Fill()
     cmd->SetDelayTime(2000);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 }
+
 void SchedulerMainThreadController::Soak()
 {
     m_CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
     qDebug() << "Start to soak, start time stamp is:" << m_CurStepSoakStartTime;
+    if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
+    {
+        if(m_CurProgramStepInfo.isPressure)
+        {
+            Pressure();
+        }
+        else
+        {
+            Vaccum();
+        }
+    }
 }
+
 void SchedulerMainThreadController::Drain()
 {
     CmdALDraining* cmd  = new CmdALDraining(500, mp_IDeviceProcessing, this);
@@ -971,10 +1043,23 @@ void SchedulerMainThreadController::Drain()
     cmd->SetDelayTime(2000);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 }
+
+void SchedulerMainThreadController::Pressure()
+{
+    m_SchedulerCommandProcessor->pushCmd(new CmdALPressure(500, mp_IDeviceProcessing, this));
+}
+
+void SchedulerMainThreadController::Vaccum()
+{
+    m_SchedulerCommandProcessor->pushCmd(new CmdALVaccum(500, mp_IDeviceProcessing, this));
+}
+
 bool SchedulerMainThreadController::CheckStepTemperature()
 {
-    // get target temperature here
+    //todo: remove this when hardware is ready
     return true;
+    qint32 targetTemp = m_CurProgramStepInfo.temperature;
+    return ((targetTemp < m_TempRTBottom)&&(targetTemp < m_TempRTSide));
 }
 
 bool SchedulerMainThreadController::CheckLevelSensorTemperature(qreal targetTemperature)
@@ -982,5 +1067,36 @@ bool SchedulerMainThreadController::CheckLevelSensorTemperature(qreal targetTemp
     // get target temperature here
     return (m_TempALLevelSensor > targetTemperature);
 }
+
+RVPosition_t SchedulerMainThreadController::GetRVTubePositionByStationID(const QString stationID)
+{
+    RVPosition_t ret = RV_UNDEF;
+    if(!stationID.isEmpty())
+    {
+        bool ok;
+        int position = stationID.right(stationID.length() - 1).toInt(&ok, 10);
+        if(ok)
+        {
+            ret = (RVPosition_t)(position * 2 - 1);
+        }
+    }
+    return ret;
+}
+
+RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const QString stationID)
+{
+    RVPosition_t ret = RV_UNDEF;
+    if(!stationID.isEmpty())
+    {
+        bool ok;
+        int position = stationID.right(stationID.length() - 1).toInt(&ok, 10);
+        if(ok)
+        {
+            ret = (RVPosition_t)(position * 2);
+        }
+    }
+    return ret;
+}
+
 } // EONS ::Scheduler
 
