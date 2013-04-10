@@ -4,6 +4,7 @@
 
 #include <QObject>
 #include <QStateMachine>
+#include <QFinalState>
 
 namespace Scheduler{
 
@@ -75,7 +76,7 @@ private:
     QState* mp_PssmReadyToFill;
     QState* mp_PssmReadyToDrain;
     QState* mp_PssmSoak;
-    QState* mp_PssmFinish;
+    QFinalState* mp_PssmFinish;
     QState* mp_PssmError;
 
 };

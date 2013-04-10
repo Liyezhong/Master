@@ -15,7 +15,7 @@ ProgramStepStateMachine::ProgramStepStateMachine()
     mp_PssmReadyToFill = new QState(mp_ProgramStepStateMachine);
     mp_PssmReadyToDrain = new QState(mp_ProgramStepStateMachine);
     mp_PssmSoak = new QState(mp_ProgramStepStateMachine);
-    mp_PssmFinish = new QState(mp_ProgramStepStateMachine);
+    mp_PssmFinish = new QFinalState(mp_ProgramStepStateMachine);
     mp_PssmError = new QState(mp_ProgramStepStateMachine);
     mp_ProgramStepStateMachine->setInitialState(mp_PssmInit);
     mp_PssmInit->addTransition(this, SIGNAL(TempsReady()), mp_PssmReadyToHeatLevelSensorS1);
@@ -43,6 +43,9 @@ ProgramStepStateMachine::ProgramStepStateMachine()
     connect(mp_PssmReadyToTubeBefore, SIGNAL(entered()), this, SIGNAL(OnMoveToTubeBefore()));
     connect(mp_PssmReadyToTubeAfter, SIGNAL(entered()), this, SIGNAL(OnMoveToTubeAfter()));
     connect(mp_PssmReadyToSeal, SIGNAL(entered()), this, SIGNAL(OnMoveToSeal()));
+    connect(mp_PssmReadyToFill, SIGNAL(entered()), this, SIGNAL(OnFill()));
+    connect(mp_PssmSoak, SIGNAL(entered()), this, SIGNAL(OnSoak()));
+    connect(mp_PssmReadyToDrain, SIGNAL(entered()), this, SIGNAL(OnDrain()));
 
 }
 

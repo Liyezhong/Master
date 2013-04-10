@@ -98,6 +98,7 @@ typedef enum
         QString m_CurProgramStepID;
         QString m_CurProgramID;
         QString m_NewProgramID;
+        qreal m_PressureAL;
         qreal m_TempALLevelSensor;
         qreal m_TempALTube1;
         qreal m_TempALTube2;

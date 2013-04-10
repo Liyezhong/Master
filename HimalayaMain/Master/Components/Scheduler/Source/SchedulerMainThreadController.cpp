@@ -21,9 +21,13 @@
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Commands/Include/CmdALStartTemperatureControlWithPID.h"
+#include "Scheduler/Commands/Include/CmdALFilling.h"
+#include "Scheduler/Commands/Include/CmdALDraining.h"
 #include "Scheduler/Commands/Include/CmdRVStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdRTStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdOvenStartTemperatureControlWithPID.h"
+#include "Scheduler/Commands/Include/CmdPerTurnOnMainRelay.h"
+#include "Scheduler/Commands/Include/CmdPerTurnOffMainRelay.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "HimalayaDataManager/Include/DataManager.h"
@@ -160,17 +164,17 @@ void SchedulerMainThreadController::OnPowerFail()
 
 void SchedulerMainThreadController::OnTickTimer()
 {
-    return; //this is a crash in this function, disable this now!
-
     //ProcessNonDeviceCommand();
 
     ControlCommandType_t newControllerCmd = ReceiveNonDeviceCommand();
     SchedulerCommandShPtr_t cmd;
-    PopDeviceControlCmdQueue(cmd);
-    ReturnCode_t retCode;
-    if(!(cmd->GetResult(retCode)))
+    ReturnCode_t retCode = DCL_ERR_UNDEFINED;
+    if(PopDeviceControlCmdQueue(cmd))
     {
-        retCode = DCL_ERR_UNDEFINED;
+        if(!(cmd->GetResult(retCode)))
+        {
+            retCode = DCL_ERR_UNDEFINED;
+        }
     }
     SchedulerState_t currentState = m_SchedulerMachine->GetCurrentState();
     switch(currentState)
@@ -188,6 +192,7 @@ void SchedulerMainThreadController::OnTickTimer()
         break;
     case ERROR_STATE:
         //refuse any main controller request if there is any
+        qDebug()<<"Scheduler main controller is in error state";
         break;
     default:
         qDebug()<<"Scheduler main controller gets unexpected state: " << currentState;
@@ -261,14 +266,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
          //todo: get current step seal position here
          if(m_PositionRV == RV_SEAL_2)
          {
-             mp_ProgramStepStateMachine->NotifyHitTubeBefore();
+             mp_ProgramStepStateMachine->NotifyHitSeal();
          }
     }
     else if(PSSM_SOAK == stepState)
     {
         qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
         //todo: get proper time here
-        if((now - m_CurStepSoakStartTime) > (20*1000))
+        if((now - m_CurStepSoakStartTime) > (10*1000))
         {
             mp_ProgramStepStateMachine->NotifySoakFinished();
         }
@@ -295,6 +300,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     else if(PSSM_FINISH == stepState)
     {
         //todo: start next program step or finish all program
+        qDebug()<< "step finished!";
+        m_SchedulerMachine->SendRunComplete();
     }
 
 }
@@ -657,11 +664,21 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
-            qDebug()<<"move to initial position result is: " << retCode;
+            qDebug()<<"Failed move to initial position, return code: " << retCode;
             goto ERROR;
         }
-
-
+#if 0
+    //hardware not ready yet
+        m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, mp_IDeviceProcessing, this));
+        SchedulerCommandShPtr_t resPerTurnOnRelay;
+        while(!PopDeviceControlCmdQueue(resPerTurnOnRelay));
+        resPerTurnOnRelay->GetResult(retCode);
+        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            //todo: error handling
+            qDebug()<<"Failed turn on main relay, return code: " << retCode;
+            goto ERROR;
+        }
         CmdRTStartTemperatureControlWithPID* cmdHeatRTSide = new CmdRTStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
         cmdHeatRTSide->SetType(RT_SIDE);
         //todo: get temperature here
@@ -678,11 +695,12 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
+            qDebug()<<"Failed to heat Retort side, return code: " << retCode;
             goto ERROR;
         }
-#if 0
+
         CmdRTStartTemperatureControlWithPID* cmdHeatRTBot = new CmdRTStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
-        cmdHeatRTBot->SetType(RT_SIDE);
+        cmdHeatRTBot->SetType(RT_BOTTOM);
         //todo: get temperature here
         cmdHeatRTBot->SetNominalTemperature(90);
         cmdHeatRTBot->SetSlopeTempChange(10);
@@ -697,6 +715,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
+            qDebug()<<"Failed to heat Retort bottom, return code: " << retCode;
             goto ERROR;
         }
 
@@ -716,8 +735,10 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
+            qDebug()<<"Failed to heat Rotary valve, return code: " << retCode;
             goto ERROR;
         }
+
         CmdOvenStartTemperatureControlWithPID* cmdHeatOvenBot = new CmdOvenStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
         cmdHeatOvenBot->SetType(OVEN_BOTTOM);
         //todo: get temperature here
@@ -734,6 +755,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
+            qDebug()<<"Failed to heat oven bottom, return code: " << retCode;
             goto ERROR;
         }
 
@@ -753,24 +775,27 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
+            qDebug()<<"Failed to heat oven top, return code: " << retCode;
             goto ERROR;
         }
 #endif
         // set state machine "init" to "idle" (David)
-
         m_SchedulerMachine->SendSchedulerInitComplete();
         //for debug
         qDebug() << "Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
     }
-    m_TickTimer.start();
-    return;
-ERROR:
+    else
     {
+ERROR:
+        if(RetCode == DCL_ERR_TIMEOUT)
+        {
+            qDebug()<<"Some devices are not found during DCL's initialization period.";
+        }
         //error happend
         // set state machine "init" to "error" (David)
         m_SchedulerMachine->SendErrorSignal();
         //for debug
-        qDebug() << "Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
+        qDebug() << "Error while init, Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
     }
     m_TickTimer.start();
 }
@@ -781,6 +806,7 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
     {
        // if(StepID == "IDLE")
         {
+            qreal PressureAL= pIDP->ALGetRecentPressure(0);
             qreal TempALLevelSensor= pIDP->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
             qreal TempALTube1= pIDP->ALGetRecentTemperature(AL_TUBE1,0);
             qreal TempALTube2= pIDP->ALGetRecentTemperature(AL_TUBE2,0);
@@ -790,6 +816,10 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
             qreal TempRTSide= pIDP->RTGetRecentTemperature(RT_SIDE,0);
             qreal TempOvenBottom= pIDP->OvenGetRecentTemperature(OVEN_BOTTOM,0);
             qreal TempOvenTop= pIDP->OvenGetRecentTemperature(OVEN_TOP,0);
+            if(PressureAL != UNDEFINED_VALUE)
+            {
+                m_PressureAL = PressureAL;
+            }
             if(TempALLevelSensor != UNDEFINED_VALUE)
             {
                 m_TempALLevelSensor = TempALLevelSensor;
@@ -823,6 +853,7 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
                 m_TempOvenTop = TempOvenTop;
             }
             m_PositionRV = PositionRV;
+            qDebug()<<"Air liquid system pressure is" << PressureAL;
             qDebug()<<"Air liquid system level sensor's temp is" << TempALLevelSensor;
             qDebug()<<"Air liquid system tube1's temp is" << TempALTube1;
             qDebug()<<"Air liquid system tube2's temp is" << TempALTube2;
@@ -923,15 +954,22 @@ void SchedulerMainThreadController::MoveRV()
 }
 void SchedulerMainThreadController::Fill()
 {
-
+    CmdALFilling* cmd  = new CmdALFilling(500, mp_IDeviceProcessing, this);
+    //todo: get delay time here
+    cmd->SetDelayTime(2000);
+    m_SchedulerCommandProcessor->pushCmd(cmd);
 }
 void SchedulerMainThreadController::Soak()
 {
     m_CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+    qDebug() << "Start to soak, start time stamp is:" << m_CurStepSoakStartTime;
 }
 void SchedulerMainThreadController::Drain()
 {
-
+    CmdALDraining* cmd  = new CmdALDraining(500, mp_IDeviceProcessing, this);
+    //todo: get delay time here
+    cmd->SetDelayTime(2000);
+    m_SchedulerCommandProcessor->pushCmd(cmd);
 }
 bool SchedulerMainThreadController::CheckStepTemperature()
 {
