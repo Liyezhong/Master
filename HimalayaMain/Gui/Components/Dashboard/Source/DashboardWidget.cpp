@@ -207,6 +207,10 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
 
     }
 
+    //the following two lines for test purpose:
+    m_ProgramCurrentAction = DataManager::PROGRAM_START;
+    OnProgramStartConfirmation();
+
     return false;
 
 }

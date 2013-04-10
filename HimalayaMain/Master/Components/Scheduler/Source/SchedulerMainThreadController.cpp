@@ -620,9 +620,10 @@ void SchedulerMainThreadController::OnOnRetortLock(Global::tRefType Ref, const M
 void SchedulerMainThreadController::OnActionCommandReceived(Global::tRefType Ref, const NetCommands::CmdSystemAction & Cmd)    // todo: should be of type CmdAction
 {
     m_Mutex.lock();
-
+    NetCommands::CmdSystemAction *p_CmdSystemAction = new NetCommands::CmdSystemAction();
+    p_CmdSystemAction->SetAction(Cmd.GetAction());
+    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(p_CmdSystemAction));
     m_Mutex.unlock();
-    this->SendAcknowledgeOK(Ref);
 }
 
 QString SchedulerMainThreadController::GetStationIDFromReagentID(const QString& ReagentID, bool IsLastStep)
