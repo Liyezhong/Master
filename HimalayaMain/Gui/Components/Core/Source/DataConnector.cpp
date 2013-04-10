@@ -794,7 +794,7 @@ void CDataConnector::UpdateStationSetAsEmptyHandler(Global::tRefType Ref, const 
         Result = false;
     if(Result){
         mp_WaitDialog->accept();
-        emit DashboardStationSetAsEmpty();
+        emit DashboardStationChangeReagent(Command.StationID());
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }

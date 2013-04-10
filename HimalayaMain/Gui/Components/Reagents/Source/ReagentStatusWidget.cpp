@@ -39,7 +39,7 @@ CReagentStatusWidget::CReagentStatusWidget(QWidget *p_Parent):
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
 
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
-    m_RMSOptions = Global::RMS_CASSETTES;
+
     PopulateReagentList();
     CONNECTSIGNALSLOT(mp_TableWidget, pressed(QModelIndex), this, SelectionChanged(QModelIndex));
     CONNECTSIGNALSLOT(mp_Ui->btnEmpty, clicked(), this, OnSetAsEmpty());
@@ -198,41 +198,62 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
     m_CurrentIndex = Index;
     QString Id = m_ReagentStatusModel.data(Index, (int)Qt::UserRole).toString();
     mp_DashStation = const_cast<DataManager::CDashboardStation*>(mp_DataConnector->DashboardStationList->GetDashboardStation(Id));
-
+    int ExpireReagent = false;
     if (mp_DashStation) {
-
-            mp_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(mp_DashStation->GetDashboardReagentID()));
-
-            if(mp_Reagent){
+        mp_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(mp_DashStation->GetDashboardReagentID()));
+        if (mp_Reagent){
+            QDate Current_Date;
+            QDate Expiry_Date;
+            switch (m_RMSOptions) {
+            default:
+                break;
+            case Global::RMS_CASSETTES:
                 if(mp_Reagent->GetMaxCassettes() < mp_DashStation->GetDashboardReagentActualCassettes())
-                    mp_TableWidget->setStyleSheet("QTableView::item:selected {background-color:#D43032;""border-style:default;color:yellow}""QHeaderView {color:black;}");
-                else
-                    mp_TableWidget->setStyleSheet("QHeaderView {color:black;}");
-             }
-            if (!m_ProcessRunning) {
-                mp_Ui->btnFull->setEnabled(true);
-                mp_Ui->btnEmpty->setEnabled(true);
-                mp_Ui->btnReset->setEnabled(true);
-                if(mp_DashStation->GetDashboardReagentID().compare("",Qt::CaseInsensitive) == 0) {
-
-                    mp_Ui->btnFull->setEnabled(false);
-                    mp_Ui->btnEmpty->setEnabled(false);
-                    mp_Ui->btnReset->setEnabled(false);
-                }
-
-                if (mp_DashStation->GetDashboardReagentStatus().compare("Full", Qt::CaseInsensitive) == 0) {
-                    mp_Ui->btnFull->setEnabled(false);
-                }
-                else if (mp_DashStation->GetDashboardReagentStatus().compare("Empty", Qt::CaseInsensitive) == 0) {
-                    mp_Ui->btnEmpty->setEnabled(false);
-                    mp_Ui->btnReset->setEnabled(false);
-                }
+                    ExpireReagent = true;
+                break;
+            case Global::RMS_CYCLES:
+                if(mp_Reagent->GetMaxCycles() < mp_DashStation->GetDashboardReagentActualCycles())
+                    ExpireReagent = true;
+                break;
+            case Global::RMS_DAYS:
+                 Expiry_Date = mp_DashStation->GetDashboardReagentExchangeDate().addDays(mp_Reagent->GetMaxDays());
+                if( Expiry_Date.dayOfYear() < Current_Date.currentDate().dayOfYear())
+                    ExpireReagent = true;
+                break;
+             case Global::RMS_OFF:
+                ExpireReagent = false;
+                break;
             }
-            else {
+        }
+        if(ExpireReagent)
+            mp_TableWidget->setStyleSheet("QTableView::item:selected {background-color:#D43032;""border-style:default;color:yellow}""QHeaderView {color:black;}");
+        else
+            mp_TableWidget->setStyleSheet("QHeaderView {color:black;}");
+
+        if (!m_ProcessRunning) {
+            mp_Ui->btnFull->setEnabled(true);
+            mp_Ui->btnEmpty->setEnabled(true);
+            mp_Ui->btnReset->setEnabled(true);
+            if(mp_DashStation->GetDashboardReagentID().compare("",Qt::CaseInsensitive) == 0) {
+
                 mp_Ui->btnFull->setEnabled(false);
                 mp_Ui->btnEmpty->setEnabled(false);
                 mp_Ui->btnReset->setEnabled(false);
             }
+
+            if (mp_DashStation->GetDashboardReagentStatus().compare("Full", Qt::CaseInsensitive) == 0) {
+                mp_Ui->btnFull->setEnabled(false);
+            }
+            else if (mp_DashStation->GetDashboardReagentStatus().compare("Empty", Qt::CaseInsensitive) == 0) {
+                mp_Ui->btnEmpty->setEnabled(false);
+                mp_Ui->btnReset->setEnabled(false);
+            }
+        }
+        else {
+            mp_Ui->btnFull->setEnabled(false);
+            mp_Ui->btnEmpty->setEnabled(false);
+            mp_Ui->btnReset->setEnabled(false);
+        }
     }
 }
 
@@ -385,6 +406,7 @@ void CReagentStatusWidget::ResetButtons()
 void CReagentStatusWidget:: StationReagentUpdated(QString StationId)
 {
     m_ReagentStatusModel.UpdateReagentList();
+    m_ReagentStatusModel.ResetAndUpdateModel();
     mp_TableWidget->selectRow(m_CurrentIndex.row());
 }
 

@@ -52,7 +52,7 @@ CAlarmSettingsWidget::CAlarmSettingsWidget(QWidget *p_Parent) :
     CONNECTSIGNALSLOT(mp_Ui->informationButton, clicked(), this, OnNoteEdit());
     CONNECTSIGNALSLOT(mp_Ui->warningButton, clicked(), this, OnWarningEdit());
     CONNECTSIGNALSLOT(mp_Ui->errorButton, clicked(), this, OnErrorEdit());
-    CONNECTSIGNALSLOT(mp_Error, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
+    CONNECTSIGNALSLOT(mp_Error,AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Information, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Warning, AlarmSettingsChanged(DataManager::CUserSettings &), this , AlarmSettingsChange(DataManager::CUserSettings &));
     CONNECTSIGNALSIGNAL(mp_Error, PlayTestTone(quint8, quint8, bool ), this, PlayTestTone(quint8, quint8, bool ));

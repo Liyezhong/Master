@@ -81,7 +81,7 @@ public:
                     Global::RMSOptions_t Option);
     void Update();
     void UpdateOnESC();
-    void NewReagent();
+    void UpdateRmsLabel(Global::RMSOptions_t Option);
     void EnableElements(bool m_Enable);
 
     /****************************************************************************/

@@ -59,7 +59,7 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
         mp_Ui->pageReagentStatus->SetUserSettings(p_Settings);
         mp_Ui->pageReagentGroup->SetUserSettings(p_Settings);
         mp_Ui->pageReagentStation->SetUserSettings(p_Settings);
-        mp_Ui->pageReagents->SetUserSettings(p_Settings);
+        //mp_Ui->pageReagents->SetUserSettings(p_Settings);
         mp_Ui->pageReagentStatus->SetPtrToMainWindow(mp_DataConnector, mp_DataConnector->ReagentList, mp_MainWindow, mp_KeyBoardWidget);
         mp_Ui->pageReagentStation->SetPtrToMainWindow(mp_DataConnector, mp_DataConnector->ReagentList, mp_MainWindow, mp_KeyBoardWidget);
         mp_Ui->pageReagentGroup->SetPtrToMainWindow(mp_DataConnector->ReagentGroupColorList,mp_DataConnector->ReagentGroupList, mp_MainWindow);

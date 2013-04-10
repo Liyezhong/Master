@@ -62,7 +62,8 @@ class CReagentRMSWidget : public MainMenu::CPanelFrame
     friend class CTestReagents;
 private:
     Ui::CReagentRMSWidget *mp_Ui;                     //!< User interface
-    DataManager::CUserSettings *mp_UserSettings;    //!< Data object
+    DataManager::CHimalayaUserSettings *mp_UserSettings;    //!< Data object
+    DataManager::CHimalayaUserSettings m_UserSettings;    //!< Data object
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
@@ -143,12 +144,22 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief This signal is emitted to delete the selected reagent.
+     *  \brief This signal is emitted Whenever Reagent Processing mode is changes
      *
      *  \iparam ReagentID = Selected reagent id.
      */
     /****************************************************************************/
     void RMSChanged(const Global::RMSOptions_t);
+
+    /****************************************************************************/
+    /*!
+     *  \brief This signal is emitted to delete the selected reagent.
+     *
+     *  \iparam ReagentID = Selected reagent id.
+     */
+    /****************************************************************************/
+    void RMSSettingChanged(DataManager::CUserSettings &);
+
 
 private slots:
     void OnEdit();
@@ -167,7 +178,7 @@ private slots:
     void OnCleaningRMSOFF();
     void OnCleaningRMSCycles();
     void OnCleaningRMSDays();
-    //void UpdateUserSetting();
+    void UpdateUserSetting();
 };
 
 } // end namespace Reagents

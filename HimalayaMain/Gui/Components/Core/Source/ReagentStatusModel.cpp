@@ -177,6 +177,10 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
 {
     DataManager::CReagent *p_Reagent = NULL;
     DataManager::CDashboardStation *p_Station = NULL;
+    int Days_Overdue =0;
+    QDate t_Date;
+    QDate Expiry_Date;
+    bool Expired ;
     if (mp_ReagentList == NULL && mp_StationList == NULL) {
         return QVariant();
     }
@@ -185,12 +189,32 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
     }
     if (Index.row() < m_ReagentNames.count()
             && (p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]])))){
-        QDate t_Date;
-        int Days_Overdue = t_Date.currentDate().dayOfYear()-p_Station->GetDashboardReagentExchangeDate().dayOfYear();
-        bool Expired = false;
-        if (p_Reagent)
-             if(p_Reagent->GetMaxCassettes() < p_Station->GetDashboardReagentActualCassettes())
-                 Expired = true;
+
+        if (p_Reagent){
+            Expiry_Date = p_Station->GetDashboardReagentExchangeDate().addDays(p_Reagent->GetMaxDays());
+
+            Days_Overdue = t_Date.currentDate().dayOfYear() - Expiry_Date.dayOfYear() ;
+            Expired = false;
+
+            switch (m_RMSOptions) {
+            default:
+                break;
+            case Global::RMS_CASSETTES:
+                if(p_Reagent->GetMaxCassettes() < p_Station->GetDashboardReagentActualCassettes())
+                    Expired = true;
+                break;
+            case Global::RMS_CYCLES:
+                if(p_Reagent->GetMaxCycles() < p_Station->GetDashboardReagentActualCycles())
+                    Expired = true;
+                break;
+            case Global::RMS_DAYS:
+                if( Expiry_Date.dayOfYear() - t_Date.currentDate().dayOfYear() < 0)
+                    Expired = true;
+                break;
+            case Global::RMS_OFF:
+                break;
+            }
+        }
 
         if( true == Expired && Role == (int) Qt::TextColorRole)
         {
@@ -233,7 +257,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                                case Global::DATE_US:
                                    return Tem_QDate.addDays(p_Reagent->GetMaxDays()).toString("MM/dd/yyyy");
                              }
-                     }
+                      }
                 }
                 else
                    return QString("");

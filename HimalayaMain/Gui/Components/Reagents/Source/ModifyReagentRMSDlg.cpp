@@ -159,37 +159,30 @@ void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
     m_RMSOption = Option;
     if (p_Reagent != NULL) {
         m_Reagent = *p_Reagent;
-
         // Check if Edit button was clicked in ReagentWidget
         if (m_ButtonType == Reagents::EDIT_BTN_CLICKED) {
 
             mp_Ui->buttonReagentName->setText(m_Reagent.GetReagentName());
             mp_Ui->buttonValue->setVisible(true);
             mp_Ui->labelRMSStaticName->setVisible(true);
-            switch (Option) {
-                case Global::RMS_CASSETTES:
-                    mp_Ui->labelRMSStaticName->setText("Cassettes until change");
-                    mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxCassettes()));
-                    break;
-                case Global::RMS_CYCLES:
-                    mp_Ui->labelRMSStaticName->setText("Cycles until change");
-                    mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxCycles()));
-                    break;
-                case Global::RMS_DAYS:
-                    mp_Ui->labelRMSStaticName->setText("Days until change");
-                    mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxDays()));
-                    break;
-                case Global::RMS_OFF:
-                    mp_Ui->buttonValue->setVisible(false);
-                    mp_Ui->labelRMSStaticName->setVisible(false);
-                    break;
-            }
+            UpdateRmsLabel(Option);
             mp_TableWidget->selectRow(mp_ReagentGroupList->GetReagentGroupIndex(m_Reagent.GetGroupID()));
         }
 
     }
     else {
-        NewReagent();
+        UpdateRmsLabel(Option);
+        if(Option == Global::RMS_OFF){
+            mp_Ui->buttonValue->setVisible(false);
+            mp_Ui->labelRMSStaticName->setVisible(false);
+            mp_Ui->buttonReagentName->setText("--");
+        }
+        else {
+            mp_Ui->buttonReagentName->setText("--");
+            mp_Ui->buttonValue->setVisible(true);
+            mp_Ui->labelRMSStaticName->setVisible(true);
+            mp_Ui->buttonValue->setText("--");
+        }
     }    
 
 }
@@ -200,12 +193,27 @@ void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
  *
  */
 /****************************************************************************/
-void CModifyReagentRMSDlg::NewReagent()
+void CModifyReagentRMSDlg::UpdateRmsLabel(Global::RMSOptions_t Option)
 {
-    mp_Ui->buttonReagentName->setEnabled(true);    
-    mp_Ui->buttonReagentName->setText("--");
-    mp_Ui->buttonValue->setEnabled(true);
-    mp_Ui->buttonValue->setText("--");
+    switch (Option) {
+        case Global::RMS_CASSETTES:
+            mp_Ui->labelRMSStaticName->setText("Cassettes until change");
+            mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxCassettes()));
+            break;
+        case Global::RMS_CYCLES:
+            mp_Ui->labelRMSStaticName->setText("Cycles until change");
+            mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxCycles()));
+            break;
+        case Global::RMS_DAYS:
+            mp_Ui->labelRMSStaticName->setText("Days until change");
+            mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxDays()));
+            break;
+        case Global::RMS_OFF:
+            mp_Ui->buttonValue->setVisible(false);
+            mp_Ui->labelRMSStaticName->setVisible(false);
+            break;
+    }
+
 }
 
 /****************************************************************************/
