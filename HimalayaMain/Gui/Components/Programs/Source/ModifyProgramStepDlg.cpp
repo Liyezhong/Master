@@ -42,9 +42,9 @@ const QString UNLOADER_STEP_ID = "S7";           //!< Unloader id
 //! Maximal scroll wheel temperature in degree Celsius
 #define MAX_CENTIGRADE_TEMP   75
 //! Minimal scroll wheel temperature in degree Fahrenheit
-#define MIN_FARENHEIT_TEMP    104
+#define MIN_FARENHEIT_TEMP    95
 //! Maximal scroll wheel temperature in degree Fahrenheit
-#define MAX_FARENHEIT_TEMP    158
+#define MAX_FARENHEIT_TEMP    167
 
 /****************************************************************************/
 /*!
@@ -80,6 +80,7 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
     mp_ScrollWheelTemp = new MainMenu ::CScrollWheel();
     mp_Program = new DataManager::CProgram();
 
+    mp_UserSettings = NULL;
     m_ReagentEditModel.SetVisibleRowCount(8);
     m_ReagentEditModel.SetRequiredContainers(mp_DataConnector->ReagentList,mp_DataConnector->ReagentGroupList,mp_DataConnector->DashboardStationList, 2);
 
@@ -97,7 +98,7 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
     CONNECTSIGNALSLOT(p_Parent, ReagentsUpdated(), this, ReagentTableUpdate());
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
     CONNECTSIGNALSLOT(mp_TableWidget,clicked(QModelIndex), this, OnSelectionChanged(QModelIndex));
-
+    CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(),this,UpdateUserSetting());
 }
 
 /****************************************************************************/
@@ -131,6 +132,10 @@ void CModifyProgramStepDlg::ResizeHorizontalSection()
     mp_TableWidget->horizontalHeader()->resizeSection(1, 130);
 }
 
+void CModifyProgramStepDlg:: UpdateUserSetting()
+{
+    mp_UserSettings = mp_DataConnector->SettingsInterface->GetUserSettings();
+}
 /****************************************************************************/
 /*!
  *  \brief Initializes the duration scroll wheels
@@ -145,7 +150,6 @@ void CModifyProgramStepDlg::InitDurationWidget()
     for (int MinItemCnt = 0; MinItemCnt <= 59; MinItemCnt++) {
         mp_ScrollWheelMin->AddItem(QString("%1").arg(MinItemCnt, 2, 10, QChar('0')), MinItemCnt);
     }
-
     mp_Ui->scrollPanelWidgetTime->Init(2);
     mp_Ui->scrollPanelWidgetTime->SetTitle(tr("Time"));
     mp_Ui->scrollPanelWidgetTime->AddScrollWheel(mp_ScrollWheelHour, 0);
@@ -168,18 +172,17 @@ void CModifyProgramStepDlg::InitTemperatureWidget()
     mp_ScrollWheelTemp->ClearItems();
     // Temperature Control
     if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
-        for (int i = MIN_CENTIGRADE_TEMP; i <= MAX_CENTIGRADE_TEMP; i += 5) {
+        for (int i = MIN_CENTIGRADE_TEMP; i <= MAX_CENTIGRADE_TEMP; i += 1) {
             mp_ScrollWheelTemp->AddItem(QString::number(i).rightJustified(2, '0'), i);
         }
         mp_Ui->scrollPanelWidgetTemperature->SetSubtitle(QApplication::translate("CModifyProgramStepDlg", "\302\260C", 0, QApplication::UnicodeUTF8), 0);
     }
     else {
-        for (int i = MIN_FARENHEIT_TEMP; i <= MAX_FARENHEIT_TEMP; i += 9) {
+        for (int i = MIN_FARENHEIT_TEMP; i <= MAX_FARENHEIT_TEMP; i += 1) {
             mp_ScrollWheelTemp->AddItem(QString::number(i).rightJustified(2, '0'), i);
         }
         mp_Ui->scrollPanelWidgetTemperature->SetSubtitle(QApplication::translate("CModifyProgramStepDlg", "\302\260F", 0, QApplication::UnicodeUTF8), 0);
     }
-
     mp_ScrollWheelTemp->SetNonContinuous();
 }
 /****************************************************************************/
@@ -202,12 +205,13 @@ void CModifyProgramStepDlg::SetProgramStep(DataManager::CProgramStep *p_ProgramS
     mp_ScrollWheelHour->SetCurrentData(Duration.hour());
     mp_ScrollWheelMin->SetCurrentData(Duration.minute());
 
-    if (m_UserSettingsTemp.GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT) {
-        qint32 TemperatureCelsius = ((mp_ScrollWheelTemp->GetCurrentData().toInt() - 32) * 5) / 9;
-        m_UserSettingsTemp.SetValue("Temp", TemperatureCelsius);
+
+    if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT) {
+        double TemperatureCelsius = ((mp_ProgramStep->GetTemperature().toDouble() - 35) / 5)* 9 +95;
+        mp_ScrollWheelTemp->SetCurrentData((qRound(TemperatureCelsius)));
     }
     else {
-        m_UserSettingsTemp.SetValue("Temp", mp_ScrollWheelTemp->GetCurrentData().toInt());
+        mp_ScrollWheelTemp->SetCurrentData(mp_ProgramStep->GetTemperature());
     }
     m_ReagentModel.FilterLeicaReagents(true);
     m_ReagentModel.SetUserSettings(&m_UserSettings);
@@ -215,6 +219,7 @@ void CModifyProgramStepDlg::SetProgramStep(DataManager::CProgramStep *p_ProgramS
     m_ReagentModel.SetParentPtr(this);
 
     const DataManager::CReagent *Reagent = mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID());
+    m_ReagentID = Reagent->GetReagentID();
     QString ID = mp_ProgramStep->GetReagentID();
     int Index = m_ReagentEditModel.GetReagentPositionOfReagent(ID);
     mp_TableWidget->selectRow(Index);
@@ -247,6 +252,7 @@ void CModifyProgramStepDlg::NewProgramStep(DataManager::CDataReagentList *p_Reag
     m_ReagentModel.FilterLeicaReagents(true);
     m_ReagentModel.OnDeviceModeChanged(m_DeviceMode);
     m_ReagentModel.SetUserSettings(&m_UserSettings);
+    m_ReagentModel.SetReagentGroupList(mp_DataConnector->ReagentGroupList);
     m_ReagentModel.SetReagentList(mp_ReagentList, 2);
     m_ReagentModel.SetParentPtr(this);
     ResizeHorizontalSection();
@@ -312,8 +318,16 @@ void CModifyProgramStepDlg::OnOk()
     if(m_ReagentExists) {
         MinDurationInSec = mp_ScrollWheelHour->GetCurrentData().toInt()*60*60;
         MinDurationInSec+= mp_ScrollWheelMin->GetCurrentData().toInt()*60;
-        Temperature = mp_ScrollWheelTemp->GetCurrentData().toString();
 
+        if( mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS)
+        {
+            Temperature = mp_ScrollWheelTemp->GetCurrentData().toString();
+        }
+        else
+        {
+            double Temp = qRound(((mp_ScrollWheelTemp->GetCurrentData().toDouble() - 32) * 5) / 9);
+            Temperature = qRound(Temp);
+        }
 
         if (mp_Ui->radioButton_0->isChecked()) {
             Pressure = "On";
@@ -422,6 +436,7 @@ void CModifyProgramStepDlg::OnSelectionChanged(QModelIndex Index)
             m_ReagentModel.SetCurrentReagent(m_ReagentLongName);
             m_RowNotSelected = false;
             mp_Ui->btnOk->setEnabled(true);
+            //            InitTemperatureWidget();
         }
     }
 }
@@ -448,6 +463,7 @@ void CModifyProgramStepDlg::OnProcessStateChanged()
         mp_Ui->btnOk->setEnabled(false);
     }
 }
+
 /****************************************************************************/
 /*!
  *  \brief This event is called whenever widget is shown.
@@ -469,29 +485,28 @@ void CModifyProgramStepDlg::showEvent(QShowEvent *p_Event)
             else {
                 mp_Ui->btnOk->setEnabled(false);
             }
-
             if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
                 mp_ScrollWheelTemp->SetThreeDigitMode(false);
                 mp_Ui->scrollPanelWidgetTemperature->SetThreeDigitMode(false);
-                mp_ScrollWheelTemp->SetCurrentData(QString::number(m_UserSettings.GetValue("Temp").toInt()));
-                 qDebug()<<"\n\n Program widget Temp" << m_UserSettings.GetValue("Temp").toInt();
+                mp_ScrollWheelTemp->SetCurrentData(QString::number(m_ProgramStep.GetTemperature().toInt()));
+                qDebug()<<"\n\n Program widget Temp" << m_ProgramStep.GetTemperature().toInt();
             }
             else {
                 mp_ScrollWheelTemp->SetThreeDigitMode(true);
                 mp_Ui->scrollPanelWidgetTemperature->SetThreeDigitMode(true);
-                mp_ScrollWheelTemp->SetCurrentData(tr("%1").arg((((m_UserSettings.GetValue("Temp").toInt() - 40) / 5) * 9) + 104));
-                qDebug()<<"\n\n Program widget Temp" << m_UserSettings.GetValue("Temp").toInt();
+                mp_ScrollWheelTemp->SetCurrentData(tr("%1").arg((((m_ProgramStep.GetTemperature().toInt() - 32) / 5) * 9) + 104));
+                qDebug()<<"\n\n Program widget Temp" << m_ProgramStep.GetTemperature().toInt();
             }
             DataManager::CReagent Reagent;
             if ((mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID(), Reagent) == true)
                     && (m_ReagentModel.rowCount(QModelIndex()) > 0)) {
 
-                    mp_Ui->scrollPanelWidgetTime->SetDisabled(false);
-                    mp_Ui->scrollPanelWidgetTemperature->SetDisabled(false);
-                    mp_Ui->radioButton_0->setEnabled(true);
-                    mp_Ui->radioButton_25->setEnabled(true);
-                    mp_Ui->radioButton_50->setEnabled(true);
-                    mp_Ui->radioButton_75->setEnabled(true);
+                mp_Ui->scrollPanelWidgetTime->SetDisabled(false);
+                mp_Ui->scrollPanelWidgetTemperature->SetDisabled(false);
+                mp_Ui->radioButton_0->setEnabled(true);
+                mp_Ui->radioButton_25->setEnabled(true);
+                mp_Ui->radioButton_50->setEnabled(true);
+                mp_Ui->radioButton_75->setEnabled(true);
             }
         }
     }

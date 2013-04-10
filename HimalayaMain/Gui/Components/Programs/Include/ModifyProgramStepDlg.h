@@ -149,6 +149,7 @@ private slots:
     void OnSelectionChanged(QModelIndex);
     void ReagentTableUpdate();
     void OnProcessStateChanged();
+    void UpdateUserSetting();
 
 signals:
 

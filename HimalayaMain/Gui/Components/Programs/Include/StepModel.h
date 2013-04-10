@@ -25,6 +25,7 @@
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "HimalayaDataContainer/Containers/ReagentGroupColor/Include/ReagentGroupColorList.h"
 #include "HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupList.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "MainMenu/Include/TableMoving.h"
 #include "MainMenu/Include/ScrollTable.h"
 #include <QAbstractTableModel>
@@ -44,7 +45,7 @@ class CStepModel : public QAbstractTableModel
 
 public:
     CStepModel(QObject *p_Parent = NULL);
-    void SetProgram(DataManager::CProgram *p_Program, DataManager::CDataReagentGroupList *p_ReagentGroupList, DataManager::CDataReagentList *p_ReagentList,
+    void SetProgram(DataManager::CProgram *p_Program, DataManager::CUserSettings *p_UserSettings, DataManager::CDataReagentGroupList *p_ReagentGroupList, DataManager::CDataReagentList *p_ReagentList,
                     qint32 Columns);
     int rowCount(const QModelIndex &) const;
     int columnCount(const QModelIndex &) const;
@@ -67,7 +68,7 @@ private:
     DataManager::CReagentGroupColorList *mp_ReagentGroupColorList; //!< List of reagent Group Colors
     DataManager::CDataReagentGroupList *mp_ReagentGroupList; //!< Reagent group list
     QStringList m_ReagentID;
-
+    DataManager::CUserSettings *mp_UserSettings;    //!< Data object
 
 private slots:
 

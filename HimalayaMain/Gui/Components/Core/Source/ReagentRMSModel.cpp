@@ -47,6 +47,7 @@ namespace Core {
 CReagentRMSModel::CReagentRMSModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
 {
     mp_ReagentList = NULL;
+    mp_ReagentGroupList =NULL;
     mp_Parent = NULL;
     m_HideSpecialReagents = false;
     m_FilterLeicaReagent = false;

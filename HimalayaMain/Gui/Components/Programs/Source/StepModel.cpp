@@ -59,7 +59,7 @@ CStepModel::CStepModel(QObject *p_Parent) : QAbstractTableModel(p_Parent),
  *  \iparam Columns = Table columns
  */
 /****************************************************************************/
-void CStepModel::SetProgram(DataManager::CProgram *p_Program, DataManager:: CDataReagentGroupList *p_ReagentGroupList, DataManager::CDataReagentList *p_ReagentList,
+void CStepModel::SetProgram(DataManager::CProgram *p_Program, DataManager::CUserSettings *p_UserSettings, DataManager:: CDataReagentGroupList *p_ReagentGroupList, DataManager::CDataReagentList *p_ReagentList,
                             qint32 Columns)
 {
     beginResetModel();
@@ -68,6 +68,7 @@ void CStepModel::SetProgram(DataManager::CProgram *p_Program, DataManager:: CDat
     mp_ReagentGroupList = p_ReagentGroupList;
     m_Columns = Columns;
     m_CurrentRow = 0;
+    mp_UserSettings = p_UserSettings;
     endResetModel();
 }
 
@@ -171,7 +172,15 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
                 return Time.addSecs(Step->GetDurationInSeconds());
             }
             case 3:
-                return Step->GetTemperature();
+                if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS)
+                {
+                    return Step->GetTemperature();
+               }
+                else
+                {
+                    double Temperature = (((Step->GetTemperature().toDouble() - 35) / 5) * 9 + 95);
+                    return qRound(Temperature);
+                }
             case 4:
             {
                 if (Step->GetVacuum() == "On" && Step->GetPressure() == "Off")
@@ -184,7 +193,6 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
                 {
                     return QString("-");
                 }
-
                 else if (Step->GetVacuum() == "On" && Step->GetPressure() == "On")
                 {
                     return QString("P/V");

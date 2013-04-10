@@ -29,7 +29,7 @@
         <Program ID="U37" Name="biopsy protocol" Icon="IconFile" LeicaProgram="false"  Favorite="true">
             <StepList NextStepID="4">
                 <Step ID="0" ReagentID="L1" Duration="15m" Temperature="37" Pressure="On" Vacuum="On"/>
-                <Step ID="1" ReagentID="U101" Duration="2m" Temperature="0" Pressure="Off" Vacuum="Off"/>
+                <Step ID="1" ReagentID="U101" Duration="2m" Temperature="38" Pressure="Off" Vacuum="Off"/>
                 <Step ID="2" ReagentID="U102" Duration="5m" Temperature="45" Pressure="Off" Vacuum="Off"/>
                 <Step ID="3" ReagentID="U103" Duration="5m" Temperature="45" Pressure="Off" Vacuum="Off"/>
             </StepList>
