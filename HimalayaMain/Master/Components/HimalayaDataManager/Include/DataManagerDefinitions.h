@@ -31,6 +31,7 @@ const QString REAGENTS_XML       ("HimalayaReagents.xml");
 const QString STATIONS_XML       ("HimalayaStations.xml");
 const QString PROGRAMS_XML       ("HimalayaPrograms.xml");
 const QString USER_SETTINGS_XML  ("HimalayaUserSettings.xml");
+const QString PROGRAM_SETTINGS_XML  ("HimalayaProgramSettings.xml");
 }
 
 #endif // DATAMANAGER_DEFINITIONS_H

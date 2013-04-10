@@ -96,11 +96,11 @@ bool CSpecialVerifierGroupC::VerifyData(CDataContainerBase* p_ContainerBase)
             return false;
         }
 
-        /* if (Result) {
+        if (Result) {
             if (!CheckData()) {
                 Result = false;
             }
-        }*/
+        }
 
         // revert all the temporary data to local variables
         if (p_ContainerBase->GetDataContainerType() == REAGENTS) {

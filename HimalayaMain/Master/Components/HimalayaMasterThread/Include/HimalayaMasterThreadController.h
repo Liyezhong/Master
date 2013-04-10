@@ -58,6 +58,7 @@ namespace EventHandler {
 //Forward declarations
 namespace NetCommands {
     class CmdExternalProcessState;
+    class CmdSystemState;
 }
 
 
@@ -369,8 +370,8 @@ private:
      *  \iparam AckCommandChannel = Command channel to send acknowledge
      */
     /****************************************************************************/
-    /*void OnCmdSysState(Global::tRefType Ref, const NetCommands::CmdSystemState &Cmd,
-                          Threads::CommandChannel& AckCommandChannel);*/
+    void OnCmdSysState(Global::tRefType Ref, const NetCommands::CmdSystemState &Cmd,
+                          Threads::CommandChannel& AckCommandChannel);
 
 protected:
     /****************************************************************************/

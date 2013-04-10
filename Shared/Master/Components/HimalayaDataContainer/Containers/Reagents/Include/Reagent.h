@@ -145,7 +145,7 @@ public:
      */
     /****************************************************************************/
 
-    int GetMaxCycles() {return m_CyclesUntilChange;}
+    int GetMaxCycles() const {return m_CyclesUntilChange;}
 
     /****************************************************************************/
     /*!
@@ -166,7 +166,7 @@ public:
      */
     /****************************************************************************/
 
-    int GetMaxCassettes() {return m_CassettesUntilChange;}
+    int GetMaxCassettes() const {return m_CassettesUntilChange;}
 
     /****************************************************************************/
     /*!

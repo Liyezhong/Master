@@ -33,6 +33,7 @@
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationInterface.h"
 #include "DataManager/Include/DataContainerCollectionBase.h"
+#include "HimalayaDataContainer/Containers/ProgramSettings/Include/ProgramSettings.h"
 
 
 namespace Himalaya {
@@ -51,8 +52,8 @@ private:
     bool ResetDCReagentList();
     bool ResetDCReagentGroupColorList();
     bool ResetDCProgramList();
+    bool ResetDCProgramSettings();
     bool ResetDCStationList();
-    bool ResetDCUserSettings(void);
 
     void AddStation(QString StationID, QString ReagentID,CDashboardStation &Station);
 
@@ -68,6 +69,7 @@ public:
     CDataReagentGroupList* ReagentGroupList;  //!< Container for reagent groups
     CDataReagentList* ReagentList;  //!< Container for reagents
     CReagentGroupColorList* ReagentGroupColorList; //!<//!< Container for reagentGroupColor
+    CProgramSettings* ProgramSettings;         ///<! container for ProgramSettings
     IVerifierInterface* SpecialVerifierGroupA; //!< Special verifier for group A
     IVerifierInterface* SpecialVerifierGroupB; //!< Special verifier for group B
     IVerifierInterface* SpecialVerifierGroupC; //!< Special verifier for group C

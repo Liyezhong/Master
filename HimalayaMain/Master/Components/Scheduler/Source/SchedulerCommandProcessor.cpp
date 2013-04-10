@@ -18,10 +18,9 @@
  *
  * ================================================================================================
 */
-
-
-#include "../Include/SchedulerCommandProcessor.h"
-#include "../Include/SchedulerMainThreadController.h"
+#include "DeviceControl/Include/Interface/IDeviceProcessing.h"
+#include "Scheduler/Include/SchedulerMainThreadController.h"
+#include "Scheduler/Include/SchedulerCommandProcessor.h"
 
 namespace Scheduler{
 
@@ -30,41 +29,67 @@ SchedulerCommandProcessor::SchedulerCommandProcessor(SchedulerMainThreadControll
     mp_SchedulerThreadController(controller)
 {
 
-    qRegisterMetaType<ReturnCode_t>("ReturnCode_t");
-    qRegisterMetaType<DevInstanceID_t>("DevInstanceID_t");
-
-    CONNECTSIGNALSLOT(&m_IDeviceProcessing, ReportInitializationFinished(DevInstanceID_t, ReturnCode_t),
-                      this, DevProcInitialisationAckn(DevInstanceID_t, ReturnCode_t));
-    CONNECTSIGNALSLOT(&m_IDeviceProcessing, ReportConfigurationFinished(DevInstanceID_t, ReturnCode_t),
-                      this, DevProcConfigurationAckn(DevInstanceID_t, ReturnCode_t));
-    CONNECTSIGNALSLOT(&m_IDeviceProcessing, ReportStartNormalOperationMode(DevInstanceID_t, ReturnCode_t),
-                      this, DevProcStartNormalOpModeAckn(DevInstanceID_t, ReturnCode_t));
-    CONNECTSIGNALSLOT(&m_IDeviceProcessing, ReportError(DevInstanceID_t, quint16, quint16, quint16, const QDateTime &),
-                      this, ThrowError(DevInstanceID_t, quint16, quint16, quint16, const QDateTime &));
-    CONNECTSIGNALSLOT(&m_IDeviceProcessing, ReportDestroyFinished(), this, DevProcDestroyAckn());
 
 }
 
 void SchedulerCommandProcessor::run()
 {
-    while(true)
-    {
-        if(newCmdComing())
+    mp_IDeviceProcessing = new IDeviceProcessing();
+    qRegisterMetaType<ReturnCode_t>("ReturnCode_t");
+    qRegisterMetaType<DevInstanceID_t>("DevInstanceID_t");
+
+    //connect(mp_IDeviceProcessing, SIGNAL(ReportInitializationFinished(DevInstanceID_t, ReturnCode_t)), this, SLOT(DevProcInitialisationAckn(DevInstanceID_t, ReturnCode_t)), Qt::QueuedConnection);
+    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportInitializationFinished(DevInstanceID_t, ReturnCode_t),
+                      this, DevProcInitialisationAckn(DevInstanceID_t, ReturnCode_t));
+    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportConfigurationFinished(DevInstanceID_t, ReturnCode_t),
+                      this, DevProcConfigurationAckn(DevInstanceID_t, ReturnCode_t));
+    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportStartNormalOperationMode(DevInstanceID_t, ReturnCode_t),
+                      this, DevProcStartNormalOpModeAckn(DevInstanceID_t, ReturnCode_t));
+    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportError(DevInstanceID_t, quint16, quint16, quint16, const QDateTime &),
+                      this, ThrowError(DevInstanceID_t, quint16, quint16, quint16, const QDateTime &));
+    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportDestroyFinished(), this, DevProcDestroyAckn());
+
+    CONNECTSIGNALSLOT(this, NewCmdAdded(), this, OnNewCmdAdded());
+    /*CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportConfigurationFinished(DevInstanceID_t, ReturnCode_t),
+                      this, DevProcConfigurationAckn(DevInstanceID_t, ReturnCode_t));
+    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportStartNormalOperationMode(DevInstanceID_t, ReturnCode_t),
+                      this, DevProcStartNormalOpModeAckn(DevInstanceID_t, ReturnCode_t));
+    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportError(DevInstanceID_t, quint16, quint16, quint16, const QDateTime &),
+                      this, ThrowError(DevInstanceID_t, quint16, quint16, quint16, const QDateTime &));
+    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportDestroyFinished(), this, DevProcDestroyAckn());
+    */
+
+
+    /*
+        while(true)
         {
-            QString cmdname = m_currentCmd->GetPointerToUserData()->GetName();
-            bool result = false;
-            //TBD
-            emit onCmdFinished(m_currentCmd,result);
+    qDebug()<< "this is second thread, id is: "<<QThread::currentThreadId();
+            if(newCmdComing())
+            {
+        qDebug()<< "sec thread got msg! current thread id is: "<<QThread::currentThreadId();
+                CmdSchedulerCommandBase *scmd = dynamic_cast<CmdSchedulerCommandBase *> (m_currentCmd.GetPointerToUserData());
+                scmd->Execute();
+    //            (&m_currentCmd)->Execute();
+            }
+        usleep(200*1000);
         }
-    }
-
+    */
 }
-
-void SchedulerCommandProcessor::pushCmd(Global::CommandShPtr_t *cmd)
+void SchedulerCommandProcessor::OnNewCmdAdded()
+{
+    if(newCmdComing())
+    {
+        qDebug()<< "sec thread got msg! current thread id is: "<<QThread::currentThreadId();
+        m_currentCmd->Execute();
+        mp_SchedulerThreadController->PushDeviceControlCmdQueue(m_currentCmd);
+    }
+}
+void SchedulerCommandProcessor::pushCmd(CmdSchedulerCommandBase* cmd)
 {
     m_CmdMutex.lock();
-    m_Cmds.push_front(cmd);
+    m_Cmds.push_front(Scheduler::SchedulerCommandShPtr_t(cmd));
     m_CmdMutex.unlock();
+    emit NewCmdAdded();
 }
 
 bool SchedulerCommandProcessor::newCmdComing()
@@ -79,6 +104,7 @@ bool SchedulerCommandProcessor::newCmdComing()
     m_CmdMutex.unlock();
     return ret;
 }
+
 void SchedulerCommandProcessor::DevProcInitialisationAckn(DevInstanceID_t instanceID, ReturnCode_t configResult)
 {
     // interface implementation runs in DeviceControl-Thread
@@ -95,25 +121,33 @@ void SchedulerCommandProcessor::DevProcInitialisationAckn(DevInstanceID_t instan
         qDebug() << "  Error: getting serial number failed.";
     }
 
-    retCode = m_IDeviceProcessing.StartConfigurationService();
+    retCode = mp_IDeviceProcessing->StartConfigurationService();
     if(retCode != DCL_ERR_FCT_CALL_SUCCESS)
     {
         qDebug() << "  Error starting configuration service: " << retCode;
     }
 }
+
 void SchedulerCommandProcessor::DevProcConfigurationAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
 {
     // interface implementation runs in DeviceControl-Thread
     qDebug() << "  SchedulerCommandProcessor::DevProcConfigurationAckn" << instanceID << "ReturnCode" << hdlInfo;
-    if((hdlInfo == DCL_ERR_FCT_CALL_SUCCESS)|| (hdlInfo == DCL_ERR_TIMEOUT))
+    if(hdlInfo == DCL_ERR_FCT_CALL_SUCCESS)
     {
-        emit DCLConfigurationFinished(hdlInfo, &m_IDeviceProcessing);
+      //successfully configured the devices
     }
+   else
+   {
+    //some error happens
+   }
+        emit DCLConfigurationFinished(hdlInfo, mp_IDeviceProcessing);
 }
+
 void SchedulerCommandProcessor::DevProcStartNormalOpModeAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
 {
     qDebug() << "  SchedulerCommandProcessor::DevProcStartNormalOpModeAckn " << instanceID << " " << hdlInfo;
 }
+
 void SchedulerCommandProcessor::ThrowError(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp)
 {
     // Platform/Master/Components/DeviceControl/Include/Global/
@@ -128,7 +162,9 @@ void SchedulerCommandProcessor::ThrowError(DevInstanceID_t instanceID, quint16 u
      //                       ", TimeStamp:" + TimeStamp.toString()
      //                       );
 }
+
 void SchedulerCommandProcessor::DevProcDestroyAckn()
 {
 }
+
 }// end of namespace Scheduler

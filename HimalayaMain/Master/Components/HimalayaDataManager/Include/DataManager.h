@@ -57,6 +57,9 @@ public:
     CDataProgramList* GetProgramList();
     bool GetProgramList(CDataProgramList *p_ProgramList);
 
+    CProgramSettings* GetProgramSettings();
+    bool GetProgramSettings(CProgramSettings *p_ProgramList);
+
     CDataReagentGroupList* GetReagentGroupList();
     bool GetReagentGroupList(CDataReagentGroupList *p_ReagentGroupList);
 

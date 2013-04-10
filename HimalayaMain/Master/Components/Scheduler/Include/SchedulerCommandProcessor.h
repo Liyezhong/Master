@@ -36,6 +36,7 @@
 #include "DeviceControl/Include/Devices/RetortDevice.h"
 #include "DeviceControl/Include/Devices/OvenDevice.h"
 #include "DeviceControl/Include/Devices/PeripheryDevice.h"
+#include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 
 using namespace DeviceControl;
 //{
@@ -75,7 +76,7 @@ signals:
     /****************************************************************************/
     void onCmdFinished(Global::CommandShPtr_t *cmd, bool result);
     void DCLConfigurationFinished(ReturnCode_t RetCode, IDeviceProcessing* pIDP);
-
+    void NewCmdAdded();
 
 public slots:
     /****************************************************************************/
@@ -92,13 +93,14 @@ public slots:
      *
      */
     /****************************************************************************/
-    void pushCmd(Global::CommandShPtr_t *cmd);
+    void pushCmd(CmdSchedulerCommandBase *cmd);
 
     void DevProcInitialisationAckn(DevInstanceID_t instanceID, ReturnCode_t configResult);
     void DevProcConfigurationAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo);
     void DevProcStartNormalOpModeAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo);
     void ThrowError(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp);
     void DevProcDestroyAckn();
+    void OnNewCmdAdded();
 
 private:
 
@@ -116,11 +118,11 @@ private:
 
 
 private:
-    DeviceControl::IDeviceProcessing m_IDeviceProcessing;
+    DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
     SchedulerMainThreadController *mp_SchedulerThreadController;
 
-    QQueue<Global::CommandShPtr_t *> m_Cmds;
-    Global::CommandShPtr_t * m_currentCmd;
+    QQueue<Scheduler::SchedulerCommandShPtr_t> m_Cmds;
+    Scheduler::SchedulerCommandShPtr_t m_currentCmd;
     QMutex m_CmdMutex;
 
 

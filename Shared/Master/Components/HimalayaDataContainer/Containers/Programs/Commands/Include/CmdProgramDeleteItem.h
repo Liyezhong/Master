@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdDeleteItem.h
+/*! \file CmdProgramDeleteItem.h
  *
- *  \brief CmdDeleteItem command definition.
+ *  \brief CmdProgramDeleteItem command definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 18.03.2011
@@ -27,29 +27,29 @@ namespace MsgClasses {
 
 /****************************************************************************/
 /*!
- *  \brief  This class implements a CmdDeleteItem command.
+ *  \brief  This class implements a CmdProgramDeleteItem command.
  *
  * \todo implement
  */
 /****************************************************************************/
-class CmdDeleteItem : public Global::Command {
-    friend QDataStream & operator << (QDataStream &, const CmdDeleteItem &);
-    friend QDataStream & operator >> (QDataStream &, CmdDeleteItem &);
+class CmdProgramDeleteItem : public Global::Command {
+    friend QDataStream & operator << (QDataStream &, const CmdProgramDeleteItem &);
+    friend QDataStream & operator >> (QDataStream &, CmdProgramDeleteItem &);
 public:
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdDeleteItem(int Timeout, const QString &ItemId);
-    CmdDeleteItem();
-    ~CmdDeleteItem();
+    CmdProgramDeleteItem(int Timeout, const QString &ItemId);
+    CmdProgramDeleteItem();
+    ~CmdProgramDeleteItem();
     virtual QString GetName() const;
     QString GetItemId() const;
 
 private:
-    CmdDeleteItem(const CmdDeleteItem &);                       ///< Not implemented.
-    const CmdDeleteItem & operator = (const CmdDeleteItem &);   ///< Not implemented.
+    CmdProgramDeleteItem(const CmdProgramDeleteItem &);                       ///< Not implemented.
+    const CmdProgramDeleteItem & operator = (const CmdProgramDeleteItem &);   ///< Not implemented.
 private:
     QString      m_ItemId;      ///< Item ID.
-}; // end class CmdDeleteItem
+}; // end class CmdProgramDeleteItem
 
 /****************************************************************************/
 /**
@@ -60,7 +60,7 @@ private:
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator << (QDataStream &Stream, const CmdDeleteItem &Cmd)
+inline QDataStream & operator << (QDataStream &Stream, const CmdProgramDeleteItem &Cmd)
 {
     // copy base class data
     Cmd.CopyToStream(Stream);
@@ -78,7 +78,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdDeleteItem &Cmd)
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator >> (QDataStream &Stream, CmdDeleteItem &Cmd)
+inline QDataStream & operator >> (QDataStream &Stream, CmdProgramDeleteItem &Cmd)
 {
     // copy base class data
     Cmd.CopyFromStream(Stream);

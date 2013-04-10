@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ReagentGroups Version="1">
-    <ReagentGroup ID="RG1" Name="Fixing" Color="5FC603" />
+ <ReagentGroup ID="RG1" Name="Fixing" Color="5FC603" />    
     <ReagentGroup ID="RG2" Name="Dehydrating diluted" Color="D8EAFF" />
     <ReagentGroup ID="RG3" Name="Dehydrating absolute" Color="3664FF" />
     <ReagentGroup ID="RG4" Name="Clearing" Color="FF28DE" />
     <ReagentGroup ID="RG5" Name="Paraffin" Color="FFCF4F" />
     <ReagentGroup ID="RG6" Name="Cleaning solvent" Color="7CDAFF" />
     <ReagentGroup ID="RG7" Name="Clearing alcohol" Color="FF2DEA" />
-    <ReagentGroup ID="RG8" Name="Cleaning water" Color="E1D8B3" />
+    <ReagentGroup ID="RG8" Name="Cleaning water, Detergent" Color="E1D8B3" />
+    <ReagentGroup ID="RG9" Name="Isopropanol diluted" Color="D53032" />
+    <ReagentGroup ID="RG10" Name="Water" Color="FF2301" />
+    <ReagentGroup ID="RG11" Name="Isopropanol concentrated" Color="008F39" />
+    <ReagentGroup ID="RG12" Name="Paraffin oils, Isoparaffins" Color="5D9B9B" />
+    <ReagentGroup ID="RG13" Name="Ethanol / Isopropanol(80/20) " Color="063971" />
 </ReagentGroups>

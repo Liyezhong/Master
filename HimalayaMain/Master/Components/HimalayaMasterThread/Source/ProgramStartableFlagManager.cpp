@@ -81,45 +81,6 @@ void ProgramStartableManager::ConnectSignals() {
     CONNECTSIGNALSLOT(mp_DataManager->mp_ProgramCommandInterface, StartableProgramEdited(const QString &), this , OnStartableProgramEdited(const QString &));
 }
 
-/****************************************************************************/
-/*!
- *  \brief  Manages Dynamic startable flag based on RMS component output
- *  \iparam  ProgramID     = Program ID of the program of which a reagent
- *                           has expired.s
- *  \iparam  ExpiryStatus  = True means reagent used by the Program
- *                           has expired, else false.
- */
-/****************************************************************************/
-void ProgramStartableManager::RMSStatusHandler(const QString ProgramID, const bool ExpiryStatus, const QString ReagentName) {
-    try {
-/*
-        DataManager::CProgramSequence *p_ProgramSequence = const_cast<DataManager::CProgramSequence*>(mp_ProgramSequenceList->GetProgramSequenceStep(ProgramID));
-        CHECKPTR(p_ProgramSequence);
-        if (ExpiryStatus) {
-            //reagent expired, make program non startable, raise event.
-           const DataManager::CProgram *p_Program = mp_ProgramList->GetProgram(ProgramID);
-           CHECKPTR(p_Program);
-           QString ProgramName = p_Program->GetLongName();
-           Global::EventObject::Instance().RaiseEvent(EVENT_REAGENT_EXPIRED_PROG_NOT_STARTABLE,
-                                                            Global::FmtArgs() << ProgramName << ReagentName,
-                                                            true);
-           p_ProgramSequence->SetStartCapableDynamicStatus(false);
-           //Set BLG result to reagent expired
-           p_ProgramSequence->SetStartCapableResult("8");
-        }
-        else {
-            //reagent filled again, make program startable.
-            p_ProgramSequence->SetStartCapableDynamicStatus(true);
-            //Set BLG result back to success.
-            p_ProgramSequence->SetStartCapableResult("0");
-        }
-*/
-        UpdateGUI();
-    }
-    catch(...) {
-            //! \todo raise exception
-    }
-}
 
 /****************************************************************************/
 /*!

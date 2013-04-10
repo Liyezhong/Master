@@ -17,7 +17,9 @@ HEADERS += ../Containers/ContainerBase/Include/*.h \
  ../SpecialVerifiers/Include/*h \
  ../Containers/DashboardStations/Commands/Include/*h \
  ../Containers/DashboardStations/Include/*h \
- ../Containers/UserSettings/Include/*.h
+ ../Containers/UserSettings/Include/*.h \
+../Containers/ProgramSettings/Include/*h \
+../Containers/ProgramSettings/Commands/Include/*.h
 
 
 # source file location
@@ -35,7 +37,10 @@ SOURCES += ../Containers/ContainerBase/Source/*.cpp \
  ../SpecialVerifiers/Source/*.cpp \
  ../Containers/DashboardStations/Commands/Source/*.cpp \
  ../Containers/DashboardStations/Source/*.cpp \
- ../Containers/UserSettings/Source/*.cpp
+ ../Containers/UserSettings/Source/*.cpp \
+../Containers/ProgramSettings/Source/*.cpp \
+../Containers/ProgramSettings/Commands/Source/*.cpp
+
 # Resource file location
 RESOURCES += ../Containers/Programs/Resources/ProgramsXml.qrc \
  ../Containers/Reagents/Resources/ReagentsXml.qrc \

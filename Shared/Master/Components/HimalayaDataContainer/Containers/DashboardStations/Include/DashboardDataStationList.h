@@ -30,8 +30,11 @@
 #include "DataManager/Helper/Include/Types.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"
+#include "Global/Include/GlobalDefines.h"
 
 namespace DataManager {
+
+class CReagent;
 
 typedef QHash<QString, CDashboardStation*> ListOfDashboardStation_t;      //!< List of stations
 
@@ -139,6 +142,9 @@ public:
     bool DeleteDashboardStation(const unsigned int Index);  // uses order index
 
     bool UpdateStationsByReagentDelete(const QString& ReagentID);
+    const QString& FindStationByReagent(const CReagent* pReagent, bool bFindNewestOne,
+                                                                   Global::RMSOptions_t rmsMode) const;
+
     /******************** INLINE FUNCTIONS **************************************/
     /****************************************************************************/
     /*!

@@ -22,7 +22,7 @@
 
 #include "../../../../../../Platform/Master/Components/DataManager/CommandInterface/Include/CommandInterfaceBase.h"
 #include "HimalayaDataManager/Include/DataManager.h"
-#include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdDeleteItem.h"
+#include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramDeleteItem.h"
 #include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdNewProgram.h"
 #include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramUpdate.h"
 
@@ -43,7 +43,7 @@ private:
     void RegisterCommands();
     void UpdateProgram(Global::tRefType, const MsgClasses::CmdProgramUpdate &Cmd, Threads::CommandChannel &AckCommandChannel);
     void AddProgram(Global::tRefType, const MsgClasses::CmdNewProgram &Cmd, Threads::CommandChannel &AckCommandChannel);
-    void DeleteProgram(Global::tRefType, const MsgClasses::CmdDeleteItem &Cmd, Threads::CommandChannel &AckCommandChannel);
+    void DeleteProgram(Global::tRefType, const MsgClasses::CmdProgramDeleteItem &Cmd, Threads::CommandChannel &AckCommandChannel);
 
 signals:
     void StartableProgramEdited(const QString &ProgramID);

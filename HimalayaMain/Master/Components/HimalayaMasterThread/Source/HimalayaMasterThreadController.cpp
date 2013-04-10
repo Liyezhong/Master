@@ -33,14 +33,12 @@
 #include <NetCommands/Include/CmdScheduledStations.h>
 #include <NetCommands/Include/CmdProcessState.h>
 #include <NetCommands/Include/CmdExecutionStateChanged.h>
-#include <HimalayaDataContainer/Containers/Programs/Commands/Include/CmdCancelProgram.h>
 #include <NetCommands/Include/CmdDayRunLogRequest.h>
 #include <NetCommands/Include/CmdLanguageFile.h>
-#include <HimalayaDataContainer/Containers/Programs/Commands/Include/CmdDeleteItem.h>
+#include <HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramDeleteItem.h>
 #include <NetCommands/Include/CmdProblemReportReply.h>
 #include <NetCommands/Include/CmdEventReport.h>
 #include <HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramUpdate.h>
-#include <DataManager/Containers/UserSettings/Commands/Include/CmdRmsOnOff.h>
 #include <NetCommands/Include/CmdSwitchToService.h>
 #include <NetCommands/Include/CmdConfigurationFile.h>
 #include <HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h>
@@ -82,6 +80,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndDateTime.h"
+#include "Scheduler/Commands/Include/CmdSystemState.h"
 
 
 
@@ -198,7 +197,7 @@ void HimalayaMasterThreadController::CreateControllersAndThreads() {
     // create and connect scheduler main controller
     Scheduler::SchedulerMainThreadController *schedulerMainController = new Scheduler::SchedulerMainThreadController(HEARTBEAT_SOURCE_SCHEDULER_MAIN);
     AddAndConnectController(schedulerMainController, &m_CommandChannelSchedulerMain, static_cast<int>(SCHEDULER_MAIN_THREAD));
-
+    schedulerMainController->DataManager(mp_DataManager);
     // register all commands for processing and routing
     RegisterCommands();
 
@@ -322,7 +321,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
 
 
     //Update and keep the current system state
-    /*RegisterCommandForProcessing<NetCommands::CmdSystemState, HimalayaMasterThreadController>
+   /*RegisterCommandForProcessing<NetCommands::CmdSystemState, HimalayaMasterThreadController>
             (&HimalayaMasterThreadController::OnCmdSysState, this);*/
 
 }
@@ -1001,11 +1000,11 @@ void HimalayaMasterThreadController::RequestDayRunLogFileNames() {
 }
 
 /****************************************************************************/
-/*void HimalayaMasterThreadController::OnCmdSysState(Global::tRefType, const NetCommands::CmdSystemState &Cmd,
+void HimalayaMasterThreadController::OnCmdSysState(Global::tRefType, const NetCommands::CmdSystemState &Cmd,
                       Threads::CommandChannel&)
 {
     EventHandler::CrisisEventHandler::Instance().currentSysState(Cmd.m_StateId);
-}*/
+}
 
 void HimalayaMasterThreadController::SetAlarmHandlerTimeout(quint16 timeout)
 {

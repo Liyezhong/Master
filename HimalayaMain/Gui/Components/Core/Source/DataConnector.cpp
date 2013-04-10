@@ -59,7 +59,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
 
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdNewProgram>(&CDataConnector::AddNewProgramHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramUpdate>(&CDataConnector::UpdateProgramHandler, this);
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdDeleteItem>(&CDataConnector::ProgramRemoveHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramDeleteItem>(&CDataConnector::ProgramRemoveHandler, this);
 
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdReagentAdd>(&CDataConnector::AddNewReagentHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdReagentUpdate>(&CDataConnector::UpdateReagentHandler, this);
@@ -547,7 +547,7 @@ void CDataConnector::SendProgramAdd(DataManager::CProgram &Program)
 /****************************************************************************/
 void CDataConnector::SendProgramRemove(QString &ProgramID)
 {
-    MsgClasses::CmdDeleteItem Command(1000, ProgramID);
+    MsgClasses::CmdProgramDeleteItem Command(1000, ProgramID);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
     mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
     mp_WaitDialog->SetText(tr("Saving Settings ..."));
@@ -628,7 +628,7 @@ void CDataConnector::UpdateProgramHandler(Global::tRefType Ref, const MsgClasses
  */
 /****************************************************************************/
 void CDataConnector::ProgramRemoveHandler(Global::tRefType Ref,
-                                       const MsgClasses::CmdDeleteItem &Command)
+                                       const MsgClasses::CmdProgramDeleteItem &Command)
 {
     bool Result = true;
     QString ProgramId = Command.GetItemId();
@@ -794,7 +794,7 @@ void CDataConnector::UpdateStationSetAsEmptyHandler(Global::tRefType Ref, const 
         Result = false;
     if(Result){
         mp_WaitDialog->accept();
-        emit DashboardStationChangeReagent(Command.StationID());
+        emit DashboardStationSetAsEmpty();
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
 }

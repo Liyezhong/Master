@@ -48,7 +48,7 @@ void CProgramCommandInterface::RegisterCommands() {
             (&CProgramCommandInterface::UpdateProgram, this);
     mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdNewProgram, DataManager::CProgramCommandInterface>
             (&CProgramCommandInterface::AddProgram, this);
-    mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdDeleteItem, DataManager::CProgramCommandInterface>
+    mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdProgramDeleteItem, DataManager::CProgramCommandInterface>
             (&CProgramCommandInterface::DeleteProgram, this);
 }
 
@@ -126,13 +126,13 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
 
 /****************************************************************************/
 /**
- * \brief Function which handles CmdDeleteItem
+ * \brief Function which handles CmdProgramDeleteItem
  *  \iparam Ref = Command reference
  *  \iparam Cmd = Command
  *  \AckCommandChannel = Command channel to send acknowledge
  */
 /****************************************************************************/
-void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClasses::CmdDeleteItem &Cmd, Threads::CommandChannel &AckCommandChannel)
+void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClasses::CmdProgramDeleteItem &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
     bool Result = true;
 
@@ -157,7 +157,7 @@ void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClas
     }
     else {
         mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-        MsgClasses::CmdDeleteItem* p_Command = new MsgClasses::CmdDeleteItem(5000, Cmd.GetItemId());
+        MsgClasses::CmdProgramDeleteItem* p_Command = new MsgClasses::CmdProgramDeleteItem(5000, Cmd.GetItemId());
         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
         qDebug()<<"\n\n Delete Program Success";
     }

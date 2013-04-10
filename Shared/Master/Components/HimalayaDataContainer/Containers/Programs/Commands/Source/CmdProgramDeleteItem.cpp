@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdDeleteItem.cpp
+/*! \file CmdProgramDeleteItem.cpp
  *
- *  \brief CmdDeleteItem command implementation.
+ *  \brief CmdProgramDeleteItem command implementation.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 18.03.2010
@@ -18,11 +18,11 @@
  */
 /****************************************************************************/
 
-#include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdDeleteItem.h"
+#include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramDeleteItem.h"
 
 namespace MsgClasses {
 
-QString CmdDeleteItem::NAME = "MsgClasses::CmdDeleteItem";
+QString CmdProgramDeleteItem::NAME = "MsgClasses::CmdProgramDeleteItem";
 
 /****************************************************************************/
 /*!
@@ -33,7 +33,7 @@ QString CmdDeleteItem::NAME = "MsgClasses::CmdDeleteItem";
  * \param[in]   ItemId      Item ID.
  */
 /****************************************************************************/
-CmdDeleteItem::CmdDeleteItem(int Timeout, const QString &ItemId) :
+CmdProgramDeleteItem::CmdProgramDeleteItem(int Timeout, const QString &ItemId) :
     Command(Timeout),
     m_ItemId(ItemId)
 {
@@ -44,7 +44,7 @@ CmdDeleteItem::CmdDeleteItem(int Timeout, const QString &ItemId) :
  * \brief   Constructor for receiving
  */
 /****************************************************************************/
-CmdDeleteItem::CmdDeleteItem() : Command(0)
+CmdProgramDeleteItem::CmdProgramDeleteItem() : Command(0)
 {
 }
 
@@ -53,7 +53,7 @@ CmdDeleteItem::CmdDeleteItem() : Command(0)
  *  \brief   Destructor
  */
 /****************************************************************************/
-CmdDeleteItem::~CmdDeleteItem()
+CmdProgramDeleteItem::~CmdProgramDeleteItem()
 {
 }
 
@@ -64,7 +64,7 @@ CmdDeleteItem::~CmdDeleteItem()
  *  \return  command name as string
  */
 /****************************************************************************/
-QString CmdDeleteItem::GetName() const
+QString CmdProgramDeleteItem::GetName() const
 {
     return NAME;
 }
@@ -76,7 +76,7 @@ QString CmdDeleteItem::GetName() const
  *  \return  item ID (program, macro, etc)
  */
 /****************************************************************************/
-QString CmdDeleteItem::GetItemId() const
+QString CmdProgramDeleteItem::GetItemId() const
 {
     return m_ItemId;
 }

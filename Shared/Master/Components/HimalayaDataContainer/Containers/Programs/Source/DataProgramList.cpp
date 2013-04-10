@@ -451,6 +451,7 @@ bool CDataProgramList::AddLeicaProgram(const CProgram* p_Program)
         Result = false;
     }
 
+
     if (!Result) {
         SetErrorList(&m_ErrorHash);
         return Result;

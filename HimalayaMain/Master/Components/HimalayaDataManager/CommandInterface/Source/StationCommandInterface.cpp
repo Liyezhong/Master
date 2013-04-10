@@ -141,7 +141,7 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      else {
          //BroadCast Command
          mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-         MsgClasses::CmdStationResetData* p_Command = new MsgClasses::CmdStationResetData(1000, cmd.StationID());
+         MsgClasses::CmdStationSetAsFull* p_Command = new MsgClasses::CmdStationSetAsFull(1000, cmd.StationID());
          mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
          qDebug()<<"\n\n SetStationAsFull Success";
      }
@@ -168,7 +168,7 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      else {
          //BroadCast Command
          mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-         MsgClasses::CmdStationResetData* p_Command = new MsgClasses::CmdStationResetData(1000, Cmd.StationID());
+         MsgClasses::CmdStationSetAsEmpty* p_Command = new MsgClasses::CmdStationSetAsEmpty(1000, Cmd.StationID());
          mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
          qDebug()<<"\n\n SetStationAsEmpty Success";
      }

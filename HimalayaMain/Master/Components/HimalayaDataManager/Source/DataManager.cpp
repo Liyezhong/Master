@@ -103,7 +103,12 @@ quint32 CDataManager::InitDataContainer()
         return EVENT_DM_PROGRAM_XML_READ_FAILED;
     }
 
-
+        mp_DataContainer->ProgramSettings->SetDataVerificationMode(false);
+        QString FilenameProgramSettings = Global::SystemPaths::Instance().GetSettingsPath() + "/" + PROGRAM_SETTINGS_XML;
+        if (!mp_DataContainer->ProgramSettings->Read(FilenameProgramSettings)) {
+            qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ProgramSettings->Read failed with filename: " << FilenameProgramSettings;
+            return EVENT_DM_PROGRAM_XML_READ_FAILED; // TBD need to be changed
+        }
 
     mp_DataContainer->StationList->SetDataVerificationMode(false);
 
@@ -243,6 +248,29 @@ bool CDataManager::GetProgramList(CDataProgramList *p_ProgramList)
     }
     return false;
 }
+
+CProgramSettings* CDataManager::GetProgramSettings() {
+    if (m_IsInitialized != true) {
+        qDebug() << "CDataManager::GetProgramSettings failed. Not initialized!";
+        return NULL;
+    }
+    return mp_DataContainer->ProgramSettings;
+}
+
+
+bool CDataManager::GetProgramSettings(CProgramSettings *p_ProgramSettings)
+{
+    if (m_IsInitialized != true) {
+        qDebug() << "CDataManager::GetProgramSettings failed. Not initialized!";
+        return false;
+    }
+    if (p_ProgramSettings) {
+        *p_ProgramSettings = *(mp_DataContainer->ProgramSettings);
+        return true;
+    }
+    return false;
+}
+
 
 bool CDataManager::GetReagentList(CDataReagentList *p_ReagentList)
 {

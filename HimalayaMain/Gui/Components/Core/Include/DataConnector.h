@@ -32,7 +32,7 @@
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdChangeUserSettings.h"
 #include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramUpdate.h"
 #include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdNewProgram.h"
-#include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdDeleteItem.h"
+#include "HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramDeleteItem.h"
 #include "HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentAdd.h"
 #include "HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentUpdate.h"
 #include "HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentRemove.h"
@@ -351,7 +351,7 @@ private:
     void ProcessStateHandler(Global::tRefType ref, const NetCommands::CmdProcessState &Command);
     void UpdateProgramHandler(Global::tRefType Ref, const MsgClasses::CmdProgramUpdate &Command);
     void AddNewProgramHandler(Global::tRefType Ref, const MsgClasses::CmdNewProgram &Command);
-    void ProgramRemoveHandler(Global::tRefType Ref, const MsgClasses::CmdDeleteItem &Command);
+    void ProgramRemoveHandler(Global::tRefType Ref, const MsgClasses::CmdProgramDeleteItem &Command);
     void AddNewReagentHandler(Global::tRefType Ref, const MsgClasses::CmdReagentAdd &Command);
     void UpdateReagentHandler(Global::tRefType Ref, const MsgClasses::CmdReagentUpdate &Command);
     void UpdateReagentGroupHandler(Global::tRefType Ref, const MsgClasses::CmdReagentGroupUpdate &Command);

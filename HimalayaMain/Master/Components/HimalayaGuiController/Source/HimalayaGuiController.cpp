@@ -34,7 +34,7 @@
 #include <NetCommands/Include/CmdProcessState.h>
 #include <HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramUpdate.h>
 #include <HimalayaDataContainer/Containers/Programs/Commands/Include/CmdNewProgram.h>
-#include <HimalayaDataContainer/Containers/Programs/Commands/Include/CmdDeleteItem.h>
+#include <HimalayaDataContainer/Containers/Programs/Commands/Include/CmdProgramDeleteItem.h>
 
 #include <NetCommands/Include/CmdEventStrings.h>
 #include <NetCommands/Include/CmdExecutionStateChanged.h>
@@ -272,16 +272,16 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     RegisterExternalMessage<MsgClasses::CmdNewProgram, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdNewProgram>, this);
 
-    RegisterExternalMessage<MsgClasses::CmdDeleteItem, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdDeleteItem>, this);
+    RegisterExternalMessage<MsgClasses::CmdProgramDeleteItem, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdProgramDeleteItem>, this);
 
     RegisterCommandForProcessing<MsgClasses::CmdProgramUpdate, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdProgramUpdate>, this);
 
     RegisterCommandForProcessing<MsgClasses::CmdNewProgram, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdNewProgram>, this);
-    RegisterCommandForProcessing<MsgClasses::CmdDeleteItem, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdDeleteItem>, this);
+    RegisterCommandForProcessing<MsgClasses::CmdProgramDeleteItem, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdProgramDeleteItem>, this);
 
 
     // commands for Import and Export
