@@ -123,6 +123,8 @@ typedef enum
         void ProcessNonDeviceCommand();
         ControlCommandType_t ReceiveNonDeviceCommand();
         QString GetStationIDFromReagentID(const QString& ReagentID, bool IsLastStep = false);
+        QString GetReagentName(const QString& ReagentID);
+
         /****************************************************************************/
         /**
          *

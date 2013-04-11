@@ -713,6 +713,21 @@ QString SchedulerMainThreadController::GetStationIDFromReagentID(const QString& 
     return "";
 }
 
+QString SchedulerMainThreadController::GetReagentName(const QString& ReagentID)
+{
+    if (!mp_DataManager)
+        return "";
+
+    if (CDataReagentList* pReagentList =  mp_DataManager->GetReagentList())
+    {
+        const CReagent* pReagent = pReagentList->GetReagent(ReagentID);
+        if (pReagent)
+            return pReagent->GetReagentName();
+    }
+
+    return "";
+}
+
 void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetCode, IDeviceProcessing* pIDP)
 {
     if(RetCode == DCL_ERR_FCT_CALL_SUCCESS)
