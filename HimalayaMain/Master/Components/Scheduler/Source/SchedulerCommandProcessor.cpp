@@ -79,7 +79,7 @@ void SchedulerCommandProcessor::OnNewCmdAdded()
 {
     if(newCmdComing())
     {
-        qDebug()<< "sec thread got msg! current thread id is: "<<QThread::currentThreadId();
+        //qDebug()<< "sec thread got msg! current thread id is: "<<QThread::currentThreadId();
         m_currentCmd->Execute();
         mp_SchedulerThreadController->PushDeviceControlCmdQueue(m_currentCmd);
     }

@@ -1,5 +1,5 @@
 #include "../Include/ProgramStepStateMachine.h"
-
+#include <QDebug>
 namespace Scheduler
 {
 
@@ -17,6 +17,7 @@ ProgramStepStateMachine::ProgramStepStateMachine()
     mp_PssmSoak = new QState(mp_ProgramStepStateMachine);
     mp_PssmFinish = new QFinalState(mp_ProgramStepStateMachine);
     mp_PssmError = new QState(mp_ProgramStepStateMachine);
+
     mp_ProgramStepStateMachine->setInitialState(mp_PssmInit);
     mp_PssmInit->addTransition(this, SIGNAL(TempsReady()), mp_PssmReadyToHeatLevelSensorS1);
     mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(LevelSensorTempS1Ready()), mp_PssmReadyToHeatLevelSensorS2);
@@ -46,6 +47,18 @@ ProgramStepStateMachine::ProgramStepStateMachine()
     connect(mp_PssmReadyToFill, SIGNAL(entered()), this, SIGNAL(OnFill()));
     connect(mp_PssmSoak, SIGNAL(entered()), this, SIGNAL(OnSoak()));
     connect(mp_PssmReadyToDrain, SIGNAL(entered()), this, SIGNAL(OnDrain()));
+
+    connect(mp_PssmInit, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmReadyToHeatLevelSensorS1, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmReadyToHeatLevelSensorS2, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmReadyToTubeBefore, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmReadyToTubeAfter, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmReadyToSeal, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmReadyToFill, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmSoak, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmReadyToDrain, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmFinish, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmError, SIGNAL(entered()), this, SLOT(OnStateChanged()));
 
 }
 
@@ -168,4 +181,54 @@ ProgramStepStateMachine_t ProgramStepStateMachine::GetCurrentState()
     }
 }
 
+void ProgramStepStateMachine::OnStateChanged()
+{
+    ProgramStepStateMachine_t curState = GetCurrentState();
+    QString str = "";
+    if( curState == (PSSM_INIT))
+    {
+        str = " PSSM_INIT";
+    }
+    else if(curState == (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1))
+    {
+         str = " PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1";
+    }
+    else if(curState == (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2))
+    {
+         str = " PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2";
+    }
+    else if(curState == (PSSM_READY_TO_TUBE_BEFORE))
+    {
+         str = " PSSM_READY_TO_TUBE_BEFORE";
+    }
+    else if(curState == (PSSM_READY_TO_TUBE_AFTER))
+    {
+         str = " PSSM_READY_TO_TUBE_AFTER";
+    }
+    else if(curState == (PSSM_READY_TO_FILL))
+    {
+         str = " PSSM_READY_TO_FILL";
+    }
+    else if(curState == (PSSM_READY_TO_SEAL))
+    {
+         str = " PSSM_READY_TO_SEAL";
+    }
+    else if(curState == (PSSM_SOAK))
+    {
+         str = " PSSM_SOAK";
+    }
+    else if(curState == (PSSM_READY_TO_DRAIN))
+    {
+         str = " PSSM_READY_TO_DRAIN";
+    }
+    else if(curState == (PSSM_FINISH))
+    {
+         str = " PSSM_FINISH";
+    }
+    else if(curState == (PSSM_ERROR))
+    {
+         str = " PSSM_ERROR";
+    }
+    qDebug() << "Program step state machine enter:" << str;
+}
 }

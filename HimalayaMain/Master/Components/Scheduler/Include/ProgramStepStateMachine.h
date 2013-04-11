@@ -65,6 +65,9 @@ signals:
     void OnSoak();
     void OnDrain();
 
+private slots:
+    void OnStateChanged();
+
 private:
     QStateMachine* mp_ProgramStepStateMachine;
     QState* mp_PssmInit;

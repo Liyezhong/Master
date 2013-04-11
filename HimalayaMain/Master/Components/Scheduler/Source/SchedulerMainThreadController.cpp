@@ -36,6 +36,7 @@
 #include "Global/Include/GlobalDefines.h"
 #include <Scheduler/Commands/Include/CmdRTLock.h>
 #include <Scheduler/Commands/Include/CmdRTUnlock.h>
+#include <HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h>
 //#include "Scheduler/Include/HimalayaHardwareSystemStateId.h"
 //#include "Scheduler/Commands/Include/CmdSystemState.h"
 
@@ -210,8 +211,22 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
         m_NewProgramID = "";
         m_CurProgramStepID = "";
         this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
-        mp_ProgramStepStateMachine->Start();
-        m_SchedulerMachine->SendRunSignal();
+        if(m_CurProgramStepID != "")
+        {
+            qDebug() << "Start step: " << m_CurProgramID;
+            mp_ProgramStepStateMachine->Start();
+            m_SchedulerMachine->SendRunSignal();
+#if 0 //for Abe to update
+//send command to main controller to tell the left time
+            quint32 leftSeconds = GetLeftProgramNeededTime(m_CurProgramID);
+            QTime leftTime = QTime(0 ,0, leftSeconds, 0);
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurProgramStepID, leftTime));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+#endif
+
+        }
         break;
     case CTRL_CMD_LOCK_RETORT:
         break;
@@ -283,7 +298,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         static qint64 lastPVTime = 0;
         //todo: 1/10 the time
         //qint32 period = m_CurProgramStepInfo.durationInSeconds * 1000;
-        qint32 period = m_CurProgramStepInfo.durationInSeconds * 100;
+        qint32 period = m_CurProgramStepInfo.durationInSeconds * 20;
         if((now - m_CurStepSoakStartTime) > (period))
         {
             mp_ProgramStepStateMachine->NotifySoakFinished();
@@ -332,7 +347,19 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     {
         //todo: start next program step or finish all program
         qDebug()<< "step finished!";
-        m_SchedulerMachine->SendRunComplete();
+        this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
+        if(m_CurProgramStepID != "")
+        {
+            //start next step
+            qDebug() << "Start step: " << m_CurProgramID;
+            mp_ProgramStepStateMachine->Start();
+        }
+        else
+        {
+            //program finished
+            qDebug() << "Program finished!";
+            m_SchedulerMachine->SendRunComplete();
+        }
     }
 
 }
@@ -351,7 +378,7 @@ ControlCommandType_t SchedulerMainThreadController::ReceiveNonDeviceCommand()
         {
             //emit signalProgramStart(pCmdProgramAction->GetProgramID());
             m_NewProgramID = pCmdProgramAction->GetProgramID();
-#if 1 //for debug
+#if 0 //for debug
             quint32 timeneeded = GetLeftProgramNeededTime(m_NewProgramID);
 #endif
             return CTRL_CMD_START;
@@ -556,6 +583,10 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
         programStepInfor.isPressure = (pProgramStep->GetPressure() == "On");
         programStepInfor.isVacuum = (pProgramStep->GetVacuum() == "On");
         m_CurProgramStepID = nextProgramStep;
+    }
+    else
+    {
+        m_CurProgramStepID = "";
     }
     return true;
 }
@@ -814,6 +845,13 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         m_SchedulerMachine->SendSchedulerInitComplete();
         //for debug
         qDebug() << "Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
+        //send command to main controller to tell init complete
+#if 0//for Abe to update
+        NetCommands::CmdExternalProcessState* commandPtr(new NetCommands::CmdExternalProcessState(5000, NetCommands::HIMALAYA_GUI_PROCESS, true));
+        Q_ASSERT(commandPtr);
+        Global::tRefType Ref = GetNewCommandRef();
+        SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+#endif
     }
     else
     {
@@ -884,16 +922,18 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
                 m_TempOvenTop = TempOvenTop;
             }
             m_PositionRV = PositionRV;
+            qDebug()<<"Rotary valve's position is" << PositionRV;
             qDebug()<<"Air liquid system pressure is" << PressureAL;
             qDebug()<<"Air liquid system level sensor's temp is" << TempALLevelSensor;
+#if 0
             qDebug()<<"Air liquid system tube1's temp is" << TempALTube1;
             qDebug()<<"Air liquid system tube2's temp is" << TempALTube2;
             qDebug()<<"Rotary valve's temp is" << TempRV;
-            qDebug()<<"Rotary valve's position is" << PositionRV;
             qDebug()<<"Retort bottom temp is" << TempRTBottom;
             qDebug()<<"Retort side temp is" << TempRTSide;
             qDebug()<<"Oven bottom temp is" << TempOvenBottom;
             qDebug()<<"Oven top temp is" << TempOvenTop;
+#endif
         }
     }
 }
