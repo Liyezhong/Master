@@ -69,6 +69,8 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndDateTime.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
+
 
 
 namespace HimalayaGui {
@@ -202,6 +204,9 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
 
     RegisterCommandForProcessing<MsgClasses::CmdCurrentProgramStepInfor, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdCurrentProgramStepInfor>, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdProgramStartReady, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdProgramStartReady>, this);
 
     //Retort Lock/Unlock
     RegisterExternalMessage<MsgClasses::CmdRetortLock, HimalayaGui::HimalayaGuiController>

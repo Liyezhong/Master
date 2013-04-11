@@ -32,6 +32,11 @@
 #include <QFrame>
 #include <QGridLayout>
 
+namespace MsgClasses
+{
+    class CmdProgramStartReady;
+}
+
 namespace Dashboard {
 
 namespace Ui {
@@ -69,6 +74,7 @@ private:
     void PlayProgram();
     void PauseProgram();
     void AbortProgram();
+    void EnablePlayButton(bool bSetEnable);
 
 public:
     explicit CDashboardWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL);
@@ -95,6 +101,7 @@ public slots:
     void AddItemsToComboBox();
     void OnActivated(int);
     void OnProgramActionStarted(DataManager::ProgramActionType_t ActionType);
+    void OnProgramStartReadyUpdated(const MsgClasses::CmdProgramStartReady& cmd);
 
     // Warning Message Slots
     void OnProgramStartConfirmation();

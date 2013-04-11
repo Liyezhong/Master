@@ -21,6 +21,7 @@
 #include "Dashboard/Include/DashboardWidget.h"
 #include "ui_DashboardWidget.h"
 #include <QDebug>
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
 
 namespace Dashboard {
 
@@ -70,6 +71,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      CONNECTSIGNALSLOT(this, ProgramSelected(QString&), 
 						mp_DashboardScene, UpdateDashboardSceneReagentsForProgram(QString &));
 
+     CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(const MsgClasses::CmdProgramStartReady &),
+                       this, OnProgramStartReadyUpdated(const MsgClasses::CmdProgramStartReady&));
 }
 
 CDashboardWidget::~CDashboardWidget()
@@ -279,6 +282,17 @@ void CDashboardWidget::OnProgramActionStarted(DataManager::ProgramActionType_t A
         AbortProgram();
 
     }
+}
+
+//Need the gray button!
+void CDashboardWidget::EnablePlayButton(bool bSetEnable)
+{
+    mp_Ui->playButton->setEnabled(bSetEnable);
+}
+
+void CDashboardWidget::OnProgramStartReadyUpdated(const MsgClasses::CmdProgramStartReady& cmd)
+{
+    this->EnablePlayButton(cmd.IsReady());
 }
 
 } // End of namespace Dashboard

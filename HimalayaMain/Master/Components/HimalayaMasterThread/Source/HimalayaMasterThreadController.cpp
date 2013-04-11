@@ -81,6 +81,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndDateTime.h"
 #include "Scheduler/Commands/Include/CmdSystemState.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
 
 
 
@@ -282,6 +283,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<MsgClasses::CmdStationStatus>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdProgramEndDateTime>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdCurrentProgramStepInfor>(&m_CommandChannelGui);
+    RegisterCommandForRouting<MsgClasses::CmdProgramStartReady>(&m_CommandChannelGui);
 
     RegisterCommandForRouting<NetCommands::CmdCriticalActionStatus>(&m_CommandChannelSoftSwitch);
 

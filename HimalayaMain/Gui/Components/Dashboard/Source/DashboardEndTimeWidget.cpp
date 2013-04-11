@@ -203,7 +203,7 @@ void CDashboardEndTimeWidget::UpdateDateTime(QDateTime &selDateTime)
  void CDashboardEndTimeWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor& cmd)
  {
      mp_Ui->lblName->setText(cmd.StepName());
-     mp_Ui->lblTime->setText(cmd.CurRemainingTim().toString("hh:mm:ss"));
+     mp_Ui->lblTime->setText(cmd.CurRemainingTime().toString("hh:mm:ss"));
  }
 
 }    // end of namespace Dashboard

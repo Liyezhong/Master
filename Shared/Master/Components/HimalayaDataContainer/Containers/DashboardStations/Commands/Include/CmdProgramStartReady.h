@@ -1,10 +1,10 @@
 /****************************************************************************/
-/*! \file CmdCurrentProgramStepInfor.h
+/*! \file CmdProgramStartReady.h
  *
- *  \brief CmdCurrentProgramStepInfor command definition.
+ *  \brief CmdProgramStartReady command definition.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 27.03.2013
+ *   $Date:    $ 11.04.2013
  *   $Author:  $ Abe Yang
  *
  *  \b Company:
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef MSGCLASSES_CMDCURRENTPROGRAMSTEPINFOR_H
-#define MSGCLASSES_CMDCURRENTPROGRAMSTEPINFOR_H
+#ifndef MSGCLASSES_CMDPROGRAMSTARTREADY_H
+#define MSGCLASSES_CMDPROGRAMSTARTREADY_H
 
 #include <Global/Include/Commands/Command.h>
 #include <HimalayaDataContainer/Helper/Include/Global.h>
@@ -29,32 +29,30 @@ namespace MsgClasses {
 
 /****************************************************************************/
 /*!
- *  \brief  This class implements a CmdCurrentProgramStepInfor command.
+ *  \brief  This class implements a CmdProgramStartReady command.
  *
  * \todo implement
  */
 /****************************************************************************/
-class CmdCurrentProgramStepInfor : public Global::Command {
-    friend QDataStream & operator << (QDataStream &, const CmdCurrentProgramStepInfor &);
-    friend QDataStream & operator >> (QDataStream &, CmdCurrentProgramStepInfor &);
+class CmdProgramStartReady : public Global::Command {
+    friend QDataStream & operator << (QDataStream &, const CmdProgramStartReady &);
+    friend QDataStream & operator >> (QDataStream &, CmdProgramStartReady &);
 public:
-    CmdCurrentProgramStepInfor();                                             ///< Not implemented.
+    CmdProgramStartReady();                                             ///< Not implemented.
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdCurrentProgramStepInfor(int Timeout, const QString& StepName, const QTime& CurRemainingTime);
-    ~CmdCurrentProgramStepInfor();
+    CmdProgramStartReady(int Timeout, bool IsReady);
+    ~CmdProgramStartReady();
     virtual QString GetName() const;
-    inline const QString& StepName() const {return m_StepName;}
-    inline const QTime& CurRemainingTime()const {return m_CurRemainingTime;}
+    inline bool IsReady() const {return m_IsReady;}
+ private:
+    CmdProgramStartReady(const CmdProgramStartReady &);                     ///< Not implemented.
+    const CmdProgramStartReady & operator = (const CmdProgramStartReady &); ///< Not implemented.
 private:
-    CmdCurrentProgramStepInfor(const CmdCurrentProgramStepInfor &);                     ///< Not implemented.
-    const CmdCurrentProgramStepInfor & operator = (const CmdCurrentProgramStepInfor &); ///< Not implemented.
-private:
-    QString m_StepName;
-    QTime   m_CurRemainingTime; 
+    bool m_IsReady;
     
-}; // end class CmdCurrentProgramStepInfor
+}; // end class CmdProgramStartReady
 
 /****************************************************************************/
 /**
@@ -65,14 +63,12 @@ private:
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator << (QDataStream &Stream, const CmdCurrentProgramStepInfor &Cmd)
+inline QDataStream & operator << (QDataStream &Stream, const CmdProgramStartReady &Cmd)
 {
     // copy base class data
     Cmd.CopyToStream(Stream);
     // copy internal data
-    Stream << Cmd.m_StepName;
-    Stream << Cmd.m_CurRemainingTime;
-
+    Stream << Cmd.m_IsReady;
     return Stream;
 }
 
@@ -85,15 +81,14 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdCurrentProgramSt
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator >> (QDataStream &Stream, CmdCurrentProgramStepInfor &Cmd)
+inline QDataStream & operator >> (QDataStream &Stream, CmdProgramStartReady &Cmd)
 {
     // copy base class data
     Cmd.CopyFromStream(Stream);
     // copy internal data
-     Stream >> Cmd.m_StepName;
-    Stream >> Cmd.m_CurRemainingTime;
+    Stream >> Cmd.m_IsReady;
     return Stream;
 }
 } // end namespace MsgClasses
 
-#endif // MSGCLASSES_CMDCURRENTPROGRAMSTEPINFOR_H
+#endif // MSGCLASSES_CMDPROGRAMSTARTREADY_H

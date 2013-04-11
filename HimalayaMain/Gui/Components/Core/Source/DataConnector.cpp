@@ -23,6 +23,7 @@
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataExport.h"
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImport.h"
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdAlarmToneTest.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "Global/Include/Commands/AckOKNOK.h"
 #include "Global/Include/Commands/CmdDateAndTime.h"
@@ -76,7 +77,8 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
 
     // Dashboard Command Handlers
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdCurrentProgramStepInfor>(&CDataConnector::CurrentProgramStepInfoHandler, this);
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramAction>(&CDataConnector::ProgramActionHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramStartReady>(&CDataConnector::ProgramStartReadyHandler, this);
+
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdParaffinBathStatus>(&CDataConnector::ParaffinBathStatusHandler, this);
     //m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramEndDateTime>(&CDataConnector::ProgramEndDateTimeHandler, this);
     //m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortLock>(&CDataConnector::RetortLockHandler, this);
@@ -1615,15 +1617,14 @@ void CDataConnector::ShowMessageDialog(Global::GUIMessageType MessageType, QStri
 
 void CDataConnector::CurrentProgramStepInfoHandler(Global::tRefType Ref, const MsgClasses::CmdCurrentProgramStepInfor & Command)
 {
-    Q_UNUSED(Ref);
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
     emit CurrentProgramStepInforUpdated(Command);
 }
 
-
-void CDataConnector::ProgramActionHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAction &Command)
+void CDataConnector::ProgramStartReadyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramStartReady& Command)
 {
-    emit StartProgramAction(Command.ProgramActionType());
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    emit ProgramStartReady(Command);
 }
 
 void CDataConnector::ParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdParaffinBathStatus & Command)

@@ -73,9 +73,10 @@
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/MsgBoxManager.h"
 
-//namespace MainMenu {
-//    class CMsgBoxManager;
-//}
+namespace MsgClasses
+{
+    class CmdProgramStartReady;
+}
 
 namespace Core {
 
@@ -346,6 +347,7 @@ signals:
     /****************************************************************************/
     void StartProgramAction(DataManager::ProgramActionType_t ActionType);
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
+    void ProgramStartReady(const MsgClasses::CmdProgramStartReady& Command);
 private:
     void ConfFileHandler(Global::tRefType Ref, const NetCommands::CmdConfigurationFile &Command);
     void ProcessStateHandler(Global::tRefType ref, const NetCommands::CmdProcessState &Command);
@@ -362,7 +364,7 @@ private:
     void UpdateStationReagentStatus(Global::tRefType Ref, const MsgClasses::CmdUpdateStationReagentStatus &Command);
 
     void CurrentProgramStepInfoHandler(Global::tRefType Ref, const MsgClasses::CmdCurrentProgramStepInfor & Command);
-    void ProgramActionHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAction & Command);
+    void ProgramStartReadyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramStartReady& Command);
     void ParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdParaffinBathStatus & Command);
     void ProgramEndDateTimeHandler(Global::tRefType Ref, MsgClasses::CmdProgramEndDateTime & Command);
     void RetortLockHandler(Global::tRefType Ref, MsgClasses::CmdRetortLock & Command);

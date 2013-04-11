@@ -37,6 +37,7 @@
 #include <Scheduler/Commands/Include/CmdRTLock.h>
 #include <Scheduler/Commands/Include/CmdRTUnlock.h>
 #include <HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h>
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
 //#include "Scheduler/Include/HimalayaHardwareSystemStateId.h"
 //#include "Scheduler/Commands/Include/CmdSystemState.h"
 
@@ -670,6 +671,11 @@ void SchedulerMainThreadController::OnRaiseAlarmLocalRemote(Global::tRefType Ref
 void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
                                                     const MsgClasses::CmdProgramAction &Cmd)
 {
+   /* MsgClasses::CmdProgramStartReady* commandPtr(new MsgClasses::CmdProgramStartReady(5000, false));
+    Q_ASSERT(commandPtr);
+    //Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));*/
+
     m_Mutex.lock();
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType())));
     m_Mutex.unlock();
