@@ -1615,7 +1615,9 @@ void CDataConnector::ShowMessageDialog(Global::GUIMessageType MessageType, QStri
 
 void CDataConnector::CurrentProgramStepInfoHandler(Global::tRefType Ref, const MsgClasses::CmdCurrentProgramStepInfor & Command)
 {
-
+    Q_UNUSED(Ref);
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    emit CurrentProgramStepInforUpdated(Command);
 }
 
 

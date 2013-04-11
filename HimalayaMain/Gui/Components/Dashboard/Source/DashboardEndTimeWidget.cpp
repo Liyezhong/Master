@@ -21,7 +21,6 @@
 #include "ui_DashboardEndTimeWidget.h"
 #include <QPainter>
 #include "Dashboard/Include/DashboardEndTimeWidget.h"
-
 namespace Dashboard {
 
 /****************************************************************************/
@@ -49,6 +48,9 @@ CDashboardEndTimeWidget::CDashboardEndTimeWidget(Core::CDataConnector *p_DataCon
     mp_wdgtDateTime->setWindowFlags(Qt::CustomizeWindowHint);
 
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, OnUserSettingsUpdated());
+    CONNECTSIGNALSLOT(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
+                      this, OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
+
     CONNECTSIGNALSLOT(mp_Ui->btnEndTime, clicked(), this, OnEndTimeButtonClicked());
 }
 
@@ -197,5 +199,11 @@ void CDashboardEndTimeWidget::UpdateDateTime(QDateTime &selDateTime)
     mp_Ui->btnEndTime->setText(DateTimeStr);
 
 }
+
+ void CDashboardEndTimeWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor& cmd)
+ {
+     mp_Ui->lblName->setText(cmd.StepName());
+     mp_Ui->lblTime->setText(cmd.CurRemainingTim().toString("hh:mm:ss"));
+ }
 
 }    // end of namespace Dashboard

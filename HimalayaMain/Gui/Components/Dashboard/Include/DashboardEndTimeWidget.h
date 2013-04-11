@@ -61,6 +61,7 @@ public slots:
     void OnUserSettingsUpdated();
     void OnEndTimeButtonClicked();
     void UpdateDateTime(QDateTime & selDateTime);
+    void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor& cmd);
 
 private:
     Ui::CDashboardEndTimeWidget *mp_Ui;

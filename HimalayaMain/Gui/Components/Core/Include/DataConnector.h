@@ -345,7 +345,7 @@ signals:
      */
     /****************************************************************************/
     void StartProgramAction(DataManager::ProgramActionType_t ActionType);
-
+    void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
 private:
     void ConfFileHandler(Global::tRefType Ref, const NetCommands::CmdConfigurationFile &Command);
     void ProcessStateHandler(Global::tRefType ref, const NetCommands::CmdProcessState &Command);

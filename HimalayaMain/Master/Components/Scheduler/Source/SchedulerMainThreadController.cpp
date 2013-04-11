@@ -216,15 +216,15 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             qDebug() << "Start step: " << m_CurProgramID;
             mp_ProgramStepStateMachine->Start();
             m_SchedulerMachine->SendRunSignal();
-#if 0 //for Abe to update
-//send command to main controller to tell the left time
+
+            //send command to main controller to tell the left time
             quint32 leftSeconds = GetLeftProgramNeededTime(m_CurProgramID);
-            QTime leftTime = QTime(0 ,0, leftSeconds, 0);
+            QTime leftTime(0,0,0);
+            leftTime = leftTime.addSecs(leftSeconds);
             MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurProgramStepID, leftTime));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-#endif
 
         }
         break;
