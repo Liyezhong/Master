@@ -671,11 +671,6 @@ void SchedulerMainThreadController::OnRaiseAlarmLocalRemote(Global::tRefType Ref
 void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
                                                     const MsgClasses::CmdProgramAction &Cmd)
 {
-   /* MsgClasses::CmdProgramStartReady* commandPtr(new MsgClasses::CmdProgramStartReady(5000, false));
-    Q_ASSERT(commandPtr);
-    //Global::tRefType Ref = GetNewCommandRef();
-    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));*/
-
     m_Mutex.lock();
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType())));
     m_Mutex.unlock();
@@ -866,13 +861,12 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         m_SchedulerMachine->SendSchedulerInitComplete();
         //for debug
         qDebug() << "Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
+
         //send command to main controller to tell init complete
-#if 0//for Abe to update
-        NetCommands::CmdExternalProcessState* commandPtr(new NetCommands::CmdExternalProcessState(5000, NetCommands::HIMALAYA_GUI_PROCESS, true));
+        MsgClasses::CmdProgramStartReady* commandPtr(new MsgClasses::CmdProgramStartReady(5000, true));
         Q_ASSERT(commandPtr);
         Global::tRefType Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-#endif
     }
     else
     {

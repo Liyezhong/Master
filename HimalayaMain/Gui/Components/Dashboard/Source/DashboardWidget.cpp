@@ -57,7 +57,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      m_btnGroup.addButton(mp_Ui->playButton, Dashboard::firstButton);
      m_btnGroup.addButton(mp_Ui->abortButton, Dashboard::secondButton);
-
+     EnablePlayButton(false);
      m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
      mp_MessageDlg = new MainMenu::CMessageDlg();
 
@@ -212,11 +212,6 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
         return true;
 
     }
-
-    //the following three lines for test purpose:
-    m_ProgramCurrentAction = DataManager::PROGRAM_START;
-    m_SelectedProgramId = "L01";
-    OnProgramStartConfirmation();
 
     return false;
 
