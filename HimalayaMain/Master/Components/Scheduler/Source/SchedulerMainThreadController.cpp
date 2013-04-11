@@ -64,6 +64,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_NewProgramID("")
         , mp_ProgramStepStateMachine(new ProgramStepStateMachine())
         , m_CurStepSoakStartTime(0)
+        , m_CurReagnetName("")
 {
 
 }
@@ -222,7 +223,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             quint32 leftSeconds = GetLeftProgramNeededTime(m_CurProgramID);
             QTime leftTime(0,0,0);
             leftTime = leftTime.addSecs(leftSeconds);
-            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurProgramStepID, leftTime));
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, leftTime));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -354,6 +355,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             //start next step
             qDebug() << "Start step: " << m_CurProgramID;
             mp_ProgramStepStateMachine->Start();
+            //send command to main controller to tell the left time
+            quint32 leftSeconds = GetLeftProgramNeededTime(m_CurProgramID);
+            QTime leftTime(0,0,0);
+            leftTime = leftTime.addSecs(leftSeconds);
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, leftTime));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
         else
         {
@@ -584,6 +593,7 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
         programStepInfor.isPressure = (pProgramStep->GetPressure() == "On");
         programStepInfor.isVacuum = (pProgramStep->GetVacuum() == "On");
         m_CurProgramStepID = nextProgramStep;
+        m_CurReagnetName = GetReagentName(reagentID);
     }
     else
     {

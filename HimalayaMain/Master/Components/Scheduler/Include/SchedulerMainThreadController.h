@@ -96,6 +96,7 @@ typedef enum
         DataManager::CDataManager       *mp_DataManager;
         qint64 m_CurStepSoakStartTime;
         QString m_CurProgramStepID;
+        QString m_CurReagnetName;
         ProgramStepInfor m_CurProgramStepInfo;
         QString m_CurProgramID;
         QString m_NewProgramID;
