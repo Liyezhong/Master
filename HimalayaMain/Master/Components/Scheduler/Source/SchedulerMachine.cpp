@@ -16,11 +16,11 @@ SchedulerMachine::SchedulerMachine()
     mp_IdleState->addTransition(this, SIGNAL(RunSignal()), mp_RunState);
     mp_RunState->addTransition(this, SIGNAL(RunComplete()), mp_IdleState);
     mp_RunState->addTransition(this, SIGNAL(PauseSignal()), mp_PauseState);
-    mp_RunState->addTransition(this, SIGNAL(ErrorSiganl()), mp_ErrorState);
+    mp_RunState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState);
     mp_PauseState->addTransition(this, SIGNAL(RunSignal()), mp_RunState);
     mp_PauseState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState);
-    mp_InitState->addTransition(this, SIGNAL(ErrorSiganl()), mp_ErrorState);
-    mp_IdleState->addTransition(this, SIGNAL(ErrorSiganl()), mp_ErrorState);
+    mp_InitState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState);
+    mp_IdleState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState);
     mp_ErrorState->addTransition(this, SIGNAL(RecoverToPause()), mp_PauseState);
 }
 
