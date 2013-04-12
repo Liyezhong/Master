@@ -160,31 +160,98 @@ bool CSpecialVerifierGroupA::CheckData()
         for (qint32 Counter = 0; Counter < mp_DProgramList->GetReagentIDList().count(); Counter++) {
             // check the Program Reagent ID exists in ReagentID List
             if (!(mp_DReagentList->ReagentExists(mp_DProgramList->GetReagentIDList().at(Counter)) ||
-                  (mp_DProgramList->GetReagentIDList().at(Counter) == "-1"))) {
+                  (mp_DProgramList->GetReagentIDList().at(Counter) == "-1"))) {            
+                m_ErrorsHash.insert(EVENT_DM_GV_REAGENTID_EXIST_IN_PROG_NOT_IN_REAGENT_LIST,
+                                    Global::tTranslatableStringList() << mp_DProgramList->GetReagentIDList().at(Counter));
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_GV_REAGENTID_EXIST_IN_PROG_NOT_IN_REAGENT_LIST,
-                                                           Global::FmtArgs() << mp_DProgramList->GetReagentIDList().at(Counter));
-//                qDebug() << "CSpecialVerifierGroupA::Reagent ID does not exist in Reagent List but it exists in Program List: "
-//                         << mp_DProgramList->GetReagentIDList().at(Counter);
+                                                           Global::tTranslatableStringList() << mp_DProgramList->GetReagentIDList().at(Counter),
+                                                           Global::GUI_MSG_BOX);
                 Result = false;
                 break;
             }
         }
-/*
-        for (int StationCount = 0; StationCount < mp_DStationList->GetNumberOfStations(); StationCount++) {
-            CStation* p_Station = const_cast<CStation*> (mp_DStationList->GetStation(StationCount));
-            if (p_Station != NULL) {
-                // check the Program Reagent ID exists in ReagentID List
-                if (!(mp_DReagentList->ReagentExists(p_Station->GetReagentID()) || (p_Station->GetReagentID() == "-1"))) {
-                    Global::EventObject::Instance().RaiseEvent(EVENT_DM_GV_REAGENTID_EXIST_IN_STATION_NOT_IN_REAGENT_LIST,
-                                                               Global::FmtArgs() << p_Station->GetReagentID());
-//                    qDebug() << "CSpecialVerifierGroupA::Reagent ID does not exist in Reagent List but it exists in Station List: "
-//                             << p_Station->GetReagentID();
-                    Result = false;
-                    break;
-                }
+        CProgram* p_Program = NULL;
+        CProgramStep *Previous_ProgramStep = NULL;
+        QString Previous_ReagentGroupID;
+        QString Previous_ReagentID;
+        CProgramStep *Current_ProgramStep = NULL;
+        QString Current_ReagentGroupID;
+        QString Current_ReagentID;
+        qint32 temperature;
+        for (qint32 I = 0; I < mp_DProgramList->GetNumberOfPrograms(); I++) {
+            p_Program = mp_DProgramList->GetProgram(I);
+            if (p_Program) {
+                for (qint32 X = 0; X < p_Program->GetNumberOfSteps(); X++) {
+                    Current_ProgramStep = const_cast<CProgramStep *>(p_Program->GetProgramStep(X));
+                    if (Current_ProgramStep != NULL) {
+                        //check temperature
+                        Current_ReagentID = Current_ProgramStep->GetReagentID();
+                        if(Current_ReagentID.isEmpty()){
+                            continue;
+                        }
+                        Current_ReagentGroupID = mp_DReagentList->GetReagent(Current_ReagentID)->GetGroupID();
+                        bool ok = false;
+                        temperature = Current_ProgramStep->GetTemperature().toInt(&ok);
+                        if(ok){
+                            // paraffin
+                            if(!Current_ReagentGroupID.compare("RG5",Qt::CaseInsensitive) ||
+                                    !Current_ReagentGroupID.compare("RG12",Qt::CaseInsensitive)){
+                                if(temperature < STEP_PARAFFIN_TEMP_MIN || temperature > STEP_PARAFFIN_TEMP_MAX){
+                                    // error
+                                    m_ErrorsHash.insert(VENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT,
+                                                        Global::tTranslatableStringList() << Current_ProgramStep->GetStepID()
+                                                        << p_Program->GetName() << QString::number(STEP_PARAFFIN_TEMP_MIN)
+                                                        << QString::number(STEP_PARAFFIN_TEMP_MAX));
+                                    Global::EventObject::Instance().RaiseEvent(EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE,
+                                                                               Global::tTranslatableStringList() << Current_ProgramStep->GetStepID()
+                                                                               << p_Program->GetName() << QString::number(STEP_PARAFFIN_TEMP_MIN)
+                                                                               << QString::number(STEP_PARAFFIN_TEMP_MAX),
+                                                                               Global::GUI_MSG_BOX);
+                                    Result = false;
+
+                                }
+                            }
+                            //reagents
+                            else
+                            {
+                                if(temperature < STEP_REAGENT_TEMP_MIN || temperature > STEP_REAGENT_TEMP_MAX){
+                                    // error
+                                    m_ErrorsHash.insert(VENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT,
+                                                        Global::tTranslatableStringList() << Current_ProgramStep->GetStepID()
+                                                        << p_Program->GetName() << QString::number(STEP_REAGENT_TEMP_MIN)
+                                                        << QString::number(STEP_REAGENT_TEMP_MAX));
+                                    Global::EventObject::Instance().RaiseEvent(EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE,
+                                                                               Global::tTranslatableStringList() << Current_ProgramStep->GetStepID()
+                                                                               << p_Program->GetName() << QString::number(STEP_REAGENT_TEMP_MIN)
+                                                                               << QString::number(STEP_REAGENT_TEMP_MAX),
+                                                                               Global::GUI_MSG_BOX);
+                                    Result = false;
+                                }
+                            }
+                        }
+                        //check reagent group Compatible
+                        if(X > 0){
+                            Previous_ProgramStep = const_cast<CProgramStep *>(p_Program->GetProgramStep(X - 1));
+                            if(Previous_ProgramStep){
+                                Previous_ReagentID = Previous_ProgramStep->GetReagentID();
+                                Previous_ReagentGroupID = mp_DReagentList->GetReagent(Previous_ReagentID)->GetGroupID();
+                                if(!IsCompatible(Current_ReagentGroupID,Previous_ReagentGroupID)){
+                                    //error
+                                    m_ErrorsHash.insert(EVENT_DM_INCOMPATIBLE_STEP_REAGENT_GROUP,
+                                                        Global::tTranslatableStringList() <<p_Program->GetName()
+                                                        << Current_ProgramStep->GetStepID() << Previous_ProgramStep->GetStepID());
+                                    Global::EventObject::Instance().RaiseEvent(EVENT_DM_INCOMPATIBLE_STEP_REAGENT_GROUP,
+                                                                               Global::tTranslatableStringList() <<p_Program->GetName()
+                                                                               << Current_ProgramStep->GetStepID() << Previous_ProgramStep->GetStepID(),
+                                                                               Global::GUI_MSG_BOX);
+                                    Result = false;
+                                }
+                            }
+                        }// end if for reagent group compatible check
+                    }
+                }// end of loop for step
             }
-        }
-*/
+        }//end of loop for program
     }    
 
     // if everything goes well then Special verifier verified all the data

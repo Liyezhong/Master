@@ -33,29 +33,23 @@ namespace DataManager {
 class CDataContainer;
 
 // constraints
-const int PROGRAMS_MAX = 50;                //!< Max program allowed
+const int PROGRAMS_MAX = 12;                //!< Max program allowed
 const int NEXT_STEP_ID_MIN = 1;             //!< Minimum value of step Id
 const int NAME_LENGTH_MIN = 1;        //!< name length Min
 const int NAME_LENGTH_MAX = 20;        //!< name length Max
 const int LONG_NAME_LENGTH_MIN = 1;         //!< Long name length Min
 const int LONG_NAME_LENGTH_MAX = 32;        //!< Long name length Max
-const int OVEN_TEMPERATURE_MAX = 70;        //!< Oven temperature Max
-const int OVEN_TEMPERATURE_MIN = 10;        //!< Oven temperature Min
-const int OVEN_TEMPERATURE_STEP_VALUE = 5;  //!< Oven temperature steps value
 const int PROGRAM_STEPS_MAX = 50;           //!< Max program steps per program
-const int PARALLEL_STATIONS_MAX = 3;        //!< Max number of parallel stations
-const int PARALLEL_STATIONS_MIN = 0;        //!< Minimum number of parallel stations
+const int PROGRAM_STEPS_MIN = 1;            //!< Minimum program steps per program
 const int STEP_DURATION_MIN = 1;            //!< Minimum value of step duration in secs
-const int STEP_DURATION_MAX = 86400;        //!< Maximum value of step duration in secs
+const int STEP_DURATION_MAX = 359940;        //!< Maximum value of step duration in secs
+
 const int SECONDS_PER_MIN = 60;             //!< number of secs per minute
 const int MINS_PER_HOUR = 60;               //!< Number of mins per se
 const int HOURS_PER_DAY = 24;               //!< Number of hours per day
 const int ZERO_PERCENT = 0;                 //!< 0 %
 const int HUNDRED_PERCENT = 100;            //!< 100 %
-const int INTENSITY_MAX = 10;               //!< Maximum value of intensity
-const int INTENSITY_MIN = 0;                //!< Minimum value of intensity
-const int NUMBEROFSTEPS_MIN = 2;            //!< Minimum value of number of steps
-const int NUMBEROFSTEPS_MAX = 9;            //!< Maximum value of number of steps
+
 
 /****************************************************************************/
 /*!

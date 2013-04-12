@@ -67,23 +67,15 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
     }
     // check constraints
 
-    // check max number of programs (50)
+    // check max number of programs (12)
     if (mp_DPL->GetNumberOfPrograms() > PROGRAMS_MAX) {
-        qDebug() << "### Too many programs (max 50 allowed): " << mp_DPL->GetNumberOfPrograms();
+        qDebug() << "### Too many programs (max 12 allowed): " << mp_DPL->GetNumberOfPrograms();
         m_ErrorsHash.insert(EVENT_DM_PROG_COUNT_EXCEEDS_LIMIT, Global::tTranslatableStringList() << QString::number(PROGRAMS_MAX) );
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_COUNT_EXCEEDS_LIMIT,
-                                                   Global::tTranslatableStringList() << QString::number(PROGRAMS_MAX));
+                                                   Global::tTranslatableStringList() << QString::number(PROGRAMS_MAX),Global::GUI_MSG_BOX);
         VerifiedData = false;
     }
-    QString NextStepID = mp_DPL->GetNextFreeProgID(false).mid(1);
-
-
-    if (!(NextStepID.toInt() >= NEXT_STEP_ID_MIN)) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_NEXT_STEPID_LESS_THAN_ONE, Global::GUI_MSG_BOX);
-        m_ErrorsHash.insert(EVENT_DM_NEXT_STEPID_INVALID, Global::tTranslatableStringList());
-        qDebug()<<"### ProgramId less than 1";
-        VerifiedData = false;
-    }
+//    QString NextStepID = mp_DPL->GetNextFreeProgID(false).mid(1);
 
     // check content of each program
     CProgram *p_Program;
@@ -92,6 +84,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
     for (qint32 I = 0; I < mp_DPL->GetNumberOfPrograms(); I++) {
         p_Program = mp_DPL->GetProgram(I);
         if (p_Program) {
+
             //Verify program ID
             if ((p_Program->GetID().at(0) != 'U') && (p_Program->GetID().at(0) != 'L') && (p_Program->GetID().at(0) != 'C')) {
                 qDebug()<<"Invalid Program Id"<<p_Program->GetID();
@@ -118,25 +111,55 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
                 VerifiedData = false;
             }
 
-            //Verify short name & long name constraints
+            //Verify name length constraints
             if ((p_Program->GetName().length() < NAME_LENGTH_MIN) ||
-                    (p_Program->GetName().length() > NAME_LENGTH_MAX) ||
-                    (p_Program->GetName().contains("LEICA",Qt::CaseInsensitive) && p_Program->GetID().at(0) != 'L')) {
+                    (p_Program->GetName().length() > NAME_LENGTH_MAX)) {
                 qDebug()<<"###Short name length check failed"<<p_Program->GetName();
-                Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROGSHORT_NAME_LENGTH_CHECK_FAILED,
+                m_ErrorsHash.insert(VENT_DM_PROG_NAME_LENGTH_CHECK_FAILED,
+                                   Global::tTranslatableStringList() <<  p_Program->GetName()
+                                   <<QString::number(NAME_LENGTH_MIN) << QString::number(NAME_LENGTH_MAX));
+                Global::EventObject::Instance().RaiseEvent(VENT_DM_PROG_NAME_LENGTH_CHECK_FAILED,
                                                            Global::tTranslatableStringList() << p_Program->GetName()
-                                                           << NAME_LENGTH_MIN << NAME_LENGTH_MAX);
+                                                          <<QString::number(NAME_LENGTH_MIN) << QString::number(NAME_LENGTH_MAX),
+                                                            Global::GUI_MSG_BOX);
+                VerifiedData = false;
+            }
+
+            // user program name can not contain leica letter
+            if ((p_Program->GetName().contains("LEICA",Qt::CaseInsensitive) && p_Program->GetID().at(0) != 'L')) {
+                m_ErrorsHash.insert(EVENT_DM_USER_PROGRAM_NAME_CONTAINS_LEICA,
+                                   Global::tTranslatableStringList() <<  p_Program->GetName());
+                Global::EventObject::Instance().RaiseEvent(EVENT_DM_USER_PROGRAM_NAME_CONTAINS_LEICA,
+                                                           Global::tTranslatableStringList() << p_Program->GetName(),
+                                                            Global::GUI_MSG_BOX);
                 VerifiedData = false;
             }
 
 
             //check no of steps
             if (p_Program->GetNumberOfSteps() > PROGRAM_STEPS_MAX) {
+                m_ErrorsHash.insert(EVENT_DM_PROG_STEP_COUNT_EXCEEDS_LIMIT,
+                                   Global::tTranslatableStringList() <<  p_Program->GetName()
+                                   << QString::number(PROGRAM_STEPS_MIN) << QString::number(PROGRAM_STEPS_MAX));
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_STEP_COUNT_EXCEEDS_LIMIT,
-                                                           Global::tTranslatableStringList() <<p_Program->GetName()
-                                                           << p_Program->GetNumberOfSteps(),
+                                                           Global::tTranslatableStringList() <<  p_Program->GetName()
+                                                           << QString::number(PROGRAM_STEPS_MAX),
                                                            Global::GUI_MSG_BOX);
                 qDebug("### Program Steps should be less than 50");
+                VerifiedData = false;
+            }
+
+            QString NextStepID = p_Program->GetNextFreeStepID(false).mid(0);
+
+            if (!(NextStepID.toInt() >= PROGRAM_STEPS_MIN)) {
+                Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_STEP_COUNT_LESS_LIMIT,
+                                                           Global::tTranslatableStringList() <<  p_Program->GetName()
+                                                           << QString::number(PROGRAM_STEPS_MIN) << QString::number(PROGRAM_STEPS_MAX),
+                                                           Global::GUI_MSG_BOX);
+                m_ErrorsHash.insert(EVENT_DM_PROG_STEP_COUNT_LESS_LIMIT,
+                                    Global::tTranslatableStringList() <<  p_Program->GetName()
+                                    << QString::number(PROGRAM_STEPS_MIN));
+                qDebug()<<"### ProgramId less than 1";
                 VerifiedData = false;
             }
 
@@ -166,6 +189,20 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
         p_ProgramStep = const_cast<CProgramStep *>(p_Program->GetProgramStep(X));
         if (p_ProgramStep != NULL) {
             QString ReagentID = p_ProgramStep->GetReagentID();
+            // Reagent is empty
+            if(ReagentID.isEmpty())
+            {
+                m_ErrorsHash.insert(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
+                                    Global::tTranslatableStringList() << p_Program->GetName()
+                                    << p_ProgramStep->GetReagentID());
+                Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
+                                                           Global::tTranslatableStringList() << p_Program->GetName()
+                                                           << p_ProgramStep->GetReagentID(),
+                                                           Global::GUI_MSG_BOX);
+                qDebug() << "### Reagent is empty ";
+                VerifiedData = false;
+                break;
+            }
             //Validate Reagent ID
             switch(ReagentID.at(0).toAscii()) {
                 case 'U':
@@ -174,10 +211,10 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
                     break;
                 default:
                     m_ErrorsHash.insert(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
-                                        Global::tTranslatableStringList() << p_Program->GetLongName()
+                                        Global::tTranslatableStringList() << p_Program->GetName()
                                         << p_ProgramStep->GetReagentID());
                     Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
-                                                               Global::tTranslatableStringList() << p_Program->GetLongName()
+                                                               Global::tTranslatableStringList() << p_Program->GetName()
                                                                << p_ProgramStep->GetReagentID(),
                                                                Global::GUI_MSG_BOX);
                     qDebug() << "### Reagent ID doesn't start with S,L,U: ";
@@ -194,10 +231,10 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
             (void)(p_ProgramStep->GetStepID().toInt(&IntOk));
             if (!IntOk) {
                 m_ErrorsHash.insert(EVENT_DM_INVALID_STEP_ID,
-                                    Global::tTranslatableStringList() << p_Program->GetLongName()
+                                    Global::tTranslatableStringList() << p_Program->GetName()
                                     << p_ProgramStep->GetStepID());
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_INVALID_STEP_ID,
-                                                           Global::tTranslatableStringList() << p_Program->GetLongName()
+                                                           Global::tTranslatableStringList() << p_Program->GetName()
                                                            << p_ProgramStep->GetStepID(),
                                                            Global::GUI_MSG_BOX);
                 qDebug("### invalid StepId");
@@ -209,6 +246,25 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
 
             // check the duration format
             CheckDurationFormat(SplitList, VerifiedData, p_Program->GetName());
+
+            // check duration rang
+            if(VerifiedData)
+            {
+                quint32 duration = Helper::ConvertTimeStringToSeconds(p_ProgramStep->GetDuration());
+                if(duration > STEP_DURATION_MAX  || duration < STEP_DURATION_MIN)
+                {
+                    m_ErrorsHash.insert(VENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT,
+                                        Global::tTranslatableStringList() << p_ProgramStep->GetStepID() << p_Program->GetName()
+                                        <<Helper::ConvertSecondsToTimeString(STEP_DURATION_MIN) << Helper::ConvertSecondsToTimeString(STEP_DURATION_MAX));
+                    Global::EventObject::Instance().RaiseEvent(VENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT,
+                                                               Global::tTranslatableStringList() << p_ProgramStep->GetStepID() << p_Program->GetName()
+                                                               <<Helper::ConvertSecondsToTimeString(STEP_DURATION_MIN) << Helper::ConvertSecondsToTimeString(STEP_DURATION_MAX),
+                                                               Global::GUI_MSG_BOX);
+                    qDebug() << "##### Invalid Duration";
+                    VerifiedData = false;
+                }
+            }
+
 
         } // End of if
     }// End of for loop

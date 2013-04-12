@@ -154,6 +154,12 @@ const quint32 EVENT_DM_RMS_PROCESSING_OUT_OF_RANGE
 const quint32 EVENT_DM_RMS_CLEANING_OUT_OF_RANGE
 = EVENT_DM_USER_SETTINGS_EVENTS + 0X0008;
 
-
-
+const quint32 EVENT_DM_PROGRAM_EVENTS                       = EVENT_GROUP_HIMALAYA_DATAMANAGER + 0x600; /// < 0x02040600   dec 33818112
+const quint32 EVENT_DM_PROG_NAME_NOT_UNIQUE                 = EVENT_DM_PROGRAM_EVENTS + 0x0001;  ///< Program name '%1' already in use. Please choose different Program name.
+const quint32 EVENT_DM_INCOMPATIBLE_STEP_REAGENT_GROUP      = EVENT_DM_PROGRAM_EVENTS + 0x0002;   ///< Program '%1' Reagents  for Step %2 and Step %3 are not compatible.
+const quint32 EVENT_DM_USER_PROGRAM_NAME_CONTAINS_LEICA     = EVENT_DM_PROGRAM_EVENTS + 0x0003;  ///< User Program name can not contain 'leica' word.
+const quint32 EVENT_DM_PROG_STEP_COUNT_LESS_LIMIT           = EVENT_DM_PROGRAM_EVENTS + 0x0004;  ///< Program '%1' must have '%2' step(s) at least.
+const quint32 VENT_DM_PROG_NAME_LENGTH_CHECK_FAILED         = EVENT_DM_PROGRAM_EVENTS + 0x0005;       ///< Length of the Program name exceeds limit for the program '%1'. Valid Range '%2' - '%3' characters.
+const quint32 VENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT       = EVENT_DM_PROGRAM_EVENTS + 0x0006;     ///< Duration in Step '%1' of Program '%2' exceeds limits, validated range : '%3' - '%4'.
+const quint32 VENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT           = EVENT_DM_PROGRAM_EVENTS + 0x0007;     ///< Temperature in Step '%1' of Program '%2' exceeds limits, validated range : '%3' - '%4' (Celsius).
 #endif // DATAMANAGEREVENTCODES_H

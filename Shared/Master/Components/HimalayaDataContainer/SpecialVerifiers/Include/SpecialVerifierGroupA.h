@@ -35,6 +35,13 @@
 
 namespace DataManager {
 
+
+
+const int STEP_PARAFFIN_TEMP_MAX = 70; //!< Max paraffin temperature
+const int STEP_PARAFFIN_TEMP_MIN = 45; //!< Minium paraffin temperature
+const int STEP_REAGENT_TEMP_MAX = 55; //!< Max reagent temperature
+const int STEP_REAGENT_TEMP_MIN = 35; //!< Minium reagent temperature
+
 /****************************************************************************/
 /*!
  *  \brief  This class implements Special verifier Group A

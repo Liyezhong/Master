@@ -720,7 +720,7 @@
         <string id="33816602" text1="Length of the Program name exceeds limit for the program %1.Valid Range %2 - %3 characters." text2=""/>
         <string id="33816603" text1="Program %1 assigned to unknown color %2." text2="Invalid/corrupt data. Please contact service."/>
         <string id="33816604" text1="One or more Programs associated with same color %1." text2=""/>
-        <string id="33816605" text1="Number of steps in Program %1 exceeds limit. Max 50 steps allowed." text2=""/>
+        <string id="33816605" text1="Number of steps in Program '%1' exceeds limit. Max '%2' steps allowed." text2=""/>
         <string id="33816606" text1="Program Verifier found invalid Reagent ID %2 in the program %1." text2="Data verification failed because invalid/corrupt data. Please contact service."/>
         <string id="33816607" text1="&quot;Reagent %2 is used in multiple program steps of the program %1." text2=""/>
         <string id="33816608" text1="Step ID %2 in Program %1 is invalid" text2=""/>
@@ -791,6 +791,16 @@
         <string id="33817602" text1="Blgconf : &apos;%1&apos; : Maximum Parallel Stations Count value is more than 10" text2=""/>
         <string id="33817603" text1="Blgconf : &apos;%1&apos; : Rule ShortName more than 8 characters" text2=""/>
         <string id="33817604" text1="Blgconf : &apos;%1&apos; : Rule Longname more than 50 characters" text2=""/>
+	<!-- logan add start -->
+	<string id="33818113" text1="" text2=""/>
+	<string id="33818114" text1="Program '%1' Reagents  for Step '%2' and Step '%3' are not compatible." text2=""/>
+	<string id="33818115" text1="User Program name can not contain 'leica' word." text2=""/>
+	<string id="33818116" text1="Program '%1' must have '%2' step(s) at least." text2=""/>
+	<string id="33818117" text1="Length of the Program name exceeds limit for the program '%1'. Valid Range '%2' - '%3' characters." text2="" />
+	<string id="33818118" text1="Duration in Step '%1' of Program '%2' exceeds limits, validated range : '%3' - '%4'." text2=""/>
+	<string id="33818119" text1="Temperature in Step '%1' of Program '%2' exceeds limits, validated range : '%3' - '%4' (Celsius)." text2=""/>
+	<string id="33818120" text1="" text2=""/>
+	<!-- logan add end -->
         <string id="33882113" text1="Bath layout successfully generated" text2=""/>
         <string id="33882114" text1="BLG failed : one or more Invalid Input files" text2=""/>
         <string id="33882115" text1="BLG failed : Used programs list is empty" text2=""/>

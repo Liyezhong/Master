@@ -202,6 +202,8 @@ public:
     /****************************************************************************/
     QStringList const & GetReagentIDList() const { return m_ReagentIDList; }
 
+    bool CheckForUniquePropeties(const CProgram* p_Program);
+
 private:
     int m_Version;  //!<  version of the file read
     bool m_DataVerificationMode;//!< Verification mode flag , verify the Container
@@ -226,7 +228,7 @@ private:
     bool ReadAllPrograms(QXmlStreamReader& XmlStreamReader, bool CompleteData);
 
 
-    bool CheckForUniqueName(QString ID, QString Name, QString LongName);
+
     bool UpdateReagentIDList();
 
     /****************************************************************************/
