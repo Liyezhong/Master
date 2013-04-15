@@ -151,7 +151,6 @@ public slots:
 
     void SendCurrentProgramStepInfo(const QString& StepName, const QTime& CurRemainingTime);
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
-    void SendParaffinBathStatus(const QString& ParaffinBathID, DataManager::ParaffinBathStatusType_t StatusType);
     void SendProgramEndDateTime(const QDateTime& EndDateTime);
     void SendRetortLock(bool IsLock);
     void SendRetortLockStatus(bool IsLocked);

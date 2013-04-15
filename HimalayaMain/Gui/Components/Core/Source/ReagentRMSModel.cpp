@@ -109,8 +109,8 @@ void CReagentRMSModel::UpdateReagentList()
             DataManager::CReagentGroup *p_ReagentGroup=mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID());
             QString GroupName  =p_ReagentGroup->GetReagentGroupName();
             bool Check = false;
-             Check = (GroupName == QString("Cleaning solvent")  || \
-                           GroupName == QString("Clearing alcohol")  ||\
+             Check = (GroupName == QString("Cleaning Solvent")  || \
+                           GroupName == QString("Cleaning Alcohol")  ||\
                            GroupName == QString("Cleaning water"));
 
             if (p_Reagent) {

@@ -1435,15 +1435,6 @@ void CDataConnector::SendProgramAction(const QString& ProgramID, DataManager::Pr
     mp_WaitDialog->show();
 }
 
-void CDataConnector::SendParaffinBathStatus(const QString& ParaffinBathID, DataManager::ParaffinBathStatusType_t StatusType)
-{
-    MsgClasses::CmdParaffinBathStatus Command(1000, ParaffinBathID, StatusType);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
-    mp_WaitDialog->SetTimeout(10000);
-    mp_WaitDialog->show();
-}
 
 void CDataConnector::SendProgramEndDateTime(const QDateTime& EndDateTime)
 {
@@ -1629,6 +1620,7 @@ void CDataConnector::ProgramStartReadyHandler(Global::tRefType Ref, const MsgCla
 
 void CDataConnector::ParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdParaffinBathStatus & Command)
 {
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
 
 }
 
