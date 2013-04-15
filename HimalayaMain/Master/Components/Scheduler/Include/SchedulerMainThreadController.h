@@ -135,6 +135,8 @@ typedef enum
          bool PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd);
          bool GetNextProgramStepInformation(const QString& ProgramID, ProgramStepInfor& ProgramStepInfor);
          quint32 GetLeftProgramNeededTime(const QString& ProgramID);
+         quint32 GetCurrentProgramNeededTime(const QString& ProgramID);
+
          RVPosition_t GetRVTubePositionByStationID(const QString stationID);
          RVPosition_t GetRVSealPositionByStationID(const QString stationID);
 
