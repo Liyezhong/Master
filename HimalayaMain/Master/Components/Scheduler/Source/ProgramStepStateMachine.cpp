@@ -5,6 +5,8 @@ namespace Scheduler
 
 ProgramStepStateMachine::ProgramStepStateMachine()
 {
+    m_PreviousState = PSSM_UNDEF;
+
     mp_ProgramStepStateMachine = new QStateMachine();
     mp_PssmInit = new QState(mp_ProgramStepStateMachine);
     mp_PssmReadyToHeatLevelSensorS1 = new QState(mp_ProgramStepStateMachine);
@@ -17,6 +19,8 @@ ProgramStepStateMachine::ProgramStepStateMachine()
     mp_PssmSoak = new QState(mp_ProgramStepStateMachine);
     mp_PssmFinish = new QFinalState(mp_ProgramStepStateMachine);
     mp_PssmError = new QState(mp_ProgramStepStateMachine);
+    mp_PssmPause = new QState(mp_ProgramStepStateMachine);
+    mp_PssmPauseDrain = new QState(mp_ProgramStepStateMachine);
 
     mp_ProgramStepStateMachine->setInitialState(mp_PssmInit);
     mp_PssmInit->addTransition(this, SIGNAL(TempsReady()), mp_PssmReadyToHeatLevelSensorS1);
@@ -37,6 +41,26 @@ ProgramStepStateMachine::ProgramStepStateMachine()
     mp_PssmReadyToFill->addTransition(this, SIGNAL(Error()), mp_PssmError);
     mp_PssmReadyToDrain->addTransition(this, SIGNAL(Error()), mp_PssmError);
     mp_PssmSoak->addTransition(this, SIGNAL(Error()), mp_PssmError);
+
+    mp_PssmInit->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
+    mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
+    mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
+    mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
+    mp_PssmReadyToSeal->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
+    mp_PssmReadyToFill->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
+    mp_PssmSoak->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
+
+    mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPauseDrain);
+    mp_PssmReadyToDrain->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPauseDrain);
+
+    mp_PssmPause->addTransition(this, SIGNAL(ResumeToInit()), mp_PssmInit);
+    mp_PssmPause->addTransition(this, SIGNAL(ResumeToHeatLevelSensorS1()), mp_PssmReadyToHeatLevelSensorS1);
+    mp_PssmPause->addTransition(this, SIGNAL(ResumeToHeatLevelSensorS2()), mp_PssmReadyToHeatLevelSensorS2);
+    mp_PssmPause->addTransition(this, SIGNAL(ResumeToReadyToFill()), mp_PssmReadyToFill);
+    mp_PssmPause->addTransition(this, SIGNAL(ResumeToReadyToSoak()), mp_PssmSoak);
+
+    mp_PssmPauseDrain->addTransition(this, SIGNAL(ResumeToReadyToTubeAfter()), mp_PssmReadyToTubeAfter);
+
 
     connect(mp_PssmInit, SIGNAL(entered()), this, SIGNAL(OnInit()));
     connect(mp_PssmReadyToHeatLevelSensorS1, SIGNAL(entered()), this, SIGNAL(OnHeatLevelSensorTempS1()));
@@ -59,6 +83,9 @@ ProgramStepStateMachine::ProgramStepStateMachine()
     connect(mp_PssmReadyToDrain, SIGNAL(entered()), this, SLOT(OnStateChanged()));
     connect(mp_PssmFinish, SIGNAL(entered()), this, SLOT(OnStateChanged()));
     connect(mp_PssmError, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmPause, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+
 
 }
 
@@ -75,6 +102,8 @@ ProgramStepStateMachine::~ProgramStepStateMachine()
     delete  mp_PssmSoak;
     delete  mp_PssmFinish;
     delete  mp_PssmError;
+    delete  mp_PssmPause;
+    delete  mp_PssmPauseDrain;
     delete  mp_ProgramStepStateMachine;
 }
 
@@ -133,6 +162,61 @@ void ProgramStepStateMachine::NotifyError()
     emit Error();
 }
 
+void ProgramStepStateMachine::NotifyPause(ProgramStepStateMachine_t PreviousState)
+{
+   m_PreviousState = PreviousState;
+   emit Pause(PreviousState);
+}
+
+void ProgramStepStateMachine::NotifyResume()
+{
+    //emit Resume(m_PreviousState);
+    if( m_PreviousState == (PSSM_INIT))
+    {
+        emit ResumeToInit();
+    }
+    else if(m_PreviousState == (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1))
+    {
+         //str = " PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1";
+    }
+    else if(m_PreviousState == (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2))
+    {
+        // str = " PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2";
+    }
+    else if(m_PreviousState == (PSSM_READY_TO_TUBE_BEFORE))
+    {
+        // str = " PSSM_READY_TO_TUBE_BEFORE";
+    }
+    else if(m_PreviousState == (PSSM_READY_TO_TUBE_AFTER))
+    {
+        // str = " PSSM_READY_TO_TUBE_AFTER";
+    }
+    else if(m_PreviousState == (PSSM_READY_TO_FILL))
+    {
+       //  str = " PSSM_READY_TO_FILL";
+    }
+    else if(m_PreviousState == (PSSM_READY_TO_SEAL))
+    {
+        // str = " PSSM_READY_TO_SEAL";
+    }
+    else if(m_PreviousState == (PSSM_SOAK))
+    {
+        // str = " PSSM_SOAK";
+    }
+    else if(m_PreviousState == (PSSM_READY_TO_DRAIN))
+    {
+        // str = " PSSM_READY_TO_DRAIN";
+    }
+    else if(m_PreviousState == (PSSM_FINISH))
+    {
+        // str = " PSSM_FINISH";
+    }
+    else if(m_PreviousState == (PSSM_ERROR))
+    {
+         //str = " PSSM_ERROR";
+    }
+}
+
 ProgramStepStateMachine_t ProgramStepStateMachine::GetCurrentState()
 {
     if(mp_ProgramStepStateMachine->configuration().contains(mp_PssmInit))
@@ -179,6 +263,11 @@ ProgramStepStateMachine_t ProgramStepStateMachine::GetCurrentState()
     {
         return PSSM_ERROR;
     }
+}
+
+ProgramStepStateMachine_t ProgramStepStateMachine::GetPreviousState()
+{
+    return m_PreviousState;
 }
 
 void ProgramStepStateMachine::OnStateChanged()
@@ -228,6 +317,18 @@ void ProgramStepStateMachine::OnStateChanged()
     else if(curState == (PSSM_ERROR))
     {
          str = " PSSM_ERROR";
+    }
+    else if(curState == PSSM_PAUSE)
+    {
+         str = " PSSM_PAUSE";
+    }
+    else if(curState == PSSM_PAUSE_DRAIN)
+    {
+         str = " PSSM_PAUSE_DRAIN";
+    }
+    else
+    {
+         str = "UNKNOWEN STATE";
     }
     qDebug() << "Program step state machine enter:" << str;
 }

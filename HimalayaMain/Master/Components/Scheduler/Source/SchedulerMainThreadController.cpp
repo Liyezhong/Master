@@ -244,7 +244,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     ProgramStepStateMachine_t stepState = mp_ProgramStepStateMachine->GetCurrentState();
     if(PSSM_INIT == stepState)
     {
-        if(CheckStepTemperature())
+        if(CTRL_CMD_PAUSE == ctrlCmd)
+        {
+           mp_ProgramStepStateMachine->NotifyPause(PSSM_INIT);
+        }
+        else if(CheckStepTemperature())
         {
             mp_ProgramStepStateMachine->NotifyTempsReady();
         }
@@ -378,6 +382,18 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
     }
+    else if(PSSM_PAUSE == stepState)
+    {
+        if(CTRL_CMD_START == ctrlCmd)
+        {
+            // resume the program
+            mp_ProgramStepStateMachine->NotifyResume();
+        }
+    }
+    else if(PSSM_PAUSE_DRAIN == stepState)
+    {
+    }
+
 
 }
 

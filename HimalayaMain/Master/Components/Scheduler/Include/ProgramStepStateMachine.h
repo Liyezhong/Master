@@ -20,7 +20,10 @@ typedef enum
     PSSM_READY_TO_TUBE_AFTER,
     PSSM_READY_TO_DRAIN,
     PSSM_FINISH,
-    PSSM_ERROR
+    PSSM_PAUSE,
+    PSSM_PAUSE_DRAIN,
+    PSSM_ERROR,
+    PSSM_UNDEF
 } ProgramStepStateMachine_t;
 
 
@@ -31,6 +34,8 @@ public:
     ProgramStepStateMachine();
     ~ProgramStepStateMachine();
     ProgramStepStateMachine_t GetCurrentState();
+    ProgramStepStateMachine_t GetPreviousState();
+
     void Start();
     void NotifyTempsReady();
     void NotifyLevelSensorTempS1Ready();
@@ -42,7 +47,8 @@ public:
     void NotifyHitTubeAfter();
     void NotifyDrainFinished();
     void NotifyError();
-
+    void NotifyPause(ProgramStepStateMachine_t PreviousState);
+    void NotifyResume();
 signals:
     void TempsReady();
     void LevelSensorTempS1Ready();
@@ -54,6 +60,14 @@ signals:
     void HitTubeAfter();
     void DrainFinished();
     void Error();
+    void Pause(ProgramStepStateMachine_t PreviousState);
+    void ResumeToInit();
+    void ResumeToHeatLevelSensorS1();
+    void ResumeToHeatLevelSensorS2();
+    void ResumeToReadyToFill();
+    void ResumeToSoak();
+    void ResumeToReadyToTubeAfter();
+    void Abort();
 
     void OnInit();
     void OnHeatLevelSensorTempS1();
@@ -79,8 +93,11 @@ private:
     QState* mp_PssmReadyToFill;
     QState* mp_PssmReadyToDrain;
     QState* mp_PssmSoak;
+    QState* mp_PssmPause;
+    QState* mp_PssmPauseDrain;
     QFinalState* mp_PssmFinish;
     QState* mp_PssmError;
+    ProgramStepStateMachine_t m_PreviousState;
 
 };
 
