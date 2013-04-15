@@ -299,8 +299,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
         static qint64 lastPVTime = 0;
         //todo: 1/10 the time
-        //qint32 period = m_CurProgramStepInfo.durationInSeconds * 1000;
-        qint32 period = m_CurProgramStepInfo.durationInSeconds * 20;
+        qint32 period = m_CurProgramStepInfo.durationInSeconds * 1000;
+        //qint32 period = m_CurProgramStepInfo.durationInSeconds * 20;
         if((now - m_CurStepSoakStartTime) > (period))
         {
             mp_ProgramStepStateMachine->NotifySoakFinished();
@@ -369,6 +369,13 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             //program finished
             qDebug() << "Program finished!";
             m_SchedulerMachine->SendRunComplete();
+            //todo: tell main controller that program is complete
+            //send command to main controller to tell the left time
+            QTime leftTime(0,0,0);
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", leftTime));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
     }
 
@@ -650,9 +657,63 @@ quint32 SchedulerMainThreadController::GetLeftProgramNeededTime(const QString& P
         }
         leftTime += 5 +  2 * 2; //suppose RV need 5 seconds to move to the target station, and movment between tube and its seal need 2 seconds.
         leftTime += 60; //suppose need 60 seconds to fill
-        leftTime += 40; //suppose need 50 seconds to drain
+        leftTime += 40; //suppose need 40 seconds to drain
         leftTime += 20; //suppose need 20 seconds to heat level sensor
         iter++;
+    }
+    return leftTime;
+}
+
+quint32 SchedulerMainThreadController::GetCurrentProgramNeededTime(const QString& ProgramID)
+{
+    quint32 leftTime = 0;
+    if (!mp_DataManager)
+    {
+        Q_ASSERT(false);
+        return 0;//error handling
+    }
+
+    CDataProgramList* pDataProgramList = mp_DataManager->GetProgramList();
+    if (!pDataProgramList)
+    {
+        Q_ASSERT(false);
+        return 0;
+    }
+
+    CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
+    ListOfProgramSteps_t* programSteps = pProgram->GetStepList();
+
+    QString programStepID("");
+    if (m_CurProgramStepID.isEmpty())
+    {
+        programStepID = "0";
+    }
+    else
+    {
+        programStepID = m_CurProgramStepID ;
+    }
+
+
+    ListOfProgramSteps_t::iterator iter = programSteps->find(programStepID);
+    if (iter != programSteps->end())
+    {
+        CProgramStep* pProgramStep = iter.value();
+        quint32 soakTime = pProgramStep->GetDurationInSeconds();
+        leftTime += soakTime;
+        bool isPressure = (pProgramStep->GetPressure() == "On");
+        bool isVaccum = (pProgramStep->GetVacuum() == "On");
+        if (isPressure ^ isVaccum)
+        {
+            leftTime += 30;//suppose pressure or vaccum need 30 seconds to build up
+        }
+        else if(isPressure && isVaccum)
+        {
+            leftTime += 30 * (soakTime / 60); //suppose P/V take turns in 1 min, and each takes 30 seconds to build up
+        }
+        leftTime += 5 +  2 * 2; //suppose RV need 5 seconds to move to the target station, and movment between tube and its seal need 2 seconds.
+        leftTime += 60; //suppose need 60 seconds to fill
+        leftTime += 40; //suppose need 40 seconds to drain
+        leftTime += 20; //suppose need 20 seconds to heat level sensor
     }
     return leftTime;
 }
