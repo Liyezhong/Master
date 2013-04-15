@@ -157,6 +157,7 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
                 if(CheckPreConditionsToPauseProgram())
                 {
                     m_ProgramCurrentAction = DataManager::PROGRAM_PAUSE;
+                    mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction);
 
                 } else {
                     // Take Necessary Action
@@ -207,8 +208,11 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
         mp_MessageDlg->SetText(tr("Do you want to Start the Program with Expired Reagents."));
         mp_MessageDlg->SetButtonText(1, tr("OK"));
         mp_MessageDlg->HideButtons();    // Hiding First Two Buttons in the Message Dialog
-        mp_MessageDlg->Show();
         CONNECTSIGNALSLOT(mp_MessageDlg, ButtonRightClicked(), this, OnProgramStartConfirmation());
+        mp_MessageDlg->exec();
+        mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
+        m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
+
         return true;
 
     }
@@ -219,7 +223,7 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
 
 bool CDashboardWidget::CheckPreConditionsToPauseProgram()
 {
-    return false;
+    return true;
 
 }
 
