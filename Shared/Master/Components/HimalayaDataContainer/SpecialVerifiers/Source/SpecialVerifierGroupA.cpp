@@ -276,22 +276,17 @@ bool CSpecialVerifierGroupA::CheckData()
          j= temp;
      }
 
-     int arr[]={1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1,
-                   1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1,
-                      1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1,
-                         1, 1, 1, 1, 0, 0, 0, 1, 1, 0,
-                            1, 1, 0, 0, 0, 0, 0, 1, 0,      //paraffin
-                               1, 1, 0, 0, 0, 1, 1, 0,
-                                  1, 1, 1, 1, 1, 0, 1,      //Cleaning alcohol
-                                     1, 1, 1, 1, 0, 1,
-                                        1, 1, 1, 0, 1,
-                                           1, 1, 0, 1,      //water
-                                              1, 1, 1,
-                                                 1, 0,
-                                                    1};
+     int arr[]={1, 1, 0, 0, 0, 0, 0, 1,
+                   1, 1, 1, 0, 0, 0, 1,//water
+                      1, 1, 0, 0, 0, 1,//dehydrating,diluted
+                         1, 1, 0, 0, 1,
+                            1, 1, 1, 0, //clearing
+                               1, 1, 0,
+                                  1, 1,
+                                     1};
 
      int index = 0;
-     index = (28 - i) * i / 2 + (j - i);//[(n + 1) + (n - i + 1)] * i / 2 + (j - i);int n = 13;//the dimention of array
+     index = (18 - i) * i / 2 + (j - i);//[(n + 1) + (n - i + 1)] * i / 2 + (j - i);int n = 8;//the dimention of array
     if (1 == arr[index])
        return true;
     else
