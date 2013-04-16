@@ -172,11 +172,11 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
     RegisterCommandForProcessing<NetCommands::CmdExternalProcessState, HimalayaMasterThreadController>
             (&HimalayaMasterThreadController::ExternalProcessConnectionHandler, this);
 
-  //EventHandler Commands
-        RegisterCommandForProcessing<NetCommands::CmdSystemAction, HimalayaMasterThreadController>
-                (&HimalayaMasterThreadController::EventCmdSystemAction,this);
-        RegisterAcknowledgeForProcessing<Global::AckOKNOK, HimalayaMasterThreadController>
-                (&HimalayaMasterThreadController::OnAckOKNOK, this);
+    //EventHandler Commands
+    RegisterCommandForProcessing<NetCommands::CmdSystemAction, HimalayaMasterThreadController>
+        (&HimalayaMasterThreadController::EventCmdSystemAction,this);
+    RegisterAcknowledgeForProcessing<Global::AckOKNOK, HimalayaMasterThreadController>
+        (&HimalayaMasterThreadController::OnAckOKNOK, this);
     }
     catch (...) {
         qDebug()<<"Create And Initialize Failed";

@@ -107,12 +107,7 @@ void CReagentRMSModel::UpdateReagentList()
             DataManager::CReagent *p_Reagent = NULL;
             p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(i));
             DataManager::CReagentGroup *p_ReagentGroup=mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID());
-            QString GroupName  =p_ReagentGroup->GetReagentGroupName();
-            bool Check = false;
-             Check = (GroupName == QString("Cleaning Solvent")  || \
-                           GroupName == QString("Cleaning Alcohol")  ||\
-                           GroupName == QString("Cleaning water"));
-
+            bool Check = p_ReagentGroup->IsCleaningReagentGroup();
             if (p_Reagent) {
                 if ((p_Reagent->GetReagentType() != LEICA_REAGENT || (!m_FilterLeicaReagent)) \
                        && Check == false && m_CleaningReagent == false){

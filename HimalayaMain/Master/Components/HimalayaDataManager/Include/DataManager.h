@@ -72,6 +72,7 @@ public:
     CDataReagentList* GetReagentList();
 
     CUserSettingsInterface* GetUserSettingsInterface();
+    CHimalayaUserSettings* GetUserSettings();
     CDeviceConfigurationInterface* GetDeviceConfigurationInterface();
     CProgramCommandInterface *mp_ProgramCommandInterface; //!< Handles commands related to program container
 

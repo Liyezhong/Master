@@ -36,7 +36,8 @@ namespace DataManager {
  *  \brief Constructor
  */
 /****************************************************************************/
-CReagentGroup::CReagentGroup() :m_GroupID(""), m_GroupName(""),m_Color("")
+CReagentGroup::CReagentGroup() :m_GroupID(""), m_GroupName(""),m_Color(""),
+                                m_IsCleaningReagentGroup(false)
 {
 
 }
@@ -47,7 +48,8 @@ CReagentGroup::CReagentGroup() :m_GroupID(""), m_GroupName(""),m_Color("")
  *  \iparam ID
  */
 /****************************************************************************/
-CReagentGroup::CReagentGroup(const QString ID) :m_GroupID(ID), m_GroupName(""),m_Color("")
+CReagentGroup::CReagentGroup(const QString ID) :m_GroupID(ID), m_GroupName(""),m_Color(""),
+                                                m_IsCleaningReagentGroup(false)
 {
 }
 
@@ -92,6 +94,11 @@ bool CReagentGroup::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Com
     XmlStreamWriter.writeAttribute("ID", GetGroupID());
     XmlStreamWriter.writeAttribute("Name", GetReagentGroupName());
     XmlStreamWriter.writeAttribute("Color", GetGroupColor());
+    if (m_IsCleaningReagentGroup)
+        XmlStreamWriter.writeAttribute("CleaningReagentGroup", "True");
+    else
+        XmlStreamWriter.writeAttribute("CleaningReagentGroup", "false");
+
 
         //======NODE=======Temporary Data Variables=========================
         if(CompleteData) {
@@ -142,6 +149,22 @@ bool CReagentGroup::DeserializeContent(QXmlStreamReader& XmlStreamReader,bool Co
         return false;
     }
     SetGroupColor(XmlStreamReader.attributes().value("Color").toString());
+
+    // Is CleaningReagentGroup
+    if (!XmlStreamReader.attributes().hasAttribute("CleaningReagentGroup")) {
+        qDebug() << "### attribute <CleaningReagentGroup> is missing => abort reading";
+//        Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+//                                                   Global::tTranslatableStringList() << "Reagent-Name", true);
+        return false;
+    }
+
+    if (XmlStreamReader.attributes().value("CleaningReagentGroup").toString().toUpper() == "TRUE") {
+        m_IsCleaningReagentGroup = true;
+    }
+    else {
+        m_IsCleaningReagentGroup = false;
+    }
+
 
     //======NODE=======Temporary Data Variables=========================
     if(CompleteData) {

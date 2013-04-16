@@ -308,6 +308,15 @@ CUserSettingsInterface *CDataManager::GetUserSettingsInterface()
     return mp_DataContainer->SettingsInterface;
 }
 
+CHimalayaUserSettings* CDataManager::GetUserSettings()
+{
+    if (m_IsInitialized != true) {
+        qDebug() << "CDataManager::GetUserSettingsInterface failed. Not initialized!";
+        return NULL;
+    }
+    return mp_DataContainer->SettingsInterface->GetUserSettings();
+}
+
 CDeviceConfigurationInterface *CDataManager::GetDeviceConfigurationInterface()
 {
     if (m_IsInitialized != true) {

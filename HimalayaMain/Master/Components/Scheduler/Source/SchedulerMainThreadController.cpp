@@ -783,6 +783,25 @@ void SchedulerMainThreadController::OnActionCommandReceived(Global::tRefType Ref
     m_Mutex.unlock();
 }
 
+bool SchedulerMainThreadController::IsCleaningReagent(const QString& ReagentID)
+{
+    if (!mp_DataManager)
+    {
+        return false;
+        Q_ASSERT(0);
+    }
+
+    if (CDataReagentList* pReagentList =  mp_DataManager->GetReagentList())
+    {
+        const CReagent* pReagent = pReagentList->GetReagent(ReagentID);
+        if (CReagentGroup*  reagentGroup = mp_DataManager->GetReagentGroupList()->GetReagentGroup(pReagent->GetGroupID()))
+        {
+            return reagentGroup->IsCleaningReagentGroup();
+        }
+    }
+    return false;
+}
+
 QString SchedulerMainThreadController::GetStationIDFromReagentID(const QString& ReagentID, bool IsLastStep)
 {
     if (!mp_DataManager)
@@ -791,7 +810,18 @@ QString SchedulerMainThreadController::GetStationIDFromReagentID(const QString& 
     CDashboardDataStationList* pDashboardDataStationList = mp_DataManager->GetStationList();
     if (!pDashboardDataStationList)
         return "";
-    Global::RMSOptions_t rmsMode = Global::RMS_CASSETTES;//should get the actual information from DataManager later
+
+    DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
+    Global::RMSOptions_t rmsMode = Global::RMS_UNDEFINED;
+    if (this->IsCleaningReagent(ReagentID))
+    {
+        rmsMode = pUserSetting->GetModeRMSCleaning();
+    }
+    else
+    {
+        rmsMode = pUserSetting->GetModeRMSProcessing();
+    }
+
     if (CDataReagentList* pReagentList =  mp_DataManager->GetReagentList())
     {
         const CReagent* pReagent = pReagentList->GetReagent(ReagentID);
