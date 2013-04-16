@@ -110,6 +110,7 @@ typedef enum
         qreal m_TempRTSide;
         qreal m_TempOvenBottom;
         qreal m_TempOvenTop;
+        bool m_PauseToBeProcessed;
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         const SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.

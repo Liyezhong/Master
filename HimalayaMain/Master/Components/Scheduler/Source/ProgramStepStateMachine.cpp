@@ -42,22 +42,22 @@ ProgramStepStateMachine::ProgramStepStateMachine()
     mp_PssmReadyToDrain->addTransition(this, SIGNAL(Error()), mp_PssmError);
     mp_PssmSoak->addTransition(this, SIGNAL(Error()), mp_PssmError);
 
-    mp_PssmInit->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
-    mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
-    mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
-    mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
-    mp_PssmReadyToSeal->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
-    mp_PssmReadyToFill->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
-    mp_PssmSoak->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPause);
+    mp_PssmInit->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+    mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+    mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+    mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+    mp_PssmReadyToSeal->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+    mp_PssmReadyToFill->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+    mp_PssmSoak->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
 
-    mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPauseDrain);
-    mp_PssmReadyToDrain->addTransition(this, SIGNAL(Pause(ProgramStepStateMachine_t)), mp_PssmPauseDrain);
+    mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(Pause()), mp_PssmPauseDrain);
+    mp_PssmReadyToDrain->addTransition(this, SIGNAL(Pause()), mp_PssmPauseDrain);
 
     mp_PssmPause->addTransition(this, SIGNAL(ResumeToInit()), mp_PssmInit);
     mp_PssmPause->addTransition(this, SIGNAL(ResumeToHeatLevelSensorS1()), mp_PssmReadyToHeatLevelSensorS1);
     mp_PssmPause->addTransition(this, SIGNAL(ResumeToHeatLevelSensorS2()), mp_PssmReadyToHeatLevelSensorS2);
     mp_PssmPause->addTransition(this, SIGNAL(ResumeToReadyToFill()), mp_PssmReadyToFill);
-    mp_PssmPause->addTransition(this, SIGNAL(ResumeToReadyToSoak()), mp_PssmSoak);
+    mp_PssmPause->addTransition(this, SIGNAL(ResumeToSoak()), mp_PssmSoak);
 
     mp_PssmPauseDrain->addTransition(this, SIGNAL(ResumeToReadyToTubeAfter()), mp_PssmReadyToTubeAfter);
 
@@ -165,7 +165,7 @@ void ProgramStepStateMachine::NotifyError()
 void ProgramStepStateMachine::NotifyPause(ProgramStepStateMachine_t PreviousState)
 {
    m_PreviousState = PreviousState;
-   emit Pause(PreviousState);
+   emit Pause();
 }
 
 void ProgramStepStateMachine::NotifyResume()
@@ -177,35 +177,27 @@ void ProgramStepStateMachine::NotifyResume()
     }
     else if(m_PreviousState == (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1))
     {
-         //str = " PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1";
+        emit ResumeToHeatLevelSensorS1();
     }
     else if(m_PreviousState == (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2))
     {
-        // str = " PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2";
+        emit ResumeToHeatLevelSensorS2();
     }
     else if(m_PreviousState == (PSSM_READY_TO_TUBE_BEFORE))
     {
-        // str = " PSSM_READY_TO_TUBE_BEFORE";
-    }
-    else if(m_PreviousState == (PSSM_READY_TO_TUBE_AFTER))
-    {
-        // str = " PSSM_READY_TO_TUBE_AFTER";
+        emit ResumeToReadyToFill();
     }
     else if(m_PreviousState == (PSSM_READY_TO_FILL))
     {
-       //  str = " PSSM_READY_TO_FILL";
+        emit ResumeToReadyToFill();
     }
     else if(m_PreviousState == (PSSM_READY_TO_SEAL))
     {
-        // str = " PSSM_READY_TO_SEAL";
+        emit ResumeToSoak();
     }
     else if(m_PreviousState == (PSSM_SOAK))
     {
-        // str = " PSSM_SOAK";
-    }
-    else if(m_PreviousState == (PSSM_READY_TO_DRAIN))
-    {
-        // str = " PSSM_READY_TO_DRAIN";
+        emit ResumeToSoak();
     }
     else if(m_PreviousState == (PSSM_FINISH))
     {
@@ -213,8 +205,26 @@ void ProgramStepStateMachine::NotifyResume()
     }
     else if(m_PreviousState == (PSSM_ERROR))
     {
-         //str = " PSSM_ERROR";
+        //str = " PSSM_ERROR";
     }
+    else
+    {
+        //should not enter here
+    }
+    m_PreviousState = PSSM_PAUSE;
+}
+
+void ProgramStepStateMachine::NotifyResumeDrain()
+{
+    if(m_PreviousState == (PSSM_READY_TO_TUBE_AFTER))
+    {
+        emit ResumeToReadyToTubeAfter();
+    }
+    else if(m_PreviousState == (PSSM_READY_TO_DRAIN))
+    {
+        emit ResumeToReadyToTubeAfter();
+    }
+    m_PreviousState = PSSM_PAUSE_DRAIN;
 }
 
 ProgramStepStateMachine_t ProgramStepStateMachine::GetCurrentState()
@@ -262,6 +272,18 @@ ProgramStepStateMachine_t ProgramStepStateMachine::GetCurrentState()
     else if(mp_ProgramStepStateMachine->configuration().contains(mp_PssmError))
     {
         return PSSM_ERROR;
+    }
+    else if(mp_ProgramStepStateMachine->configuration().contains(mp_PssmPause))
+    {
+        return PSSM_PAUSE;
+    }
+    else if(mp_ProgramStepStateMachine->configuration().contains(mp_PssmPauseDrain))
+    {
+        return PSSM_PAUSE_DRAIN;
+    }
+    else
+    {
+        return PSSM_UNDEF;
     }
 }
 
@@ -328,8 +350,10 @@ void ProgramStepStateMachine::OnStateChanged()
     }
     else
     {
+        //todo: log error here
          str = "UNKNOWEN STATE";
     }
     qDebug() << "Program step state machine enter:" << str;
 }
+
 }

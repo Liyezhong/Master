@@ -65,6 +65,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , mp_ProgramStepStateMachine(new ProgramStepStateMachine())
         , m_CurStepSoakStartTime(0)
         , m_CurReagnetName("")
+        , m_PauseToBeProcessed(false)
 {
 
 }
@@ -256,7 +257,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1 == stepState)
     {
         //todo: get data here
-        if(CheckLevelSensorTemperature(85))
+        if(CTRL_CMD_PAUSE == ctrlCmd)
+        {
+            mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1);
+        }
+        else if(CheckLevelSensorTemperature(85))
         {
             mp_ProgramStepStateMachine->NotifyLevelSensorTempS1Ready();
         }
@@ -264,90 +269,207 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2 == stepState)
     {
         //todo: get data here
-        if(CheckLevelSensorTemperature(85))
+        if(CTRL_CMD_PAUSE == ctrlCmd)
+        {
+           mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2);
+        }
+        else if(CheckLevelSensorTemperature(85))
         {
             mp_ProgramStepStateMachine->NotifyLevelSensorTempS2Ready();
         }
     }
     else if(PSSM_READY_TO_TUBE_BEFORE == stepState)
     {
-         // get current step tube position here
-         RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
-         if(m_PositionRV == targetPos)
-         {
-             mp_ProgramStepStateMachine->NotifyHitTubeBefore();
-         }
-    }
-    else if(PSSM_READY_TO_FILL == stepState)
-    {
-         if(retCode == DCL_ERR_DEV_AL_FILL_SUCCESS)
-         {
-             mp_ProgramStepStateMachine->NotifyFillFinished();
-         }
-         else if(retCode != DCL_ERR_UNDEFINED)
-         {
-            //todo: error handling here
-         }
-    }
-    else if(PSSM_READY_TO_SEAL == stepState)
-    {
-         //todo: get current step seal position here
-         RVPosition_t targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
-         if(m_PositionRV == targetPos)
-         {
-             mp_ProgramStepStateMachine->NotifyHitSeal();
-         }
-    }
-    else if(PSSM_SOAK == stepState)
-    {
-        qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
-        static qint64 lastPVTime = 0;
-        //todo: 1/10 the time
-        qint32 period = m_CurProgramStepInfo.durationInSeconds * 1000;
-        //qint32 period = m_CurProgramStepInfo.durationInSeconds * 20;
-        if((now - m_CurStepSoakStartTime) > (period))
+        // get current step tube position here
+        RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+        if(m_PositionRV == targetPos)
         {
-            mp_ProgramStepStateMachine->NotifySoakFinished();
+            if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
+            {
+                mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_TUBE_BEFORE);
+                m_PauseToBeProcessed = false;
+            }
+            else
+            {
+                mp_ProgramStepStateMachine->NotifyHitTubeBefore();
+            }
         }
         else
         {
-            if(m_CurProgramStepInfo.isPressure && m_CurProgramStepInfo.isVacuum)
+            if(CTRL_CMD_PAUSE == ctrlCmd)
             {
-                // P/V take turns in 1 minute
-                if((now - lastPVTime)>60000)
+                m_PauseToBeProcessed = true;
+            }
+        }
+    }
+    else if(PSSM_READY_TO_FILL == stepState)
+    {
+        if(CTRL_CMD_PAUSE == ctrlCmd)
+        {
+            mp_IDeviceProcessing->ALAllStop();
+            mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_FILL);
+        }
+        else if(DCL_ERR_DEV_AL_FILL_SUCCESS == retCode)
+        {
+            mp_ProgramStepStateMachine->NotifyFillFinished();
+        }
+        else if(retCode != DCL_ERR_UNDEFINED)
+        {
+            //todo: error handling here
+        }
+    }
+    else if(PSSM_READY_TO_SEAL == stepState)
+    {
+        RVPosition_t targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+        if(m_PositionRV == targetPos)
+        {
+            if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
+            {
+                mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_SEAL);
+                m_PauseToBeProcessed = false;
+            }
+            else
+            {
+                mp_ProgramStepStateMachine->NotifyHitSeal();
+            }
+        }
+        else
+        {
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                m_PauseToBeProcessed = true;
+            }
+        }
+    }
+    else if(PSSM_SOAK == stepState)
+    {
+    static qint64 lastPVTime = 0;
+        if(CTRL_CMD_PAUSE == ctrlCmd)
+        {
+            if(m_CurProgramStepInfo.isPressure || m_CurProgramStepInfo.isVacuum)
+            {
+                mp_IDeviceProcessing->ALAllStop();
+                lastPVTime = 0;
+            }
+            mp_ProgramStepStateMachine->NotifyPause(PSSM_SOAK);
+        }
+        else
+        {
+            qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
+            //todo: 1/10 the time
+            qint32 period = m_CurProgramStepInfo.durationInSeconds * 1000;
+            //qint32 period = m_CurProgramStepInfo.durationInSeconds * 20;
+            if((now - m_CurStepSoakStartTime) > (period))
+            {
+                mp_ProgramStepStateMachine->NotifySoakFinished();
+                m_CurStepSoakStartTime = 0;
+            }
+            else
+            {
+                if(m_CurProgramStepInfo.isPressure && m_CurProgramStepInfo.isVacuum)
                 {
-                    if(((now - m_CurStepSoakStartTime)/60000)%2 == 0)
+                    // P/V take turns in 1 minute
+                    if((now - lastPVTime)>60000)
                     {
-                        Pressure();
+                        if(((now - m_CurStepSoakStartTime)/60000)%2 == 0)
+                        {
+                            Pressure();
+                        }
+                        else
+                        {
+                            Vaccum();
+                        }
+                        lastPVTime = now;
                     }
-                    else
-                    {
-                        Vaccum();
-                    }
-                    lastPVTime = now;
                 }
             }
         }
     }
     else if(PSSM_READY_TO_TUBE_AFTER == stepState)
     {
-         //get current step tube position here
-         RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
-         if(m_PositionRV == targetPos)
-         {
-             mp_ProgramStepStateMachine->NotifyHitTubeAfter();
-         }
+
+        // get current step tube position here
+        RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+        if(m_PositionRV == targetPos)
+        {
+            if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
+            {
+                RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+                if(RV_UNDEF != sealPos)
+                {
+                    CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_IDeviceProcessing, this);
+                    cmd->SetRVPosition(sealPos);
+                    m_SchedulerCommandProcessor->pushCmd(cmd);
+                }
+                else
+                {
+                    //todo: error handling
+                    qDebug()<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
+                }
+            }
+            else
+            {
+                mp_ProgramStepStateMachine->NotifyHitTubeAfter();
+            }
+        }
+        else
+        {
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                m_PauseToBeProcessed = true;
+            }
+            if(m_PauseToBeProcessed)
+            {
+                RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+                if(m_PositionRV == sealPos)
+                {
+                    mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_TUBE_AFTER);
+                    m_PauseToBeProcessed = false;
+
+                }
+            }
+        }
     }
     else if(PSSM_READY_TO_DRAIN == stepState)
     {
-         if(retCode == DCL_ERR_DEV_AL_DRAIN_SUCCESS)
-         {
-             mp_ProgramStepStateMachine->NotifyDrainFinished();
-         }
-         else if(retCode != DCL_ERR_UNDEFINED)
-         {
+        if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
+        {
+            if(m_PauseToBeProcessed)
+            {
+                RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+                if(m_PositionRV == sealPos)
+                {
+                    //release pressure
+                    mp_IDeviceProcessing->ALAllStop();
+                    m_PauseToBeProcessed = false;
+                    mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_DRAIN);
+                }
+            }
+            else
+            {
+                m_PauseToBeProcessed = true;
+                RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+                if(RV_UNDEF != sealPos)
+                {
+                    CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_IDeviceProcessing, this);
+                    cmd->SetRVPosition(sealPos);
+                    m_SchedulerCommandProcessor->pushCmd(cmd);
+                }
+                else
+                {
+                    //todo: error handling
+                    qDebug()<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
+                }
+            }
+        }
+        else if(DCL_ERR_DEV_AL_DRAIN_SUCCESS == retCode)
+        {
+            mp_ProgramStepStateMachine->NotifyDrainFinished();
+        }
+        else if(DCL_ERR_UNDEFINED != retCode)
+        {
             //todo: error handling here
-         }
+        }
     }
     else if(PSSM_FINISH == stepState)
     {
@@ -392,9 +514,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     }
     else if(PSSM_PAUSE_DRAIN == stepState)
     {
+        if(CTRL_CMD_START == ctrlCmd)
+        {
+            mp_ProgramStepStateMachine->NotifyResumeDrain();
+        }
     }
-
-
 }
 
 ControlCommandType_t SchedulerMainThreadController::ReceiveNonDeviceCommand()
@@ -1193,8 +1317,11 @@ void SchedulerMainThreadController::Fill()
 
 void SchedulerMainThreadController::Soak()
 {
-    m_CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-    qDebug() << "Start to soak, start time stamp is:" << m_CurStepSoakStartTime;
+    if(m_CurStepSoakStartTime == 0)
+    {
+        m_CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+        qDebug() << "Start to soak, start time stamp is:" << m_CurStepSoakStartTime;
+    }
     if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
     {
         if(m_CurProgramStepInfo.isPressure)

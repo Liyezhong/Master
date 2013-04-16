@@ -49,6 +49,8 @@ public:
     void NotifyError();
     void NotifyPause(ProgramStepStateMachine_t PreviousState);
     void NotifyResume();
+    void NotifyResumeDrain();
+
 signals:
     void TempsReady();
     void LevelSensorTempS1Ready();
@@ -60,7 +62,7 @@ signals:
     void HitTubeAfter();
     void DrainFinished();
     void Error();
-    void Pause(ProgramStepStateMachine_t PreviousState);
+    void Pause();
     void ResumeToInit();
     void ResumeToHeatLevelSensorS1();
     void ResumeToHeatLevelSensorS2();
