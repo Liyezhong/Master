@@ -146,7 +146,7 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
             case DataManager::PROGRAM_START:
             {
                 if (CheckPreConditionsToRunProgram()) {
-                    m_ProgramCurrentAction = DataManager::PROGRAM_START;
+
                 } else {
                     // Take Necessary Action
                 }
@@ -158,6 +158,8 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
                 {
                     m_ProgramCurrentAction = DataManager::PROGRAM_PAUSE;
                     mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction);
+                    m_ProgramNextAction = DataManager::PROGRAM_START;
+                    mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
 
                 } else {
                     // Take Necessary Action
@@ -258,6 +260,7 @@ void CDashboardWidget::OnProgramStartConfirmation()
 {
     qDebug() << " On Confirmation";
     // Send Command to Master
+    m_ProgramCurrentAction = DataManager::PROGRAM_START;
     mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction);
 
 }
