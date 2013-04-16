@@ -110,7 +110,8 @@ typedef enum
         qreal m_TempRTSide;
         qreal m_TempOvenBottom;
         qreal m_TempOvenTop;
-        bool m_PauseToBeProcessed;
+        QStringList m_UsedStationIDs;                                                 ///in a whole of program processing
+		bool m_PauseToBeProcessed;
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         const SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
@@ -127,6 +128,8 @@ typedef enum
         QString GetStationIDFromReagentID(const QString& ReagentID, bool IsLastStep = false);
         QString GetReagentName(const QString& ReagentID);
         bool IsCleaningReagent(const QString& ReagentID);
+        void UpdateStationReagentStatus();
+
         /****************************************************************************/
         /**
          *

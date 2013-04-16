@@ -38,6 +38,7 @@
 #include <Scheduler/Commands/Include/CmdRTUnlock.h>
 #include <HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
 //#include "Scheduler/Include/HimalayaHardwareSystemStateId.h"
 //#include "Scheduler/Commands/Include/CmdSystemState.h"
 
@@ -210,6 +211,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
     switch (ctrlCmd)
     {
     case CTRL_CMD_START:
+        m_UsedStationIDs.clear();
         m_CurProgramID = m_NewProgramID;
         m_NewProgramID = "";
         m_CurProgramStepID = "";
@@ -237,6 +239,38 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
         break;
     default:
         ;
+    }
+}
+
+void SchedulerMainThreadController::UpdateStationReagentStatus()
+{
+    MsgClasses::CmdUpdateStationReagentStatus* commandPtr = NULL;
+    DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
+    if (m_CurProgramID.at(0) != 'C')
+    {
+        Global::RMSOptions_t rmsMode = pUserSetting->GetModeRMSCleaning();
+        if (rmsMode == DataManager::RMS_CYCLES)
+        {
+            commandPtr = new MsgClasses::CmdUpdateStationReagentStatus(5000, m_UsedStationIDs, 0);
+        }
+    }
+    else //process reagent
+    {
+        Global::RMSOptions_t rmsMode = pUserSetting->GetModeRMSProcessing();
+        if (rmsMode == DataManager::RMS_CYCLES)
+        {
+            commandPtr = new MsgClasses::CmdUpdateStationReagentStatus(5000, m_UsedStationIDs, 0);
+        }
+        else
+        {
+            commandPtr = new MsgClasses::CmdUpdateStationReagentStatus(5000, m_UsedStationIDs, 100);//toDo: 100, should get the actual number
+        }
+    }
+
+    if(commandPtr)
+    {
+        Global::tRefType Ref = GetNewCommandRef();
+        SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
     }
 }
 
@@ -474,6 +508,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     else if(PSSM_FINISH == stepState)
     {
         //todo: start next program step or finish all program
+        m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
         qDebug()<< "step finished!";
         this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
         if(m_CurProgramStepID != "")
@@ -496,6 +531,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             qDebug() << "Program finished!";
             m_SchedulerMachine->SendRunComplete();
             //todo: tell main controller that program is complete
+            UpdateStationReagentStatus();
+
             //send command to main controller to tell the left time
             QTime leftTime(0,0,0);
             MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", leftTime));

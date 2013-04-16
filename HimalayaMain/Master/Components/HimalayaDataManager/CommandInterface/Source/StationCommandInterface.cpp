@@ -206,6 +206,7 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
          }
      }
 
+     //for update the qata in UI
      mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
      MsgClasses::CmdUpdateStationReagentStatus* p_Command = new MsgClasses::CmdUpdateStationReagentStatus(1000, Cmd.StationIDs(),
                                                                                                 Cmd.CassetteCount());

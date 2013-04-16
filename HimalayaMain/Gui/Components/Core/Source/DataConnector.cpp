@@ -830,6 +830,7 @@ void CDataConnector::UpdateStationSetAsFullHandler(Global::tRefType Ref, const M
 
 void CDataConnector::UpdateStationReagentStatus(Global::tRefType Ref, const MsgClasses::CmdUpdateStationReagentStatus &Command)
 {
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
     const QStringList& Ids = Command.StationIDs();
     for (int i = 0; i < Ids.count(); i++)
     {
@@ -854,12 +855,6 @@ void CDataConnector::UpdateStationReagentStatus(Global::tRefType Ref, const MsgC
             qDebug() << "UpdateStationReagentStatus Failed.";
         }
     }
-
-    mp_WaitDialog->accept();
-    //emit DashboardStationChangeReagent(Command.StationID());
-
-    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
-
 }
 
 /****************************************************************************/
