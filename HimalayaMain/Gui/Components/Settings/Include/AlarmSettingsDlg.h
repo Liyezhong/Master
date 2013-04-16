@@ -25,6 +25,7 @@
 #include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/ScrollWheel.h"
+#include "MainMenu/Include/SliderControl.h"
 #include <QButtonGroup>
 
 namespace Settings {
@@ -43,19 +44,19 @@ class CAlarmSettingsDlg : public MainMenu::CDialogFrame
     Q_OBJECT
 
 public:
-    explicit CAlarmSettingsDlg(bool Error, QWidget *p_Parent = 0);
-
-    CAlarmSettingsDlg();
-
     typedef enum {
         Information = 0,
         Warning = 1,
         Error
     } AlarmDialogType;
 
+    explicit CAlarmSettingsDlg(AlarmDialogType DialogType, QWidget *p_Parent = 0);
+
+    CAlarmSettingsDlg();
+
 
     ~CAlarmSettingsDlg();
-    void UpdateDisplay(qint32 Volume, qint32 Sound);
+    void UpdateDisplay(void);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
     bool m_Type;
 
@@ -78,7 +79,7 @@ public:
 
 private:
     Ui::CAlarmSettingsDlg *mp_Ui;   //!< User interface
-    MainMenu::CScrollWheel *mp_ScrollWheel; //!< Volume scroll wheel
+    MainMenu::CScrollWheel *mp_VolumeScrollWheel; //!< Volume scroll wheel
     MainMenu::CScrollWheel *mp_SoundScrollWheel; //!< Volume scroll wheel
     MainMenu::CScrollWheel *mp_SecondWheel;   //!< Second scroll wheel
      MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
@@ -98,6 +99,7 @@ protected:
     void showEvent(QEvent *p_Event);
 
 private slots:
+    void OnPeriodicChanged(MainMenu::CSliderControl::Position_t Position);
     void OnProcessStateChanged();
     void OnApply();
     void OnPlayTone();

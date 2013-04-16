@@ -97,11 +97,14 @@ void CLanguageWidget::SetLanguages(QStringList LanguageList)
     m_LanguageList = LanguageList;
     for (int i = 0; i < m_LanguageList.count(); i++) {
         QString LanguageName = m_LanguageList.at(i);
-        QLocale Language;
-        Language = Global::StringToLanguage(LanguageName);
+
+        QLocale Language = Global::StringToLanguage(LanguageName);
         QString LangaugeNativeName = Language.nativeLanguageName();
-        QString FirstCharacter = LangaugeNativeName.at(0).toUpper();
-        LangaugeNativeName.replace(0, 1, FirstCharacter);
+        if (LangaugeNativeName.isEmpty())
+        {
+            continue;
+        }
+
         m_LanguageNativeNameList.append("   "+ LangaugeNativeName);
     }
     m_LanguageModel.SetLanguageList(m_LanguageNativeNameList);

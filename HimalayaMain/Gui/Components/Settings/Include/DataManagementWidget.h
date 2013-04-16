@@ -61,8 +61,8 @@ protected:
 
 
 private slots:
-    void ExportDialog();
-    void SaveUSBDialog();
+    void ServiceExportDialog();
+    void SaveToUSBDialog();
     void ImportDialog();
 
 signals:

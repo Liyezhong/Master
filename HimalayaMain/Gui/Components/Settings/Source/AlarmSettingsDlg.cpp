@@ -33,14 +33,13 @@ namespace Settings {
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CAlarmSettingsDlg::CAlarmSettingsDlg(bool Error, QWidget *p_Parent) :
-    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CAlarmSettingsDlg)
+CAlarmSettingsDlg::CAlarmSettingsDlg(AlarmDialogType DialogType, QWidget *p_Parent) :
+    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CAlarmSettingsDlg),
+    m_AlarmScreen(DialogType)
 {
-    char TypeLetter;
-
     mp_Ui->setupUi(GetContentFrame());
 
-    mp_ScrollWheel = new MainMenu::CScrollWheel;
+    mp_VolumeScrollWheel = new MainMenu::CScrollWheel;
     mp_SoundScrollWheel = new MainMenu::CScrollWheel;
     mp_SecondWheel = new MainMenu::CScrollWheel();
     mp_MinWheel = new MainMenu::CScrollWheel();
@@ -69,13 +68,22 @@ CAlarmSettingsDlg::CAlarmSettingsDlg(bool Error, QWidget *p_Parent) :
     }
     mp_SecondWheel->SetNonContinuous();
 
-    for (qint32 i = 0; i <= 9; i++) {
-        mp_ScrollWheel->AddItem(QString::number(i), i);
+    if (Error == m_AlarmScreen)
+    {
+        for (qint32 i = 2; i <= 9; i++) {
+            mp_VolumeScrollWheel->AddItem(QString::number(i), i);
+        }
     }
-    mp_ScrollWheel->SetNonContinuous();
-    mp_Ui->scrollPanel->AddScrollWheel(mp_ScrollWheel, 0);
+    else
+    {
+        for (qint32 i = 0; i <= 9; i++) {
+            mp_VolumeScrollWheel->AddItem(QString::number(i), i);
+        }
+    }
+    mp_VolumeScrollWheel->SetNonContinuous();
+    mp_Ui->scrollPanel->AddScrollWheel(mp_VolumeScrollWheel, 0);
 
-    for (qint32 i = 0; i <= 6; i++) {
+    for (qint32 i = 1; i <= 6; i++) {
         mp_SoundScrollWheel->AddItem(QString::number(i), i);
     }
     mp_SoundScrollWheel->SetNonContinuous();
@@ -85,6 +93,10 @@ CAlarmSettingsDlg::CAlarmSettingsDlg(bool Error, QWidget *p_Parent) :
     CONNECTSIGNALSLOT(mp_Ui->cancelButton, clicked(), this, reject());
     CONNECTSIGNALSLOT(mp_Ui->saveButton, clicked(), this , OnApply());
     CONNECTSIGNALSLOT(mp_Ui->testButton, clicked(), this, OnPlayTone());
+    CONNECTSIGNALSLOT(mp_Ui->periodic_onoffslider,
+                      positionChanged(MainMenu::CSliderControl::Position_t),
+                      this,
+                      OnPeriodicChanged(MainMenu::CSliderControl::Position_t));
 }
 
 
@@ -96,7 +108,7 @@ CAlarmSettingsDlg::CAlarmSettingsDlg(bool Error, QWidget *p_Parent) :
 CAlarmSettingsDlg::~CAlarmSettingsDlg()
 {
     try {
-        delete mp_ScrollWheel;
+        delete mp_VolumeScrollWheel;
         delete mp_SoundScrollWheel;
         delete mp_SecondWheel ;
         delete mp_MinWheel ;
@@ -150,52 +162,69 @@ void CAlarmSettingsDlg::showEvent(QEvent *p_Event)
  *  \iparam Sound = Selected alarm sound
  */
 /****************************************************************************/
-void CAlarmSettingsDlg::UpdateDisplay(qint32 Volume, qint32 Sound)
+void CAlarmSettingsDlg::UpdateDisplay(void)
 {
     int PeriodicTime;
 
     if(m_AlarmScreen == Information)  {
-        SetDialogTitle(tr("Edit Alarm Type 1 - Information"));
-        if(mp_UserSettings->GetValue("InformationTone_Periodic") == QString("off"))
-            mp_Ui->periodic_onoffslider->SetPosition(MainMenu::CSliderControl::PosRight);
+        SetDialogTitle(tr("Edit Information"));
 
+        // set volume and number
+        mp_VolumeScrollWheel->SetCurrentData(mp_UserSettings->GetSoundLevelInformation());
+        mp_SoundScrollWheel->SetCurrentData(mp_UserSettings->GetSoundNumberInformation());
+
+        // set periodic time
         PeriodicTime = mp_UserSettings->GetSoundPeriodicTimeInformation();
         mp_MinWheel->SetCurrentData((PeriodicTime/60));
         mp_SecondWheel->SetCurrentData((PeriodicTime%60));
 
-        mp_ScrollWheel->SetCurrentData(QString::number(mp_UserSettings->GetValue("InformationTone_Level").toInt()));
-        mp_SoundScrollWheel->SetCurrentData(QString::number(mp_UserSettings->GetValue("InformationTone_Number").toInt()));
-        if (mp_Ui->periodic_onoffslider->GetPosition() == MainMenu::CSliderControl::PosRight)
-            mp_Ui->periodictime_scrolltable->SetDisabled(true);
-        else
-            mp_Ui->periodictime_scrolltable->SetDisabled(false);
-    }
-
-    else if(m_AlarmScreen == Warning){
-        SetDialogTitle(tr("Edit Alarm Type 2 - Warning"));
-        if(mp_UserSettings->GetValue("WarningTone_Periodic") == QString("off"))
+        // set periodic on/off
+        if(!mp_UserSettings->GetSoundPeriodicInformation())
+        {
             mp_Ui->periodic_onoffslider->SetPosition(MainMenu::CSliderControl::PosRight);
+            mp_Ui->periodictime_scrolltable->SetDisabled(true);
+        }
+        else
+        {
+            mp_Ui->periodictime_scrolltable->SetDisabled(false);
+        }
+    }
+    else if(m_AlarmScreen == Warning){
+        SetDialogTitle(tr("Edit Warning"));
 
+        // set volume and number
+        mp_VolumeScrollWheel->SetCurrentData(mp_UserSettings->GetSoundLevelWarning());
+        mp_SoundScrollWheel->SetCurrentData(mp_UserSettings->GetSoundNumberWarning());
+
+        // set periodic time
         PeriodicTime = mp_UserSettings->GetSoundPeriodicTimeWarning();
         mp_MinWheel->SetCurrentData((PeriodicTime/60));
         mp_SecondWheel->SetCurrentData((PeriodicTime%60));
 
-        mp_ScrollWheel->SetCurrentData(mp_UserSettings->GetSoundLevelWarning());
-        mp_SoundScrollWheel->SetCurrentData(mp_UserSettings->GetSoundNumberWarning());
-        if (mp_Ui->periodic_onoffslider->GetPosition() == MainMenu::CSliderControl::PosRight)
+        // set periodic on/off
+        if(!mp_UserSettings->GetSoundPeriodicWarning())
+        {
+            mp_Ui->periodic_onoffslider->SetPosition(MainMenu::CSliderControl::PosRight);
             mp_Ui->periodictime_scrolltable->SetDisabled(true);
+        }
         else
+        {
             mp_Ui->periodictime_scrolltable->SetDisabled(false);
+        }
     }
-
     else if (m_AlarmScreen == Error) {
-        SetDialogTitle(tr("Edit Alarm Type 3 - Error"));
-         PeriodicTime = mp_UserSettings->GetSoundPeriodicTimeError();
+        SetDialogTitle(tr("Edit Error"));
+
+        // set volume and number
+        mp_VolumeScrollWheel->SetCurrentData(mp_UserSettings->GetSoundLevelError());
+        mp_SoundScrollWheel->SetCurrentData(mp_UserSettings->GetSoundNumberError());
+
+        // set periodic time
+        PeriodicTime = mp_UserSettings->GetSoundPeriodicTimeError();
         mp_MinWheel->SetCurrentData((PeriodicTime/60));
         mp_SecondWheel->SetCurrentData((PeriodicTime%60));
 
-        mp_ScrollWheel->SetCurrentData(mp_UserSettings->GetSoundLevelError());
-        mp_SoundScrollWheel->SetCurrentData(mp_UserSettings->GetSoundNumberError());
+        // hide periodic
         mp_Ui->periodic_onoffslider->hide();
         mp_Ui->label_periodic_2->hide();
         mp_Ui->label_periodicoff_2->hide();
@@ -271,11 +300,11 @@ void CAlarmSettingsDlg::OnApply()
 
     m_UserSettingsTemp = *mp_UserSettings;
     if (m_AlarmScreen == Information) {
-        m_UserSettingsTemp.SetValue("InformationTone_Level", mp_ScrollWheel->GetCurrentData().toInt());
+        m_UserSettingsTemp.SetSoundLevelInformation(mp_VolumeScrollWheel->GetCurrentData().toInt());
         //Adding one to checkedId  because , the id starts from zero
-        m_UserSettingsTemp.SetValue("InformationTone_Number", mp_SoundScrollWheel->GetCurrentData().toInt());
+        m_UserSettingsTemp.SetSoundNumberInformation(mp_SoundScrollWheel->GetCurrentData().toInt());
         // m_UserSettingsTemp.SetValue("InformationTone_PeriodicTime",mp_MinWheel->GetCurrentData().toInt());
-        mp_UserSettings->SetSoundPeriodicTimeInformation(PeriodicTime);
+        m_UserSettingsTemp.SetSoundPeriodicTimeInformation(PeriodicTime);
         if(mp_Ui->periodic_onoffslider->GetPosition() == MainMenu::CSliderControl::PosRight)
             m_UserSettingsTemp.SetSoundPeriodicInformation(false);
         else
@@ -283,7 +312,7 @@ void CAlarmSettingsDlg::OnApply()
 
     }
     if (m_AlarmScreen == Warning) {
-        m_UserSettingsTemp.SetSoundLevelWarning(mp_ScrollWheel->GetCurrentData().toInt());
+        m_UserSettingsTemp.SetSoundLevelWarning(mp_VolumeScrollWheel->GetCurrentData().toInt());
         //Adding one to checkedId  because , the id starts from zero
         m_UserSettingsTemp.SetSoundNumberWarning(mp_SoundScrollWheel->GetCurrentData().toInt());
         //m_UserSettingsTemp.SetValue("WarningTone_PeriodicTime",mp_MinWheel->GetCurrentData().toInt());
@@ -294,7 +323,7 @@ void CAlarmSettingsDlg::OnApply()
             m_UserSettingsTemp.SetSoundPeriodicWarning(true);
     }
     else if(m_AlarmScreen == Error){
-        m_UserSettingsTemp.SetSoundLevelError(mp_ScrollWheel->GetCurrentData().toInt());
+        m_UserSettingsTemp.SetSoundLevelError(mp_VolumeScrollWheel->GetCurrentData().toInt());
         //Adding one to checkedId  because , the id starts from zero
         m_UserSettingsTemp.SetSoundNumberError(mp_SoundScrollWheel->GetCurrentData().toInt());
         //m_UserSettingsTemp.SetValue("ErrorTone_PeriodicTime",mp_MinWheel->GetCurrentData().toInt());
@@ -325,8 +354,24 @@ void CAlarmSettingsDlg::OnPlayTone()
     else if(m_AlarmScreen == Warning){
         m_Type=false;
     }
-    emit PlayTestTone(mp_ScrollWheel->GetCurrentData().toInt(),(mp_SoundScrollWheel->GetCurrentData().toInt()), m_Type);
+    emit PlayTestTone(mp_VolumeScrollWheel->GetCurrentData().toInt(),(mp_SoundScrollWheel->GetCurrentData().toInt()), m_Type);
 }
 
+/****************************************************************************/
+/*!
+ *  \brief Called when the periodic slider is changed.
+ */
+/****************************************************************************/
+void CAlarmSettingsDlg::OnPeriodicChanged(MainMenu::CSliderControl::Position_t Position)
+{
+    if (MainMenu::CSliderControl::PosLeft == Position)
+    {
+        mp_Ui->periodictime_scrolltable->SetDisabled(false);
+    }
+    else
+    {
+        mp_Ui->periodictime_scrolltable->SetDisabled(true);
+    }
+}
 
 } // end namespace Settings

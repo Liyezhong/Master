@@ -76,6 +76,12 @@ private:
     bool m_ProcessRunning;                  //!< Process running state
     //UI related
 
+    // texts to be displayed on the widget
+    QString m_TextSound;
+    QString m_TextVolume;
+    QString m_TextPeriodicOff;
+    QString m_TextPeriodicTime;
+
 private slots:
     void OnNoteEdit();
     void OnWarningEdit();

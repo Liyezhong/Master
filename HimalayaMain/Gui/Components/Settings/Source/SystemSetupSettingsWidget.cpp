@@ -18,6 +18,7 @@
  */
 /****************************************************************************/
 
+#include <QMap>
 
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
@@ -35,6 +36,23 @@ namespace Settings {
 #define MIN_FARENHEIT_TEMP    122
 //! Maximal scroll wheel temperature in degree Fahrenheit
 #define MAX_FARENHEIT_TEMP    158
+
+QMap<int, int> GetTemperatureMap(int MinC, int MaxC, int StepC)
+{
+    QMap<int, int> MapTemp;
+    for (int Cel = MinC; Cel <= MaxC; Cel += StepC)
+    {
+        int Faren =
+                qRound(((static_cast<double>(Cel)  - 50.0) / 5.0) * 9.0) + 122;
+
+        MapTemp.insert(Faren, Cel);
+    }
+
+    return MapTemp;
+}
+
+static QMap<int, int> s_MapTemperature =
+        GetTemperatureMap(MIN_CENTIGRADE_TEMP, MAX_CENTIGRADE_TEMP, 1);
 
 
 /****************************************************************************/
@@ -128,9 +146,15 @@ void CSystemSetupSettingsWidget::InitTemperatureWidget()
         mp_Ui->scrollPanelWidget->SetSubtitle(QApplication::translate("CSystemSetupSettingsWidget", "\302\260C", 0, QApplication::UnicodeUTF8), 0);
     }
     else {
-        for (int i = MIN_FARENHEIT_TEMP; i <= MAX_FARENHEIT_TEMP; i += 1) {
-            mp_ScrollWheel->AddItem(QString::number(i).rightJustified(2, '0'), i);
+        for (QMap<int, int>::iterator itr = s_MapTemperature.begin();
+             s_MapTemperature.end() != itr;
+             ++itr)
+        {
+            mp_ScrollWheel->AddItem(
+                        QString::number(itr.key()).rightJustified(2, '0'),
+                        itr.value());
         }
+
         mp_Ui->scrollPanelWidget->SetSubtitle(QApplication::translate("CSystemSetupSettingsWidget", "\302\260F", 0, QApplication::UnicodeUTF8), 0);
     }
     mp_ScrollWheel->SetNonContinuous();
@@ -146,26 +170,22 @@ void CSystemSetupSettingsWidget::InitTemperatureWidget()
 /****************************************************************************/
 void CSystemSetupSettingsWidget::showEvent(QShowEvent *p_Event)
 {
-      double Temp;
     if ((mp_UserSettings != NULL) && (p_Event != NULL) && !p_Event->spontaneous()) {
         InitTemperatureWidget();
 
         if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
             mp_ScrollWheel->SetThreeDigitMode(false);
             mp_Ui->scrollPanelWidget->SetThreeDigitMode(false);
-
-            Temp = mp_UserSettings->GetValue("ParaffinBath_Temperature").toInt();
-            mp_ScrollWheel->SetCurrentData(qRound(Temp));
-             qDebug()<<"\n\n SystemSetup settings widget Temp " << mp_UserSettings->GetValue("ParaffinBath_Temperature").toInt();
         }
         else {
             mp_ScrollWheel->SetThreeDigitMode(true);
             mp_Ui->scrollPanelWidget->SetThreeDigitMode(true);
-            qDebug()<<"Swaminarayan"<<mp_UserSettings->GetValue("ParaffinBath_Temperature").toDouble();
-            Temp = (((mp_UserSettings->GetValue("ParaffinBath_Temperature").toDouble() - 50) / 5) * 9) + 122;
-            mp_ScrollWheel->SetCurrentData(tr("%1").arg(qRound(Temp)));
-            qDebug()<<"\n\n SystemSetup settings widget Temp" << mp_UserSettings->GetValue("ParaffinBath_Temperature").toInt();
         }
+
+        int Temp = mp_UserSettings->GetTemperatureParaffinBath();
+        mp_ScrollWheel->SetCurrentData(Temp);
+         qDebug()<<"\n\n SystemSetup settings widget Temp " << Temp;
+
         ResetButtons();
     }
 }
@@ -243,14 +263,11 @@ void CSystemSetupSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_Mai
 void CSystemSetupSettingsWidget::OnApply()
 {
     m_UserSettingsTemp = *mp_UserSettings;
-    if (m_UserSettingsTemp.GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT) {
-        double TemperatureCelsius = qRound(((mp_ScrollWheel->GetCurrentData().toDouble() - 32) * 5) / 9);
-        m_UserSettingsTemp.SetValue("ParaffinBath_Temperature", qRound(TemperatureCelsius));
-    }
-    else {
-        m_UserSettingsTemp.SetValue("ParaffinBath_Temperature", mp_ScrollWheel->GetCurrentData().toInt());
-    }
-        emit TemperatureChanged(m_UserSettingsTemp);
+
+    int Temp = mp_ScrollWheel->GetCurrentData().toInt();
+    m_UserSettingsTemp.SetTemperatureParaffinBath(Temp);
+
+    emit TemperatureChanged(m_UserSettingsTemp);
 }
 
 } // end namespace Settings

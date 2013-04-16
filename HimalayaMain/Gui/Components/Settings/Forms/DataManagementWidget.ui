@@ -33,7 +33,7 @@
       <enum>Qt::NoFocus</enum>
      </property>
      <property name="text">
-      <string>Save USB</string>
+      <string>Save to USB</string>
      </property>
     </widget>
    </item>

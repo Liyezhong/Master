@@ -41,8 +41,8 @@ CDataManagementWidget::CDataManagementWidget(QWidget *p_Parent) : MainMenu::CPan
     SetPanelTitle(tr("Data Management"));
     //CONNECTSIGNALSIGNAL(mp_DataManagement, ExecSending(const QString, const QStringList &), this, ExecSending(const QString, const QStringList &));
     CONNECTSIGNALSLOT(mp_Ui->importButton,clicked(),this,ImportDialog());
-    CONNECTSIGNALSLOT(mp_Ui->saveusbButton,clicked(),this,SaveUSBDialog());
-    CONNECTSIGNALSLOT(mp_Ui->serviceExportButton,clicked(),this,ExportDialog());
+    CONNECTSIGNALSLOT(mp_Ui->saveusbButton,clicked(),this,SaveToUSBDialog());
+    CONNECTSIGNALSLOT(mp_Ui->serviceExportButton,clicked(),this,ServiceExportDialog());
 }
 
 /****************************************************************************/
@@ -80,17 +80,17 @@ void CDataManagementWidget::changeEvent(QEvent *p_Event)
     }
 }
 
-void CDataManagementWidget:: ExportDialog()
+void CDataManagementWidget:: ServiceExportDialog()
 {
     QStringList Type;
     Type << "User";
-    emit ExecSending("DataExport", Type);
+    emit ExecSending("ServiceExport", Type);
 }
-void CDataManagementWidget:: SaveUSBDialog()
+void CDataManagementWidget:: SaveToUSBDialog()
 {
     QStringList Type;
     Type << "User";
-    emit ExecSending("SaveUSB", Type);
+    emit ExecSending("UserExport", Type);
 }
 void CDataManagementWidget:: ImportDialog()
 {

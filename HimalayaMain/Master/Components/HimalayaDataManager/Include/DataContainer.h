@@ -54,6 +54,7 @@ private:
     bool ResetDCProgramList();
     bool ResetDCProgramSettings();
     bool ResetDCStationList();
+    bool ResetDCUserSettings(void);
 
     void AddStation(QString StationID, QString ReagentID,CDashboardStation &Station);
 

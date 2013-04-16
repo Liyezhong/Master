@@ -35,18 +35,25 @@ namespace Settings {
 CAlarmSettingsWidget::CAlarmSettingsWidget(QWidget *p_Parent) :
     MainMenu::CPanelFrame(p_Parent),
     mp_Ui(new Ui::CAlarmSettingsWidget),
-    mp_DataConnector(NULL)
+    mp_DataConnector(NULL),
+    m_TextSound("Sound: %1"),
+    m_TextVolume("Volume: %1"),
+    m_TextPeriodicOff("Periodic: OFF"),
+    m_TextPeriodicTime("Periodic time (MM:ss): %1:%2")
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Alarm"));
 
-    mp_Information = new Settings::CAlarmSettingsDlg(false, this);
+    mp_Information =
+            new Settings::CAlarmSettingsDlg(Settings::CAlarmSettingsDlg::Information, this);
     mp_Information->setModal(true);
 
-    mp_Error = new Settings::CAlarmSettingsDlg(true, this);
+    mp_Error =
+            new Settings::CAlarmSettingsDlg(Settings::CAlarmSettingsDlg::Error, this);
     mp_Error->setModal(true);
 
-    mp_Warning = new Settings::CAlarmSettingsDlg(true, this);
+    mp_Warning =
+            new Settings::CAlarmSettingsDlg(Settings::CAlarmSettingsDlg::Warning, this);
     mp_Warning->setModal(true);
 
     CONNECTSIGNALSLOT(mp_Ui->informationButton, clicked(), this, OnNoteEdit());
@@ -122,20 +129,58 @@ void CAlarmSettingsWidget::SetUserSettings(DataManager::CHimalayaUserSettings *p
 /****************************************************************************/
 void CAlarmSettingsWidget::UpdateLabels()
 {
-    qint32 PeriodicTime ;
-    mp_Ui->informationSound->setText(tr("Sound: Sound  %1").arg(QString::number(m_UserSettings.GetValue("InformationTone_Number").toInt())));
-    mp_Ui->informationVolume->setText(tr("Volume:  %1").arg(QString::number(m_UserSettings.GetValue("InformationTone_Level").toInt())));
-    mp_Ui->informationperiodic->setText(tr("Periodic: %1").arg(m_UserSettings.GetValue("InformationTone_Periodic")));
+    QString TextSound;
+    QString TextVolume;
+    QString TextPeriodic;
 
-    PeriodicTime = m_UserSettings.GetSoundPeriodicTimeWarning();
-    mp_Ui->warningSound->setText(tr("Sound: Sound  %1").arg(QString::number(m_UserSettings.GetSoundNumberWarning())));
-    mp_Ui->warningVolume->setText(tr("Volume:  %1").arg(QString::number(m_UserSettings.GetSoundLevelWarning())));
-    mp_Ui->warningperiodic->setText(tr("Periodic time (MM:ss): %1: %2").arg(QString::number(PeriodicTime/60),QString::number(PeriodicTime%60)));
+    // information
+    TextSound = m_TextSound.arg(m_UserSettings.GetSoundNumberInformation());
+    TextVolume = m_TextVolume.arg(m_UserSettings.GetSoundLevelInformation());
+    if (m_UserSettings.GetSoundPeriodicInformation())
+    {
+        int PeriodicTime = m_UserSettings.GetSoundPeriodicTimeInformation();
+        QString Minutes = QString("%1").arg(PeriodicTime/60, 2, 10, QChar('0'));
+        QString Seconds = QString("%1").arg(PeriodicTime%60, 2, 10, QChar('0'));
+        TextPeriodic = m_TextPeriodicTime.arg(Minutes, Seconds);
+    }
+    else
+    {
+        TextPeriodic = m_TextPeriodicOff;
+    }
 
-    PeriodicTime = m_UserSettings.GetSoundPeriodicTimeError();
-    mp_Ui->errorSound->setText(tr("Sound: Sound  %1").arg(QString::number(m_UserSettings.GetSoundNumberError())));
-    mp_Ui->errorVolume->setText(tr("Volume:  %1").arg( QString::number(m_UserSettings.GetSoundLevelError())));
-    mp_Ui->errorperiodic->setText(tr("Periodic time (MM:ss): %1: %2").arg(QString::number(PeriodicTime/60),QString::number(PeriodicTime%60)));
+    mp_Ui->informationSound->setText(TextSound);
+    mp_Ui->informationVolume->setText(TextVolume);
+    mp_Ui->informationperiodic->setText(TextPeriodic);
+
+    // warning
+    TextSound = m_TextSound.arg(m_UserSettings.GetSoundNumberWarning());
+    TextVolume = m_TextVolume.arg(m_UserSettings.GetSoundLevelWarning());
+    if (m_UserSettings.GetSoundPeriodicWarning())
+    {
+        int PeriodicTime = m_UserSettings.GetSoundPeriodicTimeWarning();
+        QString Minutes = QString("%1").arg(PeriodicTime/60, 2, 10, QChar('0'));
+        QString Seconds = QString("%1").arg(PeriodicTime%60, 2, 10, QChar('0'));
+        TextPeriodic = m_TextPeriodicTime.arg(Minutes, Seconds);
+    }
+    else
+    {
+        TextPeriodic = m_TextPeriodicOff;
+    }
+    mp_Ui->warningSound->setText(TextSound);
+    mp_Ui->warningVolume->setText(TextVolume);
+    mp_Ui->warningperiodic->setText(TextPeriodic);
+
+    // error
+    TextSound = m_TextSound.arg(m_UserSettings.GetSoundNumberError());
+    TextVolume = m_TextVolume.arg(m_UserSettings.GetSoundLevelError());
+    int PeriodicTime = m_UserSettings.GetSoundPeriodicTimeError();
+    QString Minutes = QString("%1").arg(PeriodicTime/60, 2, 10, QChar('0'));
+    QString Seconds = QString("%1").arg(PeriodicTime%60, 2, 10, QChar('0'));
+    TextPeriodic = m_TextPeriodicTime.arg(Minutes, Seconds);
+
+    mp_Ui->errorSound->setText(TextSound);
+    mp_Ui->errorVolume->setText(TextVolume);
+    mp_Ui->errorperiodic->setText(TextPeriodic);
 }
 /****************************************************************************/
 /*!
@@ -160,7 +205,7 @@ void CAlarmSettingsWidget::showEvent(QShowEvent *p_Event)
 void CAlarmSettingsWidget::OnNoteEdit()
 {
     mp_Information->SetDialogType(CAlarmSettingsDlg ::Information);
-    mp_Information->UpdateDisplay(m_UserSettings.GetSoundLevelWarning(), m_UserSettings.GetSoundNumberWarning());
+    mp_Information->UpdateDisplay();
     mp_Information->show();
 }
 /****************************************************************************/
@@ -171,7 +216,7 @@ void CAlarmSettingsWidget::OnNoteEdit()
 void CAlarmSettingsWidget::OnWarningEdit()
 {
     mp_Warning->SetDialogType(CAlarmSettingsDlg :: Warning);
-    mp_Warning->UpdateDisplay(m_UserSettings.GetSoundLevelWarning(), m_UserSettings.GetSoundNumberWarning());
+    mp_Warning->UpdateDisplay();
     mp_Warning->show();
 }
 
@@ -184,7 +229,7 @@ void CAlarmSettingsWidget::OnWarningEdit()
 void CAlarmSettingsWidget::OnErrorEdit()
 {  
      mp_Error->SetDialogType(CAlarmSettingsDlg ::Error);
-     mp_Error->UpdateDisplay(m_UserSettings.GetSoundLevelError(), m_UserSettings.GetSoundNumberError());
+     mp_Error->UpdateDisplay();
      mp_Error->show();
 }
 
@@ -246,6 +291,21 @@ void CAlarmSettingsWidget::RetranslateUI()
     mp_Ui->warningButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));
     mp_Ui->groupBox_2->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "AlarmType 3 - Error", 0, QApplication::UnicodeUTF8));
     mp_Ui->errorButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));
+    // texts to be displayed
+    m_TextSound = QApplication::translate("Settings::CAlarmSettingsWidget",
+                                          "Sound: %1", 0,
+                                          QApplication::UnicodeUTF8);
+    m_TextVolume = QApplication::translate("Settings::CAlarmSettingsWidget",
+                                           "Volume: %1", 0,
+                                           QApplication::UnicodeUTF8);
+    m_TextPeriodicOff =
+            QApplication::translate("Settings::CAlarmSettingsWidget",
+                                    "Periodic: OFF", 0,
+                                    QApplication::UnicodeUTF8);
+    m_TextPeriodicTime =
+            QApplication::translate("Settings::CAlarmSettingsWidget",
+                                    "Periodic time (MM:ss): %1:%2", 0,
+                                    QApplication::UnicodeUTF8);
 }
 
 /****************************************************************************/
