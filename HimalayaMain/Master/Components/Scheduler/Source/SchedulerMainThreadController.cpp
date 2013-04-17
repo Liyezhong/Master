@@ -228,7 +228,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             m_SchedulerMachine->SendRunSignal();
 
             //send command to main controller to tell the left time
-            quint32 leftSeconds = GetLeftProgramNeededTime(m_CurProgramID);
+            quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
             QTime leftTime(0,0,0);
             leftTime = leftTime.addSecs(leftSeconds);
             MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, leftTime));
@@ -522,7 +522,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             qDebug() << "Start step: " << m_CurProgramID;
             mp_ProgramStepStateMachine->Start();
             //send command to main controller to tell the left time
-            quint32 leftSeconds = GetLeftProgramNeededTime(m_CurProgramID);
+            quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
             QTime leftTime(0,0,0);
             leftTime = leftTime.addSecs(leftSeconds);
             MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, leftTime));
@@ -791,7 +791,7 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
     return true;
 }
 
-quint32 SchedulerMainThreadController::GetLeftProgramNeededTime(const QString& ProgramID)
+quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QString& ProgramID)
 {
     quint32 leftTime = 0;
     if (!mp_DataManager)
@@ -846,7 +846,7 @@ quint32 SchedulerMainThreadController::GetLeftProgramNeededTime(const QString& P
     return leftTime;
 }
 
-quint32 SchedulerMainThreadController::GetCurrentProgramNeededTime(const QString& ProgramID)
+quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QString& ProgramID)
 {
     quint32 leftTime = 0;
     if (!mp_DataManager)
