@@ -40,6 +40,11 @@
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 using namespace DeviceControl;
 
+namespace MsgClasses
+{
+    class CmdKeepCassetteCount;
+}
+
 namespace DataManager
 {
     class CDataManager;
@@ -112,6 +117,7 @@ typedef enum
         qreal m_TempOvenTop;
         QStringList m_UsedStationIDs;                                                 ///in a whole of program processing
 		bool m_PauseToBeProcessed;
+        int m_ProcessCassetteCount;
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         const SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
@@ -205,8 +211,8 @@ private slots:
         void OnRaiseAlarmLocalRemote(Global::tRefType Ref, const HimalayaErrorHandler::CmdRaiseAlarm &Cmd);
 
         void OnProgramAction(Global::tRefType Ref, const MsgClasses::CmdProgramAction& Cmd);
-        void OnOnRetortLock(Global::tRefType Ref, const MsgClasses::CmdRetortLock& Cmd);
-
+        void OnRetortLock(Global::tRefType Ref, const MsgClasses::CmdRetortLock& Cmd);
+        void OnKeepCassetteCount(Global::tRefType Ref, const MsgClasses::CmdKeepCassetteCount & Cmd);
     public:
         /****************************************************************************/
         /**

@@ -323,8 +323,9 @@ void HimalayaMasterThreadController::RegisterCommands() {
 
 
     //Update and keep the current system state
-   /*RegisterCommandForProcessing<NetCommands::CmdSystemState, HimalayaMasterThreadController>
-            (&HimalayaMasterThreadController::OnCmdSysState, this);*/
+   RegisterCommandForProcessing<NetCommands::CmdSystemState, HimalayaMasterThreadController>
+            (&HimalayaMasterThreadController::OnCmdSysState, this);
+
 
 }
 
