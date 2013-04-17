@@ -34,15 +34,17 @@ namespace DataManager {
     } ProgramActionType_t;
     
 typedef enum  {
-        RETORT_EMPTY_CLEANING = 0,
-        RETORT_SCUKING_DRAINING,
+        RETORT_EMPTYCLEAN = 0,
+        RETORT_SCUKING,
+        RETORT_DRAINING,
         RETORT_FULL,
         RETORT_CONTAMINATED
     } RetortStatusType_t;
     
 typedef enum  {
         PARAFFINBATH_EMPTY = 0,
-        PARAFFINBATH_SCUKING_DRAINING,
+        PARAFFINBATH_SCUKING,
+        PARAFFINBATH_DRAINING,
         PARAFFINBATH_FULL,
         PARAFFINBATH_EXPIRED,
         PARAFFINBATH_NOTUSED
@@ -50,7 +52,8 @@ typedef enum  {
     
 typedef enum  {
         STATION_EMPTY = 0,
-        STATION_SCUKING_DRAINING,
+        STATION_SCUKING,
+        STATION_DRAINING,
         STATION_FULL,
         STATION_EXPIRED,
         STATION_NOTUSED
