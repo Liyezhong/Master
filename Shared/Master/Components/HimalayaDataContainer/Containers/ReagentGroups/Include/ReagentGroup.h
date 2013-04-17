@@ -50,7 +50,8 @@ protected:
     QString m_GroupID;                      //!< Reagent Group ID
     QString m_GroupName;                    //!< Reagent Name
     QString m_Color;                        //!< Reagent Color
-    bool m_IsCleaningReagentGroup;                 //!< is it a cleaning reagent?
+    bool m_IsCleaningReagentGroup;          //!< is it a cleaning reagent?
+    bool m_IsParraffinGroup;                //!< is it a parraffin reagent?
     bool m_Locked;                          //!< locked stats for reagent , true user cannot chnage its parameters
 
 public:
@@ -137,6 +138,22 @@ public:
      * \param bSet
      */
     void CleaningReagentGroup(bool bSet){m_IsCleaningReagentGroup = bSet;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief is it a cleaning reagent group
+     *
+     *  \return bool value
+     */
+    /****************************************************************************/
+    bool IsParraffin() const {return m_IsParraffinGroup;}
+
+   /****************************************************************************/
+    /*!
+     * \brief Set it is a Cleaning Reagent group
+     * \param bSet
+     */
+    void IsParraffin(bool bSet){ m_IsParraffinGroup = bSet;}
 
     /****************************************************************************/
     /*!

@@ -37,7 +37,8 @@ namespace DataManager {
  */
 /****************************************************************************/
 CReagentGroup::CReagentGroup() :m_GroupID(""), m_GroupName(""),m_Color(""),
-                                m_IsCleaningReagentGroup(false)
+                                m_IsCleaningReagentGroup(false),
+                                m_IsParraffinGroup(false)
 {
 
 }
@@ -49,7 +50,8 @@ CReagentGroup::CReagentGroup() :m_GroupID(""), m_GroupName(""),m_Color(""),
  */
 /****************************************************************************/
 CReagentGroup::CReagentGroup(const QString ID) :m_GroupID(ID), m_GroupName(""),m_Color(""),
-                                                m_IsCleaningReagentGroup(false)
+                                                m_IsCleaningReagentGroup(false),
+                                                m_IsParraffinGroup(false)
 {
 }
 
@@ -99,6 +101,10 @@ bool CReagentGroup::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Com
     else
         XmlStreamWriter.writeAttribute("CleaningReagentGroup", "false");
 
+    if (m_IsParraffinGroup)
+        XmlStreamWriter.writeAttribute("IsParraffinGroup", "True");
+    else
+        XmlStreamWriter.writeAttribute("IsParraffinGroup", "false");
 
         //======NODE=======Temporary Data Variables=========================
         if(CompleteData) {
@@ -163,6 +169,21 @@ bool CReagentGroup::DeserializeContent(QXmlStreamReader& XmlStreamReader,bool Co
     }
     else {
         m_IsCleaningReagentGroup = false;
+    }
+
+    //IsParraffinGroup
+    if (!XmlStreamReader.attributes().hasAttribute("IsParraffinGroup")) {
+        qDebug() << "### attribute <IsParraffinGroup> is missing => abort reading";
+    //        Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+    //                                                   Global::tTranslatableStringList() << "Reagent-Name", true);
+        return false;
+    }
+
+    if (XmlStreamReader.attributes().value("IsParraffinGroup").toString().toUpper() == "TRUE") {
+        m_IsParraffinGroup = true;
+    }
+    else {
+        m_IsParraffinGroup = false;
     }
 
 

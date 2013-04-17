@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ReagentGroups Version="1">
-    <ReagentGroup ID="RG1" Name="Fixation" Color="5FC603" CleaningReagentGroup="false"/>
-    <ReagentGroup ID="RG2" Name="Water" Color="FF2301" CleaningReagentGroup="false"/>    
-    <ReagentGroup ID="RG3" Name="Dehydrating,diluted" Color="D8EAFF" CleaningReagentGroup="false"/>
-    <ReagentGroup ID="RG4" Name="Dehydrating,absolute" Color="3664FF" CleaningReagentGroup="false"/>
-    <ReagentGroup ID="RG5" Name="Clearing" Color="FF28DE" CleaningReagentGroup="false"/>
-    <ReagentGroup ID="RG6" Name="Paraffin" Color="FFCF4F" CleaningReagentGroup="false"/>
-    <ReagentGroup ID="RG7" Name="Cleaning Solvent" Color="7CDAFF" CleaningReagentGroup="true"/>
-    <ReagentGroup ID="RG8" Name="Cleaning Alcohol" Color="FF2DEA" CleaningReagentGroup="true"/>
+    <ReagentGroup ID="RG1" Name="Fixation" Color="5FC603" CleaningReagentGroup="false" IsParraffinGroup = "false"/>
+    <ReagentGroup ID="RG2" Name="Water" Color="FF2301" CleaningReagentGroup="false" IsParraffinGroup = "false"/>    
+    <ReagentGroup ID="RG3" Name="Dehydrating,diluted" Color="D8EAFF" CleaningReagentGroup="false" IsParraffinGroup = "false"/>
+    <ReagentGroup ID="RG4" Name="Dehydrating,absolute" Color="3664FF" CleaningReagentGroup="false" IsParraffinGroup = "false"/>
+    <ReagentGroup ID="RG5" Name="Clearing" Color="FF28DE" CleaningReagentGroup="false" IsParraffinGroup = "false"/>
+    <ReagentGroup ID="RG6" Name="Paraffin" Color="FFCF4F" CleaningReagentGroup="false" IsParraffinGroup = "true"/>
+    <ReagentGroup ID="RG7" Name="Cleaning Solvent" Color="7CDAFF" CleaningReagentGroup="true" IsParraffinGroup = "false"/>
+    <ReagentGroup ID="RG8" Name="Cleaning Alcohol" Color="FF2DEA" CleaningReagentGroup="true" IsParraffinGroup = "false"/>
 </ReagentGroups>
