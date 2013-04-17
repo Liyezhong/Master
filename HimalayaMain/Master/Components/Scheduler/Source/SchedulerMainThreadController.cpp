@@ -251,7 +251,7 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
 {
     MsgClasses::CmdUpdateStationReagentStatus* commandPtr = NULL;
     DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
-    if (m_CurProgramID.at(0) != 'C')
+    if (m_CurProgramID.at(0) != 'C')//process cleaning reagent
     {
         Global::RMSOptions_t rmsMode = pUserSetting->GetModeRMSCleaning();
         if (rmsMode == DataManager::RMS_CYCLES)

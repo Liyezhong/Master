@@ -22,6 +22,7 @@
 #include "ui_DashboardWidget.h"
 #include <QDebug>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
+#include "MainMenu/Include/SliderControl.h"
 
 namespace Dashboard {
 
@@ -73,6 +74,11 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(const MsgClasses::CmdProgramStartReady &),
                        this, OnProgramStartReadyUpdated(const MsgClasses::CmdProgramStartReady&));
+
+     CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus &),
+                       this, OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus&));
+     CONNECTSIGNALSLOT(mp_Ui->retortSlider, positionChanged(MainMenu::CSliderControl::Position_t),
+                       this, RetortSliderPositionChanged(MainMenu::CSliderControl::Position_t));
 }
 
 CDashboardWidget::~CDashboardWidget()
@@ -85,6 +91,14 @@ CDashboardWidget::~CDashboardWidget()
     } catch(...) {
 
     }
+}
+
+void CDashboardWidget::RetortSliderPositionChanged(MainMenu::CSliderControl::Position_t Position)
+{
+    if (Position ==  MainMenu::CSliderControl::PosLeft)
+        mp_DataConnector->SendRetortLock(true);
+    else
+        mp_DataConnector->SendRetortLock(false);
 }
 
 void CDashboardWidget::DrawSeparatorLine()
@@ -295,6 +309,14 @@ void CDashboardWidget::EnablePlayButton(bool bSetEnable)
 void CDashboardWidget::OnProgramStartReadyUpdated(const MsgClasses::CmdProgramStartReady& cmd)
 {
     this->EnablePlayButton(cmd.IsReady());
+}
+
+void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd)
+{
+    if (cmd.IsLocked())
+        mp_Ui->retortSlider->SetPosition(MainMenu::CSliderControl::PosLeft);
+    else
+        mp_Ui->retortSlider->SetPosition(MainMenu::CSliderControl::PosRight);
 }
 
 } // End of namespace Dashboard

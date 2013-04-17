@@ -24,6 +24,8 @@
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImport.h"
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdAlarmToneTest.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
+
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "Global/Include/Commands/AckOKNOK.h"
 #include "Global/Include/Commands/CmdDateAndTime.h"
@@ -80,11 +82,11 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramStartReady>(&CDataConnector::ProgramStartReadyHandler, this);
 
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdParaffinBathStatus>(&CDataConnector::ParaffinBathStatusHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortStatus>(&CDataConnector::RetortStatusHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationStatus>(&CDataConnector::StationStatusHandler, this);
+
     //m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramEndDateTime>(&CDataConnector::ProgramEndDateTimeHandler, this);
-    //m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortLock>(&CDataConnector::RetortLockHandler, this);
-   // m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortLockStatus>(&CDataConnector::RetortLockStatusHandler, this);
-    //m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortStatus>(&CDataConnector::RetortStatusHandler, this);
-    //m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationStatus>(&CDataConnector::StationStatusHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortLockStatus>(&CDataConnector::RetortLockStatusHandler, this);
 
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdEventStrings>(&CDataConnector::EventStringHandler, this);
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdExecutionStateChanged>(&CDataConnector::ExecutionStateHandler, this);
@@ -1408,18 +1410,6 @@ void CDataConnector::SendSelectedDayRunLogFile(const QString &FileName)
     mp_WaitDialog->show();
 }
 
-void CDataConnector::SendCurrentProgramStepInfo(const QString& StepName, const QTime& CurRemainingTime)
-{
-    MsgClasses::CmdCurrentProgramStepInfor Command(1000, StepName, CurRemainingTime);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
-    mp_WaitDialog->SetTimeout(10000);
-    mp_WaitDialog->show();
-}
-
-
-
 void CDataConnector::SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType)
 {
     MsgClasses::CmdProgramAction Command(1000, ProgramID, ActionType);
@@ -1444,36 +1434,6 @@ void CDataConnector::SendProgramEndDateTime(const QDateTime& EndDateTime)
 void CDataConnector::SendRetortLock(bool IsLock)
 {
     MsgClasses::CmdRetortLock Command(1000, IsLock);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
-    mp_WaitDialog->SetTimeout(10000);
-    mp_WaitDialog->show();
-}
-
-void CDataConnector::SendRetortLockStatus(bool IsLocked)
-{
-    MsgClasses::CmdRetortLockStatus Command(1000, IsLocked);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
-    mp_WaitDialog->SetTimeout(10000);
-    mp_WaitDialog->show();
-}
-
-void CDataConnector::SendRetortStatus(DataManager::RetortStatusType_t RetortStatusType)
-{
-    MsgClasses::CmdRetortStatus Command(1000, RetortStatusType);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
-    mp_WaitDialog->SetTimeout(10000);
-    mp_WaitDialog->show();
-}
-
-void CDataConnector::SendStationStatus(const QString& StationID, DataManager::StationStatusType_t StationStatusType)
-{
-    MsgClasses::CmdStationStatus Command(1000, StationID, StationStatusType);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
     mp_WaitDialog->SetText(tr("Saving Settings ..."));
@@ -1613,38 +1573,35 @@ void CDataConnector::ProgramStartReadyHandler(Global::tRefType Ref, const MsgCla
     emit ProgramStartReady(Command);
 }
 
+void CDataConnector::ProgramEndDateTimeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramEndDateTime & Command)
+{
+
+}
+
+void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortLockStatus & Command)
+{
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    emit RetortLockStatusChanged(Command);
+}
+
+void CDataConnector::RetortStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortStatus & Command)
+{
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    //
+}
+
 void CDataConnector::ParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdParaffinBathStatus & Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    //
 
 }
 
-void CDataConnector::ProgramEndDateTimeHandler(Global::tRefType Ref, MsgClasses::CmdProgramEndDateTime & Command)
+void CDataConnector::StationStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationStatus & Command)
 {
-
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    //
 }
-
-void CDataConnector::RetortLockHandler(Global::tRefType Ref, MsgClasses::CmdRetortLock & Command)
-{
-
-}
-
-void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, MsgClasses::CmdRetortLockStatus & Command)
-{
-
-}
-
-void CDataConnector::RetortStatusHandler(Global::tRefType Ref, MsgClasses::CmdRetortStatus & Command)
-{
-
-}
-
-void CDataConnector::StationStatusHandler(Global::tRefType Ref, MsgClasses::CmdStationStatus & Command)
-{
-
-}
-
-
 
 } // end namespace Core
 

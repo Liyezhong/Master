@@ -95,6 +95,7 @@ signals:
     void ProgramSelected(QString & ProgramId);
 
 public slots:
+    void RetortSliderPositionChanged(MainMenu::CSliderControl::Position_t Position);
     void OnUserRoleChanged();
     void OnButtonClicked(int whichBtn);
     void OnRMSValueChanged(Global::RMSOptions_t);
@@ -102,6 +103,7 @@ public slots:
     void OnActivated(int);
     void OnProgramActionStarted(DataManager::ProgramActionType_t ActionType);
     void OnProgramStartReadyUpdated(const MsgClasses::CmdProgramStartReady& cmd);
+    void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
 
     // Warning Message Slots
     void OnProgramStartConfirmation();

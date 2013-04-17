@@ -49,7 +49,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndDateTime.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
+
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationStatus.h"
 
 
@@ -76,6 +76,8 @@
 namespace MsgClasses
 {
     class CmdProgramStartReady;
+    class CmdRetortStatus;
+    class CmdRetortLockStatus;
 }
 
 namespace Core {
@@ -149,13 +151,9 @@ public slots:
     void SendProgramColorUpdate(DataManager::CProgram &ColorReplacedProgram,
                                 DataManager::CProgram &ColorAssignedProgram);
 
-    void SendCurrentProgramStepInfo(const QString& StepName, const QTime& CurRemainingTime);
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
     void SendProgramEndDateTime(const QDateTime& EndDateTime);
     void SendRetortLock(bool IsLock);
-    void SendRetortLockStatus(bool IsLocked);
-    void SendRetortStatus(DataManager::RetortStatusType_t RetortStatusType);
-    void SendStationStatus(const QString &StationID, DataManager::StationStatusType_t StationStatusType);
 
     void SendUserLevel(QDataStream &DataStream);
     void SendChangepassword(QDataStream &DataStream);
@@ -347,6 +345,7 @@ signals:
     void StartProgramAction(DataManager::ProgramActionType_t ActionType);
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
     void ProgramStartReady(const MsgClasses::CmdProgramStartReady& Command);
+    void RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& Command);
 private:
     void ConfFileHandler(Global::tRefType Ref, const NetCommands::CmdConfigurationFile &Command);
     void ProcessStateHandler(Global::tRefType ref, const NetCommands::CmdProcessState &Command);
@@ -365,11 +364,10 @@ private:
     void CurrentProgramStepInfoHandler(Global::tRefType Ref, const MsgClasses::CmdCurrentProgramStepInfor & Command);
     void ProgramStartReadyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramStartReady& Command);
     void ParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdParaffinBathStatus & Command);
-    void ProgramEndDateTimeHandler(Global::tRefType Ref, MsgClasses::CmdProgramEndDateTime & Command);
-    void RetortLockHandler(Global::tRefType Ref, MsgClasses::CmdRetortLock & Command);
-    void RetortLockStatusHandler(Global::tRefType Ref, MsgClasses::CmdRetortLockStatus & Command);
-    void RetortStatusHandler(Global::tRefType Ref, MsgClasses::CmdRetortStatus & Command);
-    void StationStatusHandler(Global::tRefType Ref, MsgClasses::CmdStationStatus & Command);
+    void ProgramEndDateTimeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramEndDateTime & Command);
+    void RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortLockStatus & Command);
+    void RetortStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortStatus & Command);
+    void StationStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationStatus & Command);
 
     void EventStringHandler(Global::tRefType ref, const NetCommands::CmdEventStrings &Command);
     void ReagentRemoveHandler(Global::tRefType Ref, const MsgClasses::CmdReagentRemove &Command);
