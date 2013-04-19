@@ -42,15 +42,18 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdProgramEndDateTime(int Timeout, const QDateTime& EndDateTime);
+    CmdProgramEndDateTime(int Timeout, const QDateTime& EndDateTime, const QTime& ParaffinWeltCostedtime);
     ~CmdProgramEndDateTime();
     virtual QString GetName() const;
     inline const QDateTime& EndDateTime()const {return m_EndDateTime;}
+    inline const QTime& ParaffinWeltCostedTime()const {return m_ParaffinWeltCostedtime;}
+    
 private:
     CmdProgramEndDateTime(const CmdProgramEndDateTime &);                     ///< Not implemented.
     const CmdProgramEndDateTime & operator = (const CmdProgramEndDateTime &); ///< Not implemented.
 private:
     QDateTime m_EndDateTime;
+    QTime m_ParaffinWeltCostedtime;
     
 }; // end class CmdProgramEndDateTime
 
@@ -69,7 +72,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramEndDateTi
     Cmd.CopyToStream(Stream);
     // copy internal data
     Stream << Cmd.m_EndDateTime;
-
+    Stream << Cmd.m_ParaffinWeltCostedtime;
     return Stream;
 }
 
@@ -88,6 +91,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdProgramEndDateTime &Cm
     Cmd.CopyFromStream(Stream);
     // copy internal data
     Stream >> Cmd.m_EndDateTime;
+    Stream >> Cmd.m_ParaffinWeltCostedtime;
     return Stream;
 }
 } // end namespace MsgClasses

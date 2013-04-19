@@ -24,9 +24,10 @@ namespace MsgClasses {
 QString CmdProgramEndDateTime::NAME = "MsgClasses::CmdProgramEndDateTime";
 
 
-CmdProgramEndDateTime::CmdProgramEndDateTime(int Timeout, const QDateTime& ProgramEndDateTime) :
+CmdProgramEndDateTime::CmdProgramEndDateTime(int Timeout, const QDateTime& ProgramEndDateTime, const QTime& ParaffinWeltCostedtime) :
     Command(Timeout),
-    m_EndDateTime(ProgramEndDateTime)
+    m_EndDateTime(ProgramEndDateTime),
+    m_ParaffinWeltCostedtime(ParaffinWeltCostedtime)
 {
 }
 
