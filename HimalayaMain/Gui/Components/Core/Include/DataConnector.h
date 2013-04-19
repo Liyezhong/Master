@@ -45,12 +45,11 @@
 
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdParaffinBathStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationParaffinBathStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndDateTime.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationStatus.h"
 
 
 /********************** Net Commands ************************************************/
@@ -362,11 +361,10 @@ private:
 
     void CurrentProgramStepInfoHandler(Global::tRefType Ref, const MsgClasses::CmdCurrentProgramStepInfor & Command);
     void ProgramStartReadyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramStartReady& Command);
-    void ParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdParaffinBathStatus & Command);
+    void StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationParaffinBathStatus & Command);
     void ProgramEndDateTimeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramEndDateTime & Command);
     void RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortLockStatus & Command);
     void RetortStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortStatus & Command);
-    void StationStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationStatus & Command);
 
     void EventStringHandler(Global::tRefType ref, const NetCommands::CmdEventStrings &Command);
     void ReagentRemoveHandler(Global::tRefType Ref, const MsgClasses::CmdReagentRemove &Command);

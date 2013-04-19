@@ -65,8 +65,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdParaffinBathStatus.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationParaffinBathStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndDateTime.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
@@ -191,11 +190,8 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     RegisterCommandForProcessing<MsgClasses::CmdRetortStatus, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdRetortStatus>, this);
 
-    RegisterCommandForProcessing<MsgClasses::CmdParaffinBathStatus, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdParaffinBathStatus>, this);
-
-    RegisterCommandForProcessing<MsgClasses::CmdStationStatus, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdStationStatus>, this);
+    RegisterCommandForProcessing<MsgClasses::CmdStationParaffinBathStatus, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdStationParaffinBathStatus>, this);
 
     RegisterCommandForProcessing<MsgClasses::CmdProgramEndDateTime, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdProgramEndDateTime>, this);

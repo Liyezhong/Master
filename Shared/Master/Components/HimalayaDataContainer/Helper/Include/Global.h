@@ -48,16 +48,8 @@ typedef enum  {
         PARAFFINBATH_FULL,
         PARAFFINBATH_EXPIRED,
         PARAFFINBATH_NOTUSED
-    } ParaffinBathStatusType_t;
+    } StationParaffinBathStatusType_t;
     
-typedef enum  {
-        STATION_EMPTY = 0,
-        STATION_SCUKING,
-        STATION_DRAINING,
-        STATION_FULL,
-        STATION_EXPIRED,
-        STATION_NOTUSED
-    } StationStatusType_t;
 
 const QString LEICA("leica");
 

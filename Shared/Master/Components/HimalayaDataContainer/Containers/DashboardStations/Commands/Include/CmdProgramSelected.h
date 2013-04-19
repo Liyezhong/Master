@@ -1,10 +1,10 @@
 /****************************************************************************/
-/*! \file CmdParaffinBathStatus.h
+/*! \file CmdProgramSelected.h
  *
- *  \brief CmdParaffinBathStatus command definition.
+ *  \brief CmdProgramSelected command definition.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 27.03.2013
+ *   $Date:    $ 17.04.2013
  *   $Author:  $ Abe Yang
  *
  *  \b Company:
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef MSGCLASSES_CMDPARAFFINBATHSTATUS_H
-#define MSGCLASSES_CMDPARAFFINBATHSTATUS_H
+#ifndef MSGCLASSES_CMDPROGRAMSELECTED_H
+#define MSGCLASSES_CMDPROGRAMSELECTED_H
 
 #include <Global/Include/Commands/Command.h>
 #include <HimalayaDataContainer/Helper/Include/Global.h>
@@ -28,32 +28,31 @@ namespace MsgClasses {
 
 /****************************************************************************/
 /*!
- *  \brief  This class implements a CmdParaffinBathStatus command.
+ *  \brief  This class implements a CmdProgramSelected command.
  *
  * \todo implement
  */
 /****************************************************************************/
-class CmdParaffinBathStatus : public Global::Command {
-    friend QDataStream & operator << (QDataStream &, const CmdParaffinBathStatus &);
-    friend QDataStream & operator >> (QDataStream &, CmdParaffinBathStatus &);
+class CmdProgramSelected : public Global::Command {
+    friend QDataStream & operator << (QDataStream &, const CmdProgramSelected &);
+    friend QDataStream & operator >> (QDataStream &, CmdProgramSelected &);
 public:
-    CmdParaffinBathStatus();                                             ///< Not implemented.
+    CmdProgramSelected();                                             ///< Not implemented.
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdParaffinBathStatus(int Timeout, const QString& ParaffinBathID, DataManager::ParaffinBathStatusType_t ParaffinBathStatusType);
-    ~CmdParaffinBathStatus();
+    CmdProgramSelected(int Timeout, const QString& ProgramID);
+    ~CmdProgramSelected();
     virtual QString GetName() const;
-    inline DataManager::ParaffinBathStatusType_t ParaffinBathStatusType() const {return m_ParaffinBathStatusType;} 
-    inline const QString& ParaffinBathID()const {return m_ParaffinBathID;}
+    inline const QString& GetProgramID()const {return m_ProgramID;}
+
+
 private:
-    CmdParaffinBathStatus(const CmdParaffinBathStatus &);                     ///< Not implemented.
-    const CmdParaffinBathStatus & operator = (const CmdParaffinBathStatus &); ///< Not implemented.
+    CmdProgramSelected(const CmdProgramSelected &);                     ///< Not implemented.
+    const CmdProgramSelected & operator = (const CmdProgramSelected &); ///< Not implemented.
 private:
-    QString m_ParaffinBathID;
-    DataManager::ParaffinBathStatusType_t m_ParaffinBathStatusType;
-    
-}; // end class CmdParaffinBathStatus
+    QString      m_ProgramID;
+}; // end class CmdProgramSelected
 
 /****************************************************************************/
 /**
@@ -64,13 +63,12 @@ private:
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator << (QDataStream &Stream, const CmdParaffinBathStatus &Cmd)
+inline QDataStream & operator << (QDataStream &Stream, const CmdProgramSelected &Cmd)
 {
     // copy base class data
     Cmd.CopyToStream(Stream);
     // copy internal data
-    Stream << Cmd.m_ParaffinBathID;
-    Stream << Cmd.m_ParaffinBathStatusType;
+    Stream << Cmd.m_ProgramID;
     return Stream;
 }
 
@@ -83,17 +81,14 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdParaffinBathStat
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator >> (QDataStream &Stream, CmdParaffinBathStatus &Cmd)
+inline QDataStream & operator >> (QDataStream &Stream, CmdProgramSelected &Cmd)
 {
     // copy base class data
     Cmd.CopyFromStream(Stream);
     // copy internal data
-    Stream >> Cmd.m_ParaffinBathID;
-    int temp;
-    Stream >> temp;
-    Cmd.m_ParaffinBathStatusType = (DataManager::ParaffinBathStatusType_t)temp;
+    Stream >> Cmd.m_ProgramID;
     return Stream;
 }
 } // end namespace MsgClasses
 
-#endif // MSGCLASSES_CMDPARAFFINBATHSTATUS_H
+#endif // MSGCLASSES_CMDPROGRAMSELECTED_H

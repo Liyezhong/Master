@@ -81,9 +81,8 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdCurrentProgramStepInfor>(&CDataConnector::CurrentProgramStepInfoHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramStartReady>(&CDataConnector::ProgramStartReadyHandler, this);
 
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdParaffinBathStatus>(&CDataConnector::ParaffinBathStatusHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationParaffinBathStatus>(&CDataConnector::StationParaffinBathStatusHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortStatus>(&CDataConnector::RetortStatusHandler, this);
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationStatus>(&CDataConnector::StationStatusHandler, this);
 
     //m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramEndDateTime>(&CDataConnector::ProgramEndDateTimeHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortLockStatus>(&CDataConnector::RetortLockStatusHandler, this);
@@ -1550,8 +1549,6 @@ void CDataConnector::ShowMessageDialog(Global::GUIMessageType MessageType, QStri
     mp_MessageDlg->show();
 }
 
-
-
 void CDataConnector::CurrentProgramStepInfoHandler(Global::tRefType Ref, const MsgClasses::CmdCurrentProgramStepInfor & Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
@@ -1581,17 +1578,11 @@ void CDataConnector::RetortStatusHandler(Global::tRefType Ref, const MsgClasses:
     //
 }
 
-void CDataConnector::ParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdParaffinBathStatus & Command)
+void CDataConnector::StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationParaffinBathStatus & Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
     //
 
-}
-
-void CDataConnector::StationStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationStatus & Command)
-{
-    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
-    //
 }
 
 } // end namespace Core

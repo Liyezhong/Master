@@ -1,10 +1,10 @@
 /****************************************************************************/
-/*! \file CmdStationStatus.cpp
+/*! \file CmdProgramSelected.cpp
  *
- *  \brief CmdStationStatus command implementation.
+ *  \brief CmdProgramSelected command implementation.
  *
  *   $Version: $ 0.1
-*   $Date:    $ 27.03.2013
+*   $Date:    $ 17.04.2013
  *   $Author:  $ Abe Yang
  *
  *  \b Company:
@@ -18,21 +18,19 @@
  */
 /****************************************************************************/
 
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 namespace MsgClasses {
 
-QString CmdStationStatus::NAME = "MsgClasses::CmdStationStatus";
+QString CmdProgramSelected::NAME = "MsgClasses::CmdProgramSelected";
 
 
-CmdStationStatus::CmdStationStatus(int Timeout, const QString& StationID,
-                                    DataManager::StationStatusType_t StationStatusType) :
+CmdProgramSelected::CmdProgramSelected(int Timeout, const QString& ProgramID) :
     Command(Timeout),
-    m_StationID(StationID),
-    m_StationStatusType(StationStatusType)
+    m_ProgramID(ProgramID)
 {
 }
 
-CmdStationStatus::CmdStationStatus()
+CmdProgramSelected::CmdProgramSelected()
     : Command(0)
 {
 }
@@ -42,7 +40,7 @@ CmdStationStatus::CmdStationStatus()
  *  \brief   Destructor
  */
 /****************************************************************************/
-CmdStationStatus::~CmdStationStatus()
+CmdProgramSelected::~CmdProgramSelected()
 {
 }
 
@@ -53,7 +51,7 @@ CmdStationStatus::~CmdStationStatus()
  *  \return  command name as string
  */
 /****************************************************************************/
-QString CmdStationStatus::GetName() const
+QString CmdProgramSelected::GetName() const
 {
     return NAME;
 }

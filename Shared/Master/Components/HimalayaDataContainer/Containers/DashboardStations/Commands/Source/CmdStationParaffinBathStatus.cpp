@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdParaffinBathStatus.cpp
+/*! \file CmdStationParaffinBathStatus.cpp
  *
- *  \brief CmdParaffinBathStatus command implementation.
+ *  \brief CmdStationParaffinBathStatus command implementation.
  *
  *   $Version: $ 0.1
 *   $Date:    $ 27.03.2013
@@ -18,21 +18,21 @@
  */
 /****************************************************************************/
 
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdParaffinBathStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationParaffinBathStatus.h"
 namespace MsgClasses {
 
-QString CmdParaffinBathStatus::NAME = "MsgClasses::CmdParaffinBathStatus";
+QString CmdStationParaffinBathStatus::NAME = "MsgClasses::CmdStationParaffinBathStatus";
 
 
-CmdParaffinBathStatus::CmdParaffinBathStatus(int Timeout, const QString& ParaffinBathID,
-                                    DataManager::ParaffinBathStatusType_t ParaffinBathStatusType) :
+CmdStationParaffinBathStatus::CmdStationParaffinBathStatus(int Timeout, const QString& StationParaffinBathID,
+                                    DataManager::StationParaffinBathStatusType_t StationParaffinBathStatusType) :
     Command(Timeout),
-    m_ParaffinBathID(ParaffinBathID),
-    m_ParaffinBathStatusType(ParaffinBathStatusType)
+    m_StationParaffinBathID(StationParaffinBathID),
+    m_StationParaffinBathStatusType(StationParaffinBathStatusType)
 {
 }
 
-CmdParaffinBathStatus::CmdParaffinBathStatus()
+CmdStationParaffinBathStatus::CmdStationParaffinBathStatus()
     : Command(0)
 {
 }
@@ -42,7 +42,7 @@ CmdParaffinBathStatus::CmdParaffinBathStatus()
  *  \brief   Destructor
  */
 /****************************************************************************/
-CmdParaffinBathStatus::~CmdParaffinBathStatus()
+CmdStationParaffinBathStatus::~CmdStationParaffinBathStatus()
 {
 }
 
@@ -53,7 +53,7 @@ CmdParaffinBathStatus::~CmdParaffinBathStatus()
  *  \return  command name as string
  */
 /****************************************************************************/
-QString CmdParaffinBathStatus::GetName() const
+QString CmdStationParaffinBathStatus::GetName() const
 {
     return NAME;
 }
