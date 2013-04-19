@@ -152,7 +152,6 @@ public slots:
                                 DataManager::CProgram &ColorAssignedProgram);
 
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
-    void SendProgramEndDateTime(const QDateTime& EndDateTime);
     void SendRetortLock(bool IsLock);
 
     void SendUserLevel(QDataStream &DataStream);

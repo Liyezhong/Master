@@ -925,7 +925,8 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
                                                     const MsgClasses::CmdProgramAction &Cmd)
 {
     m_Mutex.lock();
-    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType())));
+    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType(),
+                                                                                        Cmd.ProgramEndDateTime())));
     m_Mutex.unlock();
     this->SendAcknowledgeOK(Ref);
 }

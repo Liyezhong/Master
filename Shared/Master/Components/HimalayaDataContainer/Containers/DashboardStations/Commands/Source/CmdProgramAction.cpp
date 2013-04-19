@@ -24,10 +24,12 @@ namespace MsgClasses {
 QString CmdProgramAction::NAME = "MsgClasses::CmdProgramAction";
 
 
-CmdProgramAction::CmdProgramAction(int Timeout, const QString& ProgramID, DataManager::ProgramActionType_t ActionType) :
+CmdProgramAction::CmdProgramAction(int Timeout, const QString& ProgramID, DataManager::ProgramActionType_t ActionType,
+                                   const QDateTime ProgramEndDateTime) :
     Command(Timeout),
     m_ProgramID(ProgramID),
-    m_ActionType(ActionType)
+    m_ActionType(ActionType),
+    m_ProgramEndDateTime(ProgramEndDateTime)
 {
 }
 

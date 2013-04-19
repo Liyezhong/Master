@@ -23,6 +23,7 @@
 
 #include <Global/Include/Commands/Command.h>
 #include <HimalayaDataContainer/Helper/Include/Global.h>
+#include <QDateTime>
 
 namespace MsgClasses {
 
@@ -41,18 +42,20 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdProgramAction(int Timeout, const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
+    CmdProgramAction(int Timeout, const QString& ProgramID, DataManager::ProgramActionType_t ActionType,
+                     const QDateTime ProgramEndDateTime);
     ~CmdProgramAction();
     virtual QString GetName() const;
     inline const QString& GetProgramID()const {return m_ProgramID;}
     inline DataManager::ProgramActionType_t ProgramActionType() const {return m_ActionType;}
-
+    inline const QDateTime& ProgramEndDateTime()const {return m_ProgramEndDateTime;}
 private:
     CmdProgramAction(const CmdProgramAction &);                     ///< Not implemented.
     const CmdProgramAction & operator = (const CmdProgramAction &); ///< Not implemented.
 private:
     QString      m_ProgramID;
     DataManager::ProgramActionType_t m_ActionType;
+    QDateTime m_ProgramEndDateTime;
 }; // end class CmdProgramAction
 
 /****************************************************************************/
@@ -71,6 +74,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramAction &C
     // copy internal data
     Stream << Cmd.m_ProgramID;
     Stream << Cmd.m_ActionType;
+    Stream << Cmd.m_ProgramEndDateTime;
     return Stream;
 }
 
@@ -92,6 +96,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdProgramAction &Cmd)
     int temp;
     Stream >> temp;
     Cmd.m_ActionType = (DataManager::ProgramActionType_t)temp;
+    Stream >> Cmd.m_ProgramEndDateTime;
     return Stream;
 }
 } // end namespace MsgClasses
