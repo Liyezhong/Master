@@ -116,10 +116,10 @@ void CDashboardWidget::AddItemsToComboBox()
     m_FavProgramIDs.clear();
     mp_Ui->pgmsComboBox->clear();
 
-    if(m_UserRoleChanged) {
-        if((m_CurrentUserRole == MainMenu::CMainWindow::Admin) ||
-                (m_CurrentUserRole == MainMenu::CMainWindow::Service))
-        {
+    //if(m_UserRoleChanged) {
+        //if((m_CurrentUserRole == MainMenu::CMainWindow::Admin) ||
+         //       (m_CurrentUserRole == MainMenu::CMainWindow::Service))
+        //{
             m_FavProgramIDs = mp_ProgramList->GetFavoriteProgramIDs(); // get five favorite Programs' ID
             for ( int i = 0; i < m_FavProgramIDs.count(); i++)
             {
@@ -134,9 +134,8 @@ void CDashboardWidget::AddItemsToComboBox()
                 }
                 mp_Ui->pgmsComboBox->insertItem(i, ProgramIcon, ProgramName);
             }
-        }
-    }
-    //mp_ComboBoxModel->ResetAndUpdateModel();
+        //}
+    //}
 }
 
 /****************************************************************************/
@@ -148,7 +147,7 @@ void CDashboardWidget::OnUserRoleChanged()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_UserRoleChanged = true;
-    AddItemsToComboBox();
+
 }
 
 
