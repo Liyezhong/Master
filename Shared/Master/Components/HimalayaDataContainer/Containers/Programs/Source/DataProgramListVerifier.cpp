@@ -140,7 +140,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
             if (p_Program->GetNumberOfSteps() > PROGRAM_STEPS_MAX) {
                 m_ErrorsHash.insert(EVENT_DM_PROG_STEP_COUNT_EXCEEDS_LIMIT,
                                    Global::tTranslatableStringList() <<  p_Program->GetName()
-                                   << QString::number(PROGRAM_STEPS_MIN) << QString::number(PROGRAM_STEPS_MAX));
+                                   << QString::number(PROGRAM_STEPS_MAX));
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_STEP_COUNT_EXCEEDS_LIMIT,
                                                            Global::tTranslatableStringList() <<  p_Program->GetName()
                                                            << QString::number(PROGRAM_STEPS_MAX),
