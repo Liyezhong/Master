@@ -136,11 +136,11 @@ void SchedulerCommandProcessor::DevProcConfigurationAckn(DevInstanceID_t instanc
     {
       //successfully configured the devices
     }
-   else
-   {
-    //some error happens
-   }
-        emit DCLConfigurationFinished(hdlInfo, mp_IDeviceProcessing);
+    else
+    {
+        //some error happens
+    }
+    emit DCLConfigurationFinished(hdlInfo, mp_IDeviceProcessing);
 }
 
 void SchedulerCommandProcessor::DevProcStartNormalOpModeAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)

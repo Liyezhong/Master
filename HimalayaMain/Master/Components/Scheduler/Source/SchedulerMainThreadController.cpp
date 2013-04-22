@@ -178,7 +178,7 @@ void SchedulerMainThreadController::OnTickTimer()
 {
     //ProcessNonDeviceCommand();
 
-    ControlCommandType_t newControllerCmd = ReceiveNonDeviceCommand();
+    ControlCommandType_t newControllerCmd = PeekNonDeviceCommand();
     SchedulerCommandShPtr_t cmd;
     ReturnCode_t retCode = DCL_ERR_UNDEFINED;
     if(PopDeviceControlCmdQueue(cmd))
@@ -235,7 +235,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
+            DequeueNonDeviceCommand();
         }
         break;
     case CTRL_CMD_LOCK_RETORT:
@@ -286,7 +286,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     {
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
-           mp_ProgramStepStateMachine->NotifyPause(PSSM_INIT);
+            mp_ProgramStepStateMachine->NotifyPause(PSSM_INIT);
+            DequeueNonDeviceCommand();
         }
         else if(CheckStepTemperature())
         {
@@ -299,6 +300,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
             mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1);
+            DequeueNonDeviceCommand();
         }
         else if(CheckLevelSensorTemperature(85))
         {
@@ -311,6 +313,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
            mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2);
+            DequeueNonDeviceCommand();
         }
         else if(CheckLevelSensorTemperature(85))
         {
@@ -327,6 +330,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_TUBE_BEFORE);
                 m_PauseToBeProcessed = false;
+                DequeueNonDeviceCommand();
             }
             else
             {
@@ -347,6 +351,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             mp_IDeviceProcessing->ALAllStop();
             mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_FILL);
+            DequeueNonDeviceCommand();
         }
         else if(DCL_ERR_DEV_AL_FILL_SUCCESS == retCode)
         {
@@ -366,6 +371,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_SEAL);
                 m_PauseToBeProcessed = false;
+                DequeueNonDeviceCommand();
             }
             else
             {
@@ -391,6 +397,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 lastPVTime = 0;
             }
             mp_ProgramStepStateMachine->NotifyPause(PSSM_SOAK);
+            DequeueNonDeviceCommand();
         }
         else
         {
@@ -400,6 +407,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             //qint32 period = m_CurProgramStepInfo.durationInSeconds * 20;
             if((now - m_CurStepSoakStartTime) > (period))
             {
+                //todo: verify whether this is last step and if need to notice user
                 mp_ProgramStepStateMachine->NotifySoakFinished();
                 m_CurStepSoakStartTime = 0;
             }
@@ -464,7 +472,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 {
                     mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_TUBE_AFTER);
                     m_PauseToBeProcessed = false;
-
+                    DequeueNonDeviceCommand();
                 }
             }
         }
@@ -482,6 +490,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     mp_IDeviceProcessing->ALAllStop();
                     m_PauseToBeProcessed = false;
                     mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_DRAIN);
+                    DequeueNonDeviceCommand();
                 }
             }
             else
@@ -552,6 +561,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             // resume the program
             mp_ProgramStepStateMachine->NotifyResume();
+            DequeueNonDeviceCommand();
         }
     }
     else if(PSSM_PAUSE_DRAIN == stepState)
@@ -559,17 +569,28 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         if(CTRL_CMD_START == ctrlCmd)
         {
             mp_ProgramStepStateMachine->NotifyResumeDrain();
+            DequeueNonDeviceCommand();
         }
     }
+#if 1
+  //work around to avoid continus START cmd
+   if(CTRL_CMD_START == ctrlCmd)
+   {
+    if((PSSM_PAUSE != stepState)&&(PSSM_PAUSE_DRAIN != stepState))
+    {
+            DequeueNonDeviceCommand();
+    }
+   }
+#endif
 }
 
-ControlCommandType_t SchedulerMainThreadController::ReceiveNonDeviceCommand()
+ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
 {
 
     if(m_SchedulerCmdQueue.isEmpty())
         return CTRL_CMD_NONE;
 
-    Global::CommandShPtr_t pt = m_SchedulerCmdQueue.dequeue();//should use m_SchedulerCmdQueue.head()?
+    Global::CommandShPtr_t pt = m_SchedulerCmdQueue.head();
     MsgClasses::CmdProgramAction* pCmdProgramAction = dynamic_cast<MsgClasses::CmdProgramAction*>(pt.GetPointerToUserData());
     if(pCmdProgramAction)
     {
@@ -577,9 +598,6 @@ ControlCommandType_t SchedulerMainThreadController::ReceiveNonDeviceCommand()
         {
             //emit signalProgramStart(pCmdProgramAction->GetProgramID());
             m_NewProgramID = pCmdProgramAction->GetProgramID();
-#if 0 //for debug
-            quint32 timeneeded = GetLeftProgramNeededTime(m_NewProgramID);
-#endif
             return CTRL_CMD_START;
         }
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_PAUSE)
@@ -712,6 +730,14 @@ void SchedulerMainThreadController::ProcessNonDeviceCommand()
 
 
 }//When end of this function, the command in m_SchedulerCmdQueue will be destrory by share pointer (CommandShPtr_t) mechanism
+
+void SchedulerMainThreadController::DequeueNonDeviceCommand()
+{
+        if(!m_SchedulerCmdQueue.isEmpty())
+        {
+            m_SchedulerCmdQueue.dequeue();
+        }
+}
 
 void SchedulerMainThreadController::ProgramStart(const QString& ProgramID)
 {
@@ -1036,7 +1062,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"Failed move to initial position, return code: " << retCode;
             goto ERROR;
         }
-#if 0
+#if 1
     //hardware not ready yet
         m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, mp_IDeviceProcessing, this));
         SchedulerCommandShPtr_t resPerTurnOnRelay;
@@ -1147,6 +1173,48 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"Failed to heat oven top, return code: " << retCode;
             goto ERROR;
         }
+
+        CmdALStartTemperatureControlWithPID* cmdHeatALTube1  = new CmdALStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
+        cmdHeatALTube1->SetType(AL_LEVELSENSOR);
+        //todo: get temperature here
+        cmdHeatALTube1->SetNominalTemperature(90);
+        cmdHeatALTube1->SetSlopeTempChange(10);
+        cmdHeatALTube1->SetMaxTemperature(120);
+        cmdHeatALTube1->SetControllerGain(200);
+        cmdHeatALTube1->SetResetTime(1000);
+        cmdHeatALTube1->SetDerivativeTime(0);
+        m_SchedulerCommandProcessor->pushCmd(cmdHeatALTube1);
+        SchedulerCommandShPtr_t resHeatALTube1;
+        while(!PopDeviceControlCmdQueue(resHeatALTube1));
+        resHeatALTube1->GetResult(retCode);
+        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            //todo: error handling
+            qDebug()<<"Failed to heat tube 1, return code: " << retCode;
+            goto ERROR;
+        }
+
+        CmdALStartTemperatureControlWithPID* cmdHeatALTube2  = new CmdALStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
+        cmdHeatALTube2->SetType(AL_LEVELSENSOR);
+        //todo: get temperature here
+        cmdHeatALTube2->SetNominalTemperature(90);
+        cmdHeatALTube2->SetSlopeTempChange(10);
+        cmdHeatALTube2->SetMaxTemperature(120);
+        cmdHeatALTube2->SetControllerGain(200);
+        cmdHeatALTube2->SetResetTime(1000);
+        cmdHeatALTube2->SetDerivativeTime(0);
+        m_SchedulerCommandProcessor->pushCmd(cmdHeatALTube2);
+        SchedulerCommandShPtr_t resHeatALTube2;
+        while(!PopDeviceControlCmdQueue(resHeatALTube2));
+        resHeatALTube2->GetResult(retCode);
+        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            //todo: error handling
+            qDebug()<<"Failed to heat tube 2, return code: " << retCode;
+            goto ERROR;
+        }
+
+
 #endif
         // set state machine "init" to "idle" (David)
         m_SchedulerMachine->SendSchedulerInitComplete();
@@ -1228,10 +1296,10 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
                 m_TempOvenTop = TempOvenTop;
             }
             m_PositionRV = PositionRV;
+#if 0
             qDebug()<<"Rotary valve's position is" << PositionRV;
             qDebug()<<"Air liquid system pressure is" << PressureAL;
             qDebug()<<"Air liquid system level sensor's temp is" << TempALLevelSensor;
-#if 0
             qDebug()<<"Air liquid system tube1's temp is" << TempALTube1;
             qDebug()<<"Air liquid system tube2's temp is" << TempALTube2;
             qDebug()<<"Rotary valve's temp is" << TempRV;

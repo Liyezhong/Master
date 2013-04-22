@@ -116,7 +116,7 @@ typedef enum
         qreal m_TempOvenBottom;
         qreal m_TempOvenTop;
         QStringList m_UsedStationIDs;                                                 ///in a whole of program processing
-		bool m_PauseToBeProcessed;
+        bool m_PauseToBeProcessed;
         int m_ProcessCassetteCount;
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -130,7 +130,8 @@ typedef enum
         void HardwareMonitor(IDeviceProcessing* pIDP, const QString& StepID);
         //process commands, like: program Start, Pause, Abort.
         void ProcessNonDeviceCommand();
-        ControlCommandType_t ReceiveNonDeviceCommand();
+        ControlCommandType_t PeekNonDeviceCommand();
+        void DequeueNonDeviceCommand();
         QString GetStationIDFromReagentID(const QString& ReagentID, bool IsLastStep = false);
         QString GetReagentName(const QString& ReagentID);
         bool IsCleaningReagent(const QString& ReagentID);
