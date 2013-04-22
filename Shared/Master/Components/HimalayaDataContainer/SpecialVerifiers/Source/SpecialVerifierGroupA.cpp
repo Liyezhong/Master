@@ -258,16 +258,16 @@ bool CSpecialVerifierGroupA::CheckData()
     return Result;
 }
 
- bool CSpecialVerifierGroupA::IsCompatible(const QString& currentReagentGroupID, const QString& NextReagentGroupID)
+ bool CSpecialVerifierGroupA::IsCompatible(const QString& currentReagentGroupID, const QString& PreviousReagentGroupID)
  {
-    if (currentReagentGroupID.isEmpty()||NextReagentGroupID.isEmpty())
+    if (currentReagentGroupID.isEmpty()||PreviousReagentGroupID.isEmpty())
         return true;
 
     if(!m_pDataReagentGroupList)
         return false;
 
-     int i = m_pDataReagentGroupList->GetReagentGroupIndex(currentReagentGroupID);
-     int j = m_pDataReagentGroupList->GetReagentGroupIndex(NextReagentGroupID);
+     int i = m_pDataReagentGroupList->GetReagentGroupIndex(PreviousReagentGroupID);
+     int j = m_pDataReagentGroupList->GetReagentGroupIndex(currentReagentGroupID);
 
      if (i > j)//swap
      {
@@ -276,18 +276,16 @@ bool CSpecialVerifierGroupA::CheckData()
          j= temp;
      }
 
-     int arr[]={1, 1, 0, 0, 0, 0, 0, 1,
-                   1, 1, 1, 0, 0, 0, 1,//water
-                      1, 1, 0, 0, 0, 1,//dehydrating,diluted
-                         1, 1, 0, 0, 1,
-                            1, 1, 1, 0, //clearing
-                               1, 1, 0,
-                                  1, 1,
-                                     1};
+    int arr[8][8]={1, 1, 0, 0, 0, 0, 0, 1,
+                 0, 1, 1, 1, 0, 0, 0, 1,//water
+                 0, 0, 1, 1, 0, 0, 0, 1,//dehydrating,diluted
+                 0, 0, 0, 1, 1, 0, 0, 1,
+                 0, 0, 0, 0, 1, 1, 1, 0, //clearing
+                 0, 0, 0, 0, 0, 1, 1, 0,
+                 0, 0, 0, 0, 0, 0, 1, 1,
+                 0, 0, 0, 0, 0, 0, 0, 1};
 
-     int index = 0;
-     index = (18 - i) * i / 2 + (j - i);//[(n + 1) + (n - i + 1)] * i / 2 + (j - i);int n = 8;//the dimention of array
-    if (1 == arr[index])
+    if (1 == arr[i][j])
        return true;
     else
         return false;

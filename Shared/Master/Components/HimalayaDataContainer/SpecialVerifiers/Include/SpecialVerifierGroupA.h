@@ -74,7 +74,7 @@ private:
     CDataReagentGroupList* m_pDataReagentGroupList;
     ErrorHash_t m_ErrorsHash;          //!< To store Error ID and any arguments associated
 	bool CheckData();
-    bool IsCompatible(const QString& currentReagentGroupID, const QString& NextReagentGroupID);
+    bool IsCompatible(const QString& currentReagentGroupID, const QString& PreviousReagentGroupID);
 };
 
 } // namespace DataManager
