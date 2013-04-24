@@ -175,6 +175,7 @@ private slots:
          void Drain();
          void Pressure();
          void Vaccum();
+         bool SelfTest();
     protected:
 
         /****************************************************************************/

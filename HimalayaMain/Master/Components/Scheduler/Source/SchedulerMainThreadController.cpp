@@ -1514,6 +1514,8 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
     }
     return ret;
 }
-
+bool SchedulerMainThreadController::SelfTest()
+{
+}
 } // EONS ::Scheduler
 
