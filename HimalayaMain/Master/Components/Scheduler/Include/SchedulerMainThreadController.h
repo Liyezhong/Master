@@ -35,6 +35,7 @@
 #include "NetCommands/Include/CmdSystemAction.h"
 #include "SchedulerMachine.h"
 #include "ProgramStepStateMachine.h"
+#include "SelfTestStateMachine.h"
 #include "DeviceControl/Include/Interface/IDeviceProcessing.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
@@ -76,6 +77,11 @@ typedef enum
     CTRL_CMD_UNKNOWN
 }ControlCommandType_t;
 
+typedef struct
+{
+    QString ReagentGroupID;
+    QString StationID;
+}ProgramStationInfo_t;
 
     /****************************************************************************/
     /**
@@ -92,11 +98,13 @@ typedef enum
         QQueue<Global::CommandShPtr_t> m_SchedulerCmdQueue;
         QMutex m_MutexDeviceControlCmdQueue;                                        /// < mutex for accessing m_DeviceControlCmdQueue
         QQueue<Scheduler::SchedulerCommandShPtr_t> m_DeviceControlCmdQueue;                     ///< Queue(Q2) for receive respond from SechedulerCommandProcessor
+        QQueue<ProgramStationInfo_t> m_ProgramStationList;
 
         QThread* m_SchedulerCommandProcessorThread;
         SchedulerCommandProcessor* m_SchedulerCommandProcessor;
         SchedulerMachine* m_SchedulerMachine;
         ProgramStepStateMachine* mp_ProgramStepStateMachine;
+        SelfTestStateMachine* mp_SelfTestStateMachine;
         DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
         DataManager::CDataManager       *mp_DataManager;
         qint64 m_CurStepSoakStartTime;
@@ -134,6 +142,7 @@ typedef enum
         void DequeueNonDeviceCommand();
         QString GetStationIDFromReagentID(const QString& ReagentID, bool IsLastStep = false);
         QString GetReagentName(const QString& ReagentID);
+        QString GetReagentGroupID(const QString& ReagentID);
         bool IsCleaningReagent(const QString& ReagentID);
         void UpdateStationReagentStatus();
 
@@ -147,6 +156,7 @@ typedef enum
          bool GetNextProgramStepInformation(const QString& ProgramID, ProgramStepInfor& ProgramStepInfor);
          quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID);
          quint32 GetCurrentProgramStepNeededTime(const QString& ProgramID);
+         bool PrepareProgramStationList(const QString& ProgramID);
 
          RVPosition_t GetRVTubePositionByStationID(const QString stationID);
          RVPosition_t GetRVSealPositionByStationID(const QString stationID);
@@ -175,7 +185,7 @@ private slots:
          void Drain();
          void Pressure();
          void Vaccum();
-         bool SelfTest();
+         bool SelfTest(ReturnCode_t RetCode);
     protected:
 
         /****************************************************************************/

@@ -31,6 +31,7 @@
 #include "Scheduler/Commands/Include/CmdPerTurnOnMainRelay.h"
 #include "Scheduler/Commands/Include/CmdPerTurnOffMainRelay.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
+#include "Scheduler/Commands/Include/CmdIDBottleCheck.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "HimalayaDataManager/Include/DataManager.h"
 #include "Global/Include/GlobalDefines.h"
@@ -65,6 +66,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_CurProgramID("")
         , m_NewProgramID("")
         , mp_ProgramStepStateMachine(new ProgramStepStateMachine())
+        , mp_SelfTestStateMachine(new SelfTestStateMachine())
         , m_CurStepSoakStartTime(0)
         , m_CurReagnetName("")
         , m_PauseToBeProcessed(false)
@@ -83,6 +85,8 @@ SchedulerMainThreadController::~SchedulerMainThreadController()
     m_SchedulerMachine = NULL;
     delete mp_ProgramStepStateMachine;
     mp_ProgramStepStateMachine = NULL;
+    delete mp_SelfTestStateMachine;
+    mp_SelfTestStateMachine = NULL;
 }
 
 void SchedulerMainThreadController::RegisterCommands()
@@ -225,8 +229,9 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
         {
             qDebug() << "Start step: " << m_CurProgramID;
             mp_ProgramStepStateMachine->Start();
+            mp_SelfTestStateMachine->Start();
             m_SchedulerMachine->SendRunSignal();
-
+            PrepareProgramStationList(m_CurProgramID);
             //send command to main controller to tell the left time
             quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
             QTime leftTime(0,0,0);
@@ -289,9 +294,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             mp_ProgramStepStateMachine->NotifyPause(PSSM_INIT);
             DequeueNonDeviceCommand();
         }
-        else if(CheckStepTemperature())
+        else if(SelfTest(retCode))
         {
-            mp_ProgramStepStateMachine->NotifyTempsReady();
+            if(CheckStepTemperature())
+            {
+                mp_ProgramStepStateMachine->NotifyTempsReady();
+            }
         }
     }
     else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1 == stepState)
@@ -817,6 +825,43 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
     return true;
 }
 
+bool SchedulerMainThreadController::PrepareProgramStationList(const QString& ProgramID)
+{
+    if (!mp_DataManager)
+    {
+        Q_ASSERT(false);
+        return false;//need error handling
+    }
+
+    CDataProgramList* pDataProgramList = mp_DataManager->GetProgramList();
+    if (!pDataProgramList)
+    {
+        Q_ASSERT(false);
+        return false;
+    }
+
+    CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
+    ListOfProgramSteps_t* programSteps = pProgram->GetStepList();
+
+    bool isLastStep = false;
+    m_ProgramStationList.clear();
+
+    ListOfProgramSteps_t::iterator iter = programSteps->begin();
+    while (iter != programSteps->end())
+    {
+        ProgramStationInfo_t stationInfo;
+       // isLastStep = (iter.nextNode() == programSteps->end());
+        CProgramStep* pProgramStep = iter.value();
+        QString reagentID = pProgramStep->GetReagentID();
+        stationInfo.ReagentGroupID =GetReagentGroupID(reagentID);
+        stationInfo.StationID = this->GetStationIDFromReagentID(reagentID, isLastStep);
+        m_ProgramStationList.enqueue(stationInfo);
+        iter++;
+    }
+
+    return true;
+}
+
 quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QString& ProgramID)
 {
     quint32 leftTime = 0;
@@ -1041,6 +1086,21 @@ QString SchedulerMainThreadController::GetReagentName(const QString& ReagentID)
         const CReagent* pReagent = pReagentList->GetReagent(ReagentID);
         if (pReagent)
             return pReagent->GetReagentName();
+    }
+
+    return "";
+}
+
+QString SchedulerMainThreadController::GetReagentGroupID(const QString& ReagentID)
+{
+    if (!mp_DataManager)
+        return "";
+
+    if (CDataReagentList* pReagentList =  mp_DataManager->GetReagentList())
+    {
+        const CReagent* pReagent = pReagentList->GetReagent(ReagentID);
+        if (pReagent)
+            return pReagent->GetGroupID();
     }
 
     return "";
@@ -1514,8 +1574,103 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
     }
     return ret;
 }
-bool SchedulerMainThreadController::SelfTest()
+
+bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
 {
+    bool retValue = false;
+    SelfTestStateMachine_t selfTestState = mp_SelfTestStateMachine->GetCurrentState();
+    if(SELF_TEST_INIT == selfTestState)
+    {
+        // check temperature
+        if(true)
+        {
+            mp_SelfTestStateMachine->NotifyTempsReady();
+        }
+    }
+    else if(SELF_TEST_TEMP_READY == selfTestState)
+    {
+        ProgramStationInfo_t stationInfo = m_ProgramStationList.dequeue();
+        RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
+        QString reagentGrpId = stationInfo.ReagentGroupID;
+
+        CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_IDeviceProcessing, this);
+        //todo: get delay time here
+        cmd->SetReagentGrpID(reagentGrpId);
+        cmd->SetTubePos(tubePos);
+        m_SchedulerCommandProcessor->pushCmd(cmd);
+        mp_SelfTestStateMachine->NotifyCheckStation();
+
+    }
+    else if(SELF_TEST_BOTTLE_CHECKING == selfTestState)
+    {
+        if( DCL_ERR_DEV_BOTTLE_CHECK_OK == RetCode)
+        {
+        mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+        }
+        else if( DCL_ERR_DEV_BOTTLE_CHECK_NOT_FULL == RetCode)
+        {
+        mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+        }
+        else if( DCL_ERR_DEV_BOTTLE_CHECK_BLOCKAGE == RetCode)
+        {
+        mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+        }
+        else if(DCL_ERR_DEV_BOTTLE_CHECK_LEAKAGE == RetCode)
+        {
+        mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+        }
+        else if(DCL_ERR_DEV_BOTTLE_CHECK_ERROR == RetCode)
+        {
+        mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+        }
+        else if(DCL_ERR_DEV_BOTTLE_CHECK_TIMEOUT == RetCode)
+        {
+        mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+        }
+        else if(DCL_ERR_UNDEFINED != RetCode)
+        {
+            qDebug() << "Unexpected ret code: "<< RetCode;
+        }
+    }
+    else if(SELF_TEST_BOTTLE_CHECK_FINISH == selfTestState)
+    {
+        if(m_ProgramStationList.size() > 0)
+        {
+            ProgramStationInfo_t stationInfo = m_ProgramStationList.dequeue();
+            RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
+            QString reagentGrpId = stationInfo.ReagentGroupID;
+
+            CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_IDeviceProcessing, this);
+            //todo: get delay time here
+            cmd->SetReagentGrpID(reagentGrpId);
+            cmd->SetTubePos(tubePos);
+            m_SchedulerCommandProcessor->pushCmd(cmd);
+            mp_SelfTestStateMachine->NotifyCheckStation();
+        }
+        else
+        {
+            mp_SelfTestStateMachine->NotifyCheckStaionFinished();
+        }
+    }
+    else if(SELF_TEST_FINISH == selfTestState)
+    {
+        retValue = true;
+    }
+    else
+    {
+        //should not get here
+        qDebug()<<"error when run Selftest state machine";
+    }
+
+    return retValue;
+
+
+    CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_IDeviceProcessing, this);
+    //todo: get delay time here
+    cmd->SetReagentGrpID("RG3");
+    //cmd->SetTubePos(1);
+    m_SchedulerCommandProcessor->pushCmd(cmd);
+
 }
 } // EONS ::Scheduler
 
