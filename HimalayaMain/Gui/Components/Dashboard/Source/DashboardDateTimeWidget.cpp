@@ -96,7 +96,7 @@ CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent) : MainMenu
 
 
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
-    CONNECTSIGNALSLOT(mp_Ui->btnASAP, clicked(), this, close()); // to do
+    CONNECTSIGNALSLOT(mp_Ui->btnASAP, clicked(), this, OnSetASAPDateTime());
     CONNECTSIGNALSLOT(mp_Ui->btnOK, clicked(), this, OnOK());
 }
 
@@ -270,5 +270,8 @@ void CDashboardDateTimeWidget::OnCancel()
     close();
 }
 
+void CDashboardDateTimeWidget::OnSetASAPDateTime()
+{
+}
 
 } // end namespace Dashboard

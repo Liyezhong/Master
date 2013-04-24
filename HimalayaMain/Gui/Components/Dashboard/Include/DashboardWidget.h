@@ -70,11 +70,16 @@ private:
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
     bool m_UserRoleChanged;                                     //!< Flag to Verify the Change in User Role
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
+    int m_asapEndTime;
+    QDateTime m_EndDateTime;
 
     void PlayProgram();
     void PauseProgram();
     void AbortProgram();
     void EnablePlayButton(bool bSetEnable);
+
+    bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
+    int GetASAPTime(const DataManager::CProgram*, int);
 
 public:
     explicit CDashboardWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL);
@@ -92,7 +97,7 @@ signals:
     void ProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
     void UpdateProgramName(QString SelectedProgramName);
     void UpdateDashboardSceneReagentStations(QString& ProgramID);
-    void ProgramSelected(QString & ProgramId);
+    void ProgramSelected(QString & ProgramId, int asapEndTime);
 
 public slots:
     void RetortSliderPositionChanged(MainMenu::CSliderControl::Position_t Position);
@@ -107,6 +112,7 @@ public slots:
 
     // Warning Message Slots
     void OnProgramStartConfirmation();
+    void OnSelectDateTime(const QDateTime&);
 };
 
 }

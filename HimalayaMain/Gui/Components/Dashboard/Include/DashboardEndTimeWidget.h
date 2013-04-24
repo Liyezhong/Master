@@ -51,7 +51,7 @@ public:
     explicit CDashboardEndTimeWidget(Core::CDataConnector *p_DataConnector, QWidget *p_Parent = NULL);
     ~CDashboardEndTimeWidget();
     void InitEndTimeWidgetItems();
-    void UpdateEndTimeWidgetItems(DataManager::CProgram const *p_Program);
+    void UpdateEndTimeWidgetItems(DataManager::CProgram const *p_Program, int ProgramEndTimeInSecs);
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -60,7 +60,7 @@ public slots:
     void OnUserRoleChanged();
     void OnUserSettingsUpdated();
     void OnEndTimeButtonClicked();
-    void UpdateDateTime(QDateTime & selDateTime);
+    void UpdateDateTime(const QDateTime & selDateTime);
     void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor& cmd);
 
 private:
@@ -77,7 +77,8 @@ private:
     QDateTime m_ProgramEndDateTime;
     Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
     DataManager::CProgram const *mp_Program;
-
+signals:
+    void OnSelectDateTime(const QDateTime& selDateTime);
 
 };
 

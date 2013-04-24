@@ -301,7 +301,7 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     mp_GraphicsProxyWidget->setPos(m_DashboardEndTimeWidgetPos);
     addItem(mp_GraphicsProxyWidget);
 
-
+    CONNECTSIGNALSIGNAL(mp_DashboardEndTimeWidget, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime &));
 /**
     for(int i = 0; i < m_DashboardStationConnectorsPositions.count(); i++)
     {
@@ -342,24 +342,21 @@ void CDashboardScene::UpdateDashboardStations()
         pListItem->StationSelected(true);
         pListItem->update();
     }
-
 }
 
-void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &ProgramId)
+void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &ProgramId, int asapEndTime)
 {
     QStringList SelectedStationIdList;
     DataManager::CProgram const *p_Program = NULL;
     QStringList ProgramReagentIdList;
     QString StationReagentId;
 
-
-
     if (m_CloneProgramList) {
         *mp_ProgramListClone = *(mp_DataConnector->ProgramList);
     }
     p_Program = mp_ProgramListClone->GetProgram(ProgramId);
     if(p_Program) {
-        mp_DashboardEndTimeWidget->UpdateEndTimeWidgetItems(p_Program);
+        mp_DashboardEndTimeWidget->UpdateEndTimeWidgetItems(p_Program, asapEndTime);
         ProgramReagentIdList = p_Program->GetReagentIDList();
     }
 

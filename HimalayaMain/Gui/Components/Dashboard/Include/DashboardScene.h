@@ -101,8 +101,10 @@ private:
 
 private slots:
     void UpdateDashboardStations();
-    void UpdateDashboardSceneReagentsForProgram(QString & ProgramId);
+    void UpdateDashboardSceneReagentsForProgram(QString&, int);
 
+signals:
+    void OnSelectDateTime(const QDateTime &);
 
 };
 

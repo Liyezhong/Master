@@ -31,7 +31,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    mp_Ui(new Ui::CDashboardWidget),mp_MainWindow(p_Parent),
                                    mp_DataConnector(p_DataConnector),
                                    m_ProgramNextAction(DataManager::PROGRAM_START),
-                                   m_UserRoleChanged(false)
+                                   m_UserRoleChanged(false),
+                                   m_asapEndTime(0)
 {
      mp_Ui->setupUi(GetContentFrame());
      SetPanelTitle(tr("Dashboard"));
@@ -44,6 +45,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      mp_DashboardScene = new CDashboardScene(mp_DataConnector, this, mp_MainWindow);
      mp_Ui->dashboardView->setScene(mp_DashboardScene);
+     CONNECTSIGNALSLOT(mp_DashboardScene, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime&));
 
      mp_Separator = new QFrame();
      mp_Separator->setParent(this);  // Set Parent of this Frame as the Dashboard Widget.
@@ -69,8 +71,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      CONNECTSIGNALSLOT(this, ProgramAction(const QString&, DataManager::ProgramActionType_t),
                        mp_DataConnector, SendProgramAction(const QString&, DataManager::ProgramActionType_t));
 
-     CONNECTSIGNALSLOT(this, ProgramSelected(QString&), 
-						mp_DashboardScene, UpdateDashboardSceneReagentsForProgram(QString &));
+     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int),
+                        mp_DashboardScene, UpdateDashboardSceneReagentsForProgram(QString &, int));
 
      CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(const MsgClasses::CmdProgramStartReady &),
                        this, OnProgramStartReadyUpdated(const MsgClasses::CmdProgramStartReady&));
@@ -170,7 +172,8 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
                 if(CheckPreConditionsToPauseProgram())
                 {
                     m_ProgramCurrentAction = DataManager::PROGRAM_PAUSE;
-                    mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction);
+                    QDateTime programDateTime;
+                    mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction, programDateTime);
                     m_ProgramNextAction = DataManager::PROGRAM_START;
                     mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
 
@@ -197,6 +200,72 @@ void CDashboardWidget::OnRMSValueChanged(Global::RMSOptions_t state)
     m_RMSState = state;
 }
 
+void CDashboardWidget::OnSelectDateTime(const QDateTime& dateTime)
+{
+    m_EndDateTime = dateTime;
+}
+
+bool CDashboardWidget::IsParaffinInProgram(const DataManager::CProgram* p_Program)
+{
+    if (!mp_DataConnector)
+    {
+        Q_ASSERT(0);
+        return false;
+    }
+
+    QStringList ReagentIDList = p_Program->GetReagentIDList();
+    for (int i = 0; i < ReagentIDList.size(); ++i)
+    {
+        QString ReagentGroupID = mp_DataConnector->ReagentList->GetReagent(ReagentIDList.at(i))->GetGroupID();
+        DataManager::CReagentGroup* pReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupID);
+        if(pReagentGroup->IsParraffin()){
+            return true;
+        }
+    }
+    return false;
+}
+
+//TimeActual--- get from Scheduler
+//TimeDelta
+//EndTimeAsap = TimeActual + TimeDelta;
+int CDashboardWidget::GetASAPTime(const DataManager::CProgram* p_Program, int TimeActual)//TimeActual is seconds
+{
+    //IsParaffinInProgram()
+    //Yes
+      //calculate the timeBeforeUseParraffin
+      //RemainingTimeWeltParraffin = 12 hour - TimeCosted
+      //if RemainingTimeWeltParraffin > 0
+        //if RemainingTimeWeltParraffin <= timeBeforeUseParraffin , TDelta = 0;
+            //else TDelta = RemainingTimeWeltParraffin - timeBeforeUseParraffin
+    //if RemainingTimeWeltParraffin <= 0 Paraffin is welted, TDelta = 0;
+
+    //No Paraffin TimeDelta = 0;
+
+    int TimeDelta; //seconds
+    if (!IsParaffinInProgram(p_Program))//No Paraffin in all program steps
+    {
+        TimeDelta = 0;
+    }
+    else
+    {
+        //calculate the timeBeforeUseParraffin
+        int timeBeforeUseParraffin = 123;//seconds, todo:should get from Master
+        //RemainingTimeWeltParraffin = 12 hour - TimeCosted
+        int TimeCostedParaffinWelting = 500; //seconds, todo:should get from Master
+        int RemainingTimeWeltParraffin = 12 * 60 * 60 - TimeCostedParaffinWelting;
+        if (RemainingTimeWeltParraffin > 0)
+        {
+          if (RemainingTimeWeltParraffin <= timeBeforeUseParraffin)
+              TimeDelta = 0;
+           else
+              TimeDelta = RemainingTimeWeltParraffin - timeBeforeUseParraffin;
+        }
+        else
+            TimeDelta = 0;  //Paraffin is welted
+    }
+    return (TimeActual + TimeDelta);//seconds
+}
+
 void CDashboardWidget::OnActivated(int index)
 {
     qDebug() << "Index Recieved : " << index;
@@ -204,7 +273,10 @@ void CDashboardWidget::OnActivated(int index)
         m_SelectedProgramId = m_FavProgramIDs.at(index);
         CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_SelectedProgramId)->GetName();
         mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
-        emit ProgramSelected(m_SelectedProgramId);
+        //get the proposed program end DateTime
+        int asapEndTime = GetASAPTime(mp_ProgramList->GetProgram(m_SelectedProgramId), 900);
+        m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+        emit ProgramSelected(m_SelectedProgramId, asapEndTime);
     } else {
         mp_Ui->pgmsComboBox->showPopup();
     }
@@ -274,7 +346,7 @@ void CDashboardWidget::OnProgramStartConfirmation()
     qDebug() << " On Confirmation";
     // Send Command to Master
     m_ProgramCurrentAction = DataManager::PROGRAM_START;
-    mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction);
+    mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction, m_EndDateTime);
 
 }
 

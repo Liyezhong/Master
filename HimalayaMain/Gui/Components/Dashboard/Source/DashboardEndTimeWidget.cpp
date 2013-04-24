@@ -87,26 +87,17 @@ void CDashboardEndTimeWidget::OnUserSettingsUpdated()
    }
 }
 
-void CDashboardEndTimeWidget::UpdateEndTimeWidgetItems(DataManager::CProgram const *p_Program)
+void CDashboardEndTimeWidget::UpdateEndTimeWidgetItems(DataManager::CProgram const *p_Program, int ProgramEndTimeInSecs)
 {
     mp_Program = p_Program;
-    int ProgramEndTimeInSecs = 0;
-    QDateTime curDateTime;
 
-    for ( int i = 0; i < p_Program->GetNumberOfSteps(); i++)
-    {
-        DataManager::CProgramStep const *p_ProgramStep = p_Program->GetProgramStep(i);
-        ProgramEndTimeInSecs += p_ProgramStep->GetDurationInSeconds();
-        qDebug() << "Program End Time in Seconds" << ProgramEndTimeInSecs;
-    }
     mp_Ui->btnEndTime->setStyleSheet(
                  "border-image: url(:/HimalayaImages/LongButton/LongButton_Enabled.png);"
                  "font: 75 regular 14pt \"cmr10\";"
                  "text-align: left;"
              );
     mp_Ui->btnEndTime->setEnabled(true);
-
-    m_ProgramEndDateTime = curDateTime.currentDateTime().addSecs(ProgramEndTimeInSecs);
+    m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(ProgramEndTimeInSecs);
     UpdateDateTime(m_ProgramEndDateTime);
     mp_Ui->lblName->show();
     mp_Ui->lblReagentName->show();
@@ -138,12 +129,13 @@ void CDashboardEndTimeWidget::OnEndTimeButtonClicked()
 {
     mp_wdgtDateTime->UpdateProgramName();
     mp_wdgtDateTime->show();
-    CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(QDateTime &), this, UpdateDateTime(QDateTime &));
+    CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, UpdateDateTime(const QDateTime &));
+    CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime &));
     update();
 }
 
 
-void CDashboardEndTimeWidget::UpdateDateTime(QDateTime &selDateTime)
+void CDashboardEndTimeWidget::UpdateDateTime(const QDateTime &selDateTime)
 {
     QString DateStr;
     QString TimeStr;
@@ -197,6 +189,7 @@ void CDashboardEndTimeWidget::UpdateDateTime(QDateTime &selDateTime)
     DateTimeStr.append(DateStr);
 
     mp_Ui->btnEndTime->setText(DateTimeStr);
+
 
 }
 

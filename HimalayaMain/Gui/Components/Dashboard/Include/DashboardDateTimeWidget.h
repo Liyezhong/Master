@@ -77,9 +77,10 @@ public slots:
     void OnOK(bool Send = true);
     void OnCancel();
     void UpdateProgramName();
+    void OnSetASAPDateTime();
 
 signals:
-    void OnSelectDateTime(QDateTime& selDateTime);
+    void OnSelectDateTime(const QDateTime& selDateTime);
 
 };
 

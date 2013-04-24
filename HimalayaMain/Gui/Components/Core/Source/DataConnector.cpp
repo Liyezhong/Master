@@ -1409,11 +1409,11 @@ void CDataConnector::SendSelectedDayRunLogFile(const QString &FileName)
     mp_WaitDialog->show();
 }
 
-void CDataConnector::SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType)
+void CDataConnector::SendProgramAction(const QString& ProgramID,
+                                       DataManager::ProgramActionType_t ActionType,
+                                       const QDateTime& ProgramEndDateTime)
 {
-    //Todo get the actual ProgramEndDateTime
-    QDateTime dateTime;
-    MsgClasses::CmdProgramAction Command(1000, ProgramID, ActionType, dateTime);
+    MsgClasses::CmdProgramAction Command(1000, ProgramID, ActionType, ProgramEndDateTime);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
     mp_WaitDialog->SetText(tr("Saving Settings ..."));
