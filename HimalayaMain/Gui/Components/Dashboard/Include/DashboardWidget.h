@@ -80,7 +80,7 @@ private:
     void EnablePlayButton(bool bSetEnable);
 
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
-    int GetASAPTime(const DataManager::CProgram*, int);
+    int GetASAPTime(const DataManager::CProgram*, int, int, int);
 
 public:
     explicit CDashboardWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL);
@@ -110,6 +110,7 @@ public slots:
     void OnProgramActionStarted(DataManager::ProgramActionType_t ActionType);
     void OnProgramStartReadyUpdated(const MsgClasses::CmdProgramStartReady& cmd);
     void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
+    void OnRecievedProgramEndTime(const MsgClasses::CmdProgramEndTime& cmd);
 
     // Warning Message Slots
     void OnProgramStartConfirmation();

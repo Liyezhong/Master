@@ -1574,7 +1574,8 @@ void CDataConnector::ProgramStartReadyHandler(Global::tRefType Ref, const MsgCla
 
 void CDataConnector::ProgramEndTimeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramEndTime & Command)
 {
-
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    emit ReceivedProgramEndTime(Command);
 }
 
 void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortLockStatus & Command)

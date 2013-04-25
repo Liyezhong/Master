@@ -78,8 +78,12 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus &),
                        this, OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus&));
+
      CONNECTSIGNALSLOT(mp_Ui->retortSlider, positionChanged(MainMenu::CSliderControl::Position_t),
                        this, RetortSliderPositionChanged(MainMenu::CSliderControl::Position_t));
+
+     CONNECTSIGNALSLOT(mp_DataConnector, ReceivedProgramEndTime(const MsgClasses::CmdProgramEndTime &),
+                       this, OnRecievedProgramEndTime(const MsgClasses::CmdProgramEndTime&));
 }
 
 CDashboardWidget::~CDashboardWidget()
@@ -227,7 +231,10 @@ bool CDashboardWidget::IsParaffinInProgram(const DataManager::CProgram* p_Progra
 //TimeActual--- get from Scheduler
 //TimeDelta
 //EndTimeAsap = TimeActual + TimeDelta;
-int CDashboardWidget::GetASAPTime(const DataManager::CProgram* p_Program, int TimeActual)//TimeActual is seconds
+int CDashboardWidget::GetASAPTime(const DataManager::CProgram* p_Program,
+                                  int TimeActual,//TimeActual is seconds
+                                  int timeBeforeUseParaffin,
+                                  int TimeCostedParaffinWelting)
 {
     //IsParaffinInProgram()
     //Yes
@@ -248,9 +255,7 @@ int CDashboardWidget::GetASAPTime(const DataManager::CProgram* p_Program, int Ti
     else
     {
         //calculate the timeBeforeUseParraffin
-        int timeBeforeUseParaffin = 123;//seconds, todo:should get from Master
         //RemainingTimeWeltParraffin = 12 hour - TimeCosted
-        int TimeCostedParaffinWelting = 500; //seconds, todo:should get from Master
         int RemainingTimeWeltParaffin = 12 * 60 * 60 - TimeCostedParaffinWelting;
         if (RemainingTimeWeltParaffin > 0)
         {
@@ -272,11 +277,6 @@ void CDashboardWidget::OnActivated(int index)
         m_SelectedProgramId = m_FavProgramIDs.at(index);
         CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_SelectedProgramId)->GetName();
         mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
-
-        //get the proposed program end DateTime
-        int asapEndTime = GetASAPTime(mp_ProgramList->GetProgram(m_SelectedProgramId), 900);
-        m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
-        emit ProgramSelected(m_SelectedProgramId, asapEndTime);//for UI update
 
         //Notify Master, to get the time costed for paraffin welting
         mp_DataConnector->SendProgramSelected(m_SelectedProgramId, m_ParaffinStepIndex);
@@ -392,6 +392,15 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLock
         mp_Ui->retortSlider->SetPosition(MainMenu::CSliderControl::PosLeft);
     else
         mp_Ui->retortSlider->SetPosition(MainMenu::CSliderControl::PosRight);
+}
+
+void CDashboardWidget::OnRecievedProgramEndTime(const MsgClasses::CmdProgramEndTime& cmd)
+{
+    //get the proposed program end DateTime
+    int asapEndTime = GetASAPTime(mp_ProgramList->GetProgram(m_SelectedProgramId), cmd.TimeProposed(),
+                                  cmd.ParaffinWeltCostedTime(), cmd.CostedTimeBeforeParaffin());
+    m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+    emit ProgramSelected(m_SelectedProgramId, asapEndTime);//for UI update
 }
 
 } // End of namespace Dashboard

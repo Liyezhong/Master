@@ -345,6 +345,7 @@ signals:
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
     void ProgramStartReady(const MsgClasses::CmdProgramStartReady& Command);
     void RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& Command);
+    void ReceivedProgramEndTime(const MsgClasses::CmdProgramEndTime& Command);
 private:
     void ConfFileHandler(Global::tRefType Ref, const NetCommands::CmdConfigurationFile &Command);
     void ProcessStateHandler(Global::tRefType ref, const NetCommands::CmdProcessState &Command);

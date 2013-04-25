@@ -42,6 +42,7 @@
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndTime.h"
 
 
 
@@ -881,23 +882,25 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
     }
 
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
-    ListOfProgramSteps_t* programSteps = pProgram->GetStepList();
-
-    QString programStepID("");
-    if (m_CurProgramStepID.isEmpty())
+    ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
+    int index = SpecifiedStepIndex;
+    if (-1 == index)
     {
-        programStepID = "0";
+        QString programStepID("");
+        if (m_CurProgramStepID.isEmpty())
+        {
+            programStepID = "0";
+        }
+        else
+        {
+            programStepID = m_CurProgramStepID ;
+        }
+        index = stepIDs->indexOf(programStepID);
     }
-    else
-    {
-        programStepID = m_CurProgramStepID ;
-    }
 
-
-    ListOfProgramSteps_t::iterator iter = programSteps->find(programStepID);
-    while (iter != programSteps->end())
+    for (int i = index; i < stepIDs->count(); i++)
     {
-        CProgramStep* pProgramStep = iter.value();
+        const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);
         quint32 soakTime = pProgramStep->GetDurationInSeconds();
         leftTime += soakTime;
         bool isPressure = (pProgramStep->GetPressure() == "On");
@@ -914,7 +917,6 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
         leftTime += 60; //suppose need 60 seconds to fill
         leftTime += 40; //suppose need 40 seconds to drain
         leftTime += 20; //suppose need 20 seconds to heat level sensor
-        iter++;
     }
     return leftTime;
 }
@@ -1032,6 +1034,20 @@ void SchedulerMainThreadController::OnKeepCassetteCount(Global::tRefType Ref, co
 void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, const MsgClasses::CmdProgramSelected & Cmd)
 {
     this->SendAcknowledgeOK(Ref);
+    //get
+    unsigned int timeProposed = GetLeftProgramStepsNeededTime(Cmd.GetProgramID(), 0);
+    unsigned int paraffinWeltCostedtime = 0;//todo:Get the actual value
+    unsigned int costedTimeBeforeParaffin = 0;
+    if (-1 != Cmd.ParaffinStepIndex())//has Paraffin
+    {
+        costedTimeBeforeParaffin = timeProposed - GetLeftProgramStepsNeededTime(Cmd.GetProgramID(), Cmd.ParaffinStepIndex());
+    }
+
+    //send back the proposed program end time
+    MsgClasses::CmdProgramEndTime* commandPtr(new MsgClasses::CmdProgramEndTime(5000, timeProposed,
+                                                                                paraffinWeltCostedtime, costedTimeBeforeParaffin));
+    Q_ASSERT(commandPtr);
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 
 }
 
