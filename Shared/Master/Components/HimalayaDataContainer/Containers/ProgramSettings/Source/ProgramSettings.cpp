@@ -217,7 +217,7 @@ double CProgramSettings::GetParameterValue(QString DeviceKey, QString FunctionKe
     }
     if(ok)
     {
-        QRegExp time("\d+[DdHhMmSs]");
+        QRegExp time("\\d+[DdHhMmSs]");
         if(value.contains(time))
         {
             ret = Helper::ConvertTimeStringToSeconds(value);
