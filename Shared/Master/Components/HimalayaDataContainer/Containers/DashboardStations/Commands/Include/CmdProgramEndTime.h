@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdProgramEndDateTime.h
+/*! \file CmdProgramEndTime.h
  *
- *  \brief CmdProgramEndDateTime command definition.
+ *  \brief CmdProgramEndTime command definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 27.03.2013
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef MSGCLASSES_CMDPROGRAMENDDATETIME_H
-#define MSGCLASSES_CMDPROGRAMENDDATETIME_H
+#ifndef MSGCLASSES_CMDPROGRAMENDTIME_H
+#define MSGCLASSES_CMDPROGRAMENDTIME_H
 
 #include <Global/Include/Commands/Command.h>
 #include <HimalayaDataContainer/Helper/Include/Global.h>
@@ -29,33 +29,35 @@ namespace MsgClasses {
 
 /****************************************************************************/
 /*!
- *  \brief  This class implements a CmdProgramEndDateTime command.
+ *  \brief  This class implements a CmdProgramEndTime command.
  *
  * \todo implement
  */
 /****************************************************************************/
-class CmdProgramEndDateTime : public Global::Command {
-    friend QDataStream & operator << (QDataStream &, const CmdProgramEndDateTime &);
-    friend QDataStream & operator >> (QDataStream &, CmdProgramEndDateTime &);
+class CmdProgramEndTime : public Global::Command {
+    friend QDataStream & operator << (QDataStream &, const CmdProgramEndTime &);
+    friend QDataStream & operator >> (QDataStream &, CmdProgramEndTime &);
 public:
-    CmdProgramEndDateTime();                                             ///< Not implemented.
+    CmdProgramEndTime();                                             ///< Not implemented.
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdProgramEndDateTime(int Timeout, const QDateTime& EndDateTime, const QTime& ParaffinWeltCostedtime);
-    ~CmdProgramEndDateTime();
+    CmdProgramEndTime(int Timeout, int TimeProposed, int ParaffinWeltCostedtime, int CostedTimeBeforeParaffin);
+    ~CmdProgramEndTime();
     virtual QString GetName() const;
-    inline const QDateTime& EndDateTime()const {return m_EndDateTime;}
-    inline const QTime& ParaffinWeltCostedTime()const {return m_ParaffinWeltCostedtime;}
+    inline int TimeProposed()const {return m_TimeProposed;}
+    inline int ParaffinWeltCostedTime()const {return m_ParaffinWeltCostedtime;}
+    inline int CostedTimeBeforeParaffin()const {return m_CostedTimeBeforeParaffin;}
     
 private:
-    CmdProgramEndDateTime(const CmdProgramEndDateTime &);                     ///< Not implemented.
-    const CmdProgramEndDateTime & operator = (const CmdProgramEndDateTime &); ///< Not implemented.
+    CmdProgramEndTime(const CmdProgramEndTime &);                     ///< Not implemented.
+    const CmdProgramEndTime & operator = (const CmdProgramEndTime &); ///< Not implemented.
 private:
-    QDateTime m_EndDateTime;
-    QTime m_ParaffinWeltCostedtime;
+    int m_TimeProposed;//the costed time for selected program, seconds
+    int m_CostedTimeBeforeParaffin; //seconds
+    int m_ParaffinWeltCostedtime; //seconds
     
-}; // end class CmdProgramEndDateTime
+}; // end class CmdProgramEndTime
 
 /****************************************************************************/
 /**
@@ -66,13 +68,14 @@ private:
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator << (QDataStream &Stream, const CmdProgramEndDateTime &Cmd)
+inline QDataStream & operator << (QDataStream &Stream, const CmdProgramEndTime &Cmd)
 {
     // copy base class data
     Cmd.CopyToStream(Stream);
     // copy internal data
-    Stream << Cmd.m_EndDateTime;
+    Stream << Cmd.m_TimeProposed;
     Stream << Cmd.m_ParaffinWeltCostedtime;
+    Stream << Cmd.m_CostedTimeBeforeParaffin;
     return Stream;
 }
 
@@ -85,13 +88,14 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramEndDateTi
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator >> (QDataStream &Stream, CmdProgramEndDateTime &Cmd)
+inline QDataStream & operator >> (QDataStream &Stream, CmdProgramEndTime &Cmd)
 {
     // copy base class data
     Cmd.CopyFromStream(Stream);
     // copy internal data
-    Stream >> Cmd.m_EndDateTime;
+    Stream >> Cmd.m_TimeProposed;
     Stream >> Cmd.m_ParaffinWeltCostedtime;
+    Stream >> Cmd.m_CostedTimeBeforeParaffin;
     return Stream;
 }
 } // end namespace MsgClasses

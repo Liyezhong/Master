@@ -41,10 +41,11 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdProgramSelected(int Timeout, const QString& ProgramID);
+    CmdProgramSelected(int Timeout, const QString& ProgramID, int ParaffinStepIndex);
     ~CmdProgramSelected();
     virtual QString GetName() const;
     inline const QString& GetProgramID()const {return m_ProgramID;}
+    inline int ParaffinStepIndex()const { return m_ParaffinStepIndex; }
 
 
 private:
@@ -52,6 +53,7 @@ private:
     const CmdProgramSelected & operator = (const CmdProgramSelected &); ///< Not implemented.
 private:
     QString      m_ProgramID;
+    int m_ParaffinStepIndex;
 }; // end class CmdProgramSelected
 
 /****************************************************************************/
@@ -69,6 +71,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramSelected 
     Cmd.CopyToStream(Stream);
     // copy internal data
     Stream << Cmd.m_ProgramID;
+    Stream << Cmd.m_ParaffinStepIndex;
     return Stream;
 }
 
@@ -87,6 +90,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdProgramSelected &Cmd)
     Cmd.CopyFromStream(Stream);
     // copy internal data
     Stream >> Cmd.m_ProgramID;
+    Stream >> Cmd.m_ParaffinStepIndex;
     return Stream;
 }
 } // end namespace MsgClasses

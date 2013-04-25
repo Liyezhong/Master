@@ -25,6 +25,7 @@
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdAlarmToneTest.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "Global/Include/Commands/AckOKNOK.h"
@@ -84,7 +85,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationParaffinBathStatus>(&CDataConnector::StationParaffinBathStatusHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortStatus>(&CDataConnector::RetortStatusHandler, this);
 
-    //m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramEndDateTime>(&CDataConnector::ProgramEndDateTimeHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramEndTime>(&CDataConnector::ProgramEndTimeHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortLockStatus>(&CDataConnector::RetortLockStatusHandler, this);
 
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdEventStrings>(&CDataConnector::EventStringHandler, this);
@@ -1421,6 +1422,16 @@ void CDataConnector::SendProgramAction(const QString& ProgramID,
     mp_WaitDialog->show();
 }
 
+void CDataConnector::SendProgramSelected(const QString& ProgramID, int ParaffinStepIndex)
+{
+    MsgClasses::CmdProgramSelected Command(1000, ProgramID, ParaffinStepIndex);
+    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
+    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetTimeout(10000);
+    mp_WaitDialog->show();
+}
+
 void CDataConnector::SendRetortLock(bool IsLock)
 {
     MsgClasses::CmdRetortLock Command(1000, IsLock);
@@ -1561,7 +1572,7 @@ void CDataConnector::ProgramStartReadyHandler(Global::tRefType Ref, const MsgCla
     emit ProgramStartReady(Command);
 }
 
-void CDataConnector::ProgramEndDateTimeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramEndDateTime & Command)
+void CDataConnector::ProgramEndTimeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramEndTime & Command)
 {
 
 }

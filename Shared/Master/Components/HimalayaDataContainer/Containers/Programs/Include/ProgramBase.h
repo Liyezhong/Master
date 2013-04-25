@@ -157,6 +157,10 @@ public:
         return &m_StepList;
     }
 
+    ListOfIDs_t* OrderedListOfStepIDs()
+    {
+        return &m_OrderedListOfStepIDs;
+    }
     //STEPS
     /****************************************************************************/
     /*!

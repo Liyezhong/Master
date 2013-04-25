@@ -72,6 +72,7 @@ private:
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
     int m_asapEndTime;
     QDateTime m_EndDateTime;
+    int m_ParaffinStepIndex;
 
     void PlayProgram();
     void PauseProgram();

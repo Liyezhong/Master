@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdProgramEndDateTime.cpp
+/*! \file CmdProgramEndTime.cpp
  *
- *  \brief CmdProgramEndDateTime command implementation.
+ *  \brief CmdProgramEndTime command implementation.
  *
  *   $Version: $ 0.1
 *   $Date:    $ 27.03.2013
@@ -18,20 +18,23 @@
  */
 /****************************************************************************/
 
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndDateTime.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndTime.h"
 namespace MsgClasses {
 
-QString CmdProgramEndDateTime::NAME = "MsgClasses::CmdProgramEndDateTime";
+QString CmdProgramEndTime::NAME = "MsgClasses::CmdProgramEndTime";
 
 
-CmdProgramEndDateTime::CmdProgramEndDateTime(int Timeout, const QDateTime& ProgramEndDateTime, const QTime& ParaffinWeltCostedtime) :
+CmdProgramEndTime::CmdProgramEndTime(int Timeout, int TimeProposed,
+                                             int ParaffinWeltCostedtime,
+                                             int CostedTimeBeforeParaffin) :
     Command(Timeout),
-    m_EndDateTime(ProgramEndDateTime),
-    m_ParaffinWeltCostedtime(ParaffinWeltCostedtime)
+    m_TimeProposed(TimeProposed),
+    m_ParaffinWeltCostedtime(ParaffinWeltCostedtime),
+    m_CostedTimeBeforeParaffin(CostedTimeBeforeParaffin)
 {
 }
 
-CmdProgramEndDateTime::CmdProgramEndDateTime()
+CmdProgramEndTime::CmdProgramEndTime()
     : Command(0)
 {
 }
@@ -41,7 +44,7 @@ CmdProgramEndDateTime::CmdProgramEndDateTime()
  *  \brief   Destructor
  */
 /****************************************************************************/
-CmdProgramEndDateTime::~CmdProgramEndDateTime()
+CmdProgramEndTime::~CmdProgramEndTime()
 {
 }
 
@@ -52,7 +55,7 @@ CmdProgramEndDateTime::~CmdProgramEndDateTime()
  *  \return  command name as string
  */
 /****************************************************************************/
-QString CmdProgramEndDateTime::GetName() const
+QString CmdProgramEndTime::GetName() const
 {
     return NAME;
 }

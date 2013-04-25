@@ -44,6 +44,7 @@ using namespace DeviceControl;
 namespace MsgClasses
 {
     class CmdKeepCassetteCount;
+    class CmdProgramSelected;
 }
 
 namespace DataManager
@@ -154,7 +155,7 @@ typedef struct
         /****************************************************************************/
          bool PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd);
          bool GetNextProgramStepInformation(const QString& ProgramID, ProgramStepInfor& ProgramStepInfor);
-         quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID);
+         quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex = -1);
          quint32 GetCurrentProgramStepNeededTime(const QString& ProgramID);
          bool PrepareProgramStationList(const QString& ProgramID);
 
@@ -225,6 +226,7 @@ private slots:
         void OnProgramAction(Global::tRefType Ref, const MsgClasses::CmdProgramAction& Cmd);
         void OnRetortLock(Global::tRefType Ref, const MsgClasses::CmdRetortLock& Cmd);
         void OnKeepCassetteCount(Global::tRefType Ref, const MsgClasses::CmdKeepCassetteCount & Cmd);
+        void OnProgramSelected(Global::tRefType Ref, const MsgClasses::CmdProgramSelected& Cmd);
     public:
         /****************************************************************************/
         /**

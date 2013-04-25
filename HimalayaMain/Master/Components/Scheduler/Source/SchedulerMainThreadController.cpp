@@ -41,8 +41,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
-//#include "Scheduler/Include/HimalayaHardwareSystemStateId.h"
-//#include "Scheduler/Commands/Include/CmdSystemState.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 
 
 
@@ -106,6 +105,9 @@ void SchedulerMainThreadController::RegisterCommands()
 
     RegisterCommandForProcessing<MsgClasses::CmdKeepCassetteCount,
                     SchedulerMainThreadController>(&SchedulerMainThreadController::OnKeepCassetteCount, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdProgramSelected,
+                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnProgramSelected, this);
 
 }
 
@@ -862,7 +864,7 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
     return true;
 }
 
-quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QString& ProgramID)
+quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex)
 {
     quint32 leftTime = 0;
     if (!mp_DataManager)
@@ -1023,10 +1025,16 @@ void SchedulerMainThreadController::OnActionCommandReceived(Global::tRefType Ref
 
 void SchedulerMainThreadController::OnKeepCassetteCount(Global::tRefType Ref, const MsgClasses::CmdKeepCassetteCount & Cmd)
 {
-    Q_UNUSED(Ref);
     m_ProcessCassetteCount = Cmd.CassetteCount();
     this->SendAcknowledgeOK(Ref);
 }
+
+void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, const MsgClasses::CmdProgramSelected & Cmd)
+{
+    this->SendAcknowledgeOK(Ref);
+
+}
+
 
 bool SchedulerMainThreadController::IsCleaningReagent(const QString& ReagentID)
 {

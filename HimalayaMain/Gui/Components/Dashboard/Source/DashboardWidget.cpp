@@ -32,7 +32,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    mp_DataConnector(p_DataConnector),
                                    m_ProgramNextAction(DataManager::PROGRAM_START),
                                    m_UserRoleChanged(false),
-                                   m_asapEndTime(0)
+                                   m_asapEndTime(0),
+                                   m_ParaffinStepIndex(-1)
 {
      mp_Ui->setupUi(GetContentFrame());
      SetPanelTitle(tr("Dashboard"));
@@ -68,8 +69,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, activated(int), this, OnActivated(int));
 
      CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
-     CONNECTSIGNALSLOT(this, ProgramAction(const QString&, DataManager::ProgramActionType_t),
-                       mp_DataConnector, SendProgramAction(const QString&, DataManager::ProgramActionType_t));
 
      CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int),
                         mp_DashboardScene, UpdateDashboardSceneReagentsForProgram(QString &, int));
@@ -172,8 +171,7 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
                 if(CheckPreConditionsToPauseProgram())
                 {
                     m_ProgramCurrentAction = DataManager::PROGRAM_PAUSE;
-                    QDateTime programDateTime;
-                    mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction, programDateTime);
+                    mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction);
                     m_ProgramNextAction = DataManager::PROGRAM_START;
                     mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
 
@@ -219,6 +217,7 @@ bool CDashboardWidget::IsParaffinInProgram(const DataManager::CProgram* p_Progra
         QString ReagentGroupID = mp_DataConnector->ReagentList->GetReagent(ReagentIDList.at(i))->GetGroupID();
         DataManager::CReagentGroup* pReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupID);
         if(pReagentGroup->IsParraffin()){
+            m_ParaffinStepIndex= i;
             return true;
         }
     }
@@ -249,16 +248,16 @@ int CDashboardWidget::GetASAPTime(const DataManager::CProgram* p_Program, int Ti
     else
     {
         //calculate the timeBeforeUseParraffin
-        int timeBeforeUseParraffin = 123;//seconds, todo:should get from Master
+        int timeBeforeUseParaffin = 123;//seconds, todo:should get from Master
         //RemainingTimeWeltParraffin = 12 hour - TimeCosted
         int TimeCostedParaffinWelting = 500; //seconds, todo:should get from Master
-        int RemainingTimeWeltParraffin = 12 * 60 * 60 - TimeCostedParaffinWelting;
-        if (RemainingTimeWeltParraffin > 0)
+        int RemainingTimeWeltParaffin = 12 * 60 * 60 - TimeCostedParaffinWelting;
+        if (RemainingTimeWeltParaffin > 0)
         {
-          if (RemainingTimeWeltParraffin <= timeBeforeUseParraffin)
+          if (RemainingTimeWeltParaffin <= timeBeforeUseParaffin)
               TimeDelta = 0;
            else
-              TimeDelta = RemainingTimeWeltParraffin - timeBeforeUseParraffin;
+              TimeDelta = RemainingTimeWeltParaffin - timeBeforeUseParaffin;
         }
         else
             TimeDelta = 0;  //Paraffin is welted
@@ -273,10 +272,15 @@ void CDashboardWidget::OnActivated(int index)
         m_SelectedProgramId = m_FavProgramIDs.at(index);
         CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_SelectedProgramId)->GetName();
         mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+
         //get the proposed program end DateTime
         int asapEndTime = GetASAPTime(mp_ProgramList->GetProgram(m_SelectedProgramId), 900);
         m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
-        emit ProgramSelected(m_SelectedProgramId, asapEndTime);
+        emit ProgramSelected(m_SelectedProgramId, asapEndTime);//for UI update
+
+        //Notify Master, to get the time costed for paraffin welting
+        mp_DataConnector->SendProgramSelected(m_SelectedProgramId, m_ParaffinStepIndex);
+
     } else {
         mp_Ui->pgmsComboBox->showPopup();
     }

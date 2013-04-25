@@ -46,7 +46,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationParaffinBathStatus.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndDateTime.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndTime.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 
@@ -150,9 +150,10 @@ public slots:
     void SendProgramColorUpdate(DataManager::CProgram &ColorReplacedProgram,
                                 DataManager::CProgram &ColorAssignedProgram);
 
-    void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType, const QDateTime& ProgramEndDateTime);
+    void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType,
+                           const QDateTime& ProgramEndDateTime = QDateTime::currentDateTime());
     void SendRetortLock(bool IsLock);
-
+    void SendProgramSelected(const QString& ProgramID, int ParaffinStepIndex);
     void SendUserLevel(QDataStream &DataStream);
     void SendChangepassword(QDataStream &DataStream);
     void SendSelectedDayRunLogFile(const QString &FileName);
@@ -362,7 +363,7 @@ private:
     void CurrentProgramStepInfoHandler(Global::tRefType Ref, const MsgClasses::CmdCurrentProgramStepInfor & Command);
     void ProgramStartReadyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramStartReady& Command);
     void StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationParaffinBathStatus & Command);
-    void ProgramEndDateTimeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramEndDateTime & Command);
+    void ProgramEndTimeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramEndTime & Command);
     void RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortLockStatus & Command);
     void RetortStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortStatus & Command);
 
