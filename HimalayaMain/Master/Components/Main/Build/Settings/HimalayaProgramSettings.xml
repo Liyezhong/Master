@@ -150,13 +150,13 @@
                 <Parameter Key="Position" Value=""/>
             </Function>
             <Function Key="PositionStatus">
-                <Parameter Key="Sensor1" Value="false"/>
-                <Parameter Key="Sensor2" Value="false"/>
+                <Parameter Key="Sensor1" Value="0"/>
+                <Parameter Key="Sensor2" Value="0"/>
             </Function>
         </Device>
         <Device Key="Wax Bath">
             <Function Key="cover sensor">
-                <Parameter Key="StatusOfCoverSensor" Value="false"/>
+                <Parameter Key="StatusOfCoverSensor" Value="0"/>
             </Function>
             <Function Key="oven heating">
                 <Parameter Key="DOfPID" Value=""/>
