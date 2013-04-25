@@ -113,7 +113,7 @@ public:
      *  \return parameter value
      */
     /****************************************************************************/
-    QString GetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, bool& ok);
+    double GetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, bool& ok);
 
 
 private:

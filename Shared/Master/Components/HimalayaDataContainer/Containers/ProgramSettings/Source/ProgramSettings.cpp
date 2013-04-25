@@ -25,6 +25,7 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <QStringList>
+#include <QRegExp>
 
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
@@ -198,9 +199,10 @@ bool CProgramSettings::Read(QString Filename)
 }
 
 
-QString CProgramSettings::GetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, bool& ok)
+double CProgramSettings::GetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, bool& ok)
 {
     QString value="";
+    double ret = -1;
     ok = false;
     if(m_Parameters.contains(DeviceKey))
     {
@@ -213,7 +215,19 @@ QString CProgramSettings::GetParameterValue(QString DeviceKey, QString FunctionK
             }
         }
     }
-    return value;
+    if(ok)
+    {
+        QRegExp time("\d+[DdHhMmSs]");
+        if(value.contains(time))
+        {
+            ret = Helper::ConvertTimeStringToSeconds(value);
+        }
+        else
+        {
+            ret = value.toDouble(&ok);
+        }
+    }
+    return ret;
 }
 
 /****************************************************************************/
