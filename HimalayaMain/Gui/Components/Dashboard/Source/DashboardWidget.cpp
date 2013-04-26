@@ -164,7 +164,9 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
             case DataManager::PROGRAM_START:
             {
                 if (CheckPreConditionsToRunProgram()) {
-
+                    OnProgramStartConfirmation();
+                    mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
+                    m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
                 } else {
                     // Take Necessary Action
                 }
@@ -288,27 +290,31 @@ void CDashboardWidget::OnActivated(int index)
 
 bool CDashboardWidget::CheckPreConditionsToRunProgram()
 {
-
-    if((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
+    if (""== m_SelectedProgramId)
+        return false;
+    //Todo: We should give the Expired conditions
+   /* if((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
         m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
             Global::RMS_OFF != m_RMSState)
-    {
+    {*/
         qDebug() << "RMS IS ON && User = Admin | Service";
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         mp_MessageDlg->SetTitle(tr("Warning"));
         mp_MessageDlg->SetText(tr("Do you want to Start the Program with Expired Reagents."));
+        mp_MessageDlg->SetButtonText(3, tr("Cancel"));
         mp_MessageDlg->SetButtonText(1, tr("OK"));
-        mp_MessageDlg->HideButtons();    // Hiding First Two Buttons in the Message Dialog
-        CONNECTSIGNALSLOT(mp_MessageDlg, ButtonRightClicked(), this, OnProgramStartConfirmation());
-        mp_MessageDlg->exec();
-        mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
-        m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
+        mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
 
-        return true;
+        if (mp_MessageDlg->exec())
+        {
+                return true;
+        }
+        else
+            return false;
 
-    }
+    //}
 
-    return false;
+    //return false;
 
 }
 
