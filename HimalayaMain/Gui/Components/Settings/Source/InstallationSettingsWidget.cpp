@@ -39,8 +39,8 @@ CInstallationSettingsWidget::CInstallationSettingsWidget(QWidget *p_Parent) : Ma
     mp_Ui(new Ui::CInstallationSettingsWidget), mp_UserSettings(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
-    mp_Ui->btnEdit->setText("Edit");
-    mp_Ui->btnUpdate->setText("Update");
+    mp_Ui->btnEdit->setText(tr("Edit"));
+    mp_Ui->btnUpdate->setText(tr("Update"));
     SetPanelTitle(tr("Installation"));
     CONNECTSIGNALSLOT(mp_Ui->btnEdit,clicked(),this,OnEditclicked());
     CONNECTSIGNALSLOT(mp_Ui->btnUpdate,clicked(),this,OnUpdateclicked());
@@ -103,12 +103,23 @@ void CInstallationSettingsWidget::ResetButtons()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
-    if (( m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
-            //Edit Mode
-          mp_Ui->btnUpdate->setEnabled(true);
+
+    if (!m_ProcessRunning &&
+        (MainMenu::CMainWindow::Service == m_CurrentUserRole))
+    {
+        mp_Ui->btnEdit->setEnabled(true);
+        mp_Ui->btnUpdate->setEnabled(true);
     }
-    else {
-         mp_Ui->btnUpdate->setEnabled(false);
+    else if (!m_ProcessRunning &&
+             MainMenu::CMainWindow::Admin == m_CurrentUserRole)
+    {
+        mp_Ui->btnEdit->setEnabled(true);
+        mp_Ui->btnUpdate->setEnabled(false);
+    }
+    else
+    {
+        mp_Ui->btnEdit->setEnabled(false);
+        mp_Ui->btnUpdate->setEnabled(false);
     }
 }
 
@@ -120,13 +131,24 @@ void CInstallationSettingsWidget::ResetButtons()
 void CInstallationSettingsWidget::RetranslateUI()
 {
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CInstallationSettingsWidget", "Installation", 0, QApplication::UnicodeUTF8));
-   mp_Ui->btnEdit->setText("Edit");
-   mp_Ui->btnUpdate->setText("Update");
-   mp_Ui->instrumentname->setText("Unidentified Instrument");
-   mp_Ui->serialnumber->setText("00000000000000000000000");
-   mp_Ui->softwareversion->setText("SoftwareVersion: ");
-   mp_Ui->driverversion->setText("Driver Version : ");
-   mp_Ui->versionofprogram->setText("Version of write-Protected Program :");
+   mp_Ui->btnEdit->setText(QApplication::translate(
+                               "Settings::CInstallationSettingsWidget",
+                               "Edit", 0, QApplication::UnicodeUTF8));
+   mp_Ui->btnUpdate->setText(QApplication::translate(
+                                 "Settings::CInstallationSettingsWidget",
+                                 "Update", 0, QApplication::UnicodeUTF8));
+   mp_Ui->softwareversion->setText(QApplication::translate(
+                                       "Settings::CInstallationSettingsWidget",
+                                       "SoftwareVersion: ",
+                                       0, QApplication::UnicodeUTF8));
+   mp_Ui->driverversion->setText(QApplication::translate(
+                                     "Settings::CInstallationSettingsWidget",
+                                     "Driver Version : ",
+                                     0, QApplication::UnicodeUTF8));
+   mp_Ui->versionofprogram->setText(QApplication::translate(
+                                        "Settings::CInstallationSettingsWidget",
+                                        "Version of write-Protected Program :",
+                                        0, QApplication::UnicodeUTF8));
 }
 
 /****************************************************************************/
@@ -218,9 +240,13 @@ void CInstallationSettingsWidget :: OnEditclicked()
     mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Instrument Name"));
 
-    if (mp_Ui->btnEdit->text() != "") {
-
-        mp_KeyBoardWidget->SetLineEditContent(mp_Ui->btnEdit->text());
+    if (mp_Ui->instrumentname->text().isEmpty())
+    {
+        mp_KeyBoardWidget->SetLineEditContent(tr("Instrument Name"));
+    }
+    else
+    {
+        mp_KeyBoardWidget->SetLineEditContent(mp_Ui->instrumentname->text());
     }
 
     m_ValidationType = KeyBoard::VALIDATION_1;
@@ -229,7 +255,5 @@ void CInstallationSettingsWidget :: OnEditclicked()
     mp_KeyBoardWidget->SetMaxCharLength(32);
     mp_KeyBoardWidget->SetMinCharLength(2);
     mp_KeyBoardWidget->show();
-
-
 }
 } // end namespace Settings

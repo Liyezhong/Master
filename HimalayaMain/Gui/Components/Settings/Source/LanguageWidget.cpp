@@ -98,8 +98,9 @@ void CLanguageWidget::SetLanguages(QStringList LanguageList)
     for (int i = 0; i < m_LanguageList.count(); i++) {
         QString LanguageName = m_LanguageList.at(i);
 
-        QLocale Language = Global::StringToLanguage(LanguageName);
-        QString LangaugeNativeName = Language.nativeLanguageName();
+        QLocale Locale(Global::StringToLanguage(LanguageName));
+
+        QString LangaugeNativeName = Locale.nativeLanguageName();
         if (LangaugeNativeName.isEmpty())
         {
             continue;

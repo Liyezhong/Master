@@ -295,8 +295,8 @@ void CAlarmSettingsDlg::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)
 void CAlarmSettingsDlg::OnApply()
 {
     qDebug()<<"calling the slot play tone"<<endl;
-    int PeriodicTime;
-     PeriodicTime = mp_MinWheel->GetCurrentData().toInt() *60 +mp_SecondWheel->GetCurrentData().toInt();
+    int PeriodicTime = mp_MinWheel->GetCurrentData().toInt() * 60 +
+            mp_SecondWheel->GetCurrentData().toInt();
 
     m_UserSettingsTemp = *mp_UserSettings;
     if (m_AlarmScreen == Information) {
@@ -304,11 +304,15 @@ void CAlarmSettingsDlg::OnApply()
         //Adding one to checkedId  because , the id starts from zero
         m_UserSettingsTemp.SetSoundNumberInformation(mp_SoundScrollWheel->GetCurrentData().toInt());
         // m_UserSettingsTemp.SetValue("InformationTone_PeriodicTime",mp_MinWheel->GetCurrentData().toInt());
-        m_UserSettingsTemp.SetSoundPeriodicTimeInformation(PeriodicTime);
         if(mp_Ui->periodic_onoffslider->GetPosition() == MainMenu::CSliderControl::PosRight)
+        {
             m_UserSettingsTemp.SetSoundPeriodicInformation(false);
+        }
         else
+        {
             m_UserSettingsTemp.SetSoundPeriodicInformation(true);
+            m_UserSettingsTemp.SetSoundPeriodicTimeInformation(PeriodicTime);
+        }
 
     }
     if (m_AlarmScreen == Warning) {
@@ -316,11 +320,15 @@ void CAlarmSettingsDlg::OnApply()
         //Adding one to checkedId  because , the id starts from zero
         m_UserSettingsTemp.SetSoundNumberWarning(mp_SoundScrollWheel->GetCurrentData().toInt());
         //m_UserSettingsTemp.SetValue("WarningTone_PeriodicTime",mp_MinWheel->GetCurrentData().toInt());
-        m_UserSettingsTemp.SetSoundPeriodicTimeWarning(PeriodicTime);
         if(mp_Ui->periodic_onoffslider->GetPosition() == MainMenu::CSliderControl::PosRight)
+        {
             m_UserSettingsTemp.SetSoundPeriodicWarning(false);
+        }
         else
+        {
             m_UserSettingsTemp.SetSoundPeriodicWarning(true);
+            m_UserSettingsTemp.SetSoundPeriodicTimeWarning(PeriodicTime);
+        }
     }
     else if(m_AlarmScreen == Error){
         m_UserSettingsTemp.SetSoundLevelError(mp_VolumeScrollWheel->GetCurrentData().toInt());
