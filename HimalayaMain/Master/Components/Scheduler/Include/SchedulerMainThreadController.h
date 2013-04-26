@@ -84,6 +84,14 @@ typedef struct
     QString StationID;
 }ProgramStationInfo_t;
 
+typedef struct
+{
+    qint64 OvenStartHeatingTime;
+    qint64 DelayProgramStartTime;
+    qint64 PauseStartTime;
+    qint64 CurStepSoakStartTime;
+}SchedulerTimeStamps_t;
+
     /****************************************************************************/
     /**
      * @brief Controller class for the main scheduler thread.
@@ -108,7 +116,7 @@ typedef struct
         SelfTestStateMachine* mp_SelfTestStateMachine;
         DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
         DataManager::CDataManager       *mp_DataManager;
-        qint64 m_CurStepSoakStartTime;
+        //qint64 m_CurStepSoakStartTime;
         QString m_CurProgramStepID;
         QString m_CurReagnetName;
         ProgramStepInfor m_CurProgramStepInfo;
@@ -125,6 +133,7 @@ typedef struct
         qreal m_TempOvenBottom;
         qreal m_TempOvenTop;
         QStringList m_UsedStationIDs;                                                 ///in a whole of program processing
+        SchedulerTimeStamps_t m_TimeStamps;
         bool m_PauseToBeProcessed;
         int m_ProcessCassetteCount;
         SchedulerMainThreadController();                                             ///< Not implemented.
@@ -270,6 +279,13 @@ private slots:
          */
         /****************************************************************************/
         void PushDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t CmdPtr);
+        /****************************************************************************/
+        /**
+         *
+         * Get the time(in seconds) that Oven has been heated
+         */
+        /****************************************************************************/
+        qint64 GetOvenHeatingTime();
     public slots:
 
         /****************************************************************************/

@@ -67,10 +67,10 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_NewProgramID("")
         , mp_ProgramStepStateMachine(new ProgramStepStateMachine())
         , mp_SelfTestStateMachine(new SelfTestStateMachine())
-        , m_CurStepSoakStartTime(0)
         , m_CurReagnetName("")
         , m_PauseToBeProcessed(false)
         , m_ProcessCassetteCount(0)
+        , m_TimeStamps{0}
 {
 
 }
@@ -294,6 +294,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     {
         if(CTRL_CMD_PAUSE == ctrlCmd)
         {
+            mp_IDeviceProcessing->ALAllStop();
             mp_ProgramStepStateMachine->NotifyPause(PSSM_INIT);
             DequeueNonDeviceCommand();
         }
@@ -416,11 +417,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             //todo: 1/10 the time
             qint32 period = m_CurProgramStepInfo.durationInSeconds * 1000;
             //qint32 period = m_CurProgramStepInfo.durationInSeconds * 20;
-            if((now - m_CurStepSoakStartTime) > (period))
+            if((now - m_TimeStamps.CurStepSoakStartTime ) > (period))
             {
                 //todo: verify whether this is last step and if need to notice user
                 mp_ProgramStepStateMachine->NotifySoakFinished();
-                m_CurStepSoakStartTime = 0;
+                m_TimeStamps.CurStepSoakStartTime = 0;
             }
             else
             {
@@ -429,7 +430,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     // P/V take turns in 1 minute
                     if((now - lastPVTime)>60000)
                     {
-                        if(((now - m_CurStepSoakStartTime)/60000)%2 == 0)
+                        if(((now - m_TimeStamps.CurStepSoakStartTime)/60000)%2 == 0)
                         {
                             Pressure();
                         }
@@ -1257,6 +1258,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"Failed to heat oven top, return code: " << retCode;
             goto ERROR;
         }
+        m_TimeStamps.OvenStartHeatingTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
         CmdALStartTemperatureControlWithPID* cmdHeatALTube1  = new CmdALStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
         cmdHeatALTube1->SetType(AL_LEVELSENSOR);
@@ -1519,10 +1521,10 @@ void SchedulerMainThreadController::Fill()
 
 void SchedulerMainThreadController::Soak()
 {
-    if(m_CurStepSoakStartTime == 0)
+    if(m_TimeStamps.CurStepSoakStartTime == 0)
     {
-        m_CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-        qDebug() << "Start to soak, start time stamp is:" << m_CurStepSoakStartTime;
+        m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+        qDebug() << "Start to soak, start time stamp is:" << m_TimeStamps.CurStepSoakStartTime ;
     }
     if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
     {
@@ -1629,27 +1631,27 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
     {
         if( DCL_ERR_DEV_BOTTLE_CHECK_OK == RetCode)
         {
-        mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+            mp_SelfTestStateMachine->NotifyGotCheckStationResult();
         }
         else if( DCL_ERR_DEV_BOTTLE_CHECK_NOT_FULL == RetCode)
         {
-        mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+            mp_SelfTestStateMachine->NotifyGotCheckStationResult();
         }
         else if( DCL_ERR_DEV_BOTTLE_CHECK_BLOCKAGE == RetCode)
         {
-        mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+            mp_SelfTestStateMachine->NotifyGotCheckStationResult();
         }
         else if(DCL_ERR_DEV_BOTTLE_CHECK_LEAKAGE == RetCode)
         {
-        mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+            mp_SelfTestStateMachine->NotifyGotCheckStationResult();
         }
         else if(DCL_ERR_DEV_BOTTLE_CHECK_ERROR == RetCode)
         {
-        mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+            mp_SelfTestStateMachine->NotifyGotCheckStationResult();
         }
         else if(DCL_ERR_DEV_BOTTLE_CHECK_TIMEOUT == RetCode)
         {
-        mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+            mp_SelfTestStateMachine->NotifyGotCheckStationResult();
         }
         else if(DCL_ERR_UNDEFINED != RetCode)
         {
@@ -1665,7 +1667,6 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
             QString reagentGrpId = stationInfo.ReagentGroupID;
 
             CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_IDeviceProcessing, this);
-            //todo: get delay time here
             cmd->SetReagentGrpID(reagentGrpId);
             cmd->SetTubePos(tubePos);
             m_SchedulerCommandProcessor->pushCmd(cmd);
@@ -1687,13 +1688,17 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
     }
 
     return retValue;
-
-
-    CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_IDeviceProcessing, this);
-    //todo: get delay time here
-    cmd->SetReagentGrpID("RG3");
-    //cmd->SetTubePos(1);
-    m_SchedulerCommandProcessor->pushCmd(cmd);
+}
+qint64 SchedulerMainThreadController::GetOvenHeatingTime()
+{
+    if(m_TimeStamps.OvenStartHeatingTime != 0)
+    {
+        return  (QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.OvenStartHeatingTime)/1000;
+    }
+    else
+    {
+        return 0;
+    }
 
 }
 } // EONS ::Scheduler
