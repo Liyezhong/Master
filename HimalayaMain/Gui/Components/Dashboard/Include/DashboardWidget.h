@@ -74,9 +74,6 @@ private:
     QDateTime m_EndDateTime;
     int m_ParaffinStepIndex;
 
-    void PlayProgram();
-    void PauseProgram();
-    void AbortProgram();
     void EnablePlayButton(bool bSetEnable);
 
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
@@ -107,7 +104,6 @@ public slots:
     void OnRMSValueChanged(Global::RMSOptions_t);
     void AddItemsToComboBox();
     void OnActivated(int);
-    void OnProgramActionStarted(DataManager::ProgramActionType_t ActionType);
     void OnProgramStartReadyUpdated(const MsgClasses::CmdProgramStartReady& cmd);
     void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
     void OnRecievedProgramEndTime(const MsgClasses::CmdProgramEndTime& cmd);

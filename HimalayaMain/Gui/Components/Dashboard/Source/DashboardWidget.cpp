@@ -193,6 +193,7 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
 
         if(CheckPreConditionsToAbortProgram()) {
             m_ProgramCurrentAction = DataManager::PROGRAM_ABORT;
+            mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction);
 
         }
     }
@@ -327,28 +328,8 @@ bool CDashboardWidget::CheckPreConditionsToPauseProgram()
 
 bool CDashboardWidget::CheckPreConditionsToAbortProgram()
 {
-    return false;
+    return true;
 
-}
-
-void CDashboardWidget::PlayProgram()
-{
-    qDebug() << "Playing The Program";
-    // To Do
-    // Do Animation
-
-}
-
-void CDashboardWidget::PauseProgram()
-{
-    // To Do
-    // Take Necessary Action When Program is Paused
-}
-
-void CDashboardWidget::AbortProgram()
-{
-    // To Do
-    // Take Necessary Action When Program is Stoped/Aborted
 }
 
 void CDashboardWidget::OnProgramStartConfirmation()
@@ -358,27 +339,6 @@ void CDashboardWidget::OnProgramStartConfirmation()
     m_ProgramCurrentAction = DataManager::PROGRAM_START;
     mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction, m_EndDateTime);
 
-}
-
-void CDashboardWidget::OnProgramActionStarted(DataManager::ProgramActionType_t ActionType)
-{
-    switch(ActionType)
-    {
-    case DataManager::PROGRAM_START:
-        mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
-        m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
-        PlayProgram();
-        break;
-    case DataManager::PROGRAM_PAUSE:
-        mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
-        m_ProgramNextAction = DataManager::PROGRAM_START;
-        PauseProgram();
-        break;
-    case DataManager::PROGRAM_ABORT:
-        m_ProgramNextAction = DataManager::PROGRAM_START;
-        AbortProgram();
-
-    }
 }
 
 //Need the gray button!
