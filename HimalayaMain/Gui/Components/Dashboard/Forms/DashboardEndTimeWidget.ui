@@ -48,7 +48,7 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
+     <item row="1" column="0" colspan="2">
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
         <widget class="QLabel" name="lblReagentName">
@@ -92,14 +92,13 @@
        </item>
       </layout>
      </item>
-     <item row="2" column="0">
+     <item row="2" column="0" colspan="2">
       <widget class="QProgressBar" name="progressBar">
        <property name="styleSheet">
-        <string notr="true">border-image: url(:/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png);
-image: url(:/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png);</string>
+        <string notr="true"/>
        </property>
        <property name="value">
-        <number>0</number>
+        <number>50</number>
        </property>
        <property name="textVisible">
         <bool>false</bool>

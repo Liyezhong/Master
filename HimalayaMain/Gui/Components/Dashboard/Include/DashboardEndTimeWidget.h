@@ -30,6 +30,7 @@
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramStep.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 
+class QPlastiqueStyle;
 namespace Dashboard {
 
 namespace Ui {
@@ -77,6 +78,7 @@ private:
     QDateTime m_ProgramEndDateTime;
     Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
     DataManager::CProgram const *mp_Program;
+    QPlastiqueStyle* m_PlastiqueStyle;
 signals:
     void OnSelectDateTime(const QDateTime& selDateTime);
 

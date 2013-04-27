@@ -21,6 +21,8 @@
 #include "ui_DashboardEndTimeWidget.h"
 #include <QPainter>
 #include "Dashboard/Include/DashboardEndTimeWidget.h"
+#include <QPlastiqueStyle>
+
 namespace Dashboard {
 
 /****************************************************************************/
@@ -46,7 +48,7 @@ CDashboardEndTimeWidget::CDashboardEndTimeWidget(Core::CDataConnector *p_DataCon
 
     mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget();
     mp_wdgtDateTime->setWindowFlags(Qt::CustomizeWindowHint);
-
+    m_PlastiqueStyle = new QPlastiqueStyle();
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, OnUserSettingsUpdated());
     CONNECTSIGNALSLOT(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
                       this, OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
@@ -60,6 +62,7 @@ CDashboardEndTimeWidget::~CDashboardEndTimeWidget()
         delete mp_UserSettings;
         delete mp_wdgtDateTime;
         delete mp_Ui;
+        delete m_PlastiqueStyle;
     } catch(...) {
 
     }
@@ -74,6 +77,13 @@ void CDashboardEndTimeWidget::InitEndTimeWidgetItems()
     mp_Ui->lblReagentName->hide();
     mp_Ui->lblStepTime->hide();
     mp_Ui->lblTime->hide();
+
+    mp_Ui->progressBar->setStyle(m_PlastiqueStyle);
+    mp_Ui->progressBar->setStyleSheet(mp_Ui->progressBar->property("defaultStyleSheet").toString() +
+                                       "QProgressBar { border-image: url(:/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png);"
+                                      + "background-origin: margin;}"
+                                      + "QProgressBar::chunk { background-color: #05B8CC; margin: 4.0px;} ");
+
     mp_Ui->progressBar->hide();
 }
 
