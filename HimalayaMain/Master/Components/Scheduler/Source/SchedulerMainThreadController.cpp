@@ -584,7 +584,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             DequeueNonDeviceCommand();
         }
     }
-#if 1
+#if 0
   //work around to avoid continus START cmd
    if(CTRL_CMD_START == ctrlCmd)
    {
@@ -1339,7 +1339,8 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
             qreal TempALLevelSensor= pIDP->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
             qreal TempALTube1= pIDP->ALGetRecentTemperature(AL_TUBE1,0);
             qreal TempALTube2= pIDP->ALGetRecentTemperature(AL_TUBE2,0);
-            qreal TempRV = pIDP->RVGetRecentTemperature(0);
+            qreal TempRV1 = pIDP->RVGetRecentTemperature(0);
+            qreal TempRV2 = pIDP->RVGetRecentTemperature(1);
             RVPosition_t PositionRV = pIDP->RVReqActRVPosition();
             qreal TempRTBottom= pIDP->RTGetRecentTemperature(RT_BOTTOM,0);
             qreal TempRTSide= pIDP->RTGetRecentTemperature(RT_SIDE,0);
@@ -1361,9 +1362,13 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
             {
                 m_TempALTube2 = TempALTube2;
             }
-            if(TempRV != UNDEFINED_VALUE)
+            if(TempRV1 != UNDEFINED_VALUE)
             {
-                m_TempRV = TempRV;
+                m_TempRV1 = TempRV1;
+            }
+            if(TempRV2 != UNDEFINED_VALUE)
+            {
+                m_TempRV2 = TempRV2;
             }
             if(TempRTBottom != UNDEFINED_VALUE)
             {
@@ -1388,7 +1393,8 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
             qDebug()<<"Air liquid system level sensor's temp is" << TempALLevelSensor;
             qDebug()<<"Air liquid system tube1's temp is" << TempALTube1;
             qDebug()<<"Air liquid system tube2's temp is" << TempALTube2;
-            qDebug()<<"Rotary valve's temp is" << TempRV;
+            qDebug()<<"Rotary valve's temp1 is" << TempRV1;
+            qDebug()<<"Rotary valve's temp2 is" << TempRV2;
             qDebug()<<"Retort bottom temp is" << TempRTBottom;
             qDebug()<<"Retort side temp is" << TempRTSide;
             qDebug()<<"Oven bottom temp is" << TempOvenBottom;
@@ -1607,10 +1613,66 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
     SelfTestStateMachine_t selfTestState = mp_SelfTestStateMachine->GetCurrentState();
     if(SELF_TEST_INIT == selfTestState)
     {
+        bool ok;
+        bool goon;
+        // check oven heat time
+        qreal parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "Oven", "oven heating",  "HeatingOvertime", ok);
+        if(ok)
+        {
+             goon |= (GetOvenHeatingTime() > parameter);
+        }
+
         // check temperature
-        if(true)
+        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "Rotary Valve", "Heating",  "TemperatureOverrange", ok);
+        if(ok)
+        {
+             goon |= (m_TempRV1 < parameter);
+             goon |= (m_TempRV2 < parameter);
+        }
+        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "Oven", "oven heating",  "TemperatureOverrange", ok);
+        if(ok)
+        {
+             goon |= (m_TempOvenTop < parameter);
+             goon |= (m_TempOvenBottom < parameter);
+        }
+        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "Retort", "Retort heating",  "TemperatureOverrange", ok);
+        if(ok)
+        {
+             goon |= (m_TempRTBottom < parameter);
+             goon |= (m_TempRTSide < parameter);
+        }
+        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "Retort", "level sensor",  "TemperatureOverrange", ok);
+        if(ok)
+        {
+             goon |= (m_TempALLevelSensor < parameter);
+        }
+        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "LA", "HeatingOfRetortToRVTube",  "TemperatureOverrange", ok);
+        if(ok)
+        {
+             goon |= (m_TempALTube1 < parameter);
+        }
+        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "LA", "HeatingOfRetortToRVWaxTrap",  "TemperatureOverrange", ok);
+        if(ok)
+        {
+             goon |= (m_TempALTube2 < parameter);
+        }
+        // check pressure
+        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "LA", "Release",  "AmbientThresholdPressure", ok);
+        if(ok)
+        {
+             goon |= (m_PressureAL < parameter);
+             goon |= (m_PressureAL > (parameter * (-1)));
+        }
+        // check Rotary valve's position
+        goon |= (m_PositionRV != RV_UNDEF);
+
+        if(goon)
         {
             mp_SelfTestStateMachine->NotifyTempsReady();
+        }
+        else
+        {
+            //todo: raise error
         }
     }
     else if(SELF_TEST_TEMP_READY == selfTestState)
@@ -1689,6 +1751,7 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
 
     return retValue;
 }
+
 qint64 SchedulerMainThreadController::GetOvenHeatingTime()
 {
     if(m_TimeStamps.OvenStartHeatingTime != 0)

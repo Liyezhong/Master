@@ -126,7 +126,8 @@ typedef struct
         qreal m_TempALLevelSensor;
         qreal m_TempALTube1;
         qreal m_TempALTube2;
-        qreal m_TempRV;
+        qreal m_TempRV1;
+        qreal m_TempRV2;
         RVPosition_t m_PositionRV;
         qreal m_TempRTBottom;
         qreal m_TempRTSide;
