@@ -63,7 +63,9 @@ public slots:
     void OnEndTimeButtonClicked();
     void UpdateDateTime(const QDateTime & selDateTime);
     void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor& cmd);
-
+    void UpdateProgress();
+    void OnProgramStarted(int timeTotal, QDateTime& startDateTime, bool IsResume);//in seconds
+    void OnProgramStopped();
 private:
     Ui::CDashboardEndTimeWidget *mp_Ui;
     QPixmap         m_btnPixmap;
@@ -76,9 +78,12 @@ private:
     Global::DateFormat m_CurDateFormat;
     Global::TimeFormat m_CurTimeFormat;
     QDateTime m_ProgramEndDateTime;
+    QTime m_CurRemainingTime;
     Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
     DataManager::CProgram const *mp_Program;
-    QPlastiqueStyle* m_PlastiqueStyle;
+    QPlastiqueStyle* mp_PlastiqueStyle;
+    QTimer* mp_ProgressTimer;
+    QDateTime m_startDateTime;
 signals:
     void OnSelectDateTime(const QDateTime& selDateTime);
 

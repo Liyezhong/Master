@@ -48,7 +48,12 @@ CDashboardEndTimeWidget::CDashboardEndTimeWidget(Core::CDataConnector *p_DataCon
 
     mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget();
     mp_wdgtDateTime->setWindowFlags(Qt::CustomizeWindowHint);
-    m_PlastiqueStyle = new QPlastiqueStyle();
+    mp_PlastiqueStyle = new QPlastiqueStyle();
+
+    mp_ProgressTimer = new QTimer(this);
+    mp_ProgressTimer->setInterval(1000);
+    CONNECTSIGNALSLOT(mp_ProgressTimer, timeout(), this, UpdateProgress());
+
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, OnUserSettingsUpdated());
     CONNECTSIGNALSLOT(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
                       this, OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
@@ -62,7 +67,8 @@ CDashboardEndTimeWidget::~CDashboardEndTimeWidget()
         delete mp_UserSettings;
         delete mp_wdgtDateTime;
         delete mp_Ui;
-        delete m_PlastiqueStyle;
+        delete mp_PlastiqueStyle;
+        delete mp_ProgressTimer;
     } catch(...) {
 
     }
@@ -78,13 +84,15 @@ void CDashboardEndTimeWidget::InitEndTimeWidgetItems()
     mp_Ui->lblStepTime->hide();
     mp_Ui->lblTime->hide();
 
-    mp_Ui->progressBar->setStyle(m_PlastiqueStyle);
+    mp_Ui->progressBar->setStyle(mp_PlastiqueStyle);
     mp_Ui->progressBar->setStyleSheet(mp_Ui->progressBar->property("defaultStyleSheet").toString() +
                                        "QProgressBar { border-image: url(:/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png);"
                                       + "background-origin: margin;}"
-                                      + "QProgressBar::chunk { background-color: #05B8CC; margin: 4.0px;} ");
+                                      + "QProgressBar::chunk { background-color:rgba(0, 255, 150, 100%); margin: 4.0px;} ");
 
+    mp_Ui->progressBar->setMinimum(0);
     mp_Ui->progressBar->hide();
+    mp_ProgressTimer->stop();
 }
 
 void CDashboardEndTimeWidget::OnUserSettingsUpdated()
@@ -97,6 +105,7 @@ void CDashboardEndTimeWidget::OnUserSettingsUpdated()
    }
 }
 
+//Set from the proposed end time
 void CDashboardEndTimeWidget::UpdateEndTimeWidgetItems(DataManager::CProgram const *p_Program, int ProgramEndTimeInSecs)
 {
     mp_Program = p_Program;
@@ -113,7 +122,10 @@ void CDashboardEndTimeWidget::UpdateEndTimeWidgetItems(DataManager::CProgram con
     mp_Ui->lblReagentName->show();
     mp_Ui->lblStepTime->show();
     mp_Ui->lblTime->show();
+    int TimeTotal = 100;
+    mp_Ui->progressBar->setMaximum(TimeTotal);
     mp_Ui->progressBar->show();
+
 }
 
 /****************************************************************************/
@@ -203,10 +215,40 @@ void CDashboardEndTimeWidget::UpdateDateTime(const QDateTime &selDateTime)
 
 }
 
- void CDashboardEndTimeWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor& cmd)
+void CDashboardEndTimeWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor& cmd)
+{
+    mp_Ui->lblName->setText(cmd.StepName());
+    mp_Ui->lblTime->setText(cmd.CurRemainingTime().toString("hh:mm:ss"));
+    m_CurRemainingTime = cmd.CurRemainingTime();
+}
+
+void CDashboardEndTimeWidget::UpdateProgress()
+{
+    //update the remaining time for single step
+    QTime curTime = QTime::currentTime();
+    int elapsed = curTime.secsTo(m_CurRemainingTime);
+    m_CurRemainingTime.addSecs(elapsed);
+    mp_Ui->lblTime->setText(m_CurRemainingTime.toString("hh:mm:ss"));
+
+    //update progress bar
+    QDateTime curDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+    int  elapsedTime = m_startDateTime.secsTo(curDateTime);
+    mp_Ui->progressBar->setValue(elapsedTime);
+}
+
+ void CDashboardEndTimeWidget::OnProgramStarted(int timeTotal, QDateTime& startDateTime, bool IsResume)
  {
-     mp_Ui->lblName->setText(cmd.StepName());
-     mp_Ui->lblTime->setText(cmd.CurRemainingTime().toString("hh:mm:ss"));
+    if (!IsResume)
+    {
+        mp_Ui->progressBar->setMaximum(timeTotal);
+        m_startDateTime = startDateTime;
+    }
+    mp_ProgressTimer->start();
+}
+
+ void CDashboardEndTimeWidget::OnProgramStopped()
+ {
+    mp_ProgressTimer->stop();
  }
 
 }    // end of namespace Dashboard

@@ -66,7 +66,6 @@ private:
     //Flags
     bool m_ProcessRunning;                  //!< Process running state
     QDateTime m_selDateTime;                //!< Selected Date and Time
-    QDateTime m_curTime;
 
     void RetranslateUI();
 
