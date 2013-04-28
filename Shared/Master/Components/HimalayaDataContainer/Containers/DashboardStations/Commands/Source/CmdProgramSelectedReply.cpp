@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdProgramEndTime.cpp
+/*! \file CmdProgramSelectedReply.cpp
  *
- *  \brief CmdProgramEndTime command implementation.
+ *  \brief CmdProgramSelectedReply command implementation.
  *
  *   $Version: $ 0.1
 *   $Date:    $ 27.03.2013
@@ -18,13 +18,13 @@
  */
 /****************************************************************************/
 
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndTime.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 namespace MsgClasses {
 
-QString CmdProgramEndTime::NAME = "MsgClasses::CmdProgramEndTime";
+QString CmdProgramSelectedReply::NAME = "MsgClasses::CmdProgramSelectedReply";
 
 
-CmdProgramEndTime::CmdProgramEndTime(int Timeout, int TimeProposed,
+CmdProgramSelectedReply::CmdProgramSelectedReply(int Timeout, int TimeProposed,
                                              int ParaffinWeltCostedtime,
                                              int CostedTimeBeforeParaffin,
                                              QList<QString>& StationList) :
@@ -36,7 +36,7 @@ CmdProgramEndTime::CmdProgramEndTime(int Timeout, int TimeProposed,
 {
 }
 
-CmdProgramEndTime::CmdProgramEndTime()
+CmdProgramSelectedReply::CmdProgramSelectedReply()
     : Command(0)
 {
 }
@@ -46,7 +46,7 @@ CmdProgramEndTime::CmdProgramEndTime()
  *  \brief   Destructor
  */
 /****************************************************************************/
-CmdProgramEndTime::~CmdProgramEndTime()
+CmdProgramSelectedReply::~CmdProgramSelectedReply()
 {
 }
 
@@ -57,7 +57,7 @@ CmdProgramEndTime::~CmdProgramEndTime()
  *  \return  command name as string
  */
 /****************************************************************************/
-QString CmdProgramEndTime::GetName() const
+QString CmdProgramSelectedReply::GetName() const
 {
     return NAME;
 }

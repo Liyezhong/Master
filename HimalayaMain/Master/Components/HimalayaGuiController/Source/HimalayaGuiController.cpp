@@ -67,9 +67,9 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationParaffinBathStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndTime.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 
 
@@ -194,8 +194,8 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     RegisterCommandForProcessing<MsgClasses::CmdStationParaffinBathStatus, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdStationParaffinBathStatus>, this);
 
-    RegisterCommandForProcessing<MsgClasses::CmdProgramEndTime, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdProgramEndTime>, this);
+    RegisterCommandForProcessing<MsgClasses::CmdProgramSelectedReply, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdProgramSelectedReply>, this);
 
     RegisterExternalMessage<MsgClasses::CmdProgramSelected, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdProgramSelected>, this);
@@ -203,8 +203,8 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     RegisterCommandForProcessing<MsgClasses::CmdCurrentProgramStepInfor, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdCurrentProgramStepInfor>, this);
 
-    RegisterCommandForProcessing<MsgClasses::CmdProgramStartReady, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdProgramStartReady>, this);
+    RegisterCommandForProcessing<MsgClasses::CmdProgramAcknowledge, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdProgramAcknowledge>, this);
 
     RegisterExternalMessage<MsgClasses::CmdKeepCassetteCount, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdKeepCassetteCount>, this);

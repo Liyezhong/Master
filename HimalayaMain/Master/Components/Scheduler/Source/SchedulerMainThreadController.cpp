@@ -38,11 +38,11 @@
 #include <Scheduler/Commands/Include/CmdRTLock.h>
 #include <Scheduler/Commands/Include/CmdRTUnlock.h>
 #include <HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h>
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndTime.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "float.h"
 
 
@@ -614,6 +614,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             return CTRL_CMD_ABORT;
         }
+        if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_DRAIN)
+        {
+            return CTRL_CMD_DRAIN;
+        }
     }
 
     MsgClasses::CmdRetortLock* pCmdRetortLock = dynamic_cast<MsgClasses::CmdRetortLock*>(pt.GetPointerToUserData());
@@ -1036,7 +1040,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
     }
 
     //send back the proposed program end time
-    MsgClasses::CmdProgramEndTime* commandPtr(new MsgClasses::CmdProgramEndTime(5000, timeProposed,
+    MsgClasses::CmdProgramSelectedReply* commandPtr(new MsgClasses::CmdProgramSelectedReply(5000, timeProposed,
                                                                                 paraffinWeltCostedtime,
                                                                                 costedTimeBeforeParaffin,
                                                                                 m_StationList));
@@ -1272,7 +1276,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         qDebug() << "Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
 
         //send command to main controller to tell init complete
-        MsgClasses::CmdProgramStartReady* commandPtr(new MsgClasses::CmdProgramStartReady(5000, true));
+        MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
         Q_ASSERT(commandPtr);
         Global::tRefType Ref = GetNewCommandRef();
         SendCommand(Ref, Global::CommandShPtr_t(commandPtr));

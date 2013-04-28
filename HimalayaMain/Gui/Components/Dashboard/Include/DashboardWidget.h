@@ -32,10 +32,6 @@
 #include <QFrame>
 #include <QGridLayout>
 
-namespace MsgClasses
-{
-    class CmdProgramStartReady;
-}
 
 namespace Dashboard {
 
@@ -73,12 +69,13 @@ private:
     int m_asapEndTime;
     QDateTime m_EndDateTime;
     int m_ParaffinStepIndex;
+    bool m_IsWaitingCleaningProgram;
+    bool m_ForceRunCleanProgram;
 
     void EnablePlayButton(bool bSetEnable);
-
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(const DataManager::CProgram*, int, int, int);
-
+    void PrepareSelectedProgramChecking();
 public:
     explicit CDashboardWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL);
     ~CDashboardWidget();
@@ -104,9 +101,12 @@ public slots:
     void OnRMSValueChanged(Global::RMSOptions_t);
     void AddItemsToComboBox();
     void OnActivated(int);
-    void OnProgramStartReadyUpdated(const MsgClasses::CmdProgramStartReady& cmd);
+    void OnProgramStartReadyUpdated();
+    void OnProgramWillComplete();
+    void OnDrainFinished();
+
     void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
-    void OnRecievedProgramEndTime(const MsgClasses::CmdProgramEndTime& cmd);
+    void OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd);
 
     // Warning Message Slots
     void OnProgramStartConfirmation();

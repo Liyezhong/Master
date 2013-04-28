@@ -21,7 +21,6 @@
 #include "Dashboard/Include/DashboardWidget.h"
 #include "ui_DashboardWidget.h"
 #include <QDebug>
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
 #include "MainMenu/Include/SliderControl.h"
 
 namespace Dashboard {
@@ -33,7 +32,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    m_ProgramNextAction(DataManager::PROGRAM_START),
                                    m_UserRoleChanged(false),
                                    m_asapEndTime(0),
-                                   m_ParaffinStepIndex(-1)
+                                   m_ParaffinStepIndex(-1),
+                                   m_IsWaitingCleaningProgram(false),
+                                   m_ForceRunCleanProgram(false)
 {
      mp_Ui->setupUi(GetContentFrame());
      SetPanelTitle(tr("Dashboard"));
@@ -73,8 +74,14 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int),
                         mp_DashboardScene, UpdateDashboardSceneReagentsForProgram(QString &, int));
 
-     CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(const MsgClasses::CmdProgramStartReady &),
-                       this, OnProgramStartReadyUpdated(const MsgClasses::CmdProgramStartReady&));
+     CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
+                       this, OnProgramStartReadyUpdated());
+
+     CONNECTSIGNALSLOT(mp_DataConnector, ProgramWillComplete(),
+                       this, OnProgramWillComplete());
+
+     CONNECTSIGNALSLOT(mp_DataConnector, ProgramDrainFinished(),
+                       this, OnDrainFinished());
 
      CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus &),
                        this, OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus&));
@@ -82,8 +89,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      CONNECTSIGNALSLOT(mp_Ui->retortSlider, positionChanged(MainMenu::CSliderControl::Position_t),
                        this, RetortSliderPositionChanged(MainMenu::CSliderControl::Position_t));
 
-     CONNECTSIGNALSLOT(mp_DataConnector, ReceivedProgramEndTime(const MsgClasses::CmdProgramEndTime &),
-                       this, OnRecievedProgramEndTime(const MsgClasses::CmdProgramEndTime&));
+     CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply &),
+                       this, OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply&));
 }
 
 CDashboardWidget::~CDashboardWidget()
@@ -251,7 +258,7 @@ int CDashboardWidget::GetASAPTime(const DataManager::CProgram* p_Program,
     //No Paraffin TimeDelta = 0;
 
     int TimeDelta; //seconds
-    if (!IsParaffinInProgram(p_Program))//No Paraffin in all program steps
+    if (-1 == m_ParaffinStepIndex)//No Paraffin in all program steps
     {
         TimeDelta = 0;
     }
@@ -279,18 +286,23 @@ void CDashboardWidget::OnActivated(int index)
     if(-1 != index) {
         m_NewSelectedProgramId = m_FavProgramIDs.at(index);
         CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
-
-        //Notify Master, to get the time costed for paraffin welting
-        mp_DataConnector->SendProgramSelected(m_NewSelectedProgramId, m_ParaffinStepIndex);
-
+        PrepareSelectedProgramChecking();
     } else {
         mp_Ui->pgmsComboBox->showPopup();
     }
 }
 
+void CDashboardWidget::PrepareSelectedProgramChecking()
+{
+    this->IsParaffinInProgram(mp_ProgramList->GetProgram(m_NewSelectedProgramId));//to get m_ParaffinStepIndex
+    //Notify Master, to get the time costed for paraffin welting
+    mp_DataConnector->SendProgramSelected(m_NewSelectedProgramId, m_ParaffinStepIndex);
+
+}
+
 bool CDashboardWidget::CheckPreConditionsToRunProgram()
 {
-    if (""== m_SelectedProgramId)
+    if ("" == m_SelectedProgramId)
         return false;
     //Todo: We should give the Expired conditions
    /* if((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
@@ -346,9 +358,64 @@ void CDashboardWidget::EnablePlayButton(bool bSetEnable)
     mp_Ui->playButton->setEnabled(bSetEnable);
 }
 
-void CDashboardWidget::OnProgramStartReadyUpdated(const MsgClasses::CmdProgramStartReady& cmd)
+void CDashboardWidget::OnProgramStartReadyUpdated()
 {
-    this->EnablePlayButton(cmd.IsReady());
+    this->EnablePlayButton(true);
+}
+
+void CDashboardWidget::OnProgramWillComplete()
+{
+    mp_MessageDlg->SetIcon(QMessageBox::Warning);
+    mp_MessageDlg->SetTitle(tr("Warning"));
+    QString strTemp(tr("Program \""));
+    strTemp = strTemp + CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME
+            + "\" is complete! Would you like to drain the retort?";
+    mp_MessageDlg->SetText(strTemp);
+    mp_MessageDlg->SetButtonText(1, tr("OK"));
+    mp_MessageDlg->HideButtons();
+
+    if (mp_MessageDlg->exec())
+    {
+        m_ProgramCurrentAction = DataManager::PROGRAM_DRAIN;
+        mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction);
+        //disable pause and abort
+        mp_Ui->playButton->setEnabled(false);
+        mp_Ui->abortButton->setEnabled(false);
+        return;
+    }
+}
+
+void CDashboardWidget::OnDrainFinished()
+{
+    mp_MessageDlg->SetIcon(QMessageBox::Warning);
+    mp_MessageDlg->SetTitle(tr("Warning"));
+    mp_MessageDlg->SetText(tr("Please take out your specimen!"));
+    mp_MessageDlg->SetButtonText(1, tr("OK"));
+    mp_MessageDlg->HideButtons();
+
+    if (mp_MessageDlg->exec())
+    {
+        //todo: need send unlock?
+        mp_MessageDlg->SetText(tr("The retort is contaminated, Cleaning Program will run!"));
+
+        mp_MessageDlg->SetButtonText(1, tr("OK"));
+        mp_MessageDlg->HideButtons();
+        m_IsWaitingCleaningProgram = true;
+        if (mp_MessageDlg->exec())
+        {
+            m_IsWaitingCleaningProgram = false;
+            m_ProgramCurrentAction = DataManager::PROGRAM_START;
+            m_ForceRunCleanProgram = true;
+            m_NewSelectedProgramId = "C01";
+            CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = tr("Cleaning Program");
+            PrepareSelectedProgramChecking();
+
+            //enable pause and abort
+            //mp_Ui->playButton->setEnabled(true);
+            //mp_Ui->abortButton->setEnabled(true);
+        }
+        return;
+    }
 }
 
 void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd)
@@ -356,10 +423,17 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLock
     if (cmd.IsLocked())
         mp_Ui->retortSlider->SetPosition(MainMenu::CSliderControl::PosLeft);
     else
+    {
         mp_Ui->retortSlider->SetPosition(MainMenu::CSliderControl::PosRight);
+        //enable the "OK"
+        if (m_IsWaitingCleaningProgram && mp_MessageDlg->isVisible())
+        {
+            //mp_MessageDlg->
+        }
+    }
 }
 
-void CDashboardWidget::OnRecievedProgramEndTime(const MsgClasses::CmdProgramEndTime& cmd)
+void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd)
 {
     //firstly check whether there is any empty station for some program steps
     const QList<QString>& stationList = cmd.StationList();
@@ -394,6 +468,13 @@ void CDashboardWidget::OnRecievedProgramEndTime(const MsgClasses::CmdProgramEndT
                                   cmd.ParaffinWeltCostedTime(), cmd.CostedTimeBeforeParaffin());
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
     emit ProgramSelected(m_SelectedProgramId, asapEndTime);//for UI update
+
+    if (m_ForceRunCleanProgram)//for after program completed
+    {
+        m_ProgramCurrentAction = DataManager::PROGRAM_START;
+        mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction, m_EndDateTime);
+        m_ForceRunCleanProgram = false;
+    }
 }
 
 } // End of namespace Dashboard

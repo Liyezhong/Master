@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdProgramEndTime.h
+/*! \file CmdProgramSelectedReply.h
  *
- *  \brief CmdProgramEndTime command definition.
+ *  \brief CmdProgramSelectedReply command definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 27.03.2013
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef MSGCLASSES_CMDPROGRAMENDTIME_H
-#define MSGCLASSES_CMDPROGRAMENDTIME_H
+#ifndef MSGCLASSES_CMDPROGRAMSELECTEDREPLY_H
+#define MSGCLASSES_CMDPROGRAMSELECTEDREPLY_H
 
 #include <Global/Include/Commands/Command.h>
 #include <HimalayaDataContainer/Helper/Include/Global.h>
@@ -29,24 +29,24 @@ namespace MsgClasses {
 
 /****************************************************************************/
 /*!
- *  \brief  This class implements a CmdProgramEndTime command.
+ *  \brief  This class implements a CmdProgramSelectedReply command.
  *
  * \todo implement
  */
 /****************************************************************************/
-class CmdProgramEndTime : public Global::Command {
-    friend QDataStream & operator << (QDataStream &, const CmdProgramEndTime &);
-    friend QDataStream & operator >> (QDataStream &, CmdProgramEndTime &);
+class CmdProgramSelectedReply : public Global::Command {
+    friend QDataStream & operator << (QDataStream &, const CmdProgramSelectedReply &);
+    friend QDataStream & operator >> (QDataStream &, CmdProgramSelectedReply &);
 public:
-    CmdProgramEndTime();                                             ///< Not implemented.
+    CmdProgramSelectedReply();                                             ///< Not implemented.
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdProgramEndTime(int Timeout, int TimeProposed,
+    CmdProgramSelectedReply(int Timeout, int TimeProposed,
                       int ParaffinWeltCostedtime,
                       int CostedTimeBeforeParaffin,
                       QList<QString>& StationList);
-    ~CmdProgramEndTime();
+    ~CmdProgramSelectedReply();
     virtual QString GetName() const;
     inline int TimeProposed()const {return m_TimeProposed;}
     inline int ParaffinWeltCostedTime()const {return m_ParaffinWeltCostedtime;}
@@ -55,15 +55,15 @@ public:
 
     
 private:
-    CmdProgramEndTime(const CmdProgramEndTime &);                     ///< Not implemented.
-    const CmdProgramEndTime & operator = (const CmdProgramEndTime &); ///< Not implemented.
+    CmdProgramSelectedReply(const CmdProgramSelectedReply &);                     ///< Not implemented.
+    const CmdProgramSelectedReply & operator = (const CmdProgramSelectedReply &); ///< Not implemented.
 private:
     int m_TimeProposed;//the costed time for selected program, seconds
     int m_CostedTimeBeforeParaffin; //seconds
     int m_ParaffinWeltCostedtime; //seconds
     QList<QString> m_StationList;
     
-}; // end class CmdProgramEndTime
+}; // end class CmdProgramSelectedReply
 
 /****************************************************************************/
 /**
@@ -74,7 +74,7 @@ private:
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator << (QDataStream &Stream, const CmdProgramEndTime &Cmd)
+inline QDataStream & operator << (QDataStream &Stream, const CmdProgramSelectedReply &Cmd)
 {
     // copy base class data
     Cmd.CopyToStream(Stream);
@@ -99,7 +99,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramEndTime &
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator >> (QDataStream &Stream, CmdProgramEndTime &Cmd)
+inline QDataStream & operator >> (QDataStream &Stream, CmdProgramSelectedReply &Cmd)
 {
     // copy base class data
     Cmd.CopyFromStream(Stream);
@@ -119,4 +119,4 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdProgramEndTime &Cmd)
 }
 } // end namespace MsgClasses
 
-#endif // MSGCLASSES_CMDPROGRAMENDDATETIME_H
+#endif // MSGCLASSES_CMDPROGRAMSELECTEDREPLY_H

@@ -23,7 +23,7 @@
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataExport.h"
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImport.h"
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdAlarmToneTest.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 
@@ -80,12 +80,12 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
 
     // Dashboard Command Handlers
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdCurrentProgramStepInfor>(&CDataConnector::CurrentProgramStepInfoHandler, this);
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramStartReady>(&CDataConnector::ProgramStartReadyHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramAcknowledge>(&CDataConnector::ProgramAcknowledgeHandler, this);
 
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationParaffinBathStatus>(&CDataConnector::StationParaffinBathStatusHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortStatus>(&CDataConnector::RetortStatusHandler, this);
 
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramEndTime>(&CDataConnector::ProgramEndTimeHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramSelectedReply>(&CDataConnector::ProgramSelectedReplyHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortLockStatus>(&CDataConnector::RetortLockStatusHandler, this);
 
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdEventStrings>(&CDataConnector::EventStringHandler, this);
@@ -1566,16 +1566,37 @@ void CDataConnector::CurrentProgramStepInfoHandler(Global::tRefType Ref, const M
     emit CurrentProgramStepInforUpdated(Command);
 }
 
-void CDataConnector::ProgramStartReadyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramStartReady& Command)
+void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAcknowledge& Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
-    emit ProgramStartReady(Command);
+    switch( Command.AcknownedgeType())
+    {
+        case DataManager::PROGRAM_READY:
+        {
+           emit ProgramStartReady();
+        }
+        break;
+        case DataManager::PROGRAM_WILL_COMPLETE:
+        {
+             emit ProgramWillComplete();
+        }
+        break;
+        case DataManager::PROGRAM_DRAIN_FINISHED:
+        {
+             emit ProgramDrainFinished();
+        }
+        break;
+        default:
+        {
+            qDebug() << "Do Nothing";
+        }
+    }
 }
 
-void CDataConnector::ProgramEndTimeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramEndTime & Command)
+void CDataConnector::ProgramSelectedReplyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramSelectedReply & Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
-    emit ReceivedProgramEndTime(Command);
+    emit ProgramSelectedReply(Command);
 }
 
 void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortLockStatus & Command)
@@ -1596,6 +1617,11 @@ void CDataConnector::StationParaffinBathStatusHandler(Global::tRefType Ref, cons
     //
 
 }
+
+/*void CDataConnector::NotifiedProgramComplete()
+{
+
+}*/
 
 } // end namespace Core
 

@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdProgramStartReady.cpp
+/*! \file CmdProgramAcknowledge.cpp
  *
- *  \brief CmdProgramStartReady command implementation.
+ *  \brief CmdProgramAcknowledge command implementation.
  *
  *   $Version: $ 0.1
 *   $Date:    $ 27.03.2013
@@ -18,19 +18,19 @@
  */
 /****************************************************************************/
 
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramStartReady.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 namespace MsgClasses {
 
-QString CmdProgramStartReady::NAME = "MsgClasses::CmdProgramStartReady";
+QString CmdProgramAcknowledge::NAME = "MsgClasses::CmdProgramAcknowledge";
 
 
-CmdProgramStartReady::CmdProgramStartReady(int Timeout, bool IsReady) :
+CmdProgramAcknowledge::CmdProgramAcknowledge(int Timeout, DataManager::ProgramAcknownedgeType_t acknownedgeType) :
     Command(Timeout),
-    m_IsReady(IsReady)
+    m_AcknownedgeType(acknownedgeType)
 {
 }
 
-CmdProgramStartReady::CmdProgramStartReady()
+CmdProgramAcknowledge::CmdProgramAcknowledge()
     : Command(0)
 {
 }
@@ -40,7 +40,7 @@ CmdProgramStartReady::CmdProgramStartReady()
  *  \brief   Destructor
  */
 /****************************************************************************/
-CmdProgramStartReady::~CmdProgramStartReady()
+CmdProgramAcknowledge::~CmdProgramAcknowledge()
 {
 }
 
@@ -51,7 +51,7 @@ CmdProgramStartReady::~CmdProgramStartReady()
  *  \return  command name as string
  */
 /****************************************************************************/
-QString CmdProgramStartReady::GetName() const
+QString CmdProgramAcknowledge::GetName() const
 {
     return NAME;
 }

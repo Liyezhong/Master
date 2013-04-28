@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdProgramStartReady.h
+/*! \file CmdProgramAcknowledge.h
  *
- *  \brief CmdProgramStartReady command definition.
+ *  \brief CmdProgramAcknowledge command definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 11.04.2013
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef MSGCLASSES_CMDPROGRAMSTARTREADY_H
-#define MSGCLASSES_CMDPROGRAMSTARTREADY_H
+#ifndef MSGCLASSES_CMDPROGRAMACKNOWLEDGE_H
+#define MSGCLASSES_CMDPROGRAMACKNOWLEDGE_H
 
 #include <Global/Include/Commands/Command.h>
 #include <HimalayaDataContainer/Helper/Include/Global.h>
@@ -29,30 +29,30 @@ namespace MsgClasses {
 
 /****************************************************************************/
 /*!
- *  \brief  This class implements a CmdProgramStartReady command.
+ *  \brief  This class implements a CmdProgramAcknowledge command.
  *
  * \todo implement
  */
 /****************************************************************************/
-class CmdProgramStartReady : public Global::Command {
-    friend QDataStream & operator << (QDataStream &, const CmdProgramStartReady &);
-    friend QDataStream & operator >> (QDataStream &, CmdProgramStartReady &);
+class CmdProgramAcknowledge : public Global::Command {
+    friend QDataStream & operator << (QDataStream &, const CmdProgramAcknowledge &);
+    friend QDataStream & operator >> (QDataStream &, CmdProgramAcknowledge &);
 public:
-    CmdProgramStartReady();                                             ///< Not implemented.
+    CmdProgramAcknowledge();                                             ///< Not implemented.
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdProgramStartReady(int Timeout, bool IsReady);
-    ~CmdProgramStartReady();
+    CmdProgramAcknowledge(int Timeout, DataManager::ProgramAcknownedgeType_t acknownedgeType);
+    ~CmdProgramAcknowledge();
     virtual QString GetName() const;
-    inline bool IsReady() const {return m_IsReady;}
+    inline DataManager::ProgramAcknownedgeType_t AcknownedgeType() const {return m_AcknownedgeType;}
  private:
-    CmdProgramStartReady(const CmdProgramStartReady &);                     ///< Not implemented.
-    const CmdProgramStartReady & operator = (const CmdProgramStartReady &); ///< Not implemented.
+    CmdProgramAcknowledge(const CmdProgramAcknowledge &);                     ///< Not implemented.
+    const CmdProgramAcknowledge & operator = (const CmdProgramAcknowledge &); ///< Not implemented.
 private:
-    bool m_IsReady;
+    DataManager::ProgramAcknownedgeType_t m_AcknownedgeType;
     
-}; // end class CmdProgramStartReady
+}; // end class CmdProgramAcknowledge
 
 /****************************************************************************/
 /**
@@ -63,12 +63,12 @@ private:
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator << (QDataStream &Stream, const CmdProgramStartReady &Cmd)
+inline QDataStream & operator << (QDataStream &Stream, const CmdProgramAcknowledge &Cmd)
 {
     // copy base class data
     Cmd.CopyToStream(Stream);
     // copy internal data
-    Stream << Cmd.m_IsReady;
+    Stream << (int)(Cmd.m_AcknownedgeType);
     return Stream;
 }
 
@@ -81,14 +81,16 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramStartRead
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator >> (QDataStream &Stream, CmdProgramStartReady &Cmd)
+inline QDataStream & operator >> (QDataStream &Stream, CmdProgramAcknowledge &Cmd)
 {
     // copy base class data
     Cmd.CopyFromStream(Stream);
     // copy internal data
-    Stream >> Cmd.m_IsReady;
+    int temp;
+    Stream >> temp;
+    Cmd.m_AcknownedgeType = (DataManager::ProgramAcknownedgeType_t)temp;
     return Stream;
 }
 } // end namespace MsgClasses
 
-#endif // MSGCLASSES_CMDPROGRAMSTARTREADY_H
+#endif // MSGCLASSES_CMDPROGRAMACKNOWLEDGE_H

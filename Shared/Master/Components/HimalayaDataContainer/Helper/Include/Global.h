@@ -30,8 +30,16 @@ namespace DataManager {
  typedef enum  {
         PROGRAM_START = 0,
         PROGRAM_PAUSE,
-        PROGRAM_ABORT
+        PROGRAM_ABORT,
+        PROGRAM_DRAIN
     } ProgramActionType_t;
+
+typedef enum  {
+        PROGRAM_READY = 0,
+        PROGRAM_WILL_COMPLETE,
+        PROGRAM_DRAIN_FINISHED,
+        PROGRAM_ABORTED
+    } ProgramAcknownedgeType_t;
     
 typedef enum  {
         RETORT_EMPTYCLEAN = 0,

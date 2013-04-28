@@ -46,7 +46,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationParaffinBathStatus.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramEndTime.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 
@@ -74,7 +74,7 @@
 
 namespace MsgClasses
 {
-    class CmdProgramStartReady;
+    class CmdProgramAcknowledge;
     class CmdRetortStatus;
     class CmdRetortLockStatus;
 }
@@ -343,9 +343,12 @@ signals:
     /****************************************************************************/
     void StartProgramAction(DataManager::ProgramActionType_t ActionType);
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
-    void ProgramStartReady(const MsgClasses::CmdProgramStartReady& Command);
+	void ProgramStartReady();
+    void ProgramWillComplete();
+    void ProgramDrainFinished();
     void RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& Command);
-    void ReceivedProgramEndTime(const MsgClasses::CmdProgramEndTime& Command);
+    void ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& Command);
+    
 private:
     void ConfFileHandler(Global::tRefType Ref, const NetCommands::CmdConfigurationFile &Command);
     void ProcessStateHandler(Global::tRefType ref, const NetCommands::CmdProcessState &Command);
@@ -362,9 +365,9 @@ private:
     void UpdateStationReagentStatus(Global::tRefType Ref, const MsgClasses::CmdUpdateStationReagentStatus &Command);
 
     void CurrentProgramStepInfoHandler(Global::tRefType Ref, const MsgClasses::CmdCurrentProgramStepInfor & Command);
-    void ProgramStartReadyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramStartReady& Command);
+    void ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAcknowledge& Command);
     void StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationParaffinBathStatus & Command);
-    void ProgramEndTimeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramEndTime & Command);
+    void ProgramSelectedReplyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramSelectedReply & Command);
     void RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortLockStatus & Command);
     void RetortStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortStatus & Command);
 
