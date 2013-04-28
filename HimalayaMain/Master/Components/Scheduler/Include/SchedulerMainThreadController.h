@@ -39,6 +39,8 @@
 #include "DeviceControl/Include/Interface/IDeviceProcessing.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
+#include "DataManager/Helper/Include/Types.h"
+
 using namespace DeviceControl;
 
 namespace MsgClasses
@@ -50,6 +52,7 @@ namespace MsgClasses
 namespace DataManager
 {
     class CDataManager;
+    class CReagent;
 }
 
 namespace Scheduler {
@@ -92,6 +95,15 @@ typedef struct
     qint64 CurStepSoakStartTime;
 }SchedulerTimeStamps_t;
 
+typedef struct
+{
+    QString StationID;
+    int UsedTimes;
+
+}StationUseRecord_t;
+
+
+
     /****************************************************************************/
     /**
      * @brief Controller class for the main scheduler thread.
@@ -117,7 +129,7 @@ typedef struct
         DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
         DataManager::CDataManager       *mp_DataManager;
         //qint64 m_CurStepSoakStartTime;
-        QString m_CurProgramStepID;
+        int m_CurProgramStepIndex;
         QString m_CurReagnetName;
         ProgramStepInfor m_CurProgramStepInfo;
         QString m_CurProgramID;
@@ -135,6 +147,7 @@ typedef struct
         qreal m_TempOvenTop;
         QStringList m_UsedStationIDs;                                                 ///in a whole of program processing
         SchedulerTimeStamps_t m_TimeStamps;
+        QList<QString> m_StationList;
         bool m_PauseToBeProcessed;
         int m_ProcessCassetteCount;
         SchedulerMainThreadController();                                             ///< Not implemented.
@@ -151,7 +164,6 @@ typedef struct
         void ProcessNonDeviceCommand();
         ControlCommandType_t PeekNonDeviceCommand();
         void DequeueNonDeviceCommand();
-        QString GetStationIDFromReagentID(const QString& ReagentID, bool IsLastStep = false);
         QString GetReagentName(const QString& ReagentID);
         QString GetReagentGroupID(const QString& ReagentID);
         bool IsCleaningReagent(const QString& ReagentID);
@@ -168,7 +180,17 @@ typedef struct
          quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex = -1);
          quint32 GetCurrentProgramStepNeededTime(const QString& ProgramID);
          bool PrepareProgramStationList(const QString& ProgramID);
+         QString SelectStationFromReagentID(const QString& ReagentID,
+                                           ListOfIDs_t& unusedStationIDs,
+                                           QList<StationUseRecord_t>& usedStations,
+                                           bool IsLastStep);
 
+         const QString& SelectStationByReagent(const DataManager::CReagent* pReagent,
+                                                                             ListOfIDs_t& unusedStationIDs,
+                                                                             QList<StationUseRecord_t>& usedStations,
+                                                                             bool bFindNewestOne,
+                                                                             Global::RMSOptions_t rmsMode) const;
+         QString GetStationIDFromProgramStep(int ProgramStepIndex);
          RVPosition_t GetRVTubePositionByStationID(const QString stationID);
          RVPosition_t GetRVSealPositionByStationID(const QString stationID);
 
@@ -179,10 +201,6 @@ signals:
          void signalRetortLock(bool IsLock);
 
 private slots:
-         void ProgramStart(const QString& ProgramID);
-         void ProgramPause();
-         void ProgramAbort();
-         void processNextProgramStep();
          void HandleIdleState(ControlCommandType_t ctrlCmd);
          //void HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
          void HandleRunState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode);

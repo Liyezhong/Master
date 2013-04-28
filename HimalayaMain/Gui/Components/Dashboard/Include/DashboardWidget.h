@@ -64,7 +64,7 @@ private:
     QStringList m_FavProgramIDs;
 
     Dashboard::CDashboardComboBoxModel *mp_ComboBoxModel;
-    QString m_SelectedProgramId;
+    QString m_SelectedProgramId, m_NewSelectedProgramId;
     QButtonGroup m_btnGroup;                                    //!< Button Group
     Global::RMSOptions_t m_RMSState;                            //!< Current RMS State
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role

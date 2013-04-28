@@ -34,7 +34,7 @@
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include "HimalayaDataContainer/Helper/Include/HimalayaDataManagerEventCodes.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
-#include "float.h"
+
 
 
 namespace DataManager {
@@ -670,70 +670,6 @@ bool CDashboardDataStationList::UpdateStationsByReagentDelete(const QString& Rea
 }
 
 
-/****************************************************************************/
-/*!
- *  //\brief find the reagent container, if bFindNewestOne is false, get the first one.
- *  \return the found station ID
- */
-/****************************************************************************/
-
-const QString& CDashboardDataStationList::FindStationByReagent(const CReagent* pReagent,
-                                                               bool bFindNewestOne,
-                                                               Global::RMSOptions_t rmsMode) const
-{
-    if (!pReagent)
-        return "";
-
-    const QString& ReagentID = pReagent->GetReagentID();
-
-    int days = INT_MAX;
-    qreal usedCassetteOrCyclePercent = DBL_MAX;
-    QString stationID("");
-    ListOfDashboardStation_t::const_iterator i = m_DashboardStationList.constBegin();
-    while (i != m_DashboardStationList.constEnd()) {
-        CDashboardStation*  pDashboardStation = i.value();
-        if (pDashboardStation->GetDashboardReagentID() == ReagentID)
-        {
-            if (!bFindNewestOne || rmsMode == Global::RMS_OFF)
-                return pDashboardStation->GetDashboardStationID();//get the first finding directly
-            {//get the newest one
-                //day
-                if (rmsMode == Global::RMS_DAYS)
-                {
-                    QDate dateOfThisOne = pDashboardStation->GetDashboardReagentExchangeDate();
-                    int temp = dateOfThisOne.daysTo(QDate::currentDate());
-                    if(temp < days) //get the minimum
-                    {
-                        days = temp;
-                        stationID = pDashboardStation->GetDashboardStationID();
-                    }
-                }
-                else if(rmsMode == Global::RMS_CASSETTES)
-                {
-                    qreal temp = (qreal)pDashboardStation->GetDashboardReagentActualCassettes() / (pReagent->GetMaxCassettes());
-                    if (temp < usedCassetteOrCyclePercent)
-                    {
-                        usedCassetteOrCyclePercent = temp;
-                        stationID = pDashboardStation->GetDashboardStationID();
-                    }
-                }
-                else if (rmsMode == Global::RMS_CYCLES)
-                {
-                    qreal temp = (qreal)pDashboardStation->GetDashboardReagentActualCycles() / pReagent->GetMaxCycles();
-                    if (temp < usedCassetteOrCyclePercent)
-                    {
-                        usedCassetteOrCyclePercent = temp;
-                        stationID = pDashboardStation->GetDashboardStationID();
-                    }
-                }
-
-            }
-        }
-        ++i;
-     }
-
-    return stationID;
-}
 
 /****************************************************************************/
 /*!

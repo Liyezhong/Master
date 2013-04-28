@@ -64,10 +64,7 @@ private:
     {
         return m_DashboardStationList;
     }
-    ListOfIDs_t & GetOrderedListOfDashboardStationIDs()
-    {
-        return m_OrderedListOfDashboardStationIDs;
-    }
+
     QReadWriteLock* GetLock()
     {
         return mp_ReadWriteLock;
@@ -142,8 +139,6 @@ public:
     bool DeleteDashboardStation(const unsigned int Index);  // uses order index
 
     bool UpdateStationsByReagentDelete(const QString& ReagentID);
-    const QString& FindStationByReagent(const CReagent* pReagent, bool bFindNewestOne,
-                                                                   Global::RMSOptions_t rmsMode) const;
 
     /******************** INLINE FUNCTIONS **************************************/
     /****************************************************************************/
@@ -216,6 +211,10 @@ public:
         return STATIONS;
     }
 
+    ListOfIDs_t & GetOrderedListOfDashboardStationIDs()
+    {
+        return m_OrderedListOfDashboardStationIDs;
+    }
 };
 
 } // namespace DataManager

@@ -88,7 +88,7 @@ void CDashboardEndTimeWidget::InitEndTimeWidgetItems()
     mp_Ui->progressBar->setStyleSheet(mp_Ui->progressBar->property("defaultStyleSheet").toString() +
                                        "QProgressBar { border-image: url(:/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png);"
                                       + "background-origin: margin;}"
-                                      + "QProgressBar::chunk { background-color:rgba(0, 255, 150, 100%); margin: 4.0px;} ");
+                                      + "QProgressBar::chunk { background-origin: margin;border-image: url(:/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png); background-color:rgba(0, 255, 150, 100%); margin: 4.0px;}");
 
     mp_Ui->progressBar->setMinimum(0);
     mp_Ui->progressBar->hide();

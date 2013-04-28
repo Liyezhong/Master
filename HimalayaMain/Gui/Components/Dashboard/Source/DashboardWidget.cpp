@@ -277,12 +277,11 @@ void CDashboardWidget::OnActivated(int index)
 {
     qDebug() << "Index Recieved : " << index;
     if(-1 != index) {
-        m_SelectedProgramId = m_FavProgramIDs.at(index);
-        CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_SelectedProgramId)->GetName();
-        mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+        m_NewSelectedProgramId = m_FavProgramIDs.at(index);
+        CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
 
         //Notify Master, to get the time costed for paraffin welting
-        mp_DataConnector->SendProgramSelected(m_SelectedProgramId, m_ParaffinStepIndex);
+        mp_DataConnector->SendProgramSelected(m_NewSelectedProgramId, m_ParaffinStepIndex);
 
     } else {
         mp_Ui->pgmsComboBox->showPopup();
@@ -362,6 +361,34 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLock
 
 void CDashboardWidget::OnRecievedProgramEndTime(const MsgClasses::CmdProgramEndTime& cmd)
 {
+    //firstly check whether there is any empty station for some program steps
+    const QList<QString>& stationList = cmd.StationList();
+    for (int i = 0; i < stationList.count(); i++)
+    {
+        if ("" == stationList.at(i))
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(tr("Warning"));
+            QString strTemp(tr("Program step \""));
+            strTemp = strTemp + QString::number(i+1);
+            strTemp = strTemp + "\" of \"";
+            strTemp = strTemp + CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME
+                    + "\" can not find the corresponding reagent station, please set a station for the reagent in this step.";
+            mp_MessageDlg->SetText(strTemp);
+            mp_MessageDlg->SetButtonText(1, tr("OK"));
+            mp_MessageDlg->HideButtons();
+
+            if (mp_MessageDlg->exec())
+            {
+                    return;
+            }
+            return;
+        }
+    }
+
+    m_SelectedProgramId = m_NewSelectedProgramId;
+    //Show program name in the comboBox
+    mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
     //get the proposed program end DateTime
     int asapEndTime = GetASAPTime(mp_ProgramList->GetProgram(m_SelectedProgramId), cmd.TimeProposed(),
                                   cmd.ParaffinWeltCostedTime(), cmd.CostedTimeBeforeParaffin());

@@ -26,11 +26,13 @@ QString CmdProgramEndTime::NAME = "MsgClasses::CmdProgramEndTime";
 
 CmdProgramEndTime::CmdProgramEndTime(int Timeout, int TimeProposed,
                                              int ParaffinWeltCostedtime,
-                                             int CostedTimeBeforeParaffin) :
+                                             int CostedTimeBeforeParaffin,
+                                             QList<QString>& StationList) :
     Command(Timeout),
     m_TimeProposed(TimeProposed),
     m_ParaffinWeltCostedtime(ParaffinWeltCostedtime),
-    m_CostedTimeBeforeParaffin(CostedTimeBeforeParaffin)
+    m_CostedTimeBeforeParaffin(CostedTimeBeforeParaffin),
+    m_StationList(StationList)
 {
 }
 

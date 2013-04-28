@@ -42,12 +42,17 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdProgramEndTime(int Timeout, int TimeProposed, int ParaffinWeltCostedtime, int CostedTimeBeforeParaffin);
+    CmdProgramEndTime(int Timeout, int TimeProposed,
+                      int ParaffinWeltCostedtime,
+                      int CostedTimeBeforeParaffin,
+                      QList<QString>& StationList);
     ~CmdProgramEndTime();
     virtual QString GetName() const;
     inline int TimeProposed()const {return m_TimeProposed;}
     inline int ParaffinWeltCostedTime()const {return m_ParaffinWeltCostedtime;}
     inline int CostedTimeBeforeParaffin()const {return m_CostedTimeBeforeParaffin;}
+    inline const QList<QString>& StationList()const {return m_StationList;}
+
     
 private:
     CmdProgramEndTime(const CmdProgramEndTime &);                     ///< Not implemented.
@@ -56,6 +61,7 @@ private:
     int m_TimeProposed;//the costed time for selected program, seconds
     int m_CostedTimeBeforeParaffin; //seconds
     int m_ParaffinWeltCostedtime; //seconds
+    QList<QString> m_StationList;
     
 }; // end class CmdProgramEndTime
 
@@ -76,6 +82,11 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramEndTime &
     Stream << Cmd.m_TimeProposed;
     Stream << Cmd.m_ParaffinWeltCostedtime;
     Stream << Cmd.m_CostedTimeBeforeParaffin;
+    Stream << Cmd.m_StationList.count();
+    for (int i = 0; i < Cmd.m_StationList.count(); i++)
+    {
+        Stream << Cmd.m_StationList.at(i);
+    }
     return Stream;
 }
 
@@ -96,6 +107,14 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdProgramEndTime &Cmd)
     Stream >> Cmd.m_TimeProposed;
     Stream >> Cmd.m_ParaffinWeltCostedtime;
     Stream >> Cmd.m_CostedTimeBeforeParaffin;
+    int stationCount = 0;
+    Stream >> stationCount;
+    QString stationID("");
+    for (int i = 0; i < stationCount; i++)
+    {
+        Stream >> stationID;
+        Cmd.m_StationList.push_back(stationID);
+    }
     return Stream;
 }
 } // end namespace MsgClasses
