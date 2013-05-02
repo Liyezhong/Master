@@ -35,6 +35,11 @@ void SelfTestStateMachine::Start()
     mp_SelfTestStateMachine->start();
 }
 
+void SelfTestStateMachine::Stop()
+{
+    mp_SelfTestStateMachine->stop();
+}
+
 void SelfTestStateMachine::NotifyTempsReady()
 {
     emit TempsReady();

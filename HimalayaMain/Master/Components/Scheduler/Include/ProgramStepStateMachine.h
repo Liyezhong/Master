@@ -22,6 +22,8 @@ typedef enum
     PSSM_FINISH,
     PSSM_PAUSE,
     PSSM_PAUSE_DRAIN,
+    PSSM_ABORTING,
+    PSSM_ABORTED,
     PSSM_ERROR,
     PSSM_UNDEF
 } ProgramStepStateMachine_t;
@@ -37,6 +39,7 @@ public:
     ProgramStepStateMachine_t GetPreviousState();
 
     void Start();
+    void Stop();
     void NotifyTempsReady();
     void NotifyLevelSensorTempS1Ready();
     void NotifyLevelSensorTempS2Ready();
@@ -50,6 +53,7 @@ public:
     void NotifyPause(ProgramStepStateMachine_t PreviousState);
     void NotifyResume();
     void NotifyResumeDrain();
+    void NotifyAbort();
 
 signals:
     void TempsReady();
@@ -80,6 +84,8 @@ signals:
     void OnFill();
     void OnSoak();
     void OnDrain();
+    void OnAborting();
+    void OnAborted();
 
 private slots:
     void OnStateChanged();
@@ -97,6 +103,8 @@ private:
     QState* mp_PssmSoak;
     QState* mp_PssmPause;
     QState* mp_PssmPauseDrain;
+    QState* mp_PssmAborting;
+    QState* mp_PssmAborted;
     QFinalState* mp_PssmFinish;
     QState* mp_PssmError;
     ProgramStepStateMachine_t m_PreviousState;

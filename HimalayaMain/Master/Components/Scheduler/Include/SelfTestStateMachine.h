@@ -26,6 +26,7 @@ public:
     SelfTestStateMachine_t GetCurrentState();
 
     void Start();
+    void Stop();
     void NotifyTempsReady();
     void NotifyCheckStation();
     void NotifyGotCheckStationResult();

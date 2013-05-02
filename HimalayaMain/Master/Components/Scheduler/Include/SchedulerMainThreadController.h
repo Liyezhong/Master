@@ -215,6 +215,7 @@ private slots:
          void Drain();
          void Pressure();
          void Vaccum();
+         void Abort();
          bool SelfTest(ReturnCode_t RetCode);
     protected:
 

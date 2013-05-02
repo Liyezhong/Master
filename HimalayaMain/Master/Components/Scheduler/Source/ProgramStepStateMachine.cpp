@@ -21,6 +21,9 @@ ProgramStepStateMachine::ProgramStepStateMachine()
     mp_PssmError = new QState(mp_ProgramStepStateMachine);
     mp_PssmPause = new QState(mp_ProgramStepStateMachine);
     mp_PssmPauseDrain = new QState(mp_ProgramStepStateMachine);
+    mp_PssmAborting = new QState(mp_ProgramStepStateMachine);
+    mp_PssmAborted = new QState(mp_ProgramStepStateMachine);
+
 
     mp_ProgramStepStateMachine->setInitialState(mp_PssmInit);
     mp_PssmInit->addTransition(this, SIGNAL(TempsReady()), mp_PssmReadyToHeatLevelSensorS1);
@@ -53,6 +56,19 @@ ProgramStepStateMachine::ProgramStepStateMachine()
     mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(Pause()), mp_PssmPauseDrain);
     mp_PssmReadyToDrain->addTransition(this, SIGNAL(Pause()), mp_PssmPauseDrain);
 
+    mp_PssmInit->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
+    mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
+    mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
+    mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
+    mp_PssmAborting->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
+
+    mp_PssmReadyToFill->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
+    mp_PssmReadyToSeal->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
+    mp_PssmSoak->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
+    mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
+    mp_PssmReadyToDrain->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
+
+
     mp_PssmPause->addTransition(this, SIGNAL(ResumeToInit()), mp_PssmInit);
     mp_PssmPause->addTransition(this, SIGNAL(ResumeToHeatLevelSensorS1()), mp_PssmReadyToHeatLevelSensorS1);
     mp_PssmPause->addTransition(this, SIGNAL(ResumeToHeatLevelSensorS2()), mp_PssmReadyToHeatLevelSensorS2);
@@ -71,6 +87,8 @@ ProgramStepStateMachine::ProgramStepStateMachine()
     connect(mp_PssmReadyToFill, SIGNAL(entered()), this, SIGNAL(OnFill()));
     connect(mp_PssmSoak, SIGNAL(entered()), this, SIGNAL(OnSoak()));
     connect(mp_PssmReadyToDrain, SIGNAL(entered()), this, SIGNAL(OnDrain()));
+    connect(mp_PssmAborting, SIGNAL(entered()), this, SIGNAL(OnAborting()));
+    connect(mp_PssmAborted, SIGNAL(entered()), this, SIGNAL(OnAborted()));
 
     connect(mp_PssmInit, SIGNAL(entered()), this, SLOT(OnStateChanged()));
     connect(mp_PssmReadyToHeatLevelSensorS1, SIGNAL(entered()), this, SLOT(OnStateChanged()));
@@ -85,6 +103,8 @@ ProgramStepStateMachine::ProgramStepStateMachine()
     connect(mp_PssmError, SIGNAL(entered()), this, SLOT(OnStateChanged()));
     connect(mp_PssmPause, SIGNAL(entered()), this, SLOT(OnStateChanged()));
     connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmAborted, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PssmAborting, SIGNAL(entered()), this, SLOT(OnStateChanged()));
 
 
 }
@@ -104,12 +124,19 @@ ProgramStepStateMachine::~ProgramStepStateMachine()
     delete  mp_PssmError;
     delete  mp_PssmPause;
     delete  mp_PssmPauseDrain;
+    delete  mp_PssmAborted;
+    delete  mp_PssmAborting;
     delete  mp_ProgramStepStateMachine;
 }
 
 void ProgramStepStateMachine::Start()
 {
     mp_ProgramStepStateMachine->start();
+}
+
+void ProgramStepStateMachine::Stop()
+{
+    mp_ProgramStepStateMachine->stop();
 }
 
 void ProgramStepStateMachine::NotifyTempsReady()
@@ -166,6 +193,11 @@ void ProgramStepStateMachine::NotifyPause(ProgramStepStateMachine_t PreviousStat
 {
    m_PreviousState = PreviousState;
    emit Pause();
+}
+
+void ProgramStepStateMachine::NotifyAbort()
+{
+    emit Abort();
 }
 
 void ProgramStepStateMachine::NotifyResume()
@@ -281,6 +313,14 @@ ProgramStepStateMachine_t ProgramStepStateMachine::GetCurrentState()
     {
         return PSSM_PAUSE_DRAIN;
     }
+    else if(mp_ProgramStepStateMachine->configuration().contains(mp_PssmAborting))
+    {
+        return PSSM_ABORTING;
+    }
+    else if(mp_ProgramStepStateMachine->configuration().contains(mp_PssmAborted))
+    {
+        return PSSM_ABORTED;
+    }
     else
     {
         return PSSM_UNDEF;
@@ -347,6 +387,14 @@ void ProgramStepStateMachine::OnStateChanged()
     else if(curState == PSSM_PAUSE_DRAIN)
     {
          str = " PSSM_PAUSE_DRAIN";
+    }
+    else if(curState == PSSM_ABORTED)
+    {
+         str = " PSSM_ABORTED";
+    }
+    else if(curState == PSSM_ABORTING)
+    {
+         str = " PSSM_ABORTING";
     }
     else
     {
