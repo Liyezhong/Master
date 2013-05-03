@@ -197,6 +197,7 @@ void ProgramStepStateMachine::NotifyPause(ProgramStepStateMachine_t PreviousStat
 
 void ProgramStepStateMachine::NotifyAbort()
 {
+    m_PreviousState = GetCurrentState();
     emit Abort();
 }
 

@@ -1601,7 +1601,14 @@ void SchedulerMainThreadController::Abort()
         }
         else
         {
-            this->Drain();
+            if(mp_ProgramStepStateMachine->GetPreviousState() != PSSM_READY_TO_DRAIN)
+            {
+                this->Drain();
+            }
+            else
+            {
+                qDebug()<<"Already in draining process, abort will happen when draining finished.";
+            }
         }
     }
 }
