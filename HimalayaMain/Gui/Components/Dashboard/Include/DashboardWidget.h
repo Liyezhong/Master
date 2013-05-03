@@ -35,6 +35,9 @@
 
 namespace Dashboard {
 
+class CDashboardProgramStatusWidget;
+class CCassetteNumberInputWidget;
+
 namespace Ui {
     class CDashboardWidget;
 }
@@ -59,7 +62,8 @@ private:
     DataManager::CDataProgramList *mp_ProgramList;
     QStringList m_FavProgramIDs;
 
-    Dashboard::CDashboardComboBoxModel *mp_ComboBoxModel;
+    CDashboardProgramStatusWidget *mp_ProgramStatusWidget;
+    CCassetteNumberInputWidget *mp_CassetteInput;
     QString m_SelectedProgramId, m_NewSelectedProgramId;
     QButtonGroup m_btnGroup;                                    //!< Button Group
     Global::RMSOptions_t m_RMSState;                            //!< Current RMS State
@@ -104,6 +108,7 @@ public slots:
     void OnRMSValueChanged(Global::RMSOptions_t);
     void AddItemsToComboBox();
     void OnActivated(int);
+    void OnComBoxButtonPress();
     void OnProgramStartReadyUpdated();
     void OnProgramWillComplete();
     void OnDrainFinished();

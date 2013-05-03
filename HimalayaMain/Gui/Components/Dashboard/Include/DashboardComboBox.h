@@ -47,13 +47,17 @@ public:
     void showPopup();
     void hidePopup();
     void UpdateSelectedProgramName(QString & SelProgramName);
-
+    void WorkAsButton(bool);
 protected:
     void paintEvent(QPaintEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+signals:
+    void ButtonPress();
 private:
     QWidget *mp_Popup;
     QListView *mp_ListView;
     QString m_SelProgName;
+    bool m_IsWorkAsButton;
 
 };
 

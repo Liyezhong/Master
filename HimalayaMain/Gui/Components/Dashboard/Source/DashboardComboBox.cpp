@@ -31,7 +31,8 @@ namespace Dashboard {
  */
 /****************************************************************************/
 
-CDashboardComboBox::CDashboardComboBox(QWidget *p_Parent): QComboBox(p_Parent)
+CDashboardComboBox::CDashboardComboBox(QWidget *p_Parent):
+    QComboBox(p_Parent), m_IsWorkAsButton(false)
 {
 
     //mp_ListView = new QListView(this);
@@ -41,7 +42,6 @@ CDashboardComboBox::CDashboardComboBox(QWidget *p_Parent): QComboBox(p_Parent)
                                 //);
    // setView(mp_ListView);
     m_SelProgName = tr("Program");
-
 }
 
 CDashboardComboBox::~CDashboardComboBox()
@@ -79,10 +79,24 @@ void CDashboardComboBox::paintEvent(QPaintEvent *e)
 
 }
 
+void CDashboardComboBox::mousePressEvent(QMouseEvent *e)
+{
+    if (!m_IsWorkAsButton)
+      QComboBox::mousePressEvent(e);
+    else
+        emit ButtonPress();
+
+}
+
 void CDashboardComboBox::UpdateSelectedProgramName(QString &SelProgramName)
 {
     m_SelProgName = SelProgramName;
     update();
+}
+
+void  CDashboardComboBox::WorkAsButton(bool bSet)
+{
+    m_IsWorkAsButton = bSet;
 }
 
 }

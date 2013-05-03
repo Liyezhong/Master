@@ -22,6 +22,9 @@
 #include "ui_DashboardWidget.h"
 #include <QDebug>
 #include "MainMenu/Include/SliderControl.h"
+#include "Dashboard/Include/DashboardProgramStatusWidget.h"
+#include "Dashboard/Include/CassetteNumberInputWidget.h"
+
 
 namespace Dashboard {
 
@@ -46,6 +49,14 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      Palette.setColor(QPalette::Base, BaseColor);
      mp_Ui->dashboardView->setPalette(Palette);
 
+     mp_ProgramStatusWidget = new Dashboard::CDashboardProgramStatusWidget(this);
+     mp_ProgramStatusWidget->setWindowFlags(Qt::CustomizeWindowHint);
+     mp_ProgramStatusWidget->setVisible(false);
+
+     mp_CassetteInput = new Dashboard::CCassetteNumberInputWidget(this);
+     mp_CassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
+     mp_CassetteInput->setVisible(false);
+
      mp_DashboardScene = new CDashboardScene(mp_DataConnector, this, mp_MainWindow);
      mp_Ui->dashboardView->setScene(mp_DashboardScene);
      CONNECTSIGNALSLOT(mp_DashboardScene, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime&));
@@ -61,11 +72,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      mp_ProgramList = mp_DataConnector->ProgramList;
 
-//     mp_ComboBoxModel = new Dashboard::CDashboardComboBoxModel();
-//     mp_ComboBoxModel->SetProgramListContainer(mp_ProgramList);
-//     mp_ComboBoxModel->ResetAndUpdateModel();
-//     mp_Ui->pgmsComboBox->setModel(mp_ComboBoxModel);
-
      m_btnGroup.addButton(mp_Ui->playButton, Dashboard::firstButton);
      m_btnGroup.addButton(mp_Ui->abortButton, Dashboard::secondButton);
 
@@ -77,6 +83,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
      CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, activated(int), this, OnActivated(int));
+     CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, ButtonPress(), this, OnComBoxButtonPress());
 
      CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
 
@@ -118,6 +125,8 @@ CDashboardWidget::~CDashboardWidget()
 {
     try {
         delete mp_Separator;
+        delete mp_ProgramStatusWidget;
+        delete mp_CassetteInput;
         delete mp_DashboardScene;
         delete mp_MessageDlg;
         delete mp_Ui;
@@ -313,6 +322,11 @@ void CDashboardWidget::OnActivated(int index)
     }
 }
 
+void CDashboardWidget::OnComBoxButtonPress()
+{
+    mp_ProgramStatusWidget->show();
+}
+
 void CDashboardWidget::PrepareSelectedProgramChecking()
 {
     this->IsParaffinInProgram(mp_ProgramList->GetProgram(m_NewSelectedProgramId));//to get m_ParaffinStepIndex
@@ -459,6 +473,8 @@ void CDashboardWidget::OnProgramAborted()
     //progress aborted;
     //aborting time countdown is hidden.
     m_IsResumeRun = false;
+    mp_Ui->pgmsComboBox->WorkAsButton(false);
+
     emit ProgramActionStopped(DataManager::PROGRAM_ABORT);
 
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
@@ -493,6 +509,7 @@ void CDashboardWidget::OnProgramAborted()
 void CDashboardWidget::OnProgramCompleted()
 {
     m_IsResumeRun = false;
+    mp_Ui->pgmsComboBox->WorkAsButton(false);
     emit ProgramActionStopped(DataManager::PROGRAM_START);
 }
 
@@ -500,6 +517,7 @@ void CDashboardWidget::OnProgramRunBegin()
 {
     emit ProgramActionStarted(DataManager::PROGRAM_START, m_TimeProposed, Global::AdjustedTime::Instance().GetCurrentDateTime(), m_IsResumeRun);
     m_IsResumeRun = true;
+    mp_Ui->pgmsComboBox->WorkAsButton(true);
 }
 
 void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd)
