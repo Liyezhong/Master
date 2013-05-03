@@ -1586,6 +1586,27 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
              emit ProgramDrainFinished();
         }
         break;
+        case DataManager::PROGRAM_ABORT_FINISHED:
+        {
+             emit ProgramAborted();
+        }
+        break;
+        case DataManager::PROGRAM_ABORT_BEGIN:
+        {
+             emit ProgramBeginAbort();
+        }
+        break;
+        case DataManager::PROGRAM_RUN_FINISHED:
+        {
+             emit ProgramCompleted();
+        }
+        break;
+        case DataManager::PROGRAM_RUN_BEGIN:
+        {
+             emit ProgramRunBegin();
+        }
+        break;
+
         default:
         {
             qDebug() << "Do Nothing";

@@ -66,16 +66,17 @@ private:
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
     bool m_UserRoleChanged;                                     //!< Flag to Verify the Change in User Role
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
-    int m_asapEndTime;
+    int m_TimeProposed;
     QDateTime m_EndDateTime;
     int m_ParaffinStepIndex;
     bool m_IsWaitingCleaningProgram;
     bool m_ForceRunCleanProgram;
-
+    bool m_IsResumeRun;
     void EnablePlayButton(bool bSetEnable);
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(const DataManager::CProgram*, int, int, int);
     void PrepareSelectedProgramChecking();
+    void TakeOutSpecimenAndRunCleaning();
 public:
     explicit CDashboardWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL);
     ~CDashboardWidget();
@@ -90,6 +91,8 @@ protected:
 
 signals:
     void ProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
+    void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
+    void ProgramActionStopped(DataManager::ProgramActionType_t);
     void UpdateProgramName(QString SelectedProgramName);
     void UpdateDashboardSceneReagentStations(QString& ProgramID);
     void ProgramSelected(QString & ProgramId, int asapEndTime);
@@ -104,6 +107,10 @@ public slots:
     void OnProgramStartReadyUpdated();
     void OnProgramWillComplete();
     void OnDrainFinished();
+    void OnProgramAborted();
+    void OnProgramBeginAbort();
+    void OnProgramCompleted();
+    void OnProgramRunBegin();
 
     void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
     void OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd);

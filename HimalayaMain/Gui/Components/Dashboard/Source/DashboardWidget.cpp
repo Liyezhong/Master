@@ -31,10 +31,11 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    mp_DataConnector(p_DataConnector),
                                    m_ProgramNextAction(DataManager::PROGRAM_START),
                                    m_UserRoleChanged(false),
-                                   m_asapEndTime(0),
+                                   m_TimeProposed(0),
                                    m_ParaffinStepIndex(-1),
                                    m_IsWaitingCleaningProgram(false),
-                                   m_ForceRunCleanProgram(false)
+                                   m_ForceRunCleanProgram(false),
+                                   m_IsResumeRun(false)
 {
      mp_Ui->setupUi(GetContentFrame());
      SetPanelTitle(tr("Dashboard"));
@@ -48,6 +49,11 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      mp_DashboardScene = new CDashboardScene(mp_DataConnector, this, mp_MainWindow);
      mp_Ui->dashboardView->setScene(mp_DashboardScene);
      CONNECTSIGNALSLOT(mp_DashboardScene, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime&));
+     CONNECTSIGNALSIGNAL(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
+                         mp_DashboardScene, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
+
+     CONNECTSIGNALSIGNAL(this, ProgramActionStopped(DataManager::ProgramActionType_t),
+                         mp_DashboardScene, ProgramActionStopped(DataManager::ProgramActionType_t));
 
      mp_Separator = new QFrame();
      mp_Separator->setParent(this);  // Set Parent of this Frame as the Dashboard Widget.
@@ -62,7 +68,10 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      m_btnGroup.addButton(mp_Ui->playButton, Dashboard::firstButton);
      m_btnGroup.addButton(mp_Ui->abortButton, Dashboard::secondButton);
+
+     //mp_Ui->abortButton->setEnabled(false);
      EnablePlayButton(false);
+
      m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
      mp_MessageDlg = new MainMenu::CMessageDlg();
 
@@ -82,6 +91,18 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      CONNECTSIGNALSLOT(mp_DataConnector, ProgramDrainFinished(),
                        this, OnDrainFinished());
+
+     CONNECTSIGNALSLOT(mp_DataConnector, ProgramAborted(),
+                       this, OnProgramAborted());
+
+     CONNECTSIGNALSLOT(mp_DataConnector, ProgramBeginAbort(),
+                               this, OnProgramBeginAbort());
+
+     CONNECTSIGNALSLOT(mp_DataConnector, ProgramCompleted(),
+                               this, OnProgramCompleted());
+
+     CONNECTSIGNALSLOT(mp_DataConnector, ProgramRunBegin(),
+                               this, OnProgramRunBegin());
 
      CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus &),
                        this, OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus&));
@@ -387,19 +408,27 @@ void CDashboardWidget::OnProgramWillComplete()
 
 void CDashboardWidget::OnDrainFinished()
 {
+    this->TakeOutSpecimenAndRunCleaning();
+}
+
+void CDashboardWidget::TakeOutSpecimenAndRunCleaning()
+{
+    mp_DataConnector->SendRetortLock(false);
+
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetTitle(tr("Warning"));
     mp_MessageDlg->SetText(tr("Please take out your specimen!"));
     mp_MessageDlg->SetButtonText(1, tr("OK"));
     mp_MessageDlg->HideButtons();
-
     if (mp_MessageDlg->exec())
     {
-        //todo: need send unlock?
-        mp_MessageDlg->SetText(tr("The retort is contaminated, Cleaning Program will run!"));
+        //represent the retort as contaminated status
+        mp_DashboardScene->UpdateRetortStatus(DataManager::RETORT_CONTAMINATED);
 
+        mp_MessageDlg->SetText(tr("The retort is contaminated, Cleaning Program will run! Please lock the retort then click \"OK\"."));
         mp_MessageDlg->SetButtonText(1, tr("OK"));
         mp_MessageDlg->HideButtons();
+        mp_MessageDlg->EnableButton(1, false);
         m_IsWaitingCleaningProgram = true;
         if (mp_MessageDlg->exec())
         {
@@ -411,11 +440,66 @@ void CDashboardWidget::OnDrainFinished()
             PrepareSelectedProgramChecking();
 
             //enable pause and abort
-            //mp_Ui->playButton->setEnabled(true);
-            //mp_Ui->abortButton->setEnabled(true);
+            mp_Ui->playButton->setEnabled(true);
+            mp_Ui->abortButton->setEnabled(true);
         }
-        return;
     }
+}
+
+void CDashboardWidget::OnProgramBeginAbort()
+{
+    //show "aborting"
+    //time countdown
+    //Todo:20, Abort time, will be given a rough value later;
+    emit ProgramActionStarted(DataManager::PROGRAM_ABORT, 20, Global::AdjustedTime::Instance().GetCurrentDateTime(), false);
+}
+
+void CDashboardWidget::OnProgramAborted()
+{
+    //progress aborted;
+    //aborting time countdown is hidden.
+    m_IsResumeRun = false;
+    emit ProgramActionStopped(DataManager::PROGRAM_ABORT);
+
+    mp_MessageDlg->SetIcon(QMessageBox::Warning);
+    mp_MessageDlg->SetTitle(tr("Warning"));
+    QString strTemp(tr("Program \""));
+    strTemp = strTemp + CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME
+            + "\" is aborted! Would you like to start a new Program?";
+    mp_MessageDlg->SetText(strTemp);
+    mp_MessageDlg->SetButtonText(1, tr("Yes"));
+    mp_MessageDlg->SetButtonText(3, tr("No"));
+    mp_MessageDlg->HideCenterButton();
+    if (mp_MessageDlg->exec())//yes
+    {
+        //switch to the dashboard page
+        mp_MainWindow->SetTabWidgetIndex();
+        //show the comboBox
+        mp_Ui->pgmsComboBox->showPopup();
+        //disable "Start" button and "Abort" button, enable Retort lock button, hide End time button
+        mp_Ui->playButton->setEnabled(false);
+        mp_Ui->abortButton->setEnabled(false);
+        mp_Ui->retortSlider->setEnabled(true);
+    }
+    else//no
+    {
+        this->TakeOutSpecimenAndRunCleaning();
+    }
+}
+
+//  QDateTime curDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+//int  elapsedTime = m_startDateTime.secsTo(curDateTime);
+
+void CDashboardWidget::OnProgramCompleted()
+{
+    m_IsResumeRun = false;
+    emit ProgramActionStopped(DataManager::PROGRAM_START);
+}
+
+void CDashboardWidget::OnProgramRunBegin()
+{
+    emit ProgramActionStarted(DataManager::PROGRAM_START, m_TimeProposed, Global::AdjustedTime::Instance().GetCurrentDateTime(), m_IsResumeRun);
+    m_IsResumeRun = true;
 }
 
 void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd)
@@ -425,10 +509,11 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLock
     else
     {
         mp_Ui->retortSlider->SetPosition(MainMenu::CSliderControl::PosRight);
+
         //enable the "OK"
         if (m_IsWaitingCleaningProgram && mp_MessageDlg->isVisible())
         {
-            //mp_MessageDlg->
+            mp_MessageDlg->EnableButton(1, true);
         }
     }
 }
@@ -466,6 +551,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     //get the proposed program end DateTime
     int asapEndTime = GetASAPTime(mp_ProgramList->GetProgram(m_SelectedProgramId), cmd.TimeProposed(),
                                   cmd.ParaffinWeltCostedTime(), cmd.CostedTimeBeforeParaffin());
+    m_TimeProposed = cmd.TimeProposed();
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
     emit ProgramSelected(m_SelectedProgramId, asapEndTime);//for UI update
 

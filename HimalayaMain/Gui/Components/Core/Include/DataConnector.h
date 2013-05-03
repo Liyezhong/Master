@@ -346,6 +346,10 @@ signals:
 	void ProgramStartReady();
     void ProgramWillComplete();
     void ProgramDrainFinished();
+    void ProgramAborted();
+    void ProgramBeginAbort();
+    void ProgramCompleted();
+    void ProgramRunBegin();
     void RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& Command);
     void ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& Command);
     

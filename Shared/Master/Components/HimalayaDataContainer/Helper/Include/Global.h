@@ -38,7 +38,11 @@ typedef enum  {
         PROGRAM_READY = 0,
         PROGRAM_WILL_COMPLETE,
         PROGRAM_DRAIN_FINISHED,
-        PROGRAM_ABORTED
+        PROGRAM_CLEANING_FINISHED,
+        PROGRAM_ABORT_FINISHED,
+        PROGRAM_ABORT_BEGIN,
+        PROGRAM_RUN_BEGIN,
+        PROGRAM_RUN_FINISHED
     } ProgramAcknownedgeType_t;
     
 typedef enum  {

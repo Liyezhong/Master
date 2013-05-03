@@ -236,19 +236,30 @@ void CDashboardEndTimeWidget::UpdateProgress()
     mp_Ui->progressBar->setValue(elapsedTime);
 }
 
- void CDashboardEndTimeWidget::OnProgramStarted(int timeTotal, QDateTime& startDateTime, bool IsResume)
+ void CDashboardEndTimeWidget::OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType,
+                                                      int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume)
  {
     if (!IsResume)
     {
-        mp_Ui->progressBar->setMaximum(timeTotal);
+        mp_Ui->progressBar->setMaximum(remainingTimeTotal);
         m_startDateTime = startDateTime;
     }
     mp_ProgressTimer->start();
+
+    if (DataManager::PROGRAM_ABORT == ProgramActionType)
+    {
+        mp_Ui->lblName->setVisible(false);
+        mp_Ui->lblReagentName->setText(tr("Aborting..."));//only show the first label
+    }
 }
 
- void CDashboardEndTimeWidget::OnProgramStopped()
+ void CDashboardEndTimeWidget::OnProgramActionStopped(DataManager::ProgramActionType_t ProgramActionType)
  {
-    mp_ProgressTimer->stop();
+    mp_ProgressTimer->stop();//the progress bar and Time countdown will stop
+    if (DataManager::PROGRAM_ABORT == ProgramActionType)
+    {
+        mp_Ui->lblReagentName->setText(tr("Aborted"));
+    }
  }
 
 }    // end of namespace Dashboard

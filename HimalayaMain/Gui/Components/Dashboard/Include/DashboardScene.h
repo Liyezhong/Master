@@ -36,10 +36,9 @@
 #include <QFormLayout>
 #include <QPushButton>
 #include <QSignalMapper>
-
-
 #include <QGraphicsItem>
 #include <QPainter>
+#include <HimalayaDataContainer/Helper/Include/Global.h>
 
 namespace Core {
     class CDataConnector;
@@ -61,6 +60,7 @@ public:
                         QObject *p_Parent = NULL,
                         MainMenu::CMainWindow *p_MainWindow = NULL);
     virtual ~CDashboardScene();
+    void UpdateRetortStatus(DataManager::RetortStatusType_t retortStatusType);
 protected:
 
 private:
@@ -99,12 +99,15 @@ private:
     void AddDashboardStationItemsToScene();
     void AddGraphicsProxyWidgetsToScene();
 
+
 private slots:
     void UpdateDashboardStations();
     void UpdateDashboardSceneReagentsForProgram(QString&, int);
 
 signals:
     void OnSelectDateTime(const QDateTime &);
+    void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
+    void ProgramActionStopped(DataManager::ProgramActionType_t);
 
 };
 

@@ -302,6 +302,13 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     addItem(mp_GraphicsProxyWidget);
 
     CONNECTSIGNALSIGNAL(mp_DashboardEndTimeWidget, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime &));
+    CONNECTSIGNALSLOT(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
+                      mp_DashboardEndTimeWidget, OnProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
+
+    CONNECTSIGNALSLOT(this, ProgramActionStopped(DataManager::ProgramActionType_t),
+                      mp_DashboardEndTimeWidget, OnProgramActionStopped(DataManager::ProgramActionType_t));
+
+
 /**
     for(int i = 0; i < m_DashboardStationConnectorsPositions.count(); i++)
     {
@@ -384,5 +391,11 @@ void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &ProgramId,
          pListItem->UpdateDashboardStationItemReagent();
     }
 }
+
+void CDashboardScene::UpdateRetortStatus(DataManager::RetortStatusType_t retortStatusType)
+{
+
+}
+
 
 } // end namespace Dashboard
