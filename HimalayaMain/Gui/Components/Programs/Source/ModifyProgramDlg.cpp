@@ -796,7 +796,7 @@ void CModifyProgramDlg::UpdateProgramStepTable(DataManager::CProgramStep *p_Prgm
             m_StepModel.SetModifyProgramDlgPtr(this);
             mp_TableWidget->setModel(&m_StepModel);
             ResetButtons(m_Program, false);
-            m_RowIndex = m_Program->GetNumberOfSteps();
+            m_RowIndex = m_Program.GetNumberOfSteps();
             qDebug() << "After new step button clicked. m_RowIndex = " << m_RowIndex << "\n";
         }
         else {
