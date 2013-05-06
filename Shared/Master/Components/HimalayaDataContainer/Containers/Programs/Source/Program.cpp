@@ -257,6 +257,7 @@ bool CProgram::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
     //Delete program steps
     (void)DeleteAllProgramSteps();
     m_ReagentIDList.clear();
+    quint8 RowIndex = 0;
     while(!XmlStreamReader.atEnd()) {
         if (static_cast<int>(XmlStreamReader.readNext()) == 1) {
             qDebug() << "Reading " << XmlStreamReader.name() << " at line number: " << XmlStreamReader.lineNumber();
@@ -273,13 +274,14 @@ bool CProgram::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
                         delete p_NewProgramStep;
                         return false;
                     }
-                    if (!AddProgramStep(p_NewProgramStep)) {
+                    if (!AddProgramStep(RowIndex, p_NewProgramStep)) {
                         qDebug() << "CProgram::Add ProgramStep failed!";
                         delete p_NewProgramStep;
                         return false;
                     }
                     m_ReagentIDList.append(p_NewProgramStep->GetReagentID());
                 }
+                RowIndex++;
             }
             else {
                 qDebug() << "### unknown node name <" << XmlStreamReader.name().toString() << "> at line number: " << XmlStreamReader.lineNumber();

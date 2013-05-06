@@ -73,7 +73,7 @@ private:
     bool m_ProgShortNameBtnClicked;                 //!< True if Btn Program Short Name is clicked
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     bool m_ProcessRunning;                          //!< Process running state
-    Programs::ButtonType_t m_ButtonType;            //!< Informs which button was clicked
+    Programs::ButtonType_t m_ButtonType;            //!< Informs which button was clicked in program dialog
     QString m_TempColor;                            //!< String to store program color for temperory
     CProgramModel m_ProgramModel;                   //!< Program model object
     MainMenu::CMessageDlg *mp_MessageDlg;             //!< Message Dialog object
@@ -90,6 +90,7 @@ private:
     DataManager::CProgramStep m_LeicaProgramStepOne;           //!< ProgramStep object
     QString m_Icon;                                   //!< Program Icon Name
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
+    quint8 m_RowIndex;
 
 
 protected:

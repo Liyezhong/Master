@@ -161,7 +161,7 @@ bool CProgramBase::GetProgramStep(unsigned int Index, CProgramStep &ProgramStep)
  *  \return true = add success , false - add failed
  */
 /****************************************************************************/
-bool CProgramBase::AddProgramStep(CProgramStep* p_ProgramStep)
+bool CProgramBase::AddProgramStep(quint8 RowIndex, CProgramStep* p_ProgramStep)
 {
     if (p_ProgramStep == NULL) return false;
 
@@ -172,7 +172,8 @@ bool CProgramBase::AddProgramStep(CProgramStep* p_ProgramStep)
         return false;
     } else {
         m_StepList.insert(p_ProgramStep->GetStepID(), p_ProgramStep);
-        m_OrderedListOfStepIDs.append(p_ProgramStep->GetStepID());
+        //m_OrderedListOfStepIDs.append(p_ProgramStep->GetStepID());
+        m_OrderedListOfStepIDs.insert(RowIndex, p_ProgramStep->GetStepID());
         return true;
     }
 }

@@ -214,7 +214,7 @@ public:
     /****************************************************************************/
     const CProgramStep* GetProgramStep(const unsigned int Index) const; // uses order index
     bool GetProgramStep(const unsigned int Index, CProgramStep& ProgramStep) const;
-    bool AddProgramStep(CProgramStep* p_ProgramStep);   // p_ProgramStep is added directly => don't delete outside!
+    bool AddProgramStep(quint8 RowIndex, CProgramStep* p_ProgramStep);   // p_ProgramStep is added directly => don't delete outside!
     bool UpdateProgramStep(CProgramStep* p_ProgramStep);  // content of p_ProgramStep will be copied  => delete outside!
     bool DeleteProgramStep(const QString StepID);   // uses unique step ID
     virtual bool DeleteProgramStep(const unsigned int Index);  // uses order index
