@@ -63,7 +63,6 @@ private:
     QStringList m_FavProgramIDs;
 
     CDashboardProgramStatusWidget *mp_ProgramStatusWidget;
-    CCassetteNumberInputWidget *mp_CassetteInput;
     QString m_SelectedProgramId, m_NewSelectedProgramId;
     QButtonGroup m_btnGroup;                                    //!< Button Group
     Global::RMSOptions_t m_RMSState;                            //!< Current RMS State

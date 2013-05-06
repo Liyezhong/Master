@@ -153,6 +153,7 @@ public slots:
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType,
                            const QDateTime& ProgramEndDateTime = QDateTime::currentDateTime());
     void SendRetortLock(bool IsLock);
+    void SendKeepCassetteCount(int CassetteCount);
     void SendProgramSelected(const QString& ProgramID, int ParaffinStepIndex);
     void SendUserLevel(QDataStream &DataStream);
     void SendChangepassword(QDataStream &DataStream);

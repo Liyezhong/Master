@@ -53,10 +53,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      mp_ProgramStatusWidget->setWindowFlags(Qt::CustomizeWindowHint);
      mp_ProgramStatusWidget->setVisible(false);
 
-     mp_CassetteInput = new Dashboard::CCassetteNumberInputWidget(this);
-     mp_CassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
-     mp_CassetteInput->setVisible(false);
-
      mp_DashboardScene = new CDashboardScene(mp_DataConnector, this, mp_MainWindow);
      mp_Ui->dashboardView->setScene(mp_DashboardScene);
      CONNECTSIGNALSLOT(mp_DashboardScene, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime&));
@@ -126,7 +122,6 @@ CDashboardWidget::~CDashboardWidget()
     try {
         delete mp_Separator;
         delete mp_ProgramStatusWidget;
-        delete mp_CassetteInput;
         delete mp_DashboardScene;
         delete mp_MessageDlg;
         delete mp_Ui;
@@ -339,6 +334,10 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
 {
     if ("" == m_SelectedProgramId)
         return false;
+
+    if (m_IsResumeRun)
+        return true;
+
     //Todo: We should give the Expired conditions
    /* if((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
         m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
@@ -354,7 +353,25 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
 
         if (mp_MessageDlg->exec())
         {
-                return true;
+            if ( mp_DataConnector)
+            {
+                if (Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
+                {
+                    CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
+                    pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
+                    pCassetteInput->move(80,50);
+                    pCassetteInput->SetDialogTitle(tr("Please set numbers of cassettes:"));
+                    pCassetteInput->exec();
+
+                    int cassetteNumber = pCassetteInput->CassetteNumber();
+                    if (-1 == cassetteNumber)
+                        return false;//clicked Cancel button
+
+                    mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
+                    delete pCassetteInput;
+                }
+            }
+            return true;
         }
         else
             return false;

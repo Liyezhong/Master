@@ -1,15 +1,20 @@
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
 #include "ui_CassetteNumberInputWidget.h"
 #include "Global/Include/Utils.h"
+#include "MainMenu/Include/MessageDlg.h"
 
 using namespace Dashboard;
 
 CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *parent) :
-    MainMenu::CPanelFrame(parent),
-    ui(new Ui::CCassetteNumberInputWidget)
+    MainMenu::CDialogFrame(parent),
+    ui(new Ui::CCassetteNumberInputWidget),
+    m_CassetteNumber(0)
 {
     ui->setupUi(this);
+    this->setWindowModality(Qt::ApplicationModal);
     CONNECTSIGNALSLOT(ui->btnOK, clicked(), this, OnOK());
+    CONNECTSIGNALSLOT(ui->btnCancel, clicked(), this, OnCancel());
+
 
     mp_singleWheel = new MainMenu::CScrollWheel();
     mp_tenWheel = new MainMenu::CScrollWheel();
@@ -45,5 +50,35 @@ CCassetteNumberInputWidget::~CCassetteNumberInputWidget()
 
 void CCassetteNumberInputWidget::OnOK()
 {
+    int hundred = mp_hundredWheel->GetCurrentData().toInt() * 100;
+    int ten = mp_tenWheel->GetCurrentData().toInt() * 10;
+    m_CassetteNumber = hundred + ten + mp_singleWheel->GetCurrentData().toInt();
+    if (m_CassetteNumber == 0 || m_CassetteNumber > 200)
+    {
+          MainMenu::CMessageDlg* pMessageDlg = new MainMenu::CMessageDlg();
+          pMessageDlg->SetIcon(QMessageBox::Warning);
+          pMessageDlg->SetTitle(tr("Warning"));
+          pMessageDlg->SetText(tr("The cassette number should be 1 to 200."));
+          pMessageDlg->SetButtonText(1, tr("OK"));
+          pMessageDlg->HideButtons(); 
+
+          if (pMessageDlg->exec())
+          {
+              delete pMessageDlg;
+              return;
+          }
+    }
     this->close();
 }
+
+void CCassetteNumberInputWidget::OnCancel()
+{
+    m_CassetteNumber = -1;
+    this->close();
+}
+
+int CCassetteNumberInputWidget::CassetteNumber()
+{
+    return m_CassetteNumber;
+}
+

@@ -26,6 +26,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "Global/Include/Commands/AckOKNOK.h"
@@ -1435,6 +1436,16 @@ void CDataConnector::SendProgramSelected(const QString& ProgramID, int ParaffinS
 void CDataConnector::SendRetortLock(bool IsLock)
 {
     MsgClasses::CmdRetortLock Command(1000, IsLock);
+    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
+    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetTimeout(10000);
+    mp_WaitDialog->show();
+}
+
+void CDataConnector::SendKeepCassetteCount(int CassetteCount)
+{
+    MsgClasses::CmdKeepCassetteCount Command(1000, CassetteCount);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
     mp_WaitDialog->SetText(tr("Saving Settings ..."));
