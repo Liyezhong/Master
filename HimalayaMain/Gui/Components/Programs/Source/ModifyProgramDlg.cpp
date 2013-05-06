@@ -217,6 +217,7 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
         m_StepModel.SetVisibleRowCount(6);
         m_StepModel.SetProgram(&m_Program, mp_DataConnector->SettingsInterface->GetUserSettings(), mp_DataConnector->ReagentGroupList,mp_DataConnector->ReagentList, 5);
         mp_TableWidget->setModel(&m_StepModel);
+        m_RowIndex = m_Program.GetNumberOfSteps();
     }
     else if (m_ButtonType == COPY_BTN_CLICKED) {
         switch (LongName.length()) {
@@ -791,13 +792,13 @@ void CModifyProgramDlg::UpdateProgramStepTable(DataManager::CProgramStep *p_Prgm
         // Check if new Program step is being added to the selected Program else update the program step
         if (AddNewProgramStep) {
             p_ProgramStep->SetStepID(m_Program.GetNextFreeStepID(true));
-            (void) m_Program.AddProgramStep(m_RowIndex, p_ProgramStep);
+            (void) m_Program.AddProgramStep(m_Program.GetNumberOfSteps(), p_ProgramStep);
             m_StepModel.SetProgram(&m_Program,mp_DataConnector->SettingsInterface->GetUserSettings(), mp_DataConnector->ReagentGroupList, mp_DataConnector->ReagentList, 5);
             m_StepModel.SetModifyProgramDlgPtr(this);
             mp_TableWidget->setModel(&m_StepModel);
             ResetButtons(m_Program, false);
-            m_RowIndex = m_Program.GetNumberOfSteps();
-            qDebug() << "After new step button clicked. m_RowIndex = " << m_RowIndex << "\n";
+            //m_RowIndex = m_Program.GetNumberOfSteps();
+            //qDebug() << "After new step button clicked. m_RowIndex = " << m_RowIndex << "\n";
         }
         else {
             (void) m_Program.UpdateProgramStep(p_ProgramStep);
