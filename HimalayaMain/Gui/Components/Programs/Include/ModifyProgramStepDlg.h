@@ -105,6 +105,7 @@ public:
      */
     /****************************************************************************/
     void SetButtonType(ButtonType_t ButtonType) { m_ModifyProgramDlgButtonType = ButtonType;}
+    ButtonType_t GetButtonType(){return m_ModifyProgramDlgButtonType;}
 
     void SetProgramStep(DataManager::CProgramStep *p_ProgramStep,
                         DataManager::CDataReagentList *p_ReagentList);
