@@ -114,6 +114,9 @@ public:
      */
     /****************************************************************************/
     double GetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, bool& ok);
+    bool SetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, double value);
+    bool SetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, QString value);
+
 
 
 private:

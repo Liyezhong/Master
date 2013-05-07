@@ -230,6 +230,34 @@ double CProgramSettings::GetParameterValue(QString DeviceKey, QString FunctionKe
     return ret;
 }
 
+
+bool CProgramSettings::SetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, QString value)
+{
+    bool ok = false;
+    if(m_Parameters.contains(DeviceKey))
+    {
+        if(m_Parameters[DeviceKey].contains(FunctionKey))
+        {
+            if(m_Parameters[DeviceKey][FunctionKey].contains(ParameterKey))
+            {
+                ok = true;
+                m_Parameters[DeviceKey][FunctionKey][ParameterKey] = value;
+            }
+        }
+    }
+
+    if(ok)
+    {
+        ok = Write();
+    }
+    return ok;
+}
+
+bool CProgramSettings::SetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, double value)
+{
+    return SetParameterValue(DeviceKey, FunctionKey, ParameterKey, QString::number(value));
+}
+
 /****************************************************************************/
 /*!
  *  \brief  Deletes all the Groups in the list
