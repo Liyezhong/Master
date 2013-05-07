@@ -42,16 +42,18 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdCurrentProgramStepInfor(int Timeout, const QString& StepName, const QTime& CurRemainingTime);
+    CmdCurrentProgramStepInfor(int Timeout, const QString& StepName, int CurProgramStepIndex, const QTime& CurRemainingTime);
     ~CmdCurrentProgramStepInfor();
     virtual QString GetName() const;
     inline const QString& StepName() const {return m_StepName;}
     inline const QTime& CurRemainingTime()const {return m_CurRemainingTime;}
+    inline int CurProgramStepIndex() const {return m_CurProgramStepIndex;}
 private:
     CmdCurrentProgramStepInfor(const CmdCurrentProgramStepInfor &);                     ///< Not implemented.
     const CmdCurrentProgramStepInfor & operator = (const CmdCurrentProgramStepInfor &); ///< Not implemented.
 private:
     QString m_StepName;
+    int m_CurProgramStepIndex;
     QTime   m_CurRemainingTime; 
     
 }; // end class CmdCurrentProgramStepInfor
@@ -71,6 +73,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdCurrentProgramSt
     Cmd.CopyToStream(Stream);
     // copy internal data
     Stream << Cmd.m_StepName;
+    Stream << Cmd.m_CurProgramStepIndex;
     Stream << Cmd.m_CurRemainingTime;
 
     return Stream;
@@ -90,7 +93,8 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdCurrentProgramStepInfo
     // copy base class data
     Cmd.CopyFromStream(Stream);
     // copy internal data
-     Stream >> Cmd.m_StepName;
+    Stream >> Cmd.m_StepName;
+    Stream >> Cmd.m_CurProgramStepIndex;
     Stream >> Cmd.m_CurRemainingTime;
     return Stream;
 }

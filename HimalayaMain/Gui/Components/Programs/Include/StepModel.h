@@ -32,6 +32,11 @@
 #include <QMap>
 #include <QStringList>
 
+namespace DataManager
+{
+    class CDashboardDataStationList;
+}
+
 namespace Programs {
 class CModifyProgramDlg;
 /****************************************************************************/
@@ -56,7 +61,11 @@ public:
     void SetModifyProgramDlgPtr(CModifyProgramDlg *p_ModifyProgram);
     void SetVisibleRowCount(int RowCount);
     qint32 GetIndex();
-
+    void ShowStation(bool bSet);
+    void SetStationNameList(QList<QString>&);
+    void SetCurSelectRowIndex(int index);
+    QString ShowPV(DataManager::CProgramStep *Step) const;
+    QVariant ShowTemperature(DataManager::CProgramStep *Step) const;
 private:
     QString DurationString(qint32 Duration) const;
     DataManager::CProgram *mp_Program;                  //!< Program displayed in the table
@@ -69,6 +78,9 @@ private:
     DataManager::CDataReagentGroupList *mp_ReagentGroupList; //!< Reagent group list
     QStringList m_ReagentID;
     DataManager::CUserSettings *mp_UserSettings;    //!< Data object
+    QList<QString> mp_DashboardStationNameList;
+    bool m_IsShowStation;
+    int m_CurSelectRowIndex;
 
 private slots:
 

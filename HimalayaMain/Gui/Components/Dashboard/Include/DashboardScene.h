@@ -61,6 +61,10 @@ public:
                         MainMenu::CMainWindow *p_MainWindow = NULL);
     virtual ~CDashboardScene();
     void UpdateRetortStatus(DataManager::RetortStatusType_t retortStatusType);
+    const QTime& GetStepRemainingTime();
+    const QTime GetProgramRemainingTime();
+    const QString GetEndDateTime();
+
 protected:
 
 private:

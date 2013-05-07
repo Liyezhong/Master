@@ -27,6 +27,7 @@
 #include "Global/Include/Exception.h"
 #include "Programs/Include/StepModel.h"
 #include "Programs/Include/ModifyProgramDlg.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 #include <QDebug>
 #include <QPainter>
 #include <QPixmap>
@@ -44,7 +45,9 @@ CStepModel::CStepModel(QObject *p_Parent) : QAbstractTableModel(p_Parent),
                                              mp_Program(NULL), mp_ReagentList(NULL),
                                              m_Columns(0), m_CurrentRow(0),
                                              mp_ModifyProgramDlg(NULL), m_VisibleRowCount(6),
-                                             mp_ReagentGroupList(NULL)
+                                             mp_ReagentGroupList(NULL),
+                                             m_IsShowStation(false),
+                                             m_CurSelectRowIndex(-1)
 
 {
 
@@ -127,6 +130,38 @@ int CStepModel::columnCount(const QModelIndex &) const
     return m_Columns;
 }
 
+QString CStepModel::ShowPV(DataManager::CProgramStep *Step) const
+{
+    if (Step->GetVacuum() == "On" && Step->GetPressure() == "Off")
+        return QString("V");
+
+    else if (Step->GetPressure() == "On" && Step->GetVacuum() == "Off")
+        return QString("P");
+
+    else if( Step->GetVacuum() == "Off" && Step->GetPressure() == "Off")
+    {
+        return QString("-");
+    }
+    else if (Step->GetVacuum() == "On" && Step->GetPressure() == "On")
+    {
+        return QString("P/V");
+    }
+    return QString("");
+}
+
+QVariant CStepModel::ShowTemperature(DataManager::CProgramStep *Step) const
+{
+    if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS)
+    {
+        return Step->GetTemperature();
+    }
+    else
+    {
+        double Temperature = (((Step->GetTemperature().toDouble() - 35) / 5) * 9 + 95);
+        return qRound(Temperature);
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Returns the data items displayed in the table
@@ -166,39 +201,48 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
                     return QVariant();
                 }
             }
+
             case 2:
             {
-                QTime Time;
-                return Time.addSecs(Step->GetDurationInSeconds());
-            }
-            case 3:
-                if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS)
+                if (!m_IsShowStation)
                 {
-                    return Step->GetTemperature();
-               }
+                    QTime Time;
+                    return Time.addSecs(Step->GetDurationInSeconds());
+                }
                 else
                 {
-                    double Temperature = (((Step->GetTemperature().toDouble() - 35) / 5) * 9 + 95);
-                    return qRound(Temperature);
+                    return mp_DashboardStationNameList.at(Index.row());
+                }
+            }
+            case 3:
+                if (!m_IsShowStation)
+                {
+                    return ShowTemperature(Step);
+                }
+                else
+                {
+                    QTime Time;
+                    return Time.addSecs(Step->GetDurationInSeconds());
                 }
             case 4:
             {
-                if (Step->GetVacuum() == "On" && Step->GetPressure() == "Off")
-                    return QString("V");
-
-                else if (Step->GetPressure() == "On" && Step->GetVacuum() == "Off")
-                    return QString("P");
-
-                else if( Step->GetVacuum() == "Off" && Step->GetPressure() == "Off")
+                if (!m_IsShowStation)
                 {
-                    return QString("-");
+                    return ShowPV(Step);
                 }
-                else if (Step->GetVacuum() == "On" && Step->GetPressure() == "On")
+                else
                 {
-                    return QString("P/V");
+                   return ShowTemperature(Step);
                 }
             }
+            if (m_IsShowStation)
+            {
+                case 5:
+                {
+                    return ShowPV(Step);
+                }
             }
+        }
         }
         else if (Role == (int)Qt::UserRole) {
             return Step->GetStepID();
@@ -226,8 +270,14 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
                 }
             }
         }
+        else if (Role == (int)Qt::ForegroundRole) {
+                    //Grays
+                    QPalette Palette;
+                    if (m_IsShowStation && (Index.row() < m_CurSelectRowIndex))
+                        return QVariant(Palette.color(QPalette::Dark));
+                }
     }
-    else if (Role == (int)Qt::BackgroundRole) {
+    else if (Role == (int)Qt::ForegroundRole) {
         //Grays the empty lines
         QPalette Palette;
         return QVariant(Palette.color(QPalette::Window));
@@ -254,16 +304,48 @@ QVariant CStepModel::headerData(int Section, Qt::Orientation Orientation, int Ro
             return tr("Step");
         case 1:
             return tr("Reagent");
+
         case 2:
-            return tr("Duration");
+            if (!m_IsShowStation)
+                return tr("Duration");
+            else return tr("Station");
         case 3:
-            return tr("Temperature");
+            if (!m_IsShowStation)
+                return tr("Temperature");
+            else return tr("Duration");
+
         case 4:
-            return tr("P/V");
-        }
+            if (!m_IsShowStation)
+                return tr("P/V");
+            else return tr("Temp.");
+
+            if (m_IsShowStation)
+            {
+               case 5:
+                    return tr("P/V");
+            }
+       }
     }
     return QVariant();
 }
+
+void CStepModel::ShowStation(bool bSet)
+{
+    m_IsShowStation = bSet;
+}
+
+void CStepModel::SetStationNameList(QList<QString>& stationNameList)
+{
+    mp_DashboardStationNameList.clear();
+    mp_DashboardStationNameList = stationNameList;
+}
+
+void CStepModel::SetCurSelectRowIndex(int index)
+{
+    m_CurSelectRowIndex= index;
+}
+
+
 
 /****************************************************************************/
 /*!

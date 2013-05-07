@@ -53,7 +53,9 @@ public:
     ~CDashboardEndTimeWidget();
     void InitEndTimeWidgetItems();
     void UpdateEndTimeWidgetItems(DataManager::CProgram const *p_Program, int ProgramEndTimeInSecs);
-
+    const QTime&  GetStepRemainingTime();
+    const QTime GetProgramRemainingTime();
+    const QString GetEndDateTime();
 protected:
     void paintEvent(QPaintEvent *);
 
@@ -85,6 +87,9 @@ private:
     QPlastiqueStyle* mp_PlastiqueStyle;
     QTimer* mp_ProgressTimer;
     QDateTime m_startDateTime;
+    int m_remainingTimeTotal;
+    int m_curRemainingTimeTotal;
+    QString m_DateTimeStr;
 signals:
     void OnSelectDateTime(const QDateTime& selDateTime);
 

@@ -1,6 +1,11 @@
 #include "Dashboard/Include/DashboardProgramStatusWidget.h"
 #include "ui_DashboardProgramStatusWidget.h"
 #include "Dashboard/Include/DashboardDateTimeWidget.h"
+#include "MainMenu/Include/BaseTable.h"
+#include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
+#include "Core/Include/DataConnector.h"
+
+
 
 using namespace Dashboard;
 
@@ -10,18 +15,92 @@ CDashboardProgramStatusWidget::CDashboardProgramStatusWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    SetPanelTitle(QString(tr("\"%1\"").arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME)));
+
     SetTitleCenter();
 
     CONNECTSIGNALSLOT(ui->btnClose, clicked(), this, OnClose());
+    CONNECTSIGNALSLOT(ui->btnAbort, clicked(), this, OnAbort());
+
+
+    mp_TableWidget = new MainMenu::CBaseTable;
+    mp_TableWidget->horizontalHeader()->show();
+    ui->scrollTable_ProgramSteps->SetContent(mp_TableWidget);
+    mp_TableWidget->SetVisibleRows(6);
 }
 
 CDashboardProgramStatusWidget::~CDashboardProgramStatusWidget()
 {
     delete ui;
+    delete mp_TableWidget;
+}
+
+void CDashboardProgramStatusWidget::InitDialog(DataManager::CProgram *p_Program,
+                                               const Core::CDataConnector* pDataConnector,
+                                               QList<QString>& StationNameList, int CurProgramStepIndex,
+                                               const QTime& StepRemainingTime, const QTime& ProgramRemainingTime,
+                                               const QString& endDateTime)
+{
+    if (!p_Program || !pDataConnector)
+        return;
+
+    SetPanelTitle(QString(tr("\"%1\"").arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME)));
+
+    m_StepModel.SetVisibleRowCount(6);
+    m_StepModel.ShowStation(true);
+    m_StepModel.SetCurSelectRowIndex(CurProgramStepIndex);
+    m_StepModel.SetStationNameList(StationNameList);
+    m_StepModel.SetProgram(p_Program, pDataConnector->SettingsInterface->GetUserSettings(), pDataConnector->ReagentGroupList,
+                           pDataConnector->ReagentList, 6);
+    mp_TableWidget->setModel(&m_StepModel);
+    ResizeHorizontalSection();
+    mp_TableWidget->selectRow(CurProgramStepIndex);
+    ui->labelStepRemainingTime->setText(StepRemainingTime.toString("hh:mm"));
+    ui->labelPrgmRemainingTime->setText(ProgramRemainingTime.toString("hh:mm"));
+    ui->LabelPrgmEndTime->setText(endDateTime);
+
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Resizes the columns in the program step table
+ */
+/****************************************************************************/
+void CDashboardProgramStatusWidget::ResizeHorizontalSection()
+{
+    mp_TableWidget->horizontalHeader()->resizeSection(0, 45);
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 180);
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 55);
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 100);
+    mp_TableWidget->horizontalHeader()->resizeSection(4, 55);
+    mp_TableWidget->horizontalHeader()->resizeSection(5, 65);
 }
 
 void CDashboardProgramStatusWidget::OnClose()
 {
     this->close();
 }
+
+void CDashboardProgramStatusWidget::OnAbort()
+{
+    emit AbortClicked(2);
+}
+
+void CDashboardProgramStatusWidget::changeEvent(QEvent *p_Event)
+{
+    QWidget::changeEvent(p_Event);
+    switch (p_Event->type()) {
+        case QEvent::LanguageChange:
+            ui->retranslateUi(this);
+            this->RetranslateUI();
+            break;
+        default:
+            break;
+    }
+}
+
+void CDashboardProgramStatusWidget::RetranslateUI()
+{
+    //?
+}
+
+

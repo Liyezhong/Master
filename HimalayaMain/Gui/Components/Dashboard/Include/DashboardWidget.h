@@ -75,6 +75,8 @@ private:
     bool m_IsWaitingCleaningProgram;
     bool m_ForceRunCleanProgram;
     bool m_IsResumeRun;
+    QList<QString> m_StationList;
+     int m_CurProgramStepIndex;
     void EnablePlayButton(bool bSetEnable);
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(const DataManager::CProgram*, int, int, int);
@@ -118,7 +120,7 @@ public slots:
 
     void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
     void OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd);
-
+    void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
     // Warning Message Slots
     void OnProgramStartConfirmation();
     void OnSelectDateTime(const QDateTime&);

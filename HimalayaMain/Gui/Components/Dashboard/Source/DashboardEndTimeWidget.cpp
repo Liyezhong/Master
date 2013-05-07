@@ -34,7 +34,8 @@ namespace Dashboard {
 /****************************************************************************/
 
 CDashboardEndTimeWidget::CDashboardEndTimeWidget(Core::CDataConnector *p_DataConnector, QWidget *p_Parent) : QWidget(p_Parent),
-    mp_Ui(new Ui::CDashboardEndTimeWidget), mp_DataConnector(p_DataConnector), m_UserRoleChanged(false)
+    mp_Ui(new Ui::CDashboardEndTimeWidget), mp_DataConnector(p_DataConnector), m_UserRoleChanged(false), m_remainingTimeTotal(0),
+    m_curRemainingTimeTotal(0), m_DateTimeStr("")
 
 {
     mp_Ui->setupUi(this);
@@ -210,9 +211,11 @@ void CDashboardEndTimeWidget::UpdateDateTime(const QDateTime &selDateTime)
     DateTimeStr.append("\t\t\t");
     DateTimeStr.append(DateStr);
 
+    m_DateTimeStr.append(TimeStr);
+    m_DateTimeStr.append(" ");
+    m_DateTimeStr.append(DateStr);
+
     mp_Ui->btnEndTime->setText(DateTimeStr);
-
-
 }
 
 void CDashboardEndTimeWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor& cmd)
@@ -233,6 +236,7 @@ void CDashboardEndTimeWidget::UpdateProgress()
     //update progress bar
     QDateTime curDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
     int  elapsedTime = m_startDateTime.secsTo(curDateTime);
+    m_curRemainingTimeTotal = m_remainingTimeTotal - elapsedTime;
     mp_Ui->progressBar->setValue(elapsedTime);
 }
 
@@ -241,6 +245,7 @@ void CDashboardEndTimeWidget::UpdateProgress()
  {
     if (!IsResume)
     {
+        m_remainingTimeTotal = remainingTimeTotal;
         mp_Ui->progressBar->setMaximum(remainingTimeTotal);
         m_startDateTime = startDateTime;
     }
@@ -260,6 +265,22 @@ void CDashboardEndTimeWidget::UpdateProgress()
     {
         mp_Ui->lblReagentName->setText(tr("Aborted"));
     }
+ }
+
+ const QTime& CDashboardEndTimeWidget::GetStepRemainingTime()
+ {
+    return m_CurRemainingTime;
+ }
+
+ const QTime CDashboardEndTimeWidget::GetProgramRemainingTime()
+ {
+     QTime leftTime(0,0,0);
+     return leftTime = leftTime.addSecs(m_curRemainingTimeTotal);
+ }
+
+ const QString CDashboardEndTimeWidget::GetEndDateTime()
+ {
+    return m_DateTimeStr;
  }
 
 }    // end of namespace Dashboard

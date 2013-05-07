@@ -38,7 +38,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    m_ParaffinStepIndex(-1),
                                    m_IsWaitingCleaningProgram(false),
                                    m_ForceRunCleanProgram(false),
-                                   m_IsResumeRun(false)
+                                   m_IsResumeRun(false),
+                                   m_CurProgramStepIndex(-1)
 {
      mp_Ui->setupUi(GetContentFrame());
      SetPanelTitle(tr("Dashboard"));
@@ -49,7 +50,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      Palette.setColor(QPalette::Base, BaseColor);
      mp_Ui->dashboardView->setPalette(Palette);
 
-     mp_ProgramStatusWidget = new Dashboard::CDashboardProgramStatusWidget(this);
+     mp_ProgramStatusWidget = new Dashboard::CDashboardProgramStatusWidget();
      mp_ProgramStatusWidget->setWindowFlags(Qt::CustomizeWindowHint);
      mp_ProgramStatusWidget->setVisible(false);
 
@@ -72,7 +73,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      m_btnGroup.addButton(mp_Ui->abortButton, Dashboard::secondButton);
 
      //mp_Ui->abortButton->setEnabled(false);
-     EnablePlayButton(false);
+     EnablePlayButton(true);
 
      m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
      mp_MessageDlg = new MainMenu::CMessageDlg();
@@ -82,6 +83,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, ButtonPress(), this, OnComBoxButtonPress());
 
      CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
+     CONNECTSIGNALSLOT(mp_ProgramStatusWidget, AbortClicked(int), this, OnButtonClicked(int));
 
      CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int),
                         mp_DashboardScene, UpdateDashboardSceneReagentsForProgram(QString &, int));
@@ -115,6 +117,10 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply &),
                        this, OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply&));
+
+     CONNECTSIGNALSLOT(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
+                       this, OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
+
 }
 
 CDashboardWidget::~CDashboardWidget()
@@ -319,7 +325,28 @@ void CDashboardWidget::OnActivated(int index)
 
 void CDashboardWidget::OnComBoxButtonPress()
 {
-    mp_ProgramStatusWidget->show();
+    const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_NewSelectedProgramId);
+    if (pProgram)
+    {
+        QList<QString> stationNameList;
+        for (int i = 0; i < m_StationList.count(); i++)
+        {
+            DataManager::CDashboardStation* pStation = mp_DataConnector->DashboardStationList->GetDashboardStation(m_StationList.at(i));
+            if (!pStation)
+            {
+                Q_ASSERT(0);
+            }
+            stationNameList.append(pStation->GetDashboardStationName());
+        }
+
+        mp_ProgramStatusWidget->InitDialog(const_cast<DataManager::CProgram*>(pProgram), mp_DataConnector,
+                                           stationNameList, m_CurProgramStepIndex,
+                                           mp_DashboardScene->GetStepRemainingTime(),
+                                           mp_DashboardScene->GetProgramRemainingTime(),
+                                           mp_DashboardScene->GetEndDateTime());
+        mp_ProgramStatusWidget->move(80,50);
+        mp_ProgramStatusWidget->show();
+    }
 }
 
 void CDashboardWidget::PrepareSelectedProgramChecking()
@@ -520,9 +547,6 @@ void CDashboardWidget::OnProgramAborted()
     }
 }
 
-//  QDateTime curDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
-//int  elapsedTime = m_startDateTime.secsTo(curDateTime);
-
 void CDashboardWidget::OnProgramCompleted()
 {
     m_IsResumeRun = false;
@@ -581,6 +605,8 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     }
 
     m_SelectedProgramId = m_NewSelectedProgramId;
+    m_StationList.clear();
+    m_StationList = stationList;
     //Show program name in the comboBox
     mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
     //get the proposed program end DateTime
@@ -596,6 +622,11 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction, m_EndDateTime);
         m_ForceRunCleanProgram = false;
     }
+}
+
+void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd)
+{
+    m_CurProgramStepIndex = cmd.CurProgramStepIndex();
 }
 
 } // End of namespace Dashboard

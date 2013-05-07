@@ -397,5 +397,19 @@ void CDashboardScene::UpdateRetortStatus(DataManager::RetortStatusType_t retortS
 
 }
 
+const QTime& CDashboardScene::GetStepRemainingTime()
+{
+    return mp_DashboardEndTimeWidget->GetStepRemainingTime();
+}
+
+const QTime CDashboardScene::GetProgramRemainingTime()
+{
+    return mp_DashboardEndTimeWidget->GetProgramRemainingTime();
+}
+
+const QString CDashboardScene::GetEndDateTime()
+{
+    return mp_DashboardEndTimeWidget->GetEndDateTime();
+}
 
 } // end namespace Dashboard
