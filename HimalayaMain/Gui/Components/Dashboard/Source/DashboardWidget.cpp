@@ -380,8 +380,25 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
 
         if (mp_MessageDlg->exec())
         {
+            //Check cleaning program run in last time?
+            bool isCleaningProgramRun = true; // get this from a log file.
+            if (!isCleaningProgramRun)
+            {
+                mp_MessageDlg->SetIcon(QMessageBox::Information);
+                mp_MessageDlg->SetTitle(tr("Information"));
+                mp_MessageDlg->SetText(tr("Found cleaning program did not run in last time."));
+                mp_MessageDlg->SetButtonText(1, tr("OK"));
+                mp_MessageDlg->HideButtons();
+                if (mp_MessageDlg->exec())
+                {
+                    TakeOutSpecimenAndRunCleaning();
+                }
+                return false;
+            }
+
             if ( mp_DataConnector)
             {
+                //input cassette number
                 if (Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
                 {
                     CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
