@@ -199,11 +199,11 @@ bool CSpecialVerifierGroupA::CheckData()
                                 if(temperature < STEP_PARAFFIN_TEMP_MIN || temperature > STEP_PARAFFIN_TEMP_MAX){
                                     // error
                                     m_ErrorsHash.insert(VENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT,
-                                                        Global::tTranslatableStringList() << Current_ProgramStep->GetStepID()
+                                                        Global::tTranslatableStringList() << QString::number(X + 1)
                                                         << p_Program->GetName() << QString::number(STEP_PARAFFIN_TEMP_MIN)
                                                         << QString::number(STEP_PARAFFIN_TEMP_MAX));
                                     Global::EventObject::Instance().RaiseEvent(EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE,
-                                                                               Global::tTranslatableStringList() << Current_ProgramStep->GetStepID()
+                                                                               Global::tTranslatableStringList() << QString::number(X + 1)
                                                                                << p_Program->GetName() << QString::number(STEP_PARAFFIN_TEMP_MIN)
                                                                                << QString::number(STEP_PARAFFIN_TEMP_MAX),
                                                                                Global::GUI_MSG_BOX);
@@ -217,11 +217,11 @@ bool CSpecialVerifierGroupA::CheckData()
                                 if(temperature < STEP_REAGENT_TEMP_MIN || temperature > STEP_REAGENT_TEMP_MAX){
                                     // error
                                     m_ErrorsHash.insert(VENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT,
-                                                        Global::tTranslatableStringList() << Current_ProgramStep->GetStepID()
+                                                        Global::tTranslatableStringList() << QString::number(X + 1)
                                                         << p_Program->GetName() << QString::number(STEP_REAGENT_TEMP_MIN)
                                                         << QString::number(STEP_REAGENT_TEMP_MAX));
                                     Global::EventObject::Instance().RaiseEvent(EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE,
-                                                                               Global::tTranslatableStringList() << Current_ProgramStep->GetStepID()
+                                                                               Global::tTranslatableStringList() << QString::number(X + 1)
                                                                                << p_Program->GetName() << QString::number(STEP_REAGENT_TEMP_MIN)
                                                                                << QString::number(STEP_REAGENT_TEMP_MAX),
                                                                                Global::GUI_MSG_BOX);
@@ -239,10 +239,10 @@ bool CSpecialVerifierGroupA::CheckData()
                                     //error
                                     m_ErrorsHash.insert(EVENT_DM_INCOMPATIBLE_STEP_REAGENT_GROUP,
                                                         Global::tTranslatableStringList() <<p_Program->GetName()
-                                                        << Current_ProgramStep->GetStepID() << Previous_ProgramStep->GetStepID());
+                                                        << QString::number(X + 1) << QString::number(X));
                                     Global::EventObject::Instance().RaiseEvent(EVENT_DM_INCOMPATIBLE_STEP_REAGENT_GROUP,
                                                                                Global::tTranslatableStringList() <<p_Program->GetName()
-                                                                               << Current_ProgramStep->GetStepID() << Previous_ProgramStep->GetStepID(),
+                                                                               << QString::number(X + 1) << QString::number(X),
                                                                                Global::GUI_MSG_BOX);
                                     Result = false;
                                 }

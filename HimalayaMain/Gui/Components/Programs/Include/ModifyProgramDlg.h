@@ -164,7 +164,6 @@ private slots:
     void OnIconClicked();
     void UpdateProgramIcon(DataManager::CProgram *Program);
 
-
 signals:
 
     /****************************************************************************/
