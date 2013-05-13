@@ -56,7 +56,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_LanguageChangeCount(0),m_BottleCount(0), m_GuiInit(true), mp_RmsMessageDlg(NULL)
 {
     if (m_NetworkObject.NetworkInit()) {
-        THROW(Global::EVENT_GLOBAL_ERROR_UNKNOWN_EXCEPTION);
+        THROW(EVENT_GLOBAL_ERROR_UNKNOWN_EXCEPTION);
     }
 
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdConfigurationFile>(&CDataConnector::ConfFileHandler, this);

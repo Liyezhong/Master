@@ -319,7 +319,7 @@ QDataStream& operator << (QDataStream& OutDataStream, const CProgram& Program)
     if (!p_TempProgram->SerializeContent(XmlStreamWriter, true)) {
         qDebug() << "CProgram::Operator Streaming (SerializeContent) failed.";
         // throws an exception
-        THROWARG(Global::EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
+        THROWARG(EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
     }
 
     return OutDataStream;
@@ -342,13 +342,13 @@ QDataStream& operator >> (QDataStream& InDataStream, CProgram& Program)
     (void)XmlStreamReader.readElementText(QXmlStreamReader::IncludeChildElements); //lint -e534
     if (!Helper::ReadNode(XmlStreamReader, QString("Program"))) {
         qDebug() << "CProgram::Operator Streaming (DeSerializeContent) Node not found: Program";
-        THROWARG(Global::EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
+        THROWARG(EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
     }
 
     if (!Program.DeserializeContent(XmlStreamReader, true)) {
         qDebug() << "CProgram::Operator Streaming (DeSerializeContent) failed.";
         // throws an exception
-        THROWARG(Global::EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
+        THROWARG(EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
     }
 
     return InDataStream;

@@ -105,7 +105,7 @@ void CDataProgramList::Init()
 
     if (!DeleteAllPrograms()) {
         //throw error ...
-        THROWARG(Global::EVENT_GLOBAL_ERROR_NULL_POINTER, Global::tTranslatableStringList() << FILE_LINE);
+        THROWARG(EVENT_GLOBAL_ERROR_NULL_POINTER, Global::tTranslatableStringList() << FILE_LINE);
     }
 
     m_NextProgramID = "0";   // this has to be a persistent value later (maybe stored in a file)
@@ -751,7 +751,7 @@ bool CDataProgramList::DeserializeContent(QIODevice& IODevice, bool CompleteData
     //  Now Delete the Program list and ordered list of Program ID's
     if (!DeleteAllPrograms()) {
         //throw error ...
-        THROWARG(Global::EVENT_GLOBAL_ERROR_NULL_POINTER, Global::tTranslatableStringList() << FILE_LINE);
+        THROWARG(EVENT_GLOBAL_ERROR_NULL_POINTER, Global::tTranslatableStringList() << FILE_LINE);
     }
 
     // Look for node <ProgramList>

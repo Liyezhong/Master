@@ -115,10 +115,10 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
             if ((p_Program->GetName().length() < NAME_LENGTH_MIN) ||
                     (p_Program->GetName().length() > NAME_LENGTH_MAX)) {
                 qDebug()<<"###Short name length check failed"<<p_Program->GetName();
-                m_ErrorsHash.insert(VENT_DM_PROG_NAME_LENGTH_CHECK_FAILED,
+                m_ErrorsHash.insert(EVENT_DM_PROG_NAME_LENGTH_CHECK_FAILED,
                                    Global::tTranslatableStringList() <<  p_Program->GetName()
                                    <<QString::number(NAME_LENGTH_MIN) << QString::number(NAME_LENGTH_MAX));
-                Global::EventObject::Instance().RaiseEvent(VENT_DM_PROG_NAME_LENGTH_CHECK_FAILED,
+                Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_NAME_LENGTH_CHECK_FAILED,
                                                            Global::tTranslatableStringList() << p_Program->GetName()
                                                           <<QString::number(NAME_LENGTH_MIN) << QString::number(NAME_LENGTH_MAX),
                                                             Global::GUI_MSG_BOX);
@@ -253,10 +253,10 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
                 quint32 duration = Helper::ConvertTimeStringToSeconds(p_ProgramStep->GetDuration());
                 if(duration > STEP_DURATION_MAX  || duration < STEP_DURATION_MIN)
                 {
-                    m_ErrorsHash.insert(VENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT,
+                    m_ErrorsHash.insert(EVENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT,
                                         Global::tTranslatableStringList() << p_ProgramStep->GetStepID() << p_Program->GetName()
                                         <<Helper::ConvertSecondsToTimeString(STEP_DURATION_MIN) << Helper::ConvertSecondsToTimeString(STEP_DURATION_MAX));
-                    Global::EventObject::Instance().RaiseEvent(VENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT,
+                    Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT,
                                                                Global::tTranslatableStringList() << p_ProgramStep->GetStepID() << p_Program->GetName()
                                                                <<Helper::ConvertSecondsToTimeString(STEP_DURATION_MIN) << Helper::ConvertSecondsToTimeString(STEP_DURATION_MAX),
                                                                Global::GUI_MSG_BOX);

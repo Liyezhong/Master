@@ -100,7 +100,7 @@ void CProgramSettings::Init()
     if (!DeleteAll()) {
         //throw error ...
 //        Global::EventObject::Instance().RaiseEvent(EVENT_DM_NULL_PTR);
-//        THROWARG(Global::EVENT_GLOBAL_ERROR_NULL_POINTER, Global::tTranslatableStringList() << FILE_LINE);
+//        THROWARG(EVENT_GLOBAL_ERROR_NULL_POINTER, Global::tTranslatableStringList() << FILE_LINE);
 
     }
 }
@@ -565,7 +565,7 @@ bool CProgramSettings::DeserializeContent(QIODevice& IODevice, bool CompleteData
     if (!DeleteAll()) {
         //throw error ...
 //        Global::EventObject::Instance().RaiseEvent(EVENT_DM_NULL_PTR);
-//        THROWARG(Global::EVENT_GLOBAL_ERROR_NULL_POINTER, Global::tTranslatableStringList() << FILE_LINE);
+//        THROWARG(EVENT_GLOBAL_ERROR_NULL_POINTER, Global::tTranslatableStringList() << FILE_LINE);
     }
 	
     Result = ReadAllParameters(XmlStreamReader);
@@ -600,7 +600,7 @@ QDataStream& operator <<(QDataStream& OutDataStream, const CProgramSettings& Gro
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_STREAMOUT_FAILED,
                                                    Global::tTranslatableStringList() << "ProgramSettings", true);
         // throws an exception
-        THROWARG(Global::EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE );
+        THROWARG(EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE );
     }
     return OutDataStream;
 }
@@ -623,7 +623,7 @@ QDataStream& operator >>(QDataStream& InDataStream, CProgramSettings& GroupList)
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_STREAMIN_FAILED,
                                                    Global::tTranslatableStringList() << "ProgramSettings", true);
 
-        THROWARG(Global::EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
+        THROWARG(EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
     }
     return InDataStream;
 }

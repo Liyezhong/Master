@@ -376,7 +376,7 @@ void HimalayaMasterThreadController:: OnCmdGuiInitHandler(Global::tRefType Ref, 
             }
         }
         // log current time offset as info
-        LOG_EVENT(Global::EVTTYPE_INFO, Global::LOG_ENABLED, Global::EVENT_GLOBAL_CURRENT_TIME_OFFSET,
+        LOG_EVENT(Global::EVTTYPE_INFO, Global::LOG_ENABLED, EVENT_GLOBAL_CURRENT_TIME_OFFSET,
                   QString::number(Global::AdjustedTime::Instance().GetOffsetSeconds(), 10)
                   , Global::NO_NUMERIC_DATA, false);
         // start own statemachine
@@ -396,13 +396,13 @@ void HimalayaMasterThreadController:: OnCmdGuiInitHandler(Global::tRefType Ref, 
     } catch(const std::bad_alloc &) {
         // destroy controllers and threads
         // send error message
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_ERROR_MEMORY_ALLOCATION, FILE_LINE_LIST);
+            Global::EventObject::Instance().RaiseEvent(EVENT_GLOBAL_ERROR_MEMORY_ALLOCATION, FILE_LINE_LIST);
         // and request exit
         Shutdown();
     } catch(...) {
         // destroy controllers and threads
         // Send error message
-        LOG_EVENT(Global::EVTTYPE_FATAL_ERROR, Global::LOG_ENABLED, Global::EVENT_GLOBAL_ERROR_UNKNOWN_EXCEPTION, FILE_LINE_LIST,
+        LOG_EVENT(Global::EVTTYPE_FATAL_ERROR, Global::LOG_ENABLED, EVENT_GLOBAL_ERROR_UNKNOWN_EXCEPTION, FILE_LINE_LIST,
                   Global::NO_NUMERIC_DATA, false);
         // and request exit
         Shutdown();
@@ -584,100 +584,100 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
     StopSpecificThreadController(static_cast<int>(IMPORT_EXPORT_THREAD));
     if (ExitCode == Global::EXIT_CODE_EXPORT_SUCCESS) {
         // raise the event code
-        Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_SUCCESS);
+        Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_SUCCESS);
     }
     else {
-        quint32 EventCode = Global::EVENT_EXPORT_FAILED;
+        quint32 EventCode = EVENT_EXPORT_FAILED;
         // map the exit codes with the event code
         switch(ExitCode) {
             case Global::EXIT_CODE_EXPORT_FAILED:
-                EventCode = Global::EVENT_EXPORT_FAILED;
+                EventCode = EVENT_EXPORT_FAILED;
                 break;
             case Global::EXIT_CODE_EXPORT_UNABLE_TO_READ_FILE_TEMP_EXPORTCONFIGURATION:
-                EventCode = Global::EVENT_EXPORT_UNABLE_TO_READ_FILE_TEMP_EXPORTCONFIGURATION;
+                EventCode = EVENT_EXPORT_UNABLE_TO_READ_FILE_TEMP_EXPORTCONFIGURATION;
                 break;
             case Global::EXIT_CODE_EXPORT_INIT_CONTAINER_FAILED:
-                EventCode = Global::EVENT_EXPORT_INIT_CONTAINER_FAILED;
+                EventCode = EVENT_EXPORT_INIT_CONTAINER_FAILED;
                 break;
             case Global::EXIT_CODE_EXPORT_VERIFICATION_CONTAINER_FAILED:
-                EventCode = Global::EVENT_EXPORT_VERIFICATION_CONTAINER_FAILED;
+                EventCode = EVENT_EXPORT_VERIFICATION_CONTAINER_FAILED;
                 break;
             case Global::EXIT_CODE_EXPORT_UNABLE_ARCHIVE_FILES:
-                EventCode = Global::EVENT_EXPORT_UNABLE_TO_ARCHIVE_FILES ;
+                EventCode = EVENT_EXPORT_UNABLE_TO_ARCHIVE_FILES ;
                 break;
             case Global::EXIT_CODE_EXPORT_SOURCE_DIRECTORY_NOT_EXISTS:
-                EventCode = Global::EVENT_EXPORT_SOURCE_DIRECTORY_NOT_EXISTS;
+                EventCode = EVENT_EXPORT_SOURCE_DIRECTORY_NOT_EXISTS;
                 break;
             case Global::EXIT_CODE_EXPORT_TARGET_DIRECTORY_NOT_EXISTS:
-                EventCode = Global::EVENT_EXPORT_TARGET_DIRECTORY_NOT_EXISTS;
+                EventCode = EVENT_EXPORT_TARGET_DIRECTORY_NOT_EXISTS;
                 break;
             case Global::EXIT_CODE_EXPORT_LOG_DIRECTORY_NOT_EXISTS:
-                EventCode = Global::EVENT_EXPORT_LOG_DIRECTORY_NOT_EXISTS;
+                EventCode = EVENT_EXPORT_LOG_DIRECTORY_NOT_EXISTS;
                 break;
             case Global::EXIT_CODE_EXPORT_TARGET_FILE_FORMAT_IS_WRONG:
-                EventCode = Global::EVENT_EXPORT_TARGET_FILE_FORMAT_IS_WRONG;
+                EventCode = EVENT_EXPORT_TARGET_FILE_FORMAT_IS_WRONG;
                 break;
             case Global::EXIT_CODE_EXPORT_INVALID_EXPORT:
-                EventCode = Global::EVENT_EXPORT_INVALID_EXPORT;
+                EventCode = EVENT_EXPORT_INVALID_EXPORT;
                 break;
             case Global::EXIT_CODE_EXPORT_CRYTOSERVICE_RUNNING:
-                EventCode = Global::EVENT_EXPORT_CRYTOSERVICE_RUNNING;
+                EventCode = EVENT_EXPORT_CRYTOSERVICE_RUNNING;
                 break;
             case Global::EXIT_CODE_EXPORT_CANNOT_OPEN_FILE_FOR_READ:
-                EventCode = Global::EVENT_EXPORT_CANNOT_OPEN_FILE_FOR_READ;
+                EventCode = EVENT_EXPORT_CANNOT_OPEN_FILE_FOR_READ;
                 break;
             case Global::EXIT_CODE_EXPORT_CANNOT_OPEN_FILE_FOR_WRITE:
-                EventCode = Global::EVENT_EXPORT_CANNOT_OPEN_FILE_FOR_WRITE;
+                EventCode = EVENT_EXPORT_CANNOT_OPEN_FILE_FOR_WRITE;
                 break;
             case Global::EXIT_CODE_EXPORT_ERROR_TO_READ:
-                EventCode = Global::EVENT_EXPORT_ERROR_TO_READ;
+                EventCode = EVENT_EXPORT_ERROR_TO_READ;
                 break;
             case Global::EXIT_CODE_EXPORT_ERROR_TO_WRITE:
-                EventCode = Global::EVENT_EXPORT_ERROR_TO_WRITE;
+                EventCode = EVENT_EXPORT_ERROR_TO_WRITE;
                 break;            
             case Global::EXIT_CODE_EXPORT_INDEX_IS_MATCHING:
-                EventCode = Global::EVENT_EXPORT_INDEX_IS_MATCHING;
+                EventCode = EVENT_EXPORT_INDEX_IS_MATCHING;
                 break;
             case Global::EXIT_CODE_EXPORT_KEY_SIZE_LESS:
-                EventCode = Global::EVENT_EXPORT_KEY_SIZE_LESS;
+                EventCode = EVENT_EXPORT_KEY_SIZE_LESS;
                 break;
             case Global::EXIT_CODE_EXPORT_KEYDATA_SIZE_IS_NOT_MATCHING:
-                EventCode = Global::EVENT_EXPORT_KEYDATA_SIZE_IS_NOT_MATCHING;
+                EventCode = EVENT_EXPORT_KEYDATA_SIZE_IS_NOT_MATCHING;
                 break;
             case Global::EXIT_CODE_EXPORT_HMAC_NOT_INITIALIZED:
-                EventCode = Global::EVENT_EXPORT_HMAC_NOT_INITIALIZED;
+                EventCode = EVENT_EXPORT_HMAC_NOT_INITIALIZED;
                 break;
             case Global::EXIT_CODE_EXPORT_AES_NOT_INITIALIZED:
-                EventCode = Global::EVENT_EXPORT_AES_NOT_INITIALIZED;
+                EventCode = EVENT_EXPORT_AES_NOT_INITIALIZED;
                 break;
             case Global::EXIT_CODE_EXPORT_INTEGER_SIZE_IS_MORE:
-                EventCode = Global::EVENT_EXPORT_INTEGER_SIZE_IS_MORE;
+                EventCode = EVENT_EXPORT_INTEGER_SIZE_IS_MORE;
                 break;
             case Global::EXIT_CODE_EXPORT_MSB_BIT_IS_NOT_SET:
-                EventCode = Global::EVENT_EXPORT_MSB_BIT_IS_NOT_SET;
+                EventCode = EVENT_EXPORT_MSB_BIT_IS_NOT_SET;
                 break;
             case Global::EXIT_CODE_EXPORT_INVALID_FILE_MODE:
-                EventCode = Global::EVENT_EXPORT_INVALID_FILE_MODE;
+                EventCode = EVENT_EXPORT_INVALID_FILE_MODE;
                 break;
             case Global::EXIT_CODE_EXPORT_HMAC_COMPUTATION_STARTED:
-                EventCode = Global::EVENT_EXPORT_HMAC_COMPUTATION_STARTED;
+                EventCode = EVENT_EXPORT_HMAC_COMPUTATION_STARTED;
                 break;
             case Global::EXIT_CODE_EXPORT_ZIP_ERROR:
-                EventCode = Global::EVENT_EXPORT_ZIP_ERROR;
+                EventCode = EVENT_EXPORT_ZIP_ERROR;
                 break;
             case Global::EXIT_CODE_EXPORT_ZIP_COMMAND_NOT_FOUND:
-                EventCode = Global::EVENT_EXPORT_ZIP_COMMAND_NOT_FOUND;
+                EventCode = EVENT_EXPORT_ZIP_COMMAND_NOT_FOUND;
                 break;
             case Global::EXIT_CODE_EXPORT_ZIP_IS_TAKING_LONGTIME:
-                EventCode = Global::EVENT_EXPORT_ZIP_IS_TAKING_LONGTIME;
+                EventCode = EVENT_EXPORT_ZIP_IS_TAKING_LONGTIME;
                 break;
         }
 
 
         // this raise event code will be informed to GUI, that Export is failed
-        Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED);
+        Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FAILED);
 
-        if (EventCode != Global::EVENT_EXPORT_FAILED) {
+        if (EventCode != EVENT_EXPORT_FAILED) {
             // raise the event code
             Global::EventObject::Instance().RaiseEvent(EventCode);
         }

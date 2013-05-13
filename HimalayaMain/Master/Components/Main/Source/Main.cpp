@@ -58,21 +58,21 @@ public:
         catch(std::exception& e)
         {
             qWarning() << "Exception thrown:" << e.what();
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_UNCAUGHT_EXCEPTION, Global::FmtArgs() << e.what());
+            Global::EventObject::Instance().RaiseEvent(EVENT_GLOBAL_UNCAUGHT_EXCEPTION, Global::FmtArgs() << e.what());
             TheMasterThreadController.Shutdown();
             QCoreApplication::exit();
         }
         catch(Global::Exception& e)
         {
             qWarning() << "Exception thrown:" << e.what();
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_UNCAUGHT_EXCEPTION, Global::FmtArgs() << e.what());
+            Global::EventObject::Instance().RaiseEvent(EVENT_GLOBAL_UNCAUGHT_EXCEPTION, Global::FmtArgs() << e.what());
             TheMasterThreadController.Shutdown();
             QCoreApplication::exit();
         }
         catch (...)
         {
             qWarning() << "Exception thrown";
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_ERROR_UNKNOWN_EXCEPTION);
+            Global::EventObject::Instance().RaiseEvent(EVENT_GLOBAL_ERROR_UNKNOWN_EXCEPTION);
             TheMasterThreadController.Shutdown();
             QCoreApplication::exit();
         }

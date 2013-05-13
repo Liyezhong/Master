@@ -253,7 +253,7 @@ void ImportExportThreadController::OnGoReceived() {
             if (ErrorInThreadExecution) {
                 // if the event is not raised then display an error due to any reason
                 if (!m_EventRaised) {
-                    Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED);
+                    Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FAILED);
                 }
                 // emit the thread finished flag - with error code
                 emit ThreadFinished(false, "");
@@ -392,7 +392,7 @@ bool ImportExportThreadController::DoPretasks() {
             // create RMS file
 /*
             if (!CreateRMSFile(ExportDirPath + QDir::separator() + FILENAME_RMSSTATUS)) {
-                Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_RMS_STATUS);
+                Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_UNABLE_TO_CREATE_FILE_RMS_STATUS);
                 return false;
             }            
 */
@@ -401,7 +401,7 @@ bool ImportExportThreadController::DoPretasks() {
             }
         }
         else {
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_DIRECTORY_CREATION_FAILED);
+            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_DIRECTORY_CREATION_FAILED);
             return false;
         }
     }
@@ -430,12 +430,12 @@ bool ImportExportThreadController::WriteTempExportConfigurationAndFiles() {
         // copy all the files in a temporary directory
         if (!CopyConfigurationFiles(mp_ExportConfiguration->GetServiceConfiguration().GetServiceConfigurationList(),
                                     m_TempExportConfiguration.GetSourceDir())) {
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FILES_NOT_COPIED);
+            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FILES_NOT_COPIED);
             return false;
         }
         // write the Export configuration file
         if (!m_TempExportConfiguration.Write(m_TempExportConfiguration.GetSourceDir() + QDir::separator() + FILENAME_TEMPEXPORTCONFIG)) {
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION);
+            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION);
             return false;
         }
     }    
@@ -463,7 +463,7 @@ void ImportExportThreadController::UpdateUserExportConfigurationAndWriteFile() {
                 m_TempExportConfiguration.GetUserConfiguration().GetUserReportList().SetGroupFileName(m_DayRunLogDirectoryName);
                 if (!CopyConfigurationFiles(mp_ExportConfiguration->GetUserConfiguration().GetUserReportList(),
                                             m_TempExportConfiguration.GetSourceDir())) {
-                    Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FILES_NOT_COPIED);
+                    Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FILES_NOT_COPIED);
                     ErrorInExecution = true;
                 }
             }
@@ -474,7 +474,7 @@ void ImportExportThreadController::UpdateUserExportConfigurationAndWriteFile() {
 
         // write the Export configuration file
         if (!m_TempExportConfiguration.Write(m_TempExportConfiguration.GetSourceDir() + QDir::separator() + FILENAME_TEMPEXPORTCONFIG)) {
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION);
+            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION);
             ErrorInExecution = true;
         }
     }
@@ -492,7 +492,7 @@ void ImportExportThreadController::UpdateUserExportConfigurationAndWriteFile() {
     if (ErrorInExecution) {
         // if the event is not raised then display an error due to any reason
         if (!m_EventRaised) {
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_FAILED);
+            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FAILED);
         }
         // emit the thread finished flag - with error code
         emit ThreadFinished(false, "");

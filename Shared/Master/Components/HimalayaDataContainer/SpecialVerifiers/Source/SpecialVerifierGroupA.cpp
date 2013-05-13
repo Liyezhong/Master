@@ -198,7 +198,7 @@ bool CSpecialVerifierGroupA::CheckData()
                             if(pReagentGroup->IsParraffin()){
                                 if(temperature < STEP_PARAFFIN_TEMP_MIN || temperature > STEP_PARAFFIN_TEMP_MAX){
                                     // error
-                                    m_ErrorsHash.insert(VENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT,
+                                    m_ErrorsHash.insert(EVENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT,
                                                         Global::tTranslatableStringList() << QString::number(X + 1)
                                                         << p_Program->GetName() << QString::number(STEP_PARAFFIN_TEMP_MIN)
                                                         << QString::number(STEP_PARAFFIN_TEMP_MAX));
@@ -216,7 +216,7 @@ bool CSpecialVerifierGroupA::CheckData()
                             {
                                 if(temperature < STEP_REAGENT_TEMP_MIN || temperature > STEP_REAGENT_TEMP_MAX){
                                     // error
-                                    m_ErrorsHash.insert(VENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT,
+                                    m_ErrorsHash.insert(EVENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT,
                                                         Global::tTranslatableStringList() << QString::number(X + 1)
                                                         << p_Program->GetName() << QString::number(STEP_REAGENT_TEMP_MIN)
                                                         << QString::number(STEP_REAGENT_TEMP_MAX));

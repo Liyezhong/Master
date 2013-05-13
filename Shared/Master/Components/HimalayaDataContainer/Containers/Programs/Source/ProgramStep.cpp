@@ -187,7 +187,7 @@ QDataStream& operator << (QDataStream& OutDataStream, const CProgramStep& Progra
     if (!p_TempProgStep->SerializeContent(XmlStreamWriter, true)) {
         qDebug() << "CProgram::Operator Streaming (SerializeContent) failed.";
         // throws an exception
-        THROWARG(Global::EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
+        THROWARG(EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
     }
 
     return OutDataStream;
@@ -209,13 +209,13 @@ QDataStream& operator >> (QDataStream& InDataStream, CProgramStep& ProgramStep) 
     XmlStreamReader.setDevice(InDataStream.device());
     if (!Helper::ReadNode(XmlStreamReader, QString("Step"))) {
         qDebug() << "CProgram::Operator Streaming (DeSerializeContent) Node not found: Reagent";
-        THROWARG(Global::EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
+        THROWARG(EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
     }
 
     if (!ProgramStep.DeserializeContent(XmlStreamReader, true)) {
         qDebug() << "CProgram::Operator Streaming (DeSerializeContent) failed.";
         // throws an exception
-        THROWARG(Global::EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
+        THROWARG(EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
     }
 
     return InDataStream;
