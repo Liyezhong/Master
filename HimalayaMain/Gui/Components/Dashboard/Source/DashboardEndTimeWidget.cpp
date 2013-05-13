@@ -210,7 +210,7 @@ void CDashboardEndTimeWidget::UpdateDateTime(const QDateTime &selDateTime)
     DateTimeStr.append("\n");
     DateTimeStr.append("\t\t\t");
     DateTimeStr.append(DateStr);
-
+    m_DateTimeStr = "";
     m_DateTimeStr.append(TimeStr);
     m_DateTimeStr.append(" ");
     m_DateTimeStr.append(DateStr);

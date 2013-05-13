@@ -34,7 +34,7 @@ CDashboardStationConnector::CDashboardStationConnector(int Width,
                                                        int Height,
                                                        bool Animation,
                                                        QGraphicsItem *p_Parent) :
-                                                       QGraphicsItem(p_Parent),
+                                                       QGraphicsPathItem(p_Parent),
                                                        m_Width(Width),
                                                        m_Height(Height),
                                                        m_Animate(Animation)
@@ -67,7 +67,9 @@ void CDashboardStationConnector:: InitializePipePointsPositions()
 
     m_PipePoints << QPoint(175, 167) << QPoint(175, 178)
                  << QPoint(161, 178) << QPoint(161, 192) << QPoint(170, 192) << QPoint(170, 186)
+
                  << QPoint(289, 186) << QPoint(289, 192) << QPoint(298, 192) << QPoint(298, 186)
+
                  << QPoint(417, 186) << QPoint(417, 192) << QPoint(426, 192) << QPoint(426, 186)
                  << QPoint(502, 186) << QPoint(502, 262)
                  << QPoint(142, 262) << QPoint(142, 276) << QPoint(151, 276) << QPoint(151, 270)
@@ -93,8 +95,8 @@ void CDashboardStationConnector:: InitializePipePointsPositions()
 void CDashboardStationConnector::paint(QPainter *p_Painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     p_Painter->setPen(QPen(Qt::black));
-    p_Painter->setBrush(QBrush(Qt::gray));
-    p_Painter->drawPolyline(m_PipePoints);
+    p_Painter->setBrush(Qt::DiagCrossPattern);
+    p_Painter->drawPolygon(m_PipePoints);
 }
 
 QRectF CDashboardStationConnector::boundingRect() const

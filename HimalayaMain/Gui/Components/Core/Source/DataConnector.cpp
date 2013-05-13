@@ -1650,10 +1650,6 @@ void CDataConnector::StationParaffinBathStatusHandler(Global::tRefType Ref, cons
 
 }
 
-/*void CDataConnector::NotifiedProgramComplete()
-{
-
-}*/
 
 } // end namespace Core
 

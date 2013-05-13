@@ -28,6 +28,8 @@
 
 namespace Dashboard {
 
+const int PipeWidth = 10;
+const int JointHeight = 17;
 
 //!< Timing interval for the water animation in milliseconds
 #define ANIMATION_INTERVAL 500
@@ -46,22 +48,23 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
                        mp_DataConnector(p_DataConnector),                       
                        mp_MainWindow(p_MainWindow),
                        m_CloneDashboardStationList(true),
-                       m_CloneProgramList(true)
+                       m_CloneProgramList(true),
+                       m_pPipeAnimationTimer(NULL),
+                       m_currentTimerOrder(0)
 
 {
     QRectF Rect;
 
     mp_DashboardStationListClone = new DataManager::CDashboardDataStationList();
     mp_ProgramListClone = new DataManager::CDataProgramList();
-
+    m_pPipeAnimationTimer = new QTimer(this);
+    CONNECTSIGNALSLOT(m_pPipeAnimationTimer, timeout(), this, PipeSuckDrainAnimation());
     InitDashboardStationItemsPositions();
     InitDashboardStationGroups();
     InitDashboardStationIDs();
     InitDashboardStationLabels();
-    InitDashboardStationConnectorsPositions();
-    InitDashboardStationConnectorsWidths();
-    InitDashboardStationConnectorsHeights();
     InitDashboardEndTimeWidgetPosition();
+    InitStationConnectedPipeList();
     AddDashboardStationItemsToScene();
 
 
@@ -88,15 +91,15 @@ CDashboardScene::~CDashboardScene()
         {
             delete mp_DashboardStationItems.at(i);
         }
-/**
-        for(int i = 0; i < mp_DashboardStationConnectors.count(); i++)
+
+        for (int i = 0; i < m_pGraphicsPathItemPipeList.count(); i++)
         {
-            delete mp_DashboardStationConnectors.at(i);
+            delete m_pGraphicsPathItemPipeList.at(i);
         }
-**/
+        delete m_WholePipeGraphicsRectItem;
         delete mp_DashboardStationConnector;
         delete mp_DashboardEndTimeWidget;
-
+        delete m_pPipeAnimationTimer;
     } catch(...) {
         // Please the PC-Lint
     }
@@ -109,17 +112,54 @@ CDashboardScene::~CDashboardScene()
 /****************************************************************************/
 void CDashboardScene::InitDashboardStationItemsPositions()
 {
-    /**
-     m_DashboardStationItemPositions << QPoint(119, 89)
-                                << QPoint(119, 192) << QPoint(247, 192) << QPoint(375, 192)
-                                << QPoint(119, 276) << QPoint(204, 276) << QPoint(289, 276) << QPoint(374, 276) << QPoint(459, 276) << QPoint(544, 276) << QPoint(629, 276)
-                                << QPoint(119, 396) << QPoint(204, 396) << QPoint(289, 396) << QPoint(374, 396) << QPoint(459, 396) << QPoint(544, 396) ;
-    **/
 
     m_DashboardStationItemPositions << QPoint(119, 276) << QPoint(204, 276) << QPoint(289, 276) << QPoint(374, 276) << QPoint(459, 276) << QPoint(544, 276) << QPoint(629, 276)
                                     << QPoint(119, 396) << QPoint(204, 396) << QPoint(289, 396) << QPoint(374, 396) << QPoint(459, 396) << QPoint(544, 396)
                                     << QPoint(119, 192) << QPoint(247, 192) << QPoint(375, 192)
                                     << QPoint(119, 89);
+
+
+}
+
+void CDashboardScene::InitStationConnectedPipeList()
+{
+    m_PipeListP1 << "P1" << "P1P2Left" << "Retort";
+    m_PipeListP2 << "P2" << "P1P2Right" << "Retort";
+
+    m_PipeListP3 << "P3" << "P2P3" << "P1P2Right" << "Retort";
+
+    m_PipeListS1 << "S1" << "S1S2" << "S2S3" << "S3S4" << "S4S5" << "S5S6Left" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
+    m_PipeListS2         <<   "S2" << "S2S3" << "S3S4" << "S4S5" << "S5S6Left" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
+    m_PipeListS3         <<             "S3" << "S3S4" << "S4S5" << "S5S6Left" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
+    m_PipeListS4         <<                       "S4" << "S4S5" << "S5S6Left" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
+    m_PipeListS5         <<                                 "S5" << "S5S6Left" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
+    m_PipeListS6         <<                                 "S6" << "S5S6Right" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
+
+    m_PipeListS7 << "S7" << "S6S7" << "S5S6Right" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
+
+    m_PipeListS8 << "S8" << "S8S9" << "S9S10" << "S10S11" << "S11S12" << "S12S13" << "S13S13RightPoint" << "VerticalPipe2"
+                 << "S7S7RightPoint" << "S6S7" << "S5S6Right" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
+
+
+    m_PipeListS9 <<           "S9" << "S9S10" << "S10S11" << "S11S12" << "S12S13" << "S13S13RightPoint" << "VerticalPipe2"
+                 << "S7S7RightPoint" << "S6S7" << "S5S6Right" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
+
+    m_PipeListS10 <<                    "S10" << "S10S11" << "S11S12" << "S12S13" << "S13S13RightPoint" << "VerticalPipe2"
+                 << "S7S7RightPoint" << "S6S7" << "S5S6Right" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
+
+
+
+    m_PipeListS11 <<                                "S11" << "S11S12" << "S12S13" << "S13S13RightPoint" << "VerticalPipe2"
+                 << "S7S7RightPoint" << "S6S7" << "S5S6Right" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
+
+
+    m_PipeListS12 <<                                            "S12" << "S12S13" << "S13S13RightPoint" << "VerticalPipe2"
+                 << "S7S7RightPoint" << "S6S7" << "S5S6Right" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
+
+
+    m_PipeListS13 <<                                                        "S13" << "S13S13RightPoint" << "VerticalPipe2"
+                 << "S7S7RightPoint" << "S6S7" << "S5S6Right" << "VerticalPipe1" << "P3P3RightPoint" << "P2P3" << "P1P2Right" << "Retort";
+
 
 
 }
@@ -131,14 +171,6 @@ void CDashboardScene::InitDashboardStationItemsPositions()
 /****************************************************************************/
 void CDashboardScene::InitDashboardStationIDs()
 {
-    /**
-     m_DashboardStationIDs << "001"
-                          << "O02" << "O03" << "004"
-                          << "005" << "006" << "007" << "008"
-                          << "009" << "010" << "011" << "012"
-                          << "013" << "014" << "015" << "016"
-                          << "017";
-    **/
     m_DashboardStationIDs << "S1" << "S2" << "S3" << "S4" << "S5" << "S6" <<"S7"
                           << "S8" << "S9" <<"S10" <<"S11" <<"S12" <<"S13"
                           << "P1" << "P2" << "P3";
@@ -151,12 +183,7 @@ void CDashboardScene::InitDashboardStationIDs()
 /****************************************************************************/
 void CDashboardScene::InitDashboardStationLabels()
 {
-    /**
-     m_DashboardStationLabels << "Retort"
-                          << "Paraffin (1)" << "Paraffin (2)" << "Paraffin (3)"
-                          << "1" << "2" << "3" << "4" << "5" << "6" << "7"
-                          << "8" << "9" << "10" << "11" << "12" << "13";
-    **/
+
     m_DashboardStationLabels << "1" << "2" << "3" << "4" << "5" << "6" << "7"
                              << "8" << "9" << "10" << "11" << "12" << "13"
                              << "Paraffin (1)" << "Paraffin (2)" << "Paraffin (3)";
@@ -169,75 +196,12 @@ void CDashboardScene::InitDashboardStationLabels()
 /****************************************************************************/
 void CDashboardScene::InitDashboardStationGroups()
 {
-   /**
-    m_DashboardStationGroup << STATIONS_GROUP_RETORT
-                             << STATIONS_GROUP_PARAFFINBATH << STATIONS_GROUP_PARAFFINBATH << STATIONS_GROUP_PARAFFINBATH
-                             << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE
-                             << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE
-                             << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE
-                             << STATIONS_GROUP_BOTTLE;
-   **/
+
     m_DashboardStationGroup << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE
                             << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE
                             << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE << STATIONS_GROUP_BOTTLE
                             << STATIONS_GROUP_BOTTLE
                             << STATIONS_GROUP_PARAFFINBATH << STATIONS_GROUP_PARAFFINBATH << STATIONS_GROUP_PARAFFINBATH;
-}
-
-/****************************************************************************/
-/*!
- *  \brief Initialize Dashboard Station Connector Positions on the Screen
- */
-/****************************************************************************/
-void CDashboardScene::InitDashboardStationConnectorsPositions()
-{
-    m_DashboardStationConnectorsPositions << QPoint(175, 167)
-                                          << QPoint(161, 186) << QPoint(286, 186) << QPoint(417, 186)
-                                          << QPoint(142, 270) << QPoint(226, 270) << QPoint(311, 270) << QPoint(396, 270) << QPoint(481, 270) << QPoint(565, 270) << QPoint(651, 270)
-                                          << QPoint(142, 390) << QPoint(226, 390) << QPoint(311, 390) << QPoint(396, 390) << QPoint(481, 390) << QPoint(565, 390)
-                                          << QPoint(161, 178)
-                                          << QPoint(502, 178)
-                                          << QPoint(142, 262)
-                                          << QPoint(716, 262)
-                                          << QPoint(142, 382);
-
-}
-
-/****************************************************************************/
-/*!
- *  \brief Initialize Dashboard Station Connectors (Pipe) Width on the Screen
- */
-/****************************************************************************/
-void CDashboardScene::InitDashboardStationConnectorsWidths()
-{
-    m_DashboardStationConnectorsWidths << 9
-                                       << 9 << 9 << 9
-                                       << 9 << 9 << 9 << 9 << 9 << 9 << 9
-                                       << 9 << 9 << 9 << 9 << 9 << 9
-                                       << 349
-                                       << 8
-                                       << 582
-                                       << 8
-                                       << 582;
-
-}
-
-/****************************************************************************/
-/*!
- *  \brief Initialize Dashboard Station Connectors (Pipe) Height on the Screen
- */
-/****************************************************************************/
-void CDashboardScene::InitDashboardStationConnectorsHeights()
-{
-    m_DashboardStationConnectorsHeights << 11
-                                        << 6 << 6 << 6
-                                        << 6 << 6 << 6 << 6 << 6 << 6 << 6
-                                        << 6 << 6 << 6 << 6 << 6 << 6
-                                        << 8
-                                        << 84
-                                        << 8
-                                        << 120
-                                        << 8;
 }
 
 
@@ -251,6 +215,223 @@ void CDashboardScene::InitDashboardEndTimeWidgetPosition()
     m_DashboardEndTimeWidgetPos = QPoint(520, 78);
 }
 
+QRectF CDashboardScene::MakeHorizontalPipeRect(const QString& stationID, const QString& OtherStationID)
+{
+    QPointF p1 = m_StationJointList[stationID];
+    QPointF p2 = m_StationJointList[OtherStationID];
+
+    return QRectF(p1.rx(), p1.ry(), p2.rx() - p1.rx(), PipeWidth);
+}
+
+QRectF CDashboardScene::MakeHorizontalBinaryPipeRect(const QString& stationID, const QString& OtherStationID,
+                                    const QString& MidTopStationID, bool IsReturnLeftOne)//IsReturnLeftOne is false ,it will return the right one
+
+{
+    QPointF p1 = m_StationJointList[stationID];
+    QPointF p2 = m_StationJointList[MidTopStationID];
+    if (IsReturnLeftOne)
+    {
+        return QRectF(p1.rx(), p1.ry(), p2.rx() - p1.rx(), PipeWidth);
+    }
+    else
+    {
+         QPointF p3 = m_StationJointList[OtherStationID];
+         return QRectF(p2.rx(), p1.ry(), p3.rx() - p2.rx(), PipeWidth);
+    }
+
+}
+
+void CDashboardScene::CollectPipeRect()
+{
+    int yOffset = -1;
+    int yOffsetP = -5;
+    m_PipeRectList.insert("S8S9", PipeRectOrientation(MakeHorizontalPipeRect("S8", "S9"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S9S10", PipeRectOrientation(MakeHorizontalPipeRect("S9", "S10"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S10S11", PipeRectOrientation(MakeHorizontalPipeRect("S10", "S11"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S11S12", PipeRectOrientation(MakeHorizontalPipeRect("S11", "S12"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S12S13", PipeRectOrientation(MakeHorizontalPipeRect("S12", "S13"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S13S13RightPoint", PipeRectOrientation(MakeHorizontalPipeRect("S13", "S13RightPoint"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S1S2", PipeRectOrientation(MakeHorizontalPipeRect("S1", "S2"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S2S3", PipeRectOrientation(MakeHorizontalPipeRect("S2", "S3"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S3S4", PipeRectOrientation(MakeHorizontalPipeRect("S3", "S4"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S4S5", PipeRectOrientation(MakeHorizontalPipeRect("S4", "S5"), "right", QPoint(0, yOffset)));
+
+    m_PipeRectList.insert("S5S6Right", PipeRectOrientation(MakeHorizontalBinaryPipeRect("S5", "S6", "P3RightPoint", false), "left", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S5S6Left", PipeRectOrientation(MakeHorizontalBinaryPipeRect("S5", "S6", "P3RightPoint", true), "right", QPoint(0, yOffset)));
+
+    m_PipeRectList.insert("S6S7", PipeRectOrientation(MakeHorizontalPipeRect("S6", "S7"), "left", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S7S7RightPoint", PipeRectOrientation(MakeHorizontalPipeRect("S7", "S7RightPoint"), "left", QPoint(0, yOffset)));
+
+    m_PipeRectList.insert("P2P3", PipeRectOrientation(MakeHorizontalPipeRect("P2", "P3"), "left", QPoint(0, yOffsetP)));
+    m_PipeRectList.insert("P3P3RightPoint", PipeRectOrientation(MakeHorizontalPipeRect("P3", "P3RightPoint"), "left", QPoint(0, yOffsetP)));
+
+    m_PipeRectList.insert("P1P2Right", PipeRectOrientation(MakeHorizontalBinaryPipeRect("P1", "P2", "Retort", false), "left", QPoint(0, yOffsetP)));
+    m_PipeRectList.insert("P1P2Left", PipeRectOrientation(MakeHorizontalBinaryPipeRect("P1", "P2", "Retort", true), "right", QPoint(0, yOffsetP)));
+
+
+}
+
+void CDashboardScene::CreateAllPipe()
+{
+    QPainterPath path;
+    path.setFillRule(Qt::WindingFill);
+    foreach (PipeRectOrientation rectOrientation, m_PipeRectList)
+    {
+        path.addRect(rectOrientation.m_rect);
+    }
+
+    m_WholePipeGraphicsRectItem = new QGraphicsPathItem(path);
+    m_WholePipeGraphicsRectItem->setPen(QPen(Qt::NoPen));
+    m_WholePipeGraphicsRectItem->setBrush(QBrush(QColor(136, 136, 136), Qt::SolidPattern));
+    addItem(m_WholePipeGraphicsRectItem);
+}
+
+class CPipeGraphicsPathItem: public QGraphicsPathItem
+{
+public:
+    CPipeGraphicsPathItem(const QPainterPath &path, const QPointF& brushOrigin):QGraphicsPathItem(path),
+        m_BrushOrigin(brushOrigin)
+    {}
+
+  void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0)
+  {
+        painter->setBrushOrigin(m_BrushOrigin);
+        QGraphicsPathItem::paint(painter, option, widget);
+  }
+private:
+  const QPointF m_BrushOrigin;
+};
+
+void CDashboardScene::ClearCurrentWorkingPipe()
+{
+    for (int i = 0; i < m_pGraphicsPathItemPipeList.count(); i++)
+    {
+        delete m_pGraphicsPathItemPipeList.at(i);
+    }
+}
+
+void CDashboardScene::RepresentCurrentWorkingPipe(const QString& StationID)
+{
+    //P1: P1, Retort Joint, P1P2Left
+
+     QStringList* pipeList = NULL;
+
+     if ("P1" == StationID)
+         pipeList = &m_PipeListP1;
+     else if ("P2" == StationID)
+         pipeList = &m_PipeListP2;
+     else if ("P3" == StationID)
+         pipeList = &m_PipeListP3;
+     else if ("S1" == StationID)
+         pipeList = &m_PipeListS1;
+     else if ("S2" == StationID)
+         pipeList = &m_PipeListS2;
+     else if ("S3" == StationID)
+         pipeList = &m_PipeListS3;
+     else if ("S4" == StationID)
+         pipeList = &m_PipeListS4;
+     else if ("S5" == StationID)
+         pipeList = &m_PipeListS5;
+     else if ("S6" == StationID)
+         pipeList = &m_PipeListS6;
+     else if ("S7" == StationID)
+         pipeList = &m_PipeListS7;
+     else if ("S8" == StationID)
+         pipeList = &m_PipeListS8;
+     else if ("S9" == StationID)
+         pipeList = &m_PipeListS9;
+     else if ("S10" == StationID)
+         pipeList = &m_PipeListS10;
+     else if ("S11" == StationID)
+         pipeList = &m_PipeListS11;
+     else if ("S12" == StationID)
+         pipeList = &m_PipeListS12;
+     else if ("S13" == StationID)
+         pipeList = &m_PipeListS13;
+
+     foreach (const QString &strPipeID, *pipeList)
+     {
+        QPainterPath path;
+        path.setFillRule(Qt::WindingFill);
+        path.addRect(m_PipeRectList[strPipeID].m_rect);
+
+        QGraphicsPathItem* pWorkingPipeGraphicsRectItem = new CPipeGraphicsPathItem(path, m_PipeRectList[strPipeID].m_brushOrigin);
+        pWorkingPipeGraphicsRectItem ->setPen(QPen(Qt::NoPen));
+        addItem(pWorkingPipeGraphicsRectItem);
+
+        m_PipeOrientationList.append(m_PipeRectList[strPipeID].m_orientation);
+        m_pGraphicsPathItemPipeList.append(pWorkingPipeGraphicsRectItem);
+     }
+}
+
+
+void CDashboardScene::PipeSuckDrainAnimation()
+{
+    QString pixmapName;
+    if (0 == m_currentTimerOrder)
+    {
+        pixmapName = ":/HimalayaImages/Icons/Dashboard/Pipe/flow1.png";
+        m_currentTimerOrder++;
+    }
+    else if(1 == m_currentTimerOrder)
+    {
+        pixmapName = ":/HimalayaImages/Icons/Dashboard/Pipe/flow2.png";
+        m_currentTimerOrder++;
+    }
+    else if(2 == m_currentTimerOrder)
+    {
+        pixmapName = ":/HimalayaImages/Icons/Dashboard/Pipe/flow3.png";
+        m_currentTimerOrder = 0;
+    }
+
+    int j = 0;
+    for (int i = 0; i < m_pGraphicsPathItemPipeList.size(); ++i)
+    {
+        QString pipeOrientation = m_PipeOrientationList.at(j);
+        j++;
+        QPixmap pixMap;
+        pixMap.load(pixmapName);
+
+        QMatrix matrix;
+        qreal angle = 0.0;
+        if ("up" == pipeOrientation)
+        {
+            if (m_IsSuck)
+            {
+                angle = -90.0;
+            }
+            else
+               angle = 90.0;
+        }
+        else if ("left" == pipeOrientation)
+        {
+            if (m_IsSuck)
+             angle = 180.0;
+        }
+        else if ("right" == pipeOrientation)
+        {
+            if (!m_IsSuck)
+            {
+                angle = 180.0;
+            }
+        }
+
+        if (abs(angle) > 0.0)
+        {
+            matrix.rotate(angle);
+            pixMap = pixMap.transformed(matrix);
+        }
+
+        QPainter painter;
+        painter.begin(&pixMap);
+        QColor color(m_CurrentReagentColorValue);
+        color.setAlpha(150);
+        painter.fillRect(0, 0, 20, 20, color);
+        painter.end();
+
+        m_pGraphicsPathItemPipeList.at(i)->setBrush(QBrush(pixMap));
+    }
+}
 
 /****************************************************************************/
 /*!
@@ -259,6 +440,10 @@ void CDashboardScene::InitDashboardEndTimeWidgetPosition()
 /****************************************************************************/
 void CDashboardScene::AddDashboardStationItemsToScene()
 {
+    m_StationJointList.clear();
+    m_PipeRectList.clear();
+
+    //Stations(include paraffin Bath)
     for (int i = 0; i < m_DashboardStationIDs.count(); i++)
     {
         // If station is found in the DashboardStations xmls,
@@ -268,30 +453,82 @@ void CDashboardScene::AddDashboardStationItemsToScene()
 
         if (p_DashboardStation) {
             m_DashboardStationList.insert(m_DashboardStationIDs[i], p_DashboardStation);
-        } else {
-            m_DashboardStationList.insert(m_DashboardStationIDs[i], p_DashboardStation);
         }
 
         Core::CDashboardStationItem* p_DashboardStationItem = new Core::CDashboardStationItem(mp_DataConnector,                                                                                             
                                                                                               m_DashboardStationGroup[i],
+                                                                                              m_DashboardStationIDs[i],
                                                                                               m_DashboardStationLabels[i],
                                                                                               true,
                                                                                               m_DashboardStationList[m_DashboardStationIDs[i]]);
         p_DashboardStationItem->setPos(m_DashboardStationItemPositions[i]);
         p_DashboardStationItem->StationSelected(false);
         mp_DashboardStationItems.append(p_DashboardStationItem);
+
+        QRectF rectStation = p_DashboardStationItem->boundingRect();
+        QPointF posStation = p_DashboardStationItem->pos();
+        qreal x = posStation.rx() + rectStation.width()/2 - 5 - 14;
+        qreal y = posStation.ry() - JointHeight;
+        m_StationJointList.insert(m_DashboardStationIDs[i], QPointF(x, y));
+
         addItem(p_DashboardStationItem);
-    }
+        int xOrigin = 0;
+        const QString& strID = m_DashboardStationIDs[i];
+        if ("S9" == strID || "S11" == strID || "S13" == strID || "S6" == strID
+                || "S4" == strID || "S2" == strID)
+        {
+           xOrigin = -5;
+        } else if("P2" == strID)
+        {
+            xOrigin = -2;
+        }  else if("P3" == strID)
+        {
+            xOrigin = -3;
+        }
+        m_PipeRectList.insert(m_DashboardStationIDs[i], PipeRectOrientation(QRectF(x, y, PipeWidth, JointHeight), "up", QPoint(xOrigin, 0)));
+    }   
 
     // For Retort, No Station Id
-    mp_DashboardStationRetort = new Core::CDashboardStationItem(mp_DataConnector, STATIONS_GROUP_RETORT, "Retort", false);
+    mp_DashboardStationRetort = new Core::CDashboardStationItem(mp_DataConnector, STATIONS_GROUP_RETORT, "Retort", "Retort", false);
     mp_DashboardStationRetort->setPos(QPoint(119, 89));
     addItem(mp_DashboardStationRetort);
 
+    //Add Retort's rect and letfTop point
+    QRectF rectStation = mp_DashboardStationRetort->boundingRect();
+    QPointF posStation = mp_DashboardStationRetort->pos();
+    qreal x = posStation.rx() + rectStation.width()/2 - 5;
+    qreal y = posStation.ry() + rectStation.height();
+    m_StationJointList.insert("Retort", QPointF(x, y));
+    int hh = m_StationJointList["P1"].ry()  - y + PipeWidth;
+    m_PipeRectList.insert("Retort", PipeRectOrientation(QRectF(x, y, PipeWidth, hh), "up", QPoint(-3, 0)));
 
-    // Draw the Pipe Over here (582, 289) (width, height) of bounding rectangle
-    mp_DashboardStationConnector = new Dashboard::CDashboardStationConnector(582, 289, false );
-    addItem(mp_DashboardStationConnector);
+    //P3 Right point
+    int paraffinbathBoundingRectWidth = 122;
+    QPointF P3RightPoint(m_StationJointList["P3"].rx() + paraffinbathBoundingRectWidth/2 + 24, m_StationJointList["P3"].ry());
+    int h = m_StationJointList["S5"].ry() - m_StationJointList["P1"].ry() + PipeWidth;
+    QRectF rect;
+    rect.setTopLeft(P3RightPoint);//vertical pipe 1
+    rect.setWidth(PipeWidth);
+    rect.setHeight(h);
+    m_PipeRectList.insert("VerticalPipe1", PipeRectOrientation(rect, "up", QPoint(-8, 0)));
+    m_StationJointList.insert("P3RightPoint", P3RightPoint);
+
+    //S7 Right point
+    int bottleBoundingRectWidth = 79;
+    QPointF S7RightPoint(m_StationJointList["S7"].rx() + bottleBoundingRectWidth/2 + 24, m_StationJointList["S7"].ry());
+    h = m_StationJointList["S13"].ry() - m_StationJointList["S7"].ry() + PipeWidth;
+    rect.setTopLeft(S7RightPoint);//vertical pipe 2
+    rect.setWidth(PipeWidth);
+    rect.setHeight(h);
+    m_PipeRectList.insert("VerticalPipe2", PipeRectOrientation(rect, "up", QPoint(-7, 0)));
+    m_StationJointList.insert("S7RightPoint", S7RightPoint);
+
+    //S13 right point
+    QPointF S13RightPoint(S7RightPoint.rx(), m_StationJointList["S13"].ry());
+    m_StationJointList.insert("S13RightPoint", S7RightPoint);
+
+    this->CollectPipeRect();
+    CreateAllPipe();
 
     // Add the End Time Widget
     mp_DashboardEndTimeWidget = new Dashboard::CDashboardEndTimeWidget(mp_DataConnector);
@@ -307,20 +544,6 @@ void CDashboardScene::AddDashboardStationItemsToScene()
 
     CONNECTSIGNALSLOT(this, ProgramActionStopped(DataManager::ProgramActionType_t),
                       mp_DashboardEndTimeWidget, OnProgramActionStopped(DataManager::ProgramActionType_t));
-
-
-/**
-    for(int i = 0; i < m_DashboardStationConnectorsPositions.count(); i++)
-    {
-        Dashboard::CDashboardStationConnector *p_DashboardStationConnector = new Dashboard::CDashboardStationConnector(m_DashboardStationConnectorsWidths[i],
-                                                                                                                       m_DashboardStationConnectorsHeights[i],
-                                                                                                                       false);
-        p_DashboardStationConnector->setPos(m_DashboardStationConnectorsPositions[i]);
-        mp_DashboardStationConnectors.append(p_DashboardStationConnector);
-        addItem(p_DashboardStationConnector);
-    }
-**/
-
 
 }
 
@@ -410,6 +633,58 @@ const QTime CDashboardScene::GetProgramRemainingTime()
 const QString CDashboardScene::GetEndDateTime()
 {
     return mp_DashboardEndTimeWidget->GetEndDateTime();
+}
+
+void CDashboardScene::StationSuckDrainAnimationStart(const QString& StationId, bool IsStart, bool IsSuck)
+{
+   m_IsSuck = IsSuck;
+   RepresentCurrentWorkingPipe(StationId);
+
+   if (IsStart)
+   {
+       //Get Current selected reagent corlor for Retort's representation
+      DataManager::CDashboardStation* pDashboardStation = NULL;
+      QHash<QString, DataManager::CDashboardStation*>::const_iterator it = m_DashboardStationList.find(StationId);
+      if(it != m_DashboardStationList.constEnd()) {
+           pDashboardStation = it.value();
+      }
+      if (pDashboardStation)
+      {
+          QString ReagentID = pDashboardStation->GetDashboardReagentID();
+          if ("" != ReagentID)
+          {
+              DataManager::CReagent const *p_Reagent = mp_DataConnector->ReagentList->GetReagent(ReagentID);
+              if (p_Reagent)
+              {
+                  QString ReagentGroupId = p_Reagent->GetGroupID();
+                  DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupId);
+
+                  m_CurrentReagentColorValue = p_ReagentGroup->GetGroupColor();
+                  m_CurrentReagentColorValue.prepend("#");
+              }
+          }
+      }
+
+     m_pPipeAnimationTimer->start(500);
+   }
+   else
+   {
+
+        m_pPipeAnimationTimer->stop();
+   }
+
+    //find Station and let Station animation start/stop
+   for (int i = 0; i < mp_DashboardStationItems.size(); i++)
+   {
+        Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
+        if (item->StationItemID() == StationId)
+        {
+            item->SuckDrain(IsStart, IsSuck);
+            mp_DashboardStationRetort->StationSelected(true);
+            mp_DashboardStationRetort->SuckDrain(IsStart, IsSuck, m_CurrentReagentColorValue);
+            break;
+        }
+   }
 }
 
 } // end namespace Dashboard

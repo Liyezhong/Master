@@ -25,7 +25,7 @@ QString CmdStationParaffinBathStatus::NAME = "MsgClasses::CmdStationParaffinBath
 
 
 CmdStationParaffinBathStatus::CmdStationParaffinBathStatus(int Timeout, const QString& StationParaffinBathID,
-                                    DataManager::StationParaffinBathStatusType_t StationParaffinBathStatusType) :
+                                    DataManager::ContainerStatusType_t StationParaffinBathStatusType) :
     Command(Timeout),
     m_StationParaffinBathID(StationParaffinBathID),
     m_StationParaffinBathStatusType(StationParaffinBathStatusType)

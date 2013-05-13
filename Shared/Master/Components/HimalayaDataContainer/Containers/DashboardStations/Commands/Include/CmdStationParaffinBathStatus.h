@@ -41,17 +41,17 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdStationParaffinBathStatus(int Timeout, const QString&, DataManager::StationParaffinBathStatusType_t);
+    CmdStationParaffinBathStatus(int Timeout, const QString&, DataManager::ContainerStatusType_t);
     ~CmdStationParaffinBathStatus();
     virtual QString GetName() const;
-    inline DataManager::StationParaffinBathStatusType_t StationParaffinBathStatusType() const {return m_StationParaffinBathStatusType;} 
+    inline DataManager::ContainerStatusType_t StationParaffinBathStatusType() const {return m_StationParaffinBathStatusType;}
     inline const QString& StationParaffinBathID()const {return m_StationParaffinBathID;}
 private:
     CmdStationParaffinBathStatus(const CmdStationParaffinBathStatus &);                     ///< Not implemented.
     const CmdStationParaffinBathStatus & operator = (const CmdStationParaffinBathStatus &); ///< Not implemented.
 private:
     QString m_StationParaffinBathID;
-    DataManager::StationParaffinBathStatusType_t m_StationParaffinBathStatusType;
+    DataManager::ContainerStatusType_t m_StationParaffinBathStatusType;
     
 }; // end class CmdStationParaffinBathStatus
 
@@ -91,7 +91,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdStationParaffinBathSta
     Stream >> Cmd.m_StationParaffinBathID;
     int temp;
     Stream >> temp;
-    Cmd.m_StationParaffinBathStatusType = (DataManager::StationParaffinBathStatusType_t)temp;
+    Cmd.m_StationParaffinBathStatusType = (DataManager::ContainerStatusType_t)temp;
     return Stream;
 }
 } // end namespace MsgClasses

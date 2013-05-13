@@ -76,7 +76,8 @@ private:
     bool m_ForceRunCleanProgram;
     bool m_IsResumeRun;
     QList<QString> m_StationList;
-     int m_CurProgramStepIndex;
+    int m_CurProgramStepIndex;
+    QString m_CurrentSuckDrainStationID;
     void EnablePlayButton(bool bSetEnable);
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(const DataManager::CProgram*, int, int, int);

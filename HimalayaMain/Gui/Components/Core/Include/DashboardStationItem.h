@@ -27,6 +27,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "Reagents/Include/ReagentRMSWidget.h"
+#include "HimalayaDataContainer/Helper/Include/Global.h"
 
 #include <QGraphicsSceneMouseEvent>
 #include <QObject>
@@ -76,7 +77,7 @@ private:
     bool m_Animation;                                    //!< Turns on animation of station blink when true.
     bool m_Enabled;                                      //!< Indicates if the station is enabled
     bool m_Pressed;                                      //!< Indicates if the station is pressed
-
+    QString m_StationItemID;
     bool m_GridDrawn;                                    //!< Flag to verify whether the grid is drawn or not
     StationGroupType_t m_DashboardStationGroup;          //!< Dashboard StationGroup object
     QString m_DashboardStationID;                        //!< Dashboard Station ID
@@ -101,15 +102,19 @@ private:
     const int m_BottleBoundingRectWidth;                 //!< Bottle Bounding Rect Width
     const int m_BottleBoundingRectHeight;                //!< Bottle Bounding Rect Height
 
+    int m_CurrentBoundingRectReagentHeight;                //!< current container Bounding Rect Height
 
     QTimer *mp_BlinkingTimer;                            //!< timer for blinking effect of station when reagent is expired
+    QTimer* mp_SuckDrainTimer;
     bool m_ReagentExpiredFlag;                           //!< Indicates if the reagent in a station is expired.
     qint32 m_BlinkingCounter;                            //!< Counter for animation
     bool m_StationSelected;                              //!< Indicates if the station is selected for the program
+    QString m_CurrentReagentColorValue;
+    DataManager::ContainerStatusType_t m_ContainerStatusType;
 
 public:
     explicit CDashboardStationItem(Core::CDataConnector *p_DataConnector,                                   
-                                   StationGroupType_t StationGroup, QString StationLabel,
+                                   StationGroupType_t StationGroup, const QString& StationItemID, QString StationLabel,
                                    bool Animation,
                                    DataManager::CDashboardStation *p_DashboardStation = NULL,
                                    QGraphicsItem *p_Parent = NULL);
@@ -129,6 +134,7 @@ public:
     void DrawReagentName(QPainter & Painter);
     void DrawStationItemLabel(QPainter & Painter);
     void FillReagentColor(QPainter & Painter);
+    void SetContainerStatus(DataManager::ContainerStatusType_t containerStatus);
     /****************************************************************************/
     /*!
      *  \brief Sets the selected station
@@ -167,10 +173,11 @@ public:
     /****************************************************************************/
     StationGroupType_t GetStationGroup(){ return m_DashboardStationGroup; }
 
-
+    QRectF boundingRect() const;
+    void SuckDrain(bool isStart = true, bool isSuck = true, const QString& ReagentColorValue = "#FFFFFF");
+    const QString& StationItemID() const;
 
 protected:
-    QRectF boundingRect() const;
     void paint(QPainter *p_Painter, const QStyleOptionGraphicsItem *, QWidget *);
 
 signals:
@@ -191,6 +198,7 @@ public slots:
     void UpdateImage();
     void UpdateDashboardScene(QString StationID);
     void UpdateDashboardStationItemReagent();
+    void SuckDrainAnimation();
 
 
 

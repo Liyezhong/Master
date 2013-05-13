@@ -44,6 +44,25 @@ namespace Core {
     class CDataConnector;
 }
 
+struct PipeRectOrientation
+{
+    PipeRectOrientation()
+    {
+
+    }
+
+    PipeRectOrientation(QRectF rect, QString orientation, QPoint brushOrigin)
+    {
+        m_rect = rect;
+        m_orientation = orientation;
+        m_brushOrigin = brushOrigin;
+    }
+
+    QRectF m_rect;
+    QString m_orientation;
+    QPoint m_brushOrigin;
+};
+
 namespace Dashboard {
 
 /****************************************************************************/
@@ -64,6 +83,7 @@ public:
     const QTime& GetStepRemainingTime();
     const QTime GetProgramRemainingTime();
     const QString GetEndDateTime();
+    void StationSuckDrainAnimationStart(const QString& StationId, bool IsStart, bool IsSuck);
 
 protected:
 
@@ -72,13 +92,12 @@ private:
     MainMenu::CMainWindow *mp_MainWindow;                                            //!< Reference to main window.
     QList<Core::CDashboardStationItem *> mp_DashboardStationItems;                   //!< list of station items
     Core::CDashboardStationItem *mp_DashboardStationRetort;
-    QList<Dashboard::CDashboardStationConnector *> mp_DashboardStationConnectors;    //!< list of station connectors
     QList<QPointF> m_DashboardStationItemPositions;                                  //!< list of station item positions
-    QList<QPointF> m_DashboardStationConnectorsPositions;                             //!< list of station connectors positions
-    QList<int> m_DashboardStationConnectorsWidths;                                    //!< list of station connectors (pipe) width
-    QList<int> m_DashboardStationConnectorsHeights;                                   //!< list of station connectors (pipe) height
     QPoint    m_DashboardEndTimeWidgetPos;
     QHash<QString, DataManager::CDashboardStation*> m_DashboardStationList;          //!< Hash table of Stations
+    QHash<QString, QPointF> m_StationJointList;          //!< Hash table of Station joints
+    QHash<QString, PipeRectOrientation> m_PipeRectList;
+
     QStringList m_DashboardStationIDs;                                               //!< StationIds list
     QList<StationGroupType_t> m_DashboardStationGroup;                               //!< StationGroup list
     QList<QString> m_DashboardStationLabels;
@@ -90,23 +109,52 @@ private:
     bool m_CloneDashboardStationList;                                                //!< True if DataManager StationList has to be cloned.
     DataManager::CDataProgramList *mp_ProgramListClone;                              //!< Cloned DataManager ProgramList
     bool m_CloneProgramList;                                                         //!< True if DataManager StationList has to be cloned.
+    QString m_CurrentReagentColorValue;
+    QStringList m_PipeListP1;
+    QStringList m_PipeListP2;
+    QStringList m_PipeListP3;
 
+    QStringList m_PipeOrientationList;
 
+    QStringList m_PipeListS1;
+    QStringList m_PipeListS2;
+    QStringList m_PipeListS3;
+    QStringList m_PipeListS4;
+    QStringList m_PipeListS5;
+    QStringList m_PipeListS6;
+
+    QStringList m_PipeListS7;
+    QStringList m_PipeListS8;
+    QStringList m_PipeListS9;
+    QStringList m_PipeListS10;
+    QStringList m_PipeListS11;
+    QStringList m_PipeListS12;
+    QStringList m_PipeListS13;
+    bool m_IsSuck;
+    QTimer* m_pPipeAnimationTimer;
+    QGraphicsPathItem* m_pWorkingPipeGraphicsRectItem;
+    QList<QGraphicsPathItem*> m_pGraphicsPathItemPipeList;
+    QGraphicsPathItem* m_WholePipeGraphicsRectItem;
+    int m_currentTimerOrder;
     void InitDashboardStationIDs();
     void InitDashboardStationItemsPositions();
+    void InitStationConnectedPipeList();
     void InitDashboardStationGroups();
     void InitDashboardStationLabels();
-    void InitDashboardStationConnectorsPositions();
-    void InitDashboardStationConnectorsWidths();
-    void InitDashboardStationConnectorsHeights();
     void InitDashboardEndTimeWidgetPosition();
     void AddDashboardStationItemsToScene();
     void AddGraphicsProxyWidgetsToScene();
-
-
+    QRectF MakeHorizontalPipeRect(const QString& stationID, const QString& OtherStationID);
+    QRectF MakeHorizontalBinaryPipeRect(const QString& stationID, const QString& OtherStationID,
+                                        const QString& MidTopStationID, bool IsReturnLeftOne);//IsReturnLeftOne is false ,it will return the right one
+    void CollectPipeRect();
+    void CreateAllPipe();
+    void RepresentCurrentWorkingPipe(const QString& StationID);
+    void ClearCurrentWorkingPipe();
 private slots:
     void UpdateDashboardStations();
     void UpdateDashboardSceneReagentsForProgram(QString&, int);
+    void PipeSuckDrainAnimation();
 
 signals:
     void OnSelectDateTime(const QDateTime &);

@@ -23,7 +23,7 @@
 #include <QObject>
 #include <QVector>
 #include <QPoint>
-#include <QGraphicsItem>
+#include <QGraphicsPathItem>
 
 namespace Dashboard {
 
@@ -32,7 +32,7 @@ namespace Dashboard {
  * \brief This class is the graphics scene for the bath layout.
  */
 /****************************************************************************/
-class CDashboardStationConnector: public QObject, public QGraphicsItem
+class CDashboardStationConnector: public QObject, public QGraphicsPathItem
 {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)

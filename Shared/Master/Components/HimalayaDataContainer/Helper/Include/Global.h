@@ -54,14 +54,15 @@ typedef enum  {
     } RetortStatusType_t;
     
 typedef enum  {
-        PARAFFINBATH_EMPTY = 0,
-        PARAFFINBATH_SCUKING,
-        PARAFFINBATH_DRAINING,
-        PARAFFINBATH_FULL,
-        PARAFFINBATH_EXPIRED,
-        PARAFFINBATH_NOTUSED
-    } StationParaffinBathStatusType_t;
-    
+        CONTAINER_STATUS_EMPTY = 0,
+        CONTAINER_STATUS_SCUKING,
+        CONTAINER_STATUS_DRAINING,
+        CONTAINER_STATUS_FULL,
+        CONTAINER_STATUS_EXPIRED,
+        CONTAINER_STATUS_CONTAMINATED,
+        CONTAINER_STATUS_NOTUSED
+    } ContainerStatusType_t;
+
 
 const QString LEICA("leica");
 

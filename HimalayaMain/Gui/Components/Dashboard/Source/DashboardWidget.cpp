@@ -39,7 +39,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    m_IsWaitingCleaningProgram(false),
                                    m_ForceRunCleanProgram(false),
                                    m_IsResumeRun(false),
-                                   m_CurProgramStepIndex(-1)
+                                   m_CurProgramStepIndex(-1),
+                                   m_CurrentSuckDrainStationID("")
 {
      mp_Ui->setupUi(GetContentFrame());
      SetPanelTitle(tr("Dashboard"));
@@ -201,6 +202,9 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
         {
             case DataManager::PROGRAM_START:
             {
+                //m_CurrentSuckDrainStationID = "P3"; //Test purpose
+                //mp_DashboardScene->StationSuckDrainAnimationStart(m_CurrentSuckDrainStationID, true, true);
+
                 if (CheckPreConditionsToRunProgram()) {
                     OnProgramStartConfirmation();
                     mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
@@ -228,12 +232,14 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
     }
     else if (whichBtn == Dashboard::secondButton)
     {
+        //mp_DashboardScene->StationSuckDrainAnimationStart(m_CurrentSuckDrainStationID, false, true);//Test purpose
 
         if(CheckPreConditionsToAbortProgram()) {
             m_ProgramCurrentAction = DataManager::PROGRAM_ABORT;
             mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction);
 
         }
+
     }
 
 }
