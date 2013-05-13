@@ -599,7 +599,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 mp_ProgramStepStateMachine->NotifyAbort();
             }
-#if 1
+#if 0
           qDebug()<<"unexpected ret code: "<<retCode;
 #endif
         }
@@ -1310,7 +1310,32 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"Failed to heat tube 2, return code: " << retCode;
             goto ERROR;
         }
-
+        bool ok;
+        qreal pressureDrift = mp_DataManager->GetProgramSettings()->GetParameterValue("LA", "Base", "PressureDrift", ok);
+        if(ok)
+        {
+#if 1
+            pressureDrift= mp_IDeviceProcessing->ALGetRecentPressure(0);
+            if(UNDEFINED_VALUE != pressureDrift)
+            {
+                mp_DataManager->GetProgramSettings()->SetParameterValue("LA", "Base", "PressureDrift", pressureDrift);
+            }
+            mp_IDeviceProcessing->ALSetPressureDrift(pressureDrift);
+#else
+            if(UNDEFINED_VALUE == pressureDrift)
+            {
+                 pressureDrift= mp_IDeviceProcessing->ALGetRecentPressure(0);
+                 if(UNDEFINED_VALUE != pressureDrift)
+                 {
+                     mp_DataManager->GetProgramSettings()->SetParameterValue("LA", "Base", "PressureDrift", pressureDrift);
+                 }
+            }
+            else
+            {
+            }
+            mp_IDeviceProcessing->ALSetPressureDrift(pressureDrift);
+#endif
+        }
 
 #endif
         // set state machine "init" to "idle" (David)

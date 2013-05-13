@@ -6,6 +6,9 @@
             <Function Key="AirSystemCleaning">
                 <Parameter Key="LoopCounterForCleaning" Value="30"/>
             </Function>
+            <Function Key="Base">
+                <Parameter Key="PressureDrift" Value="1"/>
+            </Function>
             <Function Key="BottleCheck">
                 <Parameter Key="PressureBuildForBCovertime" Value="30s"/>
                 <Parameter Key="PressureBuildForBottleCheck" Value="10"/>
@@ -81,6 +84,20 @@
                 <Parameter Key="ThresholdTimeOfStable" Value="5s"/>
             </Function>
         </Device>
+        <Device Key="Oven">
+            <Function Key="cover sensor">
+                <Parameter Key="StatusOfCoverSensor" Value="0"/>
+            </Function>
+            <Function Key="oven heating">
+                <Parameter Key="DOfPID" Value=""/>
+                <Parameter Key="HeatingOvertime" Value="12h"/>
+                <Parameter Key="IOfPID" Value=""/>
+                <Parameter Key="POfPID" Value=""/>
+                <Parameter Key="TargetTemperature" Value="2"/>
+                <Parameter Key="TemperatureDifference" Value=""/>
+                <Parameter Key="TemperatureOverrange" Value="100"/>
+            </Function>
+        </Device>
         <Device Key="Retort">
             <Function Key="Retort heating">
                 <Parameter Key="DOfPID" Value=""/>
@@ -152,20 +169,6 @@
             <Function Key="PositionStatus">
                 <Parameter Key="Sensor1" Value="0"/>
                 <Parameter Key="Sensor2" Value="0"/>
-            </Function>
-        </Device>
-        <Device Key="Wax Bath">
-            <Function Key="cover sensor">
-                <Parameter Key="StatusOfCoverSensor" Value="0"/>
-            </Function>
-            <Function Key="oven heating">
-                <Parameter Key="DOfPID" Value=""/>
-                <Parameter Key="HeatingOvertime" Value="12h"/>
-                <Parameter Key="IOfPID" Value=""/>
-                <Parameter Key="POfPID" Value=""/>
-                <Parameter Key="TargetTemperature" Value="2"/>
-                <Parameter Key="TemperatureDifference" Value=""/>
-                <Parameter Key="TemperatureOverrange" Value="100"/>
             </Function>
         </Device>
     </DeviceList>
