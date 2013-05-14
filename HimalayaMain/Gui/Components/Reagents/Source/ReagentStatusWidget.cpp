@@ -105,8 +105,19 @@ void CReagentStatusWidget::SetUserSettings(DataManager::CUserSettings *p_UserSet
 /****************************************************************************/
 void CReagentStatusWidget::OnSetAsEmpty()
 {
-        emit UpdateStationSetAsEmpty(mp_DashStation->GetDashboardStationID());
-         ResetButtons();   
+        MainMenu::CMessageDlg ConfirmationMessageDlg;
+
+        ConfirmationMessageDlg.SetTitle(tr("Confirmation Message"));
+        ConfirmationMessageDlg.SetText(tr("Do you want to set as empty?"));
+        ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
+        ConfirmationMessageDlg.SetButtonText(1, tr("Yes"));
+        ConfirmationMessageDlg.SetButtonText(3, tr("Cancel"));
+        ConfirmationMessageDlg.HideCenterButton();
+        if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
+        {
+            emit UpdateStationSetAsEmpty(mp_DashStation->GetDashboardStationID());
+            ResetButtons();
+        }
 }
 
 /****************************************************************************/
@@ -116,8 +127,19 @@ void CReagentStatusWidget::OnSetAsEmpty()
 /****************************************************************************/
 void CReagentStatusWidget::OnResetData()
 {
+    MainMenu::CMessageDlg ConfirmationMessageDlg;
+
+    ConfirmationMessageDlg.SetTitle(tr("Confirmation Message"));
+    ConfirmationMessageDlg.SetText(tr("Do you want to reset data?"));
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
+    ConfirmationMessageDlg.SetButtonText(1, tr("Yes"));
+    ConfirmationMessageDlg.SetButtonText(3, tr("Cancel"));
+    ConfirmationMessageDlg.HideCenterButton();
+    if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
+    {
         emit UpdateStationResetData(mp_DashStation->GetDashboardStationID());
         ResetButtons();
+    }
 }
 
 /****************************************************************************/
@@ -127,8 +149,19 @@ void CReagentStatusWidget::OnResetData()
 /****************************************************************************/
 void CReagentStatusWidget::OnSetAsFull()
 {
+    MainMenu::CMessageDlg ConfirmationMessageDlg;
+
+    ConfirmationMessageDlg.SetTitle(tr("Confirmation Message"));
+    ConfirmationMessageDlg.SetText(tr("Do you want to set as full?"));
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
+    ConfirmationMessageDlg.SetButtonText(1, tr("Yes"));
+    ConfirmationMessageDlg.SetButtonText(3, tr("Cancel"));
+    ConfirmationMessageDlg.HideCenterButton();
+    if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
+    {
         emit UpdateStationSetAsFull(mp_DashStation->GetDashboardStationID());
-        ResetButtons();   
+        ResetButtons();
+    }
 }
 
 /****************************************************************************/

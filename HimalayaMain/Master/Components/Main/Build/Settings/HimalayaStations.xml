@@ -2,25 +2,25 @@
 <!DOCTYPE Stations>
 <Stations Version="1">
     <Station ID="S1" Name="1" ParaffinBath="false">
-        <Reagent ID="L1" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+        <Reagent ID="L1" ExchangeDate="2013-05-14" ActualCassettes="0" ActualCycles="0" Status="Full"/>
     </Station>
     <Station ID="S2" Name="2" ParaffinBath="false">
-        <Reagent ID="L2" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+        <Reagent ID="L2" ExchangeDate="2013-05-14" ActualCassettes="0" ActualCycles="0" Status="Full"/>
     </Station>
     <Station ID="S3" Name="3" ParaffinBath="false">
-        <Reagent ID="L3" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+        <Reagent ID="L3" ExchangeDate="2013-05-14" ActualCassettes="0" ActualCycles="0" Status="Empty"/>
     </Station>
     <Station ID="S4" Name="4" ParaffinBath="false">
-        <Reagent ID="L4" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+        <Reagent ID="L4" ExchangeDate="2013-05-14" ActualCassettes="0" ActualCycles="0" Status="Full"/>
     </Station>
     <Station ID="S5" Name="5" ParaffinBath="false">
-        <Reagent ID="L5" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+        <Reagent ID="L5" ExchangeDate="2013-05-14" ActualCassettes="0" ActualCycles="0" Status="Empty"/>
     </Station>
     <Station ID="S6" Name="6" ParaffinBath="false">
-        <Reagent ID="L6" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+        <Reagent ID="L6" ExchangeDate="2013-05-14" ActualCassettes="0" ActualCycles="0" Status="Empty"/>
     </Station>
     <Station ID="S7" Name="7" ParaffinBath="false">
-        <Reagent ID="L7" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
+        <Reagent ID="L7" ExchangeDate="2013-05-14" ActualCassettes="0" ActualCycles="0" Status="Empty"/>
     </Station>
     <Station ID="S8" Name="8" ParaffinBath="false">
         <Reagent ID="U103" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>

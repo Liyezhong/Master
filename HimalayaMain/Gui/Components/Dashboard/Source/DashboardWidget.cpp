@@ -435,8 +435,16 @@ bool CDashboardWidget::CheckPreConditionsToPauseProgram()
 
 bool CDashboardWidget::CheckPreConditionsToAbortProgram()
 {
-    return true;
+    MainMenu::CMessageDlg ConfirmationMessageDlg;
 
+    ConfirmationMessageDlg.SetTitle(tr("Confirmation Message"));
+    ConfirmationMessageDlg.SetText(tr("Do you want to abort the program?"));
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
+    ConfirmationMessageDlg.SetButtonText(1, tr("Yes"));
+    ConfirmationMessageDlg.SetButtonText(3, tr("Cancel"));
+    ConfirmationMessageDlg.HideCenterButton();
+
+    return ConfirmationMessageDlg.exec() == (int)QDialog::Accepted;
 }
 
 void CDashboardWidget::OnProgramStartConfirmation()
