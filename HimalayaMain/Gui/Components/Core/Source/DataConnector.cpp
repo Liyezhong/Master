@@ -24,7 +24,6 @@
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImport.h"
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdAlarmToneTest.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 
@@ -83,8 +82,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdCurrentProgramStepInfor>(&CDataConnector::CurrentProgramStepInfoHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramAcknowledge>(&CDataConnector::ProgramAcknowledgeHandler, this);
 
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationParaffinBathStatus>(&CDataConnector::StationParaffinBathStatusHandler, this);
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortStatus>(&CDataConnector::RetortStatusHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationSuckDrain>(&CDataConnector::StationParaffinBathStatusHandler, this);
 
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramSelectedReply>(&CDataConnector::ProgramSelectedReplyHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortLockStatus>(&CDataConnector::RetortLockStatusHandler, this);
@@ -1592,11 +1590,6 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
              emit ProgramWillComplete();
         }
         break;
-        case DataManager::PROGRAM_DRAIN_FINISHED:
-        {
-             emit ProgramDrainFinished();
-        }
-        break;
         case DataManager::PROGRAM_ABORT_FINISHED:
         {
              emit ProgramAborted();
@@ -1637,17 +1630,11 @@ void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClas
     emit RetortLockStatusChanged(Command);
 }
 
-void CDataConnector::RetortStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortStatus & Command)
+
+void CDataConnector::StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationSuckDrain & Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
-    //
-}
-
-void CDataConnector::StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationParaffinBathStatus & Command)
-{
-    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
-    //
-
+    emit StationSuckDrain(Command);
 }
 
 

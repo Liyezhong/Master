@@ -44,14 +44,14 @@ namespace Core {
     class CDataConnector;
 }
 
-struct PipeRectOrientation
+struct PipeRectAndOrientation
 {
-    PipeRectOrientation()
+    PipeRectAndOrientation()
     {
 
     }
 
-    PipeRectOrientation(QRectF rect, QString orientation, QPoint brushOrigin)
+    PipeRectAndOrientation(QRectF rect, QString orientation, QPoint brushOrigin)
     {
         m_rect = rect;
         m_orientation = orientation;
@@ -79,11 +79,11 @@ public:
                         QObject *p_Parent = NULL,
                         MainMenu::CMainWindow *p_MainWindow = NULL);
     virtual ~CDashboardScene();
-    void UpdateRetortStatus(DataManager::RetortStatusType_t retortStatusType);
+    void UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType);
     const QTime& GetStepRemainingTime();
     const QTime GetProgramRemainingTime();
     const QString GetEndDateTime();
-    void StationSuckDrainAnimationStart(const QString& StationId, bool IsStart, bool IsSuck);
+    void OnStationSuckDrain(const QString& StationId, bool IsStart, bool IsSuck);
 
 protected:
 
@@ -96,7 +96,7 @@ private:
     QPoint    m_DashboardEndTimeWidgetPos;
     QHash<QString, DataManager::CDashboardStation*> m_DashboardStationList;          //!< Hash table of Stations
     QHash<QString, QPointF> m_StationJointList;          //!< Hash table of Station joints
-    QHash<QString, PipeRectOrientation> m_PipeRectList;
+    QHash<QString, PipeRectAndOrientation> m_PipeRectList;
 
     QStringList m_DashboardStationIDs;                                               //!< StationIds list
     QList<StationGroupType_t> m_DashboardStationGroup;                               //!< StationGroup list

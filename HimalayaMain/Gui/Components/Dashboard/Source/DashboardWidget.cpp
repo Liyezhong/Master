@@ -40,7 +40,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    m_ForceRunCleanProgram(false),
                                    m_IsResumeRun(false),
                                    m_CurProgramStepIndex(-1),
-                                   m_CurrentSuckDrainStationID("")
+                                   m_IsDraining(false)
 {
      mp_Ui->setupUi(GetContentFrame());
      SetPanelTitle(tr("Dashboard"));
@@ -95,9 +95,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      CONNECTSIGNALSLOT(mp_DataConnector, ProgramWillComplete(),
                        this, OnProgramWillComplete());
 
-     CONNECTSIGNALSLOT(mp_DataConnector, ProgramDrainFinished(),
-                       this, OnDrainFinished());
-
      CONNECTSIGNALSLOT(mp_DataConnector, ProgramAborted(),
                        this, OnProgramAborted());
 
@@ -121,6 +118,10 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      CONNECTSIGNALSLOT(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
                        this, OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
+
+     CONNECTSIGNALSLOT(mp_DataConnector, StationSuckDrain(const MsgClasses::CmdStationSuckDrain &),
+                       this, OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain &));
+
 
 }
 
@@ -202,9 +203,6 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
         {
             case DataManager::PROGRAM_START:
             {
-                //m_CurrentSuckDrainStationID = "P3"; //Test purpose
-                //mp_DashboardScene->StationSuckDrainAnimationStart(m_CurrentSuckDrainStationID, true, true);
-
                 if (CheckPreConditionsToRunProgram()) {
                     OnProgramStartConfirmation();
                     mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
@@ -218,8 +216,7 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
             {
                 if(CheckPreConditionsToPauseProgram())
                 {
-                    m_ProgramCurrentAction = DataManager::PROGRAM_PAUSE;
-                    mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction);
+                    mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_PAUSE);
                     m_ProgramNextAction = DataManager::PROGRAM_START;
                     mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
 
@@ -232,11 +229,8 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
     }
     else if (whichBtn == Dashboard::secondButton)
     {
-        //mp_DashboardScene->StationSuckDrainAnimationStart(m_CurrentSuckDrainStationID, false, true);//Test purpose
-
         if(CheckPreConditionsToAbortProgram()) {
-            m_ProgramCurrentAction = DataManager::PROGRAM_ABORT;
-            mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction);
+            mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
 
         }
 
@@ -449,9 +443,7 @@ void CDashboardWidget::OnProgramStartConfirmation()
 {
     qDebug() << " On Confirmation";
     // Send Command to Master
-    m_ProgramCurrentAction = DataManager::PROGRAM_START;
-    mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction, m_EndDateTime);
-
+    mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, m_EndDateTime);
 }
 
 //Need the gray button!
@@ -478,8 +470,8 @@ void CDashboardWidget::OnProgramWillComplete()
 
     if (mp_MessageDlg->exec())
     {
-        m_ProgramCurrentAction = DataManager::PROGRAM_DRAIN;
-        mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction);
+        m_IsDraining = true;
+        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_DRAIN);
         //disable pause and abort
         mp_Ui->playButton->setEnabled(false);
         mp_Ui->abortButton->setEnabled(false);
@@ -487,10 +479,6 @@ void CDashboardWidget::OnProgramWillComplete()
     }
 }
 
-void CDashboardWidget::OnDrainFinished()
-{
-    this->TakeOutSpecimenAndRunCleaning();
-}
 
 void CDashboardWidget::TakeOutSpecimenAndRunCleaning()
 {
@@ -504,7 +492,7 @@ void CDashboardWidget::TakeOutSpecimenAndRunCleaning()
     if (mp_MessageDlg->exec())
     {
         //represent the retort as contaminated status
-        mp_DashboardScene->UpdateRetortStatus(DataManager::RETORT_CONTAMINATED);
+        mp_DashboardScene->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED);
 
         mp_MessageDlg->SetText(tr("The retort is contaminated, Cleaning Program will run! Please lock the retort then click \"OK\"."));
         mp_MessageDlg->SetButtonText(1, tr("OK"));
@@ -514,7 +502,6 @@ void CDashboardWidget::TakeOutSpecimenAndRunCleaning()
         if (mp_MessageDlg->exec())
         {
             m_IsWaitingCleaningProgram = false;
-            m_ProgramCurrentAction = DataManager::PROGRAM_START;
             m_ForceRunCleanProgram = true;
             m_NewSelectedProgramId = "C01";
             CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = tr("Cleaning Program");
@@ -612,9 +599,9 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
             mp_MessageDlg->SetTitle(tr("Warning"));
             QString strTemp(tr("Program step \""));
             strTemp = strTemp + QString::number(i+1);
-            strTemp = strTemp + "\" of \"";
+            strTemp = strTemp + tr("\" of \"");
             strTemp = strTemp + CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME
-                    + "\" can not find the corresponding reagent station, please set a station for the reagent in this step.";
+                    + tr("\" can not find the corresponding reagent station, please set a station for the reagent in this step.");
             mp_MessageDlg->SetText(strTemp);
             mp_MessageDlg->SetButtonText(1, tr("OK"));
             mp_MessageDlg->HideButtons();
@@ -624,6 +611,36 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
                     return;
             }
             return;
+        }
+        else //then check station's status is empty?
+        {
+            DataManager::CDashboardStation* pStation = mp_DataConnector->DashboardStationList->GetDashboardStation(stationList.at(i));
+            if (!pStation)
+            {
+                Q_ASSERT(0);
+            }
+
+            if ("Empty" == pStation->GetDashboardReagentStatus())
+            {
+                mp_MessageDlg->SetIcon(QMessageBox::Warning);
+                mp_MessageDlg->SetTitle(tr("Warning"));
+                QString strTemp(tr("The Station \""));
+                strTemp = strTemp + pStation->GetDashboardStationName();
+                strTemp = strTemp + tr("\" status is set as Empty in Program step \"");
+                strTemp = strTemp + QString::number(i+1);
+                strTemp = strTemp + tr("\" of \"");
+                strTemp = strTemp + CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME
+                        + tr("\" , it can not be executed.");
+                mp_MessageDlg->SetText(strTemp);
+                mp_MessageDlg->SetButtonText(1, tr("OK"));
+                mp_MessageDlg->HideButtons();
+
+                if (mp_MessageDlg->exec())
+                {
+                        return;
+                }
+                return;
+            }
         }
     }
 
@@ -641,8 +658,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
 
     if (m_ForceRunCleanProgram)//for after program completed
     {
-        m_ProgramCurrentAction = DataManager::PROGRAM_START;
-        mp_DataConnector->SendProgramAction(m_SelectedProgramId, m_ProgramCurrentAction, m_EndDateTime);
+        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, m_EndDateTime);
         m_ForceRunCleanProgram = false;
     }
 }
@@ -650,6 +666,16 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
 void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd)
 {
     m_CurProgramStepIndex = cmd.CurProgramStepIndex();
+}
+
+void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd)
+{
+    if (m_IsDraining && !cmd.IsStart() && !cmd.IsSuck())
+    {
+        this->TakeOutSpecimenAndRunCleaning();
+        m_IsDraining = false;//when abort or pause, set this too?
+    }
+    mp_DashboardScene->OnStationSuckDrain(cmd.StationID(), cmd.IsStart(), cmd.IsSuck());
 }
 
 } // End of namespace Dashboard

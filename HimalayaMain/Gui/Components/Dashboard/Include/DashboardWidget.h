@@ -57,7 +57,6 @@ private:
     Core::CDataConnector *mp_DataConnector;                     //!< Global data container
     CDashboardScene *mp_DashboardScene;                         //!< Displays the station items
     QFrame *mp_Separator;                                       //!< Separator Line between View & Operation
-    DataManager::ProgramActionType_t m_ProgramCurrentAction;    //!< Program Current Action
     DataManager::ProgramActionType_t m_ProgramNextAction;       //!< Program Next Action
     DataManager::CDataProgramList *mp_ProgramList;
     QStringList m_FavProgramIDs;
@@ -77,7 +76,7 @@ private:
     bool m_IsResumeRun;
     QList<QString> m_StationList;
     int m_CurProgramStepIndex;
-    QString m_CurrentSuckDrainStationID;
+    bool m_IsDraining;
     void EnablePlayButton(bool bSetEnable);
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(const DataManager::CProgram*, int, int, int);
@@ -113,7 +112,6 @@ public slots:
     void OnComBoxButtonPress();
     void OnProgramStartReadyUpdated();
     void OnProgramWillComplete();
-    void OnDrainFinished();
     void OnProgramAborted();
     void OnProgramBeginAbort();
     void OnProgramCompleted();
@@ -122,6 +120,7 @@ public slots:
     void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
     void OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd);
     void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
+    void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);
     // Warning Message Slots
     void OnProgramStartConfirmation();
     void OnSelectDateTime(const QDateTime&);

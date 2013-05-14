@@ -65,7 +65,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationParaffinBathStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
@@ -191,8 +191,8 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     RegisterCommandForProcessing<MsgClasses::CmdRetortStatus, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdRetortStatus>, this);
 
-    RegisterCommandForProcessing<MsgClasses::CmdStationParaffinBathStatus, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdStationParaffinBathStatus>, this);
+    RegisterCommandForProcessing<MsgClasses::CmdStationSuckDrain, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdStationSuckDrain>, this);
 
     RegisterCommandForProcessing<MsgClasses::CmdProgramSelectedReply, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdProgramSelectedReply>, this);

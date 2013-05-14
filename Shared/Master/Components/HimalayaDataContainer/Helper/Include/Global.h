@@ -37,7 +37,6 @@ namespace DataManager {
 typedef enum  {
         PROGRAM_READY = 0,
         PROGRAM_WILL_COMPLETE,
-        PROGRAM_DRAIN_FINISHED,
         PROGRAM_CLEANING_FINISHED,
         PROGRAM_ABORT_FINISHED,
         PROGRAM_ABORT_BEGIN,

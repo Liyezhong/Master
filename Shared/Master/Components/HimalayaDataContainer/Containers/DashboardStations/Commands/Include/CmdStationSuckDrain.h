@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdStationParaffinBathStatus.h
+/*! \file CmdStationSuckDrain.h
  *
- *  \brief CmdStationParaffinBathStatus command definition.
+ *  \brief CmdStationSuckDrain command definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 27.03.2013
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef MSGCLASSES_CMDSTATIONPARAFFINBATHSTATUS_H
-#define MSGCLASSES_CMDSTATIONPARAFFINBATHSTATUS_H
+#ifndef MSGCLASSES_CmdStationSuckDrain_H
+#define MSGCLASSES_CmdStationSuckDrain_H
 
 #include <Global/Include/Commands/Command.h>
 #include <HimalayaDataContainer/Helper/Include/Global.h>
@@ -28,32 +28,34 @@ namespace MsgClasses {
 
 /****************************************************************************/
 /*!
- *  \brief  This class implements a CmdStationParaffinBathStatus command.
+ *  \brief  This class implements a CmdStationSuckDrain command.
  *
  * \todo implement
  */
 /****************************************************************************/
-class CmdStationParaffinBathStatus : public Global::Command {
-    friend QDataStream & operator << (QDataStream &, const CmdStationParaffinBathStatus &);
-    friend QDataStream & operator >> (QDataStream &, CmdStationParaffinBathStatus &);
+class CmdStationSuckDrain : public Global::Command {
+    friend QDataStream & operator << (QDataStream &, const CmdStationSuckDrain &);
+    friend QDataStream & operator >> (QDataStream &, CmdStationSuckDrain &);
 public:
-    CmdStationParaffinBathStatus();                                             ///< Not implemented.
+    CmdStationSuckDrain();                                             ///< Not implemented.
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdStationParaffinBathStatus(int Timeout, const QString&, DataManager::ContainerStatusType_t);
-    ~CmdStationParaffinBathStatus();
+    CmdStationSuckDrain(int Timeout, const QString& StationID, bool IsStart, bool IsSuck);
+    ~CmdStationSuckDrain();
     virtual QString GetName() const;
-    inline DataManager::ContainerStatusType_t StationParaffinBathStatusType() const {return m_StationParaffinBathStatusType;}
-    inline const QString& StationParaffinBathID()const {return m_StationParaffinBathID;}
+    inline bool IsStart() const {return m_IsStart;}
+    inline bool IsSuck() const {return m_IsSuck;}
+    inline const QString& StationID()const {return m_StationID;}
 private:
-    CmdStationParaffinBathStatus(const CmdStationParaffinBathStatus &);                     ///< Not implemented.
-    const CmdStationParaffinBathStatus & operator = (const CmdStationParaffinBathStatus &); ///< Not implemented.
+    CmdStationSuckDrain(const CmdStationSuckDrain &);                     ///< Not implemented.
+    const CmdStationSuckDrain & operator = (const CmdStationSuckDrain &); ///< Not implemented.
 private:
-    QString m_StationParaffinBathID;
-    DataManager::ContainerStatusType_t m_StationParaffinBathStatusType;
+    QString m_StationID;
+    bool m_IsStart;
+    bool m_IsSuck;
     
-}; // end class CmdStationParaffinBathStatus
+}; // end class CmdStationSuckDrain
 
 /****************************************************************************/
 /**
@@ -64,13 +66,14 @@ private:
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator << (QDataStream &Stream, const CmdStationParaffinBathStatus &Cmd)
+inline QDataStream & operator << (QDataStream &Stream, const CmdStationSuckDrain &Cmd)
 {
     // copy base class data
     Cmd.CopyToStream(Stream);
     // copy internal data
-    Stream << Cmd.m_StationParaffinBathID;
-    Stream << Cmd.m_StationParaffinBathStatusType;
+    Stream << Cmd.m_StationID;
+    Stream << Cmd.m_IsStart;
+    Stream << Cmd.m_IsSuck;
     return Stream;
 }
 
@@ -83,17 +86,16 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdStationParaffinB
  * \return                      Stream.
  */
 /****************************************************************************/
-inline QDataStream & operator >> (QDataStream &Stream, CmdStationParaffinBathStatus &Cmd)
+inline QDataStream & operator >> (QDataStream &Stream, CmdStationSuckDrain &Cmd)
 {
     // copy base class data
     Cmd.CopyFromStream(Stream);
     // copy internal data
-    Stream >> Cmd.m_StationParaffinBathID;
-    int temp;
-    Stream >> temp;
-    Cmd.m_StationParaffinBathStatusType = (DataManager::ContainerStatusType_t)temp;
+    Stream >> Cmd.m_StationID;
+    Stream >> Cmd.m_IsStart;
+    Stream >> Cmd.m_IsSuck;
     return Stream;
 }
 } // end namespace MsgClasses
 
-#endif // MSGCLASSES_CMDSTATIONPARAFFINBATHSTATUSS_H
+#endif // MSGCLASSES_CmdStationSuckDrainS_H

@@ -45,7 +45,7 @@
 
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationParaffinBathStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
@@ -75,7 +75,6 @@
 namespace MsgClasses
 {
     class CmdProgramAcknowledge;
-    class CmdRetortStatus;
     class CmdRetortLockStatus;
 }
 
@@ -346,14 +345,13 @@ signals:
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
 	void ProgramStartReady();
     void ProgramWillComplete();
-    void ProgramDrainFinished();
     void ProgramAborted();
     void ProgramBeginAbort();
     void ProgramCompleted();
     void ProgramRunBegin();
     void RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& Command);
     void ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& Command);
-    
+    void StationSuckDrain(const MsgClasses::CmdStationSuckDrain& Command);
 private:
     void ConfFileHandler(Global::tRefType Ref, const NetCommands::CmdConfigurationFile &Command);
     void ProcessStateHandler(Global::tRefType ref, const NetCommands::CmdProcessState &Command);
@@ -371,10 +369,9 @@ private:
 
     void CurrentProgramStepInfoHandler(Global::tRefType Ref, const MsgClasses::CmdCurrentProgramStepInfor & Command);
     void ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAcknowledge& Command);
-    void StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationParaffinBathStatus & Command);
+    void StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationSuckDrain & Command);
     void ProgramSelectedReplyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramSelectedReply & Command);
     void RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortLockStatus & Command);
-    void RetortStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortStatus & Command);
 
     void EventStringHandler(Global::tRefType ref, const NetCommands::CmdEventStrings &Command);
     void ReagentRemoveHandler(Global::tRefType Ref, const MsgClasses::CmdReagentRemove &Command);

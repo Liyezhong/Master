@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdStationParaffinBathStatus.cpp
+/*! \file CmdStationSuckDrain.cpp
  *
- *  \brief CmdStationParaffinBathStatus command implementation.
+ *  \brief CmdStationSuckDrain command implementation.
  *
  *   $Version: $ 0.1
 *   $Date:    $ 27.03.2013
@@ -18,21 +18,21 @@
  */
 /****************************************************************************/
 
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationParaffinBathStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 namespace MsgClasses {
 
-QString CmdStationParaffinBathStatus::NAME = "MsgClasses::CmdStationParaffinBathStatus";
+QString CmdStationSuckDrain::NAME = "MsgClasses::CmdStationSuckDrain";
 
 
-CmdStationParaffinBathStatus::CmdStationParaffinBathStatus(int Timeout, const QString& StationParaffinBathID,
-                                    DataManager::ContainerStatusType_t StationParaffinBathStatusType) :
+CmdStationSuckDrain::CmdStationSuckDrain(int Timeout, const QString& StationID, bool IsStart, bool IsSuck) :
     Command(Timeout),
-    m_StationParaffinBathID(StationParaffinBathID),
-    m_StationParaffinBathStatusType(StationParaffinBathStatusType)
+    m_StationID(StationID),
+    m_IsStart(IsStart),
+    m_IsSuck(IsSuck)
 {
 }
 
-CmdStationParaffinBathStatus::CmdStationParaffinBathStatus()
+CmdStationSuckDrain::CmdStationSuckDrain()
     : Command(0)
 {
 }
@@ -42,7 +42,7 @@ CmdStationParaffinBathStatus::CmdStationParaffinBathStatus()
  *  \brief   Destructor
  */
 /****************************************************************************/
-CmdStationParaffinBathStatus::~CmdStationParaffinBathStatus()
+CmdStationSuckDrain::~CmdStationSuckDrain()
 {
 }
 
@@ -53,7 +53,7 @@ CmdStationParaffinBathStatus::~CmdStationParaffinBathStatus()
  *  \return  command name as string
  */
 /****************************************************************************/
-QString CmdStationParaffinBathStatus::GetName() const
+QString CmdStationSuckDrain::GetName() const
 {
     return NAME;
 }

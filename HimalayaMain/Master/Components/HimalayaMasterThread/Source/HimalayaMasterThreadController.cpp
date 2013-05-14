@@ -76,7 +76,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationParaffinBathStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
@@ -280,7 +280,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<MsgClasses::CmdRetortLock>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdRetortLockStatus>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdRetortStatus>(&m_CommandChannelGui);
-    RegisterCommandForRouting<MsgClasses::CmdStationParaffinBathStatus>(&m_CommandChannelGui);
+    RegisterCommandForRouting<MsgClasses::CmdStationSuckDrain>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdProgramSelectedReply>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdCurrentProgramStepInfor>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdProgramAcknowledge>(&m_CommandChannelGui);
