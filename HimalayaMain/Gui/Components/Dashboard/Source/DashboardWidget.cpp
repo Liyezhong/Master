@@ -86,8 +86,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
      CONNECTSIGNALSLOT(mp_ProgramStatusWidget, AbortClicked(int), this, OnButtonClicked(int));
 
-     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int),
-                        mp_DashboardScene, UpdateDashboardSceneReagentsForProgram(QString &, int));
+     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, QList<QString>&),
+                        mp_DashboardScene, UpdateDashboardSceneReagentsForProgram(QString &, int, QList<QString>&));
 
      CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
                        this, OnProgramStartReadyUpdated());
@@ -662,7 +662,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
                                   cmd.ParaffinWeltCostedTime(), cmd.CostedTimeBeforeParaffin());
     m_TimeProposed = cmd.TimeProposed();
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
-    emit ProgramSelected(m_SelectedProgramId, asapEndTime);//for UI update
+    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
 
     if (m_ForceRunCleanProgram)//for after program completed
     {

@@ -153,7 +153,7 @@ private:
     void ClearCurrentWorkingPipe();
 private slots:
     void UpdateDashboardStations();
-    void UpdateDashboardSceneReagentsForProgram(QString&, int);
+    void UpdateDashboardSceneReagentsForProgram(QString&, int, QList<QString>&);
     void PipeSuckDrainAnimation();
 
 signals:

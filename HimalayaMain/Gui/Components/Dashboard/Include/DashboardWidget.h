@@ -100,7 +100,7 @@ signals:
     void ProgramActionStopped(DataManager::ProgramActionType_t);
     void UpdateProgramName(QString SelectedProgramName);
     void UpdateDashboardSceneReagentStations(QString& ProgramID);
-    void ProgramSelected(QString & ProgramId, int asapEndTime);
+    void ProgramSelected(QString & ProgramId, int asapEndTime, QList<QString>& SelectedStationList);
 
 public slots:
     void RetortSliderPositionChanged(MainMenu::CSliderControl::Position_t Position);
