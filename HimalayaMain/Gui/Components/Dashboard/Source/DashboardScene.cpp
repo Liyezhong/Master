@@ -577,7 +577,6 @@ void CDashboardScene::UpdateDashboardStations()
 void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId, int asapEndTime, QList<QString>& selectedStationList)
 {
     DataManager::CProgram const *p_Program = NULL;
-    QStringList ProgramReagentIdList;
 
     if (m_CloneProgramList) {
         *mp_ProgramListClone = *(mp_DataConnector->ProgramList);
@@ -585,20 +584,27 @@ void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId,
     p_Program = mp_ProgramListClone->GetProgram(programId);
     if(p_Program) {
         mp_DashboardEndTimeWidget->UpdateEndTimeWidgetItems(p_Program, asapEndTime);
-        ProgramReagentIdList = p_Program->GetReagentIDList();
     }
+    else
+        mp_DashboardEndTimeWidget->InitEndTimeWidgetItems();
 
     for(int j = 0 ; j < m_DashboardStationList.count(); j++)
     {
-         Core::CDashboardStationItem *pListItem =
-                static_cast<Core::CDashboardStationItem *>(mp_DashboardStationItems[j]);
+        Core::CDashboardStationItem *pListItem =
+            static_cast<Core::CDashboardStationItem *>(mp_DashboardStationItems[j]);
 
-         if(selectedStationList.contains(pListItem->GetDashboardStation()->GetDashboardStationID()))
+        if(!p_Program)//reset
+        {
             pListItem->StationSelected(true);
-         else
-            pListItem->StationSelected(false);
-
-         pListItem->UpdateDashboardStationItemReagent();
+        }
+        else
+        {
+            if(selectedStationList.contains(pListItem->GetDashboardStation()->GetDashboardStationID()))
+                pListItem->StationSelected(true);
+            else
+                pListItem->StationSelected(false);
+        }
+        pListItem->UpdateDashboardStationItemReagent();
     }
 }
 

@@ -71,6 +71,7 @@ private:
     void RetranslateUI();
     void ResetButtons();
 
+
 public:
     explicit CReagentStatusWidget(QWidget *p_Parent = 0);
     ~CReagentStatusWidget();
@@ -79,6 +80,7 @@ public:
                             DataManager::CDataReagentList *p_ReagentList,
                             MainMenu::CMainWindow *p_MainWindow,
                             KeyBoard::CKeyBoard *p_KeyBoard = NULL);
+    static bool HaveSelectedProgram();
 private slots:
     void OnSetAsEmpty();
     void OnSetAsFull();

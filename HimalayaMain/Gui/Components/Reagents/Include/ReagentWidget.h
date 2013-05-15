@@ -96,7 +96,7 @@ signals:
      */
     /****************************************************************************/
     void RMSValueChanged(Global::RMSOptions_t);
-
+    void UnselectProgram();
 
 private slots:
     void OnUserRoleChanged();

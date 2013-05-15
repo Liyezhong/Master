@@ -28,6 +28,8 @@
 
 namespace Dashboard {
 
+QString CDashboardWidget::m_SelectedProgramId = "";
+
 CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    MainMenu::CMainWindow *p_Parent): MainMenu::CPanelFrame(p_Parent),
                                    mp_Ui(new Ui::CDashboardWidget),mp_MainWindow(p_Parent),
@@ -74,7 +76,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      m_btnGroup.addButton(mp_Ui->abortButton, Dashboard::secondButton);
 
      //mp_Ui->abortButton->setEnabled(false);
-     EnablePlayButton(true);
+     EnablePlayButton(false);
 
      m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
      mp_MessageDlg = new MainMenu::CMessageDlg();
@@ -243,6 +245,18 @@ void CDashboardWidget::OnRMSValueChanged(Global::RMSOptions_t state)
     m_RMSState = state;
 }
 
+void CDashboardWidget::OnUnselectProgram()
+{
+    m_SelectedProgramId = "";
+    EnablePlayButton(false);
+    m_StationList.clear();
+    //Show program name in the comboBox
+    CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = tr("Program");
+    mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+    int asapEndTime = 0;
+    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
+}
+
 void CDashboardWidget::OnSelectDateTime(const QDateTime& dateTime)
 {
     m_EndDateTime = dateTime;
@@ -347,6 +361,11 @@ void CDashboardWidget::OnComBoxButtonPress()
         mp_ProgramStatusWidget->move(80,50);
         mp_ProgramStatusWidget->show();
     }
+}
+
+const QString& CDashboardWidget::SelectedProgramId()
+{
+    return m_SelectedProgramId;
 }
 
 void CDashboardWidget::PrepareSelectedProgramChecking()

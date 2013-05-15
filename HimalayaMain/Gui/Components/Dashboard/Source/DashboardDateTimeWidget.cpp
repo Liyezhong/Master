@@ -28,7 +28,7 @@
 
 namespace Dashboard {
 
-QString CDashboardDateTimeWidget :: SELECTED_PROGRAM_NAME = tr("Test Protocol 1");
+QString CDashboardDateTimeWidget :: SELECTED_PROGRAM_NAME = tr("");
 const int ONE_WEEK_TIME_OFFSET_VALUE = (7 * 24 * 60 * 60);
 
 /****************************************************************************/

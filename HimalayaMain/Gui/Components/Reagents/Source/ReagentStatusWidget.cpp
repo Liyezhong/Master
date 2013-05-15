@@ -6,6 +6,7 @@
 #include "Reagents/Include/ReagentStatusWidget.h"
 #include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "ui_ReagentStatusWidget.h"
+#include "Dashboard/Include/DashboardWidget.h"
 
 #include <QDebug>
 
@@ -97,6 +98,27 @@ void CReagentStatusWidget::SetUserSettings(DataManager::CUserSettings *p_UserSet
     m_ReagentStatusModel.SetUserSettings(p_UserSettings);
 }
 
+bool CReagentStatusWidget::HaveSelectedProgram()
+{
+    if (!Dashboard::CDashboardWidget::SelectedProgramId().isEmpty())
+    {
+        MainMenu::CMessageDlg ConfirmationMessageDlg;
+        ConfirmationMessageDlg.SetTitle(tr("Warning"));
+        QString strMsg;
+        strMsg.append(tr("As the program \""));
+        strMsg.append(Dashboard::CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+        strMsg.append(tr("\" is selected, this operation will reusult in an incorrect program result,"));
+        strMsg.append(tr("if you click \"Yes\", the selected program will unselect."));
+        ConfirmationMessageDlg.SetText(strMsg);
+        ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
+        ConfirmationMessageDlg.SetButtonText(1, tr("Yes"));
+        ConfirmationMessageDlg.SetButtonText(3, tr("Cancel"));
+        ConfirmationMessageDlg.HideCenterButton();
+        if (!ConfirmationMessageDlg.exec())
+            return false;
+    }
+    return true;
+}
 
 /****************************************************************************/
 /*!
@@ -115,6 +137,8 @@ void CReagentStatusWidget::OnSetAsEmpty()
         ConfirmationMessageDlg.HideCenterButton();
         if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
         {
+            if (!HaveSelectedProgram())
+                return;
             emit UpdateStationSetAsEmpty(mp_DashStation->GetDashboardStationID());
             ResetButtons();
         }
@@ -137,6 +161,8 @@ void CReagentStatusWidget::OnResetData()
     ConfirmationMessageDlg.HideCenterButton();
     if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
     {
+        if (!HaveSelectedProgram())
+            return;
         emit UpdateStationResetData(mp_DashStation->GetDashboardStationID());
         ResetButtons();
     }

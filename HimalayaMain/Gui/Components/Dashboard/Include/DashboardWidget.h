@@ -62,7 +62,8 @@ private:
     QStringList m_FavProgramIDs;
 
     CDashboardProgramStatusWidget *mp_ProgramStatusWidget;
-    QString m_SelectedProgramId, m_NewSelectedProgramId;
+    static QString m_SelectedProgramId;
+    QString m_NewSelectedProgramId;
     QButtonGroup m_btnGroup;                                    //!< Button Group
     Global::RMSOptions_t m_RMSState;                            //!< Current RMS State
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
@@ -89,7 +90,7 @@ public:
     bool CheckPreConditionsToRunProgram();
     bool CheckPreConditionsToPauseProgram();
     bool CheckPreConditionsToAbortProgram();
-
+    static const QString& SelectedProgramId();
 protected:
     void DrawSeparatorLine();
 
@@ -107,6 +108,7 @@ public slots:
     void OnUserRoleChanged();
     void OnButtonClicked(int whichBtn);
     void OnRMSValueChanged(Global::RMSOptions_t);
+    void OnUnselectProgram();
     void AddItemsToComboBox();
     void OnActivated(int);
     void OnComBoxButtonPress();
