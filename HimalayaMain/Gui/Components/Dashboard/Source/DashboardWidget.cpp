@@ -76,7 +76,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      m_btnGroup.addButton(mp_Ui->abortButton, Dashboard::secondButton);
 
      //mp_Ui->abortButton->setEnabled(false);
-     EnablePlayButton(false);
+     EnablePlayButton(true);
 
      m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
      mp_MessageDlg = new MainMenu::CMessageDlg();
@@ -384,65 +384,71 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
     if (m_IsResumeRun)
         return true;
 
-    //Todo: We should give the Expired conditions
-   /* if((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
-        m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-            Global::RMS_OFF != m_RMSState)
-    {*/
-        qDebug() << "RMS IS ON && User = Admin | Service";
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(tr("Warning"));
-        mp_MessageDlg->SetText(tr("Do you want to Start the Program with Expired Reagents."));
-        mp_MessageDlg->SetButtonText(3, tr("Cancel"));
-        mp_MessageDlg->SetButtonText(1, tr("OK"));
-        mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
-
-        if (mp_MessageDlg->exec())
+    if (Global::RMS_OFF != m_RMSState && mp_DashboardScene->HaveExpiredReagent())
+    {
+        if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
         {
-            //Check cleaning program run in last time?
-            bool isCleaningProgramRun = true; // get this from a log file.
-            if (!isCleaningProgramRun)
-            {
-                mp_MessageDlg->SetIcon(QMessageBox::Information);
-                mp_MessageDlg->SetTitle(tr("Information"));
-                mp_MessageDlg->SetText(tr("Found cleaning program did not run in last time."));
-                mp_MessageDlg->SetButtonText(1, tr("OK"));
-                mp_MessageDlg->HideButtons();
-                if (mp_MessageDlg->exec())
-                {
-                    TakeOutSpecimenAndRunCleaning();
-                }
-                return false;
-            }
-
-            if ( mp_DataConnector)
-            {
-                //input cassette number
-                if (Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
-                {
-                    CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
-                    pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
-                    pCassetteInput->move(80,50);
-                    pCassetteInput->SetDialogTitle(tr("Please set numbers of cassettes:"));
-                    pCassetteInput->exec();
-
-                    int cassetteNumber = pCassetteInput->CassetteNumber();
-                    if (-1 == cassetteNumber)
-                        return false;//clicked Cancel button
-
-                    mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
-                    delete pCassetteInput;
-                }
-            }
-            return true;
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(tr("Warning"));
+            mp_MessageDlg->SetText(tr("Some expired reagents are used in this selected program, you can not start this program."));
+            mp_MessageDlg->SetButtonText(1, tr("OK"));
+            mp_MessageDlg->HideButtons();
+            if (mp_MessageDlg->exec())
+            return false;
         }
         else
+        if(m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
+        m_CurrentUserRole == MainMenu::CMainWindow::Service)
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(tr("Warning"));
+            mp_MessageDlg->SetText(tr("Do you want to Start the Program with Expired Reagents."));
+            mp_MessageDlg->SetButtonText(3, tr("Cancel"));
+            mp_MessageDlg->SetButtonText(1, tr("OK"));
+            mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
+
+            if (!mp_MessageDlg->exec())
             return false;
+        }
+    }
 
-    //}
+    //Check cleaning program run in last time?
+    bool isCleaningProgramRun = true; // get this from a log file.
+    if (!isCleaningProgramRun)
+    {
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
+        mp_MessageDlg->SetTitle(tr("Information"));
+        mp_MessageDlg->SetText(tr("Found cleaning program did not run in last time."));
+        mp_MessageDlg->SetButtonText(1, tr("OK"));
+        mp_MessageDlg->HideButtons();
+        if (mp_MessageDlg->exec())
+        {
+            TakeOutSpecimenAndRunCleaning();
+        }
+        return false;
+     }
 
-    //return false;
+    if ( mp_DataConnector)
+    {
+        //input cassette number
+        if (Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
+        {
+            CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
+            pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
+            pCassetteInput->move(80,50);
+            pCassetteInput->SetDialogTitle(tr("Please set numbers of cassettes:"));
+            pCassetteInput->exec();
 
+            int cassetteNumber = pCassetteInput->CassetteNumber();
+            if (-1 == cassetteNumber)
+                return false;//clicked Cancel button
+
+            mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
+            delete pCassetteInput;
+        }
+    }
+
+    return true;
 }
 
 bool CDashboardWidget::CheckPreConditionsToPauseProgram()

@@ -176,7 +176,7 @@ public:
     QRectF boundingRect() const;
     void SuckDrain(bool isStart = true, bool isSuck = true, const QString& ReagentColorValue = "#FFFFFF");
     const QString& StationItemID() const;
-
+    bool IsReagentExpired();
 protected:
     void paint(QPainter *p_Painter, const QStyleOptionGraphicsItem *, QWidget *);
 

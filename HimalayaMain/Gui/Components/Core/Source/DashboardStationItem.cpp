@@ -806,6 +806,11 @@ const QString& CDashboardStationItem::StationItemID() const
     return m_StationItemID;
 }
 
+bool CDashboardStationItem::IsReagentExpired()
+{
+    return m_ReagentExpiredFlag;
+}
+
 void CDashboardStationItem::SetContainerStatus(DataManager::ContainerStatusType_t containerStatus)
 {
     if (DataManager::CONTAINER_STATUS_CONTAMINATED == containerStatus)

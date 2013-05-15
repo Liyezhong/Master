@@ -680,4 +680,17 @@ void CDashboardScene::OnStationSuckDrain(const QString& StationId, bool IsStart,
    }
 }
 
+bool CDashboardScene::HaveExpiredReagent()
+{
+    for (int i = 0; i < mp_DashboardStationItems.size(); i++)
+    {
+         Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
+         if (item)
+         {
+             if (item->GetStationSelect() && item->IsReagentExpired())
+                 return true;
+         }
+    }
+}
+
 } // end namespace Dashboard

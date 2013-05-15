@@ -84,7 +84,7 @@ public:
     const QTime GetProgramRemainingTime();
     const QString GetEndDateTime();
     void OnStationSuckDrain(const QString& StationId, bool IsStart, bool IsSuck);
-
+    bool HaveExpiredReagent();
 protected:
 
 private:
