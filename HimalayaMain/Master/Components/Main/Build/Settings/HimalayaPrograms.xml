@@ -9,7 +9,7 @@
         </Program>
         <Program ID="C01" Name="TestCleaningprogram" Icon="IconFile" LeicaProgram="true" Favorite="true">
             <StepList NextStepID="2">
-                <Step ID="1" ReagentID="L12" Duration="12m" Temperature="55" Pressure="Off" Vacuum="Off"/>
+                <Step ID="1" ReagentID="L10" Duration="12m" Temperature="55" Pressure="Off" Vacuum="Off"/>
             </StepList>
         </Program>
         <Program ID="U01" Name="TestUserProgram" Icon="IconFile" LeicaProgram="false" Favorite="true">
@@ -20,7 +20,7 @@
         <Program ID="L02" Name="LeicaOvernight" Icon="CheckedPressed" LeicaProgram="false" Favorite="true">
             <StepList NextStepID="14">
                 <Step ID="0" ReagentID="L1" Duration="1h" Temperature="37" Pressure="On" Vacuum="On"/>
-                <Step ID="1" ReagentID="U110" Duration="2m" Temperature="37" Pressure="Off" Vacuum="Off"/>
+                <Step ID="1" ReagentID="L9" Duration="2m" Temperature="37" Pressure="Off" Vacuum="Off"/>
                 <Step ID="2" ReagentID="L2" Duration="40m" Temperature="45" Pressure="Off" Vacuum="Off"/>
                 <Step ID="3" ReagentID="L3" Duration="40m" Temperature="45" Pressure="Off" Vacuum="Off"/>
                 <Step ID="4" ReagentID="L5" Duration="40m" Temperature="45" Pressure="Off" Vacuum="Off"/>
@@ -38,7 +38,7 @@
         <Program ID="L3" Name="Biopsie" Icon="CheckedDisabled" LeicaProgram="false" Favorite="false">
             <StepList NextStepID="14">
                 <Step ID="0" ReagentID="L1" Duration="15m" Temperature="37" Pressure="On" Vacuum="On"/>
-                <Step ID="1" ReagentID="U110" Duration="2m" Temperature="37" Pressure="Off" Vacuum="Off"/>
+                <Step ID="1" ReagentID="L9" Duration="2m" Temperature="37" Pressure="Off" Vacuum="Off"/>
                 <Step ID="2" ReagentID="L2" Duration="5m" Temperature="45" Pressure="Off" Vacuum="Off"/>
                 <Step ID="3" ReagentID="L3" Duration="5m" Temperature="45" Pressure="Off" Vacuum="Off"/>
                 <Step ID="4" ReagentID="L5" Duration="5m" Temperature="45" Pressure="Off" Vacuum="Off"/>

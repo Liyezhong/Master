@@ -471,7 +471,7 @@ void CDashboardWidget::OnProgramWillComplete()
     mp_MessageDlg->SetTitle(tr("Warning"));
     QString strTemp(tr("Program \""));
     strTemp = strTemp + CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME
-            + "\" is complete! Would you like to drain the retort?";
+            + tr("\" is complete! Would you like to drain the retort?");
     mp_MessageDlg->SetText(strTemp);
     mp_MessageDlg->SetButtonText(1, tr("OK"));
     mp_MessageDlg->HideButtons();
@@ -543,7 +543,7 @@ void CDashboardWidget::OnProgramAborted()
     mp_MessageDlg->SetTitle(tr("Warning"));
     QString strTemp(tr("Program \""));
     strTemp = strTemp + CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME
-            + "\" is aborted! Would you like to start a new Program?";
+            + tr("\" is aborted! Would you like to start a new Program?");
     mp_MessageDlg->SetText(strTemp);
     mp_MessageDlg->SetButtonText(1, tr("Yes"));
     mp_MessageDlg->SetButtonText(3, tr("No"));
@@ -609,7 +609,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
             strTemp = strTemp + QString::number(i+1);
             strTemp = strTemp + tr("\" of \"");
             strTemp = strTemp + CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME
-                    + tr("\" can not find the corresponding reagent station, please set a station for the reagent in this step.");
+                    + tr("\" can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.");
             mp_MessageDlg->SetText(strTemp);
             mp_MessageDlg->SetButtonText(1, tr("OK"));
             mp_MessageDlg->HideButtons();

@@ -189,6 +189,10 @@ bool CSpecialVerifierGroupA::CheckData()
                         if(Current_ReagentID.isEmpty()){
                             continue;
                         }
+
+                        if (!mp_DReagentList->GetReagent(Current_ReagentID))
+                            continue;
+
                         Current_ReagentGroupID = mp_DReagentList->GetReagent(Current_ReagentID)->GetGroupID();
                         bool ok = false;
                         temperature = Current_ProgramStep->GetTemperature().toInt(&ok);

@@ -796,6 +796,10 @@ const QString& SchedulerMainThreadController::SelectStationByReagent(const CReag
                                                                     bool bFindNewestOne,
                                                                     Global::RMSOptions_t rmsMode) const
 {
+    Q_UNUSED(bFindNewestOne);
+    Q_UNUSED(usedStations);
+    Q_UNUSED(rmsMode);
+
     if (!pReagent)
         return "";
 
@@ -805,65 +809,16 @@ const QString& SchedulerMainThreadController::SelectStationByReagent(const CReag
 
     const QString& ReagentID = pReagent->GetReagentID();
 
-    int days = INT_MAX;
-    qreal usedCassetteOrCyclePercent = DBL_MAX;
-    QString stationID("");
-
-
     for (int i = 0; i < unusedStationIDs.count(); i++)
     {
         CDashboardStation* pDashboardStation = pDashboardDataStationList->GetDashboardStation(unusedStationIDs.at(i));
         if (pDashboardStation->GetDashboardReagentID() == ReagentID)
         {
-            if (!bFindNewestOne || rmsMode == Global::RMS_OFF)
-                return pDashboardStation->GetDashboardStationID();//get the first finding directly
-            {//get the newest one
-                //day
-                if (rmsMode == Global::RMS_DAYS)
-                {
-                    QDate dateOfThisOne = pDashboardStation->GetDashboardReagentExchangeDate();
-                    int temp = dateOfThisOne.daysTo(QDate::currentDate());
-                    if(temp < days) //get the minimum
-                    {
-                        days = temp;
-                        stationID = pDashboardStation->GetDashboardStationID();
-                    }
-                }
-                else if(rmsMode == Global::RMS_CASSETTES)
-                {
-                    qreal temp = (qreal)pDashboardStation->GetDashboardReagentActualCassettes() / (pReagent->GetMaxCassettes());
-                    if (temp < usedCassetteOrCyclePercent)
-                    {
-                        usedCassetteOrCyclePercent = temp;
-                        stationID = pDashboardStation->GetDashboardStationID();
-                    }
-                }
-                else if (rmsMode == Global::RMS_CYCLES)
-                {
-                    qreal temp = (qreal)pDashboardStation->GetDashboardReagentActualCycles() / pReagent->GetMaxCycles();
-                    if (temp < usedCassetteOrCyclePercent)
-                    {
-                        usedCassetteOrCyclePercent = temp;
-                        stationID = pDashboardStation->GetDashboardStationID();
-                    }
-                }
-
-            }
+                unusedStationIDs.removeAt(i);
+                return pDashboardStation->GetDashboardStationID();
         }
     }
-
-    /*if ( "" != stationID)
-    {
-        unusedStationIDs.remove(stationID);
-        //add to usedDashboardStationList and increase 1 for this dashboard
-        usedStations.push_back(StationUseRecord_t(stationID, 1));
-    }
-    else
-    {
-        //find in usedDashboardStationList
-    }*/
-
-    return stationID;
+    return "";
 }
 
 bool SchedulerMainThreadController::PrepareProgramStationList(const QString& ProgramID)
