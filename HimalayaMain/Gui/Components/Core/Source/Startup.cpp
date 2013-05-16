@@ -56,7 +56,6 @@ CStartup::CStartup() : QObject()
     MainMenu::StatusBarManager::CreateInstance(&m_MainWindow,mp_DataConnector->SettingsInterface);
 
     // Dashboard Signals & Slots
-    CONNECTSIGNALSLOT(mp_Reagents, RMSValueChanged(Global::RMSOptions_t), mp_Dashboard, OnRMSValueChanged(Global::RMSOptions_t));
     CONNECTSIGNALSLOT(mp_Reagents, UnselectProgram(), mp_Dashboard, OnUnselectProgram());
 
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramsUpdated(), mp_Dashboard, AddItemsToComboBox());  // To Populate the ComboBox Items in the initial stage

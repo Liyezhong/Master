@@ -24,6 +24,7 @@
 #include "MainMenu/Include/SliderControl.h"
 #include "Dashboard/Include/DashboardProgramStatusWidget.h"
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 
 
 namespace Dashboard {
@@ -240,11 +241,6 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
 
 }
 
-void CDashboardWidget::OnRMSValueChanged(Global::RMSOptions_t state)
-{
-    m_RMSState = state;
-}
-
 void CDashboardWidget::OnUnselectProgram()
 {
     m_SelectedProgramId = "";
@@ -384,7 +380,25 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
     if (m_IsResumeRun)
         return true;
 
-    if (Global::RMS_OFF != m_RMSState && mp_DashboardScene->HaveExpiredReagent())
+    DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
+    bool isRMSOFF = false;
+    if (Global::RMS_OFF == userSetting->GetModeRMSCleaning() || Global::RMS_OFF == userSetting->GetModeRMSProcessing())
+    {
+        isRMSOFF = true;
+    }
+
+    if (isRMSOFF && mp_ProgramList->GetProgram(m_SelectedProgramId)->IsLeicaProgram())
+    {
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(tr("Warning"));
+        mp_MessageDlg->SetText(tr("Can not start Leica Program With RMS OFF,please trun on RMS."));
+        mp_MessageDlg->SetButtonText(1, tr("OK"));
+        mp_MessageDlg->HideButtons();
+        if (mp_MessageDlg->exec())
+        return false;
+    }
+
+    if (!isRMSOFF && mp_DashboardScene->HaveExpiredReagent())
     {
         if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
         {

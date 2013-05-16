@@ -65,7 +65,6 @@ private:
     static QString m_SelectedProgramId;
     QString m_NewSelectedProgramId;
     QButtonGroup m_btnGroup;                                    //!< Button Group
-    Global::RMSOptions_t m_RMSState;                            //!< Current RMS State
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
     bool m_UserRoleChanged;                                     //!< Flag to Verify the Change in User Role
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
@@ -107,7 +106,6 @@ public slots:
     void RetortSliderPositionChanged(MainMenu::CSliderControl::Position_t Position);
     void OnUserRoleChanged();
     void OnButtonClicked(int whichBtn);
-    void OnRMSValueChanged(Global::RMSOptions_t);
     void OnUnselectProgram();
     void AddItemsToComboBox();
     void OnActivated(int);
