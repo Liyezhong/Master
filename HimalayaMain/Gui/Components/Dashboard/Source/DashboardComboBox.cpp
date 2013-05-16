@@ -42,6 +42,9 @@ CDashboardComboBox::CDashboardComboBox(QWidget *p_Parent):
                                 //);
    // setView(mp_ListView);
     m_SelProgName = tr("Program");
+    m_PixmapEnable.load(":/HimalayaImages/ComboButton/ComboButton_Button_Enable.png");
+    m_PixmapRunning.load(":/HimalayaImages/ComboButton/ComboButton_Program_Running.png");
+    m_Pixmap = &m_PixmapEnable;
 }
 
 CDashboardComboBox::~CDashboardComboBox()
@@ -70,13 +73,12 @@ void CDashboardComboBox::paintEvent(QPaintEvent *e)
     Q_UNUSED(e);
     QPainter Painter(this);
     QFont TextFont;
-    Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/ComboButton/ComboButton_Button_Enable.png"));
+    Painter.drawPixmap(0, 0, *m_Pixmap);
     Painter.setRenderHint(QPainter::Antialiasing);
     TextFont.setPointSize(14);
     Painter.setFont(TextFont);
     Painter.setPen(Qt::white);
     Painter.drawText(rect(), Qt::AlignCenter, m_SelProgName);
-
 }
 
 void CDashboardComboBox::mousePressEvent(QMouseEvent *e)
@@ -97,6 +99,11 @@ void CDashboardComboBox::UpdateSelectedProgramName(QString &SelProgramName)
 void  CDashboardComboBox::WorkAsButton(bool bSet)
 {
     m_IsWorkAsButton = bSet;
+    if (m_IsWorkAsButton)
+        m_Pixmap = &m_PixmapRunning;
+    else
+        m_Pixmap = &m_PixmapEnable;
+    update();
 }
 
 }

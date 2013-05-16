@@ -35,13 +35,24 @@ namespace DataManager {
     } ProgramActionType_t;
 
 typedef enum  {
+        PROGRAM_STATUS_COMPLETED = 0,
+        PROGRAM_STATUS_ABORTED
+   } ProgramStatusType_t;
+
+typedef enum  {
         PROGRAM_READY = 0,
         PROGRAM_WILL_COMPLETE,
         PROGRAM_CLEANING_FINISHED,
-        PROGRAM_ABORT_FINISHED,
-        PROGRAM_ABORT_BEGIN,
+
         PROGRAM_RUN_BEGIN,
-        PROGRAM_RUN_FINISHED
+        PROGRAM_RUN_FINISHED,
+
+        PROGRAM_PAUSE_BEGIN,
+        PROGRAM_PAUSE_FINISHED,
+
+        PROGRAM_ABORT_BEGIN,
+        PROGRAM_ABORT_FINISHED
+
     } ProgramAcknownedgeType_t;
     
 typedef enum  {

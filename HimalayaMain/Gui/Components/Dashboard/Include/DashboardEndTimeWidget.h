@@ -68,7 +68,7 @@ public slots:
     void UpdateProgress();
     void OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType, int remainingTimeTotal,
                                 const QDateTime& startDateTime, bool IsResume);//in seconds
-    void OnProgramActionStopped(DataManager::ProgramActionType_t ProgramActionType);
+    void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
 private:
     Ui::CDashboardEndTimeWidget *mp_Ui;
     QPixmap         m_btnPixmap;

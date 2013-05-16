@@ -63,7 +63,7 @@
        <item row="0" column="1">
         <widget class="QLabel" name="lblName">
          <property name="text">
-          <string>&lt;Reagent Name&gt;</string>
+          <string/>
          </property>
          <property name="alignment">
           <set>Qt::AlignJustify|Qt::AlignTop</set>

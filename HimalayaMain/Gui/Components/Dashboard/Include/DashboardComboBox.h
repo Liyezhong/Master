@@ -58,7 +58,8 @@ private:
     QListView *mp_ListView;
     QString m_SelProgName;
     bool m_IsWorkAsButton;
-
+    QPixmap m_PixmapEnable, m_PixmapRunning;
+    QPixmap* m_Pixmap;
 };
 
 } // end namespace Dashboard

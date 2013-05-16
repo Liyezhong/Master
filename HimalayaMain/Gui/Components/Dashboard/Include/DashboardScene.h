@@ -159,7 +159,7 @@ private slots:
 signals:
     void OnSelectDateTime(const QDateTime &);
     void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
-    void ProgramActionStopped(DataManager::ProgramActionType_t);
+    void ProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
 
 };
 

@@ -97,7 +97,7 @@ protected:
 signals:
     void ProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
     void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
-    void ProgramActionStopped(DataManager::ProgramActionType_t);
+    void ProgramActionStopped(DataManager::ProgramStatusType_t);
     void UpdateProgramName(QString SelectedProgramName);
     void UpdateDashboardSceneReagentStations(QString& ProgramID);
     void ProgramSelected(QString & ProgramId, int asapEndTime, QList<QString>& SelectedStationList);

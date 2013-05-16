@@ -64,8 +64,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      CONNECTSIGNALSIGNAL(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
                          mp_DashboardScene, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
 
-     CONNECTSIGNALSIGNAL(this, ProgramActionStopped(DataManager::ProgramActionType_t),
-                         mp_DashboardScene, ProgramActionStopped(DataManager::ProgramActionType_t));
+     CONNECTSIGNALSIGNAL(this, ProgramActionStopped(DataManager::ProgramStatusType_t),
+                         mp_DashboardScene, ProgramActionStopped(DataManager::ProgramStatusType_t));
 
      mp_Separator = new QFrame();
      mp_Separator->setParent(this);  // Set Parent of this Frame as the Dashboard Widget.
@@ -576,7 +576,7 @@ void CDashboardWidget::OnProgramAborted()
     m_IsResumeRun = false;
     mp_Ui->pgmsComboBox->WorkAsButton(false);
 
-    emit ProgramActionStopped(DataManager::PROGRAM_ABORT);
+    emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
 
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetTitle(tr("Warning"));
@@ -608,7 +608,7 @@ void CDashboardWidget::OnProgramCompleted()
 {
     m_IsResumeRun = false;
     mp_Ui->pgmsComboBox->WorkAsButton(false);
-    emit ProgramActionStopped(DataManager::PROGRAM_START);
+    emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
 }
 
 void CDashboardWidget::OnProgramRunBegin()
