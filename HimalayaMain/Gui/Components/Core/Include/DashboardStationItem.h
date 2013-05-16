@@ -111,6 +111,7 @@ private:
     bool m_StationSelected;                              //!< Indicates if the station is selected for the program
     QString m_CurrentReagentColorValue;
     DataManager::ContainerStatusType_t m_ContainerStatusType;
+    bool m_ExpiredColorRed;
 
 public:
     explicit CDashboardStationItem(Core::CDataConnector *p_DataConnector,                                   

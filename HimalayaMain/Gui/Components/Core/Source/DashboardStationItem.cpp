@@ -64,7 +64,8 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_StationSelected(false),
     m_CurRMSMode(Global::RMS_UNDEFINED),
     m_StationItemID(StationItemID),
-    m_ContainerStatusType(DataManager::CONTAINER_STATUS_FULL)
+    m_ContainerStatusType(DataManager::CONTAINER_STATUS_FULL),
+    m_ExpiredColorRed(true)
 {
     setFlag(QGraphicsItem::ItemIsSelectable);
 
@@ -77,6 +78,9 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     } else {
         m_Image = QPixmap(m_BottleBoundingRectWidth, m_BottleBoundingRectHeight);
     }
+
+    mp_BlinkingTimer = new QTimer();
+    CONNECTSIGNALSLOT(mp_BlinkingTimer, timeout(), this, DrawStationItemImage());
 
     UpdateImage();
 
@@ -443,10 +447,9 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
     }
 
     if(true == m_ReagentExpiredFlag) {
-        mp_BlinkingTimer = new QTimer();
+        mp_BlinkingTimer->stop();
         mp_BlinkingTimer->start(500);
-        CONNECTSIGNALSLOT(mp_BlinkingTimer, timeout(), this, DrawStationItemImage());
-    } else {
+        } else {
         DrawStationItemImage(); // No Blinking
     }
 }
@@ -470,19 +473,20 @@ void CDashboardStationItem::DrawStationItemImage()
 
     if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
     {
-        if(true == m_ReagentExpiredFlag && m_StationSelected && (m_BlinkingCounter % 2))
+       /* if(true == m_ReagentExpiredFlag && m_StationSelected && (m_BlinkingCounter % 2))
         {
             Painter.drawPixmap((m_BottleBoundingRectWidth - 67) , (m_BottleBoundingRectHeight - 65), QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Small.png"));
         }
+        */
         DrawReagentName(Painter);
     }
-    else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
+    /*else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
     {
         if(true == m_ReagentExpiredFlag && m_StationSelected && (m_BlinkingCounter % 2))
         {
             Painter.drawPixmap((m_ParaffinbathBoundingRectWidth - 90), 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Small.png"));
         }
-    }
+    }*/
     DrawStationItemLabel(Painter);
     update();
 }
@@ -583,7 +587,24 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
     if(m_StationSelected) {
         Painter.setRenderHint(QPainter::Antialiasing);
         Painter.setPen(QColor(ReagentColorValue));
-        Painter.setBrush(QColor(ReagentColorValue));
+        QColor color(ReagentColorValue);
+        if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup || STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
+        {
+            if(true == m_ReagentExpiredFlag && m_StationSelected && (m_BlinkingCounter % 2))
+            {
+                if (m_ExpiredColorRed)
+                {
+                    m_ExpiredColorRed = false;
+                }
+                else
+                {
+                    color.setRgb(255, 255, 0);
+                    m_ExpiredColorRed = true;
+                }
+            }
+        }
+
+        Painter.setBrush(color);
     } else {
         Painter.setRenderHint(QPainter::Antialiasing);
         Painter.setPen(QColor(Qt::gray));
