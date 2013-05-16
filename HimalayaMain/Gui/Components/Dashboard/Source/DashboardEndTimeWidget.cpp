@@ -151,6 +151,7 @@ void CDashboardEndTimeWidget::paintEvent(QPaintEvent *)
 void CDashboardEndTimeWidget::OnEndTimeButtonClicked()
 {
     mp_wdgtDateTime->UpdateProgramName();
+    mp_wdgtDateTime->SetASAPDateTime(m_ProgramEndDateTime);
     mp_wdgtDateTime->show();
     CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, UpdateDateTime(const QDateTime &));
     CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime &));
@@ -205,6 +206,7 @@ void CDashboardEndTimeWidget::UpdateDateTime(const QDateTime &selDateTime)
     }
 
     QString DateTimeStr;
+    DateTimeStr.append("  ");
     DateTimeStr.append(tr("End Time :"));
     DateTimeStr.append(TimeStr);
     DateTimeStr.append("\n");

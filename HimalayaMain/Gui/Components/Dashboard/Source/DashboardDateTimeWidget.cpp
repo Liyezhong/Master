@@ -92,7 +92,6 @@ CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent) : MainMenu
     mp_Ui->scrollPanelTime->AddScrollWheel(mp_MinWheel, 1);
     mp_Ui->scrollPanelTime->SetSubtitle(tr("Minute"), 1);
 
-    RefreshDateTime();
 
 
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
@@ -126,6 +125,17 @@ void CDashboardDateTimeWidget ::UpdateProgramName()
      SetTitleCenter();
 }
 
+void CDashboardDateTimeWidget::SetASAPDateTime(const QDateTime& DateTime)
+{
+    m_ASAPDateTime = DateTime;
+}
+
+void CDashboardDateTimeWidget::show()
+{
+    RefreshDateTime();
+    MainMenu::CPanelFrame::show();
+}
+
 /****************************************************************************/
 /*!
  *  \brief Event handler for change events
@@ -149,19 +159,6 @@ void CDashboardDateTimeWidget::changeEvent(QEvent *p_Event)
 
 /****************************************************************************/
 /*!
- *  \brief Returns the date and time displayed in the widget
- *
- *  \return Date and time displayed in the widget
- */
-/****************************************************************************/
-QDateTime& CDashboardDateTimeWidget::GetSelectedDateTime()
-{
-    OnOK(false);
-    return m_selDateTime;
-}
-
-/****************************************************************************/
-/*!
  *  \brief Sets the date and time displayed by the scroll wheels
  *
  *  \iparam TimeFormat = 12 or 24 hour format
@@ -169,9 +166,6 @@ QDateTime& CDashboardDateTimeWidget::GetSelectedDateTime()
 /****************************************************************************/
 void CDashboardDateTimeWidget::RefreshDateTime(Global::TimeFormat TimeFormat)
 {
-    // get adjusted time
-    QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
-
     // Hour
     mp_HourWheel->ClearItems();
     for (int i = 0; i < 24; i++) {
@@ -187,12 +181,12 @@ void CDashboardDateTimeWidget::RefreshDateTime(Global::TimeFormat TimeFormat)
         }
     }
 
-    mp_DayWheel->SetCurrentData(DateTime.date().day());
-    mp_MonthWheel->SetCurrentData(DateTime.date().month());
-    mp_YearWheel->SetCurrentData(DateTime.date().year());
+    mp_DayWheel->SetCurrentData(m_ASAPDateTime.date().day());
+    mp_MonthWheel->SetCurrentData(m_ASAPDateTime.date().month());
+    mp_YearWheel->SetCurrentData(m_ASAPDateTime.date().year());
 
-    mp_HourWheel->SetCurrentData(DateTime.time().hour());
-    mp_MinWheel->SetCurrentData(DateTime.time().minute());
+    mp_HourWheel->SetCurrentData(m_ASAPDateTime.time().hour());
+    mp_MinWheel->SetCurrentData(m_ASAPDateTime.time().minute());
 
     // make it UTC
     m_selDateTime.setTimeSpec(Qt::UTC);
@@ -202,7 +196,7 @@ void CDashboardDateTimeWidget::RefreshDateTime(Global::TimeFormat TimeFormat)
                              mp_DayWheel->GetCurrentData().toInt()));
 
     m_selDateTime.setTime(QTime(mp_HourWheel->GetCurrentData().toInt(), mp_MinWheel->GetCurrentData().toInt()));
-
+    mp_Ui->lblDateTimeDisplay->setText(m_ASAPDateTime.toString());
 }
 
 /****************************************************************************/
@@ -210,7 +204,7 @@ void CDashboardDateTimeWidget::RefreshDateTime(Global::TimeFormat TimeFormat)
  *  \brief Reads data from the scroll wheels
  */
 /****************************************************************************/
-void CDashboardDateTimeWidget::OnOK(bool Send)
+void CDashboardDateTimeWidget::OnOK()
 {
     // make it UTC
     m_selDateTime.setTimeSpec(Qt::UTC);
@@ -227,16 +221,13 @@ void CDashboardDateTimeWidget::OnOK(bool Send)
     int secsDifference = CurTime.secsTo(m_selDateTime);
     qDebug() << "Date Time Difference is" << secsDifference;
 
-    if(secsDifference <= ONE_WEEK_TIME_OFFSET_VALUE) {
-        mp_Ui->lblDateTimeDisplay->setText(m_selDateTime.toString());
-        if (Send == true) {
-            emit OnSelectDateTime(m_selDateTime);
-        }
+    if(m_selDateTime >= m_ASAPDateTime && secsDifference <= ONE_WEEK_TIME_OFFSET_VALUE) {
+        emit OnSelectDateTime(m_selDateTime);
         close();
     } else {
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         mp_MessageDlg->SetTitle(tr("Warning"));
-        mp_MessageDlg->SetText(tr("Program End Time canot be more than a WEEK"));
+        mp_MessageDlg->SetText(tr("Program End Date Time cannot be later than one week and earlier than the ASAP setting."));
         mp_MessageDlg->SetButtonText(1, tr("OK"));
         mp_MessageDlg->HideButtons();    // Hiding First Two Buttons in the Message Dialog
         mp_MessageDlg->Show();
@@ -261,7 +252,7 @@ void CDashboardDateTimeWidget::RetranslateUI()
     mp_Ui->scrollPanelTime->SetSubtitle(QApplication::translate("MainMenu::CDateTime", "Hour", 0, QApplication::UnicodeUTF8),0);
     mp_Ui->scrollPanelTime->SetSubtitle(QApplication::translate("MainMenu::CDateTime", "Minute", 0, QApplication::UnicodeUTF8),1);
 
-    mp_Ui->lblDateTimeDisplay->setText(m_selDateTime.toString());
+    mp_Ui->lblDateTimeDisplay->setText(m_ASAPDateTime.toString());
 }
 
 
@@ -272,6 +263,7 @@ void CDashboardDateTimeWidget::OnCancel()
 
 void CDashboardDateTimeWidget::OnSetASAPDateTime()
 {
+    RefreshDateTime();
 }
 
 } // end namespace Dashboard

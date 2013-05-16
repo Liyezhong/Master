@@ -49,7 +49,8 @@ public:
     explicit CDashboardDateTimeWidget(QWidget *p_Parent = 0);
     virtual ~CDashboardDateTimeWidget();
     void RefreshDateTime(Global::TimeFormat TimeFormat = Global::TIME_24);
-    QDateTime& GetSelectedDateTime();
+    void SetASAPDateTime(const QDateTime& DateTime);
+    void show();
     static QString SELECTED_PROGRAM_NAME;
 
 
@@ -66,14 +67,14 @@ private:
     //Flags
     bool m_ProcessRunning;                  //!< Process running state
     QDateTime m_selDateTime;                //!< Selected Date and Time
-
+    QDateTime m_ASAPDateTime;
     void RetranslateUI();
 
 protected:
     void changeEvent(QEvent *p_Event);
 
 public slots:
-    void OnOK(bool Send = true);
+    void OnOK();
     void OnCancel();
     void UpdateProgramName();
     void OnSetASAPDateTime();

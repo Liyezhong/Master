@@ -391,7 +391,7 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
     {
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         mp_MessageDlg->SetTitle(tr("Warning"));
-        mp_MessageDlg->SetText(tr("Can not start Leica Program With RMS OFF,please trun on RMS."));
+        mp_MessageDlg->SetText(tr("Can not start Leica Program With RMS OFF, please trun on RMS."));
         mp_MessageDlg->SetButtonText(1, tr("OK"));
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
