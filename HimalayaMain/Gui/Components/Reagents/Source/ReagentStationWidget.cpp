@@ -267,6 +267,10 @@ void CReagentStationWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConne
     CONNECTSIGNALSIGNAL(mp_ModifiyReagentStationDlg, UpdateStationSetAsEmpty(QString),
                         this, UpdateStationSetAsEmpty(QString));
 
+    CONNECTSIGNALSIGNAL(mp_ModifiyReagentStationDlg, UnselectProgram(),
+                                this, UnselectProgram());
+
+
 }
 
 

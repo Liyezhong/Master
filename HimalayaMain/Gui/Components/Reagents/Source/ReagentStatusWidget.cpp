@@ -98,28 +98,6 @@ void CReagentStatusWidget::SetUserSettings(DataManager::CUserSettings *p_UserSet
     m_ReagentStatusModel.SetUserSettings(p_UserSettings);
 }
 
-bool CReagentStatusWidget::HaveSelectedProgram()
-{
-    if (!Dashboard::CDashboardWidget::SelectedProgramId().isEmpty())
-    {
-        MainMenu::CMessageDlg ConfirmationMessageDlg;
-        ConfirmationMessageDlg.SetTitle(tr("Warning"));
-        QString strMsg;
-        strMsg.append(tr("As the program \""));
-        strMsg.append(Dashboard::CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
-        strMsg.append(tr("\" is selected, this operation will reusult in an incorrect program result,"));
-        strMsg.append(tr("if you click \"Yes\", the selected program will unselect."));
-        ConfirmationMessageDlg.SetText(strMsg);
-        ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
-        ConfirmationMessageDlg.SetButtonText(1, tr("Yes"));
-        ConfirmationMessageDlg.SetButtonText(3, tr("Cancel"));
-        ConfirmationMessageDlg.HideCenterButton();
-        if (!ConfirmationMessageDlg.exec())
-            return false;
-    }
-    return true;
-}
-
 /****************************************************************************/
 /*!
  *  \brief Displays a dialog for the modification of a staining reagent
@@ -137,8 +115,13 @@ void CReagentStatusWidget::OnSetAsEmpty()
         ConfirmationMessageDlg.HideCenterButton();
         if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
         {
-            if (!HaveSelectedProgram())
+            bool bRevertSelectedProgram = false;
+            if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram))
                 return;
+
+            if (bRevertSelectedProgram)
+                emit UnselectProgram();
+
             emit UpdateStationSetAsEmpty(mp_DashStation->GetDashboardStationID());
             ResetButtons();
         }
@@ -161,8 +144,13 @@ void CReagentStatusWidget::OnResetData()
     ConfirmationMessageDlg.HideCenterButton();
     if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
     {
-        if (!HaveSelectedProgram())
+        bool bRevertSelectedProgram = false;
+        if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram))
             return;
+
+        if (bRevertSelectedProgram)
+            emit UnselectProgram();
+
         emit UpdateStationResetData(mp_DashStation->GetDashboardStationID());
         ResetButtons();
     }

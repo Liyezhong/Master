@@ -30,6 +30,8 @@
 #include "Programs/Include/ModifyProgramStepDlg.h"
 #include "ui_ProgramWidget.h"
 #include <QDebug>
+#include "Dashboard/Include/DashboardWidget.h"
+
 
 namespace Programs {
 
@@ -181,16 +183,22 @@ void CProgramWidget::PopulateProgramList()
 /****************************************************************************/
 void CProgramWidget::OnEdit()
 {
-    m_MessageDlg.SetText(tr("Process has started, editing is no longer possible."
-                            "\nPlease close the dialog."));
         if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
              m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-                (!m_ProcessRunning)) {
+                (!m_ProcessRunning))
+        {
             //Edit Mode
+            bool bRevertSelectedProgram = false;
+            if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram, mp_Program->GetID()))
+                return;
+            if (bRevertSelectedProgram)
+                emit UnselectProgram();
+
             mp_ModifyProgramDlg->SetButtonType(EDIT_BTN_CLICKED);
             mp_ModifyProgramDlg->SetDialogTitle(tr("Edit Program"));
         }
-        else {
+        else
+        {
             mp_ModifyProgramDlg->SetButtonType(EDIT_BTN_CLICKED);
             mp_ModifyProgramDlg->SetDialogTitle(tr("View Program"));
         }
@@ -241,9 +249,6 @@ void CProgramWidget::OnCopy()
 /****************************************************************************/
 void CProgramWidget::OnDelete()
 {
-    m_MessageDlg.SetText(tr("Process has started, Editing is no longer possible."
-                            "\nPlease close the dialog."));
-
     MainMenu::CMessageDlg ConfirmationMessageDlg;
     ConfirmationMessageDlg.SetTitle(tr("Confirmation Message"));
     ConfirmationMessageDlg.SetIcon(QMessageBox::Question);
@@ -254,6 +259,13 @@ void CProgramWidget::OnDelete()
 
     if (ConfirmationMessageDlg.exec() == (int)QDialog::Accepted) {
         QString ProgramID = mp_Program->GetID();
+
+        bool bRevertSelectedProgram = false;
+        if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram, ProgramID))
+            return;
+        if (bRevertSelectedProgram)
+            emit UnselectProgram();
+
         emit DeleteProgram(ProgramID);
         ResetButtons();
     }

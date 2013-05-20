@@ -223,7 +223,7 @@ signals:
     /****************************************************************************/
     void ProgramColorReplaced(DataManager::CProgram &ColorReplacedProgram,
                               DataManager::CProgram &ColorAssignedProgram);
-
+    void UnselectProgram();
 };
 
 } // end namespace Programs

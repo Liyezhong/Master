@@ -43,7 +43,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    m_ForceRunCleanProgram(false),
                                    m_IsResumeRun(false),
                                    m_CurProgramStepIndex(-1),
-                                   m_IsDraining(false)
+                                   m_IsDraining(false),
+                                   m_CheckEndDatetimeAgain(false)
 {
      mp_Ui->setupUi(GetContentFrame());
      SetPanelTitle(tr("Dashboard"));
@@ -206,13 +207,15 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
         {
             case DataManager::PROGRAM_START:
             {
-                if (CheckPreConditionsToRunProgram()) {
-                    OnProgramStartConfirmation();
+                if (m_IsResumeRun)
+                {
+                    mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, m_EndDateTime);
                     mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
                     m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
-                } else {
-                    // Take Necessary Action
+                    return;
                 }
+
+                CheckPreConditionsToRunProgram();
             }
             break;
             case DataManager::PROGRAM_PAUSE:
@@ -241,16 +244,51 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
 
 }
 
+bool CDashboardWidget::CheckSelectedProgram(bool& bRevertSelectProgram, QString ProgramID)
+{
+    bRevertSelectProgram = false;
+    if (!SelectedProgramId().isEmpty())
+    {
+        if (!ProgramID.isEmpty())
+        {
+            if (ProgramID != SelectedProgramId())
+                return true;
+        }
+
+        MainMenu::CMessageDlg ConfirmationMessageDlg;
+        ConfirmationMessageDlg.SetTitle(tr("Warning"));
+        QString strMsg;
+        strMsg.append(tr("As the program \""));
+        strMsg.append(Dashboard::CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+        strMsg.append(tr("\" is selected, this operation will reusult in an incorrect program result,"));
+        strMsg.append(tr("if you click \"Yes\", the selected program will unselect."));
+        ConfirmationMessageDlg.SetText(strMsg);
+        ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
+        ConfirmationMessageDlg.SetButtonText(1, tr("Yes"));
+        ConfirmationMessageDlg.SetButtonText(3, tr("Cancel"));
+        ConfirmationMessageDlg.HideCenterButton();
+        if (!ConfirmationMessageDlg.exec())
+            return false;
+        else
+            bRevertSelectProgram = true;
+
+    }
+    return true;
+}
+
 void CDashboardWidget::OnUnselectProgram()
 {
-    m_SelectedProgramId = "";
-    EnablePlayButton(false);
-    m_StationList.clear();
-    //Show program name in the comboBox
-    CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = tr("Program");
-    mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
-    int asapEndTime = 0;
-    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
+    if (!m_SelectedProgramId.isEmpty())
+    {
+        m_SelectedProgramId = "";
+        EnablePlayButton(false);
+        m_StationList.clear();
+        //Show program name in the comboBox
+        CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = tr("Program");
+        mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+        int asapEndTime = 0;
+        emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
+    }
 }
 
 void CDashboardWidget::OnSelectDateTime(const QDateTime& dateTime)
@@ -372,14 +410,29 @@ void CDashboardWidget::PrepareSelectedProgramChecking()
 
 }
 
-bool CDashboardWidget::CheckPreConditionsToRunProgram()
+void CDashboardWidget::CheckPreConditionsToRunProgram()
 {
     if ("" == m_SelectedProgramId)
-        return false;
+        return;
 
-    if (m_IsResumeRun)
-        return true;
 
+    //Check cleaning program run in last time?
+    bool isCleaningProgramRun = true; // get this from a log file.
+    if (!isCleaningProgramRun)
+    {
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
+        mp_MessageDlg->SetTitle(tr("Information"));
+        mp_MessageDlg->SetText(tr("Found cleaning program did not run in last time."));
+        mp_MessageDlg->SetButtonText(1, tr("OK"));
+        mp_MessageDlg->HideButtons();
+        if (mp_MessageDlg->exec())
+        {
+            TakeOutSpecimenAndRunCleaning();
+        }
+        return;
+     }
+
+    //Check if Leica program and RMS OFF?
     DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
     bool isRMSOFF = false;
     if (Global::RMS_OFF == userSetting->GetModeRMSCleaning() || Global::RMS_OFF == userSetting->GetModeRMSProcessing())
@@ -395,9 +448,10 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
         mp_MessageDlg->SetButtonText(1, tr("OK"));
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
-        return false;
+        return;
     }
 
+    //Check Expired?
     if (!isRMSOFF && mp_DashboardScene->HaveExpiredReagent())
     {
         if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
@@ -408,7 +462,7 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
             mp_MessageDlg->SetButtonText(1, tr("OK"));
             mp_MessageDlg->HideButtons();
             if (mp_MessageDlg->exec())
-            return false;
+            return;
         }
         else
         if(m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
@@ -416,53 +470,20 @@ bool CDashboardWidget::CheckPreConditionsToRunProgram()
         {
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
             mp_MessageDlg->SetTitle(tr("Warning"));
-            mp_MessageDlg->SetText(tr("Do you want to Start the Program with Expired Reagents."));
-            mp_MessageDlg->SetButtonText(3, tr("Cancel"));
-            mp_MessageDlg->SetButtonText(1, tr("OK"));
+            mp_MessageDlg->SetText(tr("Do you want to Start the Program with Expired Reagents?"));
+            mp_MessageDlg->SetButtonText(3, tr("Yes"));
+            mp_MessageDlg->SetButtonText(1, tr("No"));
             mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
 
             if (!mp_MessageDlg->exec())
-            return false;
+            return;
         }
     }
 
-    //Check cleaning program run in last time?
-    bool isCleaningProgramRun = true; // get this from a log file.
-    if (!isCleaningProgramRun)
-    {
-        mp_MessageDlg->SetIcon(QMessageBox::Information);
-        mp_MessageDlg->SetTitle(tr("Information"));
-        mp_MessageDlg->SetText(tr("Found cleaning program did not run in last time."));
-        mp_MessageDlg->SetButtonText(1, tr("OK"));
-        mp_MessageDlg->HideButtons();
-        if (mp_MessageDlg->exec())
-        {
-            TakeOutSpecimenAndRunCleaning();
-        }
-        return false;
-     }
-
-    if ( mp_DataConnector)
-    {
-        //input cassette number
-        if (Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
-        {
-            CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
-            pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
-            pCassetteInput->move(80,50);
-            pCassetteInput->SetDialogTitle(tr("Please set numbers of cassettes:"));
-            pCassetteInput->exec();
-
-            int cassetteNumber = pCassetteInput->CassetteNumber();
-            if (-1 == cassetteNumber)
-                return false;//clicked Cancel button
-
-            mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
-            delete pCassetteInput;
-        }
-    }
-
-    return true;
+    //check End Datetime again
+    m_NewSelectedProgramId = m_SelectedProgramId;
+    m_CheckEndDatetimeAgain = true;
+    PrepareSelectedProgramChecking();
 }
 
 bool CDashboardWidget::CheckPreConditionsToPauseProgram()
@@ -484,13 +505,6 @@ bool CDashboardWidget::CheckPreConditionsToAbortProgram()
     ConfirmationMessageDlg.HideCenterButton();
 
     return ConfirmationMessageDlg.exec() == (int)QDialog::Accepted;
-}
-
-void CDashboardWidget::OnProgramStartConfirmation()
-{
-    qDebug() << " On Confirmation";
-    // Send Command to Master
-    mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, m_EndDateTime);
 }
 
 //Need the gray button!
@@ -636,7 +650,54 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLock
 
 void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd)
 {
-    //firstly check whether there is any empty station for some program steps
+    if (m_CheckEndDatetimeAgain)
+    {
+        m_CheckEndDatetimeAgain = false;
+        //get the proposed program end DateTime
+        int asapEndTime = GetASAPTime(mp_ProgramList->GetProgram(m_SelectedProgramId), cmd.TimeProposed(),
+                                      cmd.ParaffinWeltCostedTime(), cmd.CostedTimeBeforeParaffin());
+        asapEndTime = asapEndTime - 60;//60 seconds: buffer time for "select program" and "Run" operation.
+        QDateTime endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+        if (endDateTime > m_EndDateTime)
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(tr("Warning"));
+            mp_MessageDlg->SetText(tr("Please re-set the End Date&Time of the current selected program."));
+            mp_MessageDlg->SetButtonText(1, tr("OK"));
+            mp_MessageDlg->HideButtons();
+            if (mp_MessageDlg->exec())
+            {
+                return;
+            }
+            return;
+        }
+
+        if ( mp_DataConnector)
+        {
+            //input cassette number
+            if (Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
+            {
+                CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
+                pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
+                pCassetteInput->move(80,50);
+                pCassetteInput->SetDialogTitle(tr("Please set numbers of cassettes:"));
+                pCassetteInput->exec();
+
+                int cassetteNumber = pCassetteInput->CassetteNumber();
+                if (-1 == cassetteNumber)
+                    return;//clicked Cancel button
+
+                mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
+                delete pCassetteInput;
+            }
+        }
+        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, m_EndDateTime);
+        mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
+        m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
+        return;
+    }
+
+    //firstly check whether there is any station not existing for some program steps
     const QList<QString>& stationList = cmd.StationList();
     for (int i = 0; i < stationList.count(); i++)
     {
@@ -701,6 +762,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
                                   cmd.ParaffinWeltCostedTime(), cmd.CostedTimeBeforeParaffin());
     m_TimeProposed = cmd.TimeProposed();
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+
     emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
 
     if (m_ForceRunCleanProgram)//for after program completed

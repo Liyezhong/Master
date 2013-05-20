@@ -97,13 +97,10 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_Ui->pageReagentStatus, UpdateStationSetAsEmpty(QString),
                       mp_DataConnector, SendStationSetAsEmpty(QString));
 
-    CONNECTSIGNALSIGNAL(mp_Ui->pageReagentStation, UpdateStationSetAsEmpty(QString),
+    CONNECTSIGNALSIGNAL(mp_Ui->pageReagentStation, UnselectProgram(),
                         this, UnselectProgram());
 
-    CONNECTSIGNALSIGNAL(mp_Ui->pageReagentStatus, UpdateStationResetData(QString),
-                      this, UnselectProgram());
-
-    CONNECTSIGNALSIGNAL(mp_Ui->pageReagentStatus, UpdateStationSetAsEmpty(QString),
+    CONNECTSIGNALSIGNAL(mp_Ui->pageReagentStatus, UnselectProgram(),
                       this, UnselectProgram());
 
     CONNECTSIGNALSLOT(mp_Ui->pageReagentStatus, UpdateStationSetAsFull(QString),

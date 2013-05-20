@@ -80,7 +80,6 @@ public:
                             DataManager::CDataReagentList *p_ReagentList,
                             MainMenu::CMainWindow *p_MainWindow,
                             KeyBoard::CKeyBoard *p_KeyBoard = NULL);
-    static bool HaveSelectedProgram();
 private slots:
     void OnSetAsEmpty();
     void OnSetAsFull();
@@ -104,6 +103,7 @@ signals:
     void UpdateStationSetAsEmpty(const QString&);
     void UpdateStationSetAsFull(const QString&);
     void UpdateStationResetData(const QString&);
+    void UnselectProgram();
 
 };
 

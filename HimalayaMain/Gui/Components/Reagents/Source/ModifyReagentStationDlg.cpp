@@ -23,7 +23,7 @@
 #include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "ui_ModifyReagentStatusDlg.h"
 #include <QDebug>
-#include "Reagents/Include/ReagentStatusWidget.h"
+#include "Dashboard/Include/DashboardWidget.h"
 
 namespace Reagents {
 /****************************************************************************/
@@ -162,8 +162,12 @@ void CModifyReagentStationDlg::SelectionChanged(QModelIndex Index)
 /****************************************************************************/
 void CModifyReagentStationDlg::OnOk()
 {    
-    if (!Reagents::CReagentStatusWidget::HaveSelectedProgram())
+    bool bRevertSelectedProgram = false;
+    if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram))
         return;
+
+    if (bRevertSelectedProgram)
+        emit UnselectProgram();
 
     m_DashboardStation.SetDashboardReagentStatus("Empty");
     emit UpdateStationChangeReagent(m_DashboardStation.GetDashboardStationID(),

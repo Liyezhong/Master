@@ -87,6 +87,7 @@ signals:
     void UpdateReagentList();
     void UpdateStationChangeReagent(const QString&, const QString&);
     void UpdateStationSetAsEmpty(const QString&);
+    void UnselectProgram();
 
 };
 

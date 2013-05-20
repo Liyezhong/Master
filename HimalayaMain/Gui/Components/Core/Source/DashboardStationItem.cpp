@@ -80,11 +80,13 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     }
 
     mp_BlinkingTimer = new QTimer();
+    mp_BlinkingTimer->setInterval(500);
     CONNECTSIGNALSLOT(mp_BlinkingTimer, timeout(), this, DrawStationItemImage());
 
     UpdateImage();
 
     mp_SuckDrainTimer = new QTimer(this);
+    mp_SuckDrainTimer->setInterval(500);
     CONNECTSIGNALSLOT(mp_SuckDrainTimer, timeout(), this, SuckDrainAnimation());
 }
 
@@ -448,7 +450,7 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
 
     if(true == m_ReagentExpiredFlag) {
         mp_BlinkingTimer->stop();
-        mp_BlinkingTimer->start(500);
+        mp_BlinkingTimer->start();
         } else {
         DrawStationItemImage(); // No Blinking
     }
@@ -745,7 +747,7 @@ void CDashboardStationItem::SuckDrain(bool isStart, bool isSuck, const QString& 
 
     if (isStart)
     {
-        mp_SuckDrainTimer->start(500);
+        mp_SuckDrainTimer->start();
     }
     else
         mp_SuckDrainTimer->stop();
@@ -829,6 +831,7 @@ const QString& CDashboardStationItem::StationItemID() const
 
 bool CDashboardStationItem::IsReagentExpired()
 {
+    UpdateDashboardStationItemReagent();
     return m_ReagentExpiredFlag;
 }
 

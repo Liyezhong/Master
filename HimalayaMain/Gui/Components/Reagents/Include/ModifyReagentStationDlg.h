@@ -106,6 +106,7 @@ signals:
      */
     /****************************************************************************/
     void UpdateStationChangeReagent(const QString&, const QString&);
+    void UnselectProgram();
 
 };
 }

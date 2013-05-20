@@ -77,6 +77,7 @@ private:
     QList<QString> m_StationList;
     int m_CurProgramStepIndex;
     bool m_IsDraining;
+    bool m_CheckEndDatetimeAgain;
     void EnablePlayButton(bool bSetEnable);
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(const DataManager::CProgram*, int, int, int);
@@ -86,10 +87,11 @@ public:
     explicit CDashboardWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL);
     ~CDashboardWidget();
 
-    bool CheckPreConditionsToRunProgram();
+    void CheckPreConditionsToRunProgram();
     bool CheckPreConditionsToPauseProgram();
     bool CheckPreConditionsToAbortProgram();
     static const QString& SelectedProgramId();
+    static bool CheckSelectedProgram(bool& bRevertSelectProgram, QString ProgramID = "");//the return value means the work flow can go continuely.
 protected:
     void DrawSeparatorLine();
 
@@ -121,8 +123,6 @@ public slots:
     void OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd);
     void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);
-    // Warning Message Slots
-    void OnProgramStartConfirmation();
     void OnSelectDateTime(const QDateTime&);
 };
 
