@@ -1030,7 +1030,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
     this->PrepareProgramStationList(Cmd.GetProgramID());
 
     unsigned int timeProposed = GetLeftProgramStepsNeededTime(Cmd.GetProgramID(), 0);
-    unsigned int paraffinWeltCostedtime = this->GetOvenHeatingTime();
+    unsigned int paraffinMeltCostedtime = this->GetOvenHeatingTime();
     unsigned int costedTimeBeforeParaffin = 0;
     if (-1 != Cmd.ParaffinStepIndex())//has Paraffin
     {
@@ -1039,7 +1039,7 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
 
     //send back the proposed program end time
     MsgClasses::CmdProgramSelectedReply* commandPtr(new MsgClasses::CmdProgramSelectedReply(5000, timeProposed,
-                                                                                paraffinWeltCostedtime,
+                                                                                paraffinMeltCostedtime,
                                                                                 costedTimeBeforeParaffin,
                                                                                 m_StationList));
     Q_ASSERT(commandPtr);

@@ -43,13 +43,13 @@ public:
     static QString NAME;    ///< Command name.
     /****************************************************************************/
     CmdProgramSelectedReply(int Timeout, int TimeProposed,
-                      int ParaffinWeltCostedtime,
+                      int ParaffinMeltCostedtime,
                       int CostedTimeBeforeParaffin,
                       QList<QString>& StationList);
     ~CmdProgramSelectedReply();
     virtual QString GetName() const;
     inline int TimeProposed()const {return m_TimeProposed;}
-    inline int ParaffinWeltCostedTime()const {return m_ParaffinWeltCostedtime;}
+    inline int ParaffinMeltCostedTime()const {return m_ParaffinMeltCostedtime;}
     inline int CostedTimeBeforeParaffin()const {return m_CostedTimeBeforeParaffin;}
     inline const QList<QString>& StationList()const {return m_StationList;}
 
@@ -60,7 +60,7 @@ private:
 private:
     int m_TimeProposed;//the costed time for selected program, seconds
     int m_CostedTimeBeforeParaffin; //seconds
-    int m_ParaffinWeltCostedtime; //seconds
+    int m_ParaffinMeltCostedtime; //seconds
     QList<QString> m_StationList;
     
 }; // end class CmdProgramSelectedReply
@@ -80,7 +80,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramSelectedR
     Cmd.CopyToStream(Stream);
     // copy internal data
     Stream << Cmd.m_TimeProposed;
-    Stream << Cmd.m_ParaffinWeltCostedtime;
+    Stream << Cmd.m_ParaffinMeltCostedtime;
     Stream << Cmd.m_CostedTimeBeforeParaffin;
     Stream << Cmd.m_StationList.count();
     for (int i = 0; i < Cmd.m_StationList.count(); i++)
@@ -105,7 +105,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdProgramSelectedReply &
     Cmd.CopyFromStream(Stream);
     // copy internal data
     Stream >> Cmd.m_TimeProposed;
-    Stream >> Cmd.m_ParaffinWeltCostedtime;
+    Stream >> Cmd.m_ParaffinMeltCostedtime;
     Stream >> Cmd.m_CostedTimeBeforeParaffin;
     int stationCount = 0;
     Stream >> stationCount;

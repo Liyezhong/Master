@@ -25,12 +25,12 @@ QString CmdProgramSelectedReply::NAME = "MsgClasses::CmdProgramSelectedReply";
 
 
 CmdProgramSelectedReply::CmdProgramSelectedReply(int Timeout, int TimeProposed,
-                                             int ParaffinWeltCostedtime,
+                                             int ParaffinMeltCostedtime,
                                              int CostedTimeBeforeParaffin,
                                              QList<QString>& StationList) :
     Command(Timeout),
     m_TimeProposed(TimeProposed),
-    m_ParaffinWeltCostedtime(ParaffinWeltCostedtime),
+    m_ParaffinMeltCostedtime(ParaffinMeltCostedtime),
     m_CostedTimeBeforeParaffin(CostedTimeBeforeParaffin),
     m_StationList(StationList)
 {
