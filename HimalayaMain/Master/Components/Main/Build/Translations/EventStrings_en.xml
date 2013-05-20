@@ -248,5 +248,77 @@
 		<string id="16908296" text1="Unknown command reference %1" text2=""/>
 		<string id="16908298" text1="Unsupported acknowledgement %1" text2=""/>
 		<string id="16908297" text1="Unsupported command %1" text2=""/>
+		<string id="50331649" text1="Recovery fail, please contact service for help. Error Code: %1, Scenario: %2" text2=""/>
+		<string id="513010001" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513010101" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513010201" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513010221" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513010241" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513010261" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513010301" text1="Levelsensor failed, please open retort lid and clear level senor by recommend tool in IFU, then close retort lid and recovery" text2=""/>
+		<string id="513010321" text1="Levelsensor failed, please open retort lid and clear level senor by recommend tool in IFU, then close retort lid and recovery" text2=""/>
+		<string id="513010421" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513010461" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513020001" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513020002" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513020011" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513020012" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513020013" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="512020021" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="512020022" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="512020023" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="512020031" text1="Paraffin oven cover is open, add solid paraffin now is not permitted, please close paraffin oven cover!" text2=""/>
+		<string id="513030001" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513030011" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="511030021" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513030031" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513030051" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513030061" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513030071" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513030081" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513030091" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="511030101" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513030111" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513040001" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513040011" text1="Bottle check failed! The usual reason are Retort sealing issue or sealing issue sw elase! Please confirm the Retort lid is locked well and try again." text2=""/>
+		<string id="513040012" text1="No i Bottle should be empty or no bottle! Pls have a check about the bottle and recovery the ERR. If still fail, please call for sevice!" text2=""/>
+		<string id="512040013" text1="No i Bottle should be Insufficient or somewhere is leakage, Pls have a check about the bottle and recovery the ERR! If still fail, please call for sevice!" text2=""/>
+		<string id="513040014" text1="No i Bottle or the liquid path of this bottle should be blockaged! Pls have a check about the bottle and recovery the ERR! If still fail, please call for sevice! (Please using the cleaning xylene to implement the Blockage-recovery program.)" text2=""/>
+		<string id="513040021" text1="Pretest  - Sealing function-Pressure Failed! Please check the Retort lid is closed correctly and retry. If still fail, please call for sevice!" text2=""/>
+		<string id="512040022" text1="Sealing function-Pressure failed in xxxxx protocol the protocol can be continue! Please confirm the status and make your choice. Before you chose recovery, please confirm the retort lid is locked properly. " text2=""/>
+		<string id="513040051" text1="Pretest  - Sealing function-Pressure Failed! Please check the Retort lid is closed correctly and retry. If still fail, please call for sevice!" text2=""/>
+		<string id="512040052" text1="Sealing function-vacuum failed in xxxxx protocol! Please confirm the status and make your choice. Before you chose recovery, please confirm the retort lid is locked properly. " text2=""/>
+		<string id="511040101" text1="Filling time of Bottle 1% exceed 2 min which always means there is some blockage in this path. Please pay attention to the reagent of this path whether has been expired." text2=""/>
+		<string id="513040121" text1="Filling time of  Bottle 1%  failed which always means there is serious blockage in this path.  Please pay attention to the reagent of this path! Please change a new bottle and try again." text2=""/>
+		<string id="513040125" text1="Filling time of  Bottle 1% failed which always means there is serious blockage in this path.  Please pay attention to the reagent of this path! Please change a new bottle and try again." text2=""/>
+		<string id="513040216" text1="Filling time of  Bottle 1%  failed which always means there is serious blockage in this path.  Please pay attention to the reagent of this path! Please change a new bottle and try again." text2=""/>
+		<string id="513040141" text1="Overflow was detected when processed Bottle i! Level-sensor in Retort should have some issue! Levelsensor failed, please open retort lid and clear level senor by recommend tool in IFU, then close retort lid and recovery" text2=""/>
+		<string id="513040142" text1="Overflow was detected when processed Bottle i! Level-sensor in Retort should have some issue! Levelsensor failed, please open retort lid and clear level senor by recommend tool in IFU, then close retort lid and recovery" text2=""/>
+		<string id="513040143" text1="Overflow was detected when processed Bottle i! Level-sensor in Retort should have some issue! Levelsensor failed, please open retort lid and clear level senor by recommend tool in IFU, then close retort lid and recovery" text2=""/>
+		<string id="513040143" text1="The recovery failed, Error ID, please call for service." text2=""/>
+		<string id="513040201" text1="Draining failed when Bottle 1%! It usually cased by sealing-function issues! Please check the Retort Lid is closed properly and recovery. " text2=""/>
+		<string id="513040202" text1="Draining Start-Up failed when Bottle 1%! It usually cased by sealing-function issues! Please check the Retort Lid is closed properly and recovery. " text2=""/>
+		<string id="513040203" text1="Draining Start-Up failed when Fixation-Bottle 1%! It usually cased by sealing-function issues! Please check the Retort Lid is closed properly and recovery. " text2=""/>
+		<string id="511040221" text1="Draining time of Bottle 1% exceed 2 min which always means there is some blockage in this path. Please pay attention to the reagent of this path!" text2=""/>
+		<string id="513040241" text1="Draining time of  Bottle %1  failed which always means there is serious blockage in this path.  Please pay attention to the reagent of this path! Please change a new bottle and try again." text2=""/>
+		<string id="513040242" text1="Draining time of  Bottle %1 failed which always means there is serious blockage in this path.  Please pay attention to the reagent of this path! Please change a new bottle and try again." text2=""/>
+		<string id="513040243" text1="Draining time of  Bottle %1 failed which always means there is serious blockage in this path.  Please pay attention to the reagent of this path! Please change a new bottle and try again." text2=""/>
+		<string id="513040302" text1="Releasing failed when Pause or Abort! Please call for service and do not open retort manually!" text2=""/>
+		<string id="513040303" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513040304" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513040305" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="512040401" text1="Exhaust Fan Status error which will lead to exhaust gas spill but can the protocol can going on! Please call for sevice!" text2=""/>
+		<string id="513040541" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513040551" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513050101" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513050102" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513050103" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513050201" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513050202" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513050301" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513050302" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="513050303" text1="Error ID %1! Please call for sevice!" text2=""/>
+		<string id="512050401" text1="Remote alarm system not connected! Please connect the device with remote alarm system" text2=""/>
+		<string id="512050402" text1="Local alarm system not connected! Please connect the device with local alarm system" text2=""/>
 	</language>
 </strings>
