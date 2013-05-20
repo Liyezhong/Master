@@ -591,7 +591,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ABORTING == stepState)
         {
-            if(DCL_ERR_DEV_RV_MOVE_OK == retCode)
+            if(DCL_ERR_DEV_RV_REF_MOVE_OK == retCode)
             {
                 this->Drain();
             }
@@ -1720,7 +1720,7 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
         }
-        else if(DCL_ERR_DEV_BOTTLE_CHECK_LEAKAGE == RetCode)
+        else if(DCL_ERR_DEV_BOTTLE_CHECK_EMPTY == RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
         }
