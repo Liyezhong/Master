@@ -25,7 +25,6 @@
 #include "MainMenu/Include/BaseTable.h"
 #include "MainMenu/Include/PanelFrame.h"
 #include "Programs/Include/ProgramModel.h"
-#include "Programs/Include/RackGripColorDlg.h"
 #include "KeyBoard/Include/KeyBoard.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramBase.h"

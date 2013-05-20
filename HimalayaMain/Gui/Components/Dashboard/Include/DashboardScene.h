@@ -23,7 +23,6 @@
 
 #include "Core/Include/ReagentRMSModel.h"
 #include "Core/Include/DashboardStationItem.h"
-#include "Dashboard/Include/DashboardStationConnector.h"
 #include "Dashboard/Include/DashboardEndTimeWidget.h"
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/MainWindow.h"
@@ -101,7 +100,6 @@ private:
     QStringList m_DashboardStationIDs;                                               //!< StationIds list
     QList<StationGroupType_t> m_DashboardStationGroup;                               //!< StationGroup list
     QList<QString> m_DashboardStationLabels;
-    Dashboard::CDashboardStationConnector *mp_DashboardStationConnector;
     Dashboard::CDashboardEndTimeWidget *mp_DashboardEndTimeWidget;
     QGraphicsProxyWidget *mp_GraphicsProxyWidget;
 

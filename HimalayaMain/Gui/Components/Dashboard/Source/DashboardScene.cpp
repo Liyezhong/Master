@@ -97,7 +97,6 @@ CDashboardScene::~CDashboardScene()
             delete m_pGraphicsPathItemPipeList.at(i);
         }
         delete m_WholePipeGraphicsRectItem;
-        delete mp_DashboardStationConnector;
         delete mp_DashboardEndTimeWidget;
         delete m_pPipeAnimationTimer;
     } catch(...) {
