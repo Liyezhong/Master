@@ -82,6 +82,7 @@ public:
     const QTime& GetStepRemainingTime();
     const QTime GetProgramRemainingTime();
     const QString GetEndDateTime();
+    void OnPauseStationSuckDrain();
     void OnStationSuckDrain(const QString& StationId, bool IsStart, bool IsSuck);
     bool HaveExpiredReagent();
 protected:
@@ -134,6 +135,7 @@ private:
     QList<QGraphicsPathItem*> m_pGraphicsPathItemPipeList;
     QGraphicsPathItem* m_WholePipeGraphicsRectItem;
     int m_currentTimerOrder;
+    QString m_SuckDrainStationId;
     void InitDashboardStationIDs();
     void InitDashboardStationItemsPositions();
     void InitStationConnectedPipeList();

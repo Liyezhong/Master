@@ -1608,6 +1608,12 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         case DataManager::PROGRAM_RUN_BEGIN:
         {
              emit ProgramRunBegin();
+             mp_MainWindow->SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+        }
+        break;
+        case DataManager::PROGRAM_PAUSE_FINISHED:
+        {
+              mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
 

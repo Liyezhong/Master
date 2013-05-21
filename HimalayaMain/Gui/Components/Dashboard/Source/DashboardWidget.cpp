@@ -44,7 +44,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    m_IsResumeRun(false),
                                    m_CurProgramStepIndex(-1),
                                    m_IsDraining(false),
-                                   m_CheckEndDatetimeAgain(false)
+                                   m_CheckEndDatetimeAgain(false),
+                                   m_ProcessRunning(false)
+
 {
      mp_Ui->setupUi(GetContentFrame());
      SetPanelTitle(tr("Dashboard"));
@@ -67,6 +69,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      CONNECTSIGNALSIGNAL(this, ProgramActionStopped(DataManager::ProgramStatusType_t),
                          mp_DashboardScene, ProgramActionStopped(DataManager::ProgramStatusType_t));
+
+     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
 
      mp_Separator = new QFrame();
      mp_Separator->setParent(this);  // Set Parent of this Frame as the Dashboard Widget.
@@ -196,6 +200,13 @@ void CDashboardWidget::OnUserRoleChanged()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_UserRoleChanged = true;
+    if (m_CurProgramStepIndex > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    {
+        this->EnablePlayButton(false);//in fact, it will disable pause button when runing
+    }
+    else
+    if (m_ProcessRunning && m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service)
+        EnablePlayButton(true);
 
 }
 
@@ -239,7 +250,6 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
             mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
 
         }
-
     }
 
 }
@@ -593,6 +603,7 @@ void CDashboardWidget::OnProgramAborted()
     //progress aborted;
     //aborting time countdown is hidden.
     m_IsResumeRun = false;
+    m_CurProgramStepIndex = -1;
     mp_Ui->pgmsComboBox->WorkAsButton(false);
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
@@ -626,6 +637,7 @@ void CDashboardWidget::OnProgramAborted()
 void CDashboardWidget::OnProgramCompleted()
 {
     m_IsResumeRun = false;
+    m_CurProgramStepIndex = -1;
     mp_Ui->pgmsComboBox->WorkAsButton(false);
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
 }
@@ -635,6 +647,20 @@ void CDashboardWidget::OnProgramRunBegin()
     emit ProgramActionStarted(DataManager::PROGRAM_START, m_TimeProposed, Global::AdjustedTime::Instance().GetCurrentDateTime(), m_IsResumeRun);
     m_IsResumeRun = true;
     mp_Ui->pgmsComboBox->WorkAsButton(true);
+}
+
+void CDashboardWidget::OnProcessStateChanged()
+{
+    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+    if (m_ProcessRunning)
+    {
+        mp_Ui->retortSlider->setEnabled(false);
+    }
+    else
+    {
+        mp_Ui->retortSlider->setEnabled(true);
+        mp_DashboardScene->OnPauseStationSuckDrain();
+    }
 }
 
 void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd)
@@ -795,6 +821,10 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
 void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd)
 {
     m_CurProgramStepIndex = cmd.CurProgramStepIndex();
+    if (m_CurProgramStepIndex > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    {
+        this->EnablePlayButton(false);//disable pause button when runing
+    }
 }
 
 void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd)

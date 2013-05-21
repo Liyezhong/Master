@@ -52,8 +52,8 @@ private:
     const CmdStationSuckDrain & operator = (const CmdStationSuckDrain &); ///< Not implemented.
 private:
     QString m_StationID;
-    bool m_IsStart;
-    bool m_IsSuck;
+    bool m_IsStart;//true: start, false: completed
+    bool m_IsSuck; //true: suck, false:drain
     
 }; // end class CmdStationSuckDrain
 

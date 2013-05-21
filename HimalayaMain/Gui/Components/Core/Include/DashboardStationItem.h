@@ -112,7 +112,7 @@ private:
     QString m_CurrentReagentColorValue;
     DataManager::ContainerStatusType_t m_ContainerStatusType;
     bool m_ExpiredColorRed;
-
+    void OnCompletedSuckDrain(bool isSuck);
 public:
     explicit CDashboardStationItem(Core::CDataConnector *p_DataConnector,                                   
                                    StationGroupType_t StationGroup, const QString& StationItemID, QString StationLabel,
@@ -175,6 +175,7 @@ public:
     StationGroupType_t GetStationGroup(){ return m_DashboardStationGroup; }
 
     QRectF boundingRect() const;
+    void PauseSuckDrain();
     void SuckDrain(bool isStart = true, bool isSuck = true, const QString& ReagentColorValue = "#FFFFFF");
     const QString& StationItemID() const;
     bool IsReagentExpired();

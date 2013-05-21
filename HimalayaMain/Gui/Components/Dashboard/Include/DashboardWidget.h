@@ -78,6 +78,7 @@ private:
     int m_CurProgramStepIndex;
     bool m_IsDraining;
     bool m_CheckEndDatetimeAgain;
+    bool m_ProcessRunning;                      //!< Process running state
     void EnablePlayButton(bool bSetEnable);
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(const DataManager::CProgram*, int, int, int, bool&);
@@ -118,6 +119,7 @@ public slots:
     void OnProgramBeginAbort();
     void OnProgramCompleted();
     void OnProgramRunBegin();
+    void OnProcessStateChanged();
 
     void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
     void OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd);

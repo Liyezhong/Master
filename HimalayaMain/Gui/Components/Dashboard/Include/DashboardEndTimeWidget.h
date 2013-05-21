@@ -49,7 +49,9 @@ class CDashboardEndTimeWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit CDashboardEndTimeWidget(Core::CDataConnector *p_DataConnector, QWidget *p_Parent = NULL);
+    explicit CDashboardEndTimeWidget(Core::CDataConnector *p_DataConnector,
+                                     MainMenu::CMainWindow *p_MainWindow,
+                                     QWidget *p_Parent = NULL);
     ~CDashboardEndTimeWidget();
     void InitEndTimeWidgetItems();
     void UpdateEndTimeWidgetItems(DataManager::CProgram const *p_Program, int ProgramEndTimeInSecs);
@@ -61,6 +63,7 @@ protected:
 
 public slots:
     void OnUserRoleChanged();
+    void OnProcessStateChanged();
     void OnUserSettingsUpdated();
     void OnEndTimeButtonClicked();
     void UpdateDateTime(const QDateTime & selDateTime);
@@ -76,6 +79,7 @@ private:
     QPixmap         m_backgroundPixmap;
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
     bool m_UserRoleChanged;                                     //!< Flag to Verify the Change in User Role
+    bool m_ProcessRunning;
     Core::CDataConnector *mp_DataConnector;
     DataManager::CUserSettings *mp_UserSettings;
     Global::DateFormat m_CurDateFormat;
@@ -90,6 +94,7 @@ private:
     int m_remainingTimeTotal;
     int m_curRemainingTimeTotal;
     QString m_DateTimeStr;
+    MainMenu::CMainWindow *mp_MainWindow;
 signals:
     void OnSelectDateTime(const QDateTime& selDateTime);
 

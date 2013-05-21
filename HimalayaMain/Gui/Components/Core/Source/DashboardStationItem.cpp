@@ -741,7 +741,7 @@ void CDashboardStationItem::SuckDrain(bool isStart, bool isSuck, const QString& 
     }
     else
     {
-        if (!isSuck)
+        if (!isSuck)//draining
             m_CurrentBoundingRectReagentHeight = 0;
     }
 
@@ -749,8 +749,40 @@ void CDashboardStationItem::SuckDrain(bool isStart, bool isSuck, const QString& 
     {
         mp_SuckDrainTimer->start();
     }
-    else
+    else //finished
+    {
         mp_SuckDrainTimer->stop();
+        OnCompletedSuckDrain(isSuck);
+    }
+}
+
+void CDashboardStationItem::PauseSuckDrain()
+{
+    mp_SuckDrainTimer->stop();
+}
+
+void CDashboardStationItem::OnCompletedSuckDrain(bool isSuck)
+{
+    if (m_StationItemID == "Retort")
+    {
+        if (isSuck)
+            m_CurrentBoundingRectReagentHeight = m_RetortBoundingRectHeight - 33;
+        else
+            m_CurrentBoundingRectReagentHeight = 0;
+    }
+    else
+    {
+        if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
+        {
+            m_CurrentBoundingRectReagentHeight = m_BottleBoundingRectHeight - 25;
+        }
+        else if (STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
+        {
+            m_CurrentBoundingRectReagentHeight = m_ParaffinbathBoundingRectHeight - 8;
+        }
+    }
+
+    DrawStationItemImage();
 }
 
 void CDashboardStationItem::SuckDrainAnimation()

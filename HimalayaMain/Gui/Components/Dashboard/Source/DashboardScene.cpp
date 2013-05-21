@@ -50,7 +50,8 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
                        m_CloneDashboardStationList(true),
                        m_CloneProgramList(true),
                        m_pPipeAnimationTimer(NULL),
-                       m_currentTimerOrder(0)
+                       m_currentTimerOrder(0),
+                       m_SuckDrainStationId("")
 
 {
     QRectF Rect;
@@ -307,6 +308,7 @@ void CDashboardScene::ClearCurrentWorkingPipe()
     {
         delete m_pGraphicsPathItemPipeList.at(i);
     }
+    m_pGraphicsPathItemPipeList.clear();
 }
 
 void CDashboardScene::RepresentCurrentWorkingPipe(const QString& StationID)
@@ -530,7 +532,7 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     CreateAllPipe();
 
     // Add the End Time Widget
-    mp_DashboardEndTimeWidget = new Dashboard::CDashboardEndTimeWidget(mp_DataConnector);
+    mp_DashboardEndTimeWidget = new Dashboard::CDashboardEndTimeWidget(mp_DataConnector, mp_MainWindow);
     mp_DashboardEndTimeWidget->InitEndTimeWidgetItems();
     mp_GraphicsProxyWidget = this->addWidget(mp_DashboardEndTimeWidget);
     mp_GraphicsProxyWidget->setFlag(QGraphicsItem::ItemIgnoresTransformations);
@@ -627,10 +629,32 @@ const QString CDashboardScene::GetEndDateTime()
     return mp_DashboardEndTimeWidget->GetEndDateTime();
 }
 
+void CDashboardScene::OnPauseStationSuckDrain()
+{
+    m_pPipeAnimationTimer->stop();
+    //find Station and let Station animation pause
+   for (int i = 0; i < mp_DashboardStationItems.size(); i++)
+   {
+        Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
+        if (item->StationItemID() == m_SuckDrainStationId)
+        {
+            item->PauseSuckDrain();
+            mp_DashboardStationRetort->StationSelected(true);
+            mp_DashboardStationRetort->PauseSuckDrain();
+            break;
+        }
+   }
+}
+
 void CDashboardScene::OnStationSuckDrain(const QString& StationId, bool IsStart, bool IsSuck)
 {
    m_IsSuck = IsSuck;
-   RepresentCurrentWorkingPipe(StationId);
+   m_SuckDrainStationId = StationId;
+   ClearCurrentWorkingPipe();
+   if (IsStart)
+   {
+       RepresentCurrentWorkingPipe(StationId);
+   }
 
    if (IsStart)
    {
@@ -661,7 +685,6 @@ void CDashboardScene::OnStationSuckDrain(const QString& StationId, bool IsStart,
    }
    else
    {
-
         m_pPipeAnimationTimer->stop();
    }
 

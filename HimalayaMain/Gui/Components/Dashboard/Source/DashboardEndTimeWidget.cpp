@@ -33,10 +33,18 @@ namespace Dashboard {
  */
 /****************************************************************************/
 
-CDashboardEndTimeWidget::CDashboardEndTimeWidget(Core::CDataConnector *p_DataConnector, QWidget *p_Parent) : QWidget(p_Parent),
-    mp_Ui(new Ui::CDashboardEndTimeWidget), mp_DataConnector(p_DataConnector), m_UserRoleChanged(false), m_remainingTimeTotal(0),
-    m_curRemainingTimeTotal(0), m_DateTimeStr("")
-
+CDashboardEndTimeWidget::CDashboardEndTimeWidget(Core::CDataConnector *p_DataConnector,
+                                                 MainMenu::CMainWindow *p_MainWindow,
+                                                 QWidget *p_Parent) :
+                                                    QWidget(p_Parent),
+                                                    mp_Ui(new Ui::CDashboardEndTimeWidget),
+                                                    mp_DataConnector(p_DataConnector),
+                                                    m_UserRoleChanged(false),
+                                                    m_remainingTimeTotal(0),
+                                                    m_curRemainingTimeTotal(0),
+                                                    m_DateTimeStr(""),
+                                                    mp_MainWindow(p_MainWindow),
+                                                    m_ProcessRunning(false)
 {
     mp_Ui->setupUi(this);
     mp_Program = NULL;
@@ -60,6 +68,7 @@ CDashboardEndTimeWidget::CDashboardEndTimeWidget(Core::CDataConnector *p_DataCon
                       this, OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
 
     CONNECTSIGNALSLOT(mp_Ui->btnEndTime, clicked(), this, OnEndTimeButtonClicked());
+    CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
 }
 
 CDashboardEndTimeWidget::~CDashboardEndTimeWidget()
@@ -140,6 +149,13 @@ void CDashboardEndTimeWidget::OnUserRoleChanged()
     m_UserRoleChanged = true;
 }
 
+void CDashboardEndTimeWidget::OnProcessStateChanged()
+{
+   m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+   if (!m_ProcessRunning)//only for pause
+    mp_ProgressTimer->stop();//the progress bar and Time countdown will stop
+}
+
 void CDashboardEndTimeWidget::paintEvent(QPaintEvent *)
 {
 
@@ -150,12 +166,15 @@ void CDashboardEndTimeWidget::paintEvent(QPaintEvent *)
 
 void CDashboardEndTimeWidget::OnEndTimeButtonClicked()
 {
-    mp_wdgtDateTime->UpdateProgramName();
-    mp_wdgtDateTime->SetASAPDateTime(m_ProgramEndDateTime);
-    mp_wdgtDateTime->show();
-    CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, UpdateDateTime(const QDateTime &));
-    CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime &));
-    update();
+    if (!m_ProcessRunning)
+    {
+        mp_wdgtDateTime->UpdateProgramName();
+        mp_wdgtDateTime->SetASAPDateTime(m_ProgramEndDateTime);
+        mp_wdgtDateTime->show();
+        CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, UpdateDateTime(const QDateTime &));
+        CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime &));
+        update();
+    }
 }
 
 
@@ -265,11 +284,12 @@ void CDashboardEndTimeWidget::UpdateProgress()
     mp_ProgressTimer->stop();//the progress bar and Time countdown will stop
     if (DataManager::PROGRAM_STATUS_ABORTED == ProgramStatusType)
     {
-        mp_Ui->lblReagentName->setText(tr("Aborted"));
+        mp_Ui->lblReagentName->setText(tr("Aborted."));
     }
     else if (DataManager::PROGRAM_STATUS_COMPLETED == ProgramStatusType)
     {
-        mp_Ui->lblReagentName->setText(tr("Completed"));
+        mp_Ui->lblReagentName->setText(tr("Completed!"));
+        mp_Ui->lblTime->setVisible(false);
     }
 
  }
