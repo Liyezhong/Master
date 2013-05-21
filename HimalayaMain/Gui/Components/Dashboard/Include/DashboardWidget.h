@@ -79,6 +79,7 @@ private:
     bool m_IsDraining;
     bool m_CheckEndDatetimeAgain;
     bool m_ProcessRunning;                      //!< Process running state
+    bool m_ProgramStartReady;
     void EnablePlayButton(bool bSetEnable);
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(const DataManager::CProgram*, int, int, int, bool&);

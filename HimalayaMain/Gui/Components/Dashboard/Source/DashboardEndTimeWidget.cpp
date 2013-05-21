@@ -289,9 +289,8 @@ void CDashboardEndTimeWidget::UpdateProgress()
     else if (DataManager::PROGRAM_STATUS_COMPLETED == ProgramStatusType)
     {
         mp_Ui->lblReagentName->setText(tr("Completed!"));
-        mp_Ui->lblTime->setVisible(false);
     }
-
+    mp_Ui->lblTime->setVisible(false);
  }
 
  const QTime& CDashboardEndTimeWidget::GetStepRemainingTime()

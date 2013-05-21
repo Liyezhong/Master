@@ -1582,7 +1582,7 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
     {
         case DataManager::PROGRAM_READY:
         {
-           emit ProgramStartReady();
+             emit ProgramStartReady();
         }
         break;
         case DataManager::PROGRAM_WILL_COMPLETE:

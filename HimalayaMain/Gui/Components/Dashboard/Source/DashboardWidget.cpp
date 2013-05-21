@@ -45,7 +45,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    m_CurProgramStepIndex(-1),
                                    m_IsDraining(false),
                                    m_CheckEndDatetimeAgain(false),
-                                   m_ProcessRunning(false)
+                                   m_ProcessRunning(false),
+                                   m_ProgramStartReady(false)
 
 {
      mp_Ui->setupUi(GetContentFrame());
@@ -81,8 +82,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      m_btnGroup.addButton(mp_Ui->playButton, Dashboard::firstButton);
      m_btnGroup.addButton(mp_Ui->abortButton, Dashboard::secondButton);
 
-     //mp_Ui->abortButton->setEnabled(false);
-     EnablePlayButton(true);
+     mp_Ui->abortButton->setEnabled(false);//enable it when OnProgramRunBegin
+     EnablePlayButton(false);
 
      m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
      mp_MessageDlg = new MainMenu::CMessageDlg();
@@ -216,6 +217,7 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
     if ( whichBtn == Dashboard::firstButton ) {
         switch(m_ProgramNextAction)
         {
+            this->EnablePlayButton(false);//protect to click twice in a short time
             case DataManager::PROGRAM_START:
             {
                 if (m_IsResumeRun)
@@ -247,8 +249,9 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
     else if (whichBtn == Dashboard::secondButton)
     {
         if(CheckPreConditionsToAbortProgram()) {
+            mp_Ui->abortButton->setEnabled(false);
+            mp_Ui->playButton->setEnabled(false);
             mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
-
         }
     }
 
@@ -531,6 +534,7 @@ void CDashboardWidget::EnablePlayButton(bool bSetEnable)
 void CDashboardWidget::OnProgramStartReadyUpdated()
 {
     this->EnablePlayButton(true);
+    m_ProgramStartReady = true;
 }
 
 void CDashboardWidget::OnProgramWillComplete()
@@ -583,9 +587,9 @@ void CDashboardWidget::TakeOutSpecimenAndRunCleaning()
             CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = tr("Cleaning Program");
             PrepareSelectedProgramChecking();
 
-            //enable pause and abort
-            mp_Ui->playButton->setEnabled(true);
-            mp_Ui->abortButton->setEnabled(true);
+            //disable pause and abort
+            mp_Ui->playButton->setEnabled(false);
+            mp_Ui->abortButton->setEnabled(false);
         }
     }
 }
@@ -596,6 +600,7 @@ void CDashboardWidget::OnProgramBeginAbort()
     //time countdown
     //Todo:20, Abort time, will be given a rough value later;
     emit ProgramActionStarted(DataManager::PROGRAM_ABORT, 20, Global::AdjustedTime::Instance().GetCurrentDateTime(), false);
+    this->EnablePlayButton(false);
 }
 
 void CDashboardWidget::OnProgramAborted()
@@ -607,6 +612,11 @@ void CDashboardWidget::OnProgramAborted()
     mp_Ui->pgmsComboBox->WorkAsButton(false);
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
+
+    mp_Ui->retortSlider->setEnabled(true);
+    //disable "Start" button, enable Retort lock button, hide End time button, now Abort button is still in "disable" status
+    mp_Ui->playButton->setEnabled(false);
+
 
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetTitle(tr("Warning"));
@@ -623,10 +633,6 @@ void CDashboardWidget::OnProgramAborted()
         mp_MainWindow->SetTabWidgetIndex();
         //show the comboBox
         mp_Ui->pgmsComboBox->showPopup();
-        //disable "Start" button and "Abort" button, enable Retort lock button, hide End time button
-        mp_Ui->playButton->setEnabled(false);
-        mp_Ui->abortButton->setEnabled(false);
-        mp_Ui->retortSlider->setEnabled(true);
     }
     else//no
     {
@@ -647,6 +653,8 @@ void CDashboardWidget::OnProgramRunBegin()
     emit ProgramActionStarted(DataManager::PROGRAM_START, m_TimeProposed, Global::AdjustedTime::Instance().GetCurrentDateTime(), m_IsResumeRun);
     m_IsResumeRun = true;
     mp_Ui->pgmsComboBox->WorkAsButton(true);
+    this->EnablePlayButton(true);//enable pause button
+    mp_Ui->abortButton->setEnabled(true);
 }
 
 void CDashboardWidget::OnProcessStateChanged()
@@ -809,12 +817,19 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_TimeProposed = cmd.TimeProposed();
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 
+
     emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
+
+    //m_ProgramStartReady = true;//only for test purpose
 
     if (m_ForceRunCleanProgram)//for after program completed
     {
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, m_EndDateTime);
         m_ForceRunCleanProgram = false;
+    }
+    else if (m_ProgramStartReady)
+    {
+        EnablePlayButton(true);
     }
 }
 
