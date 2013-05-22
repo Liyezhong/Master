@@ -336,9 +336,6 @@ bool CReagentStationEditModel::ContainsReagent(QString ReagentID)
 /****************************************************************************/
 Qt::ItemFlags CReagentStationEditModel::flags(const QModelIndex &Index) const
 {
-    if (Index.column() == 1) {
-        return Qt::NoItemFlags;
-    }
     return QAbstractItemModel::flags(Index);
 }
 
