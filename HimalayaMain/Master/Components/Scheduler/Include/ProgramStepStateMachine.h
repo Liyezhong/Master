@@ -82,8 +82,10 @@ signals:
     void OnMoveToTubeAfter();
     void OnMoveToSeal();
     void OnFill();
+    void OnStopFill();
     void OnSoak();
     void OnDrain();
+    void OnStopDrain();
     void OnAborting();
     void OnAborted();
 

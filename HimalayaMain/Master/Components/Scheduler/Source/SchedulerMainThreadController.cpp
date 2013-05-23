@@ -43,6 +43,8 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "float.h"
 
 
@@ -141,6 +143,8 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnDrain(), this, Drain());
     CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnAborting(), this, Abort());
 
+    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnStopFill(), this, StopFill());
+    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnStopDrain(), this, StopDrain());
 
     //command queue reset
     m_SchedulerCmdQueue.clear();
@@ -226,6 +230,12 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
         this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
         if(m_CurProgramStepIndex != -1)
         {
+            //send command to main controller to tell program finished
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
+            Q_ASSERT(commandPtrFinish);
+            Global::tRefType fRef = GetNewCommandRef();
+            SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+
             qDebug() << "Start step: " << m_CurProgramID;
             mp_ProgramStepStateMachine->Start();
             mp_SelfTestStateMachine->Start();
@@ -285,6 +295,7 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
 
 void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode)
 {
+
     if(CTRL_CMD_ABORT == ctrlCmd)
     {
         mp_ProgramStepStateMachine->NotifyAbort();
@@ -570,6 +581,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 Q_ASSERT(commandPtr);
                 Global::tRefType Ref = GetNewCommandRef();
                 SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+                //send command to main controller to tell program finished
+                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+                Q_ASSERT(commandPtrFinish);
+                Ref = GetNewCommandRef();
+                SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
             }
         }
         else if(PSSM_PAUSE == stepState)
@@ -1514,6 +1531,21 @@ void SchedulerMainThreadController::Fill()
     //todo: get delay time here
     cmd->SetDelayTime(2000);
     m_SchedulerCommandProcessor->pushCmd(cmd);
+
+    // acknowledge to gui
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, true));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+}
+
+void SchedulerMainThreadController::StopFill()
+{
+    // acknowledge to gui
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , false, true));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 }
 
 void SchedulerMainThreadController::Soak()
@@ -1542,6 +1574,21 @@ void SchedulerMainThreadController::Drain()
     //todo: get delay time here
     cmd->SetDelayTime(2000);
     m_SchedulerCommandProcessor->pushCmd(cmd);
+
+    // acknowledge to gui
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+}
+
+void SchedulerMainThreadController::StopDrain()
+{
+    // acknowledge to gui
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , false, false));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 }
 
 void SchedulerMainThreadController::Pressure()

@@ -211,8 +211,10 @@ private slots:
          void HeatLevelSensor();
          void MoveRV();
          void Fill();
+         void StopFill();
          void Soak();
          void Drain();
+         void StopDrain();
          void Pressure();
          void Vaccum();
          void Abort();

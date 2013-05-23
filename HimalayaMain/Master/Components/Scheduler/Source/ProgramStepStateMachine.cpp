@@ -1,5 +1,6 @@
 #include "../Include/ProgramStepStateMachine.h"
 #include <QDebug>
+
 namespace Scheduler
 {
 
@@ -106,6 +107,8 @@ ProgramStepStateMachine::ProgramStepStateMachine()
     connect(mp_PssmAborted, SIGNAL(entered()), this, SLOT(OnStateChanged()));
     connect(mp_PssmAborting, SIGNAL(entered()), this, SLOT(OnStateChanged()));
 
+    connect(mp_PssmReadyToFill,SIGNAL(exited()),this, SIGNAL(OnStopFill()));
+    connect(mp_PssmReadyToDrain,SIGNAL(exited()),this,SIGNAL(OnStopDrain()));
 
 }
 
