@@ -364,9 +364,10 @@ QVariant CReagentStatusModel::headerData(int Section, Qt::Orientation Orientatio
                 case Global::RMS_CYCLES:
                     return tr("Cycles\noverdue");
                 case Global::RMS_DAYS:
-                    return tr("Days\noverdue");
+                    //return tr("Days\noverdue");
+                    return tr("Cycles\nsince\nchange");//test
             }
-        case 4:            
+        case 4:
             return tr("Exchange\nDate");
         case 5:
             return tr("Status");
@@ -461,11 +462,6 @@ void CReagentStatusModel::ResetAndUpdateModel()
 /****************************************************************************/
 Qt::ItemFlags CReagentStatusModel::flags(const QModelIndex &Index) const
 {
-    if (mp_ReagentList) {
-        if (Index.row() >=  mp_ReagentList->GetNumberOfReagents()) {
-            return Qt::NoItemFlags;
-        }
-    }
     return QAbstractItemModel::flags(Index);
 }
 } // end namespace Core

@@ -85,7 +85,7 @@ private:
     Core::CReagentStationEditModel m_ReagentEditModel;  //!< Model for the table
     QString m_ReagentLongName;
     QString m_ReagentID;
-
+    QPixmap* m_pAmbientTempraturePixmap;
 
 private:
     void showEvent(QShowEvent *p_Event);

@@ -230,7 +230,7 @@ void CModifyReagentGroupColorDlg::SetReagentGroupList(DataManager::CDataReagentG
 
            if(m_ColorNames.contains(Temp_ReagentGroup->GetGroupColor())){
                int index = m_ColorNames.indexOf(Temp_ReagentGroup->GetGroupColor());
-               m_QPushButtonMap[index]->setDisabled(true);
+               m_QPushButtonMap[index]->setEnabled(false);
            }
        }
 }

@@ -83,7 +83,7 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
     mp_UserSettings = NULL;
     m_ReagentEditModel.SetVisibleRowCount(8);
     m_ReagentEditModel.SetRequiredContainers(mp_DataConnector->ReagentList,mp_DataConnector->ReagentGroupList,mp_DataConnector->DashboardStationList, 2);
-
+    m_pAmbientTempraturePixmap = new QPixmap(":/HimalayaImages/Digits/Snow.png");
     InitDurationWidget();
     InitTemperatureWidget();
 
@@ -97,7 +97,6 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
     CONNECTSIGNALSLOT(mp_TableWidget,clicked(QModelIndex), this, OnSelectionChanged(QModelIndex));
     CONNECTSIGNALSLOT(p_Parent, ReagentsUpdated(), this, ReagentTableUpdate());
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
-    CONNECTSIGNALSLOT(mp_TableWidget,clicked(QModelIndex), this, OnSelectionChanged(QModelIndex));
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(),this,UpdateUserSetting());
 }
 
@@ -115,6 +114,7 @@ CModifyProgramStepDlg::~CModifyProgramStepDlg()
         delete mp_TableWidget;
         delete mp_Program;
         delete mp_Ui;
+        delete m_pAmbientTempraturePixmap;
     }
     catch (...) {
         // to please Lint.
@@ -170,11 +170,19 @@ void CModifyProgramStepDlg::InitTemperatureWidget()
     mp_Ui->scrollPanelWidgetTemperature->AddScrollWheel(mp_ScrollWheelTemp, 0);
 
     mp_ScrollWheelTemp->ClearItems();
+
     // Temperature Control
+
+    //Todo: Get the temprature range of reagent group, then convert to the FAHRENHEIT data
     if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
+
         for (int i = MIN_CENTIGRADE_TEMP; i <= MAX_CENTIGRADE_TEMP; i += 1) {
             mp_ScrollWheelTemp->AddItem(QString::number(i).rightJustified(2, '0'), i);
         }
+
+        //Add the AmbientTemprature icon.
+        mp_ScrollWheelTemp->AddItem("", 35, *m_pAmbientTempraturePixmap);
+
         mp_Ui->scrollPanelWidgetTemperature->SetSubtitle(QApplication::translate("CModifyProgramStepDlg", "\302\260C", 0, QApplication::UnicodeUTF8), 0);
     }
     else {
@@ -475,6 +483,20 @@ void CModifyProgramStepDlg::showEvent(QShowEvent *p_Event)
 {
     Q_UNUSED(p_Event);
     m_ReagentModel.OnDeviceModeChanged(m_DeviceMode);
+
+    if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
+        mp_ScrollWheelTemp->SetThreeDigitMode(false);
+        mp_Ui->scrollPanelWidgetTemperature->SetThreeDigitMode(false);
+        mp_ScrollWheelTemp->SetCurrentData(QString::number(m_ProgramStep.GetTemperature().toInt()));
+        qDebug()<<"\n\n Program widget Temp" << m_ProgramStep.GetTemperature().toInt();
+    }
+    else {
+        mp_ScrollWheelTemp->SetThreeDigitMode(true);
+        mp_Ui->scrollPanelWidgetTemperature->SetThreeDigitMode(true);
+        mp_ScrollWheelTemp->SetCurrentData(tr("%1").arg((((m_ProgramStep.GetTemperature().toInt() - 32) / 5) * 9) + 104));
+        qDebug()<<"\n\n Program widget Temp" << m_ProgramStep.GetTemperature().toInt();
+    }
+
     if (mp_ProgramStep && mp_ReagentList) {
         DataManager::CReagent const *p_Reagent = mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID());
         if (p_Reagent && m_ReagentModel.rowCount(QModelIndex()) > 0) {
@@ -485,18 +507,7 @@ void CModifyProgramStepDlg::showEvent(QShowEvent *p_Event)
             else {
                 mp_Ui->btnOk->setEnabled(false);
             }
-            if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
-                mp_ScrollWheelTemp->SetThreeDigitMode(false);
-                mp_Ui->scrollPanelWidgetTemperature->SetThreeDigitMode(false);
-                mp_ScrollWheelTemp->SetCurrentData(QString::number(m_ProgramStep.GetTemperature().toInt()));
-                qDebug()<<"\n\n Program widget Temp" << m_ProgramStep.GetTemperature().toInt();
-            }
-            else {
-                mp_ScrollWheelTemp->SetThreeDigitMode(true);
-                mp_Ui->scrollPanelWidgetTemperature->SetThreeDigitMode(true);
-                mp_ScrollWheelTemp->SetCurrentData(tr("%1").arg((((m_ProgramStep.GetTemperature().toInt() - 32) / 5) * 9) + 104));
-                qDebug()<<"\n\n Program widget Temp" << m_ProgramStep.GetTemperature().toInt();
-            }
+
             DataManager::CReagent Reagent;
             if ((mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID(), Reagent) == true)
                     && (m_ReagentModel.rowCount(QModelIndex()) > 0)) {

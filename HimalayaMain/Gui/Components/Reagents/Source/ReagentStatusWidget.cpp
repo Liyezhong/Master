@@ -380,7 +380,7 @@ void CReagentStatusWidget::RetranslateUI()
             break;
         case Global::RMS_DAYS:
             SecondColumnName = "Days\nsince\nchange";
-            ThirdColumnName = "Days\noverdue";
+            ThirdColumnName = "Cycles\nsince\nchange";//for test
             break;
     }
 

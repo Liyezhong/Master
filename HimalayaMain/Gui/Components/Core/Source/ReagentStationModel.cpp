@@ -328,11 +328,6 @@ void CReagentStationModel::ResetAndUpdateModel()
 /****************************************************************************/
 Qt::ItemFlags CReagentStationModel::flags(const QModelIndex &Index) const
 {
-    if (mp_ReagentList) {
-        if (Index.row() >=  mp_ReagentList->GetNumberOfReagents()) {
-            return Qt::NoItemFlags;
-        }
-    }
     return QAbstractItemModel::flags(Index);
 }
 } // end namespace Core
