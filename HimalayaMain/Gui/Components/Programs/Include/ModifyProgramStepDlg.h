@@ -39,6 +39,11 @@
 
 //lint -sem(Programs::CModifyProgramStepDlg::InitDurationWidget, initializer)
 //lint -e1565
+namespace DataManager
+{
+    class CDataReagentGroupList;
+}
+
 namespace Programs {
 
 namespace Ui {
@@ -86,7 +91,7 @@ private:
     QString m_ReagentLongName;
     QString m_ReagentID;
     QPixmap* m_pAmbientTempraturePixmap;
-
+    QPixmap* m_pAmbientTempratureBigPixmap;
 private:
     void showEvent(QShowEvent *p_Event);
     void RetranslateUI();
@@ -107,9 +112,8 @@ public:
     void SetButtonType(ButtonType_t ButtonType) { m_ModifyProgramDlgButtonType = ButtonType;}
     ButtonType_t GetButtonType(){return m_ModifyProgramDlgButtonType;}
 
-    void SetProgramStep(DataManager::CProgramStep *p_ProgramStep,
-                        DataManager::CDataReagentList *p_ReagentList);
-    void NewProgramStep(DataManager::CDataReagentList *p_ReagentList);
+    void SetProgramStep(DataManager::CProgramStep *p_ProgramStep);
+    void NewProgramStep();
     void SelectRow(qint32 Row);
 
     void ShowSelectReagentPopup();
@@ -134,13 +138,13 @@ public:
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings)
     {
         m_UserSettings = *p_UserSettings;
-        InitTemperatureWidget();
+        //InitTemperatureWidget();
     }
 
 private:
     void InitDurationWidget();
     void ResizeHorizontalSection();
-    void InitTemperatureWidget();
+    void InitTemperatureWidget(const DataManager::CReagent * pReagent);
 protected:
     void changeEvent(QEvent *p_Event);
 

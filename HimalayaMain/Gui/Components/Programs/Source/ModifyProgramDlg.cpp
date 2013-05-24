@@ -351,7 +351,7 @@ void CModifyProgramDlg::OnEdit()
 {
     mp_ModifyProgStepDlg->SetDialogTitle(tr("Edit Program Step"));
     mp_ModifyProgStepDlg->SetDeviceMode(m_DeviceMode);
-    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep(), mp_DataConnector->ReagentList);
+    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep());
     mp_ModifyProgStepDlg ->SetButtonType(EDIT_BTN_CLICKED);
     mp_ModifyProgStepDlg->move(80,50);
 //    mp_ModifyProgStepDlg->ShowSelectReagentPopup();
@@ -367,7 +367,7 @@ void CModifyProgramDlg::OnNew()
 {
     mp_ModifyProgStepDlg->SetDialogTitle(tr("New Program Step"));
     mp_ModifyProgStepDlg->SetDeviceMode(m_DeviceMode);
-    mp_ModifyProgStepDlg->NewProgramStep(mp_DataConnector->ReagentList);
+    mp_ModifyProgStepDlg->NewProgramStep();
     mp_ModifyProgStepDlg ->SetButtonType(NEW_BTN_CLICKED);
     mp_ModifyProgStepDlg->move(80,50);
     mp_ModifyProgStepDlg->show();
@@ -383,7 +383,7 @@ void CModifyProgramDlg::OnCopy()
     mp_ModifyProgStepDlg->SetDialogTitle(tr("Edit Program Step"));
     mp_ModifyProgStepDlg->SetButtonType(COPY_BTN_CLICKED);
     mp_ModifyProgStepDlg->SetDeviceMode(m_DeviceMode);
-    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep(), mp_DataConnector->ReagentList);
+    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep());
     mp_ModifyProgStepDlg->move(80,50);   
     mp_ModifyProgStepDlg->show();
 //    mp_ModifyProgStepDlg->ShowSelectReagentPopup();

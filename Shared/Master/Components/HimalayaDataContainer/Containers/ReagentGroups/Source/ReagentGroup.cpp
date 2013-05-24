@@ -106,6 +106,8 @@ bool CReagentGroup::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Com
     else
         XmlStreamWriter.writeAttribute("IsParraffinGroup", "false");
 
+    XmlStreamWriter.writeAttribute("MinTemprature", QString::number(m_MinTemp));
+    XmlStreamWriter.writeAttribute("MaxTemprature", QString::number(m_MaxTemp));
         //======NODE=======Temporary Data Variables=========================
         if(CompleteData) {
         // Do Nothing as the m_ReagentType is derived from m_ID
@@ -185,6 +187,24 @@ bool CReagentGroup::DeserializeContent(QXmlStreamReader& XmlStreamReader,bool Co
     else {
         m_IsParraffinGroup = false;
     }
+
+    //MinTemp
+    if (!XmlStreamReader.attributes().hasAttribute("MinTemprature")) {
+        qDebug() << "### attribute <MinTemprature> is missing => abort reading";
+    //        Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+    //                                                   Global::tTranslatableStringList() << "Reagent-Name", true);
+        return false;
+    }
+
+    if (!XmlStreamReader.attributes().hasAttribute("MaxTemprature")) {
+        qDebug() << "### attribute <MaxTemprature> is missing => abort reading";
+    //        Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+    //                                                   Global::tTranslatableStringList() << "Reagent-Name", true);
+        return false;
+    }
+
+    m_MinTemp = XmlStreamReader.attributes().value("MinTemprature").toString().toInt();
+    m_MaxTemp = XmlStreamReader.attributes().value("MaxTemprature").toString().toInt();
 
 
     //======NODE=======Temporary Data Variables=========================

@@ -53,6 +53,9 @@ protected:
     bool m_IsCleaningReagentGroup;          //!< is it a cleaning reagent?
     bool m_IsParraffinGroup;                //!< is it a parraffin reagent?
     bool m_Locked;                          //!< locked stats for reagent , true user cannot chnage its parameters
+    int  m_MinTemp;                         //!<Tempature range for reagent group, min value in CELSIUS
+    int  m_MaxTemp;                         //!<Tempature range for reagent group, max value in CELSIUS
+
 
 public:
     CReagentGroup();
@@ -154,6 +157,9 @@ public:
      * \param bSet
      */
     void IsParraffin(bool bSet){ m_IsParraffinGroup = bSet;}
+
+    int  GetMinTemprature() const {return m_MinTemp;}
+    int  GetMaxTemprature() const {return m_MaxTemp;}
 
     /****************************************************************************/
     /*!
