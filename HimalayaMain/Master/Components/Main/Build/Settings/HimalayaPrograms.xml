@@ -7,9 +7,23 @@
                 <Step ID="1" ReagentID="L1" Duration="44m" Temperature="55" Pressure="On" Vacuum="On"/>
             </StepList>
         </Program>
-        <Program ID="C01" Name="TestCleaningprogram" Icon="IconFile" LeicaProgram="false" Favorite="true">
-            <StepList NextStepID="2">
-                <Step ID="1" ReagentID="L10" Duration="12m" Temperature="55" Pressure="Off" Vacuum="Off"/>
+        <Program ID="C01" Name="CleaningProgram" Icon="Icon_Leica" LeicaProgram="true" Favorite="true">
+            <StepList NextStepID="15">
+                <Step ID="0" ReagentID="L10" Duration="8m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="1" ReagentID="L10" Duration="5m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="2" ReagentID="L10" Duration="5m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="3" ReagentID="L10" Duration="5m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="4" ReagentID="L10" Duration="5m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="5" ReagentID="L10" Duration="5m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="6" ReagentID="L10" Duration="5m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="7" ReagentID="L10" Duration="5m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="8" ReagentID="L10" Duration="5m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="9" ReagentID="L11" Duration="7m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="10" ReagentID="L11" Duration="7m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="11" ReagentID="L11" Duration="7m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="12" ReagentID="L11" Duration="7m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="13" ReagentID="L11" Duration="7m" Temperature="65" Pressure="Off" Vacuum="Off"/>
+                <Step ID="14" ReagentID="L11" Duration="7m" Temperature="65" Pressure="Off" Vacuum="Off"/>
             </StepList>
         </Program>
         <Program ID="U01" Name="TestUserProgram" Icon="Icon2" LeicaProgram="false" Favorite="true">

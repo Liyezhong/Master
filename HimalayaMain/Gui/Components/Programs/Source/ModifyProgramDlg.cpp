@@ -198,7 +198,7 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
     {
         mp_Ui->btnPrgIcon->setIcon(QIcon(""));
     }
-    else if(m_Program.IsLeicaProgram()) {
+    else if(m_Program.IsLeicaProgram() || m_Program.GetID().at(0) == 'C') {
         mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png"));
         mp_Ui->btnEdit->setEnabled(false);
         mp_Ui->btnCopy->setEnabled(false);

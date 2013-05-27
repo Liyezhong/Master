@@ -127,6 +127,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
 
             // user program name can not contain leica letter
             if ((p_Program->GetName().contains("LEICA",Qt::CaseInsensitive) && p_Program->GetID().at(0) != 'L')) {
+                qDebug()<<"###user program name can not contain leica letter-- check failed.";
                 m_ErrorsHash.insert(EVENT_DM_USER_PROGRAM_NAME_CONTAINS_LEICA,
                                    Global::tTranslatableStringList() <<  p_Program->GetName());
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_USER_PROGRAM_NAME_CONTAINS_LEICA,
@@ -137,7 +138,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
 
 
             //check no of steps
-            if (p_Program->GetNumberOfSteps() > PROGRAM_STEPS_MAX) {
+            if (!p_Program->IsLeicaProgram() && p_Program->GetNumberOfSteps() > PROGRAM_STEPS_MAX) {
                 m_ErrorsHash.insert(EVENT_DM_PROG_STEP_COUNT_EXCEEDS_LIMIT,
                                    Global::tTranslatableStringList() <<  p_Program->GetName()
                                    << QString::number(PROGRAM_STEPS_MAX));
@@ -145,7 +146,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
                                                            Global::tTranslatableStringList() <<  p_Program->GetName()
                                                            << QString::number(PROGRAM_STEPS_MAX),
                                                            Global::GUI_MSG_BOX);
-                qDebug("### Program Steps should be less than 50");
+                qDebug("### Program Steps should be less than 14");
                 VerifiedData = false;
             }
 

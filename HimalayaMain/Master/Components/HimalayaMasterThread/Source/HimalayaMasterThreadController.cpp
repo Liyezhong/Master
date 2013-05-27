@@ -459,21 +459,13 @@ void HimalayaMasterThreadController::SendXML() {
     p_ByteArray->clear();
     (void)XmlStream.device()->reset();
 
-    DataManager::CDataProgramList *p_ProgramList =  new DataManager::CDataProgramList(*(mp_DataManager->GetProgramList()));
+    DataManager::CDataProgramList *p_ProgramList =  mp_DataManager->GetProgramList();
 
-    if (p_ProgramList) {
-        if(p_ProgramList->GetProgram(QString("C01")) != NULL)
-        {
-            p_ProgramList->DeleteProgram(QString("C01"));
-        }else
-        {
-            qDebug() << "No Cleaning Program C01";
-        }
-        XmlStream << *p_ProgramList;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM , XmlStream)), m_CommandChannelGui);
-    }
+       if (p_ProgramList) {
+           XmlStream << *p_ProgramList;
+           SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM , XmlStream)), m_CommandChannelGui);
+       }
 
-    delete p_ProgramList;
 
     p_ByteArray->clear();
     (void)XmlStream.device()->reset();
