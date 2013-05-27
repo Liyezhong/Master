@@ -61,7 +61,7 @@ public:
     explicit CModifyProgramIconDlg(QWidget *p_Parent = NULL,
                                    MainMenu::CMainWindow *p_MainWindow = NULL);
     virtual ~CModifyProgramIconDlg();
-//    void SetProgramIconList( const DataManager::CProgram &Program);
+    void EnableAvailableIcon(DataManager::CDataProgramList* pProgramList);
 private slots:
     void OnOk();
     void OnCancel();

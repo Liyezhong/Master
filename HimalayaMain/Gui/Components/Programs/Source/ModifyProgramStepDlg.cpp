@@ -203,15 +203,18 @@ void CModifyProgramStepDlg::InitTemperatureWidget(const DataManager::CReagent * 
         maxTemp = qRound(((double)maxTemp * 9) / 5  + 32);
     }
 
+    //Add the AmbientTemprature icon.
+    if (!reagentGroup->IsParraffin())
+    {
+        if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT)
+            mp_ScrollWheelTemp->AddItem("", -1, *m_pAmbientTempratureBigPixmap);
+        else
+            mp_ScrollWheelTemp->AddItem("", -1, *m_pAmbientTempraturePixmap);
+    }
+
     for (int i = minTemp; i <= maxTemp; i += 1) {
         mp_ScrollWheelTemp->AddItem(QString::number(i).rightJustified(2, '0'), i);
     }
-
-    //Add the AmbientTemprature icon.
-    if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT)
-        mp_ScrollWheelTemp->AddItem("", -1, *m_pAmbientTempratureBigPixmap);
-    else
-        mp_ScrollWheelTemp->AddItem("", -1, *m_pAmbientTempraturePixmap);
 
     if (mp_ProgramStep)
     {

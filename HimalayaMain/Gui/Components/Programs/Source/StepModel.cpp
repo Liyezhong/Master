@@ -151,13 +151,18 @@ QString CStepModel::ShowPV(DataManager::CProgramStep *Step) const
 
 QVariant CStepModel::ShowTemperature(DataManager::CProgramStep *Step) const
 {
+    if (Step->GetTemperature() == "-1")
+    {
+        return "-";
+    }
+
     if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS)
     {
         return Step->GetTemperature();
     }
     else
     {
-        double Temperature = (((Step->GetTemperature().toDouble() - 35) / 5) * 9 + 95);
+        double Temperature = Step->GetTemperature().toDouble() * 9 / 5 + 32;
         return qRound(Temperature);
     }
 }

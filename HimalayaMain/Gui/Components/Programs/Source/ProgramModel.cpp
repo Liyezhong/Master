@@ -149,7 +149,7 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
                 if(Icon.compare("") == true)
                     return QVariant();
                 else
-                    return QPixmap(":/HimalayaImages/CheckBox/CheckBox-"+Icon+".png");
+                    return QPixmap(":/HimalayaImages/Icons/Program/"+Icon+".png");
             }
         }
         else if (Role == (int)Qt::CheckStateRole) {

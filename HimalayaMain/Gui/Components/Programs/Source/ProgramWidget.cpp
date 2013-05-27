@@ -388,14 +388,13 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
     }
     else {
         if (mp_Program) {
-            bool IsLeicaProgram = false;
-            if (mp_Program->IsLeicaProgram()) {
-                IsLeicaProgram = true;
+            bool IsLeicaProgram = mp_Program->IsLeicaProgram();
+            if (IsLeicaProgram) {
                 if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
                      m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
                         (!m_ProcessRunning)) {
                     //Edit Mode
-                    mp_Ui->btnEdit->setEnabled(IsLeicaProgram);
+                    mp_Ui->btnEdit->setEnabled(!IsLeicaProgram);
                     mp_Ui->btnDelete->setEnabled(!IsLeicaProgram);
                     mp_Ui->btnCopy->setEnabled(IsLeicaProgram);
                 } else {

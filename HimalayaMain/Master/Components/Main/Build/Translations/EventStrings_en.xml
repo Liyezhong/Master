@@ -84,7 +84,7 @@
 		<string id="33817346" text1="Program Sequence ID &apos;%1&apos; does not exists in the list." text2=""/>
 		<string id="33817345" text1="Program Sequence ID &apos;%1&apos; already in use. Please choose different ID." text2=""/>
 		<string id="33817347" text1="Program Sequence &apos;%1&apos; operation failed" text2=""/>
-		<string id="33816605" text1="Number of steps in Program %1 exceeds limit. Max 50 steps allowed." text2=""/>
+		<string id="33816605" text1="Number of steps in Program %1 exceeds limit. Max 14 steps allowed." text2=""/>
 		<string id="33818116" text1="Program &apos;%1&apos; must have &apos;%2&apos; step(s) at least." text2=""/>
 		<string id="33818118" text1="Duration in Step &apos;%1&apos; of Program &apos;%2&apos; exceeds limits, validated range : &apos;%3&apos; - &apos;%4&apos;." text2=""/>
 		<string id="33818119" text1="Temperature in Step &apos;%1&apos; of Program &apos;%2&apos; exceeds limits, validated range : &apos;%3&apos; - &apos;%4&apos; (Celsius)." text2=""/>

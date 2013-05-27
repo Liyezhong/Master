@@ -38,34 +38,25 @@ CModifyProgramIconDlg::CModifyProgramIconDlg(QWidget *p_Parent, MainMenu::CMainW
 {
     mp_Ui->setupUi(GetContentFrame());
     m_ProcessRunning = false ;
-    m_IconName<<"Checked"<<"CheckedDisabled"<<"CheckedPressed"<<"Disabled"<<"Enabled"<<"";
+    SetButtonGroup();
 
-    mp_Ui->IconButton_1->setIcon(QIcon(":/HimalayaImages/CheckBox/CheckBox-"+m_IconName.at(0)+".png"));
-    mp_Ui->IconButton_1->setIconSize(QSize(40, 30));
-
-    mp_Ui->IconButton_2->setIcon(QIcon(":/HimalayaImages/CheckBox/CheckBox-"+m_IconName.at(1)+".png"));
-    mp_Ui->IconButton_2->setIconSize(QSize(40, 30));
-
-    mp_Ui->IconButton_3->setIcon(QIcon(":/HimalayaImages/CheckBox/CheckBox-"+m_IconName.at(2)+".png"));
-    mp_Ui->IconButton_3->setIconSize(QSize(40, 30));
-
-    mp_Ui->IconButton_4->setIcon(QIcon(":/HimalayaImages/CheckBox/CheckBox-"+m_IconName.at(3)+".png"));
-    mp_Ui->IconButton_4->setIconSize(QSize(40, 30));
-
-    mp_Ui->IconButton_5->setIcon(QIcon(":/HimalayaImages/CheckBox/CheckBox-"+m_IconName.at(4)+".png"));
-    mp_Ui->IconButton_5->setIconSize(QSize(40, 30));
-
-    mp_Ui->IconButton_6->setIcon(QIcon(""));
+    QString strName("Icon");
+    for (int i = 0; i < m_ButtonGroup.buttons().count(); i++)
+    {
+        strName.append(QString::number(i));
+        m_IconName.push_back(strName);
+        m_ButtonGroup.button(i)->setIcon(QIcon(":/HimalayaImages/Icons/Program/"+strName+".png"));
+        m_ButtonGroup.button(i)->setIconSize(QSize(40, 30));
+        strName = strName.left(4);
+    }
 
     mp_Ui->btnCancel->setText("Cancel");
     mp_Ui->btnOk->setText("Ok");
-    SetButtonGroup();
 
     // Connecting Signal and Slots
     CONNECTSIGNALSLOT(&m_ButtonGroup, buttonClicked(int), this, OnIconGroup(int));
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
-
     m_MessageDlg.SetTitle(tr("Information Message"));
     m_MessageDlg.SetIcon(QMessageBox::Information);
     m_MessageDlg.SetButtonText(1, tr("Ok"));
@@ -88,6 +79,12 @@ void CModifyProgramIconDlg ::SetButtonGroup()
         m_ButtonGroup.addButton(mp_Ui->IconButton_5, 4);
         m_ButtonGroup.addButton(mp_Ui->IconButton_6, 5);
 
+        m_ButtonGroup.addButton(mp_Ui->IconButton_7, 6);
+        m_ButtonGroup.addButton(mp_Ui->IconButton_8, 7);
+        m_ButtonGroup.addButton(mp_Ui->IconButton_9, 8);
+        m_ButtonGroup.addButton(mp_Ui->IconButton_10, 9);
+        m_ButtonGroup.addButton(mp_Ui->IconButton_11, 10);
+        m_ButtonGroup.addButton(mp_Ui->IconButton_12, 11);
 }
 /****************************************************************************/
 /*!
@@ -168,6 +165,27 @@ void CModifyProgramIconDlg::OnProcessStateChanged()
         //View Mode
         mp_Ui->btnOk->setEnabled(false);
         mp_Ui->btnCancel->setText(tr("Close"));
+    }
+}
+
+void CModifyProgramIconDlg::EnableAvailableIcon(DataManager::CDataProgramList* pProgramList)
+{
+    //enable all icons
+    for (int i = 0; i < m_ButtonGroup.buttons().count(); i++)
+    {
+        m_ButtonGroup.button(i)->setEnabled(true);
+        m_ButtonGroup.button(i)->setChecked(false);
+    }
+
+    //loop all used icons, diable it
+    int count = pProgramList->GetNumberOfPrograms();
+    for (int j = 0; j< count; j++)
+    {
+        if (m_IconName.contains(pProgramList->GetProgram(j)->GetIcon()))
+        {
+            int index = m_IconName.indexOf(pProgramList->GetProgram(j)->GetIcon());
+            m_ButtonGroup.button(index)->setEnabled(false);
+        }
     }
 }
 

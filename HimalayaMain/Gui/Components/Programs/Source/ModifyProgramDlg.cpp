@@ -119,7 +119,7 @@ void CModifyProgramDlg::UpdateProgramIcon(DataManager::CProgram *Program)
 {
     m_Icon = Program->GetIcon();
     m_Program.SetIcon(m_Icon);
-    mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/CheckBox/CheckBox-"+m_Icon+".png"));
+    mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/Program/"+m_Icon+".png"));
 
 }
 
@@ -207,7 +207,7 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
         mp_Ui->btnPrgName->setEnabled(false);
         mp_Ui->btnPrgIcon->setEnabled(true);
     } else {
-        mp_Ui->btnPrgIcon->setIcon(QIcon(QString(":/HimalayaImages/CheckBox/CheckBox-"+m_Program.GetIcon()+".png")));
+        mp_Ui->btnPrgIcon->setIcon(QIcon(QString(":/HimalayaImages/Icons/Program/"+m_Program.GetIcon()+".png")));
     }
 
     if (m_ButtonType == EDIT_BTN_CLICKED) {
@@ -1001,6 +1001,7 @@ void CModifyProgramDlg::OnIconClicked()
     m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
                             "\nPlease close the dialog with \"Close\""));
     mp_ModifyProgramIconDlg->SetDialogTitle(tr("Select Icon"));
+    mp_ModifyProgramIconDlg->EnableAvailableIcon(&m_ProgramListClone);
     mp_ModifyProgramIconDlg->move(96,70);
     mp_ModifyProgramIconDlg->show();
 }

@@ -222,7 +222,10 @@ void CModifyReagentGroupColorDlg::SetReagentGroupList(DataManager::CDataReagentG
       mp_Ui->btnOk->setEnabled(false);
 
       for(int ButtonIndex = 0; ButtonIndex < m_ColorNames.count();ButtonIndex++ )
-                 m_QPushButtonMap[ButtonIndex]->setEnabled(true);
+      {
+        m_QPushButtonMap[ButtonIndex]->setEnabled(true);
+        m_QPushButtonMap[ButtonIndex]->setChecked(false);
+      }
 
        const DataManager::CReagentGroup * Temp_ReagentGroup;
        for(int Index = 0;Index<ReagentGroupList.GetNumberOfReagentGroups();Index++){
