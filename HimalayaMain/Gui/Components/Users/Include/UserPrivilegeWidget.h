@@ -68,7 +68,7 @@ protected:
     void changeEvent(QEvent *p_Event);
 
 private slots:
-    void OnBtnServiceClicked();
+    //void OnBtnServiceClicked();
     void OnBtnAdministratorClicked();
     void OnBtnUserClicked();
     void OnBtnChangePasswordClicked();

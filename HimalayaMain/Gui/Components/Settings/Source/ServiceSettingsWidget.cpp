@@ -114,14 +114,14 @@ void CServiceSettingsWidget::ResetButtons()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
-    if ((m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
+    /*if ((m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
          (!m_ProcessRunning)) {
         //Edit Mode
         mp_Ui->btnService->setEnabled(true);
     }
     else {
         mp_Ui->btnService->setEnabled(false);
-    }
+    }*/
 }
 
 /****************************************************************************/

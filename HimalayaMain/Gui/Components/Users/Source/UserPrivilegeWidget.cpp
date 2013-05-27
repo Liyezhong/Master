@@ -57,12 +57,12 @@ CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
     mp_Ui->btnAdministrator->setIconSize(QSize(42, 28));
     mp_Ui->btnUser->setIcon(QIcon(":/Large/Icons/User_Status_TextButton/Btn_User_Operator.png"));
     mp_Ui->btnUser->setIconSize(QSize(42, 28));
-    mp_Ui->btnService->setIcon(QIcon(":/Large/Icons/User_Status_TextButton/Btn_User_Service.png"));
-    mp_Ui->btnService->setIconSize(QSize(42, 28));
+    //mp_Ui->btnService->setIcon(QIcon(":/Large/Icons/User_Status_TextButton/Btn_User_Service.png"));
+    //mp_Ui->btnService->setIconSize(QSize(42, 28));
 
     CONNECTSIGNALSLOT(mp_Ui->btnAdministrator, clicked(), this, OnBtnAdministratorClicked());
     CONNECTSIGNALSLOT(mp_Ui->btnChangePassword, clicked(), this, OnBtnChangePasswordClicked());
-    CONNECTSIGNALSLOT(mp_Ui->btnService, clicked(), this, OnBtnServiceClicked());
+    //CONNECTSIGNALSLOT(mp_Ui->btnService, clicked(), this, OnBtnServiceClicked());
     CONNECTSIGNALSLOT(mp_Ui->btnUser, clicked(), this, OnBtnUserClicked());
     mp_KeyBoardWidget = p_KeyBoardWidget;
 }
@@ -135,7 +135,7 @@ void CUserPrivilegeWidget::OnBtnAdministratorClicked()
  *  \brief Switch the role to the service user after requesting the password
  */
 /****************************************************************************/
-void CUserPrivilegeWidget::OnBtnServiceClicked()
+/*void CUserPrivilegeWidget::OnBtnServiceClicked()
 {
     m_ValidationType = KeyBoard::VALIDATION_3;
     mp_KeyBoardWidget->Attach(this);
@@ -152,7 +152,7 @@ void CUserPrivilegeWidget::OnBtnServiceClicked()
 
     mp_KeyBoardWidget->show();
     m_UserLevel = MainMenu::CMainWindow::Service;
-}
+}*/
 
 /****************************************************************************/
 /*!
