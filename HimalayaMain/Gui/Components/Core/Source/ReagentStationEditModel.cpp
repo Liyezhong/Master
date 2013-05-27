@@ -94,6 +94,10 @@ void CReagentStationEditModel::UpdateReagentList()
             DataManager::CReagent *p_Reagent = NULL;
             p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(i));
             if (p_Reagent && mp_ReagentGroupList) {
+                if (m_ModifiedProgramStepDlg &&
+                        (mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->IsCleaningReagentGroup()))
+                    continue;//Cleaning reagents could not be displayed in new step dialog.
+
                 if ((p_Reagent->GetReagentType() != LEICA_REAGENT)|| (!m_FilterLeicaReagent)) {
                     if(m_ParaffinReagent == true && mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->GetReagentGroupName() .toLower() == QString("Paraffin").toLower() \
                             || m_ModifiedProgramStepDlg){
