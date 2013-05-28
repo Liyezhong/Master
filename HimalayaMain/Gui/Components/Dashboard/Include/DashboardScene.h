@@ -131,6 +131,7 @@ private:
     QStringList m_PipeListS13;
     bool m_IsSuck;
     QTimer* m_pPipeAnimationTimer;
+    QTimer* m_pBlinkingTimer;
     QGraphicsPathItem* m_pWorkingPipeGraphicsRectItem;
     QList<QGraphicsPathItem*> m_pGraphicsPathItemPipeList;
     QGraphicsPathItem* m_WholePipeGraphicsRectItem;
@@ -155,6 +156,8 @@ private slots:
     void UpdateDashboardStations();
     void UpdateDashboardSceneReagentsForProgram(QString&, int, QList<QString>&);
     void PipeSuckDrainAnimation();
+    void BlinkingStation();
+    void OnUpdateUserSettings();
 
 signals:
     void OnSelectDateTime(const QDateTime &);

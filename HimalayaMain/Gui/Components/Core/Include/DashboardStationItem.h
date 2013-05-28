@@ -107,7 +107,6 @@ private:
     QTimer *mp_BlinkingTimer;                            //!< timer for blinking effect of station when reagent is expired
     QTimer* mp_SuckDrainTimer;
     bool m_ReagentExpiredFlag;                           //!< Indicates if the reagent in a station is expired.
-    qint32 m_BlinkingCounter;                            //!< Counter for animation
     bool m_StationSelected;                              //!< Indicates if the station is selected for the program
     QString m_CurrentReagentColorValue;
     DataManager::ContainerStatusType_t m_ContainerStatusType;
@@ -201,12 +200,9 @@ public slots:
     void UpdateDashboardScene(QString StationID);
     void UpdateDashboardStationItemReagent();
     void SuckDrainAnimation();
-
-
+    void DrawStationItemImage();
 
 private slots:
-
-    void DrawStationItemImage();
     void UpdateUserSettings();
 };
 

@@ -58,7 +58,6 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_BottleBoundingRectWidth(79),
     m_BottleBoundingRectHeight(97),
     m_ReagentExpiredFlag(false),
-    m_BlinkingCounter(1),
     m_Enabled(true),
     m_Pressed(false),
     m_StationSelected(false),
@@ -79,9 +78,6 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
         m_Image = QPixmap(m_BottleBoundingRectWidth, m_BottleBoundingRectHeight);
     }
 
-    mp_BlinkingTimer = new QTimer();
-    mp_BlinkingTimer->setInterval(500);
-    CONNECTSIGNALSLOT(mp_BlinkingTimer, timeout(), this, DrawStationItemImage());
 
     UpdateImage();
 
@@ -135,11 +131,6 @@ void CDashboardStationItem::paint(QPainter *p_Painter, const QStyleOptionGraphic
 {
 
     p_Painter->drawPixmap(0, 0, m_Image);
-
-    m_BlinkingCounter++;
-    if (!(m_BlinkingCounter % ANIMATION_COUNT_MAX)) {
-        m_BlinkingCounter = 0;
-    }
 
     if (!mp_DashboardStation) {
         return;
@@ -440,6 +431,11 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
                         m_ReagentExpiredFlag = false;
                 }
                 break;
+                case Global::RMS_OFF:
+                {
+                    m_ReagentExpiredFlag = false;
+                }
+                break;
                 default:
                 {
                     qDebug() << "Do Nothing";
@@ -449,8 +445,6 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
     }
 
     if(true == m_ReagentExpiredFlag) {
-        mp_BlinkingTimer->stop();
-        mp_BlinkingTimer->start();
         } else {
         DrawStationItemImage(); // No Blinking
     }
@@ -475,20 +469,8 @@ void CDashboardStationItem::DrawStationItemImage()
 
     if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
     {
-       /* if(true == m_ReagentExpiredFlag && m_StationSelected && (m_BlinkingCounter % 2))
-        {
-            Painter.drawPixmap((m_BottleBoundingRectWidth - 67) , (m_BottleBoundingRectHeight - 65), QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Small.png"));
-        }
-        */
         DrawReagentName(Painter);
     }
-    /*else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
-    {
-        if(true == m_ReagentExpiredFlag && m_StationSelected && (m_BlinkingCounter % 2))
-        {
-            Painter.drawPixmap((m_ParaffinbathBoundingRectWidth - 90), 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Expiry/Expiry_Expired_Small.png"));
-        }
-    }*/
     DrawStationItemLabel(Painter);
     update();
 }
@@ -592,7 +574,7 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         QColor color(ReagentColorValue);
         if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup || STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
         {
-            if(true == m_ReagentExpiredFlag && m_StationSelected && (m_BlinkingCounter % 2))
+            if(true == m_ReagentExpiredFlag && m_StationSelected)
             {
                 if (m_ExpiredColorRed)
                 {
@@ -600,7 +582,7 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
                 }
                 else
                 {
-                    color.setRgb(255, 255, 0);
+                    color.setRgb(240, 175, 82);
                     m_ExpiredColorRed = true;
                 }
             }

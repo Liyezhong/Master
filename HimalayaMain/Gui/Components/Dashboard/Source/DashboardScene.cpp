@@ -50,6 +50,7 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
                        m_CloneDashboardStationList(true),
                        m_CloneProgramList(true),
                        m_pPipeAnimationTimer(NULL),
+                       m_pBlinkingTimer(NULL),
                        m_currentTimerOrder(0),
                        m_SuckDrainStationId("")
 
@@ -60,6 +61,11 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     mp_ProgramListClone = new DataManager::CDataProgramList();
     m_pPipeAnimationTimer = new QTimer(this);
     CONNECTSIGNALSLOT(m_pPipeAnimationTimer, timeout(), this, PipeSuckDrainAnimation());
+
+    m_pBlinkingTimer = new QTimer(this);
+    m_pBlinkingTimer->setInterval(1000);
+    CONNECTSIGNALSLOT(m_pBlinkingTimer, timeout(), this, BlinkingStation());
+
     InitDashboardStationItemsPositions();
     InitDashboardStationGroups();
     InitDashboardStationIDs();
@@ -72,6 +78,7 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
 
     // update the stations whenenver the stations.xml is sent
     CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationsUpdated(), this, UpdateDashboardStations());
+    CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, OnUpdateUserSettings());
 
 }
 
@@ -100,6 +107,7 @@ CDashboardScene::~CDashboardScene()
         delete m_WholePipeGraphicsRectItem;
         delete mp_DashboardEndTimeWidget;
         delete m_pPipeAnimationTimer;
+        delete m_pBlinkingTimer;
     } catch(...) {
         // Please the PC-Lint
     }
@@ -432,6 +440,30 @@ void CDashboardScene::PipeSuckDrainAnimation()
 
         m_pGraphicsPathItemPipeList.at(i)->setBrush(QBrush(pixMap));
     }
+}
+
+void CDashboardScene::BlinkingStation()
+{
+    for (int i = 0; i < mp_DashboardStationItems.size(); i++)
+    {
+         Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
+         if (item)
+         {
+             if (item->IsReagentExpired())
+                 item->DrawStationItemImage();
+         }
+    }
+}
+
+void CDashboardScene::OnUpdateUserSettings()
+{
+     if (Global::RMS_OFF == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing()&&
+        Global::RMS_OFF == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSCleaning())
+     {
+        m_pBlinkingTimer->stop();
+     }
+     else
+         m_pBlinkingTimer->start();
 }
 
 /****************************************************************************/
