@@ -14,7 +14,7 @@
         <Reagent ID="L9" ExchangeDate="2013-05-15" ActualCassettes="0" ActualCycles="0" Status="Full"/>
     </Station>
     <Station ID="S5" Name="5" ParaffinBath="false">
-        <Reagent ID="L5" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Empty"/>
+        <Reagent ID="L5" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>
     </Station>
     <Station ID="S6" Name="6" ParaffinBath="false">
         <Reagent ID="L6" ExchangeDate="2012-02-04" ActualCassettes="500" ActualCycles="5" Status="Full"/>

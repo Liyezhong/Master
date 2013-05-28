@@ -754,6 +754,7 @@ void CDashboardStationItem::OnCompletedSuckDrain(bool isSuck)
     }
     else
     {
+
         if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
         {
             m_CurrentBoundingRectReagentHeight = m_BottleBoundingRectHeight - 25;
@@ -762,6 +763,9 @@ void CDashboardStationItem::OnCompletedSuckDrain(bool isSuck)
         {
             m_CurrentBoundingRectReagentHeight = m_ParaffinbathBoundingRectHeight - 8;
         }
+
+        if (isSuck)
+            m_CurrentBoundingRectReagentHeight = 0;
     }
 
     DrawStationItemImage();

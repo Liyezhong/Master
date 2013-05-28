@@ -317,6 +317,7 @@ void CDashboardScene::ClearCurrentWorkingPipe()
         delete m_pGraphicsPathItemPipeList.at(i);
     }
     m_pGraphicsPathItemPipeList.clear();
+    m_PipeOrientationList.clear();
 }
 
 void CDashboardScene::RepresentCurrentWorkingPipe(const QString& StationID)
@@ -449,7 +450,7 @@ void CDashboardScene::BlinkingStation()
          Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
          if (item)
          {
-             if (item->IsReagentExpired())
+             if (item->isSelected() && item->IsReagentExpired())
                  item->DrawStationItemImage();
          }
     }

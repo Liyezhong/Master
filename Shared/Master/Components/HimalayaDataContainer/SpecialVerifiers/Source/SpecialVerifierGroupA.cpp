@@ -216,7 +216,7 @@ bool CSpecialVerifierGroupA::CheckData()
                                 }
                             }
                             //reagents
-                            else
+                            /*else
                             {
                                 if(temperature < STEP_REAGENT_TEMP_MIN || temperature > STEP_REAGENT_TEMP_MAX){
                                     // error
@@ -231,7 +231,7 @@ bool CSpecialVerifierGroupA::CheckData()
                                                                                Global::GUI_MSG_BOX);
                                     Result = false;
                                 }
-                            }
+                            }*/
                         }
                         //check reagent group Compatible
                         if(X > 0){

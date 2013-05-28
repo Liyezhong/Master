@@ -85,6 +85,7 @@ private:
     Global::DateFormat m_CurDateFormat;
     Global::TimeFormat m_CurTimeFormat;
     QDateTime m_ProgramEndDateTime;
+    QTime m_CurStepRemainingTime;
     QTime m_CurRemainingTime;
     Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
     DataManager::CProgram const *mp_Program;
@@ -95,6 +96,7 @@ private:
     int m_curRemainingTimeTotal;
     QString m_DateTimeStr;
     MainMenu::CMainWindow *mp_MainWindow;
+    int m_Elapsed;
 signals:
     void OnSelectDateTime(const QDateTime& selDateTime);
 
