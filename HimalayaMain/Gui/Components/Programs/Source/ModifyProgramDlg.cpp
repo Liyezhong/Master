@@ -262,7 +262,6 @@ void CModifyProgramDlg::NewProgram()
     m_StepModel.SetModifyProgramDlgPtr(this);
     ResizeHorizontalSection();
     mp_Ui->btnPrgName->setText("--");
-    mp_Ui->label_3->setText(tr("Program not ready to start"));
 }
 
 /****************************************************************************/
@@ -695,18 +694,6 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
         mp_Ui->btnSave->setEnabled(false);
         mp_Ui->btnCancel->setText("Close");
     }
-}
-
-/****************************************************************************/
-/*!
- *  \brief Displays whether the program is ready to start or not.
- *
- *  \iparam ReadyString = Text to be displayed on the label.
- */
-/****************************************************************************/
-void CModifyProgramDlg::SetReadyProgram(QString ReadyString)
-{
-    mp_Ui->label_3->setText(ReadyString);
 }
 
 /****************************************************************************/

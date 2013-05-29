@@ -134,7 +134,6 @@ public:
     void Update();
     void UpdateOnESC();
     void NewProgram();    
-    void SetReadyProgram(QString);
     bool VerifyLastProgramStep(DataManager::CProgram *p_CurrentProgram, QString DeviceMode);
     void DeleteSelectedStep(DataManager::CProgram* p_CurrentProgram);
 

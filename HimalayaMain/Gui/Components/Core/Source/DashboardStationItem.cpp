@@ -656,12 +656,18 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 
         QPainterPath path;
         path.setFillRule( Qt::WindingFill);
+        if (m_CurrentBoundingRectReagentHeight == 3)//Retort CONTAMINATED
+        {
+            path.addRect((-75 + fillRetortWidth), 3, m_RetortBoundingRectHeight - 36, 5);
+            path.addRect((-75 + fillRetortWidth), (fillRetortHeight - 8), m_RetortBoundingRectHeight - 36, 5);
+        }
+
         path.addRoundedRect(QRect(-75, 3, fillRetortWidth, fillRetortHeight - 5), 8, 8);
         int cornerHeight = 4;
         if (fillRetortWidth > cornerHeight)
         {
-            path.addRect(QRect((-79 + fillRetortWidth), 3, cornerHeight, 8));// Top left corner not rounded
-            path.addRect(QRect((-79 + fillRetortWidth), (fillRetortHeight - 10), cornerHeight, 8));// Top right corner not rounded
+            path.addRect(QRect((-75 + fillRetortWidth), 3, cornerHeight, 8));// Top left corner not rounded
+            path.addRect(QRect((-75 + fillRetortWidth), (fillRetortHeight - 10), cornerHeight, 8));// Top right corner not rounded
         }
         Painter.drawPath(path);  // Only the Bottome Left and Bottom Right Corner
 
