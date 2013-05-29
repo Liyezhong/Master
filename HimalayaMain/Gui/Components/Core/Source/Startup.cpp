@@ -23,6 +23,7 @@
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "MainMenu/Include/StatusBarManager.h"
 #include "Application/Include/LeicaStyle.h"
+#include "Application/Include/Application.h"
 
 namespace Core {
 
@@ -53,11 +54,19 @@ CStartup::CStartup() : QObject()
     mp_Reagents = new Reagents::CReagentWidget(mp_DataConnector, &m_MainWindow, mp_KeyBoardWidget);
     mp_Settings = new Settings::CSettingsWidget(mp_DataConnector, &m_MainWindow, mp_KeyBoardWidget);
     mp_Users = new Users::CUserPrivilegeWidget(&m_MainWindow, mp_KeyBoardWidget);
+
+    mp_ScreenSaver = new ScreenSaverWidget();
+
     MainMenu::StatusBarManager::CreateInstance(&m_MainWindow,mp_DataConnector->SettingsInterface);
 
     // Dashboard Signals & Slots
     CONNECTSIGNALSLOT(mp_Reagents, UnselectProgram(), mp_Dashboard, OnUnselectProgram());
     CONNECTSIGNALSLOT(mp_Programs, UnselectProgram(), mp_Dashboard, OnUnselectProgram());
+
+    Application::CApplication* pApp =  dynamic_cast<Application::CApplication*>(QCoreApplication::instance());
+    CONNECTSIGNALSLOT(pApp, InteractStart(), mp_ScreenSaver, OnInteractStart());
+    CONNECTSIGNALSLOT(pApp, InteractStart(), mp_Users, OnInteractStart());
+
 
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramsUpdated(), mp_Dashboard, AddItemsToComboBox());  // To Populate the ComboBox Items in the initial stage
     CONNECTSIGNALSLOT(mp_Programs, FavoriteProgramListUpdated(), mp_Dashboard, AddItemsToComboBox()); // To Populate the ComboBox when User Changes the List
@@ -114,6 +123,7 @@ CStartup::~CStartup()
         delete mp_Dashboard;
         delete mp_KeyBoardWidget;
         delete mp_DataConnector;
+        delete mp_ScreenSaver;
     }
     catch (...) {}
 }

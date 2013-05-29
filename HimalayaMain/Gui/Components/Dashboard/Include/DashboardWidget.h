@@ -127,6 +127,7 @@ public slots:
     void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);
     void OnSelectDateTime(const QDateTime&);
+    void onTest();
 };
 
 }

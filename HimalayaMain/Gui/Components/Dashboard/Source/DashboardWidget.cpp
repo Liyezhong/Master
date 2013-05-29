@@ -309,6 +309,11 @@ void CDashboardWidget::OnSelectDateTime(const QDateTime& dateTime)
     m_EndDateTime = dateTime;
 }
 
+void CDashboardWidget::onTest()
+{
+
+}
+
 bool CDashboardWidget::IsParaffinInProgram(const DataManager::CProgram* p_Program)
 {
     if (!mp_DataConnector)

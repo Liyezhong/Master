@@ -25,6 +25,7 @@
 #include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/StatusBarManager.h"
 #include "Dashboard/Include/DashboardWidget.h"
+#include "Dashboard/Include/ScreenSaverWidget.h"
 #include "Programs/Include/ProgramWidget.h"
 #include "Reagents/Include/ReagentWidget.h"
 #include "Settings/Include/SettingsWidget.h"
@@ -58,6 +59,7 @@ private:
     Reagents::CReagentWidget *mp_Reagents; //!< Reagents screen
     Settings::CSettingsWidget *mp_Settings; //!< Settings screen
     Users::CUserPrivilegeWidget *mp_Users;  //!< Users screen
+    ScreenSaverWidget* mp_ScreenSaver;
     KeyBoard::CKeyBoard *mp_KeyBoardWidget; //!< On-screen Keyboard
     QString m_Mode;							//!< GUI mode
 };

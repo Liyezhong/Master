@@ -27,6 +27,8 @@
 #include "KeyBoard/Include/KeyBoardObserver.h"
 #include <QRegExpValidator>
 
+class QTimer;
+
 namespace Users {
 
 namespace Ui {
@@ -56,6 +58,7 @@ private:
     QString m_PwdType;                              //!< Type of the password is stored i.e. Old, New and Confirm
     MainMenu::CMainWindow::UserRole_t m_UserLevel;  //!< Current user Level    
     void RetranslateUI();
+    QTimer* m_Timer;
 
 public:
     explicit CUserPrivilegeWidget(QWidget *p_Parent = 0,
@@ -73,9 +76,11 @@ private slots:
     void OnBtnUserClicked();
     void OnBtnChangePasswordClicked();
     void OnOkClicked();
+    void AppIdleForLongTime();
 public slots:
     void UserAuthenticated(const qint32 &AuthenticatedLevel);
     void ChangeInAdminPassword(const QString &PasswordType);
+    void OnInteractStart();
 signals:
     void UserLevelClicked(QDataStream &);
     void ChangePasswordClicked(QDataStream &);

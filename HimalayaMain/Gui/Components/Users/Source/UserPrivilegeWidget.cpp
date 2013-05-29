@@ -25,6 +25,7 @@
 #include "Users/Include/UserPrivilegeWidget.h"
 #include "ui_UserPrivilegeWidget.h"
 #include <QDebug>
+#include <QTimer>
 
 namespace Users {
 
@@ -65,6 +66,12 @@ CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
     //CONNECTSIGNALSLOT(mp_Ui->btnService, clicked(), this, OnBtnServiceClicked());
     CONNECTSIGNALSLOT(mp_Ui->btnUser, clicked(), this, OnBtnUserClicked());
     mp_KeyBoardWidget = p_KeyBoardWidget;
+
+    m_Timer = new QTimer(this);
+    m_Timer->setInterval(600000);//10 minutes
+    //m_Timer->setInterval(3000);//test
+    connect(m_Timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
+    m_Timer->start();
 }
 
 /****************************************************************************/
@@ -75,6 +82,7 @@ CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
 CUserPrivilegeWidget::~CUserPrivilegeWidget()
 {
     delete mp_Ui;
+    delete m_Timer;
 }
 
 /****************************************************************************/
@@ -95,6 +103,22 @@ void CUserPrivilegeWidget::changeEvent(QEvent *p_Event)
             break;
     }
     QWidget::changeEvent(p_Event);
+}
+
+void CUserPrivilegeWidget::AppIdleForLongTime()
+{
+    m_Timer->stop();
+    if (m_UserLevel == MainMenu::CMainWindow::Admin || m_UserLevel == MainMenu::CMainWindow::Service)
+        OnBtnUserClicked();
+}
+
+void CUserPrivilegeWidget::OnInteractStart()
+{
+    if (m_UserLevel == MainMenu::CMainWindow::Admin || m_UserLevel == MainMenu::CMainWindow::Service)
+    {
+        m_Timer->stop();
+        m_Timer->start();
+    }
 }
 
 /****************************************************************************/

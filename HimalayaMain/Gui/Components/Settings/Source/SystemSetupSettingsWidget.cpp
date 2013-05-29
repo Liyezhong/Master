@@ -238,7 +238,7 @@ void CSystemSetupSettingsWidget::ResetButtons()
 /****************************************************************************/
 void CSystemSetupSettingsWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CSystemSetupSettingsWidget", "Agitation", 0, QApplication::UnicodeUTF8));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CSystemSetupSettingsWidget", "System Setup", 0, QApplication::UnicodeUTF8));
 }
 
 /****************************************************************************/
