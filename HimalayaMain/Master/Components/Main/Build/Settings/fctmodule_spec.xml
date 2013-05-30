@@ -269,7 +269,7 @@
             </CAN_messages>
         </function_module>
         <function_module type="pressure_control" moduleID="13">
-            <!-- this sections defines all CAN-message IDs used by the temperature control function module -->
+            <!-- this sections defines all CAN-message IDs used by the pressure control function module -->
             <CAN_messages>
                 <CAN_message key="EventInfo" commandclass="0x2" commandcode="0x00" ms="0x0"/>
                 <CAN_message key="EventWarning" commandclass="0x2" commandcode="0x01" ms="0x0"/>

@@ -1124,7 +1124,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         while(!PopDeviceControlCmdQueue(resRVInitPos));
         ReturnCode_t retCode;
         resRVInitPos->GetResult(retCode);
-        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        if(DCL_ERR_DEV_RV_MOVE_TO_INIT_POS_SUCCESS != retCode)
         {
             //todo: error handling
             qDebug()<<"Failed move to initial position, return code: " << retCode;
