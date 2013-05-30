@@ -64,7 +64,8 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_CurRMSMode(Global::RMS_UNDEFINED),
     m_StationItemID(StationItemID),
     m_ContainerStatusType(DataManager::CONTAINER_STATUS_FULL),
-    m_ExpiredColorRed(true)
+    m_ExpiredColorRed(true),
+    m_IsRetortContaminated(false)
 {
     setFlag(QGraphicsItem::ItemIsSelectable);
 
@@ -656,10 +657,10 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 
         QPainterPath path;
         path.setFillRule( Qt::WindingFill);
-        if (m_CurrentBoundingRectReagentHeight == 3)//Retort CONTAMINATED
+        if (m_IsRetortContaminated)//Retort CONTAMINATED
         {
-            path.addRect((-75 + fillRetortWidth), 3, m_RetortBoundingRectHeight - 36, 5);
-            path.addRect((-75 + fillRetortWidth), (fillRetortHeight - 8), m_RetortBoundingRectHeight - 36, 5);
+            path.addRect((-75 + fillRetortWidth), 3, m_RetortBoundingRectHeight - 36, 3);
+            path.addRect((-75 + fillRetortWidth), (fillRetortHeight - 6), m_RetortBoundingRectHeight - 36, 3);
         }
 
         path.addRoundedRect(QRect(-75, 3, fillRetortWidth, fillRetortHeight - 5), 8, 8);
@@ -863,6 +864,7 @@ void CDashboardStationItem::SetContainerStatus(DataManager::ContainerStatusType_
 {
     if (DataManager::CONTAINER_STATUS_CONTAMINATED == containerStatus)
     {
+        m_IsRetortContaminated = true;
         m_CurrentBoundingRectReagentHeight  = 3;
     }
     else if (DataManager::CONTAINER_STATUS_EMPTY == containerStatus)
@@ -871,6 +873,7 @@ void CDashboardStationItem::SetContainerStatus(DataManager::ContainerStatusType_
     }
 
     DrawStationItemImage();
+    m_IsRetortContaminated = false;
 }
 
 } // end namespace Core
