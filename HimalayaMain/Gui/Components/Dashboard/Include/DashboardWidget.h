@@ -81,6 +81,8 @@ private:
     bool m_ProcessRunning;                      //!< Process running state
     bool m_ProgramStartReady;
     void EnablePlayButton(bool bSetEnable);
+    void EnableAbortButton(bool bSetEnable);
+    void EnableRetortSlider(bool bSetEnable);
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(const DataManager::CProgram*, int, int, int, bool&);
     void PrepareSelectedProgramChecking();

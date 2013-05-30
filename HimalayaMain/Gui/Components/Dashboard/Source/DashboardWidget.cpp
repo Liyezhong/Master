@@ -82,7 +82,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      m_btnGroup.addButton(mp_Ui->playButton, Dashboard::firstButton);
      m_btnGroup.addButton(mp_Ui->abortButton, Dashboard::secondButton);
 
-     mp_Ui->abortButton->setEnabled(false);//enable it when OnProgramRunBegin
+     EnableAbortButton(false);
      EnablePlayButton(false);
 
      m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
@@ -249,8 +249,8 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
     else if (whichBtn == Dashboard::secondButton)
     {
         if(CheckPreConditionsToAbortProgram()) {
-            mp_Ui->abortButton->setEnabled(false);
-            mp_Ui->playButton->setEnabled(false);
+            EnableAbortButton(false);
+            EnablePlayButton(false);
             mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
         }
     }
@@ -530,15 +530,45 @@ bool CDashboardWidget::CheckPreConditionsToAbortProgram()
     return ConfirmationMessageDlg.exec() == (int)QDialog::Accepted;
 }
 
-//Need the gray button!
 void CDashboardWidget::EnablePlayButton(bool bSetEnable)
 {
     mp_Ui->playButton->setEnabled(bSetEnable);
+    if (bSetEnable)
+        mp_Ui->playButton->setStyleSheet(QString::fromUtf8("border-image: url(:/HimalayaImages/IconPushButton/IconPushButton-Enabled.png);"));
+    else
+        mp_Ui->playButton->setStyleSheet(QString::fromUtf8("border-image: url(:/HimalayaImages/IconPushButton/IconPushButton-Disabled.png);"));
+
 }
+
+void CDashboardWidget::EnableAbortButton(bool bSetEnable)
+{
+    mp_Ui->abortButton->setEnabled(bSetEnable);
+    if (bSetEnable)
+        mp_Ui->abortButton->setStyleSheet(QString::fromUtf8("border-image: url(:/HimalayaImages/IconPushButton/IconPushButton-Enabled.png);"));
+    else
+        mp_Ui->abortButton->setStyleSheet(QString::fromUtf8("border-image: url(:/HimalayaImages/IconPushButton/IconPushButton-Disabled.png);"));
+}
+
+void CDashboardWidget::EnableRetortSlider(bool bSetEnable)
+{
+    if (bSetEnable)
+    {
+        mp_Ui->retortSlider->SetDisabled(false);
+        mp_Ui->retortSlider->setEnabled(true);
+    }
+    else
+    {
+        mp_Ui->retortSlider->SetDisabled(true);
+        mp_Ui->retortSlider->setEnabled(false);
+    }
+    mp_Ui->retortSlider->update();
+}
+
 
 void CDashboardWidget::OnProgramStartReadyUpdated()
 {
-    this->EnablePlayButton(true);
+    if (!m_SelectedProgramId.isEmpty())
+        this->EnablePlayButton(true);
     m_ProgramStartReady = true;
 }
 
@@ -558,8 +588,8 @@ void CDashboardWidget::OnProgramWillComplete()
         m_IsDraining = true;
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_DRAIN);
         //disable pause and abort
-        mp_Ui->playButton->setEnabled(false);
-        mp_Ui->abortButton->setEnabled(false);
+        EnablePlayButton(false);
+        EnableAbortButton(false);
         return;
     }
 }
@@ -593,8 +623,8 @@ void CDashboardWidget::TakeOutSpecimenAndRunCleaning()
             PrepareSelectedProgramChecking();
 
             //disable pause and abort
-            mp_Ui->playButton->setEnabled(false);
-            mp_Ui->abortButton->setEnabled(false);
+            EnablePlayButton(false);
+            EnableAbortButton(false);
         }
     }
 }
@@ -618,10 +648,9 @@ void CDashboardWidget::OnProgramAborted()
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
 
-    mp_Ui->retortSlider->setEnabled(true);
+    EnableRetortSlider(true);
     //disable "Start" button, enable Retort lock button, hide End time button, now Abort button is still in "disable" status
-    mp_Ui->playButton->setEnabled(false);
-
+    EnablePlayButton(false);
 
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetTitle(tr("Warning"));
@@ -659,7 +688,7 @@ void CDashboardWidget::OnProgramRunBegin()
     m_IsResumeRun = true;
     mp_Ui->pgmsComboBox->WorkAsButton(true);
     this->EnablePlayButton(true);//enable pause button
-    mp_Ui->abortButton->setEnabled(true);
+    EnableAbortButton(true);
 }
 
 void CDashboardWidget::OnProcessStateChanged()
@@ -667,11 +696,11 @@ void CDashboardWidget::OnProcessStateChanged()
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if (m_ProcessRunning)
     {
-        mp_Ui->retortSlider->setEnabled(false);
+        EnableRetortSlider(false);
     }
     else
     {
-        mp_Ui->retortSlider->setEnabled(true);
+        EnableRetortSlider(true);
         mp_DashboardScene->OnPauseStationSuckDrain();
     }
 }
@@ -824,8 +853,6 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
 
 
     emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
-
-    //m_ProgramStartReady = true;//only for test purpose
 
     if (m_ForceRunCleanProgram)//for after program completed
     {
