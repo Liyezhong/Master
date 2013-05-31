@@ -824,14 +824,20 @@ const QString& SchedulerMainThreadController::SelectStationByReagent(const CReag
     if (!pDashboardDataStationList)
         return "";
 
+    CDataReagentGroupList* pDataReagentGroupList = mp_DataManager->GetReagentGroupList();
+    if (!pDataReagentGroupList)
+        return "";
+
     const QString& ReagentID = pReagent->GetReagentID();
+    bool isCleaningReagent = pDataReagentGroupList->GetReagentGroup(pReagent->GetGroupID())->IsCleaningReagentGroup();
 
     for (int i = 0; i < unusedStationIDs.count(); i++)
     {
         CDashboardStation* pDashboardStation = pDashboardDataStationList->GetDashboardStation(unusedStationIDs.at(i));
         if (pDashboardStation->GetDashboardReagentID() == ReagentID)
         {
-                unusedStationIDs.removeAt(i);
+                if (!isCleaningReagent)
+                    unusedStationIDs.removeAt(i);
                 return pDashboardStation->GetDashboardStationID();
         }
     }
