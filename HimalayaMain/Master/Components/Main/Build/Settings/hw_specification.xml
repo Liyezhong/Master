@@ -171,37 +171,37 @@
 ************************************************************************************************* -->
         <device type="RotaryValveDevice" dev_instanceID="0x000080C0" optional="0">
             <functionmodules>
-                <functionmodule key="RV_motor" fct_instanceID="0x3003"/>
-                <functionmodule key="RV_temp_ctrl" fct_instanceID="0x4003"/>
+                <functionmodule key="RV_motor" fct_instanceID="0x30003"/>
+                <functionmodule key="RV_temp_ctrl" fct_instanceID="0x40003"/>
             </functionmodules>
         </device>
         <device type="AirLiquidDevice" dev_instanceID="0x000080C1" optional="0">
             <functionmodules>
-                <functionmodule key="AL_pressure_ctrl" fct_instanceID="0x100F"/>
-                <functionmodule key="AL_level_sensor_temp_ctrl" fct_instanceID="0x200F"/>
-                <functionmodule key="AL_tube1_temp_ctrl" fct_instanceID="0x300F"/>
-                <functionmodule key="AL_tube2_temp_ctrl" fct_instanceID="0x400F"/>
-                <functionmodule key="AL_fan_digital_output" fct_instanceID="0x500F"/>
+                <functionmodule key="AL_pressure_ctrl" fct_instanceID="0x1000F"/>
+                <functionmodule key="AL_level_sensor_temp_ctrl" fct_instanceID="0x2000F"/>
+                <functionmodule key="AL_tube1_temp_ctrl" fct_instanceID="0x3000F"/>
+                <functionmodule key="AL_tube2_temp_ctrl" fct_instanceID="0x4000F"/>
+                <functionmodule key="AL_fan_digital_output" fct_instanceID="0x5000F"/>
             </functionmodules>
         </device>
         <device type="OvenDevice" dev_instanceID="0x000080C2" optional="0">
             <functionmodules>
-                <functionmodule key="OVEN_top_temp_ctrl" fct_instanceID="0x1005"/>
-                <functionmodule key="OVEN_bottom_temp_ctrl" fct_instanceID="0x2005"/>
+                <functionmodule key="OVEN_top_temp_ctrl" fct_instanceID="0x10005"/>
+                <functionmodule key="OVEN_bottom_temp_ctrl" fct_instanceID="0x20005"/>
             </functionmodules>
         </device>
         <device type="RetortDevice" dev_instanceID="0x000080C3" optional="0">
             <functionmodules>
-                <functionmodule key="RETORT_bottom_temp_ctrl" fct_instanceID="0x3005"/>
-                <functionmodule key="RETORT_side_temp_ctrl" fct_instanceID="0x4005"/>
-                <functionmodule key="RETORT_lock_digital_output" fct_instanceID="0x600F"/>
+                <functionmodule key="RETORT_bottom_temp_ctrl" fct_instanceID="0x30005"/>
+                <functionmodule key="RETORT_side_temp_ctrl" fct_instanceID="0x40005"/>
+                <functionmodule key="RETORT_lock_digital_output" fct_instanceID="0x6000F"/>
             </functionmodules>
         </device>
         <device type="PeripheryDevice" dev_instanceID="0x000080C4" optional="0">
             <functionmodules>
-                <functionmodule key="PER_remote_alarm_ctrl_digital_output" fct_instanceID="0x800F"/>
-                <functionmodule key="PER_local_alarm_ctrl_digital_output" fct_instanceID="0x900F"/>
-                <functionmodule key="PER_main_relay_digital_output" fct_instanceID="0x700F"/>
+                <functionmodule key="PER_remote_alarm_ctrl_digital_output" fct_instanceID="0x8000F"/>
+                <functionmodule key="PER_local_alarm_ctrl_digital_output" fct_instanceID="0x9000F"/>
+                <functionmodule key="PER_main_relay_digital_output" fct_instanceID="0x7000F"/>
             </functionmodules>
         </device>
     </devices>
