@@ -125,7 +125,7 @@ signals:
      *  \brief Emit this Signal when Favorite Program List is updated
      */
     /****************************************************************************/
-    void FavoriteProgramListUpdated();
+    void FavoriteProgramListUpdated(DataManager::CProgram &);
 
     /****************************************************************************/
     /*!

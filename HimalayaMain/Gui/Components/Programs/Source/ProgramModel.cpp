@@ -48,7 +48,6 @@ CProgramModel::CProgramModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
     m_Columns = 0;
     m_CurrentIndex = 0;
     m_VisibleRowCount = VISIBLE_ROW_COUNT;
-    m_SelectedProgramCount = 0;
 }
 
 /****************************************************************************/
@@ -191,7 +190,8 @@ Qt::ItemFlags CProgramModel::flags(const QModelIndex &Index) const
     if (Index.column() == 1) {
         if (m_CurrentUserRole == MainMenu::CMainWindow::Admin
                 || m_CurrentUserRole == MainMenu::CMainWindow::Service){
-            if (m_SelectedProgramCount == 4) {
+            int FavProgramCount = mp_ProgramList->GetFavoriteProgramIDs().count();
+            if (FavProgramCount == 5) {
                 if (data(Index, Qt::CheckStateRole) == Qt::Unchecked) {
                     return Qt::ItemIsSelectable;
                 }
@@ -264,27 +264,26 @@ bool CProgramModel::setData(const QModelIndex &Index, const QVariant &Value, int
         DataManager::CProgram *p_Program = mp_ProgramList->GetProgram(Index.row());
         if (p_Program) {
             if (Index.column() == 1) {
-                m_SelectedProgramCount = mp_ProgramList->GetFavoriteProgramIDs().count();
-                qDebug() <<"\n Selected Program Count:-> "<< m_SelectedProgramCount;
-                if (m_SelectedProgramCount < MAX_FAVORITE_PROGRAM_COUNT && Value.toBool() == true)
+                int FavProgramCount = mp_ProgramList->GetFavoriteProgramIDs().count();
+                if (FavProgramCount < MAX_FAVORITE_PROGRAM_COUNT && Value.toBool() == true)
                 {
                     p_Program->SetFavorite(Value.toBool());
                     UpdateStat = mp_ProgramList->UpdateProgram(p_Program);
                     OnUpdateProgramList();
-                    emit FavoriteProgramListUpdated();
+                    emit FavoriteProgramListUpdated(*p_Program);
                     return true;
                 }
                 else if(Value.toBool() == 0)
                 {
                     p_Program->SetFavorite(false);
                     OnUpdateProgramList();
-                    emit FavoriteProgramListUpdated();
+                    emit FavoriteProgramListUpdated(*p_Program);
                     return false;
                 }
                 else
                 {
                     OnUpdateProgramList();
-                    emit FavoriteProgramListUpdated();
+                    emit FavoriteProgramListUpdated(*p_Program);
                     return false;
                 }
             }

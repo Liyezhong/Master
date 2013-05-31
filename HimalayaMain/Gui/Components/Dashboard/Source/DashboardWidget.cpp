@@ -170,26 +170,21 @@ void CDashboardWidget::AddItemsToComboBox()
     m_FavProgramIDs.clear();
     mp_Ui->pgmsComboBox->clear();
 
-    //if(m_UserRoleChanged) {
-        //if((m_CurrentUserRole == MainMenu::CMainWindow::Admin) ||
-         //       (m_CurrentUserRole == MainMenu::CMainWindow::Service))
-        //{
-            m_FavProgramIDs = mp_ProgramList->GetFavoriteProgramIDs(); // get five favorite Programs' ID
-            for ( int i = 0; i < m_FavProgramIDs.count(); i++)
-            {
-                QString ProgramId = m_FavProgramIDs.at(i);
-                QString ProgramName = mp_ProgramList->GetProgram(ProgramId)->GetName();
-                // Replace this statement later
-                QIcon ProgramIcon; // = QIcon(mp_ProgramList->GetProgram(ProgramId)->GetIcon());
-                if(ProgramId.at(0) == 'L') {
-                    ProgramIcon = QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png");
-                } else {
-                    ProgramIcon = QIcon(":/HimalayaImages/Icons/MISC/TickOk.png");
-                }
-                mp_Ui->pgmsComboBox->insertItem(i, ProgramIcon, ProgramName);
-            }
-        //}
-    //}
+    m_FavProgramIDs = mp_ProgramList->GetFavoriteProgramIDs(); // get five favorite Programs' ID
+    for ( int i = 0; i < m_FavProgramIDs.count(); i++)
+    {
+        QString ProgramId = m_FavProgramIDs.at(i);
+        QString ProgramName = mp_ProgramList->GetProgram(ProgramId)->GetName();
+        QString strIconName;
+        if (mp_ProgramList->GetProgram(ProgramId)->GetIcon().isEmpty())
+        {
+            strIconName = ":/HimalayaImages/Icons/Program/IconEmpty.png";
+        }
+        else
+            strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(ProgramId)->GetIcon() + ".png";
+        QIcon ProgramIcon(strIconName);
+        mp_Ui->pgmsComboBox->insertItem(i, ProgramIcon, ProgramName);
+    }
 }
 
 /****************************************************************************/

@@ -106,7 +106,7 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, UpdateMode(QString), this, OnDeviceModeChanged(QString));
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), mp_ModifyProgramDlg, UpdateUserSettings());
 
-    CONNECTSIGNALSIGNAL(&m_ProgramModel, FavoriteProgramListUpdated(), this, FavoriteProgramListUpdated());
+    CONNECTSIGNALSIGNAL(&m_ProgramModel, FavoriteProgramListUpdated(DataManager::CProgram &), this, FavoriteProgramListUpdated(DataManager::CProgram &));
     PopulateProgramList();
     OnUserRoleChanged();
 }
