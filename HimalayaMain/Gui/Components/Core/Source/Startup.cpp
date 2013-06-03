@@ -24,6 +24,7 @@
 #include "MainMenu/Include/StatusBarManager.h"
 #include "Application/Include/LeicaStyle.h"
 #include "Application/Include/Application.h"
+#include "Dashboard/Include/LanguageSettingWidget.h"
 
 namespace Core {
 
@@ -66,7 +67,7 @@ CStartup::CStartup() : QObject()
     Application::CApplication* pApp =  dynamic_cast<Application::CApplication*>(QCoreApplication::instance());
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_ScreenSaver, OnInteractStart());
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_Users, OnInteractStart());
-
+    CONNECTSIGNALSLOT(&m_MainWindow, ShowLanguageSelectDialog(), this, OnLanguangeSet());
 
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramsUpdated(), mp_Dashboard, AddItemsToComboBox());  // To Populate the ComboBox Items in the initial stage
     CONNECTSIGNALSLOT(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Dashboard, AddItemsToComboBox()); // To Populate the ComboBox when User Changes the List
@@ -128,6 +129,28 @@ CStartup::~CStartup()
         delete mp_ScreenSaver;
     }
     catch (...) {}
+}
+
+void CStartup::OnLanguangeSet()
+{
+    QStringList languageList = mp_DataConnector->DeviceConfigurationInterface->GetLanguageList();
+    DataManager::CHimalayaUserSettings *p_Settings = mp_DataConnector->SettingsInterface->GetUserSettings();
+
+    LanguageSettingWidget* pLanguageSettingWidget = new LanguageSettingWidget();
+    pLanguageSettingWidget->SetDialogTitle(tr("Select Language"));
+    QLocale locale(p_Settings->GetLanguage());
+    pLanguageSettingWidget->SetLocale(locale);
+    pLanguageSettingWidget->UpdateLanguageLsit(languageList);
+    pLanguageSettingWidget->move(80, 50);
+    if (pLanguageSettingWidget->exec())
+    {
+        if (pLanguageSettingWidget->GetSelectedLanguage() != p_Settings->GetLanguage())
+        {
+            p_Settings->SetLanguage(pLanguageSettingWidget->GetSelectedLanguage());
+            mp_DataConnector->SendUpdatedSettings(*p_Settings);
+        }
+    }
+    delete pLanguageSettingWidget;
 }
 
 } // end namespace Core
