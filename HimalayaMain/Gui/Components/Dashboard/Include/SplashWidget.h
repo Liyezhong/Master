@@ -2,12 +2,13 @@
 #define SPLASHWIDGET_H
 
 #include <QWidget>
+#include "MainMenu/Include/DialogFrame.h"
 
 namespace Ui {
 class SplashWidget;
 }
 
-class SplashWidget : public QWidget
+class SplashWidget : public MainMenu::CDialogFrame
 {
     Q_OBJECT
     

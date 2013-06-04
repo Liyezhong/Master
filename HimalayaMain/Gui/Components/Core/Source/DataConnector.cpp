@@ -40,6 +40,7 @@
 #include <QHash>
 #include "Global/Include/UITranslator.h"
 #include "MainMenu//Include/MsgBoxManager.h"
+#include "Dashboard/Include/SplashWidget.h"
 
 namespace Core {
 
@@ -140,6 +141,10 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     mp_MesgBoxManager  = new MainMenu::CMsgBoxManager(mp_MainWindow,SettingsInterface);
     (void)connect(mp_MesgBoxManager, SIGNAL(EventReportAck(NetCommands::ClickedButton_t,Global::tRefType, quint64)),
                       this, SLOT(OnEventReportAck(NetCommands::ClickedButton_t,Global::tRefType, quint64)));
+
+    mp_SplashWidget = new SplashWidget();
+    CONNECTSIGNALSLOT(this, ProgramStartReady(), this, OnProgramStartReady());
+
 }
 
 /****************************************************************************/
@@ -942,6 +947,8 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
     mp_WaitDialog->accept();
+
+
     /*! Device Configuration is the last among all the XML's sent from Main. We
      *  inform main that GUI is intialized.
      */
@@ -951,8 +958,17 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         m_GuiInit = false;
         NetCommands::CmdGuiInit Cmd(2000, true);
         m_NetworkObject.SendCmdToMaster(Cmd, &CDataConnector::OnAckTwoPhase, this);
+
+        //Enable it later
+        //mp_SplashWidget->move(80, 50);
+        //mp_SplashWidget->exec();
     }
     return;
+}
+
+void CDataConnector::OnProgramStartReady()
+{
+    mp_SplashWidget->accept();
 }
 
 /****************************************************************************/

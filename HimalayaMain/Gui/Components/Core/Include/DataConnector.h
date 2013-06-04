@@ -78,6 +78,8 @@ namespace MsgClasses
     class CmdRetortLockStatus;
 }
 
+class SplashWidget;
+
 namespace Core {
 
 
@@ -159,7 +161,7 @@ public slots:
     void SendSelectedDayRunLogFile(const QString &FileName);
     void OnDeviceConfigurationUpdated();
     void OnCurrentTabChanged(int CurrentTabIndex);
-
+    void OnProgramStartReady();
 signals:
 
     /****************************************************************************/
@@ -393,6 +395,7 @@ private:
     MainMenu::CMessageDlg *mp_RmsMessageDlg;        //!< Error message box
     MainMenu::CWaitDialog *mp_WaitDialog;           //!< Displayed when busy
     MainMenu::CWaitDialog *mp_BlgScanWaitDialog;    //!< Displayed when busy
+    SplashWidget          *mp_SplashWidget;
     QFile *mp_LanguageFile;                         //!< Lanugage file object (qm file)
     QFile *mp_OldFile;                              //!< Old/Previous language file(qm file)
     QTranslator m_Translator;                       //!< Language translator
