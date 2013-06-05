@@ -285,11 +285,11 @@ void CAlarmSettingsWidget::ResetButtons()
 void CAlarmSettingsWidget::RetranslateUI()
 {
     MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Alarm", 0, QApplication::UnicodeUTF8));
-    mp_Ui->groupBox->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Alarm Type 1 - Information", 0, QApplication::UnicodeUTF8));
+    mp_Ui->groupBox->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Information", 0, QApplication::UnicodeUTF8));
     mp_Ui->informationButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));
-    mp_Ui->groupBox_1->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Alarm Type 2 - Warning", 0, QApplication::UnicodeUTF8));
+    mp_Ui->groupBox_1->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Warning", 0, QApplication::UnicodeUTF8));
     mp_Ui->warningButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));
-    mp_Ui->groupBox_2->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "AlarmType 3 - Error", 0, QApplication::UnicodeUTF8));
+    mp_Ui->groupBox_2->setTitle(QApplication::translate("Settings::CAlarmSettingsWidget", "Error", 0, QApplication::UnicodeUTF8));
     mp_Ui->errorButton->setText(QApplication::translate("Settings::CAlarmSettingsWidget", "Edit", 0, QApplication::UnicodeUTF8));
     // texts to be displayed
     m_TextSound = QApplication::translate("Settings::CAlarmSettingsWidget",
