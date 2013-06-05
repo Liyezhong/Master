@@ -212,7 +212,8 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
                 if (!m_IsShowStation)
                 {
                     QTime Time;
-                    return Time.addSecs(Step->GetDurationInSeconds());
+                    Time = Time.addSecs(Step->GetDurationInSeconds());
+                    return Time.toString("hh:mm");
                 }
                 else
                 {
@@ -372,22 +373,6 @@ Qt::ItemFlags CStepModel::flags(const QModelIndex &Index) const
         return Qt::NoItemFlags;
     }
     return QAbstractItemModel::flags(Index);
-}
-/****************************************************************************/
-/*!
- *  \brief Converts a time in seconds into a string of format hh:mm:ss
- *
- *  \iparam Duration = Time in seconds
- *
- *  \return Duration string
- */
-/****************************************************************************/
-QString CStepModel::DurationString(qint32 Duration) const
-{
-    return QString("%1:%2:%3")
-            .arg(Duration / 3600, 2, 10, QChar('0'))
-            .arg((Duration % 3600) / 60, 2, 10, QChar('0'))
-            .arg(Duration % 60, 2, 10, QChar('0'));
 }
 
 /****************************************************************************/
