@@ -41,7 +41,7 @@ const int LONG_NAME_LENGTH_MIN = 1;         //!< Long name length Min
 const int LONG_NAME_LENGTH_MAX = 32;        //!< Long name length Max
 const int PROGRAM_STEPS_MAX = 14;           //!< Max program steps per program
 const int PROGRAM_STEPS_MIN = 1;            //!< Minimum program steps per program
-const int STEP_DURATION_MIN = 1;            //!< Minimum value of step duration in secs
+const int STEP_DURATION_MIN = 60;            //!< Minimum value of step duration in secs
 const int STEP_DURATION_MAX = 359940;        //!< Maximum value of step duration in secs
 
 const int SECONDS_PER_MIN = 60;             //!< number of secs per minute

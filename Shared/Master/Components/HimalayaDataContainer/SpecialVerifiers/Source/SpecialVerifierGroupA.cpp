@@ -155,7 +155,7 @@ bool CSpecialVerifierGroupA::CheckData()
 {
     bool Result = true;
     // check required to avoid lint warning
-    if (mp_DReagentList && mp_DProgramList) {
+    if (mp_DReagentList && mp_DProgramList && m_pDataReagentGroupList) {
         // check each program has a valid reagent ID or not
         for (qint32 Counter = 0; Counter < mp_DProgramList->GetReagentIDList().count(); Counter++) {
             // check the Program Reagent ID exists in ReagentID List
@@ -171,10 +171,10 @@ bool CSpecialVerifierGroupA::CheckData()
             }
         }
         CProgram* p_Program = NULL;
-        CProgramStep *Previous_ProgramStep = NULL;
+        CProgramStep Previous_ProgramStep;
         QString Previous_ReagentGroupID;
         QString Previous_ReagentID;
-        CProgramStep *Current_ProgramStep = NULL;
+        CProgramStep Current_ProgramStep;
         QString Current_ReagentGroupID;
         QString Current_ReagentID;
         qint32 temperature;
@@ -182,10 +182,10 @@ bool CSpecialVerifierGroupA::CheckData()
             p_Program = mp_DProgramList->GetProgram(I);
             if (p_Program) {
                 for (qint32 X = 0; X < p_Program->GetNumberOfSteps(); X++) {
-                    Current_ProgramStep = const_cast<CProgramStep *>(p_Program->GetProgramStep(X));
-                    if (Current_ProgramStep != NULL) {
+
+                    if (p_Program->GetProgramStep(X,Current_ProgramStep)) {
                         //check temperature
-                        Current_ReagentID = Current_ProgramStep->GetReagentID();
+                        Current_ReagentID = Current_ProgramStep.GetReagentID();
                         if(Current_ReagentID.isEmpty()){
                             continue;
                         }
@@ -195,58 +195,38 @@ bool CSpecialVerifierGroupA::CheckData()
 
                         Current_ReagentGroupID = mp_DReagentList->GetReagent(Current_ReagentID)->GetGroupID();
                         bool ok = false;
-                        temperature = Current_ProgramStep->GetTemperature().toInt(&ok);
+                        temperature = Current_ProgramStep.GetTemperature().toInt(&ok);
                         if(ok){
-                            // paraffin
-                            CReagentGroup* pReagentGroup = m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID);
-                            if(pReagentGroup->IsParraffin()){
-                                if(temperature < STEP_PARAFFIN_TEMP_MIN || temperature > STEP_PARAFFIN_TEMP_MAX){
+                                if(temperature < m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMinTemprature() ||
+                                        temperature > m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMaxTemprature()){
                                     // error
                                     m_ErrorsHash.insert(EVENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT,
                                                         Global::tTranslatableStringList() << QString::number(X + 1)
-                                                        << p_Program->GetName() << QString::number(STEP_PARAFFIN_TEMP_MIN)
-                                                        << QString::number(STEP_PARAFFIN_TEMP_MAX));
+                                                        << p_Program->GetName()
+                                                        << QString::number(m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMinTemprature())
+                                                        << QString::number(m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMaxTemprature()));
                                     Global::EventObject::Instance().RaiseEvent(EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE,
                                                                                Global::tTranslatableStringList() << QString::number(X + 1)
-                                                                               << p_Program->GetName() << QString::number(STEP_PARAFFIN_TEMP_MIN)
-                                                                               << QString::number(STEP_PARAFFIN_TEMP_MAX),
-                                                                               Global::GUI_MSG_BOX);
-                                    Result = false;
-
-                                }
-                            }
-                            //reagents
-                            /*else
-                            {
-                                if(temperature < STEP_REAGENT_TEMP_MIN || temperature > STEP_REAGENT_TEMP_MAX){
-                                    // error
-                                    m_ErrorsHash.insert(EVENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT,
-                                                        Global::tTranslatableStringList() << QString::number(X + 1)
-                                                        << p_Program->GetName() << QString::number(STEP_REAGENT_TEMP_MIN)
-                                                        << QString::number(STEP_REAGENT_TEMP_MAX));
-                                    Global::EventObject::Instance().RaiseEvent(EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE,
-                                                                               Global::tTranslatableStringList() << QString::number(X + 1)
-                                                                               << p_Program->GetName() << QString::number(STEP_REAGENT_TEMP_MIN)
-                                                                               << QString::number(STEP_REAGENT_TEMP_MAX),
+                                                                               << p_Program->GetName()
+                                                                               << QString::number(m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMinTemprature())
+                                                                               << QString::number(m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMaxTemprature()),
                                                                                Global::GUI_MSG_BOX);
                                     Result = false;
                                 }
-                            }*/
                         }
                         //check reagent group Compatible
                         if(X > 0){
-                            Previous_ProgramStep = const_cast<CProgramStep *>(p_Program->GetProgramStep(X - 1));
-                            if(Previous_ProgramStep){
-                                Previous_ReagentID = Previous_ProgramStep->GetReagentID();
+                            if(p_Program->GetProgramStep(X-1,Previous_ProgramStep)){
+                                Previous_ReagentID = Previous_ProgramStep.GetReagentID();
                                 Previous_ReagentGroupID = mp_DReagentList->GetReagent(Previous_ReagentID)->GetGroupID();
                                 if(!IsCompatible(Current_ReagentGroupID,Previous_ReagentGroupID)){
                                     //error
                                     m_ErrorsHash.insert(EVENT_DM_INCOMPATIBLE_STEP_REAGENT_GROUP,
                                                         Global::tTranslatableStringList() <<p_Program->GetName()
-                                                        << QString::number(X + 1) << QString::number(X));
+                                                        << QString::number(X) << QString::number(X + 1));
                                     Global::EventObject::Instance().RaiseEvent(EVENT_DM_INCOMPATIBLE_STEP_REAGENT_GROUP,
                                                                                Global::tTranslatableStringList() <<p_Program->GetName()
-                                                                               << QString::number(X + 1) << QString::number(X),
+                                                                               << QString::number(X) << QString::number(X + 1),
                                                                                Global::GUI_MSG_BOX);
                                     Result = false;
                                 }

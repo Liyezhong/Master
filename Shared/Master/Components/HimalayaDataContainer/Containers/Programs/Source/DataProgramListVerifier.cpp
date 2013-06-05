@@ -183,22 +183,21 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
 /****************************************************************************/
 void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &VerifiedData)
 {
-    CProgramStep *p_ProgramStep = NULL;
+    CProgramStep p_ProgramStep;
     QStringList ReagentIDList;
 
     for (qint32 X = 0; X < p_Program->GetNumberOfSteps(); X++) {
-        p_ProgramStep = const_cast<CProgramStep *>(p_Program->GetProgramStep(X));
-        if (p_ProgramStep != NULL) {
-            QString ReagentID = p_ProgramStep->GetReagentID();
+        if(p_Program->GetProgramStep(X,p_ProgramStep)){
+            QString ReagentID = p_ProgramStep.GetReagentID();
             // Reagent is empty
             if(ReagentID.isEmpty())
             {
                 m_ErrorsHash.insert(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
                                     Global::tTranslatableStringList() << p_Program->GetName()
-                                    << p_ProgramStep->GetReagentID());
+                                    << p_ProgramStep.GetReagentID());
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
                                                            Global::tTranslatableStringList() << p_Program->GetName()
-                                                           << p_ProgramStep->GetReagentID(),
+                                                           << p_ProgramStep.GetReagentID(),
                                                            Global::GUI_MSG_BOX);
                 qDebug() << "### Reagent is empty ";
                 VerifiedData = false;
@@ -213,10 +212,10 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
                 default:
                     m_ErrorsHash.insert(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
                                         Global::tTranslatableStringList() << p_Program->GetName()
-                                        << p_ProgramStep->GetReagentID());
+                                        << p_ProgramStep.GetReagentID());
                     Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID,
                                                                Global::tTranslatableStringList() << p_Program->GetName()
-                                                               << p_ProgramStep->GetReagentID(),
+                                                               << p_ProgramStep.GetReagentID(),
                                                                Global::GUI_MSG_BOX);
                     qDebug() << "### Reagent ID doesn't start with S,L,U: ";
                     VerifiedData = false;
@@ -229,21 +228,21 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
             bool IntOk = false;
             //Validate Step ID.
             //ignoring return value of "toInt()"
-            (void)(p_ProgramStep->GetStepID().toInt(&IntOk));
+            (void)(p_ProgramStep.GetStepID().toInt(&IntOk));
             if (!IntOk) {
                 m_ErrorsHash.insert(EVENT_DM_INVALID_STEP_ID,
                                     Global::tTranslatableStringList() << p_Program->GetName()
-                                    << p_ProgramStep->GetStepID());
+                                    <<  QString::number(X+1));
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_INVALID_STEP_ID,
                                                            Global::tTranslatableStringList() << p_Program->GetName()
-                                                           << p_ProgramStep->GetStepID(),
+                                                           << QString::number(X+1),
                                                            Global::GUI_MSG_BOX);
                 qDebug("### invalid StepId");
                 VerifiedData = false;
             }
 
             QStringList SplitList;
-            SplitList = p_ProgramStep->GetDuration().split(" ");
+            SplitList = p_ProgramStep.GetDuration().split(" ");
 
             // check the duration format
             CheckDurationFormat(SplitList, VerifiedData, p_Program->GetName());
@@ -251,14 +250,14 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
             // check duration rang
             if(VerifiedData)
             {
-                quint32 duration = Helper::ConvertTimeStringToSeconds(p_ProgramStep->GetDuration());
+                quint32 duration = Helper::ConvertTimeStringToSeconds(p_ProgramStep.GetDuration());
                 if(duration > STEP_DURATION_MAX  || duration < STEP_DURATION_MIN)
                 {
                     m_ErrorsHash.insert(EVENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT,
-                                        Global::tTranslatableStringList() << p_ProgramStep->GetStepID() << p_Program->GetName()
+                                        Global::tTranslatableStringList() <<  QString::number(X+1) << p_Program->GetName()
                                         <<Helper::ConvertSecondsToTimeString(STEP_DURATION_MIN) << Helper::ConvertSecondsToTimeString(STEP_DURATION_MAX));
                     Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT,
-                                                               Global::tTranslatableStringList() << p_ProgramStep->GetStepID() << p_Program->GetName()
+                                                               Global::tTranslatableStringList() << QString::number(X+1) << p_Program->GetName()
                                                                <<Helper::ConvertSecondsToTimeString(STEP_DURATION_MIN) << Helper::ConvertSecondsToTimeString(STEP_DURATION_MAX),
                                                                Global::GUI_MSG_BOX);
                     qDebug() << "##### Invalid Duration";

@@ -356,11 +356,6 @@ bool CDataProgramList::AddProgram(const CProgram* p_Program)
             *this = *p_DPL_Verification;
         }
         else {
-//            ListOfErrors_t ErrorList = p_DPL_Verification->GetErrorList();
-//            if (!ErrorList.isEmpty()) {
-//                m_ErrorHash = *(ErrorList.first());
-//                SetErrorList(&m_ErrorHash);
-//            }
             Result = false;
         }
         delete p_TempProgram;
