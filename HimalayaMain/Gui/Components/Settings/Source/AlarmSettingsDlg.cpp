@@ -50,7 +50,7 @@ CAlarmSettingsDlg::CAlarmSettingsDlg(AlarmDialogType DialogType, QWidget *p_Pare
     mp_Ui->scrollPanel->SetTitle("Volume");
 
     mp_Ui->periodictime_scrolltable->Init(2);
-    mp_Ui->periodictime_scrolltable->SetTitle(tr("Periodi Time"));
+    mp_Ui->periodictime_scrolltable->SetTitle(tr("Periodic Time"));
     mp_Ui->periodictime_scrolltable->AddScrollWheel(mp_MinWheel, 0);
     mp_Ui->periodictime_scrolltable->SetSubtitle(tr("Minute"), 0);
     mp_Ui->periodictime_scrolltable->AddSeparator(MainMenu::CWheelPanel::COLON, 0);
