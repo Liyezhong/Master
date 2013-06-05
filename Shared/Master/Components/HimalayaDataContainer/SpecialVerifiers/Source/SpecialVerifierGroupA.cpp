@@ -199,19 +199,24 @@ bool CSpecialVerifierGroupA::CheckData()
                         if(ok){
                                 if(temperature < m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMinTemprature() ||
                                         temperature > m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMaxTemprature()){
-                                    // error
-                                    m_ErrorsHash.insert(EVENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT,
-                                                        Global::tTranslatableStringList() << QString::number(X + 1)
-                                                        << p_Program->GetName()
-                                                        << QString::number(m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMinTemprature())
-                                                        << QString::number(m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMaxTemprature()));
-                                    Global::EventObject::Instance().RaiseEvent(EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE,
-                                                                               Global::tTranslatableStringList() << QString::number(X + 1)
-                                                                               << p_Program->GetName()
-                                                                               << QString::number(m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMinTemprature())
-                                                                               << QString::number(m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMaxTemprature()),
-                                                                               Global::GUI_MSG_BOX);
-                                    Result = false;
+                                    if(! m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->IsParraffin() && temperature == -1)
+                                    {
+                                        Result = true;
+                                    }
+                                    else{// error
+                                        m_ErrorsHash.insert(EVENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT,
+                                                            Global::tTranslatableStringList() << QString::number(X + 1)
+                                                            << p_Program->GetName()
+                                                            << QString::number(m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMinTemprature())
+                                                            << QString::number(m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMaxTemprature()));
+                                        Global::EventObject::Instance().RaiseEvent(EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE,
+                                                                                   Global::tTranslatableStringList() << QString::number(X + 1)
+                                                                                   << p_Program->GetName()
+                                                                                   << QString::number(m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMinTemprature())
+                                                                                   << QString::number(m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMaxTemprature()),
+                                                                                   Global::GUI_MSG_BOX);
+                                        Result = false;
+                                    }
                                 }
                         }
                         //check reagent group Compatible
