@@ -145,6 +145,9 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
 
     CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnStopFill(), this, StopFill());
     CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnStopDrain(), this, StopDrain());
+    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnPause(), this, Pause());
+    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnPauseDrain(), this, Pause());
+
 
     //command queue reset
     m_SchedulerCmdQueue.clear();
@@ -230,7 +233,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
         this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
         if(m_CurProgramStepIndex != -1)
         {
-            //send command to main controller to tell program finished
+            //send command to main controller to tell program is starting
             MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
             Q_ASSERT(commandPtrFinish);
             Global::tRefType fRef = GetNewCommandRef();
@@ -300,7 +303,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     {
         mp_ProgramStepStateMachine->NotifyAbort();
         DequeueNonDeviceCommand();
-        //todo: send main controller the abort needed time
+        //tell main controller scheduler is starting to abort
+        MsgClasses::CmdProgramAcknowledge* commandPtrAbortBegin(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_BEGIN));
+        Q_ASSERT(commandPtrAbortBegin);
+        Global::tRefType fRef = GetNewCommandRef();
+        SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortBegin));
     }
     else
     {
@@ -416,6 +423,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         else if(PSSM_SOAK == stepState)
         {
             static qint64 lastPVTime = 0;
+            static bool completionNotifierSent = false;
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
                 if(m_CurProgramStepInfo.isPressure || m_CurProgramStepInfo.isVacuum)
@@ -434,9 +442,29 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 //qint32 period = m_CurProgramStepInfo.durationInSeconds * 20;
                 if((now - m_TimeStamps.CurStepSoakStartTime ) > (period))
                 {
-                    //todo: verify whether this is last step and if need to notice user
-                    mp_ProgramStepStateMachine->NotifySoakFinished();
-                    m_TimeStamps.CurStepSoakStartTime = 0;
+                    if(IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
+                    {
+                         //this is last step, need to notice user
+                         if(!completionNotifierSent)
+                         {
+                             MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_WILL_COMPLETE));
+                             Q_ASSERT(commandPtrFinish);
+                             Global::tRefType fRef = GetNewCommandRef();
+                             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+                             completionNotifierSent = true;
+                         }
+                         if(CTRL_CMD_DRAIN == ctrlCmd)
+                         {
+                             mp_ProgramStepStateMachine->NotifySoakFinished();
+                             m_TimeStamps.CurStepSoakStartTime = 0;
+                             completionNotifierSent = false;
+                         }
+                    }
+                    else
+                    {
+                        mp_ProgramStepStateMachine->NotifySoakFinished();
+                        m_TimeStamps.CurStepSoakStartTime = 0;
+                    }
                 }
                 else
                 {
@@ -596,6 +624,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 // resume the program
                 mp_ProgramStepStateMachine->NotifyResume();
                 DequeueNonDeviceCommand();
+                // tell the main controller the program is resuming
+                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
+                Q_ASSERT(commandPtrFinish);
+                Global::tRefType fRef = GetNewCommandRef();
+                SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
             }
         }
         else if(PSSM_PAUSE_DRAIN == stepState)
@@ -604,6 +637,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 mp_ProgramStepStateMachine->NotifyResumeDrain();
                 DequeueNonDeviceCommand();
+                // tell the main controller the program is resuming
+                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
+                Q_ASSERT(commandPtrFinish);
+                Global::tRefType fRef = GetNewCommandRef();
+                SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
             }
         }
         else if(PSSM_ABORTING == stepState)
@@ -628,7 +666,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_SchedulerMachine->SendRunComplete();
             mp_ProgramStepStateMachine->Stop();
             mp_SelfTestStateMachine->Stop();
-            //todo: tell main controller that program is complete
+            // tell the main controller the program has been aborted
+            MsgClasses::CmdProgramAcknowledge* commandPtrAbortFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_FINISHED));
+            Q_ASSERT(commandPtrAbortFinish);
+            Global::tRefType fRef = GetNewCommandRef();
+            SendCommand(fRef, Global::CommandShPtr_t(commandPtrAbortFinish));
+
             UpdateStationReagentStatus();
 
             //send command to main controller to tell the left time
@@ -1607,6 +1650,15 @@ void SchedulerMainThreadController::Vaccum()
     m_SchedulerCommandProcessor->pushCmd(new CmdALVaccum(500, mp_IDeviceProcessing, this));
 }
 
+void SchedulerMainThreadController::Pause()
+{
+    //send command to main controller to tell program is actually pasued
+    MsgClasses::CmdProgramAcknowledge* commandPtrPauseFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_PAUSE_FINISHED));
+    Q_ASSERT(commandPtrPauseFinish);
+    Global::tRefType fRef = GetNewCommandRef();
+    SendCommand(fRef, Global::CommandShPtr_t(commandPtrPauseFinish));
+}
+
 bool SchedulerMainThreadController::CheckStepTemperature()
 {
     //todo: remove this when hardware is ready
@@ -1834,5 +1886,24 @@ qint64 SchedulerMainThreadController::GetOvenHeatingTime()
     }
 }
 
+bool SchedulerMainThreadController::IsLastStep(int currentStepIndex,const QString& currentProgramID)
+{
+    if (!mp_DataManager)
+    {
+        Q_ASSERT(false);
+        return false;//need error handling
+    }
+
+    CDataProgramList* pDataProgramList = mp_DataManager->GetProgramList();
+    if (!pDataProgramList)
+    {
+        Q_ASSERT(false);
+        return false;
+    }
+
+    CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(currentProgramID));
+    ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
+    return (stepIDs->count() == (currentStepIndex + 1));
+}
 }
 

@@ -194,6 +194,7 @@ typedef struct
          QString GetStationIDFromProgramStep(int ProgramStepIndex);
          RVPosition_t GetRVTubePositionByStationID(const QString stationID);
          RVPosition_t GetRVSealPositionByStationID(const QString stationID);
+         bool IsLastStep(int currentStepIndex,const QString& currentProgramID);
 
 signals:
          void signalProgramStart(const QString& ProgramID);
@@ -219,7 +220,9 @@ private slots:
          void Vaccum();
          void Abort();
          bool SelfTest(ReturnCode_t RetCode);
-    protected:
+         void Pause();
+
+protected:
 
         /****************************************************************************/
         /**

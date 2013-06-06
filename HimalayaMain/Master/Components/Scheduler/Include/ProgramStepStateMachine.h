@@ -88,6 +88,8 @@ signals:
     void OnStopDrain();
     void OnAborting();
     void OnAborted();
+    void OnPause();
+    void OnPauseDrain();
 
 private slots:
     void OnStateChanged();
