@@ -254,11 +254,6 @@ void CModifyProgramStepDlg::SetProgramStep(DataManager::CProgramStep *p_ProgramS
     mp_ScrollWheelHour->SetCurrentData(Duration.hour());
     mp_ScrollWheelMin->SetCurrentData(Duration.minute());
 
-    m_ReagentModel.FilterLeicaReagents(true);
-    m_ReagentModel.SetUserSettings(&m_UserSettings);
-    m_ReagentModel.OnDeviceModeChanged(m_DeviceMode);
-    m_ReagentModel.SetParentPtr(this);
-
     const DataManager::CReagent *pReagent = mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID());
 
     m_ReagentID = pReagent->GetReagentID();
@@ -278,10 +273,9 @@ void CModifyProgramStepDlg::SetProgramStep(DataManager::CProgramStep *p_ProgramS
  *  \iparam p_ReagentList = Reagent list for the table
  *  \iparam p_StationList = Station list for the table
  */
-/****************************************************************************/
+/**************************************************************************/////////////****/
 void CModifyProgramStepDlg::NewProgramStep()
 {
-
     m_ReagentEditModel.UpdateReagentList();
     QTime Duration;
     mp_ProgramStep = NULL;
@@ -292,13 +286,6 @@ void CModifyProgramStepDlg::NewProgramStep()
     Duration = Duration.addSecs(0);
     mp_ScrollWheelHour->SetCurrentData(Duration.hour());
     mp_ScrollWheelMin->SetCurrentData(Duration.minute());
-
-    m_ReagentModel.FilterLeicaReagents(true);
-    m_ReagentModel.OnDeviceModeChanged(m_DeviceMode);
-    m_ReagentModel.SetUserSettings(&m_UserSettings);
-    m_ReagentModel.SetReagentGroupList(mp_DataConnector->ReagentGroupList);
-    m_ReagentModel.SetReagentList(mp_ReagentList, 2);
-    m_ReagentModel.SetParentPtr(this);
     ResizeHorizontalSection();
 
     m_NewProgramStep = true;
@@ -468,7 +455,7 @@ void CModifyProgramStepDlg::OnCancel()
 void CModifyProgramStepDlg::ReagentTableUpdate()
 {
     if (mp_ReagentList) {
-        m_ReagentModel.UpdateReagentList();
+
     }
 }
 
@@ -485,7 +472,6 @@ void CModifyProgramStepDlg::OnSelectionChanged(QModelIndex Index)
         m_ReagentID = m_ReagentEditModel.GetReagentID(Index.row());
         m_ReagentLongName = m_ReagentEditModel.GetReagentLongName(m_ReagentID);
         if (!m_ReagentLongName.isEmpty()) {
-            m_ReagentModel.SetCurrentReagent(m_ReagentLongName);
             m_RowNotSelected = false;
             mp_Ui->btnOk->setEnabled(true);
             const DataManager::CReagent *pReagent = mp_ReagentList->GetReagent(m_ReagentID);
@@ -527,7 +513,6 @@ void CModifyProgramStepDlg::OnProcessStateChanged()
 void CModifyProgramStepDlg::showEvent(QShowEvent *p_Event)
 {
     Q_UNUSED(p_Event);
-    m_ReagentModel.OnDeviceModeChanged(m_DeviceMode);
 
     if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
         mp_ScrollWheelTemp->SetThreeDigitMode(false);
@@ -544,7 +529,7 @@ void CModifyProgramStepDlg::showEvent(QShowEvent *p_Event)
 
     if (mp_ProgramStep && mp_ReagentList) {
         DataManager::CReagent const *p_Reagent = mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID());
-        if (p_Reagent && m_ReagentModel.rowCount(QModelIndex()) > 0) {
+        if (p_Reagent) {
 
             if (!m_ProcessRunning) {
                 mp_Ui->btnOk->setEnabled(true);
@@ -554,8 +539,7 @@ void CModifyProgramStepDlg::showEvent(QShowEvent *p_Event)
             }
 
             DataManager::CReagent Reagent;
-            if ((mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID(), Reagent) == true)
-                    && (m_ReagentModel.rowCount(QModelIndex()) > 0)) {
+            if (mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID(), Reagent) == true) {
 
                 mp_Ui->scrollPanelWidgetTime->SetDisabled(false);
                 mp_Ui->scrollPanelWidgetTemperature->SetDisabled(false);
@@ -578,53 +562,6 @@ void CModifyProgramStepDlg::showEvent(QShowEvent *p_Event)
         mp_Ui->radioButton_50->setEnabled(true);
         mp_Ui->radioButton_75->setEnabled(true);
         mp_Ui->radioButton_50->setChecked(true);
-    }
-}
-
-/****************************************************************************/
-/*!
- *  \brief Pops up a Message Dialog asking user to select a different regeant.
- */
-/****************************************************************************/
-void CModifyProgramStepDlg::ShowSelectReagentPopup()
-{
-    mp_MessageBox->SetIcon(QMessageBox::Information);
-    mp_MessageBox->SetButtonText(1, tr("Ok"));
-    mp_MessageBox->HideButtons();
-    if (!mp_ProgramStep) {
-        return;
-    }
-    if (m_ModifyProgramDlgButtonType == COPY_BTN_CLICKED) {
-        if (m_ReagentModel.ContainsReagent(mp_ProgramStep->GetReagentID())) {
-            m_SelectedStepReagentID = m_ReagentModel.GetReagentID(mp_TableWidget->currentIndex().row());
-            QString ReagentLongName = m_ReagentModel.GetReagentLongName(mp_TableWidget->currentIndex().row());
-            mp_MessageBox->SetText(tr("Please select a reagent other than \"%1\""
-                                      "\nand which is not used in the selected program").arg(ReagentLongName));
-            if (mp_MessageBox->exec()==(int)QDialog::Accepted) {
-                return;
-            }
-        }
-        else {
-            ResetButtons(false);
-            m_ReagentExists = false;
-            mp_MessageBox->SetText(tr("Action failed!""\nThe selected program step reagent does not exist."));
-            if (mp_MessageBox->exec()==(int)QDialog::Accepted) {
-                return;
-            }
-        }
-    }
-    else if (m_ModifyProgramDlgButtonType == EDIT_BTN_CLICKED) {
-        if (!m_ReagentModel.ContainsReagent(mp_ProgramStep->GetReagentID())) {
-            ResetButtons(false);
-            mp_MessageBox->SetText(tr("Action failed!""\nThe selected program step reagent does not exist."));
-            m_ReagentExists = false;
-            if (mp_MessageBox->exec()==(int)QDialog::Accepted) {
-                return;
-            }
-        }
-    }
-    else {
-        // to please Lint
     }
 }
 
@@ -661,17 +598,6 @@ void CModifyProgramStepDlg::RetranslateUI()
                                             "Duration", 0, QApplication::UnicodeUTF8));
     mp_Ui->scrollPanelWidgetTemperature->SetTitle(QApplication::translate("Programs::CModifyProgramStepDlg",
                                             "Temp", 0, QApplication::UnicodeUTF8));
-    // Added void to please lint
-    (void) m_ReagentModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
-                                        "Program Name", 0, QApplication::UnicodeUTF8),0);
-    (void) m_ReagentModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
-                                        "Nr.", 0, QApplication::UnicodeUTF8),0);
-    (void) m_ReagentModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
-                                        "Color", 0, QApplication::UnicodeUTF8),0);
-    (void) m_ReagentModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
-                                        "Abbr.", 0, QApplication::UnicodeUTF8),0);
-    (void) m_ReagentModel.setHeaderData(4,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
-                                        "Leica", 0, QApplication::UnicodeUTF8),0);
 }
 
 } // end namespace Programs

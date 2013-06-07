@@ -186,17 +186,17 @@ void CDashboardEndTimeWidget::UpdateDateTime(const QDateTime &selDateTime)
     switch(m_CurDateFormat) {
         case Global::DATE_INTERNATIONAL:
         {
-            DateStr = QString(tr("%1").arg(selDateTime.date().toString("dd.MM.yyyy")));
+            DateStr = QString("%1").arg(selDateTime.date().toString("dd.MM.yyyy"));
         }
         break;
         case Global::DATE_ISO:
         {
-            DateStr = QString(tr("%1").arg(selDateTime.date().toString("yyyy-MM-dd")));
+            DateStr = QString("%1").arg(selDateTime.date().toString("yyyy-MM-dd"));
         }
         break;
         case Global::DATE_US:
         {
-            DateStr = QString(tr("%1").arg(selDateTime.date().toString("MM/dd/yyyy")));
+            DateStr = QString("%1").arg(selDateTime.date().toString("MM/dd/yyyy"));
         }
         break;
         case Global::DATE_UNDEFINED:
@@ -209,12 +209,12 @@ void CDashboardEndTimeWidget::UpdateDateTime(const QDateTime &selDateTime)
     switch(m_CurTimeFormat) {
         case Global::TIME_12:
         {
-            TimeStr = QString(tr("%1").arg(selDateTime.time().toString("hh:mm:ss p.m")));
+            TimeStr = QString("%1").arg(selDateTime.time().toString("hh:mm:ss p.m"));
         }
             break;
         case Global::TIME_24:
         {
-            TimeStr = QString(tr("%1").arg(selDateTime.time().toString("hh:mm:ss")));
+            TimeStr = QString("%1").arg(selDateTime.time().toString("hh:mm:ss"));
         }
             break;
         case Global::TIME_UNDEFINED:

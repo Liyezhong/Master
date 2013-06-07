@@ -43,7 +43,7 @@ void CDashboardProgramStatusWidget::InitDialog(DataManager::CProgram *p_Program,
     if (!p_Program || !pDataConnector)
         return;
 
-    SetPanelTitle(QString(tr("\"%1\"").arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME)));
+    SetPanelTitle(QString("\"%1\"").arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME));
 
     m_StepModel.SetVisibleRowCount(6);
     m_StepModel.ShowStation(true);

@@ -74,7 +74,6 @@ private:
     bool m_ShowMessageDialog;                   //!< To show Information Message Dialog
     ButtonType_t m_ButtonType;                  //!< Informs which button was clicked
     bool m_ColorReplaced;                       //!< Flag for program color change.
-    QMap<QString,QString> m_NonStartableProgramErrorMap;    //!< Error Map for non-startable programs
     QString m_ProgramID;                        //!< Program ID
     QModelIndex m_CurrentIndex;
     bool m_UserChanged;

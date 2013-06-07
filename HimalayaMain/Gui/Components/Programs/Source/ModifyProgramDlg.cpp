@@ -353,7 +353,6 @@ void CModifyProgramDlg::OnEdit()
     mp_ModifyProgStepDlg->SetProgramStep(SelectedStep());
     mp_ModifyProgStepDlg ->SetButtonType(EDIT_BTN_CLICKED);
     mp_ModifyProgStepDlg->move(80,50);
-//    mp_ModifyProgStepDlg->ShowSelectReagentPopup();
     mp_ModifyProgStepDlg->show();
 }
 
@@ -385,7 +384,6 @@ void CModifyProgramDlg::OnCopy()
     mp_ModifyProgStepDlg->SetProgramStep(SelectedStep());
     mp_ModifyProgStepDlg->move(80,50);   
     mp_ModifyProgStepDlg->show();
-//    mp_ModifyProgStepDlg->ShowSelectReagentPopup();
 }
 
 /****************************************************************************/
@@ -798,28 +796,6 @@ void CModifyProgramDlg::UpdateProgramStepTable(DataManager::CProgramStep *p_Prgm
     }
 }
 
-/********************************************************************************/
-/*!
- *  \brief Verifies last step of the program step list.
- *
- *  \iparam p_Program = Selected/New Program
- *  \iparam DeviceMode = Device is in Standalone/Workstation mode
- *
- *  \return VerificationResult (True if verification is success else False)
- */
-/********************************************************************************/
-bool CModifyProgramDlg::VerifyLastProgramStep(DataManager::CProgram *p_Program,
-                                              QString DeviceMode)
-{
-    bool VerificationResult;
-    if (DeviceMode == "Himalaya") {
-        VerificationResult = VerifyLastStepForHimalayaMode(p_Program);
-    }
-    else {
-        VerificationResult = VerifyLastStepForWorkStationMode(p_Program);
-    }
-    return VerificationResult;
-}
 
 /********************************************************************************/
 /*!
@@ -831,155 +807,6 @@ void CModifyProgramDlg::UpdateUserSettings()
     mp_ModifyProgStepDlg->SetUserSettings(mp_DataConnector->SettingsInterface->GetUserSettings());
 }
 
-/********************************************************************************/
-/*!
- *  \brief Verifies last step of the program step when device is in Himalaya mode.
- *  \iparam p_CurrentProgram = Selected/New Program
- *
- *  \return True if verification is success else False
- */
-/********************************************************************************/
-bool CModifyProgramDlg::VerifyLastStepForHimalayaMode(DataManager::CProgram* p_SelectedProgram)
-{
-    DataManager::CProgram *p_Program = p_SelectedProgram;
-    int NumberOfUnloaders = 0;
-    int LastStepIndex = 0;
-    bool Unloader = false;
-    if (mp_MessageDlg) {
-        delete mp_MessageDlg;
-    }
-    mp_MessageDlg = new MainMenu::CMessageDlg();
-    mp_MessageDlg->SetTitle(tr("Information Message"));
-    mp_MessageDlg->SetIcon(QMessageBox::Information);
-    mp_MessageDlg->SetButtonText(1, tr("Ok"));
-    mp_MessageDlg->HideButtons();
-    mp_MessageDlg->SetText(tr("Please check""\n 1.Unloader station should be the last step."
-                              "\n 2.Program cannot have more than one Unloader station"));
-    for (int i = 0;i < p_Program->GetNumberOfSteps(); i++) {
-        (void) p_Program->GetProgramStep(i,m_LastProgramStep);
-        if (m_LastProgramStep.GetReagentID() == "S7") {
-            Unloader = true;
-            NumberOfUnloaders+= 1;
-            if(NumberOfUnloaders > 1) {
-                if(mp_MessageDlg->exec() == (int)QDialog::Accepted) return false;
-            }
-            else LastStepIndex = i;
-        }
-    }
-    if (LastStepIndex!= p_Program->GetNumberOfSteps()-1) {
-        if (Unloader) {
-            if(mp_MessageDlg->exec() == (int)QDialog::Accepted) {
-                return false;
-            }
-        }
-        else {
-            if(mp_MessageDlg->exec() == (int)QDialog::Accepted) {
-                return false;
-            }
-        }
-    }
-    // Check if only UNLOADER step is added.
-    else if ((LastStepIndex == 0)) {
-        if (!Unloader) {
-            if(mp_MessageDlg->exec() == (int)QDialog::Accepted) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
-/********************************************************************************/
-/*!
- *  \brief Verifies last step of the program step list when device is in WorkStation mode.
- *
- *  \iparam p_SelectedProgram = Selected/New Program
- *
- *  \return True if verification is success else False
- */
-/********************************************************************************/
-bool CModifyProgramDlg::VerifyLastStepForWorkStationMode(DataManager::CProgram* p_SelectedProgram)
-{
-    DataManager::CProgram *p_Program = p_SelectedProgram;
-    int NumberOfUnloaders = 0;
-    int NumberOfTransfer = 0;
-    int LastStepIndex = 0;
-    bool Unloader = false;
-    bool Transfer = false;
-    if (mp_MessageDlg) {
-        delete mp_MessageDlg;
-    }
-    mp_MessageDlg = new MainMenu::CMessageDlg();
-    mp_MessageDlg->SetTitle(tr("Information Message"));
-    mp_MessageDlg->SetIcon(QMessageBox::Information);
-    mp_MessageDlg->SetButtonText(1, tr("Ok"));
-    mp_MessageDlg->HideButtons();
-    mp_MessageDlg->SetText(tr("Please check"
-                              "\n 1.Unloader or Transfer station should be the last step."
-                              "\n 2.Program cannot have more than one Unloader or Transfer station"));
-    for (int i = 0;i < p_Program->GetNumberOfSteps();i++) {
-        (void) p_Program->GetProgramStep(i,m_LastProgramStep);
-        if (m_LastProgramStep.GetReagentID() == "S7") {
-            Unloader = true;
-            NumberOfUnloaders+= 1;
-            // Check if there are more than one UNLOADER steps
-            if (NumberOfUnloaders > 1) {
-                if (mp_MessageDlg->exec()== (int)QDialog::Accepted) {
-                    return false;
-                }
-            }
-            else LastStepIndex = i;
-        }
-        else if (m_LastProgramStep.GetReagentID() == "S8") {
-            Transfer = true;
-            NumberOfTransfer+= 1;
-            // Check if there are more than one TRANSFER steps
-            if (NumberOfTransfer > 1) {
-                if(mp_MessageDlg->exec() == (int)QDialog::Accepted) {
-                    return false;
-                }
-            }
-            else LastStepIndex = i;
-        }
-        // Check if both UNLOADER and TRANSFER steps are added into the program steps.
-        if (Unloader && Transfer) {
-            mp_MessageDlg->SetText(tr("Please check"
-                                      "\n Program cannot have both Unloader and Transfer in program steps."
-                                      "\n Please select either Unloader or Transfer."));
-            if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
-                return false;
-            }
-        }
-    }
-    if (LastStepIndex!= p_Program->GetNumberOfSteps()-1) {
-        // LastStationFound = true;
-        if (Unloader) {
-            if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
-                return false;
-            }
-        }
-         // Check if atleast one TRANSFER step is present in the program steps.
-        else if (Transfer) {
-            if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
-                return false;
-            }
-        }
-        else {
-            if(mp_MessageDlg->exec() == (int)QDialog::Accepted) {
-                return false;
-            }
-        }
-    }
-    // Check if only UNLOADER or TRANSFER step is added.
-    else if ((LastStepIndex == 0)) {
-        if (!(Unloader || Transfer)) {
-            if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
 
 /****************************************************************************/
 /*!
@@ -988,8 +815,8 @@ bool CModifyProgramDlg::VerifyLastStepForWorkStationMode(DataManager::CProgram* 
 /****************************************************************************/
 void CModifyProgramDlg::OnIconClicked()
 {
-    m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
-                            "\nPlease close the dialog with \"Close\""));
+    /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
+                            "\nPlease close the dialog with \"Close\""));*/
     mp_ModifyProgramIconDlg->SetDialogTitle(tr("Select Icon"));
     mp_ModifyProgramIconDlg->EnableAvailableIcon(&m_ProgramListClone);
     mp_ModifyProgramIconDlg->move(96,70);

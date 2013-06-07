@@ -227,7 +227,7 @@ void CDashboardDateTimeWidget::OnOK()
     } else {
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         mp_MessageDlg->SetTitle(tr("Warning"));
-        mp_MessageDlg->SetText(tr("Program End Date Time cannot be later than one week and earlier than the ASAP setting."));
+        mp_MessageDlg->SetText(tr("Program End Date Time cannot be later than one week or earlier than the ASAP End Date Time."));
         mp_MessageDlg->SetButtonText(1, tr("OK"));
         mp_MessageDlg->HideButtons();    // Hiding First Two Buttons in the Message Dialog
         mp_MessageDlg->Show();

@@ -402,7 +402,7 @@ void CReagentStatusWidget::RetranslateUI()
 /****************************************************************************/
 void CReagentStatusWidget::showEvent(QShowEvent *)
 {
-    m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."));
+    //m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."));
     m_ShowMessageDialog = true ;
     mp_TableWidget->clearSelection();
     mp_Ui->scrollTable->Reset();

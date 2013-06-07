@@ -104,7 +104,7 @@ void CReagentGroupWidget::SetPtrToMainWindow(DataManager::CReagentGroupColorList
 /****************************************************************************/
 void CReagentGroupWidget::showEvent(QShowEvent *)
 {
-    m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."));
+    //m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."));
     m_ShowMessageDialog = true ;
     mp_TableWidget->clearSelection();
     mp_Ui->scrollTable->Reset();
@@ -196,8 +196,8 @@ void CReagentGroupWidget::RetranslateUI()
 /****************************************************************************/
 void CReagentGroupWidget::OnEdit()
 {
-    m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
-                            "\nPlease close the dialog with \"Close\""));
+    /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
+                            "\nPlease close the dialog with \"Close\""));*/
     mp_ModifyReagentColorDlg->SetDialogTitle(tr("Select Color"));
     mp_ModifyReagentColorDlg->SetReagentGroupList(*mp_ReagentGroupList, *mp_ReagentGroup);
     mp_ModifyReagentColorDlg->move(96,70);

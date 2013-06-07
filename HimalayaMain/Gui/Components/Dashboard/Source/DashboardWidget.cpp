@@ -268,7 +268,7 @@ bool CDashboardWidget::CheckSelectedProgram(bool& bRevertSelectProgram, QString 
         QString strMsg;
         strMsg.append(tr("As the program \""));
         strMsg.append(Dashboard::CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
-        strMsg.append(tr("\" is selected, this operation will reusult in an incorrect program result,"));
+        strMsg.append(tr("\" is selected, this operation will result in an incorrect program result,"));
         strMsg.append(tr("if you click \"Yes\", the selected program will unselect."));
         ConfirmationMessageDlg.SetText(strMsg);
         ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
@@ -440,7 +440,7 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
     {
         mp_MessageDlg->SetIcon(QMessageBox::Information);
         mp_MessageDlg->SetTitle(tr("Information"));
-        mp_MessageDlg->SetText(tr("Found cleaning program did not run in last time."));
+        mp_MessageDlg->SetText(tr("Found the cleaning program did not run in last time."));
         mp_MessageDlg->SetButtonText(1, tr("OK"));
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
@@ -607,16 +607,18 @@ void CDashboardWidget::TakeOutSpecimenAndRunCleaning()
         mp_MessageDlg->SetText(tr("The retort is contaminated, Cleaning Program will run! Please lock the retort then click \"OK\"."));
         mp_MessageDlg->SetButtonText(1, tr("OK"));
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->EnableButton(1, false);
+        //mp_MessageDlg->EnableButton(1, false);
+        mp_MessageDlg->EnableButton(1, true);//6.6 for test
+
         m_IsWaitingCleaningProgram = true;
         if (mp_MessageDlg->exec())
         {
             m_IsWaitingCleaningProgram = false;
-            m_ForceRunCleanProgram = true;
+            /*m_ForceRunCleanProgram = true;////6.6 for test
             m_NewSelectedProgramId = "C01";
             CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = tr("Cleaning Program");
             PrepareSelectedProgramChecking();
-
+            */
             //disable pause and abort
             EnablePlayButton(false);
             EnableAbortButton(false);

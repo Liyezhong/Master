@@ -134,7 +134,6 @@ public:
     void Update();
     void UpdateOnESC();
     void NewProgram();    
-    bool VerifyLastProgramStep(DataManager::CProgram *p_CurrentProgram, QString DeviceMode);
     void DeleteSelectedStep(DataManager::CProgram* p_CurrentProgram);
 
 private:
@@ -144,8 +143,6 @@ private:
     void EscClicked();
     void RetranslateUI();
     void ResetButtons(DataManager::CProgram &CurrentProgram, bool SelectionChanged);
-    bool VerifyLastStepForHimalayaMode(DataManager::CProgram* p_SelectedProgram);
-    bool VerifyLastStepForWorkStationMode(DataManager::CProgram* p_SelectedProgram);
 
 private slots:
     void OnEditName();

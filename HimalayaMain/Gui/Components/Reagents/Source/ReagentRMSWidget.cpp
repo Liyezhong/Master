@@ -256,8 +256,8 @@ void CReagentRMSWidget::OnCleaningRMSDays()
 /****************************************************************************/
 void CReagentRMSWidget::OnEdit()
 {
-    m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
-                            "\nPlease close the dialog with \"Close\""));
+    /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
+                            "\nPlease close the dialog with \"Close\""));*/
     mp_ModifiyReagentRMSDlg->SetDialogTitle(tr("Edit Reagent"));
     mp_ModifiyReagentRMSDlg->SetButtonType(EDIT_BTN_CLICKED);
     mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList, Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION);
@@ -271,8 +271,8 @@ void CReagentRMSWidget::OnEdit()
 /****************************************************************************/
 void CReagentRMSWidget::OnNew()
 {
-    m_MessageDlg.SetText(tr("Staining Process has started, editing is no longer possible."
-                            "\nPlease close the dialog with \"Close\""));
+    /*m_MessageDlg.SetText(tr("Staining Process has started, editing is no longer possible."
+                            "\nPlease close the dialog with \"Close\""));*/
     mp_ModifiyReagentRMSDlg->SetDialogTitle(tr("New Reagent"));
     mp_ModifiyReagentRMSDlg->SetButtonType(NEW_BTN_CLICKED);
     mp_Reagent = NULL;
@@ -287,7 +287,7 @@ void CReagentRMSWidget::OnNew()
 /****************************************************************************/
 void CReagentRMSWidget::OnDelete()
 {
-    m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."));
+    /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."));*/
     m_MessageDlg.SetTitle(tr("Confirmation Message"));
     m_MessageDlg.SetIcon(QMessageBox::Information);
     m_MessageDlg.SetButtonText(1, tr("Yes"));
@@ -606,7 +606,7 @@ void CReagentRMSWidget ::UpdateUserSetting()
 /****************************************************************************/
 void CReagentRMSWidget::showEvent(QShowEvent *)
 {
-    m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."));
+    /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."));*/
     m_ShowMessageDialog = true ;
     mp_TableWidget->clearSelection();  
     mp_Ui->scrollTable->Reset();

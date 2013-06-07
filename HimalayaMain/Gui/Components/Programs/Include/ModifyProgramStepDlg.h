@@ -72,7 +72,6 @@ private:
     DataManager::CDataReagentList *mp_ReagentList;      //!< Global reagent list
     DataManager::CDashboardDataStationList *mp_DashboardStationList;      //!< Global Station list
     QButtonGroup m_ButtonGroup;                         //!< Group combining tolerance radio buttons
-    Core::CReagentRMSModel m_ReagentModel;                 //!< Data model of the reagent table
     qint32 m_RowSelected;                               //!< Row selected in table
     bool m_RowNotSelected;                              //!< True - row not selected else selected
     bool m_NewProgramStep;                              //!< True if dialog popped up for New Program Step.
@@ -115,8 +114,6 @@ public:
     void SetProgramStep(DataManager::CProgramStep *p_ProgramStep);
     void NewProgramStep();
     void SelectRow(qint32 Row);
-
-    void ShowSelectReagentPopup();
     void ResetButtons(bool Disable);
 
     /****************************************************************************/

@@ -57,18 +57,6 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
                                    mp_MainWindow(p_Parent),m_UserRoleChanged(false),
                                    m_ProcessRunning(false), m_ColorReplaced(false)
 {
-    // Added void to please lint
-    (void) m_NonStartableProgramErrorMap.insert("-1", tr("BathLayout was not generated for this program"));
-    (void) m_NonStartableProgramErrorMap.insert("0", tr("Success"));
-    (void) m_NonStartableProgramErrorMap.insert("1", tr("Heated Cuvette not mounted"));
-    (void) m_NonStartableProgramErrorMap.insert("2", tr("Distilled Water station not available"));
-    (void) m_NonStartableProgramErrorMap.insert("3", tr("Station not available"));
-    (void) m_NonStartableProgramErrorMap.insert("4", tr("Oven Defect"));
-    (void) m_NonStartableProgramErrorMap.insert("5", tr("Heated cuvette defect"));
-    (void) m_NonStartableProgramErrorMap.insert("6", tr("Water Station defect"));
-    (void) m_NonStartableProgramErrorMap.insert("7", tr("Reagent not present in bathlayout"));
-    (void) m_NonStartableProgramErrorMap.insert("8", tr("Reagent Expired"));
-
     DataManager::CUserSettings *p_Settings = mp_DataConnector->SettingsInterface->GetUserSettings();
 
     mp_Ui->setupUi(GetContentFrame());
@@ -350,7 +338,7 @@ void CProgramWidget::OnProcessStateChanged()
             m_MessageDlg.SetIcon(QMessageBox::Information);
             m_MessageDlg.SetButtonText(1, tr("Ok"));
             m_MessageDlg.HideButtons();
-            m_MessageDlg.SetText(tr("Staining Process has started.Editing is no longer possible."));
+            m_MessageDlg.SetText(tr("Program Process has started.Editing is no longer possible."));
             (void) m_MessageDlg.exec();
         }
     }

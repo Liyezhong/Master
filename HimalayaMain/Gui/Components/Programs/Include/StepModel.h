@@ -67,7 +67,6 @@ public:
     QString ShowPV(DataManager::CProgramStep *Step) const;
     QVariant ShowTemperature(DataManager::CProgramStep *Step) const;
 private:
-    QString DurationString(qint32 Duration) const;
     DataManager::CProgram *mp_Program;                  //!< Program displayed in the table
     DataManager::CDataReagentList *mp_ReagentList;      //!< Global reagent list
     qint32 m_Columns;                                   //!< Number of table columns
