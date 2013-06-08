@@ -203,8 +203,8 @@ void CProgramWidget::OnEdit()
 void CProgramWidget::OnNew()
 {
 
-     m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
-                            "\nPlease close the dialog."));
+     /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
+                            "\nPlease close the dialog."));*/
     mp_ModifyProgramDlg->SetDialogTitle(tr("New Program"));
     mp_ModifyProgramDlg->SetButtonType(NEW_BTN_CLICKED);
     mp_ModifyProgramDlg->InitDialog(NULL);
@@ -220,8 +220,8 @@ void CProgramWidget::OnNew()
 /****************************************************************************/
 void CProgramWidget::OnCopy()
 {
-    m_MessageDlg.SetText(tr("Process has started, Editing is no longer possible."
-                            "\nPlease close the dialog."));
+    /*m_MessageDlg.SetText(tr("Process has started, Editing is no longer possible."
+                            "\nPlease close the dialog."));*/
     mp_ModifyProgramDlg->SetDialogTitle(tr("Edit Program"));
     mp_ModifyProgramDlg->SetButtonType(COPY_BTN_CLICKED);
     mp_ModifyProgramDlg->InitDialog(mp_Program);

@@ -117,7 +117,7 @@
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="230"/>
-        <source>Program End Date Time cannot be later than one week and earlier than the ASAP setting.</source>
+        <source>Program End Date Time cannot be later than one week or earlier than the ASAP End Date Time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -177,11 +177,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="271"/>
-        <source>&quot; is selected, this operation will reusult in an incorrect program result,</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="272"/>
         <source>if you click &quot;Yes&quot;, the selected program will unselect.</source>
         <translation type="unfinished"></translation>
@@ -211,8 +206,13 @@
         <translation type="unfinished">Information*</translation>
     </message>
     <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="271"/>
+        <source>&quot; is selected, this operation will result in an incorrect program result,</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="443"/>
-        <source>Found cleaning program did not run in last time.</source>
+        <source>Found the cleaning program did not run in last time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -736,59 +736,59 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="214"/>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="237"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="638"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="636"/>
         <source>%1</source>
         <translation type="unfinished">%1</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="351"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="382"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="381"/>
         <source>Edit Program Step</source>
         <translation>Programschritt editieren</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="367"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="366"/>
         <source>New Program Step</source>
         <translation>Neuer Programmschritt</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="402"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="400"/>
         <source>Confirmation Message</source>
         <translation>Bestätigungsmeldung</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="404"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="402"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="405"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="403"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="407"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="405"/>
         <source>Do you really want to delete the selected program step?</source>
         <translation>Wollen Sie wirklich den ausgewählte Programmschritt zu löschen?</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="457"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="455"/>
         <source>Information Message</source>
         <translation>Informations Meldung</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="459"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="457"/>
         <source>Ok</source>
         <translation>Ok*</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="462"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="460"/>
         <source>Please enter a valid Program Name</source>
         <translation>Bitte geben Sie einen gültige Programmnamen ein
 </translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="822"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="820"/>
         <source>Select Icon</source>
         <translation type="unfinished"></translation>
     </message>
@@ -819,7 +819,7 @@
 <context>
     <name>CModifyProgramStepDlg</name>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="358"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="345"/>
         <source>Information Message</source>
         <translation>Informations Meldung</translation>
     </message>
@@ -849,30 +849,12 @@
         <translation type="unfinished">°F*</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="541"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="526"/>
         <source>%1</source>
         <translation type="unfinished">%1</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="601"/>
-        <source>Please select a reagent other than &quot;%1&quot;
-and which is not used in the selected program</source>
-        <translation>Bitte wählen Sie eine andere Reagenz als &quot;% 1&quot;,
-die nicht in diesem Programm verwendet wird
-</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="610"/>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="619"/>
-        <source>Action failed!
-The selected program step reagent does not exist.</source>
-        <translation>Aktion fehlgeschlagen!
-Das Reagenz für den gewählten Programmschritt ist nicht vorhanden.
-</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="360"/>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="592"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="347"/>
         <source>Ok</source>
         <translation>Ok*</translation>
     </message>
@@ -1110,138 +1092,83 @@ Das Reagenz für den gewählten Programmschritt ist nicht vorhanden.
 <context>
     <name>CProgramWidget</name>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="349"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="337"/>
         <source>Information Message</source>
         <translation>Informations Meldung</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="351"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="339"/>
         <source>Ok</source>
         <translation>Ok*</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="79"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="67"/>
         <source>Programs</source>
         <translation>Programme</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="198"/>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="237"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="186"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="225"/>
         <source>Edit Program</source>
         <translation>Programm editieren</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="203"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="191"/>
         <source>View Program</source>
         <translation>Programm ansehen</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="220"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="208"/>
         <source>New Program</source>
         <translation>Neues Programm</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="235"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="223"/>
         <source>Process has started, Editing is no longer possible.
 Please close the dialog.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="253"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="241"/>
         <source>Confirmation Message</source>
         <translation>Bestätigungsmeldung</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="255"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="243"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="256"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="244"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="258"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="246"/>
         <source>Do you really want to delete the selected program?</source>
         <translation>Möchten Sie das gewählte Program löschen?</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="353"/>
-        <source>Staining Process has started.Editing is no longer possible.</source>
-        <translation>Der Färbeprozeß wurde gestarted, editieren nicht mehr möglich.
-Bitte schließen Sie den Dialog mit Schließen.</translation>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="341"/>
+        <source>Program Process has started.Editing is no longer possible.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="289"/>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="324"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="277"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="312"/>
         <source>Edit</source>
         <translation>Editieren</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="61"/>
-        <source>BathLayout was not generated for this program</source>
-        <translation>Stationsbelegung wurde nicht für dieses Programm generiert</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="62"/>
-        <source>Success</source>
-        <translation>Erfolg</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="63"/>
-        <source>Heated Cuvette not mounted</source>
-        <translation>Beheizte Cuvette nicht eingebaut
-</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="64"/>
-        <source>Distilled Water station not available</source>
-        <translation>Destilliertes Wasser-Station nicht verfügbar
-</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="65"/>
-        <source>Station not available</source>
-        <translation>Station nicht verfügbar
-</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="66"/>
-        <source>Oven Defect</source>
-        <translation>Ofen  defekt
-</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="67"/>
-        <source>Heated cuvette defect</source>
-        <translation>Beheizte Küvette defekt</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="68"/>
-        <source>Water Station defect</source>
-        <translation>Wasserstation defekt</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="69"/>
-        <source>Reagent not present in bathlayout</source>
-        <translation>Reagenz nicht in Stationsbelegung</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="70"/>
-        <source>Reagent Expired</source>
-        <translation>Reagent abgelaufen</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="218"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="206"/>
         <source>Staining Process has started, Editing is no longer possible.
 Please close the dialog.</source>
         <translation>Der Färbeprozeß wurde gestarted, editieren nicht mehr möglich.
 Bitte schließen Sie den Dialog mit Schließen.</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="305"/>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="343"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="293"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="331"/>
         <source>View</source>
         <translation>Ansicht</translation>
     </message>
@@ -1272,18 +1199,6 @@ Bitte schließen Sie den Dialog mit Schließen.</translation>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="28"/>
         <source>Groups</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="107"/>
-        <source>Staining Process has started, Editing is no longer possible.</source>
-        <translation type="unfinished">Der Färbeprozeß wurde gestarted, editieren nicht mehr möglich.
-Bitte schließen Sie den Dialog mit Schließen.</translation>
-    </message>
-    <message>
-        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="199"/>
-        <source>Staining Process has started, Editing is no longer possible.
-Please close the dialog with &quot;Close&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1340,33 +1255,14 @@ Please close the dialog with &quot;Close&quot;</source>
         <translation type="unfinished">RMS*</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="259"/>
-        <source>Staining Process has started, Editing is no longer possible.
-Please close the dialog with &quot;Close&quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="261"/>
         <source>Edit Reagent</source>
         <translation type="unfinished">Reagenzie editieren</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="274"/>
-        <source>Staining Process has started, editing is no longer possible.
-Please close the dialog with &quot;Close&quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="276"/>
         <source>New Reagent</source>
         <translation type="unfinished">Neue Reagenz</translation>
-    </message>
-    <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="290"/>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="609"/>
-        <source>Staining Process has started, Editing is no longer possible.</source>
-        <translation type="unfinished">Der Färbeprozeß wurde gestarted, editieren nicht mehr möglich.
-Bitte schließen Sie den Dialog mit Schließen.</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="291"/>
@@ -1447,12 +1343,6 @@ Bitte schließen Sie den Dialog mit Schließen.</translation>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="206"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="237"/>
-        <source>Staining Process has started, Editing is no longer possible.</source>
-        <translation type="unfinished">Der Färbeprozeß wurde gestarted, editieren nicht mehr möglich.
-Bitte schließen Sie den Dialog mit Schließen.</translation>
     </message>
 </context>
 <context>
@@ -1564,12 +1454,6 @@ Date</source>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="349"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="405"/>
-        <source>Staining Process has started, Editing is no longer possible.</source>
-        <translation type="unfinished">Der Färbeprozeß wurde gestarted, editieren nicht mehr möglich.
-Bitte schließen Sie den Dialog mit Schließen.</translation>
     </message>
 </context>
 <context>
@@ -1767,30 +1651,9 @@ Bitte schließen Sie den Dialog mit Schließen.</translation>
 <context>
     <name>Core::CReagentRMSModel</name>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="665"/>
-        <source>Program Name</source>
-        <translation type="unfinished">Programmname</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="667"/>
-        <source>Nr.</source>
-        <translation type="unfinished">Nr*</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="669"/>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="187"/>
         <source>Color</source>
         <translation type="unfinished">Farbe</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="671"/>
-        <source>Abbr.</source>
-        <translation type="unfinished">Abk.</translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="673"/>
-        <source>Leica</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="185"/>
@@ -2364,22 +2227,22 @@ Date</source>
         <translation>Speichern</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="835"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="833"/>
         <source>Edit Program Step</source>
         <translation>Programschritt editieren</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="836"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="834"/>
         <source>New Program Step</source>
         <translation>Neuer Programmschritt</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="837"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="835"/>
         <source>Enter Program Name</source>
         <translation>Programmnamen eingeben</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="838"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="836"/>
         <source>Enter Program Short Name</source>
         <translation>Programmkurzname eingeben</translation>
     </message>
@@ -2440,27 +2303,27 @@ Date</source>
         <translation type="unfinished">Speichern</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="654"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="591"/>
         <source>Edit Program Step</source>
         <translation>Programschritt editieren</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="656"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="593"/>
         <source>Information Message</source>
         <translation>Informations Meldung</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="658"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="595"/>
         <source>Please select a reagent from the list</source>
         <translation>Eine Reagenz der Liste auswählen</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="660"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="597"/>
         <source>Duration</source>
         <translation>Dauer</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="662"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="599"/>
         <source>Temp</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2468,22 +2331,22 @@ Date</source>
 <context>
     <name>Programs::CProgramModel</name>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="542"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="530"/>
         <source>Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="544"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="532"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="546"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="534"/>
         <source>Duration</source>
         <translation type="unfinished">Dauer</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="548"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="536"/>
         <source>Icon.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2492,7 +2355,7 @@ Date</source>
     <name>Programs::CProgramWidget</name>
     <message>
         <location filename="../../Programs/Forms/ProgramWidget.ui" line="20"/>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="557"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="545"/>
         <source>Edit</source>
         <translation>Editieren</translation>
     </message>
@@ -2512,17 +2375,17 @@ Date</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="539"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="527"/>
         <source>Programs</source>
         <translation>Programme</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="551"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="539"/>
         <source>New Program</source>
         <translation>Neues Programm</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="561"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="549"/>
         <source>View</source>
         <translation>Ansicht</translation>
     </message>
@@ -2530,27 +2393,27 @@ Date</source>
 <context>
     <name>Programs::CStepModel</name>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="841"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="839"/>
         <source>Step</source>
         <translation>Schritt</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="842"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="840"/>
         <source>Reagent</source>
         <translation>Reagenzie</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="843"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="841"/>
         <source>Duration</source>
         <translation>Dauer</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="844"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="842"/>
         <source>Temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="845"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="843"/>
         <source>P/V</source>
         <translation type="unfinished"></translation>
     </message>

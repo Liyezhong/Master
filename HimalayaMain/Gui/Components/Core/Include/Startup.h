@@ -62,9 +62,6 @@ private:
     ScreenSaverWidget* mp_ScreenSaver;
     KeyBoard::CKeyBoard *mp_KeyBoardWidget; //!< On-screen Keyboard
     QString m_Mode;							//!< GUI mode
-
-private slots:
-    void OnLanguangeSet();
 };
 
 } // end namespace Core
