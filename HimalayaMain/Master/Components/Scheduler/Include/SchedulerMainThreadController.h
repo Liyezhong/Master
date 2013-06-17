@@ -146,6 +146,8 @@ typedef struct
         qreal m_TempRTSide;
         qreal m_TempOvenBottom;
         qreal m_TempOvenTop;
+        quint16 m_OvenLidStatus;
+        quint16 m_RetortLockStatus;
         QStringList m_UsedStationIDs;                                                 ///in a whole of program processing
         SchedulerTimeStamps_t m_TimeStamps;
         QList<QString> m_StationList;

@@ -1411,6 +1411,8 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
             qreal TempRTSide= pIDP->RTGetRecentTemperature(RT_SIDE,0);
             qreal TempOvenBottom= pIDP->OvenGetRecentTemperature(OVEN_BOTTOM,0);
             qreal TempOvenTop= pIDP->OvenGetRecentTemperature(OVEN_TOP,0);
+            quint16 OvenLidStatus = pIDP->OvenGetRecentLidStatus();
+            quint16 RetortLockStatus = pIDP->RTGetRecentLockStatus();
             if(PressureAL != UNDEFINED_VALUE)
             {
                 m_PressureAL = PressureAL;
@@ -1451,6 +1453,15 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
             {
                 m_TempOvenTop = TempOvenTop;
             }
+            if(OvenLidStatus != UNDEFINED_VALUE)
+            {
+                m_OvenLidStatus = OvenLidStatus;
+            }
+            if(RetortLockStatus != UNDEFINED_VALUE)
+            {
+                m_RetortLockStatus = RetortLockStatus;
+            }
+
             m_PositionRV = PositionRV;
 #if 0
             qDebug()<<"Rotary valve's position is" << PositionRV;
@@ -1464,6 +1475,8 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
             qDebug()<<"Retort side temp is" << TempRTSide;
             qDebug()<<"Oven bottom temp is" << TempOvenBottom;
             qDebug()<<"Oven top temp is" << TempOvenTop;
+            qDebug()<<"Oven Lid status" << OvenLidStatus;
+            qDebug()<<"Retort Lock status" << RetortLockStatus;
 #endif
         }
     }
