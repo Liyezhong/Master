@@ -60,9 +60,9 @@ private:
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     QStringList m_ColorNames;                       //!< store color names
     QButtonGroup m_ButtonGroup;
+    QString m_strCancel, m_strClose;
     void SetButtonGroup();
-
-
+    void RetranslateUI();
 
 public:
     explicit CModifyReagentGroupColorDlg(QWidget *p_Parent = NULL,

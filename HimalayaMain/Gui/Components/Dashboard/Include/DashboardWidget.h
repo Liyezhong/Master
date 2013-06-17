@@ -80,6 +80,20 @@ private:
     bool m_CheckEndDatetimeAgain;
     bool m_ProcessRunning;                      //!< Process running state
     bool m_ProgramStartReady;
+    QString m_strProgram;
+    QString m_strInformation;
+    QString m_strCleanNotRun;
+    QString m_strOK, m_strNo;
+    QString m_strNotStartRMSOFF;
+    QString m_strNotStartExpiredReagent;
+    QString m_strStartExpiredReagent;
+    QString m_strConfirmation, m_strAbortProgram;
+    QString m_ProgramComplete, m_strTakeOutSpecimen;
+    QString m_strRetortContaminated;
+    QString m_strStartNewProgram, m_strNeedMeltParaffin;
+    QString m_strResetEndTime, m_strInputCassetteBoxTitle;
+    QString m_strNotFoundStation;
+    QString m_strCheckEmptyStation;
     void EnablePlayButton(bool bSetEnable);
     void EnableAbortButton(bool bSetEnable);
     void EnableRetortSlider(bool bSetEnable);
@@ -87,6 +101,7 @@ private:
     int GetASAPTime(const DataManager::CProgram*, int, int, int, bool&);
     void PrepareSelectedProgramChecking();
     void TakeOutSpecimenAndRunCleaning();
+    void RetranslateUI();
 public:
     explicit CDashboardWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL);
     ~CDashboardWidget();
@@ -96,9 +111,13 @@ public:
     bool CheckPreConditionsToAbortProgram();
     static const QString& SelectedProgramId();
     static bool CheckSelectedProgram(bool& bRevertSelectProgram, QString ProgramID = "");//the return value means the work flow can go continuely.
+    static QString m_strWarning;
+    static QString m_strYes, m_strCancel;
+    static QString m_strMsgUnselect;
+
 protected:
     void DrawSeparatorLine();
-
+    void changeEvent(QEvent *p_Event);
 
 signals:
     void ProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
@@ -129,7 +148,6 @@ public slots:
     void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);
     void OnSelectDateTime(const QDateTime&);
-    void onTest();
 };
 
 }

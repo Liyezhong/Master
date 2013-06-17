@@ -68,6 +68,7 @@ private:
     bool m_ProcessRunning;                  //!< Process running state
     QDateTime m_selDateTime;                //!< Selected Date and Time
     QDateTime m_ASAPDateTime;
+    QString m_strEndTimeForProgram;
     void RetranslateUI();
 
 protected:

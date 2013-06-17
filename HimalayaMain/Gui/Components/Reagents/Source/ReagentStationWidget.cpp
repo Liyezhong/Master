@@ -6,7 +6,7 @@
 #include "Reagents/Include/ReagentStationWidget.h"
 #include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "Reagents/Build/ui_ReagentStationWidget.h"
-
+#include <Dashboard/Include/CommonString.h>
 
 #include <QDebug>
 
@@ -27,7 +27,8 @@ CReagentStationWidget::CReagentStationWidget(QWidget *p_Parent):
                                            mp_Ui(new Ui::CReagentStationWidget),
                                            mp_DataConnector(NULL),
                                            mp_ReagentList(NULL),
-                                           mp_Reagent(NULL)
+                                           mp_Reagent(NULL),
+                                           m_strSelectReagent(tr("Select Reagent"))
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Station"));
@@ -104,8 +105,8 @@ void CReagentStationWidget::SetUserSettings(DataManager::CUserSettings *p_UserSe
 /****************************************************************************/
 void CReagentStationWidget::OnEdit()
 {
-    m_MessageDlg.SetText(tr("Select Reagent"));
-    mp_ModifiyReagentStationDlg->SetDialogTitle(tr("Select Reagent"));
+    m_MessageDlg.SetText(m_strSelectReagent);
+    mp_ModifiyReagentStationDlg->SetDialogTitle(m_strSelectReagent);
     mp_ModifiyReagentStationDlg->SetDashboardStation(mp_DashStation);
     mp_ModifiyReagentStationDlg->move(96,70);
     mp_ModifiyReagentStationDlg->show();
@@ -201,9 +202,9 @@ void CReagentStationWidget::OnProcessStateChanged()
         mp_Ui->btnEdit->setEnabled(false);
 
         if(m_ProcessRunning && m_ShowMessageDialog){
-            m_MessageDlg.SetTitle(tr("Information Message"));
+            m_MessageDlg.SetTitle(CommonString::strInforMsg);
             m_MessageDlg.SetIcon(QMessageBox::Information);
-            m_MessageDlg.SetButtonText(1, tr("Ok"));
+            m_MessageDlg.SetButtonText(1, CommonString::strOK);
             m_MessageDlg.HideButtons();
             (void)m_MessageDlg.exec();
         }
@@ -224,6 +225,8 @@ void CReagentStationWidget::RetranslateUI()
 
     (void) m_ReagentStationModel.setHeaderData(1, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8),0);
+
+    m_strSelectReagent = QApplication::translate("Reagents::CReagentStationWidget", "Select Reagent", 0, QApplication::UnicodeUTF8);
 
 }
 

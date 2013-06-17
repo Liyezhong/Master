@@ -39,7 +39,8 @@ const int ONE_WEEK_TIME_OFFSET_VALUE = (7 * 24 * 60 * 60);
  */
 /****************************************************************************/
 CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
-    mp_Ui(new Ui::CDashboardDateTimeWidget)
+    mp_Ui(new Ui::CDashboardDateTimeWidget),
+    m_strEndTimeForProgram(tr("End Time for Program"))
 {
 
     mp_Ui->setupUi(GetContentFrame());
@@ -121,7 +122,8 @@ CDashboardDateTimeWidget::~CDashboardDateTimeWidget()
 
 void CDashboardDateTimeWidget ::UpdateProgramName()
 {
-     SetPanelTitle(QString(tr("End Time for Program \"%1\"").arg(SELECTED_PROGRAM_NAME)));
+     QString str(m_strEndTimeForProgram + " \"%1\"");
+     SetPanelTitle(str.arg(SELECTED_PROGRAM_NAME));
      SetTitleCenter();
 }
 
@@ -242,17 +244,20 @@ void CDashboardDateTimeWidget::OnOK()
 /****************************************************************************/
 void CDashboardDateTimeWidget::RetranslateUI()
 {
-    mp_Ui->scrollPanelDate->SetTitle(QApplication::translate("MainMenu::CDateTime", "Date", 0, QApplication::UnicodeUTF8));
-    mp_Ui->scrollPanelDate->SetSubtitle(QApplication::translate("MainMenu::CDateTime", "Day", 0, QApplication::UnicodeUTF8),0);
-    mp_Ui->scrollPanelDate->SetSubtitle(QApplication::translate("MainMenu::CDateTime", "Month", 0, QApplication::UnicodeUTF8),1);
-    mp_Ui->scrollPanelDate->SetSubtitle(QApplication::translate("MainMenu::CDateTime", "Year", 0, QApplication::UnicodeUTF8),2);
+    mp_Ui->scrollPanelDate->SetTitle(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Date", 0, QApplication::UnicodeUTF8));
+    mp_Ui->scrollPanelDate->SetSubtitle(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Day", 0, QApplication::UnicodeUTF8),0);
+    mp_Ui->scrollPanelDate->SetSubtitle(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Month", 0, QApplication::UnicodeUTF8),1);
+    mp_Ui->scrollPanelDate->SetSubtitle(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Year", 0, QApplication::UnicodeUTF8),2);
 
 
-    mp_Ui->scrollPanelTime->SetTitle(QApplication::translate("MainMenu::CDateTime", "Time", 0, QApplication::UnicodeUTF8));
-    mp_Ui->scrollPanelTime->SetSubtitle(QApplication::translate("MainMenu::CDateTime", "Hour", 0, QApplication::UnicodeUTF8),0);
-    mp_Ui->scrollPanelTime->SetSubtitle(QApplication::translate("MainMenu::CDateTime", "Minute", 0, QApplication::UnicodeUTF8),1);
+    mp_Ui->scrollPanelTime->SetTitle(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Time", 0, QApplication::UnicodeUTF8));
+    mp_Ui->scrollPanelTime->SetSubtitle(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Hour", 0, QApplication::UnicodeUTF8),0);
+    mp_Ui->scrollPanelTime->SetSubtitle(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Minute", 0, QApplication::UnicodeUTF8),1);
 
-    mp_Ui->lblDateTimeDisplay->setText(m_ASAPDateTime.toString());
+    mp_MessageDlg->SetTitle(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Warning", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->SetText(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date Time cannot be later than one week or earlier than the ASAP End Date Time.", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->SetButtonText(1, QApplication::translate("Dashboard::CDashboardDateTimeWidget", "OK", 0, QApplication::UnicodeUTF8));
+    m_strEndTimeForProgram = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "End Time for Program", 0, QApplication::UnicodeUTF8);
 }
 
 

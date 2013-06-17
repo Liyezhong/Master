@@ -51,6 +51,7 @@ public:
 protected:
     void paintEvent(QPaintEvent *e);
     void mousePressEvent(QMouseEvent *e);
+    void changeEvent(QEvent *p_Event);
 signals:
     void ButtonPress();
 private:
@@ -60,6 +61,7 @@ private:
     bool m_IsWorkAsButton;
     QPixmap m_PixmapEnable, m_PixmapRunning;
     QPixmap* m_Pixmap;
+    void RetranslateUI();
 };
 
 } // end namespace Dashboard

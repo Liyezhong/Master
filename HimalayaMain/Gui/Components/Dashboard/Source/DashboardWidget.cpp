@@ -25,7 +25,7 @@
 #include "Dashboard/Include/DashboardProgramStatusWidget.h"
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
-
+#include "Dashboard/Include/CommonString.h"
 
 namespace Dashboard {
 
@@ -46,12 +46,28 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    m_IsDraining(false),
                                    m_CheckEndDatetimeAgain(false),
                                    m_ProcessRunning(false),
-                                   m_ProgramStartReady(false)
-
+                                   m_ProgramStartReady(false),
+                                   m_strNo(tr("No")),
+                                   m_strOK(tr("OK")),
+                                   m_strProgram(tr("Program")),
+                                   m_strInformation(tr("Information")),
+                                   m_strConfirmation(tr("Confirmation Message")),
+                                   m_strCleanNotRun(tr("Found the cleaning program did not run in last time.")),
+                                   m_strNotStartRMSOFF(tr("Can not start Leica Program With RMS OFF, please trun on RMS.")),
+                                   m_strNotStartExpiredReagent(tr("Some expired reagents are used in this selected program, you can not start this program.")),
+                                   m_strStartExpiredReagent(tr("Do you want to Start the Program with Expired Reagents?")),
+                                   m_strAbortProgram(tr("Do you want to abort the program?")),
+                                   m_ProgramComplete(tr("Program \"%1\" is complete! Would you like to drain the retort?")),
+                                   m_strTakeOutSpecimen(tr("Please take out your specimen!")),
+                                   m_strRetortContaminated(tr("The retort is contaminated, Cleaning Program will run! Please lock the retort then click \"OK\".")),
+                                   m_strStartNewProgram(tr("Program \"%1\" is aborted! Would you like to start a new Program?")),
+                                   m_strNeedMeltParaffin(tr("Still it will cost some time to melt paraffin, the current selected program can not run now.")),
+                                   m_strResetEndTime(tr("Please re-set the End Date&Time of the current selected program.")),
+                                   m_strInputCassetteBoxTitle(tr("Please set numbers of cassettes:")),
+                                   m_strNotFoundStation(tr("Program step \"%1\" of \"%2\" can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.")),
+                                   m_strCheckEmptyStation(tr("The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed."))
 {
      mp_Ui->setupUi(GetContentFrame());
-     SetPanelTitle(tr("Dashboard"));
-
      QPalette Palette = mp_Ui->dashboardView->palette();
      QColor BaseColor = Palette.color(QPalette::Base);
      BaseColor.setAlpha(0);
@@ -134,6 +150,11 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
 }
 
+QString CDashboardWidget::m_strWarning = CDashboardWidget::tr("Warning");
+QString CDashboardWidget::m_strYes = CDashboardWidget::tr("Yes");
+QString CDashboardWidget::m_strCancel = CDashboardWidget::tr("Cancel");
+QString CDashboardWidget::m_strMsgUnselect = CDashboardWidget::tr("As the program \"%1\" is selected, this operation will result in an incorrect program result, if you click \"Yes\", the selected program will unselect.");
+
 CDashboardWidget::~CDashboardWidget()
 {
     try {
@@ -153,6 +174,49 @@ void CDashboardWidget::RetortSliderPositionChanged(MainMenu::CSliderControl::Pos
         mp_DataConnector->SendRetortLock(true);
     else
         mp_DataConnector->SendRetortLock(false);
+}
+
+void CDashboardWidget::changeEvent(QEvent *p_Event)
+{
+    QWidget::changeEvent(p_Event);
+    switch (p_Event->type()) {
+        case QEvent::LanguageChange:
+            mp_Ui->retranslateUi(this);
+            CommonString::RetranslateUIString();
+            this->RetranslateUI();
+            break;
+        default:
+            break;
+    }
+}
+
+void CDashboardWidget::RetranslateUI()
+{
+    SetPanelTitle(CommonString::strOK);
+    m_strYes = QApplication::translate("Dashboard::CDashboardWidget", "Yes", 0, QApplication::UnicodeUTF8);
+    m_strNo = QApplication::translate("Dashboard::CDashboardWidget", "No", 0, QApplication::UnicodeUTF8);
+    m_strOK = QApplication::translate("Dashboard::CDashboardWidget", "OK", 0, QApplication::UnicodeUTF8);
+    m_strCancel = QApplication::translate("Dashboard::CDashboardWidget", "Cancel", 0, QApplication::UnicodeUTF8);
+    m_strWarning = QApplication::translate("Dashboard::CDashboardWidget", "Warning", 0, QApplication::UnicodeUTF8);
+    m_strMsgUnselect = QApplication::translate("Dashboard::CDashboardWidget", "As the program \"%1\" is selected, this operation will result in an incorrect program result, if you click \"Yes\", the selected program will unselect.", 0, QApplication::UnicodeUTF8);
+    m_strProgram = QApplication::translate("Dashboard::CDashboardWidget", "Program", 0, QApplication::UnicodeUTF8);
+    m_strInformation = QApplication::translate("Dashboard::CDashboardWidget", "Information", 0, QApplication::UnicodeUTF8);
+    m_strCleanNotRun = QApplication::translate("Dashboard::CDashboardWidget", "Found the cleaning program did not run in last time.", 0, QApplication::UnicodeUTF8);
+    m_strNotStartRMSOFF = QApplication::translate("Dashboard::CDashboardWidget", "Can not start Leica Program With RMS OFF, please trun on RMS.", 0, QApplication::UnicodeUTF8);
+    m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CDashboardWidget", "Some expired reagents are used in this selected program, you can not start this program.", 0, QApplication::UnicodeUTF8);
+    m_strStartExpiredReagent =  QApplication::translate("Dashboard::CDashboardWidget", "Do you want to Start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
+    m_strConfirmation = QApplication::translate("Dashboard::CDashboardWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
+    m_strAbortProgram = QApplication::translate("Dashboard::CDashboardWidget", "Do you want to abort the program?", 0, QApplication::UnicodeUTF8);
+    m_ProgramComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is complete! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
+    m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
+    m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, Cleaning Program will run! Please lock the retort then click \"OK\".", 0, QApplication::UnicodeUTF8);
+    m_strStartNewProgram  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted! Would you like to start a new Program?", 0, QApplication::UnicodeUTF8);
+    m_strNeedMeltParaffin  = QApplication::translate("Dashboard::CDashboardWidget", "Still it will cost some time to melt paraffin, the current selected program can not run now.", 0, QApplication::UnicodeUTF8);
+    m_strResetEndTime = QApplication::translate("Dashboard::CDashboardWidget", "Please re-set the End Date&Time of the current selected program.", 0, QApplication::UnicodeUTF8);
+    m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please set numbers of cassettes:", 0, QApplication::UnicodeUTF8);
+    m_strNotFoundStation = QApplication::translate("Dashboard::CDashboardWidget", "Program step \"%1\" of \"%2\" can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.", 0, QApplication::UnicodeUTF8);
+    m_strCheckEmptyStation = QApplication::translate("Dashboard::CDashboardWidget", "The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed.", 0, QApplication::UnicodeUTF8);
+
 }
 
 void CDashboardWidget::DrawSeparatorLine()
@@ -264,16 +328,13 @@ bool CDashboardWidget::CheckSelectedProgram(bool& bRevertSelectProgram, QString 
         }
 
         MainMenu::CMessageDlg ConfirmationMessageDlg;
-        ConfirmationMessageDlg.SetTitle(tr("Warning"));
+        ConfirmationMessageDlg.SetTitle(m_strWarning);
         QString strMsg;
-        strMsg.append(tr("As the program \""));
-        strMsg.append(Dashboard::CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
-        strMsg.append(tr("\" is selected, this operation will result in an incorrect program result,"));
-        strMsg.append(tr("if you click \"Yes\", the selected program will unselect."));
+        strMsg = m_strMsgUnselect.arg(Dashboard::CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
         ConfirmationMessageDlg.SetText(strMsg);
         ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
-        ConfirmationMessageDlg.SetButtonText(1, tr("Yes"));
-        ConfirmationMessageDlg.SetButtonText(3, tr("Cancel"));
+        ConfirmationMessageDlg.SetButtonText(1, m_strYes);
+        ConfirmationMessageDlg.SetButtonText(3, m_strCancel);
         ConfirmationMessageDlg.HideCenterButton();
         if (!ConfirmationMessageDlg.exec())
             return false;
@@ -292,7 +353,7 @@ void CDashboardWidget::OnUnselectProgram()
         EnablePlayButton(false);
         m_StationList.clear();
         //Show program name in the comboBox
-        CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = tr("Program");
+        CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = m_strProgram;
         mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
         int asapEndTime = 0;
         emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
@@ -302,11 +363,6 @@ void CDashboardWidget::OnUnselectProgram()
 void CDashboardWidget::OnSelectDateTime(const QDateTime& dateTime)
 {
     m_EndDateTime = dateTime;
-}
-
-void CDashboardWidget::onTest()
-{
-
 }
 
 bool CDashboardWidget::IsParaffinInProgram(const DataManager::CProgram* p_Program)
@@ -439,9 +495,9 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
     if (!isCleaningProgramRun)
     {
         mp_MessageDlg->SetIcon(QMessageBox::Information);
-        mp_MessageDlg->SetTitle(tr("Information"));
-        mp_MessageDlg->SetText(tr("Found the cleaning program did not run in last time."));
-        mp_MessageDlg->SetButtonText(1, tr("OK"));
+        mp_MessageDlg->SetTitle(m_strInformation);
+        mp_MessageDlg->SetText(m_strCleanNotRun);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
         {
@@ -461,9 +517,9 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
     if (isRMSOFF && mp_ProgramList->GetProgram(m_SelectedProgramId)->IsLeicaProgram())
     {
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(tr("Warning"));
-        mp_MessageDlg->SetText(tr("Can not start Leica Program With RMS OFF, please trun on RMS."));
-        mp_MessageDlg->SetButtonText(1, tr("OK"));
+        mp_MessageDlg->SetTitle(m_strWarning);
+        mp_MessageDlg->SetText(m_strNotStartRMSOFF);
+        mp_MessageDlg->SetButtonText(1, m_strOK);
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
         return;
@@ -475,9 +531,9 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
         if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
         {
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(tr("Warning"));
-            mp_MessageDlg->SetText(tr("Some expired reagents are used in this selected program, you can not start this program."));
-            mp_MessageDlg->SetButtonText(1, tr("OK"));
+            mp_MessageDlg->SetTitle(m_strWarning);
+            mp_MessageDlg->SetText(m_strNotStartExpiredReagent);
+            mp_MessageDlg->SetButtonText(1, m_strOK);
             mp_MessageDlg->HideButtons();
             if (mp_MessageDlg->exec())
             return;
@@ -487,10 +543,10 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
         m_CurrentUserRole == MainMenu::CMainWindow::Service)
         {
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(tr("Warning"));
-            mp_MessageDlg->SetText(tr("Do you want to Start the Program with Expired Reagents?"));
-            mp_MessageDlg->SetButtonText(3, tr("Yes"));
-            mp_MessageDlg->SetButtonText(1, tr("No"));
+            mp_MessageDlg->SetTitle(m_strWarning);
+            mp_MessageDlg->SetText(m_strStartExpiredReagent);
+            mp_MessageDlg->SetButtonText(3, m_strYes);
+            mp_MessageDlg->SetButtonText(1, m_strNo);
             mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
 
             if (!mp_MessageDlg->exec())
@@ -515,11 +571,11 @@ bool CDashboardWidget::CheckPreConditionsToAbortProgram()
 {
     MainMenu::CMessageDlg ConfirmationMessageDlg;
 
-    ConfirmationMessageDlg.SetTitle(tr("Confirmation Message"));
-    ConfirmationMessageDlg.SetText(tr("Do you want to abort the program?"));
+    ConfirmationMessageDlg.SetTitle(m_strConfirmation);
+    ConfirmationMessageDlg.SetText(m_strAbortProgram);
     ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
-    ConfirmationMessageDlg.SetButtonText(1, tr("Yes"));
-    ConfirmationMessageDlg.SetButtonText(3, tr("Cancel"));
+    ConfirmationMessageDlg.SetButtonText(1, m_strYes);
+    ConfirmationMessageDlg.SetButtonText(3, m_strCancel);
     ConfirmationMessageDlg.HideCenterButton();
 
     return ConfirmationMessageDlg.exec() == (int)QDialog::Accepted;
@@ -570,12 +626,11 @@ void CDashboardWidget::OnProgramStartReadyUpdated()
 void CDashboardWidget::OnProgramWillComplete()
 {
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
-    mp_MessageDlg->SetTitle(tr("Warning"));
-    QString strTemp(tr("Program \""));
-    strTemp = strTemp + CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME
-            + tr("\" is complete! Would you like to drain the retort?");
+    mp_MessageDlg->SetTitle(m_strWarning);
+    QString strTemp(m_ProgramComplete);
+    strTemp.arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
     mp_MessageDlg->SetText(strTemp);
-    mp_MessageDlg->SetButtonText(1, tr("OK"));
+    mp_MessageDlg->SetButtonText(1, m_strOK);
     mp_MessageDlg->HideButtons();
 
     if (mp_MessageDlg->exec())
@@ -595,17 +650,17 @@ void CDashboardWidget::TakeOutSpecimenAndRunCleaning()
     mp_DataConnector->SendRetortLock(false);
 
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
-    mp_MessageDlg->SetTitle(tr("Warning"));
-    mp_MessageDlg->SetText(tr("Please take out your specimen!"));
-    mp_MessageDlg->SetButtonText(1, tr("OK"));
+    mp_MessageDlg->SetTitle(m_strWarning);
+    mp_MessageDlg->SetText(m_strTakeOutSpecimen);
+    mp_MessageDlg->SetButtonText(1, m_strOK);
     mp_MessageDlg->HideButtons();
     if (mp_MessageDlg->exec())
     {
         //represent the retort as contaminated status
         mp_DashboardScene->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED);
 
-        mp_MessageDlg->SetText(tr("The retort is contaminated, Cleaning Program will run! Please lock the retort then click \"OK\"."));
-        mp_MessageDlg->SetButtonText(1, tr("OK"));
+        mp_MessageDlg->SetText(m_strRetortContaminated);
+        mp_MessageDlg->SetButtonText(1, m_strOK);
         mp_MessageDlg->HideButtons();
         //mp_MessageDlg->EnableButton(1, false);
         mp_MessageDlg->EnableButton(1, true);//6.6 for test
@@ -650,13 +705,12 @@ void CDashboardWidget::OnProgramAborted()
     EnablePlayButton(false);
 
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
-    mp_MessageDlg->SetTitle(tr("Warning"));
-    QString strTemp(tr("Program \""));
-    strTemp = strTemp + CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME
-            + tr("\" is aborted! Would you like to start a new Program?");
+    mp_MessageDlg->SetTitle(m_strWarning);
+    QString strTemp;
+    strTemp = m_strStartNewProgram.arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
     mp_MessageDlg->SetText(strTemp);
-    mp_MessageDlg->SetButtonText(1, tr("Yes"));
-    mp_MessageDlg->SetButtonText(3, tr("No"));
+    mp_MessageDlg->SetButtonText(1, m_strYes);
+    mp_MessageDlg->SetButtonText(3, m_strNo);
     mp_MessageDlg->HideCenterButton();
     if (mp_MessageDlg->exec())//yes
     {
@@ -730,9 +784,9 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
         if (bCanotRun)
         {
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(tr("Warning"));
-            mp_MessageDlg->SetText(tr("Still it will cost some time to melt paraffin, the current selected program can not run now."));
-            mp_MessageDlg->SetButtonText(1, tr("OK"));
+            mp_MessageDlg->SetTitle(m_strWarning);
+            mp_MessageDlg->SetText(m_strNeedMeltParaffin);
+            mp_MessageDlg->SetButtonText(1, m_strOK);
             mp_MessageDlg->HideButtons();
             if (mp_MessageDlg->exec())
             {
@@ -745,9 +799,9 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
         if (endDateTime > m_EndDateTime)
         {
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(tr("Warning"));
-            mp_MessageDlg->SetText(tr("Please re-set the End Date&Time of the current selected program."));
-            mp_MessageDlg->SetButtonText(1, tr("OK"));
+            mp_MessageDlg->SetTitle(m_strWarning);
+            mp_MessageDlg->SetText(m_strResetEndTime);
+            mp_MessageDlg->SetButtonText(1, m_strOK);
             mp_MessageDlg->HideButtons();
             if (mp_MessageDlg->exec())
             {
@@ -764,7 +818,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
                 CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
                 pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
                 pCassetteInput->move(80,50);
-                pCassetteInput->SetDialogTitle(tr("Please set numbers of cassettes:"));
+                pCassetteInput->SetDialogTitle(m_strInputCassetteBoxTitle);
                 pCassetteInput->exec();
 
                 int cassetteNumber = pCassetteInput->CassetteNumber();
@@ -788,14 +842,10 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
         if ("" == stationList.at(i))
         {
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(tr("Warning"));
-            QString strTemp(tr("Program step \""));
-            strTemp = strTemp + QString::number(i+1);
-            strTemp = strTemp + tr("\" of \"");
-            strTemp = strTemp + CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME
-                    + tr("\" can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.");
+            mp_MessageDlg->SetTitle(m_strWarning);
+            QString strTemp = m_strNotFoundStation.arg(QString::number(i+1)).arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
             mp_MessageDlg->SetText(strTemp);
-            mp_MessageDlg->SetButtonText(1, tr("OK"));
+            mp_MessageDlg->SetButtonText(1, m_strOK);
             mp_MessageDlg->HideButtons();
 
             if (mp_MessageDlg->exec())
@@ -815,16 +865,10 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
             if ("Empty" == pStation->GetDashboardReagentStatus())
             {
                 mp_MessageDlg->SetIcon(QMessageBox::Warning);
-                mp_MessageDlg->SetTitle(tr("Warning"));
-                QString strTemp(tr("The Station \""));
-                strTemp = strTemp + pStation->GetDashboardStationName();
-                strTemp = strTemp + tr("\" status is set as Empty in Program step \"");
-                strTemp = strTemp + QString::number(i+1);
-                strTemp = strTemp + tr("\" of \"");
-                strTemp = strTemp + CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME
-                        + tr("\" , it can not be executed.");
+                mp_MessageDlg->SetTitle(m_strWarning);
+                QString strTemp = m_strCheckEmptyStation.arg(pStation->GetDashboardStationName()).arg(QString::number(i+1)).arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
                 mp_MessageDlg->SetText(strTemp);
-                mp_MessageDlg->SetButtonText(1, tr("OK"));
+                mp_MessageDlg->SetButtonText(1, m_strOK);
                 mp_MessageDlg->HideButtons();
 
                 if (mp_MessageDlg->exec())

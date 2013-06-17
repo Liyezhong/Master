@@ -41,6 +41,7 @@
 #include "Global/Include/UITranslator.h"
 #include "MainMenu//Include/MsgBoxManager.h"
 #include "Dashboard/Include/SplashWidget.h"
+#include <Dashboard/Include/CommonString.h>
 
 namespace Core {
 
@@ -53,7 +54,27 @@ namespace Core {
 /****************************************************************************/
 CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::CDataContainer(),
     m_ConsumableType(KIT),mp_MainWindow(p_Parent), mp_LanguageFile(NULL), mp_OldFile(NULL),
-    m_LanguageChangeCount(0),m_BottleCount(0), m_GuiInit(true), mp_RmsMessageDlg(NULL)
+    m_LanguageChangeCount(0),m_BottleCount(0), m_GuiInit(true), mp_RmsMessageDlg(NULL),
+    m_strCommunicationError(tr("Communication Error")),
+    m_strChangeNotSave(tr("The changes could not be saved.")),
+    m_strStartup(tr("Startup")),
+    m_strInitDevCom(tr("Initializing device communication ...")),
+    m_strDisconnect(tr("Disconnect")),
+    m_strReinitDeviceCommunication(tr("Reinitializing device communication ...")),
+    m_strError(tr("Error")),
+    m_strInformation(tr("Information")),
+    m_strWarning(tr("Warning")),
+    m_strDeviceCommunication(tr("Device Communication")),
+    m_strSavingSettings(tr("Saving Settings ...")),
+    m_strUserExport(tr("User Export")),
+    m_strExportUserData(tr("Exporting user data ...")),
+    m_strServiceExport(tr("Service Export")),
+    m_strExportServiceData(tr("Exporting service data ...")),
+    m_strImport("Import"),
+    m_strImportData("Importing data ..."),
+    m_strLogFile(tr("Log Files")),
+    m_strGettingDailyLog(tr("Getting Daily run Log file ..."))
+
 {
     if (m_NetworkObject.NetworkInit()) {
         THROW(EVENT_GLOBAL_ERROR_UNKNOWN_EXCEPTION);
@@ -120,10 +141,10 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), this, OnCurrentTabChanged(int));
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
-    mp_MessageDlg->SetTitle(tr("Communication Error"));
-    mp_MessageDlg->SetText(tr("The changes could not be saved."));
+    mp_MessageDlg->SetTitle(m_strCommunicationError);
+    mp_MessageDlg->SetText(m_strChangeNotSave);
     mp_MessageDlg->SetIcon(QMessageBox::Critical);
-    mp_MessageDlg->SetButtonText(1, tr("Ok"));
+    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
     mp_MessageDlg->setModal(true);
     mp_MessageDlg->HideButtons();
     m_UpdateProgramColor = false;
@@ -131,8 +152,8 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
 
     mp_BlgScanWaitDialog = new MainMenu::CWaitDialog(mp_MainWindow);
     mp_WaitDialog = new MainMenu::CWaitDialog(mp_MainWindow);
-    mp_WaitDialog->SetDialogTitle(tr("Startup"));
-    mp_WaitDialog->SetText(tr("Initializing device communication ..."));
+    mp_WaitDialog->SetDialogTitle(m_strStartup);
+    mp_WaitDialog->SetText(m_strInitDevCom);
     mp_WaitDialog->HideAbort();
     mp_WaitDialog->show();
     CONNECTSIGNALSLOT(mp_WaitDialog, Timeout(), mp_MessageDlg, Show());
@@ -222,8 +243,8 @@ void CDataConnector::OnMasterDisconnected(const QString &name)
 {
     Q_UNUSED(name)
     // show the "waiting for reconnect" dialog:
-    mp_WaitDialog->SetDialogTitle(tr("Disconnect"));
-    mp_WaitDialog->SetText(tr("Reinitializing device communication ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDisconnect);
+    mp_WaitDialog->SetText(m_strReinitDeviceCommunication);
     mp_WaitDialog->show();
     /// \todo: do whatever needs to be done on this event
 }
@@ -250,25 +271,25 @@ void CDataConnector::OnAckDateAndTime(Global::tRefType Ref, const Global::AckOKN
             switch(Ack.GetType()) {
                 case Global::GUIMSGTYPE_ERROR:
                     mp_MessageDlg->SetIcon(QMessageBox::Critical);
-                    mp_MessageDlg->SetTitle(tr("Error"));
+                    mp_MessageDlg->SetTitle(m_strError);
                     break;
                 case Global::GUIMSGTYPE_INFO:
                     mp_MessageDlg->SetIcon(QMessageBox::Information);
-                    mp_MessageDlg->SetTitle(tr("Information"));
+                    mp_MessageDlg->SetTitle(m_strInformation);
                     break;
                 case Global::GUIMSGTYPE_WARNING:
                     mp_MessageDlg->SetIcon(QMessageBox::Warning);
-                    mp_MessageDlg->SetTitle(tr("Warning"));
+                    mp_MessageDlg->SetTitle(m_strWarning);
                     break;
             }
             mp_MessageDlg->SetText(Ack.GetText());
         }
         else {
-            mp_MessageDlg->SetTitle(tr("Communication Error"));
-            mp_MessageDlg->SetText(tr("Communication Error"));
+            mp_MessageDlg->SetTitle(m_strCommunicationError);
+            mp_MessageDlg->SetText(m_strCommunicationError);
             mp_MessageDlg->SetIcon(QMessageBox::Critical);
         }
-        mp_MessageDlg->SetButtonText(1, tr("OK"));
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
         mp_MessageDlg->show();
     }
 }
@@ -322,8 +343,8 @@ void CDataConnector::SendDateTime(QDateTime DateTime)
 {
     Global::CmdDateAndTime Command(5000, DateTime);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckDateAndTime, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->show();
 }
 
@@ -338,8 +359,8 @@ void CDataConnector::SendStationChangeReagent(const QString& StationId, const QS
 {
     MsgClasses::CmdStationChangeReagent Command(1000, StationId, ReagentId);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 
@@ -348,8 +369,8 @@ void CDataConnector::SendStationResetData(const QString& StationId)
 {
     MsgClasses::CmdStationResetData Command(1000, StationId);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }
@@ -358,8 +379,8 @@ void CDataConnector::SendStationSetAsEmpty(const QString StationId)
 {
     MsgClasses::CmdStationSetAsEmpty Command(1000, StationId);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }
@@ -368,8 +389,8 @@ void CDataConnector::SendStationSetAsFull(const QString& StationId)
 {
     MsgClasses::CmdStationSetAsFull Command(1000, StationId);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }
@@ -390,8 +411,8 @@ void CDataConnector::SendReagentGroupUpdate(DataManager::CReagentGroup &ReagentG
 {
     MsgClasses::CmdReagentGroupUpdate Command(1000, ReagentGroup.GetGroupID(), ReagentGroup.GetGroupColor());
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }
@@ -433,8 +454,8 @@ void CDataConnector::SendReagentUpdate(DataManager::CReagent &Reagent)
     ReagentDataStream << Reagent;
     MsgClasses::CmdReagentUpdate Command(1000, ReagentDataStream);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }
@@ -453,8 +474,8 @@ void CDataConnector::SendReagentAdd(DataManager::CReagent &Reagent)
     ReagentDataStream << Reagent;
     MsgClasses::CmdReagentAdd Command(1000, ReagentDataStream);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnReagentAck, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
  }
@@ -470,8 +491,8 @@ void CDataConnector::SendReagentRemove(QString ReagentID)
 {
     MsgClasses::CmdReagentRemove Command(1000, ReagentID);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }
@@ -492,8 +513,8 @@ void CDataConnector::SendProgramUpdate(DataManager::CProgram &Program)
       Command.SetProgramColorReplaced(false);
       m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
        m_UpdateProgramColor = false;
-      mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-      mp_WaitDialog->SetText(tr("Saving Settings ..."));
+      mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+      mp_WaitDialog->SetText(m_strSavingSettings);
       mp_WaitDialog->SetTimeout(10000);
       mp_WaitDialog->show();
 }
@@ -519,8 +540,8 @@ void CDataConnector::SendProgramColorUpdate(DataManager::CProgram &ColorReplaced
       Command.SetProgramColorReplaced(true);
       m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
       m_UpdateProgramColor = true;
-      mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-      mp_WaitDialog->SetText(tr("Saving Settings ..."));
+      mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+      mp_WaitDialog->SetText(m_strSavingSettings);
       mp_WaitDialog->SetTimeout(10000);
       mp_WaitDialog->show();
 }
@@ -540,8 +561,8 @@ void CDataConnector::SendProgramAdd(DataManager::CProgram &Program)
     (void)ProgramDataStream.device()->reset();
     MsgClasses::CmdNewProgram Command(5000, ProgramDataStream);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }
@@ -557,8 +578,8 @@ void CDataConnector::SendProgramRemove(QString &ProgramID)
 {
     MsgClasses::CmdProgramDeleteItem Command(1000, ProgramID);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }
@@ -1009,8 +1030,8 @@ void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &Settings)
     (void)SettingsDataStream.device()->reset();
     MsgClasses::CmdChangeUserSettings Command(5000, SettingsDataStream);    
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnUserSettingsAck, this);
-    mp_WaitDialog->SetDialogTitle("Device Communication");
-    mp_WaitDialog->SetText("Saving Settings ...");
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->show();
 }
 /****************************************************************************/
@@ -1028,8 +1049,8 @@ void CDataConnector::SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, bool 
 
     MsgClasses::CmdAlarmToneTest Command(5000, Volume, Sound, Type);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle("Device Communication");
-    mp_WaitDialog->SetText("Request Sent");
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->show();
 }
 
@@ -1040,15 +1061,31 @@ void CDataConnector::SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, bool 
 /****************************************************************************/
 void CDataConnector::RetranslateUI()
 {
-   mp_WaitDialog->SetDialogTitle(QApplication::translate("Core::CDataConnector", "Device Communication", 0, QApplication::UnicodeUTF8));
-   mp_WaitDialog->SetText(QApplication::translate("Core::CDataConnector", "Saving Settings ...", 0, QApplication::UnicodeUTF8));
-   mp_WaitDialog->SetDialogTitle(QApplication::translate("Core::CDataConnector", "Disconnect", 0, QApplication::UnicodeUTF8));
-   mp_WaitDialog->SetDialogTitle(QApplication::translate("Core::CDataConnector", "Startup", 0, QApplication::UnicodeUTF8));
-   mp_WaitDialog->SetText(QApplication::translate("Core::CDataConnector", "Initializing device communication ...", 0, QApplication::UnicodeUTF8));
-   mp_WaitDialog->SetText(QApplication::translate("Core::CDataConnector", "Reinitializing device communication ...", 0, QApplication::UnicodeUTF8));
-   mp_MessageDlg->SetDialogTitle(QApplication::translate("Core::CDataConnector", "Communication Error", 0, QApplication::UnicodeUTF8));
-   mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "The changes could not be saved.", 0, QApplication::UnicodeUTF8));
-   mp_MessageDlg->SetButtonText(1,QApplication::translate("Core::CDataConnector", "Ok", 0, QApplication::UnicodeUTF8));
+   m_strCommunicationError = QApplication::translate("Core::CDataConnector", "Communication Error", 0, QApplication::UnicodeUTF8);
+   m_strChangeNotSave = QApplication::translate("Core::CDataConnector", "The changes could not be saved.", 0, QApplication::UnicodeUTF8);
+   m_strStartup = QApplication::translate("Core::CDataConnector", "Startup", 0, QApplication::UnicodeUTF8);
+   m_strInitDevCom = QApplication::translate("Core::CDataConnector", "Initializing device communication ...", 0, QApplication::UnicodeUTF8);
+   m_strDisconnect = QApplication::translate("Core::CDataConnector", "Disconnect", 0, QApplication::UnicodeUTF8);
+   m_strReinitDeviceCommunication = QApplication::translate("Core::CDataConnector", "Reinitializing device communication ...", 0, QApplication::UnicodeUTF8);
+   m_strError = QApplication::translate("Core::CDataConnector", "Error", 0, QApplication::UnicodeUTF8);
+   m_strInformation = QApplication::translate("Core::CDataConnector", "Information", 0, QApplication::UnicodeUTF8);
+
+   m_strWarning = QApplication::translate("Core::CDataConnector", "Warning", 0, QApplication::UnicodeUTF8);
+   m_strDeviceCommunication = QApplication::translate("Core::CDataConnector", "Device Communication", 0, QApplication::UnicodeUTF8);
+   m_strSavingSettings = QApplication::translate("Core::CDataConnector", "Saving Settings ...", 0, QApplication::UnicodeUTF8);
+   m_strUserExport = QApplication::translate("Core::CDataConnector", "User Export", 0, QApplication::UnicodeUTF8);
+   m_strExportUserData = QApplication::translate("Core::CDataConnector", "Exporting user data ...", 0, QApplication::UnicodeUTF8);
+
+   m_strServiceExport = QApplication::translate("Core::CDataConnector", "Service Export", 0, QApplication::UnicodeUTF8);
+   m_strExportServiceData = QApplication::translate("Core::CDataConnector", "Exporting service data ...", 0, QApplication::UnicodeUTF8);
+
+   m_strImport = QApplication::translate("Core::CDataConnector", "Import", 0, QApplication::UnicodeUTF8);
+   m_strImportData = QApplication::translate("Core::CDataConnector", "Importing data ...", 0, QApplication::UnicodeUTF8);
+
+   m_strLogFile = QApplication::translate("Core::CDataConnector", "Log Files", 0, QApplication::UnicodeUTF8);
+   m_strGettingDailyLog = QApplication::translate("Core::CDataConnector", "Getting Daily run Log file ...", 0, QApplication::UnicodeUTF8);
+
+
 }
 
 /****************************************************************************/
@@ -1082,12 +1119,12 @@ void CDataConnector::SendDataImportExport(const QString Name, const QStringList 
             ByteArray.append(ListValue);
         }
         if (ParamList.contains("User")) {
-            DialogTitle = "User Export";
-            DialogText = "Exporting user data ...";
+            DialogTitle = m_strUserExport;
+            DialogText = m_strExportUserData;
         }
         else {
-            DialogTitle = "Service Export";
-            DialogText = "Exporting service data ...";
+            DialogTitle = m_strServiceExport;
+            DialogText = m_strExportServiceData;
         }
         MsgClasses::CmdDataExport Command(20000, ByteArray);
         m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
@@ -1095,8 +1132,8 @@ void CDataConnector::SendDataImportExport(const QString Name, const QStringList 
     else {
         MsgClasses::CmdDataImport Command(Global::Command::MAXTIMEOUT, ByteArray);
         m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-        DialogTitle = "Import";
-        DialogText = "Importing data ...";
+        DialogTitle = m_strImport;
+        DialogText = m_strImportData;
     }
 
 
@@ -1420,8 +1457,8 @@ void CDataConnector::SendSelectedDayRunLogFile(const QString &FileName)
     Global::GuiUserLevel userRole = (Global::GuiUserLevel)MainMenu::CMainWindow::GetCurrentUserRole();
     NetCommands::CmdDayRunLogRequestFile Command(3000, FileName, userRole);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Log Files"));
-    mp_WaitDialog->SetText(tr("Getting Daily run Log file ..."));
+    mp_WaitDialog->SetDialogTitle(m_strLogFile);
+    mp_WaitDialog->SetText(m_strGettingDailyLog);
     mp_WaitDialog->show();
 }
 
@@ -1431,8 +1468,8 @@ void CDataConnector::SendProgramAction(const QString& ProgramID,
 {
     MsgClasses::CmdProgramAction Command(1000, ProgramID, ActionType, ProgramEndDateTime);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }
@@ -1441,8 +1478,8 @@ void CDataConnector::SendProgramSelected(const QString& ProgramID, int ParaffinS
 {
     MsgClasses::CmdProgramSelected Command(1000, ProgramID, ParaffinStepIndex);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }
@@ -1451,8 +1488,8 @@ void CDataConnector::SendRetortLock(bool IsLock)
 {
     MsgClasses::CmdRetortLock Command(1000, IsLock);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }
@@ -1461,8 +1498,8 @@ void CDataConnector::SendKeepCassetteCount(int CassetteCount)
 {
     MsgClasses::CmdKeepCassetteCount Command(1000, CassetteCount);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(tr("Device Communication"));
-    mp_WaitDialog->SetText(tr("Saving Settings ..."));
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }
@@ -1563,25 +1600,25 @@ void CDataConnector::ShowMessageDialog(Global::GUIMessageType MessageType, QStri
         switch (MessageType) {
         case Global::GUIMSGTYPE_ERROR:
             mp_MessageDlg->SetIcon(QMessageBox::Critical);
-            mp_MessageDlg->SetTitle(tr("Error"));
+            mp_MessageDlg->SetTitle(m_strError);
             break;
         case Global::GUIMSGTYPE_INFO:
             mp_MessageDlg->SetIcon(QMessageBox::Information);
-            mp_MessageDlg->SetTitle(tr("Information"));
+            mp_MessageDlg->SetTitle(m_strInformation);
             break;
         case Global::GUIMSGTYPE_WARNING:
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(tr("Warning"));
+            mp_MessageDlg->SetTitle(m_strWarning);
             break;
         }
         mp_MessageDlg->SetText(MessageText);
     }
     else {
-        mp_MessageDlg->SetTitle(tr("Communication Error"));
-        mp_MessageDlg->SetText(tr("Communication Error"));
+        mp_MessageDlg->SetTitle(m_strCommunicationError);
+        mp_MessageDlg->SetText(m_strCommunicationError);
         mp_MessageDlg->SetIcon(QMessageBox::Critical);
     }
-    mp_MessageDlg->SetButtonText(1, tr("OK"));
+    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
     mp_MessageDlg->show();
 }
 

@@ -23,6 +23,7 @@
 #include "Reagents/Include/ModifyReagentRMSDlg.h"
 #include "ui_ModifyReagentDlg.h"
 #include <QDebug>
+#include "Dashboard/Include/CommonString.h"
 
 namespace Reagents {
 
@@ -38,7 +39,18 @@ const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,5}$"; //!< Reg expression fo
  */
 /****************************************************************************/
 CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoard *p_KeyBoard, MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector) :
-    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyReagentRMSDlg), mp_MainWindow(p_MainWindow), mp_DataConnector(p_DataConnector)
+    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyReagentRMSDlg), mp_MainWindow(p_MainWindow), mp_DataConnector(p_DataConnector),
+    m_strCassettesUntilChange(tr("Cassettes until change")),
+    m_strCyclesUntilChange(tr("Cycles until change")),
+    m_strDaysUntilChange(tr("Days until change")),
+    m_strEnterValidName(tr("Please enter valid Reagent Long Name")),
+    m_strEnterValidData(tr("Please enter valid data")),
+    m_strSelectReagentGroup(tr("Please Select ReagentGroup")),
+    m_strReagentAddFailed(tr("Reagent add failed")),
+    m_strReagentCopyFailed(tr("Reagent copy failed")),
+    m_strEnterCassetteValue(tr("Enter Cassette Value")),
+    m_strEnterCycleValue(tr("Enter Cycle Value")),
+    m_strEnterDayValue(tr("Enter Day Value"))
 {
     mp_Ui->setupUi(GetContentFrame());
     m_ReagentNameBtnClicked = false;
@@ -65,9 +77,9 @@ CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoar
     mp_KeyBoardWidget = p_KeyBoard;
 
     // Init Message dialog
-    m_MessageDlg.SetTitle(tr("Information Message"));
+    m_MessageDlg.SetTitle(CommonString::strInforMsg);
     m_MessageDlg.SetIcon(QMessageBox::Information);
-    m_MessageDlg.SetButtonText(1, tr("Ok"));
+    m_MessageDlg.SetButtonText(1, CommonString::strOK);
     m_MessageDlg.HideButtons();
     m_RMSOption = Global::RMS_OFF;
 }
@@ -197,15 +209,15 @@ void CModifyReagentRMSDlg::UpdateRmsLabel(Global::RMSOptions_t Option)
 {
     switch (Option) {
         case Global::RMS_CASSETTES:
-            mp_Ui->labelRMSStaticName->setText("Cassettes until change");
+            mp_Ui->labelRMSStaticName->setText(m_strCassettesUntilChange);
             mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxCassettes()));
             break;
         case Global::RMS_CYCLES:
-            mp_Ui->labelRMSStaticName->setText("Cycles until change");
+            mp_Ui->labelRMSStaticName->setText(m_strCyclesUntilChange);
             mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxCycles()));
             break;
         case Global::RMS_DAYS:
-            mp_Ui->labelRMSStaticName->setText("Days until change");
+            mp_Ui->labelRMSStaticName->setText(m_strDaysUntilChange);
             mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxDays()));
             break;
         case Global::RMS_OFF:
@@ -259,14 +271,14 @@ void CModifyReagentRMSDlg::OnOk()
      m_ReagentCloneList = *(mp_DataConnector->ReagentList);
 
     if (mp_Ui->buttonReagentName->text()=="--") {
-        m_MessageDlg.SetText(tr("Please enter valid Reagent Long Name"));
-        m_MessageDlg.SetButtonText(1, tr("Ok"));
+        m_MessageDlg.SetText(m_strEnterValidName);
+        m_MessageDlg.SetButtonText(1, CommonString::strOK);
         (void) m_MessageDlg.exec();
         return;
     }
     if (mp_Ui->buttonValue->text()=="--") {
-        m_MessageDlg.SetText(tr("Please enter valid data"));
-        m_MessageDlg.SetButtonText(1, tr("Ok"));
+        m_MessageDlg.SetText(m_strEnterValidData);
+        m_MessageDlg.SetButtonText(1, CommonString::strOK);
         (void) m_MessageDlg.exec();
         return;
     }
@@ -295,7 +307,7 @@ void CModifyReagentRMSDlg::OnOk()
             QString ErrorString;
             DataManager::Helper::ErrorIDToString(ErrorList, ErrorString);
             m_MessageDlg.SetText(ErrorString);
-            m_MessageDlg.SetButtonText(1, tr("Ok"));
+            m_MessageDlg.SetButtonText(1, CommonString::strOK);
             m_MessageDlg.HideButtons();
             (void) m_MessageDlg.exec();
         }
@@ -305,8 +317,8 @@ void CModifyReagentRMSDlg::OnOk()
         // GetNextFreeReagentId for New/Copied Reagent.
         if(m_SelectionFlag != true)
         {
-            m_MessageDlg.SetText(tr("Please Select ReagentGroup"));
-            m_MessageDlg.SetButtonText(1, tr("Ok"));
+            m_MessageDlg.SetText(m_strSelectReagentGroup);
+            m_MessageDlg.SetButtonText(1, CommonString::strOK);
             (void) m_MessageDlg.exec();
             return;
         }
@@ -323,12 +335,12 @@ void CModifyReagentRMSDlg::OnOk()
         }
         else {
             if (m_ButtonType == Reagents::NEW_BTN_CLICKED) {
-                m_MessageDlg.SetText("Reagent add failed");
+                m_MessageDlg.SetText(m_strReagentAddFailed);
             }
             else {
-                m_MessageDlg.SetText("Reagent copy failed");
+                m_MessageDlg.SetText(m_strReagentCopyFailed);
             }
-            m_MessageDlg.SetButtonText(1, tr("Ok"));
+            m_MessageDlg.SetButtonText(1, CommonString::strOK);
             m_MessageDlg.HideButtons();
            (void) m_MessageDlg.exec();
         }
@@ -372,13 +384,13 @@ void CModifyReagentRMSDlg::OnEditCassetteValue()
     m_CassetteValueBtnClicked = true;
     switch (m_RMSOption) {
         case Global::RMS_CASSETTES:
-            mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Cassette Value"));
+            mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterCassetteValue);
             break;
         case Global::RMS_CYCLES:
-            mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Cycle Value"));
+            mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterCycleValue);
             break;
         case Global::RMS_DAYS:
-            mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Day Value"));
+            mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterDayValue);
             break;
     }
 
@@ -425,6 +437,42 @@ void CModifyReagentRMSDlg::OnOkClicked()
 /****************************************************************************/
 void CModifyReagentRMSDlg::RetranslateUI()
 {
+    m_MessageDlg.SetTitle(CommonString::strInforMsg);
+    m_MessageDlg.SetButtonText(1, CommonString::strOK);
+
+    m_strCassettesUntilChange = QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                          "Cassettes until change", 0, QApplication::UnicodeUTF8);
+
+    m_strCyclesUntilChange = QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                                     "Cycles until change", 0, QApplication::UnicodeUTF8);
+
+    m_strDaysUntilChange = QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                                     "Days until change", 0, QApplication::UnicodeUTF8);
+
+    m_strEnterValidName =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                                   "Please enter valid Reagent Long Name", 0, QApplication::UnicodeUTF8);
+
+    m_strEnterValidData =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                               "Please enter valid data", 0, QApplication::UnicodeUTF8);
+
+    m_strSelectReagentGroup =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                               "Please Select ReagentGroup", 0, QApplication::UnicodeUTF8);
+
+    m_strReagentAddFailed =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                               "Reagent add failed", 0, QApplication::UnicodeUTF8);
+
+    m_strReagentCopyFailed =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                               "Reagent copy failed", 0, QApplication::UnicodeUTF8);
+
+    m_strEnterCassetteValue =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                                       "Enter Cassette Value", 0, QApplication::UnicodeUTF8);
+
+    m_strEnterCycleValue =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                                               "Enter Cycle Value", 0, QApplication::UnicodeUTF8);
+
+    m_strEnterDayValue =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                                               "Enter Day Value", 0, QApplication::UnicodeUTF8);
+
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                               "Enter Reagent Name", 0, QApplication::UnicodeUTF8));
 }

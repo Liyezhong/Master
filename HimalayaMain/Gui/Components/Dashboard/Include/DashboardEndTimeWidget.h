@@ -60,7 +60,7 @@ public:
     const QString GetEndDateTime();
 protected:
     void paintEvent(QPaintEvent *);
-
+    void changeEvent(QEvent *p_Event);
 public slots:
     void OnUserRoleChanged();
     void OnProcessStateChanged();
@@ -97,6 +97,12 @@ private:
     QString m_DateTimeStr;
     MainMenu::CMainWindow *mp_MainWindow;
     int m_Elapsed;
+    QString m_strEndTime;
+    QString m_strAborting;
+    QString m_strAborted;
+    QString m_strCompleted;
+
+    void RetranslateUI();
 signals:
     void OnSelectDateTime(const QDateTime& selDateTime);
 

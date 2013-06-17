@@ -34,7 +34,9 @@ namespace Programs {
  */
 /****************************************************************************/
 CModifyProgramIconDlg::CModifyProgramIconDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow) :
-    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyProgramIconDlg)
+    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyProgramIconDlg),
+    m_strConfirmMsg(tr("Information Message")),
+    m_strOK(tr("Ok")), m_strCancel(tr("Cancel")), m_strClose(tr("Close"))
 {
     mp_Ui->setupUi(GetContentFrame());
     m_ProcessRunning = false ;
@@ -50,16 +52,16 @@ CModifyProgramIconDlg::CModifyProgramIconDlg(QWidget *p_Parent, MainMenu::CMainW
         strName = strName.left(4);
     }
 
-    mp_Ui->btnCancel->setText("Cancel");
-    mp_Ui->btnOk->setText("Ok");
+    mp_Ui->btnCancel->setText(m_strCancel);
+    mp_Ui->btnOk->setText(m_strOK);
 
     // Connecting Signal and Slots
     CONNECTSIGNALSLOT(&m_ButtonGroup, buttonClicked(int), this, OnIconGroup(int));
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
-    m_MessageDlg.SetTitle(tr("Information Message"));
+    m_MessageDlg.SetTitle(m_strConfirmMsg);
     m_MessageDlg.SetIcon(QMessageBox::Information);
-    m_MessageDlg.SetButtonText(1, tr("Ok"));
+    m_MessageDlg.SetButtonText(1, m_strOK);
     m_MessageDlg.HideButtons();
 }
 
@@ -109,6 +111,7 @@ void CModifyProgramIconDlg::changeEvent(QEvent *p_Event)
     switch (p_Event->type()) {
     case QEvent::LanguageChange:
         mp_Ui->retranslateUi(this);
+        RetranslateUI();
         break;
     default:
         break;
@@ -159,12 +162,12 @@ void CModifyProgramIconDlg::OnProcessStateChanged()
     if (!m_ProcessRunning) {
         //Edit Mode
         mp_Ui->btnOk->setEnabled(true);
-        mp_Ui->btnCancel->setText(tr("Cancel"));
+        mp_Ui->btnCancel->setText(m_strCancel);
     }
     else {
         //View Mode
         mp_Ui->btnOk->setEnabled(false);
-        mp_Ui->btnCancel->setText(tr("Close"));
+        mp_Ui->btnCancel->setText(m_strClose);
     }
 }
 
@@ -189,4 +192,11 @@ void CModifyProgramIconDlg::EnableAvailableIcon(DataManager::CDataProgramList* p
     }
 }
 
+void CModifyProgramIconDlg::RetranslateUI()
+{
+    m_strConfirmMsg = QApplication::translate("Programs::CModifyProgramIconDlg", "Information Message", 0, QApplication::UnicodeUTF8);
+    m_strOK = QApplication::translate("Programs::CModifyProgramIconDlg", "Ok", 0, QApplication::UnicodeUTF8);
+    m_strCancel = QApplication::translate("Programs::CModifyProgramIconDlg", "Cancel", 0, QApplication::UnicodeUTF8);
+    m_strClose = QApplication::translate("Programs::CModifyProgramIconDlg", "Close", 0, QApplication::UnicodeUTF8);
+}
 }

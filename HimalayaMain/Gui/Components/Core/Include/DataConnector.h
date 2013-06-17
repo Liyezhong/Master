@@ -409,6 +409,23 @@ private:
     bool m_GuiAllConfigurationReceived;             //!< True -if all configuration data (XML)from Main is received
     bool m_GuiInit;                                 //!< True - if Gui is getting initialized
     int m_CurrentTabIndex;
+    QString m_strCommunicationError;
+    QString m_strChangeNotSave;
+    QString m_strStartup;
+    QString m_strInitDevCom;
+    QString m_strDisconnect;
+    QString m_strReinitDeviceCommunication;
+    QString m_strError;
+    QString m_strInformation;
+    QString m_strWarning;
+    QString m_strDeviceCommunication;
+    QString m_strSavingSettings;
+    QString m_strUserExport, m_strExportUserData;
+    QString m_strServiceExport, m_strExportServiceData;
+    QString m_strImport, m_strImportData;
+    QString m_strLogFile;
+    QString m_strGettingDailyLog;
+
 private slots:
     void OnMasterConnected(const QString &name);
     void OnMasterDisconnected(const QString &name);

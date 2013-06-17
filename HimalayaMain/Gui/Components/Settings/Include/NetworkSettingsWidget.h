@@ -69,6 +69,11 @@ private:
     ButtonType_t m_ButtonType;                      //!< Button Type
     DataManager::CHimalayaUserSettings m_UserSettings;      //!< UserSettings object
     QString m_Password;                             //!< String to hold Password
+    QString m_strEnterProxyName;
+    QString m_strEnterProxyPassword;
+    QString m_strEnterProxyIP;
+    QString m_strEnterProxyPort;
+
     void RetranslateUI();
     void ResetButtons();
 

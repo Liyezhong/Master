@@ -24,6 +24,7 @@
 #include "ui_ModifyReagentStatusDlg.h"
 #include <QDebug>
 #include "Dashboard/Include/DashboardWidget.h"
+#include <Dashboard/Include/CommonString.h>
 
 namespace Reagents {
 /****************************************************************************/
@@ -55,9 +56,9 @@ CModifyReagentStationDlg::CModifyReagentStationDlg(QWidget *p_Parent, MainMenu::
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
     // Init Message dialog
-    m_MessageDlg.SetTitle(tr("Information Message"));
+    m_MessageDlg.SetTitle(CommonString::strInforMsg);
     m_MessageDlg.SetIcon(QMessageBox::Information);
-    m_MessageDlg.SetButtonText(1, tr("Ok"));
+    m_MessageDlg.SetButtonText(1, CommonString::strOK);
     m_MessageDlg.HideButtons();
 }
 
@@ -188,12 +189,12 @@ void CModifyReagentStationDlg::OnProcessStateChanged()
     if (!m_ProcessRunning) {
         //Edit Mode
         mp_Ui->btnOk->setEnabled(true);
-        mp_Ui->btnCancel->setText(tr("Cancel"));
+        mp_Ui->btnCancel->setText(CommonString::strCancel);
     }
     else {
         //View Mode
         mp_Ui->btnOk->setEnabled(false);
-        mp_Ui->btnCancel->setText(tr("Close"));
+        mp_Ui->btnCancel->setText(CommonString::strClose);
     }
 }
 

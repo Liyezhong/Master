@@ -44,7 +44,12 @@ CDashboardEndTimeWidget::CDashboardEndTimeWidget(Core::CDataConnector *p_DataCon
                                                     m_curRemainingTimeTotal(0),
                                                     m_DateTimeStr(""),
                                                     mp_MainWindow(p_MainWindow),
-                                                    m_ProcessRunning(false)
+                                                    m_ProcessRunning(false),
+                                                    m_strEndTime(tr("End Time :")),
+                                                    m_strAborting(tr("Aborting...")),
+                                                    m_strAborted(tr("Aborted.")),
+                                                    m_strCompleted(tr("Completed!"))
+
 {
     mp_Ui->setupUi(this);
     mp_Program = NULL;
@@ -93,7 +98,6 @@ void CDashboardEndTimeWidget::InitEndTimeWidgetItems()
     mp_Ui->lblReagentName->hide();
     mp_Ui->lblStepTime->hide();
     mp_Ui->lblTime->hide();
-
     mp_Ui->progressBar->setStyle(mp_PlastiqueStyle);
     mp_Ui->progressBar->setStyleSheet(mp_Ui->progressBar->property("defaultStyleSheet").toString() +
                                        "QProgressBar { border-image: url(:/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png);"
@@ -129,6 +133,7 @@ void CDashboardEndTimeWidget::UpdateEndTimeWidgetItems(DataManager::CProgram con
     m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(ProgramEndTimeInSecs);
     UpdateDateTime(m_ProgramEndDateTime);
     mp_Ui->lblName->show();
+    mp_Ui->lblTime->setText("00:00:00");
     mp_Ui->lblReagentName->show();
     mp_Ui->lblStepTime->show();
     mp_Ui->lblTime->show();
@@ -226,7 +231,7 @@ void CDashboardEndTimeWidget::UpdateDateTime(const QDateTime &selDateTime)
 
     QString DateTimeStr;
     DateTimeStr.append("  ");
-    DateTimeStr.append(tr("End Time :"));
+    DateTimeStr.append(m_strEndTime);
     DateTimeStr.append(TimeStr);
     DateTimeStr.append("\n");
     DateTimeStr.append("\t\t\t");
@@ -278,7 +283,7 @@ void CDashboardEndTimeWidget::UpdateProgress()
     if (DataManager::PROGRAM_ABORT == ProgramActionType)
     {
         mp_Ui->lblName->setVisible(false);
-        mp_Ui->lblReagentName->setText(tr("Aborting..."));//only show the first label
+        mp_Ui->lblReagentName->setText(m_strAborting);//only show the first label
     }
 }
 
@@ -287,11 +292,11 @@ void CDashboardEndTimeWidget::UpdateProgress()
     mp_ProgressTimer->stop();//the progress bar and Time countdown will stop
     if (DataManager::PROGRAM_STATUS_ABORTED == ProgramStatusType)
     {
-        mp_Ui->lblReagentName->setText(tr("Aborted."));
+        mp_Ui->lblReagentName->setText(m_strAborted);
     }
     else if (DataManager::PROGRAM_STATUS_COMPLETED == ProgramStatusType)
     {
-        mp_Ui->lblReagentName->setText(tr("Completed!"));
+        mp_Ui->lblReagentName->setText(m_strCompleted);
         mp_Ui->progressBar->setValue(m_remainingTimeTotal);
     }
     mp_Ui->lblTime->setVisible(false);
@@ -312,6 +317,27 @@ void CDashboardEndTimeWidget::UpdateProgress()
  const QString CDashboardEndTimeWidget::GetEndDateTime()
  {
     return m_DateTimeStr;
+ }
+
+ void CDashboardEndTimeWidget::changeEvent(QEvent *p_Event)
+ {
+     QWidget::changeEvent(p_Event);
+     switch (p_Event->type()) {
+         case QEvent::LanguageChange:
+             mp_Ui->retranslateUi(this);
+             this->RetranslateUI();
+             break;
+         default:
+             break;
+     }
+ }
+
+ void CDashboardEndTimeWidget::RetranslateUI()
+ {
+     m_strEndTime = QApplication::translate("Dashboard::CDashboardEndTimeWidget", "End Time :", 0, QApplication::UnicodeUTF8);
+     m_strAborting = QApplication::translate("Dashboard::CDashboardEndTimeWidget", "Aborting...", 0, QApplication::UnicodeUTF8);
+     m_strAborted = QApplication::translate("Dashboard::CDashboardEndTimeWidget", "Aborting.", 0, QApplication::UnicodeUTF8);
+     m_strCompleted = QApplication::translate("Dashboard::CDashboardEndTimeWidget", "Completed!", 0, QApplication::UnicodeUTF8);
  }
 
 }    // end of namespace Dashboard

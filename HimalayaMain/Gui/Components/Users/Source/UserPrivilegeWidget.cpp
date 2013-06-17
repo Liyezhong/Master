@@ -42,7 +42,9 @@ const QString REGEXP_NUMERIC_VALIDATOR = "^[0-9]*$"; //!< Reg expression for the
 CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
                                            KeyBoard::CKeyBoard *p_KeyBoardWidget) :
                                            MainMenu::CPanelFrame(p_Parent),
-                                           mp_Ui(new Ui::CUserPrivilegeWidget)
+                                           mp_Ui(new Ui::CUserPrivilegeWidget),
+                                           m_strEnterNewPassword(tr("Enter New Password")),
+                                           m_strConfirmNewPassword(tr("Confirm New Password"))
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("User"));
@@ -323,6 +325,8 @@ void CUserPrivilegeWidget::RetranslateUI()
 {
       MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Users::CUserPrivilegeWidget", "User", 0, QApplication::UnicodeUTF8));
       mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Users::CUserPrivilegeWidget", "Enter Password", 0, QApplication::UnicodeUTF8));
+      m_strEnterNewPassword = QApplication::translate("Users::CUserPrivilegeWidget", "Enter New Password", 0, QApplication::UnicodeUTF8);
+      m_strConfirmNewPassword = QApplication::translate("Users::CUserPrivilegeWidget", "Confirm New Password", 0, QApplication::UnicodeUTF8);
 }
 
 
@@ -369,13 +373,13 @@ void CUserPrivilegeWidget::ChangeInAdminPassword(const QString &PasswordType)
     // check the password type
     if (PasswordType.compare("New") == 0) {
         m_PwdType = "New";
-        KeyboardTitleText = "Enter New Password";
+        KeyboardTitleText = m_strEnterNewPassword;
         // make it true so that still we are in change password
         m_ChangePasswdBtnClicked = true;
     }
     else if(PasswordType.compare("Confirm") == 0) {
         m_PwdType = "Confirm";
-        KeyboardTitleText = "Confirm New Password";
+        KeyboardTitleText = m_strConfirmNewPassword;
         // make it true so that still we are in change password
         m_ChangePasswdBtnClicked = true;
     }

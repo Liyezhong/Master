@@ -57,11 +57,17 @@ private:
     QMap<int, QPushButton*> m_QPushButtonMap;
     QStringList m_IconName;                          //!< store Icon name
 
+    QString m_strConfirmMsg;
+    QString m_strOK, m_strCancel, m_strClose;
+
+    void RetranslateUI();
+
 public:
     explicit CModifyProgramIconDlg(QWidget *p_Parent = NULL,
                                    MainMenu::CMainWindow *p_MainWindow = NULL);
     virtual ~CModifyProgramIconDlg();
     void EnableAvailableIcon(DataManager::CDataProgramList* pProgramList);
+
 private slots:
     void OnOk();
     void OnCancel();

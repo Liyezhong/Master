@@ -46,8 +46,8 @@ CAlarmSettingsDlg::CAlarmSettingsDlg(AlarmDialogType DialogType, QWidget *p_Pare
 
     mp_Ui->scrollPanel->Init(1);
     mp_Ui->sound_scrollpanel->Init(1);
-    mp_Ui->sound_scrollpanel->SetTitle("Sound");
-    mp_Ui->scrollPanel->SetTitle("Volume");
+    mp_Ui->sound_scrollpanel->SetTitle(tr("Sound"));
+    mp_Ui->scrollPanel->SetTitle(tr("Volume"));
 
     mp_Ui->periodictime_scrolltable->Init(2);
     mp_Ui->periodictime_scrolltable->SetTitle(tr("Periodic Time"));
@@ -271,8 +271,16 @@ void CAlarmSettingsDlg::ResetButtons()
 /****************************************************************************/
 void CAlarmSettingsDlg::RetranslateUI()
 {
-   MainMenu::CDialogFrame::SetDialogTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Edit Alarm Type 2 - Error", 0, QApplication::UnicodeUTF8));
-   MainMenu::CDialogFrame::SetDialogTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Edit Alarm Type 1 - Information", 0, QApplication::UnicodeUTF8));
+   mp_Ui->sound_scrollpanel->SetTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Sound", 0, QApplication::UnicodeUTF8));
+   mp_Ui->scrollPanel->SetTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Volume", 0, QApplication::UnicodeUTF8));
+   mp_Ui->periodictime_scrolltable->SetTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Periodic Time", 0, QApplication::UnicodeUTF8));
+   mp_Ui->periodictime_scrolltable->SetSubtitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Minute", 0, QApplication::UnicodeUTF8), 0);
+   mp_Ui->periodictime_scrolltable->SetSubtitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Second", 0, QApplication::UnicodeUTF8), 1);
+
+   SetDialogTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Edit Information", 0, QApplication::UnicodeUTF8));
+   SetDialogTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Edit Error", 0, QApplication::UnicodeUTF8));
+   SetDialogTitle(QApplication::translate("Settings::CAlarmSettingsDlg", "Edit Warning", 0, QApplication::UnicodeUTF8));
+
 }
 
 /****************************************************************************/

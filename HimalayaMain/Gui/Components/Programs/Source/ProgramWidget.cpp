@@ -31,6 +31,7 @@
 #include "ui_ProgramWidget.h"
 #include <QDebug>
 #include "Dashboard/Include/DashboardWidget.h"
+#include <Dashboard/Include/CommonString.h>
 
 
 namespace Programs {
@@ -55,7 +56,14 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
                                    mp_Ui(new Ui::CProgramWidget),
                                    mp_DataConnector(p_DataConnector),
                                    mp_MainWindow(p_Parent),m_UserRoleChanged(false),
-                                   m_ProcessRunning(false), m_ColorReplaced(false)
+                                   m_ProcessRunning(false), m_ColorReplaced(false),
+                                   m_strEditProgram(tr("Edit Program")),
+                                   m_strViewProgram(tr("View Program")),
+                                   m_strNewProgram(tr("New Program")),
+                                   m_strDelProgram(tr("Do you really want to delete the selected program?")),
+                                   m_strNotEditProgram(tr("Program Process has started.Editing is no longer possible.")),
+                                   m_strView(tr("View")),
+                                   m_strEdit(tr("Edit"))
 {
     DataManager::CUserSettings *p_Settings = mp_DataConnector->SettingsInterface->GetUserSettings();
 
@@ -183,12 +191,12 @@ void CProgramWidget::OnEdit()
                 emit UnselectProgram();
 
             mp_ModifyProgramDlg->SetButtonType(EDIT_BTN_CLICKED);
-            mp_ModifyProgramDlg->SetDialogTitle(tr("Edit Program"));
+            mp_ModifyProgramDlg->SetDialogTitle(m_strEditProgram);
         }
         else
         {
             mp_ModifyProgramDlg->SetButtonType(EDIT_BTN_CLICKED);
-            mp_ModifyProgramDlg->SetDialogTitle(tr("View Program"));
+            mp_ModifyProgramDlg->SetDialogTitle(m_strViewProgram);
         }
         mp_ModifyProgramDlg->InitDialog(mp_Program);
         mp_ModifyProgramDlg->move(88, 50);
@@ -205,7 +213,7 @@ void CProgramWidget::OnNew()
 
      /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
                             "\nPlease close the dialog."));*/
-    mp_ModifyProgramDlg->SetDialogTitle(tr("New Program"));
+    mp_ModifyProgramDlg->SetDialogTitle(m_strNewProgram);
     mp_ModifyProgramDlg->SetButtonType(NEW_BTN_CLICKED);
     mp_ModifyProgramDlg->InitDialog(NULL);
     mp_ModifyProgramDlg->move(88, 50);
@@ -222,7 +230,7 @@ void CProgramWidget::OnCopy()
 {
     /*m_MessageDlg.SetText(tr("Process has started, Editing is no longer possible."
                             "\nPlease close the dialog."));*/
-    mp_ModifyProgramDlg->SetDialogTitle(tr("Edit Program"));
+    mp_ModifyProgramDlg->SetDialogTitle(m_strEditProgram);
     mp_ModifyProgramDlg->SetButtonType(COPY_BTN_CLICKED);
     mp_ModifyProgramDlg->InitDialog(mp_Program);
     mp_ModifyProgramDlg->move(88, 50);
@@ -238,12 +246,12 @@ void CProgramWidget::OnCopy()
 void CProgramWidget::OnDelete()
 {
     MainMenu::CMessageDlg ConfirmationMessageDlg;
-    ConfirmationMessageDlg.SetTitle(tr("Confirmation Message"));
+    ConfirmationMessageDlg.SetTitle(CommonString::strConfirmMsg);
     ConfirmationMessageDlg.SetIcon(QMessageBox::Question);
-    ConfirmationMessageDlg.SetButtonText(1, tr("Yes"));
-    ConfirmationMessageDlg.SetButtonText(3,tr("Cancel"));
+    ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);
     ConfirmationMessageDlg.HideCenterButton();
-    ConfirmationMessageDlg.SetText(tr("Do you really want to delete the selected program?"));
+    ConfirmationMessageDlg.SetText(m_strDelProgram);
 
     if (ConfirmationMessageDlg.exec() == (int)QDialog::Accepted) {
         QString ProgramID = mp_Program->GetID();
@@ -274,7 +282,7 @@ void CProgramWidget::OnUserRoleChanged()
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
             (!m_ProcessRunning)) {
         //Edit Mode
-        mp_Ui->btnEdit->setText(tr("Edit"));
+        mp_Ui->btnEdit->setText(m_strEdit);
         m_UserProgramCount = GetNumberOfUserPrograms();
         if(m_UserProgramCount >= MAX_USER_PROGRAMS)
         {
@@ -290,7 +298,7 @@ void CProgramWidget::OnUserRoleChanged()
     }
     else {
         //View Mode
-        mp_Ui->btnEdit->setText(tr("View"));
+        mp_Ui->btnEdit->setText(m_strView);
         mp_Ui->btnNew->setEnabled(false);
     }
     m_UserRoleChanged = true;
@@ -309,7 +317,7 @@ void CProgramWidget::OnProcessStateChanged()
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
             (!m_ProcessRunning)) {
         //Edit Mode
-        mp_Ui->btnEdit->setText(tr("Edit"));
+        mp_Ui->btnEdit->setText(m_strEdit);
         mp_Ui->btnDelete->setEnabled(false);
         m_UserProgramCount = GetNumberOfUserPrograms();
         if(m_UserProgramCount< MAX_USER_PROGRAMS)
@@ -328,17 +336,17 @@ void CProgramWidget::OnProcessStateChanged()
     }
     else {
         //View Mode
-        mp_Ui->btnEdit->setText(tr("View"));
+        mp_Ui->btnEdit->setText(m_strView);
         mp_Ui->btnNew->setEnabled(false);
         mp_Ui->btnCopy->setEnabled(false);
         mp_Ui->btnDelete->setEnabled(false);
 
         if(m_ProcessRunning && m_ShowMessageDialog){
-            m_MessageDlg.SetTitle(tr("Information Message"));
+            m_MessageDlg.SetTitle(CommonString::strInforMsg);
             m_MessageDlg.SetIcon(QMessageBox::Information);
-            m_MessageDlg.SetButtonText(1, tr("Ok"));
+            m_MessageDlg.SetButtonText(1, CommonString::strOK);
             m_MessageDlg.HideButtons();
-            m_MessageDlg.SetText(tr("Program Process has started.Editing is no longer possible."));
+            m_MessageDlg.SetText(m_strNotEditProgram);
             (void) m_MessageDlg.exec();
         }
     }
@@ -536,19 +544,27 @@ void CProgramWidget::RetranslateUI()
     (void) m_ProgramModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
     "Icon.", 0, QApplication::UnicodeUTF8),0);
 
-    mp_ModifyProgramDlg->SetDialogTitle(QApplication::translate("Programs::CProgramWidget", "New Program",
-    0, QApplication::UnicodeUTF8));
+    m_strEditProgram = QApplication::translate("Programs::CProgramWidget", "Edit Program",
+                                                                   0, QApplication::UnicodeUTF8);
 
-    if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
-         m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-            (!m_ProcessRunning)) {
-        mp_Ui->btnEdit->setText(QApplication::translate("Programs::CProgramWidget","Edit", 0,
-                                                        QApplication::UnicodeUTF8));
-    }
-    else {
-        mp_Ui->btnEdit->setText(QApplication::translate("Programs::CProgramWidget","View", 0,
-                                                        QApplication::UnicodeUTF8));
-    }
+    m_strViewProgram = QApplication::translate("Programs::CProgramWidget", "View Program",
+                                                                   0, QApplication::UnicodeUTF8);
+
+    m_strNewProgram = QApplication::translate("Programs::CProgramWidget", "New Program",
+                                                                   0, QApplication::UnicodeUTF8);
+
+    m_strDelProgram = QApplication::translate("Programs::CProgramWidget", "Do you really want to delete the selected program?",
+                                              0, QApplication::UnicodeUTF8);
+
+    m_strNotEditProgram = QApplication::translate("Programs::CProgramWidget", "Program Process has started.Editing is no longer possible.",
+                                              0, QApplication::UnicodeUTF8);
+
+
+    m_strView = QApplication::translate("Programs::CProgramWidget", "View",
+                                              0, QApplication::UnicodeUTF8);
+
+    m_strEdit = QApplication::translate("Programs::CProgramWidget", "Edit",
+                                              0, QApplication::UnicodeUTF8);
 }
 
 

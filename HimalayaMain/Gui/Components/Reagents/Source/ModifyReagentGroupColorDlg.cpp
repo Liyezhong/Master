@@ -23,6 +23,7 @@
 #include "Reagents/Include/ModifyReagentGroupColorDlg.h"
 #include "ui_ModifyReagentGroupColorDlg.h"
 #include <QDebug>
+#include <Dashboard/Include/CommonString.h>
 
 namespace Reagents {
 /****************************************************************************/
@@ -33,7 +34,8 @@ namespace Reagents {
  */
 /****************************************************************************/
 CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow) :
-    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyReagentGroupColorDlg)
+    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyReagentGroupColorDlg),
+    m_strCancel(tr("Cancel")), m_strClose(tr("Close"))
 {
     mp_Ui->setupUi(GetContentFrame());
     m_ProcessRunning = false ;
@@ -44,7 +46,7 @@ CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, Main
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
 
     m_MessageDlg.SetIcon(QMessageBox::Information);
-    m_MessageDlg.SetButtonText(1, tr("Ok"));
+    m_MessageDlg.SetButtonText(1, CommonString::strOK);
     m_MessageDlg.HideButtons();
 }
 
@@ -119,12 +121,24 @@ void CModifyReagentGroupColorDlg::changeEvent(QEvent *p_Event)
     switch (p_Event->type()) {
     case QEvent::LanguageChange:
         mp_Ui->retranslateUi(this);
+        RetranslateUI();
         break;
     default:
         break;
     }
 }
 
+void CModifyReagentGroupColorDlg::RetranslateUI()
+{
+    m_MessageDlg.SetButtonText(1, QApplication::translate("Reagents::CModifyReagentGroupColorDlg",
+                                                                  "Ok", 0, QApplication::UnicodeUTF8));
+
+    m_strCancel = QApplication::translate("Reagents::CModifyReagentGroupColorDlg",
+                                      "Cancel", 0, QApplication::UnicodeUTF8);
+
+    m_strClose =  QApplication::translate("Reagents::CModifyReagentGroupColorDlg",
+                                       "Close", 0, QApplication::UnicodeUTF8);
+}
 
 /****************************************************************************/
 /*!
@@ -158,12 +172,12 @@ void CModifyReagentGroupColorDlg::OnProcessStateChanged()
     if (!m_ProcessRunning) {
         //Edit Mode
         mp_Ui->btnOk->setEnabled(true);
-        mp_Ui->btnCancel->setText(tr("Cancel"));
+        mp_Ui->btnCancel->setText(m_strCancel);
     }
     else {
         //View Mode
         mp_Ui->btnOk->setEnabled(false);
-        mp_Ui->btnCancel->setText(tr("Close"));
+        mp_Ui->btnCancel->setText(m_strClose);
     }
 }
 

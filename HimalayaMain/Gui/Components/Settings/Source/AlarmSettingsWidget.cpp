@@ -36,10 +36,10 @@ CAlarmSettingsWidget::CAlarmSettingsWidget(QWidget *p_Parent) :
     MainMenu::CPanelFrame(p_Parent),
     mp_Ui(new Ui::CAlarmSettingsWidget),
     mp_DataConnector(NULL),
-    m_TextSound("Sound: %1"),
-    m_TextVolume("Volume: %1"),
-    m_TextPeriodicOff("Periodic: OFF"),
-    m_TextPeriodicTime("Periodic time (MM:ss): %1:%2")
+    m_TextSound(tr("Sound: %1")),
+    m_TextVolume(tr("Volume: %1")),
+    m_TextPeriodicOff(tr("Periodic: OFF")),
+    m_TextPeriodicTime(tr("Periodic time (MM:ss): %1:%2"))
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Alarm"));

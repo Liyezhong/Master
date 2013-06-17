@@ -83,7 +83,9 @@ private:
     bool m_ShowMessageDialog;                       //!< To show Information Message Dialog
     DataManager::CReagent const *mp_Reagent;        //!< Reagent object
     KeyBoard::CKeyBoard *mp_KeyBoard;
-
+    QString m_strNewReagent;
+    QString m_strEditReagent;
+    QString m_strConfirmDelReagent;
 public:
     explicit CReagentRMSWidget(QWidget *p_Parent = 0);
     ~CReagentRMSWidget();

@@ -64,7 +64,10 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
                                             mp_ReagentList(NULL), m_RowSelected(-1),
                                             m_RowNotSelected(true), m_NewProgramStep(false),
                                             m_ProcessRunning(false), m_ReagentExists(true),
-                                            m_DeviceMode(""),mp_DataConnector(p_DataConnector)
+                                            m_DeviceMode(""),mp_DataConnector(p_DataConnector),
+                                            m_strConfirmMsg(tr("Information Message")),
+                                            m_strOK(tr("OK"))
+
 {
     mp_Ui->setupUi(GetContentFrame());
     mp_TableWidget = new MainMenu::CBaseTable;
@@ -342,9 +345,9 @@ void CModifyProgramStepDlg::OnOk()
     QString Pressure;
     QString Vaccum;
     MainMenu::CMessageDlg MessageDlg(this);
-    MessageDlg.SetTitle(tr("Information Message"));
+    MessageDlg.SetTitle(m_strConfirmMsg);
     MessageDlg.SetIcon(QMessageBox::Information);
-    MessageDlg.SetButtonText(1, tr("Ok"));
+    MessageDlg.SetButtonText(1, m_strOK);
     MessageDlg.HideButtons();
 
     if(m_ReagentExists) {
@@ -588,16 +591,17 @@ void CModifyProgramStepDlg::ResetButtons(bool Disable)
 /****************************************************************************/
 void CModifyProgramStepDlg::RetranslateUI()
 {
-    MainMenu::CDialogFrame::SetDialogTitle(QApplication::translate("Programs::CModifyProgramStepDlg",
-                                            "Edit Program Step", 0, QApplication::UnicodeUTF8));
-    mp_MessageBox->SetTitle(QApplication::translate("Programs::CModifyProgramStepDlg",
-                                            "Information Message", 0, QApplication::UnicodeUTF8));
-    mp_MessageBox->SetText(QApplication::translate("Programs::CModifyProgramStepDlg",
-                            "Please select a reagent from the list", 0, QApplication::UnicodeUTF8));
     mp_Ui->scrollPanelWidgetTime->SetTitle(QApplication::translate("Programs::CModifyProgramStepDlg",
-                                            "Duration", 0, QApplication::UnicodeUTF8));
-    mp_Ui->scrollPanelWidgetTemperature->SetTitle(QApplication::translate("Programs::CModifyProgramStepDlg",
-                                            "Temp", 0, QApplication::UnicodeUTF8));
+                                            "Time", 0, QApplication::UnicodeUTF8));
+    mp_Ui->scrollPanelWidgetTime->SetSubtitle(QApplication::translate("Programs::CModifyProgramStepDlg",
+                                             "Hour", 0, QApplication::UnicodeUTF8), 0);
+    mp_Ui->scrollPanelWidgetTime->SetSubtitle(QApplication::translate("Programs::CModifyProgramStepDlg",
+                                             "Minute", 0, QApplication::UnicodeUTF8), 1);
+
+    m_strConfirmMsg = QApplication::translate("Programs::CModifyProgramStepDlg",
+                                                        "Information Message", 0, QApplication::UnicodeUTF8);
+    m_strOK = QApplication::translate("Programs::CModifyProgramStepDlg",
+                                      "OK", 0, QApplication::UnicodeUTF8);
 }
 
 } // end namespace Programs

@@ -69,7 +69,17 @@ private:
     DataManager::CDataReagentGroupList *mp_ReagentGroupList;  //!< Reagent list
     Global::RMSOptions_t m_RMSOption;
     bool m_SelectionFlag;
-
+    QString m_strCassettesUntilChange;
+    QString m_strCyclesUntilChange;
+    QString m_strDaysUntilChange;
+    QString m_strEnterValidName;
+    QString m_strEnterValidData;
+    QString m_strSelectReagentGroup;
+    QString m_strReagentAddFailed;
+    QString m_strReagentCopyFailed;
+    QString m_strEnterCassetteValue;
+    QString m_strEnterCycleValue;
+    QString m_strEnterDayValue;
 
 public:
     explicit CModifyReagentRMSDlg(QWidget *p_Parent = NULL, KeyBoard::CKeyBoard *p_KeyBoard = NULL,

@@ -5,6 +5,7 @@
 #include "MainMenu/Include/SliderControl.h"
 #include "Reagents/Include/ReagentGroupWidget.h"
 #include "ui_ReagentGroupWidget.h"
+#include <Dashboard/Include/CommonString.h>
 
 #include <QDebug>
 
@@ -22,7 +23,8 @@ namespace Reagents {
 /****************************************************************************/
 CReagentGroupWidget::CReagentGroupWidget(QWidget *p_Parent):
                      MainMenu::CPanelFrame(p_Parent),
-                     mp_Ui(new Ui::CReagentGroupWidget)
+                     mp_Ui(new Ui::CReagentGroupWidget),
+                     m_strSelectColor("Select Color")
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Groups"));
@@ -186,7 +188,7 @@ void CReagentGroupWidget::RetranslateUI()
                                                         "Reagent Group", 0, QApplication::UnicodeUTF8),0);
    (void) m_ReagentGroupModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                           "Color", 0, QApplication::UnicodeUTF8),0);
-
+   m_strSelectColor = QApplication::translate("Core::CReagentRMSModel", "Select Color", 0, QApplication::UnicodeUTF8);
 }
 
 /****************************************************************************/
@@ -198,7 +200,7 @@ void CReagentGroupWidget::OnEdit()
 {
     /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
                             "\nPlease close the dialog with \"Close\""));*/
-    mp_ModifyReagentColorDlg->SetDialogTitle(tr("Select Color"));
+    mp_ModifyReagentColorDlg->SetDialogTitle(m_strSelectColor);
     mp_ModifyReagentColorDlg->SetReagentGroupList(*mp_ReagentGroupList, *mp_ReagentGroup);
     mp_ModifyReagentColorDlg->move(96,70);
     mp_ModifyReagentColorDlg->show();
@@ -244,9 +246,9 @@ void CReagentGroupWidget::OnProcessStateChanged()
         mp_Ui->btnEdit->setEnabled(false);
 
         if(m_ProcessRunning && m_ShowMessageDialog){
-            m_MessageDlg.SetTitle(tr("Information Message"));
+            m_MessageDlg.SetTitle(CommonString::strInforMsg);
             m_MessageDlg.SetIcon(QMessageBox::Information);
-            m_MessageDlg.SetButtonText(1, tr("Ok"));
+            m_MessageDlg.SetButtonText(1, CommonString::strOK);
             m_MessageDlg.HideButtons();
             (void)m_MessageDlg.exec();
         }

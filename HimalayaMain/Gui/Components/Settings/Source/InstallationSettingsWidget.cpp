@@ -42,6 +42,7 @@ CInstallationSettingsWidget::CInstallationSettingsWidget(QWidget *p_Parent) : Ma
     mp_Ui->btnEdit->setText(tr("Edit"));
     mp_Ui->btnUpdate->setText(tr("Update"));
     SetPanelTitle(tr("Installation"));
+    mp_Ui->serialnumber->setText("0000-0000-0000-0000");
     CONNECTSIGNALSLOT(mp_Ui->btnEdit,clicked(),this,OnEditclicked());
     CONNECTSIGNALSLOT(mp_Ui->btnUpdate,clicked(),this,OnUpdateclicked());
 }

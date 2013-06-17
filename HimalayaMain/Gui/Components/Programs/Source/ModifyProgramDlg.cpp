@@ -61,7 +61,15 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
                                      mp_DataConnector(p_DataConnector),mp_NewProgram(NULL),
                                      m_ProgNameBtnClicked(false), m_ProgShortNameBtnClicked(false),
                                      m_ProcessRunning(false), m_TempColor(" "),
-                                     mp_MessageDlg(NULL), m_ColorReplaced(false)
+                                     mp_MessageDlg(NULL), m_ColorReplaced(false),
+                                     m_strSelectIcon(tr("Select Icon")),
+                                     m_strConfirmMsg(tr("Confirmation Message")),
+                                     m_strYes(tr("Yes")),
+                                     m_strOK(tr("OK")),
+                                     m_strCancel(tr("Cancel")),
+                                     m_strDelProgramStep(tr("Do you really want to delete the selected program step?")),
+                                     m_strEnterValidName(tr("Please enter a valid Program Name")),
+                                     m_strClose(tr("Close"))
 {
     mp_Ui->setupUi(GetContentFrame());
     mp_ModifyProgramIconDlg = new Programs::CModifyProgramIconDlg(this, mp_MainWindow);
@@ -158,7 +166,6 @@ void CModifyProgramDlg::changeEvent(QEvent *p_Event)
 void CModifyProgramDlg::CloseDialogs()
 {
 //      ResetButtons();
-
 }
 /****************************************************************************/
 /*!
@@ -397,12 +404,12 @@ void CModifyProgramDlg::OnDelete()
         delete mp_MessageDlg;
     }
     mp_MessageDlg = new MainMenu::CMessageDlg();
-    mp_MessageDlg->SetTitle(tr("Confirmation Message"));
+    mp_MessageDlg->SetTitle(m_strConfirmMsg);
     mp_MessageDlg->SetIcon(QMessageBox::Question);
-    mp_MessageDlg->SetButtonText(1, tr("Yes"));
-    mp_MessageDlg->SetButtonText(3,tr("Cancel"));
+    mp_MessageDlg->SetButtonText(1, m_strYes);
+    mp_MessageDlg->SetButtonText(3, m_strCancel);
     mp_MessageDlg->HideCenterButton();
-    mp_MessageDlg->SetText(tr("Do you really want to delete the selected program step?"));
+    mp_MessageDlg->SetText(m_strDelProgramStep);
 
     if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
         if (m_ButtonType == NEW_BTN_CLICKED) {
@@ -452,12 +459,12 @@ void CModifyProgramDlg::OnSave()
         delete mp_MessageDlg;
     }
     mp_MessageDlg = new MainMenu::CMessageDlg();
-    mp_MessageDlg->SetTitle(tr("Information Message"));
+    mp_MessageDlg->SetTitle(m_strConfirmMsg);
     mp_MessageDlg->SetIcon(QMessageBox::Information);
-    mp_MessageDlg->SetButtonText(1, tr("Ok"));
+    mp_MessageDlg->SetButtonText(1, m_strOK);
     mp_MessageDlg->HideButtons();
     if(mp_Ui->btnPrgName->text() == "--"){
-        mp_MessageDlg->SetText(tr("Please enter a valid Program Name"));
+        mp_MessageDlg->SetText(m_strEnterValidName);
         (void) mp_MessageDlg->exec();
         return;
     }
@@ -693,7 +700,7 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
         mp_Ui->btnNew->setEnabled(false);
         mp_Ui->btnEdit->setEnabled(false);
         mp_Ui->btnSave->setEnabled(false);
-        mp_Ui->btnCancel->setText("Close");
+        mp_Ui->btnCancel->setText(m_strClose);
     }
 }
 
@@ -817,7 +824,7 @@ void CModifyProgramDlg::OnIconClicked()
 {
     /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
                             "\nPlease close the dialog with \"Close\""));*/
-    mp_ModifyProgramIconDlg->SetDialogTitle(tr("Select Icon"));
+    mp_ModifyProgramIconDlg->SetDialogTitle(m_strSelectIcon);
     mp_ModifyProgramIconDlg->EnableAvailableIcon(&m_ProgramListClone);
     mp_ModifyProgramIconDlg->move(96,70);
     mp_ModifyProgramIconDlg->show();
@@ -830,8 +837,8 @@ void CModifyProgramDlg::OnIconClicked()
 /****************************************************************************/
 void CModifyProgramDlg::RetranslateUI()
 {
-   MainMenu::CDialogFrame::SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Edit Program Step", 0, QApplication::UnicodeUTF8));
-   MainMenu::CDialogFrame::SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "New Program Step", 0, QApplication::UnicodeUTF8));
+   mp_ModifyProgStepDlg->SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Edit Program Step", 0, QApplication::UnicodeUTF8));
+   mp_ModifyProgStepDlg->SetDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "New Program Step", 0, QApplication::UnicodeUTF8));
    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Enter Program Name", 0, QApplication::UnicodeUTF8));
    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Programs::CModifyProgramDlg", "Enter Program Short Name", 0, QApplication::UnicodeUTF8));
 
@@ -841,6 +848,15 @@ void CModifyProgramDlg::RetranslateUI()
    (void) m_StepModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Duration", 0, QApplication::UnicodeUTF8),0);
    (void) m_StepModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "Temperature", 0, QApplication::UnicodeUTF8),0);
    (void) m_StepModel.setHeaderData(4,Qt::Horizontal,QApplication::translate("Programs::CStepModel", "P/V", 0, QApplication::UnicodeUTF8),0);
+
+   m_strSelectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Select Icon", 0, QApplication::UnicodeUTF8);
+   m_strConfirmMsg = QApplication::translate("Programs::CModifyProgramDlg", "Confirmation Message", 0, QApplication::UnicodeUTF8);
+   m_strYes = QApplication::translate("Programs::CModifyProgramDlg", "Yes", 0, QApplication::UnicodeUTF8);
+   m_strCancel = QApplication::translate("Programs::CModifyProgramDlg", "Cancel", 0, QApplication::UnicodeUTF8);
+   m_strDelProgramStep = QApplication::translate("Programs::CModifyProgramDlg", "Do you really want to delete the selected program step?", 0, QApplication::UnicodeUTF8);
+   m_strEnterValidName = QApplication::translate("Programs::CModifyProgramDlg", "Please enter a valid Program Name", 0, QApplication::UnicodeUTF8);
+   m_strClose = QApplication::translate("Programs::CModifyProgramDlg", "Close", 0, QApplication::UnicodeUTF8);
+
 }
 
 } // end namespace Programs

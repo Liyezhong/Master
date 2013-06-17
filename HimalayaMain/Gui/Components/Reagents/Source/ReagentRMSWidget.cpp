@@ -25,6 +25,7 @@
 #include "Reagents/Include/ModifyReagentRMSDlg.h"
 #include "ui_ReagentsWidget.h"
 #include <QDebug>
+#include <Dashboard/Include/CommonString.h>
 
 namespace Reagents {
 
@@ -258,7 +259,7 @@ void CReagentRMSWidget::OnEdit()
 {
     /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
                             "\nPlease close the dialog with \"Close\""));*/
-    mp_ModifiyReagentRMSDlg->SetDialogTitle(tr("Edit Reagent"));
+    mp_ModifiyReagentRMSDlg->SetDialogTitle(m_strEditReagent);
     mp_ModifiyReagentRMSDlg->SetButtonType(EDIT_BTN_CLICKED);
     mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList, Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION);
     mp_ModifiyReagentRMSDlg->show();
@@ -273,7 +274,7 @@ void CReagentRMSWidget::OnNew()
 {
     /*m_MessageDlg.SetText(tr("Staining Process has started, editing is no longer possible."
                             "\nPlease close the dialog with \"Close\""));*/
-    mp_ModifiyReagentRMSDlg->SetDialogTitle(tr("New Reagent"));
+    mp_ModifiyReagentRMSDlg->SetDialogTitle(m_strNewReagent);
     mp_ModifiyReagentRMSDlg->SetButtonType(NEW_BTN_CLICKED);
     mp_Reagent = NULL;
     mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList,Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION);
@@ -288,12 +289,12 @@ void CReagentRMSWidget::OnNew()
 void CReagentRMSWidget::OnDelete()
 {
     /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."));*/
-    m_MessageDlg.SetTitle(tr("Confirmation Message"));
+    m_MessageDlg.SetTitle(CommonString::strConfirmMsg);
     m_MessageDlg.SetIcon(QMessageBox::Information);
-    m_MessageDlg.SetButtonText(1, tr("Yes"));
-    m_MessageDlg.SetButtonText(3, tr("Cancel"));
+    m_MessageDlg.SetButtonText(1, CommonString::strYes);
+    m_MessageDlg.SetButtonText(3, CommonString::strCancel);
     m_MessageDlg.HideCenterButton();
-    m_MessageDlg.SetText(tr("Do you really want to delete the selected reagent"));
+    m_MessageDlg.SetText(m_strConfirmDelReagent);
 
     if(m_MessageDlg.exec()==(int)QDialog::Accepted){
         emit RemoveReagent(mp_Reagent->GetReagentID());
@@ -448,9 +449,9 @@ void CReagentRMSWidget::OnProcessStateChanged()
         mp_Ui->CleaningReagent_GroupRMS->setEnabled(false);
 
         if(m_ProcessRunning && m_ShowMessageDialog){
-            m_MessageDlg.SetTitle(tr("Information Message"));
+            m_MessageDlg.SetTitle(CommonString::strInforMsg);
             m_MessageDlg.SetIcon(QMessageBox::Information);
-            m_MessageDlg.SetButtonText(1, tr("Ok"));
+            m_MessageDlg.SetButtonText(1, CommonString::strOK);
             m_MessageDlg.HideButtons();
             (void)m_MessageDlg.exec();
         }
@@ -493,6 +494,17 @@ void CReagentRMSWidget::RetranslateUI()
 {
     MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagents::CReagentRMSWidget",
                                                                  "RMS", 0, QApplication::UnicodeUTF8));
+
+    m_strEditReagent = QApplication::translate("Reagents::CReagentRMSWidget",
+                                           "Edit Reagent", 0, QApplication::UnicodeUTF8);
+
+    m_strNewReagent = QApplication::translate("Reagents::CReagentRMSWidget",
+                                           "New Reagent", 0, QApplication::UnicodeUTF8);
+
+    m_strConfirmDelReagent = QApplication::translate("Reagents::CReagentRMSWidget",
+                                           "Do you really want to delete the selected reagent", 0, QApplication::UnicodeUTF8);
+
+
     (void) m_ReagentRMSModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8),0);
     (void) m_ReagentRMSModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",

@@ -8,9 +8,15 @@ using namespace Dashboard;
 CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *parent) :
     MainMenu::CDialogFrame(parent),
     ui(new Ui::CCassetteNumberInputWidget),
-    m_CassetteNumber(0)
+    m_CassetteNumber(0),
+    m_strMsg(tr("The cassette number should be 1 to 200.")),
+    m_strWarning(tr("Warning")),
+    m_strOK(tr("OK"))
+
 {
     ui->setupUi(this);
+    RetranslateUI();//As the overrided function changeEvent(QEvent *p_Event) cannot be revoked in this class, we should call it here
+
     this->setWindowModality(Qt::ApplicationModal);
     CONNECTSIGNALSLOT(ui->btnOK, clicked(), this, OnOK());
     CONNECTSIGNALSLOT(ui->btnCancel, clicked(), this, OnCancel());
@@ -57,9 +63,9 @@ void CCassetteNumberInputWidget::OnOK()
     {
           MainMenu::CMessageDlg* pMessageDlg = new MainMenu::CMessageDlg();
           pMessageDlg->SetIcon(QMessageBox::Warning);
-          pMessageDlg->SetTitle(tr("Warning"));
-          pMessageDlg->SetText(tr("The cassette number should be 1 to 200."));
-          pMessageDlg->SetButtonText(1, tr("OK"));
+          pMessageDlg->SetTitle(m_strWarning);
+          pMessageDlg->SetText(m_strMsg);
+          pMessageDlg->SetButtonText(1, m_strOK);
           pMessageDlg->HideButtons(); 
 
           if (pMessageDlg->exec())
@@ -80,5 +86,13 @@ void CCassetteNumberInputWidget::OnCancel()
 int CCassetteNumberInputWidget::CassetteNumber()
 {
     return m_CassetteNumber;
+}
+
+void CCassetteNumberInputWidget::RetranslateUI()
+{
+    m_strMsg = QApplication::translate("CCassetteNumberInputWidget", "The cassette number should be 1 to 200.", 0, QApplication::UnicodeUTF8);
+    m_strWarning = QApplication::translate("CCassetteNumberInputWidget", "Warning", 0, QApplication::UnicodeUTF8);
+    m_strOK = QApplication::translate("CCassetteNumberInputWidget", "OK", 0, QApplication::UnicodeUTF8);
+
 }
 

@@ -41,7 +41,7 @@ CDashboardComboBox::CDashboardComboBox(QWidget *p_Parent):
                                //"color: black;}"
                                 //);
    // setView(mp_ListView);
-    m_SelProgName = tr("Program");
+    m_SelProgName = "Program";
     m_PixmapEnable.load(":/HimalayaImages/ComboButton/ComboButton_Button_Enable.png");
     m_PixmapRunning.load(":/HimalayaImages/ComboButton/ComboButton_Program_Running.png");
     m_Pixmap = &m_PixmapEnable;
@@ -87,6 +87,23 @@ void CDashboardComboBox::mousePressEvent(QMouseEvent *e)
       QComboBox::mousePressEvent(e);
     else
         emit ButtonPress();
+
+}
+
+void CDashboardComboBox::changeEvent(QEvent *p_Event)
+{
+    QWidget::changeEvent(p_Event);
+    switch (p_Event->type()) {
+        case QEvent::LanguageChange:
+            RetranslateUI();
+            break;
+        default:
+            break;
+    }
+}
+
+void CDashboardComboBox::RetranslateUI()
+{
 
 }
 

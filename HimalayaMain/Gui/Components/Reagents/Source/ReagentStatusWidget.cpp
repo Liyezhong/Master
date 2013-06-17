@@ -7,7 +7,7 @@
 #include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "ui_ReagentStatusWidget.h"
 #include "Dashboard/Include/DashboardWidget.h"
-
+#include <Dashboard/Include/CommonString.h>
 #include <QDebug>
 
 namespace Reagents {
@@ -27,7 +27,10 @@ CReagentStatusWidget::CReagentStatusWidget(QWidget *p_Parent):
                                            mp_Ui(new Ui::CReagentStatusWidget),
                                            mp_DataConnector(NULL),
                                            mp_ReagentList(NULL),
-                                           mp_Reagent(NULL)
+                                           mp_Reagent(NULL),
+                                           m_strSetAsEmpty(tr("Do you want to set as empty?")),
+                                           m_strResetData(tr("Do you want to reset data?")),
+                                           m_strSetAsFull(tr("Do you want to set as full?"))
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Status"));
@@ -107,11 +110,11 @@ void CReagentStatusWidget::OnSetAsEmpty()
 {
         MainMenu::CMessageDlg ConfirmationMessageDlg;
 
-        ConfirmationMessageDlg.SetTitle(tr("Confirmation Message"));
-        ConfirmationMessageDlg.SetText(tr("Do you want to set as empty?"));
+        ConfirmationMessageDlg.SetTitle(CommonString::strConfirmMsg);
+        ConfirmationMessageDlg.SetText(m_strSetAsEmpty);
         ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
-        ConfirmationMessageDlg.SetButtonText(1, tr("Yes"));
-        ConfirmationMessageDlg.SetButtonText(3, tr("Cancel"));
+        ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
+        ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);
         ConfirmationMessageDlg.HideCenterButton();
         if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
         {
@@ -136,11 +139,11 @@ void CReagentStatusWidget::OnResetData()
 {
     MainMenu::CMessageDlg ConfirmationMessageDlg;
 
-    ConfirmationMessageDlg.SetTitle(tr("Confirmation Message"));
-    ConfirmationMessageDlg.SetText(tr("Do you want to reset data?"));
+    ConfirmationMessageDlg.SetTitle(CommonString::strConfirmMsg);
+    ConfirmationMessageDlg.SetText(m_strResetData);
     ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
-    ConfirmationMessageDlg.SetButtonText(1, tr("Yes"));
-    ConfirmationMessageDlg.SetButtonText(3, tr("Cancel"));
+    ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);
     ConfirmationMessageDlg.HideCenterButton();
     if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
     {
@@ -165,11 +168,11 @@ void CReagentStatusWidget::OnSetAsFull()
 {
     MainMenu::CMessageDlg ConfirmationMessageDlg;
 
-    ConfirmationMessageDlg.SetTitle(tr("Confirmation Message"));
-    ConfirmationMessageDlg.SetText(tr("Do you want to set as full?"));
+    ConfirmationMessageDlg.SetTitle(CommonString::strConfirmMsg);
+    ConfirmationMessageDlg.SetText(m_strSetAsFull);
     ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
-    ConfirmationMessageDlg.SetButtonText(1, tr("Yes"));
-    ConfirmationMessageDlg.SetButtonText(3, tr("Cancel"));
+    ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);
     ConfirmationMessageDlg.HideCenterButton();
     if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
     {
@@ -344,9 +347,9 @@ void CReagentStatusWidget::OnProcessStateChanged()
         mp_Ui->btnReset->setEnabled(false);
 
         if(m_ProcessRunning && m_ShowMessageDialog){
-            m_MessageDlg.SetTitle(tr("Information Message"));
+            m_MessageDlg.SetTitle(CommonString::strInforMsg);
             m_MessageDlg.SetIcon(QMessageBox::Information);
-            m_MessageDlg.SetButtonText(1, tr("Ok"));
+            m_MessageDlg.SetButtonText(1, CommonString::strOK);
             m_MessageDlg.HideButtons();
             (void)m_MessageDlg.exec();
         }
@@ -360,8 +363,19 @@ void CReagentStatusWidget::OnProcessStateChanged()
 /****************************************************************************/
 void CReagentStatusWidget::RetranslateUI()
 {
-    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagent Status::CReagentStatusWidget",
+    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagent::CReagentStatusWidget",
                                                                  "Status", 0, QApplication::UnicodeUTF8));
+
+    m_strSetAsEmpty = QApplication::translate("Reagent::CReagentStatusWidget",
+                                              "Do you want to set as empty?", 0, QApplication::UnicodeUTF8);
+
+    m_strResetData = QApplication::translate("Reagent::CReagentStatusWidget",
+                                             "Do you want to reset data?", 0, QApplication::UnicodeUTF8);
+
+    m_strSetAsFull = QApplication::translate("Reagent::CReagentStatusWidget",
+                                             "Do you want to set as full?", 0, QApplication::UnicodeUTF8);
+
+
     (void) m_ReagentStatusModel.setHeaderData(0, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
                                                                                  "Station", 0, QApplication::UnicodeUTF8),0);
 

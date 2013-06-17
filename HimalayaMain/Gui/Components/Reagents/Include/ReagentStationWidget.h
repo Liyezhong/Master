@@ -51,8 +51,7 @@ private:
     MainMenu::CFileView *mp_ReagentStatusWidgetView;     //!< Content of this widget
     KeyBoard::CKeyBoard *mp_KeyBoard;
     Global::RMSOptions_t m_RMSOptions;
-
-
+    QString m_strSelectReagent;
 protected:
     void showEvent(QShowEvent *);
     void changeEvent(QEvent *p_Event);

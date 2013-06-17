@@ -70,7 +70,7 @@ private:
     DataManager::CUserSettings *mp_UserSettings;    //!< Data object
     DataManager::CReagentGroupColorList *mp_CReagentGroupColorList; //!< CReagentGroupColor object
     CModifyReagentGroupColorDlg *mp_ModifyReagentColorDlg;        //!< Edit reagent dialog
-
+    QString m_strSelectColor;
 signals:
 
     /****************************************************************************/

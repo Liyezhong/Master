@@ -38,7 +38,11 @@ const QString IPADDRESS_INPUT_MASK_    = "000.000.000.000; "; //!< Mask for the 
 /****************************************************************************/
 CNetworkSettingsWidget::CNetworkSettingsWidget(QWidget *p_Parent) :
     MainMenu::CPanelFrame(p_Parent), mp_Ui(new Ui::CNetworkSettingsWidget),
-    m_Password("")
+    m_Password(""),
+    m_strEnterProxyName(tr("Enter Proxy User Name")),
+    m_strEnterProxyPassword(tr("Enter Proxy Password")),
+    m_strEnterProxyIP(tr("Enter Proxy IP Address")),
+    m_strEnterProxyPort(tr("Enter Proxy Port"))
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Network"));
@@ -166,6 +170,10 @@ void CNetworkSettingsWidget::RetranslateUI()
     mp_Ui->proxyIpAddressLabel->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Proxy IP Address", 0, QApplication::UnicodeUTF8));
     mp_Ui->proxyPortLabel->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Proxy Port", 0, QApplication::UnicodeUTF8));
     mp_Ui->saveButton->setText(QApplication::translate("Settings::CNetworkSettingsWidget", "Save", 0, QApplication::UnicodeUTF8));
+    m_strEnterProxyName = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy User Name", 0, QApplication::UnicodeUTF8);
+    m_strEnterProxyPassword = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy Password", 0, QApplication::UnicodeUTF8);
+    m_strEnterProxyIP = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy IP Address", 0, QApplication::UnicodeUTF8);
+    m_strEnterProxyPort = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy Port", 0, QApplication::UnicodeUTF8);
 }
 
 /****************************************************************************/
@@ -210,7 +218,7 @@ void CNetworkSettingsWidget::OnProxyUserName()
 {
     m_ButtonType = USERNAME_BTN_CLICKED;
     mp_KeyBoardWidget->Attach(this);
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Proxy User Name"));
+    mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyName);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyUserNameButton->text());
     m_ValidationType = KeyBoard::VALIDATION_3;
@@ -229,7 +237,7 @@ void CNetworkSettingsWidget::OnProxyPassword()
 {
     m_ButtonType = PASSWORD_BTN_CLICKED;
     mp_KeyBoardWidget->Attach(this);
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Proxy Password"));
+    mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyPassword);
     mp_KeyBoardWidget->SetPasswordMode(true);
     // mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyPasswordButton->text());
     m_ValidationType = KeyBoard::VALIDATION_3;
@@ -248,7 +256,7 @@ void CNetworkSettingsWidget::OnProxyIPAddress()
 {
     m_ButtonType = IP_ADDRESS_BTN_CLICKED;
     mp_KeyBoardWidget->Attach(this);
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Proxy IP Address"));
+    mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyIP);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyIpAddressButton->text());
     // m_ValidationType = KeyBoard::VALIDATION_1;
@@ -269,7 +277,7 @@ void CNetworkSettingsWidget::OnProxyPort()
 {
     m_ButtonType = PORT_BTN_CLICKED;
     mp_KeyBoardWidget->Attach(this);
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Proxy Port"));
+    mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyPort);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyPortButton->text());
     mp_KeyBoardWidget->SetMaxCharLength(32);

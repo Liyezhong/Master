@@ -91,6 +91,7 @@ private:
     QString m_ReagentID;
     QPixmap* m_pAmbientTempraturePixmap;
     QPixmap* m_pAmbientTempratureBigPixmap;
+    QString m_strConfirmMsg, m_strOK;
 private:
     void showEvent(QShowEvent *p_Event);
     void RetranslateUI();
