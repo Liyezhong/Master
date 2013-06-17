@@ -218,6 +218,7 @@ private slots:
          void StopDrain();
          void Pressure();
          void Vaccum();
+         void AllStop();
          void Abort();
          bool SelfTest(ReturnCode_t RetCode);
          void Pause();

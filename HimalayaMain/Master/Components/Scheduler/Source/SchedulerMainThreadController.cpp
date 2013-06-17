@@ -25,6 +25,7 @@
 #include "Scheduler/Commands/Include/CmdALDraining.h"
 #include "Scheduler/Commands/Include/CmdALPressure.h"
 #include "Scheduler/Commands/Include/CmdALVaccum.h"
+#include "Scheduler/Commands/Include/CmdALAllStop.h"
 #include "Scheduler/Commands/Include/CmdRVStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdRTStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdOvenStartTemperatureControlWithPID.h"
@@ -203,18 +204,21 @@ void SchedulerMainThreadController::OnTickTimer()
     {
     case INIT_STATE:
         //refuse any main controller request if there is any
+        qDebug()<<"Scheduler main controller state: INIT";
         break;
     case IDLE_STATE:
+        qDebug()<<"Scheduler main controller state: IDLE";
         HardwareMonitor(mp_IDeviceProcessing, "IDLE");
         HandleIdleState(newControllerCmd);
         break;
     case RUN_STATE:
+        qDebug()<<"Scheduler main controller state: RUN";
         HardwareMonitor(mp_IDeviceProcessing, m_CurProgramID);
         HandleRunState(newControllerCmd, retCode);
         break;
     case ERROR_STATE:
+        qDebug()<<"Scheduler main controller state: ERROR";
         //refuse any main controller request if there is any
-        qDebug()<<"Scheduler main controller is in error state";
         break;
     default:
         qDebug()<<"Scheduler main controller gets unexpected state: " << currentState;
@@ -301,6 +305,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
     if(CTRL_CMD_ABORT == ctrlCmd)
     {
+        qDebug() << "Scheduler received command: ABORT";
         mp_ProgramStepStateMachine->NotifyAbort();
         DequeueNonDeviceCommand();
         //tell main controller scheduler is starting to abort
@@ -312,11 +317,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     else
     {
         ProgramStepStateMachine_t stepState = mp_ProgramStepStateMachine->GetCurrentState();
+        qDebug() << "Scheduler step statemachine: "<<stepState;
         if(PSSM_INIT == stepState)
         {
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
-                mp_IDeviceProcessing->ALAllStop();
+                AllStop();
                 mp_ProgramStepStateMachine->NotifyPause(PSSM_INIT);
                 DequeueNonDeviceCommand();
             }
@@ -383,12 +389,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
-                mp_IDeviceProcessing->ALAllStop();
+                qDebug() << "Scheduler step: READY_TO_FILL is abort to PAUSE";
+                AllStop();
                 mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_FILL);
                 DequeueNonDeviceCommand();
             }
             else if(DCL_ERR_DEV_AL_FILL_SUCCESS == retCode)
             {
+                qDebug() << "Scheduler step: READY_TO_FILL received FILL_SUCCESS, go to next state now.";
                 mp_ProgramStepStateMachine->NotifyFillFinished();
             }
             else if(retCode != DCL_ERR_UNDEFINED)
@@ -428,7 +436,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 if(m_CurProgramStepInfo.isPressure || m_CurProgramStepInfo.isVacuum)
                 {
-                    mp_IDeviceProcessing->ALAllStop();
+                    AllStop();
                     lastPVTime = 0;
                 }
                 mp_ProgramStepStateMachine->NotifyPause(PSSM_SOAK);
@@ -542,7 +550,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     if(m_PositionRV == sealPos)
                     {
                         //release pressure
-                        mp_IDeviceProcessing->ALAllStop();
+                        AllStop();
                         m_PauseToBeProcessed = false;
                         mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_DRAIN);
                         DequeueNonDeviceCommand();
@@ -661,7 +669,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         else if(PSSM_ABORTED == stepState)
         {
             //program finished
-            mp_IDeviceProcessing->ALAllStop();
+            AllStop();
             qDebug() << "Program aborted!";
             m_SchedulerMachine->SendRunComplete();
             mp_ProgramStepStateMachine->Stop();
@@ -1648,6 +1656,12 @@ void SchedulerMainThreadController::Pressure()
 void SchedulerMainThreadController::Vaccum()
 {
     m_SchedulerCommandProcessor->pushCmd(new CmdALVaccum(500, mp_IDeviceProcessing, this));
+}
+
+void SchedulerMainThreadController::AllStop()
+{
+    mp_IDeviceProcessing->ALBreakAllOperation();
+    m_SchedulerCommandProcessor->pushCmd(new CmdALAllStop(500, mp_IDeviceProcessing, this));
 }
 
 void SchedulerMainThreadController::Pause()

@@ -38,7 +38,8 @@ public:
     QString GetName() const{return NAME;}
 
     DeviceControl::ReturnCode_t GetResult()const{return m_result;}
-	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
+
+    bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
 	
 
     void Execute();
