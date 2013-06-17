@@ -59,7 +59,8 @@ private:
     MainMenu::CMainWindow::UserRole_t m_UserLevel;  //!< Current user Level    
     void RetranslateUI();
     QTimer* m_Timer;
-
+    QString m_strEnterNewPassword;
+    QString m_strConfirmNewPassword;
 public:
     explicit CUserPrivilegeWidget(QWidget *p_Parent = 0,
                                   KeyBoard::CKeyBoard *p_KeyBoardWidget = NULL);
