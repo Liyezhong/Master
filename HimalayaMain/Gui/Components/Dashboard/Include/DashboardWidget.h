@@ -88,7 +88,7 @@ private:
     QString m_strNotStartExpiredReagent;
     QString m_strStartExpiredReagent;
     QString m_strConfirmation, m_strAbortProgram;
-    QString m_ProgramComplete, m_strTakeOutSpecimen;
+    QString m_strProgramComplete, m_strTakeOutSpecimen;
     QString m_strRetortContaminated;
     QString m_strStartNewProgram, m_strNeedMeltParaffin;
     QString m_strResetEndTime, m_strInputCassetteBoxTitle;

@@ -265,14 +265,13 @@ bool CSpecialVerifierGroupA::CheckData()
          j= temp;
      }
 
-    int arr[8][8]={1, 1, 0, 0, 0, 0, 0, 1,
-                 0, 1, 1, 1, 0, 0, 0, 1,//water
-                 0, 0, 1, 1, 0, 0, 0, 1,//dehydrating,diluted
-                 0, 0, 0, 1, 1, 0, 0, 1,
-                 0, 0, 0, 0, 1, 1, 1, 0, //clearing
-                 0, 0, 0, 0, 0, 1, 1, 0,
-                 0, 0, 0, 0, 0, 0, 1, 1,
-                 0, 0, 0, 0, 0, 0, 0, 1};
+    int arr[6][6]={{1, 0, 0, 0, 0, 0}, //Fixation
+                   {1, 1, 0, 0, 0, 0},   //water
+                   {0, 1, 1, 0, 0, 0},   //dehydrating,diluted
+                   {0, 1, 1, 1, 0, 0},   //dehydrating,absolute
+                   {0, 0, 0, 1, 1, 0},   //clearing
+                   {0, 0, 0, 0, 1, 1}   //paraffin
+                  };
 
     if (1 == arr[i][j])
        return true;

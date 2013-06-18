@@ -36,7 +36,8 @@ namespace DataManager {
 
 typedef enum  {
         PROGRAM_STATUS_COMPLETED = 0,
-        PROGRAM_STATUS_ABORTED
+        PROGRAM_STATUS_ABORTED,
+        PROGRAM_STATUS_PAUSED
    } ProgramStatusType_t;
 
 typedef enum  {

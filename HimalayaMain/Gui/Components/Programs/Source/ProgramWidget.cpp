@@ -392,10 +392,22 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
                     //Edit Mode
                     mp_Ui->btnEdit->setEnabled(!IsLeicaProgram);
                     mp_Ui->btnDelete->setEnabled(!IsLeicaProgram);
-                    mp_Ui->btnCopy->setEnabled(IsLeicaProgram);
+                    if (mp_Program->GetID().at(0) == 'C')
+                    {
+                        mp_Ui->btnCopy->setEnabled(!IsLeicaProgram);
+                    }
+                    else
+                        mp_Ui->btnCopy->setEnabled(IsLeicaProgram);
                 } else {
                     //View Mode
-                    mp_Ui->btnEdit->setEnabled(IsLeicaProgram);
+                    mp_Ui->btnEdit->setText(m_strView);
+                    if (mp_Program->GetID().at(0) == 'C')
+                    {
+                        mp_Ui->btnCopy->setEnabled(false);
+                        mp_Ui->btnEdit->setEnabled(false);
+                    }
+                    else
+                        mp_Ui->btnEdit->setEnabled(IsLeicaProgram);
                 }
             }
             else {
@@ -403,11 +415,13 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
                      m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
                         (!m_ProcessRunning)) {
                     //Edit Mode
+					mp_Ui->btnEdit->setText(m_strEdit);
                     mp_Ui->btnEdit->setEnabled(!IsLeicaProgram);
                     mp_Ui->btnCopy->setEnabled(!IsLeicaProgram);
                     mp_Ui->btnDelete->setEnabled(!IsLeicaProgram);
                 }
                 else {
+                    mp_Ui->btnEdit->setText(m_strView);
                     mp_Ui->btnEdit->setEnabled(!IsLeicaProgram);
                 }
             }

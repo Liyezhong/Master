@@ -57,7 +57,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    m_strNotStartExpiredReagent(tr("Some expired reagents are used in this selected program, you can not start this program.")),
                                    m_strStartExpiredReagent(tr("Do you want to Start the Program with Expired Reagents?")),
                                    m_strAbortProgram(tr("Do you want to abort the program?")),
-                                   m_ProgramComplete(tr("Program \"%1\" is complete! Would you like to drain the retort?")),
+                                   m_strProgramComplete(tr("Program \"%1\" is complete! Would you like to drain the retort?")),
                                    m_strTakeOutSpecimen(tr("Please take out your specimen!")),
                                    m_strRetortContaminated(tr("The retort is contaminated, Cleaning Program will run! Please lock the retort then click \"OK\".")),
                                    m_strStartNewProgram(tr("Program \"%1\" is aborted! Would you like to start a new Program?")),
@@ -192,7 +192,7 @@ void CDashboardWidget::changeEvent(QEvent *p_Event)
 
 void CDashboardWidget::RetranslateUI()
 {
-    SetPanelTitle(CommonString::strOK);
+    SetPanelTitle(QApplication::translate("Dashboard::CDashboardWidget", "Dashboard", 0, QApplication::UnicodeUTF8));
     m_strYes = QApplication::translate("Dashboard::CDashboardWidget", "Yes", 0, QApplication::UnicodeUTF8);
     m_strNo = QApplication::translate("Dashboard::CDashboardWidget", "No", 0, QApplication::UnicodeUTF8);
     m_strOK = QApplication::translate("Dashboard::CDashboardWidget", "OK", 0, QApplication::UnicodeUTF8);
@@ -207,7 +207,7 @@ void CDashboardWidget::RetranslateUI()
     m_strStartExpiredReagent =  QApplication::translate("Dashboard::CDashboardWidget", "Do you want to Start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
     m_strConfirmation = QApplication::translate("Dashboard::CDashboardWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
     m_strAbortProgram = QApplication::translate("Dashboard::CDashboardWidget", "Do you want to abort the program?", 0, QApplication::UnicodeUTF8);
-    m_ProgramComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is complete! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
+    m_strProgramComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is complete! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, Cleaning Program will run! Please lock the retort then click \"OK\".", 0, QApplication::UnicodeUTF8);
     m_strStartNewProgram  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted! Would you like to start a new Program?", 0, QApplication::UnicodeUTF8);
@@ -627,15 +627,21 @@ void CDashboardWidget::OnProgramWillComplete()
 {
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetTitle(m_strWarning);
-    QString strTemp(m_ProgramComplete);
-    strTemp.arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+    QString strTemp(m_strProgramComplete);
+    strTemp = strTemp.arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
     mp_MessageDlg->SetText(strTemp);
     mp_MessageDlg->SetButtonText(1, m_strOK);
     mp_MessageDlg->HideButtons();
 
+    emit ProgramActionStopped(DataManager::PROGRAM_STATUS_PAUSED);//pause ProgressBar and EndTime countdown
+
     if (mp_MessageDlg->exec())
     {
         m_IsDraining = true;
+
+        //Resume ProgressBar and EndTime countdown
+        emit ProgramActionStarted(DataManager::PROGRAM_START, m_TimeProposed, Global::AdjustedTime::Instance().GetCurrentDateTime(), true);
+
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_DRAIN);
         //disable pause and abort
         EnablePlayButton(false);
@@ -647,8 +653,6 @@ void CDashboardWidget::OnProgramWillComplete()
 
 void CDashboardWidget::TakeOutSpecimenAndRunCleaning()
 {
-    mp_DataConnector->SendRetortLock(false);
-
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetTitle(m_strWarning);
     mp_MessageDlg->SetText(m_strTakeOutSpecimen);
@@ -669,11 +673,11 @@ void CDashboardWidget::TakeOutSpecimenAndRunCleaning()
         if (mp_MessageDlg->exec())
         {
             m_IsWaitingCleaningProgram = false;
-            /*m_ForceRunCleanProgram = true;////6.6 for test
+            m_ForceRunCleanProgram = true;////6.6 for test
             m_NewSelectedProgramId = "C01";
             CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = tr("Cleaning Program");
             PrepareSelectedProgramChecking();
-            */
+
             //disable pause and abort
             EnablePlayButton(false);
             EnableAbortButton(false);
@@ -917,12 +921,14 @@ void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCur
 
 void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd)
 {
+    mp_DashboardScene->OnStationSuckDrain(cmd.StationID(), cmd.IsStart(), cmd.IsSuck());
+
     if (m_IsDraining && !cmd.IsStart() && !cmd.IsSuck())
     {
-        this->TakeOutSpecimenAndRunCleaning();
+        emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
+        this->TakeOutSpecimenAndRunCleaning();//pause ProgressBar and EndTime countdown
         m_IsDraining = false;//when abort or pause, set this too?
     }
-    mp_DashboardScene->OnStationSuckDrain(cmd.StationID(), cmd.IsStart(), cmd.IsSuck());
 }
 
 } // End of namespace Dashboard

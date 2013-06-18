@@ -450,7 +450,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 //qint32 period = m_CurProgramStepInfo.durationInSeconds * 20;
                 if((now - m_TimeStamps.CurStepSoakStartTime ) > (period))
                 {
-                    if(IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
+                    //if it is Cleaning program, need not notify user
+                    if((m_CurProgramID.at(0) != 'C') && IsLastStep(m_CurProgramStepIndex, m_CurProgramID))
                     {
                          //this is last step, need to notice user
                          if(!completionNotifierSent)
@@ -789,9 +790,6 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
     ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
 
-    int stepSize = stepIDs->count();
-    bool isLastStep = false;
-
     int nextProgramStepIndex(-1);
     if (-1 == m_CurProgramStepIndex)
     {
@@ -802,8 +800,6 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
         int nextOne = m_CurProgramStepIndex ;
         ++nextOne;
         nextProgramStepIndex = nextOne;
-        if (stepSize == nextOne + 1)
-            isLastStep = true;
     }
 
     const CProgramStep* pProgramStep = pProgram->GetProgramStep(nextProgramStepIndex);
