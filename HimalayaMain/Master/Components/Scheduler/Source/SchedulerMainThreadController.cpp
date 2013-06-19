@@ -31,6 +31,8 @@
 #include "Scheduler/Commands/Include/CmdOvenStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdPerTurnOnMainRelay.h"
 #include "Scheduler/Commands/Include/CmdPerTurnOffMainRelay.h"
+#include "Scheduler/Commands/Include/CmdALTurnOnFan.h"
+#include "Scheduler/Commands/Include/CmdALTurnOffFan.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Commands/Include/CmdIDBottleCheck.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
@@ -1455,7 +1457,18 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
             }
             if(RetortLockStatus != UNDEFINED_VALUE)
             {
+                if((m_RetortLockStatus == 0)&&(RetortLockStatus == 1))
+                {
+                   // turn on the fan
+                    m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, mp_IDeviceProcessing, this));
+                }
+                if((m_RetortLockStatus == 1)&&(RetortLockStatus == 0))
+                {
+                   // turn on the fan
+                    m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, mp_IDeviceProcessing, this));
+                }
                 m_RetortLockStatus = RetortLockStatus;
+
             }
 
             m_PositionRV = PositionRV;
