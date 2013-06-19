@@ -792,12 +792,7 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
     //ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
 
-<<<<<<< .mine
-    //int stepSize = stepIDs->count();
-    //bool isLastStep = false;
 
-=======
->>>>>>> .r756
     int nextProgramStepIndex(-1);
     if (-1 == m_CurProgramStepIndex)
     {
@@ -808,11 +803,7 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
         int nextOne = m_CurProgramStepIndex ;
         ++nextOne;
         nextProgramStepIndex = nextOne;
-<<<<<<< .mine
-        //if (stepSize == nextOne + 1)
-            //isLastStep = true;
-=======
->>>>>>> .r756
+
     }
 
     const CProgramStep* pProgramStep = pProgram->GetProgramStep(nextProgramStepIndex);
