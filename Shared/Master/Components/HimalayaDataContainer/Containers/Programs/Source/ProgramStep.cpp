@@ -94,6 +94,7 @@ CProgramStep::CProgramStep(const CProgramStep &SourceProgramStep)
 /****************************************************************************/
 bool CProgramStep::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool CompleteData)
 {
+    Q_UNUSED(CompleteData)
     bool Result = true;
     XmlStreamWriter.writeStartElement("Step");
     XmlStreamWriter.writeAttribute("ID", GetStepID());
@@ -120,6 +121,7 @@ bool CProgramStep::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Comp
 /****************************************************************************/
 bool CProgramStep::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool CompleteData)
 {
+    Q_UNUSED(CompleteData)
     // get attribute ID
     if (!XmlStreamReader.attributes().hasAttribute("ID")) {
         qDebug() << "### attribute <ID> is missing => abort reading";

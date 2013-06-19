@@ -150,6 +150,11 @@ void SchedulerCommandProcessor::DevProcStartNormalOpModeAckn(DevInstanceID_t ins
 
 void SchedulerCommandProcessor::ThrowError(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp)
 {
+    Q_UNUSED(instanceID)
+    Q_UNUSED(usErrorGroup)
+    Q_UNUSED(usErrorID)
+    Q_UNUSED(usErrorData)
+    Q_UNUSED(TimeStamp)
     // Platform/Master/Components/DeviceControl/Include/Global/
     //   DeviceControlError.h
     //   DeviceControlGlobal.h

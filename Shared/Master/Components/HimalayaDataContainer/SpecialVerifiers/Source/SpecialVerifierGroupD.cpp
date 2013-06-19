@@ -124,7 +124,7 @@ bool CSpecialVerifierGroupD::CheckData()
     bool Result = true;
 
     // check required to avoid lint warning
-    /*if (mp_DStationList != NULL && mp_StationMatrix != NULL) {
+    //if (mp_DStationList != NULL && mp_StationMatrix != NULL) {
         /*! \todo need to put more test cases*/
         //QStringList StationIDs;
         // row counter

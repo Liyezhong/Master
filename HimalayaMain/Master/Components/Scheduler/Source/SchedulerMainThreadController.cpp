@@ -65,14 +65,14 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_SchedulerCommandProcessorThread(NULL)
         , m_SchedulerCommandProcessor(NULL)
         , m_SchedulerMachine(new SchedulerMachine())
+        , mp_ProgramStepStateMachine(new ProgramStepStateMachine())
+        , mp_SelfTestStateMachine(new SelfTestStateMachine())
         , mp_IDeviceProcessing(NULL)
         , mp_DataManager(NULL)
         , m_CurProgramStepIndex(-1)
+        , m_CurReagnetName("")
         , m_CurProgramID("")
         , m_NewProgramID("")
-        , mp_ProgramStepStateMachine(new ProgramStepStateMachine())
-        , mp_SelfTestStateMachine(new SelfTestStateMachine())
-        , m_CurReagnetName("")
         , m_PauseToBeProcessed(false)
         , m_ProcessCassetteCount(0)
 {
@@ -277,7 +277,7 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
     if (m_CurProgramID.at(0) != 'C')//process cleaning reagent
     {
         Global::RMSOptions_t rmsMode = pUserSetting->GetModeRMSCleaning();
-        if (rmsMode == DataManager::RMS_CYCLES)
+        if (rmsMode == Global::RMS_CYCLES)
         {
             commandPtr = new MsgClasses::CmdUpdateStationReagentStatus(5000, m_UsedStationIDs, 0);
         }
@@ -285,7 +285,7 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
     else //process reagent
     {
         Global::RMSOptions_t rmsMode = pUserSetting->GetModeRMSProcessing();
-        if (rmsMode == DataManager::RMS_CYCLES)
+        if (rmsMode == Global::RMS_CYCLES)
         {
             commandPtr = new MsgClasses::CmdUpdateStationReagentStatus(5000, m_UsedStationIDs, 0);
         }
@@ -790,8 +790,14 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
     }
 
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
-    ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
+    //ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
 
+<<<<<<< .mine
+    //int stepSize = stepIDs->count();
+    //bool isLastStep = false;
+
+=======
+>>>>>>> .r756
     int nextProgramStepIndex(-1);
     if (-1 == m_CurProgramStepIndex)
     {
@@ -802,6 +808,11 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
         int nextOne = m_CurProgramStepIndex ;
         ++nextOne;
         nextProgramStepIndex = nextOne;
+<<<<<<< .mine
+        //if (stepSize == nextOne + 1)
+            //isLastStep = true;
+=======
+>>>>>>> .r756
     }
 
     const CProgramStep* pProgramStep = pProgram->GetProgramStep(nextProgramStepIndex);
@@ -1014,7 +1025,7 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
     }
 
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
-    ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
+    //ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
 
     int programStepIDIndex(-1);
     if (-1 == m_CurProgramStepIndex)
@@ -1082,6 +1093,7 @@ void SchedulerMainThreadController::OnRetortLock(Global::tRefType Ref, const Msg
 //response or recovery
 void SchedulerMainThreadController::OnActionCommandReceived(Global::tRefType Ref, const NetCommands::CmdSystemAction & Cmd)
 {
+    Q_UNUSED(Ref)
     m_Mutex.lock();
     NetCommands::CmdSystemAction *p_CmdSystemAction = new NetCommands::CmdSystemAction();
     p_CmdSystemAction->SetAction(Cmd.GetAction());
@@ -1394,6 +1406,7 @@ ERROR:
 
 void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, const QString& StepID)
 {
+    Q_UNUSED(StepID)
     if(pIDP)
     {
        // if(StepID == "IDLE")
@@ -1772,7 +1785,7 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
     if(SELF_TEST_INIT == selfTestState)
     {
         bool ok;
-        bool goon;
+        bool goon = false;
         // check oven heat time
         qreal parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "Oven", "oven heating",  "HeatingOvertime", ok);
         if(ok)

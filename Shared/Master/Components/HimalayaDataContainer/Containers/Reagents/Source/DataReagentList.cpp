@@ -40,7 +40,7 @@ namespace DataManager {
  *
  */
 /****************************************************************************/
-CDataReagentList::CDataReagentList() :m_Version(0), m_Filename(""), m_DataVerificationMode(true), mp_ReadWriteLock(NULL)
+CDataReagentList::CDataReagentList() :m_Version(0), m_DataVerificationMode(true), m_Filename(""), mp_ReadWriteLock(NULL)
 {
     SetDefaultAttributes();
 }
@@ -211,7 +211,7 @@ bool CDataReagentList::SerializeContent(QIODevice& IODevice, bool CompleteData)
  *  \return True or False
  */
 /****************************************************************************/
-bool CDataReagentList::WriteReagents(QXmlStreamWriter& XmlStreamWriter, \                                     
+bool CDataReagentList::WriteReagents(QXmlStreamWriter& XmlStreamWriter,
                                      bool CompleteData)
 {    
     for(int i=0;i<GetNumberOfReagents();i++) {        
@@ -345,7 +345,7 @@ bool CDataReagentList::DeserializeContent(QIODevice& IODevice, bool CompleteData
  *  \return True or False
  */
 /****************************************************************************/
-bool CDataReagentList::ReadReagents(QXmlStreamReader& XmlStreamReader, \                                    
+bool CDataReagentList::ReadReagents(QXmlStreamReader& XmlStreamReader,
                                     bool CompleteData){
 
     while (!XmlStreamReader.atEnd()) {

@@ -90,7 +90,7 @@ void ProgramStartableManager::ConnectSignals() {
  */
 /****************************************************************************/
 void ProgramStartableManager::OnStartableProgramEdited(const QString &ProgramID) {
-
+    Q_UNUSED(ProgramID)
 }
 
 /****************************************************************************/
@@ -102,7 +102,7 @@ void ProgramStartableManager::OnStartableProgramEdited(const QString &ProgramID)
  */
 /****************************************************************************/
 void ProgramStartableManager::OnReadLiquidLevelComplete(QStringList DefectiveStations) {
-
+    Q_UNUSED(DefectiveStations)
 }
 
 /****************************************************************************/
@@ -177,6 +177,7 @@ void ProgramStartableManager::OnUserSettingsChanged(const bool LanguangeChanged)
  */
 /****************************************************************************/
 void ProgramStartableManager::StationDefectHandler(QStringList DefectiveStationList) {
+    Q_UNUSED(DefectiveStationList)
 /*
     QStringList NonStartableProgramIDs;
     if (mp_ProgramList && mp_ProgramSequenceList) {
@@ -258,6 +259,7 @@ void ProgramStartableManager::UpdateGUI() const {
  */
 /****************************************************************************/
 bool ProgramStartableManager::IsProgramStartable(const QString &ProgramID) const {
+    Q_UNUSED(ProgramID)
     try {
 /*        CHECKPTR(mp_ProgramSequenceList);
         QStringList StartableProgramIDList = mp_ProgramSequenceList->GetStartableProgramIDList();

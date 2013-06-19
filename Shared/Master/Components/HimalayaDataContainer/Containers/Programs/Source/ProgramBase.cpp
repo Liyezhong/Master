@@ -30,7 +30,7 @@ namespace DataManager {
  */
 /****************************************************************************/
 CProgramBase::CProgramBase()
-    : m_ID(""), m_Name(""), m_LongName(""), m_NextFreeStepID(0)
+    : m_Name(""), m_ID(""), m_LongName(""), m_NextFreeStepID(0)
 {
     Init();
 }
@@ -44,7 +44,7 @@ CProgramBase::CProgramBase()
  */
 /****************************************************************************/
 CProgramBase::CProgramBase(const QString ID, const QString Name)
-              : m_ID(ID), m_Name(Name),m_NextFreeStepID(0)
+              : m_Name(Name), m_ID(ID), m_NextFreeStepID(0)
 {
     Init();
 }
@@ -57,7 +57,7 @@ CProgramBase::CProgramBase(const QString ID, const QString Name)
  */
 /****************************************************************************/
 CProgramBase::CProgramBase(const QString ID, const QString Name, const QString LongName)
-              : m_ID(ID), m_Name(Name), m_LongName(LongName), m_NextFreeStepID(0)
+              : m_Name(Name), m_ID(ID), m_LongName(LongName), m_NextFreeStepID(0)
 {
     Init();
 }

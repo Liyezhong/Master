@@ -37,7 +37,7 @@ namespace DataManager {
  *  \brief Constructor
  */
 /****************************************************************************/
-CReagentGroupColor::CReagentGroupColor() :m_ColorID(""),m_Color("")
+CReagentGroupColor::CReagentGroupColor() :m_Color(""), m_ColorID("")
 {
 
 }
@@ -47,8 +47,9 @@ CReagentGroupColor::CReagentGroupColor() :m_ColorID(""),m_Color("")
  *  \iparam ID
  */
 /****************************************************************************/
-CReagentGroupColor::CReagentGroupColor(const QString ID) :m_ColorID(""), m_Color("")
+CReagentGroupColor::CReagentGroupColor(const QString ID) : m_Color(""), m_ColorID("")
 {
+    Q_UNUSED(ID)
 }
 /****************************************************************************/
 /*!

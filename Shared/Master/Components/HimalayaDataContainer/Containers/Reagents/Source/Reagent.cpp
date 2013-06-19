@@ -41,8 +41,8 @@ namespace DataManager {
  */
 /****************************************************************************/
 
-CReagent::CReagent() :m_ReagentID("U100"), m_Name(""),m_GroupID(""),m_CassettesUntilChange(0),
-    m_CyclesUntilChange(0),m_DaysUntilChange(0), m_Visible(true)
+CReagent::CReagent() : m_Visible(true), m_Name(""), m_CassettesUntilChange(0),
+    m_CyclesUntilChange(0), m_DaysUntilChange(0), m_ReagentID("U100"), m_GroupID("")
 {
 }
 
@@ -54,8 +54,8 @@ CReagent::CReagent() :m_ReagentID("U100"), m_Name(""),m_GroupID(""),m_CassettesU
  */
 /****************************************************************************/
 
-CReagent::CReagent(const QString ID) : m_ReagentID(ID),m_Name(""),m_GroupID(""),m_CassettesUntilChange(0),
-    m_CyclesUntilChange(0),m_DaysUntilChange(0), m_Visible(true)
+CReagent::CReagent(const QString ID) : m_Visible(true), m_Name(""), m_CassettesUntilChange(0),
+    m_CyclesUntilChange(0), m_DaysUntilChange(0), m_ReagentID(ID), m_GroupID("")
 {
 }
 

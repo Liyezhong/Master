@@ -30,8 +30,8 @@ CmdProgramSelectedReply::CmdProgramSelectedReply(int Timeout, int TimeProposed,
                                              QList<QString>& StationList) :
     Command(Timeout),
     m_TimeProposed(TimeProposed),
-    m_ParaffinMeltCostedtime(ParaffinMeltCostedtime),
     m_CostedTimeBeforeParaffin(CostedTimeBeforeParaffin),
+    m_ParaffinMeltCostedtime(ParaffinMeltCostedtime),
     m_StationList(StationList)
 {
 }

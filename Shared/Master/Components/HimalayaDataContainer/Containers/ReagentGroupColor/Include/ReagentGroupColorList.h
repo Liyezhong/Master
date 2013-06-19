@@ -115,7 +115,7 @@ public:
      *  \return Datacontainer Type
      */
     /****************************************************************************/
-    DataContainerType_t GetDataContainerType() {}
+    DataContainerType_t GetDataContainerType() {return PROGRAMS;}
 
     /****************************************************************************/
     /*!

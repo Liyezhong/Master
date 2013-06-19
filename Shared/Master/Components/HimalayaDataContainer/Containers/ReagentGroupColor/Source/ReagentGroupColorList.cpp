@@ -40,7 +40,7 @@ namespace DataManager {
  *
  */
 /****************************************************************************/
-CReagentGroupColorList::CReagentGroupColorList() :m_Version(0), m_Filename(""), m_DataVerificationMode(true), mp_ReadWriteLock(NULL)
+CReagentGroupColorList::CReagentGroupColorList() :m_Version(0), m_DataVerificationMode(true), m_Filename(""), mp_ReadWriteLock(NULL)
 {
     SetDefaultAttributes();
 }

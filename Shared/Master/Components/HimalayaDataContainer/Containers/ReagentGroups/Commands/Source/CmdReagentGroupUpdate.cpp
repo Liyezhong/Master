@@ -38,8 +38,9 @@ CmdReagentGroupUpdate::CmdReagentGroupUpdate(int TimeOut,
                                              const QString& GroupId,
                                              const QString& ColorId)
     : Command(TimeOut)
-    , m_GroupId(GroupId)
     , m_Color(ColorId)
+    , m_GroupId(GroupId)
+
 {
 }
 

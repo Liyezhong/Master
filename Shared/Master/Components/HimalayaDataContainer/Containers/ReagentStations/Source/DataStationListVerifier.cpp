@@ -47,6 +47,7 @@ CDataStationListVerifier::CDataStationListVerifier() : mp_DSL(NULL)
 /****************************************************************************/
 bool CDataStationListVerifier::VerifyData(CDataContainerBase* p_DataStationList)
 {
+    Q_UNUSED(p_DataStationList)
     /*
     mp_DSL = static_cast<CDashboardDataStationList*>(p_DataStationList);
 

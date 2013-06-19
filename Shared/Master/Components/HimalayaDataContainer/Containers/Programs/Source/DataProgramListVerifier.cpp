@@ -35,15 +35,15 @@ namespace DataManager {
  */
 /****************************************************************************/
 CDataProgramListVerifier::CDataProgramListVerifier(CDataContainer *p_DataContainer)
-    :mp_DataContainer(p_DataContainer)
-    ,mp_DPL(NULL)
+    :mp_DPL(NULL)
+    ,mp_DataContainer(p_DataContainer)
 {
 
 }
 
 CDataProgramListVerifier::CDataProgramListVerifier()
-    :mp_DataContainer(NULL),
-    mp_DPL(NULL)
+    :mp_DPL(NULL),
+    mp_DataContainer(NULL)
 {
 
 }
@@ -250,7 +250,7 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
             // check duration rang
             if(VerifiedData)
             {
-                quint32 duration = Helper::ConvertTimeStringToSeconds(p_ProgramStep.GetDuration());
+                int duration = Helper::ConvertTimeStringToSeconds(p_ProgramStep.GetDuration());
                 if(duration > STEP_DURATION_MAX  || duration < STEP_DURATION_MIN)
                 {
                     m_ErrorsHash.insert(EVENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT,

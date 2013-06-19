@@ -33,7 +33,7 @@ namespace DataManager {
  */
 /****************************************************************************/
 CProgram::CProgram() : CProgramBase("0","",""),
-    m_Icon(""), m_LeicaProgram(false), m_Favorite(false)
+    m_LeicaProgram(false), m_Icon(""), m_Favorite(false)
 {
     Init();
 }
@@ -45,7 +45,7 @@ CProgram::CProgram() : CProgramBase("0","",""),
  */
 /****************************************************************************/
 CProgram::CProgram(const QString ID) : CProgramBase(ID,"",""),
-     m_Icon(""), m_LeicaProgram(false), m_Favorite(false)
+     m_LeicaProgram(false), m_Icon(""), m_Favorite(false)
 {
     Init();
 }

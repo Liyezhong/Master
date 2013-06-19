@@ -45,11 +45,11 @@ namespace DataManager {
 
 CDataContainer::CDataContainer(Threads::MasterThreadController *p_MasterThreadController) :
     DataManager::CDataContainerCollectionBase(p_MasterThreadController),
-    ReagentGroupList(NULL),
-    ReagentGroupColorList(NULL),
     ProgramList(NULL),
-    ReagentList(NULL),
     StationList(NULL),
+    ReagentGroupList(NULL),
+    ReagentList(NULL),
+    ReagentGroupColorList(NULL),
     ProgramSettings(NULL),
     SpecialVerifierGroupA(NULL),
     SpecialVerifierGroupB(NULL),
@@ -320,6 +320,8 @@ QString CDataContainer::GetReagentName(QString ReagentID)
             return p_Reagent->GetReagentName();
         }
     }
+
+    return NULL;
 }
 
 }// namespace DataManager

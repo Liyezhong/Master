@@ -325,7 +325,7 @@ void CHimalayaUserSettings::SetTemperatureParaffinBath(
 /****************************************************************************/
 int CHimalayaUserSettings::GetFrequencyPV(void)
 {
-    GetValue(PV_FREQUENCY).toInt();
+    return GetValue(PV_FREQUENCY).toInt();
 }
 
 /****************************************************************************/

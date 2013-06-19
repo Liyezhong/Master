@@ -129,3 +129,8 @@ for(TheComponent, HIMALAYA_COMPONENTS) {
 
 ################# end group
 LIBS += -Wl,--end-group
+HEADERS   *= ../Include/*.h      # header file location
+FORMS += \
+    ../Forms/splash.ui
+
+HEADERS +=

@@ -107,8 +107,8 @@ HimalayaMasterThreadController::HimalayaMasterThreadController() try:
    // m_Simulation(true),
     m_Simulation(false),
     m_ProgramStartableManager(this),
-    m_ControllerCreationFlag(false),
-    m_AuthenticatedLevel(Global::OPERATOR)
+    m_AuthenticatedLevel(Global::OPERATOR),
+    m_ControllerCreationFlag(false)
 {
 }
 catch (...) {
@@ -570,6 +570,7 @@ void HimalayaMasterThreadController::SendStateChange(QString state) {
 
 /****************************************************************************/
 void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, int ExitCode) {
+    Q_UNUSED(Name)
     // first clear the process
     StopSpecificThreadController(static_cast<int>(EXPORT_CONTROLLER_THREAD));
     // second clear the thread

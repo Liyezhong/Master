@@ -32,10 +32,10 @@ namespace DataManager {
 
 CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThreadController) :CDataManagerBase(p_HimalayaMasterThreadController),
     mp_DataContainer(NULL),
-    mp_ReagentCommandInterface(NULL),
     mp_StationCommandInterface(NULL),
-    mp_ProgramCommandInterface(NULL),
-    mp_ReagentGroupCommandInterface(NULL)
+    mp_ReagentCommandInterface(NULL),
+    mp_ReagentGroupCommandInterface(NULL),
+    mp_ProgramCommandInterface(NULL)
 {
     quint32 ReturnCode  = InitDataContainer();
     if (ReturnCode != INIT_OK) {
@@ -46,11 +46,12 @@ CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThre
 
 CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThreadController, QString Path) :CDataManagerBase(p_HimalayaMasterThreadController),
     mp_DataContainer(NULL),
-    mp_ProgramCommandInterface(NULL),
-    mp_ReagentCommandInterface(NULL),
     mp_StationCommandInterface(NULL),
-    mp_ReagentGroupCommandInterface(NULL)
+    mp_ReagentCommandInterface(NULL),
+    mp_ReagentGroupCommandInterface(NULL),
+    mp_ProgramCommandInterface(NULL)
 {
+    Q_UNUSED(Path)
     quint32 ReturnCode = InitDataContainer();
     if (ReturnCode != INIT_OK) {
         Global::EventObject::Instance().RaiseEvent(ReturnCode);

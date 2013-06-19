@@ -586,6 +586,8 @@ bool ImportExportThreadController::WriteRMSFileData(const QFile &RMSFile,
                                                     const QStringList StationIDList) {
     // check whether station list exists or not
     // this is prerequiste to create the RMS file
+    Q_UNUSED(RMSFile)
+    Q_UNUSED(StationIDList)
 #ifndef HIMALAYA_IMPORT_EXPORT
     if (mp_StationList != NULL && mp_ReagentList != NULL) {
         QString FileData;
@@ -647,7 +649,7 @@ bool ImportExportThreadController::WriteRMSFileData(const QFile &RMSFile,
 
 /****************************************************************************/
 QString ImportExportThreadController::CalculateShelfLife(const DataManager::CReagent* p_Reagent) {
-
+    Q_UNUSED(p_Reagent)
     // This has to be done using the following formula:
     // the current time has to be added to (MaxTime - ActualTime)
 #ifndef HIMALAYA_IMPORT_EXPORT

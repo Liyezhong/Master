@@ -37,8 +37,8 @@ QString CmdUpdateStationReagentStatus::NAME = "MsgClasses::CmdUpdateStationReage
 /****************************************************************************/
 CmdUpdateStationReagentStatus::CmdUpdateStationReagentStatus(int TimeOut, const QStringList& StationIDs, int CassetteCount)
     : Command(TimeOut)
-    , m_StationIDs(StationIDs)
     , m_CassetteCount(CassetteCount)
+    , m_StationIDs(StationIDs)
 {
 }
 

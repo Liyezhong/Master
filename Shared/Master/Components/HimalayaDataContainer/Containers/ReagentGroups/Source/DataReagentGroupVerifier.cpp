@@ -49,6 +49,7 @@ CDataReagentGroupListVerifier::CDataReagentGroupListVerifier() : mp_DPSL(NULL)
 /****************************************************************************/
 bool CDataReagentGroupListVerifier::VerifyData(CDataContainerBase *p_ReagentGroupList)
 {
+    Q_UNUSED(p_ReagentGroupList)
     return true;
 }
 
