@@ -72,7 +72,6 @@ private:
     QDateTime m_EndDateTime;
     int m_ParaffinStepIndex;
     bool m_IsWaitingCleaningProgram;
-    bool m_ForceRunCleanProgram;
     bool m_IsResumeRun;
     QList<QString> m_StationList;
     int m_CurProgramStepIndex;
@@ -94,13 +93,15 @@ private:
     QString m_strResetEndTime, m_strInputCassetteBoxTitle;
     QString m_strNotFoundStation;
     QString m_strCheckEmptyStation;
+    DataManager::CHimalayaUserSettings* m_pUserSetting;
+
     void EnablePlayButton(bool bSetEnable);
     void EnableAbortButton(bool bSetEnable);
     void EnableRetortSlider(bool bSetEnable);
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(const DataManager::CProgram*, int, int, int, bool&);
     void PrepareSelectedProgramChecking();
-    void TakeOutSpecimenAndRunCleaning();
+    void TakeOutSpecimenAndWaitRunCleaning();
     void RetranslateUI();
 public:
     explicit CDashboardWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL);
@@ -132,9 +133,9 @@ public slots:
     void OnUserRoleChanged();
     void OnButtonClicked(int whichBtn);
     void OnUnselectProgram();
-    void AddItemsToComboBox();
+    void AddItemsToComboBox(bool bOnlyAddCleaningProgram = false);
     void OnActivated(int);
-    void OnComBoxButtonPress();
+    void OnComboBoxButtonPress();
     void OnProgramStartReadyUpdated();
     void OnProgramWillComplete();
     void OnProgramAborted();

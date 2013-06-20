@@ -101,6 +101,7 @@ private:
     QString m_strAborting;
     QString m_strAborted;
     QString m_strCompleted;
+    QString m_strReagentName;
 
     void RetranslateUI();
 signals:

@@ -48,7 +48,8 @@ CDashboardEndTimeWidget::CDashboardEndTimeWidget(Core::CDataConnector *p_DataCon
                                                     m_strEndTime(tr("End Time :")),
                                                     m_strAborting(tr("Aborting...")),
                                                     m_strAborted(tr("Aborted.")),
-                                                    m_strCompleted(tr("Completed!"))
+                                                    m_strCompleted(tr("Completed!")),
+                                                    m_strReagentName(tr("Reagent Name :"))
 
 {
     mp_Ui->setupUi(this);
@@ -134,6 +135,7 @@ void CDashboardEndTimeWidget::UpdateEndTimeWidgetItems(DataManager::CProgram con
     UpdateDateTime(m_ProgramEndDateTime);
     mp_Ui->lblName->show();
     mp_Ui->lblTime->setText("00:00:00");
+    mp_Ui->lblReagentName->setText(m_strReagentName);
     mp_Ui->lblReagentName->show();
     mp_Ui->lblStepTime->show();
     mp_Ui->lblTime->show();
@@ -290,7 +292,11 @@ void CDashboardEndTimeWidget::UpdateProgress()
  void CDashboardEndTimeWidget::OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType)
  {
     mp_ProgressTimer->stop();//the progress bar and Time countdown will stop
-    if (DataManager::PROGRAM_STATUS_ABORTED == ProgramStatusType)
+    if (DataManager::PROGRAM_STATUS_PAUSED == ProgramStatusType)
+    {
+       return;
+    }
+    else if (DataManager::PROGRAM_STATUS_ABORTED == ProgramStatusType)
     {
         mp_Ui->lblReagentName->setText(m_strAborted);
     }
@@ -336,8 +342,10 @@ void CDashboardEndTimeWidget::UpdateProgress()
  {
      m_strEndTime = QApplication::translate("Dashboard::CDashboardEndTimeWidget", "End Time :", 0, QApplication::UnicodeUTF8);
      m_strAborting = QApplication::translate("Dashboard::CDashboardEndTimeWidget", "Aborting...", 0, QApplication::UnicodeUTF8);
-     m_strAborted = QApplication::translate("Dashboard::CDashboardEndTimeWidget", "Aborting.", 0, QApplication::UnicodeUTF8);
+     m_strAborted = QApplication::translate("Dashboard::CDashboardEndTimeWidget", "Aborted.", 0, QApplication::UnicodeUTF8);
      m_strCompleted = QApplication::translate("Dashboard::CDashboardEndTimeWidget", "Completed!", 0, QApplication::UnicodeUTF8);
+     m_strReagentName = QApplication::translate("Dashboard::CDashboardEndTimeWidget", "Reagent Name :", 0, QApplication::UnicodeUTF8);
+
  }
 
 }    // end of namespace Dashboard

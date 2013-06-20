@@ -187,7 +187,7 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
     QStringList ReagentIDList;
 
     for (qint32 X = 0; X < p_Program->GetNumberOfSteps(); X++) {
-        if(p_Program->GetProgramStep(X,p_ProgramStep)){
+        if(p_Program->GetProgramStep(X, p_ProgramStep)){//use order index
             QString ReagentID = p_ProgramStep.GetReagentID();
             // Reagent is empty
             if(ReagentID.isEmpty())

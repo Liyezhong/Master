@@ -233,7 +233,17 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
     {
     case CTRL_CMD_START:
         m_UsedStationIDs.clear();
-        m_CurProgramID = m_NewProgramID;
+
+        //Check if it is a Cleaning Program or not?
+        if (m_NewProgramID.at(0) == 'C')
+        {
+            int sep = m_NewProgramID.indexOf('_');
+            m_CurProgramID = m_NewProgramID.left(sep);
+            m_ReagentIdOfLastStep = m_NewProgramID.right(m_NewProgramID.count()- sep -1);
+        }
+        else
+            m_CurProgramID = m_NewProgramID;
+
         m_NewProgramID = "";
         m_CurProgramStepIndex = -1;
         this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
@@ -790,32 +800,59 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
     }
 
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
-    //ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
+    if (!pProgram)
+        return false;
 
-
-    int nextProgramStepIndex(-1);
-    if (-1 == m_CurProgramStepIndex)
+    const CProgramStep* pProgramStep(NULL);
+    QString reagentID("");
+    bool bSkipCurrentStep = false;
+    do
     {
-        nextProgramStepIndex = 0;
-    }
-    else
-    {
-        int nextOne = m_CurProgramStepIndex ;
-        ++nextOne;
-        nextProgramStepIndex = nextOne;
+        if (-1 == m_CurProgramStepIndex)
+        {
+            m_CurProgramStepIndex = 0;
+        }
+        else
+        {
+            ++m_CurProgramStepIndex;
 
     }
 
-    const CProgramStep* pProgramStep = pProgram->GetProgramStep(nextProgramStepIndex);
+        pProgramStep = pProgram->GetProgramStep(m_CurProgramStepIndex);//use order index
+        if (pProgramStep)
+        {
+            reagentID = pProgramStep->GetReagentID();
+            //Check reagent compatible
+            if (ProgramID.at(0) == 'C')
+            {
+                if (CDataReagentList* pReagentList =  mp_DataManager->GetReagentList())
+                {
+                    const CReagent* pLastReagent = pReagentList->GetReagent(m_ReagentIdOfLastStep);
+                    if (!pLastReagent)
+                        return false;
+
+                    const CReagent* pCurReagent = pReagentList->GetReagent(reagentID);
+
+                    QStringList list;
+                    list << "RG1"<<"RG2"<<"RG3"<<"RG4"<<"RG5";
+                    if (list.contains(pLastReagent->GetGroupID()) && pCurReagent->GetGroupID() == "RG7")
+                    {
+                        bSkipCurrentStep = true;
+                    }
+                    else
+                        bSkipCurrentStep = false;
+                }
+            }
+        }
+    } while (bSkipCurrentStep);
+
     if (pProgramStep)
     {
-        QString reagentID = pProgramStep->GetReagentID();
-        programStepInfor.stationID  = this->GetStationIDFromProgramStep(nextProgramStepIndex);
+        programStepInfor.stationID  = this->GetStationIDFromProgramStep(m_CurProgramStepIndex);
         programStepInfor.durationInSeconds = pProgramStep->GetDurationInSeconds();
         programStepInfor.temperature = pProgramStep->GetTemperature().toInt();
         programStepInfor.isPressure = (pProgramStep->GetPressure() == "On");
         programStepInfor.isVacuum = (pProgramStep->GetVacuum() == "On");
-        m_CurProgramStepIndex = nextProgramStepIndex;
         m_CurReagnetName = GetReagentName(reagentID);
     }
     else
@@ -930,7 +967,7 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
 
     for (int i = 0; i < stepIDs->count(); i++)
     {
-        const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);
+        const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
         ProgramStationInfo_t stationInfo;
         isLastStep = (i == (stepIDs->count() - 1));
         QString reagentID = pProgramStep->GetReagentID();
@@ -978,7 +1015,7 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
 
     for (int i = index; i < stepIDs->count(); i++)
     {
-        const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);
+        const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
         quint32 soakTime = pProgramStep->GetDurationInSeconds();
         leftTime += soakTime;
         bool isPressure = (pProgramStep->GetPressure() == "On");
@@ -1016,7 +1053,6 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
     }
 
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
-    //ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
 
     int programStepIDIndex(-1);
     if (-1 == m_CurProgramStepIndex)

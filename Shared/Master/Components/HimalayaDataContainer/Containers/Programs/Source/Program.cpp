@@ -122,7 +122,7 @@ quint32 CProgram::GetProgramDurationInSeconds() const
 {
     quint32 duration = 0;
     for (qint32 I = 0; I < GetNumberOfSteps(); I++) {
-        const CProgramStep *step = GetProgramStep(I);
+        const CProgramStep *step = GetProgramStep(I);//use order index
         if (step) {
             duration += step->GetDurationInSeconds();
         }

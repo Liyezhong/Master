@@ -58,6 +58,9 @@ const QString RMS_CYCLES_STRING("cycles");
 const QString RMS_DAYS_STRING("days");
 const QString RMS_OFF_STRING("off");
 
+const QString CASSETTE_COUNT("CassetteCount_Number");//need the format with "_"
+const QString REAGENTID_OF_LASTSTEP("ReagentIdOfLastStep_ID");
+
 /****************************************************************************/
 /**
  * \brief Class for reading / writing XML based configuration file for user settings.
@@ -111,6 +114,14 @@ public:
     int GetFrequencyPV(void);
 
     void SetFrequencyPV(int FrequencyPV);
+
+    void SetCassetteCount(int CassetteCount);
+
+    int GetCassetteCount();
+
+    void SetReagentIdOfLastStep(QString reagentID);
+
+    QString GetReagentIdOfLastStep();
 
     Global::RMSOptions_t GetModeRMSProcessing(void);
 

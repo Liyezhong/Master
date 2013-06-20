@@ -151,6 +151,7 @@ typedef struct
         QStringList m_UsedStationIDs;                                                 ///in a whole of program processing
         SchedulerTimeStamps_t m_TimeStamps;
         QList<QString> m_StationList;
+        QString m_ReagentIdOfLastStep;
         bool m_PauseToBeProcessed;
         int m_ProcessCassetteCount;
         SchedulerMainThreadController();                                             ///< Not implemented.

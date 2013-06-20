@@ -340,6 +340,26 @@ void CHimalayaUserSettings::SetFrequencyPV(int FrequencyPV)
     SetValue(PV_FREQUENCY, QString::number(FrequencyPV));
 }
 
+void CHimalayaUserSettings::SetCassetteCount(int CassetteCount)
+{
+    SetValue(CASSETTE_COUNT, QString::number(CassetteCount));
+}
+
+int CHimalayaUserSettings::GetCassetteCount()
+{
+    return GetValue(CASSETTE_COUNT).toInt();
+}
+
+void CHimalayaUserSettings::SetReagentIdOfLastStep(QString reagentID)
+{
+    SetValue(REAGENTID_OF_LASTSTEP, reagentID);
+}
+
+QString CHimalayaUserSettings::GetReagentIdOfLastStep()
+{
+    return GetValue(REAGENTID_OF_LASTSTEP);
+}
+
 /****************************************************************************/
 /*!
  *  \brief Gets the RMS mode of processing reagents.

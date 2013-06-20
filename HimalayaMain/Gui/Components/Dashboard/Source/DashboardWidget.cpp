@@ -40,7 +40,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    m_TimeProposed(0),
                                    m_ParaffinStepIndex(-1),
                                    m_IsWaitingCleaningProgram(false),
-                                   m_ForceRunCleanProgram(false),
                                    m_IsResumeRun(false),
                                    m_CurProgramStepIndex(-1),
                                    m_IsDraining(false),
@@ -56,11 +55,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    m_strNotStartRMSOFF(tr("Can not start Leica Program With RMS OFF, please trun on RMS.")),
                                    m_strNotStartExpiredReagent(tr("Some expired reagents are used in this selected program, you can not start this program.")),
                                    m_strStartExpiredReagent(tr("Do you want to Start the Program with Expired Reagents?")),
-                                   m_strAbortProgram(tr("Do you want to abort the program?")),
                                    m_strProgramComplete(tr("Program \"%1\" is complete! Would you like to drain the retort?")),
                                    m_strTakeOutSpecimen(tr("Please take out your specimen!")),
-                                   m_strRetortContaminated(tr("The retort is contaminated, Cleaning Program will run! Please lock the retort then click \"OK\".")),
-                                   m_strStartNewProgram(tr("Program \"%1\" is aborted! Would you like to start a new Program?")),
                                    m_strNeedMeltParaffin(tr("Still it will cost some time to melt paraffin, the current selected program can not run now.")),
                                    m_strResetEndTime(tr("Please re-set the End Date&Time of the current selected program.")),
                                    m_strInputCassetteBoxTitle(tr("Please set numbers of cassettes:")),
@@ -93,6 +89,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      mp_Separator->setParent(this);  // Set Parent of this Frame as the Dashboard Widget.
      DrawSeparatorLine();
 
+     m_pUserSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
+
      mp_ProgramList = mp_DataConnector->ProgramList;
 
      m_btnGroup.addButton(mp_Ui->playButton, Dashboard::firstButton);
@@ -106,7 +104,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
      CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, activated(int), this, OnActivated(int));
-     CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, ButtonPress(), this, OnComBoxButtonPress());
+     CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, ButtonPress(), this, OnComboBoxButtonPress());
 
      CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
      CONNECTSIGNALSLOT(mp_ProgramStatusWidget, AbortClicked(int), this, OnButtonClicked(int));
@@ -209,8 +207,8 @@ void CDashboardWidget::RetranslateUI()
     m_strAbortProgram = QApplication::translate("Dashboard::CDashboardWidget", "Do you want to abort the program?", 0, QApplication::UnicodeUTF8);
     m_strProgramComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is complete! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
-    m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, Cleaning Program will run! Please lock the retort then click \"OK\".", 0, QApplication::UnicodeUTF8);
-    m_strStartNewProgram  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted! Would you like to start a new Program?", 0, QApplication::UnicodeUTF8);
+    m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
+    m_strStartNewProgram  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
     m_strNeedMeltParaffin  = QApplication::translate("Dashboard::CDashboardWidget", "Still it will cost some time to melt paraffin, the current selected program can not run now.", 0, QApplication::UnicodeUTF8);
     m_strResetEndTime = QApplication::translate("Dashboard::CDashboardWidget", "Please re-set the End Date&Time of the current selected program.", 0, QApplication::UnicodeUTF8);
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please set numbers of cassettes:", 0, QApplication::UnicodeUTF8);
@@ -229,12 +227,19 @@ void CDashboardWidget::DrawSeparatorLine()
     mp_Separator->show();
 }
 
-void CDashboardWidget::AddItemsToComboBox()
+void CDashboardWidget::AddItemsToComboBox(bool bOnlyAddCleaningProgram)
 {
     m_FavProgramIDs.clear();
     mp_Ui->pgmsComboBox->clear();
+    if (bOnlyAddCleaningProgram)
+    {
+        m_FavProgramIDs.append("C01");
+    }
+    else
+    {
+        m_FavProgramIDs = mp_ProgramList->GetFavoriteProgramIDs(); // get five favorite Programs' ID
+    }
 
-    m_FavProgramIDs = mp_ProgramList->GetFavoriteProgramIDs(); // get five favorite Programs' ID
     for ( int i = 0; i < m_FavProgramIDs.count(); i++)
     {
         QString ProgramId = m_FavProgramIDs.at(i);
@@ -281,7 +286,16 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
             {
                 if (m_IsResumeRun)
                 {
-                    mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, m_EndDateTime);
+                    QString strTempProgramId;
+                    if (m_SelectedProgramId.at(0) == 'C')
+                    {
+                        strTempProgramId = m_SelectedProgramId;
+                        strTempProgramId.append("_");
+                        QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
+                        strTempProgramId.append(strReagentIDOfLastStep);
+                    }
+
+                    mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
                     mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
                     m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
                     return;
@@ -295,6 +309,7 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
                 if(CheckPreConditionsToPauseProgram())
                 {
                     mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_PAUSE);
+                    emit ProgramActionStopped(DataManager::PROGRAM_STATUS_PAUSED);//pause ProgressBar and EndTime countdown
                     m_ProgramNextAction = DataManager::PROGRAM_START;
                     mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
 
@@ -446,7 +461,7 @@ void CDashboardWidget::OnActivated(int index)
     }
 }
 
-void CDashboardWidget::OnComBoxButtonPress()
+void CDashboardWidget::OnComboBoxButtonPress()
 {
     const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_NewSelectedProgramId);
     if (pProgram)
@@ -490,10 +505,17 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
     if ("" == m_SelectedProgramId)
         return;
 
-
     //Check cleaning program run in last time?
-    bool isCleaningProgramRun = true; // get this from a log file.
-    if (!isCleaningProgramRun)
+    bool hasRunCleaningProgram = true;
+    QString strReagentIDOfLastStep("");
+    if (m_SelectedProgramId.at(0) != 'C')
+    {
+        DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
+        strReagentIDOfLastStep = userSetting->GetReagentIdOfLastStep();
+        hasRunCleaningProgram = strReagentIDOfLastStep == "";
+    }
+
+    if (!hasRunCleaningProgram)
     {
         mp_MessageDlg->SetIcon(QMessageBox::Information);
         mp_MessageDlg->SetTitle(m_strInformation);
@@ -502,7 +524,7 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
         {
-            TakeOutSpecimenAndRunCleaning();
+            TakeOutSpecimenAndWaitRunCleaning();
         }
         return;
      }
@@ -626,6 +648,12 @@ void CDashboardWidget::OnProgramStartReadyUpdated()
 
 void CDashboardWidget::OnProgramWillComplete()
 {
+    //log the reagent ID in last step
+    const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_SelectedProgramId);
+    QString strReagentIDOfLastStep = pProgram->GetProgramStep(pProgram->GetNumberOfSteps()-1)->GetReagentID();
+    m_pUserSetting->SetReagentIdOfLastStep(strReagentIDOfLastStep);
+    mp_DataConnector->SendUpdatedSettings(*m_pUserSetting);
+
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetTitle(m_strWarning);
     QString strTemp(m_strProgramComplete);
@@ -651,8 +679,8 @@ void CDashboardWidget::OnProgramWillComplete()
     }
 }
 
-
-void CDashboardWidget::TakeOutSpecimenAndRunCleaning()
+//this function will be invoked after program Abort and completed
+void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
 {
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetTitle(m_strWarning);
@@ -667,21 +695,25 @@ void CDashboardWidget::TakeOutSpecimenAndRunCleaning()
         mp_MessageDlg->SetText(m_strRetortContaminated);
         mp_MessageDlg->SetButtonText(1, m_strOK);
         mp_MessageDlg->HideButtons();
-        //mp_MessageDlg->EnableButton(1, false);
+        //mp_MessageDlg->EnableButton(1, false);//when lock is locked, "OK" will be enable
         mp_MessageDlg->EnableButton(1, true);//6.6 for test
 
         m_IsWaitingCleaningProgram = true;
         if (mp_MessageDlg->exec())
         {
-            m_IsWaitingCleaningProgram = false;
-            m_ForceRunCleanProgram = true;////6.6 for test
-            m_NewSelectedProgramId = "C01";
-            CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = tr("Cleaning Program");
-            PrepareSelectedProgramChecking();
+            //Change UI to prepare start Cleaning Program
+            mp_Ui->pgmsComboBox->WorkAsButton(false);
 
-            //disable pause and abort
-            EnablePlayButton(false);
-            EnableAbortButton(false);
+            m_ProgramNextAction = DataManager::PROGRAM_START;
+            mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
+
+            //only show Cleaning program in the ComboBox list
+            this->AddItemsToComboBox(true);
+            //switch to the dashboard page
+            mp_MainWindow->SetTabWidgetIndex();
+            //show the comboBox
+            mp_Ui->pgmsComboBox->showPopup();
+
         }
     }
 }
@@ -707,7 +739,7 @@ void CDashboardWidget::OnProgramAborted()
 
     EnableRetortSlider(true);
     //disable "Start" button, enable Retort lock button, hide End time button, now Abort button is still in "disable" status
-    EnablePlayButton(false);
+    EnablePlayButton(true);
 
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetTitle(m_strWarning);
@@ -715,18 +747,10 @@ void CDashboardWidget::OnProgramAborted()
     strTemp = m_strStartNewProgram.arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
     mp_MessageDlg->SetText(strTemp);
     mp_MessageDlg->SetButtonText(1, m_strYes);
-    mp_MessageDlg->SetButtonText(3, m_strNo);
-    mp_MessageDlg->HideCenterButton();
-    if (mp_MessageDlg->exec())//yes
+    mp_MessageDlg->HideButtons();
+    if (mp_MessageDlg->exec())
     {
-        //switch to the dashboard page
-        mp_MainWindow->SetTabWidgetIndex();
-        //show the comboBox
-        mp_Ui->pgmsComboBox->showPopup();
-    }
-    else//no
-    {
-        this->TakeOutSpecimenAndRunCleaning();
+        this->TakeOutSpecimenAndWaitRunCleaning();
     }
 }
 
@@ -735,6 +759,13 @@ void CDashboardWidget::OnProgramCompleted()
     m_IsResumeRun = false;
     m_CurProgramStepIndex = -1;
     mp_Ui->pgmsComboBox->WorkAsButton(false);
+
+    if (m_SelectedProgramId.at(0) == 'C')
+    {
+        m_pUserSetting->SetReagentIdOfLastStep("");//Clear CleaningProgram flag
+        mp_DataConnector->SendUpdatedSettings(*m_pUserSetting);
+    }
+
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
 }
 
@@ -834,7 +865,16 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
                 delete pCassetteInput;
             }
         }
-        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, m_EndDateTime);
+
+        QString strTempProgramId(m_SelectedProgramId);
+        if (m_SelectedProgramId.at(0) == 'C')
+        {
+            strTempProgramId.append("_");
+            QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
+            strTempProgramId.append(strReagentIDOfLastStep);
+        }
+
+        mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
         mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
         m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
         return;
@@ -900,12 +940,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
 
     emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
 
-    if (m_ForceRunCleanProgram)//for after program completed
-    {
-        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_START, m_EndDateTime);
-        m_ForceRunCleanProgram = false;
-    }
-    else if (m_ProgramStartReady)
+    if (m_ProgramStartReady)
     {
         EnablePlayButton(true);
     }
@@ -927,7 +962,7 @@ void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain 
     if (m_IsDraining && !cmd.IsStart() && !cmd.IsSuck())
     {
         emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
-        this->TakeOutSpecimenAndRunCleaning();//pause ProgressBar and EndTime countdown
+        this->TakeOutSpecimenAndWaitRunCleaning();//pause ProgressBar and EndTime countdown
         m_IsDraining = false;//when abort or pause, set this too?
     }
 }

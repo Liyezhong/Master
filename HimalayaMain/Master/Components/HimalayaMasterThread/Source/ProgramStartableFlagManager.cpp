@@ -112,42 +112,6 @@ void ProgramStartableManager::OnReadLiquidLevelComplete(QStringList DefectiveSta
  */
 /****************************************************************************/
 void ProgramStartableManager::OnUserSettingsChanged(const bool LanguangeChanged) {
-    /*
-        Global::WaterType CurrentWaterType = Global::StringToWaterType(mp_UserSettings->GetValue("Water_Type"));
-        QStringList NonStartableProgramIDs;
-        QStringList StartableProgramIDList =  mp_ProgramSequenceList->GetStartableProgramIDList();
-        for (qint32 I = 0 ; I < StartableProgramIDList.size(); I++) {
-            DataManager::CProgram *p_Program = const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(StartableProgramIDList.at(I)));
-            if (p_Program) {
-                for (qint32 I = 0; I < p_Program->GetNumberOfSteps(); I++) {
-                    const DataManager::CProgramStep *p_ProgramStep = p_Program->GetProgramStep(I);
-                    //Check: Current step is Distilled water and Current Water Type is not distilled water
-                    if ((QString::compare(p_ProgramStep->GetReagentID(), DISTILLED_WATER_STEP) == 0)
-                            && QString::compare(p_ProgramStep->GetReagentID(), Global::WaterTypeToString(CurrentWaterType)) != 0) {
-                        //Store Program Ids of Programs which use DI water
-                        NonStartableProgramIDs << p_Program->GetID();
-                        //We dont need to iterate further, check next startable program
-                        continue;
-                    }
-                }
-            }
-        }
-        //Now that we have Program IDs of Programs which are no longer startable update Program Sequence Container
-        QStringListIterator It(NonStartableProgramIDs);
-        while (It.hasNext()) {
-            DataManager::CProgramSequence *p_ProgramSequence = const_cast<DataManager::CProgramSequence*>(mp_ProgramSequenceList->GetProgramSequenceStep(It.next()));
-            if (p_ProgramSequence) {
-                p_ProgramSequence->SetStartCapableStatus(false);
-                p_ProgramSequence->SetStartCapableResult("2");
-            }
-        }
-        if (NonStartableProgramIDs.size() >= 1) {
-            //Log and inform EventHandler
-            Global::EventObject::Instance().RaiseEvent(EVENT_DI_WATER_NOT_AVAILABLE);
-            UpdateGUI();
-        }
-    */
-
     if (!LanguangeChanged || (0 == mp_DataManager))
     {
         return;
