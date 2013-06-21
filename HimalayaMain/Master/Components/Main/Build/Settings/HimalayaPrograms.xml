@@ -7,7 +7,7 @@
                 <Step ID="1" ReagentID="L1" Duration="44m" Temperature="55" Pressure="On" Vacuum="On"/>
             </StepList>
         </Program>
-        <Program ID="C01" Name="CleaningProgram" NameID="" Icon="Icon_Leica" LeicaProgram="true" Favorite="true">
+        <Program ID="C01" Name="CleaningProgram" NameID="" Icon="Icon_Leica" LeicaProgram="true" Favorite="false">
             <StepList NextStepID="15">
                 <Step ID="0" ReagentID="L10" Duration="8m" Temperature="65" Pressure="Off" Vacuum="Off"/>
                 <Step ID="1" ReagentID="L10" Duration="5m" Temperature="65" Pressure="Off" Vacuum="Off"/>
