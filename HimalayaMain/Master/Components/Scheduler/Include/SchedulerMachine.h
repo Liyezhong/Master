@@ -42,7 +42,8 @@ public:
     void SendErrorSignal();
 
     SchedulerState_t GetCurrentState();
-
+private slots:
+    void OnStateChanged();
 signals:
     void SchedulerInitComplete();
     void RunSignal();

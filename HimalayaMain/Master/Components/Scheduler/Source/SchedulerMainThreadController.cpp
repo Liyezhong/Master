@@ -49,6 +49,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "float.h"
+#include "EventHandler/Include/CrisisEventHandler.h"
 
 
 using namespace DataManager;
@@ -254,6 +255,9 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             Q_ASSERT(commandPtrFinish);
             Global::tRefType fRef = GetNewCommandRef();
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
+            QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
+            LOG_STR_ARG(STR_START_PROGRAM, Global::FmtArgs()<<ProgramName);
+
 
             qDebug() << "Start step: " << m_CurProgramID;
             mp_ProgramStepStateMachine->Start();
@@ -262,6 +266,8 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             PrepareProgramStationList(m_CurProgramID);
             //send command to main controller to tell the left time
             quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
+            LOG_STR_ARG(STR_CURRENT_PROGRAM_NAME_STEP_REAGENT_LEFTTIME,Global::FmtArgs()<< ProgramName
+                    << m_CurProgramStepIndex +1 << m_CurReagnetName << leftSeconds);
             QTime leftTime(0,0,0);
             leftTime = leftTime.addSecs(leftSeconds);
             MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftTime));
@@ -601,6 +607,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
             qDebug()<< "step finished!";
             this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
+            QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
             if(m_CurProgramStepIndex != -1)
             {
                 //start next step
@@ -608,12 +615,18 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 mp_ProgramStepStateMachine->Start();
                 //send command to main controller to tell the left time
                 quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
+
+
                 QTime leftTime(0,0,0);
                 leftTime = leftTime.addSecs(leftSeconds);
                 MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftTime));
                 Q_ASSERT(commandPtr);
                 Global::tRefType Ref = GetNewCommandRef();
                 SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+                //log
+                LOG_STR_ARG(STR_CURRENT_PROGRAM_NAME_STEP_REAGENT_LEFTTIME,Global::FmtArgs()<< ProgramName
+                                    << m_CurProgramStepIndex + 1 << m_CurReagnetName << leftSeconds);
             }
             else
             {
@@ -636,6 +649,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 Q_ASSERT(commandPtrFinish);
                 Ref = GetNewCommandRef();
                 SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+
+                //LOG
+                LOG_STR_ARG(STR_FINISH_PROGRAM, Global::FmtArgs()<<ProgramName);
             }
         }
         else if(PSSM_PAUSE == stepState)
@@ -1106,6 +1122,27 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
                                                                                         Cmd.ProgramEndDateTime())));
     m_Mutex.unlock();
     this->SendAcknowledgeOK(Ref);
+
+    //log
+    quint32 cmdid = 0;
+    if (Cmd.ProgramActionType() == DataManager::PROGRAM_START)
+    {
+        cmdid = STR_PROGRAM_COMMAND_START_PROGRAM;
+    }
+    else if(Cmd.ProgramActionType() == DataManager::PROGRAM_PAUSE)
+    {
+        cmdid = STR_PROGRAM_COMMAND_PAUSE_PROGRAM;
+    }
+    else if(Cmd.ProgramActionType() == DataManager::PROGRAM_ABORT)
+    {
+        cmdid = STR_PROGRAM_COMMAND_ABORT_PROGRAM;
+    }
+    else if(Cmd.ProgramActionType() == DataManager::PROGRAM_DRAIN)
+    {
+        cmdid = STR_PROGRAM_COMMAND_DRAIN;
+    }
+    LOG_STR_ARG(STR_SCHDEULER_RECEIVE_MASTER_ACTION_COMMAND,
+                Global::tTranslatableStringList()<<Global::TranslatableString(cmdid));
 }
 
 //client-->master
@@ -1512,20 +1549,25 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
             }
 
             m_PositionRV = PositionRV;
+
+            LOG_PAR()<<"HDM"<<PositionRV<<PressureAL<<TempALLevelSensor
+                       <<TempALTube1<<TempALTube2<<TempRV1<<TempRV2
+                       <<TempRTBottom<<TempRTSide<<TempOvenBottom<<TempOvenTop
+                       <<OvenLidStatus<<RetortLockStatus;
 #if 0
-            qDebug()<<"Rotary valve's position is" << PositionRV;
-            qDebug()<<"Air liquid system pressure is" << PressureAL;
-            qDebug()<<"Air liquid system level sensor's temp is" << TempALLevelSensor;
-            qDebug()<<"Air liquid system tube1's temp is" << TempALTube1;
-            qDebug()<<"Air liquid system tube2's temp is" << TempALTube2;
-            qDebug()<<"Rotary valve's temp1 is" << TempRV1;
-            qDebug()<<"Rotary valve's temp2 is" << TempRV2;
-            qDebug()<<"Retort bottom temp is" << TempRTBottom;
-            qDebug()<<"Retort side temp is" << TempRTSide;
-            qDebug()<<"Oven bottom temp is" << TempOvenBottom;
-            qDebug()<<"Oven top temp is" << TempOvenTop;
-            qDebug()<<"Oven Lid status" << OvenLidStatus;
-            qDebug()<<"Retort Lock status" << RetortLockStatus;
+            LOG_PAR()<<"Rotary valve's position is" << PositionRV;
+            LOG_PAR()<<"Air liquid system pressure is" << PressureAL;
+            LOG_PAR()<<"Air liquid system level sensor's temp is" << TempALLevelSensor;
+            LOG_PAR()<<"Air liquid system tube1's temp is" << TempALTube1;
+            LOG_PAR()<<"Air liquid system tube2's temp is" << TempALTube2;
+            LOG_PAR()<<"Rotary valve's temp1 is" << TempRV1;
+            LOG_PAR()<<"Rotary valve's temp2 is" << TempRV2;
+            LOG_PAR()<<"Retort bottom temp is" << TempRTBottom;
+            LOG_PAR()<<"Retort side temp is" << TempRTSide;
+            LOG_PAR()<<"Oven bottom temp is" << TempOvenBottom;
+            LOG_PAR()<<"Oven top temp is" << TempOvenTop;
+            LOG_PAR()<<"Oven Lid status" << OvenLidStatus;
+            LOG_PAR()<<"Retort Lock status" << RetortLockStatus;
 #endif
         }
     }
@@ -1813,6 +1855,8 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
     {
         bool ok;
         bool goon = false;
+		LOG_STR(STR_PROGRAM_SELFTEST_START);
+        LOG_STR(STR_PROGRAM_SELFTEST_CHECK_TEMP_PRESSURE);
         // check oven heat time
         qreal parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "Oven", "oven heating",  "HeatingOvertime", ok);
         if(ok)
@@ -1886,37 +1930,48 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
         m_SchedulerCommandProcessor->pushCmd(cmd);
         mp_SelfTestStateMachine->NotifyCheckStation();
 
+        LOG_STR_ARG(STR_PROGRAM_SELFTEST_CHECK_BOTTLE, Global::FmtArgs()<<stationInfo.StationID);
+
     }
     else if(SELF_TEST_BOTTLE_CHECKING == selfTestState)
     {
+        quint32 resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
         if( DCL_ERR_DEV_BOTTLE_CHECK_OK == RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_OK;
         }
         else if( DCL_ERR_DEV_BOTTLE_CHECK_NOT_FULL == RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_NOT_FULL;
         }
         else if( DCL_ERR_DEV_BOTTLE_CHECK_BLOCKAGE == RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_BLOCKAGE;
         }
         else if(DCL_ERR_DEV_BOTTLE_CHECK_EMPTY == RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_EMPTY;
         }
         else if(DCL_ERR_DEV_BOTTLE_CHECK_ERROR == RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_ERROR;
         }
         else if(DCL_ERR_DEV_BOTTLE_CHECK_TIMEOUT == RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
+            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_TIMEOUT;
         }
         else if(DCL_ERR_UNDEFINED != RetCode)
         {
             qDebug() << "Unexpected ret code: "<< RetCode;
+            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
         }
+        LOG_STR_ARG(STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT, Global::tTranslatableStringList()<<Global::TranslatableString(resid));
     }
     else if(SELF_TEST_BOTTLE_CHECK_FINISH == selfTestState)
     {
@@ -1935,6 +1990,7 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
         else
         {
             mp_SelfTestStateMachine->NotifyCheckStaionFinished();
+            LOG_STR(STR_PROGRAM_SELFTEST_FINISH);
         }
     }
     else if(SELF_TEST_FINISH == selfTestState)

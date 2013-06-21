@@ -149,6 +149,7 @@ bool CProgram::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Complete
     XmlStreamWriter.writeStartElement("Program");
     XmlStreamWriter.writeAttribute("ID", GetID());
     XmlStreamWriter.writeAttribute("Name", GetName());
+    XmlStreamWriter.writeAttribute("NameID", GetNameID());
     XmlStreamWriter.writeAttribute("Icon", GetIcon());
     if (IsLeicaProgram()) {
         XmlStreamWriter.writeAttribute("LeicaProgram", "true");
@@ -208,6 +209,11 @@ bool CProgram::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
         return false;
     }
     SetName(XmlStreamReader.attributes().value("Name").toString());
+
+    // NameID
+    if (XmlStreamReader.attributes().hasAttribute("NameID")) {
+        SetNameID(XmlStreamReader.attributes().value("NameID").toString());
+    }
 
     // Icon
     if (!XmlStreamReader.attributes().hasAttribute("Icon")) {

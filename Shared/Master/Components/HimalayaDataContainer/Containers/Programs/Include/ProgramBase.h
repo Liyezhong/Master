@@ -25,6 +25,7 @@
 #include <QHash>
 
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramStep.h"
+#include "DataManager/Helper/Include/Helper.h"
 
 namespace DataManager {
 
@@ -39,6 +40,7 @@ class CProgramBase
 
 protected:
     QString m_Name;                     //!<  program name
+    QString m_NameID;
 
     ListOfIDs_t m_OrderedListOfStepIDs; //!< Ordered list of step id's
     QString m_ID;                               //!< program ID
@@ -118,7 +120,7 @@ public:
      *  \return  name
      */
     /****************************************************************************/
-    QString GetName() const {return m_Name;}
+    QString GetName() const;
     /****************************************************************************/
     /*!
      *  \brief Sets the program name
@@ -127,6 +129,23 @@ public:
      */
     /****************************************************************************/
     void SetName(const QString Value){m_Name = Value;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Retrieve the program name string id
+     *
+     *  \return  name string id
+     */
+    /****************************************************************************/
+    QString GetNameID() const {return m_NameID;}
+    /****************************************************************************/
+    /*!
+     *  \brief Sets the program name string id
+     *
+     *  \iparam Value = name string id
+     */
+    /****************************************************************************/
+    void SetNameID(const QString Value){m_NameID = Value;}
 
     /****************************************************************************/
     /*!

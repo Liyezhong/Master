@@ -1,4 +1,5 @@
 #include "../Include/ProgramStepStateMachine.h"
+#include "EventHandler/Include/CrisisEventHandler.h"
 #include <QDebug>
 
 namespace Scheduler
@@ -344,72 +345,90 @@ void ProgramStepStateMachine::OnStateChanged()
 {
     ProgramStepStateMachine_t curState = GetCurrentState();
     QString str = "";
+    quint32 strid = STR_PROGRAM_STEP_STATE_UNKNOWN;
     if( curState == (PSSM_INIT))
     {
         str = " PSSM_INIT";
+        strid = STR_PROGRAM_STEP_STATE_START;
     }
     else if(curState == (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1))
     {
          str = " PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1";
+         strid = STR_PROGRAM_STEP_STATE_HEAT_LEVEL_SENSOR_1;
     }
     else if(curState == (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2))
     {
          str = " PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2";
+         strid = STR_PROGRAM_STEP_STATE_HEAT_LEVEL_SENSOR_2;
     }
     else if(curState == (PSSM_READY_TO_TUBE_BEFORE))
     {
          str = " PSSM_READY_TO_TUBE_BEFORE";
+         strid = STR_PROGRAM_STEP_STATE_MOVE_TUBE_TO_FILL;
     }
     else if(curState == (PSSM_READY_TO_TUBE_AFTER))
     {
          str = " PSSM_READY_TO_TUBE_AFTER";
+         strid = STR_PROGRAM_STEP_STATE_MOVE_TUBE_TO_DRAIN;
     }
     else if(curState == (PSSM_READY_TO_FILL))
     {
          str = " PSSM_READY_TO_FILL";
+         strid = STR_PROGRAM_STEP_STATE_FILL;
     }
     else if(curState == (PSSM_READY_TO_SEAL))
     {
          str = " PSSM_READY_TO_SEAL";
+         strid = STR_PROGRAM_STEP_STATE_SEAL;
     }
     else if(curState == (PSSM_SOAK))
     {
          str = " PSSM_SOAK";
+         strid = STR_PROGRAM_STEP_STATE_SOAK;
     }
     else if(curState == (PSSM_READY_TO_DRAIN))
     {
          str = " PSSM_READY_TO_DRAIN";
+         strid = STR_PROGRAM_STEP_STATE_DRAIN;
     }
     else if(curState == (PSSM_FINISH))
     {
          str = " PSSM_FINISH";
+         strid = STR_PROGRAM_STEP_STATE_FINISH;
     }
     else if(curState == (PSSM_ERROR))
     {
          str = " PSSM_ERROR";
+         strid = STR_PROGRAM_STEP_STATE_ERROR;
     }
     else if(curState == PSSM_PAUSE)
     {
          str = " PSSM_PAUSE";
+         strid = STR_PROGRAM_STEP_STATE_PAUSE;
     }
     else if(curState == PSSM_PAUSE_DRAIN)
     {
          str = " PSSM_PAUSE_DRAIN";
+         strid = STR_PROGRAM_STEP_STATE_PAUSE_DRAIN;
     }
     else if(curState == PSSM_ABORTED)
     {
          str = " PSSM_ABORTED";
+         strid = STR_PROGRAM_STEP_STATE_ABORTED;
     }
     else if(curState == PSSM_ABORTING)
     {
          str = " PSSM_ABORTING";
+         strid = STR_PROGRAM_STEP_STATE_ABORTING;
     }
     else
     {
         //todo: log error here
          str = "UNKNOWEN STATE";
+         strid = STR_PROGRAM_STEP_STATE_UNKNOWN;
     }
     qDebug() << "Program step state machine enter:" << str;
+    LOG_STR_ARG(STR_PROGRAM_STEP_STATE,Global::tTranslatableStringList()<<Global::TranslatableString(strid));
 }
 
 }

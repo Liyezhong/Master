@@ -1,4 +1,5 @@
 #include "../Include/SchedulerMachine.h"
+#include "EventHandler/Include/CrisisEventHandler.h"
 
 namespace Scheduler
 {
@@ -22,6 +23,36 @@ SchedulerMachine::SchedulerMachine()
     mp_InitState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState);
     mp_IdleState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState);
     mp_ErrorState->addTransition(this, SIGNAL(RecoverToPause()), mp_PauseState);
+
+    connect(mp_InitState, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_IdleState, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_RunState, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_PauseState, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_ErrorState, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+}
+
+void SchedulerMachine::OnStateChanged()
+{
+    SchedulerState_t currentState = GetCurrentState();
+    quint32 stateid = STR_UNEXPECTED_STATE;
+    switch(currentState)
+    {
+    case INIT_STATE:
+        stateid = STR_INIT;
+        break;
+    case IDLE_STATE:
+        stateid = STR_IDLE;
+        break;
+    case RUN_STATE:
+        stateid = STR_RUN;
+        break;
+    case ERROR_STATE:
+        stateid = STR_ERROR;
+        break;
+    default:
+        stateid = STR_UNEXPECTED_STATE;
+    }
+    LOG_STR_ARG(STR_SCHDEULER_MAIN_CONTROLLER_STATE,Global::tTranslatableStringList()<<Global::TranslatableString(stateid));
 }
 
 SchedulerMachine::~SchedulerMachine()

@@ -84,7 +84,7 @@
 		<string id="33817346" text1="Program Sequence ID &apos;%1&apos; does not exists in the list." text2=""/>
 		<string id="33817345" text1="Program Sequence ID &apos;%1&apos; already in use. Please choose different ID." text2=""/>
 		<string id="33817347" text1="Program Sequence &apos;%1&apos; operation failed" text2=""/>
-		<string id="33816605" text1="Number of steps in Program %1 exceeds limit. Max 14 steps allowed." text2=""/>
+		<string id="33816605" text1="Number of steps in Program %1 exceeds limit. Max 50 steps allowed." text2=""/>
 		<string id="33818116" text1="Program &apos;%1&apos; must have &apos;%2&apos; step(s) at least." text2=""/>
 		<string id="33818118" text1="Duration in Step &apos;%1&apos; of Program &apos;%2&apos; exceeds limits, validated range : &apos;%3&apos; - &apos;%4&apos;." text2=""/>
 		<string id="33818119" text1="Temperature in Step &apos;%1&apos; of Program &apos;%2&apos; exceeds limits, validated range : &apos;%3&apos; - &apos;%4&apos; (Celsius)." text2=""/>
@@ -320,5 +320,71 @@
 		<string id="513050303" text1="Error ID %1! Please call for sevice!" text2=""/>
 		<string id="512050401" text1="Remote alarm system not connected! Please connect the device with remote alarm system" text2=""/>
 		<string id="512050402" text1="Local alarm system not connected! Please connect the device with local alarm system" text2=""/>
+		<string id="50331650" text1="LeicaOvernight" text2=""/>
+		<string id="50331651" text1="LeicaBiopsie" text2=""/>
+		<string id="50331652" text1="CleaningProgram" text2=""/>
+		<string id="50331653" text1="Fixation" text2=""/>
+		<string id="50331654" text1="Water" text2=""/>
+		<string id="50331655" text1="Dehydrating,diluted" text2=""/>
+		<string id="50331656" text1="Dehydrating,absolute" text2=""/>
+		<string id="50331657" text1="Clearing" text2=""/>
+		<string id="50331658" text1="Paraffin" text2=""/>
+		<string id="50331659" text1="Cleaning Solvent" text2=""/>
+		<string id="50331660" text1="Cleaning Alcohol" text2=""/>
+		<string id="50331661" text1="Formalin" text2=""/>
+		<string id="50331662" text1="Ethanol 70%" text2=""/>
+		<string id="50331663" text1="Ethanol 80%" text2=""/>
+		<string id="50331664" text1="Ethanol 90%" text2=""/>
+		<string id="50331665" text1="Ethanol 95%" text2=""/>
+		<string id="50331666" text1="Ethanol 100%" text2=""/>
+		<string id="50331667" text1="Xylene" text2=""/>
+		<string id="50331668" text1="Paraffin" text2=""/>
+		<string id="50331669" text1="Procssing Water" text2=""/>
+		<string id="50331670" text1="Cleaning xylene" text2=""/>
+		<string id="50331671" text1="Cleaning alcohol" text2=""/>
+		<string id="50331672" text1="Scheduler main controller state: %1" text2=""/>
+		<string id="50331673" text1="INIT" text2=""/>
+		<string id="50331674" text1="IDLE" text2=""/>
+		<string id="50331675" text1="RUN" text2=""/>
+		<string id="50331676" text1="ERROR" text2=""/>
+		<string id="50331677" text1="unexpected state" text2=""/>
+		<string id="50331678" text1="Scheduler receive action command from GUI: %1" text2=""/>
+		<string id="50331679" text1="Current program step state: %1" text2=""/>
+		<string id="50331680" text1="Start program %1" text2=""/>
+		<string id="50331681" text1="Program name %1 current step %2 current reagent %3 left time %4s" text2=""/>
+		<string id="50331682" text1="Finish program %1" text2=""/>
+		<string id="50331683" text1="step initializing" text2=""/>
+		<string id="50331684" text1="heating level sensor 1" text2=""/>
+		<string id="50331685" text1="heating level sensor 2" text2=""/>
+		<string id="50331686" text1="moving to tube to fill" text2=""/>
+		<string id="50331687" text1="moving to tube to draing" text2=""/>
+		<string id="50331688" text1="filling" text2=""/>
+		<string id="50331689" text1="sealing" text2=""/>
+		<string id="50331690" text1="soaking" text2=""/>
+		<string id="50331691" text1="draining" text2=""/>
+		<string id="50331692" text1="ready to drain" text2=""/>
+		<string id="50331693" text1="finished" text2=""/>
+		<string id="50331694" text1="Error" text2=""/>
+		<string id="50331695" text1="pause" text2=""/>
+		<string id="50331696" text1="pause during drain" text2=""/>
+		<string id="50331697" text1="aborted" text2=""/>
+		<string id="50331698" text1="aborting" text2=""/>
+		<string id="50331699" text1="unknown" text2=""/>
+		<string id="50331700" text1="start selftest" text2=""/>
+		<string id="50331701" text1="checking temperature and pressure" text2=""/>
+		<string id="50331702" text1="checking bottle %1" text2=""/>
+		<string id="50331703" text1="bottle check result: %1" text2=""/>
+		<string id="50331704" text1="selftest finished" text2=""/>
+		<string id="50331705" text1="Ok" text2=""/>
+		<string id="50331706" text1="not full" text2=""/>
+		<string id="50331707" text1="blockage" text2=""/>
+		<string id="50331708" text1="empty" text2=""/>
+		<string id="50331709" text1="error" text2=""/>
+		<string id="50331710" text1="timeout" text2=""/>
+		<string id="50331711" text1="unexpected" text2=""/>
+		<string id="50331712" text1="start program" text2=""/>
+		<string id="50331713" text1="pause program" text2=""/>
+		<string id="50331714" text1="abort program" text2=""/>
+		<string id="50331715" text1="drain" text2=""/>
 	</language>
 </strings>
