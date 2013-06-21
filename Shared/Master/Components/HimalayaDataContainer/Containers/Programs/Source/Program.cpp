@@ -203,17 +203,17 @@ bool CProgram::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
     }
 
     SetID(XmlStreamReader.attributes().value("ID").toString());
+    // NameID
+    if (XmlStreamReader.attributes().hasAttribute("NameID")) {
+        SetNameID(XmlStreamReader.attributes().value("NameID").toString());
+    }
+
     // Name
     if (!XmlStreamReader.attributes().hasAttribute("Name")) {
         qDebug() << "### attribute <Name> is missing => abort reading";
         return false;
     }
     SetName(XmlStreamReader.attributes().value("Name").toString());
-
-    // NameID
-    if (XmlStreamReader.attributes().hasAttribute("NameID")) {
-        SetNameID(XmlStreamReader.attributes().value("NameID").toString());
-    }
 
     // Icon
     if (!XmlStreamReader.attributes().hasAttribute("Icon")) {

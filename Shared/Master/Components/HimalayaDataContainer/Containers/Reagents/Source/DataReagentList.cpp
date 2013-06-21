@@ -642,7 +642,7 @@ ReagentType_t CDataReagentList::GetReagentType(const unsigned int Index)
  *  \return CReagent pointer
  */
 /****************************************************************************/
-const CReagent* CDataReagentList::GetReagent(const unsigned int Index)
+CReagent* CDataReagentList::GetReagent(const unsigned int Index)
 {
     QReadLocker locker(mp_ReadWriteLock);
 
@@ -1076,4 +1076,21 @@ bool CDataReagentList::CheckForUniqueName(QString ID, QString ReagentName)
     return Result;
 }
 
+
+
+void CDataReagentList::UpdateOnLanguageChanged()
+{
+   for (qint32 I = 0; I < m_ReagentList.count(); I++) {
+       CReagent *p_Reagent = GetReagent(I);
+       if(!p_Reagent->GetReagentNameID().isEmpty()){
+           bool ok = false;
+           quint32 strid = p_Reagent->GetReagentNameID().toUInt(&ok);
+           if(ok && strid > 0)
+           {
+               p_Reagent->SetReagentName(Helper::TranslateString(strid));
+           }
+       }
+   }
+   Write();
+}
 } // namespace DataManager

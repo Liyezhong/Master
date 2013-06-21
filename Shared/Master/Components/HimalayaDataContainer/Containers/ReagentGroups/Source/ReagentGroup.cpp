@@ -36,7 +36,7 @@ namespace DataManager {
  *  \brief Constructor
  */
 /****************************************************************************/
-CReagentGroup::CReagentGroup() :m_GroupID(""), m_GroupName(""),m_Color(""),
+CReagentGroup::CReagentGroup() :m_GroupID(""), m_GroupName(""),m_GroupNameID(""), m_Color(""),
                                 m_IsCleaningReagentGroup(false),
                                 m_IsParraffinGroup(false)
 {
@@ -50,7 +50,7 @@ CReagentGroup::CReagentGroup() :m_GroupID(""), m_GroupName(""),m_Color(""),
  */
 /****************************************************************************/
 CReagentGroup::CReagentGroup(const QString ID) :m_GroupID(ID), m_GroupName(""),m_Color(""),
-                                                m_IsCleaningReagentGroup(false),
+                                                m_IsCleaningReagentGroup(false),m_GroupNameID(""),
                                                 m_IsParraffinGroup(false)
 {
 }
@@ -95,6 +95,7 @@ bool CReagentGroup::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Com
 
     XmlStreamWriter.writeAttribute("ID", GetGroupID());
     XmlStreamWriter.writeAttribute("Name", GetReagentGroupName());
+    XmlStreamWriter.writeAttribute("NameID", GetGroupNameID());
     XmlStreamWriter.writeAttribute("Color", GetGroupColor());
     if (m_IsCleaningReagentGroup)
         XmlStreamWriter.writeAttribute("CleaningReagentGroup", "True");
@@ -139,6 +140,11 @@ bool CReagentGroup::DeserializeContent(QXmlStreamReader& XmlStreamReader,bool Co
         return false;
     }
     SetGroupID(XmlStreamReader.attributes().value("ID").toString());
+
+    // GroupName
+    if (XmlStreamReader.attributes().hasAttribute("NameID")) {
+        SetGroupNameID(XmlStreamReader.attributes().value("NameID").toString().trimmed());
+    }
 
     // GroupName
     if (!XmlStreamReader.attributes().hasAttribute("Name")) {

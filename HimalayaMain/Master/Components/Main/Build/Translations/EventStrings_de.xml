@@ -8,6 +8,32 @@
         <string id="16973831" text1="" text2=""/>
         <string id="16973832" text1="" text2=""/>
         <string id="16973833" text1="" text2=""/>
+		<string id="50331650" text1="LeicaOvernight_de" text2=""/>
+<string id="50331651" text1="LeicaBiopsie_de" text2=""/>
+<string id="50331652" text1="CleaningProgram_de" text2=""/>
+<string id="50331653" text1="Fixation_de" text2=""/>
+		<string id="50331654" text1="Water_de" text2=""/>
+		<string id="50331655" text1="Dehydrating,diluted_de" text2=""/>
+		<string id="50331656" text1="Dehydrating,absolute_de" text2=""/>
+		<string id="50331657" text1="Clearing_de" text2=""/>
+		<string id="50331658" text1="Paraffin_de" text2=""/>
+		<string id="50331659" text1="Cleaning Solvent_de" text2=""/>
+		<string id="50331660" text1="Cleaning Alcohol_de" text2=""/>
+		<!--string id="50331661" text1="Formalin_de" text2=""/-->
+		<string id="50331662" text1="Ethanol 70%_de" text2=""/>
+		<string id="50331663" text1="Ethanol 80%_de" text2=""/>
+		<string id="50331664" text1="Ethanol 90%_de" text2=""/>
+		<string id="50331665" text1="Ethanol 95%_de" text2=""/>
+		<string id="50331666" text1="Ethanol 100%_de" text2=""/>
+		<string id="50331667" text1="Xylene_de" text2=""/>
+		<string id="50331668" text1="Paraffin_de" text2=""/>
+		<string id="50331669" text1="Procssing Water_de" text2=""/>
+		<string id="50331670" text1="Cleaning xylene_de" text2=""/>
+		<string id="50331671" text1="Cleaning alcohol_de" text2=""/>
+		<string id="50331674" text1="IDLE_de" text2=""/>
+		<string id="50331679" text1="Current program step state: &quot;%1&quot;_de" text2=""/>
+		<string id="50331683" text1="step initializing_de" text2=""/>
+		<string id="50331684" text1="heating level sensor 1_de" text2=""/>
         <string id="16973834" text1="Data logging is disabled" text2=""/>
         <string id="17039361" text1="Colorado has switched to error state" text2=""/>
         <string id="17039362" text1="Colorado has switched to normal state" text2=""/>

@@ -145,7 +145,7 @@ public:
     bool GetReagentGroup(const unsigned int Index, CReagentGroup& ReagentGroup);
     bool GetReagentGroup(const QString ID, CReagentGroup& ReagentGroup);
 
-    const CReagentGroup* GetReagentGroup(const unsigned int Index); // uses order index
+    CReagentGroup* GetReagentGroup(const unsigned int Index); // uses order index
 
     bool AddReagentGroup(const CReagentGroup* p_ReagentGroupStep);   // p_ProgramStep is added directly => don't delete outside!
     bool UpdateReagentGroup(const CReagentGroup* p_ReagentGroupStep);  // content of p_ProgramStep will be copied  => delete outside!
@@ -155,6 +155,7 @@ public:
 
     qint32 GetReagentGroupIndex(const QString& GroupID) { return m_OrderedListOfReagentGroupIDs.indexOf(GroupID); }   // uses unique group ID
 
+    void UpdateOnLanguageChanged();
 
 private:
     int m_Version;                  //!< version of the xml

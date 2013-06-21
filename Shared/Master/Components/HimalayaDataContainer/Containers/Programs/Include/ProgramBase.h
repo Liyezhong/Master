@@ -128,7 +128,7 @@ public:
      *  \iparam Value = Program name
      */
     /****************************************************************************/
-    void SetName(const QString Value){m_Name = Value;}
+    void SetName(const QString Value);
 
     /****************************************************************************/
     /*!

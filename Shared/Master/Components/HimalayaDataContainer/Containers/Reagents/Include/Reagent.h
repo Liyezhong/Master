@@ -51,6 +51,7 @@ protected:
     int m_MaxTime;                          //!< Maximum  allowable time  for Reagent
     bool m_Visible;                         //!< Visible state of reagent
     QString m_Name;                         //!< Reagent Name
+    QString m_NameID;                       //!< Reagent Name id
     int m_CassettesUntilChange;             //!< maximum Cassettes for reagent to replace
     int m_CyclesUntilChange;                //!< maximum Cycles for reagent to replace
     int m_DaysUntilChange;                  //!< maximum Days for reagent to replace
@@ -222,6 +223,27 @@ public:
     /****************************************************************************/
     void SetReagentName(const QString Value){m_Name = Value.trimmed();}
 
+
+    /****************************************************************************/
+    /*!
+     *  \brief Gets the Name ID of the particular reagent
+     *
+     *  \return Name String
+     */
+    /****************************************************************************/
+    QString GetReagentNameID() const {return m_NameID;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief Sets the Name for the particular reagent
+     *
+     *  \iparam Value = Name
+     *
+     *  \return
+     */
+    /****************************************************************************/
+    void SetReagentNameID(const QString Value){m_NameID = Value.trimmed();}
+
     /****************************************************************************/
     /*!
      *  \brief Gets Maximum Time in Days of the particular reagent
@@ -312,6 +334,8 @@ public:
      */
     /****************************************************************************/
     void ResetLastErrors();
+
+
 
 };
 

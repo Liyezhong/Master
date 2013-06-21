@@ -49,6 +49,7 @@ private:
 protected:
     QString m_GroupID;                      //!< Reagent Group ID
     QString m_GroupName;                    //!< Reagent Name
+    QString m_GroupNameID;                  //1< GroupName string id
     QString m_Color;                        //!< Reagent Color
     bool m_IsCleaningReagentGroup;          //!< is it a cleaning reagent?
     bool m_IsParraffinGroup;                //!< is it a parraffin reagent?
@@ -106,6 +107,27 @@ public:
      */
     /****************************************************************************/
     void SetGroupID(const QString Value){m_GroupID = Value.trimmed();}
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief Gets the Group Name ID of the particular reagent
+     *
+     *  \return
+     */
+    /****************************************************************************/
+
+    QString GetGroupNameID() const{return m_GroupNameID;}
+    /****************************************************************************/
+    /*!
+     *  \brief Sets the Group Name ID of the particular reagent
+     *
+     *  \iparam Value = Desired Reagent Group ID
+     *
+     *  \return
+     */
+    /****************************************************************************/
+    void SetGroupNameID(const QString Value){m_GroupNameID = Value.trimmed();}
     /****************************************************************************/
     /*!
      *  \brief Gets the Name of the particular reagent

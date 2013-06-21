@@ -41,7 +41,7 @@ namespace DataManager {
  */
 /****************************************************************************/
 
-CReagent::CReagent() : m_Visible(true), m_Name(""), m_CassettesUntilChange(0),
+CReagent::CReagent() : m_Visible(true), m_Name(""), m_NameID(""), m_CassettesUntilChange(0),
     m_CyclesUntilChange(0), m_DaysUntilChange(0), m_ReagentID("U100"), m_GroupID("")
 {
 }
@@ -54,7 +54,7 @@ CReagent::CReagent() : m_Visible(true), m_Name(""), m_CassettesUntilChange(0),
  */
 /****************************************************************************/
 
-CReagent::CReagent(const QString ID) : m_Visible(true), m_Name(""), m_CassettesUntilChange(0),
+CReagent::CReagent(const QString ID) : m_Visible(true), m_Name(""), m_NameID(""),  m_CassettesUntilChange(0),
     m_CyclesUntilChange(0), m_DaysUntilChange(0), m_ReagentID(ID), m_GroupID("")
 {
 }
@@ -94,6 +94,7 @@ bool CReagent::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool Complete
 
     XmlStreamWriter.writeAttribute("ID", GetReagentID());
     XmlStreamWriter.writeAttribute("Name", GetReagentName());
+    XmlStreamWriter.writeAttribute("NameID", GetReagentNameID());
     XmlStreamWriter.writeAttribute("Group", GetGroupID());
 
 //    if((IsUserReagent()) || (IsLeicaReagent())) {
@@ -143,6 +144,11 @@ bool CReagent::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
         return false;
     }
     SetReagentID(XmlStreamReader.attributes().value("ID").toString());
+
+    // ReagentNameID
+    if (XmlStreamReader.attributes().hasAttribute("NameID")) {
+        SetReagentNameID(XmlStreamReader.attributes().value("NameID").toString().trimmed());
+    }
 
     // ReagentName
     if (!XmlStreamReader.attributes().hasAttribute("Name")) {

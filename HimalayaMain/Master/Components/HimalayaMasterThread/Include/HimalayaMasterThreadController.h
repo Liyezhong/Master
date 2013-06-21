@@ -246,38 +246,7 @@ private:
     }
 
 
-    /****************************************************************************/
-    /**
-     * \brief Send command to the required channel.
-     *
-     * \param Container - Container class
-     * \param ContainerVerifier - Verifier class for the container
-     * \param Path - path of the file
-     *
-     * \return On successful (true) or not (false)
-     */
-    /****************************************************************************/
-    template<class DataList>
-    bool SendConfigurationFile(DataList *Container,NetCommands::FileType_t FileType,
-                               Threads::CommandChannel &Channel) {
-        // initialize the byte array
-        QByteArray *p_ByteArray = new QByteArray();
-        // clear the byte array
-        p_ByteArray->clear();
-        // create the xml stream in the read write mode
-        QDataStream XmlStream(p_ByteArray, QIODevice::ReadWrite);
-        // set the stream version
-        XmlStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
-        // stream the container
-        XmlStream << *Container;
-        /// \todo please add if any  logevent is required or not
-        // send the command to the required channel
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, FileType, XmlStream)), Channel);
 
-        // delete the byte array
-        delete p_ByteArray;
-        return true;
-    }
 
 
     /****************************************************************************/
@@ -484,6 +453,37 @@ public:
     /****************************************************************************/
     bool SendLanguageFileToGUI(QString FileName);
 
+    /****************************************************************************/
+    /**
+     * \brief Send command to the required channel.
+     *
+     * \param Container - Container class
+     * \param ContainerVerifier - Verifier class for the container
+     * \param Path - path of the file
+     *
+     * \return On successful (true) or not (false)
+     */
+    /****************************************************************************/
+    template<class DataList>
+    bool SendConfigurationFile(DataList *Container,NetCommands::FileType_t FileType) {
+        // initialize the byte array
+        QByteArray *p_ByteArray = new QByteArray();
+        // clear the byte array
+        p_ByteArray->clear();
+        // create the xml stream in the read write mode
+        QDataStream XmlStream(p_ByteArray, QIODevice::ReadWrite);
+        // set the stream version
+        XmlStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
+        // stream the container
+        XmlStream << *Container;
+        /// \todo please add if any  logevent is required or not
+        // send the command to the required channel
+        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, FileType, XmlStream)), m_CommandChannelGui);
+
+        // delete the byte array
+        delete p_ByteArray;
+        return true;
+    }
 
 private slots:
       void SendXML();

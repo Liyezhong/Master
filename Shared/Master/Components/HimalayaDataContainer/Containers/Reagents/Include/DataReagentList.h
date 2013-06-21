@@ -122,7 +122,7 @@ public:
 
     bool GetReagent(const QString ReagentID, CReagent& Reagent);
     bool GetReagent(const unsigned int Index, CReagent& Reagent);
-    const CReagent* GetReagent(const unsigned int Index); // uses order index
+    CReagent* GetReagent(const unsigned int Index); // uses order index
 
     bool AddReagent(const CReagent* p_Reagent);   // p_Reagent is added directly => don't delete outside!
     bool UpdateReagent(const CReagent* p_Reagent);  // content of p_Reagent will be copied  => delete outside!
@@ -222,7 +222,9 @@ public:
      */
     /****************************************************************************/
     // uses unique reagent ID
-    const CReagent* GetReagent(const QString ReagentID) const {return m_ReagentList.value(ReagentID, NULL);}
+    CReagent* GetReagent(const QString ReagentID) const {return m_ReagentList.value(ReagentID, NULL);}
+
+        void UpdateOnLanguageChanged();
 };
 
 } // namespace DataManager

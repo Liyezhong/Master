@@ -130,6 +130,22 @@ void ProgramStartableManager::OnUserSettingsChanged(const bool LanguangeChanged)
 
         QString LanguageFileName = "Himalaya_" + LanguageName + ".qm";
         mp_HimalayaMasterThreadController->SendLanguageFileToGUI(LanguageFileName);
+        if(mp_ProgramList)
+        {
+            mp_ProgramList->UpdateOnLanguageChanged();
+            mp_HimalayaMasterThreadController->SendConfigurationFile(mp_ProgramList,NetCommands::PROGRAM);
+
+        }
+        if(mp_DataManager->GetReagentGroupList())
+        {
+            mp_DataManager->GetReagentGroupList()->UpdateOnLanguageChanged();
+            mp_HimalayaMasterThreadController->SendConfigurationFile(mp_DataManager->GetReagentGroupList(),NetCommands::REAGENTGROUP);
+        }
+        if(mp_DataManager->GetReagentList())
+        {
+            mp_DataManager->GetReagentList()->UpdateOnLanguageChanged();
+            mp_HimalayaMasterThreadController->SendConfigurationFile(mp_DataManager->GetReagentList(),NetCommands::REAGENT);
+        }
     }
 
 }

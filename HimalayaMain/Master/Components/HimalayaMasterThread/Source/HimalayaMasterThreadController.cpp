@@ -714,12 +714,12 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
         if ((TypeOfImport.compare("User") == 0) || (TypeOfImport.compare("Service") == 0) || (TypeOfImport.compare("Leica") == 0)) {
 
             // send configuration files to GUI
-            SendConfigurationFile(mp_DataManager->GetUserSettingsInterface(), NetCommands::USER_SETTING, m_CommandChannelGui);
-            SendConfigurationFile(mp_DataManager->GetReagentList(), NetCommands::REAGENT, m_CommandChannelGui);
-            SendConfigurationFile(mp_DataManager->GetReagentGroupList(), NetCommands::REAGENTGROUP, m_CommandChannelGui);
-            SendConfigurationFile(mp_DataManager->GetReagentGroupColorList(), NetCommands::REAGENTGROUPCOLOR, m_CommandChannelGui);
-            SendConfigurationFile(mp_DataManager->GetProgramList(), NetCommands::PROGRAM, m_CommandChannelGui);
-            SendConfigurationFile(mp_DataManager->GetStationList(), NetCommands::STATION, m_CommandChannelGui);
+            SendConfigurationFile(mp_DataManager->GetUserSettingsInterface(), NetCommands::USER_SETTING);
+            SendConfigurationFile(mp_DataManager->GetReagentList(), NetCommands::REAGENT);
+            SendConfigurationFile(mp_DataManager->GetReagentGroupList(), NetCommands::REAGENTGROUP);
+            SendConfigurationFile(mp_DataManager->GetReagentGroupColorList(), NetCommands::REAGENTGROUPCOLOR);
+            SendConfigurationFile(mp_DataManager->GetProgramList(), NetCommands::PROGRAM);
+            SendConfigurationFile(mp_DataManager->GetStationList(), NetCommands::STATION);
             // inform the event handler
             Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_SUCCESS);
             // send ack OK
