@@ -689,10 +689,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else if(DCL_ERR_DEV_AL_DRAIN_SUCCESS == retCode)
             {
+                StopDrain();
                 mp_ProgramStepStateMachine->NotifyAbort();
             }
 #if 0
-          qDebug()<<"unexpected ret code: "<<retCode;
+            qDebug()<<"unexpected ret code: "<<retCode;
 #endif
         }
         else if(PSSM_ABORTED == stepState)
