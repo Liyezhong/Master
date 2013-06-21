@@ -30,6 +30,10 @@
 namespace Dashboard {
 
 QString CDashboardWidget::m_SelectedProgramId = "";
+QString CDashboardWidget::m_strWarning = CDashboardWidget::tr("Warning");
+QString CDashboardWidget::m_strYes = CDashboardWidget::tr("Yes");
+QString CDashboardWidget::m_strCancel = CDashboardWidget::tr("Cancel");
+QString CDashboardWidget::m_strMsgUnselect = CDashboardWidget::tr("As the program \"%1\" is selected, this operation will result in an incorrect program result, if you click \"Yes\", the selected program will unselect.");
 
 CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    MainMenu::CMainWindow *p_Parent): MainMenu::CPanelFrame(p_Parent),
@@ -144,14 +148,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      CONNECTSIGNALSLOT(mp_DataConnector, StationSuckDrain(const MsgClasses::CmdStationSuckDrain &),
                        this, OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain &));
-
-
+     CONNECTSIGNALSLOT(this, UpdateUserSetting(DataManager::CUserSettings&), mp_DataConnector, SendUpdatedSettings(DataManager::CUserSettings&));
 }
 
-QString CDashboardWidget::m_strWarning = CDashboardWidget::tr("Warning");
-QString CDashboardWidget::m_strYes = CDashboardWidget::tr("Yes");
-QString CDashboardWidget::m_strCancel = CDashboardWidget::tr("Cancel");
-QString CDashboardWidget::m_strMsgUnselect = CDashboardWidget::tr("As the program \"%1\" is selected, this operation will result in an incorrect program result, if you click \"Yes\", the selected program will unselect.");
 
 CDashboardWidget::~CDashboardWidget()
 {
@@ -208,7 +207,7 @@ void CDashboardWidget::RetranslateUI()
     m_strProgramComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is complete! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
-    m_strStartNewProgram  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
+    m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
     m_strNeedMeltParaffin  = QApplication::translate("Dashboard::CDashboardWidget", "Still it will cost some time to melt paraffin, the current selected program can not run now.", 0, QApplication::UnicodeUTF8);
     m_strResetEndTime = QApplication::translate("Dashboard::CDashboardWidget", "Please re-set the End Date&Time of the current selected program.", 0, QApplication::UnicodeUTF8);
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please set numbers of cassettes:", 0, QApplication::UnicodeUTF8);
@@ -652,7 +651,7 @@ void CDashboardWidget::OnProgramWillComplete()
     const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_SelectedProgramId);
     QString strReagentIDOfLastStep = pProgram->GetProgramStep(pProgram->GetNumberOfSteps()-1)->GetReagentID();
     m_pUserSetting->SetReagentIdOfLastStep(strReagentIDOfLastStep);
-    mp_DataConnector->SendUpdatedSettings(*m_pUserSetting);
+    emit UpdateUserSetting(*m_pUserSetting);
 
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetTitle(m_strWarning);
@@ -709,6 +708,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
 
             //only show Cleaning program in the ComboBox list
             this->AddItemsToComboBox(true);
+
             //switch to the dashboard page
             mp_MainWindow->SetTabWidgetIndex();
             //show the comboBox
@@ -731,6 +731,13 @@ void CDashboardWidget::OnProgramAborted()
 {
     //progress aborted;
     //aborting time countdown is hidden.
+
+    //save the ReagentIdOfLastStep on case of: user restarts machine at this time
+    const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_SelectedProgramId);
+    QString strReagentIDOfLastStep = pProgram->GetProgramStep(m_CurProgramStepIndex)->GetReagentID();
+    m_pUserSetting->SetReagentIdOfLastStep(strReagentIDOfLastStep);
+    emit UpdateUserSetting(*m_pUserSetting);
+
     m_IsResumeRun = false;
     m_CurProgramStepIndex = -1;
     mp_Ui->pgmsComboBox->WorkAsButton(false);
@@ -739,14 +746,14 @@ void CDashboardWidget::OnProgramAborted()
 
     EnableRetortSlider(true);
     //disable "Start" button, enable Retort lock button, hide End time button, now Abort button is still in "disable" status
-    EnablePlayButton(true);
+    EnablePlayButton(false);
 
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetTitle(m_strWarning);
     QString strTemp;
-    strTemp = m_strStartNewProgram.arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+    strTemp = m_strProgramIsAborted.arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
     mp_MessageDlg->SetText(strTemp);
-    mp_MessageDlg->SetButtonText(1, m_strYes);
+    mp_MessageDlg->SetButtonText(1, m_strOK);
     mp_MessageDlg->HideButtons();
     if (mp_MessageDlg->exec())
     {
@@ -758,12 +765,17 @@ void CDashboardWidget::OnProgramCompleted()
 {
     m_IsResumeRun = false;
     m_CurProgramStepIndex = -1;
-    mp_Ui->pgmsComboBox->WorkAsButton(false);
+    mp_Ui->pgmsComboBox->WorkAsButton(false);//now it is ComboBox, not a long button
 
     if (m_SelectedProgramId.at(0) == 'C')
     {
         m_pUserSetting->SetReagentIdOfLastStep("");//Clear CleaningProgram flag
-        mp_DataConnector->SendUpdatedSettings(*m_pUserSetting);
+        emit UpdateUserSetting(*m_pUserSetting);
+        EnableAbortButton(false);
+        AddItemsToComboBox();
+
+        m_ProgramNextAction = DataManager::PROGRAM_START;
+        mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
     }
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
@@ -774,8 +786,16 @@ void CDashboardWidget::OnProgramRunBegin()
     emit ProgramActionStarted(DataManager::PROGRAM_START, m_TimeProposed, Global::AdjustedTime::Instance().GetCurrentDateTime(), m_IsResumeRun);
     m_IsResumeRun = true;
     mp_Ui->pgmsComboBox->WorkAsButton(true);
-    this->EnablePlayButton(true);//enable pause button
-    EnableAbortButton(true);
+    if (m_SelectedProgramId.at(0) == 'C')
+    {
+        EnablePlayButton(false);//enable pause button
+        EnableAbortButton(false);
+    }
+    else
+    {
+        EnablePlayButton(true);//enable pause button
+        EnableAbortButton(true);
+    }
 }
 
 void CDashboardWidget::OnProcessStateChanged()
@@ -849,7 +869,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
         if ( mp_DataConnector)
         {
             //input cassette number
-            if (Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
+            if (m_SelectedProgramId.at(0) != 'C' && Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
             {
                 CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
                 pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);

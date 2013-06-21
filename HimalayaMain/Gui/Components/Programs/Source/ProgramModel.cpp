@@ -125,7 +125,7 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
     if (mp_ProgramList == NULL) {
         return QVariant();
     }
-    if ((p_Program = const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(Index.row())))) {
+    if (p_Program = const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(Index.row()))) {
         if (Role == (int)Qt::DisplayRole) {
             switch (5 - m_Columns + Index.column()) {
             case -1:
@@ -154,8 +154,7 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
         else if (Role == (int)Qt::CheckStateRole) {
             if (Index.column() == 1)
             {
-                // TODO test code
-                if (p_Program->IsFavorite()) {
+                if (p_Program->IsFavorite() && p_Program->GetID().at(0) != 'C') {
                     return (int)Qt::Checked;
                 }
                 else
@@ -187,11 +186,19 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
 /****************************************************************************/
 Qt::ItemFlags CProgramModel::flags(const QModelIndex &Index) const
 {
+    if (mp_ProgramList) {
+        if (Index.row() >= mp_ProgramList->GetNumberOfPrograms()) {
+            return Qt::NoItemFlags;
+        }
+    }
+
     if (Index.column() == 1) {
         if (m_CurrentUserRole == MainMenu::CMainWindow::Admin
-                || m_CurrentUserRole == MainMenu::CMainWindow::Service){
+                || m_CurrentUserRole == MainMenu::CMainWindow::Service)
+        {
             int FavProgramCount = mp_ProgramList->GetFavoriteProgramIDs().count();
-            if (FavProgramCount == 5) {
+            DataManager::CProgram *p_Program = const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(Index.row()));
+            if (FavProgramCount == 5 || p_Program->GetID().at(0) == 'C') {
                 if (data(Index, Qt::CheckStateRole) == Qt::Unchecked) {
                     return Qt::ItemIsSelectable;
                 }
@@ -205,11 +212,7 @@ Qt::ItemFlags CProgramModel::flags(const QModelIndex &Index) const
     if (NUMBER_OF_COLUMNS - m_Columns + Index.column() == 0) {
         return QAbstractItemModel::flags(Index) | Qt::ItemIsUserCheckable;
     }
-    if (mp_ProgramList) {
-        if (Index.row() >= mp_ProgramList->GetNumberOfPrograms()) {
-            return Qt::NoItemFlags;
-        }
-    }
+
     return QAbstractItemModel::flags(Index);
 }
 
@@ -263,7 +266,7 @@ bool CProgramModel::setData(const QModelIndex &Index, const QVariant &Value, int
     if (Role == (int)Qt::CheckStateRole) {
         DataManager::CProgram *p_Program = mp_ProgramList->GetProgram(Index.row());
         if (p_Program) {
-            if (Index.column() == 1) {
+            if (Index.column() == 1 && p_Program->GetID().at(0) != 'C') {
                 int FavProgramCount = mp_ProgramList->GetFavoriteProgramIDs().count();
                 if (FavProgramCount < MAX_FAVORITE_PROGRAM_COUNT && Value.toBool() == true)
                 {

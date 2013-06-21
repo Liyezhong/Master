@@ -89,7 +89,7 @@ private:
     QString m_strConfirmation, m_strAbortProgram;
     QString m_strProgramComplete, m_strTakeOutSpecimen;
     QString m_strRetortContaminated;
-    QString m_strStartNewProgram, m_strNeedMeltParaffin;
+    QString m_strProgramIsAborted, m_strNeedMeltParaffin;
     QString m_strResetEndTime, m_strInputCassetteBoxTitle;
     QString m_strNotFoundStation;
     QString m_strCheckEmptyStation;
@@ -127,6 +127,7 @@ signals:
     void UpdateProgramName(QString SelectedProgramName);
     void UpdateDashboardSceneReagentStations(QString& ProgramID);
     void ProgramSelected(QString & ProgramId, int asapEndTime, QList<QString>& SelectedStationList);
+    void UpdateUserSetting(DataManager::CUserSettings&);
 
 public slots:
     void RetortSliderPositionChanged(MainMenu::CSliderControl::Position_t Position);
