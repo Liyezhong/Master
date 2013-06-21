@@ -20,7 +20,6 @@
 
 #include "Application/Include/Application.h"
 #include "Core/Include/Startup.h"
-#include "../Build/ui_splash.h"
 #include <QDebug>
 #include <QTranslator>
 #include <QDir>
@@ -53,11 +52,6 @@ int main(int Argc, char *p_Argv[])
     Global::InitSupportedLanguages();// set global directories.   
     Application::CApplication App(Argc, p_Argv, Application::HIMALAYA_PROJECT);
     Core::CStartup StartUp;
-
-/*    Ui_SplashDialog splash;
-    QDialog *SplashDialog = new QDialog;
-    splash.setupUi(SplashDialog);
-    SplashDialog->show();*/
 
     return App.exec();
 }
