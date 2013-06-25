@@ -255,21 +255,14 @@ bool CSpecialVerifierGroupA::CheckData()
     if(!m_pDataReagentGroupList)
         return false;
 
-     int i = m_pDataReagentGroupList->GetReagentGroupIndex(PreviousReagentGroupID);
-     int j = m_pDataReagentGroupList->GetReagentGroupIndex(currentReagentGroupID);
+    int j = m_pDataReagentGroupList->GetReagentGroupIndex(PreviousReagentGroupID);
+    int i = m_pDataReagentGroupList->GetReagentGroupIndex(currentReagentGroupID);
 
-     if (i > j)//swap
-     {
-         int temp = i;
-         i = j;
-         j= temp;
-     }
-
-    int arr[6][6]={{1, 1, 0, 0, 0, 0}, //Fixation
-                   {1, 1, 1, 1, 0, 0},   //water
-                   {0, 1, 1, 1, 0, 0},   //dehydrating,diluted
-                   {0, 1, 1, 1, 1, 0},   //dehydrating,absolute
-                   {0, 0, 0, 1, 1, 1},   //clearing
+    int arr[6][6]={{1, 0, 0, 0, 0, 0}, //Fixation
+                   {1, 1, 0, 0, 0, 0},   //water
+                   {0, 1, 1, 0, 0, 0},   //dehydrating,diluted
+                   {0, 1, 1, 1, 0, 0},   //dehydrating,absolute
+                   {0, 0, 0, 1, 1, 0},   //clearing
                    {0, 0, 0, 0, 1, 1}   //paraffin
                   };
 
