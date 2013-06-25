@@ -10,13 +10,10 @@
 using namespace Dashboard;
 
 CDashboardProgramStatusWidget::CDashboardProgramStatusWidget(QWidget *parent) :
-    MainMenu::CPanelFrame(parent),
+    MainMenu::CDialogFrame(parent),
     ui(new Ui::CDashboardProgramStatusWidget)
 {
     ui->setupUi(this);
-
-
-    SetTitleCenter();
 
     CONNECTSIGNALSLOT(ui->btnClose, clicked(), this, OnClose());
     CONNECTSIGNALSLOT(ui->btnAbort, clicked(), this, OnAbort());
@@ -38,12 +35,13 @@ void CDashboardProgramStatusWidget::InitDialog(DataManager::CProgram *p_Program,
                                                const Core::CDataConnector* pDataConnector,
                                                QList<QString>& StationNameList, int CurProgramStepIndex,
                                                const QTime& StepRemainingTime, const QTime& ProgramRemainingTime,
-                                               const QString& endDateTime)
+                                               const QString& endDateTime,
+                                               bool bAbortButtonEnabled)
 {
     if (!p_Program || !pDataConnector)
         return;
 
-    SetPanelTitle(QString("\"%1\"").arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME));
+    SetDialogTitle(QString("\"%1\"").arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME));
 
     m_StepModel.SetVisibleRowCount(6);
     m_StepModel.ShowStation(true);
@@ -57,7 +55,7 @@ void CDashboardProgramStatusWidget::InitDialog(DataManager::CProgram *p_Program,
     ui->labelStepRemainingTime->setText(StepRemainingTime.toString("hh:mm"));
     ui->labelPrgmRemainingTime->setText(ProgramRemainingTime.toString("hh:mm"));
     ui->LabelPrgmEndTime->setText(endDateTime);
-
+    ui->btnAbort->setEnabled(bAbortButtonEnabled);
 }
 
 /****************************************************************************/

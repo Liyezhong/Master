@@ -386,5 +386,7 @@
 		<string id="50331713" text1="pause program" text2=""/>
 		<string id="50331714" text1="abort program" text2=""/>
 		<string id="50331715" text1="drain" text2=""/>
+		<string id="50331716" text1="Please call the service engineer for maintenance!" text2=""/>
+		<string id="50331717" text1="The Active carbon is overdue, please replace a new carbon filter!" text2=""/>
 	</language>
 </strings>

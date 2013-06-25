@@ -61,6 +61,11 @@ const QString RMS_OFF_STRING("off");
 const QString CASSETTE_COUNT("CassetteCount_Number");//need the format with "_"
 const QString REAGENTID_OF_LASTSTEP("ReagentIdOfLastStep_ID");
 
+const QString SERVICE_OPERATION_HOURS("Service_OperationHours");
+const QString SERVICE_ACTIVE_CARBON_HOURS("Service_ActiveCarbonHours");
+
+
+
 /****************************************************************************/
 /**
  * \brief Class for reading / writing XML based configuration file for user settings.
@@ -130,6 +135,11 @@ public:
     Global::RMSOptions_t GetModeRMSCleaning(void);
 
     void SetModeRMSCleaning(Global::RMSOptions_t ModeRMSCleaning);
+
+    void SetOperationHours(int operationHours);
+    int GetOperationHours();
+    void SetActiveCarbonHours(int operationHours);
+    int GetActiveCarbonHours();
 
 }; // end class CUserSettings
 

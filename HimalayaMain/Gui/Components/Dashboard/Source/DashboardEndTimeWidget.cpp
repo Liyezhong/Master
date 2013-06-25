@@ -140,7 +140,13 @@ void CDashboardEndTimeWidget::UpdateEndTimeWidgetItems(DataManager::CProgram con
     mp_Ui->lblStepTime->show();
     mp_Ui->lblTime->show();
     int TimeTotal = 100;
+    mp_Ui->progressBar->setStyleSheet(mp_Ui->progressBar->property("defaultStyleSheet").toString() +
+                                       "QProgressBar { border-image: url(:/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png);"
+                                      + "background-origin: margin;}"
+                                      + "QProgressBar::chunk { background-origin: margin;border-image: url(:/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine.png); margin: 4.0px;}");
+
     mp_Ui->progressBar->setMaximum(TimeTotal);
+    mp_Ui->progressBar->setValue(0);
     mp_Ui->progressBar->show();
 
 }
@@ -286,6 +292,11 @@ void CDashboardEndTimeWidget::UpdateProgress()
     {
         mp_Ui->lblName->setVisible(false);
         mp_Ui->lblReagentName->setText(m_strAborting);//only show the first label
+        mp_Ui->progressBar->setStyleSheet(mp_Ui->progressBar->property("defaultStyleSheet").toString() +
+                                           "QProgressBar { border-image: url(:/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png);"
+                                          + "background-origin: margin;}"
+                                          + "QProgressBar::chunk { background-origin: margin;border-image: url(:/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLineRed.png); margin: 4.0px;}");
+
     }
 }
 
@@ -299,6 +310,7 @@ void CDashboardEndTimeWidget::UpdateProgress()
     else if (DataManager::PROGRAM_STATUS_ABORTED == ProgramStatusType)
     {
         mp_Ui->lblReagentName->setText(m_strAborted);
+        mp_Ui->progressBar->setValue(m_remainingTimeTotal);
     }
     else if (DataManager::PROGRAM_STATUS_COMPLETED == ProgramStatusType)
     {

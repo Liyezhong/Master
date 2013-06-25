@@ -480,9 +480,9 @@ void CDashboardWidget::OnComboBoxButtonPress()
                                            stationNameList, m_CurProgramStepIndex,
                                            mp_DashboardScene->GetStepRemainingTime(),
                                            mp_DashboardScene->GetProgramRemainingTime(),
-                                           mp_DashboardScene->GetEndDateTime());
+                                           mp_DashboardScene->GetEndDateTime(), mp_Ui->playButton->isEnabled());
         mp_ProgramStatusWidget->move(80,50);
-        mp_ProgramStatusWidget->show();
+        mp_ProgramStatusWidget->exec();
     }
 }
 
@@ -504,13 +504,25 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
     if ("" == m_SelectedProgramId)
         return;
 
+    //Check for Service
+    /*int operationHours = m_pUserSetting->GetOperationHours();
+    if (operationHours >= 365*24)
+    {
+        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_OPERATIONTIME_OVERDUE);
+    }
+
+    int activeCarbonHours = m_pUserSetting->GetActiveCarbonHours();
+    if (activeCarbonHours >= 5*30*24)
+    {
+        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE);
+    }
+*/
     //Check cleaning program run in last time?
     bool hasRunCleaningProgram = true;
     QString strReagentIDOfLastStep("");
     if (m_SelectedProgramId.at(0) != 'C')
     {
-        DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
-        strReagentIDOfLastStep = userSetting->GetReagentIdOfLastStep();
+        strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
         hasRunCleaningProgram = strReagentIDOfLastStep == "";
     }
 
@@ -732,7 +744,7 @@ void CDashboardWidget::OnProgramAborted()
     //progress aborted;
     //aborting time countdown is hidden.
 
-    //save the ReagentIdOfLastStep on case of: user restarts machine at this time
+    //save the ReagentIdOfLastStep in case of: user restarts machine at this time
     const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_SelectedProgramId);
     QString strReagentIDOfLastStep = pProgram->GetProgramStep(m_CurProgramStepIndex)->GetReagentID();
     m_pUserSetting->SetReagentIdOfLastStep(strReagentIDOfLastStep);

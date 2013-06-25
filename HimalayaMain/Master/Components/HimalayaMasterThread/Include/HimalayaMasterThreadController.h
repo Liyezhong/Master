@@ -32,7 +32,6 @@
 #include <Global/Include/Commands/CmdEventUpdate.h>
 #include <HimalayaDataManager/Include/DataManager.h>
 #include "ImportExport/Include/ImportExportThreadController.h"
-#include <EventHandler/Include/StateHandler.h>
 #include <NetCommands/Include/CmdSystemAction.h>
 #include <NetCommands/Include/CmdChangeAdminPassword.h>
 #include <NetCommands/Include/CmdChangeAdminPasswordReply.h>

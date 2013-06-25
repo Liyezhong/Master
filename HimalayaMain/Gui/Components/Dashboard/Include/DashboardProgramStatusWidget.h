@@ -1,7 +1,7 @@
 #ifndef DASHBOARDPROGRAMSTATUS_H
 #define DASHBOARDPROGRAMSTATUS_H
 
-#include "MainMenu/Include/PanelFrame.h"
+#include "MainMenu/Include/DialogFrame.h"
 #include "Programs/Include/StepModel.h"
 
 namespace MainMenu
@@ -25,7 +25,7 @@ namespace Ui {
     class CDashboardProgramStatusWidget;
 }
 
-class CDashboardProgramStatusWidget : public MainMenu::CPanelFrame
+class CDashboardProgramStatusWidget : public MainMenu::CDialogFrame
 {
     Q_OBJECT
     
@@ -33,7 +33,7 @@ public:
     explicit CDashboardProgramStatusWidget(QWidget *parent = 0);
     ~CDashboardProgramStatusWidget();
      void InitDialog(DataManager::CProgram*, const Core::CDataConnector*, QList<QString>&, int, const QTime&,
-                     const QTime&, const QString& endDateTime);
+                     const QTime&, const QString& endDateTime, bool bAbortButtonEnabled);
 
 protected:
      void changeEvent(QEvent *p_Event);

@@ -221,7 +221,7 @@ bool CSpecialVerifierGroupA::CheckData()
                         }
                         //check reagent group Compatible
                         if(X > 0){
-                            if(p_Program->GetProgramStep(X-1,Previous_ProgramStep)){
+                            if(p_Program->GetID().at(0) != 'C' && p_Program->GetProgramStep(X-1,Previous_ProgramStep)){
                                 Previous_ReagentID = Previous_ProgramStep.GetReagentID();
                                 Previous_ReagentGroupID = mp_DReagentList->GetReagent(Previous_ReagentID)->GetGroupID();
                                 if(!IsCompatible(Current_ReagentGroupID,Previous_ReagentGroupID)){
@@ -265,11 +265,11 @@ bool CSpecialVerifierGroupA::CheckData()
          j= temp;
      }
 
-    int arr[6][6]={{1, 0, 0, 0, 0, 0}, //Fixation
-                   {1, 1, 0, 0, 0, 0},   //water
-                   {0, 1, 1, 0, 0, 0},   //dehydrating,diluted
-                   {0, 1, 1, 1, 0, 0},   //dehydrating,absolute
-                   {0, 0, 0, 1, 1, 0},   //clearing
+    int arr[6][6]={{1, 1, 0, 0, 0, 0}, //Fixation
+                   {1, 1, 1, 1, 0, 0},   //water
+                   {0, 1, 1, 1, 0, 0},   //dehydrating,diluted
+                   {0, 1, 1, 1, 1, 0},   //dehydrating,absolute
+                   {0, 0, 0, 1, 1, 1},   //clearing
                    {0, 0, 0, 0, 1, 1}   //paraffin
                   };
 

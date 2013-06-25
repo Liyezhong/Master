@@ -390,4 +390,6 @@ const quint32 STR_PROGRAM_COMMAND_START_PROGRAM	= 50331712;	///< start program
 const quint32 STR_PROGRAM_COMMAND_PAUSE_PROGRAM	= 50331713;	///< pause program
 const quint32 STR_PROGRAM_COMMAND_ABORT_PROGRAM	= 50331714;	///< abort program
 const quint32 STR_PROGRAM_COMMAND_DRAIN	= 50331715;	///< drain
+const quint32 EVENT_SERVICE_OPERATIONTIME_OVERDUE	= 50331716;	///< Please call the service engineer for maintenance!
+const quint32 EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE	= 50331717;	///< The Active carbon is overdue, please replace a new carbon filter!
 #endif // HIMALAYAEVENTCODES_H

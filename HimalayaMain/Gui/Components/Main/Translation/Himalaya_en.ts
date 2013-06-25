@@ -173,67 +173,67 @@
         <source>Completed!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="52"/>
+        <source>Reagent Name :</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CDashboardWidget</name>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="153"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="33"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="154"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="34"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="155"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="35"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="52"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="55"/>
         <source>Program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="53"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="56"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="55"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="58"/>
         <source>Found the cleaning program did not run in last time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="51"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="54"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="56"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="59"/>
         <source>Can not start Leica Program With RMS OFF, please trun on RMS.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="57"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="60"/>
         <source>Some expired reagents are used in this selected program, you can not start this program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="58"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="61"/>
         <source>Do you want to Start the Program with Expired Reagents?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="60"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="62"/>
         <source>Program &quot;%1&quot; is complete! Would you like to drain the retort?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="63"/>
-        <source>Program &quot;%1&quot; is aborted! Would you like to start a new Program?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -247,33 +247,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="156"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="36"/>
         <source>As the program &quot;%1&quot; is selected, this operation will result in an incorrect program result, if you click &quot;Yes&quot;, the selected program will unselect.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="50"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="53"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="54"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="57"/>
         <source>Confirmation Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="59"/>
-        <source>Do you want to abort the program?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="61"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="63"/>
         <source>Please take out your specimen!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="62"/>
-        <source>The retort is contaminated, Cleaning Program will run! Please lock the retort then click &quot;OK&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -972,27 +962,27 @@
 <context>
     <name>CProgramModel</name>
     <message>
-        <location filename="../../Programs/Source/ProgramModel.cpp" line="232"/>
+        <location filename="../../Programs/Source/ProgramModel.cpp" line="235"/>
         <source>Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramModel.cpp" line="234"/>
+        <location filename="../../Programs/Source/ProgramModel.cpp" line="237"/>
         <source>Use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramModel.cpp" line="236"/>
+        <location filename="../../Programs/Source/ProgramModel.cpp" line="239"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramModel.cpp" line="238"/>
+        <location filename="../../Programs/Source/ProgramModel.cpp" line="241"/>
         <source>Duration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramModel.cpp" line="240"/>
+        <location filename="../../Programs/Source/ProgramModel.cpp" line="243"/>
         <source>Icon</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1670,6 +1660,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardEndTimeWidget.ui" line="56"/>
+        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="359"/>
         <source>Reagent Name :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1684,22 +1675,22 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="337"/>
+        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="355"/>
         <source>End Time :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="338"/>
+        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="356"/>
         <source>Aborting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="339"/>
-        <source>Aborting.</source>
+        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="357"/>
+        <source>Aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="340"/>
+        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="358"/>
         <source>Completed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1760,117 +1751,122 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="196"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="192"/>
+        <source>Dashboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="193"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="197"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="194"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="198"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="195"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="199"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="196"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="200"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="197"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="201"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="198"/>
         <source>As the program &quot;%1&quot; is selected, this operation will result in an incorrect program result, if you click &quot;Yes&quot;, the selected program will unselect.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="202"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="199"/>
         <source>Program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="203"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="200"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="204"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="201"/>
         <source>Found the cleaning program did not run in last time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="205"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="202"/>
         <source>Can not start Leica Program With RMS OFF, please trun on RMS.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="206"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="203"/>
         <source>Some expired reagents are used in this selected program, you can not start this program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="207"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="204"/>
         <source>Do you want to Start the Program with Expired Reagents?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="208"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="205"/>
         <source>Confirmation Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="209"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="206"/>
         <source>Do you want to abort the program?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="210"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="207"/>
         <source>Program &quot;%1&quot; is complete! Would you like to drain the retort?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="211"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="208"/>
         <source>Please take out your specimen!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="212"/>
-        <source>The retort is contaminated, Cleaning Program will run! Please lock the retort then click &quot;OK&quot;.</source>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="209"/>
+        <source>The retort is contaminated, please lock the retort and select Cleaning Program to run!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="213"/>
-        <source>Program &quot;%1&quot; is aborted! Would you like to start a new Program?</source>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="210"/>
+        <source>Program &quot;%1&quot; is aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="214"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="211"/>
         <source>Still it will cost some time to melt paraffin, the current selected program can not run now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="215"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="212"/>
         <source>Please re-set the End Date&amp;Time of the current selected program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="216"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="213"/>
         <source>Please set numbers of cassettes:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="217"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="214"/>
         <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="218"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="215"/>
         <source>The Station &quot;%1&quot; status is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;, it can not be executed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2345,22 +2341,22 @@ Date</source>
 <context>
     <name>Programs::CProgramModel</name>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="538"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="552"/>
         <source>Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="540"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="554"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="542"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="556"/>
         <source>Duration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="544"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="558"/>
         <source>Icon.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2369,7 +2365,7 @@ Date</source>
     <name>Programs::CProgramWidget</name>
     <message>
         <location filename="../../Programs/Forms/ProgramWidget.ui" line="20"/>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="566"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="580"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2389,37 +2385,37 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="535"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="549"/>
         <source>Programs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="547"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="561"/>
         <source>Edit Program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="550"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="564"/>
         <source>View Program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="553"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="567"/>
         <source>New Program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="556"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="570"/>
         <source>Do you really want to delete the selected program?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="559"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="573"/>
         <source>Program Process has started.Editing is no longer possible.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="563"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="577"/>
         <source>View</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3332,6 +3328,54 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="14"/>
         <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="20"/>
+        <source>Active carbon filter [hrs]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="32"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="143"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="45"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="71"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="97"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="123"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="156"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="182"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="58"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="84"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="169"/>
+        <source>Warning threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="110"/>
+        <source>Alarm threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="131"/>
+        <source>Operation Hour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="190"/>
+        <source>CheckBox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="197"/>
+        <source>Shutdown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

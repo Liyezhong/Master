@@ -38,6 +38,8 @@ CServiceSettingsWidget::CServiceSettingsWidget(QWidget *p_Parent) :  MainMenu::C
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Service"));
+    CONNECTSIGNALSLOT(mp_Ui->btnResetOperationHour, clicked(), this, OnResetOperationDays());
+    CONNECTSIGNALSLOT(mp_Ui->btnResetCarbonFilter, clicked(), this, OnResetCarbonFilter());
 }
 
 /****************************************************************************/
@@ -92,6 +94,14 @@ void CServiceSettingsWidget::showEvent(QShowEvent *p_Event)
 void CServiceSettingsWidget::OnUserRoleChanged()
 {
     ResetButtons();
+}
+
+void CServiceSettingsWidget::OnResetOperationDays()
+{
+}
+
+void CServiceSettingsWidget::OnResetCarbonFilter()
+{
 }
 
 /****************************************************************************/

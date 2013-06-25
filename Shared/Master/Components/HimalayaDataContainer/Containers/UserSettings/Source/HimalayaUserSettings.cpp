@@ -360,6 +360,27 @@ QString CHimalayaUserSettings::GetReagentIdOfLastStep()
     return GetValue(REAGENTID_OF_LASTSTEP);
 }
 
+void CHimalayaUserSettings::SetOperationHours(int operationHours)
+{
+    SetValue(SERVICE_OPERATION_HOURS, QString::number(operationHours));
+}
+
+int CHimalayaUserSettings::GetOperationHours()
+{
+    return GetValue(SERVICE_OPERATION_HOURS).toInt();
+}
+
+void CHimalayaUserSettings::SetActiveCarbonHours(int operationHours)
+{
+    SetValue(SERVICE_ACTIVE_CARBON_HOURS, QString::number(operationHours));
+}
+
+int CHimalayaUserSettings::GetActiveCarbonHours()
+{
+    return GetValue(SERVICE_ACTIVE_CARBON_HOURS).toInt();
+}
+
+
 /****************************************************************************/
 /*!
  *  \brief Gets the RMS mode of processing reagents.

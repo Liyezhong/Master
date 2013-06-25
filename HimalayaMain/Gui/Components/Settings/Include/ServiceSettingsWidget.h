@@ -61,6 +61,8 @@ protected:
 private slots:
     void OnProcessStateChanged();
     void OnUserRoleChanged();
+    void OnResetOperationDays();
+    void OnResetCarbonFilter();
 };
 
 } // end namespace Settings
