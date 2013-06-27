@@ -62,7 +62,12 @@ const QString CASSETTE_COUNT("CassetteCount_Number");//need the format with "_"
 const QString REAGENTID_OF_LASTSTEP("ReagentIdOfLastStep_ID");
 
 const QString SERVICE_OPERATION_HOURS("Service_OperationHours");
+const QString SERVICE_OPERATION_LAST_RESET_DATE("Service_OperationLastResetDate");
+
 const QString SERVICE_ACTIVE_CARBON_HOURS("Service_ActiveCarbonHours");
+const QString SERVICE_ACTIVE_CARBON_LAST_RESET_DATE("Service_ActiveCarbonLastResetDate");
+
+const QString SERVICE_USE_EXHAUST_SYSTEM("Service_UseExhaustSystem");
 
 
 
@@ -124,7 +129,7 @@ public:
 
     int GetCassetteCount();
 
-    void SetReagentIdOfLastStep(QString reagentID);
+    void SetReagentIdOfLastStep(QString& reagentID);
 
     QString GetReagentIdOfLastStep();
 
@@ -140,6 +145,14 @@ public:
     int GetOperationHours();
     void SetActiveCarbonHours(int operationHours);
     int GetActiveCarbonHours();
+
+    void SetOperationLastResetDate(QString& resetDate);
+    QString GetOperationLastResetDate();
+    void SetActiveCarbonLastResetDate(QString& resetDate);
+    QString GetActiveCarbonLastResetDate();
+
+    void SetUseExhaustSystem(int checked);
+    int GetUseExhaustSystem();
 
 }; // end class CUserSettings
 

@@ -504,19 +504,6 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
     if ("" == m_SelectedProgramId)
         return;
 
-    //Check for Service
-    /*int operationHours = m_pUserSetting->GetOperationHours();
-    if (operationHours >= 365*24)
-    {
-        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_OPERATIONTIME_OVERDUE);
-    }
-
-    int activeCarbonHours = m_pUserSetting->GetActiveCarbonHours();
-    if (activeCarbonHours >= 5*30*24)
-    {
-        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE);
-    }
-*/
     //Check cleaning program run in last time?
     bool hasRunCleaningProgram = true;
     QString strReagentIDOfLastStep("");
@@ -760,6 +747,15 @@ void CDashboardWidget::OnProgramAborted()
     //disable "Start" button, enable Retort lock button, hide End time button, now Abort button is still in "disable" status
     EnablePlayButton(false);
 
+    QDateTime  endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+    if (m_StartDateTime.isValid())
+    {
+        int days = m_StartDateTime.daysTo(endDateTime);
+        m_pUserSetting->SetOperationHours(m_pUserSetting->GetOperationHours() + days * 24);
+        m_pUserSetting->SetActiveCarbonHours(m_pUserSetting->GetActiveCarbonHours() + days * 24);
+		emit UpdateUserSetting(*m_pUserSetting);
+    }
+
     mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetTitle(m_strWarning);
     QString strTemp;
@@ -781,7 +777,8 @@ void CDashboardWidget::OnProgramCompleted()
 
     if (m_SelectedProgramId.at(0) == 'C')
     {
-        m_pUserSetting->SetReagentIdOfLastStep("");//Clear CleaningProgram flag
+        QString reagentID("");
+        m_pUserSetting->SetReagentIdOfLastStep(reagentID);//Clear CleaningProgram flag
         emit UpdateUserSetting(*m_pUserSetting);
         EnableAbortButton(false);
         AddItemsToComboBox();
@@ -791,6 +788,16 @@ void CDashboardWidget::OnProgramCompleted()
     }
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
+
+    QDateTime  endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+    if (m_StartDateTime.isValid())
+    {
+        int days = m_StartDateTime.daysTo(endDateTime);
+        m_pUserSetting->SetOperationHours(m_pUserSetting->GetOperationHours() + days * 24);
+        m_pUserSetting->SetActiveCarbonHours(m_pUserSetting->GetActiveCarbonHours() + days * 24);
+        emit UpdateUserSetting(*m_pUserSetting);
+    }
+
 }
 
 void CDashboardWidget::OnProgramRunBegin()
@@ -808,6 +815,9 @@ void CDashboardWidget::OnProgramRunBegin()
         EnablePlayButton(true);//enable pause button
         EnableAbortButton(true);
     }
+
+    m_StartDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+
 }
 
 void CDashboardWidget::OnProcessStateChanged()

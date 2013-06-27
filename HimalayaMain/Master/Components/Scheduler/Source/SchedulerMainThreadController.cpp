@@ -1124,6 +1124,21 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
     m_Mutex.unlock();
     this->SendAcknowledgeOK(Ref);
 
+    //Check for Service
+    DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
+
+    int operationHours = pUserSetting->GetOperationHours();
+    if (operationHours >= 365 * 24)
+    {
+       Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_OPERATIONTIME_OVERDUE);
+    }
+
+    int activeCarbonHours = pUserSetting->GetActiveCarbonHours();
+    if (activeCarbonHours >= 5* 30* 24)
+    {
+       Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE);
+    }
+
     //log
     quint32 cmdid = 0;
     if (Cmd.ProgramActionType() == DataManager::PROGRAM_START)

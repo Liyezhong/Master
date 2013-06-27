@@ -70,6 +70,7 @@ private:
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
     int m_TimeProposed;
     QDateTime m_EndDateTime;
+    QDateTime m_StartDateTime;
     int m_ParaffinStepIndex;
     bool m_IsWaitingCleaningProgram;
     bool m_IsResumeRun;

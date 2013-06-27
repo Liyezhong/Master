@@ -46,6 +46,7 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
         mp_Ui->pageInstallation->SetUserSettings(p_Settings);
         mp_Ui->pageInstallation->SetKeyBoardInstance(mp_KeyBoardWidget);
         mp_Ui->pageRegionalSettings->SetUserSettings(p_Settings);
+        mp_Ui->pageService->SetUserSettings(p_Settings);
         mp_Ui->pageRegionalSettings->SetPtrToMainWindow(mp_MainWindow);
         mp_Ui->pageLanguage->SetPtrToMainWindow(mp_MainWindow,p_Data);
         mp_Ui->pageSystemSetup->SetPtrToMainWindow(mp_MainWindow);
@@ -64,8 +65,10 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     CONNECTSIGNALSLOT(mp_Data, DateTimeAcked(), this, PropagateDateTime());
     CONNECTSIGNALSLOT(mp_Ui->pageRegionalSettings, RegionalSettingsChanged(DataManager::CUserSettings &),
                       mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
-   /* CONNECTSIGNALSLOT(mp_Ui->pageOven, OvenTemperatureChanged(DataManager::CUserSettings &),
-            mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));*/
+
+    CONNECTSIGNALSLOT(mp_Ui->pageService, ServiceSettingsChanged(DataManager::CUserSettings &),
+                      mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
+
     CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup,TemperatureChanged(DataManager::CUserSettings &),
                       mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Ui->pageAlarm, AlarmSettingsChanged(DataManager::CUserSettings &),

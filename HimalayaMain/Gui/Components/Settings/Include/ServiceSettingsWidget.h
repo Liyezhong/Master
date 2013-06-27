@@ -23,6 +23,7 @@
 
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/MainWindow.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 
 namespace Settings {
 
@@ -43,7 +44,7 @@ public:
     explicit CServiceSettingsWidget(QWidget *p_Parent = 0);
     ~CServiceSettingsWidget();
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
-
+    void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
 private:
     Ui::CServiceSettingsWidget *mp_Ui;  //!< User interface
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
@@ -51,8 +52,13 @@ private:
     bool m_ProcessRunning;                  //!< Process running state
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    DataManager::CHimalayaUserSettings *mp_UserSettings;  //!< Data object
+    DataManager::CHimalayaUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
+
     void RetranslateUI();
     void ResetButtons();
+    QString GetFormattedCurrentDateString();
+    QString GetFormattedDateString(const QDateTime& dateTime);
 
 protected:
     void changeEvent(QEvent *p_Event);
@@ -63,6 +69,10 @@ private slots:
     void OnUserRoleChanged();
     void OnResetOperationDays();
     void OnResetCarbonFilter();
+    void OnCheckBoxUseExhaustSystem(bool checked);
+    void OnSaveSetting();
+signals:
+    void ServiceSettingsChanged(DataManager::CUserSettings &Settings);
 };
 
 } // end namespace Settings

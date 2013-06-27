@@ -19,6 +19,13 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
+        <widget class="QPushButton" name="pushButton_3">
+         <property name="text">
+          <string>Shutdown</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="horizontalSpacer">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -32,9 +39,9 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="btnSave">
          <property name="text">
-          <string>Shutdown</string>
+          <string>Save</string>
          </property>
         </widget>
        </item>
@@ -54,15 +61,15 @@
          <rect>
           <x>20</x>
           <y>30</y>
-          <width>80</width>
-          <height>26</height>
+          <width>91</width>
+          <height>41</height>
          </rect>
         </property>
         <property name="text">
          <string>Reset</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="labelResetOperationDate">
         <property name="geometry">
          <rect>
           <x>220</x>
@@ -79,7 +86,7 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>90</y>
+          <y>100</y>
           <width>161</width>
           <height>16</height>
          </rect>
@@ -92,19 +99,19 @@
         <property name="geometry">
          <rect>
           <x>220</x>
-          <y>90</y>
+          <y>100</y>
           <width>91</width>
           <height>16</height>
          </rect>
         </property>
         <property name="text">
-         <string>TextLabel</string>
+         <string>365</string>
         </property>
        </widget>
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBox">
+      <widget class="QCheckBox" name="checkBoxUseExhaustSystem">
        <property name="text">
         <string>Use exhausting system</string>
        </property>
@@ -120,21 +127,21 @@
          <rect>
           <x>20</x>
           <y>30</y>
-          <width>80</width>
-          <height>31</height>
+          <width>91</width>
+          <height>41</height>
          </rect>
         </property>
         <property name="text">
          <string>Reset</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="labelResetCarbonFilterDate">
         <property name="geometry">
          <rect>
           <x>220</x>
           <y>40</y>
-          <width>57</width>
-          <height>15</height>
+          <width>201</width>
+          <height>16</height>
          </rect>
         </property>
         <property name="text">
@@ -145,7 +152,7 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>80</y>
+          <y>90</y>
           <width>171</width>
           <height>16</height>
          </rect>
@@ -154,24 +161,24 @@
          <string>Warning threshold :</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_8">
+       <widget class="QLabel" name="labelWarningThreshold">
         <property name="geometry">
          <rect>
           <x>220</x>
-          <y>80</y>
-          <width>57</width>
-          <height>15</height>
+          <y>90</y>
+          <width>101</width>
+          <height>16</height>
          </rect>
         </property>
         <property name="text">
-         <string>TextLabel</string>
+         <string>150</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_9">
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>110</y>
+          <y>120</y>
           <width>141</width>
           <height>16</height>
          </rect>
@@ -180,17 +187,17 @@
          <string>Alarm threshold :</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_10">
+       <widget class="QLabel" name="labelAlarmThreshold">
         <property name="geometry">
          <rect>
           <x>220</x>
-          <y>110</y>
-          <width>57</width>
-          <height>15</height>
+          <y>120</y>
+          <width>101</width>
+          <height>16</height>
          </rect>
         </property>
         <property name="text">
-         <string>TextLabel</string>
+         <string>240</string>
         </property>
        </widget>
       </widget>

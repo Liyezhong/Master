@@ -350,7 +350,7 @@ int CHimalayaUserSettings::GetCassetteCount()
     return GetValue(CASSETTE_COUNT).toInt();
 }
 
-void CHimalayaUserSettings::SetReagentIdOfLastStep(QString reagentID)
+void CHimalayaUserSettings::SetReagentIdOfLastStep(QString& reagentID)
 {
     SetValue(REAGENTID_OF_LASTSTEP, reagentID);
 }
@@ -370,6 +370,26 @@ int CHimalayaUserSettings::GetOperationHours()
     return GetValue(SERVICE_OPERATION_HOURS).toInt();
 }
 
+void CHimalayaUserSettings::SetOperationLastResetDate(QString& resetDate)
+{
+    SetValue(SERVICE_OPERATION_LAST_RESET_DATE, resetDate);
+}
+
+QString CHimalayaUserSettings::GetOperationLastResetDate()
+{
+    return GetValue(SERVICE_OPERATION_LAST_RESET_DATE);
+}
+
+void CHimalayaUserSettings::SetActiveCarbonLastResetDate(QString& resetDate)
+{
+    SetValue(SERVICE_ACTIVE_CARBON_LAST_RESET_DATE, resetDate);
+}
+
+QString CHimalayaUserSettings::GetActiveCarbonLastResetDate()
+{
+    return GetValue(SERVICE_ACTIVE_CARBON_LAST_RESET_DATE);
+}
+
 void CHimalayaUserSettings::SetActiveCarbonHours(int operationHours)
 {
     SetValue(SERVICE_ACTIVE_CARBON_HOURS, QString::number(operationHours));
@@ -378,6 +398,16 @@ void CHimalayaUserSettings::SetActiveCarbonHours(int operationHours)
 int CHimalayaUserSettings::GetActiveCarbonHours()
 {
     return GetValue(SERVICE_ACTIVE_CARBON_HOURS).toInt();
+}
+
+void CHimalayaUserSettings::SetUseExhaustSystem(int checked)
+{
+    SetValue(SERVICE_USE_EXHAUST_SYSTEM, QString::number(checked));
+}
+
+int CHimalayaUserSettings::GetUseExhaustSystem()
+{
+    return GetValue(SERVICE_USE_EXHAUST_SYSTEM).toInt();
 }
 
 
