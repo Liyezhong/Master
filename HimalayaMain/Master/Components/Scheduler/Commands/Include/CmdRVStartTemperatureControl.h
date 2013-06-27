@@ -44,6 +44,8 @@ public:
 	quint8 GetSlopeTempChange(){return m_SlopeTempChange;}
 	void SetSlopeTempChange(quint8 SlopeTempChange){m_SlopeTempChange = SlopeTempChange;}
 	
+	QString GetParameters()const{ return GetName() + QString("(%1,%2)").arg(m_NominalTemperature).arg(m_SlopeTempChange);}
+	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
     void Execute();
 

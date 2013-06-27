@@ -56,6 +56,8 @@ public:
     virtual bool GetResult(DeviceControl::CBaseDevice* result) const;
     virtual bool GetResult(DeviceControl::TempCtrlState_t& result) const;
     virtual bool GetResult(qreal& result) const;
+    virtual QString GetParameters() const{return "";}
+    virtual QString GetStrResult() const{return "";}
 
 
     /****************************************************************************/

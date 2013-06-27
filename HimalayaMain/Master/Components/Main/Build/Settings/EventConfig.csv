@@ -386,3 +386,5 @@
 50331715,STR_PROGRAM_COMMAND_DRAIN,Info,,,,SCHEDULERMAIN,,High,Auth_USER,,,drain,
 50331716,EVENT_SERVICE_OPERATIONTIME_OVERDUE,Warning,,,,,,High,Auth_USER,,,"Please call the service engineer for maintenance!",
 50331717,EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE,Warning,,,,,,High,Auth_USER,,,"The Active carbon is overdue, please replace a new carbon filter!",
+50331718,STR_EXECUTE_COMMAND,Info,,,,SCHEDULERMAIN,,Low,Auth_SERVICE,,,"Scheduler execute command %1",
+50331719,STR_EXECUTE_COMMAND_RESULT,Info,,,,SCHEDULERMAIN,,Low,Auth_SERVICE,,,"Scheduler execute command %1 result %2",

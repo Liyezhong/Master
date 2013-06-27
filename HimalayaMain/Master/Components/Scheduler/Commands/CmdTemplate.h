@@ -39,6 +39,7 @@ public:
 
     fct_ret
 	fct_par
+	fct_str
 
     void Execute();
 

@@ -42,6 +42,8 @@ public:
 	DeviceControl::RVPosition_t GetRVPosition(){return m_RVPosition;}
 	void SetRVPosition(DeviceControl::RVPosition_t RVPosition){m_RVPosition = RVPosition;}
 	
+	QString GetParameters()const{ return GetName() + QString("(%1)").arg(m_RVPosition);}
+	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
     void Execute();
 

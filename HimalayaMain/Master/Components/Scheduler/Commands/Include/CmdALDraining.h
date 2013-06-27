@@ -42,6 +42,8 @@ public:
 	quint32 GetDelayTime(){return m_DelayTime;}
 	void SetDelayTime(quint32 DelayTime){m_DelayTime = DelayTime;}
 	
+	QString GetParameters()const{ return GetName() + QString("(%1)").arg(m_DelayTime);}
+	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
     void Execute();
 

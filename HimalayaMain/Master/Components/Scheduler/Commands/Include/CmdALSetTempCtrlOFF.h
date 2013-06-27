@@ -42,6 +42,8 @@ public:
 	DeviceControl::ALTempCtrlType_t Gettype(){return m_type;}
 	void Settype(DeviceControl::ALTempCtrlType_t type){m_type = type;}
 	
+	QString GetParameters()const{ return GetName() + QString("(%1)").arg(m_type);}
+	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
     void Execute();
 

@@ -44,6 +44,8 @@ public:
 	DeviceControl::RVPosition_t GetTubePos(){return m_TubePos;}
 	void SetTubePos(DeviceControl::RVPosition_t TubePos){m_TubePos = TubePos;}
 	
+	QString GetParameters()const{ return GetName() + QString("(%1,%2)").arg(m_ReagentGrpID).arg(m_TubePos);}
+	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
     void Execute();
 

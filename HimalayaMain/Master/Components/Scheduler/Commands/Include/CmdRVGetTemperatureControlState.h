@@ -40,6 +40,8 @@ public:
     DeviceControl::TempCtrlState_t GetResult()const{return m_result;}
 	bool GetResult(DeviceControl::TempCtrlState_t& result) const{result = m_result; return true;}
 	
+	QString GetParameters()const{ return GetName() + QString("()");}
+	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
     void Execute();
 

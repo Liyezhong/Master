@@ -54,6 +54,8 @@ public:
 	quint16 GetDerivativeTime(){return m_DerivativeTime;}
 	void SetDerivativeTime(quint16 DerivativeTime){m_DerivativeTime = DerivativeTime;}
 	
+	QString GetParameters()const{ return GetName() + QString("(%1,%2,%3,%4,%5,%6,%7)").arg(m_Type).arg(m_NominalTemperature).arg(m_SlopeTempChange).arg(m_MaxTemperature).arg(m_ControllerGain).arg(m_ResetTime).arg(m_DerivativeTime);}
+	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
     void Execute();
 

@@ -44,6 +44,8 @@ public:
 	quint8 GetIndex(){return m_Index;}
 	void SetIndex(quint8 Index){m_Index = Index;}
 	
+	QString GetParameters()const{ return GetName() + QString("(%1,%2)").arg(m_Type).arg(m_Index);}
+	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
     void Execute();
 

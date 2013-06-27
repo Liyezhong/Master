@@ -42,6 +42,8 @@ public:
 	quint32 GetIndex(){return m_Index;}
 	void SetIndex(quint32 Index){m_Index = Index;}
 	
+	QString GetParameters()const{ return GetName() + QString("(%1)").arg(m_Index);}
+	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
     void Execute();
 
