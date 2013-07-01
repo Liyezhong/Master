@@ -27,6 +27,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdown.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h"
 
 
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
@@ -590,6 +591,16 @@ void CDataConnector::SendProgramRemove(QString &ProgramID)
 void CDataConnector::SendSystemShutdown()
 {
     MsgClasses::CmdShutdown Command(1000);
+    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
+    mp_WaitDialog->SetTimeout(10000);
+    mp_WaitDialog->show();
+}
+
+void CDataConnector::SendResetOperationDays(DataManager::ResetOperationHoursType_t resetOperationHoursType)
+{
+    MsgClasses::CmdResetOperationHours Command(1000, resetOperationHoursType);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);

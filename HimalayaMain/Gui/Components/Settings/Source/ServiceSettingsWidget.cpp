@@ -215,6 +215,7 @@ void CServiceSettingsWidget::OnResetOperationDays()
 
     QString dateStr = GetFormattedCurrentDateString();
     mp_Ui->labelResetOperationDate->setText(dateStr);
+    emit ResetOperationDays(DataManager::RESETOPERATIONHOURS_WHOLEMACHINEOPERATION);
 }
 
 void CServiceSettingsWidget::OnResetCarbonFilter()
@@ -224,6 +225,7 @@ void CServiceSettingsWidget::OnResetCarbonFilter()
     m_UserSettingsTemp.SetActiveCarbonLastResetDate(strDate);
     QString dateStr = GetFormattedCurrentDateString();
     mp_Ui->labelResetCarbonFilterDate->setText(dateStr);
+    emit ResetOperationDays(DataManager::RESETOPERATIONHOURS_ACTIVECARBONFILTER);
 }
 
 void CServiceSettingsWidget::OnCheckBoxUseExhaustSystem(bool checked)

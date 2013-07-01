@@ -72,6 +72,10 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     CONNECTSIGNALSLOT(mp_Ui->pageService, SystemShutdown(),
                       mp_Data, SendSystemShutdown());
 
+    CONNECTSIGNALSLOT(mp_Ui->pageService, ResetOperationDays(DataManager::ResetOperationHoursType_t),
+                      mp_Data, SendResetOperationDays(DataManager::ResetOperationHoursType_t));
+
+
     CONNECTSIGNALSLOT(mp_Ui->pageSystemSetup,TemperatureChanged(DataManager::CUserSettings &),
                       mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Ui->pageAlarm, AlarmSettingsChanged(DataManager::CUserSettings &),

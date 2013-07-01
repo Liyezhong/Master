@@ -85,7 +85,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdownReply.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdown.h"
-
+#include "HimalayaDataContainer/Helper/Include/Global.h"
 
 
 namespace Himalaya {
@@ -902,7 +902,11 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
 void HimalayaMasterThreadController::ResetOperationHoursHandler(Global::tRefType Ref, const MsgClasses::CmdResetOperationHours &Cmd,
                                 Threads::CommandChannel &AckCommandChannel)
 {
-
+    DataManager::ResetOperationHoursType_t resetOperationHoursType = Cmd.ResetOperationHoursType();
+    if (resetOperationHoursType == DataManager::RESETOPERATIONHOURS_WHOLEMACHINEOPERATION)
+        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_OPERATIONTIME_OVERDUE, true);
+    else
+        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE, true);
 }
 
 /****************************************************************************/

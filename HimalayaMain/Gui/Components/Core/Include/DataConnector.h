@@ -164,6 +164,8 @@ public slots:
     void OnCurrentTabChanged(int CurrentTabIndex);
     void OnProgramStartReady();
     void SendSystemShutdown();
+    void SendResetOperationDays(DataManager::ResetOperationHoursType_t);
+
 signals:
 
     /****************************************************************************/

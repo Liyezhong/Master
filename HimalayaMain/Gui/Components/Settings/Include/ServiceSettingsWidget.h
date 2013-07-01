@@ -24,6 +24,7 @@
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
+#include <HimalayaDataContainer/Helper/Include/Global.h>
 
 namespace Settings {
 
@@ -74,6 +75,7 @@ private slots:
     void OnShutdown();
 signals:
     void ServiceSettingsChanged(DataManager::CUserSettings &Settings);
+    void ResetOperationDays(DataManager::ResetOperationHoursType_t resetOperationHoursType);
     void SystemShutdown();
 };
 
