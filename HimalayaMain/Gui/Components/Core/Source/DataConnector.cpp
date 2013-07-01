@@ -26,6 +26,8 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdown.h"
+
 
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "Global/Include/Commands/AckOKNOK.h"
@@ -109,11 +111,12 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramSelectedReply>(&CDataConnector::ProgramSelectedReplyHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortLockStatus>(&CDataConnector::RetortLockStatusHandler, this);
 
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdShutdownReply>(&CDataConnector::SystemShutdownRelyHandler, this);
+
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdEventStrings>(&CDataConnector::EventStringHandler, this);
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdExecutionStateChanged>(&CDataConnector::ExecutionStateHandler, this);
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdLanguageFile>(&CDataConnector::LanguageFileHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdChangeUserSettings>(&CDataConnector::SettingsUpdateHandler, this);
-    //m_NetworkObject.RegisterNetMessage<MsgClasses::CmdAlarmToneTest>(&CDataConnector::TestAlarmHandler, this);
 
 
     //EventHandlercomamnds
@@ -583,6 +586,17 @@ void CDataConnector::SendProgramRemove(QString &ProgramID)
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
 }
+
+void CDataConnector::SendSystemShutdown()
+{
+    MsgClasses::CmdShutdown Command(1000);
+    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
+    mp_WaitDialog->SetText(m_strSavingSettings);
+    mp_WaitDialog->SetTimeout(10000);
+    mp_WaitDialog->show();
+}
+
 /****************************************************************************/
 /*!
  *  \brief Handles incoming configuration Program commands
@@ -1085,6 +1099,7 @@ void CDataConnector::RetranslateUI()
    m_strLogFile = QApplication::translate("Core::CDataConnector", "Log Files", 0, QApplication::UnicodeUTF8);
    m_strGettingDailyLog = QApplication::translate("Core::CDataConnector", "Getting Daily run Log file ...", 0, QApplication::UnicodeUTF8);
 
+   m_strTurnOffSwitch = QApplication::translate("Core::CDataConnector", "Please turn off the switch on the back of machine to shutdown the machine.", 0, QApplication::UnicodeUTF8);
 
 }
 
@@ -1689,6 +1704,16 @@ void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClas
     emit RetortLockStatusChanged(Command);
 }
 
+void  CDataConnector::SystemShutdownRelyHandler(Global::tRefType Ref, const MsgClasses::CmdShutdownReply & Command)
+{
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    mp_MessageDlg->SetTitle(m_strInformation);
+    mp_MessageDlg->SetText(m_strTurnOffSwitch);
+    mp_MessageDlg->SetIcon(QMessageBox::Information);
+    mp_MessageDlg->HideButtons();
+    mp_MessageDlg->HideButtonsOneAndTwo();
+    mp_MessageDlg->show();
+}
 
 void CDataConnector::StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationSuckDrain & Command)
 {

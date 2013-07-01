@@ -83,6 +83,8 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 #include "Scheduler/Commands/Include/CmdSystemState.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdownReply.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdown.h"
 
 
 
@@ -286,6 +288,8 @@ void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<MsgClasses::CmdProgramAcknowledge>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdProgramSelected>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdKeepCassetteCount>(&m_CommandChannelSchedulerMain);
+    RegisterCommandForRouting<MsgClasses::CmdShutdown>(&m_CommandChannelSchedulerMain);
+    RegisterCommandForRouting<MsgClasses::CmdShutdownReply>(&m_CommandChannelGui);
 
     RegisterCommandForRouting<NetCommands::CmdCriticalActionStatus>(&m_CommandChannelSoftSwitch);
 
@@ -328,7 +332,8 @@ void HimalayaMasterThreadController::RegisterCommands() {
    RegisterCommandForProcessing<NetCommands::CmdSystemState, HimalayaMasterThreadController>
             (&HimalayaMasterThreadController::OnCmdSysState, this);
 
-
+   RegisterCommandForProcessing<MsgClasses::CmdResetOperationHours, HimalayaMasterThreadController>
+           (&HimalayaMasterThreadController::ResetOperationHoursHandler, this);//for remover maintainance reminder warning
 }
 
 /****************************************************************************/
@@ -892,6 +897,12 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
         // User entered the fallback password so ask him to change the password
         SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeAdminPasswordReply(5000, "New")), m_CommandChannelGui);
     }
+}
+
+void HimalayaMasterThreadController::ResetOperationHoursHandler(Global::tRefType Ref, const MsgClasses::CmdResetOperationHours &Cmd,
+                                Threads::CommandChannel &AckCommandChannel)
+{
+
 }
 
 /****************************************************************************/

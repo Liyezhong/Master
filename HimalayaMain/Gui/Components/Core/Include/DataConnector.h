@@ -49,6 +49,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
+#include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdownReply.h>
 
 
 
@@ -162,6 +163,7 @@ public slots:
     void OnDeviceConfigurationUpdated();
     void OnCurrentTabChanged(int CurrentTabIndex);
     void OnProgramStartReady();
+    void SendSystemShutdown();
 signals:
 
     /****************************************************************************/
@@ -374,6 +376,7 @@ private:
     void StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationSuckDrain & Command);
     void ProgramSelectedReplyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramSelectedReply & Command);
     void RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortLockStatus & Command);
+    void SystemShutdownRelyHandler(Global::tRefType Ref, const MsgClasses::CmdShutdownReply & Command);
 
     void EventStringHandler(Global::tRefType ref, const NetCommands::CmdEventStrings &Command);
     void ReagentRemoveHandler(Global::tRefType Ref, const MsgClasses::CmdReagentRemove &Command);
@@ -425,6 +428,7 @@ private:
     QString m_strImport, m_strImportData;
     QString m_strLogFile;
     QString m_strGettingDailyLog;
+    QString m_strTurnOffSwitch;
 
 private slots:
     void OnMasterConnected(const QString &name);

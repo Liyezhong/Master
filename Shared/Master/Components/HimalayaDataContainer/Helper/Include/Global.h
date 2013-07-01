@@ -74,6 +74,10 @@ typedef enum  {
         CONTAINER_STATUS_NOTUSED
     } ContainerStatusType_t;
 
+typedef enum {
+    RESETOPERATIONHOURS_WHOLEMACHINEOPERATION = 0,
+    RESETOPERATIONHOURS_ACTIVECARBONFILTER
+} ResetOperationHoursType_t;
 
 const QString LEICA("leica");
 

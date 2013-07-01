@@ -23,6 +23,8 @@
 #include "Global/Include/Utils.h"
 #include "Settings/Include/ServiceSettingsWidget.h"
 #include "ui_ServiceSettingsWidget.h"
+#include "MainMenu/Include/MessageDlg.h"
+#include <Dashboard/Include/CommonString.h>
 
 namespace Settings {
 
@@ -43,7 +45,7 @@ CServiceSettingsWidget::CServiceSettingsWidget(QWidget *p_Parent) :  MainMenu::C
     CONNECTSIGNALSLOT(mp_Ui->btnResetCarbonFilter, clicked(), this, OnResetCarbonFilter());
     CONNECTSIGNALSLOT(mp_Ui->checkBoxUseExhaustSystem, clicked(bool), this, OnCheckBoxUseExhaustSystem(bool));
     CONNECTSIGNALSLOT(mp_Ui->btnSave, clicked(), this, OnSaveSetting());
-
+    CONNECTSIGNALSLOT(mp_Ui->btnShutdown, clicked(), this, OnShutdown());
 
 }
 
@@ -245,6 +247,21 @@ void CServiceSettingsWidget::OnSaveSetting()
     emit ServiceSettingsChanged(m_UserSettingsTemp);
 }
 
+void CServiceSettingsWidget::OnShutdown()
+{
+    MainMenu::CMessageDlg ConfirmationMessageDlg;
+    ConfirmationMessageDlg.SetTitle(CommonString::strInforMsg);
+    ConfirmationMessageDlg.SetText(m_strShutdownConfirm);
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
+    ConfirmationMessageDlg.SetButtonText(1, CommonString::strCancel);//right
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strYes);//left
+    ConfirmationMessageDlg.HideCenterButton();
+    ConfirmationMessageDlg.exec();
+
+    //send command to scheduler to shut Down
+    emit SystemShutdown();
+}
+
 /****************************************************************************/
 /*!
  *  \brief This slot is called when Process state changes
@@ -283,6 +300,10 @@ void CServiceSettingsWidget::ResetButtons()
 void CServiceSettingsWidget::RetranslateUI()
 {
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CServiceSettingsWidget", "Service", 0, QApplication::UnicodeUTF8));
+   m_strShutdownConfirm = QApplication::translate("Settings::CServiceSettingsWidget",
+                        "If shut down now, 12 hours will be needed for melt paraffin in next startup! really shut down?",
+                                           0, QApplication::UnicodeUTF8);
+
 }
 
 /****************************************************************************/

@@ -48,6 +48,7 @@
 #include <NetCommands/Include/CmdGuiInit.h>
 #include <HimalayaMasterThread/Include/ProgramStartableFlagManager.h>
 #include <NetCommands/Include/CmdConfigurationFile.h>
+#include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h>
 
 
 namespace EventHandler {
@@ -273,6 +274,9 @@ private:
     /************************************************************************************/
     void ChangeUserLevelHandler(Global::tRefType Ref, const NetCommands::CmdChangeUserLevel &Cmd,
                              Threads::CommandChannel &AckCommandChannel);
+
+    void ResetOperationHoursHandler(Global::tRefType Ref, const MsgClasses::CmdResetOperationHours &Cmd,
+                                    Threads::CommandChannel &AckCommandChannel);
 
     /************************************************************************************/
     /*!

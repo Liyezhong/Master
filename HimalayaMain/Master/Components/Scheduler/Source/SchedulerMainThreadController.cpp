@@ -48,6 +48,8 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdown.h"
+
 #include "float.h"
 #include "EventHandler/Include/CrisisEventHandler.h"
 
@@ -114,6 +116,9 @@ void SchedulerMainThreadController::RegisterCommands()
 
     RegisterCommandForProcessing<MsgClasses::CmdProgramSelected,
                     SchedulerMainThreadController>(&SchedulerMainThreadController::OnProgramSelected, this);
+
+    RegisterCommandForProcessing<MsgClasses::CmdShutdown,
+                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnShutdown, this);
 
 }
 
@@ -739,6 +744,12 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         return CTRL_CMD_NONE;
 
     Global::CommandShPtr_t pt = m_SchedulerCmdQueue.head();
+    MsgClasses::CmdShutdown* pCmdShutdown = dynamic_cast<MsgClasses::CmdShutdown*>(pt.GetPointerToUserData());
+    if(pCmdShutdown)
+    {
+        return CTRL_CMD_SHUTDOWN;
+    }
+
     MsgClasses::CmdProgramAction* pCmdProgramAction = dynamic_cast<MsgClasses::CmdProgramAction*>(pt.GetPointerToUserData());
     if(pCmdProgramAction)
     {
@@ -1133,8 +1144,20 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_OPERATIONTIME_OVERDUE);
     }
 
+
     int activeCarbonHours = pUserSetting->GetActiveCarbonHours();
-    if (activeCarbonHours >= 5* 30* 24)
+    int usedExhaustSystem = pUserSetting->GetUseExhaustSystem();
+    int warningthreshold = 0;
+    if (1 == usedExhaustSystem)
+    {
+        warningthreshold = 5* 30 * 24;
+    }
+    else
+    {
+        warningthreshold = 10 * 30 * 24;
+    }
+
+    if (activeCarbonHours >= warningthreshold)
     {
        Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE);
     }
@@ -1211,6 +1234,13 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
 
 }
 
+void SchedulerMainThreadController::OnShutdown(Global::tRefType Ref, const MsgClasses::CmdShutdown & Cmd)
+{
+    m_Mutex.lock();
+    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdShutdown(Cmd.GetTimeout())));
+    m_Mutex.unlock();
+    this->SendAcknowledgeOK(Ref);
+}
 
 bool SchedulerMainThreadController::IsCleaningReagent(const QString& ReagentID)
 {

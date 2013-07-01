@@ -18,6 +18,7 @@ HEADERS += ../Containers/ContainerBase/Include/*.h \
  ../Containers/DashboardStations/Commands/Include/*h \
  ../Containers/DashboardStations/Include/*h \
  ../Containers/UserSettings/Include/*.h \
+ ../Containers/UserSettings/Commands/Include/*h \
 ../Containers/ProgramSettings/Include/*h \
 ../Containers/ProgramSettings/Commands/Include/*.h
 
@@ -38,6 +39,7 @@ SOURCES += ../Containers/ContainerBase/Source/*.cpp \
  ../Containers/DashboardStations/Commands/Source/*.cpp \
  ../Containers/DashboardStations/Source/*.cpp \
  ../Containers/UserSettings/Source/*.cpp \
+ ../Containers/UserSettings/Commands/Source/*.cpp \
 ../Containers/ProgramSettings/Source/*.cpp \
 ../Containers/ProgramSettings/Commands/Source/*.cpp
 
