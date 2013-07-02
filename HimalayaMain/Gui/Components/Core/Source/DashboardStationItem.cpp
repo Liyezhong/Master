@@ -95,7 +95,7 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
 CDashboardStationItem::~CDashboardStationItem()
 {
     try {
-        delete mp_BlinkingTimer;
+
     } catch(...) {
 
     }

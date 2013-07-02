@@ -61,6 +61,7 @@ private:
     QString GetFormattedCurrentDateString();
     QString GetFormattedDateString(const QDateTime& dateTime);
     QString m_strShutdownConfirm;
+
 protected:
     void changeEvent(QEvent *p_Event);
     void showEvent(QShowEvent *p_Event);
@@ -73,10 +74,11 @@ private slots:
     void OnCheckBoxUseExhaustSystem(bool checked);
     void OnSaveSetting();
     void OnShutdown();
+    void OnStartServiceApp();
 signals:
     void ServiceSettingsChanged(DataManager::CUserSettings &Settings);
     void ResetOperationDays(DataManager::ResetOperationHoursType_t resetOperationHoursType);
-    void SystemShutdown();
+    void AppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);
 };
 
 } // end namespace Settings

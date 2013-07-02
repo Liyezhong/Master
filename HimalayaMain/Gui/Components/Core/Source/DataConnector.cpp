@@ -26,7 +26,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
-#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdown.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h"
 
 
@@ -45,6 +45,8 @@
 #include "MainMenu//Include/MsgBoxManager.h"
 #include "Dashboard/Include/SplashWidget.h"
 #include <Dashboard/Include/CommonString.h>
+#include <Global/Include/SystemPaths.h>
+#include <QProcess>
 
 namespace Core {
 
@@ -112,7 +114,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramSelectedReply>(&CDataConnector::ProgramSelectedReplyHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortLockStatus>(&CDataConnector::RetortLockStatusHandler, this);
 
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdShutdownReply>(&CDataConnector::SystemShutdownRelyHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdQuitAppShutdownReply>(&CDataConnector::AppQuitSystemShutdownRelyHandler, this);
 
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdEventStrings>(&CDataConnector::EventStringHandler, this);
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdExecutionStateChanged>(&CDataConnector::ExecutionStateHandler, this);
@@ -169,6 +171,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
 
     mp_SplashWidget = new SplashWidget();
     CONNECTSIGNALSLOT(this, ProgramStartReady(), this, OnProgramStartReady());
+    m_pServiceProcess = new QProcess();
 
 }
 
@@ -185,6 +188,7 @@ CDataConnector::~CDataConnector()
         delete mp_BlgScanWaitDialog;
         delete mp_MessageDlg;
         delete mp_LanguageFile;
+        delete m_pServiceProcess;
     }
     catch (...) {
         //To please lint warnings
@@ -588,9 +592,9 @@ void CDataConnector::SendProgramRemove(QString &ProgramID)
     mp_WaitDialog->show();
 }
 
-void CDataConnector::SendSystemShutdown()
+void CDataConnector::SendAppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType)
 {
-    MsgClasses::CmdShutdown Command(1000);
+    MsgClasses::CmdQuitAppShutdown Command(1000, quitAppShutdownActionType);
     m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
@@ -1715,15 +1719,24 @@ void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClas
     emit RetortLockStatusChanged(Command);
 }
 
-void  CDataConnector::SystemShutdownRelyHandler(Global::tRefType Ref, const MsgClasses::CmdShutdownReply & Command)
+void CDataConnector::AppQuitSystemShutdownRelyHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdownReply & Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
-    mp_MessageDlg->SetTitle(m_strInformation);
-    mp_MessageDlg->SetText(m_strTurnOffSwitch);
-    mp_MessageDlg->SetIcon(QMessageBox::Information);
-    mp_MessageDlg->HideButtons();
-    mp_MessageDlg->HideButtonsOneAndTwo();
-    mp_MessageDlg->show();
+    if (DataManager::QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN == Command.QuitAppShutdownActionType())
+    {
+        mp_MessageDlg->SetTitle(m_strInformation);
+        mp_MessageDlg->SetText(m_strTurnOffSwitch);
+        mp_MessageDlg->SetIcon(QMessageBox::Information);
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->HideButtonsOneAndTwo();
+        mp_MessageDlg->show();
+    }
+    else
+    {
+        m_pServiceProcess->start(Global::SystemPaths::Instance().GetComponentTestPath()
+                        + QDir::separator() + "GUITest");
+        qApp->quit();
+    }
 }
 
 void CDataConnector::StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationSuckDrain & Command)

@@ -49,7 +49,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
-#include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdownReply.h>
+#include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdownReply.h>
 
 
 
@@ -163,7 +163,7 @@ public slots:
     void OnDeviceConfigurationUpdated();
     void OnCurrentTabChanged(int CurrentTabIndex);
     void OnProgramStartReady();
-    void SendSystemShutdown();
+    void SendAppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);
     void SendResetOperationDays(DataManager::ResetOperationHoursType_t);
 
 signals:
@@ -378,7 +378,7 @@ private:
     void StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationSuckDrain & Command);
     void ProgramSelectedReplyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramSelectedReply & Command);
     void RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortLockStatus & Command);
-    void SystemShutdownRelyHandler(Global::tRefType Ref, const MsgClasses::CmdShutdownReply & Command);
+    void AppQuitSystemShutdownRelyHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdownReply & Command);
 
     void EventStringHandler(Global::tRefType ref, const NetCommands::CmdEventStrings &Command);
     void ReagentRemoveHandler(Global::tRefType Ref, const MsgClasses::CmdReagentRemove &Command);
@@ -404,6 +404,7 @@ private:
     QFile *mp_LanguageFile;                         //!< Lanugage file object (qm file)
     QFile *mp_OldFile;                              //!< Old/Previous language file(qm file)
     QTranslator m_Translator;                       //!< Language translator
+    QProcess* m_pServiceProcess;
     bool m_UpdateProgramColor;
     bool m_AddProgramWithUpdateColor;
     quint32 m_LanguageChangeCount;                  //!< Count of language changes

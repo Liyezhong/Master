@@ -24,6 +24,7 @@
 #include <QTranslator>
 #include <QDir>
 #include "Global/Include/SignalHandler.h"
+#include <Global/Include/SystemPaths.h>
 
 /****************************************************************************/
 /*!
@@ -51,6 +52,7 @@ int main(int Argc, char *p_Argv[])
 
     Global::InitSupportedLanguages();// set global directories.   
     Application::CApplication App(Argc, p_Argv, Application::HIMALAYA_PROJECT);
+    Global::SystemPaths::Instance().SetComponentTestPath("Tests");
     Core::CStartup StartUp;
 
     return App.exec();

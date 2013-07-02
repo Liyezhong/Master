@@ -48,7 +48,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
-#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdown.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 
 #include "float.h"
 #include "EventHandler/Include/CrisisEventHandler.h"
@@ -117,8 +117,8 @@ void SchedulerMainThreadController::RegisterCommands()
     RegisterCommandForProcessing<MsgClasses::CmdProgramSelected,
                     SchedulerMainThreadController>(&SchedulerMainThreadController::OnProgramSelected, this);
 
-    RegisterCommandForProcessing<MsgClasses::CmdShutdown,
-                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnShutdown, this);
+    RegisterCommandForProcessing<MsgClasses::CmdQuitAppShutdown,
+                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnQuitAppShutdown, this);
 
 }
 
@@ -744,10 +744,17 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         return CTRL_CMD_NONE;
 
     Global::CommandShPtr_t pt = m_SchedulerCmdQueue.head();
-    MsgClasses::CmdShutdown* pCmdShutdown = dynamic_cast<MsgClasses::CmdShutdown*>(pt.GetPointerToUserData());
+    MsgClasses::CmdQuitAppShutdown* pCmdShutdown = dynamic_cast<MsgClasses::CmdQuitAppShutdown*>(pt.GetPointerToUserData());
     if(pCmdShutdown)
     {
-        return CTRL_CMD_SHUTDOWN;
+        if (pCmdShutdown->QuitAppShutdownActionType() == DataManager::QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN)
+        {
+            return CTRL_CMD_QUITAPP;
+        }
+        if (pCmdShutdown->QuitAppShutdownActionType() == DataManager::QUITAPPSHUTDOWNACTIONTYPE_QUITAPP)
+        {
+            return CTRL_CMD_SHUTDOWN;
+        }
     }
 
     MsgClasses::CmdProgramAction* pCmdProgramAction = dynamic_cast<MsgClasses::CmdProgramAction*>(pt.GetPointerToUserData());
@@ -1234,10 +1241,10 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
 
 }
 
-void SchedulerMainThreadController::OnShutdown(Global::tRefType Ref, const MsgClasses::CmdShutdown & Cmd)
+void SchedulerMainThreadController::OnQuitAppShutdown(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdown & Cmd)
 {
     m_Mutex.lock();
-    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdShutdown(Cmd.GetTimeout())));
+    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdQuitAppShutdown(Cmd.GetTimeout(), Cmd.QuitAppShutdownActionType())));
     m_Mutex.unlock();
     this->SendAcknowledgeOK(Ref);
 }

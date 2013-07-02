@@ -104,7 +104,6 @@ private:
 
     int m_CurrentBoundingRectReagentHeight;                //!< current container Bounding Rect Height
 
-    QTimer *mp_BlinkingTimer;                            //!< timer for blinking effect of station when reagent is expired
     QTimer* mp_SuckDrainTimer;
     bool m_ReagentExpiredFlag;                           //!< Indicates if the reagent in a station is expired.
     bool m_StationSelected;                              //!< Indicates if the station is selected for the program

@@ -47,7 +47,7 @@ namespace MsgClasses
 {
     class CmdKeepCassetteCount;
     class CmdProgramSelected;
-    class CmdShutdown;
+    class CmdQuitAppShutdown;
 }
 
 namespace DataManager
@@ -79,6 +79,7 @@ typedef enum
     CTRL_CMD_SET_REMOTE_ALARM,
     CTRL_CMD_CLEAR_REMOTE_ALARM,
     CTRL_CMD_DRAIN,
+    CTRL_CMD_QUITAPP,
     CTRL_CMD_SHUTDOWN,
     CTRL_CMD_NONE,
     CTRL_CMD_UNKNOWN
@@ -268,7 +269,7 @@ protected:
         void OnRetortLock(Global::tRefType Ref, const MsgClasses::CmdRetortLock& Cmd);
         void OnKeepCassetteCount(Global::tRefType Ref, const MsgClasses::CmdKeepCassetteCount & Cmd);
         void OnProgramSelected(Global::tRefType Ref, const MsgClasses::CmdProgramSelected& Cmd);
-        void OnShutdown(Global::tRefType Ref, const MsgClasses::CmdShutdown& Cmd);
+        void OnQuitAppShutdown(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdown& Cmd);
     public:
         /****************************************************************************/
         /**

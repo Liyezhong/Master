@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdShutdown.cpp
+/*! \file CmdQuitAppShutdownReply.cpp
  *
- *  \brief Notice Scheduler that System will shutdown.
+ *  \brief  After some processes have done for "quit Application" or "shutdown", scheduler will notify GUI by this command.
  *
  *  $Version:   $ 0.1
  *  $Date:      $ 2013-06-27
@@ -18,13 +18,13 @@
  */
 /****************************************************************************/
 
-#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdown.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdownReply.h"
 
 
 
 namespace MsgClasses {
 
-QString CmdShutdown::NAME = "MsgClasses::CmdShutdown";
+QString CmdQuitAppShutdownReply::NAME = "MsgClasses::CmdQuitAppShutdownReply";
 
 /****************************************************************************/
 /*!
@@ -33,17 +33,17 @@ QString CmdShutdown::NAME = "MsgClasses::CmdShutdown";
  * \param[in]   Timeout     Timeout for command.
  */
 /****************************************************************************/
-CmdShutdown::CmdShutdown(int TimeOut)
-    : Command(TimeOut)
+CmdQuitAppShutdownReply::CmdQuitAppShutdownReply(int TimeOut, DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType)
+    : Command(TimeOut), m_quitAppShutdownActionType(quitAppShutdownActionType)
 {
 }
 
-CmdShutdown::CmdShutdown(void)
+CmdQuitAppShutdownReply::CmdQuitAppShutdownReply(void)
     : Command(0)
 {
 }
 
-CmdShutdown::~CmdShutdown(void)
+CmdQuitAppShutdownReply::~CmdQuitAppShutdownReply(void)
 {
 }
 
@@ -54,7 +54,7 @@ CmdShutdown::~CmdShutdown(void)
  *  \return  command name as string
  */
 /****************************************************************************/
-QString CmdShutdown::GetName(void) const
+QString CmdQuitAppShutdownReply::GetName(void) const
 {
     return NAME;
 }

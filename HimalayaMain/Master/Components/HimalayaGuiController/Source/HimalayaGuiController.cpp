@@ -72,8 +72,8 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h>
-#include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdown.h>
-#include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdShutdownReply.h>
+#include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h>
+#include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdownReply.h>
 
 
 namespace HimalayaGui {
@@ -339,11 +339,11 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     RegisterExternalMessage<MsgClasses::CmdResetOperationHours, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdResetOperationHours>, this);
 
-    RegisterExternalMessage<MsgClasses::CmdShutdown, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdShutdown>, this);
+    RegisterExternalMessage<MsgClasses::CmdQuitAppShutdown, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdQuitAppShutdown>, this);
 
-    RegisterCommandForProcessing<MsgClasses::CmdShutdownReply, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdShutdownReply>,this);
+    RegisterCommandForProcessing<MsgClasses::CmdQuitAppShutdownReply, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdQuitAppShutdownReply>,this);
 }
 
 /****************************************************************************/

@@ -79,6 +79,12 @@ typedef enum {
     RESETOPERATIONHOURS_ACTIVECARBONFILTER
 } ResetOperationHoursType_t;
 
+typedef enum {
+    QUITAPPSHUTDOWNACTIONTYPE_QUITAPP = 0,
+    QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN
+} QuitAppShutdownActionType_t;
+
+
 const QString LEICA("leica");
 
 /****************************************************************************/

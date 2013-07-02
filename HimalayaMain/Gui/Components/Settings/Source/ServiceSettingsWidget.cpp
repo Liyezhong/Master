@@ -46,7 +46,7 @@ CServiceSettingsWidget::CServiceSettingsWidget(QWidget *p_Parent) :  MainMenu::C
     CONNECTSIGNALSLOT(mp_Ui->checkBoxUseExhaustSystem, clicked(bool), this, OnCheckBoxUseExhaustSystem(bool));
     CONNECTSIGNALSLOT(mp_Ui->btnSave, clicked(), this, OnSaveSetting());
     CONNECTSIGNALSLOT(mp_Ui->btnShutdown, clicked(), this, OnShutdown());
-
+    CONNECTSIGNALSLOT(mp_Ui->btnStartServiceApp, clicked(), this, OnStartServiceApp());
 }
 
 /****************************************************************************/
@@ -261,7 +261,12 @@ void CServiceSettingsWidget::OnShutdown()
     ConfirmationMessageDlg.exec();
 
     //send command to scheduler to shut Down
-    emit SystemShutdown();
+    emit AppQuitSystemShutdown(DataManager::QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN);
+}
+
+void CServiceSettingsWidget::OnStartServiceApp()
+{
+    emit AppQuitSystemShutdown(DataManager::QUITAPPSHUTDOWNACTIONTYPE_QUITAPP);
 }
 
 /****************************************************************************/
