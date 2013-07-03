@@ -466,6 +466,7 @@ void CReagentStatusWidget::ResetButtons()
 
 void CReagentStatusWidget:: StationReagentUpdated(QString StationId)
 {
+    Q_UNUSED(StationId)
     m_ReagentStatusModel.UpdateReagentList();
     m_ReagentStatusModel.ResetAndUpdateModel();
     mp_TableWidget->selectRow(m_CurrentIndex.row());

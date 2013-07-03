@@ -44,8 +44,9 @@ CReagentRMSWidget::CReagentRMSWidget(QWidget *p_Parent):
     mp_Ui(new Ui::CReagentRMSWidget),
     mp_DataConnector(NULL),
     mp_ReagentList(NULL),
-    mp_Reagent(NULL),
-    mp_ModifiyReagentRMSDlg(NULL)
+    mp_ModifiyReagentRMSDlg(NULL),
+    mp_Reagent(NULL)
+
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("RMS"));
@@ -322,6 +323,7 @@ void CReagentRMSWidget::OnCancelPressed()
 /****************************************************************************/
 void CReagentRMSWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
 {
+    Q_UNUSED(p_UserSettings)
    // mp_UserSettings = p_UserSettings;
    // m_ReagentRMSModel.SetUserSettings(p_UserSettings);
 }

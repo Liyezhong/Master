@@ -49,8 +49,8 @@ CReagentGroup::CReagentGroup() :m_GroupID(""), m_GroupName(""),m_GroupNameID("")
  *  \iparam ID
  */
 /****************************************************************************/
-CReagentGroup::CReagentGroup(const QString ID) :m_GroupID(ID), m_GroupName(""),m_Color(""),
-                                                m_IsCleaningReagentGroup(false),m_GroupNameID(""),
+CReagentGroup::CReagentGroup(const QString ID) :m_GroupID(ID), m_GroupName(""),m_GroupNameID(""),m_Color(""),
+                                                m_IsCleaningReagentGroup(false),
                                                 m_IsParraffinGroup(false)
 {
 }

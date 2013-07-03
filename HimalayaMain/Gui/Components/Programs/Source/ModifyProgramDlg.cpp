@@ -58,18 +58,23 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
                                      MainMenu::CDialogFrame(p_Parent),
                                      mp_Ui(new Ui::CModifyProgramDlg),
                                      mp_MainWindow(p_MainWindow),
-                                     mp_DataConnector(p_DataConnector),mp_NewProgram(NULL),
-                                     m_ProgNameBtnClicked(false), m_ProgShortNameBtnClicked(false),
-                                     m_ProcessRunning(false), m_TempColor(" "),
-                                     mp_MessageDlg(NULL), m_ColorReplaced(false),
+                                     mp_DataConnector(p_DataConnector),
+                                     m_ProgNameBtnClicked(false),
+                                     m_ProgShortNameBtnClicked(false),
+                                     m_ProcessRunning(false),
+                                     m_TempColor(" "),
+                                     mp_MessageDlg(NULL),
+                                     mp_NewProgram(NULL),
+                                     m_ColorReplaced(false),
                                      m_strSelectIcon(tr("Select Icon")),
                                      m_strConfirmMsg(tr("Confirmation Message")),
                                      m_strYes(tr("Yes")),
                                      m_strOK(tr("OK")),
+                                     m_strClose(tr("Close")),
                                      m_strCancel(tr("Cancel")),
                                      m_strDelProgramStep(tr("Do you really want to delete the selected program step?")),
-                                     m_strEnterValidName(tr("Please enter a valid Program Name")),
-                                     m_strClose(tr("Close"))
+                                     m_strEnterValidName(tr("Please enter a valid Program Name"))
+
 {
     mp_Ui->setupUi(GetContentFrame());
     mp_ModifyProgramIconDlg = new Programs::CModifyProgramIconDlg(this, mp_MainWindow);

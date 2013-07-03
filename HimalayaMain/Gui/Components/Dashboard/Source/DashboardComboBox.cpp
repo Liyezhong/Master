@@ -36,10 +36,10 @@ CDashboardComboBox::CDashboardComboBox(QWidget *p_Parent):
 {
 
     //mp_ListView = new QListView(this);
-    //mp_ListView->setStyleSheet("QListView::item { border-bottom: 5px solid white; margin:3px; }" \
-                               //"QListView::item:selected { border-bottom: 5px solid black; margin:3px;" \
-                               //"color: black;}"
-                                //);
+    /*mp_ListView->setStyleSheet("QListView::item { border-bottom: 5px solid white; margin:3px; }"
+                               "QListView::item:selected { border-bottom: 5px solid black; margin:3px;"
+                               "color: black;}"
+                                );*/
    // setView(mp_ListView);
     m_SelProgName = "Program";
     m_PixmapEnable.load(":/HimalayaImages/ComboButton/ComboButton_Button_Enable.png");

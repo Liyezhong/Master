@@ -38,6 +38,7 @@ CModifyProgramIconDlg::CModifyProgramIconDlg(QWidget *p_Parent, MainMenu::CMainW
     m_strConfirmMsg(tr("Information Message")),
     m_strOK(tr("Ok")), m_strCancel(tr("Cancel")), m_strClose(tr("Close"))
 {
+    Q_UNUSED(p_MainWindow)
     mp_Ui->setupUi(GetContentFrame());
     m_ProcessRunning = false ;
     SetButtonGroup();

@@ -78,6 +78,7 @@ void CLanguageModel::SetVisibleRowCount(qint32 RowCount)
 /****************************************************************************/
 int CLanguageModel::rowCount(const QModelIndex &p_parent) const
 {
+    Q_UNUSED(p_parent)
     int Count = m_LanguageList.count();
     return ((Count < m_VisibleRowCount) ? m_VisibleRowCount : Count);
 }
@@ -91,6 +92,7 @@ int CLanguageModel::rowCount(const QModelIndex &p_parent) const
 /****************************************************************************/
 int CLanguageModel::columnCount(const QModelIndex &p_parent) const
 {
+    Q_UNUSED(p_parent)
     return m_Columns;
 }
 /****************************************************************************/
@@ -153,6 +155,7 @@ Qt::ItemFlags CLanguageModel::flags(const QModelIndex &Index) const
 /****************************************************************************/
 QVariant CLanguageModel::headerData(int Section, Qt::Orientation Orientation, int Role) const
 {
+    Q_UNUSED(Section)
     if (Role == (int)Qt::DisplayRole && Orientation == Qt::Horizontal) {        
         return tr("  Language");
     }

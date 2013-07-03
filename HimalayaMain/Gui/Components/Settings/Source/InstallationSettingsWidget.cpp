@@ -40,11 +40,11 @@ CInstallationSettingsWidget::CInstallationSettingsWidget(QWidget *p_Parent) : Ma
 {
     mp_Ui->setupUi(GetContentFrame());
     mp_Ui->btnEdit->setText(tr("Edit"));
-    mp_Ui->btnUpdate->setText(tr("Update"));
+    //mp_Ui->btnUpdate->setText(tr("Update"));
     SetPanelTitle(tr("Installation"));
     mp_Ui->serialnumber->setText("0000-0000-0000-0000");
     CONNECTSIGNALSLOT(mp_Ui->btnEdit,clicked(),this,OnEditclicked());
-    CONNECTSIGNALSLOT(mp_Ui->btnUpdate,clicked(),this,OnUpdateclicked());
+    //CONNECTSIGNALSLOT(mp_Ui->btnUpdate,clicked(),this,OnUpdateclicked());
 }
 
 
@@ -92,6 +92,7 @@ void CInstallationSettingsWidget::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CInstallationSettingsWidget::showEvent(QShowEvent *p_Event)
 {
+    Q_UNUSED(p_Event)
     ResetButtons();
 }
 /****************************************************************************/
@@ -109,18 +110,18 @@ void CInstallationSettingsWidget::ResetButtons()
         (MainMenu::CMainWindow::Service == m_CurrentUserRole))
     {
         mp_Ui->btnEdit->setEnabled(true);
-        mp_Ui->btnUpdate->setEnabled(true);
+        //mp_Ui->btnUpdate->setEnabled(true);
     }
     else if (!m_ProcessRunning &&
              MainMenu::CMainWindow::Admin == m_CurrentUserRole)
     {
         mp_Ui->btnEdit->setEnabled(true);
-        mp_Ui->btnUpdate->setEnabled(false);
+        //mp_Ui->btnUpdate->setEnabled(false);
     }
     else
     {
         mp_Ui->btnEdit->setEnabled(false);
-        mp_Ui->btnUpdate->setEnabled(false);
+        //mp_Ui->btnUpdate->setEnabled(false);
     }
 }
 
@@ -135,9 +136,9 @@ void CInstallationSettingsWidget::RetranslateUI()
    mp_Ui->btnEdit->setText(QApplication::translate(
                                "Settings::CInstallationSettingsWidget",
                                "Edit", 0, QApplication::UnicodeUTF8));
-   mp_Ui->btnUpdate->setText(QApplication::translate(
+   /*mp_Ui->btnUpdate->setText(QApplication::translate(
                                  "Settings::CInstallationSettingsWidget",
-                                 "Update", 0, QApplication::UnicodeUTF8));
+                                 "Update", 0, QApplication::UnicodeUTF8));*/
    mp_Ui->softwareversion->setText(QApplication::translate(
                                        "Settings::CInstallationSettingsWidget",
                                        "SoftwareVersion: ",

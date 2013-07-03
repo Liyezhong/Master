@@ -746,6 +746,7 @@ bool CDashboardScene::HaveExpiredReagent()
                  return true;
          }
     }
+    return false;
 }
 
 } // end namespace Dashboard

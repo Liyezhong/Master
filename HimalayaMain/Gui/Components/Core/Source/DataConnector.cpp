@@ -58,8 +58,8 @@ namespace Core {
  */
 /****************************************************************************/
 CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::CDataContainer(),
-    m_ConsumableType(KIT),mp_MainWindow(p_Parent), mp_LanguageFile(NULL), mp_OldFile(NULL),
-    m_LanguageChangeCount(0),m_BottleCount(0), m_GuiInit(true), mp_RmsMessageDlg(NULL),
+    mp_MainWindow(p_Parent), mp_RmsMessageDlg(NULL), mp_LanguageFile(NULL), mp_OldFile(NULL),
+    m_LanguageChangeCount(0), m_ConsumableType(KIT), m_BottleCount(0), m_GuiInit(true),
     m_strCommunicationError(tr("Communication Error")),
     m_strChangeNotSave(tr("The changes could not be saved.")),
     m_strStartup(tr("Startup")),
@@ -405,7 +405,7 @@ void CDataConnector::SendStationSetAsFull(const QString& StationId)
 
 void CDataConnector::SendRMSChanged(Global::RMSOptions_t rmsOption)
 {
-
+    Q_UNUSED(rmsOption)
 }
 
 /****************************************************************************/
@@ -1551,6 +1551,7 @@ void CDataConnector::RequestDayRunLogFileNames()
 /****************************************************************************/
 void CDataConnector::OnCmdGuiInit(Global::tRefType Ref, const NetCommands::CmdGuiInit &Command)
 {
+    Q_UNUSED(Command)
     //Set GUI Init Flag to true. This will be set to false when last xml file is received from Master
     qDebug()<<"NetCommands::CmdGuiInit Received \n";
     m_GuiAllConfigurationReceived = true;

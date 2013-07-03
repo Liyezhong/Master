@@ -125,7 +125,7 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
     if (mp_ProgramList == NULL) {
         return QVariant();
     }
-    if (p_Program = const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(Index.row()))) {
+    if (p_Program == const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(Index.row()))) {
         if (Role == (int)Qt::DisplayRole) {
             switch (5 - m_Columns + Index.column()) {
             case -1:
@@ -259,7 +259,7 @@ QVariant CProgramModel::headerData(int Section, Qt::Orientation Orientation, int
 /****************************************************************************/
 bool CProgramModel::setData(const QModelIndex &Index, const QVariant &Value, int Role)
 {
-    bool UpdateStat = false;
+    //bool UpdateStat = false;
     if (mp_ProgramList == NULL) {
         return false;
     }
@@ -271,7 +271,7 @@ bool CProgramModel::setData(const QModelIndex &Index, const QVariant &Value, int
                 if (FavProgramCount < MAX_FAVORITE_PROGRAM_COUNT && Value.toBool() == true)
                 {
                     p_Program->SetFavorite(Value.toBool());
-                    UpdateStat = mp_ProgramList->UpdateProgram(p_Program);
+                    //UpdateStat = mp_ProgramList->UpdateProgram(p_Program);
                     OnUpdateProgramList();
                     emit FavoriteProgramListUpdated(*p_Program);
                     return true;

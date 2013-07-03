@@ -37,6 +37,7 @@ CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, Main
     MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyReagentGroupColorDlg),
     m_strCancel(tr("Cancel")), m_strClose(tr("Close"))
 {
+    Q_UNUSED(p_MainWindow)
     mp_Ui->setupUi(GetContentFrame());
     m_ProcessRunning = false ;
     SetButtonGroup();

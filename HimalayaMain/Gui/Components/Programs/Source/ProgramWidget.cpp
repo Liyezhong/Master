@@ -65,7 +65,7 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
                                    m_strView(tr("View")),
                                    m_strEdit(tr("Edit"))
 {
-    DataManager::CUserSettings *p_Settings = mp_DataConnector->SettingsInterface->GetUserSettings();
+    //DataManager::CUserSettings *p_Settings = mp_DataConnector->SettingsInterface->GetUserSettings();
 
     mp_Ui->setupUi(GetContentFrame());
     m_ProgramModel.SetProgramList(mp_DataConnector->ProgramList,5);    

@@ -61,7 +61,7 @@ int CDashboardComboBoxModel::columnCount(const QModelIndex &) const
 /****************************************************************************/
 QVariant CDashboardComboBoxModel::data(const QModelIndex &Index, int Role) const
 {
-
+    Q_UNUSED(Role)
     if( mp_ProgramList == NULL)
     {
         return QVariant();

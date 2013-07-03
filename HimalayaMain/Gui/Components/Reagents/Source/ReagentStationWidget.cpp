@@ -294,6 +294,7 @@ void CReagentStationWidget::ResetButtons()
 /****************************************************************************/
 void CReagentStationWidget:: StationReagentUpdated(QString StationId)
 {
+    Q_UNUSED(StationId)
     m_ReagentStationModel.UpdateReagentList();
     m_ReagentStationModel.ResetAndUpdateModel();
 }

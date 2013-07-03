@@ -28,8 +28,8 @@
 
 namespace DataManager {
 CDataContainer::CDataContainer() : m_IsInitialized(false), ProgramList(NULL),
-                                    ReagentList(NULL), DashboardStationList(NULL), SettingsInterface(NULL),
-                                    ReagentGroupList(NULL),ReagentGroupColorList(NULL)
+                                    ReagentList(NULL), ReagentGroupList(NULL), DashboardStationList(NULL), SettingsInterface(NULL),
+                                    ReagentGroupColorList(NULL)
 
 {
     if (!InitContainers()) {
