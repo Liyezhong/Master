@@ -105,9 +105,6 @@ void SchedulerMainThreadController::RegisterCommands()
     RegisterCommandForProcessing<MsgClasses::CmdProgramAction,
                     SchedulerMainThreadController>(&SchedulerMainThreadController::OnProgramAction, this);
 
-    RegisterCommandForProcessing<MsgClasses::CmdRetortLock,
-                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnRetortLock, this);
-
     RegisterCommandForProcessing<NetCommands::CmdSystemAction,
                     SchedulerMainThreadController>(&SchedulerMainThreadController::OnActionCommandReceived, this);
 
@@ -281,10 +278,6 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
             DequeueNonDeviceCommand();
         }
-        break;
-    case CTRL_CMD_LOCK_RETORT:
-        break;
-    case CTRL_CMD_UNLOCK_RETORT:
         break;
     default:
           DequeueNonDeviceCommand();
@@ -779,19 +772,6 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         }
     }
 
-    MsgClasses::CmdRetortLock* pCmdRetortLock = dynamic_cast<MsgClasses::CmdRetortLock*>(pt.GetPointerToUserData());
-    if (pCmdRetortLock)
-    {
-        if(pCmdRetortLock->IsLock())
-        {
-            return CTRL_CMD_LOCK_RETORT;
-        }
-        else
-        {
-            return CTRL_CMD_UNLOCK_RETORT;
-        }
-    }
-
     HimalayaErrorHandler::CmdRaiseAlarm* pCmdRaiseAlarm = dynamic_cast<HimalayaErrorHandler::CmdRaiseAlarm*>(pt.GetPointerToUserData());
     if (pCmdRaiseAlarm)
     {
@@ -1189,15 +1169,6 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
     }
     LOG_STR_ARG(STR_SCHDEULER_RECEIVE_MASTER_ACTION_COMMAND,
                 Global::tTranslatableStringList()<<Global::TranslatableString(cmdid));
-}
-
-//client-->master
-void SchedulerMainThreadController::OnRetortLock(Global::tRefType Ref, const MsgClasses::CmdRetortLock &Cmd)
-{
-    m_Mutex.lock();
-    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdRetortLock(Cmd.GetTimeout(), Cmd.IsLock())));
-    m_Mutex.unlock();
-    this->SendAcknowledgeOK(Ref);
 }
 
 //response or recovery

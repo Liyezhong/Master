@@ -62,7 +62,6 @@
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsEmpty.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
@@ -210,10 +209,6 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
 
     RegisterExternalMessage<MsgClasses::CmdKeepCassetteCount, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdKeepCassetteCount>, this);
-
-    //Retort Lock/Unlock
-    RegisterExternalMessage<MsgClasses::CmdRetortLock, HimalayaGui::HimalayaGuiController>
-            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdRetortLock>, this);
 
     RegisterCommandForProcessing<MsgClasses::CmdRetortLockStatus, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdRetortLockStatus>, this);

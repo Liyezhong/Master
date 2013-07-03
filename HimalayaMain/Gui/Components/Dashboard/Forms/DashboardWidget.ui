@@ -116,34 +116,28 @@
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>42</width>
-           <height>17</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="3">
-        <widget class="QLabel" name="labelUnlock">
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string>Unlock</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
+       <property name="sizeConstraint">
+        <enum>QLayout::SetNoConstraint</enum>
+       </property>
+       <item row="1" column="2" colspan="5">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QLabel" name="labelBackground">
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">:/HimalayaImages/Color/Color_7045.png</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="labelRetort">
@@ -151,6 +145,30 @@
           <string>Retort:</string>
          </property>
         </widget>
+       </item>
+       <item row="0" column="3">
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="2">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string> Lock </string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="1" column="1">
         <spacer name="horizontalSpacer">
@@ -168,19 +186,47 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="2" colspan="2">
-        <widget class="MainMenu::CSliderControl" name="retortSlider">
+       <item row="0" column="0">
+        <spacer name="verticalSpacer_2">
          <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>42</width>
+           <height>17</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="5">
+        <widget class="QLabel" name="labelUnlock">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>Unlock</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="labelLock">
-         <property name="text">
-          <string>Lock</string>
+       <item row="0" column="4">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
          </property>
-        </widget>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </item>
@@ -189,11 +235,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>MainMenu::CSliderControl</class>
-   <extends>QSlider</extends>
-   <header>MainMenu/Include/SliderControl.h</header>
-  </customwidget>
   <customwidget>
    <class>Dashboard::CDashboardComboBox</class>
    <extends>QComboBox</extends>

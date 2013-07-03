@@ -31,7 +31,6 @@
 #include <HimalayaErrorHandler/Include/Commands/CmdRaiseAlarm.h>
 #include <Global/Include/Commands/Command.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "NetCommands/Include/CmdSystemAction.h"
 #include "SchedulerMachine.h"
 #include "ProgramStepStateMachine.h"
@@ -74,8 +73,6 @@ typedef enum
     CTRL_CMD_START,
     CTRL_CMD_PAUSE,
     CTRL_CMD_ABORT,
-    CTRL_CMD_LOCK_RETORT,
-    CTRL_CMD_UNLOCK_RETORT,
     CTRL_CMD_SET_REMOTE_ALARM,
     CTRL_CMD_CLEAR_REMOTE_ALARM,
     CTRL_CMD_DRAIN,
@@ -206,7 +203,6 @@ signals:
          void signalProgramStart(const QString& ProgramID);
          void signalProgramPause();
          void signalProgramAbort();
-         void signalRetortLock(bool IsLock);
 
 private slots:
          void HandleIdleState(ControlCommandType_t ctrlCmd);
@@ -266,7 +262,6 @@ protected:
         void OnRaiseAlarmLocalRemote(Global::tRefType Ref, const HimalayaErrorHandler::CmdRaiseAlarm &Cmd);
 
         void OnProgramAction(Global::tRefType Ref, const MsgClasses::CmdProgramAction& Cmd);
-        void OnRetortLock(Global::tRefType Ref, const MsgClasses::CmdRetortLock& Cmd);
         void OnKeepCassetteCount(Global::tRefType Ref, const MsgClasses::CmdKeepCassetteCount & Cmd);
         void OnProgramSelected(Global::tRefType Ref, const MsgClasses::CmdProgramSelected& Cmd);
         void OnQuitAppShutdown(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdown& Cmd);

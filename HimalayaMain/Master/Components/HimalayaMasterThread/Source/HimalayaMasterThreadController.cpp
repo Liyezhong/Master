@@ -73,7 +73,6 @@
 #include <EventHandler/Include/CrisisEventHandler.h>
 #include <HimalayaErrorHandler/Include/HimalayaAlarmHandler.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
@@ -279,7 +278,6 @@ void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Glo
 void HimalayaMasterThreadController::RegisterCommands() {
     //Dashboard
     RegisterCommandForRouting<MsgClasses::CmdProgramAction>(&m_CommandChannelSchedulerMain);//GUI-->master->Scheduler
-    RegisterCommandForRouting<MsgClasses::CmdRetortLock>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdRetortLockStatus>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdRetortStatus>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdStationSuckDrain>(&m_CommandChannelGui);

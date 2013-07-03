@@ -47,7 +47,6 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLock.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdownReply.h>
 
@@ -154,7 +153,6 @@ public slots:
 
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType,
                            const QDateTime& ProgramEndDateTime = QDateTime::currentDateTime());
-    void SendRetortLock(bool IsLock);
     void SendKeepCassetteCount(int CassetteCount);
     void SendProgramSelected(const QString& ProgramID, int ParaffinStepIndex);
     void SendUserLevel(QDataStream &DataStream);

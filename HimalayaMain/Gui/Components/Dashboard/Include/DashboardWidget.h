@@ -98,7 +98,6 @@ private:
 
     void EnablePlayButton(bool bSetEnable);
     void EnableAbortButton(bool bSetEnable);
-    void EnableRetortSlider(bool bSetEnable);
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(const DataManager::CProgram*, int, int, int, bool&);
     void PrepareSelectedProgramChecking();
@@ -131,7 +130,6 @@ signals:
     void UpdateUserSetting(DataManager::CUserSettings&);
 
 public slots:
-    void RetortSliderPositionChanged(MainMenu::CSliderControl::Position_t Position);
     void OnUserRoleChanged();
     void OnButtonClicked(int whichBtn);
     void OnUnselectProgram();

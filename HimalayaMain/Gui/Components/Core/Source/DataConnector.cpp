@@ -1514,16 +1514,6 @@ void CDataConnector::SendProgramSelected(const QString& ProgramID, int ParaffinS
     mp_WaitDialog->show();
 }
 
-void CDataConnector::SendRetortLock(bool IsLock)
-{
-    MsgClasses::CmdRetortLock Command(1000, IsLock);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-    mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
-    mp_WaitDialog->SetText(m_strSavingSettings);
-    mp_WaitDialog->SetTimeout(10000);
-    mp_WaitDialog->show();
-}
-
 void CDataConnector::SendKeepCassetteCount(int CassetteCount)
 {
     MsgClasses::CmdKeepCassetteCount Command(1000, CassetteCount);

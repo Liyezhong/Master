@@ -100,7 +100,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      m_btnGroup.addButton(mp_Ui->playButton, Dashboard::firstButton);
      m_btnGroup.addButton(mp_Ui->abortButton, Dashboard::secondButton);
 
-     EnableAbortButton(false);
+     //EnableAbortButton(false);
      EnablePlayButton(false);
 
      m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
@@ -137,9 +137,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus &),
                        this, OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus&));
 
-     CONNECTSIGNALSLOT(mp_Ui->retortSlider, positionChanged(MainMenu::CSliderControl::Position_t),
-                       this, RetortSliderPositionChanged(MainMenu::CSliderControl::Position_t));
-
      CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply &),
                        this, OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply&));
 
@@ -163,14 +160,6 @@ CDashboardWidget::~CDashboardWidget()
     } catch(...) {
 
     }
-}
-
-void CDashboardWidget::RetortSliderPositionChanged(MainMenu::CSliderControl::Position_t Position)
-{
-    if (Position ==  MainMenu::CSliderControl::PosLeft)
-        mp_DataConnector->SendRetortLock(true);
-    else
-        mp_DataConnector->SendRetortLock(false);
 }
 
 void CDashboardWidget::changeEvent(QEvent *p_Event)
@@ -621,22 +610,6 @@ void CDashboardWidget::EnableAbortButton(bool bSetEnable)
         mp_Ui->abortButton->setStyleSheet(QString::fromUtf8("border-image: url(:/HimalayaImages/IconPushButton/IconPushButton-Disabled.png);"));
 }
 
-void CDashboardWidget::EnableRetortSlider(bool bSetEnable)
-{
-    if (bSetEnable)
-    {
-        mp_Ui->retortSlider->SetDisabled(false);
-        mp_Ui->retortSlider->setEnabled(true);
-    }
-    else
-    {
-        mp_Ui->retortSlider->SetDisabled(true);
-        mp_Ui->retortSlider->setEnabled(false);
-    }
-    mp_Ui->retortSlider->update();
-}
-
-
 void CDashboardWidget::OnProgramStartReadyUpdated()
 {
     if (!m_SelectedProgramId.isEmpty())
@@ -743,7 +716,6 @@ void CDashboardWidget::OnProgramAborted()
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
 
-    EnableRetortSlider(true);
     //disable "Start" button, enable Retort lock button, hide End time button, now Abort button is still in "disable" status
     EnablePlayButton(false);
 
@@ -825,11 +797,10 @@ void CDashboardWidget::OnProcessStateChanged()
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if (m_ProcessRunning)
     {
-        EnableRetortSlider(false);
+
     }
     else
     {
-        EnableRetortSlider(true);
         mp_DashboardScene->OnPauseStationSuckDrain();
     }
 }
@@ -837,10 +808,11 @@ void CDashboardWidget::OnProcessStateChanged()
 void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd)
 {
     if (cmd.IsLocked())
-        mp_Ui->retortSlider->SetPosition(MainMenu::CSliderControl::PosLeft);
+    {
+
+    }
     else
     {
-        mp_Ui->retortSlider->SetPosition(MainMenu::CSliderControl::PosRight);
 
         //enable the "OK"
         if (m_IsWaitingCleaningProgram && mp_MessageDlg->isVisible())

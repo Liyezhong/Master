@@ -35,7 +35,7 @@ namespace Core {
 /****************************************************************************/
 CStartup::CStartup() : QObject()
 {
-    m_MainWindow.setWindowTitle("ST8200 Software");
+    m_MainWindow.setWindowTitle("MainWindow");
     m_MainWindow.setFixedSize(800, 600);
     m_MainWindow.SetVerticalOrientation(true);
     m_MainWindow.SetUserIcon(MainMenu::CMainWindow::Operator);
