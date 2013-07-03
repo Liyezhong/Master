@@ -215,8 +215,11 @@ void CModifyProgramStepDlg::InitTemperatureWidget(const DataManager::CReagent * 
             mp_ScrollWheelTemp->AddItem("", -1, *m_pAmbientTempraturePixmap);
     }
 
-    for (int i = minTemp; i <= maxTemp; i += 1) {
-        mp_ScrollWheelTemp->AddItem(QString::number(i).rightJustified(2, '0'), i);
+    if (0 != minTemp && 0 != maxTemp)
+    {
+        for (int i = minTemp; i <= maxTemp; i += 1) {
+            mp_ScrollWheelTemp->AddItem(QString::number(i).rightJustified(2, '0'), i);
+        }
     }
 
     if (mp_ProgramStep)
