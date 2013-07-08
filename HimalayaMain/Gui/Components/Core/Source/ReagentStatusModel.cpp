@@ -177,25 +177,25 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
 {
     DataManager::CReagent *p_Reagent = NULL;
     DataManager::CDashboardStation *p_Station = NULL;
-    int Days_Overdue =0;
     QDate t_Date;
     QDate Expiry_Date;
     bool Expired ;
     if (mp_ReagentList == NULL && mp_StationList == NULL) {
         return QVariant();
     }
+
     if (Index.row() < m_ReagentNames.count()) {
         p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_Identifiers[m_StationNames[Index.row()]]));
+        if (!p_Reagent)
+            return QVariant();
     }
-    if (Index.row() < m_ReagentNames.count()
-            && (p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]])))){
 
-        if (p_Reagent){
+    if (Index.row() < m_ReagentNames.count()
+            && (p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]]))))
+    {
             Expiry_Date = p_Station->GetDashboardReagentExchangeDate().addDays(p_Reagent->GetMaxDays());
 
-            Days_Overdue = t_Date.currentDate().dayOfYear() - Expiry_Date.dayOfYear() ;
             Expired = false;
-
             switch (m_RMSOptions) {
             default:
                 break;
@@ -214,16 +214,39 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
             case Global::RMS_OFF:
                 break;
             }
-        }
 
-        if( true == Expired && Role == (int) Qt::TextColorRole)
-        {
-            switch (Index.column()) {
-            case 2:
-            case 3:
-                return QVariant(Qt::red);
+            if( true == Expired && Role == (int) Qt::TextColorRole)
+            {
+                switch (Index.column()) {
+                case 2:
+                    return QVariant(Qt::red);//if the reagent expired, text is red
+                }
             }
-        }
+
+            Expired = false;
+            switch (m_RMSCleaningOptions) {
+            default:
+                break;
+            case Global::RMS_CYCLES:
+                if(p_Reagent->GetMaxCycles() < p_Station->GetDashboardReagentActualCycles())
+                    Expired = true;
+                break;
+            case Global::RMS_DAYS:
+                if( Expiry_Date.dayOfYear() - t_Date.currentDate().dayOfYear() < 0)
+                    Expired = true;
+                break;
+            case Global::RMS_OFF:
+                break;
+            }
+
+            if( true == Expired && Role == (int) Qt::TextColorRole)
+            {
+                switch (Index.column()) {
+                case 3:
+                    return QVariant(Qt::red);//if the reagent expired, text is red
+                }
+            }
+
         if (Role == (int)Qt::DisplayRole) {
             switch (Index.column()) {
             case 0:
@@ -236,8 +259,16 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                 else {
                     return QString("None");
                 }
-            case 2:
+            case 2://column 3
                 if (p_Reagent) {
+
+                    bool isCleaningReagentGroup = mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->IsCleaningReagentGroup();
+                    if (((Global::RMS_OFF == m_RMSCleaningOptions) || (m_RMSOptions != m_RMSCleaningOptions))
+                            && isCleaningReagentGroup)
+                    {
+                        return "";
+                    }
+
                     switch (m_RMSOptions) {
                         default:
                             return QString("");
@@ -264,24 +295,28 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
 
             case 3:
                 if (p_Reagent) {
-                    switch (m_RMSOptions) {
+                    bool isCleaningReagentGroup = mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->IsCleaningReagentGroup();
+                    if (((Global::RMS_OFF == m_RMSOptions) || (m_RMSOptions != m_RMSCleaningOptions)) && !isCleaningReagentGroup)
+                    {
+                        return "";
+                    }
+                    switch (m_RMSCleaningOptions) {
                         default:
                             return QString("");
-                        case Global::RMS_CASSETTES:
-                        if(true == Expired)
-                             return p_Station->GetDashboardReagentActualCassettes()-p_Reagent->GetMaxCassettes();
-                        else
-                          return 0;
-                        case Global::RMS_CYCLES:
-                        if(true == Expired)
-                            return p_Station->GetDashboardReagentActualCycles()-p_Reagent->GetMaxCycles();
-                        else
-                            return 0;
-                        case Global::RMS_DAYS:
-                        if(true == Expired)
-                            return Days_Overdue;
-                        else
-                            return 0;
+                    case Global::RMS_CYCLES:
+                        return p_Station->GetDashboardReagentActualCycles();
+                    case Global::RMS_DAYS:
+                       QDate Tem_QDate = p_Station->GetDashboardReagentExchangeDate();
+                           switch(mp_UserSettings->GetDateFormat()){
+                           default:
+                               return QString("");
+                           case Global::DATE_INTERNATIONAL:
+                               return Tem_QDate.addDays(p_Reagent->GetMaxDays()).toString("dd.MM.yyyy");
+                           case Global::DATE_ISO:
+                               return Tem_QDate.addDays(p_Reagent->GetMaxDays()).toString("yyyy-MM-dd");
+                           case Global::DATE_US:
+                               return Tem_QDate.addDays(p_Reagent->GetMaxDays()).toString("MM/dd/yyyy");
+                         }
                      }
                 }
                 else
@@ -312,11 +347,10 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
         }
         if (Role == (int)Qt::UserRole)
             return p_Station->GetDashboardStationID();
-     }
-     else if (Role == (int)Qt::BackgroundRole) {
+    } else if (Role == (int)Qt::BackgroundRole) {
          QPalette Palette;
          return QVariant(Palette.color(QPalette::Window));
-    }
+        }
     return QVariant();
 }
 
@@ -339,7 +373,7 @@ QVariant CReagentStatusModel::headerData(int Section, Qt::Orientation Orientatio
     }
 
     if (Role == (int)Qt::DisplayRole && Orientation == Qt::Horizontal) {
-        switch (Section) {
+        switch (Section) {//column head
         case 0:
             return tr("Station");
         case 1:
@@ -356,16 +390,14 @@ QVariant CReagentStatusModel::headerData(int Section, Qt::Orientation Orientatio
                     return tr("Expiry\nDate");
             }
         case 3:
-            switch (m_RMSOptions) {
+            switch (m_RMSCleaningOptions) {
                 default:
                     return QString("");
-                case Global::RMS_CASSETTES:
-                    return tr("Cassettes\noverdue");
-                case Global::RMS_CYCLES:
-                    return tr("Cycles\noverdue");
-                case Global::RMS_DAYS:
-                    //return tr("Days\noverdue");
-                    return tr("Cycles\nsince\nchange");//test
+            case Global::RMS_CYCLES:
+                return tr("Cycles\nsince\nchange");
+            case Global::RMS_DAYS:
+                return tr("Expiry\nDate");
+
             }
         case 4:
             return tr("Exchange\nDate");

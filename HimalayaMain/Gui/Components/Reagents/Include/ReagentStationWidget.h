@@ -50,7 +50,6 @@ private:
     CModifyReagentStationDlg *mp_ModifiyReagentStationDlg;        //!< Edit reagent dialog
     MainMenu::CFileView *mp_ReagentStatusWidgetView;     //!< Content of this widget
     KeyBoard::CKeyBoard *mp_KeyBoard;
-    Global::RMSOptions_t m_RMSOptions;
     QString m_strSelectReagent;
 protected:
     void showEvent(QShowEvent *);

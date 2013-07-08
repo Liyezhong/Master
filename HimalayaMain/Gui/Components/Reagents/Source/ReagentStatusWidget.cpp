@@ -190,19 +190,46 @@ void CReagentStatusWidget::RMSChanged(const Global::RMSOptions_t RMSValue)
 {
     m_ReagentStatusModel.SetRMSOption(RMSValue);
     m_RMSOptions = RMSValue;
+    ControlColumnShow();
+    m_ReagentStatusModel.ResetAndUpdateModel();
+}
 
-    switch (RMSValue) {
-        case Global::RMS_OFF:
-            mp_TableWidget->setColumnHidden(2, true);
-            mp_TableWidget->setColumnHidden(3, true);
-            break;
-        default:
-            mp_TableWidget->setColumnHidden(2, false);
-            mp_TableWidget->setColumnHidden(3, false);
-            break;
+void CReagentStatusWidget::RMSCleaningChanged(const Global::RMSOptions_t RMSValue)
+{
+    m_ReagentStatusModel.SetRMSCleaningOption(RMSValue);
+    m_RMSCleaningOptions = RMSValue;
+    ControlColumnShow();
+    m_ReagentStatusModel.ResetAndUpdateModel();
+}
+
+void CReagentStatusWidget::ControlColumnShow()
+{
+    if (Global::RMS_OFF == m_RMSOptions && Global::RMS_OFF == m_RMSCleaningOptions)
+    {
+        mp_TableWidget->setColumnHidden(2, true);
+        mp_TableWidget->setColumnHidden(3, true);
+        return;
     }
 
-    m_ReagentStatusModel.ResetAndUpdateModel();
+    if ((m_RMSOptions == m_RMSCleaningOptions) || (Global::RMS_OFF == m_RMSCleaningOptions))
+    {
+        mp_TableWidget->setColumnHidden(2, false);//show
+        mp_TableWidget->setColumnHidden(3, true);//hide
+        return;
+    }
+
+    if (Global::RMS_OFF == m_RMSOptions)
+    {
+        mp_TableWidget->setColumnHidden(2, true);//hide
+        mp_TableWidget->setColumnHidden(3, false);//show
+        return;
+    }
+
+    if (m_RMSOptions != m_RMSCleaningOptions)
+    {
+        mp_TableWidget->setColumnHidden(2, false);//show
+        mp_TableWidget->setColumnHidden(3, false);//show
+    }
 }
 
 /****************************************************************************/
@@ -236,6 +263,65 @@ void CReagentStatusWidget::ResizeHorizontalSection()
     mp_TableWidget->horizontalHeader()->resizeSection(4, 110);
     mp_TableWidget->horizontalHeader()->resizeSection(5, 50);
 }
+
+bool CReagentStatusWidget::IsProcessReagentExpired()
+{
+    QDate Expiry_Date;
+    bool bExpireReagent = false;
+    bool isCleaningReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(mp_Reagent->GetGroupID())->IsCleaningReagentGroup();
+    if (!isCleaningReagentGroup)
+    {
+        switch (m_RMSOptions) {
+        default:
+            break;
+        case Global::RMS_CASSETTES:
+            if(mp_Reagent->GetMaxCassettes() < mp_DashStation->GetDashboardReagentActualCassettes())
+                bExpireReagent = true;
+            break;
+        case Global::RMS_CYCLES:
+            if(mp_Reagent->GetMaxCycles() < mp_DashStation->GetDashboardReagentActualCycles())
+                bExpireReagent = true;
+            break;
+        case Global::RMS_DAYS:
+             Expiry_Date = mp_DashStation->GetDashboardReagentExchangeDate().addDays(mp_Reagent->GetMaxDays());
+            if( Expiry_Date.dayOfYear() < QDate::currentDate().dayOfYear())
+                bExpireReagent = true;
+            break;
+         case Global::RMS_OFF:
+            bExpireReagent = false;
+            break;
+        }
+    }
+    return bExpireReagent;
+}
+
+bool CReagentStatusWidget::IsCleaningReagentExpired()
+{
+    QDate Expiry_Date;
+    bool bExpireReagent = false;
+    bool isCleaningReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(mp_Reagent->GetGroupID())->IsCleaningReagentGroup();
+    if (isCleaningReagentGroup)
+    {
+        switch (m_RMSCleaningOptions) {
+        default:
+            break;
+        case Global::RMS_CYCLES:
+            if(mp_Reagent->GetMaxCycles() < mp_DashStation->GetDashboardReagentActualCycles())
+                bExpireReagent = true;
+            break;
+        case Global::RMS_DAYS:
+             Expiry_Date = mp_DashStation->GetDashboardReagentExchangeDate().addDays(mp_Reagent->GetMaxDays());
+            if( Expiry_Date.dayOfYear() < QDate::currentDate().dayOfYear())
+                bExpireReagent = true;
+            break;
+         case Global::RMS_OFF:
+            bExpireReagent = false;
+            break;
+        }
+    }
+    return bExpireReagent;
+}
+
 /****************************************************************************/
 /*!
  *  \brief Called when the selection of the table is changed
@@ -248,34 +334,41 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
     m_CurrentIndex = Index;
     QString Id = m_ReagentStatusModel.data(Index, (int)Qt::UserRole).toString();
     mp_DashStation = const_cast<DataManager::CDashboardStation*>(mp_DataConnector->DashboardStationList->GetDashboardStation(Id));
-    int ExpireReagent = false;
+    bool bExpireReagent = false;
     if (mp_DashStation) {
         mp_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(mp_DashStation->GetDashboardReagentID()));
-        if (mp_Reagent){
-            QDate Current_Date;
-            QDate Expiry_Date;
-            switch (m_RMSOptions) {
-            default:
-                break;
-            case Global::RMS_CASSETTES:
-                if(mp_Reagent->GetMaxCassettes() < mp_DashStation->GetDashboardReagentActualCassettes())
-                    ExpireReagent = true;
-                break;
-            case Global::RMS_CYCLES:
-                if(mp_Reagent->GetMaxCycles() < mp_DashStation->GetDashboardReagentActualCycles())
-                    ExpireReagent = true;
-                break;
-            case Global::RMS_DAYS:
-                 Expiry_Date = mp_DashStation->GetDashboardReagentExchangeDate().addDays(mp_Reagent->GetMaxDays());
-                if( Expiry_Date.dayOfYear() < Current_Date.currentDate().dayOfYear())
-                    ExpireReagent = true;
-                break;
-             case Global::RMS_OFF:
-                ExpireReagent = false;
-                break;
+
+        if (Global::RMS_OFF == m_RMSOptions && Global::RMS_OFF == m_RMSCleaningOptions)
+        {
+            mp_TableWidget->setColumnHidden(2, true);
+            mp_TableWidget->setColumnHidden(3, true);
+        }
+        else if (m_RMSOptions == m_RMSCleaningOptions)
+        {
+            bExpireReagent = IsProcessReagentExpired();
+            if (!bExpireReagent)
+            {
+                bExpireReagent = IsCleaningReagentExpired();
             }
         }
-        if(ExpireReagent)
+        else if (Global::RMS_OFF == m_RMSCleaningOptions)
+        {
+            bExpireReagent = IsProcessReagentExpired();
+        }
+        else if (Global::RMS_OFF == m_RMSOptions)
+        {
+            bExpireReagent = IsCleaningReagentExpired();
+        }
+        else if (m_RMSOptions != m_RMSCleaningOptions)
+        {
+            bExpireReagent = IsProcessReagentExpired();
+            if (!bExpireReagent)
+            {
+               bExpireReagent = IsCleaningReagentExpired();
+            }
+        }
+
+        if(bExpireReagent)
             mp_TableWidget->setStyleSheet("QTableView::item:selected {background-color:#D43032;""border-style:default;color:yellow}""QHeaderView {color:black;}");
         else
             mp_TableWidget->setStyleSheet("QHeaderView {color:black;}");

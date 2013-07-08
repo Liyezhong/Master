@@ -153,6 +153,8 @@ signals:
     /****************************************************************************/
     void RMSChanged(const Global::RMSOptions_t);
 
+    void RMSCleaningChanged(const Global::RMSOptions_t);
+
     /****************************************************************************/
     /*!
      *  \brief This signal is emitted to delete the selected reagent.

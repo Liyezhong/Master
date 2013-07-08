@@ -58,7 +58,7 @@ private:
     QStringList m_ReagentList;                      //!< List of Reagents
     MainMenu::CFileView *mp_ReagentStatusWidgetView;     //!< Content of this widget
     KeyBoard::CKeyBoard *mp_KeyBoard;
-    Global::RMSOptions_t m_RMSOptions;
+    Global::RMSOptions_t m_RMSOptions, m_RMSCleaningOptions;
     QModelIndex m_CurrentIndex;
     QString m_strSetAsEmpty, m_strResetData, m_strSetAsFull;
 
@@ -70,8 +70,9 @@ private:
     void ResizeHorizontalSection();
     void RetranslateUI();
     void ResetButtons();
-
-
+    void ControlColumnShow();
+    bool IsProcessReagentExpired();
+    bool IsCleaningReagentExpired();
 public:
     explicit CReagentStatusWidget(QWidget *p_Parent = 0);
     ~CReagentStatusWidget();
@@ -91,6 +92,7 @@ private slots:
 
 public slots:
     void RMSChanged(const Global::RMSOptions_t RMSValue);
+    void RMSCleaningChanged(const Global::RMSOptions_t RMSValue);
 signals:
     /****************************************************************************/
     /*!

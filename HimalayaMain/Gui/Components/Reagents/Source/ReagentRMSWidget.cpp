@@ -597,17 +597,20 @@ void CReagentRMSWidget ::UpdateUserSetting()
                         mp_TableWidgetCleaning->setColumnHidden(2, false);
                         m_ReagentCleaningModel.ResetAndUpdateModel();
                         ResizeHorizontalSection();
+                        emit RMSCleaningChanged(Global::RMS_CYCLES);
                         break;
                     case Global::RMS_DAYS:
                         mp_Ui->radioDays_Cleaning->setChecked(true);
                         mp_TableWidgetCleaning->setColumnHidden(2, false);
                         m_ReagentCleaningModel.ResetAndUpdateModel();
                         ResizeHorizontalSection();
+                        emit RMSCleaningChanged(Global::RMS_DAYS);
                         break;
                     case Global::RMS_OFF:
                         mp_Ui->radioOff_Cleaning->setChecked(true);
                         mp_TableWidgetCleaning->setColumnHidden(2, true);
                         m_ReagentCleaningModel.ResetAndUpdateModel();
+                        emit RMSCleaningChanged(Global::RMS_OFF);
                         break;
                 }
         }

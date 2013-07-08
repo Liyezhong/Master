@@ -123,7 +123,6 @@ private:
     QMap<QString, QString> m_StationNameMap;            //!< Sorts Station names
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
-    Global::RMSOptions_t m_RMSOptions;
     Global::DateFormat  m_DateFormat;
 };
 

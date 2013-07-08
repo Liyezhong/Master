@@ -100,6 +100,9 @@ public:
         m_RMSOptions = Value;
     }
 
+    void SetRMSCleaningOption(Global::RMSOptions_t Value){
+        m_RMSCleaningOptions = Value;
+    }
     /****************************************************************************/
     /**
      * \brief Sets the parent pointer
@@ -144,6 +147,7 @@ private:
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     DataManager::CUserSettings *mp_UserSettings;          //!< UserSettings object
     Global::RMSOptions_t m_RMSOptions;
+    Global::RMSOptions_t m_RMSCleaningOptions;
 };
 
 } // end namespace Core
