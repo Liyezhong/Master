@@ -278,7 +278,7 @@ void CReagentRMSWidget::OnNew()
     mp_ModifiyReagentRMSDlg->SetDialogTitle(m_strNewReagent);
     mp_ModifiyReagentRMSDlg->SetButtonType(NEW_BTN_CLICKED);
     mp_Reagent = NULL;
-    mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList,Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION);
+    mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList, Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION);
     mp_ModifiyReagentRMSDlg->show();
 }
 
@@ -349,7 +349,6 @@ void CReagentRMSWidget::SelectionChanged(QModelIndex Index)
 {
     mp_TableWidgetCleaning->clearSelection();
     QString Id = m_ReagentRMSModel.data(Index, (int)Qt::UserRole).toString();
-
     UpdateButtons(Id);
 }
 

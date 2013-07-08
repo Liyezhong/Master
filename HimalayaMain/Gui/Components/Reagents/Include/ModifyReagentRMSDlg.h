@@ -73,6 +73,8 @@ private:
     QString m_strCyclesUntilChange;
     QString m_strDaysUntilChange;
     QString m_strEnterValidName;
+    QString m_strReagentNameHasLaicaString;
+    QString m_strReagentNameLengthLimit;
     QString m_strEnterValidData;
     QString m_strSelectReagentGroup;
     QString m_strReagentAddFailed;

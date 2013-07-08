@@ -390,6 +390,16 @@ bool CDataProgramList::AddProgram(const CProgram* p_Program)
         Result = true;
     }
 
+    if (!UpdateReagentIDList()) {
+       /* Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_ID_LIST,
+                                                   Global::tTranslatableStringList() << ProgramName
+                                                   );
+        m_ErrorHash.insert(EVENT_DM_REAGENT_ID_LIST_UPDATE_FAILED,
+                           Global::tTranslatableStringList() << ProgramName
+                           );*/
+         Result = false;
+    }
+
     return Result;
 }
 
@@ -619,12 +629,13 @@ bool CDataProgramList::DeleteProgram(const QString ProgramID)
         }
 
         if (!UpdateReagentIDList()) {
-//            Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_ID_LIST,
-//                                                       Global::tTranslatableStringList() << ProgramName
-//                                                       );
-//            m_ErrorHash.insert(EVENT_DM_REAGENT_ID_LIST_UPDATE_FAILED,
-//                               Global::tTranslatableStringList() << ProgramName
-//                               );
+            /*Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_ID_LIST,
+                                                       Global::tTranslatableStringList() << ProgramName
+                                                       );
+            m_ErrorHash.insert(EVENT_DM_REAGENT_ID_LIST_UPDATE_FAILED,
+                               Global::tTranslatableStringList() << ProgramName
+                               );
+                               */
             return false;
         }
         return true;

@@ -24,6 +24,7 @@
 #include "ui_ModifyReagentDlg.h"
 #include <QDebug>
 #include "Dashboard/Include/CommonString.h"
+#include "Reagents/Include/ReagentRMSWidget.h"
 
 namespace Reagents {
 
@@ -43,9 +44,8 @@ CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoar
     m_strCassettesUntilChange(tr("Cassettes until change")),
     m_strCyclesUntilChange(tr("Cycles until change")),
     m_strDaysUntilChange(tr("Days until change")),
-    m_strEnterValidName(tr("Please enter valid Reagent Long Name")),
     m_strEnterValidData(tr("Please enter valid data")),
-    m_strSelectReagentGroup(tr("Please Select ReagentGroup")),
+    m_strSelectReagentGroup(tr("Please Select reagent group")),
     m_strReagentAddFailed(tr("Reagent add failed")),
     m_strReagentCopyFailed(tr("Reagent copy failed")),
     m_strEnterCassetteValue(tr("Enter Cassette Value")),
@@ -112,6 +112,22 @@ void CModifyReagentRMSDlg::SelectionChanged(QModelIndex Index)
         m_SelectionFlag = true;
 
     QString Id = m_ReagentGroupModel.data(Index, (int)Qt::UserRole).toString();
+
+    Q_ASSERT(mp_ReagentGroupList);
+    if (mp_ReagentGroupList)
+    {
+        Global::RMSOptions_t rmsOption = Global::RMS_UNDEFINED;
+        if (mp_ReagentGroupList->GetReagentGroup(Id)->IsCleaningReagentGroup())
+        {
+            rmsOption = Reagents::CReagentRMSWidget::RMSCLEANINGOPTIONS;
+        }
+        else
+        {
+            rmsOption = Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION;
+        }
+        mp_Ui->buttonValue->setEnabled(true);
+        UpdateRmsLabel(rmsOption);
+    }
     m_Reagent.SetGroupID(Id);
 }
 
@@ -179,11 +195,21 @@ void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
             mp_Ui->labelRMSStaticName->setVisible(true);
             UpdateRmsLabel(Option);
             mp_TableWidget->selectRow(mp_ReagentGroupList->GetReagentGroupIndex(m_Reagent.GetGroupID()));
+            if (mp_DataConnector->ProgramList->GetReagentIDList().contains(m_Reagent.GetReagentID()))
+            {
+                mp_TableWidget->setEnabled(false);
+            }
+            else
+            {
+                mp_TableWidget->setEnabled(true);
+            }
+
         }
 
     }
-    else {
+    else {//new reagent
         UpdateRmsLabel(Option);
+        mp_Ui->buttonValue->setEnabled(false);
         if(Option == Global::RMS_OFF){
             mp_Ui->buttonValue->setVisible(false);
             mp_Ui->labelRMSStaticName->setVisible(false);
@@ -270,18 +296,33 @@ void CModifyReagentRMSDlg::OnOk()
     // Clone the DataManager ReagentList
      m_ReagentCloneList = *(mp_DataConnector->ReagentList);
 
-    if (mp_Ui->buttonReagentName->text()=="--") {
-        m_MessageDlg.SetText(m_strEnterValidName);
+     if (mp_Ui->buttonReagentName->text() == "--") {//as "--" is initialized when dialog is showing
+         m_MessageDlg.SetText(m_strEnterValidName);
+         m_MessageDlg.SetButtonText(1, CommonString::strOK);
+         (void) m_MessageDlg.exec();
+         return;
+     }
+
+     if (mp_Ui->buttonReagentName->text().contains("LEICA",Qt::CaseInsensitive)) {
+        m_MessageDlg.SetText(m_strReagentNameHasLaicaString);
         m_MessageDlg.SetButtonText(1, CommonString::strOK);
         (void) m_MessageDlg.exec();
         return;
-    }
-    if (mp_Ui->buttonValue->text()=="--") {
+     }
+
+     if (mp_Ui->buttonReagentName->text().length() > 20) {
+        m_MessageDlg.SetText(m_strReagentNameLengthLimit);
+        m_MessageDlg.SetButtonText(1, CommonString::strOK);
+        (void) m_MessageDlg.exec();
+        return;
+     }
+
+     if (mp_Ui->buttonValue->text() == "--") {
         m_MessageDlg.SetText(m_strEnterValidData);
         m_MessageDlg.SetButtonText(1, CommonString::strOK);
         (void) m_MessageDlg.exec();
         return;
-    }
+     }
 
     // Check if Edit button was clicked in ReagentWidget
     if (m_ButtonType == Reagents::EDIT_BTN_CLICKED) {
@@ -317,7 +358,7 @@ void CModifyReagentRMSDlg::OnOk()
         // GetNextFreeReagentId for New/Copied Reagent.
         if(m_SelectionFlag != true)
         {
-            m_MessageDlg.SetText(m_strSelectReagentGroup);
+            m_MessageDlg.SetText(m_strSelectReagentGroup);//Please Select reagent group
             m_MessageDlg.SetButtonText(1, CommonString::strOK);
             (void) m_MessageDlg.exec();
             return;
@@ -328,7 +369,18 @@ void CModifyReagentRMSDlg::OnOk()
         QString Id = m_ReagentCloneList.GetNextFreeReagentID(true);
         m_Reagent.SetReagentID(Id);
         m_Reagent.SetReagentName(mp_Ui->buttonReagentName->text());
-        m_Reagent.SetMaxCassettes(mp_Ui->buttonValue->text().toInt());
+
+        switch (m_RMSOption) {
+            case Global::RMS_CASSETTES:
+                m_Reagent.SetMaxCassettes(mp_Ui->buttonValue->text().toInt());
+                break;
+            case Global::RMS_CYCLES:
+                m_Reagent.SetMaxCycles(mp_Ui->buttonValue->text().toInt());
+                break;
+            case Global::RMS_DAYS:
+                m_Reagent.SetMaxDays(mp_Ui->buttonValue->text().toInt());
+                break;
+        }
 
         if (m_ReagentCloneList.AddReagent(&m_Reagent)== true) {
             emit AddReagent(m_Reagent);
@@ -401,7 +453,7 @@ void CModifyReagentRMSDlg::OnEditCassetteValue()
     mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetMaxCharLength(32);
-    mp_KeyBoardWidget->SetMinCharLength(2);
+    mp_KeyBoardWidget->SetMinCharLength(1);
 	mp_KeyBoardWidget->SetLineEditValidatorExpression(REGEXP_NUMERIC_VALIDATOR);
     mp_KeyBoardWidget->show();
 
@@ -450,7 +502,14 @@ void CModifyReagentRMSDlg::RetranslateUI()
                                                      "Days until change", 0, QApplication::UnicodeUTF8);
 
     m_strEnterValidName =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                   "Please enter valid Reagent Long Name", 0, QApplication::UnicodeUTF8);
+                                                           "Please enter the reagent Name", 0, QApplication::UnicodeUTF8);
+
+    m_strReagentNameHasLaicaString =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                                   "Reagent name should not contain 'leica'.", 0, QApplication::UnicodeUTF8);
+
+    m_strReagentNameLengthLimit =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                                           "The length of reagent name should not be more than 20.", 0, QApplication::UnicodeUTF8);
+
 
     m_strEnterValidData =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                                "Please enter valid data", 0, QApplication::UnicodeUTF8);
