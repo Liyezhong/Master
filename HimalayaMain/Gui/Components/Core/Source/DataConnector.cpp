@@ -1724,9 +1724,10 @@ void CDataConnector::AppQuitSystemShutdownRelyHandler(Global::tRefType Ref, cons
     }
     else
     {
-        m_pServiceProcess->start(Global::SystemPaths::Instance().GetComponentTestPath()
-                        + QDir::separator() + "GUITest");
-        qApp->quit();
+        QString str = Global::SystemPaths::Instance().GetComponentTestPath()
+                + "/bin_dbg/prototest";
+        m_pServiceProcess->start(str);
+        //qApp->quit();
     }
 }
 
