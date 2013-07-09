@@ -390,14 +390,20 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
                      m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
                         (!m_ProcessRunning)) {
                     //Edit Mode
-                    mp_Ui->btnEdit->setEnabled(!IsLeicaProgram);
+                    //mp_Ui->btnEdit->setEnabled(!IsLeicaProgram);
+                    mp_Ui->btnEdit->setText(m_strView);
                     mp_Ui->btnDelete->setEnabled(!IsLeicaProgram);
-                    if (mp_Program->GetID().at(0) == 'C')
+
+                    if (mp_Program->GetID().at(0) == 'C')//Cleaning program
                     {
+                        mp_Ui->btnEdit->setEnabled(false);
                         mp_Ui->btnCopy->setEnabled(!IsLeicaProgram);
                     }
                     else
+                    {
+                        mp_Ui->btnEdit->setEnabled(true);
                         mp_Ui->btnCopy->setEnabled(IsLeicaProgram);
+                    }
                 } else {
                     //View Mode
                     mp_Ui->btnEdit->setText(m_strView);
