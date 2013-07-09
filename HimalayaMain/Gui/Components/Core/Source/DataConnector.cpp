@@ -1667,6 +1667,7 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         case DataManager::PROGRAM_ABORT_FINISHED:
         {
              emit ProgramAborted();
+             mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
         case DataManager::PROGRAM_ABORT_BEGIN:
@@ -1677,6 +1678,7 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         case DataManager::PROGRAM_RUN_FINISHED:
         {
              emit ProgramCompleted();
+             mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
         case DataManager::PROGRAM_RUN_BEGIN:

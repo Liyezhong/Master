@@ -518,13 +518,24 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
 
     //Check if Leica program and RMS OFF?
     DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
-    bool isRMSOFF = false;
-    if (Global::RMS_OFF == userSetting->GetModeRMSCleaning() || Global::RMS_OFF == userSetting->GetModeRMSProcessing())
+    bool bShowRMSOffWarning = false;
+    bool isLeicaProgram = mp_ProgramList->GetProgram(m_SelectedProgramId)->IsLeicaProgram();
+    if (m_SelectedProgramId.at(0) == 'C')
     {
-        isRMSOFF = true;
+        if ((Global::RMS_OFF == userSetting->GetModeRMSCleaning()) && isLeicaProgram)
+        {
+            bShowRMSOffWarning = true;
+        }
+    }
+    else
+    {
+        if ((Global::RMS_OFF == userSetting->GetModeRMSProcessing()) && isLeicaProgram)
+        {
+            bShowRMSOffWarning = true;
+        }
     }
 
-    if (isRMSOFF && mp_ProgramList->GetProgram(m_SelectedProgramId)->IsLeicaProgram())
+    if (bShowRMSOffWarning)
     {
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         mp_MessageDlg->SetTitle(m_strWarning);
@@ -536,6 +547,11 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
     }
 
     //Check Expired?
+    bool isRMSOFF = false;
+    if ((Global::RMS_OFF == userSetting->GetModeRMSCleaning()) || (Global::RMS_OFF == userSetting->GetModeRMSProcessing()))
+    {
+        isRMSOFF = true;
+    }
     if (!isRMSOFF && mp_DashboardScene->HaveExpiredReagent())
     {
         if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
