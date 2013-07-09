@@ -830,8 +830,7 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
         else
         {
             ++m_CurProgramStepIndex;
-
-    }
+        }
 
         pProgramStep = pProgram->GetProgramStep(m_CurProgramStepIndex);//use order index
         if (pProgramStep)
@@ -1191,15 +1190,29 @@ void SchedulerMainThreadController::OnKeepCassetteCount(Global::tRefType Ref, co
 void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, const MsgClasses::CmdProgramSelected & Cmd)
 {
     this->SendAcknowledgeOK(Ref);
+    QString curProgramID;
+    QString strProgramID = Cmd.GetProgramID();
+    if (strProgramID.at(0) == 'C')
+    {
+        int sep = strProgramID.indexOf('_');
+        curProgramID = strProgramID.left(sep);
+        m_ReagentIdOfLastStep = strProgramID.right(strProgramID.count()- sep -1);//m_ReagentIdOfLastStep used in GetNextProgramStepInformation(...)
+    }
+    else
+        curProgramID = strProgramID;
 
-    this->PrepareProgramStationList(Cmd.GetProgramID());
+    this->PrepareProgramStationList(curProgramID);
 
-    unsigned int timeProposed = GetLeftProgramStepsNeededTime(Cmd.GetProgramID(), 0);
+    m_CurProgramStepIndex = -1;
+    this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo);//only to get m_CurProgramStepIndex
+    unsigned int timeProposed = GetLeftProgramStepsNeededTime(curProgramID, m_CurProgramStepIndex);
+    m_CurProgramStepIndex = -1;
+
     unsigned int paraffinMeltCostedtime = this->GetOvenHeatingTime();
     unsigned int costedTimeBeforeParaffin = 0;
     if (-1 != Cmd.ParaffinStepIndex())//has Paraffin
     {
-        costedTimeBeforeParaffin = timeProposed - GetLeftProgramStepsNeededTime(Cmd.GetProgramID(), Cmd.ParaffinStepIndex());
+        costedTimeBeforeParaffin = timeProposed - GetLeftProgramStepsNeededTime(curProgramID, Cmd.ParaffinStepIndex());
     }
 
     //send back the proposed program end time
@@ -2042,7 +2055,7 @@ qint64 SchedulerMainThreadController::GetOvenHeatingTime()
     }
 }
 
-bool SchedulerMainThreadController::IsLastStep(int currentStepIndex,const QString& currentProgramID)
+bool SchedulerMainThreadController::IsLastStep(int currentStepIndex, const QString& currentProgramID)
 {
     if (!mp_DataManager)
     {

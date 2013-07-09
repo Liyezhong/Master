@@ -484,7 +484,14 @@ void CDashboardWidget::PrepareSelectedProgramChecking()
 {
     this->IsParaffinInProgram(mp_ProgramList->GetProgram(m_NewSelectedProgramId));//to get m_ParaffinStepIndex
     //Notify Master, to get the time costed for paraffin Melting
-    mp_DataConnector->SendProgramSelected(m_NewSelectedProgramId, m_ParaffinStepIndex);
+    QString strTempProgramId(m_NewSelectedProgramId);
+    if (m_NewSelectedProgramId.at(0) == 'C')
+    {
+      strTempProgramId.append("_");
+      QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
+      strTempProgramId.append(strReagentIDOfLastStep);
+    }
+    mp_DataConnector->SendProgramSelected(strTempProgramId, m_ParaffinStepIndex);
 
 }
 
