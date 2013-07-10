@@ -258,7 +258,7 @@ void CDashboardWidget::OnUserRoleChanged()
         this->EnablePlayButton(false);//in fact, it will disable pause button when runing
     }
     else
-    if (m_ProcessRunning && m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service)
+    if (m_ProcessRunning && (m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service))
         EnablePlayButton(true);
 
 }
@@ -270,6 +270,8 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
         switch(m_ProgramNextAction)
         {
             this->EnablePlayButton(false);//protect to click twice in a short time
+            default:
+            break;
             case DataManager::PROGRAM_START:
             {
                 if (m_IsResumeRun)
@@ -392,8 +394,7 @@ bool CDashboardWidget::IsParaffinInProgram(const DataManager::CProgram* p_Progra
 //TimeActual--- get from Scheduler
 //TimeDelta
 //EndTimeAsap = TimeActual + TimeDelta;
-int CDashboardWidget::GetASAPTime(const DataManager::CProgram* p_Program,
-                                  int TimeActual,//TimeActual is seconds
+int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
                                   int timeBeforeUseParaffin,
                                   int TimeCostedParaffinMelting,
                                   bool& bCanotRun)
@@ -852,21 +853,9 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
         m_CheckEndDatetimeAgain = false;
         //get the proposed program end DateTime
         bool bCanotRun = true;
-        int asapEndTime = GetASAPTime(mp_ProgramList->GetProgram(m_SelectedProgramId), cmd.TimeProposed(),
+        int asapEndTime = GetASAPTime(cmd.TimeProposed(),
                                       cmd.ParaffinMeltCostedTime(), cmd.CostedTimeBeforeParaffin(), bCanotRun);
-        if (bCanotRun)
-        {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(m_strWarning);
-            mp_MessageDlg->SetText(m_strNeedMeltParaffin);
-            mp_MessageDlg->SetButtonText(1, m_strOK);
-            mp_MessageDlg->HideButtons();
-            if (mp_MessageDlg->exec())
-            {
-                return;
-            }
-            return;
-        }
+
         asapEndTime = asapEndTime - 60;//60 seconds: buffer time for "select program" and "Run" operation.
         QDateTime endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
         if (endDateTime > m_EndDateTime)
@@ -969,7 +958,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
     //get the proposed program end DateTime
     bool bCanotRun = true;
-    int asapEndTime = GetASAPTime(mp_ProgramList->GetProgram(m_SelectedProgramId), cmd.TimeProposed(),
+    int asapEndTime = GetASAPTime(cmd.TimeProposed(),
                                   cmd.ParaffinMeltCostedTime(), cmd.CostedTimeBeforeParaffin(), bCanotRun);
     m_TimeProposed = cmd.TimeProposed();
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);

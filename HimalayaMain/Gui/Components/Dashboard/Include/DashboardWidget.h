@@ -99,7 +99,7 @@ private:
     void EnablePlayButton(bool bSetEnable);
     void EnableAbortButton(bool bSetEnable);
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
-    int GetASAPTime(const DataManager::CProgram*, int, int, int, bool&);
+    int GetASAPTime(int, int, int, bool&);
     void PrepareSelectedProgramChecking();
     void TakeOutSpecimenAndWaitRunCleaning();
     void RetranslateUI();
