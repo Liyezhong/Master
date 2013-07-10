@@ -256,26 +256,16 @@ void CDashboardEndTimeWidget::OnCurrentProgramStepInforUpdated(const MsgClasses:
 {
     mp_Ui->lblName->setText(cmd.StepName());
     mp_Ui->lblTime->setText(cmd.CurRemainingTime().toString("hh:mm:ss"));
-    //m_CurStepRemainingTime = cmd.CurRemainingTime();
     m_CurStepRemainingTime = m_CurRemainingTime = cmd.CurRemainingTime();
-    //QTime curTime = QTime::currentTime();
-    //m_Elapsed = curTime.secsTo(m_CurStepRemainingTime);
 }
 
 void CDashboardEndTimeWidget::UpdateProgress()
 {
     //update the remaining time for single step
-    //QTime curTime = QTime::currentTime();
-    //int elapsed = curTime.secsTo(m_CurStepRemainingTime);
-    //int diff = elapsed - m_Elapsed;
     m_CurRemainingTime = m_CurRemainingTime.addSecs(-1);
     mp_Ui->lblTime->setText(m_CurRemainingTime.toString("hh:mm:ss"));
 
     //update progress bar
-    //QDateTime curDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
-    //int  elapsedTime = m_startDateTime.secsTo(curDateTime);
-
-
     int elapsed = m_CurRemainingTime.secsTo(m_CurStepRemainingTime);
     m_curRemainingTimeTotal = m_remainingTimeTotal - elapsed;
     mp_Ui->progressBar->setValue(elapsed);//unit:second

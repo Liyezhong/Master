@@ -475,20 +475,28 @@ void CReagentStatusWidget::RetranslateUI()
     (void) m_ReagentStatusModel.setHeaderData(1, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8),0);
     QString SecondColumnName("");
-    QString ThirdColumnName("");
     switch(m_ReagentStatusModel.GetRMSOption()) {
+        default:
+            SecondColumnName = "";
         case Global::RMS_CASSETTES:
             SecondColumnName = "Cassettes\nsince\nchange";
-            ThirdColumnName = "Cassettes\noverdue";
             break;
         case Global::RMS_CYCLES:
             SecondColumnName = "Cycles\nsince\nchange";
-            ThirdColumnName = "Cycles\noverdue";
             break;
         case Global::RMS_DAYS:
             SecondColumnName = "Days\nsince\nchange";
-            ThirdColumnName = "Cycles\nsince\nchange";//for test
             break;
+    }
+
+    QString ThirdColumnName("");
+    switch (m_ReagentStatusModel.GetRMSCleaningOption()) {
+        default:
+            ThirdColumnName = "";
+        case Global::RMS_CYCLES:
+             ThirdColumnName = "Cycles\nsince\nchange";
+        case Global::RMS_DAYS:
+             ThirdColumnName = "Expiry\nDate";
     }
 
     (void) m_ReagentStatusModel.setHeaderData(2, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",

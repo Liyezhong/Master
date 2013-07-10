@@ -90,6 +90,10 @@ public:
         return m_RMSOptions;
     }
 
+    Global::RMSOptions_t GetRMSCleaningOption(){
+        return m_RMSCleaningOptions;
+    }
+
     /****************************************************************************/
     /**
      * \brief Sets the currently selected reagent in the table
