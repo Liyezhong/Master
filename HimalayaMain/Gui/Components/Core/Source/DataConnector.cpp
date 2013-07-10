@@ -289,6 +289,8 @@ void CDataConnector::OnAckDateAndTime(Global::tRefType Ref, const Global::AckOKN
                     mp_MessageDlg->SetIcon(QMessageBox::Warning);
                     mp_MessageDlg->SetTitle(m_strWarning);
                     break;
+                default:
+                    break;
             }
             mp_MessageDlg->SetText(Ack.GetText());
         }
@@ -1630,6 +1632,8 @@ void CDataConnector::ShowMessageDialog(Global::GUIMessageType MessageType, QStri
         case Global::GUIMSGTYPE_WARNING:
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
             mp_MessageDlg->SetTitle(m_strWarning);
+            break;
+        default:
             break;
         }
         mp_MessageDlg->SetText(MessageText);

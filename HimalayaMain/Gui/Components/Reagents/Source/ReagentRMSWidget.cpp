@@ -521,6 +521,9 @@ void CReagentRMSWidget::RetranslateUI()
         case Global::RMS_DAYS:
             SecondColumnName = "Days until change";
             break;
+        default:
+            break;
+
     }
     (void) m_ReagentRMSModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                                                  SecondColumnName.toUtf8(), 0, QApplication::UnicodeUTF8),0);
@@ -537,6 +540,9 @@ void CReagentRMSWidget::RetranslateUI()
         case Global::RMS_DAYS:
             SecondColumnName = "Days until change";
             break;
+        default:
+         break;
+
     }
     (void) m_ReagentCleaningModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                                                  SecondColumnName.toUtf8(), 0, QApplication::UnicodeUTF8),0);
@@ -586,6 +592,9 @@ void CReagentRMSWidget ::UpdateUserSetting()
                     m_ReagentRMSModel.ResetAndUpdateModel();
                     emit RMSChanged(Global::RMS_OFF);
                     break;
+                default:
+                    break;
+
             }
 
             if(RMSCLEANINGOPTIONS != m_UserSettings.GetModeRMSCleaning())
@@ -610,6 +619,8 @@ void CReagentRMSWidget ::UpdateUserSetting()
                         mp_TableWidgetCleaning->setColumnHidden(2, true);
                         m_ReagentCleaningModel.ResetAndUpdateModel();
                         emit RMSCleaningChanged(Global::RMS_OFF);
+                        break;
+                    default:
                         break;
                 }
         }

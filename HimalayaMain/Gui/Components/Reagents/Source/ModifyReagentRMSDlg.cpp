@@ -250,6 +250,8 @@ void CModifyReagentRMSDlg::UpdateRmsLabel(Global::RMSOptions_t Option)
             mp_Ui->buttonValue->setVisible(false);
             mp_Ui->labelRMSStaticName->setVisible(false);
             break;
+        default:
+            break;
     }
 
 }
@@ -338,6 +340,8 @@ void CModifyReagentRMSDlg::OnOk()
             case Global::RMS_DAYS:
 			    m_Reagent.SetMaxDays(mp_Ui->buttonValue->text().toInt());
 				break;
+            default:
+                break;
 		}
 
         if (m_ReagentCloneList.UpdateReagent(&m_Reagent) == true) {
@@ -379,6 +383,8 @@ void CModifyReagentRMSDlg::OnOk()
                 break;
             case Global::RMS_DAYS:
                 m_Reagent.SetMaxDays(mp_Ui->buttonValue->text().toInt());
+                break;
+            default:
                 break;
         }
 
@@ -444,6 +450,9 @@ void CModifyReagentRMSDlg::OnEditCassetteValue()
         case Global::RMS_DAYS:
             mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterDayValue);
             break;
+        default:
+            break;
+
     }
 
     if (mp_Ui->buttonValue->text() != "--") {
