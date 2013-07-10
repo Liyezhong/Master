@@ -289,14 +289,26 @@ void CServiceSettingsWidget::ResetButtons()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
-    /*if ((m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
-         (!m_ProcessRunning)) {
+    if (((m_CurrentUserRole == MainMenu::CMainWindow::Admin) ||
+         (m_CurrentUserRole == MainMenu::CMainWindow::Service)) &&
+         (!m_ProcessRunning))
+    {
         //Edit Mode
-        mp_Ui->btnService->setEnabled(true);
+        mp_Ui->btnResetOperationHour->setEnabled(true);
+        mp_Ui->checkBoxUseExhaustSystem->setEnabled(true);
+        mp_Ui->btnResetCarbonFilter->setEnabled(true);
+        mp_Ui->btnShutdown->setEnabled(true);
+        mp_Ui->btnStartServiceApp->setEnabled(true);
+        mp_Ui->btnSave->setEnabled(true);
     }
     else {
-        mp_Ui->btnService->setEnabled(false);
-    }*/
+        mp_Ui->btnResetOperationHour->setEnabled(false);
+        mp_Ui->checkBoxUseExhaustSystem->setEnabled(false);
+        mp_Ui->btnResetCarbonFilter->setEnabled(false);
+        mp_Ui->btnShutdown->setEnabled(false);
+        mp_Ui->btnStartServiceApp->setEnabled(false);
+        mp_Ui->btnSave->setEnabled(false);
+    }
 }
 
 /****************************************************************************/
