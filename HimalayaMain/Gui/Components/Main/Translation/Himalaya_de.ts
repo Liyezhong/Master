@@ -197,37 +197,37 @@
         <translation type="unfinished">Abbrechen</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="55"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="53"/>
         <source>Program</source>
         <translation type="unfinished">Programme</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="56"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="54"/>
         <source>Information</source>
         <translation type="unfinished">Information*</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="58"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="55"/>
         <source>Found the cleaning program did not run in last time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="54"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="56"/>
         <source>OK</source>
         <translation type="unfinished">OK*</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="59"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="58"/>
         <source>Can not start Leica Program With RMS OFF, please trun on RMS.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="60"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="59"/>
         <source>Some expired reagents are used in this selected program, you can not start this program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="61"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="60"/>
         <source>Do you want to Start the Program with Expired Reagents?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -252,12 +252,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="53"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="57"/>
         <source>No</source>
         <translation type="unfinished">Nein</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="57"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="61"/>
         <source>Confirmation Message</source>
         <translation type="unfinished">Bestätigungsmeldung</translation>
     </message>
@@ -285,87 +285,87 @@
 <context>
     <name>CDataConnector</name>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="58"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="63"/>
         <source>Communication Error</source>
         <translation>Kommunikations Fehler</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="59"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="64"/>
         <source>The changes could not be saved.</source>
         <translation>Die Änderungen können nicht gespeichert werden.</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="60"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="65"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="61"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="66"/>
         <source>Initializing device communication ...</source>
         <translation>Initialisiere Geräte Kommunikation ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="62"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="67"/>
         <source>Disconnect</source>
         <translation>Trennen</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="63"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="68"/>
         <source>Reinitializing device communication ...</source>
         <translation>Re-Initialisiere Geräte Kommunikation ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="64"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="69"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="65"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="70"/>
         <source>Information</source>
         <translation>Information*</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="66"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="71"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="67"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="72"/>
         <source>Device Communication</source>
         <translation>Geräte Kommunikation</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="68"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="73"/>
         <source>Saving Settings ...</source>
         <translation>Einstellungen speichern ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="69"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="74"/>
         <source>User Export</source>
         <translation type="unfinished">Benutzer Export</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="70"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="75"/>
         <source>Exporting user data ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="71"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="76"/>
         <source>Service Export</source>
         <translation type="unfinished">Service Export*</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="72"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="77"/>
         <source>Exporting service data ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="75"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="80"/>
         <source>Log Files</source>
         <translation>Logdateien</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="76"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="81"/>
         <source>Getting Daily run Log file ...</source>
         <translation>Lade DailyRunLog Datei ...
 </translation>
@@ -524,22 +524,17 @@
         <translation type="unfinished">Editieren</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="43"/>
-        <source>Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="44"/>
         <source>Installation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="242"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="243"/>
         <source>Enter Instrument Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="246"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="247"/>
         <source>Instrument Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -605,7 +600,7 @@
 <context>
     <name>CLanguageModel</name>
     <message>
-        <location filename="../../Settings/Source/LanguageModel.cpp" line="157"/>
+        <location filename="../../Settings/Source/LanguageModel.cpp" line="160"/>
         <source>  Language</source>
         <translation>Sprache</translation>
     </message>
@@ -648,66 +643,66 @@
 <context>
     <name>CModifyProgramDlg</name>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="333"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="338"/>
         <source>Enter Program Name</source>
         <translation>Programmname eingeben</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="221"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="244"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="643"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="226"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="249"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="648"/>
         <source>%1</source>
         <translation type="unfinished">%1</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="358"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="388"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="363"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="393"/>
         <source>Edit Program Step</source>
         <translation>Programschritt editieren</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="373"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="378"/>
         <source>New Program Step</source>
         <translation>Neuer Programmschritt</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="66"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="70"/>
         <source>Confirmation Message</source>
         <translation>Bestätigungsmeldung</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="67"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="71"/>
         <source>Yes</source>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="68"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="72"/>
         <source>OK</source>
         <translation type="unfinished">OK*</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="69"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="74"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="70"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="75"/>
         <source>Do you really want to delete the selected program step?</source>
         <translation>Wollen Sie wirklich den ausgewählte Programmschritt zu löschen?</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="71"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="76"/>
         <source>Please enter a valid Program Name</source>
         <translation>Bitte geben Sie einen gültige Programmnamen ein
 </translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="72"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="73"/>
         <source>Close</source>
         <translation type="unfinished">Schließen</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="65"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="69"/>
         <source>Select Icon</source>
         <translation type="unfinished"></translation>
     </message>
@@ -773,7 +768,7 @@
         <translation type="unfinished">°F*</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="529"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="532"/>
         <source>%1</source>
         <translation type="unfinished">%1</translation>
     </message>
@@ -794,34 +789,23 @@
 <context>
     <name>CModifyReagentRMSDlg</name>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="43"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="44"/>
         <source>Cassettes until change</source>
         <translation type="unfinished">Cassettes until change Abe</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="44"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="45"/>
         <source>Cycles until change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="45"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
         <source>Days until change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
-        <source>Please enter valid Reagent Long Name</source>
-        <translation type="unfinished">Bitte geben Sie einen gültige Reagenziennamen ein
-</translation>
-    </message>
-    <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="47"/>
         <source>Please enter valid data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="48"/>
-        <source>Please Select ReagentGroup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -835,13 +819,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="360"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="418"/>
         <source>Enter Reagent Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="51"/>
         <source>Enter Cassette Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="48"/>
+        <source>Please Select reagent group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1087,7 +1076,7 @@
 <context>
     <name>CReagentRMSWidget</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="51"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="52"/>
         <source>RMS</source>
         <translation type="unfinished">RMS*</translation>
     </message>
@@ -1134,56 +1123,45 @@
 <context>
     <name>CReagentStatusModel</name>
     <message>
-        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="344"/>
+        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="378"/>
         <source>Station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="346"/>
+        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="380"/>
         <source>Reagent</source>
         <translation type="unfinished">Reagenzie</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="352"/>
+        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="386"/>
         <source>Cassettes
 since
 change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="354"/>
-        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="368"/>
+        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="388"/>
+        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="397"/>
         <source>Cycles
 since
 change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="356"/>
+        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="390"/>
+        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="399"/>
         <source>Expiry
 Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="363"/>
-        <source>Cassettes
-overdue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="365"/>
-        <source>Cycles
-overdue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="371"/>
+        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="403"/>
         <source>Exchange
 Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="373"/>
+        <location filename="../../Core/Source/ReagentStatusModel.cpp" line="405"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1222,7 +1200,7 @@ Date</source>
 <context>
     <name>CServiceSettingsWidget</name>
     <message>
-        <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="40"/>
+        <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="43"/>
         <source>Service</source>
         <translation>Service</translation>
     </message>
@@ -1393,98 +1371,103 @@ Date</source>
 <context>
     <name>Core::CDataConnector</name>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1074"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1105"/>
         <source>Device Communication</source>
         <translation>Geräte Kommunikation</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1075"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1106"/>
         <source>Saving Settings ...</source>
         <translation>Einstellungen speichern ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1068"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1099"/>
         <source>Disconnect</source>
         <translation>Trennen</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1066"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1097"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1067"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1098"/>
         <source>Initializing device communication ...</source>
         <translation>Initialisiere Geräte Kommunikation ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1069"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1100"/>
         <source>Reinitializing device communication ...</source>
         <translation type="unfinished">Re-Initialisiere Geräte Kommunikation ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1070"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1101"/>
         <source>Error</source>
         <translation type="unfinished">Fehler</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1102"/>
         <source>Information</source>
         <translation type="unfinished">Information*</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1073"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1104"/>
         <source>Warning</source>
         <translation type="unfinished">Warnung</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1076"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1107"/>
         <source>User Export</source>
         <translation type="unfinished">Benutzer Export</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1077"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1108"/>
         <source>Exporting user data ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1079"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1110"/>
         <source>Service Export</source>
         <translation type="unfinished">Service Export*</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1080"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1111"/>
         <source>Exporting service data ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1082"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1113"/>
         <source>Import</source>
         <translation type="unfinished">Import*</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1083"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1114"/>
         <source>Importing data ...</source>
         <translation type="unfinished">Importiere Daten ...</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1085"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1116"/>
         <source>Log Files</source>
         <translation type="unfinished">Logdateien</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1086"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1117"/>
         <source>Getting Daily run Log file ...</source>
         <translation type="unfinished">Lade DailyRunLog Datei ...
 </translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1064"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1119"/>
+        <source>Please turn off the switch on the back of machine to shutdown the machine.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1095"/>
         <source>Communication Error</source>
         <translation type="unfinished">Kommunikations Fehler</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1065"/>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1096"/>
         <source>The changes could not be saved.</source>
         <translation type="unfinished">Die Änderungen können nicht gespeichert werden.</translation>
     </message>
@@ -1507,14 +1490,14 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="508"/>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="527"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="509"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="531"/>
         <source>Reagent</source>
         <translation type="unfinished">Reagenzie</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="510"/>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="529"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="511"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="533"/>
         <source>ReagentGroup</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1536,24 +1519,24 @@ Date</source>
     <name>Core::CReagentStatusModel</name>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="223"/>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="379"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="472"/>
         <source>Station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="226"/>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="382"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="475"/>
         <source>Reagent</source>
         <translation type="unfinished">Reagenzie</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="405"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="506"/>
         <source>Exchange
 Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="407"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="508"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1664,7 +1647,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardEndTimeWidget.ui" line="56"/>
-        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="359"/>
+        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="353"/>
         <source>Reagent Name :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1679,22 +1662,22 @@ Date</source>
         <translation type="unfinished">12h* {00:00:00?}</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="355"/>
+        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="349"/>
         <source>End Time :</source>
         <translation type="unfinished">End Time:</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="356"/>
+        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="350"/>
         <source>Aborting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="357"/>
+        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="351"/>
         <source>Aborted.</source>
         <translation type="unfinished">Aborted.</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="358"/>
+        <location filename="../../Dashboard/Source/DashboardEndTimeWidget.cpp" line="352"/>
         <source>Completed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1740,137 +1723,137 @@ Date</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="141"/>
+        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="167"/>
+        <source> Lock </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="211"/>
         <source>Unlock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="151"/>
+        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="145"/>
         <source>Retort:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="181"/>
-        <source>Lock</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="192"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="181"/>
         <source>Dashboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="193"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="182"/>
         <source>Yes</source>
         <translation type="unfinished">Ja</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="194"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="183"/>
         <source>No</source>
         <translation type="unfinished">Nein</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="195"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="184"/>
         <source>OK</source>
         <translation type="unfinished">OK*</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="196"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="185"/>
         <source>Cancel</source>
         <translation type="unfinished">Abbrechen</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="197"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="186"/>
         <source>Warning</source>
         <translation type="unfinished">Warnung</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="198"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="187"/>
         <source>As the program &quot;%1&quot; is selected, this operation will result in an incorrect program result, if you click &quot;Yes&quot;, the selected program will unselect.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="199"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="188"/>
         <source>Program</source>
         <translation type="unfinished">Programme</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="200"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="189"/>
         <source>Information</source>
         <translation type="unfinished">Information*</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="201"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="190"/>
         <source>Found the cleaning program did not run in last time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="202"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="191"/>
         <source>Can not start Leica Program With RMS OFF, please trun on RMS.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="203"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="192"/>
         <source>Some expired reagents are used in this selected program, you can not start this program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="204"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="193"/>
         <source>Do you want to Start the Program with Expired Reagents?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="205"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="194"/>
         <source>Confirmation Message</source>
         <translation type="unfinished">Bestätigungsmeldung</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="206"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="195"/>
         <source>Do you want to abort the program?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="207"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="196"/>
         <source>Program &quot;%1&quot; is complete! Would you like to drain the retort?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="208"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="197"/>
         <source>Please take out your specimen!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="209"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="198"/>
         <source>The retort is contaminated, please lock the retort and select Cleaning Program to run!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="210"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="199"/>
         <source>Program &quot;%1&quot; is aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="211"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="200"/>
         <source>Still it will cost some time to melt paraffin, the current selected program can not run now.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="212"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="201"/>
         <source>Please re-set the End Date&amp;Time of the current selected program.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="213"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="202"/>
         <source>Please set numbers of cassettes:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="214"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="203"/>
         <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="215"/>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="204"/>
         <source>The Station &quot;%1&quot; status is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;, it can not be executed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2189,7 +2172,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="173"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="855"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="860"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
@@ -2199,53 +2182,53 @@ Date</source>
         <translation>Speichern</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="840"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="845"/>
         <source>Edit Program Step</source>
         <translation>Programschritt editieren</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="841"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="846"/>
         <source>New Program Step</source>
         <translation>Neuer Programmschritt</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="842"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="847"/>
         <source>Enter Program Name</source>
         <translation>Programmnamen eingeben</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="843"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="848"/>
         <source>Enter Program Short Name</source>
         <translation>Programmkurzname eingeben</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="852"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="857"/>
         <source>Select Icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="853"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="858"/>
         <source>Confirmation Message</source>
         <translation type="unfinished">Bestätigungsmeldung</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="854"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="859"/>
         <source>Yes</source>
         <translation type="unfinished">Ja</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="856"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="861"/>
         <source>Do you really want to delete the selected program step?</source>
         <translation type="unfinished">Wollen Sie wirklich den ausgewählte Programmschritt zu löschen?</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="857"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="862"/>
         <source>Please enter a valid Program Name</source>
         <translation type="unfinished">Bitte geben Sie einen gültige Programmnamen ein
 </translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="858"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="863"/>
         <source>Close</source>
         <translation type="unfinished">Schließen</translation>
     </message>
@@ -2259,23 +2242,23 @@ Date</source>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramIconDlg.ui" line="269"/>
-        <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="199"/>
+        <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="200"/>
         <source>Cancel</source>
         <translation type="unfinished">Abbrechen</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramIconDlg.ui" line="289"/>
-        <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="198"/>
+        <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="199"/>
         <source>Ok</source>
         <translation type="unfinished">Ok*</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="197"/>
+        <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="198"/>
         <source>Information Message</source>
         <translation type="unfinished">Informations Meldung</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="200"/>
+        <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="201"/>
         <source>Close</source>
         <translation type="unfinished">Schließen</translation>
     </message>
@@ -2318,27 +2301,27 @@ Date</source>
         <translation type="unfinished">Speichern</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="594"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="597"/>
         <source>Time</source>
         <translation type="unfinished">Zeit</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="596"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="599"/>
         <source>Hour</source>
         <translation type="unfinished">Stunde</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="598"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="601"/>
         <source>Minute</source>
         <translation type="unfinished">Minute</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="601"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="604"/>
         <source>Information Message</source>
         <translation>Informations Meldung</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="603"/>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="606"/>
         <source>OK</source>
         <translation type="unfinished">OK*</translation>
     </message>
@@ -2346,22 +2329,22 @@ Date</source>
 <context>
     <name>Programs::CProgramModel</name>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="552"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="558"/>
         <source>Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="554"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="560"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="556"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="562"/>
         <source>Duration</source>
         <translation type="unfinished">Dauer</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="558"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="564"/>
         <source>Icon.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2370,7 +2353,7 @@ Date</source>
     <name>Programs::CProgramWidget</name>
     <message>
         <location filename="../../Programs/Forms/ProgramWidget.ui" line="20"/>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="580"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="586"/>
         <source>Edit</source>
         <translation>Editieren</translation>
     </message>
@@ -2390,37 +2373,37 @@ Date</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="549"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="555"/>
         <source>Programs</source>
         <translation>Programme</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="561"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="567"/>
         <source>Edit Program</source>
         <translation type="unfinished">Programm editieren</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="564"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="570"/>
         <source>View Program</source>
         <translation type="unfinished">Programm ansehen</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="567"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="573"/>
         <source>New Program</source>
         <translation>Neues Programm</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="570"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="576"/>
         <source>Do you really want to delete the selected program?</source>
         <translation type="unfinished">Möchten Sie das gewählte Program löschen?</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="573"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="579"/>
         <source>Program Process has started.Editing is no longer possible.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="577"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="583"/>
         <source>View</source>
         <translation>Ansicht</translation>
     </message>
@@ -2428,27 +2411,27 @@ Date</source>
 <context>
     <name>Programs::CStepModel</name>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="846"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="851"/>
         <source>Step</source>
         <translation>Schritt</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="847"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="852"/>
         <source>Reagent</source>
         <translation>Reagenzie</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="848"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="853"/>
         <source>Duration</source>
         <translation>Dauer</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="849"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="854"/>
         <source>Temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="850"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="855"/>
         <source>P/V</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2464,22 +2447,22 @@ Date</source>
 <context>
     <name>Reagent::CReagentStatusWidget</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="366"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="459"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="369"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="462"/>
         <source>Do you want to set as empty?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="372"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="465"/>
         <source>Do you want to reset data?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="375"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="468"/>
         <source>Do you want to set as full?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2493,18 +2476,18 @@ Date</source>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentGroupColorDlg.ui" line="285"/>
-        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="136"/>
+        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="137"/>
         <source>Cancel</source>
         <translation type="unfinished">Abbrechen</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentGroupColorDlg.ui" line="305"/>
-        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="133"/>
+        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="134"/>
         <source>Ok</source>
         <translation type="unfinished">Ok*</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="139"/>
+        <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="140"/>
         <source>Close</source>
         <translation type="unfinished">Schließen</translation>
     </message>
@@ -2547,63 +2530,72 @@ Date</source>
         <translation type="unfinished">12h* {500?}</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="443"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="504"/>
         <source>Cassettes until change</source>
         <translation type="unfinished">Cassettes until change Abe</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="446"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="507"/>
         <source>Cycles until change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="449"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="510"/>
         <source>Days until change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="452"/>
-        <source>Please enter valid Reagent Long Name</source>
-        <translation type="unfinished">Bitte geben Sie einen gültige Reagenziennamen ein
-</translation>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="513"/>
+        <source>Please enter the reagent Name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="455"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="516"/>
+        <source>Reagent name should not contain &apos;leica&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="519"/>
+        <source>The length of reagent name should not be more than 20.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="523"/>
         <source>Please enter valid data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="458"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="526"/>
         <source>Please Select ReagentGroup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="461"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="529"/>
         <source>Reagent add failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="464"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="532"/>
         <source>Reagent copy failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="467"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="535"/>
         <source>Enter Cassette Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="470"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="538"/>
         <source>Enter Cycle Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="473"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="541"/>
         <source>Enter Day Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="476"/>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="544"/>
         <source>Enter Reagent Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2700,22 +2692,22 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="495"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="496"/>
         <source>RMS</source>
         <translation type="unfinished">RMS*</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="498"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="499"/>
         <source>Edit Reagent</source>
         <translation type="unfinished">Reagenzie editieren</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="501"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="502"/>
         <source>New Reagent</source>
         <translation type="unfinished">Neue Reagenz</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="504"/>
+        <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="505"/>
         <source>Do you really want to delete the selected reagent</source>
         <translation type="unfinished">Wollen Sie wirklich die ausgewählte Reagenz löschen?</translation>
     </message>
@@ -3042,32 +3034,27 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="134"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="135"/>
         <source>Installation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="135"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="136"/>
         <source>Edit</source>
         <translation type="unfinished">Editieren</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="138"/>
-        <source>Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="141"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="142"/>
         <source>SoftwareVersion: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="145"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="146"/>
         <source>Driver Version : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="149"/>
+        <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="150"/>
         <source>Version of write-Protected Program :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3337,57 +3324,86 @@ Date</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="20"/>
-        <source>Active carbon filter [hrs]</source>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="22"/>
+        <source>Operation Days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="32"/>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="143"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="34"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="100"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="45"/>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="71"/>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="97"/>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="123"/>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="156"/>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="182"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="47"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="113"/>
         <source>TextLabel</source>
         <translation type="unfinished">Text</translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="58"/>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="84"/>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="169"/>
-        <source>Warning threshold</source>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="60"/>
+        <source>Warning threshold:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="110"/>
-        <source>Alarm threshold</source>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="73"/>
+        <source>365</source>
+        <translation type="unfinished">12h* {365?}</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="81"/>
+        <source>Use exhausting system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="131"/>
-        <source>Operation Hour</source>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="88"/>
+        <source>Active carbon filter [Days]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="190"/>
-        <source>CheckBox</source>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="126"/>
+        <source>Warning threshold :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="197"/>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="139"/>
+        <source>150</source>
+        <translation type="unfinished">12h* {150?}</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="152"/>
+        <source>Alarm threshold :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="165"/>
+        <source>240</source>
+        <translation type="unfinished">12h* {240?}</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="192"/>
+        <source>Save</source>
+        <translation type="unfinished">Speichern</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="228"/>
+        <source>Start Service App</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="205"/>
         <source>Shutdown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="134"/>
+        <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="321"/>
         <source>Service</source>
         <translation>Service</translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="322"/>
+        <source>If shut down now, 12 hours will be needed for melt paraffin in next startup! really shut down?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3398,7 +3414,7 @@ Date</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../../Settings/Source/SettingsWidget.cpp" line="138"/>
+        <location filename="../../Settings/Source/SettingsWidget.cpp" line="148"/>
         <source>Parameter</source>
         <translation>Einstellungen</translation>
     </message>

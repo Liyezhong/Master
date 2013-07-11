@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<TS version="2.0" language="zh_CN">
 <context>
     <name>CAlarmSettingsDlg</name>
     <message>
@@ -75,15 +75,15 @@
 <context>
     <name>CCassetteNumberInputWidget</name>
     <message>
-        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="13"/>
-        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="94"/>
-        <source>Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="12"/>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="93"/>
         <source>The cassette number should be 1 to 200.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="13"/>
+        <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="94"/>
+        <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -197,6 +197,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="36"/>
+        <source>As the program &quot;%1&quot; is selected, this operation will result in an incorrect program result, if you click &quot;Yes&quot;, the selected program will unselect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="53"/>
         <source>Program</source>
         <translation type="unfinished"></translation>
@@ -217,6 +222,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="57"/>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="58"/>
         <source>Can not start Leica Program With RMS OFF, please trun on RMS.</source>
         <translation type="unfinished"></translation>
@@ -232,33 +242,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="62"/>
-        <source>Program &quot;%1&quot; is complete! Would you like to drain the retort?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="67"/>
-        <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="68"/>
-        <source>The Station &quot;%1&quot; status is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;, it can not be executed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="36"/>
-        <source>As the program &quot;%1&quot; is selected, this operation will result in an incorrect program result, if you click &quot;Yes&quot;, the selected program will unselect.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="57"/>
-        <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="61"/>
         <source>Confirmation Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="62"/>
+        <source>Program &quot;%1&quot; is complete! Would you like to drain the retort?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -279,6 +269,16 @@
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="66"/>
         <source>Please set numbers of cassettes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="67"/>
+        <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="68"/>
+        <source>The Station &quot;%1&quot; status is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;, it can not be executed.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -481,15 +481,15 @@
 <context>
     <name>CErrorMsgDlg</name>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="158"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="159"/>
-        <source>Error Messages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="112"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="144"/>
         <source>%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="158"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="159"/>
+        <source>Error Messages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -642,6 +642,46 @@
 <context>
     <name>CModifyProgramDlg</name>
     <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="69"/>
+        <source>Select Icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="70"/>
+        <source>Confirmation Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="71"/>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="72"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="73"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="74"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="75"/>
+        <source>Do you really want to delete the selected program step?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="76"/>
+        <source>Please enter a valid Program Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="226"/>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="249"/>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="648"/>
@@ -662,46 +702,6 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="378"/>
         <source>New Program Step</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="70"/>
-        <source>Confirmation Message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="71"/>
-        <source>Yes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="72"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="74"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="75"/>
-        <source>Do you really want to delete the selected program step?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="76"/>
-        <source>Please enter a valid Program Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="73"/>
-        <source>Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="69"/>
-        <source>Select Icon</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -731,6 +731,11 @@
 <context>
     <name>CModifyProgramStepDlg</name>
     <message>
+        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="68"/>
+        <source>Information Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="69"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
@@ -758,11 +763,6 @@
     <message utf8="true">
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="186"/>
         <source>°F</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="68"/>
-        <source>Information Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -807,6 +807,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="48"/>
+        <source>Please Select reagent group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="49"/>
         <source>Reagent add failed</source>
         <translation type="unfinished"></translation>
@@ -817,18 +822,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="418"/>
-        <source>Enter Reagent Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="51"/>
         <source>Enter Cassette Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="48"/>
-        <source>Please Select reagent group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -839,6 +834,11 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="53"/>
         <source>Enter Day Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="418"/>
+        <source>Enter Reagent Name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -858,12 +858,6 @@
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="90"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="94"/>
         <source>Error Message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="128"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="133"/>
-        <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -898,6 +892,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="128"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="133"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="129"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
@@ -905,11 +905,6 @@
 </context>
 <context>
     <name>CNetworkSettingsWidget</name>
-    <message>
-        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="48"/>
-        <source>Network</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="42"/>
         <source>Enter Proxy User Name</source>
@@ -928,6 +923,11 @@
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="45"/>
         <source>Enter Proxy Port</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="48"/>
+        <source>Network</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -980,11 +980,6 @@
 <context>
     <name>CProgramWidget</name>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="75"/>
-        <source>Programs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="60"/>
         <source>Edit Program</source>
         <translation type="unfinished"></translation>
@@ -1005,8 +1000,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="66"/>
-        <source>Edit</source>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="64"/>
+        <source>Program Process has started.Editing is no longer possible.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1015,8 +1010,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="64"/>
-        <source>Program Process has started.Editing is no longer possible.</source>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="66"/>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="75"/>
+        <source>Programs</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1108,13 +1108,13 @@
 <context>
     <name>CReagentStationWidget</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="34"/>
-        <source>Station</source>
+        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="31"/>
+        <source>Select Reagent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="31"/>
-        <source>Select Reagent</source>
+        <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="34"/>
+        <source>Station</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1167,11 +1167,6 @@ Date</source>
 <context>
     <name>CReagentStatusWidget</name>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="36"/>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="31"/>
         <source>Do you want to set as empty?</source>
         <translation type="unfinished"></translation>
@@ -1184,6 +1179,11 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="33"/>
         <source>Do you want to set as full?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="36"/>
+        <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1281,16 +1281,6 @@ Date</source>
 <context>
     <name>CUserPrivilegeWidget</name>
     <message>
-        <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="50"/>
-        <source>User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="198"/>
-        <source>Enter Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="46"/>
         <source>Enter New Password</source>
         <translation type="unfinished"></translation>
@@ -1298,6 +1288,16 @@ Date</source>
     <message>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="47"/>
         <source>Confirm New Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="50"/>
+        <source>User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="198"/>
+        <source>Enter Password</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1312,15 +1312,15 @@ Date</source>
 <context>
     <name>CWarningMsgDlg</name>
     <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="155"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="156"/>
-        <source>Warning Messages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="108"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="141"/>
         <source>%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="155"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="156"/>
+        <source>Warning Messages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1369,18 +1369,13 @@ Date</source>
 <context>
     <name>Core::CDataConnector</name>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1105"/>
-        <source>Device Communication</source>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1095"/>
+        <source>Communication Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1106"/>
-        <source>Saving Settings ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1099"/>
-        <source>Disconnect</source>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1096"/>
+        <source>The changes could not be saved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1391,6 +1386,11 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1098"/>
         <source>Initializing device communication ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1099"/>
+        <source>Disconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1411,6 +1411,16 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1104"/>
         <source>Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1105"/>
+        <source>Device Communication</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Core/Source/DataConnector.cpp" line="1106"/>
+        <source>Saving Settings ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1458,19 +1468,14 @@ Date</source>
         <source>Please turn off the switch on the back of machine to shutdown the machine.</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1095"/>
-        <source>Communication Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Core/Source/DataConnector.cpp" line="1096"/>
-        <source>The changes could not be saved.</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Core::CReagentRMSModel</name>
+    <message>
+        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="187"/>
+        <source>Reagent Group</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="189"/>
         <source>Color</source>
@@ -1479,11 +1484,6 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="191"/>
         <source>Select Color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="187"/>
-        <source>Reagent Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1720,6 +1720,11 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="145"/>
+        <source>Retort:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="167"/>
         <source> Lock </source>
         <translation type="unfinished"></translation>
@@ -1727,11 +1732,6 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="211"/>
         <source>Unlock</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="145"/>
-        <source>Retort:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2133,6 +2133,11 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="29"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="44"/>
         <source>Program Name:</source>
         <translation type="unfinished"></translation>
@@ -2145,6 +2150,12 @@ Date</source>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="93"/>
         <source>Icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="173"/>
+        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="860"/>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2165,17 +2176,6 @@ Date</source>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="267"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="173"/>
-        <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="860"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="29"/>
-        <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2359,13 +2359,13 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Forms/ProgramWidget.ui" line="157"/>
-        <source>Copy</source>
+        <location filename="../../Programs/Forms/ProgramWidget.ui" line="40"/>
+        <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Forms/ProgramWidget.ui" line="40"/>
-        <source>Delete</source>
+        <location filename="../../Programs/Forms/ProgramWidget.ui" line="157"/>
+        <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2910,12 +2910,6 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="159"/>
-        <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="292"/>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="102"/>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="178"/>
         <source>Sound: Sound E5</source>
@@ -2925,6 +2919,12 @@ Date</source>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="109"/>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="185"/>
         <source>Volume: 7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="159"/>
+        <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="292"/>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2956,11 +2956,6 @@ Date</source>
 <context>
     <name>Settings::CDataManagementWidget</name>
     <message>
-        <location filename="../../Settings/Source/DataManagementWidget.cpp" line="153"/>
-        <source>Data Management</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
@@ -2978,6 +2973,11 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="105"/>
         <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Settings/Source/DataManagementWidget.cpp" line="153"/>
+        <source>Data Management</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3382,13 +3382,13 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="228"/>
-        <source>Start Service App</source>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="205"/>
+        <source>Shutdown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="205"/>
-        <source>Shutdown</source>
+        <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="228"/>
+        <source>Start Service App</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3459,11 +3459,6 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Users/Forms/UserPrivilegeWidget.ui" line="85"/>
-        <source>Standard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Users/Forms/UserPrivilegeWidget.ui" line="23"/>
         <source>Supervisor</source>
         <translation type="unfinished"></translation>
@@ -3471,6 +3466,11 @@ Date</source>
     <message>
         <location filename="../../Users/Forms/UserPrivilegeWidget.ui" line="46"/>
         <source>Change Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Users/Forms/UserPrivilegeWidget.ui" line="85"/>
+        <source>Standard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

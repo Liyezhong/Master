@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>531</width>
-    <height>272</height>
+    <width>547</width>
+    <height>404</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -119,21 +119,43 @@
        <property name="sizeConstraint">
         <enum>QLayout::SetNoConstraint</enum>
        </property>
+       <item row="0" column="4">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item row="1" column="2" colspan="5">
         <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <property name="spacing">
+          <number>0</number>
+         </property>
          <item>
-          <widget class="QLabel" name="labelBackground">
-           <property name="frameShadow">
-            <enum>QFrame::Sunken</enum>
+          <widget class="Dashboard::CRetortLockIndicator" name="labelLockIndicator">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <property name="text">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>34</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(194, 194, 194);</string>
+           </property>
+           <property name="text" stdset="0">
             <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">:/HimalayaImages/Color/Color_7045.png</pixmap>
-           </property>
-           <property name="scaledContents">
-            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -215,19 +237,6 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="4">
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
       </layout>
      </item>
     </layout>
@@ -239,6 +248,11 @@
    <class>Dashboard::CDashboardComboBox</class>
    <extends>QComboBox</extends>
    <header>Dashboard/Include/DashboardComboBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Dashboard::CRetortLockIndicator</class>
+   <extends>QLabel</extends>
+   <header>Dashboard/Include/RetortLockIndicator.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -81,17 +81,6 @@ private:
     bool m_GridDrawn;                                    //!< Flag to verify whether the grid is drawn or not
     StationGroupType_t m_DashboardStationGroup;          //!< Dashboard StationGroup object
     QString m_DashboardStationID;                        //!< Dashboard Station ID
-
-    QPixmap m_PixmapRetortEnabled;                       //!< Pixmap for Enabled Retort
-    QPixmap m_PixmapBottleBackground;                    //!< Pixmap for Bottle Background
-    QPixmap m_PixmapBottleBackgroundGrayed;              //!< Pixmap for Grayed Bottle Background
-    QPixmap m_PixmapBottleCover;                         //!< Pixmap for Bottle Cover
-    QPixmap m_PixmapBottleCoverGrayed;                   //!< Pixmap for Grayed Bottle Cover
-    QPixmap m_PixmapParaffinbathBackground;              //!< Pixmap for Paraffinbath Background
-    QPixmap m_PixmapParaffinbathBackgroundGrayed;        //!< Pixmap for Garyed Paraffinbath Background
-    QPixmap m_PixmapParaffinbathCover;                   //!< Pixmap for Paraffibathn Cover
-    QPixmap m_PixmapParaffinbathCoverGrayed;             //!< Pixmap for Grayed Paraffinbath Cover
-    
     QPixmap m_Image;                                     //!< Background image.
     QString m_ReagentId;                                 //!< Reagent ID
     QString m_StationItemLabel;                          //!< Station Label

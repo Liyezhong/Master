@@ -100,7 +100,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      m_btnGroup.addButton(mp_Ui->playButton, Dashboard::firstButton);
      m_btnGroup.addButton(mp_Ui->abortButton, Dashboard::secondButton);
 
-     //EnableAbortButton(false);
+     EnableAbortButton(false);
      EnablePlayButton(false);
 
      m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
@@ -833,11 +833,11 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLock
 {
     if (cmd.IsLocked())
     {
-
+        mp_Ui->labelLockIndicator->lock(true);
     }
     else
     {
-
+        mp_Ui->labelLockIndicator->lock(false);
         //enable the "OK"
         if (m_IsWaitingCleaningProgram && mp_MessageDlg->isVisible())
         {

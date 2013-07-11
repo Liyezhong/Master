@@ -31,4 +31,6 @@ SUBDIRS = ../../../../Platform/Master/Components/Global/Build/Global.pro \
 CONFIG += ordered
 
 TRANSLATIONS = ../Components/Main/Translation/Himalaya_de.ts \
-               ../Components/Main/Translation/Himalaya_en.ts
+               ../Components/Main/Translation/Himalaya_en.ts \
+               ../Components/Main/Translation/Himalaya_zh.ts \
+
