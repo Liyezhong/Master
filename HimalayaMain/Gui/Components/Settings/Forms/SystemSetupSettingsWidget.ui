@@ -128,12 +128,6 @@
     </layout>
    </item>
   </layout>
-  <zorder>labelSpeed</zorder>
-  <zorder>horizontalSpacer_5</zorder>
-  <zorder>horizontalSpacer_4</zorder>
-  <zorder>horizontalSpacer_3</zorder>
-  <zorder>verticalSpacer_2</zorder>
-  <zorder>verticalSpacer_3</zorder>
  </widget>
  <customwidgets>
   <customwidget>

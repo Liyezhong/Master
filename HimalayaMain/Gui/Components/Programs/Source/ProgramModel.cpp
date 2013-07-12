@@ -125,7 +125,8 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
     if (mp_ProgramList == NULL) {
         return QVariant();
     }
-    if (p_Program = const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(Index.row()))) {
+    p_Program = const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(Index.row()));
+    if (p_Program) {
         if (Role == (int)Qt::DisplayRole) {
             switch (5 - m_Columns + Index.column()) {
             case -1:

@@ -557,12 +557,14 @@ void CProgramWidget::RetranslateUI()
     //Added void to please lint
     (void) m_ProgramModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
     "Number", 0, QApplication::UnicodeUTF8),0);
+    (void) m_ProgramModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
+    "Use", 0, QApplication::UnicodeUTF8),0);
     (void) m_ProgramModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
     "Name", 0, QApplication::UnicodeUTF8),0);
     (void) m_ProgramModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
     "Duration", 0, QApplication::UnicodeUTF8),0);
     (void) m_ProgramModel.setHeaderData(3,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
-    "Icon.", 0, QApplication::UnicodeUTF8),0);
+    "Icon", 0, QApplication::UnicodeUTF8),0);
 
     m_strEditProgram = QApplication::translate("Programs::CProgramWidget", "Edit Program",
                                                                    0, QApplication::UnicodeUTF8);
