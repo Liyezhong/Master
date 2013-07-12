@@ -909,7 +909,7 @@ QString SchedulerMainThreadController::SelectStationFromReagentID(const QString&
 }
 
 
-const QString& SchedulerMainThreadController::SelectStationByReagent(const CReagent* pReagent,
+QString SchedulerMainThreadController::SelectStationByReagent(const CReagent* pReagent,
                                                                     ListOfIDs_t& unusedStationIDs,
                                                                     QList<StationUseRecord_t>& usedStations,
                                                                     bool bFindNewestOne,

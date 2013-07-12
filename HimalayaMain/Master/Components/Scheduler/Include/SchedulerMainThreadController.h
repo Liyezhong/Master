@@ -189,7 +189,7 @@ typedef struct
                                            QList<StationUseRecord_t>& usedStations,
                                            bool IsLastStep);
 
-         const QString& SelectStationByReagent(const DataManager::CReagent* pReagent,
+         QString SelectStationByReagent(const DataManager::CReagent* pReagent,
                                                                              ListOfIDs_t& unusedStationIDs,
                                                                              QList<StationUseRecord_t>& usedStations,
                                                                              bool bFindNewestOne,
