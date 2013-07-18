@@ -479,13 +479,13 @@ void CReagentStatusWidget::RetranslateUI()
         default:
             SecondColumnName = "";
         case Global::RMS_CASSETTES:
-            SecondColumnName = "Cassettes\nsince\nchange";
+            SecondColumnName = QApplication::translate("Core::CReagentStatusModel", "Cassettes\nsince\nchange", 0, QApplication::UnicodeUTF8);
             break;
         case Global::RMS_CYCLES:
-            SecondColumnName = "Cycles\nsince\nchange";
+            SecondColumnName = QApplication::translate("Core::CReagentStatusModel", "Cycles\nsince\nchange", 0, QApplication::UnicodeUTF8);
             break;
         case Global::RMS_DAYS:
-            SecondColumnName = "Days\nsince\nchange";
+            SecondColumnName = QApplication::translate("Core::CReagentStatusModel", "Expiry\nDate", 0, QApplication::UnicodeUTF8);
             break;
     }
 
@@ -494,15 +494,13 @@ void CReagentStatusWidget::RetranslateUI()
         default:
             ThirdColumnName = "";
         case Global::RMS_CYCLES:
-             ThirdColumnName = "Cycles\nsince\nchange";
+             ThirdColumnName = QApplication::translate("Core::CReagentStatusModel", "Cycles\nsince\nchange", 0, QApplication::UnicodeUTF8);
         case Global::RMS_DAYS:
-             ThirdColumnName = "Expiry\nDate";
+             ThirdColumnName = QApplication::translate("Core::CReagentStatusModel", "Expiry\nDate", 0, QApplication::UnicodeUTF8);
     }
 
-    (void) m_ReagentStatusModel.setHeaderData(2, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
-                                                                                 SecondColumnName.toUtf8(), 0, QApplication::UnicodeUTF8),0);
-    (void) m_ReagentStatusModel.setHeaderData(3, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
-                                                                                 ThirdColumnName.toUtf8(), 0, QApplication::UnicodeUTF8),0);
+    (void) m_ReagentStatusModel.setHeaderData(2, Qt::Horizontal, SecondColumnName, 0);
+    (void) m_ReagentStatusModel.setHeaderData(3, Qt::Horizontal, ThirdColumnName, 0);
     (void) m_ReagentStatusModel.setHeaderData(4, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
                                                                                  "Exchange\nDate", 0, QApplication::UnicodeUTF8),0);
     (void) m_ReagentStatusModel.setHeaderData(5, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",

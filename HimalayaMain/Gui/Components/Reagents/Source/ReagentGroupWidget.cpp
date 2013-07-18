@@ -24,7 +24,7 @@ namespace Reagents {
 CReagentGroupWidget::CReagentGroupWidget(QWidget *p_Parent):
                      MainMenu::CPanelFrame(p_Parent),
                      mp_Ui(new Ui::CReagentGroupWidget),
-                     m_strSelectColor("Select Color")
+                     m_strSelectColor(tr("Select Color"))
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Groups"));
@@ -184,11 +184,11 @@ void CReagentGroupWidget::RetranslateUI()
 {
    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagents::CReagentRMSWidget",
                                                         "Group", 0, QApplication::UnicodeUTF8));
-   (void) m_ReagentGroupModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
+   (void) m_ReagentGroupModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentGroupModel",
                                                         "Reagent Group", 0, QApplication::UnicodeUTF8),0);
-   (void) m_ReagentGroupModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
+   (void) m_ReagentGroupModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentGroupModel",
                                                           "Color", 0, QApplication::UnicodeUTF8),0);
-   m_strSelectColor = QApplication::translate("Core::CReagentRMSModel", "Select Color", 0, QApplication::UnicodeUTF8);
+   m_strSelectColor = QApplication::translate("Reagents::CReagentGroupWidget", "Select Color", 0, QApplication::UnicodeUTF8);
 }
 
 /****************************************************************************/

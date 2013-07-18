@@ -220,10 +220,10 @@ void CReagentStationWidget::RetranslateUI()
 {
     MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagent Station::CReagentStatusWidget",
                                                                  "Station", 0, QApplication::UnicodeUTF8));
-    (void) m_ReagentStationModel.setHeaderData(0, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
+    (void) m_ReagentStationModel.setHeaderData(0, Qt::Horizontal,QApplication::translate("Core::CReagentStationModel",
                                                                                  "Station", 0, QApplication::UnicodeUTF8),0);
 
-    (void) m_ReagentStationModel.setHeaderData(1, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
+    (void) m_ReagentStationModel.setHeaderData(1, Qt::Horizontal,QApplication::translate("Core::CReagentStationModel",
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8),0);
 
     m_strSelectReagent = QApplication::translate("Reagents::CReagentStationWidget", "Select Reagent", 0, QApplication::UnicodeUTF8);

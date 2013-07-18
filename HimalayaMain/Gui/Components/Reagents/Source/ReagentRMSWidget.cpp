@@ -328,15 +328,6 @@ void CReagentRMSWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettin
    // m_ReagentRMSModel.SetUserSettings(p_UserSettings);
 }
 
-/****************************************************************************/
-/*!
- *  \brief Translates the strings in UI to the selected language
- */
-/****************************************************************************/
-//void CReagentRMSWidget::RetranslateUI()
-//{
-//   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagents::CReagentRMSWidget", "Reagents", 0, QApplication::UnicodeUTF8));
-//}
 
 /****************************************************************************/
 /*!
@@ -513,19 +504,19 @@ void CReagentRMSWidget::RetranslateUI()
     QString SecondColumnName("");
     switch(Reagents:: CReagentRMSWidget::RMSPROCESSINGOPTION) {
         case Global::RMS_CASSETTES:
-            SecondColumnName = "Cassettes until change";
+            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Cassettes until change", 0, QApplication::UnicodeUTF8);
             break;
         case Global::RMS_CYCLES:
-            SecondColumnName = "Cycles until change";
+            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Cycles until change", 0, QApplication::UnicodeUTF8);
             break;
         case Global::RMS_DAYS:
-            SecondColumnName = "Days until change";
+            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Days until change", 0, QApplication::UnicodeUTF8);
             break;
         default:
             break;
-
     }
-    (void) m_ReagentRMSModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
+
+    (void) m_ReagentRMSModel.setHeaderData(2,Qt::Horizontal, QApplication::translate("Core::CReagentRMSModel",
                                                                                  SecondColumnName.toUtf8(), 0, QApplication::UnicodeUTF8),0);
 
     (void) m_ReagentCleaningModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
@@ -535,10 +526,10 @@ void CReagentRMSWidget::RetranslateUI()
 
     switch(Reagents:: CReagentRMSWidget::RMSCLEANINGOPTIONS) {
         case Global::RMS_CYCLES:
-            SecondColumnName = "Cycles until change";
+            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Cycles until change", 0, QApplication::UnicodeUTF8);
             break;
         case Global::RMS_DAYS:
-            SecondColumnName = "Days until change";
+            SecondColumnName = QApplication::translate("Core::CReagentRMSModel", "Days until change", 0, QApplication::UnicodeUTF8);
             break;
         default:
          break;

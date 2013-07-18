@@ -954,27 +954,27 @@
 <context>
     <name>CProgramModel</name>
     <message>
-        <location filename="../../Programs/Source/ProgramModel.cpp" line="235"/>
+        <location filename="../../Programs/Source/ProgramModel.cpp" line="236"/>
         <source>Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramModel.cpp" line="237"/>
+        <location filename="../../Programs/Source/ProgramModel.cpp" line="238"/>
         <source>Use</source>
         <translation>Verw.</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramModel.cpp" line="239"/>
+        <location filename="../../Programs/Source/ProgramModel.cpp" line="240"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramModel.cpp" line="241"/>
+        <location filename="../../Programs/Source/ProgramModel.cpp" line="242"/>
         <source>Duration</source>
         <translation type="unfinished">Dauer</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramModel.cpp" line="243"/>
+        <location filename="../../Programs/Source/ProgramModel.cpp" line="244"/>
         <source>Icon</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1084,12 +1084,12 @@
 <context>
     <name>CReagentStationEditModel</name>
     <message>
-        <location filename="../../Core/Source/ReagentStationEditModel.cpp" line="269"/>
+        <location filename="../../Core/Source/ReagentStationEditModel.cpp" line="268"/>
         <source>Reagent</source>
         <translation type="unfinished">Reagenzie</translation>
     </message>
     <message>
-        <location filename="../../Core/Source/ReagentStationEditModel.cpp" line="271"/>
+        <location filename="../../Core/Source/ReagentStationEditModel.cpp" line="270"/>
         <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1530,13 +1530,33 @@ Date</source>
         <translation type="unfinished">Reagenzie</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="506"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="496"/>
+        <source>Cassettes
+since
+change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="499"/>
+        <source>Cycles
+since
+change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="502"/>
+        <source>Expiry
+Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="509"/>
         <source>Exchange
 Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="508"/>
+        <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="511"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1723,17 +1743,17 @@ Date</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="167"/>
+        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="189"/>
         <source> Lock </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="211"/>
+        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="233"/>
         <source>Unlock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="145"/>
+        <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="167"/>
         <source>Retort:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2009,11 +2029,6 @@ Date</source>
 </context>
 <context>
     <name>MainMenu::CMainWindow</name>
-    <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="14"/>
-        <source>MainWindow</source>
-        <translation>MainWindow</translation>
-    </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="75"/>
         <source>1970-01-01</source>
@@ -2335,17 +2350,22 @@ Date</source>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="560"/>
+        <source>Use</source>
+        <translation type="unfinished">Verw.</translation>
+    </message>
+    <message>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="562"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="562"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="564"/>
         <source>Duration</source>
         <translation type="unfinished">Dauer</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="564"/>
-        <source>Icon.</source>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="566"/>
+        <source>Icon</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2353,7 +2373,7 @@ Date</source>
     <name>Programs::CProgramWidget</name>
     <message>
         <location filename="../../Programs/Forms/ProgramWidget.ui" line="20"/>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="586"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="588"/>
         <source>Edit</source>
         <translation>Editieren</translation>
     </message>
@@ -2378,32 +2398,32 @@ Date</source>
         <translation>Programme</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="567"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="569"/>
         <source>Edit Program</source>
         <translation type="unfinished">Programm editieren</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="570"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="572"/>
         <source>View Program</source>
         <translation type="unfinished">Programm ansehen</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="573"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="575"/>
         <source>New Program</source>
         <translation>Neues Programm</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="576"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="578"/>
         <source>Do you really want to delete the selected program?</source>
         <translation type="unfinished">Möchten Sie das gewählte Program löschen?</translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="579"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="581"/>
         <source>Program Process has started.Editing is no longer possible.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Programs/Source/ProgramWidget.cpp" line="583"/>
+        <location filename="../../Programs/Source/ProgramWidget.cpp" line="585"/>
         <source>View</source>
         <translation>Ansicht</translation>
     </message>
@@ -2645,7 +2665,7 @@ Date</source>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="57"/>
-        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="131"/>
+        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="130"/>
         <source>OFF</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2656,33 +2676,33 @@ Date</source>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="71"/>
-        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="138"/>
+        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="137"/>
         <source>Cycles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="78"/>
-        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="145"/>
+        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="144"/>
         <source>Days</source>
         <translation type="unfinished">Tage</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="116"/>
+        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="115"/>
         <source>Cleaning Reagents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="193"/>
+        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="192"/>
         <source>Edit</source>
         <translation type="unfinished">Editieren</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="216"/>
+        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="215"/>
         <source>New</source>
         <translation type="unfinished">Neu</translation>
     </message>
     <message>
-        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="239"/>
+        <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="238"/>
         <source>Delete</source>
         <translation type="unfinished">Löschen</translation>
     </message>
