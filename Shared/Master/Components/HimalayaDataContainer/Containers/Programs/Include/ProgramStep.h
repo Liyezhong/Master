@@ -21,11 +21,6 @@
 #ifndef DATAMANAGER_PROGRAMSTEP_H
 #define DATAMANAGER_PROGRAMSTEP_H
 
-#include <QString>
-#include <QStringList>
-#include <QXmlStreamReader>
-#include <QXmlStreamWriter>
-
 #include "DataManager/Helper/Include/Types.h"
 #include "DataManager/Helper/Include/Helper.h"
 

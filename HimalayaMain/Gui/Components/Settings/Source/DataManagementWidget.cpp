@@ -83,7 +83,7 @@ void CDataManagementWidget::changeEvent(QEvent *p_Event)
 void CDataManagementWidget:: ServiceExportDialog()
 {
     QStringList Type;
-    Type << "User";
+    Type << "Service";
     emit ExecSending("ServiceExport", Type);
 }
 void CDataManagementWidget:: SaveToUSBDialog()
@@ -120,7 +120,7 @@ void CDataManagementWidget::ResetButtons()
         mp_Ui->serviceExportButton->setEnabled(true);
     }
     else {
-        mp_Ui->serviceExportButton->setEnabled(false);
+        mp_Ui->serviceExportButton->setEnabled(true);
     }
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {

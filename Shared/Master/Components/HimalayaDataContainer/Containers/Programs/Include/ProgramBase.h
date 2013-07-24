@@ -21,8 +21,6 @@
 #ifndef DATAMANAGER_PROGRAMBASE_H
 #define DATAMANAGER_PROGRAMBASE_H
 
-#include <QString>
-#include <QHash>
 
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramStep.h"
 #include "DataManager/Helper/Include/Helper.h"

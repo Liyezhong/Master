@@ -21,10 +21,6 @@
 #ifndef DATAMANAGER_PROGRAM_H
 #define DATAMANAGER_PROGRAM_H
 
-#include <QString>
-#include <QStringList>
-#include <QHash>
-#include <QDebug>
 #include <DataManager/Helper/Include/Types.h>
 #include "HimalayaDataContainer/Containers/Programs/Include/ProgramBase.h"
 
