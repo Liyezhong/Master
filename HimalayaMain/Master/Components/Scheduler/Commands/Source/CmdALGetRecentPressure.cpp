@@ -37,7 +37,7 @@ CmdALGetRecentPressure::~CmdALGetRecentPressure(){}
 
 void CmdALGetRecentPressure::Execute()
 {
-    m_result = m_IDeviceProcessing->ALGetRecentPressure(m_Index);
+    m_result = m_IDeviceProcessing->ALGetRecentPressure();
 }
 
 }

@@ -1455,7 +1455,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(ok)
         {
 #if 1
-            pressureDrift= mp_IDeviceProcessing->ALGetRecentPressure(0);
+            pressureDrift= mp_IDeviceProcessing->ALGetRecentPressure();
             if(UNDEFINED_VALUE != pressureDrift)
             {
                 mp_DataManager->GetProgramSettings()->SetParameterValue("LA", "Base", "PressureDrift", pressureDrift);
@@ -1512,7 +1512,7 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
     {
        // if(StepID == "IDLE")
         {
-            qreal PressureAL= pIDP->ALGetRecentPressure(0);
+            qreal PressureAL= pIDP->ALGetRecentPressure();
             qreal TempALLevelSensor= pIDP->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
             qreal TempALTube1= pIDP->ALGetRecentTemperature(AL_TUBE1,0);
             qreal TempALTube2= pIDP->ALGetRecentTemperature(AL_TUBE2,0);
