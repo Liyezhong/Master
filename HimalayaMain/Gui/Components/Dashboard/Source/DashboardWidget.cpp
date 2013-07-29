@@ -848,14 +848,14 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLock
 
 void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd)
 {
+    //get the proposed program end DateTime
+    bool bCanotRun = true;
+    int asapEndTime = GetASAPTime(cmd.TimeProposed(),
+                                  cmd.ParaffinMeltCostedTime(), cmd.CostedTimeBeforeParaffin(), bCanotRun);
+
     if (m_CheckEndDatetimeAgain)
     {
         m_CheckEndDatetimeAgain = false;
-        //get the proposed program end DateTime
-        bool bCanotRun = true;
-        int asapEndTime = GetASAPTime(cmd.TimeProposed(),
-                                      cmd.ParaffinMeltCostedTime(), cmd.CostedTimeBeforeParaffin(), bCanotRun);
-
         asapEndTime = asapEndTime - 60;//60 seconds: buffer time for "select program" and "Run" operation.
         QDateTime endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
         if (endDateTime > m_EndDateTime)
@@ -956,10 +956,8 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_StationList = stationList;
     //Show program name in the comboBox
     mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+
     //get the proposed program end DateTime
-    bool bCanotRun = true;
-    int asapEndTime = GetASAPTime(cmd.TimeProposed(),
-                                  cmd.ParaffinMeltCostedTime(), cmd.CostedTimeBeforeParaffin(), bCanotRun);
     m_TimeProposed = cmd.TimeProposed();
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 
@@ -987,7 +985,6 @@ void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain 
 
     if (m_IsDraining && !cmd.IsStart() && !cmd.IsSuck())
     {
-        emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
         this->TakeOutSpecimenAndWaitRunCleaning();//pause ProgressBar and EndTime countdown
         m_IsDraining = false;//when abort or pause, set this too?
     }
