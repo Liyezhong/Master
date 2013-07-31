@@ -439,14 +439,6 @@ void CReagentRMSWidget::OnProcessStateChanged()
         mp_Ui->btnDelete->setEnabled(false);
         mp_Ui->groupRMS->setEnabled(false);
         mp_Ui->CleaningReagent_GroupRMS->setEnabled(false);
-
-        if(m_ProcessRunning && m_ShowMessageDialog){
-            m_MessageDlg.SetTitle(CommonString::strInforMsg);
-            m_MessageDlg.SetIcon(QMessageBox::Information);
-            m_MessageDlg.SetButtonText(1, CommonString::strOK);
-            m_MessageDlg.HideButtons();
-            (void)m_MessageDlg.exec();
-        }
     }
 }
 

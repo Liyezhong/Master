@@ -340,15 +340,6 @@ void CProgramWidget::OnProcessStateChanged()
         mp_Ui->btnNew->setEnabled(false);
         mp_Ui->btnCopy->setEnabled(false);
         mp_Ui->btnDelete->setEnabled(false);
-
-        if(m_ProcessRunning && m_ShowMessageDialog){
-            m_MessageDlg.SetTitle(CommonString::strInforMsg);
-            m_MessageDlg.SetIcon(QMessageBox::Information);
-            m_MessageDlg.SetButtonText(1, CommonString::strOK);
-            m_MessageDlg.HideButtons();
-            m_MessageDlg.SetText(m_strNotEditProgram);
-            (void) m_MessageDlg.exec();
-        }
     }
 }
 

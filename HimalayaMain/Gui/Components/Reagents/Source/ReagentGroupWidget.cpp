@@ -244,14 +244,6 @@ void CReagentGroupWidget::OnProcessStateChanged()
     }
     else {
         mp_Ui->btnEdit->setEnabled(false);
-
-        if(m_ProcessRunning && m_ShowMessageDialog){
-            m_MessageDlg.SetTitle(CommonString::strInforMsg);
-            m_MessageDlg.SetIcon(QMessageBox::Information);
-            m_MessageDlg.SetButtonText(1, CommonString::strOK);
-            m_MessageDlg.HideButtons();
-            (void)m_MessageDlg.exec();
-        }
     }
 }
 
