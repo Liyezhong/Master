@@ -450,7 +450,7 @@ void CDashboardScene::BlinkingStation()
          Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
          if (item)
          {
-             if (item->isSelected() && item->IsReagentExpired())
+             if (item->IsReagentExpired())
                  item->DrawStationItemImage();
          }
     }

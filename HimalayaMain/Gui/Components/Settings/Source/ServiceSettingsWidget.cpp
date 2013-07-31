@@ -255,8 +255,8 @@ void CServiceSettingsWidget::OnShutdown()
     ConfirmationMessageDlg.SetTitle(CommonString::strInforMsg);
     ConfirmationMessageDlg.SetText(m_strShutdownConfirm);
     ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
-    ConfirmationMessageDlg.SetButtonText(1, CommonString::strCancel);//right
-    ConfirmationMessageDlg.SetButtonText(3, CommonString::strYes);//left
+    ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);//right
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);//left
     ConfirmationMessageDlg.HideCenterButton();
     ConfirmationMessageDlg.exec();
 

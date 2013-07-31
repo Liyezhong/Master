@@ -579,8 +579,8 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
             mp_MessageDlg->SetTitle(m_strWarning);
             mp_MessageDlg->SetText(m_strStartExpiredReagent);
-            mp_MessageDlg->SetButtonText(3, m_strYes);
-            mp_MessageDlg->SetButtonText(1, m_strNo);
+            mp_MessageDlg->SetButtonText(3, m_strNo);
+            mp_MessageDlg->SetButtonText(1, m_strYes);
             mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
 
             if (!mp_MessageDlg->exec())
