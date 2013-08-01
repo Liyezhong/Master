@@ -312,11 +312,17 @@ void CModifyReagentRMSDlg::OnOk()
         return;
      }
 
-     if (mp_Ui->buttonReagentName->text().length() > 20) {
-        m_MessageDlg.SetText(m_strReagentNameLengthLimit);
-        m_MessageDlg.SetButtonText(1, CommonString::strOK);
-        (void) m_MessageDlg.exec();
-        return;
+     //Check whether or not there is a reagent with the same name to the one just inputed
+     for(qint32 i = 0; i < m_ReagentCloneList.GetNumberOfReagents(); i++) {
+         DataManager::CReagent *p_Reagent = NULL;
+         p_Reagent = const_cast<DataManager::CReagent*>(m_ReagentCloneList.GetReagent(i));
+         if (0 == p_Reagent->GetReagentName().compare(mp_Ui->buttonReagentName->text(), Qt::CaseInsensitive))
+         {
+            m_MessageDlg.SetText(m_strInputReagentSameName);
+            m_MessageDlg.SetButtonText(1, CommonString::strOK);
+            (void) m_MessageDlg.exec();
+            return;
+         }
      }
 
      if (mp_Ui->buttonValue->text() == "--") {
@@ -425,8 +431,8 @@ void CModifyReagentRMSDlg::OnEditName()
     m_ValidationType = KeyBoard::VALIDATION_1;
     mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetPasswordMode(false);
-    mp_KeyBoardWidget->SetMaxCharLength(32);
-    mp_KeyBoardWidget->SetMinCharLength(2);
+    mp_KeyBoardWidget->SetMaxCharLength(20);
+    mp_KeyBoardWidget->SetMinCharLength(1);
     mp_KeyBoardWidget->show();
 
 }
@@ -516,9 +522,8 @@ void CModifyReagentRMSDlg::RetranslateUI()
     m_strReagentNameHasLaicaString =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                                    "Reagent name should not contain 'leica'.", 0, QApplication::UnicodeUTF8);
 
-    m_strReagentNameLengthLimit =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                                           "The length of reagent name should not be more than 20.", 0, QApplication::UnicodeUTF8);
-
+    m_strInputReagentSameName =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
+                                                         "The same reagent name is in use, please change the reagent name.", 0, QApplication::UnicodeUTF8);
 
     m_strEnterValidData =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                                "Please enter valid data", 0, QApplication::UnicodeUTF8);
