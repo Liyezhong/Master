@@ -5,7 +5,8 @@
 namespace CommonString
 {
     extern QString strOK;
-        extern QString strYes;
+    extern QString strYes;
+    extern QString strNo;
     extern QString strClose;
     extern QString strCancel;
     extern QString strInforMsg;

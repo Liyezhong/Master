@@ -27,10 +27,7 @@ CReagentStatusWidget::CReagentStatusWidget(QWidget *p_Parent):
                                            mp_Ui(new Ui::CReagentStatusWidget),
                                            mp_DataConnector(NULL),
                                            mp_ReagentList(NULL),
-                                           mp_Reagent(NULL),
-                                           m_strSetAsEmpty(tr("Do you want to set as empty?")),
-                                           m_strResetData(tr("Do you want to reset data?")),
-                                           m_strSetAsFull(tr("Do you want to set as full?"))
+                                           mp_Reagent(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Status"));
@@ -111,10 +108,11 @@ void CReagentStatusWidget::OnSetAsEmpty()
         MainMenu::CMessageDlg ConfirmationMessageDlg;
 
         ConfirmationMessageDlg.SetTitle(CommonString::strConfirmMsg);
-        ConfirmationMessageDlg.SetText(m_strSetAsEmpty);
+        QString strTemp = m_strSetAsEmpty.arg(m_CurrentStationName);
+        ConfirmationMessageDlg.SetText(strTemp);
         ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
         ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
-        ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);
+        ConfirmationMessageDlg.SetButtonText(3, CommonString::strNo);
         ConfirmationMessageDlg.HideCenterButton();
         if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
         {
@@ -140,10 +138,10 @@ void CReagentStatusWidget::OnResetData()
     MainMenu::CMessageDlg ConfirmationMessageDlg;
 
     ConfirmationMessageDlg.SetTitle(CommonString::strConfirmMsg);
-    ConfirmationMessageDlg.SetText(m_strResetData);
+    ConfirmationMessageDlg.SetText(m_strResetData.arg(m_CurrentStationName));
     ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
     ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
-    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strNo);
     ConfirmationMessageDlg.HideCenterButton();
     if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
     {
@@ -169,10 +167,10 @@ void CReagentStatusWidget::OnSetAsFull()
     MainMenu::CMessageDlg ConfirmationMessageDlg;
 
     ConfirmationMessageDlg.SetTitle(CommonString::strConfirmMsg);
-    ConfirmationMessageDlg.SetText(m_strSetAsFull);
+    ConfirmationMessageDlg.SetText(m_strSetAsFull.arg(m_CurrentStationName));
     ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
     ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
-    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strOK);
     ConfirmationMessageDlg.HideCenterButton();
     if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
     {
@@ -334,6 +332,7 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
     m_CurrentIndex = Index;
     QString Id = m_ReagentStatusModel.data(Index, (int)Qt::UserRole).toString();
     mp_DashStation = const_cast<DataManager::CDashboardStation*>(mp_DataConnector->DashboardStationList->GetDashboardStation(Id));
+    m_CurrentStationName = mp_DashStation->GetDashboardStationName();
     bool bExpireReagent = false;
     if (mp_DashStation) {
         mp_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(mp_DashStation->GetDashboardReagentID()));
@@ -452,13 +451,13 @@ void CReagentStatusWidget::RetranslateUI()
                                                                  "Status", 0, QApplication::UnicodeUTF8));
 
     m_strSetAsEmpty = QApplication::translate("Reagent::CReagentStatusWidget",
-                                              "Do you want to set as empty?", 0, QApplication::UnicodeUTF8);
+                                              "Do you want to set Station %1 as empty?", 0, QApplication::UnicodeUTF8);
 
     m_strResetData = QApplication::translate("Reagent::CReagentStatusWidget",
-                                             "Do you want to reset data?", 0, QApplication::UnicodeUTF8);
+                                             "Do you want to reset data for Station %1?", 0, QApplication::UnicodeUTF8);
 
     m_strSetAsFull = QApplication::translate("Reagent::CReagentStatusWidget",
-                                             "Do you want to set as full?", 0, QApplication::UnicodeUTF8);
+                                             "Do you want to set Station %1 as full?", 0, QApplication::UnicodeUTF8);
 
 
     (void) m_ReagentStatusModel.setHeaderData(0, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",

@@ -60,7 +60,7 @@ private:
     KeyBoard::CKeyBoard *mp_KeyBoard;
     Global::RMSOptions_t m_RMSOptions, m_RMSCleaningOptions;
     QModelIndex m_CurrentIndex;
-    QString m_strSetAsEmpty, m_strResetData, m_strSetAsFull;
+    QString m_strSetAsEmpty, m_strResetData, m_strSetAsFull, m_CurrentStationName;
 
 protected:
     void showEvent(QShowEvent *);
