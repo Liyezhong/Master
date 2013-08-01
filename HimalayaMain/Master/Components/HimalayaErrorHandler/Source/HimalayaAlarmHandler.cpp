@@ -181,6 +181,9 @@ bool HimalayaAlarmHandler::playTestTone(bool AlarmTypeFlag, quint8 AlarmNumber, 
 
 void HimalayaAlarmHandler::StopPlayAlarm()
 {
+    if (!m_processPlay)
+        return;
+        
     if ( m_processPlay->state() == QProcess::NotRunning)
     {
         qDebug() << "Process completed...";

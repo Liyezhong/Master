@@ -900,8 +900,7 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
 void HimalayaMasterThreadController::ResetOperationHoursHandler(Global::tRefType Ref, const MsgClasses::CmdResetOperationHours &Cmd,
                                 Threads::CommandChannel &AckCommandChannel)
 {
-    Q_UNUSED(Ref);
-    Q_UNUSED(AckCommandChannel);
+    SendAcknowledgeOK(Ref, AckCommandChannel);
     DataManager::ResetOperationHoursType_t resetOperationHoursType = Cmd.ResetOperationHoursType();
     if (resetOperationHoursType == DataManager::RESETOPERATIONHOURS_WHOLEMACHINEOPERATION)
         Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_OPERATIONTIME_OVERDUE, true);
