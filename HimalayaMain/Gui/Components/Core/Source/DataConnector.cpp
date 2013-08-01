@@ -1012,8 +1012,8 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         m_NetworkObject.SendCmdToMaster(Cmd, &CDataConnector::OnAckTwoPhase, this);
 
         //Enable it later
-        //mp_SplashWidget->move(80, 50);
-        //mp_SplashWidget->exec();
+        mp_SplashWidget->move(80, 50);
+        mp_SplashWidget->exec();
     }
     return;
 }
