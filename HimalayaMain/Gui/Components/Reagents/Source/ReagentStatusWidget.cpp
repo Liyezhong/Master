@@ -170,7 +170,7 @@ void CReagentStatusWidget::OnSetAsFull()
     ConfirmationMessageDlg.SetText(m_strSetAsFull.arg(m_CurrentStationName));
     ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
     ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
-    ConfirmationMessageDlg.SetButtonText(3, CommonString::strOK);
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strNo);
     ConfirmationMessageDlg.HideCenterButton();
     if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
     {
