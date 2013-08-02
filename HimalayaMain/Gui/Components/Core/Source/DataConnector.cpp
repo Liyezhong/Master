@@ -990,6 +990,7 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
             DataStream >> *DeviceConfigurationInterface;
             DeviceConfigurationInterface->SetDataVerificationMode(false);
             qDebug()<<"Receive NetCommands::DEVICECONFIGURATION \n";
+            emit DeviceConfigurationUpdated();
             break;
         default:
             Result = false;
