@@ -158,7 +158,6 @@ public slots:
     void SendUserLevel(QDataStream &DataStream);
     void SendChangepassword(QDataStream &DataStream);
     void SendSelectedDayRunLogFile(const QString &FileName);
-    void OnDeviceConfigurationUpdated();
     void OnCurrentTabChanged(int CurrentTabIndex);
     void OnProgramStartReady();
     void SendAppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);
@@ -316,12 +315,7 @@ signals:
      */
     /****************************************************************************/
     void ShowPrioritizeScreenDlg(bool IsBlgChangesDlg);
-    /****************************************************************************/
-    /*!
-     *  \brief
-     */
-    /****************************************************************************/
-    void DeviceConfigurationUpdated();
+
     /****************************************************************************/
     /*!
      *  \brief

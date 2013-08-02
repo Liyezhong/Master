@@ -383,17 +383,7 @@ bool CReagentRMSModel::ContainsReagent(QString ReagentID)
         return false;
     }
 }
-/****************************************************************************/
-/*!
- *  \brief This Slot sets the device mode.
- *
- *  \iparam DeviceMode = Himalaya/Worskstation
- */
-/****************************************************************************/
-void CReagentRMSModel::OnDeviceModeChanged(QString DeviceMode)
-{
-    m_DeviceMode = DeviceMode;
-}
+
 
 /****************************************************************************/
 /*!

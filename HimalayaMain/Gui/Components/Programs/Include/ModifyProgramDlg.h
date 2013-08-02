@@ -78,7 +78,6 @@ private:
     CProgramModel m_ProgramModel;                   //!< Program model object
     MainMenu::CMessageDlg *mp_MessageDlg;             //!< Message Dialog object
     DataManager::CProgramStep m_LastProgramStep;    //!< ProgramStep object
-    QString m_DeviceMode;                           //!< Stores device mode
     DataManager::CDataProgramList m_ProgramListClone;   //!< ProgramList object
     DataManager::CProgram *mp_NewProgram;           //!< Program object
     bool m_ColorReplaced;                           //!< True if program color is replaced
@@ -125,16 +124,6 @@ public:
      */
     /****************************************************************************/
     void CloseDialogModifyStepDlg();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Sets device mode.
-     *
-     *  \iparam DeviceMode - Standalone/Workstation
-     */
-    /****************************************************************************/
-    void SetCurrentDeviceMode(QString DeviceMode){ m_DeviceMode = DeviceMode;}
-
     void Update();
     void UpdateOnESC();
     void NewProgram();    

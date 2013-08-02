@@ -79,7 +79,6 @@ private:
     Programs::ButtonType_t m_ModifyProgramDlgButtonType;//!< Informs which button was clicked in ModifyProgramDialog
     QString m_SelectedStepReagentID;                    //!< Contains Selected ProgramStep reagent id
     bool m_ReagentExists;                               //!< True if Reagent exists in the reagent model
-    QString m_DeviceMode;                               //!< To store device mode( Standalone/WorkstationMode)
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
     DataManager::CUserSettings *mp_UserSettings;        //!< Data object
     CStepModel m_StepModel;                             //!< Model of the program table
@@ -116,15 +115,6 @@ public:
     void NewProgramStep();
     void SelectRow(qint32 Row);
     void ResetButtons(bool Disable);
-
-    /****************************************************************************/
-    /*!
-     *  \brief Sets current device mode.
-     *
-     *  \iparam DeviceMode - Standalone/Workstation
-     */
-    /****************************************************************************/
-    void SetDeviceMode(QString DeviceMode) { m_DeviceMode = DeviceMode; }
 
     /****************************************************************************/
     /*!

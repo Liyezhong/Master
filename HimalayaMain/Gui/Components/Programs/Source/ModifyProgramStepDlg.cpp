@@ -64,7 +64,7 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
                                             mp_ReagentList(NULL), m_RowSelected(-1),
                                             m_RowNotSelected(true), m_NewProgramStep(false),
                                             m_ProcessRunning(false), m_ReagentExists(true),
-                                            m_DeviceMode(""),mp_DataConnector(p_DataConnector),
+                                            mp_DataConnector(p_DataConnector),
                                             m_strConfirmMsg(tr("Information Message")),
                                             m_strOK(tr("OK"))
 

@@ -109,7 +109,6 @@ private slots:
     void OnProcessStateChanged();
     void CloseDialogs();
     void OnCurrentTabChanged(int CurrentIndex);
-    void OnDeviceModeChanged(QString);
     void OnCancelClicked();
 
 protected:

@@ -742,11 +742,11 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
     {
         if (pCmdShutdown->QuitAppShutdownActionType() == DataManager::QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN)
         {
-            return CTRL_CMD_QUITAPP;
+            return CTRL_CMD_SHUTDOWN;
         }
         if (pCmdShutdown->QuitAppShutdownActionType() == DataManager::QUITAPPSHUTDOWNACTIONTYPE_QUITAPP)
         {
-            return CTRL_CMD_SHUTDOWN;
+            return CTRL_CMD_QUITAPP;
         }
     }
 

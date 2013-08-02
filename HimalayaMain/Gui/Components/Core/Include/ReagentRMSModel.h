@@ -130,7 +130,6 @@ public:
 
 public slots:
     void UpdateReagentList();
-    void OnDeviceModeChanged(QString DeviceMode);
 
 private:
     DataManager::CDataReagentList *mp_ReagentList;      //!< Reagent list
@@ -149,7 +148,6 @@ private:
     QMap<QString, QString> m_ReagentNameMap;            //!< Sorts Reagent Longnames
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     QPixmap m_PixmapTickOk;                             //!< Pixmap for TickOk png
-    QString m_DeviceMode;                               //!< Device mode
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
     bool m_CleaningReagent;
 };

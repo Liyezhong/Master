@@ -143,7 +143,6 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
 
     CONNECTSIGNALSLOT(mp_MainWindow, onChangeEvent(), this, RetranslateUI());
 
-    CONNECTSIGNALSLOT(this, DeviceConfigurationUpdated(), this, OnDeviceConfigurationUpdated());
     CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), this, OnCurrentTabChanged(int));
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
@@ -991,7 +990,6 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
             DataStream >> *DeviceConfigurationInterface;
             DeviceConfigurationInterface->SetDataVerificationMode(false);
             qDebug()<<"Receive NetCommands::DEVICECONFIGURATION \n";
-            emit DeviceConfigurationUpdated();
             break;
         default:
             Result = false;
@@ -1120,21 +1118,7 @@ void CDataConnector::RetranslateUI()
 
 }
 
-/****************************************************************************/
-/*!
- *  \brief This slot is called when  DeviceConfigurationUpdated signal is emitted.
- */
-/****************************************************************************/
-void CDataConnector::OnDeviceConfigurationUpdated()
-{
-    bool WorkStationMode = DeviceConfigurationInterface->GetDeviceConfiguration()->GetBoolValue("WorkstationMode");
-    if (WorkStationMode) {
-        emit UpdateMode("Workstation");
-    }
-    else {
-        emit UpdateMode("Himalaya");
-    }
-}
+
 /****************************************************************************/
 /*!
  *  \brief This slot is called when  ---- is emitted.
