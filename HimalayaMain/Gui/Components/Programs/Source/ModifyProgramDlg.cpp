@@ -210,7 +210,7 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
     {
         mp_Ui->btnPrgIcon->setIcon(QIcon(""));
     }
-    else if(m_Program.IsLeicaProgram() || m_Program.GetID().at(0) == 'C') {
+    else if((m_ButtonType != COPY_BTN_CLICKED) && (m_Program.IsLeicaProgram() || m_Program.GetID().at(0) == 'C')) {
         mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png"));
         mp_Ui->btnEdit->setEnabled(false);
         mp_Ui->btnCopy->setEnabled(false);
@@ -232,6 +232,18 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
         m_RowIndex = m_Program.GetNumberOfSteps();
     }
     else if (m_ButtonType == COPY_BTN_CLICKED) {
+        if (m_Program.IsLeicaProgram())
+        {
+            int index = LongName.indexOf("leica", 0, Qt::CaseInsensitive);
+            if (-1 != index)
+            {
+                LongName.remove(index, 5);
+            }
+            m_Program.SetLeicaProgram(false);
+            mp_Ui->btnPrgIcon->setIcon(QIcon(""));
+            m_Program.SetIcon("");
+        }
+
         switch (LongName.length()) {
         case 20:
             LongName.replace(17, 3, "_cp");

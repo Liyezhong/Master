@@ -147,10 +147,6 @@ void CInstallationSettingsWidget::RetranslateUI()
                                      "Settings::CInstallationSettingsWidget",
                                      "Driver Version : ",
                                      0, QApplication::UnicodeUTF8));
-   mp_Ui->versionofprogram->setText(QApplication::translate(
-                                        "Settings::CInstallationSettingsWidget",
-                                        "Version of write-Protected Program :",
-                                        0, QApplication::UnicodeUTF8));
 }
 
 /****************************************************************************/
