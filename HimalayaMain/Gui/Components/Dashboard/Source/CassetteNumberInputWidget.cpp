@@ -9,7 +9,6 @@ CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *parent) :
     MainMenu::CDialogFrame(parent),
     ui(new Ui::CCassetteNumberInputWidget),
     m_CassetteNumber(0),
-    m_strMsg(tr("The cassette number should be 1 to 200.")),
     m_strWarning(tr("Warning")),
     m_strOK(tr("OK"))
 
@@ -90,7 +89,7 @@ int CCassetteNumberInputWidget::CassetteNumber()
 
 void CCassetteNumberInputWidget::RetranslateUI()
 {
-    m_strMsg = QApplication::translate("CCassetteNumberInputWidget", "The cassette number should be 1 to 200.", 0, QApplication::UnicodeUTF8);
+    m_strMsg = QApplication::translate("CCassetteNumberInputWidget", "The entered cassette number should be between 1 and 200.", 0, QApplication::UnicodeUTF8);
     m_strWarning = QApplication::translate("CCassetteNumberInputWidget", "Warning", 0, QApplication::UnicodeUTF8);
     m_strOK = QApplication::translate("CCassetteNumberInputWidget", "OK", 0, QApplication::UnicodeUTF8);
 

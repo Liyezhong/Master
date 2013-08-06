@@ -31,7 +31,6 @@ CReagentStationWidget::CReagentStationWidget(QWidget *p_Parent):
                                            m_strSelectReagent(tr("Select Reagent"))
 {
     mp_Ui->setupUi(GetContentFrame());
-    SetPanelTitle(tr("Station"));
 
     m_ShowMessageDialog = false;
     m_ProcessRunning = false;
@@ -212,7 +211,7 @@ void CReagentStationWidget::OnProcessStateChanged()
 void CReagentStationWidget::RetranslateUI()
 {
     MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Reagent Station::CReagentStatusWidget",
-                                                                 "Station", 0, QApplication::UnicodeUTF8));
+                                                                 "Stations", 0, QApplication::UnicodeUTF8));
     (void) m_ReagentStationModel.setHeaderData(0, Qt::Horizontal,QApplication::translate("Core::CReagentStationModel",
                                                                                  "Station", 0, QApplication::UnicodeUTF8),0);
 

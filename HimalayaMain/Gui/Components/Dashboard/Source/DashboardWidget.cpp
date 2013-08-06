@@ -55,15 +55,11 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    m_strCleanNotRun(tr("Found the cleaning program did not run in last time.")),
                                    m_strOK(tr("OK")),
                                    m_strNo(tr("No")),
-                                   m_strNotStartRMSOFF(tr("Can not start Leica Program With RMS OFF, please trun on RMS.")),
-                                   m_strNotStartExpiredReagent(tr("Some expired reagents are used in this selected program, you can not start this program.")),
-                                   m_strStartExpiredReagent(tr("Do you want to Start the Program with Expired Reagents?")),
                                    m_strConfirmation(tr("Confirmation Message")),
                                    m_strProgramComplete(tr("Program \"%1\" is complete! Would you like to drain the retort?")),
                                    m_strTakeOutSpecimen(tr("Please take out your specimen!")),
                                    m_strNeedMeltParaffin(tr("Still it will cost some time to melt paraffin, the current selected program can not run now.")),
                                    m_strResetEndTime(tr("Please re-set the End Date&Time of the current selected program.")),
-                                   m_strInputCassetteBoxTitle(tr("Please set numbers of cassettes:")),
                                    m_strNotFoundStation(tr("Program step \"%1\" of \"%2\" can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.")),
                                    m_strCheckEmptyStation(tr("The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed."))
 {
@@ -188,8 +184,8 @@ void CDashboardWidget::RetranslateUI()
     m_strProgram = QApplication::translate("Dashboard::CDashboardWidget", "Program", 0, QApplication::UnicodeUTF8);
     m_strInformation = QApplication::translate("Dashboard::CDashboardWidget", "Information", 0, QApplication::UnicodeUTF8);
     m_strCleanNotRun = QApplication::translate("Dashboard::CDashboardWidget", "Found the cleaning program did not run in last time.", 0, QApplication::UnicodeUTF8);
-    m_strNotStartRMSOFF = QApplication::translate("Dashboard::CDashboardWidget", "Can not start Leica Program With RMS OFF, please trun on RMS.", 0, QApplication::UnicodeUTF8);
-    m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CDashboardWidget", "Some expired reagents are used in this selected program, you can not start this program.", 0, QApplication::UnicodeUTF8);
+    m_strNotStartRMSOFF = QApplication::translate("Dashboard::CDashboardWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);
+    m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CDashboardWidget", "Reagents needed for this program are expired! You can't operate this program.", 0, QApplication::UnicodeUTF8);
     m_strStartExpiredReagent =  QApplication::translate("Dashboard::CDashboardWidget", "Do you want to Start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
     m_strConfirmation = QApplication::translate("Dashboard::CDashboardWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
     m_strAbortProgram = QApplication::translate("Dashboard::CDashboardWidget", "Do you want to abort the program?", 0, QApplication::UnicodeUTF8);
@@ -199,7 +195,7 @@ void CDashboardWidget::RetranslateUI()
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
     m_strNeedMeltParaffin  = QApplication::translate("Dashboard::CDashboardWidget", "Still it will cost some time to melt paraffin, the current selected program can not run now.", 0, QApplication::UnicodeUTF8);
     m_strResetEndTime = QApplication::translate("Dashboard::CDashboardWidget", "Please re-set the End Date&Time of the current selected program.", 0, QApplication::UnicodeUTF8);
-    m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please set numbers of cassettes:", 0, QApplication::UnicodeUTF8);
+    m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter cassette number:", 0, QApplication::UnicodeUTF8);
     m_strNotFoundStation = QApplication::translate("Dashboard::CDashboardWidget", "Program step \"%1\" of \"%2\" can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.", 0, QApplication::UnicodeUTF8);
     m_strCheckEmptyStation = QApplication::translate("Dashboard::CDashboardWidget", "The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed.", 0, QApplication::UnicodeUTF8);
 

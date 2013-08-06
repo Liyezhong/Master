@@ -235,7 +235,7 @@ QVariant CProgramModel::headerData(int Section, Qt::Orientation Orientation, int
         case 0:
             return tr("Number");
         case 1:
-            return tr("Use");
+            return tr("Apply");
         case 2:
             return tr("Name");
         case 3:

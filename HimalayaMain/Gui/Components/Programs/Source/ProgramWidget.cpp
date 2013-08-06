@@ -536,7 +536,7 @@ void CProgramWidget::RetranslateUI()
     (void) m_ProgramModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
     "Number", 0, QApplication::UnicodeUTF8),0);
     (void) m_ProgramModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
-    "Use", 0, QApplication::UnicodeUTF8),0);
+    "Apply", 0, QApplication::UnicodeUTF8),0);
     (void) m_ProgramModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",
     "Name", 0, QApplication::UnicodeUTF8),0);
     (void) m_ProgramModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Programs::CProgramModel",

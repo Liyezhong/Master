@@ -185,6 +185,7 @@ void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
         //mp_TableWidget->selectRow(0);
     }
     m_RMSOption = Option;
+    mp_TableWidget->setEnabled(true);
     if (p_Reagent != NULL) {
         m_Reagent = *p_Reagent;
         // Check if Edit button was clicked in ReagentWidget
@@ -313,19 +314,22 @@ void CModifyReagentRMSDlg::OnOk()
      }
 
      //Check whether or not there is a reagent with the same name to the one just inputed
-     for(qint32 i = 0; i < m_ReagentCloneList.GetNumberOfReagents(); i++) {
-         DataManager::CReagent *p_Reagent = NULL;
-         p_Reagent = const_cast<DataManager::CReagent*>(m_ReagentCloneList.GetReagent(i));
-         if (0 == p_Reagent->GetReagentName().compare(mp_Ui->buttonReagentName->text(), Qt::CaseInsensitive))
-         {
-            m_MessageDlg.SetText(m_strInputReagentSameName);
-            m_MessageDlg.SetButtonText(1, CommonString::strOK);
-            (void) m_MessageDlg.exec();
-            return;
+     if (Reagents::EDIT_BTN_CLICKED != m_ButtonType)//check same name for copy and new
+     {
+         for(qint32 i = 0; i < m_ReagentCloneList.GetNumberOfReagents(); i++) {
+             DataManager::CReagent *p_Reagent = NULL;
+             p_Reagent = const_cast<DataManager::CReagent*>(m_ReagentCloneList.GetReagent(i));
+             if (0 == p_Reagent->GetReagentName().compare(mp_Ui->buttonReagentName->text(), Qt::CaseInsensitive))
+             {
+                m_MessageDlg.SetText(m_strInputReagentSameName);
+                m_MessageDlg.SetButtonText(1, CommonString::strOK);
+                (void) m_MessageDlg.exec();
+                return;
+             }
          }
      }
 
-     if (mp_Ui->buttonValue->text() == "--") {
+     if ((m_RMSOption != Global::RMS_OFF) && (mp_Ui->buttonValue->text() == "--")) {
         m_MessageDlg.SetText(m_strEnterValidData);
         m_MessageDlg.SetButtonText(1, CommonString::strOK);
         (void) m_MessageDlg.exec();

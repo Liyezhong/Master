@@ -157,7 +157,7 @@ QVariant CLanguageModel::headerData(int Section, Qt::Orientation Orientation, in
 {
     Q_UNUSED(Section)
     if (Role == (int)Qt::DisplayRole && Orientation == Qt::Horizontal) {        
-        return tr("  Language");
+        return tr("Language");
     }
     return QVariant();
 }

@@ -34,7 +34,6 @@ CFileViewWidget::CFileViewWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Pa
 {
     mp_FileView = new MainMenu::CFileView(this);
     SetContent(mp_FileView->layout());
-    SetPanelTitle(tr("EventView"));
     // connect the slots
     CONNECTSIGNALSLOT(this, DayRunLogFileContent(const QDataStream &),
                       mp_FileView, DayRunLogFileContent(const QDataStream &));
@@ -87,7 +86,7 @@ void CFileViewWidget::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CFileViewWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CFileViewWidget", "EventView", 0, QApplication::UnicodeUTF8));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CFileViewWidget", "Event View", 0, QApplication::UnicodeUTF8));
 }
 
 /****************************************************************************/

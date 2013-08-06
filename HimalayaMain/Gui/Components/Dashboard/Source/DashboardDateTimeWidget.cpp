@@ -39,8 +39,7 @@ const int ONE_WEEK_TIME_OFFSET_VALUE = (7 * 24 * 60 * 60);
  */
 /****************************************************************************/
 CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
-    mp_Ui(new Ui::CDashboardDateTimeWidget),
-    m_strEndTimeForProgram(tr("End Time for Program"))
+    mp_Ui(new Ui::CDashboardDateTimeWidget)
 {
 
     mp_Ui->setupUi(GetContentFrame());
@@ -257,7 +256,7 @@ void CDashboardDateTimeWidget::RetranslateUI()
     mp_MessageDlg->SetTitle(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Warning", 0, QApplication::UnicodeUTF8));
     mp_MessageDlg->SetText(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date Time cannot be later than one week or earlier than the ASAP End Date Time.", 0, QApplication::UnicodeUTF8));
     mp_MessageDlg->SetButtonText(1, QApplication::translate("Dashboard::CDashboardDateTimeWidget", "OK", 0, QApplication::UnicodeUTF8));
-    m_strEndTimeForProgram = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "End Time for Program", 0, QApplication::UnicodeUTF8);
+    m_strEndTimeForProgram = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "End Time of program", 0, QApplication::UnicodeUTF8);
 }
 
 

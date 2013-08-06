@@ -101,7 +101,7 @@
          <item>
           <widget class="QGroupBox" name="groupBox">
            <property name="title">
-            <string>Cycle Type(Pressure/Vaccum)</string>
+            <string>Pressure/Vacuum type</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_3">
             <item row="0" column="0">

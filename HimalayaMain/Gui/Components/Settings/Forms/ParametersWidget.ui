@@ -89,7 +89,7 @@
    </property>
    <item>
     <property name="text">
-     <string>Language</string>
+     <string>Languages</string>
     </property>
     <property name="icon">
      <iconset>

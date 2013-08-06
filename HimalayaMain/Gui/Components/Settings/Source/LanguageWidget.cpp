@@ -37,7 +37,6 @@ CLanguageWidget::CLanguageWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Pa
     mp_Ui(new Ui::CLanguageWidget), mp_UserSettings(NULL), mp_MainWindow(NULL), m_ProcessRunning(false), mp_DataConnector(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
-    SetPanelTitle(tr("Language"));
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_UserSettings = new DataManager::CHimalayaUserSettings();
     m_LanguageModel.SetVisibleRowCount(8);
@@ -204,8 +203,8 @@ void CLanguageWidget::ResetButtons()
 /****************************************************************************/
 void CLanguageWidget::RetranslateUI()
 {
-    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CLanguageWidget", "Language", 0, QApplication::UnicodeUTF8));
-    (void) m_LanguageModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Settings::CLanguageModel", "  Language", 0, QApplication::UnicodeUTF8),0);
+    MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CLanguageWidget", "Languages", 0, QApplication::UnicodeUTF8));
+    (void) m_LanguageModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Settings::CLanguageModel", "Language", 0, QApplication::UnicodeUTF8),0);
 }
 
 /****************************************************************************/

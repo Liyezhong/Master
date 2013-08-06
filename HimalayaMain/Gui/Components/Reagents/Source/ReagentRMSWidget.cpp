@@ -262,7 +262,13 @@ void CReagentRMSWidget::OnEdit()
                             "\nPlease close the dialog with \"Close\""));*/
     mp_ModifiyReagentRMSDlg->SetDialogTitle(m_strEditReagent);
     mp_ModifiyReagentRMSDlg->SetButtonType(EDIT_BTN_CLICKED);
-    mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList, Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION);
+
+    Global::RMSOptions_t rmsOption = Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION;
+    if (mp_DataConnector->ReagentGroupList->GetReagentGroup(mp_Reagent->GetGroupID())->IsCleaningReagentGroup())
+    {
+        rmsOption = RMSCLEANINGOPTIONS;
+    }
+    mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList, rmsOption);
     mp_ModifiyReagentRMSDlg->show();
 }
 
