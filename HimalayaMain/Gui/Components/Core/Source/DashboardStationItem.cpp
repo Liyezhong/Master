@@ -663,7 +663,9 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
             path.addRect((-75 + fillRetortWidth), (fillRetortHeight - 6), m_RetortBoundingRectHeight - 36, 3);
         }
 
-        path.addRoundedRect(QRect(-75, 3, fillRetortWidth, fillRetortHeight - 5), 8, 8);
+        if (fillRetortWidth > 0)
+            path.addRoundedRect(QRect(-75, 3, fillRetortWidth, fillRetortHeight - 5), 8, 8);
+
         int cornerHeight = 4;
         if (fillRetortWidth > cornerHeight)
         {
