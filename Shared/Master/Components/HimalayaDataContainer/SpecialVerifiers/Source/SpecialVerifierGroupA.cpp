@@ -197,13 +197,14 @@ bool CSpecialVerifierGroupA::CheckData()
                         bool ok = false;
                         temperature = Current_ProgramStep.GetTemperature().toInt(&ok);
                         if(ok){
-                                if(temperature < m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMinTemprature() ||
-                                        temperature > m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMaxTemprature()){
-                                    if(! m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->IsParraffin() && temperature == -1)
-                                    {
-                                        Result = true;
-                                    }
-                                    else{// error
+                                if(temperature != -1 &&
+                                   (temperature < m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMinTemprature() ||
+                                   temperature > m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMaxTemprature())){
+//                                    if(! m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->IsParraffin() && temperature == -1)
+//                                    {
+//                                        Result = true;
+//                                    }
+//                                    else{// error
                                         m_ErrorsHash.insert(EVENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT,
                                                             Global::tTranslatableStringList() << QString::number(X + 1)
                                                             << p_Program->GetName()
@@ -216,7 +217,7 @@ bool CSpecialVerifierGroupA::CheckData()
                                                                                    << QString::number(m_pDataReagentGroupList->GetReagentGroup(Current_ReagentGroupID)->GetMaxTemprature()),
                                                                                    Global::GUI_MSG_BOX);
                                         Result = false;
-                                    }
+//                                    }
                                 }
                         }
                         //check reagent group Compatible
