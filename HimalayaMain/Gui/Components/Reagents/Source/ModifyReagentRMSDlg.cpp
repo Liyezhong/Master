@@ -329,7 +329,7 @@ void CModifyReagentRMSDlg::OnOk()
          }
      }
 
-     if ((m_RMSOption != Global::RMS_OFF) && (mp_Ui->buttonValue->text() == "--")) {
+     if ((m_RMSOption != Global::RMS_OFF) && (mp_Ui->buttonValue->text().toInt() == 0)) {
         m_MessageDlg.SetText(m_strEnterValidData);
         m_MessageDlg.SetButtonText(1, CommonString::strOK);
         (void) m_MessageDlg.exec();

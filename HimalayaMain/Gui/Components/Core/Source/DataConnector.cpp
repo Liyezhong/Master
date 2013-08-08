@@ -47,6 +47,7 @@
 #include <Dashboard/Include/CommonString.h>
 #include <Global/Include/SystemPaths.h>
 #include <QProcess>
+#include <QDesktopWidget>
 
 namespace Core {
 
@@ -58,7 +59,7 @@ namespace Core {
  */
 /****************************************************************************/
 CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::CDataContainer(),
-    mp_MainWindow(p_Parent), mp_RmsMessageDlg(NULL), mp_LanguageFile(NULL), mp_OldFile(NULL),
+    mp_MainWindow(p_Parent), mp_LanguageFile(NULL), mp_OldFile(NULL),
     m_LanguageChangeCount(0), m_ConsumableType(KIT), m_BottleCount(0), m_GuiInit(true),
     m_strCommunicationError(tr("Communication Error")),
     m_strChangeNotSave(tr("The changes could not be saved.")),
@@ -424,22 +425,6 @@ void CDataConnector::SendReagentGroupUpdate(DataManager::CReagentGroup &ReagentG
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
-}
-
-/****************************************************************************/
-/*!
- *  \brief Auto hide message box
- */
-/****************************************************************************/
-void CDataConnector::OnCancelMessageBoxDisplay()
-{    
-    if (mp_RmsMessageDlg) {
-        if (mp_RmsMessageDlg->isVisible() ) {
-            mp_RmsMessageDlg->accept();
-            delete mp_RmsMessageDlg;
-            mp_RmsMessageDlg = NULL;
-        }
-    }
 }
 
 /****************************************************************************/
@@ -1009,9 +994,8 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         m_GuiInit = false;
         NetCommands::CmdGuiInit Cmd(2000, true);
         m_NetworkObject.SendCmdToMaster(Cmd, &CDataConnector::OnAckTwoPhase, this);
-
-        //Enable it later
-        mp_SplashWidget->move(80, 50);
+        QRect scr = mp_MainWindow->rect();
+        mp_SplashWidget->move( scr.center() - mp_SplashWidget->rect().center());
         mp_SplashWidget->exec();
     }
     return;

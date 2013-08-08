@@ -875,8 +875,9 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
             {
                 CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
                 pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
-                pCassetteInput->move(80,50);
                 pCassetteInput->SetDialogTitle(m_strInputCassetteBoxTitle);
+                QRect scr = mp_MainWindow->geometry();
+                pCassetteInput->move( scr.center() - pCassetteInput->rect().center());
                 pCassetteInput->exec();
 
                 int cassetteNumber = pCassetteInput->CassetteNumber();

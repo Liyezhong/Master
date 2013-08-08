@@ -387,14 +387,12 @@ private:
     void AdminPasswordChangeHandler(Global::tRefType Ref, const NetCommands::CmdChangeAdminPasswordReply &Command);
     void DayRunLogReplyFileHandler(Global::tRefType Ref, const NetCommands::CmdDayRunLogReplyFile &Command);
     void DayRunLogReplyHandler(Global::tRefType Ref, const NetCommands::CmdDayRunLogReply &Command);
-    void OnCancelMessageBoxDisplay();
     void OnCmdGuiInit(Global::tRefType Ref, const NetCommands::CmdGuiInit &Command);
     void ShowMessageDialog(Global::GUIMessageType MessageType, QString MessageText);
 
     NetLayer::CMasterLinkDevice m_NetworkObject;    //!< The network layer
     MainMenu::CMainWindow *mp_MainWindow;           //!< Main window of the GUI
     MainMenu::CMessageDlg *mp_MessageDlg;           //!< Error message box
-    MainMenu::CMessageDlg *mp_RmsMessageDlg;        //!< Error message box
     MainMenu::CWaitDialog *mp_WaitDialog;           //!< Displayed when busy
     MainMenu::CWaitDialog *mp_BlgScanWaitDialog;    //!< Displayed when busy
     SplashWidget          *mp_SplashWidget;
