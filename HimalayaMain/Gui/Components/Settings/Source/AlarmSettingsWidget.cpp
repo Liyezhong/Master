@@ -35,11 +35,7 @@ namespace Settings {
 CAlarmSettingsWidget::CAlarmSettingsWidget(QWidget *p_Parent) :
     MainMenu::CPanelFrame(p_Parent),
     mp_Ui(new Ui::CAlarmSettingsWidget),
-    mp_DataConnector(NULL),
-    m_TextSound(tr("Sound: %1")),
-    m_TextVolume(tr("Volume: %1")),
-    m_TextPeriodicOff(tr("Periodic: OFF")),
-    m_TextPeriodicTime(tr("Periodic time (MM:ss): %1:%2"))
+    mp_DataConnector(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Alarm"));
@@ -140,8 +136,7 @@ void CAlarmSettingsWidget::UpdateLabels()
     {
         int PeriodicTime = m_UserSettings.GetSoundPeriodicTimeInformation();
         QString Minutes = QString("%1").arg(PeriodicTime/60, 2, 10, QChar('0'));
-        QString Seconds = QString("%1").arg(PeriodicTime%60, 2, 10, QChar('0'));
-        TextPeriodic = m_TextPeriodicTime.arg(Minutes, Seconds);
+        TextPeriodic = m_TextPeriodicTime.arg(Minutes);
     }
     else
     {
@@ -159,8 +154,7 @@ void CAlarmSettingsWidget::UpdateLabels()
     {
         int PeriodicTime = m_UserSettings.GetSoundPeriodicTimeWarning();
         QString Minutes = QString("%1").arg(PeriodicTime/60, 2, 10, QChar('0'));
-        QString Seconds = QString("%1").arg(PeriodicTime%60, 2, 10, QChar('0'));
-        TextPeriodic = m_TextPeriodicTime.arg(Minutes, Seconds);
+        TextPeriodic = m_TextPeriodicTime.arg(Minutes);
     }
     else
     {
@@ -175,12 +169,10 @@ void CAlarmSettingsWidget::UpdateLabels()
     TextVolume = m_TextVolume.arg(m_UserSettings.GetSoundLevelError());
     int PeriodicTime = m_UserSettings.GetSoundPeriodicTimeError();
     QString Minutes = QString("%1").arg(PeriodicTime/60, 2, 10, QChar('0'));
-    QString Seconds = QString("%1").arg(PeriodicTime%60, 2, 10, QChar('0'));
-    TextPeriodic = m_TextPeriodicTime.arg(Minutes, Seconds);
+    TextPeriodic = m_TextPeriodicTime.arg(Minutes);
 
     mp_Ui->errorSound->setText(TextSound);
     mp_Ui->errorVolume->setText(TextVolume);
-    mp_Ui->errorperiodic->setText(TextPeriodic);
 }
 /****************************************************************************/
 /*!
@@ -300,11 +292,11 @@ void CAlarmSettingsWidget::RetranslateUI()
                                            QApplication::UnicodeUTF8);
     m_TextPeriodicOff =
             QApplication::translate("Settings::CAlarmSettingsWidget",
-                                    "Periodic: OFF", 0,
+                                    "Periodic: Off", 0,
                                     QApplication::UnicodeUTF8);
     m_TextPeriodicTime =
             QApplication::translate("Settings::CAlarmSettingsWidget",
-                                    "Periodic time (MM:ss): %1:%2", 0,
+                                    "Periodic time (Min.): %1", 0,
                                     QApplication::UnicodeUTF8);
 }
 
