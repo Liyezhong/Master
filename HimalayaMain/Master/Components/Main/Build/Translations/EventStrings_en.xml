@@ -68,19 +68,19 @@
 		<string id="17235981" text1="%1&apos; is not a valid temperature format ." text2=""/>
 		<string id="17235980" text1="%1&apos; is not a valid time format." text2=""/>
 		<string id="17956868" text1="Work Station mode data is Invalid." text2=""/>
-		<string id="33816621" text1="Programs NULL pointer error" text2="Internal Software error. Please contact service."/>
+		<string id="33816621" text1="Programs NULL pointer error" text2=""/>
 		<string id="33817862" text1="" text2=""/>
 		<string id="33816626" text1="Internal Software Error. Adding rogram failed. Please contact service." text2=""/>
 		<string id="33816597" text1="Program list contains more than %1 programs. Only %1 programs allowed" text2=""/>
-		<string id="33816624" text1="Delete program failed due to invalid Program ID %1." text2="Invalid/corrupt data. Please contact service."/>
+		<string id="33816624" text1="Delete program failed due to invalid Program ID %1." text2=""/>
 		<string id="33816631" text1="Internal Software Error. Program delete failed. Please contact service." text2=""/>
-		<string id="33816623" text1="Program ID %1 associated with Program %2 is not unique ." text2="Invalid/corrupt data. Please contact service."/>
-		<string id="33816620" text1="Program step(s) in Program %1 contains invalid duration format" text2="Invalid/corrupt data. Please contact service."/>
+		<string id="33816623" text1="Program ID %1 associated with Program %2 is not unique ." text2=""/>
+		<string id="33816620" text1="Program step(s) in Program %1 contains invalid duration format" text2=""/>
 		<string id="33818117" text1="Length of the Program name exceeds limit for the program &apos;%1&apos;. Valid Range &apos;%2&apos; - &apos;%3&apos; characters." text2=""/>
 		<string id="33818113" text1="Program name &apos;%1&apos; already in use. Please choose different Program name." text2=""/>
-		<string id="33816596" text1="Invalid Index in program hash table." text2="Invalid/corrupt data.Please contact service"/>
-		<string id="33816592" text1="Verifying Programs.xml failed." text2="Invalid/corrupt data.Please contact service"/>
-		<string id="33816584" text1="Reading Programs.xml failed." text2="Internal Software Error. Please contact service"/>
+		<string id="33816596" text1="Invalid Index in program hash table." text2=""/>
+		<string id="33816592" text1="Verifying Programs.xml failed." text2=""/>
+		<string id="33816584" text1="Reading Programs.xml failed." text2=""/>
 		<string id="33817346" text1="Program Sequence ID &apos;%1&apos; does not exists in the list." text2=""/>
 		<string id="33817345" text1="Program Sequence ID &apos;%1&apos; already in use. Please choose different ID." text2=""/>
 		<string id="33817347" text1="Program Sequence &apos;%1&apos; operation failed" text2=""/>
@@ -88,11 +88,11 @@
 		<string id="33818116" text1="Program &apos;%1&apos; must have &apos;%2&apos; step(s) at least." text2=""/>
 		<string id="33818118" text1="Duration in Step &apos;%1&apos; of Program &apos;%2&apos; exceeds limits, validated range : &apos;%3&apos; - &apos;%4&apos;." text2=""/>
 		<string id="33818119" text1="Temperature in Step &apos;%1&apos; of Program &apos;%2&apos; exceeds limits, validated range : &apos;%3&apos; - &apos;%4&apos; (Celsius)." text2=""/>
-		<string id="33816606" text1="Program Verifier found invalid Reagent ID %2 in the program %1." text2="Data verification failed because invalid/corrupt data. Please contact service."/>
+		<string id="33816606" text1="Program Verifier found invalid Reagent ID %2 in the program %1." text2=""/>
 		<string id="33816837" text1="Too many reagents (max 100 allowed):" text2=""/>
 		<string id="33816836" text1="Reagent ID &apos;%1&apos; does not exists in the list" text2=""/>
 		<string id="33816835" text1="Reagent ID &apos;%1&apos; already in use. Please choose different Reagent ID" text2=""/>
-		<string id="33816838" text1="Reagent &apos;%1&apos; Reagent ID doesn&apos;t start with S or L or U" text2="Data verification failed due to invalid/corrupt data. Please contact service."/>
+		<string id="33816838" text1="Reagent &apos;%1&apos; Reagent ID doesn&apos;t start with S or L or U" text2=""/>
 		<string id="33816846" text1="ReagentList reading failed &apos;%1&apos; reagents" text2=""/>
 		<string id="33816845" text1="ReagentList writing failed &apos;%1&apos; reagents" text2=""/>
 		<string id="33816841" text1="Reagent &apos;%1&apos; The value for Slides max must be equal or less than 3000." text2=""/>
@@ -100,15 +100,15 @@
 		<string id="33816833" text1="Reagent name &apos;%1&apos; already in use. Please choose different reagent name" text2=""/>
 		<string id="33816848" text1="Reagent name must be unique." text2=""/>
 		<string id="33816847" text1="Reagent : &apos;%1&apos; operation failed" text2=""/>
-		<string id="33816591" text1="Verifying Reagents.xml failed." text2="Invalid/corrupt data.Please contact service"/>
-		<string id="33816585" text1="Reading Reagents.xml failed." text2="Internal Software Error. Please contact service"/>
+		<string id="33816591" text1="Verifying Reagents.xml failed." text2=""/>
+		<string id="33816585" text1="Reading Reagents.xml failed." text2=""/>
 		<string id="33817864" text1="" text2=""/>
 		<string id="33817863" text1="" text2=""/>
 		<string id="17760274" text1="Generic failure message" text2=""/>
 		<string id="17235985" text1="UserSettings Verification Failed" text2=""/>
 		<string id="17235983" text1="UserSettings XML File Read failed" text2=""/>
-		<string id="33816587" text1="Reading Stations.xml failed." text2="Internal Software Error. Please contact service"/>
-		<string id="33816590" text1="Verifying Station.xml failed." text2="Invalid/corrupt data.Please contact service"/>
+		<string id="33816587" text1="Reading Stations.xml failed." text2=""/>
+		<string id="33816590" text1="Verifying Station.xml failed." text2=""/>
 		<string id="17235990" text1="%1&apos; Stream In Operation failed" text2=""/>
 		<string id="17235991" text1="%1&apos; Stream Out Operation failed" text2=""/>
 		<string id="33818115" text1="User Program name can not contain &apos;leica&apos; word." text2=""/>
@@ -224,8 +224,8 @@
 		<string id="17694728" text1="Service login successful and the service id is %1" text2=""/>
 		<string id="17694721" text1="Service authentication failed. No USB device found" text2=""/>
 		<string id="33619973" text1="Unable to change the password. Passwords are not matching." text2=""/>
-		<string id="17825793" text1="To switch off press button again" text2="User didn&apos;t press SoftSwitch within 7 seconds"/>
-		<string id="17825794" text1="To switch off press button again.Warning:staining procedure is still in progress." text2="User didn&apos;t press SoftSwitch within 7 seconds"/>
+		<string id="17825793" text1="To switch off press button again" text2=""/>
+		<string id="17825794" text1="To switch off press button again.Warning:staining procedure is still in progress." text2=""/>
 		<string id="33619978" text1="Coverslipper Device Connected" text2=""/>
 		<string id="33619975" text1="Stainer GUI process has stopped" text2=""/>
 		<string id="17891329" text1="SoftSwitch monitor started" text2=""/>
@@ -390,5 +390,41 @@
 		<string id="50331717" text1="The Active carbon filter is overdue, please replace a new Active carbon filter!" text2=""/>
 		<string id="50331718" text1="Scheduler execute command %1" text2=""/>
 		<string id="50331719" text1="Scheduler execute command %1 result %2" text2=""/>
+		<string id="50331720" text1="SW Update Failed: File/Folder copy failed from %1 to %2" text2=""/>
+		<string id="50331721" text1="SW Update Failed: File/Folder %1 does not exists" text2=""/>
+		<string id="50331722" text1="SW Update Failed: Invalid Command line arguments:%1" text2=""/>
+		<string id="50331723" text1="SW Update Failed: Md5sum check failed:%1" text2=""/>
+		<string id="50331724" text1="SW Update Failed: CRC check failed" text2=""/>
+		<string id="50331725" text1="SW Update Failed: Slave %1 has HW version %2 which is not equal or higher compared to %3" text2=""/>
+		<string id="50331726" text1="SW Update Failed: No USB Device found" text2=""/>
+		<string id="50331727" text1="SW Update Failed: No Update Package found at %1" text2=""/>
+		<string id="50331728" text1="SW Update Failed: File/Folder creation failed for %1" text2=""/>
+		<string id="50331729" text1="SW Update Failed: Slave SW update failed" text2=""/>
+		<string id="50331730" text1="SW Update Failed: File/Folder deletion failed for %1" text2=""/>
+		<string id="50331731" text1="SW Update Failed: Missing slave name %1 in %2" text2=""/>
+		<string id="50331732" text1="SW Update: Copying the File/Folder from %1 to %2" text2=""/>
+		<string id="50331733" text1="SW Update: XML attribute %1 found in %2 but not in %3" text2=""/>
+		<string id="50331734" text1="SW Update: Mounting USB Device %1 to %2 passed" text2=""/>
+		<string id="50331735" text1="SW Update: Unzipping the update package %1 to %2" text2=""/>
+		<string id="50331736" text1="SW Update: CRC check passed" text2=""/>
+		<string id="50331737" text1="SW Update: Md5sum check passed" text2=""/>
+		<string id="50331738" text1="SW Update: Slave %1 has HW version %2 is equal or higher compared to %3" text2=""/>
+		<string id="50331739" text1="SW Update: Creating File/Folder %1" text2=""/>
+		<string id="50331740" text1="SW Update: Extracting package from %1" text2=""/>
+		<string id="50331741" text1="SW Update: Executing the script %1" text2=""/>
+		<string id="50331742" text1="SW Update: Rolling back the files in %1 from %2" text2=""/>
+		<string id="50331743" text1="SW Update: Parsing the XML file %1" text2=""/>
+		<string id="50331744" text1="SW Update Success" text2=""/>
+		<string id="50331745" text1="SW Update: Mounting USB Device %1 to %2 failed" text2=""/>
+		<string id="50331746" text1="SW Update: %1 file not found. Updating all SW binaries and firmwares" text2=""/>
+		<string id="50331747" text1="SW Update: %1 file corrupted. Updating all SW binaries and firmwares" text2=""/>
+		<string id="50331748" text1="SW Update: Failed %1 file corrupted." text2=""/>
+		<string id="50331749" text1="SW Update: Execution of the starter succeeded" text2=""/>
+		<string id="50331750" text1="SW Update: PTS execution is success" text2=""/>
+		<string id="50331751" text1="SW Update: PTS execution is failed" text2=""/>
+		<string id="50331752" text1="SW Update: Unmounted USB to %1" text2=""/>
+		<string id="50331753" text1="SW Update: %1 file not found" text2=""/>
+		<string id="50331754" text1="SW Update: %1 file updated" text2=""/>
+		<string id="50331755" text1="SW Update: %1 file missing entry of &apos;Software_Update_Status&apos;" text2=""/>
 	</language>
 </strings>
