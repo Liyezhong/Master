@@ -37,10 +37,12 @@ namespace Dashboard {
 
 class CDashboardProgramStatusWidget;
 class CCassetteNumberInputWidget;
+class CDashboardDateTimeWidget;
 
 namespace Ui {
     class CDashboardWidget;
 }
+
 
 /****************************************************************************/
 /**
@@ -77,7 +79,6 @@ private:
     QList<QString> m_StationList;
     int m_CurProgramStepIndex;
     bool m_IsDraining;
-    bool m_CheckEndDatetimeAgain;
     bool m_ProcessRunning;                      //!< Process running state
     bool m_ProgramStartReady;
     QString m_strProgram;
@@ -95,6 +96,7 @@ private:
     QString m_strNotFoundStation;
     QString m_strCheckEmptyStation;
     DataManager::CHimalayaUserSettings* m_pUserSetting;
+    Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
 
     void EnablePlayButton(bool bSetEnable);
     void EnableAbortButton(bool bSetEnable);

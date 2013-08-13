@@ -572,7 +572,8 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     mp_GraphicsProxyWidget->setPos(m_DashboardEndTimeWidgetPos);
     addItem(mp_GraphicsProxyWidget);
 
-    CONNECTSIGNALSIGNAL(mp_DashboardEndTimeWidget, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime &));
+    CONNECTSIGNALSLOT(this, OnSelectDateTime(const QDateTime &), mp_DashboardEndTimeWidget, UpdateDateTime(const QDateTime &));
+
     CONNECTSIGNALSLOT(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
                       mp_DashboardEndTimeWidget, OnProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
 

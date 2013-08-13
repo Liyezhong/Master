@@ -26,6 +26,7 @@
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "Dashboard/Include/CommonString.h"
+#include "Dashboard/Include/DashboardDateTimeWidget.h"
 
 namespace Dashboard {
 
@@ -47,7 +48,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                    m_IsResumeRun(false),
                                    m_CurProgramStepIndex(-1),
                                    m_IsDraining(false),
-                                   m_CheckEndDatetimeAgain(false),
                                    m_ProcessRunning(false),
                                    m_ProgramStartReady(false),
                                    m_strProgram(tr("Program")),
@@ -74,9 +74,14 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
      mp_ProgramStatusWidget->setWindowFlags(Qt::CustomizeWindowHint);
      mp_ProgramStatusWidget->setVisible(false);
 
+     mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget();
+
      mp_DashboardScene = new CDashboardScene(mp_DataConnector, this, mp_MainWindow);
      mp_Ui->dashboardView->setScene(mp_DashboardScene);
-     CONNECTSIGNALSLOT(mp_DashboardScene, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime&));
+
+     CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime&));
+     CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), mp_DashboardScene, OnSelectDateTime(const QDateTime &));
+
      CONNECTSIGNALSIGNAL(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
                          mp_DashboardScene, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
 
@@ -150,6 +155,7 @@ CDashboardWidget::~CDashboardWidget()
     try {
         delete mp_Separator;
         delete mp_ProgramStatusWidget;
+        delete mp_wdgtDateTime;
         delete mp_DashboardScene;
         delete mp_MessageDlg;
         delete mp_Ui;
@@ -273,7 +279,7 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
                 if (m_IsResumeRun)
                 {
                     QString strTempProgramId;
-                    if (m_SelectedProgramId.at(0) == 'C')
+                    if (m_SelectedProgramId.at(0) == 'C')//Cleaning program
                     {
                         strTempProgramId = m_SelectedProgramId;
                         strTempProgramId.append("_");
@@ -584,18 +590,51 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
         }
     }
 
-    //check End Datetime again
-    m_NewSelectedProgramId = m_SelectedProgramId;
-    m_CheckEndDatetimeAgain = true;
-    PrepareSelectedProgramChecking();
+    QRect scr = mp_MainWindow->geometry();
+    //input cassette number
+    if (m_SelectedProgramId.at(0) != 'C' && Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
+    {
+        CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
+        pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
+        pCassetteInput->SetDialogTitle(m_strInputCassetteBoxTitle);
+
+        pCassetteInput->move( scr.center() - pCassetteInput->rect().center());
+        pCassetteInput->exec();
+
+        int cassetteNumber = pCassetteInput->CassetteNumber();
+        if (-1 == cassetteNumber)
+            return;//clicked Cancel button
+
+        mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
+        delete pCassetteInput;
+    }
+
+    //set endtime of program
+    mp_wdgtDateTime->UpdateProgramName();
+    mp_wdgtDateTime->SetASAPDateTime(m_EndDateTime);
+    mp_wdgtDateTime->setFixedSize(625,483);
+    scr.translate(mp_MainWindow->rect().center() - mp_wdgtDateTime->rect().center());
+    mp_wdgtDateTime->move(scr.left(), scr.top());
+    if (!mp_wdgtDateTime->exec())
+        return;
+
+    QString strTempProgramId(m_SelectedProgramId);
+    if (m_SelectedProgramId.at(0) == 'C')
+    {
+        strTempProgramId.append("_");
+        QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
+        strTempProgramId.append(strReagentIDOfLastStep);
+    }
+
+    mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
+    mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
+    m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
 }
 
 bool CDashboardWidget::CheckPreConditionsToPauseProgram()
 {
     return true;
-
 }
-
 
 bool CDashboardWidget::CheckPreConditionsToAbortProgram()
 {
@@ -848,60 +887,6 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     bool bCanotRun = true;
     int asapEndTime = GetASAPTime(cmd.TimeProposed(),
                                   cmd.ParaffinMeltCostedTime(), cmd.CostedTimeBeforeParaffin(), bCanotRun);
-
-    if (m_CheckEndDatetimeAgain)
-    {
-        m_CheckEndDatetimeAgain = false;
-        asapEndTime = asapEndTime - 60;//60 seconds: buffer time for "select program" and "Run" operation.
-        QDateTime endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
-        if (endDateTime > m_EndDateTime)
-        {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(m_strWarning);
-            mp_MessageDlg->SetText(m_strResetEndTime);
-            mp_MessageDlg->SetButtonText(1, m_strOK);
-            mp_MessageDlg->HideButtons();
-            if (mp_MessageDlg->exec())
-            {
-                return;
-            }
-            return;
-        }
-
-        if ( mp_DataConnector)
-        {
-            //input cassette number
-            if (m_SelectedProgramId.at(0) != 'C' && Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
-            {
-                CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
-                pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
-                pCassetteInput->SetDialogTitle(m_strInputCassetteBoxTitle);
-                QRect scr = mp_MainWindow->geometry();
-                pCassetteInput->move( scr.center() - pCassetteInput->rect().center());
-                pCassetteInput->exec();
-
-                int cassetteNumber = pCassetteInput->CassetteNumber();
-                if (-1 == cassetteNumber)
-                    return;//clicked Cancel button
-
-                mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
-                delete pCassetteInput;
-            }
-        }
-
-        QString strTempProgramId(m_SelectedProgramId);
-        if (m_SelectedProgramId.at(0) == 'C')
-        {
-            strTempProgramId.append("_");
-            QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
-            strTempProgramId.append(strReagentIDOfLastStep);
-        }
-
-        mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
-        mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
-        m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
-        return;
-    }
 
     //firstly check whether there is any station not existing for some program steps
     const QList<QString>& stationList = cmd.StationList();

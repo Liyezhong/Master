@@ -23,7 +23,7 @@
 
 
 #include "MainMenu/Include/MainWindow.h"
-#include "MainMenu/Include/PanelFrame.h"
+#include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/DateTime.h"
 #include "Application/Include/LeicaStyle.h"
 #include "MainMenu/Include/ScrollWheel.h"
@@ -36,12 +36,13 @@ namespace Ui {
     class CDashboardDateTimeWidget;
 }
 
+
 /****************************************************************************/
 /**
  * \brief Frame for the date and time widget
  */
 /****************************************************************************/
-class CDashboardDateTimeWidget : public MainMenu::CPanelFrame
+class CDashboardDateTimeWidget : public MainMenu::CDialogFrame
 {
     Q_OBJECT
 
@@ -50,7 +51,6 @@ public:
     virtual ~CDashboardDateTimeWidget();
     void RefreshDateTime(Global::TimeFormat TimeFormat = Global::TIME_24);
     void SetASAPDateTime(const QDateTime& DateTime);
-    void show();
     static QString SELECTED_PROGRAM_NAME;
 
 
@@ -73,6 +73,7 @@ private:
 
 protected:
     void changeEvent(QEvent *p_Event);
+    void showEvent(QShowEvent *p_Event);
 
 public slots:
     void OnOK();

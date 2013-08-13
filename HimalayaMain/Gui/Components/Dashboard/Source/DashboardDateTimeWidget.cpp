@@ -38,7 +38,7 @@ const int ONE_WEEK_TIME_OFFSET_VALUE = (7 * 24 * 60 * 60);
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
+CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent) : CDialogFrame(p_Parent),
     mp_Ui(new Ui::CDashboardDateTimeWidget)
 {
 
@@ -51,7 +51,7 @@ CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent) : MainMenu
     mp_HourWheel = new MainMenu::CScrollWheel();
     mp_MinWheel = new MainMenu::CScrollWheel();
 
-    mp_MessageDlg = new MainMenu::CMessageDlg();
+    mp_MessageDlg = new MainMenu::CMessageDlg(this);
 
     // Day
     for (int i = 1; i <= 31; i++) {
@@ -122,19 +122,12 @@ CDashboardDateTimeWidget::~CDashboardDateTimeWidget()
 void CDashboardDateTimeWidget ::UpdateProgramName()
 {
      QString str(m_strEndTimeForProgram + " \"%1\"");
-     SetPanelTitle(str.arg(SELECTED_PROGRAM_NAME));
-     SetTitleCenter();
+     SetDialogTitle(str.arg(SELECTED_PROGRAM_NAME));
 }
 
 void CDashboardDateTimeWidget::SetASAPDateTime(const QDateTime& DateTime)
 {
     m_ASAPDateTime = DateTime;
-}
-
-void CDashboardDateTimeWidget::show()
-{
-    RefreshDateTime();
-    MainMenu::CPanelFrame::show();
 }
 
 /****************************************************************************/
@@ -156,6 +149,12 @@ void CDashboardDateTimeWidget::changeEvent(QEvent *p_Event)
         default:
             break;
     }
+}
+
+void CDashboardDateTimeWidget::showEvent(QShowEvent *p_Event)
+{
+    Q_UNUSED(p_Event);
+    RefreshDateTime();
 }
 
 /****************************************************************************/
@@ -224,14 +223,14 @@ void CDashboardDateTimeWidget::OnOK()
 
     if(m_selDateTime >= m_ASAPDateTime && secsDifference <= ONE_WEEK_TIME_OFFSET_VALUE) {
         emit OnSelectDateTime(m_selDateTime);
-        close();
+        accept();
     } else {
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         mp_MessageDlg->SetTitle(tr("Warning"));
         mp_MessageDlg->SetText(tr("Program End Date Time cannot be later than one week or earlier than the ASAP End Date Time."));
         mp_MessageDlg->SetButtonText(1, tr("OK"));
         mp_MessageDlg->HideButtons();    // Hiding First Two Buttons in the Message Dialog
-        mp_MessageDlg->Show();
+        mp_MessageDlg->exec();
     }
 }
 
@@ -262,7 +261,7 @@ void CDashboardDateTimeWidget::RetranslateUI()
 
 void CDashboardDateTimeWidget::OnCancel()
 {
-    close();
+    reject();
 }
 
 void CDashboardDateTimeWidget::OnSetASAPDateTime()

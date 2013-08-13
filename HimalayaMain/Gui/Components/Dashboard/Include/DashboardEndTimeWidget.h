@@ -23,7 +23,6 @@
 
 
 #include <QWidget>
-#include "Dashboard/Include/DashboardDateTimeWidget.h"
 #include "Core/Include/DataConnector.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
@@ -87,7 +86,6 @@ private:
     QDateTime m_ProgramEndDateTime;
     QTime m_CurStepRemainingTime;
     QTime m_CurRemainingTime;
-    Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
     DataManager::CProgram const *mp_Program;
     QPlastiqueStyle* mp_PlastiqueStyle;
     QTimer* mp_ProgressTimer;

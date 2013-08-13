@@ -60,9 +60,6 @@ CDashboardEndTimeWidget::CDashboardEndTimeWidget(Core::CDataConnector *p_DataCon
     m_progBarPixmap.load(":/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png");
 
     mp_UserSettings = new DataManager::CUserSettings();
-
-    mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget();
-    mp_wdgtDateTime->setWindowFlags(Qt::CustomizeWindowHint);
     mp_PlastiqueStyle = new QPlastiqueStyle();
 
     mp_ProgressTimer = new QTimer(this);
@@ -81,7 +78,6 @@ CDashboardEndTimeWidget::~CDashboardEndTimeWidget()
 {
     try {
         delete mp_UserSettings;
-        delete mp_wdgtDateTime;
         delete mp_Ui;
         delete mp_PlastiqueStyle;
         delete mp_ProgressTimer;
@@ -179,15 +175,6 @@ void CDashboardEndTimeWidget::paintEvent(QPaintEvent *)
 
 void CDashboardEndTimeWidget::OnEndTimeButtonClicked()
 {
-    if (!m_ProcessRunning)
-    {
-        mp_wdgtDateTime->UpdateProgramName();
-        mp_wdgtDateTime->SetASAPDateTime(m_ProgramEndDateTime);
-        mp_wdgtDateTime->show();
-        CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, UpdateDateTime(const QDateTime &));
-        CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime &));
-        update();
-    }
 }
 
 
