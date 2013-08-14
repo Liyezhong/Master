@@ -684,7 +684,7 @@ void CDashboardWidget::OnProgramWillComplete()
     m_pUserSetting->SetReagentIdOfLastStep(strReagentIDOfLastStep);
     emit UpdateUserSetting(*m_pUserSetting);
 
-    mp_MessageDlg->SetIcon(QMessageBox::Warning);
+    mp_MessageDlg->SetIcon(QMessageBox::Information);
     mp_MessageDlg->SetTitle(m_strWarning);
     QString strTemp(m_strProgramComplete);
     strTemp = strTemp.arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);

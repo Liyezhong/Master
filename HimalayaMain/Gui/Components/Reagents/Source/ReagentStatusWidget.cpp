@@ -125,6 +125,7 @@ void CReagentStatusWidget::OnSetAsEmpty()
 
             emit UpdateStationSetAsEmpty(mp_DashStation->GetDashboardStationID());
             ResetButtons();
+            mp_Ui->btnFull->setEnabled(true);
         }
 }
 
@@ -153,7 +154,6 @@ void CReagentStatusWidget::OnResetData()
             emit UnselectProgram();
 
         emit UpdateStationResetData(mp_DashStation->GetDashboardStationID());
-        ResetButtons();
     }
 }
 
@@ -176,6 +176,8 @@ void CReagentStatusWidget::OnSetAsFull()
     {
         emit UpdateStationSetAsFull(mp_DashStation->GetDashboardStationID());
         ResetButtons();
+        mp_Ui->btnEmpty->setEnabled(true);
+        mp_Ui->btnReset->setEnabled(true);
     }
 }
 

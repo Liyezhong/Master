@@ -237,15 +237,12 @@ void CModifyReagentRMSDlg::UpdateRmsLabel(Global::RMSOptions_t Option)
     switch (Option) {
         case Global::RMS_CASSETTES:
             mp_Ui->labelRMSStaticName->setText(m_strCassettesUntilChange);
-            mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxCassettes()));
             break;
         case Global::RMS_CYCLES:
             mp_Ui->labelRMSStaticName->setText(m_strCyclesUntilChange);
-            mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxCycles()));
             break;
         case Global::RMS_DAYS:
             mp_Ui->labelRMSStaticName->setText(m_strDaysUntilChange);
-            mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxDays()));
             break;
         case Global::RMS_OFF:
             mp_Ui->buttonValue->setVisible(false);
