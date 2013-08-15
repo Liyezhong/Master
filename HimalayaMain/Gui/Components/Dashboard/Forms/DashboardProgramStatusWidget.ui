@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>577</height>
+    <height>533</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -32,7 +32,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>370</y>
+      <y>350</y>
       <width>551</width>
       <height>21</height>
      </rect>
@@ -57,9 +57,9 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>390</y>
+      <y>360</y>
       <width>551</width>
-      <height>91</height>
+      <height>81</height>
      </rect>
     </property>
     <widget class="QLabel" name="label_2">
@@ -114,7 +114,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>               </string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -156,15 +156,28 @@
       <x>0</x>
       <y>0</y>
       <width>551</width>
-      <height>361</height>
+      <height>351</height>
      </rect>
     </property>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>220</y>
+       <width>102</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>PushButton</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="widget_2" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>480</y>
+      <y>440</y>
       <width>551</width>
       <height>61</height>
      </rect>

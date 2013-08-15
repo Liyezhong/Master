@@ -474,7 +474,9 @@ void CDashboardWidget::OnComboBoxButtonPress()
                                            mp_DashboardScene->GetStepRemainingTime(),
                                            mp_DashboardScene->GetProgramRemainingTime(),
                                            mp_DashboardScene->GetEndDateTime(), mp_Ui->playButton->isEnabled());
-        mp_ProgramStatusWidget->move(80,50);
+        mp_ProgramStatusWidget->setFixedSize(568, 548);
+        QRect scr = mp_MainWindow->geometry();
+        mp_ProgramStatusWidget->move( scr.center() - mp_ProgramStatusWidget->rect().center());
         mp_ProgramStatusWidget->exec();
     }
 }
