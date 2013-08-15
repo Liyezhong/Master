@@ -72,6 +72,9 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSLOT(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Dashboard, AddItemsToComboBox()); // To Populate the ComboBox when User Changes the List
     CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Programs, UpdateProgram(DataManager::CProgram &));
 
+    CONNECTSIGNALSIGNAL(mp_Dashboard, UpdateSelectedStationList(QList<QString>&), mp_Reagents, UpdateSelectedStationList(QList<QString>&));
+
+
     //CONNECTSIGNALSIGNAL(mp_DataConnector, DashboardStationChangeReagent(QString), mp_Dashboard, StationReagentChange(QString));
 
 //    CONNECTSIGNALSLOT(mp_Reagents, UpdateReagent(DataManager::CReagent &),

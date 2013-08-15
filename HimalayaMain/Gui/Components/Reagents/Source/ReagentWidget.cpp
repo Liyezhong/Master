@@ -68,7 +68,7 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
     // call when reagents are updated
     CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentsUpdated(), mp_Ui->pageReagents, UpdateReagentList());
     CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentsUpdated(), mp_Ui->pageReagentStatus, UpdateReagentList());
-        CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentsUpdated(), mp_Ui->pageReagentStation, UpdateReagentList());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentsUpdated(), mp_Ui->pageReagentStation, UpdateReagentList());
     // call when Reagent group is updated, since the color is changed
     CONNECTSIGNALSIGNAL(mp_DataConnector, ReagentGroupUpdated(), mp_Ui->pageReagents, UpdateReagentList());
     // for the reagent group
@@ -102,6 +102,13 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSIGNAL(mp_Ui->pageReagentStatus, UnselectProgram(),
                       this, UnselectProgram());
+
+    CONNECTSIGNALSLOT(this, UpdateSelectedStationList(QList<QString>&),
+                      mp_Ui->pageReagentStatus, UpdateSelectedStationList(QList<QString>&));
+
+    CONNECTSIGNALSLOT(this, UpdateSelectedStationList(QList<QString>&),
+                      mp_Ui->pageReagentStation, UpdateSelectedStationList(QList<QString>&));
+
 
     CONNECTSIGNALSLOT(mp_Ui->pageReagentStatus, UpdateStationSetAsFull(QString),
                       mp_DataConnector, SendStationSetAsFull(QString));

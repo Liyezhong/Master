@@ -117,8 +117,11 @@ void CReagentStatusWidget::OnSetAsEmpty()
         if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
         {
             bool bRevertSelectedProgram = false;
-            if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram))
-                return;
+            if (m_StationList.contains(mp_DashStation->GetDashboardStationID()))
+            {
+                if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram, ""))
+                    return;
+            }
 
             if (bRevertSelectedProgram)
                 emit UnselectProgram();
@@ -147,8 +150,11 @@ void CReagentStatusWidget::OnResetData()
     if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
     {
         bool bRevertSelectedProgram = false;
-        if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram))
-            return;
+        if (m_StationList.contains(mp_DashStation->GetDashboardStationID()))
+        {
+            if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram))
+                return;
+        }
 
         if (bRevertSelectedProgram)
             emit UnselectProgram();
@@ -378,8 +384,8 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
             mp_Ui->btnFull->setEnabled(true);
             mp_Ui->btnEmpty->setEnabled(true);
             mp_Ui->btnReset->setEnabled(true);
-            if(mp_DashStation->GetDashboardReagentID().compare("",Qt::CaseInsensitive) == 0) {
 
+            if(mp_DashStation->GetDashboardReagentID().compare("",Qt::CaseInsensitive) == 0) {
                 mp_Ui->btnFull->setEnabled(false);
                 mp_Ui->btnEmpty->setEnabled(false);
                 mp_Ui->btnReset->setEnabled(false);
@@ -556,12 +562,17 @@ void CReagentStatusWidget::ResetButtons()
  */
 /****************************************************************************/
 
-void CReagentStatusWidget:: StationReagentUpdated(QString StationId)
+void CReagentStatusWidget::StationReagentUpdated(QString StationId)
 {
     Q_UNUSED(StationId)
     m_ReagentStatusModel.UpdateReagentList();
     m_ReagentStatusModel.ResetAndUpdateModel();
     mp_TableWidget->selectRow(m_CurrentIndex.row());
+}
+
+void CReagentStatusWidget::UpdateSelectedStationList(QList<QString>& stationList)
+{
+    m_StationList = stationList;
 }
 
 }

@@ -328,7 +328,7 @@ bool CDashboardWidget::CheckSelectedProgram(bool& bRevertSelectProgram, QString 
     bRevertSelectProgram = false;
     if (!SelectedProgramId().isEmpty())
     {
-        if (!ProgramID.isEmpty())
+        if (!ProgramID.isEmpty())//not empty
         {
             if (ProgramID != SelectedProgramId())
                 return true;
@@ -344,7 +344,7 @@ bool CDashboardWidget::CheckSelectedProgram(bool& bRevertSelectProgram, QString 
         ConfirmationMessageDlg.SetButtonText(3, m_strCancel);
         ConfirmationMessageDlg.HideCenterButton();
         if (!ConfirmationMessageDlg.exec())
-            return false;
+            return false;//cancel
         else
             bRevertSelectProgram = true;
 
@@ -364,6 +364,7 @@ void CDashboardWidget::OnUnselectProgram()
         mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
         int asapEndTime = 0;
         emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
+        emit UpdateSelectedStationList(m_StationList);
     }
 }
 
@@ -945,7 +946,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
 
 
     emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
-
+    emit UpdateSelectedStationList(m_StationList);
     if (m_ProgramStartReady)
     {
         EnablePlayButton(true);

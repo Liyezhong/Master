@@ -7,6 +7,7 @@
 #include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "Reagents/Build/ui_ReagentStationWidget.h"
 #include <Dashboard/Include/CommonString.h>
+#include "Dashboard/Include/DashboardWidget.h"
 
 #include <QDebug>
 
@@ -104,6 +105,16 @@ void CReagentStationWidget::SetUserSettings(DataManager::CUserSettings *p_UserSe
 /****************************************************************************/
 void CReagentStationWidget::OnEdit()
 {
+    if (m_StationList.contains(mp_DashStation->GetDashboardStationID()))
+    {
+        bool bRevertSelectedProgram = false;
+        if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram))
+            return;
+
+        if (bRevertSelectedProgram)
+            emit UnselectProgram();
+    }
+
     m_MessageDlg.SetText(m_strSelectReagent);
     mp_ModifiyReagentStationDlg->SetDialogTitle(m_strSelectReagent);
     mp_ModifiyReagentStationDlg->SetDashboardStation(mp_DashStation);
@@ -289,6 +300,11 @@ void CReagentStationWidget:: StationReagentUpdated(QString StationId)
     Q_UNUSED(StationId)
     m_ReagentStationModel.UpdateReagentList();
     m_ReagentStationModel.ResetAndUpdateModel();
+}
+
+void CReagentStationWidget::UpdateSelectedStationList(QList<QString>& stationList)
+{
+    m_StationList = stationList;
 }
 
 }
