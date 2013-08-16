@@ -24,6 +24,7 @@ PLATFORM_COMPONENTS = DataLogging \
                       NetworkComponents \
                       NetCommands \
                       Global \
+                      ExportController \
                       #DeviceCommandProcessor \
                       StateMachines \
                       ExternalProcessController \
@@ -44,7 +45,6 @@ HIMALAYA_SHAREDCOMPONENTS = HimalayaDataContainer
 HIMALAYA_COMPONENTS_DIR = ../..
 HIMALAYA_COMPONENTS = HimalayaGuiController \
                       HimalayaMasterThread \
-                      ExportController \
                       Scheduler \
                       HimalayaErrorHandler
 ###########################################################
