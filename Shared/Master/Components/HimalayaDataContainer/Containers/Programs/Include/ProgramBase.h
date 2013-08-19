@@ -94,7 +94,7 @@ public:
     CProgramBase(const QString ID, const QString Name);
     virtual ~CProgramBase();
 
-    void Init();
+    void InitObject();
 
     void SetNextFreeStepID(const QString Value);
 

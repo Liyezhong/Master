@@ -32,7 +32,7 @@ namespace DataManager {
 CProgramBase::CProgramBase()
     : m_Name(""), m_ID(""), m_LongName(""), m_NextFreeStepID(0)
 {
-    Init();
+    InitObject();
 }
 
 /****************************************************************************/
@@ -46,7 +46,7 @@ CProgramBase::CProgramBase()
 CProgramBase::CProgramBase(const QString ID, const QString Name)
               : m_Name(Name), m_ID(ID), m_NextFreeStepID(0)
 {
-    Init();
+    InitObject();
 }
 /****************************************************************************/
 /*!
@@ -59,7 +59,7 @@ CProgramBase::CProgramBase(const QString ID, const QString Name)
 CProgramBase::CProgramBase(const QString ID, const QString Name, const QString LongName)
               : m_Name(Name), m_ID(ID), m_LongName(LongName), m_NextFreeStepID(0)
 {
-    Init();
+    InitObject();
 }
 
 /****************************************************************************/
@@ -77,7 +77,7 @@ CProgramBase::~CProgramBase()
  *  \brief Initializes the object
  */
 /****************************************************************************/
-void CProgramBase::Init()
+void CProgramBase::InitObject()
 {
     m_NextFreeStepID = 0;  // this has to be a persistent value and unique for every single program and macro
     m_StepList.clear();
