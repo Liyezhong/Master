@@ -32,7 +32,7 @@ namespace DataManager {
 CProgramBase::CProgramBase()
     : m_Name(""), m_ID(""), m_LongName(""), m_NextFreeStepID(0)
 {
-    Init();
+    InitObject();
 }
 
 /****************************************************************************/
@@ -46,7 +46,7 @@ CProgramBase::CProgramBase()
 CProgramBase::CProgramBase(const QString ID, const QString Name)
               : m_Name(Name), m_ID(ID), m_NextFreeStepID(0)
 {
-    Init();
+    InitObject();
 }
 /****************************************************************************/
 /*!
@@ -59,7 +59,7 @@ CProgramBase::CProgramBase(const QString ID, const QString Name)
 CProgramBase::CProgramBase(const QString ID, const QString Name, const QString LongName)
               : m_Name(Name), m_ID(ID), m_LongName(LongName), m_NextFreeStepID(0)
 {
-    Init();
+    InitObject();
 }
 
 /****************************************************************************/
@@ -77,7 +77,7 @@ CProgramBase::~CProgramBase()
  *  \brief Initializes the object
  */
 /****************************************************************************/
-void CProgramBase::Init()
+void CProgramBase::InitObject()
 {
     m_NextFreeStepID = 0;  // this has to be a persistent value and unique for every single program and macro
     m_StepList.clear();
@@ -324,5 +324,24 @@ void CProgramBase::SetName(const QString Value)
     m_Name = Value;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief Copy Data from another instance.
+ *         This function should be called from CopyConstructor or
+ *         Assignment operator only.
+ *
+ *  \iparam OtherProgramBase = Reference to the other programbase to be copied
+ *
+ */
+/****************************************************************************/
+void CProgramBase::CopyFromOther(const CProgramBase &OtherProgramBase)
+{
+    m_ID = OtherProgramBase.GetID();
+    m_Name = OtherProgramBase.GetName();
+    m_LongName = OtherProgramBase.GetLongName();
+    m_NextFreeStepID = const_cast<CProgramBase&>(OtherProgramBase).GetNextFreeStepID(false).toUInt();
+    /*! \note Steplist and Step Id list are updated automatically when AddProgramStep is
+     called in derived class */
+}
 
 }  // namespace DataManager
