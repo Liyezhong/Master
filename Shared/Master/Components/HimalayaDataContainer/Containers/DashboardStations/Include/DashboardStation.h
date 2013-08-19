@@ -20,11 +20,6 @@
 #ifndef DATAMANAGER_DASHBOARDSTATION_H
 #define DATAMANAGER_DASHBOARDSTATION_H
 
-#include <QString>
-#include <QDate>
-#include <QXmlStreamReader>
-#include <QXmlStreamWriter>
-
 #include "DataManager/Helper/Include/Types.h"
 #include "DataManager/Helper/Include/Helper.h"
 #include "Global/Include/GlobalDefines.h"

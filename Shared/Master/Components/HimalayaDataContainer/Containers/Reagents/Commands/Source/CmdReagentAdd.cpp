@@ -19,7 +19,7 @@
 /****************************************************************************/
 
 #include "HimalayaDataContainer/Containers/Reagents/Commands/Include/CmdReagentAdd.h"
-
+#include <QBuffer>
 namespace MsgClasses {
 
 QString CmdReagentAdd::NAME = "MsgClasses::CmdReagentAdd";

@@ -1188,7 +1188,7 @@ void CDataConnector::EventStringHandler(Global::tRefType Ref, const NetCommands:
     QHashIterator<QLocale::Language, Global::tLanguageData> j(Translations);
     while (j.hasNext())
     {
-        j.next();
+        (void)j.next();
         //qDebug() << j.key() << ": " << j.value() << endl;
         Global::UITranslator::TranslatorInstance().SetLanguageData(j.key(), j.value(), false, false);
 
@@ -1236,21 +1236,21 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
 {
     mp_LanguageFile = new QFile(QString("languagefile%1.qm").arg(m_LanguageChangeCount));
     if (!mp_LanguageFile->isOpen()) {
-        mp_LanguageFile->open(QIODevice::ReadWrite);
+        (void)mp_LanguageFile->open(QIODevice::ReadWrite);
     }
     if (mp_LanguageFile->write(Command.GetLanguageData()) != Command.GetLanguageData().size()) {
         m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(false));
-        mp_LanguageFile->remove();
+        (void)mp_LanguageFile->remove();
         delete mp_LanguageFile;
         mp_LanguageFile = NULL;
         return;
     }
-    mp_LanguageFile->flush();
+    (void)mp_LanguageFile->flush();
 
     if (!m_Translator.load(mp_LanguageFile->fileName())) {
         qDebug()<<"\n\nTranslations failed";
         m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(false));
-        mp_LanguageFile->remove();
+        (void)mp_LanguageFile->remove();
         delete mp_LanguageFile;
         mp_LanguageFile = NULL;
         return;
@@ -1259,7 +1259,7 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
     m_LanguageChangeCount++;
     if (m_LanguageChangeCount != 1) {
         if (mp_OldFile) {
-            mp_OldFile->remove();
+            (void)mp_OldFile->remove();
             delete mp_OldFile;
             mp_OldFile = mp_LanguageFile;
         }
