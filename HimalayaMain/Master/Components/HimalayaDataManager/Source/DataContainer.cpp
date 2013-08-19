@@ -64,12 +64,12 @@ CDataContainer::CDataContainer(Threads::MasterThreadController *p_MasterThreadCo
 
 CDataContainer::~CDataContainer()
 {
-    if (!DeinitContainers()) {
-        qDebug() << "CDataContainer::Destructor / DeinitContainers failed";
+    if (!DeinitializeContainers()) {
+        qDebug() << "CDataContainer::Destructor / DeinitializeContainers failed";
     }
 }
 
-bool CDataContainer::InitContainers()
+bool CDataContainer::InitializeContainers()
 {
     if (!CDataContainerCollectionBase::InitContainers()) {
         return false;
@@ -157,7 +157,7 @@ bool CDataContainer::InitContainers()
     return true;
 }
 
-bool CDataContainer::DeinitContainers()
+bool CDataContainer::DeinitializeContainers()
 {
     if (CDataContainerCollectionBase::DeinitContainers()) {
 

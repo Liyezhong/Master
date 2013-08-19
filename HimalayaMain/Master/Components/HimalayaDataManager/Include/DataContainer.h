@@ -47,7 +47,7 @@ class CDataContainer: public DataManager::CDataContainerCollectionBase
 {
     Q_OBJECT
 private:
-    bool DeinitContainers();
+    bool DeinitializeContainers();
     bool ResetDCReagentGroupList();
     bool ResetDCReagentList();
     bool ResetDCReagentGroupColorList();
@@ -61,7 +61,7 @@ private:
 public:
     CDataContainer(Threads::MasterThreadController *p_HimalayaMasterThreadController);
     ~CDataContainer();
-    bool InitContainers();
+    bool InitializeContainers();
     QString GetReagentName(QString ReagentID);
 
     // prefix mp_ left because members are intentially accessible from outside (public)
