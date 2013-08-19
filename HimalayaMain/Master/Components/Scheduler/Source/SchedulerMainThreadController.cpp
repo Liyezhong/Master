@@ -970,7 +970,7 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
 
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
 
-    ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
+//    ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
     bool isLastStep = false;
 
     m_ProgramStationList.clear();
@@ -979,11 +979,11 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
     ListOfIDs_t unusedStationIDs = pDashboardDataStationList->GetOrderedListOfDashboardStationIDs();
     QList<StationUseRecord_t> usedStations;
 
-    for (int i = 0; i < stepIDs->count(); i++)
+    for (int i = 0; i < pProgram->GetNumberOfSteps(); i++)
     {
         const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
         ProgramStationInfo_t stationInfo;
-        isLastStep = (i == (stepIDs->count() - 1));
+        isLastStep = (i == (pProgram->GetNumberOfSteps() - 1));
         QString reagentID = pProgramStep->GetReagentID();
         stationInfo.ReagentGroupID =GetReagentGroupID(reagentID);
         stationInfo.StationID = this->SelectStationFromReagentID(reagentID, unusedStationIDs, usedStations, isLastStep);
@@ -1011,7 +1011,7 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
     }
 
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
-    ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
+    //ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
     int index = SpecifiedStepIndex;
     if (-1 == index)
     {
@@ -1027,7 +1027,7 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
         index = programStepIDIndex;
     }
 
-    for (int i = index; i < stepIDs->count(); i++)
+    for (int i = index; i < pProgram->GetNumberOfSteps(); i++)
     {
         const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
         quint32 soakTime = pProgramStep->GetDurationInSeconds();
@@ -2071,8 +2071,8 @@ bool SchedulerMainThreadController::IsLastStep(int currentStepIndex, const QStri
     }
 
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(currentProgramID));
-    ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
-    return (stepIDs->count() == (currentStepIndex + 1));
+//    ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
+    return (pProgram->GetNumberOfSteps() == (currentStepIndex + 1));
 }
 }
 

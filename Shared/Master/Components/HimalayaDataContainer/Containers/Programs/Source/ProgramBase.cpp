@@ -324,5 +324,24 @@ void CProgramBase::SetName(const QString Value)
     m_Name = Value;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief Copy Data from another instance.
+ *         This function should be called from CopyConstructor or
+ *         Assignment operator only.
+ *
+ *  \iparam OtherProgramBase = Reference to the other programbase to be copied
+ *
+ */
+/****************************************************************************/
+void CProgramBase::CopyFromOther(const CProgramBase &OtherProgramBase)
+{
+    m_ID = OtherProgramBase.GetID();
+    m_Name = OtherProgramBase.GetName();
+    m_LongName = OtherProgramBase.GetLongName();
+    m_NextFreeStepID = const_cast<CProgramBase&>(OtherProgramBase).GetNextFreeStepID(false).toUInt();
+    /*! \note Steplist and Step Id list are updated automatically when AddProgramStep is
+     called in derived class */
+}
 
 }  // namespace DataManager

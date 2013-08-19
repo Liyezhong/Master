@@ -64,9 +64,11 @@ protected:
      */
     /****************************************************************************/
     CProgramBase(const CProgramBase& SourceProgramBase)
+        :m_Name(""), m_NameID(""),m_ID(""), m_LongName(""), m_NextFreeStepID(0)
     {
         Q_UNUSED(SourceProgramBase);
         //!< Empty since data is getting copied in the derived class assingment operator func.
+        //lint -e1529
     }
 
     //!< Made protected so that client classes don't call this explicitly.
@@ -77,13 +79,15 @@ protected:
      *  \iparam ProgramBase = const reference to sourceprogram base object
      */
     /****************************************************************************/
+    //lint -efunc(1529, =)
     CProgramBase& operator = (const CProgramBase& ProgramBase)
     {
-        Q_UNUSED(ProgramBase)
+        CopyFromOther(ProgramBase);
         return *this;
         //!< Empty since data is getting copied in the derived class assingment operator func.
         //!< Defined so that compiler wont provide one !
     }
+    void CopyFromOther(const CProgramBase &OtherProgramBase);
 public:
     CProgramBase();
     CProgramBase(const QString ID, const QString Name, const QString LongName);
@@ -162,22 +166,22 @@ public:
     /****************************************************************************/
     void SetLongName(const QString Value){m_LongName = Value;}
 
-    /****************************************************************************/
-    /*!
-     *  \brief Retrieves list of program steps in a program
-     *
-     *  \return Step list
-     */
-    /****************************************************************************/
-    ListOfProgramSteps_t* GetStepList()
-    {
-        return &m_StepList;
-    }
+//    /****************************************************************************/
+//    /*!
+//     *  \brief Retrieves list of program steps in a program
+//     *
+//     *  \return Step list
+//     */
+//    /****************************************************************************/
+//    ListOfProgramSteps_t* GetStepList()
+//    {
+//        return &m_StepList;
+//    }
 
-    ListOfIDs_t* OrderedListOfStepIDs()
-    {
-        return &m_OrderedListOfStepIDs;
-    }
+//    ListOfIDs_t* OrderedListOfStepIDs()
+//    {
+//        return &m_OrderedListOfStepIDs;
+//    }
     //STEPS
     /****************************************************************************/
     /*!
