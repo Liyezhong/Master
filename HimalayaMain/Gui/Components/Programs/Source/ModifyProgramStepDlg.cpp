@@ -30,6 +30,7 @@
 #include <QDebug>
 #include <QTime>
 #include "HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupList.h"
+#include <Dashboard/Include/CommonString.h>
 
 namespace Programs {
 
@@ -59,11 +60,11 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
                                             MainMenu::CDialogFrame(p_Parent),
                                             mp_Ui(new Ui::CModifyProgramStepDlg), mp_TableWidget(NULL),
                                             mp_ScrollWheelHour(NULL), mp_ScrollWheelMin(NULL),
-                                            mp_ScrollWheelTemp(NULL), mp_MessageBox(new MainMenu::CMessageDlg),
+                                            mp_ScrollWheelTemp(NULL), mp_MessageBox(new MainMenu::CMessageDlg(this)),
                                             mp_MainWindow(p_MainWindow), mp_ProgramStep(NULL),
                                             mp_ReagentList(NULL), m_RowSelected(-1),
                                             m_RowNotSelected(true), m_NewProgramStep(false),
-                                            m_ProcessRunning(false), m_ReagentExists(true),
+                                            m_ProcessRunning(false),
                                             mp_DataConnector(p_DataConnector),
                                             m_strConfirmMsg(tr("Information Message")),
                                             m_strOK(tr("OK"))
@@ -179,7 +180,7 @@ void CModifyProgramStepDlg::InitTemperatureWidget(const DataManager::CReagent * 
     mp_ScrollWheelTemp->ClearItems();
 
     // set temperature symbol
-    if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
+    if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
         mp_Ui->scrollPanelWidgetTemperature->SetSubtitle(QApplication::translate("CModifyProgramStepDlg", "\302\260C", 0, QApplication::UnicodeUTF8), 0);
     }
     else {
@@ -201,15 +202,11 @@ void CModifyProgramStepDlg::InitTemperatureWidget(const DataManager::CReagent * 
     int minTemp = reagentGroup->GetMinTemprature();
     int maxTemp = reagentGroup->GetMaxTemprature();
 
-    if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT) {
-        minTemp = qRound(((double)minTemp * 9) / 5  + 32);
-        maxTemp = qRound(((double)maxTemp * 9) / 5  + 32);
-    }
 
     //Add the AmbientTemprature icon.
     if (!reagentGroup->IsParraffin())
     {
-        if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT)
+        if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT)
             mp_ScrollWheelTemp->AddItem("", -1, *m_pAmbientTempratureBigPixmap);
         else
             mp_ScrollWheelTemp->AddItem("", -1, *m_pAmbientTempraturePixmap);
@@ -218,7 +215,12 @@ void CModifyProgramStepDlg::InitTemperatureWidget(const DataManager::CReagent * 
     if (0 != minTemp && 0 != maxTemp)
     {
         for (int i = minTemp; i <= maxTemp; i += 1) {
-            mp_ScrollWheelTemp->AddItem(QString::number(i).rightJustified(2, '0'), i);
+            int temp = i;
+            if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_FAHRENHEIT) {
+                temp = qRound(((double)i * 9) / 5  + 32);
+            }
+
+            mp_ScrollWheelTemp->AddItem(QString::number(temp).rightJustified(2, '0'), temp);
         }
     }
 
@@ -295,7 +297,6 @@ void CModifyProgramStepDlg::NewProgramStep()
     ResizeHorizontalSection();
 
     m_NewProgramStep = true;
-    m_ReagentExists = true;
     InitTemperatureWidget(NULL);
 }
 
@@ -343,99 +344,110 @@ void CModifyProgramStepDlg::SelectRow(qint32 Row)
 /****************************************************************************/
 void CModifyProgramStepDlg::OnOk()
 {
+    const DataManager::CReagent *pReagent = mp_ReagentList->GetReagent(m_ReagentID);
+    const DataManager::CReagentGroup* reagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(pReagent->GetGroupID());
+    if (reagentGroup ->IsParraffin())
+    {
+          DataManager::CHimalayaUserSettings *p_Settings = mp_DataConnector->SettingsInterface->GetUserSettings();
+          int paraffinBathTemp = p_Settings->GetTemperatureParaffinBath();
+          double diffTemp = 0;
+          if( mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS)
+              diffTemp = 2.0;
+          else
+          {
+              diffTemp = 3.6;
+              paraffinBathTemp  = qRound((paraffinBathTemp * 9) / 5) + 32;
+          }
+
+         int ddd = mp_ScrollWheelTemp->GetCurrentData().toInt();
+         double diffSetting = qAbs(ddd - paraffinBathTemp);
+
+         if (diffSetting > diffTemp)
+         {
+            mp_MessageBox->SetIcon(QMessageBox::Information);
+            mp_MessageBox->SetTitle(CommonString::strInforMsg);
+            mp_MessageBox->SetText(m_strDiffTemp);
+            mp_MessageBox->SetButtonText(1, m_strOK);
+            mp_MessageBox->HideButtons();
+            if (mp_MessageBox->exec())
+            {
+
+            }
+         }
+    }
+
     int MinDurationInSec;
-    QString Temperature;
     QString Pressure;
     QString Vaccum;
-    MainMenu::CMessageDlg MessageDlg(this);
-    MessageDlg.SetTitle(m_strConfirmMsg);
-    MessageDlg.SetIcon(QMessageBox::Information);
-    MessageDlg.SetButtonText(1, m_strOK);
-    MessageDlg.HideButtons();
+    QString Temperature;
+    MinDurationInSec = mp_ScrollWheelHour->GetCurrentData().toInt()*60*60;
+    MinDurationInSec+= mp_ScrollWheelMin->GetCurrentData().toInt()*60;
 
-    if(m_ReagentExists) {
-        MinDurationInSec = mp_ScrollWheelHour->GetCurrentData().toInt()*60*60;
-        MinDurationInSec+= mp_ScrollWheelMin->GetCurrentData().toInt()*60;
-
-        if( mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS)
+    if( mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS)
+    {
+        Temperature = mp_ScrollWheelTemp->GetCurrentData().toString();
+    }
+    else
+    {
+        if (mp_ScrollWheelTemp->GetCurrentData().toInt() == -1)
         {
-            Temperature = mp_ScrollWheelTemp->GetCurrentData().toString();
+            Temperature = "-1";
         }
         else
         {
-            if (mp_ScrollWheelTemp->GetCurrentData().toInt() == -1)
-            {
-                Temperature = "-1";
-            }
-            else
-            {
-                double Temp = qRound(((mp_ScrollWheelTemp->GetCurrentData().toDouble() - 32) * 5) / 9);
-                Temperature = QString::number(qRound(Temp));
-            }
-        }
-
-        if (mp_Ui->radioButton_0->isChecked()) {
-            Pressure = "On";
-            Vaccum = "Off";
-        }
-        else if(mp_Ui->radioButton_25->isChecked()) {
-            Vaccum = "On";
-            Pressure = "Off";
-        }
-        else if(mp_Ui->radioButton_50->isChecked()) {
-            Vaccum = "On";
-            Pressure = "On";
-        }
-        else if(mp_Ui->radioButton_75->isChecked()) {
-            Vaccum = "Off";
-            Pressure = "Off";
-        }
-
-        m_ReagentEditModel.UpdateReagentList();
-        DataManager::CProgramStep ProgramStep;
-        if (m_ModifyProgramDlgButtonType == COPY_BTN_CLICKED) {
-
-            if (m_ReagentID == m_SelectedStepReagentID) {
-                (void) mp_MessageBox->exec();
-            }
-            else {
-                m_NewProgramStep = true ;
-                ProgramStep.SetDurationInSeconds(MinDurationInSec);
-                ProgramStep.SetReagentID(m_ReagentID);
-                ProgramStep.SetTemperature(Temperature);
-                ProgramStep.SetPressure(Pressure);
-                ProgramStep.SetVacuum(Vaccum);
-                emit AddProgramStep(&ProgramStep, m_NewProgramStep);
-                accept();
-            }
-        }
-        else {
-            if (m_ModifyProgramDlgButtonType == NEW_BTN_CLICKED) {
-                m_NewProgramStep = true ;
-
-                ProgramStep.SetDurationInSeconds(MinDurationInSec);
-                ProgramStep.SetReagentID(m_ReagentID);
-                ProgramStep.SetTemperature(Temperature);
-                ProgramStep.SetPressure(Pressure);
-                ProgramStep.SetVacuum(Vaccum);
-
-                emit AddProgramStep(&ProgramStep, m_NewProgramStep);
-            }
-            else {
-                m_NewProgramStep = false ;
-                ProgramStep = *mp_ProgramStep;
-                ProgramStep.SetDurationInSeconds(MinDurationInSec);
-                ProgramStep.SetReagentID(m_ReagentID);
-                ProgramStep.SetTemperature(Temperature);
-                ProgramStep.SetPressure(Pressure);
-                ProgramStep.SetVacuum(Vaccum);
-                emit AddProgramStep(&ProgramStep, m_NewProgramStep);
-            }
-            accept();
+            double Temp = qRound(((mp_ScrollWheelTemp->GetCurrentData().toDouble() - 32) * 5) / 9);
+            Temperature = QString::number(qRound(Temp));
         }
     }
+    if (mp_Ui->radioButton_0->isChecked()) {
+        Pressure = "On";
+        Vaccum = "Off";
+    }
+    else if(mp_Ui->radioButton_25->isChecked()) {
+        Vaccum = "On";
+        Pressure = "Off";
+    }
+    else if(mp_Ui->radioButton_50->isChecked()) {
+        Vaccum = "On";
+        Pressure = "On";
+    }
+    else if(mp_Ui->radioButton_75->isChecked()) {
+        Vaccum = "Off";
+        Pressure = "Off";
+    }
+
+    m_ReagentEditModel.UpdateReagentList();
+    DataManager::CProgramStep ProgramStep;
+    if (m_ModifyProgramDlgButtonType == COPY_BTN_CLICKED) {
+        m_NewProgramStep = true ;
+        ProgramStep.SetDurationInSeconds(MinDurationInSec);
+        ProgramStep.SetReagentID(m_ReagentID);
+        ProgramStep.SetTemperature(Temperature);
+        ProgramStep.SetPressure(Pressure);
+        ProgramStep.SetVacuum(Vaccum);
+        emit AddProgramStep(&ProgramStep, m_NewProgramStep);
+        accept();
+    }
     else {
-        ResetButtons(true);
+        if (m_ModifyProgramDlgButtonType == NEW_BTN_CLICKED) {
+            m_NewProgramStep = true ;
+            ProgramStep.SetDurationInSeconds(MinDurationInSec);
+            ProgramStep.SetReagentID(m_ReagentID);
+            ProgramStep.SetTemperature(Temperature);
+            ProgramStep.SetPressure(Pressure);
+            ProgramStep.SetVacuum(Vaccum);
+            emit AddProgramStep(&ProgramStep, m_NewProgramStep);
+        }
+        else {
+            m_NewProgramStep = false ;
+            ProgramStep = *mp_ProgramStep;
+            ProgramStep.SetDurationInSeconds(MinDurationInSec);
+            ProgramStep.SetReagentID(m_ReagentID);
+            ProgramStep.SetTemperature(Temperature);
+            ProgramStep.SetPressure(Pressure);
+            ProgramStep.SetVacuum(Vaccum);
+            emit AddProgramStep(&ProgramStep, m_NewProgramStep);
+        }
         accept();
     }
 }
@@ -447,9 +459,6 @@ void CModifyProgramStepDlg::OnOk()
 /****************************************************************************/
 void CModifyProgramStepDlg::OnCancel()
 {
-    if (!m_ReagentExists) {
-        ResetButtons(true);
-    }
     reject();
 }
 
@@ -520,16 +529,16 @@ void CModifyProgramStepDlg::showEvent(QShowEvent *p_Event)
 {
     Q_UNUSED(p_Event);
 
-    if (m_UserSettings.GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
+    if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
         mp_ScrollWheelTemp->SetThreeDigitMode(false);
         mp_Ui->scrollPanelWidgetTemperature->SetThreeDigitMode(false);
-        mp_ScrollWheelTemp->SetCurrentData(QString::number(m_ProgramStep.GetTemperature().toInt()));
+        //mp_ScrollWheelTemp->SetCurrentData(QString::number(m_ProgramStep.GetTemperature().toInt()));
         qDebug()<<"\n\n Program widget Temp" << m_ProgramStep.GetTemperature().toInt();
     }
     else {
         mp_ScrollWheelTemp->SetThreeDigitMode(true);
         mp_Ui->scrollPanelWidgetTemperature->SetThreeDigitMode(true);
-        mp_ScrollWheelTemp->SetCurrentData(tr("%1").arg((((m_ProgramStep.GetTemperature().toInt() - 32) / 5) * 9) + 104));
+        //mp_ScrollWheelTemp->SetCurrentData(tr("%1").arg((((m_ProgramStep.GetTemperature().toInt() - 32) / 5) * 9) + 104));
         qDebug()<<"\n\n Program widget Temp" << m_ProgramStep.GetTemperature().toInt();
     }
 
@@ -605,6 +614,10 @@ void CModifyProgramStepDlg::RetranslateUI()
                                                         "Information Message", 0, QApplication::UnicodeUTF8);
     m_strOK = QApplication::translate("Programs::CModifyProgramStepDlg",
                                       "OK", 0, QApplication::UnicodeUTF8);
+
+    m_strDiffTemp = QApplication::translate("Programs::CModifyProgramStepDlg",
+                                      "Different temperature setting", 0, QApplication::UnicodeUTF8);
+
 }
 
 } // end namespace Programs

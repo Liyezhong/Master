@@ -149,7 +149,6 @@ private slots:
     void OnProcessStateChanged();
     void UpdateProgramStepTable(DataManager::CProgramStep* ProgramStep, bool AddProgramStep);
     void CloseDialogs();
-    void UpdateUserSettings();
     void OnIconClicked();
     void UpdateProgramIcon(DataManager::CProgram *Program);
 

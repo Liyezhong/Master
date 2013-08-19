@@ -99,7 +99,6 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
                         this, AddProgram(DataManager::CProgram &));
     CONNECTSIGNALSLOT(&m_ProgramModel, modelReset(), this, CloseDialogs());
     CONNECTSIGNALSLOT(mp_ModifyProgramDlg, CancelClicked(), this, OnCancelClicked());
-    CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), mp_ModifyProgramDlg, UpdateUserSettings());
 
     CONNECTSIGNALSIGNAL(&m_ProgramModel, FavoriteProgramListUpdated(DataManager::CProgram &), this, FavoriteProgramListUpdated(DataManager::CProgram &));
     PopulateProgramList();

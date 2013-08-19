@@ -87,8 +87,6 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     mp_NewProgram = new DataManager::CProgram;
     mp_ModifyProgStepDlg = new Programs::CModifyProgramStepDlg(this, p_MainWindow, p_DataConnector);
     mp_ModifyProgStepDlg->setModal(true);
-    mp_ModifyProgStepDlg->SetUserSettings(mp_DataConnector->SettingsInterface->GetUserSettings());
-
     CONNECTSIGNALSLOT(mp_Ui->btnEdit, clicked(), this, OnEdit());
     CONNECTSIGNALSLOT(mp_Ui->btnNew, clicked(), this, OnNew());
     CONNECTSIGNALSLOT(mp_Ui->btnCopy, clicked(), this, OnCopy());
@@ -816,18 +814,6 @@ void CModifyProgramDlg::UpdateProgramStepTable(DataManager::CProgramStep *p_Prgm
         }
     }
 }
-
-
-/********************************************************************************/
-/*!
- *  \brief Sets the UserSettings for ModifyStep dialog.
- */
-/********************************************************************************/
-void CModifyProgramDlg::UpdateUserSettings()
-{
-    mp_ModifyProgStepDlg->SetUserSettings(mp_DataConnector->SettingsInterface->GetUserSettings());
-}
-
 
 /****************************************************************************/
 /*!
