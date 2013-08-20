@@ -56,7 +56,7 @@ CDataContainer::CDataContainer(Threads::MasterThreadController *p_MasterThreadCo
     SpecialVerifierGroupC(NULL),
     SpecialVerifierGroupD(NULL)
 {
-    if (!InitContainers()) {
+    if (!InitializeContainers()) {
         qDebug() << "CDataContainer::Constructor / InitContainers failed";
     }
 }
@@ -145,12 +145,12 @@ bool CDataContainer::InitializeContainers()
     }
 */
 
-    ProgramList->AddVerifier(SpecialVerifierGroupA);
+    (void)ProgramList->AddVerifier(SpecialVerifierGroupA);
     // add required special verifiers for the station list
-    StationList->AddVerifier(SpecialVerifierGroupA);
-    StationList->AddVerifier(SpecialVerifierGroupD);
+    (void)StationList->AddVerifier(SpecialVerifierGroupA);
+    (void)StationList->AddVerifier(SpecialVerifierGroupD);
 
-    SettingsInterface->AddVerifier(SpecialVerifierGroupC);
+    (void)SettingsInterface->AddVerifier(SpecialVerifierGroupC);
 
 
     m_IsInitialized = true;
@@ -184,7 +184,10 @@ bool CDataContainer::ResetDCProgramList()
     }
 
     // init program list
-    ProgramList->Init();
+    if(ProgramList){
+        ProgramList->Init();
+    }
+
 
 
     // create a verifier object for this data container, if not done before
@@ -193,7 +196,9 @@ bool CDataContainer::ResetDCProgramList()
         p_DataProgramListVerifier = new CDataProgramListVerifier(this);
     }
     // register this verifier object in the data container (=> dependency injection)
-    ProgramList->AddVerifier(p_DataProgramListVerifier);
+    if(ProgramList){
+        (void)ProgramList->AddVerifier(p_DataProgramListVerifier);
+    }
 
     return true;
 }
@@ -206,7 +211,9 @@ bool CDataContainer::ResetDCProgramSettings()
     }
 
     // init program list
-    ProgramSettings->Init();
+    if(ProgramSettings){
+        ProgramSettings->Init();
+    }
 
 
     // create a verifier object for this data container, if not done before
@@ -228,7 +235,9 @@ bool CDataContainer::ResetDCReagentGroupList()
     }
 
     // init reagent list
-    ReagentGroupList->Init();
+    if(ReagentGroupList){
+        ReagentGroupList->Init();
+    }
     return true;
 }
 
@@ -240,7 +249,9 @@ bool CDataContainer::ResetDCReagentGroupColorList()
     }
 
     // init reagent list
-    ReagentGroupColorList->Init();
+    if(ReagentGroupColorList){
+        ReagentGroupColorList->Init();
+    }
     return true;
 }
 
@@ -252,15 +263,17 @@ bool CDataContainer::ResetDCReagentList()
     }
 
     // init reagent list
-    ReagentList->Init();
+    if(ReagentList){
+        ReagentList->Init();
 
-    // create a verifier object for this data container, if not done before
-    static IVerifierInterface *p_DataReagentListVerifier = NULL;
-    if (p_DataReagentListVerifier == NULL) {
-        p_DataReagentListVerifier = new CDataReagentListVerifier();
+        // create a verifier object for this data container, if not done before
+        static IVerifierInterface *p_DataReagentListVerifier = NULL;
+        if (p_DataReagentListVerifier == NULL) {
+            p_DataReagentListVerifier = new CDataReagentListVerifier();
+        }
+        // register this verifier object in the data container (=> dependency injection)
+        (void)ReagentList->AddVerifier(p_DataReagentListVerifier);
     }
-    // register this verifier object in the data container (=> dependency injection)
-    ReagentList->AddVerifier(p_DataReagentListVerifier);
 
     return true;
 }
