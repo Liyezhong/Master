@@ -70,7 +70,8 @@ bool CProgramSettingsVerifier::VerifyData(CDataContainerBase *p_ParameterList)
 ErrorHash_t &CProgramSettingsVerifier::GetErrors()
 {
     // return the last error which is occured in the verifier
-    //lint -esym(429, m_ErrorMap)
+    //lint -esym(429, m_ErrorsHash)
+    //lint -esym(1536, m_ErrorsHash)
     return m_ErrorsHash;
 }
 

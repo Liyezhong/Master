@@ -64,8 +64,10 @@ CDataContainer::CDataContainer(Threads::MasterThreadController *p_MasterThreadCo
 
 CDataContainer::~CDataContainer()
 {
-    if (!DeinitializeContainers()) {
-        qDebug() << "CDataContainer::Destructor / DeinitializeContainers failed";
+    try {
+        (void)DeinitializeContainers();
+    }
+    catch(...) {
     }
 }
 

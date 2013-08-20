@@ -217,8 +217,8 @@ double CProgramSettings::GetParameterValue(QString DeviceKey, QString FunctionKe
     }
     if(ok)
     {
-        QRegExp time("\\d+[DdHhMmSs]");
-        if(value.contains(time))
+        QRegExp TimeFormat("\\d+[DdHhMmSs]");
+        if(value.contains(TimeFormat))
         {
             ret = Helper::ConvertTimeStringToSeconds(value);
         }
@@ -470,7 +470,7 @@ bool CProgramSettings::WriteAllParameters(QXmlStreamWriter& XmlStreamWriter)
 
                 XmlStreamWriter.writeEndElement(); // end element of Parameter
             }
-             XmlStreamWriter.writeEndElement(); // end element of Function
+            XmlStreamWriter.writeEndElement(); // end element of Function
         }
         XmlStreamWriter.writeEndElement(); // end element of Device
 

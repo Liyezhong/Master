@@ -62,7 +62,7 @@ CmdProgramUpdate::CmdProgramUpdate(int Timeout, const QDataStream &ProgramDataSt
  * \brief   Constructor for receiving
  */
 /****************************************************************************/
-CmdProgramUpdate::CmdProgramUpdate() : Command(0)
+CmdProgramUpdate::CmdProgramUpdate() : Command(0),m_ProgramColorReplaced(false)
 {
 }
 

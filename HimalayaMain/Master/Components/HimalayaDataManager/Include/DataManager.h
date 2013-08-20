@@ -44,7 +44,7 @@ private:
     CReagentCommandInterface *mp_ReagentCommandInterface; //!< handles commands related to reagent container
     CReagentGroupCommandInterface *mp_ReagentGroupCommandInterface;
 protected:
-    virtual bool DeinitializeDataContainer();
+    bool DeinitializeDataContainer();
 
 public:
     CDataManager(Threads::MasterThreadController *p_HimalayaMasterThreadController);

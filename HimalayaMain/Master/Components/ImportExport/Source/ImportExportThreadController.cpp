@@ -498,7 +498,7 @@ void ImportExportThreadController::UpdateUserExportConfigurationAndWriteFile() {
         emit ThreadFinished(false, "");
     }
     // please change the directory to application path
-    QDir::setCurrent(CurrentDir);
+    (void) QDir::setCurrent(CurrentDir);
 }
 
 
@@ -1019,12 +1019,12 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
         //check Regent Group color container
         DataManager::CReagentGroupColorList ImportReagentGroupColorList;
         ImportReagentGroupColorList.SetDataVerificationMode(false);
-        ImportReagentGroupColorList.Read(FilePath + QDir::separator() + FILENAME_REAGENT_GROUP_COLORS);
+        (void)ImportReagentGroupColorList.Read(FilePath + QDir::separator() + FILENAME_REAGENT_GROUP_COLORS);
 
         //check Station container
         DataManager::CDashboardDataStationList ImportDashboardDataStationList;
         ImportDashboardDataStationList.SetDataVerificationMode(false);
-        ImportDashboardDataStationList.Read(FilePath + QDir::separator() + FILENAME_STATIONS);
+        (void)ImportDashboardDataStationList.Read(FilePath + QDir::separator() + FILENAME_STATIONS);
 
         // initialize the Programs container
         DataManager::CDataProgramList ImportProgramList;
@@ -1049,7 +1049,7 @@ bool ImportExportThreadController::CreateAndUpdateContainers(const QString TypeO
 
         // before updating take a back-up of the configuration files
         QStringList FileList;
-        AddFilesForImportType(TypeOfImport,FileList);
+        (void)AddFilesForImportType(TypeOfImport,FileList);
 
         // save the data containers before copying to "Rollback" folder
         if (!WriteFilesInSettingsFolder()) {
@@ -1151,7 +1151,7 @@ bool ImportExportThreadController::UpdateSettingsWithRollbackFolder() {
 
     QStringList FileList;
 
-    AddFilesForImportType(QString("Service"), FileList);
+    (void)AddFilesForImportType(QString("Service"), FileList);
 
     // update the settings folder with the rollback folder files
     if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator(),
@@ -1249,7 +1249,8 @@ bool ImportExportThreadController::CompareSoftwareVersions() {
 
 /****************************************************************************/
 bool ImportExportThreadController::SearchAndMountTheDevice(bool IsImport) {
-    return true;
+    Q_UNUSED(IsImport)
+#if defined(__arm__) || defined(__TARGET_ARCH_ARM) || defined(_M_ARM)
     // create the QProcess
     QProcess ProcToMountUSB;
     // set the working directory "/dev"
@@ -1284,6 +1285,9 @@ bool ImportExportThreadController::SearchAndMountTheDevice(bool IsImport) {
     // log the event code
     Global::EventObject::Instance().RaiseEvent(EVENT_IMPORTEXPORT_NO_USB);
     return false;
+#else
+    return true;
+#endif
 }
 
 /****************************************************************************/
@@ -1476,7 +1480,7 @@ bool ImportExportThreadController::ImportLanguageFiles() {
 void ImportExportThreadController::UnMountTheDevice() {
     // store the current directory path otherwise if we change the
     // directory path then export process cannot start it
-    return;
+#if defined(__arm__) || defined(__TARGET_ARCH_ARM) || defined(_M_ARM)
     QString CurrentDir = QDir::currentPath();
 
     // check the USB directory exists or not  "/mnt/USB"
@@ -1490,6 +1494,9 @@ void ImportExportThreadController::UnMountTheDevice() {
     }
     // reset the path
     (void)QDir::setCurrent(CurrentDir);
+#else
+    return;
+#endif
 }
 
 /****************************************************************************/
