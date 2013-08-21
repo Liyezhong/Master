@@ -44,12 +44,14 @@ CProgramCommandInterface::CProgramCommandInterface(CDataManager *p_DataManager,
  */
 /****************************************************************************/
 void CProgramCommandInterface::RegisterCommands() {
-    mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdProgramUpdate, DataManager::CProgramCommandInterface>
-            (&CProgramCommandInterface::UpdateProgram, this);
-    mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdNewProgram, DataManager::CProgramCommandInterface>
-            (&CProgramCommandInterface::AddProgram, this);
-    mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdProgramDeleteItem, DataManager::CProgramCommandInterface>
-            (&CProgramCommandInterface::DeleteProgram, this);
+    if (mp_MasterThreadController) {
+        mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdProgramUpdate, DataManager::CProgramCommandInterface>
+                (&CProgramCommandInterface::UpdateProgram, this);
+        mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdNewProgram, DataManager::CProgramCommandInterface>
+                (&CProgramCommandInterface::AddProgram, this);
+        mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdProgramDeleteItem, DataManager::CProgramCommandInterface>
+                (&CProgramCommandInterface::DeleteProgram, this);
+    }
 }
 
 /****************************************************************************/
@@ -92,21 +94,26 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
         // If error occurs , get errors and send errors to GUI
         //ErrorString = "sdfsdfsdfsdfsafd";
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_ADD_FAILED_INTERNAL_ERR);
-        mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel, ErrorString, Global::GUIMSGTYPE_INFO);
+        if(mp_MasterThreadController){
+            mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel, ErrorString, Global::GUIMSGTYPE_INFO);
+        }
         return;
     }
     else {
         //BroadCast Command
         //Increment NextFreeProgramId
-        static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->GetNextFreeProgID(true);
-        mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-        ProgramDataStream.device()->reset();
+        (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->GetNextFreeProgID(true);
+        if(mp_MasterThreadController){
+            mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
+        }
+        (void) ProgramDataStream.device()->reset();
         ProgramDataStream << Program ;
-         MsgClasses::CmdNewProgram* p_Command = new MsgClasses::CmdNewProgram(1000, ProgramDataStream);
-        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
+         if(mp_MasterThreadController){
+             mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdNewProgram(1000, ProgramDataStream)));
+         }
         qDebug()<<"\n\n\n Adding New Program Success";
     }
-    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
+    (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
 }
 
 /****************************************************************************/
@@ -137,16 +144,19 @@ void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClas
         else {
             DataManager::Helper::ErrorIDToString(ErrorList, ErrorString);
         }
-        mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel);
+        if(mp_MasterThreadController){
+            mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel);
+        }
         qDebug()<<"\n\n Delete Program Failed";
     }
     else {
-        mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-        MsgClasses::CmdProgramDeleteItem* p_Command = new MsgClasses::CmdProgramDeleteItem(5000, Cmd.GetItemId());
-        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
-        qDebug()<<"\n\n Delete Program Success";
+        if(mp_MasterThreadController){
+            mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
+            mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdProgramDeleteItem(5000, Cmd.GetItemId())));
+            qDebug()<<"\n\n Delete Program Success";
+        }
     }
-    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
+    (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
 //    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->Write();
 
 //    if (static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->VerifyData(true)) {
@@ -176,7 +186,7 @@ void CProgramCommandInterface::UpdateProgram(Global::tRefType Ref, const MsgClas
     QByteArray ProgramData(const_cast<QByteArray &>(Cmd.GetProgramData()));
     QDataStream ProgramDataStream(&ProgramData, QIODevice::ReadWrite);
     ProgramDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
-    ProgramDataStream.device()->reset();
+    (void)ProgramDataStream.device()->reset();
     ProgramDataStream >> Program;
 
 
@@ -202,22 +212,27 @@ void CProgramCommandInterface::UpdateProgram(Global::tRefType Ref, const MsgClas
         // If error occurs , get errors and send errors to GUI
         //ErrorString = "sdfsdfsdfsdfsafd";
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_ADD_FAILED_INTERNAL_ERR);
-        mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel, ErrorString, Global::GUIMSGTYPE_INFO);
+        if(mp_MasterThreadController){
+            mp_MasterThreadController->SendAcknowledgeNOK(Ref, AckCommandChannel, ErrorString, Global::GUIMSGTYPE_INFO);
+        }
         return;
     }
     else
     {
 //        *(static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList) = TempProgramList;
         //Send Ack
-        mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-        ProgramDataStream.device()->reset();
+        if(mp_MasterThreadController){
+            mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
+        }
+        (void)ProgramDataStream.device()->reset();
         ProgramDataStream << Program ;
-        MsgClasses::CmdProgramUpdate* p_ProgramCommand = new MsgClasses::CmdProgramUpdate(1000, ProgramDataStream);
-        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_ProgramCommand));
-        qDebug()<<"\n\n Update Program Success";
-        emit StartableProgramEdited(Program.GetID());
+        if(mp_MasterThreadController){
+            mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdProgramUpdate(1000, ProgramDataStream)));
+            qDebug()<<"\n\n Update Program Success";
+            emit StartableProgramEdited(Program.GetID());
+        }
     }
-    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
+    (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramList->Write();
 }
 
 }// End of namespace DataManager

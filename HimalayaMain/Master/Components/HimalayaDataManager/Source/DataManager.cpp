@@ -37,9 +37,9 @@ CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThre
     mp_ReagentGroupCommandInterface(NULL),
     mp_ProgramCommandInterface(NULL)
 {
-    quint32 ReturnCode  = InitDataContainer();
+    quint32 ReturnCode  = InitializeDataContainer();
     if (ReturnCode != INIT_OK) {
-        qDebug() << "CDataManager::Constructor / InitDataContainer failed";
+        qDebug() << "CDataManager::Constructor / InitializeDataContainer failed";
         Global::EventObject::Instance().RaiseEvent(ReturnCode);
     }
 }
@@ -52,7 +52,7 @@ CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThre
     mp_ProgramCommandInterface(NULL)
 {
     Q_UNUSED(Path)
-    quint32 ReturnCode = InitDataContainer();
+    quint32 ReturnCode = InitializeDataContainer();
     if (ReturnCode != INIT_OK) {
         Global::EventObject::Instance().RaiseEvent(ReturnCode);
     }
@@ -60,12 +60,14 @@ CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThre
 
 CDataManager::~CDataManager()
 {
-    if (!DeinitDataContainer()) {
-        qDebug() << "CDataManager::Destructor / DeinitDataContainer failed";
+    try {
+        (void)(DeinitializeDataContainer());
+    }
+    catch(...){
     }
 }
 
-quint32 CDataManager::InitDataContainer()
+quint32 CDataManager::InitializeDataContainer()
 {
     quint32 ReturnCode = INIT_OK;
     //Create DataContainer - Inturn creates individual containers
@@ -79,43 +81,43 @@ quint32 CDataManager::InitDataContainer()
     mp_DataContainer->ReagentGroupList->SetDataVerificationMode(false);
     QString FilenameReagentGroupList = Global::SystemPaths::Instance().GetSettingsPath() + "/" + REAGENT_GROUPS_XML;
     if (!mp_DataContainer->ReagentGroupList->Read(FilenameReagentGroupList)) {
-        qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ReagentGroupList->Read failed with filename: " << FilenameReagentGroupList;
+        qDebug() << "CDataManager::InitializeDataContainer failed, because mp_DataContainer->ReagentGroupList->Read failed with filename: " << FilenameReagentGroupList;
         return EVENT_DM_PROGRAM_XML_READ_FAILED;
     }
 
     mp_DataContainer->ReagentGroupColorList->SetDataVerificationMode(false);
     QString FilenameReagentGroupColorList = Global::SystemPaths::Instance().GetSettingsPath() + "/" + REAGENT_GROUPS_COLOR_XML;
     if (!mp_DataContainer->ReagentGroupColorList->Read(FilenameReagentGroupColorList)) {
-        qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ReagentGroupColorList->Read failed with filename: " << FilenameReagentGroupColorList;
+        qDebug() << "CDataManager::InitializeDataContainer failed, because mp_DataContainer->ReagentGroupColorList->Read failed with filename: " << FilenameReagentGroupColorList;
         return EVENT_DM_PROGRAM_XML_READ_FAILED;
     }
 
     mp_DataContainer->ReagentList->SetDataVerificationMode(false);
     QString FilenameReagentList = Global::SystemPaths::Instance().GetSettingsPath() + "/" + REAGENTS_XML;
     if (!mp_DataContainer->ReagentList->Read(FilenameReagentList)) {
-        qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ReagentList->Read failed with filename: " << FilenameReagentList;
+        qDebug() << "CDataManager::InitializeDataContainer failed, because mp_DataContainer->ReagentList->Read failed with filename: " << FilenameReagentList;
         return EVENT_DM_REAGENT_XML_READ_FAILED;
     }
 
     mp_DataContainer->ProgramList->SetDataVerificationMode(false);
     QString FilenameProgramList = Global::SystemPaths::Instance().GetSettingsPath() + "/" + PROGRAMS_XML;
     if (!mp_DataContainer->ProgramList->Read(FilenameProgramList)) {
-        qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ProgramList->Read failed with filename: " << FilenameProgramList;
+        qDebug() << "CDataManager::InitializeDataContainer failed, because mp_DataContainer->ProgramList->Read failed with filename: " << FilenameProgramList;
         return EVENT_DM_PROGRAM_XML_READ_FAILED;
     }
 
-        mp_DataContainer->ProgramSettings->SetDataVerificationMode(false);
-        QString FilenameProgramSettings = Global::SystemPaths::Instance().GetSettingsPath() + "/" + PROGRAM_SETTINGS_XML;
-        if (!mp_DataContainer->ProgramSettings->Read(FilenameProgramSettings)) {
-            qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ProgramSettings->Read failed with filename: " << FilenameProgramSettings;
-            return EVENT_DM_PROGRAM_XML_READ_FAILED; // TBD need to be changed
-        }
+    mp_DataContainer->ProgramSettings->SetDataVerificationMode(false);
+    QString FilenameProgramSettings = Global::SystemPaths::Instance().GetSettingsPath() + "/" + PROGRAM_SETTINGS_XML;
+    if (!mp_DataContainer->ProgramSettings->Read(FilenameProgramSettings)) {
+         qDebug() << "CDataManager::InitializeDataContainer failed, because mp_DataContainer->ProgramSettings->Read failed with filename: " << FilenameProgramSettings;
+         return EVENT_DM_PROGRAM_XML_READ_FAILED; // TBD need to be changed
+    }
 
     mp_DataContainer->StationList->SetDataVerificationMode(false);
 
     QString FilenameStationList = Global::SystemPaths::Instance().GetSettingsPath() + "/" + STATIONS_XML;
     if (!mp_DataContainer->StationList->Read(FilenameStationList)) {
-        qDebug() << "CDataManager::InitDataContainer failed, \
+        qDebug() << "CDataManager::InitializeDataContainer failed, \
                 because mp_DataContainer->StationtList->Read failed with filename: "
                 << FilenameStationList;
         return EVENT_DM_STATIONS_XML_READ_FAILED;
@@ -127,15 +129,15 @@ quint32 CDataManager::InitDataContainer()
     mp_DataContainer->StationList->SetDataVerificationMode(true);
 
     if (!mp_DataContainer->ProgramList->VerifyData()) {
-        qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ProgramList->VerifyData failed.";
+        qDebug() << "CDataManager::InitializeDataContainer failed, because mp_DataContainer->ProgramList->VerifyData failed.";
         return EVENT_DM_PROGRAM_VERIFICATION_FAILED;
     }
     if (!mp_DataContainer->ReagentList->VerifyData()) {
-        qDebug() << "CDataManager::InitDataContainer failed, because mp_DataContainer->ReagentList->VerifyData failed.";
+        qDebug() << "CDataManager::InitializeDataContainer failed, because mp_DataContainer->ReagentList->VerifyData failed.";
         return EVENT_DM_REAGENT_VERIFICATION_FAILED;
     }
     if (!mp_DataContainer->StationList->VerifyData()) {
-        qDebug() << "CDataManager::InitDataContainer failed,\
+        qDebug() << "CDataManager::InitializeDataContainer failed,\
                 because mp_DataContainer->StationList->VerifyData failed.";
         return EVENT_DM_STATION_VERIFICATION_FAILED;
     }
@@ -162,7 +164,7 @@ quint32 CDataManager::InitDataContainer()
     return INIT_OK;
 }
 
-bool CDataManager::DeinitDataContainer()
+bool CDataManager::DeinitializeDataContainer()
 {
     delete mp_ProgramCommandInterface;
     delete mp_StationCommandInterface;
