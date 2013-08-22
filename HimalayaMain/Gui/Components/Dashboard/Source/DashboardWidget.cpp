@@ -20,7 +20,6 @@
 #include "Global/Include/Utils.h"
 #include "Dashboard/Include/DashboardWidget.h"
 #include "ui_DashboardWidget.h"
-#include <QDebug>
 #include "MainMenu/Include/SliderControl.h"
 #include "Dashboard/Include/DashboardProgramStatusWidget.h"
 #include "Dashboard/Include/CassetteNumberInputWidget.h"

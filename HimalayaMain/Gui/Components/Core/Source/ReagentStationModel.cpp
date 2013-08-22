@@ -29,8 +29,7 @@
 #include "Programs/Include/ProgramWidget.h"
 #include "Application/Include/LeicaStyle.h"
 
-#include <QPixmap>
-#include <QDebug>
+
 
 namespace Core {
 
@@ -44,6 +43,7 @@ namespace Core {
 CReagentStationModel::CReagentStationModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
 {
     mp_ReagentList = NULL;
+    mp_ReagentGroupList = NULL;
     mp_Parent = NULL;
     mp_StationList = NULL;
     m_FilterLeicaReagent = false;
@@ -178,7 +178,7 @@ QVariant CReagentStationModel::data(const QModelIndex &Index, int Role) const
 {
     DataManager::CReagent *p_Reagent = NULL;
     DataManager::CDashboardStation *p_Station = NULL;
-    if (mp_ReagentList == NULL && mp_StationList == NULL) {
+    if (mp_ReagentList == NULL || mp_StationList == NULL) {
         return QVariant();
     }
     if (Index.row() < m_ReagentNames.count()) {

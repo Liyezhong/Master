@@ -22,9 +22,7 @@
 #include "Core/Include/DataConnector.h"
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
-#include <QDebug>
 #include <QGraphicsProxyWidget>
-#include <QApplication>
 
 namespace Dashboard {
 
@@ -670,7 +668,7 @@ void CDashboardScene::OnPauseStationSuckDrain()
    for (int i = 0; i < mp_DashboardStationItems.size(); i++)
    {
         Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
-        if (item->StationItemID() == m_SuckDrainStationId)
+        if (item->GetStationItemID() == m_SuckDrainStationId)
         {
             item->PauseSuckDrain();
             mp_DashboardStationRetort->StationSelected(true);
@@ -726,7 +724,7 @@ void CDashboardScene::OnStationSuckDrain(const QString& StationId, bool IsStart,
    for (int i = 0; i < mp_DashboardStationItems.size(); i++)
    {
         Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
-        if (item->StationItemID() == StationId)
+        if (item->GetStationItemID() == StationId)
         {
             item->SuckDrain(IsStart, IsSuck);
             mp_DashboardStationRetort->StationSelected(true);

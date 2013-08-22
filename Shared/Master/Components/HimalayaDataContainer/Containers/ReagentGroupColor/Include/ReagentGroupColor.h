@@ -19,7 +19,6 @@
 #ifndef DATAMANAGER_REAGENTGROUPCOLOR_H
 #define DATAMANAGER_REAGENTGROUPCOLOR_H
 
-#include <QXmlStreamReader>
 
 #include "DataManager/Helper/Include/Types.h"
 #include "DataManager/Helper/Include/Helper.h"

@@ -34,7 +34,11 @@ namespace Settings {
  */
 /****************************************************************************/
 CAlarmSettingsDlg::CAlarmSettingsDlg(AlarmDialogType DialogType, QWidget *p_Parent) :
-    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CAlarmSettingsDlg),
+    MainMenu::CDialogFrame(p_Parent), m_Type(false), mp_Ui(new Ui::CAlarmSettingsDlg),
+    m_CurrentUserRole(MainMenu::CMainWindow::Service),
+    mp_MainWindow(NULL),
+    mp_UserSettings(NULL),
+    m_ProcessRunning(false),
     m_AlarmScreen(DialogType)
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -137,7 +141,7 @@ void CAlarmSettingsDlg::changeEvent(QEvent *p_Event)
  *  \iparam p_Event = Show event
  */
 /****************************************************************************/
-void CAlarmSettingsDlg::showEvent(QEvent *p_Event)
+void CAlarmSettingsDlg::showEvent(QShowEvent *p_Event)
 {
     if((p_Event != NULL) && !p_Event->spontaneous()) {
         ResetButtons();

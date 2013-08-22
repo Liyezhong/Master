@@ -72,14 +72,15 @@ void CCassetteNumberInputWidget::OnOK()
               delete pMessageDlg;
               return;
           }
+          delete pMessageDlg;
     }
-    this->close();
+    (void)this->close();
 }
 
 void CCassetteNumberInputWidget::OnCancel()
 {
     m_CassetteNumber = -1;
-    this->close();
+    (void)this->close();
 }
 
 int CCassetteNumberInputWidget::CassetteNumber()

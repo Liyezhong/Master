@@ -22,7 +22,6 @@
 #define DASHBOARD_DASHBOARDENDTIMEWIDGET_H
 
 
-#include <QWidget>
 #include "Core/Include/DataConnector.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/Program.h"

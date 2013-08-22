@@ -53,7 +53,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdQuitAppShutdownR
 {
     // copy base class data
     Cmd.CopyToStream(Stream);
-    Stream << Cmd.QuitAppShutdownActionType();
+    Stream << (int)Cmd.QuitAppShutdownActionType();
     return Stream;
 }
 

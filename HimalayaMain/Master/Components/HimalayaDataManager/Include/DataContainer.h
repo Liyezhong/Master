@@ -21,7 +21,6 @@
 #ifndef DATAMANAGER_OBSOLETE_DATACONTAINER_H
 #define DATAMANAGER_OBSOLETE_DATACONTAINER_H
 
-#include <QString>
 #include <QIODevice>
 
 #include "HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupList.h"

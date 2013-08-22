@@ -73,7 +73,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramAction &C
     Cmd.CopyToStream(Stream);
     // copy internal data
     Stream << Cmd.m_ProgramID;
-    Stream << Cmd.m_ActionType;
+    Stream << (int)Cmd.m_ActionType;
     Stream << Cmd.m_ProgramEndDateTime;
     return Stream;
 }

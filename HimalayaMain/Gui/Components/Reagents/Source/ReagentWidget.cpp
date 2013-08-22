@@ -24,7 +24,6 @@
 #include "Reagents/Include/ReagentWidget.h"
 #include "Reagents/Include/ModifyReagentRMSDlg.h"
 #include "ui_ReagentWidget.h"
-#include <QDebug>
 
 namespace Reagents {
 
@@ -41,7 +40,6 @@ namespace Reagents {
 CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
                                  MainMenu::CMainWindow *p_Parent,
                                  KeyBoard::CKeyBoard *p_KeyBoard):
-                                 QWidget(p_Parent),
                                  mp_Ui(new Ui::CReagentWidget),
                                  mp_DataConnector(p_DataConnector),                                 
                                  mp_MainWindow(p_Parent),

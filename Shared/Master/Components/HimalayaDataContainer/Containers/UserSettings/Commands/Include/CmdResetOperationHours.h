@@ -52,7 +52,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdResetOperationHo
 {
     // copy base class data
     Cmd.CopyToStream(Stream);
-    Stream << Cmd.m_ResetOperationHoursType;
+    Stream << (int)Cmd.m_ResetOperationHoursType;
     return Stream;
 }
 

@@ -35,7 +35,6 @@
 #include "MainMenu/Include/MainWindow.h"
 #include "Programs/Include/ProgramWidget.h"
 #include "Programs/Include/StepModel.h"
-#include <QButtonGroup>
 
 //lint -sem(Programs::CModifyProgramStepDlg::InitDurationWidget, initializer)
 //lint -e1565

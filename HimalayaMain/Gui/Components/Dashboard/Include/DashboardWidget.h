@@ -29,8 +29,6 @@
 #include "Dashboard/Include/DashboardDataTypes.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
-#include <QFrame>
-#include <QGridLayout>
 
 
 namespace Dashboard {

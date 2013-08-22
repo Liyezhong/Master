@@ -26,6 +26,9 @@
 #include "DataManager/Containers/UserSettings/Include/UserSettingsVerifier.h"
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationVerifier.h"
 
+//lint -sem(DataManager::CDataContainer::InitContainers, initializer)
+//lint -sem(DataManager::CDataContainer::DeinitContainers,cleanup)
+
 namespace DataManager {
 CDataContainer::CDataContainer() : m_IsInitialized(false), ProgramList(NULL),
                                     ReagentList(NULL), ReagentGroupList(NULL), DashboardStationList(NULL), SettingsInterface(NULL),

@@ -21,7 +21,6 @@
 #ifndef DATAMANAGER_GLOBAL_H
 #define DATAMANAGER_GLOBAL_H
 
-#include <QString>
 
 
 namespace DataManager {

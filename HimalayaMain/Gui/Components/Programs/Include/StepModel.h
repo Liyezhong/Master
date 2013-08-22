@@ -29,8 +29,6 @@
 #include "MainMenu/Include/TableMoving.h"
 #include "MainMenu/Include/ScrollTable.h"
 #include <QAbstractTableModel>
-#include <QMap>
-#include <QStringList>
 
 namespace DataManager
 {

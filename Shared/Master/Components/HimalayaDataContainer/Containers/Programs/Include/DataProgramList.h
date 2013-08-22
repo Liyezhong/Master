@@ -21,12 +21,6 @@
 #ifndef DATAMANAGER_DATAPROGRAMLIST_H
 #define DATAMANAGER_DATAPROGRAMLIST_H
 
-#include <QHash>
-#include <QList>
-#include <QReadWriteLock>
-#include <QBuffer>
-#include <QXmlStreamReader>
-#include <QXmlStreamWriter>
 
 #include "Global/Include/Translator.h"
 #include "DataManager/Helper/Include/Types.h"

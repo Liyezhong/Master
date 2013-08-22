@@ -21,7 +21,7 @@
 #ifndef DATAMANAGER_STATION_XMLDEFINITIONS_H
 #define DATAMANAGER_STATION_XMLDEFINITIONS_H
 
-#include <QString>
+
 
 namespace DataManager {
 namespace SN {

@@ -22,7 +22,7 @@
 #include "Global/Include/Utils.h"
 #include "Settings/Include/LanguageWidget.h"
 #include "ui_LanguageWidget.h"
-#include <QLocale>
+
 
 namespace Settings {
 
@@ -34,7 +34,12 @@ namespace Settings {
  */
 /****************************************************************************/
 CLanguageWidget::CLanguageWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
-    mp_Ui(new Ui::CLanguageWidget), mp_UserSettings(NULL), mp_MainWindow(NULL), m_ProcessRunning(false), mp_DataConnector(NULL)
+    mp_Ui(new Ui::CLanguageWidget),
+    mp_UserSettings(NULL),
+    mp_MainWindow(NULL),
+    m_ProcessRunning(false),
+    m_CurrentUserRole(MainMenu::CMainWindow::Operator),
+    mp_DataConnector(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
     mp_TableWidget = new MainMenu::CBaseTable;

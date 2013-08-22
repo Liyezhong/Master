@@ -21,8 +21,7 @@
 #ifndef DATAMANAGER_DATAPROGRAMLISTVERIFIER_H
 #define DATAMANAGER_DATAPROGRAMLISTVERIFIER_H
 
-#include <QString>
-#include <QXmlStreamReader>
+
 
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
@@ -75,7 +74,7 @@ public:
      *  \brief  Destructor
      */
     /****************************************************************************/
-    virtual ~CDataProgramListVerifier() {}
+    virtual ~CDataProgramListVerifier();
 private:
     CDataProgramList* mp_DPL;           //!< pointer to program list container
     ErrorHash_t m_ErrorsHash;           //!< To store Error ID and any arguments associated

@@ -21,7 +21,6 @@
 #ifndef DATAMANAGER_DATACONTAINER_H
 #define DATAMANAGER_DATACONTAINER_H
 
-#include <QString>
 #include <QIODevice>
 
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"

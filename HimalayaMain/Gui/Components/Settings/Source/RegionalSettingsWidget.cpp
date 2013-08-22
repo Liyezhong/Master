@@ -131,7 +131,11 @@ void CRegionalSettingsWidget::SetUserSettings(DataManager::CHimalayaUserSettings
 /****************************************************************************/
 void CRegionalSettingsWidget::OnApply()
 {
-    m_UserSettingsTemp = *mp_UserSettings;
+    if (mp_UserSettings)
+    {
+        m_UserSettingsTemp = *mp_UserSettings;
+    }
+
     if(mp_Ui->radioInternational->isChecked()) {
         m_UserSettingsTemp.SetDateFormat(Global::DATE_INTERNATIONAL);
     }

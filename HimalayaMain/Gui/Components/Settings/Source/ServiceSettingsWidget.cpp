@@ -37,6 +37,9 @@ namespace Settings {
 /****************************************************************************/
 CServiceSettingsWidget::CServiceSettingsWidget(QWidget *p_Parent) :  MainMenu::CPanelFrame(p_Parent),
     mp_Ui(new Ui::CServiceSettingsWidget),
+    mp_MainWindow(NULL),
+    m_ProcessRunning(false),
+    m_CurrentUserRole(MainMenu::CMainWindow::Operator),
     mp_UserSettings(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -257,7 +260,7 @@ void CServiceSettingsWidget::OnShutdown()
     ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);//right
     ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);//left
     ConfirmationMessageDlg.HideCenterButton();
-    ConfirmationMessageDlg.exec();
+    (void)ConfirmationMessageDlg.exec();
 
     //send command to scheduler to shut Down
     emit AppQuitSystemShutdown(DataManager::QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN);

@@ -69,7 +69,6 @@
 #include <NetCommands/Include/CmdDayRunLogRequest.h>
 #include <NetCommands/Include/CmdDayRunLogRequestFile.h>
 #include <NetCommands/Include/CmdGuiInit.h>
-#include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/MsgBoxManager.h"
 
 namespace MsgClasses

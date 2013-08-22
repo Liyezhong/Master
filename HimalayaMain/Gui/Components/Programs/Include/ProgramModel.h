@@ -23,10 +23,7 @@
 
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include "MainMenu/Include/TableMoving.h"
-#include <QAbstractTableModel>
 #include "MainMenu/Include/MainWindow.h"
-#include <QMap>
-#include <QStringList>
 #include <QStyleOption>
 #include <QStandardItem>
 

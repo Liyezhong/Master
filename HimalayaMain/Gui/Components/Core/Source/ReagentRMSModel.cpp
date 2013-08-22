@@ -33,7 +33,6 @@
 
 
 #include <QPixmap>
-#include <QDebug>
 
 namespace Core {
 
@@ -202,6 +201,7 @@ QVariant CReagentRMSModel::data(const QModelIndex &Index, int Role) const
                         return QString("");
                     }
                 }
+                break;
             case 2:
                 if(m_CleaningReagent == false){
                     switch (Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION) {

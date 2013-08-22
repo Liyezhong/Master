@@ -25,11 +25,7 @@
 #include "Global/Include/Utils.h"
 #include "Global/Include/Exception.h"
 #include "Programs/Include/ProgramModel.h"
-#include <QDebug>
-#include <QPainter>
-#include <QPixmap>
-#include <QApplication>
-#include <QEvent>
+
 
 namespace Programs {
 const int VISIBLE_ROW_COUNT = 8;    //!< Number of rows visible in a table
