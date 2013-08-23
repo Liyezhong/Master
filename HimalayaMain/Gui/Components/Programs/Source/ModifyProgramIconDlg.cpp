@@ -23,7 +23,7 @@
 #include "Global/Include/Exception.h"
 #include "Programs/Include/ModifyProgramIconDlg.h"
 #include "ui_ModifyProgramIconDlg.h"
-#include <QDebug>
+
 
 namespace Programs {
 /****************************************************************************/

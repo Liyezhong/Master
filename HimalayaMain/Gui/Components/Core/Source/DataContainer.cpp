@@ -44,10 +44,15 @@ CDataContainer::CDataContainer() : m_IsInitialized(false), ProgramList(NULL),
 
 CDataContainer::~CDataContainer()
 {
-    if (!DeinitContainers()) {
-        qDebug() << "CDataContainer::Destructor / DeinitContainers failed";
-        Q_ASSERT(false);
+    try
+    {
+        if (!DeinitContainers()) {
+            qDebug() << "CDataContainer::Destructor / DeinitContainers failed";
+            Q_ASSERT(false);
+        }
     }
+    catch(...)
+    {}
 }
 
 bool CDataContainer::InitContainers()

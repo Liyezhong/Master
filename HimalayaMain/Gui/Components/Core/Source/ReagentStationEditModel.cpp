@@ -38,16 +38,19 @@ namespace Core {
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CReagentStationEditModel::CReagentStationEditModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
+CReagentStationEditModel::CReagentStationEditModel(QObject *p_Parent) :
+    QAbstractTableModel(p_Parent),
+    mp_ReagentList(NULL),
+    mp_ReagentGroupList(NULL),
+    mp_DashboardDataStationList(NULL),
+    mp_Parent(NULL),
+    m_FilterLeicaReagent(false),
+    m_ParaffinReagent(false),
+    m_ModifiedProgramStepDlg(false),
+    m_Columns(0),
+    m_VisibleRowCount(7)
 {
-    mp_ReagentList = NULL;
-    mp_ReagentGroupList = NULL;
-    mp_Parent = NULL;
-    m_FilterLeicaReagent = false;
-    m_ParaffinReagent = false;
-    m_ModifiedProgramStepDlg = false;
-    m_Columns = 0;
-    m_VisibleRowCount = 7;
+
 }
 
 /****************************************************************************/

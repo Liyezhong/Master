@@ -1031,11 +1031,11 @@ void CDataConnector::ProcessStateHandler(Global::tRefType Ref, const NetCommands
  *  \iparam Settings = Settings reference
  */
 /****************************************************************************/
-void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &Settings)
+void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &settings)
 {
     QByteArray ByteArray;
     QDataStream SettingsDataStream(&ByteArray, QIODevice::ReadWrite);
-    SettingsDataStream << Settings;
+    SettingsDataStream << settings;
     (void)SettingsDataStream.device()->reset();
     MsgClasses::CmdChangeUserSettings Command(5000, SettingsDataStream);    
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnUserSettingsAck, this);

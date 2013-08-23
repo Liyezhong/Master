@@ -59,7 +59,6 @@ CDashboardEndTimeWidget::CDashboardEndTimeWidget(Core::CDataConnector *p_DataCon
     m_btnPixmap.load(":/HimalayaImages/LongButton/LongButton_Disabled.png");
     m_progBarPixmap.load(":/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png");
 
-    mp_UserSettings = new DataManager::CUserSettings();
     mp_PlastiqueStyle = new QPlastiqueStyle();
 
     mp_ProgressTimer = new QTimer(this);
@@ -77,7 +76,7 @@ CDashboardEndTimeWidget::CDashboardEndTimeWidget(Core::CDataConnector *p_DataCon
 CDashboardEndTimeWidget::~CDashboardEndTimeWidget()
 {
     try {
-        delete mp_UserSettings;
+        mp_UserSettings = NULL;
         delete mp_Ui;
         delete mp_PlastiqueStyle;
         delete mp_ProgressTimer;

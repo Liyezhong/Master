@@ -33,6 +33,11 @@ CDataReagentListVerifier::CDataReagentListVerifier() : mp_DRL(NULL)
 
 }
 
+CDataReagentListVerifier::~CDataReagentListVerifier()
+{
+    mp_DRL = NULL;
+}
+
 /****************************************************************************/
 /*!
  *  \brief Verifies the Constraints of Particular Reagent list

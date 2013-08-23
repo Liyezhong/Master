@@ -32,8 +32,6 @@
 #include "Reagents/Include/ReagentRMSWidget.h"
 
 
-#include <QPixmap>
-
 namespace Core {
 
 /****************************************************************************/

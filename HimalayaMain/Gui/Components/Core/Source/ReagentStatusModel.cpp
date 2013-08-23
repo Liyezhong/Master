@@ -185,10 +185,11 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
     }
 
     if (Index.row() < m_ReagentNames.count()) {
-        p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_Identifiers[m_StationNames[Index.row()]]));
-        if (!p_Reagent)
-            return QVariant();
+        p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_Identifiers[m_StationNames[Index.row()]])); 
     }
+
+    if (!p_Reagent)
+        return QVariant();
 
     if (Index.row() < m_ReagentNames.count()
             && (p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]]))))
@@ -260,7 +261,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                     return QString("None");
                 }
             case 2://column 3
-                if (p_Reagent) {
+                if (mp_ReagentGroupList) {
 
                     bool isCleaningReagentGroup = mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->IsCleaningReagentGroup();
                     if (((Global::RMS_OFF == m_RMSCleaningOptions) || (m_RMSOptions != m_RMSCleaningOptions))
@@ -298,7 +299,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                    return QString("");
 
             case 3:
-                if (p_Reagent) {
+                if (mp_ReagentGroupList) {
                     bool isCleaningReagentGroup = mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->IsCleaningReagentGroup();
                     if (((Global::RMS_OFF == m_RMSOptions) || (m_RMSOptions != m_RMSCleaningOptions)) && !isCleaningReagentGroup)
                     {
@@ -326,12 +327,13 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                        }
                        break;
                      }
+                    return QString("");
                 }
                 else
                    return QString("");
 
             case 4:
-                if (p_Reagent) {
+                if (mp_UserSettings) {
                     switch(mp_UserSettings->GetDateFormat()){
                     default:
                         return QString("");
@@ -342,6 +344,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                     case Global::DATE_US:
                         return p_Station->GetDashboardReagentExchangeDate().toString("MM/dd/yyyy");
                     }
+                    return QString("");
                  }
                  else
                    return QString("");

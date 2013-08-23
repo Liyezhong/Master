@@ -80,11 +80,9 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     mp_ModifyProgramIconDlg = new Programs::CModifyProgramIconDlg(this, mp_MainWindow);
     mp_KeyBoardWidget = p_KeyBoard;
     mp_TableWidget = new MainMenu::CBaseTable;
-    mp_Program = new DataManager::CProgram;
     mp_TableWidget->horizontalHeader()->show();
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
     mp_TableWidget->SetVisibleRows(6);
-    mp_NewProgram = new DataManager::CProgram;
     mp_ModifyProgStepDlg = new Programs::CModifyProgramStepDlg(this, p_MainWindow, p_DataConnector);
     mp_ModifyProgStepDlg->setModal(true);
     CONNECTSIGNALSLOT(mp_Ui->btnEdit, clicked(), this, OnEdit());
@@ -275,7 +273,9 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
 /****************************************************************************/
 void CModifyProgramDlg::NewProgram()
 {
-    mp_NewProgram = NULL;
+    if (mp_NewProgram)
+        delete mp_NewProgram;
+
     mp_NewProgram = new DataManager::CProgram();
    //Pass a value same as the one passed to SetVisibleRows()
     m_StepModel.SetVisibleRowCount(6);
@@ -484,50 +484,17 @@ void CModifyProgramDlg::OnSave()
     m_Program.SetName(mp_Ui->btnPrgName->text());
     if (m_ButtonType == EDIT_BTN_CLICKED) {
         emit UpdateProgram(m_Program);
-//            if (m_ProgramListClone.UpdateProgram(&m_Program)== true){
-//                    emit UpdateProgram(m_Program);
-//            }
-//            else {
-//                ListOfErrors_t &ErrorList = m_ProgramListClone.GetErrorList();
-//                QString ErrorString;
-//                DataManager::Helper::ErrorIDToString(ErrorList, ErrorString);
-//                mp_MessageDlg->SetText(ErrorString);
-//                (void) mp_MessageDlg->exec();
-//            }
     }
     else if (m_ButtonType == COPY_BTN_CLICKED) {
             m_Program.SetFavorite(false);
             m_Program.SetID(m_ProgramListClone.GetNextFreeProgID(true));
             emit AddProgram(m_Program);
-//            if (m_ProgramListClone.AddProgram(&m_Program) == true) {
-//                emit AddProgram(m_Program);
-//                accept();
-//        }
-//            else {
-//                ListOfErrors_t &ErrorList = m_ProgramListClone.GetErrorList();
-//                QString ErrorString;
-//                DataManager::Helper::ErrorIDToString(ErrorList, ErrorString);
-//                mp_MessageDlg->SetText(ErrorString);
-//                (void) mp_MessageDlg->exec();
-
-//            }
     }
     else {
         mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
         mp_NewProgram->SetIcon(m_Icon);
             mp_NewProgram->SetID(m_ProgramListClone.GetNextFreeProgID(true));
              emit AddProgram(*mp_NewProgram);
-//            if (m_ProgramListClone.AddProgram(mp_NewProgram)== true) {
-//                emit AddProgram(*mp_NewProgram);
-//            }
-//            else {
-//                ListOfErrors_t &ErrorList = m_ProgramListClone.GetErrorList();
-//                QString ErrorString;
-//                DataManager::Helper::ErrorIDToString(ErrorList, ErrorString);
-//                mp_MessageDlg->SetText(ErrorString);
-//                (void) mp_MessageDlg->exec();
-//            }
-
     }
 }
 

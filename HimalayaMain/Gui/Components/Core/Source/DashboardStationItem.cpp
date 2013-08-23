@@ -507,7 +507,7 @@ void CDashboardStationItem::DrawReagentName(QPainter & Painter)
         if (p_Reagent)
         {
             Painter.rotate(270.0);
-            Painter.drawText(QRect(-90, -3, 75, 60 ), (int)(Qt::TextWordWrap | Qt::AlignVCenter | Qt::AlignLeft), p_Reagent->GetReagentName());
+            Painter.drawText(QRect(-90, -3, 75, 60 ), (int)Qt::TextWordWrap | (int)Qt::AlignVCenter | (int)Qt::AlignLeft, p_Reagent->GetReagentName());
             Painter.rotate(-270.0);
         }
     }
