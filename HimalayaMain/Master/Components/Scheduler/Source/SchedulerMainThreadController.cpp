@@ -1492,6 +1492,12 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
     else
     {
 ERROR:
+        //send command to main controller to tell init failed
+        MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_SELFTEST_FAILED));
+        Q_ASSERT(commandPtr);
+        Global::tRefType Ref = GetNewCommandRef();
+        SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
         if(RetCode == DCL_ERR_TIMEOUT)
         {
             qDebug()<<"Some devices are not found during DCL's initialization period.";

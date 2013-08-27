@@ -170,6 +170,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
 
     mp_SplashWidget = new SplashWidget();
     CONNECTSIGNALSLOT(this, ProgramStartReady(), this, OnProgramStartReady());
+    CONNECTSIGNALSLOT(this, ProgramSelfTestFailed(), this, OnProgramSelfTestFailed());
     m_pServiceProcess = new QProcess();
 
 }
@@ -990,8 +991,8 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         NetCommands::CmdGuiInit Cmd(2000, true);
         (void)m_NetworkObject.SendCmdToMaster(Cmd, &CDataConnector::OnAckTwoPhase, this);
         QRect scr = mp_MainWindow->rect();
-        mp_SplashWidget->move( scr.center() - mp_SplashWidget->rect().center());
-        mp_SplashWidget->exec();
+        //mp_SplashWidget->move( scr.center() - mp_SplashWidget->rect().center());
+        //mp_SplashWidget->exec();
     }
     return;
 }
@@ -1000,6 +1001,12 @@ void CDataConnector::OnProgramStartReady()
 {
     mp_SplashWidget->accept();
 }
+
+void CDataConnector::OnProgramSelfTestFailed()
+{
+    mp_SplashWidget->accept();
+}
+
 
 /****************************************************************************/
 /*!
@@ -1626,6 +1633,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         case DataManager::PROGRAM_READY:
         {
              emit ProgramStartReady();
+        }
+        break;
+        case DataManager::PROGRAM_SELFTEST_FAILED:
+        {
+             emit ProgramSelfTestFailed();
         }
         break;
         case DataManager::PROGRAM_WILL_COMPLETE:
