@@ -252,6 +252,7 @@
                 <CAN_message key="TempCtrlNotiInRange" commandclass="0x4" commandcode="0x11" ms="0x0"/>
                 <CAN_message key="TempCtrlNotiOutOfRange" commandclass="0x4" commandcode="0x12" ms="0x0"/>
                 <CAN_message key="TempCtrlLevelSensorState" commandclass="0x4" commandcode="0x13" ms="0x0"/>
+                <CAN_message key="TempCtrlSetSwitchState" commandclass="0x4" commandcode="0x14" ms="0x1"/>
             </CAN_messages>
         </function_module>
         <function_module type="UART" moduleID="12">
@@ -297,6 +298,7 @@
                 <CAN_message key="PressureCtrlValveSet" commandclass="0x4" commandcode="0x13" ms="0x1"/>
                 <CAN_message key="PressureCtrlCalibration" commandclass="0x4" commandcode="0x14" ms="0x1"/>
                 <CAN_message key="PressureCtrlPWMParamSet" commandclass="0x4" commandcode="0x15" ms="0x1"/>
+                <CAN_message key="PressureCtrlFanSet" commandclass="0x4" commandcode="0x16" ms="0x1"/>
             </CAN_messages>
         </function_module>
     </function_modules>
