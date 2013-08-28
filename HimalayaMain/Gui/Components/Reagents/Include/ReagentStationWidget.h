@@ -51,6 +51,7 @@ private:
     MainMenu::CFileView *mp_ReagentStatusWidgetView;     //!< Content of this widget
     KeyBoard::CKeyBoard *mp_KeyBoard;
     QString m_strSelectReagent;
+    QList<QString> m_StationList;
 protected:
     void showEvent(QShowEvent *);
     void changeEvent(QEvent *p_Event);
@@ -74,7 +75,6 @@ private slots:
     void OnProcessStateChanged();
     void OnUserRoleChanged();
     void StationReagentUpdated(QString);
-
 signals:
     /****************************************************************************/
     /*!
@@ -86,6 +86,10 @@ signals:
     void UpdateStationChangeReagent(const QString&, const QString&);
     void UpdateStationSetAsEmpty(const QString&);
     void UnselectProgram();
+
+public slots:
+    void UpdateSelectedStationList(QList<QString>&);
+
 
 };
 

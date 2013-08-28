@@ -18,13 +18,7 @@
  */
 /****************************************************************************/
 
-#include <QDebug>
-#include <QFile>
-#include <QReadLocker>
-#include <QWriteLocker>
-#include <QBuffer>
-#include <QXmlStreamReader>
-#include <QXmlStreamWriter>
+
 
 #include "Global/Include/Exception.h"
 #include "Global/Include/EventObject.h"

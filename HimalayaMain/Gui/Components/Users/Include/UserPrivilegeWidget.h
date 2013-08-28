@@ -25,7 +25,6 @@
 #include "KeyBoard/Include/KeyBoard.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "KeyBoard/Include/KeyBoardObserver.h"
-#include <QRegExpValidator>
 
 class QTimer;
 

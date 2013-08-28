@@ -21,8 +21,6 @@
 #ifndef MSGCLASSES_CMDREAGENTUPDATE_H
 #define MSGCLASSES_CMDREAGENTUPDATE_H
 
-#include <QByteArray>
-
 #include "Global/Include/Commands/Command.h"
 
 namespace MsgClasses {

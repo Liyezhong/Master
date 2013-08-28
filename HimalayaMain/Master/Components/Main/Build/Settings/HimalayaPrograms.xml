@@ -4,7 +4,7 @@
     <ProgramList NextProgramID="U1">
         <Program ID="L01" Name="TestLeicaProgram" NameID="" Icon="Icon8" LeicaProgram="false" Favorite="true">
             <StepList NextStepID="2">
-                <Step ID="1" ReagentID="L1" Duration="44m" Temperature="55" Pressure="On" Vacuum="On"/>
+                <Step ID="1" ReagentID="L1" Duration="44m" Temperature="45" Pressure="On" Vacuum="On"/>
             </StepList>
         </Program>
         <Program ID="C01" Name="CleaningProgram" NameID="50331652" Icon="Icon_Leica" LeicaProgram="true" Favorite="false">
@@ -28,7 +28,7 @@
         </Program>
         <Program ID="U01" Name="TestUserProgram" NameID="" Icon="Icon2" LeicaProgram="false" Favorite="true">
             <StepList NextStepID="2">
-                <Step ID="1" ReagentID="L1" Duration="15m" Temperature="55" Pressure="On" Vacuum="On"/>
+                <Step ID="1" ReagentID="L1" Duration="15m" Temperature="45" Pressure="On" Vacuum="On"/>
             </StepList>
         </Program>
         <Program ID="L02" Name="LeicaOvernight" NameID="50331650" Icon="Icon_Leica" LeicaProgram="true" Favorite="true">

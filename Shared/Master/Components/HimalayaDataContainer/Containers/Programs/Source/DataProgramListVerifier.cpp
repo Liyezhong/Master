@@ -18,9 +18,6 @@
  */
 /****************************************************************************/
 
-#include <QDebug>
-#include <QFile>
-#include <QStringList>
 
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramListVerifier.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
@@ -46,6 +43,12 @@ CDataProgramListVerifier::CDataProgramListVerifier()
     mp_DataContainer(NULL)
 {
 
+}
+
+CDataProgramListVerifier::~CDataProgramListVerifier()
+{
+    mp_DPL = NULL;
+    mp_DataContainer = NULL;
 }
 /****************************************************************************/
 /*!

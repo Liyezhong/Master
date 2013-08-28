@@ -22,9 +22,6 @@
 #define MSGCLASSES_CMDREAGENTADD_H
 
 
-#include <QBuffer>
-#include <QByteArray>
-
 #include "Global/Include/Commands/Command.h"
 
 namespace MsgClasses {

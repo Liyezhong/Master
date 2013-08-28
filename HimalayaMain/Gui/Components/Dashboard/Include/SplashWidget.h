@@ -1,7 +1,6 @@
 #ifndef SPLASHWIDGET_H
 #define SPLASHWIDGET_H
 
-#include <QWidget>
 #include "MainMenu/Include/DialogFrame.h"
 
 namespace Ui {

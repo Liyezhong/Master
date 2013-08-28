@@ -22,9 +22,7 @@
 #include "Core/Include/DataConnector.h"
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
-#include <QDebug>
 #include <QGraphicsProxyWidget>
-#include <QApplication>
 
 namespace Dashboard {
 
@@ -572,7 +570,8 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     mp_GraphicsProxyWidget->setPos(m_DashboardEndTimeWidgetPos);
     addItem(mp_GraphicsProxyWidget);
 
-    CONNECTSIGNALSIGNAL(mp_DashboardEndTimeWidget, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime &));
+    CONNECTSIGNALSLOT(this, OnSelectDateTime(const QDateTime &), mp_DashboardEndTimeWidget, UpdateDateTime(const QDateTime &));
+
     CONNECTSIGNALSLOT(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
                       mp_DashboardEndTimeWidget, OnProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
 
@@ -669,7 +668,7 @@ void CDashboardScene::OnPauseStationSuckDrain()
    for (int i = 0; i < mp_DashboardStationItems.size(); i++)
    {
         Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
-        if (item->StationItemID() == m_SuckDrainStationId)
+        if (item->GetStationItemID() == m_SuckDrainStationId)
         {
             item->PauseSuckDrain();
             mp_DashboardStationRetort->StationSelected(true);
@@ -725,7 +724,7 @@ void CDashboardScene::OnStationSuckDrain(const QString& StationId, bool IsStart,
    for (int i = 0; i < mp_DashboardStationItems.size(); i++)
    {
         Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
-        if (item->StationItemID() == StationId)
+        if (item->GetStationItemID() == StationId)
         {
             item->SuckDrain(IsStart, IsSuck);
             mp_DashboardStationRetort->StationSelected(true);

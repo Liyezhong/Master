@@ -19,7 +19,7 @@
 /****************************************************************************/
 
 #include "Dashboard/Include/DashboardComboBox.h"
-#include <QDebug>
+#include <QEvent>
 
 namespace Dashboard {
 

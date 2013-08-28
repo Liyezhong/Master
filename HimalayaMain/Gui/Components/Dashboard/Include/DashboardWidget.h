@@ -29,18 +29,18 @@
 #include "Dashboard/Include/DashboardDataTypes.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
-#include <QFrame>
-#include <QGridLayout>
 
 
 namespace Dashboard {
 
 class CDashboardProgramStatusWidget;
 class CCassetteNumberInputWidget;
+class CDashboardDateTimeWidget;
 
 namespace Ui {
     class CDashboardWidget;
 }
+
 
 /****************************************************************************/
 /**
@@ -77,7 +77,6 @@ private:
     QList<QString> m_StationList;
     int m_CurProgramStepIndex;
     bool m_IsDraining;
-    bool m_CheckEndDatetimeAgain;
     bool m_ProcessRunning;                      //!< Process running state
     bool m_ProgramStartReady;
     QString m_strProgram;
@@ -95,6 +94,7 @@ private:
     QString m_strNotFoundStation;
     QString m_strCheckEmptyStation;
     DataManager::CHimalayaUserSettings* m_pUserSetting;
+    Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
 
     void EnablePlayButton(bool bSetEnable);
     void EnableAbortButton(bool bSetEnable);
@@ -111,7 +111,8 @@ public:
     bool CheckPreConditionsToPauseProgram();
     bool CheckPreConditionsToAbortProgram();
     static const QString& SelectedProgramId();
-    static bool CheckSelectedProgram(bool& bRevertSelectProgram, QString ProgramID = "");//the return value means the work flow can go continuely.
+    static bool CheckSelectedProgram(bool& bRevertSelectProgram,
+                                     QString ProgramID = "");//the return value(true) means the work flow can go continuely.
     static QString m_strWarning;
     static QString m_strYes, m_strCancel;
     static QString m_strMsgUnselect;
@@ -128,7 +129,7 @@ signals:
     void UpdateDashboardSceneReagentStations(QString& ProgramID);
     void ProgramSelected(QString & ProgramId, int asapEndTime, QList<QString>& SelectedStationList);
     void UpdateUserSetting(DataManager::CUserSettings&);
-
+    void UpdateSelectedStationList(QList<QString>&);
 public slots:
     void OnUserRoleChanged();
     void OnButtonClicked(int whichBtn);

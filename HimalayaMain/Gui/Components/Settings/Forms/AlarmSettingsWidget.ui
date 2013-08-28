@@ -186,13 +186,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="errorperiodic">
-        <property name="text">
-         <string>Periodic : Off</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="2" rowspan="3">
        <widget class="QPushButton" name="errorButton">
         <property name="text">

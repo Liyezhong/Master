@@ -166,7 +166,7 @@
    </item>
    <item>
     <property name="text">
-     <string>Service</string>
+     <string>Maintenance</string>
     </property>
     <property name="icon">
      <iconset>

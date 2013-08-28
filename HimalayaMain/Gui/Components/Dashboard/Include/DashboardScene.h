@@ -27,16 +27,7 @@
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/MainWindow.h"
 #include <QGraphicsScene>
-#include <QGraphicsProxyWidget>
-#include <QGroupBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QFormLayout>
-#include <QPushButton>
-#include <QSignalMapper>
-#include <QGraphicsItem>
-#include <QPainter>
+
 #include <HimalayaDataContainer/Helper/Include/Global.h>
 
 namespace Core {

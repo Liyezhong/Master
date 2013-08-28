@@ -29,8 +29,6 @@
 #include "Programs/Include/ProgramWidget.h"
 #include "Application/Include/LeicaStyle.h"
 
-#include <QPixmap>
-#include <QDebug>
 
 namespace Core {
 
@@ -44,6 +42,7 @@ namespace Core {
 CReagentStatusModel::CReagentStatusModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
 {
     mp_ReagentList = NULL;
+    mp_ReagentGroupList = NULL;
     mp_Parent = NULL;
     mp_StationList = NULL;
     m_FilterLeicaReagent = false;
@@ -51,6 +50,7 @@ CReagentStatusModel::CReagentStatusModel(QObject *p_Parent) : QAbstractTableMode
     m_Columns = 0;
     m_VisibleRowCount = 7;
     m_RMSOptions = Global::RMS_CASSETTES;
+    m_RMSCleaningOptions = Global::RMS_UNDEFINED;
 }
 
 /****************************************************************************/
@@ -180,15 +180,16 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
     QDate t_Date;
     QDate Expiry_Date;
     bool Expired ;
-    if (mp_ReagentList == NULL && mp_StationList == NULL) {
+    if (mp_ReagentList == NULL || mp_StationList == NULL) {
         return QVariant();
     }
 
     if (Index.row() < m_ReagentNames.count()) {
-        p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_Identifiers[m_StationNames[Index.row()]]));
-        if (!p_Reagent)
-            return QVariant();
+        p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_Identifiers[m_StationNames[Index.row()]])); 
     }
+
+    if (!p_Reagent)
+        return QVariant();
 
     if (Index.row() < m_ReagentNames.count()
             && (p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]]))))
@@ -260,7 +261,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                     return QString("None");
                 }
             case 2://column 3
-                if (p_Reagent) {
+                if (mp_ReagentGroupList) {
 
                     bool isCleaningReagentGroup = mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->IsCleaningReagentGroup();
                     if (((Global::RMS_OFF == m_RMSCleaningOptions) || (m_RMSOptions != m_RMSCleaningOptions))
@@ -278,6 +279,8 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                             return p_Station->GetDashboardReagentActualCycles();
                         case Global::RMS_DAYS:
                            QDate Tem_QDate = p_Station->GetDashboardReagentExchangeDate();
+                           if (mp_UserSettings)
+                           {
                                switch(mp_UserSettings->GetDateFormat()){
                                default:
                                    return QString("");
@@ -288,13 +291,15 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                                case Global::DATE_US:
                                    return Tem_QDate.addDays(p_Reagent->GetMaxDays()).toString("MM/dd/yyyy");
                              }
+                           }
+                           break;
                       }
                 }
                 else
                    return QString("");
 
             case 3:
-                if (p_Reagent) {
+                if (mp_ReagentGroupList) {
                     bool isCleaningReagentGroup = mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->IsCleaningReagentGroup();
                     if (((Global::RMS_OFF == m_RMSOptions) || (m_RMSOptions != m_RMSCleaningOptions)) && !isCleaningReagentGroup)
                     {
@@ -307,6 +312,8 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                         return p_Station->GetDashboardReagentActualCycles();
                     case Global::RMS_DAYS:
                        QDate Tem_QDate = p_Station->GetDashboardReagentExchangeDate();
+                       if (mp_UserSettings)
+                       {
                            switch(mp_UserSettings->GetDateFormat()){
                            default:
                                return QString("");
@@ -317,13 +324,16 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                            case Global::DATE_US:
                                return Tem_QDate.addDays(p_Reagent->GetMaxDays()).toString("MM/dd/yyyy");
                          }
+                       }
+                       break;
                      }
+                    return QString("");
                 }
                 else
                    return QString("");
 
             case 4:
-                if (p_Reagent) {
+                if (mp_UserSettings) {
                     switch(mp_UserSettings->GetDateFormat()){
                     default:
                         return QString("");
@@ -334,6 +344,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                     case Global::DATE_US:
                         return p_Station->GetDashboardReagentExchangeDate().toString("MM/dd/yyyy");
                     }
+                    return QString("");
                  }
                  else
                    return QString("");
@@ -350,7 +361,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
     } else if (Role == (int)Qt::BackgroundRole) {
          QPalette Palette;
          return QVariant(Palette.color(QPalette::Window));
-        }
+    }
     return QVariant();
 }
 

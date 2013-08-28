@@ -37,10 +37,12 @@ namespace Settings {
 /****************************************************************************/
 CServiceSettingsWidget::CServiceSettingsWidget(QWidget *p_Parent) :  MainMenu::CPanelFrame(p_Parent),
     mp_Ui(new Ui::CServiceSettingsWidget),
+    mp_MainWindow(NULL),
+    m_ProcessRunning(false),
+    m_CurrentUserRole(MainMenu::CMainWindow::Operator),
     mp_UserSettings(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
-    SetPanelTitle(tr("Service"));
     CONNECTSIGNALSLOT(mp_Ui->btnResetOperationHour, clicked(), this, OnResetOperationDays());
     CONNECTSIGNALSLOT(mp_Ui->btnResetCarbonFilter, clicked(), this, OnResetCarbonFilter());
     CONNECTSIGNALSLOT(mp_Ui->checkBoxUseExhaustSystem, clicked(bool), this, OnCheckBoxUseExhaustSystem(bool));
@@ -258,7 +260,7 @@ void CServiceSettingsWidget::OnShutdown()
     ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);//right
     ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);//left
     ConfirmationMessageDlg.HideCenterButton();
-    ConfirmationMessageDlg.exec();
+    (void)ConfirmationMessageDlg.exec();
 
     //send command to scheduler to shut Down
     emit AppQuitSystemShutdown(DataManager::QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN);
@@ -318,7 +320,7 @@ void CServiceSettingsWidget::ResetButtons()
 /****************************************************************************/
 void CServiceSettingsWidget::RetranslateUI()
 {
-   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CServiceSettingsWidget", "Service", 0, QApplication::UnicodeUTF8));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("Settings::CServiceSettingsWidget", "Maintenance", 0, QApplication::UnicodeUTF8));
    m_strShutdownConfirm = QApplication::translate("Settings::CServiceSettingsWidget",
                         "If shut down now, 12 hours will be needed for melt paraffin in next startup! really shut down?",
                                            0, QApplication::UnicodeUTF8);

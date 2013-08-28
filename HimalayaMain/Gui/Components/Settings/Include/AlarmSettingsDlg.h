@@ -81,9 +81,9 @@ private:
     Ui::CAlarmSettingsDlg *mp_Ui;   //!< User interface
     MainMenu::CScrollWheel *mp_VolumeScrollWheel; //!< Volume scroll wheel
     MainMenu::CScrollWheel *mp_SoundScrollWheel; //!< Volume scroll wheel
-    MainMenu::CScrollWheel *mp_SecondWheel;   //!< Second scroll wheel
-     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     MainMenu::CScrollWheel *mp_MinWheel;        //!< Minut scroll wheel
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+
     QButtonGroup m_ButtonGroup; //!< Groups radio buttons for sound selection
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     DataManager::CHimalayaUserSettings *mp_UserSettings;    //!< Data object
@@ -96,7 +96,7 @@ private:
 
 protected:
     void changeEvent(QEvent *p_Event);
-    void showEvent(QEvent *p_Event);
+    void showEvent(QShowEvent *p_Event);
 
 private slots:
     void OnPeriodicChanged(MainMenu::CSliderControl::Position_t Position);

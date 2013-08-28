@@ -1,8 +1,6 @@
 #ifndef SCREENSAVERWIDGET_H
 #define SCREENSAVERWIDGET_H
 
-#include <QWidget>
-#include <QTimer>
 #include "MainMenu/Include/PanelFrame.h"
 
 namespace Ui {

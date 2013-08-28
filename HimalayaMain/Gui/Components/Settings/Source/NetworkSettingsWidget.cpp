@@ -22,7 +22,6 @@
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
 #include "ui_NetworkSettingsWidget.h"
-#include <QCheckBox>
 
 namespace Settings {
 
@@ -38,6 +37,11 @@ const QString IPADDRESS_INPUT_MASK_    = "000.000.000.000; "; //!< Mask for the 
 /****************************************************************************/
 CNetworkSettingsWidget::CNetworkSettingsWidget(QWidget *p_Parent) :
     MainMenu::CPanelFrame(p_Parent), mp_Ui(new Ui::CNetworkSettingsWidget),
+    mp_MainWindow(NULL),m_ProcessRunning(false),
+    m_CurrentUserRole(MainMenu::CMainWindow::Operator),
+    mp_KeyBoardWidget(NULL),
+    m_ValidationType(KeyBoard::VALIDATION_1),
+    m_ButtonType(USERNAME_BTN_CLICKED),
     m_Password(""),
     m_strEnterProxyName(tr("Enter Proxy User Name")),
     m_strEnterProxyPassword(tr("Enter Proxy Password")),
@@ -195,7 +199,7 @@ void CNetworkSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWin
 /****************************************************************************/
 void CNetworkSettingsWidget::OnDirectConnectionStateChanged(int State)
 {
-    if (State == Qt::Checked) {
+    if (State == (int)Qt::Checked) {
         mp_Ui->proxyUserNameButton->setDisabled(true);
         mp_Ui->proxyPasswordButton->setDisabled(true);
         mp_Ui->proxyIpAddressButton->setDisabled(true);

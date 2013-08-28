@@ -1,5 +1,6 @@
 #include "Dashboard/Include/ScreenSaverWidget.h"
 #include "ui_ScreenSaverWidget.h"
+#include <QTimer>
 
 ScreenSaverWidget::ScreenSaverWidget(QWidget *parent) :
     MainMenu::CPanelFrame(parent),

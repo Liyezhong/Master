@@ -19,6 +19,7 @@
 /****************************************************************************/
 
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
+
 namespace MsgClasses {
 
 QString CmdProgramSelected::NAME = "MsgClasses::CmdProgramSelected";

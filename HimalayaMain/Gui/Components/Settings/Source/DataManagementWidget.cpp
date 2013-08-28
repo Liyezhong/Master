@@ -23,7 +23,6 @@
 #include "Global/Include/Exception.h"
 #include "ui_DataManagementWidget.h"
 #include <QEvent>
-#include <QApplication>
 namespace Settings {
 
 /****************************************************************************/
@@ -33,7 +32,12 @@ namespace Settings {
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CDataManagementWidget::CDataManagementWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),mp_Ui(new Ui::CDataManagementWidget)
+CDataManagementWidget::CDataManagementWidget(QWidget *p_Parent) :
+    MainMenu::CPanelFrame(p_Parent),
+    mp_MainWindow(NULL),
+    mp_Ui(new Ui::CDataManagementWidget),
+    m_ProcessRunning(false),
+    m_CurrentUserRole(MainMenu::CMainWindow::Operator)
 {
     mp_Ui->setupUi(GetContentFrame());
     // mp_DataManagement = new MainMenu::CDataManagement(this);

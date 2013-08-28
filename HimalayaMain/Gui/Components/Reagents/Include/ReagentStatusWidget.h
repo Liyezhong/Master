@@ -47,7 +47,6 @@ private:
     DataManager::CDataReagentList *mp_ReagentList;  //!< Reagent list
     DataManager::CReagent m_SelectedReagent;        //!< Currently selected reagent
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
-    MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
     bool m_UserRoleChanged;                         //!< True if user Role changed else false
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //! < Current user role
     bool m_ProcessRunning;                          //!< Process running state
@@ -61,7 +60,7 @@ private:
     Global::RMSOptions_t m_RMSOptions, m_RMSCleaningOptions;
     QModelIndex m_CurrentIndex;
     QString m_strSetAsEmpty, m_strResetData, m_strSetAsFull, m_CurrentStationName;
-
+    QList<QString> m_StationList;
 protected:
     void showEvent(QShowEvent *);
     void changeEvent(QEvent *p_Event);
@@ -93,6 +92,8 @@ private slots:
 public slots:
     void RMSChanged(const Global::RMSOptions_t RMSValue);
     void RMSCleaningChanged(const Global::RMSOptions_t RMSValue);
+    void UpdateSelectedStationList(QList<QString>&);
+
 signals:
     /****************************************************************************/
     /*!

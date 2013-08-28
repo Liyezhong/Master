@@ -22,12 +22,6 @@
 #ifndef DATAMANAGER_DATAREAGENTLIST_H
 #define DATAMANAGER_DATAREAGENTLIST_H
 
-#include <QHash>
-#include <QList>
-#include <QReadWriteLock>
-#include <QByteArray>
-#include <QBuffer>
-
 #include "DataManager/Helper/Include/Types.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
 #include "DataManager/Containers/ContainerBase/Include/VerifierInterface.h"

@@ -97,6 +97,7 @@ signals:
     /****************************************************************************/
     void RMSValueChanged(Global::RMSOptions_t);
     void UnselectProgram();
+    void UpdateSelectedStationList(QList<QString>&);
 
 private slots:
     void OnUserRoleChanged();

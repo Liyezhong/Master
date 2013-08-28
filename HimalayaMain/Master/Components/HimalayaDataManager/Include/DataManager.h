@@ -44,14 +44,14 @@ private:
     CReagentCommandInterface *mp_ReagentCommandInterface; //!< handles commands related to reagent container
     CReagentGroupCommandInterface *mp_ReagentGroupCommandInterface;
 protected:
-    virtual bool DeinitDataContainer();
+    bool DeinitializeDataContainer();
 
 public:
     CDataManager(Threads::MasterThreadController *p_HimalayaMasterThreadController);
     CDataManager(Threads::MasterThreadController *p_HimalayaMasterThreadController, QString Path);
     virtual ~CDataManager();
 
-    quint32 InitDataContainer();
+    quint32 InitializeDataContainer();
     const CDataContainer* GetDataContainer() { return mp_DataContainer; }
 
     CDataProgramList* GetProgramList();

@@ -134,7 +134,10 @@ void CDateTimeWidget::RetranslateUI()
 void CDateTimeWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)
 {
     mp_MainWindow = p_MainWindow;
-    mp_DateTime->SetPtrToMainWindow(mp_MainWindow);
+    if (mp_DateTime)
+    {
+        mp_DateTime->SetPtrToMainWindow(mp_MainWindow);
+    }
 }
 
 } // end namespace Settings
