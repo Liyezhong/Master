@@ -24,7 +24,6 @@
 #include <QListView>
 #include <QPainter>
 
-
 namespace Dashboard {
 
 /****************************************************************************/

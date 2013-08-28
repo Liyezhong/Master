@@ -81,8 +81,13 @@ CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
 /****************************************************************************/
 CUserPrivilegeWidget::~CUserPrivilegeWidget()
 {
-    delete mp_Ui;
-    delete m_Timer;
+    try
+    {
+        delete mp_Ui;
+        delete m_Timer;
+    }
+    catch(...)
+    {}
 }
 
 /****************************************************************************/

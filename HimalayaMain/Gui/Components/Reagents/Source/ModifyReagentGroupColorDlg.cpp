@@ -22,7 +22,6 @@
 #include "Global/Include/Exception.h"
 #include "Reagents/Include/ModifyReagentGroupColorDlg.h"
 #include "ui_ModifyReagentGroupColorDlg.h"
-#include <QDebug>
 #include <Dashboard/Include/CommonString.h>
 
 namespace Reagents {
@@ -34,8 +33,11 @@ namespace Reagents {
  */
 /****************************************************************************/
 CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow) :
-    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyReagentGroupColorDlg),
-    m_strCancel(tr("Cancel")), m_strClose(tr("Close"))
+    MainMenu::CDialogFrame(p_Parent),
+    mp_Ui(new Ui::CModifyReagentGroupColorDlg),
+    m_strCancel(tr("Cancel")),
+    m_strClose(tr("Close")),
+    mp_CReagentGroupColorList(NULL)
 {
     Q_UNUSED(p_MainWindow)
     mp_Ui->setupUi(GetContentFrame());
@@ -202,14 +204,17 @@ void CModifyReagentGroupColorDlg:: OnButtonGroup(int Id)
 /****************************************************************************/
 void CModifyReagentGroupColorDlg:: UpdateReagentGroupColor()
 {
+    if (!mp_CReagentGroupColorList)
+        return;
+
     m_ColorNames.clear();
 
     int Count = 0;
     QAbstractButton *p_Button;
 
       foreach(p_Button, m_ButtonGroup.buttons()) {
-          QPixmap Pixmap;
-         Pixmap.load(":/HimalayaImages/Color/Color_"+mp_CReagentGroupColorList->GetCReagentGroupColor(Count)->GetColorID()+ ".png");
+         QPixmap Pixmap;
+         (void)Pixmap.load(":/HimalayaImages/Color/Color_"+mp_CReagentGroupColorList->GetCReagentGroupColor(Count)->GetColorID()+ ".png");
 
          p_Button->setIconSize(QSize(50,50));
          p_Button->setIcon(QIcon(Pixmap));

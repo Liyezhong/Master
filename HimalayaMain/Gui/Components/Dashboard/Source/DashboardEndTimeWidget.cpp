@@ -55,9 +55,9 @@ CDashboardEndTimeWidget::CDashboardEndTimeWidget(Core::CDataConnector *p_DataCon
     mp_Ui->setupUi(this);
     mp_Program = NULL;
 
-    m_backgroundPixmap.load(":/HimalayaImages/Icons/Dashboard/EndTime/EndTime_Background.png");
-    m_btnPixmap.load(":/HimalayaImages/LongButton/LongButton_Disabled.png");
-    m_progBarPixmap.load(":/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png");
+    (void)m_backgroundPixmap.load(":/HimalayaImages/Icons/Dashboard/EndTime/EndTime_Background.png");
+    (void)m_btnPixmap.load(":/HimalayaImages/LongButton/LongButton_Disabled.png");
+    (void)m_progBarPixmap.load(":/HimalayaImages/Icons/Dashboard/ProgressLine/ProgressLine_Background.png");
 
     mp_PlastiqueStyle = new QPlastiqueStyle();
 

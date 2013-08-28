@@ -31,8 +31,6 @@
 #include "DataManager/Helper/Include/Helper.h"
 #include "DataManager/Helper/Include/Types.h"
 #include "ui_ModifyProgramDlg.h"
-#include <QDebug>
-#include <QPainter>
 
 namespace Programs {
 
@@ -233,7 +231,7 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
             int index = LongName.indexOf("leica", 0, Qt::CaseInsensitive);
             if (-1 != index)
             {
-                LongName.remove(index, 5);
+                (void)LongName.remove(index, 5);
             }
             m_Program.SetLeicaProgram(false);
             mp_Ui->btnPrgIcon->setIcon(QIcon(""));
@@ -545,12 +543,12 @@ void CModifyProgramDlg::OnSelectionChanged(QModelIndex Index)
             //Edit Mode            
             if ((SelectedIndex+1) > m_Program.GetNumberOfSteps()) {
                 if(!m_Program.IsLeicaProgram())
-                ResetButtons(m_Program, false);
+                    ResetButtons(m_Program, false);
                 mp_TableWidget->clearSelection();
             }
             else {
                  if(!m_Program.IsLeicaProgram())
-                ResetButtons(m_Program, true);
+                    ResetButtons(m_Program, true);
             }
         }
     }

@@ -46,17 +46,12 @@ private:
     Core::CDataConnector *mp_DataConnector;         //!< Global data container
     DataManager::CDataReagentList *mp_ReagentList;  //!< Reagent list
     DataManager::CReagent m_SelectedReagent;        //!< Currently selected reagent
-    MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
-    bool m_UserRoleChanged;                         //!< True if user Role changed else false
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //! < Current user role
     bool m_ProcessRunning;                          //!< Process running state
     bool m_ShowMessageDialog;                       //!< To show Information Message Dialog
     DataManager::CReagent *mp_Reagent;              //!< Reagent object
     DataManager::CDashboardStation *mp_DashStation;        //!< Station object
-    DataManager::CUserSettings *mp_UserSettings;    //!< Data object
     QStringList m_ReagentList;                      //!< List of Reagents
-    MainMenu::CFileView *mp_ReagentStatusWidgetView;     //!< Content of this widget
-    KeyBoard::CKeyBoard *mp_KeyBoard;
     Global::RMSOptions_t m_RMSOptions, m_RMSCleaningOptions;
     QModelIndex m_CurrentIndex;
     QString m_strSetAsEmpty, m_strResetData, m_strSetAsFull, m_CurrentStationName;
@@ -78,7 +73,6 @@ public:
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
     void SetPtrToMainWindow(Core::CDataConnector *p_DataConnector,
                             DataManager::CDataReagentList *p_ReagentList,
-                            MainMenu::CMainWindow *p_MainWindow,
                             KeyBoard::CKeyBoard *p_KeyBoard = NULL);
 private slots:
     void OnSetAsEmpty();

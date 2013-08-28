@@ -8,7 +8,6 @@
 #include "ui_ReagentStatusWidget.h"
 #include "Dashboard/Include/DashboardWidget.h"
 #include <Dashboard/Include/CommonString.h>
-#include <QDebug>
 
 namespace Reagents {
 
@@ -27,7 +26,11 @@ CReagentStatusWidget::CReagentStatusWidget(QWidget *p_Parent):
                                            mp_Ui(new Ui::CReagentStatusWidget),
                                            mp_DataConnector(NULL),
                                            mp_ReagentList(NULL),
-                                           mp_Reagent(NULL)
+                                           mp_Reagent(NULL),
+                                           mp_DashStation(NULL),
+                                           m_RMSOptions(Global::RMS_UNDEFINED),
+                                           m_RMSCleaningOptions(Global::RMS_UNDEFINED)
+
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Status"));
@@ -94,7 +97,6 @@ void CReagentStatusWidget::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CReagentStatusWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
 {
-    mp_UserSettings = p_UserSettings;
     m_ReagentStatusModel.SetUserSettings(p_UserSettings);
 }
 
@@ -416,7 +418,6 @@ void CReagentStatusWidget::OnUserRoleChanged()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
-    m_UserRoleChanged = true;
 }
 
 /****************************************************************************/
@@ -477,6 +478,7 @@ void CReagentStatusWidget::RetranslateUI()
     switch(m_ReagentStatusModel.GetRMSOption()) {
         default:
             SecondColumnName = "";
+            break;
         case Global::RMS_CASSETTES:
             SecondColumnName = QApplication::translate("Core::CReagentStatusModel", "Cassettes\nsince\nchange", 0, QApplication::UnicodeUTF8);
             break;
@@ -492,10 +494,13 @@ void CReagentStatusWidget::RetranslateUI()
     switch (m_ReagentStatusModel.GetRMSCleaningOption()) {
         default:
             ThirdColumnName = "";
+            break;
         case Global::RMS_CYCLES:
              ThirdColumnName = QApplication::translate("Core::CReagentStatusModel", "Cycles\nsince\nchange", 0, QApplication::UnicodeUTF8);
+             break;
         case Global::RMS_DAYS:
              ThirdColumnName = QApplication::translate("Core::CReagentStatusModel", "Expiry\nDate", 0, QApplication::UnicodeUTF8);
+             break;
     }
 
     (void) m_ReagentStatusModel.setHeaderData(2, Qt::Horizontal, SecondColumnName, 0);
@@ -530,13 +535,11 @@ void CReagentStatusWidget::showEvent(QShowEvent *)
 /****************************************************************************/
 void CReagentStatusWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConnector,
                                          DataManager::CDataReagentList *p_ReagentList,
-                                         MainMenu::CMainWindow *p_MainWindow,
                                          KeyBoard::CKeyBoard *p_KeyBoard)
 {
-    mp_MainWindow = p_MainWindow;
+    Q_UNUSED(p_KeyBoard);
     mp_DataConnector = p_DataConnector;
     mp_ReagentList = p_ReagentList;
-    mp_KeyBoard = p_KeyBoard;
     // set the reagent ist to the model
     m_ReagentStatusModel.SetRequiredContainers(mp_ReagentList, mp_DataConnector->ReagentGroupList,
                                                mp_DataConnector->DashboardStationList, 6);

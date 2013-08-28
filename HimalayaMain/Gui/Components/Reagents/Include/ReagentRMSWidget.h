@@ -64,7 +64,6 @@ private:
     Ui::CReagentRMSWidget *mp_Ui;                     //!< User interface
     DataManager::CHimalayaUserSettings m_UserSettings;    //!< Data object
     //Flags
-    bool m_UserRoleChanged;                         //!< True if user Role changed else false
     bool m_ProcessRunning;
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
@@ -79,7 +78,6 @@ private:
     MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
     bool m_ShowMessageDialog;                       //!< To show Information Message Dialog
     DataManager::CReagent const *mp_Reagent;        //!< Reagent object
-    KeyBoard::CKeyBoard *mp_KeyBoard;
     QString m_strNewReagent;
     QString m_strEditReagent;
     QString m_strConfirmDelReagent;

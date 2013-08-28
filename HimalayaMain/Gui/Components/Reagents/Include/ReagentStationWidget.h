@@ -38,7 +38,6 @@ private:
     Core::CDataConnector *mp_DataConnector;         //!< Global data container
     DataManager::CDataReagentList *mp_ReagentList;  //!< Reagent list
     DataManager::CReagent m_SelectedReagent;        //!< Currently selected reagent
-    MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
     bool m_UserRoleChanged;                         //!< True if user Role changed else false
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //! < Current user role
@@ -46,9 +45,7 @@ private:
     bool m_ShowMessageDialog;                       //!< To show Information Message Dialog
     DataManager::CReagent *mp_Reagent;              //!< Reagent object
     DataManager::CDashboardStation *mp_DashStation;        //!< Station object
-    DataManager::CUserSettings *mp_UserSettings;    //!< Data object
     CModifyReagentStationDlg *mp_ModifiyReagentStationDlg;        //!< Edit reagent dialog
-    MainMenu::CFileView *mp_ReagentStatusWidgetView;     //!< Content of this widget
     KeyBoard::CKeyBoard *mp_KeyBoard;
     QString m_strSelectReagent;
     QList<QString> m_StationList;

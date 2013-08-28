@@ -27,8 +27,6 @@
 #include "Global/Include/Exception.h"
 #include "Programs/Include/ModifyProgramStepDlg.h"
 #include "ui_ModifyProgramStepDlg.h"
-#include <QDebug>
-#include <QTime>
 #include "HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupList.h"
 #include <Dashboard/Include/CommonString.h>
 
@@ -355,7 +353,7 @@ void CModifyProgramStepDlg::OnOk()
           else
           {
               diffTemp = 3.6;
-              paraffinBathTemp  = qRound((paraffinBathTemp * 9) / 5) + 32;
+              paraffinBathTemp  = qRound((paraffinBathTemp * 9.0) / 5.0) + 32;
           }
 
          int ddd = mp_ScrollWheelTemp->GetCurrentData().toInt();
@@ -439,13 +437,16 @@ void CModifyProgramStepDlg::OnOk()
         }
         else {
             m_NewProgramStep = false ;
-            ProgramStep = *mp_ProgramStep;
-            ProgramStep.SetDurationInSeconds(MinDurationInSec);
-            ProgramStep.SetReagentID(m_ReagentID);
-            ProgramStep.SetTemperature(Temperature);
-            ProgramStep.SetPressure(Pressure);
-            ProgramStep.SetVacuum(Vaccum);
-            emit AddProgramStep(&ProgramStep, m_NewProgramStep);
+            if (mp_ProgramStep)
+            {
+                ProgramStep = *mp_ProgramStep;
+                ProgramStep.SetDurationInSeconds(MinDurationInSec);
+                ProgramStep.SetReagentID(m_ReagentID);
+                ProgramStep.SetTemperature(Temperature);
+                ProgramStep.SetPressure(Pressure);
+                ProgramStep.SetVacuum(Vaccum);
+                emit AddProgramStep(&ProgramStep, m_NewProgramStep);
+            }
         }
         accept();
     }
@@ -488,8 +489,11 @@ void CModifyProgramStepDlg::OnSelectionChanged(QModelIndex Index)
         if (!m_ReagentLongName.isEmpty()) {
             m_RowNotSelected = false;
             mp_Ui->btnOk->setEnabled(true);
-            const DataManager::CReagent *pReagent = mp_ReagentList->GetReagent(m_ReagentID);
-            InitTemperatureWidget(pReagent);
+            if (mp_ReagentList)
+            {
+                const DataManager::CReagent *pReagent = mp_ReagentList->GetReagent(m_ReagentID);
+                InitTemperatureWidget(pReagent);
+            }
         }
     }
 }

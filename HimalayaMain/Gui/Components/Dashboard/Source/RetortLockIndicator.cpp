@@ -6,7 +6,7 @@ namespace Dashboard {
 CRetortLockIndicator::CRetortLockIndicator(QWidget *parent) :
     QLabel(parent),m_bLock(false)
 {
-    m_Pixmap.load(":/HimalayaImages/Icons/Program/Icon2.png");
+    (void)m_Pixmap.load(":/HimalayaImages/Icons/Program/Icon2.png");
 }
 
 void CRetortLockIndicator::paintEvent(QPaintEvent *e)

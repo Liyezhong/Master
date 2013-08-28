@@ -62,12 +62,10 @@ private:
     DataManager::CDataReagentGroupList *mp_ReagentGroupList;  //!< Reagent list
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
-    bool m_UserRoleChanged;                         //!< True if user Role changed else false
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //! < Current user role
     bool m_ProcessRunning;                          //!< Process running state
     bool m_ShowMessageDialog;                       //!< To show Information Message Dialog
     DataManager::CReagentGroup const *mp_ReagentGroup;        //!< Reagent object
-    DataManager::CUserSettings *mp_UserSettings;    //!< Data object
     DataManager::CReagentGroupColorList *mp_CReagentGroupColorList; //!< CReagentGroupColor object
     CModifyReagentGroupColorDlg *mp_ModifyReagentColorDlg;        //!< Edit reagent dialog
     QString m_strSelectColor;

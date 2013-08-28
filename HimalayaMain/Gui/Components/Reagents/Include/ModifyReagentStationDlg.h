@@ -29,7 +29,6 @@
 #include "Reagents/Include/ReagentStatusWidget.h"
 #include "MainMenu/Include/ScrollTable.h"
 #include "Core/Include/ReagentStationEditModel.h"
-#include <QButtonGroup>
 
 namespace Reagents {
 
@@ -51,10 +50,8 @@ private:
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object
     DataManager::CDashboardStation m_DashboardStation;
-    DataManager::CDashboardStation *mp_DashboardStation;
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
-    bool m_UserRoleChanged;                         //!< True if user Role changed else false
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
