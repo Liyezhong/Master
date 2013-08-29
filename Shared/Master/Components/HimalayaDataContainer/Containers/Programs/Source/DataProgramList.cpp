@@ -578,6 +578,9 @@ bool CDataProgramList::UpdateProgram(const CProgram* p_Program)
         *m_ProgramList.value(ID) = *p_Program;
         Result = true;
     }
+    if (!UpdateReagentIDList()) {
+        Result = false;
+    }
     return Result;
 }
 
