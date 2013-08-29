@@ -44,13 +44,10 @@ class CModifyProgramIconDlg : public MainMenu::CDialogFrame
 
 private:
     Ui::CModifyProgramIconDlg *mp_Ui;               //!< User interface
-    MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
-    bool m_UserRoleChanged;                         //!< True if user Role changed else false
     //UI related
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;//! < Current user role
     QStringList m_ProgramIconNames;                 //!< store Icon List names
     DataManager::CProgram m_Program;
     QButtonGroup m_ButtonGroup;

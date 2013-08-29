@@ -206,7 +206,7 @@ public:
         return STATIONS;
     }
 
-    ListOfIDs_t & GetOrderedListOfDashboardStationIDs()
+    const ListOfIDs_t & GetOrderedListOfDashboardStationIDs()
     {
         return m_OrderedListOfDashboardStationIDs;
     }

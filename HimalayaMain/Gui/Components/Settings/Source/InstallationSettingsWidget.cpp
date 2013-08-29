@@ -194,6 +194,8 @@ void CInstallationSettingsWidget::Update()
 /****************************************************************************/
 void CInstallationSettingsWidget::OnOkClicked()
 {
+    if (!mp_KeyBoardWidget)
+        return;
     QString LineEditString;
     mp_KeyBoardWidget->hide();
 
@@ -219,6 +221,8 @@ void CInstallationSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_Ma
 /****************************************************************************/
 void CInstallationSettingsWidget::UpdateOnESC()
 {
+    if (!mp_KeyBoardWidget)
+        return;
     mp_KeyBoardWidget->Detach();
 }
 
@@ -239,6 +243,9 @@ void CInstallationSettingsWidget:: OnUpdateclicked()
 /****************************************************************************/
 void CInstallationSettingsWidget :: OnEditclicked()
 {
+    if (!mp_KeyBoardWidget)
+        return;
+
     mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Instrument Name"));
 

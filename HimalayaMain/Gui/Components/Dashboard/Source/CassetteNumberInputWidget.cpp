@@ -47,10 +47,15 @@ CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *pParent) :
 
 CCassetteNumberInputWidget::~CCassetteNumberInputWidget()
 {
-    delete ui;
-    delete mp_singleWheel;
-    delete mp_tenWheel;
-    delete mp_hundredWheel;
+    try
+    {
+        delete ui;
+        delete mp_singleWheel;
+        delete mp_tenWheel;
+        delete mp_hundredWheel;
+    }
+    catch(...)
+    {}
 }
 
 void CCassetteNumberInputWidget::OnOK()

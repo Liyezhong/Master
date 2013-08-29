@@ -71,7 +71,6 @@ private:
     qint32 m_CurrentRow;                                //!< Current row selected
     CModifyProgramDlg *mp_ModifyProgramDlg;             //!< View pointer
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
-    DataManager::CReagentGroupColorList *mp_ReagentGroupColorList; //!< List of reagent Group Colors
     DataManager::CDataReagentGroupList *mp_ReagentGroupList; //!< Reagent group list
     QStringList m_ReagentID;
     DataManager::CUserSettings *mp_UserSettings;    //!< Data object

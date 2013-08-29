@@ -27,8 +27,12 @@ CDashboardProgramStatusWidget::CDashboardProgramStatusWidget(QWidget *parent) :
 
 CDashboardProgramStatusWidget::~CDashboardProgramStatusWidget()
 {
-    delete ui;
-    delete mp_TableWidget;
+    try
+    {
+        delete ui;
+        delete mp_TableWidget;
+    }catch (...)
+    {}
 }
 
 void CDashboardProgramStatusWidget::InitDialog(DataManager::CProgram *p_Program,
@@ -75,7 +79,7 @@ void CDashboardProgramStatusWidget::ResizeHorizontalSection()
 
 void CDashboardProgramStatusWidget::OnClose()
 {
-    this->close();
+    (void)this->close();
 }
 
 void CDashboardProgramStatusWidget::OnAbort()

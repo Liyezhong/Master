@@ -29,7 +29,6 @@
 #include "Programs/Include/ModifyProgramDlg.h"
 #include "Programs/Include/ModifyProgramStepDlg.h"
 #include "ui_ProgramWidget.h"
-#include <QDebug>
 #include "Dashboard/Include/DashboardWidget.h"
 #include <Dashboard/Include/CommonString.h>
 

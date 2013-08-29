@@ -30,7 +30,6 @@
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
-#include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationInterface.h"
 #include "DataManager/Include/DataContainerCollectionBase.h"
 #include "HimalayaDataContainer/Containers/ProgramSettings/Include/ProgramSettings.h"
 

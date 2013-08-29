@@ -22,7 +22,6 @@
 #include "Global/Include/Exception.h"
 #include "Reagents/Include/ModifyReagentRMSDlg.h"
 #include "ui_ModifyReagentDlg.h"
-#include <QDebug>
 #include "Dashboard/Include/CommonString.h"
 #include "Reagents/Include/ReagentRMSWidget.h"
 

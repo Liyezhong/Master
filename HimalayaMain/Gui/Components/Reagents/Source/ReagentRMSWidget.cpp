@@ -348,7 +348,10 @@ void CReagentRMSWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettin
 /****************************************************************************/
 void CReagentRMSWidget::SelectionChanged(QModelIndex Index)
 {
-    mp_TableWidgetCleaning->clearSelection();
+    if (mp_TableWidgetCleaning)
+    {
+        mp_TableWidgetCleaning->clearSelection();
+    }
     QString Id = m_ReagentRMSModel.data(Index, (int)Qt::UserRole).toString();
     UpdateButtons(Id);
 }
@@ -559,28 +562,40 @@ void CReagentRMSWidget ::UpdateUserSetting()
             switch(RMSPROCESSINGOPTION) {
                 case Global::RMS_CASSETTES:
                     mp_Ui->radioCassettes->setChecked(true);
-                    mp_TableWidget->setColumnHidden(2, false);
+                    if (mp_TableWidget)
+                    {
+                        mp_TableWidget->setColumnHidden(2, false);
+                    }
                     m_ReagentRMSModel.ResetAndUpdateModel();
                     ResizeHorizontalSection();
                     emit RMSChanged(Global::RMS_CASSETTES);
                     break;
                 case Global::RMS_CYCLES:
                     mp_Ui->radioCycles->setChecked(true);
-                    mp_TableWidget->setColumnHidden(2, false);
+                    if (mp_TableWidget)
+                    {
+                        mp_TableWidget->setColumnHidden(2, false);
+                    }
                     m_ReagentRMSModel.ResetAndUpdateModel();
                     ResizeHorizontalSection();
                     emit RMSChanged(Global::RMS_CYCLES);
                     break;
                 case Global::RMS_DAYS:
                     mp_Ui->radioDays->setChecked(true);
-                    mp_TableWidget->setColumnHidden(2, false);
+                    if (mp_TableWidget)
+                    {
+                        mp_TableWidget->setColumnHidden(2, false);
+                    }
                     m_ReagentRMSModel.ResetAndUpdateModel();
                     ResizeHorizontalSection();
                     emit RMSChanged(Global::RMS_DAYS);
                     break;
                 case Global::RMS_OFF:
                     mp_Ui->radioOff->setChecked(true);
-                    mp_TableWidget->setColumnHidden(2, true);
+                    if (mp_TableWidget)
+                    {
+                        mp_TableWidget->setColumnHidden(2, true);
+                    }
                     m_ReagentRMSModel.ResetAndUpdateModel();
                     emit RMSChanged(Global::RMS_OFF);
                     break;
@@ -594,21 +609,30 @@ void CReagentRMSWidget ::UpdateUserSetting()
                 switch(RMSCLEANINGOPTIONS) {
                     case Global::RMS_CYCLES:
                         mp_Ui->radioCycles_Cleaning->setChecked(true);
-                        mp_TableWidgetCleaning->setColumnHidden(2, false);
+                        if (mp_TableWidgetCleaning)
+                        {
+                            mp_TableWidgetCleaning->setColumnHidden(2, false);
+                        }
                         m_ReagentCleaningModel.ResetAndUpdateModel();
                         ResizeHorizontalSection();
                         emit RMSCleaningChanged(Global::RMS_CYCLES);
                         break;
                     case Global::RMS_DAYS:
                         mp_Ui->radioDays_Cleaning->setChecked(true);
-                        mp_TableWidgetCleaning->setColumnHidden(2, false);
+                        if (mp_TableWidgetCleaning)
+                        {
+                            mp_TableWidgetCleaning->setColumnHidden(2, false);
+                        }
                         m_ReagentCleaningModel.ResetAndUpdateModel();
                         ResizeHorizontalSection();
                         emit RMSCleaningChanged(Global::RMS_DAYS);
                         break;
                     case Global::RMS_OFF:
                         mp_Ui->radioOff_Cleaning->setChecked(true);
-                        mp_TableWidgetCleaning->setColumnHidden(2, true);
+                        if (mp_TableWidgetCleaning)
+                        {
+                            mp_TableWidgetCleaning->setColumnHidden(2, true);
+                        }
                         m_ReagentCleaningModel.ResetAndUpdateModel();
                         emit RMSCleaningChanged(Global::RMS_OFF);
                         break;
@@ -627,11 +651,18 @@ void CReagentRMSWidget::showEvent(QShowEvent *)
 {
     /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."));*/
     m_ShowMessageDialog = true ;
-    mp_TableWidget->clearSelection();  
+    if (mp_TableWidget)
+    {
+        mp_TableWidget->clearSelection();
+    }
     mp_Ui->scrollTable->Reset();
     m_ReagentRMSModel.UpdateReagentList();
 
-    mp_TableWidgetCleaning->clearSelection();
+    if (mp_TableWidgetCleaning)
+    {
+        mp_TableWidgetCleaning->clearSelection();
+    }
+
     m_ReagentCleaningModel.UpdateReagentList();
 
     ResetButtons();

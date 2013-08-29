@@ -9,7 +9,6 @@
 #include <Dashboard/Include/CommonString.h>
 #include "Dashboard/Include/DashboardWidget.h"
 
-#include <QDebug>
 
 namespace Reagents {
 
@@ -29,6 +28,10 @@ CReagentStationWidget::CReagentStationWidget(QWidget *p_Parent):
                                            mp_DataConnector(NULL),
                                            mp_ReagentList(NULL),
                                            mp_Reagent(NULL),
+
+                                           mp_DashStation(NULL),
+                                           mp_ModifiyReagentStationDlg(NULL),
+                                           m_CurrentUserRole(MainMenu::CMainWindow::GetCurrentUserRole()),
                                            m_strSelectReagent(tr("Select Reagent"))
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -38,7 +41,7 @@ CReagentStationWidget::CReagentStationWidget(QWidget *p_Parent):
 
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->setModel(&m_ReagentStationModel);
-    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+
 
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
 
@@ -94,7 +97,8 @@ void CReagentStationWidget::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CReagentStationWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
 {
-    mp_UserSettings = p_UserSettings;
+
+    Q_UNUSED(p_UserSettings);
 }
 
 
@@ -258,10 +262,10 @@ void CReagentStationWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConne
                                          MainMenu::CMainWindow *p_MainWindow,
                                          KeyBoard::CKeyBoard *p_KeyBoard)
 {
-    mp_MainWindow = p_MainWindow;
+    Q_UNUSED(p_MainWindow);
+    Q_UNUSED(p_KeyBoard);
     mp_DataConnector = p_DataConnector;
     mp_ReagentList = p_ReagentList;
-    mp_KeyBoard = p_KeyBoard;
     // set the reagent ist to the model
     m_ReagentStationModel.SetRequiredContainers(mp_ReagentList, mp_DataConnector->ReagentGroupList,
                                                mp_DataConnector->DashboardStationList, 2);

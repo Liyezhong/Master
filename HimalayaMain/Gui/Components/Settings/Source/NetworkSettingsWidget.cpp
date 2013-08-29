@@ -220,6 +220,8 @@ void CNetworkSettingsWidget::OnDirectConnectionStateChanged(int State)
 /****************************************************************************/
 void CNetworkSettingsWidget::OnProxyUserName()
 {
+    if (!mp_KeyBoardWidget)
+        return;
     m_ButtonType = USERNAME_BTN_CLICKED;
     mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyName);
@@ -239,6 +241,8 @@ void CNetworkSettingsWidget::OnProxyUserName()
 /****************************************************************************/
 void CNetworkSettingsWidget::OnProxyPassword()
 {
+    if (!mp_KeyBoardWidget)
+        return;
     m_ButtonType = PASSWORD_BTN_CLICKED;
     mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyPassword);
@@ -258,6 +262,8 @@ void CNetworkSettingsWidget::OnProxyPassword()
 /****************************************************************************/
 void CNetworkSettingsWidget::OnProxyIPAddress()
 {
+    if (!mp_KeyBoardWidget)
+        return;
     m_ButtonType = IP_ADDRESS_BTN_CLICKED;
     mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyIP);
@@ -279,6 +285,8 @@ void CNetworkSettingsWidget::OnProxyIPAddress()
 /****************************************************************************/
 void CNetworkSettingsWidget::OnProxyPort()
 {
+    if (!mp_KeyBoardWidget)
+        return;
     m_ButtonType = PORT_BTN_CLICKED;
     mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyPort);
@@ -319,6 +327,8 @@ void CNetworkSettingsWidget::Update()
 /****************************************************************************/
 void CNetworkSettingsWidget::UpdateOnESC()
 {
+    if (!mp_KeyBoardWidget)
+        return;
     mp_KeyBoardWidget->Detach();
 
 }
@@ -329,6 +339,8 @@ void CNetworkSettingsWidget::UpdateOnESC()
 /****************************************************************************/
 void CNetworkSettingsWidget::OnOkClicked()
 {
+    if (!mp_KeyBoardWidget)
+        return;
     QString PasswordString;
     QString EnteredString;
     EnteredString  = mp_KeyBoardWidget->GetLineEditString();

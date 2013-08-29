@@ -43,12 +43,12 @@ CReagentStationEditModel::CReagentStationEditModel(QObject *p_Parent) :
     mp_ReagentList(NULL),
     mp_ReagentGroupList(NULL),
     mp_DashboardDataStationList(NULL),
+    m_Columns(0),
     mp_Parent(NULL),
     m_FilterLeicaReagent(false),
+    m_VisibleRowCount(7),
     m_ParaffinReagent(false),
-    m_ModifiedProgramStepDlg(false),
-    m_Columns(0),
-    m_VisibleRowCount(7)
+    m_ModifiedProgramStepDlg(false)
 {
 
 }

@@ -158,6 +158,9 @@ void CAlarmSettingsDlg::showEvent(QShowEvent *p_Event)
 /****************************************************************************/
 void CAlarmSettingsDlg::UpdateDisplay(void)
 {
+    if (!mp_UserSettings)
+        return;
+
     int PeriodicTime;
 
     if(m_AlarmScreen == Information)  {
@@ -291,6 +294,9 @@ void CAlarmSettingsDlg::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)
 /****************************************************************************/
 void CAlarmSettingsDlg::OnApply()
 {
+    if (!mp_UserSettings)
+        return;
+
     qDebug()<<"calling the slot play tone"<<endl;
 
     int PeriodicTime = 0;
