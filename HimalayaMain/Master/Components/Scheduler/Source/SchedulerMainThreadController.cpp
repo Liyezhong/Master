@@ -166,7 +166,7 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
 
     m_SchedulerMachine->Start();
     //for debug
-    qDebug() << "Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
+    LOG_PAR()<<"DBG" << "Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
 }
 
 void SchedulerMainThreadController::CleanupAndDestroyObjects()
@@ -209,24 +209,24 @@ void SchedulerMainThreadController::OnTickTimer()
     {
     case INIT_STATE:
         //refuse any main controller request if there is any
-        qDebug()<<"Scheduler main controller state: INIT";
+        LOG_PAR()<<"DBG"<<"Scheduler main controller state: INIT";
         break;
     case IDLE_STATE:
-        qDebug()<<"Scheduler main controller state: IDLE";
+        LOG_PAR()<<"DBG"<<"Scheduler main controller state: IDLE";
         HardwareMonitor(mp_IDeviceProcessing, "IDLE");
         HandleIdleState(newControllerCmd);
         break;
     case RUN_STATE:
-        qDebug()<<"Scheduler main controller state: RUN";
+        LOG_PAR()<<"DBG"<<"Scheduler main controller state: RUN";
         HardwareMonitor(mp_IDeviceProcessing, m_CurProgramID);
         HandleRunState(newControllerCmd, retCode);
         break;
     case ERROR_STATE:
-        qDebug()<<"Scheduler main controller state: ERROR";
+        LOG_PAR()<<"DBG"<<"Scheduler main controller state: ERROR";
         //refuse any main controller request if there is any
         break;
     default:
-        qDebug()<<"Scheduler main controller gets unexpected state: " << currentState;
+        LOG_PAR()<<"DBG"<<"Scheduler main controller gets unexpected state: " << currentState;
     }
 }
 
@@ -261,7 +261,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             LOG_STR_ARG(STR_START_PROGRAM, Global::FmtArgs()<<ProgramName);
 
 
-            qDebug() << "Start step: " << m_CurProgramID;
+            LOG_PAR()<<"DBG" << "Start step: " << m_CurProgramID;
             mp_ProgramStepStateMachine->Start();
             mp_SelfTestStateMachine->Start();
             m_SchedulerMachine->SendRunSignal();
@@ -321,7 +321,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
     if(CTRL_CMD_ABORT == ctrlCmd)
     {
-        qDebug() << "Scheduler received command: ABORT";
+        LOG_PAR()<<"DBG" << "Scheduler received command: ABORT";
         mp_ProgramStepStateMachine->NotifyAbort();
         DequeueNonDeviceCommand();
         //tell main controller scheduler is starting to abort
@@ -333,7 +333,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     else
     {
         ProgramStepStateMachine_t stepState = mp_ProgramStepStateMachine->GetCurrentState();
-        qDebug() << "Scheduler step statemachine: "<<stepState;
+        LOG_PAR()<<"DBG" << "Scheduler step statemachine: "<<stepState;
         if(PSSM_INIT == stepState)
         {
             if(CTRL_CMD_PAUSE == ctrlCmd)
@@ -405,14 +405,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
-                qDebug() << "Scheduler step: READY_TO_FILL is abort to PAUSE";
+                LOG_PAR()<<"DBG" << "Scheduler step: READY_TO_FILL is abort to PAUSE";
                 AllStop();
                 mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_FILL);
                 DequeueNonDeviceCommand();
             }
             else if(DCL_ERR_DEV_AL_FILL_SUCCESS == retCode)
             {
-                qDebug() << "Scheduler step: READY_TO_FILL received FILL_SUCCESS, go to next state now.";
+                LOG_PAR()<<"DBG" << "Scheduler step: READY_TO_FILL received FILL_SUCCESS, go to next state now.";
                 mp_ProgramStepStateMachine->NotifyFillFinished();
             }
             else if(retCode != DCL_ERR_UNDEFINED)
@@ -531,7 +531,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     else
                     {
                         //todo: error handling
-                        qDebug()<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
+                        LOG_PAR()<<"DBG"<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
                     }
                 }
                 else
@@ -586,7 +586,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     else
                     {
                         //todo: error handling
-                        qDebug()<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
+                        LOG_PAR()<<"DBG"<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
                     }
                 }
             }
@@ -603,13 +603,13 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             //todo: start next program step or finish all program
             m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
-            qDebug()<< "step finished!";
+            LOG_PAR()<<"DBG"<< "step finished!";
             this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
             QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
             if(m_CurProgramStepIndex != -1)
             {
                 //start next step
-                qDebug() << "Start step: " << m_CurProgramID;
+                LOG_PAR()<<"DBG" << "Start step: " << m_CurProgramID;
                 mp_ProgramStepStateMachine->Start();
                 //send command to main controller to tell the left time
                 quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
@@ -629,7 +629,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             else
             {
                 //program finished
-                qDebug() << "Program finished!";
+                LOG_PAR()<<"DBG" << "Program finished!";
                 m_SchedulerMachine->SendRunComplete();
                 mp_ProgramStepStateMachine->Stop();
                 //todo: tell main controller that program is complete
@@ -691,14 +691,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 mp_ProgramStepStateMachine->NotifyAbort();
             }
 #if 0
-            qDebug()<<"unexpected ret code: "<<retCode;
+            LOG_PAR()<<"DBG"<<"unexpected ret code: "<<retCode;
 #endif
         }
         else if(PSSM_ABORTED == stepState)
         {
             //program finished
             AllStop();
-            qDebug() << "Program aborted!";
+            LOG_PAR()<<"DBG" << "Program aborted!";
             m_SchedulerMachine->SendRunComplete();
             mp_ProgramStepStateMachine->Stop();
             mp_SelfTestStateMachine->Stop();
@@ -1295,7 +1295,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_DEV_RV_MOVE_TO_INIT_POS_SUCCESS != retCode)
         {
             //todo: error handling
-            qDebug()<<"Failed move to initial position, return code: " << retCode;
+            LOG_PAR()<<"DBG"<<"Failed move to initial position, return code: " << retCode;
             goto ERROR;
         }
 #if 1
@@ -1307,7 +1307,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
-            qDebug()<<"Failed turn on main relay, return code: " << retCode;
+            LOG_PAR()<<"DBG"<<"Failed turn on main relay, return code: " << retCode;
             goto ERROR;
         }
         CmdRTStartTemperatureControlWithPID* cmdHeatRTSide = new CmdRTStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
@@ -1326,7 +1326,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
-            qDebug()<<"Failed to heat Retort side, return code: " << retCode;
+            LOG_PAR()<<"DBG"<<"Failed to heat Retort side, return code: " << retCode;
             goto ERROR;
         }
 
@@ -1346,7 +1346,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
-            qDebug()<<"Failed to heat Retort bottom, return code: " << retCode;
+            LOG_PAR()<<"DBG"<<"Failed to heat Retort bottom, return code: " << retCode;
             goto ERROR;
         }
 
@@ -1366,7 +1366,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
-            qDebug()<<"Failed to heat Rotary valve, return code: " << retCode;
+            LOG_PAR()<<"DBG"<<"Failed to heat Rotary valve, return code: " << retCode;
             goto ERROR;
         }
 
@@ -1386,7 +1386,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
-            qDebug()<<"Failed to heat oven bottom, return code: " << retCode;
+            LOG_PAR()<<"DBG"<<"Failed to heat oven bottom, return code: " << retCode;
             goto ERROR;
         }
 
@@ -1406,7 +1406,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
-            qDebug()<<"Failed to heat oven top, return code: " << retCode;
+            LOG_PAR()<<"DBG"<<"Failed to heat oven top, return code: " << retCode;
             goto ERROR;
         }
         m_TimeStamps.OvenStartHeatingTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
@@ -1427,7 +1427,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
-            qDebug()<<"Failed to heat tube 1, return code: " << retCode;
+            LOG_PAR()<<"DBG"<<"Failed to heat tube 1, return code: " << retCode;
             goto ERROR;
         }
 
@@ -1447,7 +1447,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
-            qDebug()<<"Failed to heat tube 2, return code: " << retCode;
+            LOG_PAR()<<"DBG"<<"Failed to heat tube 2, return code: " << retCode;
             goto ERROR;
         }
         bool ok;
@@ -1481,7 +1481,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         // set state machine "init" to "idle" (David)
         m_SchedulerMachine->SendSchedulerInitComplete();
         //for debug
-        qDebug() << "Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
+        LOG_PAR()<<"DBG" << "Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
 
         //send command to main controller to tell init complete
         MsgClasses::CmdProgramAcknowledge* commandPtr(new MsgClasses::CmdProgramAcknowledge(5000, DataManager::PROGRAM_READY));
@@ -1500,13 +1500,13 @@ ERROR:
 
         if(RetCode == DCL_ERR_TIMEOUT)
         {
-            qDebug()<<"Some devices are not found during DCL's initialization period.";
+            LOG_PAR()<<"DBG"<<"Some devices are not found during DCL's initialization period.";
         }
         //error happend
         // set state machine "init" to "error" (David)
         m_SchedulerMachine->SendErrorSignal();
         //for debug
-        qDebug() << "Error while init, Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
+        LOG_PAR()<<"DBG" << "Error while init, Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
     }
     m_TickTimer.start();
 }
@@ -1593,24 +1593,24 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
 
             m_PositionRV = PositionRV;
 
-            LOG_PAR()<<"HDM"<<PositionRV<<PressureAL<<TempALLevelSensor
+            LOG_PAR()<<"DBG"<<"HDM"<<PositionRV<<PressureAL<<TempALLevelSensor
                        <<TempALTube1<<TempALTube2<<TempRV1<<TempRV2
                        <<TempRTBottom<<TempRTSide<<TempOvenBottom<<TempOvenTop
                        <<OvenLidStatus<<RetortLockStatus;
 #if 0
-            LOG_PAR()<<"Rotary valve's position is" << PositionRV;
-            LOG_PAR()<<"Air liquid system pressure is" << PressureAL;
-            LOG_PAR()<<"Air liquid system level sensor's temp is" << TempALLevelSensor;
-            LOG_PAR()<<"Air liquid system tube1's temp is" << TempALTube1;
-            LOG_PAR()<<"Air liquid system tube2's temp is" << TempALTube2;
-            LOG_PAR()<<"Rotary valve's temp1 is" << TempRV1;
-            LOG_PAR()<<"Rotary valve's temp2 is" << TempRV2;
-            LOG_PAR()<<"Retort bottom temp is" << TempRTBottom;
-            LOG_PAR()<<"Retort side temp is" << TempRTSide;
-            LOG_PAR()<<"Oven bottom temp is" << TempOvenBottom;
-            LOG_PAR()<<"Oven top temp is" << TempOvenTop;
-            LOG_PAR()<<"Oven Lid status" << OvenLidStatus;
-            LOG_PAR()<<"Retort Lock status" << RetortLockStatus;
+            LOG_PAR()<<"DBG"<<"Rotary valve's position is" << PositionRV;
+            LOG_PAR()<<"DBG"<<"Air liquid system pressure is" << PressureAL;
+            LOG_PAR()<<"DBG"<<"Air liquid system level sensor's temp is" << TempALLevelSensor;
+            LOG_PAR()<<"DBG"<<"Air liquid system tube1's temp is" << TempALTube1;
+            LOG_PAR()<<"DBG"<<"Air liquid system tube2's temp is" << TempALTube2;
+            LOG_PAR()<<"DBG"<<"Rotary valve's temp1 is" << TempRV1;
+            LOG_PAR()<<"DBG"<<"Rotary valve's temp2 is" << TempRV2;
+            LOG_PAR()<<"DBG"<<"Retort bottom temp is" << TempRTBottom;
+            LOG_PAR()<<"DBG"<<"Retort side temp is" << TempRTSide;
+            LOG_PAR()<<"DBG"<<"Oven bottom temp is" << TempOvenBottom;
+            LOG_PAR()<<"DBG"<<"Oven top temp is" << TempOvenTop;
+            LOG_PAR()<<"DBG"<<"Oven Lid status" << OvenLidStatus;
+            LOG_PAR()<<"DBG"<<"Retort Lock status" << RetortLockStatus;
 #endif
         }
     }
@@ -1694,7 +1694,7 @@ void SchedulerMainThreadController::MoveRV()
         else
         {
            //todo: error handling
-           qDebug()<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
+           LOG_PAR()<<"DBG"<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
         }
     }
     else if(PSSM_READY_TO_TUBE_AFTER == stepState)
@@ -1709,7 +1709,7 @@ void SchedulerMainThreadController::MoveRV()
         else
         {
            //todo: error handling
-           qDebug()<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
+           LOG_PAR()<<"DBG"<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
         }
     }
     else if(PSSM_READY_TO_SEAL == stepState)
@@ -1724,7 +1724,7 @@ void SchedulerMainThreadController::MoveRV()
         else
         {
            //todo: error handling
-           qDebug()<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
+           LOG_PAR()<<"DBG"<<"Get invalid RV position: " << m_CurProgramStepInfo.stationID;
         }
     }
 }
@@ -1757,7 +1757,7 @@ void SchedulerMainThreadController::Soak()
     if(m_TimeStamps.CurStepSoakStartTime == 0)
     {
         m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-        qDebug() << "Start to soak, start time stamp is:" << m_TimeStamps.CurStepSoakStartTime ;
+        LOG_PAR()<<"DBG" << "Start to soak, start time stamp is:" << m_TimeStamps.CurStepSoakStartTime ;
     }
     if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
     {
@@ -1853,7 +1853,7 @@ void SchedulerMainThreadController::Abort()
             }
             else
             {
-                qDebug()<<"Already in draining process, abort will happen when draining finished.";
+                LOG_PAR()<<"DBG"<<"Already in draining process, abort will happen when draining finished.";
             }
         }
     }
@@ -2011,7 +2011,7 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
         }
         else if(DCL_ERR_UNDEFINED != RetCode)
         {
-            qDebug() << "Unexpected ret code: "<< RetCode;
+            LOG_PAR()<<"DBG" << "Unexpected ret code: "<< RetCode;
             resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
         }
         LOG_STR_ARG(STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT, Global::tTranslatableStringList()<<Global::TranslatableString(resid));
@@ -2043,7 +2043,7 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
     else
     {
         //should not get here
-        qDebug()<<"error when run Selftest state machine";
+        LOG_PAR()<<"DBG"<<"error when run Selftest state machine";
     }
 
     return retValue;
