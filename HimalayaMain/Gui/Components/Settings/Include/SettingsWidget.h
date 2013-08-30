@@ -25,9 +25,6 @@
 #include "MainMenu/Include/MainWindow.h"
 #include "KeyBoard/Include/KeyBoard.h"
 
-#include <QDateTime>
-#include <QWidget>
-
 namespace Settings {
 
 namespace Ui {

@@ -29,9 +29,6 @@
 #include "Programs/Include/ProgramWidget.h"
 #include "Application/Include/LeicaStyle.h"
 
-#include <QPixmap>
-#include <QDebug>
-
 namespace Core {
 
 /****************************************************************************/
@@ -41,15 +38,19 @@ namespace Core {
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CReagentStationEditModel::CReagentStationEditModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
+CReagentStationEditModel::CReagentStationEditModel(QObject *p_Parent) :
+    QAbstractTableModel(p_Parent),
+    mp_ReagentList(NULL),
+    mp_ReagentGroupList(NULL),
+    mp_DashboardDataStationList(NULL),
+    m_Columns(0),
+    mp_Parent(NULL),
+    m_FilterLeicaReagent(false),
+    m_VisibleRowCount(7),
+    m_ParaffinReagent(false),
+    m_ModifiedProgramStepDlg(false)
 {
-    mp_ReagentList = NULL;
-    mp_Parent = NULL;
-    m_FilterLeicaReagent = false;
-    m_ParaffinReagent = false;
-    m_ModifiedProgramStepDlg = false;
-    m_Columns = 0;
-    m_VisibleRowCount = 7;
+
 }
 
 /****************************************************************************/
@@ -179,72 +180,71 @@ QVariant CReagentStationEditModel::data(const QModelIndex &Index, int Role) cons
         return QVariant();
     }
 
-        if (Index.row() < m_ReagentID.count()){
+    if (Index.row() < m_ReagentID.count()){
+        if(m_ReagentID[Index.row()] != QString(""))
+            p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_ReagentID[Index.row()]));
+        else
+            p_Reagent = NULL;
 
-            if(m_ReagentID[Index.row()] != QString(""))
-                p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_ReagentID[Index.row()]));
-            else
-                p_Reagent = NULL;
-
-            if (Role == (int)Qt::DisplayRole) {
-                switch (Index.column()) {
-                case 0:
-                    if(p_Reagent == NULL)
-                        return QString("None");
-                    else
-                        return p_Reagent->GetReagentName();
-                case 1:
-                     if (mp_ReagentGroupList) {
-                        if(p_Reagent){
-                            DataManager::CReagentGroup *p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID()));
-                            if (p_ReagentGroup) {
-                                return p_ReagentGroup->GetReagentGroupName();
-                            }
-                         }
-                         else {
-                             return QString("");
-                          }
+        if (Role == (int)Qt::DisplayRole) {
+            switch (Index.column()) {
+            case 0:
+                if(p_Reagent == NULL)
+                    return QString("None");
+                else
+                    return p_Reagent->GetReagentName();
+            case 1:
+                 if (mp_ReagentGroupList) {
+                    if(p_Reagent){
+                        DataManager::CReagentGroup *p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID()));
+                        if (p_ReagentGroup) {
+                            return p_ReagentGroup->GetReagentGroupName();
+                        }
+                     }
+                     else {
+                         return QString("");
                       }
                   }
               }
+          }
 
-            if (Role == (int)Qt::UserRole) {
-                return m_ReagentID[Index.row()];
+        if (Role == (int)Qt::UserRole) {
+            return m_ReagentID[Index.row()];
+        }
+
+        if (Role == (int)Qt::TextColorRole) {
+            if (Index.column() == 1) {
+                QColor Color;
+                QPalette Palete(Color.black());
+                return QVariant(Palete.color(QPalette::Window));
             }
+        }
 
-            if (Role == (int)Qt::TextColorRole) {
-                if (Index.column() == 1) {
-                    QColor Color;
-                    QPalette Palete(Color.black());
-                    return QVariant(Palete.color(QPalette::Window));
-                }
-            }
-
-            if (Role == (int)Qt::BackgroundColorRole) {
-                if (Index.column() == 1) {
-                    if (mp_ReagentGroupList) {
-                        if(p_Reagent) {
-                            DataManager::CReagentGroup *p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID()));
-                              if (p_ReagentGroup) {
-                                    QColor Color;
-                                    // add '#' to hex value to change to color value
-                                    Color.setNamedColor("#" + p_ReagentGroup->GetGroupColor().trimmed());
-                                    QPalette Palete(Color);
-                                    return QVariant(Palete.color(QPalette::Window));
-                               }
-                         }
-                         else {
-                            QPalette Palette;
-                            return QVariant(Palette.color(QPalette::Window));
-                        }
+        if (Role == (int)Qt::BackgroundColorRole) {
+            if (Index.column() == 1) {
+                if (mp_ReagentGroupList) {
+                    if(p_Reagent) {
+                        DataManager::CReagentGroup *p_ReagentGroup = const_cast<DataManager::CReagentGroup*>(mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID()));
+                          if (p_ReagentGroup) {
+                                QColor Color;
+                                // add '#' to hex value to change to color value
+                                Color.setNamedColor("#" + p_ReagentGroup->GetGroupColor().trimmed());
+                                QPalette Palete(Color);
+                                return QVariant(Palete.color(QPalette::Window));
+                           }
+                     }
+                     else {
+                        QPalette Palette;
+                        return QVariant(Palette.color(QPalette::Window));
                     }
                 }
             }
         }
-        else if (Role == (int)Qt::BackgroundRole) {
-              QPalette Palette;
-              return QVariant(Palette.color(QPalette::Window));
-         }
+       }
+       else if (Role == (int)Qt::BackgroundRole) {
+            QPalette Palette;
+            return QVariant(Palette.color(QPalette::Window));
+       }
 
       return QVariant();
 }

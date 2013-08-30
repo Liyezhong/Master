@@ -29,8 +29,6 @@
 #include "Programs/Include/ProgramWidget.h"
 #include "Application/Include/LeicaStyle.h"
 
-#include <QPixmap>
-#include <QDebug>
 
 namespace Core {
 

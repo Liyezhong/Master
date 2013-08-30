@@ -22,8 +22,6 @@
 #ifndef DATAMANAGER_DATAREAGENTLISTVERIFIER_H
 #define DATAMANAGER_DATAREAGENTLISTVERIFIER_H
 
-#include <QString>
-#include <QXmlStreamReader>
 
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
@@ -63,7 +61,7 @@ public:
      *  \brief  Destructor
      */
     /****************************************************************************/
-    virtual ~CDataReagentListVerifier() {}
+    virtual ~CDataReagentListVerifier();
 private:
     CDataReagentList* mp_DRL;                        //!< Reagent Data Container
     ErrorHash_t m_ErrorsHash;          //!< To store Error ID and any arguments associated

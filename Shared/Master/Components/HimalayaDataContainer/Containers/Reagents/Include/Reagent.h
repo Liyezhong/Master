@@ -21,8 +21,6 @@
 #ifndef DATAMANAGER_REAGENT_H
 #define DATAMANAGER_REAGENT_H
 
-#include <QString>
-#include <QXmlStreamReader>
 
 #include "DataManager/Helper/Include/Types.h"
 #include "DataManager/Helper/Include/Helper.h"
@@ -323,7 +321,7 @@ public:
      *  \return     List of errors
      */
     /****************************************************************************/
-    ListOfErrors_t& GetErrorList()
+    const ListOfErrors_t& GetErrorList()
     {
         return m_ListOfErrors;
     }

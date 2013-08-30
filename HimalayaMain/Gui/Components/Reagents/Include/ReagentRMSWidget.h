@@ -28,13 +28,13 @@
 #include "Core/Include/ReagentRMSModel.h"
 #include "Core/Include/DataConnector.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
-#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "Global/Include/Utils.h"
 #include "MainMenu/Include/BaseTable.h"
 #include "MainMenu/Include/SliderControl.h"
 #include "MainMenu/Include/FileView.h"
 
 #include "KeyBoard/Include/KeyBoard.h"
+#include "MainMenu/Include/MessageDlg.h"
 
 namespace Reagents {
 
@@ -62,12 +62,9 @@ class CReagentRMSWidget : public MainMenu::CPanelFrame
     friend class CTestReagents;
 private:
     Ui::CReagentRMSWidget *mp_Ui;                     //!< User interface
-    DataManager::CHimalayaUserSettings *mp_UserSettings;    //!< Data object
     DataManager::CHimalayaUserSettings m_UserSettings;    //!< Data object
-    MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     //Flags
-    bool m_ProcessRunning;                          //!< Process running state
-    bool m_UserRoleChanged;                         //!< True if user Role changed else false
+    bool m_ProcessRunning;
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
@@ -79,10 +76,8 @@ private:
     DataManager::CReagent m_SelectedReagent;        //!< Currently selected reagent
     CModifyReagentRMSDlg *mp_ModifiyReagentRMSDlg;        //!< Edit reagent dialog
     MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
-    ButtonType_t m_ButtonType;                      //!< Informs which button was clicked
     bool m_ShowMessageDialog;                       //!< To show Information Message Dialog
     DataManager::CReagent const *mp_Reagent;        //!< Reagent object
-    KeyBoard::CKeyBoard *mp_KeyBoard;
     QString m_strNewReagent;
     QString m_strEditReagent;
     QString m_strConfirmDelReagent;

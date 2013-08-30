@@ -29,7 +29,6 @@
 #include "Reagents/Include/ReagentStatusWidget.h"
 #include "MainMenu/Include/ScrollTable.h"
 #include "Core/Include/ReagentStationEditModel.h"
-#include <QButtonGroup>
 
 namespace Reagents {
 
@@ -48,16 +47,13 @@ class CModifyReagentGroupColorDlg : public MainMenu::CDialogFrame
 
 private:
     Ui::CModifyReagentGroupColorDlg *mp_Ui;                   //!< User interface
-    MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object
     DataManager::CReagentGroup m_ReagentGroup;
     DataManager::CReagentGroupColorList *mp_CReagentGroupColorList;
     QMap<int, QPushButton*> m_QPushButtonMap;
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
-    bool m_UserRoleChanged;                         //!< True if user Role changed else false
     //UI related
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     QStringList m_ColorNames;                       //!< store color names
     QButtonGroup m_ButtonGroup;
     QString m_strCancel, m_strClose;

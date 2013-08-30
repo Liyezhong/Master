@@ -96,7 +96,7 @@ private:
 
 protected:
     void changeEvent(QEvent *p_Event);
-    void showEvent(QEvent *p_Event);
+    void showEvent(QShowEvent *p_Event);
 
 private slots:
     void OnPeriodicChanged(MainMenu::CSliderControl::Position_t Position);

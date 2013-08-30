@@ -45,7 +45,7 @@ QMap<int, int> GetTemperatureMap(int MinC, int MaxC, int StepC)
         int Faren =
                 qRound(((static_cast<double>(Cel)  - 50.0) / 5.0) * 9.0) + 122;
 
-        MapTemp.insert(Faren, Cel);
+        (void)MapTemp.insert(Faren, Cel);
     }
 
     return MapTemp;
@@ -63,7 +63,8 @@ static QMap<int, int> s_MapTemperature =
  */
 /****************************************************************************/
 CSystemSetupSettingsWidget::CSystemSetupSettingsWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
-    mp_Ui(new Ui::CSystemSetupSettingsWidget), mp_UserSettings(NULL), mp_MainWindow(NULL)
+    mp_Ui(new Ui::CSystemSetupSettingsWidget), mp_UserSettings(NULL), mp_MainWindow(NULL),m_ProcessRunning(false),
+    m_CurrentUserRole(MainMenu::CMainWindow::Operator)
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Oven"));
@@ -262,7 +263,10 @@ void CSystemSetupSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_Mai
 
 void CSystemSetupSettingsWidget::OnApply()
 {
-    m_UserSettingsTemp = *mp_UserSettings;
+    if (mp_UserSettings)
+    {
+        m_UserSettingsTemp = *mp_UserSettings;
+    }
 
     int Temp = mp_ScrollWheel->GetCurrentData().toInt();
     m_UserSettingsTemp.SetTemperatureParaffinBath(Temp);

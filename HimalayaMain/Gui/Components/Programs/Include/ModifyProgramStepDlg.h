@@ -35,7 +35,6 @@
 #include "MainMenu/Include/MainWindow.h"
 #include "Programs/Include/ProgramWidget.h"
 #include "Programs/Include/StepModel.h"
-#include <QButtonGroup>
 
 //lint -sem(Programs::CModifyProgramStepDlg::InitDurationWidget, initializer)
 //lint -e1565
@@ -77,20 +76,17 @@ private:
     bool m_NewProgramStep;                              //!< True if dialog popped up for New Program Step.
     bool m_ProcessRunning;                              //!< State of process running    
     Programs::ButtonType_t m_ModifyProgramDlgButtonType;//!< Informs which button was clicked in ModifyProgramDialog
-    QString m_SelectedStepReagentID;                    //!< Contains Selected ProgramStep reagent id
     bool m_ReagentExists;                               //!< True if Reagent exists in the reagent model
-    DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
     DataManager::CUserSettings *mp_UserSettings;        //!< Data object
     CStepModel m_StepModel;                             //!< Model of the program table
     Core::CDataConnector *mp_DataConnector;             //!< Global data container
-    DataManager::CUserSettings m_UserSettingsTemp;      //!< Temporary copy of User Settings
     DataManager::CProgram *mp_Program;
     Core::CReagentStationEditModel m_ReagentEditModel;  //!< Model for the table
     QString m_ReagentLongName;
     QString m_ReagentID;
     QPixmap* m_pAmbientTempraturePixmap;
     QPixmap* m_pAmbientTempratureBigPixmap;
-    QString m_strConfirmMsg, m_strOK;
+    QString m_strConfirmMsg, m_strOK, m_strDiffTemp;
 private:
     void showEvent(QShowEvent *p_Event);
     void RetranslateUI();
@@ -115,19 +111,6 @@ public:
     void NewProgramStep();
     void SelectRow(qint32 Row);
     void ResetButtons(bool Disable);
-
-    /****************************************************************************/
-    /*!
-     *  \brief Sets UserSettings
-     *
-     *  \iparam p_UserSettings - Pointer of UserSettings.
-     */
-    /****************************************************************************/
-    void SetUserSettings(DataManager::CUserSettings *p_UserSettings)
-    {
-        m_UserSettings = *p_UserSettings;
-        //InitTemperatureWidget();
-    }
 
 private:
     void InitDurationWidget();

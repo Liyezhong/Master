@@ -41,7 +41,7 @@
                     </motion_profiles>
                 </functionmodule>
                 <functionmodule type="temperature_control" key="temp_rv" name="temp_rv" interface="2">
-                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="7813" heater_current="495" heater_threshold="105"/>
+                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="7813" heater_current="456" heater_threshold="309"/>
                     <pid_controllers>
                         <pid_controller max_temperature="130" controller_gain="1212" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
@@ -54,28 +54,28 @@
             <functionmodules>
 
                 <functionmodule type="temperature_control" key="temp_oven_top" name="temp_oven_top" interface="1">
-                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="510" heater_threshold="120"/>
+                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="498" heater_threshold="314"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
                 </functionmodule>
 
                 <functionmodule type="temperature_control" key="temp_oven_bottom" name="temp_oven_bottom" interface="2">
-                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="1350" heater_threshold="320"/>
+                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="1314" heater_threshold="532"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
                 </functionmodule>
 
                 <functionmodule type="temperature_control" key="temp_retort_bottom" name="temp_retort_bottom" interface="3">
-                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="1695" heater_threshold="405"/>
+                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="2039" heater_threshold="725"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="30000" derivative_time="0"/>
                     </pid_controllers>
                 </functionmodule>
 
                 <functionmodule type="temperature_control" key="temp_retort_side" name="temp_retort_side" interface="4">
-                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="930" heater_threshold="220"/>
+                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="363" heater_threshold="277"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
@@ -88,46 +88,48 @@
             <nodeindex>0</nodeindex>
             <functionmodules>
                 <functionmodule type="pressure_control" key="pressurectrl" name="pressurectrl" interface="1">
-                    <configuration pressure_tolerance="2" sampling_period="200" fan_speed="2950" fan_threshold="295" current_gain="0" pump_current="500" pump_threshold="400"/>
+                    <configuration pressure_tolerance="2" sampling_period="200" fan_current_gain="120" fan_current="300"  fan_threshold="200" current_gain="1241" pump_current="600" pump_threshold="500"/>
                     <pid_controllers>
                         <pid_controller max_pressure="60" min_pressure="-60" controller_gain="40" reset_time="20000" derivative_time="0"/>
                     </pid_controllers>
                     <pwm_controller max_actuating_value="8000" min_actuating_value="200" max_pwm_duty="100" min_pwm_duty="60"/>
                 </functionmodule>
               <functionmodule type="temperature_control" key="temp_lsensor" name="temp_lsensor" interface="2">
-                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="7813" heater_current="875" heater_threshold="200"/>
+                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="620" heater_current="600" heater_threshold="200"/>
                     <pid_controllers>
                         <pid_controller max_temperature="120" controller_gain="1212" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
                 </functionmodule>
               <functionmodule type="temperature_control" key="temp_tube1" name="temp_tube1" interface="3">
-                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="7813" heater_current="340" heater_threshold="200"/>
+                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="620" heater_current="208" heater_threshold="200"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
                 </functionmodule>
               <functionmodule type="temperature_control" key="temp_tube2" name="temp_tube2" interface="4">
-                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="7813" heater_current="340" heater_threshold="200"/>
+                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="620" heater_current="208" heater_threshold="200"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
                 </functionmodule>
+  <!--
               <functionmodule type="digital_out" key="pump_fan" name="pump_fan" interface="5">
                     <configuration enabled="1" inactiv_shutdown="1" inactiv_emcy="1" polarity="0" outval_inactiv="0" livetime_limit="0"/>
                 </functionmodule>
-              <functionmodule type="digital_out" key="lid_control" name="lid_control" interface="6">
+  -->
+              <functionmodule type="digital_out" key="lid_control" name="lid_control" interface="5">
                     <configuration enabled="1" inactiv_shutdown="1" inactiv_emcy="1" polarity="0" outval_inactiv="0" livetime_limit="0"/>
                 </functionmodule>
-                <functionmodule type="digital_out" key="heater_relay" name="heater_relay" interface="7">
+                <functionmodule type="digital_out" key="heater_relay" name="heater_relay" interface="6">
                     <configuration enabled="1" inactiv_shutdown="1" inactiv_emcy="1" polarity="0" outval_inactiv="0" livetime_limit="0"/>
                 </functionmodule>
-              <functionmodule type="digital_out" key="remote_alarm_ctrl" name="remote_alarm_ctrl" interface="8">
+              <functionmodule type="digital_out" key="remote_alarm_ctrl" name="remote_alarm_ctrl" interface="7">
                     <configuration enabled="1" inactiv_shutdown="1" inactiv_emcy="1" polarity="0" outval_inactiv="0" livetime_limit="0"/>
                 </functionmodule>
-              <functionmodule type="digital_out" key="local_alarm_ctrl" name="local_alarm_ctrl" interface="9">
+              <functionmodule type="digital_out" key="local_alarm_ctrl" name="local_alarm_ctrl" interface="8">
                     <configuration enabled="1" inactiv_shutdown="1" inactiv_emcy="1" polarity="0" outval_inactiv="0" livetime_limit="0"/>
                 </functionmodule>
-              <functionmodule type="digital_in" key="lid_status" name="lid_status" interface="10">
+              <functionmodule type="digital_in" key="lid_status" name="lid_status" interface="9">
                     <configuration enabled="1" timestamp="0" polarity="1" supervision="1" interval="10" debounce="5"/>
                 </functionmodule>
 <!--
@@ -141,7 +143,7 @@
                     <configuration enabled="1" inactiv_shutdown="1" inactiv_emcy="1" polarity="0" outval_inactiv="0" livetime_limit="0"/>
                 </functionmodule>
 -->
-              <functionmodule type="digital_in" key="oven_door_status" name="oven_door_status" interface="11">
+              <functionmodule type="digital_in" key="oven_door_status" name="oven_door_status" interface="10">
                     <configuration enabled="1" timestamp="0" polarity="1" supervision="1" interval="10" debounce="5"/>
                 </functionmodule>
             </functionmodules>
@@ -160,8 +162,8 @@
 ************************************************************************************************* -->
         <device type="RotaryValveDevice" dev_instanceID="0x000080C0" optional="0">
             <functionmodules>
-                <functionmodule key="RV_motor" fct_instanceID="0x30003"/>
-                <functionmodule key="RV_temp_ctrl" fct_instanceID="0x40003"/>
+                <functionmodule key="RV_motor" fct_instanceID="0x10003"/>
+                <functionmodule key="RV_temp_ctrl" fct_instanceID="0x20003"/>
             </functionmodules>
         </device>
         <device type="AirLiquidDevice" dev_instanceID="0x000080C1" optional="0">
@@ -170,14 +172,14 @@
                 <functionmodule key="AL_level_sensor_temp_ctrl" fct_instanceID="0x2000F"/>
                 <functionmodule key="AL_tube1_temp_ctrl" fct_instanceID="0x3000F"/>
                 <functionmodule key="AL_tube2_temp_ctrl" fct_instanceID="0x4000F"/>
-                <functionmodule key="AL_fan_digital_output" fct_instanceID="0x5000F"/>
+            <!--    <functionmodule key="AL_fan_digital_output" fct_instanceID="0x5000F"/>-->
             </functionmodules>
         </device>
         <device type="OvenDevice" dev_instanceID="0x000080C2" optional="0">
             <functionmodules>
                 <functionmodule key="OVEN_top_temp_ctrl" fct_instanceID="0x10005"/>
                 <functionmodule key="OVEN_bottom_temp_ctrl" fct_instanceID="0x20005"/>
-                <functionmodule key="OVEN_lid_digital_input" fct_instanceID="0xB000F"/>
+                <functionmodule key="OVEN_lid_digital_input" fct_instanceID="0xA000F"/>
             </functionmodules>
         </device>
         <device type="RetortDevice" dev_instanceID="0x000080C3" optional="0">
@@ -190,9 +192,9 @@
         </device>
         <device type="PeripheryDevice" dev_instanceID="0x000080C4" optional="0">
             <functionmodules>
-                <functionmodule key="PER_remote_alarm_ctrl_digital_output" fct_instanceID="0x8000F"/>
-                <functionmodule key="PER_local_alarm_ctrl_digital_output" fct_instanceID="0x9000F"/>
-                <functionmodule key="PER_main_relay_digital_output" fct_instanceID="0x7000F"/>
+                <functionmodule key="PER_remote_alarm_ctrl_digital_output" fct_instanceID="0x7000F"/>
+                <functionmodule key="PER_local_alarm_ctrl_digital_output" fct_instanceID="0x8000F"/>
+                <functionmodule key="PER_main_relay_digital_output" fct_instanceID="0x6000F"/>
             </functionmodules>
         </device>
     </devices>

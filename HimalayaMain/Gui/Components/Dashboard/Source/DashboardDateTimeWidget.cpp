@@ -23,8 +23,7 @@
 #include "Application/Include/LeicaStyle.h"
 
 #include "ui_DashboardDateTimeWidget.h"
-#include <QDebug>
-#include <QPainter>
+
 
 namespace Dashboard {
 
@@ -230,7 +229,7 @@ void CDashboardDateTimeWidget::OnOK()
         mp_MessageDlg->SetText(tr("Program End Date Time cannot be later than one week or earlier than the ASAP End Date Time."));
         mp_MessageDlg->SetButtonText(1, tr("OK"));
         mp_MessageDlg->HideButtons();    // Hiding First Two Buttons in the Message Dialog
-        mp_MessageDlg->exec();
+        (void)mp_MessageDlg->exec();
     }
 }
 

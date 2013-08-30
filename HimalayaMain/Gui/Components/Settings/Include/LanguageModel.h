@@ -22,9 +22,6 @@
 
 #include "MainMenu/Include/TableMoving.h"
 #include <QAbstractTableModel>
-#include <QMap>
-#include <QStringList>
-
 
 namespace Settings {
 
@@ -44,7 +41,7 @@ public:
     int columnCount(const QModelIndex &p_parent) const;
     QVariant data(const QModelIndex &Index, int Role) const;
     Qt::ItemFlags flags(const QModelIndex &Index) const;
-    QVariant headerData(int Section, Qt::Orientation Orientation, int Role = Qt::DisplayRole) const;
+    QVariant headerData(int Section, Qt::Orientation Orientation, int Role = (int)Qt::DisplayRole) const;
    // bool setData(const QModelIndex &Index, const QVariant &Value, int Role = Qt::EditRole);
     void SetVisibleRowCount(qint32 RowCount);
     void SetLanguageList(QStringList LanguageList);

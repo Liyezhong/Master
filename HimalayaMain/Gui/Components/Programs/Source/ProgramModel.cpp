@@ -25,11 +25,7 @@
 #include "Global/Include/Utils.h"
 #include "Global/Include/Exception.h"
 #include "Programs/Include/ProgramModel.h"
-#include <QDebug>
-#include <QPainter>
-#include <QPixmap>
-#include <QApplication>
-#include <QEvent>
+
 
 namespace Programs {
 const int VISIBLE_ROW_COUNT = 8;    //!< Number of rows visible in a table
@@ -42,12 +38,15 @@ const int MAX_FAVORITE_PROGRAM_COUNT = 5; //!< Maxiimum number of favourite Prog
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CProgramModel::CProgramModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
+CProgramModel::CProgramModel(QObject *p_Parent) :
+QAbstractTableModel(p_Parent),
+mp_ProgramList(NULL),
+m_CurrentUserRole(MainMenu::CMainWindow::Operator),
+m_Columns(0),
+  m_VisibleRowCount(VISIBLE_ROW_COUNT),
+m_CurrentIndex(0)
 {
-    mp_ProgramList = NULL;
-    m_Columns = 0;
-    m_CurrentIndex = 0;
-    m_VisibleRowCount = VISIBLE_ROW_COUNT;
+
 }
 
 /****************************************************************************/
@@ -197,11 +196,14 @@ Qt::ItemFlags CProgramModel::flags(const QModelIndex &Index) const
         if (m_CurrentUserRole == MainMenu::CMainWindow::Admin
                 || m_CurrentUserRole == MainMenu::CMainWindow::Service)
         {
-            int FavProgramCount = mp_ProgramList->GetFavoriteProgramIDs().count();
-            DataManager::CProgram *p_Program = const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(Index.row()));
-            if (FavProgramCount == 5 || p_Program->GetID().at(0) == 'C') {
-                if (data(Index, Qt::CheckStateRole) == Qt::Unchecked) {
-                    return Qt::ItemIsSelectable;
+            if (mp_ProgramList)
+            {
+                int FavProgramCount = mp_ProgramList->GetFavoriteProgramIDs().count();
+                DataManager::CProgram *p_Program = const_cast<DataManager::CProgram*>(mp_ProgramList->GetProgram(Index.row()));
+                if (FavProgramCount == 5 || p_Program->GetID().at(0) == 'C') {
+                    if (data(Index, (int)Qt::CheckStateRole) == Qt::Unchecked) {
+                        return Qt::ItemIsSelectable;
+                    }
                 }
             }
             return QAbstractItemModel::flags(Index) | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;

@@ -26,9 +26,6 @@
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 #include "Global/Include/GlobalDefines.h"
 #include <QAbstractTableModel>
-#include <QMap>
-#include <QStringList>
-#include <QObject>
 #include <QPixmap>
 namespace Programs {
     class CModifyProgramStepDlg;

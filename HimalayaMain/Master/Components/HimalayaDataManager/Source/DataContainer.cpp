@@ -30,7 +30,6 @@
 
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationVerifier.h"
 
-//#include "DataManager/Containers/Adjustment/Include/AdjustmentVerifier.h"
 
 #include "DataManager/Containers/Racks/Include/RackList.h"
 #include "DataManager/Containers/Racks/Include/RackListVerifier.h"
@@ -40,6 +39,7 @@
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupD.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaSettingsVerifier.h"
 
+//lint -sem(DataManager::CDataContainer::DeinitializeContainers, cleanup)
 
 namespace DataManager {
 

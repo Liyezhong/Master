@@ -21,8 +21,6 @@
 #include "NetworkLayer/Include/MasterLinkDevice.h"
 #include "Global/Include/Commands/CmdDateAndTime.h"
 
-#include <QMetaType>
-
 namespace NetLayer {
 
 const CreatorFunctorShPtr_t NullCreatorFunctor(NULL);   ///< NULL functor.
@@ -230,7 +228,10 @@ void CMasterLinkDevice::OnCommandTimeoutSlot(Global::tRefType Ref, QString Comma
             return;
         }
         // execute
-        Command->CopyAndCall(Ref, Global::AckOKNOK(false));
+        if (Command)
+        {
+            Command->CopyAndCall(Ref, Global::AckOKNOK(false));
+        }
         /// \todo still emit this signal?
         emit SigCmdTimeout(Ref, CommandName);
     } else {
@@ -264,7 +265,8 @@ void CMasterLinkDevice::OnAckOKNOK(Global::tRefType Ref, const Global::AckOKNOK 
         return;
     }
     // execute
-    Command->CopyAndCall(Ref, Ack);
+    if (Command)
+        Command->CopyAndCall(Ref, Ack);
 }
 
 } // end namespace NetLayer

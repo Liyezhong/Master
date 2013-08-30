@@ -1,5 +1,6 @@
 #include "Dashboard/Include/ScreenSaverWidget.h"
 #include "ui_ScreenSaverWidget.h"
+#include <QTimer>
 
 ScreenSaverWidget::ScreenSaverWidget(QWidget *parent) :
     MainMenu::CPanelFrame(parent),
@@ -11,15 +12,19 @@ ScreenSaverWidget::ScreenSaverWidget(QWidget *parent) :
     this->move(0, 0);
     m_timer = new QTimer(this);
     m_timer->setInterval(1800000);//30 mintues
-    //m_timer->setInterval(3000);//test
-    connect(m_timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
+    (void)connect(m_timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
     m_timer->start();
 }
 
 ScreenSaverWidget::~ScreenSaverWidget()
 {
-    delete ui;
-    delete m_timer;
+    try
+    {
+        delete ui;
+        delete m_timer;
+    }
+    catch(...)
+    {}
 }
 
 void ScreenSaverWidget::AppIdleForLongTime()

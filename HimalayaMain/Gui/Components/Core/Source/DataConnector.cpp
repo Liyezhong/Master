@@ -40,7 +40,6 @@
 #include "HimalayaDataContainer/Containers/ReagentStations/Include/StationXmlDefinitions.h"
 
 #include <QApplication>
-#include <QHash>
 #include "Global/Include/UITranslator.h"
 #include "MainMenu//Include/MsgBoxManager.h"
 #include "Dashboard/Include/SplashWidget.h"
@@ -171,6 +170,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
 
     mp_SplashWidget = new SplashWidget();
     CONNECTSIGNALSLOT(this, ProgramStartReady(), this, OnProgramStartReady());
+    CONNECTSIGNALSLOT(this, ProgramSelfTestFailed(), this, OnProgramSelfTestFailed());
     m_pServiceProcess = new QProcess();
 
 }
@@ -352,7 +352,7 @@ void CDataConnector::OnAck(Global::tRefType Ref, const Global::AckOKNOK &Ack)
 void CDataConnector::SendDateTime(QDateTime DateTime)
 {
     Global::CmdDateAndTime Command(5000, DateTime);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckDateAndTime, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckDateAndTime, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->show();
@@ -368,7 +368,7 @@ void CDataConnector::SendDateTime(QDateTime DateTime)
 void CDataConnector::SendStationChangeReagent(const QString& StationId, const QString& ReagentId)
 {
     MsgClasses::CmdStationChangeReagent Command(1000, StationId, ReagentId);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -378,7 +378,7 @@ void CDataConnector::SendStationChangeReagent(const QString& StationId, const QS
 void CDataConnector::SendStationResetData(const QString& StationId)
 {
     MsgClasses::CmdStationResetData Command(1000, StationId);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -388,7 +388,7 @@ void CDataConnector::SendStationResetData(const QString& StationId)
 void CDataConnector::SendStationSetAsEmpty(const QString StationId)
 {
     MsgClasses::CmdStationSetAsEmpty Command(1000, StationId);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -398,7 +398,7 @@ void CDataConnector::SendStationSetAsEmpty(const QString StationId)
 void CDataConnector::SendStationSetAsFull(const QString& StationId)
 {
     MsgClasses::CmdStationSetAsFull Command(1000, StationId);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -420,7 +420,7 @@ void CDataConnector::SendRMSChanged(Global::RMSOptions_t rmsOption)
 void CDataConnector::SendReagentGroupUpdate(DataManager::CReagentGroup &ReagentGroup)
 {
     MsgClasses::CmdReagentGroupUpdate Command(1000, ReagentGroup.GetGroupID(), ReagentGroup.GetGroupColor());
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -436,18 +436,11 @@ void CDataConnector::SendReagentGroupUpdate(DataManager::CReagentGroup &ReagentG
 /****************************************************************************/
 void CDataConnector::SendReagentUpdate(DataManager::CReagent &Reagent)
 {
-#if 0
-    QByteArray ByteArray;
-    Reagent.SerializeContent(&ByteArray);
-
-    NetCommands::CmdReagentUpdate Command(5000, ByteArray);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
-#endif
     QByteArray ByteArray;
     QDataStream ReagentDataStream(&ByteArray,QIODevice::ReadWrite);
     ReagentDataStream << Reagent;
     MsgClasses::CmdReagentUpdate Command(1000, ReagentDataStream);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -467,7 +460,7 @@ void CDataConnector::SendReagentAdd(DataManager::CReagent &Reagent)
     QDataStream ReagentDataStream(&ByteArray,QIODevice::ReadWrite);
     ReagentDataStream << Reagent;
     MsgClasses::CmdReagentAdd Command(1000, ReagentDataStream);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnReagentAck, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnReagentAck, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -484,7 +477,7 @@ void CDataConnector::SendReagentAdd(DataManager::CReagent &Reagent)
 void CDataConnector::SendReagentRemove(QString ReagentID)
 {
     MsgClasses::CmdReagentRemove Command(1000, ReagentID);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -505,7 +498,7 @@ void CDataConnector::SendProgramUpdate(DataManager::CProgram &Program)
       ProgramDataStream << Program;
       MsgClasses::CmdProgramUpdate Command(5000, ProgramDataStream, ProgramDataStream);
       Command.SetProgramColorReplaced(false);
-      m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
+      (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
        m_UpdateProgramColor = false;
       mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
       mp_WaitDialog->SetText(m_strSavingSettings);
@@ -532,7 +525,7 @@ void CDataConnector::SendProgramColorUpdate(DataManager::CProgram &ColorReplaced
       (void)ProgramDataStream.device()->reset();
       MsgClasses::CmdProgramUpdate Command(5000, ProgramDataStream, ColorAssignedProgramDataStream);
       Command.SetProgramColorReplaced(true);
-      m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
+      (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
       m_UpdateProgramColor = true;
       mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
       mp_WaitDialog->SetText(m_strSavingSettings);
@@ -554,7 +547,7 @@ void CDataConnector::SendProgramAdd(DataManager::CProgram &Program)
     ProgramDataStream << Program;
     (void)ProgramDataStream.device()->reset();
     MsgClasses::CmdNewProgram Command(5000, ProgramDataStream);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -571,7 +564,7 @@ void CDataConnector::SendProgramAdd(DataManager::CProgram &Program)
 void CDataConnector::SendProgramRemove(QString &ProgramID)
 {
     MsgClasses::CmdProgramDeleteItem Command(1000, ProgramID);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnProgramAck, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -581,7 +574,7 @@ void CDataConnector::SendProgramRemove(QString &ProgramID)
 void CDataConnector::SendAppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType)
 {
     MsgClasses::CmdQuitAppShutdown Command(1000, quitAppShutdownActionType);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -591,7 +584,7 @@ void CDataConnector::SendAppQuitSystemShutdown(DataManager::QuitAppShutdownActio
 void CDataConnector::SendResetOperationDays(DataManager::ResetOperationHoursType_t resetOperationHoursType)
 {
     MsgClasses::CmdResetOperationHours Command(1000, resetOperationHoursType);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -618,7 +611,7 @@ void CDataConnector::AddNewProgramHandler(Global::tRefType Ref, const MsgClasses
 
     Result = ProgramList->AddProgram(&Program);
     if (Result) {
-        ProgramList->GetNextFreeProgID(true);
+        (void)ProgramList->GetNextFreeProgID(true);
         emit ProgramsUpdated();
     }
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(Result));
@@ -705,7 +698,7 @@ void CDataConnector::AddNewReagentHandler(Global::tRefType Ref, const MsgClasses
     Result = ReagentList->AddReagent(&Reagent);
     if (Result) {
         emit ReagentsUpdated();
-        ReagentList->GetNextFreeReagentID(true);
+        (void)ReagentList->GetNextFreeReagentID(true);
         mp_WaitDialog->accept();
         qDebug()<<"ReagentsUpdated emitted";
     }
@@ -781,6 +774,7 @@ void CDataConnector::UpdateStationChangeReagentHandler(Global::tRefType Ref,
         switch (Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION) {
             default:
                  QString("");
+                break;
             case Global::RMS_CASSETTES:
                 pDashboardStation->SetDashboardReagentActualCassettes(0);
                 break;
@@ -809,6 +803,7 @@ void CDataConnector::UpdateStationResetDataHandler(Global::tRefType Ref, const M
         switch (Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION) {
             default:
                  QString("");
+                break;
             case Global::RMS_CASSETTES:
                 pDashboardStation->SetDashboardReagentActualCassettes(0);
                 break;
@@ -853,12 +848,13 @@ void CDataConnector::UpdateStationSetAsFullHandler(Global::tRefType Ref, const M
         switch (Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION) {
             default:
                  QString("");
+                break;
             case Global::RMS_CASSETTES:
                 pDashboardStation->SetDashboardReagentActualCassettes(0);
                 break;
             case Global::RMS_CYCLES:
                  pDashboardStation->SetDashboardReagentActualCycles(0);
-                 break;
+                break;
          }
     }
     else
@@ -872,7 +868,7 @@ void CDataConnector::UpdateStationSetAsFullHandler(Global::tRefType Ref, const M
 
 void CDataConnector::UpdateStationReagentStatus(Global::tRefType Ref, const MsgClasses::CmdUpdateStationReagentStatus &Command)
 {
-    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    (void)m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
     const QStringList& Ids = Command.StationIDs();
     for (int i = 0; i < Ids.count(); i++)
     {
@@ -993,7 +989,7 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         //end of initialization
         m_GuiInit = false;
         NetCommands::CmdGuiInit Cmd(2000, true);
-        m_NetworkObject.SendCmdToMaster(Cmd, &CDataConnector::OnAckTwoPhase, this);
+        (void)m_NetworkObject.SendCmdToMaster(Cmd, &CDataConnector::OnAckTwoPhase, this);
         QRect scr = mp_MainWindow->rect();
         mp_SplashWidget->move( scr.center() - mp_SplashWidget->rect().center());
         mp_SplashWidget->exec();
@@ -1005,6 +1001,12 @@ void CDataConnector::OnProgramStartReady()
 {
     mp_SplashWidget->accept();
 }
+
+void CDataConnector::OnProgramSelfTestFailed()
+{
+    mp_SplashWidget->accept();
+}
+
 
 /****************************************************************************/
 /*!
@@ -1036,14 +1038,14 @@ void CDataConnector::ProcessStateHandler(Global::tRefType Ref, const NetCommands
  *  \iparam Settings = Settings reference
  */
 /****************************************************************************/
-void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &Settings)
+void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &settings)
 {
     QByteArray ByteArray;
     QDataStream SettingsDataStream(&ByteArray, QIODevice::ReadWrite);
-    SettingsDataStream << Settings;
+    SettingsDataStream << settings;
     (void)SettingsDataStream.device()->reset();
     MsgClasses::CmdChangeUserSettings Command(5000, SettingsDataStream);    
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnUserSettingsAck, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnUserSettingsAck, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->show();
@@ -1062,7 +1064,7 @@ void CDataConnector::SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, bool 
     qDebug()<< Volume << Sound << Type;
 
     MsgClasses::CmdAlarmToneTest Command(5000, Volume, Sound, Type);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->show();
@@ -1128,11 +1130,11 @@ void CDataConnector::SendDataImportExport(const QString Name, const QStringList 
             DialogText = m_strExportServiceData;
         }
         MsgClasses::CmdDataExport Command(20000, ByteArray);
-        m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+        (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     }
     else {
         MsgClasses::CmdDataImport Command(Global::Command::MAXTIMEOUT, ByteArray);
-        m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+        (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
         DialogTitle = m_strImport;
         DialogText = m_strImportData;
     }
@@ -1174,7 +1176,7 @@ void CDataConnector::EventStringHandler(Global::tRefType Ref, const NetCommands:
         }
         QLocale::Language Key;
         Global::tLanguageData T;
-        quint32 num = static_cast<quint32>(Key);
+        quint32 num;
         DataStream >> num >> T;
         Key = static_cast<QLocale::Language>(num);
         Translations.insertMulti(Key, T);
@@ -1188,7 +1190,7 @@ void CDataConnector::EventStringHandler(Global::tRefType Ref, const NetCommands:
     QHashIterator<QLocale::Language, Global::tLanguageData> j(Translations);
     while (j.hasNext())
     {
-        j.next();
+        (void)j.next();
         //qDebug() << j.key() << ": " << j.value() << endl;
         Global::UITranslator::TranslatorInstance().SetLanguageData(j.key(), j.value(), false, false);
 
@@ -1236,21 +1238,21 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
 {
     mp_LanguageFile = new QFile(QString("languagefile%1.qm").arg(m_LanguageChangeCount));
     if (!mp_LanguageFile->isOpen()) {
-        mp_LanguageFile->open(QIODevice::ReadWrite);
+        (void)mp_LanguageFile->open(QIODevice::ReadWrite);
     }
     if (mp_LanguageFile->write(Command.GetLanguageData()) != Command.GetLanguageData().size()) {
         m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(false));
-        mp_LanguageFile->remove();
+        (void)mp_LanguageFile->remove();
         delete mp_LanguageFile;
         mp_LanguageFile = NULL;
         return;
     }
-    mp_LanguageFile->flush();
+    (void)mp_LanguageFile->flush();
 
     if (!m_Translator.load(mp_LanguageFile->fileName())) {
         qDebug()<<"\n\nTranslations failed";
         m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(false));
-        mp_LanguageFile->remove();
+        (void)mp_LanguageFile->remove();
         delete mp_LanguageFile;
         mp_LanguageFile = NULL;
         return;
@@ -1259,7 +1261,7 @@ void CDataConnector::LanguageFileHandler(Global::tRefType Ref, const NetCommands
     m_LanguageChangeCount++;
     if (m_LanguageChangeCount != 1) {
         if (mp_OldFile) {
-            mp_OldFile->remove();
+            (void)mp_OldFile->remove();
             delete mp_OldFile;
             mp_OldFile = mp_LanguageFile;
         }
@@ -1285,11 +1287,11 @@ void CDataConnector::SettingsUpdateHandler(Global::tRefType Ref, const MsgClasse
     QByteArray SettingsData(const_cast<QByteArray &>(Command.GetUserSettings()));
     QDataStream SettingsDataStream(&SettingsData, QIODevice::ReadWrite);
     SettingsDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
-    DataManager::CUserSettings Settings;
-    SettingsDataStream >> Settings;
+    DataManager::CUserSettings settings;
+    SettingsDataStream >> settings;
     bool Result = false;
     if (SettingsInterface) {
-        Result = SettingsInterface->UpdateUserSettings(&Settings);
+        Result = SettingsInterface->UpdateUserSettings(&settings);
         if (Result) {
             emit UserSettingsUpdated();
         }
@@ -1368,7 +1370,7 @@ void CDataConnector::SendUserLevel(QDataStream &DataStream)
     (void)DataStream.device()->reset();
     qDebug()<<" Password = "<< DataStream.device()->readAll();
     NetCommands::CmdChangeUserLevel Command(1000, (Global::GuiUserLevel)UserLevel, Password);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
 
 /****************************************************************************/
@@ -1385,7 +1387,7 @@ void CDataConnector::SendChangepassword(QDataStream &DataStream)
     (void)DataStream.device()->reset();
     DataStream >> Type >> Password;
     NetCommands::CmdChangeAdminPassword Command(1000, Type, Password);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
 
 /****************************************************************************/
@@ -1399,7 +1401,7 @@ void CDataConnector::SendChangepassword(QDataStream &DataStream)
 void CDataConnector::UserAuthenticationHandler(Global::tRefType Ref, const NetCommands::CmdChangeUserLevelReply &Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
-    emit UserAuthentication(Command.GetUserAuthenticatedLevel());
+    emit UserAuthentication((qint32)Command.GetUserAuthenticatedLevel());
 }
 
 /****************************************************************************/
@@ -1458,7 +1460,7 @@ void CDataConnector::SendSelectedDayRunLogFile(const QString &FileName)
 {
     Global::GuiUserLevel userRole = (Global::GuiUserLevel)MainMenu::CMainWindow::GetCurrentUserRole();
     NetCommands::CmdDayRunLogRequestFile Command(3000, FileName, userRole);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strLogFile);
     mp_WaitDialog->SetText(m_strGettingDailyLog);
     mp_WaitDialog->show();
@@ -1469,7 +1471,7 @@ void CDataConnector::SendProgramAction(const QString& ProgramID,
                                        const QDateTime& ProgramEndDateTime)
 {
     MsgClasses::CmdProgramAction Command(1000, ProgramID, ActionType, ProgramEndDateTime);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -1479,7 +1481,7 @@ void CDataConnector::SendProgramAction(const QString& ProgramID,
 void CDataConnector::SendProgramSelected(const QString& ProgramID, int ParaffinStepIndex)
 {
     MsgClasses::CmdProgramSelected Command(1000, ProgramID, ParaffinStepIndex);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -1489,7 +1491,7 @@ void CDataConnector::SendProgramSelected(const QString& ProgramID, int ParaffinS
 void CDataConnector::SendKeepCassetteCount(int CassetteCount)
 {
     MsgClasses::CmdKeepCassetteCount Command(1000, CassetteCount);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
@@ -1504,7 +1506,7 @@ void CDataConnector::SendKeepCassetteCount(int CassetteCount)
 void CDataConnector::RequestDayRunLogFileNames()
 {
     NetCommands::CmdDayRunLogRequest Command(1000);
-    m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
 /****************************************************************************/
 /*!
@@ -1633,6 +1635,11 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
              emit ProgramStartReady();
         }
         break;
+        case DataManager::PROGRAM_SELFTEST_FAILED:
+        {
+             emit ProgramSelfTestFailed();
+        }
+        break;
         case DataManager::PROGRAM_WILL_COMPLETE:
         {
              emit ProgramWillComplete();
@@ -1641,7 +1648,7 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         case DataManager::PROGRAM_ABORT_FINISHED:
         {
              emit ProgramAborted();
-             mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+             (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
         case DataManager::PROGRAM_ABORT_BEGIN:
@@ -1652,18 +1659,18 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         case DataManager::PROGRAM_RUN_FINISHED:
         {
              emit ProgramCompleted();
-             mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+             (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
         case DataManager::PROGRAM_RUN_BEGIN:
         {
              emit ProgramRunBegin();
-             mp_MainWindow->SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+             (void)mp_MainWindow->SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
         case DataManager::PROGRAM_PAUSE_FINISHED:
         {
-              mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+              (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
 

@@ -22,7 +22,7 @@
 #define MSGCLASSES_CMDPROGRAMUPDATE_H
 
 #include <Global/Include/Commands/Command.h>
-
+//lint -e1527
 namespace MsgClasses {
 
 /****************************************************************************/

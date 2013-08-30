@@ -22,11 +22,6 @@
 #ifndef DATAMANAGER_REAGENTGROUPCOLORLIST_H
 #define DATAMANAGER_REAGENTGROUPCOLORLIST_H
 
-#include <QHash>
-#include <QList>
-#include <QReadWriteLock>
-#include <QByteArray>
-#include <QBuffer>
 
 #include "DataManager/Helper/Include/Types.h"
 #include "HimalayaDataContainer/Containers/ReagentGroupColor/Include/ReagentGroupColor.h"

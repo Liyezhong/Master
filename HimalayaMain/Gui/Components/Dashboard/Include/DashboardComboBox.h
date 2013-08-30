@@ -20,14 +20,9 @@
 
 #ifndef DASHBOARD_DASHBOARDCOMBOBOX_H
 #define DASHBOARD_DASHBOARDCOMBOBOX_H
-
 #include <QComboBox>
 #include <QListView>
 #include <QPainter>
-#include <QMessageBox>
-#include <QFrame>
-#include <QMouseEvent>
-
 
 namespace Dashboard {
 

@@ -22,9 +22,7 @@
 #include "Core/Include/DataConnector.h"
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
-#include <QDebug>
 #include <QGraphicsProxyWidget>
-#include <QApplication>
 
 namespace Dashboard {
 
@@ -359,6 +357,9 @@ void CDashboardScene::RepresentCurrentWorkingPipe(const QString& StationID)
      else if ("S13" == StationID)
          pipeList = &m_PipeListS13;
 
+     if (!pipeList)
+         return;
+
      foreach (const QString &strPipeID, *pipeList)
      {
         QPainterPath path;
@@ -400,7 +401,7 @@ void CDashboardScene::PipeSuckDrainAnimation()
         QString pipeOrientation = m_PipeOrientationList.at(j);
         j++;
         QPixmap pixMap;
-        pixMap.load(pixmapName);
+        (void)pixMap.load(pixmapName);
 
         QMatrix matrix;
         qreal angle = 0.0;
@@ -426,18 +427,18 @@ void CDashboardScene::PipeSuckDrainAnimation()
             }
         }
 
-        if (abs(angle) > 0.0)
+        if (abs(angle) > 0)
         {
-            matrix.rotate(angle);
+            (void)matrix.rotate(angle);
             pixMap = pixMap.transformed(matrix);
         }
 
         QPainter painter;
-        painter.begin(&pixMap);
+        (void)painter.begin(&pixMap);
         QColor color(m_CurrentReagentColorValue);
         color.setAlpha(150);
         painter.fillRect(0, 0, 20, 20, color);
-        painter.end();
+        (void)painter.end();
 
         m_pGraphicsPathItemPipeList.at(i)->setBrush(QBrush(pixMap));
     }
@@ -533,13 +534,13 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     qreal x = posStation.rx() + rectStation.width()/2 - 5;
     qreal y = posStation.ry() + rectStation.height();
     m_StationJointList.insert("Retort", QPointF(x, y));
-    int hh = m_StationJointList["P1"].ry()  - y + PipeWidth;
+    int hh = (int)m_StationJointList["P1"].ry()  - y + PipeWidth;
     m_PipeRectList.insert("Retort", PipeRectAndOrientation(QRectF(x, y, PipeWidth, hh), "up", QPoint(-3, 0)));
 
     //P3 Right point
     int paraffinbathBoundingRectWidth = 122;
     QPointF P3RightPoint(m_StationJointList["P3"].rx() + paraffinbathBoundingRectWidth/2 + 24, m_StationJointList["P3"].ry());
-    int h = m_StationJointList["S5"].ry() - m_StationJointList["P1"].ry() + PipeWidth;
+    int h = (int)m_StationJointList["S5"].ry() - (int)m_StationJointList["P1"].ry() + PipeWidth;
     QRectF rect;
     rect.setTopLeft(P3RightPoint);//vertical pipe 1
     rect.setWidth(PipeWidth);
@@ -550,7 +551,7 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     //S7 Right point
     int bottleBoundingRectWidth = 79;
     QPointF S7RightPoint(m_StationJointList["S7"].rx() + bottleBoundingRectWidth/2 + 24, m_StationJointList["S7"].ry());
-    h = m_StationJointList["S13"].ry() - m_StationJointList["S7"].ry() + PipeWidth;
+    h = (int)m_StationJointList["S13"].ry() - (int)m_StationJointList["S7"].ry() + PipeWidth;
     rect.setTopLeft(S7RightPoint);//vertical pipe 2
     rect.setWidth(PipeWidth);
     rect.setHeight(h);
@@ -670,7 +671,7 @@ void CDashboardScene::OnPauseStationSuckDrain()
    for (int i = 0; i < mp_DashboardStationItems.size(); i++)
    {
         Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
-        if (item->StationItemID() == m_SuckDrainStationId)
+        if (item->GetStationItemID() == m_SuckDrainStationId)
         {
             item->PauseSuckDrain();
             mp_DashboardStationRetort->StationSelected(true);
@@ -710,7 +711,7 @@ void CDashboardScene::OnStationSuckDrain(const QString& StationId, bool IsStart,
                   DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupId);
 
                   m_CurrentReagentColorValue = p_ReagentGroup->GetGroupColor();
-                  m_CurrentReagentColorValue.prepend("#");
+                  (void)m_CurrentReagentColorValue.prepend("#");
               }
           }
       }
@@ -726,7 +727,7 @@ void CDashboardScene::OnStationSuckDrain(const QString& StationId, bool IsStart,
    for (int i = 0; i < mp_DashboardStationItems.size(); i++)
    {
         Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
-        if (item->StationItemID() == StationId)
+        if (item->GetStationItemID() == StationId)
         {
             item->SuckDrain(IsStart, IsSuck);
             mp_DashboardStationRetort->StationSelected(true);

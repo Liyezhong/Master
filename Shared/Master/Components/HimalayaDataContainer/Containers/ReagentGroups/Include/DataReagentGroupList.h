@@ -21,13 +21,6 @@
 #define DATAMANAGER_DATAREAGENTGROUPLIST_H
 
 
-#include <QHash>
-#include <QList>
-#include <QMutableHashIterator>
-#include <QReadWriteLock>
-#include <QBuffer>
-#include <QDebug>
-
 #include "DataManager/Helper/Include/Types.h"
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"
 #include "DataManager/Containers/ContainerBase/Include/VerifierInterface.h"
@@ -35,6 +28,7 @@
 
 //lint -sem(DataManager::CDataReagentGroupList::AddReagentGroup, custodial(1))
 //lint -sem(DataManager::CDataReagentGroupList::UpdateReagentGroup, custodial(2))
+//lint -e526
 
 namespace DataManager {
 //!< List of reagent groups

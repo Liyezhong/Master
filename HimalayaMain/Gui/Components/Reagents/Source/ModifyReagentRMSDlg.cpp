@@ -22,7 +22,6 @@
 #include "Global/Include/Exception.h"
 #include "Reagents/Include/ModifyReagentRMSDlg.h"
 #include "ui_ModifyReagentDlg.h"
-#include <QDebug>
 #include "Dashboard/Include/CommonString.h"
 #include "Reagents/Include/ReagentRMSWidget.h"
 
@@ -77,10 +76,11 @@ CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoar
     mp_KeyBoardWidget = p_KeyBoard;
 
     // Init Message dialog
-    m_MessageDlg.SetTitle(CommonString::strInforMsg);
-    m_MessageDlg.SetIcon(QMessageBox::Information);
-    m_MessageDlg.SetButtonText(1, CommonString::strOK);
-    m_MessageDlg.HideButtons();
+    mp_MessageDlg = new MainMenu::CMessageDlg(this);
+    mp_MessageDlg->SetTitle(CommonString::strInforMsg);
+    mp_MessageDlg->SetIcon(QMessageBox::Information);
+    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+    mp_MessageDlg->HideButtons();
     m_RMSOption = Global::RMS_OFF;
 }
 
@@ -141,6 +141,7 @@ CModifyReagentRMSDlg::~CModifyReagentRMSDlg()
 {
     try {        
         delete mp_Ui;
+        delete mp_MessageDlg;
     }
     catch (...) {
         // to please Lint.
@@ -297,16 +298,16 @@ void CModifyReagentRMSDlg::OnOk()
      m_ReagentCloneList = *(mp_DataConnector->ReagentList);
 
      if (mp_Ui->buttonReagentName->text() == "--") {//as "--" is initialized when dialog is showing
-         m_MessageDlg.SetText(m_strEnterValidName);
-         m_MessageDlg.SetButtonText(1, CommonString::strOK);
-         (void) m_MessageDlg.exec();
+         mp_MessageDlg->SetText(m_strEnterValidName);
+         mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+         (void) mp_MessageDlg->exec();
          return;
      }
 
      if (mp_Ui->buttonReagentName->text().contains("LEICA",Qt::CaseInsensitive)) {
-        m_MessageDlg.SetText(m_strReagentNameHasLaicaString);
-        m_MessageDlg.SetButtonText(1, CommonString::strOK);
-        (void) m_MessageDlg.exec();
+        mp_MessageDlg->SetText(m_strReagentNameHasLaicaString);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        (void) mp_MessageDlg->exec();
         return;
      }
 
@@ -318,18 +319,18 @@ void CModifyReagentRMSDlg::OnOk()
              p_Reagent = const_cast<DataManager::CReagent*>(m_ReagentCloneList.GetReagent(i));
              if (0 == p_Reagent->GetReagentName().compare(mp_Ui->buttonReagentName->text(), Qt::CaseInsensitive))
              {
-                m_MessageDlg.SetText(m_strInputReagentSameName);
-                m_MessageDlg.SetButtonText(1, CommonString::strOK);
-                (void) m_MessageDlg.exec();
+                mp_MessageDlg->SetText(m_strInputReagentSameName);
+                mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+                (void) mp_MessageDlg->exec();
                 return;
              }
          }
      }
 
      if ((m_RMSOption != Global::RMS_OFF) && (mp_Ui->buttonValue->text().toInt() == 0)) {
-        m_MessageDlg.SetText(m_strEnterValidData);
-        m_MessageDlg.SetButtonText(1, CommonString::strOK);
-        (void) m_MessageDlg.exec();
+        mp_MessageDlg->SetText(m_strEnterValidData);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        (void) mp_MessageDlg->exec();
         return;
      }
 
@@ -358,10 +359,10 @@ void CModifyReagentRMSDlg::OnOk()
             ListOfErrors_t &ErrorList = m_ReagentCloneList.GetErrorList();
             QString ErrorString;
             DataManager::Helper::ErrorIDToString(ErrorList, ErrorString);
-            m_MessageDlg.SetText(ErrorString);
-            m_MessageDlg.SetButtonText(1, CommonString::strOK);
-            m_MessageDlg.HideButtons();
-            (void) m_MessageDlg.exec();
+            mp_MessageDlg->SetText(ErrorString);
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->HideButtons();
+            (void) mp_MessageDlg->exec();
         }
     }
     // Else New/Copy button is clicked in ReagentWidget
@@ -369,9 +370,9 @@ void CModifyReagentRMSDlg::OnOk()
         // GetNextFreeReagentId for New/Copied Reagent.
         if(m_SelectionFlag != true)
         {
-            m_MessageDlg.SetText(m_strSelectReagentGroup);//Please Select reagent group
-            m_MessageDlg.SetButtonText(1, CommonString::strOK);
-            (void) m_MessageDlg.exec();
+            mp_MessageDlg->SetText(m_strSelectReagentGroup);//Please Select reagent group
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            (void) mp_MessageDlg->exec();
             return;
         }
         else
@@ -400,14 +401,14 @@ void CModifyReagentRMSDlg::OnOk()
         }
         else {
             if (m_ButtonType == Reagents::NEW_BTN_CLICKED) {
-                m_MessageDlg.SetText(m_strReagentAddFailed);
+                mp_MessageDlg->SetText(m_strReagentAddFailed);
             }
             else {
-                m_MessageDlg.SetText(m_strReagentCopyFailed);
+                mp_MessageDlg->SetText(m_strReagentCopyFailed);
             }
-            m_MessageDlg.SetButtonText(1, CommonString::strOK);
-            m_MessageDlg.HideButtons();
-           (void) m_MessageDlg.exec();
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->HideButtons();
+           (void) mp_MessageDlg->exec();
         }
     }
     accept();
@@ -505,8 +506,8 @@ void CModifyReagentRMSDlg::OnOkClicked()
 /****************************************************************************/
 void CModifyReagentRMSDlg::RetranslateUI()
 {
-    m_MessageDlg.SetTitle(CommonString::strInforMsg);
-    m_MessageDlg.SetButtonText(1, CommonString::strOK);
+    mp_MessageDlg->SetTitle(CommonString::strInforMsg);
+    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
 
     m_strCassettesUntilChange = QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                           "Cassettes until change", 0, QApplication::UnicodeUTF8);

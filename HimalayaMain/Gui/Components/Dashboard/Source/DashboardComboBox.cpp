@@ -19,7 +19,7 @@
 /****************************************************************************/
 
 #include "Dashboard/Include/DashboardComboBox.h"
-#include <QDebug>
+#include <QEvent>
 
 namespace Dashboard {
 
@@ -32,7 +32,11 @@ namespace Dashboard {
 /****************************************************************************/
 
 CDashboardComboBox::CDashboardComboBox(QWidget *p_Parent):
-    QComboBox(p_Parent), m_IsWorkAsButton(false)
+    QComboBox(p_Parent),
+    mp_Popup(NULL),
+    mp_ListView(NULL),
+    m_IsWorkAsButton(false),
+    m_Pixmap(NULL)
 {
 
     //mp_ListView = new QListView(this);
@@ -42,8 +46,8 @@ CDashboardComboBox::CDashboardComboBox(QWidget *p_Parent):
                                 );*/
    // setView(mp_ListView);
     m_SelProgName = "Program";
-    m_PixmapEnable.load(":/HimalayaImages/ComboButton/ComboButton_Button_Enable.png");
-    m_PixmapRunning.load(":/HimalayaImages/ComboButton/ComboButton_Program_Running.png");
+    (void)m_PixmapEnable.load(":/HimalayaImages/ComboButton/ComboButton_Button_Enable.png");
+    (void)m_PixmapRunning.load(":/HimalayaImages/ComboButton/ComboButton_Program_Running.png");
     m_Pixmap = &m_PixmapEnable;
 }
 
@@ -78,7 +82,7 @@ void CDashboardComboBox::paintEvent(QPaintEvent *e)
     TextFont.setPointSize(14);
     Painter.setFont(TextFont);
     Painter.setPen(Qt::white);
-    Painter.drawText(rect(), Qt::AlignCenter, m_SelProgName);
+    Painter.drawText(rect(), (int)Qt::AlignCenter, m_SelProgName);
 }
 
 void CDashboardComboBox::mousePressEvent(QMouseEvent *e)

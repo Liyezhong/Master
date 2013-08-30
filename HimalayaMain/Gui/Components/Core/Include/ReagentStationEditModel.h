@@ -26,10 +26,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 #include <QAbstractTableModel>
-#include <QMap>
-#include <QStringList>
-#include <QObject>
-#include <QPixmap>
+
 namespace Programs {
     class CModifyProgramStepDlg;
 }

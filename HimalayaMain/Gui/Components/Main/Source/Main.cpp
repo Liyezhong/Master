@@ -20,7 +20,6 @@
 
 #include "Application/Include/Application.h"
 #include "Core/Include/Startup.h"
-#include <QDebug>
 #include <QTranslator>
 #include <QDir>
 #include "Global/Include/SignalHandler.h"

@@ -29,7 +29,6 @@
 #include "Programs/Include/ModifyProgramDlg.h"
 #include "Programs/Include/ModifyProgramStepDlg.h"
 #include "ui_ProgramWidget.h"
-#include <QDebug>
 #include "Dashboard/Include/DashboardWidget.h"
 #include <Dashboard/Include/CommonString.h>
 
@@ -99,7 +98,6 @@ CProgramWidget::CProgramWidget(Core::CDataConnector *p_DataConnector,
                         this, AddProgram(DataManager::CProgram &));
     CONNECTSIGNALSLOT(&m_ProgramModel, modelReset(), this, CloseDialogs());
     CONNECTSIGNALSLOT(mp_ModifyProgramDlg, CancelClicked(), this, OnCancelClicked());
-    CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), mp_ModifyProgramDlg, UpdateUserSettings());
 
     CONNECTSIGNALSIGNAL(&m_ProgramModel, FavoriteProgramListUpdated(DataManager::CProgram &), this, FavoriteProgramListUpdated(DataManager::CProgram &));
     PopulateProgramList();

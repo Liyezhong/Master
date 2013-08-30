@@ -21,7 +21,6 @@
 #include "Global/Include/Utils.h"
 #include "Global/Include/Exception.h"
 #include "Settings/Include/LanguageModel.h"
-#include <QDebug>
 #include <QApplication>
 #include <QEvent>
 

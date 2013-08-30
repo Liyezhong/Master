@@ -22,7 +22,6 @@
 #include "Global/Include/Exception.h"
 #include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "ui_ModifyReagentStatusDlg.h"
-#include <QDebug>
 #include <Dashboard/Include/CommonString.h>
 
 namespace Reagents {

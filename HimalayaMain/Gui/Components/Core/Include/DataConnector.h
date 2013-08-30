@@ -69,7 +69,6 @@
 #include <NetCommands/Include/CmdDayRunLogRequest.h>
 #include <NetCommands/Include/CmdDayRunLogRequestFile.h>
 #include <NetCommands/Include/CmdGuiInit.h>
-#include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/MsgBoxManager.h"
 
 namespace MsgClasses
@@ -160,6 +159,7 @@ public slots:
     void SendSelectedDayRunLogFile(const QString &FileName);
     void OnCurrentTabChanged(int CurrentTabIndex);
     void OnProgramStartReady();
+    void OnProgramSelfTestFailed();
     void SendAppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);
     void SendResetOperationDays(DataManager::ResetOperationHoursType_t);
 
@@ -347,6 +347,7 @@ signals:
     void StartProgramAction(DataManager::ProgramActionType_t ActionType);
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
 	void ProgramStartReady();
+    void ProgramSelfTestFailed();
     void ProgramWillComplete();
     void ProgramAborted();
     void ProgramBeginAbort();

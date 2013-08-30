@@ -28,7 +28,6 @@
 #include "KeyBoard/Include/KeyBoard.h"
 #include "Reagents/Include/ReagentRMSWidget.h"
 #include "Core/Include/ReagentGroupModel.h"
-#include <QButtonGroup>
 
 //lint -sem(Reagents::CModifyReagentRMSDlg::Init,initializer)
 //lint -e1565
@@ -63,7 +62,7 @@ private:
     Reagents::ButtonType_t m_ButtonType;            //!< Informs which button was clicked
     bool m_ProcessRunning;                          //!< Process running state
     DataManager::CDataReagentList m_ReagentCloneList;   //!< ReagentList local object
-    MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object
+    MainMenu::CMessageDlg* mp_MessageDlg;             //! Message dialog object
     MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
     Core::CReagentGroupModel m_ReagentGroupModel;             //!< Model for the table
     DataManager::CDataReagentGroupList *mp_ReagentGroupList;  //!< Reagent list

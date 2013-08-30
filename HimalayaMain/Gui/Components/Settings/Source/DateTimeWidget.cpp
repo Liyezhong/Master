@@ -21,9 +21,7 @@
 #include "Global/Include/Utils.h"
 #include "Global/Include/Exception.h"
 #include "Settings/Include/DateTimeWidget.h"
-#include <QDateTime>
 #include <QApplication>
-#include <QEvent>
 
 namespace Settings {
 
@@ -34,7 +32,10 @@ namespace Settings {
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CDateTimeWidget::CDateTimeWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent), mp_UserSettings(NULL)
+CDateTimeWidget::CDateTimeWidget(QWidget *p_Parent) :
+    MainMenu::CPanelFrame(p_Parent),
+    mp_UserSettings(NULL),
+    mp_MainWindow(NULL)
 {
     mp_DateTime = new MainMenu::CDateTime();
     SetPanelTitle(tr("Date/Time"));
@@ -134,7 +135,10 @@ void CDateTimeWidget::RetranslateUI()
 void CDateTimeWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)
 {
     mp_MainWindow = p_MainWindow;
-    mp_DateTime->SetPtrToMainWindow(mp_MainWindow);
+    if (mp_DateTime)
+    {
+        mp_DateTime->SetPtrToMainWindow(mp_MainWindow);
+    }
 }
 
 } // end namespace Settings

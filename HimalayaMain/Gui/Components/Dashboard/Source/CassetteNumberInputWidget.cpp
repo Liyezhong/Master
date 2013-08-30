@@ -5,8 +5,8 @@
 
 using namespace Dashboard;
 
-CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *parent) :
-    MainMenu::CDialogFrame(parent),
+CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *pParent) :
+    MainMenu::CDialogFrame(pParent),
     ui(new Ui::CCassetteNumberInputWidget),
     m_CassetteNumber(0),
     m_strWarning(tr("Warning")),
@@ -47,10 +47,15 @@ CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *parent) :
 
 CCassetteNumberInputWidget::~CCassetteNumberInputWidget()
 {
-    delete ui;
-    delete mp_singleWheel;
-    delete mp_tenWheel;
-    delete mp_hundredWheel;
+    try
+    {
+        delete ui;
+        delete mp_singleWheel;
+        delete mp_tenWheel;
+        delete mp_hundredWheel;
+    }
+    catch(...)
+    {}
 }
 
 void CCassetteNumberInputWidget::OnOK()
@@ -72,14 +77,15 @@ void CCassetteNumberInputWidget::OnOK()
               delete pMessageDlg;
               return;
           }
+          delete pMessageDlg;
     }
-    this->close();
+    (void)this->close();
 }
 
 void CCassetteNumberInputWidget::OnCancel()
 {
     m_CassetteNumber = -1;
-    this->close();
+    (void)this->close();
 }
 
 int CCassetteNumberInputWidget::CassetteNumber()

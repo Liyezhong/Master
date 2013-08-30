@@ -28,9 +28,7 @@
 #include "Programs/Include/StepModel.h"
 #include "Programs/Include/ModifyProgramDlg.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
-#include <QDebug>
-#include <QPainter>
-#include <QPixmap>
+
 
 namespace Programs {
 
@@ -46,9 +44,9 @@ CStepModel::CStepModel(QObject *p_Parent) : QAbstractTableModel(p_Parent),
                                              m_Columns(0), m_CurrentRow(0),
                                              mp_ModifyProgramDlg(NULL), m_VisibleRowCount(6),
                                              mp_ReagentGroupList(NULL),
+                                              mp_UserSettings(NULL),
                                              m_IsShowStation(false),
                                              m_CurSelectRowIndex(-1)
-
 {
 
 }

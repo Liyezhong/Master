@@ -26,7 +26,6 @@
 #include "KeyBoard/Include/KeyBoard.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
-#include <QRegExpValidator>
 
 namespace Settings {
 

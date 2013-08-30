@@ -20,11 +20,9 @@
 #include "Global/Include/Utils.h"
 #include "Dashboard/Include/DashboardWidget.h"
 #include "ui_DashboardWidget.h"
-#include <QDebug>
 #include "MainMenu/Include/SliderControl.h"
 #include "Dashboard/Include/DashboardProgramStatusWidget.h"
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
-#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "Dashboard/Include/CommonString.h"
 #include "Dashboard/Include/DashboardDateTimeWidget.h"
 
@@ -269,9 +267,9 @@ void CDashboardWidget::OnUserRoleChanged()
 void CDashboardWidget::OnButtonClicked(int whichBtn)
 {
     if ( whichBtn == Dashboard::firstButton ) {
+        this->EnablePlayButton(false);//protect to click twice in a short time
         switch(m_ProgramNextAction)
         {
-            this->EnablePlayButton(false);//protect to click twice in a short time
             default:
             break;
             case DataManager::PROGRAM_START:
@@ -320,7 +318,6 @@ void CDashboardWidget::OnButtonClicked(int whichBtn)
             mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
         }
     }
-
 }
 
 bool CDashboardWidget::CheckSelectedProgram(bool& bRevertSelectProgram, QString ProgramID)
@@ -477,7 +474,7 @@ void CDashboardWidget::OnComboBoxButtonPress()
         mp_ProgramStatusWidget->setFixedSize(568, 548);
         QRect scr = mp_MainWindow->geometry();
         mp_ProgramStatusWidget->move( scr.center() - mp_ProgramStatusWidget->rect().center());
-        mp_ProgramStatusWidget->exec();
+        (void)mp_ProgramStatusWidget->exec();
     }
 }
 
@@ -488,7 +485,7 @@ const QString& CDashboardWidget::SelectedProgramId()
 
 void CDashboardWidget::PrepareSelectedProgramChecking()
 {
-    this->IsParaffinInProgram(mp_ProgramList->GetProgram(m_NewSelectedProgramId));//to get m_ParaffinStepIndex
+    (void)this->IsParaffinInProgram(mp_ProgramList->GetProgram(m_NewSelectedProgramId));//to get m_ParaffinStepIndex
     //Notify Master, to get the time costed for paraffin Melting
     QString strTempProgramId(m_NewSelectedProgramId);
     if (m_NewSelectedProgramId.at(0) == 'C')
@@ -602,11 +599,15 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
         pCassetteInput->SetDialogTitle(m_strInputCassetteBoxTitle);
 
         pCassetteInput->move( scr.center() - pCassetteInput->rect().center());
-        pCassetteInput->exec();
+        (void)pCassetteInput->exec();
 
         int cassetteNumber = pCassetteInput->CassetteNumber();
         if (-1 == cassetteNumber)
+        {
+            delete pCassetteInput;
             return;//clicked Cancel button
+        }
+
 
         mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
         delete pCassetteInput;
@@ -625,8 +626,8 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
     if (m_SelectedProgramId.at(0) == 'C')
     {
         strTempProgramId.append("_");
-        QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
-        strTempProgramId.append(strReagentIDOfLastStep);
+        QString reagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
+        strTempProgramId.append(reagentIDOfLastStep);
     }
 
     mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);

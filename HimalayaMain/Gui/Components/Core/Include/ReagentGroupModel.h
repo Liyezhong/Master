@@ -26,10 +26,6 @@
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 #include "HimalayaDataContainer/Containers/ReagentGroupColor/Include/ReagentGroupColorList.h"
 #include <QAbstractTableModel>
-#include <QMap>
-#include <QStringList>
-#include <QObject>
-#include <QPixmap>
 
 namespace Core {
 

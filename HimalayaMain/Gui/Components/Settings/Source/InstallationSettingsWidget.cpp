@@ -23,7 +23,7 @@
 #include "Global/Include/Utils.h"
 #include "Settings/Include/InstallationSettingsWidget.h"
 #include "ui_InstallationSettingsWidget.h"
-#include <QDebug>
+
 
 namespace Settings {
 
@@ -36,7 +36,11 @@ namespace Settings {
  */
 /****************************************************************************/
 CInstallationSettingsWidget::CInstallationSettingsWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
-    mp_Ui(new Ui::CInstallationSettingsWidget), mp_UserSettings(NULL)
+    mp_Ui(new Ui::CInstallationSettingsWidget), mp_KeyBoardWidget(NULL),
+    m_ValidationType(KeyBoard::VALIDATION_1),
+    mp_UserSettings(NULL),
+    mp_MainWindow(NULL), m_ProcessRunning(false),
+    m_CurrentUserRole(MainMenu::CMainWindow::Operator)
 {
     mp_Ui->setupUi(GetContentFrame());
     mp_Ui->btnEdit->setText(tr("Edit"));
@@ -190,6 +194,8 @@ void CInstallationSettingsWidget::Update()
 /****************************************************************************/
 void CInstallationSettingsWidget::OnOkClicked()
 {
+    if (!mp_KeyBoardWidget)
+        return;
     QString LineEditString;
     mp_KeyBoardWidget->hide();
 
@@ -215,6 +221,8 @@ void CInstallationSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_Ma
 /****************************************************************************/
 void CInstallationSettingsWidget::UpdateOnESC()
 {
+    if (!mp_KeyBoardWidget)
+        return;
     mp_KeyBoardWidget->Detach();
 }
 
@@ -235,6 +243,9 @@ void CInstallationSettingsWidget:: OnUpdateclicked()
 /****************************************************************************/
 void CInstallationSettingsWidget :: OnEditclicked()
 {
+    if (!mp_KeyBoardWidget)
+        return;
+
     mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Instrument Name"));
 

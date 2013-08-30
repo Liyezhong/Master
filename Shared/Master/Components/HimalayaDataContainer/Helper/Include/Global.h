@@ -21,7 +21,6 @@
 #ifndef DATAMANAGER_GLOBAL_H
 #define DATAMANAGER_GLOBAL_H
 
-#include <QString>
 
 
 namespace DataManager {
@@ -52,7 +51,8 @@ typedef enum  {
         PROGRAM_PAUSE_FINISHED,
 
         PROGRAM_ABORT_BEGIN,
-        PROGRAM_ABORT_FINISHED
+        PROGRAM_ABORT_FINISHED,
+        PROGRAM_SELFTEST_FAILED
 
     } ProgramAcknownedgeType_t;
     

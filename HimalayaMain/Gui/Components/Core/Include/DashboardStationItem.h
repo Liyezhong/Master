@@ -25,15 +25,10 @@
 #include "Core/Include/DataConnector.h"
 #include "MainMenu/Include/MessageDlg.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
-#include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
 #include "Reagents/Include/ReagentRMSWidget.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 
 #include <QGraphicsSceneMouseEvent>
-#include <QObject>
-#include <QPointer>
-#include <QTimer>
-#include <QFont>
 
 //!< Group 1 -> Includes all reagent stations and heated cuvette
 //!<            stations when heated cuvettes are not mounted.
@@ -165,7 +160,7 @@ public:
     QRectF boundingRect() const;
     void PauseSuckDrain();
     void SuckDrain(bool isStart = true, bool isSuck = true, const QString& ReagentColorValue = "#FFFFFF");
-    const QString& StationItemID() const;
+    const QString& GetStationItemID() const;
     bool IsReagentExpired();
 protected:
     void paint(QPainter *p_Painter, const QStyleOptionGraphicsItem *, QWidget *);

@@ -24,7 +24,6 @@
 #include "Reagents/Include/ReagentWidget.h"
 #include "Reagents/Include/ModifyReagentRMSDlg.h"
 #include "ui_ReagentWidget.h"
-#include <QDebug>
 
 namespace Reagents {
 
@@ -41,7 +40,6 @@ namespace Reagents {
 CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
                                  MainMenu::CMainWindow *p_Parent,
                                  KeyBoard::CKeyBoard *p_KeyBoard):
-                                 QWidget(p_Parent),
                                  mp_Ui(new Ui::CReagentWidget),
                                  mp_DataConnector(p_DataConnector),                                 
                                  mp_MainWindow(p_Parent),
@@ -60,7 +58,7 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
         mp_Ui->pageReagentGroup->SetUserSettings(p_Settings);
         mp_Ui->pageReagentStation->SetUserSettings(p_Settings);
         //mp_Ui->pageReagents->SetUserSettings(p_Settings);
-        mp_Ui->pageReagentStatus->SetPtrToMainWindow(mp_DataConnector, mp_DataConnector->ReagentList, mp_MainWindow, mp_KeyBoardWidget);
+        mp_Ui->pageReagentStatus->SetPtrToMainWindow(mp_DataConnector, mp_DataConnector->ReagentList, mp_KeyBoardWidget);
         mp_Ui->pageReagentStation->SetPtrToMainWindow(mp_DataConnector, mp_DataConnector->ReagentList, mp_MainWindow, mp_KeyBoardWidget);
         mp_Ui->pageReagentGroup->SetPtrToMainWindow(mp_DataConnector->ReagentGroupColorList,mp_DataConnector->ReagentGroupList, mp_MainWindow);
         mp_Ui->pageReagents->SetPtrToMainWindow(mp_DataConnector, mp_DataConnector->ReagentList, mp_MainWindow, mp_KeyBoardWidget);

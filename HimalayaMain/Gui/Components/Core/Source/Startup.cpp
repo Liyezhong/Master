@@ -58,7 +58,7 @@ CStartup::CStartup() : QObject()
 
     mp_ScreenSaver = new ScreenSaverWidget();
 
-    MainMenu::StatusBarManager::CreateInstance(&m_MainWindow,mp_DataConnector->SettingsInterface);
+    (void)MainMenu::StatusBarManager::CreateInstance(&m_MainWindow,mp_DataConnector->SettingsInterface);
 
     // Dashboard Signals & Slots
     CONNECTSIGNALSLOT(mp_Reagents, UnselectProgram(), mp_Dashboard, OnUnselectProgram());

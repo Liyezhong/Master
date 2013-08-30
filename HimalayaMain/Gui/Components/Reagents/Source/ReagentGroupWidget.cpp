@@ -7,8 +7,6 @@
 #include "ui_ReagentGroupWidget.h"
 #include <Dashboard/Include/CommonString.h>
 
-#include <QDebug>
-
 namespace Reagents {
 
 /****************************************************************************/
@@ -24,6 +22,11 @@ namespace Reagents {
 CReagentGroupWidget::CReagentGroupWidget(QWidget *p_Parent):
                      MainMenu::CPanelFrame(p_Parent),
                      mp_Ui(new Ui::CReagentGroupWidget),
+                     mp_ReagentGroupList(NULL),
+                     m_ProcessRunning(false),
+                     mp_ReagentGroup(NULL),
+                     mp_CReagentGroupColorList(NULL),
+                     mp_ModifyReagentColorDlg(NULL),
                      m_strSelectColor(tr("Select Color"))
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -72,7 +75,7 @@ CReagentGroupWidget::~CReagentGroupWidget()
 /****************************************************************************/
 void CReagentGroupWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
 {
-    mp_UserSettings = p_UserSettings;
+    Q_UNUSED(p_UserSettings);
 }
 
 /****************************************************************************/
@@ -84,8 +87,8 @@ void CReagentGroupWidget::SetUserSettings(DataManager::CUserSettings *p_UserSett
 void CReagentGroupWidget::SetPtrToMainWindow(DataManager::CReagentGroupColorList *p_ReagentGroupColorList,DataManager::CDataReagentGroupList *p_ReagentGroupList,
                                     MainMenu::CMainWindow *p_MainWindow)
 {
+    Q_UNUSED(p_MainWindow);
     mp_CReagentGroupColorList = p_ReagentGroupColorList;
-    mp_MainWindow = p_MainWindow;
     mp_ReagentGroupList = p_ReagentGroupList;
     m_ReagentGroupModel.SetReagentGroupList(mp_ReagentGroupList, 2);
     ResizeHorizontalSection();
@@ -197,6 +200,8 @@ void CReagentGroupWidget::RetranslateUI()
 /****************************************************************************/
 void CReagentGroupWidget::OnEdit()
 {
+    if (!mp_ModifyReagentColorDlg)
+        return;
     /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
                             "\nPlease close the dialog with \"Close\""));*/
     mp_ModifyReagentColorDlg->SetDialogTitle(m_strSelectColor);
@@ -224,7 +229,6 @@ void CReagentGroupWidget::OnUserRoleChanged()
     else {
         mp_Ui->btnEdit->setEnabled(false);
     }
-    m_UserRoleChanged = true;
 }
 
 /****************************************************************************/

@@ -21,11 +21,6 @@
 #ifndef DATAMANAGER_DASHBOARDDATASTATIONLIST_H
 #define DATAMANAGER_DASHBOARDDATASTATIONLIST_H
 
-#include <QHash>
-#include <QList>
-#include <QMutableHashIterator>
-#include <QReadWriteLock>
-#include <QBuffer>
 
 #include "DataManager/Helper/Include/Types.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
@@ -211,7 +206,7 @@ public:
         return STATIONS;
     }
 
-    ListOfIDs_t & GetOrderedListOfDashboardStationIDs()
+    const ListOfIDs_t & GetOrderedListOfDashboardStationIDs()
     {
         return m_OrderedListOfDashboardStationIDs;
     }

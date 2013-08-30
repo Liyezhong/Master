@@ -21,8 +21,7 @@
 #include "Core/Include/DashboardStationItem.h"
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
-#include <QDebug>
-#include <QPainter>
+
 
 
 namespace Core {
@@ -95,7 +94,9 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
 CDashboardStationItem::~CDashboardStationItem()
 {
     try {
-
+        mp_DataConnector = NULL;
+        mp_DashboardStation = NULL;
+        delete mp_SuckDrainTimer;
     } catch(...) {
 
     }
@@ -147,7 +148,7 @@ void CDashboardStationItem::paint(QPainter *p_Painter, const QStyleOptionGraphic
 /****************************************************************************/
 void CDashboardStationItem::UpdateImage()
 {
-    qDebug() << "STATION GROUP = " << m_DashboardStationGroup;
+    qDebug() << "STATION GROUP = " << (int)m_DashboardStationGroup;
     if (!mp_DashboardStation)
     {
         //Painter for Drawing the Bakground rectangle, Loading the Static Images and Drawingthe Static Label
@@ -389,6 +390,8 @@ void CDashboardStationItem::LoadStationImages(QPainter& Painter)
 
 void CDashboardStationItem::UpdateDashboardStationItemReagent()
 {
+    if (!mp_DashboardStation)
+        return;
     QString ReagentID = mp_DashboardStation->GetDashboardReagentID();
     DataManager::CReagent *p_Reagent = const_cast<DataManager::CReagent*>(mp_DataConnector->ReagentList->GetReagent(ReagentID));
 
@@ -504,7 +507,7 @@ void CDashboardStationItem::DrawReagentName(QPainter & Painter)
         if (p_Reagent)
         {
             Painter.rotate(270.0);
-            Painter.drawText(QRect(-90, -3, 75, 60 ), Qt::TextWordWrap | Qt::AlignVCenter | Qt::AlignLeft, p_Reagent->GetReagentName());
+            Painter.drawText(QRect(-90, -3, 75, 60 ), (int)Qt::TextWordWrap | (int)Qt::AlignVCenter | (int)Qt::AlignLeft, p_Reagent->GetReagentName());
             Painter.rotate(-270.0);
         }
     }
@@ -525,11 +528,11 @@ void CDashboardStationItem::DrawStationItemLabel(QPainter &Painter)
     Painter.setFont(TextFont);
 
    if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
-       Painter.drawText(QRectF(32,5,67,15), Qt::AlignCenter, m_StationItemLabel);
+       Painter.drawText(QRectF(32,5,67,15), (int)Qt::AlignCenter, m_StationItemLabel);
    } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
        // Load the Cover Image , because it will not be visible after filling the Color.
        Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover.png"));
-       Painter.drawText(QRectF(13,7,67,15), Qt::AlignCenter, m_StationItemLabel);
+       Painter.drawText(QRectF(13,7,67,15), (int)Qt::AlignCenter, m_StationItemLabel);
    } else {
        if(m_StationSelected) {
            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover.png"));
@@ -537,7 +540,7 @@ void CDashboardStationItem::DrawStationItemLabel(QPainter &Painter)
            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover_Grayed.png"));
        }
 
-       Painter.drawText(QRectF(10,1,33,16), Qt::AlignCenter, m_StationItemLabel);
+       Painter.drawText(QRectF(10,1,33,16), (int)Qt::AlignCenter, m_StationItemLabel);
    }
    update();
 }
@@ -563,7 +566,7 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupId);
 
         ReagentColorValue = p_ReagentGroup->GetGroupColor();
-        ReagentColorValue.prepend("#");
+        (void)ReagentColorValue.prepend("#");
     }
     else
     {
@@ -828,7 +831,7 @@ void CDashboardStationItem::SuckDrainAnimation()
         }
         else
         {
-            int currentLiquidLevel;
+            int currentLiquidLevel(0);
             if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
             {
                  currentLiquidLevel = m_BottleBoundingRectHeight - 25;
@@ -840,7 +843,6 @@ void CDashboardStationItem::SuckDrainAnimation()
 
             if (m_CurrentBoundingRectReagentHeight < currentLiquidLevel)
             {
-
                 m_CurrentBoundingRectReagentHeight = m_CurrentBoundingRectReagentHeight + 1;
             }
             else //reset
@@ -851,7 +853,7 @@ void CDashboardStationItem::SuckDrainAnimation()
     DrawStationItemImage();
 }
 
-const QString& CDashboardStationItem::StationItemID() const
+const QString& CDashboardStationItem::GetStationItemID() const
 {
     return m_StationItemID;
 }

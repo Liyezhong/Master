@@ -24,8 +24,6 @@
 #include "Global/Include/Exception.h"
 #include "Users/Include/UserPrivilegeWidget.h"
 #include "ui_UserPrivilegeWidget.h"
-#include <QDebug>
-#include <QTimer>
 
 namespace Users {
 
@@ -72,7 +70,7 @@ CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
     m_Timer = new QTimer(this);
     m_Timer->setInterval(600000);//10 minutes
     //m_Timer->setInterval(3000);//test
-    connect(m_Timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
+    (void)connect(m_Timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
     m_Timer->start();
 }
 
@@ -83,8 +81,13 @@ CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
 /****************************************************************************/
 CUserPrivilegeWidget::~CUserPrivilegeWidget()
 {
-    delete mp_Ui;
-    delete m_Timer;
+    try
+    {
+        delete mp_Ui;
+        delete m_Timer;
+    }
+    catch(...)
+    {}
 }
 
 /****************************************************************************/
@@ -133,7 +136,7 @@ void CUserPrivilegeWidget::OnBtnUserClicked()
     m_UserLevel = MainMenu::CMainWindow::Operator;
     QByteArray ByteArray;
     QDataStream UserLevelInfo(&ByteArray, QIODevice::ReadWrite);
-    UserLevelInfo << m_UserLevel << "";
+    UserLevelInfo << (int)m_UserLevel << "";
     emit UserLevelClicked(UserLevelInfo);//master should know this change
 }
 
@@ -303,7 +306,7 @@ void CUserPrivilegeWidget::OnOkClicked()
         QByteArray ByteArray;
         if (!m_ChangePasswdBtnClicked) {
             QDataStream UserLevelInfo(&ByteArray, QIODevice::ReadWrite);
-            UserLevelInfo << m_UserLevel << LineEditString;
+            UserLevelInfo << (int)m_UserLevel << LineEditString;
             emit UserLevelClicked(UserLevelInfo);
         }
         else {

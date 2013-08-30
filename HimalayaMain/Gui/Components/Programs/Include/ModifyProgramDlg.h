@@ -63,7 +63,6 @@ private:
     MainMenu::CBaseTable *mp_TableWidget;           //!< Program step table
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     Core::CDataConnector *mp_DataConnector;         //!< Global data container
-    DataManager::CProgram *mp_Program;              //!< Program data displayed
     DataManager::CProgram m_Program;                //!< Temporary/local Program data used for New Program
     DataManager::CProgramStep m_SelectedStep;       //!< Currently selected program step
     CStepModel m_StepModel;                         //!< Model for the program step table
@@ -149,7 +148,6 @@ private slots:
     void OnProcessStateChanged();
     void UpdateProgramStepTable(DataManager::CProgramStep* ProgramStep, bool AddProgramStep);
     void CloseDialogs();
-    void UpdateUserSettings();
     void OnIconClicked();
     void UpdateProgramIcon(DataManager::CProgram *Program);
 
