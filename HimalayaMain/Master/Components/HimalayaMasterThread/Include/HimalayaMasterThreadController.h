@@ -49,7 +49,7 @@
 #include <HimalayaMasterThread/Include/ProgramStartableFlagManager.h>
 #include <NetCommands/Include/CmdConfigurationFile.h>
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h>
-
+//lint -e1536
 
 namespace EventHandler {
     class EventObject;
@@ -118,6 +118,8 @@ private:
     ProgramStartableManager         m_ProgramStartableManager;              ///< Object Managing Program Startablity
     Global::GuiUserLevel            m_AuthenticatedLevel;                   ///< The current user authenticated level
     bool                            m_ControllerCreationFlag;               ///< True if controllers are created, False if not
+
+    QString                         m_ExportTargetFileName;                 ///< Target file name of the export
     /****************************************************************************/
     HimalayaMasterThreadController(const HimalayaMasterThreadController &);                     ///< Not implemented.
     const HimalayaMasterThreadController & operator = (const HimalayaMasterThreadController &); ///< Not implemented.
@@ -186,7 +188,7 @@ private:
                                                                      (const_cast<CommandData&>(Cmd)).GetCommandData());
             try {
                 // connect the siganl slot mechanism to create the process.
-                CONNECTSIGNALSLOT(ImportExportThreadController, StartExportProcess(), this, StartExportProcess());
+                CONNECTSIGNALSLOT(ImportExportThreadController, StartExportProcess(QString), this, StartExportProcess(QString));
             }
             catch (...){
                 SendAcknowledgeNOK(Ref, AckCommandChannel, "Unable to connect to signal slot");
@@ -197,8 +199,8 @@ private:
             try {
                 // connect the siganl slot mechanism to create the containers for the Import.
                 CONNECTSIGNALSLOT(ImportExportThreadController,
-                              ThreadFinished(const bool, const QString &, bool, bool), this,
-                              ImportExportThreadFinished(const bool, const QString &, bool, bool));
+                              ThreadFinished(const bool, QStringList, quint32,bool, bool), this,
+                              ImportExportThreadFinished(const bool, QStringList, quint32, bool, bool));
             }
             catch (...){
                 SendAcknowledgeNOK(Ref, AckCommandChannel, "Unable to connect to signal slot");
@@ -495,7 +497,7 @@ private slots:
        * \brief Starts the export process.
        */
       /****************************************************************************/
-      void StartExportProcess();
+      void StartExportProcess(QString FileName);
 
       /****************************************************************************/
       /**
@@ -534,7 +536,8 @@ private slots:
        * \param NewLanguageAdded - Flag for the new language is added or not
        */
       /****************************************************************************/
-      void ImportExportThreadFinished(const bool IsImport, const QString &TypeOfImport,
+      void ImportExportThreadFinished(const bool IsImport, QStringList ImportTypeList,
+                                      quint32 EventCode,
                                       bool UpdatedCurrentLanguage = false,
                                       bool NewLanguageAdded = false);     
       void SetAlarmHandlerTimeout(quint16 timeout);
