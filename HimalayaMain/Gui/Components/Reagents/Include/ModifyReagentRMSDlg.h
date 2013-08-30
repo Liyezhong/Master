@@ -108,7 +108,7 @@ private:
     void Init();
     void RetranslateUI();
     void ResizeHorizontalSection();
-
+    void ShowReagentValue(Global::RMSOptions_t Option);
 private slots:
     void OnOk();
     void OnCancel();
