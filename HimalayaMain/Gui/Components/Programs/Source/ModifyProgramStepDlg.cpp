@@ -361,15 +361,14 @@ void CModifyProgramStepDlg::OnOk()
 
          if (diffSetting > diffTemp)
          {
-            mp_MessageBox->SetIcon(QMessageBox::Information);
+            mp_MessageBox->SetIcon(QMessageBox::Warning);
             mp_MessageBox->SetTitle(CommonString::strInforMsg);
             mp_MessageBox->SetText(m_strDiffTemp);
-            mp_MessageBox->SetButtonText(1, m_strOK);
-            mp_MessageBox->HideButtons();
-            if (mp_MessageBox->exec())
-            {
-
-            }
+            mp_MessageBox->SetButtonText(1, CommonString::strYes);
+            mp_MessageBox->SetButtonText(3, CommonString::strNo);
+            mp_MessageBox->HideCenterButton();
+            if (!mp_MessageBox->exec())
+                return;
          }
     }
 
@@ -619,7 +618,8 @@ void CModifyProgramStepDlg::RetranslateUI()
                                       "OK", 0, QApplication::UnicodeUTF8);
 
     m_strDiffTemp = QApplication::translate("Programs::CModifyProgramStepDlg",
-                                      "Different temperature setting", 0, QApplication::UnicodeUTF8);
+                                      "The set temperature of paraffin baths differs from the temperature of the program by more than 2℃.Would you like to continue?",
+                                            0, QApplication::UnicodeUTF8);
 
 }
 
