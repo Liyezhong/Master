@@ -461,6 +461,14 @@ void HimalayaMasterThreadController::SendXML() {
 
     p_ByteArray->clear();
     (void)XmlStream.device()->reset();
+    DataManager::CUserSettingsInterface *p_SettingsInterface = mp_DataManager->GetUserSettingsInterface();
+    if (p_SettingsInterface) {
+        XmlStream << *p_SettingsInterface;
+        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::USER_SETTING, XmlStream)), m_CommandChannelGui);
+    }
+
+    p_ByteArray->clear();
+    (void)XmlStream.device()->reset();
 
     DataManager::CDataProgramList *p_ProgramList =  mp_DataManager->GetProgramList();
 
@@ -468,15 +476,6 @@ void HimalayaMasterThreadController::SendXML() {
            XmlStream << *p_ProgramList;
            SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM , XmlStream)), m_CommandChannelGui);
        }
-
-
-    p_ByteArray->clear();
-    (void)XmlStream.device()->reset();
-    DataManager::CUserSettingsInterface *p_SettingsInterface = mp_DataManager->GetUserSettingsInterface();
-    if (p_SettingsInterface) {
-        XmlStream << *p_SettingsInterface;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::USER_SETTING, XmlStream)), m_CommandChannelGui);
-    }
 
     if (p_SettingsInterface) {
         if (p_SettingsInterface->GetUserSettings(false) != NULL) {
