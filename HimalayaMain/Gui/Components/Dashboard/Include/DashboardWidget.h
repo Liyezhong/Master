@@ -81,7 +81,6 @@ private:
     bool m_ProgramStartReady;
     QString m_strProgram;
     QString m_strInformation;
-    QString m_strCleanNotRun;
     QString m_strOK, m_strNo;
     QString m_strNotStartRMSOFF;
     QString m_strNotStartExpiredReagent;
