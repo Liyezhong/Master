@@ -430,4 +430,9 @@ const quint32 EVENT_SWU_UNMOUNT_USB	= 50331752;	///< SW Update: Unmounted USB to
 const quint32 EVENT_SWU_FILE_NOT_FOUND	= 50331753;	///< SW Update: %1 file not found
 const quint32 EVENT_SWU_FILE_UPDATED	= 50331754;	///< SW Update: %1 file updated
 const quint32 EVENT_SWU_MISS_Software_Update_Status	= 50331755;	///< SW Update: %1 file missing entry of 'Software_Update_Status'
+const quint32 EVENT_IMPORT_TAMPERED_ARCHIVE_FILE	= 50331756;	///< Import failed. Archive file is tampered
+const quint32 EVENT_IMPORT_DEVICE_NAME_NOT_MATCHING	= 50331757;	///< Import failed. SW versions are not matching to Import the files
+const quint32 EVENT_IMPORT_TYPEOFIMPORTNOTVALID	= 50331758;	///< Type of import is not valid
+const quint32 EVENT_IMPORTEXPORT_IMPORT_NO_USB	= 50331759;	///< No USB devices found in the system to import files
+const quint32 EVENT_IMPORTEXPORT_EXPORT_NO_USB	= 50331760;	///< No USB devices found in the system to export files
 #endif // HIMALAYAEVENTCODES_H

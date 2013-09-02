@@ -532,8 +532,9 @@ void HimalayaMasterThreadController::SendContainersTo(Threads::CommandChannel &r
 
 
 /****************************************************************************/
-void HimalayaMasterThreadController::StartExportProcess() {
+void HimalayaMasterThreadController::StartExportProcess(QString FileName) {
     // create and connect gui controller
+    m_ExportTargetFileName = FileName;
     Export::ExportController *p_ExportController = new Export::ExportController(HEARTBEAT_SOURCE_EXPORT);
     // connect the process exit slot
 
@@ -707,13 +708,14 @@ void HimalayaMasterThreadController::RemoveAndDestroyObjects() {
 
 
 /****************************************************************************/
-void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImport, const QString &TypeOfImport,
+void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImport, QStringList ImportTypeList,
+                                                                quint32 EventCode,
                                                                 bool UpdatedCurrentLanguage,
                                                                 bool NewLanguageAdded) {
     bool SendAckOK = false;
-    if (IsImport) {
+    if (IsImport && ImportTypeList.count() > 0) {
         // check the type of Impor
-        if ((TypeOfImport.compare("User") == 0) || (TypeOfImport.compare("Service") == 0) || (TypeOfImport.compare("Leica") == 0)) {
+        if ((ImportTypeList.contains("User") == 0) || (ImportTypeList.contains("Service") == 0) || (ImportTypeList.contains("Leica") == 0)) {
 
             // send configuration files to GUI
             SendConfigurationFile(mp_DataManager->GetUserSettingsInterface(), NetCommands::USER_SETTING);
@@ -727,7 +729,7 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
             // send ack OK
             SendAckOK = true;
         }
-        else if(TypeOfImport == "Language") {
+        else if(ImportTypeList.contains("Language")) {
             // new langauge is added
             if (NewLanguageAdded) {
                 if (UpdateSupportedGUILanguages()) {
@@ -760,6 +762,7 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
             SendAckOK = true;
         }        
     }
+
     // send ack to the channel
     if (SendAckOK) {
         // send ack is OK
@@ -767,6 +770,9 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
     }
     else {        
         // send ack is NOK
+        if (EventCode != 0) {
+            Global::EventObject::Instance().RaiseEvent(EventCode, true);
+        }
         SendAcknowledgeNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
     }
     // clear the thread

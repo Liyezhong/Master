@@ -426,5 +426,10 @@
 		<string id="50331753" text1="SW Update: %1 file not found" text2=""/>
 		<string id="50331754" text1="SW Update: %1 file updated" text2=""/>
 		<string id="50331755" text1="SW Update: %1 file missing entry of &apos;Software_Update_Status&apos;" text2=""/>
+		<string id="50331756" text1="Import failed. Archive file is tampered" text2=""/>
+		<string id="50331757" text1="Import failed. SW versions are not matching to Import the files" text2=""/>
+		<string id="50331758" text1="Type of import is not valid" text2=""/>
+		<string id="50331759" text1="No USB devices found in the system to import files" text2=""/>
+		<string id="50331760" text1="No USB devices found in the system to export files" text2=""/>
 	</language>
 </strings>
