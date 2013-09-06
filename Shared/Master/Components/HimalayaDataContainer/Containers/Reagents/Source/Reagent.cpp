@@ -18,12 +18,6 @@
  */
 /****************************************************************************/
 
-#include <QDebug>
-#include <QString>
-#include <QBuffer>
-#include <QXmlStreamReader>
-#include <iostream>
-
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"

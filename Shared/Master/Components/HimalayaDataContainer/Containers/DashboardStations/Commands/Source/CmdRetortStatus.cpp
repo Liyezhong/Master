@@ -24,15 +24,16 @@ namespace MsgClasses {
 QString CmdRetortStatus::NAME = "MsgClasses::CmdRetortStatus";
 
 
-CmdRetortStatus::CmdRetortStatus(int Timeout, 
-                                    DataManager::RetortStatusType_t RetortStatusType) :
-    Command(Timeout),
-    m_RetortStatusType(RetortStatusType)
+CmdRetortStatus::CmdRetortStatus(int timeout,
+                                    DataManager::RetortStatusType_t retortStatusType) :
+    Command(timeout),
+    m_RetortStatusType(retortStatusType)
 {
 }
 
 CmdRetortStatus::CmdRetortStatus()
-    : Command(0)
+    : Command(0),
+      m_RetortStatusType(DataManager::RETORT_UNDEFINED)
 {
 }
 

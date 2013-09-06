@@ -21,9 +21,6 @@
 #ifndef DATAMANAGER_OBSOLETE_DATAMANAGER_H
 #define DATAMANAGER_OBSOLETE_DATAMANAGER_H
 
-#include <QObject>
-#include <QString>
-#include <QIODevice>
 #include "../Include/DataContainer.h"
 #include "DataManager/Include/DataManagerBase.h"
 

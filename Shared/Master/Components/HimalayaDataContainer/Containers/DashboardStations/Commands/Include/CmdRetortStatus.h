@@ -41,7 +41,7 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdRetortStatus(int Timeout, DataManager::RetortStatusType_t RetortStatusType);
+    CmdRetortStatus(int timeout, DataManager::RetortStatusType_t retortStatusType);
     ~CmdRetortStatus();
     virtual QString GetName() const;
     inline DataManager::RetortStatusType_t RetortStatusType() const {return m_RetortStatusType;} 
@@ -68,7 +68,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdRetortStatus &Cm
     // copy base class data
     Cmd.CopyToStream(Stream);
     // copy internal data
-    Stream << Cmd.m_RetortStatusType;
+    Stream << (int)Cmd.m_RetortStatusType;
     return Stream;
 }
 

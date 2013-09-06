@@ -33,7 +33,7 @@ class CmdUpdateStationReagentStatus : public Global::Command
 
 public:
     //if CassetteCount == 0, then bUpdateCycle
-    CmdUpdateStationReagentStatus(int TimeOut, const QStringList& StationIDs, int CassetteCount);
+    CmdUpdateStationReagentStatus(int timeOut, const QStringList& stationIDs, int cassetteCount);
     CmdUpdateStationReagentStatus(void);
 
     ~CmdUpdateStationReagentStatus(void);

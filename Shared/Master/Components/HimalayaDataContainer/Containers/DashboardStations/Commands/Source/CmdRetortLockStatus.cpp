@@ -24,14 +24,15 @@ namespace MsgClasses {
 QString CmdRetortLockStatus::NAME = "MsgClasses::CmdRetortLockStatus";
 
 
-CmdRetortLockStatus::CmdRetortLockStatus(int Timeout, bool IsLocked) :
-    Command(Timeout),
-    m_Locked(IsLocked)
+CmdRetortLockStatus::CmdRetortLockStatus(int timeout, bool isLocked) :
+    Command(timeout),
+    m_Locked(isLocked)
 {
 }
 
-CmdRetortLockStatus::CmdRetortLockStatus()
-    : Command(0)
+CmdRetortLockStatus::CmdRetortLockStatus():
+    Command(0),
+    m_Locked(false)
 {
 }
 

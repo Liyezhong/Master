@@ -21,11 +21,7 @@
 #ifndef DATAMANAGER_DATACONTAINER_BASE_H
 #define DATAMANAGER_DATACONTAINER_BASE_H
 
-#include <QString>
-#include <QXmlStreamReader>
-
 #include "Global/Include/GlobalDefines.h"
-
 #include "HimalayaDataContainer/Helper/Include/Types.h"
 
 namespace DataManager {

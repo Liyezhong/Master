@@ -44,8 +44,11 @@ namespace DataManager {
  *  \brief  Default Constructor
  */
 /****************************************************************************/
-CDashboardDataStationList::CDashboardDataStationList()
-    :m_Version(0), m_Filename(""), mp_ReadWriteLock(NULL)
+CDashboardDataStationList::CDashboardDataStationList():
+    m_Version(0),
+    m_Filename(""),
+    m_DataVerificationMode(false),
+    mp_ReadWriteLock(NULL)
 {
      mp_ReadWriteLock = new QReadWriteLock(QReadWriteLock::Recursive);
      Init();
@@ -63,7 +66,11 @@ CDashboardDataStationList::CDashboardDataStationList()
  *  \return
  */
 /****************************************************************************/
-CDashboardDataStationList::CDashboardDataStationList(const CDashboardDataStationList& DashboardStationList) : CDataContainerBase(),
+CDashboardDataStationList::CDashboardDataStationList(const CDashboardDataStationList& DashboardStationList) :
+    CDataContainerBase(),
+    m_Version(0),
+    m_Filename(""),
+    m_DataVerificationMode(false),
     mp_ReadWriteLock(NULL)
 {
     try {
@@ -160,7 +167,7 @@ bool CDashboardDataStationList::SerializeContent(QIODevice& IODevice, bool Compl
     XmlStreamWriter.writeStartElement("Stations");
 
     // write attribute version
-    StringValue.setNum(GetVersion());
+    (void)StringValue.setNum(GetVersion());
     XmlStreamWriter.writeAttribute("Version", StringValue);
 
     for(int i=0;i<GetNumberOfDashboardStations();i++)
@@ -315,13 +322,13 @@ bool CDashboardDataStationList::ReadDashboardStations(QXmlStreamReader& XmlStrea
     QSet<QString> NewDashboardStationIDSet =  QSet<QString>::fromList(NewDashboardStationIDList);
 
     //Remove items present in NewStationIDSet from OldStationIDSet
-    OldDashboardStationIDSet.subtract(NewDashboardStationIDSet);
+    (void)OldDashboardStationIDSet.subtract(NewDashboardStationIDSet);
     QList<QString> DashboardStationIDToRemove = OldDashboardStationIDSet.toList();
 
     //Remove station  which is no longer required.
     foreach(QString DashboardStationID, DashboardStationIDToRemove)
     {
-        DeleteDashboardStation(DashboardStationID);
+        (void)DeleteDashboardStation(DashboardStationID);
     }
 
 
@@ -384,10 +391,10 @@ QDataStream& operator >>(QDataStream& InDataStream, CDashboardDataStationList& D
 CDashboardDataStationList& CDashboardDataStationList::operator=(const CDashboardDataStationList &SourceDashboardStationList)
 {
     try {
-        DeleteAllDashboardStations();
-        CopyFromOther(SourceDashboardStationList);
+        (void)DeleteAllDashboardStations();
+        (void)CopyFromOther(SourceDashboardStationList);
     }catch (...) {
-        DeleteAllDashboardStations();
+        (void)DeleteAllDashboardStations();
        //! \todo Inform event Handler
     }
     return (*this);

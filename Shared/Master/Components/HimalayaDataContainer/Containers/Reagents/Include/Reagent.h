@@ -46,7 +46,6 @@ private:
     ErrorHash_t m_ErrorHash;    //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator
 
 protected:
-    int m_MaxTime;                          //!< Maximum  allowable time  for Reagent
     bool m_Visible;                         //!< Visible state of reagent
     QString m_Name;                         //!< Reagent Name
     QString m_NameID;                       //!< Reagent Name id

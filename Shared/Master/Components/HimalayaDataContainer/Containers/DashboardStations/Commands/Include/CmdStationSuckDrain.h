@@ -41,7 +41,7 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdStationSuckDrain(int Timeout, const QString& StationID, bool IsStart, bool IsSuck);
+    CmdStationSuckDrain(int timeout, const QString& stationID, bool isStart, bool isSuck);
     ~CmdStationSuckDrain();
     virtual QString GetName() const;
     inline bool IsStart() const {return m_IsStart;}

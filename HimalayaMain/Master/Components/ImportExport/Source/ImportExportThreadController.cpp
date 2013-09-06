@@ -31,11 +31,7 @@
 #include "ImportExport/Include/ImportExportThreadController.h"
 #include "Global/Include/Utils.h"
 #include "Global/Include/GlobalEventCodes.h"
-
-
-
-
-#include <QMetaType>
+#include <QProcess>
 
 namespace ImportExport {
 
@@ -760,7 +756,7 @@ bool ImportExportThreadController::CopyConfigurationFiles(const DataManager::CCo
                     QDir Directory(TargetPath + QDir::separator() + DirectoryName);
                     // create directory if not exists
                     if (!Directory.exists()) {
-                        Directory.mkdir(Directory.absolutePath());
+                        (void)Directory.mkdir(Directory.absolutePath());
                     }
                 }
 
@@ -905,7 +901,6 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
 
     ImportTypeList.clear();
 
-    m_TakeBackUp = true;
     // multiple files can be imported. At max three files can be imported.
     for (qint32 Counter = 0; Counter < FileList.count(); Counter++) {
         if (!ImportArchiveFiles(TypeOfImport, FileList.value(Counter))) {
@@ -956,7 +951,7 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
     }
 
     if (!IsImport  && ImportTypeList.count() > 0) {
-        if (!ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE) && m_SettingsFolderUpdatedFiles) {
+        if (!ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
             (void)UpdateSettingsWithRollbackFolder();
         }
         if (ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE) && m_TranslationsFolderUpdatedFiles) {

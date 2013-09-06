@@ -42,8 +42,8 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdProgramAction(int Timeout, const QString& ProgramID, DataManager::ProgramActionType_t ActionType,
-                     const QDateTime ProgramEndDateTime);
+    CmdProgramAction(int timeout, const QString& programID, DataManager::ProgramActionType_t actionType,
+                     const QDateTime programEndDateTime);
     ~CmdProgramAction();
     virtual QString GetName() const;
     inline const QString& GetProgramID()const {return m_ProgramID;}

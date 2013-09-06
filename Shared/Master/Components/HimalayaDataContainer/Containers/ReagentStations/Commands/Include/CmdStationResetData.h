@@ -32,7 +32,7 @@ class CmdStationResetData : public Global::Command
     friend QDataStream & operator >> (QDataStream &, CmdStationResetData &);
 
 public:
-    CmdStationResetData(int TimeOut, const QString& StationID);
+    CmdStationResetData(int timeOut, const QString& stationID);
     CmdStationResetData(void);
 
     ~CmdStationResetData(void);

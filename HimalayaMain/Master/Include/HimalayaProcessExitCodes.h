@@ -22,7 +22,6 @@
 #define HIMALAYAPROCESSEXITCODES_H
 
 
-#include <QtGlobal>
 
 //exit codes for the BLG process
 const qint32 EXIT_CODE_BLG_GENERATION_SUCCESS                      = 0x0001;    //!< Self explaining

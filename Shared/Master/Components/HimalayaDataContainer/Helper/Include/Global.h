@@ -30,7 +30,8 @@ namespace DataManager {
         PROGRAM_START = 0,
         PROGRAM_PAUSE,
         PROGRAM_ABORT,
-        PROGRAM_DRAIN
+        PROGRAM_DRAIN,
+        PROGRAM_UNDEFINED
     } ProgramActionType_t;
 
 typedef enum  {
@@ -61,7 +62,8 @@ typedef enum  {
         RETORT_SCUKING,
         RETORT_DRAINING,
         RETORT_FULL,
-        RETORT_CONTAMINATED
+        RETORT_CONTAMINATED,
+        RETORT_UNDEFINED
     } RetortStatusType_t;
     
 typedef enum  {
@@ -76,12 +78,14 @@ typedef enum  {
 
 typedef enum {
     RESETOPERATIONHOURS_WHOLEMACHINEOPERATION = 0,
-    RESETOPERATIONHOURS_ACTIVECARBONFILTER
+    RESETOPERATIONHOURS_ACTIVECARBONFILTER,
+    RESETOPERATIONHOURS_UNDEFINED
 } ResetOperationHoursType_t;
 
 typedef enum {
     QUITAPPSHUTDOWNACTIONTYPE_QUITAPP = 0,
-    QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN
+    QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN,
+    QUITAPPSHUTDOWNACTIONTYPE_UNDEFINED
 } QuitAppShutdownActionType_t;
 
 

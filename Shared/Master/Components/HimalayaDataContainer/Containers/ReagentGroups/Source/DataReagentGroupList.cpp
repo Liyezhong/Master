@@ -17,15 +17,7 @@
  *
  */
 /****************************************************************************/
-#include <QDebug>
-#include <QFile>
-#include <QReadLocker>
-#include <QWriteLocker>
-#include <QBuffer>
-#include <QXmlStreamReader>
-#include <QXmlStreamWriter>
-#include <QStringList>
-#include <QDebug>
+
 
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
@@ -34,6 +26,7 @@
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include "HimalayaDataContainer/Helper/Include/HimalayaDataManagerEventCodes.h"
 
+//lint -sem(QHash::insert, custodial(1))
 
 namespace DataManager {
 
@@ -776,7 +769,7 @@ void CDataReagentGroupList::UpdateOnLanguageChanged()
    QWriteLocker Locker(mp_ReadWriteLock);
    for (qint32 I = 0; I < m_ReagentGroupsList.count(); I++) {
        CReagentGroup *p_ReagentGroup = GetReagentGroup(I);
-       if(!p_ReagentGroup->GetGroupNameID().isEmpty()){
+       if(p_ReagentGroup && !p_ReagentGroup->GetGroupNameID().isEmpty()){
            bool ok = false;
            quint32 strid = p_ReagentGroup->GetGroupNameID().toUInt(&ok);
            if(ok && strid > 0)

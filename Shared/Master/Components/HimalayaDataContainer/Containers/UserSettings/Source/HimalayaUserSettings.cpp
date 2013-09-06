@@ -19,10 +19,6 @@
 /****************************************************************************/
 
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
-
-#include <QDebug>
-#include <QFile>
-
 #include "DataManager/Helper/Include/DataManagerEventCodes.h"
 #include "Global/Include/EventObject.h"
 #include "DataManager/Helper/Include/Helper.h"

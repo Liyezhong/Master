@@ -32,8 +32,10 @@ CmdProgramSelected::CmdProgramSelected(int Timeout, const QString& ProgramID, in
 {
 }
 
-CmdProgramSelected::CmdProgramSelected()
-    : Command(0)
+CmdProgramSelected::CmdProgramSelected():
+    Command(0),
+    m_ProgramID(""),
+    m_ParaffinStepIndex(0)
 {
 }
 

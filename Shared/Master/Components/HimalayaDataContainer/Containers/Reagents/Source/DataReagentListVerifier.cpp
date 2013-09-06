@@ -19,9 +19,6 @@
  */
 /****************************************************************************/
 
-#include <QDebug>
-#include <QFile>
-
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentListVerifier.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
@@ -49,56 +46,8 @@ CDataReagentListVerifier::~CDataReagentListVerifier()
 /****************************************************************************/
 bool CDataReagentListVerifier::VerifyData(CDataContainerBase* p_DataReagentList)
 {
-    /** todo **/
+    Q_UNUSED(p_DataReagentList);
     return true;
-
-    // assign pointer to member variable
-    mp_DRL = static_cast<CDataReagentList*>(p_DataReagentList);
-    // check constraints
-    // check max number of reagents (100)
-    if (mp_DRL->GetNumberOfReagents() > MAX_REAGENTS) {
-        qDebug() << "### Too many reagents (max 100 allowed): " << mp_DRL->GetNumberOfReagents();
-        m_ErrorsHash.insert(EVENT_DM_REAGENT_EXCEEDS_LIMIT, Global::tTranslatableStringList() << "");
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_EXCEEDS_LIMIT);
-        return false;
-    }
-
-    // by default make the verification flag to true
-    bool VerifiedData = true;
-
-    // check content of each reagent
-    for (int i=0;i< mp_DRL->GetNumberOfReagents();i++) {
-        CReagent Reagent;
-        if (mp_DRL->GetReagent(i, Reagent)) {
-            QString ReagentID;
-            ReagentID = Reagent.GetReagentID();
-            if (mp_DRL->GetReagentType(ReagentID) == UNDEFINED_REAGENT_TYPE) {
-                qDebug() << "### Reagent ID doesn't start with L,U: " << ReagentID;
-                m_ErrorsHash.insert(EVENT_DM_REAGENT_INVALID_PREFIX, Global::tTranslatableStringList() << Reagent.GetReagentName());
-                Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_INVALID_PREFIX, Global::tTranslatableStringList() << Reagent.GetReagentName(), true);
-                VerifiedData = false;
-            }
-            QString TempString;
-            TempString = Reagent.GetReagentName();
-            if ((TempString.size() > MAX_CHARACTERS_NAME) || (TempString.size() < 0)) {
-                qDebug() << "### Reagent:" << ReagentID <<"Name is too long (max 32 Characters) " << Reagent.GetReagentName();
-                m_ErrorsHash.insert(EVENT_DM_REAGENT_NAME_LENGTH_CHECK_FAILED, Global::tTranslatableStringList() << Reagent.GetReagentName());
-                Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_NAME_LENGTH_CHECK_FAILED, Global::tTranslatableStringList() << Reagent.GetReagentName(), true);
-                VerifiedData = false;
-            }
-/*            if (Reagent.IsLeicaReagent() || Reagent.IsUserReagent()) {
-                if ((Reagent.GetMaxCassettes() > MAX_CASSETTES_TOREPLACE_REAGENT) ||
-                        (Reagent.GetMaxCassettes() < 0)) {
-                    qDebug() << "### Reagent:" << ReagentID <<"Max Cassettes Reached Replace Reagent" << Reagent.GetMaxCassettes();
-                    m_ErrorsHash.insert(EVENT_DM_REAGENT_MAXSLIDES_EXCEEDS_LIMIT, Global::tTranslatableStringList() << "");
-                    Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_MAXSLIDES_EXCEEDS_LIMIT, Global::tTranslatableStringList() << Reagent.GetReagentName(), true);
-                    VerifiedData = false;
-                }
-
-            }*/ // end of Leica and User comparison
-        }
-    } // end of for loop
-    return VerifiedData;
 }
 
 

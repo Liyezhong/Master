@@ -35,9 +35,9 @@ QString CmdStationSetAsEmpty::NAME = "MsgClasses::CmdStationSetAsEmpty";
  */
 /****************************************************************************/
 CmdStationSetAsEmpty::CmdStationSetAsEmpty(int timeout,
-                                             const QString& StationID)
+                                             const QString& stationID)
     : Command(timeout)
-    , m_StationID(StationID)
+    , m_StationID(stationID)
 {
 }
 

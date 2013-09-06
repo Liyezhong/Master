@@ -34,12 +34,12 @@ QString CmdReagentGroupUpdate::NAME = "MsgClasses::CmdReagentGroupUpdate";
  * \param[in]   ReagentID   Unique reagent id.
  */
 /****************************************************************************/
-CmdReagentGroupUpdate::CmdReagentGroupUpdate(int TimeOut,
-                                             const QString& GroupId,
+CmdReagentGroupUpdate::CmdReagentGroupUpdate(int timeOut,
+                                             const QString& groupId,
                                              const QString& ColorId)
-    : Command(TimeOut)
+    : Command(timeOut)
     , m_Color(ColorId)
-    , m_GroupId(GroupId)
+    , m_GroupId(groupId)
 
 {
 }

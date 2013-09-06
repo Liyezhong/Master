@@ -19,18 +19,14 @@
  */
 /****************************************************************************/
 
-#include <QDebug>
-#include <QFile>
-#include <QReadLocker>
-#include <QWriteLocker>
-#include <QBuffer>
-#include <QXmlStreamWriter>
+
 
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
 #include "HimalayaDataContainer/Containers/ReagentGroupColor/Include/ReagentGroupColorList.h"
 #include "HimalayaDataContainer/Containers/ReagentGroupColor/Include/ReagentGroupColor.h"
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
+//lint -sem(QHash::insert, custodial(1))
 
 namespace DataManager {
 

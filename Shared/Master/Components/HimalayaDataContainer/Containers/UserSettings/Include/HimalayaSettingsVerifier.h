@@ -20,8 +20,7 @@
 #ifndef HIMALAYA_SETTINGSVERIFIER_H
 #define HIMALAYA_SETTINGSVERIFIER_H
 
-#include <QString>
-#include <QXmlStreamReader>
+
 
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsVerifier.h"

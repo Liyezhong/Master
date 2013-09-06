@@ -38,7 +38,11 @@ namespace DataManager {
 /****************************************************************************/
 CReagentGroup::CReagentGroup() :m_GroupID(""), m_GroupName(""),m_GroupNameID(""), m_Color(""),
                                 m_IsCleaningReagentGroup(false),
-                                m_IsParraffinGroup(false)
+                                m_IsParraffinGroup(false),
+                                m_Locked(false),
+                                m_MinTemp(0),
+                                m_MaxTemp(0)
+
 {
 
 }
