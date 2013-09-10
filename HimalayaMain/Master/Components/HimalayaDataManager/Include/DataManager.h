@@ -76,6 +76,8 @@ public:
     CDeviceConfigurationInterface* GetDeviceConfigurationInterface();
     CProgramCommandInterface *mp_ProgramCommandInterface; //!< Handles commands related to program container
 
+    //function to save data during shutdown
+    void SaveDataOnShutdown();
 
 signals:
     void StationUpdate(CDashboardStation &Station);

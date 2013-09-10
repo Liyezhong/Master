@@ -328,5 +328,16 @@ CDeviceConfigurationInterface *CDataManager::GetDeviceConfigurationInterface()
     }
     return mp_DataContainer->DeviceConfigurationInterface;
 }
+/****************************************************************************/
+/*!
+ *  \brief saves all the files modification before shutting down
+ */
+/****************************************************************************/
+void CDataManager::SaveDataOnShutdown()
+{
+    if(!m_IsInitialized) {
+        return;
+    }
 
+}
 } // namespace DataManager

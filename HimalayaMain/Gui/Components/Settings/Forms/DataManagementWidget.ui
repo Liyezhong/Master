@@ -21,7 +21,7 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>103</width>
+       <width>84</width>
        <height>20</height>
       </size>
      </property>
@@ -44,7 +44,7 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>103</width>
+       <width>85</width>
        <height>20</height>
       </size>
      </property>
@@ -57,7 +57,7 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>103</width>
+       <width>84</width>
        <height>20</height>
       </size>
      </property>
@@ -77,7 +77,7 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>103</width>
+       <width>85</width>
        <height>20</height>
       </size>
      </property>
@@ -90,7 +90,7 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>103</width>
+       <width>84</width>
        <height>20</height>
       </size>
      </property>
@@ -113,7 +113,79 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>103</width>
+       <width>85</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="3" column="0">
+    <spacer name="horizontalSpacer_10">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>84</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="3" column="1">
+    <widget class="QPushButton" name="SWUpdateButton">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="text">
+      <string>SW Update</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <spacer name="horizontalSpacer_11">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>85</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="0">
+    <spacer name="horizontalSpacer_12">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>84</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="1">
+    <widget class="QPushButton" name="RemoteSWUpdateButton">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="text">
+      <string>Remote SW Update</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <spacer name="horizontalSpacer_13">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>85</width>
        <height>20</height>
       </size>
      </property>

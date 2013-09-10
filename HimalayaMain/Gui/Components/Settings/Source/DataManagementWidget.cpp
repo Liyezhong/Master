@@ -47,6 +47,8 @@ CDataManagementWidget::CDataManagementWidget(QWidget *p_Parent) :
     CONNECTSIGNALSLOT(mp_Ui->importButton,clicked(),this,ImportDialog());
     CONNECTSIGNALSLOT(mp_Ui->saveusbButton,clicked(),this,SaveToUSBDialog());
     CONNECTSIGNALSLOT(mp_Ui->serviceExportButton,clicked(),this,ServiceExportDialog());
+    CONNECTSIGNALSLOT(mp_Ui->SWUpdateButton,clicked(),this,SWUpdate());
+    CONNECTSIGNALSLOT(mp_Ui->RemoteSWUpdateButton,clicked(),this,RemoteSWUpdate());
 }
 
 /****************************************************************************/
@@ -103,6 +105,15 @@ void CDataManagementWidget:: ImportDialog()
     emit ExecSending("DataImport", Type);
 }
 
+void CDataManagementWidget:: SWUpdate()
+{
+    emit EmitSWUpdate(true);
+}
+
+void CDataManagementWidget:: RemoteSWUpdate()
+{
+    emit EmitSWUpdate(false);
+}
 /****************************************************************************/
 /*!
  *  \brief Enables/Disables the button based on the user role/process
@@ -132,6 +143,15 @@ void CDataManagementWidget::ResetButtons()
     }
     else {
         mp_Ui->importButton->setEnabled(false);
+    }
+
+    if ((m_CurrentUserRole >= MainMenu::CMainWindow::Admin && (!m_ProcessRunning))) {
+        mp_Ui->SWUpdateButton->setEnabled(true);
+        mp_Ui->RemoteSWUpdateButton->setEnabled(true);
+    }
+    else {
+        mp_Ui->SWUpdateButton->setEnabled(false);
+        mp_Ui->RemoteSWUpdateButton->setEnabled(false);
     }
 }
 

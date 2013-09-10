@@ -32,6 +32,7 @@
 #include <QString>
 #include <QDebug>
 
+#include <stdlib.h> //For "system()"
 //#include <QWidget>
 //#include <QtGui/QApplication>
 //#include "Scheduler/Demo/SchedulerSimulation/mainwindow.h"
@@ -145,6 +146,7 @@ int main(int argc, char *argv[]) {
     Global::SystemPaths::Instance().SetRollbackPath("../Rollback");
     Global::SystemPaths::Instance().SetTranslationsPath("../Translations");
     Global::SystemPaths::Instance().SetSoundPath("../Sounds");
+    Global::SystemPaths::Instance().SetRemoteCarePath("../RemoteCare");
 
     // create master thread
     QThread thrMasterThread;
@@ -157,7 +159,7 @@ int main(int argc, char *argv[]) {
         /// \todo set max file size of event logger
         App.TheMasterThreadController.SetEventLoggerMaxFileSize(1000000);
         // set max file count for day operation logger
-        App.TheMasterThreadController.SetDayEventLoggerMaxFileCount(14);
+        App.TheMasterThreadController.SetDayEventLoggerMaxFileCount(56);
         // set max date time offset
         App.TheMasterThreadController.SetMaxAdjustedTimeOffset(24*3600);
         // read time offset from file
@@ -202,6 +204,9 @@ int main(int argc, char *argv[]) {
         }
         // cleanup controller for master thread.
         App.TheMasterThreadController.CleanupAndDestroyObjects();
+        //write buffered data to disk-> refer man pages for sync
+        system("sync");
+        std::cout << "\n\n\n Sync in Main" << Global::AdjustedTime::Instance().GetCurrentTime().toString().toStdString();
         // and exit
         return ReturnCode;
     }

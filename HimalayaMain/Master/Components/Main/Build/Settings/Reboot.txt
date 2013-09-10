@@ -1,0 +1,5 @@
+Main_Rebooted:No
+Reboot_Count:0
+Software_Update_Check_Status:NA
+Software_Update_Status:No
+Update_RollBack_Failed:No

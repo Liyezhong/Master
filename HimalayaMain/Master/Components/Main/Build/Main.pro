@@ -31,7 +31,8 @@ PLATFORM_COMPONENTS = DataLogging \
                       ImportExport \
                       Threads \
                       PasswordManager \
-                      SoftSwitchManager
+                      SoftSwitchManager \
+                      SWUpdateManager
 ################################################################
 
 
