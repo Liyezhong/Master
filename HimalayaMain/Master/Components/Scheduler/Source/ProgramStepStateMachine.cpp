@@ -1,6 +1,5 @@
 #include "../Include/ProgramStepStateMachine.h"
 #include "EventHandler/Include/CrisisEventHandler.h"
-#include <QDebug>
 
 namespace Scheduler
 {

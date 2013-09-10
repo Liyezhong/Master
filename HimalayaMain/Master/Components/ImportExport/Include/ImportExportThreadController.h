@@ -38,7 +38,6 @@
 #include "ImportExport/ReadArchive/Include/ReadArchive.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 
-#include <QProcess>
 
 //lint -sem(ImportExport::ImportExportThreadController::DoCleanUpObjects,cleanup)
 
@@ -75,8 +74,6 @@ private:
     bool m_CurrentLanguageUpdated;                              ///< Store the flag for current language
     bool m_EventRaised;                                         ///< Store the event information flag for raise event
     bool m_UserExport;                                          ///< Store the user export flag
-    bool m_TakeBackUp;                                          ///< Store the back up
-    bool m_SettingsFolderUpdatedFiles;                          ///< Settings folder updated with the files
     bool m_TranslationsFolderUpdatedFiles;                      ///< Translations folder updated with the files
     bool m_RemoteCareRequest;                                   ///< Remote care request flag
     QString m_DayRunLogDirectoryName;                           ///< Store the day run log directory name

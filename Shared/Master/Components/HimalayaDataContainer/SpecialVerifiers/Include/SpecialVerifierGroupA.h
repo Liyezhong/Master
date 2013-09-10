@@ -21,9 +21,7 @@
 #ifndef DATAMANAGER_SPECIALVERIFIERGROUPA_H
 #define DATAMANAGER_SPECIALVERIFIERGROUPA_H
 
-#include <QString>
-#include <QXmlStreamReader>
-#include "QStringList"
+
 
 #include "DataManager/Containers/ContainerBase/Include/VerifierInterface.h"
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"

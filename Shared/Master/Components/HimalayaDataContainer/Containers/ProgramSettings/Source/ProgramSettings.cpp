@@ -17,7 +17,7 @@
  *
  */
 /****************************************************************************/
-#include <QDebug>
+/*#include <QDebug>
 #include <QFile>
 #include <QReadLocker>
 #include <QWriteLocker>
@@ -26,7 +26,7 @@
 #include <QXmlStreamWriter>
 #include <QStringList>
 #include <QRegExp>
-
+*/
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
 #include "DataManager/Helper/Include/Helper.h"

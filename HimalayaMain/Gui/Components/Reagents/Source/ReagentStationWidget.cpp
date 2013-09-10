@@ -27,12 +27,11 @@ CReagentStationWidget::CReagentStationWidget(QWidget *p_Parent):
                                            mp_Ui(new Ui::CReagentStationWidget),
                                            mp_DataConnector(NULL),
                                            mp_ReagentList(NULL),
+                                           m_CurrentUserRole(MainMenu::CMainWindow::GetCurrentUserRole()),
                                            mp_Reagent(NULL),
-
                                            mp_DashStation(NULL),
                                            mp_ModifiyReagentStationDlg(NULL),
-                                           m_CurrentUserRole(MainMenu::CMainWindow::GetCurrentUserRole()),
-                                           m_strSelectReagent(tr("Select Reagent"))
+                                            m_strSelectReagent(tr("Select Reagent"))
 {
     mp_Ui->setupUi(GetContentFrame());
 

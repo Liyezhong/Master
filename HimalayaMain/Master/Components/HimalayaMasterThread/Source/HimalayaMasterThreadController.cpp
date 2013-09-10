@@ -52,7 +52,6 @@
 #include <Global/Include/Commands/CmdEventUpdate.h>
 #include <Global/Include/Translator.h>
 #include <Global/Include/UITranslator.h>
-#include <QLocale>
 
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramListVerifier.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentListVerifier.h"
@@ -218,17 +217,22 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
     catch (...) {
         qDebug()<<"Create And Initialize Failed";
     }
-    EventHandler::CrisisEventHandler::Instance().readEventStateConf("../Settings/EventStateError.csv");
+    (void)EventHandler::CrisisEventHandler::Instance().readEventStateConf("../Settings/EventStateError.csv");
 }
 
 /****************************************************************************/
 void HimalayaMasterThreadController::CreateControllersAndThreads() {
-
-    // let base class create controllers and threads
+  // let base class create controllers and threads
     MasterThreadController::CreateControllersAndThreads();
-
     CHECKPTR(mp_DataManager);
     CHECKPTR(mp_DataManager->GetDeviceConfigurationInterface());
+
+    if (!mp_DataManager)
+        return;
+
+    if (!mp_DataManager->GetDeviceConfigurationInterface())
+        return;
+
     DataManager::CDeviceConfiguration *p_DeviceConfiguration = mp_DataManager->GetDeviceConfigurationInterface()->GetDeviceConfiguration();
     CHECKPTR(p_DeviceConfiguration);
 
@@ -247,7 +251,7 @@ void HimalayaMasterThreadController::CreateControllersAndThreads() {
 
 
 
-    connect(&EventHandler::StateHandler::Instance(), SIGNAL(stateChanged(QString)), this, SLOT(SendStateChange(QString)));
+    (void)connect(&EventHandler::StateHandler::Instance(), SIGNAL(stateChanged(QString)), this, SLOT(SendStateChange(QString)));
 
 
 }
@@ -409,7 +413,7 @@ void HimalayaMasterThreadController::InitializeGUI() {
     RegisterCommandForProcessing<NetCommands::CmdGuiInit, HimalayaMasterThreadController>
             (&HimalayaMasterThreadController::OnCmdGuiInitHandler, this);
     AddAndConnectController(p_GuiController, &m_CommandChannelGui, static_cast<int>(HIMALAYA_GUI_THREAD));
-    StartSpecificThreadController(HIMALAYA_GUI_THREAD);
+    StartSpecificThreadController((int)HIMALAYA_GUI_THREAD);
 }
 
 /****************************************************************************/
@@ -434,7 +438,7 @@ void HimalayaMasterThreadController:: OnCmdGuiInitHandler(Global::tRefType Ref, 
 
         for(Threads::tControllerMap::iterator it = m_ControllerMap.begin(); it != m_ControllerMap.end(); ++it) {
             //Himalaya Gui is already started! so dont start again
-            if (it.key() != HIMALAYA_GUI_THREAD) {
+            if (it.key() != (int)HIMALAYA_GUI_THREAD) {
                 StartSpecificThreadController(it.key());
             }
         }
@@ -476,7 +480,12 @@ void HimalayaMasterThreadController:: OnCmdGuiInitHandler(Global::tRefType Ref, 
 
 /****************************************************************************/
 void HimalayaMasterThreadController::SendXML() {
-    SendCommand(Global::CommandShPtr_t(new NetCommands::CmdGuiInit(2000, false)), m_CommandChannelGui);
+    Q_ASSERT(mp_DataManager);
+
+    if (!mp_DataManager)
+        return;
+
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdGuiInit(2000, false)), m_CommandChannelGui);
 
     QByteArray *p_ByteArray = new QByteArray();
     p_ByteArray->clear();
@@ -490,7 +499,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CDashboardDataStationList *p_StationList = mp_DataManager->GetStationList();
     if (p_StationList) {
         XmlStream << *p_StationList;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::STATION, XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::STATION, XmlStream)), m_CommandChannelGui);
     }
 
     // send reagent group list in xml ---------------------------------
@@ -499,7 +508,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CDataReagentGroupList *p_ReagentGroupList = mp_DataManager->GetReagentGroupList() ;
     if (p_ReagentGroupList) {
         XmlStream << *p_ReagentGroupList;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENTGROUP , XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENTGROUP , XmlStream)), m_CommandChannelGui);
     }
 
     p_ByteArray->clear();
@@ -507,7 +516,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CDataReagentList *p_ReagentList = mp_DataManager->GetReagentList() ;
     if (p_ReagentList) {
         XmlStream << *p_ReagentList;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENT, XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENT, XmlStream)), m_CommandChannelGui);
     }
 
     p_ByteArray->clear();
@@ -516,7 +525,15 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CReagentGroupColorList *p_ReagentGroupColorList = mp_DataManager->GetReagentGroupColorList() ;
     if (p_ReagentGroupColorList) {
         XmlStream << *p_ReagentGroupColorList;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENTGROUPCOLOR , XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENTGROUPCOLOR , XmlStream)), m_CommandChannelGui);
+    }
+
+    p_ByteArray->clear();
+    (void)XmlStream.device()->reset();
+    DataManager::CUserSettingsInterface *p_SettingsInterface = mp_DataManager->GetUserSettingsInterface();
+    if (p_SettingsInterface) {
+        XmlStream << *p_SettingsInterface;
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::USER_SETTING, XmlStream)), m_CommandChannelGui);
     }
 
     p_ByteArray->clear();
@@ -526,17 +543,8 @@ void HimalayaMasterThreadController::SendXML() {
 
        if (p_ProgramList) {
            XmlStream << *p_ProgramList;
-           SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM , XmlStream)), m_CommandChannelGui);
+           (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM , XmlStream)), m_CommandChannelGui);
        }
-
-
-    p_ByteArray->clear();
-    (void)XmlStream.device()->reset();
-    DataManager::CUserSettingsInterface *p_SettingsInterface = mp_DataManager->GetUserSettingsInterface();
-    if (p_SettingsInterface) {
-        XmlStream << *p_SettingsInterface;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::USER_SETTING, XmlStream)), m_CommandChannelGui);
-    }
 
     if (p_SettingsInterface) {
         if (p_SettingsInterface->GetUserSettings(false) != NULL) {
@@ -563,7 +571,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CDeviceConfigurationInterface *p_DeviceConfigurationInterface = mp_DataManager->GetDeviceConfigurationInterface();
     if (p_DeviceConfigurationInterface ) {
         XmlStream << *p_DeviceConfigurationInterface;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::DEVICE_CONFIGURATION, XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::DEVICE_CONFIGURATION, XmlStream)), m_CommandChannelGui);
     }
 
     QByteArray EventData;
@@ -572,8 +580,8 @@ void HimalayaMasterThreadController::SendXML() {
     Global::tTranslations TempTranslations;
     TempTranslations = Global::UITranslator::TranslatorInstance().GetTranslations();
     EventDataStream << TempTranslations;
-    EventDataStream.device()->reset();
-    SendCommand(Global::CommandShPtr_t(new NetCommands::CmdEventStrings(5000, EventDataStream)), m_CommandChannelGui);
+    (void)EventDataStream.device()->reset();
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdEventStrings(5000, EventDataStream)), m_CommandChannelGui);
 
     delete p_ByteArray;
 }
@@ -586,8 +594,11 @@ bool HimalayaMasterThreadController::IsCommandAllowed(const Global::CommandShPtr
 
 
 void HimalayaMasterThreadController::SendContainersTo(Threads::CommandChannel &rCommandChannel) {
+    Q_ASSERT(mp_DataManager);
+    if (!mp_DataManager)
+        return;
 
-    SendCommand(Global::CommandShPtr_t(new DataManager::CmdStationDataContainer(*mp_DataManager->GetStationList(),
+    (void)SendCommand(Global::CommandShPtr_t(new DataManager::CmdStationDataContainer(*mp_DataManager->GetStationList(),
                                                                                 *mp_DataManager->GetReagentList())), rCommandChannel);
 }
 
@@ -616,13 +627,13 @@ void HimalayaMasterThreadController::SendStateChange(QString state) {
     if (state == "BusyState")
     {
         // inform gui
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(3000, true)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(3000, true)), m_CommandChannelGui);
     }
 
     if (state == "IdleState")
     {
         // inform gui
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(3000, false)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(3000, false)), m_CommandChannelGui);
     }
 
     if (state == "ErrorState")
@@ -747,7 +758,11 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
     }
 
     // send acknowledgement to GUI
-    SendAcknowledgeOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
+    Q_ASSERT(mp_ImportExportAckChannel);
+    if (mp_ImportExportAckChannel)
+    {
+        SendAcknowledgeOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
+    }
 
     m_ExportProcessIsFinished = true;
     // enable the timer slot to destroy the objects after one second
@@ -778,6 +793,14 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
                                                                 quint32 EventCode,
                                                                 bool UpdatedCurrentLanguage,
                                                                 bool NewLanguageAdded) {
+    Q_ASSERT(mp_DataManager);
+    if (!mp_DataManager)
+        return;
+
+    Q_ASSERT(mp_ImportExportAckChannel);
+    if (!mp_ImportExportAckChannel)
+        return;
+
     bool SendAckOK = false;
     if (IsImport && ImportTypeList.count() > 0) {
         // check the type of Impor
@@ -849,6 +872,9 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
 
 /****************************************************************************/
 bool HimalayaMasterThreadController::UpdateSupportedGUILanguages() {
+    Q_ASSERT(mp_DataManager);
+    if (!mp_DataManager)
+        return false;
 
     QDir TheDir(Global::SystemPaths::Instance().GetTranslationsPath());
     QStringList FileNames = TheDir.entryList(QStringList("Himalaya_*.qm"));
@@ -863,7 +889,7 @@ bool HimalayaMasterThreadController::UpdateSupportedGUILanguages() {
             QString Locale;
             Locale = FileNames[i];                  // "Himalaya_de.qm"
             Locale.truncate(Locale.lastIndexOf('.'));   // "Himalaya_de"
-            Locale.remove(0, Locale.indexOf('_') + 1);   // "de"
+            (void)Locale.remove(0, Locale.indexOf('_') + 1);   // "de"
             LanguageList << QLocale::languageToString(QLocale(Locale).language());
         }
         p_DeviceConfiguration->SetLanguageList(LanguageList);
@@ -891,7 +917,7 @@ bool HimalayaMasterThreadController::SendLanguageFileToGUI(QString FileName) {
             QDataStream LangDataStream(&File);
             LangDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
             // send the command to GUI
-            SendCommand(Global::CommandShPtr_t(new NetCommands::CmdLanguageFile(5000, LangDataStream)),
+            (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdLanguageFile(5000, LangDataStream)),
                         m_CommandChannelGui);
             // change the UI translator default language also
             // get locale extracted by filename
@@ -916,6 +942,10 @@ bool HimalayaMasterThreadController::SendLanguageFileToGUI(QString FileName) {
 void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref,
                                                             const NetCommands::CmdChangeUserLevel &Cmd,
                                                             Threads::CommandChannel &AckCommandChannel) {
+    Q_ASSERT(mp_DataManager);
+    if (!mp_DataManager)
+        return;
+
     // send ack to GUI
     SendAcknowledgeOK(Ref, AckCommandChannel);
     QString DeviceName;
@@ -948,7 +978,9 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
             // there is no password for the operator
             m_AuthenticatedLevel = Global::OPERATOR;
             bPassed = true;
-            break;        
+            break;
+        default:
+            break;
     }
 
     // check whether user level is operator, if it is operator then authentication failed
@@ -957,14 +989,14 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
     }
 
     if (bPassed)
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevel(Cmd)),m_CommandChannelEventThread);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevel(Cmd)),m_CommandChannelEventThread);
 
     // send the authenticated command to GUI
-    SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevelReply(5000, m_AuthenticatedLevel)), m_CommandChannelGui);
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevelReply(5000, m_AuthenticatedLevel)), m_CommandChannelGui);
     // check the whether fallback password is validated for the successful login
     if (m_PasswordManager.GetFallbackPasswordFlag()) {
         // User entered the fallback password so ask him to change the password
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeAdminPasswordReply(5000, "New")), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeAdminPasswordReply(5000, "New")), m_CommandChannelGui);
     }
 }
 
@@ -1018,7 +1050,7 @@ void HimalayaMasterThreadController::ChangeAdminPasswordHandler(Global::tRefType
         }
     }
 
-    SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeAdminPasswordReply(5000, CommandType)), m_CommandChannelGui);
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeAdminPasswordReply(5000, CommandType)), m_CommandChannelGui);
 
 }
 
@@ -1105,7 +1137,7 @@ void HimalayaMasterThreadController::ExportDayRunLogHandler(Global::tRefType Ref
 
 /****************************************************************************/
 void HimalayaMasterThreadController::RequestDayRunLogFileNames() {
-    SendCommand(Global::CommandShPtr_t(new NetCommands::CmdExportDayRunLogRequest(m_AuthenticatedLevel)),
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdExportDayRunLogRequest(m_AuthenticatedLevel)),
                                             m_CommandChannelDataLogging);
 
 }
@@ -1124,7 +1156,7 @@ void HimalayaMasterThreadController::SetAlarmHandlerTimeout(quint16 timeout)
 
 void HimalayaMasterThreadController::OnFireAlarmLocalRemote(bool isLocalAlarm)
 {
-    SendCommand(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(isLocalAlarm)), m_CommandChannelSchedulerMain);
+    (void)SendCommand(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(isLocalAlarm)), m_CommandChannelSchedulerMain);
 }
 
 /************************************************************************************************************************************/

@@ -24,13 +24,13 @@ namespace MsgClasses {
 QString CmdCurrentProgramStepInfor::NAME = "MsgClasses::CmdCurrentProgramStepInfor";
 
 
-CmdCurrentProgramStepInfor::CmdCurrentProgramStepInfor(int Timeout, const QString& StepName,
-                                                       int CurProgramStepIndex,
-                                                        const QTime& CurRemainingTime) :
-    Command(Timeout),
-    m_StepName(StepName),
-    m_CurProgramStepIndex(CurProgramStepIndex),
-    m_CurRemainingTime(CurRemainingTime)
+CmdCurrentProgramStepInfor::CmdCurrentProgramStepInfor(int timeout, const QString& stepName,
+                                                       int curProgramStepIndex,
+                                                        const QTime& curRemainingTime) :
+    Command(timeout),
+    m_StepName(stepName),
+    m_CurProgramStepIndex(curProgramStepIndex),
+    m_CurRemainingTime(curRemainingTime)
 {
 }
 

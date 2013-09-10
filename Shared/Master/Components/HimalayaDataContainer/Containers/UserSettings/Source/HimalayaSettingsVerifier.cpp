@@ -65,11 +65,11 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
             qDebug() << "Unsupported language is detected";
             m_ErrorHash.insert(EVENT_DM_ERROR_NOT_SUPPORTED_LANGUAGE,
                                Global::tTranslatableStringList()
-                               << HiUserSettings.GetLanguage());
+                               << (int)HiUserSettings.GetLanguage());
             Global::EventObject::Instance().RaiseEvent
                     (EVENT_DM_ERROR_NOT_SUPPORTED_LANGUAGE,
                      Global::tTranslatableStringList()
-                     << HiUserSettings.GetLanguage(), true);
+                     << (int)HiUserSettings.GetLanguage(), true);
             VerifiedData = false;
             break;
         }
@@ -173,10 +173,10 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
 
         switch (HiUserSettings.GetModeRMSProcessing())
         {
-        case RMS_OFF:
-        case RMS_CASSETTES:
-        case RMS_CYCLES:
-        case RMS_DAYS:
+        case Global::RMS_OFF:
+        case Global::RMS_CASSETTES:
+        case Global::RMS_CYCLES:
+        case Global::RMS_DAYS:
             break;
         default:
         {
@@ -193,9 +193,9 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
 
         switch (HiUserSettings.GetModeRMSCleaning())
         {
-        case RMS_OFF:
-        case RMS_CYCLES:
-        case RMS_DAYS:
+        case Global::RMS_OFF:
+        case Global::RMS_CYCLES:
+        case Global::RMS_DAYS:
             break;
         default:
         {

@@ -20,8 +20,6 @@
 #ifndef DATAMANAGER_SPECIALVERIFIERGROUPC_H
 #define DATAMANAGER_SPECIALVERIFIERGROUPC_H
 
-#include <QString>
-#include <QXmlStreamReader>
 
 #include "DataManager/Containers/ContainerBase/Include/VerifierInterface.h"
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"

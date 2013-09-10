@@ -674,6 +674,7 @@ void CDataConnector::ProgramRemoveHandler(Global::tRefType Ref,
     Result = ProgramList-> DeleteProgram(ProgramId);
     if (Result) {
         emit ProgramsUpdated();
+        emit ProgramsDeleted();
     }
     else {
         Result = false;
@@ -937,14 +938,22 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
 
     QDataStream DataStream(const_cast<QByteArray *>(&Command.GetFileContent()), QIODevice::ReadWrite);
     (void)DataStream.device()->reset();
-
+    bool hasRunCleaningProgram  = true;
+    QString strReagentIDOfLastStep("");
     switch (Command.GetFileType()) {
 
         case NetCommands::PROGRAM:
             DataStream >> *ProgramList;
             ProgramList->SetDataVerificationMode(false);
             emit ProgramsUpdated();
+            if (SettingsInterface && SettingsInterface->GetUserSettings())
+            {
+                strReagentIDOfLastStep = SettingsInterface->GetUserSettings()->GetReagentIdOfLastStep();
+                hasRunCleaningProgram = strReagentIDOfLastStep == "";
+                emit ProgramsInitialized(!hasRunCleaningProgram);
+            }
             break;
+
         case NetCommands::REAGENT:
             DataStream >> *ReagentList;
             ReagentList->SetDataVerificationMode(false);

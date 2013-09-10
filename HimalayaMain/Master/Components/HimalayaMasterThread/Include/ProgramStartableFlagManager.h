@@ -19,13 +19,10 @@
 /****************************************************************************/
 #ifndef PROGRAMSTARTABLEFLAGMANAGER_H
 #define PROGRAMSTARTABLEFLAGMANAGER_H
-//Qt Includes
-#include <QObject>
-#include <QString>
-#include <QStringList>
 
 //Project Includes
 #include <Global/Include/GlobalDefines.h>
+#include <QStringList>
 
 namespace Threads {
     class CommandChannel;

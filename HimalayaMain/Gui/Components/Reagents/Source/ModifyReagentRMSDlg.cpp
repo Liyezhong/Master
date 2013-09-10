@@ -112,22 +112,7 @@ void CModifyReagentRMSDlg::SelectionChanged(QModelIndex Index)
         m_SelectionFlag = true;
 
     QString Id = m_ReagentGroupModel.data(Index, (int)Qt::UserRole).toString();
-
-    Q_ASSERT(mp_ReagentGroupList);
-    if (mp_ReagentGroupList)
-    {
-        Global::RMSOptions_t rmsOption = Global::RMS_UNDEFINED;
-        if (mp_ReagentGroupList->GetReagentGroup(Id)->IsCleaningReagentGroup())
-        {
-            rmsOption = Reagents::CReagentRMSWidget::RMSCLEANINGOPTIONS;
-        }
-        else
-        {
-            rmsOption = Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION;
-        }
-        mp_Ui->buttonValue->setEnabled(true);
-        UpdateRmsLabel(rmsOption);
-    }
+    mp_Ui->buttonValue->setEnabled(true);
     m_Reagent.SetGroupID(Id);
 }
 
@@ -196,6 +181,7 @@ void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
             mp_Ui->buttonValue->setVisible(true);
             mp_Ui->labelRMSStaticName->setVisible(true);
             UpdateRmsLabel(Option);
+            ShowReagentValue(Option);
             mp_TableWidget->selectRow(mp_ReagentGroupList->GetReagentGroupIndex(m_Reagent.GetGroupID()));
             if (mp_DataConnector->ProgramList->GetReagentIDList().contains(m_Reagent.GetReagentID()))
             {
@@ -252,7 +238,26 @@ void CModifyReagentRMSDlg::UpdateRmsLabel(Global::RMSOptions_t Option)
         default:
             break;
     }
+}
 
+void CModifyReagentRMSDlg::ShowReagentValue(Global::RMSOptions_t Option)
+{
+    switch (Option) {
+        case Global::RMS_CASSETTES:
+            mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxCassettes()));
+            break;
+        case Global::RMS_CYCLES:
+            mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxCycles()));
+            break;
+        case Global::RMS_DAYS:
+            mp_Ui->buttonValue->setText(QString::number(m_Reagent.GetMaxDays()));
+            break;
+        case Global::RMS_OFF:
+            mp_Ui->buttonValue->setVisible(false);
+            break;
+        default:
+            break;
+    }
 }
 
 /****************************************************************************/

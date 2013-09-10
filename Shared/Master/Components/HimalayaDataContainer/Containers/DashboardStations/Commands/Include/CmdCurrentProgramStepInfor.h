@@ -42,7 +42,7 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdCurrentProgramStepInfor(int Timeout, const QString& StepName, int CurProgramStepIndex, const QTime& CurRemainingTime);
+    CmdCurrentProgramStepInfor(int timeout, const QString& stepName, int curProgramStepIndex, const QTime& curRemainingTime);
     ~CmdCurrentProgramStepInfor();
     virtual QString GetName() const;
     inline const QString& StepName() const {return m_StepName;}

@@ -220,16 +220,25 @@ void CDashboardDateTimeWidget::OnOK()
     int secsDifference = CurTime.secsTo(m_selDateTime);
     qDebug() << "Date Time Difference is" << secsDifference;
 
-    if(m_selDateTime >= m_ASAPDateTime && secsDifference <= ONE_WEEK_TIME_OFFSET_VALUE) {
-        emit OnSelectDateTime(m_selDateTime);
-        accept();
-    } else {
+    QString strEndTime("");
+    if(secsDifference > ONE_WEEK_TIME_OFFSET_VALUE) {
+        strEndTime = m_strLaterEndTime;
+    } else if(m_selDateTime < m_ASAPDateTime)  {
+        strEndTime = m_strEarlierEndTime;
+    }
+
+    if ("" != strEndTime)
+    {
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         mp_MessageDlg->SetTitle(tr("Warning"));
-        mp_MessageDlg->SetText(tr("Program End Date Time cannot be later than one week or earlier than the ASAP End Date Time."));
+        mp_MessageDlg->SetText(strEndTime);
         mp_MessageDlg->SetButtonText(1, tr("OK"));
         mp_MessageDlg->HideButtons();    // Hiding First Two Buttons in the Message Dialog
         (void)mp_MessageDlg->exec();
+    }
+    else{
+        emit OnSelectDateTime(m_selDateTime);
+        accept();
     }
 }
 
@@ -253,6 +262,10 @@ void CDashboardDateTimeWidget::RetranslateUI()
 
     mp_MessageDlg->SetTitle(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Warning", 0, QApplication::UnicodeUTF8));
     mp_MessageDlg->SetText(QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date Time cannot be later than one week or earlier than the ASAP End Date Time.", 0, QApplication::UnicodeUTF8));
+
+    m_strEarlierEndTime = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date Time cannot be earlier than the ASAP End Date Time.", 0, QApplication::UnicodeUTF8);
+    m_strLaterEndTime = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date Time cannot be later than one week.", 0, QApplication::UnicodeUTF8);
+
     mp_MessageDlg->SetButtonText(1, QApplication::translate("Dashboard::CDashboardDateTimeWidget", "OK", 0, QApplication::UnicodeUTF8));
     m_strEndTimeForProgram = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "End Time of program", 0, QApplication::UnicodeUTF8);
 }

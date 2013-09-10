@@ -18,8 +18,7 @@
  */
 /****************************************************************************/
 
-#include <QDebug>
-#include <QFile>
+
 
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupD.h"
 #include "Global/Include/EventObject.h"

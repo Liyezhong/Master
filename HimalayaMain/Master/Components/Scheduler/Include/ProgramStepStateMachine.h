@@ -2,7 +2,6 @@
 #define PROGRAMSTEPSTATEMACHINE_H
 
 
-#include <QObject>
 #include <QStateMachine>
 #include <QFinalState>
 

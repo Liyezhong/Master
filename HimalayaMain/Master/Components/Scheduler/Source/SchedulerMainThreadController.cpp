@@ -847,6 +847,7 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
 
                     const CReagent* pCurReagent = pReagentList->GetReagent(reagentID);
 
+                    //RG7:Cleaning Solvent, RG8:Cleaning Alcohol
                     QStringList list;
                     list << "RG1"<<"RG2"<<"RG3"<<"RG4"<<"RG5";
                     if (list.contains(pLastReagent->GetGroupID()) && pCurReagent->GetGroupID() == "RG7")

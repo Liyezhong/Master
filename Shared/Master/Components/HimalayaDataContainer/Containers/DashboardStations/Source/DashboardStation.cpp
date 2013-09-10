@@ -28,6 +28,8 @@
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include "HimalayaDataContainer/Helper/Include/HimalayaDataManagerEventCodes.h"
 
+//lint -sem(DataManager::CDashboardStation::CopyFromOther, initializer)
+
 namespace DataManager {
 
 /****************************************************************************/

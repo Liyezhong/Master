@@ -18,7 +18,6 @@
  */
 /****************************************************************************/
 
-#include <QDebug>
 #include  "../Include/DataContainer.h"
 
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramListVerifier.h"

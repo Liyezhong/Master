@@ -39,7 +39,7 @@ CmdQuitAppShutdown::CmdQuitAppShutdown(int TimeOut, DataManager::QuitAppShutdown
 }
 
 CmdQuitAppShutdown::CmdQuitAppShutdown(void)
-    : Command(0)
+    : Command(0), m_quitAppShutdownActionType(DataManager::QUITAPPSHUTDOWNACTIONTYPE_UNDEFINED)
 {
 }
 

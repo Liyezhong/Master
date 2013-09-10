@@ -18,7 +18,6 @@
  */
 /****************************************************************************/
 
-#include <QDebug>
 #include <Global/Include/SystemPaths.h>
 #include "../Include/DataManager.h"
 #include "HimalayaDataManager/CommandInterface/Include/ProgramCommandInterface.h"
@@ -28,9 +27,13 @@
 #include "DataManager/CommandInterface/Include/UserSettingsCommandInterface.h"
 #include "HimalayaDataManager/Include/DataManagerDefinitions.h"
 
+//lint -sem(DataManager::CDataManager::DeinitializeDataContainer,cleanup)
+
 namespace DataManager {
 
-CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThreadController) :CDataManagerBase(p_HimalayaMasterThreadController),
+CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThreadController)
+    :CDataManagerBase(p_HimalayaMasterThreadController),
+    m_UpdateList(false),
     mp_DataContainer(NULL),
     mp_StationCommandInterface(NULL),
     mp_ReagentCommandInterface(NULL),

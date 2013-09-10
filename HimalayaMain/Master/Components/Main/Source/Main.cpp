@@ -28,15 +28,7 @@
 /// \todo Norbert's debug output
 #include <DeviceControl/Include/Global/dcl_log.h>
 
-#include <QThread>
-#include <QString>
-#include <QDebug>
 
-#include <stdlib.h> //For "system()"
-//#include <QWidget>
-//#include <QtGui/QApplication>
-//#include "Scheduler/Demo/SchedulerSimulation/mainwindow.h"
-//#include "../../../../Himalaya/HimalayaMain/Master/Components/Scheduler/Demo/SchedulerSimulation/mainwindow.h"
 #include "Global/Include/SignalHandler.h"
 
 class MApplication : public QCoreApplication

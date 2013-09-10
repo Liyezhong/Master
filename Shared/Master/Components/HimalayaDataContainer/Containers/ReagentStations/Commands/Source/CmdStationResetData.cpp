@@ -27,9 +27,9 @@ namespace MsgClasses {
 QString CmdStationResetData::NAME = "MsgClasses::CmdStationResetData";
 
 
-CmdStationResetData::CmdStationResetData(int TimeOut, const QString& StationID)
-    : Command(TimeOut)
-    , m_StationID(StationID)
+CmdStationResetData::CmdStationResetData(int timeOut, const QString& stationID)
+    : Command(timeOut)
+    , m_StationID(stationID)
 {
 }
 

@@ -120,7 +120,7 @@ void CDataProgramList::UpdateOnLanguageChanged()
            }
        }
    }
-   Write();
+   (void)Write();
 }
 
 /****************************************************************************/
@@ -578,6 +578,9 @@ bool CDataProgramList::UpdateProgram(const CProgram* p_Program)
         *m_ProgramList.value(ID) = *p_Program;
         Result = true;
     }
+    if (!UpdateReagentIDList()) {
+        Result = false;
+    }
     return Result;
 }
 
@@ -786,7 +789,7 @@ bool CDataProgramList::DeserializeContent(QIODevice& IODevice, bool CompleteData
     SetNextFreeProgID(XmlStreamReader.attributes().value("NextProgramID").toString());
 
     Result = ReadAllPrograms(XmlStreamReader, CompleteData);
-    UpdateReagentIDList();
+    (void)UpdateReagentIDList();
 
     (void)XmlStreamReader.device()->reset();
 
@@ -987,7 +990,7 @@ bool CDataProgramList::UpdateReagentIDList()
             return false;
         }
     }
-   m_ReagentIDList.removeDuplicates();
+   (void)m_ReagentIDList.removeDuplicates();
    return true;
 }
 

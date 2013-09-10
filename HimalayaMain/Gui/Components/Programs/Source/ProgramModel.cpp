@@ -41,9 +41,9 @@ const int MAX_FAVORITE_PROGRAM_COUNT = 5; //!< Maxiimum number of favourite Prog
 CProgramModel::CProgramModel(QObject *p_Parent) :
 QAbstractTableModel(p_Parent),
 mp_ProgramList(NULL),
-m_CurrentUserRole(MainMenu::CMainWindow::Operator),
 m_Columns(0),
-  m_VisibleRowCount(VISIBLE_ROW_COUNT),
+m_VisibleRowCount(VISIBLE_ROW_COUNT),
+m_CurrentUserRole(MainMenu::CMainWindow::Operator),
 m_CurrentIndex(0)
 {
 

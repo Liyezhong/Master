@@ -42,10 +42,10 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdProgramSelectedReply(int Timeout, int TimeProposed,
-                      int ParaffinMeltCostedtime,
-                      int CostedTimeBeforeParaffin,
-                      QList<QString>& StationList);
+    CmdProgramSelectedReply(int timeout, int timeProposed,
+                      int paraffinMeltCostedtime,
+                      int costedTimeBeforeParaffin,
+                      QList<QString>& stationList);
     ~CmdProgramSelectedReply();
     virtual QString GetName() const;
     inline int TimeProposed()const {return m_TimeProposed;}
