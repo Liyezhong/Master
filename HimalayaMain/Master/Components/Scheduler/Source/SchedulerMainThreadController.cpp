@@ -73,6 +73,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , mp_IDeviceProcessing(NULL)
         , mp_DataManager(NULL)
         , m_CurProgramStepIndex(-1)
+        , m_FirstProgramStepIndex(0)
         , m_CurReagnetName("")
         , m_CurProgramID("")
         , m_NewProgramID("")
@@ -265,7 +266,6 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             mp_ProgramStepStateMachine->Start();
             mp_SelfTestStateMachine->Start();
             m_SchedulerMachine->SendRunSignal();
-            PrepareProgramStationList(m_CurProgramID);
             //send command to main controller to tell the left time
             quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
             LOG_STR_ARG(STR_CURRENT_PROGRAM_NAME_STEP_REAGENT_LEFTTIME,Global::FmtArgs()<< ProgramName
@@ -799,7 +799,8 @@ void SchedulerMainThreadController::DequeueNonDeviceCommand()
 }
 
 bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString& ProgramID,
-                                                                  ProgramStepInfor& programStepInfor)
+                                                                  ProgramStepInfor& programStepInfor,
+                                                                  bool onlyGetFirstProgramStepIndex)
 {
     if (!mp_DataManager)
     {
@@ -860,7 +861,10 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
             }
         }
     } while (bSkipCurrentStep);
-
+    
+    if (onlyGetFirstProgramStepIndex)
+        return true;
+        
     if (pProgramStep)
     {
         programStepInfor.stationID  = this->GetStationIDFromProgramStep(m_CurProgramStepIndex);
@@ -879,6 +883,7 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
 
 QString SchedulerMainThreadController::GetStationIDFromProgramStep(int ProgramStepIndex)
 {
+    ProgramStepIndex = ProgramStepIndex - m_FirstProgramStepIndex;
     return m_StationList.at(ProgramStepIndex);
 }
 
@@ -947,7 +952,7 @@ QString SchedulerMainThreadController::SelectStationByReagent(const CReagent* pR
     return "";
 }
 
-bool SchedulerMainThreadController::PrepareProgramStationList(const QString& ProgramID)
+bool SchedulerMainThreadController::PrepareProgramStationList(const QString& ProgramID, int beginStep)
 {
     if (!mp_DataManager)
     {
@@ -980,7 +985,7 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
     ListOfIDs_t unusedStationIDs = pDashboardDataStationList->GetOrderedListOfDashboardStationIDs();
     QList<StationUseRecord_t> usedStations;
 
-    for (int i = 0; i < pProgram->GetNumberOfSteps(); i++)
+    for (int i = beginStep; i < pProgram->GetNumberOfSteps(); i++)
     {
         const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
         ProgramStationInfo_t stationInfo;
@@ -1202,11 +1207,14 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
     else
         curProgramID = strProgramID;
 
-    this->PrepareProgramStationList(curProgramID);
-
     m_CurProgramStepIndex = -1;
-    this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo);//only to get m_CurProgramStepIndex
+    this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);//only to get m_CurProgramStepIndex
     unsigned int timeProposed = GetLeftProgramStepsNeededTime(curProgramID, m_CurProgramStepIndex);
+        
+    //For Cleaning Program
+    Q_ASSERT(m_CurProgramStepIndex >= 0);
+    m_FirstProgramStepIndex = m_CurProgramStepIndex;
+    this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
     m_CurProgramStepIndex = -1;
 
     unsigned int paraffinMeltCostedtime = this->GetOvenHeatingTime();
