@@ -744,6 +744,9 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
             case Global::EXIT_CODE_EXPORT_ZIP_IS_TAKING_LONGTIME:
                 EventCode = EVENT_EXPORT_ZIP_IS_TAKING_LONGTIME;
                 break;
+            case Global::EXIT_CODE_EXPORT_NO_ENOUGH_SPACE_ON_USB:
+                EventCode = EVENT_EXPORT_NO_ENOUGH_SPACE_ON_USB_CARD;
+                break;
         }
 
 
