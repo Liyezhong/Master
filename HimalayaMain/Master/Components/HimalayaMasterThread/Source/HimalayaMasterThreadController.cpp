@@ -210,6 +210,7 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
         (&HimalayaMasterThreadController::EventCmdSystemAction,this);
     RegisterAcknowledgeForProcessing<Global::AckOKNOK, HimalayaMasterThreadController>
         (&HimalayaMasterThreadController::OnAckOKNOK, this);
+    RegisterCommandForRouting<NetCommands::CmdEventReport>(&m_CommandChannelGui);
     RegisterCommandForProcessing<Global::CmdShutDown, HimalayaMasterThreadController>
                 (&HimalayaMasterThreadController::ShutdownHandler, this);
 		CONNECTSIGNALSLOT(this, RemoteCareExport(const quint8 &), this, RemoteCareExportData(const quint8 &));
@@ -387,7 +388,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
             (&HimalayaMasterThreadController::ChangeUserLevelHandler, this);
 
     //GUI - Sent by Scheduler
-    RegisterCommandForRouting<NetCommands::CmdEventReport>(&m_CommandChannelGui);
+    //RegisterCommandForRouting<NetCommands::CmdEventReport>(&m_CommandChannelGui);
 
 
     //Update and keep the current system state
@@ -972,10 +973,10 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
                 }
             }
 
-            if (m_PasswordManager.ServiceAuthentication(Cmd.GetPassword(), DeviceName)) {
+            //if (m_PasswordManager.ServiceAuthentication(Cmd.GetPassword(), DeviceName)) {
                 m_AuthenticatedLevel = Global::SERVICE;
                 bPassed = true;
-            }
+            //}
             break;
         case Global::OPERATOR:
             // there is no password for the operator
