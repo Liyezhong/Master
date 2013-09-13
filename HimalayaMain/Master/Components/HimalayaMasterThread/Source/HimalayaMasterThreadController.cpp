@@ -107,6 +107,7 @@ HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     mp_ImportExportAckChannel(NULL),
     m_ExportProcessIsFinished(false),
     m_ImportExportThreadIsRunning(false),
+    m_RemoteCareExportRequest(false),
 	m_CurrentUserActionState(NORMAL_USER_ACTION_STATE),
     mp_SWUpdateManager(NULL),
     m_ExportTargetFileName(""),
