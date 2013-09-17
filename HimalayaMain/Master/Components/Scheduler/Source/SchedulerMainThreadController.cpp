@@ -1000,6 +1000,109 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
     return true;
 }
 
+bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList)
+{
+    QList<QString> fixationStationList, dehydratingAbsstationList;
+    CDataReagentList* pReagentList =  mp_DataManager->GetReagentList();
+    if (!pReagentList)
+        return false;
+
+        CDashboardDataStationList* pDashboardDataStationList = mp_DataManager->GetStationList();
+        if (!pDashboardDataStationList)
+            return false;
+
+        ListOfIDs_t stationIDs = pDashboardDataStationList->GetOrderedListOfDashboardStationIDs();
+        for (int i = 0; i < stationIDs.count(); i++)
+        {
+            CDashboardStation* pDashboardStation = pDashboardDataStationList->GetDashboardStation(stationIDs.at(i));
+            if (!pDashboardStation)
+                continue;
+
+            const CReagent* pReagent = pReagentList->GetReagent(pDashboardStation->GetDashboardReagentID());
+            if (!pReagent)
+                continue;
+
+            if (CReagentGroup* reagentGroup = mp_DataManager->GetReagentGroupList()->GetReagentGroup(pReagent->GetGroupID()))
+            {
+                //Fixation:RG1, Clearing RG5, Paraffin:RG6
+                if ( (reagentGroupID == "RG1") || (reagentGroupID == "RG5") || (reagentGroupID == "RG6"))
+                {
+                    if (reagentGroup->GetGroupID() == reagentGroupID)
+                    {
+                        stationList.append(pDashboardStation->GetDashboardStationID());
+                    }
+                    continue;
+                }
+
+                if ( (reagentGroupID == "RG2") || (reagentGroupID == "RG3") || (reagentGroupID == "RG4") )//RG2:Water,RG3:Dehydrating diluted,RG4:Dehydrating absolute
+                {
+                    if (reagentGroup->GetGroupID() == "RG1")//Fixation
+                    {
+                        fixationStationList.append(pDashboardStation->GetDashboardStationID());
+                    }
+
+                    if (reagentGroup->GetGroupID() == "RG3")//Dehydrating,diluted
+                    {
+                        stationList.append(pDashboardStation->GetDashboardStationID());
+                    }
+
+                    if (reagentGroup->GetGroupID() == "RG4")//Dehydrating absolute
+                    {
+                        dehydratingAbsstationList.append(pDashboardStation->GetDashboardStationID());
+                    }
+                    continue;
+                }
+
+            }
+        }// end of for
+
+        if ( (reagentGroupID == "RG2") || (reagentGroupID == "RG3") || (reagentGroupID == "RG4") )//RG2:Water,RG3:Dehydrating diluted,RG4:Dehydrating absolute
+        {
+            if (stationList.isEmpty())//no Dehydrating,diluted
+            {
+                if (!fixationStationList.isEmpty())
+                    stationList = fixationStationList;
+                else
+                    stationList = dehydratingAbsstationList;
+            }
+        }
+
+
+    return true;
+}
+
+int SchedulerMainThreadController::WhichStepHasNoSafeReagent(const QString& ProgramID)
+{
+    if (!mp_DataManager)
+    {
+        Q_ASSERT(false);
+        return -1;
+    }
+
+    CDataProgramList* pDataProgramList = mp_DataManager->GetProgramList();
+    if (!pDataProgramList)
+    {
+        Q_ASSERT(false);
+        return -1;
+    }
+
+    QList<QString> stationList;
+    CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
+    for (int i = 0; i < pProgram->GetNumberOfSteps(); i++)
+    {
+        const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);
+        if (!pProgramStep)
+            continue;
+         bool ret = GetSafeReagentStationList(GetReagentGroupID(pProgramStep->GetReagentID()), stationList);
+        if (ret && stationList.isEmpty())
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex)
 {
     quint32 leftTime = 0;
@@ -1224,10 +1327,14 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
         costedTimeBeforeParaffin = timeProposed - GetLeftProgramStepsNeededTime(curProgramID, Cmd.ParaffinStepIndex());
     }
 
+    //cheack safe reagent
+    int whichStep = WhichStepHasNoSafeReagent(curProgramID);
+
     //send back the proposed program end time
     MsgClasses::CmdProgramSelectedReply* commandPtr(new MsgClasses::CmdProgramSelectedReply(5000, timeProposed,
                                                                                 paraffinMeltCostedtime,
                                                                                 costedTimeBeforeParaffin,
+                                                                                whichStep,
                                                                                 m_StationList));
     Q_ASSERT(commandPtr);
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));

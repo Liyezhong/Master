@@ -45,12 +45,14 @@ public:
     CmdProgramSelectedReply(int timeout, int timeProposed,
                       int paraffinMeltCostedtime,
                       int costedTimeBeforeParaffin,
+                      int whichStepHasNoSafeReagent,
                       QList<QString>& stationList);
     ~CmdProgramSelectedReply();
     virtual QString GetName() const;
     inline int TimeProposed()const {return m_TimeProposed;}
     inline int ParaffinMeltCostedTime()const {return m_ParaffinMeltCostedtime;}
     inline int CostedTimeBeforeParaffin()const {return m_CostedTimeBeforeParaffin;}
+    inline int WhichStepHasNoSafeReagent() const {return m_WhichStepHasNoSafeReagent;}
     inline const QList<QString>& StationList()const {return m_StationList;}
 
     
@@ -61,6 +63,7 @@ private:
     int m_TimeProposed;//the costed time for selected program, seconds
     int m_CostedTimeBeforeParaffin; //seconds
     int m_ParaffinMeltCostedtime; //seconds
+    int m_WhichStepHasNoSafeReagent;
     QList<QString> m_StationList;
     
 }; // end class CmdProgramSelectedReply
@@ -82,6 +85,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramSelectedR
     Stream << Cmd.m_TimeProposed;
     Stream << Cmd.m_ParaffinMeltCostedtime;
     Stream << Cmd.m_CostedTimeBeforeParaffin;
+    Stream << Cmd.m_WhichStepHasNoSafeReagent;
     Stream << Cmd.m_StationList.count();
     for (int i = 0; i < Cmd.m_StationList.count(); i++)
     {
@@ -107,6 +111,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdProgramSelectedReply &
     Stream >> Cmd.m_TimeProposed;
     Stream >> Cmd.m_ParaffinMeltCostedtime;
     Stream >> Cmd.m_CostedTimeBeforeParaffin;
+    Stream >> Cmd.m_WhichStepHasNoSafeReagent;
     int stationCount = 0;
     Stream >> stationCount;
     QString stationID("");

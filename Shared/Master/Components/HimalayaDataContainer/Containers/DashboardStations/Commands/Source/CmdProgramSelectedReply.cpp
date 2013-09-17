@@ -27,11 +27,13 @@ QString CmdProgramSelectedReply::NAME = "MsgClasses::CmdProgramSelectedReply";
 CmdProgramSelectedReply::CmdProgramSelectedReply(int timeout, int timeProposed,
                                              int paraffinMeltCostedtime,
                                              int costedTimeBeforeParaffin,
+                                             int whichStepHasNoSafeReagent,
                                              QList<QString>& stationList) :
     Command(timeout),
     m_TimeProposed(timeProposed),
     m_CostedTimeBeforeParaffin(costedTimeBeforeParaffin),
     m_ParaffinMeltCostedtime(paraffinMeltCostedtime),
+    m_WhichStepHasNoSafeReagent(whichStepHasNoSafeReagent),
     m_StationList(stationList)
 {
 }
@@ -40,7 +42,8 @@ CmdProgramSelectedReply::CmdProgramSelectedReply():
     Command(0),
     m_TimeProposed(0),
     m_CostedTimeBeforeParaffin(0),
-    m_ParaffinMeltCostedtime(0)
+    m_ParaffinMeltCostedtime(0),
+    m_WhichStepHasNoSafeReagent(-1)
 {
 }
 
