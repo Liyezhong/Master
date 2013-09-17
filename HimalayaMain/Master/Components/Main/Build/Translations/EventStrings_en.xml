@@ -152,6 +152,8 @@
 		<string id="17629215" text1="Export failed. Zip command not found in the system" text2=""/>
 		<string id="17629214" text1="Export failed. Unable to zip the files" text2=""/>
 		<string id="17629216" text1="Export failed. Zip is taking long time to complete the request" text2=""/>
+		<string id="50331649" text1="Export failed. No enough space on SD card." text2=""/>
+		<string id="50331672" text1="Export failed. No enough space on USB storage." text2=""/>
 		<string id="17498118" text1="Creator functor already registered for: &apos;%1&apos;." text2=""/>
 		<string id="17498114" text1="Error initializing external process device." text2=""/>
 		<string id="17498116" text1="Error initializing full state machine." text2=""/>
@@ -248,7 +250,7 @@
 		<string id="16908296" text1="Unknown command reference %1" text2=""/>
 		<string id="16908298" text1="Unsupported acknowledgement %1" text2=""/>
 		<string id="16908297" text1="Unsupported command %1" text2=""/>
-		<string id="50331649" text1="Recovery fail, please contact service for help. Error Code: %1, Scenario: %2" text2=""/>
+		<string id="50331673" text1="Recovery fail, please contact service for help. Error Code: %1, Scenario: %2" text2=""/>
 		<string id="513010001" text1="Error ID %1! Please call for sevice!" text2=""/>
 		<string id="513010101" text1="Error ID %1! Please call for sevice!" text2=""/>
 		<string id="513010201" text1="Error ID %1! Please call for sevice!" text2=""/>
@@ -342,95 +344,95 @@
 		<string id="50331669" text1="Procssing Water" text2=""/>
 		<string id="50331670" text1="Cleaning xylene" text2=""/>
 		<string id="50331671" text1="Cleaning alcohol" text2=""/>
-		<string id="50331672" text1="Scheduler main controller state: %1" text2=""/>
-		<string id="50331673" text1="INIT" text2=""/>
-		<string id="50331674" text1="IDLE" text2=""/>
-		<string id="50331675" text1="RUN" text2=""/>
-		<string id="50331676" text1="ERROR" text2=""/>
-		<string id="50331677" text1="unexpected state" text2=""/>
-		<string id="50331678" text1="Scheduler receive action command from GUI: %1" text2=""/>
-		<string id="50331679" text1="Current program step state: %1" text2=""/>
-		<string id="50331680" text1="Start program %1" text2=""/>
-		<string id="50331681" text1="Program name %1 current step %2 current reagent %3 left time %4s" text2=""/>
-		<string id="50331682" text1="Finish program %1" text2=""/>
-		<string id="50331683" text1="step initializing" text2=""/>
-		<string id="50331684" text1="heating level sensor 1" text2=""/>
-		<string id="50331685" text1="heating level sensor 2" text2=""/>
-		<string id="50331686" text1="moving to tube to fill" text2=""/>
-		<string id="50331687" text1="moving to tube to draing" text2=""/>
-		<string id="50331688" text1="filling" text2=""/>
-		<string id="50331689" text1="sealing" text2=""/>
-		<string id="50331690" text1="soaking" text2=""/>
-		<string id="50331691" text1="draining" text2=""/>
-		<string id="50331692" text1="ready to drain" text2=""/>
-		<string id="50331693" text1="finished" text2=""/>
-		<string id="50331694" text1="Error" text2=""/>
-		<string id="50331695" text1="pause" text2=""/>
-		<string id="50331696" text1="pause during drain" text2=""/>
-		<string id="50331697" text1="aborted" text2=""/>
-		<string id="50331698" text1="aborting" text2=""/>
-		<string id="50331699" text1="unknown" text2=""/>
-		<string id="50331700" text1="start selftest" text2=""/>
-		<string id="50331701" text1="checking temperature and pressure" text2=""/>
-		<string id="50331702" text1="checking bottle %1" text2=""/>
-		<string id="50331703" text1="bottle check result: %1" text2=""/>
-		<string id="50331704" text1="selftest finished" text2=""/>
-		<string id="50331705" text1="Ok" text2=""/>
-		<string id="50331706" text1="not full" text2=""/>
-		<string id="50331707" text1="blockage" text2=""/>
-		<string id="50331708" text1="empty" text2=""/>
-		<string id="50331709" text1="error" text2=""/>
-		<string id="50331710" text1="timeout" text2=""/>
-		<string id="50331711" text1="unexpected" text2=""/>
-		<string id="50331712" text1="start program" text2=""/>
-		<string id="50331713" text1="pause program" text2=""/>
-		<string id="50331714" text1="abort program" text2=""/>
-		<string id="50331715" text1="drain" text2=""/>
-		<string id="50331716" text1="Please call the service engineer for maintenance!" text2=""/>
-		<string id="50331717" text1="The Active carbon filter is overdue, please replace a new Active carbon filter!" text2=""/>
-		<string id="50331718" text1="Scheduler execute command %1" text2=""/>
-		<string id="50331719" text1="Scheduler execute command %1 result %2" text2=""/>
-		<string id="50331720" text1="SW Update Failed: File/Folder copy failed from %1 to %2" text2=""/>
-		<string id="50331721" text1="SW Update Failed: File/Folder %1 does not exists" text2=""/>
-		<string id="50331722" text1="SW Update Failed: Invalid Command line arguments:%1" text2=""/>
-		<string id="50331723" text1="SW Update Failed: Md5sum check failed:%1" text2=""/>
-		<string id="50331724" text1="SW Update Failed: CRC check failed" text2=""/>
-		<string id="50331725" text1="SW Update Failed: Slave %1 has HW version %2 which is not equal or higher compared to %3" text2=""/>
-		<string id="50331726" text1="SW Update Failed: No USB Device found" text2=""/>
-		<string id="50331727" text1="SW Update Failed: No Update Package found at %1" text2=""/>
-		<string id="50331728" text1="SW Update Failed: File/Folder creation failed for %1" text2=""/>
-		<string id="50331729" text1="SW Update Failed: Slave SW update failed" text2=""/>
-		<string id="50331730" text1="SW Update Failed: File/Folder deletion failed for %1" text2=""/>
-		<string id="50331731" text1="SW Update Failed: Missing slave name %1 in %2" text2=""/>
-		<string id="50331732" text1="SW Update: Copying the File/Folder from %1 to %2" text2=""/>
-		<string id="50331733" text1="SW Update: XML attribute %1 found in %2 but not in %3" text2=""/>
-		<string id="50331734" text1="SW Update: Mounting USB Device %1 to %2 passed" text2=""/>
-		<string id="50331735" text1="SW Update: Unzipping the update package %1 to %2" text2=""/>
-		<string id="50331736" text1="SW Update: CRC check passed" text2=""/>
-		<string id="50331737" text1="SW Update: Md5sum check passed" text2=""/>
-		<string id="50331738" text1="SW Update: Slave %1 has HW version %2 is equal or higher compared to %3" text2=""/>
-		<string id="50331739" text1="SW Update: Creating File/Folder %1" text2=""/>
-		<string id="50331740" text1="SW Update: Extracting package from %1" text2=""/>
-		<string id="50331741" text1="SW Update: Executing the script %1" text2=""/>
-		<string id="50331742" text1="SW Update: Rolling back the files in %1 from %2" text2=""/>
-		<string id="50331743" text1="SW Update: Parsing the XML file %1" text2=""/>
-		<string id="50331744" text1="SW Update Success" text2=""/>
-		<string id="50331745" text1="SW Update: Mounting USB Device %1 to %2 failed" text2=""/>
-		<string id="50331746" text1="SW Update: %1 file not found. Updating all SW binaries and firmwares" text2=""/>
-		<string id="50331747" text1="SW Update: %1 file corrupted. Updating all SW binaries and firmwares" text2=""/>
-		<string id="50331748" text1="SW Update: Failed %1 file corrupted." text2=""/>
-		<string id="50331749" text1="SW Update: Execution of the starter succeeded" text2=""/>
-		<string id="50331750" text1="SW Update: PTS execution is success" text2=""/>
-		<string id="50331751" text1="SW Update: PTS execution is failed" text2=""/>
-		<string id="50331752" text1="SW Update: Unmounted USB to %1" text2=""/>
-		<string id="50331753" text1="SW Update: %1 file not found" text2=""/>
-		<string id="50331754" text1="SW Update: %1 file updated" text2=""/>
-		<string id="50331755" text1="SW Update: %1 file missing entry of &apos;Software_Update_Status&apos;" text2=""/>
-		<string id="50331756" text1="SW Update failed" text2=""/>
-		<string id="50331757" text1="Import failed. Archive file is tampered" text2=""/>
-		<string id="50331758" text1="Import failed. SW versions are not matching to Import the files" text2=""/>
-		<string id="50331759" text1="Type of import is not valid" text2=""/>
-		<string id="50331760" text1="No USB devices found in the system to import files" text2=""/>
-		<string id="50331761" text1="No USB devices found in the system to export files" text2=""/>
+		<string id="50331674" text1="Scheduler main controller state: %1" text2=""/>
+		<string id="50331675" text1="INIT" text2=""/>
+		<string id="50331676" text1="IDLE" text2=""/>
+		<string id="50331677" text1="RUN" text2=""/>
+		<string id="50331678" text1="ERROR" text2=""/>
+		<string id="50331679" text1="unexpected state" text2=""/>
+		<string id="50331680" text1="Scheduler receive action command from GUI: %1" text2=""/>
+		<string id="50331681" text1="Current program step state: %1" text2=""/>
+		<string id="50331682" text1="Start program %1" text2=""/>
+		<string id="50331683" text1="Program name %1 current step %2 current reagent %3 left time %4s" text2=""/>
+		<string id="50331684" text1="Finish program %1" text2=""/>
+		<string id="50331685" text1="step initializing" text2=""/>
+		<string id="50331686" text1="heating level sensor 1" text2=""/>
+		<string id="50331687" text1="heating level sensor 2" text2=""/>
+		<string id="50331688" text1="moving to tube to fill" text2=""/>
+		<string id="50331689" text1="moving to tube to draing" text2=""/>
+		<string id="50331690" text1="filling" text2=""/>
+		<string id="50331691" text1="sealing" text2=""/>
+		<string id="50331692" text1="soaking" text2=""/>
+		<string id="50331693" text1="draining" text2=""/>
+		<string id="50331694" text1="ready to drain" text2=""/>
+		<string id="50331695" text1="finished" text2=""/>
+		<string id="50331696" text1="Error" text2=""/>
+		<string id="50331697" text1="pause" text2=""/>
+		<string id="50331698" text1="pause during drain" text2=""/>
+		<string id="50331699" text1="aborted" text2=""/>
+		<string id="50331700" text1="aborting" text2=""/>
+		<string id="50331701" text1="unknown" text2=""/>
+		<string id="50331702" text1="start selftest" text2=""/>
+		<string id="50331703" text1="checking temperature and pressure" text2=""/>
+		<string id="50331704" text1="checking bottle %1" text2=""/>
+		<string id="50331705" text1="bottle check result: %1" text2=""/>
+		<string id="50331706" text1="selftest finished" text2=""/>
+		<string id="50331707" text1="Ok" text2=""/>
+		<string id="50331708" text1="not full" text2=""/>
+		<string id="50331709" text1="blockage" text2=""/>
+		<string id="50331710" text1="empty" text2=""/>
+		<string id="50331711" text1="error" text2=""/>
+		<string id="50331712" text1="timeout" text2=""/>
+		<string id="50331713" text1="unexpected" text2=""/>
+		<string id="50331714" text1="start program" text2=""/>
+		<string id="50331715" text1="pause program" text2=""/>
+		<string id="50331716" text1="abort program" text2=""/>
+		<string id="50331717" text1="drain" text2=""/>
+		<string id="50331718" text1="Please call the service engineer for maintenance!" text2=""/>
+		<string id="50331719" text1="The Active carbon filter is overdue, please replace a new Active carbon filter!" text2=""/>
+		<string id="50331720" text1="Scheduler execute command %1" text2=""/>
+		<string id="50331721" text1="Scheduler execute command %1 result %2" text2=""/>
+		<string id="50331722" text1="SW Update Failed: File/Folder copy failed from %1 to %2" text2=""/>
+		<string id="50331723" text1="SW Update Failed: File/Folder %1 does not exists" text2=""/>
+		<string id="50331724" text1="SW Update Failed: Invalid Command line arguments:%1" text2=""/>
+		<string id="50331725" text1="SW Update Failed: Md5sum check failed:%1" text2=""/>
+		<string id="50331726" text1="SW Update Failed: CRC check failed" text2=""/>
+		<string id="50331727" text1="SW Update Failed: Slave %1 has HW version %2 which is not equal or higher compared to %3" text2=""/>
+		<string id="50331728" text1="SW Update Failed: No USB Device found" text2=""/>
+		<string id="50331729" text1="SW Update Failed: No Update Package found at %1" text2=""/>
+		<string id="50331730" text1="SW Update Failed: File/Folder creation failed for %1" text2=""/>
+		<string id="50331731" text1="SW Update Failed: Slave SW update failed" text2=""/>
+		<string id="50331732" text1="SW Update Failed: File/Folder deletion failed for %1" text2=""/>
+		<string id="50331733" text1="SW Update Failed: Missing slave name %1 in %2" text2=""/>
+		<string id="50331734" text1="SW Update: Copying the File/Folder from %1 to %2" text2=""/>
+		<string id="50331735" text1="SW Update: XML attribute %1 found in %2 but not in %3" text2=""/>
+		<string id="50331736" text1="SW Update: Mounting USB Device %1 to %2 passed" text2=""/>
+		<string id="50331737" text1="SW Update: Unzipping the update package %1 to %2" text2=""/>
+		<string id="50331738" text1="SW Update: CRC check passed" text2=""/>
+		<string id="50331739" text1="SW Update: Md5sum check passed" text2=""/>
+		<string id="50331740" text1="SW Update: Slave %1 has HW version %2 is equal or higher compared to %3" text2=""/>
+		<string id="50331741" text1="SW Update: Creating File/Folder %1" text2=""/>
+		<string id="50331742" text1="SW Update: Extracting package from %1" text2=""/>
+		<string id="50331743" text1="SW Update: Executing the script %1" text2=""/>
+		<string id="50331744" text1="SW Update: Rolling back the files in %1 from %2" text2=""/>
+		<string id="50331745" text1="SW Update: Parsing the XML file %1" text2=""/>
+		<string id="50331746" text1="SW Update Success" text2=""/>
+		<string id="50331747" text1="SW Update: Mounting USB Device %1 to %2 failed" text2=""/>
+		<string id="50331748" text1="SW Update: %1 file not found. Updating all SW binaries and firmwares" text2=""/>
+		<string id="50331749" text1="SW Update: %1 file corrupted. Updating all SW binaries and firmwares" text2=""/>
+		<string id="50331750" text1="SW Update: Failed %1 file corrupted." text2=""/>
+		<string id="50331751" text1="SW Update: Execution of the starter succeeded" text2=""/>
+		<string id="50331752" text1="SW Update: PTS execution is success" text2=""/>
+		<string id="50331753" text1="SW Update: PTS execution is failed" text2=""/>
+		<string id="50331754" text1="SW Update: Unmounted USB to %1" text2=""/>
+		<string id="50331755" text1="SW Update: %1 file not found" text2=""/>
+		<string id="50331756" text1="SW Update: %1 file updated" text2=""/>
+		<string id="50331757" text1="SW Update: %1 file missing entry of &apos;Software_Update_Status&apos;" text2=""/>
+		<string id="50331758" text1="SW Update failed" text2=""/>
+		<string id="50331759" text1="Import failed. Archive file is tampered" text2=""/>
+		<string id="50331760" text1="Import failed. SW versions are not matching to Import the files" text2=""/>
+		<string id="50331761" text1="Type of import is not valid" text2=""/>
+		<string id="50331762" text1="No USB devices found in the system to import files" text2=""/>
+		<string id="50331763" text1="No USB devices found in the system to export files" text2=""/>
 	</language>
 </strings>

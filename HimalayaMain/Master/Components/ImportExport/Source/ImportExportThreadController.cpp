@@ -67,10 +67,11 @@ const QString DIRECTORY_TRANSLATIONS        = "Translations"; ///< constant for 
 const QString DIRECTORY_LOGFILES            = "Logfiles"; ///< constant for the Logfiles directory name
 
 // constants for system directory paths
-const QString DIRECTORY_MNT                 = "/mnt"; ///< constant for the mnt directory
+//const QString DIRECTORY_MNT                 = "/mnt"; ///< constant for the mnt directory
 const QString DIRECTORY_DEV                 = "/dev"; ///< constant for the dev directory
 const QString DIRECTORY_SH                  = "/bin/sh"; ///< constant for the shell directory
 const QString DIRECTORY_SD                  = "sd"; ///< constant for the sd directory
+const QString DEVICE_FILE_SD                = "/dev/mmpblkpk0"; ///< constant for sd card device file name
 
 // constants for the file type
 const QString FILETYPE_LPKG                 = "*.lpkg"; ///< constant for the lpkg file type
@@ -428,7 +429,7 @@ bool ImportExportThreadController::DoPretasks() {
             m_TargetFileName = TargetFileName;
             mp_ExportConfiguration->SetTargetFileName(TargetFileName);
 
-            QString ExportDirPath = Global::SystemPaths::Instance().GetTempPath() + QDir::separator() + DIRECTORY_EXPORT;
+//            QString ExportDirPath = Global::SystemPaths::Instance().GetTempPath() + QDir::separator() + DIRECTORY_EXPORT;
 
             // create RMS file
 /*
@@ -849,6 +850,7 @@ bool ImportExportThreadController::CheckTheExistenceAndCopyFile(QString TargetFi
 
     if (!QFile::copy(SourceFileName, TargetFileName)) {
         qDebug() << "Unable to copy the files";
+        Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_NO_ENOUGH_SPACE_ON_SD_CARD, false);
         return false;
     }
     return true;

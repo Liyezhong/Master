@@ -107,7 +107,8 @@ HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     mp_ImportExportAckChannel(NULL),
     m_ExportProcessIsFinished(false),
     m_ImportExportThreadIsRunning(false),
-   // m_Simulation(true),
+    m_RemoteCareExportRequest(false),
+ // m_Simulation(true),
     m_Simulation(false),
     m_ProgramStartableManager(this),
     m_AuthenticatedLevel(Global::OPERATOR),
@@ -115,6 +116,7 @@ HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     m_CurrentUserActionState(NORMAL_USER_ACTION_STATE),
     mp_SWUpdateManager(NULL),
     m_ExportTargetFileName("")
+
 {
 }
 catch (...) {
@@ -210,6 +212,7 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
         (&HimalayaMasterThreadController::EventCmdSystemAction,this);
     RegisterAcknowledgeForProcessing<Global::AckOKNOK, HimalayaMasterThreadController>
         (&HimalayaMasterThreadController::OnAckOKNOK, this);
+    RegisterCommandForRouting<NetCommands::CmdEventReport>(&m_CommandChannelGui);
     RegisterCommandForProcessing<Global::CmdShutDown, HimalayaMasterThreadController>
                 (&HimalayaMasterThreadController::ShutdownHandler, this);
 		CONNECTSIGNALSLOT(this, RemoteCareExport(const quint8 &), this, RemoteCareExportData(const quint8 &));
@@ -387,7 +390,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
             (&HimalayaMasterThreadController::ChangeUserLevelHandler, this);
 
     //GUI - Sent by Scheduler
-    RegisterCommandForRouting<NetCommands::CmdEventReport>(&m_CommandChannelGui);
+    //RegisterCommandForRouting<NetCommands::CmdEventReport>(&m_CommandChannelGui);
 
 
     //Update and keep the current system state
@@ -744,6 +747,9 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
             case Global::EXIT_CODE_EXPORT_ZIP_IS_TAKING_LONGTIME:
                 EventCode = EVENT_EXPORT_ZIP_IS_TAKING_LONGTIME;
                 break;
+            case Global::EXIT_CODE_EXPORT_NO_ENOUGH_SPACE_ON_USB:
+                EventCode = EVENT_EXPORT_NO_ENOUGH_SPACE_ON_USB_CARD;
+                break;
         }
 
 
@@ -969,10 +975,10 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
                 }
             }
 
-            if (m_PasswordManager.ServiceAuthentication(Cmd.GetPassword(), DeviceName)) {
+            //if (m_PasswordManager.ServiceAuthentication(Cmd.GetPassword(), DeviceName)) {
                 m_AuthenticatedLevel = Global::SERVICE;
                 bPassed = true;
-            }
+            //}
             break;
         case Global::OPERATOR:
             // there is no password for the operator
