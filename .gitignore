@@ -1,0 +1,60 @@
+#in repository we don't need to have:
+# Compiled object files
+*.o
+*.out
+
+# Generated MOC, resource and UI files
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+Makefile*
+*.moc
+
+# Qt User Project files
+*.pro.user
+
+# Debug and Release directories (created under Windows, not Linux)
+# and the shadow build directories
+Debug/
+Release/
+*build-desktop-Qt*
+
+# Ignore lib_* and bin_*
+lib*/
+bin_dbg/
+bin_rel/
+obj_*/
+
+# Ignore log files
+*.log
+
+# Backup files from editor
+*~
+
+# Backup from Keil
+*.bak
+*.dep
+*.uvgui.*
+*.map
+
+# Output of the coverage analysis
+gcov.info
+test.info
+/Gui/Components/Application/Resource/Large/User_Status_Icon_Button
+
+# Eclipse
+.cproject
+.project
+
+# ExternalPackages
+*.a
+AeDemo*
+
+# Generated header files
+ProtoTest/Include/Revision.h
+
+# Doxygen
+*/Documentation/Doxygen/output
+
+# Subprojects
+RemoteCareAgent
