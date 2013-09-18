@@ -200,6 +200,7 @@ void CDashboardWidget::RetranslateUI()
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter cassette number:", 0, QApplication::UnicodeUTF8);
     m_strNotFoundStation = QApplication::translate("Dashboard::CDashboardWidget", "Program step \"%1\" of \"%2\" can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.", 0, QApplication::UnicodeUTF8);
     m_strCheckEmptyStation = QApplication::translate("Dashboard::CDashboardWidget", "The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed.", 0, QApplication::UnicodeUTF8);
+    m_strCheckSafeReagent = QApplication::translate("Dashboard::CDashboardWidget", "No safe reagent for Program step \"%1\" of \"%2\" in case of error happen.Would you like to continue?", 0, QApplication::UnicodeUTF8);
 
 }
 
@@ -862,6 +863,23 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLock
 
 void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd)
 {
+    //Check safe reagent
+    int iWhichStepHasNoSafeReagent = cmd.WhichStepHasNoSafeReagent();
+    if (iWhichStepHasNoSafeReagent  != -1)
+    {
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(m_strWarning);
+        QString strTemp = m_strCheckSafeReagent.arg(QString::number(iWhichStepHasNoSafeReagent +1)).arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+        mp_MessageDlg->SetText(strTemp);
+        mp_MessageDlg->SetButtonText(1, m_strYes);
+        mp_MessageDlg->SetButtonText(3, m_strNo);
+        mp_MessageDlg->HideCenterButton();
+        if (!mp_MessageDlg->exec())
+        {
+            return;
+        }
+    }
+
     //get the proposed program end DateTime
     bool bCanotRun = true;
     int asapEndTime = GetASAPTime(cmd.TimeProposed(),

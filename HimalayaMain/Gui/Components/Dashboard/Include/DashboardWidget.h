@@ -92,6 +92,7 @@ private:
     QString m_strResetEndTime, m_strInputCassetteBoxTitle;
     QString m_strNotFoundStation;
     QString m_strCheckEmptyStation;
+    QString m_strCheckSafeReagent;
     DataManager::CHimalayaUserSettings* m_pUserSetting;
     Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
 

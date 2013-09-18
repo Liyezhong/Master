@@ -197,7 +197,8 @@ typedef struct
          RVPosition_t GetRVTubePositionByStationID(const QString stationID);
          RVPosition_t GetRVSealPositionByStationID(const QString stationID);
          bool IsLastStep(int currentStepIndex,const QString& currentProgramID);
-
+         bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
+         int WhichStepHasNoSafeReagent(const QString& ProgramID);
 signals:
          void signalProgramStart(const QString& ProgramID);
          void signalProgramPause();

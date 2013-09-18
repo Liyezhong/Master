@@ -108,14 +108,15 @@ HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     m_ExportProcessIsFinished(false),
     m_ImportExportThreadIsRunning(false),
     m_RemoteCareExportRequest(false),
-	m_CurrentUserActionState(NORMAL_USER_ACTION_STATE),
-    mp_SWUpdateManager(NULL),
-    m_ExportTargetFileName(""),
-   // m_Simulation(true),
+ // m_Simulation(true),
     m_Simulation(false),
     m_ProgramStartableManager(this),
     m_AuthenticatedLevel(Global::OPERATOR),
-    m_ControllerCreationFlag(false)
+    m_ControllerCreationFlag(false),
+    m_CurrentUserActionState(NORMAL_USER_ACTION_STATE),
+    mp_SWUpdateManager(NULL),
+    m_ExportTargetFileName("")
+
 {
 }
 catch (...) {
