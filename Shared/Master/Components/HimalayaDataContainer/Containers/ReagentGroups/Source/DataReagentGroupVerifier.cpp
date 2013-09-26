@@ -17,9 +17,7 @@
  *
  */
 /****************************************************************************/
-#include <QDebug>
-#include <QFile>
-#include <QStringList>
+
 
 #include "Global/Include/EventObject.h"
 #include "HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupVerifier.h"

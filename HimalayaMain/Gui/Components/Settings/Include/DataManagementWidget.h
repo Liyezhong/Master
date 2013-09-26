@@ -63,11 +63,13 @@ private slots:
     void ServiceExportDialog();
     void SaveToUSBDialog();
     void ImportDialog();
+    void SWUpdate();
+    void RemoteSWUpdate();
 
 signals:
 
     void ExecSending(const QString, const QStringList &);
-
+    void EmitSWUpdate(bool);
 };
 
 } //end of namespace

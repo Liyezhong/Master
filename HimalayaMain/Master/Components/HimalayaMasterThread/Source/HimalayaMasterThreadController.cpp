@@ -52,7 +52,6 @@
 #include <Global/Include/Commands/CmdEventUpdate.h>
 #include <Global/Include/Translator.h>
 #include <Global/Include/UITranslator.h>
-#include <QLocale>
 
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramListVerifier.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentListVerifier.h"
@@ -86,6 +85,9 @@
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 
+#include <SWUpdateManager/Include/SWUpdateManager.h>
+#include <DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImportFiles.h>
+#include <Global/Include/Commands/CmdShutDown.h>
 
 namespace Himalaya {
 const quint32 ERROR_CODE_HIMALAYA_CONSTRUCTION_FAILED = 1;
@@ -105,11 +107,16 @@ HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     mp_ImportExportAckChannel(NULL),
     m_ExportProcessIsFinished(false),
     m_ImportExportThreadIsRunning(false),
-   // m_Simulation(true),
+    m_RemoteCareExportRequest(false),
+ // m_Simulation(true),
     m_Simulation(false),
     m_ProgramStartableManager(this),
     m_AuthenticatedLevel(Global::OPERATOR),
-    m_ControllerCreationFlag(false)
+    m_ControllerCreationFlag(false),
+    m_CurrentUserActionState(NORMAL_USER_ACTION_STATE),
+    mp_SWUpdateManager(NULL),
+    m_ExportTargetFileName("")
+
 {
 }
 catch (...) {
@@ -163,8 +170,34 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
     //initialize the DataManagerBase pointer in MasterThread
     mp_DataManagerBase = mp_DataManager;
 
-    //! \todo Do this when a rack is inserted
-//    mp_DataManager->RefreshPossibleStationList();
+    mp_SWUpdateManager = new SWUpdate::SWUpdateManager(*this);
+    CONNECTSIGNALSLOT(mp_SWUpdateManager, RollBackComplete(), this, SWUpdateRollbackComplete());
+    CONNECTSIGNALSLOT(mp_SWUpdateManager, WaitDialog(bool, Global::WaitDialogText_t),
+                      this, ShowWaitDialog(bool,Global::WaitDialogText_t));
+    CONNECTSIGNALSLOT(mp_SWUpdateManager, SWUpdateStatus(bool),
+                      this, SWUpdateProgress(bool))
+
+//    if (m_RebootFileContent.value("PowerFailed") == "Yes") {
+//        //Now that we know power had failed previously , revert it back to No
+//        m_RebootFileContent.insert("PowerFailed", "No");
+//        Global::EventObject::Instance().RaiseEvent(EVENT_RECOVERED_FROM_POWER_FAIL);
+//    }
+      if (mp_DataManager && mp_DataManager->IsInitialized()) {
+
+          if (m_SWUpdateStatus == "Success" || m_UpdateRollBackFailed) {
+              m_UpdatingRollback = true;
+              mp_SWUpdateManager->UpdateSoftware("-updateRollback", "");
+          }
+
+          if (m_SWUpdateStatus == "Failure") {
+              Global::EventObject::Instance().RaiseEvent(EVENT_SW_UPDATE_FAILED);
+          }
+
+          if (m_SWUpdateCheckStatus == "Failure") {
+              //Clean any temporary folders
+              mp_SWUpdateManager->UpdateSoftware("-Clean", "");
+          }
+    }
 
     //Initialize program Startable manager
     m_ProgramStartableManager.Init();
@@ -179,21 +212,30 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
         (&HimalayaMasterThreadController::EventCmdSystemAction,this);
     RegisterAcknowledgeForProcessing<Global::AckOKNOK, HimalayaMasterThreadController>
         (&HimalayaMasterThreadController::OnAckOKNOK, this);
+    RegisterCommandForRouting<NetCommands::CmdEventReport>(&m_CommandChannelGui);
+    RegisterCommandForProcessing<Global::CmdShutDown, HimalayaMasterThreadController>
+                (&HimalayaMasterThreadController::ShutdownHandler, this);
+		CONNECTSIGNALSLOT(this, RemoteCareExport(const quint8 &), this, RemoteCareExportData(const quint8 &));
     }
     catch (...) {
         qDebug()<<"Create And Initialize Failed";
     }
-    EventHandler::CrisisEventHandler::Instance().readEventStateConf("../Settings/EventStateError.csv");
+    (void)EventHandler::CrisisEventHandler::Instance().readEventStateConf("../Settings/EventStateError.csv");
 }
 
 /****************************************************************************/
 void HimalayaMasterThreadController::CreateControllersAndThreads() {
-
-    // let base class create controllers and threads
+  // let base class create controllers and threads
     MasterThreadController::CreateControllersAndThreads();
-
     CHECKPTR(mp_DataManager);
     CHECKPTR(mp_DataManager->GetDeviceConfigurationInterface());
+
+    if (!mp_DataManager)
+        return;
+
+    if (!mp_DataManager->GetDeviceConfigurationInterface())
+        return;
+
     DataManager::CDeviceConfiguration *p_DeviceConfiguration = mp_DataManager->GetDeviceConfigurationInterface()->GetDeviceConfiguration();
     CHECKPTR(p_DeviceConfiguration);
 
@@ -212,14 +254,28 @@ void HimalayaMasterThreadController::CreateControllersAndThreads() {
 
 
 
-    connect(&EventHandler::StateHandler::Instance(), SIGNAL(stateChanged(QString)), this, SLOT(SendStateChange(QString)));
+    (void)connect(&EventHandler::StateHandler::Instance(), SIGNAL(stateChanged(QString)), this, SLOT(SendStateChange(QString)));
 
 
 }
 
-/****************************************************************************/
+/************************************************************************************************************************************/
 void HimalayaMasterThreadController::OnPowerFail() {
-    /// \todo implement
+    if(mp_DataManager) {
+        mp_DataManager->SaveDataOnShutdown();
+    }
+//    if (PowerFailStage == Global::POWER_FAIL_STAGE_2) {
+//        m_PowerFailed = true;
+//        if (EventHandler::StateHandler::Instance().getCurrentOperationState() != "SoftSwitchMonitorState") {
+//            m_RebootFileContent.insert("PowerFailed", "Yes");
+//            UpdateRebootFile();
+//        }
+//        if (mp_SWUpdateManager) {
+//            //Halt SW update
+//            mp_SWUpdateManager->PowerFailed();
+//        }
+//        QTimer::singleShot(2000, this, SLOT(ShutdownOnPowerFail()));
+//    }
 }
 
 /****************************************************************************/
@@ -241,12 +297,21 @@ void HimalayaMasterThreadController::OnGoReceived() {
 
 }
 
-/****************************************************************************/
+/************************************************************************************************************************************/
 void HimalayaMasterThreadController::InitiateShutdown() {
-    // shutdown device command processor
+
+    //save data to the file system
+    if(!m_PowerFailed && mp_DataManager) { //if power fails we would have already written the data
+        mp_DataManager->SaveDataOnShutdown();
+    }
+//    if (!Reboot) {
+//            m_RebootFileContent.insert("Main_Rebooted", "No");
+//            m_RebootFileContent.insert("Reboot_Count", "0");
+//            UpdateRebootFile();
+//    }
+    Shutdown();
 
 }
-
 /****************************************************************************/
 void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Global::CmdDateAndTime &Cmd,
                                                  Threads::CommandChannel &AckCommandChannel) {
@@ -273,7 +338,10 @@ void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Glo
     }
 
 }
-
+void HimalayaMasterThreadController::ShutdownOnPowerFail()
+{
+    InitiateShutdown();
+}
 /****************************************************************************/
 void HimalayaMasterThreadController::RegisterCommands() {
     //Dashboard
@@ -295,6 +363,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<NetCommands::CmdDayRunLogRequest>(&m_CommandChannelDataLogging);    
     RegisterCommandForRouting<NetCommands::CmdDayRunLogRequestFile>(&m_CommandChannelDataLogging);
     RegisterCommandForRouting<NetCommands::CmdDayRunLogReply>(&m_CommandChannelGui);
+    RegisterCommandForRouting<NetCommands::CmdExecutionStateChanged>(&m_CommandChannelGui);
     RegisterCommandForRouting<NetCommands::CmdDayRunLogReplyFile>(&m_CommandChannelGui);
 
     // -> device
@@ -304,8 +373,6 @@ void HimalayaMasterThreadController::RegisterCommands() {
 
     RegisterCommandForProcessing<NetCommands::CmdExportDayRunLogReply, HimalayaMasterThreadController>
             (&HimalayaMasterThreadController::ExportDayRunLogHandler, this);
-
-    RegisterCommandForRouting<NetCommands::CmdExecutionStateChanged>(&m_CommandChannelGui);
 
 
 
@@ -323,7 +390,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
             (&HimalayaMasterThreadController::ChangeUserLevelHandler, this);
 
     //GUI - Sent by Scheduler
-    RegisterCommandForRouting<NetCommands::CmdEventReport>(&m_CommandChannelGui);
+    //RegisterCommandForRouting<NetCommands::CmdEventReport>(&m_CommandChannelGui);
 
 
     //Update and keep the current system state
@@ -349,7 +416,7 @@ void HimalayaMasterThreadController::InitializeGUI() {
     RegisterCommandForProcessing<NetCommands::CmdGuiInit, HimalayaMasterThreadController>
             (&HimalayaMasterThreadController::OnCmdGuiInitHandler, this);
     AddAndConnectController(p_GuiController, &m_CommandChannelGui, static_cast<int>(HIMALAYA_GUI_THREAD));
-    StartSpecificThreadController(HIMALAYA_GUI_THREAD);
+    StartSpecificThreadController((int)HIMALAYA_GUI_THREAD);
 }
 
 /****************************************************************************/
@@ -374,7 +441,7 @@ void HimalayaMasterThreadController:: OnCmdGuiInitHandler(Global::tRefType Ref, 
 
         for(Threads::tControllerMap::iterator it = m_ControllerMap.begin(); it != m_ControllerMap.end(); ++it) {
             //Himalaya Gui is already started! so dont start again
-            if (it.key() != HIMALAYA_GUI_THREAD) {
+            if (it.key() != (int)HIMALAYA_GUI_THREAD) {
                 StartSpecificThreadController(it.key());
             }
         }
@@ -416,7 +483,12 @@ void HimalayaMasterThreadController:: OnCmdGuiInitHandler(Global::tRefType Ref, 
 
 /****************************************************************************/
 void HimalayaMasterThreadController::SendXML() {
-    SendCommand(Global::CommandShPtr_t(new NetCommands::CmdGuiInit(2000, false)), m_CommandChannelGui);
+    Q_ASSERT(mp_DataManager);
+
+    if (!mp_DataManager)
+        return;
+
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdGuiInit(2000, false)), m_CommandChannelGui);
 
     QByteArray *p_ByteArray = new QByteArray();
     p_ByteArray->clear();
@@ -430,7 +502,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CDashboardDataStationList *p_StationList = mp_DataManager->GetStationList();
     if (p_StationList) {
         XmlStream << *p_StationList;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::STATION, XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::STATION, XmlStream)), m_CommandChannelGui);
     }
 
     // send reagent group list in xml ---------------------------------
@@ -439,7 +511,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CDataReagentGroupList *p_ReagentGroupList = mp_DataManager->GetReagentGroupList() ;
     if (p_ReagentGroupList) {
         XmlStream << *p_ReagentGroupList;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENTGROUP , XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENTGROUP , XmlStream)), m_CommandChannelGui);
     }
 
     p_ByteArray->clear();
@@ -447,7 +519,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CDataReagentList *p_ReagentList = mp_DataManager->GetReagentList() ;
     if (p_ReagentList) {
         XmlStream << *p_ReagentList;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENT, XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENT, XmlStream)), m_CommandChannelGui);
     }
 
     p_ByteArray->clear();
@@ -456,7 +528,15 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CReagentGroupColorList *p_ReagentGroupColorList = mp_DataManager->GetReagentGroupColorList() ;
     if (p_ReagentGroupColorList) {
         XmlStream << *p_ReagentGroupColorList;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENTGROUPCOLOR , XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENTGROUPCOLOR , XmlStream)), m_CommandChannelGui);
+    }
+
+    p_ByteArray->clear();
+    (void)XmlStream.device()->reset();
+    DataManager::CUserSettingsInterface *p_SettingsInterface = mp_DataManager->GetUserSettingsInterface();
+    if (p_SettingsInterface) {
+        XmlStream << *p_SettingsInterface;
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::USER_SETTING, XmlStream)), m_CommandChannelGui);
     }
 
     p_ByteArray->clear();
@@ -466,17 +546,8 @@ void HimalayaMasterThreadController::SendXML() {
 
        if (p_ProgramList) {
            XmlStream << *p_ProgramList;
-           SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM , XmlStream)), m_CommandChannelGui);
+           (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::PROGRAM , XmlStream)), m_CommandChannelGui);
        }
-
-
-    p_ByteArray->clear();
-    (void)XmlStream.device()->reset();
-    DataManager::CUserSettingsInterface *p_SettingsInterface = mp_DataManager->GetUserSettingsInterface();
-    if (p_SettingsInterface) {
-        XmlStream << *p_SettingsInterface;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::USER_SETTING, XmlStream)), m_CommandChannelGui);
-    }
 
     if (p_SettingsInterface) {
         if (p_SettingsInterface->GetUserSettings(false) != NULL) {
@@ -503,7 +574,7 @@ void HimalayaMasterThreadController::SendXML() {
     DataManager::CDeviceConfigurationInterface *p_DeviceConfigurationInterface = mp_DataManager->GetDeviceConfigurationInterface();
     if (p_DeviceConfigurationInterface ) {
         XmlStream << *p_DeviceConfigurationInterface;
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::DEVICE_CONFIGURATION, XmlStream)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::DEVICE_CONFIGURATION, XmlStream)), m_CommandChannelGui);
     }
 
     QByteArray EventData;
@@ -512,8 +583,8 @@ void HimalayaMasterThreadController::SendXML() {
     Global::tTranslations TempTranslations;
     TempTranslations = Global::UITranslator::TranslatorInstance().GetTranslations();
     EventDataStream << TempTranslations;
-    EventDataStream.device()->reset();
-    SendCommand(Global::CommandShPtr_t(new NetCommands::CmdEventStrings(5000, EventDataStream)), m_CommandChannelGui);
+    (void)EventDataStream.device()->reset();
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdEventStrings(5000, EventDataStream)), m_CommandChannelGui);
 
     delete p_ByteArray;
 }
@@ -526,15 +597,19 @@ bool HimalayaMasterThreadController::IsCommandAllowed(const Global::CommandShPtr
 
 
 void HimalayaMasterThreadController::SendContainersTo(Threads::CommandChannel &rCommandChannel) {
+    Q_ASSERT(mp_DataManager);
+    if (!mp_DataManager)
+        return;
 
-    SendCommand(Global::CommandShPtr_t(new DataManager::CmdStationDataContainer(*mp_DataManager->GetStationList(),
+    (void)SendCommand(Global::CommandShPtr_t(new DataManager::CmdStationDataContainer(*mp_DataManager->GetStationList(),
                                                                                 *mp_DataManager->GetReagentList())), rCommandChannel);
 }
 
 
 /****************************************************************************/
-void HimalayaMasterThreadController::StartExportProcess() {
+void HimalayaMasterThreadController::StartExportProcess(QString FileName) {
     // create and connect gui controller
+    m_ExportTargetFileName = FileName;
     Export::ExportController *p_ExportController = new Export::ExportController(HEARTBEAT_SOURCE_EXPORT);
     // connect the process exit slot
 
@@ -546,17 +621,22 @@ void HimalayaMasterThreadController::StartExportProcess() {
     StartSpecificThreadController(static_cast<int>(EXPORT_CONTROLLER_THREAD));
 }
 
+void HimalayaMasterThreadController::OnInitStateCompleted()
+{
+
+}
+
 void HimalayaMasterThreadController::SendStateChange(QString state) {
     if (state == "BusyState")
     {
         // inform gui
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(3000, true)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(3000, true)), m_CommandChannelGui);
     }
 
     if (state == "IdleState")
     {
         // inform gui
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(3000, false)), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdProcessState(3000, false)), m_CommandChannelGui);
     }
 
     if (state == "ErrorState")
@@ -667,6 +747,9 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
             case Global::EXIT_CODE_EXPORT_ZIP_IS_TAKING_LONGTIME:
                 EventCode = EVENT_EXPORT_ZIP_IS_TAKING_LONGTIME;
                 break;
+            case Global::EXIT_CODE_EXPORT_NO_ENOUGH_SPACE_ON_USB:
+                EventCode = EVENT_EXPORT_NO_ENOUGH_SPACE_ON_USB_CARD;
+                break;
         }
 
 
@@ -681,7 +764,11 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
     }
 
     // send acknowledgement to GUI
-    SendAcknowledgeOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
+    Q_ASSERT(mp_ImportExportAckChannel);
+    if (mp_ImportExportAckChannel)
+    {
+        SendAcknowledgeOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
+    }
 
     m_ExportProcessIsFinished = true;
     // enable the timer slot to destroy the objects after one second
@@ -708,13 +795,22 @@ void HimalayaMasterThreadController::RemoveAndDestroyObjects() {
 
 
 /****************************************************************************/
-void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImport, const QString &TypeOfImport,
+void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImport, QStringList ImportTypeList,
+                                                                quint32 EventCode,
                                                                 bool UpdatedCurrentLanguage,
                                                                 bool NewLanguageAdded) {
+    Q_ASSERT(mp_DataManager);
+    if (!mp_DataManager)
+        return;
+
+    Q_ASSERT(mp_ImportExportAckChannel);
+    if (!mp_ImportExportAckChannel)
+        return;
+
     bool SendAckOK = false;
-    if (IsImport) {
+    if (IsImport && ImportTypeList.count() > 0) {
         // check the type of Impor
-        if ((TypeOfImport.compare("User") == 0) || (TypeOfImport.compare("Service") == 0) || (TypeOfImport.compare("Leica") == 0)) {
+        if ((ImportTypeList.contains("User") == 0) || (ImportTypeList.contains("Service") == 0) || (ImportTypeList.contains("Leica") == 0)) {
 
             // send configuration files to GUI
             SendConfigurationFile(mp_DataManager->GetUserSettingsInterface(), NetCommands::USER_SETTING);
@@ -728,7 +824,7 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
             // send ack OK
             SendAckOK = true;
         }
-        else if(TypeOfImport == "Language") {
+        else if(ImportTypeList.contains("Language")) {
             // new langauge is added
             if (NewLanguageAdded) {
                 if (UpdateSupportedGUILanguages()) {
@@ -761,6 +857,7 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
             SendAckOK = true;
         }        
     }
+
     // send ack to the channel
     if (SendAckOK) {
         // send ack is OK
@@ -768,6 +865,9 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
     }
     else {        
         // send ack is NOK
+        if (EventCode != 0) {
+            Global::EventObject::Instance().RaiseEvent(EventCode, true);
+        }
         SendAcknowledgeNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
     }
     // clear the thread
@@ -778,6 +878,9 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
 
 /****************************************************************************/
 bool HimalayaMasterThreadController::UpdateSupportedGUILanguages() {
+    Q_ASSERT(mp_DataManager);
+    if (!mp_DataManager)
+        return false;
 
     QDir TheDir(Global::SystemPaths::Instance().GetTranslationsPath());
     QStringList FileNames = TheDir.entryList(QStringList("Himalaya_*.qm"));
@@ -792,7 +895,7 @@ bool HimalayaMasterThreadController::UpdateSupportedGUILanguages() {
             QString Locale;
             Locale = FileNames[i];                  // "Himalaya_de.qm"
             Locale.truncate(Locale.lastIndexOf('.'));   // "Himalaya_de"
-            Locale.remove(0, Locale.indexOf('_') + 1);   // "de"
+            (void)Locale.remove(0, Locale.indexOf('_') + 1);   // "de"
             LanguageList << QLocale::languageToString(QLocale(Locale).language());
         }
         p_DeviceConfiguration->SetLanguageList(LanguageList);
@@ -820,7 +923,7 @@ bool HimalayaMasterThreadController::SendLanguageFileToGUI(QString FileName) {
             QDataStream LangDataStream(&File);
             LangDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
             // send the command to GUI
-            SendCommand(Global::CommandShPtr_t(new NetCommands::CmdLanguageFile(5000, LangDataStream)),
+            (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdLanguageFile(5000, LangDataStream)),
                         m_CommandChannelGui);
             // change the UI translator default language also
             // get locale extracted by filename
@@ -845,6 +948,10 @@ bool HimalayaMasterThreadController::SendLanguageFileToGUI(QString FileName) {
 void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref,
                                                             const NetCommands::CmdChangeUserLevel &Cmd,
                                                             Threads::CommandChannel &AckCommandChannel) {
+    Q_ASSERT(mp_DataManager);
+    if (!mp_DataManager)
+        return;
+
     // send ack to GUI
     SendAcknowledgeOK(Ref, AckCommandChannel);
     QString DeviceName;
@@ -868,16 +975,18 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
                 }
             }
 
-            if (m_PasswordManager.ServiceAuthentication(Cmd.GetPassword(), DeviceName)) {
+            //if (m_PasswordManager.ServiceAuthentication(Cmd.GetPassword(), DeviceName)) {
                 m_AuthenticatedLevel = Global::SERVICE;
                 bPassed = true;
-            }
+            //}
             break;
         case Global::OPERATOR:
             // there is no password for the operator
             m_AuthenticatedLevel = Global::OPERATOR;
             bPassed = true;
-            break;        
+            break;
+        default:
+            break;
     }
 
     // check whether user level is operator, if it is operator then authentication failed
@@ -886,14 +995,14 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
     }
 
     if (bPassed)
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevel(Cmd)),m_CommandChannelEventThread);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevel(Cmd)),m_CommandChannelEventThread);
 
     // send the authenticated command to GUI
-    SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevelReply(5000, m_AuthenticatedLevel)), m_CommandChannelGui);
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevelReply(5000, m_AuthenticatedLevel)), m_CommandChannelGui);
     // check the whether fallback password is validated for the successful login
     if (m_PasswordManager.GetFallbackPasswordFlag()) {
         // User entered the fallback password so ask him to change the password
-        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeAdminPasswordReply(5000, "New")), m_CommandChannelGui);
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeAdminPasswordReply(5000, "New")), m_CommandChannelGui);
     }
 }
 
@@ -947,7 +1056,7 @@ void HimalayaMasterThreadController::ChangeAdminPasswordHandler(Global::tRefType
         }
     }
 
-    SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeAdminPasswordReply(5000, CommandType)), m_CommandChannelGui);
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeAdminPasswordReply(5000, CommandType)), m_CommandChannelGui);
 
 }
 
@@ -972,7 +1081,26 @@ void HimalayaMasterThreadController::EventCmdSystemAction(Global::tRefType Ref, 
             }
 
 
+/************************************************************************************************************************************/
+void HimalayaMasterThreadController::ShutdownHandler(Global::tRefType Ref, const Global::CmdShutDown &Cmd, Threads::CommandChannel &AckCommandChannel)
+{
+    Q_UNUSED(Cmd)
+    SendAcknowledgeOK(Ref, AckCommandChannel);
+    //! \todo Call initiate Shutdown
+    InitiateShutdown();
+}
 
+void HimalayaMasterThreadController::Reboot()
+{
+    m_RebootFileContent.insert("Main_Rebooted", "Yes");
+    QString RebootCountStr = m_RebootFileContent.value("Reboot_Count");
+    qint32  RebootCount = RebootCountStr.toInt();
+    RebootCount++;
+    RebootCountStr = QString::number(RebootCount);
+    m_RebootFileContent.insert("Reboot_Count", RebootCountStr);
+    UpdateRebootFile();
+    InitiateShutdown();
+}
 /****************************************************************************/
 void HimalayaMasterThreadController::ExternalProcessConnectionHandler(Global::tRefType Ref, const NetCommands::CmdExternalProcessState &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
@@ -1015,7 +1143,7 @@ void HimalayaMasterThreadController::ExportDayRunLogHandler(Global::tRefType Ref
 
 /****************************************************************************/
 void HimalayaMasterThreadController::RequestDayRunLogFileNames() {
-    SendCommand(Global::CommandShPtr_t(new NetCommands::CmdExportDayRunLogRequest(m_AuthenticatedLevel)),
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdExportDayRunLogRequest(m_AuthenticatedLevel)),
                                             m_CommandChannelDataLogging);
 
 }
@@ -1034,7 +1162,129 @@ void HimalayaMasterThreadController::SetAlarmHandlerTimeout(quint16 timeout)
 
 void HimalayaMasterThreadController::OnFireAlarmLocalRemote(bool isLocalAlarm)
 {
-    SendCommand(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(isLocalAlarm)), m_CommandChannelSchedulerMain);
+    (void)SendCommand(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(isLocalAlarm)), m_CommandChannelSchedulerMain);
 }
 
+/************************************************************************************************************************************/
+void HimalayaMasterThreadController::SetUserActionState(const CurrentUserActionState_t UserActionState) {
+    m_CurrentUserActionState = UserActionState;
+//    quint32 UserActionEventID = 0;
+//    bool InformGPIOManager = false;
+//    bool UserActionCompleted = false;
+//    DeviceCommandProcessor::CmdDrawerSetBlockingState *p_CmdBlkDrawer = new DeviceCommandProcessor::CmdDrawerSetBlockingState(DeviceControl::DEVICE_INSTANCE_ID_LOADER);
+//    switch (m_CurrentUserActionState) {
+//    case Colorado::NORMAL_USER_ACTION_STATE:
+//        if (m_FreeDrawer) {
+//            p_CmdBlkDrawer->m_BlockingState = DeviceControl::BLOCKING_STATE_FREE;
+//            SendCommand(Global::CommandShPtr_t(p_CmdBlkDrawer), m_CommandChannelDeviceCommandProcessor);
+//            InformGPIOManager = true;
+//        }
+//        UserActionCompleted = true;
+//        m_FreeDrawer = false;
+//        break;
+//    case Colorado::EXPORT_STATE:
+//        p_CmdBlkDrawer->m_BlockingState = DeviceControl::BLOCKING_STATE_BLOCKED;
+//        SendCommand(Global::CommandShPtr_t(p_CmdBlkDrawer), m_CommandChannelDeviceCommandProcessor);
+//        InformGPIOManager = true;
+//        m_FreeDrawer = true;
+//        UserActionCompleted = false;
+//        UserActionEventID = EVENT_STRING_EXPORT;
+//        break;
+//    case Colorado::BLG_STATE:
+//        p_CmdBlkDrawer->m_BlockingState = DeviceControl::BLOCKING_STATE_BLOCKED;
+//        SendCommand(Global::CommandShPtr_t(p_CmdBlkDrawer), m_CommandChannelDeviceCommandProcessor);
+//        InformGPIOManager = true;
+//        m_FreeDrawer = true;
+//        UserActionCompleted = false;
+//        UserActionEventID = EVENT_STRING_BATHLAYOUT_GENERATION;
+//        break;
+//    case Colorado::IMPORT_STATE:
+//        p_CmdBlkDrawer->m_BlockingState = DeviceControl::BLOCKING_STATE_BLOCKED;
+//        SendCommand(Global::CommandShPtr_t(p_CmdBlkDrawer), m_CommandChannelDeviceCommandProcessor);
+//        InformGPIOManager = true;
+//        m_FreeDrawer = true;
+//        UserActionCompleted = false;
+//        UserActionEventID = EVENT_STRING_IMPORT;
+//        break;
+//    case Colorado::SW_UPDATE_STATE:
+//        p_CmdBlkDrawer->m_BlockingState = DeviceControl::BLOCKING_STATE_BLOCKED;
+//        SendCommand(Global::CommandShPtr_t(p_CmdBlkDrawer), m_CommandChannelDeviceCommandProcessor);
+//        InformGPIOManager = true;
+//        m_FreeDrawer = true;
+//        UserActionCompleted = false;
+//        UserActionEventID = EVENT_STRING_SW_UPDATE;
+//        break;
+//    case Colorado::UPDATE_LEICA_REAGENT_STATE:
+//        p_CmdBlkDrawer->m_BlockingState = DeviceControl::BLOCKING_STATE_BLOCKED;
+//        SendCommand(Global::CommandShPtr_t(p_CmdBlkDrawer), m_CommandChannelDeviceCommandProcessor);
+//        InformGPIOManager = true;
+//        m_FreeDrawer = true;
+//        UserActionCompleted = false;
+//        UserActionEventID = EVENT_STRING_LEICA_REAGENT_UPDATE;
+//        break;
+//    case Colorado::RACK_IN_DRAWER_STATE:
+//        break;
+//    default:
+//        break;
+//    }
+//    if (InformGPIOManager) {
+//        SendCommand(Global::CommandShPtr_t(new NetCommands::CmdUserAction(1000, UserActionEventID, UserActionCompleted)), m_CommandChannelGPIOManager);
+//    }
+}
+
+
+void HimalayaMasterThreadController::SendFileSelectionToGUI(QStringList FileList)
+{
+    // send ack is OK
+    SendAcknowledgeOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
+
+    SendCommand(Global::CommandShPtr_t(new MsgClasses::CmdDataImportFiles(3000, FileList)),
+                m_CommandChannelGui);
+
+}
+
+
+/************************************************************************************************************************************/
+void HimalayaMasterThreadController::RemoteCareExportData(const quint8 &NoOfLogFiles) {
+    m_RemoteCareExportRequest = true;
+    // remote care only requests for service export
+    // add all data in bytearray
+    QByteArray ByteArray;
+    ByteArray.append("Service_" + QString::number(NoOfLogFiles));
+    // create export command
+    MsgClasses::CmdDataExport *p_Command = new MsgClasses::CmdDataExport(20000, ByteArray);
+    // create dummy channel because "ImportExportDataFileHandler" function uses these arguments
+    Threads::CommandChannel DummyChannel(this, "Dummy", Global::EVENTSOURCE_NONE);
+    ImportExportDataFileHandler(0, *p_Command, DummyChannel);
+    // delete the created command
+    delete p_Command;
+}
+
+void HimalayaMasterThreadController::SWUpdateRollbackComplete() {
+
+    EventHandler::StateHandler::Instance().setInitStageProgress(3, true);
+
+    NetCommands::CmdExecutionStateChanged *p_Command = new NetCommands::CmdExecutionStateChanged(5000);
+    p_Command->m_WaitDialogFlag = false;
+    p_Command->m_WaitDialogText = Global::INITIALIZING_TEXT;
+    SendCommand(Global::CommandShPtr_t(p_Command), m_CommandChannelGui);
+}
+
+void HimalayaMasterThreadController::SWUpdateProgress(bool InProgress) {
+    if (InProgress) {
+        SetUserActionState(Himalaya::SW_UPDATE_STATE);
+    }
+    else if (GetCurrentIdleState() == Himalaya::SW_UPDATE_STATE) {
+        SetUserActionState(Himalaya::NORMAL_USER_ACTION_STATE);
+    }
+}
+
+/****************************************************************************/
+void HimalayaMasterThreadController::ShowWaitDialog(bool Display, Global::WaitDialogText_t WaitDialogText) {
+    NetCommands::CmdExecutionStateChanged *p_Command = new NetCommands::CmdExecutionStateChanged(5000);
+    p_Command->m_Stop = false;
+    p_Command->m_WaitDialogFlag = Display;
+    p_Command->m_WaitDialogText = WaitDialogText;
+    SendCommand(Global::CommandShPtr_t(p_Command),m_CommandChannelGui);
+}
 } // end namespace Himalaya

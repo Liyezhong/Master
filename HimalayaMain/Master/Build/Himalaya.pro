@@ -26,6 +26,7 @@ SUBDIRS  = \
            ../../../../Platform/Master/Components/PasswordManager/Build/PasswordManager.pro \
            ../../../../Platform/Master/Components/SoftSwitchManager/Build/SoftSwitchManager.pro \
            ../../../../Platform/Master/Components/ExportController/Build/ExportController.pro \
+            ../../../../Platform/Master/Components/SWUpdateManager/Build/SWUpdateManager.pro \
            ../../../Shared/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro \
            ../Components/HimalayaMasterThread/Build/HimalayaMasterThread.pro \
            ../Components/HimalayaGuiController/Build/HimalayaGuiController.pro \

@@ -34,10 +34,10 @@ QString CmdStationChangeReagent::NAME = "MsgClasses::CmdStationChangeReagent";
  * \param[in]   ReagentID   Unique reagent id.
  */
 /****************************************************************************/
-CmdStationChangeReagent::CmdStationChangeReagent(int TimeOut, const QString& StationID, const QString& ReagentID)
-    : Command(TimeOut)
-    , m_StationID(StationID)
-    , m_ReagentID(ReagentID)
+CmdStationChangeReagent::CmdStationChangeReagent(int timeOut, const QString& stationID, const QString& reagentID)
+    : Command(timeOut)
+    , m_StationID(stationID)
+    , m_ReagentID(reagentID)
 {
 }
 

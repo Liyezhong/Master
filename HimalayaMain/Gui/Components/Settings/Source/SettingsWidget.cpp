@@ -84,6 +84,7 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
             mp_Data, SendCmdPlayTestToneAlarm(quint8 , quint8 , bool ));
     CONNECTSIGNALSLOT(mp_Data, UserSettingsUpdated(), this, UserSettingsUpdated());
     CONNECTSIGNALSLOT(mp_Ui->pageDataManagement, ExecSending(const QString, const QStringList &), mp_Data, SendDataImportExport(const QString , const QStringList &));
+    CONNECTSIGNALSLOT(mp_Ui->pageDataManagement, EmitSWUpdate(bool), mp_Data, SendSWUpdate(bool));
 
     CONNECTSIGNALSLOT(mp_Ui->settingsStack, currentChanged(int), this, PanelSelected(int));
     CONNECTSIGNALSLOT(mp_Ui->pageEventView, SelectedLogFile(const QString &), mp_Data, SendSelectedDayRunLogFile(const QString &));

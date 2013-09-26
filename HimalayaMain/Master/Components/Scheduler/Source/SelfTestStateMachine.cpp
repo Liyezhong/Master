@@ -1,5 +1,5 @@
 #include "../Include/SelfTestStateMachine.h"
-#include <QDebug>
+
 namespace Scheduler
 {
 SelfTestStateMachine::SelfTestStateMachine()

@@ -19,18 +19,13 @@
  */
 /****************************************************************************/
 
-#include <QDebug>
-#include <QFile>
-#include <QReadLocker>
-#include <QWriteLocker>
-#include <QBuffer>
-#include <QXmlStreamWriter>
-
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/DataReagentList.h"
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
+
+//lint -sem(QHash::insert, custodial(1))
 
 namespace DataManager {
 
@@ -1082,7 +1077,7 @@ void CDataReagentList::UpdateOnLanguageChanged()
 {
    for (qint32 I = 0; I < m_ReagentList.count(); I++) {
        CReagent *p_Reagent = GetReagent(I);
-       if(!p_Reagent->GetReagentNameID().isEmpty()){
+       if(p_Reagent && !p_Reagent->GetReagentNameID().isEmpty()){
            bool ok = false;
            quint32 strid = p_Reagent->GetReagentNameID().toUInt(&ok);
            if(ok && strid > 0)

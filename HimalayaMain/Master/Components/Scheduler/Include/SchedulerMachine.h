@@ -1,7 +1,6 @@
 #ifndef SCHEDULERMACHINE_H
 #define SCHEDULERMACHINE_H
 
-#include <QObject>
 #include <QStateMachine>
 #include "SchedulerMainThreadController.h"
 

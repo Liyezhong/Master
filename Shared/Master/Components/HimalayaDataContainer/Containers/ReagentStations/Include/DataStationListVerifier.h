@@ -20,8 +20,6 @@
 #ifndef DATAMANAGER_DATASTATIONLISTVERIFIER_H
 #define DATAMANAGER_DATASTATIONLISTVERIFIER_H
 
-#include <QString>
-#include <QXmlStreamReader>
 
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"

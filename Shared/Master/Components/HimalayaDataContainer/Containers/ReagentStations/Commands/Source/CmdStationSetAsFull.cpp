@@ -27,10 +27,10 @@ namespace MsgClasses {
 QString CmdStationSetAsFull::NAME = "MsgClasses::CmdStationSetAsFull";
 
 
-CmdStationSetAsFull::CmdStationSetAsFull(int TimeOut,
-                                            const QString& StationID)
-    : Command(TimeOut)
-    , m_StationID(StationID)
+CmdStationSetAsFull::CmdStationSetAsFull(int timeOut,
+                                            const QString& stationID)
+    : Command(timeOut)
+    , m_StationID(stationID)
 {
 }
 

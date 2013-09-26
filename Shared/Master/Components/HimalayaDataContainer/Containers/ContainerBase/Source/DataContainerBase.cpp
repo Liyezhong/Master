@@ -19,11 +19,8 @@
 /****************************************************************************/
 
 #include "HimalayaDataContainer/Containers/ContainerBase/Include/DataContainerBase.h"
-
 #include <QFile>
 #include <QUuid>
-#include <QDebug>
-
 #include "Global/Include/GlobalDefines.h"
 #include "HimalayaDataContainer/Containers/ContainerBase/Include/VerifierInterface.h"
 
@@ -69,7 +66,12 @@ DataContainerBase::DataContainerBase(void)
 
 DataContainerBase::~DataContainerBase(void)
 {
-    delete m_Data;
+    try {
+        delete m_Data;
+    }
+    catch(...)
+    {}
+
 }
 
 /****************************************************************************/

@@ -81,7 +81,6 @@ private:
     bool m_ProgramStartReady;
     QString m_strProgram;
     QString m_strInformation;
-    QString m_strCleanNotRun;
     QString m_strOK, m_strNo;
     QString m_strNotStartRMSOFF;
     QString m_strNotStartExpiredReagent;
@@ -93,6 +92,7 @@ private:
     QString m_strResetEndTime, m_strInputCassetteBoxTitle;
     QString m_strNotFoundStation;
     QString m_strCheckEmptyStation;
+    QString m_strCheckSafeReagent;
     DataManager::CHimalayaUserSettings* m_pUserSetting;
     Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
 

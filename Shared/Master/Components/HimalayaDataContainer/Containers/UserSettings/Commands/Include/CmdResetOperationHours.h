@@ -32,7 +32,7 @@ class CmdResetOperationHours : public Global::Command
     friend QDataStream & operator >> (QDataStream &, CmdResetOperationHours &);
 
 public:
-    CmdResetOperationHours(int TimeOut, DataManager::ResetOperationHoursType_t ResetOperationHoursType);
+    CmdResetOperationHours(int timeOut, DataManager::ResetOperationHoursType_t resetOperationHoursType);
     CmdResetOperationHours(void);
 
     ~CmdResetOperationHours(void);

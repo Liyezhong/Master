@@ -31,11 +31,7 @@
 #include "ImportExport/Include/ImportExportThreadController.h"
 #include "Global/Include/Utils.h"
 #include "Global/Include/GlobalEventCodes.h"
-
-
-
-
-#include <QMetaType>
+#include <QProcess>
 
 namespace ImportExport {
 
@@ -52,7 +48,8 @@ const QString FILENAME_EVENTSTRING          = "HimalayaEventStrings_*.xml"; ///<
 const QString FILENAME_EXPORTCONFIG         = "ExportConfiguration.xml"; ///< const for the export configuration file name
 const QString FILENAME_RMSSTATUS            = "RMS_Status.csv"; ///< const for the RMS status file name
 const QString FILENAME_TEMPEXPORTCONFIG     = "TempExportConfiguration.xml"; ///< const for the temporary export configuration file name
-const QString FILENAME_HIMALAYAEVENTLOG     = "*.log"; ///< const for the himalaya event log file name
+const QString FILTER_EXTENSION_ANY          = "*.*"; ///< const for the any file names
+const QString FILTER_EXTENSION_LOG          = "*.log"; ///< const for the any file names
 const QString FILENAME_DAILYRUNLOG          = "DailyRun*.log"; ///< const for the dialy run log file name
 const QString FILENAME_COLEVENTSTRINGS      = "HimalayaEventStrings_"; ///< const for the himalaya event string file name
 
@@ -70,10 +67,11 @@ const QString DIRECTORY_TRANSLATIONS        = "Translations"; ///< constant for 
 const QString DIRECTORY_LOGFILES            = "Logfiles"; ///< constant for the Logfiles directory name
 
 // constants for system directory paths
-const QString DIRECTORY_MNT                 = "/mnt"; ///< constant for the mnt directory
+//const QString DIRECTORY_MNT                 = "/mnt"; ///< constant for the mnt directory
 const QString DIRECTORY_DEV                 = "/dev"; ///< constant for the dev directory
 const QString DIRECTORY_SH                  = "/bin/sh"; ///< constant for the shell directory
 const QString DIRECTORY_SD                  = "sd"; ///< constant for the sd directory
+const QString DEVICE_FILE_SD                = "/dev/mmpblkpk0"; ///< constant for sd card device file name
 
 // constants for the file type
 const QString FILETYPE_LPKG                 = "*.lpkg"; ///< constant for the lpkg file type
@@ -122,8 +120,6 @@ const QString CSV_STRING_COLHEADER          = "Station ID,Reagent,RMS,Remaining 
 // constants for commands
 const QString COMMAND_MKDIR                 = "mkdir "; ///< constant string for the command 'mkdir'
 const QString COMMAND_MOUNT                 = "mount "; ///< constant string for the command 'mount'
-const QString COMMAND_UNMOUNT               = "umount "; ///< constant string for the command 'umount'
-const QString COMMAND_LS                    = "ls "; ///< constant string for the command 'ls'
 const QString COMMAND_RM                    = "rm "; ///< constant string for the command 'rm'
 const QString COMMAND_RMDIR                 = "rmdir "; ///< constant string for the command 'rmdir'
 const QString COMMAND_ARGUMENT_C            = "-c"; ///< constant string for the command argument for shell '-c'
@@ -150,7 +146,6 @@ ImportExportThreadController::ImportExportThreadController(Global::gSourceType T
     mp_StationList(NULL),
     mp_ReagentList(NULL),
     mp_ExportConfiguration(NULL),
-    m_CommandValue(CommandValue),
     m_CommandName(SourceType),
     m_SerialNumber(STRING_UNDEFINED),
     m_DeviceName(STRING_UNDEFINED),
@@ -160,7 +155,22 @@ ImportExportThreadController::ImportExportThreadController(Global::gSourceType T
     m_CurrentLanguageUpdated(false),
     m_EventRaised(false),
     m_UserExport(false),
-    m_DayRunLogDirectoryName(""){
+    m_RemoteCareRequest(false),
+    m_DayRunLogDirectoryName(""),
+    m_EventCode(0),
+    m_EventLogFileName(""),
+    m_TargetFileName("") {
+
+    QString StringData(CommandValue);
+
+    m_CommandValue.clear();
+    // always the first one will be the command type
+    m_CommandValue = StringData.split("_").value(0);
+    // default value
+    m_NoOfLogFiles = 5;
+    if (StringData.split("_").count() > 1) {
+        m_NoOfLogFiles = StringData.split("_").value(1).toInt();
+    }
 }
 
 
@@ -221,30 +231,28 @@ void ImportExportThreadController::CleanupAndDestroyObjects() {
 /****************************************************************************/
 void ImportExportThreadController::OnGoReceived() {
 
-    QString TypeOfImport;
-    // store the current directory path otherwise if we change the
-    // directory path then export process cannot start it
-    QString CurrentDir = QDir::currentPath();
+    QString TypeOfImport;    
 
     if (!m_ThreadInitialized) {
         m_ThreadInitialized = true;
         CreateRequiredDirectories();
 
+
         if (!m_CommandName.contains(COMMAND_NAME_IMPORT)) {
             bool ErrorInThreadExecution = true;
+            // write the files in settings directory
+            (void)WriteFilesInSettingsFolder();
 
-            if (SearchAndMountTheDevice()) {
+            if (MountDevice()) {
                 // do pre-tasks before emitting the Export process signal
                 if (DoPretasks()) {
 
                     // for user export we need to know the daily run log files
                     if (!m_UserExport) {
                         // clear the objects
-                        DoCleanUpObjects();
-                        // set the application directory path
-                        (void)QDir::setCurrent(CurrentDir); //to avoid lint-534
+                        DoCleanUpObjects();                        
                         // emit the export process signal
-                        emit StartExportProcess();
+                        emit StartExportProcess(m_TargetFileName);
                     }
                     ErrorInThreadExecution = false;
                 }                
@@ -253,38 +261,67 @@ void ImportExportThreadController::OnGoReceived() {
             if (ErrorInThreadExecution) {
                 // if the event is not raised then display an error due to any reason
                 if (!m_EventRaised) {
-                    Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FAILED);
+                    Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FAILED, true);
+                    m_EventCode = EVENT_EXPORT_FAILED;
                 }
                 // emit the thread finished flag - with error code
-                emit ThreadFinished(false, "");
+                emit ThreadFinished(false, QStringList(), m_EventCode);
             }
         }
         else {
             bool IsImported = false;
+            bool IsSelectionRequested = false;
             // mount the USB device
-            if (SearchAndMountTheDevice(true)) {
-                // get the return code
-                IsImported = ImportArchiveFiles(TypeOfImport);
+            if (MountDevice(true)) {
+                // to store the files in the directory
+                QStringList DirFileNames;
+                QDir Dir(Global::DIRECTORY_MNT_STORAGE + QDir::separator() + DIRECTORY_IMPORT);
+                // get the lpkg files from the directory
+                DirFileNames = Dir.entryList(QStringList(FILETYPE_LPKG), QDir::Files, QDir::Name | QDir::Time);
+                switch(DirFileNames.count()) {
+                    case 0:
+                        m_EventRaised = true;
+                        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_NO_FILES_TO_IMPORT);
+                        m_EventCode = EVENT_IMPORT_NO_FILES_TO_IMPORT;
+                        IsImported = false;
+                        break;
+                    case 1:
+                        // get the return code
+                        StartImportingFiles(DirFileNames);
+                        break;
+                    default:
+                        IsSelectionRequested = true;
+                        // sort the files
+                        emit RequestFileSelectionToImport(DirFileNames);
+                        break;
+                }
+
             }
-            // if the event is not raised then display an error due to any reason
-//            if (!m_EventRaised) {
-//                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_FAILED);
-//            }
-            // emit the thread finished flag
-            emit ThreadFinished(IsImported, TypeOfImport, m_CurrentLanguageUpdated, m_NewLanguageAdded);
+            if (!IsSelectionRequested) {
+                // if the import is not successful then raise event
+                if (!IsImported) {
+                    // if the event is not raised then display an error due to any reason
+                    if (!m_EventRaised) {
+                        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_FAILED, true);
+                        m_EventCode = EVENT_IMPORT_FAILED;
+                    }
+                }
+                // emit the thread finished flag
+                emit ThreadFinished(IsImported, QStringList() << TypeOfImport, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
+            }
         }
     }
     else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORTEXPORT_THREADRUNNING);
-    }
-    // set the application directory path
-    (void)QDir::setCurrent(CurrentDir); //to avoid lint-534
+        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORTEXPORT_THREADRUNNING, true);
+        m_EventCode = EVENT_IMPORTEXPORT_THREADRUNNING;
+    }    
 }
 
 /****************************************************************************/
 void ImportExportThreadController::OnStopReceived() {
     // unmount the device
-    UnMountTheDevice();
+    UnMountDevice();
+
     QString DirectoryName;
     // this temporary directory will be used everybody so dont use the command line arguments
     if (!m_CommandName.contains(COMMAND_NAME_IMPORT)) {
@@ -299,13 +336,10 @@ void ImportExportThreadController::OnStopReceived() {
     // -c option for shell and remove directory
     Options << COMMAND_ARGUMENT_C << COMMAND_RM + COMMAND_ARGUMENT_R + STRING_SPACE
                + Global::SystemPaths::Instance().GetTempPath()
-               + QDir::separator() + DirectoryName + QDir::separator() + WILDCHAR_ASTRIK;
+               + QDir::separator() + DirectoryName;
     // execute the process with "/bin/sh"
-    // remove all the files from the temporary directory "rm -rf Temporary/Import/*" or "rm -rf Temporary/Export/*"
-    if (QProcess::execute(DIRECTORY_SH, Options) >= 0) {
-        (void)QProcess::execute(COMMAND_RMDIR + Global::SystemPaths::Instance().GetTempPath()
-                              + QDir::separator() + DirectoryName );  //to avoid lint-534
-    }
+    // remove all the files from the temporary directory "rm -rf Temporary/Import" or "rm -rf Temporary/Export"
+    (void)QProcess::execute(DIRECTORY_SH, Options);
     // this is to make sure all the xpresobjects are cleared.
     DoCleanUpObjects();
     // reset the thread initialization flag
@@ -360,8 +394,15 @@ bool ImportExportThreadController::DoPretasks() {
 
     if (mp_ExportConfiguration->Read(Global::SystemPaths::Instance().GetSettingsPath()
                                      + QDir::separator() + FILENAME_EXPORTCONFIG)) {
-        // set the target directory path "/mnt/USB"
-        mp_ExportConfiguration->SetTargetDir(DIRECTORY_MNT + QDir::separator() + DIRECTORY_USB);
+
+        if (!m_RemoteCareRequest) {
+            // set the target directory path "../mnt_storage"
+            mp_ExportConfiguration->SetTargetDir(Global::DIRECTORY_MNT_STORAGE);
+        }
+        else {
+            // set the target directory path "../RemoteCare"
+            mp_ExportConfiguration->SetTargetDir(Global::SystemPaths::Instance().GetRemoteCarePath());
+        }
 
         // create the Export directory in "Temporary" folder
         if (QProcess::execute(COMMAND_MKDIR + Global::SystemPaths::Instance().GetTempPath()
@@ -385,6 +426,7 @@ bool ImportExportThreadController::DoPretasks() {
             // concatenate other information to the target file name, dont add the time stamp here. This will be done by
             // export process
             TargetFileName += m_SerialNumber + DELIMITER_STRING_UNDERSCORE + STRING_PERCENTNUMBER;
+            m_TargetFileName = TargetFileName;
             mp_ExportConfiguration->SetTargetFileName(TargetFileName);
 
 //            QString ExportDirPath = Global::SystemPaths::Instance().GetTempPath() + QDir::separator() + DIRECTORY_EXPORT;
@@ -401,7 +443,9 @@ bool ImportExportThreadController::DoPretasks() {
             }
         }
         else {
-            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_DIRECTORY_CREATION_FAILED);
+            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_DIRECTORY_CREATION_FAILED, true);
+            m_EventCode = EVENT_EXPORT_DIRECTORY_CREATION_FAILED;
+            m_EventRaised = true;
             return false;
         }
     }
@@ -430,12 +474,16 @@ bool ImportExportThreadController::WriteTempExportConfigurationAndFiles() {
         // copy all the files in a temporary directory
         if (!CopyConfigurationFiles(mp_ExportConfiguration->GetServiceConfiguration().GetServiceConfigurationList(),
                                     m_TempExportConfiguration.GetSourceDir())) {
-            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FILES_NOT_COPIED);
+            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FILES_NOT_COPIED, true);
+            m_EventCode = EVENT_EXPORT_FILES_NOT_COPIED;
+            m_EventRaised = true;
             return false;
         }
         // write the Export configuration file
         if (!m_TempExportConfiguration.Write(m_TempExportConfiguration.GetSourceDir() + QDir::separator() + FILENAME_TEMPEXPORTCONFIG)) {
-            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION);
+            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION, true);
+            m_EventCode = EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION;
+            m_EventRaised = true;
             return false;
         }
     }    
@@ -452,8 +500,7 @@ void ImportExportThreadController::SetDayRunLogFilesDirectoryName(const QString 
 
 /****************************************************************************/
 void ImportExportThreadController::UpdateUserExportConfigurationAndWriteFile() {
-    bool ErrorInExecution = false;
-    QString CurrentDir = QDir::currentPath();
+    bool ErrorInExecution = false;    
     if (mp_ExportConfiguration != NULL) {
         if (m_TempExportConfiguration.GetUserConfigurationFlag()) {
             // copy all the files in a temporary directory
@@ -463,7 +510,9 @@ void ImportExportThreadController::UpdateUserExportConfigurationAndWriteFile() {
                 m_TempExportConfiguration.GetUserConfiguration().GetUserReportList().SetGroupFileName(m_DayRunLogDirectoryName);
                 if (!CopyConfigurationFiles(mp_ExportConfiguration->GetUserConfiguration().GetUserReportList(),
                                             m_TempExportConfiguration.GetSourceDir())) {
-                    Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FILES_NOT_COPIED);
+                    Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FILES_NOT_COPIED, true);
+                    m_EventCode = EVENT_EXPORT_FILES_NOT_COPIED;
+                    m_EventRaised = true;
                     ErrorInExecution = true;
                 }
             }
@@ -474,7 +523,9 @@ void ImportExportThreadController::UpdateUserExportConfigurationAndWriteFile() {
 
         // write the Export configuration file
         if (!m_TempExportConfiguration.Write(m_TempExportConfiguration.GetSourceDir() + QDir::separator() + FILENAME_TEMPEXPORTCONFIG)) {
-            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION);
+            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION, true);
+            m_EventCode = EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION;
+            m_EventRaised = true;
             ErrorInExecution = true;
         }
     }
@@ -486,19 +537,19 @@ void ImportExportThreadController::UpdateUserExportConfigurationAndWriteFile() {
         // clear the objects
         DoCleanUpObjects();
         // emit the export process signal
-        emit StartExportProcess();
+        emit StartExportProcess(m_TargetFileName);
     }
 
     if (ErrorInExecution) {
         // if the event is not raised then display an error due to any reason
         if (!m_EventRaised) {
-            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FAILED);
+            Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FAILED, true);
+            m_EventCode = EVENT_EXPORT_FAILED;
         }
         // emit the thread finished flag - with error code
-        emit ThreadFinished(false, "");
+        emit ThreadFinished(false, QStringList(), m_EventCode);
     }
-    // please change the directory to application path
-    (void) QDir::setCurrent(CurrentDir);
+
 }
 
 
@@ -700,6 +751,16 @@ bool ImportExportThreadController::CopyConfigurationFiles(const DataManager::CCo
                     return false;
                 }
 
+                // file name can contain folder name also, create folder name
+                if (FileName.contains(QDir::separator())) {
+                    QString DirectoryName(FileName.mid(0, FileName.indexOf(QDir::separator())));
+                    QDir Directory(TargetPath + QDir::separator() + DirectoryName);
+                    // create directory if not exists
+                    if (!Directory.exists()) {
+                        (void)Directory.mkdir(Directory.absolutePath());
+                    }
+                }
+
                 // copy the files and QDir::seperator uses generic symbol depending on the OS i.e. "/" for unix and for windows "\"
                 if (!CheckTheExistenceAndCopyFile(TargetPath + QDir::separator() + FileName, mp_ExportConfiguration->GetSourceDir() +
                                                  QDir::separator() + FileName)) {
@@ -719,22 +780,39 @@ bool ImportExportThreadController::CopyConfigurationFiles(const DataManager::CCo
         QString LogFiles;
         bool UserLogDirectory = false;
 
+
         if (Configuration.GetGroupFileName().compare(DIRECTORY_LOGFILES, Qt::CaseInsensitive) == 0) {
-            (void)LogDirectory.setCurrent(Global::SystemPaths::Instance().GetLogfilesPath()); //to avoid lint-534
-            LogFiles = FILENAME_HIMALAYAEVENTLOG;
+            (void)LogDirectory.setPath(Global::SystemPaths::Instance().GetLogfilesPath()); //to avoid lint-534
+            LogFiles = FILTER_EXTENSION_ANY;
+
         }
         else {
             UserLogDirectory = true;
-            (void)LogDirectory.setCurrent(Global::SystemPaths::Instance().GetLogfilesPath() + QDir::separator() + Configuration.GetGroupFileName()); //to avoid lint-534
+            (void)LogDirectory.setPath(Global::SystemPaths::Instance().GetLogfilesPath() + QDir::separator() +
+                                          Configuration.GetGroupFileName()); //to avoid lint-534
             LogFiles = FILENAME_DAILYRUNLOG;
         }
 
-        if (LogDirectory.exists()) {
-
+        if (LogDirectory.exists()) {            
             // create one more directory to save the LogFiles
             if (QProcess::execute(COMMAND_MKDIR + TargetPath + QDir::separator()
                                   + Configuration.GetGroupFileName()) >= 0) {
-                foreach (QString FileName, LogDirectory.entryList(QStringList() << LogFiles)) {
+
+                QStringList LogFilesList = LogDirectory.entryList(QStringList() << LogFiles, QDir::Files);
+                if (!UserLogDirectory) {
+                    if (m_EventLogFileName.compare("") != 0) {
+                        // for event log files we need to copy only the specified number of files
+                        QStringList EventFileList = LogDirectory.entryList
+                                (QStringList() << m_EventLogFileName + FILTER_EXTENSION_LOG,
+                                 QDir::Files, QDir::Name | QDir::Time);
+
+                        for (int Counter = m_NoOfLogFiles; Counter < EventFileList.count(); Counter++) {
+                            (void)LogFilesList.removeOne(EventFileList.value(Counter));
+                        }
+                    }
+                }
+
+                foreach (QString FileName, LogFilesList) {
 
                     // copy the files and QDir::seperator uses generic symbol depending on the OS i.e. "/" for unix and for windows "\"
                     if (!CheckTheExistenceAndCopyFile(TargetPath + QDir::separator() + Configuration.GetGroupFileName() +
@@ -746,19 +824,14 @@ bool ImportExportThreadController::CopyConfigurationFiles(const DataManager::CCo
             }
             // if it is a DailyRunLog folder then delete the folder after copying the data
             if (UserLogDirectory) {
-                if (LogDirectory.exists()) {
-                    QStringList Options;
-                    // -c option for shell and remove directory
-                    Options << COMMAND_ARGUMENT_C << COMMAND_RM + COMMAND_ARGUMENT_R + STRING_SPACE +
-                               COMMAND_RM + LogDirectory.absolutePath() +QDir::separator() + WILDCHAR_ASTRIK;
-                    // execute the process with "/bin/sh"
-                    // remove all the files from the "rm -rf DailyRun/*"
-                    if (QProcess::execute(DIRECTORY_SH, Options) >= 0) {
-                        (void)QProcess::execute(COMMAND_RMDIR + LogDirectory.absolutePath());  //to avoid lint-534
-                    }
-                }
+                QStringList Options;
+                // -c option for shell and remove directory
+                Options << COMMAND_ARGUMENT_C << COMMAND_RM + COMMAND_ARGUMENT_R + STRING_SPACE +
+                           LogDirectory.absolutePath();
+                // execute the process with "/bin/sh"
+                // remove all the files from the "rm -rf DailyRun"
+                (void)QProcess::execute(DIRECTORY_SH, Options);  //to avoid lint-534
             }
-
         }
         else {
             return false;
@@ -777,6 +850,7 @@ bool ImportExportThreadController::CheckTheExistenceAndCopyFile(QString TargetFi
 
     if (!QFile::copy(SourceFileName, TargetFileName)) {
         qDebug() << "Unable to copy the files";
+        Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_NO_ENOUGH_SPACE_ON_SD_CARD, false);
         return false;
     }
     return true;
@@ -821,79 +895,154 @@ void ImportExportThreadController::DoCleanUpObjects() {
 }
 
 /****************************************************************************/
-bool ImportExportThreadController::ImportArchiveFiles(const QString &ImportType) {
+void ImportExportThreadController::StartImportingFiles(const QStringList FileList) {
+
+    QStringList ImportTypeList;
+    QString TypeOfImport;
+    bool IsImport = true;
+
+    ImportTypeList.clear();
+
+    // multiple files can be imported. At max three files can be imported.
+    for (qint32 Counter = 0; Counter < FileList.count(); Counter++) {
+        if (!ImportArchiveFiles(TypeOfImport, FileList.value(Counter))) {
+            IsImport = false;
+            break;
+        }
+        ImportTypeList.append(TypeOfImport);
+    }
+
+    if (IsImport && ImportTypeList.count() > 0) {
+        // if everything goes well then update the files and take a backup of the files
+        if (!ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
+            // before updating take a back-up of the configuration files
+            QStringList FileList;
+            FileList << FILENAME_PROGRAMS << FILENAME_REAGENTS << FILENAME_STATIONS
+                     << FILENAME_USERSETTINGS;
+            // check for the files updation error
+            if (!CheckForFilesUpdateError()) {
+                IsImport = false;
+            }
+            // update the Rollback folder with latest files after the Import is successful
+            if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetRollbackPath()
+                                       + QDir::separator() + DIRECTORY_SETTINGS + QDir::separator(),
+                                       Global::SystemPaths::Instance().GetSettingsPath()
+                                       + QDir::separator())) {
+                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED, true);
+                m_EventCode = EVENT_IMPORT_UPDATE_ROLLBACK_FAILED;
+                m_EventRaised = true;
+                IsImport = false;
+            }
+        }
+        if (ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
+            // before updating take a back-up of the configuration files
+            QStringList FileList;
+            // store the file names in the list "Colorado_*.qm" , "ColoradoEventStrings_*.xml"
+            FileList << FILENAME_QM << FILENAME_EVENTSTRING;
+            // Update the rollback folder after the import is done
+            if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetRollbackPath()
+                                       + QDir::separator() + DIRECTORY_TRANSLATIONS + QDir::separator(),
+                                       Global::SystemPaths::Instance().GetTranslationsPath()
+                                       + QDir::separator())) {
+                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED, true);
+                m_EventCode = EVENT_IMPORT_UPDATE_ROLLBACK_FAILED;
+                m_EventRaised = true;
+                IsImport = false;
+            }
+        }
+    }
+
+    if (!IsImport  && ImportTypeList.count() > 0) {
+        if (!ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
+            (void)UpdateSettingsWithRollbackFolder();
+        }
+        if (ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE) && m_TranslationsFolderUpdatedFiles) {
+            QStringList FileList;
+            // store the file names in the list "Colorado_*.qm" , "ColoradoEventStrings_*.xml"
+            FileList << FILENAME_QM << FILENAME_EVENTSTRING;
+            m_CurrentLanguageUpdated = false;
+            m_NewLanguageAdded = false;
+
+            // copy all the files from rollback folder
+            if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetRollbackPath()
+                                       + QDir::separator() + DIRECTORY_TRANSLATIONS + QDir::separator(),
+                                       Global::SystemPaths::Instance().GetTranslationsPath()
+                                       + QDir::separator())) {
+                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED, true);
+                m_EventCode = EVENT_IMPORT_UPDATE_ROLLBACK_FAILED;
+                m_EventRaised = true;
+                IsImport = false;
+            }
+        }
+    }
+
+    // emit the thread finished flag
+    emit ThreadFinished(IsImport, ImportTypeList, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
+
+}
+
+/****************************************************************************/
+bool ImportExportThreadController::ImportArchiveFiles(const QString &ImportType, QString FileName) {
     // remove the const cast
     QString& TypeOfImport = const_cast<QString&>(ImportType);
     // this is used for Import command
     bool IsImported = true;
     // we use different keys for Leica and Viewer (Viewer with value 1)
     QByteArray KeyBytes(ImportExport::Constants::KEYFILESIZE, 0);
-    KeyBytes[2*ImportExport::Constants::HASH_SIZE-1] = 1;
+    KeyBytes[2 * ImportExport::Constants::HASH_SIZE - 1] = 1;
     // create the RAM file
     ImportExport::RAMFile RFile;
     // to store the file list
     QStringList FileList;
-    // to store the files in the directory
-    QStringList DirFileNames;
-    QDir Dir;
-    // set the current directory path   "/mnt/USB/Import"
-    (void)Dir.setCurrent(DIRECTORY_MNT + QDir::separator() + DIRECTORY_USB);// + QDir::separator() + DIRECTORY_IMPORT); //to avoid lint-534
-    // get the lpkg files from the directory
-    DirFileNames = Dir.entryList(QStringList(FILETYPE_LPKG),QDir::NoFilter,QDir::Time);
+    QDir Dir(Global::DIRECTORY_MNT_STORAGE + QDir::separator() + DIRECTORY_IMPORT);
 
-    if (DirFileNames.count() > 0) {
-        // check the file format - consider the first file
-        if (DirFileNames.value(0).split(DELIMITER_STRING_UNDERSCORE).count() > 4) {
-            // check whether device name matches with the file name
-            if (DirFileNames.value(0).split("_").value(0).compare(m_DeviceName, Qt::CaseInsensitive) == 0) {
-                // second value of the file name will be the type of Import
-                TypeOfImport = DirFileNames.value(0).split("_").value(1);
-                // every type of Import will have SW_version.xml by default
-                FileList << FILENAME_SWVERSION;
+    // check the file format - consider the first file
+    if (FileName.split(DELIMITER_STRING_UNDERSCORE).count() > 4) {
+        // check whether device name matches with the file name
+        if (FileName.split("_").value(0).compare(m_DeviceName, Qt::CaseInsensitive) == 0) {
+            // second value of the file name will be the type of Import
+            TypeOfImport = FileName.split("_").value(1);
+            // every type of Import will have SW_version.xml by default
+            FileList << FILENAME_SWVERSION;
 
-                IsImported = AddFilesForImportType(TypeOfImport, FileList);
+            IsImported = AddFilesForImportType(TypeOfImport, FileList);
 
-                if (IsImported) {
-                    try {
-                        // read the archive file - add try catch
-                        ReadArchive(qPrintable(Dir.absoluteFilePath(DirFileNames.value(0))), &RFile,
-                                    "Import", KeyBytes, FileList, Global::SystemPaths::Instance().GetTempPath()
-                                    + QDir::separator() + DIRECTORY_IMPORT + QDir::separator());
-                    }
-                    catch (...) {
-                        // error occured
-                    }
+            if (IsImported) {
+                try {
+                    // read the archive file - add try catch
+                    ReadArchive(qPrintable(Dir.absoluteFilePath(FileName)), &RFile,
+                                "Import", KeyBytes, FileList, Global::SystemPaths::Instance().GetTempPath()
+                                + QDir::separator() + DIRECTORY_IMPORT + QDir::separator());
                 }
-            }
-            else {
-                // device name is not matching
-                IsImported = false;
+                catch (...) {
+                    m_EventCode = EVENT_IMPORT_TAMPERED_ARCHIVE_FILE;
+                    IsImported = false;
+                }
             }
         }
         else {
-            Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ARCHIVE_FILE_FORMAT_NOT_PROPER);
+            // device name is not matching
+            m_EventCode = EVENT_IMPORT_DEVICE_NAME_NOT_MATCHING;
             IsImported = false;
-        }
-        // set the current directory path temporary, so that USB can be unmounted easily, otherwise
-        // it is difficult to unmount the device because the current directory path is "mnt/USB/Import"
-        (void)QDir::setCurrent(Global::SystemPaths::Instance().GetTempPath()); //to avoid lint-534
-        // Unmount the device
-        UnMountTheDevice();
-
-        if (IsImported) {
-            // check the type of Import, for the language file we cannot predict how many files can be present
-            // so we hard code the value at least two should be present one is SW_Version.xml and other one can
-            // be either QM or event string XML file
-            if (!WriteFilesAndImportData(TypeOfImport, FileList, RFile)) {
-                IsImported = false;
-            }
         }
     }
     else {
+        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ARCHIVE_FILE_FORMAT_NOT_PROPER, true);
+        m_EventCode = EVENT_IMPORT_ARCHIVE_FILE_FORMAT_NOT_PROPER;
         m_EventRaised = true;
-        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_NO_FILES_TO_IMPORT);
         IsImported = false;
     }
+    qDebug() << QDir::currentPath();
+
+    if (IsImported) {
+        // check the type of Import, for the language file we cannot predict how many files can be present
+        // so we hard code the value at least two should be present one is SW_Version.xml and other one can
+        // be either QM or event string XML file
+        if (!WriteFilesAndImportData(TypeOfImport, FileList, RFile)) {
+            IsImported = false;
+        }
+    }
+
     return IsImported;
 }
 
@@ -903,7 +1052,7 @@ bool ImportExportThreadController::AddFilesForImportType(const QString &TypeOfIm
     QStringList& FileList = const_cast<QStringList&>(ListOfFiles);
     // check the type of Import
     if (TypeOfImport.compare(TYPEOFIMPORT_SERVICE, Qt::CaseInsensitive) == 0 ||
-            TypeOfImport.compare(TYPEOFIMPORT_SERVICE, Qt::CaseInsensitive) == 0) {
+            TypeOfImport.compare(TYPEOFIMPORT_USER, Qt::CaseInsensitive) == 0) {
         // for the type of import "user" or "Service"
         FileList << FILENAME_REAGENTS << FILENAME_REAGENT_GROUPS << FILENAME_REAGENT_GROUP_COLORS
                  << FILENAME_PROGRAMS << FILENAME_STATIONS << FILENAME_USERSETTINGS;
@@ -917,6 +1066,7 @@ bool ImportExportThreadController::AddFilesForImportType(const QString &TypeOfIm
         FileList << FILENAME_QM << FILENAME_EVENTSTRING;
     }
     else {
+        m_EventCode = EVENT_IMPORT_TYPEOFIMPORTNOTVALID;
         return false;
         //ErrorString = "Type of Import is not valid";
     }
@@ -985,7 +1135,9 @@ bool ImportExportThreadController::WriteFilesAndImportData(const QString &TypeOf
         }
     }
     else {
-        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_REQUIRED_FILES_NOT_AVAILABLE);
+        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_REQUIRED_FILES_NOT_AVAILABLE, true);
+        m_EventCode = EVENT_IMPORT_REQUIRED_FILES_NOT_AVAILABLE;
+        m_EventRaised = true;
     }
     return false;
 }
@@ -1157,7 +1309,9 @@ bool ImportExportThreadController::UpdateSettingsWithRollbackFolder() {
     if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator(),
                                Global::SystemPaths::Instance().GetRollbackPath() + QDir::separator()
                                + DIRECTORY_SETTINGS + QDir::separator())) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ROLLBACK_FAILED);
+        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ROLLBACK_FAILED, true);
+        m_EventCode = EVENT_IMPORT_ROLLBACK_FAILED;
+        m_EventRaised = true;
         return false;
     }
 
@@ -1225,16 +1379,18 @@ bool ImportExportThreadController::CompareSoftwareVersions() {
                         (ImportSWVersionList.GetSWDetails(SettingsSWDetails.GetSWName()));
                 if (ImportSWDetails != NULL) {
                     if (ImportSWDetails->GetSWVersionNumber() != SettingsSWDetails.GetSWVersionNumber()) {
+                        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_SWVERSION_NOT_MATCHING, true);
+                        m_EventCode = EVENT_IMPORT_SWVERSION_NOT_MATCHING;
                         m_EventRaised = true;
-                        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_SWVERSION_NOT_MATCHING);
                         qDebug() << "SW version is not matching with the Imported file version number :: "
                                  << ImportSWDetails->GetSWVersionNumber();
                         return false;
                     }
                 }
                 else {
+                    Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_SWVERSION_NOT_MATCHING, true);
+                    m_EventCode = EVENT_IMPORT_SWVERSION_NOT_MATCHING;
                     m_EventRaised = true;
-                    Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_SWVERSION_NOT_MATCHING);
                     qDebug() << "SW name does not exist in the SW version list" << SettingsSWDetails.GetSWName();
                     return false;
                 }
@@ -1248,90 +1404,175 @@ bool ImportExportThreadController::CompareSoftwareVersions() {
 
 
 /****************************************************************************/
-bool ImportExportThreadController::SearchAndMountTheDevice(bool IsImport) {
-    Q_UNUSED(IsImport)
-#if defined(__arm__) || defined(__TARGET_ARCH_ARM) || defined(_M_ARM)
-    // create the QProcess
-    QProcess ProcToMountUSB;
-    // set the working directory "/dev"
-    (void)ProcToMountUSB.setWorkingDirectory(DIRECTORY_DEV); //to avoid lint-534
+bool ImportExportThreadController::ImportLeicaPrograms(const DataManager::CDataProgramList &ProgramList) {
 
-    QStringList Options;
-    // -c option for shell and ls is to search for the sda, sdb devices "ls sd*"
-    Options << COMMAND_ARGUMENT_C << COMMAND_LS + DIRECTORY_SD + WILDCHAR_ASTRIK;
-    // start the process with grep command  "/bin/sh"
-    ProcToMountUSB.start(DIRECTORY_SH, Options);
-    // check for the process finished
-    if (ProcToMountUSB.waitForFinished()) {
-        // store all the device names from the standard input
-        QString Devices(ProcToMountUSB.readAllStandardOutput());        
-        if (Devices.length() > 0) {            
-            if (Devices.split(STRING_NEWLINE).length() > 0) {
-                for (int DeviceCount = 0; DeviceCount < Devices.split(STRING_NEWLINE).length(); DeviceCount++) {
-                    // create USB directory using process "mkdir /mnt/USB"
-                    ProcToMountUSB.start(COMMAND_MKDIR + DIRECTORY_MNT + QDir::separator() + DIRECTORY_USB);
-                    if (ProcToMountUSB.waitForFinished()) {
-                        // mount one device at a time
-                        if (MountTheSpecificDevice(ProcToMountUSB, Devices.split(STRING_NEWLINE).value(DeviceCount), IsImport)) {
-                            return true;
-                        }
+    Q_UNUSED(ProgramList)
+#ifndef HIMALAYA_IMPORT_EXPORT
 
+    // remove the constant cast
+    DataManager::CDataProgramList& ImportProgramList = const_cast<DataManager::CDataProgramList&>(ProgramList);
+    // get the Leica Programs
+    DataManager::CDataProgramList* p_DataProgramList = m_DataManager.GetProgramList();
+
+    if (p_DataProgramList != NULL) {
+        // check for the program ID
+        for (int ProgramCount = 0; ProgramCount < ImportProgramList.GetNumberOfPrograms();
+             ProgramCount++) {
+            bool ExecuteLoop = false;
+            DataManager::CProgram ImportProgram;
+
+            if (ImportProgramList.GetProgram((unsigned int)ProgramCount, ImportProgram)) {
+                DataManager::CProgram* p_Program = const_cast<DataManager::CProgram*>
+                        (p_DataProgramList->GetProgram(ImportProgram.GetID()));
+
+                // if the program exist then update the program in the container
+                if (p_Program != NULL) {
+                    // check whether program is updated in the container or not
+                    if (p_DataProgramList->UpdateProgram(&ImportProgram)) {
+                        ExecuteLoop = true;
                     }
                 }
-            }            
+                else {
+
+                    // add new program in the list - but the program shall be inserted after the Leica programs
+                    if (p_DataProgramList->AddLeicaProgram(&ImportProgram)) {
+                        DataManager::CProgramSequenceList* p_ProgramSeqList = m_DataManager.GetProgramSequenceList();
+
+                        if (p_ProgramSeqList != NULL) {
+                            // create the program sequence step
+                            DataManager::CProgramSequence ProgramSequence;
+                            // set the program id
+                            ProgramSequence.SetID(ImportProgram.GetID());
+                            // check whether the Program is added to the list
+                            if (p_ProgramSeqList->AddLeicaProgramSequenceStep(&ProgramSequence)) {
+                                ExecuteLoop = true;
+                            }
+                        }                        
+                    }                    
+                }
+            }
+            // check whether loop is required to exit
+            if (!ExecuteLoop) {
+                return false;
+            }
         }
     }
-    m_EventRaised = true;
-    // log the event code
-    Global::EventObject::Instance().RaiseEvent(EVENT_IMPORTEXPORT_NO_USB);
-    return false;
-#else
-    return true;
+    else {
+        return false;
+    }
 #endif
+    return true;
 }
 
 /****************************************************************************/
-bool ImportExportThreadController::MountTheSpecificDevice(const QProcess &Process,
-                                                          QString DeviceName, bool IsImport) {
-    /// uncomment the first line of the code to test in VMWare
-    //return true;
-    QProcess& ProcToMount = const_cast<QProcess&>(Process);
-    // remove the const cast
-    // "mount /dev/sda /mnt/USB"
-    QString CommandName = COMMAND_MOUNT + DIRECTORY_DEV + QDir::separator()
-            + DeviceName + STRING_SPACE
-            + DIRECTORY_MNT + QDir::separator() + DIRECTORY_USB;
-    // merge the channels so that all the data on the stdout can be read easily
-    ProcToMount.setProcessChannelMode(QProcess::MergedChannels);
-    // mount the device
-    ProcToMount.start(CommandName);
-    if (ProcToMount.waitForFinished()) {
-        // save the data in temporay string
-        QString StdOutData(ProcToMount.readAllStandardOutput());
-        // if the mount is successful then standrad output will be empty string
-        if (StdOutData.length() == 0) {
-            // if the type is import then check for the Import folder in mounted device
-            if (IsImport) {
-                // directory name "/mnt/USB/Import"
-                QDir Directory(DIRECTORY_MNT + QDir::separator() + DIRECTORY_USB
-                               + QDir::separator() + DIRECTORY_IMPORT);
-                // if directory exist then go out
-                if (Directory.exists()) {
-                    return true;
-                }
-                else {
-                    // unmount the device - most of the times it unmounts the device  "umount /mnt/USB"
-                    ProcToMount.start(COMMAND_UNMOUNT + DIRECTORY_MNT
-                                         + QDir::separator() + DIRECTORY_USB);
+bool ImportExportThreadController::ImportLeicaUserReagents(const DataManager::CDataReagentList &ReagentList) {
+
+    Q_UNUSED(ReagentList)
+#ifndef HIMALAYA_IMPORT_EXPORT
+    // remove the constant cast
+    DataManager::CDataReagentList& ImportReagentList = const_cast<DataManager::CDataReagentList&>(ReagentList);
+    // get the Leica and User Reagents
+    DataManager::CDataReagentList* p_DataReagentList = m_DataManager.GetReagentList();
+
+    if (p_DataReagentList != NULL) {
+        // check for the Reagent ID
+        for (int ReagentCount = 0; ReagentCount < ImportReagentList.GetNumberOfReagents(); ReagentCount++) {
+            DataManager::CReagent ImportReagent;
+
+            if (ImportReagentList.GetReagent((unsigned int)ReagentCount, ImportReagent)) {
+                if (ImportReagent.GetReagentType() == LEICA_REAGENT || ImportReagent.GetReagentType() == USER_REAGENT) {
+                    // used for updating or adding the reagents
+                    bool DoFurther = true;
+
+                    if (ImportReagent.GetReagentType() == USER_REAGENT) {
+                        // check if the user Leica reagent ID value more than 99 then don't update the reagents
+                        if (ImportReagent.GetID().mid(1).toInt() > 100) {
+                            DoFurther = false;
+                        }
+                    }
+
+                    // do further steps if the above condition satisfies
+                    if (DoFurther) {
+                        DataManager::CReagent* p_Reagent = const_cast<DataManager::CReagent*>
+                                (p_DataReagentList->GetReagent(ImportReagent.GetID()));
+
+                        // if the Reagent exist then update the Reagent in the container
+                        if (p_Reagent != NULL) {
+                            // update the Max slides and max time only for the User Reagents
+                            if (ImportReagent.GetReagentType() == USER_REAGENT) {
+                                p_Reagent->SetMaxSlides(ImportReagent.GetMaxSlides());
+                                p_Reagent->SetMaxTime(ImportReagent.GetMaxTime());
+                            }
+                            p_Reagent->SetShortName(ImportReagent.GetShortName());
+                            p_Reagent->SetLongName(ImportReagent.GetLongName());
+                            // check whether Reagent is updated in the container or not
+                            if (!p_DataReagentList->UpdateReagent(p_Reagent)) {
+                                return false;
+
+                            }
+                        }
+                        else {
+                            // add new reagent in the list
+                            if (!p_DataReagentList->AddReagent(&ImportReagent)) {
+                                return false;
+                            }
+                        }
+                    }
                 }
             }
             else {
-                return true;
+                return false;
             }
         }
     }
+    else {
+        return false;
+    }
+#endif
+    return true;
+}
+
+
+/****************************************************************************/
+bool ImportExportThreadController::MountDevice(bool IsImport) {
+    QString FileName("");
+
+    if (IsImport) {
+        FileName = Global::DIRECTORY_MNT_STORAGE + QDir::separator() + DIRECTORY_IMPORT + QDir::separator() + "*.lpkg";
+    }
+
+    // check for the file existence in the mounted device.
+    qint32 MountedValue = Global::MountStorageDevice(FileName);
+
+    switch (MountedValue) {
+        default:
+            m_EventRaised = true;
+            if (m_CommandName.contains(COMMAND_NAME_IMPORT)) {
+                // log the event code
+                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORTEXPORT_IMPORT_NO_USB);
+                m_EventCode = EVENT_IMPORTEXPORT_IMPORT_NO_USB;
+            }
+            else {
+                // log the event code
+                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORTEXPORT_EXPORT_NO_USB);
+                m_EventCode = EVENT_IMPORTEXPORT_EXPORT_NO_USB;
+            }
+            break;
+
+        case 3:
+            if (IsImport) {
+                m_EventRaised = true;
+                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_NO_FILES_TO_IMPORT);
+                m_EventCode = EVENT_IMPORT_NO_FILES_TO_IMPORT;
+            }
+            break;
+
+        case 0:
+            return true;
+    }
     return false;
 }
+
 
 
 /****************************************************************************/
@@ -1342,7 +1583,7 @@ bool ImportExportThreadController::UpdateFolderWithFiles(QStringList FileList, Q
         // search in the file name  "*."
         if (FileName.contains(WILDCHAR_ASTRIK + QString(CHAR_DOT))) {
             QDir SourceDirectory(SourcePath);
-            foreach (QString WildCharFileName, SourceDirectory.entryList(QStringList() << FileName)) {
+            foreach (QString WildCharFileName, SourceDirectory.entryList(QStringList() << FileName, QDir::Files)) {
                 // remove the file then try to write it
                 (void)QFile::remove(TargetPath + WildCharFileName); //to avoid lint-534
                 // not able to take backup of the files
@@ -1429,7 +1670,9 @@ bool ImportExportThreadController::ImportLanguageFiles() {
                                    + QDir::separator() + DIRECTORY_TRANSLATIONS + QDir::separator(),
                                    Global::SystemPaths::Instance().GetTranslationsPath()
                                    + QDir::separator())) {
-            Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED);
+            Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED, true);
+            m_EventCode = EVENT_IMPORT_UPDATE_ROLLBACK_FAILED;
+            m_EventRaised = true;
             return false;
         }
 
@@ -1442,18 +1685,8 @@ bool ImportExportThreadController::ImportLanguageFiles() {
             CopyEventStringFiles(ImportDirectory, Rollback);
         }
         // check the rollback flag
-        if (!Rollback) {
-            // Update the rollback folder after the import is done
-            if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetRollbackPath()
-                                       + QDir::separator() + DIRECTORY_TRANSLATIONS + QDir::separator(),
-                                       Global::SystemPaths::Instance().GetTranslationsPath()
-                                       + QDir::separator())) {
-                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_UPDATE_ROLLBACK_FAILED);
-                return false;
-            }
-        }
-        else {
-            // if the rollback is going to do then reset the flags
+        if (Rollback) {
+            // if the rollback is going to happen then reset the flags
             m_NewLanguageAdded = false;
             m_CurrentLanguageUpdated = false;
             // delete all the files from translations directory
@@ -1465,10 +1698,14 @@ bool ImportExportThreadController::ImportLanguageFiles() {
             if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetTranslationsPath()
                                        + QDir::separator(), Global::SystemPaths::Instance().GetRollbackPath()
                                        + QDir::separator() + DIRECTORY_TRANSLATIONS + QDir::separator())) {
-                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ROLLBACK_FAILED);
+                Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_ROLLBACK_FAILED, true);
+                m_EventCode = EVENT_IMPORT_ROLLBACK_FAILED;
+                m_EventRaised = true;
                 return false;
             }
+            return false;
         }
+        m_TranslationsFolderUpdatedFiles = true;
         return true;
     }
     else {
@@ -1477,26 +1714,8 @@ bool ImportExportThreadController::ImportLanguageFiles() {
 }
 
 /****************************************************************************/
-void ImportExportThreadController::UnMountTheDevice() {
-    // store the current directory path otherwise if we change the
-    // directory path then export process cannot start it
-#if defined(__arm__) || defined(__TARGET_ARCH_ARM) || defined(_M_ARM)
-    QString CurrentDir = QDir::currentPath();
-
-    // check the USB directory exists or not  "/mnt/USB"
-    QDir USBDirectory(DIRECTORY_MNT + QDir::separator() + DIRECTORY_USB);
-
-    if (USBDirectory.exists()) {
-        // unmount the USB flash "umount /mnt/USB"
-        (void)QProcess::execute(COMMAND_UNMOUNT + DIRECTORY_MNT + QDir::separator() + DIRECTORY_USB); //to avoid lint-534
-        // remove directory "rmdir /mnt/USB"
-        (void)QProcess::execute(COMMAND_RMDIR + DIRECTORY_MNT + QDir::separator() + DIRECTORY_USB); //to avoid lint-534
-    }
-    // reset the path
-    (void)QDir::setCurrent(CurrentDir);
-#else
-    return;
-#endif
+void ImportExportThreadController::UnMountDevice() {
+    Global::UnMountStorageDevice();
 }
 
 /****************************************************************************/

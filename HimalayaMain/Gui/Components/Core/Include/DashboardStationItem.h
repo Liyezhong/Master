@@ -30,12 +30,6 @@
 
 #include <QGraphicsSceneMouseEvent>
 
-//!< Group 1 -> Includes all reagent stations and heated cuvette
-//!<            stations when heated cuvettes are not mounted.
-//!< Group 2 -> Includes all special stations like water station, dry station, loader,
-//!<            unloader and heated cuvette stations if mounted.
-//!< Group 3 -> for clipboard stations
-
 
 typedef enum {
     STATIONS_GROUP_RETORT,

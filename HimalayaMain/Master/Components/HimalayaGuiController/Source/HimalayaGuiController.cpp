@@ -54,6 +54,7 @@
 #include <NetCommands/Include/CmdDayRunLogRequestFile.h>
 #include <NetCommands/Include/CmdAcknEventReport.h>
 #include <NetCommands/Include/CmdGuiInit.h>
+#include <NetCommands/Include/CmdSWUpdate.h>
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdAlarmToneTest.h"
 
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationChangeReagent.h"
@@ -339,6 +340,9 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
 
     RegisterCommandForProcessing<MsgClasses::CmdQuitAppShutdownReply, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdQuitAppShutdownReply>,this);
+    //SW Update
+    RegisterExternalMessage<NetCommands::CmdSWUpdate, HimalayaGui::HimalayaGuiController>
+                (&HimalayaGuiController::ForwardCmdFromExternalProcess<NetCommands::CmdSWUpdate>, this);
 }
 
 /****************************************************************************/

@@ -30,7 +30,7 @@ class CmdStationSetAsFull : public Global::Command
     friend QDataStream & operator << (QDataStream &, const CmdStationSetAsFull &);
     friend QDataStream & operator >> (QDataStream &, CmdStationSetAsFull &);
 public:
-    CmdStationSetAsFull(int TimeOut, const QString& StationID);
+    CmdStationSetAsFull(int timeOut, const QString& stationID);
     CmdStationSetAsFull(void);
 
     ~CmdStationSetAsFull(void);

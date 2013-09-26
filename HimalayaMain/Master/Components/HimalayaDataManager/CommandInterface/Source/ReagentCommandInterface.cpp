@@ -19,7 +19,10 @@
 /****************************************************************************/
 #include "HimalayaDataManager/CommandInterface/Include/ReagentCommandInterface.h"
 #include "NetCommands/Include/CmdConfigurationFile.h"
-#include <QDebug>
+
+//lint -sem(DataManager::CReagentCommandInterface::AddReagent, custodial(1))
+//lint -sem(DataManager::CReagentCommandInterface::DeleteReagent, custodial(2))
+//lint -sem(DataManager::CReagentCommandInterface::UpdateReagent, custodial(3))
 
 namespace DataManager {
 /****************************************************************************/
@@ -50,12 +53,16 @@ CReagentCommandInterface::CReagentCommandInterface(CDataManager *p_DataManager, 
  */
 /****************************************************************************/
 void CReagentCommandInterface::RegisterCommands() {
-    mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdReagentUpdate, DataManager::CReagentCommandInterface>
-            (&CReagentCommandInterface::UpdateReagent, this);
-    mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdReagentAdd, DataManager::CReagentCommandInterface>
-            (&CReagentCommandInterface::AddReagent, this);
-    mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdReagentRemove, DataManager::CReagentCommandInterface>
-            (&CReagentCommandInterface::DeleteReagent, this);
+    Q_ASSERT(mp_MasterThreadController);
+    if (mp_MasterThreadController)
+    {
+        mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdReagentUpdate, DataManager::CReagentCommandInterface>
+                (&CReagentCommandInterface::UpdateReagent, this);
+        mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdReagentAdd, DataManager::CReagentCommandInterface>
+                (&CReagentCommandInterface::AddReagent, this);
+        mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdReagentRemove, DataManager::CReagentCommandInterface>
+                (&CReagentCommandInterface::DeleteReagent, this);
+    }
 }
 
 /****************************************************************************/
@@ -68,6 +75,10 @@ void CReagentCommandInterface::RegisterCommands() {
 /****************************************************************************/
 void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses::CmdReagentAdd &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
+    Q_ASSERT(mp_MasterThreadController);
+    if (!mp_MasterThreadController)
+        return;
+
     QByteArray ReagentData(const_cast<QByteArray &>(Cmd.GetReagentData()));
     QDataStream ReagentDataStream(&ReagentData, QIODevice::ReadWrite);
     ReagentDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
@@ -85,16 +96,16 @@ void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses
     }
     else {
         //BroadCast Command
-        static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->GetNextFreeReagentID(true);
+        (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->GetNextFreeReagentID(true);
         mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
         ReagentData.clear();
-        ReagentDataStream.device()->reset();
+        (void)ReagentDataStream.device()->reset();
         ReagentDataStream << Reagent;
         MsgClasses::CmdReagentAdd* p_Command = new MsgClasses::CmdReagentAdd(1000, ReagentDataStream);
         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
         qDebug()<<"\n\n\n Adding New Reagent Success";
     }
-    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
+    (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
 
 }
 
@@ -108,6 +119,10 @@ void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses
 /****************************************************************************/
 void CReagentCommandInterface::DeleteReagent(Global::tRefType Ref, const MsgClasses::CmdReagentRemove &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
+    Q_ASSERT(mp_MasterThreadController);
+    if (!mp_MasterThreadController)
+        return;
+
     bool Result = true;
     bool ResultUpdateStation = true;
     //Also the Station should be updated
@@ -123,12 +138,11 @@ void CReagentCommandInterface::DeleteReagent(Global::tRefType Ref, const MsgClas
     }
     else {
         mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-        MsgClasses::CmdReagentRemove* p_Command = new MsgClasses::CmdReagentRemove(5000, Cmd.GetReagentID());
-        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
+        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdReagentRemove(5000, Cmd.GetReagentID())));
         qDebug()<<"\n\n Delete Reagent Success";
     }
-    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
-    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->StationList->Write();
+    (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
+    (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->StationList->Write();
 }
 
 /****************************************************************************/
@@ -141,6 +155,10 @@ void CReagentCommandInterface::DeleteReagent(Global::tRefType Ref, const MsgClas
 /****************************************************************************/
 void CReagentCommandInterface::UpdateReagent(Global::tRefType Ref, const MsgClasses::CmdReagentUpdate &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
+    Q_ASSERT(mp_MasterThreadController);
+    if (!mp_MasterThreadController)
+        return;
+
     QByteArray ReagentData(const_cast<QByteArray &>(Cmd.GetReagentData()));
     QDataStream ReagentDataStream(&ReagentData, QIODevice::ReadWrite);
     ReagentDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
@@ -159,13 +177,12 @@ void CReagentCommandInterface::UpdateReagent(Global::tRefType Ref, const MsgClas
         //BroadCast Command
         mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
         ReagentData.clear();
-        ReagentDataStream.device()->reset();
+        (void)ReagentDataStream.device()->reset();
         ReagentDataStream << Reagent;
-        MsgClasses::CmdReagentUpdate* p_Command = new MsgClasses::CmdReagentUpdate(1000, ReagentDataStream);
-        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
+        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdReagentUpdate(1000, ReagentDataStream)));
         qDebug()<<"\n\n Update Reagent Success";
     }
-    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
+    (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
 }
 
 /****************************************************************************/
@@ -176,6 +193,10 @@ void CReagentCommandInterface::UpdateReagent(Global::tRefType Ref, const MsgClas
 /****************************************************************************/
 void CReagentCommandInterface::UpdateReagent(CReagent &Reagent)
 {
+    Q_ASSERT(mp_MasterThreadController);
+    if (!mp_MasterThreadController)
+        return;
+
     bool Result = true;
     Result = static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->UpdateReagent(&Reagent);
     if (!Result) {
@@ -208,14 +229,17 @@ void CReagentCommandInterface::UpdateReagent(CReagent &Reagent)
 /****************************************************************************/
 void CReagentCommandInterface::UpdateReagentContainer(CDataReagentList &ReagentList)
 {
+    Q_ASSERT(mp_MasterThreadController);
+    if (!mp_MasterThreadController)
+        return;
+
     try {
         *(static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList) = ReagentList;
         QByteArray BA;
         QDataStream ReagentDataStream(&BA, QIODevice::ReadWrite);
         ReagentDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
         ReagentDataStream << *(static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList);
-        NetCommands::CmdConfigurationFile *p_Command = new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENT, ReagentDataStream);
-        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
+        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new NetCommands::CmdConfigurationFile(5000, NetCommands::REAGENT, ReagentDataStream)));
     }
     catch (...) {
         qDebug()<<"\n\n\n Reagent List Container Update Failed";

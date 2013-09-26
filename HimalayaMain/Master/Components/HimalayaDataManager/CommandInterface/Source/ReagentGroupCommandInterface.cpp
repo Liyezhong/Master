@@ -18,9 +18,6 @@
  */
 /****************************************************************************/
 #include "HimalayaDataManager/CommandInterface/Include/ReagentGroupCommandInterface.h"
-
-#include <QDebug>
-
 #include "Threads/Include/MasterThreadController.h"
 #include "Threads/Include/CommandChannel.h"
 #include "HimalayaDataManager/Include/DataContainer.h"
@@ -53,6 +50,10 @@ CReagentGroupCommandInterface::CReagentGroupCommandInterface(CDataManager *p_Dat
 /****************************************************************************/
 void CReagentGroupCommandInterface::RegisterCommands(void)
 {
+    Q_ASSERT(mp_MasterThreadController);
+    if (!mp_MasterThreadController)
+        return;
+
     mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdReagentGroupUpdate, DataManager::CReagentGroupCommandInterface>
             (&CReagentGroupCommandInterface::UpdateReagentGroup, this);
 }
@@ -67,6 +68,10 @@ void CReagentGroupCommandInterface::UpdateReagentGroup(
         const MsgClasses::CmdReagentGroupUpdate &cmd,
         Threads::CommandChannel &ackCommandChannel)
 {
+    Q_ASSERT(mp_MasterThreadController);
+    if (!mp_MasterThreadController)
+        return;
+
     bool Result = true;
     CReagentGroup* pReagentGroup = static_cast<CDataContainer*>(mp_DataContainer)->ReagentGroupList->GetReagentGroup(cmd.GroupId());
     if (pReagentGroup)
@@ -83,14 +88,12 @@ void CReagentGroupCommandInterface::UpdateReagentGroup(
     {
         //BroadCast Command
         mp_MasterThreadController->SendAcknowledgeOK(ref, ackCommandChannel);
-        MsgClasses::CmdReagentGroupUpdate* p_Command =
-                new MsgClasses::CmdReagentGroupUpdate(1000, cmd.GroupId(), cmd.GroupColor());
         mp_MasterThreadController->BroadcastCommand(
-                    Global::CommandShPtr_t(p_Command));
+                    Global::CommandShPtr_t(new MsgClasses::CmdReagentGroupUpdate(1000, cmd.GroupId(), cmd.GroupColor())));
 
         qDebug()<<"\n\n Update Reagent Success";
     }
-    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentGroupList->Write();
+    (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentGroupList->Write();
 }
 
 

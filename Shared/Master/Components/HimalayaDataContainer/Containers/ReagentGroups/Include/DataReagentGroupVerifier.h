@@ -20,8 +20,6 @@
 #ifndef DATAMANAGER_DATAREAGENTGROUPLISTVERIFIER_H
 #define DATAMANAGER_DATAREAGENTGROUPLISTVERIFIER_H
 
-#include <QString>
-#include <QXmlStreamReader>
 
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"
 #include "HimalayaDataContainer/Containers/ReagentGroups/Include/DataReagentGroupList.h"

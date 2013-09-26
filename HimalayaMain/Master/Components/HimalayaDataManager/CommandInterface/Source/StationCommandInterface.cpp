@@ -43,6 +43,10 @@ CStationCommandInterface::CStationCommandInterface(CDataManager *p_DataManager, 
 /****************************************************************************/
 void CStationCommandInterface::RegisterCommands()
 {
+    Q_ASSERT(mp_MasterThreadController);
+    if (!mp_MasterThreadController)
+        return;
+
     mp_MasterThreadController->RegisterCommandForProcessing<MsgClasses::CmdStationChangeReagent, CStationCommandInterface>
             (&CStationCommandInterface::ChangeReagentInStation, this);
 
@@ -64,6 +68,10 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
                              const MsgClasses::CmdStationChangeReagent & cmd,
                              Threads::CommandChannel& AckCommandChannel)
 {
+    Q_ASSERT(mp_MasterThreadController);
+    if (!mp_MasterThreadController)
+        return;
+
     bool Result = true;
     CDashboardStation* pDashboardStation = static_cast<CDataContainer*>(mp_DataContainer)->StationList->GetDashboardStation(cmd.StationID());
     if (pDashboardStation)
@@ -84,17 +92,21 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
     else {
         //BroadCast Command
         mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-        MsgClasses::CmdStationChangeReagent* p_Command = new MsgClasses::CmdStationChangeReagent(1000, cmd.StationID(), cmd.ReagentID());
-        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
+        mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdStationChangeReagent(1000, cmd.StationID(), cmd.ReagentID())));
         qDebug()<<"\n\n Change reagent in station Success";
     }
-    static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
+
+    (void)static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
 }
 
  void CStationCommandInterface::ResetStationData(Global::tRefType Ref,
                        const MsgClasses::CmdStationResetData & cmd,
                        Threads::CommandChannel & AckCommandChannel)
  {
+     Q_ASSERT(mp_MasterThreadController);
+     if (!mp_MasterThreadController)
+         return;
+
      bool Result = true;
      CDashboardStation* pDashboardStation = static_cast<CDataContainer*>(mp_DataContainer)->StationList->GetDashboardStation(cmd.StationID());
      if (pDashboardStation)
@@ -111,17 +123,20 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      else {
          //BroadCast Command
          mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-         MsgClasses::CmdStationResetData* p_Command = new MsgClasses::CmdStationResetData(1000, cmd.StationID());
-         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
+         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdStationResetData(1000, cmd.StationID())));
          qDebug()<<"\n\n Reset station data Success";
      }
-     static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
+     (void)static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
  }
 
  void CStationCommandInterface::SetStationAsFull(Global::tRefType Ref,
                        const MsgClasses::CmdStationSetAsFull& cmd,
                        Threads::CommandChannel & AckCommandChannel)
  {
+     Q_ASSERT(mp_MasterThreadController);
+     if (!mp_MasterThreadController)
+         return;
+
      bool Result = true;
      CDashboardStation* pDashboardStation = static_cast<CDataContainer*>(mp_DataContainer)->StationList->GetDashboardStation(cmd.StationID());
      if (pDashboardStation)
@@ -141,17 +156,20 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      else {
          //BroadCast Command
          mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-         MsgClasses::CmdStationSetAsFull* p_Command = new MsgClasses::CmdStationSetAsFull(1000, cmd.StationID());
-         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
+         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdStationSetAsFull(1000, cmd.StationID())));
          qDebug()<<"\n\n SetStationAsFull Success";
      }
-     static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
+     (void)static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
  }
 
  void CStationCommandInterface::SetStationAsEmpty(Global::tRefType Ref,
                         const MsgClasses::CmdStationSetAsEmpty& Cmd,
                         Threads::CommandChannel& AckCommandChannel)
  {
+     Q_ASSERT(mp_MasterThreadController);
+     if (!mp_MasterThreadController)
+         return;
+
      bool Result = true;
      CDashboardStation* pDashboardStation = static_cast<CDataContainer*>(mp_DataContainer)->StationList->GetDashboardStation(Cmd.StationID());
      if (pDashboardStation)
@@ -168,11 +186,10 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
      else {
          //BroadCast Command
          mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-         MsgClasses::CmdStationSetAsEmpty* p_Command = new MsgClasses::CmdStationSetAsEmpty(1000, Cmd.StationID());
-         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
+         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdStationSetAsEmpty(1000, Cmd.StationID())));
          qDebug()<<"\n\n SetStationAsEmpty Success";
      }
-     static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
+     (void)static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
  }
 
 //Based on the RMS mode to send CmdUpdateStationReagentStatus
@@ -180,6 +197,10 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
                         const MsgClasses::CmdUpdateStationReagentStatus &Cmd,
                         Threads::CommandChannel& AckCommandChannel)
  {
+     Q_ASSERT(mp_MasterThreadController);
+     if (!mp_MasterThreadController)
+         return;
+
      const QStringList& Ids = Cmd.StationIDs();
      for (int i = 0; i < Ids.count(); i++)
      {
@@ -208,9 +229,8 @@ void CStationCommandInterface::ChangeReagentInStation(Global::tRefType Ref,
 
      //for update the qata in UI
      mp_MasterThreadController->SendAcknowledgeOK(Ref, AckCommandChannel);
-     MsgClasses::CmdUpdateStationReagentStatus* p_Command = new MsgClasses::CmdUpdateStationReagentStatus(1000, Cmd.StationIDs(),
-                                                                                                Cmd.CassetteCount());
-     mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
+     mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(new MsgClasses::CmdUpdateStationReagentStatus(1000, Cmd.StationIDs(),
+                                                                                                                      Cmd.CassetteCount())));
      static_cast<CDataContainer*>(mp_DataContainer)->StationList->Write();
  }
 }

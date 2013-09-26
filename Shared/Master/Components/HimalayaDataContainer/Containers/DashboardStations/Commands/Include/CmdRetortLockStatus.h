@@ -41,7 +41,7 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdRetortLockStatus(int Timeout, bool IsLocked);
+    CmdRetortLockStatus(int timeout, bool isLocked);
     ~CmdRetortLockStatus();
     virtual QString GetName() const;
     inline bool IsLocked() const {return m_Locked;}

@@ -31,7 +31,7 @@ class CmdReagentGroupUpdate : public Global::Command
     friend QDataStream & operator << (QDataStream &, const CmdReagentGroupUpdate &);
     friend QDataStream & operator >> (QDataStream &, CmdReagentGroupUpdate &);
 public:
-    CmdReagentGroupUpdate(int TimeOut, const QString& GroupId, const QString& color);
+    CmdReagentGroupUpdate(int timeOut, const QString& groupId, const QString& color);
     CmdReagentGroupUpdate(void);
 
     ~CmdReagentGroupUpdate(void);

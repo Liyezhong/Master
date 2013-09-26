@@ -1,7 +1,6 @@
 #ifndef SELFTESTSTATEMACHINE_H
 #define SELFTESTSTATEMACHINE_H
 
-#include <QObject>
 #include <QStateMachine>
 #include <QFinalState>
 

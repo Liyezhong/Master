@@ -31,7 +31,7 @@ class CmdStationSetAsEmpty : public Global::Command
     friend QDataStream & operator << (QDataStream &, const CmdStationSetAsEmpty &);
     friend QDataStream & operator >> (QDataStream &, CmdStationSetAsEmpty &);
 public:
-    CmdStationSetAsEmpty(int TimeOut, const QString& StationID);
+    CmdStationSetAsEmpty(int timeOut, const QString& stationID);
     CmdStationSetAsEmpty(void);
 
     ~CmdStationSetAsEmpty(void);

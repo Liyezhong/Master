@@ -78,7 +78,8 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_strImport("Import"),
     m_strImportData("Importing data ..."),
     m_strLogFile(tr("Log Files")),
-    m_strGettingDailyLog(tr("Getting Daily run Log file ..."))
+    m_strGettingDailyLog(tr("Getting Daily run Log file ...")),
+    mp_WaitDlgExecChanged(NULL)
 
 {
     if (m_NetworkObject.NetworkInit()) {
@@ -189,6 +190,7 @@ CDataConnector::~CDataConnector()
         delete mp_MessageDlg;
         delete mp_LanguageFile;
         delete m_pServiceProcess;
+        delete mp_WaitDlgExecChanged;
     }
     catch (...) {
         //To please lint warnings
@@ -672,6 +674,7 @@ void CDataConnector::ProgramRemoveHandler(Global::tRefType Ref,
     Result = ProgramList-> DeleteProgram(ProgramId);
     if (Result) {
         emit ProgramsUpdated();
+        emit ProgramsDeleted();
     }
     else {
         Result = false;
@@ -935,14 +938,22 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
 
     QDataStream DataStream(const_cast<QByteArray *>(&Command.GetFileContent()), QIODevice::ReadWrite);
     (void)DataStream.device()->reset();
-
+    bool hasRunCleaningProgram  = true;
+    QString strReagentIDOfLastStep("");
     switch (Command.GetFileType()) {
 
         case NetCommands::PROGRAM:
             DataStream >> *ProgramList;
             ProgramList->SetDataVerificationMode(false);
             emit ProgramsUpdated();
+            if (SettingsInterface && SettingsInterface->GetUserSettings())
+            {
+                strReagentIDOfLastStep = SettingsInterface->GetUserSettings()->GetReagentIdOfLastStep();
+                hasRunCleaningProgram = strReagentIDOfLastStep == "";
+                emit ProgramsInitialized(!hasRunCleaningProgram);
+            }
             break;
+
         case NetCommands::REAGENT:
             DataStream >> *ReagentList;
             ReagentList->SetDataVerificationMode(false);
@@ -992,7 +1003,7 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         (void)m_NetworkObject.SendCmdToMaster(Cmd, &CDataConnector::OnAckTwoPhase, this);
         QRect scr = mp_MainWindow->rect();
         mp_SplashWidget->move( scr.center() - mp_SplashWidget->rect().center());
-        mp_SplashWidget->exec();
+//        mp_SplashWidget->exec();
     }
     return;
 }
@@ -1146,7 +1157,19 @@ void CDataConnector::SendDataImportExport(const QString Name, const QStringList 
     mp_WaitDialog->show();
 
 }
-
+/****************************************************************************/
+/*!
+ *  \brief Send Software Update command to Main.
+ *
+ *  \iparam USBUpdate = True if SW update has to done using USB and
+ *                      False if SW update has to done using remote care.
+ */
+/****************************************************************************/
+void CDataConnector::SendSWUpdate(bool USBUpdate)
+{
+    NetCommands::CmdSWUpdate Command(5000, USBUpdate);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+}
 /****************************************************************************/
 /*!
  *  \brief Handles incoming Event String command
@@ -1223,6 +1246,33 @@ void CDataConnector::ExecutionStateHandler(Global::tRefType Ref, const NetComman
         qDebug()<<"Starting Timers"<< Global::AdjustedTime::Instance().GetCurrentDateTime();
         emit ReCalculateEndTimes();
     }
+
+    if (!Command.m_Stop && Command.m_WaitDialogFlag) {
+        if (mp_WaitDlgExecChanged) {
+            delete mp_WaitDlgExecChanged;
+            mp_WaitDlgExecChanged = NULL;
+        }
+
+        mp_WaitDlgExecChanged = new MainMenu::CWaitDialog(mp_MainWindow);
+        mp_WaitDlgExecChanged->HideAbort();
+
+        if (Command.m_WaitDialogText == Global::SOFTWARE_UPDATE_TEXT) {
+            mp_WaitDlgExecChanged->SetDialogTitle(QApplication::translate("Core::CDataConnector", "Software Update",
+                                                                  0, QApplication::UnicodeUTF8));
+            mp_WaitDlgExecChanged->SetText(QApplication::translate("Core::CDataConnector", "Updating the software ...",
+                                                           0, QApplication::UnicodeUTF8));
+            mp_WaitDlgExecChanged->show();
+        }
+
+    }
+    else if (!Command.m_Stop && !(Command.m_WaitDialogFlag)) {
+        if (mp_WaitDlgExecChanged == NULL) {
+            //If wait dialog object is NULL return immediately
+            return;
+        }
+        mp_WaitDlgExecChanged->accept();
+    }
+
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
 }
 

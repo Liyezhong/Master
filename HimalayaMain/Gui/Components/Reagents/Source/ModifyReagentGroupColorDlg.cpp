@@ -35,9 +35,9 @@ namespace Reagents {
 CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow) :
     MainMenu::CDialogFrame(p_Parent),
     mp_Ui(new Ui::CModifyReagentGroupColorDlg),
+    mp_CReagentGroupColorList(NULL),
     m_strCancel(tr("Cancel")),
-    m_strClose(tr("Close")),
-    mp_CReagentGroupColorList(NULL)
+    m_strClose(tr("Close"))
 {
     Q_UNUSED(p_MainWindow)
     mp_Ui->setupUi(GetContentFrame());

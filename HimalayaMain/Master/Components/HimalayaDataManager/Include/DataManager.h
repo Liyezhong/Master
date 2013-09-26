@@ -21,9 +21,6 @@
 #ifndef DATAMANAGER_OBSOLETE_DATAMANAGER_H
 #define DATAMANAGER_OBSOLETE_DATAMANAGER_H
 
-#include <QObject>
-#include <QString>
-#include <QIODevice>
 #include "../Include/DataContainer.h"
 #include "DataManager/Include/DataManagerBase.h"
 
@@ -76,6 +73,8 @@ public:
     CDeviceConfigurationInterface* GetDeviceConfigurationInterface();
     CProgramCommandInterface *mp_ProgramCommandInterface; //!< Handles commands related to program container
 
+    //function to save data during shutdown
+    void SaveDataOnShutdown();
 
 signals:
     void StationUpdate(CDashboardStation &Station);

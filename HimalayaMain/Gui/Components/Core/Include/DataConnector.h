@@ -50,7 +50,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdownReply.h>
 
-
+#include <NetCommands/Include/CmdSWUpdate.h>
 
 /********************** Net Commands ************************************************/
 #include "NetCommands/Include/CmdConfigurationFile.h"
@@ -146,6 +146,7 @@ public slots:
     void SendProgramAdd(DataManager::CProgram &Program);
     void SendProgramRemove(QString &ProgramID);
     void SendDataImportExport(const QString Name, const QStringList &ParamList);
+    void SendSWUpdate(bool USBUpdate);
 
     void SendProgramColorUpdate(DataManager::CProgram &ColorReplacedProgram,
                                 DataManager::CProgram &ColorAssignedProgram);
@@ -221,6 +222,18 @@ signals:
      */
     /****************************************************************************/
     void ProgramsUpdated();
+    /****************************************************************************/
+    /*!
+     *  \brief
+     */
+    /****************************************************************************/
+    void ProgramsInitialized(bool);
+    /****************************************************************************/
+    /*!
+     *  \brief
+     */
+    /****************************************************************************/
+    void ProgramsDeleted();
     /****************************************************************************/
     /*!
      *  \brief
@@ -428,6 +441,7 @@ private:
     QString m_strLogFile;
     QString m_strGettingDailyLog;
     QString m_strTurnOffSwitch;
+    MainMenu::CWaitDialog *mp_WaitDlgExecChanged;    //!< Displayed when Execution Chaged command recved
 
 private slots:
     void OnMasterConnected(const QString &name);

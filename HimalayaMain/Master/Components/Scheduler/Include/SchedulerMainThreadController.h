@@ -23,7 +23,6 @@
 
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //                                                                                  From Qt-Library
-#include <QTimer>
 #include <QQueue>
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //                                                                                 Project Specific
@@ -130,7 +129,7 @@ typedef struct
         DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
         DataManager::CDataManager       *mp_DataManager;
         //qint64 m_CurStepSoakStartTime;
-        int m_CurProgramStepIndex;
+        int m_CurProgramStepIndex, m_FirstProgramStepIndex;
         QString m_CurReagnetName;
         ProgramStepInfor m_CurProgramStepInfo;
         QString m_CurProgramID;
@@ -180,10 +179,10 @@ typedef struct
          */
         /****************************************************************************/
          bool PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd);
-         bool GetNextProgramStepInformation(const QString& ProgramID, ProgramStepInfor& ProgramStepInfor);
+         bool GetNextProgramStepInformation(const QString& ProgramID, ProgramStepInfor& ProgramStepInfor, bool onlyGetFirstProgramStepIndex = false);
          quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex = -1);
          quint32 GetCurrentProgramStepNeededTime(const QString& ProgramID);
-         bool PrepareProgramStationList(const QString& ProgramID);
+         bool PrepareProgramStationList(const QString& ProgramID, int beginStep = 0);
          QString SelectStationFromReagentID(const QString& ReagentID,
                                            ListOfIDs_t& unusedStationIDs,
                                            QList<StationUseRecord_t>& usedStations,
@@ -198,7 +197,8 @@ typedef struct
          RVPosition_t GetRVTubePositionByStationID(const QString stationID);
          RVPosition_t GetRVSealPositionByStationID(const QString stationID);
          bool IsLastStep(int currentStepIndex,const QString& currentProgramID);
-
+         bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
+         int WhichStepHasNoSafeReagent(const QString& ProgramID);
 signals:
          void signalProgramStart(const QString& ProgramID);
          void signalProgramPause();

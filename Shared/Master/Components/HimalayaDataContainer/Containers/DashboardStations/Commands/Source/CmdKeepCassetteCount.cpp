@@ -31,7 +31,7 @@ CmdKeepCassetteCount::CmdKeepCassetteCount(int Timeout, int CasseteCount) :
 }
 
 CmdKeepCassetteCount::CmdKeepCassetteCount()
-    : Command(0)
+    : Command(0), m_CassetteCount(0)
 {
 }
 

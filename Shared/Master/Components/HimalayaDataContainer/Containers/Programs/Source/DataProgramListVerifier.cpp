@@ -75,7 +75,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
         qDebug() << "### Too many programs (max 12 allowed): " << mp_DPL->GetNumberOfPrograms();
         m_ErrorsHash.insert(EVENT_DM_PROG_COUNT_EXCEEDS_LIMIT, Global::tTranslatableStringList() << QString::number(PROGRAMS_MAX) );
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_COUNT_EXCEEDS_LIMIT,
-                                                   Global::tTranslatableStringList() << QString::number(PROGRAMS_MAX),Global::GUI_MSG_BOX);
+                                                   Global::tTranslatableStringList() << QString::number(PROGRAMS_MAX), (int)Global::GUI_MSG_BOX);
         VerifiedData = false;
     }
 //    QString NextStepID = mp_DPL->GetNextFreeProgID(false).mid(1);

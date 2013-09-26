@@ -68,7 +68,9 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_ScreenSaver, OnInteractStart());
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_Users, OnInteractStart());
 
-    CONNECTSIGNALSLOT(mp_DataConnector, ProgramsUpdated(), mp_Dashboard, AddItemsToComboBox());  // To Populate the ComboBox Items in the initial stage
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramsInitialized(bool), mp_Dashboard, AddItemsToComboBox(bool));  // To Populate the ComboBox Items in the initial stage
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramsDeleted(), mp_Dashboard, AddItemsToComboBox());
+
     CONNECTSIGNALSLOT(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Dashboard, AddItemsToComboBox()); // To Populate the ComboBox when User Changes the List
     CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Programs, UpdateProgram(DataManager::CProgram &));
 

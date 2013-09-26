@@ -31,7 +31,7 @@ class CmdStationChangeReagent : public Global::Command
     friend QDataStream & operator >> (QDataStream &, CmdStationChangeReagent &);
 
 public:
-    CmdStationChangeReagent(int TimeOut, const QString& StationID, const QString& ReagentID);
+    CmdStationChangeReagent(int timeOut, const QString& stationID, const QString& reagentID);
     CmdStationChangeReagent(void);
 
     ~CmdStationChangeReagent(void);

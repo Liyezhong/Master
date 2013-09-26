@@ -47,9 +47,11 @@
 #include <NetCommands/Include/CmdDataUpdate.h>
 #include <NetCommands/Include/CmdGuiInit.h>
 #include <HimalayaMasterThread/Include/ProgramStartableFlagManager.h>
+#include <Global/Include/Commands/CmdShutDown.h>
 #include <NetCommands/Include/CmdConfigurationFile.h>
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h>
-
+#include <Global/Include/UITranslator.h>
+//lint -e1536
 
 namespace EventHandler {
     class EventObject;
@@ -65,6 +67,10 @@ namespace NetCommands {
 
 namespace DataManager {
     class DataManager;
+}
+
+namespace SWUpdate {
+    class SWUpdateManager;
 }
 
 namespace Himalaya {
@@ -87,6 +93,17 @@ typedef enum  {
     EXPORT_CONTROLLER_THREAD,
     IMPORT_EXPORT_THREAD
 } HimalayaThreads_t;
+
+
+
+//! Enumeration of various Idle substates
+typedef enum {
+    NORMAL_USER_ACTION_STATE,
+    IMPORT_STATE,
+    EXPORT_STATE,
+    SW_UPDATE_STATE
+}CurrentUserActionState_t;
+
 
 /****************************************************************************/
 /**
@@ -112,12 +129,15 @@ private:
     Threads::CommandChannel*        mp_ImportExportAckChannel;              ///< Store the command reference to return the command channel data once export process is exited
     bool                            m_ExportProcessIsFinished;              ///< Store export process flag value
     bool                            m_ImportExportThreadIsRunning;          ///< Store ImportExport thread flag value
-
+    bool                            m_RemoteCareExportRequest;              ///< Request received from export
 
     bool m_Simulation;  //!  Enable/disable simulation thread controller. \todo Remove later
     ProgramStartableManager         m_ProgramStartableManager;              ///< Object Managing Program Startablity
     Global::GuiUserLevel            m_AuthenticatedLevel;                   ///< The current user authenticated level
     bool                            m_ControllerCreationFlag;               ///< True if controllers are created, False if not
+	CurrentUserActionState_t        m_CurrentUserActionState;               ///< This variable holds the current idle state- e.g. BLG, ImportExport
+    SWUpdate::SWUpdateManager       *mp_SWUpdateManager;                    ///< The SWUpdate Manager
+    QString                         m_ExportTargetFileName;                 ///< Target file name of the export
     /****************************************************************************/
     HimalayaMasterThreadController(const HimalayaMasterThreadController &);                     ///< Not implemented.
     const HimalayaMasterThreadController & operator = (const HimalayaMasterThreadController &); ///< Not implemented.
@@ -127,6 +147,15 @@ private:
      */
     /****************************************************************************/
     virtual void RegisterCommands();
+	    /****************************************************************************/
+    /**
+     * \brief Acknowledge of type AckOKNOK received.
+     *
+     * \iparam   Ref -    Command reference
+     * \iparam   Ack -    Acknowledge
+     */
+    /****************************************************************************/
+    void OnAckOKNOK(Global::tRefType Ref, const Global::AckOKNOK &Ack);
     /****************************************************************************/
     /**
      * \brief Set new date and time offset.
@@ -137,15 +166,7 @@ private:
      */
     /****************************************************************************/
     void SetDateTime(Global::tRefType Ref, const Global::CmdDateAndTime &Cmd, Threads::CommandChannel &AckCommandChannel);
-    /****************************************************************************/
-    /**
-     * \brief Acknowledge of type AckOKNOK received.
-     *
-     * \param[in]   Ref     Command reference.
-     * \param[in]   Ack     Acknowledge.
-     */
-    /****************************************************************************/
-    void OnAckOKNOK(Global::tRefType Ref, const Global::AckOKNOK &Ack);
+
     /****************************************************************************/
 
 
@@ -172,12 +193,31 @@ private:
     void ImportExportDataFileHandler(Global::tRefType Ref, const CommandData &Cmd,
                         Threads::CommandChannel &AckCommandChannel) {
         if (!m_ImportExportThreadIsRunning) {
-            m_ImportExportThreadIsRunning = true;
+
+            if (m_RemoteCareExportRequest) {
+                // check the current user action state
+                if (m_CurrentUserActionState != NORMAL_USER_ACTION_STATE) {
+                    SendImportExportAckNOK(Ref, AckCommandChannel, CommandData::NAME);
+                    return;
+                }
+                // sets the state of the action
+                if (QString(CommandData::NAME).contains("Import")) {
+                    m_CurrentUserActionState = IMPORT_STATE;
+                }
+                else {
+                    m_CurrentUserActionState = EXPORT_STATE;
+                }                
+            }
+
+            // save the command channel, so that once the work is completed then ack can be sent to the same channel
+            mp_ImportExportAckChannel = &AckCommandChannel;
+
             // store the command reference so that once Export process is finished then
             // this reference need to be sent to the acknowledgement channel
             m_ImportExportCommandRef = Ref;
-            // save the command channel, so that once the work is completed then ack can be sent to the same channel
-            mp_ImportExportAckChannel = &AckCommandChannel;
+
+
+            m_ImportExportThreadIsRunning = true;
 
             // create and connect scheduler controller
             ImportExport::ImportExportThreadController *ImportExportThreadController
@@ -186,7 +226,8 @@ private:
                                                                      (const_cast<CommandData&>(Cmd)).GetCommandData());
             try {
                 // connect the siganl slot mechanism to create the process.
-                CONNECTSIGNALSLOT(ImportExportThreadController, StartExportProcess(), this, StartExportProcess());
+				ImportExportThreadController->SetEventLogFileName(GetEventLoggerBaseFileName());
+                CONNECTSIGNALSLOT(ImportExportThreadController, StartExportProcess(QString), this, StartExportProcess(QString));
             }
             catch (...){
                 SendAcknowledgeNOK(Ref, AckCommandChannel, "Unable to connect to signal slot");
@@ -197,8 +238,8 @@ private:
             try {
                 // connect the siganl slot mechanism to create the containers for the Import.
                 CONNECTSIGNALSLOT(ImportExportThreadController,
-                              ThreadFinished(const bool, const QString &, bool, bool), this,
-                              ImportExportThreadFinished(const bool, const QString &, bool, bool));
+                              ThreadFinished(const bool, QStringList, quint32,bool, bool), this,
+                              ImportExportThreadFinished(const bool, QStringList, quint32, bool, bool));
             }
             catch (...){
                 SendAcknowledgeNOK(Ref, AckCommandChannel, "Unable to connect to signal slot");
@@ -244,7 +285,32 @@ private:
             SendAcknowledgeNOK(Ref, AckCommandChannel, "Thread is already running");
         }
     }
+    /****************************************************************************/
+    /**
+     * \brief Send negative acknowledgement to GUI
+     *
+     * \iparam Ref - Refernce of the command argument
+     * \iparam AckCommandChannel - Channel class for the command
+     * \iparam Name - Name of the command
+     *
+     */
+    /****************************************************************************/
+    void SendImportExportAckNOK(Global::tRefType Ref, Threads::CommandChannel &AckCommandChannel,
+                                QString Name) {
 
+
+        quint32 EventCode = 0;
+        if (Name.contains("Import")) {
+            EventCode = EVENT_IMPORT_FAILED;
+        }
+        else {
+            EventCode = EVENT_EXPORT_FAILED;
+        }
+        // send acknowledgement to GUI
+        SendAcknowledgeNOK(Ref, AckCommandChannel,
+                           Global::UITranslator::TranslatorInstance().Translate(Global::TranslatableString(EventCode)
+                                                                                , true));
+    }
 
 
 
@@ -345,6 +411,26 @@ private:
     void OnCmdSysState(Global::tRefType Ref, const NetCommands::CmdSystemState &Cmd,
                           Threads::CommandChannel& AckCommandChannel);
 
+    /****************************************************************************/
+    /*!
+     *  \brief   This handler is called on reception of "CmdShutdown" & will
+     *           initiate graceful shutdown of the Main S/W
+     *
+     *  \iparam Ref = Command reference
+     *  \iparam Cmd = Shudown Command
+     *  \iparam AckCommandChannel = Command channel to send acknowledge
+     */
+    /****************************************************************************/
+    void ShutdownHandler(Global::tRefType Ref, const Global::CmdShutDown &Cmd,
+                         Threads::CommandChannel &AckCommandChannel);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Initiates reboot of the Main S/W
+     */
+    /****************************************************************************/
+    void Reboot();
+
 protected:
     /****************************************************************************/
     /**
@@ -378,6 +464,14 @@ protected:
     /****************************************************************************/
     virtual void InitiateShutdown();
 
+    /****************************************************************************/
+    /**
+     * \brief
+     *
+     * \iparam CommandChannel
+     *
+     */
+    /****************************************************************************/
     virtual void SendContainersTo(Threads::CommandChannel &CommandChannel);
 
     virtual bool IsCommandAllowed(const Global::CommandShPtr_t &Cmd);
@@ -397,6 +491,23 @@ protected:
     virtual void OnGoReceived();
     /****************************************************************************/
     virtual void CreateAlarmHandler();
+    /****************************************************************************/
+    /*!
+     *  \brief   Sets the user action state
+     *
+     *  \iparam UserActionState = e.g. BLG state /export state
+     */
+    /****************************************************************************/
+    void SetUserActionState(const CurrentUserActionState_t UserActionState);
+
+    /****************************************************************************/
+    /*!
+     *  \brief   Gets the current Idle state
+     *
+     *  \return m_CurrentUserActionState = Current idle state e.g. BLG state /export state
+     */
+    /****************************************************************************/
+    inline CurrentUserActionState_t GetCurrentIdleState() const { return m_CurrentUserActionState; }
 public:
     /****************************************************************************/
     /**
@@ -489,13 +600,34 @@ public:
     }
 
 private slots:
-      void SendXML();
+	void SendXML();
+	  
+	void SWUpdateProgress(bool InProgress);
+    void SWUpdateRollbackComplete();
+
+    /****************************************************************************/
+    /**
+     * \brief Informs GUI to display/close wait dialog
+     *
+     * \iparam Display - true indicate display dialog, false indicates close dialog
+     */
+    /****************************************************************************/
+    void ShowWaitDialog(bool Display, Global::WaitDialogText_t WaitDialogText);
+
+    /****************************************************************************/
+    /**
+     * \brief Signal for exporting the log files for service user
+     *
+     * \iparam NoOfLogFiles - Number of log files
+     */
+    /****************************************************************************/
+    void RemoteCareExportData(const quint8 &NoOfLogFiles);
       /****************************************************************************/
       /**
        * \brief Starts the export process.
        */
       /****************************************************************************/
-      void StartExportProcess();
+      void StartExportProcess(QString FileName);
 
       /****************************************************************************/
       /**
@@ -504,16 +636,39 @@ private slots:
       /****************************************************************************/
       void RequestDayRunLogFileNames();
 
-      void SendStateChange(QString state);
-      /****************************************************************************/
-      /**
-       * \brief Slot for the export process.
-       *
-       * \param Name - Name of the error string
-       * \param ExitCode - exit code for the process
-       */
-      /****************************************************************************/
-      void ExportProcessExited(const QString &Name, int ExitCode);
+    /****************************************************************************/
+    /**
+     * \brief Send file selection to GUI to import the files.
+     *
+     * \iparam FileList     List of file names
+     */
+    /****************************************************************************/
+    void SendFileSelectionToGUI(QStringList FileList);
+
+    /****************************************************************************/
+    /**
+     * \brief Slot called on Init state completed.
+     */
+    /****************************************************************************/
+    void OnInitStateCompleted();
+
+    /****************************************************************************/
+    /**
+     * \brief This Slot is called on Signal sent on state changed.
+     *
+     * \iparam state
+     */
+    /****************************************************************************/
+    void SendStateChange(QString state);
+    /****************************************************************************/
+    /**
+     * \brief Slot for the export process.
+     *
+     * \iparam Name - Name of the error string
+     * \iparam ExitCode - exit code for the process
+     */
+    /****************************************************************************/
+    void ExportProcessExited(const QString &Name, int ExitCode);
 
       /****************************************************************************/
       /**
@@ -534,9 +689,11 @@ private slots:
        * \param NewLanguageAdded - Flag for the new language is added or not
        */
       /****************************************************************************/
-      void ImportExportThreadFinished(const bool IsImport, const QString &TypeOfImport,
+      void ImportExportThreadFinished(const bool IsImport, QStringList ImportTypeList,
+                                      quint32 EventCode,
                                       bool UpdatedCurrentLanguage = false,
                                       bool NewLanguageAdded = false);     
+	  void ShutdownOnPowerFail();
       void SetAlarmHandlerTimeout(quint16 timeout);
       void OnFireAlarmLocalRemote(bool isLocalAlarm);
 signals:
@@ -549,6 +706,21 @@ signals:
       /****************************************************************************/
       void DayRunLogDirectoryName(const QString &Name);
 
+    /****************************************************************************/
+    /**
+     * \brief Signal to import the selected files.
+     *
+     * \iparam FileList - List of files
+     */
+    /****************************************************************************/
+    void ImportSelectedFiles(QStringList FileList);
+
+    /****************************************************************************/
+    /**
+     * \brief Signal to inidicate software initialization failure
+     */
+    /****************************************************************************/
+    void InitFailed();
 }; // end class HimalayaMasterThreadController
 
 } // end namespace Himalaya

@@ -32,13 +32,13 @@ QString CmdResetOperationHours::NAME = "MsgClasses::CmdResetOperationHours";
  * \param[in]   Timeout     Timeout for command.
  */
 /****************************************************************************/
-CmdResetOperationHours::CmdResetOperationHours(int TimeOut, DataManager::ResetOperationHoursType_t ResetOperationHoursType)
-    : Command(TimeOut), m_ResetOperationHoursType(ResetOperationHoursType)
+CmdResetOperationHours::CmdResetOperationHours(int timeOut, DataManager::ResetOperationHoursType_t resetOperationHoursType)
+    : Command(timeOut), m_ResetOperationHoursType(resetOperationHoursType)
 {
 }
 
 CmdResetOperationHours::CmdResetOperationHours(void)
-    : Command(0)
+    : Command(0),m_ResetOperationHoursType(DataManager::RESETOPERATIONHOURS_UNDEFINED)
 {
 }
 

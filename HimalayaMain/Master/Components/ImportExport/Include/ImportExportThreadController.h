@@ -38,9 +38,8 @@
 #include "ImportExport/ReadArchive/Include/ReadArchive.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 
-#include <QProcess>
-#include <QMutex>
-#include <QWaitCondition>
+
+//lint -sem(ImportExport::ImportExportThreadController::DoCleanUpObjects,cleanup)
 
 
 namespace ImportExport {
@@ -57,6 +56,7 @@ class CmdDataExport;
  */
 /****************************************************************************/
 class ImportExportThreadController : public Threads::ThreadController {
+    friend class TestImportExportThreadController;
     Q_OBJECT
 private:    
     DataManager::CDataManager& m_DataManager;                   ///< Store the data manager - pointer
@@ -64,6 +64,7 @@ private:
     DataManager::CDataReagentList* mp_ReagentList;              ///< Store the reagent list
     DataManager::CExportConfiguration* mp_ExportConfiguration;  ///< Store export configuration    
     QString m_CommandValue;                                     ///< Store the command value
+    quint32 m_NoOfLogFiles;                                     ///< Store the no of log files value for service export
     QString m_CommandName;                                      ///< Store the command name i.e. either user export or service export
     QString m_SerialNumber;                                     ///< Store the serial number of the device
     QString m_DeviceName;                                       ///< Store the device name
@@ -73,8 +74,13 @@ private:
     bool m_CurrentLanguageUpdated;                              ///< Store the flag for current language
     bool m_EventRaised;                                         ///< Store the event information flag for raise event
     bool m_UserExport;                                          ///< Store the user export flag
+    bool m_TranslationsFolderUpdatedFiles;                      ///< Translations folder updated with the files
+    bool m_RemoteCareRequest;                                   ///< Remote care request flag
     QString m_DayRunLogDirectoryName;                           ///< Store the day run log directory name
     DataManager::CExportConfiguration m_TempExportConfiguration;  ///< Store temporary export configuration
+    quint32 m_EventCode;                                        ///< Store the event code
+    QString m_EventLogFileName;                                 ///< Store the event log file name
+    QString m_TargetFileName;                                   ///< Store the target file name
 
 
     /****************************************************************************/
@@ -139,7 +145,7 @@ private:
     /**
      * \brief Creates the RMS file.     
      *
-     * \param[in]   FileName    File name of the file.
+     * \iparam       FileName    File name of the file.
      *
      * \return On Successful (true) or not (false)
      */
@@ -160,8 +166,8 @@ private:
      * \brief Write the data into RMS_status.csv file. Information of Station and
      *        Reagent data will be written.
      *
-     * \param[in,out]   RMSFile         Reference of the file.
-     * \param[in]       StationIDList   Stations IDs
+     * \oparam           RMSFile         Reference of the file.
+     * \iparam           StationIDList   Stations IDs
      *
      * \return On Successful (true) or not (false)
      */
@@ -172,7 +178,7 @@ private:
     /**
      * \brief Calculates the shelf life for the given reagent.
      *
-     * \param[in]   p_Reagent         Pointer to Reagent class.
+     * \iparam       p_Reagent         Pointer to Reagent class.
      *
      * \return Shelf life value
      */
@@ -185,8 +191,8 @@ private:
      *        Configuration list contains all the file list, so read all the files
      *        from the list and copy the files to target location
      *
-     * \param[in]       ConfigurationList    Configuration class.
-     * \param[in]       TargetPath           Target path to copy the files.
+     * \iparam           ConfigurationList    Configuration class.
+     * \iparam           TargetPath           Target path to copy the files.
      *
      * \return On Successful (true) or not (false)
      */
@@ -201,8 +207,8 @@ private:
      *        the existence of the file first before copying, if it exists delete
      *        and copy the new file
      *
-     * \param[in]       TargetFileName    Target file name.
-     * \param[in]       SourceFileName    Source file name.
+     * \iparam           TargetFileName    Target file name.
+     * \iparam           SourceFileName    Source file name.
      *
      * \return On Successful (true) or not (false)
      */
@@ -220,20 +226,21 @@ private:
     /**
      * \brief Imports files from the archive file.
      *
-     * \param[in] ImportType  Type of Import
+     * \iparam    ImportType  Type of Import
+     * \iparam    FileName    Name of the file
      *
      * \return On successful (true) or not (false)
      */
     /****************************************************************************/
-    bool ImportArchiveFiles(const QString &ImportType);
+    bool ImportArchiveFiles(const QString &ImportType, QString FileName);
 
     /****************************************************************************/
     /**
      * \brief Adds required files to string list, so that importing can be done
      *        little easier .
      *
-     * \param[in]       TypeOfImport  Type of Import
-     * \param[in,out]   ListOfFiles   List of files to be imported
+     * \iparam           TypeOfImport  Type of Import
+     * \oparam           ListOfFiles   List of files to be imported
      *
      * \return On successful (true) or not (false)
      */
@@ -245,9 +252,9 @@ private:
      * \brief Writes the files in a temporary loaction and imports the data into
      *        data containers.
      *
-     * \param[in]       TypeOfImport  Type of Import
-     * \param[in]       FileList      List of files to be imported
-     * \param[in]       RamFile       Object of the RAM file
+     * \iparam           TypeOfImport  Type of Import
+     * \iparam           FileList      List of files to be imported
+     * \iparam           RamFile       Object of the RAM file
      *
      * \return On successful (true) or not (false)
      */
@@ -283,14 +290,24 @@ private:
     /****************************************************************************/
     bool UpdateSettingsWithRollbackFolder();
 
+    /****************************************************************************/
+    /**
+     * \brief Resets the station and program sequence containers data.
+     *        Reset the StartCapablefalg and BLGResult in Program sequence container
+     *        Reset the Actual slides, Program ID, step ID and Reagent ID(Except for
+     *        the Loader stations) in stations container
+     * \iparam     TypeOfImport  Type of Import
+     */
+    /****************************************************************************/
+    void ResetTheStationPSContainers(const QString TypeOfImport);
 
     /****************************************************************************/
     /**
      * \brief Initialize and verifies the data containers.
      *
-     * \param[in,out] DataList          Container class
-     * \param[in,out] Verifier          Verifier class for the container
-     * \param[in]     Path              Path of the file
+     * \oparam         DataList          Container class
+     * \oparam         Verifier          Verifier class for the container
+     * \iparam         Path              Path of the file
      *
      * \return On successful (true) or not (false)
      */
@@ -323,41 +340,55 @@ private:
         return true;
     }    
 
-
     /****************************************************************************/
     /**
-     * \brief Search and Mounts the USB device.
-     *        It searches the sd* in the dev directory and iterates the each device
-     *        and try to mounts the device
+     * \brief Imports Leica programs.
+     *        Imports the new Leica programs to Program and program sequence
+     *        container and updates for an existing Leica program which is present
+     *        in program container
      *
-     * \param[in] IsImport     Import flag
+     * \oparam         ProgramList  Program list Container class
      *
      * \return On successful (true) or not (false)
      */
     /****************************************************************************/
-    bool SearchAndMountTheDevice(bool IsImport = false);
+    bool ImportLeicaPrograms(const DataManager::CDataProgramList &ProgramList);
 
     /****************************************************************************/
     /**
-     * \brief Mount the device with a specified name in the "/mnt/USB/" folder.
+     * \brief Imports Leica reagents and User Leica Reagents.
+     *        Imports the new Leica reagents and new Leica user reagents to Reagent
+     *        container and updates for an existing Leica reagent and new Leica reagent
+     *        which is present in reagent container. Leica user reagents range is from
+     *        U1 to U99
      *
-     * \param[in,out] Process        Process to mount the device
-     * \param[in]     DeviceName     Device name to mount
-     * \param[in]     IsImport       Import flag
+     * \oparam         ReagentList  Reagent list Container class
      *
      * \return On successful (true) or not (false)
      */
     /****************************************************************************/
-    bool MountTheSpecificDevice(const QProcess &Process, QString DeviceName,
-                                bool IsImport);
+    bool ImportLeicaUserReagents(const DataManager::CDataReagentList &ReagentList);
+
+    /****************************************************************************/
+    /**
+     * \brief Mounts the USB device.
+     *
+     *
+     * \iparam     IsImport     Import flag
+     *
+     * \return On successful (true) or not (false)
+     */
+    /****************************************************************************/
+    bool MountDevice(bool IsImport = false);
+
 
     /****************************************************************************/
     /**
      * \brief Update the folder with the files from the source to target folder.
      *
-     * \param[in] FileList      Files in the list
-     * \param[in] TargetPath    Target path of the folder
-     * \param[in] SourcePath    Source path of the folder
+     * \iparam     FileList      Files in the list
+     * \iparam     TargetPath    Target path of the folder
+     * \iparam     SourcePath    Source path of the folder
      *
      * \return On successful (true) or not (false)
      */
@@ -388,14 +419,14 @@ private:
      * \brief Unmount the device if the device is mounted.
      */
     /****************************************************************************/
-    void UnMountTheDevice();
+    void UnMountDevice();
 
     /****************************************************************************/
     /**
      * \brief Copy the QM files from one location to other location.
      *
-     * \param[in,out] Directory  Directory location object
-     * \param[in,out] Rollback   Flag for Rollback
+     * \oparam         Directory  Directory location object
+     * \oparam         Rollback   Flag for Rollback
      *
      * \return On successful (true) or not (false)
      */
@@ -406,8 +437,8 @@ private:
     /**
      * \brief Copy the Event string files from one location to other location.
      *
-     * \param[in,out] Directory  Directory location object
-     * \param[in,out] Rollback   Flag for Rollback
+     * \oparam         Directory  Directory location object
+     * \oparam         Rollback   Flag for Rollback
      *
      * \return On successful (true) or not (false)
      */
@@ -443,6 +474,8 @@ protected:
      * We try to log the power fail into the event logger and close all open files.
      * After that we switch to a PowerFail state where only events are processed
      * and dumped to console.
+     *
+     * \iparam PowerFailStage   Power fail stages
      */
     /****************************************************************************/
     virtual void OnPowerFail();
@@ -451,10 +484,10 @@ public:
     /**
      * \brief Constructor.
      *
-     * \param[in]       TheSource       Logging source to be used.
-     * \param[in,out]   RefDataManager  Take the reference of the main data manager
-     * \param[in]       SourceType      Source type of the thread.
-     * \param[in]       CommandValue    Command data which is stored in bytearray
+     * \iparam           ThreadID        Unique Thread ID
+     * \oparam           RefDataManager  Take the reference of the main data manager
+     * \iparam           SourceType      Source type of the thread.
+     * \iparam           CommandValue    Command data which is stored in bytearray
      */
     /****************************************************************************/    
     ImportExportThreadController(Global::gSourceType TheSource,
@@ -488,13 +521,26 @@ public:
     /**
      * \brief Creates the containers and update the containers.
      *
-     * \param[in]   TypeOfImport    Type of Import
-     * \param[in]   FilePath        Path of the file to save
+     * \iparam       TypeOfImport    Type of Import
+     * \iparam       FilePath        Path of the file to save
      *
      * \return On successful (true) or not (false)
      */
     /****************************************************************************/
     bool CreateAndUpdateContainers(const QString TypeOfImport, const QString FilePath);
+
+
+    /****************************************************************************/
+    /**
+     * \brief Sets the event log file name.
+     *
+     * \iparam       FileName    Event log file name
+     *
+     */
+    /****************************************************************************/
+    void SetEventLogFileName(QString FileName) {
+        m_EventLogFileName = FileName;
+    }
 
 signals:
     /****************************************************************************/
@@ -503,7 +549,7 @@ signals:
      * As soon as this signal received by Main it starts the Export process
      */
     /****************************************************************************/
-    void StartExportProcess();
+    void StartExportProcess(QString FileName);
 
     /****************************************************************************/
     /**
@@ -511,14 +557,15 @@ signals:
      *  This signals main that this thread exited with some code and also updates
      *  about the language import
      *
-     * \param[in]   IsTaskDone                  Task done successful or not
-     * \param[in]   TypeOfImport                Type of Import
-     * \param[in]   UpdatedCurrentLanguage      Flag for current language
-     * \param[in]   NewLanguageAdded            Flag for new language
+     * \iparam       IsTaskDone                  Task done successful or not
+     * \iparam       ImportTypeList              List of import types
+     * \iparam       EventCode                   Event code
+     * \iparam       UpdatedCurrentLanguage      Flag for current language
+     * \iparam       NewLanguageAdded            Flag for new language
      *
      */
     /****************************************************************************/
-    void ThreadFinished(const bool IsTaskDone, const QString &TypeOfImport,
+    void ThreadFinished(const bool IsTaskDone, QStringList ImportTypeList, quint32 EventCode,
                         bool UpdatedCurrentLanguage = false, bool NewLanguageAdded = false);
 
 
@@ -531,14 +578,36 @@ signals:
     /****************************************************************************/
     void RequestDayRunLogFileNames();
 
+    /****************************************************************************/
+    /**
+     * \brief Signal for selecting required files to import.
+     *  This signals main that import detected multiple files, Main requests
+     *  to display selection screen in GUI side
+     *
+     */
+    /****************************************************************************/
+    void RequestFileSelectionToImport(QStringList);
+
 public slots:
     /****************************************************************************/
     /**
-     * \brief Signal for getting the daily run log file directory name.
+     * \brief Slot for getting the daily run log file directory name.
+     *
+     * \iparam DirectoryName - Name of the directory
      *
      */
     /****************************************************************************/
     void SetDayRunLogFilesDirectoryName(const QString& DirectoryName);
+
+    /****************************************************************************/
+    /**
+     * \brief Slot for importing files.
+     *
+     * \iparam FileList - List of files
+     *
+     */
+    /****************************************************************************/
+    void StartImportingFiles(const QStringList FileList);
 
 };
 

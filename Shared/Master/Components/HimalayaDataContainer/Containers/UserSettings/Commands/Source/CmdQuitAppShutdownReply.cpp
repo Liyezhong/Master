@@ -39,7 +39,8 @@ CmdQuitAppShutdownReply::CmdQuitAppShutdownReply(int TimeOut, DataManager::QuitA
 }
 
 CmdQuitAppShutdownReply::CmdQuitAppShutdownReply(void)
-    : Command(0)
+    : Command(0),
+      m_quitAppShutdownActionType(DataManager::QUITAPPSHUTDOWNACTIONTYPE_UNDEFINED)
 {
 }
 

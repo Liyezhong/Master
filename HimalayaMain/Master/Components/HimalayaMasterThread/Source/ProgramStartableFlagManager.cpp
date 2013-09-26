@@ -54,20 +54,32 @@ ProgramStartableManager::ProgramStartableManager(HimalayaMasterThreadController 
 /****************************************************************************/
 void ProgramStartableManager::Init() {
     try {
-    //Initialize all pointers that will be used
-    CHECKPTR(mp_HimalayaMasterThreadController);
-    mp_DataManager = dynamic_cast<DataManager::CDataManager*>((const_cast<DataManager::CDataManagerBase *>(mp_HimalayaMasterThreadController->GetDataManager())));
-    CHECKPTR(mp_DataManager);
-    mp_UserSettingsInterface = mp_DataManager->GetUserSettingsInterface();
-    CHECKPTR(mp_UserSettingsInterface)
-    mp_UserSettings = mp_UserSettingsInterface->GetUserSettings();
-    CHECKPTR(mp_UserSettings);
-    mp_ProgramList = mp_DataManager->GetProgramList();
-    CHECKPTR(mp_ProgramList);
-    ConnectSignals();
-}
-    catch (...) {
+        //Initialize all pointers that will be used
+        CHECKPTR(mp_HimalayaMasterThreadController);
+        if (!mp_HimalayaMasterThreadController)
+            return;
 
+        mp_DataManager = dynamic_cast<DataManager::CDataManager*>((const_cast<DataManager::CDataManagerBase *>(mp_HimalayaMasterThreadController->GetDataManager())));
+        CHECKPTR(mp_DataManager);
+        if (!mp_DataManager)
+            return;
+
+        mp_UserSettingsInterface = mp_DataManager->GetUserSettingsInterface();
+        CHECKPTR(mp_UserSettingsInterface)
+        if (!mp_UserSettingsInterface)
+            return;
+        mp_UserSettings = mp_UserSettingsInterface->GetUserSettings();
+        CHECKPTR(mp_UserSettings);
+        if (!mp_UserSettings)
+            return;
+
+        mp_ProgramList = mp_DataManager->GetProgramList();
+        CHECKPTR(mp_ProgramList);
+        if (!mp_ProgramList)
+            return;
+        ConnectSignals();
+    }
+    catch (...) {
     }
 }
 
@@ -77,8 +89,12 @@ void ProgramStartableManager::Init() {
  */
 /****************************************************************************/
 void ProgramStartableManager::ConnectSignals() {
-    CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, UserSettingsChanged(const bool), this , OnUserSettingsChanged(const bool));
-    CONNECTSIGNALSLOT(mp_DataManager->mp_ProgramCommandInterface, StartableProgramEdited(const QString &), this , OnStartableProgramEdited(const QString &));
+    CHECKPTR(mp_DataManager);
+    if (mp_DataManager)
+    {
+        CONNECTSIGNALSLOT(mp_DataManager->mp_SettingsCommandInterface, UserSettingsChanged(const bool), this , OnUserSettingsChanged(const bool));
+        CONNECTSIGNALSLOT(mp_DataManager->mp_ProgramCommandInterface, StartableProgramEdited(const QString &), this , OnStartableProgramEdited(const QString &));
+    }
 }
 
 
@@ -129,22 +145,22 @@ void ProgramStartableManager::OnUserSettingsChanged(const bool LanguangeChanged)
         qDebug() << "Language Name ############################" << LanguageName << "#########################";
 
         QString LanguageFileName = "Himalaya_" + LanguageName + ".qm";
-        mp_HimalayaMasterThreadController->SendLanguageFileToGUI(LanguageFileName);
+        (void)mp_HimalayaMasterThreadController->SendLanguageFileToGUI(LanguageFileName);
         if(mp_ProgramList)
         {
             mp_ProgramList->UpdateOnLanguageChanged();
-            mp_HimalayaMasterThreadController->SendConfigurationFile(mp_ProgramList,NetCommands::PROGRAM);
+            (void)mp_HimalayaMasterThreadController->SendConfigurationFile(mp_ProgramList,NetCommands::PROGRAM);
 
         }
         if(mp_DataManager->GetReagentGroupList())
         {
             mp_DataManager->GetReagentGroupList()->UpdateOnLanguageChanged();
-            mp_HimalayaMasterThreadController->SendConfigurationFile(mp_DataManager->GetReagentGroupList(),NetCommands::REAGENTGROUP);
+            (void)mp_HimalayaMasterThreadController->SendConfigurationFile(mp_DataManager->GetReagentGroupList(),NetCommands::REAGENTGROUP);
         }
         if(mp_DataManager->GetReagentList())
         {
             mp_DataManager->GetReagentList()->UpdateOnLanguageChanged();
-            mp_HimalayaMasterThreadController->SendConfigurationFile(mp_DataManager->GetReagentList(),NetCommands::REAGENT);
+            (void)mp_HimalayaMasterThreadController->SendConfigurationFile(mp_DataManager->GetReagentList(),NetCommands::REAGENT);
         }
     }
 

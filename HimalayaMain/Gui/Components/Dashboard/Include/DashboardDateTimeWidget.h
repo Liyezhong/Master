@@ -69,6 +69,8 @@ private:
     QDateTime m_selDateTime;                //!< Selected Date and Time
     QDateTime m_ASAPDateTime;
     QString m_strEndTimeForProgram;
+    QString m_strEarlierEndTime;
+    QString m_strLaterEndTime;
     void RetranslateUI();
 
 protected:

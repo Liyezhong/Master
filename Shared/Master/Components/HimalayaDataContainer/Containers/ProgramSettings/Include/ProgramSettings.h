@@ -24,13 +24,7 @@
 #ifndef DATAMANAGER_PRGRAMSETTINGS_H
 #define DATAMANAGER_PRGRAMSETTINGS_H
 
-#include <QHash>
-#include <QMap>
-#include <QIODevice>
-#include <QReadWriteLock>
-#include <QXmlStreamReader>
-#include <QXmlStreamWriter>
-#include <QString>
+
 
 #include "Global/Include/Translator.h"
 #include "DataManager/Helper/Include/Types.h"
