@@ -192,6 +192,7 @@ private:
     template<class CommandData>
     void ImportExportDataFileHandler(Global::tRefType Ref, const CommandData &Cmd,
                         Threads::CommandChannel &AckCommandChannel) {
+        SendAcknowledgeOK(Ref, AckCommandChannel);
         if (!m_ImportExportThreadIsRunning) {
 
             if (m_RemoteCareExportRequest) {
