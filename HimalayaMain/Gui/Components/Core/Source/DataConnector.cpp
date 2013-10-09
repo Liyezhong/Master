@@ -1140,7 +1140,7 @@ void CDataConnector::SendDataImportExport(const QString Name, const QStringList 
             DialogTitle = m_strServiceExport;
             DialogText = m_strExportServiceData;
         }
-        MsgClasses::CmdDataExport Command(20000, ByteArray);
+        MsgClasses::CmdDataExport Command(Global::Command::MAXTIMEOUT, ByteArray);
         (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     }
     else {
