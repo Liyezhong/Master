@@ -1708,12 +1708,12 @@ void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, con
             }
 
             m_PositionRV = PositionRV;
-
+#if 0
             LOG_PAR()<<"DBG"<<"HDM"<<PositionRV<<PressureAL<<TempALLevelSensor
                        <<TempALTube1<<TempALTube2<<TempRV1<<TempRV2
                        <<TempRTBottom<<TempRTSide<<TempOvenBottom<<TempOvenTop
                        <<OvenLidStatus<<RetortLockStatus;
-#if 0
+
             LOG_PAR()<<"DBG"<<"Rotary valve's position is" << PositionRV;
             LOG_PAR()<<"DBG"<<"Air liquid system pressure is" << PressureAL;
             LOG_PAR()<<"DBG"<<"Air liquid system level sensor's temp is" << TempALLevelSensor;
