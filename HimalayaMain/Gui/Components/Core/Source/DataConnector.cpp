@@ -1167,7 +1167,7 @@ void CDataConnector::SendDataImportExport(const QString Name, const QStringList 
 /****************************************************************************/
 void CDataConnector::SendSWUpdate(bool USBUpdate)
 {
-    NetCommands::CmdSWUpdate Command(5000, USBUpdate);
+    NetCommands::CmdSWUpdate Command(Global::Command::MAXTIMEOUT, USBUpdate);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
 /****************************************************************************/
@@ -1555,7 +1555,7 @@ void CDataConnector::SendKeepCassetteCount(int CassetteCount)
 /****************************************************************************/
 void CDataConnector::RequestDayRunLogFileNames()
 {
-    NetCommands::CmdDayRunLogRequest Command(1000);
+    NetCommands::CmdDayRunLogRequest Command(500000);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
 /****************************************************************************/
@@ -1641,6 +1641,14 @@ void CDataConnector::OnCurrentTabChanged(int CurrentTabIndex)
 /****************************************************************************/
 void CDataConnector::ShowMessageDialog(Global::GUIMessageType MessageType, QString MessageText)
 {
+    if (mp_MessageDlg) {
+        delete mp_MessageDlg;
+        mp_MessageDlg = NULL;
+    }
+    mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_MessageDlg->HideButtons();
+    mp_MessageDlg->setModal(true);
+
     if (MessageText.length() > 0) {
         switch (MessageType) {
         case Global::GUIMSGTYPE_ERROR:
@@ -1659,14 +1667,15 @@ void CDataConnector::ShowMessageDialog(Global::GUIMessageType MessageType, QStri
             break;
         }
         mp_MessageDlg->SetText(MessageText);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->show();
     }
-    else {
-        mp_MessageDlg->SetTitle(m_strCommunicationError);
-        mp_MessageDlg->SetText(m_strCommunicationError);
-        mp_MessageDlg->SetIcon(QMessageBox::Critical);
-    }
-    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-    mp_MessageDlg->show();
+//    else {
+//        mp_MessageDlg->SetTitle(m_strCommunicationError);
+//        mp_MessageDlg->SetText(m_strCommunicationError);
+//        mp_MessageDlg->SetIcon(QMessageBox::Critical);
+//    }
+
 }
 
 void CDataConnector::CurrentProgramStepInfoHandler(Global::tRefType Ref, const MsgClasses::CmdCurrentProgramStepInfor & Command)

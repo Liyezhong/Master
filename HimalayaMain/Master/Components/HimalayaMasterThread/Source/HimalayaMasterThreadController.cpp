@@ -661,6 +661,8 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
     if (ExitCode == Global::EXIT_CODE_EXPORT_SUCCESS) {
         // raise the event code
         Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_SUCCESS);
+        // send acknowledgement to GUI
+        SendAcknowledgeOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
     }
     else {
         quint32 EventCode = EVENT_EXPORT_FAILED;
@@ -751,23 +753,11 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
                 EventCode = EVENT_EXPORT_NO_ENOUGH_SPACE_ON_USB_CARD;
                 break;
         }
-
-
         // this raise event code will be informed to GUI, that Export is failed
-        Global::EventObject::Instance().RaiseEvent(EVENT_EXPORT_FAILED);
+        Global::EventObject::Instance().RaiseEvent(EventCode, false);
+        // send acknowledgement to GUI
+        SendAcknowledgeNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
 
-        if (EventCode != EVENT_EXPORT_FAILED) {
-            // raise the event code
-            Global::EventObject::Instance().RaiseEvent(EventCode);
-        }
-
-    }
-
-    // send acknowledgement to GUI
-    Q_ASSERT(mp_ImportExportAckChannel);
-    if (mp_ImportExportAckChannel)
-    {
-        SendAcknowledgeOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
     }
 
     m_ExportProcessIsFinished = true;
@@ -866,7 +856,7 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
     else {        
         // send ack is NOK
         if (EventCode != 0) {
-            Global::EventObject::Instance().RaiseEvent(EventCode, true);
+            Global::EventObject::Instance().RaiseEvent(EventCode, false);
         }
         SendAcknowledgeNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
     }
