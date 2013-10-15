@@ -13,6 +13,6 @@
   <Firmware>
     <file Filename="ASB3_0.bin" Version="1" Date="2012-06-22"></file>
     <file Filename="ASB5_0.bin" Version="1" Date="2012-06-22"></file>
-    <file Filename="ASB13_0.bin" Version="1" Date="2012-06-22"></file>
+    <file Filename="ASB15_0.bin" Version="1" Date="2012-06-22"></file>
   </Firmware>
 </SW_Version>
