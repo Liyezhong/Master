@@ -75,6 +75,7 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
      mp_DashboardScene = new CDashboardScene(mp_DataConnector, this, mp_MainWindow);
      mp_Ui->dashboardView->setScene(mp_DashboardScene);
+     mp_Ui->dashboardView->setRenderHint(QPainter::Antialiasing);
 
      CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime&));
      CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), mp_DashboardScene, OnSelectDateTime(const QDateTime &));

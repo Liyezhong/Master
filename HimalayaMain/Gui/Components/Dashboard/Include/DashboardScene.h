@@ -34,21 +34,21 @@ namespace Core {
     class CDataConnector;
 }
 
-struct PipeRectAndOrientation
+struct PipePathAndOrientation
 {
-    PipeRectAndOrientation()
+    PipePathAndOrientation()
     {
 
     }
 
-    PipeRectAndOrientation(QRectF rect, QString orientation, QPoint brushOrigin)
+    PipePathAndOrientation(const QPainterPath& painterPath, const QString& orientation, const QPoint& brushOrigin)
     {
-        m_rect = rect;
+        m_PainterPath = painterPath;
         m_orientation = orientation;
         m_brushOrigin = brushOrigin;
     }
 
-    QRectF m_rect;
+    QPainterPath m_PainterPath;
     QString m_orientation;
     QPoint m_brushOrigin;
 };
@@ -87,7 +87,7 @@ private:
     QPoint    m_DashboardEndTimeWidgetPos;
     QHash<QString, DataManager::CDashboardStation*> m_DashboardStationList;          //!< Hash table of Stations
     QHash<QString, QPointF> m_StationJointList;          //!< Hash table of Station joints
-    QHash<QString, PipeRectAndOrientation> m_PipeRectList;
+    QHash<QString, PipePathAndOrientation> m_PipeRectList;
 
     QStringList m_DashboardStationIDs;                                               //!< StationIds list
     QList<StationGroupType_t> m_DashboardStationGroup;                               //!< StationGroup list
@@ -136,9 +136,10 @@ private:
     void InitDashboardEndTimeWidgetPosition();
     void AddDashboardStationItemsToScene();
     void AddGraphicsProxyWidgetsToScene();
-    QRectF MakeHorizontalPipeRect(const QString& stationID, const QString& OtherStationID);
-    QRectF MakeHorizontalBinaryPipeRect(const QString& stationID, const QString& OtherStationID,
-                                        const QString& MidTopStationID, bool IsReturnLeftOne);//IsReturnLeftOne is false ,it will return the right one
+    void AddPathArc(QPainterPath& path, QPointF& p1);
+    QPainterPath MakeHorizontalPipePath(const QString& stationID, const QString& otherStationID, bool bShooter = false);
+    QPainterPath MakeHorizontalBinaryPipePath(const QString& stationID, const QString& OtherStationID,
+                                        const QString& MidTopStationID, bool IsReturnLeftOne, bool bShortor = false);//IsReturnLeftOne is false ,it will return the right one
     void CollectPipeRect();
     void CreateAllPipe();
     void RepresentCurrentWorkingPipe(const QString& StationID);
