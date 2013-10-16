@@ -136,7 +136,8 @@ private:
     void InitDashboardEndTimeWidgetPosition();
     void AddDashboardStationItemsToScene();
     void AddGraphicsProxyWidgetsToScene();
-    void AddPathArc(QPainterPath& path, QPointF& p1);
+    void AddPathLeftTopArc(QPainterPath& path, QPointF& pnt);
+    void AddPathRightTopArc(QPainterPath& path, QPointF& pnt);
     QPainterPath MakeHorizontalPipePath(const QString& stationID, const QString& otherStationID, bool bShooter = false);
     QPainterPath MakeHorizontalBinaryPipePath(const QString& stationID, const QString& OtherStationID,
                                         const QString& MidTopStationID, bool IsReturnLeftOne, bool bShortor = false);//IsReturnLeftOne is false ,it will return the right one
