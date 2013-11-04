@@ -129,6 +129,6 @@ for(TheComponent, HIMALAYA_COMPONENTS) {
 
 ################# end group
 LIBS += -Wl,--end-group
-HEADERS   *= ../Include/*.h      # header file location
+#HEADERS   *= ../Include/*.h      # header file location
 
 HEADERS +=

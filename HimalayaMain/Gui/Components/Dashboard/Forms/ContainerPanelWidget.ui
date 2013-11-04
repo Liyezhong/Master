@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dashboard::CDashboardWidget</class>
- <widget class="QWidget" name="Dashboard::CDashboardWidget">
+ <class>Dashboard::CContainerPanelWidget</class>
+ <widget class="QWidget" name="Dashboard::CContainerPanelWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -154,7 +154,7 @@
            <property name="styleSheet">
             <string notr="true">background-color: rgb(194, 194, 194);</string>
            </property>
-           <property name="text" stdset="0">
+           <property name="text">
             <string/>
            </property>
           </widget>

@@ -28,7 +28,7 @@
         <!-- Remote login: Yes/No  (if empty, "No" is assumed) -->
         <!-- If External Process is not started by Master and its exact login timing is 
         undefined, remotelogin shall be set to "Yes". -->
-        <remotelogin>No</remotelogin>
+        <remotelogin>Yes</remotelogin>
         <!-- Timeout for remote login option, in seconds. 
         Zero means infinite waiting. -->
         <remotetimeout>0</remotetimeout>

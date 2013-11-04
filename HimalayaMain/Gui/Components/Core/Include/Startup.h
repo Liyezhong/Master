@@ -24,7 +24,7 @@
 #include "Core/Include/DataConnector.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/StatusBarManager.h"
-#include "Dashboard/Include/DashboardWidget.h"
+#include "Dashboard/Include/DashboardWidget2.h"
 #include "Dashboard/Include/ScreenSaverWidget.h"
 #include "Programs/Include/ProgramWidget.h"
 #include "Reagents/Include/ReagentWidget.h"
@@ -54,7 +54,7 @@ private:
     Core::CDataConnector *mp_DataConnector; //!< Connects data manager to the network
     // GUI components
     MainMenu::CMainWindow m_MainWindow;     //!< The main window of the application
-    Dashboard::CDashboardWidget *mp_Dashboard;  //!< Dashboard screen
+    Dashboard::CDashboardWidget2 *mp_Dashboard;  //!< Dashboard screen
     Programs::CProgramWidget *mp_Programs;  //!< Programs screen
     Reagents::CReagentWidget *mp_Reagents; //!< Reagents screen
     Settings::CSettingsWidget *mp_Settings; //!< Settings screen
