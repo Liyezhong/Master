@@ -21,7 +21,14 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="CProgramPanelWidget" name="programPanelWidget" native="true"/>
+    <widget class="CProgramPanelWidget" name="programPanelWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QStackedWidget" name="stackedWidget">

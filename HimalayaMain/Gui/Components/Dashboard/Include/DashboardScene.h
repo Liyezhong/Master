@@ -70,9 +70,9 @@ public:
                         MainMenu::CMainWindow *p_MainWindow = NULL);
     virtual ~CDashboardScene();
     void UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType);
-    const QTime& GetStepRemainingTime();
+    /*const QTime& GetStepRemainingTime();
     const QTime GetProgramRemainingTime();
-    const QString GetEndDateTime();
+    const QString GetEndDateTime();*/
     void OnPauseStationSuckDrain();
     void OnStationSuckDrain(const QString& StationId, bool IsStart, bool IsSuck);
     bool HaveExpiredReagent();
@@ -84,7 +84,6 @@ private:
     QList<Core::CDashboardStationItem *> mp_DashboardStationItems;                   //!< list of station items
     Core::CDashboardStationItem *mp_DashboardStationRetort;
     QList<QPointF> m_DashboardStationItemPositions;                                  //!< list of station item positions
-    QPoint    m_DashboardEndTimeWidgetPos;
     QHash<QString, DataManager::CDashboardStation*> m_DashboardStationList;          //!< Hash table of Stations
     QHash<QString, QPointF> m_StationJointList;          //!< Hash table of Station joints
     QHash<QString, PipePathAndOrientation> m_PipeRectList;
@@ -92,8 +91,6 @@ private:
     QStringList m_DashboardStationIDs;                                               //!< StationIds list
     QList<StationGroupType_t> m_DashboardStationGroup;                               //!< StationGroup list
     QList<QString> m_DashboardStationLabels;
-    Dashboard::CDashboardEndTimeWidget *mp_DashboardEndTimeWidget;
-    QGraphicsProxyWidget *mp_GraphicsProxyWidget;
 
     DataManager::CDashboardDataStationList *mp_DashboardStationListClone;            //!< Cloned DataManager StationList
     bool m_CloneDashboardStationList;                                                //!< True if DataManager StationList has to be cloned.
@@ -133,7 +130,6 @@ private:
     void InitStationConnectedPipeList();
     void InitDashboardStationGroups();
     void InitDashboardStationLabels();
-    void InitDashboardEndTimeWidgetPosition();
     void AddDashboardStationItemsToScene();
     void AddGraphicsProxyWidgetsToScene();
     void AddPathLeftTopArc(QPainterPath& path, QPointF& pnt);

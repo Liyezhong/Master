@@ -60,6 +60,7 @@ CContainerPanelWidget::CContainerPanelWidget(QWidget *p_Parent): MainMenu::CPane
                                    m_strCheckEmptyStation(tr("The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed."))
 {
      mp_Ui->setupUi(GetContentFrame());
+     SetPanelTitle(QApplication::translate("Dashboard::CContainerPanelWidget", "Dashboard", 0, QApplication::UnicodeUTF8));
      QPalette Palette = mp_Ui->dashboardView->palette();
      QColor BaseColor = Palette.color(QPalette::Base);
      BaseColor.setAlpha(0);
@@ -120,18 +121,10 @@ void CContainerPanelWidget::Initialize()
 
     mp_ProgramList = mp_DataConnector->ProgramList;
 
-    m_btnGroup.addButton(mp_Ui->playButton, Dashboard::firstButton);
-    m_btnGroup.addButton(mp_Ui->abortButton, Dashboard::secondButton);
-
-    EnableAbortButton(false);
-    EnablePlayButton(false);
-
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     mp_MessageDlg = new MainMenu::CMessageDlg();
 
     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
-    CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, activated(int), this, OnActivated(int));
-    CONNECTSIGNALSLOT(mp_Ui->pgmsComboBox, ButtonPress(), this, OnComboBoxButtonPress());
 
     CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
     CONNECTSIGNALSLOT(mp_ProgramStatusWidget, AbortClicked(int), this, OnButtonClicked(int));
@@ -227,7 +220,6 @@ void CContainerPanelWidget::DrawSeparatorLine()
 void CContainerPanelWidget::AddItemsToComboBox(bool bOnlyAddCleaningProgram)
 {
     m_FavProgramIDs.clear();
-    mp_Ui->pgmsComboBox->clear();
     if (bOnlyAddCleaningProgram)
     {
         m_FavProgramIDs.append("C01");
@@ -248,8 +240,6 @@ void CContainerPanelWidget::AddItemsToComboBox(bool bOnlyAddCleaningProgram)
         }
         else
             strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(ProgramId)->GetIcon() + ".png";
-        QIcon ProgramIcon(strIconName);
-        mp_Ui->pgmsComboBox->insertItem(i, ProgramIcon, ProgramName);
     }
 }
 
@@ -264,11 +254,7 @@ void CContainerPanelWidget::OnUserRoleChanged()
     m_UserRoleChanged = true;
     if (m_CurProgramStepIndex > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
     {
-        this->EnablePlayButton(false);//in fact, it will disable pause button when runing
     }
-    else
-    if (m_ProcessRunning && (m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service))
-        EnablePlayButton(true);
 
 }
 
@@ -276,7 +262,6 @@ void CContainerPanelWidget::OnUserRoleChanged()
 void CContainerPanelWidget::OnButtonClicked(int whichBtn)
 {
     if ( whichBtn == Dashboard::firstButton ) {
-        this->EnablePlayButton(false);//protect to click twice in a short time
         switch(m_ProgramNextAction)
         {
             default:
@@ -295,7 +280,6 @@ void CContainerPanelWidget::OnButtonClicked(int whichBtn)
                     }
 
                     mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
-                    mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
                     m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
                     return;
                 }
@@ -310,8 +294,6 @@ void CContainerPanelWidget::OnButtonClicked(int whichBtn)
                     mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_PAUSE);
                     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_PAUSED);//pause ProgressBar and EndTime countdown
                     m_ProgramNextAction = DataManager::PROGRAM_START;
-                    mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
-
                 } else {
                     // Take Necessary Action
                 }
@@ -322,8 +304,6 @@ void CContainerPanelWidget::OnButtonClicked(int whichBtn)
     else if (whichBtn == Dashboard::secondButton)
     {
         if(CheckPreConditionsToAbortProgram()) {
-            EnableAbortButton(false);
-            EnablePlayButton(false);
             mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
         }
     }
@@ -363,11 +343,7 @@ void CContainerPanelWidget::OnUnselectProgram()
     if (!m_SelectedProgramId.isEmpty())
     {
         m_SelectedProgramId = "";
-        EnablePlayButton(false);
         m_StationList.clear();
-        //Show program name in the comboBox
-        CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = m_strProgram;
-        mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
         int asapEndTime = 0;
         emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
         emit UpdateSelectedStationList(m_StationList);
@@ -445,46 +421,6 @@ int CContainerPanelWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
     }
 
     return (TimeActual + TimeDelta);//seconds
-}
-
-void CContainerPanelWidget::OnActivated(int index)
-{
-    qDebug() << "Index Recieved : " << index;
-    if(-1 != index) {
-        m_NewSelectedProgramId = m_FavProgramIDs.at(index);
-        CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
-        PrepareSelectedProgramChecking();
-    } else {
-        mp_Ui->pgmsComboBox->showPopup();
-    }
-}
-
-void CContainerPanelWidget::OnComboBoxButtonPress()
-{
-    const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_NewSelectedProgramId);
-    if (pProgram)
-    {
-        QList<QString> stationNameList;
-        for (int i = 0; i < m_StationList.count(); i++)
-        {
-            DataManager::CDashboardStation* pStation = mp_DataConnector->DashboardStationList->GetDashboardStation(m_StationList.at(i));
-            if (!pStation)
-            {
-                Q_ASSERT(0);
-            }
-            stationNameList.append(pStation->GetDashboardStationName());
-        }
-
-        mp_ProgramStatusWidget->InitDialog(const_cast<DataManager::CProgram*>(pProgram), mp_DataConnector,
-                                           stationNameList, m_CurProgramStepIndex,
-                                           mp_DashboardScene->GetStepRemainingTime(),
-                                           mp_DashboardScene->GetProgramRemainingTime(),
-                                           mp_DashboardScene->GetEndDateTime(), mp_Ui->playButton->isEnabled());
-        mp_ProgramStatusWidget->setFixedSize(568, 548);
-        QRect scr = mp_MainWindow->geometry();
-        mp_ProgramStatusWidget->move( scr.center() - mp_ProgramStatusWidget->rect().center());
-        (void)mp_ProgramStatusWidget->exec();
-    }
 }
 
 const QString& CContainerPanelWidget::SelectedProgramId()
@@ -617,7 +553,6 @@ void CContainerPanelWidget::CheckPreConditionsToRunProgram()
     }
 
     mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
-    mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Pause.png"));
     m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
 }
 
@@ -640,29 +575,8 @@ bool CContainerPanelWidget::CheckPreConditionsToAbortProgram()
     return ConfirmationMessageDlg.exec() == (int)QDialog::Accepted;
 }
 
-void CContainerPanelWidget::EnablePlayButton(bool bSetEnable)
-{
-    mp_Ui->playButton->setEnabled(bSetEnable);
-    if (bSetEnable)
-        mp_Ui->playButton->setStyleSheet(QString::fromUtf8("border-image: url(:/HimalayaImages/IconPushButton/IconPushButton-Enabled.png);"));
-    else
-        mp_Ui->playButton->setStyleSheet(QString::fromUtf8("border-image: url(:/HimalayaImages/IconPushButton/IconPushButton-Disabled.png);"));
-
-}
-
-void CContainerPanelWidget::EnableAbortButton(bool bSetEnable)
-{
-    mp_Ui->abortButton->setEnabled(bSetEnable);
-    if (bSetEnable)
-        mp_Ui->abortButton->setStyleSheet(QString::fromUtf8("border-image: url(:/HimalayaImages/IconPushButton/IconPushButton-Enabled.png);"));
-    else
-        mp_Ui->abortButton->setStyleSheet(QString::fromUtf8("border-image: url(:/HimalayaImages/IconPushButton/IconPushButton-Disabled.png);"));
-}
-
 void CContainerPanelWidget::OnProgramStartReadyUpdated()
 {
-    if (!m_SelectedProgramId.isEmpty())
-        this->EnablePlayButton(true);
     m_ProgramStartReady = true;
 }
 
@@ -692,9 +606,6 @@ void CContainerPanelWidget::OnProgramWillComplete()
         emit ProgramActionStarted(DataManager::PROGRAM_START, m_TimeProposed, Global::AdjustedTime::Instance().GetCurrentDateTime(), true);
 
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_DRAIN);
-        //disable pause and abort
-        EnablePlayButton(false);
-        EnableAbortButton(false);
         return;
     }
 }
@@ -721,19 +632,12 @@ void CContainerPanelWidget::TakeOutSpecimenAndWaitRunCleaning()
         m_IsWaitingCleaningProgram = true;
         if (mp_MessageDlg->exec())
         {
-            //Change UI to prepare start Cleaning Program
-            mp_Ui->pgmsComboBox->WorkAsButton(false);
-
             m_ProgramNextAction = DataManager::PROGRAM_START;
-            mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
-
             //only show Cleaning program in the ComboBox list
             this->AddItemsToComboBox(true);
 
             //switch to the dashboard page
             mp_MainWindow->SetTabWidgetIndex();
-            //show the comboBox
-            mp_Ui->pgmsComboBox->showPopup();
 
         }
     }
@@ -745,7 +649,6 @@ void CContainerPanelWidget::OnProgramBeginAbort()
     //time countdown
     //Todo:20, Abort time, will be given a rough value later;
     emit ProgramActionStarted(DataManager::PROGRAM_ABORT, 20, Global::AdjustedTime::Instance().GetCurrentDateTime(), false);
-    this->EnablePlayButton(false);
 }
 
 void CContainerPanelWidget::OnProgramAborted()
@@ -761,12 +664,10 @@ void CContainerPanelWidget::OnProgramAborted()
 
     m_IsResumeRun = false;
     m_CurProgramStepIndex = -1;
-    mp_Ui->pgmsComboBox->WorkAsButton(false);
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
 
     //disable "Start" button, enable Retort lock button, hide End time button, now Abort button is still in "disable" status
-    EnablePlayButton(false);
 
     QDateTime  endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
     if (m_StartDateTime.isValid())
@@ -794,18 +695,15 @@ void CContainerPanelWidget::OnProgramCompleted()
 {
     m_IsResumeRun = false;
     m_CurProgramStepIndex = -1;
-    mp_Ui->pgmsComboBox->WorkAsButton(false);//now it is ComboBox, not a long button
 
     if (m_SelectedProgramId.at(0) == 'C')
     {
         QString reagentID("");
         m_pUserSetting->SetReagentIdOfLastStep(reagentID);//Clear CleaningProgram flag
         emit UpdateUserSetting(*m_pUserSetting);
-        EnableAbortButton(false);
         AddItemsToComboBox();
 
         m_ProgramNextAction = DataManager::PROGRAM_START;
-        mp_Ui->playButton->setIcon(QIcon(":/HimalayaImages/Icons/Dashboard/Operation/Operation_Start_Resume.png"));
     }
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
@@ -825,16 +723,11 @@ void CContainerPanelWidget::OnProgramRunBegin()
 {
     emit ProgramActionStarted(DataManager::PROGRAM_START, m_TimeProposed, Global::AdjustedTime::Instance().GetCurrentDateTime(), m_IsResumeRun);
     m_IsResumeRun = true;
-    mp_Ui->pgmsComboBox->WorkAsButton(true);
     if (m_SelectedProgramId.at(0) == 'C')
     {
-        EnablePlayButton(false);//enable pause button
-        EnableAbortButton(false);
     }
     else
     {
-        EnablePlayButton(true);//enable pause button
-        EnableAbortButton(true);
     }
 
     m_StartDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
@@ -858,11 +751,9 @@ void CContainerPanelWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetor
 {
     if (cmd.IsLocked())
     {
-        mp_Ui->labelLockIndicator->lock(true);
     }
     else
     {
-        mp_Ui->labelLockIndicator->lock(false);
         //enable the "OK"
         if (m_IsWaitingCleaningProgram && mp_MessageDlg->isVisible())
         {
@@ -943,8 +834,6 @@ void CContainerPanelWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramS
     m_SelectedProgramId = m_NewSelectedProgramId;
     m_StationList.clear();
     m_StationList = stationList;
-    //Show program name in the comboBox
-    mp_Ui->pgmsComboBox->UpdateSelectedProgramName(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
 
     //get the proposed program end DateTime
     m_TimeProposed = cmd.TimeProposed();
@@ -955,7 +844,6 @@ void CContainerPanelWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramS
     emit UpdateSelectedStationList(m_StationList);
     if (m_ProgramStartReady)
     {
-        EnablePlayButton(true);
     }
 }
 
@@ -964,7 +852,7 @@ void CContainerPanelWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::C
     m_CurProgramStepIndex = cmd.CurProgramStepIndex();
     if (m_CurProgramStepIndex > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
     {
-        this->EnablePlayButton(false);//disable pause button when runing
+
     }
 }
 

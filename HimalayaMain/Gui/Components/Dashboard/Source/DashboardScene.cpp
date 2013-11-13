@@ -68,7 +68,6 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     InitDashboardStationGroups();
     InitDashboardStationIDs();
     InitDashboardStationLabels();
-    InitDashboardEndTimeWidgetPosition();
     InitStationConnectedPipeList();
     AddDashboardStationItemsToScene();
 
@@ -103,7 +102,6 @@ CDashboardScene::~CDashboardScene()
             delete m_pGraphicsPathItemPipeList.at(i);
         }
         delete m_WholePipeGraphicsRectItem;
-        delete mp_DashboardEndTimeWidget;
         delete m_pPipeAnimationTimer;
         delete m_pBlinkingTimer;
     } catch(...) {
@@ -210,16 +208,6 @@ void CDashboardScene::InitDashboardStationGroups()
                             << STATIONS_GROUP_PARAFFINBATH << STATIONS_GROUP_PARAFFINBATH << STATIONS_GROUP_PARAFFINBATH;
 }
 
-
-/****************************************************************************/
-/*!
- *  \brief Initialize Dashboard Station End Time Widget Position on the Scene
- */
-/****************************************************************************/
-void CDashboardScene::InitDashboardEndTimeWidgetPosition()
-{
-    m_DashboardEndTimeWidgetPos = QPoint(520, 78);
-}
 
 void CDashboardScene::AddPathLeftTopArc(QPainterPath& path, QPointF& pnt)
 {
@@ -670,21 +658,14 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     this->CollectPipeRect();
     CreateAllPipe();
 
-    // Add the End Time Widget
-    mp_DashboardEndTimeWidget = new Dashboard::CDashboardEndTimeWidget(mp_DataConnector, mp_MainWindow);
-    mp_DashboardEndTimeWidget->InitEndTimeWidgetItems();
-    mp_GraphicsProxyWidget = this->addWidget(mp_DashboardEndTimeWidget);
-    mp_GraphicsProxyWidget->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-    mp_GraphicsProxyWidget->setPos(m_DashboardEndTimeWidgetPos);
-    addItem(mp_GraphicsProxyWidget);
-
-    CONNECTSIGNALSLOT(this, OnSelectDateTime(const QDateTime &), mp_DashboardEndTimeWidget, UpdateDateTime(const QDateTime &));
+    /*CONNECTSIGNALSLOT(this, OnSelectDateTime(const QDateTime &), mp_DashboardEndTimeWidget, UpdateDateTime(const QDateTime &));
 
     CONNECTSIGNALSLOT(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
                       mp_DashboardEndTimeWidget, OnProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
 
     CONNECTSIGNALSLOT(this, ProgramActionStopped(DataManager::ProgramStatusType_t),
                       mp_DashboardEndTimeWidget, OnProgramActionStopped(DataManager::ProgramStatusType_t));
+                      */
 
 }
 
@@ -723,11 +704,12 @@ void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId,
         *mp_ProgramListClone = *(mp_DataConnector->ProgramList);
     }
     p_Program = mp_ProgramListClone->GetProgram(programId);
-    if(p_Program) {
+    /*if(p_Program) {
         mp_DashboardEndTimeWidget->UpdateEndTimeWidgetItems(p_Program, asapEndTime);
     }
     else
         mp_DashboardEndTimeWidget->InitEndTimeWidgetItems();
+    */
 
     for(int j = 0 ; j < m_DashboardStationList.count(); j++)
     {
@@ -754,7 +736,7 @@ void CDashboardScene::UpdateRetortStatus(DataManager::ContainerStatusType_t reto
     mp_DashboardStationRetort->SetContainerStatus(retortStatusType);
 }
 
-const QTime& CDashboardScene::GetStepRemainingTime()
+/*const QTime& CDashboardScene::GetStepRemainingTime()
 {
     return mp_DashboardEndTimeWidget->GetStepRemainingTime();
 }
@@ -768,6 +750,7 @@ const QString CDashboardScene::GetEndDateTime()
 {
     return mp_DashboardEndTimeWidget->GetEndDateTime();
 }
+*/
 
 void CDashboardScene::OnPauseStationSuckDrain()
 {

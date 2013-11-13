@@ -95,9 +95,6 @@ private:
     QString m_strCheckSafeReagent;
     DataManager::CHimalayaUserSettings* m_pUserSetting;
     Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
-
-    void EnablePlayButton(bool bSetEnable);
-    void EnableAbortButton(bool bSetEnable);
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(int, int, int, bool&);
     void PrepareSelectedProgramChecking();
@@ -137,8 +134,6 @@ signals:
 public slots:
     void OnUserRoleChanged();
     void OnButtonClicked(int whichBtn);
-    void OnActivated(int);
-    void OnComboBoxButtonPress();
     void OnProgramStartReadyUpdated();
     void OnProgramWillComplete();
     void OnProgramAborted();
