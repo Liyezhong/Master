@@ -161,7 +161,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     mp_WaitDialog->SetDialogTitle(m_strStartup);
     mp_WaitDialog->SetText(m_strInitDevCom);
     mp_WaitDialog->HideAbort();
-    mp_WaitDialog->show();
+    //mp_WaitDialog->show();
     CONNECTSIGNALSLOT(mp_WaitDialog, Timeout(), mp_MessageDlg, Show());
 
     // MsgBox Manager

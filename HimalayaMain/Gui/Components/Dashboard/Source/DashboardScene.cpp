@@ -117,10 +117,10 @@ CDashboardScene::~CDashboardScene()
 void CDashboardScene::InitDashboardStationItemsPositions()
 {
 
-    m_DashboardStationItemPositions << QPoint(119, 276) << QPoint(204, 276) << QPoint(289, 276) << QPoint(374, 276) << QPoint(459, 276) << QPoint(544, 276) << QPoint(629, 276)
-                                    << QPoint(119, 396) << QPoint(204, 396) << QPoint(289, 396) << QPoint(374, 396) << QPoint(459, 396) << QPoint(544, 396)
-                                    << QPoint(119, 192) << QPoint(247, 192) << QPoint(375, 192)
-                                    << QPoint(119, 89);
+    m_DashboardStationItemPositions << QPoint(15, 232) << QPoint(75, 232) << QPoint(135, 232) << QPoint(195, 232) << QPoint(255, 232) << QPoint(315, 232) << QPoint(375, 232)
+                                    << QPoint(15, 385) << QPoint(75, 385) << QPoint(135, 385) << QPoint(195, 385) << QPoint(255, 385) << QPoint(315, 385)
+                                    << QPoint(15, 149) << QPoint(135, 149) << QPoint(255, 149)
+                                    << QPoint(15, 44);
 
 
 }
@@ -575,7 +575,7 @@ void CDashboardScene::AddDashboardStationItemsToScene()
 
     // For Retort, No Station Id
     mp_DashboardStationRetort = new Core::CDashboardStationItem(mp_DataConnector, STATIONS_GROUP_RETORT, "Retort", "Retort", false);
-    mp_DashboardStationRetort->setPos(QPoint(119, 89));
+    mp_DashboardStationRetort->setPos(QPoint(15, 44));
     addItem(mp_DashboardStationRetort);
 
     //Add Retort's rect and letfTop point

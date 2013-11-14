@@ -108,7 +108,6 @@ public:
     void SetPressed(bool Press);
     bool IsEmpty();
     void LoadStationImages(QPainter & Painter);
-    void DrawBackgroundRectangle(QPainter & Painter);
     void DrawReagentName(QPainter & Painter);
     void DrawStationItemLabel(QPainter & Painter);
     void FillReagentColor(QPainter & Painter);

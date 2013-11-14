@@ -72,7 +72,6 @@ CContainerPanelWidget::CContainerPanelWidget(QWidget *p_Parent): MainMenu::CPane
 CContainerPanelWidget::~CContainerPanelWidget()
 {
     try {
-        delete mp_Separator;
         delete mp_ProgramStatusWidget;
         delete mp_wdgtDateTime;
         delete mp_DashboardScene;
@@ -112,10 +111,6 @@ void CContainerPanelWidget::Initialize()
                         mp_DashboardScene, ProgramActionStopped(DataManager::ProgramStatusType_t));
 
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
-
-    mp_Separator = new QFrame();
-    mp_Separator->setParent(this);  // Set Parent of this Frame as the Dashboard Widget.
-    DrawSeparatorLine();
 
     m_pUserSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
 
@@ -205,16 +200,6 @@ void CContainerPanelWidget::RetranslateUI()
     m_strCheckEmptyStation = QApplication::translate("Dashboard::CContainerPanelWidget", "The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed.", 0, QApplication::UnicodeUTF8);
     m_strCheckSafeReagent = QApplication::translate("Dashboard::CContainerPanelWidget", "No safe reagent for Program step \"%1\" of \"%2\" in case of error happen.Would you like to continue?", 0, QApplication::UnicodeUTF8);
 
-}
-
-void CContainerPanelWidget::DrawSeparatorLine()
-{
-
-    mp_Separator->setFrameShape(QFrame::HLine);
-    mp_Separator->setLineWidth(2);
-    mp_Separator->setFrameShadow(QFrame::Plain);
-    mp_Separator->setGeometry(4,460,685,2);
-    mp_Separator->show();
 }
 
 void CContainerPanelWidget::AddItemsToComboBox(bool bOnlyAddCleaningProgram)

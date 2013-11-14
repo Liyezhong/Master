@@ -56,7 +56,6 @@ private:
     MainMenu::CMainWindow *mp_MainWindow;                           //!< Reference to MainWindow.
     Core::CDataConnector *mp_DataConnector;                     //!< Global data container
     CDashboardScene *mp_DashboardScene;                         //!< Displays the station items
-    QFrame *mp_Separator;                                       //!< Separator Line between View & Operation
     DataManager::ProgramActionType_t m_ProgramNextAction;       //!< Program Next Action
     DataManager::CDataProgramList *mp_ProgramList;
     QStringList m_FavProgramIDs;

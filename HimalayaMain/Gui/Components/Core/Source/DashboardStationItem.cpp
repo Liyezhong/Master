@@ -54,12 +54,12 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
        m_StationItemID(StationItemID),
     m_DashboardStationGroup(StationGroup),
     m_StationItemLabel(StationLabel),
-    m_RetortBoundingRectWidth(125),
-    m_RetortBoundingRectHeight(78),
-    m_ParaffinbathBoundingRectWidth(122),
-    m_ParaffinbathBoundingRectHeight(60),
-    m_BottleBoundingRectWidth(79),
-    m_BottleBoundingRectHeight(97),
+    m_RetortBoundingRectWidth(180),
+    m_RetortBoundingRectHeight(96),
+    m_ParaffinbathBoundingRectWidth(120),
+    m_ParaffinbathBoundingRectHeight(70),
+    m_BottleBoundingRectWidth(61),
+    m_BottleBoundingRectHeight(143),
     m_ReagentExpiredFlag(false),
     m_StationSelected(false),
     m_ContainerStatusType(DataManager::CONTAINER_STATUS_FULL),
@@ -156,7 +156,6 @@ void CDashboardStationItem::UpdateImage()
 
         if (!m_GridDrawn)
         {
-            DrawBackgroundRectangle(Painter);
             m_GridDrawn = true;
         }
         LoadStationImages(Painter);
@@ -329,24 +328,6 @@ void CDashboardStationItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *p_Event)
     update();
 }
 
-/****************************************************************************/
-/*!
- *  \brief Draw Background Rectangle to place the Dashboard Station Items
- *
- *
- */
-/****************************************************************************/
-void CDashboardStationItem::DrawBackgroundRectangle(QPainter & Painter)
-{
-    if ("Retort" != m_StationItemID)
-    {
-        Painter.setRenderHint(QPainter::Antialiasing);
-        Painter.setPen(Qt::white);
-        Painter.setBrush(QColor(Qt::white));
-        Painter.drawRect(boundingRect()); //Draw Rectangle here
-        update();
-    }
-}
 
 /****************************************************************************/
 /*!
@@ -370,7 +351,7 @@ void CDashboardStationItem::LoadStationImages(QPainter& Painter)
     } else {
         if(m_StationSelected) {
             Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png"));
-            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover.png"));
+            //Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover.png"));
         } else {
             Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background_Grayed.png"));
             Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover_Grayed.png"));
@@ -535,7 +516,7 @@ void CDashboardStationItem::DrawStationItemLabel(QPainter &Painter)
        Painter.drawText(QRectF(13,7,67,15), (int)Qt::AlignCenter, m_StationItemLabel);
    } else {
        if(m_StationSelected) {
-           Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover.png"));
+           //Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover.png"));
        } else {
            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover_Grayed.png"));
        }
@@ -604,8 +585,8 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
     if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
     {
         // Since the Painter is rotated, Width and Height Axis Changes.
-        fillBottleWidth = (m_BottleBoundingRectHeight - 25);  // Manual Pixel Calculation
-        fillBottleHeight = (m_BottleBoundingRectWidth- 31);  // Manual Pixel Calculation
+        fillBottleWidth = (m_BottleBoundingRectHeight - 40);  // Manual Pixel Calculation
+        fillBottleHeight = (m_BottleBoundingRectWidth- 10);  // Manual Pixel Calculation
         if (m_ContainerStatusType == DataManager::CONTAINER_STATUS_SCUKING
         || m_ContainerStatusType == DataManager::CONTAINER_STATUS_DRAINING)
         {
@@ -618,19 +599,19 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 
         QPainterPath path;
         path.setFillRule( Qt::WindingFill );
-        path.addRoundedRect(QRect(-95, 2, fillBottleWidth, fillBottleHeight), 8, 8);
+        path.addRoundedRect(QRect(-137, 4, fillBottleWidth, fillBottleHeight), 8, 8);
         int cornerHeight = 8;
         if (fillBottleWidth > cornerHeight && fillBottleWidth < m_BottleBoundingRectHeight - 25 - cornerHeight + 4)
         {
-            path.addRect(QRect((-95 + fillBottleWidth - 8), 3, cornerHeight, 8));// Top left corner not rounded
-            path.addRect(QRect((-95 + fillBottleWidth - 8), (3 + fillBottleHeight - 8), cornerHeight, 8));// Top right corner not rounded
+            path.addRect(QRect((-137 + fillBottleWidth - 8), 4, cornerHeight, 8));// Top left corner not rounded
+            path.addRect(QRect((-137 + fillBottleWidth - 8), (4 + fillBottleHeight - 8), cornerHeight, 8));// Top right corner not rounded
         }
         Painter.drawPath(path);  // Only the Bottome Left and Bottom Right Corner
     }
     else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
     {
-        fillParaffinbathWidth = (m_ParaffinbathBoundingRectHeight - 8);
-        fillParafinbathHeight = (m_ParaffinbathBoundingRectWidth - 32);
+        fillParaffinbathWidth = (m_ParaffinbathBoundingRectHeight - 11);
+        fillParafinbathHeight = (m_ParaffinbathBoundingRectWidth - 10);
         if (m_ContainerStatusType == DataManager::CONTAINER_STATUS_SCUKING
         || m_ContainerStatusType == DataManager::CONTAINER_STATUS_DRAINING)
         {
@@ -643,12 +624,12 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 
         QPainterPath path;
         path.setFillRule( Qt::WindingFill );
-        path.addRoundedRect(QRect(-57, 3, fillParaffinbathWidth, fillParafinbathHeight), 8, 4);
+        path.addRoundedRect(QRect(-62, 5, fillParaffinbathWidth, fillParafinbathHeight), 8, 4);
         int cornerHeight = 8;
         if (fillParaffinbathWidth > cornerHeight)
         {
-            path.addRect(QRect((-57 + fillParaffinbathWidth - 8), 3, cornerHeight, 8));// Top left corner not rounded
-            path.addRect(QRect((-57 + fillParaffinbathWidth - 8), (3 + fillParafinbathHeight - 8), cornerHeight, 8));// Top right corner not rounded
+            path.addRect(QRect((-62 + fillParaffinbathWidth - 8), 5, cornerHeight, 8));// Top left corner not rounded
+            path.addRect(QRect((-62 + fillParaffinbathWidth - 8), (5 + fillParafinbathHeight - 8), cornerHeight, 8));// Top right corner not rounded
         }
         Painter.drawPath(path.simplified());  // Only the Bottome Left and Bottom Right Corner
 
