@@ -28,8 +28,6 @@
 #include "Reagents/Include/ReagentRMSWidget.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 
-#include <QGraphicsSceneMouseEvent>
-
 
 typedef enum {
     STATIONS_GROUP_RETORT,
@@ -54,9 +52,6 @@ class CDashboardStationItem : public QObject, public QGraphicsItem
     Q_INTERFACES(QGraphicsItem)
 
 private:
-    void mousePressEvent(QGraphicsSceneMouseEvent *p_Event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *p_Event);
-
     Core::CDataConnector *mp_DataConnector;              //!< Global data container
     DataManager::CHimalayaUserSettings m_UserSettings;
     Global::RMSOptions_t m_CurRMSMode;
@@ -67,7 +62,6 @@ private:
     bool m_Enabled;                                      //!< Indicates if the station is enabled
     bool m_Pressed;                                      //!< Indicates if the station is pressed
     QString m_StationItemID;
-    bool m_GridDrawn;                                    //!< Flag to verify whether the grid is drawn or not
     StationGroupType_t m_DashboardStationGroup;          //!< Dashboard StationGroup object
     QString m_DashboardStationID;                        //!< Dashboard Station ID
     QPixmap m_Image;                                     //!< Background image.
@@ -90,6 +84,7 @@ private:
     bool m_ExpiredColorRed;
     bool m_IsRetortContaminated;
     void OnCompletedSuckDrain(bool isSuck);
+    void DrawGlowBoundaryText(QFont& textFont, QString& text, QRect& rect, QPainter& painter);
 public:
     explicit CDashboardStationItem(Core::CDataConnector *p_DataConnector,                                   
                                    StationGroupType_t StationGroup, const QString& StationItemID, QString StationLabel,
@@ -109,7 +104,7 @@ public:
     bool IsEmpty();
     void LoadStationImages(QPainter & Painter);
     void DrawReagentName(QPainter & Painter);
-    void DrawStationItemLabel(QPainter & Painter);
+    void DrawStationItemLabel(QPainter & painter);
     void FillReagentColor(QPainter & Painter);
     void SetContainerStatus(DataManager::ContainerStatusType_t containerStatus);
     /****************************************************************************/

@@ -77,8 +77,6 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     } else {
         m_Image = QPixmap(m_BottleBoundingRectWidth, m_BottleBoundingRectHeight);
     }
-
-
     UpdateImage();
 
     mp_SuckDrainTimer = new QTimer(this);
@@ -151,13 +149,9 @@ void CDashboardStationItem::UpdateImage()
     qDebug() << "STATION GROUP = " << (int)m_DashboardStationGroup;
     if (!mp_DashboardStation)
     {
-        //Painter for Drawing the Bakground rectangle, Loading the Static Images and Drawingthe Static Label
+        //Loading the Static Images and Drawingthe Static Label
         QPainter Painter(&m_Image);
-
-        if (!m_GridDrawn)
-        {
-            m_GridDrawn = true;
-        }
+        Painter.fillRect(this->boundingRect(), QColor(226, 227, 228));
         LoadStationImages(Painter);
         return;
     }
@@ -165,8 +159,6 @@ void CDashboardStationItem::UpdateImage()
     CONNECTSIGNALSLOT(mp_DataConnector, ReagentsUpdated(), this, UpdateDashboardStationItemReagent());
     CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationChangeReagent(QString), this, UpdateDashboardScene(QString));
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, UpdateUserSettings());
-    update();
-
 }
 
 /****************************************************************************/
@@ -192,7 +184,6 @@ void CDashboardStationItem::SetImageType(const QString& ImageType)
 {
     m_ImageType = ImageType;
     UpdateImage();
-    update();
 }
 
 /****************************************************************************/
@@ -298,39 +289,6 @@ bool CDashboardStationItem::IsEmpty()
 
 /****************************************************************************/
 /*!
- *  \brief Event handler for mouse press events
- *
- *  \iparam p_Event = Mouse event
- */
-/****************************************************************************/
-void CDashboardStationItem::mousePressEvent(QGraphicsSceneMouseEvent *p_Event)
-{
-    emit Pressed();
-    m_Pressed = true;
-    p_Event->accept();
-    update();
-}
-
-/****************************************************************************/
-/*!
- *  \brief Event handler for mouse release events
- *
- *  \iparam p_Event = Mouse event
- */
-/****************************************************************************/
-void CDashboardStationItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *p_Event)
-{
-    emit Released();
-    if(isSelected() == false) {
-        m_Pressed = false;
-    }
-    p_Event->accept();
-    update();
-}
-
-
-/****************************************************************************/
-/*!
  *  \brief Load the Initial Images of Stations
  *
  */
@@ -359,7 +317,6 @@ void CDashboardStationItem::LoadStationImages(QPainter& Painter)
 
     }
     DrawStationItemLabel(Painter);
-    update();
 }
 
 /****************************************************************************/
@@ -438,9 +395,7 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
 void CDashboardStationItem::DrawStationItemImage()
 {
     QPainter Painter(&m_Image);
-
-    Painter.eraseRect(boundingRect());
-
+    Painter.fillRect(this->boundingRect(), QColor(226, 227, 228));
     LoadStationImages(Painter);
 
     QString ReagentStatus = "";
@@ -472,13 +427,11 @@ void CDashboardStationItem::DrawReagentName(QPainter & Painter)
     QFont TextFont;
     Painter.setRenderHint(QPainter::Antialiasing);
     Painter.setPen(Qt::black);
-    TextFont.setPointSize(9);
+    TextFont.setPointSize(8);
 
     if(m_StationSelected) {
         TextFont.setBold(true);
     }
-
-    Painter.setFont(TextFont);
 
     if (mp_DashboardStation)
     {
@@ -488,42 +441,57 @@ void CDashboardStationItem::DrawReagentName(QPainter & Painter)
         if (p_Reagent)
         {
             Painter.rotate(270.0);
-            Painter.drawText(QRect(-90, -3, 75, 60 ), (int)Qt::TextWordWrap | (int)Qt::AlignVCenter | (int)Qt::AlignLeft, p_Reagent->GetReagentName());
+            QString reagentName = p_Reagent->GetReagentName();
+            QRect rect(-130, 23, 75, 60 );
+            DrawGlowBoundaryText(TextFont, reagentName, rect, Painter);
             Painter.rotate(-270.0);
         }
     }
-    update();
 }
 
-void CDashboardStationItem::DrawStationItemLabel(QPainter &Painter)
+void CDashboardStationItem::DrawGlowBoundaryText(QFont& textFont, QString& text, QRect& rect, QPainter& painter)
 {
-    QFont TextFont;
-    Painter.setRenderHint(QPainter::Antialiasing);
-    Painter.setPen(Qt::black);
-    TextFont.setPointSize(10);
+   QPainterPath textPath;
+   QFontMetrics fm(textFont);
+   textPath.addText(rect.x(), rect.y()+ fm.height() -1 - fm.descent(), textFont, text);
+   QPainterPathStroker pps;
+   pps.setWidth(3);
+   pps.setDashPattern(Qt::NoPen);
+   pps.setCurveThreshold(0.001);
+   pps.setCapStyle(Qt::RoundCap);
+   pps.setJoinStyle(Qt::RoundJoin);
+   QPainterPath strokePath = pps.createStroke(textPath);
+   painter.fillPath(strokePath, QBrush(QColor(Qt::white)));
+   painter.setPen(Qt::black);
+   painter.drawText(rect.x(), rect.y()+ fm.height() -1 - fm.descent(), text);
+}
 
+void CDashboardStationItem::DrawStationItemLabel(QPainter &painter)
+{
+    QFont textFont;
+    textFont.setPointSize(8);
+    painter.setRenderHint(QPainter::Antialiasing);
     if(m_StationSelected) {
-        TextFont.setBold(true);
+        textFont.setBold(true);
     }
 
-    Painter.setFont(TextFont);
-
-   if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
-       Painter.drawText(QRectF(32,5,67,15), (int)Qt::AlignCenter, m_StationItemLabel);
-   } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
-       // Load the Cover Image , because it will not be visible after filling the Color.
-       Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover.png"));
-       Painter.drawText(QRectF(13,7,67,15), (int)Qt::AlignCenter, m_StationItemLabel);
-   } else {
-       if(m_StationSelected) {
+    painter.setFont(textFont);
+    QRect rect;
+    if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
+       textFont.setBold(true);
+       rect.setRect(65,45,67,15);
+     } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
+       rect.setRect(33,22,67,15);
+     } else {//draw text in station label
+        if(m_StationSelected) {
            //Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover.png"));
-       } else {
-           Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover_Grayed.png"));
-       }
+        } else {
+            painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover_Grayed.png"));
+        }
+        rect.setRect(23,9,33,16);
+     }
 
-       Painter.drawText(QRectF(10,1,33,16), (int)Qt::AlignCenter, m_StationItemLabel);
-   }
-   update();
+     DrawGlowBoundaryText(textFont, m_StationItemLabel, rect, painter);
 }
 
 void CDashboardStationItem::FillReagentColor(QPainter & Painter)
@@ -661,8 +629,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
     }
 
     Painter.rotate(-270.0);
-
-    update();
 }
 
 /****************************************************************************/
