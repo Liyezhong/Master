@@ -41,9 +41,15 @@
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="3">
           <widget class="QPushButton" name="IconButton_3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>55</width>
+             <width>71</width>
              <height>62</height>
             </size>
            </property>
@@ -57,9 +63,15 @@
          </item>
          <item row="3" column="1">
           <widget class="QPushButton" name="IconButton_7">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>55</width>
+             <width>71</width>
              <height>62</height>
             </size>
            </property>
@@ -73,9 +85,15 @@
          </item>
          <item row="0" column="2">
           <widget class="QPushButton" name="IconButton_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>55</width>
+             <width>71</width>
              <height>62</height>
             </size>
            </property>
@@ -89,9 +107,15 @@
          </item>
          <item row="1" column="3">
           <widget class="QPushButton" name="IconButton_6">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>55</width>
+             <width>71</width>
              <height>62</height>
             </size>
            </property>
@@ -105,9 +129,15 @@
          </item>
          <item row="4" column="3">
           <widget class="QPushButton" name="IconButton_12">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>55</width>
+             <width>71</width>
              <height>62</height>
             </size>
            </property>
@@ -121,9 +151,15 @@
          </item>
          <item row="3" column="2">
           <widget class="QPushButton" name="IconButton_8">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>55</width>
+             <width>71</width>
              <height>62</height>
             </size>
            </property>
@@ -137,9 +173,15 @@
          </item>
          <item row="4" column="2">
           <widget class="QPushButton" name="IconButton_11">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>55</width>
+             <width>71</width>
              <height>62</height>
             </size>
            </property>
@@ -153,9 +195,15 @@
          </item>
          <item row="4" column="1">
           <widget class="QPushButton" name="IconButton_10">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>55</width>
+             <width>71</width>
              <height>62</height>
             </size>
            </property>
@@ -169,9 +217,15 @@
          </item>
          <item row="0" column="1">
           <widget class="QPushButton" name="IconButton_1">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>55</width>
+             <width>71</width>
              <height>62</height>
             </size>
            </property>
@@ -185,9 +239,15 @@
          </item>
          <item row="1" column="1">
           <widget class="QPushButton" name="IconButton_4">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>55</width>
+             <width>71</width>
              <height>62</height>
             </size>
            </property>
@@ -201,9 +261,15 @@
          </item>
          <item row="3" column="3">
           <widget class="QPushButton" name="IconButton_9">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>55</width>
+             <width>71</width>
              <height>62</height>
             </size>
            </property>
@@ -217,9 +283,15 @@
          </item>
          <item row="1" column="2">
           <widget class="QPushButton" name="IconButton_5">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>55</width>
+             <width>71</width>
              <height>62</height>
             </size>
            </property>

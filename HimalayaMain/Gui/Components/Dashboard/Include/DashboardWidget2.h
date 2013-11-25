@@ -36,6 +36,9 @@ private:
 public slots:
     void OnUnselectProgram();
 
+ signals:
+    void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram = false);
+
 };
 
 } // end namespace Dashboard

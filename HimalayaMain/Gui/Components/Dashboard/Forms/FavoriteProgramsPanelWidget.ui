@@ -31,13 +31,19 @@
      <property name="text">
       <string/>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>71</width>
+       <height>62</height>
+      </size>
+     </property>
      <property name="checkable">
       <bool>true</bool>
      </property>
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="lblPrg1">
      <property name="text">
       <string>Program1</string>
      </property>
@@ -73,13 +79,19 @@
      <property name="text">
       <string/>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>71</width>
+       <height>62</height>
+      </size>
+     </property>
      <property name="checkable">
       <bool>true</bool>
      </property>
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="lblPrg2">
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -109,13 +121,19 @@
      <property name="text">
       <string/>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>71</width>
+       <height>62</height>
+      </size>
+     </property>
      <property name="checkable">
       <bool>true</bool>
      </property>
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="lblPrg3">
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -145,13 +163,19 @@
      <property name="text">
       <string/>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>71</width>
+       <height>62</height>
+      </size>
+     </property>
      <property name="checkable">
       <bool>true</bool>
      </property>
     </widget>
    </item>
    <item row="6" column="1">
-    <widget class="QLabel" name="label_4">
+    <widget class="QLabel" name="lblPrg4">
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -181,6 +205,12 @@
      <property name="text">
       <string/>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>71</width>
+       <height>62</height>
+      </size>
+     </property>
      <property name="checkable">
       <bool>true</bool>
      </property>
@@ -190,7 +220,7 @@
     </widget>
    </item>
    <item row="8" column="1">
-    <widget class="QLabel" name="label_5">
+    <widget class="QLabel" name="lblPrg5">
      <property name="text">
       <string>TextLabel</string>
      </property>

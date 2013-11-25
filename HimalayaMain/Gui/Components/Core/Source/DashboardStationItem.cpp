@@ -54,12 +54,12 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
        m_StationItemID(StationItemID),
     m_DashboardStationGroup(StationGroup),
     m_StationItemLabel(StationLabel),
-    m_RetortBoundingRectWidth(180),
-    m_RetortBoundingRectHeight(96),
+    m_RetortBoundingRectWidth(177),
+    m_RetortBoundingRectHeight(92),
     m_ParaffinbathBoundingRectWidth(120),
-    m_ParaffinbathBoundingRectHeight(70),
+    m_ParaffinbathBoundingRectHeight(65),
     m_BottleBoundingRectWidth(61),
-    m_BottleBoundingRectHeight(143),
+    m_BottleBoundingRectHeight(139),
     m_ReagentExpiredFlag(false),
     m_StationSelected(false),
     m_ContainerStatusType(DataManager::CONTAINER_STATUS_FULL),
@@ -297,22 +297,22 @@ bool CDashboardStationItem::IsEmpty()
 void CDashboardStationItem::LoadStationImages(QPainter& Painter)
 {
     if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
-        Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Enabled.png"));        
+        Painter.drawPixmap(-1, -2, QPixmap(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Enabled.png"));
     } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
         if (m_StationSelected) {
             Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png"));
-            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover.png"));
+            //Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover.png"));
         } else {
-            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background_Grayed.png"));
-            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover_Grayed.png"));
+            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png"));
+            //Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover_Grayed.png"));
         }
     } else {
         if(m_StationSelected) {
-            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png"));
+            Painter.drawPixmap(0, -2, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png"));
             //Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover.png"));
         } else {
-            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background_Grayed.png"));
-            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover_Grayed.png"));
+            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png"));
+            //Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover_Grayed.png"));
         }
 
     }
@@ -486,7 +486,7 @@ void CDashboardStationItem::DrawStationItemLabel(QPainter &painter)
         if(m_StationSelected) {
            //Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover.png"));
         } else {
-            painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover_Grayed.png"));
+            //painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Cover_Grayed.png"));
         }
         rect.setRect(23,9,33,16);
      }
@@ -522,7 +522,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         ReagentColorValue = m_CurrentReagentColorValue;
     }
     if(m_StationSelected) {
-        Painter.setRenderHint(QPainter::Antialiasing);
         Painter.setPen(QColor(ReagentColorValue));
         QColor color(ReagentColorValue);
         if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup || STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
@@ -543,7 +542,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 
         Painter.setBrush(color);
     } else {
-        Painter.setRenderHint(QPainter::Antialiasing);
         Painter.setPen(QColor(Qt::gray));
         Painter.setBrush(QColor(Qt::gray));
     }

@@ -1,5 +1,7 @@
 #include "Dashboard/Include/ProgramPanelWidget.h"
 #include "ui_ProgramPanelWidget.h"
+#include "Global/Include/Utils.h"
+#include "MainMenu/Include/MainWindow.h"
 
 namespace Dashboard {
 CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
@@ -8,11 +10,14 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
 {
     ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Programs"));
+    CONNECTSIGNALSLOT(this, AddItemsToFavoritePanel(bool), ui->favoriteProgramsPanel, AddItemsToFavoritePanel(bool));
+
     connect(ui->pushButton, SIGNAL(clicked(bool)),
                 this, SLOT(on_pushButton_clicked()));
 
     connect(ui->pushButton_2, SIGNAL(clicked(bool)),
                 this, SLOT(on_pushButton_2_clicked()));
+
 }
 
 CProgramPanelWidget::~CProgramPanelWidget()
@@ -42,6 +47,11 @@ void CProgramPanelWidget::RetranslateUI()
 {
     SetPanelTitle(QApplication::translate("Dashboard::CProgramPanelWidget", "Programs",
                                                                  0, QApplication::UnicodeUTF8));
+}
+
+void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector)
+{
+    ui->favoriteProgramsPanel->SetPtrToMainWindow(p_MainWindow, p_DataConnector);
 }
 
 void CProgramPanelWidget::on_pushButton_clicked()

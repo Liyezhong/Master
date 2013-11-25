@@ -135,6 +135,7 @@ private:
     void EscClicked();
     void RetranslateUI();
     void ResetButtons(DataManager::CProgram &CurrentProgram, bool SelectionChanged);
+    void ButtonPrgIconEnable(bool enable);
 
 private slots:
     void OnEditName();

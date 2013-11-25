@@ -100,7 +100,8 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
                       this, UpdateProgramStepTable(DataManager::CProgramStep*,bool));
     CONNECTSIGNALSLOT(mp_ModifyProgramIconDlg, UpdateProgram(DataManager::CProgram *), this, UpdateProgramIcon(DataManager::CProgram *));
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    OnProcessStateChanged();   
+    OnProcessStateChanged();
+    mp_Ui->btnPrgIcon->setIconSize(QSize(45, 30));
 }
 
 /****************************************************************************/
@@ -127,7 +128,6 @@ void CModifyProgramDlg::UpdateProgramIcon(DataManager::CProgram *Program)
     m_Icon = Program->GetIcon();
     m_Program.SetIcon(m_Icon);
     mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/Program/"+m_Icon+".png"));
-
 }
 
 /****************************************************************************/
@@ -205,13 +205,13 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
         mp_Ui->btnPrgIcon->setIcon(QIcon(""));
     }
     else if((m_ButtonType != COPY_BTN_CLICKED) && (m_Program.IsLeicaProgram() || m_Program.GetID().at(0) == 'C')) {
-        mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/MISC/Icon_Leica.png"));
+        mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/Program/Icon_Leica.png"));
         mp_Ui->btnEdit->setEnabled(false);
         mp_Ui->btnCopy->setEnabled(false);
         mp_Ui->btnDelete->setEnabled(false);
         mp_Ui->btnNew->setEnabled(false);
         mp_Ui->btnPrgName->setEnabled(false);
-        mp_Ui->btnPrgIcon->setEnabled(true);
+        ButtonPrgIconEnable(false);
     } else {
         mp_Ui->btnPrgIcon->setIcon(QIcon(QString(":/HimalayaImages/Icons/Program/"+m_Program.GetIcon()+".png")));
     }
@@ -567,7 +567,7 @@ void CModifyProgramDlg::OnProcessStateChanged()
         (!m_ProcessRunning)) {
         //Edit Mode
         mp_Ui->btnPrgName->setEnabled(true);
-        mp_Ui->btnPrgIcon->setEnabled(true);
+        ButtonPrgIconEnable(true);
         mp_Ui->btnNew->setEnabled(true);
         mp_Ui->btnCancel->setEnabled(true);
         mp_Ui->btnSave->setEnabled(true);
@@ -579,7 +579,7 @@ void CModifyProgramDlg::OnProcessStateChanged()
         else {
             //View Mode
             mp_Ui->btnPrgName->setEnabled(false);
-            mp_Ui->btnPrgIcon->setEnabled(false);
+            ButtonPrgIconEnable(false);
             mp_Ui->btnCancel->setEnabled(true);           
             mp_Ui->btnDelete->setEnabled(false);
             mp_Ui->btnNew->setEnabled(false);
@@ -625,6 +625,26 @@ void CModifyProgramDlg::OnOkClicked()
     mp_KeyBoardWidget->Detach();
 }
 
+void CModifyProgramDlg::ButtonPrgIconEnable(bool enable)
+{
+    if (!mp_Ui)
+        return;
+
+    QString enableIcon;
+    if (enable)
+    {
+        enableIcon = "IconPushButton-Enabled.png";
+    }
+    else
+    {
+        enableIcon = "IconPushButton-Disabled.png";
+    }
+    mp_Ui->btnPrgIcon->setStyleSheet(mp_Ui->btnPrgIcon->property("defaultStyleSheet").toString()
+                                     + "QToolButton { border-image: url(:HimalayaImages/IconPushButton/"
+                                     + enableIcon + ");}");
+    mp_Ui->btnPrgIcon->setEnabled(enable);
+}
+
 /****************************************************************************/
 /*!
  *  \brief This event is called whenever widget is shown.Sets the states of
@@ -645,7 +665,7 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
         //Edit Mode
         if (m_ButtonType == NEW_BTN_CLICKED) {
             mp_Ui->btnPrgName->setEnabled(true);
-            mp_Ui->btnPrgIcon->setEnabled(true);
+            ButtonPrgIconEnable(true);
             mp_Ui->btnNew->setEnabled(true);
             mp_Ui->btnCancel->setEnabled(true);
             mp_Ui->btnSave->setEnabled(true);
@@ -663,14 +683,14 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
                 mp_Ui->btnCopy->setEnabled(false);
                 mp_Ui->btnEdit->setEnabled(false);
                 mp_Ui->btnPrgName->setEnabled(true);
-                mp_Ui->btnPrgIcon->setEnabled(true);
+                ButtonPrgIconEnable(true);
             }
         }
     }
     else {
         //View Mode
         mp_Ui->btnPrgName->setEnabled(false);
-        mp_Ui->btnPrgIcon->setEnabled(false);
+        ButtonPrgIconEnable(false);
         mp_Ui->btnCancel->setEnabled(true);
         mp_Ui->btnCopy->setEnabled(false);
         mp_Ui->btnDelete->setEnabled(false);

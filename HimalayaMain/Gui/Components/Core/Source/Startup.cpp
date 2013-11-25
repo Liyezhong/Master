@@ -68,13 +68,13 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_ScreenSaver, OnInteractStart());
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_Users, OnInteractStart());
 
-    //CONNECTSIGNALSLOT(mp_DataConnector, ProgramsInitialized(bool), mp_Dashboard, AddItemsToComboBox(bool));  // To Populate the ComboBox Items in the initial stage
-    //CONNECTSIGNALSLOT(mp_DataConnector, ProgramsDeleted(), mp_Dashboard, AddItemsToComboBox());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsInitialized(bool), mp_Dashboard, AddItemsToFavoritePanel(bool));
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsDeleted(), mp_Dashboard, AddItemsToFavoritePanel());
 
-    //CONNECTSIGNALSLOT(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Dashboard, AddItemsToComboBox()); // To Populate the ComboBox when User Changes the List
+    CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Dashboard, AddItemsToFavoritePanel());
     CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Programs, UpdateProgram(DataManager::CProgram &));
 
-   // CONNECTSIGNALSIGNAL(mp_Dashboard, UpdateSelectedStationList(QList<QString>&), mp_Reagents, UpdateSelectedStationList(QList<QString>&));
+    //CONNECTSIGNALSIGNAL(mp_Dashboard, UpdateSelectedStationList(QList<QString>&), mp_Reagents, UpdateSelectedStationList(QList<QString>&));
 
 
     CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsUpdated(), mp_Programs, UpdateProgramList());

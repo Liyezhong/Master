@@ -3,11 +3,20 @@
 
 #include "MainMenu/Include/PanelFrame.h"
 
+namespace MainMenu
+{
+    class CMainWindow ;
+}
+
+namespace Core
+{
+    class CDataConnector;
+}
 
 namespace Dashboard {
 
 namespace Ui {
-class CProgramPanelWidget;
+    class CProgramPanelWidget;
 }
 
 class CProgramPanelWidget : public MainMenu::CPanelFrame
@@ -17,6 +26,11 @@ class CProgramPanelWidget : public MainMenu::CPanelFrame
 public:
     explicit CProgramPanelWidget(QWidget *parent = 0);
     ~CProgramPanelWidget();
+
+    void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector);
+
+signals:
+    void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
 
 protected:
     void changeEvent(QEvent *p_Event);

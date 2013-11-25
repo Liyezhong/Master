@@ -99,7 +99,7 @@ void CContainerPanelWidget::Initialize()
 
     mp_DashboardScene = new CDashboardScene(mp_DataConnector, this, mp_MainWindow);
     mp_Ui->dashboardView->setScene(mp_DashboardScene);
-    mp_Ui->dashboardView->setRenderHint(QPainter::Antialiasing);
+    //mp_Ui->dashboardView->setRenderHint(QPainter::Antialiasing);
 
     CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime&));
     CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), mp_DashboardScene, OnSelectDateTime(const QDateTime &));
@@ -225,6 +225,8 @@ void CContainerPanelWidget::AddItemsToComboBox(bool bOnlyAddCleaningProgram)
         }
         else
             strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(ProgramId)->GetIcon() + ".png";
+       // QIcon ProgramIcon(strIconName);
+        //mp_Ui->pgmsComboBox->insertItem(i, ProgramIcon, ProgramName);
     }
 }
 

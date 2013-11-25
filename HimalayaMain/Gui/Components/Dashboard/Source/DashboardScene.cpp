@@ -26,8 +26,8 @@
 
 namespace Dashboard {
 
-const int PipeWidth = 7;
-const int JointHeight = 17;
+const int PipeWidth = 5;
+const int JointHeight = 10;
 
 //!< Timing interval for the water animation in milliseconds
 #define ANIMATION_INTERVAL 500
@@ -70,7 +70,6 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     InitDashboardStationLabels();
     InitStationConnectedPipeList();
     AddDashboardStationItemsToScene();
-
 
 
     // update the stations whenenver the stations.xml is sent
@@ -117,10 +116,10 @@ CDashboardScene::~CDashboardScene()
 void CDashboardScene::InitDashboardStationItemsPositions()
 {
 
-    m_DashboardStationItemPositions << QPoint(15, 232) << QPoint(75, 232) << QPoint(135, 232) << QPoint(195, 232) << QPoint(255, 232) << QPoint(315, 232) << QPoint(375, 232)
+    m_DashboardStationItemPositions << QPoint(15, 227) << QPoint(75, 227) << QPoint(135, 227) << QPoint(195, 227) << QPoint(255, 227) << QPoint(315, 227) << QPoint(375, 227)
                                     << QPoint(15, 385) << QPoint(75, 385) << QPoint(135, 385) << QPoint(195, 385) << QPoint(255, 385) << QPoint(315, 385)
-                                    << QPoint(15, 149) << QPoint(135, 149) << QPoint(255, 149)
-                                    << QPoint(15, 44);
+                                    << QPoint(15, 144) << QPoint(135, 144) << QPoint(255, 144)
+                                    << QPoint(15, 39);
 
 
 }
@@ -330,7 +329,7 @@ void CDashboardScene::CreateAllPipe()
     m_WholePipeGraphicsRectItem = new QGraphicsPathItem(path);
     m_WholePipeGraphicsRectItem->setPen(QPen(QColor(0, 0, 0), 0, Qt::SolidLine,
                                              Qt::FlatCap, Qt::MiterJoin));
-    //m_WholePipeGraphicsRectItem->setBrush(QBrush(QColor(136, 136, 136), Qt::SolidPattern));
+    m_WholePipeGraphicsRectItem->setBrush(QBrush(QColor(255, 255, 255), Qt::SolidPattern));
     addItem(m_WholePipeGraphicsRectItem);
 }
 
@@ -506,8 +505,8 @@ void CDashboardScene::OnUpdateUserSettings()
      {
         m_pBlinkingTimer->stop();
      }
-     else
-         m_pBlinkingTimer->start();
+     //else
+      //   m_pBlinkingTimer->start();
 }
 
 /****************************************************************************/
@@ -544,7 +543,7 @@ void CDashboardScene::AddDashboardStationItemsToScene()
 
         QRectF rectStation = p_DashboardStationItem->boundingRect();
         QPointF posStation = p_DashboardStationItem->pos();
-        qreal x = posStation.rx() + rectStation.width()/2 - 5 - 14;
+        qreal x = posStation.rx() + rectStation.width()/2 - 5;
         qreal y = posStation.ry() - JointHeight;
         m_StationJointList.insert(m_DashboardStationIDs[i], QPointF(x, y));
 
@@ -575,7 +574,7 @@ void CDashboardScene::AddDashboardStationItemsToScene()
 
     // For Retort, No Station Id
     mp_DashboardStationRetort = new Core::CDashboardStationItem(mp_DataConnector, STATIONS_GROUP_RETORT, "Retort", "Retort", false);
-    mp_DashboardStationRetort->setPos(QPoint(15, 44));
+    mp_DashboardStationRetort->setPos(QPoint(15, 35));
     addItem(mp_DashboardStationRetort);
 
     //Add Retort's rect and letfTop point
@@ -593,8 +592,8 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     //P3 Right point
     int harfPipeWidth = PipeWidth / 2;
 
-    int paraffinbathBoundingRectWidth = 122;
-    QPointF P3RightPoint(m_StationJointList["P3"].rx() + paraffinbathBoundingRectWidth/2 + 24, m_StationJointList["P3"].ry());
+    int paraffinbathBoundingRectWidth = 120;
+    QPointF P3RightPoint(m_StationJointList["P3"].rx() + paraffinbathBoundingRectWidth/2 + 72, m_StationJointList["P3"].ry());
     m_StationJointList.insert("P3RightPoint", P3RightPoint);
 
     //v1TopPoint
@@ -615,8 +614,7 @@ void CDashboardScene::AddDashboardStationItemsToScene()
 
 
     //S7 Right point
-    int bottleBoundingRectWidth = 79;
-    QPointF S7RightPoint(m_StationJointList["S7"].rx() + bottleBoundingRectWidth/2 + 24, m_StationJointList["S7"].ry());
+    QPointF S7RightPoint(P3RightPoint.rx(), m_StationJointList["S7"].ry());
     m_StationJointList.insert("S7RightPoint", S7RightPoint);
 
     //v2TopPoint

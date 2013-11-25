@@ -33,6 +33,10 @@ CDashboardWidget2::CDashboardWidget2(Core::CDataConnector *p_DataConnector,
 {
     ui->setupUi(this);
     ui->containerPanelWidget->SetPtrToMainWindow(mp_MainWindow, mp_DataConnector);
+    ui->programPanelWidget->SetPtrToMainWindow(mp_MainWindow, mp_DataConnector);
+
+    CONNECTSIGNALSIGNAL(this, AddItemsToFavoritePanel(bool), ui->programPanelWidget, AddItemsToFavoritePanel(bool));
+
 }
 
 CDashboardWidget2::~CDashboardWidget2()
