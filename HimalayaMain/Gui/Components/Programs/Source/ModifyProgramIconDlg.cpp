@@ -49,7 +49,7 @@ CModifyProgramIconDlg::CModifyProgramIconDlg(QWidget *p_Parent, MainMenu::CMainW
         strName.append(QString::number(i));
         m_IconName.push_back(strName);
         m_ButtonGroup.button(i)->setIcon(QIcon(":/HimalayaImages/Icons/Program/"+strName+".png"));
-        m_ButtonGroup.button(i)->setIconSize(QSize(40, 30));
+        m_ButtonGroup.button(i)->setIconSize(QSize(71, 62));
         strName = strName.left(4);
     }
 

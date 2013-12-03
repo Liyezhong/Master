@@ -48,7 +48,7 @@ CStartup::CStartup() : QObject()
 
     mp_DataConnector = new Core::CDataConnector(&m_MainWindow);
 
-    mp_Dashboard = new Dashboard::CDashboardWidget(mp_DataConnector, &m_MainWindow);
+    mp_Dashboard = new Dashboard::CDashboardWidget2(mp_DataConnector, &m_MainWindow);
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
     mp_KeyBoardWidget->setModal(true);
     mp_Programs = new Programs::CProgramWidget(mp_DataConnector, &m_MainWindow, mp_KeyBoardWidget);
@@ -68,22 +68,14 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_ScreenSaver, OnInteractStart());
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_Users, OnInteractStart());
 
-    CONNECTSIGNALSLOT(mp_DataConnector, ProgramsInitialized(bool), mp_Dashboard, AddItemsToComboBox(bool));  // To Populate the ComboBox Items in the initial stage
-    CONNECTSIGNALSLOT(mp_DataConnector, ProgramsDeleted(), mp_Dashboard, AddItemsToComboBox());
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsInitialized(bool), mp_Dashboard, AddItemsToFavoritePanel(bool));
+    CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsDeleted(), mp_Dashboard, AddItemsToFavoritePanel());
 
-    CONNECTSIGNALSLOT(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Dashboard, AddItemsToComboBox()); // To Populate the ComboBox when User Changes the List
+    CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Dashboard, AddItemsToFavoritePanel());
     CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Programs, UpdateProgram(DataManager::CProgram &));
 
-    CONNECTSIGNALSIGNAL(mp_Dashboard, UpdateSelectedStationList(QList<QString>&), mp_Reagents, UpdateSelectedStationList(QList<QString>&));
+    //CONNECTSIGNALSIGNAL(mp_Dashboard, UpdateSelectedStationList(QList<QString>&), mp_Reagents, UpdateSelectedStationList(QList<QString>&));
 
-
-    //CONNECTSIGNALSIGNAL(mp_DataConnector, DashboardStationChangeReagent(QString), mp_Dashboard, StationReagentChange(QString));
-
-//    CONNECTSIGNALSLOT(mp_Reagents, UpdateReagent(DataManager::CReagent &),
-//                      mp_DataConnector, SendReagentUpdate(DataManager::CReagent &));
-//    CONNECTSIGNALSLOT(mp_Reagents, AddReagent(DataManager::CReagent &),
-//                      mp_DataConnector, SendReagentAdd(DataManager::CReagent &));
-//    CONNECTSIGNALSLOT(mp_Reagents, RemoveReagent(QString), mp_DataConnector, SendReagentRemove(QString));
 
     CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsUpdated(), mp_Programs, UpdateProgramList());
 

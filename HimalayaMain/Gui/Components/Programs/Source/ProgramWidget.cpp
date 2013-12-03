@@ -29,7 +29,7 @@
 #include "Programs/Include/ModifyProgramDlg.h"
 #include "Programs/Include/ModifyProgramStepDlg.h"
 #include "ui_ProgramWidget.h"
-#include "Dashboard/Include/DashboardWidget.h"
+#include "Dashboard/Include/ContainerPanelWidget.h"
 #include <Dashboard/Include/CommonString.h>
 
 
@@ -182,7 +182,7 @@ void CProgramWidget::OnEdit()
         {
             //Edit Mode
             bool bRevertSelectedProgram = false;
-            if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram, mp_Program->GetID()))
+            if (!Dashboard::CContainerPanelWidget::CheckSelectedProgram(bRevertSelectedProgram, mp_Program->GetID()))
                 return;
             if (bRevertSelectedProgram)
                 emit UnselectProgram();
@@ -254,7 +254,7 @@ void CProgramWidget::OnDelete()
         QString ProgramID = mp_Program->GetID();
 
         bool bRevertSelectedProgram = false;
-        if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram, ProgramID))
+        if (!Dashboard::CContainerPanelWidget::CheckSelectedProgram(bRevertSelectedProgram, ProgramID))
             return;
         if (bRevertSelectedProgram)
             emit UnselectProgram();

@@ -1,6 +1,6 @@
 #include "Dashboard/Include/CommonString.h"
 #include <QApplication>
-#include <Dashboard/Include/DashboardWidget.h>
+//#include <Dashboard/Include/DashboardWidget.h>
 
 namespace CommonString
 {

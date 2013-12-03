@@ -26,8 +26,8 @@
 
 namespace Dashboard {
 
-const int PipeWidth = 10;
-const int JointHeight = 17;
+const int PipeWidth = 5;
+const int JointHeight = 10;
 
 //!< Timing interval for the water animation in milliseconds
 #define ANIMATION_INTERVAL 500
@@ -68,10 +68,8 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     InitDashboardStationGroups();
     InitDashboardStationIDs();
     InitDashboardStationLabels();
-    InitDashboardEndTimeWidgetPosition();
     InitStationConnectedPipeList();
     AddDashboardStationItemsToScene();
-
 
 
     // update the stations whenenver the stations.xml is sent
@@ -103,7 +101,6 @@ CDashboardScene::~CDashboardScene()
             delete m_pGraphicsPathItemPipeList.at(i);
         }
         delete m_WholePipeGraphicsRectItem;
-        delete mp_DashboardEndTimeWidget;
         delete m_pPipeAnimationTimer;
         delete m_pBlinkingTimer;
     } catch(...) {
@@ -119,10 +116,10 @@ CDashboardScene::~CDashboardScene()
 void CDashboardScene::InitDashboardStationItemsPositions()
 {
 
-    m_DashboardStationItemPositions << QPoint(119, 276) << QPoint(204, 276) << QPoint(289, 276) << QPoint(374, 276) << QPoint(459, 276) << QPoint(544, 276) << QPoint(629, 276)
-                                    << QPoint(119, 396) << QPoint(204, 396) << QPoint(289, 396) << QPoint(374, 396) << QPoint(459, 396) << QPoint(544, 396)
-                                    << QPoint(119, 192) << QPoint(247, 192) << QPoint(375, 192)
-                                    << QPoint(119, 89);
+    m_DashboardStationItemPositions << QPoint(15, 227) << QPoint(75, 227) << QPoint(135, 227) << QPoint(195, 227) << QPoint(255, 227) << QPoint(315, 227) << QPoint(375, 227)
+                                    << QPoint(15, 385) << QPoint(75, 385) << QPoint(135, 385) << QPoint(195, 385) << QPoint(255, 385) << QPoint(315, 385)
+                                    << QPoint(15, 144) << QPoint(135, 144) << QPoint(255, 144)
+                                    << QPoint(15, 39);
 
 
 }
@@ -211,84 +208,128 @@ void CDashboardScene::InitDashboardStationGroups()
 }
 
 
-/****************************************************************************/
-/*!
- *  \brief Initialize Dashboard Station End Time Widget Position on the Scene
- */
-/****************************************************************************/
-void CDashboardScene::InitDashboardEndTimeWidgetPosition()
+void CDashboardScene::AddPathLeftTopArc(QPainterPath& path, QPointF& pnt)
 {
-    m_DashboardEndTimeWidgetPos = QPoint(520, 78);
+    QPointF originalPoint(pnt.rx() + PipeWidth, pnt.ry() + PipeWidth);
+    QPainterPath pathArc, pathArcTopLeft, pathArcBottomRight;
+    pathArcTopLeft.moveTo(originalPoint.rx(), originalPoint.ry() - PipeWidth);
+    pathArcTopLeft.arcTo(originalPoint.rx()- PipeWidth, originalPoint.ry() - PipeWidth, 2 * PipeWidth, 2 * PipeWidth, 90.0, 90.0);
+    pathArcTopLeft.lineTo(originalPoint);
+    pathArcTopLeft.lineTo(originalPoint.rx(), originalPoint.ry() - PipeWidth);
+    pathArcTopLeft.closeSubpath();
+
+    int harfPipeWidth = PipeWidth / 2;
+    pathArcBottomRight.moveTo(originalPoint.rx() + harfPipeWidth, originalPoint.ry());
+    pathArcBottomRight.arcTo(originalPoint.rx(), originalPoint.ry(), PipeWidth, PipeWidth, 90.0, 90.0);
+    pathArcBottomRight.lineTo(originalPoint);
+    pathArcBottomRight.lineTo(originalPoint.rx() + harfPipeWidth, originalPoint.ry());
+    pathArcBottomRight.closeSubpath();
+
+    pathArc = pathArcTopLeft.united(pathArcBottomRight);
+    path.addPath(pathArc);
 }
 
-QRectF CDashboardScene::MakeHorizontalPipeRect(const QString& stationID, const QString& OtherStationID)
+void CDashboardScene::AddPathRightTopArc(QPainterPath& path, QPointF& originalPoint)
 {
+    QPainterPath pathArc, pathTopArcTopRight, pathTopArcBottomLeft;
+    pathTopArcTopRight.moveTo(originalPoint.rx() + PipeWidth, originalPoint.ry());
+    pathTopArcTopRight.arcTo(originalPoint.rx()- PipeWidth, originalPoint.ry()- PipeWidth, 2 * PipeWidth, 2 * PipeWidth, 0.0, 90.0);
+    pathTopArcTopRight.lineTo(originalPoint);
+    pathTopArcTopRight.lineTo(originalPoint.rx() + PipeWidth, originalPoint.ry());
+    pathTopArcTopRight.closeSubpath();
+
+    int harfPipeWidth = PipeWidth / 2;
+    pathTopArcBottomLeft.moveTo(originalPoint.rx(), originalPoint.ry() + harfPipeWidth);
+    pathTopArcBottomLeft.arcTo(originalPoint.rx() - PipeWidth, originalPoint.ry(), PipeWidth, PipeWidth, 0.0, 90.0);
+    pathTopArcBottomLeft.lineTo(originalPoint);
+    pathTopArcBottomLeft.lineTo(originalPoint.rx(), originalPoint.ry() + harfPipeWidth);
+    pathTopArcBottomLeft.closeSubpath();
+
+    pathArc = pathTopArcTopRight.united(pathTopArcBottomLeft);
+    path.addPath(pathArc);
+}
+
+QPainterPath CDashboardScene::MakeHorizontalPipePath(const QString& stationID, const QString& otherStationID, bool bShorter)
+{
+    QPainterPath path;
     QPointF p1 = m_StationJointList[stationID];
-    QPointF p2 = m_StationJointList[OtherStationID];
-
-    return QRectF(p1.rx(), p1.ry(), p2.rx() - p1.rx(), PipeWidth);
+    QPointF p2 = m_StationJointList[otherStationID];
+    if (bShorter)
+    {
+        AddPathLeftTopArc(path, p1);
+        path.addRect(p1.rx() + PipeWidth, p1.ry(), p2.rx() - p1.rx() - PipeWidth, PipeWidth);
+    }
+    else
+        path.addRect(p1.rx(), p1.ry(), p2.rx() - p1.rx(), PipeWidth);
+    return path;
 }
 
-QRectF CDashboardScene::MakeHorizontalBinaryPipeRect(const QString& stationID, const QString& OtherStationID,
-                                    const QString& MidTopStationID, bool IsReturnLeftOne)//IsReturnLeftOne is false ,it will return the right one
+QPainterPath CDashboardScene::MakeHorizontalBinaryPipePath(const QString& stationID, const QString& OtherStationID,
+                                    const QString& MidTopStationID, bool IsReturnLeftOne,bool bShortor)//IsReturnLeftOne is false ,it will return the right one
 
 {
+    QPainterPath path;
     QPointF p1 = m_StationJointList[stationID];
     QPointF p2 = m_StationJointList[MidTopStationID];
     if (IsReturnLeftOne)
     {
-        return QRectF(p1.rx(), p1.ry(), p2.rx() - p1.rx(), PipeWidth);
+        if (bShortor)
+        {
+            AddPathLeftTopArc(path, p1);
+            path.addRect(p1.rx() + PipeWidth, p1.ry(), p2.rx() - p1.rx() - PipeWidth, PipeWidth);
+        }
+        else
+           path.addRect(p1.rx(), p1.ry(), p2.rx() - p1.rx(), PipeWidth);
     }
     else
     {
          QPointF p3 = m_StationJointList[OtherStationID];
-         return QRectF(p2.rx(), p1.ry(), p3.rx() - p2.rx(), PipeWidth);
+         path.addRect(p2.rx(), p1.ry(), p3.rx() - p2.rx(), PipeWidth);
     }
-
+    return path;
 }
 
 void CDashboardScene::CollectPipeRect()
 {
     int yOffset = -1;
     int yOffsetP = -5;
-    m_PipeRectList.insert("S8S9", PipeRectAndOrientation(MakeHorizontalPipeRect("S8", "S9"), "right", QPoint(0, yOffset)));
-    m_PipeRectList.insert("S9S10", PipeRectAndOrientation(MakeHorizontalPipeRect("S9", "S10"), "right", QPoint(0, yOffset)));
-    m_PipeRectList.insert("S10S11", PipeRectAndOrientation(MakeHorizontalPipeRect("S10", "S11"), "right", QPoint(0, yOffset)));
-    m_PipeRectList.insert("S11S12", PipeRectAndOrientation(MakeHorizontalPipeRect("S11", "S12"), "right", QPoint(0, yOffset)));
-    m_PipeRectList.insert("S12S13", PipeRectAndOrientation(MakeHorizontalPipeRect("S12", "S13"), "right", QPoint(0, yOffset)));
-    m_PipeRectList.insert("S13S13RightPoint", PipeRectAndOrientation(MakeHorizontalPipeRect("S13", "S13RightPoint"), "right", QPoint(0, yOffset)));
-    m_PipeRectList.insert("S1S2", PipeRectAndOrientation(MakeHorizontalPipeRect("S1", "S2"), "right", QPoint(0, yOffset)));
-    m_PipeRectList.insert("S2S3", PipeRectAndOrientation(MakeHorizontalPipeRect("S2", "S3"), "right", QPoint(0, yOffset)));
-    m_PipeRectList.insert("S3S4", PipeRectAndOrientation(MakeHorizontalPipeRect("S3", "S4"), "right", QPoint(0, yOffset)));
-    m_PipeRectList.insert("S4S5", PipeRectAndOrientation(MakeHorizontalPipeRect("S4", "S5"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S8S9", PipePathAndOrientation(MakeHorizontalPipePath("S8", "S9", true), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S9S10", PipePathAndOrientation(MakeHorizontalPipePath("S9", "S10"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S10S11", PipePathAndOrientation(MakeHorizontalPipePath("S10", "S11"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S11S12", PipePathAndOrientation(MakeHorizontalPipePath("S11", "S12"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S12S13", PipePathAndOrientation(MakeHorizontalPipePath("S12", "S13"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S13S13RightPoint", PipePathAndOrientation(MakeHorizontalPipePath("S13", "S13RightPoint"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S1S2", PipePathAndOrientation(MakeHorizontalPipePath("S1", "S2", true), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S2S3", PipePathAndOrientation(MakeHorizontalPipePath("S2", "S3"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S3S4", PipePathAndOrientation(MakeHorizontalPipePath("S3", "S4"), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S4S5", PipePathAndOrientation(MakeHorizontalPipePath("S4", "S5"), "right", QPoint(0, yOffset)));
 
-    m_PipeRectList.insert("S5S6Right", PipeRectAndOrientation(MakeHorizontalBinaryPipeRect("S5", "S6", "P3RightPoint", false), "left", QPoint(0, yOffset)));
-    m_PipeRectList.insert("S5S6Left", PipeRectAndOrientation(MakeHorizontalBinaryPipeRect("S5", "S6", "P3RightPoint", true), "right", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S5S6Right", PipePathAndOrientation(MakeHorizontalBinaryPipePath("S5", "S6", "P3RightPoint", false), "left", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S5S6Left", PipePathAndOrientation(MakeHorizontalBinaryPipePath("S5", "S6", "P3RightPoint", true), "right", QPoint(0, yOffset)));
 
-    m_PipeRectList.insert("S6S7", PipeRectAndOrientation(MakeHorizontalPipeRect("S6", "S7"), "left", QPoint(0, yOffset)));
-    m_PipeRectList.insert("S7S7RightPoint", PipeRectAndOrientation(MakeHorizontalPipeRect("S7", "S7RightPoint"), "left", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S6S7", PipePathAndOrientation(MakeHorizontalPipePath("S6", "S7"), "left", QPoint(0, yOffset)));
+    m_PipeRectList.insert("S7S7RightPoint", PipePathAndOrientation(MakeHorizontalPipePath("S7", "S7RightPoint"), "left", QPoint(0, yOffset)));
 
-    m_PipeRectList.insert("P2P3", PipeRectAndOrientation(MakeHorizontalPipeRect("P2", "P3"), "left", QPoint(0, yOffsetP)));
-    m_PipeRectList.insert("P3P3RightPoint", PipeRectAndOrientation(MakeHorizontalPipeRect("P3", "P3RightPoint"), "left", QPoint(0, yOffsetP)));
+    m_PipeRectList.insert("P2P3", PipePathAndOrientation(MakeHorizontalPipePath("P2", "P3"), "left", QPoint(0, yOffsetP)));
+    m_PipeRectList.insert("P3P3RightPoint", PipePathAndOrientation(MakeHorizontalPipePath("P3", "P3RightPoint"), "left", QPoint(0, yOffsetP)));
 
-    m_PipeRectList.insert("P1P2Right", PipeRectAndOrientation(MakeHorizontalBinaryPipeRect("P1", "P2", "Retort", false), "left", QPoint(0, yOffsetP)));
-    m_PipeRectList.insert("P1P2Left", PipeRectAndOrientation(MakeHorizontalBinaryPipeRect("P1", "P2", "Retort", true), "right", QPoint(0, yOffsetP)));
-
-
+    m_PipeRectList.insert("P1P2Right", PipePathAndOrientation(MakeHorizontalBinaryPipePath("P1", "P2", "Retort", false), "left", QPoint(0, yOffsetP)));
+    m_PipeRectList.insert("P1P2Left", PipePathAndOrientation(MakeHorizontalBinaryPipePath("P1", "P2", "Retort", true, true), "right", QPoint(0, yOffsetP)));
 }
 
 void CDashboardScene::CreateAllPipe()
 {
     QPainterPath path;
     path.setFillRule(Qt::WindingFill);
-    foreach (PipeRectAndOrientation rectOrientation, m_PipeRectList)
+    foreach (PipePathAndOrientation pathAndOrientation, m_PipeRectList)
     {
-        path.addRect(rectOrientation.m_rect);
+        path = path.united(pathAndOrientation.m_PainterPath);
     }
 
     m_WholePipeGraphicsRectItem = new QGraphicsPathItem(path);
-    m_WholePipeGraphicsRectItem->setPen(QPen(Qt::NoPen));
-    m_WholePipeGraphicsRectItem->setBrush(QBrush(QColor(136, 136, 136), Qt::SolidPattern));
+    m_WholePipeGraphicsRectItem->setPen(QPen(QColor(0, 0, 0), 0, Qt::SolidLine,
+                                             Qt::FlatCap, Qt::MiterJoin));
+    m_WholePipeGraphicsRectItem->setBrush(QBrush(QColor(255, 255, 255), Qt::SolidPattern));
     addItem(m_WholePipeGraphicsRectItem);
 }
 
@@ -364,7 +405,7 @@ void CDashboardScene::RepresentCurrentWorkingPipe(const QString& StationID)
      {
         QPainterPath path;
         path.setFillRule(Qt::WindingFill);
-        path.addRect(m_PipeRectList[strPipeID].m_rect);
+        path.addPath(m_PipeRectList[strPipeID].m_PainterPath);
 
         QGraphicsPathItem* pWorkingPipeGraphicsRectItem = new CPipeGraphicsPathItem(path, m_PipeRectList[strPipeID].m_brushOrigin);
         pWorkingPipeGraphicsRectItem ->setPen(QPen(Qt::NoPen));
@@ -464,8 +505,8 @@ void CDashboardScene::OnUpdateUserSettings()
      {
         m_pBlinkingTimer->stop();
      }
-     else
-         m_pBlinkingTimer->start();
+     //else
+      //   m_pBlinkingTimer->start();
 }
 
 /****************************************************************************/
@@ -502,7 +543,7 @@ void CDashboardScene::AddDashboardStationItemsToScene()
 
         QRectF rectStation = p_DashboardStationItem->boundingRect();
         QPointF posStation = p_DashboardStationItem->pos();
-        qreal x = posStation.rx() + rectStation.width()/2 - 5 - 14;
+        qreal x = posStation.rx() + rectStation.width()/2 - 5;
         qreal y = posStation.ry() - JointHeight;
         m_StationJointList.insert(m_DashboardStationIDs[i], QPointF(x, y));
 
@@ -520,12 +561,20 @@ void CDashboardScene::AddDashboardStationItemsToScene()
         {
             xOrigin = -3;
         }
-        m_PipeRectList.insert(m_DashboardStationIDs[i], PipeRectAndOrientation(QRectF(x, y, PipeWidth, JointHeight), "up", QPoint(xOrigin, 0)));
+
+        QPainterPath path;
+        if ("P1" == strID || "S1" == strID || "S8" == strID)
+        {
+            path.addRect(x, y + PipeWidth, PipeWidth, JointHeight - PipeWidth);
+        }
+        else
+            path.addRect(x, y, PipeWidth, JointHeight);
+        m_PipeRectList.insert(m_DashboardStationIDs[i], PipePathAndOrientation(path, "up", QPoint(xOrigin, 0)));
     }   
 
     // For Retort, No Station Id
     mp_DashboardStationRetort = new Core::CDashboardStationItem(mp_DataConnector, STATIONS_GROUP_RETORT, "Retort", "Retort", false);
-    mp_DashboardStationRetort->setPos(QPoint(119, 89));
+    mp_DashboardStationRetort->setPos(QPoint(15, 35));
     addItem(mp_DashboardStationRetort);
 
     //Add Retort's rect and letfTop point
@@ -535,28 +584,70 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     qreal y = posStation.ry() + rectStation.height();
     m_StationJointList.insert("Retort", QPointF(x, y));
     int hh = (int)m_StationJointList["P1"].ry()  - y + PipeWidth;
-    m_PipeRectList.insert("Retort", PipeRectAndOrientation(QRectF(x, y, PipeWidth, hh), "up", QPoint(-3, 0)));
+
+    QPainterPath pathRetort;
+    pathRetort.addRect(x, y, PipeWidth, hh);
+    m_PipeRectList.insert("Retort", PipePathAndOrientation(pathRetort, "up", QPoint(-3, 0)));
 
     //P3 Right point
-    int paraffinbathBoundingRectWidth = 122;
-    QPointF P3RightPoint(m_StationJointList["P3"].rx() + paraffinbathBoundingRectWidth/2 + 24, m_StationJointList["P3"].ry());
-    int h = (int)m_StationJointList["S5"].ry() - (int)m_StationJointList["P1"].ry() + PipeWidth;
-    QRectF rect;
-    rect.setTopLeft(P3RightPoint);//vertical pipe 1
-    rect.setWidth(PipeWidth);
-    rect.setHeight(h);
-    m_PipeRectList.insert("VerticalPipe1", PipeRectAndOrientation(rect, "up", QPoint(-8, 0)));
+    int harfPipeWidth = PipeWidth / 2;
+
+    int paraffinbathBoundingRectWidth = 120;
+    QPointF P3RightPoint(m_StationJointList["P3"].rx() + paraffinbathBoundingRectWidth/2 + 72, m_StationJointList["P3"].ry());
     m_StationJointList.insert("P3RightPoint", P3RightPoint);
 
-    //S7 Right point
-    int bottleBoundingRectWidth = 79;
-    QPointF S7RightPoint(m_StationJointList["S7"].rx() + bottleBoundingRectWidth/2 + 24, m_StationJointList["S7"].ry());
-    h = (int)m_StationJointList["S13"].ry() - (int)m_StationJointList["S7"].ry() + PipeWidth;
-    rect.setTopLeft(S7RightPoint);//vertical pipe 2
+    //v1TopPoint
+    QPointF v1Point(P3RightPoint.rx(), m_StationJointList["P3"].ry() + PipeWidth);
+
+    QPainterPath pathVerticalPipe1;
+    AddPathRightTopArc(pathVerticalPipe1, v1Point);
+
+    int h = (int)m_StationJointList["S5"].ry() - (int)m_StationJointList["P1"].ry();
+    QRectF rect;
+    rect.setTopLeft(v1Point);//vertical pipe 1
     rect.setWidth(PipeWidth);
     rect.setHeight(h);
-    m_PipeRectList.insert("VerticalPipe2", PipeRectAndOrientation(rect, "up", QPoint(-7, 0)));
+
+
+    pathVerticalPipe1.addRect(rect);
+    m_PipeRectList.insert("VerticalPipe1", PipePathAndOrientation(pathVerticalPipe1, "up", QPoint(-8, 0)));
+
+
+    //S7 Right point
+    QPointF S7RightPoint(P3RightPoint.rx(), m_StationJointList["S7"].ry());
     m_StationJointList.insert("S7RightPoint", S7RightPoint);
+
+    //v2TopPoint
+    QPointF v2TopPoint(S7RightPoint.rx(), m_StationJointList["S7RightPoint"].ry() + PipeWidth);
+
+    QPainterPath pathVerticalPipe2;
+    AddPathRightTopArc(pathVerticalPipe2, v2TopPoint);
+
+    //v2BottomPoint
+    QPointF v2BottomPoint(S7RightPoint.rx(), m_StationJointList["S13"].ry());
+
+    QPainterPath pathBottomArcVerticalPipe2, pathBottomArcBottomRightVerticalPipe2, pathBottomArcTopLeftVerticalPipe2;
+    pathBottomArcBottomRightVerticalPipe2.moveTo(v2BottomPoint.rx(), v2BottomPoint.ry());
+    pathBottomArcBottomRightVerticalPipe2.arcTo(v2BottomPoint.rx()- PipeWidth, v2BottomPoint.ry()- PipeWidth, 2 * PipeWidth, 2 * PipeWidth, 270.0, 90.0);//90.0 for counter-clockwise
+    pathBottomArcBottomRightVerticalPipe2.lineTo(v2BottomPoint.rx(), v2BottomPoint.ry());
+    pathBottomArcBottomRightVerticalPipe2.lineTo(v2BottomPoint.rx(), v2BottomPoint.ry() + PipeWidth);
+    pathBottomArcBottomRightVerticalPipe2.closeSubpath();
+
+    pathBottomArcTopLeftVerticalPipe2.moveTo(v2BottomPoint.rx() - harfPipeWidth, v2BottomPoint.ry());
+    pathBottomArcTopLeftVerticalPipe2.arcTo(v2BottomPoint.rx() - PipeWidth, v2BottomPoint.ry() - PipeWidth, PipeWidth, PipeWidth, 270.0, 90.0);
+    pathBottomArcTopLeftVerticalPipe2.lineTo(v2BottomPoint);
+    pathBottomArcTopLeftVerticalPipe2.lineTo(v2BottomPoint.rx() - harfPipeWidth, v2BottomPoint.ry());
+    pathBottomArcTopLeftVerticalPipe2.closeSubpath();
+
+    pathBottomArcVerticalPipe2 = pathBottomArcBottomRightVerticalPipe2.united(pathBottomArcTopLeftVerticalPipe2);
+    pathVerticalPipe2.addPath(pathBottomArcVerticalPipe2);
+
+    h = (int)m_StationJointList["S13"].ry() - (int)m_StationJointList["S7"].ry() - PipeWidth;
+    rect.setTopLeft(v2TopPoint);//vertical pipe 2
+    rect.setWidth(PipeWidth);
+    rect.setHeight(h);
+    pathVerticalPipe2.addRect(rect);
+    m_PipeRectList.insert("VerticalPipe2", PipePathAndOrientation(pathVerticalPipe2, "up", QPoint(-7, 0)));
 
     //S13 right point
     QPointF S13RightPoint(S7RightPoint.rx(), m_StationJointList["S13"].ry());
@@ -565,21 +656,14 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     this->CollectPipeRect();
     CreateAllPipe();
 
-    // Add the End Time Widget
-    mp_DashboardEndTimeWidget = new Dashboard::CDashboardEndTimeWidget(mp_DataConnector, mp_MainWindow);
-    mp_DashboardEndTimeWidget->InitEndTimeWidgetItems();
-    mp_GraphicsProxyWidget = this->addWidget(mp_DashboardEndTimeWidget);
-    mp_GraphicsProxyWidget->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-    mp_GraphicsProxyWidget->setPos(m_DashboardEndTimeWidgetPos);
-    addItem(mp_GraphicsProxyWidget);
-
-    CONNECTSIGNALSLOT(this, OnSelectDateTime(const QDateTime &), mp_DashboardEndTimeWidget, UpdateDateTime(const QDateTime &));
+    /*CONNECTSIGNALSLOT(this, OnSelectDateTime(const QDateTime &), mp_DashboardEndTimeWidget, UpdateDateTime(const QDateTime &));
 
     CONNECTSIGNALSLOT(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
                       mp_DashboardEndTimeWidget, OnProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
 
     CONNECTSIGNALSLOT(this, ProgramActionStopped(DataManager::ProgramStatusType_t),
                       mp_DashboardEndTimeWidget, OnProgramActionStopped(DataManager::ProgramStatusType_t));
+                      */
 
 }
 
@@ -618,11 +702,12 @@ void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId,
         *mp_ProgramListClone = *(mp_DataConnector->ProgramList);
     }
     p_Program = mp_ProgramListClone->GetProgram(programId);
-    if(p_Program) {
+    /*if(p_Program) {
         mp_DashboardEndTimeWidget->UpdateEndTimeWidgetItems(p_Program, asapEndTime);
     }
     else
         mp_DashboardEndTimeWidget->InitEndTimeWidgetItems();
+    */
 
     for(int j = 0 ; j < m_DashboardStationList.count(); j++)
     {
@@ -649,7 +734,7 @@ void CDashboardScene::UpdateRetortStatus(DataManager::ContainerStatusType_t reto
     mp_DashboardStationRetort->SetContainerStatus(retortStatusType);
 }
 
-const QTime& CDashboardScene::GetStepRemainingTime()
+/*const QTime& CDashboardScene::GetStepRemainingTime()
 {
     return mp_DashboardEndTimeWidget->GetStepRemainingTime();
 }
@@ -663,6 +748,7 @@ const QString CDashboardScene::GetEndDateTime()
 {
     return mp_DashboardEndTimeWidget->GetEndDateTime();
 }
+*/
 
 void CDashboardScene::OnPauseStationSuckDrain()
 {

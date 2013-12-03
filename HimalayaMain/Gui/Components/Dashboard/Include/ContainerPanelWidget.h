@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file DashboardWidget.h
+/*! \file ContainerPanelWidget.h
  *
- *  \brief Dashboard Widget Class Definition.
+ *  \brief ContainerPanel Widget Class Definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2013-01-03
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef DASHBOARDWIDGET_H
-#define DASHBOARDWIDGET_H
+#ifndef CONTAINERPANELWIDGET_H
+#define CONTAINERPANELWIDGET_H
 
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/MainWindow.h"
@@ -38,25 +38,24 @@ class CCassetteNumberInputWidget;
 class CDashboardDateTimeWidget;
 
 namespace Ui {
-    class CDashboardWidget;
+    class CContainerPanelWidget;
 }
 
 
 /****************************************************************************/
 /**
- * \brief This is the main widget for Dash Board.
+ * \brief This is the widget for container panel widget.
  */
 /****************************************************************************/
-class CDashboardWidget : public MainMenu::CPanelFrame
+class CContainerPanelWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
 
 private:
-    Ui::CDashboardWidget *mp_Ui;                                //!< User interface
+    Ui::CContainerPanelWidget *mp_Ui;                                //!< User interface
     MainMenu::CMainWindow *mp_MainWindow;                           //!< Reference to MainWindow.
     Core::CDataConnector *mp_DataConnector;                     //!< Global data container
     CDashboardScene *mp_DashboardScene;                         //!< Displays the station items
-    QFrame *mp_Separator;                                       //!< Separator Line between View & Operation
     DataManager::ProgramActionType_t m_ProgramNextAction;       //!< Program Next Action
     DataManager::CDataProgramList *mp_ProgramList;
     QStringList m_FavProgramIDs;
@@ -95,24 +94,24 @@ private:
     QString m_strCheckSafeReagent;
     DataManager::CHimalayaUserSettings* m_pUserSetting;
     Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
-
-    void EnablePlayButton(bool bSetEnable);
-    void EnableAbortButton(bool bSetEnable);
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(int, int, int, bool&);
     void PrepareSelectedProgramChecking();
     void TakeOutSpecimenAndWaitRunCleaning();
     void RetranslateUI();
 public:
-    explicit CDashboardWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL);
-    ~CDashboardWidget();
-
+    explicit CContainerPanelWidget(QWidget *p_Parent = 0);
+    ~CContainerPanelWidget();
+    void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector);
     void CheckPreConditionsToRunProgram();
     bool CheckPreConditionsToPauseProgram();
     bool CheckPreConditionsToAbortProgram();
     static const QString& SelectedProgramId();
     static bool CheckSelectedProgram(bool& bRevertSelectProgram,
                                      QString ProgramID = "");//the return value(true) means the work flow can go continuely.
+    void OnUnselectProgram();
+    void AddItemsToComboBox(bool bOnlyAddCleaningProgram = false);
+
     static QString m_strWarning;
     static QString m_strYes, m_strCancel;
     static QString m_strMsgUnselect;
@@ -120,6 +119,7 @@ public:
 protected:
     void DrawSeparatorLine();
     void changeEvent(QEvent *p_Event);
+    void Initialize();
 
 signals:
     void ProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
@@ -133,10 +133,6 @@ signals:
 public slots:
     void OnUserRoleChanged();
     void OnButtonClicked(int whichBtn);
-    void OnUnselectProgram();
-    void AddItemsToComboBox(bool bOnlyAddCleaningProgram = false);
-    void OnActivated(int);
-    void OnComboBoxButtonPress();
     void OnProgramStartReadyUpdated();
     void OnProgramWillComplete();
     void OnProgramAborted();
@@ -153,4 +149,4 @@ public slots:
 };
 
 }
-#endif // DASHBOARDWIDGET_H
+#endif // CONTAINERPANELWIDGET_H
