@@ -48,7 +48,7 @@ CStartup::CStartup() : QObject()
 
     mp_DataConnector = new Core::CDataConnector(&m_MainWindow);
 
-    mp_Dashboard = new Dashboard::CDashboardWidget2(mp_DataConnector, &m_MainWindow);
+    mp_Dashboard = new Dashboard::CDashboardWidget(mp_DataConnector, &m_MainWindow);
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
     mp_KeyBoardWidget->setModal(true);
     mp_Programs = new Programs::CProgramWidget(mp_DataConnector, &m_MainWindow, mp_KeyBoardWidget);

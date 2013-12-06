@@ -18,17 +18,17 @@
  */
 /****************************************************************************/
 
-#include "Dashboard/Include/DashboardWidget2.h"
-#include "ui_DashboardWidget2.h"
+#include "Dashboard/Include/DashboardWidget.h"
+#include "ui_DashboardWidget.h"
 #include "Core/Include/DataConnector.h"
 #include "MainMenu/Include/MainWindow.h"
 //#include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 
 using namespace Dashboard;
 
-CDashboardWidget2::CDashboardWidget2(Core::CDataConnector *p_DataConnector,
+CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                      MainMenu::CMainWindow *p_Parent) :
-    ui(new Ui::CDashboardWidget2),
+    ui(new Ui::CDashboardWidget),
     mp_DataConnector(p_DataConnector),
     mp_MainWindow(p_Parent)
 {
@@ -40,7 +40,7 @@ CDashboardWidget2::CDashboardWidget2(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(ui->programPanelWidget, PrepareSelectedProgramChecking(), this, PrepareSelectedProgramChecking());
 }
 
-CDashboardWidget2::~CDashboardWidget2()
+CDashboardWidget::~CDashboardWidget()
 {
     try {
             delete ui;
@@ -50,12 +50,12 @@ CDashboardWidget2::~CDashboardWidget2()
         }
 }
 
-void CDashboardWidget2::OnUnselectProgram()
+void CDashboardWidget::OnUnselectProgram()
 {
     ui->containerPanelWidget->OnUnselectProgram();
 }
 
-void CDashboardWidget2::PrepareSelectedProgramChecking()
+void CDashboardWidget::PrepareSelectedProgramChecking()
 {
     //(void)this->IsParaffinInProgram(mp_ProgramList->GetProgram(m_NewSelectedProgramId));//to get m_ParaffinStepIndex
     //Notify Master, to get the time costed for paraffin Melting

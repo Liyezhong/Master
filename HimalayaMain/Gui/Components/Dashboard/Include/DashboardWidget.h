@@ -22,22 +22,22 @@ namespace DataManager
 namespace Dashboard {
 
 namespace Ui {
-    class CDashboardWidget2;
+    class CDashboardWidget;
 }
 
-class CDashboardWidget2 : public QWidget
+class CDashboardWidget : public QWidget
 {
     Q_OBJECT
     
 public:
-    explicit CDashboardWidget2(Core::CDataConnector *p_DataConnector,
+    explicit CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                MainMenu::CMainWindow *p_Parent = NULL);
-    ~CDashboardWidget2();
+    ~CDashboardWidget();
     
 private:
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     int GetASAPTime(int, int, int, bool&);
-    Ui::CDashboardWidget2 *ui;
+    Ui::CDashboardWidget *ui;
     Core::CDataConnector *mp_DataConnector;          //!< Data object
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     DataManager::CDataProgramList *mp_ProgramList;
