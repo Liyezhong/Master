@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QButtonGroup>
 #include <QMap>
+#include <QDateTime>
 
 class QLabel;
 
@@ -23,6 +24,11 @@ namespace DataManager
     class CDataProgramList;
 }
 
+namespace Dashboard
+{
+    class CDashboardDateTimeWidget;
+}
+
 namespace Dashboard {
     namespace Ui {
     class CFavoriteProgramsPanelWidget;
@@ -36,11 +42,16 @@ namespace Dashboard {
         explicit CFavoriteProgramsPanelWidget(QWidget *parent = 0);
         ~CFavoriteProgramsPanelWidget();
         void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector);
+        static QString SELECTED_PROGRAM_NAME;
 
-public slots:
+    public slots:
         void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
     private slots:
-        void on_pushButton_6_clicked();
+        void OnEndTimeButtonClicked();
+        void OnProcessStateChanged();
+
+    signals:
+        void PrepareSelectedProgramChecking();
 
     private:
         void SetButtonGroup();
@@ -50,6 +61,12 @@ public slots:
         QButtonGroup m_ButtonGroup;
         Core::CDataConnector *mp_DataConnector;                     //!< Global data container
         DataManager::CDataProgramList* mp_ProgramList;
+        bool m_ProcessRunning;
+        Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
+        int m_LastSelectedButtonId;
+        QDateTime m_ProgramEndDateTime;
+        QStringList m_FavProgramIDs;
+        QString m_NewSelectedProgramId;
 
     };
 }

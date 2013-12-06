@@ -22,8 +22,9 @@
 #include "ui_DashboardWidget2.h"
 #include "Core/Include/DataConnector.h"
 #include "MainMenu/Include/MainWindow.h"
+//#include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 
-namespace Dashboard {
+using namespace Dashboard;
 
 CDashboardWidget2::CDashboardWidget2(Core::CDataConnector *p_DataConnector,
                                      MainMenu::CMainWindow *p_Parent) :
@@ -34,9 +35,9 @@ CDashboardWidget2::CDashboardWidget2(Core::CDataConnector *p_DataConnector,
     ui->setupUi(this);
     ui->containerPanelWidget->SetPtrToMainWindow(mp_MainWindow, mp_DataConnector);
     ui->programPanelWidget->SetPtrToMainWindow(mp_MainWindow, mp_DataConnector);
-
+    mp_ProgramList = mp_DataConnector->ProgramList;
     CONNECTSIGNALSIGNAL(this, AddItemsToFavoritePanel(bool), ui->programPanelWidget, AddItemsToFavoritePanel(bool));
-
+    CONNECTSIGNALSLOT(ui->programPanelWidget, PrepareSelectedProgramChecking(), this, PrepareSelectedProgramChecking());
 }
 
 CDashboardWidget2::~CDashboardWidget2()
@@ -54,5 +55,18 @@ void CDashboardWidget2::OnUnselectProgram()
     ui->containerPanelWidget->OnUnselectProgram();
 }
 
-}//end
+void CDashboardWidget2::PrepareSelectedProgramChecking()
+{
+    //(void)this->IsParaffinInProgram(mp_ProgramList->GetProgram(m_NewSelectedProgramId));//to get m_ParaffinStepIndex
+    //Notify Master, to get the time costed for paraffin Melting
+    /*QString strTempProgramId(m_NewSelectedProgramId);
+    if (m_NewSelectedProgramId.at(0) == 'C')
+    {
+      strTempProgramId.append("_");
+      QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
+      strTempProgramId.append(strReagentIDOfLastStep);
+    }
+    mp_DataConnector->SendProgramSelected(strTempProgramId, m_ParaffinStepIndex);*/
+
+}
 

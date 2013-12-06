@@ -5,12 +5,18 @@
 
 namespace Core
 {
- class CDataConnector;
+    class CDataConnector;
 }
 
 namespace MainMenu
 {
- class CMainWindow;
+    class CMainWindow;
+}
+
+namespace DataManager
+{
+    class CDataProgramList;
+    class CProgram;
 }
 
 namespace Dashboard {
@@ -29,12 +35,19 @@ public:
     ~CDashboardWidget2();
     
 private:
+    bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
+    int GetASAPTime(int, int, int, bool&);
     Ui::CDashboardWidget2 *ui;
     Core::CDataConnector *mp_DataConnector;          //!< Data object
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
+    DataManager::CDataProgramList *mp_ProgramList;
 
 public slots:
     void OnUnselectProgram();
+
+
+private slots:
+    void PrepareSelectedProgramChecking();
 
  signals:
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram = false);
