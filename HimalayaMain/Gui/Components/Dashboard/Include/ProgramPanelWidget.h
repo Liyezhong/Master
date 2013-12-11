@@ -31,6 +31,7 @@ public:
 
 signals:
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
+    void PrepareSelectedProgramChecking();
 
 protected:
     void changeEvent(QEvent *p_Event);
