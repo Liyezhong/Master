@@ -64,7 +64,8 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_StationSelected(false),
     m_ContainerStatusType(DataManager::CONTAINER_STATUS_FULL),
     m_ExpiredColorRed(true),
-    m_IsRetortContaminated(false)
+    m_IsRetortContaminated(false),
+    m_RetortLocked(false)
 {
     setFlag(QGraphicsItem::ItemIsSelectable);
 
@@ -297,7 +298,15 @@ bool CDashboardStationItem::IsEmpty()
 void CDashboardStationItem::LoadStationImages(QPainter& Painter)
 {
     if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
-        Painter.drawPixmap(-1, -2, QPixmap(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Enabled.png"));
+		if (false == m_RetortLocked)
+		{
+				Painter.drawPixmap(-1, -2, QPixmap(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Unlocked.png"));
+		}
+		else
+		{
+				Painter.drawPixmap(-1, -2, QPixmap(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Locked01.png"));
+				Painter.drawPixmap(-1, -2, QPixmap(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Locked02.png"));
+		}
     } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
         if (m_StationSelected) {
             Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png"));
@@ -825,4 +834,10 @@ void CDashboardStationItem::SetContainerStatus(DataManager::ContainerStatusType_
     m_IsRetortContaminated = false;
 }
 
+void CDashboardStationItem::SetContainerRetortLockedStatus(bool locked)
+{
+	m_RetortLocked = locked;
+    DrawStationItemImage();
+
+}
 } // end namespace Core
