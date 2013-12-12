@@ -83,6 +83,7 @@ private:
     DataManager::ContainerStatusType_t m_ContainerStatusType;
     bool m_ExpiredColorRed;
     bool m_IsRetortContaminated;
+    bool m_RetortLocked;								 //!< Indicates if the retort is locked or not
     void OnCompletedSuckDrain(bool isSuck);
     void DrawGlowBoundaryText(QFont& textFont, QString& text, QRect& rect, QPainter& painter);
 public:
@@ -107,6 +108,7 @@ public:
     void DrawStationItemLabel(QPainter & painter);
     void FillReagentColor(QPainter & Painter);
     void SetContainerStatus(DataManager::ContainerStatusType_t containerStatus);
+    void SetContainerRetortLockedStatus(bool locked);
     /****************************************************************************/
     /*!
      *  \brief Sets the selected station

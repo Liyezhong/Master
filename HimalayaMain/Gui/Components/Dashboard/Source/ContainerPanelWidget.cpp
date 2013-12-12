@@ -657,9 +657,11 @@ void CContainerPanelWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetor
 {
     if (cmd.IsLocked())
     {
+		mp_DashboardScene->UpdateRetortLockedStatus(true);
     }
     else
     {
+		mp_DashboardScene->UpdateRetortLockedStatus(false);
         //enable the "OK"
         if (m_IsWaitingCleaningProgram && mp_MessageDlg->isVisible())
         {

@@ -734,6 +734,10 @@ void CDashboardScene::UpdateRetortStatus(DataManager::ContainerStatusType_t reto
     mp_DashboardStationRetort->SetContainerStatus(retortStatusType);
 }
 
+void CDashboardScene::UpdateRetortLockedStatus(bool locked)
+{
+    mp_DashboardStationRetort->SetContainerRetortLockedStatus(locked);
+}
 /*const QTime& CDashboardScene::GetStepRemainingTime()
 {
     return mp_DashboardEndTimeWidget->GetStepRemainingTime();
