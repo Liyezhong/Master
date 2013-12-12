@@ -11,6 +11,7 @@ namespace CommonString
     extern QString strCancel;
     extern QString strInforMsg;
     extern QString strConfirmMsg;
+    extern QString strWarning;
     void RetranslateUIString();
 }
 #endif

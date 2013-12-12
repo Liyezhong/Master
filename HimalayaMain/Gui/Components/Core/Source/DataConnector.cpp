@@ -169,7 +169,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     (void)connect(mp_MesgBoxManager, SIGNAL(EventReportAck(NetCommands::ClickedButton_t,Global::tRefType, quint64)),
                       this, SLOT(OnEventReportAck(NetCommands::ClickedButton_t,Global::tRefType, quint64)));
 
-    mp_SplashWidget = new SplashWidget();
+    mp_SplashWidget = new SplashWidget(mp_MainWindow);
     CONNECTSIGNALSLOT(this, ProgramStartReady(), this, OnProgramStartReady());
     CONNECTSIGNALSLOT(this, ProgramSelfTestFailed(), this, OnProgramSelfTestFailed());
     m_pServiceProcess = new QProcess();
@@ -1003,7 +1003,7 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         (void)m_NetworkObject.SendCmdToMaster(Cmd, &CDataConnector::OnAckTwoPhase, this);
         QRect scr = mp_MainWindow->rect();
         mp_SplashWidget->move( scr.center() - mp_SplashWidget->rect().center());
-//        mp_SplashWidget->exec();
+        mp_SplashWidget->exec();
     }
     return;
 }

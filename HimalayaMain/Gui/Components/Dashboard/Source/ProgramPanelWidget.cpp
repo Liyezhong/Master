@@ -11,7 +11,7 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Programs"));
     CONNECTSIGNALSLOT(this, AddItemsToFavoritePanel(bool), ui->favoriteProgramsPanel, AddItemsToFavoritePanel(bool));
-    CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, PrepareSelectedProgramChecking(), this, PrepareSelectedProgramChecking());
+   // CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, PrepareSelectedProgramChecking(), this, PrepareSelectedProgramChecking());
     connect(ui->pushButton, SIGNAL(clicked(bool)),
                 this, SLOT(on_pushButton_clicked()));
 

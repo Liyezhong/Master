@@ -94,9 +94,6 @@ private:
     QString m_strCheckSafeReagent;
     DataManager::CHimalayaUserSettings* m_pUserSetting;
     Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
-    bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
-    int GetASAPTime(int, int, int, bool&);
-    void PrepareSelectedProgramChecking();
     void TakeOutSpecimenAndWaitRunCleaning();
     void RetranslateUI();
 public:
@@ -143,7 +140,7 @@ public slots:
     void OnProcessStateChanged();
 
     void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
-    void OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd);
+
     void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);
     void OnSelectDateTime(const QDateTime&);

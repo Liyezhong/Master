@@ -22,7 +22,8 @@
 #include "ui_DashboardWidget.h"
 #include "Core/Include/DataConnector.h"
 #include "MainMenu/Include/MainWindow.h"
-//#include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
+#include <Dashboard/Include/CommonString.h>
+#include <Dashboard/Include/FavoriteProgramsPanelWidget.h>
 
 using namespace Dashboard;
 
@@ -30,14 +31,19 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                      MainMenu::CMainWindow *p_Parent) :
     ui(new Ui::CDashboardWidget),
     mp_DataConnector(p_DataConnector),
-    mp_MainWindow(p_Parent)
+    mp_MainWindow(p_Parent),
+    m_ParaffinStepIndex(-1)
 {
     ui->setupUi(this);
     ui->containerPanelWidget->SetPtrToMainWindow(mp_MainWindow, mp_DataConnector);
     ui->programPanelWidget->SetPtrToMainWindow(mp_MainWindow, mp_DataConnector);
+    m_pUserSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
     mp_ProgramList = mp_DataConnector->ProgramList;
     CONNECTSIGNALSIGNAL(this, AddItemsToFavoritePanel(bool), ui->programPanelWidget, AddItemsToFavoritePanel(bool));
-    CONNECTSIGNALSLOT(ui->programPanelWidget, PrepareSelectedProgramChecking(), this, PrepareSelectedProgramChecking());
+    //CONNECTSIGNALSLOT(ui->programPanelWidget, PrepareSelectedProgramChecking(), this, PrepareSelectedProgramChecking());
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply &),
+                      this, OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply&));
+
 }
 
 CDashboardWidget::~CDashboardWidget()
@@ -55,18 +61,171 @@ void CDashboardWidget::OnUnselectProgram()
     ui->containerPanelWidget->OnUnselectProgram();
 }
 
-void CDashboardWidget::PrepareSelectedProgramChecking()
+bool CDashboardWidget::IsParaffinInProgram(const DataManager::CProgram* p_Program)
 {
-    //(void)this->IsParaffinInProgram(mp_ProgramList->GetProgram(m_NewSelectedProgramId));//to get m_ParaffinStepIndex
+    if (!mp_DataConnector)
+    {
+        Q_ASSERT(0);
+        return false;
+    }
+
+    QStringList ReagentIDList = p_Program->GetReagentIDList();
+    for (int i = 0; i < ReagentIDList.size(); ++i)
+    {
+        QString ReagentGroupID = mp_DataConnector->ReagentList->GetReagent(ReagentIDList.at(i))->GetGroupID();
+        DataManager::CReagentGroup* pReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupID);
+        if(pReagentGroup->IsParraffin()){
+            m_ParaffinStepIndex= i;
+            return true;
+        }
+    }
+    return false;
+}
+
+//TimeActual--- get from Scheduler
+//TimeDelta
+//EndTimeAsap = TimeActual + TimeDelta;
+int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
+                                  int timeBeforeUseParaffin,
+                                  int TimeCostedParaffinMelting,
+                                  bool& bCanotRun)
+{
+    //IsParaffinInProgram()
+    //Yes
+      //calculate the timeBeforeUseParraffin
+      //RemainingTimeMeltParraffin = 12 hour - TimeCosted
+      //if RemainingTimeMeltParraffin > 0
+        //if RemainingTimeMeltParraffin <= timeBeforeUseParraffin , TDelta = 0;
+            //else TDelta = RemainingTimeMeltParraffin - timeBeforeUseParraffin
+    //if RemainingTimeMeltParraffin <= 0 Paraffin is Melted, TDelta = 0;
+
+    //No Paraffin TimeDelta = 0;
+    bCanotRun = false;
+    int TimeDelta; //seconds
+    if (-1 == m_ParaffinStepIndex)//No Paraffin in all program steps
+    {
+        TimeDelta = 0;
+    }
+    else
+    {
+        //calculate the timeBeforeUseParraffin
+        //RemainingTimeMeltParraffin = 12 hour - TimeCosted
+        //int RemainingTimeMeltParaffin = 12 * 60 * 60 - TimeCostedParaffinMelting;
+        int RemainingTimeMeltParaffin = 60 - TimeCostedParaffinMelting;
+        if (RemainingTimeMeltParaffin > 0)
+        {
+          if (RemainingTimeMeltParaffin <= timeBeforeUseParaffin)
+              TimeDelta = 0;
+           else
+           {
+              TimeDelta = RemainingTimeMeltParaffin - timeBeforeUseParaffin;
+              bCanotRun = true;
+           }
+        }
+        else
+            TimeDelta = 0;  //Paraffin is Melted
+    }
+
+    return (TimeActual + TimeDelta);//seconds
+}
+
+void CDashboardWidget::PrepareSelectedProgramChecking(const QString& selectedProgramId)
+{
+    (void)this->IsParaffinInProgram(mp_ProgramList->GetProgram(selectedProgramId));//to get m_ParaffinStepIndex
     //Notify Master, to get the time costed for paraffin Melting
-    /*QString strTempProgramId(m_NewSelectedProgramId);
-    if (m_NewSelectedProgramId.at(0) == 'C')
+    QString strTempProgramId(selectedProgramId);
+    if (selectedProgramId.at(0) == 'C')
     {
       strTempProgramId.append("_");
       QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
       strTempProgramId.append(strReagentIDOfLastStep);
     }
-    mp_DataConnector->SendProgramSelected(strTempProgramId, m_ParaffinStepIndex);*/
-
+    mp_DataConnector->SendProgramSelected(strTempProgramId, m_ParaffinStepIndex);
 }
 
+void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd)
+{
+    //Check safe reagent
+   /* int iWhichStepHasNoSafeReagent = cmd.WhichStepHasNoSafeReagent();
+    if (iWhichStepHasNoSafeReagent  != -1)
+    {
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(CommonString::strWarning);
+        ///QString strTemp = m_strCheckSafeReagent.arg(QString::number(iWhichStepHasNoSafeReagent +1)).arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+        mp_MessageDlg->SetText(strTemp);
+        mp_MessageDlg->SetButtonText(1, CommonString::strYes);
+        mp_MessageDlg->SetButtonText(3, CommonString::strNo);
+        mp_MessageDlg->HideCenterButton();
+        if (!mp_MessageDlg->exec())
+        {
+            return;
+        }
+    }
+
+    //get the proposed program end DateTime
+    bool bCanotRun = true;
+    int asapEndTime = GetASAPTime(cmd.TimeProposed(),
+                                  cmd.ParaffinMeltCostedTime(), cmd.CostedTimeBeforeParaffin(), bCanotRun);
+
+    //firstly check whether there is any station not existing for some program steps
+    const QList<QString>& stationList = cmd.StationList();
+    for (int i = 0; i < stationList.count(); i++)
+    {
+        if ("" == stationList.at(i))
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(CommonString::strWarning);
+            QString strTemp = m_strNotFoundStation.arg(QString::number(i+1)).arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+            mp_MessageDlg->SetText(strTemp);
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->HideButtons();
+
+            if (mp_MessageDlg->exec())
+            {
+                    return;
+            }
+            return;
+        }
+        else //then check station's status is empty?
+        {
+            DataManager::CDashboardStation* pStation = mp_DataConnector->DashboardStationList->GetDashboardStation(stationList.at(i));
+            if (!pStation)
+            {
+                Q_ASSERT(0);
+            }
+
+            if ("Empty" == pStation->GetDashboardReagentStatus())
+            {
+                mp_MessageDlg->SetIcon(QMessageBox::Warning);
+                mp_MessageDlg->SetTitle(CommonString::strWarning);
+                QString strTemp = m_strCheckEmptyStation.arg(pStation->GetDashboardStationName()).arg(QString::number(i+1)).arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+                mp_MessageDlg->SetText(strTemp);
+                mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+                mp_MessageDlg->HideButtons();
+
+                if (mp_MessageDlg->exec())
+                {
+                        return;
+                }
+                return;
+            }
+        }
+    }
+
+    m_SelectedProgramId = m_NewSelectedProgramId;
+    m_StationList.clear();
+    m_StationList = stationList;
+
+    //get the proposed program end DateTime
+    m_TimeProposed = cmd.TimeProposed();
+    m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+
+
+    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
+    emit UpdateSelectedStationList(m_StationList);
+    if (m_ProgramStartReady)
+    {
+        //  EnablePlayButton(true);
+    }
+    */
+}

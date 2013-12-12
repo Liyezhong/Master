@@ -103,9 +103,9 @@
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
-        <normaloff>:/HimalayaImages/Icons/Configuration/Configuration_Agitation.png</normaloff>
-        <selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_Agitation_act.png</selectedoff>
-        <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Agitation_act.png</selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Agitation.png</iconset>
+        <normaloff>:/HimalayaImages/Icons/Configuration/Configuration_Status.png</normaloff>
+        <selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_Status_act.png</selectedoff>
+        <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Status_act.png</selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Status.png</iconset>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
@@ -117,8 +117,9 @@
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
-        <normaloff>:/HimalayaImages/Icons/Configuration/Configuration_Alarm.png</normaloff>
-        <selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_Alarm_act.png</selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_Alarm.png</iconset>
+        <normaloff>:/HimalayaImages/Icons/Configuration/Configuration_Groups.png</normaloff>
+        <selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_Groups_act.png</selectedoff>
+        <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Groups_act.png</selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Groups.png</iconset>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
@@ -130,9 +131,8 @@
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
-        <normaloff>:/Large/Icons/Configuration/Configuration_Water.png</normaloff>
-        <selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_Water_act.png</selectedoff>
-        <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Water_act.png</selectedon>:/Large/Icons/Configuration/Configuration_Water.png</iconset>
+        <normaloff>:/HimalayaImages/Icons/Configuration/Configuration_Stations.png</normaloff>
+        <selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_Stations_act.png</selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_Stations.png</iconset>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
@@ -144,9 +144,8 @@
       </property>
       <property name="icon">
        <iconset resource="../../../../../../Platform/Gui/Components/MainMenu/Resource/MainMenu.qrc">
-        <normaloff>:/HimalayaImages/Icons/Configuration/Configuration_CountrySpecific.png</normaloff>
-        <selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_CountrySpecific_act.png</selectedoff>
-        <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_CountrySpecific_act.png</selectedon>:/HimalayaImages/Icons/Configuration/Configuration_CountrySpecific.png</iconset>
+        <normaloff>:/HimalayaImages/Icons/Configuration/Configuration_RMS.png</normaloff>
+        <selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_RMS_act.png</selectedoff>:/HimalayaImages/Icons/Configuration/Configuration_RMS.png</iconset>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>

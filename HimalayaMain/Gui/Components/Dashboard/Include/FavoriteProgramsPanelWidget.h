@@ -51,7 +51,7 @@ namespace Dashboard {
         void OnProcessStateChanged();
 
     signals:
-        void PrepareSelectedProgramChecking();
+        void PrepareSelectedProgramChecking(const QString& selectedProgramId);
 
     private:
         void SetButtonGroup();

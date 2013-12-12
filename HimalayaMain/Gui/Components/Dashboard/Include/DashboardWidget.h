@@ -8,15 +8,22 @@ namespace Core
     class CDataConnector;
 }
 
+namespace MsgClasses
+{
+    class CmdProgramSelectedReply;
+}
+
 namespace MainMenu
 {
     class CMainWindow;
+    class CMessageDlg;
 }
 
 namespace DataManager
 {
     class CDataProgramList;
     class CProgram;
+    class CHimalayaUserSettings;
 }
 
 namespace Dashboard {
@@ -41,13 +48,18 @@ private:
     Core::CDataConnector *mp_DataConnector;          //!< Data object
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     DataManager::CDataProgramList *mp_ProgramList;
+    QString m_NewSelectedProgramId;
+    int m_ParaffinStepIndex;
+    DataManager::CHimalayaUserSettings* m_pUserSetting;
+    MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
 
 public slots:
     void OnUnselectProgram();
 
 
 private slots:
-    void PrepareSelectedProgramChecking();
+    void PrepareSelectedProgramChecking(const QString& selectedProgramId);
+    void OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd);
 
  signals:
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram = false);

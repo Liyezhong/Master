@@ -1,16 +1,24 @@
 #include "Dashboard/Include/SplashWidget.h"
 #include "ui_SplashWidget.h"
+#include <QPalette>
 
 SplashWidget::SplashWidget(QWidget *parent) :
-    MainMenu::CDialogFrame(parent),
+    QDialog(parent),
     ui(new Ui::SplashWidget)
 {
+    setAttribute(Qt::WA_TranslucentBackground, true);
+    setStyleSheet ("background-color:transparent");
+    setWindowFlags(Qt::FramelessWindowHint);
     ui->setupUi(this);
-    this->setWindowModality(Qt::ApplicationModal);
-    //this->SetDialogTitle(tr(""));
+    this->setWindowModality(Qt::WindowModal);
 }
 
 SplashWidget::~SplashWidget()
 {
-    delete ui;
+    try
+    {
+        delete ui;
+    }
+    catch(...)
+    {}
 }

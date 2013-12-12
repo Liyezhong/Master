@@ -148,10 +148,10 @@ void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
     }
     else
     {//on selected a program
-        /*m_LastSelectedButtonId = m_ButtonGroup.checkedId();
+        m_LastSelectedButtonId = m_ButtonGroup.checkedId();
         m_NewSelectedProgramId = m_FavProgramIDs.at(m_LastSelectedButtonId);
-        CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();*/
-        PrepareSelectedProgramChecking();
+        CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
+        emit PrepareSelectedProgramChecking(m_NewSelectedProgramId);
     }
 
 }

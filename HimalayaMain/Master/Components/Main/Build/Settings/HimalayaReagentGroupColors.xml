@@ -1,16 +1,16 @@
 
 <!DOCTYPE ReagentGroupColors>
 <ReagentGroupColors>
-    <Color ID="9003" Value="F4F8F4"/>
-    <Color ID="1026" Value="F5FF00"/>
-    <Color ID="3015" Value="E1A6AD"/>
-    <Color ID="3020" Value="C1121C"/>
-    <Color ID="6038" Value="00F700"/>
-    <Color ID="7045" Value="91969A"/>
-    <Color ID="3018" Value="D53032"/>
-    <Color ID="2005" Value="FF2301"/>
-    <Color ID="6037" Value="008F39"/>
-    <Color ID="5024" Value="5D9B9B"/>
-    <Color ID="5017" Value="063971"/>
-    <Color ID="5002" Value="20214F"/>
+    <Color ID="9003" Value="E3F9FC"/>
+    <Color ID="1026" Value="B2F1FC"/>
+    <Color ID="3015" Value="4CDDF7"/>
+    <Color ID="3020" Value="A9F1FF"/>
+    <Color ID="6038" Value="FFD9FF"/>
+    <Color ID="7045" Value="FFA6FF"/>
+    <Color ID="3018" Value="FFC8FF"/>
+    <Color ID="2005" Value="D9FFD9"/>
+    <Color ID="6037" Value="EEFF99"/>
+    <Color ID="5024" Value="CFDAE6"/>
+    <Color ID="5017" Value="FFD2B2"/>
+    <Color ID="5002" Value="A9B7FF"/>
 </ReagentGroupColors>
