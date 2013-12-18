@@ -1,6 +1,6 @@
 #include "Dashboard/Include/DashboardProgramStatusWidget.h"
 #include "ui_DashboardProgramStatusWidget.h"
-#include "Dashboard/Include/DashboardDateTimeWidget.h"
+#include "Dashboard/Include/FavoriteProgramsPanelWidget.h"
 #include "MainMenu/Include/BaseTable.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
 #include "Core/Include/DataConnector.h"
@@ -45,7 +45,7 @@ void CDashboardProgramStatusWidget::InitDialog(DataManager::CProgram *p_Program,
     if (!p_Program || !pDataConnector)
         return;
 
-    SetDialogTitle(QString("\"%1\"").arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME));
+    SetDialogTitle(QString("\"%1\"").arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME));
 
     m_StepModel.SetVisibleRowCount(6);
     m_StepModel.ShowStation(true);

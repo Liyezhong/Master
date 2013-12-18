@@ -51,8 +51,6 @@ public:
     virtual ~CDashboardDateTimeWidget();
     void RefreshDateTime(Global::TimeFormat TimeFormat = Global::TIME_24);
     void SetASAPDateTime(const QDateTime& DateTime);
-    static QString SELECTED_PROGRAM_NAME;
-
 
 private:
 

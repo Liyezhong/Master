@@ -3,6 +3,7 @@
 
 #include "MainMenu/Include/PanelFrame.h"
 
+class QDateTime;
 namespace MainMenu
 {
     class CMainWindow ;
@@ -31,8 +32,9 @@ public:
 
 signals:
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
-    void PrepareSelectedProgramChecking();
-
+    void PrepareSelectedProgramChecking(const QString& selectedProgramId);
+    void OnSelectEndDateTime(const QDateTime &);
+    void ProgramSelected(QString& ProgramId, int asapEndTime);
 protected:
     void changeEvent(QEvent *p_Event);
 

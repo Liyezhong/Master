@@ -21,13 +21,12 @@
 #include "Dashboard/Include/DashboardDateTimeWidget.h"
 #include <Global/Include/AdjustedTime.h>
 #include "Application/Include/LeicaStyle.h"
-
 #include "ui_DashboardDateTimeWidget.h"
+#include "Dashboard/Include/FavoriteProgramsPanelWidget.h"
 
 
 namespace Dashboard {
 
-QString CDashboardDateTimeWidget :: SELECTED_PROGRAM_NAME = tr("");
 const int ONE_WEEK_TIME_OFFSET_VALUE = (7 * 24 * 60 * 60);
 
 /****************************************************************************/
@@ -121,7 +120,7 @@ CDashboardDateTimeWidget::~CDashboardDateTimeWidget()
 void CDashboardDateTimeWidget ::UpdateProgramName()
 {
      QString str(m_strEndTimeForProgram + " \"%1\"");
-     SetDialogTitle(str.arg(SELECTED_PROGRAM_NAME));
+     SetDialogTitle(str.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME));
 }
 
 void CDashboardDateTimeWidget::SetASAPDateTime(const QDateTime& DateTime)

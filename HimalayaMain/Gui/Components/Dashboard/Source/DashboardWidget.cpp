@@ -25,14 +25,18 @@
 #include <Dashboard/Include/CommonString.h>
 #include <Dashboard/Include/FavoriteProgramsPanelWidget.h>
 
+
 using namespace Dashboard;
+
+QString CDashboardWidget::m_SelectedProgramId = "";
 
 CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                      MainMenu::CMainWindow *p_Parent) :
     ui(new Ui::CDashboardWidget),
     mp_DataConnector(p_DataConnector),
     mp_MainWindow(p_Parent),
-    m_ParaffinStepIndex(-1)
+    m_ParaffinStepIndex(-1),
+    m_TimeProposed(0)
 {
     ui->setupUi(this);
     ui->containerPanelWidget->SetPtrToMainWindow(mp_MainWindow, mp_DataConnector);
@@ -40,9 +44,18 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     m_pUserSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
     mp_ProgramList = mp_DataConnector->ProgramList;
     CONNECTSIGNALSIGNAL(this, AddItemsToFavoritePanel(bool), ui->programPanelWidget, AddItemsToFavoritePanel(bool));
-    //CONNECTSIGNALSLOT(ui->programPanelWidget, PrepareSelectedProgramChecking(), this, PrepareSelectedProgramChecking());
+    CONNECTSIGNALSLOT(ui->programPanelWidget, PrepareSelectedProgramChecking(const QString&), this, PrepareSelectedProgramChecking(const QString&));
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply &),
                       this, OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply&));
+
+    CONNECTSIGNALSLOT(ui->programPanelWidget, OnSelectEndDateTime(const QDateTime&),
+                        this, OnSelectEndDateTime(const QDateTime &));
+
+    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int),
+                       ui->programPanelWidget, ProgramSelected(QString&, int));
+
+    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, QList<QString>&),
+                       ui->containerPanelWidget, ProgramSelected(QString&, QList<QString>&));
 
 }
 
@@ -131,6 +144,7 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
 
 void CDashboardWidget::PrepareSelectedProgramChecking(const QString& selectedProgramId)
 {
+    m_NewSelectedProgramId = selectedProgramId;
     (void)this->IsParaffinInProgram(mp_ProgramList->GetProgram(selectedProgramId));//to get m_ParaffinStepIndex
     //Notify Master, to get the time costed for paraffin Melting
     QString strTempProgramId(selectedProgramId);
@@ -146,12 +160,12 @@ void CDashboardWidget::PrepareSelectedProgramChecking(const QString& selectedPro
 void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd)
 {
     //Check safe reagent
-   /* int iWhichStepHasNoSafeReagent = cmd.WhichStepHasNoSafeReagent();
+    int iWhichStepHasNoSafeReagent = cmd.WhichStepHasNoSafeReagent();
     if (iWhichStepHasNoSafeReagent  != -1)
     {
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         mp_MessageDlg->SetTitle(CommonString::strWarning);
-        ///QString strTemp = m_strCheckSafeReagent.arg(QString::number(iWhichStepHasNoSafeReagent +1)).arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+        QString strTemp = m_strCheckSafeReagent.arg(QString::number(iWhichStepHasNoSafeReagent +1)).arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
         mp_MessageDlg->SetText(strTemp);
         mp_MessageDlg->SetButtonText(1, CommonString::strYes);
         mp_MessageDlg->SetButtonText(3, CommonString::strNo);
@@ -175,7 +189,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
         {
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
             mp_MessageDlg->SetTitle(CommonString::strWarning);
-            QString strTemp = m_strNotFoundStation.arg(QString::number(i+1)).arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+            QString strTemp = m_strNotFoundStation.arg(QString::number(i+1)).arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
             mp_MessageDlg->SetText(strTemp);
             mp_MessageDlg->SetButtonText(1, CommonString::strOK);
             mp_MessageDlg->HideButtons();
@@ -198,7 +212,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
             {
                 mp_MessageDlg->SetIcon(QMessageBox::Warning);
                 mp_MessageDlg->SetTitle(CommonString::strWarning);
-                QString strTemp = m_strCheckEmptyStation.arg(pStation->GetDashboardStationName()).arg(QString::number(i+1)).arg(CDashboardDateTimeWidget::SELECTED_PROGRAM_NAME);
+                QString strTemp = m_strCheckEmptyStation.arg(pStation->GetDashboardStationName()).arg(QString::number(i+1)).arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
                 mp_MessageDlg->SetText(strTemp);
                 mp_MessageDlg->SetButtonText(1, CommonString::strOK);
                 mp_MessageDlg->HideButtons();
@@ -221,11 +235,38 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 
 
-    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_StationList);//for UI update
+    emit ProgramSelected(m_SelectedProgramId, asapEndTime);
+    emit ProgramSelected(m_SelectedProgramId, m_StationList);
     emit UpdateSelectedStationList(m_StationList);
-    if (m_ProgramStartReady)
+    //if (m_ProgramStartReady)
     {
         //  EnablePlayButton(true);
     }
-    */
 }
+
+void CDashboardWidget::changeEvent(QEvent *p_Event)
+{
+    QWidget::changeEvent(p_Event);
+    switch (p_Event->type()) {
+        case QEvent::LanguageChange:
+            ui->retranslateUi(this);
+            CommonString::RetranslateUIString();
+            this->RetranslateUI();
+            break;
+        default:
+            break;
+    }
+}
+
+void CDashboardWidget::RetranslateUI()
+{
+    m_strCheckSafeReagent = QApplication::translate("Dashboard::CDashboardWidget", "No safe reagent for Program step \"%1\" of \"%2\" in case of error happen.Would you like to continue?", 0, QApplication::UnicodeUTF8);
+    m_strNotFoundStation = QApplication::translate("Dashboard::CDashboardWidget", "Program step \"%1\" of \"%2\" can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.", 0, QApplication::UnicodeUTF8);
+    m_strCheckEmptyStation = QApplication::translate("Dashboard::CContainerPanelWidget", "The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed.", 0, QApplication::UnicodeUTF8);
+}
+
+void CDashboardWidget::OnSelectEndDateTime(const QDateTime& dateTime)
+{
+    m_EndDateTime = dateTime;
+}
+

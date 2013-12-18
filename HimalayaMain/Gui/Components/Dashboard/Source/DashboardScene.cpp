@@ -656,8 +656,6 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     this->CollectPipeRect();
     CreateAllPipe();
 
-    //CONNECTSIGNALSLOT(this, OnSelectDateTime(const QDateTime &), mp_DashboardEndTimeWidget, UpdateDateTime(const QDateTime &));
-
     /*CONNECTSIGNALSLOT(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
                       mp_DashboardEndTimeWidget, OnProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
 
@@ -694,7 +692,7 @@ void CDashboardScene::UpdateDashboardStations()
     }
 }
 
-void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId, int asapEndTime, QList<QString>& selectedStationList)
+void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId, QList<QString>& selectedStationList)
 {
     DataManager::CProgram const *p_Program = NULL;
 
@@ -702,12 +700,6 @@ void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId,
         *mp_ProgramListClone = *(mp_DataConnector->ProgramList);
     }
     p_Program = mp_ProgramListClone->GetProgram(programId);
-    /*if(p_Program) {
-        mp_DashboardEndTimeWidget->UpdateEndTimeWidgetItems(p_Program, asapEndTime);
-    }
-    else
-        mp_DashboardEndTimeWidget->InitEndTimeWidgetItems();
-    */
 
     for(int j = 0 ; j < m_DashboardStationList.count(); j++)
     {

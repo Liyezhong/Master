@@ -12,15 +12,18 @@ QString CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME = tr("");
 
 CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
     QWidget(parent),
-    m_ProcessRunning(false),
     ui(new Ui::CFavoriteProgramsPanelWidget),
-    m_LastSelectedButtonId(-1)
+    m_LastSelectedButtonId(-1),
+    m_ProcessRunning(false)
 {
     ui->setupUi(this);
     SetButtonGroup();
 
     mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget();
     mp_wdgtDateTime->setWindowFlags(Qt::CustomizeWindowHint);
+
+    CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime&));
+    CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectEndDateTime(const QDateTime &));
 
     CONNECTSIGNALSLOT(ui->BtnProgram1, clicked(bool), this, OnEndTimeButtonClicked());
     CONNECTSIGNALSLOT(ui->BtnProgram2, clicked(bool), this, OnEndTimeButtonClicked());
@@ -31,6 +34,7 @@ CFavoriteProgramsPanelWidget::~CFavoriteProgramsPanelWidget()
 {
     try {
             delete ui;
+            delete mp_wdgtDateTime;
         }
         catch (...) {
             // to please Lint.
@@ -136,6 +140,11 @@ void CFavoriteProgramsPanelWidget::OnProcessStateChanged()
    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
 }
 
+void CFavoriteProgramsPanelWidget::ProgramSelected(QString& ProgramId, int asapEndTime)
+{
+    m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+}
+
 void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
 {
     if (m_LastSelectedButtonId == m_ButtonGroup.checkedId())
@@ -143,17 +152,20 @@ void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
         mp_wdgtDateTime->UpdateProgramName();
         mp_wdgtDateTime->SetASAPDateTime(m_ProgramEndDateTime);
         mp_wdgtDateTime->show();
-       // CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, UpdateDateTime(const QDateTime &));
-        //CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime &));
     }
     else
     {//on selected a program
         m_LastSelectedButtonId = m_ButtonGroup.checkedId();
         m_NewSelectedProgramId = m_FavProgramIDs.at(m_LastSelectedButtonId);
-        CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
+        SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
         emit PrepareSelectedProgramChecking(m_NewSelectedProgramId);
     }
+}
 
+void CFavoriteProgramsPanelWidget::OnSelectDateTime(const QDateTime& dateTime)
+{
+    m_EndDateTime = dateTime;
+    //show the time on the panel???
 }
 
 

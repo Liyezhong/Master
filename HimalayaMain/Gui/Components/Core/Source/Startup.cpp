@@ -74,7 +74,7 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Dashboard, AddItemsToFavoritePanel());
     CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Programs, UpdateProgram(DataManager::CProgram &));
 
-    //CONNECTSIGNALSIGNAL(mp_Dashboard, UpdateSelectedStationList(QList<QString>&), mp_Reagents, UpdateSelectedStationList(QList<QString>&));
+    CONNECTSIGNALSIGNAL(mp_Dashboard, UpdateSelectedStationList(QList<QString>&), mp_Reagents, UpdateSelectedStationList(QList<QString>&));
 
 
     CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsUpdated(), mp_Programs, UpdateProgramList());

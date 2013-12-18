@@ -35,7 +35,6 @@ namespace Dashboard {
 
 class CDashboardProgramStatusWidget;
 class CCassetteNumberInputWidget;
-class CDashboardDateTimeWidget;
 
 namespace Ui {
     class CContainerPanelWidget;
@@ -61,19 +60,14 @@ private:
     QStringList m_FavProgramIDs;
 
     CDashboardProgramStatusWidget *mp_ProgramStatusWidget;
-    static QString m_SelectedProgramId;
-    QString m_NewSelectedProgramId;
     QButtonGroup m_btnGroup;                                    //!< Button Group
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
     bool m_UserRoleChanged;                                     //!< Flag to Verify the Change in User Role
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
-    int m_TimeProposed;
-    QDateTime m_EndDateTime;
     QDateTime m_StartDateTime;
     int m_ParaffinStepIndex;
     bool m_IsWaitingCleaningProgram;
     bool m_IsResumeRun;
-    QList<QString> m_StationList;
     int m_CurProgramStepIndex;
     bool m_IsDraining;
     bool m_ProcessRunning;                      //!< Process running state
@@ -89,11 +83,7 @@ private:
     QString m_strRetortContaminated;
     QString m_strProgramIsAborted, m_strNeedMeltParaffin;
     QString m_strResetEndTime, m_strInputCassetteBoxTitle;
-    QString m_strNotFoundStation;
-    QString m_strCheckEmptyStation;
-    QString m_strCheckSafeReagent;
     DataManager::CHimalayaUserSettings* m_pUserSetting;
-    Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
     void TakeOutSpecimenAndWaitRunCleaning();
     void RetranslateUI();
 public:
@@ -103,7 +93,7 @@ public:
     void CheckPreConditionsToRunProgram();
     bool CheckPreConditionsToPauseProgram();
     bool CheckPreConditionsToAbortProgram();
-    static const QString& SelectedProgramId();
+    //static const QString& SelectedProgramId();
     static bool CheckSelectedProgram(bool& bRevertSelectProgram,
                                      QString ProgramID = "");//the return value(true) means the work flow can go continuely.
     void OnUnselectProgram();
@@ -124,10 +114,9 @@ signals:
     void ProgramActionStopped(DataManager::ProgramStatusType_t);
     void UpdateProgramName(QString& SelectedProgramName);
     void UpdateDashboardSceneReagentStations(QString& ProgramID);
-    void ProgramSelected(QString & ProgramId, int asapEndTime, QList<QString>& SelectedStationList);
+    void ProgramSelected(QString & ProgramId, QList<QString>& SelectedStationList);
     void UpdateUserSetting(DataManager::CUserSettings&);
-    void UpdateSelectedStationList(QList<QString>&);
-
+    void OnSelectEndDateTime(const QDateTime &);
 public slots:
     void OnUserRoleChanged();
     void OnButtonClicked(int whichBtn);
@@ -143,7 +132,7 @@ public slots:
 
     void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);
-    void OnSelectDateTime(const QDateTime&);
+
 };
 
 }

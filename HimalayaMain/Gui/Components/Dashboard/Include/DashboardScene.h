@@ -144,13 +144,12 @@ private:
     void ClearCurrentWorkingPipe();
 private slots:
     void UpdateDashboardStations();
-    void UpdateDashboardSceneReagentsForProgram(QString&, int, QList<QString>&);
+    void UpdateDashboardSceneReagentsForProgram(QString&, QList<QString>&);
     void PipeSuckDrainAnimation();
     void BlinkingStation();
     void OnUpdateUserSettings();
 
 signals:
-    void OnSelectDateTime(const QDateTime &);
     void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
     void ProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
 
