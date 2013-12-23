@@ -84,6 +84,7 @@ private:
     bool m_ExpiredColorRed;
     bool m_IsRetortContaminated;
     bool m_RetortLocked;								 //!< Indicates if the retort is locked or not
+    QPixmap m_RawImage4Cleaning;                         //!< Big Image with customized BDiagPattern for Cleaning reagent
     void OnCompletedSuckDrain(bool isSuck);
     void DrawGlowBoundaryText(QFont& textFont, QString& text, QRect& rect, QPainter& painter);
 public:

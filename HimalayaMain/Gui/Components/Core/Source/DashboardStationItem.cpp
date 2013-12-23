@@ -77,6 +77,22 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
         m_Image = QPixmap(m_ParaffinbathBoundingRectWidth, m_ParaffinbathBoundingRectHeight);
     } else {
         m_Image = QPixmap(m_BottleBoundingRectWidth, m_BottleBoundingRectHeight);
+
+        //For Cleaning Reagent, generate the raw image used for BDiagpattern
+        QPixmap pix(1024,1024);
+        pix.fill(Qt::transparent);
+        QPainter painter(&pix);
+        painter.setBrush(Qt::white);
+        painter.setPen(Qt::white);
+        for (int i=0; i<1024; i+=8)
+        {
+            painter.drawRect(i,0,4,1024);
+        }
+        QMatrix matrix;
+        (void)matrix.rotate(45.0);
+        QPixmap img = pix.transformed(matrix);
+        img = img.copy(1024/2,1024/2,1024/2,1024/2);
+        m_RawImage4Cleaning = img;
     }
     UpdateImage();
 
@@ -512,6 +528,8 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
     int fillRetortWidth;
     int fillRetortHeight;
     QString ReagentColorValue;
+	bool isCleaningReagent = false;
+
     if(mp_DashboardStation)
     {
         QString ReagentID = mp_DashboardStation->GetDashboardReagentID();
@@ -525,6 +543,12 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 
         ReagentColorValue = p_ReagentGroup->GetGroupColor();
         (void)ReagentColorValue.prepend("#");
+
+		//Check whether the bottle contains cleaning reagnet for later use 
+		if (p_ReagentGroup->IsCleaningReagentGroup())
+		{
+			isCleaningReagent = true;
+		}
     }
     else
     {
@@ -636,6 +660,24 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
     }
 
     Painter.rotate(-270.0);
+
+	//For Cleaning Reagent, we add the BDiagPattern
+	if (isCleaningReagent == true)
+	{
+		qreal startx = 4.0;
+        qreal starty = 38.0;
+        qreal bottleWidth = fillBottleWidth-47;
+        qreal boottleHeight = fillBottleHeight+46;
+        QPainterPath clipPath;
+        clipPath.setFillRule(Qt::WindingFill);
+        clipPath.addRect(startx,starty, bottleWidth, boottleHeight-5);
+        clipPath.addRoundedRect(startx, starty+boottleHeight-8, bottleWidth, 10, 8, 8);
+        Painter.setClipPath(clipPath);
+
+		//draw the final result
+        Painter.setBrush(Qt::white);
+        Painter.drawPixmap(startx, starty, m_RawImage4Cleaning);
+	}
 }
 
 /****************************************************************************/
