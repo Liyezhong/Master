@@ -37,11 +37,9 @@ QString CContainerPanelWidget::m_strMsgUnselect = CContainerPanelWidget::tr("As 
 CContainerPanelWidget::CContainerPanelWidget(QWidget *p_Parent): MainMenu::CPanelFrame(p_Parent),
                                    mp_Ui(new Ui::CContainerPanelWidget),mp_MainWindow(NULL),
                                    mp_DataConnector(NULL),
-                                   m_ProgramNextAction(DataManager::PROGRAM_START),
                                    m_UserRoleChanged(false),
                                    m_ParaffinStepIndex(-1),
                                    m_IsWaitingCleaningProgram(false),
-                                   m_IsResumeRun(false),
                                    m_CurProgramStepIndex(-1),
                                    m_IsDraining(false),
                                    m_ProcessRunning(false),
@@ -112,8 +110,7 @@ void CContainerPanelWidget::Initialize()
 
     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
 
-    CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
-    CONNECTSIGNALSLOT(mp_ProgramStatusWidget, AbortClicked(int), this, OnButtonClicked(int));
+    //CONNECTSIGNALSLOT(mp_ProgramStatusWidget, AbortClicked(int), this, OnButtonClicked(int));
 
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, QList<QString>&),
                        mp_DashboardScene, UpdateDashboardSceneReagentsForProgram(QString&, QList<QString>&));
@@ -173,7 +170,6 @@ void CContainerPanelWidget::RetranslateUI()
     m_strMsgUnselect = QApplication::translate("Dashboard::CContainerPanelWidget", "As the program \"%1\" is selected, this operation will result in an incorrect program result, if you click \"Yes\", the selected program will unselect.", 0, QApplication::UnicodeUTF8);
     m_strProgram = QApplication::translate("Dashboard::CContainerPanelWidget", "Program", 0, QApplication::UnicodeUTF8);
     m_strInformation = QApplication::translate("Dashboard::CContainerPanelWidget", "Information", 0, QApplication::UnicodeUTF8);
-    m_strNotStartRMSOFF = QApplication::translate("Dashboard::CContainerPanelWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);
     m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CContainerPanelWidget", "Reagents needed for this program are expired! You can't operate this program.", 0, QApplication::UnicodeUTF8);
     m_strStartExpiredReagent =  QApplication::translate("Dashboard::CContainerPanelWidget", "Do you want to Start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
     m_strConfirmation = QApplication::translate("Dashboard::CContainerPanelWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
@@ -231,56 +227,6 @@ void CContainerPanelWidget::OnUserRoleChanged()
 }
 
 
-void CContainerPanelWidget::OnButtonClicked(int whichBtn)
-{
-    /*if ( whichBtn == Dashboard::firstButton ) {
-        switch(m_ProgramNextAction)
-        {
-            default:
-            break;
-            case DataManager::PROGRAM_START:
-            {
-                if (m_IsResumeRun)
-                {
-                    QString strTempProgramId;
-                    if (m_SelectedProgramId.at(0) == 'C')//Cleaning program
-                    {
-                        strTempProgramId = m_SelectedProgramId;
-                        strTempProgramId.append("_");
-                        QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
-                        strTempProgramId.append(strReagentIDOfLastStep);
-                    }
-
-                    mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
-                    m_ProgramNextAction = DataManager::PROGRAM_PAUSE;
-                    return;
-                }
-
-                CheckPreConditionsToRunProgram();
-            }
-            break;
-            case DataManager::PROGRAM_PAUSE:
-            {
-                if(CheckPreConditionsToPauseProgram())
-                {
-                    mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_PAUSE);
-                    emit ProgramActionStopped(DataManager::PROGRAM_STATUS_PAUSED);//pause ProgressBar and EndTime countdown
-                    m_ProgramNextAction = DataManager::PROGRAM_START;
-                } else {
-                    // Take Necessary Action
-                }
-            }
-            break;
-        }
-    }
-    else if (whichBtn == Dashboard::secondButton)
-    {
-        if(CheckPreConditionsToAbortProgram()) {
-            mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
-        }
-    }
-    */
-}
 
 bool CContainerPanelWidget::CheckSelectedProgram(bool& bRevertSelectProgram, QString ProgramID)
 {
@@ -328,119 +274,7 @@ void CContainerPanelWidget::OnUnselectProgram()
     return m_SelectedProgramId;
 }*/
 
-void CContainerPanelWidget::CheckPreConditionsToRunProgram()
-{
-    /*
-    if ("" == m_SelectedProgramId)
-        return;
 
-    //Check if Leica program and RMS OFF?
-    DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
-    bool bShowRMSOffWarning = false;
-    bool isLeicaProgram = mp_ProgramList->GetProgram(m_SelectedProgramId)->IsLeicaProgram();
-    if (m_SelectedProgramId.at(0) == 'C')
-    {
-        if ((Global::RMS_OFF == userSetting->GetModeRMSCleaning()) && isLeicaProgram)
-        {
-            bShowRMSOffWarning = true;
-        }
-    }
-    else
-    {
-        if ((Global::RMS_OFF == userSetting->GetModeRMSProcessing()) && isLeicaProgram)
-        {
-            bShowRMSOffWarning = true;
-        }
-    }
-
-    if (bShowRMSOffWarning)
-    {
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(m_strWarning);
-        mp_MessageDlg->SetText(m_strNotStartRMSOFF);
-        mp_MessageDlg->SetButtonText(1, m_strOK);
-        mp_MessageDlg->HideButtons();
-        if (mp_MessageDlg->exec())
-        return;
-    }
-
-    //Check Expired?
-    bool isRMSOFF = false;
-    if ((Global::RMS_OFF == userSetting->GetModeRMSCleaning()) || (Global::RMS_OFF == userSetting->GetModeRMSProcessing()))
-    {
-        isRMSOFF = true;
-    }
-    if (!isRMSOFF && mp_DashboardScene->HaveExpiredReagent())
-    {
-        if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
-        {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(m_strWarning);
-            mp_MessageDlg->SetText(m_strNotStartExpiredReagent);
-            mp_MessageDlg->SetButtonText(1, m_strOK);
-            mp_MessageDlg->HideButtons();
-            if (mp_MessageDlg->exec())
-            return;
-        }
-        else
-        if(m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
-        m_CurrentUserRole == MainMenu::CMainWindow::Service)
-        {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(m_strWarning);
-            mp_MessageDlg->SetText(m_strStartExpiredReagent);
-            mp_MessageDlg->SetButtonText(3, m_strNo);
-            mp_MessageDlg->SetButtonText(1, m_strYes);
-            mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
-
-            if (!mp_MessageDlg->exec())
-            return;
-        }
-    }
-
-    QRect scr = mp_MainWindow->geometry();
-    //input cassette number
-    if (m_SelectedProgramId.at(0) != 'C' && Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
-    {
-        CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
-        pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
-        pCassetteInput->SetDialogTitle(m_strInputCassetteBoxTitle);
-
-        pCassetteInput->move( scr.center() - pCassetteInput->rect().center());
-        (void)pCassetteInput->exec();
-
-        int cassetteNumber = pCassetteInput->CassetteNumber();
-        if (-1 == cassetteNumber)
-        {
-            delete pCassetteInput;
-            return;//clicked Cancel button
-        }
-
-
-        mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
-        delete pCassetteInput;
-    }
-
-    //set endtime of program
-    mp_wdgtDateTime->UpdateProgramName();
-    mp_wdgtDateTime->SetASAPDateTime(m_EndDateTime);
-    mp_wdgtDateTime->setFixedSize(625,483);
-    scr.translate(mp_MainWindow->rect().center() - mp_wdgtDateTime->rect().center());
-    mp_wdgtDateTime->move(scr.left(), scr.top());
-    if (!mp_wdgtDateTime->exec())
-        return;
-
-    QString strTempProgramId(m_SelectedProgramId);
-    if (m_SelectedProgramId.at(0) == 'C')
-    {
-        strTempProgramId.append("_");
-        QString reagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
-        strTempProgramId.append(reagentIDOfLastStep);
-    }
-
-    mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
-    m_ProgramNextAction = DataManager::PROGRAM_PAUSE;*/
-}
 
 bool CContainerPanelWidget::CheckPreConditionsToPauseProgram()
 {
@@ -518,7 +352,7 @@ void CContainerPanelWidget::TakeOutSpecimenAndWaitRunCleaning()
         m_IsWaitingCleaningProgram = true;
         if (mp_MessageDlg->exec())
         {
-            m_ProgramNextAction = DataManager::PROGRAM_START;
+            //m_ProgramNextAction = DataManager::PROGRAM_START;
             //only show Cleaning program in the ComboBox list
             this->AddItemsToComboBox(true);
 

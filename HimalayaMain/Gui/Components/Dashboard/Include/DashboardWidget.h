@@ -60,10 +60,11 @@ private:
     QString m_strCheckSafeReagent;
     QString m_strNotFoundStation;
     QString m_strCheckEmptyStation;
-    static QString m_SelectedProgramId;
+    QString m_SelectedProgramId;
     QList<QString> m_StationList;
     int m_TimeProposed;
     QDateTime m_EndDateTime;
+
 
 public slots:
     void OnUnselectProgram();

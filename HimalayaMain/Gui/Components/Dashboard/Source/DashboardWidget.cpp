@@ -28,8 +28,6 @@
 
 using namespace Dashboard;
 
-QString CDashboardWidget::m_SelectedProgramId = "";
-
 CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                      MainMenu::CMainWindow *p_Parent) :
     ui(new Ui::CDashboardWidget),
@@ -56,6 +54,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, QList<QString>&),
                        ui->containerPanelWidget, ProgramSelected(QString&, QList<QString>&));
+    mp_MessageDlg = new MainMenu::CMessageDlg(this);
+
 
 }
 
@@ -63,6 +63,7 @@ CDashboardWidget::~CDashboardWidget()
 {
     try {
             delete ui;
+            delete mp_MessageDlg;
         }
         catch (...) {
             // to please Lint.

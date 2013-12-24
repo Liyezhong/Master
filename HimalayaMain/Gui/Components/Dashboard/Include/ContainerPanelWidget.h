@@ -27,14 +27,12 @@
 #include "Dashboard/Include/DashboardScene.h"
 #include "Dashboard/Include/DashboardComboBox.h"
 #include "Dashboard/Include/DashboardDataTypes.h"
-#include "HimalayaDataContainer/Helper/Include/Global.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 
 
 namespace Dashboard {
 
 class CDashboardProgramStatusWidget;
-class CCassetteNumberInputWidget;
 
 namespace Ui {
     class CContainerPanelWidget;
@@ -55,19 +53,16 @@ private:
     MainMenu::CMainWindow *mp_MainWindow;                           //!< Reference to MainWindow.
     Core::CDataConnector *mp_DataConnector;                     //!< Global data container
     CDashboardScene *mp_DashboardScene;                         //!< Displays the station items
-    DataManager::ProgramActionType_t m_ProgramNextAction;       //!< Program Next Action
     DataManager::CDataProgramList *mp_ProgramList;
     QStringList m_FavProgramIDs;
 
     CDashboardProgramStatusWidget *mp_ProgramStatusWidget;
-    QButtonGroup m_btnGroup;                                    //!< Button Group
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
     bool m_UserRoleChanged;                                     //!< Flag to Verify the Change in User Role
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
     QDateTime m_StartDateTime;
     int m_ParaffinStepIndex;
     bool m_IsWaitingCleaningProgram;
-    bool m_IsResumeRun;
     int m_CurProgramStepIndex;
     bool m_IsDraining;
     bool m_ProcessRunning;                      //!< Process running state
@@ -75,7 +70,6 @@ private:
     QString m_strProgram;
     QString m_strInformation;
     QString m_strOK, m_strNo;
-    QString m_strNotStartRMSOFF;
     QString m_strNotStartExpiredReagent;
     QString m_strStartExpiredReagent;
     QString m_strConfirmation, m_strAbortProgram;
@@ -90,7 +84,6 @@ public:
     explicit CContainerPanelWidget(QWidget *p_Parent = 0);
     ~CContainerPanelWidget();
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector);
-    void CheckPreConditionsToRunProgram();
     bool CheckPreConditionsToPauseProgram();
     bool CheckPreConditionsToAbortProgram();
     //static const QString& SelectedProgramId();
@@ -119,7 +112,6 @@ signals:
     void OnSelectEndDateTime(const QDateTime &);
 public slots:
     void OnUserRoleChanged();
-    void OnButtonClicked(int whichBtn);
     void OnProgramStartReadyUpdated();
     void OnProgramWillComplete();
     void OnProgramAborted();
