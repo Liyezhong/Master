@@ -69,7 +69,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_SchedulerCommandProcessor(NULL)
         , m_SchedulerMachine(new SchedulerMachine())
         , mp_ProgramStepStateMachine(new ProgramStepStateMachine())
-        , mp_SelfTestStateMachine(new SelfTestStateMachine())
+        //, mp_SelfTestStateMachine(new SelfTestStateMachine())
         , mp_IDeviceProcessing(NULL)
         , mp_DataManager(NULL)
         , m_CurProgramStepIndex(-1)
@@ -93,8 +93,8 @@ SchedulerMainThreadController::~SchedulerMainThreadController()
     m_SchedulerMachine = NULL;
     delete mp_ProgramStepStateMachine;
     mp_ProgramStepStateMachine = NULL;
-    delete mp_SelfTestStateMachine;
-    mp_SelfTestStateMachine = NULL;
+    //delete mp_SelfTestStateMachine;
+    //mp_SelfTestStateMachine = NULL;
 }
 
 void SchedulerMainThreadController::RegisterCommands()
@@ -206,6 +206,12 @@ void SchedulerMainThreadController::OnTickTimer()
         }
     }
     SchedulerState_t currentState = m_SchedulerMachine->GetCurrentState();
+
+#if 1
+            mp_ProgramStepStateMachine->Start();
+        HandleRunState(newControllerCmd, retCode);
+#endif
+
     switch(currentState)
     {
     case INIT_STATE:
@@ -264,7 +270,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
 
             LOG_PAR()<<"DBG" << "Start step: " << m_CurProgramID;
             mp_ProgramStepStateMachine->Start();
-            mp_SelfTestStateMachine->Start();
+            //mp_SelfTestStateMachine->Start();
             m_SchedulerMachine->SendRunSignal();
             //send command to main controller to tell the left time
             quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
@@ -334,7 +340,115 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     {
         ProgramStepStateMachine_t stepState = mp_ProgramStepStateMachine->GetCurrentState();
         LOG_PAR()<<"DBG" << "Scheduler step statemachine: "<<stepState;
-        if(PSSM_INIT == stepState)
+        if(PSSM_ST_INIT == stepState)
+        {
+            mp_ProgramStepStateMachine->NotifyStInitOK(); //todo: update later
+        }
+        else if(PSSM_ST_TEMP_CHECKING == stepState)
+        {
+            mp_ProgramStepStateMachine->NotifyStTempOK(); //todo: update later
+        }
+        else if(PSSM_ST_CURRENT_CHECKING == stepState)
+        {
+            mp_ProgramStepStateMachine->NotifyStCurrentOK(); //todo: update later
+        }
+        else if(PSSM_ST_VOLTAGE_CHECKING == stepState)
+        {
+            mp_ProgramStepStateMachine->NotifyStVoltageOK(); //todo: update later
+        }
+        else if(PSSM_ST_RV_POSITION_CHECKING == stepState)
+        {
+            mp_ProgramStepStateMachine->NotifyStRVPositionOK(); //todo: update later
+        }
+        else if(PSSM_ST_PRESSURE_CHECKING == stepState)
+        {
+            mp_ProgramStepStateMachine->NotifyStPressureOK(); //todo: update later
+        }
+        else if(PSSM_ST_SEALING_CHECKING == stepState)
+        {
+            if(true)
+            {
+                ProgramStationInfo_t stationInfo = m_ProgramStationList.dequeue();
+                RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
+                QString reagentGrpId = stationInfo.ReagentGroupID;
+
+                CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_IDeviceProcessing, this);
+                //todo: get delay time here
+                cmd->SetReagentGrpID(reagentGrpId);
+                cmd->SetTubePos(tubePos);
+                m_SchedulerCommandProcessor->pushCmd(cmd);
+                LOG_STR_ARG(STR_PROGRAM_SELFTEST_CHECK_BOTTLE, Global::FmtArgs()<<stationInfo.StationID);
+                mp_ProgramStepStateMachine->NotifyStSealingOK(); //todo: update later
+            }
+        }
+        else if(PSSM_ST_STATION_CHECKING == stepState)
+        {
+            if(DCL_ERR_UNDEFINED != retCode)
+            {
+                quint32 resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
+                if( DCL_ERR_DEV_BOTTLE_CHECK_OK == retCode)
+                {
+                    mp_ProgramStepStateMachine->NotifyStGetStationcheckResult(); //todo: update later
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_OK;
+                }
+                else if( DCL_ERR_DEV_BOTTLE_CHECK_NOT_FULL == retCode)
+                {
+                    mp_ProgramStepStateMachine->NotifyStGetStationcheckResult(); //todo: update later
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_NOT_FULL;
+                }
+                else if( DCL_ERR_DEV_BOTTLE_CHECK_BLOCKAGE == retCode)
+                {
+                    mp_ProgramStepStateMachine->NotifyStGetStationcheckResult(); //todo: update later
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_BLOCKAGE;
+                }
+                else if(DCL_ERR_DEV_BOTTLE_CHECK_EMPTY == retCode)
+                {
+                    mp_ProgramStepStateMachine->NotifyStGetStationcheckResult(); //todo: update later
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_EMPTY;
+                }
+                else if(DCL_ERR_DEV_BOTTLE_CHECK_ERROR == retCode)
+                {
+                    mp_ProgramStepStateMachine->NotifyStGetStationcheckResult(); //todo: update later
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_ERROR;
+                }
+                else if(DCL_ERR_DEV_BOTTLE_CHECK_TIMEOUT == retCode)
+                {
+                    mp_ProgramStepStateMachine->NotifyStGetStationcheckResult(); //todo: update later
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_TIMEOUT;
+                }
+                else if(DCL_ERR_UNDEFINED != retCode)
+                {
+                    LOG_PAR()<<"DBG" << "Unexpected ret code: "<< retCode;
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
+                }
+                LOG_STR_ARG(STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT, Global::tTranslatableStringList()<<Global::TranslatableString(resid));
+            }
+        }
+        else if(PSSM_ST_STATION_CHECK_FINISH == stepState)
+        {
+            if(m_ProgramStationList.size() > 0)
+            {
+                ProgramStationInfo_t stationInfo = m_ProgramStationList.dequeue();
+                RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
+                QString reagentGrpId = stationInfo.ReagentGroupID;
+
+                CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_IDeviceProcessing, this);
+                cmd->SetReagentGrpID(reagentGrpId);
+                cmd->SetTubePos(tubePos);
+                m_SchedulerCommandProcessor->pushCmd(cmd);
+                mp_ProgramStepStateMachine->NotifyStStationLeft(); //todo: update later
+            }
+            else
+            {
+                mp_ProgramStepStateMachine->NotifyStStationOK(); //todo: update later
+                LOG_STR(STR_PROGRAM_SELFTEST_FINISH);
+            }
+        }
+        else if(PSSM_ST_DONE == stepState)
+        {
+            mp_ProgramStepStateMachine->NotifyStDone(); //todo: update later
+        }
+        else if(PSSM_INIT == stepState)
         {
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
@@ -342,9 +456,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 mp_ProgramStepStateMachine->NotifyPause(PSSM_INIT);
                 DequeueNonDeviceCommand();
             }
-            else if(SelfTest(retCode))
+            else
             {
-                if(CheckStepTemperature())
+                if(CheckStepTemperature()) //todo: verify later
                 {
                     mp_ProgramStepStateMachine->NotifyTempsReady();
                 }
@@ -599,7 +713,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 //todo: error handling here
             }
         }
-        else if(PSSM_FINISH == stepState)
+        else if(PSSM_STEP_FINISH == stepState)
         {
             //todo: start next program step or finish all program
             m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
@@ -610,7 +724,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 //start next step
                 LOG_PAR()<<"DBG" << "Start step: " << m_CurProgramID;
-                mp_ProgramStepStateMachine->Start();
+                mp_ProgramStepStateMachine->NotifyStepFinished();
                 //send command to main controller to tell the left time
                 quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
 
@@ -628,29 +742,36 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
-                //program finished
-                LOG_PAR()<<"DBG" << "Program finished!";
-                m_SchedulerMachine->SendRunComplete();
-                mp_ProgramStepStateMachine->Stop();
-                //todo: tell main controller that program is complete
-                UpdateStationReagentStatus();
+                LOG_PAR()<<"DBG" << "All Steps finished ";
+                mp_ProgramStepStateMachine->NotifyProgramFinished();
 
-                //send command to main controller to tell the left time
-                QTime leftTime(0,0,0);
-                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, leftTime));
-                Q_ASSERT(commandPtr);
-                Global::tRefType Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
-                //send command to main controller to tell program finished
-                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
-                Q_ASSERT(commandPtrFinish);
-                Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
-
-                //LOG
-                LOG_STR_ARG(STR_FINISH_PROGRAM, Global::FmtArgs()<<ProgramName);
             }
+        }
+        else if(PSSM_PROGRAM_FINISH == stepState)
+        {
+            //program finished
+            QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
+            LOG_PAR()<<"DBG" << "Program finished!";
+            m_SchedulerMachine->SendRunComplete();
+            mp_ProgramStepStateMachine->Stop();
+            //todo: tell main controller that program is complete
+            UpdateStationReagentStatus();
+
+            //send command to main controller to tell the left time
+            QTime leftTime(0,0,0);
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, leftTime));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+            //send command to main controller to tell program finished
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+            Q_ASSERT(commandPtrFinish);
+            Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+
+            //LOG
+            LOG_STR_ARG(STR_FINISH_PROGRAM, Global::FmtArgs()<<ProgramName);
         }
         else if(PSSM_PAUSE == stepState)
         {
@@ -701,7 +822,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             LOG_PAR()<<"DBG" << "Program aborted!";
             m_SchedulerMachine->SendRunComplete();
             mp_ProgramStepStateMachine->Stop();
-            mp_SelfTestStateMachine->Stop();
+            //mp_SelfTestStateMachine->Stop();
             // tell the main controller the program has been aborted
             MsgClasses::CmdProgramAcknowledge* commandPtrAbortFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_FINISHED));
             Q_ASSERT(commandPtrAbortFinish);
@@ -1620,7 +1741,7 @@ ERROR:
         }
         //error happend
         // set state machine "init" to "error" (David)
-        m_SchedulerMachine->SendErrorSignal();
+ //1227///       m_SchedulerMachine->SendErrorSignal();
         //for debug
         LOG_PAR()<<"DBG" << "Error while init, Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
     }
@@ -2008,6 +2129,7 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
 
 bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
 {
+#if 0
     bool retValue = false;
     SelfTestStateMachine_t selfTestState = mp_SelfTestStateMachine->GetCurrentState();
     if(SELF_TEST_INIT == selfTestState)
@@ -2163,6 +2285,8 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
     }
 
     return retValue;
+#endif
+    return true;
 }
 
 qint64 SchedulerMainThreadController::GetOvenHeatingTime()
