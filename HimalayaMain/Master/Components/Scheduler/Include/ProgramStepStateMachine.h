@@ -4,9 +4,9 @@
 
 #include <QStateMachine>
 #include <QFinalState>
-
+#include "SchedulerStateMachineStates.h"
 namespace Scheduler{
-
+#if 0
 typedef enum
 {
     PSSM_INIT = 0,
@@ -38,20 +38,25 @@ typedef enum
     PSSM_ST_DONE = 29,
     PSSM_UNDEF
 } ProgramStepStateMachine_t;
-
+#endif
 
 class ProgramStepStateMachine : public QObject
 {
     Q_OBJECT
 public:
+#if 0 //delete later
     ProgramStepStateMachine();
+#endif
+    ProgramStepStateMachine(QState* pParentState);
     ~ProgramStepStateMachine();
-    ProgramStepStateMachine_t GetCurrentState();
-    ProgramStepStateMachine_t GetPreviousState();
+    SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
+    void SetPreviousState(SchedulerStateMachine_t state);
+    SchedulerStateMachine_t GetPreviousState();
 
     void Start();
     void Stop();
 
+#if 0 //delete later
     void NotifyStInitOK();
     void NotifyStTempOK();
     void NotifyStCurrentOK();
@@ -81,6 +86,7 @@ public:
     void NotifyResumeDrain();
     void NotifyAbort();
     void NotifyResumeToSelftest();
+#endif
 
 signals:
     void StInitOK();
@@ -165,7 +171,7 @@ private:
     QState* mp_PssmStepFinish;
     QFinalState* mp_PssmProgramFinish;
     QState* mp_PssmError;
-    ProgramStepStateMachine_t m_PreviousState;
+    SchedulerStateMachine_t m_PreviousState;
 
 };
 
