@@ -656,12 +656,7 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     this->CollectPipeRect();
     CreateAllPipe();
 
-    /*CONNECTSIGNALSLOT(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
-                      mp_DashboardEndTimeWidget, OnProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
 
-    CONNECTSIGNALSLOT(this, ProgramActionStopped(DataManager::ProgramStatusType_t),
-                      mp_DashboardEndTimeWidget, OnProgramActionStopped(DataManager::ProgramStatusType_t));
-                      */
 
 }
 

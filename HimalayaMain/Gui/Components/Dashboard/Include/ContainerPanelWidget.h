@@ -60,41 +60,25 @@ private:
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
     bool m_UserRoleChanged;                                     //!< Flag to Verify the Change in User Role
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
-    QDateTime m_StartDateTime;
     int m_ParaffinStepIndex;
     bool m_IsWaitingCleaningProgram;
-    int m_CurProgramStepIndex;
-    bool m_IsDraining;
     bool m_ProcessRunning;                      //!< Process running state
-    bool m_ProgramStartReady;
     QString m_strProgram;
     QString m_strInformation;
     QString m_strOK, m_strNo;
     QString m_strNotStartExpiredReagent;
     QString m_strStartExpiredReagent;
-    QString m_strConfirmation, m_strAbortProgram;
-    QString m_strProgramComplete, m_strTakeOutSpecimen;
-    QString m_strRetortContaminated;
-    QString m_strProgramIsAborted, m_strNeedMeltParaffin;
-    QString m_strResetEndTime, m_strInputCassetteBoxTitle;
+    QString m_strNeedMeltParaffin;
     DataManager::CHimalayaUserSettings* m_pUserSetting;
-    void TakeOutSpecimenAndWaitRunCleaning();
     void RetranslateUI();
 public:
     explicit CContainerPanelWidget(QWidget *p_Parent = 0);
     ~CContainerPanelWidget();
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector);
-    bool CheckPreConditionsToPauseProgram();
-    bool CheckPreConditionsToAbortProgram();
-    //static const QString& SelectedProgramId();
-    static bool CheckSelectedProgram(bool& bRevertSelectProgram,
-                                     QString ProgramID = "");//the return value(true) means the work flow can go continuely.
-    void OnUnselectProgram();
     void AddItemsToComboBox(bool bOnlyAddCleaningProgram = false);
-
+    inline void IsDraining(bool);
     static QString m_strWarning;
     static QString m_strYes, m_strCancel;
-    static QString m_strMsgUnselect;
 
 protected:
     void DrawSeparatorLine();
@@ -103,26 +87,13 @@ protected:
 
 signals:
     void ProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
-    void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
-    void ProgramActionStopped(DataManager::ProgramStatusType_t);
-    void UpdateProgramName(QString& SelectedProgramName);
     void UpdateDashboardSceneReagentStations(QString& ProgramID);
     void ProgramSelected(QString & ProgramId, QList<QString>& SelectedStationList);
-    void UpdateUserSetting(DataManager::CUserSettings&);
     void OnSelectEndDateTime(const QDateTime &);
 public slots:
     void OnUserRoleChanged();
-    void OnProgramStartReadyUpdated();
-    void OnProgramWillComplete();
-    void OnProgramAborted();
-    void OnProgramBeginAbort();
-    void OnProgramCompleted();
-    void OnProgramRunBegin();
     void OnProcessStateChanged();
-
     void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
-
-    void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);
 
 };

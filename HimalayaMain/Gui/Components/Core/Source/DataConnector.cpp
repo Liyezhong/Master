@@ -191,6 +191,7 @@ CDataConnector::~CDataConnector()
         delete mp_LanguageFile;
         delete m_pServiceProcess;
         delete mp_WaitDlgExecChanged;
+        delete mp_SplashWidget;
     }
     catch (...) {
         //To please lint warnings
@@ -1003,7 +1004,7 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         (void)m_NetworkObject.SendCmdToMaster(Cmd, &CDataConnector::OnAckTwoPhase, this);
         QRect scr = mp_MainWindow->rect();
         mp_SplashWidget->move( scr.center() - mp_SplashWidget->rect().center());
-        mp_SplashWidget->exec();
+        //mp_SplashWidget->exec();
     }
     return;
 }
