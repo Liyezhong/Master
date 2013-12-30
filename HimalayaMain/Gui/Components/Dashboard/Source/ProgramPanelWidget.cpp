@@ -8,7 +8,7 @@
 #include "MainMenu/Include/MessageDlg.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
-
+#include "Dashboard/Include/CommonString.h"
 namespace Dashboard {
 CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     CPanelFrame(parent),
@@ -26,21 +26,26 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, PrepareSelectedProgramChecking(const QString&), this, PrepareSelectedProgramChecking(const QString&));
 
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&), this, OnSelectEndDateTime(const QDateTime &));
-    //CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&), this, OnSelectEndDateTime(const QDateTime &));
 
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int),
                       ui->favoriteProgramsPanel, ProgramSelected(QString&, int));
 
-    CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
+    CONNECTSIGNALSLOT(this, ProgramActionStopped(DataManager::ProgramStatusType_t),
+                        ui->programRunningPanel, OnProgramActionStopped(DataManager::ProgramStatusType_t));
+
+    CONNECTSIGNALSLOT(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
+                      ui->programRunningPanel, OnProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
 
     m_btnGroup.addButton(ui->startButton, Dashboard::firstButton);
     m_btnGroup.addButton(ui->pauseButton, Dashboard::secondButton);
 
+    CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int),
                       this, OnProgramSelected(QString&, int));
 
+    ui->startButton->setEnabled(false);
+    ui->pauseButton->setEnabled(false);
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
-
 }
 
 CProgramPanelWidget::~CProgramPanelWidget()
@@ -60,6 +65,7 @@ void CProgramPanelWidget::changeEvent(QEvent *p_Event)
     switch (p_Event->type()) {
         case QEvent::LanguageChange:
             ui->retranslateUi(this);
+            CommonString::RetranslateUIString();
             this->RetranslateUI();
             break;
         default:
@@ -71,10 +77,9 @@ void CProgramPanelWidget::RetranslateUI()
 {
     SetPanelTitle(QApplication::translate("Dashboard::CProgramPanelWidget", "Programs",
                                                                  0, QApplication::UnicodeUTF8));
-    m_strOK = QApplication::translate("Dashboard::CProgramPanelWidget", "OK", 0, QApplication::UnicodeUTF8);
-    m_strWarning = QApplication::translate("Dashboard::CProgramPanelWidget", "Warning", 0, QApplication::UnicodeUTF8);
     m_strNotStartRMSOFF = QApplication::translate("Dashboard::CProgramPanelWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);
-
+    m_strConfirmation = QApplication::translate("Dashboard::CProgramPanelWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
+    m_strAbortProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Do you want to abort the program?", 0, QApplication::UnicodeUTF8);
 
 }
 
@@ -125,9 +130,9 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
     if (bShowRMSOffWarning)
     {
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(m_strWarning);
+        mp_MessageDlg->SetTitle(CommonString::strWarning);
         mp_MessageDlg->SetText(m_strNotStartRMSOFF);
-        mp_MessageDlg->SetButtonText(1, m_strOK);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
         return;
@@ -140,8 +145,8 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
         isRMSOFF = true;
     }
 
-    /*Improve the expired.
-     *if (!isRMSOFF && mp_DashboardScene->HaveExpiredReagent())
+    //We should improve the expired later
+    /*if (!isRMSOFF && mp_DashboardScene->HaveExpiredReagent())
     {
         if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
         {
@@ -171,29 +176,27 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
 
 
     //check End Datetime again
-    /*m_NewSelectedProgramId = m_SelectedProgramId;
-    m_CheckEndDatetimeAgain = true;
-    PrepareSelectedProgramChecking();
+    //m_NewSelectedProgramId = m_SelectedProgramId;
+    emit PrepareSelectedProgramChecking(m_SelectedProgramId, true);
+}
 
-    //set endtime of program
-    mp_wdgtDateTime->UpdateProgramName();
-    mp_wdgtDateTime->SetASAPDateTime(m_EndDateTime);
-    mp_wdgtDateTime->setFixedSize(625,483);
-    scr.translate(mp_MainWindow->rect().center() - mp_wdgtDateTime->rect().center());
-    mp_wdgtDateTime->move(scr.left(), scr.top());
-    if (!mp_wdgtDateTime->exec())
-        return;
 
-    QString strTempProgramId(m_SelectedProgramId);
-    if (m_SelectedProgramId.at(0) == 'C')
-    {
-        strTempProgramId.append("_");
-        QString reagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
-        strTempProgramId.append(reagentIDOfLastStep);
-    }
+bool CProgramPanelWidget::CheckPreConditionsToPauseProgram()
+{
+    return true;
+}
 
-    mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
-    m_ProgramNextAction = DataManager::PROGRAM_PAUSE;*/
+bool CProgramPanelWidget::CheckPreConditionsToAbortProgram()
+{
+    MainMenu::CMessageDlg ConfirmationMessageDlg;
+
+    ConfirmationMessageDlg.SetTitle(m_strConfirmation);
+    ConfirmationMessageDlg.SetText(m_strAbortProgram);
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
+    ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);
+    ConfirmationMessageDlg.HideCenterButton();
+    return ConfirmationMessageDlg.exec() == (int)QDialog::Accepted;
 }
 
 void CProgramPanelWidget::OnButtonClicked(int whichBtn)
@@ -226,24 +229,44 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
             break;
             case DataManager::PROGRAM_ABORT:
             {
-                /*if(CheckPreConditionsToPauseProgram())
-                {
+                if(CheckPreConditionsToAbortProgram()) {
                     mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
-                    emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);//pause ProgressBar and EndTime countdown
                     m_ProgramNextAction = DataManager::PROGRAM_START;
-                } else {
-                    // Take Necessary Action
-                }*/
+                }
             }
             break;
         }
     }
     else if (whichBtn == Dashboard::secondButton)//pause
     {
-        /*if(CheckPreConditionsToAbortProgram()) {
+        if(CheckPreConditionsToPauseProgram())
+        {
             mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_PAUSE);
-        }*/
+            emit ProgramActionStopped(DataManager::PROGRAM_STATUS_PAUSED);//pause EndTime countdown
+        } else {
+            // Take Necessary Action
+        }
+
     }
+}
+
+void CProgramPanelWidget::ChangeStartButtonToStopState()
+{
+    ui->startButton->setText(tr("Stop"));
+    m_ProgramNextAction = DataManager::PROGRAM_ABORT;
+}
+
+void CProgramPanelWidget::OnProgramStartReadyUpdated()
+{
+    if (!m_SelectedProgramId.isEmpty())
+        this->ui->startButton->setEnabled(true);
+
+    //m_ProgramStartReady = true;
+}
+
+void CProgramPanelWidget::SetProgramNextActionAsStart()
+{
+    m_ProgramNextAction = DataManager::PROGRAM_START;
 }
 
 void CProgramPanelWidget::on_pushButton_clicked()
@@ -254,7 +277,15 @@ void CProgramPanelWidget::on_pushButton_clicked()
 
 void CProgramPanelWidget::on_pushButton_2_clicked()
 {
-   ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void CProgramPanelWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd)
+{
+    /*if (cmd.CurProgramStepIndex() > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    {
+        //  EnablePlayButton(true);
+    }*/
 }
 
 }

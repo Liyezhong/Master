@@ -149,9 +149,6 @@ private slots:
     void BlinkingStation();
     void OnUpdateUserSettings();
 
-signals:
-    void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
-    void ProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
 
 };
 

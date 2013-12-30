@@ -7,7 +7,7 @@
 #include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "Reagents/Build/ui_ReagentStationWidget.h"
 #include <Dashboard/Include/CommonString.h>
-#include "Dashboard/Include/ContainerPanelWidget.h"
+#include "Dashboard/Include/DashboardWidget.h"
 
 
 namespace Reagents {
@@ -111,7 +111,7 @@ void CReagentStationWidget::OnEdit()
     if (m_StationList.contains(mp_DashStation->GetDashboardStationID()))
     {
         bool bRevertSelectedProgram = false;
-        if (!Dashboard::CContainerPanelWidget::CheckSelectedProgram(bRevertSelectedProgram))
+        if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram))
             return;
 
         if (bRevertSelectedProgram)
