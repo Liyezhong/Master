@@ -21,7 +21,7 @@
 #ifndef HIMALAYADEVICEEVENTCODES_H
 #define HIMALAYADEVICEEVENTCODES_H
 
-#include "HimalayEventCodes.h"
+#include "../../../Include/HimalayaEventCodes.h"
 
 
 #endif // HIMALAYADEVICEEVENTCODES_H

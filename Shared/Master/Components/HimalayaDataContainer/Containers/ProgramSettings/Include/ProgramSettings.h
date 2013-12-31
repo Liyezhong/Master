@@ -123,7 +123,7 @@ private:
 
     QReadWriteLock* mp_ReadWriteLock; //!< Lock for thread safety
 
-    ErrorHash_t m_ErrorMap;    //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator
+    ErrorMap_t m_ErrorMap;    //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator
     
     bool SerializeContent(QIODevice& IODevice, bool CompleteData);
 

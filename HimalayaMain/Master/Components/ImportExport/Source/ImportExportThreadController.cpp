@@ -347,8 +347,9 @@ void ImportExportThreadController::OnStopReceived() {
 }
 
 /****************************************************************************/
-void ImportExportThreadController::OnPowerFail() {
+void ImportExportThreadController::OnPowerFail(const Global::PowerFailStages PowerFailStage) {
     // call stop received event
+    Q_UNUSED(PowerFailStage)
     OnStopReceived();
 }
 
@@ -466,7 +467,7 @@ bool ImportExportThreadController::WriteTempExportConfigurationAndFiles() {
     m_TempExportConfiguration.SetSourceDir(Global::SystemPaths::Instance().GetTempPath() + QDir::separator() + DIRECTORY_EXPORT);
 
     if (m_TempExportConfiguration.GetUserConfigurationFlag()) {
-        emit RequestDayRunLogFileNames();
+        emit RequestDayRunLogFileNames(m_TempExportConfiguration.GetSourceDir());
         m_UserExport = true;
     }
 

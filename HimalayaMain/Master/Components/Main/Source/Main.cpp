@@ -18,7 +18,6 @@
  */
 /****************************************************************************/
 
-#include <../Include/DataLoggingSources.h>
 #include <Main/Include/Main.h>
 #include <HimalayaMasterThread/Include/HimalayaMasterThreadController.h>
 #include <Global/Include/SystemPaths.h>
@@ -30,6 +29,8 @@
 
 
 #include "Global/Include/SignalHandler.h"
+#include "Global/Include/AlarmPlayer.h"
+#include "EventHandler/Include/StateHandler.h"
 
 class MApplication : public QCoreApplication
 {
@@ -99,6 +100,10 @@ void myMessageOutput(QtMsgType type, const char *msg)
 /****************************************************************************/
 int main(int argc, char *argv[]) {
 
+    Global::EventObject::Instance();
+    Global::AdjustedTime::Instance();
+    Global::AlarmPlayer::Instance();
+    EventHandler::StateHandler::Instance();
    // qInstallMsgHandler(myMessageOutput);
     //=========================================================
     // WARNING: uncomment following lines to switch on
@@ -124,7 +129,7 @@ int main(int argc, char *argv[]) {
 //#endif
 
     // initialize supported languages
-    Global::InitSupportedLanguages();
+   // Global::InitSupportedLanguages();
 
     // set global directories.
     Global::SystemPaths::Instance().SetComponentTestPath("../Tests");

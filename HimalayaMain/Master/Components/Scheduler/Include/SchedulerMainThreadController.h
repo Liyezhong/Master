@@ -27,7 +27,7 @@
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //                                                                                 Project Specific
 #include "Threads/Include/ThreadController.h"
-#include <HimalayaErrorHandler/Include/Commands/CmdRaiseAlarm.h>
+//#include <HimalayaErrorHandler/Include/Commands/CmdRaiseAlarm.h>
 #include <Global/Include/Commands/Command.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "NetCommands/Include/CmdSystemAction.h"
@@ -252,14 +252,14 @@ protected:
          * Called when power failure is to expect.
          */
         /****************************************************************************/
-        virtual void OnPowerFail();
+    virtual void OnPowerFail(const Global::PowerFailStages PowerFailStage);
 
         /****************************************************************************/
         /**
          * Called when a local/remote alarm raises.
          */
         /****************************************************************************/
-        void OnRaiseAlarmLocalRemote(Global::tRefType Ref, const HimalayaErrorHandler::CmdRaiseAlarm &Cmd);
+//        void OnRaiseAlarmLocalRemote(Global::tRefType Ref, const HimalayaErrorHandler::CmdRaiseAlarm &Cmd);
 
         void OnProgramAction(Global::tRefType Ref, const MsgClasses::CmdProgramAction& Cmd);
         void OnKeepCassetteCount(Global::tRefType Ref, const MsgClasses::CmdKeepCassetteCount & Cmd);

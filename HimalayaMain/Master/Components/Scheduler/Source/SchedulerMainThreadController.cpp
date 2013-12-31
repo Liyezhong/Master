@@ -100,8 +100,8 @@ SchedulerMainThreadController::~SchedulerMainThreadController()
 void SchedulerMainThreadController::RegisterCommands()
 {
     // register commands
-    RegisterCommandForProcessing<HimalayaErrorHandler::CmdRaiseAlarm,
-                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnRaiseAlarmLocalRemote, this);
+//    RegisterCommandForProcessing<HimalayaErrorHandler::CmdRaiseAlarm,
+//                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnRaiseAlarmLocalRemote, this);
 
     RegisterCommandForProcessing<MsgClasses::CmdProgramAction,
                     SchedulerMainThreadController>(&SchedulerMainThreadController::OnProgramAction, this);
@@ -186,11 +186,9 @@ void SchedulerMainThreadController::OnStopReceived()
     m_SchedulerCommandProcessorThread->wait();
 }
 
-void SchedulerMainThreadController::OnPowerFail()
+void SchedulerMainThreadController::OnPowerFail(const Global::PowerFailStages PowerFailStage)
 {
-    DEBUGWHEREAMI;
-
-    //! @todo: Implement Power Fail Handling
+    Q_UNUSED(PowerFailStage)
 }
 
 void SchedulerMainThreadController::OnTickTimer()
@@ -772,20 +770,20 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         }
     }
 
-    HimalayaErrorHandler::CmdRaiseAlarm* pCmdRaiseAlarm = dynamic_cast<HimalayaErrorHandler::CmdRaiseAlarm*>(pt.GetPointerToUserData());
-    if (pCmdRaiseAlarm)
-    {
-        if(pCmdRaiseAlarm->m_localAlarm)
-        {
+//    HimalayaErrorHandler::CmdRaiseAlarm* pCmdRaiseAlarm = dynamic_cast<HimalayaErrorHandler::CmdRaiseAlarm*>(pt.GetPointerToUserData());
+//    if (pCmdRaiseAlarm)
+//    {
+//        if(pCmdRaiseAlarm->m_localAlarm)
+//        {
 
-        }
-        else
-        {
+//        }
+//        else
+//        {
 
-        }
-        //todo temp. return set remote alarm, update later
-        return CTRL_CMD_SET_REMOTE_ALARM;
-    }
+//        }
+//        //todo temp. return set remote alarm, update later
+//        return CTRL_CMD_SET_REMOTE_ALARM;
+//    }
     return CTRL_CMD_UNKNOWN;
 
 }//When end of this function, the command in m_SchedulerCmdQueue will be destrory by share pointer (CommandShPtr_t) mechanism
@@ -1210,15 +1208,15 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
     return leftTime;
 }
 
-void SchedulerMainThreadController::OnRaiseAlarmLocalRemote(Global::tRefType Ref,
-                                                            const HimalayaErrorHandler::CmdRaiseAlarm &Cmd)
-{
-    Q_UNUSED(Ref);
-    m_Mutex.lock();
-    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(Cmd.m_localAlarm)));
-    m_Mutex.unlock();
-    this->SendAcknowledgeOK(Ref);
-}
+//void SchedulerMainThreadController::OnRaiseAlarmLocalRemote(Global::tRefType Ref,
+//                                                            const HimalayaErrorHandler::CmdRaiseAlarm &Cmd)
+//{
+//    Q_UNUSED(Ref);
+//    m_Mutex.lock();
+//    //m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(Cmd.m_localAlarm)));
+//    m_Mutex.unlock();
+//    this->SendAcknowledgeOK(Ref);
+//}
 
 //client-->master
 void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,

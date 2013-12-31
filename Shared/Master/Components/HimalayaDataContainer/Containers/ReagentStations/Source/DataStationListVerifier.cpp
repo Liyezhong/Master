@@ -94,7 +94,7 @@ bool CDataStationListVerifier::VerifyData(CDataContainerBase* p_DataStationList)
  *  \return QStringList - List of the errors occured
  */
 /****************************************************************************/
-ErrorHash_t& CDataStationListVerifier::GetErrors()
+ErrorMap_t& CDataStationListVerifier::GetErrors()
 {
     // return the last error which is occured in the verifier
     return m_ErrorsHash;
@@ -105,7 +105,7 @@ ErrorHash_t& CDataStationListVerifier::GetErrors()
  *  \brief  Resets the last error which is done by verifier
  */
 /****************************************************************************/
-void CDataStationListVerifier::ResetLastErrors()
+void CDataStationListVerifier::ResetErrors()
 {
     m_ErrorsHash.clear();
 }

@@ -49,8 +49,8 @@ int main(int Argc, char *p_Argv[])
     Q_INIT_RESOURCE(SpellerButtons);
     Q_INIT_RESOURCE(Speller);
 
-    Global::InitSupportedLanguages();// set global directories.   
-    Application::CApplication App(Argc, p_Argv, Application::HIMALAYA_PROJECT);
+//    Global::InitSupportedLanguages();// set global directories.
+    Application::CApplication App(Argc, p_Argv, Application::DEVICE_HIMALAYA);
     Global::SystemPaths::Instance().SetComponentTestPath("../Tests");
     Core::CStartup StartUp;
 

@@ -1,5 +1,5 @@
 #include "../Include/ProgramStepStateMachine.h"
-#include "EventHandler/Include/CrisisEventHandler.h"
+#include "../Include/HimalayaDeviceEventCodes.h"
 
 namespace Scheduler
 {
@@ -426,8 +426,8 @@ void ProgramStepStateMachine::OnStateChanged()
          str = "UNKNOWEN STATE";
          strid = STR_PROGRAM_STEP_STATE_UNKNOWN;
     }
-    qDebug() << "Program step state machine enter:" << str;
-    LOG_STR_ARG(STR_PROGRAM_STEP_STATE,Global::tTranslatableStringList()<<Global::TranslatableString(strid));
+//    qDebug() << "Program step state machine enter:" << str;
+//    LOG_STR_ARG(STR_PROGRAM_STEP_STATE,Global::tTranslatableStringList()<<Global::TranslatableString(strid));
 }
 
 }

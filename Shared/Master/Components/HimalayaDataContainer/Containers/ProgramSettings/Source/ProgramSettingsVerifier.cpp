@@ -67,7 +67,7 @@ bool CProgramSettingsVerifier::VerifyData(CDataContainerBase *p_ParameterList)
  *  \return QStringList - List of the errors occured
  */
 /****************************************************************************/
-ErrorHash_t &CProgramSettingsVerifier::GetErrors()
+ErrorMap_t &CProgramSettingsVerifier::GetErrors()
 {
     // return the last error which is occured in the verifier
     //lint -esym(429, m_ErrorsHash)

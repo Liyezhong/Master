@@ -43,7 +43,7 @@ private:
     bool ReadHeatingInformation(QXmlStreamReader& XmlStreamReader);
 
     ListOfErrors_t    m_ListOfErrors;   ///< This will hold Hash table of Error ID's.
-    ErrorHash_t m_ErrorHash;    //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator
+    ErrorMap_t m_ErrorHash;    //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator
 
 protected:
     bool m_Visible;                         //!< Visible state of reagent
@@ -308,7 +308,7 @@ public:
      */
     /****************************************************************************/
     /*! \warning DON'T implement(override) in derived classes! */
-    void SetErrorList(ErrorHash_t *p_ErrorHash)
+    void SetErrorList(ErrorMap_t *p_ErrorHash)
     {
         m_ListOfErrors.append(p_ErrorHash);
     }

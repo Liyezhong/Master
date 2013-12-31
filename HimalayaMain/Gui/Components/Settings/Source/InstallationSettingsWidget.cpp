@@ -223,7 +223,7 @@ void CInstallationSettingsWidget::UpdateOnESC()
 {
     if (!mp_KeyBoardWidget)
         return;
-    mp_KeyBoardWidget->Detach();
+    //mp_KeyBoardWidget->Detach();
 }
 
 /****************************************************************************/
@@ -246,7 +246,7 @@ void CInstallationSettingsWidget :: OnEditclicked()
     if (!mp_KeyBoardWidget)
         return;
 
-    mp_KeyBoardWidget->Attach(this);
+//    mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Instrument Name"));
 
     if (mp_Ui->instrumentname->text().isEmpty())
@@ -259,7 +259,7 @@ void CInstallationSettingsWidget :: OnEditclicked()
     }
 
     m_ValidationType = KeyBoard::VALIDATION_1;
-    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
+//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetMaxCharLength(32);
     mp_KeyBoardWidget->SetMinCharLength(2);

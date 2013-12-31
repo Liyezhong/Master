@@ -63,9 +63,9 @@ public:
 
     bool VerifyData(CDataContainerBase* p_DataProgramList);  // use concrete class for concrete verifier
     //lint -esym(1536,GetErrors )
-    ErrorHash_t &GetErrors();
+    ErrorMap_t &GetErrors();
 
-    void ResetLastErrors();
+    void ResetErrors();
 
     bool IsLocalVerifier();
 
@@ -77,7 +77,7 @@ public:
     virtual ~CDataProgramListVerifier();
 private:
     CDataProgramList* mp_DPL;           //!< pointer to program list container
-    ErrorHash_t m_ErrorsHash;           //!< To store Error ID and any arguments associated
+    ErrorMap_t m_ErrorsHash;           //!< To store Error ID and any arguments associated
     QStringList m_LeicaReagentIDList;   //!< To store the Leica reagent IDs
     CDataContainer *mp_DataContainer;   //!< DataContainer
     void CheckProgramStep(CProgram* p_Program,bool &VerifiedData);

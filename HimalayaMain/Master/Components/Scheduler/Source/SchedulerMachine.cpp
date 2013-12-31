@@ -1,5 +1,5 @@
 #include "../Include/SchedulerMachine.h"
-#include "EventHandler/Include/CrisisEventHandler.h"
+#include "../Include/HimalayaDeviceEventCodes.h"
 
 namespace Scheduler
 {
@@ -52,7 +52,7 @@ void SchedulerMachine::OnStateChanged()
     default:
         stateid = STR_UNEXPECTED_STATE;
     }
-    LOG_STR_ARG(STR_SCHDEULER_MAIN_CONTROLLER_STATE,Global::tTranslatableStringList()<<Global::TranslatableString(stateid));
+//    LOG_STR_ARG(STR_SCHDEULER_MAIN_CONTROLLER_STATE,Global::tTranslatableStringList()<<Global::TranslatableString(stateid));
 }
 
 SchedulerMachine::~SchedulerMachine()

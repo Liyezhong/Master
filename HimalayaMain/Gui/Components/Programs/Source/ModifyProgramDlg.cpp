@@ -342,7 +342,7 @@ void CModifyProgramDlg::UpdateOnESC()
 /****************************************************************************/
 void CModifyProgramDlg::OnEditName()
 {
-    mp_KeyBoardWidget->Attach(this);
+//    mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Program Name"));
     mp_KeyBoardWidget->SetPasswordMode(false);
     if (!(m_ButtonType == NEW_BTN_CLICKED)) {
@@ -354,7 +354,7 @@ void CModifyProgramDlg::OnEditName()
         }
     }
     m_ValidationType = KeyBoard::VALIDATION_1;
-    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
+//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetMaxCharLength(MAX_LONGNAME_LENGTH);
     mp_KeyBoardWidget->SetMinCharLength(MIN_LONGNAME_LENGTH);
     mp_KeyBoardWidget->show();
@@ -598,7 +598,7 @@ void CModifyProgramDlg::EscClicked()
 
     m_ProgNameBtnClicked = false;
     m_ProgShortNameBtnClicked = false;
-    mp_KeyBoardWidget->Detach();
+    //mp_KeyBoardWidget->Detach();
 }
 
 /****************************************************************************/
@@ -622,7 +622,7 @@ void CModifyProgramDlg::OnOkClicked()
     else if (m_ProgShortNameBtnClicked) {
         m_ProgShortNameBtnClicked = false;
     }
-    mp_KeyBoardWidget->Detach();
+//    mp_KeyBoardWidget->Detach();
 }
 
 void CModifyProgramDlg::ButtonPrgIconEnable(bool enable)

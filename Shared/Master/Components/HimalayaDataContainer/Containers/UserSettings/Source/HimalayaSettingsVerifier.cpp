@@ -63,7 +63,7 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
             break;
         default:
             qDebug() << "Unsupported language is detected";
-            m_ErrorHash.insert(EVENT_DM_ERROR_NOT_SUPPORTED_LANGUAGE,
+            m_ErrorMap.insert(EVENT_DM_ERROR_NOT_SUPPORTED_LANGUAGE,
                                Global::tTranslatableStringList()
                                << (int)HiUserSettings.GetLanguage());
             Global::EventObject::Instance().RaiseEvent
@@ -80,7 +80,7 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
               (SoundLevelError <= MAX_SOUND_LEVEL)))
         {
             qDebug() << "Unknown error volume level is detected";
-            m_ErrorHash.insert(EVENT_DM_ERROR_SOUND_LEVEL_OUT_OF_RANGE,
+            m_ErrorMap.insert(EVENT_DM_ERROR_SOUND_LEVEL_OUT_OF_RANGE,
                                Global::tTranslatableStringList() << "");
             Global::EventObject::Instance().
                     RaiseEvent(EVENT_DM_ERROR_SOUND_LEVEL_OUT_OF_RANGE,
@@ -93,7 +93,7 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
               (SoundPeriodicTimeError <= MAX_PERIODIC_TIME)))
         {
             qDebug() << "Unknown error periodic time is detected";
-            m_ErrorHash.insert(EVENT_DM_ERROR_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
+            m_ErrorMap.insert(EVENT_DM_ERROR_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
                                Global::tTranslatableStringList() << "");
             Global::EventObject::Instance().
                     RaiseEvent(EVENT_DM_ERROR_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
@@ -107,7 +107,7 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
               (SoundPeriodicTimeWarning <= MAX_PERIODIC_TIME)))
         {
             qDebug() << "Unknown warning periodic time is detected";
-            m_ErrorHash.insert(EVENT_DM_WARN_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
+            m_ErrorMap.insert(EVENT_DM_WARN_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
                                Global::tTranslatableStringList() << "");
             Global::EventObject::Instance().
                     RaiseEvent(EVENT_DM_WARN_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
@@ -120,7 +120,7 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
               (SoundNumberInformation <= MAX_SOUND_NUMBER)))
         {
             qDebug() << "Unknown information tone is detected for the sound";
-            m_ErrorHash.insert(EVENT_DM_INFO_SOUND_NUMBER_OUT_OF_RANGE,
+            m_ErrorMap.insert(EVENT_DM_INFO_SOUND_NUMBER_OUT_OF_RANGE,
                                Global::tTranslatableStringList() << "");
             Global::EventObject::Instance().
                     RaiseEvent(EVENT_DM_INFO_SOUND_NUMBER_OUT_OF_RANGE,
@@ -133,7 +133,7 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
               (SoundLevelInformation <= MAX_SOUND_LEVEL)))
         {
             qDebug() << "Unknown information level is detected";
-            m_ErrorHash.insert(EVENT_DM_INFO_SOUND_LEVEL_OUT_OF_RANGE,
+            m_ErrorMap.insert(EVENT_DM_INFO_SOUND_LEVEL_OUT_OF_RANGE,
                                Global::tTranslatableStringList() <<"");
             Global::EventObject::Instance().
                     RaiseEvent(EVENT_DM_INFO_SOUND_LEVEL_OUT_OF_RANGE,
@@ -147,7 +147,7 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
               (SoundPeriodicTimeInformation <= MAX_PERIODIC_TIME)))
         {
             qDebug() << "Unknown information periodic time is detected";
-            m_ErrorHash.insert(EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
+            m_ErrorMap.insert(EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
                                Global::tTranslatableStringList() << "");
             Global::EventObject::Instance().
                     RaiseEvent(EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
@@ -163,7 +163,7 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
               (TemperatureParaffinBath <= MAX_PARAFFIN_TEMP)))
         {
             qDebug() << "Unknown paraffin bath temperature is detected";
-            m_ErrorHash.insert(EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE,
+            m_ErrorMap.insert(EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE,
                                Global::tTranslatableStringList() << "");
             Global::EventObject::Instance().
                     RaiseEvent(EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE,
@@ -181,7 +181,7 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
         default:
         {
             qDebug() << "Unknown RMS mode for procesisng reagent is detected";
-            m_ErrorHash.insert(EVENT_DM_RMS_PROCESSING_OUT_OF_RANGE,
+            m_ErrorMap.insert(EVENT_DM_RMS_PROCESSING_OUT_OF_RANGE,
                                Global::tTranslatableStringList() << "");
             Global::EventObject::Instance().
                     RaiseEvent(EVENT_DM_RMS_PROCESSING_OUT_OF_RANGE,
@@ -200,7 +200,7 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
         default:
         {
             qDebug() << "Unknown RMS mode for cleaning reagent is detected";
-            m_ErrorHash.insert(EVENT_DM_RMS_CLEANING_OUT_OF_RANGE,
+            m_ErrorMap.insert(EVENT_DM_RMS_CLEANING_OUT_OF_RANGE,
                                Global::tTranslatableStringList() << "");
             Global::EventObject::Instance().
                     RaiseEvent(EVENT_DM_RMS_CLEANING_OUT_OF_RANGE,
