@@ -68,8 +68,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_SchedulerCommandProcessorThread(NULL)
         , m_SchedulerCommandProcessor(NULL)
         , m_SchedulerMachine(new SchedulerMachine())
-        , mp_ProgramStepStateMachine(new ProgramStepStateMachine())
-        , mp_SelfTestStateMachine(new SelfTestStateMachine())
         , mp_IDeviceProcessing(NULL)
         , mp_DataManager(NULL)
         , m_CurProgramStepIndex(-1)
@@ -91,10 +89,6 @@ SchedulerMainThreadController::~SchedulerMainThreadController()
     m_SchedulerCommandProcessor = NULL;
     delete m_SchedulerMachine;
     m_SchedulerMachine = NULL;
-    delete mp_ProgramStepStateMachine;
-    mp_ProgramStepStateMachine = NULL;
-    delete mp_SelfTestStateMachine;
-    mp_SelfTestStateMachine = NULL;
 }
 
 void SchedulerMainThreadController::RegisterCommands()
@@ -139,21 +133,21 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
 
     m_TickTimer.setInterval(500);
 
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnInit(), this, StepStart());
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnHeatLevelSensorTempS1(), this, HeatLevelSensor());
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnHeatLevelSensorTempS2(), this, HeatLevelSensor());
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnMoveToTubeBefore(), this, MoveRV());
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnMoveToTubeAfter(), this, MoveRV());
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnMoveToSeal(), this, MoveRV());
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnFill(), this, Fill());
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnSoak(), this, Soak());
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnDrain(), this, Drain());
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnAborting(), this, Abort());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnInit(), this, StepStart());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnHeatLevelSensorTempS1(), this, HeatLevelSensor());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnHeatLevelSensorTempS2(), this, HeatLevelSensor());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnMoveToTubeBefore(), this, MoveRV());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnMoveToTubeAfter(), this, MoveRV());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnMoveToSeal(), this, MoveRV());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnFill(), this, Fill());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnSoak(), this, Soak());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnDrain(), this, Drain());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnAborting(), this, Abort());
 
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnStopFill(), this, StopFill());
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnStopDrain(), this, StopDrain());
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnPause(), this, Pause());
-    CONNECTSIGNALSLOT(mp_ProgramStepStateMachine, OnPauseDrain(), this, Pause());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnStopFill(), this, StopFill());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnStopDrain(), this, StopDrain());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnPause(), this, Pause());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnPauseDrain(), this, Pause());
 
 
     //command queue reset
@@ -165,9 +159,9 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
 
     //InitializeDevice();
 
-    m_SchedulerMachine->Start();
     //for debug
     LOG_PAR()<<"DBG" << "Current state of Scheduler is: " << m_SchedulerMachine->GetCurrentState();
+    m_SchedulerMachine->Start();
 }
 
 void SchedulerMainThreadController::CleanupAndDestroyObjects()
@@ -205,24 +199,26 @@ void SchedulerMainThreadController::OnTickTimer()
             retCode = DCL_ERR_UNDEFINED;
         }
     }
-    SchedulerState_t currentState = m_SchedulerMachine->GetCurrentState();
-    switch(currentState)
+    SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
+    LOG_PAR()<<"DBG"<<"Scheduler state: "<<hex<<currentState;
+
+    switch(currentState & 0xFF)
     {
-    case INIT_STATE:
+    case SM_INIT:
         //refuse any main controller request if there is any
         LOG_PAR()<<"DBG"<<"Scheduler main controller state: INIT";
         break;
-    case IDLE_STATE:
+    case SM_IDLE:
         LOG_PAR()<<"DBG"<<"Scheduler main controller state: IDLE";
         HardwareMonitor(mp_IDeviceProcessing, "IDLE");
         HandleIdleState(newControllerCmd);
         break;
-    case RUN_STATE:
+    case SM_BUSY:
         LOG_PAR()<<"DBG"<<"Scheduler main controller state: RUN";
         HardwareMonitor(mp_IDeviceProcessing, m_CurProgramID);
         HandleRunState(newControllerCmd, retCode);
         break;
-    case ERROR_STATE:
+    case SM_ERROR:
         LOG_PAR()<<"DBG"<<"Scheduler main controller state: ERROR";
         //refuse any main controller request if there is any
         break;
@@ -263,8 +259,8 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
 
 
             LOG_PAR()<<"DBG" << "Start step: " << m_CurProgramID;
-            mp_ProgramStepStateMachine->Start();
-            mp_SelfTestStateMachine->Start();
+            //mp_ProgramStepStateMachine->Start();
+            //mp_SelfTestStateMachine->Start();
             m_SchedulerMachine->SendRunSignal();
             //send command to main controller to tell the left time
             quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
@@ -322,7 +318,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     if(CTRL_CMD_ABORT == ctrlCmd)
     {
         LOG_PAR()<<"DBG" << "Scheduler received command: ABORT";
-        mp_ProgramStepStateMachine->NotifyAbort();
+        m_SchedulerMachine->NotifyAbort();
         DequeueNonDeviceCommand();
         //tell main controller scheduler is starting to abort
         MsgClasses::CmdProgramAcknowledge* commandPtrAbortBegin(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_BEGIN));
@@ -332,21 +328,129 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     }
     else
     {
-        ProgramStepStateMachine_t stepState = mp_ProgramStepStateMachine->GetCurrentState();
-        LOG_PAR()<<"DBG" << "Scheduler step statemachine: "<<stepState;
-        if(PSSM_INIT == stepState)
+        SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
+        //LOG_PAR()<<"DBG" << "Scheduler step statemachine: "<<stepState;
+        if(PSSM_ST_INIT == stepState)
+        {
+            m_SchedulerMachine->NotifyStInitOK(); //todo: update later
+        }
+        else if(PSSM_ST_TEMP_CHECKING == stepState)
+        {
+            m_SchedulerMachine->NotifyStTempOK(); //todo: update later
+        }
+        else if(PSSM_ST_CURRENT_CHECKING == stepState)
+        {
+            m_SchedulerMachine->NotifyStCurrentOK(); //todo: update later
+        }
+        else if(PSSM_ST_VOLTAGE_CHECKING == stepState)
+        {
+            m_SchedulerMachine->NotifyStVoltageOK(); //todo: update later
+        }
+        else if(PSSM_ST_RV_POSITION_CHECKING == stepState)
+        {
+            m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
+        }
+        else if(PSSM_ST_PRESSURE_CHECKING == stepState)
+        {
+            m_SchedulerMachine->NotifyStPressureOK(); //todo: update later
+        }
+        else if(PSSM_ST_SEALING_CHECKING == stepState)
+        {
+            if(true)
+            {
+                ProgramStationInfo_t stationInfo = m_ProgramStationList.dequeue();
+                RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
+                QString reagentGrpId = stationInfo.ReagentGroupID;
+
+                CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_IDeviceProcessing, this);
+                //todo: get delay time here
+                cmd->SetReagentGrpID(reagentGrpId);
+                cmd->SetTubePos(tubePos);
+                m_SchedulerCommandProcessor->pushCmd(cmd);
+                LOG_STR_ARG(STR_PROGRAM_SELFTEST_CHECK_BOTTLE, Global::FmtArgs()<<stationInfo.StationID);
+                m_SchedulerMachine->NotifyStSealingOK(); //todo: update later
+            }
+        }
+        else if(PSSM_ST_STATION_CHECKING == stepState)
+        {
+            if(DCL_ERR_UNDEFINED != retCode)
+            {
+                quint32 resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
+                if( DCL_ERR_DEV_BOTTLE_CHECK_OK == retCode)
+                {
+                    m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_OK;
+                }
+                else if( DCL_ERR_DEV_BOTTLE_CHECK_NOT_FULL == retCode)
+                {
+                    m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_NOT_FULL;
+                }
+                else if( DCL_ERR_DEV_BOTTLE_CHECK_BLOCKAGE == retCode)
+                {
+                    m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_BLOCKAGE;
+                }
+                else if(DCL_ERR_DEV_BOTTLE_CHECK_EMPTY == retCode)
+                {
+                    m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_EMPTY;
+                }
+                else if(DCL_ERR_DEV_BOTTLE_CHECK_ERROR == retCode)
+                {
+                    m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_ERROR;
+                }
+                else if(DCL_ERR_DEV_BOTTLE_CHECK_TIMEOUT == retCode)
+                {
+                    m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_TIMEOUT;
+                }
+                else if(DCL_ERR_UNDEFINED != retCode)
+                {
+                    LOG_PAR()<<"DBG" << "Unexpected ret code: "<< retCode;
+                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
+                }
+                LOG_STR_ARG(STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT, Global::tTranslatableStringList()<<Global::TranslatableString(resid));
+            }
+        }
+        else if(PSSM_ST_STATION_CHECK_FINISH == stepState)
+        {
+            if(m_ProgramStationList.size() > 0)
+            {
+                ProgramStationInfo_t stationInfo = m_ProgramStationList.dequeue();
+                RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
+                QString reagentGrpId = stationInfo.ReagentGroupID;
+
+                CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_IDeviceProcessing, this);
+                cmd->SetReagentGrpID(reagentGrpId);
+                cmd->SetTubePos(tubePos);
+                m_SchedulerCommandProcessor->pushCmd(cmd);
+                m_SchedulerMachine->NotifyStStationLeft(); //todo: update later
+            }
+            else
+            {
+                m_SchedulerMachine->NotifyStStationOK(); //todo: update later
+                LOG_STR(STR_PROGRAM_SELFTEST_FINISH);
+            }
+        }
+        else if(PSSM_ST_DONE == stepState)
+        {
+            m_SchedulerMachine->NotifyStDone(); //todo: update later
+        }
+        else if(PSSM_INIT == stepState)
         {
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
                 AllStop();
-                mp_ProgramStepStateMachine->NotifyPause(PSSM_INIT);
+                m_SchedulerMachine->NotifyPause(PSSM_INIT);
                 DequeueNonDeviceCommand();
             }
-            else if(SelfTest(retCode))
+            else
             {
-                if(CheckStepTemperature())
+                if(CheckStepTemperature()) //todo: verify later
                 {
-                    mp_ProgramStepStateMachine->NotifyTempsReady();
+                    m_SchedulerMachine->NotifyTempsReady();
                 }
             }
         }
@@ -355,12 +459,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             //todo: get data here
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
-                mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1);
+                m_SchedulerMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1);
                 DequeueNonDeviceCommand();
             }
             else if(CheckLevelSensorTemperature(85))
             {
-                mp_ProgramStepStateMachine->NotifyLevelSensorTempS1Ready();
+                m_SchedulerMachine->NotifyLevelSensorTempS1Ready();
             }
         }
         else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2 == stepState)
@@ -368,12 +472,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             //todo: get data here
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
-                mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2);
+                m_SchedulerMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2);
                 DequeueNonDeviceCommand();
             }
             else if(CheckLevelSensorTemperature(85))
             {
-                mp_ProgramStepStateMachine->NotifyLevelSensorTempS2Ready();
+                m_SchedulerMachine->NotifyLevelSensorTempS2Ready();
             }
         }
         else if(PSSM_READY_TO_TUBE_BEFORE == stepState)
@@ -384,13 +488,13 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
                 {
-                    mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_TUBE_BEFORE);
+                    m_SchedulerMachine->NotifyPause(PSSM_READY_TO_TUBE_BEFORE);
                     m_PauseToBeProcessed = false;
                     DequeueNonDeviceCommand();
                 }
                 else
                 {
-                    mp_ProgramStepStateMachine->NotifyHitTubeBefore();
+                    m_SchedulerMachine->NotifyHitTubeBefore();
                 }
             }
             else
@@ -407,13 +511,13 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 LOG_PAR()<<"DBG" << "Scheduler step: READY_TO_FILL is abort to PAUSE";
                 AllStop();
-                mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_FILL);
+                m_SchedulerMachine->NotifyPause(PSSM_READY_TO_FILL);
                 DequeueNonDeviceCommand();
             }
             else if(DCL_ERR_DEV_AL_FILL_SUCCESS == retCode)
             {
                 LOG_PAR()<<"DBG" << "Scheduler step: READY_TO_FILL received FILL_SUCCESS, go to next state now.";
-                mp_ProgramStepStateMachine->NotifyFillFinished();
+                m_SchedulerMachine->NotifyFillFinished();
             }
             else if(retCode != DCL_ERR_UNDEFINED)
             {
@@ -427,13 +531,13 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
                 {
-                    mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_SEAL);
+                    m_SchedulerMachine->NotifyPause(PSSM_READY_TO_SEAL);
                     m_PauseToBeProcessed = false;
                     DequeueNonDeviceCommand();
                 }
                 else
                 {
-                    mp_ProgramStepStateMachine->NotifyHitSeal();
+                    m_SchedulerMachine->NotifyHitSeal();
                 }
             }
             else
@@ -455,7 +559,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     AllStop();
                     lastPVTime = 0;
                 }
-                mp_ProgramStepStateMachine->NotifyPause(PSSM_SOAK);
+                m_SchedulerMachine->NotifyPause(PSSM_SOAK);
                 DequeueNonDeviceCommand();
             }
             else
@@ -480,14 +584,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                          }
                          if(CTRL_CMD_DRAIN == ctrlCmd)
                          {
-                             mp_ProgramStepStateMachine->NotifySoakFinished();
+                             m_SchedulerMachine->NotifySoakFinished();
                              m_TimeStamps.CurStepSoakStartTime = 0;
                              completionNotifierSent = false;
                          }
                     }
                     else
                     {
-                        mp_ProgramStepStateMachine->NotifySoakFinished();
+                        m_SchedulerMachine->NotifySoakFinished();
                         m_TimeStamps.CurStepSoakStartTime = 0;
                     }
                 }
@@ -536,7 +640,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
                 else
                 {
-                    mp_ProgramStepStateMachine->NotifyHitTubeAfter();
+                    m_SchedulerMachine->NotifyHitTubeAfter();
                 }
             }
             else
@@ -550,7 +654,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
                     if(m_PositionRV == sealPos)
                     {
-                        mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_TUBE_AFTER);
+                        m_SchedulerMachine->NotifyPause(PSSM_READY_TO_TUBE_AFTER);
                         m_PauseToBeProcessed = false;
                         DequeueNonDeviceCommand();
                     }
@@ -569,7 +673,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         //release pressure
                         AllStop();
                         m_PauseToBeProcessed = false;
-                        mp_ProgramStepStateMachine->NotifyPause(PSSM_READY_TO_DRAIN);
+                        m_SchedulerMachine->NotifyPause(PSSM_READY_TO_DRAIN);
                         DequeueNonDeviceCommand();
                     }
                 }
@@ -592,14 +696,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else if(DCL_ERR_DEV_AL_DRAIN_SUCCESS == retCode)
             {
-                mp_ProgramStepStateMachine->NotifyDrainFinished();
+                m_SchedulerMachine->NotifyDrainFinished();
             }
             else if(DCL_ERR_UNDEFINED != retCode)
             {
                 //todo: error handling here
             }
         }
-        else if(PSSM_FINISH == stepState)
+        else if(PSSM_STEP_FINISH == stepState)
         {
             //todo: start next program step or finish all program
             m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
@@ -610,7 +714,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 //start next step
                 LOG_PAR()<<"DBG" << "Start step: " << m_CurProgramID;
-                mp_ProgramStepStateMachine->Start();
+                m_SchedulerMachine->NotifyStepFinished();
                 //send command to main controller to tell the left time
                 quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
 
@@ -628,36 +732,43 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
-                //program finished
-                LOG_PAR()<<"DBG" << "Program finished!";
-                m_SchedulerMachine->SendRunComplete();
-                mp_ProgramStepStateMachine->Stop();
-                //todo: tell main controller that program is complete
-                UpdateStationReagentStatus();
+                LOG_PAR()<<"DBG" << "All Steps finished ";
+                m_SchedulerMachine->NotifyProgramFinished();
 
-                //send command to main controller to tell the left time
-                QTime leftTime(0,0,0);
-                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, leftTime));
-                Q_ASSERT(commandPtr);
-                Global::tRefType Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
-                //send command to main controller to tell program finished
-                MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
-                Q_ASSERT(commandPtrFinish);
-                Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
-
-                //LOG
-                LOG_STR_ARG(STR_FINISH_PROGRAM, Global::FmtArgs()<<ProgramName);
             }
+        }
+        else if(PSSM_PROGRAM_FINISH == stepState)
+        {
+            //program finished
+            QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
+            LOG_PAR()<<"DBG" << "Program finished!";
+            m_SchedulerMachine->SendRunComplete();
+            //m_SchedulerMachine->Stop();
+            //todo: tell main controller that program is complete
+            UpdateStationReagentStatus();
+
+            //send command to main controller to tell the left time
+            QTime leftTime(0,0,0);
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, leftTime));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+            //send command to main controller to tell program finished
+            MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_FINISHED));
+            Q_ASSERT(commandPtrFinish);
+            Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
+
+            //LOG
+            LOG_STR_ARG(STR_FINISH_PROGRAM, Global::FmtArgs()<<ProgramName);
         }
         else if(PSSM_PAUSE == stepState)
         {
             if(CTRL_CMD_START == ctrlCmd)
             {
                 // resume the program
-                mp_ProgramStepStateMachine->NotifyResume();
+                m_SchedulerMachine->NotifyResume();
                 DequeueNonDeviceCommand();
                 // tell the main controller the program is resuming
                 MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
@@ -670,7 +781,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             if(CTRL_CMD_START == ctrlCmd)
             {
-                mp_ProgramStepStateMachine->NotifyResumeDrain();
+                m_SchedulerMachine->NotifyResumeDrain();
                 DequeueNonDeviceCommand();
                 // tell the main controller the program is resuming
                 MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
@@ -688,7 +799,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             else if(DCL_ERR_DEV_AL_DRAIN_SUCCESS == retCode)
             {
                 StopDrain();
-                mp_ProgramStepStateMachine->NotifyAbort();
+                m_SchedulerMachine->NotifyAbort();
             }
 #if 0
             LOG_PAR()<<"DBG"<<"unexpected ret code: "<<retCode;
@@ -700,8 +811,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             AllStop();
             LOG_PAR()<<"DBG" << "Program aborted!";
             m_SchedulerMachine->SendRunComplete();
-            mp_ProgramStepStateMachine->Stop();
-            mp_SelfTestStateMachine->Stop();
+            //mp_ProgramStepStateMachine->Stop();
+            //mp_SelfTestStateMachine->Stop();
             // tell the main controller the program has been aborted
             MsgClasses::CmdProgramAcknowledge* commandPtrAbortFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_FINISHED));
             Q_ASSERT(commandPtrAbortFinish);
@@ -1764,7 +1875,7 @@ void SchedulerMainThreadController::StepStart()
 
 void SchedulerMainThreadController::HeatLevelSensor()
 {
-    ProgramStepStateMachine_t stepState = mp_ProgramStepStateMachine->GetCurrentState();
+    SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
     if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1 == stepState)
     {
         CmdALStartTemperatureControlWithPID* cmd  = new CmdALStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
@@ -1795,7 +1906,7 @@ void SchedulerMainThreadController::HeatLevelSensor()
 
 void SchedulerMainThreadController::MoveRV()
 {
-    ProgramStepStateMachine_t stepState = mp_ProgramStepStateMachine->GetCurrentState();
+    SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_IDeviceProcessing, this);
 
     if(PSSM_READY_TO_TUBE_BEFORE == stepState)
@@ -1963,7 +2074,7 @@ void SchedulerMainThreadController::Abort()
         }
         else
         {
-            if(mp_ProgramStepStateMachine->GetPreviousState() != PSSM_READY_TO_DRAIN)
+            if(m_SchedulerMachine->GetPreviousState() != PSSM_READY_TO_DRAIN)
             {
                 this->Drain();
             }
@@ -2008,6 +2119,7 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
 
 bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
 {
+#if 0
     bool retValue = false;
     SelfTestStateMachine_t selfTestState = mp_SelfTestStateMachine->GetCurrentState();
     if(SELF_TEST_INIT == selfTestState)
@@ -2163,6 +2275,8 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
     }
 
     return retValue;
+#endif
+    return true;
 }
 
 qint64 SchedulerMainThreadController::GetOvenHeatingTime()
