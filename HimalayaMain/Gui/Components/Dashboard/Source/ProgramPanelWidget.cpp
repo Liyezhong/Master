@@ -27,8 +27,11 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
 
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&), this, OnSelectEndDateTime(const QDateTime &));
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int),
-                      ui->favoriteProgramsPanel, ProgramSelected(QString&, int));
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool),
+                      ui->favoriteProgramsPanel, ProgramSelected(QString&, int, bool));
+
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool),
+                      this, OnProgramSelected(QString&, int, bool));
 
     CONNECTSIGNALSLOT(this, ProgramActionStopped(DataManager::ProgramStatusType_t),
                         ui->programRunningPanel, OnProgramActionStopped(DataManager::ProgramStatusType_t));
@@ -36,12 +39,14 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     CONNECTSIGNALSLOT(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
                       ui->programRunningPanel, OnProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
 
+    CONNECTSIGNALSLOT(this, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
+                      ui->programRunningPanel, OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
+
     m_btnGroup.addButton(ui->startButton, Dashboard::firstButton);
     m_btnGroup.addButton(ui->pauseButton, Dashboard::secondButton);
 
     CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int),
-                      this, OnProgramSelected(QString&, int));
+
 
     ui->startButton->setEnabled(false);
     ui->pauseButton->setEnabled(false);
@@ -91,10 +96,12 @@ void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow
     mp_ProgramList = mp_DataConnector->ProgramList;
 }
 
-void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime)
+void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady)
 {
     m_SelectedProgramId = ProgramId;
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+    if (bProgramStartReady)
+        OnProgramStartReadyUpdated();
 }
 
 void CProgramPanelWidget::SelectEndDateTime(const QDateTime & dateTime)
@@ -204,6 +211,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
     if ( whichBtn == Dashboard::firstButton ) {
         switch(m_ProgramNextAction)
         {
+            ui->startButton->setEnabled(false);//protect to click twice in a short time
             default:
             break;
             case DataManager::PROGRAM_START:
@@ -230,6 +238,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
             case DataManager::PROGRAM_ABORT:
             {
                 if(CheckPreConditionsToAbortProgram()) {
+                    ui->pauseButton->setEnabled(false);
                     mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
                     m_ProgramNextAction = DataManager::PROGRAM_START;
                 }
@@ -239,6 +248,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
     }
     else if (whichBtn == Dashboard::secondButton)//pause
     {
+        ui->pauseButton->setEnabled(false);//protect to click twice in a short time
         if(CheckPreConditionsToPauseProgram())
         {
             mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_PAUSE);
@@ -256,12 +266,26 @@ void CProgramPanelWidget::ChangeStartButtonToStopState()
     m_ProgramNextAction = DataManager::PROGRAM_ABORT;
 }
 
+void CProgramPanelWidget::ChangeStartButtonToStartState()
+{
+    ui->startButton->setText(tr("Start"));
+    m_ProgramNextAction = DataManager::PROGRAM_START;
+}
+
+void CProgramPanelWidget::EnableStartButton(bool bEnable)
+{
+    ui->startButton->setEnabled(bEnable);
+}
+
+void CProgramPanelWidget::EnablePauseButton(bool bEnable)
+{
+    ui->pauseButton->setEnabled(bEnable);
+}
+
 void CProgramPanelWidget::OnProgramStartReadyUpdated()
 {
     if (!m_SelectedProgramId.isEmpty())
         this->ui->startButton->setEnabled(true);
-
-    //m_ProgramStartReady = true;
 }
 
 void CProgramPanelWidget::SetProgramNextActionAsStart()
@@ -280,12 +304,5 @@ void CProgramPanelWidget::on_pushButton_2_clicked()
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-void CProgramPanelWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd)
-{
-    /*if (cmd.CurProgramStepIndex() > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
-    {
-        //  EnablePlayButton(true);
-    }*/
-}
 
 }

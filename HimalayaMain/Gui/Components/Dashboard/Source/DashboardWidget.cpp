@@ -25,7 +25,7 @@
 #include <Dashboard/Include/CommonString.h>
 #include <Dashboard/Include/FavoriteProgramsPanelWidget.h>
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
-
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 
 using namespace Dashboard;
 
@@ -41,10 +41,16 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     m_TimeProposed(0),
     m_CheckEndDatetimeAgain(false),
     m_ProgramStartReady(false),
+    m_IsResumeRun(false),
+    m_IsWaitingCleaningProgram(false),
     m_CurProgramStepIndex(-1),
-    m_IsResumeRun(false)
+    m_ProcessRunning(false),
+    m_IsDraining(false)
 {
     ui->setupUi(this);
+    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
+    CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+
     ui->containerPanelWidget->SetPtrToMainWindow(mp_MainWindow, mp_DataConnector);
     ui->programPanelWidget->SetPtrToMainWindow(mp_MainWindow, mp_DataConnector);
     m_pUserSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
@@ -57,14 +63,18 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(ui->programPanelWidget, OnSelectEndDateTime(const QDateTime&),
                         this, OnSelectEndDateTime(const QDateTime &));
 
-    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int),
-                       ui->programPanelWidget, ProgramSelected(QString&, int));
+    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int, bool),
+                       ui->programPanelWidget, ProgramSelected(QString&, int, bool));
 
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
                       ui->programPanelWidget, OnProgramStartReadyUpdated());
 
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
                       this, OnProgramStartReadyUpdated());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus &),
+                      this, OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus&));
+
 
     CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, QList<QString>&),
                        ui->containerPanelWidget, ProgramSelected(QString&, QList<QString>&));
@@ -92,14 +102,22 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramRunBegin(),
                               this, OnProgramRunBegin());
 
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramPaused(),
+                              this, OnProgramPaused());
+
     CONNECTSIGNALSLOT(this, SetProgramNextActionAsStart(), ui->programPanelWidget, SetProgramNextActionAsStart());
 
+    CONNECTSIGNALSIGNAL(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
+                      ui->programPanelWidget, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
+
     CONNECTSIGNALSLOT(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
-                      ui->programPanelWidget, OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
+                      this, OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
 
     CONNECTSIGNALSLOT(this, UpdateUserSetting(DataManager::CUserSettings&), mp_DataConnector, SendUpdatedSettings(DataManager::CUserSettings&));
     CONNECTSIGNALSLOT(mp_DataConnector, StationSuckDrain(const MsgClasses::CmdStationSuckDrain &),
                       this, OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain &));
+
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
 }
 
 CDashboardWidget::~CDashboardWidget()
@@ -111,6 +129,27 @@ CDashboardWidget::~CDashboardWidget()
         catch (...) {
             // to please Lint.
         }
+}
+
+void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd)
+{
+    m_CurProgramStepIndex = cmd.CurProgramStepIndex();
+    if (cmd.CurProgramStepIndex() > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    {
+          ui->programPanelWidget->EnableStartButton(true);
+    }
+}
+
+void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd)
+{
+    if (!cmd.IsLocked())
+    {
+        //enable the "OK"
+        if (m_IsWaitingCleaningProgram && mp_MessageDlg->isVisible())
+        {
+            mp_MessageDlg->EnableButton(1, true);
+        }
+    }
 }
 
 void CDashboardWidget::OnProgramStartReadyUpdated()
@@ -138,10 +177,15 @@ void CDashboardWidget::OnProgramWillComplete()
 
     if (mp_MessageDlg->exec())
     {
+        m_IsDraining = true;
+
         //Resume ProgressBar and EndTime countdown
         emit ProgramActionStarted(DataManager::PROGRAM_START, m_TimeProposed, Global::AdjustedTime::Instance().GetCurrentDateTime(), true);
 
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_DRAIN);
+        //disable pause and abort
+        ui->programPanelWidget->EnableStartButton(false);
+        ui->programPanelWidget->EnablePauseButton(false);
         return;
     }
 }
@@ -152,6 +196,7 @@ void CDashboardWidget::OnProgramBeginAbort()
     //time countdown
     //Todo:20, Abort time, will be given a rough value later;
     emit ProgramActionStarted(DataManager::PROGRAM_ABORT, 20, Global::AdjustedTime::Instance().GetCurrentDateTime(), false);
+    ui->programPanelWidget->EnableStartButton(false);
 }
 
 //this function will be invoked after program Abort and completed
@@ -165,7 +210,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
     if (mp_MessageDlg->exec())
     {
         //represent the retort as contaminated status
-        //mp_DashboardScene->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED);
+        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED);
 
         mp_MessageDlg->SetText(m_strRetortContaminated);
         mp_MessageDlg->SetButtonText(1, CommonString::strOK);
@@ -173,7 +218,7 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
         //mp_MessageDlg->EnableButton(1, false);//when lock is locked, "OK" will be enable
         mp_MessageDlg->EnableButton(1, true);//6.6 for test
 
-        //m_IsWaitingCleaningProgram = true;
+        m_IsWaitingCleaningProgram = true;
         if (mp_MessageDlg->exec())
         {
             emit SetProgramNextActionAsStart();
@@ -204,6 +249,7 @@ void CDashboardWidget::OnProgramAborted()
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
 
     //disable "Start" button, enable Retort lock button, hide End time button, now Abort button is still in "disable" status
+    ui->programPanelWidget->EnableStartButton(false);
 
     QDateTime  endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
     if (m_StartDateTime.isValid())
@@ -237,6 +283,7 @@ void CDashboardWidget::OnProgramCompleted()
         QString reagentID("");
         m_pUserSetting->SetReagentIdOfLastStep(reagentID);//Clear CleaningProgram flag
         emit UpdateUserSetting(*m_pUserSetting);
+        ui->programPanelWidget->EnableStartButton(false);
         //AddItemsToComboBox();
         emit SetProgramNextActionAsStart();
     }
@@ -260,16 +307,23 @@ void CDashboardWidget::OnProgramRunBegin()
 
     if (m_SelectedProgramId.at(0) == 'C')
     {
-        //EnablePlayButton(false);//enable pause button
-        //EnableAbortButton(false);
+        ui->programPanelWidget->EnablePauseButton(false);//disable pause button
+        ui->programPanelWidget->EnableStartButton(false);//disable Stop button
     }
     else
     {
-        //EnablePlayButton(true);//enable pause button
-        //EnableAbortButton(true);
+        ui->programPanelWidget->EnablePauseButton(true);//enable pause button
+        ui->programPanelWidget->EnableStartButton(true);//enable stop button
     }
 
     m_StartDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+}
+
+void CDashboardWidget::OnProgramPaused()
+{
+    ui->programPanelWidget->EnableStartButton(true);//enable stop button
+    ui->programPanelWidget->ChangeStartButtonToStartState();
+    ui->programPanelWidget->EnablePauseButton(true);//enable pause button
 }
 
 void CDashboardWidget::OnUnselectProgram()
@@ -277,11 +331,12 @@ void CDashboardWidget::OnUnselectProgram()
     if (!m_SelectedProgramId.isEmpty())
     {
         m_SelectedProgramId = "";
+        ui->programPanelWidget->EnableStartButton(false);
         m_StationList.clear();
         int asapEndTime = 0;
         //for UI update
         emit ProgramSelected(m_SelectedProgramId, m_StationList);
-        emit ProgramSelected(m_SelectedProgramId, asapEndTime);
+        emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady);
         emit UpdateSelectedStationList(m_StationList);
     }
 }
@@ -500,14 +555,9 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 
 
-    emit ProgramSelected(m_SelectedProgramId, asapEndTime);
+    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady);
     emit ProgramSelected(m_SelectedProgramId, m_StationList);
     emit UpdateSelectedStationList(m_StationList);
-    if (m_ProgramStartReady)
-    {
-        //  EnablePlayButton(true);
-        ui->programPanelWidget->OnProgramStartReadyUpdated();
-    }
 }
 
 void CDashboardWidget::changeEvent(QEvent *p_Event)
@@ -546,9 +596,11 @@ void CDashboardWidget::OnSelectEndDateTime(const QDateTime& dateTime)
 
 void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd)
 {
-    if (!cmd.IsStart() && !cmd.IsSuck())
+    if (m_IsDraining && !cmd.IsStart() && !cmd.IsSuck())
     {
+        emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
         this->TakeOutSpecimenAndWaitRunCleaning();//pause ProgressBar and EndTime countdown
+        m_IsDraining = false;//when abort or pause, set this too?
     }
 }
 
@@ -580,5 +632,30 @@ bool CDashboardWidget::CheckSelectedProgram(bool& bRevertSelectProgram, QString 
     }
     return true;
 }
+
+/****************************************************************************/
+/*!
+ *  \brief This slot is called when User Role changes
+ */
+/****************************************************************************/
+void CDashboardWidget::OnUserRoleChanged()
+{
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    if (m_CurProgramStepIndex > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    {
+        ui->programPanelWidget->EnableStartButton(false);//in fact, it will disable pause button when runing
+    }
+    else
+    if (m_ProcessRunning && (m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service))
+        ui->programPanelWidget->EnableStartButton(true);
+
+}
+
+void CDashboardWidget::OnProcessStateChanged()
+{
+    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+}
+
+
 
 

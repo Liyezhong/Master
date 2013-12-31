@@ -6,6 +6,11 @@
 
 class QDateTime;
 
+namespace MsgClasses
+{
+    class CmdCurrentProgramStepInfor;
+}
+
 namespace Dashboard {
     namespace Ui {
         class CProgramRunningPanelWidget;
@@ -23,7 +28,7 @@ namespace Dashboard {
         void OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType, int remainingTimeTotal,
                                     const QDateTime& startDateTime, bool IsResume);//in seconds
         void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
-
+        void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
     private:
         Ui::CProgramRunningPanelWidget *ui;
     };

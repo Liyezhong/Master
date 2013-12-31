@@ -53,4 +53,12 @@ void CProgramRunningPanelWidget::OnProgramActionStarted(DataManager::ProgramActi
    */
 }
 
+void CProgramRunningPanelWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd)
+{
+    /*mp_Ui->lblName->setText(cmd.StepName());
+    mp_Ui->lblTime->setText(cmd.CurRemainingTime().toString("hh:mm:ss"));
+    m_CurStepRemainingTime = m_CurRemainingTime = cmd.CurRemainingTime();*/
+}
+
+
 }

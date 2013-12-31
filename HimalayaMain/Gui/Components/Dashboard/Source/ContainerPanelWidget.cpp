@@ -38,8 +38,6 @@ CContainerPanelWidget::CContainerPanelWidget(QWidget *p_Parent): MainMenu::CPane
                                    mp_DataConnector(NULL),
                                    m_UserRoleChanged(false),
                                    m_ParaffinStepIndex(-1),
-                                   m_IsWaitingCleaningProgram(false),
-                                   m_ProcessRunning(false),
                                    m_strProgram(tr("Program")),
                                    m_strInformation(tr("Information")),
                                    m_strOK(tr("OK")),
@@ -91,10 +89,7 @@ void CContainerPanelWidget::Initialize()
 
     mp_ProgramList = mp_DataConnector->ProgramList;
 
-    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     mp_MessageDlg = new MainMenu::CMessageDlg();
-
-    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
 
     //CONNECTSIGNALSLOT(mp_ProgramStatusWidget, AbortClicked(int), this, OnButtonClicked(int));
 
@@ -137,6 +132,11 @@ void CContainerPanelWidget::RetranslateUI()
     m_strNeedMeltParaffin  = QApplication::translate("Dashboard::CContainerPanelWidget", "Still it will cost some time to melt paraffin, the current selected program can not run now.", 0, QApplication::UnicodeUTF8);
 }
 
+void CContainerPanelWidget::UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType)
+{
+    mp_DashboardScene->UpdateRetortStatus(retortStatusType);
+}
+
 void CContainerPanelWidget::AddItemsToComboBox(bool bOnlyAddCleaningProgram)
 {
     m_FavProgramIDs.clear();
@@ -165,29 +165,10 @@ void CContainerPanelWidget::AddItemsToComboBox(bool bOnlyAddCleaningProgram)
     }
 }
 
-/****************************************************************************/
-/*!
- *  \brief This slot is called when User Role changes
- */
-/****************************************************************************/
-void CContainerPanelWidget::OnUserRoleChanged()
-{
- /*   m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    m_UserRoleChanged = true;
-    if (m_CurProgramStepIndex > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
-    {
-    }
-*/
-}
-
 void CContainerPanelWidget::OnProcessStateChanged()
 {
-    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
-    if (m_ProcessRunning)
-    {
-
-    }
-    else
+    bool processRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+    if (!processRunning)
     {
         mp_DashboardScene->OnPauseStationSuckDrain();
     }
@@ -202,11 +183,6 @@ void CContainerPanelWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetor
     else
     {
 		mp_DashboardScene->UpdateRetortLockedStatus(false);
-        //enable the "OK"
-        /*if (m_IsWaitingCleaningProgram && mp_MessageDlg->isVisible())
-        {
-            mp_MessageDlg->EnableButton(1, true);
-        }*/
     }
 }
 
