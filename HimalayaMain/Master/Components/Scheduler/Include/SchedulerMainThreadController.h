@@ -38,6 +38,7 @@
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 #include "DataManager/Helper/Include/Types.h"
+#include "Scenario.h"
 
 using namespace DeviceControl;
 
@@ -169,6 +170,7 @@ typedef struct
         void DequeueNonDeviceCommand();
         QString GetReagentName(const QString& ReagentID);
         QString GetReagentGroupID(const QString& ReagentID);
+        qint32 GetScenarioBySchedulerState(SchedulerStateMachine_t State, QString ReagentGroup);
         bool IsCleaningReagent(const QString& ReagentID);
         void UpdateStationReagentStatus();
 

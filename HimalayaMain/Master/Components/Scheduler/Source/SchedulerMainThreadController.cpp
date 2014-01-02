@@ -1509,6 +1509,148 @@ QString SchedulerMainThreadController::GetReagentGroupID(const QString& ReagentI
     return "";
 }
 
+qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerStateMachine_t State, QString ReagentGroup)
+{
+    qint32 scenario = 0;
+    bool reagentRelated = false;
+    switch(State)
+    {
+    case SM_UNDEF:
+        break;
+    case SM_INIT:
+        scenario = 002;
+        break;
+    case SM_IDLE:
+        scenario = 004;
+        break;
+    case SM_BUSY:
+        break;
+    case SM_ERROR:
+        break;
+    case PSSM_INIT:
+        break;
+    case PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1:
+        scenario = 211;
+        reagentRelated = true;
+        break;
+    case PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2:
+        scenario = 211;
+        reagentRelated = true;
+        break;
+    case PSSM_READY_TO_TUBE_BEFORE:
+        scenario = 217;
+        reagentRelated = true;
+        break;
+    case PSSM_READY_TO_FILL:
+        scenario = 212;
+        reagentRelated = true;
+        break;
+    case PSSM_READY_TO_SEAL:
+        scenario = 213;
+        reagentRelated = true;
+        break;
+    case PSSM_SOAK:
+        scenario = 214;
+        reagentRelated = true;
+        break;
+    case PSSM_READY_TO_TUBE_AFTER:
+        scenario = 215;
+        reagentRelated = true;
+        break;
+    case PSSM_READY_TO_DRAIN:
+        scenario = 216;
+        reagentRelated = true;
+        break;
+    case PSSM_STEP_FINISH:
+        break;
+    case PSSM_PROGRAM_FINISH:
+        break;
+    case PSSM_PAUSE:
+        scenario = 206;
+        break;
+    case PSSM_PAUSE_DRAIN:
+        scenario = 206;
+        break;
+    case PSSM_ABORTING:
+        scenario = 206;
+        break;
+    case PSSM_ABORTED:
+        scenario = 206;
+        break;
+    case PSSM_ST:
+        scenario = 200;
+        break;
+    case PSSM_ST_INIT:
+        scenario = 200;
+        break;
+    case PSSM_ST_TEMP_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_CURRENT_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_VOLTAGE_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_RV_POSITION_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_PRESSURE_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_SEALING_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_STATION_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_STATION_CHECK_FINISH:
+        scenario = 200;
+        break;
+    case PSSM_ST_DONE:
+        scenario = 200;
+        break;
+    default:
+        break;
+    }
+    if(reagentRelated)
+    {
+        if(ReagentGroup == "RG1") //Fixation
+        {
+        }
+        else if(ReagentGroup == "RG2") //Water
+        {
+            scenario += 10;
+        }
+        else if(ReagentGroup == "RG3") //Dehydrating diluted
+        {
+            scenario += 20;
+        }
+        else if(ReagentGroup == "RG4") //Dehydrating absolute
+        {
+            scenario += 30;
+        }
+        else if(ReagentGroup == "RG5") //Clearing
+        {
+            scenario += 40;
+        }
+        else if(ReagentGroup == "RG6") //Paraffin
+        {
+            scenario += 50;
+        }
+        else if(ReagentGroup == "RG7") //Cleaning solvent
+        {
+            scenario += 60;
+        }
+        else if(ReagentGroup == "RG8") //Cleaning Alcohol
+        {
+            scenario += 70;
+        }
+    }
+    return scenario;
+}
+
+
 void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetCode, IDeviceProcessing* pIDP)
 {
     if(RetCode == DCL_ERR_FCT_CALL_SUCCESS)
