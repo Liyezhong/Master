@@ -1730,7 +1730,8 @@ void CDataConnector::ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgCl
         break;
         case DataManager::PROGRAM_PAUSE_FINISHED:
         {
-              (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+            emit ProgramPaused();
+            (void)mp_MainWindow->UnsetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
         }
         break;
 

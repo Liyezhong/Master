@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <HimalayaDataContainer/Helper/Include/Global.h>
 #include  <QDateTime>
+#include "MainMenu/Include/MainWindow.h"
 
 namespace Core
 {
@@ -14,6 +15,8 @@ namespace MsgClasses
 {
     class CmdProgramSelectedReply;
     class CmdStationSuckDrain;
+    class CmdRetortLockStatus;
+    class CmdCurrentProgramStepInfor;
 }
 
 
@@ -76,13 +79,17 @@ private:
     QString m_strInputCassetteBoxTitle;
     bool m_ProgramStartReady;
     QString m_strProgramComplete;
-    int m_CurProgramStepIndex;
     QString m_strTakeOutSpecimen;
     QString m_strRetortContaminated;
     QDateTime m_StartDateTime;
     QString m_strProgramIsAborted;
     bool m_IsResumeRun;
     static QString m_strMsgUnselect;
+    bool m_IsWaitingCleaningProgram;
+    int m_CurProgramStepIndex;
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
+    bool m_ProcessRunning;                      //!< Process running state
+    bool m_IsDraining;
 
 public slots:
     void OnUnselectProgram();
@@ -98,12 +105,16 @@ private slots:
     void OnProgramBeginAbort();
     void OnProgramCompleted();
     void OnProgramRunBegin();
+    void OnProgramPaused();
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);
-
+    void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
+    void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd);
+    void OnUserRoleChanged();
+    void OnProcessStateChanged();
  signals:
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram = false);
     void ProgramSelected(QString & ProgramId, QList<QString>& SelectedStationList);
-    void ProgramSelected(QString & ProgramId, int asapEndTime);
+    void ProgramSelected(QString & ProgramId, int asapEndTime, bool bProgramStartReady);
     void UpdateSelectedStationList(QList<QString>&);
     void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
     void ProgramActionStopped(DataManager::ProgramStatusType_t);

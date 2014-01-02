@@ -22,7 +22,6 @@
 #define CONTAINERPANELWIDGET_H
 
 #include "MainMenu/Include/PanelFrame.h"
-#include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/MessageDlg.h"
 #include "Dashboard/Include/DashboardScene.h"
 #include "Dashboard/Include/DashboardComboBox.h"
@@ -57,12 +56,9 @@ private:
     QStringList m_FavProgramIDs;
 
     CDashboardProgramStatusWidget *mp_ProgramStatusWidget;
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
     bool m_UserRoleChanged;                                     //!< Flag to Verify the Change in User Role
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
     int m_ParaffinStepIndex;
-    bool m_IsWaitingCleaningProgram;
-    bool m_ProcessRunning;                      //!< Process running state
     QString m_strProgram;
     QString m_strInformation;
     QString m_strOK, m_strNo;
@@ -70,13 +66,15 @@ private:
     QString m_strStartExpiredReagent;
     QString m_strNeedMeltParaffin;
     DataManager::CHimalayaUserSettings* m_pUserSetting;
+
+
     void RetranslateUI();
 public:
     explicit CContainerPanelWidget(QWidget *p_Parent = 0);
     ~CContainerPanelWidget();
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector);
     void AddItemsToComboBox(bool bOnlyAddCleaningProgram = false);
-    inline void IsDraining(bool);
+    void UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType);
     static QString m_strWarning;
     static QString m_strYes, m_strCancel;
 
@@ -91,7 +89,6 @@ signals:
     void ProgramSelected(QString & ProgramId, QList<QString>& SelectedStationList);
     void OnSelectEndDateTime(const QDateTime &);
 public slots:
-    void OnUserRoleChanged();
     void OnProcessStateChanged();
     void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);

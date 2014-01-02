@@ -44,13 +44,17 @@ public:
 
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector);
     void ChangeStartButtonToStopState();
+    void ChangeStartButtonToStartState();
+    void EnableStartButton(bool bEnable);
+    void EnablePauseButton(bool bEnable);
 signals:
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
     void PrepareSelectedProgramChecking(const QString& selectedProgramId, bool bCheckEndDatetimeAgain = false);
     void OnSelectEndDateTime(const QDateTime &);
-    void ProgramSelected(QString& ProgramId, int asapEndTime);
+    void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady);
     void ProgramActionStopped(DataManager::ProgramStatusType_t);
     void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
+    void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
 
 protected:
     void changeEvent(QEvent *p_Event);
@@ -60,10 +64,10 @@ public slots:
 
 private slots:
     void OnButtonClicked(int whichBtn);
-    void OnProgramSelected(QString& ProgramId, int asapEndTime);
+    void OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady);
     void SelectEndDateTime(const QDateTime &);
     void SetProgramNextActionAsStart();
-    void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
+
 
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();

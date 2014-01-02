@@ -27,7 +27,9 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
 
     CONNECTSIGNALSLOT(ui->BtnProgram1, clicked(bool), this, OnEndTimeButtonClicked());
     CONNECTSIGNALSLOT(ui->BtnProgram2, clicked(bool), this, OnEndTimeButtonClicked());
-
+    CONNECTSIGNALSLOT(ui->BtnProgram3, clicked(bool), this, OnEndTimeButtonClicked());
+    CONNECTSIGNALSLOT(ui->BtnProgram4, clicked(bool), this, OnEndTimeButtonClicked());
+    CONNECTSIGNALSLOT(ui->BtnProgram5, clicked(bool), this, OnEndTimeButtonClicked());
 }
 
 CFavoriteProgramsPanelWidget::~CFavoriteProgramsPanelWidget()
@@ -140,8 +142,10 @@ void CFavoriteProgramsPanelWidget::OnProcessStateChanged()
    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
 }
 
-void CFavoriteProgramsPanelWidget::ProgramSelected(QString& ProgramId, int asapEndTime)
+void CFavoriteProgramsPanelWidget::ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady)
 {
+    Q_UNUSED(ProgramId);
+    Q_UNUSED(bProgramStartReady);
     m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 }
 
