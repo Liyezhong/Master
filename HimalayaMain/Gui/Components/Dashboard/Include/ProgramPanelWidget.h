@@ -6,7 +6,11 @@
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 #include <QDateTime>
 
-class QDateTime;
+namespace MsgClasses
+{
+    class CmdCurrentProgramStepInfor;
+}
+
 namespace MainMenu
 {
     class CMainWindow ;
@@ -39,25 +43,43 @@ public:
     ~CProgramPanelWidget();
 
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector);
-
+    void ChangeStartButtonToStopState();
+    void ChangeStartButtonToStartState();
+    void EnableStartButton(bool bEnable);
+    void EnablePauseButton(bool bEnable);
+    void IsResumeRun(bool bSet);
+    bool IsResumeRun();
 signals:
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
-    void PrepareSelectedProgramChecking(const QString& selectedProgramId);
+    void PrepareSelectedProgramChecking(const QString& selectedProgramId, bool bCheckEndDatetimeAgain = false);
     void OnSelectEndDateTime(const QDateTime &);
-    void ProgramSelected(QString& ProgramId, int asapEndTime);
+    void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady);
+    void ProgramActionStopped(DataManager::ProgramStatusType_t);
+    void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
+    void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
+    void UndoProgramSelection();
 protected:
     void changeEvent(QEvent *p_Event);
 
+public slots:
+     void OnProgramStartReadyUpdated();
+
 private slots:
     void OnButtonClicked(int whichBtn);
-    void OnProgramSelected(QString& ProgramId, int asapEndTime);
+    void OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady);
     void SelectEndDateTime(const QDateTime &);
-    void on_pushButton_clicked();
-    void on_pushButton_2_clicked();
+    void SetProgramNextActionAsStart();
+    void OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType, int remainingTimeTotal,
+                                const QDateTime& startDateTime, bool IsResume);//in seconds
+    void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
+    void SwitchToFavoritePanel();
 
 private:
     void RetranslateUI();
     void CheckPreConditionsToRunProgram();
+    bool CheckPreConditionsToPauseProgram();
+    bool CheckPreConditionsToAbortProgram();
+
 
     Ui::CProgramPanelWidget *ui;
     QButtonGroup m_btnGroup;                                    //!< Button Group
@@ -69,9 +91,9 @@ private:
     QDateTime m_EndDateTime;
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
     DataManager::CDataProgramList *mp_ProgramList;
-    QString m_strWarning;
     QString m_strNotStartRMSOFF;
-    QString m_strOK;
+    QString m_strConfirmation;
+    QString m_strAbortProgram;
 
 };
 

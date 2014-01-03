@@ -2,6 +2,14 @@
 #define PROGRAMRUNNINGPANELWIDGET_H
 
 #include "Dashboard/Include/IconTitlePanelFrame.h"
+#include "HimalayaDataContainer/Helper/Include/Global.h"
+
+class QDateTime;
+
+namespace MsgClasses
+{
+    class CmdCurrentProgramStepInfor;
+}
 
 namespace Dashboard {
     namespace Ui {
@@ -16,6 +24,11 @@ namespace Dashboard {
         explicit CProgramRunningPanelWidget(QWidget *parent = 0);
         ~CProgramRunningPanelWidget();
 
+    public slots:
+        void OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType, int remainingTimeTotal,
+                                    const QDateTime& startDateTime, bool IsResume);//in seconds
+        void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
+        void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
     private:
         Ui::CProgramRunningPanelWidget *ui;
     };

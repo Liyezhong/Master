@@ -8,7 +8,7 @@
 #include "MainMenu/Include/MessageDlg.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
-
+#include "Dashboard/Include/CommonString.h"
 namespace Dashboard {
 CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     CPanelFrame(parent),
@@ -26,21 +26,41 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, PrepareSelectedProgramChecking(const QString&), this, PrepareSelectedProgramChecking(const QString&));
 
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&), this, OnSelectEndDateTime(const QDateTime &));
-    //CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&), this, OnSelectEndDateTime(const QDateTime &));
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int),
-                      ui->favoriteProgramsPanel, ProgramSelected(QString&, int));
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool),
+                      ui->favoriteProgramsPanel, ProgramSelected(QString&, int, bool));
 
-    CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
+    CONNECTSIGNALSLOT(this, UndoProgramSelection(),
+                      ui->favoriteProgramsPanel, UndoProgramSelection());
+
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool),
+                      this, OnProgramSelected(QString&, int, bool));
+
+    CONNECTSIGNALSLOT(this, ProgramActionStopped(DataManager::ProgramStatusType_t),
+                        ui->programRunningPanel, OnProgramActionStopped(DataManager::ProgramStatusType_t));
+
+    CONNECTSIGNALSLOT(this, ProgramActionStopped(DataManager::ProgramStatusType_t),
+                        this, OnProgramActionStopped(DataManager::ProgramStatusType_t));
+
+
+    CONNECTSIGNALSLOT(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
+                      ui->programRunningPanel, OnProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
+
+    CONNECTSIGNALSLOT(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
+                      this, OnProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool));
+
+    CONNECTSIGNALSLOT(this, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
+                      ui->programRunningPanel, OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
 
     m_btnGroup.addButton(ui->startButton, Dashboard::firstButton);
     m_btnGroup.addButton(ui->pauseButton, Dashboard::secondButton);
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int),
-                      this, OnProgramSelected(QString&, int));
+    CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
 
+
+    ui->startButton->setEnabled(false);
+    ui->pauseButton->setEnabled(false);
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
-
 }
 
 CProgramPanelWidget::~CProgramPanelWidget()
@@ -60,6 +80,7 @@ void CProgramPanelWidget::changeEvent(QEvent *p_Event)
     switch (p_Event->type()) {
         case QEvent::LanguageChange:
             ui->retranslateUi(this);
+            CommonString::RetranslateUIString();
             this->RetranslateUI();
             break;
         default:
@@ -71,10 +92,9 @@ void CProgramPanelWidget::RetranslateUI()
 {
     SetPanelTitle(QApplication::translate("Dashboard::CProgramPanelWidget", "Programs",
                                                                  0, QApplication::UnicodeUTF8));
-    m_strOK = QApplication::translate("Dashboard::CProgramPanelWidget", "OK", 0, QApplication::UnicodeUTF8);
-    m_strWarning = QApplication::translate("Dashboard::CProgramPanelWidget", "Warning", 0, QApplication::UnicodeUTF8);
     m_strNotStartRMSOFF = QApplication::translate("Dashboard::CProgramPanelWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);
-
+    m_strConfirmation = QApplication::translate("Dashboard::CProgramPanelWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
+    m_strAbortProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Do you want to abort the program?", 0, QApplication::UnicodeUTF8);
 
 }
 
@@ -86,10 +106,12 @@ void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow
     mp_ProgramList = mp_DataConnector->ProgramList;
 }
 
-void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime)
+void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady)
 {
     m_SelectedProgramId = ProgramId;
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+    if (bProgramStartReady)
+        OnProgramStartReadyUpdated();
 }
 
 void CProgramPanelWidget::SelectEndDateTime(const QDateTime & dateTime)
@@ -125,9 +147,9 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
     if (bShowRMSOffWarning)
     {
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(m_strWarning);
+        mp_MessageDlg->SetTitle(CommonString::strWarning);
         mp_MessageDlg->SetText(m_strNotStartRMSOFF);
-        mp_MessageDlg->SetButtonText(1, m_strOK);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
         return;
@@ -140,8 +162,8 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
         isRMSOFF = true;
     }
 
-    /*Improve the expired.
-     *if (!isRMSOFF && mp_DashboardScene->HaveExpiredReagent())
+    //We should improve the expired later
+    /*if (!isRMSOFF && mp_DashboardScene->HaveExpiredReagent())
     {
         if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
         {
@@ -171,29 +193,27 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
 
 
     //check End Datetime again
-    /*m_NewSelectedProgramId = m_SelectedProgramId;
-    m_CheckEndDatetimeAgain = true;
-    PrepareSelectedProgramChecking();
+    //m_NewSelectedProgramId = m_SelectedProgramId;
+    emit PrepareSelectedProgramChecking(m_SelectedProgramId, true);
+}
 
-    //set endtime of program
-    mp_wdgtDateTime->UpdateProgramName();
-    mp_wdgtDateTime->SetASAPDateTime(m_EndDateTime);
-    mp_wdgtDateTime->setFixedSize(625,483);
-    scr.translate(mp_MainWindow->rect().center() - mp_wdgtDateTime->rect().center());
-    mp_wdgtDateTime->move(scr.left(), scr.top());
-    if (!mp_wdgtDateTime->exec())
-        return;
 
-    QString strTempProgramId(m_SelectedProgramId);
-    if (m_SelectedProgramId.at(0) == 'C')
-    {
-        strTempProgramId.append("_");
-        QString reagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
-        strTempProgramId.append(reagentIDOfLastStep);
-    }
+bool CProgramPanelWidget::CheckPreConditionsToPauseProgram()
+{
+    return true;
+}
 
-    mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
-    m_ProgramNextAction = DataManager::PROGRAM_PAUSE;*/
+bool CProgramPanelWidget::CheckPreConditionsToAbortProgram()
+{
+    MainMenu::CMessageDlg ConfirmationMessageDlg;
+
+    ConfirmationMessageDlg.SetTitle(m_strConfirmation);
+    ConfirmationMessageDlg.SetText(m_strAbortProgram);
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
+    ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
+    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);
+    ConfirmationMessageDlg.HideCenterButton();
+    return ConfirmationMessageDlg.exec() == (int)QDialog::Accepted;
 }
 
 void CProgramPanelWidget::OnButtonClicked(int whichBtn)
@@ -201,6 +221,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
     if ( whichBtn == Dashboard::firstButton ) {
         switch(m_ProgramNextAction)
         {
+            ui->startButton->setEnabled(false);//protect to click twice in a short time
             default:
             break;
             case DataManager::PROGRAM_START:
@@ -217,7 +238,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
                     }
 
                     mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
-                    m_ProgramNextAction = DataManager::PROGRAM_ABORT;
+                    ChangeStartButtonToStopState();
                     return;
                 }
 
@@ -226,35 +247,97 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
             break;
             case DataManager::PROGRAM_ABORT:
             {
-                /*if(CheckPreConditionsToPauseProgram())
-                {
+                if(CheckPreConditionsToAbortProgram()) {
+                    ui->pauseButton->setEnabled(false);
                     mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
-                    emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);//pause ProgressBar and EndTime countdown
                     m_ProgramNextAction = DataManager::PROGRAM_START;
-                } else {
-                    // Take Necessary Action
-                }*/
+                }
             }
             break;
         }
     }
     else if (whichBtn == Dashboard::secondButton)//pause
     {
-        /*if(CheckPreConditionsToAbortProgram()) {
+        ui->pauseButton->setEnabled(false);//protect to click twice in a short time
+        ui->startButton->setEnabled(false);
+        if(CheckPreConditionsToPauseProgram())
+        {
             mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_PAUSE);
-        }*/
+            emit ProgramActionStopped(DataManager::PROGRAM_STATUS_PAUSED);//pause EndTime countdown
+        } else {
+            // Take Necessary Action
+        }
+
     }
 }
 
-void CProgramPanelWidget::on_pushButton_clicked()
+void CProgramPanelWidget::ChangeStartButtonToStopState()
 {
-    ui->stackedWidget->setCurrentIndex(1);
-    ui->programRunningPanel->SetPanelTitle(tr("Test"));
+    ui->startButton->setText(tr("Stop"));
+    m_ProgramNextAction = DataManager::PROGRAM_ABORT;
 }
 
-void CProgramPanelWidget::on_pushButton_2_clicked()
+void CProgramPanelWidget::ChangeStartButtonToStartState()
 {
-   ui->stackedWidget->setCurrentIndex(0);
+    ui->startButton->setText(tr("Start"));
+    m_ProgramNextAction = DataManager::PROGRAM_START;
+}
+
+void CProgramPanelWidget::EnableStartButton(bool bEnable)
+{
+    ui->startButton->setEnabled(bEnable);
+}
+
+void CProgramPanelWidget::EnablePauseButton(bool bEnable)
+{
+    ui->pauseButton->setEnabled(bEnable);
+}
+
+void CProgramPanelWidget::IsResumeRun(bool bSet)
+{
+    m_IsResumeRun = bSet;
+}
+
+bool CProgramPanelWidget::IsResumeRun()
+{
+    return m_IsResumeRun;
+}
+
+void CProgramPanelWidget::OnProgramStartReadyUpdated()
+{
+    if (!m_SelectedProgramId.isEmpty())
+        this->ui->startButton->setEnabled(true);
+}
+
+void CProgramPanelWidget::SetProgramNextActionAsStart()
+{
+    m_ProgramNextAction = DataManager::PROGRAM_START;
+}
+
+void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType,
+                                                     int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume)
+{
+    Q_UNUSED(remainingTimeTotal);
+    Q_UNUSED(startDateTime);
+    Q_UNUSED(IsResume);
+    if (DataManager::PROGRAM_START== ProgramActionType)
+    {
+        ui->stackedWidget->setCurrentIndex(1);
+        ui->programRunningPanel->SetPanelTitle(tr("Test"));
+    }
+}
+
+void CProgramPanelWidget::OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType)
+{
+    if (DataManager::PROGRAM_STATUS_COMPLETED == ProgramStatusType)
+    {
+        SwitchToFavoritePanel();
+    }
+}
+
+void CProgramPanelWidget::SwitchToFavoritePanel()
+{
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
 }

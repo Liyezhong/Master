@@ -24,9 +24,13 @@
 #include "MainMenu/Include/MainWindow.h"
 #include <Dashboard/Include/CommonString.h>
 #include <Dashboard/Include/FavoriteProgramsPanelWidget.h>
-
+#include "Dashboard/Include/CassetteNumberInputWidget.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 
 using namespace Dashboard;
+
+QString CDashboardWidget::m_SelectedProgramId = "";
+QString CDashboardWidget::m_strMsgUnselect = "";
 
 CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                      MainMenu::CMainWindow *p_Parent) :
@@ -34,29 +38,91 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     mp_DataConnector(p_DataConnector),
     mp_MainWindow(p_Parent),
     m_ParaffinStepIndex(-1),
-    m_TimeProposed(0)
+    m_TimeProposed(0),
+    m_CheckEndDatetimeAgain(false),
+    m_ProgramStartReady(false),
+    m_IsWaitingCleaningProgram(false),
+    m_CurProgramStepIndex(-1),
+    m_ProcessRunning(false),
+    m_IsDraining(false)
 {
     ui->setupUi(this);
+    CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
+    CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+
     ui->containerPanelWidget->SetPtrToMainWindow(mp_MainWindow, mp_DataConnector);
     ui->programPanelWidget->SetPtrToMainWindow(mp_MainWindow, mp_DataConnector);
     m_pUserSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
     mp_ProgramList = mp_DataConnector->ProgramList;
     CONNECTSIGNALSIGNAL(this, AddItemsToFavoritePanel(bool), ui->programPanelWidget, AddItemsToFavoritePanel(bool));
-    CONNECTSIGNALSLOT(ui->programPanelWidget, PrepareSelectedProgramChecking(const QString&), this, PrepareSelectedProgramChecking(const QString&));
+    CONNECTSIGNALSLOT(ui->programPanelWidget, PrepareSelectedProgramChecking(const QString&, bool), this, PrepareSelectedProgramChecking(const QString&, bool));
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply &),
                       this, OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply&));
 
     CONNECTSIGNALSLOT(ui->programPanelWidget, OnSelectEndDateTime(const QDateTime&),
                         this, OnSelectEndDateTime(const QDateTime &));
 
-    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int),
-                       ui->programPanelWidget, ProgramSelected(QString&, int));
+    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int, bool),
+                       ui->programPanelWidget, ProgramSelected(QString&, int, bool));
+
+    CONNECTSIGNALSIGNAL(this, UndoProgramSelection(),
+                       ui->programPanelWidget, UndoProgramSelection());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
+                      ui->programPanelWidget, OnProgramStartReadyUpdated());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
+                      this, OnProgramStartReadyUpdated());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus &),
+                      this, OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus&));
+
 
     CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, QList<QString>&),
                        ui->containerPanelWidget, ProgramSelected(QString&, QList<QString>&));
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
 
+    CONNECTSIGNALSIGNAL(this, ProgramActionStarted(DataManager::ProgramActionType_t, int, const QDateTime&, bool),
+                        ui->programPanelWidget, ProgramActionStarted(DataManager::ProgramActionType_t, int,
+                                                                     const QDateTime&, bool));
 
+    CONNECTSIGNALSIGNAL(this, ProgramActionStopped(DataManager::ProgramStatusType_t),
+                        ui->programPanelWidget, ProgramActionStopped(DataManager::ProgramStatusType_t));
+
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramWillComplete(),
+                      this, OnProgramWillComplete());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramAborted(),
+                      this, OnProgramAborted());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramBeginAbort(),
+                              this, OnProgramBeginAbort());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramCompleted(),
+                              this, OnProgramCompleted());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramRunBegin(),
+                              this, OnProgramRunBegin());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramPaused(),
+                              this, OnProgramPaused());
+
+    CONNECTSIGNALSLOT(this, SetProgramNextActionAsStart(), ui->programPanelWidget, SetProgramNextActionAsStart());
+
+    CONNECTSIGNALSIGNAL(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
+                      ui->programPanelWidget, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
+
+    CONNECTSIGNALSLOT(this, SwitchToFavoritePanel(),
+                      ui->programPanelWidget, SwitchToFavoritePanel());
+
+    CONNECTSIGNALSLOT(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
+                      this, OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
+
+    CONNECTSIGNALSLOT(this, UpdateUserSetting(DataManager::CUserSettings&), mp_DataConnector, SendUpdatedSettings(DataManager::CUserSettings&));
+    CONNECTSIGNALSLOT(mp_DataConnector, StationSuckDrain(const MsgClasses::CmdStationSuckDrain &),
+                      this, OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain &));
+
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
 }
 
 CDashboardWidget::~CDashboardWidget()
@@ -70,9 +136,214 @@ CDashboardWidget::~CDashboardWidget()
         }
 }
 
+void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd)
+{
+    m_CurProgramStepIndex = cmd.CurProgramStepIndex();
+    if (cmd.CurProgramStepIndex() > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    {
+          ui->programPanelWidget->EnableStartButton(true);
+    }
+}
+
+void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd)
+{
+    if (!cmd.IsLocked())
+    {
+        //enable the "OK"
+        if (m_IsWaitingCleaningProgram && mp_MessageDlg->isVisible())
+        {
+            mp_MessageDlg->EnableButton(1, true);
+        }
+    }
+}
+
+void CDashboardWidget::OnProgramStartReadyUpdated()
+{
+    m_ProgramStartReady = true;
+}
+
+void CDashboardWidget::OnProgramWillComplete()
+{
+    //log the reagent ID in last step
+    const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_SelectedProgramId);
+    QString strReagentIDOfLastStep = pProgram->GetProgramStep(pProgram->GetNumberOfSteps()-1)->GetReagentID();
+    m_pUserSetting->SetReagentIdOfLastStep(strReagentIDOfLastStep);
+    emit UpdateUserSetting(*m_pUserSetting);
+
+    mp_MessageDlg->SetIcon(QMessageBox::Information);
+    mp_MessageDlg->SetTitle(CommonString::strWarning);
+    QString strTemp(m_strProgramComplete);
+    strTemp = strTemp.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+    mp_MessageDlg->SetText(strTemp);
+    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+    mp_MessageDlg->HideButtons();
+
+    emit ProgramActionStopped(DataManager::PROGRAM_STATUS_PAUSED);//pause ProgressBar and EndTime countdown
+
+    if (mp_MessageDlg->exec())
+    {
+        m_IsDraining = true;
+
+        //Resume ProgressBar and EndTime countdown
+        emit ProgramActionStarted(DataManager::PROGRAM_START, m_TimeProposed, Global::AdjustedTime::Instance().GetCurrentDateTime(), true);
+
+        mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_DRAIN);
+        //disable pause and abort
+        ui->programPanelWidget->EnableStartButton(false);
+        ui->programPanelWidget->EnablePauseButton(false);
+        return;
+    }
+}
+
+void CDashboardWidget::OnProgramBeginAbort()
+{
+    //show "aborting"
+    //time countdown
+    //Todo:20, Abort time, will be given a rough value later;
+    emit ProgramActionStarted(DataManager::PROGRAM_ABORT, 20, Global::AdjustedTime::Instance().GetCurrentDateTime(), false);
+    ui->programPanelWidget->EnableStartButton(false);
+}
+
+//this function will be invoked after program Abort and completed
+void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
+{
+    mp_MessageDlg->SetIcon(QMessageBox::Warning);
+    mp_MessageDlg->SetTitle(CommonString::strWarning);
+    mp_MessageDlg->SetText(m_strTakeOutSpecimen);
+    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+    mp_MessageDlg->HideButtons();
+    if (mp_MessageDlg->exec())
+    {
+        //represent the retort as contaminated status
+        ui->containerPanelWidget->UpdateRetortStatus(DataManager::CONTAINER_STATUS_CONTAMINATED);
+
+        mp_MessageDlg->SetText(m_strRetortContaminated);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->HideButtons();
+        //mp_MessageDlg->EnableButton(1, false);//when lock is locked, "OK" will be enable
+        mp_MessageDlg->EnableButton(1, true);//6.6 for test
+
+        m_IsWaitingCleaningProgram = true;
+        if (mp_MessageDlg->exec())
+        {
+            emit SetProgramNextActionAsStart();
+            //only show Cleaning program in the favorite panel
+            emit AddItemsToFavoritePanel(true);
+            //switch to the dashboard page
+            mp_MainWindow->SetTabWidgetIndex();
+            emit SwitchToFavoritePanel();
+
+        }
+    }
+}
+
+void CDashboardWidget::OnProgramAborted()
+{
+    //progress aborted;
+    //aborting time countdown is hidden.
+
+    //save the ReagentIdOfLastStep in case of: user restarts machine at this time
+    const DataManager::CProgram* pProgram = mp_ProgramList->GetProgram(m_SelectedProgramId);
+    QString strReagentIDOfLastStep = pProgram->GetProgramStep(m_CurProgramStepIndex)->GetReagentID();
+    m_pUserSetting->SetReagentIdOfLastStep(strReagentIDOfLastStep);
+    emit UpdateUserSetting(*m_pUserSetting);
+
+    ui->programPanelWidget->IsResumeRun(false);
+    m_CurProgramStepIndex = -1;
+
+    emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
+
+    //disable "Start" button, enable Retort lock button, hide End time button, now Abort button is still in "disable" status
+    ui->programPanelWidget->EnableStartButton(false);
+
+    QDateTime  endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+    if (m_StartDateTime.isValid())
+    {
+        int days = m_StartDateTime.daysTo(endDateTime);
+        m_pUserSetting->SetOperationHours(m_pUserSetting->GetOperationHours() + days * 24);
+        m_pUserSetting->SetActiveCarbonHours(m_pUserSetting->GetActiveCarbonHours() + days * 24);
+        emit UpdateUserSetting(*m_pUserSetting);
+    }
+
+    mp_MessageDlg->SetIcon(QMessageBox::Warning);
+    mp_MessageDlg->SetTitle(CommonString::strWarning);
+    QString strTemp;
+    strTemp = m_strProgramIsAborted.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+    mp_MessageDlg->SetText(strTemp);
+    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+    mp_MessageDlg->HideButtons();
+    if (mp_MessageDlg->exec())
+    {
+        this->TakeOutSpecimenAndWaitRunCleaning();
+    }
+}
+
+void CDashboardWidget::OnProgramCompleted()
+{
+    ui->programPanelWidget->IsResumeRun(false);
+    m_CurProgramStepIndex = -1;
+
+    if (m_SelectedProgramId.at(0) == 'C')
+    {
+        QString reagentID("");
+        m_pUserSetting->SetReagentIdOfLastStep(reagentID);//Clear CleaningProgram flag
+        emit UpdateUserSetting(*m_pUserSetting);
+        ui->programPanelWidget->EnableStartButton(false);
+        emit AddItemsToFavoritePanel();
+        ui->programPanelWidget->ChangeStartButtonToStartState();
+    }
+
+    emit ProgramActionStopped(DataManager::PROGRAM_STATUS_COMPLETED);
+
+    QDateTime  endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+    if (m_StartDateTime.isValid())
+    {
+        int days = m_StartDateTime.daysTo(endDateTime);
+        m_pUserSetting->SetOperationHours(m_pUserSetting->GetOperationHours() + days * 24);
+        m_pUserSetting->SetActiveCarbonHours(m_pUserSetting->GetActiveCarbonHours() + days * 24);
+        emit UpdateUserSetting(*m_pUserSetting);
+    }
+}
+
+void CDashboardWidget::OnProgramRunBegin()
+{
+    bool isResumeRun = ui->programPanelWidget->IsResumeRun();
+    emit ProgramActionStarted(DataManager::PROGRAM_START, m_TimeProposed, Global::AdjustedTime::Instance().GetCurrentDateTime(), isResumeRun);
+    ui->programPanelWidget->IsResumeRun(true);
+
+    if (m_SelectedProgramId.at(0) == 'C')
+    {
+        ui->programPanelWidget->EnablePauseButton(false);//disable pause button
+        ui->programPanelWidget->EnableStartButton(false);//disable Stop button
+    }
+    else
+    {
+        ui->programPanelWidget->EnablePauseButton(true);//enable pause button
+        ui->programPanelWidget->EnableStartButton(true);//enable stop button
+    }
+
+    m_StartDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+}
+
+void CDashboardWidget::OnProgramPaused()
+{
+    ui->programPanelWidget->EnableStartButton(true);//enable stop button
+    ui->programPanelWidget->ChangeStartButtonToStartState();
+}
+
 void CDashboardWidget::OnUnselectProgram()
 {
-    ui->containerPanelWidget->OnUnselectProgram();
+    if (!m_SelectedProgramId.isEmpty())
+    {
+        m_SelectedProgramId = "";
+        ui->programPanelWidget->EnableStartButton(false);
+        m_StationList.clear();
+        int asapEndTime = 0;
+        //for UI update
+        emit ProgramSelected(m_SelectedProgramId, m_StationList);
+        emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady);
+        emit UpdateSelectedStationList(m_StationList);
+    }
 }
 
 bool CDashboardWidget::IsParaffinInProgram(const DataManager::CProgram* p_Program)
@@ -143,8 +414,9 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
     return (TimeActual + TimeDelta);//seconds
 }
 
-void CDashboardWidget::PrepareSelectedProgramChecking(const QString& selectedProgramId)
+void CDashboardWidget::PrepareSelectedProgramChecking(const QString& selectedProgramId, bool bCheckEndDatetimeAgain)
 {
+    m_CheckEndDatetimeAgain = bCheckEndDatetimeAgain;
     m_NewSelectedProgramId = selectedProgramId;
     (void)this->IsParaffinInProgram(mp_ProgramList->GetProgram(selectedProgramId));//to get m_ParaffinStepIndex
     //Notify Master, to get the time costed for paraffin Melting
@@ -160,27 +432,80 @@ void CDashboardWidget::PrepareSelectedProgramChecking(const QString& selectedPro
 
 void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd)
 {
-    //Check safe reagent
-    int iWhichStepHasNoSafeReagent = cmd.WhichStepHasNoSafeReagent();
-    if (iWhichStepHasNoSafeReagent  != -1)
-    {
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(CommonString::strWarning);
-        QString strTemp = m_strCheckSafeReagent.arg(QString::number(iWhichStepHasNoSafeReagent +1)).arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-        mp_MessageDlg->SetText(strTemp);
-        mp_MessageDlg->SetButtonText(1, CommonString::strYes);
-        mp_MessageDlg->SetButtonText(3, CommonString::strNo);
-        mp_MessageDlg->HideCenterButton();
-        if (!mp_MessageDlg->exec())
-        {
-            return;
-        }
-    }
 
     //get the proposed program end DateTime
     bool bCanotRun = true;
     int asapEndTime = GetASAPTime(cmd.TimeProposed(),
                                   cmd.ParaffinMeltCostedTime(), cmd.CostedTimeBeforeParaffin(), bCanotRun);
+    if (m_CheckEndDatetimeAgain)
+    {
+        //Check safe reagent
+        int iWhichStepHasNoSafeReagent = cmd.WhichStepHasNoSafeReagent();
+        if ((m_SelectedProgramId.at(0) != 'C') && (iWhichStepHasNoSafeReagent  != -1))
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(CommonString::strWarning);
+            QString strTemp = m_strCheckSafeReagent.arg(QString::number(iWhichStepHasNoSafeReagent +1)).arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+            mp_MessageDlg->SetText(strTemp);
+            mp_MessageDlg->SetButtonText(1, CommonString::strYes);
+            mp_MessageDlg->SetButtonText(3, CommonString::strNo);
+            mp_MessageDlg->HideCenterButton();
+            if (!mp_MessageDlg->exec())
+            {
+                return;
+            }
+        }
+
+        m_CheckEndDatetimeAgain = false;
+        asapEndTime = asapEndTime - 60;//60 seconds: buffer time for "select program" and "Run" operation.
+        QDateTime endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+        if (endDateTime > m_EndDateTime)
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(CommonString::strWarning);
+            mp_MessageDlg->SetText(m_strResetEndTime);
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->HideButtons();
+            if (mp_MessageDlg->exec())
+            {
+                return;
+            }
+            return;
+        }
+
+        if ( mp_DataConnector)
+        {
+            //input cassette number
+            if (m_SelectedProgramId.at(0) != 'C' && Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
+            {
+                CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
+                pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
+                pCassetteInput->SetDialogTitle(m_strInputCassetteBoxTitle);
+                QRect scr = mp_MainWindow->geometry();
+                pCassetteInput->move( scr.center() - pCassetteInput->rect().center());
+                pCassetteInput->exec();
+
+                int cassetteNumber = pCassetteInput->CassetteNumber();
+                if (-1 == cassetteNumber)
+                    return;//clicked Cancel button
+
+                mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
+                delete pCassetteInput;
+            }
+        }
+
+        QString strTempProgramId(m_SelectedProgramId);
+        if (m_SelectedProgramId.at(0) == 'C')
+        {
+            strTempProgramId.append("_");
+            QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
+            strTempProgramId.append(strReagentIDOfLastStep);
+        }
+
+        mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
+        ui->programPanelWidget->ChangeStartButtonToStopState();
+        return;
+    }
 
     //firstly check whether there is any station not existing for some program steps
     const QList<QString>& stationList = cmd.StationList();
@@ -231,18 +556,14 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_StationList.clear();
     m_StationList = stationList;
 
-    //get the proposed program end DateTime
+
     m_TimeProposed = cmd.TimeProposed();
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 
 
-    emit ProgramSelected(m_SelectedProgramId, asapEndTime);
+    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady);
     emit ProgramSelected(m_SelectedProgramId, m_StationList);
     emit UpdateSelectedStationList(m_StationList);
-    //if (m_ProgramStartReady)
-    {
-        //  EnablePlayButton(true);
-    }
 }
 
 void CDashboardWidget::changeEvent(QEvent *p_Event)
@@ -263,11 +584,84 @@ void CDashboardWidget::RetranslateUI()
 {
     m_strCheckSafeReagent = QApplication::translate("Dashboard::CDashboardWidget", "No safe reagent for Program step \"%1\" of \"%2\" in case of error happen.Would you like to continue?", 0, QApplication::UnicodeUTF8);
     m_strNotFoundStation = QApplication::translate("Dashboard::CDashboardWidget", "Program step \"%1\" of \"%2\" can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.", 0, QApplication::UnicodeUTF8);
-    m_strCheckEmptyStation = QApplication::translate("Dashboard::CContainerPanelWidget", "The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed.", 0, QApplication::UnicodeUTF8);
+    m_strCheckEmptyStation = QApplication::translate("Dashboard::CDashboardWidget", "The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed.", 0, QApplication::UnicodeUTF8);
+    m_strResetEndTime = QApplication::translate("Dashboard::CDashboardWidget", "Please re-set the End Date&Time of the current selected program.", 0, QApplication::UnicodeUTF8);
+    m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter cassette number:", 0, QApplication::UnicodeUTF8);
+    m_strProgramComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is complete! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
+    m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
+    m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
+    m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
+    m_strMsgUnselect = QApplication::translate("Dashboard::CDashboardWidget", "As the program \"%1\" is selected, this operation will result in an incorrect program result, if you click \"Yes\", the selected program will unselect.", 0, QApplication::UnicodeUTF8);
+
 }
 
 void CDashboardWidget::OnSelectEndDateTime(const QDateTime& dateTime)
 {
     m_EndDateTime = dateTime;
 }
+
+void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd)
+{
+    if (m_IsDraining && !cmd.IsStart() && !cmd.IsSuck())
+    {
+        emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
+        this->TakeOutSpecimenAndWaitRunCleaning();//pause ProgressBar and EndTime countdown
+        m_IsDraining = false;//when abort or pause, set this too?
+    }
+}
+
+bool CDashboardWidget::CheckSelectedProgram(bool& bRevertSelectProgram, QString ProgramID)
+{
+    bRevertSelectProgram = false;
+    if (!m_SelectedProgramId.isEmpty())
+    {
+        if (!ProgramID.isEmpty())//not empty
+        {
+            if (ProgramID != m_SelectedProgramId)
+                return true;
+        }
+
+        MainMenu::CMessageDlg ConfirmationMessageDlg;
+        ConfirmationMessageDlg.SetTitle(CommonString::strWarning);
+        QString strMsg;
+        strMsg = m_strMsgUnselect.arg(Dashboard::CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+        ConfirmationMessageDlg.SetText(strMsg);
+        ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
+        ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
+        ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);
+        ConfirmationMessageDlg.HideCenterButton();
+        if (!ConfirmationMessageDlg.exec())
+            return false;//cancel
+        else
+            bRevertSelectProgram = true;
+
+    }
+    return true;
+}
+
+/****************************************************************************/
+/*!
+ *  \brief This slot is called when User Role changes
+ */
+/****************************************************************************/
+void CDashboardWidget::OnUserRoleChanged()
+{
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    if (m_CurProgramStepIndex > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    {
+        ui->programPanelWidget->EnableStartButton(false);//in fact, it will disable pause button when runing
+    }
+    else
+    if (m_ProcessRunning && (m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service))
+        ui->programPanelWidget->EnableStartButton(true);
+
+}
+
+void CDashboardWidget::OnProcessStateChanged()
+{
+    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+}
+
+
+
 
