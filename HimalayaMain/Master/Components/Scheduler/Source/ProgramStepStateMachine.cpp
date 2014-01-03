@@ -129,8 +129,8 @@ ProgramStepStateMachine::ProgramStepStateMachine(QState* pParentState)
     connect(mp_PssmReadyToDrain, SIGNAL(entered()), this, SIGNAL(OnDrain()));
     connect(mp_PssmAborting, SIGNAL(entered()), this, SIGNAL(OnAborting()));
     connect(mp_PssmAborted, SIGNAL(entered()), this, SIGNAL(OnAborted()));
-    //connect(mp_PssmPause, SIGNAL(entered()), this, SIGNAL(OnPause()));
-    //connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SIGNAL(OnPauseDrain()));
+    connect(mp_PssmPause, SIGNAL(entered()), this, SIGNAL(OnPause()));
+    connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SIGNAL(OnPauseDrain()));
 
     connect(mp_PssmInit, SIGNAL(entered()), this, SLOT(OnStateChanged()));
     connect(mp_PssmReadyToHeatLevelSensorS1, SIGNAL(entered()), this, SLOT(OnStateChanged()));

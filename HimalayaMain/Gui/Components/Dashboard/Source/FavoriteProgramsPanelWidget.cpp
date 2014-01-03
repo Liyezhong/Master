@@ -149,6 +149,14 @@ void CFavoriteProgramsPanelWidget::ProgramSelected(QString& ProgramId, int asapE
     m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 }
 
+void CFavoriteProgramsPanelWidget::UndoProgramSelection()
+{
+    m_ButtonGroup.setExclusive(false);
+    m_ButtonGroup.button(m_ButtonGroup.checkedId())->setChecked(false);
+    m_ButtonGroup.setExclusive(true);
+    m_LastSelectedButtonId = -1;
+}
+
 void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
 {
     if (m_LastSelectedButtonId == m_ButtonGroup.checkedId())

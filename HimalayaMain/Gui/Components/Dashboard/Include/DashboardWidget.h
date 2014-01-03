@@ -83,7 +83,6 @@ private:
     QString m_strRetortContaminated;
     QDateTime m_StartDateTime;
     QString m_strProgramIsAborted;
-    bool m_IsResumeRun;
     static QString m_strMsgUnselect;
     bool m_IsWaitingCleaningProgram;
     int m_CurProgramStepIndex;
@@ -120,6 +119,8 @@ private slots:
     void ProgramActionStopped(DataManager::ProgramStatusType_t);
     void UpdateUserSetting(DataManager::CUserSettings&);
     void SetProgramNextActionAsStart();
+    void SwitchToFavoritePanel();
+    void UndoProgramSelection();
 
 };
 
