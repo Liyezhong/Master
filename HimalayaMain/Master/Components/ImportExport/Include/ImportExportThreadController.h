@@ -478,7 +478,7 @@ protected:
      * \iparam PowerFailStage   Power fail stages
      */
     /****************************************************************************/
-    virtual void OnPowerFail();
+    virtual void OnPowerFail(const Global::PowerFailStages PowerFailStage);
 public:
     /****************************************************************************/
     /**
@@ -576,7 +576,7 @@ signals:
      *
      */
     /****************************************************************************/
-    void RequestDayRunLogFileNames();
+    void RequestDayRunLogFileNames(QString FolderPath);
 
     /****************************************************************************/
     /**

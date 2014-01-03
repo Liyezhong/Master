@@ -24,7 +24,8 @@ lib*/
 bin_dbg/
 bin_rel/
 obj_*/
-
+moc_rel/
+moc_dbg/
 # Ignore log files
 *.log
 

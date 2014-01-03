@@ -51,7 +51,7 @@ CReagentRMSModel::CReagentRMSModel(QObject *p_Parent) : QAbstractTableModel(p_Pa
     m_CleaningReagent = true;
     m_Columns = 0;
     m_VisibleRowCount = 7;
-    (void)m_PixmapTickOk.load(QString(":/%1/Icons/MISC/TickOk.png").arg(Application::CLeicaStyle::GetProjectNameString()));
+    (void)m_PixmapTickOk.load(QString(":/%1/Icons/MISC/TickOk.png").arg(Application::CLeicaStyle::GetDeviceImagesPath()));
 }
 
 /****************************************************************************/

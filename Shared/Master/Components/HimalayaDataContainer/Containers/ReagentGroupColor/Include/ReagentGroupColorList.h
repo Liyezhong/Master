@@ -59,7 +59,7 @@ private:
 
     ListOfIDs_t m_OrderedListOfReagentColorIDs;
 
-    ErrorHash_t m_ErrorHash;    //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator
+    ErrorMap_t m_ErrorHash;    //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator
 
     bool SerializeContent(QIODevice& IODevice, bool CompleteData);
     bool DeserializeContent(QIODevice& IODevice, bool CompleteData);

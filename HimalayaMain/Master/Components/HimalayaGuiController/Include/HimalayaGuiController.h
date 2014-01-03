@@ -56,7 +56,7 @@ protected:
 
     virtual void OnGoReceived();
     virtual void OnStopReceived();
-    virtual void OnPowerFail();
+    virtual void OnPowerFail(const Global::PowerFailStages PowerFailStage);
     virtual void OnReadyToWork();
     virtual void OnStopWorking();
 

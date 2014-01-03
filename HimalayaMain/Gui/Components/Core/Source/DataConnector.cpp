@@ -1510,7 +1510,7 @@ void CDataConnector::DayRunLogReplyFileHandler(Global::tRefType Ref, const NetCo
 void CDataConnector::SendSelectedDayRunLogFile(const QString &FileName)
 {
     Global::GuiUserLevel userRole = (Global::GuiUserLevel)MainMenu::CMainWindow::GetCurrentUserRole();
-    NetCommands::CmdDayRunLogRequestFile Command(3000, FileName, userRole);
+    NetCommands::CmdDayRunLogRequestFile Command(3000, userRole, FileName);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strLogFile);
     mp_WaitDialog->SetText(m_strGettingDailyLog);
@@ -1556,7 +1556,7 @@ void CDataConnector::SendKeepCassetteCount(int CassetteCount)
 /****************************************************************************/
 void CDataConnector::RequestDayRunLogFileNames()
 {
-    NetCommands::CmdDayRunLogRequest Command(500000);
+    NetCommands::CmdDayRunLogRequest Command(500000,(int) MainMenu::CMainWindow::GetCurrentUserRole());
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
 /****************************************************************************/

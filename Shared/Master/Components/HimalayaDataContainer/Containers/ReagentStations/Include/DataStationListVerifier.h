@@ -43,9 +43,9 @@ public:
 
     bool VerifyData(CDataContainerBase* p_DataStationList);  // use concrete class for concrete verifier
     //lint -esym(1536,GetErrors )
-    ErrorHash_t &GetErrors();
+    ErrorMap_t &GetErrors();
 
-    void ResetLastErrors();
+    void ResetErrors();
 
     bool IsLocalVerifier();
 
@@ -57,7 +57,7 @@ public:
     virtual ~CDataStationListVerifier() {}
 private:
     CDashboardDataStationList* mp_DSL;                //!< Station Data Container
-    ErrorHash_t m_ErrorsHash;          //!< To store Error ID and any arguments associated
+    ErrorMap_t m_ErrorsHash;          //!< To store Error ID and any arguments associated
 
 };
 

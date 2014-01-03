@@ -45,8 +45,8 @@ typedef enum {
  * \brief This class contains the proxy settings for remote care
  */
 /****************************************************************************/
-class CNetworkSettingsWidget : public MainMenu::CPanelFrame,
-                               public KeyBoard::CKeyBoardObserver
+class CNetworkSettingsWidget : public MainMenu::CPanelFrame//,
+                               //public KeyBoard::CKeyBoardObserver
 {
     Q_OBJECT
 

@@ -69,8 +69,6 @@
 #include <EventHandler/Include/EventHandlerEventCodes.h>
 #include <NetCommands/Include/CmdCriticalActionCheck.h>
 #include <NetCommands/Include/CmdCriticalActionStatus.h>
-#include <EventHandler/Include/CrisisEventHandler.h>
-#include <HimalayaErrorHandler/Include/HimalayaAlarmHandler.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
@@ -95,11 +93,11 @@ const Global::gSubComponentType SUBCOMPONENT_ERRORHANDLER   = 0x0001;   ///< Sub
 
 /****************************************************************************/
 HimalayaMasterThreadController::HimalayaMasterThreadController() try:
-    MasterThreadController(HEARTBEAT_SOURCE_MASTERTHREAD, HEARTBEAT_SOURCE_DATALOGGING, HEARTBEAT_SOURCE_EVENTHANDLER, "HimalayaShutdown"),
+    MasterThreadController("HimalayaShutdown"),
     /// \todo hash of master password (now master password is "Himalaya")
-    m_PasswordManager("6C7F722B0C5AC1BD70BE4ECC6FC0653E"),
+//    m_PasswordManager("6C7F722B0C5AC1BD70BE4ECC6FC0653E"),
     m_CommandChannelGui(this, "Gui", Global::EVENTSOURCE_NONE),
-    m_CommandChannelSchedulerMain(this, "SchedulerMain", Global::EVENTSOURCE_SCHEDULER_MAIN),
+    m_CommandChannelSchedulerMain(this, "SchedulerMain", Global::EVENTSOURCE_SCHEDULER),
     m_CommandChannelEventHandler(this, "EventHandler", Global::EVENTSOURCE_EVENTHANDLER),
     m_CommandChannelExport(this, "Export", Global::EVENTSOURCE_EXPORT),
     m_CommandChannelImportExport(this, "ImportExport", Global::EVENTSOURCE_IMPORTEXPORT),
@@ -131,9 +129,9 @@ HimalayaMasterThreadController::~HimalayaMasterThreadController() {
 
 void HimalayaMasterThreadController::CreateAlarmHandler()
 {
-    mp_alarmHandler = new HimalayaErrorHandler::HimalayaAlarmHandler(5000, this);
-    CONNECTSIGNALSLOT(mp_alarmHandler, sigSetTimeout(quint16), this, SetAlarmHandlerTimeout(quint16));
-    CONNECTSIGNALSLOT(mp_alarmHandler, FireAlarmLocalRemote(bool), this, OnFireAlarmLocalRemote(bool));
+//    mp_alarmHandler = new HimalayaErrorHandler::HimalayaAlarmHandler(5000, this);
+//    CONNECTSIGNALSLOT(mp_alarmHandler, sigSetTimeout(quint16), this, SetAlarmHandlerTimeout(quint16));
+//    CONNECTSIGNALSLOT(mp_alarmHandler, FireAlarmLocalRemote(bool), this, OnFireAlarmLocalRemote(bool));
 }
 
 /****************************************************************************/
@@ -220,7 +218,6 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
     catch (...) {
         qDebug()<<"Create And Initialize Failed";
     }
-    (void)EventHandler::CrisisEventHandler::Instance().readEventStateConf("../Settings/EventStateError.csv");
 }
 
 /****************************************************************************/
@@ -240,7 +237,7 @@ void HimalayaMasterThreadController::CreateControllersAndThreads() {
     CHECKPTR(p_DeviceConfiguration);
 
     // create and connect scheduler main controller
-    Scheduler::SchedulerMainThreadController *schedulerMainController = new Scheduler::SchedulerMainThreadController(HEARTBEAT_SOURCE_SCHEDULER_MAIN);
+    Scheduler::SchedulerMainThreadController *schedulerMainController = new Scheduler::SchedulerMainThreadController(THREAD_ID_SCHEDULER);
     AddAndConnectController(schedulerMainController, &m_CommandChannelSchedulerMain, static_cast<int>(SCHEDULER_MAIN_THREAD));
     schedulerMainController->DataManager(mp_DataManager);
     // register all commands for processing and routing
@@ -260,7 +257,8 @@ void HimalayaMasterThreadController::CreateControllersAndThreads() {
 }
 
 /************************************************************************************************************************************/
-void HimalayaMasterThreadController::OnPowerFail() {
+void HimalayaMasterThreadController::OnPowerFail(const Global::PowerFailStages PowerFailStage) {
+    Q_UNUSED(PowerFailStage)
     if(mp_DataManager) {
         mp_DataManager->SaveDataOnShutdown();
     }
@@ -298,8 +296,9 @@ void HimalayaMasterThreadController::OnGoReceived() {
 }
 
 /************************************************************************************************************************************/
-void HimalayaMasterThreadController::InitiateShutdown() {
+void HimalayaMasterThreadController::InitiateShutdown(bool Reboot) {
 
+    Q_UNUSED(Reboot)
     //save data to the file system
     if(!m_PowerFailed && mp_DataManager) { //if power fails we would have already written the data
         mp_DataManager->SaveDataOnShutdown();
@@ -357,7 +356,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<MsgClasses::CmdQuitAppShutdown>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdQuitAppShutdownReply>(&m_CommandChannelGui);
 
-    RegisterCommandForRouting<NetCommands::CmdCriticalActionStatus>(&m_CommandChannelSoftSwitch);
+//    RegisterCommandForRouting<NetCommands::CmdCriticalActionStatus>(&m_CommandChannelSoftSwitch);
 
     // -> Datalogging
     RegisterCommandForRouting<NetCommands::CmdDayRunLogRequest>(&m_CommandChannelDataLogging);    
@@ -410,7 +409,7 @@ void HimalayaMasterThreadController::StartStatemachine() {
 
 
 void HimalayaMasterThreadController::InitializeGUI() {
-    HimalayaGui::HimalayaGuiController *p_GuiController = new HimalayaGui::HimalayaGuiController(HEARTBEAT_SOURCE_GUI);
+    HimalayaGui::HimalayaGuiController *p_GuiController = new HimalayaGui::HimalayaGuiController(THREAD_ID_GUI);
     // Send XML files to GUI when its connected to Main
     CONNECTSIGNALSLOT(p_GuiController, SendConfigurationFiles(), this, SendXML());
     RegisterCommandForProcessing<NetCommands::CmdGuiInit, HimalayaMasterThreadController>
@@ -445,10 +444,6 @@ void HimalayaMasterThreadController:: OnCmdGuiInitHandler(Global::tRefType Ref, 
                 StartSpecificThreadController(it.key());
             }
         }
-        // log current time offset as info
-        LOG_EVENT(Global::EVTTYPE_INFO, Global::LOG_ENABLED, EVENT_GLOBAL_CURRENT_TIME_OFFSET,
-                  QString::number(Global::AdjustedTime::Instance().GetOffsetSeconds(), 10)
-                  , Global::NO_NUMERIC_DATA, false);
         // start own statemachine
         StartStatemachine();
 
@@ -460,7 +455,7 @@ void HimalayaMasterThreadController:: OnCmdGuiInitHandler(Global::tRefType Ref, 
     } catch(const Global::Exception &E) {
         // destroy controllers and threads
         // send error message
-        Global::EventObject::Instance().RaiseException(E);
+        Global::EventObject::Instance().RaiseEvent(E);
         // and request exit
         Shutdown();
     } catch(const std::bad_alloc &) {
@@ -471,9 +466,6 @@ void HimalayaMasterThreadController:: OnCmdGuiInitHandler(Global::tRefType Ref, 
         Shutdown();
     } catch(...) {
         // destroy controllers and threads
-        // Send error message
-        LOG_EVENT(Global::EVTTYPE_FATAL_ERROR, Global::LOG_ENABLED, EVENT_GLOBAL_ERROR_UNKNOWN_EXCEPTION, FILE_LINE_LIST,
-                  Global::NO_NUMERIC_DATA, false);
         // and request exit
         Shutdown();
     }
@@ -610,7 +602,7 @@ void HimalayaMasterThreadController::SendContainersTo(Threads::CommandChannel &r
 void HimalayaMasterThreadController::StartExportProcess(QString FileName) {
     // create and connect gui controller
     m_ExportTargetFileName = FileName;
-    Export::ExportController *p_ExportController = new Export::ExportController(HEARTBEAT_SOURCE_EXPORT);
+    Export::ExportController *p_ExportController = new Export::ExportController(THREAD_ID_EXPORT);
     // connect the process exit slot
 
     CONNECTSIGNALSLOT(p_ExportController, ProcessExited(const QString &, int), this, ExportProcessExited(const QString &, int));
@@ -910,11 +902,17 @@ bool HimalayaMasterThreadController::SendLanguageFileToGUI(QString FileName) {
     if (File.exists()) {
         // open the file
         if (File.open(QIODevice::ReadWrite)) {
-            QDataStream LangDataStream(&File);
-            LangDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
-            // send the command to GUI
-            (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdLanguageFile(5000, LangDataStream)),
-                        m_CommandChannelGui);
+            if (mp_DataManager) {
+                const DataManager::CUserSettings *p_Settings = mp_DataManager->GetUserSettings();
+                if (p_Settings) {
+                    QLocale::Language CurrentLanguage =  p_Settings->GetLanguage();
+                    QDataStream LangDataStream(&File);
+                    LangDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
+                    // send the command to GUI
+                    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdLanguageFile(5000, LangDataStream,CurrentLanguage)),
+                                m_CommandChannelGui);
+                }
+            }
             // change the UI translator default language also
             // get locale extracted by filename
             QString Locale;
@@ -985,7 +983,11 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
     }
 
     if (bPassed)
-        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevel(Cmd)),m_CommandChannelEventThread);
+
+        (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevel(Cmd.GetTimeout(),
+                                                                                     Cmd.GetUserLevel(),
+                                                                                     Cmd.GetPassword())),
+                          m_CommandChannelEventThread);
 
     // send the authenticated command to GUI
     (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdChangeUserLevelReply(5000, m_AuthenticatedLevel)), m_CommandChannelGui);
@@ -1104,7 +1106,7 @@ void HimalayaMasterThreadController::ExternalProcessConnectionHandler(Global::tR
             Global::EventObject::Instance().RaiseEvent(EVENT_PROCESS_HIMALAYA_GUI_CONNECTED, Global::FmtArgs(), false);
             Global::EventObject::Instance().RaiseEvent(EVENT_GUI_AVAILABLE, Global::FmtArgs(), false);
             // emit a signal so that if logging is disabled then Main can inform to GUI
-            emit CheckLoggingEnabled();
+//            emit CheckLoggingEnabled();
         }
     }
     else {
@@ -1114,7 +1116,7 @@ void HimalayaMasterThreadController::ExternalProcessConnectionHandler(Global::tR
             Global::EventObject::Instance().RaiseEvent(EVENT_PROCESS_HIMALAYA_GUI_CONNECTED);
             Global::EventObject::Instance().RaiseEvent(EVENT_GUI_AVAILABLE, Global::FmtArgs(), true);
             // emit a signal so that if logging is disabled then Main can inform to GUI
-            emit CheckLoggingEnabled();
+  //          emit CheckLoggingEnabled();
         }
     }
 
@@ -1132,8 +1134,8 @@ void HimalayaMasterThreadController::ExportDayRunLogHandler(Global::tRefType Ref
 }
 
 /****************************************************************************/
-void HimalayaMasterThreadController::RequestDayRunLogFileNames() {
-    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdExportDayRunLogRequest(m_AuthenticatedLevel)),
+void HimalayaMasterThreadController::RequestDayRunLogFileNames(QString FolderPath) {
+    (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdExportDayRunLogRequest(m_AuthenticatedLevel,FolderPath)),
                                             m_CommandChannelDataLogging);
 
 }
@@ -1142,17 +1144,17 @@ void HimalayaMasterThreadController::RequestDayRunLogFileNames() {
 void HimalayaMasterThreadController::OnCmdSysState(Global::tRefType, const NetCommands::CmdSystemState &Cmd,
                       Threads::CommandChannel&)
 {
-    EventHandler::CrisisEventHandler::Instance().currentSysState(Cmd.m_StateId);
+    //EventHandler::CrisisEventHandler::Instance().currentSysState(Cmd.m_StateId);
 }
 
 void HimalayaMasterThreadController::SetAlarmHandlerTimeout(quint16 timeout)
 {
-    mp_alarmHandler->setTimeout(timeout);
+    //mp_alarmHandler->setTimeout(timeout);
 }
 
 void HimalayaMasterThreadController::OnFireAlarmLocalRemote(bool isLocalAlarm)
 {
-    (void)SendCommand(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(isLocalAlarm)), m_CommandChannelSchedulerMain);
+ //   (void)SendCommand(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(isLocalAlarm)), m_CommandChannelSchedulerMain);
 }
 
 /************************************************************************************************************************************/

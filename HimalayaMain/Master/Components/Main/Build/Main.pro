@@ -24,14 +24,17 @@ PLATFORM_COMPONENTS = DataLogging \
                       NetworkComponents \
                       NetCommands \
                       Global \
-                      ExportController \
                       #DeviceCommandProcessor \
                       StateMachines \
                       ExternalProcessController \
+                      ExportController \
                       ImportExport \
                       Threads \
                       PasswordManager \
-                      SoftSwitchManager \
+                      GPIOManager \
+                      RemoteCareController \
+                      HeartBeatManager \
+                      RemoteCareManager \
                       SWUpdateManager
 ################################################################
 
@@ -47,7 +50,7 @@ HIMALAYA_COMPONENTS_DIR = ../..
 HIMALAYA_COMPONENTS = HimalayaGuiController \
                       HimalayaMasterThread \
                       Scheduler \
-                      HimalayaErrorHandler
+                      HimalayaDataManager
 ###########################################################
 
 ################## list simulation libraries #################
@@ -59,7 +62,6 @@ HIMALAYA_COMPONENTS = HimalayaGuiController \
 INCLUDEPATH += ../..
 HEADERS +=  ../Include/Main.h \
             ../../../Include/HimalayaEventCodes.h \
-            ../../../Include/DataLoggingSources.h \
             ../../../Include/HimalayaProcessExitCodes.h
 SOURCES +=  ../Source/Main.cpp
 ###############################################

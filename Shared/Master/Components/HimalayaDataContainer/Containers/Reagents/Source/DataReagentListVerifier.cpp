@@ -58,7 +58,7 @@ bool CDataReagentListVerifier::VerifyData(CDataContainerBase* p_DataReagentList)
  *  \return QStringList - List of the errors occured
  */
 /****************************************************************************/
-ErrorHash_t& CDataReagentListVerifier::GetErrors()
+ErrorMap_t& CDataReagentListVerifier::GetErrors()
 {
     // return the last error which is occured in the verifier
     return m_ErrorsHash;
@@ -69,7 +69,7 @@ ErrorHash_t& CDataReagentListVerifier::GetErrors()
  *  \brief  Resets the last error which is done by verifier
  */
 /****************************************************************************/
-void CDataReagentListVerifier::ResetLastErrors()
+void CDataReagentListVerifier::ResetErrors()
 {
     m_ErrorsHash.clear();
 }

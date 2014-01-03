@@ -30,8 +30,6 @@
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationVerifier.h"
 
 
-#include "DataManager/Containers/Racks/Include/RackList.h"
-#include "DataManager/Containers/Racks/Include/RackListVerifier.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsVerifier.h"
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupA.h"
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupC.h"

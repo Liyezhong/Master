@@ -47,7 +47,7 @@ public:
     bool GetSyncObject(QReadWriteLock* p_ReadWriteLock);
 
     /*! \todo complete implementation*/
-    ErrorHash_t& GetErrors();
+    ErrorMap_t& GetErrors();
 
     void ResetErrors();
 
@@ -61,7 +61,7 @@ public:
     virtual ~CProgramSettingsVerifier() {}
 
 private:
-    ErrorHash_t m_ErrorsHash;           //!< To store Error Key and any arguments associated
+    ErrorMap_t m_ErrorsHash;           //!< To store Error Key and any arguments associated
 };
 
 } // namespace DataManager

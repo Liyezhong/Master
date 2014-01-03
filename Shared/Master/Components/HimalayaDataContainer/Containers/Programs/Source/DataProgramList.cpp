@@ -116,7 +116,7 @@ void CDataProgramList::UpdateOnLanguageChanged()
            quint32 strid = p_Program->GetNameID().toUInt(&ok);
            if(ok && strid > 0)
            {
-               p_Program->SetName(Helper::TranslateString(strid));
+//               p_Program->SetName(Helper::TranslateString(strid));
            }
        }
    }

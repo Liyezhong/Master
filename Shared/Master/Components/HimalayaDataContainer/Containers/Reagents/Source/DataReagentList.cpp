@@ -490,7 +490,7 @@ bool CDataReagentList::Read(QString Filename)
     bool Result = true;
 
     if (m_DataVerificationMode) {
-        ErrorHash_t ErrorHash;
+        ErrorMap_t ErrorHash;
         QWriteLocker locker(mp_ReadWriteLock);
 
         // create instance of CDataReagentList for verification
@@ -598,7 +598,7 @@ ReagentType_t CDataReagentList::GetReagentType(const QString ReagentID)
         CHECKPTR(p_Reagent);
     }
     catch(Global::Exception &E) {
-        Global::EventObject::Instance().RaiseException(E);
+        Global::EventObject::Instance().RaiseEvent(E);
         return UNDEFINED_REAGENT_TYPE;
     }
 
@@ -622,7 +622,7 @@ ReagentType_t CDataReagentList::GetReagentType(const unsigned int Index)
         CHECKPTR(p_Reagent);
     }
     catch(Global::Exception &E) {
-        Global::EventObject::Instance().RaiseException(E);
+        Global::EventObject::Instance().RaiseEvent(E);
         return UNDEFINED_REAGENT_TYPE;
     }
     return p_Reagent->GetReagentType();
@@ -730,7 +730,7 @@ bool CDataReagentList::AddReagent(const CReagent* p_Reagent)
         CHECKPTR(p_Reagent);
     }
     catch(Global::Exception &E) {
-        Global::EventObject::Instance().RaiseException(E);
+        Global::EventObject::Instance().RaiseEvent(E);
         m_ErrorHash.insert(EVENT_DM_REAGENT_OPERATION_FAILED,
                            Global::tTranslatableStringList() << "AddReagent");
         SetErrorList(&m_ErrorHash);
@@ -772,7 +772,7 @@ bool CDataReagentList::AddReagent(const CReagent* p_Reagent)
 
 
     if (m_DataVerificationMode) {
-        ErrorHash_t ErrorHash;
+        ErrorMap_t ErrorHash;
         CDataReagentList* p_DRL_Verification = new CDataReagentList();
 
         // first lock current state for reading
@@ -848,7 +848,7 @@ bool CDataReagentList::UpdateReagent(const CReagent* p_Reagent)
         CHECKPTR(p_Reagent);
     }
     catch(Global::Exception &E) {
-        Global::EventObject::Instance().RaiseException(E);
+        Global::EventObject::Instance().RaiseEvent(E);
         m_ErrorHash.insert(EVENT_DM_REAGENT_OPERATION_FAILED,
                            Global::tTranslatableStringList() << "CDataReagentList::UpdateReagent");
         SetErrorList(&m_ErrorHash);
@@ -875,7 +875,7 @@ bool CDataReagentList::UpdateReagent(const CReagent* p_Reagent)
 
     bool Result = false;
     if (m_DataVerificationMode) {
-        ErrorHash_t ErrorHash;
+        ErrorMap_t ErrorHash;
         CReagent const *p_CurrentReagent = GetReagent(ID);
         QString PreviousName  = p_CurrentReagent->GetReagentName().simplified();
         CDataReagentList* p_DRL_Verification = new CDataReagentList();
@@ -1082,7 +1082,7 @@ void CDataReagentList::UpdateOnLanguageChanged()
            quint32 strid = p_Reagent->GetReagentNameID().toUInt(&ok);
            if(ok && strid > 0)
            {
-               p_Reagent->SetReagentName(Helper::TranslateString(strid));
+//               p_Reagent->SetReagentName(Helper::TranslateString(strid));
            }
        }
    }
