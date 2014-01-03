@@ -3,16 +3,22 @@
 
 namespace Scheduler
 {
-SchedulerMachine::SchedulerMachine()
+CSchedulerStateMachine::CSchedulerStateMachine()
 {
     mp_SchedulerMachine = new QStateMachine();
     mp_InitState = new QState(mp_SchedulerMachine);
     mp_IdleState = new QState(mp_SchedulerMachine);
     mp_BusyState = new QState(mp_SchedulerMachine);
     mp_ErrorState = new QState(mp_SchedulerMachine);
-    mp_ProgramStepStates = new ProgramStepStateMachine(mp_BusyState);
+    mp_ErrorWaitState = new QState(mp_ErrorState);
+    mp_ProgramStepStates = new CProgramStepStateMachine(mp_BusyState, mp_ErrorState);
+
 
     mp_SchedulerMachine->setInitialState(mp_InitState);
+    mp_ErrorState->setInitialState(mp_ErrorWaitState);
+
+    mp_RSRvGetOriginalPositionAgain = new CRsRvGetOriginalPositionAgain(mp_SchedulerMachine, mp_ErrorState );
+
     mp_InitState->addTransition(this, SIGNAL(SchedulerInitComplete()), mp_IdleState);
     mp_IdleState->addTransition(this, SIGNAL(RunSignal()), mp_BusyState);
     mp_BusyState->addTransition(this, SIGNAL(RunComplete()), mp_IdleState);
@@ -59,6 +65,9 @@ SchedulerMachine::SchedulerMachine()
     connect(this, SIGNAL(sigResumeToReadyToTubeAfter()), mp_ProgramStepStates, SIGNAL(ResumeToReadyToTubeAfter()));
     connect(this, SIGNAL(sigAbort()), mp_ProgramStepStates, SIGNAL(Abort()));
 
+    connect(this, SIGNAL(sigRsRvMoveToInitPosition()), mp_RSRvGetOriginalPositionAgain, SIGNAL(RvMoveToInitPosition()));
+    connect(this, SIGNAL(sigRsRvMoveToInitPositionFinished()), mp_RSRvGetOriginalPositionAgain, SIGNAL(RvMoveToInitPositionFinished()));
+
     connect(mp_ProgramStepStates, SIGNAL(OnInit()), this, SIGNAL(sigOnInit()));
     connect(mp_ProgramStepStates, SIGNAL(OnHeatLevelSensorTempS1()), this, SIGNAL(sigOnHeatLevelSensorTempS1()));
     connect(mp_ProgramStepStates, SIGNAL(OnHeatLevelSensorTempS2()), this, SIGNAL(sigOnHeatLevelSensorTempS2()));
@@ -74,9 +83,12 @@ SchedulerMachine::SchedulerMachine()
     connect(mp_ProgramStepStates, SIGNAL(OnAborted()), this, SIGNAL(sigOnAborted()));
     connect(mp_ProgramStepStates, SIGNAL(OnPause()), this, SIGNAL(sigOnPause()));
     connect(mp_ProgramStepStates, SIGNAL(OnPauseDrain()), this, SIGNAL(sigOnPauseDrain()));
+
+
+    connect(mp_RSRvGetOriginalPositionAgain, SIGNAL(OnRvMoveToInitPosition()), this, SIGNAL(sigOnRsRvMoveToInitPosition()));
 }
 
-void SchedulerMachine::OnStateChanged()
+void CSchedulerStateMachine::OnStateChanged()
 {
     SchedulerStateMachine_t currentState = GetCurrentState();
     quint32 stateid = STR_UNEXPECTED_STATE;
@@ -100,203 +112,225 @@ void SchedulerMachine::OnStateChanged()
     LOG_STR_ARG(STR_SCHDEULER_MAIN_CONTROLLER_STATE,Global::tTranslatableStringList()<<Global::TranslatableString(stateid));
 }
 
-SchedulerMachine::~SchedulerMachine()
+CSchedulerStateMachine::~CSchedulerStateMachine()
 {
+    delete mp_ErrorWaitState;
+    mp_ErrorWaitState = NULL;
     delete mp_ErrorState;
+    mp_ErrorState = NULL;
     delete mp_BusyState;
+    mp_BusyState = NULL;
     delete mp_IdleState;
+    mp_IdleState = NULL;
     delete mp_InitState;
+    mp_InitState = NULL;
     delete mp_ProgramStepStates;
+    mp_ProgramStepStates = NULL;
     delete mp_SchedulerMachine;
+    mp_SchedulerMachine = NULL;
 }
 
-void SchedulerMachine::Start()
+void CSchedulerStateMachine::Start()
 {
     mp_SchedulerMachine->start();
 }
 
-void SchedulerMachine::Stop()
+void CSchedulerStateMachine::Stop()
 {
     mp_SchedulerMachine->stop();
 }
 
-void SchedulerMachine::SendSchedulerInitComplete()
+void CSchedulerStateMachine::SendSchedulerInitComplete()
 {
     emit SchedulerInitComplete();
 }
 
-void SchedulerMachine::SendRunSignal()
+void CSchedulerStateMachine::SendRunSignal()
 {
     emit RunSignal();
 }
 
-void SchedulerMachine::SendRunComplete()
+void CSchedulerStateMachine::SendRunComplete()
 {
     emit RunComplete();
 }
 
-void SchedulerMachine::SendErrorSignal()
+void CSchedulerStateMachine::SendErrorSignal()
 {
     emit ErrorSignal();
 }
 
-SchedulerStateMachine_t SchedulerMachine::GetCurrentState()
+SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
 {
+    SchedulerStateMachine_t currentState = SM_UNDEF;
     if(mp_SchedulerMachine->configuration().contains(mp_InitState))
     {
-        return SM_INIT;
+        currentState = SM_INIT;
     }else if(mp_SchedulerMachine->configuration().contains(mp_IdleState))
     {
-        return SM_IDLE;
+        currentState = SM_IDLE;
     }else if(mp_SchedulerMachine->configuration().contains(mp_ErrorState))
     {
-        return SM_ERROR;
+        if(mp_SchedulerMachine->configuration().contains(mp_ErrorWaitState))
+        {
+            currentState = SM_ERR_WAIT;
+        }
+        else if((currentState = mp_RSRvGetOriginalPositionAgain->GetCurrentState(mp_SchedulerMachine->configuration())) != SM_UNDEF);
     }else if(mp_SchedulerMachine->configuration().contains(mp_BusyState))
     {
-        return mp_ProgramStepStates->GetCurrentState(mp_SchedulerMachine->configuration());
-    }else
-    {
-        return SM_UNDEF;
+        currentState = mp_ProgramStepStates->GetCurrentState(mp_SchedulerMachine->configuration());
     }
+
+    return currentState;
 }
 
-SchedulerStateMachine_t SchedulerMachine::GetPreviousState()
+SchedulerStateMachine_t CSchedulerStateMachine::GetPreviousState()
 {
     return mp_ProgramStepStates->GetPreviousState();
 }
 
-void SchedulerMachine::NotifyStInitOK()
+void CSchedulerStateMachine::NotifyStInitOK()
 {
     emit sigStInitOK();
 }
 
-void SchedulerMachine::NotifyStTempOK()
+void CSchedulerStateMachine::NotifyStTempOK()
 {
     emit sigStTempOK();
 }
 
-void SchedulerMachine::NotifyStCurrentOK()
+void CSchedulerStateMachine::NotifyStCurrentOK()
 {
     emit sigStCurrentOK();
 }
 
-void SchedulerMachine::NotifyStVoltageOK()
+void CSchedulerStateMachine::NotifyStVoltageOK()
 {
     emit sigStVoltageOK();
 }
 
-void SchedulerMachine::NotifyStRVPositionOK()
+void CSchedulerStateMachine::NotifyStRVPositionOK()
 {
     emit sigStRVPositionOK();
 }
 
-void SchedulerMachine::NotifyStPressureOK()
+void CSchedulerStateMachine::NotifyStPressureOK()
 {
     emit sigStPressureOK();
 }
 
-void SchedulerMachine::NotifyStSealingOK()
+void CSchedulerStateMachine::NotifyStSealingOK()
 {
     emit sigStSealingOK();
 }
 
-void SchedulerMachine::NotifyStGetStationcheckResult()
+void CSchedulerStateMachine::NotifyStGetStationcheckResult()
 {
     emit sigStGetStationcheckResult();
 }
 
-void SchedulerMachine::NotifyStStationLeft()
+void CSchedulerStateMachine::NotifyStStationLeft()
 {
     emit sigStStationLeft();
 }
 
-void SchedulerMachine::NotifyStStationOK()
+void CSchedulerStateMachine::NotifyStStationOK()
 {
     emit sigStStationOK();
 }
 
-void SchedulerMachine::NotifyStDone()
+void CSchedulerStateMachine::NotifyStDone()
 {
     emit sigStDone();
 }
-void SchedulerMachine::NotifyTempsReady()
+void CSchedulerStateMachine::NotifyTempsReady()
 {
     emit sigTempsReady();
 }
 
-void SchedulerMachine::NotifyLevelSensorTempS1Ready()
+void CSchedulerStateMachine::NotifyLevelSensorTempS1Ready()
 {
     emit sigLevelSensorTempS1Ready();
 }
 
-void SchedulerMachine::NotifyLevelSensorTempS2Ready()
+void CSchedulerStateMachine::NotifyLevelSensorTempS2Ready()
 {
     emit sigLevelSensorTempS2Ready();
 }
 
-void SchedulerMachine::NotifyHitTubeBefore()
+void CSchedulerStateMachine::NotifyHitTubeBefore()
 {
     emit sigHitTubeBefore();
 }
 
-void SchedulerMachine::NotifyFillFinished()
+void CSchedulerStateMachine::NotifyFillFinished()
 {
     emit sigFillFinished();
 }
 
-void SchedulerMachine::NotifyHitSeal()
+void CSchedulerStateMachine::NotifyHitSeal()
 {
     emit sigHitSeal();
 }
 
-void SchedulerMachine::NotifySoakFinished()
+void CSchedulerStateMachine::NotifySoakFinished()
 {
     emit sigSoakFinished();
 }
 
-void SchedulerMachine::NotifyHitTubeAfter()
+void CSchedulerStateMachine::NotifyHitTubeAfter()
 {
     emit sigHitTubeAfter();
 }
 
-void SchedulerMachine::NotifyDrainFinished()
+void CSchedulerStateMachine::NotifyDrainFinished()
 {
     emit sigDrainFinished();
 }
 
-void SchedulerMachine::NotifyStepFinished()
+void CSchedulerStateMachine::NotifyStepFinished()
 {
     emit sigStepFinished();
 }
 
-void SchedulerMachine::NotifyProgramFinished()
+void CSchedulerStateMachine::NotifyProgramFinished()
 {
     emit sigProgramFinished();
 }
 
-void SchedulerMachine::NotifyError()
+void CSchedulerStateMachine::NotifyError()
 {
     emit sigError();
 }
 
-void SchedulerMachine::NotifyPause(SchedulerStateMachine_t PreviousState)
+void CSchedulerStateMachine::NotifyPause(SchedulerStateMachine_t PreviousState)
 {
     mp_ProgramStepStates->SetPreviousState(PreviousState);
     emit sigPause();
 }
 
-void SchedulerMachine::NotifyAbort()
+void CSchedulerStateMachine::NotifyAbort()
 {
     mp_ProgramStepStates->SetPreviousState(this->GetCurrentState());
     emit sigAbort();
 }
 
-void SchedulerMachine::NotifyResumeToSelftest()
+void CSchedulerStateMachine::NotifyResumeToSelftest()
 {
     emit sigResumeToSelftest();
 }
 
-void SchedulerMachine::NotifyResume()
+void CSchedulerStateMachine::NotifyRsRvMoveToInitPositionFinished()
+{
+    emit sigRsRvMoveToInitPositionFinished();
+}
+
+void CSchedulerStateMachine::NotifyRsRvMoveToInitPosition()
+{
+    emit sigRsRvMoveToInitPosition();
+}
+
+void CSchedulerStateMachine::NotifyResume()
 {
     //emit sigResume(m_PreviousState);
     if( mp_ProgramStepStates->GetPreviousState() == (PSSM_INIT))
@@ -338,7 +372,7 @@ void SchedulerMachine::NotifyResume()
      mp_ProgramStepStates->SetPreviousState(PSSM_PAUSE);
 }
 
-void SchedulerMachine::NotifyResumeDrain()
+void CSchedulerStateMachine::NotifyResumeDrain()
 {
     if( mp_ProgramStepStates->GetPreviousState() == (PSSM_READY_TO_TUBE_AFTER))
     {

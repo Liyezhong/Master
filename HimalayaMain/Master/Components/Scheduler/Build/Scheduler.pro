@@ -10,9 +10,7 @@ SOURCES += ../Source/*.cpp \
 HEADERS += ../Include/*.h \
            ../../../../../../Platform/Master/Components/DeviceControl/Include/Interface/*.h \
            ../../../../../../Platform/Master/Components/DeviceControl/Include/Global/*.h \
-             ../Commands/Include/*.h #\
-#    ../Include/Scenario.h
-#    ../Include/SchedulerStateMachineStates.h
+             ../Commands/Include/*.h
 
 
 RESOURCES +=

@@ -67,7 +67,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_TickTimer(this)
         , m_SchedulerCommandProcessorThread(NULL)
         , m_SchedulerCommandProcessor(NULL)
-        , m_SchedulerMachine(new SchedulerMachine())
+        , m_SchedulerMachine(new CSchedulerStateMachine())
         , mp_IDeviceProcessing(NULL)
         , mp_DataManager(NULL)
         , m_CurProgramStepIndex(-1)
@@ -148,6 +148,7 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnStopDrain(), this, StopDrain());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnPause(), this, Pause());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnPauseDrain(), this, Pause());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsRvMoveToInitPosition(), this, MoveRVToInit());
 
 
     //command queue reset
@@ -206,21 +207,22 @@ void SchedulerMainThreadController::OnTickTimer()
     {
     case SM_INIT:
         //refuse any main controller request if there is any
-        LOG_PAR()<<"DBG"<<"Scheduler main controller state: INIT";
+        //LOG_PAR()<<"DBG"<<"Scheduler main controller state: INIT";
         break;
     case SM_IDLE:
-        LOG_PAR()<<"DBG"<<"Scheduler main controller state: IDLE";
+        //LOG_PAR()<<"DBG"<<"Scheduler main controller state: IDLE";
         HardwareMonitor(mp_IDeviceProcessing, "IDLE");
         HandleIdleState(newControllerCmd);
         break;
     case SM_BUSY:
-        LOG_PAR()<<"DBG"<<"Scheduler main controller state: RUN";
+        //LOG_PAR()<<"DBG"<<"Scheduler main controller state: RUN";
         HardwareMonitor(mp_IDeviceProcessing, m_CurProgramID);
         HandleRunState(newControllerCmd, retCode);
         break;
     case SM_ERROR:
-        LOG_PAR()<<"DBG"<<"Scheduler main controller state: ERROR";
+        //LOG_PAR()<<"DBG"<<"Scheduler main controller state: ERROR";
         //refuse any main controller request if there is any
+        HandleErrorState(newControllerCmd, retCode, currentState);
         break;
     default:
         LOG_PAR()<<"DBG"<<"Scheduler main controller gets unexpected state: " << currentState;
@@ -348,7 +350,24 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ST_RV_POSITION_CHECKING == stepState)
         {
-            m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
+#if 0 //test RS_movetoinitposition
+            static bool b = false;
+            if(!b)
+            {
+            LOG_PAR()<<"DBG" << "Make a false RV error here. ";
+            //m_SchedulerMachine->NotifyError();
+            m_SchedulerMachine->SendErrorSignal();
+            b=true;
+            }
+#endif
+            if(m_PositionRV == RV_UNDEF)
+            {
+                //raise event here
+            }
+            else
+            {
+                m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
+            }
         }
         else if(PSSM_ST_PRESSURE_CHECKING == stepState)
         {
@@ -839,6 +858,50 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
     }
 #endif
+}
+
+void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode, SchedulerStateMachine_t currentState)
+{
+#if 0 //test RS_movetoinitposition
+    static bool actionSccessed = false;
+#endif
+    if (SM_ERR_WAIT == currentState)
+    {
+        LOG_PAR()<<"DBG" << "Scheduler waitting event handler give instruction!";
+#if 0 //test RS_movetoinitposition
+        static bool b = false; //todo: remove later
+        if(!b) // todo: replace with command later
+        {
+            m_SchedulerMachine->NotifyRsRvMoveToInitPosition();
+            LOG_PAR()<<"DBG" << "Try to move to RS RV Move To Initial Position!";
+            b = true;
+        }
+        if(actionSccessed)
+        {
+            LOG_PAR()<<"DBG" << "Action success,  resume to self test!";
+            m_SchedulerMachine->NotifyResumeToSelftest();
+        }
+
+#endif
+    }
+    else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
+    {
+        LOG_PAR()<<"DBG" << "Responsing...."<<retCode;
+        if( DCL_ERR_DEV_RV_MOVE_TO_INIT_POS_SUCCESS == retCode )
+        {
+            //todo: notify event handler that response is succeed
+            LOG_PAR()<<"DBG" << "Response Move to initial position again succeed!";
+#if 0 //test RS_movetoinitposition
+            actionSccessed = true;
+#endif
+        }
+        else if(DCL_ERR_DEV_RV_MOVE_TO_INIT_FUNC & retCode)
+        {
+            //todo: notify event handler that response is failed
+            LOG_PAR()<<"DBG" << "Response Move to initial position again failed!";
+        }
+        m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
+    }
 }
 
 ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
@@ -2044,6 +2107,12 @@ void SchedulerMainThreadController::HeatLevelSensor()
         cmd->SetDerivativeTime(0);
         m_SchedulerCommandProcessor->pushCmd(cmd);
     }
+}
+
+void SchedulerMainThreadController::MoveRVToInit()
+{
+    LOG_PAR()<<"DBG"<<"Send cmd to DCL to let RV move to init position. ";
+    m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_IDeviceProcessing, this));
 }
 
 void SchedulerMainThreadController::MoveRV()

@@ -58,7 +58,7 @@ namespace DataManager
 namespace Scheduler {
 
 class SchedulerCommandProcessor;
-class SchedulerMachine;
+class CSchedulerStateMachine;
 
 typedef struct {
     QString stationID;
@@ -124,7 +124,7 @@ typedef struct
 
         QThread* m_SchedulerCommandProcessorThread;
         SchedulerCommandProcessor* m_SchedulerCommandProcessor;
-        SchedulerMachine* m_SchedulerMachine;
+        CSchedulerStateMachine* m_SchedulerMachine;
         //ProgramStepStateMachine* mp_ProgramStepStateMachine;
         //SelfTestStateMachine* mp_SelfTestStateMachine;
         DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
@@ -210,6 +210,7 @@ private slots:
          void HandleIdleState(ControlCommandType_t ctrlCmd);
          //void HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
          void HandleRunState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode);
+         void HandleErrorState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode, SchedulerStateMachine_t currentState);
          void StepStart();
          bool CheckStepTemperature();
          bool CheckLevelSensorTemperature(qreal targetTemperature);
@@ -226,6 +227,7 @@ private slots:
          void Abort();
          bool SelfTest(ReturnCode_t RetCode);
          void Pause();
+         void MoveRVToInit();
 
 protected:
 
