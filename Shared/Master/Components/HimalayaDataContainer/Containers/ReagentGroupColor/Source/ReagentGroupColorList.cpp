@@ -358,7 +358,7 @@ bool CReagentGroupColorList::Read(QString Filename)
     bool Result = true;
 
     if (m_DataVerificationMode) {
-        ErrorHash_t ErrorHash;
+        ErrorMap_t ErrorHash;
         QWriteLocker locker(mp_ReadWriteLock);
 
         // create instance of CReagentGroupColorList for verification
@@ -440,7 +440,7 @@ bool CReagentGroupColorList::AddReagentColorGroup(const CReagentGroupColor* p_Re
         CHECKPTR(p_ReagentGroupColor);
     }
     catch(Global::Exception &E) {
-        Global::EventObject::Instance().RaiseException(E);
+        Global::EventObject::Instance().RaiseEvent(E);
 //        m_ErrorHash.insert(EVENT_DM_PROGSEQ_OPERATION_FAILED,
 //                           Global::tTranslatableStringList() << "AddReagentGroup");
 //        SetErrorList(&m_ErrorHash);

@@ -81,11 +81,11 @@ void SchedulerCommandProcessor::OnNewCmdAdded()
     if(newCmdComing())
     {
         //qDebug()<< "sec thread got msg! current thread id is: "<<QThread::currentThreadId();
-        LOG_STR_ARG(STR_EXECUTE_COMMAND,Global::tTranslatableStringList()<<Global::TranslatableString(m_currentCmd->GetParameters()));
+//        LOG_STR_ARG(STR_EXECUTE_COMMAND,Global::tTranslatableStringList()<<Global::TranslatableString(m_currentCmd->GetParameters()));
         m_currentCmd->Execute();
         mp_SchedulerThreadController->PushDeviceControlCmdQueue(m_currentCmd);
-        LOG_STR_ARG(STR_EXECUTE_COMMAND_RESULT,Global::tTranslatableStringList()<<Global::TranslatableString(m_currentCmd->GetName())
-                    <<Global::TranslatableString(m_currentCmd->GetStrResult()));
+//        LOG_STR_ARG(STR_EXECUTE_COMMAND_RESULT,Global::tTranslatableStringList()<<Global::TranslatableString(m_currentCmd->GetName())
+//                    <<Global::TranslatableString(m_currentCmd->GetStrResult()));
     }
 }
 void SchedulerCommandProcessor::pushCmd(CmdSchedulerCommandBase* cmd)

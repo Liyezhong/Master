@@ -24,14 +24,13 @@
 #include <Threads/Include/MasterThreadController.h>
 #include <PasswordManager/Include/PasswordManager.h>
 #include <DataManager/Containers/UserSettings/Include/UserSettings.h>
-#include <../Include/DataLoggingSources.h>
 #include <Global/Include/Commands/CmdDateAndTime.h>
 #include <Global/Include/AlarmHandler.h>
 #include <Global/Include/GlobalExitCodes.h>
 #include <Global/Include/Commands/AckOKNOK.h>
 #include <Global/Include/Commands/CmdEventUpdate.h>
-#include <HimalayaDataManager/Include/DataManager.h>
-#include "ImportExport/Include/ImportExportThreadController.h"
+#include <Global/Include/Commands/CmdShutDown.h>
+#include <Global/Include/UITranslator.h>
 #include <NetCommands/Include/CmdSystemAction.h>
 #include <NetCommands/Include/CmdChangeAdminPassword.h>
 #include <NetCommands/Include/CmdChangeAdminPasswordReply.h>
@@ -46,11 +45,13 @@
 #include <NetCommands/Include/CmdEventStrings.h>
 #include <NetCommands/Include/CmdDataUpdate.h>
 #include <NetCommands/Include/CmdGuiInit.h>
-#include <HimalayaMasterThread/Include/ProgramStartableFlagManager.h>
-#include <Global/Include/Commands/CmdShutDown.h>
 #include <NetCommands/Include/CmdConfigurationFile.h>
+
+#include <HimalayaMasterThread/Include/ProgramStartableFlagManager.h>
+#include <HimalayaDataManager/Include/DataManager.h>
+#include <HimalayaMasterThread/Include/ThreadIDs.h>
+#include <ImportExport/Include/ImportExportThreadController.h>
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h>
-#include <Global/Include/UITranslator.h>
 //lint -e1536
 
 namespace EventHandler {
@@ -75,14 +76,14 @@ namespace SWUpdate {
 
 namespace Himalaya {
 
-enum CommandChannelSelector_t {
-    GUI,
-    EVENTHANDLER,
-    DATALOGGING,
-    SCHEDULER,
-    SCHEDULERMAIN,
-    DEVICE_CMD_PROCESSOR
-};
+//! constant definitions
+const int CMD_CHANNEL_GUI_ID                    = 0;  /// GUI Command Channel Id
+const int CMD_CHANNEL_EVENT_HANDLER_ID          = 1;  /// EventHandler Command Channel Id
+const int CMD_CHANNEL_SCHEDULER_ID              = 2;  /// Scheduler Command Channel Id
+const int CMD_CHANNEL_DEVICE_CMD_PROESSOR_ID    = 3;  /// Device Command Processor Command Channel Id
+const int CMD_CHANNEL_DATA_LOGGING_ID           = 4;  /// DataLogging Command Channel Id
+const int CMD_CHANNEL_SEPIA_ID                  = 5;  /// Sepia Command Channel Id
+const int CMD_CHANNEL_REMOTECARE                = 6;  /// Remote Care Command Channel Id
 
 typedef enum  {
     UNDEFINED_HIMALAYA_THREAD,
@@ -221,7 +222,7 @@ private:
 
             // create and connect scheduler controller
             ImportExport::ImportExportThreadController *ImportExportThreadController
-                    = new ImportExport::ImportExportThreadController(HEARTBEAT_SOURCE_IMPORTEXPORT, *mp_DataManager,
+                    = new ImportExport::ImportExportThreadController(THREAD_ID_IMPORTEXPORT, *mp_DataManager,
                                                                      CommandData::NAME,
                                                                      (const_cast<CommandData&>(Cmd)).GetCommandData());
             try {
@@ -250,8 +251,8 @@ private:
             try {
                 // connect the siganl slot mechanism to create the containers for the Import.
                 CONNECTSIGNALSLOT(ImportExportThreadController,
-                              RequestDayRunLogFileNames(), this,
-                              RequestDayRunLogFileNames());
+                              RequestDayRunLogFileNames(QString FolderPath), this,
+                              RequestDayRunLogFileNames(QString FolderPath));
             }
             catch (...){
                 SendAcknowledgeNOK(Ref, AckCommandChannel, "Unable to connect to signal slot");
@@ -453,7 +454,7 @@ protected:
      * \brief Power will fail shortly.
      */
     /****************************************************************************/
-    virtual void OnPowerFail();
+    virtual void OnPowerFail(const Global::PowerFailStages PowerFailStage);
     /****************************************************************************/
     /**
      * \brief Initiate the shutdown process.
@@ -462,7 +463,7 @@ protected:
      * \ref Shutdown to shut down software.
      */
     /****************************************************************************/
-    virtual void InitiateShutdown();
+    virtual void InitiateShutdown(bool Reboot = false);
 
     /****************************************************************************/
     /**
@@ -539,16 +540,16 @@ public:
      * \return CommandChannel object
      */
     /****************************************************************************/
-    inline Threads::CommandChannel & GetCommandChannel(CommandChannelSelector_t CommandChannelSelector) {
+    inline Threads::CommandChannel & GetCommandChannel(const int CommandChannelSelector) {
         switch (CommandChannelSelector) {
-            case GUI:
+            case CMD_CHANNEL_GUI_ID:
                 return m_CommandChannelGui;
-            case EVENTHANDLER:
+            case CMD_CHANNEL_EVENT_HANDLER_ID:
                 return m_CommandChannelEventHandler;
-            case SCHEDULERMAIN:
+            case CMD_CHANNEL_SCHEDULER_ID:
                 return m_CommandChannelSchedulerMain;
 
-            case DATALOGGING:
+            case CMD_CHANNEL_DATA_LOGGING_ID:
                 return m_CommandChannelDataLogging;
             default:
                 return m_CommandChannelGui;
@@ -634,7 +635,7 @@ private slots:
        * \brief Requests the day run log file names.
        */
       /****************************************************************************/
-      void RequestDayRunLogFileNames();
+      void RequestDayRunLogFileNames(QString FolderPath);
 
     /****************************************************************************/
     /**

@@ -56,10 +56,10 @@ public:
 
     bool VerifyData(CDataContainerBase* p_ContainerBase);
 
-    ErrorHash_t& GetErrors() { return m_ErrorsHash;}
+    ErrorMap_t& GetErrors() { return m_ErrorsHash;}
 
 
-    void ResetLastErrors(){m_ErrorsHash.clear();}
+    void ResetErrors(){m_ErrorsHash.clear();}
 
     bool IsLocalVerifier(){return false;}
 
@@ -70,7 +70,7 @@ private:
     CDataReagentList* mp_DReagentList; ///< Container for the Reagent list
     CDashboardDataStationList* mp_DStationList; ///< Container for the Station list
     CDataReagentGroupList* m_pDataReagentGroupList;
-    ErrorHash_t m_ErrorsHash;          //!< To store Error ID and any arguments associated
+    ErrorMap_t m_ErrorsHash;          //!< To store Error ID and any arguments associated
 	bool CheckData();
     bool IsCompatible(const QString& currentReagentGroupID, const QString& PreviousReagentGroupID);
 };

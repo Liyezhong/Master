@@ -600,7 +600,7 @@ QDataStream& operator <<(QDataStream& OutDataStream, const CProgramSettings& Gro
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_STREAMOUT_FAILED,
                                                    Global::tTranslatableStringList() << "ProgramSettings", true);
         // throws an exception
-        THROWARG(EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE );
+        THROWARG(Global::EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE );
     }
     return OutDataStream;
 }
@@ -623,7 +623,7 @@ QDataStream& operator >>(QDataStream& InDataStream, CProgramSettings& GroupList)
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_STREAMIN_FAILED,
                                                    Global::tTranslatableStringList() << "ProgramSettings", true);
 
-        THROWARG(EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
+        THROWARG(Global::EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
     }
     return InDataStream;
 }

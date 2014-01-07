@@ -162,7 +162,7 @@ private:
 
     QReadWriteLock* mp_ReadWriteLock;//!< File read write protection
 
-    ErrorHash_t m_ErrorHash;    //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator
+    ErrorMap_t m_ErrorHash;    //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator
 
     /****************************************************************************/
     /*!

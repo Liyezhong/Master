@@ -75,7 +75,7 @@ quint32 CDataManager::InitializeDataContainer()
     quint32 ReturnCode = INIT_OK;
     //Create DataContainer - Inturn creates individual containers
     mp_DataContainer = new CDataContainer(mp_MasterThreadController);
-    mp_DataContainerCollection = mp_DataContainer;
+    mp_DataContainerCollectionBase = mp_DataContainer;
     ReturnCode = CDataManagerBase::InitDataContainer();
     if ( ReturnCode != INIT_OK) {
         return ReturnCode;

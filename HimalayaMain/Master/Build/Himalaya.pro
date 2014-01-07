@@ -20,17 +20,20 @@ SUBDIRS  = \
            ../../../../Platform/Master/Components/ImportExport/Build/ImportExport.pro \
            ../../../../Platform/Master/Components/NetworkComponents/Build/NetworkComponents.pro \
            ../../../../Platform/Master/Components/StateMachines/Build/StateMachines.pro \
-           #../../../../Platform/Master/Components/AxedaController/Build/AxedaController.pro \
+           ../../../../Platform/Master/Components/RemoteCareController/Build/RemoteCareController.pro \
+           ../../../../Platform/Master/Components/RemoteCareManager/Build/RemoteCareManager.pro \
            ../../../../Platform/Master/Components/Threads/Build/Threads.pro \
            ../../../../Platform/Master/Components/NetCommands/Build/NetCommands.pro \
            ../../../../Platform/Master/Components/PasswordManager/Build/PasswordManager.pro \
-           ../../../../Platform/Master/Components/SoftSwitchManager/Build/SoftSwitchManager.pro \
+           ../../../../Platform/Master/Components/GPIOManager/Build/GPIOManager.pro \
            ../../../../Platform/Master/Components/ExportController/Build/ExportController.pro \
+           ../../../../Platform/Master/Components/HeartBeatManager/Build/HeartBeatManager.pro \
             ../../../../Platform/Master/Components/SWUpdateManager/Build/SWUpdateManager.pro \
            ../../../Shared/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro \
            ../Components/HimalayaMasterThread/Build/HimalayaMasterThread.pro \
            ../Components/HimalayaGuiController/Build/HimalayaGuiController.pro \
-           ../Components/HimalayaErrorHandler/Build/HimalayaErrorHandler.pro \
+            ../Components/HimalayaDataManager/Build/HimalayaDataManager.pro \
+#           ../Components/HimalayaErrorHandler/Build/HimalayaErrorHandler.pro \
            ../Components/Scheduler/Build/Scheduler.pro \
            ../Components/Main/Build/Main.pro
 

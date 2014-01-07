@@ -99,11 +99,11 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSLOT(mp_DataConnector, UserAuthentication(const qint32 &), mp_Users, UserAuthenticated(const qint32 &));
     CONNECTSIGNALSLOT(mp_DataConnector, ChangeAdminPassword(const QString &), mp_Users, ChangeInAdminPassword(const QString &));
 
-    m_MainWindow.AddMenuGroup(mp_Dashboard, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_Dashboard.png").arg(Application::CLeicaStyle::GetProjectNameString())));
-    m_MainWindow.AddMenuGroup(mp_Programs, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_Programs.png").arg(Application::CLeicaStyle::GetProjectNameString())));
-    m_MainWindow.AddMenuGroup(mp_Reagents, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_Reagents.png").arg(Application::CLeicaStyle::GetProjectNameString())));
-    m_MainWindow.AddMenuGroup(mp_Settings, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_Settings.png").arg(Application::CLeicaStyle::GetProjectNameString())));
-    m_MainWindow.AddMenuGroup(mp_Users, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_User.png").arg(Application::CLeicaStyle::GetProjectNameString())));
+    m_MainWindow.AddMenuGroup(mp_Dashboard, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_Dashboard.png").arg(Application::CLeicaStyle::GetDeviceImagesPath())));
+    m_MainWindow.AddMenuGroup(mp_Programs, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_Programs.png").arg(Application::CLeicaStyle::GetDeviceImagesPath())));
+    m_MainWindow.AddMenuGroup(mp_Reagents, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_Reagents.png").arg(Application::CLeicaStyle::GetDeviceImagesPath())));
+    m_MainWindow.AddMenuGroup(mp_Settings, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_Settings.png").arg(Application::CLeicaStyle::GetDeviceImagesPath())));
+    m_MainWindow.AddMenuGroup(mp_Users, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_User.png").arg(Application::CLeicaStyle::GetDeviceImagesPath())));
 
 }
 

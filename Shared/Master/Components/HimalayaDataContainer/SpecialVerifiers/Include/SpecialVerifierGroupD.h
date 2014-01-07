@@ -47,9 +47,9 @@ public:
 
     bool VerifyData(CDataContainerBase* p_ContainerBase);
 
-    ErrorHash_t& GetErrors() { return m_ErrorsHash;}
+    ErrorMap_t& GetErrors() { return m_ErrorsHash;}
 
-    void ResetLastErrors(){m_ErrorsHash.clear();}
+    void ResetErrors(){m_ErrorsHash.clear();}
 
     bool IsLocalVerifier(){return false;}
 
@@ -59,7 +59,7 @@ private:
 
     CDashboardDataStationList* mp_DStationList; ///< Container for the Station list
     //CDataStationMatrix* mp_StationMatrix; ///< Container for the Station grid
-    ErrorHash_t m_ErrorsHash;          //!< To store Error ID and any arguments associated
+    ErrorMap_t m_ErrorsHash;          //!< To store Error ID and any arguments associated
     bool CheckData();
 };
 

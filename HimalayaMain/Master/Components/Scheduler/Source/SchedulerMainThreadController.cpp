@@ -67,7 +67,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_TickTimer(this)
         , m_SchedulerCommandProcessorThread(NULL)
         , m_SchedulerCommandProcessor(NULL)
-        , m_SchedulerMachine(new SchedulerMachine())
+        , m_SchedulerMachine(new CSchedulerStateMachine())
         , mp_IDeviceProcessing(NULL)
         , mp_DataManager(NULL)
         , m_CurProgramStepIndex(-1)
@@ -94,8 +94,8 @@ SchedulerMainThreadController::~SchedulerMainThreadController()
 void SchedulerMainThreadController::RegisterCommands()
 {
     // register commands
-    RegisterCommandForProcessing<HimalayaErrorHandler::CmdRaiseAlarm,
-                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnRaiseAlarmLocalRemote, this);
+//    RegisterCommandForProcessing<HimalayaErrorHandler::CmdRaiseAlarm,
+//                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnRaiseAlarmLocalRemote, this);
 
     RegisterCommandForProcessing<MsgClasses::CmdProgramAction,
                     SchedulerMainThreadController>(&SchedulerMainThreadController::OnProgramAction, this);
@@ -148,6 +148,7 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnStopDrain(), this, StopDrain());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnPause(), this, Pause());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnPauseDrain(), this, Pause());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsRvMoveToInitPosition(), this, MoveRVToInit());
 
 
     //command queue reset
@@ -180,11 +181,9 @@ void SchedulerMainThreadController::OnStopReceived()
     m_SchedulerCommandProcessorThread->wait();
 }
 
-void SchedulerMainThreadController::OnPowerFail()
+void SchedulerMainThreadController::OnPowerFail(const Global::PowerFailStages PowerFailStage)
 {
-    DEBUGWHEREAMI;
-
-    //! @todo: Implement Power Fail Handling
+    Q_UNUSED(PowerFailStage)
 }
 
 void SchedulerMainThreadController::OnTickTimer()
@@ -206,21 +205,22 @@ void SchedulerMainThreadController::OnTickTimer()
     {
     case SM_INIT:
         //refuse any main controller request if there is any
-        LOG_PAR()<<"DBG"<<"Scheduler main controller state: INIT";
+        //LOG_PAR()<<"DBG"<<"Scheduler main controller state: INIT";
         break;
     case SM_IDLE:
-        LOG_PAR()<<"DBG"<<"Scheduler main controller state: IDLE";
+        //LOG_PAR()<<"DBG"<<"Scheduler main controller state: IDLE";
         HardwareMonitor(mp_IDeviceProcessing, "IDLE");
         HandleIdleState(newControllerCmd);
         break;
     case SM_BUSY:
-        LOG_PAR()<<"DBG"<<"Scheduler main controller state: RUN";
+        //LOG_PAR()<<"DBG"<<"Scheduler main controller state: RUN";
         HardwareMonitor(mp_IDeviceProcessing, m_CurProgramID);
         HandleRunState(newControllerCmd, retCode);
         break;
     case SM_ERROR:
-        LOG_PAR()<<"DBG"<<"Scheduler main controller state: ERROR";
+        //LOG_PAR()<<"DBG"<<"Scheduler main controller state: ERROR";
         //refuse any main controller request if there is any
+        HandleErrorState(newControllerCmd, retCode, currentState);
         break;
     default:
         LOG_PAR()<<"DBG"<<"Scheduler main controller gets unexpected state: " << currentState;
@@ -348,7 +348,24 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ST_RV_POSITION_CHECKING == stepState)
         {
-            m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
+#if 0 //test RS_movetoinitposition
+            static bool b = false;
+            if(!b)
+            {
+            LOG_PAR()<<"DBG" << "Make a false RV error here. ";
+            //m_SchedulerMachine->NotifyError();
+            m_SchedulerMachine->SendErrorSignal();
+            b=true;
+            }
+#endif
+            if(m_PositionRV == RV_UNDEF)
+            {
+                //raise event here
+            }
+            else
+            {
+                m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
+            }
         }
         else if(PSSM_ST_PRESSURE_CHECKING == stepState)
         {
@@ -841,6 +858,50 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 #endif
 }
 
+void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode, SchedulerStateMachine_t currentState)
+{
+#if 0 //test RS_movetoinitposition
+    static bool actionSccessed = false;
+#endif
+    if (SM_ERR_WAIT == currentState)
+    {
+        LOG_PAR()<<"DBG" << "Scheduler waitting event handler give instruction!";
+#if 0 //test RS_movetoinitposition
+        static bool b = false; //todo: remove later
+        if(!b) // todo: replace with command later
+        {
+            m_SchedulerMachine->NotifyRsRvMoveToInitPosition();
+            LOG_PAR()<<"DBG" << "Try to move to RS RV Move To Initial Position!";
+            b = true;
+        }
+        if(actionSccessed)
+        {
+            LOG_PAR()<<"DBG" << "Action success,  resume to self test!";
+            m_SchedulerMachine->NotifyResumeToSelftest();
+        }
+
+#endif
+    }
+    else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
+    {
+        LOG_PAR()<<"DBG" << "Responsing...."<<retCode;
+        if( DCL_ERR_DEV_RV_MOVE_TO_INIT_POS_SUCCESS == retCode )
+        {
+            //todo: notify event handler that response is succeed
+            LOG_PAR()<<"DBG" << "Response Move to initial position again succeed!";
+#if 0 //test RS_movetoinitposition
+            actionSccessed = true;
+#endif
+        }
+        else if(DCL_ERR_DEV_RV_MOVE_TO_INIT_FUNC & retCode)
+        {
+            //todo: notify event handler that response is failed
+            LOG_PAR()<<"DBG" << "Response Move to initial position again failed!";
+        }
+        m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
+    }
+}
+
 ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
 {
 
@@ -883,20 +944,20 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         }
     }
 
-    HimalayaErrorHandler::CmdRaiseAlarm* pCmdRaiseAlarm = dynamic_cast<HimalayaErrorHandler::CmdRaiseAlarm*>(pt.GetPointerToUserData());
-    if (pCmdRaiseAlarm)
-    {
-        if(pCmdRaiseAlarm->m_localAlarm)
-        {
+//    HimalayaErrorHandler::CmdRaiseAlarm* pCmdRaiseAlarm = dynamic_cast<HimalayaErrorHandler::CmdRaiseAlarm*>(pt.GetPointerToUserData());
+//    if (pCmdRaiseAlarm)
+//    {
+//        if(pCmdRaiseAlarm->m_localAlarm)
+//        {
 
-        }
-        else
-        {
+//        }
+//        else
+//        {
 
-        }
-        //todo temp. return set remote alarm, update later
-        return CTRL_CMD_SET_REMOTE_ALARM;
-    }
+//        }
+//        //todo temp. return set remote alarm, update later
+//        return CTRL_CMD_SET_REMOTE_ALARM;
+//    }
     return CTRL_CMD_UNKNOWN;
 
 }//When end of this function, the command in m_SchedulerCmdQueue will be destrory by share pointer (CommandShPtr_t) mechanism
@@ -1328,15 +1389,15 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
     return leftTime;
 }
 
-void SchedulerMainThreadController::OnRaiseAlarmLocalRemote(Global::tRefType Ref,
-                                                            const HimalayaErrorHandler::CmdRaiseAlarm &Cmd)
-{
-    Q_UNUSED(Ref);
-    m_Mutex.lock();
-    m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(Cmd.m_localAlarm)));
-    m_Mutex.unlock();
-    this->SendAcknowledgeOK(Ref);
-}
+//void SchedulerMainThreadController::OnRaiseAlarmLocalRemote(Global::tRefType Ref,
+//                                                            const HimalayaErrorHandler::CmdRaiseAlarm &Cmd)
+//{
+//    Q_UNUSED(Ref);
+//    m_Mutex.lock();
+//    //m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(Cmd.m_localAlarm)));
+//    m_Mutex.unlock();
+//    this->SendAcknowledgeOK(Ref);
+//}
 
 //client-->master
 void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
@@ -1520,6 +1581,148 @@ QString SchedulerMainThreadController::GetReagentGroupID(const QString& ReagentI
 
     return "";
 }
+
+qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerStateMachine_t State, QString ReagentGroup)
+{
+    qint32 scenario = 0;
+    bool reagentRelated = false;
+    switch(State)
+    {
+    case SM_UNDEF:
+        break;
+    case SM_INIT:
+        scenario = 002;
+        break;
+    case SM_IDLE:
+        scenario = 004;
+        break;
+    case SM_BUSY:
+        break;
+    case SM_ERROR:
+        break;
+    case PSSM_INIT:
+        break;
+    case PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1:
+        scenario = 211;
+        reagentRelated = true;
+        break;
+    case PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2:
+        scenario = 211;
+        reagentRelated = true;
+        break;
+    case PSSM_READY_TO_TUBE_BEFORE:
+        scenario = 217;
+        reagentRelated = true;
+        break;
+    case PSSM_READY_TO_FILL:
+        scenario = 212;
+        reagentRelated = true;
+        break;
+    case PSSM_READY_TO_SEAL:
+        scenario = 213;
+        reagentRelated = true;
+        break;
+    case PSSM_SOAK:
+        scenario = 214;
+        reagentRelated = true;
+        break;
+    case PSSM_READY_TO_TUBE_AFTER:
+        scenario = 215;
+        reagentRelated = true;
+        break;
+    case PSSM_READY_TO_DRAIN:
+        scenario = 216;
+        reagentRelated = true;
+        break;
+    case PSSM_STEP_FINISH:
+        break;
+    case PSSM_PROGRAM_FINISH:
+        break;
+    case PSSM_PAUSE:
+        scenario = 206;
+        break;
+    case PSSM_PAUSE_DRAIN:
+        scenario = 206;
+        break;
+    case PSSM_ABORTING:
+        scenario = 206;
+        break;
+    case PSSM_ABORTED:
+        scenario = 206;
+        break;
+    case PSSM_ST:
+        scenario = 200;
+        break;
+    case PSSM_ST_INIT:
+        scenario = 200;
+        break;
+    case PSSM_ST_TEMP_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_CURRENT_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_VOLTAGE_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_RV_POSITION_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_PRESSURE_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_SEALING_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_STATION_CHECKING:
+        scenario = 200;
+        break;
+    case PSSM_ST_STATION_CHECK_FINISH:
+        scenario = 200;
+        break;
+    case PSSM_ST_DONE:
+        scenario = 200;
+        break;
+    default:
+        break;
+    }
+    if(reagentRelated)
+    {
+        if(ReagentGroup == "RG1") //Fixation
+        {
+        }
+        else if(ReagentGroup == "RG2") //Water
+        {
+            scenario += 10;
+        }
+        else if(ReagentGroup == "RG3") //Dehydrating diluted
+        {
+            scenario += 20;
+        }
+        else if(ReagentGroup == "RG4") //Dehydrating absolute
+        {
+            scenario += 30;
+        }
+        else if(ReagentGroup == "RG5") //Clearing
+        {
+            scenario += 40;
+        }
+        else if(ReagentGroup == "RG6") //Paraffin
+        {
+            scenario += 50;
+        }
+        else if(ReagentGroup == "RG7") //Cleaning solvent
+        {
+            scenario += 60;
+        }
+        else if(ReagentGroup == "RG8") //Cleaning Alcohol
+        {
+            scenario += 70;
+        }
+    }
+    return scenario;
+}
+
 
 void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetCode, IDeviceProcessing* pIDP)
 {
@@ -1914,6 +2117,12 @@ void SchedulerMainThreadController::HeatLevelSensor()
         cmd->SetDerivativeTime(0);
         m_SchedulerCommandProcessor->pushCmd(cmd);
     }
+}
+
+void SchedulerMainThreadController::MoveRVToInit()
+{
+    LOG_PAR()<<"DBG"<<"Send cmd to DCL to let RV move to init position. ";
+    m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_IDeviceProcessing, this));
 }
 
 void SchedulerMainThreadController::MoveRV()

@@ -19,7 +19,6 @@
 /****************************************************************************/
 
 #include <HimalayaGuiController/Include/HimalayaGuiController.h>
-#include <../Include/DataLoggingSources.h>
 #include <Global/Include/SystemPaths.h>
 #include <Global/Include/Utils.h>
 
@@ -424,7 +423,8 @@ void HimalayaGuiController::OnStopReceived() {
  * Power will fail shortly.
  */
 /****************************************************************************/
-void HimalayaGuiController::OnPowerFail() {
+void HimalayaGuiController::OnPowerFail(const Global::PowerFailStages PowerFailStage) {
+    Q_UNUSED(PowerFailStage)
     /// \todo implement
 }
 

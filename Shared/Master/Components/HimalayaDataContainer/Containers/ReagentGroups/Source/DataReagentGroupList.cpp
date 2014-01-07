@@ -510,7 +510,7 @@ bool CDataReagentGroupList::AddReagentGroup(const CReagentGroup* p_ReagentGroup)
         CHECKPTR(p_ReagentGroup);
     }
     catch(Global::Exception &E) {
-        Global::EventObject::Instance().RaiseException(E);
+        Global::EventObject::Instance().RaiseEvent(E);
 //        m_ErrorHash.insert(EVENT_DM_PROGSEQ_OPERATION_FAILED,
 //                           Global::tTranslatableStringList() << "AddReagentGroup");
 //        SetErrorList(&m_ErrorHash);
@@ -597,7 +597,7 @@ bool CDataReagentGroupList::UpdateReagentGroup(const CReagentGroup* p_ReagentGro
         CHECKPTR(p_ReagentGroup);
     }
     catch(Global::Exception &E) {
-        Global::EventObject::Instance().RaiseException(E);
+        Global::EventObject::Instance().RaiseEvent(E);
         m_ErrorHash.insert(EVENT_DM_PROGSEQ_OPERATION_FAILED,
                            Global::tTranslatableStringList() << "UpdateReagentGroup");
         SetErrorList(&m_ErrorHash);
@@ -774,7 +774,7 @@ void CDataReagentGroupList::UpdateOnLanguageChanged()
            quint32 strid = p_ReagentGroup->GetGroupNameID().toUInt(&ok);
            if(ok && strid > 0)
            {
-               p_ReagentGroup->SetReagentGroupName(Helper::TranslateString(strid));
+//               p_ReagentGroup->SetReagentGroupName(Helper::TranslateString(strid));
            }
        }
    }

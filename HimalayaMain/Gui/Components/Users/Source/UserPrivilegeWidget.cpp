@@ -148,10 +148,10 @@ void CUserPrivilegeWidget::OnBtnUserClicked()
 void CUserPrivilegeWidget::OnBtnAdministratorClicked()
 {
     m_ValidationType = KeyBoard::VALIDATION_3;
-    mp_KeyBoardWidget->Attach(this);
+//    mp_KeyBoardWidget->Attach(this);
     m_SupervisorBtnClicked = true;
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Password"));
-    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
+//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetPasswordMode(true);
     mp_KeyBoardWidget->SetMaxCharLength(16);
     mp_KeyBoardWidget->SetMinCharLength(4);
@@ -167,10 +167,10 @@ void CUserPrivilegeWidget::OnBtnAdministratorClicked()
 void CUserPrivilegeWidget::OnBtnServiceClicked()
 {
     m_ValidationType = KeyBoard::VALIDATION_3;
-    mp_KeyBoardWidget->Attach(this);
+//    mp_KeyBoardWidget->Attach(this);
     m_ServiceUserBtnClicked = true;
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Password"));
-    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
+//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetPasswordMode(true);
     mp_KeyBoardWidget->SetMaxCharLength(4);
     mp_KeyBoardWidget->SetMinCharLength(4);
@@ -191,11 +191,11 @@ void CUserPrivilegeWidget::OnBtnServiceClicked()
 void CUserPrivilegeWidget::OnBtnChangePasswordClicked()
 {
     m_ValidationType = KeyBoard::VALIDATION_3;
-    mp_KeyBoardWidget->Attach(this);
+//    mp_KeyBoardWidget->Attach(this);
     m_ChangePasswdBtnClicked = true;
     m_PwdType = "Old";
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Password"));
-    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
+//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetPasswordMode(true);
     mp_KeyBoardWidget->SetMaxCharLength(16);
     mp_KeyBoardWidget->SetMinCharLength(4);
@@ -218,7 +218,7 @@ void CUserPrivilegeWidget::Update()
 /****************************************************************************/
 void CUserPrivilegeWidget::UpdateOnESC()
 {
-   mp_KeyBoardWidget->Detach();
+//   mp_KeyBoardWidget->Detach();
 }
 
 /****************************************************************************/
@@ -316,7 +316,7 @@ void CUserPrivilegeWidget::OnOkClicked()
         }
     }
 
-    mp_KeyBoardWidget->Detach();    
+//    mp_KeyBoardWidget->Detach();
 }
 
 /****************************************************************************/
@@ -401,9 +401,9 @@ void CUserPrivilegeWidget::ChangeInAdminPassword(const QString &PasswordType)
     // initialize the keyboard
     if (InitKeyboard) {
         m_ValidationType = KeyBoard::VALIDATION_3;
-        mp_KeyBoardWidget->Attach(this);
+//        mp_KeyBoardWidget->Attach(this);
         mp_KeyBoardWidget->SetKeyBoardDialogTitle(KeyboardTitleText);
-        mp_KeyBoardWidget->SetValidationType(m_ValidationType);
+//        mp_KeyBoardWidget->SetValidationType(m_ValidationType);
         mp_KeyBoardWidget->SetPasswordMode(true);
         mp_KeyBoardWidget->SetMaxCharLength(16);
         mp_KeyBoardWidget->SetMinCharLength(4);

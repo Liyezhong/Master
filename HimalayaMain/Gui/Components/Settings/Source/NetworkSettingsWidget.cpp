@@ -223,12 +223,12 @@ void CNetworkSettingsWidget::OnProxyUserName()
     if (!mp_KeyBoardWidget)
         return;
     m_ButtonType = USERNAME_BTN_CLICKED;
-    mp_KeyBoardWidget->Attach(this);
+//    mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyName);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyUserNameButton->text());
     m_ValidationType = KeyBoard::VALIDATION_3;
-    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
+//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetMaxCharLength(16);
     mp_KeyBoardWidget->SetMinCharLength(1);
     mp_KeyBoardWidget->show();
@@ -244,12 +244,12 @@ void CNetworkSettingsWidget::OnProxyPassword()
     if (!mp_KeyBoardWidget)
         return;
     m_ButtonType = PASSWORD_BTN_CLICKED;
-    mp_KeyBoardWidget->Attach(this);
+//    mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyPassword);
     mp_KeyBoardWidget->SetPasswordMode(true);
     // mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyPasswordButton->text());
     m_ValidationType = KeyBoard::VALIDATION_3;
-    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
+//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetMaxCharLength(16);
     mp_KeyBoardWidget->SetMinCharLength(4);
     mp_KeyBoardWidget->show();
@@ -265,7 +265,7 @@ void CNetworkSettingsWidget::OnProxyIPAddress()
     if (!mp_KeyBoardWidget)
         return;
     m_ButtonType = IP_ADDRESS_BTN_CLICKED;
-    mp_KeyBoardWidget->Attach(this);
+//    mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyIP);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyIpAddressButton->text());
@@ -288,7 +288,7 @@ void CNetworkSettingsWidget::OnProxyPort()
     if (!mp_KeyBoardWidget)
         return;
     m_ButtonType = PORT_BTN_CLICKED;
-    mp_KeyBoardWidget->Attach(this);
+//    mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyPort);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyPortButton->text());
@@ -329,7 +329,7 @@ void CNetworkSettingsWidget::UpdateOnESC()
 {
     if (!mp_KeyBoardWidget)
         return;
-    mp_KeyBoardWidget->Detach();
+//    mp_KeyBoardWidget->Detach();
 
 }
 /****************************************************************************/
@@ -371,7 +371,7 @@ void CNetworkSettingsWidget::OnOkClicked()
     default:
         break;
     }
-    mp_KeyBoardWidget->Detach();
+//    mp_KeyBoardWidget->Detach();
 }
 
 /****************************************************************************/

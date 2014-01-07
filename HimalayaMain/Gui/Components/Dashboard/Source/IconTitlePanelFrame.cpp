@@ -168,10 +168,10 @@ void CIconTitlePanelFrame::paintEvent(QPaintEvent *)
     Target.fill(Qt::transparent);
 
     if (m_IsDialog == false) {
-        Source = QPixmap(QString(":/%1/Panel.png").arg(Application::CLeicaStyle::GetProjectNameString()));
+        Source = QPixmap(QString(":/%1/Panel.png").arg(Application::CLeicaStyle::GetDeviceImagesPath()));
     }
     else {
-        Source = QPixmap(QString(":/%1/Popup/Popup.png").arg(Application::CLeicaStyle::GetProjectNameString()));
+        Source = QPixmap(QString(":/%1/Popup/Popup.png").arg(Application::CLeicaStyle::GetDeviceImagesPath()));
     }
     Application::CLeicaStyle::BorderPixmap(&Target, &Source, 18, 32, 20, 21);
     Painter.drawPixmap(0, 0, Target);

@@ -426,7 +426,7 @@ void CModifyReagentRMSDlg::OnOk()
 /****************************************************************************/
 void CModifyReagentRMSDlg::OnEditName()
 {
-    mp_KeyBoardWidget->Attach(this);
+//    mp_KeyBoardWidget->Attach(this);
     m_ReagentNameBtnClicked = true;
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Reagent Name"));
 
@@ -436,7 +436,7 @@ void CModifyReagentRMSDlg::OnEditName()
     }
 
     m_ValidationType = KeyBoard::VALIDATION_1;
-    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
+//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetMaxCharLength(20);
     mp_KeyBoardWidget->SetMinCharLength(1);
@@ -451,7 +451,7 @@ void CModifyReagentRMSDlg::OnEditName()
 /****************************************************************************/
 void CModifyReagentRMSDlg::OnEditCassetteValue()
 {
-    mp_KeyBoardWidget->Attach(this);
+//    mp_KeyBoardWidget->Attach(this);
     m_CassetteValueBtnClicked = true;
     switch (m_RMSOption) {
         case Global::RMS_CASSETTES:
@@ -472,7 +472,7 @@ void CModifyReagentRMSDlg::OnEditCassetteValue()
         mp_KeyBoardWidget->SetLineEditContent(mp_Ui->buttonValue->text());
     }
     m_ValidationType = KeyBoard::VALIDATION_1;
-    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
+//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetMaxCharLength(32);
     mp_KeyBoardWidget->SetMinCharLength(1);
@@ -501,7 +501,7 @@ void CModifyReagentRMSDlg::OnOkClicked()
         mp_Ui->buttonValue->setText(LineEditString);
     }
 
-    mp_KeyBoardWidget->Detach();
+//    mp_KeyBoardWidget->Detach();
 }
 
 /****************************************************************************/

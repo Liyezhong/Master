@@ -3,9 +3,7 @@
 TARGET = HimalayaDataContainer # functional unit name
 
 # header file location
-HEADERS += ../Containers/ContainerBase/Include/*.h \
- ../Containers/ContainerBase/Commands/Include/*.h \
- ../Containers/Programs/Include/*.h \
+HEADERS += ../Containers/Programs/Include/*.h \
  ../Containers/Programs/Commands/Include/*.h \
  ../Containers/Reagents/Include/*.h \
  ../Containers/Reagents/Commands/Include/*.h \
@@ -24,9 +22,7 @@ HEADERS += ../Containers/ContainerBase/Include/*.h \
 
 
 # source file location
-SOURCES += ../Containers/ContainerBase/Source/*.cpp \
- ../Containers/ContainerBase/Commands/Source/*.cpp \
- ../Containers/Programs/Source/*.cpp \
+SOURCES +=../Containers/Programs/Source/*.cpp \
  ../Containers/Programs/Commands/Source/*.cpp \
  ../Containers/Reagents/Source/*.cpp \
  ../Containers/Reagents/Commands/Source/*.cpp \
@@ -40,8 +36,8 @@ SOURCES += ../Containers/ContainerBase/Source/*.cpp \
  ../Containers/DashboardStations/Source/*.cpp \
  ../Containers/UserSettings/Source/*.cpp \
  ../Containers/UserSettings/Commands/Source/*.cpp \
-../Containers/ProgramSettings/Source/*.cpp \
-../Containers/ProgramSettings/Commands/Source/*.cpp
+ ../Containers/ProgramSettings/Source/*.cpp \
+ ../Containers/ProgramSettings/Commands/Source/*.cpp
 
 # Resource file location
 RESOURCES += ../Containers/Programs/Resources/ProgramsXml.qrc \

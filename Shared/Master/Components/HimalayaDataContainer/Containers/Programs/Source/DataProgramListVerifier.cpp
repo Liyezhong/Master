@@ -389,7 +389,7 @@ void CDataProgramListVerifier::CheckDurationFormat(QStringList SplitList, bool &
  *  \return QStringList - List of the errors occured
  */
 /****************************************************************************/
-ErrorHash_t& CDataProgramListVerifier::GetErrors()
+ErrorMap_t& CDataProgramListVerifier::GetErrors()
 {
     // return the last error which is occured in the verifier
     return m_ErrorsHash;
@@ -400,7 +400,7 @@ ErrorHash_t& CDataProgramListVerifier::GetErrors()
  *  \brief  Resets the last error which is done by verifier
  */
 /****************************************************************************/
-void CDataProgramListVerifier::ResetLastErrors()
+void CDataProgramListVerifier::ResetErrors()
 {
     m_ErrorsHash.clear();
 }

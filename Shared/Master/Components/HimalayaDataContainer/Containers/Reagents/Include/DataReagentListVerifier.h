@@ -50,9 +50,9 @@ public:
 
     bool VerifyData(CDataContainerBase* p_DataReagentList);  // use concrete class for concrete verifier
 
-    ErrorHash_t &GetErrors();
+    ErrorMap_t &GetErrors();
 
-    void ResetLastErrors();
+    void ResetErrors();
 
     bool IsLocalVerifier();
 
@@ -64,7 +64,7 @@ public:
     virtual ~CDataReagentListVerifier();
 private:
     CDataReagentList* mp_DRL;                        //!< Reagent Data Container
-    ErrorHash_t m_ErrorsHash;          //!< To store Error ID and any arguments associated
+    ErrorMap_t m_ErrorsHash;          //!< To store Error ID and any arguments associated
 };
 
 } // namespace DataManager

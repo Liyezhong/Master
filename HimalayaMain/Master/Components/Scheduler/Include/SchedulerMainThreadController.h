@@ -27,7 +27,7 @@
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //                                                                                 Project Specific
 #include "Threads/Include/ThreadController.h"
-#include <HimalayaErrorHandler/Include/Commands/CmdRaiseAlarm.h>
+//#include <HimalayaErrorHandler/Include/Commands/CmdRaiseAlarm.h>
 #include <Global/Include/Commands/Command.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "NetCommands/Include/CmdSystemAction.h"
@@ -38,6 +38,7 @@
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 #include "DataManager/Helper/Include/Types.h"
+#include "Scenario.h"
 
 using namespace DeviceControl;
 
@@ -57,7 +58,7 @@ namespace DataManager
 namespace Scheduler {
 
 class SchedulerCommandProcessor;
-class SchedulerMachine;
+class CSchedulerStateMachine;
 
 typedef struct {
     QString stationID;
@@ -123,7 +124,7 @@ typedef struct
 
         QThread* m_SchedulerCommandProcessorThread;
         SchedulerCommandProcessor* m_SchedulerCommandProcessor;
-        SchedulerMachine* m_SchedulerMachine;
+        CSchedulerStateMachine* m_SchedulerMachine;
         //ProgramStepStateMachine* mp_ProgramStepStateMachine;
         //SelfTestStateMachine* mp_SelfTestStateMachine;
         DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
@@ -169,6 +170,7 @@ typedef struct
         void DequeueNonDeviceCommand();
         QString GetReagentName(const QString& ReagentID);
         QString GetReagentGroupID(const QString& ReagentID);
+        qint32 GetScenarioBySchedulerState(SchedulerStateMachine_t State, QString ReagentGroup);
         bool IsCleaningReagent(const QString& ReagentID);
         void UpdateStationReagentStatus();
 
@@ -208,6 +210,7 @@ private slots:
          void HandleIdleState(ControlCommandType_t ctrlCmd);
          //void HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
          void HandleRunState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode);
+         void HandleErrorState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode, SchedulerStateMachine_t currentState);
          void StepStart();
          bool CheckStepTemperature();
          bool CheckLevelSensorTemperature(qreal targetTemperature);
@@ -224,6 +227,7 @@ private slots:
          void Abort();
          bool SelfTest(ReturnCode_t RetCode);
          void Pause();
+         void MoveRVToInit();
 
 protected:
 
@@ -252,14 +256,14 @@ protected:
          * Called when power failure is to expect.
          */
         /****************************************************************************/
-        virtual void OnPowerFail();
+    virtual void OnPowerFail(const Global::PowerFailStages PowerFailStage);
 
         /****************************************************************************/
         /**
          * Called when a local/remote alarm raises.
          */
         /****************************************************************************/
-        void OnRaiseAlarmLocalRemote(Global::tRefType Ref, const HimalayaErrorHandler::CmdRaiseAlarm &Cmd);
+//        void OnRaiseAlarmLocalRemote(Global::tRefType Ref, const HimalayaErrorHandler::CmdRaiseAlarm &Cmd);
 
         void OnProgramAction(Global::tRefType Ref, const MsgClasses::CmdProgramAction& Cmd);
         void OnKeepCassetteCount(Global::tRefType Ref, const MsgClasses::CmdKeepCassetteCount & Cmd);
