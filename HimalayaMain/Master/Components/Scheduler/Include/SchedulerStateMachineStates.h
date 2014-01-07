@@ -24,20 +24,20 @@ namespace Scheduler{
 #define L2_PRO_ABORTING                       (0xF)
 #define L2_PRO_ABORTED                        (0x10)
 
-#define L3_ST_INIT                        (0x1)
-#define L3_ST_TEMP_CHECKING               (0x2)
-#define L3_ST_CURRENT_CHECKING            (0x3)
-#define L3_ST_VOLTAGE_CHECKING            (0x4)
-#define L3_ST_RV_POSITION_CHECKING        (0x5)
-#define L3_ST_PRESSURE_CHECKING           (0x6)
-#define L3_ST_SEALING_CHECKING            (0x7)
-#define L3_ST_STATION_CHECKING            (0x8)
-#define L3_ST_STATION_CHECK_FINISH        (0x9)
-#define L3_ST_DONE                        (0xA)
+#define L3_ST_INIT                            (0x1)
+#define L3_ST_TEMP_CHECKING                   (0x2)
+#define L3_ST_CURRENT_CHECKING                (0x3)
+#define L3_ST_VOLTAGE_CHECKING                (0x4)
+#define L3_ST_RV_POSITION_CHECKING            (0x5)
+#define L3_ST_PRESSURE_CHECKING               (0x6)
+#define L3_ST_SEALING_CHECKING                (0x7)
+#define L3_ST_STATION_CHECKING                (0x8)
+#define L3_ST_STATION_CHECK_FINISH            (0x9)
+#define L3_ST_DONE                            (0xA)
 
-#define L2_ERR_WAIT                       (0x1)
-#define L2_ERR_RS_RV_MOV_TO_INIT_POS_AGAIN (0x2)
-#define L3_ERR_RS_RV_MOVING_TO_INIT_POS   (0x1)
+#define L2_ERR_WAIT                           (0x1)
+#define L2_ERR_RS_RV_MOV_TO_INIT_POS_AGAIN    (0x2)
+#define L3_ERR_RS_RV_MOVING_TO_INIT_POS       (0x1)
 
 
 typedef enum

@@ -332,18 +332,38 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         if(PSSM_ST_INIT == stepState)
         {
             m_SchedulerMachine->NotifyStInitOK(); //todo: update later
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                m_SchedulerMachine->NotifyPause(PSSM_INIT);
+                DequeueNonDeviceCommand();
+            }
         }
         else if(PSSM_ST_TEMP_CHECKING == stepState)
         {
             m_SchedulerMachine->NotifyStTempOK(); //todo: update later
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                m_SchedulerMachine->NotifyPause(PSSM_INIT);
+                DequeueNonDeviceCommand();
+            }
         }
         else if(PSSM_ST_CURRENT_CHECKING == stepState)
         {
             m_SchedulerMachine->NotifyStCurrentOK(); //todo: update later
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                m_SchedulerMachine->NotifyPause(PSSM_INIT);
+                DequeueNonDeviceCommand();
+            }
         }
         else if(PSSM_ST_VOLTAGE_CHECKING == stepState)
         {
             m_SchedulerMachine->NotifyStVoltageOK(); //todo: update later
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                m_SchedulerMachine->NotifyPause(PSSM_INIT);
+                DequeueNonDeviceCommand();
+            }
         }
         else if(PSSM_ST_RV_POSITION_CHECKING == stepState)
         {
@@ -365,10 +385,21 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
             }
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                m_SchedulerMachine->NotifyPause(PSSM_INIT);
+                DequeueNonDeviceCommand();
+            }
         }
         else if(PSSM_ST_PRESSURE_CHECKING == stepState)
         {
             m_SchedulerMachine->NotifyStPressureOK(); //todo: update later
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                AllStop();
+                m_SchedulerMachine->NotifyPause(PSSM_INIT);
+                DequeueNonDeviceCommand();
+            }
         }
         else if(PSSM_ST_SEALING_CHECKING == stepState)
         {
@@ -385,6 +416,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerCommandProcessor->pushCmd(cmd);
                 LOG_STR_ARG(STR_PROGRAM_SELFTEST_CHECK_BOTTLE, Global::FmtArgs()<<stationInfo.StationID);
                 m_SchedulerMachine->NotifyStSealingOK(); //todo: update later
+            }
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                AllStop();
+                m_SchedulerMachine->NotifyPause(PSSM_INIT);
+                DequeueNonDeviceCommand();
             }
         }
         else if(PSSM_ST_STATION_CHECKING == stepState)
@@ -449,10 +486,20 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->NotifyStStationOK(); //todo: update later
                 LOG_STR(STR_PROGRAM_SELFTEST_FINISH);
             }
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                m_SchedulerMachine->NotifyPause(PSSM_INIT);
+                DequeueNonDeviceCommand();
+            }
         }
         else if(PSSM_ST_DONE == stepState)
         {
             m_SchedulerMachine->NotifyStDone(); //todo: update later
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                m_SchedulerMachine->NotifyPause(PSSM_INIT);
+                DequeueNonDeviceCommand();
+            }
         }
         else if(PSSM_INIT == stepState)
         {
