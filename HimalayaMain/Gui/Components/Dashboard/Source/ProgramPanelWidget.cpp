@@ -107,6 +107,11 @@ void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow
     mp_DataConnector = p_DataConnector;
     m_pUserSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
     mp_ProgramList = mp_DataConnector->ProgramList;
+
+    if (!mp_DataConnector)
+        return;
+
+    CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), ui->programRunningPanel, OnUserSettingsUpdated());
 }
 
 void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady)
