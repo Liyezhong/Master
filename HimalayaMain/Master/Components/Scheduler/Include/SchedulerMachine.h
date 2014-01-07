@@ -4,12 +4,13 @@
 #include <QStateMachine>
 //#include "SchedulerMainThreadController.h"
 #include "ProgramStepStateMachine.h"
+#include "RsRvGetOriginalPositionAgain.h"
 
 namespace Scheduler{
 
 class SchedulerMainThreadController;
 
-class SchedulerMachine : public QObject
+class CSchedulerStateMachine : public QObject
 {
     Q_OBJECT
 private:
@@ -18,11 +19,17 @@ private:
     QState* mp_IdleState;
     QState* mp_ErrorState;
     QState* mp_BusyState;
-    ProgramStepStateMachine *mp_ProgramStepStates;
+    QState* mp_ErrorWaitState;
+    CProgramStepStateMachine *mp_ProgramStepStates;
+    CRsRvGetOriginalPositionAgain *mp_RSRvGetOriginalPositionAgain;
+    SchedulerStateMachine_t m_PreviousState;
+    SchedulerStateMachine_t m_CurrentState;
+
+
 
 public:
-    SchedulerMachine();
-    ~SchedulerMachine();
+    CSchedulerStateMachine();
+    ~CSchedulerStateMachine();
     void Start();
     void Stop();
     void SendSchedulerInitComplete();
@@ -58,7 +65,10 @@ public:
     void NotifyResumeDrain();
     void NotifyAbort();
     void NotifyResumeToSelftest();
+    void NotifyRsRvMoveToInitPosition();
+    void NotifyRsRvMoveToInitPositionFinished();
 
+    void UpdateCurrentState(SchedulerStateMachine_t currentState);
     SchedulerStateMachine_t GetCurrentState();
     SchedulerStateMachine_t GetPreviousState();
 
@@ -105,6 +115,8 @@ signals:
     void sigResumeToStepFinished();
     void sigResumeToReadyToTubeAfter();
     void sigAbort();
+    void sigRsRvMoveToInitPosition();
+    void sigRsRvMoveToInitPositionFinished();
 
     void sigOnInit();
     void sigOnHeatLevelSensorTempS1();
@@ -121,6 +133,7 @@ signals:
     void sigOnAborted();
     void sigOnPause();
     void sigOnPauseDrain();
+    void sigOnRsRvMoveToInitPosition();
 };
 }
 

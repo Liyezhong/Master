@@ -4,156 +4,193 @@
 
 namespace Scheduler
 {
-ProgramStepStateMachine::ProgramStepStateMachine(QState* pParentState)
+CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState* pErrorState)
 {
-    m_PreviousState = SM_UNDEF;
+    if((pParentState)&&(pErrorState))
+    {
+        m_PreviousState = SM_UNDEF;
 
-    mp_PssmSelfTest = new QState(pParentState);
-    mp_PssmStInit = new QState(mp_PssmSelfTest);
-    mp_PssmStTempChecking = new QState(mp_PssmSelfTest);
-    mp_PssmStCurrentChecking = new QState(mp_PssmSelfTest);
-    mp_PssmStVoltageChecking = new QState(mp_PssmSelfTest);
-    mp_PssmStRVPositionChecking = new QState(mp_PssmSelfTest);
-    mp_PssmStPressureChecking = new QState(mp_PssmSelfTest);
-    mp_PssmStSealingChecking = new QState(mp_PssmSelfTest);
-    mp_PssmStStationChecking = new QState(mp_PssmSelfTest);
-    mp_PssmStStationCheckFinish = new QState(mp_PssmSelfTest);
-    mp_PssmStDone = new QState(mp_PssmSelfTest);
-    QHistoryState *stHistory = new QHistoryState(mp_PssmSelfTest);
+        mp_PssmSelfTest = new QState(pParentState);
+        mp_PssmStInit = new QState(mp_PssmSelfTest);
+        mp_PssmStTempChecking = new QState(mp_PssmSelfTest);
+        mp_PssmStCurrentChecking = new QState(mp_PssmSelfTest);
+        mp_PssmStVoltageChecking = new QState(mp_PssmSelfTest);
+        mp_PssmStRVPositionChecking = new QState(mp_PssmSelfTest);
+        mp_PssmStPressureChecking = new QState(mp_PssmSelfTest);
+        mp_PssmStSealingChecking = new QState(mp_PssmSelfTest);
+        mp_PssmStStationChecking = new QState(mp_PssmSelfTest);
+        mp_PssmStStationCheckFinish = new QState(mp_PssmSelfTest);
+        mp_PssmStDone = new QState(mp_PssmSelfTest);
+        QHistoryState *stHistory = new QHistoryState(mp_PssmSelfTest);
 
-    mp_PssmInit = new QState(pParentState);
-    mp_PssmReadyToHeatLevelSensorS1 = new QState(pParentState);
-    mp_PssmReadyToHeatLevelSensorS2 = new QState(pParentState);
-    mp_PssmReadyToTubeBefore = new QState(pParentState);
-    mp_PssmReadyToTubeAfter = new QState(pParentState);
-    mp_PssmReadyToSeal = new QState(pParentState);
-    mp_PssmReadyToFill = new QState(pParentState);
-    mp_PssmReadyToDrain = new QState(pParentState);
-    mp_PssmSoak = new QState(pParentState);
-    mp_PssmStepFinish = new QState(pParentState);
-    mp_PssmError = new QState(pParentState);
-    mp_PssmPause = new QState(pParentState);
-    mp_PssmPauseDrain = new QState(pParentState);
-    mp_PssmAborting = new QState(pParentState);
-    mp_PssmAborted = new QState(pParentState);
-    mp_PssmProgramFinish = new QFinalState(pParentState);
+        mp_PssmInit = new QState(pParentState);
+        mp_PssmReadyToHeatLevelSensorS1 = new QState(pParentState);
+        mp_PssmReadyToHeatLevelSensorS2 = new QState(pParentState);
+        mp_PssmReadyToTubeBefore = new QState(pParentState);
+        mp_PssmReadyToTubeAfter = new QState(pParentState);
+        mp_PssmReadyToSeal = new QState(pParentState);
+        mp_PssmReadyToFill = new QState(pParentState);
+        mp_PssmReadyToDrain = new QState(pParentState);
+        mp_PssmSoak = new QState(pParentState);
+        mp_PssmStepFinish = new QState(pParentState);
+        mp_PssmError = new QState(pParentState);
+        mp_PssmPause = new QState(pParentState);
+        mp_PssmPauseDrain = new QState(pParentState);
+        mp_PssmAborting = new QState(pParentState);
+        mp_PssmAborted = new QState(pParentState);
+        mp_PssmProgramFinish = new QFinalState(pParentState);
 
-    pParentState->setInitialState(mp_PssmSelfTest);
-    mp_PssmSelfTest->setInitialState(mp_PssmStInit);
+        pParentState->setInitialState(mp_PssmSelfTest);
+        mp_PssmSelfTest->setInitialState(mp_PssmStInit);
 
-    mp_PssmSelfTest->addTransition(this, SIGNAL(StDone()), mp_PssmInit);
-    mp_PssmStInit->addTransition(this, SIGNAL(StInitOK()), mp_PssmStTempChecking);
-    mp_PssmStTempChecking->addTransition(this, SIGNAL(StTempOK()), mp_PssmStCurrentChecking);
-    mp_PssmStCurrentChecking->addTransition(this, SIGNAL(StCurrentOK()), mp_PssmStVoltageChecking);
-    mp_PssmStVoltageChecking->addTransition(this, SIGNAL(StVoltageOK()), mp_PssmStRVPositionChecking);
-    mp_PssmStRVPositionChecking->addTransition(this, SIGNAL(StRVPositionOK()), mp_PssmStPressureChecking);
-    mp_PssmStPressureChecking->addTransition(this, SIGNAL(StPressureOK()), mp_PssmStSealingChecking);
-    mp_PssmStSealingChecking->addTransition(this, SIGNAL(StSealingOK()), mp_PssmStStationChecking);
-    mp_PssmStStationChecking->addTransition(this, SIGNAL(StGetStationcheckResult()), mp_PssmStStationCheckFinish);
-    mp_PssmStStationCheckFinish->addTransition(this, SIGNAL(StStationLeft()), mp_PssmStStationChecking);
-    mp_PssmStStationCheckFinish->addTransition(this, SIGNAL(StStationOK()), mp_PssmStDone);
+        mp_PssmSelfTest->addTransition(this, SIGNAL(StDone()), mp_PssmInit);
+        mp_PssmStInit->addTransition(this, SIGNAL(StInitOK()), mp_PssmStTempChecking);
+        mp_PssmStTempChecking->addTransition(this, SIGNAL(StTempOK()), mp_PssmStCurrentChecking);
+        mp_PssmStCurrentChecking->addTransition(this, SIGNAL(StCurrentOK()), mp_PssmStVoltageChecking);
+        mp_PssmStVoltageChecking->addTransition(this, SIGNAL(StVoltageOK()), mp_PssmStRVPositionChecking);
+        mp_PssmStRVPositionChecking->addTransition(this, SIGNAL(StRVPositionOK()), mp_PssmStPressureChecking);
+        mp_PssmStPressureChecking->addTransition(this, SIGNAL(StPressureOK()), mp_PssmStSealingChecking);
+        mp_PssmStSealingChecking->addTransition(this, SIGNAL(StSealingOK()), mp_PssmStStationChecking);
+        mp_PssmStStationChecking->addTransition(this, SIGNAL(StGetStationcheckResult()), mp_PssmStStationCheckFinish);
+        mp_PssmStStationCheckFinish->addTransition(this, SIGNAL(StStationLeft()), mp_PssmStStationChecking);
+        mp_PssmStStationCheckFinish->addTransition(this, SIGNAL(StStationOK()), mp_PssmStDone);
 
-    mp_PssmSelfTest->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
-    mp_PssmPause->addTransition(this, SIGNAL(ResumeToSelftest()), stHistory);
-    mp_PssmSelfTest->addTransition(this, SIGNAL(Error()), mp_PssmError);
-    mp_PssmError->addTransition(this, SIGNAL(ResumeToSelftest()), stHistory);//verify later
-    mp_PssmSelfTest->addTransition(this, SIGNAL(abort()), mp_PssmAborted);
+        mp_PssmSelfTest->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+        mp_PssmPause->addTransition(this, SIGNAL(ResumeToSelftest()), stHistory);
+        mp_PssmSelfTest->addTransition(this, SIGNAL(Error()), pErrorState);
+        pErrorState->addTransition(this, SIGNAL(ResumeToSelftest()), stHistory);//verify later
+        mp_PssmSelfTest->addTransition(this, SIGNAL(abort()), mp_PssmAborted);
 
-    mp_PssmInit->addTransition(this, SIGNAL(TempsReady()), mp_PssmReadyToHeatLevelSensorS1);
-    mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(LevelSensorTempS1Ready()), mp_PssmReadyToHeatLevelSensorS2);
-    mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(LevelSensorTempS2Ready()), mp_PssmReadyToTubeBefore);
-    mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(HitTubeBefore()), mp_PssmReadyToFill);
-    mp_PssmReadyToFill->addTransition(this, SIGNAL(FillFinished()), mp_PssmReadyToSeal);
-    mp_PssmReadyToSeal->addTransition(this, SIGNAL(HitSeal()), mp_PssmSoak);
-    mp_PssmSoak->addTransition(this, SIGNAL(SoakFinished()), mp_PssmReadyToTubeAfter);
-    mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(HitTubeAfter()), mp_PssmReadyToDrain);
-    mp_PssmReadyToDrain->addTransition(this, SIGNAL(DrainFinished()), mp_PssmStepFinish);
-    mp_PssmStepFinish->addTransition(this, SIGNAL(ProgramFinished()), mp_PssmProgramFinish);
-    mp_PssmStepFinish->addTransition(this, SIGNAL(StepFinished()), mp_PssmInit);
+        mp_PssmInit->addTransition(this, SIGNAL(TempsReady()), mp_PssmReadyToHeatLevelSensorS1);
+        mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(LevelSensorTempS1Ready()), mp_PssmReadyToHeatLevelSensorS2);
+        mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(LevelSensorTempS2Ready()), mp_PssmReadyToTubeBefore);
+        mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(HitTubeBefore()), mp_PssmReadyToFill);
+        mp_PssmReadyToFill->addTransition(this, SIGNAL(FillFinished()), mp_PssmReadyToSeal);
+        mp_PssmReadyToSeal->addTransition(this, SIGNAL(HitSeal()), mp_PssmSoak);
+        mp_PssmSoak->addTransition(this, SIGNAL(SoakFinished()), mp_PssmReadyToTubeAfter);
+        mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(HitTubeAfter()), mp_PssmReadyToDrain);
+        mp_PssmReadyToDrain->addTransition(this, SIGNAL(DrainFinished()), mp_PssmStepFinish);
+        mp_PssmStepFinish->addTransition(this, SIGNAL(ProgramFinished()), mp_PssmProgramFinish);
+        mp_PssmStepFinish->addTransition(this, SIGNAL(StepFinished()), mp_PssmInit);
 
-    mp_PssmInit->addTransition(this, SIGNAL(Error()), mp_PssmError);
-    mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(Error()), mp_PssmError);
-    mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(Error()), mp_PssmError);
-    mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(Error()), mp_PssmError);
-    mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(Error()), mp_PssmError);
-    mp_PssmReadyToSeal->addTransition(this, SIGNAL(Error()), mp_PssmError);
-    mp_PssmReadyToFill->addTransition(this, SIGNAL(Error()), mp_PssmError);
-    mp_PssmReadyToDrain->addTransition(this, SIGNAL(Error()), mp_PssmError);
-    mp_PssmSoak->addTransition(this, SIGNAL(Error()), mp_PssmError);
+        mp_PssmInit->addTransition(this, SIGNAL(Error()), pErrorState);
+        mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(Error()), pErrorState);
+        mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(Error()), pErrorState);
+        mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(Error()), pErrorState);
+        mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(Error()), pErrorState);
+        mp_PssmReadyToSeal->addTransition(this, SIGNAL(Error()), pErrorState);
+        mp_PssmReadyToFill->addTransition(this, SIGNAL(Error()), pErrorState);
+        mp_PssmReadyToDrain->addTransition(this, SIGNAL(Error()), pErrorState);
+        mp_PssmSoak->addTransition(this, SIGNAL(Error()), pErrorState);
 
-    mp_PssmInit->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
-    mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
-    mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
-    mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
-    mp_PssmReadyToSeal->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
-    mp_PssmReadyToFill->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
-    mp_PssmSoak->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
-    mp_PssmStepFinish->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+        mp_PssmInit->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+        mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+        mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+        mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+        mp_PssmReadyToSeal->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+        mp_PssmReadyToFill->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+        mp_PssmSoak->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+        mp_PssmStepFinish->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
 
-    mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(Pause()), mp_PssmPauseDrain);
-    mp_PssmReadyToDrain->addTransition(this, SIGNAL(Pause()), mp_PssmPauseDrain);
+        mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(Pause()), mp_PssmPauseDrain);
+        mp_PssmReadyToDrain->addTransition(this, SIGNAL(Pause()), mp_PssmPauseDrain);
 
-    mp_PssmInit->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
-    mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
-    mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
-    mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
-    mp_PssmStepFinish->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
-    mp_PssmAborting->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
+        mp_PssmInit->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
+        mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
+        mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
+        mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
+        mp_PssmStepFinish->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
+        mp_PssmAborting->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
 
-    mp_PssmReadyToFill->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
-    mp_PssmReadyToSeal->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
-    mp_PssmSoak->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
-    mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
-    mp_PssmReadyToDrain->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
+        mp_PssmReadyToFill->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
+        mp_PssmReadyToSeal->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
+        mp_PssmSoak->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
+        mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
+        mp_PssmReadyToDrain->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
 
 
-    mp_PssmPause->addTransition(this, SIGNAL(ResumeToInit()), mp_PssmInit);
-    mp_PssmPause->addTransition(this, SIGNAL(ResumeToHeatLevelSensorS1()), mp_PssmReadyToHeatLevelSensorS1);
-    mp_PssmPause->addTransition(this, SIGNAL(ResumeToHeatLevelSensorS2()), mp_PssmReadyToHeatLevelSensorS2);
-    mp_PssmPause->addTransition(this, SIGNAL(ResumeToReadyToFill()), mp_PssmReadyToFill);
-    mp_PssmPause->addTransition(this, SIGNAL(ResumeToSoak()), mp_PssmSoak);
-    mp_PssmPause->addTransition(this, SIGNAL(ResumeToStepFinished()), mp_PssmStepFinish);
-    mp_PssmPause->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
+        mp_PssmPause->addTransition(this, SIGNAL(ResumeToInit()), mp_PssmInit);
+        mp_PssmPause->addTransition(this, SIGNAL(ResumeToHeatLevelSensorS1()), mp_PssmReadyToHeatLevelSensorS1);
+        mp_PssmPause->addTransition(this, SIGNAL(ResumeToHeatLevelSensorS2()), mp_PssmReadyToHeatLevelSensorS2);
+        mp_PssmPause->addTransition(this, SIGNAL(ResumeToReadyToFill()), mp_PssmReadyToFill);
+        mp_PssmPause->addTransition(this, SIGNAL(ResumeToSoak()), mp_PssmSoak);
+        mp_PssmPause->addTransition(this, SIGNAL(ResumeToStepFinished()), mp_PssmStepFinish);
+        mp_PssmPause->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
 
-    mp_PssmPauseDrain->addTransition(this, SIGNAL(ResumeToReadyToTubeAfter()), mp_PssmReadyToTubeAfter);
-    mp_PssmPauseDrain->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
+        mp_PssmPauseDrain->addTransition(this, SIGNAL(ResumeToReadyToTubeAfter()), mp_PssmReadyToTubeAfter);
+        mp_PssmPauseDrain->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
 
-    connect(mp_PssmInit, SIGNAL(entered()), this, SIGNAL(OnInit()));
-    connect(mp_PssmReadyToHeatLevelSensorS1, SIGNAL(entered()), this, SIGNAL(OnHeatLevelSensorTempS1()));
-    connect(mp_PssmReadyToHeatLevelSensorS2, SIGNAL(entered()), this, SIGNAL(OnHeatLevelSensorTempS2()));
-    connect(mp_PssmReadyToTubeBefore, SIGNAL(entered()), this, SIGNAL(OnMoveToTubeBefore()));
-    connect(mp_PssmReadyToTubeAfter, SIGNAL(entered()), this, SIGNAL(OnMoveToTubeAfter()));
-    connect(mp_PssmReadyToSeal, SIGNAL(entered()), this, SIGNAL(OnMoveToSeal()));
-    connect(mp_PssmReadyToFill, SIGNAL(entered()), this, SIGNAL(OnFill()));
-    connect(mp_PssmSoak, SIGNAL(entered()), this, SIGNAL(OnSoak()));
-    connect(mp_PssmReadyToDrain, SIGNAL(entered()), this, SIGNAL(OnDrain()));
-    connect(mp_PssmAborting, SIGNAL(entered()), this, SIGNAL(OnAborting()));
-    connect(mp_PssmAborted, SIGNAL(entered()), this, SIGNAL(OnAborted()));
-    connect(mp_PssmPause, SIGNAL(entered()), this, SIGNAL(OnPause()));
-    connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SIGNAL(OnPauseDrain()));
+        connect(mp_PssmInit, SIGNAL(entered()), this, SIGNAL(OnInit()));
+        connect(mp_PssmReadyToHeatLevelSensorS1, SIGNAL(entered()), this, SIGNAL(OnHeatLevelSensorTempS1()));
+        connect(mp_PssmReadyToHeatLevelSensorS2, SIGNAL(entered()), this, SIGNAL(OnHeatLevelSensorTempS2()));
+        connect(mp_PssmReadyToTubeBefore, SIGNAL(entered()), this, SIGNAL(OnMoveToTubeBefore()));
+        connect(mp_PssmReadyToTubeAfter, SIGNAL(entered()), this, SIGNAL(OnMoveToTubeAfter()));
+        connect(mp_PssmReadyToSeal, SIGNAL(entered()), this, SIGNAL(OnMoveToSeal()));
+        connect(mp_PssmReadyToFill, SIGNAL(entered()), this, SIGNAL(OnFill()));
+        connect(mp_PssmSoak, SIGNAL(entered()), this, SIGNAL(OnSoak()));
+        connect(mp_PssmReadyToDrain, SIGNAL(entered()), this, SIGNAL(OnDrain()));
+        connect(mp_PssmAborting, SIGNAL(entered()), this, SIGNAL(OnAborting()));
+        connect(mp_PssmAborted, SIGNAL(entered()), this, SIGNAL(OnAborted()));
+        //connect(mp_PssmPause, SIGNAL(entered()), this, SIGNAL(OnPause()));
+        //connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SIGNAL(OnPauseDrain()));
 
-    connect(mp_PssmInit, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmReadyToHeatLevelSensorS1, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmReadyToHeatLevelSensorS2, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmReadyToTubeBefore, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmReadyToTubeAfter, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmReadyToSeal, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmReadyToFill, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmSoak, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmReadyToDrain, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmStepFinish, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmProgramFinish, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmError, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmPause, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmAborted, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_PssmAborting, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+        connect(mp_PssmSelfTest, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStInit, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStTempChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStCurrentChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStVoltageChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStRVPositionChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStPressureChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStSealingChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStStationChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStStationCheckFinish, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStDone, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
 
-    connect(mp_PssmReadyToFill,SIGNAL(exited()),this, SIGNAL(OnStopFill()));
-    connect(mp_PssmReadyToDrain,SIGNAL(exited()),this,SIGNAL(OnStopDrain()));
+        connect(mp_PssmInit, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToHeatLevelSensorS1, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToHeatLevelSensorS2, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToTubeBefore, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToTubeAfter, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToSeal, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToFill, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmSoak, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToDrain, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStepFinish, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmProgramFinish, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmError, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmPause, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmPauseDrain, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmAborted, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmAborting, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+
+
+#if 0
+        connect(mp_PssmInit, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToHeatLevelSensorS1, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToHeatLevelSensorS2, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToTubeBefore, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToTubeAfter, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToSeal, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToFill, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmSoak, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToDrain, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStepFinish, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmProgramFinish, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmError, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmPause, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmAborted, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmAborting, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+
+#endif
+
+
+        connect(mp_PssmReadyToFill,SIGNAL(exited()),this, SIGNAL(OnStopFill()));
+        connect(mp_PssmReadyToDrain,SIGNAL(exited()),this,SIGNAL(OnStopDrain()));
+    }
 }
 
-ProgramStepStateMachine::~ProgramStepStateMachine()
+CProgramStepStateMachine::~CProgramStepStateMachine()
 {
     delete  mp_PssmInit;
     delete  mp_PssmReadyToHeatLevelSensorS1;
@@ -171,10 +208,9 @@ ProgramStepStateMachine::~ProgramStepStateMachine()
     delete  mp_PssmPauseDrain;
     delete  mp_PssmAborted;
     delete  mp_PssmAborting;
-    delete  mp_ProgramStepStateMachine;
 }
 
-SchedulerStateMachine_t ProgramStepStateMachine::GetCurrentState(QSet<QAbstractState*> statesList)
+SchedulerStateMachine_t CProgramStepStateMachine::GetCurrentState(QSet<QAbstractState*> statesList)
 {
     if(statesList.contains(mp_PssmInit))
     {
@@ -286,20 +322,22 @@ SchedulerStateMachine_t ProgramStepStateMachine::GetCurrentState(QSet<QAbstractS
     }
 }
 
-SchedulerStateMachine_t ProgramStepStateMachine::GetPreviousState()
+SchedulerStateMachine_t CProgramStepStateMachine::GetPreviousState()
 {
     return m_PreviousState;
 }
 
-void ProgramStepStateMachine::SetPreviousState(SchedulerStateMachine_t state)
+void CProgramStepStateMachine::SetPreviousState(SchedulerStateMachine_t state)
 {
     m_PreviousState = state;
 }
 
-void ProgramStepStateMachine::OnStateChanged()
+void CProgramStepStateMachine::OnStateChanged()
 {
 #if 0
-    SchedulerStateMachine_t curState = GetCurrentState();
+    SchedulerStateMachine_t curState = GetCurrentState( mp_SchedulerMachine->configuration());
+    SetPreviousState(curState);
+
     QString str = "";
     quint32 strid = STR_PROGRAM_STEP_STATE_UNKNOWN;
     if( curState == (PSSM_INIT))

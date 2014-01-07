@@ -432,6 +432,27 @@ void CDashboardWidget::PrepareSelectedProgramChecking(const QString& selectedPro
 
 void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd)
 {
+    const QList<QString>& stationList = cmd.StationList();
+    if (stationList.count() == 0)
+    {
+        if (m_NewSelectedProgramId.at(0) == 'C')
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(CommonString::strWarning);
+            mp_MessageDlg->SetText("CleaningProgram does not need to be run as the reagent compatibility");
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->HideButtons();
+            if (mp_MessageDlg->exec())
+            {
+                QString reagentID("");
+                m_pUserSetting->SetReagentIdOfLastStep(reagentID);//Clear CleaningProgram flag
+                emit UpdateUserSetting(*m_pUserSetting);
+                emit AddItemsToFavoritePanel();
+                ui->programPanelWidget->ChangeStartButtonToStartState();
+                return;
+            }
+        }
+    }
 
     //get the proposed program end DateTime
     bool bCanotRun = true;
@@ -508,7 +529,6 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     }
 
     //firstly check whether there is any station not existing for some program steps
-    const QList<QString>& stationList = cmd.StationList();
     for (int i = 0; i < stationList.count(); i++)
     {
         if ("" == stationList.at(i))

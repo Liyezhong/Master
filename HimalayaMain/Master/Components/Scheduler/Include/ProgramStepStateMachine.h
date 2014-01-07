@@ -40,15 +40,15 @@ typedef enum
 } ProgramStepStateMachine_t;
 #endif
 
-class ProgramStepStateMachine : public QObject
+class CProgramStepStateMachine : public QObject
 {
     Q_OBJECT
 public:
 #if 0 //delete later
     ProgramStepStateMachine();
 #endif
-    ProgramStepStateMachine(QState* pParentState);
-    ~ProgramStepStateMachine();
+    CProgramStepStateMachine(QState* pParentState, QState* pErrorState);
+    ~CProgramStepStateMachine();
     SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
     void SetPreviousState(SchedulerStateMachine_t state);
     SchedulerStateMachine_t GetPreviousState();
@@ -139,11 +139,12 @@ signals:
     void OnPause();
     void OnPauseDrain();
 
+    void OnStateExited();
+
 private slots:
     void OnStateChanged();
 
 private:
-    QStateMachine* mp_ProgramStepStateMachine;
     QState* mp_PssmSelfTest;
     QState* mp_PssmStInit;
     QState* mp_PssmStTempChecking;

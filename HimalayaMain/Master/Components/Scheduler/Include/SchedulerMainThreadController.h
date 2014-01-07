@@ -38,6 +38,7 @@
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 #include "DataManager/Helper/Include/Types.h"
+#include "Scenario.h"
 
 using namespace DeviceControl;
 
@@ -57,7 +58,7 @@ namespace DataManager
 namespace Scheduler {
 
 class SchedulerCommandProcessor;
-class SchedulerMachine;
+class CSchedulerStateMachine;
 
 typedef struct {
     QString stationID;
@@ -123,9 +124,7 @@ typedef struct
 
         QThread* m_SchedulerCommandProcessorThread;
         SchedulerCommandProcessor* m_SchedulerCommandProcessor;
-        SchedulerMachine* m_SchedulerMachine;
-        //ProgramStepStateMachine* mp_ProgramStepStateMachine;
-        //SelfTestStateMachine* mp_SelfTestStateMachine;
+        CSchedulerStateMachine* m_SchedulerMachine;
         DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
         DataManager::CDataManager       *mp_DataManager;
         //qint64 m_CurStepSoakStartTime;
@@ -169,6 +168,7 @@ typedef struct
         void DequeueNonDeviceCommand();
         QString GetReagentName(const QString& ReagentID);
         QString GetReagentGroupID(const QString& ReagentID);
+        qint32 GetScenarioBySchedulerState(SchedulerStateMachine_t State, QString ReagentGroup);
         bool IsCleaningReagent(const QString& ReagentID);
         void UpdateStationReagentStatus();
 
@@ -208,6 +208,7 @@ private slots:
          void HandleIdleState(ControlCommandType_t ctrlCmd);
          //void HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
          void HandleRunState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode);
+         void HandleErrorState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode, SchedulerStateMachine_t currentState);
          void StepStart();
          bool CheckStepTemperature();
          bool CheckLevelSensorTemperature(qreal targetTemperature);
@@ -224,6 +225,7 @@ private slots:
          void Abort();
          bool SelfTest(ReturnCode_t RetCode);
          void Pause();
+         void MoveRVToInit();
 
 protected:
 

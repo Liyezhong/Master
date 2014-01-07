@@ -30,11 +30,14 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool),
                       ui->favoriteProgramsPanel, ProgramSelected(QString&, int, bool));
 
-    CONNECTSIGNALSLOT(this, UndoProgramSelection(),
-                      ui->favoriteProgramsPanel, UndoProgramSelection());
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool),
+                      ui->programRunningPanel, ProgramSelected(QString&, int, bool));
 
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool),
                       this, OnProgramSelected(QString&, int, bool));
+
+    CONNECTSIGNALSLOT(this, UndoProgramSelection(),
+                      ui->favoriteProgramsPanel, UndoProgramSelection());
 
     CONNECTSIGNALSLOT(this, ProgramActionStopped(DataManager::ProgramStatusType_t),
                         ui->programRunningPanel, OnProgramActionStopped(DataManager::ProgramStatusType_t));
@@ -323,7 +326,9 @@ void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_
     if (DataManager::PROGRAM_START== ProgramActionType)
     {
         ui->stackedWidget->setCurrentIndex(1);
-        ui->programRunningPanel->SetPanelTitle(tr("Test"));
+        QString strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(m_SelectedProgramId)->GetIcon() + ".png";
+        ui->programRunningPanel->SetPanelIcon(strIconName);
+        ui->programRunningPanel->SetPanelTitle(QString("%1").arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME));
     }
 }
 
