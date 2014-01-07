@@ -3,8 +3,10 @@
 
 #include "Dashboard/Include/IconTitlePanelFrame.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
+#include <QTime>
 
 class QDateTime;
+
 
 namespace MsgClasses
 {
@@ -29,8 +31,27 @@ namespace Dashboard {
                                     const QDateTime& startDateTime, bool IsResume);//in seconds
         void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
         void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
+
+    protected:
+        void changeEvent(QEvent *p_Event);
+
+    private slots:
+        void UpdateProgress();
+        void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady);
     private:
+        void RetranslateUI();
         Ui::CProgramRunningPanelWidget *ui;
+        QTimer* mp_ProgressTimer;
+        QTime m_CurStepRemainingTime;
+        QTime m_CurRemainingTime;
+        int m_remainingTimeTotal;
+        int m_curRemainingTimeTotal;
+        QString m_strAborted;
+        QString m_strCompleted;
+        QString m_strAborting;
+        QDateTime m_ProgramEndDateTime;
+
+
     };
 }
 

@@ -113,7 +113,8 @@ void CIconTitlePanelFrame::SetPanelTitle(QString TitleLeft, QString TitleRight)
 void CIconTitlePanelFrame::SetPanelIcon(const QString& icon)
 {
     QPixmap pixmap(icon);
-    mp_FrameUi->panelIcon->setPixmap(pixmap.scaled(20,20));
+    QPixmap img = pixmap.copy(8, 8, 54, 45);
+    mp_FrameUi->panelIcon->setPixmap(img.scaledToHeight(25, Qt::SmoothTransformation));
 }
 
 /****************************************************************************/
