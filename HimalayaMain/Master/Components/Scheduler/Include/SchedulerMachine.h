@@ -22,6 +22,9 @@ private:
     QState* mp_ErrorWaitState;
     CProgramStepStateMachine *mp_ProgramStepStates;
     CRsRvGetOriginalPositionAgain *mp_RSRvGetOriginalPositionAgain;
+    SchedulerStateMachine_t m_PreviousState;
+    SchedulerStateMachine_t m_CurrentState;
+
 
 
 public:
@@ -65,6 +68,7 @@ public:
     void NotifyRsRvMoveToInitPosition();
     void NotifyRsRvMoveToInitPositionFinished();
 
+    void UpdateCurrentState(SchedulerStateMachine_t currentState);
     SchedulerStateMachine_t GetCurrentState();
     SchedulerStateMachine_t GetPreviousState();
 

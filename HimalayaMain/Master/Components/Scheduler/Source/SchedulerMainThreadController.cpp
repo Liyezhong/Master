@@ -199,7 +199,8 @@ void SchedulerMainThreadController::OnTickTimer()
         }
     }
     SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
-    LOG_PAR()<<"DBG"<<"Scheduler state: "<<hex<<currentState;
+    m_SchedulerMachine->UpdateCurrentState(currentState);
+    LOG_PAR()<<"DBG"<< QDateTime::currentDateTime() <<"Scheduler state: "<<hex<<currentState;
 
     switch(currentState & 0xFF)
     {
@@ -259,8 +260,6 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
 
 
             LOG_PAR()<<"DBG" << "Start step: " << m_CurProgramID;
-            //mp_ProgramStepStateMachine->Start();
-            //mp_SelfTestStateMachine->Start();
             m_SchedulerMachine->SendRunSignal();
             //send command to main controller to tell the left time
             quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
@@ -828,8 +827,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             AllStop();
             LOG_PAR()<<"DBG" << "Program aborted!";
             m_SchedulerMachine->SendRunComplete();
-            //mp_ProgramStepStateMachine->Stop();
-            //mp_SelfTestStateMachine->Stop();
             // tell the main controller the program has been aborted
             MsgClasses::CmdProgramAcknowledge* commandPtrAbortFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_FINISHED));
             Q_ASSERT(commandPtrAbortFinish);
@@ -881,6 +878,17 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         }
 
 #endif
+        if(false) //todo: replace with RC_Restart command
+        {
+            if(true) //todo: replace with previous state is ST
+            {
+                m_SchedulerMachine->NotifyResumeToSelftest();
+            }
+            else
+            {
+                m_SchedulerMachine->NotifyResume();
+            }
+        }
     }
     else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
     {

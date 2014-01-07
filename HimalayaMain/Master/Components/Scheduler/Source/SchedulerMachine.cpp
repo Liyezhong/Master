@@ -1,10 +1,14 @@
 #include "../Include/SchedulerMachine.h"
 #include "../Include/HimalayaDeviceEventCodes.h"
+#include "EventHandler/Include/CrisisEventHandler.h"
 
 namespace Scheduler
 {
 CSchedulerStateMachine::CSchedulerStateMachine()
 {
+    m_PreviousState = SM_UNDEF;
+    m_CurrentState = SM_UNDEF;
+
     mp_SchedulerMachine = new QStateMachine();
     mp_InitState = new QState(mp_SchedulerMachine);
     mp_IdleState = new QState(mp_SchedulerMachine);
@@ -26,10 +30,10 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     mp_InitState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState);
     mp_IdleState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState);
 
-    connect(mp_InitState, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_IdleState, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_BusyState, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-    connect(mp_ErrorState, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+    connect(mp_InitState, SIGNAL(exited()), this, SLOT(OnStateChanged()));
+    connect(mp_IdleState, SIGNAL(exited()), this, SLOT(OnStateChanged()));
+    connect(mp_BusyState, SIGNAL(exited()), this, SLOT(OnStateChanged()));
+    connect(mp_ErrorState, SIGNAL(exited()), this, SLOT(OnStateChanged()));
 
     connect(this, SIGNAL(sigStInitOK()), mp_ProgramStepStates, SIGNAL(StInitOK()));
     connect(this, SIGNAL(sigStTempOK()), mp_ProgramStepStates, SIGNAL(StTempOK()));
@@ -85,12 +89,17 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     connect(mp_ProgramStepStates, SIGNAL(OnPauseDrain()), this, SIGNAL(sigOnPauseDrain()));
 
 
+    connect(mp_ProgramStepStates, SIGNAL(OnStateExited()), this, SLOT(OnStateChanged()));
+
+
     connect(mp_RSRvGetOriginalPositionAgain, SIGNAL(OnRvMoveToInitPosition()), this, SIGNAL(sigOnRsRvMoveToInitPosition()));
 }
 
 void CSchedulerStateMachine::OnStateChanged()
 {
-    SchedulerStateMachine_t currentState = GetCurrentState();
+    m_PreviousState = m_CurrentState;
+    LOG_PAR()<<"DBG"<< QDateTime::currentDateTime()<<"Previous state is: "<<hex<<m_PreviousState;
+#if 0
     quint32 stateid = STR_UNEXPECTED_STATE;
     switch(currentState)
     {
@@ -110,6 +119,7 @@ void CSchedulerStateMachine::OnStateChanged()
         stateid = STR_UNEXPECTED_STATE;
     }
 //    LOG_STR_ARG(STR_SCHDEULER_MAIN_CONTROLLER_STATE,Global::tTranslatableStringList()<<Global::TranslatableString(stateid));
+#endif
 }
 
 CSchedulerStateMachine::~CSchedulerStateMachine()
@@ -128,6 +138,14 @@ CSchedulerStateMachine::~CSchedulerStateMachine()
     mp_ProgramStepStates = NULL;
     delete mp_SchedulerMachine;
     mp_SchedulerMachine = NULL;
+}
+
+void CSchedulerStateMachine::UpdateCurrentState(SchedulerStateMachine_t currentState)
+{
+    if(m_CurrentState != currentState )
+    {
+        m_CurrentState = currentState;
+    }
 }
 
 void CSchedulerStateMachine::Start()
@@ -186,7 +204,8 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
 
 SchedulerStateMachine_t CSchedulerStateMachine::GetPreviousState()
 {
-    return mp_ProgramStepStates->GetPreviousState();
+    return m_PreviousState;
+//    return mp_ProgramStepStates->GetPreviousState();
 }
 
 void CSchedulerStateMachine::NotifyStInitOK()

@@ -139,6 +139,8 @@ signals:
     void OnPause();
     void OnPauseDrain();
 
+    void OnStateExited();
+
 private slots:
     void OnStateChanged();
 

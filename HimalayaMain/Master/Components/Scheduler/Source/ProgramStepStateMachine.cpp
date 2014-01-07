@@ -134,22 +134,56 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         //connect(mp_PssmPause, SIGNAL(entered()), this, SIGNAL(OnPause()));
         //connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SIGNAL(OnPauseDrain()));
 
-        connect(mp_PssmInit, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmReadyToHeatLevelSensorS1, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmReadyToHeatLevelSensorS2, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmReadyToTubeBefore, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmReadyToTubeAfter, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmReadyToSeal, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmReadyToFill, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmSoak, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmReadyToDrain, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmStepFinish, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmProgramFinish, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmError, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmPause, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmAborted, SIGNAL(entered()), this, SLOT(OnStateChanged()));
-        connect(mp_PssmAborting, SIGNAL(entered()), this, SLOT(OnStateChanged()));
+        connect(mp_PssmSelfTest, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStInit, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStTempChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStCurrentChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStVoltageChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStRVPositionChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStPressureChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStSealingChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStStationChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStStationCheckFinish, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStDone, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+
+        connect(mp_PssmInit, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToHeatLevelSensorS1, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToHeatLevelSensorS2, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToTubeBefore, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToTubeAfter, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToSeal, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToFill, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmSoak, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToDrain, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStepFinish, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmProgramFinish, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmError, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmPause, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmPauseDrain, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmAborted, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmAborting, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+
+
+#if 0
+        connect(mp_PssmInit, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToHeatLevelSensorS1, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToHeatLevelSensorS2, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToTubeBefore, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToTubeAfter, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToSeal, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToFill, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmSoak, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmReadyToDrain, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmStepFinish, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmProgramFinish, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmError, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmPause, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmAborted, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmAborting, SIGNAL(entered()), this, SIGNAL(OnStateExited()));
+
+#endif
+
 
         connect(mp_PssmReadyToFill,SIGNAL(exited()),this, SIGNAL(OnStopFill()));
         connect(mp_PssmReadyToDrain,SIGNAL(exited()),this,SIGNAL(OnStopDrain()));
@@ -301,7 +335,9 @@ void CProgramStepStateMachine::SetPreviousState(SchedulerStateMachine_t state)
 void CProgramStepStateMachine::OnStateChanged()
 {
 #if 0
-    SchedulerStateMachine_t curState = GetCurrentState();
+    SchedulerStateMachine_t curState = GetCurrentState( mp_SchedulerMachine->configuration());
+    SetPreviousState(curState);
+
     QString str = "";
     quint32 strid = STR_PROGRAM_STEP_STATE_UNKNOWN;
     if( curState == (PSSM_INIT))

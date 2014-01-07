@@ -125,8 +125,6 @@ typedef struct
         QThread* m_SchedulerCommandProcessorThread;
         SchedulerCommandProcessor* m_SchedulerCommandProcessor;
         CSchedulerStateMachine* m_SchedulerMachine;
-        //ProgramStepStateMachine* mp_ProgramStepStateMachine;
-        //SelfTestStateMachine* mp_SelfTestStateMachine;
         DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
         DataManager::CDataManager       *mp_DataManager;
         //qint64 m_CurStepSoakStartTime;
