@@ -142,6 +142,9 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
 //    Global::EventObject::Instance().moveToThread(this->thread());
 //    EventHandler::StateHandler::Instance().moveToThread(this->thread());
 
+
+    SetEventStringFileList(QStringList() << Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator() + "EventConfig.xml");
+
     //CreateBasic threads
     /*! Basic threads cannot be constructed in MasterThread contructor
      *  since , the objects created in constructor will have affinity
@@ -255,6 +258,7 @@ void HimalayaMasterThreadController::CreateControllersAndThreads() {
 
 
 }
+
 
 /************************************************************************************************************************************/
 void HimalayaMasterThreadController::OnPowerFail(const Global::PowerFailStages PowerFailStage) {
