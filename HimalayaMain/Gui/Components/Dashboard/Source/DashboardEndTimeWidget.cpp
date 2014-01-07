@@ -264,7 +264,6 @@ void CDashboardEndTimeWidget::UpdateProgress()
     {
         m_remainingTimeTotal = remainingTimeTotal;
         mp_Ui->progressBar->setMaximum(remainingTimeTotal);
-        m_startDateTime = startDateTime;
     }
     mp_ProgressTimer->start();
 

@@ -1002,6 +1002,7 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
     const CProgramStep* pProgramStep(NULL);
     QString reagentID("");
     bool bSkipCurrentStep = false;
+    int count = pProgram->GetNumberOfSteps();
     do
     {
         if (-1 == m_CurProgramStepIndex)
@@ -1011,6 +1012,12 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
         else
         {
             ++m_CurProgramStepIndex;
+        }
+
+        if (m_CurProgramStepIndex > count && bSkipCurrentStep)
+        {
+            m_CurProgramStepIndex = -1;//cannot find the needed step
+            return false;
         }
 
         pProgramStep = pProgram->GetProgramStep(m_CurProgramStepIndex);//use order index
@@ -1492,23 +1499,28 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
 
     m_CurProgramStepIndex = -1;
     this->GetNextProgramStepInformation(curProgramID, m_CurProgramStepInfo, true);//only to get m_CurProgramStepIndex
-    unsigned int timeProposed = GetLeftProgramStepsNeededTime(curProgramID, m_CurProgramStepIndex);
-        
-    //For Cleaning Program
-    Q_ASSERT(m_CurProgramStepIndex >= 0);
-    m_FirstProgramStepIndex = m_CurProgramStepIndex;
-    this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
-    m_CurProgramStepIndex = -1;
 
-    unsigned int paraffinMeltCostedtime = this->GetOvenHeatingTime();
+    unsigned int timeProposed = 0;
+    unsigned int paraffinMeltCostedtime = 0;
     unsigned int costedTimeBeforeParaffin = 0;
-    if (-1 != Cmd.ParaffinStepIndex())//has Paraffin
+    int whichStep = 0;
+    if (m_CurProgramStepIndex != -1)
     {
-        costedTimeBeforeParaffin = timeProposed - GetLeftProgramStepsNeededTime(curProgramID, Cmd.ParaffinStepIndex());
-    }
+        timeProposed = GetLeftProgramStepsNeededTime(curProgramID, m_CurProgramStepIndex);
 
-    //cheack safe reagent
-    int whichStep = WhichStepHasNoSafeReagent(curProgramID);
+        m_FirstProgramStepIndex = m_CurProgramStepIndex;
+        this->PrepareProgramStationList(curProgramID, m_CurProgramStepIndex);
+        m_CurProgramStepIndex = -1;
+
+        paraffinMeltCostedtime = this->GetOvenHeatingTime();
+        if (-1 != Cmd.ParaffinStepIndex())//has Paraffin
+        {
+            costedTimeBeforeParaffin = timeProposed - GetLeftProgramStepsNeededTime(curProgramID, Cmd.ParaffinStepIndex());
+        }
+
+        //cheack safe reagent
+        whichStep = WhichStepHasNoSafeReagent(curProgramID);
+    }
 
     //send back the proposed program end time
     MsgClasses::CmdProgramSelectedReply* commandPtr(new MsgClasses::CmdProgramSelectedReply(5000, timeProposed,
