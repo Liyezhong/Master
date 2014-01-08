@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EventConfigure>
-	<Event Code="" ErrorID="513030001" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_Local">
-		<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
-		<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
-		<Step ID="2" Type="MSG" StringID="192" RDStringID="193" ButtonType="OK" ButtonEnableCondation="RT_LID_OPEN_CLOSE" StatusBar="YES"/>
-		<Step ID="3" Type="ACT" Action="RC_Restart"/>				
-	</Event>
-	<Event Code="" ErrorID="511030021" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_Remote">
-		<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
-		<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
-		<Step ID="2" Type="MSG" StringID="198" RDStringID="199" ButtonType="OK" ButtonEnableCondation="RT_LID_OPEN_CLOSE" StatusBar="YES"/>
-		<Step ID="3" Type="ACT" Action="RC_Restart"/>		
-	</Event>
-	<Event Code="" ErrorID="511030022" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_Remote">
-		<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
-		<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
-		<Step ID="2" Type="MSG" StringID="200" RDStringID="201" ButtonType="OK" StatusBar="YES"/>
-		<Step ID="3" Type="ACT" Action="RC_Restart"/>		
-	</Event>
-	<Event Code="" ErrorID="513030091" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_Remote">
-		<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
-		<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
-		<Step ID="2" Type="MSG" StringID="236" RDStringID="237" ButtonType="OK" ButtonEnableCondation="RT_LID_OPEN_CLOSE" StatusBar="YES"/>
-		<Step ID="3" Type="ACT" Action="RC_Restart"/>		
-	</Event>
-	<Event Code="" ErrorID="513030092" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_Remote">
-		<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
-		<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
-		<Step ID="2" Type="MSG" StringID="238" RDStringID="239" ButtonType="OK" StatusBar="YES"/>
-		<Step ID="3" Type="ACT" Action="RC_Restart"/>		
-	</Event>
+	<Source Name="Himalaya">
+		<Event Code="" ErrorID="513030001" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_LOCAL" EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
+			<Step ID="2" Type="MSG" StringID="192" RDStringID="193" ButtonType="OK" ButtonEnableCondation="RT_LID_OPEN_CLOSE" StatusBar="YES"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>				
+		</Event>
+		<Event Code="" ErrorID="511030021" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
+			<Step ID="2" Type="MSG" StringID="198" RDStringID="199" ButtonType="OK" ButtonEnableCondation="RT_LID_OPEN_CLOSE" StatusBar="YES"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>		
+		</Event>
+		<Event Code="" ErrorID="511030022" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
+			<Step ID="2" Type="MSG" StringID="200" RDStringID="201" ButtonType="OK" StatusBar="YES"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>		
+		</Event>
+		<Event Code="" ErrorID="513030091" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
+			<Step ID="2" Type="MSG" StringID="236" RDStringID="237" ButtonType="OK" ButtonEnableCondation="RT_LID_OPEN_CLOSE" StatusBar="YES"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>		
+		</Event>
+		<Event Code="" ErrorID="513030092" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
+			<Step ID="2" Type="MSG" StringID="238" RDStringID="239" ButtonType="OK" StatusBar="YES"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>		
+		</Event>
+	</Source>
 </EventConfigure>
