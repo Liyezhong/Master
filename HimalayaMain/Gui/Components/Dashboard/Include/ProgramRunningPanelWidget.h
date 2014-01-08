@@ -4,6 +4,7 @@
 #include "Dashboard/Include/IconTitlePanelFrame.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 #include <QTime>
+#include "Global/Include/GlobalDefines.h"
 
 class QDateTime;
 
@@ -11,6 +12,11 @@ class QDateTime;
 namespace MsgClasses
 {
     class CmdCurrentProgramStepInfor;
+}
+
+namespace DataManager
+{
+    class CUserSettings;
 }
 
 namespace Dashboard {
@@ -25,6 +31,10 @@ namespace Dashboard {
     public:
         explicit CProgramRunningPanelWidget(QWidget *parent = 0);
         ~CProgramRunningPanelWidget();
+        void SetUserSettings(DataManager::CUserSettings *pUserSettings);
+        const QTime&  GetStepRemainingTime();
+        const QTime GetProgramRemainingTime();
+        const QString GetEndDateTime();
 
     public slots:
         void OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType, int remainingTimeTotal,
@@ -39,7 +49,7 @@ namespace Dashboard {
         void UpdateProgress();
         void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady);
         void OnUserSettingsUpdated();
-
+        void OnProcessStateChanged();
     private:
         void UpdateDateTime(const QDateTime & selDateTime);
         void RetranslateUI();
@@ -53,7 +63,10 @@ namespace Dashboard {
         QString m_strCompleted;
         QString m_strAborting;
         QDateTime m_ProgramEndDateTime;
-
+        DataManager::CUserSettings *mp_UserSettings;
+        Global::DateFormat m_CurDateFormat;
+        Global::TimeFormat m_CurTimeFormat;
+        QString m_DateTimeStr;
 
     };
 }

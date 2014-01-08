@@ -4,6 +4,8 @@
 #include <HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h>
 #include <QTimer>
 #include "Global/Include/Utils.h"
+#include "DataManager/Containers/UserSettings/Include/UserSettings.h"
+#include "MainMenu/Include/MainWindow.h"
 
 namespace Dashboard
 {
@@ -13,7 +15,9 @@ CProgramRunningPanelWidget::CProgramRunningPanelWidget(QWidget *parent):
     m_remainingTimeTotal(0),
     m_curRemainingTimeTotal(0),
     m_strAborted(tr("Aborted.")),
-    m_strCompleted(tr("Completed!"))
+    m_strCompleted(tr("Completed!")),
+    mp_UserSettings(NULL),
+    m_DateTimeStr("")
 {
     ui->setupUi(GetContentFrame());
     mp_ProgressTimer = new QTimer(this);
@@ -114,19 +118,24 @@ void CProgramRunningPanelWidget::RetranslateUI()
 
 }
 
+void CProgramRunningPanelWidget::SetUserSettings(DataManager::CUserSettings *pUserSettings)
+{
+    mp_UserSettings = pUserSettings;
+}
+
 void CProgramRunningPanelWidget::OnUserSettingsUpdated()
 {
-   /* mp_UserSettings = mp_DataConnector->SettingsInterface->GetUserSettings() ;
-    m_CurDateFormat = mp_UserSettings->GetDateFormat();
-    m_CurTimeFormat = mp_UserSettings->GetTimeFormat();
-    if(mp_Program) {
+   if (mp_UserSettings)
+   {
+        m_CurDateFormat = mp_UserSettings->GetDateFormat();
+        m_CurTimeFormat = mp_UserSettings->GetTimeFormat();
         UpdateDateTime(m_ProgramEndDateTime);
-   }*/
+   }
 }
 
 void CProgramRunningPanelWidget::UpdateDateTime(const QDateTime &selDateTime)
 {
-   /* QString DateStr;
+    QString DateStr;
     QString TimeStr;
 
     switch(m_CurDateFormat) {
@@ -171,18 +180,15 @@ void CProgramRunningPanelWidget::UpdateDateTime(const QDateTime &selDateTime)
     }
 
     QString DateTimeStr;
-    DateTimeStr.append("  ");
-    DateTimeStr.append(m_strEndTime);
     DateTimeStr.append(TimeStr);
     DateTimeStr.append("\n");
-    DateTimeStr.append("\t\t\t");
     DateTimeStr.append(DateStr);
     m_DateTimeStr = "";
     m_DateTimeStr.append(TimeStr);
     m_DateTimeStr.append(" ");
     m_DateTimeStr.append(DateStr);
 
-    mp_Ui->btnEndTime->setText(DateTimeStr);*/
+    ui->lblEndtime->setText(DateTimeStr);
 }
 
 void CProgramRunningPanelWidget::ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady)
@@ -190,7 +196,31 @@ void CProgramRunningPanelWidget::ProgramSelected(QString& ProgramId, int asapEnd
     Q_UNUSED(ProgramId);
     Q_UNUSED(bProgramStartReady);
     m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
-    //ui->lblEndtime->setText();
+    UpdateDateTime(m_ProgramEndDateTime);
 }
+
+const QTime& CProgramRunningPanelWidget::GetStepRemainingTime()
+{
+   return m_CurRemainingTime;
+}
+
+const QTime CProgramRunningPanelWidget::GetProgramRemainingTime()
+{
+    QTime leftTime(0,0,0);
+    return leftTime = leftTime.addSecs(m_curRemainingTimeTotal);
+}
+
+const QString CProgramRunningPanelWidget::GetEndDateTime()
+{
+   return m_DateTimeStr;
+}
+
+void CProgramRunningPanelWidget::OnProcessStateChanged()
+{
+   bool bProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+   if (!bProcessRunning)
+    mp_ProgressTimer->stop();//the progress bar and Time countdown will stop
+}
+
 
 }

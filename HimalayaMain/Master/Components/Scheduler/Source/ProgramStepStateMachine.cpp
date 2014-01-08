@@ -131,8 +131,8 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         connect(mp_PssmReadyToDrain, SIGNAL(entered()), this, SIGNAL(OnDrain()));
         connect(mp_PssmAborting, SIGNAL(entered()), this, SIGNAL(OnAborting()));
         connect(mp_PssmAborted, SIGNAL(entered()), this, SIGNAL(OnAborted()));
-        //connect(mp_PssmPause, SIGNAL(entered()), this, SIGNAL(OnPause()));
-        //connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SIGNAL(OnPauseDrain()));
+        connect(mp_PssmPause, SIGNAL(entered()), this, SIGNAL(OnPause()));
+        connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SIGNAL(OnPauseDrain()));
 
         connect(mp_PssmSelfTest, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
         connect(mp_PssmStInit, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
