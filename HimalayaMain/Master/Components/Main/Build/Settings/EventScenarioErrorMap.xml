@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mapmsg>
+<scenariolist prefixId="520000-000">
+	<scenario id="001" name="Start-up"/>
+	<scenario id="002" name="Self-test"/>
+	<scenario id="003" name="Delay-Paraffin-melting"/>
+	<scenario id="200" name="Pre-test"/>
+	<scenario id="202" name="Protocol-Fixation-Standby"/>
+	<scenario id="203" name="Dry-function"/>
+	<scenario id="204" name="Air-system-cleaning"/>
+	<scenario id="205" name="Delay-Step"/>
+	<scenario id="206" name="Pause_or_Abort"/>
+	<scenario id="211" name="Protocol-Fixation-Filling-LevelSensor-Heating"/>
+	<scenario id="212" name="Protocol-Fixation-Filling"/>
+	<scenario id="213" name="Protocol-Fixation-RV-MovetoSeal"/>
+	<scenario id="214" name="Protocol-Fixation-Processing"/>
+	<scenario id="215" name="Protocol-Fixation-RV-MovetoTube"/>
+	<scenario id="216" name="Protocol-Fixation-Draining"/>
+	<scenario id="217" name="Protocol-Fixation-RV-PositionChange"/>
+	<scenario id="221" name="Protocol-Water-Filling-LevelSensor-Heating"/>
+	<scenario id="222" name="Protocol-Water-Filling"/>
+	<scenario id="223" name="Protocol-Water-RV-MovetoSeal"/>
+	<scenario id="224" name="Protocol-Water-Processing"/>
+	<scenario id="225" name="Protocol-Water-RV-MovetoTube"/>
+	<scenario id="226" name="Protocol-Water-Draining"/>
+	<scenario id="227" name="Protocol-Water-RV-PositionChange"/>
+	<scenario id="231" name="Protocol-Dehydration-diluted-Filling-LevelSensor-Heating"/>
+	<scenario id="232" name="Protocol-Dehydration-diluted-Filling"/>
+	<scenario id="233" name="Protocol-Dehydration-diluted-RV-MovetoSeal"/>
+	<scenario id="234" name="Protocol-Dehydration-diluted-Processing"/>
+	<scenario id="235" name="Protocol-Dehydration-diluted-RV-MovetoTube"/>
+	<scenario id="236" name="Protocol-Dehydration-diluted-Draining"/>
+	<scenario id="237" name="Protocol-Dehydration-diluted-RV-PositionChange"/>
+	<scenario id="241" name="Protocol-Dehydration-absolute-Filling-LevelSensor-Heating"/>
+	<scenario id="242" name="Protocol-Dehydration-absolute-Filling"/>
+	<scenario id="243" name="Protocol-Dehydration-absolute-RV-MovetoSeal"/>
+	<scenario id="244" name="Protocol-Dehydration-absolute-Processing"/>
+	<scenario id="245" name="Protocol-Dehydration-absolute-RV-MovetoTube"/>
+	<scenario id="246" name="Protocol-Dehydration-absolute-Draining"/>
+	<scenario id="247" name="Protocol-Dehydration-absolute-RV-PositionChange"/>
+	<scenario id="251" name="Protocol-Clearing-Filling-LevelSensor-Heating"/>
+	<scenario id="252" name="Protocol-Clearing-Filling"/>
+	<scenario id="253" name="Protocol-Clearing-RV-MovetoSeal"/>
+	<scenario id="254" name="Protocol-Clearing-Processing"/>
+	<scenario id="255" name="Protocol-Clearing-RV-MovetoTube"/>
+	<scenario id="256" name="Protocol-Clearing-Draining"/>
+	<scenario id="257" name="Protocol-Clearing-RV-PositionChange"/>
+	<scenario id="260" name="Protocol-GetReadyFor-Paraffin"/>
+	<scenario id="271" name="Protocol-Paraffin-Filling-LevelSensor-Heating"/>
+	<scenario id="272" name="Protocol-Paraffin-Filling"/>
+	<scenario id="273" name="Protocol-Paraffin-RV-MovetoSeal"/>
+	<scenario id="274" name="Protocol-Paraffin-Processing"/>
+	<scenario id="275" name="Protocol-Paraffin-RV-MovetoTube"/>
+	<scenario id="276" name="Protocol-Paraffin-Draining"/>
+	<scenario id="277" name="Protocol-Paraffin-RV-PositionChange"/>
+	<scenario id="281" name="Protocol-Cleaning-Xylene-Filling-LevelSensor-Heating"/>
+	<scenario id="282" name="Protocol-Cleaning-Xylene-Filling"/>
+	<scenario id="283" name="Protocol-Cleaning-Xylene-RV-MovetoSeal"/>
+	<scenario id="284" name="Protocol-Cleaning-Xylene-Processing"/>
+	<scenario id="285" name="Protocol-Cleaning-Xylene-RV-MovetoTube"/>
+	<scenario id="286" name="Protocol-Cleaning-Xylene-Draining"/>
+	<scenario id="287" name="Protocol-Cleaning-Xylene-RV-PositionChange"/>
+	<scenario id="291" name="Protocol-Cleaning-Xylene-Filling-LevelSensor-Heating"/>
+	<scenario id="292" name="Protocol-Cleaning-Xylene-Filling"/>
+	<scenario id="293" name="Protocol-Cleaning-Xylene-RV-MovetoSeal"/>
+	<scenario id="294" name="Protocol-Cleaning-Xylene-Processing"/>
+	<scenario id="295" name="Protocol-Cleaning-Xylene-RV-MovetoTube"/>
+	<scenario id="296" name="Protocol-Cleaning-Xylene-Draining"/>
+	<scenario id="297" name="Protocol-Cleaning-Xylene-RV-PositionChange"/>
+</scenariolist>
+
+<eventlist> 
+	<group name="Retort">
+		<event id="500010001" name="EVENT_Retort_Bottom_Sidelow_Heating_Element_Failed"/>
+	</group>
+	<group name="Rotary Valve">
+		<event id="500030001" name="EVENT_RV_Motor_CannotGet_OriginalPosition"/>
+		<event id="500030021" name="EVENT_RV_Motor_InternalSteps_ExceedUpperlimit"/>
+		<event id="500030091" name="EVENT_RV_Motor_LostCurrentPosition"/>
+	</group>
+	<group name="Main Control">
+		<event id="500050001" name="EVENT_MC_DC_5V_ASB3_OutofRange"/>
+	</group>
+</eventlist>
+
+<correspondinglist>
+	<event eventid="500010001">
+		<error errorid="513010000">
+			<scenario type="single" id="200"/>
+		</error>
+		<error errorid="513010001">
+			<scenario type="single" id="205"/>
+			<scenario type="range" startid="211" endid="217"/>
+			<scenario type="single" id="221"/>
+			<scenario type="range" startid="252" endid="257"/>
+			<scenario type="single" id="260"/>
+			<scenario type="range" startid="271" endid="277"/>
+		</error>
+		<error errorid="513010002">
+			<scenario type="range" startid="222" endid="227"/>
+			<scenario type="range" startid="231" endid="237"/>
+			<scenario type="range" startid="241" endid="247"/>
+			<scenario type="single" id="251"/>
+		</error>
+		<error errorid="513010003">
+			<scenario type="single" id="002"/>
+			<scenario type="range" startid="281" endid="287"/>
+			<scenario type="range" startid="291" endid="297"/>
+		</error>
+	</event>
+	<event eventid="500030001">
+		<error errorid="513030001">
+			<scenario type="single" id="200"/>
+		</error>
+	</event>
+	<event eventid="500030021">
+		<error errorid="513030021">
+			<scenario type="single" id="200"/>
+			<scenario type="single" id="213"/>
+			<scenario type="single" id="215"/>
+			<scenario type="single" id="223"/>
+			<scenario type="single" id="225"/>
+			<scenario type="single" id="233"/>
+			<scenario type="single" id="235"/>
+			<scenario type="single" id="243"/>
+			<scenario type="single" id="245"/>
+			<scenario type="single" id="253"/>
+			<scenario type="single" id="255"/>
+			<scenario type="single" id="273"/>
+			<scenario type="single" id="275"/>
+		</error>
+		<error errorid="511030022">
+			<scenario type="single" id="002"/>
+			<scenario type="single" id="003"/>
+			<scenario type="single" id="283"/>
+			<scenario type="single" id="285"/>
+			<scenario type="single" id="293"/>
+			<scenario type="single" id="295"/>
+		</error>
+	</event>
+	<event eventid="500030091">
+		<error errorid="513030091">
+			<scenario type="single" id="200"/>
+			<scenario type="single" id="217"/>
+			<scenario type="single" id="227"/>
+			<scenario type="single" id="237"/>
+			<scenario type="single" id="247"/>
+			<scenario type="single" id="257"/>
+			<scenario type="single" id="277"/>
+		</error>
+		<error errorid="513030092">
+			<scenario type="single" id="287"/>
+			<scenario type="single" id="297"/>
+		</error>
+	</event>
+	<event eventid="500050001">
+		<error errorid="513050001">
+			<scenario type="all"/>
+		</error>
+	</event>
+</correspondinglist>
+</mapmsg>
