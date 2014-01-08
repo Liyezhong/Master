@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
 	<language name="English">
+		<string id="192" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="193" text1="RotaryValve: Cannot get the original position! " text2=""/>
+		<string id="198" text1="Error ID %1! Please call for sevice! RotaryValve: Moving from tube position %2 to %3 failed either during pre-test or during fixation, water, dehydration, clearing, paraffin step. Lower limiter is %4, internal steps is %5,The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="199" text1="RotaryValve: Moving from tube position %2 to %3 failed either during pre-test or during fixation, water, dehydration, clearing, paraffin step. Lower limiter is %4, internal steps is %5," text2=""/>
+		<string id="200" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
+		<string id="201" text1="RotaryValve: Moving from tube position %2 to %3 failed before or after processing tissue. Lower limiter is %4, internal steps is %5." text2=""/>
+		<string id="236" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="237" text1="RotaryValve: The Rotary valve lost its current position, during moving from position xx to position xx. This occured during cleaning steps." text2=""/>
+		<string id="238" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
+		<string id="239" text1="The Rotary valve lost current position, during moving from position xx to position xx." text2=""/>
 		<string id="17825795" text1="Switch off not allowed.Wait until transportation is completed." text2=""/>
 		<string id="16973834" text1="Data logging is disabled" text2=""/>
 		<string id="16973828" text1="Event Id %1 not exists in the event string xml file" text2=""/>
