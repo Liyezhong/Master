@@ -114,6 +114,77 @@ void CProgramRunningPanelWidget::RetranslateUI()
 
 }
 
+void CProgramRunningPanelWidget::OnUserSettingsUpdated()
+{
+   /* mp_UserSettings = mp_DataConnector->SettingsInterface->GetUserSettings() ;
+    m_CurDateFormat = mp_UserSettings->GetDateFormat();
+    m_CurTimeFormat = mp_UserSettings->GetTimeFormat();
+    if(mp_Program) {
+        UpdateDateTime(m_ProgramEndDateTime);
+   }*/
+}
+
+void CProgramRunningPanelWidget::UpdateDateTime(const QDateTime &selDateTime)
+{
+   /* QString DateStr;
+    QString TimeStr;
+
+    switch(m_CurDateFormat) {
+        case Global::DATE_INTERNATIONAL:
+        {
+            DateStr = QString("%1").arg(selDateTime.date().toString("dd.MM.yyyy"));
+        }
+        break;
+        case Global::DATE_ISO:
+        {
+            DateStr = QString("%1").arg(selDateTime.date().toString("yyyy-MM-dd"));
+        }
+        break;
+        case Global::DATE_US:
+        {
+            DateStr = QString("%1").arg(selDateTime.date().toString("MM/dd/yyyy"));
+        }
+        break;
+        case Global::DATE_UNDEFINED:
+        default:
+        {
+            qDebug() << " Date format is Invalid";
+        }
+    }
+
+    switch(m_CurTimeFormat) {
+        case Global::TIME_12:
+        {
+            TimeStr = QString("%1").arg(selDateTime.time().toString("hh:mm:ss p.m"));
+        }
+            break;
+        case Global::TIME_24:
+        {
+            TimeStr = QString("%1").arg(selDateTime.time().toString("hh:mm:ss"));
+        }
+            break;
+        case Global::TIME_UNDEFINED:
+        default:
+        {
+            qDebug() << " Time format is Invalid";
+        }
+    }
+
+    QString DateTimeStr;
+    DateTimeStr.append("  ");
+    DateTimeStr.append(m_strEndTime);
+    DateTimeStr.append(TimeStr);
+    DateTimeStr.append("\n");
+    DateTimeStr.append("\t\t\t");
+    DateTimeStr.append(DateStr);
+    m_DateTimeStr = "";
+    m_DateTimeStr.append(TimeStr);
+    m_DateTimeStr.append(" ");
+    m_DateTimeStr.append(DateStr);
+
+    mp_Ui->btnEndTime->setText(DateTimeStr);*/
+}
+
 void CProgramRunningPanelWidget::ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady)
 {
     Q_UNUSED(ProgramId);

@@ -1751,6 +1751,12 @@ void CDataConnector::ProgramSelectedReplyHandler(Global::tRefType Ref, const Msg
 void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortLockStatus & Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+
+    if (Command.IsLocked())
+    {
+        mp_MesgBoxManager->EnableOKButton();
+    }
+
     emit RetortLockStatusChanged(Command);
 }
 

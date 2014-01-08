@@ -38,7 +38,10 @@ namespace Dashboard {
     private slots:
         void UpdateProgress();
         void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady);
+        void OnUserSettingsUpdated();
+
     private:
+        void UpdateDateTime(const QDateTime & selDateTime);
         void RetranslateUI();
         Ui::CProgramRunningPanelWidget *ui;
         QTimer* mp_ProgressTimer;
