@@ -149,6 +149,7 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnPause(), this, Pause());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnPauseDrain(), this, Pause());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsRvMoveToInitPosition(), this, MoveRVToInit());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRCReport(), this, ShutdownRetortHeater());
 
 
     //command queue reset
@@ -375,6 +376,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_SchedulerMachine->SendErrorSignal();
             b=true;
             }
+#else
 #endif
             if(m_PositionRV == RV_UNDEF)
             {
@@ -382,7 +384,22 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
+#if 1
+                static int b= 0;
+                if(b ==0)
+                {
+                    Global::EventObject::Instance().RaiseEvent(0, 500030001, 200, true);
+                    m_SchedulerMachine->SendErrorSignal();
+                    b++;
+                }
+                else if((b++)==20)
+                {
+                    m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
+                    b = 0;
+                }
+#else
                 m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
+#endif
             }
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
@@ -916,17 +933,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             qDebug()<<"DBG" << "Try to move to RS RV Move To Initial Position!";
             b = true;
         }
-        if(actionSccessed)
-        {
-            qDebug()<<"DBG" << "Action success,  resume to self test!";
-            m_SchedulerMachine->NotifyResumeToSelftest();
-        }
 
 #endif
-        if(false) //todo: replace with RC_Restart command
+        if(CTRL_CMD_RC_RESTART == ctrlCmd)
         {
-            if(((m_SchedulerMachine->GetPreviousState()) & 0xFFFF)==PSSM_ST_INIT)
-            //if(true) //todo: replace with previous state is ST
+            if(((m_SchedulerMachine->GetPreviousState()) & 0xFFFF)==PSSM_ST)
             {
                 m_SchedulerMachine->NotifyResumeToSelftest();
             }
@@ -934,24 +945,40 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             {
                 m_SchedulerMachine->NotifyResume();
             }
+            DequeueNonDeviceCommand();
+        }
+        else if(CTRL_CMD_RC_REPORT == ctrlCmd)
+        {
+            qDebug()<<"DBG" << "Try to move to RC_Report";
+            m_SchedulerMachine->NotifyRCReport();
+            DequeueNonDeviceCommand();
+        }
+        else if(CTRL_CMD_RS_GET_ORIGINAL_POSITION_AGAIN == ctrlCmd)
+        {
+            qDebug()<<"DBG" << "Try to move to RS RV Move To Initial Position!";
+            m_SchedulerMachine->NotifyRsRvMoveToInitPosition();
+            DequeueNonDeviceCommand();
         }
     }
     else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
     {
-        qDebug()<<"DBG" << "Responsing...."<<retCode;
+        qDebug()<<"DBG" << "RS_RV_GET_ORIGINAL_POSITION_AGAIN Response: "<<retCode;
         if( DCL_ERR_DEV_RV_MOVE_TO_INIT_POS_SUCCESS == retCode )
         {
-            //todo: notify event handler that response is succeed
             qDebug()<<"DBG" << "Response Move to initial position again succeed!";
-#if 0 //test RS_movetoinitposition
-            actionSccessed = true;
-#endif
+            Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, true);
+            m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
         }
         else if(DCL_ERR_DEV_RV_MOVE_TO_INIT_FUNC & retCode)
         {
-            //todo: notify event handler that response is failed
             qDebug()<<"DBG" << "Response Move to initial position again failed!";
+            Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, false);
+            m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
         }
+    }
+    else if(SM_ERR_RC_REPORT == currentState)
+    {
+        Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, true);
         m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
     }
 }
@@ -1001,7 +1028,23 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
     NetCommands::CmdSystemAction* pCmdSystemAction = dynamic_cast<NetCommands::CmdSystemAction*>(pt.GetPointerToUserData());
     if(pCmdSystemAction)
     {
+        QString cmd = pCmdSystemAction->GetActionString();
+        m_EventKey = pCmdSystemAction->GetEventKey();
 
+        qDebug()<<"Get action: " << cmd;
+
+        if(cmd == "RS_RV_GetOriginalPositionAgain")
+        {
+            return CTRL_CMD_RS_GET_ORIGINAL_POSITION_AGAIN;
+        }
+        if(cmd == "RC_Restart")
+        {
+            return CTRL_CMD_RC_RESTART;
+        }
+        if(cmd == "RC_Report")
+        {
+            return CTRL_CMD_RC_REPORT;
+        }
     }
 //    HimalayaErrorHandler::CmdRaiseAlarm* pCmdRaiseAlarm = dynamic_cast<HimalayaErrorHandler::CmdRaiseAlarm*>(pt.GetPointerToUserData());
 //    if (pCmdRaiseAlarm)
@@ -1522,7 +1565,8 @@ void SchedulerMainThreadController::OnActionCommandReceived(Global::tRefType Ref
     Q_UNUSED(Ref)
     m_Mutex.lock();
     NetCommands::CmdSystemAction *p_CmdSystemAction = new NetCommands::CmdSystemAction();
-    p_CmdSystemAction->SetAction(Cmd.GetAction());
+    p_CmdSystemAction->SetActionString(Cmd.GetActionString());
+    p_CmdSystemAction->SetEventKey(Cmd.GetEventKey());
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(p_CmdSystemAction));
     m_Mutex.unlock();
 }
@@ -2181,6 +2225,12 @@ void SchedulerMainThreadController::MoveRVToInit()
 {
     qDebug()<<"DBG"<<"Send cmd to DCL to let RV move to init position. ";
     m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_IDeviceProcessing, this));
+}
+
+void SchedulerMainThreadController::ShutdownRetortHeater()
+{
+    //todo: add code to shutdown retort heaters
+    qDebug()<<"Shut down all retort heaters!";
 }
 
 void SchedulerMainThreadController::MoveRV()

@@ -37,7 +37,9 @@ namespace Scheduler{
 
 #define L2_ERR_WAIT                           (0x1)
 #define L2_ERR_RS_RV_MOV_TO_INIT_POS_AGAIN    (0x2)
+#define L2_ERR_RC_REPORT                      (0x3)
 #define L3_ERR_RS_RV_MOVING_TO_INIT_POS       (0x1)
+#define L3_ERR_RC_REPORT                      (0x1)
 
 
 typedef enum
@@ -77,7 +79,8 @@ typedef enum
     PSSM_ST_DONE = ((L3_ST_DONE << 16) | (L2_PRO_ST << 8) | L1_BUSY),
 
     SM_ERR_WAIT = ((L2_ERR_WAIT << 8) | L1_ERROR),
-    SM_ERR_RS_RV_MOVING_TO_INIT_POS = ((L3_ERR_RS_RV_MOVING_TO_INIT_POS << 16) | (L2_ERR_RS_RV_MOV_TO_INIT_POS_AGAIN << 8) | L1_ERROR)
+    SM_ERR_RS_RV_MOVING_TO_INIT_POS = ((L3_ERR_RS_RV_MOVING_TO_INIT_POS << 16) | (L2_ERR_RS_RV_MOV_TO_INIT_POS_AGAIN << 8) | L1_ERROR),
+    SM_ERR_RC_REPORT = ((L3_ERR_RC_REPORT << 16) | (L2_ERR_RC_REPORT << 8) | L1_ERROR)
 
 } SchedulerStateMachine_t;
 }

@@ -5,6 +5,7 @@
 //#include "SchedulerMainThreadController.h"
 #include "ProgramStepStateMachine.h"
 #include "RsRvGetOriginalPositionAgain.h"
+#include "RCReport.h"
 
 namespace Scheduler{
 
@@ -22,6 +23,7 @@ private:
     QState* mp_ErrorWaitState;
     CProgramStepStateMachine *mp_ProgramStepStates;
     CRsRvGetOriginalPositionAgain *mp_RSRvGetOriginalPositionAgain;
+    CRCReport *mp_RCReport;
     SchedulerStateMachine_t m_PreviousState;
     SchedulerStateMachine_t m_CurrentState;
 
@@ -67,6 +69,7 @@ public:
     void NotifyResumeToSelftest();
     void NotifyRsRvMoveToInitPosition();
     void NotifyRsRvMoveToInitPositionFinished();
+    void NotifyRCReport();
 
     void UpdateCurrentState(SchedulerStateMachine_t currentState);
     SchedulerStateMachine_t GetCurrentState();
@@ -117,6 +120,7 @@ signals:
     void sigAbort();
     void sigRsRvMoveToInitPosition();
     void sigRsRvMoveToInitPositionFinished();
+    void sigRCReport();
 
     void sigOnInit();
     void sigOnHeatLevelSensorTempS1();
@@ -134,6 +138,7 @@ signals:
     void sigOnPause();
     void sigOnPauseDrain();
     void sigOnRsRvMoveToInitPosition();
+    void sigOnRCReport();
 };
 }
 
