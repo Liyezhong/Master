@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
-	<language name="English">
+        <language name="en">
 		<string id="192" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
 		<string id="193" text1="RotaryValve: Cannot get the original position! " text2=""/>
 		<string id="198" text1="Error ID %1! Please call for sevice! RotaryValve: Moving from tube position %2 to %3 failed either during pre-test or during fixation, water, dehydration, clearing, paraffin step. Lower limiter is %4, internal steps is %5,The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
