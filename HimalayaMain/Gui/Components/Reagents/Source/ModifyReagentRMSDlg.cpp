@@ -435,8 +435,6 @@ void CModifyReagentRMSDlg::OnEditName()
         mp_KeyBoardWidget->SetLineEditContent(mp_Ui->buttonReagentName->text());
     }
 
-    m_ValidationType = KeyBoard::VALIDATION_1;
-//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetMaxCharLength(20);
     mp_KeyBoardWidget->SetMinCharLength(1);
@@ -471,8 +469,7 @@ void CModifyReagentRMSDlg::OnEditCassetteValue()
     if (mp_Ui->buttonValue->text() != "--") {
         mp_KeyBoardWidget->SetLineEditContent(mp_Ui->buttonValue->text());
     }
-    m_ValidationType = KeyBoard::VALIDATION_1;
-//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
+
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetMaxCharLength(32);
     mp_KeyBoardWidget->SetMinCharLength(1);

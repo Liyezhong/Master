@@ -37,7 +37,6 @@ namespace Settings {
 /****************************************************************************/
 CInstallationSettingsWidget::CInstallationSettingsWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
     mp_Ui(new Ui::CInstallationSettingsWidget), mp_KeyBoardWidget(NULL),
-    m_ValidationType(KeyBoard::VALIDATION_1),
     mp_UserSettings(NULL),
     mp_MainWindow(NULL), m_ProcessRunning(false),
     m_CurrentUserRole(MainMenu::CMainWindow::Operator)
@@ -258,7 +257,6 @@ void CInstallationSettingsWidget :: OnEditclicked()
         mp_KeyBoardWidget->SetLineEditContent(mp_Ui->instrumentname->text());
     }
 
-    m_ValidationType = KeyBoard::VALIDATION_1;
 //    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetMaxCharLength(32);

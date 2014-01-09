@@ -22,7 +22,6 @@
 #define SETTINGS_INSTALLATIONSETTINGSWIDGET_H
 
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
-#include "KeyBoard/Include/KeyBoardObserver.h"//!< User interface
 #include "KeyBoard/Include/KeyBoard.h"
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/ScrollWheel.h"
@@ -41,14 +40,13 @@ namespace Ui {
  * \brief This class displays all settings related to the oven of Himalaya
  */
 /****************************************************************************/
-class CInstallationSettingsWidget : public MainMenu::CPanelFrame,public KeyBoard::CKeyBoardObserver
+class CInstallationSettingsWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
 
 private:
     Ui::CInstallationSettingsWidget *mp_Ui;                 //!< User interface
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Reference to Keyboard widget
-    KeyBoard::ValidationType_t m_ValidationType;    //!< Keyboard input type validation
     DataManager::CHimalayaUserSettings *mp_UserSettings;    //!< Data object
     DataManager::CHimalayaUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow

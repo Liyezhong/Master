@@ -40,7 +40,6 @@ CNetworkSettingsWidget::CNetworkSettingsWidget(QWidget *p_Parent) :
     mp_MainWindow(NULL),m_ProcessRunning(false),
     m_CurrentUserRole(MainMenu::CMainWindow::Operator),
     mp_KeyBoardWidget(NULL),
-    m_ValidationType(KeyBoard::VALIDATION_1),
     m_ButtonType(USERNAME_BTN_CLICKED),
     m_Password(""),
     m_strEnterProxyName(tr("Enter Proxy User Name")),
@@ -227,7 +226,6 @@ void CNetworkSettingsWidget::OnProxyUserName()
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyName);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyUserNameButton->text());
-    m_ValidationType = KeyBoard::VALIDATION_3;
 //    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetMaxCharLength(16);
     mp_KeyBoardWidget->SetMinCharLength(1);
@@ -248,7 +246,7 @@ void CNetworkSettingsWidget::OnProxyPassword()
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyPassword);
     mp_KeyBoardWidget->SetPasswordMode(true);
     // mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyPasswordButton->text());
-    m_ValidationType = KeyBoard::VALIDATION_3;
+
 //    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetMaxCharLength(16);
     mp_KeyBoardWidget->SetMinCharLength(4);

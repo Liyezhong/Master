@@ -29,7 +29,6 @@
 #include "Programs/Include/StepModel.h"
 #include "KeyBoard/Include/KeyBoard.h"
 #include "Programs/Include/ProgramWidget.h"
-#include "KeyBoard/Include/KeyBoardObserver.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "Core/Include/DataContainer.h"
 #include "MainMenu/Include/ContentScroller.h"
@@ -51,8 +50,7 @@ namespace Ui {
  * \brief Edit dialog for a user defined  program.
  */
 /****************************************************************************/
-class CModifyProgramDlg : public MainMenu::CDialogFrame,
-                          public KeyBoard::CKeyBoardObserver
+class CModifyProgramDlg : public MainMenu::CDialogFrame
 {
     Q_OBJECT
     friend class CTestPrograms;
@@ -67,7 +65,6 @@ private:
     DataManager::CProgramStep m_SelectedStep;       //!< Currently selected program step
     CStepModel m_StepModel;                         //!< Model for the program step table
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Reference to Keyboard widget
-    KeyBoard::ValidationType_t m_ValidationType;    //!< Keyboard input validation type
     bool m_ProgNameBtnClicked;                      //!< True if Btn Program Name is clicked
     bool m_ProgShortNameBtnClicked;                 //!< True if Btn Program Short Name is clicked
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role

@@ -353,8 +353,6 @@ void CModifyProgramDlg::OnEditName()
             mp_KeyBoardWidget->SetLineEditContent(mp_Ui->btnPrgName->text());
         }
     }
-    m_ValidationType = KeyBoard::VALIDATION_1;
-//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetMaxCharLength(MAX_LONGNAME_LENGTH);
     mp_KeyBoardWidget->SetMinCharLength(MIN_LONGNAME_LENGTH);
     mp_KeyBoardWidget->show();
