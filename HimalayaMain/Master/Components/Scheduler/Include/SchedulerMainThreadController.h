@@ -78,6 +78,9 @@ typedef enum
     CTRL_CMD_DRAIN,
     CTRL_CMD_QUITAPP,
     CTRL_CMD_SHUTDOWN,
+    CTRL_CMD_RS_GET_ORIGINAL_POSITION_AGAIN,
+    CTRL_CMD_RC_REPORT,
+    CTRL_CMD_RC_RESTART,
     CTRL_CMD_NONE,
     CTRL_CMD_UNKNOWN
 }ControlCommandType_t;
@@ -152,6 +155,7 @@ typedef struct
         QString m_ReagentIdOfLastStep;
         bool m_PauseToBeProcessed;
         int m_ProcessCassetteCount;
+        quint32 m_EventKey; //todo: add mechanism to cash the key
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         const SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
@@ -226,6 +230,7 @@ private slots:
          bool SelfTest(ReturnCode_t RetCode);
          void Pause();
          void MoveRVToInit();
+         void ShutdownRetortHeater();
 
 protected:
 
