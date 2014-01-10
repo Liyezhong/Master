@@ -1,6 +1,7 @@
 #include "../Include/SchedulerMachine.h"
 #include "../Include/HimalayaDeviceEventCodes.h"
-#include "EventHandler/Include/CrisisEventHandler.h"
+#include "QDebug"
+#include "QDateTime"
 
 namespace Scheduler
 {
@@ -98,7 +99,7 @@ CSchedulerStateMachine::CSchedulerStateMachine()
 void CSchedulerStateMachine::OnStateChanged()
 {
     m_PreviousState = m_CurrentState;
-    LOG_PAR()<<"DBG"<< QDateTime::currentDateTime()<<"Previous state is: "<<hex<<m_PreviousState;
+    qDebug()<<"DBG"<< QDateTime::currentDateTime()<<"Previous state is: "<<hex<<m_PreviousState;
 #if 0
     quint32 stateid = STR_UNEXPECTED_STATE;
     switch(currentState)
