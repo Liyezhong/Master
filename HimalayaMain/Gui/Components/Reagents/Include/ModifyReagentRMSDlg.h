@@ -88,8 +88,6 @@ public:
     void InitDialog(DataManager::CReagent const *p_Reagent,
                     const DataManager::CDataReagentGroupList *p_ReagentGroupList,
                     Global::RMSOptions_t Option);
-    void Update();
-    void UpdateOnESC();
     void UpdateRmsLabel(Global::RMSOptions_t Option);
     void EnableElements(bool m_Enable);
 
@@ -107,12 +105,16 @@ private:
     void RetranslateUI();
     void ResizeHorizontalSection();
     void ShowReagentValue(Global::RMSOptions_t Option);
+    void ConnectKeyBoardSignalSlots();
+    void DisconnectKeyBoardSignalSlots();
+
 private slots:
     void OnOk();
     void OnCancel();
     void OnEditName();
     void OnEditCassetteValue();
-    void OnOkClicked();
+    void OnOkClicked(QString EnteredText);
+    void OnESCClicked();
     void SelectionChanged(QModelIndex Index);
 
 protected:

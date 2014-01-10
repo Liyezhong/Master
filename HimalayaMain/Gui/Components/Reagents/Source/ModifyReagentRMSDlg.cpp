@@ -260,24 +260,43 @@ void CModifyReagentRMSDlg::ShowReagentValue(Global::RMSOptions_t Option)
     }
 }
 
-/****************************************************************************/
-/*!
- *  \brief This function is called when Ok button on keyboard is clicked
- */
-/****************************************************************************/
-void CModifyReagentRMSDlg::Update()
-{
-    OnOkClicked();
-}
 
 /****************************************************************************/
 /*!
  *  \brief This function is called when ESC button on keyboard is clicked
  */
 /****************************************************************************/
-void CModifyReagentRMSDlg::UpdateOnESC()
+void CModifyReagentRMSDlg::OnESCClicked()
 {
     m_ReagentNameBtnClicked = false;
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Connects signals and slots of keyboard.
+ */
+/****************************************************************************/
+void CModifyReagentRMSDlg::ConnectKeyBoardSignalSlots()
+{
+    if (mp_KeyBoardWidget) {
+        // Connect signals and slots to keyboard.
+        CONNECTSIGNALSLOTGUI(mp_KeyBoardWidget, OkButtonClicked(QString), this, OnOkClicked(QString));
+        CONNECTSIGNALSLOTGUI(mp_KeyBoardWidget, EscButtonClicked(), this, OnESCClicked());
+    }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Disconnects signals and slots of keyboard.
+ */
+/****************************************************************************/
+void CModifyReagentRMSDlg::DisconnectKeyBoardSignalSlots()
+{
+    if (mp_KeyBoardWidget) {
+        // Disconnect signals and slots connected to keyboard.
+        (void) disconnect(mp_KeyBoardWidget, SIGNAL(OkButtonClicked(QString)), this, SLOT(OnOkClicked(QString)));
+        (void) disconnect(mp_KeyBoardWidget, SIGNAL(EscButtonClicked()), this, SLOT(OnESCClicked()));
+    }
 }
 
 /****************************************************************************/
@@ -426,7 +445,6 @@ void CModifyReagentRMSDlg::OnOk()
 /****************************************************************************/
 void CModifyReagentRMSDlg::OnEditName()
 {
-//    mp_KeyBoardWidget->Attach(this);
     m_ReagentNameBtnClicked = true;
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Reagent Name"));
 
@@ -439,7 +457,8 @@ void CModifyReagentRMSDlg::OnEditName()
     mp_KeyBoardWidget->SetMaxCharLength(20);
     mp_KeyBoardWidget->SetMinCharLength(1);
     mp_KeyBoardWidget->show();
-
+    // Connect signals and slots to keyboard.
+    ConnectKeyBoardSignalSlots();
 }
 
 /****************************************************************************/
@@ -449,7 +468,6 @@ void CModifyReagentRMSDlg::OnEditName()
 /****************************************************************************/
 void CModifyReagentRMSDlg::OnEditCassetteValue()
 {
-//    mp_KeyBoardWidget->Attach(this);
     m_CassetteValueBtnClicked = true;
     switch (m_RMSOption) {
         case Global::RMS_CASSETTES:
@@ -474,7 +492,10 @@ void CModifyReagentRMSDlg::OnEditCassetteValue()
     mp_KeyBoardWidget->SetMaxCharLength(32);
     mp_KeyBoardWidget->SetMinCharLength(1);
 	mp_KeyBoardWidget->SetLineEditValidatorExpression(REGEXP_NUMERIC_VALIDATOR);
+    mp_KeyBoardWidget->DisplayNumericKeyBoard();
     mp_KeyBoardWidget->show();
+    // Connect signals and slots to keyboard.
+    ConnectKeyBoardSignalSlots();
 
 }
 
@@ -483,7 +504,7 @@ void CModifyReagentRMSDlg::OnEditCassetteValue()
  *  \brief This slot is called when OK button on Keyboard is clicked.
  */
 /****************************************************************************/
-void CModifyReagentRMSDlg::OnOkClicked()
+void CModifyReagentRMSDlg::OnOkClicked(QString EnteredText)
 {
     QString LineEditString;
     mp_KeyBoardWidget->hide();
@@ -498,7 +519,8 @@ void CModifyReagentRMSDlg::OnOkClicked()
         mp_Ui->buttonValue->setText(LineEditString);
     }
 
-//    mp_KeyBoardWidget->Detach();
+    // Disconnect signals and slots connected to keyboard.
+    DisconnectKeyBoardSignalSlots();
 }
 
 /****************************************************************************/

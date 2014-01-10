@@ -317,22 +317,30 @@ void CModifyProgramDlg::SetRowFocus(qint32 CurrentRow)
 
 /****************************************************************************/
 /*!
- *  \brief This function is called when Ok button on keyboard is clicked
+ *  \brief Connects signals and slots of keyboard.
  */
 /****************************************************************************/
-void CModifyProgramDlg::Update()
+void CModifyProgramDlg::ConnectKeyBoardSignalSlots()
 {
-    OnOkClicked();
+    if (mp_KeyBoardWidget) {
+        // Connect signals and slots to keyboard.
+        CONNECTSIGNALSLOTGUI(mp_KeyBoardWidget, OkButtonClicked(QString), this, OnOkClicked(QString));
+        CONNECTSIGNALSLOTGUI(mp_KeyBoardWidget, EscButtonClicked(), this, OnESCClicked());
+    }
 }
 
 /****************************************************************************/
 /*!
- *  \brief This function is called when Ok button on keyboard is clicked
+ *  \brief Disconnects signals and slots of keyboard.
  */
 /****************************************************************************/
-void CModifyProgramDlg::UpdateOnESC()
+void CModifyProgramDlg::DisconnectKeyBoardSignalSlots()
 {
-    EscClicked();
+    if (mp_KeyBoardWidget) {
+        // Disconnect signals and slots connected to keyboard.
+        (void) disconnect(mp_KeyBoardWidget, SIGNAL(OkButtonClicked(QString)), this, SLOT(OnOkClicked(QString)));
+        (void) disconnect(mp_KeyBoardWidget, SIGNAL(EscButtonClicked()), this, SLOT(OnESCClicked()));
+    }
 }
 
 /****************************************************************************/
@@ -357,6 +365,8 @@ void CModifyProgramDlg::OnEditName()
     mp_KeyBoardWidget->SetMinCharLength(MIN_LONGNAME_LENGTH);
     mp_KeyBoardWidget->show();
     m_ProgNameBtnClicked  = true;
+    // Connect signals and slots to keyboard.
+    ConnectKeyBoardSignalSlots();
 }
 
 ///****************************************************************************/
@@ -586,17 +596,19 @@ void CModifyProgramDlg::OnProcessStateChanged()
         }
     }
 }
+
 /****************************************************************************/
 /*!
  *  \brief This slot is called when Esc button on Keyboard is clicked.
  */
 /****************************************************************************/
-void CModifyProgramDlg::EscClicked()
+void CModifyProgramDlg::OnESCClicked()
 {
 
     m_ProgNameBtnClicked = false;
     m_ProgShortNameBtnClicked = false;
-    //mp_KeyBoardWidget->Detach();
+    // Disconnect signals and slots connected to keyboard.
+    DisconnectKeyBoardSignalSlots();
 }
 
 /****************************************************************************/
@@ -604,23 +616,23 @@ void CModifyProgramDlg::EscClicked()
  *  \brief This slot is called when OK button on Keyboard is clicked.
  */
 /****************************************************************************/
-void CModifyProgramDlg::OnOkClicked()
+void CModifyProgramDlg::OnOkClicked(QString EnteredText)
 {
-    QString LineEditString;
     mp_KeyBoardWidget->hide();
     if (m_ProgNameBtnClicked) {
         m_ProgNameBtnClicked = false;
-        LineEditString = mp_KeyBoardWidget->GetLineEditString();
-        if (LineEditString == "Leica")
+        if (EnteredText == "Leica")
         {
             return;
         }
-        mp_Ui->btnPrgName->setText(tr("%1").arg(LineEditString));
+        mp_Ui->btnPrgName->setText(tr("%1").arg(EnteredText));
     }
     else if (m_ProgShortNameBtnClicked) {
         m_ProgShortNameBtnClicked = false;
     }
-//    mp_KeyBoardWidget->Detach();
+
+    // Disconnect signals and slots connected to keyboard.
+    DisconnectKeyBoardSignalSlots();
 }
 
 void CModifyProgramDlg::ButtonPrgIconEnable(bool enable)

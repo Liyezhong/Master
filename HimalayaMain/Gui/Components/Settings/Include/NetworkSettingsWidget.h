@@ -73,18 +73,18 @@ private:
 
     void RetranslateUI();
     void ResetButtons();
-
+    void ConnectKeyBoardSignalSlots();
+    void DisconnectKeyBoardSignalSlots();
 protected:
     void changeEvent(QEvent *p_Event);
     void showEvent(QShowEvent *p_Event);
-    void Update();
-    void UpdateOnESC();
 
 public:
      void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
 
 private slots:    
-    void OnOkClicked();
+    void OnOkClicked(QString EnteredText);
+    void OnESCClicked();
     void OnProcessStateChanged();
     void OnDirectConnectionStateChanged(int State);
     void OnProxyUserName();

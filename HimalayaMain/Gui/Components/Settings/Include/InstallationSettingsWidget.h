@@ -54,14 +54,14 @@ private:
     bool m_ProcessRunning;                          //!< Process running state
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
-
+    void ConnectKeyBoardSignalSlots();
+    void DisconnectKeyBoardSignalSlots();
 public:
     explicit CInstallationSettingsWidget(QWidget *p_Parent = NULL);
     ~CInstallationSettingsWidget();
     void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
     void SetKeyBoardInstance(KeyBoard::CKeyBoard *p_KeyBoard);
-    void Update();
 
 
 private:
@@ -72,12 +72,11 @@ private:
 protected:
     void changeEvent(QEvent *p_Event);
     void showEvent(QShowEvent *p_Event);
-    void UpdateOnESC();
 
  private slots:
     void OnEditclicked();
-    void OnOkClicked();
-    void OnUpdateclicked();
+    void OnOkClicked(QString EnteredText);
+    void OnESCClicked();
 
 };
 

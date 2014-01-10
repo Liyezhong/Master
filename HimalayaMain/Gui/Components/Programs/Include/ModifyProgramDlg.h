@@ -120,20 +120,17 @@ public:
      */
     /****************************************************************************/
     void CloseDialogModifyStepDlg();
-    void Update();
-    void UpdateOnESC();
     void NewProgram();    
     void DeleteSelectedStep(DataManager::CProgram* p_CurrentProgram);
 
 private:
     void ResizeHorizontalSection();
     DataManager::CProgramStep *SelectedStep();
-    void OnOkClicked();
-    void EscClicked();
     void RetranslateUI();
     void ResetButtons(DataManager::CProgram &CurrentProgram, bool SelectionChanged);
     void ButtonPrgIconEnable(bool enable);
-
+    void ConnectKeyBoardSignalSlots();
+    void DisconnectKeyBoardSignalSlots();
 private slots:
     void OnEditName();
     void OnEdit();
@@ -148,7 +145,8 @@ private slots:
     void CloseDialogs();
     void OnIconClicked();
     void UpdateProgramIcon(DataManager::CProgram *Program);
-
+    void OnOkClicked(QString EnteredText);
+    void OnESCClicked();
 signals:
 
     /****************************************************************************/
