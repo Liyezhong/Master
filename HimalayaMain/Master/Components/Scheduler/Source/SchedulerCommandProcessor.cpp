@@ -21,7 +21,6 @@
 #include "DeviceControl/Include/Interface/IDeviceProcessing.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
-#include "EventHandler/Include/CrisisEventHandler.h"
 
 namespace Scheduler{
 

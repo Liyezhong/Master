@@ -1,6 +1,7 @@
 #include "../Include/SchedulerMachine.h"
 #include "../Include/HimalayaDeviceEventCodes.h"
-#include "EventHandler/Include/CrisisEventHandler.h"
+#include "QDebug"
+#include "QDateTime"
 
 namespace Scheduler
 {
@@ -17,11 +18,11 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     mp_ErrorWaitState = new QState(mp_ErrorState);
     mp_ProgramStepStates = new CProgramStepStateMachine(mp_BusyState, mp_ErrorState);
 
-
     mp_SchedulerMachine->setInitialState(mp_InitState);
     mp_ErrorState->setInitialState(mp_ErrorWaitState);
 
     mp_RSRvGetOriginalPositionAgain = new CRsRvGetOriginalPositionAgain(mp_SchedulerMachine, mp_ErrorState );
+    mp_RCReport = new CRCReport(mp_SchedulerMachine, mp_ErrorState );
 
     mp_InitState->addTransition(this, SIGNAL(SchedulerInitComplete()), mp_IdleState);
     mp_IdleState->addTransition(this, SIGNAL(RunSignal()), mp_BusyState);
@@ -72,6 +73,9 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     connect(this, SIGNAL(sigRsRvMoveToInitPosition()), mp_RSRvGetOriginalPositionAgain, SIGNAL(RvMoveToInitPosition()));
     connect(this, SIGNAL(sigRsRvMoveToInitPositionFinished()), mp_RSRvGetOriginalPositionAgain, SIGNAL(RvMoveToInitPositionFinished()));
 
+    connect(this, SIGNAL(sigRCReport()), mp_RCReport, SIGNAL(RCReport()));
+    connect(this, SIGNAL(sigRCReport()), mp_RCReport, SIGNAL(RCReport()));
+
     connect(mp_ProgramStepStates, SIGNAL(OnInit()), this, SIGNAL(sigOnInit()));
     connect(mp_ProgramStepStates, SIGNAL(OnHeatLevelSensorTempS1()), this, SIGNAL(sigOnHeatLevelSensorTempS1()));
     connect(mp_ProgramStepStates, SIGNAL(OnHeatLevelSensorTempS2()), this, SIGNAL(sigOnHeatLevelSensorTempS2()));
@@ -87,18 +91,15 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     connect(mp_ProgramStepStates, SIGNAL(OnAborted()), this, SIGNAL(sigOnAborted()));
     connect(mp_ProgramStepStates, SIGNAL(OnPause()), this, SIGNAL(sigOnPause()));
     connect(mp_ProgramStepStates, SIGNAL(OnPauseDrain()), this, SIGNAL(sigOnPauseDrain()));
-
-
     connect(mp_ProgramStepStates, SIGNAL(OnStateExited()), this, SLOT(OnStateChanged()));
-
-
     connect(mp_RSRvGetOriginalPositionAgain, SIGNAL(OnRvMoveToInitPosition()), this, SIGNAL(sigOnRsRvMoveToInitPosition()));
+    connect(mp_RCReport, SIGNAL(OnRCReport()), this, SIGNAL(sigOnRCReport()));
 }
 
 void CSchedulerStateMachine::OnStateChanged()
 {
     m_PreviousState = m_CurrentState;
-    LOG_PAR()<<"DBG"<< QDateTime::currentDateTime()<<"Previous state is: "<<hex<<m_PreviousState;
+    qDebug()<<"DBG"<< QDateTime::currentDateTime()<<"Previous state is: "<<hex<<m_PreviousState;
 #if 0
     quint32 stateid = STR_UNEXPECTED_STATE;
     switch(currentState)
@@ -138,6 +139,8 @@ CSchedulerStateMachine::~CSchedulerStateMachine()
     mp_ProgramStepStates = NULL;
     delete mp_SchedulerMachine;
     mp_SchedulerMachine = NULL;
+    delete mp_RSRvGetOriginalPositionAgain;
+    mp_RSRvGetOriginalPositionAgain = NULL;
 }
 
 void CSchedulerStateMachine::UpdateCurrentState(SchedulerStateMachine_t currentState)
@@ -194,6 +197,7 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
             currentState = SM_ERR_WAIT;
         }
         else if((currentState = mp_RSRvGetOriginalPositionAgain->GetCurrentState(mp_SchedulerMachine->configuration())) != SM_UNDEF);
+        else if((currentState = mp_RCReport->GetCurrentState(mp_SchedulerMachine->configuration())) != SM_UNDEF);
     }else if(mp_SchedulerMachine->configuration().contains(mp_BusyState))
     {
         currentState = mp_ProgramStepStates->GetCurrentState(mp_SchedulerMachine->configuration());
@@ -205,7 +209,6 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
 SchedulerStateMachine_t CSchedulerStateMachine::GetPreviousState()
 {
     return m_PreviousState;
-//    return mp_ProgramStepStates->GetPreviousState();
 }
 
 void CSchedulerStateMachine::NotifyStInitOK()
@@ -324,13 +327,11 @@ void CSchedulerStateMachine::NotifyError()
 
 void CSchedulerStateMachine::NotifyPause(SchedulerStateMachine_t PreviousState)
 {
-    mp_ProgramStepStates->SetPreviousState(PreviousState);
     emit sigPause();
 }
 
 void CSchedulerStateMachine::NotifyAbort()
 {
-    mp_ProgramStepStates->SetPreviousState(this->GetCurrentState());
     emit sigAbort();
 }
 
@@ -349,38 +350,47 @@ void CSchedulerStateMachine::NotifyRsRvMoveToInitPosition()
     emit sigRsRvMoveToInitPosition();
 }
 
+void CSchedulerStateMachine::NotifyRCReport()
+{
+    emit sigRCReport();
+}
+
 void CSchedulerStateMachine::NotifyResume()
 {
     //emit sigResume(m_PreviousState);
-    if( mp_ProgramStepStates->GetPreviousState() == (PSSM_INIT))
+    if((this->GetPreviousState() & 0xFFFF) == PSSM_ST)
+    {
+        emit sigResumeToSelftest();
+    }
+    else if( this->GetPreviousState() == (PSSM_INIT))
     {
         emit sigResumeToInit();
     }
-    else if( mp_ProgramStepStates->GetPreviousState()== (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1))
+    else if( this->GetPreviousState()== (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1))
     {
         emit sigResumeToHeatLevelSensorS1();
     }
-    else if( mp_ProgramStepStates->GetPreviousState() == (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2))
+    else if( this->GetPreviousState() == (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2))
     {
         emit sigResumeToHeatLevelSensorS2();
     }
-    else if( mp_ProgramStepStates->GetPreviousState() == (PSSM_READY_TO_TUBE_BEFORE))
+    else if( this->GetPreviousState() == (PSSM_READY_TO_TUBE_BEFORE))
     {
         emit sigResumeToReadyToFill();
     }
-    else if( mp_ProgramStepStates->GetPreviousState() == (PSSM_READY_TO_FILL))
+    else if( this->GetPreviousState() == (PSSM_READY_TO_FILL))
     {
         emit sigResumeToReadyToFill();
     }
-    else if( mp_ProgramStepStates->GetPreviousState() == (PSSM_READY_TO_SEAL))
+    else if( this->GetPreviousState() == (PSSM_READY_TO_SEAL))
     {
         emit sigResumeToSoak();
     }
-    else if( mp_ProgramStepStates->GetPreviousState() == (PSSM_SOAK))
+    else if( this->GetPreviousState() == (PSSM_SOAK))
     {
         emit sigResumeToSoak();
     }
-    else if( mp_ProgramStepStates->GetPreviousState() == (PSSM_STEP_FINISH))
+    else if( this->GetPreviousState() == (PSSM_STEP_FINISH))
     {
         emit sigResumeToStepFinished();
     }
@@ -388,20 +398,18 @@ void CSchedulerStateMachine::NotifyResume()
     {
         //should not enter here
     }
-     mp_ProgramStepStates->SetPreviousState(PSSM_PAUSE);
 }
 
 void CSchedulerStateMachine::NotifyResumeDrain()
 {
-    if( mp_ProgramStepStates->GetPreviousState() == (PSSM_READY_TO_TUBE_AFTER))
+    if(this->GetPreviousState() == (PSSM_READY_TO_TUBE_AFTER))
     {
         emit sigResumeToReadyToTubeAfter();
     }
-    else if( mp_ProgramStepStates->GetPreviousState() == (PSSM_READY_TO_DRAIN))
+    else if(this->GetPreviousState() == (PSSM_READY_TO_DRAIN))
     {
         emit sigResumeToReadyToTubeAfter();
     }
-    mp_ProgramStepStates->SetPreviousState(PSSM_PAUSE_DRAIN);
 }
 
 
