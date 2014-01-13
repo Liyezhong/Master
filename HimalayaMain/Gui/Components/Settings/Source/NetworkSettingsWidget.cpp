@@ -40,7 +40,6 @@ CNetworkSettingsWidget::CNetworkSettingsWidget(QWidget *p_Parent) :
     mp_MainWindow(NULL),m_ProcessRunning(false),
     m_CurrentUserRole(MainMenu::CMainWindow::Operator),
     mp_KeyBoardWidget(NULL),
-    m_ValidationType(KeyBoard::VALIDATION_1),
     m_ButtonType(USERNAME_BTN_CLICKED),
     m_Password(""),
     m_strEnterProxyName(tr("Enter Proxy User Name")),
@@ -223,15 +222,17 @@ void CNetworkSettingsWidget::OnProxyUserName()
     if (!mp_KeyBoardWidget)
         return;
     m_ButtonType = USERNAME_BTN_CLICKED;
-//    mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyName);
     mp_KeyBoardWidget->SetPasswordMode(false);
-    mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyUserNameButton->text());
-    m_ValidationType = KeyBoard::VALIDATION_3;
-//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
+    //! \note Why is the replace done before setting text ?
+    //! Unfortunately, QAbstractPushButton's uses "&" for shortcut key. Hence entering "&&"
+    //! would result in "&" only. Hence the below hack!
+    mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyUserNameButton->text().replace("&&", "&"));
     mp_KeyBoardWidget->SetMaxCharLength(16);
     mp_KeyBoardWidget->SetMinCharLength(1);
     mp_KeyBoardWidget->show();
+    // Connect signals and slots to keyboard.
+    ConnectKeyBoardSignalSlots();
 }
 
 /****************************************************************************/
@@ -244,15 +245,13 @@ void CNetworkSettingsWidget::OnProxyPassword()
     if (!mp_KeyBoardWidget)
         return;
     m_ButtonType = PASSWORD_BTN_CLICKED;
-//    mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyPassword);
     mp_KeyBoardWidget->SetPasswordMode(true);
-    // mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyPasswordButton->text());
-    m_ValidationType = KeyBoard::VALIDATION_3;
-//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetMaxCharLength(16);
     mp_KeyBoardWidget->SetMinCharLength(4);
     mp_KeyBoardWidget->show();
+    // Connect signals and slots to keyboard.
+    ConnectKeyBoardSignalSlots();
 }
 
 /****************************************************************************/
@@ -265,17 +264,16 @@ void CNetworkSettingsWidget::OnProxyIPAddress()
     if (!mp_KeyBoardWidget)
         return;
     m_ButtonType = IP_ADDRESS_BTN_CLICKED;
-//    mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyIP);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyIpAddressButton->text());
-    // m_ValidationType = KeyBoard::VALIDATION_1;
-    // mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetMaxCharLength(32);
     mp_KeyBoardWidget->SetMinCharLength(2);
     // enable the input mask so that user can easily fill the ip address
     mp_KeyBoardWidget->SetLineEditInputMask(IPADDRESS_INPUT_MASK_);
     mp_KeyBoardWidget->show();
+    // Connect signals and slots to keyboard.
+    ConnectKeyBoardSignalSlots();
 }
 
 /****************************************************************************/
@@ -288,7 +286,6 @@ void CNetworkSettingsWidget::OnProxyPort()
     if (!mp_KeyBoardWidget)
         return;
     m_ButtonType = PORT_BTN_CLICKED;
-//    mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyPort);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyPortButton->text());
@@ -298,6 +295,8 @@ void CNetworkSettingsWidget::OnProxyPort()
     // [0-9] is used to allow user to enter only 0 to 9 digits
     mp_KeyBoardWidget->SetLineEditValidatorExpression(REGEXP_NUMERIC_VALIDATOR);
     mp_KeyBoardWidget->show();
+    // Connect signals and slots to keyboard.
+    ConnectKeyBoardSignalSlots();
 }
 
 /****************************************************************************/
@@ -312,48 +311,70 @@ void CNetworkSettingsWidget::SetKeyBoardInstance(KeyBoard::CKeyBoard *p_KeyBoard
 
 /****************************************************************************/
 /*!
- *  \brief This slot is called when Ok button on Keyboard is pressed.
+ *  \brief Connects signals and slots of keyboard.
  */
 /****************************************************************************/
-void CNetworkSettingsWidget::Update()
+void CNetworkSettingsWidget::ConnectKeyBoardSignalSlots()
 {
-    OnOkClicked();
+    if (mp_KeyBoardWidget) {
+        // Connect signals and slots to keyboard.
+        CONNECTSIGNALSLOTGUI(mp_KeyBoardWidget, OkButtonClicked(QString), this, OnOkClicked(QString));
+        CONNECTSIGNALSLOTGUI(mp_KeyBoardWidget, EscButtonClicked(), this, OnESCClicked());
+    }
+
 }
 
 /****************************************************************************/
 /*!
- *  \brief This slot is called when Ok button on Keyboard is pressed.
+ *  \brief Disconnects signals and slots of keyboard.
  */
 /****************************************************************************/
-void CNetworkSettingsWidget::UpdateOnESC()
+void CNetworkSettingsWidget::DisconnectKeyBoardSignalSlots()
 {
-    if (!mp_KeyBoardWidget)
-        return;
-//    mp_KeyBoardWidget->Detach();
+    if (mp_KeyBoardWidget) {
+        // Disconnect signals and slots connected to keyboard.
+        (void) disconnect(mp_KeyBoardWidget, SIGNAL(OkButtonClicked(QString)),
+                          this, SLOT(OnOkClicked(QString)));
+        (void) disconnect(mp_KeyBoardWidget, SIGNAL(EscButtonClicked()),
+                          this, SLOT(OnESCClicked()));
+    }
 
 }
+
+/****************************************************************************/
+/*!
+ *  \brief This slot is called when ESC button on Keyboard is pressed.
+ */
+/****************************************************************************/
+void CNetworkSettingsWidget::OnESCClicked()
+{
+    // Disconnect signals and slots connected to keyboard.
+    DisconnectKeyBoardSignalSlots();
+}
+
+
 /****************************************************************************/
 /*!
  *  \brief This slot is called when Ok button on KeyBoard is pressed.
  */
 /****************************************************************************/
-void CNetworkSettingsWidget::OnOkClicked()
+void CNetworkSettingsWidget::OnOkClicked(QString EnteredText)
 {
     if (!mp_KeyBoardWidget)
         return;
     QString PasswordString;
     QString EnteredString;
     EnteredString  = mp_KeyBoardWidget->GetLineEditString();
-    int Length = EnteredString.length();
+    int Length = EnteredText.length();
 
     switch(m_ButtonType) {
 
     case USERNAME_BTN_CLICKED:
-        mp_Ui->proxyUserNameButton->setText(EnteredString);
+        mp_Ui->proxyUserNameButton->setText(EnteredText);
         break;
 
     case PASSWORD_BTN_CLICKED:
-        m_Password = EnteredString;
+        m_Password = EnteredText;
         for(int i = 0; i < Length; i++) {
             qDebug()<<"i = "<< i;
             PasswordString  = PasswordString + "*";
@@ -362,16 +383,17 @@ void CNetworkSettingsWidget::OnOkClicked()
         break;
 
     case IP_ADDRESS_BTN_CLICKED:
-        mp_Ui->proxyIpAddressButton->setText(EnteredString);
+        mp_Ui->proxyIpAddressButton->setText(EnteredText);
         break;
 
     case PORT_BTN_CLICKED:
-        mp_Ui->proxyPortButton->setText(EnteredString);
+        mp_Ui->proxyPortButton->setText(EnteredText);
         break;
     default:
         break;
     }
-//    mp_KeyBoardWidget->Detach();
+    // Disconnect signals and slots connected to keyboard.
+    DisconnectKeyBoardSignalSlots();
 }
 
 /****************************************************************************/

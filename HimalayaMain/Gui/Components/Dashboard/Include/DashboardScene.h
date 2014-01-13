@@ -23,7 +23,6 @@
 
 #include "Core/Include/ReagentRMSModel.h"
 #include "Core/Include/DashboardStationItem.h"
-#include "Dashboard/Include/DashboardEndTimeWidget.h"
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/MainWindow.h"
 #include <QGraphicsScene>

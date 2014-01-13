@@ -24,7 +24,6 @@
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
 #include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/ScrollWheel.h"
-#include "KeyBoard/Include/KeyBoardObserver.h"
 #include "KeyBoard/Include/KeyBoard.h"
 #include "Reagents/Include/ReagentStatusWidget.h"
 #include "MainMenu/Include/ScrollTable.h"

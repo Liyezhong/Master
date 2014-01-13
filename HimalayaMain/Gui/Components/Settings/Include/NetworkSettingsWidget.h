@@ -45,8 +45,7 @@ typedef enum {
  * \brief This class contains the proxy settings for remote care
  */
 /****************************************************************************/
-class CNetworkSettingsWidget : public MainMenu::CPanelFrame//,
-                               //public KeyBoard::CKeyBoardObserver
+class CNetworkSettingsWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
 
@@ -64,7 +63,6 @@ private:
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Reference to Keyboard widget
-    KeyBoard::ValidationType_t m_ValidationType;    //!< Entered text validation type
     ButtonType_t m_ButtonType;                      //!< Button Type
     DataManager::CHimalayaUserSettings m_UserSettings;      //!< UserSettings object
     QString m_Password;                             //!< String to hold Password
@@ -75,18 +73,18 @@ private:
 
     void RetranslateUI();
     void ResetButtons();
-
+    void ConnectKeyBoardSignalSlots();
+    void DisconnectKeyBoardSignalSlots();
 protected:
     void changeEvent(QEvent *p_Event);
     void showEvent(QShowEvent *p_Event);
-    void Update();
-    void UpdateOnESC();
 
 public:
      void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
 
 private slots:    
-    void OnOkClicked();
+    void OnOkClicked(QString EnteredText);
+    void OnESCClicked();
     void OnProcessStateChanged();
     void OnDirectConnectionStateChanged(int State);
     void OnProxyUserName();

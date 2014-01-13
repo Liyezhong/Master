@@ -110,12 +110,9 @@ void CProgramRunningPanelWidget::changeEvent(QEvent *p_Event)
 
 void CProgramRunningPanelWidget::RetranslateUI()
 {
-    //m_strEndTime = QApplication::translate("Dashboard::CDashboardEndTimeWidget", "End Time :", 0, QApplication::UnicodeUTF8);
     m_strAborting = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Aborting...", 0, QApplication::UnicodeUTF8);
     m_strAborted = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Aborted.", 0, QApplication::UnicodeUTF8);
     m_strCompleted = QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Completed!", 0, QApplication::UnicodeUTF8);
-    //m_strReagentName = QApplication::translate("Dashboard::CDashboardEndTimeWidget", "Reagent Name :", 0, QApplication::UnicodeUTF8);
-
 }
 
 void CProgramRunningPanelWidget::SetUserSettings(DataManager::CUserSettings *pUserSettings)

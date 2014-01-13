@@ -24,7 +24,7 @@
 #include "MainMenu/Include/PanelFrame.h"
 #include "KeyBoard/Include/KeyBoard.h"
 #include "MainMenu/Include/MainWindow.h"
-#include "KeyBoard/Include/KeyBoardObserver.h"
+#include <QRegExpValidator>
 
 class QTimer;
 
@@ -34,38 +34,42 @@ namespace Ui {
     class CUserPrivilegeWidget;
 }
 
-class CManualProgramDlg;
 /****************************************************************************/
 /**
  * \brief Main widget for user configuration and switching
  */
 /****************************************************************************/
-class CUserPrivilegeWidget : public MainMenu::CPanelFrame,
-                             public KeyBoard::CKeyBoardObserver
+class CUserPrivilegeWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
+    friend class CTestUsers;
 
 private:
     Ui::CUserPrivilegeWidget *mp_Ui;                //!< User interface
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Reference to Keyboard widget
-    KeyBoard::ValidationType_t m_ValidationType;    //!< to store the validation type
     MainMenu::CMainWindow *mp_MainWindow;           //!< pointer to main window
     bool m_StdUserBtnClicked;                       //!< True if Std user btn was clicked
     bool m_ServiceUserBtnClicked;                   //!< True if Service user btn was Clicked
     bool m_SupervisorBtnClicked;                    //!< True if Supervisor user btn was clicked
     bool m_ChangePasswdBtnClicked;                  //!< True if Change password btn was clicked
     QString m_PwdType;                              //!< Type of the password is stored i.e. Old, New and Confirm
-    MainMenu::CMainWindow::UserRole_t m_UserLevel;  //!< Current user Level    
+    MainMenu::CMainWindow::UserRole_t m_UserLevel;  //!< Current user Level
     void RetranslateUI();
-    QTimer* m_Timer;
-    QString m_strEnterNewPassword;
-    QString m_strConfirmNewPassword;
+	QTimer* m_Timer;
+    void ConnectKeyBoardSignalSlots();
+    void DisconnectKeyBoardSignalSlots();
+    /****************************************************************************/
+    /*!
+     *  \brief Disable copy and assignment operator.
+     *
+     */
+    /****************************************************************************/
+    Q_DISABLE_COPY(CUserPrivilegeWidget)
+
 public:
     explicit CUserPrivilegeWidget(QWidget *p_Parent = 0,
                                   KeyBoard::CKeyBoard *p_KeyBoardWidget = NULL);
     ~CUserPrivilegeWidget();
-    void Update();
-    void UpdateOnESC();
 
 protected:
     void changeEvent(QEvent *p_Event);
@@ -75,14 +79,28 @@ private slots:
     void OnBtnAdministratorClicked();
     void OnBtnUserClicked();
     void OnBtnChangePasswordClicked();
-    void OnOkClicked();
-    void AppIdleForLongTime();
+    void OnOkClicked(QString EnteredString);
+    void OnESCClicked();
+	void AppIdleForLongTime();
 public slots:
     void UserAuthenticated(const qint32 &AuthenticatedLevel);
     void ChangeInAdminPassword(const QString &PasswordType);
     void OnInteractStart();
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief This signal is emitted when the langauge is changed.
+     *
+     */
+    /****************************************************************************/
     void UserLevelClicked(QDataStream &);
+
+    /****************************************************************************/
+    /*!
+     *  \brief This signal is emitted when Change Password button is clicked.
+     *
+     */
+    /****************************************************************************/
     void ChangePasswordClicked(QDataStream &);
 
 };

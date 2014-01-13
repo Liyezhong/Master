@@ -24,7 +24,6 @@
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
 #include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/ScrollWheel.h"
-#include "KeyBoard/Include/KeyBoardObserver.h"
 #include "KeyBoard/Include/KeyBoard.h"
 #include "Reagents/Include/ReagentRMSWidget.h"
 #include "Core/Include/ReagentGroupModel.h"
@@ -45,7 +44,7 @@ namespace Ui {
  * \brief Edit dialog for  reagents of the user
  */
 /****************************************************************************/
-class CModifyReagentRMSDlg : public MainMenu::CDialogFrame, public KeyBoard::CKeyBoardObserver
+class CModifyReagentRMSDlg : public MainMenu::CDialogFrame
 {
     Q_OBJECT
     friend class CTestReagents;
@@ -56,7 +55,6 @@ private:
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     Core::CDataConnector *mp_DataConnector;         //!< DataConnector local object
     DataManager::CReagent m_Reagent;                //!< Local reagent object    
-    KeyBoard::ValidationType_t m_ValidationType;    //!< Keyboard input type validation
     bool m_ReagentNameBtnClicked;                   //!< Reagent Name btn clicked status
     bool m_CassetteValueBtnClicked;                 //!< Reagent cassette value btn clicked status
     Reagents::ButtonType_t m_ButtonType;            //!< Informs which button was clicked
@@ -90,8 +88,6 @@ public:
     void InitDialog(DataManager::CReagent const *p_Reagent,
                     const DataManager::CDataReagentGroupList *p_ReagentGroupList,
                     Global::RMSOptions_t Option);
-    void Update();
-    void UpdateOnESC();
     void UpdateRmsLabel(Global::RMSOptions_t Option);
     void EnableElements(bool m_Enable);
 
@@ -109,12 +105,16 @@ private:
     void RetranslateUI();
     void ResizeHorizontalSection();
     void ShowReagentValue(Global::RMSOptions_t Option);
+    void ConnectKeyBoardSignalSlots();
+    void DisconnectKeyBoardSignalSlots();
+
 private slots:
     void OnOk();
     void OnCancel();
     void OnEditName();
     void OnEditCassetteValue();
-    void OnOkClicked();
+    void OnOkClicked(QString EnteredText);
+    void OnESCClicked();
     void SelectionChanged(QModelIndex Index);
 
 protected:

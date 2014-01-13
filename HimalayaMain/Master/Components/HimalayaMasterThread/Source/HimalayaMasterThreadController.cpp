@@ -967,10 +967,10 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
                 }
             }
 
-            //if (m_PasswordManager.ServiceAuthentication(Cmd.GetPassword(), DeviceName)) {
+            if (m_PasswordManager.ServiceAuthentication(Cmd.GetPassword(), DeviceName)) {
                 m_AuthenticatedLevel = Global::SERVICE;
                 bPassed = true;
-            //}
+            }
             break;
         case Global::OPERATOR:
             // there is no password for the operator

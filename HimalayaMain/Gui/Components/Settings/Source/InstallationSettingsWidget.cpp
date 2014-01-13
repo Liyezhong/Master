@@ -37,18 +37,15 @@ namespace Settings {
 /****************************************************************************/
 CInstallationSettingsWidget::CInstallationSettingsWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
     mp_Ui(new Ui::CInstallationSettingsWidget), mp_KeyBoardWidget(NULL),
-    m_ValidationType(KeyBoard::VALIDATION_1),
     mp_UserSettings(NULL),
     mp_MainWindow(NULL), m_ProcessRunning(false),
     m_CurrentUserRole(MainMenu::CMainWindow::Operator)
 {
     mp_Ui->setupUi(GetContentFrame());
     mp_Ui->btnEdit->setText(tr("Edit"));
-    //mp_Ui->btnUpdate->setText(tr("Update"));
     SetPanelTitle(tr("Installation"));
     mp_Ui->serialnumber->setText("0000-0000-0000-0000");
     CONNECTSIGNALSLOT(mp_Ui->btnEdit,clicked(),this,OnEditclicked());
-    //CONNECTSIGNALSLOT(mp_Ui->btnUpdate,clicked(),this,OnUpdateclicked());
 }
 
 
@@ -114,18 +111,15 @@ void CInstallationSettingsWidget::ResetButtons()
         (MainMenu::CMainWindow::Service == m_CurrentUserRole))
     {
         mp_Ui->btnEdit->setEnabled(true);
-        //mp_Ui->btnUpdate->setEnabled(true);
     }
     else if (!m_ProcessRunning &&
              MainMenu::CMainWindow::Admin == m_CurrentUserRole)
     {
         mp_Ui->btnEdit->setEnabled(true);
-        //mp_Ui->btnUpdate->setEnabled(false);
     }
     else
     {
         mp_Ui->btnEdit->setEnabled(false);
-        //mp_Ui->btnUpdate->setEnabled(false);
     }
 }
 
@@ -140,9 +134,7 @@ void CInstallationSettingsWidget::RetranslateUI()
    mp_Ui->btnEdit->setText(QApplication::translate(
                                "Settings::CInstallationSettingsWidget",
                                "Edit", 0, QApplication::UnicodeUTF8));
-   /*mp_Ui->btnUpdate->setText(QApplication::translate(
-                                 "Settings::CInstallationSettingsWidget",
-                                 "Update", 0, QApplication::UnicodeUTF8));*/
+
    mp_Ui->softwareversion->setText(QApplication::translate(
                                        "Settings::CInstallationSettingsWidget",
                                        "SoftwareVersion: ",
@@ -174,33 +166,62 @@ void CInstallationSettingsWidget::SetKeyBoardInstance(KeyBoard::CKeyBoard *p_Key
 {
     mp_KeyBoardWidget = p_KeyBoard;
 }
+/****************************************************************************/
+/*!
+ *  \brief Connects signals and slots of keyboard.
+ */
+/****************************************************************************/
+void CInstallationSettingsWidget::ConnectKeyBoardSignalSlots()
+{
+    if (mp_KeyBoardWidget) {
+        // Connect signals and slots to keyboard.
+        CONNECTSIGNALSLOTGUI(mp_KeyBoardWidget, OkButtonClicked(QString), this, OnOkClicked(QString));
+        CONNECTSIGNALSLOTGUI(mp_KeyBoardWidget, EscButtonClicked(), this, OnESCClicked());
+    }
+
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Disconnects signals and slots of keyboard.
+ */
+/****************************************************************************/
+void CInstallationSettingsWidget::DisconnectKeyBoardSignalSlots()
+{
+    if (mp_KeyBoardWidget) {
+        // Disconnect signals and slots connected to keyboard.
+        (void) disconnect(mp_KeyBoardWidget, SIGNAL(OkButtonClicked(QString)),
+                          this, SLOT(OnOkClicked(QString)));
+        (void) disconnect(mp_KeyBoardWidget, SIGNAL(EscButtonClicked()),
+                          this, SLOT(OnESCClicked()));
+    }
+
+}
 
 
 /****************************************************************************/
 /*!
- *  \brief This function is called when Ok button on keyboard is clicked
+ *  \brief This slot is called when ESC button on Keyboard is pressed.
  */
 /****************************************************************************/
-void CInstallationSettingsWidget::Update()
+void CInstallationSettingsWidget::OnESCClicked()
 {
-    OnOkClicked();
+    // Disconnect signals and slots connected to keyboard.
+    DisconnectKeyBoardSignalSlots();
 }
-
 
 /****************************************************************************/
 /*!
  *  \brief this function is called when keyboard ok clickeds
  */
 /****************************************************************************/
-void CInstallationSettingsWidget::OnOkClicked()
+void CInstallationSettingsWidget::OnOkClicked(QString EnteredText)
 {
     if (!mp_KeyBoardWidget)
         return;
-    QString LineEditString;
-    mp_KeyBoardWidget->hide();
 
-    LineEditString = mp_KeyBoardWidget->GetLineEditString();
-    mp_Ui->instrumentname->setText(LineEditString);
+    mp_KeyBoardWidget->hide();
+    mp_Ui->instrumentname->setText(EnteredText);
 }
 
 /****************************************************************************/
@@ -216,37 +237,14 @@ void CInstallationSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_Ma
 
 /****************************************************************************/
 /*!
- *  \brief This slot is called when Ok button on Keyboard is pressed.
- */
-/****************************************************************************/
-void CInstallationSettingsWidget::UpdateOnESC()
-{
-    if (!mp_KeyBoardWidget)
-        return;
-    //mp_KeyBoardWidget->Detach();
-}
-
-/****************************************************************************/
-/*!
- *  \brief This slot is called when Update button pressed.
- */
-/****************************************************************************/
-void CInstallationSettingsWidget:: OnUpdateclicked()
-{
-
-
-}
-/****************************************************************************/
-/*!
  *  \brief This Slot will be called when edit button is clicked.
  */
 /****************************************************************************/
-void CInstallationSettingsWidget :: OnEditclicked()
+void CInstallationSettingsWidget::OnEditclicked()
 {
     if (!mp_KeyBoardWidget)
         return;
 
-//    mp_KeyBoardWidget->Attach(this);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("Enter Instrument Name"));
 
     if (mp_Ui->instrumentname->text().isEmpty())
@@ -258,11 +256,13 @@ void CInstallationSettingsWidget :: OnEditclicked()
         mp_KeyBoardWidget->SetLineEditContent(mp_Ui->instrumentname->text());
     }
 
-    m_ValidationType = KeyBoard::VALIDATION_1;
-//    mp_KeyBoardWidget->SetValidationType(m_ValidationType);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetMaxCharLength(32);
     mp_KeyBoardWidget->SetMinCharLength(2);
     mp_KeyBoardWidget->show();
+
+    // Connect signals and slots to keyboard.
+    ConnectKeyBoardSignalSlots();
 }
+
 } // end namespace Settings
