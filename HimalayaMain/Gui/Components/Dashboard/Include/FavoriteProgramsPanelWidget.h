@@ -58,7 +58,6 @@ namespace Dashboard {
 
     private:
         void SetButtonGroup();
-        QMap<int, QString> m_mapButtonProgramId;//(button Id <--> Program ID)
         QMap<int, QLabel*> m_mapLabel;//(label Id <--> QLabel)
         Ui::CFavoriteProgramsPanelWidget *ui;
         QButtonGroup m_ButtonGroup;

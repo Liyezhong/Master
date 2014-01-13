@@ -13,8 +13,8 @@ QString CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME = tr("");
 CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CFavoriteProgramsPanelWidget),
-    m_LastSelectedButtonId(-1),
-    m_ProcessRunning(false)
+    m_ProcessRunning(false),
+    m_LastSelectedButtonId(-1)
 {
     ui->setupUi(this);
     SetButtonGroup();
@@ -57,13 +57,6 @@ void CFavoriteProgramsPanelWidget ::SetButtonGroup()
     m_mapLabel.insert(2, ui->lblPrg3);
     m_mapLabel.insert(3, ui->lblPrg4);
     m_mapLabel.insert(4, ui->lblPrg5);
-
-    m_mapButtonProgramId.clear();
-    for(int i = 0; i < 5; i++)
-    {
-        m_mapButtonProgramId.insert(i, "");
-    }
-
 }
 
 void CFavoriteProgramsPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector)
@@ -89,29 +82,22 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
     }
 
     //loop all program buttons
-    QMapIterator<int, QString> iter(m_mapButtonProgramId);
-    while (iter.hasNext()) {
-        iter.next();
-        QString val = iter.value();
-        if (m_FavProgramIDs.contains(val))//in favProgramIDs
+    for(int i = 0; i < 5; i++)
+    {
+        QAbstractButton* btn = m_ButtonGroup.button(i);
+        if (btn->isEnabled())
         {
-           m_FavProgramIDs.removeOne(iter.value());
-        }
-        else//not in favProgramIDs
-        {
-            QAbstractButton* btn = m_ButtonGroup.button(iter.key());
             btn->setEnabled(false);
             btn->setIcon(QIcon(""));
 
-            QLabel* label = m_mapLabel.value(iter.key());
+            QLabel* label = m_mapLabel.value(i);
             label->setText("");
-            m_mapButtonProgramId[iter.key()] = "";
         }
     }
 
-    for ( int i = 0; i < m_FavProgramIDs.count(); i++)
+    for ( int j = 0; j < m_FavProgramIDs.count(); j++)
     {
-        QString ProgramId = m_FavProgramIDs.at(i);
+        QString ProgramId = m_FavProgramIDs.at(j);
         QString ProgramName = mp_ProgramList->GetProgram(ProgramId)->GetName();
         QString strIconName;
         if (mp_ProgramList->GetProgram(ProgramId)->GetIcon().isEmpty())
@@ -121,19 +107,11 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         else
             strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(ProgramId)->GetIcon() + ".png";
 
-        for (int j = 0; j < 5; j++)
-        {
-            if(!m_ButtonGroup.button(j)->isEnabled())
-            {
-                //enable this button and use it
-                m_ButtonGroup.button(j)->setEnabled(true);
-                m_ButtonGroup.button(j)->setIcon(QIcon(strIconName));
-                QLabel* label = m_mapLabel.value(j);
-                label->setText(ProgramName);
-                m_mapButtonProgramId[j] = ProgramId;
-                break;
-            }
-        }
+        //enable this button and use it
+        m_ButtonGroup.button(j)->setEnabled(true);
+        m_ButtonGroup.button(j)->setIcon(QIcon(strIconName));
+        QLabel* label = m_mapLabel.value(j);
+        label->setText(ProgramName);
     }
 }
 
@@ -177,7 +155,6 @@ void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
 void CFavoriteProgramsPanelWidget::OnSelectDateTime(const QDateTime& dateTime)
 {
     m_EndDateTime = dateTime;
-    //show the time on the panel???
 }
 
 
