@@ -14,7 +14,8 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CFavoriteProgramsPanelWidget),
     m_ProcessRunning(false),
-    m_LastSelectedButtonId(-1)
+    m_LastSelectedButtonId(-1),
+    mp_DataConnector(NULL)
 {
     ui->setupUi(this);
     SetButtonGroup();
@@ -30,6 +31,7 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
     CONNECTSIGNALSLOT(ui->BtnProgram3, clicked(bool), this, OnEndTimeButtonClicked());
     CONNECTSIGNALSLOT(ui->BtnProgram4, clicked(bool), this, OnEndTimeButtonClicked());
     CONNECTSIGNALSLOT(ui->BtnProgram5, clicked(bool), this, OnEndTimeButtonClicked());
+    AddItemsToFavoritePanel(false);
 }
 
 CFavoriteProgramsPanelWidget::~CFavoriteProgramsPanelWidget()
@@ -67,6 +69,20 @@ void CFavoriteProgramsPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_M
 
 void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram)
 {
+    //loop all program buttons
+    for(int i = 0; i < 5; i++)
+    {
+        QAbstractButton* btn = m_ButtonGroup.button(i);
+        if (btn->isEnabled())
+        {
+            btn->setEnabled(false);
+            btn->setIcon(QIcon(""));
+
+            QLabel* label = m_mapLabel.value(i);
+            label->setText("");
+        }
+    }
+
     if (!mp_DataConnector)
     return;
 
@@ -81,19 +97,7 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         m_FavProgramIDs = mp_ProgramList->GetFavoriteProgramIDs(); // get five favorite Programs' ID
     }
 
-    //loop all program buttons
-    for(int i = 0; i < 5; i++)
-    {
-        QAbstractButton* btn = m_ButtonGroup.button(i);
-        if (btn->isEnabled())
-        {
-            btn->setEnabled(false);
-            btn->setIcon(QIcon(""));
 
-            QLabel* label = m_mapLabel.value(i);
-            label->setText("");
-        }
-    }
 
     for ( int j = 0; j < m_FavProgramIDs.count(); j++)
     {

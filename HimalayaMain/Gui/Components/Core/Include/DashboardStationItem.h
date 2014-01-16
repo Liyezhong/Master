@@ -69,10 +69,15 @@ private:
     QString m_StationItemLabel;                          //!< Station Label
     const int m_RetortBoundingRectWidth;                 //!< Retort Bounding Rect Width
     const int m_RetortBoundingRectHeight;                //!< Retort Bounding Rect Height
+    const int m_RetortCoverHeight;                       //!< Retort Cover Height
+
     const int m_ParaffinbathBoundingRectWidth;           //!< Paraffinbath Bounding Rect Width
     const int m_ParaffinbathBoundingRectHeight;          //!< Paraffinbath Bounding Rect Height
+    const int m_ParaffinbathCoverHeight;                 //!< Paraffinbath Cover Height
+
     const int m_BottleBoundingRectWidth;                 //!< Bottle Bounding Rect Width
     const int m_BottleBoundingRectHeight;                //!< Bottle Bounding Rect Height
+    const int m_BottleCoverHeight;                       //!< Bottle Cover Height
 
     int m_CurrentBoundingRectReagentHeight;                //!< current container Bounding Rect Height
 

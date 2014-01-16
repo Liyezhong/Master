@@ -122,9 +122,10 @@ private:
     QTimer* m_pBlinkingTimer;
     QGraphicsPathItem* m_pWorkingPipeGraphicsRectItem;
     QList<QGraphicsPathItem*> m_pGraphicsPathItemPipeList;
-    QGraphicsPathItem* m_WholePipeGraphicsRectItem;
+    QGraphicsPathItem* m_WholePipeGraphicsRectItem, * m_UsedPipeGraphicsRectItem;
     int m_currentTimerOrder;
     QString m_SuckDrainStationId;
+    QList<QString> m_SelectedStationList;
     void InitDashboardStationIDs();
     void InitDashboardStationItemsPositions();
     void InitStationConnectedPipeList();
@@ -139,8 +140,12 @@ private:
                                         const QString& MidTopStationID, bool IsReturnLeftOne, bool bShortor = false);//IsReturnLeftOne is false ,it will return the right one
     void CollectPipeRect();
     void CreateAllPipe();
+    QStringList* GetPipeList(const QString& StationID);
     void RepresentCurrentWorkingPipe(const QString& StationID);
     void ClearCurrentWorkingPipe();
+
+    void RepresentUsedPipe(const QList<QString>& selectedStationList, bool isRunning);
+    void ClearUsedPipe();
 private slots:
     void UpdateDashboardStations();
     void UpdateDashboardSceneReagentsForProgram(QString&, QList<QString>&);
