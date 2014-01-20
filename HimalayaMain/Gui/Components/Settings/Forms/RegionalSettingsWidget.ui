@@ -69,6 +69,9 @@
    </item>
    <item row="2" column="3" colspan="2">
     <widget class="MainMenu::CSliderControl" name="temperatureSlider">
+     <property name="maximum">
+      <number>1</number>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -158,6 +161,9 @@
    </item>
    <item row="5" column="3" colspan="2">
     <widget class="MainMenu::CSliderControl" name="timeSlider">
+     <property name="maximum">
+      <number>1</number>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
