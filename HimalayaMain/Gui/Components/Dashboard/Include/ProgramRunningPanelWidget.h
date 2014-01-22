@@ -35,7 +35,7 @@ namespace Dashboard {
         const QTime&  GetStepRemainingTime();
         const QTime GetProgramRemainingTime();
         const QString GetEndDateTime();
-
+        void EnableProgramDetailButton(bool bEnable);
     public slots:
         void OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType, int remainingTimeTotal,
                                     const QDateTime& startDateTime, bool IsResume);//in seconds
@@ -45,14 +45,18 @@ namespace Dashboard {
     protected:
         void changeEvent(QEvent *p_Event);
 
+    signals:
+        void AbortClicked(int);
     private slots:
         void UpdateProgress();
-        void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady);
+        void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
         void OnUserSettingsUpdated();
         void OnProcessStateChanged();
+        void OnProgramFetail();
     private:
         void UpdateDateTime(const QDateTime & selDateTime);
         void RetranslateUI();
+        void GetStationNameList(QList<QString>& stationNameList);
         Ui::CProgramRunningPanelWidget *ui;
         QTimer* mp_ProgressTimer;
         QTime m_CurStepRemainingTime;
@@ -67,7 +71,9 @@ namespace Dashboard {
         Global::DateFormat m_CurDateFormat;
         Global::TimeFormat m_CurTimeFormat;
         QString m_DateTimeStr;
-
+        QString m_selectedProgramId;
+        QList<QString> m_selectedStationList;
+        int m_CurProgramStepIndex;
     };
 }
 

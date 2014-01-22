@@ -50,7 +50,7 @@ public:
     ~CDashboardWidget();
     static bool CheckSelectedProgram(bool& bRevertSelectProgram,
                                      QString ProgramID = "");//the return value(true) means the work flow can go continuely.
-
+    bool IsAbortEnabled();
 protected:
     void changeEvent(QEvent *p_Event);
 
@@ -112,8 +112,8 @@ private slots:
     void OnProcessStateChanged();
  signals:
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram = false);
-    void ProgramSelected(QString & ProgramId, QList<QString>& SelectedStationList);
-    void ProgramSelected(QString & ProgramId, int asapEndTime, bool bProgramStartReady);
+    void ProgramSelected(QString & programId, QList<QString>& selectedStationList);
+    void ProgramSelected(QString & programId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
     void UpdateSelectedStationList(QList<QString>&);
     void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
     void ProgramActionStopped(DataManager::ProgramStatusType_t);

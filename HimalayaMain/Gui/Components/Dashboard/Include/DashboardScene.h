@@ -70,9 +70,6 @@ public:
     virtual ~CDashboardScene();
     void UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType);
     void UpdateRetortLockedStatus(bool locked);
-    /*const QTime& GetStepRemainingTime();
-    const QTime GetProgramRemainingTime();
-    const QString GetEndDateTime();*/
     void OnPauseStationSuckDrain();
     void OnStationSuckDrain(const QString& StationId, bool IsStart, bool IsSuck);
     bool HaveExpiredReagent();

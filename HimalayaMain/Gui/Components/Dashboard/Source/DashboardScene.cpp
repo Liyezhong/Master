@@ -786,21 +786,6 @@ void CDashboardScene::UpdateRetortLockedStatus(bool locked)
 {
     mp_DashboardStationRetort->SetContainerRetortLockedStatus(locked);
 }
-/*const QTime& CDashboardScene::GetStepRemainingTime()
-{
-    return mp_DashboardEndTimeWidget->GetStepRemainingTime();
-}
-
-const QTime CDashboardScene::GetProgramRemainingTime()
-{
-    return mp_DashboardEndTimeWidget->GetProgramRemainingTime();
-}
-
-const QString CDashboardScene::GetEndDateTime()
-{
-    return mp_DashboardEndTimeWidget->GetEndDateTime();
-}
-*/
 
 void CDashboardScene::OnPauseStationSuckDrain()
 {

@@ -84,9 +84,9 @@ protected:
     void Initialize();
 
 signals:
-    void ProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType);
+    void ProgramAction(const QString& programID, DataManager::ProgramActionType_t actionType);
     void UpdateDashboardSceneReagentStations(QString& ProgramID);
-    void ProgramSelected(QString & ProgramId, QList<QString>& SelectedStationList);
+    void ProgramSelected(QString & programId, QList<QString>& selectedStationList);
     void OnSelectEndDateTime(const QDateTime &);
 public slots:
     void OnProcessStateChanged();

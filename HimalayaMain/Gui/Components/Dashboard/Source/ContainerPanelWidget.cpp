@@ -91,7 +91,6 @@ void CContainerPanelWidget::Initialize()
 
     mp_MessageDlg = new MainMenu::CMessageDlg();
 
-    //CONNECTSIGNALSLOT(mp_ProgramStatusWidget, AbortClicked(int), this, OnButtonClicked(int));
 
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, QList<QString>&),
                        mp_DashboardScene, UpdateDashboardSceneReagentsForProgram(QString&, QList<QString>&));

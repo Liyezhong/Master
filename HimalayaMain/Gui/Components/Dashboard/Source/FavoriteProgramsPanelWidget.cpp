@@ -69,6 +69,7 @@ void CFavoriteProgramsPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_M
 
 void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram)
 {
+    UndoProgramSelection();
     //loop all program buttons
     for(int i = 0; i < 5; i++)
     {
@@ -124,9 +125,9 @@ void CFavoriteProgramsPanelWidget::OnProcessStateChanged()
    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
 }
 
-void CFavoriteProgramsPanelWidget::ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady)
+void CFavoriteProgramsPanelWidget::ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady)
 {
-    Q_UNUSED(ProgramId);
+    Q_UNUSED(programId);
     Q_UNUSED(bProgramStartReady);
     m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 }
@@ -134,7 +135,12 @@ void CFavoriteProgramsPanelWidget::ProgramSelected(QString& ProgramId, int asapE
 void CFavoriteProgramsPanelWidget::UndoProgramSelection()
 {
     m_ButtonGroup.setExclusive(false);
-    m_ButtonGroup.button(m_ButtonGroup.checkedId())->setChecked(false);
+    int checkedID = m_ButtonGroup.checkedId();
+    if (checkedID != -1)
+    {
+        m_ButtonGroup.button(checkedID)->setChecked(false);
+    }
+
     m_ButtonGroup.setExclusive(true);
     m_LastSelectedButtonId = -1;
 }
