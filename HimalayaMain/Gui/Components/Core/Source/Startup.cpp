@@ -28,6 +28,7 @@
 
 namespace Core {
 
+CStartup* CStartup::self = NULL;
 /****************************************************************************/
 /*!
  *  \brief Constructor
@@ -36,6 +37,7 @@ namespace Core {
 CStartup::CStartup() : QObject()
 {
     //m_MainWindow.setWindowTitle("MainWindow");
+    CStartup::self = this;
     m_MainWindow.setFixedSize(800, 600);
     m_MainWindow.SetVerticalOrientation(true);
     m_MainWindow.SetUserIcon(MainMenu::CMainWindow::Operator);
