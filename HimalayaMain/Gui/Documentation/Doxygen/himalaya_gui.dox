@@ -539,6 +539,7 @@ QUIET                  = NO
 
 WARNINGS               = YES
 
+WARN_LOGFILE           = "warnings.log"
 # If WARN_IF_UNDOCUMENTED is set to YES, then doxygen will generate warnings
 # for undocumented members. If EXTRACT_ALL is set to YES then this flag will
 # automatically be disabled.
