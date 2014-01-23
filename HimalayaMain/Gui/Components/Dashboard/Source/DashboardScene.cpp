@@ -741,8 +741,18 @@ void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId,
 {
     m_SelectedStationList.clear();
     m_SelectedStationList << selectedStationList;
-     this->removeItem(m_WholePipeGraphicsRectItem);
-    this->RepresentUsedPipe(m_SelectedStationList, false);
+    if (programId.isEmpty())
+    {
+        this->addItem(m_WholePipeGraphicsRectItem);
+
+    }
+    else
+    {
+        this->removeItem(m_WholePipeGraphicsRectItem);
+        this->RepresentUsedPipe(m_SelectedStationList, false);
+    }
+
+
 
     DataManager::CProgram const *p_Program = NULL;
 
@@ -759,6 +769,7 @@ void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId,
         if(!p_Program)//reset
         {
             pListItem->StationSelected(true);
+            pListItem->setVisible(true);
         }
         else
         {

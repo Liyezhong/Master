@@ -340,6 +340,7 @@ void CDashboardWidget::OnUnselectProgram()
         emit ProgramSelected(m_SelectedProgramId, m_StationList);
         emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_StationList);
         emit UpdateSelectedStationList(m_StationList);
+        emit UndoProgramSelection();
     }
 }
 
