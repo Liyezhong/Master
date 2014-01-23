@@ -57,7 +57,6 @@ CContainerPanelWidget::CContainerPanelWidget(QWidget *p_Parent): MainMenu::CPane
 CContainerPanelWidget::~CContainerPanelWidget()
 {
     try {
-        delete mp_ProgramStatusWidget;
         delete mp_DashboardScene;
         delete mp_MessageDlg;
         delete mp_Ui;
@@ -75,10 +74,6 @@ void  CContainerPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWin
 
 void CContainerPanelWidget::Initialize()
 {
-    mp_ProgramStatusWidget = new Dashboard::CDashboardProgramStatusWidget();
-    mp_ProgramStatusWidget->setWindowFlags(Qt::CustomizeWindowHint);
-    mp_ProgramStatusWidget->setVisible(false);
-
     mp_DashboardScene = new CDashboardScene(mp_DataConnector, this, mp_MainWindow);
     mp_Ui->dashboardView->setScene(mp_DashboardScene);
     //mp_Ui->dashboardView->setRenderHint(QPainter::Antialiasing);
@@ -91,7 +86,6 @@ void CContainerPanelWidget::Initialize()
 
     mp_MessageDlg = new MainMenu::CMessageDlg();
 
-    //CONNECTSIGNALSLOT(mp_ProgramStatusWidget, AbortClicked(int), this, OnButtonClicked(int));
 
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, QList<QString>&),
                        mp_DashboardScene, UpdateDashboardSceneReagentsForProgram(QString&, QList<QString>&));

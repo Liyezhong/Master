@@ -1,7 +1,7 @@
 /****************************************************************************/
 /*! \file DashboardDataTypes.h
  *
- *  \brief DashboardComboBox definition.
+ *  \brief DashboardDataTypes definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 27-Mar-2013

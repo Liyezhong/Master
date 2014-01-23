@@ -27,13 +27,13 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
 
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&), this, OnSelectEndDateTime(const QDateTime &));
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool),
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, QList<QString>&),
                       ui->favoriteProgramsPanel, ProgramSelected(QString&, int, bool));
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool),
-                      ui->programRunningPanel, ProgramSelected(QString&, int, bool));
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, QList<QString>&),
+                      ui->programRunningPanel, ProgramSelected(QString&, int, bool, QList<QString>&));
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool),
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, QList<QString>&),
                       this, OnProgramSelected(QString&, int, bool));
 
     CONNECTSIGNALSLOT(this, UndoProgramSelection(),
@@ -59,11 +59,12 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     m_btnGroup.addButton(ui->pauseButton, Dashboard::secondButton);
 
     CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
-
-
     ui->startButton->setEnabled(false);
     ui->pauseButton->setEnabled(false);
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
+
+    CONNECTSIGNALSLOT(ui->programRunningPanel, AbortClicked(int), this, OnButtonClicked(int));
+
 }
 
 CProgramPanelWidget::~CProgramPanelWidget()
@@ -313,15 +314,15 @@ bool CProgramPanelWidget::IsResumeRun()
     return m_IsResumeRun;
 }
 
+bool CProgramPanelWidget::IsAbortEnabled()
+{
+    return this->ui->startButton->isEnabled();
+}
+
 void CProgramPanelWidget::OnProgramStartReadyUpdated()
 {
     if (!m_SelectedProgramId.isEmpty())
         this->ui->startButton->setEnabled(true);
-}
-
-void CProgramPanelWidget::SetProgramNextActionAsStart()
-{
-    m_ProgramNextAction = DataManager::PROGRAM_START;
 }
 
 void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType,
@@ -333,6 +334,7 @@ void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_
     if (DataManager::PROGRAM_START== ProgramActionType)
     {
         ui->stackedWidget->setCurrentIndex(1);
+        ui->programRunningPanel->EnableProgramDetailButton(m_SelectedProgramId.at(0) != 'C');
         QString strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(m_SelectedProgramId)->GetIcon() + ".png";
         ui->programRunningPanel->SetPanelIcon(strIconName);
         ui->programRunningPanel->SetPanelTitle(QString("%1").arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME));

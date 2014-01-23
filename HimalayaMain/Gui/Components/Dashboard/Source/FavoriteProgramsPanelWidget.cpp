@@ -14,7 +14,8 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CFavoriteProgramsPanelWidget),
     m_ProcessRunning(false),
-    m_LastSelectedButtonId(-1)
+    m_LastSelectedButtonId(-1),
+    mp_DataConnector(NULL)
 {
     ui->setupUi(this);
     SetButtonGroup();
@@ -30,6 +31,7 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
     CONNECTSIGNALSLOT(ui->BtnProgram3, clicked(bool), this, OnEndTimeButtonClicked());
     CONNECTSIGNALSLOT(ui->BtnProgram4, clicked(bool), this, OnEndTimeButtonClicked());
     CONNECTSIGNALSLOT(ui->BtnProgram5, clicked(bool), this, OnEndTimeButtonClicked());
+    AddItemsToFavoritePanel(false);
 }
 
 CFavoriteProgramsPanelWidget::~CFavoriteProgramsPanelWidget()
@@ -67,6 +69,21 @@ void CFavoriteProgramsPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_M
 
 void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram)
 {
+    UndoProgramSelection();
+    //loop all program buttons
+    for(int i = 0; i < 5; i++)
+    {
+        QAbstractButton* btn = m_ButtonGroup.button(i);
+        if (btn->isEnabled())
+        {
+            btn->setEnabled(false);
+            btn->setIcon(QIcon(""));
+
+            QLabel* label = m_mapLabel.value(i);
+            label->setText("");
+        }
+    }
+
     if (!mp_DataConnector)
     return;
 
@@ -81,19 +98,7 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         m_FavProgramIDs = mp_ProgramList->GetFavoriteProgramIDs(); // get five favorite Programs' ID
     }
 
-    //loop all program buttons
-    for(int i = 0; i < 5; i++)
-    {
-        QAbstractButton* btn = m_ButtonGroup.button(i);
-        if (btn->isEnabled())
-        {
-            btn->setEnabled(false);
-            btn->setIcon(QIcon(""));
 
-            QLabel* label = m_mapLabel.value(i);
-            label->setText("");
-        }
-    }
 
     for ( int j = 0; j < m_FavProgramIDs.count(); j++)
     {
@@ -120,9 +125,9 @@ void CFavoriteProgramsPanelWidget::OnProcessStateChanged()
    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
 }
 
-void CFavoriteProgramsPanelWidget::ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady)
+void CFavoriteProgramsPanelWidget::ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady)
 {
-    Q_UNUSED(ProgramId);
+    Q_UNUSED(programId);
     Q_UNUSED(bProgramStartReady);
     m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 }
@@ -130,7 +135,12 @@ void CFavoriteProgramsPanelWidget::ProgramSelected(QString& ProgramId, int asapE
 void CFavoriteProgramsPanelWidget::UndoProgramSelection()
 {
     m_ButtonGroup.setExclusive(false);
-    m_ButtonGroup.button(m_ButtonGroup.checkedId())->setChecked(false);
+    int checkedID = m_ButtonGroup.checkedId();
+    if (checkedID != -1)
+    {
+        m_ButtonGroup.button(checkedID)->setChecked(false);
+    }
+
     m_ButtonGroup.setExclusive(true);
     m_LastSelectedButtonId = -1;
 }

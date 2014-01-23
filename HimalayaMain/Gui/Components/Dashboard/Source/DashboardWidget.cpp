@@ -62,8 +62,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(ui->programPanelWidget, OnSelectEndDateTime(const QDateTime&),
                         this, OnSelectEndDateTime(const QDateTime &));
 
-    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int, bool),
-                       ui->programPanelWidget, ProgramSelected(QString&, int, bool));
+    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int, bool, QList<QString>&),
+                       ui->programPanelWidget, ProgramSelected(QString&, int, bool, QList<QString>&));
 
     CONNECTSIGNALSIGNAL(this, UndoProgramSelection(),
                        ui->programPanelWidget, UndoProgramSelection());
@@ -107,8 +107,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramPaused(),
                               this, OnProgramPaused());
 
-    CONNECTSIGNALSLOT(this, SetProgramNextActionAsStart(), ui->programPanelWidget, SetProgramNextActionAsStart());
-
     CONNECTSIGNALSIGNAL(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
                       ui->programPanelWidget, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
 
@@ -141,7 +139,7 @@ void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCur
     m_CurProgramStepIndex = cmd.CurProgramStepIndex();
     if (cmd.CurProgramStepIndex() > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
     {
-          ui->programPanelWidget->EnableStartButton(true);
+          ui->programPanelWidget->EnablePauseButton(false);
     }
 }
 
@@ -226,13 +224,12 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
         m_IsWaitingCleaningProgram = true;
         if (mp_MessageDlg->exec())
         {
-            emit SetProgramNextActionAsStart();
+            ui->programPanelWidget->ChangeStartButtonToStartState();
             //only show Cleaning program in the favorite panel
             emit AddItemsToFavoritePanel(true);
             //switch to the dashboard page
             mp_MainWindow->SetTabWidgetIndex();
             emit SwitchToFavoritePanel();
-
         }
     }
 }
@@ -341,8 +338,9 @@ void CDashboardWidget::OnUnselectProgram()
         int asapEndTime = 0;
         //for UI update
         emit ProgramSelected(m_SelectedProgramId, m_StationList);
-        emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady);
+        emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_StationList);
         emit UpdateSelectedStationList(m_StationList);
+        emit UndoProgramSelection();
     }
 }
 
@@ -581,7 +579,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 
 
-    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady);
+    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_StationList);
     emit ProgramSelected(m_SelectedProgramId, m_StationList);
     emit UpdateSelectedStationList(m_StationList);
 }
@@ -669,11 +667,11 @@ void CDashboardWidget::OnUserRoleChanged()
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     if (m_CurProgramStepIndex > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
     {
-        ui->programPanelWidget->EnableStartButton(false);//in fact, it will disable pause button when runing
+        ui->programPanelWidget->EnablePauseButton(false);//in fact, it will disable pause button when running
     }
     else
     if (m_ProcessRunning && (m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service))
-        ui->programPanelWidget->EnableStartButton(true);
+        ui->programPanelWidget->EnablePauseButton(true);
 
 }
 
@@ -682,6 +680,10 @@ void CDashboardWidget::OnProcessStateChanged()
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
 }
 
+bool CDashboardWidget::IsAbortEnabled()
+{
+    return ui->programPanelWidget->IsAbortEnabled();
+}
 
 
 

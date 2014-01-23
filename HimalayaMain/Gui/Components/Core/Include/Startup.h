@@ -48,7 +48,10 @@ public:
     CStartup();
     virtual ~CStartup();
     void InitialiseDeviceMode(QString Mode);
-
+    static CStartup* instance() { return self; }
+    MainMenu::CMainWindow* MainWindow() { return &m_MainWindow; }
+    Core::CDataConnector* DataConnector() { return mp_DataConnector; }
+    Dashboard::CDashboardWidget* Dashboard() { return mp_Dashboard; }
 private:
     // Data Manager Components
     Core::CDataConnector *mp_DataConnector; //!< Connects data manager to the network
@@ -62,6 +65,7 @@ private:
     ScreenSaverWidget* mp_ScreenSaver;
     KeyBoard::CKeyBoard *mp_KeyBoardWidget; //!< On-screen Keyboard
     QString m_Mode;							//!< GUI mode
+    static CStartup *self;
 };
 
 } // end namespace Core

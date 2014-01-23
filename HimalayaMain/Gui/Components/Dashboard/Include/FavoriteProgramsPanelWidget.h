@@ -50,7 +50,7 @@ namespace Dashboard {
         void OnSelectDateTime(const QDateTime&);
         void OnEndTimeButtonClicked();
         void OnProcessStateChanged();
-        void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady);
+        void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady);
         void UndoProgramSelection();
     signals:
         void PrepareSelectedProgramChecking(const QString& selectedProgramId);

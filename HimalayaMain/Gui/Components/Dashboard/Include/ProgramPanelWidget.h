@@ -49,11 +49,12 @@ public:
     void EnablePauseButton(bool bEnable);
     void IsResumeRun(bool bSet);
     bool IsResumeRun();
+    bool IsAbortEnabled();
 signals:
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
     void PrepareSelectedProgramChecking(const QString& selectedProgramId, bool bCheckEndDatetimeAgain = false);
     void OnSelectEndDateTime(const QDateTime &);
-    void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady);
+    void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
     void ProgramActionStopped(DataManager::ProgramStatusType_t);
     void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
@@ -68,7 +69,6 @@ private slots:
     void OnButtonClicked(int whichBtn);
     void OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady);
     void SelectEndDateTime(const QDateTime &);
-    void SetProgramNextActionAsStart();
     void OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType, int remainingTimeTotal,
                                 const QDateTime& startDateTime, bool IsResume);//in seconds
     void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
