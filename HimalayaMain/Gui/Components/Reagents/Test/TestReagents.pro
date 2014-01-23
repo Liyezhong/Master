@@ -20,6 +20,5 @@ DEPENDPATH += ../../../../
 UseLibs(Reagents Core Programs  NetworkLayer)
 UsePlatformGUILibs(MainMenu KeyBoard Application)
 UsePlatformLibs(DataManager Global NetCommands NetworkComponents)
-UseSharedLibs(HimalayaDataManager RMSCommands)
 UsePlatformScroller(QtScroller)
 
