@@ -539,7 +539,6 @@ QUIET                  = NO
 
 WARNINGS               = YES
 
-WARN_LOGFILE           = "warnings.log"
 # If WARN_IF_UNDOCUMENTED is set to YES, then doxygen will generate warnings
 # for undocumented members. If EXTRACT_ALL is set to YES then this flag will
 # automatically be disabled.
@@ -574,7 +573,7 @@ WARN_FORMAT            = "$file:$line: $text"
 # and error messages should be written. If left blank the output is written
 # to stderr.
 
-WARN_LOGFILE           = 
+WARN_LOGFILE           = "warnings.log" 
 
 #---------------------------------------------------------------------------
 # configuration options related to the input files
