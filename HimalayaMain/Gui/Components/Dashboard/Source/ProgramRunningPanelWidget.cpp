@@ -274,7 +274,7 @@ void CProgramRunningPanelWidget::OnProgramFetail()
 
     //position the window of ProgramStatusWidget
     MainMenu::CMainWindow * pMainWin = pStartup->MainWindow();
-    QRect scr(pMainWin->pos(), QSize(pMainWin->rect().width(), pMainWin->rect().height()));
+    QRect scr = pMainWin->geometry();
     pProgramStatusWidget->move( scr.center() - pProgramStatusWidget->rect().center());
     QObject::connect(pProgramStatusWidget, SIGNAL(AbortClicked(int)), this, SIGNAL(AbortClicked(int)));
     pProgramStatusWidget->exec();

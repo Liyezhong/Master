@@ -1003,7 +1003,7 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         m_GuiInit = false;
         NetCommands::CmdGuiInit Cmd(COMMAND_TIME_OUT, true);
         (void)m_NetworkObject.SendCmdToMaster(Cmd, &CDataConnector::OnAckTwoPhase, this);
-        QRect scr = mp_MainWindow->rect();
+        QRect scr = mp_MainWindow->geometry();
         mp_SplashWidget->move( scr.center() - mp_SplashWidget->rect().center());
         //mp_SplashWidget->exec();
     }
