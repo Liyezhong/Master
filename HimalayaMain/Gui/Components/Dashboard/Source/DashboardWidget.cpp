@@ -107,8 +107,6 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramPaused(),
                               this, OnProgramPaused());
 
-    CONNECTSIGNALSLOT(this, SetProgramNextActionAsStart(), ui->programPanelWidget, SetProgramNextActionAsStart());
-
     CONNECTSIGNALSIGNAL(mp_DataConnector, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &),
                       ui->programPanelWidget, CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &));
 
@@ -226,13 +224,12 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
         m_IsWaitingCleaningProgram = true;
         if (mp_MessageDlg->exec())
         {
-            emit SetProgramNextActionAsStart();
+            ui->programPanelWidget->ChangeStartButtonToStartState();
             //only show Cleaning program in the favorite panel
             emit AddItemsToFavoritePanel(true);
             //switch to the dashboard page
             mp_MainWindow->SetTabWidgetIndex();
             emit SwitchToFavoritePanel();
-
         }
     }
 }

@@ -71,11 +71,13 @@ void CProgramRunningPanelWidget::OnProgramActionStarted(DataManager::ProgramActi
        m_remainingTimeTotal = remainingTimeTotal;
    }
    mp_ProgressTimer->start();
-
+   ui->stepTimeLabel->setVisible(true);
+   ui->lblStepTime->setVisible(true);
+   ui->lblReagentName->setVisible(true);
    if (DataManager::PROGRAM_ABORT == ProgramActionType)
    {
-       ui->reagentLabel->setVisible(false);
-       ui->lblReagentName->setText(m_strAborting);//only show the first label
+       ui->lblReagentName->setVisible(false);
+       ui->reagentLabel->setText(m_strAborting);//only show the first label
    }
 }
 
@@ -272,7 +274,7 @@ void CProgramRunningPanelWidget::OnProgramFetail()
 
     //position the window of ProgramStatusWidget
     MainMenu::CMainWindow * pMainWin = pStartup->MainWindow();
-    QRect scr = pMainWin->rect();
+    QRect scr(pMainWin->pos(), QSize(pMainWin->rect().width(), pMainWin->rect().height()));
     pProgramStatusWidget->move( scr.center() - pProgramStatusWidget->rect().center());
     QObject::connect(pProgramStatusWidget, SIGNAL(AbortClicked(int)), this, SIGNAL(AbortClicked(int)));
     pProgramStatusWidget->exec();

@@ -118,7 +118,6 @@ private slots:
     void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
     void ProgramActionStopped(DataManager::ProgramStatusType_t);
     void UpdateUserSetting(DataManager::CUserSettings&);
-    void SetProgramNextActionAsStart();
     void SwitchToFavoritePanel();
     void UndoProgramSelection();
 

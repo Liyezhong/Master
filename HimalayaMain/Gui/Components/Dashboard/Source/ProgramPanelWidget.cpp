@@ -59,7 +59,6 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     m_btnGroup.addButton(ui->pauseButton, Dashboard::secondButton);
 
     CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
-    CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
     ui->startButton->setEnabled(false);
     ui->pauseButton->setEnabled(false);
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
@@ -324,11 +323,6 @@ void CProgramPanelWidget::OnProgramStartReadyUpdated()
 {
     if (!m_SelectedProgramId.isEmpty())
         this->ui->startButton->setEnabled(true);
-}
-
-void CProgramPanelWidget::SetProgramNextActionAsStart()
-{
-    m_ProgramNextAction = DataManager::PROGRAM_START;
 }
 
 void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType,

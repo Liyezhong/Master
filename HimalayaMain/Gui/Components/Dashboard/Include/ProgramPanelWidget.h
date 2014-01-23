@@ -69,7 +69,6 @@ private slots:
     void OnButtonClicked(int whichBtn);
     void OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady);
     void SelectEndDateTime(const QDateTime &);
-    void SetProgramNextActionAsStart();
     void OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType, int remainingTimeTotal,
                                 const QDateTime& startDateTime, bool IsResume);//in seconds
     void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);

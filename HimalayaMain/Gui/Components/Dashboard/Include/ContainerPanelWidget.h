@@ -31,8 +31,6 @@
 
 namespace Dashboard {
 
-class CDashboardProgramStatusWidget;
-
 namespace Ui {
     class CContainerPanelWidget;
 }
@@ -55,7 +53,6 @@ private:
     DataManager::CDataProgramList *mp_ProgramList;
     QStringList m_FavProgramIDs;
 
-    CDashboardProgramStatusWidget *mp_ProgramStatusWidget;
     bool m_UserRoleChanged;                                     //!< Flag to Verify the Change in User Role
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
     int m_ParaffinStepIndex;
