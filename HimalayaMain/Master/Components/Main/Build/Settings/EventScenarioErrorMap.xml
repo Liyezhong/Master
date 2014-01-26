@@ -81,8 +81,8 @@
 		<event id="500010251" name="EVENT_Retort_Tsensor3_Temperature_Nosignal"/>
 		<event id="500010261" name="EVENT_Retort_Tsensor1_to_2_Selfcalibration_Failed"/>
 		<event id="500010301" name="EVENT_Retort_Levelsensor_Heating_Overtime"/>
-		<event id="500010321" name="EVENT_Levelsensor_Temperature_Overrange"/>
-		<event id="500010461" name="EVENT_Lidlock_Close_Status_Error"/>
+		<event id="500010321" name="EVENT_Retort_Levelsensor_Temperature_Overrange"/>
+		<event id="500010461" name="EVENT_Retort_Lidlock_Close_Status_Error"/>
 	</group>
 	<group name="Wax Bath">
 		<event id="500020001" name="EVENT_WaxBath_Top_Heatingpad_Current_OutofRange"/>
