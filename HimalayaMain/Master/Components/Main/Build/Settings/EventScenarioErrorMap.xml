@@ -72,14 +72,77 @@
 <eventlist> 
 	<group name="Retort">
 		<event id="500010001" name="EVENT_Retort_Bottom_Sidelow_Heating_Element_Failed"/>
+		<event id="500010101" name="EVENT_Retort_Sidtop_Sidemid_Heating_Element_Failed"/>
+		<event id="500010201" name="EVENT_Retort_Tsensor1_Temperature_Overange"/>
+		<event id="500010211" name="EVENT_Retort_Tsensor1_Temperature_Nosignal"/>
+		<event id="500010221" name="EVENT_Retort_Tsensor2_Temperature_Overrange"/>
+		<event id="500010231" name="EVENT_Retort_Tsensor2_Temperature_Nosignal"/>
+		<event id="500010241" name="EVENT_Retort_Tsensor3_Temperature_Overrange"/>
+		<event id="500010251" name="EVENT_Retort_Tsensor3_Temperature_Nosignal"/>
+		<event id="500010261" name="EVENT_Retort_Tsensor1_to_2_Selfcalibration_Failed"/>
+		<event id="500010301" name="EVENT_Retort_Levelsensor_Heating_Overtime"/>
+		<event id="500010321" name="EVENT_Levelsensor_Temperature_Overrange"/>
+		<event id="500010461" name="EVENT_Lidlock_Close_Status_Error"/>
+	</group>
+	<group name="Wax Bath">
+		<event id="500020001" name="EVENT_WaxBath_Top_Heatingpad_Current_OutofRange"/>
+		<event id="500020011" name="EVENT_WaxBath_Bottom_Heatingpad_Current_OutofRange"/>
+		<event id="500020021" name="EVENT_WaxBath_TSensorUp_OutofRange"/>
+		<event id="500020031" name="EVENT_WaxBath_TSensorDown1_OutofRange"/>
+		<event id="500020041" name="EVENT_WaxBath_TSensorDown2_OutofRange"/>
+		<event id="500020051" name="EVENT_WaxBath_TSensorUp_Heating_Abnormal"/>
+		<event id="500020061" name="EVENT_WaxBath_TSensorDown1_Heating_Abnormal"/>
+		<event id="500020071" name="EVENT_WaxBath_TSensorDown2_Heating_Abnormal"/>
+		<event id="500020081" name="EVENT_WaxBath_TSensorUp_Heating_OutofTargetRange"/>
+		<event id="500020082" name="EVENT_WaxBath_TSensorDown1_Heating_OutofTargetRange"/>
+		<event id="500020083" name="EVENT_WaxBath_TSensorDown2_Heating_OutofTargetRange"/>
+		<event id="500020090" name="EVENT_WaxBath_OvenCover_Statuws_Open"/>
 	</group>
 	<group name="Rotary Valve">
 		<event id="500030001" name="EVENT_RV_Motor_CannotGet_OriginalPosition"/>
+		<event id="500030011" name="EVENT_RV_Motor_InternalSteps_Retry"/>
 		<event id="500030021" name="EVENT_RV_Motor_InternalSteps_ExceedUpperlimit"/>
+		<event id="500030041" name="EVENT_RV_Heating_TempSensor1_OutofRange"/>
+		<event id="500030051" name="EVENT_RV_Heating_TempSensor2_OutofRange"/>
+		<event id="500030061" name="EVENT_RV_Heating_Current_OutofRange"/>
+		<event id="500030071" name="EVENT_RV_Heating_TempSensor2_NotReachTarget"/>
+		<event id="500030081" name="EVENT_RV_Heating_TSensor2_Lessthan_30DegreeC_Overtime"/>
 		<event id="500030091" name="EVENT_RV_Motor_LostCurrentPosition"/>
+	</group>
+	<group name="LA System">
+		<event id="500040001" name="EVENT_LA_PressureSensor_Precheck_Failed"/>
+		<event id="500040005" name="EVENT_LA_PressureSensor_OutofRange"/>
+		<event id="500040011" name="EVENT_LA_BottleCheck_PressureBuild_Failed"/>
+		<event id="500040012" name="EVENT_LA_BottleCheck_Failed_Empty"/>
+		<event id="500040013" name="EVENT_LA_BottleCheck_Failed_Insufficient"/>
+		<event id="500040014" name="EVENT_LA_BottleCheck_Failed_Blockage"/>
+		<event id="500040021" name="EVENT_LA_Sealing_Failed_Pressure"/>
+		<event id="500040051" name="EVENT_LA_Sealing_Failed_Vaccuum"/>
+		<event id="500040101" name="EVENT_LA_Filling_TimeOut_2min"/>
+		<event id="500040121" name="EVENT_LA_Filling_TimeOut_4min"/>
+		<event id="500040141" name="EVENT_LA_Filling_OverFlow"/>
+		<event id="500040161" name="EVENT_LA_Filling_Insufficient"/>
+		<event id="500040201" name="EVENT_LA_Draining_TimeOut_BuildPressure"/>
+		<event id="500040221" name="EVENT_LA_Draining_TimeOut_Empty_2min"/>
+		<event id="500040241" name="EVENT_LA_Draining_TimeOut_Empty_4min"/>
+		<event id="500040301" name="EVENT_LA_Releasing_TimeOut"/>
+		<event id="500040401" name="EVENT_LA_Status_ExhaustFan"/>
+		<event id="500040501" name="EVENT_LA_TubeHeating_Tube1_Abnormal"/>
+		<event id="500040511" name="EVENT_LA_TubeHeating_Tube2_Abnormal"/>
+		<event id="500040521" name="EVENT_LA_TubeHeating_TSensor1_OutofRange"/>
+		<event id="500040531" name="EVENT_LA_TubeHeating_TSensor2_OutofRange"/>
+		<event id="500040541" name="EVENT_LA_TubeHeating_Tube1_NotReachTargetTemp"/>
+		<event id="500040551" name="EVENT_LA_TubeHeating_Tube2_NotReachTargetTemp"/>
 	</group>
 	<group name="Main Control">
 		<event id="500050001" name="EVENT_MC_DC_5V_ASB3_OutofRange"/>
+		<event id="500050011" name="EVENT_MC_DC_5V_ASB5_OutofRange"/>
+		<event id="500050021" name="EVENT_MC_DC_5V_ASB15_OutofRange"/>
+		<event id="500050301" name="EVENT_MC_Voltage_24V_ASB3_OutofRange"/>
+		<event id="500050311" name="EVENT_MC_Voltage_24V_ASB5_OutofRange"/>
+		<event id="500050321" name="EVENT_MC_Voltage_24V_ASB15_OutofRange"/>
+		<event id="500050301" name="EVENT_MC_RemoteAlarm_Unconnected"/>
+		<event id="500050302" name="EVENT_MC_LocalAlarm_Unconnected"/>
 	</group>
 </eventlist>
 
