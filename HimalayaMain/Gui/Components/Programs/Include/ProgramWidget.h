@@ -83,6 +83,11 @@ private:
     QString m_strNotEditProgram;
     QString m_strView;
     QString m_strEdit;
+    QString m_strConfirmMsg;
+    QString m_strYes;
+    QString m_strCancel;
+
+
 protected:
     void showEvent(QShowEvent *);
 

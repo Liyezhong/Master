@@ -15,6 +15,9 @@ public:
     explicit SplashWidget(QWidget *parent = 0);
     ~SplashWidget();
 
+public slots:
+    void ShowModel();
+
 private:
     Ui::SplashWidget *ui;
 };

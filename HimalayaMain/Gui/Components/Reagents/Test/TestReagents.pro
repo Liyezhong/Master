@@ -17,8 +17,9 @@ CONFIG += qtestlib
 CONFIG += qt
 DEPENDPATH += ../../../../
 
-UseLibs(Reagents Core Programs  NetworkLayer)
+UseLibs(Reagents Core NetworkLayer)
 UsePlatformGUILibs(MainMenu KeyBoard Application)
 UsePlatformLibs(DataManager Global NetCommands NetworkComponents)
+UseSharedLibs(HimalayaDataContainer)
 UsePlatformScroller(QtScroller)
 

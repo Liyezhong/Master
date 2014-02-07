@@ -1,7 +1,7 @@
 /****************************************************************************/
 /*! \file ReagentStationModel.h
  *
- *  \brief Definition file for class CReagentStatusModel.
+ *  \brief Definition file for class CReagentStationModel.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2013-02-11 , 2013-02-24

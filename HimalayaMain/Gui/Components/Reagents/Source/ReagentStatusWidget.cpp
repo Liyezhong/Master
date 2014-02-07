@@ -6,8 +6,8 @@
 #include "Reagents/Include/ReagentStatusWidget.h"
 #include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "ui_ReagentStatusWidget.h"
-#include "Dashboard/Include/DashboardWidget.h"
-#include <Dashboard/Include/CommonString.h>
+#include "Core/Include/GlobalHelper.h"
+
 
 namespace Reagents {
 
@@ -109,19 +109,19 @@ void CReagentStatusWidget::OnSetAsEmpty()
 {
         MainMenu::CMessageDlg ConfirmationMessageDlg;
 
-        ConfirmationMessageDlg.SetTitle(CommonString::strConfirmMsg);
+        ConfirmationMessageDlg.SetTitle(m_strConfirmMsg);
         QString strTemp = m_strSetAsEmpty.arg(m_CurrentStationName);
         ConfirmationMessageDlg.SetText(strTemp);
         ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
-        ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
-        ConfirmationMessageDlg.SetButtonText(3, CommonString::strNo);
+        ConfirmationMessageDlg.SetButtonText(1, m_strYes);
+        ConfirmationMessageDlg.SetButtonText(3, m_strNo);
         ConfirmationMessageDlg.HideCenterButton();
         if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
         {
             bool bRevertSelectedProgram = false;
             if (m_StationList.contains(mp_DashStation->GetDashboardStationID()))
             {
-                if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram, ""))
+                if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram))
                     return;
             }
 
@@ -143,18 +143,18 @@ void CReagentStatusWidget::OnResetData()
 {
     MainMenu::CMessageDlg ConfirmationMessageDlg;
 
-    ConfirmationMessageDlg.SetTitle(CommonString::strConfirmMsg);
+    ConfirmationMessageDlg.SetTitle(m_strConfirmMsg);
     ConfirmationMessageDlg.SetText(m_strResetData.arg(m_CurrentStationName));
     ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
-    ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
-    ConfirmationMessageDlg.SetButtonText(3, CommonString::strNo);
+    ConfirmationMessageDlg.SetButtonText(1, m_strYes);
+    ConfirmationMessageDlg.SetButtonText(3, m_strNo);
     ConfirmationMessageDlg.HideCenterButton();
     if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
     {
         bool bRevertSelectedProgram = false;
         if (m_StationList.contains(mp_DashStation->GetDashboardStationID()))
         {
-            if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram))
+            if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram))
                 return;
         }
 
@@ -174,11 +174,11 @@ void CReagentStatusWidget::OnSetAsFull()
 {
     MainMenu::CMessageDlg ConfirmationMessageDlg;
 
-    ConfirmationMessageDlg.SetTitle(CommonString::strConfirmMsg);
+    ConfirmationMessageDlg.SetTitle(m_strConfirmMsg);
     ConfirmationMessageDlg.SetText(m_strSetAsFull.arg(m_CurrentStationName));
     ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
-    ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
-    ConfirmationMessageDlg.SetButtonText(3, CommonString::strNo);
+    ConfirmationMessageDlg.SetButtonText(1, m_strYes);
+    ConfirmationMessageDlg.SetButtonText(3, m_strNo);
     ConfirmationMessageDlg.HideCenterButton();
     if(ConfirmationMessageDlg.exec() == (int)QDialog::Accepted)
     {
@@ -468,6 +468,10 @@ void CReagentStatusWidget::RetranslateUI()
     m_strSetAsFull = QApplication::translate("Reagent::CReagentStatusWidget",
                                              "Do you want to set Station %1 as full?", 0, QApplication::UnicodeUTF8);
 
+    m_strConfirmMsg = QApplication::translate("Reagents::CReagentStatusWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
+    m_strYes = QApplication::translate("Reagents::CReagentStatusWidget", "Yes", 0, QApplication::UnicodeUTF8);
+    m_strNo = QApplication::translate("Reagents::CReagentStatusWidget", "No", 0, QApplication::UnicodeUTF8);
+
 
     (void) m_ReagentStatusModel.setHeaderData(0, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
                                                                                  "Station", 0, QApplication::UnicodeUTF8),0);
@@ -475,7 +479,7 @@ void CReagentStatusWidget::RetranslateUI()
     (void) m_ReagentStatusModel.setHeaderData(1, Qt::Horizontal,QApplication::translate("Core::CReagentStatusModel",
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8),0);
     QString SecondColumnName("");
-    switch(m_ReagentStatusModel.GetRMSOption()) {
+    switch(Core::CReagentStatusModel::RMSPROCESSINGOPTION) {
         default:
             SecondColumnName = "";
             break;
@@ -491,7 +495,7 @@ void CReagentStatusWidget::RetranslateUI()
     }
 
     QString ThirdColumnName("");
-    switch (m_ReagentStatusModel.GetRMSCleaningOption()) {
+    switch (Core::CReagentStatusModel::RMSCLEANINGOPTIONS) {
         default:
             ThirdColumnName = "";
             break;

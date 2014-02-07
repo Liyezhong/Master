@@ -87,6 +87,9 @@ private:
     QPixmap* m_pAmbientTempraturePixmap;
     QPixmap* m_pAmbientTempratureBigPixmap;
     QString m_strConfirmMsg, m_strOK, m_strDiffTemp;
+    QString m_strInforMsg;
+    QString m_strYes;
+    QString m_strNo;
 private:
     void showEvent(QShowEvent *p_Event);
     void RetranslateUI();

@@ -22,3 +22,14 @@ SplashWidget::~SplashWidget()
     catch(...)
     {}
 }
+
+void SplashWidget::ShowModel()
+{
+    QWidget* pParent = this->parentWidget();
+    if (pParent)
+    {
+        QRect scr = pParent->geometry();
+        this->move( scr.center() - this->rect().center());
+    }
+    this->exec();
+}

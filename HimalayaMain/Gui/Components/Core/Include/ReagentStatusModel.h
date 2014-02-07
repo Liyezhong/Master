@@ -76,20 +76,7 @@ public:
         m_CurrentReagentName = ReagentName;
     }
 
-    /****************************************************************************/
-    /**
-     * \brief Returns the position of Reagent to be selected
-     * \iparam ReagentName
-     * \return m_ReagentNames = Position of Reagent in the table
-     */
-    /****************************************************************************/
-    Global::RMSOptions_t GetRMSOption(){
-        return m_RMSOptions;
-    }
 
-    Global::RMSOptions_t GetRMSCleaningOption(){
-        return m_RMSCleaningOptions;
-    }
 
     /****************************************************************************/
     /**
@@ -98,11 +85,11 @@ public:
      */
     /****************************************************************************/
     void SetRMSOption(Global::RMSOptions_t Value){
-        m_RMSOptions = Value;
+        RMSPROCESSINGOPTION = Value;
     }
 
     void SetRMSCleaningOption(Global::RMSOptions_t Value){
-        m_RMSCleaningOptions = Value;
+        RMSCLEANINGOPTIONS = Value;
     }
     /****************************************************************************/
     /**
@@ -126,7 +113,8 @@ public:
     QString GetReagentLongName(int Row);
     bool ContainsReagent(QString ReagentID);
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
-
+    static Global::RMSOptions_t RMSPROCESSINGOPTION;
+    static Global::RMSOptions_t RMSCLEANINGOPTIONS;
 public slots:
     void UpdateReagentList();
 private:
@@ -147,8 +135,7 @@ private:
     QMap<QString, QString> m_StationNameMap;            //!< Sorts Station names
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     DataManager::CUserSettings *mp_UserSettings;          //!< UserSettings object
-    Global::RMSOptions_t m_RMSOptions;
-    Global::RMSOptions_t m_RMSCleaningOptions;
+
 };
 
 } // end namespace Core

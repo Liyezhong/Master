@@ -24,7 +24,9 @@
 #include "MainMenu/Include/StatusBarManager.h"
 #include "Application/Include/LeicaStyle.h"
 #include "Application/Include/Application.h"
-
+#include "Dashboard/Include/SplashWidget.h"
+#include "Core/Include/GlobalHelper.h"
+#include "Dashboard/Include/DashboardWidget.h"
 
 namespace Core {
 
@@ -48,7 +50,9 @@ CStartup::CStartup() : QObject()
         m_MainWindow.show();
     #endif
 
+
     mp_DataConnector = new Core::CDataConnector(&m_MainWindow);
+    mp_GlobalHelper = new CGlobalHelper(mp_DataConnector);
 
     mp_Dashboard = new Dashboard::CDashboardWidget(mp_DataConnector, &m_MainWindow);
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
@@ -57,9 +61,8 @@ CStartup::CStartup() : QObject()
     mp_Reagents = new Reagents::CReagentWidget(mp_DataConnector, &m_MainWindow, mp_KeyBoardWidget);
     mp_Settings = new Settings::CSettingsWidget(mp_DataConnector, &m_MainWindow, mp_KeyBoardWidget);
     mp_Users = new Users::CUserPrivilegeWidget(&m_MainWindow, mp_KeyBoardWidget);
-
     mp_ScreenSaver = new ScreenSaverWidget();
-
+    mp_SplashWidget = new SplashWidget(&m_MainWindow);
     (void)MainMenu::CStatusBarManager::CreateInstance(&m_MainWindow,mp_DataConnector->SettingsInterface);
 
     // Dashboard Signals & Slots
@@ -77,7 +80,7 @@ CStartup::CStartup() : QObject()
     CONNECTSIGNALSIGNAL(mp_Programs, FavoriteProgramListUpdated(DataManager::CProgram &), mp_Programs, UpdateProgram(DataManager::CProgram &));
 
     CONNECTSIGNALSIGNAL(mp_Dashboard, UpdateSelectedStationList(QList<QString>&), mp_Reagents, UpdateSelectedStationList(QList<QString>&));
-
+    CONNECTSIGNALSLOT(mp_Dashboard, ProgramSelected(QString&, QList<QString>&), mp_GlobalHelper, OnProgramSelected(QString&, QList<QString>&));
 
     CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsUpdated(), mp_Programs, UpdateProgramList());
 
@@ -100,6 +103,10 @@ CStartup::CStartup() : QObject()
     // signals for the users
     CONNECTSIGNALSLOT(mp_DataConnector, UserAuthentication(const qint32 &), mp_Users, UserAuthenticated(const qint32 &));
     CONNECTSIGNALSLOT(mp_DataConnector, ChangeAdminPassword(const QString &), mp_Users, ChangeInAdminPassword(const QString &));
+
+    CONNECTSIGNALSLOT(mp_DataConnector, EndGUIInitialization(), mp_SplashWidget, ShowModel());
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(), mp_SplashWidget, accept());
+    CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelfTestFailed(), mp_SplashWidget, accept());
 
     m_MainWindow.AddMenuGroup(mp_Dashboard, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_Dashboard.png").arg(Application::CLeicaStyle::GetDeviceImagesPath())));
     m_MainWindow.AddMenuGroup(mp_Programs, QPixmap(QString(":/%1/Icons/Maintabs/Maintabs_Programs.png").arg(Application::CLeicaStyle::GetDeviceImagesPath())));

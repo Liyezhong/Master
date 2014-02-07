@@ -9,6 +9,7 @@
 #include "Dashboard/Include/DashboardProgramStatusWidget.h"
 #include "Core/Include/Startup.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
+#include "Dashboard/Include/DashboardWidget.h"
 
 namespace Dashboard
 {

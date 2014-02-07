@@ -1,8 +1,8 @@
-!include("TestPrograms.pri"):error("TestPrograms.pri not found")
+!include("TestDashboard.pri"):error("TestDashboard.pri not found")
 
-TARGET = TestPrograms
+TARGET = TestDashboard
 CONFIG   += console
-SOURCES += TestPrograms.cpp
+SOURCES += TestDashboard.cpp
 TEMPLATE = app
 
 
@@ -16,7 +16,7 @@ CONFIG += qtestlib
 CONFIG += qt
 DEPENDPATH += ../../../../
 
-UseLibs(Programs Core NetworkLayer)
+UseLibs(Dashboard Core NetworkLayer)
 UsePlatformGUILibs(MainMenu KeyBoard Application)
 UsePlatformLibs(DataManager Global NetCommands NetworkComponents)
 UseSharedLibs(HimalayaDataContainer)

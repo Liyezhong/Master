@@ -301,11 +301,10 @@ void CReagentRMSWidget::OnNew()
 /****************************************************************************/
 void CReagentRMSWidget::OnDelete()
 {
-    /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."));*/
-    m_MessageDlg.SetTitle(CommonString::strConfirmMsg);
+    m_MessageDlg.SetTitle(m_strConfirmMsg);
     m_MessageDlg.SetIcon(QMessageBox::Information);
-    m_MessageDlg.SetButtonText(1, CommonString::strYes);
-    m_MessageDlg.SetButtonText(3, CommonString::strCancel);
+    m_MessageDlg.SetButtonText(1, m_strYes);
+    m_MessageDlg.SetButtonText(3, m_strCancel);
     m_MessageDlg.HideCenterButton();
     m_MessageDlg.SetText(m_strConfirmDelReagent);
 
@@ -500,6 +499,9 @@ void CReagentRMSWidget::RetranslateUI()
     m_strConfirmDelReagent = QApplication::translate("Reagents::CReagentRMSWidget",
                                            "Do you really want to delete the selected reagent", 0, QApplication::UnicodeUTF8);
 
+    m_strConfirmMsg = QApplication::translate("Reagents::CReagentRMSWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
+    m_strYes = QApplication::translate("Reagents::CReagentRMSWidget", "Yes", 0, QApplication::UnicodeUTF8);
+    m_strCancel = QApplication::translate("Reagents::CReagentRMSWidget", "Cancel", 0, QApplication::UnicodeUTF8);
 
     (void) m_ReagentRMSModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8),0);
@@ -541,7 +543,6 @@ void CReagentRMSWidget::RetranslateUI()
     }
     (void) m_ReagentCleaningModel.setHeaderData(2,Qt::Horizontal,QApplication::translate("Core::CReagentRMSModel",
                                                                                  SecondColumnName.toUtf8(), 0, QApplication::UnicodeUTF8),0);
-
 }
 
 /****************************************************************************/

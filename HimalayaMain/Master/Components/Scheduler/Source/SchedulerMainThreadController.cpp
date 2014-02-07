@@ -1281,6 +1281,12 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
     return true;
 }
 
+/**
+ * @brief For the given reagent group, based some rules, get the station list of Safe Reagent
+ * @param reagentGroupID the given reagent group.
+ * @param stationList The station list contains the stations fitting the requirements.
+ * @return indicate Whether or not this function executes successfully
+ */
 bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList)
 {
     QList<QString> fixationStationList, dehydratingAbsstationList;
@@ -1305,7 +1311,7 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
 
             if (CReagentGroup* reagentGroup = mp_DataManager->GetReagentGroupList()->GetReagentGroup(pReagent->GetGroupID()))
             {
-                //Fixation:RG1, Clearing RG5, Paraffin:RG6
+                //Fixation:RG1, Clearing: RG5, Paraffin:RG6
                 if ( (reagentGroupID == "RG1") || (reagentGroupID == "RG5") || (reagentGroupID == "RG6"))
                 {
                     if (reagentGroup->GetGroupID() == reagentGroupID)
@@ -1348,10 +1354,14 @@ bool SchedulerMainThreadController::GetSafeReagentStationList(const QString& rea
             }
         }
 
-
     return true;
 }
 
+/**
+ * @brief Check which step has no safe reagent in a program.
+ * @param ProgramID The the program Id, which to be checked.
+ * @return the step index of the given program.
+ */
 int SchedulerMainThreadController::WhichStepHasNoSafeReagent(const QString& ProgramID)
 {
     if (!mp_DataManager)
@@ -1384,6 +1394,7 @@ int SchedulerMainThreadController::WhichStepHasNoSafeReagent(const QString& Prog
     return -1;
 }
 
+
 quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex)
 {
     quint32 leftTime = 0;
@@ -1401,7 +1412,6 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
     }
 
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
-    //ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
     int index = SpecifiedStepIndex;
     if (-1 == index)
     {

@@ -29,8 +29,8 @@
 #include "Programs/Include/ModifyProgramDlg.h"
 #include "Programs/Include/ModifyProgramStepDlg.h"
 #include "ui_ProgramWidget.h"
-#include "Dashboard/Include/DashboardWidget.h"
-#include <Dashboard/Include/CommonString.h>
+#include "Core/Include/GlobalHelper.h"
+
 
 
 namespace Programs {
@@ -182,8 +182,8 @@ void CProgramWidget::OnEdit()
         {
             //Edit Mode
             bool bRevertSelectedProgram = false;
-            if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram, mp_Program->GetID()))
-                return;
+            if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram, mp_Program->GetID()))
+               return;
             if (bRevertSelectedProgram)
                 emit UnselectProgram();
 
@@ -243,10 +243,10 @@ void CProgramWidget::OnCopy()
 void CProgramWidget::OnDelete()
 {
     MainMenu::CMessageDlg ConfirmationMessageDlg;
-    ConfirmationMessageDlg.SetTitle(CommonString::strConfirmMsg);
+    ConfirmationMessageDlg.SetTitle(m_strConfirmMsg);
     ConfirmationMessageDlg.SetIcon(QMessageBox::Question);
-    ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
-    ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);
+    ConfirmationMessageDlg.SetButtonText(1, m_strYes);
+    ConfirmationMessageDlg.SetButtonText(3, m_strCancel);
     ConfirmationMessageDlg.HideCenterButton();
     ConfirmationMessageDlg.SetText(m_strDelProgram);
 
@@ -254,7 +254,7 @@ void CProgramWidget::OnDelete()
         QString ProgramID = mp_Program->GetID();
 
         bool bRevertSelectedProgram = false;
-        if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram, ProgramID))
+        if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram, ProgramID))
             return;
         if (bRevertSelectedProgram)
             emit UnselectProgram();
@@ -563,6 +563,12 @@ void CProgramWidget::RetranslateUI()
 
     m_strEdit = QApplication::translate("Programs::CProgramWidget", "Edit",
                                               0, QApplication::UnicodeUTF8);
+    m_strConfirmMsg = QApplication::translate("Programs::CProgramWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
+
+    m_strYes = QApplication::translate("Programs::CProgramWidget", "Yes", 0, QApplication::UnicodeUTF8);
+    m_strCancel = QApplication::translate("Programs::CProgramWidget", "Cancel", 0, QApplication::UnicodeUTF8);
+
+
 }
 
 

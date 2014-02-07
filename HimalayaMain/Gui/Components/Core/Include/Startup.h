@@ -24,7 +24,7 @@
 #include "Core/Include/DataConnector.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/StatusBarManager.h"
-#include "Dashboard/Include/DashboardWidget.h"
+
 #include "Dashboard/Include/ScreenSaverWidget.h"
 #include "Programs/Include/ProgramWidget.h"
 #include "Reagents/Include/ReagentWidget.h"
@@ -33,7 +33,16 @@
 #include "KeyBoard/Include/KeyBoard.h"
 #include "MainMenu/Include/DataManagement.h"
 
+class SplashWidget;
+
+namespace Dashboard
+{
+    class CDashboardWidget;
+}
+
 namespace Core {
+
+class CGlobalHelper;
 
 /****************************************************************************/
 /**
@@ -53,6 +62,7 @@ public:
     Core::CDataConnector* DataConnector() { return mp_DataConnector; }
     Dashboard::CDashboardWidget* Dashboard() { return mp_Dashboard; }
 private:
+    Core::CGlobalHelper* mp_GlobalHelper;
     // Data Manager Components
     Core::CDataConnector *mp_DataConnector; //!< Connects data manager to the network
     // GUI components
@@ -66,6 +76,8 @@ private:
     KeyBoard::CKeyBoard *mp_KeyBoardWidget; //!< On-screen Keyboard
     QString m_Mode;							//!< GUI mode
     static CStartup *self;
+    SplashWidget    *mp_SplashWidget;
+
 };
 
 } // end namespace Core

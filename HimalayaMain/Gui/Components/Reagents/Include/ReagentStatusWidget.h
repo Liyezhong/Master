@@ -56,6 +56,9 @@ private:
     QModelIndex m_CurrentIndex;
     QString m_strSetAsEmpty, m_strResetData, m_strSetAsFull, m_CurrentStationName;
     QList<QString> m_StationList;
+    QString m_strConfirmMsg;
+    QString m_strYes;
+    QString m_strNo;
 protected:
     void showEvent(QShowEvent *);
     void changeEvent(QEvent *p_Event);

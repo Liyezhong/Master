@@ -26,7 +26,6 @@
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/WaitDialog.h"
 #include "NetworkLayer/Include/MasterLinkDevice.h"
-#include "Settings/Include/AlarmSettingsDlg.h"
 
 /************************** Commands ***********************************************/
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdChangeUserSettings.h"
@@ -77,7 +76,7 @@ namespace MsgClasses
     class CmdRetortLockStatus;
 }
 
-class SplashWidget;
+
 
 namespace Core {
 
@@ -159,8 +158,6 @@ public slots:
     void SendChangepassword(QDataStream &DataStream);
     void SendSelectedDayRunLogFile(const QString &FileName);
     void OnCurrentTabChanged(int CurrentTabIndex);
-    void OnProgramStartReady();
-    void OnProgramSelfTestFailed();
     void SendAppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);
     void SendResetOperationDays(DataManager::ResetOperationHoursType_t);
 
@@ -357,6 +354,7 @@ signals:
      *  \brief
      */
     /****************************************************************************/
+    void EndGUIInitialization();
     void StartProgramAction(DataManager::ProgramActionType_t ActionType);
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
 	void ProgramStartReady();
@@ -410,7 +408,7 @@ private:
     MainMenu::CMessageDlg *mp_MessageDlg;           //!< Error message box
     MainMenu::CWaitDialog *mp_WaitDialog;           //!< Displayed when busy
     MainMenu::CWaitDialog *mp_BlgScanWaitDialog;    //!< Displayed when busy
-    SplashWidget          *mp_SplashWidget;
+
     QFile *mp_LanguageFile;                         //!< Lanugage file object (qm file)
     QFile *mp_OldFile;                              //!< Old/Previous language file(qm file)
     QTranslator m_Translator;                       //!< Language translator
@@ -434,6 +432,7 @@ private:
     QString m_strError;
     QString m_strInformation;
     QString m_strWarning;
+    QString m_strOK;
     QString m_strDeviceCommunication;
     QString m_strSavingSettings;
     QString m_strUserExport, m_strExportUserData;

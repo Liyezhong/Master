@@ -81,6 +81,9 @@ private:
     QString m_strNewReagent;
     QString m_strEditReagent;
     QString m_strConfirmDelReagent;
+    QString m_strConfirmMsg;
+    QString m_strYes;
+    QString m_strCancel;
 public:
     explicit CReagentRMSWidget(QWidget *p_Parent = 0);
     ~CReagentRMSWidget();

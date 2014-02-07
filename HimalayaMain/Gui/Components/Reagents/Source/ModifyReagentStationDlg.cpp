@@ -54,9 +54,9 @@ CModifyReagentStationDlg::CModifyReagentStationDlg(QWidget *p_Parent, MainMenu::
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
     // Init Message dialog
-    m_MessageDlg.SetTitle(CommonString::strInforMsg);
+    m_MessageDlg.SetTitle(m_strInforMsg);
     m_MessageDlg.SetIcon(QMessageBox::Information);
-    m_MessageDlg.SetButtonText(1, CommonString::strOK);
+    m_MessageDlg.SetButtonText(1, m_strOK);
     m_MessageDlg.HideButtons();
 }
 
@@ -180,12 +180,12 @@ void CModifyReagentStationDlg::OnProcessStateChanged()
     if (!m_ProcessRunning) {
         //Edit Mode
         mp_Ui->btnOk->setEnabled(true);
-        mp_Ui->btnCancel->setText(CommonString::strCancel);
+        mp_Ui->btnCancel->setText(m_strCancel);
     }
     else {
         //View Mode
         mp_Ui->btnOk->setEnabled(false);
-        mp_Ui->btnCancel->setText(CommonString::strClose);
+        mp_Ui->btnCancel->setText(m_strClose);
     }
 }
 
@@ -196,9 +196,13 @@ void CModifyReagentStationDlg::OnProcessStateChanged()
 /****************************************************************************/
 void CModifyReagentStationDlg::RetranslateUI()
 {
-    (void)m_ReagentEditModel.setHeaderData(0,Qt::Horizontal,QApplication::translate("Core::CReagentStationEditModel",
+    m_strCancel = QApplication::translate("Reagents::CModifyReagentStationDlg", "Cancel", 0, QApplication::UnicodeUTF8);
+    m_strClose = QApplication::translate("Reagents::CModifyReagentStationDlg", "Close", 0, QApplication::UnicodeUTF8);
+    m_strInforMsg = QApplication::translate("Reagents::CModifyReagentStationDlg", "Information Message", 0, QApplication::UnicodeUTF8);
+    m_strOK = QApplication::translate("Reagents::CModifyReagentStationDlg", "OK", 0, QApplication::UnicodeUTF8);
+    (void)m_ReagentEditModel.setHeaderData(0,Qt::Horizontal, QApplication::translate("Core::CReagentStationEditModel",
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8), 0);
-    (void)m_ReagentEditModel.setHeaderData(1,Qt::Horizontal,QApplication::translate("Core::CReagentStationEditModel",
+    (void)m_ReagentEditModel.setHeaderData(1,Qt::Horizontal, QApplication::translate("Core::CReagentStationEditModel",
                                                                                  "Group", 0, QApplication::UnicodeUTF8),0);
 }
 

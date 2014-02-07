@@ -79,6 +79,9 @@ private:
     QString m_strEnterCassetteValue;
     QString m_strEnterCycleValue;
     QString m_strEnterDayValue;
+    QString m_strInforMsg;
+    QString m_strOK;
+
 
 public:
     explicit CModifyReagentRMSDlg(QWidget *p_Parent = NULL, KeyBoard::CKeyBoard *p_KeyBoard = NULL,

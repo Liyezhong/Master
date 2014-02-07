@@ -49,7 +49,7 @@ CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, Main
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
 
     m_MessageDlg.SetIcon(QMessageBox::Information);
-    m_MessageDlg.SetButtonText(1, CommonString::strOK);
+    m_MessageDlg.SetButtonText(1, m_strOK);
     m_MessageDlg.HideButtons();
 }
 
@@ -141,6 +141,8 @@ void CModifyReagentGroupColorDlg::RetranslateUI()
 
     m_strClose =  QApplication::translate("Reagents::CModifyReagentGroupColorDlg",
                                        "Close", 0, QApplication::UnicodeUTF8);
+    m_strOK = QApplication::translate("Reagents::CModifyReagentGroupColorDlg", "OK", 0, QApplication::UnicodeUTF8);
+
 }
 
 /****************************************************************************/

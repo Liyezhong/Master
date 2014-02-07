@@ -24,8 +24,6 @@
 #include <Programs/Include/ProgramWidget.h>
 #include <Programs/Include/ModifyProgramDlg.h>
 #include <Programs/Include/ColorButton.h>
-#include <Programs/Include/ModifyLeicaHne.h>
-#include <Programs/Include/ManualProgramDlg.h>
 #include <QObject>
 
 namespace Programs {
@@ -110,20 +108,12 @@ void CTestPrograms::utTestPrograms()
     Programs::CModifyProgramStepDlg *p_ModifyProgramStepDlg = new
             Programs::CModifyProgramStepDlg(p_ModifyProgramDlg, &MainWindow);
 
-    Programs::CModifyLeicaHne *p_ModifyLeicaHneDlg = new
-            Programs::CModifyLeicaHne(p_ProgramWidget,  &MainWindow, p_DataConnector);
-
-    Programs::CRackGripColorDlg *p_RackGripColorDlg = new
-            Programs::CRackGripColorDlg(p_ProgramWidget, &MainWindow);
-
     Programs::CColorButton *p_ColorButton = new Programs::CColorButton(p_ProgramWidget);
 
-    Programs::CManualProgramDlg *p_ManualProgramDlg = new CManualProgramDlg(p_ProgramWidget, &MainWindow);
 
     DataManager::CDataProgramList ProgramList = *(p_DataConnector->ProgramList);
-    DataManager::CDataStationList StationList = *(p_DataConnector->StationList);
+    DataManager::CDashboardDataStationList StationList = *(p_DataConnector->DashboardStationList);
     DataManager::CDataReagentList ReagentList = *(p_DataConnector->ReagentList);
-    DataManager::CProgramSequenceList ProgramSequenceList = *(p_DataConnector->ProgramSequenceList);
 
     //  changed method by setting the ProcessRunning to true in MainWindow
     MainWindow.SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
@@ -133,51 +123,35 @@ void CTestPrograms::utTestPrograms()
     const QModelIndex Index;
 
     //Set Program attributes
-    Program.SetLongName("TestProgram");
-    Program.SetShortName("TES");
     Program.SetID("L1");
-    Program.SetColor("blue");
 
     //Test ProgramWidget methods
     p_ProgramWidget->PopulateProgramList();
-    p_ProgramWidget->OnDeviceModeChanged("Himalaya");
     p_ProgramWidget->SelectionChanged(Index);
     p_ProgramWidget->OnUserRoleChanged();
 
     //Set all the ProgramStep parameters for ProgramSteps
     FirstProgramStep.SetStepID("0");
     FirstProgramStep.SetReagentID("S4");
-    FirstProgramStep.SetExclusive(false);
-    FirstProgramStep.SetMaxDurationInPercent("50%");
-    FirstProgramStep.SetMinDuration("1m");
+
 
     SecondProgramStep.SetStepID("3");
     SecondProgramStep.SetReagentID("S7");
-    SecondProgramStep.SetExclusive(false);
-    SecondProgramStep.SetMaxDurationInPercent("100%");
-    SecondProgramStep.SetMinDuration("0");
+
 
     LeicaProgramStepOne.SetStepID("1");
     LeicaProgramStepOne.SetReagentID("L1");
-    LeicaProgramStepOne.SetExclusive(true);
-    LeicaProgramStepOne.SetMaxDurationInPercent("50%");
-    LeicaProgramStepOne.SetMinDuration("3m");
-    LeicaProgramStepOne.SetIntensity(2);
-    LeicaProgramStepTwo.SetNumberOfParallelStations(0);
+
 
     LeicaProgramStepTwo.SetStepID("2");
     LeicaProgramStepTwo.SetReagentID("L2");
-    LeicaProgramStepTwo.SetExclusive(true);
-    LeicaProgramStepTwo.SetMaxDurationInPercent("25%");
-    LeicaProgramStepTwo.SetMinDuration("5m");
-    LeicaProgramStepTwo.SetIntensity(4);
-    LeicaProgramStepTwo.SetNumberOfParallelStations(0);
+
 
     // Adding ProgramSteps to a program
-    Program.AddProgramStep(&FirstProgramStep);
-    Program.AddProgramStep(&LeicaProgramStepOne);
-    Program.AddProgramStep(&LeicaProgramStepTwo);
-    Program.AddProgramStep(&SecondProgramStep);
+    Program.AddProgramStep(0, &FirstProgramStep);
+    Program.AddProgramStep(1, &LeicaProgramStepOne);
+    Program.AddProgramStep(2, &LeicaProgramStepTwo);
+    Program.AddProgramStep(3, &SecondProgramStep);
 
     //Add Program to ProgramList
     ProgramList.AddProgram(&Program);
@@ -189,31 +163,18 @@ void CTestPrograms::utTestPrograms()
     p_ModifyProgramDlg->SetButtonType(EDIT_BTN_CLICKED);
     QCOMPARE(p_ModifyProgramDlg->m_ButtonType, EDIT_BTN_CLICKED);
 
-    p_ModifyProgramDlg->SetCurrentDeviceMode("Himalaya");   
-    p_ModifyProgramDlg->VerifyLastProgramStep(&Program, "Himalaya");
-    p_ModifyProgramDlg->VerifyLastStepForHimalayaMode(&Program);
-    p_ModifyProgramDlg->VerifyLastStepForWorkStationMode(&Program);
 
-    //Test RackGripColorDlg class member functions
-    p_RackGripColorDlg->Init(&ProgramList, &Program);
-    p_RackGripColorDlg->SetSaveButton("Save");
 
      //Test ModifyProgramStepDlg class member functions
-    p_ModifyProgramStepDlg->SetProgramStep(&FirstProgramStep, &ReagentList, &StationList);
-    p_ModifyProgramStepDlg->NewProgramStep(&ReagentList, &StationList);
+    p_ModifyProgramStepDlg->SetProgramStep(&FirstProgramStep);
+    p_ModifyProgramStepDlg->NewProgramStep();
     p_ModifyProgramStepDlg->ResetButtons(false);
     p_ModifyProgramStepDlg->SelectRow(3);
 
-    //Test ModifyLeicaHneDlg class member functions
-    p_ModifyLeicaHneDlg->SetReadyProgram("Program ready to start");
 
    //Test ColorButton class member functions
     p_ColorButton->SetColor("blue");
 
-    //Test ManualProgramDlg class member functions
-    p_ManualProgramDlg->SetProgramList(&ProgramList, &ProgramSequenceList);
-    p_ManualProgramDlg->OnBtnStartClicked();
-    p_ManualProgramDlg->PopulateManualProgramList();
 }
 
 } // end namespace Programs

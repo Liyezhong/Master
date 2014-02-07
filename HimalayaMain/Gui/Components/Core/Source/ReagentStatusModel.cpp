@@ -32,6 +32,9 @@
 
 namespace Core {
 
+Global::RMSOptions_t CReagentStatusModel:: RMSPROCESSINGOPTION = Global::RMS_UNDEFINED;
+Global::RMSOptions_t CReagentStatusModel:: RMSCLEANINGOPTIONS = Global::RMS_UNDEFINED;
+
 /****************************************************************************/
 /*!
  *  \brief Constructor
@@ -49,8 +52,6 @@ CReagentStatusModel::CReagentStatusModel(QObject *p_Parent) : QAbstractTableMode
     mp_UserSettings = NULL;
     m_Columns = 0;
     m_VisibleRowCount = 7;
-    m_RMSOptions = Global::RMS_CASSETTES;
-    m_RMSCleaningOptions = Global::RMS_UNDEFINED;
 }
 
 /****************************************************************************/
@@ -197,7 +198,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
             Expiry_Date = p_Station->GetDashboardReagentExchangeDate().addDays(p_Reagent->GetMaxDays());
 
             Expired = false;
-            switch (m_RMSOptions) {
+            switch (RMSPROCESSINGOPTION) {
             default:
                 break;
             case Global::RMS_CASSETTES:
@@ -225,7 +226,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
             }
 
             Expired = false;
-            switch (m_RMSCleaningOptions) {
+            switch (RMSCLEANINGOPTIONS) {
             default:
                 break;
             case Global::RMS_CYCLES:
@@ -264,13 +265,13 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                 if (mp_ReagentGroupList) {
 
                     bool isCleaningReagentGroup = mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->IsCleaningReagentGroup();
-                    if (((Global::RMS_OFF == m_RMSCleaningOptions) || (m_RMSOptions != m_RMSCleaningOptions))
+                    if (((Global::RMS_OFF == RMSCLEANINGOPTIONS) || (RMSPROCESSINGOPTION != RMSCLEANINGOPTIONS))
                             && isCleaningReagentGroup)
                     {
                         return "";
                     }
 
-                    switch (m_RMSOptions) {
+                    switch (RMSPROCESSINGOPTION) {
                         default:
                             return QString("");
                         case Global::RMS_CASSETTES:
@@ -301,11 +302,11 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
             case 3:
                 if (mp_ReagentGroupList) {
                     bool isCleaningReagentGroup = mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->IsCleaningReagentGroup();
-                    if (((Global::RMS_OFF == m_RMSOptions) || (m_RMSOptions != m_RMSCleaningOptions)) && !isCleaningReagentGroup)
+                    if (((Global::RMS_OFF == RMSPROCESSINGOPTION) || (RMSPROCESSINGOPTION != RMSCLEANINGOPTIONS)) && !isCleaningReagentGroup)
                     {
                         return "";
                     }
-                    switch (m_RMSCleaningOptions) {
+                    switch (RMSCLEANINGOPTIONS) {
                         default:
                             return QString("");
                     case Global::RMS_CYCLES:
@@ -390,7 +391,7 @@ QVariant CReagentStatusModel::headerData(int Section, Qt::Orientation Orientatio
         case 1:
             return tr("Reagent");
         case 2:
-            switch (m_RMSOptions) {
+            switch (RMSPROCESSINGOPTION) {
                 default:
                     return QString("");
                 case Global::RMS_CASSETTES:
@@ -401,7 +402,7 @@ QVariant CReagentStatusModel::headerData(int Section, Qt::Orientation Orientatio
                     return tr("Expiry\nDate");
             }
         case 3:
-            switch (m_RMSCleaningOptions) {
+            switch (RMSCLEANINGOPTIONS) {
                 default:
                     return QString("");
             case Global::RMS_CYCLES:

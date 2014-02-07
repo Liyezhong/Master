@@ -77,9 +77,9 @@ CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoar
 
     // Init Message dialog
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
-    mp_MessageDlg->SetTitle(CommonString::strInforMsg);
+    mp_MessageDlg->SetTitle(m_strInforMsg);
     mp_MessageDlg->SetIcon(QMessageBox::Information);
-    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+    mp_MessageDlg->SetButtonText(1, m_strOK);
     mp_MessageDlg->HideButtons();
     m_RMSOption = Global::RMS_OFF;
 }
@@ -323,14 +323,14 @@ void CModifyReagentRMSDlg::OnOk()
 
      if (mp_Ui->buttonReagentName->text() == "--") {//as "--" is initialized when dialog is showing
          mp_MessageDlg->SetText(m_strEnterValidName);
-         mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+         mp_MessageDlg->SetButtonText(1, m_strOK);
          (void) mp_MessageDlg->exec();
          return;
      }
 
      if (mp_Ui->buttonReagentName->text().contains("LEICA",Qt::CaseInsensitive)) {
         mp_MessageDlg->SetText(m_strReagentNameHasLaicaString);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->SetButtonText(1, m_strOK);
         (void) mp_MessageDlg->exec();
         return;
      }
@@ -344,7 +344,7 @@ void CModifyReagentRMSDlg::OnOk()
              if (0 == p_Reagent->GetReagentName().compare(mp_Ui->buttonReagentName->text(), Qt::CaseInsensitive))
              {
                 mp_MessageDlg->SetText(m_strInputReagentSameName);
-                mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+                mp_MessageDlg->SetButtonText(1, m_strOK);
                 (void) mp_MessageDlg->exec();
                 return;
              }
@@ -353,7 +353,7 @@ void CModifyReagentRMSDlg::OnOk()
 
      if ((m_RMSOption != Global::RMS_OFF) && (mp_Ui->buttonValue->text().toInt() == 0)) {
         mp_MessageDlg->SetText(m_strEnterValidData);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->SetButtonText(1, m_strOK);
         (void) mp_MessageDlg->exec();
         return;
      }
@@ -384,7 +384,7 @@ void CModifyReagentRMSDlg::OnOk()
             QString ErrorString;
             DataManager::Helper::ErrorIDToString(ErrorList, ErrorString);
             mp_MessageDlg->SetText(ErrorString);
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->SetButtonText(1, m_strOK);
             mp_MessageDlg->HideButtons();
             (void) mp_MessageDlg->exec();
         }
@@ -395,7 +395,7 @@ void CModifyReagentRMSDlg::OnOk()
         if(m_SelectionFlag != true)
         {
             mp_MessageDlg->SetText(m_strSelectReagentGroup);//Please Select reagent group
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->SetButtonText(1, m_strOK);
             (void) mp_MessageDlg->exec();
             return;
         }
@@ -430,7 +430,7 @@ void CModifyReagentRMSDlg::OnOk()
             else {
                 mp_MessageDlg->SetText(m_strReagentCopyFailed);
             }
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->SetButtonText(1, m_strOK);
             mp_MessageDlg->HideButtons();
            (void) mp_MessageDlg->exec();
         }
@@ -530,8 +530,11 @@ void CModifyReagentRMSDlg::OnOkClicked(QString EnteredText)
 /****************************************************************************/
 void CModifyReagentRMSDlg::RetranslateUI()
 {
-    mp_MessageDlg->SetTitle(CommonString::strInforMsg);
-    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+    m_strInforMsg = QApplication::translate("Reagents::CModifyReagentRMSDlg", "Information Message", 0, QApplication::UnicodeUTF8);
+    m_strOK = QApplication::translate("Reagents::CModifyReagentRMSDlg", "OK", 0, QApplication::UnicodeUTF8);
+
+    mp_MessageDlg->SetTitle(m_strInforMsg);
+    mp_MessageDlg->SetButtonText(1, m_strOK);
 
     m_strCassettesUntilChange = QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                           "Cassettes until change", 0, QApplication::UnicodeUTF8);

@@ -36,17 +36,15 @@
 #include "Global/Include/GlobalEventCodes.h"
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
-#include "Reagents/Include/ReagentRMSWidget.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Include/StationXmlDefinitions.h"
 
 #include <QApplication>
 #include "Global/Include/UITranslator.h"
 #include "MainMenu//Include/MsgBoxManager.h"
-#include "Dashboard/Include/SplashWidget.h"
-#include <Dashboard/Include/CommonString.h>
 #include <Global/Include/SystemPaths.h>
 #include <QProcess>
 #include <QDesktopWidget>
+#include <Core/Include/ReagentStatusModel.h>
 
 
 namespace Core {
@@ -151,7 +149,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     mp_MessageDlg->SetTitle(m_strCommunicationError);
     mp_MessageDlg->SetText(m_strChangeNotSave);
     mp_MessageDlg->SetIcon(QMessageBox::Critical);
-    mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+    mp_MessageDlg->SetButtonText(1, m_strOK);
     mp_MessageDlg->setModal(true);
     mp_MessageDlg->HideButtons();
     m_UpdateProgramColor = false;
@@ -170,9 +168,6 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     (void)connect(mp_MesgBoxManager, SIGNAL(EventReportAck(NetCommands::ClickedButton_t,Global::tRefType, quint64)),
                       this, SLOT(OnEventReportAck(NetCommands::ClickedButton_t,Global::tRefType, quint64)));
 
-    mp_SplashWidget = new SplashWidget(mp_MainWindow);
-    CONNECTSIGNALSLOT(this, ProgramStartReady(), this, OnProgramStartReady());
-    CONNECTSIGNALSLOT(this, ProgramSelfTestFailed(), this, OnProgramSelfTestFailed());
     m_pServiceProcess = new QProcess();
 
 }
@@ -192,7 +187,6 @@ CDataConnector::~CDataConnector()
         delete mp_LanguageFile;
         delete m_pServiceProcess;
         delete mp_WaitDlgExecChanged;
-        delete mp_SplashWidget;
     }
     catch (...) {
         //To please lint warnings
@@ -303,7 +297,7 @@ void CDataConnector::OnAckDateAndTime(Global::tRefType Ref, const Global::AckOKN
             mp_MessageDlg->SetText(m_strCommunicationError);
             mp_MessageDlg->SetIcon(QMessageBox::Critical);
         }
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->SetButtonText(1, m_strOK);
         mp_MessageDlg->show();
     }
 }
@@ -776,7 +770,7 @@ void CDataConnector::UpdateStationChangeReagentHandler(Global::tRefType Ref,
     if (pDashboardStation)
     {
         pDashboardStation->SetDashboardReagentID(Command.ReagentID());
-        switch (Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION) {
+        switch (CReagentStatusModel::RMSPROCESSINGOPTION) {
             default:
                  QString("");
                 break;
@@ -805,7 +799,7 @@ void CDataConnector::UpdateStationResetDataHandler(Global::tRefType Ref, const M
     DataManager::CDashboardStation* pDashboardStation = DashboardStationList->GetDashboardStation(Command.StationID());
      if (pDashboardStation) {
         pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate()) ;
-        switch (Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION) {
+        switch (CReagentStatusModel::RMSPROCESSINGOPTION) {
             default:
                  QString("");
                 break;
@@ -850,7 +844,7 @@ void CDataConnector::UpdateStationSetAsFullHandler(Global::tRefType Ref, const M
     if (pDashboardStation){
         pDashboardStation->SetDashboardReagentStatus("Full");
         pDashboardStation->SetDashboardReagentExchangeDate(QDate::currentDate()) ;
-        switch (Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION) {
+        switch (CReagentStatusModel::RMSPROCESSINGOPTION) {
             default:
                  QString("");
                 break;
@@ -1003,23 +997,10 @@ void CDataConnector::ConfFileHandler(Global::tRefType Ref, const NetCommands::Cm
         m_GuiInit = false;
         NetCommands::CmdGuiInit Cmd(COMMAND_TIME_OUT, true);
         (void)m_NetworkObject.SendCmdToMaster(Cmd, &CDataConnector::OnAckTwoPhase, this);
-        QRect scr = mp_MainWindow->geometry();
-        mp_SplashWidget->move( scr.center() - mp_SplashWidget->rect().center());
-        //mp_SplashWidget->exec();
+        emit EndGUIInitialization();
     }
     return;
 }
-
-void CDataConnector::OnProgramStartReady()
-{
-    mp_SplashWidget->accept();
-}
-
-void CDataConnector::OnProgramSelfTestFailed()
-{
-    mp_SplashWidget->accept();
-}
-
 
 /****************************************************************************/
 /*!
@@ -1100,6 +1081,7 @@ void CDataConnector::RetranslateUI()
    m_strInformation = QApplication::translate("Core::CDataConnector", "Information", 0, QApplication::UnicodeUTF8);
 
    m_strWarning = QApplication::translate("Core::CDataConnector", "Warning", 0, QApplication::UnicodeUTF8);
+   m_strOK = QApplication::translate("Core::CDataConnector", "OK", 0, QApplication::UnicodeUTF8);
    m_strDeviceCommunication = QApplication::translate("Core::CDataConnector", "Device Communication", 0, QApplication::UnicodeUTF8);
    m_strSavingSettings = QApplication::translate("Core::CDataConnector", "Saving Settings ...", 0, QApplication::UnicodeUTF8);
    m_strUserExport = QApplication::translate("Core::CDataConnector", "User Export", 0, QApplication::UnicodeUTF8);
@@ -1657,7 +1639,7 @@ void CDataConnector::ShowMessageDialog(Global::GUIMessageType MessageType, QStri
             break;
         }
         mp_MessageDlg->SetText(MessageText);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        //mp_MessageDlg->SetButtonText(1, CommonString::strOK);
         mp_MessageDlg->show();
     }
 //    else {

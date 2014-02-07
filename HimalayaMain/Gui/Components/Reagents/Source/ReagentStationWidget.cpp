@@ -6,8 +6,7 @@
 #include "Reagents/Include/ReagentStationWidget.h"
 #include "Reagents/Include/ModifyReagentStationDlg.h"
 #include "Reagents/Build/ui_ReagentStationWidget.h"
-#include <Dashboard/Include/CommonString.h>
-#include "Dashboard/Include/DashboardWidget.h"
+#include "Core/Include/GlobalHelper.h"
 
 
 namespace Reagents {
@@ -111,7 +110,7 @@ void CReagentStationWidget::OnEdit()
     if (m_StationList.contains(mp_DashStation->GetDashboardStationID()))
     {
         bool bRevertSelectedProgram = false;
-        if (!Dashboard::CDashboardWidget::CheckSelectedProgram(bRevertSelectedProgram))
+        if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram))
             return;
 
         if (bRevertSelectedProgram)

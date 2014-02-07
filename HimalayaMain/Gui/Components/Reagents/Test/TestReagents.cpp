@@ -22,9 +22,7 @@
 
 #include <QtTest>
 #include <QDebug>
-#include <Reagents/Include/ReagentsWidget.h>
-#include <Reagents/Include/ModifyReagentDlg.h>
-#include <Programs/Include/ModifyProgramStepDlg.h>
+#include <Reagents/Include/ReagentWidget.h>
 #include <QObject>
 
 
@@ -95,10 +93,8 @@ void CTestReagents::utTestReagentWidget() {
     Core::CDataConnector *p_DataConnector = new Core::CDataConnector(&MainWindow);
     KeyBoard::CKeyBoard KeyBoard;
 
-    Reagents::CReagentsWidget *p_ReagentWidget = new
-            Reagents::CReagentsWidget(p_DataConnector, p_DataConnector->ReagentList,
-                                      &MainWindow, &KeyBoard);
-    Reagents::CModifyReagentDlg *p_ModifyReagentDlg = new
+    Reagents::CReagentWidget *p_ReagentWidget = new Reagents::CReagentWidget(p_DataConnector, &MainWindow, &KeyBoard);
+    /*Reagents::CModifyReagentDlg *p_ModifyReagentDlg = new
            Reagents::CModifyReagentDlg(p_ReagentWidget, &KeyBoard, &MainWindow, p_DataConnector);
     Reagents::CHeatedCuvette *p_HeatedCuvette = new
            Reagents::CHeatedCuvette(p_ReagentWidget, &MainWindow, p_DataConnector);
@@ -137,7 +133,7 @@ void CTestReagents::utTestReagentWidget() {
     // Test HeatedCuvette class member functions
     p_HeatedCuvette->InitDialog(&Reagent);
     p_HeatedCuvette->OnTemperatureFormatChanged();
-    p_HeatedCuvette->OnProcessStateChanged();
+    p_HeatedCuvette->OnProcessStateChanged();*/
  }
 
 } // end namespace Programs

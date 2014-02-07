@@ -56,6 +56,7 @@ private:
     QStringList m_ColorNames;                       //!< store color names
     QButtonGroup m_ButtonGroup;
     QString m_strCancel, m_strClose;
+    QString m_strOK;
     void SetButtonGroup();
     void RetranslateUI();
 

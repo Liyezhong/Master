@@ -30,7 +30,6 @@
 using namespace Dashboard;
 
 QString CDashboardWidget::m_SelectedProgramId = "";
-QString CDashboardWidget::m_strMsgUnselect = "";
 
 CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                      MainMenu::CMainWindow *p_Parent) :
@@ -609,7 +608,6 @@ void CDashboardWidget::RetranslateUI()
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
-    m_strMsgUnselect = QApplication::translate("Dashboard::CDashboardWidget", "As the program \"%1\" is selected, this operation will result in an incorrect program result, if you click \"Yes\", the selected program will unselect.", 0, QApplication::UnicodeUTF8);
 
 }
 
@@ -626,35 +624,6 @@ void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain 
         this->TakeOutSpecimenAndWaitRunCleaning();//pause ProgressBar and EndTime countdown
         m_IsDraining = false;//when abort or pause, set this too?
     }
-}
-
-bool CDashboardWidget::CheckSelectedProgram(bool& bRevertSelectProgram, QString ProgramID)
-{
-    bRevertSelectProgram = false;
-    if (!m_SelectedProgramId.isEmpty())
-    {
-        if (!ProgramID.isEmpty())//not empty
-        {
-            if (ProgramID != m_SelectedProgramId)
-                return true;
-        }
-
-        MainMenu::CMessageDlg ConfirmationMessageDlg;
-        ConfirmationMessageDlg.SetTitle(CommonString::strWarning);
-        QString strMsg;
-        strMsg = m_strMsgUnselect.arg(Dashboard::CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-        ConfirmationMessageDlg.SetText(strMsg);
-        ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
-        ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);
-        ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);
-        ConfirmationMessageDlg.HideCenterButton();
-        if (!ConfirmationMessageDlg.exec())
-            return false;//cancel
-        else
-            bRevertSelectProgram = true;
-
-    }
-    return true;
 }
 
 /****************************************************************************/

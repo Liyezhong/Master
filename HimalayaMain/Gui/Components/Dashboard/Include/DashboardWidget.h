@@ -48,8 +48,6 @@ public:
     explicit CDashboardWidget(Core::CDataConnector *p_DataConnector,
                                MainMenu::CMainWindow *p_Parent = NULL);
     ~CDashboardWidget();
-    static bool CheckSelectedProgram(bool& bRevertSelectProgram,
-                                     QString ProgramID = "");//the return value(true) means the work flow can go continuely.
     bool IsAbortEnabled();
 protected:
     void changeEvent(QEvent *p_Event);
@@ -83,7 +81,6 @@ private:
     QString m_strRetortContaminated;
     QDateTime m_StartDateTime;
     QString m_strProgramIsAborted;
-    static QString m_strMsgUnselect;
     bool m_IsWaitingCleaningProgram;
     int m_CurProgramStepIndex;
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role

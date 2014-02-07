@@ -56,6 +56,10 @@ private:
     MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
     Core::CReagentStationEditModel m_ReagentEditModel;             //!< Model for the table
     Core::CDataConnector *mp_DataConnector;         //!< Global data container
+    QString m_strCancel;
+    QString m_strClose;
+    QString m_strInforMsg;
+    QString m_strOK;
 
 public:
     explicit CModifyReagentStationDlg(QWidget *p_Parent = NULL,
