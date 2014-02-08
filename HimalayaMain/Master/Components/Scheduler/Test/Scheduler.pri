@@ -11,7 +11,7 @@ INCLUDEPATH += ../../../../../Shared/Master/Components \
 ###################################
 ### stuff for adding libraries ####
 ###################################
-EXTRACOMPONENTDIR = ../../../../../../Platform/Master/Components/
+EXTRACOMPONENTDIR = ../../../../../../Platform/Master/Components
 
 # this function adds all libraries passed as arguments to the linker and dependency list
 defineTest(UseDepLibs){
@@ -21,6 +21,10 @@ defineTest(UseDepLibs){
         THELIBPATH       = $$EXTRACOMPONENTDIR/$$TheLib/Build/lib_$$CONFIG_SUFFIX
         PRE_TARGETDEPS  += $$THELIBPATH/lib$${TheLib}.a
         LIBS            += $$THELIBPATH/lib$${TheLib}.a
+        PRE_TARGETDEPS  += ../../../../../Shared/Master/Components/HimalayaDataContainer/Build/lib_$$CONFIG_SUFFIX/libHimalayaDataContainer.a
+        LIBS            += ../../../../../Shared/Master/Components/HimalayaDataContainer/Build/lib_$$CONFIG_SUFFIX/libHimalayaDataContainer.a
+        PRE_TARGETDEPS  += ../../HimalayaDataManager/Build/lib_$$CONFIG_SUFFIX/libHimalayaDataManager.a
+        LIBS            += ../../HimalayaDataManager/Build/lib_$$CONFIG_SUFFIX/libHimalayaDataManager.a
         PRE_TARGETDEPS  += ../../Scheduler/Build/lib_$$CONFIG_SUFFIX/libScheduler.a
         LIBS            += ../../Scheduler/Build/lib_$$CONFIG_SUFFIX/libScheduler.a
     }

@@ -20,8 +20,10 @@
 
 #include <QTest> 
 
+#include <HimalayaMasterThread/Include/ThreadIDs.h>
 #include <Scheduler/Include/SchedulerMainThreadController.h>
 #include <Scheduler/Include/SchedulerCommandProcessor.h>
+#include <DeviceControl/Include/Interface/IDeviceProcessing.h>
 
 namespace Scheduler {
 
@@ -34,6 +36,9 @@ class TestSchedulerCommand : public QObject {
     Q_OBJECT
 
 private:
+    SchedulerMainThreadController* m_pSchedulerMainController;
+	DeviceControl::IDeviceProcessing* mp_IDeviceProcessing;
+	
 private slots:
     /****************************************************************************/
     /**
@@ -80,11 +85,18 @@ void TestSchedulerCommand::initTestCase()
 /****************************************************************************/
 void TestSchedulerCommand::init()
 {
+	mp_IDeviceProcessing = new IDeviceProcessing();	
+    m_pSchedulerMainController =new SchedulerMainThreadController(THREAD_ID_SCHEDULER, mp_IDeviceProcessing);
+	m_pSchedulerMainController->CreateAndInitializeObjects();
 }
 
 /****************************************************************************/
 void TestSchedulerCommand::cleanup()
 {
+    delete m_pSchedulerMainController;
+    m_pSchedulerMainController = NULL;
+	delete mp_IDeviceProcessing;
+	mp_IDeviceProcessing = NULL;
 }
 
 /****************************************************************************/
