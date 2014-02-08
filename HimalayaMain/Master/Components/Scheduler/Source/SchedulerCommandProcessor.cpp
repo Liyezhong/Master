@@ -25,8 +25,9 @@
 namespace Scheduler{
 
 
-SchedulerCommandProcessor::SchedulerCommandProcessor(SchedulerMainThreadController *controller) :
-    mp_SchedulerThreadController(controller)
+SchedulerCommandProcessor::SchedulerCommandProcessor(SchedulerMainThreadController *controller, IDeviceProcessing* pIDeviceProcessing) :
+    mp_SchedulerThreadController(controller),
+    mp_IDeviceProcessing(pIDeviceProcessing)
 {
 
 

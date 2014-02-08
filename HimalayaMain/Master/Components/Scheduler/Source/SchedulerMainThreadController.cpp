@@ -61,14 +61,14 @@ using namespace DataManager;
 namespace Scheduler {
 
 SchedulerMainThreadController::SchedulerMainThreadController(
-                Global::gSourceType TheHeartBeatSource
-                )
+        Global::gSourceType TheHeartBeatSource,
+        IDeviceProcessing *pIDeviceProcessing)
         : Threads::ThreadController(TheHeartBeatSource, "SchedulerMainThread")
         , m_TickTimer(this)
         , m_SchedulerCommandProcessorThread(NULL)
         , m_SchedulerCommandProcessor(NULL)
         , m_SchedulerMachine(new CSchedulerStateMachine())
-        , mp_IDeviceProcessing(NULL)
+        , mp_IDeviceProcessing(pIDeviceProcessing)
         , mp_DataManager(NULL)
         , m_CurProgramStepIndex(-1)
         , m_FirstProgramStepIndex(0)
@@ -83,8 +83,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
 {
-    delete m_SchedulerCommandProcessorThread;
-    m_SchedulerCommandProcessorThread = NULL;
     delete m_SchedulerCommandProcessor;
     m_SchedulerCommandProcessor = NULL;
     delete m_SchedulerMachine;
@@ -119,11 +117,13 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
 
     //create the SchedulerCommandProcessor thread
     m_SchedulerCommandProcessorThread = new QThread();
-    m_SchedulerCommandProcessor = new SchedulerCommandProcessor(this);
+    m_SchedulerCommandProcessor = new SchedulerCommandProcessor(this, mp_IDeviceProcessing);
     //CONNECTSIGNALSLOT(&m_SchedulerCommandProcessor, timeout(), m_SchedulerCommandProcessor, run());
 
     m_SchedulerCommandProcessor->moveToThread(m_SchedulerCommandProcessorThread);
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessorThread, started(), m_SchedulerCommandProcessor, run());
+    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, destroyed(), m_SchedulerCommandProcessorThread, quit());
+    CONNECTSIGNALSLOT(m_SchedulerCommandProcessorThread, finished(), m_SchedulerCommandProcessorThread, deleteLater());
     m_SchedulerCommandProcessorThread->start();
 
     //timer setting

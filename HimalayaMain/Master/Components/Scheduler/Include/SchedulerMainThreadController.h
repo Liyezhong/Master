@@ -281,7 +281,8 @@ protected:
          */
         /****************************************************************************/
         SchedulerMainThreadController(
-            Global::gSourceType TheHeartBeatSource
+            Global::gSourceType TheHeartBeatSource,
+            DeviceControl::IDeviceProcessing *pIDeviceProcessing
         );
 
         /****************************************************************************/

@@ -46,6 +46,7 @@
 #include <NetCommands/Include/CmdDataUpdate.h>
 #include <NetCommands/Include/CmdGuiInit.h>
 #include <NetCommands/Include/CmdConfigurationFile.h>
+#include <DeviceControl/Include/Interface/IDeviceProcessing.h>
 
 #include <HimalayaMasterThread/Include/ProgramStartableFlagManager.h>
 #include <HimalayaDataManager/Include/DataManager.h>
@@ -133,12 +134,13 @@ private:
     bool                            m_RemoteCareExportRequest;              ///< Request received from export
 
     bool m_Simulation;  //!  Enable/disable simulation thread controller. \todo Remove later
-    ProgramStartableManager         m_ProgramStartableManager;              ///< Object Managing Program Startablity
-    Global::GuiUserLevel            m_AuthenticatedLevel;                   ///< The current user authenticated level
-    bool                            m_ControllerCreationFlag;               ///< True if controllers are created, False if not
-	CurrentUserActionState_t        m_CurrentUserActionState;               ///< This variable holds the current idle state- e.g. BLG, ImportExport
-    SWUpdate::SWUpdateManager       *mp_SWUpdateManager;                    ///< The SWUpdate Manager
-    QString                         m_ExportTargetFileName;                 ///< Target file name of the export
+    ProgramStartableManager          m_ProgramStartableManager;              ///< Object Managing Program Startablity
+    Global::GuiUserLevel             m_AuthenticatedLevel;                   ///< The current user authenticated level
+    bool                             m_ControllerCreationFlag;               ///< True if controllers are created, False if not
+    CurrentUserActionState_t         m_CurrentUserActionState;               ///< This variable holds the current idle state- e.g. BLG, ImportExport
+    SWUpdate::SWUpdateManager        *mp_SWUpdateManager;                    ///< The SWUpdate Manager
+    QString                          m_ExportTargetFileName;                 ///< Target file name of the export
+    DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;                  ///< Device Control Interface
     /****************************************************************************/
     HimalayaMasterThreadController(const HimalayaMasterThreadController &);                     ///< Not implemented.
     const HimalayaMasterThreadController & operator = (const HimalayaMasterThreadController &); ///< Not implemented.

@@ -64,7 +64,7 @@ public:
      *
      */
     /****************************************************************************/
-    explicit SchedulerCommandProcessor(SchedulerMainThreadController *controller);
+    explicit SchedulerCommandProcessor(SchedulerMainThreadController *controller, IDeviceProcessing* pIDeviceProcessing);
 
     
 signals:
