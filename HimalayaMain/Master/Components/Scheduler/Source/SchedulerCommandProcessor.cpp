@@ -35,7 +35,6 @@ SchedulerCommandProcessor::SchedulerCommandProcessor(SchedulerMainThreadControll
 
 void SchedulerCommandProcessor::run()
 {
-    mp_IDeviceProcessing = new IDeviceProcessing();
     qRegisterMetaType<ReturnCode_t>("ReturnCode_t");
     qRegisterMetaType<DevInstanceID_t>("DevInstanceID_t");
 
