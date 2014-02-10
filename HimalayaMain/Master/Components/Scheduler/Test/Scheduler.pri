@@ -7,10 +7,19 @@
 INCLUDEPATH += ../../../../../Shared/Master/Components \
                ../../../../Common/Components \
                ../../../../../../Platform/Master/Components \
+#Add google-mock related headers into our project
+INCLUDEPATH += /usr/local/include/gtest \
+               /usr/local/include/gmock
 
 ###################################
 ### stuff for adding libraries ####
 ###################################
+#Add google-mock related libraries into our project
+PRE_TARGETDEPS  += /usr/local/lib/gmock/libgmock.a
+LIBS            += /usr/local/lib/gmock/libgmock.a
+PRE_TARGETDEPS  += /usr/local/lib/gtest/libgtest.a
+LIBS            += /usr/local/lib/gtest/libgtest.a
+
 EXTRACOMPONENTDIR = ../../../../../../Platform/Master/Components
 
 # this function adds all libraries passed as arguments to the linker and dependency list
@@ -32,3 +41,7 @@ defineTest(UseDepLibs){
     export(LIBS)
     export(PRE_TARGETDEPS)
 }
+
+
+
+

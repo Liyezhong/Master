@@ -24,6 +24,7 @@
 #include <Scheduler/Include/SchedulerMainThreadController.h>
 #include <Scheduler/Include/SchedulerCommandProcessor.h>
 #include <DeviceControl/Include/Interface/IDeviceProcessing.h>
+#include <gmock.h>
 
 namespace Scheduler {
 
@@ -107,6 +108,14 @@ void TestSchedulerCommand::cleanupTestCase()
 
 } // end namespace EventHandler
 
-QTEST_MAIN(Scheduler::TestSchedulerCommand)
+//QTEST_MAIN(Scheduler::TestSchedulerCommand)
+int main(int argc, char*argv[])
+{
+    ::testing::GTEST_FLAG(throw_on_failure) = true;
+    ::testing::InitGoogleMock(&argc, argv);
+    QCoreApplication app(argc, argv);
+    Scheduler::TestSchedulerCommand tc;
+    return QTest::qExec(&tc, argc, argv);
+}
 
 #include "TestSchedulerCommand.moc"
