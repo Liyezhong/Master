@@ -29,7 +29,7 @@ namespace Scheduler{
 class CmdRVReqActRVPosition : public CmdSchedulerCommandBase
 {
 public:
-    CmdRVReqActRVPosition(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller);
+    CmdRVReqActRVPosition(int Timeout, SchedulerMainThreadController *controller);
     ~CmdRVReqActRVPosition();
 
     static QString NAME;    ///< Command name.
@@ -37,13 +37,12 @@ public:
 
     QString GetName() const{return NAME;}
 
-    DeviceControl::RVPosition_t GetResult()const{return m_result;}
-	bool GetResult(DeviceControl::RVPosition_t& result) const{result = m_result; return true;}
+    DeviceControl::RVPosition_t GetResult()const {return m_result;}
+	void SetResult(DeviceControl::RVPosition_t result) { m_result = result;}
+	bool GetResult(DeviceControl::RVPosition_t& result) const{result = m_result; return true;}
 	
 	QString GetParameters()const{ return GetName() + QString("()");}
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
-
-    void Execute();
 
 private:
     CmdRVReqActRVPosition();                                                    ///< Not implemented.

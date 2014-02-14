@@ -29,7 +29,7 @@ namespace Scheduler{
 class CmdRTSetTempCtrlON : public CmdSchedulerCommandBase
 {
 public:
-    CmdRTSetTempCtrlON(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller);
+    CmdRTSetTempCtrlON(int Timeout, SchedulerMainThreadController *controller);
     ~CmdRTSetTempCtrlON();
 
     static QString NAME;    ///< Command name.
@@ -37,15 +37,14 @@ public:
 
     QString GetName() const{return NAME;}
 
-    DeviceControl::ReturnCode_t GetResult()const{return m_result;}
-	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
+    DeviceControl::ReturnCode_t GetResult()const {return m_result;}
+	void SetResult(DeviceControl::ReturnCode_t result) { m_result = result;}
+	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
 	DeviceControl::RTTempCtrlType_t GetType(){return m_Type;}
 	void SetType(DeviceControl::RTTempCtrlType_t Type){m_Type = Type;}
 	
 	QString GetParameters()const{ return GetName() + QString("(%1)").arg(m_Type);}
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
-
-    void Execute();
 
 private:
     CmdRTSetTempCtrlON();                                                    ///< Not implemented.

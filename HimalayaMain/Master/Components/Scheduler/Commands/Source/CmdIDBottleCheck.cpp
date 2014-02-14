@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdIDBottleCheck::NAME = "Scheduler::IDBottleCheck";
 
-CmdIDBottleCheck::CmdIDBottleCheck(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdIDBottleCheck::CmdIDBottleCheck(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdIDBottleCheck::~CmdIDBottleCheck(){}
-
-
-void CmdIDBottleCheck::Execute()
-{
-    m_result = m_IDeviceProcessing->IDBottleCheck(m_ReagentGrpID, m_TubePos);
-}
 
 }
 

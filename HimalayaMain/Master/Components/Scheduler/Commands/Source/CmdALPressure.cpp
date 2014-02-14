@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdALPressure::NAME = "Scheduler::ALPressure";
 
-CmdALPressure::CmdALPressure(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdALPressure::CmdALPressure(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdALPressure::~CmdALPressure(){}
-
-
-void CmdALPressure::Execute()
-{
-    m_result = m_IDeviceProcessing->ALPressure();
-}
 
 }
 

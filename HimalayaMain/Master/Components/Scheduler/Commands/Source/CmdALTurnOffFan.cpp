@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdALTurnOffFan::NAME = "Scheduler::ALTurnOffFan";
 
-CmdALTurnOffFan::CmdALTurnOffFan(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdALTurnOffFan::CmdALTurnOffFan(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdALTurnOffFan::~CmdALTurnOffFan(){}
-
-
-void CmdALTurnOffFan::Execute()
-{
-    m_result = m_IDeviceProcessing->ALTurnOffFan();
-}
 
 }
 

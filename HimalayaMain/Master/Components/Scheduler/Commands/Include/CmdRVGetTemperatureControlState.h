@@ -29,7 +29,7 @@ namespace Scheduler{
 class CmdRVGetTemperatureControlState : public CmdSchedulerCommandBase
 {
 public:
-    CmdRVGetTemperatureControlState(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller);
+    CmdRVGetTemperatureControlState(int Timeout, SchedulerMainThreadController *controller);
     ~CmdRVGetTemperatureControlState();
 
     static QString NAME;    ///< Command name.
@@ -37,13 +37,12 @@ public:
 
     QString GetName() const{return NAME;}
 
-    DeviceControl::TempCtrlState_t GetResult()const{return m_result;}
-	bool GetResult(DeviceControl::TempCtrlState_t& result) const{result = m_result; return true;}
+    DeviceControl::TempCtrlState_t GetResult()const {return m_result;}
+	void SetResult(DeviceControl::TempCtrlState_t result) { m_result = result;}
+	bool GetResult(DeviceControl::TempCtrlState_t& result) const{result = m_result; return true;}
 	
 	QString GetParameters()const{ return GetName() + QString("()");}
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
-
-    void Execute();
 
 private:
     CmdRVGetTemperatureControlState();                                                    ///< Not implemented.

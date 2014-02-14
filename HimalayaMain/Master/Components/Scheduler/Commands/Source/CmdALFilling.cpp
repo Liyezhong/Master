@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdALFilling::NAME = "Scheduler::ALFilling";
 
-CmdALFilling::CmdALFilling(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdALFilling::CmdALFilling(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdALFilling::~CmdALFilling(){}
-
-
-void CmdALFilling::Execute()
-{
-    m_result = m_IDeviceProcessing->ALFilling(m_DelayTime);
-}
 
 }
 

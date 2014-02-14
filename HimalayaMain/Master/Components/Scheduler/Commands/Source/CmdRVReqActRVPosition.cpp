@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdRVReqActRVPosition::NAME = "Scheduler::RVReqActRVPosition";
 
-CmdRVReqActRVPosition::CmdRVReqActRVPosition(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdRVReqActRVPosition::CmdRVReqActRVPosition(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdRVReqActRVPosition::~CmdRVReqActRVPosition(){}
-
-
-void CmdRVReqActRVPosition::Execute()
-{
-    m_result = m_IDeviceProcessing->RVReqActRVPosition();
-}
 
 }
 

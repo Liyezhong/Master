@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdRTSetTemperaturePid::NAME = "Scheduler::RTSetTemperaturePid";
 
-CmdRTSetTemperaturePid::CmdRTSetTemperaturePid(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdRTSetTemperaturePid::CmdRTSetTemperaturePid(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdRTSetTemperaturePid::~CmdRTSetTemperaturePid(){}
-
-
-void CmdRTSetTemperaturePid::Execute()
-{
-    m_result = m_IDeviceProcessing->RTSetTemperaturePid(m_Type, m_MaxTemperature, m_ControllerGain, m_ResetTime, m_DerivativeTime);
-}
 
 }
 

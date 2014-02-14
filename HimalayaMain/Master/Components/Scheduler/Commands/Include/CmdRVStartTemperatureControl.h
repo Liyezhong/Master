@@ -29,7 +29,7 @@ namespace Scheduler{
 class CmdRVStartTemperatureControl : public CmdSchedulerCommandBase
 {
 public:
-    CmdRVStartTemperatureControl(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller);
+    CmdRVStartTemperatureControl(int Timeout, SchedulerMainThreadController *controller);
     ~CmdRVStartTemperatureControl();
 
     static QString NAME;    ///< Command name.
@@ -37,8 +37,9 @@ public:
 
     QString GetName() const{return NAME;}
 
-    DeviceControl::ReturnCode_t GetResult()const{return m_result;}
-	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
+    DeviceControl::ReturnCode_t GetResult()const {return m_result;}
+	void SetResult(DeviceControl::ReturnCode_t result) { m_result = result;}
+	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
 	qreal GetNominalTemperature(){return m_NominalTemperature;}
 	void SetNominalTemperature(qreal NominalTemperature){m_NominalTemperature = NominalTemperature;}
 	quint8 GetSlopeTempChange(){return m_SlopeTempChange;}
@@ -46,8 +47,6 @@ public:
 	
 	QString GetParameters()const{ return GetName() + QString("(%1,%2)").arg(m_NominalTemperature).arg(m_SlopeTempChange);}
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
-
-    void Execute();
 
 private:
     CmdRVStartTemperatureControl();                                                    ///< Not implemented.

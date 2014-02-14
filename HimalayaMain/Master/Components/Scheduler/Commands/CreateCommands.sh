@@ -16,8 +16,9 @@ do
             type="DeviceControl::"$type
         fi
 	var_ret="mutable "$type" m_result;"
-	fct_ret=$type" GetResult()const{return m_result;}\n\r\t"
-	fct_ret=${fct_ret}'bool GetResult('$type'\& result) const{result = m_result; return true;}'
+	fct_ret=$type" GetResult()const {return m_result;}\n"
+	fct_ret=${fct_ret}"\tvoid SetResult($type result) { m_result = result;}\n"
+	fct_ret=${fct_ret}"\t"'bool GetResult('$type'\& result) const{result = m_result; return true;}'
 
 	name=${fields[1]}
 	len=$(expr ${#fields[@]} - 1)
@@ -67,6 +68,7 @@ do
 	#
 	sed -e "s/Template/$name/g" -e "s/fct_ret/$fct_ret/g" -e "s/fct_par/$fct_par/g" -e "s/TEMPLATE/$CM_NAME/g" \
 	    -e "s/var_ret/$var_ret/g" -e "s/var_par/$var_par/g" -e "s/fct_str/$par_str/g" CmdTemplate.h > "./Include/Cmd"$name".h"
-	sed -e "s/Template/$name/g" -e "s/ph_execute/$stat_exe/g" CmdTemplate.cpp > "./Source/Cmd"$name".cpp"
+	#sed -e "s/Template/$name/g" -e "s/ph_execute/$stat_exe/g" CmdTemplate.cpp > "./Source/Cmd"$name".cpp"
+	sed -e "s/Template/$name/g" CmdTemplate.cpp > "./Source/Cmd"$name".cpp"
 	
 done < scheduler.txt

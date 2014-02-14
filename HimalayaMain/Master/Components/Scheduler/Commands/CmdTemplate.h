@@ -29,7 +29,7 @@ namespace Scheduler{
 class CmdTemplate : public CmdSchedulerCommandBase
 {
 public:
-    CmdTemplate(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller);
+    CmdTemplate(int Timeout, SchedulerMainThreadController *controller);
     ~CmdTemplate();
 
     static QString NAME;    ///< Command name.
@@ -40,8 +40,6 @@ public:
     fct_ret
 	fct_par
 	fct_str
-
-    void Execute();
 
 private:
     CmdTemplate();                                                    ///< Not implemented.

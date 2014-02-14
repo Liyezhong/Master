@@ -29,7 +29,7 @@ namespace Scheduler{
 class CmdIDBottleCheck : public CmdSchedulerCommandBase
 {
 public:
-    CmdIDBottleCheck(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller);
+    CmdIDBottleCheck(int Timeout, SchedulerMainThreadController *controller);
     ~CmdIDBottleCheck();
 
     static QString NAME;    ///< Command name.
@@ -37,8 +37,9 @@ public:
 
     QString GetName() const{return NAME;}
 
-    DeviceControl::ReturnCode_t GetResult()const{return m_result;}
-	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
+    DeviceControl::ReturnCode_t GetResult()const {return m_result;}
+	void SetResult(DeviceControl::ReturnCode_t result) { m_result = result;}
+	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
 	QString GetReagentGrpID(){return m_ReagentGrpID;}
 	void SetReagentGrpID(QString ReagentGrpID){m_ReagentGrpID = ReagentGrpID;}
 	DeviceControl::RVPosition_t GetTubePos(){return m_TubePos;}
@@ -46,8 +47,6 @@ public:
 	
 	QString GetParameters()const{ return GetName() + QString("(%1,%2)").arg(m_ReagentGrpID).arg(m_TubePos);}
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
-
-    void Execute();
 
 private:
     CmdIDBottleCheck();                                                    ///< Not implemented.
