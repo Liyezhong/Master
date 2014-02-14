@@ -108,34 +108,34 @@ public slots:
      *
      */
     /****************************************************************************/
-    void pushCmd(CmdSchedulerCommandBase *cmd) { this->pushCmd4Slot(cmd); }
+    virtual void pushCmd(CmdSchedulerCommandBase *cmd) { this->pushCmd4Slot(cmd); }
 
-    void DevProcInitialisationAckn(DevInstanceID_t instanceID, ReturnCode_t configResult)
+    virtual void DevProcInitialisationAckn(DevInstanceID_t instanceID, ReturnCode_t configResult)
     {
         this->DevProcInitialisationAckn4Slot(instanceID, configResult);
     }
 
-    void DevProcConfigurationAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
+    virtual void DevProcConfigurationAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
     {
         this->DevProcConfigurationAckn4Slot(instanceID, hdlInfo);
     }
 
-    void DevProcStartNormalOpModeAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
+    virtual void DevProcStartNormalOpModeAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
     {
         this->DevProcStartNormalOpModeAckn4Slot(instanceID, hdlInfo);
     }
 
-    void ThrowError(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp)
+    virtual void ThrowError(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp)
     {
         this->ThrowError4Slot(instanceID, usErrorGroup, usErrorID, usErrorData, TimeStamp);
     }
 
-    void DevProcDestroyAckn()
+    virtual void DevProcDestroyAckn()
     {
         this->DevProcDestroyAckn4Slot();
     }
 
-    void OnNewCmdAdded()
+    virtual void OnNewCmdAdded()
     {
         this->OnNewCmdAdded4Slot();
     }
