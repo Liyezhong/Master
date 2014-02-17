@@ -209,8 +209,8 @@ private:
 
 
 private:
-    DP *mp_IDeviceProcessing;
     SchedulerMainThreadController *mp_SchedulerThreadController;
+    DP *mp_IDeviceProcessing;
 
     QQueue<Scheduler::SchedulerCommandShPtr_t> m_Cmds;
     Scheduler::SchedulerCommandShPtr_t m_currentCmd;

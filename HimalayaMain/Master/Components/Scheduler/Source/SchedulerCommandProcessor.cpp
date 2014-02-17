@@ -145,7 +145,7 @@ SchedulerCommandProcessor<DP>::~SchedulerCommandProcessor()
 template <class DP>
 HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
 {
-    HardwareMonitor_t strctHWMonitor ={0};
+    HardwareMonitor_t strctHWMonitor ={0.0, 0.0, 0.0, 0.0, 0.0, 0.0, RV_UNDEF, 0.0, 0.0, 0.0, 0.0, 0, 0};
 
 	strctHWMonitor.PressureAL			= mp_IDeviceProcessing->ALGetRecentPressure();
 	strctHWMonitor.TempALLevelSensor	= mp_IDeviceProcessing->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
