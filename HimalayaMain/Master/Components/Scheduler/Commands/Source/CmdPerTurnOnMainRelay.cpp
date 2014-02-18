@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdPerTurnOnMainRelay::NAME = "Scheduler::PerTurnOnMainRelay";
 
-CmdPerTurnOnMainRelay::CmdPerTurnOnMainRelay(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdPerTurnOnMainRelay::CmdPerTurnOnMainRelay(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdPerTurnOnMainRelay::~CmdPerTurnOnMainRelay(){}
-
-
-void CmdPerTurnOnMainRelay::Execute()
-{
-    m_result = m_IDeviceProcessing->PerTurnOnMainRelay();
-}
 
 }
 

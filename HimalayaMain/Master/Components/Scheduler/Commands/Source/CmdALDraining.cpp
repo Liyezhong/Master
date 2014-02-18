@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdALDraining::NAME = "Scheduler::ALDraining";
 
-CmdALDraining::CmdALDraining(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdALDraining::CmdALDraining(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdALDraining::~CmdALDraining(){}
-
-
-void CmdALDraining::Execute()
-{
-    m_result = m_IDeviceProcessing->ALDraining(m_DelayTime);
-}
 
 }
 

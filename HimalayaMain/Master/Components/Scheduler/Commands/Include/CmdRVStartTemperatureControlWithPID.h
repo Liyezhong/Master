@@ -29,7 +29,7 @@ namespace Scheduler{
 class CmdRVStartTemperatureControlWithPID : public CmdSchedulerCommandBase
 {
 public:
-    CmdRVStartTemperatureControlWithPID(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller);
+    CmdRVStartTemperatureControlWithPID(int Timeout, SchedulerMainThreadController *controller);
     ~CmdRVStartTemperatureControlWithPID();
 
     static QString NAME;    ///< Command name.
@@ -37,8 +37,9 @@ public:
 
     QString GetName() const{return NAME;}
 
-    DeviceControl::ReturnCode_t GetResult()const{return m_result;}
-	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
+    DeviceControl::ReturnCode_t GetResult()const {return m_result;}
+	void SetResult(DeviceControl::ReturnCode_t result) { m_result = result;}
+	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
 	qreal GetNominalTemperature(){return m_NominalTemperature;}
 	void SetNominalTemperature(qreal NominalTemperature){m_NominalTemperature = NominalTemperature;}
 	quint8 GetSlopeTempChange(){return m_SlopeTempChange;}
@@ -54,8 +55,6 @@ public:
 	
 	QString GetParameters()const{ return GetName() + QString("(%1,%2,%3,%4,%5,%6)").arg(m_NominalTemperature).arg(m_SlopeTempChange).arg(m_MaxTemperature).arg(m_ControllerGain).arg(m_ResetTime).arg(m_DerivativeTime);}
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
-
-    void Execute();
 
 private:
     CmdRVStartTemperatureControlWithPID();                                                    ///< Not implemented.

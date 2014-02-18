@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdOvenSetTempCtrlON::NAME = "Scheduler::OvenSetTempCtrlON";
 
-CmdOvenSetTempCtrlON::CmdOvenSetTempCtrlON(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdOvenSetTempCtrlON::CmdOvenSetTempCtrlON(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdOvenSetTempCtrlON::~CmdOvenSetTempCtrlON(){}
-
-
-void CmdOvenSetTempCtrlON::Execute()
-{
-    m_result = m_IDeviceProcessing->OvenSetTempCtrlON(m_Type);
-}
 
 }
 

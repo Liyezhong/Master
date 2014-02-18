@@ -61,14 +61,12 @@ using namespace DataManager;
 namespace Scheduler {
 
 SchedulerMainThreadController::SchedulerMainThreadController(
-        Global::gSourceType TheHeartBeatSource,
-        IDeviceProcessing *pIDeviceProcessing)
+        Global::gSourceType TheHeartBeatSource)
         : Threads::ThreadController(TheHeartBeatSource, "SchedulerMainThread")
         , m_TickTimer(this)
-        , m_SchedulerCommandProcessorThread(NULL)
+        , m_SchedulerCommandProcessorThread(new QThread())
         , m_SchedulerCommandProcessor(NULL)
         , m_SchedulerMachine(new CSchedulerStateMachine())
-        , mp_IDeviceProcessing(pIDeviceProcessing)
         , mp_DataManager(NULL)
         , m_CurProgramStepIndex(-1)
         , m_FirstProgramStepIndex(0)
@@ -83,8 +81,8 @@ SchedulerMainThreadController::SchedulerMainThreadController(
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
 {
-    delete m_SchedulerCommandProcessor;
-    m_SchedulerCommandProcessor = NULL;
+    //delete m_SchedulerCommandProcessor;
+    //m_SchedulerCommandProcessor = NULL;
     delete m_SchedulerMachine;
     m_SchedulerMachine = NULL;
 }
@@ -116,8 +114,8 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
 {
 
     //create the SchedulerCommandProcessor thread
-    m_SchedulerCommandProcessorThread = new QThread();
-    m_SchedulerCommandProcessor = new SchedulerCommandProcessor(this, mp_IDeviceProcessing);
+    //m_SchedulerCommandProcessorThread = new QThread();
+    ////m_SchedulerCommandProcessor = new SchedulerCommandProcessor(this, mp_IDeviceProcessing);
     //CONNECTSIGNALSLOT(&m_SchedulerCommandProcessor, timeout(), m_SchedulerCommandProcessor, run());
 
     m_SchedulerCommandProcessor->moveToThread(m_SchedulerCommandProcessorThread);
@@ -211,12 +209,12 @@ void SchedulerMainThreadController::OnTickTimer()
         break;
     case SM_IDLE:
         //qDebug()<<"DBG"<<"Scheduler main controller state: IDLE";
-        HardwareMonitor(mp_IDeviceProcessing, "IDLE");
+        HardwareMonitor( "IDLE" );
         HandleIdleState(newControllerCmd);
         break;
     case SM_BUSY:
         //qDebug()<<"DBG"<<"Scheduler main controller state: RUN";
-        HardwareMonitor(mp_IDeviceProcessing, m_CurProgramID);
+        HardwareMonitor( m_CurProgramID );
         HandleRunState(newControllerCmd, retCode);
         break;
     case SM_ERROR:
@@ -425,7 +423,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
                 QString reagentGrpId = stationInfo.ReagentGroupID;
 
-                CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_IDeviceProcessing, this);
+                CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, this);
                 //todo: get delay time here
                 cmd->SetReagentGrpID(reagentGrpId);
                 cmd->SetTubePos(tubePos);
@@ -491,7 +489,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
                 QString reagentGrpId = stationInfo.ReagentGroupID;
 
-                CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_IDeviceProcessing, this);
+                CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, this);
                 cmd->SetReagentGrpID(reagentGrpId);
                 cmd->SetTubePos(tubePos);
                 m_SchedulerCommandProcessor->pushCmd(cmd);
@@ -707,7 +705,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
                     if(RV_UNDEF != sealPos)
                     {
-                        CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_IDeviceProcessing, this);
+                        CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
                         cmd->SetRVPosition(sealPos);
                         m_SchedulerCommandProcessor->pushCmd(cmd);
                     }
@@ -762,7 +760,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
                     if(RV_UNDEF != sealPos)
                     {
-                        CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_IDeviceProcessing, this);
+                        CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
                         cmd->SetRVPosition(sealPos);
                         m_SchedulerCommandProcessor->pushCmd(cmd);
                     }
@@ -1836,12 +1834,11 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
 }
 
 
-void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetCode, IDeviceProcessing* pIDP)
+void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetCode)
 {
     if(RetCode == DCL_ERR_FCT_CALL_SUCCESS)
     {
-        mp_IDeviceProcessing = pIDP;
-        m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_IDeviceProcessing, this));
+        m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, this));
         SchedulerCommandShPtr_t resRVInitPos;
         while(!PopDeviceControlCmdQueue(resRVInitPos));
         ReturnCode_t retCode;
@@ -1854,7 +1851,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         }
 #if 1
     //hardware not ready yet
-        m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, mp_IDeviceProcessing, this));
+        m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, this));
         SchedulerCommandShPtr_t resPerTurnOnRelay;
         while(!PopDeviceControlCmdQueue(resPerTurnOnRelay));
         resPerTurnOnRelay->GetResult(retCode);
@@ -1864,7 +1861,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"DBG"<<"Failed turn on main relay, return code: " << retCode;
             goto ERROR;
         }
-        CmdRTStartTemperatureControlWithPID* cmdHeatRTSide = new CmdRTStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
+        CmdRTStartTemperatureControlWithPID* cmdHeatRTSide = new CmdRTStartTemperatureControlWithPID(500, this);
         cmdHeatRTSide->SetType(RT_SIDE);
         //todo: get temperature here
         cmdHeatRTSide->SetNominalTemperature(90);
@@ -1884,7 +1881,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             goto ERROR;
         }
 
-        CmdRTStartTemperatureControlWithPID* cmdHeatRTBot = new CmdRTStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
+        CmdRTStartTemperatureControlWithPID* cmdHeatRTBot = new CmdRTStartTemperatureControlWithPID(500, this);
         cmdHeatRTBot->SetType(RT_BOTTOM);
         //todo: get temperature here
         cmdHeatRTBot->SetNominalTemperature(90);
@@ -1905,7 +1902,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         }
 
 
-        CmdRVStartTemperatureControlWithPID* cmdHeatRV = new CmdRVStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
+        CmdRVStartTemperatureControlWithPID* cmdHeatRV = new CmdRVStartTemperatureControlWithPID(500, this);
         //todo: get temperature here
         cmdHeatRV->SetNominalTemperature(90);
         cmdHeatRV->SetSlopeTempChange(10);
@@ -1924,7 +1921,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             goto ERROR;
         }
 
-        CmdOvenStartTemperatureControlWithPID* cmdHeatOvenBot = new CmdOvenStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
+        CmdOvenStartTemperatureControlWithPID* cmdHeatOvenBot = new CmdOvenStartTemperatureControlWithPID(500, this);
         cmdHeatOvenBot->SetType(OVEN_BOTTOM);
         //todo: get temperature here
         cmdHeatOvenBot->SetNominalTemperature(90);
@@ -1944,7 +1941,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             goto ERROR;
         }
 
-        CmdOvenStartTemperatureControlWithPID* cmdHeatOvenTop = new CmdOvenStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
+        CmdOvenStartTemperatureControlWithPID* cmdHeatOvenTop = new CmdOvenStartTemperatureControlWithPID(500, this);
         cmdHeatOvenTop->SetType(OVEN_TOP);
         //todo: get temperature here
         cmdHeatOvenTop->SetNominalTemperature(90);
@@ -1965,7 +1962,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         }
         m_TimeStamps.OvenStartHeatingTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
-        CmdALStartTemperatureControlWithPID* cmdHeatALTube1  = new CmdALStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
+        CmdALStartTemperatureControlWithPID* cmdHeatALTube1  = new CmdALStartTemperatureControlWithPID(500, this);
         cmdHeatALTube1->SetType(AL_LEVELSENSOR);
         //todo: get temperature here
         cmdHeatALTube1->SetNominalTemperature(90);
@@ -1985,7 +1982,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             goto ERROR;
         }
 
-        CmdALStartTemperatureControlWithPID* cmdHeatALTube2  = new CmdALStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
+        CmdALStartTemperatureControlWithPID* cmdHeatALTube2  = new CmdALStartTemperatureControlWithPID(500, this);
         cmdHeatALTube2->SetType(AL_LEVELSENSOR);
         //todo: get temperature here
         cmdHeatALTube2->SetNominalTemperature(90);
@@ -2009,12 +2006,12 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         if(ok)
         {
 #if 1
-            pressureDrift= mp_IDeviceProcessing->ALGetRecentPressure();
+            pressureDrift= m_SchedulerCommandProcessor->ALGetRecentPressure();
             if(UNDEFINED_VALUE != pressureDrift)
             {
                 mp_DataManager->GetProgramSettings()->SetParameterValue("LA", "Base", "PressureDrift", pressureDrift);
             }
-            mp_IDeviceProcessing->ALSetPressureDrift(pressureDrift);
+            m_SchedulerCommandProcessor->ALSetPressureDrift(pressureDrift);
 #else
             if(UNDEFINED_VALUE == pressureDrift)
             {
@@ -2065,109 +2062,73 @@ ERROR:
     m_TickTimer.start();
 }
 
-void SchedulerMainThreadController::HardwareMonitor(IDeviceProcessing* pIDP, const QString& StepID)
+void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 {
     Q_UNUSED(StepID)
-    if(pIDP)
-    {
+
        // if(StepID == "IDLE")
-        {
-            qreal PressureAL= pIDP->ALGetRecentPressure();
-            qreal TempALLevelSensor= pIDP->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
-            qreal TempALTube1= pIDP->ALGetRecentTemperature(AL_TUBE1,0);
-            qreal TempALTube2= pIDP->ALGetRecentTemperature(AL_TUBE2,0);
-            qreal TempRV1 = pIDP->RVGetRecentTemperature(0);
-            qreal TempRV2 = pIDP->RVGetRecentTemperature(1);
-            RVPosition_t PositionRV = pIDP->RVReqActRVPosition();
-            qreal TempRTBottom= pIDP->RTGetRecentTemperature(RT_BOTTOM,0);
-            qreal TempRTSide= pIDP->RTGetRecentTemperature(RT_SIDE,0);
-            qreal TempOvenBottom= pIDP->OvenGetRecentTemperature(OVEN_BOTTOM,0);
-            qreal TempOvenTop= pIDP->OvenGetRecentTemperature(OVEN_TOP,0);
-            quint16 OvenLidStatus = pIDP->OvenGetRecentLidStatus();
-            quint16 RetortLockStatus = pIDP->RTGetRecentLockStatus();
-            if(PressureAL != UNDEFINED_VALUE)
-            {
-                m_PressureAL = PressureAL;
-            }
-            if(TempALLevelSensor != UNDEFINED_VALUE)
-            {
-                m_TempALLevelSensor = TempALLevelSensor;
-            }
-            if(TempALTube1 != UNDEFINED_VALUE)
-            {
-                m_TempALTube1 = TempALTube1;
-            }
-            if(TempALTube2 != UNDEFINED_VALUE)
-            {
-                m_TempALTube2 = TempALTube2;
-            }
-            if(TempRV1 != UNDEFINED_VALUE)
-            {
-                m_TempRV1 = TempRV1;
-            }
-            if(TempRV2 != UNDEFINED_VALUE)
-            {
-                m_TempRV2 = TempRV2;
-            }
-            if(TempRTBottom != UNDEFINED_VALUE)
-            {
-                m_TempRTBottom = TempRTBottom;
-            }
-            if(TempRTSide!= UNDEFINED_VALUE)
-            {
-                m_TempRTSide = TempRTSide;
-            }
-            if(TempOvenBottom != UNDEFINED_VALUE)
-            {
-                m_TempOvenBottom = TempOvenBottom;
-            }
-            if(TempOvenTop != UNDEFINED_VALUE)
-            {
-                m_TempOvenTop = TempOvenTop;
-            }
-            if(OvenLidStatus != UNDEFINED_VALUE)
-            {
-                m_OvenLidStatus = OvenLidStatus;
-            }
-            if(RetortLockStatus != UNDEFINED_VALUE)
-            {
-                if((m_RetortLockStatus == 0)&&(RetortLockStatus == 1))
-                {
-                   // turn on the fan
-                    m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, mp_IDeviceProcessing, this));
-                }
-                if((m_RetortLockStatus == 1)&&(RetortLockStatus == 0))
-                {
-                   // turn on the fan
-                    m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, mp_IDeviceProcessing, this));
-                }
-                m_RetortLockStatus = RetortLockStatus;
+	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
+	if(strctHWMonitor.PressureAL != UNDEFINED_VALUE)
+	{
+        m_PressureAL = strctHWMonitor.PressureAL;
+	}
+	if(strctHWMonitor.TempALLevelSensor != UNDEFINED_VALUE)
+	{
+        m_TempALLevelSensor = strctHWMonitor.TempALLevelSensor;
+	}
+	if(strctHWMonitor.TempALTube1 != UNDEFINED_VALUE)
+	{
+        m_TempALTube1 = strctHWMonitor.TempALTube1;
+	}
+	if(strctHWMonitor.TempALTube2 != UNDEFINED_VALUE)
+	{
+        m_TempALTube2 = strctHWMonitor.TempALTube2;
+	}
+	if(strctHWMonitor.TempRV1 != UNDEFINED_VALUE)
+	{
+        m_TempRV1 = strctHWMonitor.TempRV1;
+	}
+	if(strctHWMonitor.TempRV2 != UNDEFINED_VALUE)
+	{
+        m_TempRV2 = strctHWMonitor.TempRV2;
+	}
+	if(strctHWMonitor.TempRTBottom != UNDEFINED_VALUE)
+	{
+        m_TempRTBottom = strctHWMonitor.TempRTBottom;
+	}
+	if(strctHWMonitor.TempRTSide!= UNDEFINED_VALUE)
+	{
+        m_TempRTSide = strctHWMonitor.TempRTSide;
+	}
+	if(strctHWMonitor.TempOvenBottom != UNDEFINED_VALUE)
+	{
+        m_TempOvenBottom = strctHWMonitor.TempOvenBottom;
+	}
+	if(strctHWMonitor.TempOvenTop != UNDEFINED_VALUE)
+	{
+        m_TempOvenTop = strctHWMonitor.TempOvenTop;
+	}
+	if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
+	{
+        m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
+	}
+	if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
+	{
+        if((m_RetortLockStatus == 0)&&(strctHWMonitor.RetortLockStatus == 1))
+		{
+		   // turn on the fan
+			m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
+		}
+        if((m_RetortLockStatus == 1)&&(strctHWMonitor.RetortLockStatus == 0))
+		{
+		   // turn on the fan
+			m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, this));
+		}
+        m_RetortLockStatus = strctHWMonitor.RetortLockStatus;
 
-            }
+	}
 
-            m_PositionRV = PositionRV;
-#if 0
-            qDebug()<<"DBG"<<"HDM"<<PositionRV<<PressureAL<<TempALLevelSensor
-                       <<TempALTube1<<TempALTube2<<TempRV1<<TempRV2
-                       <<TempRTBottom<<TempRTSide<<TempOvenBottom<<TempOvenTop
-                       <<OvenLidStatus<<RetortLockStatus;
-
-            qDebug()<<"DBG"<<"Rotary valve's position is" << PositionRV;
-            qDebug()<<"DBG"<<"Air liquid system pressure is" << PressureAL;
-            qDebug()<<"DBG"<<"Air liquid system level sensor's temp is" << TempALLevelSensor;
-            qDebug()<<"DBG"<<"Air liquid system tube1's temp is" << TempALTube1;
-            qDebug()<<"DBG"<<"Air liquid system tube2's temp is" << TempALTube2;
-            qDebug()<<"DBG"<<"Rotary valve's temp1 is" << TempRV1;
-            qDebug()<<"DBG"<<"Rotary valve's temp2 is" << TempRV2;
-            qDebug()<<"DBG"<<"Retort bottom temp is" << TempRTBottom;
-            qDebug()<<"DBG"<<"Retort side temp is" << TempRTSide;
-            qDebug()<<"DBG"<<"Oven bottom temp is" << TempOvenBottom;
-            qDebug()<<"DBG"<<"Oven top temp is" << TempOvenTop;
-            qDebug()<<"DBG"<<"Oven Lid status" << OvenLidStatus;
-            qDebug()<<"DBG"<<"Retort Lock status" << RetortLockStatus;
-#endif
-        }
-    }
+    m_PositionRV = strctHWMonitor.PositionRV;
 }
 
 void SchedulerMainThreadController::DataManager(DataManager::CDataManager *p_DataManager)
@@ -2205,7 +2166,7 @@ void SchedulerMainThreadController::HeatLevelSensor()
     SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
     if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1 == stepState)
     {
-        CmdALStartTemperatureControlWithPID* cmd  = new CmdALStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
+        CmdALStartTemperatureControlWithPID* cmd  = new CmdALStartTemperatureControlWithPID(500, this);
         cmd->SetType(AL_LEVELSENSOR);
         //todo: get temperature here
         cmd->SetNominalTemperature(90);
@@ -2218,7 +2179,7 @@ void SchedulerMainThreadController::HeatLevelSensor()
     }
     else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2 == stepState)
     {
-        CmdALStartTemperatureControlWithPID* cmd  = new CmdALStartTemperatureControlWithPID(500, mp_IDeviceProcessing, this);
+        CmdALStartTemperatureControlWithPID* cmd  = new CmdALStartTemperatureControlWithPID(500, this);
         cmd->SetType(AL_LEVELSENSOR);
         //todo: get temperature here
         cmd->SetNominalTemperature(90);
@@ -2234,7 +2195,7 @@ void SchedulerMainThreadController::HeatLevelSensor()
 void SchedulerMainThreadController::MoveRVToInit()
 {
     qDebug()<<"DBG"<<"Send cmd to DCL to let RV move to init position. ";
-    m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_IDeviceProcessing, this));
+    m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, this));
 }
 
 void SchedulerMainThreadController::ShutdownRetortHeater()
@@ -2246,7 +2207,7 @@ void SchedulerMainThreadController::ShutdownRetortHeater()
 void SchedulerMainThreadController::MoveRV()
 {
     SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
-    CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_IDeviceProcessing, this);
+    CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
 
     if(PSSM_READY_TO_TUBE_BEFORE == stepState)
     {
@@ -2297,7 +2258,7 @@ void SchedulerMainThreadController::MoveRV()
 
 void SchedulerMainThreadController::Fill()
 {
-    CmdALFilling* cmd  = new CmdALFilling(500, mp_IDeviceProcessing, this);
+    CmdALFilling* cmd  = new CmdALFilling(500, this);
     //todo: get delay time here
     cmd->SetDelayTime(2000);
     m_SchedulerCommandProcessor->pushCmd(cmd);
@@ -2340,7 +2301,7 @@ void SchedulerMainThreadController::Soak()
 
 void SchedulerMainThreadController::Drain()
 {
-    CmdALDraining* cmd  = new CmdALDraining(500, mp_IDeviceProcessing, this);
+    CmdALDraining* cmd  = new CmdALDraining(500, this);
     //todo: get delay time here
     cmd->SetDelayTime(2000);
     m_SchedulerCommandProcessor->pushCmd(cmd);
@@ -2363,18 +2324,18 @@ void SchedulerMainThreadController::StopDrain()
 
 void SchedulerMainThreadController::Pressure()
 {
-    m_SchedulerCommandProcessor->pushCmd(new CmdALPressure(500, mp_IDeviceProcessing, this));
+    m_SchedulerCommandProcessor->pushCmd(new CmdALPressure(500, this));
 }
 
 void SchedulerMainThreadController::Vaccum()
 {
-    m_SchedulerCommandProcessor->pushCmd(new CmdALVaccum(500, mp_IDeviceProcessing, this));
+    m_SchedulerCommandProcessor->pushCmd(new CmdALVaccum(500, this));
 }
 
 void SchedulerMainThreadController::AllStop()
 {
-    mp_IDeviceProcessing->ALBreakAllOperation();
-    m_SchedulerCommandProcessor->pushCmd(new CmdALAllStop(500, mp_IDeviceProcessing, this));
+    m_SchedulerCommandProcessor->ALBreakAllOperation();
+    m_SchedulerCommandProcessor->pushCmd(new CmdALAllStop(500, this));
 }
 
 void SchedulerMainThreadController::Pause()
@@ -2407,7 +2368,7 @@ void SchedulerMainThreadController::Abort()
     {
         if((m_PositionRV != targetPos))
         {
-            CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_IDeviceProcessing, this);
+            CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
             cmd->SetRVPosition(targetPos);
             m_SchedulerCommandProcessor->pushCmd(cmd);
         }

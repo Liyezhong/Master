@@ -29,7 +29,7 @@ namespace Scheduler{
 class CmdALGetRecentTemperature : public CmdSchedulerCommandBase
 {
 public:
-    CmdALGetRecentTemperature(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller);
+    CmdALGetRecentTemperature(int Timeout, SchedulerMainThreadController *controller);
     ~CmdALGetRecentTemperature();
 
     static QString NAME;    ///< Command name.
@@ -37,8 +37,9 @@ public:
 
     QString GetName() const{return NAME;}
 
-    qreal GetResult()const{return m_result;}
-	bool GetResult(qreal& result) const{result = m_result; return true;}
+    qreal GetResult()const {return m_result;}
+	void SetResult(qreal result) { m_result = result;}
+	bool GetResult(qreal& result) const{result = m_result; return true;}
 	DeviceControl::ALTempCtrlType_t GetType(){return m_Type;}
 	void SetType(DeviceControl::ALTempCtrlType_t Type){m_Type = Type;}
 	quint8 GetIndex(){return m_Index;}
@@ -46,8 +47,6 @@ public:
 	
 	QString GetParameters()const{ return GetName() + QString("(%1,%2)").arg(m_Type).arg(m_Index);}
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
-
-    void Execute();
 
 private:
     CmdALGetRecentTemperature();                                                    ///< Not implemented.

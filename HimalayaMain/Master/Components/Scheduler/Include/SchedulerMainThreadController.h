@@ -34,7 +34,6 @@
 #include "SchedulerMachine.h"
 #include "ProgramStepStateMachine.h"
 #include "SelfTestStateMachine.h"
-#include "DeviceControl/Include/Interface/IDeviceProcessing.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 #include "DataManager/Helper/Include/Types.h"
@@ -57,7 +56,7 @@ namespace DataManager
 
 namespace Scheduler {
 
-class SchedulerCommandProcessor;
+class SchedulerCommandProcessorBase;
 class CSchedulerStateMachine;
 
 typedef struct {
@@ -126,11 +125,9 @@ typedef struct
         QQueue<ProgramStationInfo_t> m_ProgramStationList;
 
         QThread* m_SchedulerCommandProcessorThread;
-        SchedulerCommandProcessor* m_SchedulerCommandProcessor;
+        SchedulerCommandProcessorBase* m_SchedulerCommandProcessor;
         CSchedulerStateMachine* m_SchedulerMachine;
-        DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
         DataManager::CDataManager       *mp_DataManager;
-        //qint64 m_CurStepSoakStartTime;
         int m_CurProgramStepIndex, m_FirstProgramStepIndex;
         QString m_CurReagnetName;
         ProgramStepInfor m_CurProgramStepInfo;
@@ -165,7 +162,7 @@ typedef struct
          */
         /****************************************************************************/
         virtual void RegisterCommands();
-        void HardwareMonitor(IDeviceProcessing* pIDP, const QString& StepID);
+        void HardwareMonitor(const QString& StepID);
         //process commands, like: program Start, Pause, Abort.
         void ProcessNonDeviceCommand();
         ControlCommandType_t PeekNonDeviceCommand();
@@ -281,8 +278,7 @@ protected:
          */
         /****************************************************************************/
         SchedulerMainThreadController(
-            Global::gSourceType TheHeartBeatSource,
-            DeviceControl::IDeviceProcessing *pIDeviceProcessing
+            Global::gSourceType TheHeartBeatSource
         );
 
         /****************************************************************************/
@@ -323,6 +319,14 @@ protected:
          */
         /****************************************************************************/
         qint64 GetOvenHeatingTime();
+
+        /****************************************************************************/
+        /**
+         *
+         * push Command to Q2
+         */
+        /****************************************************************************/
+        void SetSchedCommandProcessor( Scheduler::SchedulerCommandProcessorBase* pSchedCmdProcessor ) { m_SchedulerCommandProcessor = pSchedCmdProcessor; }
     public slots:
 
         /****************************************************************************/
@@ -331,7 +335,7 @@ protected:
          */
         /****************************************************************************/
         void OnTickTimer();
-        void OnDCLConfigurationFinished(ReturnCode_t RetCode, IDeviceProcessing* pIDP);
+        void OnDCLConfigurationFinished(ReturnCode_t RetCode);
         //void DeviceInitComplete();
 
     };

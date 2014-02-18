@@ -23,8 +23,7 @@
 
 #include "Global/Include/Commands/Command.h"
 #include "DeviceControl/Include/Interface/IDeviceProcessing.h"
-
-
+#include <QSharedPointer> 
 
 namespace Scheduler {
 
@@ -41,8 +40,8 @@ class CmdSchedulerCommandBase : public Global::Command {
 
 public:
     /****************************************************************************/
-    CmdSchedulerCommandBase(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController* controller);
-    ~CmdSchedulerCommandBase();
+    CmdSchedulerCommandBase(int Timeout, SchedulerMainThreadController* controller);
+    virtual ~CmdSchedulerCommandBase();
 
     /****************************************************************************/
     /*!
@@ -56,54 +55,21 @@ public:
     virtual bool GetResult(DeviceControl::CBaseDevice* result) const;
     virtual bool GetResult(DeviceControl::TempCtrlState_t& result) const;
     virtual bool GetResult(qreal& result) const;
+    virtual void SetResult(const DeviceControl::ReturnCode_t& result);
+    virtual void SetResult(qreal result);
+    virtual void SetResult(const DeviceControl::TempCtrlState_t& result);
     virtual QString GetParameters() const{return "";}
     virtual QString GetStrResult() const{return "";}
-
-
-    /****************************************************************************/
-    /*!
-     *  \brief   Execute command by calling IDeviceProcessing API
-     *
-     *  \return  void
-     */
-    /****************************************************************************/
-    virtual void Execute() = 0;
 
 private:
     CmdSchedulerCommandBase();                                                    ///< Not implemented.
     CmdSchedulerCommandBase(const CmdSchedulerCommandBase &);                     ///< Not implemented.
     const CmdSchedulerCommandBase & operator = (const CmdSchedulerCommandBase &); ///< Not implemented.
 protected:
-    DeviceControl::IDeviceProcessing *m_IDeviceProcessing;
     SchedulerMainThreadController *mp_SchedulerThreadController;
 }; // end class CmdSchedulerCommandBase
 
-typedef Global::SharedPointer<Scheduler::CmdSchedulerCommandBase>  SchedulerCommandShPtr_t;   ///< Typedef for shared pointer of command.
+typedef QSharedPointer<Scheduler::CmdSchedulerCommandBase>  SchedulerCommandShPtr_t;   ///< Typedef for shared pointer of command.
 } // end namespace Scheduler
 
 #endif // SCHEDULER_CMDSCHEDULERCOMMANDBASE_H
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#ifndef CMDSCHEDULERCOMMANDBASE_H
-#define CMDSCHEDULERCOMMANDBASE_H
-
-#endif // CMDSCHEDULERCOMMANDBASE_H

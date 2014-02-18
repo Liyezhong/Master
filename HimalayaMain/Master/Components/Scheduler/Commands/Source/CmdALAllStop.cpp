@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdALAllStop::NAME = "Scheduler::ALAllStop";
 
-CmdALAllStop::CmdALAllStop(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdALAllStop::CmdALAllStop(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdALAllStop::~CmdALAllStop(){}
-
-
-void CmdALAllStop::Execute()
-{
-    m_result = m_IDeviceProcessing->ALAllStop();
-}
 
 }
 

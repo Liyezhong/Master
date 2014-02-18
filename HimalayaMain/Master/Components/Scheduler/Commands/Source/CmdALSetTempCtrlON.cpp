@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdALSetTempCtrlON::NAME = "Scheduler::ALSetTempCtrlON";
 
-CmdALSetTempCtrlON::CmdALSetTempCtrlON(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdALSetTempCtrlON::CmdALSetTempCtrlON(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdALSetTempCtrlON::~CmdALSetTempCtrlON(){}
-
-
-void CmdALSetTempCtrlON::Execute()
-{
-    m_result = m_IDeviceProcessing->ALSetTempCtrlON(m_Type);
-}
 
 }
 

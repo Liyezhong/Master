@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdOvenSetTemperaturePid::NAME = "Scheduler::OvenSetTemperaturePid";
 
-CmdOvenSetTemperaturePid::CmdOvenSetTemperaturePid(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdOvenSetTemperaturePid::CmdOvenSetTemperaturePid(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdOvenSetTemperaturePid::~CmdOvenSetTemperaturePid(){}
-
-
-void CmdOvenSetTemperaturePid::Execute()
-{
-    m_result = m_IDeviceProcessing->OvenSetTemperaturePid(m_Type, m_MaxTemperature, m_ControllerGain, m_ResetTime, m_DerivativeTime);
-}
 
 }
 

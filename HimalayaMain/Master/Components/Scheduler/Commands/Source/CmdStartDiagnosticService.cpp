@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdStartDiagnosticService::NAME = "Scheduler::StartDiagnosticService";
 
-CmdStartDiagnosticService::CmdStartDiagnosticService(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdStartDiagnosticService::CmdStartDiagnosticService(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdStartDiagnosticService::~CmdStartDiagnosticService(){}
-
-
-void CmdStartDiagnosticService::Execute()
-{
-    m_result = m_IDeviceProcessing->StartDiagnosticService();
-}
 
 }
 
