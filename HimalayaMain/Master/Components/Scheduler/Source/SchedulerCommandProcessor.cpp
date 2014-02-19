@@ -18,7 +18,6 @@
  *
  * ================================================================================================
 */
-#include "DeviceControl/Include/Interface/IDeviceProcessing.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "Scheduler/Commands/Include/CmdStartConfigurationService.h"
@@ -125,24 +124,25 @@
 #include "Scheduler/Commands/Include/CmdIDBottleCheck.h"
 #include "Scheduler/Commands/Include/CmdALAllStop.h"
 #ifdef GOOGLE_MOCK
+#include <gmock/gmock.h>
 #include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
+#else
+#include "DeviceControl/Include/Interface/IDeviceProcessing.h"
 #endif
 
 namespace Scheduler{
 
 
 template <class DP>
-SchedulerCommandProcessor<DP>::SchedulerCommandProcessor(SchedulerMainThreadController *controller) :
+SchedulerCommandProcessor<DP>::SchedulerCommandProcessor(SchedulerMainThreadController *controller, DP* pIDeviceProcessing) :
     mp_SchedulerThreadController(controller),
-    mp_IDeviceProcessing(new DP())
+    mp_IDeviceProcessing(pIDeviceProcessing)
 {
 
 }
 template <class DP>
 SchedulerCommandProcessor<DP>::~SchedulerCommandProcessor()
 {
-	delete mp_IDeviceProcessing;
-    mp_IDeviceProcessing = NULL;
 }
 
 template <class DP>
@@ -596,7 +596,9 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd()
 
 }// end of namespace Scheduler
 
-template class Scheduler::SchedulerCommandProcessor<DeviceControl::IDeviceProcessing>;
+
 #ifdef GOOGLE_MOCK
 template class Scheduler::SchedulerCommandProcessor<DeviceControl::MockIDeviceProcessing>;
+#else
+template class Scheduler::SchedulerCommandProcessor<DeviceControl::IDeviceProcessing>;
 #endif

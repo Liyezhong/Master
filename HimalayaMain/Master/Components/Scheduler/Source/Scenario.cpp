@@ -25,7 +25,12 @@ Scenario::Scenario(QObject *parent) :
     QObject(parent)
 {
 }
-
+qint32 Scenario::GetScenarioBySchedulerState(SchedulerStateMachine_t State, QString ReagentGroup)
+{
+    Q_UNUSED(State);
+    Q_UNUSED(ReagentGroup);
+    return 0;
+}
 
 
 }
