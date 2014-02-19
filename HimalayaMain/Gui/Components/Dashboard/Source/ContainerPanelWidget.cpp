@@ -77,9 +77,6 @@ void CContainerPanelWidget::Initialize()
     mp_DashboardScene = new CDashboardScene(mp_DataConnector, this, mp_MainWindow);
     mp_Ui->dashboardView->setScene(mp_DashboardScene);
     //mp_Ui->dashboardView->setRenderHint(QPainter::Antialiasing);
-
-    CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
-
     m_pUserSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
 
     mp_ProgramList = mp_DataConnector->ProgramList;
@@ -95,6 +92,7 @@ void CContainerPanelWidget::Initialize()
 
     CONNECTSIGNALSLOT(mp_DataConnector, StationSuckDrain(const MsgClasses::CmdStationSuckDrain &),
                       this, OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain &));
+    CONNECTSIGNALSLOT(this, OnInteractStart(), mp_DashboardScene, OnInteractStart());
 }
 
 void CContainerPanelWidget::changeEvent(QEvent *p_Event)
@@ -156,15 +154,6 @@ void CContainerPanelWidget::AddItemsToComboBox(bool bOnlyAddCleaningProgram)
             strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(ProgramId)->GetIcon() + ".png";
        // QIcon ProgramIcon(strIconName);
         //mp_Ui->pgmsComboBox->insertItem(i, ProgramIcon, ProgramName);
-    }
-}
-
-void CContainerPanelWidget::OnProcessStateChanged()
-{
-    bool processRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
-    if (!processRunning)
-    {
-        mp_DashboardScene->OnPauseStationSuckDrain();
     }
 }
 

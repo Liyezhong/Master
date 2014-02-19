@@ -84,8 +84,8 @@ signals:
     void UpdateDashboardSceneReagentStations(QString& ProgramID);
     void ProgramSelected(QString & programId, QList<QString>& selectedStationList);
     void OnSelectEndDateTime(const QDateTime &);
+    void OnInteractStart();
 public slots:
-    void OnProcessStateChanged();
     void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);
 

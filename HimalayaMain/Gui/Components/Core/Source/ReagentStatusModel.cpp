@@ -210,7 +210,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                     Expired = true;
                 break;
             case Global::RMS_DAYS:
-                if( Expiry_Date.dayOfYear() - t_Date.currentDate().dayOfYear() < 0)
+                if( Expiry_Date < t_Date.currentDate())
                     Expired = true;
                 break;
             case Global::RMS_OFF:
@@ -234,7 +234,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                     Expired = true;
                 break;
             case Global::RMS_DAYS:
-                if( Expiry_Date.dayOfYear() - t_Date.currentDate().dayOfYear() < 0)
+                if( Expiry_Date < t_Date.currentDate())
                     Expired = true;
                 break;
             case Global::RMS_OFF:

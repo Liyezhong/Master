@@ -197,8 +197,8 @@ void CAlarmSettingsWidget::showEvent(QShowEvent *p_Event)
 void CAlarmSettingsWidget::OnNoteEdit()
 {
     mp_Information->SetDialogType(CAlarmSettingsDlg ::Information);
-    mp_Information->UpdateDisplay();
     mp_Information->show();
+    mp_Information->UpdateDisplay();
 }
 /****************************************************************************/
 /*!
@@ -208,8 +208,8 @@ void CAlarmSettingsWidget::OnNoteEdit()
 void CAlarmSettingsWidget::OnWarningEdit()
 {
     mp_Warning->SetDialogType(CAlarmSettingsDlg :: Warning);
-    mp_Warning->UpdateDisplay();
     mp_Warning->show();
+    mp_Warning->UpdateDisplay();
 }
 
 
@@ -221,8 +221,8 @@ void CAlarmSettingsWidget::OnWarningEdit()
 void CAlarmSettingsWidget::OnErrorEdit()
 {  
      mp_Error->SetDialogType(CAlarmSettingsDlg ::Error);
-     mp_Error->UpdateDisplay();
      mp_Error->show();
+     mp_Error->UpdateDisplay();
 }
 
 /****************************************************************************/

@@ -56,11 +56,6 @@ private:
     DataManager::CHimalayaUserSettings m_UserSettings;
     Global::RMSOptions_t m_CurRMSMode;
     DataManager::CDashboardStation *mp_DashboardStation; //!< Dashboard Station object
-    QString m_ImageType;                                 //!< Containing the station type for the image filename
-    QString m_BorderImage;                               //!< Containing the selection border image filename
-    bool m_Animation;                                    //!< Turns on animation of station blink when true.
-    bool m_Enabled;                                      //!< Indicates if the station is enabled
-    bool m_Pressed;                                      //!< Indicates if the station is pressed
     QString m_StationItemID;
     StationGroupType_t m_DashboardStationGroup;          //!< Dashboard StationGroup object
     QString m_DashboardStationID;                        //!< Dashboard Station ID
@@ -87,6 +82,7 @@ private:
     QString m_CurrentReagentColorValue;
     DataManager::ContainerStatusType_t m_ContainerStatusType;
     bool m_ExpiredColorRed;
+    bool m_EnableBlink;
     bool m_IsRetortContaminated;
     bool m_RetortLocked;								 //!< Indicates if the retort is locked or not
     QPixmap m_RawImage4Cleaning;                         //!< Big Image with customized BDiagPattern for Cleaning reagent
@@ -95,19 +91,12 @@ private:
 public:
     explicit CDashboardStationItem(Core::CDataConnector *p_DataConnector,                                   
                                    StationGroupType_t StationGroup, const QString& StationItemID, QString StationLabel,
-                                   bool Animation,
                                    DataManager::CDashboardStation *p_DashboardStation = NULL,
                                    QGraphicsItem *p_Parent = NULL);
 
     virtual ~CDashboardStationItem();
     DataManager::CDashboardStation *GetDashboardStation() const;
     void SetDashboardStation(DataManager::CDashboardStation *p_DashboardStation);
-    QString GetImageType() const;
-    void SetImageType(const QString &ImageType);
-    void SetBorderImage(const QString &ImageType);
-    QString GetBorderImage() const;
-    void SetEnabled(bool Enabled);
-    void SetPressed(bool Press);
     bool IsEmpty();
     void LoadStationImages(QPainter & Painter);
     void DrawReagentName(QPainter & Painter);
@@ -115,6 +104,7 @@ public:
     void FillReagentColor(QPainter & Painter);
     void SetContainerStatus(DataManager::ContainerStatusType_t containerStatus);
     void SetContainerRetortLockedStatus(bool locked);
+    void EnableBlink(bool bEnable);
     /****************************************************************************/
     /*!
      *  \brief Sets the selected station
@@ -162,12 +152,6 @@ protected:
     void paint(QPainter *p_Painter, const QStyleOptionGraphicsItem *, QWidget *);
 
 signals:
-    /****************************************************************************/
-    /*!
-     *  \brief This signal is sent when the station item is pressed
-     */
-    /****************************************************************************/
-    void Pressed();
     /****************************************************************************/
     /*!
      *  \brief This signal is sent when the station item is released

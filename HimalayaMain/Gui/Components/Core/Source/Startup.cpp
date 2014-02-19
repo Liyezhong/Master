@@ -72,6 +72,7 @@ CStartup::CStartup() : QObject()
     Application::CApplication* pApp =  dynamic_cast<Application::CApplication*>(QCoreApplication::instance());
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_ScreenSaver, OnInteractStart());
     CONNECTSIGNALSLOT(pApp, InteractStart(), mp_Users, OnInteractStart());
+    CONNECTSIGNALSIGNAL(pApp, InteractStart(), mp_Dashboard, OnInteractStart());
 
     CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsInitialized(bool), mp_Dashboard, AddItemsToFavoritePanel(bool));
     CONNECTSIGNALSIGNAL(mp_DataConnector, ProgramsDeleted(), mp_Dashboard, AddItemsToFavoritePanel());

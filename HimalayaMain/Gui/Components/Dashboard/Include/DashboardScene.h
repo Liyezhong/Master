@@ -73,6 +73,7 @@ public:
     void OnPauseStationSuckDrain();
     void OnStationSuckDrain(const QString& StationId, bool IsStart, bool IsSuck);
     bool HaveExpiredReagent();
+    void ExpiredReagentStationBlinking(bool bStart);
 protected:
 
 private:
@@ -115,8 +116,10 @@ private:
     QStringList m_PipeListS12;
     QStringList m_PipeListS13;
     bool m_IsSuck;
+    bool m_bProcessRunning;
     QTimer* m_pPipeAnimationTimer;
-    QTimer* m_pBlinkingTimer;
+    QTimer* m_pBlinkingIntervalTimer;
+    QTimer* m_pStartBlinkingTimer;
     QGraphicsPathItem* m_pWorkingPipeGraphicsRectItem;
     QList<QGraphicsPathItem*> m_pGraphicsPathItemPipeList;
     QGraphicsPathItem* m_WholePipeGraphicsRectItem, * m_UsedPipeGraphicsRectItem;
@@ -143,13 +146,16 @@ private:
 
     void RepresentUsedPipe(const QList<QString>& selectedStationList, bool isRunning);
     void ClearUsedPipe();
+    void EnableBlink(bool bEnable);
 private slots:
     void UpdateDashboardStations();
     void UpdateDashboardSceneReagentsForProgram(QString&, QList<QString>&);
     void PipeSuckDrainAnimation();
     void BlinkingStation();
     void OnUpdateUserSettings();
-
+    void OnInteractStart();
+    void OnAppIdle();
+    void OnProcessStateChanged();
 
 };
 

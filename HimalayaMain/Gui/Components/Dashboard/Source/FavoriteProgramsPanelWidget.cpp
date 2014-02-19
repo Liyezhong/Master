@@ -154,8 +154,8 @@ void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
         Core::CStartup* pStartup = Core::CStartup::instance();
         MainMenu::CMainWindow* pMainWin = pStartup->MainWindow();
         QRect scr = pMainWin->geometry();
-        mp_wdgtDateTime->move( scr.center() - mp_wdgtDateTime->rect().center());
         mp_wdgtDateTime->show();
+        mp_wdgtDateTime->move( scr.center() - mp_wdgtDateTime->rect().center());
     }
     else
     {//on selected a program

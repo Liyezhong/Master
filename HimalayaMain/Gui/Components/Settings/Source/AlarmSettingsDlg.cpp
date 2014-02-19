@@ -22,7 +22,7 @@
 #include "Global/Include/Exception.h"
 #include "Settings/Include/AlarmSettingsDlg.h"
 #include "ui_AlarmSettingsDlg.h"
-
+#include "Core/Include/Startup.h"
 namespace Settings {
 
 /****************************************************************************/
@@ -224,7 +224,11 @@ void CAlarmSettingsDlg::UpdateDisplay(void)
         mp_Ui->label_periodicon_2->hide();
         // m_ButtonGroup.
     }
-
+    Core::CStartup* pStartup = Core::CStartup::instance();
+    MainMenu::CMainWindow* pMainWin = pStartup->MainWindow();
+    QRect scr = pMainWin->geometry();
+    QPoint p = scr.center() - this->rect().center();
+    this->move(p);
 }
 
 /****************************************************************************/
