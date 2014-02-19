@@ -124,6 +124,9 @@
 #include "Scheduler/Commands/Include/CmdALStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdIDBottleCheck.h"
 #include "Scheduler/Commands/Include/CmdALAllStop.h"
+#ifdef GOOGLE_MOCK
+#include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
+#endif
 
 namespace Scheduler{
 
@@ -594,3 +597,6 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd()
 }// end of namespace Scheduler
 
 template class Scheduler::SchedulerCommandProcessor<DeviceControl::IDeviceProcessing>;
+#ifdef GOOGLE_MOCK
+template class Scheduler::SchedulerCommandProcessor<DeviceControl::MockIDeviceProcessing>;
+#endif
