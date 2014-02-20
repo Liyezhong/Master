@@ -91,22 +91,23 @@ void CTestPrograms::utTestPrograms()
 {
     MainMenu::CMainWindow MainWindow;   
     KeyBoard::CKeyBoard KeyBoard;
+
+    DataManager::CProgramStep* FirstProgramStep = new DataManager::CProgramStep();
+    DataManager::CProgramStep* SecondProgramStep = new DataManager::CProgramStep();
+    DataManager::CProgramStep* LeicaProgramStepOne = new DataManager::CProgramStep();
+    DataManager::CProgramStep* LeicaProgramStepTwo = new DataManager::CProgramStep();
     DataManager::CProgram Program;
-    DataManager::CProgramStep FirstProgramStep;
-    DataManager::CProgramStep SecondProgramStep;
-    DataManager::CProgramStep LeicaProgramStepOne;
-    DataManager::CProgramStep LeicaProgramStepTwo;
 
     Core::CDataConnector *p_DataConnector = new Core::CDataConnector(&MainWindow);
 
-    Programs::CProgramWidget *p_ProgramWidget = new
+   Programs::CProgramWidget *p_ProgramWidget = new
             Programs::CProgramWidget(p_DataConnector, &MainWindow, &KeyBoard);
 
     Programs::CModifyProgramDlg *p_ModifyProgramDlg = new
             Programs::CModifyProgramDlg(p_ProgramWidget, &KeyBoard, &MainWindow, p_DataConnector);
 
     Programs::CModifyProgramStepDlg *p_ModifyProgramStepDlg = new
-            Programs::CModifyProgramStepDlg(p_ModifyProgramDlg, &MainWindow);
+            Programs::CModifyProgramStepDlg(p_ModifyProgramDlg, &MainWindow, p_DataConnector);
 
     Programs::CColorButton *p_ColorButton = new Programs::CColorButton(p_ProgramWidget);
 
@@ -131,27 +132,27 @@ void CTestPrograms::utTestPrograms()
     p_ProgramWidget->OnUserRoleChanged();
 
     //Set all the ProgramStep parameters for ProgramSteps
-    FirstProgramStep.SetStepID("0");
-    FirstProgramStep.SetReagentID("S4");
+    FirstProgramStep->SetStepID("0");
+    FirstProgramStep->SetReagentID("S4");
 
 
-    SecondProgramStep.SetStepID("3");
-    SecondProgramStep.SetReagentID("S7");
+    SecondProgramStep->SetStepID("3");
+    SecondProgramStep->SetReagentID("S7");
 
 
-    LeicaProgramStepOne.SetStepID("1");
-    LeicaProgramStepOne.SetReagentID("L1");
+    LeicaProgramStepOne->SetStepID("1");
+    LeicaProgramStepOne->SetReagentID("L1");
 
 
-    LeicaProgramStepTwo.SetStepID("2");
-    LeicaProgramStepTwo.SetReagentID("L2");
+    LeicaProgramStepTwo->SetStepID("2");
+    LeicaProgramStepTwo->SetReagentID("L2");
 
 
     // Adding ProgramSteps to a program
-    Program.AddProgramStep(0, &FirstProgramStep);
-    Program.AddProgramStep(1, &LeicaProgramStepOne);
-    Program.AddProgramStep(2, &LeicaProgramStepTwo);
-    Program.AddProgramStep(3, &SecondProgramStep);
+    Program.AddProgramStep(0, FirstProgramStep);
+    Program.AddProgramStep(1, LeicaProgramStepOne);
+    Program.AddProgramStep(2, LeicaProgramStepTwo);
+    Program.AddProgramStep(3, SecondProgramStep);
 
     //Add Program to ProgramList
     ProgramList.AddProgram(&Program);
@@ -166,7 +167,7 @@ void CTestPrograms::utTestPrograms()
 
 
      //Test ModifyProgramStepDlg class member functions
-    p_ModifyProgramStepDlg->SetProgramStep(&FirstProgramStep);
+    p_ModifyProgramStepDlg->SetProgramStep(FirstProgramStep);
     p_ModifyProgramStepDlg->NewProgramStep();
     p_ModifyProgramStepDlg->ResetButtons(false);
     p_ModifyProgramStepDlg->SelectRow(3);
