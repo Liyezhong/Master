@@ -19,12 +19,11 @@
 /****************************************************************************/
 
 #include <QTest> 
-
+#include <gmock/gmock.h>
 #include <HimalayaMasterThread/Include/ThreadIDs.h>
 #include <Scheduler/Include/SchedulerMainThreadController.h>
 #include <Scheduler/Include/SchedulerCommandProcessor.h>
-#include <DeviceControl/Include/Interface/IDeviceProcessing.h>
-#include <gmock.h>
+#include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
 
 namespace Scheduler {
 
@@ -35,10 +34,30 @@ namespace Scheduler {
 /****************************************************************************/
 class TestSchedulerCommand : public QObject {
     Q_OBJECT
+public:
+    TestSchedulerCommand()
+        : m_pSchedulerMainController(new SchedulerMainThreadController(THREAD_ID_SCHEDULER)),
+          mp_IDeviceProcessing(new DeviceControl::MockIDeviceProcessing()),
+          mp_SchdCmdProcessor(new SchedulerCommandProcessor<MockIDeviceProcessing>(m_pSchedulerMainController, mp_IDeviceProcessing))
+    {
+        m_pSchedulerMainController->SetSchedCommandProcessor(mp_SchdCmdProcessor);
+    }
+    ~TestSchedulerCommand()
+    {
+        delete m_pSchedulerMainController;
+        m_pSchedulerMainController = NULL;
+        delete mp_IDeviceProcessing;
+        mp_IDeviceProcessing = NULL;
+        delete mp_SchdCmdProcessor;
+        mp_SchdCmdProcessor = NULL;
+    }
 
 private:
-    SchedulerMainThreadController* m_pSchedulerMainController;
-	DeviceControl::IDeviceProcessing* mp_IDeviceProcessing;
+    SchedulerMainThreadController*          m_pSchedulerMainController;
+    DeviceControl::MockIDeviceProcessing*   mp_IDeviceProcessing;
+    SchedulerCommandProcessorBase*          mp_SchdCmdProcessor;
+
+
 	
 private slots:
     /****************************************************************************/
@@ -86,8 +105,6 @@ void TestSchedulerCommand::initTestCase()
 /****************************************************************************/
 void TestSchedulerCommand::init()
 {
-	mp_IDeviceProcessing = new IDeviceProcessing();	
-    m_pSchedulerMainController =new SchedulerMainThreadController(THREAD_ID_SCHEDULER, mp_IDeviceProcessing);
 	m_pSchedulerMainController->CreateAndInitializeObjects();
 }
 

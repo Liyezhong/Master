@@ -4,12 +4,13 @@
     error("../../../../../../Platform/Master/Test/Platform.pri not found")
 }
 
-INCLUDEPATH += ../../../../../Shared/Master/Components \
+DEFINES += GOOGLE_MOCK
+INCLUDEPATH += ../../../../../HimalayaMain/Master/Include \
+               ../../../../../Shared/Master/Components \
                ../../../../Common/Components \
                ../../../../../../Platform/Master/Components \
 #Add google-mock related headers into our project
-INCLUDEPATH += /usr/local/include/gtest \
-               /usr/local/include/gmock
+INCLUDEPATH += /usr/local/include
 
 ###################################
 ### stuff for adding libraries ####

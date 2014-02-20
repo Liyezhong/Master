@@ -115,6 +115,7 @@ HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     m_CurrentUserActionState(NORMAL_USER_ACTION_STATE),
     mp_SWUpdateManager(NULL),
     m_ExportTargetFileName(""),
+    mp_IDeviceProcessing(NULL),
     mp_SchdCmdProcessor(NULL)
 
 {
@@ -126,6 +127,9 @@ catch (...) {
 
 /****************************************************************************/
 HimalayaMasterThreadController::~HimalayaMasterThreadController() {
+    delete mp_IDeviceProcessing;
+    mp_IDeviceProcessing = NULL;
+
     delete mp_SchdCmdProcessor;
     mp_SchdCmdProcessor = NULL;
 }
@@ -245,7 +249,8 @@ void HimalayaMasterThreadController::CreateControllersAndThreads() {
 
     // create and connect scheduler main controller
     Scheduler::SchedulerMainThreadController *schedulerMainController = new Scheduler::SchedulerMainThreadController(THREAD_ID_SCHEDULER);
-    mp_SchdCmdProcessor = new Scheduler::SchedulerCommandProcessor<IDeviceProcessing>(schedulerMainController);
+    mp_IDeviceProcessing = new DeviceControl::IDeviceProcessing();
+    mp_SchdCmdProcessor = new Scheduler::SchedulerCommandProcessor<IDeviceProcessing>(schedulerMainController, mp_IDeviceProcessing);
 	schedulerMainController->SetSchedCommandProcessor(mp_SchdCmdProcessor);
     AddAndConnectController(schedulerMainController, &m_CommandChannelSchedulerMain, static_cast<int>(SCHEDULER_MAIN_THREAD));
     schedulerMainController->DataManager(mp_DataManager);
