@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdALGetRecentPressure::NAME = "Scheduler::ALGetRecentPressure";
 
-CmdALGetRecentPressure::CmdALGetRecentPressure(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdALGetRecentPressure::CmdALGetRecentPressure(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdALGetRecentPressure::~CmdALGetRecentPressure(){}
-
-
-void CmdALGetRecentPressure::Execute()
-{
-    m_result = m_IDeviceProcessing->ALGetRecentPressure();
-}
 
 }
 

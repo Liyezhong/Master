@@ -32,9 +32,8 @@ namespace Scheduler{
  *
  */
 /****************************************************************************/
-CmdSchedulerCommandBase::CmdSchedulerCommandBase(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
+CmdSchedulerCommandBase::CmdSchedulerCommandBase(int Timeout, SchedulerMainThreadController *controller):
     Command(Timeout),
-    m_IDeviceProcessing(IDP),
     mp_SchedulerThreadController(controller)
 {
 }
@@ -71,6 +70,21 @@ bool CmdSchedulerCommandBase::GetResult(qreal& result) const
 {
     Q_UNUSED(result);
     return false;
+}
+
+void CmdSchedulerCommandBase::SetResult(const DeviceControl::ReturnCode_t& result)
+{
+    Q_UNUSED(result);
+}
+
+void CmdSchedulerCommandBase::SetResult(qreal result)
+{
+    Q_UNUSED(result);
+}
+
+void CmdSchedulerCommandBase::SetResult(const DeviceControl::TempCtrlState_t& result)
+{
+    Q_UNUSED(result);
 }
 
 } // end of namespace Scheduler

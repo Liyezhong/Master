@@ -1,6 +1,6 @@
 !include("TestDashboard.pri"):error("TestDashboard.pri not found")
 
-TARGET = TestDashboard
+TARGET = utTestDashboard
 CONFIG   += console
 SOURCES += TestDashboard.cpp
 TEMPLATE = app

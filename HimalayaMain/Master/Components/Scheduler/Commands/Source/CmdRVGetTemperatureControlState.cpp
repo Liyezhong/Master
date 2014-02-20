@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdRVGetTemperatureControlState::NAME = "Scheduler::RVGetTemperatureControlState";
 
-CmdRVGetTemperatureControlState::CmdRVGetTemperatureControlState(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdRVGetTemperatureControlState::CmdRVGetTemperatureControlState(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdRVGetTemperatureControlState::~CmdRVGetTemperatureControlState(){}
-
-
-void CmdRVGetTemperatureControlState::Execute()
-{
-    m_result = m_IDeviceProcessing->RVGetTemperatureControlState();
-}
 
 }
 

@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdRTStartTemperatureControl::NAME = "Scheduler::RTStartTemperatureControl";
 
-CmdRTStartTemperatureControl::CmdRTStartTemperatureControl(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdRTStartTemperatureControl::CmdRTStartTemperatureControl(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdRTStartTemperatureControl::~CmdRTStartTemperatureControl(){}
-
-
-void CmdRTStartTemperatureControl::Execute()
-{
-    m_result = m_IDeviceProcessing->RTStartTemperatureControl(m_Type, m_NominalTemperature, m_SlopeTempChange);
-}
 
 }
 

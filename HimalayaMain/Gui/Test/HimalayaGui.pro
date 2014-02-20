@@ -9,7 +9,7 @@ SUBDIRS = ../../../Shared/Master/Components/HimalayaDataContainer/Build/Himalaya
           ../Components/Reagents/Build/Reagents.pro \
           ../Components/Settings/Build/Settings.pro \
           ../Components/Users/Build/Users.pro \
-          ../Components/Programs/Test/TestPrograms.pro \
+#          ../Components/Programs/Test/TestPrograms.pro \
           ../Components/Dashboard/Test/TestDashboard.pro \
           ../Components/Reagents/Test/TestReagents.pro
 

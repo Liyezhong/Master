@@ -38,6 +38,7 @@
 #include "DeviceControl/Include/Devices/PeripheryDevice.h"
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 
+
 using namespace DeviceControl;
 //{
 //    class IDeviceProcessing;
@@ -45,16 +46,26 @@ using namespace DeviceControl;
 
 namespace Scheduler{
 
+typedef struct
+{
+	qreal			PressureAL;
+	qreal			TempALLevelSensor;
+	qreal			TempALTube1;
+	qreal			TempALTube2;
+	qreal			TempRV1;
+	qreal			TempRV2;
+	RVPosition_t	PositionRV;
+	qreal			TempRTBottom;
+	qreal			TempRTSide;
+	qreal			TempOvenBottom;
+	qreal			TempOvenTop;
+	quint16			OvenLidStatus;
+	quint16			RetortLockStatus;
+} HardwareMonitor_t;
+
 class SchedulerMainThreadController;
 
-
-/****************************************************************************/
-/**
- * @brief command processing thread class for the main scheduler thread.
- *
- */
-/****************************************************************************/
-class SchedulerCommandProcessor : public QObject
+class SchedulerCommandProcessorBase : public QObject
 {
     Q_OBJECT
 public:
@@ -64,9 +75,13 @@ public:
      *
      */
     /****************************************************************************/
-    explicit SchedulerCommandProcessor(SchedulerMainThreadController *controller);
+    SchedulerCommandProcessorBase(){}
+    virtual ~SchedulerCommandProcessorBase(){}
+	virtual HardwareMonitor_t HardwareMonitor() = 0;
+	virtual DeviceControl::ReturnCode_t ALBreakAllOperation() = 0;
+    virtual qreal ALGetRecentPressure() = 0;
+    virtual void ALSetPressureDrift(qreal pressureDrift) = 0;
 
-    
 signals:
     /****************************************************************************/
     /**
@@ -75,7 +90,7 @@ signals:
      */
     /****************************************************************************/
     void onCmdFinished(Global::CommandShPtr_t *cmd, bool result);
-    void DCLConfigurationFinished(ReturnCode_t RetCode, IDeviceProcessing* pIDP);
+    void DCLConfigurationFinished(ReturnCode_t RetCode);
     void NewCmdAdded();
 
 public slots:
@@ -85,7 +100,7 @@ public slots:
      *
      */
     /****************************************************************************/
-    void run();
+    virtual void run() { this->run4Slot(); }
 
     /****************************************************************************/
     /**
@@ -93,14 +108,37 @@ public slots:
      *
      */
     /****************************************************************************/
-    void pushCmd(CmdSchedulerCommandBase *cmd);
+    virtual void pushCmd(CmdSchedulerCommandBase *cmd) { this->pushCmd4Slot(cmd); }
 
-    void DevProcInitialisationAckn(DevInstanceID_t instanceID, ReturnCode_t configResult);
-    void DevProcConfigurationAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo);
-    void DevProcStartNormalOpModeAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo);
-    void ThrowError(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp);
-    void DevProcDestroyAckn();
-    void OnNewCmdAdded();
+    virtual void DevProcInitialisationAckn(DevInstanceID_t instanceID, ReturnCode_t configResult)
+    {
+        this->DevProcInitialisationAckn4Slot(instanceID, configResult);
+    }
+
+    virtual void DevProcConfigurationAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
+    {
+        this->DevProcConfigurationAckn4Slot(instanceID, hdlInfo);
+    }
+
+    virtual void DevProcStartNormalOpModeAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
+    {
+        this->DevProcStartNormalOpModeAckn4Slot(instanceID, hdlInfo);
+    }
+
+    virtual void ThrowError(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp)
+    {
+        this->ThrowError4Slot(instanceID, usErrorGroup, usErrorID, usErrorData, TimeStamp);
+    }
+
+    virtual void DevProcDestroyAckn()
+    {
+        this->DevProcDestroyAckn4Slot();
+    }
+
+    virtual void OnNewCmdAdded()
+    {
+        this->OnNewCmdAdded4Slot();
+    }
 
 private:
 
@@ -110,22 +148,73 @@ private:
      *
      */
     /****************************************************************************/
-    bool newCmdComing();
+    virtual bool newCmdComing() =0;
+    virtual void run4Slot() = 0;
+    virtual void pushCmd4Slot(CmdSchedulerCommandBase *cmd) = 0;
+    virtual void DevProcInitialisationAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t configResult) = 0;
+    virtual void DevProcConfigurationAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t hdlInfo) = 0;
+    virtual void DevProcStartNormalOpModeAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t hdlInfo) = 0;
+    virtual void ThrowError4Slot(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp) = 0;
+    virtual void DevProcDestroyAckn4Slot() = 0;
+    virtual void OnNewCmdAdded4Slot() = 0;
+    SchedulerCommandProcessorBase(const SchedulerCommandProcessorBase&);              			///< Not implemented.
+    const SchedulerCommandProcessorBase& operator=(const SchedulerCommandProcessorBase&);		///< Not implemented.
+};
 
-    SchedulerCommandProcessor();                                             ///< Not implemented.
+
+/****************************************************************************/
+/**
+ * @brief command processing thread class for the main scheduler thread.
+ *
+ */
+/****************************************************************************/
+template <class DP>
+class SchedulerCommandProcessor : public SchedulerCommandProcessorBase 
+{
+public:
+    /****************************************************************************/
+    /**
+     * @brief constructor and destructor.
+     *
+     */
+    /****************************************************************************/
+    explicit SchedulerCommandProcessor(SchedulerMainThreadController *controller, DP* pIDeviceProcessing);
+    ~SchedulerCommandProcessor();
+	virtual HardwareMonitor_t HardwareMonitor();
+	virtual DeviceControl::ReturnCode_t ALBreakAllOperation() { return mp_IDeviceProcessing->ALBreakAllOperation(); } 
+    virtual qreal ALGetRecentPressure() { return mp_IDeviceProcessing->ALGetRecentPressure(); }
+    virtual void ALSetPressureDrift(qreal pressureDrift) { mp_IDeviceProcessing->ALSetPressureDrift(pressureDrift); }
+
+private:
+
+    /****************************************************************************/
+    /**
+     * @brief check if there are new command comming.
+     *
+     */
+    /****************************************************************************/
+    virtual bool newCmdComing();
+    virtual void run4Slot();
+    virtual void pushCmd4Slot(CmdSchedulerCommandBase *cmd);
+    virtual void DevProcInitialisationAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t configResult);
+    virtual void DevProcConfigurationAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t hdlInfo);
+    virtual void DevProcStartNormalOpModeAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t hdlInfo);
+    virtual void ThrowError4Slot(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp);
+    virtual void DevProcDestroyAckn4Slot();
+    virtual void OnNewCmdAdded4Slot();
+
+    void ExecuteCmd();
     SchedulerCommandProcessor(const SchedulerCommandProcessor&);                      ///< Not implemented.
     const SchedulerCommandProcessor& operator=(const SchedulerCommandProcessor&);     ///< Not implemented.
 
 
 private:
-    DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
     SchedulerMainThreadController *mp_SchedulerThreadController;
+    DP *mp_IDeviceProcessing;
 
     QQueue<Scheduler::SchedulerCommandShPtr_t> m_Cmds;
     Scheduler::SchedulerCommandShPtr_t m_currentCmd;
     QMutex m_CmdMutex;
-
-
 };
 
 } // end of namespace Scheduler

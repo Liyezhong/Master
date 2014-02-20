@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdALStartTemperatureControl::NAME = "Scheduler::ALStartTemperatureControl";
 
-CmdALStartTemperatureControl::CmdALStartTemperatureControl(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdALStartTemperatureControl::CmdALStartTemperatureControl(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdALStartTemperatureControl::~CmdALStartTemperatureControl(){}
-
-
-void CmdALStartTemperatureControl::Execute()
-{
-    m_result = m_IDeviceProcessing->ALStartTemperatureControl(m_Type, m_NominalTemperature, m_SlopeTempChange);
-}
 
 }
 

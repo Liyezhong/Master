@@ -1,6 +1,6 @@
 !include("TestPrograms.pri"):error("TestPrograms.pri not found")
 
-TARGET = TestPrograms
+TARGET = utTestPrograms
 CONFIG   += console
 SOURCES += TestPrograms.cpp
 TEMPLATE = app

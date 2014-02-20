@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdRestartConfigurationService::NAME = "Scheduler::RestartConfigurationService";
 
-CmdRestartConfigurationService::CmdRestartConfigurationService(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdRestartConfigurationService::CmdRestartConfigurationService(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdRestartConfigurationService::~CmdRestartConfigurationService(){}
-
-
-void CmdRestartConfigurationService::Execute()
-{
-    m_result = m_IDeviceProcessing->RestartConfigurationService();
-}
 
 }
 

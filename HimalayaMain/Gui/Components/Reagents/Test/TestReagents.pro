@@ -1,6 +1,6 @@
 !include("TestReagents.pri"):error("TestReagents.pri not found")
 
-TARGET = TestReagents
+TARGET = utTestReagents
 CONFIG   += console
 SOURCES += TestReagents.cpp \
 

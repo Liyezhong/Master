@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdALVaccum::NAME = "Scheduler::ALVaccum";
 
-CmdALVaccum::CmdALVaccum(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdALVaccum::CmdALVaccum(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdALVaccum::~CmdALVaccum(){}
-
-
-void CmdALVaccum::Execute()
-{
-    m_result = m_IDeviceProcessing->ALVaccum();
-}
 
 }
 

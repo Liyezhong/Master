@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdRTLock::NAME = "Scheduler::RTLock";
 
-CmdRTLock::CmdRTLock(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdRTLock::CmdRTLock(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdRTLock::~CmdRTLock(){}
-
-
-void CmdRTLock::Execute()
-{
-    m_result = m_IDeviceProcessing->RTLock();
-}
 
 }
 

@@ -27,18 +27,12 @@ namespace Scheduler{
 
 QString CmdRTUnlock::NAME = "Scheduler::RTUnlock";
 
-CmdRTUnlock::CmdRTUnlock(int Timeout, DeviceControl::IDeviceProcessing *IDP, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout,IDP, controller)
+CmdRTUnlock::CmdRTUnlock(int Timeout, SchedulerMainThreadController *controller):
+    CmdSchedulerCommandBase(Timeout, controller)
 {
 }
 
 CmdRTUnlock::~CmdRTUnlock(){}
-
-
-void CmdRTUnlock::Execute()
-{
-    m_result = m_IDeviceProcessing->RTUnlock();
-}
 
 }
 
