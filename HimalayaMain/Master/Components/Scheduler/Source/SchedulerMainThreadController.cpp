@@ -126,8 +126,8 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
 
     //timer setting
     CONNECTSIGNALSLOT(&m_TickTimer, timeout(), this, OnTickTimer());
-    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, DCLConfigurationFinished(ReturnCode_t, IDeviceProcessing*),
-                      this,OnDCLConfigurationFinished(ReturnCode_t, IDeviceProcessing*))
+    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, DCLConfigurationFinished(ReturnCode_t),
+                      this,OnDCLConfigurationFinished(ReturnCode_t))
 
     m_TickTimer.setInterval(500);
 
