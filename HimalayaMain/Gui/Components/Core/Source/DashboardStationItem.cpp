@@ -42,16 +42,12 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
                                              StationGroupType_t StationGroup,
                                              const QString& StationItemID,
                                              QString StationLabel,
-                                             bool Animation,
                                              DataManager::CDashboardStation *p_DashboardStation,
                                              QGraphicsItem *p_Parent) : QGraphicsItem(p_Parent),
     mp_DataConnector(p_DataConnector),
-       m_CurRMSMode(Global::RMS_UNDEFINED),
-       mp_DashboardStation(p_DashboardStation),
-       m_Animation(Animation),
-       m_Enabled(true),
-       m_Pressed(false),
-       m_StationItemID(StationItemID),
+    m_CurRMSMode(Global::RMS_UNDEFINED),
+    mp_DashboardStation(p_DashboardStation),
+    m_StationItemID(StationItemID),
     m_DashboardStationGroup(StationGroup),
     m_StationItemLabel(StationLabel),
     m_RetortBoundingRectWidth(177),
@@ -67,6 +63,7 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_StationSelected(false),
     m_ContainerStatusType(DataManager::CONTAINER_STATUS_FULL),
     m_ExpiredColorRed(true),
+    m_EnableBlink(true),
     m_IsRetortContaminated(false),
     m_RetortLocked(false)
 {
@@ -183,56 +180,6 @@ void CDashboardStationItem::UpdateImage()
 
 /****************************************************************************/
 /*!
- *  \brief Gets the type string for the image filename
- *
- *  \return Image type string
- */
-/****************************************************************************/
-QString CDashboardStationItem::GetImageType() const
-{
-    return m_ImageType;
-}
-
-/****************************************************************************/
-/*!
- *  \brief Sets the type string for the image filename
- *
- *  \iparam ImageType = Image type string
- */
-/****************************************************************************/
-void CDashboardStationItem::SetImageType(const QString& ImageType)
-{
-    m_ImageType = ImageType;
-    UpdateImage();
-}
-
-/****************************************************************************/
-/*!
-*  \brief Gets the type string for the border image filename
-*
-*  \return Image type string
-*/
-/****************************************************************************/
-QString CDashboardStationItem::GetBorderImage() const
-{
-    return m_BorderImage;
-}
-
-/****************************************************************************/
-/*!
- *  \brief Sets the type string for the border image filename
- *
- *  \iparam ImageType = Image type string
- */
-/****************************************************************************/
-void CDashboardStationItem::SetBorderImage(const QString &ImageType)
-{
-    m_BorderImage = ImageType;
-    update();
-}
-
-/****************************************************************************/
-/*!
  *  \brief Gets the data manager station data object
  *
  *  \return Station data object
@@ -262,33 +209,6 @@ void CDashboardStationItem::SetDashboardStation(DataManager::CDashboardStation* 
         m_DashboardStationID = mp_DashboardStation->GetDashboardStationID();
         UpdateImage();
     }
-}
-
-
-/****************************************************************************/
-/*!
- *  \brief Enables or disables the station
- *
- *  \iparam Enabled = Enable (true) or disable (false)
- */
-/****************************************************************************/
-void CDashboardStationItem::SetEnabled(bool Enabled)
-{
-    m_Enabled = Enabled;
-    update();
-}
-
-/****************************************************************************/
-/*!
- *  \brief Changes whether the station is pressed or not
- *
- *  \iparam Press = Pressed (true) or not (false)
- */
-/****************************************************************************/
-void CDashboardStationItem::SetPressed(bool Press)
-{
-    m_Pressed = Press;
-    update();
 }
 
 /****************************************************************************/
@@ -393,9 +313,7 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
                     QDate curDate;
                     QDate ReagentExchangeQDate = mp_DashboardStation->GetDashboardReagentExchangeDate();
                     QDate ReagentExpiryQDate = ReagentExchangeQDate.addDays(p_Reagent->GetMaxDays());
-                    int Days_Overdue = curDate.currentDate().dayOfYear() - ReagentExpiryQDate.dayOfYear();
-
-                    if(Days_Overdue > 0)
+                    if(curDate.currentDate() > ReagentExpiryQDate)
                         m_ReagentExpiredFlag = true;
                     else
                         m_ReagentExpiredFlag = false;
@@ -413,11 +331,7 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
             }
         }
     }
-
-    if(true == m_ReagentExpiredFlag) {
-        } else {
-        DrawStationItemImage(); // No Blinking
-    }
+    DrawStationItemImage();
 }
 
 void CDashboardStationItem::DrawStationItemImage()
@@ -522,6 +436,11 @@ void CDashboardStationItem::DrawStationItemLabel(QPainter &painter)
      DrawGlowBoundaryText(textFont, m_StationItemLabel, rect, painter);
 }
 
+void CDashboardStationItem::EnableBlink(bool bEnable)
+{
+    m_EnableBlink = bEnable;
+}
+
 void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 {
     int fillBottleWidth;
@@ -558,11 +477,10 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         reagentColorValue = m_CurrentReagentColorValue;
     }
     if(m_StationSelected) {
-        Painter.setPen(QColor(reagentColorValue));
         QColor color(reagentColorValue);
         if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup || STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
         {
-            if(true == m_ReagentExpiredFlag && m_StationSelected)
+            if(m_EnableBlink && m_ReagentExpiredFlag && m_StationSelected)
             {
                 if (m_ExpiredColorRed)
                 {
@@ -575,13 +493,12 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
                 }
             }
         }
-
+        Painter.setPen(color);
         Painter.setBrush(color);
     } else {
         Painter.setPen(QColor(Qt::gray));
         Painter.setBrush(QColor(Qt::gray));
     }
-
     if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
     {
         // Since the Painter is rotated, Width and Height Axis Changes.
@@ -705,7 +622,6 @@ void CDashboardStationItem::UpdateDashboardScene(QString StationID)
 
         UpdateDashboardStationItemReagent();
 
-        update();
     }
 }
 
@@ -859,7 +775,6 @@ const QString& CDashboardStationItem::GetStationItemID() const
 
 bool CDashboardStationItem::IsReagentExpired()
 {
-    UpdateDashboardStationItemReagent();
     return m_ReagentExpiredFlag;
 }
 

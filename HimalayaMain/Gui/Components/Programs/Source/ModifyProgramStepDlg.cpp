@@ -174,8 +174,10 @@ void CModifyProgramStepDlg::InitDurationWidget()
 /****************************************************************************/
 void CModifyProgramStepDlg::InitTemperatureWidget(const DataManager::CReagent * pReagent)
 {
-    mp_ScrollWheelTemp->ClearItems();
+    if(!mp_UserSettings)
+        return;
 
+    mp_ScrollWheelTemp->ClearItems();
     // set temperature symbol
     if (mp_UserSettings->GetTemperatureFormat() == Global::TEMP_FORMAT_CELSIUS) {
         mp_Ui->scrollPanelWidgetTemperature->SetSubtitle(QApplication::translate("CModifyProgramStepDlg", "\302\260C", 0, QApplication::UnicodeUTF8), 0);
@@ -259,15 +261,17 @@ void CModifyProgramStepDlg::SetProgramStep(DataManager::CProgramStep *p_ProgramS
     mp_ScrollWheelHour->SetCurrentData(Duration.hour());
     mp_ScrollWheelMin->SetCurrentData(Duration.minute());
 
-    const DataManager::CReagent *pReagent = mp_ReagentList->GetReagent(mp_ProgramStep->GetReagentID());
+    m_ReagentID = mp_ProgramStep->GetReagentID();
+    int Index = m_ReagentEditModel.GetReagentPositionOfReagent(m_ReagentID);
 
-    m_ReagentID = pReagent->GetReagentID();
-    QString ID = mp_ProgramStep->GetReagentID();
-    int Index = m_ReagentEditModel.GetReagentPositionOfReagent(ID);
+    if (-1 == Index)
+        return;
+
     mp_TableWidget->selectRow(Index);
 
     ResizeHorizontalSection();
     m_NewProgramStep = false;
+    const DataManager::CReagent *pReagent = mp_ReagentList->GetReagent(m_ReagentID);
     InitTemperatureWidget(pReagent);
 }
 

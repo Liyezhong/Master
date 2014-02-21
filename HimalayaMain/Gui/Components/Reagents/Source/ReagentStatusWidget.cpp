@@ -292,7 +292,7 @@ bool CReagentStatusWidget::IsProcessReagentExpired()
             break;
         case Global::RMS_DAYS:
              Expiry_Date = mp_DashStation->GetDashboardReagentExchangeDate().addDays(mp_Reagent->GetMaxDays());
-            if( Expiry_Date.dayOfYear() < QDate::currentDate().dayOfYear())
+            if( QDate::currentDate() > Expiry_Date)
                 bExpireReagent = true;
             break;
          case Global::RMS_OFF:
@@ -319,7 +319,7 @@ bool CReagentStatusWidget::IsCleaningReagentExpired()
             break;
         case Global::RMS_DAYS:
              Expiry_Date = mp_DashStation->GetDashboardReagentExchangeDate().addDays(mp_Reagent->GetMaxDays());
-            if( Expiry_Date.dayOfYear() < QDate::currentDate().dayOfYear())
+            if( Expiry_Date < QDate::currentDate())
                 bExpireReagent = true;
             break;
          case Global::RMS_OFF:

@@ -117,6 +117,7 @@ private slots:
     void UpdateUserSetting(DataManager::CUserSettings&);
     void SwitchToFavoritePanel();
     void UndoProgramSelection();
+    void OnInteractStart();
 
 };
 

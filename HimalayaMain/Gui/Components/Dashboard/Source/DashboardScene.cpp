@@ -47,8 +47,10 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
                        mp_MainWindow(p_MainWindow),
                        m_CloneDashboardStationList(true),
                        m_CloneProgramList(true),
+                       m_bProcessRunning(false),
                        m_pPipeAnimationTimer(NULL),
-                       m_pBlinkingTimer(NULL),
+                       m_pBlinkingIntervalTimer(NULL),
+                       m_pStartBlinkingTimer(NULL),
                        m_UsedPipeGraphicsRectItem(NULL),
                        m_currentTimerOrder(0),
                        m_SuckDrainStationId("")
@@ -61,9 +63,15 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     m_pPipeAnimationTimer = new QTimer(this);
     CONNECTSIGNALSLOT(m_pPipeAnimationTimer, timeout(), this, PipeSuckDrainAnimation());
 
-    m_pBlinkingTimer = new QTimer(this);
-    m_pBlinkingTimer->setInterval(1000);
-    CONNECTSIGNALSLOT(m_pBlinkingTimer, timeout(), this, BlinkingStation());
+    m_pBlinkingIntervalTimer = new QTimer(this);
+    m_pBlinkingIntervalTimer->setInterval(2000);
+    CONNECTSIGNALSLOT(m_pBlinkingIntervalTimer, timeout(), this, BlinkingStation());
+
+    m_pStartBlinkingTimer = new QTimer(this);
+    m_pStartBlinkingTimer->setInterval(6000);
+    CONNECTSIGNALSLOT(m_pStartBlinkingTimer, timeout(), this, OnAppIdle());
+    m_pStartBlinkingTimer->start();
+
 
     InitDashboardStationItemsPositions();
     InitDashboardStationGroups();
@@ -76,6 +84,7 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     // update the stations whenenver the stations.xml is sent
     CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationsUpdated(), this, UpdateDashboardStations());
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, OnUpdateUserSettings());
+    CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
 
 }
 
@@ -104,7 +113,8 @@ CDashboardScene::~CDashboardScene()
         delete m_WholePipeGraphicsRectItem;
         delete m_UsedPipeGraphicsRectItem;
         delete m_pPipeAnimationTimer;
-        delete m_pBlinkingTimer;
+        delete m_pBlinkingIntervalTimer;
+        delete m_pStartBlinkingTimer;
     } catch(...) {
         // Please the PC-Lint
     }
@@ -545,15 +555,76 @@ void CDashboardScene::BlinkingStation()
     }
 }
 
+void CDashboardScene::EnableBlink(bool bEnable)
+{
+    for (int i = 0; i < mp_DashboardStationItems.size(); i++)
+    {
+         Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
+         if (item)
+         {
+             if (item->IsReagentExpired())
+             {
+                 item->EnableBlink(bEnable);
+                 item->DrawStationItemImage();
+             }
+         }
+    }
+}
+
+void CDashboardScene::OnInteractStart()
+{
+    qDebug()<<"CDashboardScene::OnInteractStart";
+
+    if (!m_bProcessRunning)
+    {
+        ExpiredReagentStationBlinking(false);
+        m_pStartBlinkingTimer->start();
+    }
+}
+
+void CDashboardScene::ExpiredReagentStationBlinking(bool bStart)
+{
+    if (bStart)
+    {
+        m_pStartBlinkingTimer->stop();
+        m_pStartBlinkingTimer->start();
+        m_pBlinkingIntervalTimer->start();
+        this->EnableBlink(bStart);
+    }
+    else//stop blink
+    {
+        m_pStartBlinkingTimer->stop();
+        if (m_pBlinkingIntervalTimer->isActive())
+        {
+            m_pBlinkingIntervalTimer->stop();
+            //reset the all expired station
+            this->EnableBlink(bStart);
+        }
+    }
+}
+
+void CDashboardScene::OnAppIdle()
+{
+    m_pStartBlinkingTimer->stop();
+    if (!m_bProcessRunning && (Global::RMS_OFF != mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing() ||
+                Global::RMS_OFF != mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSCleaning()))
+    {
+        this->EnableBlink(true);
+        m_pBlinkingIntervalTimer->start();
+    }
+}
+
 void CDashboardScene::OnUpdateUserSettings()
 {
      if (Global::RMS_OFF == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing()&&
         Global::RMS_OFF == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSCleaning())
      {
-        m_pBlinkingTimer->stop();
+        m_pBlinkingIntervalTimer->stop();
      }
-     //else
-      //   m_pBlinkingTimer->start();
+     else
+     {
+         m_pBlinkingIntervalTimer->start();
+     }
 }
 
 /****************************************************************************/
@@ -582,7 +653,6 @@ void CDashboardScene::AddDashboardStationItemsToScene()
                                                                                               m_DashboardStationGroup[i],
                                                                                               m_DashboardStationIDs[i],
                                                                                               m_DashboardStationLabels[i],
-                                                                                              true,
                                                                                               m_DashboardStationList[m_DashboardStationIDs[i]]);
         p_DashboardStationItem->setPos(m_DashboardStationItemPositions[i]);
         p_DashboardStationItem->StationSelected(false);
@@ -625,7 +695,7 @@ void CDashboardScene::AddDashboardStationItemsToScene()
     }   
 
     // For Retort, No Station Id
-    mp_DashboardStationRetort = new Core::CDashboardStationItem(mp_DataConnector, STATIONS_GROUP_RETORT, "Retort", "Retort", false);
+    mp_DashboardStationRetort = new Core::CDashboardStationItem(mp_DataConnector, STATIONS_GROUP_RETORT, "Retort", "Retort");
     mp_DashboardStationRetort->setPos(QPoint(15, 35));
     addItem(mp_DashboardStationRetort);
 
@@ -883,6 +953,20 @@ bool CDashboardScene::HaveExpiredReagent()
          }
     }
     return false;
+}
+
+void CDashboardScene::OnProcessStateChanged()
+{
+    m_bProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+    if(m_bProcessRunning)
+    {
+        this->ExpiredReagentStationBlinking(false);
+    }
+    else
+    {
+        this->OnPauseStationSuckDrain();
+        this->ExpiredReagentStationBlinking(true);
+    }
 }
 
 } // end namespace Dashboard

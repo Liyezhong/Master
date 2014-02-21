@@ -211,32 +211,21 @@ void CModifyReagentGroupColorDlg:: UpdateReagentGroupColor()
 
     m_ColorNames.clear();
 
-    int Count = 0;
+    int index = 0;
     QAbstractButton *p_Button;
 
-      foreach(p_Button, m_ButtonGroup.buttons()) {
-         QPixmap Pixmap;
-         (void)Pixmap.load(":/HimalayaImages/Color/Color_"+mp_CReagentGroupColorList->GetCReagentGroupColor(Count)->GetColorID()+ ".png");
+    foreach(p_Button, m_ButtonGroup.buttons()) {
+     QPixmap pixmap(28, 28);
+     QString colorName = const_cast<DataManager::CReagentGroupColorList*>(mp_CReagentGroupColorList)->GetCReagentGroupColor(index)->GetColorValue();
+     m_ColorNames << colorName;
+     pixmap.fill(QColor(colorName.prepend("#")));
+     p_Button->setIconSize(QSize(50, 50));
+     p_Button->setIcon(QIcon(pixmap));
 
-         p_Button->setIconSize(QSize(50,50));
-         p_Button->setIcon(QIcon(Pixmap));
-         Count++;
-      }
-
-      for (qint32 ColorCount = 0; ColorCount < const_cast<DataManager::CReagentGroupColorList*>(mp_CReagentGroupColorList)->GetNumberOfReagentGroupColor(); ColorCount++) {
-            QString ColorName = const_cast<DataManager::CReagentGroupColorList*>(mp_CReagentGroupColorList)->GetCReagentGroupColor(ColorCount)->GetColorValue();
-             m_ColorNames << ColorName;
-      }
-
+     index++;
+    }
 }
 
-/****************************************************************************/
-/*!
- *  \brief Display the day run log files in the list
- *
- *  \iparam FileNames = List of file names
- */
-/****************************************************************************/
 void CModifyReagentGroupColorDlg::SetReagentGroupList(DataManager::CDataReagentGroupList &ReagentGroupList, const DataManager::CReagentGroup &ReagentGroup)
 {   
     // copy the data to local
@@ -250,8 +239,8 @@ void CModifyReagentGroupColorDlg::SetReagentGroupList(DataManager::CDataReagentG
       }
 
        const DataManager::CReagentGroup * Temp_ReagentGroup;
-       for(int Index = 0;Index<ReagentGroupList.GetNumberOfReagentGroups();Index++){
-           Temp_ReagentGroup =ReagentGroupList.GetReagentGroup(Index);
+       for(int Index = 0; Index < ReagentGroupList.GetNumberOfReagentGroups(); Index++){
+           Temp_ReagentGroup = ReagentGroupList.GetReagentGroup(Index);
 
            if(m_ColorNames.contains(Temp_ReagentGroup->GetGroupColor())){
                int index = m_ColorNames.indexOf(Temp_ReagentGroup->GetGroupColor());

@@ -148,7 +148,11 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
                 if(Icon.compare("") == true)
                     return QVariant();
                 else
-                    return QPixmap(":/HimalayaImages/Icons/Program/"+Icon+".png");
+                {
+                    QPixmap pixmap(":/HimalayaImages/Icons/Program/"+Icon+".png");
+                    QPixmap img = pixmap.copy(8, 8, 54, 45);
+                    return img.scaledToHeight(32, Qt::SmoothTransformation);
+                }
             }
         }
         else if (Role == (int)Qt::CheckStateRole) {
