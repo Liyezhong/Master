@@ -1,37 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EventConfigure>
-	<Source Name="Himalaya">
-		<Event Code="" ErrorID="513030001" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_LOCAL" EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
-			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
-                        <Step ID="2" Type="MSG" StringID="192" RDStringID="193" ButtonType="OK" ButtonEnableCondition="RT_LID_OPEN_CLOSE" StatusBar="YES"/>
-			<Step ID="3" Type="ACT" Action="RC_Restart"/>				
-		</Event>
-		<Event Code="" ErrorID="511030021" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
-			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
-                        <Step ID="2" Type="MSG" StringID="198" RDStringID="199" ButtonType="OK" ButtonEnableCondition="RT_LID_OPEN_CLOSE" StatusBar="YES"/>
-			<Step ID="3" Type="ACT" Action="RC_Restart"/>		
-		</Event>
-		<Event Code="" ErrorID="511030022" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
-			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
-			<Step ID="2" Type="MSG" StringID="200" RDStringID="201" ButtonType="OK" StatusBar="YES"/>
-			<Step ID="3" Type="ACT" Action="RC_Restart"/>		
-		</Event>
-		<Event Code="" ErrorID="513030091" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
-			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
-                        <Step ID="2" Type="MSG" StringID="236" RDStringID="237" ButtonType="OK" ButtonEnableCondition="RT_LID_OPEN_CLOSE" StatusBar="YES"/>
-			<Step ID="3" Type="ACT" Action="RC_Restart"/>		
-		</Event>
-		<Event Code="" ErrorID="513030092" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
-			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
-			<Step ID="2" Type="MSG" StringID="238" RDStringID="239" ButtonType="OK" StatusBar="YES"/>
-			<Step ID="3" Type="ACT" Action="RC_Restart"/>		
-		</Event>
-	</Source>
 	<Source Name="Platform">
 		<Event Code="" ErrorID="16842753" ErrorType="Warning" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16842753" ButtonType="" StatusBar=""/>
@@ -54,41 +22,14 @@
 		<Event Code="" ErrorID="16842760" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16842760" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="16842762" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16842762" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="16842763" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16842763" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16842764" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16842764" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16842765" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16842765" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16842766" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16842766" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16842767" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16842767" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16842768" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16842768" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16842769" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16842769" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16842770" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16842770" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16842771" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16842771" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16842772" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16842772" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16842773" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16842773" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16842774" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16842774" ButtonType="" StatusBar=""/>
@@ -104,9 +45,6 @@
 		</Event>
 		<Event Code="" ErrorID="16842778" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16842778" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16842779" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16842779" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16843264" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16843264" ButtonType="" StatusBar=""/>
@@ -155,9 +93,6 @@
 		</Event>
 		<Event Code="" ErrorID="16843280" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16843280" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843281" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16843281" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16843282" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16843282" ButtonType="" StatusBar=""/>
@@ -255,14 +190,8 @@
 		<Event Code="" ErrorID="16846857" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16846857" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="16846858" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16846858" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="16846859" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16846859" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16846860" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16846860" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16846861" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16846861" ButtonType="" StatusBar=""/>
@@ -281,9 +210,6 @@
 		</Event>
 		<Event Code="" ErrorID="16908293" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16908293" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16908294" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16908294" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16908295" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16908295" ButtonType="" StatusBar=""/>
@@ -309,9 +235,6 @@
 		<Event Code="" ErrorID="16908302" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16908302" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="16908303" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16908303" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="16908304" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16908304" ButtonType="" StatusBar=""/>
 		</Event>
@@ -323,12 +246,6 @@
 		</Event>
 		<Event Code="" ErrorID="16973825" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16973825" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16973826" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16973826" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16973827" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16973827" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16973828" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16973828" ButtonType="" StatusBar=""/>
@@ -344,9 +261,6 @@
 		</Event>
 		<Event Code="" ErrorID="16973832" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="16973832" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16973833" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="16973833" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16973834" ErrorType="Warning" AuthorityType="Auth_OPERATOR" AlarmType="Yes">
 			<Step ID="0" Type="MSG" StringID="16973834" ButtonType="Ok" StatusBar="Yes"/>
@@ -402,6 +316,9 @@
 		<Event Code="" ErrorID="17039371" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17039371" ButtonType="" StatusBar=""/>
 		</Event>
+		<Event Code="" ErrorID="17039372" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="17039372" ButtonType="" StatusBar=""/>
+		</Event>
 		<Event Code="" ErrorID="17235969" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17235969" ButtonType="" StatusBar=""/>
 		</Event>
@@ -428,9 +345,6 @@
 		</Event>
 		<Event Code="" ErrorID="17235977" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17235977" ButtonType="Ok" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17235978" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17235978" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17235979" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17235979" ButtonType="" StatusBar=""/>
@@ -461,9 +375,6 @@
 		</Event>
 		<Event Code="" ErrorID="17235988" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17235988" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17235989" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17235989" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17235990" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17235990" ButtonType="" StatusBar=""/>
@@ -542,6 +453,9 @@
 		</Event>
 		<Event Code="" ErrorID="17236019" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17236019" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="17236020" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="17236020" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17302017" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
 			<Step ID="0" Type="MSG" StringID="17302017" ButtonType="" StatusBar=""/>
@@ -699,12 +613,6 @@
 		<Event Code="" ErrorID="17563908" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17563908" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17563909" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17563909" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17563910" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17563910" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17563911" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17563911" ButtonType="" StatusBar=""/>
 		</Event>
@@ -735,9 +643,6 @@
 		<Event Code="" ErrorID="17563920" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17563920" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17564161" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17564161" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17564162" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17564162" ButtonType="" StatusBar=""/>
 		</Event>
@@ -756,17 +661,8 @@
 		<Event Code="" ErrorID="17564167" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17564167" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17564168" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17564168" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17564169" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17564169" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17564170" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17564170" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17564171" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17564171" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17564172" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17564172" ButtonType="" StatusBar=""/>
@@ -795,9 +691,6 @@
 		<Event Code="" ErrorID="17564421" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17564421" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17564422" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17564422" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17564423" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17564423" ButtonType="" StatusBar=""/>
 		</Event>
@@ -819,14 +712,8 @@
 		<Event Code="" ErrorID="17564433" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17564433" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17564448" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17564448" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17564449" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17564449" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17564471" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17564471" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17564475" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17564475" ButtonType="" StatusBar=""/>
@@ -897,12 +784,6 @@
 		<Event Code="" ErrorID="17564936" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17564936" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17565056" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17565056" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17565057" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17565057" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17565184" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17565184" ButtonType="" StatusBar=""/>
 		</Event>
@@ -930,12 +811,6 @@
 		<Event Code="" ErrorID="17565192" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17565192" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17565193" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17565193" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17565194" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17565194" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17565195" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17565195" ButtonType="" StatusBar=""/>
 		</Event>
@@ -947,12 +822,6 @@
 		</Event>
 		<Event Code="" ErrorID="17565202" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17565202" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17565440" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17565440" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17565696" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17565696" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17565952" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17565952" ButtonType="" StatusBar=""/>
@@ -998,9 +867,6 @@
 		</Event>
 		<Event Code="" ErrorID="17566979" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17566979" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17567232" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17567232" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17567488" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17567488" ButtonType="" StatusBar=""/>
@@ -1097,9 +963,6 @@
 		</Event>
 		<Event Code="" ErrorID="17597191" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17597191" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17597192" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17597192" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17597440" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17597440" ButtonType="" StatusBar=""/>
@@ -1224,6 +1087,9 @@
 		<Event Code="" ErrorID="17629217" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17629217" ButtonType="" StatusBar=""/>
 		</Event>
+		<Event Code="" ErrorID="17629218" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="17629218" ButtonType="" StatusBar=""/>
+		</Event>
 		<Event Code="" ErrorID="17694721" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17694721" ButtonType="Ok" StatusBar=""/>
 		</Event>
@@ -1295,9 +1161,6 @@
 		</Event>
 		<Event Code="" ErrorID="17760272" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17760272" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17760273" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="17760273" ButtonType="Ok" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17760274" ErrorType="info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="17760274" ButtonType="" StatusBar=""/>
@@ -2127,17 +1990,8 @@
 		<Event Code="" ErrorID="18808838" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="18808838" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="18808839" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="18808839" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808840" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="18808840" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="18808841" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="18808841" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808842" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="18808842" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="18808843" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="18808843" ButtonType="" StatusBar=""/>
@@ -2187,23 +2041,8 @@
 		<Event Code="" ErrorID="18939909" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="18939909" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="19005441" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="Yes">
-			<Step ID="0" Type="MSG" StringID="19005441" ButtonType="Ok" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19005442" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="Yes">
-			<Step ID="0" Type="MSG" StringID="19005442" ButtonType="Ok" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="19005443" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="Yes">
 			<Step ID="0" Type="MSG" StringID="19005443" ButtonType="Ok" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19005444" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19005444" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19005445" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19005445" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19005446" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19005446" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19005447" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19005447" ButtonType="Ok" StatusBar=""/>
@@ -2244,56 +2083,20 @@
 		<Event Code="" ErrorID="19070988" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19070988" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="19070989" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19070989" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19070990" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19070990" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="19070991" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19070991" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19070992" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19070992" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="19070993" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19070993" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="19070994" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19070994" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19070995" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19070995" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19070996" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19070996" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19070997" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19070997" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19070998" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19070998" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19070999" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19070999" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19071000" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19071000" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19071001" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19071001" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19071002" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19071002" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="19071003" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19071003" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="19071004" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19071004" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19071005" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19071005" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19071006" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19071006" ButtonType="" StatusBar=""/>
@@ -2310,12 +2113,6 @@
 		<Event Code="" ErrorID="19136513" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19136513" ButtonType="" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="19136514" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19136514" ButtonType="Ok" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19136515" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19136515" ButtonType="" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="19136516" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19136516" ButtonType="" StatusBar=""/>
 		</Event>
@@ -2327,9 +2124,6 @@
 		</Event>
 		<Event Code="" ErrorID="19136519" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19136519" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19136520" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19136520" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19136521" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19136521" ButtonType="" StatusBar=""/>
@@ -2354,9 +2148,6 @@
 		</Event>
 		<Event Code="" ErrorID="19202055" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19202055" ButtonType="" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19202056" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
-			<Step ID="0" Type="MSG" StringID="19202056" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19202057" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19202057" ButtonType="" StatusBar=""/>
@@ -2417,6 +2208,99 @@
 		</Event>
 		<Event Code="" ErrorID="19267601" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19267601" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333121" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333121" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333377" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333377" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333633" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333633" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333634" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333634" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333635" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333635" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333636" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333636" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333637" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333637" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333638" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333638" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333639" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333639" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333640" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333640" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333641" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333641" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333642" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333642" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333643" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333643" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333713" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333713" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333714" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333714" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333715" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333715" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333889" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333889" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333890" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333890" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333891" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333891" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333892" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333892" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333893" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333893" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333894" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333894" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333895" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333895" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333896" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333896" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333897" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333897" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333898" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333898" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333899" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333899" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333900" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333900" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333901" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333901" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333902" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333902" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333903" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19333903" ButtonType="" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19398657" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="No">
 			<Step ID="0" Type="MSG" StringID="19398657" ButtonType="" StatusBar=""/>
@@ -2654,6 +2538,675 @@
 		</Event>
 		<Event Code="" ErrorID="19595265" ErrorType="Warning" AuthorityType="Auth_OPERATOR" AlarmType="Yes">
 			<Step ID="0" Type="MSG" StringID="19595265" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19595266" ErrorType="Warning" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19595266" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19595267" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19595267" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19595268" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19595268" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19595269" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="No">
+			<Step ID="0" Type="MSG" StringID="19595269" ButtonType="" StatusBar=""/>
+		</Event>
+	</Source>
+	<Source Name="Himalaya">
+		<Event Code="" ErrorID="513030001" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_LOCAL" EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
+                        <Step ID="2" Type="MSG" StringID="192" RDStringID="193" ButtonType="OK" ButtonEnableCondition="RT_LID_OPEN_CLOSE" StatusBar="YES"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>				
+		</Event>
+		<Event Code="" ErrorID="511030021" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
+                        <Step ID="2" Type="MSG" StringID="198" RDStringID="199" ButtonType="OK" ButtonEnableCondition="RT_LID_OPEN_CLOSE" StatusBar="YES"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>		
+		</Event>
+		<Event Code="" ErrorID="511030022" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
+			<Step ID="2" Type="MSG" StringID="200" RDStringID="201" ButtonType="OK" StatusBar="YES"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>		
+		</Event>
+		<Event Code="" ErrorID="513030091" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
+                        <Step ID="2" Type="MSG" StringID="236" RDStringID="237" ButtonType="OK" ButtonEnableCondition="RT_LID_OPEN_CLOSE" StatusBar="YES"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>		
+		</Event>
+		<Event Code="" ErrorID="513030092" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>		
+			<Step ID="2" Type="MSG" StringID="238" RDStringID="239" ButtonType="OK" StatusBar="YES"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>		
+		</Event>
+
+		<Event Code="" ErrorID="33817103" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817103" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33619990" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33619990" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33619980" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33619980" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="17760273" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="17760273" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="17235978" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="17235978" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817857" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817857" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817094" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817094" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817095" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817095" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817097" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817097" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817088" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817088" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817092" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817092" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817096" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817096" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817093" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817093" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817098" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817098" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817101" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817101" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33818114" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33818114" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817861" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817861" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817860" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817860" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817859" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817859" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816577" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816577" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816608" ErrorType="info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816608" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816621" ErrorType="info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816621" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817862" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817862" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816626" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816626" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816597" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816597" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816624" ErrorType="info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816624" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816631" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816631" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816623" ErrorType="info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816623" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816620" ErrorType="info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816620" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33818117" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33818117" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33818113" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33818113" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816596" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816596" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816592" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816592" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816584" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816584" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817346" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817346" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817345" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817345" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817347" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817347" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816605" ErrorType="info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816605" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33818116" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33818116" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33818118" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33818118" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33818119" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33818119" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816606" ErrorType="info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816606" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816837" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816837" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816836" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816836" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816835" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816835" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816838" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816838" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816846" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816846" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816845" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816845" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816841" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816841" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816840" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816840" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816833" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816833" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816848" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816848" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816847" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816847" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816591" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816591" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816585" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816585" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817864" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817864" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817863" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817863" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816587" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816587" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33816590" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33816590" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33818115" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33818115" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33817858" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33817858" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331649" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331649" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331672" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331672" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="16842764" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="16842764" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="16842767" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="16842767" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="16842771" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="16842771" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="16842768" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="16842768" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="16842762" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="16842762" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="16842772" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="16842772" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="16846860" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="16846860" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="16846858" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="16846858" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="16908287" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="16908287" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="17301504" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="17301504" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33619987" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33619987" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33619971" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33619971" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947653" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947653" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947649" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947649" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947665" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947665" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947664" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947664" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947657" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947657" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947661" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947661" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947652" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947652" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947655" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947655" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947659" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947659" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947662" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947662" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947663" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947663" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947656" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947656" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947660" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947660" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33947658" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33947658" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33619974" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33619974" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33619972" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33619972" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33619973" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33619973" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33619978" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33619978" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33619975" ErrorType="" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33619975" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="33619977" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="33619977" ButtonType="Ok" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331673" ErrorType="L_ERROR" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331673" ButtonType="OK" StatusBar="Yes"/>
+		</Event>
+		<Event Code="" ErrorID="50331650" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331650" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331651" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331651" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331652" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331652" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331653" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331653" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331654" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331654" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331655" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331655" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331656" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331656" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331657" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331657" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331658" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331658" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331659" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331659" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331660" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331660" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331661" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331661" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331662" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331662" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331663" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331663" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331664" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331664" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331665" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331665" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331666" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331666" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331667" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331667" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331668" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331668" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331669" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331669" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331670" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331670" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331671" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331671" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331674" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331674" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331675" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331675" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331676" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331676" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331677" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331677" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331678" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331678" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331679" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331679" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331680" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331680" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331681" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331681" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331682" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331682" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331683" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331683" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331684" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331684" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331685" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331685" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331686" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331686" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331687" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331687" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331688" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331688" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331689" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331689" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331690" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331690" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331691" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331691" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331692" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331692" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331693" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331693" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331694" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331694" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331695" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331695" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331696" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331696" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331697" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331697" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331698" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331698" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331699" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331699" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331700" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331700" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331701" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331701" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331702" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331702" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331703" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331703" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331704" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331704" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331705" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331705" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331706" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331706" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331707" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331707" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331708" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331708" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331709" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331709" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331710" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331710" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331711" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331711" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331712" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331712" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331713" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331713" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331714" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331714" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331715" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331715" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331716" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331716" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331717" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331717" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331718" ErrorType="Warning" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331718" ButtonType="OK" StatusBar="Yes"/>
+		</Event>
+		<Event Code="" ErrorID="50331719" ErrorType="Warning" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331719" ButtonType="OK" StatusBar="Yes"/>
+		</Event>
+		<Event Code="" ErrorID="50331720" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331720" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331721" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331721" ButtonType="" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331722" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331722" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331723" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331723" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331724" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331724" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331725" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331725" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331726" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331726" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331727" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331727" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331728" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331728" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331729" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331729" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331730" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331730" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331731" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331731" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331732" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331732" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331733" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331733" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331734" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331734" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331735" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331735" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331736" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331736" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331737" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331737" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331738" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331738" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331739" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331739" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331740" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331740" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331741" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331741" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331742" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331742" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331743" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331743" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331744" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331744" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331745" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331745" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331746" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331746" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331747" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331747" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331748" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331748" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331749" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331749" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331750" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331750" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331751" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331751" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331752" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331752" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331753" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331753" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331754" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331754" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331755" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331755" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331756" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331756" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331757" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331757" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331758" ErrorType="Info" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331758" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331759" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331759" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331760" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331760" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331761" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331761" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331762" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331762" ButtonType="OK" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="50331763" ErrorType="Error" AuthorityType="Auth_OPERATOR" AlarmType="">
+			<Step ID="0" Type="MSG" StringID="50331763" ButtonType="OK" StatusBar=""/>
 		</Event>
 	</Source>
 </EventConfigure>
