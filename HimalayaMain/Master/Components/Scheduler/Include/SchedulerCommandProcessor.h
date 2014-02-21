@@ -178,7 +178,7 @@ public:
      *
      */
     /****************************************************************************/
-    explicit SchedulerCommandProcessor(SchedulerMainThreadController *controller, DP* pIDeviceProcessing);
+    explicit SchedulerCommandProcessor(SchedulerMainThreadController *controller);
     ~SchedulerCommandProcessor();
 	virtual HardwareMonitor_t HardwareMonitor();
 	virtual DeviceControl::ReturnCode_t ALBreakAllOperation() { return mp_IDeviceProcessing->ALBreakAllOperation(); } 
