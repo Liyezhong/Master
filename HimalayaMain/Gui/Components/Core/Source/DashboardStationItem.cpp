@@ -174,7 +174,6 @@ void CDashboardStationItem::UpdateImage()
     }
 
     CONNECTSIGNALSLOT(mp_DataConnector, ReagentsUpdated(), this, UpdateDashboardStationItemReagent());
-    CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationChangeReagent(QString), this, UpdateDashboardScene(QString));
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, UpdateUserSettings());
 }
 

@@ -39,13 +39,13 @@ CModifyReagentStationDlg::CModifyReagentStationDlg(QWidget *p_Parent, MainMenu::
     m_ProcessRunning = false ;
 
     mp_TableWidget = new MainMenu::CBaseTable;
-    mp_TableWidget->setModel(&m_ReagentEditModel);
+    mp_TableWidget->setModel(&m_ReagentsDataModel);
 
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
 
     mp_TableWidget->SetVisibleRows(8);
-    m_ReagentEditModel.SetVisibleRowCount(8);
-    m_ReagentEditModel.SetRequiredContainers(mp_DataConnector->ReagentList,mp_DataConnector->ReagentGroupList,mp_DataConnector->DashboardStationList, 2);
+    m_ReagentsDataModel.SetVisibleRowCount(8);
+    m_ReagentsDataModel.SetRequiredContainers(mp_DataConnector->ReagentList,mp_DataConnector->ReagentGroupList,mp_DataConnector->DashboardStationList, 2);
     mp_TableWidget->horizontalHeader()->show();
     ResizeHorizontalSection();
 
@@ -81,18 +81,15 @@ CModifyReagentStationDlg::~CModifyReagentStationDlg()
      *  \brief Destructor
      */
 /****************************************************************************/
-void CModifyReagentStationDlg::SetDashboardStation(DataManager::CDashboardStation* p_Station)
+void CModifyReagentStationDlg::SetEditedDashboardStation(DataManager::CDashboardStation* p_Station)
 {
-    m_DashboardStation = *p_Station;
-    m_ReagentEditModel.SetReagentTypeParaffin(p_Station->GetDashboardParaffinBath());
-    m_ReagentEditModel.UpdateReagentList();
-
-    const DataManager::CReagent* pReagent = mp_DataConnector->ReagentList->GetReagent(m_DashboardStation.GetDashboardReagentID());
-    QString ReagentID("");
-    if (pReagent)
-    ReagentID = mp_DataConnector->ReagentList->GetReagent(m_DashboardStation.GetDashboardReagentID())->GetReagentID();
-    mp_TableWidget->selectRow(m_ReagentEditModel.GetReagentPositionOfReagent(ReagentID));
-
+    m_EditedStation = *p_Station;
+    m_ReagentsDataModel.UpdateReagentList();
+    //Check if it is a valid
+    const DataManager::CReagent* pReagent = mp_DataConnector->ReagentList->GetReagent(m_EditedStation.GetDashboardReagentID());
+    if (pReagent){
+        mp_TableWidget->selectRow(m_ReagentsDataModel.GetReagentPositionOfReagent(pReagent->GetReagentID()));
+    }
 }
 
 /****************************************************************************/
@@ -151,8 +148,8 @@ void CModifyReagentStationDlg::OnCancel()
 /****************************************************************************/
 void CModifyReagentStationDlg::SelectionChanged(QModelIndex Index)
 {
-    QString Id = m_ReagentEditModel.data(Index, (int)Qt::UserRole).toString();
-    m_DashboardStation.SetDashboardReagentID(Id);
+    QString Id = m_ReagentsDataModel.data(Index, (int)Qt::UserRole).toString();
+    m_EditedStation.SetDashboardReagentID(Id);
 }
 /****************************************************************************/
 /*!
@@ -161,10 +158,10 @@ void CModifyReagentStationDlg::SelectionChanged(QModelIndex Index)
 /****************************************************************************/
 void CModifyReagentStationDlg::OnOk()
 {    
-    m_DashboardStation.SetDashboardReagentStatus("Empty");
-    emit UpdateStationChangeReagent(m_DashboardStation.GetDashboardStationID(),
-                                    m_DashboardStation.GetDashboardReagentID());
-    emit UpdateStationSetAsEmpty(m_DashboardStation.GetDashboardStationID());
+    m_EditedStation.SetDashboardReagentStatus("Empty");
+    emit UpdateStationChangeReagent(m_EditedStation.GetDashboardStationID(),
+                                    m_EditedStation.GetDashboardReagentID());
+    emit UpdateStationSetAsEmpty(m_EditedStation.GetDashboardStationID());
     accept();
 }
 
@@ -200,9 +197,9 @@ void CModifyReagentStationDlg::RetranslateUI()
     m_strClose = QApplication::translate("Reagents::CModifyReagentStationDlg", "Close", 0, QApplication::UnicodeUTF8);
     m_strInforMsg = QApplication::translate("Reagents::CModifyReagentStationDlg", "Information Message", 0, QApplication::UnicodeUTF8);
     m_strOK = QApplication::translate("Reagents::CModifyReagentStationDlg", "OK", 0, QApplication::UnicodeUTF8);
-    (void)m_ReagentEditModel.setHeaderData(0,Qt::Horizontal, QApplication::translate("Core::CReagentStationEditModel",
+    (void)m_ReagentsDataModel.setHeaderData(0,Qt::Horizontal, QApplication::translate("Core::CReagentStationEditModel",
                                                                                  "Reagent", 0, QApplication::UnicodeUTF8), 0);
-    (void)m_ReagentEditModel.setHeaderData(1,Qt::Horizontal, QApplication::translate("Core::CReagentStationEditModel",
+    (void)m_ReagentsDataModel.setHeaderData(1,Qt::Horizontal, QApplication::translate("Core::CReagentStationEditModel",
                                                                                  "Group", 0, QApplication::UnicodeUTF8),0);
 }
 

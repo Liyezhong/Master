@@ -488,8 +488,6 @@ void CModifyProgramStepDlg::OnSelectionChanged(QModelIndex Index)
 {
     if (Index.isValid() && (!m_ProcessRunning)) {
         m_ReagentID = m_ReagentEditModel.GetReagentID(Index.row());
-        m_ReagentLongName = m_ReagentEditModel.GetReagentLongName(m_ReagentID);
-        if (!m_ReagentLongName.isEmpty()) {
             m_RowNotSelected = false;
             mp_Ui->btnOk->setEnabled(true);
             if (mp_ReagentList)
@@ -497,7 +495,6 @@ void CModifyProgramStepDlg::OnSelectionChanged(QModelIndex Index)
                 const DataManager::CReagent *pReagent = mp_ReagentList->GetReagent(m_ReagentID);
                 InitTemperatureWidget(pReagent);
             }
-        }
     }
 }
 

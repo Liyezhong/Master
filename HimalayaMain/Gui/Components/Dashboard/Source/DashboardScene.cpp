@@ -45,7 +45,6 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
                        QGraphicsScene(p_Parent),
                        mp_DataConnector(p_DataConnector),                       
                        mp_MainWindow(p_MainWindow),
-                       m_CloneDashboardStationList(true),
                        m_CloneProgramList(true),
                        m_bProcessRunning(false),
                        m_pPipeAnimationTimer(NULL),
@@ -84,8 +83,8 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     // update the stations whenenver the stations.xml is sent
     CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationsUpdated(), this, UpdateDashboardStations());
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, OnUpdateUserSettings());
+    CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationChangeReagent(const QString&), this, UpdateDashboardStation(const QString&));
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
-
 }
 
 /****************************************************************************/
@@ -573,8 +572,6 @@ void CDashboardScene::EnableBlink(bool bEnable)
 
 void CDashboardScene::OnInteractStart()
 {
-    qDebug()<<"CDashboardScene::OnInteractStart";
-
     if (!m_bProcessRunning)
     {
         ExpiredReagentStationBlinking(false);
@@ -788,11 +785,7 @@ void CDashboardScene::AddDashboardStationItemsToScene()
 
 void CDashboardScene::UpdateDashboardStations()
 {
-
-    if (m_CloneDashboardStationList) {
-        *mp_DashboardStationListClone = *(mp_DataConnector->DashboardStationList);
-    }
-
+    *mp_DashboardStationListClone = *(mp_DataConnector->DashboardStationList);
     for (int i = 0; i < mp_DashboardStationListClone->GetNumberOfDashboardStations(); i++)
     {
         DataManager::CDashboardStation *p_DashboardStation = const_cast<DataManager::CDashboardStation*>(mp_DashboardStationListClone->GetDashboardStation(i));
@@ -805,6 +798,19 @@ void CDashboardScene::UpdateDashboardStations()
         pListItem->StationSelected(true);
     }
     this->update();
+}
+
+void CDashboardScene::UpdateDashboardStation(QString strStationId)
+{
+   for (int i = 0; i < mp_DashboardStationItems.size(); i++)
+   {
+        Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
+        if (item->GetStationItemID()== strStationId)
+        {
+            item->UpdateDashboardStationItemReagent();
+            break;
+        }
+   }
 }
 
 void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId, QList<QString>& selectedStationList)

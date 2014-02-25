@@ -82,7 +82,6 @@ private:
     Core::CDataConnector *mp_DataConnector;             //!< Global data container
     DataManager::CProgram *mp_Program;
     Core::CReagentStationEditModel m_ReagentEditModel;  //!< Model for the table
-    QString m_ReagentLongName;
     QString m_ReagentID;
     QPixmap* m_pAmbientTempraturePixmap;
     QPixmap* m_pAmbientTempratureBigPixmap;

@@ -569,7 +569,7 @@ void CReagentStatusWidget::ResetButtons()
  */
 /****************************************************************************/
 
-void CReagentStatusWidget::StationReagentUpdated(QString StationId)
+void CReagentStatusWidget::StationReagentUpdated(const QString& StationId)
 {
     Q_UNUSED(StationId)
     m_ReagentStatusModel.UpdateReagentList();

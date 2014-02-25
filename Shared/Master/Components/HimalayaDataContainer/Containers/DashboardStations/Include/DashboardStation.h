@@ -40,7 +40,7 @@ class CDashboardStation
 private:
     QString                     m_DashboardStationID;
     QString                     m_DashboardStationName;
-    bool                        m_ParaffinBath;
+    bool                        m_IsParaffinBath;
     QString                     m_ReagentID;
     QDate                       m_ReagentExchangeDate;
     int                         m_ReagentActualCassettes;
@@ -81,7 +81,7 @@ public:
      *  \return Station Id String
      */
     /****************************************************************************/
-    QString  GetDashboardStationID()
+    QString  GetDashboardStationID() const
     {
         return m_DashboardStationID;
     }
@@ -107,7 +107,7 @@ public:
      *  \return Station Name String
      */
     /****************************************************************************/
-    QString  GetDashboardStationName()
+    QString  GetDashboardStationName() const
     {
         return m_DashboardStationName;
     }
@@ -136,9 +136,9 @@ public:
      *  \return
      */
     /****************************************************************************/
-    void SetDashboardParaffinBath(const bool Value)
+    void IsParaffinBath(const bool Value)
     {
-        m_ParaffinBath = Value;
+        m_IsParaffinBath = Value;
     }
 
     /****************************************************************************/
@@ -148,9 +148,9 @@ public:
      *  \return Station Name String
      */
     /****************************************************************************/
-    bool  GetDashboardParaffinBath()
+    bool  IsParaffinBath()
     {
-        return m_ParaffinBath;
+        return m_IsParaffinBath;
     }
 
     /****************************************************************************/
@@ -160,7 +160,7 @@ public:
      *  \return Station Name String
      */
     /****************************************************************************/
-    QString  GetDashboardReagentID()
+    QString  GetDashboardReagentID() const
     {
         return m_ReagentID;
     }

@@ -142,7 +142,6 @@ private:
     bool m_HideSpecialReagents;                         //!< Hides the special reagents if true.
     bool m_FilterLeicaReagent;                          //!< Filter Leica Reagent if set to true
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
-    QMap<QString, QString> m_ReagentNameMap;            //!< Sorts Reagent Longnames
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     QPixmap m_PixmapTickOk;                             //!< Pixmap for TickOk png
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object

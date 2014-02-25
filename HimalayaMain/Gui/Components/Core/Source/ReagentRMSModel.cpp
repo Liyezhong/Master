@@ -94,7 +94,6 @@ void CReagentRMSModel::UpdateReagentList()
     beginResetModel();
     m_Identifiers.clear();
     m_ReagentNames.clear();
-    m_ReagentNameMap.clear();
     m_ReagentID.clear();
     m_CleaningGroupReagentNames.clear();
     m_CleaningGroupReagentID.clear();

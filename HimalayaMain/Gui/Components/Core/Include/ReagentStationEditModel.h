@@ -87,25 +87,6 @@ public:
     {
       m_ModifiedProgramStepDlg = Status;
     }
-    /****************************************************************************/
-    /**
-     * \brief Sets the currently selected reagent in the table
-     * \iparam ReagentName
-     */
-    /****************************************************************************/
-    void SetCurrentReagent(QString ReagentName){
-        m_CurrentReagentName = ReagentName;
-    }
-
-    /****************************************************************************/
-    /**
-     * \brief Sets the currently selected reagent in the table
-     * \iparam ReagentName
-     */
-    /****************************************************************************/
-    void SetReagentTypeParaffin(bool Value){
-        m_ParaffinReagent = Value;
-    }
 
     /****************************************************************************/
     /**
@@ -125,10 +106,8 @@ public:
     void FilterLeicaReagents(bool Filter) { m_FilterLeicaReagent = Filter; }
 
     void SetVisibleRowCount(int RowCount);
-    QString GetReagentID(const QString ReagentName);
     QString GetReagentID(int Row);
-    QString GetReagentLongName(QString ReagentId);
-    bool ContainsReagent(QString ReagentID);
+	QString GetReagentLongName(QString ReagentId);
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
     void UpdateReagentList();
 
@@ -141,14 +120,11 @@ private:
     QStringList m_ReagentNames;                         //!< Long names of reagents currently displayed
     QStringList m_ReagentID;
     qint32 m_Columns;                                   //!< Number of table columns
-    QString m_CurrentReagentName;                       //!< Current Reagent Name
     Programs::CModifyProgramStepDlg *mp_Parent;         //!< Reference to ModifyProgramStep Dialog
     bool m_FilterLeicaReagent;                          //!< Filter Leica Reagent if set to true
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
-    QMap<QString, QString> m_ReagentNameMap;            //!< Sorts Reagent Longnames
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object    
-    bool m_ParaffinReagent;                                 //!< Type of Reagent;
     bool m_ModifiedProgramStepDlg;
 };
 
