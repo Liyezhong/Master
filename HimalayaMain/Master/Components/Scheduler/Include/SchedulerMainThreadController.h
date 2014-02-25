@@ -65,6 +65,7 @@ typedef struct {
     int temperature;
     bool isPressure;
     bool isVacuum;
+    QString reagentGroup;
 } ProgramStepInfor;
 
 typedef enum

@@ -1152,6 +1152,7 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
         programStepInfor.isPressure = (pProgramStep->GetPressure() == "On");
         programStepInfor.isVacuum = (pProgramStep->GetVacuum() == "On");
         m_CurReagnetName = GetReagentName(reagentID);
+        programStepInfor.reagentGroup = GetReagentGroupID(reagentID);
     }
     else
     {
