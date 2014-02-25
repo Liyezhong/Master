@@ -43,7 +43,6 @@ namespace Core {
 CReagentStationModel::CReagentStationModel(QObject *p_Parent) : QAbstractTableModel(p_Parent)
 {
     mp_ReagentList = NULL;
-    mp_ReagentGroupList = NULL;
     mp_Parent = NULL;
     mp_StationList = NULL;
     m_FilterLeicaReagent = false;
@@ -62,11 +61,9 @@ CReagentStationModel::CReagentStationModel(QObject *p_Parent) : QAbstractTableMo
  */
  /****************************************************************************/
 void CReagentStationModel::SetRequiredContainers(DataManager::CDataReagentList *p_ReagentList,
-                                                DataManager::CDataReagentGroupList *p_ReagentGroupList,
                                                 DataManager::CDashboardDataStationList *p_StationList, qint32 Columns)
 {
     mp_ReagentList = p_ReagentList;
-    mp_ReagentGroupList = p_ReagentGroupList;
     mp_StationList = p_StationList;
     m_Columns = Columns;
     UpdateReagentList();
@@ -84,42 +81,30 @@ void CReagentStationModel::SetRequiredContainers(DataManager::CDataReagentList *
 void CReagentStationModel::UpdateReagentList()
 {
     beginResetModel();
-    m_Identifiers.clear();
     m_ReagentNames.clear();
-    m_ReagentNameMap.clear();
     m_StationNames.clear();
-    m_StationNameMap.clear();
+    m_StationIDs.clear();
 
     if (mp_StationList) {
         for (qint32 StationCounter = 0; StationCounter < mp_StationList->GetNumberOfDashboardStations(); StationCounter++) {
-            DataManager::CDashboardStation* p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(StationCounter));
+            const DataManager::CDashboardStation* p_Station = mp_StationList->GetDashboardStation(StationCounter);
             if (p_Station) {
                 QString ReagentName;
                 QString ReagentID;
                 if (mp_ReagentList) {
-                    DataManager::CReagent *p_Reagent = NULL;
-                    p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(p_Station->GetDashboardReagentID()));
+                    DataManager::CReagent *p_Reagent = mp_ReagentList->GetReagent(p_Station->GetDashboardReagentID());
                     if (p_Reagent) {
                         ReagentName =  p_Reagent->GetReagentName();
                         ReagentID =  p_Reagent->GetReagentID();
-                        if(p_Reagent->GetVisibleState()== true){
-                            m_VisibleReagentIds << p_Reagent->GetReagentName();
-                        }
                     }
                 }
-                m_ReagentNames << ReagentName;
-                m_ReagentID<<ReagentID;
+                m_StationIDs << p_Station->GetDashboardStationID();
                 // store the station id for the reagent name
-                m_StationIdentifiers[p_Station->GetDashboardStationName()] = p_Station->GetDashboardStationID();
+                m_ReagentNames << ReagentName;
                 m_StationNames << p_Station->GetDashboardStationName();
-                m_Identifiers[p_Station->GetDashboardStationName()] = p_Station->GetDashboardReagentID();
             }
         }
     }
-
-    foreach (const QString str, m_StationNames)
-        (void)m_StationNameMap.insertMulti(str.toLower(), str);
-    //m_StationNames = m_StationNameMap.values();
 
     endResetModel();
 }
@@ -176,34 +161,22 @@ int CReagentStationModel::columnCount(const QModelIndex &) const
 /****************************************************************************/
 QVariant CReagentStationModel::data(const QModelIndex &Index, int Role) const
 {
-    DataManager::CReagent *p_Reagent = NULL;
-    DataManager::CDashboardStation *p_Station = NULL;
     if (mp_ReagentList == NULL || mp_StationList == NULL) {
         return QVariant();
     }
-    if (Index.row() < m_ReagentNames.count()) {
-        p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_Identifiers[m_StationNames[Index.row()]]));
-    }
-    if (Index.row() < m_ReagentNames.count()
-            && (p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]])))){
 
+    if (Index.row() < m_ReagentNames.count()) {
         if (Role == (int)Qt::DisplayRole) {
             switch (Index.column()) {
             case 0:
-                return p_Station->GetDashboardStationName();
+                return m_StationNames[Index.row()];
             case 1:
-                if (p_Reagent) {
-                    return p_Reagent->GetReagentName();
-                }
-                else {
-                    return QString("None");
-                }
-
+                return m_ReagentNames[Index.row()];
             }
         }
 
         if (Role == (int)Qt::UserRole) {
-            return p_Station->GetDashboardStationID();
+            return m_StationIDs[Index.row()];
         }
     }
     else if (Role == (int)Qt::BackgroundRole) {
@@ -240,56 +213,6 @@ QVariant CReagentStationModel::headerData(int Section, Qt::Orientation Orientati
         }
     }
     return QVariant();
-}
-
-/****************************************************************************/
-/*!
- *  \brief This Function Gets Reagent ID of given Reagent Long name.
- *  \iparam ReagentLongName
- */
-/****************************************************************************/
-QString CReagentStationModel::GetReagentID(const QString ReagentName)
-{
-    return m_Identifiers.value(ReagentName);
-
-}
-
-/****************************************************************************/
-  /*!
-   * \brief Returns the Reagent long Name for the particular row.
-   * \iparam Row
-   * \return  m_ReagentNames = Reagent Long Name
-   */
-/****************************************************************************/
-QString CReagentStationModel::GetReagentLongName(int Row)
-{
-    if (!m_ReagentNames.isEmpty()) {
-        return m_ReagentNames[Row];
-    }
-    else {
-        return "";
-    }
-}
-
-/****************************************************************************/
-/*!
-  * \brief Returns true if reagent is present in the reagent list else false
-  *  is returned.
-  * \iparam ReagentID
-  * \return  ReagentID = Reagent ID
-  */
-/****************************************************************************/
-bool CReagentStationModel::ContainsReagent(QString ReagentID)
-{
-    if (m_VisibleReagentIds.isEmpty()) {
-        return false;
-    }
-    if (m_VisibleReagentIds.contains(ReagentID)) {
-        return true;
-    }
-    else {
-        return false;
-    }
 }
 
 /****************************************************************************/

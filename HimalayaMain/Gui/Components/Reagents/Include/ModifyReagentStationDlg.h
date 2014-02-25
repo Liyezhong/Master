@@ -48,13 +48,13 @@ private:
     Ui::CModifyReagentStationDlg *mp_Ui;                   //!< User interface
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object
-    DataManager::CDashboardStation m_DashboardStation;
+    DataManager::CDashboardStation m_EditedStation;
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
     //UI related
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
     MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
-    Core::CReagentStationEditModel m_ReagentEditModel;             //!< Model for the table
+    Core::CReagentStationEditModel m_ReagentsDataModel;             //!< Model for the table
     Core::CDataConnector *mp_DataConnector;         //!< Global data container
     QString m_strCancel;
     QString m_strClose;
@@ -67,7 +67,7 @@ public:
                                Core::CDataConnector *p_DataConnector= NULL);
     virtual ~CModifyReagentStationDlg();
 
-    void SetDashboardStation(DataManager::CDashboardStation* p_Station);
+    void SetEditedDashboardStation(DataManager::CDashboardStation* p_Station);
 
 private:
     void RetranslateUI();

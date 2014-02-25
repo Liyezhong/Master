@@ -90,9 +90,7 @@ void CReagentStatusModel::UpdateReagentList()
     beginResetModel();
     m_Identifiers.clear();
     m_ReagentNames.clear();
-    m_ReagentNameMap.clear();
-    m_StationNames.clear();
-    m_StationNameMap.clear();
+	m_StationNames.clear();
 
     if (mp_StationList) {
         for (qint32 StationCounter = 0; StationCounter < mp_StationList->GetNumberOfDashboardStations(); StationCounter++) {
@@ -117,9 +115,6 @@ void CReagentStatusModel::UpdateReagentList()
             }
         }
     }
-    foreach (const QString str, m_StationNames)
-        (void)m_StationNameMap.insertMulti(str.toLower(), str);
-    //m_StationNames = m_StationNameMap.values();
 
     endResetModel();
 }
@@ -430,23 +425,6 @@ QString CReagentStatusModel::GetReagentID(const QString ReagentName)
 {
     return m_Identifiers.value(ReagentName);
 
-}
-
-/****************************************************************************/
-  /*!
-   * \brief Returns the Reagent long Name for the particular row.
-   * \iparam Row
-   * \return  m_ReagentNames = Reagent Long Name
-   */
-/****************************************************************************/
-QString CReagentStatusModel::GetReagentLongName(int Row)
-{
-    if (!m_ReagentNames.isEmpty()) {
-        return m_ReagentNames[Row];
-    }
-    else {
-        return "";
-    }
 }
 
 /****************************************************************************/

@@ -119,7 +119,7 @@ void CReagentStationWidget::OnEdit()
 
     m_MessageDlg.SetText(m_strSelectReagent);
     mp_ModifiyReagentStationDlg->SetDialogTitle(m_strSelectReagent);
-    mp_ModifiyReagentStationDlg->SetDashboardStation(mp_DashStation);
+    mp_ModifiyReagentStationDlg->SetEditedDashboardStation(mp_DashStation);
     mp_ModifiyReagentStationDlg->move(96,70);
     mp_ModifiyReagentStationDlg->show();
 }
@@ -265,8 +265,9 @@ void CReagentStationWidget::SetPtrToMainWindow(Core::CDataConnector *p_DataConne
     mp_DataConnector = p_DataConnector;
     mp_ReagentList = p_ReagentList;
     // set the reagent ist to the model
-    m_ReagentStationModel.SetRequiredContainers(mp_ReagentList, mp_DataConnector->ReagentGroupList,
-                                               mp_DataConnector->DashboardStationList, 2);
+    m_ReagentStationModel.SetRequiredContainers(mp_ReagentList,
+                                               mp_DataConnector->DashboardStationList,
+                                                2);
     ResizeHorizontalSection();
     mp_ModifiyReagentStationDlg = new CModifyReagentStationDlg(this, p_MainWindow, p_DataConnector);
     mp_ModifiyReagentStationDlg->setModal(true);
@@ -297,7 +298,7 @@ void CReagentStationWidget::ResetButtons()
  *  \brief This Slot Called when Reagent is updated in station
  */
 /****************************************************************************/
-void CReagentStationWidget:: StationReagentUpdated(QString StationId)
+void CReagentStationWidget:: StationReagentUpdated(const QString& StationId)
 {
     Q_UNUSED(StationId)
     m_ReagentStationModel.UpdateReagentList();
