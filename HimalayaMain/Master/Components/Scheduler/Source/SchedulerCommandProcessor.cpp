@@ -134,15 +134,17 @@ namespace Scheduler{
 
 
 template <class DP>
-SchedulerCommandProcessor<DP>::SchedulerCommandProcessor(SchedulerMainThreadController *controller, DP* pIDeviceProcessing) :
+SchedulerCommandProcessor<DP>::SchedulerCommandProcessor(SchedulerMainThreadController *controller) :
     mp_SchedulerThreadController(controller),
-    mp_IDeviceProcessing(pIDeviceProcessing)
+    mp_IDeviceProcessing(NULL)
 {
 
 }
 template <class DP>
 SchedulerCommandProcessor<DP>::~SchedulerCommandProcessor()
 {
+    delete mp_IDeviceProcessing;
+    mp_IDeviceProcessing = NULL;
 }
 
 template <class DP>
@@ -157,7 +159,7 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
 	strctHWMonitor.TempRV1				= mp_IDeviceProcessing->RVGetRecentTemperature(0);
 	strctHWMonitor.TempRV2				= mp_IDeviceProcessing->RVGetRecentTemperature(1);
 	strctHWMonitor.PositionRV			= mp_IDeviceProcessing->RVReqActRVPosition();
-	strctHWMonitor.TempRTBottom			= mp_IDeviceProcessing->RTGetRecentTemperature(RT_BOTTOM,0);
+    strctHWMonitor.TempRTBottom			= mp_IDeviceProcessing->RTGetRecentTemperature(RT_BOTTOM,0);
 	strctHWMonitor.TempRTSide			= mp_IDeviceProcessing->RTGetRecentTemperature(RT_SIDE,0);
 	strctHWMonitor.TempOvenBottom		= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_BOTTOM,0);
 	strctHWMonitor.TempOvenTop			= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_TOP,0);
@@ -172,6 +174,9 @@ void SchedulerCommandProcessor<DP>::run4Slot()
 {
     qRegisterMetaType<ReturnCode_t>("ReturnCode_t");
     qRegisterMetaType<DevInstanceID_t>("DevInstanceID_t");
+
+    //Initialize IDeviceProcessing
+    mp_IDeviceProcessing = new DP();
 
     //connect(mp_IDeviceProcessing, SIGNAL(ReportInitializationFinished(DevInstanceID_t, ReturnCode_t)), this, SLOT(DevProcInitialisationAckn(DevInstanceID_t, ReturnCode_t)), Qt::QueuedConnection);
     CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportInitializationFinished(DevInstanceID_t, ReturnCode_t),
@@ -480,10 +485,10 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd()
 	}
 	else if  ("Scheduler::OvenStartTemperatureControl" == cmdName)
 	{
-        // m_currentCmd->SetResult( mp_IDeviceProcessing->OvenStartTemperatureControl( dynamic_cast<CmdOvenStartTemperatureControl*>(m_currentCmd)->GetType(),
-        //																			dynamic_cast<CmdOvenStartTemperatureControl*>(m_currentCmd)->GetNominalTemperature(),
-        //																			dynamic_cast<CmdOvenStartTemperatureControl*>(m_currentCmd)->GetSlopeTemp()
-        //																		  ) );
+        m_currentCmd->SetResult( mp_IDeviceProcessing->OvenStartTemperatureControl( qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(m_currentCmd)->GetType(),
+                                                                                    qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(m_currentCmd)->GetNominalTemperature(),
+                                                                                    qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(m_currentCmd)->GetSlopeTempChange()
+                                                                                  ) );
 	}
 	else if  ("Scheduler::OvenGetRecentTemperature" == cmdName)
 	{
@@ -540,6 +545,10 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd()
 	{
 		m_currentCmd->SetResult( mp_IDeviceProcessing->PerTurnOffMainRelay() );
 	}
+	else if  ("Scheduler::PerTurnOnMainRelay" == cmdName)
+	{
+		m_currentCmd->SetResult( mp_IDeviceProcessing->PerTurnOnMainRelay() );
+	}
 	else if  ("Scheduler::RVStartTemperatureControlWithPID" == cmdName)
 	{
         m_currentCmd->SetResult( mp_IDeviceProcessing->RVStartTemperatureControlWithPID( qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(m_currentCmd)->GetNominalTemperature(),
@@ -585,8 +594,8 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd()
 	}
 	else if  ("Scheduler::IDBottleCheck" == cmdName)
 	{
-        //m_currentCmd->SetResult( mp_IDeviceProcessing->IDBottleCheck( dynamic_cast<CmdIDBottleCheck*>(m_currentCmd)->GetType(),
-        //															  dynamic_cast<CmdIDBottleCheck*>(m_currentCmd)->GetTubePos() ) );
+        m_currentCmd->SetResult( mp_IDeviceProcessing->IDBottleCheck( qSharedPointerDynamicCast<CmdIDBottleCheck>(m_currentCmd)->GetReagentGrpID(),
+                                                                      qSharedPointerDynamicCast<CmdIDBottleCheck>(m_currentCmd)->GetTubePos() ) );
 	}
 	else if  ("Scheduler::ALAllStop" == cmdName)
 	{

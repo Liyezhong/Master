@@ -72,7 +72,7 @@ bool CmdSchedulerCommandBase::GetResult(qreal& result) const
     return false;
 }
 
-void CmdSchedulerCommandBase::SetResult(const DeviceControl::ReturnCode_t& result)
+void CmdSchedulerCommandBase::SetResult(DeviceControl::ReturnCode_t result)
 {
     Q_UNUSED(result);
 }
@@ -82,7 +82,7 @@ void CmdSchedulerCommandBase::SetResult(qreal result)
     Q_UNUSED(result);
 }
 
-void CmdSchedulerCommandBase::SetResult(const DeviceControl::TempCtrlState_t& result)
+void CmdSchedulerCommandBase::SetResult( DeviceControl::TempCtrlState_t result)
 {
     Q_UNUSED(result);
 }

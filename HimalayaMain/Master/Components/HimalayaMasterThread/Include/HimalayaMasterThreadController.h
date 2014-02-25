@@ -143,7 +143,6 @@ private:
     CurrentUserActionState_t         m_CurrentUserActionState;               ///< This variable holds the current idle state- e.g. BLG, ImportExport
     SWUpdate::SWUpdateManager        *mp_SWUpdateManager;                    ///< The SWUpdate Manager
     QString                          m_ExportTargetFileName;                 ///< Target file name of the export
-    DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;           		 ///< IDeviceProcessing Interface 
     Scheduler::SchedulerCommandProcessorBase *mp_SchdCmdProcessor;           ///< Scheduler Command Process for IDeviceProcessing 
     /****************************************************************************/
     HimalayaMasterThreadController(const HimalayaMasterThreadController &);                     ///< Not implemented.
@@ -257,8 +256,8 @@ private:
             try {
                 // connect the siganl slot mechanism to create the containers for the Import.
                 CONNECTSIGNALSLOT(ImportExportThreadController,
-                              RequestDayRunLogFileNames(QString FolderPath), this,
-                              RequestDayRunLogFileNames(QString FolderPath));
+                              RequestDayRunLogFileNames(QString), this,
+                              RequestDayRunLogFileNames(QString));
             }
             catch (...){
                 SendAcknowledgeNOK(Ref, AckCommandChannel, "Unable to connect to signal slot");

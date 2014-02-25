@@ -20,10 +20,14 @@
 
 #include <QTest> 
 #include <gmock/gmock.h>
-#include <HimalayaMasterThread/Include/ThreadIDs.h>
-#include <Scheduler/Include/SchedulerMainThreadController.h>
-#include <Scheduler/Include/SchedulerCommandProcessor.h>
+#include "HimalayaMasterThread/Include/ThreadIDs.h"
+#include "Scheduler/Include/SchedulerMainThreadController.h"
+#include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+
+using::testing::Return;
+using::testing::AtLeast;
 
 namespace Scheduler {
 
@@ -41,6 +45,12 @@ public:
           mp_SchdCmdProcessor(new SchedulerCommandProcessor<MockIDeviceProcessing>(m_pSchedulerMainController, mp_IDeviceProcessing))
     {
         m_pSchedulerMainController->SetSchedCommandProcessor(mp_SchdCmdProcessor);
+
+        //Set google-mock expections
+        EXPECT_CALL(*mp_IDeviceProcessing, StartConfigurationService())
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS))
+                .Times(AtLeast(1));
+
     }
     ~TestSchedulerCommand()
     {
