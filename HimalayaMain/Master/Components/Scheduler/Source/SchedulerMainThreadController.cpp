@@ -81,8 +81,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
 {
-    //delete m_SchedulerCommandProcessor;
-    //m_SchedulerCommandProcessor = NULL;
     delete m_SchedulerMachine;
     m_SchedulerMachine = NULL;
 }
@@ -2001,6 +1999,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"DBG"<<"Failed to heat tube 2, return code: " << retCode;
             goto ERROR;
         }
+
         bool ok;
         qreal pressureDrift = mp_DataManager->GetProgramSettings()->GetParameterValue("LA", "Base", "PressureDrift", ok);
         if(ok)
