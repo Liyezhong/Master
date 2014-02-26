@@ -46,7 +46,6 @@ class CReagentStationModel : public QAbstractTableModel
 public:
     CReagentStationModel(QObject *p_Parent = NULL);
     void SetRequiredContainers(DataManager::CDataReagentList *p_ReagentList,
-                               DataManager::CDataReagentGroupList *p_ReagentGroupList,
                                DataManager::CDashboardDataStationList *p_StationList, qint32 Columns);
     int rowCount(const QModelIndex &) const;
     int columnCount(const QModelIndex &) const;
@@ -94,9 +93,6 @@ public:
     void FilterLeicaReagents(bool Filter) { m_FilterLeicaReagent = Filter; }
 
     void SetVisibleRowCount(int RowCount);
-    QString GetReagentID(const QString ReagentName);
-    QString GetReagentLongName(int Row);
-    bool ContainsReagent(QString ReagentID);
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
 
 public slots:
@@ -104,20 +100,16 @@ public slots:
 private:
 
     DataManager::CDataReagentList *mp_ReagentList;      //!< Reagent list
-    DataManager::CDataReagentGroupList *mp_ReagentGroupList; //!< Reagent group list
     DataManager::CDashboardDataStationList *mp_StationList; //!< Station list
-    QMap<QString, QString> m_Identifiers;               //!< Identifiers of reagents currently displayed
     QMap<QString, QString> m_StationIdentifiers;               //!< Identifiers of stations currently displayed
     QStringList m_ReagentNames;                         //!< Long names of reagents currently displayed
-    QStringList m_ReagentID;                            //!< List of reagent ID
+    QStringList m_StationIDs;                            //!< List of station ID
     QStringList m_StationNames;                         //!< station names
     QString m_CurrentReagentName;
     qint32 m_Columns;                                   //!< Number of table columns
     Programs::CModifyProgramStepDlg *mp_Parent;         //!< Reference to ModifyProgramStep Dialog
     bool m_FilterLeicaReagent;                          //!< Filter Leica Reagent if set to true
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
-    QMap<QString, QString> m_ReagentNameMap;            //!< Sorts Reagent Longnames
-    QMap<QString, QString> m_StationNameMap;            //!< Sorts Station names
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
     Global::DateFormat  m_DateFormat;

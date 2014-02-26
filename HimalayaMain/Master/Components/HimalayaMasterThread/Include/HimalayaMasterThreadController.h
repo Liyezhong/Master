@@ -256,8 +256,8 @@ private:
             try {
                 // connect the siganl slot mechanism to create the containers for the Import.
                 CONNECTSIGNALSLOT(ImportExportThreadController,
-                              RequestDayRunLogFileNames(QString FolderPath), this,
-                              RequestDayRunLogFileNames(QString FolderPath));
+                              RequestDayRunLogFileNames(QString), this,
+                              RequestDayRunLogFileNames(QString));
             }
             catch (...){
                 SendAcknowledgeNOK(Ref, AckCommandChannel, "Unable to connect to signal slot");

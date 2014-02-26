@@ -40,7 +40,7 @@ namespace DataManager {
 CDashboardStation::CDashboardStation() :
     m_DashboardStationID("0"),
     m_DashboardStationName("UNDEFINED"),
-    m_ParaffinBath(false),
+    m_IsParaffinBath(false),
     m_ReagentID("-1"),
     m_ReagentExchangeDate(QDate::fromString("1986-01-01", "yyyy-MM-dd")),
     m_ReagentActualCassettes(0),
@@ -66,7 +66,7 @@ CDashboardStation::CDashboardStation(const QString ID)
     m_ReagentID = "-1";
     m_DashboardStationStatus = INVALID_STATUS;
     m_DashboardStationType = INVALID_STATION;
-    m_ParaffinBath = false;
+    m_IsParaffinBath = false;
     m_ReagentExchangeDate = QDate::fromString("1986-01-01", "yyyy-MM-dd");
     m_ReagentActualCassettes = 0;
     m_ReagentActualCycles = 0;
@@ -96,7 +96,7 @@ void CDashboardStation::CopyFromOther(const CDashboardStation& Station)
     m_ReagentStatus = OtherStation.GetDashboardReagentStatus();
     m_DashboardStationStatus = OtherStation.GetDashboardStationStatus();
     m_DashboardStationType = OtherStation.GetDashboardStationType();
-    m_ParaffinBath = OtherStation.GetDashboardParaffinBath();
+    m_IsParaffinBath = OtherStation.IsParaffinBath();
     m_ReagentExchangeDate = OtherStation.GetDashboardReagentExchangeDate();
     m_ReagentActualCassettes = OtherStation.GetDashboardReagentActualCassettes();
     m_ReagentActualCycles = OtherStation.GetDashboardReagentActualCycles();
@@ -179,7 +179,7 @@ bool CDashboardStation::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool
     XmlStreamWriter.writeStartElement("Station");
     XmlStreamWriter.writeAttribute("ID", GetDashboardStationID());
     XmlStreamWriter.writeAttribute("Name", GetDashboardStationName());
-    XmlStreamWriter.writeAttribute("ParaffinBath", (GetDashboardParaffinBath() == true ? "true" : "false"));
+    XmlStreamWriter.writeAttribute("ParaffinBath", (IsParaffinBath() == true ? "true" : "false"));
 
     if (CompleteData) {
 
@@ -232,7 +232,7 @@ bool CDashboardStation::DeserializeContent(QXmlStreamReader& XmlStreamReader, bo
         qDebug() << "### attribute <ParaffinBath> is missing => abort reading";
         return false;
     }
-    SetDashboardParaffinBath(
+    IsParaffinBath(
                 XmlStreamReader.attributes().value("ParaffinBath").toString().toLower() == "true" ?
                     true : false);
 

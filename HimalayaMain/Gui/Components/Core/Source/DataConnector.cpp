@@ -371,8 +371,8 @@ void CDataConnector::SendStationChangeReagent(const QString& StationId, const QS
     mp_WaitDialog->SetText(m_strSavingSettings);
     mp_WaitDialog->SetTimeout(10000);
     mp_WaitDialog->show();
-
 }
+
 void CDataConnector::SendStationResetData(const QString& StationId)
 {
     MsgClasses::CmdStationResetData Command(COMMAND_TIME_OUT, StationId);
@@ -770,17 +770,8 @@ void CDataConnector::UpdateStationChangeReagentHandler(Global::tRefType Ref,
     if (pDashboardStation)
     {
         pDashboardStation->SetDashboardReagentID(Command.ReagentID());
-        switch (CReagentStatusModel::RMSPROCESSINGOPTION) {
-            default:
-                 QString("");
-                break;
-            case Global::RMS_CASSETTES:
-                pDashboardStation->SetDashboardReagentActualCassettes(0);
-                break;
-            case Global::RMS_CYCLES:
-                pDashboardStation->SetDashboardReagentActualCycles(0);
-                break;
-         }
+        pDashboardStation->SetDashboardReagentActualCassettes(0);
+        pDashboardStation->SetDashboardReagentActualCycles(0);
         pDashboardStation->SetDashboardReagentStatus("Empty");
     }
     else

@@ -45,8 +45,6 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
                        QGraphicsScene(p_Parent),
                        mp_DataConnector(p_DataConnector),                       
                        mp_MainWindow(p_MainWindow),
-                       m_CloneDashboardStationList(true),
-                       m_CloneProgramList(true),
                        m_bProcessRunning(false),
                        m_pPipeAnimationTimer(NULL),
                        m_pBlinkingIntervalTimer(NULL),
@@ -58,8 +56,6 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
 {
     QRectF Rect;
 
-    mp_DashboardStationListClone = new DataManager::CDashboardDataStationList();
-    mp_ProgramListClone = new DataManager::CDataProgramList();
     m_pPipeAnimationTimer = new QTimer(this);
     CONNECTSIGNALSLOT(m_pPipeAnimationTimer, timeout(), this, PipeSuckDrainAnimation());
 
@@ -71,7 +67,7 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     m_pStartBlinkingTimer->setInterval(6000);
     CONNECTSIGNALSLOT(m_pStartBlinkingTimer, timeout(), this, OnAppIdle());
     m_pStartBlinkingTimer->start();
-
+    m_DashboardStationList.clear();
 
     InitDashboardStationItemsPositions();
     InitDashboardStationGroups();
@@ -84,8 +80,8 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     // update the stations whenenver the stations.xml is sent
     CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationsUpdated(), this, UpdateDashboardStations());
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, OnUpdateUserSettings());
+    CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationChangeReagent(const QString&), this, UpdateDashboardStation(const QString&));
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
-
 }
 
 /****************************************************************************/
@@ -96,11 +92,7 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
 CDashboardScene::~CDashboardScene()
 {
     try {
-        delete mp_DashboardStationListClone;
-        delete mp_ProgramListClone;
-
         delete mp_DashboardStationRetort;
-
         for (int i = 0; i < mp_DashboardStationItems.count(); i++)
         {
             delete mp_DashboardStationItems.at(i);
@@ -573,8 +565,6 @@ void CDashboardScene::EnableBlink(bool bEnable)
 
 void CDashboardScene::OnInteractStart()
 {
-    qDebug()<<"CDashboardScene::OnInteractStart";
-
     if (!m_bProcessRunning)
     {
         ExpiredReagentStationBlinking(false);
@@ -788,14 +778,10 @@ void CDashboardScene::AddDashboardStationItemsToScene()
 
 void CDashboardScene::UpdateDashboardStations()
 {
-
-    if (m_CloneDashboardStationList) {
-        *mp_DashboardStationListClone = *(mp_DataConnector->DashboardStationList);
-    }
-
-    for (int i = 0; i < mp_DashboardStationListClone->GetNumberOfDashboardStations(); i++)
+    int count = mp_DataConnector->DashboardStationList->GetNumberOfDashboardStations();
+    for (int i = 0; i < count; i++)
     {
-        DataManager::CDashboardStation *p_DashboardStation = const_cast<DataManager::CDashboardStation*>(mp_DashboardStationListClone->GetDashboardStation(i));
+        DataManager::CDashboardStation *p_DashboardStation = const_cast<DataManager::CDashboardStation*>(mp_DataConnector->DashboardStationList->GetDashboardStation(i));
         m_DashboardStationList.insert(m_DashboardStationIDs[i], p_DashboardStation);
 
         Core::CDashboardStationItem *pListItem =
@@ -805,6 +791,19 @@ void CDashboardScene::UpdateDashboardStations()
         pListItem->StationSelected(true);
     }
     this->update();
+}
+
+void CDashboardScene::UpdateDashboardStation(const QString& strStationId)
+{
+   for (int i = 0; i < mp_DashboardStationItems.size(); i++)
+   {
+        Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
+        if (item->GetStationItemID()== strStationId)
+        {
+            item->UpdateDashboardStationItemReagent();
+            break;
+        }
+   }
 }
 
 void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId, QList<QString>& selectedStationList)
@@ -822,14 +821,7 @@ void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId,
         this->RepresentUsedPipe(m_SelectedStationList, false);
     }
 
-
-
-    DataManager::CProgram const *p_Program = NULL;
-
-    if (m_CloneProgramList) {
-        *mp_ProgramListClone = *(mp_DataConnector->ProgramList);
-    }
-    p_Program = mp_ProgramListClone->GetProgram(programId);
+    DataManager::CProgram const *p_Program = mp_DataConnector->ProgramList->GetProgram(programId);
 
     for(int j = 0 ; j < m_DashboardStationList.count(); j++)
     {

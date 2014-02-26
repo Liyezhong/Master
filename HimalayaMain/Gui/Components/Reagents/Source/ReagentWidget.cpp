@@ -123,8 +123,8 @@ CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSLOT(mp_Ui->pageReagents, RMSChanged(const Global::RMSOptions_t), mp_Ui->pageReagentStatus, RMSChanged(const Global::RMSOptions_t));
     CONNECTSIGNALSLOT(mp_Ui->pageReagents, RMSCleaningChanged(const Global::RMSOptions_t), mp_Ui->pageReagentStatus, RMSCleaningChanged(const Global::RMSOptions_t));
-    CONNECTSIGNALSLOT(mp_DataConnector,DashboardStationChangeReagent(QString),mp_Ui->pageReagentStatus,StationReagentUpdated(QString));
-    CONNECTSIGNALSLOT(mp_DataConnector,DashboardStationChangeReagent(QString),mp_Ui->pageReagentStation,StationReagentUpdated(QString));
+    CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationChangeReagent(const QString&), mp_Ui->pageReagentStatus, StationReagentUpdated(const QString&));
+    CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationChangeReagent(const QString&), mp_Ui->pageReagentStation, StationReagentUpdated(const QString&));
 
 }
 

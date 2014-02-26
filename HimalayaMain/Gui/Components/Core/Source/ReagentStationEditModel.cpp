@@ -47,7 +47,6 @@ CReagentStationEditModel::CReagentStationEditModel(QObject *p_Parent) :
     mp_Parent(NULL),
     m_FilterLeicaReagent(false),
     m_VisibleRowCount(7),
-    m_ParaffinReagent(false),
     m_ModifiedProgramStepDlg(false)
 {
 
@@ -87,7 +86,6 @@ void CReagentStationEditModel::UpdateReagentList()
     beginResetModel();
     m_Identifiers.clear();
     m_ReagentNames.clear();
-    m_ReagentNameMap.clear();
     m_ReagentID.clear();
 
     if (mp_ReagentList) {
@@ -100,16 +98,9 @@ void CReagentStationEditModel::UpdateReagentList()
                     continue;//Cleaning reagents could not be displayed in new step dialog.
 
                 if ((p_Reagent->GetReagentType() != LEICA_REAGENT)|| (!m_FilterLeicaReagent)) {
-                    if(m_ParaffinReagent == true || m_ModifiedProgramStepDlg){
-                        m_ReagentNames << p_Reagent->GetReagentName();
-                        m_ReagentID << p_Reagent->GetReagentID();
-                        m_Identifiers[p_Reagent->GetReagentID()] = p_Reagent->GetReagentName();
-                    }
-                    else if(m_ParaffinReagent == false && mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->GetReagentGroupName().toLower() != QString("Paraffin").toLower()) {
-                        m_ReagentNames << p_Reagent->GetReagentName();
-                        m_ReagentID << p_Reagent->GetReagentID();
-                        m_Identifiers[p_Reagent->GetReagentID()] = p_Reagent->GetReagentName();
-                    }
+                    m_ReagentNames << p_Reagent->GetReagentName();
+                    m_ReagentID << p_Reagent->GetReagentID();
+                    m_Identifiers[p_Reagent->GetReagentID()] = p_Reagent->GetReagentName();
                     if(p_Reagent->GetVisibleState()== true){
                         m_VisibleReagentIds << p_Reagent->GetReagentName();
                     }
@@ -274,18 +265,6 @@ QVariant CReagentStationEditModel::headerData(int Section, Qt::Orientation Orien
 }
 
 /****************************************************************************/
-/*!
- *  \brief This Function Gets Reagent ID of given Reagent Long name.
- *  \iparam ReagentLongName
- */
-/****************************************************************************/
-QString CReagentStationEditModel::GetReagentID(const QString ReagentName)
-{
-    return m_Identifiers.value(ReagentName);
-
-}
-
-/****************************************************************************/
   /*!
    * \brief Returns the Reagent long Name for the particular row.
    * \iparam Row
@@ -306,27 +285,6 @@ QString CReagentStationEditModel :: GetReagentLongName(QString ReagentId)
 {
     return m_Identifiers.value(ReagentId);
 }
-/****************************************************************************/
-/*!
-  * \brief Returns true if reagent is present in the reagent list else false
-  *  is returned.
-  * \iparam ReagentID
-  * \return  ReagentID = Reagent ID
-  */
-/****************************************************************************/
-bool CReagentStationEditModel::ContainsReagent(QString ReagentID)
-{
-    if (m_VisibleReagentIds.isEmpty()) {
-        return false;
-    }
-    if (m_VisibleReagentIds.contains(ReagentID)) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
 
 /****************************************************************************/
 /*!

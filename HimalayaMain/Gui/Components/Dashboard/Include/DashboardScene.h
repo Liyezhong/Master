@@ -90,10 +90,6 @@ private:
     QList<StationGroupType_t> m_DashboardStationGroup;                               //!< StationGroup list
     QList<QString> m_DashboardStationLabels;
 
-    DataManager::CDashboardDataStationList *mp_DashboardStationListClone;            //!< Cloned DataManager StationList
-    bool m_CloneDashboardStationList;                                                //!< True if DataManager StationList has to be cloned.
-    DataManager::CDataProgramList *mp_ProgramListClone;                              //!< Cloned DataManager ProgramList
-    bool m_CloneProgramList;                                                         //!< True if DataManager StationList has to be cloned.
     QString m_CurrentReagentColorValue;
     QStringList m_PipeListP1;
     QStringList m_PipeListP2;
@@ -149,6 +145,7 @@ private:
     void EnableBlink(bool bEnable);
 private slots:
     void UpdateDashboardStations();
+    void UpdateDashboardStation(const QString& strStationId);
     void UpdateDashboardSceneReagentsForProgram(QString&, QList<QString>&);
     void PipeSuckDrainAnimation();
     void BlinkingStation();
@@ -156,6 +153,7 @@ private slots:
     void OnInteractStart();
     void OnAppIdle();
     void OnProcessStateChanged();
+
 
 };
 

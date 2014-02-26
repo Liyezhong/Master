@@ -110,7 +110,6 @@ public:
 
     void SetVisibleRowCount(int RowCount);
     QString GetReagentID(const QString ReagentName);
-    QString GetReagentLongName(int Row);
     bool ContainsReagent(QString ReagentID);
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
     static Global::RMSOptions_t RMSPROCESSINGOPTION;
@@ -131,8 +130,6 @@ private:
     Programs::CModifyProgramStepDlg *mp_Parent;         //!< Reference to ModifyProgramStep Dialog
     bool m_FilterLeicaReagent;                          //!< Filter Leica Reagent if set to true
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
-    QMap<QString, QString> m_ReagentNameMap;            //!< Sorts Reagent Longnames
-    QMap<QString, QString> m_StationNameMap;            //!< Sorts Station names
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     DataManager::CUserSettings *mp_UserSettings;          //!< UserSettings object
 
