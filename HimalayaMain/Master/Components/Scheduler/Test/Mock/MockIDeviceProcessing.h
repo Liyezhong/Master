@@ -14,9 +14,9 @@
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Microsystems Ltd. Shanghai.
  *
- *  (C) Copyright 2014 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2014 by Leica Microystems  Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -27,14 +27,54 @@
 #define MOCK_IDEVICEPROCESSING_H
 
 #include <QtGlobal>
+#include<QDateTime>
 #include "gmock/gmock.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
-
-namespace DeviceControl 
+namespace IDeviceProcessing
+{
+static int GetSerialNumber(QString& serNo)
+{
+    serNo = "1.1";
+	return 1;
+}
+}
+namespace DeviceControl
 {
 
-class MockIDeviceProcessing : public QObject
+class FackIDeviceProcessing : public QObject
 {
+    Q_OBJECT
+signals:
+    //! Forward the 'intitialisation finished' notification
+    void ReportInitializationFinished(DevInstanceID_t, ReturnCode_t);
+    //! Forward the 'configuration finished' notification
+    void ReportConfigurationFinished(DevInstanceID_t, ReturnCode_t);
+    //! Forward the 'normal operation mode started' notification
+    void ReportStartNormalOperationMode(DevInstanceID_t, ReturnCode_t);
+    //! Forward error information
+    void ReportError(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID,
+                     quint16 usErrorData, QDateTime timeStamp);
+    //! Forward error information
+    void ReportErrorWithInfo(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID,
+                             quint16 usErrorData, QDateTime timeStamp, QString strErrorInfo);
+    //! Forward the 'Destroy finished' to IDeviceProcessing
+    void ReportDestroyFinished();
+
+};
+
+class MockIDeviceProcessing : public FackIDeviceProcessing
+{
+public:
+    void InitializationFinished()
+	{
+        emit ReportInitializationFinished(DEVICE_INSTANCE_ID_DEVPROC, DCL_ERR_FCT_CALL_SUCCESS);
+	}
+
+    void ConfigurationFinished()
+	{
+        emit ReportConfigurationFinished(DEVICE_INSTANCE_ID_DEVPROC, DCL_ERR_FCT_CALL_SUCCESS);
+	}
+
 public:
    //! Start device control layer configuration
     MOCK_METHOD0(StartConfigurationService, ReturnCode_t());
@@ -115,7 +155,7 @@ public:
     MOCK_METHOD1(OvenSetTempCtrlON, ReturnCode_t(OVENTempCtrlType_t Type));
 
     MOCK_METHOD5(OvenSetTemperaturePid, ReturnCode_t(OVENTempCtrlType_t Type, quint16 MaxTemperature, quint16 ControllerGain, quint16 ResetTime, quint16 DerivativeTime));
-
+    MOCK_METHOD3(OvenStartTemperatureControl, ReturnCode_t(OVENTempCtrlType_t Type, qreal NominalTemperature, quint8 SlopeTempChange));
     MOCK_METHOD2(OvenGetRecentTemperature, qreal(OVENTempCtrlType_t Type, quint8 Index));
 
     MOCK_METHOD0(OvenGetRecentLidStatus, quint16());
@@ -146,15 +186,18 @@ public:
 
     //Periphery device func
     MOCK_METHOD0(PerTurnOffMainRelay, ReturnCode_t());
+    MOCK_METHOD0(PerTurnOnMainRelay, ReturnCode_t());
 
+    MOCK_METHOD2(IDBottleCheck, ReturnCode_t(QString ReagentGrpID, RVPosition_t TubePos));
 	//signals related
+    /*
 	MOCK_METHOD2(ReportInitializationFinished, void(DevInstanceID_t, ReturnCode_t));
 	MOCK_METHOD2(ReportConfigurationFinished, void(DevInstanceID_t, ReturnCode_t));
 	MOCK_METHOD2(ReportStartNormalOperationMode, void(DevInstanceID_t, ReturnCode_t));
 	MOCK_METHOD5(ReportError, void(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp));
     MOCK_METHOD6(ReportErrorWithInfo, void(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData, QDateTime timeStamp, QString strErrorInfo));
 	MOCK_METHOD0(ReportDestroyFinished, void());
-
+    */
 };
 
 } //namespace

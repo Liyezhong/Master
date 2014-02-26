@@ -9,9 +9,9 @@
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Microsystems Shanghai.
  *
- *  (C) Copyright 2013 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2014 by Leica Biosystems Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -25,9 +25,13 @@
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "HimalayaMasterThread/Include/HimalayaMasterThreadController.h"
+#include "HimalayaDataManager/Include/DataManager.h"
 
 using::testing::Return;
 using::testing::AtLeast;
+using::testing::_;
+using::testing::Lt;
 
 namespace Scheduler {
 
@@ -40,32 +44,80 @@ class TestSchedulerCommand : public QObject {
     Q_OBJECT
 public:
     TestSchedulerCommand()
-        : m_pSchedulerMainController(new SchedulerMainThreadController(THREAD_ID_SCHEDULER)),
-          mp_IDeviceProcessing(new DeviceControl::MockIDeviceProcessing()),
-          mp_SchdCmdProcessor(new SchedulerCommandProcessor<MockIDeviceProcessing>(m_pSchedulerMainController, mp_IDeviceProcessing))
+         :mp_IDeviceProcessing(new MockIDeviceProcessing()),
+          m_pSchedulerMainController(new SchedulerMainThreadController(THREAD_ID_SCHEDULER)),
+          mp_SchdCmdProcessor(new SchedulerCommandProcessor<MockIDeviceProcessing>(m_pSchedulerMainController))
     {
+        Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
+        mp_HMThreadController = new Himalaya::HimalayaMasterThreadController();
+        mp_DataManager = new DataManager::CDataManager(mp_HMThreadController);
         m_pSchedulerMainController->SetSchedCommandProcessor(mp_SchdCmdProcessor);
+        m_pSchedulerMainController->DataManager(mp_DataManager);
+        dynamic_cast<SchedulerCommandProcessor<MockIDeviceProcessing>*>(mp_SchdCmdProcessor)->SetIDeviceProcessing(mp_IDeviceProcessing);
 
         //Set google-mock expections
         EXPECT_CALL(*mp_IDeviceProcessing, StartConfigurationService())
-                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS))
-                .Times(AtLeast(1));
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
+        EXPECT_CALL(*mp_IDeviceProcessing, RVReqMoveToInitialPosition())
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_DEV_RV_MOVE_TO_INIT_POS_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, PerTurnOnMainRelay())
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, RTStartTemperatureControlWithPID(_, _, _, _, _, _, _))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, RVStartTemperatureControlWithPID(_, _, _, _, _, _))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, OvenStartTemperatureControlWithPID(_, _, _, _, _, _, _))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALStartTemperatureControlWithPID(_, _, _, _, _, _, _))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALGetRecentPressure())
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(100));
+
+        EXPECT_CALL(*mp_IDeviceProcessing, ALSetPressureDrift(_))
+                .Times(AtLeast(1))
+                .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
     }
+
     ~TestSchedulerCommand()
     {
-        delete m_pSchedulerMainController;
-        m_pSchedulerMainController = NULL;
+        delete mp_HMThreadController;
+        mp_HMThreadController = NULL;
+
+        delete mp_DataManager;
+        mp_DataManager = NULL;
+
         delete mp_IDeviceProcessing;
         mp_IDeviceProcessing = NULL;
+
+        delete m_pSchedulerMainController;
+        m_pSchedulerMainController = NULL;
+
         delete mp_SchdCmdProcessor;
         mp_SchdCmdProcessor = NULL;
+
     }
 
 private:
-    SchedulerMainThreadController*          m_pSchedulerMainController;
-    DeviceControl::MockIDeviceProcessing*   mp_IDeviceProcessing;
-    SchedulerCommandProcessorBase*          mp_SchdCmdProcessor;
+    Himalaya::HimalayaMasterThreadController*   mp_HMThreadController;
+    DataManager::CDataManager*                  mp_DataManager;
+    MockIDeviceProcessing*                      mp_IDeviceProcessing;
+    SchedulerMainThreadController*              m_pSchedulerMainController;
+    SchedulerCommandProcessorBase*              mp_SchdCmdProcessor;
 
 
 	
@@ -103,7 +155,11 @@ private slots:
 
 void TestSchedulerCommand::UTAll()
 {
-
+    sleep(2);
+    mp_IDeviceProcessing->InitializationFinished();
+    sleep(2);
+    mp_IDeviceProcessing->ConfigurationFinished();
+    sleep(30);
 }
 
 /******************************************************************ls**********/
@@ -116,21 +172,27 @@ void TestSchedulerCommand::initTestCase()
 void TestSchedulerCommand::init()
 {
 	m_pSchedulerMainController->CreateAndInitializeObjects();
+
+    // Move Scheduler into one new thread and start up
+	QThread* schedulerThread = new QThread();
+	m_pSchedulerMainController->moveToThread(schedulerThread);	
+    CONNECTSIGNALSLOT(schedulerThread, started(), m_pSchedulerMainController, Go());
+    //CONNECTSIGNALSLOT(m_pSchedulerMainController, destroyed(), schedulerThread, quit());
+    //CONNECTSIGNALSLOT(m_pSchedulerMainController, finished(), schedulerThread, deleteLater());
+
+    schedulerThread->start();
 }
 
 /****************************************************************************/
 void TestSchedulerCommand::cleanup()
 {
-    delete m_pSchedulerMainController;
-    m_pSchedulerMainController = NULL;
-	delete mp_IDeviceProcessing;
-	mp_IDeviceProcessing = NULL;
 }
 
 /****************************************************************************/
 void TestSchedulerCommand::cleanupTestCase()
 {
 
+    //exit(0);
 }
 
 } // end namespace EventHandler
@@ -146,3 +208,4 @@ int main(int argc, char*argv[])
 }
 
 #include "TestSchedulerCommand.moc"
+

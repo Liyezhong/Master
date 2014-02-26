@@ -143,8 +143,10 @@ SchedulerCommandProcessor<DP>::SchedulerCommandProcessor(SchedulerMainThreadCont
 template <class DP>
 SchedulerCommandProcessor<DP>::~SchedulerCommandProcessor()
 {
+#ifndef GOOGLE_MOCK
     delete mp_IDeviceProcessing;
     mp_IDeviceProcessing = NULL;
+#endif
 }
 
 template <class DP>
@@ -175,8 +177,10 @@ void SchedulerCommandProcessor<DP>::run4Slot()
     qRegisterMetaType<ReturnCode_t>("ReturnCode_t");
     qRegisterMetaType<DevInstanceID_t>("DevInstanceID_t");
 
+#ifndef GOOGLE_MOCK
     //Initialize IDeviceProcessing
     mp_IDeviceProcessing = new DP();
+#endif
 
     //connect(mp_IDeviceProcessing, SIGNAL(ReportInitializationFinished(DevInstanceID_t, ReturnCode_t)), this, SLOT(DevProcInitialisationAckn(DevInstanceID_t, ReturnCode_t)), Qt::QueuedConnection);
     CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportInitializationFinished(DevInstanceID_t, ReturnCode_t),
@@ -263,13 +267,13 @@ void SchedulerCommandProcessor<DP>::DevProcInitialisationAckn4Slot(DevInstanceID
 
     qDebug() << "  CApplicationControl::DevProcInitialisationAckn" << " " << instanceID << " " << configResult;
 
+
     QString SerialNo;
     if (IDeviceProcessing::GetSerialNumber(SerialNo)) {
         qDebug() << "  Serial number is " << SerialNo;
     } else {
         qDebug() << "  Error: getting serial number failed.";
     }
-
     retCode = mp_IDeviceProcessing->StartConfigurationService();
     if(retCode != DCL_ERR_FCT_CALL_SUCCESS)
     {
