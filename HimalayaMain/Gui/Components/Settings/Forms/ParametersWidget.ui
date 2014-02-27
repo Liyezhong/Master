@@ -137,8 +137,8 @@
     </property>
     <property name="icon">
      <iconset>
-      <normalon>:/HimalayaImages/Icons/Configuration/Configuration_Oven.png</normalon>
-      <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Oven_act.png</selectedon>
+      <normalon>:/HimalayaImages/Icons/Configuration/Configuration_Installation.png</normalon>
+      <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Installation_act.png</selectedon>
      </iconset>
     </property>
    </item>
@@ -148,8 +148,8 @@
     </property>
     <property name="icon">
      <iconset>
-      <normalon>:/HimalayaImages/Icons/Configuration/Configuration_Agitation.png</normalon>
-      <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Agitation_act.png</selectedon>
+      <normalon>:/HimalayaImages/Icons/Configuration/Configuration_SystemSetup.png</normalon>
+      <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_SystemSetup_act.png</selectedon>
      </iconset>
     </property>
    </item>
