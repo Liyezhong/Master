@@ -2,11 +2,11 @@
     error("Scheduler.pri not found")
 }
 
-TARGET = utTestSchedulerCommand
+TARGET = utTestSchedIDPExchange
 
 SOURCES += ../Source/*.cpp \
 			../Commands/Source/*.cpp \
-			TestSchedulerCommand.cpp
+                        TestSchedIDPExchange.cpp
 
 HEADERS += ../Include/*.h \
             ../../../../../../Platform/Master/Components/DeviceControl/Include/Interface/*.h \

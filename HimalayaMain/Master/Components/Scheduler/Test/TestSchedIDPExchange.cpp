@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file TestSchedulerCommand.cpp
+/*! \file TestSchedIDPExchange.cpp
  *
- *  \brief Implementation file for class TestSchedulerCommand.
+ *  \brief Implementation file for class TestSchedIDPExchange.
  *
  *  $Version:   $ 0.1
  *  $Date:      $ 2014-01-27
@@ -37,13 +37,13 @@ namespace Scheduler {
 
 /****************************************************************************/
 /**
- * \brief Test class for TestSchedulerCommand class.
+ * \brief Test class for TestSchedIDPExchange class.
  */
 /****************************************************************************/
-class TestSchedulerCommand : public QObject {
+class TestSchedIDPExchange : public QObject {
     Q_OBJECT
 public:
-    TestSchedulerCommand()
+    TestSchedIDPExchange()
          :mp_IDeviceProcessing(new MockIDeviceProcessing()),
           m_pSchedulerMainController(new SchedulerMainThreadController(THREAD_ID_SCHEDULER)),
           mp_SchdCmdProcessor(new SchedulerCommandProcessor<MockIDeviceProcessing>(m_pSchedulerMainController))
@@ -93,7 +93,7 @@ public:
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
     }
 
-    ~TestSchedulerCommand()
+    ~TestSchedIDPExchange()
     {
         delete mp_HMThreadController;
         mp_HMThreadController = NULL;
@@ -153,7 +153,7 @@ private slots:
 }; // end class TestEventCSVInfo
 
 
-void TestSchedulerCommand::UTAll()
+void TestSchedIDPExchange::UTAll()
 {
     sleep(2);
     mp_IDeviceProcessing->InitializationFinished();
@@ -163,13 +163,13 @@ void TestSchedulerCommand::UTAll()
 }
 
 /******************************************************************ls**********/
-void TestSchedulerCommand::initTestCase()
+void TestSchedIDPExchange::initTestCase()
 {
 
 }
 
 /****************************************************************************/
-void TestSchedulerCommand::init()
+void TestSchedIDPExchange::init()
 {
 	m_pSchedulerMainController->CreateAndInitializeObjects();
 
@@ -184,12 +184,12 @@ void TestSchedulerCommand::init()
 }
 
 /****************************************************************************/
-void TestSchedulerCommand::cleanup()
+void TestSchedIDPExchange::cleanup()
 {
 }
 
 /****************************************************************************/
-void TestSchedulerCommand::cleanupTestCase()
+void TestSchedIDPExchange::cleanupTestCase()
 {
 
     //exit(0);
@@ -203,9 +203,9 @@ int main(int argc, char*argv[])
     ::testing::GTEST_FLAG(throw_on_failure) = true;
     ::testing::InitGoogleMock(&argc, argv);
     QCoreApplication app(argc, argv);
-    Scheduler::TestSchedulerCommand tc;
+    Scheduler::TestSchedIDPExchange tc;
     return QTest::qExec(&tc, argc, argv);
 }
 
-#include "TestSchedulerCommand.moc"
+#include "TestSchedIDPExchange.moc"
 
