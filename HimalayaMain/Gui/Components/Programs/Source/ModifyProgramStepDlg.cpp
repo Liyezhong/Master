@@ -85,8 +85,8 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
     mp_UserSettings = NULL;
     m_ReagentEditModel.SetVisibleRowCount(8);
     m_ReagentEditModel.SetRequiredContainers(mp_DataConnector->ReagentList,mp_DataConnector->ReagentGroupList,mp_DataConnector->DashboardStationList, 2);
-    m_pAmbientTempraturePixmap = new QPixmap(":/HimalayaImages/Digits/Snow.png");
-    m_pAmbientTempratureBigPixmap = new QPixmap(":/HimalayaImages/Digits/SnowBig.png");
+    m_pAmbientTempraturePixmap = new QPixmap(":/HimalayaImages/Digits/AmbientTemperature.png");
+    m_pAmbientTempratureBigPixmap = new QPixmap(":/HimalayaImages/Digits/AmbientTemperatureBig.png");
     InitDurationWidget();
 
     mp_ScrollWheelTemp->setEnabled(false);
