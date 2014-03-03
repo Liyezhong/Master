@@ -2066,12 +2066,18 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 {
     Q_UNUSED(StepID)
 
+    QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
+    quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
        // if(StepID == "IDLE")
 	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
-	if(strctHWMonitor.PressureAL != UNDEFINED_VALUE)
+    if(strctHWMonitor.PressureAL == UNDEFINED_VALUE)
 	{
         m_PressureAL = strctHWMonitor.PressureAL;
 	}
+    if(m_PressureAL < -45 || m_PressureAL > 45){
+        quint32 EVENT_LA_PressureSensor_OutofRange = 34; //only for test
+        Global::EventObject::Instance().RaiseEvent(0,EVENT_LA_PressureSensor_OutofRange,Scenario,true);
+    }
 	if(strctHWMonitor.TempALLevelSensor != UNDEFINED_VALUE)
 	{
         m_TempALLevelSensor = strctHWMonitor.TempALLevelSensor;

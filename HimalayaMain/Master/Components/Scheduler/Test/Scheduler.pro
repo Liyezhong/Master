@@ -4,6 +4,6 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS =  TestSchedulerCommand.pro
+SUBDIRS =  TestSchedIDPExchange.pro
 
 
