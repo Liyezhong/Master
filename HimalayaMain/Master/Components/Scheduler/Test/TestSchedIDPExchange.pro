@@ -1,5 +1,5 @@
-!include("Scheduler.pri") {
-    error("Scheduler.pri not found")
+!include("TestSchedIDPExchange.pri") {
+    error("TestSchedIDPExchange.pri not found")
 }
 
 TARGET = utTestSchedIDPExchange
@@ -17,8 +17,3 @@ HEADERS += ../Include/*.h \
 UseDepLibs(Global DataLogging Threads NetCommands DeviceControl DataManager RemoteCareManager \
            RemoteCareController HeartBeatManager EventHandler GPIOManager ExternalProcessController \
            NetworkComponents StateMachines PasswordManager SWUpdateManager ExportController ImportExport)
-
-HEADERS +=
-QT += xml
-QT += xmlpatterns
-QT += network
