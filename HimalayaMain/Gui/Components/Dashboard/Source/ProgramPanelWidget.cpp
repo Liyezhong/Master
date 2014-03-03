@@ -284,7 +284,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
 
 void CProgramPanelWidget::ChangeStartButtonToStopState()
 {
-    ui->startButton->setText(tr("Stop"));
+    ui->startButton->setText(tr("Abort"));
     m_ProgramNextAction = DataManager::PROGRAM_ABORT;
 }
 
