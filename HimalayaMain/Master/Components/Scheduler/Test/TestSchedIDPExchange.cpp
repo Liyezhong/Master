@@ -95,8 +95,10 @@ public:
 
     ~TestSchedIDPExchange()
     {
+	#if 0
         delete mp_HMThreadController;
         mp_HMThreadController = NULL;
+	#endif
 
         delete mp_DataManager;
         mp_DataManager = NULL;
