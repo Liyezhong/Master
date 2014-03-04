@@ -15,7 +15,6 @@ SUBDIRS  = \
            ../../../../Platform/Master/Components/DataManager/Build/DataManager.pro \
            ../../../../Platform/Master/Components/DeviceControl/Build/DeviceControl.pro \
            ../../../../Platform/Master/Components/EventHandler/Build/EventHandler.pro \
-           ../../../../Platform/Master/Components/EventHandler/Build/DeviceControlRetcodeGenerator.pro \
            ../../../../Platform/Master/Components/ExternalProcessController/Build/ExternalProcessController.pro \
            ../../../../Platform/Master/Components/Global/Build/Global.pro \
            ../../../../Platform/Master/Components/ImportExport/Build/ImportExport.pro \
