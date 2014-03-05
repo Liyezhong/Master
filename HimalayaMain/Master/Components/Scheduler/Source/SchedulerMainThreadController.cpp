@@ -380,7 +380,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
-#if 1
+#if 0
                 static int b= 0;
                 if(b ==0)
                 {

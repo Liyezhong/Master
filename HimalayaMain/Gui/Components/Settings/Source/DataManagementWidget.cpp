@@ -124,7 +124,8 @@ void CDataManagementWidget::ResetButtons()
 {
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    if ((m_CurrentUserRole >= MainMenu::CMainWindow::Admin && (!m_ProcessRunning))) {
+    if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service)
+         && (!m_ProcessRunning)) {
         //Edit Mode
         mp_Ui->saveusbButton->setEnabled(true);
     }
