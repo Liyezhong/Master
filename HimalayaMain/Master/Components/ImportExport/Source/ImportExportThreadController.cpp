@@ -297,18 +297,18 @@ void ImportExportThreadController::OnGoReceived() {
                 }
 
             }
-            if (!IsSelectionRequested) {
-                // if the import is not successful then raise event
-                if (!IsImported) {
-                    // if the event is not raised then display an error due to any reason
-                    if (!m_EventRaised) {
-                        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_FAILED, true);
-                        m_EventCode = EVENT_IMPORT_FAILED;
-                    }
-                }
-                // emit the thread finished flag
-                emit ThreadFinished(IsImported, QStringList() << TypeOfImport, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
-            }
+//            if (!IsSelectionRequested) {
+//                // if the import is not successful then raise event
+//                if (!IsImported) {
+//                    // if the event is not raised then display an error due to any reason
+//                    if (!m_EventRaised) {
+//                        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_FAILED, true);
+//                        m_EventCode = EVENT_IMPORT_FAILED;
+//                    }
+//                }
+//                // emit the thread finished flag
+//                emit ThreadFinished(IsImported, QStringList() << TypeOfImport, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
+//            }
         }
     }
     else {
