@@ -1,0 +1,380 @@
+/****************************************************************************/
+/*! \file ServiceDeviceController.cpp
+ *
+ *  \brief ServiceDeviceController Implementation
+ *
+ *   $Version: $ 0.1
+ *   $Date:    $ 2013-02-14
+ *   $Author:  $ Srivathsa HH
+ *
+ *  \b Company:
+ *
+ *       Leica Biosystems Nussloch GmbH.
+ *
+ *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  This is unpublished proprietary source code of Leica. The copyright notice
+ *  does not evidence any actual or intended publication.
+ *
+ */
+/****************************************************************************/
+//QT Headers
+#include <QMetaType>
+#include <QDebug>
+//Std lib headers
+
+//Project Headers
+#include <ServiceDeviceController/Include/ServiceDeviceController.h>
+#include <Core/Include/Startup.h>
+#include <Global/Include/Utils.h>
+
+#include "Application/Include/Application.h"
+
+#include "DeviceControl/Include/Interface/IDeviceProcessing.h"
+namespace DeviceControl {
+
+/****************************************************************************/
+/*!
+ *  \brief    Constructor for the ServiceDeviceController
+ *
+ *  \return
+ *
+ ****************************************************************************/
+ServiceDeviceController::ServiceDeviceController(Global::gSourceType TheHeartBeatSource)
+    : DeviceCommandProcessor::DeviceCommandProcessorThreadController(TheHeartBeatSource, "HimalayaDeviceCommand")
+     , m_ProcessSettings(false)
+     , m_Adjustment(false)
+     , m_DeviceDataContainers(false){
+    qRegisterMetaType<DeviceControl::DevInstanceID_t>("DeviceControl::DevInstanceID_t");
+    qRegisterMetaType<Service::DeviceCalibrationCmdType>("Service::DeviceCalibrationCmdType");
+}
+
+
+/****************************************************************************/
+/*!
+ *  \brief    Destructor for the ServiceDeviceController
+ *
+ *  \return
+ *
+ ****************************************************************************/
+ServiceDeviceController::~ServiceDeviceController(){
+}
+
+/****************************************************************************/
+/*!
+ *  \brief    API function to call before EventHandler can be used
+ *
+ *      This function does everything to initialize the EventHandler. It
+ *      shall be called before EventHandler can be used.
+ *
+ ****************************************************************************/
+void ServiceDeviceController::CreateAndInitializeObjects(){
+    // now register commands
+    DeviceCommandProcessorThreadController::CreateAndInitializeObjects();
+    RegisterCommands();
+    mp_DeviceProcessor = new DeviceProcessor(*this, *m_pDeviceProcessing);
+    ConnectSignalsnSlots();
+    RequestForDataContainers();
+}
+/****************************************************************************/
+/*!
+ *  \brief Requests ServiceMasterThread for required DataContainers.
+ *
+ *
+ *  \return
+ */
+/****************************************************************************/
+void ServiceDeviceController::RequestForDataContainers(){
+    DeviceCommandProcessor::CmdGetDataContainers* commandPtr(new DeviceCommandProcessor::CmdGetDataContainers());
+    SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(commandPtr));
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Destroy all used objects and prepare for shutdown.
+ *
+ *         See detailed description in the Base Class's header
+ *
+ *  \return
+ */
+/****************************************************************************/
+void ServiceDeviceController::CleanupAndDestroyObjects(){
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Register commands handled by thread Controller
+ *
+ */
+/****************************************************************************/
+void ServiceDeviceController::ConnectSignalsnSlots()
+{
+    /* Connect Signals and slots w.r.t. Device Data containers*/
+    if (!connect(this, SIGNAL(DataContainersInitialized()),
+                 mp_DeviceProcessor, SLOT(OnDataContainersInitialized()))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'DataContainersInitialized' signal";
+    }
+    if (!connect(this, SIGNAL(SetProcessSettingsDataContainer(DataManager::CProcessSettings)),
+                 this, SLOT(SetProcessSettingsFlag(DataManager::CProcessSettings )))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'DataContainersInitialized' signal";
+    }
+
+    /* Return Messages signals connected here */
+    if (!connect(mp_DeviceProcessor, SIGNAL(ReturnMessagetoMain(const QString)),
+                 this, SLOT(ReturnMessagetoMain(const QString)))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ReturnMessagetoMain' signal";
+    }
+    if (!connect(mp_DeviceProcessor, SIGNAL(ReturnErrorMessagetoMain(const QString)),
+                 this, SLOT(ReturnErrorMessagetoMain(QString)))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ReturnErrorMessagetoMain' signal";
+    }
+
+    if (!connect(this, SIGNAL(SDC_AbortTest(Global::tRefType,DeviceControl::DevInstanceID_t)),
+                 mp_DeviceProcessor, SLOT(OnAbortTest(Global::tRefType,DeviceControl::DevInstanceID_t)))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'OnAbortTest' signal";
+    }
+
+    if (!connect(this, SIGNAL(SDC_HeatingTest(Global::tRefType,DeviceControl::DevInstanceID_t,quint8,quint8)),
+                 mp_DeviceProcessor, SLOT(OnHeatingTest(Global::tRefType,DeviceControl::DevInstanceID_t,quint8,quint8)))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'OnHeatingTest' signal";
+    }
+
+    if (!connect(this, SIGNAL(SDC_RotaryValveTest(Global::tRefType,DeviceControl::DevInstanceID_t,qint32,quint8)),
+                 mp_DeviceProcessor, SLOT(OnRotaryValveTest(Global::tRefType,DeviceControl::DevInstanceID_t,qint32,quint8)))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'OnRotaryValveTest' signal";
+    }
+
+    if (!connect(this, SIGNAL(SDC_LSensorDetectingTest(Global::tRefType,DeviceControl::DevInstanceID_t,qint32)),
+                 mp_DeviceProcessor, SLOT(OnLSensorDetectingTest(Global::tRefType,DeviceControl::DevInstanceID_t,qint32)))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'OnLSensorDetectingTest' signal";
+    }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Register commands handled by thread Controller
+ *
+ */
+/****************************************************************************/
+void ServiceDeviceController::RegisterCommands(){
+    RegisterAcknowledgeForProcessing<Global::AckOKNOK, ServiceDeviceController>
+            (&ServiceDeviceController::OnAcknowledge, this);
+#if 0
+    RegisterCommandForProcessing<DataManager::CmdGetProcessSettingsDataContainer, ServiceDeviceController>(
+            &ServiceDeviceController::OnGetProcessSettingsDataContainer, this);
+#endif
+
+    RegisterCommandForProcessing<DeviceCommandProcessor::CmdAbortTest, ServiceDeviceController>
+            (&ServiceDeviceController::OnSDC_AbortTest, this);
+
+    RegisterCommandForProcessing<DeviceCommandProcessor::CmdHeatingTest, ServiceDeviceController>
+            (&ServiceDeviceController::OnSDC_HeatingTest, this);
+
+    RegisterCommandForProcessing<DeviceCommandProcessor::CmdRotaryValveTest, ServiceDeviceController>
+            (&ServiceDeviceController::OnSDC_RotaryValveTest, this);
+
+    RegisterCommandForProcessing<DeviceCommandProcessor::CmdLSensorDetectingTest, ServiceDeviceController>
+            (&ServiceDeviceController::OnSDC_LSensorDetectingTest, this);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief This method is called when the base class receives Go signal.
+ *
+ *         See detailed description in the Base Class's header
+ *
+ *  \return
+ */
+/****************************************************************************/
+void ServiceDeviceController::OnGoReceived(){
+    qDebug()<<"ServiceDeviceController::OnGoReceived()";
+    DeviceCommandProcessorThreadController::OnGoReceived();
+}
+
+/****************************************************************************/
+/*!
+ *  \brief This method is called when the base class receives Stop signal.
+ *
+ *         See detailed description in the Base Class's header
+ *
+ *  \return
+ */
+/****************************************************************************/
+void ServiceDeviceController::OnStopReceived(){
+
+}
+
+/****************************************************************************/
+/**
+ * \brief Power will fail shortly.
+ *
+ * Power will fail shortly.
+ */
+/****************************************************************************/
+void ServiceDeviceController::OnPowerFail(const Global::PowerFailStages PowerFailStage){
+    /// \todo implement
+    Q_UNUSED(PowerFailStage);
+}
+
+/****************************************************************************/
+/**
+ * \brief Get UnInitialized devices.
+ *
+ */
+/****************************************************************************/
+void ServiceDeviceController::GetUnInitializedDevices(QList<DevInstanceID_t> &)
+{
+}
+
+/****************************************************************************/
+/**
+ * \brief Send command
+ *
+ */
+/****************************************************************************/
+void ServiceDeviceController::SendCommand(Global::tRefType Ref, const Global::CommandShPtr_t &Cmd){
+    qDebug() << "ServiceDeviceController::SendCommand" << Ref;
+    Threads::ThreadController::SendCommand(Ref, Cmd);
+}
+
+/****************************************************************************/
+/**
+ * \brief To get a new command Reference.
+ *
+ */
+/****************************************************************************/
+Global::tRefType ServiceDeviceController::GetNewCommandRef(){
+    return Threads::ThreadController::GetNewCommandRef();
+}
+
+/****************************************************************************/
+/**
+ * \brief For handling acknowledgements.
+ *
+ */
+/****************************************************************************/
+void ServiceDeviceController::OnAcknowledge(Global::tRefType, const Global::AckOKNOK &){
+
+}
+
+/*****************************************************************************/
+/**
+ *  \brief     Normal operation mode start notification
+ *
+ *  \param     HdlInfo    = Return code, DCL_ERR_FCT_CALL_SUCCESS if successfull, otherwise error return code
+ */
+/****************************************************************************/
+void ServiceDeviceController::ConnectDevices()
+{
+    qDebug()<<"ServiceDeviceController::ConnectDevices()";
+//    m_pXYZSet->Connect();
+//    m_pDrawerSet->Connect();
+//    m_pHoodSet->Connect();
+//    m_pAgitationSet->Connect();
+//    m_pRackTransferSet->Connect();
+//    m_pOvenSet->Connect();
+//    m_pHeatedCuvettesSet->Connect();
+
+//    ConnectServiceSignals();
+
+//    emit DeviceConfigure();
+}
+
+void ServiceDeviceController::InitDevices()
+{
+    qDebug()<<"ServiceDeviceController::InitDevices()";
+}
+
+
+
+
+
+/****************************************************************************/
+void ServiceDeviceController::ReturnMessagetoMain(const QString &Message)
+{
+    DeviceCommandProcessor::CmdReturnMessage* commandPtr(new DeviceCommandProcessor::CmdReturnMessage(Message));
+    SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(commandPtr));
+}
+
+/****************************************************************************/
+void ServiceDeviceController::ReturnErrorMessagetoMain(const QString &Message)
+{
+    DeviceCommandProcessor::CmdReturnMessage* commandPtr(new DeviceCommandProcessor::CmdReturnMessage(Message));
+    commandPtr->m_MessageType = Service::GUIMSGTYPE_ERROR;
+    SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(commandPtr));
+}
+
+#if 0
+
+/****************************************************************************/
+void ServiceDeviceController::SetProcessSettingsFlag(DataManager::CProcessSettings Container)
+{
+    m_ProcessSettings = true;
+    if(m_Adjustment)
+    {
+        m_DeviceDataContainers = true;
+        emit DataContainersInitialized();
+    }
+}
+#endif
+
+/****************************************************************************/
+void ServiceDeviceController::OnSDC_AbortTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdAbortTest &Cmd)
+{
+    SendAcknowledgeOK(Ref);
+    //if(m_DeviceDataContainers)
+    if(true)
+    {
+        emit SDC_AbortTest(Ref, Cmd.m_DevInstanceID);
+    }
+    else
+    {
+        ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
+    }
+}
+
+/****************************************************************************/
+void ServiceDeviceController::OnSDC_HeatingTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdHeatingTest &Cmd)
+{
+    SendAcknowledgeOK(Ref);
+    //if(m_DeviceDataContainers)
+    if(true)
+    {
+        emit SDC_HeatingTest(Ref, Cmd.m_DevInstanceID, Cmd.m_HeaterIndex, Cmd.m_CmdType);
+    }
+    else
+    {
+        ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
+    }
+}
+
+/****************************************************************************/
+void ServiceDeviceController::OnSDC_RotaryValveTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdRotaryValveTest &Cmd)
+{
+    SendAcknowledgeOK(Ref);
+    //if(m_DeviceDataContainers)
+    if(true)
+    {
+        emit SDC_RotaryValveTest(Ref, Cmd.m_DevInstanceID, Cmd.m_Position, Cmd.m_CmdType);
+    }
+    else
+    {
+        ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
+    }
+}
+
+/****************************************************************************/
+void ServiceDeviceController::OnSDC_LSensorDetectingTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdLSensorDetectingTest &Cmd)
+{
+    SendAcknowledgeOK(Ref);
+    //if(m_DeviceDataContainers)
+    if(true)
+    {
+        emit SDC_LSensorDetectingTest(Ref, Cmd.m_DevInstanceID, Cmd.m_Position);
+    }
+    else
+    {
+        ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
+    }
+}
+
+} //End Of namespace DeviceControl
