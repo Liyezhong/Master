@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ServiceUpdates::CSettingsWidget</class>
+ <widget class="QWidget" name="ServiceUpdates::CSettingsWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>327</width>
+    <height>471</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="CSettingParametersWidget" name="parametersPanel" native="true"/>
+   </item>
+   <item row="0" column="1">
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="currentIndex">
+      <number>2</number>
+     </property>
+     <widget class="ServiceUpdates::CLanguageSetting" name="pageLanguage"/>
+     <widget class="ServiceUpdates::CDateTimeSetting" name="pageDateTime"/>
+     <widget class="ServiceUpdates::CNetworkSetting" name="pageNetwork"/>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CSettingParametersWidget</class>
+   <extends>QWidget</extends>
+   <header>ServiceUpdates/Include/SettingParametersWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ServiceUpdates::CDateTimeSetting</class>
+   <extends>QWidget</extends>
+   <header>ServiceUpdates/Include/DateTimeSetting.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ServiceUpdates::CLanguageSetting</class>
+   <extends>QWidget</extends>
+   <header>ServiceUpdates/Include/LanguageSetting.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ServiceUpdates::CNetworkSetting</class>
+   <extends>QWidget</extends>
+   <header>ServiceUpdates/Include/NetworkSetting.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
