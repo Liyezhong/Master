@@ -46,16 +46,16 @@ class FackIDeviceProcessing : public QObject
     Q_OBJECT
 signals:
     //! Forward the 'intitialisation finished' notification
-    void ReportInitializationFinished(DevInstanceID_t, ReturnCode_t);
+    void ReportInitializationFinished(quint32, ReturnCode_t);
     //! Forward the 'configuration finished' notification
-    void ReportConfigurationFinished(DevInstanceID_t, ReturnCode_t);
+    void ReportConfigurationFinished(quint32, ReturnCode_t);
     //! Forward the 'normal operation mode started' notification
-    void ReportStartNormalOperationMode(DevInstanceID_t, ReturnCode_t);
+    void ReportStartNormalOperationMode(quint32, ReturnCode_t);
     //! Forward error information
-    void ReportError(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID,
+    void ReportError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID,
                      quint16 usErrorData, QDateTime timeStamp);
     //! Forward error information
-    void ReportErrorWithInfo(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID,
+    void ReportErrorWithInfo(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID,
                              quint16 usErrorData, QDateTime timeStamp, QString strErrorInfo);
     //! Forward the 'Destroy finished' to IDeviceProcessing
     void ReportDestroyFinished();
