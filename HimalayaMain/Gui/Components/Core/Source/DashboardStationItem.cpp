@@ -285,6 +285,13 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
         if(m_CurRMSMode != m_UserSettings.GetModeRMSProcessing())
         {
             m_CurRMSMode = m_UserSettings.GetModeRMSProcessing();
+
+            Global::ReagentStatusType reagentStatus = mp_DashboardStation->GetReagentStatus(*p_Reagent, m_CurRMSMode);
+            if ( reagentStatus == Global::REAGENT_STATUS_EXPIRED )
+                m_ReagentExpiredFlag = true;
+            else
+                m_ReagentExpiredFlag = false;
+ /*
             switch( m_UserSettings.GetModeRMSProcessing())
             {
                 case Global::RMS_CASSETTES:
@@ -328,6 +335,7 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
                     qDebug() << "Do Nothing";
                 }
             }
+*/
         }
     }
     DrawStationItemImage();
