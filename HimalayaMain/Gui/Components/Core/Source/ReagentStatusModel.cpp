@@ -190,27 +190,12 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
     if (Index.row() < m_ReagentNames.count()
             && (p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]]))))
     {
-            Expiry_Date = p_Station->GetDashboardReagentExchangeDate().addDays(p_Reagent->GetMaxDays());
 
-            Expired = false;
-            switch (RMSPROCESSINGOPTION) {
-            default:
-                break;
-            case Global::RMS_CASSETTES:
-                if(p_Reagent->GetMaxCassettes() < p_Station->GetDashboardReagentActualCassettes())
-                    Expired = true;
-                break;
-            case Global::RMS_CYCLES:
-                if(p_Reagent->GetMaxCycles() < p_Station->GetDashboardReagentActualCycles())
-                    Expired = true;
-                break;
-            case Global::RMS_DAYS:
-                if( Expiry_Date < t_Date.currentDate())
-                    Expired = true;
-                break;
-            case Global::RMS_OFF:
-                break;
-            }
+            Global::ReagentStatusType ReagentStatus = p_Station->GetReagentStatus(*p_Reagent, RMSPROCESSINGOPTION);
+            if ( ReagentStatus == Global::REAGENT_STATUS_EXPIRED )
+                Expired = true;
+            else
+                Expired = false;
 
             if( true == Expired && Role == (int) Qt::TextColorRole)
             {
@@ -220,21 +205,11 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
                 }
             }
 
-            Expired = false;
-            switch (RMSCLEANINGOPTIONS) {
-            default:
-                break;
-            case Global::RMS_CYCLES:
-                if(p_Reagent->GetMaxCycles() < p_Station->GetDashboardReagentActualCycles())
-                    Expired = true;
-                break;
-            case Global::RMS_DAYS:
-                if( Expiry_Date < t_Date.currentDate())
-                    Expired = true;
-                break;
-            case Global::RMS_OFF:
-                break;
-            }
+            ReagentStatus = p_Station->GetReagentStatus(*p_Reagent, RMSCLEANINGOPTIONS);
+            if ( ReagentStatus == Global::REAGENT_STATUS_EXPIRED )
+                Expired = true;
+            else
+                Expired = false;
 
             if( true == Expired && Role == (int) Qt::TextColorRole)
             {

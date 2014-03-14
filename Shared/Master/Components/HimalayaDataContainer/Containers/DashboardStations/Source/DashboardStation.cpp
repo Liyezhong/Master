@@ -318,4 +318,65 @@ void CDashboardStation::ResetData(void)
     m_ReagentExchangeDate    = QDate::currentDate();
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Get the status of a reagent
+ *
+ *  \return Global::ReagentStatusType
+ *
+ */
+/****************************************************************************/
+
+Global::ReagentStatusType CDashboardStation::GetReagentStatus(const DataManager::CReagent &Reagent, const Global::RMSOptions_t Option)
+{
+    Global::ReagentStatusType ReagentStatus = Global::REAGENT_STATUS_NOT_IN_STATION;
+	
+    CDashboardStation*  pDashboardStation = this;
+    if (pDashboardStation->GetDashboardReagentID() == Reagent.GetReagentID())
+    {
+		switch ( Option )
+		{
+		    case Global::RMS_OFF:
+                ReagentStatus = Global::REAGENT_STATUS_NORMAL;
+				break;
+			case Global::RMS_CASSETTES:
+			{
+                int MaxCassettes = Reagent.GetMaxCassettes();
+                int ActualCassettes = pDashboardStation->GetDashboardReagentActualCassettes();
+                if ( (MaxCassettes - ActualCassettes) < 0 )
+                    ReagentStatus = Global::REAGENT_STATUS_EXPIRED;
+				else
+                    ReagentStatus = Global::REAGENT_STATUS_NORMAL;
+				break;
+			}
+			case Global::RMS_CYCLES:
+			{
+                int MaxCycles = Reagent.GetMaxCycles();
+                int ActualRecycles = pDashboardStation->GetDashboardReagentActualCycles();
+				if ( (MaxCycles - ActualRecycles) < 0 )
+                    ReagentStatus = Global::REAGENT_STATUS_EXPIRED;
+				else
+                    ReagentStatus = Global::REAGENT_STATUS_NORMAL;
+				break;
+			}
+			case Global::RMS_DAYS:
+			{
+                QDate CurDate;
+                QDate ReagentExchangeQDate = pDashboardStation->GetDashboardReagentExchangeDate();
+                QDate ReagentExpiryQDate = ReagentExchangeQDate.addDays(Reagent.GetMaxDays());
+                if(CurDate.currentDate() > ReagentExpiryQDate)
+                    ReagentStatus = Global::REAGENT_STATUS_EXPIRED;
+                else
+                    ReagentStatus = Global::REAGENT_STATUS_NORMAL;
+				break;
+			}
+			default:
+				break;
+        }
+    }
+
+    return ReagentStatus;
+}
+
+
 } // end of namespace DataManager
