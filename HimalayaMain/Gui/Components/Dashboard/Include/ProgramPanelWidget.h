@@ -67,7 +67,7 @@ public slots:
 
 private slots:
     void OnButtonClicked(int whichBtn);
-    void OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady);
+    void OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
     void SelectEndDateTime(const QDateTime &);
     void OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType, int remainingTimeTotal,
                                 const QDateTime& startDateTime, bool IsResume);//in seconds
@@ -91,10 +91,19 @@ private:
     QDateTime m_EndDateTime;
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
     DataManager::CDataProgramList *mp_ProgramList;
+    QList<QString> m_StationList;                                //!< Station list occupied
     QString m_strNotStartRMSOFF;
     QString m_strConfirmation;
     QString m_strAbortProgram;
 
+    QString m_strWarning;
+    QString m_strYes, m_strCancel;
+    QString m_strProgram;
+    QString m_strInformation;
+    QString m_strOK, m_strNo;
+    QString m_strNotStartExpiredReagent;
+    QString m_strStartExpiredReagent;
+    QString m_strNeedMeltParaffin;
 };
 
 }// end namespace Dashboard
