@@ -287,55 +287,11 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
             m_CurRMSMode = m_UserSettings.GetModeRMSProcessing();
 
             Global::ReagentStatusType reagentStatus = mp_DashboardStation->GetReagentStatus(*p_Reagent, m_CurRMSMode);
+
             if ( reagentStatus == Global::REAGENT_STATUS_EXPIRED )
                 m_ReagentExpiredFlag = true;
             else
                 m_ReagentExpiredFlag = false;
- /*
-            switch( m_UserSettings.GetModeRMSProcessing())
-            {
-                case Global::RMS_CASSETTES:
-                {
-                    qint32 ReagentActualCassettes = mp_DashboardStation->GetDashboardReagentActualCassettes();
-                    int ReagentMaxCassettes = p_Reagent->GetMaxCassettes();
-                    if((ReagentMaxCassettes - ReagentActualCassettes) < 0)
-                        m_ReagentExpiredFlag = true;
-                    else
-                        m_ReagentExpiredFlag = false;
-                }
-                break;
-                case Global::RMS_CYCLES:
-                {
-                    qint32 ReagentActualCycles = mp_DashboardStation->GetDashboardReagentActualCycles();
-                    int ReagentMaxCycles = p_Reagent->GetMaxCycles();
-                    if((ReagentMaxCycles - ReagentActualCycles) < 0)
-                        m_ReagentExpiredFlag = true;
-                    else
-                        m_ReagentExpiredFlag = false;
-                }
-                break;
-                case Global::RMS_DAYS:
-                {
-                    QDate curDate;
-                    QDate ReagentExchangeQDate = mp_DashboardStation->GetDashboardReagentExchangeDate();
-                    QDate ReagentExpiryQDate = ReagentExchangeQDate.addDays(p_Reagent->GetMaxDays());
-                    if(curDate.currentDate() > ReagentExpiryQDate)
-                        m_ReagentExpiredFlag = true;
-                    else
-                        m_ReagentExpiredFlag = false;
-                }
-                break;
-                case Global::RMS_OFF:
-                {
-                    m_ReagentExpiredFlag = false;
-                }
-                break;
-                default:
-                {
-                    qDebug() << "Do Nothing";
-                }
-            }
-*/
         }
     }
     DrawStationItemImage();
