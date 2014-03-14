@@ -441,17 +441,12 @@ bool CReagentGroupColorList::AddReagentColorGroup(const CReagentGroupColor* p_Re
     }
     catch(Global::Exception &E) {
         Global::EventObject::Instance().RaiseEvent(E);
-//        m_ErrorHash.insert(EVENT_DM_PROGSEQ_OPERATION_FAILED,
-//                           Global::tTranslatableStringList() << "AddReagentGroup");
-//        SetErrorList(&m_ErrorHash);
         return false;
     }
 
     QString  ID = const_cast<CReagentGroupColor*>(p_ReagentGroupColor)->GetColorID();
     if (m_ReagentGroupColorList.contains(ID)) {
-//        Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROGSEQ_ID_REPEATED,
-//                                                   Global::tTranslatableStringList() << ID,
-//                                                   true, Global::GUI_MSG_BOX);
+
         return false;
     }
 
@@ -558,7 +553,7 @@ bool CReagentGroupColorList::DeleteReagentGroupColor(const QString ID)
     }
     catch (...) {
         qDebug() << "### exception in CDataReagentGroupList::DeleteReagentGroup";
-        m_ErrorHash.insert(EVENT_DM_PROGSEQ_OPERATION_FAILED,
+        m_ErrorHash.insert(EVENT_DM_REAGENT_OPERATION_FAILED,
                            Global::tTranslatableStringList() << "DeleteReagentGroup");
         SetErrorList(&m_ErrorHash);
         return false;

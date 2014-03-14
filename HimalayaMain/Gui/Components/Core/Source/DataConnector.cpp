@@ -82,7 +82,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
 
 {
     if (m_NetworkObject.NetworkInit()) {
-        THROW(EVENT_GLOBAL_ERROR_UNKNOWN_EXCEPTION);
+        THROW(Global::EVENT_GLOBAL_ERROR_UNKNOWN_EXCEPTION);
     }
 
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdConfigurationFile>(&CDataConnector::ConfFileHandler, this);

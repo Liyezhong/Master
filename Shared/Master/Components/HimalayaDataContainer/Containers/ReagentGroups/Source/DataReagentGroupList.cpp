@@ -511,17 +511,11 @@ bool CDataReagentGroupList::AddReagentGroup(const CReagentGroup* p_ReagentGroup)
     }
     catch(Global::Exception &E) {
         Global::EventObject::Instance().RaiseEvent(E);
-//        m_ErrorHash.insert(EVENT_DM_PROGSEQ_OPERATION_FAILED,
-//                           Global::tTranslatableStringList() << "AddReagentGroup");
-//        SetErrorList(&m_ErrorHash);
         return false;
     }
 
     QString  ID = const_cast<CReagentGroup*>(p_ReagentGroup)->GetGroupID();
     if (m_ReagentGroupsList.contains(ID)) {
-//        Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROGSEQ_ID_REPEATED,
-//                                                   Global::tTranslatableStringList() << ID,
-//                                                   true, Global::GUI_MSG_BOX);
         return false;
     }
 
@@ -593,25 +587,13 @@ bool CDataReagentGroupList::AddReagentGroup(const CReagentGroup* p_ReagentGroup)
 /****************************************************************************/
 bool CDataReagentGroupList::UpdateReagentGroup(const CReagentGroup* p_ReagentGroup)
 {
-    try {
-        CHECKPTR(p_ReagentGroup);
-    }
-    catch(Global::Exception &E) {
-        Global::EventObject::Instance().RaiseEvent(E);
-        m_ErrorHash.insert(EVENT_DM_PROGSEQ_OPERATION_FAILED,
-                           Global::tTranslatableStringList() << "UpdateReagentGroup");
-        SetErrorList(&m_ErrorHash);
-        return false;
-    }
+    CHECKPTR(p_ReagentGroup);
 
     QString ID = const_cast<CReagentGroup*>(p_ReagentGroup)->GetGroupID();
     if (!m_ReagentGroupsList.contains(ID)) {
         // there is no ReagentGroup with the given ReagentGroupID
         m_ErrorHash.insert(EVENT_DM_REAGENT_ID_DOESTNOT_EXISTS,
                            Global::tTranslatableStringList() << ID);
-//        Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROGSEQ_ID_DOESTNOT_EXISTS,
-//                                                   Global::tTranslatableStringList() << ID,
-//                                                   true, Global::GUI_MSG_BOX);
         SetErrorList(&m_ErrorHash);
         return false;
     }
@@ -706,17 +688,13 @@ bool CDataReagentGroupList::DeleteReagentGroup(const QString ID)
             return true;
         }
         else {
-            // there is no program  with the given ID
-//            Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROGSEQ_ID_DOESTNOT_EXISTS,
-//                                                       Global::tTranslatableStringList() << ID,
-//                                                       true, Global::GUI_MSG_BOX);
             return false;
         }
     }
     catch (...) {
         qDebug() << "### exception in CDataReagentGroupList::DeleteReagentGroup";
-        m_ErrorHash.insert(EVENT_DM_PROGSEQ_OPERATION_FAILED,
-                           Global::tTranslatableStringList() << "DeleteReagentGroup");
+        m_ErrorHash.insert(EVENT_DM_REAGENT_OPERATION_FAILED,
+                           Global::tTranslatableStringList()<<"DeleteReagentGroup");
         SetErrorList(&m_ErrorHash);
         return false;
     }
