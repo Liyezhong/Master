@@ -64,8 +64,8 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
     mp_DPL = static_cast<CDataProgramList*>(p_DataProgramList);
 
     if (!mp_DPL) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_NULL_PTR, Global::GUI_MSG_BOX);
-        m_ErrorsHash.insert(EVENT_DM_NULL_PTR, Global::tTranslatableStringList());
+        Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_ERROR_NULL_POINTER, Global::GUI_MSG_BOX);
+        m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT, Global::tTranslatableStringList());
         return false;
     }
     // check constraints
