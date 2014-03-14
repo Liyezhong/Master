@@ -110,22 +110,22 @@ public slots:
     /****************************************************************************/
     virtual void pushCmd(CmdSchedulerCommandBase *cmd) { this->pushCmd4Slot(cmd); }
 
-    virtual void DevProcInitialisationAckn(DevInstanceID_t instanceID, ReturnCode_t configResult)
+    virtual void DevProcInitialisationAckn(quint32 instanceID, ReturnCode_t configResult)
     {
         this->DevProcInitialisationAckn4Slot(instanceID, configResult);
     }
 
-    virtual void DevProcConfigurationAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
+    virtual void DevProcConfigurationAckn(quint32 instanceID, ReturnCode_t hdlInfo)
     {
         this->DevProcConfigurationAckn4Slot(instanceID, hdlInfo);
     }
 
-    virtual void DevProcStartNormalOpModeAckn(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
+    virtual void DevProcStartNormalOpModeAckn(quint32 instanceID, ReturnCode_t hdlInfo)
     {
         this->DevProcStartNormalOpModeAckn4Slot(instanceID, hdlInfo);
     }
 
-    virtual void ThrowError(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp)
+    virtual void ThrowError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp)
     {
         this->ThrowError4Slot(instanceID, usErrorGroup, usErrorID, usErrorData, TimeStamp);
     }
@@ -151,10 +151,10 @@ private:
     virtual bool newCmdComing() =0;
     virtual void run4Slot() = 0;
     virtual void pushCmd4Slot(CmdSchedulerCommandBase *cmd) = 0;
-    virtual void DevProcInitialisationAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t configResult) = 0;
-    virtual void DevProcConfigurationAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t hdlInfo) = 0;
-    virtual void DevProcStartNormalOpModeAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t hdlInfo) = 0;
-    virtual void ThrowError4Slot(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp) = 0;
+    virtual void DevProcInitialisationAckn4Slot(quint32 instanceID, ReturnCode_t configResult) = 0;
+    virtual void DevProcConfigurationAckn4Slot(quint32 instanceID, ReturnCode_t hdlInfo) = 0;
+    virtual void DevProcStartNormalOpModeAckn4Slot(quint32 instanceID, ReturnCode_t hdlInfo) = 0;
+    virtual void ThrowError4Slot(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp) = 0;
     virtual void DevProcDestroyAckn4Slot() = 0;
     virtual void OnNewCmdAdded4Slot() = 0;
     SchedulerCommandProcessorBase(const SchedulerCommandProcessorBase&);              			///< Not implemented.
@@ -199,10 +199,10 @@ private:
     virtual bool newCmdComing();
     virtual void run4Slot();
     virtual void pushCmd4Slot(CmdSchedulerCommandBase *cmd);
-    virtual void DevProcInitialisationAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t configResult);
-    virtual void DevProcConfigurationAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t hdlInfo);
-    virtual void DevProcStartNormalOpModeAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t hdlInfo);
-    virtual void ThrowError4Slot(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp);
+    virtual void DevProcInitialisationAckn4Slot(quint32 instanceID, ReturnCode_t configResult);
+    virtual void DevProcConfigurationAckn4Slot(quint32 instanceID, ReturnCode_t hdlInfo);
+    virtual void DevProcStartNormalOpModeAckn4Slot(quint32 instanceID, ReturnCode_t hdlInfo);
+    virtual void ThrowError4Slot(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp);
     virtual void DevProcDestroyAckn4Slot();
     virtual void OnNewCmdAdded4Slot();
 

@@ -175,7 +175,7 @@ template <class DP>
 void SchedulerCommandProcessor<DP>::run4Slot()
 {
     qRegisterMetaType<ReturnCode_t>("ReturnCode_t");
-    qRegisterMetaType<DevInstanceID_t>("DevInstanceID_t");
+    qRegisterMetaType<quint32>("quint32");
 
 #ifndef GOOGLE_MOCK
     //Initialize IDeviceProcessing
@@ -183,14 +183,14 @@ void SchedulerCommandProcessor<DP>::run4Slot()
 #endif
 
     //connect(mp_IDeviceProcessing, SIGNAL(ReportInitializationFinished(DevInstanceID_t, ReturnCode_t)), this, SLOT(DevProcInitialisationAckn(DevInstanceID_t, ReturnCode_t)), Qt::QueuedConnection);
-    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportInitializationFinished(DevInstanceID_t, ReturnCode_t),
-                      this, DevProcInitialisationAckn(DevInstanceID_t, ReturnCode_t));
-    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportConfigurationFinished(DevInstanceID_t, ReturnCode_t),
-                      this, DevProcConfigurationAckn(DevInstanceID_t, ReturnCode_t));
-    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportStartNormalOperationMode(DevInstanceID_t, ReturnCode_t),
-                      this, DevProcStartNormalOpModeAckn(DevInstanceID_t, ReturnCode_t));
-    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportError(DevInstanceID_t, quint16, quint16, quint16, const QDateTime &),
-                      this, ThrowError(DevInstanceID_t, quint16, quint16, quint16, const QDateTime &));
+    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportInitializationFinished(quint32, ReturnCode_t),
+                      this, DevProcInitialisationAckn(quint32, ReturnCode_t));
+    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportConfigurationFinished(quint32, ReturnCode_t),
+                      this, DevProcConfigurationAckn(quint32, ReturnCode_t));
+    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportStartNormalOperationMode(quint32, ReturnCode_t),
+                      this, DevProcStartNormalOpModeAckn(quint32, ReturnCode_t));
+    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportError(quint32, quint16, quint16, quint16, const QDateTime &),
+                      this, ThrowError(quint32, quint16, quint16, quint16, const QDateTime &));
     CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportDestroyFinished(), this, DevProcDestroyAckn());
 
     CONNECTSIGNALSLOT(this, NewCmdAdded(), this, OnNewCmdAdded());
@@ -258,7 +258,7 @@ bool SchedulerCommandProcessor<DP>::newCmdComing()
 }
 
 template <class DP>
-void SchedulerCommandProcessor<DP>::DevProcInitialisationAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t configResult)
+void SchedulerCommandProcessor<DP>::DevProcInitialisationAckn4Slot(quint32 instanceID, ReturnCode_t configResult)
 {
     // interface implementation runs in DeviceControl-Thread
     ReturnCode_t retCode;
@@ -282,7 +282,7 @@ void SchedulerCommandProcessor<DP>::DevProcInitialisationAckn4Slot(DevInstanceID
 }
 
 template <class DP>
-void SchedulerCommandProcessor<DP>::DevProcConfigurationAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
+void SchedulerCommandProcessor<DP>::DevProcConfigurationAckn4Slot(quint32 instanceID, ReturnCode_t hdlInfo)
 {
     // interface implementation runs in DeviceControl-Thread
     qDebug() << "  SchedulerCommandProcessor::DevProcConfigurationAckn" << instanceID << "ReturnCode" << hdlInfo;
@@ -298,13 +298,13 @@ void SchedulerCommandProcessor<DP>::DevProcConfigurationAckn4Slot(DevInstanceID_
 }
 
 template <class DP>
-void SchedulerCommandProcessor<DP>::DevProcStartNormalOpModeAckn4Slot(DevInstanceID_t instanceID, ReturnCode_t hdlInfo)
+void SchedulerCommandProcessor<DP>::DevProcStartNormalOpModeAckn4Slot(quint32 instanceID, ReturnCode_t hdlInfo)
 {
     qDebug() << "  SchedulerCommandProcessor::DevProcStartNormalOpModeAckn " << instanceID << " " << hdlInfo;
 }
 
 template <class DP>
-void SchedulerCommandProcessor<DP>::ThrowError4Slot(DevInstanceID_t instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp)
+void SchedulerCommandProcessor<DP>::ThrowError4Slot(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp)
 {
     Q_UNUSED(instanceID)
     Q_UNUSED(usErrorGroup)

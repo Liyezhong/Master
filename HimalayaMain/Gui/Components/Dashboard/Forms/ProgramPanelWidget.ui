@@ -57,7 +57,7 @@
       <enum>QLayout::SetMinimumSize</enum>
      </property>
      <item>
-      <widget class="QPushButton" name="pauseButton">
+      <widget class="Dashboard::CPausePushButton" name="pauseButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -66,12 +66,12 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>20</width>
+         <width>14</width>
          <height>0</height>
         </size>
        </property>
        <property name="text">
-        <string>Pause</string>
+        <string/>
        </property>
       </widget>
      </item>
@@ -82,14 +82,14 @@
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>10</width>
+         <width>20</width>
          <height>20</height>
         </size>
        </property>
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="startButton">
+      <widget class="Dashboard::CStartPushButton" name="startButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -98,7 +98,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>120</width>
+         <width>130</width>
          <height>0</height>
         </size>
        </property>
@@ -123,6 +123,16 @@
    <extends>QWidget</extends>
    <header>Dashboard/Include/FavoriteProgramsPanelWidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Dashboard::CPausePushButton</class>
+   <extends>QPushButton</extends>
+   <header>Dashboard/Include/PausePushButton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Dashboard::CStartPushButton</class>
+   <extends>QPushButton</extends>
+   <header>Dashboard/Include/StartPushButton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

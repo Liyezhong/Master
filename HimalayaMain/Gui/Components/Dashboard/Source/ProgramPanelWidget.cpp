@@ -324,12 +324,14 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
 void CProgramPanelWidget::ChangeStartButtonToStopState()
 {
     ui->startButton->setText(tr("Abort"));
+    ui->startButton->IsStartStatus(false);
     m_ProgramNextAction = DataManager::PROGRAM_ABORT;
 }
 
 void CProgramPanelWidget::ChangeStartButtonToStartState()
 {
     ui->startButton->setText(tr("Start"));
+    ui->startButton->IsStartStatus(true);
     m_ProgramNextAction = DataManager::PROGRAM_START;
 }
 
