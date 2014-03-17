@@ -127,22 +127,30 @@ CSchedulerStateMachine::~CSchedulerStateMachine()
 {
     delete mp_ErrorWaitState;
     mp_ErrorWaitState = NULL;
-    delete mp_ErrorState;
-    mp_ErrorState = NULL;
-    delete mp_BusyState;
-    mp_BusyState = NULL;
+
     delete mp_IdleState;
     mp_IdleState = NULL;
+
     delete mp_InitState;
     mp_InitState = NULL;
-    delete mp_ProgramStepStates;
-    mp_ProgramStepStates = NULL;
-    delete mp_SchedulerMachine;
-    mp_SchedulerMachine = NULL;
+
     delete mp_RSRvGetOriginalPositionAgain;
     mp_RSRvGetOriginalPositionAgain = NULL;
+
+    delete mp_ProgramStepStates;
+    mp_ProgramStepStates = NULL;
+
+    delete mp_ErrorState;
+    mp_ErrorState = NULL;
+
+    delete mp_BusyState;
+    mp_BusyState = NULL;
+
+    delete mp_SchedulerMachine;
+    mp_SchedulerMachine = NULL;
 }
 
+//mp_SelfTestStateMachine
 void CSchedulerStateMachine::UpdateCurrentState(SchedulerStateMachine_t currentState)
 {
     if(m_CurrentState != currentState )

@@ -95,23 +95,20 @@ public:
 
     ~TestSchedIDPExchange()
     {
-
         delete mp_HMThreadController;
         mp_HMThreadController = NULL;
-
 
         delete mp_DataManager;
         mp_DataManager = NULL;
 
         delete mp_IDeviceProcessing;
         mp_IDeviceProcessing = NULL;
-    #if 0
+
         delete m_pSchedulerMainController;
         m_pSchedulerMainController = NULL;
-    #endif
+
         delete mp_SchdCmdProcessor;
         mp_SchdCmdProcessor = NULL;
-
     }
 
 private:
