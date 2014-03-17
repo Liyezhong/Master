@@ -9,6 +9,8 @@
 #include "HimalayaDataContainer/Containers/Programs/Include/DataProgramList.h"
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
 #include "Dashboard/Include/CommonString.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
+
 namespace Dashboard {
 CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     CPanelFrame(parent),
@@ -34,7 +36,7 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
                       ui->programRunningPanel, ProgramSelected(QString&, int, bool, QList<QString>&));
 
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, QList<QString>&),
-                      this, OnProgramSelected(QString&, int, bool));
+                      this, OnProgramSelected(QString&, int, bool, QList<QString>&));
 
     CONNECTSIGNALSLOT(this, UndoProgramSelection(),
                       ui->favoriteProgramsPanel, UndoProgramSelection());
@@ -100,6 +102,17 @@ void CProgramPanelWidget::RetranslateUI()
     m_strConfirmation = QApplication::translate("Dashboard::CProgramPanelWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
     m_strAbortProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Do you want to abort the program?", 0, QApplication::UnicodeUTF8);
 
+    m_strYes = QApplication::translate("Dashboard::CProgramPanelWidget", "Yes", 0, QApplication::UnicodeUTF8);
+    m_strNo = QApplication::translate("Dashboard::CProgramPanelWidget", "No", 0, QApplication::UnicodeUTF8);
+    m_strOK = QApplication::translate("Dashboard::CProgramPanelWidget", "OK", 0, QApplication::UnicodeUTF8);
+    m_strCancel = QApplication::translate("Dashboard::CProgramPanelWidget", "Cancel", 0, QApplication::UnicodeUTF8);
+    m_strWarning = QApplication::translate("Dashboard::CProgramPanelWidget", "Warning", 0, QApplication::UnicodeUTF8);
+    m_strProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Program", 0, QApplication::UnicodeUTF8);
+    m_strInformation = QApplication::translate("Dashboard::CProgramPanelWidget", "Information", 0, QApplication::UnicodeUTF8);
+    m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CProgramPanelWidget", "Reagents needed for this program are expired! You can't operate this program.", 0, QApplication::UnicodeUTF8);
+    m_strStartExpiredReagent =  QApplication::translate("Dashboard::CProgramPanelWidget", "Do you want to Start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
+    m_strNeedMeltParaffin  = QApplication::translate("Dashboard::CProgramPanelWidget", "Still it will cost some time to melt paraffin, the current selected program can not run now.", 0, QApplication::UnicodeUTF8);
+
 }
 
 void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector)
@@ -117,12 +130,14 @@ void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow
 
 }
 
-void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady)
+void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList)
 {
     m_SelectedProgramId = ProgramId;
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
     if (bProgramStartReady)
         OnProgramStartReadyUpdated();
+    m_StationList.clear();
+    m_StationList = selectedStationList;
 }
 
 void CProgramPanelWidget::SelectEndDateTime(const QDateTime & dateTime)
@@ -166,41 +181,65 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
         return;
     }
 
-    //Check Expired?
-    bool isRMSOFF = false;
-    if ((Global::RMS_OFF == userSetting->GetModeRMSCleaning()) || (Global::RMS_OFF == userSetting->GetModeRMSProcessing()))
+
+    QStringList reagentIDList = mp_ProgramList->GetProgram(m_SelectedProgramId)->GetReagentIDList();
+
+    qDebug() << "Reagent List Size = " << (int)reagentIDList.size();
+    qDebug() << "Station List Size = " << (int) m_StationList.size();
+
+    Global::ReagentStatusType reagentStatus = Global::REAGENT_STATUS_NORMAL;
+
+    for(int i = 0; i<m_StationList.size(); i++)
     {
-        isRMSOFF = true;
+        QString stationID = m_StationList.at(i);
+        DataManager::CDashboardStation *p_Station = mp_DataConnector->DashboardStationList->GetDashboardStation(stationID);
+        QString reagentID = p_Station->GetDashboardReagentID();
+        DataManager::CReagent const *p_Reagent = mp_DataConnector->ReagentList->GetReagent(reagentID);
+
+        DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID());
+        bool isClearingGroup = p_ReagentGroup->IsCleaningReagentGroup();
+        Global::RMSOptions_t RMSOption = Global::RMS_OFF;
+        if ( isClearingGroup )
+            RMSOption = userSetting->GetModeRMSCleaning();
+        else
+            RMSOption = userSetting->GetModeRMSProcessing();
+
+        reagentStatus = p_Station->GetReagentStatus(*p_Reagent, RMSOption);
+
+        if ( reagentStatus == Global::REAGENT_STATUS_EXPIRED )
+            break;
     }
 
-    //We should improve the expired later
-    /*if (!isRMSOFF && mp_DashboardScene->HaveExpiredReagent())
-    {
-        if (m_CurrentUserRole == MainMenu::CMainWindow::Operator)
-        {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(m_strWarning);
-            mp_MessageDlg->SetText(m_strNotStartExpiredReagent);
-            mp_MessageDlg->SetButtonText(1, m_strOK);
-            mp_MessageDlg->HideButtons();
-            if (mp_MessageDlg->exec())
-            return;
-        }
-        else
-        if(m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
-        m_CurrentUserRole == MainMenu::CMainWindow::Service)
-        {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(m_strWarning);
-            mp_MessageDlg->SetText(m_strStartExpiredReagent);
-            mp_MessageDlg->SetButtonText(3, m_strNo);
-            mp_MessageDlg->SetButtonText(1, m_strYes);
-            mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
+    if ( reagentStatus == Global::REAGENT_STATUS_NORMAL ) {
+        emit PrepareSelectedProgramChecking(m_SelectedProgramId, true);
+        return ;
+    }
 
-            if (!mp_MessageDlg->exec())
+    MainMenu::CMainWindow::UserRole_t userRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    if (userRole == MainMenu::CMainWindow::Operator)
+    {
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(m_strWarning);
+        mp_MessageDlg->SetText(m_strNotStartExpiredReagent);
+        mp_MessageDlg->SetButtonText(1, m_strOK);
+        mp_MessageDlg->HideButtons();
+        if (mp_MessageDlg->exec())
             return;
-        }
-    }*/
+    }
+    else if(userRole == MainMenu::CMainWindow::Admin ||
+        userRole == MainMenu::CMainWindow::Service)
+    {
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(m_strWarning);
+        mp_MessageDlg->SetText(m_strStartExpiredReagent);
+        mp_MessageDlg->SetButtonText(3, m_strNo);
+        mp_MessageDlg->SetButtonText(1, m_strYes);
+        mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
+
+        if (!mp_MessageDlg->exec())
+            return;
+    }
+
 
 
     //check End Datetime again

@@ -147,7 +147,7 @@ void CFavoriteProgramsPanelWidget::UndoProgramSelection()
 
 void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
 {
-    if (m_LastSelectedButtonId == m_ButtonGroup.checkedId())
+    if ((m_LastSelectedButtonId == m_ButtonGroup.checkedId()) && (m_FavProgramIDs.at(0) != "C01"))
     {   //show Datetime dialog
         mp_wdgtDateTime->UpdateProgramName();
         mp_wdgtDateTime->SetASAPDateTime(m_ProgramEndDateTime);

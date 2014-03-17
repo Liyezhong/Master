@@ -250,7 +250,7 @@ bool CDataReagentList::DeserializeContent(QIODevice& IODevice, bool CompleteData
     // Read attribute Version
     if (!XmlStreamReader.attributes().hasAttribute("Version")) {
         qDebug() << "### attribute <Version> is missing => abort reading";
-        Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
                                                    Global::tTranslatableStringList() << "Version", true);
         return false;
     }
@@ -264,7 +264,7 @@ bool CDataReagentList::DeserializeContent(QIODevice& IODevice, bool CompleteData
     // get attribute NextReagentID
     if (!XmlStreamReader.attributes().hasAttribute("NextUserReagentID")) {
         qDebug() << "### attribute <NextReagentID> is missing => abort reading";
-        Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
                                                    Global::tTranslatableStringList() << "NextUserReagentID", true);
         return false;
     }
@@ -287,7 +287,7 @@ bool CDataReagentList::DeserializeContent(QIODevice& IODevice, bool CompleteData
         // File name
         if (!XmlStreamReader.attributes().hasAttribute("FileName")) {
             qDebug() << "### attribute <FileName> is missing => abort reading";
-            Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
                                                        Global::tTranslatableStringList() << "FileName", true);
             return false;
         }
@@ -296,7 +296,7 @@ bool CDataReagentList::DeserializeContent(QIODevice& IODevice, bool CompleteData
         // VerificationMode
         if (!XmlStreamReader.attributes().hasAttribute("VerificationMode")) {
             qDebug() << "### attribute <VerificationMode> is missing => abort reading";
-            Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
                                                        Global::tTranslatableStringList() << "VerificationMode", true);
             return false;
         }
@@ -1058,7 +1058,7 @@ bool CDataReagentList::CheckForUniqueName(QString ID, QString ReagentName)
             // check for the Long name existence in the Program list
             if (m_ReagentListNames.contains(ReagentName, Qt::CaseInsensitive)) {
                 qDebug() << "CDataReagentList::CheckForUniqueName() - Reagent Name already exists :";
-                m_ErrorHash.insert(EVENT_DM_REAGENT_NAME_UNIQUE, Global::tTranslatableStringList() << "");
+                m_ErrorHash.insert(EVENT_DM_REAGENT_NAME_NOT_UNIQUE, Global::tTranslatableStringList() << "");
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_REAGENT_NAME_NOT_UNIQUE,
                                                            Global::tTranslatableStringList() << ReagentName, true);
                 Result = false;

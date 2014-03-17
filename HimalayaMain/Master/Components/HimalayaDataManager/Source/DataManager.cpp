@@ -26,6 +26,7 @@
 #include "HimalayaDataManager/CommandInterface/Include/ReagentGroupCommandInterface.h"
 #include "DataManager/CommandInterface/Include/UserSettingsCommandInterface.h"
 #include "HimalayaDataManager/Include/DataManagerDefinitions.h"
+#include "DataManager/Helper/Include/DataManagerEventCodes.h"
 
 //lint -sem(DataManager::CDataManager::DeinitializeDataContainer,cleanup)
 
@@ -147,16 +148,16 @@ quint32 CDataManager::InitializeDataContainer()
 
     // do special verification
     if (!mp_DataContainer->StationList->VerifyData(true)) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_GV_FAILED);
     }
 
 
     if (!mp_DataContainer->ProgramList->VerifyData(true)) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_GV_FAILED);
     }
 
     if (!mp_DataContainer->SettingsInterface->VerifyData(true)) {
-        Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_GV_FAILED);
     }
 
     mp_ProgramCommandInterface = new CProgramCommandInterface(this, mp_MasterThreadController, mp_DataContainer);
