@@ -1,3 +1,24 @@
+/****************************************************************************/
+/*! \file CSchedulerStateMachine.h
+ *
+ *  \brief CSchedulerStateMachine class definition.
+ *
+ *   $Version: $ 0.1
+ *   $Date:    $ 02.01.2014
+ *   $Author:  $ Quan Zhang
+ *
+ *  \b Company:
+ *
+ *       Leica Biosystems SH CN.
+ *
+ *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  This is unpublished proprietary source code of Leica. The copyright notice
+ *  does not evidence any actual or intended publication.
+ *
+ */
+/****************************************************************************/
+
+
 #ifndef SCHEDULERMACHINE_H
 #define SCHEDULERMACHINE_H
 
@@ -5,12 +26,18 @@
 //#include "SchedulerMainThreadController.h"
 #include "ProgramStepStateMachine.h"
 #include "RsRvGetOriginalPositionAgain.h"
+#include "RsStandby.h"
 #include "RCReport.h"
 
 namespace Scheduler{
 
 class SchedulerMainThreadController;
 
+/****************************************************************************/
+/*!
+ * \brief Scheduler State Machine Class
+ */
+/****************************************************************************/
 class CSchedulerStateMachine : public QObject
 {
     Q_OBJECT
@@ -23,6 +50,7 @@ private:
     QState* mp_ErrorWaitState;
     CProgramStepStateMachine *mp_ProgramStepStates;
     CRsRvGetOriginalPositionAgain *mp_RSRvGetOriginalPositionAgain;
+    CRsStandby *mp_RSStandby;
     CRCReport *mp_RCReport;
     SchedulerStateMachine_t m_PreviousState;
     SchedulerStateMachine_t m_CurrentState;
@@ -70,6 +98,9 @@ public:
     void NotifyRsRvMoveToInitPosition();
     void NotifyRsRvMoveToInitPositionFinished();
     void NotifyRCReport();
+    void NotifyRsReleasePressure();
+    void NotifyRsShutdownFailedHeater();
+    void NotifyRsShutdownFailedHeaterFinished();
 
     void UpdateCurrentState(SchedulerStateMachine_t currentState);
     SchedulerStateMachine_t GetCurrentState();
@@ -122,6 +153,10 @@ signals:
     void sigRsRvMoveToInitPositionFinished();
     void sigRCReport();
 
+    void sigReleasePressure();
+    void sigShutdownFailedHeater();
+    void sigShutdownFailedHeaterFinished();
+
     void sigOnInit();
     void sigOnHeatLevelSensorTempS1();
     void sigOnHeatLevelSensorTempS2();
@@ -139,6 +174,8 @@ signals:
     void sigOnPauseDrain();
     void sigOnRsRvMoveToInitPosition();
     void sigOnRCReport();
+    void sigOnRsReleasePressure();
+    void sigOnRsShutdownFailedHeater();
 };
 }
 

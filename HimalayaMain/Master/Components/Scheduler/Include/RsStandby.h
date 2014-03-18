@@ -1,10 +1,10 @@
 /****************************************************************************/
-/*! \file CErrorHandlingSMBase.h
+/*! \file CRsStandby.h
  *
- *  \brief CErrorHandlingSMBase class definition.
+ *  \brief CRsStandby class definition.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 02.01.2014
+ *   $Date:    $ 18.03.2014
  *   $Author:  $ Quan Zhang
  *
  *  \b Company:
@@ -17,30 +17,37 @@
  *
  */
 /****************************************************************************/
-#ifndef ERRORHANDLINGSMBASE_H
-#define ERRORHANDLINGSMBASE_H
+#ifndef RSSTANDBY_H
+#define RSSTANDBY_H
+#include "ErrorHandlingSMBase.h"
 #include <QStateMachine>
-#include "SchedulerStateMachineStates.h"
 
 namespace Scheduler{
 
 /****************************************************************************/
 /*!
- * \brief Base class for Error Handling State Machine
+ * \brief Error Handling State machine for RS_Standby
  */
 /****************************************************************************/
-class CErrorHandlingSMBase : public QObject
+class  CRsStandby : public CErrorHandlingSMBase
 {
     Q_OBJECT
 public:
-    CErrorHandlingSMBase(QStateMachine* pStateMachine, QState* pParentState);
-    ~CErrorHandlingSMBase();
-    virtual SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
-protected:
-    QStateMachine* mp_StateMachine;
-    QState* mp_ParentState;
-    QList<QState*> mp_StateList;
+    CRsStandby (QStateMachine* pStateMachine, QState* pParentState);
+    ~CRsStandby();
+    SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
 
+signals:
+    void ReleasePressure();
+    void ShutdownFailedHeater();
+    void ShutdownFailedHeaterFinished();
+    void OnReleasePressure();
+    void OnShutdownFailedHeater();
+
+private:
+    QState *mp_ReleasePressure;
+    QState *mp_ShutdownFailedHeater;
 };
 }
-#endif // ERRORHANDLINGSMBASE_H
+
+#endif // RSSTANDBY_H
