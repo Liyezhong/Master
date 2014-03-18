@@ -65,6 +65,13 @@ typedef struct
 
 class SchedulerMainThreadController;
 
+
+/****************************************************************************/
+/**
+ * @brief command processing thread class for the main scheduler thread.
+ *
+ */
+/****************************************************************************/
 class SchedulerCommandProcessorBase : public QObject
 {
     Q_OBJECT

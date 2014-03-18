@@ -1,3 +1,23 @@
+#if 0
+/****************************************************************************/
+/*! \file SelfTestStateMachine.h
+ *
+ *  \brief SelfTestStateMachine class definition.
+ *
+ *   $Version: $ 0.1
+ *   $Date:    $ 02.01.2014
+ *   $Author:  $ Quan Zhang
+ *
+ *  \b Company:
+ *
+ *       Leica Biosystems SH CN.
+ *
+ *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  This is unpublished proprietary source code of Leica. The copyright notice
+ *  does not evidence any actual or intended publication.
+ *
+ */
+/****************************************************************************/
 #ifndef SELFTESTSTATEMACHINE_H
 #define SELFTESTSTATEMACHINE_H
 
@@ -16,13 +36,13 @@ SELF_TEST_FINISH,
 SELF_TEST_UNDEF
 }SelfTestStateMachine_t;
 
-class SelfTestStateMachine : public QObject
+class CSelfTestStateMachine : public QObject
 {
     Q_OBJECT
 public:
-    SelfTestStateMachine();
-    ~SelfTestStateMachine();
-    SelfTestStateMachine_t GetCurrentState();
+    CSelfTestStateMachine();
+    ~CSelfTestStateMachine();
+    CSelfTestStateMachine_t GetCurrentState();
 
     void Start();
     void Stop();
@@ -32,38 +52,10 @@ public:
     void NotifyCheckStaionFinished();
 
 signals:
-        void TempsReady();
-        void CheckStation();
-        void GotStationCheckResult();
-        void StationCheckFinished();
-    //void TempsReady();
-    //void LevelSensorTempS1Ready();
-    //void LevelSensorTempS2Ready();
-    //void HitTubeBefore();
-    //void FillFinished();
-    //void HitSeal();
-    //void SoakFinished();
-    //void HitTubeAfter();
-    //void DrainFinished();
-    //void Error();
-    //void Pause();
-    //void ResumeToInit();
-    //void ResumeToHeatLevelSensorS1();
-    //void ResumeToHeatLevelSensorS2();
-    //void ResumeToReadyToFill();
-    //void ResumeToSoak();
-    //void ResumeToReadyToTubeAfter();
-    //void Abort();
-//
-    //void OnInit();
-    //void OnHeatLevelSensorTempS1();
-    //void OnHeatLevelSensorTempS2();
-    //void OnMoveToTubeBefore();
-    //void OnMoveToTubeAfter();
-    //void OnMoveToSeal();
-    //void OnFill();
-    //void OnSoak();
-    //void OnDrain();
+    void TempsReady();
+    void CheckStation();
+    void GotStationCheckResult();
+    void StationCheckFinished();
 
 private slots:
     //void OnStateChanged();
@@ -82,3 +74,4 @@ private:
 
 
 #endif // SELFTESTSTATEMACHINE_H
+#endif

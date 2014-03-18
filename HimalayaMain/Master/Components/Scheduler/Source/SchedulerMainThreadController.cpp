@@ -35,6 +35,10 @@
 #include "Scheduler/Commands/Include/CmdALTurnOffFan.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Commands/Include/CmdIDBottleCheck.h"
+#include "Scheduler/Commands/Include/CmdRVSetTempCtrlOFF.h"
+#include "Scheduler/Commands/Include/CmdRTSetTempCtrlOFF.h"
+#include "Scheduler/Commands/Include/CmdOvenSetTempCtrlOFF.h"
+#include "Scheduler/Commands/Include/CmdALSetTempCtrlOFF.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "HimalayaDataManager/Include/DataManager.h"
 #include "Global/Include/GlobalDefines.h"
@@ -147,6 +151,8 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsRvMoveToInitPosition(), this, MoveRVToInit());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRCReport(), this, ShutdownRetortHeater());
 
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsReleasePressure(), this, ReleasePressure());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsShutdownFailedHeater(), this, ShutdownFailedHeater());
 
     //command queue reset
     m_SchedulerCmdQueue.clear();
@@ -441,32 +447,27 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(DCL_ERR_UNDEFINED != retCode)
             {
                 quint32 resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
-                if( DCL_ERR_DEV_BOTTLE_CHECK_OK == retCode)
+                if( DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
                     resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_OK;
                 }
-                else if( DCL_ERR_DEV_BOTTLE_CHECK_NOT_FULL == retCode)
+                else if( DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_INSUFFICIENT == retCode)
                 {
                     m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
                     resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_NOT_FULL;
                 }
-                else if( DCL_ERR_DEV_BOTTLE_CHECK_BLOCKAGE == retCode)
+                else if( DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_BLOCKAGE == retCode)
                 {
                     m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
                     resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_BLOCKAGE;
                 }
-                else if(DCL_ERR_DEV_BOTTLE_CHECK_EMPTY == retCode)
+                else if(DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_EMPTY == retCode)
                 {
                     m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
                     resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_EMPTY;
                 }
-                else if(DCL_ERR_DEV_BOTTLE_CHECK_ERROR == retCode)
-                {
-                    m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
-                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_ERROR;
-                }
-                else if(DCL_ERR_DEV_BOTTLE_CHECK_TIMEOUT == retCode)
+                else if(DCL_ERR_DEV_LA_BOTTLECHECK_PRESSUREBUILD_FAILED == retCode)
                 {
                     m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
                     resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_TIMEOUT;
@@ -589,7 +590,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->NotifyPause(PSSM_READY_TO_FILL);
                 DequeueNonDeviceCommand();
             }
-            else if(DCL_ERR_DEV_AL_FILL_SUCCESS == retCode)
+            else if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 qDebug()<<"DBG" << "Scheduler step: READY_TO_FILL received FILL_SUCCESS, go to next state now.";
                 m_SchedulerMachine->NotifyFillFinished();
@@ -769,7 +770,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     }
                 }
             }
-            else if(DCL_ERR_DEV_AL_DRAIN_SUCCESS == retCode)
+            else if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 m_SchedulerMachine->NotifyDrainFinished();
             }
@@ -866,11 +867,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ABORTING == stepState)
         {
-            if(DCL_ERR_DEV_RV_REF_MOVE_OK == retCode)
+            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 this->Drain();
             }
-            else if(DCL_ERR_DEV_AL_DRAIN_SUCCESS == retCode)
+            else if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 StopDrain();
                 m_SchedulerMachine->NotifyAbort();
@@ -955,17 +956,23 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             m_SchedulerMachine->NotifyRsRvMoveToInitPosition();
             DequeueNonDeviceCommand();
         }
+        else if(CTRL_CMD_RS_STANDBY == ctrlCmd)
+        {
+            qDebug()<<"DBG" << "Try to RS_STANDBY !";
+            m_SchedulerMachine->NotifyRsReleasePressure();
+            DequeueNonDeviceCommand();
+        }
     }
     else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
     {
         qDebug()<<"DBG" << "RS_RV_GET_ORIGINAL_POSITION_AGAIN Response: "<<retCode;
-        if( DCL_ERR_DEV_RV_MOVE_TO_INIT_POS_SUCCESS == retCode )
+        if( DCL_ERR_FCT_CALL_SUCCESS == retCode )
         {
             qDebug()<<"DBG" << "Response Move to initial position again succeed!";
             Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, true);
             m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
         }
-        else if(DCL_ERR_DEV_RV_MOVE_TO_INIT_FUNC & retCode)
+        else if(DCL_ERR_DEV_RV_MOTOR_CANNOTGET_ORIGINALPOSITION & retCode)
         {
             qDebug()<<"DBG" << "Response Move to initial position again failed!";
             Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, false);
@@ -976,6 +983,14 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, true);
         m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
+    }
+    else if(SM_ERR_RS_RELEASE_PRESSURE == currentState)
+    {
+        m_SchedulerMachine->NotifyRsShutdownFailedHeater();
+    }
+    else if(SM_ERR_RS_SHUTDOWN_FAILED_HEATER == currentState)
+    {
+        m_SchedulerMachine->NotifyRsShutdownFailedHeaterFinished();
     }
 }
 
@@ -1040,6 +1055,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if(cmd == "RC_Report")
         {
             return CTRL_CMD_RC_REPORT;
+        }
+        if(cmd == "RS_Standby")
+        {
+            return CTRL_CMD_RS_STANDBY;
         }
     }
 //    HimalayaErrorHandler::CmdRaiseAlarm* pCmdRaiseAlarm = dynamic_cast<HimalayaErrorHandler::CmdRaiseAlarm*>(pt.GetPointerToUserData());
@@ -1842,7 +1861,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         while(!PopDeviceControlCmdQueue(resRVInitPos));
         ReturnCode_t retCode;
         resRVInitPos->GetResult(retCode);
-        if(DCL_ERR_DEV_RV_MOVE_TO_INIT_POS_SUCCESS != retCode)
+        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
             qDebug()<<"DBG"<<"Failed move to initial position, return code: " << retCode;
@@ -2027,6 +2046,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             mp_IDeviceProcessing->ALSetPressureDrift(pressureDrift);
 #endif
         }
+        CreateFunctionModuleStatusList(&m_FunctionModuleStatusList);
 
 #endif
         // set state machine "init" to "idle" (David)
@@ -2208,6 +2228,76 @@ void SchedulerMainThreadController::ShutdownRetortHeater()
 {
     //todo: add code to shutdown retort heaters
     qDebug()<<"Shut down all retort heaters!";
+}
+
+void SchedulerMainThreadController::ReleasePressure()
+{
+    qDebug()<<"DBG"<<"Send cmd to DCL to let Release Pressure. ";
+    this->AllStop();
+}
+
+void SchedulerMainThreadController::ShutdownFailedHeater()
+{
+   QList<FunctionModuleStatus_t> failList =  this->GetFailedFunctionModuleList(&m_FunctionModuleStatusList);
+   if(failList.count() > 0)
+   {
+       QListIterator<FunctionModuleStatus_t> iter(failList);
+       FunctionModuleStatus_t fmStatus;
+       while(iter.hasNext())
+       {
+           CmdSchedulerCommandBase* cmd;
+           fmStatus = iter.next();
+           switch (fmStatus.FctModID)
+           {
+           case CANObjectKeyLUT::FCTMOD_RV_TEMPCONTROL:
+               m_SchedulerCommandProcessor->pushCmd(new CmdRVSetTempCtrlOFF(500, this));
+               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RV_TEMPCONTROL, false);
+               break;
+           case CANObjectKeyLUT::FCTMOD_AL_LEVELSENSORTEMPCTRL:
+               cmd = new CmdALSetTempCtrlOFF(500, this);
+               (dynamic_cast<CmdALSetTempCtrlOFF*>(cmd))->Settype(AL_LEVELSENSOR);
+               m_SchedulerCommandProcessor->pushCmd(cmd);
+               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_LEVELSENSORTEMPCTRL, false);
+               break;
+           case CANObjectKeyLUT::FCTMOD_AL_TUBE1TEMPCTRL:
+               cmd = new CmdALSetTempCtrlOFF(500, this);
+               (dynamic_cast<CmdALSetTempCtrlOFF*>(cmd))->Settype(AL_TUBE1);
+               m_SchedulerCommandProcessor->pushCmd(cmd);
+               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE1TEMPCTRL, false);
+               break;
+           case CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL:
+               cmd = new CmdALSetTempCtrlOFF(500, this);
+               (dynamic_cast<CmdALSetTempCtrlOFF*>(cmd))->Settype(AL_TUBE2);
+               m_SchedulerCommandProcessor->pushCmd(cmd);
+               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL, false);
+               break;
+           case CANObjectKeyLUT::FCTMOD_OVEN_TOPTEMPCTRL:
+               cmd = new CmdOvenSetTempCtrlOFF(500, this);
+               (dynamic_cast<CmdOvenSetTempCtrlOFF*>(cmd))->Settype(OVEN_TOP);
+               m_SchedulerCommandProcessor->pushCmd(cmd);
+               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_TOPTEMPCTRL, false);
+               break;
+           case CANObjectKeyLUT::FCTMOD_OVEN_BOTTOMTEMPCTRL:
+               cmd = new CmdOvenSetTempCtrlOFF(500, this);
+               (dynamic_cast<CmdOvenSetTempCtrlOFF*>(cmd))->Settype(OVEN_BOTTOM);
+               m_SchedulerCommandProcessor->pushCmd(cmd);
+               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_BOTTOMTEMPCTRL, false);
+               break;
+           case CANObjectKeyLUT::FCTMOD_RETORT_BOTTOMTEMPCTRL:
+               cmd = new CmdRTSetTempCtrlOFF(500, this);
+               (dynamic_cast<CmdRTSetTempCtrlOFF*>(cmd))->SetType(RT_BOTTOM);
+               m_SchedulerCommandProcessor->pushCmd(cmd);
+               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_BOTTOMTEMPCTRL, false);
+               break;
+           case CANObjectKeyLUT::FCTMOD_RETORT_SIDETEMPCTRL:
+               cmd = new CmdRTSetTempCtrlOFF(500, this);
+               (dynamic_cast<CmdRTSetTempCtrlOFF*>(cmd))->SetType(RT_SIDE);
+               m_SchedulerCommandProcessor->pushCmd(cmd);
+               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_SIDETEMPCTRL, false);
+               break;
+           }
+        }
+   }
 }
 
 void SchedulerMainThreadController::MoveRV()
@@ -2523,12 +2613,12 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
             resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_NOT_FULL;
         }
-        else if( DCL_ERR_DEV_BOTTLE_CHECK_BLOCKAGE == RetCode)
+        else if( DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_BLOCKAGE == RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
             resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_BLOCKAGE;
         }
-        else if(DCL_ERR_DEV_BOTTLE_CHECK_EMPTY == RetCode)
+        else if(DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_EMPTY == RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
             resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_EMPTY;
@@ -2538,7 +2628,7 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
             resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_ERROR;
         }
-        else if(DCL_ERR_DEV_BOTTLE_CHECK_TIMEOUT == RetCode)
+        else if(DCL_ERR_DEV_LA_BOTTLECHECK_PRESSUREBUILD_FAILED == RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
             resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_TIMEOUT;
@@ -2616,5 +2706,171 @@ bool SchedulerMainThreadController::IsLastStep(int currentStepIndex, const QStri
 //    ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
     return (pProgram->GetNumberOfSteps() == (currentStepIndex + 1));
 }
+
+bool SchedulerMainThreadController::CreateFunctionModuleStatusList(QList<FunctionModuleStatus_t>* pList)
+{
+    if(pList)
+    {
+        FunctionModuleStatus_t fmStatus;
+        fmStatus.IsAvialable = true;
+        fmStatus.IsWorking = false;
+        fmStatus.StartTime = 0;
+        fmStatus.StopTime = 0;
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_PER_MAINRELAYDO;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_RV_MOTOR;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_RV_TEMPCONTROL;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_AL_PRESSURECTRL;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_AL_LEVELSENSORTEMPCTRL;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_AL_TUBE1TEMPCTRL;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_AL_FANDO;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_OVEN_TOPTEMPCTRL;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_OVEN_BOTTOMTEMPCTRL;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_OVEN_LIDDI;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_RETORT_BOTTOMTEMPCTRL;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_RETORT_SIDETEMPCTRL;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_RETORT_LOCKDO;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_RETORT_LOCKDI;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_PER_REMOTEALARMCTRLDO;
+        pList->push_back(fmStatus);
+        fmStatus.FctModID = CANObjectKeyLUT::FCTMOD_PER_LOCALALARMCTRLDO;
+        pList->push_back(fmStatus);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
+bool SchedulerMainThreadController::SetFunctionModuleWork(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID, bool isWorking)
+{
+    if(pList)
+    {
+        QListIterator<FunctionModuleStatus_t> iter(*pList);
+        quint32 idx = 0;
+        FunctionModuleStatus_t fmStatus;
+        while(iter.hasNext())
+        {
+            fmStatus = iter.next();
+            if(fmStatus.FctModID == ID)
+            {
+                fmStatus.IsWorking = isWorking;
+                if(isWorking)
+                {
+                    fmStatus.StartTime = QDateTime::currentMSecsSinceEpoch();
+                }
+                else
+                {
+                    fmStatus.StopTime = QDateTime::currentMSecsSinceEpoch();
+                }
+                (*pList)[idx] = fmStatus;
+                return true;
+            }
+            idx++;
+        }
+    }
+    return false;
+}
+
+bool SchedulerMainThreadController::SetFunctionModuleHealth(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID, bool isHealth)
+{
+    if(pList)
+    {
+        QListIterator<FunctionModuleStatus_t> iter(*pList);
+        quint32 idx = 0;
+        FunctionModuleStatus_t fmStatus;
+        while(iter.hasNext())
+        {
+            fmStatus = iter.next();
+            if(fmStatus.FctModID == ID)
+            {
+                fmStatus.IsHealth = isHealth;
+                (*pList)[idx] = fmStatus;
+                return true;
+            }
+            idx++;
+        }
+    }
+    return false;
+}
+
+bool SchedulerMainThreadController::SetFunctionModuleStarttime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID)
+{
+    if(pList)
+    {
+        QListIterator<FunctionModuleStatus_t> iter(*pList);
+        quint32 idx = 0;
+        FunctionModuleStatus_t fmStatus;
+        while(iter.hasNext())
+        {
+            fmStatus = iter.next();
+            if(fmStatus.FctModID == ID)
+            {
+                fmStatus.StartTime = QDateTime::currentMSecsSinceEpoch();
+                (*pList)[idx] = fmStatus;
+                return true;
+            }
+            idx++;
+        }
+    }
+    return false;
+}
+
+bool SchedulerMainThreadController::SetFunctionModuleStoptime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID)
+{
+    if(pList)
+    {
+        QListIterator<FunctionModuleStatus_t> iter(*pList);
+        quint32 idx = 0;
+        FunctionModuleStatus_t fmStatus;
+        while(iter.hasNext())
+        {
+            fmStatus = iter.next();
+            if(fmStatus.FctModID == ID)
+            {
+                fmStatus.StopTime = QDateTime::currentMSecsSinceEpoch();
+                (*pList)[idx] = fmStatus;
+                return true;
+            }
+            idx++;
+        }
+    }
+    return false;
+}
+
+QList<FunctionModuleStatus_t> SchedulerMainThreadController::GetFailedFunctionModuleList(QList<FunctionModuleStatus_t>* pList)
+{
+    //Failed: isWorking == true + isHealth == false
+    QList<FunctionModuleStatus_t> unhealthFMList;
+    if(pList)
+    {
+        QListIterator<FunctionModuleStatus_t> iter(*pList);
+        FunctionModuleStatus_t fmStatus;
+        while(iter.hasNext())
+        {
+            fmStatus = iter.next();
+            if((fmStatus.IsWorking)&&(!fmStatus.IsHealth))
+            {
+                unhealthFMList.push_back(fmStatus);
+            }
+        }
+    }
+    return unhealthFMList;
+}
+}

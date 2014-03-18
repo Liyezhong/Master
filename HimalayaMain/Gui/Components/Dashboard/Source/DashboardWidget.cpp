@@ -475,20 +475,23 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
         }
 
         m_CheckEndDatetimeAgain = false;
-        asapEndTime = asapEndTime - 60;//60 seconds: buffer time for "select program" and "Run" operation.
-        QDateTime endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
-        if (endDateTime > m_EndDateTime)
+        if (m_SelectedProgramId.at(0) != 'C')
         {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(CommonString::strWarning);
-            mp_MessageDlg->SetText(m_strResetEndTime);
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-            mp_MessageDlg->HideButtons();
-            if (mp_MessageDlg->exec())
+            asapEndTime = asapEndTime - 60;//60 seconds: buffer time for "select program" and "Run" operation.
+            QDateTime endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+            if (endDateTime > m_EndDateTime)
             {
+                mp_MessageDlg->SetIcon(QMessageBox::Warning);
+                mp_MessageDlg->SetTitle(CommonString::strWarning);
+                mp_MessageDlg->SetText(m_strResetEndTime);
+                mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+                mp_MessageDlg->HideButtons();
+                if (mp_MessageDlg->exec())
+                {
+                    return;
+                }
                 return;
             }
-            return;
         }
 
         if ( mp_DataConnector)

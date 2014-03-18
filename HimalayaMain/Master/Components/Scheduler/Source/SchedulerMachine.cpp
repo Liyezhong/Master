@@ -1,3 +1,22 @@
+/****************************************************************************/
+/*! \file CSchedulerStateMachine.cpp
+ *
+ *  \brief CSchedulerStateMachine class definition.
+ *
+ *   $Version: $ 0.1
+ *   $Date:    $ 02.01.2014
+ *   $Author:  $ Quan Zhang
+ *
+ *  \b Company:
+ *
+ *       Leica Biosystems SH CN.
+ *
+ *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  This is unpublished proprietary source code of Leica. The copyright notice
+ *  does not evidence any actual or intended publication.
+ *
+ */
+/****************************************************************************/
 #include "../Include/SchedulerMachine.h"
 #include "../Include/HimalayaDeviceEventCodes.h"
 #include "QDebug"
@@ -5,6 +24,11 @@
 
 namespace Scheduler
 {
+/****************************************************************************/
+/*!
+ *  \brief    Constructor
+ */
+/****************************************************************************/
 CSchedulerStateMachine::CSchedulerStateMachine()
 {
     m_PreviousState = SM_UNDEF;
@@ -23,6 +47,7 @@ CSchedulerStateMachine::CSchedulerStateMachine()
 
     mp_RSRvGetOriginalPositionAgain = new CRsRvGetOriginalPositionAgain(mp_SchedulerMachine, mp_ErrorState );
     mp_RCReport = new CRCReport(mp_SchedulerMachine, mp_ErrorState );
+    mp_RSStandby = new CRsStandby(mp_SchedulerMachine, mp_ErrorState);
 
     mp_InitState->addTransition(this, SIGNAL(SchedulerInitComplete()), mp_IdleState);
     mp_IdleState->addTransition(this, SIGNAL(RunSignal()), mp_BusyState);
@@ -76,6 +101,10 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     connect(this, SIGNAL(sigRCReport()), mp_RCReport, SIGNAL(RCReport()));
     connect(this, SIGNAL(sigRCReport()), mp_RCReport, SIGNAL(RCReport()));
 
+    connect(this, SIGNAL(sigReleasePressure()), mp_RSStandby, SIGNAL(ReleasePressure()));
+    connect(this, SIGNAL(sigShutdownFailedHeater()), mp_RSStandby, SIGNAL(ShutdownFailedHeater()));
+    connect(this, SIGNAL(sigShutdownFailedHeaterFinished()), mp_RSStandby, SIGNAL(ShutdownFailedHeaterFinished()));
+
     connect(mp_ProgramStepStates, SIGNAL(OnInit()), this, SIGNAL(sigOnInit()));
     connect(mp_ProgramStepStates, SIGNAL(OnHeatLevelSensorTempS1()), this, SIGNAL(sigOnHeatLevelSensorTempS1()));
     connect(mp_ProgramStepStates, SIGNAL(OnHeatLevelSensorTempS2()), this, SIGNAL(sigOnHeatLevelSensorTempS2()));
@@ -94,6 +123,8 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     connect(mp_ProgramStepStates, SIGNAL(OnStateExited()), this, SLOT(OnStateChanged()));
     connect(mp_RSRvGetOriginalPositionAgain, SIGNAL(OnRvMoveToInitPosition()), this, SIGNAL(sigOnRsRvMoveToInitPosition()));
     connect(mp_RCReport, SIGNAL(OnRCReport()), this, SIGNAL(sigOnRCReport()));
+    connect(mp_RSStandby, SIGNAL(OnReleasePressure()), this, SIGNAL(sigOnRsReleasePressure()));
+    connect(mp_RSStandby, SIGNAL(OnShutdownFailedHeater()), this, SIGNAL(sigOnRsShutdownFailedHeater()));
 }
 
 void CSchedulerStateMachine::OnStateChanged()
@@ -123,26 +154,42 @@ void CSchedulerStateMachine::OnStateChanged()
 #endif
 }
 
+/****************************************************************************/
+/*!
+ *  \brief    Destructor
+ */
+/****************************************************************************/
 CSchedulerStateMachine::~CSchedulerStateMachine()
 {
     delete mp_ErrorWaitState;
     mp_ErrorWaitState = NULL;
-    delete mp_ErrorState;
-    mp_ErrorState = NULL;
-    delete mp_BusyState;
-    mp_BusyState = NULL;
+
     delete mp_IdleState;
     mp_IdleState = NULL;
+
     delete mp_InitState;
     mp_InitState = NULL;
-    delete mp_ProgramStepStates;
-    mp_ProgramStepStates = NULL;
-    delete mp_SchedulerMachine;
-    mp_SchedulerMachine = NULL;
+
     delete mp_RSRvGetOriginalPositionAgain;
     mp_RSRvGetOriginalPositionAgain = NULL;
+
+    delete mp_RSStandby;
+    mp_RSStandby = NULL;
+
+    delete mp_ProgramStepStates;
+    mp_ProgramStepStates = NULL;
+
+    delete mp_ErrorState;
+    mp_ErrorState = NULL;
+
+    delete mp_BusyState;
+    mp_BusyState = NULL;
+
+    delete mp_SchedulerMachine;
+    mp_SchedulerMachine = NULL;
 }
 
+//mp_SelfTestStateMachine
 void CSchedulerStateMachine::UpdateCurrentState(SchedulerStateMachine_t currentState)
 {
     if(m_CurrentState != currentState )
@@ -353,6 +400,21 @@ void CSchedulerStateMachine::NotifyRsRvMoveToInitPosition()
 void CSchedulerStateMachine::NotifyRCReport()
 {
     emit sigRCReport();
+}
+
+void CSchedulerStateMachine::NotifyRsReleasePressure()
+{
+    emit sigReleasePressure();
+}
+
+void CSchedulerStateMachine::NotifyRsShutdownFailedHeater()
+{
+    emit sigShutdownFailedHeater();
+}
+
+void CSchedulerStateMachine::NotifyRsShutdownFailedHeaterFinished()
+{
+    emit sigShutdownFailedHeaterFinished();
 }
 
 void CSchedulerStateMachine::NotifyResume()
