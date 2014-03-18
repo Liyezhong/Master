@@ -173,6 +173,9 @@ CSchedulerStateMachine::~CSchedulerStateMachine()
     delete mp_RSRvGetOriginalPositionAgain;
     mp_RSRvGetOriginalPositionAgain = NULL;
 
+    delete mp_RSStandby;
+    mp_RSStandby = NULL;
+
     delete mp_ProgramStepStates;
     mp_ProgramStepStates = NULL;
 
