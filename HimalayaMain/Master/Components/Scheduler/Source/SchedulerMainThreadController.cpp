@@ -441,32 +441,27 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(DCL_ERR_UNDEFINED != retCode)
             {
                 quint32 resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
-                if( DCL_ERR_DEV_BOTTLE_CHECK_OK == retCode)
+                if( DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
                     resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_OK;
                 }
-                else if( DCL_ERR_DEV_BOTTLE_CHECK_NOT_FULL == retCode)
+                else if( DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_INSUFFICIENT == retCode)
                 {
                     m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
                     resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_NOT_FULL;
                 }
-                else if( DCL_ERR_DEV_BOTTLE_CHECK_BLOCKAGE == retCode)
+                else if( DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_BLOCKAGE == retCode)
                 {
                     m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
                     resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_BLOCKAGE;
                 }
-                else if(DCL_ERR_DEV_BOTTLE_CHECK_EMPTY == retCode)
+                else if(DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_EMPTY == retCode)
                 {
                     m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
                     resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_EMPTY;
                 }
-                else if(DCL_ERR_DEV_BOTTLE_CHECK_ERROR == retCode)
-                {
-                    m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
-                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_ERROR;
-                }
-                else if(DCL_ERR_DEV_BOTTLE_CHECK_TIMEOUT == retCode)
+                else if(DCL_ERR_DEV_LA_BOTTLECHECK_PRESSUREBUILD_FAILED == retCode)
                 {
                     m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
                     resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_TIMEOUT;
@@ -589,7 +584,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->NotifyPause(PSSM_READY_TO_FILL);
                 DequeueNonDeviceCommand();
             }
-            else if(DCL_ERR_DEV_AL_FILL_SUCCESS == retCode)
+            else if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 qDebug()<<"DBG" << "Scheduler step: READY_TO_FILL received FILL_SUCCESS, go to next state now.";
                 m_SchedulerMachine->NotifyFillFinished();
@@ -769,7 +764,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     }
                 }
             }
-            else if(DCL_ERR_DEV_AL_DRAIN_SUCCESS == retCode)
+            else if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 m_SchedulerMachine->NotifyDrainFinished();
             }
@@ -866,11 +861,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ABORTING == stepState)
         {
-            if(DCL_ERR_DEV_RV_REF_MOVE_OK == retCode)
+            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 this->Drain();
             }
-            else if(DCL_ERR_DEV_AL_DRAIN_SUCCESS == retCode)
+            else if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 StopDrain();
                 m_SchedulerMachine->NotifyAbort();
@@ -959,13 +954,13 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
     {
         qDebug()<<"DBG" << "RS_RV_GET_ORIGINAL_POSITION_AGAIN Response: "<<retCode;
-        if( DCL_ERR_DEV_RV_MOVE_TO_INIT_POS_SUCCESS == retCode )
+        if( DCL_ERR_FCT_CALL_SUCCESS == retCode )
         {
             qDebug()<<"DBG" << "Response Move to initial position again succeed!";
             Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, true);
             m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
         }
-        else if(DCL_ERR_DEV_RV_MOVE_TO_INIT_FUNC & retCode)
+        else if(DCL_ERR_DEV_RV_MOTOR_CANNOTGET_ORIGINALPOSITION & retCode)
         {
             qDebug()<<"DBG" << "Response Move to initial position again failed!";
             Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, false);
@@ -1842,7 +1837,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         while(!PopDeviceControlCmdQueue(resRVInitPos));
         ReturnCode_t retCode;
         resRVInitPos->GetResult(retCode);
-        if(DCL_ERR_DEV_RV_MOVE_TO_INIT_POS_SUCCESS != retCode)
+        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             //todo: error handling
             qDebug()<<"DBG"<<"Failed move to initial position, return code: " << retCode;
@@ -2523,12 +2518,12 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
             resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_NOT_FULL;
         }
-        else if( DCL_ERR_DEV_BOTTLE_CHECK_BLOCKAGE == RetCode)
+        else if( DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_BLOCKAGE == RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
             resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_BLOCKAGE;
         }
-        else if(DCL_ERR_DEV_BOTTLE_CHECK_EMPTY == RetCode)
+        else if(DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_EMPTY == RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
             resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_EMPTY;
@@ -2538,7 +2533,7 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
             resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_ERROR;
         }
-        else if(DCL_ERR_DEV_BOTTLE_CHECK_TIMEOUT == RetCode)
+        else if(DCL_ERR_DEV_LA_BOTTLECHECK_PRESSUREBUILD_FAILED == RetCode)
         {
             mp_SelfTestStateMachine->NotifyGotCheckStationResult();
             resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_TIMEOUT;
