@@ -1,441 +1,329 @@
 /************************************************************************************************/
+
 /*!\file Include/HimalayaEventCodes.h
+
 * \brief The file is Created by script from EventConfig.csv, Do not modified manually!
+
 */
+
 /************************************************************************************************/
+
 #ifndef HIMALAYAEVENTCODES_H
+
 #define HIMALAYAEVENTCODES_H
-const quint32 EVENT_CRITICAL_ACTION_WARNING_MESG	= 17825795;	///< Switch off not allowed.Wait until transportation is completed.
-const quint32 EVENT_DATALOGGING_ERROR_DATA_LOGGING_DISABLED	= 16973834;	///< Data logging is disabled
-const quint32 EVENT_DATALOGGING_ERROR_EVENT_ID_NOT_EXISTS	= 16973828;	///< Event Id %1 not exists in the event string xml file
-const quint32 EVENT_DATALOGGING_ERROR_FILE_CREATE	= 16973829;	///< Error file not open.
-const quint32 EVENT_DATALOGGING_ERROR_FILE_FLUSH	= 16973832;	///< Error file not open.
-const quint32 EVENT_DATALOGGING_ERROR_FILE_NOT_OPEN	= 16973825;	///< Unable to open the file %1
-const quint32 EVENT_DATALOGGING_ERROR_FILE_REMOVE	= 16973830;	///< Error file not open.
-const quint32 EVENT_DATALOGGING_ERROR_FILE_WRITE	= 16973831;	///< Error file not open.
-const quint32 EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND	= 33817103;	///< 
+
+
+const quint32 EVENT_DM_XML_ATTRIBUTE_NOT_FOUND	= 33817103;	///< XML attributes not found:%1.
+
 const quint32 EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS	= 33619990;	///< Can not change the date and time more than 24 hours of the current system date time is %1.
-const quint32 EVENT_DI_WATER_NOT_AVAILABLE	= 33619980;	///< DI water not available.Program(s) using DI water step will no longer be startable.
-const quint32 EVENT_DM_CANCEL_PLAY_ALARM_TEST_TONE	= 17760273;	///< Can't test alarm at this moment.
-const quint32 EVENT_DM_DEVICE_CONFIG_VERIFICATION_FAILED	= 17235986;	///< DeviceConfiguration Verification Failed
-const quint32 EVENT_DM_DEVICE_CONFIG_XML_READ_FAILED	= 17235984;	///< Device Configuration XML file Read failed
-const quint32 EVENT_DM_ERROR_INVALID_AGITAION_SPEED	= 17760257;	///< %1' is not a valid Agitation Speed
-const quint32 EVENT_DM_ERROR_INVALID_DIRECT_CONNECTION_ONOFFSTATE	= 17760268;	///< %1' is not a valid DirectConnection on/off state
-const quint32 EVENT_DM_ERROR_INVALID_OVENTEMP	= 17760258;	///< %1' is not a valid Oven temperature
-const quint32 EVENT_DM_ERROR_INVALID_PROXY_IP_ADDRESS	= 17760271;	///< %1' is not a valid Proxy IP Address.
-const quint32 EVENT_DM_ERROR_INVALID_PROXY_IP_PORT	= 17760272;	///< %1' is not a valid Proxy IP Port.
-const quint32 EVENT_DM_ERROR_INVALID_REMOTECARE_ONOFFSTATE	= 17760267;	///< %1' is not a valid RemoteCare on/off state.
-const quint32 EVENT_DM_ERROR_INVALID_WATERTYPE	= 17760259;	///< %1' is not a valid Watertype
-const quint32 EVENT_DM_ERROR_NOT_SUPPORTED_LANGUAGE	= 17235973;	///< %1' is not a supported language.
-const quint32 EVENT_DM_ERROR_NO_VALID_NUMBER	= 17235972;	///< %1' is not a valid number.
-const quint32 EVENT_DM_ERROR_PASSWORD_FORMAT	= 17235977;	///< Password does not fit requirements.
-const quint32 EVENT_DM_ERROR_PASSWORD_SERIAL_NUMBER	= 17235978;	///< Serial number does not fit.
-const quint32 EVENT_DM_ERROR_READING_XML_STARTELEMENT	= 17235969;	///< Error reading xml start element '%1'.
-const quint32 EVENT_DM_ERROR_SOUND_LEVEL_OUT_OF_RANGE	= 17760264;	///< Error Sound Level values are Out Of Range
-const quint32 EVENT_DM_ERROR_SOUND_NUMBER_OUT_OF_RANGE	= 17760263;	///< Error Sound Number values are Out Of Range
+
+
 const quint32 EVENT_DM_ERROR_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817857;	///< 
-const quint32 EVENT_DM_ERROR_UNEXPECTED_XML_STARTELEMENT	= 17235970;	///< Unexpected xml start element '%1'. Expected: '%2'
-const quint32 EVENT_DM_ERROR_UNSUPPORTED_VERSION	= 17235975;	///< Unsupported version '%1'.
-const quint32 EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND	= 17235971;	///< xml attribute not found: '%1'.
-const quint32 EVENT_DM_FILE_OPEN_FAILED	= 17235988;	///< %1' file open operation failed
+
+
 const quint32 EVENT_DM_GV_BASE_CONTAINER_IS_NOT_INITIALIZED	= 33817094;	///< Group verification failed. Base container is not initialized.
-const quint32 EVENT_DM_GV_FAILED	= 17235995;	///< Group verification failed
+
+
 const quint32 EVENT_DM_GV_INVALID_CONTAINER_TYPE	= 33817095;	///< Group verification failed. Container type is not valid.
+
 const quint32 EVENT_DM_GV_PROGRAM_IS_NOT_INITIALIZED	= 33817097;	///< Group verification failed. Program container is not initialized.
+
 const quint32 EVENT_DM_GV_REAGENTID_EXIST_IN_PROG_NOT_IN_REAGENT_LIST	= 33817088;	///< Reagent ID exists in Program list but not in Reagent list: %1
+
 const quint32 EVENT_DM_GV_REAGENTID_EXIST_IN_SETTINGS_NOT_IN_REAGENT_LIST	= 33817092;	///< Reagent ID exist in User settings but not in Reagent list: %1
+
 const quint32 EVENT_DM_GV_REAGENT_IS_NOT_INITIALIZED	= 33817096;	///< Group verification failed. Reagent container is not initialized.
+
 const quint32 EVENT_DM_GV_STATIONID_EXIST_IN_STATION_NOT_IN_STATIONMATRIX	= 33817093;	///< Station ID exist in Station list but not in Station matrix : %1
+
 const quint32 EVENT_DM_GV_STATION_IS_NOT_INITIALIZED	= 33817098;	///< Group verification failed. Station container is not initialized.
+
 const quint32 EVENT_DM_GV_USINTERFACE_IS_NOT_INITIALIZED	= 33817101;	///< Group verification failed. User settings container is not initialized.
+
 const quint32 EVENT_DM_INCOMPATIBLE_STEP_REAGENT_GROUP	= 33818114;	///< Program '%1' Reagents  for Step %2 and Step %3 are not compatible.
+
 const quint32 EVENT_DM_INFO_SOUND_LEVEL_OUT_OF_RANGE	= 33817861;	///< 
+
 const quint32 EVENT_DM_INFO_SOUND_NUMBER_OUT_OF_RANGE	= 33817860;	///< 
+
 const quint32 EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817859;	///< 
-const quint32 EVENT_DM_INITIALIZATION_ERROR	= 17235987;	///< %1' Initialization Error
-const quint32 EVENT_DM_INVALID_CAMERA_SLIDEID_DATA	= 17956870;	///< Camera Slide Id data is Invalid.
-const quint32 EVENT_DM_INVALID_COVERSLIPPER_NAME_WIDTH	= 17956867;	///< Cover Slipper device name character count is Invalid.
-const quint32 EVENT_DM_INVALID_DATEFORMAT	= 17235979;	///< %1' is not a valid date format.
-const quint32 EVENT_DM_INVALID_DEVICE_NAME_CHAR_COUNT	= 17956865;	///< Device name character count is Invalid.
-const quint32 EVENT_DM_INVALID_DEVICE_NUMBER_CHAR_COUNT	= 17956866;	///< Device Number character count is Invalid.
-const quint32 EVENT_DM_INVALID_HEATED_CUEVETTES_DATA	= 17956869;	///< Heated Cuevettes mode data is Invalid.
-const quint32 EVENT_DM_INVALID_LEICA_AGITAION_SPEED	= 17760260;	///< %1' is not a valid Leica Agitation Speed
-const quint32 EVENT_DM_INVALID_LEICA_OVENTEMP	= 17760261;	///< %1' is not a valid Leica Oven temperature
-const quint32 EVENT_DM_INVALID_LOADER_REAGENTID	= 17760262;	///< Invalid Reagent Id in Loader station '%1'
-const quint32 EVENT_DM_INVALID_OVENSTARTMODE	= 17235982;	///< %1' is not a valid oven start mode.
+
 const quint32 EVENT_DM_INVALID_PROGRAM_ID	= 33816577;	///< %1' is not a valid Program ID.
-const quint32 EVENT_DM_INVALID_PROXY_PASSWORD_CHAR_COUNT	= 17760270;	///< %1' is not a valid Proxy Password.
-const quint32 EVENT_DM_INVALID_PROXY_USERNAME_CHAR_COUNT	= 17760269;	///< %1' is not a valid Proxy UserName.
-const quint32 EVENT_DM_INVALID_RMS_ONOFFSTATE	= 17235974;	///< %1' is not a valid on/off state.
-const quint32 EVENT_DM_INVALID_STAINER_DEV_NAME_WIDTH	= 17956871;	///< Stainer Device name character count is Invalid.
+
+
 const quint32 EVENT_DM_INVALID_STEP_ID	= 33816608;	///< Step ID %2 in Program %1 is invalid
-const quint32 EVENT_DM_INVALID_TEMPFORMAT	= 17235981;	///< %1' is not a valid temperature format .
-const quint32 EVENT_DM_INVALID_TIMEFORMAT	= 17235980;	///< %1' is not a valid time format.
-const quint32 EVENT_DM_INVALID_WSMODE_DATA	= 17956868;	///< Work Station mode data is Invalid.
-const quint32 EVENT_DM_NULL_PTR	= 33816621;	///< Programs NULL pointer error
+
 const quint32 EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE	= 33817862;	///< 
+
 const quint32 EVENT_DM_PROG_ADD_FAILED_INTERNAL_ERR	= 33816626;	///< Internal Software Error. Adding rogram failed. Please contact service.
+
 const quint32 EVENT_DM_PROG_COUNT_EXCEEDS_LIMIT	= 33816597;	///< Program list contains more than %1 programs. Only %1 programs allowed
+
 const quint32 EVENT_DM_PROG_DELETE_FAILED_ID_NOT_FOUND	= 33816624;	///< Delete program failed due to invalid Program ID %1.
+
 const quint32 EVENT_DM_PROG_DEL_FAILED_INTERNAL_ERR	= 33816631;	///< Internal Software Error. Program delete failed. Please contact service.
+
 const quint32 EVENT_DM_PROG_ID_NOT_UNIQUE	= 33816623;	///< Program ID %1 associated with Program %2 is not unique .
+
 const quint32 EVENT_DM_PROG_INVALID_DURATION_FORMAT	= 33816620;	///< Program step(s) in Program %1 contains invalid duration format
+
 const quint32 EVENT_DM_PROG_NAME_LENGTH_CHECK_FAILED	= 33818117;	///< Length of the Program name exceeds limit for the program '%1'. Valid Range '%2' - '%3' characters.
+
 const quint32 EVENT_DM_PROG_NAME_NOT_UNIQUE	= 33818113;	///< Program name '%1' already in use. Please choose different Program name.
+
 const quint32 EVENT_DM_PROGRAM_INVALID_INDEX	= 33816596;	///< Invalid Index in program hash table.
+
 const quint32 EVENT_DM_PROGRAM_VERIFICATION_FAILED	= 33816592;	///< Verifying Programs.xml failed.
+
 const quint32 EVENT_DM_PROGRAM_XML_READ_FAILED	= 33816584;	///< Reading Programs.xml failed.
-const quint32 EVENT_DM_PROGSEQ_ID_DOESTNOT_EXISTS	= 33817346;	///< Program Sequence ID '%1' does not exists in the list.
-const quint32 EVENT_DM_PROGSEQ_ID_REPEATED	= 33817345;	///< Program Sequence ID '%1' already in use. Please choose different ID.
-const quint32 EVENT_DM_PROGSEQ_OPERATION_FAILED	= 33817347;	///< Program Sequence '%1' operation failed
+
 const quint32 EVENT_DM_PROG_STEP_COUNT_EXCEEDS_LIMIT	= 33816605;	///< Number of steps in Program %1 exceeds limit. Max 50 steps allowed.
+
 const quint32 EVENT_DM_PROG_STEP_COUNT_LESS_LIMIT	= 33818116;	///< Program '%1' must have '%2' step(s) at least.
+
 const quint32 EVENT_DM_PROG_STEP_DURATION_EXCEED_LIMIT	= 33818118;	///< Duration in Step '%1' of Program '%2' exceeds limits, validated range : '%3' - '%4'.
+
 const quint32 EVENT_DM_PROG_STEP_TEMP_EXCEED_LIMIT	= 33818119;	///< Temperature in Step '%1' of Program '%2' exceeds limits, validated range : '%3' - '%4' (Celsius).
+
 const quint32 EVENT_DM_PROG_VERFIER_INVALID_REAGENT_ID	= 33816606;	///< Program Verifier found invalid Reagent ID %2 in the program %1.
-const quint32 EVENT_DM_REAGENT_EXCEEDS_LIMIT	= 33816837;	///< Too many reagents (max 100 allowed):
-const quint32 EVENT_DM_REAGENT_ID_DOESTNOT_EXISTS	= 33816836;	///< Reagent ID '%1' does not exists in the list
-const quint32 EVENT_DM_REAGENT_ID_NOT_UNIQUE	= 33816835;	///< Reagent ID '%1' already in use. Please choose different Reagent ID
-const quint32 EVENT_DM_REAGENT_INVALID_PREFIX	= 33816838;	///< Reagent '%1' Reagent ID doesn't start with S or L or U
+
+
 const quint32 EVENT_DM_REAGENT_LIST_READ_FAILED	= 33816846;	///< ReagentList reading failed '%1' reagents
+
 const quint32 EVENT_DM_REAGENT_LIST_WRITE_FAILED	= 33816845;	///< ReagentList writing failed '%1' reagents
-const quint32 EVENT_DM_REAGENT_MAXSLIDES_EXCEEDS_LIMIT	= 33816841;	///< Reagent '%1' The value for Slides max must be equal or less than 3000.
+
 const quint32 EVENT_DM_REAGENT_NAME_LENGTH_CHECK_FAILED	= 33816840;	///< Reagent '%1' Name is too long (max 32 Characters)
-const quint32 EVENT_DM_REAGENT_NAME_NOT_UNIQUE	= 33816833;	///< Reagent name '%1' already in use. Please choose different reagent name
-const quint32 EVENT_DM_REAGENT_NAME_UNIQUE	= 33816848;	///< Reagent name must be unique.
-const quint32 EVENT_DM_REAGENT_OPERATION_FAILED	= 33816847;	///< Reagent : '%1' operation failed
-const quint32 EVENT_DM_REAGENT_VERIFICATION_FAILED	= 33816591;	///< Verifying Reagents.xml failed.
-const quint32 EVENT_DM_REAGENT_XML_READ_FAILED	= 33816585;	///< Reading Reagents.xml failed.
+
+
 const quint32 EVENT_DM_RMS_CLEANING_OUT_OF_RANGE	= 33817864;	///< 
+
 const quint32 EVENT_DM_RMS_PROCESSING_OUT_OF_RANGE	= 33817863;	///< 
-const quint32 EVENT_DM_SETTINGS_UPDATE_FAILED	= 17760274;	///< Generic failure message
-const quint32 EVENT_DM_SETTINGS_VERIFICATION_FAILED	= 17235985;	///< UserSettings Verification Failed
-const quint32 EVENT_DM_SETTINGS_XML_READ_FAILED	= 17235983;	///< UserSettings XML File Read failed
-const quint32 EVENT_DM_STATIONS_XML_READ_FAILED	= 33816587;	///< Reading Stations.xml failed.
-const quint32 EVENT_DM_STATION_VERIFICATION_FAILED	= 33816590;	///< Verifying Station.xml failed.
-const quint32 EVENT_DM_STREAMIN_FAILED	= 17235990;	///< %1' Stream In Operation failed
-const quint32 EVENT_DM_STREAMOUT_FAILED	= 17235991;	///< %1' Stream Out Operation failed
+
+
 const quint32 EVENT_DM_USER_PROGRAM_NAME_CONTAINS_LEICA	= 33818115;	///< User Program name can not contain 'leica' word.
-const quint32 EVENT_DM_WARN_SOUND_LEVEL_OUT_OF_RANGE	= 17760266;	///< Warning Sound Level values are Out Of Range
-const quint32 EVENT_DM_WARN_SOUND_NUMBER_OUT_OF_RANGE	= 17760265;	///< Warning Sound Number values are Out Of Range
+
+
 const quint32 EVENT_DM_WARN_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817858;	///< 
-const quint32 EVENT_DM_XML_DESERIALIZE_FAILED	= 17235994;	///< %1' XML De Serialization failed
-const quint32 EVENT_DM_XML_FILE_NOT_EXISTS	= 17235992;	///< %1' XML file not exists
-const quint32 EVENT_DM_XML_SERIALIZE_FAILED	= 17235993;	///< %1' XML Serialization failed
-//const quint32 EVENT_ERROR_STATE	= 17039361;	///< Colorado has switched to error state
-//const quint32 EVENT_EVENT_ID_MISSING	= 17039364;	///< Internal software error: EventId is missing %1
-const quint32 EVENT_EXPORT_AES_NOT_INITIALIZED	= 17629209;	///< Export failed. Advance Encryption Standard is not initialized
-const quint32 EVENT_EXPORT_CANNOT_OPEN_FILE_FOR_READ	= 17629201;	///< Export failed. Cannot open the file for reading
-const quint32 EVENT_EXPORT_CANNOT_OPEN_FILE_FOR_WRITE	= 17629202;	///< Export failed. Cannot open the file for writing
-const quint32 EVENT_EXPORT_CRYTOSERVICE_RUNNING	= 17629200;	///< Export failed. Trying to run more than one Cryptoservice
-const quint32 EVENT_EXPORT_DIRECTORY_CREATION_FAILED	= 17629185;	///< Export failed. Directory creation failed
-const quint32 EVENT_EXPORT_ERROR_TO_READ	= 17629203;	///< Export failed. Error in reading file
-const quint32 EVENT_EXPORT_ERROR_TO_WRITE	= 17629204;	///< Export failed. Error in writing file
-const quint32 EVENT_EXPORT_FAILED	= 17629194;	///< Export failed.
-const quint32 EVENT_EXPORT_FILES_NOT_COPIED	= 17629186;	///< Export failed. File copying failed
-const quint32 EVENT_EXPORT_HMAC_COMPUTATION_STARTED	= 17629213;	///< Export failed. Hash-based message authentication code computation already started
-const quint32 EVENT_EXPORT_HMAC_NOT_INITIALIZED	= 17629208;	///< Export failed. Hash-based message authentication code is not initialized
-const quint32 EVENT_EXPORT_INDEX_IS_MATCHING	= 17629205;	///< Export failed. Hash chain index and USB device indexes are matching
-const quint32 EVENT_EXPORT_INIT_CONTAINER_FAILED	= 17629190;	///< Export failed. Container initialization failed
-const quint32 EVENT_EXPORT_INTEGER_SIZE_IS_MORE	= 17629210;	///< Export failed. Size of the array shall be either 4 or 2 or 1
-const quint32 EVENT_EXPORT_INVALID_EXPORT	= 17629199;	///< Export failed. Invalid type of requested export
-const quint32 EVENT_EXPORT_INVALID_FILE_MODE	= 17629212;	///< Export failed. Wrong file mode is detected
-const quint32 EVENT_EXPORT_KEYDATA_SIZE_IS_NOT_MATCHING	= 17629207;	///< Export failed. Key file size is not matching with the in-built key file size
-const quint32 EVENT_EXPORT_KEY_SIZE_LESS	= 17629206;	///< Export failed. Key file size is more by comparing with hash block size
-const quint32 EVENT_EXPORT_LOG_DIRECTORY_NOT_EXISTS	= 17629197;	///< Export failed. Log directory does not exist
-const quint32 EVENT_EXPORT_MSB_BIT_IS_NOT_SET	= 17629211;	///< Export failed. Most significat bit not set for calculations
-const quint32 EVENT_EXPORT_SOURCE_DIRECTORY_NOT_EXISTS	= 17629195;	///< Export failed. Source directory does not exist
-const quint32 EVENT_EXPORT_SUCCESS	= 17629193;	///< Export successful.
-const quint32 EVENT_EXPORT_TARGET_DIRECTORY_NOT_EXISTS	= 17629196;	///< Export failed. Target directory does not exist
-const quint32 EVENT_EXPORT_TARGET_FILE_FORMAT_IS_WRONG	= 17629198;	///< Export failed. Target file name format is wrong
-const quint32 EVENT_EXPORT_UNABLE_TO_ARCHIVE_FILES	= 17629192;	///< Export failed. Unable to archive the files
-const quint32 EVENT_EXPORT_UNABLE_TO_CREATE_FILE_RMS_STATUS	= 17629187;	///< Export failed. Unable to create the RMS_Status.csv file
-const quint32 EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION	= 17629188;	///< Export failed. Unable to create the TempConfiguration.xml file
-const quint32 EVENT_EXPORT_UNABLE_TO_READ_FILE_TEMP_EXPORTCONFIGURATION	= 17629189;	///< Export failed. Unable to read the TempConfiguration.xml file
-const quint32 EVENT_EXPORT_VERIFICATION_CONTAINER_FAILED	= 17629191;	///< Export failed. Verification of the container failed
-const quint32 EVENT_EXPORT_ZIP_COMMAND_NOT_FOUND	= 17629215;	///< Export failed. Zip command not found in the system
-const quint32 EVENT_EXPORT_ZIP_ERROR	= 17629214;	///< Export failed. Unable to zip the files
-const quint32 EVENT_EXPORT_ZIP_IS_TAKING_LONGTIME	= 17629216;	///< Export failed. Zip is taking long time to complete the request
+
 const quint32 EVENT_EXPORT_NO_ENOUGH_SPACE_ON_SD_CARD	= 50331649;	///< Export failed. No enough space on SD card.
+
 const quint32 EVENT_EXPORT_NO_ENOUGH_SPACE_ON_USB_CARD	= 50331672;	///< Export failed. No enough space on USB storage.
-const quint32 EVENT_EXTERNALPROCESSCONTROL_ERROR_CREATOR_FUNCTOR_ALREADY_REGISTERED	= 17498118;	///< Creator functor already registered for: '%1'.
-const quint32 EVENT_EXTERNALPROCESSCONTROL_ERROR_INITIALIZE_EXTERNAL_PROCESS_DEVICE	= 17498114;	///< Error initializing external process device.
-const quint32 EVENT_EXTERNALPROCESSCONTROL_ERROR_INITIALIZE_FULL_STATE_MACHINE	= 17498116;	///< Error initializing full state machine.
-const quint32 EVENT_EXTERNALPROCESSCONTROL_ERROR_INITIALIZE_PROCESS_MANAGER	= 17498117;	///< Error initializing process manager.
-const quint32 EVENT_EXTERNALPROCESSCONTROL_ERROR_INITIALIZE_SIMPLE_STATE_MACHINE	= 17498115;	///< Error initializing simple state machine.
-const quint32 EVENT_EXTERNALPROCESSCONTROL_ERROR_LOADING_SETTINGS	= 17498113;	///< Error loading settings.
-const quint32 EVENT_EXTERNALPROCESSCONTROL_ERROR_NO_CREATOR_FUNCTOR_REGISTERED	= 17498119;	///< Error no creator functor registered for class: '%1'.
-const quint32 EVENT_EXTERNALPROCESSCONTROL_ERROR_REFERENCE_ALREADY_REGISTERED	= 17498120;	///< Error reference already registered '%1' for command '%2'.
-const quint32 EVENT_EXTERNALPROCESSCONTROL_ERROR_UNKNOWN_REFERENCE	= 17498121;	///< External Process Controller:Unknown Command Reference %1. File %2 Line %3
-const quint32 EVENT_GLOBAL_CURRENT_TIME_OFFSET	= 16846859;	///< Current time offset is '%1' seconds.
-const quint32 EVENT_GLOBAL_ERROR_COMPUTING_NEW_REF	= 16842774;	///< Unable to compute new command ref.
+
 const quint32 EVENT_GLOBAL_ERROR_FALLBACK_LANGUAGE	= 16842764;	///< Could not set fallback language to '%1'.
-const quint32 EVENT_GLOBAL_ERROR_FILE_CREATE	= 16842765;	///< Error creating file %1.
-const quint32 EVENT_GLOBAL_ERROR_FILE_OPEN	= 16842766;	///< Error opening file %1.
+
 const quint32 EVENT_GLOBAL_ERROR_FILE_REMOVE	= 16842767;	///< Error deleting file %1.
+
 const quint32 EVENT_GLOBAL_ERROR_FILE_SEEK	= 16842771;	///< Error seeking in file %1.
+
 const quint32 EVENT_GLOBAL_ERROR_FILE_WRITE	= 16842768;	///< Error writing data: File %1. %2 bytes of %3 written.
-const quint32 EVENT_GLOBAL_ERROR_MEMORY_ALLOCATION	= 16842755;	///< Memory allocation error: file: %1 line: %2.
-const quint32 EVENT_GLOBAL_ERROR_MONOTONIC_CLOCK	= 16842763;	///< Error reading monotonic clock.
-const quint32 EVENT_GLOBAL_ERROR_NULL_POINTER	= 16842756;	///< Pointer is NULL: %1 file: %2 line: %3.
+
+
 const quint32 EVENT_GLOBAL_ERROR_READ_CONFIG_FILE	= 16842762;	///< Error reading config file %1.
-const quint32 EVENT_GLOBAL_ERROR_SIGNAL_NOT_CONNECTED	= 16842758;	///< Command or acknowledgement has no receiver (command '%1' - channel '%2')
-const quint32 EVENT_GLOBAL_ERROR_SIGNAL_RECEIVED	= 16842775;	///< We have an unexpected signal (possibly crash)
-const quint32 EVENT_GLOBAL_ERROR_SIGNAL_SIGNAL_CONNECT	= 16842760;	///< Error connecting signal %1::%2 to signal %3::%4 in file: %5 line: %6.
-const quint32 EVENT_GLOBAL_ERROR_SIGNAL_SLOT_CONNECT	= 16842759;	///< Error connecting signal %1::%2 to slot %3::%4 in file: %5 line: %6.
+
+
 const quint32 EVENT_GLOBAL_ERROR_TIME_OFFSET_TOO_LARGE	= 16842772;	///< Time offset is too large '%1' seconds. Allowed: '%2' seconds.
-const quint32 EVENT_GLOBAL_ERROR_UNKNOWN_EXCEPTION	= 16842754;	///< Unknown exception caught: file: %1 line: %2.
+
 const quint32 EVENT_GLOBAL_POWER_FAIL	= 16846860;	///< Power fail.
+
 const quint32 EVENT_GLOBAL_SET_DATE_TIME	= 16846858;	///< Setting date / time to '%1'.
-const quint32 EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE	= 16846848;	///< Debug message: '%1'
-const quint32 EVENT_GLOBAL_STRING_ID_EVTTYPE_DEBUG	= 16846854;	///< Debug
-const quint32 EVENT_GLOBAL_STRING_ID_EVTTYPE_ERROR	= 16846851;	///< Error
-const quint32 EVENT_GLOBAL_STRING_ID_EVTTYPE_FATAL_ERROR	= 16846850;	///< FatalError
-const quint32 EVENT_GLOBAL_STRING_ID_EVTTYPE_INFO	= 16846853;	///< Info
-const quint32 EVENT_GLOBAL_STRING_ID_EVTTYPE_UNDEFINED	= 16846849;	///< Undefined Type
-const quint32 EVENT_GLOBAL_STRING_ID_EVTTYPE_WARNING	= 16846852;	///< Warning
-const quint32 EVENT_GLOBAL_STRING_TERMINATING	= 16846857;	///< Terminating software.
-const quint32 EVENT_GLOBAL_UNCAUGHT_EXCEPTION	= 16842776;	///< We have an unexpected signal (possibly crash)
+
 const quint32 EVENT_GLOBAL_UNDEFINED	= 16908287;	///< undefined. Used for initialisations
-const quint32 EVENT_GLOBAL_UNKNOWN_STRING_ID	= 16842753;	///< Unknown String ID
-const quint32 EVENT_GLOBAL_USER_ACTIVITY_US_LANGUAGE_CHANGED	= 16843272;	///< Language set to %1
-const quint32 EVENT_GLOBAL_USER_ACTIVITY_US_NETWORK_SETTINGS_ADDED	= 16843275;	///< Network Settings changed
-//const quint32 EVENT_GROUP_PLATFORM_DEVICECOMMANDPROCESSOR	= 17301504;	///<
-//const quint32 EVENT_GUI_AVAILABLE	= 17039363;	///< GUI is available
-const quint32 EVENT_HIMALAYA_DM_GV_FAILED	= 33619987;	///< Group verification is failed
+
 const quint32 EVENT_HIMALAYA_START	= 33619971;	///< Stainer started (serial number is %1 and type is %2)
+
 const quint32 EVENT_IMPORT_ARCHIVE_FILE_FORMAT_NOT_PROPER	= 33947653;	///< Import failed. Format of import file is wrong
+
 const quint32 EVENT_IMPORTEXPORT_NO_USB	= 33947649;	///< No USB devices found in the system to import files
+
 const quint32 EVENT_IMPORTEXPORT_THREADRUNNING	= 33947665;	///< ImportExport thread already running
+
 const quint32 EVENT_IMPORT_FAILED	= 33947664;	///< Import failed
+
 const quint32 EVENT_IMPORT_INIT_CONTAINER_FAILED	= 33947657;	///< Import failed. Container initialization failed
+
 const quint32 EVENT_IMPORT_NEW_EVENTSTRING_FILE_MISSING	= 33947661;	///< Files for language import are not available
+
 const quint32 EVENT_IMPORT_NO_FILES_TO_IMPORT	= 33947652;	///< Import failed. There are no files to Import the data
+
 const quint32 EVENT_IMPORT_REQUIRED_FILES_NOT_AVAILABLE	= 33947655;	///< Import failed. Required files are not available to Import
+
 const quint32 EVENT_IMPORT_ROLLBACK_FAILED	= 33947659;	///< Import failed. Rollback failed
+
 const quint32 EVENT_IMPORT_SUCCESS	= 33947662;	///< Import successful. Please generate new bathlayout
+
 const quint32 EVENT_IMPORT_SUCCESS_LANGUAGE	= 33947663;	///< Import successful. Language files are updated
+
 const quint32 EVENT_IMPORT_SWVERSION_NOT_MATCHING	= 33947656;	///< Import failed. SW versions are not matching to Import the files
+
 const quint32 EVENT_IMPORT_UPDATE_ROLLBACK_FAILED	= 33947660;	///< Import failed. Updating rollback failed
+
 const quint32 EVENT_IMPORT_VERIFICATION_CONTAINER_FAILED	= 33947658;	///< Import failed. Verification of the container failed
-//const quint32 EVENT_NORMAL_STATE	= 17039362;	///< Colorado has switched to normal state
+
 const quint32 EVENT_PASSWORD_CHANGED_SUCCESSFULLY	= 33619974;	///< Password changed successfully.
+
 const quint32 EVENT_PASSWORD_INCORRECT	= 33619972;	///< Login failed. Incorrect password.
-const quint32 EVENT_PASSWORDMANAGER_BASIC_TAG_VALUE_IS_WRONG	= 17694727;	///< Service authentication failed. Service User is not trained for this instrument
-const quint32 EVENT_PASSWORDMANAGER_CHECKSUM_NOT_MATCHED	= 17694724;	///< Service authentication failed. Service Key file is invalid
-const quint32 EVENT_PASSWORDMANAGER_DATE_IS_EXPIRED	= 17694725;	///< Service authentication failed. Training date is expired for the entered password
-const quint32 EVENT_PASSWORDMANAGER_DEVICENAME_NOT_EXISTS	= 17694726;	///< Service authentication failed. Instrument Device name does not exist in the key file
-const quint32 EVENT_PASSWORDMANAGER_HASH_NOT_MATCHED	= 17694723;	///< Service authentication failed. Service PIN is invalid
-const quint32 EVENT_PASSWORDMANAGER_KEY_FILE_NOT_FOUND	= 17694722;	///< Service authentication failed. Unable to read Service Key file from USB
-const quint32 EVENT_PASSWORDMANAGER_LOG_SERVICE_ID	= 17694728;	///< Service login successful and the service id is %1
-const quint32 EVENT_PASSWORDMANAGER_NO_USB_DEVICE_EXISTS	= 17694721;	///< Service authentication failed. No USB device found
+
+
 const quint32 EVENT_PASSWORD_NOT_MATCHING	= 33619973;	///< Unable to change the password. Passwords are not matching.
-const quint32 EVENT_PRESS_SOFTSWITCH_TO_SHUTDOWN	= 17825793;	///< To switch off press button again
-const quint32 EVENT_PRESS_SOFTSWITCH_TO_SHUTDOWN_WITH_WARNING	= 17825794;	///< To switch off press button again.Warning:staining procedure is still in progress.
+
+
 const quint32 EVENT_PROCESS_HIMALAYA_GUI_CONNECTED	= 33619978;	///< Coverslipper Device Connected
+
 const quint32 EVENT_PROCESS_HIMALAYA_GUI_STOPPED	= 33619975;	///< Stainer GUI process has stopped
-//const quint32 EVENT_SOFTSWITCH_MONITOR_START	= 17891329;	///< SoftSwitch monitor started
-//const quint32 EVENT_SOFTSWITCH_PRESSED_FIRST_TIME	= 17891330;	///< SoftSwitch pressed for the first time after bootup
-const quint32 EVENT_STATEMACHINES_ERROR_ADD_STATE_FAILED	= 17367045;	///< Error adding state '%1'.
-const quint32 EVENT_STATEMACHINES_ERROR_ADD_TRANSITION_FAILED	= 17367042;	///< Error adding transition between states '%1' and '%2' for index %3.
-const quint32 EVENT_STATEMACHINES_ERROR_REMOVE_ALL_TRANSITIONS_FAILED	= 17367044;	///< Error removing all state transitions between states '%1' and '%2'.
-const quint32 EVENT_STATEMACHINES_ERROR_REMOVE_CURRENT_STATE	= 17367047;	///< Can not remove state '%1'. It is the current state.
-const quint32 EVENT_STATEMACHINES_ERROR_REMOVE_STATE_FAILED	= 17367046;	///< Error removing state '%1'.
-const quint32 EVENT_STATEMACHINES_ERROR_REMOVE_TRANSITION_FAILED	= 17367043;	///< Error removing transition between states '%1' and '%2' for index %3.
-const quint32 EVENT_STATEMACHINES_ERROR_TRANSITION_EXISTS	= 17367041;	///< Transition between states '%1' and '%2' for index %3 already exists.
-const quint32 EVENT_STATEMACHINES_ERROR_UNKNOWN_STATE	= 17367048;	///< Unknown state '%1'.
+
 const quint32 EVENT_STATIONS_DEFECT	= 33619977;	///< The Following Station(s) are defect: %n. Programs using defective stations will no longer be startable.
-//const quint32 EVENT_SYSTEM_INIT_COMPLETE	= 17891331;	///< System initialization complete
-const quint32 EVENT_THREADS_ERROR_ACKNOWLEDGE_FUNCTOR_ALREADY_REGISTERED	= 16908300;	///< Functor already registered for acknowledge: '%1'.
-const quint32 EVENT_THREADS_ERROR_COMMAND_FUNCTOR_ALREADY_REGISTERED	= 16908299;	///< Functor already registered for command: '%1'.
-const quint32 EVENT_THREADS_ERROR_COMMAND_HAS_TIMEOUT	= 16908304;	///< Error: Command %1 has a timeout.
-const quint32 EVENT_THREADS_ERROR_COMMAND_TIMEOUT	= 16908302;	///< Command timeout '%1' (ref %2)
-const quint32 EVENT_THREADS_ERROR_TIMEOUT_FUNCTOR_ALREADY_REGISTERED	= 16908301;	///< Functor already registered for timeout: '%1'.
-const quint32 EVENT_THREADS_ERROR_UNKNOWN_COMMAND_REF	= 16908296;	///< Unknown command reference %1
-const quint32 EVENT_THREADS_ERROR_UNSUPPORTED_ACKNOWLEDGE	= 16908298;	///< Unsupported acknowledgement %1
-const quint32 EVENT_THREADS_ERROR_UNSUPPORTED_COMMAND	= 16908297;	///< Unsupported command %1
-const quint32 EVENT_RECOVERY_FAIL_PLEASE_CONTACT_SERVICE	= 50331673;	///< Recovery fail, please contact service for help. Error Code: %1, Scenario: %2
-const quint32 EVENT_ERR_bottom_sidelow_heating_element_failed	= 513010001;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_sidetop_sidemid_heating_element_failed	= 513010101;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_thermal_sensor1_temperature_overrange	= 513010201;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_thermal_sensor2_temperature_overrange	= 513010221;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_thermal_sensor3_temperature_overrange	= 513010241;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_thermal_sensor1_tosensor2_selfcalibration_failed	= 513010261;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_Levelsensor_heating_Overtime	= 513010301;	///< Levelsensor failed, please open retort lid and clear level senor by recommend tool in IFU, then close retort lid and recovery
-const quint32 EVENT_ERR_Levelsensor_temperature_overrange	= 513010321;	///< Levelsensor failed, please open retort lid and clear level senor by recommend tool in IFU, then close retort lid and recovery
-const quint32 EVENT_ERR_lidlock_cannot_open	= 513010421;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_lidlock_close_status	= 513010461;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_WaxBath_top_heating_pad_failed_Current_OutofRange	= 513020001;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_WaxBath_bottom_heating_pad_failed_Current_OutofRange	= 513020002;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_WaxBath_Heating_SensorUp_Failed_OutofRange	= 513020011;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_WaxBath_Heating_SensorDown1_Failed_OutofRange	= 513020012;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_WaxBath_Heating_SensorDown2_Failed_OutofRange	= 513020013;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_WaxBath_heating_SensorUp_Low	= 512020021;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_WaxBath_heating_SensorDown1_Low	= 512020022;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_WaxBath_heating_SensorDown2_Low	= 512020023;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_WaxBath_OvenCover_status_Open_Protocal	= 512020031;	///< Paraffin oven cover is open, add solid paraffin now is not permitted, please close paraffin oven cover!
-const quint32 EVENT_ERR_RV_Motor_CannotGet_OriginalPosition	= 513030001;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_RV_Motor_InternalSteps_Retry	= 513030011;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_RV_NoReagentInRetort_Motor_InternalSteps_ExceedUpperlimit	= 511030021;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_RV_ReagentInRetort_Motor_InternalSteps_ExceedUpperlimit	= 513030031;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_RV_Heating_TempSensor1_OutofRange	= 513030051;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_RV_Heating_TempSensor2_OutofRange	= 513030061;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_RV_Heating_Current_OutofRange	= 513030071;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_RV_Heating_Tempsensor2_Overtime	= 513030081;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_RV_Heating_TempSensor2_Lessthan_30DegreeC_OverTime	= 513030091;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_RV_NoReagentInRetort_Motor_LostCurrentPosition	= 511030101;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_RV_ReagentInRetort_Motor_LostCurrentPosition	= 513030111;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_PressureSensor_SelfTest_Failed	= 513040001;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_BottleCheck_PressureBuild_Failed	= 513040011;	///< Bottle check failed! The usual reason are Retort sealing issue or sealing issue sw elase! Please confirm the Retort lid is locked well and try again.
-const quint32 EVENT_ERR_BottleCheck_Failed_Empty	= 513040012;	///< No i Bottle should be empty or no bottle! Pls have a check about the bottle and recovery the ERR. If still fail, please call for sevice!
-const quint32 EVENT_ERR_BottleCheck_Failed_Insufficient	= 512040013;	///< No i Bottle should be Insufficient or somewhere is leakage, Pls have a check about the bottle and recovery the ERR! If still fail, please call for sevice!
-const quint32 EVENT_ERR_BottleCheck_Failed_Blockage	= 513040014;	///< No i Bottle or the liquid path of this bottle should be blockaged! Pls have a check about the bottle and recovery the ERR! If still fail, please call for sevice! (Please using the cleaning xylene to implement the Blockage-recovery program.)
-const quint32 EVENT_ERR_PreTest_Sealing_Failed_Pressure	= 513040021;	///< Pretest  - Sealing function-Pressure Failed! Please check the Retort lid is closed correctly and retry. If still fail, please call for sevice!
-const quint32 EVENT_ERR_Protocol_Sealing_Failed_Pressure	= 512040022;	///< Sealing function-Pressure failed in xxxxx protocol the protocol can be continue! Please confirm the status and make your choice. Before you chose recovery, please confirm the retort lid is locked properly. 
-const quint32 EVENT_ERR_PreTest_Sealing_Failed_Vacuum	= 513040051;	///< Pretest  - Sealing function-Pressure Failed! Please check the Retort lid is closed correctly and retry. If still fail, please call for sevice!
-const quint32 EVENT_ERR_Protocol_Sealing_Failed_Vacuum	= 512040052;	///< Sealing function-vacuum failed in xxxxx protocol! Please confirm the status and make your choice. Before you chose recovery, please confirm the retort lid is locked properly. 
-const quint32 EVENT_ERR_Filling_TimeOut_2min	= 511040101;	///< Filling time of Bottle 1% exceed 2 min which always means there is some blockage in this path. Please pay attention to the reagent of this path whether has been expired.
-const quint32 EVENT_ERR_Reagent_Filling_TimeOut_4min	= 513040121;	///< Filling time of  Bottle 1%  failed which always means there is serious blockage in this path.  Please pay attention to the reagent of this path! Please change a new bottle and try again.
-const quint32 EVENT_ERR_Paraffin_Filling_TimeOut_4min	= 513040125;	///< Filling time of  Bottle 1% failed which always means there is serious blockage in this path.  Please pay attention to the reagent of this path! Please change a new bottle and try again.
-const quint32 EVENT_ERR_Cleaning_Filling_TimeOut_4min_Cleaning	= 513040216;	///< Filling time of  Bottle 1%  failed which always means there is serious blockage in this path.  Please pay attention to the reagent of this path! Please change a new bottle and try again.
-const quint32 EVENT_ERR_Reagent_Filling_Overflow	= 513040141;	///< Overflow was detected when processed Bottle i! Level-sensor in Retort should have some issue! Levelsensor failed, please open retort lid and clear level senor by recommend tool in IFU, then close retort lid and recovery
-const quint32 EVENT_ERR_Paraffin_Filling_Overflow	= 513040142;	///< Overflow was detected when processed Bottle i! Level-sensor in Retort should have some issue! Levelsensor failed, please open retort lid and clear level senor by recommend tool in IFU, then close retort lid and recovery
-const quint32 EVENT_ERR_Cleaning_Filling_Overflow	= 513040143;	///< Overflow was detected when processed Bottle i! Level-sensor in Retort should have some issue! Levelsensor failed, please open retort lid and clear level senor by recommend tool in IFU, then close retort lid and recovery
-const quint32 EVENT_ERR_Cleaning_ErrHandling_OverFlow	= 513040143;	///< The recovery failed, Error ID, please call for service.
-const quint32 EVENT_ERR_Reagent_Draining_TimeOut_BulidPressure	= 513040201;	///< Draining failed when Bottle 1%! It usually cased by sealing-function issues! Please check the Retort Lid is closed properly and recovery. 
-const quint32 EVENT_ERR_Paraffin_Draining_TimeOut_BulidPressure	= 513040202;	///< Draining Start-Up failed when Bottle 1%! It usually cased by sealing-function issues! Please check the Retort Lid is closed properly and recovery. 
-const quint32 EVENT_ERR_Cleaning_Draining_TimeOut_BulidPressure	= 513040203;	///< Draining Start-Up failed when Fixation-Bottle 1%! It usually cased by sealing-function issues! Please check the Retort Lid is closed properly and recovery. 
-const quint32 EVENT_ERR_Draining_TimeOut_Empty_2min	= 511040221;	///< Draining time of Bottle 1% exceed 2 min which always means there is some blockage in this path. Please pay attention to the reagent of this path!
-const quint32 EVENT_ERR_Reagent_Draining_TimeOut_Empty_4min	= 513040241;	///< Draining time of  Bottle %1  failed which always means there is serious blockage in this path.  Please pay attention to the reagent of this path! Please change a new bottle and try again.
-const quint32 EVENT_ERR_Paraffin_Draining_TimeOut_Empty_4min	= 513040242;	///< Draining time of  Bottle %1 failed which always means there is serious blockage in this path.  Please pay attention to the reagent of this path! Please change a new bottle and try again.
-const quint32 EVENT_ERR_Cleaning_Draining_TimeOut_Empty_4min	= 513040243;	///< Draining time of  Bottle %1 failed which always means there is serious blockage in this path.  Please pay attention to the reagent of this path! Please change a new bottle and try again.
-const quint32 EVENT_ERR_Releasing_TimeOut_Pause	= 513040302;	///< Releasing failed when Pause or Abort! Please call for service and do not open retort manually!
-const quint32 EVENT_ERR_Reagent_Releasing_TimeOut	= 513040303;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_Paraffin_Releasing_TimeOut	= 513040304;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_Cleaning_Releasing_TimeOut	= 513040305;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_Status_ExhaustFan	= 512040401;	///< Exhaust Fan Status error which will lead to exhaust gas spill but can the protocol can going on! Please call for sevice!
-const quint32 EVENT_ERR_TubeHeating_Tube1_NotReachTargetTemp	= 513040541;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_TubeHeating_Tube2_NotReachTargetTemp	= 513040551;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_Current_5V_ASB3_OutofRange	= 513050101;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_Current_5V_ASB5_OutofRange	= 513050102;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_Current_5V_ASB15_OutofRange	= 513050103;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_Current_AC_ASB3_OutofRange	= 513050201;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_Current_AC_ASB5_OutofRange	= 513050202;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_Voltage_24V_ASB3_OutofRange	= 513050301;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_Voltage_24V_ASB5_OutofRange	= 513050302;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_Voltage_24V_ASB15_OutofRange	= 513050303;	///< Error ID %1! Please call for sevice!
-const quint32 EVENT_ERR_RemoteAlarm_Unconnected	= 512050401;	///< Remote alarm system not connected! Please connect the device with remote alarm system
-const quint32 EVENT_ERR_LocalAlarm_Unconnected	= 512050402;	///< Local alarm system not connected! Please connect the device with local alarm system
+
+
 const quint32 STR_DM_PROGRAM_LEICA_OVERNIGHT	= 50331650;	///< LeicaOvernight
+
 const quint32 STR_DM_PROGRAM_LEICA_BIOPSIE	= 50331651;	///< LeicaBiopsie
+
 const quint32 STR_DM_PROGRAM_LEICA_CLEANINGPROGRAM	= 50331652;	///< CleaningProgram
+
 const quint32 STR_DM_REAGENT_GROUP_Fixation	= 50331653;	///< Fixation
+
 const quint32 STR_DM_REAGENT_GROUP_Water	= 50331654;	///< Water
+
 const quint32 STR_DM_REAGENT_GROUP_Dehydrating_diluted	= 50331655;	///< Dehydrating,diluted
+
 const quint32 STR_DM_REAGENT_GROUP_Dehydrating_absolute	= 50331656;	///< Dehydrating,absolute
+
 const quint32 STR_DM_REAGENT_GROUP_Clearing	= 50331657;	///< Clearing
+
 const quint32 STR_DM_REAGENT_GROUP_Paraffin	= 50331658;	///< Paraffin
+
 const quint32 STR_DM_REAGENT_GROUP_Cleaning_Solvent	= 50331659;	///< Cleaning Solvent
+
 const quint32 STR_DM_REAGENT_GROUP_Cleaning_Alcohol	= 50331660;	///< Cleaning Alcohol
+
 const quint32 STR_DM_REAGENT_Formalin	= 50331661;	///< Formalin
+
 const quint32 STR_DM_REAGENT_Ethanol_70	= 50331662;	///< Ethanol 70%
+
 const quint32 STR_DM_REAGENT_Ethanol_80	= 50331663;	///< Ethanol 80%
+
 const quint32 STR_DM_REAGENT_Ethanol_90	= 50331664;	///< Ethanol 90%
+
 const quint32 STR_DM_REAGENT_Ethanol_95	= 50331665;	///< Ethanol 95%
+
 const quint32 STR_DM_REAGENT_Ethanol_100	= 50331666;	///< Ethanol 100%
+
 const quint32 STR_DM_REAGENT_Xylene	= 50331667;	///< Xylene
+
 const quint32 STR_DM_REAGENT_Paraffin	= 50331668;	///< Paraffin
+
 const quint32 STR_DM_REAGENT_Procssing_Water	= 50331669;	///< Procssing Water
+
 const quint32 STR_DM_REAGENT_Cleaningxylene	= 50331670;	///< Cleaning xylene
+
 const quint32 STR_DM_REAGENT_Cleaningalcohol	= 50331671;	///< Cleaning alcohol
+
 const quint32 STR_SCHDEULER_MAIN_CONTROLLER_STATE	= 50331674;	///< Scheduler main controller state: %1
+
 const quint32 STR_INIT	= 50331675;	///< INIT
+
 const quint32 STR_IDLE	= 50331676;	///< IDLE
+
 const quint32 STR_RUN	= 50331677;	///< RUN
+
 const quint32 STR_ERROR	= 50331678;	///< ERROR
+
 const quint32 STR_UNEXPECTED_STATE	= 50331679;	///< unexpected state
+
 const quint32 STR_SCHDEULER_RECEIVE_MASTER_ACTION_COMMAND	= 50331680;	///< Scheduler receive action command from GUI: %1
+
 const quint32 STR_PROGRAM_STEP_STATE	= 50331681;	///< Current program step state: %1
+
 const quint32 STR_START_PROGRAM	= 50331682;	///< Start program %1
+
 const quint32 STR_CURRENT_PROGRAM_NAME_STEP_REAGENT_LEFTTIME	= 50331683;	///< Program name %1 current step %2 current reagent %3 left time %4s
+
 const quint32 STR_FINISH_PROGRAM	= 50331684;	///< Finish program %1
+
 const quint32 STR_PROGRAM_STEP_STATE_START	= 50331685;	///< step initializing
+
 const quint32 STR_PROGRAM_STEP_STATE_HEAT_LEVEL_SENSOR_1	= 50331686;	///< heating level sensor 1
+
 const quint32 STR_PROGRAM_STEP_STATE_HEAT_LEVEL_SENSOR_2	= 50331687;	///< heating level sensor 2
+
 const quint32 STR_PROGRAM_STEP_STATE_MOVE_TUBE_TO_FILL	= 50331688;	///< moving to tube to fill
+
 const quint32 STR_PROGRAM_STEP_STATE_MOVE_TUBE_TO_DRAIN	= 50331689;	///< moving to tube to draing
+
 const quint32 STR_PROGRAM_STEP_STATE_FILL	= 50331690;	///< filling
+
 const quint32 STR_PROGRAM_STEP_STATE_SEAL	= 50331691;	///< sealing
+
 const quint32 STR_PROGRAM_STEP_STATE_SOAK	= 50331692;	///< soaking
+
 const quint32 STR_PROGRAM_STEP_STATE_DRAIN	= 50331693;	///< draining
+
 const quint32 STR_PROGRAM_STEP_STATE_READY_TO_DRAIN	= 50331694;	///< ready to drain
+
 const quint32 STR_PROGRAM_STEP_STATE_FINISH	= 50331695;	///< finished
+
 const quint32 STR_PROGRAM_STEP_STATE_ERROR	= 50331696;	///< Error
+
 const quint32 STR_PROGRAM_STEP_STATE_PAUSE	= 50331697;	///< pause
+
 const quint32 STR_PROGRAM_STEP_STATE_PAUSE_DRAIN	= 50331698;	///< pause during drain
+
 const quint32 STR_PROGRAM_STEP_STATE_ABORTED	= 50331699;	///< aborted
+
 const quint32 STR_PROGRAM_STEP_STATE_ABORTING	= 50331700;	///< aborting
+
 const quint32 STR_PROGRAM_STEP_STATE_UNKNOWN	= 50331701;	///< unknown
+
 const quint32 STR_PROGRAM_SELFTEST_START	= 50331702;	///< start selftest
+
 const quint32 STR_PROGRAM_SELFTEST_CHECK_TEMP_PRESSURE	= 50331703;	///< checking temperature and pressure
+
 const quint32 STR_PROGRAM_SELFTEST_CHECK_BOTTLE	= 50331704;	///< checking bottle %1
+
 const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT	= 50331705;	///< bottle check result: %1
+
 const quint32 STR_PROGRAM_SELFTEST_FINISH	= 50331706;	///< selftest finished
+
 const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_OK	= 50331707;	///< Ok
+
 const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_NOT_FULL	= 50331708;	///< not full
+
 const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_BLOCKAGE	= 50331709;	///< blockage
+
 const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_EMPTY	= 50331710;	///< empty
+
 const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_ERROR	= 50331711;	///< error
+
 const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_TIMEOUT	= 50331712;	///< timeout
+
 const quint32 STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED	= 50331713;	///< unexpected
+
 const quint32 STR_PROGRAM_COMMAND_START_PROGRAM	= 50331714;	///< start program
+
 const quint32 STR_PROGRAM_COMMAND_PAUSE_PROGRAM	= 50331715;	///< pause program
+
 const quint32 STR_PROGRAM_COMMAND_ABORT_PROGRAM	= 50331716;	///< abort program
+
 const quint32 STR_PROGRAM_COMMAND_DRAIN	= 50331717;	///< drain
+
 const quint32 EVENT_SERVICE_OPERATIONTIME_OVERDUE	= 50331718;	///< Please call the service engineer for maintenance!
+
 const quint32 EVENT_SERVICE_ACTIVECARBONTIME_OVERDUE	= 50331719;	///< The Active carbon filter is overdue, please replace a new Active carbon filter!
+
 const quint32 STR_EXECUTE_COMMAND	= 50331720;	///< Scheduler execute command %1
+
 const quint32 STR_EXECUTE_COMMAND_RESULT	= 50331721;	///< Scheduler execute command %1 result %2
-const quint32 EVENT_SWU_COPY_FILE_FAILED	= 50331722;	///< SW Update Failed: File/Folder copy failed from %1 to %2
-const quint32 EVENT_SWU_FILE_DOES_NOT_EXIST	= 50331723;	///< SW Update Failed: File/Folder %1 does not exists
-const quint32 EVENT_SWU_INVALID_COMMAND_LINE_ARGUMENTS	= 50331724;	///< SW Update Failed: Invalid Command line arguments:%1
-const quint32 EVENT_SWU_MD5SUM_CHECK_FAILED	= 50331725;	///< SW Update Failed: Md5sum check failed:%1
-const quint32 EVENT_SWU_CRC_CHECK_FAILED	= 50331726;	///< SW Update Failed: CRC check failed
-const quint32 EVENT_SWU_SLAVE_VERSION_MISMACH	= 50331727;	///< SW Update Failed: Slave %1 has HW version %2 which is not equal or higher compared to %3
-const quint32 EVENT_SWU_NO_USB_DEVICE	= 50331728;	///< SW Update Failed: No USB Device found
-const quint32 EVENT_SWU_NO_UPDATE_PACKAGE_FOUND	= 50331729;	///< SW Update Failed: No Update Package found at %1
-const quint32 EVENT_SWU_CREATE_FILE_FAIL	= 50331730;	///< SW Update Failed: File/Folder creation failed for %1
-const quint32 EVENT_SWU_SLAVE_UPDATE_FAIL	= 50331731;	///< SW Update Failed: Slave SW update failed
-const quint32 EVENT_SWU_FILE_DELETION_FAIL	= 50331732;	///< SW Update Failed: File/Folder deletion failed for %1
-const quint32 EVENT_SWU_MISS_SLAVE	= 50331733;	///< SW Update Failed: Missing slave name %1 in %2
-const quint32 EVENT_SWU_COPYING_FILE	= 50331734;	///< SW Update: Copying the File/Folder from %1 to %2
-const quint32 EVENT_SWU_XML_ATTRIBUTE_MISMACH	= 50331735;	///< SW Update: XML attribute %1 found in %2 but not in %3
-const quint32 EVENT_SWU_MOUNTING_USB_DEVICE	= 50331736;	///< SW Update: Mounting USB Device %1 to %2 passed
-const quint32 EVENT_SWU_UNZIPPING_UPDATE_PACKAGE	= 50331737;	///< SW Update: Unzipping the update package %1 to %2
-const quint32 EVENT_SWU_CRC_CHECK_PASSED	= 50331738;	///< SW Update: CRC check passed
-const quint32 EVENT_SWU_MD5SUM_CHECK_PASSED	= 50331739;	///< SW Update: Md5sum check passed
-const quint32 EVENT_SWU_SLAVE_VERSION_INFO	= 50331740;	///< SW Update: Slave %1 has HW version %2 is equal or higher compared to %3
-const quint32 EVENT_SWU_CREATING_FILE	= 50331741;	///< SW Update: Creating File/Folder %1
-const quint32 EVENT_SWU_EXTRACTING_PACKAGE	= 50331742;	///< SW Update: Extracting package from %1
-const quint32 EVENT_SWU_EXECUTE_SCRIPT	= 50331743;	///< SW Update: Executing the script %1
-const quint32 EVENT_SWU_ROLLINGBACK_FILES	= 50331744;	///< SW Update: Rolling back the files in %1 from %2
-const quint32 EVENT_SWU_PARSING_XML	= 50331745;	///< SW Update: Parsing the XML file %1
-const quint32 EVENT_SW_UPDATE_SUCCESS	= 50331746;	///< SW Update Success
-const quint32 EVENT_SWU_MOUNTING_USB_DEVICE_FAIL	= 50331747;	///< SW Update: Mounting USB Device %1 to %2 failed
-const quint32 EVENT_SWU_UPDATING_ALL_SW_FIRMWARE_FILES	= 50331748;	///< SW Update: %1 file not found. Updating all SW binaries and firmwares
-const quint32 EVENT_SWU_CORRUPTED_UPDATING_ALL_SW_FIRMWARE_FILES	= 50331749;	///< SW Update: %1 file corrupted. Updating all SW binaries and firmwares
-const quint32 EVENT_SWU_FILE_CORRUPTED	= 50331750;	///< SW Update: Failed %1 file corrupted.
-const quint32 EVENT_SWU_EXECUTE_STARTER_SUCCESS	= 50331751;	///< SW Update: Execution of the starter succeeded
-const quint32 EVENT_SWU_PTS_EXECUTION_SUCCESS	= 50331752;	///< SW Update: PTS execution is success
-const quint32 EVENT_SWU_PTS_EXECUTION_FAILED	= 50331753;	///< SW Update: PTS execution is failed
-const quint32 EVENT_SWU_UNMOUNT_USB	= 50331754;	///< SW Update: Unmounted USB to %1
-const quint32 EVENT_SWU_FILE_NOT_FOUND	= 50331755;	///< SW Update: %1 file not found
-const quint32 EVENT_SWU_FILE_UPDATED	= 50331756;	///< SW Update: %1 file updated
-const quint32 EVENT_SWU_MISS_Software_Update_Status	= 50331757;	///< SW Update: %1 file missing entry of 'Software_Update_Status'
-const quint32 EVENT_SW_UPDATE_FAILED	= 50331758;	///< SW Update failed
+
+
 const quint32 EVENT_IMPORT_TAMPERED_ARCHIVE_FILE	= 50331759;	///< Import failed. Archive file is tampered
+
 const quint32 EVENT_IMPORT_DEVICE_NAME_NOT_MATCHING	= 50331760;	///< Import failed. SW versions are not matching to Import the files
+
 const quint32 EVENT_IMPORT_TYPEOFIMPORTNOTVALID	= 50331761;	///< Type of import is not valid
+
 const quint32 EVENT_IMPORTEXPORT_IMPORT_NO_USB	= 50331762;	///< No USB devices found in the system to import files
+
 const quint32 EVENT_IMPORTEXPORT_EXPORT_NO_USB	= 50331763;	///< No USB devices found in the system to export files
+
 #endif // HIMALAYAEVENTCODES_H
+

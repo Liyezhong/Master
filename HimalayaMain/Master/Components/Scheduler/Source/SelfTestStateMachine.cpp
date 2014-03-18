@@ -22,12 +22,12 @@ SelfTestStateMachine::SelfTestStateMachine()
 
 SelfTestStateMachine::~SelfTestStateMachine()
 {
-    delete mp_SelfTestStateMachine;
     delete mp_StInit;
     delete mp_StTempReady;
     delete mp_StStationChecking;
     delete mp_StStationCheckFinish;
     delete mp_StFinish;
+    delete mp_SelfTestStateMachine;
 }
 
 void SelfTestStateMachine::Start()

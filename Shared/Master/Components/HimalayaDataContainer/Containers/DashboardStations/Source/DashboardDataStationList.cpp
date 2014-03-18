@@ -353,7 +353,7 @@ QDataStream& operator <<(QDataStream& OutDataStream, const CDashboardDataStation
     if (!p_TempDashboardStationList->SerializeContent(*OutDataStream.device(), true)) {
         qDebug() << "CDashboardDataStationList::Operator Streaming (SerializeContent) failed.";
         // throws an exception
-        THROWARG(EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
+        THROWARG(Global::EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
     }
     return OutDataStream;
 }
@@ -374,7 +374,7 @@ QDataStream& operator >>(QDataStream& InDataStream, CDashboardDataStationList& D
     if (!DashboardStationList.DeserializeContent(*InDataStream.device(), true)) {
         qDebug() << "CDashboardDataStationList::Operator Streaming (DeSerializeContent) failed.";
         // throws an exception
-        THROWARG(EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
+        THROWARG(Global::EVENT_GLOBAL_UNKNOWN_STRING_ID, Global::tTranslatableStringList() << FILE_LINE);
     }
     return InDataStream;
 }

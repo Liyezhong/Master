@@ -310,7 +310,7 @@ private:
             EventCode = EVENT_IMPORT_FAILED;
         }
         else {
-            EventCode = EVENT_EXPORT_FAILED;
+            EventCode = Global::EVENT_EXPORT_FAILED;
         }
         // send acknowledgement to GUI
         SendAcknowledgeNOK(Ref, AckCommandChannel,

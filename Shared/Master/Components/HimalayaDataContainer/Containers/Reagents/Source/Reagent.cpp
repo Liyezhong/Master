@@ -133,7 +133,7 @@ bool CReagent::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
     // ID
     if (!XmlStreamReader.attributes().hasAttribute("ID")) {
         qDebug() << "### attribute <ID> is missing => abort reading";
-        Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
                                                    Global::tTranslatableStringList() << "Reagent-ID", true);
         return false;
     }
@@ -147,7 +147,7 @@ bool CReagent::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
     // ReagentName
     if (!XmlStreamReader.attributes().hasAttribute("Name")) {
         qDebug() << "### attribute <Name> is missing => abort reading";
-        Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
                                                    Global::tTranslatableStringList() << "Reagent-Name", true);
         return false;
     }
@@ -156,7 +156,7 @@ bool CReagent::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Comple
     // Group
     if (!XmlStreamReader.attributes().hasAttribute("Group")) {
         qDebug() << "### attribute <Group> is missing => abort reading";
-        Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
                                                    Global::tTranslatableStringList() << "Reagent-Group", true);
         return false;
     }
@@ -191,7 +191,7 @@ bool CReagent::ReadUsageLimitation(QXmlStreamReader& XmlStreamReader)
     // MaxTime
     if (!XmlStreamReader.attributes().hasAttribute("DaysUntilChange")) {
         qDebug() << "### attribute <DaysUntilChange> is missing => abort reading";
-        Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
                                                    Global::tTranslatableStringList() << "Reagent-DaysUntilChange", true);
         return false;
     }
@@ -200,7 +200,7 @@ bool CReagent::ReadUsageLimitation(QXmlStreamReader& XmlStreamReader)
    // MaxCassettes
    if (!XmlStreamReader.attributes().hasAttribute("CassettesUntilChange")) {
        qDebug() << "### attribute <CassettesUntilChange> is missing => abort reading";
-       Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+       Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
                                                   Global::tTranslatableStringList() << "Reagent-CassettesUntilChange", true);
        return false;
    }
@@ -209,7 +209,7 @@ bool CReagent::ReadUsageLimitation(QXmlStreamReader& XmlStreamReader)
    // MaxCycles
    if (!XmlStreamReader.attributes().hasAttribute("CyclesUntilChange")) {
        qDebug() << "### attribute <CyclesUntilChange> is missing => abort reading";
-       Global::EventObject::Instance().RaiseEvent(EVENT_DATAMANAGER_ERROR_XML_ATTRIBUTE_NOT_FOUND,
+       Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
                                                   Global::tTranslatableStringList() << "Reagent-CyclesUntilChange", true);
        return false;
    }

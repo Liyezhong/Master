@@ -160,7 +160,7 @@ void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClas
 //    static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->Write();
 
 //    if (static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ProgramSequenceList->VerifyData(true)) {
-//        Global::EventObject::Instance().RaiseEvent(EVENT_HIMALAYA_DM_GV_FAILED);
+//        Global::EventObject::Instance().RaiseEvent(EVENT_DM_GV_FAILED);
 //    }
 
 }
