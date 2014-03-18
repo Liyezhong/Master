@@ -81,6 +81,7 @@ typedef enum
     CTRL_CMD_RS_GET_ORIGINAL_POSITION_AGAIN,
     CTRL_CMD_RC_REPORT,
     CTRL_CMD_RC_RESTART,
+    CTRL_CMD_RS_STANDBY,
     CTRL_CMD_NONE,
     CTRL_CMD_UNKNOWN
 }ControlCommandType_t;
@@ -106,6 +107,15 @@ typedef struct
 
 }StationUseRecord_t;
 
+typedef struct
+{
+    CANObjectKeyLUT::CANObjectIdentifier_t FctModID;
+    bool IsAvialable;
+    bool IsWorking;
+    bool IsHealth;
+    qint64 StartTime;
+    qint64 StopTime;
+}FunctionModuleStatus_t;
 
 
     /****************************************************************************/
@@ -124,10 +134,12 @@ typedef struct
         QMutex m_MutexDeviceControlCmdQueue;                                        /// < mutex for accessing m_DeviceControlCmdQueue
         QQueue<Scheduler::SchedulerCommandShPtr_t> m_DeviceControlCmdQueue;                     ///< Queue(Q2) for receive respond from SechedulerCommandProcessor
         QQueue<ProgramStationInfo_t> m_ProgramStationList;
+        QList<FunctionModuleStatus_t> m_FunctionModuleStatusList;
 
         QThread* m_SchedulerCommandProcessorThread;
         SchedulerCommandProcessorBase* m_SchedulerCommandProcessor;
         CSchedulerStateMachine* m_SchedulerMachine;
+        DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
         DataManager::CDataManager       *mp_DataManager;
         int m_CurProgramStepIndex, m_FirstProgramStepIndex;
         QString m_CurReagnetName;
@@ -201,6 +213,12 @@ typedef struct
          bool IsLastStep(int currentStepIndex,const QString& currentProgramID);
          bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
          int WhichStepHasNoSafeReagent(const QString& ProgramID);
+         bool CreateFunctionModuleStatusList(QList<FunctionModuleStatus_t>* pList);
+         bool SetFunctionModuleWork(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID, bool isWorking);
+         bool SetFunctionModuleHealth(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID, bool isHealth);
+         bool SetFunctionModuleStarttime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
+         bool SetFunctionModuleStoptime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
+         QList<FunctionModuleStatus_t> GetFailedFunctionModuleList(QList<FunctionModuleStatus_t>* pList);
 signals:
          void signalProgramStart(const QString& ProgramID);
          void signalProgramPause();
@@ -229,6 +247,8 @@ private slots:
          void Pause();
          void MoveRVToInit();
          void ShutdownRetortHeater();
+         void ReleasePressure();
+         void ShutdownFailedHeater();
 
 protected:
 

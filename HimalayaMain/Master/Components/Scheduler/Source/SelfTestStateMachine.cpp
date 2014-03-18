@@ -1,8 +1,9 @@
+#if 0
 #include "../Include/SelfTestStateMachine.h"
 
 namespace Scheduler
 {
-SelfTestStateMachine::SelfTestStateMachine()
+CSelfTestStateMachine::CSelfTestStateMachine()
 {
     mp_SelfTestStateMachine = new QStateMachine();
     mp_StInit = new QState(mp_SelfTestStateMachine);
@@ -20,7 +21,7 @@ SelfTestStateMachine::SelfTestStateMachine()
 }
 
 
-SelfTestStateMachine::~SelfTestStateMachine()
+CSelfTestStateMachine::~SelfTestStateMachine()
 {
     delete mp_StInit;
     delete mp_StTempReady;
@@ -30,37 +31,37 @@ SelfTestStateMachine::~SelfTestStateMachine()
     delete mp_SelfTestStateMachine;
 }
 
-void SelfTestStateMachine::Start()
+void CSelfTestStateMachine::Start()
 {
     mp_SelfTestStateMachine->start();
 }
 
-void SelfTestStateMachine::Stop()
+void CSelfTestStateMachine::Stop()
 {
     mp_SelfTestStateMachine->stop();
 }
 
-void SelfTestStateMachine::NotifyTempsReady()
+void CSelfTestStateMachine::NotifyTempsReady()
 {
     emit TempsReady();
 }
 
-void SelfTestStateMachine::NotifyCheckStation()
+void CSelfTestStateMachine::NotifyCheckStation()
 {
     emit CheckStation();
 }
 
-void SelfTestStateMachine::NotifyGotCheckStationResult()
+void CSelfTestStateMachine::NotifyGotCheckStationResult()
 {
     emit GotStationCheckResult();
 }
 
-void SelfTestStateMachine::NotifyCheckStaionFinished()
+void CSelfTestStateMachine::NotifyCheckStaionFinished()
 {
     emit StationCheckFinished();
 }
 
-SelfTestStateMachine_t SelfTestStateMachine::GetCurrentState()
+SelfTestStateMachine_t CSelfTestStateMachine::GetCurrentState()
 {
     if(mp_SelfTestStateMachine->configuration().contains(mp_StInit))
     {
@@ -89,3 +90,4 @@ SelfTestStateMachine_t SelfTestStateMachine::GetCurrentState()
 }
 
 }
+#endif

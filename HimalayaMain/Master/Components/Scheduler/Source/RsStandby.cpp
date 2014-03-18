@@ -1,10 +1,10 @@
 /****************************************************************************/
-/*! \file CRCReport.cpp
+/*! \file RsStandby.cpp
  *
- *  \brief CRCReport class definition.
+ *  \brief CRsStandby class definition.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 02.01.2014
+ *   $Date:    $ 18.03.2014
  *   $Author:  $ Quan Zhang
  *
  *  \b Company:
@@ -17,7 +17,9 @@
  *
  */
 /****************************************************************************/
-#include "../Include/RCReport.h"
+
+
+#include "../Include/RsStandby.h"
 
 namespace Scheduler{
 
@@ -28,14 +30,18 @@ namespace Scheduler{
  *  \iparam   pParentState: Pointer to parent state
  */
 /****************************************************************************/
-CRCReport::CRCReport(QStateMachine* pStateMachine, QState* pParentState) : CErrorHandlingSMBase(pStateMachine, pParentState)
+CRsStandby::CRsStandby(QStateMachine* pStateMachine, QState* pParentState) : CErrorHandlingSMBase(pStateMachine, pParentState)
 {
     if(pParentState)
     {
-        mp_RCReport = new QState(pParentState);
+        mp_ReleasePressure = new QState(pParentState);
+        mp_ShutdownFailedHeater = new QState(pParentState);
         QState *pInitState = (QState*)pParentState->initialState();
-        pInitState->addTransition(this, SIGNAL(RCReport()), mp_RCReport);
-        connect(mp_RCReport, SIGNAL(entered()), this, SIGNAL(OnRCReport()));
+        pInitState->addTransition(this, SIGNAL(ReleasePressure()), mp_ReleasePressure);
+        mp_ReleasePressure->addTransition(this, SIGNAL(ShutdownFailedHeater()), mp_ShutdownFailedHeater);
+        mp_ShutdownFailedHeater->addTransition(this, SIGNAL(ShutdownFailedHeaterFinished()), pInitState);
+        connect(mp_ReleasePressure, SIGNAL(entered()), this, SIGNAL(OnReleasePressure()));
+        connect(mp_ShutdownFailedHeater, SIGNAL(entered()), this, SIGNAL(OnShutdownFailedHeater()));
     }
 }
 
@@ -44,10 +50,12 @@ CRCReport::CRCReport(QStateMachine* pStateMachine, QState* pParentState) : CErro
  *  \brief    Destructor
  */
 /****************************************************************************/
-CRCReport::~CRCReport()
+CRsStandby::~CRsStandby()
 {
-    delete mp_RCReport;
-    mp_RCReport = NULL;
+    delete mp_ReleasePressure;
+    mp_ReleasePressure = NULL;
+    delete mp_ShutdownFailedHeater;
+    mp_ShutdownFailedHeater = NULL;
 }
 
 /****************************************************************************/
@@ -59,12 +67,16 @@ CRCReport::~CRCReport()
  *  \return The current state of the state machine
  */
 /****************************************************************************/
-SchedulerStateMachine_t CRCReport::GetCurrentState(QSet<QAbstractState*> statesList)
+SchedulerStateMachine_t CRsStandby::GetCurrentState(QSet<QAbstractState*> statesList)
 {
     SchedulerStateMachine_t currentState = SM_UNDEF;
-    if(statesList.contains(mp_RCReport))
+    if(statesList.contains(mp_ReleasePressure))
     {
-        currentState = SM_ERR_RC_REPORT;
+        currentState = SM_ERR_RS_RELEASE_PRESSURE;
+    }
+    else if(statesList.contains(mp_ShutdownFailedHeater))
+    {
+        currentState = SM_ERR_RS_SHUTDOWN_FAILED_HEATER;
     }
 
     return currentState;
