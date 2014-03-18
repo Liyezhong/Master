@@ -12,9 +12,6 @@
 
 #define HIMALAYAEVENTCODES_H
 
-
-const quint32 EVENT_DM_XML_ATTRIBUTE_NOT_FOUND	= 33817103;	///< XML attributes not found:%1.
-
 const quint32 EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS	= 33619990;	///< Can not change the date and time more than 24 hours of the current system date time is %1.
 
 

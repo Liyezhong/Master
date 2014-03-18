@@ -139,7 +139,7 @@ bool CReagentGroup::DeserializeContent(QXmlStreamReader& XmlStreamReader,bool Co
     // ID
     if (!XmlStreamReader.attributes().hasAttribute("ID")) {
         qDebug() << "### attribute <ID> is missing => abort reading";
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND,
                                                    Global::tTranslatableStringList() << "ReagentGroup:ID", true);
         return false;
     }
@@ -153,7 +153,7 @@ bool CReagentGroup::DeserializeContent(QXmlStreamReader& XmlStreamReader,bool Co
     // GroupName
     if (!XmlStreamReader.attributes().hasAttribute("Name")) {
         qDebug() << "### attribute <Name> is missing => abort reading";
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND,
                                                    Global::tTranslatableStringList() << "Reagent-Name", true);
         return false;
     }
@@ -162,7 +162,7 @@ bool CReagentGroup::DeserializeContent(QXmlStreamReader& XmlStreamReader,bool Co
     // color
     if (!XmlStreamReader.attributes().hasAttribute("Color")) {
         qDebug() << "### attribute <Group> is missing => abort reading";
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND,
                                                    Global::tTranslatableStringList() << "Reagent-Group", true);
         return false;
     }
@@ -171,7 +171,7 @@ bool CReagentGroup::DeserializeContent(QXmlStreamReader& XmlStreamReader,bool Co
     // Is CleaningReagentGroup
     if (!XmlStreamReader.attributes().hasAttribute("CleaningReagentGroup")) {
         qDebug() << "### attribute <CleaningReagentGroup> is missing => abort reading";
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND,
                                                    Global::tTranslatableStringList() << "Reagent-Name", true);
         return false;
     }
@@ -186,7 +186,7 @@ bool CReagentGroup::DeserializeContent(QXmlStreamReader& XmlStreamReader,bool Co
     //IsParraffinGroup
     if (!XmlStreamReader.attributes().hasAttribute("IsParraffinGroup")) {
         qDebug() << "### attribute <IsParraffinGroup> is missing => abort reading";
-            Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND,
                                                        Global::tTranslatableStringList() << "Reagent-Name", true);
         return false;
     }
@@ -201,14 +201,14 @@ bool CReagentGroup::DeserializeContent(QXmlStreamReader& XmlStreamReader,bool Co
     //MinTemp
     if (!XmlStreamReader.attributes().hasAttribute("MinTemprature")) {
         qDebug() << "### attribute <MinTemprature> is missing => abort reading";
-            Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND,
                                                        Global::tTranslatableStringList() << "Reagent-Name", true);
         return false;
     }
 
     if (!XmlStreamReader.attributes().hasAttribute("MaxTemprature")) {
         qDebug() << "### attribute <MaxTemprature> is missing => abort reading";
-            Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND,
                                                        Global::tTranslatableStringList() << "Reagent-Name", true);
         return false;
     }

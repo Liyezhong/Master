@@ -250,7 +250,7 @@ bool CDataReagentList::DeserializeContent(QIODevice& IODevice, bool CompleteData
     // Read attribute Version
     if (!XmlStreamReader.attributes().hasAttribute("Version")) {
         qDebug() << "### attribute <Version> is missing => abort reading";
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND,
                                                    Global::tTranslatableStringList() << "Version", true);
         return false;
     }
@@ -264,7 +264,7 @@ bool CDataReagentList::DeserializeContent(QIODevice& IODevice, bool CompleteData
     // get attribute NextReagentID
     if (!XmlStreamReader.attributes().hasAttribute("NextUserReagentID")) {
         qDebug() << "### attribute <NextReagentID> is missing => abort reading";
-        Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
+        Global::EventObject::Instance().RaiseEvent(EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND,
                                                    Global::tTranslatableStringList() << "NextUserReagentID", true);
         return false;
     }
@@ -287,7 +287,7 @@ bool CDataReagentList::DeserializeContent(QIODevice& IODevice, bool CompleteData
         // File name
         if (!XmlStreamReader.attributes().hasAttribute("FileName")) {
             qDebug() << "### attribute <FileName> is missing => abort reading";
-            Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND,
                                                        Global::tTranslatableStringList() << "FileName", true);
             return false;
         }
@@ -296,7 +296,7 @@ bool CDataReagentList::DeserializeContent(QIODevice& IODevice, bool CompleteData
         // VerificationMode
         if (!XmlStreamReader.attributes().hasAttribute("VerificationMode")) {
             qDebug() << "### attribute <VerificationMode> is missing => abort reading";
-            Global::EventObject::Instance().RaiseEvent(EVENT_DM_XML_ATTRIBUTE_NOT_FOUND,
+            Global::EventObject::Instance().RaiseEvent(EVENT_DM_ERROR_XML_ATTRIBUTE_NOT_FOUND,
                                                        Global::tTranslatableStringList() << "VerificationMode", true);
             return false;
         }

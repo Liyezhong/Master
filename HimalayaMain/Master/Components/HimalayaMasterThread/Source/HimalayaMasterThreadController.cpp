@@ -147,7 +147,8 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
 //    EventHandler::StateHandler::Instance().moveToThread(this->thread());
 
 
-    SetEventStringFileList(QStringList() << Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator() + "EventConfigure.xml");
+    SetEventStringFileList(QStringList() << Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator() + "PlatformEventConfig.xml"
+                           << Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator() + "EventConfig.xml");
 
     //CreateBasic threads
     /*! Basic threads cannot be constructed in MasterThread contructor
