@@ -68,6 +68,13 @@
 	<scenario id="295" MachineState="" ReagentGroup="" name="Protocol-Cleaning-Xylene-RV-MovetoTube"/>
 	<scenario id="296" MachineState="" ReagentGroup="" name="Protocol-Cleaning-Xylene-Draining"/>
 	<scenario id="297" MachineState="" ReagentGroup="" name="Protocol-Cleaning-Xylene-RV-PositionChange"/>
+	<scenario id="501" MachineState="" ReagentGroup="" name="RC_BottleCheck_I"/>
+	<scenario id="502" MachineState="" ReagentGroup="" name="RC_Pressure"/>
+	<scenario id="503" MachineState="" ReagentGroup="" name="RC_Levelsensor_heating_Overtime"/>
+	<scenario id="504" MachineState="" ReagentGroup="" name="RC_Vacuum"/>
+	<scenario id="505" MachineState="" ReagentGroup="" name="RC_Filling"/>
+	<scenario id="506" MachineState="" ReagentGroup="" name="RC_Draining"/>
+	<scenario id="507" MachineState="" ReagentGroup="" name="RC_AC_voltage_different_3S_retry"/>
 </scenariolist>
 
 <eventlist> 
@@ -246,28 +253,47 @@
 			<scenario type="range" startid="281" endid="287"/>
 		</error>
 		<error errorid="513015337">
-			<scenario type="range" id="203"/>
+			<scenario type="single" id="203"/>
 		</error>
 	</event>
 	<event eventid="500010461">
 		<error errorid="513010461">
-			<scenario type="range" startid="200" endid="277"/>
+			<scenario type="single" id="200"/>
+			<scenario type="range" startid="202" endid="206"/>
+			<scenario type="range" startid="211" endid="217"/>
+			<scenario type="range" startid="221" endid="227"/>
+			<scenario type="range" startid="231" endid="237"/>
+			<scenario type="range" startid="241" endid="247"/>
+			<scenario type="range" startid="251" endid="257"/>
+			<scenario type="single" id="260"/>
+			<scenario type="range" startid="271" endid="277"/>
 		</error>
 		<error errorid="513015461">
-			<scenario type="range" startid="200" endid="277"/>
+			<scenario type="single" id="200"/>
+			<scenario type="range" startid="202" endid="206"/>
+			<scenario type="range" startid="211" endid="217"/>
+			<scenario type="range" startid="221" endid="227"/>
+			<scenario type="range" startid="231" endid="237"/>
+			<scenario type="range" startid="241" endid="247"/>
+			<scenario type="range" startid="251" endid="257"/>
+			<scenario type="single" id="260"/>
+			<scenario type="range" startid="271" endid="277"/>
 		</error>
 		<error errorid="513010462">
-			<scenario type="range" startid="281" endid="297"/>
+			<scenario type="range" startid="281" endid="287"/>
+			<scenario type="range" startid="291" endid="297"/>
 		</error>
 		<error errorid="513015462">
-			<scenario type="range" startid="281" endid="297"/>
+			<scenario type="range" startid="281" endid="287"/>
+			<scenario type="range" startid="291" endid="297"/>
 		</error>
 	</event>
 	<event eventid="500020051">
 		<error errorid="513020050">
 			<scenario type="single" id="002"/>
 			<scenario type="single" id="003"/>
-			<scenario type="range" startid="281" endid="297"/>
+			<scenario type="range" startid="281" endid="287"/>
+			<scenario type="range" startid="291" endid="297"/>
 		</error>
 		<error errorid="513020051">
 			<scenario type="single" id="205"/>
@@ -288,7 +314,8 @@
 		<error errorid="513020060">
 			<scenario type="single" id="002"/>
 			<scenario type="single" id="003"/>
-			<scenario type="range" startid="281" endid="297"/>
+			<scenario type="range" startid="281" endid="287"/>
+			<scenario type="range" startid="291" endid="297"/>
 		</error>
 		<error errorid="513020061">
 			<scenario type="single" id="205"/>
@@ -309,7 +336,8 @@
 		<error errorid="513020070">
 			<scenario type="single" id="002"/>
 			<scenario type="single" id="003"/>
-			<scenario type="range" startid="281" endid="297"/>
+			<scenario type="range" startid="281" endid="287"/>
+			<scenario type="range" startid="291" endid="297"/>
 		</error>
 		<error errorid="513020071">
 			<scenario type="single" id="205"/>
@@ -399,7 +427,8 @@
 			<scenario type="single" id="251"/>
 		</error>
 		<error errorid="511030033">
-			<scenario type="range" startid="281" endid="297"/>
+			<scenario type="range" startid="281" endid="287"/>
+			<scenario type="range" startid="291" endid="297"/>
 		</error>
 	</event>
 	<event eventid="500030091">
