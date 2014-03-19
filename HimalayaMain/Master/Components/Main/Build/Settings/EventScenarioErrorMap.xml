@@ -176,21 +176,77 @@
 		<error errorid="513010300">
 			<scenario type="single" id="200"/>
 		</error>
+		<error errorid="513015300">
+			<scenario type="single" id="503"/>
+		</error>
 		<error errorid="513010304">
 			<scenario type="single" id="211"/>
 			<scenario type="single" id="251"/>
+		</error>
+		<error errorid="513015304">
+			<scenario type="single" id="503"/>
 		</error>
 		<error errorid="513010308">
 			<scenario type="single" id="221"/>
 			<scenario type="single" id="231"/>
 			<scenario type="single" id="241"/>
 		</error>
+		<error errorid="513015308">
+			<scenario type="single" id="503"/>
+		</error>
 		<error errorid="513010312">
 			<scenario type="single" id="281"/>
 			<scenario type="single" id="291"/>
 		</error>
+		<error errorid="513015312">
+			<scenario type="single" id="503"/>
+		</error>
 		<error errorid="513010316">
 			<scenario type="single" id="271"/>
+		</error>
+		<error errorid="513015316">
+			<scenario type="single" id="503"/>
+		</error>
+	</event>
+	<event eventid="500010321">
+		<error errorid="513010320">
+			<scenario type="single" id="200"/>
+		</error>
+		<error errorid="513015320">
+			<scenario type="single" id="503"/>
+		</error>
+		<error errorid="513010324">
+			<scenario type="range" startid="211" endid="217"/>
+		</error>
+		<error errorid="513015324">
+			<scenario type="range" id="503"/>
+		</error>
+		<error errorid="513010328">
+			<scenario type="range" startid="211" endid="217"/>
+			<scenario type="range" startid="231" endid="237"/>
+			<scenario type="range" startid="241" endid="247"/>
+		</error>
+		<error errorid="513015328">
+			<scenario type="single" id="503"/>
+		</error>
+		<error errorid="513010332">
+			<scenario type="range" startid="291" endid="297"/>
+		</error>
+		<error errorid="513015332">
+			<scenario type="single" id="503"/>
+		</error>
+		<error errorid="513010336">
+			<scenario type="range" startid="251" endid="257"/>
+			<scenario type="range" startid="271" endid="277"/>
+		</error>
+		<error errorid="513015336">
+			<scenario type="single" id="503"/>
+		</error>
+		<error errorid="513010337">
+			<scenario type="range" startid="281" endid="287"/>
+		</error>
+		<error errorid="513015337">
+			<scenario type="range" id="203"/>
 		</error>
 	</event>
 	<event eventid="500010461">
