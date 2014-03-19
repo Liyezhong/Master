@@ -219,6 +219,7 @@ typedef struct
          bool SetFunctionModuleStarttime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
          bool SetFunctionModuleStoptime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
          QList<FunctionModuleStatus_t> GetFailedFunctionModuleList(QList<FunctionModuleStatus_t>* pList);
+         qint64 GetFunctionModuleStartworkTime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
 signals:
          void signalProgramStart(const QString& ProgramID);
          void signalProgramPause();
