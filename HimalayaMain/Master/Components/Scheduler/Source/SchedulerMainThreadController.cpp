@@ -539,7 +539,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1);
                 DequeueNonDeviceCommand();
             }
-            else if(CheckLevelSensorTemperature(85))
+            else if(CheckLevelSensorTemperature(185))
             {
                 m_SchedulerMachine->NotifyLevelSensorTempS1Ready();
             }
