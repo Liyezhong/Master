@@ -10,6 +10,7 @@
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
 #include "Dashboard/Include/CommonString.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
+#include "HimalayaDataContainer/Helper/Include/Global.h"
 
 namespace Dashboard {
 CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
@@ -187,7 +188,7 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
     qDebug() << "Reagent List Size = " << (int)reagentIDList.size();
     qDebug() << "Station List Size = " << (int) m_StationList.size();
 
-    Global::ReagentStatusType reagentStatus = Global::REAGENT_STATUS_NORMAL;
+    DataManager::ReagentStatusType_t reagentStatus = DataManager::REAGENT_STATUS_NORMAL;
 
     for(int i = 0; i<m_StationList.size(); i++)
     {
@@ -206,11 +207,11 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
 
         reagentStatus = p_Station->GetReagentStatus(*p_Reagent, RMSOption);
 
-        if ( reagentStatus == Global::REAGENT_STATUS_EXPIRED )
+        if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
             break;
     }
 
-    if ( reagentStatus == Global::REAGENT_STATUS_NORMAL ) {
+    if ( reagentStatus == DataManager::REAGENT_STATUS_NORMAL ) {
         emit PrepareSelectedProgramChecking(m_SelectedProgramId, true);
         return ;
     }
@@ -268,6 +269,8 @@ bool CProgramPanelWidget::CheckPreConditionsToAbortProgram()
 
 void CProgramPanelWidget::OnButtonClicked(int whichBtn)
 {
+    qDebug()<<"CProgramPanelWidget::OnButtonClicked btn = "<<whichBtn;
+
     if ( whichBtn == Dashboard::firstButton ) {
         switch(m_ProgramNextAction)
         {
@@ -276,6 +279,8 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
             break;
             case DataManager::PROGRAM_START:
             {
+                qDebug()<<"CProgramPanelWidget::OnButtonClicked btn = DataManager::PROGRAM_START";
+
                 if (m_IsResumeRun)
                 {
                     QString strTempProgramId;
@@ -297,10 +302,15 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
             break;
             case DataManager::PROGRAM_ABORT:
             {
+                qDebug()<<"CProgramPanelWidget::OnButtonClicked btn = DataManager::PROGRAM_ABORT";
+
                 if(CheckPreConditionsToAbortProgram()) {
                     ui->pauseButton->setEnabled(false);
+                    qDebug()<<"CProgramPanelWidget::OnButtonClicked send command DataManager::PROGRAM_ABORT  to master";
+
                     mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
                     m_ProgramNextAction = DataManager::PROGRAM_START;
+
                 }
             }
             break;
@@ -369,6 +379,9 @@ void CProgramPanelWidget::OnProgramStartReadyUpdated()
 void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType,
                                                      int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume)
 {
+
+    qDebug()<<__FUNCTION__<<" remainingTimeTotal = "<< remainingTimeTotal ;
+
     Q_UNUSED(remainingTimeTotal);
     Q_UNUSED(startDateTime);
     Q_UNUSED(IsResume);

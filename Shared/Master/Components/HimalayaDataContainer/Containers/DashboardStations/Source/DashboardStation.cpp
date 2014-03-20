@@ -27,6 +27,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
 #include <DataManager/Helper/Include/DataManagerEventCodes.h>
 #include "HimalayaDataContainer/Helper/Include/HimalayaDataManagerEventCodes.h"
+#include "HimalayaDataContainer/Helper/Include/Global.h"
 
 //lint -sem(DataManager::CDashboardStation::CopyFromOther, initializer)
 
@@ -322,14 +323,14 @@ void CDashboardStation::ResetData(void)
 /*!
  *  \brief  Get the status of a reagent
  *
- *  \return Global::ReagentStatusType
+ *  \return DataManager::ReagentStatusType_t
  *
  */
 /****************************************************************************/
 
-Global::ReagentStatusType CDashboardStation::GetReagentStatus(const DataManager::CReagent &Reagent, const Global::RMSOptions_t Option)
+DataManager::ReagentStatusType_t CDashboardStation::GetReagentStatus(const DataManager::CReagent &Reagent, const Global::RMSOptions_t Option)
 {
-    Global::ReagentStatusType ReagentStatus = Global::REAGENT_STATUS_NOT_IN_STATION;
+    DataManager::ReagentStatusType_t ReagentStatus = DataManager::REAGENT_STATUS_NOT_IN_STATION;
 	
     CDashboardStation*  pDashboardStation = this;
     if (pDashboardStation->GetDashboardReagentID() == Reagent.GetReagentID())
@@ -337,16 +338,16 @@ Global::ReagentStatusType CDashboardStation::GetReagentStatus(const DataManager:
 		switch ( Option )
 		{
 		    case Global::RMS_OFF:
-                ReagentStatus = Global::REAGENT_STATUS_NORMAL;
+                ReagentStatus = DataManager::REAGENT_STATUS_NORMAL;
 				break;
 			case Global::RMS_CASSETTES:
 			{
                 int MaxCassettes = Reagent.GetMaxCassettes();
                 int ActualCassettes = pDashboardStation->GetDashboardReagentActualCassettes();
                 if ( (MaxCassettes - ActualCassettes) < 0 )
-                    ReagentStatus = Global::REAGENT_STATUS_EXPIRED;
+                    ReagentStatus = DataManager::REAGENT_STATUS_EXPIRED;
 				else
-                    ReagentStatus = Global::REAGENT_STATUS_NORMAL;
+                    ReagentStatus = DataManager::REAGENT_STATUS_NORMAL;
 				break;
 			}
 			case Global::RMS_CYCLES:
@@ -354,9 +355,9 @@ Global::ReagentStatusType CDashboardStation::GetReagentStatus(const DataManager:
                 int MaxCycles = Reagent.GetMaxCycles();
                 int ActualRecycles = pDashboardStation->GetDashboardReagentActualCycles();
 				if ( (MaxCycles - ActualRecycles) < 0 )
-                    ReagentStatus = Global::REAGENT_STATUS_EXPIRED;
+                    ReagentStatus = DataManager::REAGENT_STATUS_EXPIRED;
 				else
-                    ReagentStatus = Global::REAGENT_STATUS_NORMAL;
+                    ReagentStatus = DataManager::REAGENT_STATUS_NORMAL;
 				break;
 			}
 			case Global::RMS_DAYS:
@@ -365,9 +366,9 @@ Global::ReagentStatusType CDashboardStation::GetReagentStatus(const DataManager:
                 QDate ReagentExchangeQDate = pDashboardStation->GetDashboardReagentExchangeDate();
                 QDate ReagentExpiryQDate = ReagentExchangeQDate.addDays(Reagent.GetMaxDays());
                 if(CurDate.currentDate() > ReagentExpiryQDate)
-                    ReagentStatus = Global::REAGENT_STATUS_EXPIRED;
+                    ReagentStatus = DataManager::REAGENT_STATUS_EXPIRED;
                 else
-                    ReagentStatus = Global::REAGENT_STATUS_NORMAL;
+                    ReagentStatus = DataManager::REAGENT_STATUS_NORMAL;
 				break;
 			}
 			default:

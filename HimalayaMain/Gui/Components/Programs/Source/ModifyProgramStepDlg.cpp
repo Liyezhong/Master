@@ -252,14 +252,22 @@ void CModifyProgramStepDlg::InitTemperatureWidget(const DataManager::CReagent * 
 void CModifyProgramStepDlg::SetProgramStep(DataManager::CProgramStep *p_ProgramStep)
 {
     m_ReagentEditModel.UpdateReagentList();
-    QTime Duration;
+
+    int Hour = 0;
+    int Minute = 0;
     mp_ProgramStep = p_ProgramStep;
 
     mp_ReagentList = mp_DataConnector->ReagentList;
 
-    Duration = Duration.addSecs(mp_ProgramStep->GetDurationInSeconds());
-    mp_ScrollWheelHour->SetCurrentData(Duration.hour());
-    mp_ScrollWheelMin->SetCurrentData(Duration.minute());
+    Hour = mp_ProgramStep->GetDurationInSeconds()/(60*60);
+    Minute = (mp_ProgramStep->GetDurationInSeconds()/60)%60;
+
+//    qDebug()  << "CModifyProgramStepDlg::SetProgramStep seconds = " << mp_ProgramStep->GetDurationInSeconds();
+
+//    qDebug() << "CModifyProgramStepDlg::SetProgramStep hour=" << Hour << " minute = " << Minute;
+
+    mp_ScrollWheelHour->SetCurrentData(Hour);
+    mp_ScrollWheelMin->SetCurrentData(Minute);
 
     m_ReagentID = mp_ProgramStep->GetReagentID();
     int Index = m_ReagentEditModel.GetReagentPositionOfReagent(m_ReagentID);
@@ -380,6 +388,7 @@ void CModifyProgramStepDlg::OnOk()
     QString Pressure;
     QString Vaccum;
     QString Temperature;
+
     MinDurationInSec = mp_ScrollWheelHour->GetCurrentData().toInt()*60*60;
     MinDurationInSec+= mp_ScrollWheelMin->GetCurrentData().toInt()*60;
 

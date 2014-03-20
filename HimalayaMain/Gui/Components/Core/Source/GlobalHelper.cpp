@@ -87,6 +87,34 @@ bool CGlobalHelper::CheckSelectedProgram(bool& bRevertSelectProgram,
     return true;
 }
 
+
+QString  CGlobalHelper::TimeToString(int seconds, bool showSeconds)
+{
+    QString retStr;
+
+    int hour = seconds/(60*60);
+    int minute = (seconds/60)%60;
+
+
+
+    if (hour < 100)
+        retStr.sprintf("%02d:%02d", hour, minute);
+    else
+        retStr.sprintf("%d:%02d", hour, minute);
+
+    if (showSeconds)
+    {
+        int s = seconds%60;
+        if ( s < 10)
+            retStr.append(":0");
+        else
+            retStr.append(":");
+        retStr.append(QString::number(s));
+    }
+
+    return retStr;
+}
+
 void CGlobalHelper::OnProgramSelected(QString& programId, QList<QString>& stationList)
 {
     Q_UNUSED(stationList);

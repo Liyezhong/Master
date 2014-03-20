@@ -26,7 +26,7 @@ QString CmdCurrentProgramStepInfor::NAME = "MsgClasses::CmdCurrentProgramStepInf
 
 CmdCurrentProgramStepInfor::CmdCurrentProgramStepInfor(int timeout, const QString& stepName,
                                                        int curProgramStepIndex,
-                                                        const QTime& curRemainingTime) :
+                                                        int curRemainingTime) :
     Command(timeout),
     m_StepName(stepName),
     m_CurProgramStepIndex(curProgramStepIndex),

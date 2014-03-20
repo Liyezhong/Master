@@ -187,7 +187,7 @@
                 <functionmodule key="RETORT_bottom_temp_ctrl" fct_instanceID="0x30005"/>
                 <functionmodule key="RETORT_side_temp_ctrl" fct_instanceID="0x40005"/>
                 <functionmodule key="RETORT_lock_digital_output" fct_instanceID="0x6000F"/>
-                <functionmodule key="RETORT_lock_digital_input" fct_instanceID="0xA000F"/>
+                <functionmodule key="RETORT_lock_digital_input" fct_instanceID="0x9000F"/>
             </functionmodules>
         </device>
         <device type="PeripheryDevice" dev_instanceID="0x000080C4" optional="0">
