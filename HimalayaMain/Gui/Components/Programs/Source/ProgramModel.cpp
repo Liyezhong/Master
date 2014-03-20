@@ -25,6 +25,7 @@
 #include "Global/Include/Utils.h"
 #include "Global/Include/Exception.h"
 #include "Programs/Include/ProgramModel.h"
+#include "Core/Include/GlobalHelper.h"
 
 
 namespace Programs {
@@ -135,9 +136,7 @@ QVariant CProgramModel::data(const QModelIndex &Index, int Role) const
             case 2:
                 return p_Program->GetName();
             case 3:
-                QTime Time;
-                Time =  Time.addSecs(p_Program->GetProgramDurationInSeconds());
-                return Time.toString("hh:mm");
+                return Core::CGlobalHelper::TimeToString(p_Program->GetProgramDurationInSeconds());
             }
         }
         else if (Role ==(int)Qt::DecorationRole)

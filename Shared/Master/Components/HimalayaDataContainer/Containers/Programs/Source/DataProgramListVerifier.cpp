@@ -247,6 +247,8 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
             QStringList SplitList;
             SplitList = p_ProgramStep.GetDuration().split(" ");
 
+            qDebug()<<"CDataProgramListVerifier::CheckProgramStep  programsetup.getDuration= "<< p_ProgramStep.GetDuration();
+
             // check the duration format
             CheckDurationFormat(SplitList, VerifiedData, p_Program->GetName());
 
@@ -293,6 +295,7 @@ void CDataProgramListVerifier::CheckDurationFormat(QStringList SplitList, bool &
         if (SplitString.endsWith("d")) {
             SplitString.chop(1);
             Value = SplitString.toInt(&Ok);
+
             if (!Ok) {
                 m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                     Global::tTranslatableStringList() << ProgramName);
@@ -302,7 +305,8 @@ void CDataProgramListVerifier::CheckDurationFormat(QStringList SplitList, bool &
                 qDebug() << "##### Invalid Day Duration";
                 VerifiedData = false;
             }
-            if (Value > 1 || Value < 0) {
+
+            if (Value > 4 || Value < 0) {  // The max time supported is 99:59 , so the max day is 4
                 m_ErrorsHash.insert(EVENT_DM_PROG_INVALID_DURATION_FORMAT,
                                     Global::tTranslatableStringList() << ProgramName);
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_INVALID_DURATION_FORMAT,

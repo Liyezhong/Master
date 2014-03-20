@@ -38,6 +38,7 @@ public:
     virtual ~CGlobalHelper();
     static bool CheckSelectedProgram(bool& bRevertSelectProgram,
                               QString operatedProgramID = "");
+    static QString TimeToString(int seconds, bool showSeconds=false) ;
 public slots:
     void OnProgramSelected(QString&, QList<QString>&);
     void RetranslateUI();

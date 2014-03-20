@@ -42,11 +42,11 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
-    CmdCurrentProgramStepInfor(int timeout, const QString& stepName, int curProgramStepIndex, const QTime& curRemainingTime);
+    CmdCurrentProgramStepInfor(int timeout, const QString& stepName, int curProgramStepIndex, int curRemainingTime);
     ~CmdCurrentProgramStepInfor();
     virtual QString GetName() const;
     inline const QString& StepName() const {return m_StepName;}
-    inline const QTime& CurRemainingTime()const {return m_CurRemainingTime;}
+    inline int CurRemainingTime()const {return m_CurRemainingTime;}
     inline int CurProgramStepIndex() const {return m_CurProgramStepIndex;}
 private:
     CmdCurrentProgramStepInfor(const CmdCurrentProgramStepInfor &);                     ///< Not implemented.
@@ -54,7 +54,7 @@ private:
 private:
     QString m_StepName;
     int m_CurProgramStepIndex;
-    QTime   m_CurRemainingTime; 
+    int   m_CurRemainingTime;
     
 }; // end class CmdCurrentProgramStepInfor
 

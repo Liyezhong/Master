@@ -268,6 +268,8 @@ bool CProgramPanelWidget::CheckPreConditionsToAbortProgram()
 
 void CProgramPanelWidget::OnButtonClicked(int whichBtn)
 {
+    qDebug()<<"CProgramPanelWidget::OnButtonClicked btn = "<<whichBtn;
+
     if ( whichBtn == Dashboard::firstButton ) {
         switch(m_ProgramNextAction)
         {
@@ -276,6 +278,8 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
             break;
             case DataManager::PROGRAM_START:
             {
+                qDebug()<<"CProgramPanelWidget::OnButtonClicked btn = DataManager::PROGRAM_START";
+
                 if (m_IsResumeRun)
                 {
                     QString strTempProgramId;
@@ -297,10 +301,15 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
             break;
             case DataManager::PROGRAM_ABORT:
             {
+                qDebug()<<"CProgramPanelWidget::OnButtonClicked btn = DataManager::PROGRAM_ABORT";
+
                 if(CheckPreConditionsToAbortProgram()) {
                     ui->pauseButton->setEnabled(false);
+                    qDebug()<<"CProgramPanelWidget::OnButtonClicked send command DataManager::PROGRAM_ABORT  to master";
+
                     mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
                     m_ProgramNextAction = DataManager::PROGRAM_START;
+
                 }
             }
             break;
@@ -369,6 +378,9 @@ void CProgramPanelWidget::OnProgramStartReadyUpdated()
 void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType,
                                                      int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume)
 {
+
+    qDebug()<<__FUNCTION__<<" remainingTimeTotal = "<< remainingTimeTotal ;
+
     Q_UNUSED(remainingTimeTotal);
     Q_UNUSED(startDateTime);
     Q_UNUSED(IsResume);

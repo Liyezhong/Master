@@ -28,6 +28,7 @@
 #include "Programs/Include/StepModel.h"
 #include "Programs/Include/ModifyProgramDlg.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
+#include "Core/Include/GlobalHelper.h"
 
 
 namespace Programs {
@@ -207,14 +208,10 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
 
             case 2:
             {
-                if (!m_IsShowStation)
-                {
-                    QTime Time;
-                    Time = Time.addSecs(Step->GetDurationInSeconds());
-                    return Time.toString("hh:mm");
+                if (!m_IsShowStation) {
+                    return Core::CGlobalHelper::TimeToString(Step->GetDurationInSeconds());
                 }
-                else
-                {
+                else {
                     return mp_DashboardStationNameList.at(Index.row());
                 }
             }
@@ -225,8 +222,7 @@ QVariant CStepModel::data(const QModelIndex &Index, int Role) const
                 }
                 else
                 {
-                    QTime Time;
-                    return Time.addSecs(Step->GetDurationInSeconds());
+                    return Core::CGlobalHelper::TimeToString(Step->GetDurationInSeconds());
                 }
             case 4:
             {

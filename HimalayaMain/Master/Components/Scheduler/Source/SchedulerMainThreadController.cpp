@@ -42,6 +42,7 @@
 #include "Scheduler/Commands/Include/CmdALSetTempCtrlOFF.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "HimalayaDataManager/Include/DataManager.h"
+#include "HimalayaDataContainer/Containers/ProgramSettings/Include/ProgramSettings.h"
 #include "Global/Include/GlobalDefines.h"
 #include <Scheduler/Commands/Include/CmdRTLock.h>
 #include <Scheduler/Commands/Include/CmdRTUnlock.h>
@@ -270,7 +271,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             //LOG_STR_ARG(STR_CURRENT_PROGRAM_NAME_STEP_REAGENT_LEFTTIME,Global::FmtArgs()<< ProgramName << m_CurProgramStepIndex +1 << m_CurReagnetName << leftSeconds);
             QTime leftTime(0,0,0);
             leftTime = leftTime.addSecs(leftSeconds);
-            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftTime));
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -539,9 +540,30 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1);
                 DequeueNonDeviceCommand();
             }
-            else if(CheckLevelSensorTemperature(85))
+            else if(CheckLevelSensorTemperature(185))
             {
                 m_SchedulerMachine->NotifyLevelSensorTempS1Ready();
+            }
+            else
+            {
+                //check heating time
+                qint64 lsHeatStartTime = GetFunctionModuleStartworkTime(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_LEVELSENSORTEMPCTRL);
+                bool ok;
+                CProgramSettings *pProgramSetting = NULL;
+                mp_DataManager->GetProgramSettings(pProgramSetting);
+                if(pProgramSetting)
+                {
+                    qint64 overtime = pProgramSetting->GetParameterValue("Retort", "level sensor", "HeatingOvertime", ok);
+                    if((lsHeatStartTime != 0)&&(ok))
+                    {
+                        if(QDateTime::currentMSecsSinceEpoch() > (lsHeatStartTime + overtime*1000))
+                        {
+                            //level sensor heating overtime
+                            Global::EventObject::Instance().RaiseEvent(0, 513015312, GetScenarioBySchedulerState(stepState, GetReagentGroupID(m_CurReagnetName)), true);
+                            m_SchedulerMachine->SendErrorSignal();
+                        }
+                    }
+                }
             }
         }
         else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2 == stepState)
@@ -555,6 +577,27 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             else if(CheckLevelSensorTemperature(85))
             {
                 m_SchedulerMachine->NotifyLevelSensorTempS2Ready();
+            }
+            else
+            {
+                //check heating time
+                qint64 lsHeatStartTime = GetFunctionModuleStartworkTime(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_LEVELSENSORTEMPCTRL);
+                bool ok;
+                CProgramSettings *pProgramSetting = NULL;
+                mp_DataManager->GetProgramSettings(pProgramSetting);
+                if(pProgramSetting)
+                {
+                    qint64 overtime = pProgramSetting->GetParameterValue("Retort", "level sensor", "HeatingOvertime", ok);
+                    if((lsHeatStartTime != 0)&&(ok))
+                    {
+                        if(QDateTime::currentMSecsSinceEpoch() > (lsHeatStartTime + overtime*1000))
+                        {
+                            //level sensor heating overtime
+                            Global::EventObject::Instance().RaiseEvent(0, 513015312, GetScenarioBySchedulerState(stepState, GetReagentGroupID(m_CurReagnetName)), true);
+                            m_SchedulerMachine->SendErrorSignal();
+                        }
+                    }
+                }
             }
         }
         else if(PSSM_READY_TO_TUBE_BEFORE == stepState)
@@ -798,7 +841,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
                 QTime leftTime(0,0,0);
                 leftTime = leftTime.addSecs(leftSeconds);
-                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftTime));
+                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
                 Q_ASSERT(commandPtr);
                 Global::tRefType Ref = GetNewCommandRef();
                 SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -825,7 +868,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
             //send command to main controller to tell the left time
             QTime leftTime(0,0,0);
-            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, leftTime));
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, 0));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -897,7 +940,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
             //send command to main controller to tell the left time
             QTime leftTime(0,0,0);
-            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, leftTime));
+            MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, 0));
+            qDebug()<<"SchedulerMainThreadController::HandleRunState " << "send command Program aborted!";
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -2203,6 +2247,7 @@ void SchedulerMainThreadController::HeatLevelSensor()
         cmd->SetResetTime(1000);
         cmd->SetDerivativeTime(80);
         m_SchedulerCommandProcessor->pushCmd(cmd);
+        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_LEVELSENSORTEMPCTRL, true);
     }
     else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2 == stepState)
     {
@@ -2873,5 +2918,23 @@ QList<FunctionModuleStatus_t> SchedulerMainThreadController::GetFailedFunctionMo
         }
     }
     return unhealthFMList;
+}
+
+qint64 SchedulerMainThreadController::GetFunctionModuleStartworkTime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID)
+{
+    if(pList)
+    {
+        QListIterator<FunctionModuleStatus_t> iter(*pList);
+        FunctionModuleStatus_t fmStatus;
+        while(iter.hasNext())
+        {
+            fmStatus = iter.next();
+            if(fmStatus.FctModID == ID)
+            {
+                return fmStatus.StartTime;
+            }
+        }
+    }
+    return 0;
 }
 }

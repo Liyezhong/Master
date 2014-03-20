@@ -20,10 +20,10 @@
                         <encoder type="0" resolution="400" rotation="cw"/>
                         <limitswitches>
                             <limitswitch index="0">
-                                <configuration polarity="0" sample_rate="10" debounce="10"/>
+                                <configuration polarity="0" sample_rate="10" debounce="4"/>
                             </limitswitch>
                             <limitswitch index="1">
-                                <configuration polarity="0" sample_rate="10" debounce="10"/>
+                                <configuration polarity="0" sample_rate="10" debounce="4"/>
                             </limitswitch>
                             <position_code value="1" stop="1" stop_dir="ccw" position="0" width="0" deviation="0" dir_check="0" hit_skip="1"/>
                             <position_code value="2" stop="0" stop_dir="ccw" position="0" width="0" deviation="0" dir_check="0" hit_skip="1"/>
@@ -41,7 +41,7 @@
                     </motion_profiles>
                 </functionmodule>
                 <functionmodule type="temperature_control" key="temp_rv" name="temp_rv" interface="2">
-                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="7813" heater_current="456" heater_threshold="309"/>
+                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="7813" heater_current="456" heater_threshold="309" current_deviation="200" current_min_230_serial="99" current_max_230_serial="99" current_min_100_serial="99" current_max_100_serial="99" current_min_100_parallel="99" current_max_100_parallel="99"/>
                     <pid_controllers>
                         <pid_controller max_temperature="130" controller_gain="1212" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
@@ -54,28 +54,28 @@
             <functionmodules>
 
                 <functionmodule type="temperature_control" key="temp_oven_top" name="temp_oven_top" interface="1">
-                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="498" heater_threshold="314"/>
+                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="498" heater_threshold="314" current_deviation="200" current_min_230_serial="99" current_max_230_serial="99" current_min_100_serial="99" current_max_100_serial="99" current_min_100_parallel="99" current_max_100_parallel="99"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
                 </functionmodule>
 
                 <functionmodule type="temperature_control" key="temp_oven_bottom" name="temp_oven_bottom" interface="2">
-                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="1314" heater_threshold="532"/>
+                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="1314" heater_threshold="532" current_deviation="200" current_min_230_serial="99" current_max_230_serial="99" current_min_100_serial="99" current_max_100_serial="99" current_min_100_parallel="99" current_max_100_parallel="99"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
                 </functionmodule>
 
                 <functionmodule type="temperature_control" key="temp_retort_bottom" name="temp_retort_bottom" interface="3">
-                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="2039" heater_threshold="725"/>
+                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="2039" heater_threshold="725" current_deviation="200" current_min_230_serial="99" current_max_230_serial="99" current_min_100_serial="99" current_max_100_serial="99" current_min_100_parallel="99" current_max_100_parallel="99"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="30000" derivative_time="0"/>
                     </pid_controllers>
                 </functionmodule>
 
                 <functionmodule type="temperature_control" key="temp_retort_side" name="temp_retort_side" interface="4">
-                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="363" heater_threshold="277"/>
+                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="363" heater_threshold="277" current_deviation="200" current_min_230_serial="99" current_max_230_serial="99" current_min_100_serial="99" current_max_100_serial="99" current_min_100_parallel="99" current_max_100_parallel="99"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
@@ -95,19 +95,19 @@
                     <pwm_controller max_actuating_value="8000" min_actuating_value="200" max_pwm_duty="100" min_pwm_duty="60"/>
                 </functionmodule>
               <functionmodule type="temperature_control" key="temp_lsensor" name="temp_lsensor" interface="2">
-                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="620" heater_current="600" heater_threshold="200"/>
+                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="620" heater_current="600" heater_threshold="200" current_deviation="200" current_min_230_serial="99" current_max_230_serial="99" current_min_100_serial="99" current_max_100_serial="99" current_min_100_parallel="99" current_max_100_parallel="99"/>
                     <pid_controllers>
                         <pid_controller max_temperature="120" controller_gain="1212" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
                 </functionmodule>
               <functionmodule type="temperature_control" key="temp_tube1" name="temp_tube1" interface="3">
-                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="620" heater_current="208" heater_threshold="200"/>
+                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="620" heater_current="208" heater_threshold="200" current_deviation="200" current_min_230_serial="99" current_max_230_serial="99" current_min_100_serial="99" current_max_100_serial="99" current_min_100_parallel="99" current_max_100_parallel="99"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
                 </functionmodule>
               <functionmodule type="temperature_control" key="temp_tube2" name="temp_tube2" interface="4">
-                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="620" heater_current="208" heater_threshold="200"/>
+                    <configuration temp_tolerance="5" sampling_period="500" fan_speed="2950" fan_threshold="295" current_gain="620" heater_current="208" heater_threshold="200" current_deviation="200" current_min_230_serial="99" current_max_230_serial="99" current_min_100_serial="99" current_max_100_serial="99" current_min_100_parallel="99" current_max_100_parallel="99"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
@@ -130,7 +130,7 @@
                     <configuration enabled="1" inactiv_shutdown="1" inactiv_emcy="1" polarity="0" outval_inactiv="0" livetime_limit="0"/>
                 </functionmodule>
               <functionmodule type="digital_in" key="lid_status" name="lid_status" interface="9">
-                    <configuration enabled="1" timestamp="0" polarity="1" supervision="1" interval="10" debounce="5"/>
+                    <configuration enabled="1" timestamp="0" polarity="1" threshold="1" interval="10" debounce="5"/>
                 </functionmodule>
 <!--
               <functionmodule type="digital_out" key="local_alarm_ctrl" name="local_alarm_ctrl" interface="11">
@@ -144,7 +144,7 @@
                 </functionmodule>
 -->
               <functionmodule type="digital_in" key="oven_door_status" name="oven_door_status" interface="10">
-                    <configuration enabled="1" timestamp="0" polarity="1" supervision="1" interval="10" debounce="5"/>
+                    <configuration enabled="1" timestamp="0" polarity="1" threshold="1" interval="10" debounce="5"/>
                 </functionmodule>
             </functionmodules>
         </slave>

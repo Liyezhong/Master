@@ -32,8 +32,8 @@ namespace Dashboard {
         explicit CProgramRunningPanelWidget(QWidget *parent = 0);
         ~CProgramRunningPanelWidget();
         void SetUserSettings(DataManager::CUserSettings *pUserSettings);
-        const QTime&  GetStepRemainingTime();
-        const QTime GetProgramRemainingTime();
+        int  GetStepRemainingTime();
+        int GetProgramRemainingTime();
         const QString GetEndDateTime();
         void EnableProgramDetailButton(bool bEnable);
     public slots:
@@ -41,6 +41,7 @@ namespace Dashboard {
                                     const QDateTime& startDateTime, bool IsResume);//in seconds
         void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
         void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
+
 
     protected:
         void changeEvent(QEvent *p_Event);
@@ -59,8 +60,8 @@ namespace Dashboard {
         void GetStationNameList(QList<QString>& stationNameList);
         Ui::CProgramRunningPanelWidget *ui;
         QTimer* mp_ProgressTimer;
-        QTime m_CurStepRemainingTime;
-        QTime m_CurRemainingTime;
+        int m_CurStepRemainingTime;
+        int m_CurRemainingTime;
         int m_remainingTimeTotal;
         int m_curRemainingTimeTotal;
         QString m_strAborted;
@@ -74,6 +75,7 @@ namespace Dashboard {
         QString m_selectedProgramId;
         QList<QString> m_selectedStationList;
         int m_CurProgramStepIndex;
+        bool m_isAborting;
     };
 }
 

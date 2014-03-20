@@ -11,6 +11,40 @@
 		<string id="237" text1="RotaryValve: The Rotary valve lost its current position, during moving from position xx to position xx. This occured during cleaning steps." text2=""/>
 		<string id="238" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
 		<string id="239" text1="The Rotary valve lost current position, during moving from position xx to position xx." text2=""/>
+		<!-- BEGIN::Scheduler Error Handling strings, just for test -->
+		<string id="013010312" text1="ERR_Retort_Levelsensor_Heating_Overtime_NoTissue 013010312" text2=""/>
+		<string id="033010312" text1="ERR_Retort_Levelsensor_Heating_Overtime_NoTissue 033010312" text2=""/>
+		<string id="053010312" text1="ERR_Retort_Levelsensor_Heating_Overtime_NoTissue 053010312" text2=""/>
+		<string id="073010312" text1="ERR_Retort_Levelsensor_Heating_Overtime_NoTissue 073010312" text2=""/>
+		<string id="013015312" text1="ERR_Retort_Levelsensor_Heating_Overtime_NoTissue_Retry 013015312" text2=""/>
+		<string id="033015312" text1="ERR_Retort_Levelsensor_Heating_Overtime_NoTissue_Retry 033015312" text2=""/>
+		<string id="013015332" text1="ERR_Levelsensor_temperature_overrange_NoTissue_without_Paraffin_Retry 013015332" text2=""/>
+		<string id="033015332" text1="ERR_Levelsensor_temperature_overrange_NoTissue_without_Paraffin_Retry 033015332" text2=""/>
+		<string id="013015336" text1="ERR_Levelsensor_temperature_overrange_Paraffin_Retry 013015336" text2=""/>
+		<string id="033015336" text1="ERR_Levelsensor_temperature_overrange_Paraffin_Retry 033015336" text2=""/>
+		<string id="013015337" text1="ERR_Levelsensor_temperature_overrange_NoTissue_with_paraffin_Retry 013015337" text2=""/>
+		<string id="033015337" text1="ERR_Levelsensor_temperature_overrange_NoTissue_with_paraffin_Retry 033015337" text2=""/>
+		<string id="003010462" text1="ERR_Lidlock_Close_Status_Error_NoTissue 003010462" text2=""/>
+		<string id="013010462" text1="ERR_Lidlock_Close_Status_Error_NoTissue 013010462" text2=""/>
+		<string id="013015462" text1="ERR_Lidlock_Close_Status_Error_NoTissue_Retry 013015462" text2=""/>
+		<string id="033015462" text1="ERR_Lidlock_Close_Status_Error_NoTissue_Retry 033015462" text2=""/>
+		<string id="013020050" text1="ERR_WaxBath_SensorUp_Heating_Abnormal_Delay_Melting_NoTisuue 013020050" text2=""/>
+		<string id="033020050" text1="ERR_WaxBath_SensorUp_Heating_Abnormal_Delay_Melting_NoTisuue 033020050" text2=""/>
+		<string id="013020060" text1="ERR_WaxBath_SensorDown1_Heating_Abnormal_Delay_Melting_NoTisuue 013020060" text2=""/>
+		<string id="033020060" text1="ERR_WaxBath_SensorDown1_Heating_Abnormal_Delay_Melting_NoTisuue 033020060" text2=""/>
+		<string id="013020070" text1="ERR_WaxBath_SensorDown2_Heating_Abnormal_Delay_Melting_NoTisuue 013020070" text2=""/>
+		<string id="013030012" text1="ERR_RV_Motor_InternalSteps_Retry_NoTissue 013030012" text2=""/>
+		<string id="033030012" text1="ERR_RV_Motor_InternalSteps_Retry_NoTissue 033030012" text2=""/>
+		<string id="013040020" text1="ERR_LA_Precheck_Sealing_Failed_Pressure 013040020" text2=""/>
+		<string id="013045020" text1="ERR_LA_Precheck_Sealing_Failed_Pressure_Retry 013045020" text2=""/>
+		<string id="033045020" text1="ERR_LA_Precheck_Sealing_Failed_Pressure_Retry 033045020" text2=""/>
+		<string id="013040163" text1="ERR_LA_Filling_Insufficient_Cleaning 013040163" text2=""/>
+		<string id="033040163" text1="ERR_LA_Filling_Insufficient_Cleaning 013040163" text2=""/>
+		<string id="013040203" text1="ERR_LA_Protocol_Draining_TimeOut_BulidPressure_Cleaning 013040203" text2=""/>
+		<string id="033040203" text1="ERR_LA_Protocol_Draining_TimeOut_BulidPressure_Cleaning 033040203" text2=""/>
+		<string id="013045203" text1="ERR_LA_Protocol_Draining_TimeOut_BulidPressure_Cleaning_Retry 013045203" text2=""/>
+		<string id="033045203" text1="ERR_LA_Protocol_Draining_TimeOut_BulidPressure_Cleaning_Retry 033045203" text2=""/>
+		<!-- END::Scheduler Error Handling strings, just for test -->
 		<string id="16843520" text1="Sound files for alarm are missing" text2=""/>
 		<string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
 		<string id="19398659" text1="ConnectionManager: Client %1 with version %2 connected." text2=""/>
