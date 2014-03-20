@@ -89,14 +89,19 @@ void CProgramRunningPanelWidget::OnProgramActionStarted(DataManager::ProgramActi
    ui->lblReagentName->setVisible(true);
    if (DataManager::PROGRAM_ABORT == ProgramActionType)
    {
-       ui->lblReagentName->setVisible(false);
-       ui->reagentLabel->setText(m_strAborting);//only show the first label
+        ui->lblReagentName->setVisible(false);
+        ui->reagentLabel->setText(m_strAborting);//only show the first label
 
-       ui->lblStepTime->setVisible(false);
-       ui->stepTimeLabel->setVisible(false);
+        ui->lblStepTime->setVisible(false);
+        ui->stepTimeLabel->setVisible(false);
         m_isAborting = true;
         m_curRemainingTimeTotal = m_remainingTimeTotal;
         ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal, true));
+   }
+   else if (DataManager::PROGRAM_START == ProgramActionType)
+   {
+       m_isAborting = false;
+       ui->reagentLabel->setText(QApplication::translate("Dashboard::CProgramRunningPanelWidget", "Reagent:", 0, QApplication::UnicodeUTF8));
    }
 }
 
@@ -119,15 +124,23 @@ void CProgramRunningPanelWidget::UpdateProgress()
         // update the remaining time for single step
         m_CurRemainingTime -= 1;
         ui->lblStepTime->setText(Core::CGlobalHelper::TimeToString(m_CurRemainingTime, true));
+        if ( m_CurRemainingTime <= 0)
+            m_CurRemainingTime = m_CurStepRemainingTime;
 
         // update the total remaining time
         int elapsed =  m_CurStepRemainingTime - m_CurRemainingTime;
         m_curRemainingTimeTotal = m_remainingTimeTotal - elapsed;
         ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal, false));
+
+        // to avoid negative number
+        if (m_curRemainingTimeTotal<=0)
+            m_curRemainingTimeTotal = m_remainingTimeTotal;
     }
     else
     {
         ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal--, true));
+
+        // to avoid negative number
         if (m_curRemainingTimeTotal<0)
             m_curRemainingTimeTotal = m_remainingTimeTotal;
     }
@@ -199,12 +212,12 @@ void CProgramRunningPanelWidget::UpdateDateTime(const QDateTime &selDateTime)
     switch(m_CurTimeFormat) {
         case Global::TIME_12:
         {
-            TimeStr = QString("%1").arg(selDateTime.time().toString("hh:mm:ss p.m"));
+            TimeStr = QString("%1").arg(selDateTime.time().toString("hh:mm p.m"));
         }
             break;
         case Global::TIME_24:
         {
-            TimeStr = QString("%1").arg(selDateTime.time().toString("hh:mm:ss"));
+            TimeStr = QString("%1").arg(selDateTime.time().toString("hh:mm"));
         }
             break;
         case Global::TIME_UNDEFINED:
