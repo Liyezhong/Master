@@ -36,6 +36,7 @@
 		<string id="013030012" text1="ERR_RV_Motor_InternalSteps_Retry_NoTissue 013030012" text2=""/>
 		<string id="033030012" text1="ERR_RV_Motor_InternalSteps_Retry_NoTissue 033030012" text2=""/>
 		<string id="013040020" text1="ERR_LA_Precheck_Sealing_Failed_Pressure 013040020" text2=""/>
+		<string id="033040020" text1="ERR_LA_Precheck_Sealing_Failed_Pressure 033040020" text2=""/>
 		<string id="013045020" text1="ERR_LA_Precheck_Sealing_Failed_Pressure_Retry 013045020" text2=""/>
 		<string id="033045020" text1="ERR_LA_Precheck_Sealing_Failed_Pressure_Retry 033045020" text2=""/>
 		<string id="013040163" text1="ERR_LA_Filling_Insufficient_Cleaning 013040163" text2=""/>
