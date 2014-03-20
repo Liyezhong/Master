@@ -10,6 +10,7 @@
 #include "Core/Include/Startup.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
 #include "Dashboard/Include/DashboardWidget.h"
+#include "Core/Include/GlobalHelper.h"
 
 namespace Dashboard
 {
@@ -22,8 +23,11 @@ CProgramRunningPanelWidget::CProgramRunningPanelWidget(QWidget *parent):
     m_strCompleted(tr("Completed!")),
     mp_UserSettings(NULL),
     m_DateTimeStr(""),
-    m_selectedProgramId("")
+    m_selectedProgramId(""),
+    m_isAborting(false)
 {
+    qDebug()<<"CProgramRunningPanelWidget::CProgramRunningPanelWidget  m_remainingTimeTotal = "<<m_remainingTimeTotal;
+
     ui->setupUi(GetContentFrame());
     mp_ProgressTimer = new QTimer(this);
     mp_ProgressTimer->setInterval(1000);
@@ -44,6 +48,8 @@ CProgramRunningPanelWidget::~CProgramRunningPanelWidget()
 
 void CProgramRunningPanelWidget::OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType)
 {
+    qDebug()<<"CProgramRunningPanelWidget::OnProgramActionStopped  ProgramStatusType="<<ProgramStatusType;
+
     mp_ProgressTimer->stop();//the progress bar and Time countdown will stop
     if (DataManager::PROGRAM_STATUS_PAUSED == ProgramStatusType)
     {
@@ -66,11 +72,17 @@ void CProgramRunningPanelWidget::OnProgramActionStopped(DataManager::ProgramStat
 void CProgramRunningPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType,
                                                      int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume)
 {
+    qDebug()<<"CProgramRunningPanelWidget::OnProgramActionStarted  reamainigTimeTotal="<<remainingTimeTotal<<"  IsResume="<<IsResume;
+
    Q_UNUSED(startDateTime);
+
    if (!IsResume)
    {
        m_remainingTimeTotal = remainingTimeTotal;
    }
+
+   qDebug()<<"CProgramRunningPanelWidget::OnProgramActionStarted  m_remainingTimeTotal = "<<m_remainingTimeTotal;
+
    mp_ProgressTimer->start();
    ui->stepTimeLabel->setVisible(true);
    ui->lblStepTime->setVisible(true);
@@ -79,29 +91,46 @@ void CProgramRunningPanelWidget::OnProgramActionStarted(DataManager::ProgramActi
    {
        ui->lblReagentName->setVisible(false);
        ui->reagentLabel->setText(m_strAborting);//only show the first label
+
+       ui->lblStepTime->setVisible(false);
+       ui->stepTimeLabel->setVisible(false);
+        m_isAborting = true;
+        m_curRemainingTimeTotal = m_remainingTimeTotal;
+        ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal, true));
    }
 }
 
 void CProgramRunningPanelWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd)
 {
+    qDebug()<<"CProgramRunningPanelWidget::OnCurrentProgramStepInforUpdated  cmd="<<cmd.StepName();
+
     ui->lblReagentName->setText(cmd.StepName());
-    ui->lblStepTime->setText(cmd.CurRemainingTime().toString("hh:mm:ss"));
+    QString timeStr = Core::CGlobalHelper::TimeToString(cmd.CurRemainingTime(), true);
+    ui->lblStepTime->setText(timeStr);
     m_CurStepRemainingTime = m_CurRemainingTime = cmd.CurRemainingTime();
     m_CurProgramStepIndex = cmd.CurProgramStepIndex();
 }
 
+
 void CProgramRunningPanelWidget::UpdateProgress()
 {
-   //update the remaining time for single step
-   m_CurRemainingTime = m_CurRemainingTime.addSecs(-1);
-   ui->lblStepTime->setText(m_CurRemainingTime.toString("hh:mm:ss"));
+    if (!m_isAborting)
+    {
+        // update the remaining time for single step
+        m_CurRemainingTime -= 1;
+        ui->lblStepTime->setText(Core::CGlobalHelper::TimeToString(m_CurRemainingTime, true));
 
-   //update the total remaining time
-   int elapsed = m_CurRemainingTime.secsTo(m_CurStepRemainingTime);
-   m_curRemainingTimeTotal = m_remainingTimeTotal - elapsed;
-
-   QTime n(0, 0, 0);
-   ui->lblRemainTime->setText(n.addSecs(m_curRemainingTimeTotal).toString("hh:mm"));
+        // update the total remaining time
+        int elapsed =  m_CurStepRemainingTime - m_CurRemainingTime;
+        m_curRemainingTimeTotal = m_remainingTimeTotal - elapsed;
+        ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal, false));
+    }
+    else
+    {
+        ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal--, true));
+        if (m_curRemainingTimeTotal<0)
+            m_curRemainingTimeTotal = m_remainingTimeTotal;
+    }
 }
 
 void CProgramRunningPanelWidget::changeEvent(QEvent *p_Event)
@@ -206,15 +235,14 @@ void CProgramRunningPanelWidget::ProgramSelected(QString& programId, int asapEnd
     UpdateDateTime(m_ProgramEndDateTime);
 }
 
-const QTime& CProgramRunningPanelWidget::GetStepRemainingTime()
+int CProgramRunningPanelWidget::GetStepRemainingTime()
 {
    return m_CurRemainingTime;
 }
 
-const QTime CProgramRunningPanelWidget::GetProgramRemainingTime()
+int CProgramRunningPanelWidget::GetProgramRemainingTime()
 {
-    QTime leftTime(0,0,0);
-    return leftTime = leftTime.addSecs(m_curRemainingTimeTotal);
+   return m_curRemainingTimeTotal;
 }
 
 const QString CProgramRunningPanelWidget::GetEndDateTime()
@@ -263,14 +291,12 @@ void CProgramRunningPanelWidget::OnProgramFetail()
     QList<QString> stationNameList;
     GetStationNameList(stationNameList);
 
-    QTime programleftTime(0,0,0);
-    programleftTime = programleftTime.addSecs(m_curRemainingTimeTotal);
 
     bool bAboutEnable = pStartup->Dashboard()->IsAbortEnabled();
     pProgramStatusWidget->InitDialog(const_cast<DataManager::CProgram*>(pProgram), pStartup->DataConnector(),
                                        stationNameList, m_CurProgramStepIndex,
                                         m_CurRemainingTime,
-                                       programleftTime,
+                                       m_curRemainingTimeTotal,
                                        m_DateTimeStr, bAboutEnable);
 
     //position the window of ProgramStatusWidget

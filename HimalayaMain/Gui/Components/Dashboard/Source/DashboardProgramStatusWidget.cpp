@@ -4,7 +4,7 @@
 #include "MainMenu/Include/BaseTable.h"
 #include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
 #include "Core/Include/DataConnector.h"
-
+#include "Core/Include/GlobalHelper.h"
 
 
 using namespace Dashboard;
@@ -35,10 +35,11 @@ CDashboardProgramStatusWidget::~CDashboardProgramStatusWidget()
     {}
 }
 
+
 void CDashboardProgramStatusWidget::InitDialog(DataManager::CProgram *p_Program,
                                                const Core::CDataConnector* pDataConnector,
                                                QList<QString>& StationNameList, int CurProgramStepIndex,
-                                               const QTime& StepRemainingTime, const QTime& ProgramRemainingTime,
+                                               int StepRemainingTime, int ProgramRemainingTime,
                                                const QString& endDateTime,
                                                bool bAbortButtonEnabled)
 {
@@ -56,8 +57,8 @@ void CDashboardProgramStatusWidget::InitDialog(DataManager::CProgram *p_Program,
     mp_TableWidget->setModel(&m_StepModel);
     ResizeHorizontalSection();
     mp_TableWidget->selectRow(CurProgramStepIndex);
-    ui->labelStepRemainingTime->setText(StepRemainingTime.toString("hh:mm"));
-    ui->labelPrgmRemainingTime->setText(ProgramRemainingTime.toString("hh:mm"));
+    ui->labelStepRemainingTime->setText(Core::CGlobalHelper::TimeToString(StepRemainingTime, false));
+    ui->labelPrgmRemainingTime->setText(Core::CGlobalHelper::TimeToString(ProgramRemainingTime, false));
     ui->LabelPrgmEndTime->setText(endDateTime);
     ui->btnAbort->setEnabled(bAbortButtonEnabled);
 }

@@ -32,8 +32,8 @@ class CDashboardProgramStatusWidget : public MainMenu::CDialogFrame
 public:
     explicit CDashboardProgramStatusWidget(QWidget *parent = 0);
     ~CDashboardProgramStatusWidget();
-     void InitDialog(DataManager::CProgram*, const Core::CDataConnector*, QList<QString>&, int, const QTime&,
-                     const QTime&, const QString& endDateTime, bool bAbortButtonEnabled);
+     void InitDialog(DataManager::CProgram*, const Core::CDataConnector*, QList<QString>&, int, int,
+                     int, const QString& endDateTime, bool bAbortButtonEnabled);
 
 protected:
      void changeEvent(QEvent *p_Event);
