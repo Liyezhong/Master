@@ -182,12 +182,6 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
         return;
     }
 
-
-    QStringList reagentIDList = mp_ProgramList->GetProgram(m_SelectedProgramId)->GetReagentIDList();
-
-    qDebug() << "Reagent List Size = " << (int)reagentIDList.size();
-    qDebug() << "Station List Size = " << (int) m_StationList.size();
-
     DataManager::ReagentStatusType_t reagentStatus = DataManager::REAGENT_STATUS_NORMAL;
 
     for(int i = 0; i<m_StationList.size(); i++)
@@ -211,34 +205,31 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
             break;
     }
 
-    if ( reagentStatus == DataManager::REAGENT_STATUS_NORMAL ) {
-        emit PrepareSelectedProgramChecking(m_SelectedProgramId, true);
-        return ;
-    }
+    if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED ) {
+        MainMenu::CMainWindow::UserRole_t userRole = MainMenu::CMainWindow::GetCurrentUserRole();
+        if (userRole == MainMenu::CMainWindow::Operator)
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(m_strWarning);
+            mp_MessageDlg->SetText(m_strNotStartExpiredReagent);
+            mp_MessageDlg->SetButtonText(1, m_strOK);
+            mp_MessageDlg->HideButtons();
+            if (mp_MessageDlg->exec())
+                return;
+        }
+        else if(userRole == MainMenu::CMainWindow::Admin ||
+            userRole == MainMenu::CMainWindow::Service)
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(m_strWarning);
+            mp_MessageDlg->SetText(m_strStartExpiredReagent);
+            mp_MessageDlg->SetButtonText(3, m_strNo);
+            mp_MessageDlg->SetButtonText(1, m_strYes);
+            mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
 
-    MainMenu::CMainWindow::UserRole_t userRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    if (userRole == MainMenu::CMainWindow::Operator)
-    {
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(m_strWarning);
-        mp_MessageDlg->SetText(m_strNotStartExpiredReagent);
-        mp_MessageDlg->SetButtonText(1, m_strOK);
-        mp_MessageDlg->HideButtons();
-        if (mp_MessageDlg->exec())
-            return;
-    }
-    else if(userRole == MainMenu::CMainWindow::Admin ||
-        userRole == MainMenu::CMainWindow::Service)
-    {
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(m_strWarning);
-        mp_MessageDlg->SetText(m_strStartExpiredReagent);
-        mp_MessageDlg->SetButtonText(3, m_strNo);
-        mp_MessageDlg->SetButtonText(1, m_strYes);
-        mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
-
-        if (!mp_MessageDlg->exec())
-            return;
+            if (!mp_MessageDlg->exec())
+                return;
+        }
     }
 
 

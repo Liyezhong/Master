@@ -99,6 +99,7 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     mp_SuckDrainTimer = new QTimer(this);
     mp_SuckDrainTimer->setInterval(500);
     CONNECTSIGNALSLOT(mp_SuckDrainTimer, timeout(), this, SuckDrainAnimation());
+
 }
 
 /****************************************************************************/
@@ -173,7 +174,7 @@ void CDashboardStationItem::UpdateImage()
         return;
     }
 
-    CONNECTSIGNALSLOT(mp_DataConnector, ReagentsUpdated(), this, UpdateDashboardStationItemReagent());
+    CONNECTSIGNALSLOT(mp_DataConnector, ReagentsUpdated(), this, UpdateDashboardStationItemReagentWhenReagentUpdated());
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, UpdateUserSettings());
 }
 
@@ -273,6 +274,36 @@ void CDashboardStationItem::LoadStationImages(QPainter& Painter)
  */
 /****************************************************************************/
 
+void CDashboardStationItem::UpdateDashboardStationItemReagentWhenReagentUpdated()
+{
+    if (!mp_DashboardStation)
+        return;
+    QString ReagentID = mp_DashboardStation->GetDashboardReagentID();
+    DataManager::CReagent *p_Reagent = const_cast<DataManager::CReagent*>(mp_DataConnector->ReagentList->GetReagent(ReagentID));
+
+    if (p_Reagent)
+    {
+        DataManager::ReagentStatusType_t reagentStatus = mp_DashboardStation->GetReagentStatus(*p_Reagent, m_CurRMSMode);
+
+        if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
+            m_ReagentExpiredFlag = true;
+        else
+            m_ReagentExpiredFlag = false;
+
+        qDebug()<<"CDashboardStationItem::UpdateDashboardStationItemReagentWhenReagentUpdated  expired="
+               <<m_ReagentExpiredFlag<<" reagentID="<<ReagentID<<" station="<<mp_DashboardStation->GetDashboardStationID();
+    }
+    DrawStationItemImage();
+}
+
+
+/****************************************************************************/
+/*!
+ *  \brief Update Dashboard Station Items Reagent Properties when Reagents are updated
+ *
+ */
+/****************************************************************************/
+
 void CDashboardStationItem::UpdateDashboardStationItemReagent()
 {
     if (!mp_DashboardStation)
@@ -292,6 +323,9 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
                 m_ReagentExpiredFlag = true;
             else
                 m_ReagentExpiredFlag = false;
+
+          //  qDebug()<<"CDashboardStationItem::UpdateDashboardStationItemReagent  expired="
+          //         <<m_ReagentExpiredFlag<<" reagentID="<<ReagentID<<" station="<<mp_DashboardStation->GetDashboardStationID();
         }
     }
     DrawStationItemImage();
@@ -402,6 +436,7 @@ void CDashboardStationItem::DrawStationItemLabel(QPainter &painter)
 void CDashboardStationItem::EnableBlink(bool bEnable)
 {
     m_EnableBlink = bEnable;
+    m_ExpiredColorRed = false;
 }
 
 void CDashboardStationItem::FillReagentColor(QPainter & Painter)

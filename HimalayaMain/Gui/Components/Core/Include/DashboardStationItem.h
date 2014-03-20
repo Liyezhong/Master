@@ -165,6 +165,7 @@ public slots:
     void UpdateDashboardStationItemReagent();
     void SuckDrainAnimation();
     void DrawStationItemImage();
+    void UpdateDashboardStationItemReagentWhenReagentUpdated();
 
 private slots:
     void UpdateUserSettings();
