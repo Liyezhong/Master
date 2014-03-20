@@ -10,6 +10,7 @@
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
 #include "Dashboard/Include/CommonString.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
+#include "HimalayaDataContainer/Helper/Include/Global.h"
 
 namespace Dashboard {
 CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
@@ -187,7 +188,7 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
     qDebug() << "Reagent List Size = " << (int)reagentIDList.size();
     qDebug() << "Station List Size = " << (int) m_StationList.size();
 
-    Global::ReagentStatusType reagentStatus = Global::REAGENT_STATUS_NORMAL;
+    DataManager::ReagentStatusType_t reagentStatus = DataManager::REAGENT_STATUS_NORMAL;
 
     for(int i = 0; i<m_StationList.size(); i++)
     {
@@ -206,11 +207,11 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
 
         reagentStatus = p_Station->GetReagentStatus(*p_Reagent, RMSOption);
 
-        if ( reagentStatus == Global::REAGENT_STATUS_EXPIRED )
+        if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
             break;
     }
 
-    if ( reagentStatus == Global::REAGENT_STATUS_NORMAL ) {
+    if ( reagentStatus == DataManager::REAGENT_STATUS_NORMAL ) {
         emit PrepareSelectedProgramChecking(m_SelectedProgramId, true);
         return ;
     }

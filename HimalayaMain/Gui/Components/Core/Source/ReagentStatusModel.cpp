@@ -28,7 +28,7 @@
 #include "MainMenu/Include/MainWindow.h"
 #include "Programs/Include/ProgramWidget.h"
 #include "Application/Include/LeicaStyle.h"
-
+#include "HimalayaDataContainer/Helper/Include/Global.h"
 
 namespace Core {
 
@@ -191,8 +191,8 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
             && (p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]]))))
     {
 
-            Global::ReagentStatusType ReagentStatus = p_Station->GetReagentStatus(*p_Reagent, RMSPROCESSINGOPTION);
-            if ( ReagentStatus == Global::REAGENT_STATUS_EXPIRED )
+            DataManager::ReagentStatusType_t ReagentStatus = p_Station->GetReagentStatus(*p_Reagent, RMSPROCESSINGOPTION);
+            if ( ReagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
                 Expired = true;
             else
                 Expired = false;
@@ -206,7 +206,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
             }
 
             ReagentStatus = p_Station->GetReagentStatus(*p_Reagent, RMSCLEANINGOPTIONS);
-            if ( ReagentStatus == Global::REAGENT_STATUS_EXPIRED )
+            if ( ReagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
                 Expired = true;
             else
                 Expired = false;

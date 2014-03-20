@@ -21,7 +21,7 @@
 #include "Core/Include/DashboardStationItem.h"
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
-
+#include "HimalayaDataContainer/Helper/Include/Global.h"
 
 
 namespace Core {
@@ -286,9 +286,9 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
         {
             m_CurRMSMode = m_UserSettings.GetModeRMSProcessing();
 
-            Global::ReagentStatusType reagentStatus = mp_DashboardStation->GetReagentStatus(*p_Reagent, m_CurRMSMode);
+            DataManager::ReagentStatusType_t reagentStatus = mp_DashboardStation->GetReagentStatus(*p_Reagent, m_CurRMSMode);
 
-            if ( reagentStatus == Global::REAGENT_STATUS_EXPIRED )
+            if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
                 m_ReagentExpiredFlag = true;
             else
                 m_ReagentExpiredFlag = false;

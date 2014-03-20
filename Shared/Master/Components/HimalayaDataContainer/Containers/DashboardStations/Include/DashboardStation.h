@@ -26,6 +26,7 @@
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"
 
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
+#include "HimalayaDataContainer/Helper/Include/Global.h"
 
 namespace DataManager {
 
@@ -64,7 +65,7 @@ public:
     void ResetData(void);
 
 	
-	Global::ReagentStatusType GetReagentStatus(const DataManager::CReagent &Reagent, const Global::RMSOptions_t); //
+    DataManager::ReagentStatusType_t GetReagentStatus(const DataManager::CReagent &Reagent, const Global::RMSOptions_t); //
 
 //    /******************** INLINE FuNCTIONS **************************************/
     /****************************************************************************/
