@@ -19,15 +19,15 @@
 			<Step ID="2" Type="ACT" Action="RC_Report"/>
 			<Step ID="3" Type="MSG" StringID="023010312" RDStringID="033010312" ButtonType="OK" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="4" Type="ACT" Action="RC_Levelsensor_heating_Overtime" NextStepOnFail="5" NextStepOnSuccess="7"/>
-			<Step ID="5" Type="MSG" StringID="043010312" RDStringID="053010312" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="5" Type="MSG" StringID="003010312" RDStringID="013010312" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="6" Type="ACT" Action="RC_Report"/>
 			<Step ID="7" Type="ACT" Action="RC_Restart"/>
 		</Event>
 		<Event Code="" ErrorID="513010462" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="3"/>
-			<Step ID="1" Type="MSG" StringID="003010462" RDStringID="013010462" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="1" Type="MSG" StringID="903010462" RDStringID="913010462" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="2" Type="ACT" Action="RC_Report"/>
-			<Step ID="3" Type="MSG" StringID="033010462" RDStringID="033010462" ButtonType="OK" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="3" Type="MSG" StringID="923010462" RDStringID="933010462" ButtonType="OK" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="4" Type="ACT" Action="RC_Report"/>
 		</Event>
 		<Event Code="" ErrorID="513015312" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">

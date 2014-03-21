@@ -12,10 +12,10 @@
 		<string id="238" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
 		<string id="239" text1="The Rotary valve lost current position, during moving from position xx to position xx." text2=""/>
 		<!-- BEGIN::Scheduler Error Handling strings, just for test -->
-		<string id="013010312" text1="ERR_Retort_Levelsensor_Heating_Overtime_NoTissue 013010312" text2=""/>
-		<string id="033010312" text1="ERR_Retort_Levelsensor_Heating_Overtime_NoTissue 033010312" text2=""/>
-		<string id="053010312" text1="ERR_Retort_Levelsensor_Heating_Overtime_NoTissue 053010312" text2=""/>
-		<string id="073010312" text1="ERR_Retort_Levelsensor_Heating_Overtime_NoTissue 073010312" text2=""/>
+		<string id="003010312" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
+		<string id="013010312" text1="Retort: Please check whether there is any dirt or residue on the level sensor and clean if necessary. If nothing is found, please check O-ring of level sensor or exchange level sensor sub-module." text2=""/>
+		<string id="023010312" text1="Please clear level sensor by sourcing pad" text2=""/>
+		<string id="033010312" text1="Info user::Please clear level sensor by sourcing pad" text2=""/>
 		<string id="013015312" text1="ERR_Retort_Levelsensor_Heating_Overtime_NoTissue_Retry 013015312" text2=""/>
 		<string id="033015312" text1="ERR_Retort_Levelsensor_Heating_Overtime_NoTissue_Retry 033015312" text2=""/>
 		<string id="013015332" text1="ERR_Levelsensor_temperature_overrange_NoTissue_without_Paraffin_Retry 013015332" text2=""/>
@@ -24,8 +24,10 @@
 		<string id="033015336" text1="ERR_Levelsensor_temperature_overrange_Paraffin_Retry 033015336" text2=""/>
 		<string id="013015337" text1="ERR_Levelsensor_temperature_overrange_NoTissue_with_paraffin_Retry 013015337" text2=""/>
 		<string id="033015337" text1="ERR_Levelsensor_temperature_overrange_NoTissue_with_paraffin_Retry 033015337" text2=""/>
-		<string id="003010462" text1="ERR_Lidlock_Close_Status_Error_NoTissue 003010462" text2=""/>
-		<string id="013010462" text1="ERR_Lidlock_Close_Status_Error_NoTissue 013010462" text2=""/>
+		<string id="903010462" text1="Please close retort lid and confirm the retry button." text2=""/>
+		<string id="913010462" text1="Please close retort lid and confirm by clicking the retry button. Please check the lidlock for mechanical blockages or any residue. Also check the lidlock sensor for proper function and adjustment." text2=""/>
+		<string id="923010462" text1="Please close retort lid and confirm the retry button." text2=""/>
+		<string id="933010462" text1="Please close retort lid and confirm by clicking the retry button. Please check the lidlock for mechanical blockages or any residue. Also check the lidlock sensor f    or proper function and adjustment." text2=""/>
 		<string id="013015462" text1="ERR_Lidlock_Close_Status_Error_NoTissue_Retry 013015462" text2=""/>
 		<string id="033015462" text1="ERR_Lidlock_Close_Status_Error_NoTissue_Retry 033015462" text2=""/>
 		<string id="013020050" text1="ERR_WaxBath_SensorUp_Heating_Abnormal_Delay_Melting_NoTisuue 013020050" text2=""/>
