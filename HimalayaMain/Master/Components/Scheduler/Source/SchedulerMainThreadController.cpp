@@ -54,6 +54,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 #include "NetCommands/Include/CmdSystemAction.h"
 #include "float.h"
@@ -81,6 +82,8 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_NewProgramID("")
         , m_PauseToBeProcessed(false)
         , m_ProcessCassetteCount(0)
+        , m_OvenLidStatus(UNDEFINED_VALUE)
+        , m_RetortLockStatus(UNDEFINED_VALUE)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
 }
@@ -2193,27 +2196,44 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 	}
 	if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
     {
+        if(((m_OvenLidStatus == 0) || (m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 1))
+        {
+            //oven is open
+            //todo: add cmd to notice GUI
+        }
+        if(((m_OvenLidStatus == 1) || (m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 0))
+        {
+            //oven is closed
+            //todo: add cmd to notice GUI
+        }
         m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
 	}
 	if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
 	{
-        if((m_RetortLockStatus == 0)&&(strctHWMonitor.RetortLockStatus == 1))
-		{
-		   // turn on the fan
-			m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
-           if((m_SchedulerMachine->GetCurrentState() & 0xF)== SM_BUSY)
-           {
+        if(((m_RetortLockStatus == 0) ||(m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 1))
+        {
+            // retort is open, turn on the fan
+            m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
+            if((m_SchedulerMachine->GetCurrentState() & 0xF)== SM_BUSY)
+            {
                 Global::EventObject::Instance().RaiseEvent(0, 500010461, Scenario, true);
                 m_SchedulerMachine->SendErrorSignal();
-           }
+            }
+            MsgClasses::CmdRetortLockStatus* commandPtr(new MsgClasses::CmdRetortLockStatus(5000, false));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
-        if((m_RetortLockStatus == 1)&&(strctHWMonitor.RetortLockStatus == 0))
+        if(((m_RetortLockStatus == 1) || (m_RetortLockStatus == UNDEFINED_VALUE))&&(strctHWMonitor.RetortLockStatus == 0))
 		{
-           // turn off the fan
+           // retort is closed, turn off the fan
 			m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, this));
+            MsgClasses::CmdRetortLockStatus* commandPtr(new MsgClasses::CmdRetortLockStatus(5000, true));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
 		}
         m_RetortLockStatus = strctHWMonitor.RetortLockStatus;
-
 	}
 
     m_PositionRV = strctHWMonitor.PositionRV;
