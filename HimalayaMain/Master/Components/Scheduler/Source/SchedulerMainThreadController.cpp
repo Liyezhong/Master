@@ -413,7 +413,18 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ST_PRESSURE_CHECKING == stepState)
         {
-            m_SchedulerMachine->NotifyStPressureOK(); //todo: update later
+            HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
+            qreal currentPressure = strctHWMonitor.PressureAL;
+           // if((currentPressure < 0.0000001)&&(currentPressure > (-0.00000001))) //todo: verify pressure tolerence later
+           // {
+           //     Global::EventObject::Instance().RaiseEvent(0, 513040020, GetScenarioBySchedulerState(stepState, GetReagentGroupID(m_CurReagnetName)), true);
+           //     m_SchedulerMachine->SendErrorSignal();
+           // }
+           // else
+            {
+                m_SchedulerMachine->NotifyStPressureOK(); //todo: update later
+            }
+
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
                 AllStop();
@@ -1036,6 +1047,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if(SM_ERR_RS_SHUTDOWN_FAILED_HEATER == currentState)
     {
         m_SchedulerMachine->NotifyRsShutdownFailedHeaterFinished();
+        Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, true);
     }
 }
 
@@ -2180,7 +2192,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         m_TempOvenTop = strctHWMonitor.TempOvenTop;
 	}
 	if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
-	{
+    {
         m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
 	}
 	if(strctHWMonitor.RetortLockStatus != UNDEFINED_VALUE)
@@ -2189,10 +2201,15 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 		{
 		   // turn on the fan
 			m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
-		}
+           if((m_SchedulerMachine->GetCurrentState() & 0xF)== SM_BUSY)
+           {
+                Global::EventObject::Instance().RaiseEvent(0, 500010461, Scenario, true);
+                m_SchedulerMachine->SendErrorSignal();
+           }
+        }
         if((m_RetortLockStatus == 1)&&(strctHWMonitor.RetortLockStatus == 0))
 		{
-		   // turn on the fan
+           // turn off the fan
 			m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, this));
 		}
         m_RetortLockStatus = strctHWMonitor.RetortLockStatus;

@@ -245,6 +245,7 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         }
         else if((currentState = mp_RSRvGetOriginalPositionAgain->GetCurrentState(mp_SchedulerMachine->configuration())) != SM_UNDEF);
         else if((currentState = mp_RCReport->GetCurrentState(mp_SchedulerMachine->configuration())) != SM_UNDEF);
+        else if((currentState = mp_RSStandby->GetCurrentState(mp_SchedulerMachine->configuration())) != SM_UNDEF);
     }else if(mp_SchedulerMachine->configuration().contains(mp_BusyState))
     {
         currentState = mp_ProgramStepStates->GetCurrentState(mp_SchedulerMachine->configuration());
