@@ -44,7 +44,7 @@ ServiceDeviceController::ServiceDeviceController(Global::gSourceType TheHeartBea
      , m_ProcessSettings(false)
      , m_Adjustment(false)
      , m_DeviceDataContainers(false){
-    qRegisterMetaType<DeviceControl::DevInstanceID_t>("DeviceControl::DevInstanceID_t");
+    //qRegisterMetaType<DeviceControl::DevInstanceID_t>("DeviceControl::DevInstanceID_t");
     qRegisterMetaType<Service::DeviceCalibrationCmdType>("Service::DeviceCalibrationCmdType");
 }
 
@@ -221,7 +221,7 @@ void ServiceDeviceController::OnPowerFail(const Global::PowerFailStages PowerFai
  *
  */
 /****************************************************************************/
-void ServiceDeviceController::GetUnInitializedDevices(QList<DevInstanceID_t> &)
+void ServiceDeviceController::GetUnInitializedDevices(QList<quint32> &)
 {
 }
 

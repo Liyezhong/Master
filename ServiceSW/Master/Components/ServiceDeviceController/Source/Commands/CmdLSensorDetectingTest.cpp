@@ -26,7 +26,7 @@ QString CmdLSensorDetectingTest::NAME             = "DeviceCommandProcessor::Cmd
 int     CmdLSensorDetectingTest::m_CmdTimeout     = 3000;
 
 /****************************************************************************/
-CmdLSensorDetectingTest::CmdLSensorDetectingTest(DeviceControl::DevInstanceID_t DevInstanceID, qint32 Position)
+CmdLSensorDetectingTest::CmdLSensorDetectingTest(quint32 DevInstanceID, qint32 Position)
     : Global::Command(m_CmdTimeout)
     , m_DevInstanceID(DevInstanceID)
     , m_Position(Position)

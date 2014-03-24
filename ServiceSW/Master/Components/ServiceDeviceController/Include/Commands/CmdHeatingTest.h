@@ -44,7 +44,7 @@ protected:
 public:
     static QString  NAME;                                   ///< Command name.
 
-    DeviceControl::DevInstanceID_t m_DevInstanceID;        ///< Instance ID of the target device
+    quint32 m_DevInstanceID;        ///< Instance ID of the target device
     quint8  m_HeaterIndex;                                 ///< Heater index of certain device
     quint8  m_CmdType;                                     ///< Heating command type
     quint32 m_TargetTemp;                                  ///< Target temperature
@@ -69,7 +69,7 @@ public:
      * \param[in]   DevInstanceID       Instance ID of the concerned device.
      */
     /****************************************************************************/
-    CmdHeatingTest(DeviceControl::DevInstanceID_t DevInstanceID, quint8 HeaterIndex,
+    CmdHeatingTest(quint32 DevInstanceID, quint8 HeaterIndex,
                    quint8 CmdType);
     /****************************************************************************/
     /**

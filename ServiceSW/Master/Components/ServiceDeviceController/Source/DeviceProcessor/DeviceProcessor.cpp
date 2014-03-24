@@ -208,7 +208,7 @@ bool DeviceProcessor::CheckHardwareInfo(ReturnCode_t HdlInfo)
 #endif
 
 /****************************************************************************/
-void DeviceProcessor::OnAbortTest(Global::tRefType Ref, DevInstanceID_t id)
+void DeviceProcessor::OnAbortTest(Global::tRefType Ref, quint32 id)
 {
     qDebug()<<"DeviceProcessor::OnAbortTest";
     if(!IsInitialized()){
@@ -229,7 +229,7 @@ void DeviceProcessor::OnAbortTest(Global::tRefType Ref, DevInstanceID_t id)
 
 
 /****************************************************************************/
-void DeviceProcessor::OnLSensorDetectingTest(Global::tRefType Ref, DevInstanceID_t id,
+void DeviceProcessor::OnLSensorDetectingTest(Global::tRefType Ref, quint32 id,
                                       qint32 Position)
 {
 
@@ -284,7 +284,7 @@ void DeviceProcessor::OnLSensorDetectingTest(Global::tRefType Ref, DevInstanceID
 }
 
 /****************************************************************************/
-void DeviceProcessor::OnHeatingTest(Global::tRefType Ref, DevInstanceID_t id,
+void DeviceProcessor::OnHeatingTest(Global::tRefType Ref, quint32 id,
                                       quint8 HeaterIndex, quint8 CmdType)
 {
     m_UserAbort = false;
@@ -429,7 +429,7 @@ void DeviceProcessor::OnHeatingTest(Global::tRefType Ref, DevInstanceID_t id,
 }
 
 /****************************************************************************/
-void DeviceProcessor::OnRotaryValveTest(Global::tRefType Ref, DeviceControl::DevInstanceID_t id,
+void DeviceProcessor::OnRotaryValveTest(Global::tRefType Ref, quint32 id,
                      qint32 Position, quint8 CmdType)
 {
     m_UserAbort = false;
@@ -493,7 +493,7 @@ void DeviceProcessor::OnRotaryValveTest(Global::tRefType Ref, DeviceControl::Dev
 }
 
 /****************************************************************************/
-qint32 DeviceProcessor::TestRVHeating(DeviceControl::DevInstanceID_t DeviceId)
+qint32 DeviceProcessor::TestRVHeating(quint32 DeviceId)
 {
 
     quint32 WaitSec(0);
@@ -540,7 +540,7 @@ qint32 DeviceProcessor::TestRVHeating(DeviceControl::DevInstanceID_t DeviceId)
 }
 
 /****************************************************************************/
-qint32 DeviceProcessor::TestLSensorHeating(DeviceControl::DevInstanceID_t DeviceId)
+qint32 DeviceProcessor::TestLSensorHeating(quint32 DeviceId)
 {
     quint32 WaitSec(0);
     qint32  LSensorStatus(-1);
@@ -587,7 +587,7 @@ qint32 DeviceProcessor::TestLSensorHeating(DeviceControl::DevInstanceID_t Device
 
 
 /****************************************************************************/
-qint32 DeviceProcessor::TestOvenHeating(DeviceControl::DevInstanceID_t DeviceId)
+qint32 DeviceProcessor::TestOvenHeating(quint32 DeviceId)
 {
     quint32 WaitSec(0);
     qint32  OvenStatus(-1);
@@ -639,7 +639,7 @@ qint32 DeviceProcessor::TestOvenHeating(DeviceControl::DevInstanceID_t DeviceId)
 }
 
 
-qint32 DeviceProcessor::TestTubeHeating(DeviceControl::DevInstanceID_t DeviceId, quint8 TubeIndex)
+qint32 DeviceProcessor::TestTubeHeating(quint32 DeviceId, quint8 TubeIndex)
 {
 
     quint32 WaitSec(0);
@@ -698,7 +698,7 @@ qint32 DeviceProcessor::TestTubeHeating(DeviceControl::DevInstanceID_t DeviceId,
 
 }
 
-qint32 DeviceProcessor::MoveRVToInitPos(DeviceControl::DevInstanceID_t DeviceId)
+qint32 DeviceProcessor::MoveRVToInitPos(quint32 DeviceId)
 {
     if ( !mp_MotorRV->MoveToInitialPosition() )
     {
@@ -708,7 +708,7 @@ qint32 DeviceProcessor::MoveRVToInitPos(DeviceControl::DevInstanceID_t DeviceId)
     return 0;
 }
 
-qint32 DeviceProcessor::MoveRVToTubePos(DeviceControl::DevInstanceID_t DeviceId, qint32 Pos)
+qint32 DeviceProcessor::MoveRVToTubePos(quint32 DeviceId, qint32 Pos)
 {
     if ( !mp_MotorRV->MoveToTubePosition(Pos) )
     {
@@ -724,7 +724,7 @@ qint32 DeviceProcessor::MoveRVToTubePos(DeviceControl::DevInstanceID_t DeviceId,
     return 0;
 }
 
-qint32 DeviceProcessor::MoveRVToSealPos(DeviceControl::DevInstanceID_t DeviceId, qint32 Pos)
+qint32 DeviceProcessor::MoveRVToSealPos(quint32 DeviceId, qint32 Pos)
 {
     if ( !mp_MotorRV->MoveToSealPosition(Pos) )
     {
@@ -748,7 +748,7 @@ qint32 DeviceProcessor::MoveRVToSealPos(DeviceControl::DevInstanceID_t DeviceId,
 
 }
 
-qint32 DeviceProcessor::TestLSensorDetecting(DeviceControl::DevInstanceID_t DeviceId, qint32 Pos)
+qint32 DeviceProcessor::TestLSensorDetecting(quint32 DeviceId, qint32 Pos)
 {
     qint32 Ret;
 

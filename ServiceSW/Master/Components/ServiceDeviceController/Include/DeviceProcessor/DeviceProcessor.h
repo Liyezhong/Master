@@ -101,7 +101,7 @@ public slots:
      * \param[in]       Cmd                 Command.
      */
     /****************************************************************************/
-    void OnAbortTest(Global::tRefType Ref, DeviceControl::DevInstanceID_t id);
+    void OnAbortTest(Global::tRefType Ref, quint32 id);
     /****************************************************************************/
     /**
      * \brief Handle Command of type CmdHeatingTest received.
@@ -110,7 +110,7 @@ public slots:
      * \param[in]       Cmd                 Command.
      */
     /****************************************************************************/
-    void OnHeatingTest(Global::tRefType Ref, DeviceControl::DevInstanceID_t id,
+    void OnHeatingTest(Global::tRefType Ref, quint32 id,
                          quint8 HeaterIndex, quint8 CmdType);
     /****************************************************************************/
     /**
@@ -120,7 +120,7 @@ public slots:
      * \param[in]       Cmd                 Command.
      */
     /****************************************************************************/
-    void OnRotaryValveTest(Global::tRefType Ref, DeviceControl::DevInstanceID_t id,
+    void OnRotaryValveTest(Global::tRefType Ref, quint32 id,
                          qint32 Postion, quint8 CmdType);
     /****************************************************************************/
     /**
@@ -130,7 +130,7 @@ public slots:
      * \param[in]       Cmd                 Command.
      */
     /****************************************************************************/
-    void OnLSensorDetectingTest(Global::tRefType Ref, DeviceControl::DevInstanceID_t id,
+    void OnLSensorDetectingTest(Global::tRefType Ref, quint32 id,
                          qint32 Position);
 
 signals:
@@ -185,7 +185,7 @@ private:
      * \param[in]       DeviceId            Device Instance ID
      */
     /****************************************************************************/
-    qint32 TestRVHeating(DeviceControl::DevInstanceID_t DeviceId);
+    qint32 TestRVHeating(quint32 DeviceId);
     /****************************************************************************/
     /**
      * \brief To Test heating of oven
@@ -193,7 +193,7 @@ private:
      * \param[in]       DeviceId            Device Instance ID
      */
     /****************************************************************************/
-    qint32 TestOvenHeating(DeviceControl::DevInstanceID_t DeviceId);
+    qint32 TestOvenHeating(quint32 DeviceId);
     /****************************************************************************/
     /**
      * \brief To Test heating of level sensor
@@ -201,7 +201,7 @@ private:
      * \param[in]       DeviceId            Device Instance ID
      */
     /****************************************************************************/
-    qint32 TestLSensorHeating(DeviceControl::DevInstanceID_t DeviceId);
+    qint32 TestLSensorHeating(quint32 DeviceId);
     /****************************************************************************/
     /**
      * \brief To Test heating of tube1/tube2
@@ -210,7 +210,7 @@ private:
      * \param[in]       TubeIndex           Index of Tube
      */
     /****************************************************************************/
-    qint32 TestTubeHeating(DeviceControl::DevInstanceID_t DeviceId, quint8 TubeIndex);
+    qint32 TestTubeHeating(quint32 DeviceId, quint8 TubeIndex);
     /****************************************************************************/
     /**
      * \brief Move rotary valve to initial position
@@ -218,7 +218,7 @@ private:
      * \param[in]       DeviceId            Device Instance ID
      */
     /****************************************************************************/
-    qint32 TestLSensorDetecting(DeviceControl::DevInstanceID_t DeviceId, qint32 Position);
+    qint32 TestLSensorDetecting(quint32 DeviceId, qint32 Position);
     /****************************************************************************/
     /**
      * \brief To Test detecting of level sensor
@@ -227,9 +227,9 @@ private:
      ** \param[in]      Position            Tube position for sucking
      */
     /****************************************************************************/
-    qint32 MoveRVToInitPos(DeviceControl::DevInstanceID_t DeviceId);
-    qint32 MoveRVToTubePos(DeviceControl::DevInstanceID_t DeviceId, qint32 Pos);
-    qint32 MoveRVToSealPos(DeviceControl::DevInstanceID_t DeviceId, qint32 Pos);
+    qint32 MoveRVToInitPos(quint32 DeviceId);
+    qint32 MoveRVToTubePos(quint32 DeviceId, qint32 Pos);
+    qint32 MoveRVToSealPos(quint32 DeviceId, qint32 Pos);
 #if 0
     /**
      * \brief To convert device layer codes into meaningful strings.
