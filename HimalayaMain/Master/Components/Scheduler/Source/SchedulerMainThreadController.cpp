@@ -2199,12 +2199,18 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         if(((m_OvenLidStatus == 0) || (m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 1))
         {
             //oven is open
-            //todo: add cmd to notice GUI
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, false));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
         if(((m_OvenLidStatus == 1) || (m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 0))
         {
             //oven is closed
-            //todo: add cmd to notice GUI
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, true));
+            Q_ASSERT(commandPtr);
+            Global::tRefType Ref = GetNewCommandRef();
+            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
         m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
 	}
