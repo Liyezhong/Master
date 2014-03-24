@@ -70,7 +70,7 @@
 #include <NetCommands/Include/CmdCriticalActionCheck.h>
 #include <NetCommands/Include/CmdCriticalActionStatus.h>
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortStatus.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
@@ -356,7 +356,7 @@ void HimalayaMasterThreadController::ShutdownOnPowerFail()
 void HimalayaMasterThreadController::RegisterCommands() {
     //Dashboard
     RegisterCommandForRouting<MsgClasses::CmdProgramAction>(&m_CommandChannelSchedulerMain);//GUI-->master->Scheduler
-    RegisterCommandForRouting<MsgClasses::CmdRetortLockStatus>(&m_CommandChannelGui);
+    RegisterCommandForRouting<MsgClasses::CmdLockStatus>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdRetortStatus>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdStationSuckDrain>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdProgramSelectedReply>(&m_CommandChannelGui);

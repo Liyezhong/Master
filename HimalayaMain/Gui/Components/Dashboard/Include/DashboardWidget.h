@@ -15,7 +15,7 @@ namespace MsgClasses
 {
     class CmdProgramSelectedReply;
     class CmdStationSuckDrain;
-    class CmdRetortLockStatus;
+    class CmdLockStatus;
     class CmdCurrentProgramStepInfor;
 }
 
@@ -103,7 +103,7 @@ private slots:
     void OnProgramRunBegin();
     void OnProgramPaused();
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);
-    void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
+    void OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd);
     void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd);
     void OnUserRoleChanged();
     void OnProcessStateChanged();

@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CmdRetortLockStatus.cpp
+/*! \file CmdLockStatus.cpp
  *
- *  \brief CmdRetortLockStatus command implementation.
+ *  \brief CmdLockStatus command implementation.
  *
  *   $Version: $ 0.1
 *   $Date:    $ 26.03.2013
@@ -18,20 +18,22 @@
  */
 /****************************************************************************/
 
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
 namespace MsgClasses {
 
-QString CmdRetortLockStatus::NAME = "MsgClasses::CmdRetortLockStatus";
+QString CmdLockStatus::NAME = "MsgClasses::CmdLockStatus";
 
 
-CmdRetortLockStatus::CmdRetortLockStatus(int timeout, bool isLocked) :
+CmdLockStatus::CmdLockStatus(int timeout, DataManager::LockType_t lockType, bool isLocked) :
     Command(timeout),
+    m_LockType(lockType),
     m_Locked(isLocked)
 {
 }
 
-CmdRetortLockStatus::CmdRetortLockStatus():
+CmdLockStatus::CmdLockStatus():
     Command(0),
+    m_LockType(DataManager::LOCKTYPE_UNDEFINED),
     m_Locked(false)
 {
 }
@@ -41,7 +43,7 @@ CmdRetortLockStatus::CmdRetortLockStatus():
  *  \brief   Destructor
  */
 /****************************************************************************/
-CmdRetortLockStatus::~CmdRetortLockStatus()
+CmdLockStatus::~CmdLockStatus()
 {
 }
 
@@ -52,7 +54,7 @@ CmdRetortLockStatus::~CmdRetortLockStatus()
  *  \return  command name as string
  */
 /****************************************************************************/
-QString CmdRetortLockStatus::GetName() const
+QString CmdLockStatus::GetName() const
 {
     return NAME;
 }

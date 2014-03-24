@@ -54,7 +54,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 #include "NetCommands/Include/CmdSystemAction.h"
 #include "float.h"
@@ -2219,7 +2219,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
                 Global::EventObject::Instance().RaiseEvent(0, 500010461, Scenario, true);
                 m_SchedulerMachine->SendErrorSignal();
             }
-            MsgClasses::CmdRetortLockStatus* commandPtr(new MsgClasses::CmdRetortLockStatus(5000, false));
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, false));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
@@ -2228,7 +2228,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 		{
            // retort is closed, turn off the fan
 			m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, this));
-            MsgClasses::CmdRetortLockStatus* commandPtr(new MsgClasses::CmdRetortLockStatus(5000, true));
+            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, true));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
