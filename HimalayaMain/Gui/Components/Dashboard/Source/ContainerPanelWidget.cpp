@@ -87,8 +87,8 @@ void CContainerPanelWidget::Initialize()
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, QList<QString>&),
                        mp_DashboardScene, UpdateDashboardSceneReagentsForProgram(QString&, QList<QString>&));
 
-    CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus &),
-                      this, OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus&));
+    CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdLockStatus &),
+                      this, OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus&));
 
     CONNECTSIGNALSLOT(mp_DataConnector, StationSuckDrain(const MsgClasses::CmdStationSuckDrain &),
                       this, OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain &));
@@ -129,35 +129,7 @@ void CContainerPanelWidget::UpdateRetortStatus(DataManager::ContainerStatusType_
     mp_DashboardScene->UpdateRetortStatus(retortStatusType);
 }
 
-void CContainerPanelWidget::AddItemsToComboBox(bool bOnlyAddCleaningProgram)
-{
-    m_FavProgramIDs.clear();
-    if (bOnlyAddCleaningProgram)
-    {
-        m_FavProgramIDs.append("C01");
-    }
-    else
-    {
-        m_FavProgramIDs = mp_ProgramList->GetFavoriteProgramIDs(); // get five favorite Programs' ID
-    }
-
-    for ( int i = 0; i < m_FavProgramIDs.count(); i++)
-    {
-        QString ProgramId = m_FavProgramIDs.at(i);
-        QString ProgramName = mp_ProgramList->GetProgram(ProgramId)->GetName();
-        QString strIconName;
-        if (mp_ProgramList->GetProgram(ProgramId)->GetIcon().isEmpty())
-        {
-            strIconName = ":/HimalayaImages/Icons/Program/IconEmpty.png";
-        }
-        else
-            strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(ProgramId)->GetIcon() + ".png";
-       // QIcon ProgramIcon(strIconName);
-        //mp_Ui->pgmsComboBox->insertItem(i, ProgramIcon, ProgramName);
-    }
-}
-
-void CContainerPanelWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd)
+void CContainerPanelWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd)
 {
     if (cmd.IsLocked())
     {

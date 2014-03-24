@@ -112,7 +112,7 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdStationSuckDrain>(&CDataConnector::StationParaffinBathStatusHandler, this);
 
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdProgramSelectedReply>(&CDataConnector::ProgramSelectedReplyHandler, this);
-    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdRetortLockStatus>(&CDataConnector::RetortLockStatusHandler, this);
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdLockStatus>(&CDataConnector::RetortLockStatusHandler, this);
 
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdQuitAppShutdownReply>(&CDataConnector::AppQuitSystemShutdownRelyHandler, this);
 
@@ -1710,16 +1710,17 @@ void CDataConnector::ProgramSelectedReplyHandler(Global::tRefType Ref, const Msg
     emit ProgramSelectedReply(Command);
 }
 
-void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortLockStatus & Command)
+void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdLockStatus & Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
-
-    if (Command.IsLocked())
+    if (Command.LockType() == DataManager::RETORT_LOCK)
     {
-        mp_MesgBoxManager->EnableOKButton();
+        if (Command.IsLocked())
+        {
+            mp_MesgBoxManager->EnableOKButton();
+        }
+        emit RetortLockStatusChanged(Command);
     }
-
-    emit RetortLockStatusChanged(Command);
 }
 
 void CDataConnector::AppQuitSystemShutdownRelyHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdownReply & Command)

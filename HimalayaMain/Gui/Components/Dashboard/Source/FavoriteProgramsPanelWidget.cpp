@@ -107,7 +107,7 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         QString strIconName;
         if (mp_ProgramList->GetProgram(ProgramId)->GetIcon().isEmpty())
         {
-            strIconName = ":/HimalayaImages/Icons/Program/IconEmpty.png";
+            strIconName = "";
         }
         else
             strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(ProgramId)->GetIcon() + ".png";
