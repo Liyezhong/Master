@@ -34,10 +34,11 @@
 
 
 
-
 #include <QMetaType>
 
 namespace ImportExport {
+
+using namespace Global;
 
 // constants for the different files
 const QString FILENAME_REAGENTS             = "HimalayaReagents.xml"; ///< const for the reagent file name

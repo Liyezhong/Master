@@ -39,7 +39,7 @@ CmdHeatingTest::CmdHeatingTest(DeviceControl::DevInstanceID_t DevInstanceID, qui
 }
 #endif
 /****************************************************************************/
-CmdHeatingTest::CmdHeatingTest(DeviceControl::DevInstanceID_t DevInstanceID, quint8 HeaterIndex,
+CmdHeatingTest::CmdHeatingTest(quint32 DevInstanceID, quint8 HeaterIndex,
                quint8 CmdType)
     : Global::Command(m_CmdTimeout)
     , m_DevInstanceID(DevInstanceID)

@@ -26,7 +26,7 @@ QString CmdRotaryValveTest::NAME             = "DeviceCommandProcessor::CmdRotar
 int     CmdRotaryValveTest::m_CmdTimeout     = 3000;
 
 /****************************************************************************/
-CmdRotaryValveTest::CmdRotaryValveTest(DeviceControl::DevInstanceID_t DevInstanceID, qint32 Position,
+CmdRotaryValveTest::CmdRotaryValveTest(quint32 DevInstanceID, qint32 Position,
                quint8 CmdType)
     : Global::Command(m_CmdTimeout)
     , m_DevInstanceID(DevInstanceID)

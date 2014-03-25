@@ -44,7 +44,7 @@ protected:
 public:
     static QString  NAME;                                   ///< Command name.
 
-    DeviceControl::DevInstanceID_t m_DevInstanceID;        ///< Instance ID of the target device
+    quint32 m_DevInstanceID;        ///< Instance ID of the target device
 
     /****************************************************************************/
     /**
@@ -53,7 +53,7 @@ public:
      * \param[in]   DevInstanceID       Instance ID of the concerned device.
      */
     /****************************************************************************/
-    CmdAbortTest(DeviceControl::DevInstanceID_t DevInstanceID);
+    CmdAbortTest(quint32 DevInstanceID);
     /****************************************************************************/
     /**
      * \brief Destructor.

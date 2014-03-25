@@ -46,6 +46,7 @@
 #include "ExportController/Include/ExportController.h"
 
 namespace Threads {
+using namespace Global;
 
 static const unsigned long THREAD_WAIT_TIME = 2000;             ///< Time to wait when stopping thread.
 static const QString TimeOffsetFileName = "TimeOffset.xml";     ///< Name of file in which time offset is stored.

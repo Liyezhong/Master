@@ -156,7 +156,7 @@ public:
      * \brief To get UnInitialized devices.
      */
     /****************************************************************************/
-    virtual void GetUnInitializedDevices(QList<DevInstanceID_t> &);
+    virtual void GetUnInitializedDevices(QList<quint32> &);
     /****************************************************************************/
 
 
@@ -198,14 +198,14 @@ signals:
      * \brief SDC_AbortTest signal to abort test
      */
     /****************************************************************************/
-    void SDC_AbortTest(Global::tRefType Ref, DeviceControl::DevInstanceID_t id);
+    void SDC_AbortTest(Global::tRefType Ref, quint32 id);
 
     /****************************************************************************/
     /**
      * \brief SDC_HeatingTest signal to test heating
      */
     /****************************************************************************/
-    void SDC_HeatingTest(Global::tRefType Ref, DeviceControl::DevInstanceID_t id,
+    void SDC_HeatingTest(Global::tRefType Ref, quint32 id,
                            quint8 HeaterIndex, quint8 CmdType);
 
     /****************************************************************************/
@@ -213,7 +213,7 @@ signals:
      * \brief SDC_RotaryValveTest signal to test rotary valve movement
      */
     /****************************************************************************/
-    void SDC_RotaryValveTest(Global::tRefType Ref, DeviceControl::DevInstanceID_t id,
+    void SDC_RotaryValveTest(Global::tRefType Ref, quint32 id,
                            qint32 Position, quint8 CmdType);
 
     /****************************************************************************/
@@ -221,7 +221,7 @@ signals:
      * \brief SDC_LSensorDetectingTest signal to test level sensor detecting
      */
     /****************************************************************************/
-    void SDC_LSensorDetectingTest(Global::tRefType Ref, DeviceControl::DevInstanceID_t id,
+    void SDC_LSensorDetectingTest(Global::tRefType Ref, quint32 id,
                            qint32 Position);
 protected:
     /**

@@ -123,6 +123,7 @@
 #include "Scheduler/Commands/Include/CmdALStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdIDBottleCheck.h"
 #include "Scheduler/Commands/Include/CmdALAllStop.h"
+#include "Scheduler/Commands/Include/CmdIDSealingCheck.h"
 #ifdef GOOGLE_MOCK
 #include <gmock/gmock.h>
 #include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
@@ -605,6 +606,10 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd()
 	{
 		m_currentCmd->SetResult( mp_IDeviceProcessing->ALAllStop() );
 	}
+    else if ("Scheduler::IDSealingCheck" == cmdName)
+    {
+        m_currentCmd->SetResult( mp_IDeviceProcessing->IDSealingCheck(qSharedPointerDynamicCast<CmdIDSealingCheck>(m_currentCmd)->GetThresholdPressure()));
+    }
 }
 
 }// end of namespace Scheduler

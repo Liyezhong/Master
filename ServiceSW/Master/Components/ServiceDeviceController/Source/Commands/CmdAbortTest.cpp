@@ -27,7 +27,7 @@ int     CmdAbortTest::m_CmdTimeout     = 3000;
 
 
 /****************************************************************************/
-CmdAbortTest::CmdAbortTest(DeviceControl::DevInstanceID_t DevInstanceID)
+CmdAbortTest::CmdAbortTest(quint32 DevInstanceID)
     : Global::Command(m_CmdTimeout)
     , m_DevInstanceID(DevInstanceID)
 {

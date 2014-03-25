@@ -35,6 +35,12 @@ namespace DataManager {
     } ProgramActionType_t;
 
 typedef enum  {
+    RETORT_LOCK = 0,
+    PARAFFIN_BATH_LOCK,
+    LOCKTYPE_UNDEFINED
+   } LockType_t;
+
+typedef enum  {
         PROGRAM_STATUS_COMPLETED = 0,
         PROGRAM_STATUS_ABORTED,
         PROGRAM_STATUS_PAUSED

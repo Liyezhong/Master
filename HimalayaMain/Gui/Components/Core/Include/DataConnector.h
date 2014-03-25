@@ -46,7 +46,7 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdownReply.h>
 
 #include <NetCommands/Include/CmdSWUpdate.h>
@@ -73,7 +73,7 @@
 namespace MsgClasses
 {
     class CmdProgramAcknowledge;
-    class CmdRetortLockStatus;
+    class CmdLockStatus;
 }
 
 
@@ -365,7 +365,7 @@ signals:
     void ProgramCompleted();
     void ProgramRunBegin();
     void ProgramPaused();
-    void RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& Command);
+    void RetortLockStatusChanged(const MsgClasses::CmdLockStatus& Command);
     void ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& Command);
     void StationSuckDrain(const MsgClasses::CmdStationSuckDrain& Command);
 private:
@@ -387,7 +387,7 @@ private:
     void ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAcknowledge& Command);
     void StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationSuckDrain & Command);
     void ProgramSelectedReplyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramSelectedReply & Command);
-    void RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdRetortLockStatus & Command);
+    void RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdLockStatus & Command);
     void AppQuitSystemShutdownRelyHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdownReply & Command);
 
     void EventStringHandler(Global::tRefType ref, const NetCommands::CmdEventStrings &Command);

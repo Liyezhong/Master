@@ -69,7 +69,6 @@ public:
     explicit CContainerPanelWidget(QWidget *p_Parent = 0);
     ~CContainerPanelWidget();
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector);
-    void AddItemsToComboBox(bool bOnlyAddCleaningProgram = false);
     void UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType);
     static QString m_strWarning;
     static QString m_strYes, m_strCancel;
@@ -86,7 +85,7 @@ signals:
     void OnSelectEndDateTime(const QDateTime &);
     void OnInteractStart();
 public slots:
-    void OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd);
+    void OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd);
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);
 
 };

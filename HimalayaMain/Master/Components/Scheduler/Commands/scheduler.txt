@@ -50,4 +50,5 @@ ReturnCode_t RTStartTemperatureControlWithPID(RTTempCtrlType_t Type, qreal Nomin
 ReturnCode_t ALStartTemperatureControlWithPID(ALTempCtrlType_t Type, qreal NominalTemperature, quint8 SlopeTempChange, quint16 MaxTemperature, quint16 ControllerGain, quint16 ResetTime, quint16 DerivativeTime)
 ReturnCode_t IDBottleCheck(QString ReagentGrpID, RVPosition_t TubePos)
 ReturnCode_t ALAllStop()
+ReturnCode_t IDSealingCheck(qreal ThresholdPressure)
 

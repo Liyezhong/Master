@@ -25,7 +25,7 @@
 #include <Dashboard/Include/CommonString.h>
 #include <Dashboard/Include/FavoriteProgramsPanelWidget.h>
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
-#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdRetortLockStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
 
 using namespace Dashboard;
 
@@ -73,8 +73,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramStartReady(),
                       this, OnProgramStartReadyUpdated());
 
-    CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus &),
-                      this, OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus&));
+    CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdLockStatus &),
+                      this, OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus&));
 
 
     CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, QList<QString>&),
@@ -146,7 +146,7 @@ void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCur
     }
 }
 
-void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdRetortLockStatus& cmd)
+void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd)
 {
     if (cmd.IsLocked())
     {

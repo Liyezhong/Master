@@ -44,7 +44,7 @@ protected:
 public:
     static QString  NAME;                                   ///< Command name.
 
-    DeviceControl::DevInstanceID_t m_DevInstanceID;        ///< Instance ID of the target device
+    quint32 m_DevInstanceID;        ///< Instance ID of the target device
     qint32  m_Position;                                    ///< Tube/Sealing position
     quint8  m_CmdType;                                     ///< Rotary valve command type
 
@@ -55,7 +55,7 @@ public:
      * \param[in]   DevInstanceID       Instance ID of the concerned device.
      */
     /****************************************************************************/
-    CmdRotaryValveTest(DeviceControl::DevInstanceID_t DevInstanceID, qint32 Position,
+    CmdRotaryValveTest(quint32 DevInstanceID, qint32 Position,
                    quint8 CmdType);
     /****************************************************************************/
     /**
