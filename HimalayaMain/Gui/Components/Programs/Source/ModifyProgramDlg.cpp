@@ -621,7 +621,7 @@ void CModifyProgramDlg::OnOkClicked(QString EnteredText)
     mp_KeyBoardWidget->hide();
     if (m_ProgNameBtnClicked) {
         m_ProgNameBtnClicked = false;
-        if (EnteredText == "Leica")
+        if (EnteredText.contains("Leica", Qt::CaseInsensitive))
         {
             return;
         }

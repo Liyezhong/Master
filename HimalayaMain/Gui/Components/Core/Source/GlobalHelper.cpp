@@ -60,6 +60,8 @@ CGlobalHelper::~CGlobalHelper()
 bool CGlobalHelper::CheckSelectedProgram(bool& bRevertSelectProgram,
                           QString operatedProgramID)
 {
+    RetranslateUI();  // init string
+
     bRevertSelectProgram = false;
     if (!m_selectedProgramId.isEmpty())
     {

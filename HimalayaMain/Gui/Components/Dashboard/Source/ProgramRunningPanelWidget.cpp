@@ -78,7 +78,8 @@ void CProgramRunningPanelWidget::OnProgramActionStarted(DataManager::ProgramActi
 
    if (!IsResume)
    {
-       m_remainingTimeTotal = remainingTimeTotal;
+       m_remainingTimeTotal = remainingTimeTotal;       
+       m_curRemainingTimeTotal = remainingTimeTotal;
    }
 
    qDebug()<<"CProgramRunningPanelWidget::OnProgramActionStarted  m_remainingTimeTotal = "<<m_remainingTimeTotal;
@@ -122,27 +123,21 @@ void CProgramRunningPanelWidget::UpdateProgress()
     if (!m_isAborting)
     {
         // update the remaining time for single step
-        m_CurRemainingTime -= 1;
-        ui->lblStepTime->setText(Core::CGlobalHelper::TimeToString(m_CurRemainingTime, true));
-        if ( m_CurRemainingTime <= 0)
-            m_CurRemainingTime = m_CurStepRemainingTime;
+        if (m_CurRemainingTime>0) {
+            ui->lblStepTime->setText(Core::CGlobalHelper::TimeToString(--m_CurRemainingTime, true));
+        }
 
-        // update the total remaining time
-        int elapsed =  m_CurStepRemainingTime - m_CurRemainingTime;
-        m_curRemainingTimeTotal = m_remainingTimeTotal - elapsed;
-        ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal, false));
-
-        // to avoid negative number
-        if (m_curRemainingTimeTotal<=0)
-            m_curRemainingTimeTotal = m_remainingTimeTotal;
+        // update the total remaining time        
+        if (m_curRemainingTimeTotal > 0) {
+            ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(--m_curRemainingTimeTotal, false));
+        }
     }
     else
     {
-        ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal--, true));
-
         // to avoid negative number
-        if (m_curRemainingTimeTotal<0)
-            m_curRemainingTimeTotal = m_remainingTimeTotal;
+        if (m_curRemainingTimeTotal>0) {
+            ui->lblRemainTime->setText(Core::CGlobalHelper::TimeToString(m_curRemainingTimeTotal--, true));
+        }
     }
 }
 
