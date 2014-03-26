@@ -176,6 +176,8 @@ signals:
     void sigOnRCReport();
     void sigOnRsReleasePressure();
     void sigOnRsShutdownFailedHeater();
+    void sigOnRVPositionCheck();
+    void sigOnSealingCheck();
 };
 }
 
