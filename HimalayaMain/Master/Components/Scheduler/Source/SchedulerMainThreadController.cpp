@@ -380,39 +380,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ST_RV_POSITION_CHECKING == stepState)
         {
-#if 0 //test RS_movetoinitposition
-            static bool b = false;
-            if(!b)
+            if(( DCL_ERR_FCT_CALL_SUCCESS == retCode)&&(cmdName == "Scheduler::RVReqMoveToInitialPosition"))
             {
-            qDebug()<<"DBG" << "Make a false RV error here. ";
-            //m_SchedulerMachine->NotifyError();
-            m_SchedulerMachine->SendErrorSignal();
-            b=true;
-            }
-#else
-#endif
-            if(m_PositionRV == RV_UNDEF)
-            {
-                //raise event here
-            }
-            else
-            {
-#if 0
-                static int b= 0;
-                if(b ==0)
-                {
-                    Global::EventObject::Instance().RaiseEvent(0, 500030001, 200, true);
-                    m_SchedulerMachine->SendErrorSignal();
-                    b++;
-                }
-                else if((b++)==20)
-                {
-                    m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
-                    b = 0;
-                }
-#else
                 m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
-#endif
+            }
+            else if(( DCL_ERR_FCT_CALL_SUCCESS != retCode)&&(cmdName == "Scheduler::RVReqMoveToInitialPosition"))
+            {
+                Global::EventObject::Instance().RaiseEvent(0, 500030001, 200, true);
+                m_SchedulerMachine->SendErrorSignal();
             }
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
@@ -659,7 +634,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->NotifyPause(PSSM_READY_TO_FILL);
                 DequeueNonDeviceCommand();
             }
-            else if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            else if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&( "Scheduler::ALFilling" == cmdName))
             {
                 qDebug()<<"DBG" << "Scheduler step: READY_TO_FILL received FILL_SUCCESS, go to next state now.";
                 m_SchedulerMachine->NotifyFillFinished();
@@ -839,7 +814,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     }
                 }
             }
-            else if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            else if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&( "Scheduler::ALDraining"== cmdName))
             {
                 m_SchedulerMachine->NotifyDrainFinished();
             }
@@ -936,11 +911,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ABORTING == stepState)
         {
-            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&("Scheduler::RVReqMoveToRVPosition" == cmdName))
             {
                 this->Drain();
             }
-            else if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            else if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&("Scheduler::ALDraining" == cmdName))
             {
                 StopDrain();
                 m_SchedulerMachine->NotifyAbort();
@@ -1039,6 +1014,10 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             qDebug()<<"DBG" << "Try to RS_STANDBY !";
             m_SchedulerMachine->NotifyRsReleasePressure();
             DequeueNonDeviceCommand();
+        }
+        else
+        {
+            qDebug()<<"DBG"<<"Unknown Command: "<< hex <<ctrlCmd;
         }
     }
     else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
