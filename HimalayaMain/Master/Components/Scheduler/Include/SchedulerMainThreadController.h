@@ -228,11 +228,12 @@ signals:
 private slots:
          void HandleIdleState(ControlCommandType_t ctrlCmd);
          //void HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
-         void HandleRunState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode);
-         void HandleErrorState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode, SchedulerStateMachine_t currentState);
+         void HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
+         void HandleErrorState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd, SchedulerStateMachine_t currentState);
          void StepStart();
          bool CheckStepTemperature();
          bool CheckLevelSensorTemperature(qreal targetTemperature);
+         void SealingCheck();
          void HeatLevelSensor();
          void MoveRV();
          void Fill();

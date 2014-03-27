@@ -136,6 +136,10 @@ CDashboardWidget::~CDashboardWidget()
 void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd)
 {
     m_CurProgramStepIndex = cmd.CurProgramStepIndex();
+    if (cmd.CurProgramStepIndex() >=1 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
+    {
+        ui->programPanelWidget->EnableStartButton(false);
+    }
     if (cmd.CurProgramStepIndex() > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
     {
           ui->programPanelWidget->EnablePauseButton(false);
@@ -315,7 +319,11 @@ void CDashboardWidget::OnProgramRunBegin()
     else
     {
         ui->programPanelWidget->EnablePauseButton(true);//enable pause button
-        ui->programPanelWidget->EnableStartButton(true);//enable stop button
+
+        if (m_CurProgramStepIndex>0 && m_CurrentUserRole == MainMenu::CMainWindow::Operator) // operator can't abort program when beginning the second step.
+            ui->programPanelWidget->EnableStartButton(false);
+        else
+            ui->programPanelWidget->EnableStartButton(true);//enable stop button
     }
 
     m_StartDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
@@ -641,8 +649,7 @@ void CDashboardWidget::OnUserRoleChanged()
     {
         ui->programPanelWidget->EnablePauseButton(false);//in fact, it will disable pause button when running
     }
-    else
-    if (m_ProcessRunning && (m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service))
+    else if (m_ProcessRunning && (m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service))
         ui->programPanelWidget->EnablePauseButton(true);
 
 }

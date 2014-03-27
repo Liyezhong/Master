@@ -89,6 +89,8 @@ signals:
     void OnPause();
     void OnPauseDrain();
     void OnStateExited();
+    void OnSealingCheck();
+    void OnRVPositionCheck();
 
 private:
     QState* mp_PssmSelfTest;

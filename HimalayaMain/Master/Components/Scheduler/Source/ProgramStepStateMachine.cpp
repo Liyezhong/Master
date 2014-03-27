@@ -161,6 +161,9 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         connect(mp_PssmPause, SIGNAL(entered()), this, SIGNAL(OnPause()));
         connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SIGNAL(OnPauseDrain()));
 
+        connect(mp_PssmStRVPositionChecking, SIGNAL(entered()), this, SIGNAL(OnRVPositionCheck()));
+        connect(mp_PssmStSealingChecking, SIGNAL(entered()), this, SIGNAL(OnSealingCheck()));
+
         connect(mp_PssmSelfTest, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
         connect(mp_PssmStInit, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
         connect(mp_PssmStTempChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));

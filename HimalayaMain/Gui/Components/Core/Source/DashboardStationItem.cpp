@@ -283,17 +283,23 @@ void CDashboardStationItem::UpdateDashboardStationItemReagentWhenReagentUpdated(
 
     if (p_Reagent)
     {
+        bool flag = false ;
         DataManager::ReagentStatusType_t reagentStatus = mp_DashboardStation->GetReagentStatus(*p_Reagent, m_CurRMSMode);
 
         if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
-            m_ReagentExpiredFlag = true;
+            flag = true;
         else
-            m_ReagentExpiredFlag = false;
+            flag = false;
 
-        qDebug()<<"CDashboardStationItem::UpdateDashboardStationItemReagentWhenReagentUpdated  expired="
-               <<m_ReagentExpiredFlag<<" reagentID="<<ReagentID<<" station="<<mp_DashboardStation->GetDashboardStationID();
+        if ( flag != m_ReagentExpiredFlag )
+        {
+            m_ReagentExpiredFlag = flag;
+            qDebug()<<"CDashboardStationItem::UpdateDashboardStationItemReagentWhenReagentUpdated  expired="
+                   <<m_ReagentExpiredFlag<<" reagentID="<<ReagentID<<" station="<<mp_DashboardStation->GetDashboardStationID();
+            DrawStationItemImage();
+        }
     }
-    DrawStationItemImage();
+
 }
 
 

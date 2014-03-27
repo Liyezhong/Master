@@ -39,9 +39,10 @@ public:
     static bool CheckSelectedProgram(bool& bRevertSelectProgram,
                               QString operatedProgramID = "");
     static QString TimeToString(int seconds, bool showSeconds=false) ;
+    static void RetranslateUI();
+
 public slots:
     void OnProgramSelected(QString&, QList<QString>&);
-    void RetranslateUI();
 private:
     static QString m_selectedProgramId;
     static QString m_strMsgUnselect;

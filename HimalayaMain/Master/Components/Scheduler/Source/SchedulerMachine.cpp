@@ -120,6 +120,8 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     connect(mp_ProgramStepStates, SIGNAL(OnAborted()), this, SIGNAL(sigOnAborted()));
     connect(mp_ProgramStepStates, SIGNAL(OnPause()), this, SIGNAL(sigOnPause()));
     connect(mp_ProgramStepStates, SIGNAL(OnPauseDrain()), this, SIGNAL(sigOnPauseDrain()));
+    connect(mp_ProgramStepStates, SIGNAL(OnSealingCheck()), this, SIGNAL(sigOnSealingCheck()));
+    connect(mp_ProgramStepStates, SIGNAL(OnRVPositionCheck()), this, SIGNAL(sigOnRVPositionCheck()));
     connect(mp_ProgramStepStates, SIGNAL(OnStateExited()), this, SLOT(OnStateChanged()));
     connect(mp_RSRvGetOriginalPositionAgain, SIGNAL(OnRvMoveToInitPosition()), this, SIGNAL(sigOnRsRvMoveToInitPosition()));
     connect(mp_RCReport, SIGNAL(OnRCReport()), this, SIGNAL(sigOnRCReport()));
