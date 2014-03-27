@@ -36,6 +36,7 @@
 #include "Scheduler/Commands/Include/CmdALTurnOffFan.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Commands/Include/CmdIDBottleCheck.h"
+#include "Scheduler/Commands/Include/CmdIDSealingCheck.h"
 #include "Scheduler/Commands/Include/CmdRVSetTempCtrlOFF.h"
 #include "Scheduler/Commands/Include/CmdRTSetTempCtrlOFF.h"
 #include "Scheduler/Commands/Include/CmdOvenSetTempCtrlOFF.h"
@@ -138,6 +139,8 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
 
     m_TickTimer.setInterval(500);
 
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRVPositionCheck(), this, MoveRVToInit());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnSealingCheck(), this, SealingCheck());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnInit(), this, StepStart());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnHeatLevelSensorTempS1(), this, HeatLevelSensor());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnHeatLevelSensorTempS2(), this, HeatLevelSensor());
@@ -198,14 +201,8 @@ void SchedulerMainThreadController::OnTickTimer()
 {
     ControlCommandType_t newControllerCmd = PeekNonDeviceCommand();
     SchedulerCommandShPtr_t cmd;
-    ReturnCode_t retCode = DCL_ERR_UNDEFINED;
-    if(PopDeviceControlCmdQueue(cmd))
-    {
-        if(!(cmd->GetResult(retCode)))
-        {
-            retCode = DCL_ERR_UNDEFINED;
-        }
-    }
+    PopDeviceControlCmdQueue(cmd);
+
     SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
     m_SchedulerMachine->UpdateCurrentState(currentState);
     qDebug()<<"DBG"<< QDateTime::currentDateTime() <<"Scheduler state: "<<hex<<currentState;
@@ -224,12 +221,12 @@ void SchedulerMainThreadController::OnTickTimer()
     case SM_BUSY:
         //qDebug()<<"DBG"<<"Scheduler main controller state: RUN";
         HardwareMonitor( m_CurProgramID );
-        HandleRunState(newControllerCmd, retCode);
+        HandleRunState(newControllerCmd, cmd);
         break;
     case SM_ERROR:
         //qDebug()<<"DBG"<<"Scheduler main controller state: ERROR";
         //refuse any main controller request if there is any
-        HandleErrorState(newControllerCmd, retCode, currentState);
+        HandleErrorState(newControllerCmd, cmd, currentState);
         break;
     default:
         qDebug()<<"DBG"<<"Scheduler main controller gets unexpected state: " << currentState;
@@ -318,9 +315,18 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
     }
 }
 
-void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode)
+void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
-
+    ReturnCode_t retCode;
+    QString cmdName = "";
+    if(cmd != NULL)
+    {
+        if(!(cmd->GetResult(retCode)))
+        {
+            retCode = DCL_ERR_UNDEFINED;
+        }
+        cmdName = cmd->GetName();
+    }
     if(CTRL_CMD_ABORT == ctrlCmd)
     {
         qDebug()<<"DBG" << "Scheduler received command: ABORT";
@@ -374,39 +380,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ST_RV_POSITION_CHECKING == stepState)
         {
-#if 0 //test RS_movetoinitposition
-            static bool b = false;
-            if(!b)
+            if(( DCL_ERR_FCT_CALL_SUCCESS == retCode)&&(cmdName == "Scheduler::RVReqMoveToInitialPosition"))
             {
-            qDebug()<<"DBG" << "Make a false RV error here. ";
-            //m_SchedulerMachine->NotifyError();
-            m_SchedulerMachine->SendErrorSignal();
-            b=true;
-            }
-#else
-#endif
-            if(m_PositionRV == RV_UNDEF)
-            {
-                //raise event here
-            }
-            else
-            {
-#if 0
-                static int b= 0;
-                if(b ==0)
-                {
-                    Global::EventObject::Instance().RaiseEvent(0, 500030001, 200, true);
-                    m_SchedulerMachine->SendErrorSignal();
-                    b++;
-                }
-                else if((b++)==20)
-                {
-                    m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
-                    b = 0;
-                }
-#else
                 m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
-#endif
+            }
+            else if(( DCL_ERR_FCT_CALL_SUCCESS != retCode)&&(cmdName == "Scheduler::RVReqMoveToInitialPosition"))
+            {
+                Global::EventObject::Instance().RaiseEvent(0, 500030001, 200, true);
+                m_SchedulerMachine->SendErrorSignal();
             }
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
@@ -437,7 +418,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ST_SEALING_CHECKING == stepState)
         {
-            if(true)
+            if(( DCL_ERR_FCT_CALL_SUCCESS == retCode)&&(cmdName == "Scheduler::IDSealingCheck"))
             {
                 ProgramStationInfo_t stationInfo = m_ProgramStationList.dequeue();
                 RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
@@ -451,6 +432,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 //LOG_STR_ARG(STR_PROGRAM_SELFTEST_CHECK_BOTTLE, Global::FmtArgs()<<stationInfo.StationID);
                 m_SchedulerMachine->NotifyStSealingOK(); //todo: update later
             }
+            else if(( DCL_ERR_FCT_CALL_SUCCESS != retCode)&&(cmdName == "Scheduler::IDSealingCheck"))
+            {
+                //Sealing check failed, raise event here
+
+            }
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
                 AllStop();
@@ -463,7 +449,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(DCL_ERR_UNDEFINED != retCode)
             {
                 quint32 resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
-                if( DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                if(( DCL_ERR_FCT_CALL_SUCCESS == retCode)&&(cmdName == "Scheduler::IDBottleCheck"))
                 {
                     m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
                     resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_OK;
@@ -554,7 +540,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1);
                 DequeueNonDeviceCommand();
             }
-            else if(CheckLevelSensorTemperature(185))
+            else if(CheckLevelSensorTemperature(85))
             {
                 m_SchedulerMachine->NotifyLevelSensorTempS1Ready();
             }
@@ -648,7 +634,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->NotifyPause(PSSM_READY_TO_FILL);
                 DequeueNonDeviceCommand();
             }
-            else if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            else if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&( "Scheduler::ALFilling" == cmdName))
             {
                 qDebug()<<"DBG" << "Scheduler step: READY_TO_FILL received FILL_SUCCESS, go to next state now.";
                 m_SchedulerMachine->NotifyFillFinished();
@@ -828,7 +814,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     }
                 }
             }
-            else if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            else if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&( "Scheduler::ALDraining"== cmdName))
             {
                 m_SchedulerMachine->NotifyDrainFinished();
             }
@@ -925,11 +911,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ABORTING == stepState)
         {
-            if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&("Scheduler::RVReqMoveToRVPosition" == cmdName))
             {
                 this->Drain();
             }
-            else if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            else if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&("Scheduler::ALDraining" == cmdName))
             {
                 StopDrain();
                 m_SchedulerMachine->NotifyAbort();
@@ -973,11 +959,19 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 #endif
 }
 
-void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCmd, ReturnCode_t retCode, SchedulerStateMachine_t currentState)
+void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd, SchedulerStateMachine_t currentState)
 {
-#if 0 //test RS_movetoinitposition
-    static bool actionSccessed = false;
-#endif
+    ReturnCode_t retCode;
+    QString cmdName = "";
+    if(cmd != NULL)
+    {
+        if(!(cmd->GetResult(retCode)))
+        {
+            retCode = DCL_ERR_UNDEFINED;
+        }
+        cmdName = cmd->GetName();
+    }
+
     if (SM_ERR_WAIT == currentState)
     {
         qDebug()<<"DBG" << "Scheduler waitting event handler give instruction!";
@@ -1020,6 +1014,10 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             qDebug()<<"DBG" << "Try to RS_STANDBY !";
             m_SchedulerMachine->NotifyRsReleasePressure();
             DequeueNonDeviceCommand();
+        }
+        else
+        {
+            qDebug()<<"DBG"<<"Unknown Command: "<< hex <<ctrlCmd;
         }
     }
     else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
@@ -1916,17 +1914,20 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
 {
     if(RetCode == DCL_ERR_FCT_CALL_SUCCESS)
     {
-        m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, this));
-        SchedulerCommandShPtr_t resRVInitPos;
-        while(!PopDeviceControlCmdQueue(resRVInitPos));
         ReturnCode_t retCode;
-        resRVInitPos->GetResult(retCode);
-        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            //todo: error handling
-            qDebug()<<"DBG"<<"Failed move to initial position, return code: " << retCode;
-            goto ERROR;
-        }
+        //m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, this));
+        //SchedulerCommandShPtr_t resRVInitPos;
+        //while(!PopDeviceControlCmdQueue(resRVInitPos));
+        //ReturnCode_t retCode;
+        //resRVInitPos->GetResult(retCode);
+        //if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        //{
+        //    //todo: error handling
+        //    qDebug()<<"DBG"<<"Failed move to initial position, return code: " << retCode;
+        //    goto ERROR;
+        //}
+        //SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RV_MOTOR, true);
+
 #if 1
     //hardware not ready yet
         m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, this));
@@ -1939,6 +1940,8 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"DBG"<<"Failed turn on main relay, return code: " << retCode;
             goto ERROR;
         }
+        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_PER_MAINRELAYDO, true);
+
         CmdRTStartTemperatureControlWithPID* cmdHeatRTSide = new CmdRTStartTemperatureControlWithPID(500, this);
         cmdHeatRTSide->SetType(RT_SIDE);
         //todo: get temperature here
@@ -1958,6 +1961,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"DBG"<<"Failed to heat Retort side, return code: " << retCode;
             goto ERROR;
         }
+        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_SIDETEMPCTRL, true);
 
         CmdRTStartTemperatureControlWithPID* cmdHeatRTBot = new CmdRTStartTemperatureControlWithPID(500, this);
         cmdHeatRTBot->SetType(RT_BOTTOM);
@@ -1978,7 +1982,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"DBG"<<"Failed to heat Retort bottom, return code: " << retCode;
             goto ERROR;
         }
-
+        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_BOTTOMTEMPCTRL, true);
 
         CmdRVStartTemperatureControlWithPID* cmdHeatRV = new CmdRVStartTemperatureControlWithPID(500, this);
         //todo: get temperature here
@@ -1998,6 +2002,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"DBG"<<"Failed to heat Rotary valve, return code: " << retCode;
             goto ERROR;
         }
+        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RV_TEMPCONTROL, true);
 
         CmdOvenStartTemperatureControlWithPID* cmdHeatOvenBot = new CmdOvenStartTemperatureControlWithPID(500, this);
         cmdHeatOvenBot->SetType(OVEN_BOTTOM);
@@ -2018,6 +2023,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"DBG"<<"Failed to heat oven bottom, return code: " << retCode;
             goto ERROR;
         }
+        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_BOTTOMTEMPCTRL, true);
 
         CmdOvenStartTemperatureControlWithPID* cmdHeatOvenTop = new CmdOvenStartTemperatureControlWithPID(500, this);
         cmdHeatOvenTop->SetType(OVEN_TOP);
@@ -2038,6 +2044,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"DBG"<<"Failed to heat oven top, return code: " << retCode;
             goto ERROR;
         }
+        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_TOPTEMPCTRL, true);
         m_TimeStamps.OvenStartHeatingTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
         CmdALStartTemperatureControlWithPID* cmdHeatALTube1  = new CmdALStartTemperatureControlWithPID(500, this);
@@ -2059,6 +2066,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"DBG"<<"Failed to heat tube 1, return code: " << retCode;
             goto ERROR;
         }
+        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE1TEMPCTRL, true);
 
         CmdALStartTemperatureControlWithPID* cmdHeatALTube2  = new CmdALStartTemperatureControlWithPID(500, this);
         cmdHeatALTube2->SetType(AL_LEVELSENSOR);
@@ -2079,6 +2087,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
             qDebug()<<"DBG"<<"Failed to heat tube 2, return code: " << retCode;
             goto ERROR;
         }
+        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL, true);
 
         bool ok;
         qreal pressureDrift = mp_DataManager->GetProgramSettings()->GetParameterValue("LA", "Base", "PressureDrift", ok);
@@ -2305,6 +2314,12 @@ void SchedulerMainThreadController::HeatLevelSensor()
         cmd->SetDerivativeTime(0);
         m_SchedulerCommandProcessor->pushCmd(cmd);
     }
+}
+
+void SchedulerMainThreadController::SealingCheck()
+{
+    qDebug()<<"DBG"<<"Send cmd to DCL to start sealing test. ";
+    m_SchedulerCommandProcessor->pushCmd(new CmdIDSealingCheck(500, this));
 }
 
 void SchedulerMainThreadController::MoveRVToInit()
