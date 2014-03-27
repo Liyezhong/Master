@@ -43,8 +43,8 @@
 		<string id="033040020" text1="ERR_LA_Precheck_Sealing_Failed_Pressure 033040020" text2=""/>
 		<string id="013045020" text1="ERR_LA_Precheck_Sealing_Failed_Pressure_Retry 013045020" text2=""/>
 		<string id="033045020" text1="ERR_LA_Precheck_Sealing_Failed_Pressure_Retry 033045020" text2=""/>
-		<string id="013040163" text1="ERR_LA_Filling_Insufficient_Cleaning 013040163" text2=""/>
-		<string id="033040163" text1="ERR_LA_Filling_Insufficient_Cleaning 013040163" text2=""/>
+		<string id="103040163" text1="ERR_LA_Filling_Insufficient_Cleaning 013040163" text2=""/>
+		<string id="123040163" text1="ERR_LA_Filling_Insufficient_Cleaning 013040163" text2=""/>
 		<string id="013040203" text1="ERR_LA_Protocol_Draining_TimeOut_BulidPressure_Cleaning 013040203" text2=""/>
 		<string id="033040203" text1="ERR_LA_Protocol_Draining_TimeOut_BulidPressure_Cleaning 033040203" text2=""/>
 		<string id="013045203" text1="ERR_LA_Protocol_Draining_TimeOut_BulidPressure_Cleaning_Retry 013045203" text2=""/>
