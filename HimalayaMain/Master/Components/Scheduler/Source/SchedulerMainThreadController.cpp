@@ -319,6 +319,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 {
     ReturnCode_t retCode;
     QString cmdName = "";
+    QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
+    quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
     if(cmd != NULL)
     {
         if(!(cmd->GetResult(retCode)))
@@ -380,14 +382,23 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ST_RV_POSITION_CHECKING == stepState)
         {
-            if(( DCL_ERR_FCT_CALL_SUCCESS == retCode)&&(cmdName == "Scheduler::RVReqMoveToInitialPosition"))
+
+            if((cmdName == "Scheduler::RVReqMoveToInitialPosition"))
             {
-                m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
-            }
-            else if(( DCL_ERR_FCT_CALL_SUCCESS != retCode)&&(cmdName == "Scheduler::RVReqMoveToInitialPosition"))
-            {
-                Global::EventObject::Instance().RaiseEvent(0, 500030001, 200, true);
-                m_SchedulerMachine->SendErrorSignal();
+                if(( DCL_ERR_FCT_CALL_SUCCESS == retCode))
+                {
+                    m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
+                }
+                else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
+                {
+                    Global::EventObject::Instance().RaiseEvent(0, 500030021, Scenario, false);
+                    m_SchedulerMachine->SendErrorSignal();
+                }
+                else
+                {
+                    Global::EventObject::Instance().RaiseEvent(0, 500030001, Scenario, false);
+                    m_SchedulerMachine->SendErrorSignal();
+                }
             }
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
@@ -619,6 +630,16 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
+                if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+                {
+                    if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
+                    {
+                        //fail to move to seal, raise event here
+                        Global::EventObject::Instance().RaiseEvent(0, 500030011, Scenario, true);
+                        m_SchedulerMachine->SendErrorSignal();
+                    }
+                }
+
                 if(CTRL_CMD_PAUSE == ctrlCmd)
                 {
                     m_PauseToBeProcessed = true;
@@ -634,10 +655,18 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->NotifyPause(PSSM_READY_TO_FILL);
                 DequeueNonDeviceCommand();
             }
-            else if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&( "Scheduler::ALFilling" == cmdName))
+            else if( "Scheduler::ALFilling" == cmdName)
             {
-                qDebug()<<"DBG" << "Scheduler step: READY_TO_FILL received FILL_SUCCESS, go to next state now.";
-                m_SchedulerMachine->NotifyFillFinished();
+                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                {
+                    qDebug()<<"DBG" << "Scheduler step: READY_TO_FILL received FILL_SUCCESS, go to next state now.";
+                    m_SchedulerMachine->NotifyFillFinished();
+                }
+                else if( DCL_ERR_DEV_LA_FILLING_INSUFFICIENT == retCode)
+                {
+                    Global::EventObject::Instance().RaiseEvent(0, 500040161, Scenario, true);
+                    m_SchedulerMachine->SendErrorSignal();
+                }
             }
             else if(retCode != DCL_ERR_UNDEFINED)
             {
@@ -662,6 +691,21 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
+                if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+                {
+                    if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
+                    {
+                        //fail to move to seal, raise event here
+                        Global::EventObject::Instance().RaiseEvent(0, 500030021, Scenario, true);
+                        m_SchedulerMachine->SendErrorSignal();
+                    }
+                    else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
+                    {
+                        //fail to move to seal, raise event here
+                        Global::EventObject::Instance().RaiseEvent(0, 500030011, Scenario, true);
+                        m_SchedulerMachine->SendErrorSignal();
+                    }
+                }
                 if(CTRL_CMD_PAUSE == ctrlCmd)
                 {
                     m_PauseToBeProcessed = true;
@@ -765,6 +809,20 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
+                if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+                {
+                    if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
+                    {
+                        //fail to move to seal, raise event here
+                        Global::EventObject::Instance().RaiseEvent(0, 500030011, Scenario, true);
+                        m_SchedulerMachine->SendErrorSignal();
+                    }
+                    else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
+                    {
+                        Global::EventObject::Instance().RaiseEvent(0, 500030021, Scenario, false);
+                        m_SchedulerMachine->SendErrorSignal();
+                    }
+                }
                 if(CTRL_CMD_PAUSE == ctrlCmd)
                 {
                     m_PauseToBeProcessed = true;
@@ -814,9 +872,17 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     }
                 }
             }
-            else if((DCL_ERR_FCT_CALL_SUCCESS == retCode)&&( "Scheduler::ALDraining"== cmdName))
+            else if( "Scheduler::ALDraining"== cmdName)
             {
-                m_SchedulerMachine->NotifyDrainFinished();
+                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                {
+                    m_SchedulerMachine->NotifyDrainFinished();
+                }
+                else if(DCL_ERR_DEV_LA_DRAINING_TIMEOUT_BUILDPRESSURE == retCode)
+                {
+                    Global::EventObject::Instance().RaiseEvent(0, 500040201, Scenario, true);
+                    m_SchedulerMachine->SendErrorSignal();
+                }
             }
             else if(DCL_ERR_UNDEFINED != retCode)
             {
@@ -1023,7 +1089,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
     {
         qDebug()<<"DBG" << "RS_RV_GET_ORIGINAL_POSITION_AGAIN Response: "<<retCode;
-        if( DCL_ERR_FCT_CALL_SUCCESS == retCode )
+        if(( DCL_ERR_FCT_CALL_SUCCESS == retCode )&&( "Scheduler::RVReqMoveToInitialPosition" == cmdName))
         {
             qDebug()<<"DBG" << "Response Move to initial position again succeed!";
             Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, true);
@@ -1895,15 +1961,15 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
         }
         else if(ReagentGroup == "RG6") //Paraffin
         {
-            scenario += 50;
+            scenario += 60;
         }
         else if(ReagentGroup == "RG7") //Cleaning solvent
         {
-            scenario += 60;
+            scenario += 70;
         }
         else if(ReagentGroup == "RG8") //Cleaning Alcohol
         {
-            scenario += 70;
+            scenario += 80;
         }
     }
     return scenario;
@@ -2319,7 +2385,9 @@ void SchedulerMainThreadController::HeatLevelSensor()
 void SchedulerMainThreadController::SealingCheck()
 {
     qDebug()<<"DBG"<<"Send cmd to DCL to start sealing test. ";
-    m_SchedulerCommandProcessor->pushCmd(new CmdIDSealingCheck(500, this));
+    CmdIDSealingCheck* cmd = new CmdIDSealingCheck(500, this);
+    cmd->SetThresholdPressure(10);
+    m_SchedulerCommandProcessor->pushCmd(cmd);
 }
 
 void SchedulerMainThreadController::MoveRVToInit()

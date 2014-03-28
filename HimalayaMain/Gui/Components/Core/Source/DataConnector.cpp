@@ -1359,7 +1359,7 @@ void CDataConnector::SettingsUpdateHandler(Global::tRefType Ref, const MsgClasse
 /****************************************************************************/
 void CDataConnector::EventReportHandler(Global::tRefType Ref, const NetCommands::CmdEventReport &Command)
 {
-    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+//    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
     QByteArray EventReportData(const_cast<QByteArray &>(Command.GetEventReportData()));
     QDataStream EventDataStream(&EventReportData, QIODevice::ReadWrite);
     EventDataStream.setVersion(static_cast<int>(QDataStream::Qt_4_0));
