@@ -125,16 +125,16 @@
 		</Event>
 		<Event Code="" ErrorID="513040163" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="3"/>
-			<Step ID="2" Type="MSG" StringID="003040163" RDStringID="013040163" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
-			<Step ID="1" Type="ACT" Action="RC_Report"/>
-			<Step ID="4" Type="MSG" StringID="023040163" RDStringID="033040163" ButtonType="OK" LogLevel="High" UserLog="TRUE"/>
-			<Step ID="3" Type="ACT" Action="RC_Report"/>
+			<Step ID="1" Type="MSG" StringID="103040163" RDStringID="113040163" ButtonType="OK" StatusBar="YES" NextStepOnClickOK="2" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="2" Type="ACT" Action="RC_Report"/>
+			<Step ID="3" Type="MSG" StringID="123040163" RDStringID="133040163" ButtonType="OK" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="4" Type="ACT" Action="RC_Report"/>
 		</Event>
 		<Event Code="" ErrorID="513040203" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="3"/>
-			<Step ID="1" Type="MSG" StringID="003040203" RDStringID="013040203" ButtonType="OK" StatusBar="YES" ButtonEnableCondition="RT_LID_OPEN_CLOSE" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="1" Type="MSG" StringID="103040203" RDStringID="113040203" ButtonType="OK" StatusBar="YES" ButtonEnableCondition="RT_LID_OPEN_CLOSE" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="2" Type="ACT" Action="RC_Report"/>
-			<Step ID="3" Type="MSG" StringID="023040203" RDStringID="033040203" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="3" Type="MSG" StringID="123040203" RDStringID="133040203" ButtonType="OK" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="4" Type="ACT" Action="RC_Report"/>
 		</Event>
 		<Event Code="" ErrorID="513045020" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
