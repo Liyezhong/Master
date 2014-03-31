@@ -1154,7 +1154,7 @@
 			<Step ID="0" Type="MSG" StringID="16846862" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16846848" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE">
-			<Step ID="0" Type="MSG" StringID="16846848" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="16846848" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16846854" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_STRING_ID_EVTTYPE_DEBUG">
 			<Step ID="0" Type="MSG" StringID="16846854" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
