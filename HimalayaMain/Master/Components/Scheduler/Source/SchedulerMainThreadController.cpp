@@ -424,6 +424,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
             qreal currentPressure = strctHWMonitor.PressureAL;
+            Q_UNUSED(currentPressure);
            // if((currentPressure < 0.0000001)&&(currentPressure > (-0.00000001))) //todo: verify pressure tolerence later
            // {
            //     Global::EventObject::Instance().RaiseEvent(0, 513040020, GetScenarioBySchedulerState(stepState, GetReagentGroupID(m_CurReagnetName)), true);
@@ -474,6 +475,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(DCL_ERR_UNDEFINED != retCode)
             {
                 quint32 resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
+                Q_UNUSED(resid);
                 if(( DCL_ERR_FCT_CALL_SUCCESS == retCode)&&(cmdName == "Scheduler::IDBottleCheck"))
                 {
                     m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
@@ -1645,6 +1647,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
 
     //log
     quint32 cmdid = 0;
+    Q_UNUSED(cmdid);
     if (Cmd.ProgramActionType() == DataManager::PROGRAM_START)
     {
         cmdid = STR_PROGRAM_COMMAND_START_PROGRAM;
@@ -2640,6 +2643,7 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
 
 bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
 {
+    Q_UNUSED(RetCode);
 #if 0
     bool retValue = false;
     SelfTestStateMachine_t selfTestState = mp_SelfTestStateMachine->GetCurrentState();

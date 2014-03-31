@@ -270,7 +270,9 @@ void ImportExportThreadController::OnGoReceived() {
         }
         else {
             bool IsImported = false;
+            Q_UNUSED(IsImported);
             bool IsSelectionRequested = false;
+            Q_UNUSED(IsSelectionRequested);
             // mount the USB device
             if (MountDevice(true)) {
                 // to store the files in the directory
