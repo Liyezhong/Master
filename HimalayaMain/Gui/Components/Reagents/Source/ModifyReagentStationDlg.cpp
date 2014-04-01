@@ -155,14 +155,16 @@ void CModifyReagentStationDlg::SelectionChanged(QModelIndex Index)
 /*!
  *  \brief Saves the changes in the dialog
  */
-/****************************************************************************/
+/************************************************************************/
 void CModifyReagentStationDlg::OnOk()
-{    
+{
     m_EditedStation.SetDashboardReagentStatus("Empty");
+    accept();
     emit UpdateStationChangeReagent(m_EditedStation.GetDashboardStationID(),
                                     m_EditedStation.GetDashboardReagentID());
-    emit UpdateStationSetAsEmpty(m_EditedStation.GetDashboardStationID());
-    accept();
+
+    // It is disabled for the station has been set empty when calling "emit UpdateStationChangeReagent"
+    //emit UpdateStationSetAsEmpty(m_EditedStation.GetDashboardStationID());
 }
 
 
