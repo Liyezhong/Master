@@ -286,6 +286,7 @@ void ImportExportThreadController::OnGoReceived() {
                         Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_NO_FILES_TO_IMPORT);
                         m_EventCode = EVENT_IMPORT_NO_FILES_TO_IMPORT;
                         IsImported = false;
+                        emit ThreadFinished(false, QStringList(), m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
                         break;
                     case 1:
                         // get the return code
@@ -295,6 +296,7 @@ void ImportExportThreadController::OnGoReceived() {
                         IsSelectionRequested = true;
                         // sort the files
                         emit RequestFileSelectionToImport(DirFileNames);
+                        emit ThreadFinished(false, QStringList(), m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
                         break;
                 }
 
@@ -316,6 +318,7 @@ void ImportExportThreadController::OnGoReceived() {
     else {
         Global::EventObject::Instance().RaiseEvent(EVENT_IMPORTEXPORT_THREADRUNNING, true);
         m_EventCode = EVENT_IMPORTEXPORT_THREADRUNNING;
+        emit ThreadFinished(false, QStringList(), m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
     }    
 }
 
@@ -790,10 +793,7 @@ bool ImportExportThreadController::CopyConfigurationFiles(const DataManager::CCo
 
         }
         else {
-            UserLogDirectory = true;
-            (void)LogDirectory.setPath(Global::SystemPaths::Instance().GetLogfilesPath() + QDir::separator() +
-                                          Configuration.GetGroupFileName()); //to avoid lint-534
-            LogFiles = FILENAME_DAILYRUNLOG;
+            return true;
         }
 
         if (LogDirectory.exists()) {            

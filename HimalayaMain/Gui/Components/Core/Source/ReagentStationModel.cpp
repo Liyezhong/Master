@@ -109,6 +109,42 @@ void CReagentStationModel::UpdateReagentList()
     endResetModel();
 }
 
+/****************************************************************************/
+/*!
+ *  \brief Updates the reagent data at a station
+ *
+ *
+ *  \iparam StationId
+ */
+/****************************************************************************/
+void CReagentStationModel::UpdateReagent(const QString &StationId)
+{
+    beginResetModel();
+
+    qint32 i = m_StationIDs.indexOf(StationId);
+    if (i==-1)  {
+        endResetModel();
+        return ;
+    }
+
+    if (mp_StationList) {
+
+        const DataManager::CDashboardStation* p_Station = mp_StationList->GetDashboardStation(i);
+        if (p_Station) {
+            QString ReagentName;
+            if (mp_ReagentList) {
+                DataManager::CReagent *p_Reagent = mp_ReagentList->GetReagent(p_Station->GetDashboardReagentID());
+                if (p_Reagent) {
+                    ReagentName =  p_Reagent->GetReagentName();
+                    m_ReagentNames.replace(i, ReagentName);
+                }
+            }
+        }
+    }
+
+    endResetModel();
+}
+
 
 
 /****************************************************************************/

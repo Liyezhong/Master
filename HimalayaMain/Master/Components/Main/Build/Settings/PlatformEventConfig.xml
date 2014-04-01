@@ -962,121 +962,121 @@
 			<Step ID="0" Type="MSG" StringID="17039364" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629209" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_AES_NOT_INITIALIZED">
-			<Step ID="0" Type="MSG" StringID="17629209" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629209" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629201" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_CANNOT_OPEN_FILE_FOR_READ">
-			<Step ID="0" Type="MSG" StringID="17629201" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629201" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629202" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_CANNOT_OPEN_FILE_FOR_WRITE">
-			<Step ID="0" Type="MSG" StringID="17629202" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629202" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="18939905" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORTCONFIG_EMPTY_FILE_LIST">
-			<Step ID="0" Type="MSG" StringID="18939905" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="18939905" ButtonType="OK" LogLevel="High" UserLog="FALSE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="18939906" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORTCONFIG_EMPTY_GROUP_FILE">
-			<Step ID="0" Type="MSG" StringID="18939906" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="18939906" ButtonType="OK" LogLevel="High" UserLog="FALSE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="18939908" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORTCONFIG_EMPTY_SOURCEDIR">
-			<Step ID="0" Type="MSG" StringID="18939908" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="18939908" ButtonType="OK" LogLevel="High" UserLog="FALSE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="18939909" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORTCONFIG_EMPTY_TARGETFILE">
-			<Step ID="0" Type="MSG" StringID="18939909" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="18939909" ButtonType="OK" LogLevel="High" UserLog="FALSE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="18939907" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORTCONFIG_INVALID_PACKAGETYPE">
-			<Step ID="0" Type="MSG" StringID="18939907" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="18939907" ButtonType="OK" LogLevel="High" UserLog="FALSE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629200" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_CRYTOSERVICE_RUNNING">
-			<Step ID="0" Type="MSG" StringID="17629200" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629200" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629185" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_DIRECTORY_CREATION_FAILED">
-			<Step ID="0" Type="MSG" StringID="17629185" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629185" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629203" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_ERROR_TO_READ">
-			<Step ID="0" Type="MSG" StringID="17629203" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629203" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629204" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_ERROR_TO_WRITE">
-			<Step ID="0" Type="MSG" StringID="17629204" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629204" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629194" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_FAILED">
-			<Step ID="0" Type="MSG" StringID="17629194" ButtonType="" LogLevel="High" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629194" ButtonType="OK" LogLevel="High" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629186" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_FILES_NOT_COPIED">
-			<Step ID="0" Type="MSG" StringID="17629186" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629186" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629213" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_HMAC_COMPUTATION_STARTED">
-			<Step ID="0" Type="MSG" StringID="17629213" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629213" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629208" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_HMAC_NOT_INITIALIZED">
-			<Step ID="0" Type="MSG" StringID="17629208" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629208" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629205" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_INDEX_IS_MATCHING">
-			<Step ID="0" Type="MSG" StringID="17629205" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629205" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629190" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_INIT_CONTAINER_FAILED">
-			<Step ID="0" Type="MSG" StringID="17629190" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629190" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629210" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_INTEGER_SIZE_IS_MORE">
-			<Step ID="0" Type="MSG" StringID="17629210" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629210" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629199" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_INVALID_EXPORT">
-			<Step ID="0" Type="MSG" StringID="17629199" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629199" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629212" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_INVALID_FILE_MODE">
-			<Step ID="0" Type="MSG" StringID="17629212" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629212" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629207" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_KEYDATA_SIZE_IS_NOT_MATCHING">
-			<Step ID="0" Type="MSG" StringID="17629207" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629207" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629206" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_KEY_SIZE_LESS">
-			<Step ID="0" Type="MSG" StringID="17629206" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629206" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629197" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_LOG_DIRECTORY_NOT_EXISTS">
-			<Step ID="0" Type="MSG" StringID="17629197" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629197" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629211" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_MSB_BIT_IS_NOT_SET">
-			<Step ID="0" Type="MSG" StringID="17629211" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629211" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629195" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_SOURCE_DIRECTORY_NOT_EXISTS">
-			<Step ID="0" Type="MSG" StringID="17629195" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629195" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629217" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_STOPPED_FOREVER">
-			<Step ID="0" Type="MSG" StringID="17629217" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629217" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629193" ErrorType="Info" AlarmType="No" Name="EVENT_EXPORT_SUCCESS">
 			<Step ID="0" Type="MSG" StringID="17629193" ButtonType="Ok" LogLevel="High" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629196" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_TARGET_DIRECTORY_NOT_EXISTS">
-			<Step ID="0" Type="MSG" StringID="17629196" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629196" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629198" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_TARGET_FILE_FORMAT_IS_WRONG">
-			<Step ID="0" Type="MSG" StringID="17629198" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629198" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629192" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_UNABLE_TO_ARCHIVE_FILES">
-			<Step ID="0" Type="MSG" StringID="17629192" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629192" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629218" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_UNABLE_TO_CREATE_FILE_CMS_STATUS">
-			<Step ID="0" Type="MSG" StringID="17629218" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629218" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629187" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_UNABLE_TO_CREATE_FILE_RMS_STATUS">
-			<Step ID="0" Type="MSG" StringID="17629187" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629187" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629188" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_UNABLE_TO_CREATE_FILE_TEMP_EXPORTCONFIGURATION">
-			<Step ID="0" Type="MSG" StringID="17629188" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629188" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629189" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_UNABLE_TO_READ_FILE_TEMP_EXPORTCONFIGURATION">
-			<Step ID="0" Type="MSG" StringID="17629189" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629189" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629191" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_VERIFICATION_CONTAINER_FAILED">
-			<Step ID="0" Type="MSG" StringID="17629191" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629191" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629215" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_ZIP_COMMAND_NOT_FOUND">
-			<Step ID="0" Type="MSG" StringID="17629215" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629215" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629214" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_ZIP_ERROR">
-			<Step ID="0" Type="MSG" StringID="17629214" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629214" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629216" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_ZIP_IS_TAKING_LONGTIME">
-			<Step ID="0" Type="MSG" StringID="17629216" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="17629216" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17498118" ErrorType="Error" AlarmType="No" Name="EVENT_EXTERNALPROCESSCONTROL_ERROR_CREATOR_FUNCTOR_ALREADY_REGISTERED">
 			<Step ID="0" Type="MSG" StringID="17498118" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
@@ -1154,7 +1154,7 @@
 			<Step ID="0" Type="MSG" StringID="16846862" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16846848" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE">
-			<Step ID="0" Type="MSG" StringID="16846848" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="16846848" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16846854" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_STRING_ID_EVTTYPE_DEBUG">
 			<Step ID="0" Type="MSG" StringID="16846854" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
