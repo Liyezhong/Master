@@ -97,6 +97,12 @@
 			<Step ID="2" Type="ACT" Action="RC_Report"/>
 			<Step ID="3" Type="ACT" Action="RC_Restart"/>
 		</Event>
+		<Event Code="" ErrorID="513030011" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="MSG" StringID="103030011" RDStringID="113030011" ButtonType="OK" StatusBar="YES" NextStepOnClickOK="2" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="2" Type="ACT" Action="RC_Report"/>
+			<Step ID="3" Type="ACT" Action="RC_Report"/>
+		</Event>
 		<Event Code="" ErrorID="513030012" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_LOCAL"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="3"/>
 			<Step ID="1" Type="MSG" StringID="103030012" RDStringID="113030012" ButtonType="OK" StatusBar="YES" NextStepOnClickOK="2" LogLevel="High" UserLog="TRUE"/>
