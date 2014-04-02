@@ -1,11 +1,11 @@
 /****************************************************************************/
-/*! \file SettingParametersWidget.cpp
+/*! \file ParametersWidget.cpp
  *
- *  \brief Implementation file for class CSettingParametersWidget.
+ *  \brief Implementation file for class CParametersWidget.
  *
  *  \b Description:
  *          This class implements widgets for displaying main selection panel for
- *          ServiceUpdates screen.
+ *          Settings screen.
  *
  *
  *   $Version: $ 0.1
@@ -23,47 +23,45 @@
  */
 /****************************************************************************/
 
-#include "ServiceUpdates/Include/SettingParametersWidget.h"
-
 #include "Global/Include/Utils.h"
-
-#include "ui_SettingParametersWidget.h"
+#include "Global/Include/Exception.h"
+#include "ServiceUpdates/Include/ParametersWidget.h"
+#include "ui_ParametersWidget.h"
 
 namespace ServiceUpdates {
-CSettingParametersWidget::CSettingParametersWidget(QWidget *p_Parent)
-    : MainMenu::CPanelFrame(p_Parent)
-    , mp_Ui(new Ui::CSettingParametersWidget)
+
+/****************************************************************************/
+/*!
+ *  \brief Constructor
+ *
+ *  \iparam p_Parent = Parent object
+ */
+/****************************************************************************/
+CParametersWidget::CParametersWidget(QWidget *p_Parent) :
+    MainMenu::CPanelFrame(p_Parent),
+    mp_Ui(new Ui::CParametersWidget)
 {
     mp_Ui->setupUi(GetContentFrame());
-
-    SetPanelTitle(tr("Parameter"));
+    SetPanelTitle(QApplication::translate("ServiceUpdates::CParametersWidget", "Parameter",
+                                          0, QApplication::UnicodeUTF8));
 
     QPalette Palette = mp_Ui->parameterList->palette();
-
     Palette.setColor(QPalette::Base, Qt::transparent);
     Palette.setColor(QPalette::Highlight, Qt::transparent);
     Palette.setColor(QPalette::HighlightedText, Qt::black);
-
     mp_Ui->parameterList->setPalette(Palette);
 
-    CONNECTSIGNALSIGNAL(mp_Ui->parameterList,
-                        currentRowChanged(int),
-                        this,
-                        CurrentRowChanged(int));
+    CONNECTSIGNALSIGNALGUI(mp_Ui->parameterList, currentRowChanged(int), this, CurrentRowChanged(int));
 }
 
-CSettingParametersWidget::~CSettingParametersWidget(void)
+/****************************************************************************/
+/*!
+ *  \brief Destructor
+ */
+/****************************************************************************/
+CParametersWidget::~CParametersWidget()
 {
-    try
-    {
-        delete mp_Ui;
-    }
-    catch (...) { };
-}
-
-void CSettingParametersWidget::SetCurrentRow(int CurrentRow)
-{
-    mp_Ui->parameterList->setCurrentRow(CurrentRow);
+    delete mp_Ui;
 }
 
 /****************************************************************************/
@@ -73,7 +71,7 @@ void CSettingParametersWidget::SetCurrentRow(int CurrentRow)
  *  \iparam p_Event = Change event
  */
 /****************************************************************************/
-void CSettingParametersWidget::changeEvent(QEvent *p_Event)
+void CParametersWidget::changeEvent(QEvent *p_Event)
 {
     switch (p_Event->type()) {
         case QEvent::LanguageChange:
@@ -92,9 +90,10 @@ void CSettingParametersWidget::changeEvent(QEvent *p_Event)
  *  \brief Translates the strings in UI to the selected language
  */
 /****************************************************************************/
-void CSettingParametersWidget::RetranslateUI(void)
+void CParametersWidget::RetranslateUI()
 {
-   SetPanelTitle(tr("Parameter"));
+   MainMenu::CPanelFrame::SetPanelTitle(QApplication::translate("ServiceUpdates::CParametersWidget",
+                                        "Parameter", 0, QApplication::UnicodeUTF8));
 }
 
 } // end namespace ServiceUpdates

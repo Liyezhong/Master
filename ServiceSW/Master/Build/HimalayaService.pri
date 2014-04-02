@@ -19,10 +19,15 @@ QT += gui \
 INCLUDEPATH += ../.. \
                ../../../../../../Platform/Master/Components \
                ../../../../../../Platform/Gui/Components \
+               ../../../../../../Platform/ServiceSW/Components \
                ../../../../../../Himalaya/HimalayaMain/Master/Components \
-               ../../../../../Shared/Gui/Components
+               ../../../../../Shared/Gui/Components  \
+               ../../../../../../Platform/Master/Components/DeviceControl/Include/Devices \
+               ../../../../../../Platform/Master/Components/DeviceControl/Include/Interface \
+               ../../../../../../Platform/ProtoTest/Include
 DEPENDPATH +=  ../.. \
                ../../../../../../Platform/Master/Components \
+               ../../../../../../Platform/ServiceSW/Components \
                ../../../../../../Platform/Gui/Components \
                ../../../../../Himalaya/HimalayaMain/Master/Components \
                ../../../../../Shared/Gui/Components
@@ -30,14 +35,14 @@ DEPENDPATH +=  ../.. \
 CONFIG += debug_and_release
 #CONFIG += build_all
 
-QMAKE_CXXFLAGS += -Wall
+QMAKE_CXXFLAGS += -Wall -std=c++0x
 
 CONFIG(debug, debug|release) {
     CONFIG_SUFFIX = dbg
 } else {
     CONFIG_SUFFIX = rel
     DEFINES += QT_NO_DEBUG \
-               QT_NO_DEBUG_OUTPUT \
+#               QT_NO_DEBUG_OUTPUT \
                NDEBUG
     CONFIG(gcov) {
         QMAKE_CXXFLAGS_RELEASE += -fprofile-arcs -ftest-coverage

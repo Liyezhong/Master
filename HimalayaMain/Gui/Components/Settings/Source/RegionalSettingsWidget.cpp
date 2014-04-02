@@ -159,6 +159,10 @@ void CRegionalSettingsWidget::OnApply()
     else {
         m_UserSettingsTemp.SetTemperatureFormat(Global::TEMP_FORMAT_FAHRENHEIT);
     }
+
+    if (m_UserSettingsTemp == *mp_UserSettings )
+        return ;
+
     emit RegionalSettingsChanged(m_UserSettingsTemp);
 }
 

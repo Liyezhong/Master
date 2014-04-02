@@ -526,4 +526,40 @@ void CHimalayaUserSettings::SetModeRMSCleaning(Global::RMSOptions_t ModeRMSClean
     SetValue(RMS_CLEANING_MODE, Value);
 }
 
+/****************************************************************************/
+/*!
+ *  \brief Assignment Operator which checks if the two object is same.
+ *
+ *  \iparam UserSettings = CUserSettings class object
+ *
+ *  \return bool
+ */
+/****************************************************************************/
+bool CHimalayaUserSettings::operator ==(const CHimalayaUserSettings& UserSettings)
+{
+    // make sure not same object
+    if ( this == &UserSettings )
+        return true;
+
+    if (this->GetVersion()  != UserSettings.GetVersion() ||
+        this->GetLanguage() != UserSettings.GetLanguage() ||
+        this->GetDateFormat() != UserSettings.GetDateFormat() ||
+        this->GetTimeFormat() != UserSettings.GetTimeFormat() ||
+        this->GetTemperatureFormat() != UserSettings.GetTemperatureFormat() ||
+        this->GetSoundNumberError() != UserSettings.GetSoundNumberError() ||
+        this->GetSoundLevelError() != UserSettings.GetSoundLevelError() ||
+        this->GetSoundNumberWarning() != UserSettings.GetSoundNumberWarning() ||
+        this->GetSoundLevelWarning() != UserSettings.GetSoundLevelWarning() ||
+        this->GetRemoteCare() != UserSettings.GetRemoteCare() ||
+        this->GetDirectConnection() != UserSettings.GetDirectConnection() ||
+        this->GetProxyUserName() != UserSettings.GetProxyUserName() ||
+        this->GetProxyPassword() != UserSettings.GetProxyPassword() ||
+        this->GetProxyIPAddress() != UserSettings.GetProxyIPAddress() ||
+        this->GetProxyIPPort() != UserSettings.GetProxyIPPort() ||
+        this->GetValueList() != UserSettings.GetValueList() )
+        return false;
+
+    return true;
+}
+
 } // end namespace DataManager

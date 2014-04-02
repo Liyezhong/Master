@@ -24,6 +24,8 @@ SUBDIRS = ../../../../Platform/Master/Components/Global/Build/Global.pro \
           ../../../../Platform/Master/Components/ExternalProcessController/Build/ExternalProcessController.pro \
           ../../../../Platform/Master/Components/StateMachines/Build/StateMachines.pro \
           ../../../../Platform/Master/Components/ExportController/Build/ExportController.pro \
+          ../../../../Platform/ServiceSW/Components/LogViewer/Build/LogViewer.pro \
+          ../../../../Platform/ServiceSW/Components/Settings/Build/Settings.pro \
           ../../../Shared/Gui/Components/Images/Build/Images.pro \
           ../../../Shared/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro \
           ../Components/TestCases/Build/TestCases.pro \

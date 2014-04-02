@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ServiceUpdates::CSettingsWidget</class>
- <widget class="QWidget" name="ServiceUpdates::CSettingsWidget">
+ <class>ServiceUpdates::CSettings</class>
+ <widget class="QWidget" name="ServiceUpdates::CSettings">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -21,43 +21,43 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="CSettingParametersWidget" name="parametersPanel" native="true"/>
+    <widget class="CParametersWidget" name="parametersPanel" native="true"/>
    </item>
    <item row="0" column="1">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
       <number>2</number>
      </property>
-     <widget class="ServiceUpdates::CLanguageSetting" name="pageLanguage"/>
-     <widget class="ServiceUpdates::CDateTimeSetting" name="pageDateTime"/>
-     <widget class="ServiceUpdates::CNetworkSetting" name="pageNetwork"/>
+     <widget class="Settings::CLanguageWidget" name="pageLanguageSettings"/>
+     <widget class="Settings::CDateTimeWidget" name="pageDateTimeSettings"/>
+     <widget class="Settings::CNetworkSettingsWidget" name="pageNetworkSettings"/>
     </widget>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>CSettingParametersWidget</class>
+   <class>CParametersWidget</class>
    <extends>QWidget</extends>
-   <header>ServiceUpdates/Include/SettingParametersWidget.h</header>
+   <header>ServiceUpdates/Include/ParametersWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ServiceUpdates::CDateTimeSetting</class>
+   <class>Settings::CDateTimeWidget</class>
    <extends>QWidget</extends>
-   <header>ServiceUpdates/Include/DateTimeSetting.h</header>
+   <header>Settings/Include/DateTimeWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ServiceUpdates::CLanguageSetting</class>
+   <class>Settings::CLanguageWidget</class>
    <extends>QWidget</extends>
-   <header>ServiceUpdates/Include/LanguageSetting.h</header>
+   <header>Settings/Include/LanguageWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ServiceUpdates::CNetworkSetting</class>
+   <class>Settings::CNetworkSettingsWidget</class>
    <extends>QWidget</extends>
-   <header>ServiceUpdates/Include/NetworkSetting.h</header>
+   <header>Settings/Include/NetworkSettingsWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
