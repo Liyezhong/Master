@@ -19,10 +19,8 @@
 /****************************************************************************/
 
 #include "Core/Include/Startup.h"
-#include <Global/Include/GlobalDefines.h>
-#include <QDebug>
-#include <QMessageBox>
-#include <Core/Include/ServiceDefines.h>
+
+
 
 namespace Core {
 
@@ -111,18 +109,13 @@ CStartup::CStartup() : QObject()
     // Calibration
     mp_CalibrationGroup = new MainMenu::CMenuGroup;
     mp_PressureSensor = new Calibration::CPressureSensor;
-    mp_Touchscreen = new Calibration::CTouchscreen;
+    mp_Touchscreen = new Calibration::CTouchscreen(mp_MainWindow);
 
     // Software upate
-    mp_ServiceUpdateGroup = new MainMenu::CHiMenuGroup;
+    mp_ServiceUpdateGroup = new MainMenu::CMenuGroup;
     mp_FirmwareUpdate = new ServiceUpdates::CFirmwareUpdate;
     mp_DataManagement = new ServiceUpdates::CDataManagement;
-    mp_Settings = new ServiceUpdates::CSettingsWidget(*mp_ServiceConnector);
-
-    (void)connect(mp_ServiceConnector,
-                  SIGNAL(UserSettingInterfaceChanged()),
-                  mp_Settings,
-                  SLOT(UpdateGUI()));
+    mp_Setting = new ServiceUpdates::CSettings(mp_ServiceConnector, mp_MainWindow);
 
     (void)connect(mp_DataManagement,
                   SIGNAL(ServiceImportExportRequested(bool)),
@@ -204,6 +197,8 @@ CStartup::CStartup() : QObject()
                  this, SLOT(OnGuiAbortTest()))) {
         qDebug() << "CStartup: cannot connect 'GuiAbortTest' signal";
     }
+    CONNECTSIGNALSLOT(this, SetSettingsButtonStatus(), mp_Setting, ResetButtonStatus());
+    CONNECTSIGNALSLOT(this, UpdateGUIConnector(Core::CServiceGUIConnector*, MainMenu::CMainWindow*), mp_Setting, UpdateGUIConnector(Core::CServiceGUIConnector*, MainMenu::CMainWindow*));
 
     m_DateTime.setTime_t(0);
     mp_Clock->start(60000);
@@ -223,7 +218,7 @@ CStartup::~CStartup()
         delete mp_CalibrationGroup;
 
         // Service Update
-        delete mp_Settings;
+        delete mp_Setting;
         delete mp_DataManagement;
         delete mp_FirmwareUpdate;
         delete mp_ServiceUpdateGroup;
@@ -282,7 +277,7 @@ qint32 CStartup::NetworkInit()
 /****************************************************************************/
 void CStartup::LoadCommonComponenetsOne()
 {
-    mp_MainWindow->setWindowTitle("ST8200 Service Software");
+    mp_MainWindow->setWindowTitle("Himalaya Service Software");
     mp_MainWindow->setFixedSize(800, 600);
 
     // System Tracking
@@ -327,7 +322,7 @@ void CStartup::LoadCommonComponenetsTwo()
     // Service update
     mp_ServiceUpdateGroup->AddPanel("Firmware Update", mp_FirmwareUpdate);
     mp_ServiceUpdateGroup->AddPanel("Data Management", mp_DataManagement);
-    mp_ServiceUpdateGroup->AddPanel("Settings", mp_Settings, false);
+    mp_ServiceUpdateGroup->AddSettingsPanel("Settings", mp_Setting);
     mp_MainWindow->AddMenuGroup(mp_ServiceUpdateGroup, "Service Updates");
 
 
@@ -359,6 +354,8 @@ void CStartup::ServiceGuiInit()
     LoadCommonComponenetsOne();
 
     mp_MainWindow->SetUserIcon(MainMenu::CMainWindow::Service);
+    emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
+
 
     //Diagnostics
     mp_MainWindow->AddMenuGroup(mp_DiagnosticsGroup, "Diagnostics");
@@ -368,6 +365,7 @@ void CStartup::ServiceGuiInit()
     mp_DiagnosticsGroup->AddPanel("L&&A System",   mp_LaSystem);
     mp_DiagnosticsGroup->AddPanel("System",       mp_System);
 
+    emit SetSettingsButtonStatus();
     LoadCommonComponenetsTwo();
 }
 
@@ -379,6 +377,7 @@ void CStartup::ServiceGuiInit()
 void CStartup::ManufacturingGuiInit()
 {
     LoadCommonComponenetsOne();
+    emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
 
     mp_MainWindow->AddMenuGroup(mp_DiagnosticsManufGroup, "Diagnostics");
 

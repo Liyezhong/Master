@@ -23,6 +23,7 @@
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationInterface.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "DataManager/Containers/InstrumentHistory/Include/ModuleDataList.h"
+#include <ServiceDataManager/Include/ServiceParameters.h>
 
 #include "Global/Include/Translator.h"
 #include "MainMenu/Include/MainWindow.h"
@@ -77,6 +78,7 @@ class CServiceGUIConnector : public QObject
     DataManager::CModuleDataList                *mp_ModuleList;                     //!< Container for Instrument History
     DataManager::CDeviceConfigurationInterface  *mp_DeviceConfigurationInterface;   //!< Container for Device configuration
     DataManager::CUserSettingsInterface         *mp_SettingsInterface;              //!< Provides interface to read the Settings info from xml
+    DataManager::CServiceParameters             *mp_ServiceParameters;              //!< Container for Service Parameters
 
 public:
     CServiceGUIConnector(MainMenu::CMainWindow *p_Parent);
@@ -101,6 +103,8 @@ public:
     DataManager::CDeviceConfigurationInterface *GetDeviceConfigInterface(void);
 
     DataManager::CUserSettingsInterface *GetUserSettingInterface(void);
+    DataManager::CServiceParameters* GetServiceParameters();
+    void SetServiceParametersContainer(DataManager::CServiceParameters *ServiceParameters);
 
 public slots:
     void OnCurrentTabChanged(int CurrentTabIndex);
@@ -112,6 +116,7 @@ public slots:
     void SendModuleUpdate(DataManager::CModule &Module);
 
     void SendAddModule(DataManager::CModule &Module);
+    void ServiceParametersUpdates(DataManager::CServiceParameters *ServiceParameters);
 
 signals:
     void ModuleListContainerInitialized(DataManager::CModuleDataList& ModuleList);
@@ -121,9 +126,22 @@ signals:
     void DeviceConfigurationInterfaceChanged(void);
 
     void UserSettingInterfaceChanged(void);
-
+    /****************************************************************************/
+    /*!
+     *  \brief Signal is emitted when ServiceParameters data container is
+     *  initialized
+     */
+    /****************************************************************************/
+    void ServiceParametersChanged();
+    /*******************************************************************************/
+    /*!
+     *  \brief Signal is emitted to update ServiceParameters container
+     *  \iparam ServiceParameters = Service Parameters object
+     */
+    /*******************************************************************************/
+    void UpdateServiceParameters(DataManager::CServiceParameters *ServiceParameters);
 private slots:
-    void SetDateTime(QDateTime DateTime);
+    void SetDateTime(const QDateTime& DateTime);
     void RetranslateUI();
     void SendEventReportCommand(const quint32, const Global::tTranslatableStringList &, const bool, quint32 EventKey, const Global::AlternateEventStringUsage);
     void OnEventReportAck(NetCommands::ClickedButton_t ClickedButton, Global::tRefType CmdRef, quint64 EventKey);

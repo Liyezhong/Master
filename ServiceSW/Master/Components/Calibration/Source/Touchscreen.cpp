@@ -3,6 +3,9 @@
  *
  *  \brief Touchscreen implementation.
  *
+ *  \b Description:
+ *          This class implements widgets to perform touch screen calibration.
+ *
  *   $Version: $ 0.1
  *   $Date:    $ 2011-07-13
  *   $Author:  $ M.Scherer
@@ -19,7 +22,10 @@
 /****************************************************************************/
 
 #include "Calibration/Include/Touchscreen.h"
+//#include "Main/Include/HimalayaServiceEventCodes.h"
+#include "Global/Include/Utils.h"
 #include "ui_Touchscreen.h"
+#include <QDebug>
 
 namespace Calibration {
 
@@ -27,12 +33,15 @@ namespace Calibration {
 /*!
  *  \brief Constructor
  *
- *  \iparam p_Parent = Parent widget
+ *  \iparam p_MainWindow = Mainwindow object
  */
 /****************************************************************************/
-CTouchscreen::CTouchscreen(QWidget *p_Parent) : QWidget(p_Parent), mp_Ui(new Ui::CTouchscreen)
+CTouchscreen::CTouchscreen(MainMenu::CMainWindow *p_MainWindow) : mp_MainWindow(p_MainWindow)
+  , mp_Ui(new Ui::CTouchscreen)
 {
     mp_Ui->setupUi(this);
+
+    CONNECTSIGNALSLOTGUI(mp_Ui->startButton, clicked(), this, TouchScreenCalibration());
 }
 
 /****************************************************************************/
@@ -46,6 +55,44 @@ CTouchscreen::~CTouchscreen()
         delete mp_Ui;
     }
     catch (...) {}
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Event handler for change events
+ *
+ *  \iparam p_Event = Change event
+ */
+/****************************************************************************/
+void CTouchscreen::changeEvent(QEvent *p_Event)
+{
+    QWidget::changeEvent(p_Event);
+    switch (p_Event->type()) {
+    case QEvent::LanguageChange:
+        mp_Ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Touch screen calibration
+ */
+/****************************************************************************/
+void CTouchscreen::TouchScreenCalibration()
+{
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CALIBRATION_TOUCHSCREEN);
+
+    if (QFile::exists(qApp->applicationDirPath() + "/TouchscreenCalibration.sh") && QFile::exists(qApp->applicationDirPath() + "/himalaya_service")) {
+        if(mp_MainWindow->GetSaMUserMode() == QString("Service")) {
+            (void) system("chmod 755 TouchscreenCalibration.sh");
+            (void) system("./TouchscreenCalibration.sh ts_Service &");
+        } else if(mp_MainWindow->GetSaMUserMode() == QString("Manufacturing")) {
+            (void) system("./TouchscreenCalibration.sh ts_Manufacturing &");
+         }
+    }
 }
 
 } // end namespace Calibration

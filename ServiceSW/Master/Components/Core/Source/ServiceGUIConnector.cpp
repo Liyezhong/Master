@@ -42,6 +42,7 @@ CServiceGUIConnector::CServiceGUIConnector(MainMenu::CMainWindow *p_Parent)
     , m_MessageDlg(false)
     , mp_ModuleList(0)
     , mp_SettingsInterface(0)
+    , mp_ServiceParameters(NULL)
 {
     CONNECTSIGNALSLOT(mp_MainWindow, onChangeEvent(), this, RetranslateUI());
 
@@ -259,10 +260,20 @@ void CServiceGUIConnector::RetranslateUI()
  *  \iparam DateTime = New date and time
  */
 /****************************************************************************/
-void CServiceGUIConnector::SetDateTime(QDateTime DateTime)
+void CServiceGUIConnector::SetDateTime(const QDateTime& DateTime)
 {
-    // set new time
-    Global::AdjustedTime::Instance().AdjustToDateTime(DateTime);
+    //    DEBUGWHEREAMI;
+
+        // set new time
+        QString CurrentDateTime =  DateTime.toString("d MMM yyyy hh:mm:ss");
+    //        QString DateCommand = QString("echo colorado | sudo -S date -s \"%1\"").arg(CurrentDateTime);
+        QString DateCommand = QString("date -s \"%1\"").arg(CurrentDateTime);
+
+        (void) system(DateCommand.toStdString().c_str());
+    //        (void) system("echo colorado | sudo -S hwclock -w");
+        (void) system("hwclock -w");
+
+        Global::AdjustedTime::Instance().AdjustToDateTime(DateTime);
 }
 
 /****************************************************************************/
@@ -308,6 +319,47 @@ DataManager::CUserSettingsInterface *
 CServiceGUIConnector::GetUserSettingInterface(void)
 {
     return mp_SettingsInterface;
+}
+
+/****************************************************************************/
+/*!
+ *  \brief This slot updates the ServiceParameters object
+ *  \iparam ServiceParameters = Service Parameters pointer
+ */
+/****************************************************************************/
+void CServiceGUIConnector::SetServiceParametersContainer(DataManager::CServiceParameters *ServiceParameters)
+{
+    mp_ServiceParameters = ServiceParameters;
+    emit ServiceParametersChanged();
+}
+
+/****************************************************************************/
+/*!
+ *  \brief  To get the ServiceParameters datacontainer
+ *  \return ServiceParameters pointer
+ */
+/****************************************************************************/
+DataManager::CServiceParameters* CServiceGUIConnector::GetServiceParameters()
+{
+    if(mp_ServiceParameters != NULL)
+    {
+        return mp_ServiceParameters;
+    }
+    return NULL;
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Slot to update the ServiceParameters xml file
+ *  \iparam ServiceParameters = Service Parameters object
+ */
+/****************************************************************************/
+void CServiceGUIConnector::ServiceParametersUpdates(DataManager::CServiceParameters *ServiceParameters)
+{
+    if (ServiceParameters != NULL) {
+       mp_ServiceParameters = ServiceParameters;
+    }
+    emit UpdateServiceParameters(mp_ServiceParameters);
 }
 
 } // end namespace Core

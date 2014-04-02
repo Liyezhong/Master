@@ -1,11 +1,11 @@
 /****************************************************************************/
-/*! \file SettingParametersWidget.h
+/*! \file ParametersWidget.h
  *
- *  \brief SettingParametersWidget definition.
+ *  \brief ParametersWidget definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2011-09-29
- *   $Author:  $ M.Scherer,C.Adaragunchi
+ *   $Author:  $ M.Scherer,C.Adaragunchi, Soumya. D
  *
  *  \b Company:
  *
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef SERVICEUPDATES_SETTINGPARAMETERSWIDGET_H
-#define SERVICEUPDATES_SETTINGPARAMETERSWIDGET_H
+#ifndef SETTINGS_PARAMETERSWIDGET_H
+#define SETTINGS_PARAMETERSWIDGET_H
 
 #include "MainMenu/Include/PanelFrame.h"
 
@@ -27,36 +27,41 @@
 namespace ServiceUpdates {
 
 namespace Ui {
-    class CSettingParametersWidget;
+    class CParametersWidget;
 }
 
 /****************************************************************************/
 /**
- * \brief Main selection panel for the ServiceUpdates screen
+ * \brief Main selection panel for the settings screen
  */
 /****************************************************************************/
-class CSettingParametersWidget : public MainMenu::CPanelFrame
+class CParametersWidget : public MainMenu::CPanelFrame
 {
-    Q_OBJECT
+    Q_OBJECT  
 
 public:
-    explicit CSettingParametersWidget(QWidget *p_Parent = NULL);
-
-    virtual ~CSettingParametersWidget(void);
-
-    void SetCurrentRow(int CurrentRow);
-
-Q_SIGNALS:
-    void CurrentRowChanged(int CurrentRow);
+    explicit CParametersWidget(QWidget *p_Parent = NULL);
+    virtual ~CParametersWidget();
 
 protected:
     void changeEvent(QEvent *p_Event);
 
 private:
-    Ui::CSettingParametersWidget *mp_Ui;
+    Ui::CParametersWidget *mp_Ui;   //!< User interface
     void RetranslateUI();
+
+signals:
+    /****************************************************************************/
+    /*!
+     *  \brief Changes the selected settings widget
+     *
+     *  \iparam CurrentRow = Number of the widget
+     */
+    /****************************************************************************/
+    void CurrentRowChanged(int CurrentRow);
+
 };
 
 } // end namespace ServiceUpdates
 
-#endif // SERVICEUPDATES_SETTINGPARAMETERSWIDGET_H
+#endif // SETTINGS_PARAMETERSWIDGET_H
