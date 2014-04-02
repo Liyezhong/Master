@@ -86,7 +86,9 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         mp_PssmPause->addTransition(this, SIGNAL(ResumeToSelftest()), stHistory);
         mp_PssmSelfTest->addTransition(this, SIGNAL(Error()), pErrorState);
         pErrorState->addTransition(this, SIGNAL(ResumeToSelftest()), stHistory);//verify later
-        mp_PssmSelfTest->addTransition(this, SIGNAL(abort()), mp_PssmAborted);
+        pErrorState->addTransition(this, SIGNAL(ResumeToSoak()), mp_PssmSoak);
+        pErrorState->addTransition(this, SIGNAL(ResumeFromErrorToBegin()), mp_PssmInit);
+        mp_PssmSelfTest->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
 
         mp_PssmInit->addTransition(this, SIGNAL(TempsReady()), mp_PssmReadyToHeatLevelSensorS1);
         mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(LevelSensorTempS1Ready()), mp_PssmReadyToHeatLevelSensorS2);

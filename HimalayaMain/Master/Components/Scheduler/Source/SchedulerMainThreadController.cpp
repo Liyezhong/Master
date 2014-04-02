@@ -223,6 +223,7 @@ void SchedulerMainThreadController::OnTickTimer()
         HandleRunState(newControllerCmd, cmd);
         break;
     case SM_ERROR:
+        HardwareMonitor( "ERROR" );
         //qDebug()<<"DBG"<<"Scheduler main controller state: ERROR";
         //refuse any main controller request if there is any
         HandleErrorState(newControllerCmd, cmd, currentState);
@@ -399,6 +400,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     Global::EventObject::Instance().RaiseEvent(0, 500030021, Scenario, false);
                     m_SchedulerMachine->SendErrorSignal();
                 }
+                else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
+                {
+                    LogDebug("Precheck Position Check internal step retry");
+                    Global::EventObject::Instance().RaiseEvent(0, 500030011, Scenario, false);
+                    m_SchedulerMachine->SendErrorSignal();
+                }
                 else
                 {
                     LogDebug("Precheck Sealing Check Failed");
@@ -455,6 +462,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 //Sealing check failed, raise event here
                 LogDebug("Precheck Sealing Check Fail");
+                //todo: raise event here
+                m_SchedulerMachine->SendErrorSignal();
 
             }
             if(CTRL_CMD_PAUSE == ctrlCmd)
@@ -658,7 +667,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
                     {
                         //fail to move to seal, raise event here
+                        LogDebug(QString("Program Step Move to tube(before)%1 internal steps retry").arg(targetPos));
                         Global::EventObject::Instance().RaiseEvent(0, 500030011, Scenario, true);
+                        m_SchedulerMachine->SendErrorSignal();
+                    }
+                    else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
+                    {
+                        LogDebug(QString("Program Step Move to tube(before)%1 exceed upper limit").arg(targetPos));
+                        Global::EventObject::Instance().RaiseEvent(0, 500030021, Scenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                 }
@@ -721,14 +737,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
                     {
                         //fail to move to seal, raise event here
-                        LogDebug(QString("Program Step to Seal %1 Exceed upper limit").arg(targetPos));
+                        LogDebug(QString("Program Step Move to Seal %1 Exceed upper limit").arg(targetPos));
                         Global::EventObject::Instance().RaiseEvent(0, 500030021, Scenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                     else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
                     {
                         //fail to move to seal, raise event here
-                        LogDebug(QString("Program Step to Seal %1 Stuck").arg(targetPos));
+                        LogDebug(QString("Program Step Move to Seal %1 internal step retry").arg(targetPos));
                         Global::EventObject::Instance().RaiseEvent(0, 500030011, Scenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
@@ -851,7 +867,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
                     {
                         LogDebug(QString("Program Step Move to Tube(after) %1 Exceed Upper Limit Failed").arg(targetPos));
-                        Global::EventObject::Instance().RaiseEvent(0, 500030021, Scenario, false);
+                        Global::EventObject::Instance().RaiseEvent(0, 500030021, Scenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                 }
@@ -1086,19 +1102,19 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         }
         else if(CTRL_CMD_RC_REPORT == ctrlCmd)
         {
-            LogDebug("Try to move to RC_Report");
+            LogDebug("Go to move to RC_Report");
             m_SchedulerMachine->NotifyRCReport();
             DequeueNonDeviceCommand();
         }
         else if(CTRL_CMD_RS_GET_ORIGINAL_POSITION_AGAIN == ctrlCmd)
         {
-            LogDebug("Try to move to RS RV Move To Initial Position!");
+            LogDebug("Go to RS RV Move To Initial Position!");
             m_SchedulerMachine->NotifyRsRvMoveToInitPosition();
             DequeueNonDeviceCommand();
         }
         else if(CTRL_CMD_RS_STANDBY == ctrlCmd)
         {
-            LogDebug("Try to RS_STANDBY!");
+            LogDebug("Go to RS_STANDBY!");
             m_SchedulerMachine->NotifyRsReleasePressure();
             DequeueNonDeviceCommand();
         }
@@ -1110,17 +1126,20 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
     {
         LogDebug(QString("RS_RV_GET_ORIGINAL_POSITION_AGAIN Response: %1").arg(retCode));
-        if(( DCL_ERR_FCT_CALL_SUCCESS == retCode )&&( "Scheduler::RVReqMoveToInitialPosition" == cmdName))
+        if( "Scheduler::RVReqMoveToInitialPosition" == cmdName)
         {
-            LogDebug("Response Move to initial position again succeed!");
-            Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, true);
-            m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
-        }
-        else if(DCL_ERR_DEV_RV_MOTOR_CANNOTGET_ORIGINALPOSITION & retCode)
-        {
-            LogDebug("Response Move to initial position again failed!");
-            Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, false);
-            m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
+            if( DCL_ERR_FCT_CALL_SUCCESS == retCode )
+            {
+                LogDebug("Response Move to initial position again succeed!");
+                Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, true);
+                m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
+            }
+            else
+            {
+                LogDebug("Response Move to initial position again failed!");
+                Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, false);
+                m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
+            }
         }
     }
     else if(SM_ERR_RC_REPORT == currentState)

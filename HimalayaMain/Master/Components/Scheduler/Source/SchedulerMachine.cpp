@@ -87,6 +87,7 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     connect(this, SIGNAL(sigPause()), mp_ProgramStepStates, SIGNAL(Pause()));
     connect(this, SIGNAL(sigResumeToSelftest()), mp_ProgramStepStates, SIGNAL(ResumeToSelftest()));
     connect(this, SIGNAL(sigResumeToInit()), mp_ProgramStepStates, SIGNAL(ResumeToInit()));
+    connect(this, SIGNAL(sigResumeFromErrorToBegin()), mp_ProgramStepStates, SIGNAL(ResumeFromErrorToBegin()));
     connect(this, SIGNAL(sigResumeToHeatLevelSensorS1()), mp_ProgramStepStates, SIGNAL(ResumeToHeatLevelSensorS1()));
     connect(this, SIGNAL(sigResumeToHeatLevelSensorS2()), mp_ProgramStepStates, SIGNAL(ResumeToHeatLevelSensorS2()));
     connect(this, SIGNAL(sigResumeToReadyToFill()), mp_ProgramStepStates, SIGNAL(ResumeToReadyToFill()));
@@ -441,7 +442,14 @@ void CSchedulerStateMachine::NotifyResume()
     }
     else if( this->GetPreviousState() == (PSSM_READY_TO_TUBE_BEFORE))
     {
-        emit sigResumeToReadyToFill();
+        if(((this->GetCurrentState())&0xFF) == (SM_ERROR))
+        {
+            emit sigResumeFromErrorToBegin();
+        }
+        else
+        {
+            emit sigResumeToReadyToFill();
+        }
     }
     else if( this->GetPreviousState() == (PSSM_READY_TO_FILL))
     {
@@ -449,7 +457,15 @@ void CSchedulerStateMachine::NotifyResume()
     }
     else if( this->GetPreviousState() == (PSSM_READY_TO_SEAL))
     {
-        emit sigResumeToSoak();
+
+        if(((this->GetCurrentState())&0xFF) == (SM_ERROR))
+        {
+            emit sigResumeFromErrorToBegin();
+        }
+        else
+        {
+            emit sigResumeToSoak();
+        }
     }
     else if( this->GetPreviousState() == (PSSM_SOAK))
     {

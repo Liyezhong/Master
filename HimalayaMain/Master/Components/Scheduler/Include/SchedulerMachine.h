@@ -142,6 +142,7 @@ signals:
     void sigPause();
     void sigResumeToSelftest();
     void sigResumeToInit();
+    void sigResumeFromErrorToBegin();
     void sigResumeToHeatLevelSensorS1();
     void sigResumeToHeatLevelSensorS2();
     void sigResumeToReadyToFill();

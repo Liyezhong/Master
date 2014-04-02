@@ -64,6 +64,7 @@ signals:
     void Error();
     void Pause();
     void ResumeToSelftest();
+    void ResumeFromErrorToBegin();
     void ResumeToInit();
     void ResumeToHeatLevelSensorS1();
     void ResumeToHeatLevelSensorS2();
