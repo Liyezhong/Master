@@ -1,7 +1,7 @@
 /****************************************************************************/
 /*! \file Touchscreen.h
  *
- *  \brief Touchscreen definition.
+ *  \brief Touchscreen class definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2011-07-13
@@ -22,6 +22,8 @@
 #define CALIBRATION_TOUCHSCREEN_H
 
 #include <QWidget>
+#include <QEvent>
+#include "MainMenu/Include/MainWindow.h"
 
 namespace Calibration {
 
@@ -40,11 +42,19 @@ class CTouchscreen : public QWidget
     Q_OBJECT
 
 public:
-    explicit CTouchscreen(QWidget *p_Parent = 0);
+    explicit CTouchscreen(MainMenu::CMainWindow *p_MainWindow = NULL);
     virtual ~CTouchscreen();
 
+protected:
+    void changeEvent(QEvent *p_Event);
+
 private:
-    Ui::CTouchscreen *mp_Ui;    //!< User interface
+    MainMenu::CMainWindow *mp_MainWindow;   //!< MainWindow Object
+    Ui::CTouchscreen *mp_Ui;                //!< User interface
+
+public slots:
+    void TouchScreenCalibration();
+
 };
 
 } // end namespace Calibration

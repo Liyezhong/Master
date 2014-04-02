@@ -37,6 +37,11 @@ PLATFORM_GUI_COMPONENTS = Application \
                           MainMenu \
                           KeyBoard
 
+################# list used platform service SW libraries #################
+PLATFORM_SERVICESW_COMPONENTS_DIR = ../../../../../../Platform/ServiceSW/Components
+PLATFORM_SERVICESW_COMPONENTS = LogViewer \
+                                Settings
+
 ################# list used shared libraries #################
 SHARED_COMPONENTS_DIR = ../../../../../Shared/Gui/Components
 SHARED_COMPONENTS = Images
@@ -89,6 +94,7 @@ DESTDIR = bin_$$CONFIG_SUFFIX
 ################# edit include path
 INCLUDEPATH += $$PLATFORM_COMPONENTS_DIR \
                $$PLATFORM_GUI_COMPONENTS_DIR \
+               $$PLATFORM_SERVICESW_COMPONENTS_DIR \
                $$SHARED_COMPONENTS_DIR \
                $$HIMALAYA_MAIN_COMPONENTS_DIR \
                $$HIMALAYA_COMPONENTS_DIR
@@ -112,6 +118,13 @@ for(TheComponent, PLATFORM_COMPONENTS) {
 ################# include platform gui libraries and set dependencies
 for(TheComponent, PLATFORM_GUI_COMPONENTS) {
     THELIBPATH       = $$PLATFORM_GUI_COMPONENTS_DIR/$${TheComponent}/Build/lib_$$CONFIG_SUFFIX
+    PRE_TARGETDEPS  += $$THELIBPATH/lib$${TheComponent}.a
+    LIBS            += $$THELIBPATH/lib$${TheComponent}.a
+}
+
+################# include platform service sw libraries and set dependencies
+for(TheComponent, PLATFORM_SERVICESW_COMPONENTS) {
+    THELIBPATH       = $$PLATFORM_SERVICESW_COMPONENTS_DIR/$${TheComponent}/Build/lib_$$CONFIG_SUFFIX
     PRE_TARGETDEPS  += $$THELIBPATH/lib$${TheComponent}.a
     LIBS            += $$THELIBPATH/lib$${TheComponent}.a
 }
