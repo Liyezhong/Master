@@ -378,6 +378,7 @@ void CSchedulerStateMachine::NotifyError()
 
 void CSchedulerStateMachine::NotifyPause(SchedulerStateMachine_t PreviousState)
 {
+    Q_UNUSED(PreviousState);
     emit sigPause();
 }
 

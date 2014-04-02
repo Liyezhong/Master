@@ -1161,11 +1161,13 @@ void HimalayaMasterThreadController::OnCmdSysState(Global::tRefType, const NetCo
 void HimalayaMasterThreadController::SetAlarmHandlerTimeout(quint16 timeout)
 {
     //mp_alarmHandler->setTimeout(timeout);
+    Q_UNUSED(timeout);
 }
 
 void HimalayaMasterThreadController::OnFireAlarmLocalRemote(bool isLocalAlarm)
-{
- //   (void)SendCommand(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(isLocalAlarm)), m_CommandChannelSchedulerMain);
+{ 
+    //   (void)SendCommand(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(isLocalAlarm)), m_CommandChannelSchedulerMain);
+    Q_UNUSED(isLocalAlarm);
 }
 
 /************************************************************************************************************************************/

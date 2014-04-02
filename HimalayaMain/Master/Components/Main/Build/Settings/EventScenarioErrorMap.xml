@@ -371,26 +371,16 @@
 	<event eventid="500030021">
 		<error errorid="511030021">
 			<scenario type="single" id="200"/>
-			<scenario type="single" id="213"/>
-			<scenario type="single" id="215"/>
-			<scenario type="single" id="223"/>
-			<scenario type="single" id="225"/>
-			<scenario type="single" id="233"/>
-			<scenario type="single" id="235"/>
-			<scenario type="single" id="243"/>
-			<scenario type="single" id="245"/>
-			<scenario type="single" id="253"/>
-			<scenario type="single" id="255"/>
-			<scenario type="single" id="273"/>
-			<scenario type="single" id="275"/>
+			<scenario type="single" id="217"/>
+			<scenario type="single" id="227"/>
+			<scenario type="single" id="237"/>
+			<scenario type="single" id="247"/>
+			<scenario type="single" id="257"/>
+			<scenario type="single" id="277"/>
 		</error>
 		<error errorid="511030022">
-			<scenario type="single" id="002"/>
-			<scenario type="single" id="003"/>
-			<scenario type="single" id="283"/>
-			<scenario type="single" id="285"/>
-			<scenario type="single" id="293"/>
-			<scenario type="single" id="295"/>
+			<scenario type="single" id="287"/>
+			<scenario type="single" id="297"/>
 		</error>
 	</event>
 	<event eventid="500030091">

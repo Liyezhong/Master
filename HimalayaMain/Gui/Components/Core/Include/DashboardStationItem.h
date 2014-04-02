@@ -162,7 +162,7 @@ signals:
 public slots:
     void UpdateImage();
     void UpdateDashboardScene(QString StationID);
-    void UpdateDashboardStationItemReagent();
+    void UpdateDashboardStationItemReagent(bool RefreshFlag=true);
     void SuckDrainAnimation();
     void DrawStationItemImage();
     void UpdateDashboardStationItemReagentWhenReagentUpdated();

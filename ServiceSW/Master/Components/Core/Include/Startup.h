@@ -54,7 +54,7 @@
 
 #include "ServiceUpdates/Include/FirmwareUpdate.h"
 #include "ServiceUpdates/Include/DataManagement.h"
-#include "ServiceUpdates/Include/SettingsWidget.h"
+#include "ServiceUpdates/Include/Settings.h"
 
 #include "Diagnostics/Include/Retort.h"
 #include "Diagnostics/Include/Oven.h"
@@ -139,10 +139,10 @@ private:
     Calibration::CTouchscreen               *mp_Touchscreen;                //!< Starter for the touchscreen calibration
 
     //Service Updates
-    MainMenu::CHiMenuGroup                  *mp_ServiceUpdateGroup;         //!< Menu group containing Service Update dialogs
+    MainMenu::CMenuGroup                    *mp_ServiceUpdateGroup;         //!< Menu group containing Service Update dialogs
     ServiceUpdates::CFirmwareUpdate         *mp_FirmwareUpdate;             //!< Firmware update page
     ServiceUpdates::CDataManagement         *mp_DataManagement;             //!< Data management page
-    ServiceUpdates::CSettingsWidget         *mp_Settings;                   //!< Setting page containing Language, Date time and Network
+    ServiceUpdates::CSettings               *mp_Setting;                    //!< User settings sub menu
 
 
     //Message Box, Busy Box, Generic PoP Up.
@@ -222,6 +222,20 @@ signals:
 
     /* Oven signals */
     void OvenHeatingTest(quint8, quint8);
+    /****************************************************************************/
+    /**
+     * \brief Signal emitted for setting button status
+     */
+    /****************************************************************************/
+    void SetSettingsButtonStatus();
+    /*******************************************************************************/
+    /*!
+     *  \brief Signal is emitted to update Service GUI Connector object
+     *  \iparam DataConnector = Data connector object
+     *  \iparam MainWindow = Main window object
+     */
+    /*******************************************************************************/
+    void UpdateGUIConnector(Core::CServiceGUIConnector *DataConnector, MainMenu::CMainWindow *MainWindow);
 };
 
 } // end namespace Core
