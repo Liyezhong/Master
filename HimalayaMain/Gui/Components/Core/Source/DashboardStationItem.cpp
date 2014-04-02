@@ -175,7 +175,7 @@ void CDashboardStationItem::UpdateImage()
     }
 
     CONNECTSIGNALSLOT(mp_DataConnector, ReagentsUpdated(), this, UpdateDashboardStationItemReagentWhenReagentUpdated());
-    CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, UpdateUserSettings());
+    CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, UpdateUserSettings());  // disabled by sunny
 }
 
 /****************************************************************************/
@@ -310,7 +310,7 @@ void CDashboardStationItem::UpdateDashboardStationItemReagentWhenReagentUpdated(
  */
 /****************************************************************************/
 
-void CDashboardStationItem::UpdateDashboardStationItemReagent()
+void CDashboardStationItem::UpdateDashboardStationItemReagent(bool RefreshFlag)
 {
     if (!mp_DashboardStation)
         return;
@@ -329,12 +329,11 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent()
                 m_ReagentExpiredFlag = true;
             else
                 m_ReagentExpiredFlag = false;
-
-          //  qDebug()<<"CDashboardStationItem::UpdateDashboardStationItemReagent  expired="
-          //         <<m_ReagentExpiredFlag<<" reagentID="<<ReagentID<<" station="<<mp_DashboardStation->GetDashboardStationID();
         }
     }
-    DrawStationItemImage();
+
+    if ( RefreshFlag )
+        DrawStationItemImage();
 }
 
 void CDashboardStationItem::DrawStationItemImage()
@@ -632,8 +631,7 @@ void CDashboardStationItem::UpdateDashboardScene(QString StationID)
 void CDashboardStationItem::UpdateUserSettings()
 {
     m_UserSettings = *(mp_DataConnector->SettingsInterface->GetUserSettings());
-    UpdateDashboardStationItemReagent();
-
+    UpdateDashboardStationItemReagent(false);
 }
 
 void CDashboardStationItem::SuckDrain(bool isStart, bool isSuck, const QString& ReagentColorValue)

@@ -154,6 +154,7 @@ public:
     void SetUseExhaustSystem(int checked);
     int GetUseExhaustSystem();
 
+    bool operator == (const CHimalayaUserSettings &);
 }; // end class CUserSettings
 
 } // end namespace DataManager
