@@ -33,11 +33,9 @@
 #include "NetCommands/Include/CmdSystemAction.h"
 #include "SchedulerMachine.h"
 #include "ProgramStepStateMachine.h"
-#include "SelfTestStateMachine.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 #include "DataManager/Helper/Include/Types.h"
-#include "Scenario.h"
 
 using namespace DeviceControl;
 
