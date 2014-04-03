@@ -740,8 +740,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     {
                         //fail to move to seal, raise event here
                         LogDebug(QString("Program Step Move to Seal %1 Exceed upper limit").arg(targetPos));
-                        Global::EventObject::Instance().RaiseEvent(0, 500030021, Scenario, true);
-                        m_SchedulerMachine->SendErrorSignal();
                     }
                     else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
                     {
@@ -868,8 +866,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     }
                     else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
                     {
-                        LogDebug(QString("Program Step Move to Tube(after) %1 Exceed Upper Limit Failed").arg(targetPos));
-                        Global::EventObject::Instance().RaiseEvent(0, 500030021, Scenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                 }
