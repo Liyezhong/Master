@@ -164,6 +164,7 @@ void CSettingsWidget::UserSettingsUpdated()
         mp_Ui->pageNetwork->SetUserSettings(p_Settings);
         mp_Ui->pageLanguage->SetUserSettings(p_Settings);
         mp_Ui->pageAlarm->SetUserSettings(p_Settings);
+        mp_Ui->pageService->SetUserSettings(p_Settings);
     }
 }
 

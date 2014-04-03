@@ -49,6 +49,9 @@ CServiceSettingsWidget::CServiceSettingsWidget(QWidget *p_Parent) :  MainMenu::C
     CONNECTSIGNALSLOT(mp_Ui->btnSave, clicked(), this, OnSaveSetting());
     CONNECTSIGNALSLOT(mp_Ui->btnShutdown, clicked(), this, OnShutdown());
     CONNECTSIGNALSLOT(mp_Ui->btnStartServiceApp, clicked(), this, OnStartServiceApp());
+
+    if (mp_UserSettings)
+        m_UserSettingsTemp = *mp_UserSettings;
 }
 
 /****************************************************************************/
