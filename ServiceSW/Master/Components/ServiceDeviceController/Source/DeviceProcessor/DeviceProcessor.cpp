@@ -113,7 +113,12 @@ void DeviceProcessor::Initialize()
 #endif
 
     // Temperature control
-   /*
+    /*CTemperatureControl *pTemperature;
+
+    pTemperature = NULL;
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_ROTARY_VALVE, CANObjectKeyLUT::m_RVTempCtrlKey));
+    if (NULL != pTemperature)
+    {
         mp_TempRV = new WrapperFmTempControl("temp_rv", pTemperature, this);
     }
 
