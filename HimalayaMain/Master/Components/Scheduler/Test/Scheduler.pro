@@ -1,6 +1,11 @@
 TEMPLATE = subdirs
 
-SUBDIRS =  TestSchedIDPExchange.pro
+SUBDIRS =  TestSchedIDPExchange.pro            \
+           TestRcReport.pro                    \
+           TestRsRvGetOriginalPositionAgain.pro \
+           TestProgramStepStateMachine.pro      \
+           TestRsStandby.pro
+
 CONFIG += ordered
 
 

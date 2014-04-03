@@ -122,6 +122,7 @@ public:
     MOCK_METHOD0(ALAllStop, ReturnCode_t());
     MOCK_METHOD0(ALBreakAllOperation, ReturnCode_t());
     MOCK_METHOD1(ALSetPressureDrift, ReturnCode_t(qreal pressureDrift));
+    MOCK_METHOD1(IDSealingCheck, ReturnCode_t(qreal ThresholdPressure));
 
     MOCK_METHOD7(ALStartTemperatureControlWithPID, ReturnCode_t(ALTempCtrlType_t Type, qreal NominalTemperature, quint8 SlopeTempChange, \
                 quint16 MaxTemperature, quint16 ControllerGain, quint16 ResetTime, quint16 DerivativeTime));
