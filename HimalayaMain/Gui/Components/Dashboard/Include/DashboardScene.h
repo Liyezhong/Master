@@ -77,6 +77,7 @@ public:
 protected:
 
 private:
+    int m_CurTabIndex;
     Core::CDataConnector *mp_DataConnector;                                          //!< Global data container
     MainMenu::CMainWindow *mp_MainWindow;                                            //!< Reference to main window.
     QList<Core::CDashboardStationItem *> mp_DashboardStationItems;                   //!< list of station items
@@ -153,7 +154,7 @@ private slots:
     void OnInteractStart();
     void OnAppIdle();
     void OnProcessStateChanged();
-
+    void OnCurrentTabChanged(int);
 
 };
 

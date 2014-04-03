@@ -175,7 +175,10 @@ void CDashboardStationItem::UpdateImage()
     }
 
     CONNECTSIGNALSLOT(mp_DataConnector, ReagentsUpdated(), this, UpdateDashboardStationItemReagentWhenReagentUpdated());
-    CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, UpdateUserSettings());  // disabled by sunny
+    CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, UpdateUserSettings());
+    CONNECTSIGNALSLOT(mp_DataConnector, ReagentGroupUpdated(), this, UpdateDashboardStationItemWhenReagentGroupUpdated());
+
+
 }
 
 /****************************************************************************/
@@ -267,6 +270,7 @@ void CDashboardStationItem::LoadStationImages(QPainter& Painter)
     DrawStationItemLabel(Painter);
 }
 
+
 /****************************************************************************/
 /*!
  *  \brief Update Dashboard Station Items Reagent Properties when Reagents are updated
@@ -294,12 +298,39 @@ void CDashboardStationItem::UpdateDashboardStationItemReagentWhenReagentUpdated(
         if ( flag != m_ReagentExpiredFlag )
         {
             m_ReagentExpiredFlag = flag;
-            qDebug()<<"CDashboardStationItem::UpdateDashboardStationItemReagentWhenReagentUpdated  expired="
-                   <<m_ReagentExpiredFlag<<" reagentID="<<ReagentID<<" station="<<mp_DashboardStation->GetDashboardStationID();
             DrawStationItemImage();
         }
     }
 
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Update Dashboard Station Items Reagent Properties when Reagents Group Color are updated
+ *
+ */
+/****************************************************************************/
+
+void CDashboardStationItem::UpdateDashboardStationItemWhenReagentGroupUpdated()
+{
+    if (!mp_DashboardStation)
+        return;
+    QString ReagentID = mp_DashboardStation->GetDashboardReagentID();
+    DataManager::CReagent *p_Reagent = const_cast<DataManager::CReagent*>(mp_DataConnector->ReagentList->GetReagent(ReagentID));
+
+    if (p_Reagent)
+    {
+        QString ReagentGroupId = p_Reagent->GetGroupID();
+        DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupId);
+
+        QString ColorValue = p_ReagentGroup->GetGroupColor();
+        (void)ColorValue.prepend("#");
+
+        if ( ColorValue != m_ReagentDisplayColorValue )
+        {
+            DrawStationItemImage();
+        }
+    }
 }
 
 
@@ -468,6 +499,8 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
 
         reagentColorValue = p_ReagentGroup->GetGroupColor();
         (void)reagentColorValue.prepend("#");
+
+        m_ReagentDisplayColorValue = reagentColorValue;
 
 		//Check whether the bottle contains cleaning reagnet for later use 
 		if (p_ReagentGroup->IsCleaningReagentGroup())

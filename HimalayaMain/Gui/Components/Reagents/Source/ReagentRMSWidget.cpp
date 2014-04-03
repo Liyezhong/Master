@@ -220,7 +220,7 @@ void CReagentRMSWidget::OnRMSCycles()
 void CReagentRMSWidget::OnRMSDays()
 {
     m_UserSettings.SetModeRMSProcessing(Global::RMS_DAYS);
-    RMSSettingChanged(m_UserSettings);
+    emit RMSSettingChanged(m_UserSettings);
 }
 
 /****************************************************************************/

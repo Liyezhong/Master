@@ -51,7 +51,8 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
                        m_pStartBlinkingTimer(NULL),
                        m_UsedPipeGraphicsRectItem(NULL),
                        m_currentTimerOrder(0),
-                       m_SuckDrainStationId("")
+                       m_SuckDrainStationId(""),
+                       m_CurTabIndex(0)
 
 {
     QRectF Rect;
@@ -82,6 +83,8 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, OnUpdateUserSettings());
     CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationChangeReagent(const QString&), this, UpdateDashboardStation(const QString&));
     CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), this, OnCurrentTabChanged(int));
+
 }
 
 /****************************************************************************/
@@ -536,19 +539,29 @@ void CDashboardScene::PipeSuckDrainAnimation()
 
 void CDashboardScene::BlinkingStation()
 {
+    // if the current tab is not program, this will be skipped, for station need not refresh.
+    if (m_CurTabIndex != 0)
+        return ;
+
     for (int i = 0; i < mp_DashboardStationItems.size(); i++)
     {
          Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
          if (item)
          {
              if (item->IsReagentExpired())
+             {
                  item->DrawStationItemImage();
+             }
          }
     }
 }
 
 void CDashboardScene::EnableBlink(bool bEnable)
 {
+    // if the current tab is not program, this will be skipped, for station need not refresh.
+    if (m_CurTabIndex != 0)
+        return ;
+
     for (int i = 0; i < mp_DashboardStationItems.size(); i++)
     {
          Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
@@ -609,7 +622,9 @@ void CDashboardScene::OnUpdateUserSettings()
      if (Global::RMS_OFF == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing()&&
         Global::RMS_OFF == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSCleaning())
      {
-        m_pBlinkingIntervalTimer->stop();
+         if (m_pBlinkingIntervalTimer->isActive()) {
+             m_pBlinkingIntervalTimer->stop();
+         }
      }
      else
      {
@@ -962,4 +977,15 @@ void CDashboardScene::OnProcessStateChanged()
     }
 }
 
+/****************************************************************************/
+/*!
+ *  \brief OnCurrentTabChanged.
+ *
+ *  \iparam CurrentIndex = Currently selected
+ */
+/****************************************************************************/
+void CDashboardScene::OnCurrentTabChanged(int CurrentIndex)
+{
+     m_CurTabIndex = CurrentIndex;
+}
 } // end namespace Dashboard

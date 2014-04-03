@@ -80,6 +80,7 @@ private:
     bool m_ReagentExpiredFlag;                           //!< Indicates if the reagent in a station is expired.
     bool m_StationSelected;                              //!< Indicates if the station is selected for the program
     QString m_CurrentReagentColorValue;
+    QString m_ReagentDisplayColorValue;
     DataManager::ContainerStatusType_t m_ContainerStatusType;
     bool m_ExpiredColorRed;
     bool m_EnableBlink;
@@ -166,6 +167,7 @@ public slots:
     void SuckDrainAnimation();
     void DrawStationItemImage();
     void UpdateDashboardStationItemReagentWhenReagentUpdated();
+    void UpdateDashboardStationItemWhenReagentGroupUpdated();
 
 private slots:
     void UpdateUserSettings();
