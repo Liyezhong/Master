@@ -61,7 +61,6 @@ public:
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
         EXPECT_CALL(*mp_IDeviceProcessing, RVReqMoveToInitialPosition())
-                .Times(AtLeast(1))
                 .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
         EXPECT_CALL(*mp_IDeviceProcessing, PerTurnOnMainRelay())
