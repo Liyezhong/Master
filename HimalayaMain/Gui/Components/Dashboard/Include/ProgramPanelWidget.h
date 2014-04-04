@@ -5,6 +5,8 @@
 #include <QButtonGroup>
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 #include <QDateTime>
+#include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
+
 
 namespace MsgClasses
 {
@@ -59,6 +61,7 @@ signals:
     void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
     void UndoProgramSelection();
+    void UpdateProgram(DataManager::CProgram &);
 protected:
     void changeEvent(QEvent *p_Event);
 

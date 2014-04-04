@@ -93,6 +93,9 @@ CStartup::CStartup() : QObject()
                       mp_DataConnector, SendProgramAdd(DataManager::CProgram &));
     CONNECTSIGNALSLOT(mp_Programs, DeleteProgram(QString &),mp_DataConnector,SendProgramRemove(QString &));
 
+    // this signal is to update program icon on program panel widget
+    CONNECTSIGNALSIGNAL(mp_Programs, UpdateProgram(DataManager::CProgram &), mp_Dashboard, UpdateProgram(DataManager::CProgram &));
+
 
     // Signals for the Users
     CONNECTSIGNALSLOT(mp_Users, UserLevelClicked(QDataStream &), mp_DataConnector,

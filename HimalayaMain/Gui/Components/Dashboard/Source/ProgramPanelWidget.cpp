@@ -68,6 +68,7 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
 
     CONNECTSIGNALSLOT(ui->programRunningPanel, AbortClicked(int), this, OnButtonClicked(int));
 
+    CONNECTSIGNALSLOT(this, UpdateProgram(DataManager::CProgram&), ui->favoriteProgramsPanel, UpdateProgram(DataManager::CProgram&));
 }
 
 CProgramPanelWidget::~CProgramPanelWidget()

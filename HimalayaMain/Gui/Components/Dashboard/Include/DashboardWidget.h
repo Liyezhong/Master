@@ -117,8 +117,8 @@ private slots:
     void UpdateUserSetting(DataManager::CUserSettings&);
     void SwitchToFavoritePanel();
     void UndoProgramSelection();
-    void OnInteractStart();
-
+    void OnInteractStart();    
+    void UpdateProgram(DataManager::CProgram &);
 };
 
 } // end namespace Dashboard

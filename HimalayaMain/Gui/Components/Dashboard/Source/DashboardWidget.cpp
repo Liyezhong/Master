@@ -120,6 +120,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
                       this, OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain &));
     CONNECTSIGNALSIGNAL(this, OnInteractStart(), ui->containerPanelWidget, OnInteractStart());
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+
+    CONNECTSIGNALSIGNAL(this, UpdateProgram(DataManager::CProgram&), ui->programPanelWidget, UpdateProgram(DataManager::CProgram&));
 }
 
 CDashboardWidget::~CDashboardWidget()

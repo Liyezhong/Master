@@ -6,6 +6,9 @@
 #include "Dashboard/Include/DashboardDateTimeWidget.h"
 #include "Core/Include/Startup.h"
 
+#include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
+
+
 using namespace Dashboard;
 
 QString CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME = tr("");
@@ -67,6 +70,31 @@ void CFavoriteProgramsPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_M
     mp_DataConnector = p_DataConnector;
 }
 
+void CFavoriteProgramsPanelWidget::UpdateProgram(DataManager::CProgram &Program)
+{
+    for ( int j = 0; j < m_FavProgramIDs.count(); j++)
+    {
+        QString ProgramId = m_FavProgramIDs.at(j);
+        QString ProgramName = mp_ProgramList->GetProgram(ProgramId)->GetName();
+        if ( ProgramName == Program.GetName())
+        {
+            QString strIconName;
+            if (Program.GetIcon().isEmpty())
+            {
+                strIconName = "";
+            }
+            else
+            {
+                strIconName = ":/HimalayaImages/Icons/Program/"+ Program.GetIcon() + ".png";
+            }
+
+            m_ButtonGroup.button(j)->setIcon(QIcon(strIconName));
+
+            break;
+        }
+    }
+}
+
 void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram)
 {
     UndoProgramSelection();
@@ -111,6 +139,7 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         }
         else
             strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(ProgramId)->GetIcon() + ".png";
+        qDebug()<<"CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel  ---iconname="<<strIconName;
 
         //enable this button and use it
         m_ButtonGroup.button(j)->setEnabled(true);
@@ -119,6 +148,7 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         label->setText(ProgramName);
     }
 }
+
 
 void CFavoriteProgramsPanelWidget::OnProcessStateChanged()
 {

@@ -6,6 +6,8 @@
 #include <QMap>
 #include <QDateTime>
 
+#include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
+
 class QLabel;
 
 namespace MainMenu
@@ -52,6 +54,7 @@ namespace Dashboard {
         void OnProcessStateChanged();
         void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady);
         void UndoProgramSelection();
+        void UpdateProgram(DataManager::CProgram &Program);
     signals:
         void PrepareSelectedProgramChecking(const QString& selectedProgramId);
         void OnSelectEndDateTime(const QDateTime &);
