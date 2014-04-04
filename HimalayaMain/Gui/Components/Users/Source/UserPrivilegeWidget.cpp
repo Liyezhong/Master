@@ -143,11 +143,23 @@ void CUserPrivilegeWidget::OnInteractStart()
 /****************************************************************************/
 void CUserPrivilegeWidget::OnBtnUserClicked()
 {
+    if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Operator)
+        return ;
+
     m_UserLevel = MainMenu::CMainWindow::Operator;
     if (mp_MainWindow) {
         mp_MainWindow->SetUserRole(m_UserLevel);
         mp_MainWindow->SetUserIcon(MainMenu::CMainWindow::Operator);
         Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_USER_ACTIVITY_OPERATOR_LOGIN);
+
+        // set user role to be operator.
+        m_UserLevel = MainMenu::CMainWindow::Operator;
+        QByteArray ByteArray;
+        QDataStream UserLevelInfo(&ByteArray, QIODevice::ReadWrite);
+        int UserLevel = (int) m_UserLevel; // to avoid PC-Lint
+        UserLevelInfo << UserLevel << "";
+
+        emit UserLevelClicked(UserLevelInfo);
     }
 }
 
@@ -158,6 +170,9 @@ void CUserPrivilegeWidget::OnBtnUserClicked()
 /****************************************************************************/
 void CUserPrivilegeWidget::OnBtnAdministratorClicked()
 {
+    if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Admin)
+        return ;
+
     m_SupervisorBtnClicked = true;
     if (mp_KeyBoardWidget) {
         mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Users::CUserPrivilegeWidget",
@@ -181,6 +196,9 @@ void CUserPrivilegeWidget::OnBtnAdministratorClicked()
 /****************************************************************************/
 void CUserPrivilegeWidget::OnBtnServiceClicked()
 {
+    if (MainMenu::CMainWindow::GetCurrentUserRole() == MainMenu::CMainWindow::Service)
+        return ;
+
     m_ServiceUserBtnClicked = true;
     if (mp_KeyBoardWidget) {
         mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Users::CUserPrivilegeWidget",
@@ -284,6 +302,7 @@ void CUserPrivilegeWidget::OnOkClicked(QString EnteredString)
                 QDataStream UserLevelInfo(&ByteArray, QIODevice::ReadWrite);
                 int UserLevel = (int) m_UserLevel; // to avoid PC-Lint
                 UserLevelInfo << (int) UserLevel << LineEditString;
+
                 emit UserLevelClicked(UserLevelInfo);
             }
             else {
