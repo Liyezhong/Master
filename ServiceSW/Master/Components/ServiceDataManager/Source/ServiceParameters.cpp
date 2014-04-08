@@ -32,8 +32,8 @@ namespace DataManager {
 /****************************************************************************/
 CServiceParameters::CServiceParameters()  : CDataContainerBase(),
     m_Version(1),
-    m_ProxyUserName("Colorado"),
-    m_ProxyPassword("Colorado"),
+    m_ProxyUserName("Himalaya"),
+    m_ProxyPassword("Himalaya"),
     m_ProxyIPAddress("000.000.000.001"),
     m_ProxyIPPort(1),
     mp_LoaderRfid(),
@@ -72,8 +72,8 @@ CServiceParameters::~CServiceParameters() {
 /****************************************************************************/
 CServiceParameters::CServiceParameters(const CServiceParameters& ServiceParameters) : CDataContainerBase(),
     m_Version(1),
-    m_ProxyUserName("Colorado"),
-    m_ProxyPassword("Colorado"),
+    m_ProxyUserName("Himalaya"),
+    m_ProxyPassword("Himalaya"),
     m_ProxyIPAddress("000.000.000.001"),
     m_ProxyIPPort(1),
     mp_LoaderRfid(),

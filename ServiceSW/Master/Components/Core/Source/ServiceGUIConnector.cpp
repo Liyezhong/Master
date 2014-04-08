@@ -266,11 +266,11 @@ void CServiceGUIConnector::SetDateTime(const QDateTime& DateTime)
 
         // set new time
         QString CurrentDateTime =  DateTime.toString("d MMM yyyy hh:mm:ss");
-    //        QString DateCommand = QString("echo colorado | sudo -S date -s \"%1\"").arg(CurrentDateTime);
+    //        QString DateCommand = QString("echo himalaya | sudo -S date -s \"%1\"").arg(CurrentDateTime);
         QString DateCommand = QString("date -s \"%1\"").arg(CurrentDateTime);
 
         (void) system(DateCommand.toStdString().c_str());
-    //        (void) system("echo colorado | sudo -S hwclock -w");
+    //        (void) system("echo himalaya | sudo -S hwclock -w");
         (void) system("hwclock -w");
 
         Global::AdjustedTime::Instance().AdjustToDateTime(DateTime);
