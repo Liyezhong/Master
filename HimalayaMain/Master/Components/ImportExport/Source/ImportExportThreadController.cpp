@@ -301,6 +301,9 @@ void ImportExportThreadController::OnGoReceived() {
                 }
 
             }
+            else{
+                emit ThreadFinished(IsImported, QStringList() << TypeOfImport, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
+            }
 //            if (!IsSelectionRequested) {
 //                // if the import is not successful then raise event
 //                if (!IsImported) {
