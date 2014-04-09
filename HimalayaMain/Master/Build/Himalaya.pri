@@ -37,7 +37,7 @@ CONFIG(debug, debug|release) {
 } else {
     CONFIG_SUFFIX = rel
     DEFINES += QT_NO_DEBUG \
-#               QT_NO_DEBUG_OUTPUT \
+               QT_NO_DEBUG_OUTPUT \
                            DBT_TRACE_DISCARD \
                NDEBUG
     CONFIG(gcov) {
