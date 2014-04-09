@@ -989,7 +989,7 @@ void HimalayaMasterThreadController::ChangeUserLevelHandler(Global::tRefType Ref
     }
 
     // check whether user level is operator, if it is operator then authentication failed
-    if (m_AuthenticatedLevel == Global::SERVICE || m_AuthenticatedLevel == Global::OPERATOR && Cmd.GetUserLevel() == Global::ADMIN) {
+    if ((m_AuthenticatedLevel == Global::SERVICE || m_AuthenticatedLevel == Global::OPERATOR) && Cmd.GetUserLevel() == Global::ADMIN) {
         Global::EventObject::Instance().RaiseEvent(EVENT_PASSWORD_INCORRECT);
     }
 

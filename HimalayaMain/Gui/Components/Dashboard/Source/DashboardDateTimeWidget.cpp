@@ -222,8 +222,27 @@ void CDashboardDateTimeWidget::OnOK()
     QString strEndTime("");
     if(secsDifference > ONE_WEEK_TIME_OFFSET_VALUE) {
         strEndTime = m_strLaterEndTime;
-    } else if(m_selDateTime < m_ASAPDateTime)  {
-        strEndTime = m_strEarlierEndTime;
+    } else {
+        QTime selTime = m_selDateTime.time();
+        QTime asapTime = m_ASAPDateTime.time();
+
+        int selHour = selTime.hour();
+        int selMin= selTime.minute();
+
+        int asapHour = asapTime.hour();
+        int asapMin= asapTime.minute();
+        QDateTime tempSelDatetime, tempAsapDatetime;
+        tempSelDatetime.setDate(m_selDateTime.date());
+        selTime.setHMS(selHour, selMin, 0);
+        tempSelDatetime.setTime(selTime);
+
+        tempAsapDatetime.setDate(m_ASAPDateTime.date());
+        asapTime.setHMS(asapHour, asapMin, 0);
+        tempAsapDatetime.setTime(asapTime);
+
+        if(tempSelDatetime < tempAsapDatetime)  {
+            strEndTime = m_strEarlierEndTime;
+        }
     }
 
     if ("" != strEndTime)
