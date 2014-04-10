@@ -89,14 +89,14 @@ void CTestServiceUpdates::cleanupTestCase() {
 
 /****************************************************************************/
 void CTestServiceUpdates::utTestServiceUpdates() {
-//    MainMenu::CMainWindow *p_MainWindow = new MainMenu::CMainWindow();
-//    Core::CServiceGUIConnector *p_ServiceGUIConnector = new
-//            Core::CServiceGUIConnector(p_MainWindow);
+    MainMenu::CMainWindow *p_MainWindow = new MainMenu::CMainWindow();
+    Core::CServiceGUIConnector *p_ServiceGUIConnector = new
+            Core::CServiceGUIConnector(p_MainWindow);
 
-//    ServiceUpdates::CSettings *p_Settings = new
-//            ServiceUpdates::CSettings(p_ServiceGUIConnector, p_MainWindow);
-//    p_Settings->UpdateGUIConnector(p_ServiceGUIConnector, p_MainWindow);
-//    p_Settings->SaveProxyIPAddress("221.114.112.156");
+    ServiceUpdates::CSettings *p_Settings = new
+            ServiceUpdates::CSettings(p_ServiceGUIConnector, p_MainWindow);
+    p_Settings->UpdateGUIConnector(p_ServiceGUIConnector, p_MainWindow);
+    p_Settings->SaveProxyIPAddress("221.114.112.156");
 
 }
 
