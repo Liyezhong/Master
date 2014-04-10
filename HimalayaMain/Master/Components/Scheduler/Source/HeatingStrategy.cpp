@@ -310,10 +310,12 @@ quint32 HeatingStrategy::CheckHeatingOverTime(const HardwareMonitor_t& HWValueLi
                 {
                    userInputTemp = 0.0;
                 }
-                iter.value().needCheck = false;
-              //  if (iter.value().targetTempPadding+userInputTemp < HWValueList.TempRTSide)
-                 if (iter.value().targetTempPadding+userInputTemp < 100)
+
+                if (iter.value().targetTempPadding+userInputTemp < 100) // Hard code.
                 {
+                    // Once the error occurs, the sensor needn't be checked.
+                    iter.value().needCheck = false;
+
                     if ("Retort-HT-TOP-With-Paraffin" == iter.key())
                     {
                         return HEATING_OT_RETORT_TOP;
