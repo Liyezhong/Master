@@ -24,8 +24,6 @@
 #ifndef DATAMANAGER_PRGRAMSETTINGS_H
 #define DATAMANAGER_PRGRAMSETTINGS_H
 
-
-
 #include "Global/Include/Translator.h"
 #include "DataManager/Helper/Include/Types.h"
 #include "DataManager/Helper/Include/Helper.h"
@@ -34,9 +32,19 @@
 
 namespace DataManager
 {
+typedef struct {
+    QString key;
+    QString position;
+    QString	group;
+} FunctionKey_t;
 typedef QMap<QString,QString> ParameterKeyValue_t;
-typedef QMap<QString,ParameterKeyValue_t> FunctionParameter_t;
+typedef QMap<FunctionKey_t,ParameterKeyValue_t> FunctionParameter_t;
 typedef QMap<QString,FunctionParameter_t> DeviceFunction_t;
+
+inline bool operator <(const FunctionKey_t& key1,const FunctionKey_t& key2)
+{
+    return (key1.key+key1.position+key1.group < key2.key+key2.position+key2.group);
+}
 
 /****************************************************************************/
 /*!
@@ -107,10 +115,12 @@ public:
      *  \return parameter value
      */
     /****************************************************************************/
-    double GetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, bool& ok);
-    bool SetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, double value);
-    bool SetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, QString value);
-
+    double GetParameterValue(const QString& DeviceKey, const QString& FunctionKey,const QString& ParameterKey, bool& ok);
+    double GetParameterValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey,const QString& ParameterKey, bool& ok);
+    bool SetParameterValue(const QString& DeviceKey, const QString& FunctionKey, const QString& ParameterKey, double value);
+    bool SetParameterValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey, const QString& ParameterKey, double value);
+    bool SetParameterValue(const QString& DeviceKey, const QString& FunctionKey,const QString& ParameterKey, const QString& value);
+    bool SetParameterValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey, const QString& ParameterKey, const QString& value);
 
 
 private:
@@ -130,8 +140,8 @@ private:
     bool DeserializeContent(QIODevice& IODevice, bool CompleteData);
 
     bool ReadAllParameters(QXmlStreamReader& XmlStreamReader);
-    bool ReadDeviceParameters(QXmlStreamReader& XmlStreamReader, QString DeviceKey);
-    bool ReadFunctionParameters(QXmlStreamReader &XmlStreamReader, QString DeviceKey, QString FunctionKey);
+    bool ReadDeviceParameters(QXmlStreamReader& XmlStreamReader, const QString& DeviceKey);
+    bool ReadFunctionParameters(QXmlStreamReader &XmlStreamReader, const QString& DeviceKey, const FunctionKey_t& FunctionKey);
 
 
     bool WriteAllParameters(QXmlStreamWriter& XmlStreamWriter);

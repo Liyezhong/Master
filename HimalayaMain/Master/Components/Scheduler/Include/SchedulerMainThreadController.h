@@ -56,6 +56,7 @@ namespace Scheduler {
 
 class SchedulerCommandProcessorBase;
 class CSchedulerStateMachine;
+class HeatingStrategy;
 
 typedef struct {
     QString stationID;
@@ -164,6 +165,7 @@ typedef struct
         bool m_PauseToBeProcessed;
         int m_ProcessCassetteCount;
         quint32 m_EventKey; //todo: add mechanism to cash the key
+        QSharedPointer<HeatingStrategy> mp_HeatingStrategy;
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         const SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
@@ -190,7 +192,6 @@ typedef struct
          * pop Command from Q2
          */
         /****************************************************************************/
-         bool PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd);
          bool GetNextProgramStepInformation(const QString& ProgramID, ProgramStepInfor& ProgramStepInfor, bool onlyGetFirstProgramStepIndex = false);
          quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex = -1);
          quint32 GetCurrentProgramStepNeededTime(const QString& ProgramID);
@@ -346,7 +347,14 @@ protected:
          */
         /****************************************************************************/
         void PushDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t CmdPtr);
+
         /****************************************************************************/
+        /**
+         *
+         * pop Command from Q2
+         */
+        /****************************************************************************/
+         bool PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd);
         /**
          *
          * Get the time(in seconds) that Oven has been heated
@@ -354,6 +362,8 @@ protected:
         /****************************************************************************/
         qint64 GetOvenHeatingTime();
 
+        QString& GetCurProgramID() {return m_CurProgramID; }
+		int	GetCurProgramStepIndex() { return m_CurProgramStepIndex; }
         /****************************************************************************/
         /**
          *

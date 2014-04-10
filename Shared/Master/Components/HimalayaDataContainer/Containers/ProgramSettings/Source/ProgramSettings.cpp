@@ -199,7 +199,7 @@ bool CProgramSettings::Read(QString Filename)
 }
 
 
-double CProgramSettings::GetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, bool& ok)
+double CProgramSettings::GetParameterValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey,const QString& ParameterKey, bool& ok)
 {
     QString value="";
     double ret = -1;
@@ -212,6 +212,10 @@ double CProgramSettings::GetParameterValue(QString DeviceKey, QString FunctionKe
             {
                 ok = true;
                 value = m_Parameters[DeviceKey][FunctionKey][ParameterKey];
+                if (value.isEmpty())
+                {
+                    value = "0";
+                }
             }
         }
     }
@@ -229,9 +233,17 @@ double CProgramSettings::GetParameterValue(QString DeviceKey, QString FunctionKe
     }
     return ret;
 }
+double CProgramSettings::GetParameterValue(const QString& DeviceKey, const QString& FunctionKey, const QString& ParameterKey, bool& ok)
+{
+    FunctionKey_t FunctionKeyWithGroup ={"", "", ""};
+    FunctionKeyWithGroup.key = FunctionKey;
+    FunctionKeyWithGroup.position = "";
+    FunctionKeyWithGroup.group = "";
+    return this->GetParameterValue(DeviceKey, FunctionKeyWithGroup, ParameterKey, ok);
+}
 
 
-bool CProgramSettings::SetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, QString value)
+bool CProgramSettings::SetParameterValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey, const QString& ParameterKey, const QString& value)
 {
     bool ok = false;
     if(m_Parameters.contains(DeviceKey))
@@ -253,9 +265,27 @@ bool CProgramSettings::SetParameterValue(QString DeviceKey, QString FunctionKey,
     return ok;
 }
 
-bool CProgramSettings::SetParameterValue(QString DeviceKey, QString FunctionKey,QString ParameterKey, double value)
+bool CProgramSettings::SetParameterValue(const QString& DeviceKey, const QString& FunctionKey, const QString& ParameterKey, const QString& value)
+{
+    FunctionKey_t FunctionKeyWithGroup = {"", "", ""};
+    FunctionKeyWithGroup.key = FunctionKey;
+    FunctionKeyWithGroup.position = "";
+    FunctionKeyWithGroup.group  = "";
+    return this->SetParameterValue(DeviceKey, FunctionKeyWithGroup, ParameterKey, value);
+}
+
+bool CProgramSettings::SetParameterValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey,const QString& ParameterKey, double value)
 {
     return SetParameterValue(DeviceKey, FunctionKey, ParameterKey, QString::number(value));
+}
+
+bool CProgramSettings::SetParameterValue(const QString& DeviceKey, const QString& FunctionKey, const QString& ParameterKey, double value)
+{
+    FunctionKey_t FunctionKeyWithGroup = {"", "", ""};
+    FunctionKeyWithGroup.key = FunctionKey;
+    FunctionKeyWithGroup.position = "";
+    FunctionKeyWithGroup.group  = "";
+    return this->SetParameterValue(DeviceKey, FunctionKeyWithGroup, ParameterKey, value);
 }
 
 /****************************************************************************/
@@ -334,10 +364,10 @@ bool CProgramSettings::ReadAllParameters(QXmlStreamReader& XmlStreamReader)
     return Result;
 }
 
-bool CProgramSettings::ReadDeviceParameters(QXmlStreamReader& XmlStreamReader, QString DeviceKey)
+bool CProgramSettings::ReadDeviceParameters(QXmlStreamReader& XmlStreamReader, const QString& DeviceKey)
 {
     bool Result = false;
-    QString FunctionKey;
+    FunctionKey_t FunctionKey;
 
     while(!XmlStreamReader.atEnd())
     {
@@ -352,7 +382,9 @@ bool CProgramSettings::ReadDeviceParameters(QXmlStreamReader& XmlStreamReader, Q
         {
             if (XmlStreamReader.name() == "Function")
             {
-                FunctionKey = XmlStreamReader.attributes().value("Key").toString();
+                FunctionKey.key  = XmlStreamReader.attributes().value("Key").toString();
+                FunctionKey.position = XmlStreamReader.attributes().value("position").toString();
+                FunctionKey.group = XmlStreamReader.attributes().value("group").toString();
                 if(ReadFunctionParameters(XmlStreamReader,DeviceKey,FunctionKey) == false)
                 {
                     break;
@@ -376,7 +408,7 @@ bool CProgramSettings::ReadDeviceParameters(QXmlStreamReader& XmlStreamReader, Q
     return Result;
 }
 
-bool CProgramSettings::ReadFunctionParameters(QXmlStreamReader &XmlStreamReader, QString DeviceKey, QString FunctionKey)
+bool CProgramSettings::ReadFunctionParameters(QXmlStreamReader &XmlStreamReader, const QString& DeviceKey, const FunctionKey_t& FunctionKey)
 {
     bool Result = false;
 
@@ -444,23 +476,25 @@ bool CProgramSettings::WriteAllParameters(QXmlStreamWriter& XmlStreamWriter)
     FunctionParameter_t::const_iterator FunctionIterator;
     ParameterKeyValue_t::const_iterator ParameterIterator;
     QString DKey;
-    QString FKey;
+    FunctionKey_t FKey = {"", "", ""};
 
-    for(DeviceIterator = m_Parameters.constBegin(); DeviceIterator != m_Parameters.constEnd(); DeviceIterator++)
+    for(DeviceIterator = m_Parameters.begin(); DeviceIterator != m_Parameters.end(); DeviceIterator++)
     {
         DKey = DeviceIterator.key();
 
         XmlStreamWriter.writeStartElement("Device");
 
         XmlStreamWriter.writeAttribute("Key", DKey);
-        for(FunctionIterator = m_Parameters[DKey].constBegin(); FunctionIterator != m_Parameters[DKey].constEnd(); FunctionIterator++)
+        for(FunctionIterator = m_Parameters[DKey].begin(); FunctionIterator != m_Parameters[DKey].end(); FunctionIterator++)
         {
             FKey = FunctionIterator.key();
             XmlStreamWriter.writeStartElement("Function");
-            XmlStreamWriter.writeAttribute("Key", FKey);
+            XmlStreamWriter.writeAttribute("Key", FKey.key);
+            XmlStreamWriter.writeAttribute("position", FKey.position);
+            XmlStreamWriter.writeAttribute("group", FKey.group);
 
-            for (ParameterIterator = m_Parameters[DKey][FKey].constBegin();
-                 ParameterIterator != m_Parameters[DKey][FKey].constEnd(); ParameterIterator++)
+            for (ParameterIterator = m_Parameters[DKey][FKey].begin();
+                 ParameterIterator != m_Parameters[DKey][FKey].end(); ParameterIterator++)
             {
                 XmlStreamWriter.writeStartElement("Parameter");
 
