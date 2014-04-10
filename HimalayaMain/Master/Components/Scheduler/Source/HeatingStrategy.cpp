@@ -1,8 +1,8 @@
 // ================================================================================================
-/*! @file Himalaya/HimalayaMain/Master/Components/Scheduler/Source/SchedulerCommandProcessor.cpp
+/*! @file Himalaya/HimalayaMain/Master/Components/Scheduler/Source/HeatingStrategy.cpp
  *
  *  @brief
- *  Implementation of class Scheduler::SchedulerCommandProcessor.
+ *  Implementation of class Scheduler::HeatingStrategy.
  *
  *  $Version:   $ 0.1
  *  $Date:      $ 04.03.2014 
@@ -310,8 +310,9 @@ quint32 HeatingStrategy::CheckHeatingOverTime(const HardwareMonitor_t& HWValueLi
                 {
                    userInputTemp = 0.0;
                 }
-
-                if (iter.value().targetTempPadding+userInputTemp < HWValueList.TempRTSide)
+                iter.value().needCheck = false;
+              //  if (iter.value().targetTempPadding+userInputTemp < HWValueList.TempRTSide)
+                 if (iter.value().targetTempPadding+userInputTemp < 100)
                 {
                     if ("Retort-HT-TOP-With-Paraffin" == iter.key())
                     {
