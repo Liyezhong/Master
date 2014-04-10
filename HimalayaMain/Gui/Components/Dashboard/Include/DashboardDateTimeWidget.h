@@ -30,6 +30,12 @@
 #include "MainMenu/Include/WheelPanel.h"
 #include "MainMenu/Include/MessageDlg.h"
 
+
+namespace DataManager
+{
+    class CUserSettings;
+}
+
 namespace Dashboard {
 
 namespace Ui {
@@ -51,6 +57,7 @@ public:
     virtual ~CDashboardDateTimeWidget();
     void RefreshDateTime(Global::TimeFormat TimeFormat = Global::TIME_24);
     void SetASAPDateTime(const QDateTime& DateTime);
+    void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
 
 private:
 
@@ -62,6 +69,9 @@ private:
     MainMenu::CScrollWheel *mp_MinWheel;    //!< Minute scroll wheel
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
+
+    DataManager::CUserSettings *mp_UserSetting;
+
     //Flags
     bool m_ProcessRunning;                  //!< Process running state
     QDateTime m_selDateTime;                //!< Selected Date and Time

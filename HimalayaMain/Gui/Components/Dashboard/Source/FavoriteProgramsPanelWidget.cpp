@@ -68,6 +68,7 @@ void CFavoriteProgramsPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_M
 {
     mp_wdgtDateTime->SetMainWindow(p_MainWindow);
     mp_DataConnector = p_DataConnector;
+	mp_wdgtDateTime->SetUserSettings(p_DataConnector->SettingsInterface->GetUserSettings());
 }
 
 void CFavoriteProgramsPanelWidget::UpdateProgram(DataManager::CProgram &Program)

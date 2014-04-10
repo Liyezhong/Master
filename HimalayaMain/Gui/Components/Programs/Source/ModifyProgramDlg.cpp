@@ -376,8 +376,17 @@ void CModifyProgramDlg::OnEditName()
 /****************************************************************************/
 void CModifyProgramDlg::OnEdit()
 {
+    DataManager::CProgramStep *p_ProgramStep = SelectedStep();
+
     mp_ModifyProgStepDlg->SetDialogTitle(tr("Edit Program Step"));
-    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep());
+    mp_ModifyProgStepDlg->SetProgramStep(p_ProgramStep);
+
+    if (p_ProgramStep) {
+        QString Pressure = p_ProgramStep->GetPressure();
+        QString Vacuum   = p_ProgramStep->GetVacuum();
+        mp_ModifyProgStepDlg->SetRadioButtonStatus(Pressure, Vacuum);
+    }
+
     mp_ModifyProgStepDlg ->SetButtonType(EDIT_BTN_CLICKED);
     mp_ModifyProgStepDlg->show();
 }
@@ -402,9 +411,18 @@ void CModifyProgramDlg::OnNew()
 /****************************************************************************/
 void CModifyProgramDlg::OnCopy()
 {
+    DataManager::CProgramStep *p_ProgramStep = SelectedStep();
+
     mp_ModifyProgStepDlg->SetDialogTitle(tr("Edit Program Step"));
     mp_ModifyProgStepDlg->SetButtonType(COPY_BTN_CLICKED);
-    mp_ModifyProgStepDlg->SetProgramStep(SelectedStep());
+    mp_ModifyProgStepDlg->SetProgramStep(p_ProgramStep);
+
+    if (p_ProgramStep) {
+        QString Pressure = p_ProgramStep->GetPressure();
+        QString Vacuum   = p_ProgramStep->GetVacuum();
+        mp_ModifyProgStepDlg->SetRadioButtonStatus(Pressure, Vacuum);
+    }
+ 
     mp_ModifyProgStepDlg->show();
 }
 

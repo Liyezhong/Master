@@ -608,6 +608,30 @@ void CModifyProgramStepDlg::ResetButtons(bool Disable)
     mp_Ui->scrollPanelWidgetTemperature->SetDisabled(!Disable);
 
 }
+
+void CModifyProgramStepDlg::SetRadioButtonStatus(const QString &Pressure, const QString &Vaccum)
+{
+    if(Pressure == "On" && Vaccum == "Off") {
+        mp_Ui->radioButton_0->setChecked(true);
+    }
+    else if (Pressure == "Off" && Vaccum == "On") {
+        mp_Ui->radioButton_25->setChecked(true);
+    }
+    else if (Pressure == "On" && Vaccum == "On") {
+        mp_Ui->radioButton_50->setChecked(true);
+    }
+    else if (Pressure == "Off" && Vaccum == "Off") {
+        mp_Ui->radioButton_75->setChecked(true);
+    }
+    else {
+        mp_Ui->radioButton_0->setChecked(false);
+        mp_Ui->radioButton_25->setChecked(false);
+        mp_Ui->radioButton_50->setChecked(false);
+        mp_Ui->radioButton_75->setChecked(false);
+    }
+}
+
+
 /****************************************************************************/
 /*!
  *  \brief Translates the strings in UI to the selected language

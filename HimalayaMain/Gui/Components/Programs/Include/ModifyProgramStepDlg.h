@@ -113,6 +113,7 @@ public:
     void NewProgramStep();
     void SelectRow(qint32 Row);
     void ResetButtons(bool Disable);
+    void SetRadioButtonStatus(const QString &Pressure, const QString &Vaccum);
 
 private:
     void InitDurationWidget();

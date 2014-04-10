@@ -23,6 +23,7 @@
 #include "Application/Include/LeicaStyle.h"
 #include "ui_DashboardDateTimeWidget.h"
 #include "Dashboard/Include/FavoriteProgramsPanelWidget.h"
+#include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 
 
 namespace Dashboard {
@@ -38,7 +39,8 @@ const int ONE_WEEK_TIME_OFFSET_VALUE = (7 * 24 * 60 * 60);
 /****************************************************************************/
 CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent, QMainWindow *pMainWindow)
     : CDialogFrame(p_Parent, pMainWindow),
-    mp_Ui(new Ui::CDashboardDateTimeWidget)
+    mp_Ui(new Ui::CDashboardDateTimeWidget),
+	mp_UserSetting(NULL)
 {
 
     mp_Ui->setupUi(GetContentFrame());
@@ -129,6 +131,11 @@ void CDashboardDateTimeWidget::SetASAPDateTime(const QDateTime& DateTime)
     m_ASAPDateTime = DateTime;
 }
 
+void CDashboardDateTimeWidget::SetUserSettings(DataManager::CUserSettings *p_UserSettings)
+{
+    mp_UserSetting = p_UserSettings;
+}
+
 /****************************************************************************/
 /*!
  *  \brief Event handler for change events
@@ -153,7 +160,9 @@ void CDashboardDateTimeWidget::changeEvent(QEvent *p_Event)
 void CDashboardDateTimeWidget::showEvent(QShowEvent *p_Event)
 {
     Q_UNUSED(p_Event);
-    RefreshDateTime();
+    if (mp_UserSetting) {
+        RefreshDateTime(mp_UserSetting->GetTimeFormat());
+    }
 }
 
 /****************************************************************************/
@@ -297,7 +306,9 @@ void CDashboardDateTimeWidget::OnCancel()
 
 void CDashboardDateTimeWidget::OnSetASAPDateTime()
 {
-    RefreshDateTime();
+    if (mp_UserSetting) {
+        RefreshDateTime(mp_UserSetting->GetTimeFormat());
+    }
 }
 
 } // end namespace Dashboard
