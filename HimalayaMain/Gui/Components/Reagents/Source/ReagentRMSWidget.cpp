@@ -288,8 +288,16 @@ void CReagentRMSWidget::OnNew()
     {
         mp_ModifiyReagentRMSDlg->SetDialogTitle(m_strNewReagent);
         mp_ModifiyReagentRMSDlg->SetButtonType(NEW_BTN_CLICKED);
+
+        Global::RMSOptions_t rmsOption = Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION;
+        if (mp_Reagent) {
+            if (mp_DataConnector->ReagentGroupList->GetReagentGroup(mp_Reagent->GetGroupID())->IsCleaningReagentGroup()) {
+                rmsOption = RMSCLEANINGOPTIONS;
+            }
+        }
+
         mp_Reagent = NULL;
-        mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList, Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION);
+        mp_ModifiyReagentRMSDlg->InitDialog(mp_Reagent, mp_DataConnector->ReagentGroupList, rmsOption);
         mp_ModifiyReagentRMSDlg->show();
     }
 }
