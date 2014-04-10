@@ -17,7 +17,7 @@ namespace Dashboard {
         Q_OBJECT
     
     public:
-        explicit CCassetteNumberInputWidget(QWidget *pParent = 0);
+        explicit CCassetteNumberInputWidget(QWidget *pParent = 0, QMainWindow *pMainWindow = 0);
         ~CCassetteNumberInputWidget();
         int CassetteNumber();
 

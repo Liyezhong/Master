@@ -36,7 +36,8 @@ const int ONE_WEEK_TIME_OFFSET_VALUE = (7 * 24 * 60 * 60);
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
-CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent) : CDialogFrame(p_Parent),
+CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent, QMainWindow *pMainWindow)
+    : CDialogFrame(p_Parent, pMainWindow),
     mp_Ui(new Ui::CDashboardDateTimeWidget)
 {
 

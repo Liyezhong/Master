@@ -509,11 +509,9 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
             //input cassette number
             if (m_SelectedProgramId.at(0) != 'C' && Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
             {
-                CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
+                CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget(NULL, mp_MainWindow);
                 pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
                 pCassetteInput->SetDialogTitle(m_strInputCassetteBoxTitle);
-                QRect scr = mp_MainWindow->geometry();
-                pCassetteInput->move( scr.center() - pCassetteInput->rect().center());
                 pCassetteInput->exec();
 
                 int cassetteNumber = pCassetteInput->CassetteNumber();

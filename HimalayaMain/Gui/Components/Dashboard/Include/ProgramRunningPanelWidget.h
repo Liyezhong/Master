@@ -53,7 +53,7 @@ namespace Dashboard {
         void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
         void OnUserSettingsUpdated();
         void OnProcessStateChanged();
-        void OnProgramFetail();
+        void OnProgramDetail();
     private:
         void UpdateDateTime(const QDateTime & selDateTime);
         void RetranslateUI();

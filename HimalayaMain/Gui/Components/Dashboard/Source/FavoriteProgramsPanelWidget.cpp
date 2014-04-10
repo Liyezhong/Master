@@ -16,8 +16,8 @@ QString CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME = tr("");
 CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CFavoriteProgramsPanelWidget),
-    m_ProcessRunning(false),
     mp_DataConnector(NULL),
+    m_ProcessRunning(false),
     m_LastSelectedButtonId(-1)
 {
     ui->setupUi(this);
@@ -66,7 +66,7 @@ void CFavoriteProgramsPanelWidget ::SetButtonGroup()
 
 void CFavoriteProgramsPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector)
 {
-    Q_UNUSED(p_MainWindow);
+    mp_wdgtDateTime->SetMainWindow(p_MainWindow);
     mp_DataConnector = p_DataConnector;
 }
 
@@ -181,11 +181,7 @@ void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
     {   //show Datetime dialog
         mp_wdgtDateTime->UpdateProgramName();
         mp_wdgtDateTime->SetASAPDateTime(m_ProgramEndDateTime);
-        Core::CStartup* pStartup = Core::CStartup::instance();
-        MainMenu::CMainWindow* pMainWin = pStartup->MainWindow();
-        QRect scr = pMainWin->geometry();
         mp_wdgtDateTime->show();
-        mp_wdgtDateTime->move( scr.center() - mp_wdgtDateTime->rect().center());
     }
     else
     {//on selected a program

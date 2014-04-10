@@ -5,8 +5,8 @@
 
 using namespace Dashboard;
 
-CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *pParent) :
-    MainMenu::CDialogFrame(pParent),
+CCassetteNumberInputWidget::CCassetteNumberInputWidget(QWidget *pParent, QMainWindow *pMainWindow) :
+    MainMenu::CDialogFrame(pParent, pMainWindow),
     ui(new Ui::CCassetteNumberInputWidget),
     m_CassetteNumber(0),
     m_strWarning(tr("Warning")),

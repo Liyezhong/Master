@@ -47,7 +47,7 @@ class CDashboardDateTimeWidget : public MainMenu::CDialogFrame
     Q_OBJECT
 
 public:
-    explicit CDashboardDateTimeWidget(QWidget *p_Parent = 0);
+    explicit CDashboardDateTimeWidget(QWidget *p_Parent = 0, QMainWindow *pMainWindow = 0);
     virtual ~CDashboardDateTimeWidget();
     void RefreshDateTime(Global::TimeFormat TimeFormat = Global::TIME_24);
     void SetASAPDateTime(const QDateTime& DateTime);

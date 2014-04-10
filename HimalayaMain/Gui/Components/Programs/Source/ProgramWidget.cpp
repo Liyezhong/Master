@@ -196,7 +196,6 @@ void CProgramWidget::OnEdit()
             mp_ModifyProgramDlg->SetDialogTitle(m_strViewProgram);
         }
         mp_ModifyProgramDlg->InitDialog(mp_Program);
-        mp_ModifyProgramDlg->move(88, 50);
         mp_ModifyProgramDlg->show();
 }
 
@@ -213,7 +212,6 @@ void CProgramWidget::OnNew()
     mp_ModifyProgramDlg->SetDialogTitle(m_strNewProgram);
     mp_ModifyProgramDlg->SetButtonType(NEW_BTN_CLICKED);
     mp_ModifyProgramDlg->InitDialog(NULL);
-    mp_ModifyProgramDlg->move(88, 50);
     mp_ModifyProgramDlg->show();
     ResetButtons();
 }
@@ -230,7 +228,6 @@ void CProgramWidget::OnCopy()
     mp_ModifyProgramDlg->SetDialogTitle(m_strEditProgram);
     mp_ModifyProgramDlg->SetButtonType(COPY_BTN_CLICKED);
     mp_ModifyProgramDlg->InitDialog(mp_Program);
-    mp_ModifyProgramDlg->move(88, 50);
     mp_ModifyProgramDlg->show();
     ResetButtons();
 }

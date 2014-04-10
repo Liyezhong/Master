@@ -55,7 +55,7 @@ const QString UNLOADER_STEP_ID = "S7";           //!< Unloader id
  */
 /****************************************************************************/
 CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector) :
-                                            MainMenu::CDialogFrame(p_Parent),
+                                            MainMenu::CDialogFrame(p_Parent, p_MainWindow),
                                             mp_Ui(new Ui::CModifyProgramStepDlg), mp_TableWidget(NULL),
                                             mp_ScrollWheelHour(NULL), mp_ScrollWheelMin(NULL),
                                             mp_ScrollWheelTemp(NULL), mp_MessageBox(new MainMenu::CMessageDlg(this)),

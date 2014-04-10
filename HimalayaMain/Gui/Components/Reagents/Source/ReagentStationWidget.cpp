@@ -120,7 +120,6 @@ void CReagentStationWidget::OnEdit()
     m_MessageDlg.SetText(m_strSelectReagent);
     mp_ModifiyReagentStationDlg->SetDialogTitle(m_strSelectReagent);
     mp_ModifiyReagentStationDlg->SetEditedDashboardStation(mp_DashStation);
-    mp_ModifiyReagentStationDlg->move(96,70);
     mp_ModifiyReagentStationDlg->show();
 }
 

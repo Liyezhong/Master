@@ -206,7 +206,6 @@ void CReagentGroupWidget::OnEdit()
                             "\nPlease close the dialog with \"Close\""));*/
     mp_ModifyReagentColorDlg->SetDialogTitle(m_strSelectColor);
     mp_ModifyReagentColorDlg->SetReagentGroupList(*mp_ReagentGroupList, *mp_ReagentGroup);
-    mp_ModifyReagentColorDlg->move(96,70);
     mp_ModifyReagentColorDlg->show();
 
 }

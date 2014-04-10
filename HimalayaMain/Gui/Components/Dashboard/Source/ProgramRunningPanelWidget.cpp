@@ -32,7 +32,7 @@ CProgramRunningPanelWidget::CProgramRunningPanelWidget(QWidget *parent):
     mp_ProgressTimer = new QTimer(this);
     mp_ProgressTimer->setInterval(1000);
     CONNECTSIGNALSLOT(mp_ProgressTimer, timeout(), this, UpdateProgress());
-    CONNECTSIGNALSLOT(ui->btnProgramDetail, clicked(), this, OnProgramFetail());
+    CONNECTSIGNALSLOT(ui->btnProgramDetail, clicked(), this, OnProgramDetail());
 }
 
 CProgramRunningPanelWidget::~CProgramRunningPanelWidget()
@@ -288,12 +288,16 @@ void CProgramRunningPanelWidget::GetStationNameList(QList<QString>& stationNameL
     }
 }
 
-void CProgramRunningPanelWidget::OnProgramFetail()
+void CProgramRunningPanelWidget::OnProgramDetail()
 {
     CDashboardProgramStatusWidget *pProgramStatusWidget = new Dashboard::CDashboardProgramStatusWidget();
     pProgramStatusWidget->setWindowFlags(Qt::CustomizeWindowHint);
 
     Core::CStartup* pStartup = Core::CStartup::instance();
+    MainMenu::CMainWindow * pMainWin = pStartup->MainWindow();
+    //for position the window of ProgramStatusWidget
+    pProgramStatusWidget->SetMainWindow(pMainWin);
+
     const DataManager::CProgram* pProgram = pStartup->DataConnector()->ProgramList ->GetProgram(m_selectedProgramId);
     Q_ASSERT(pProgram);
     QList<QString> stationNameList;
@@ -307,10 +311,6 @@ void CProgramRunningPanelWidget::OnProgramFetail()
                                        m_curRemainingTimeTotal,
                                        m_DateTimeStr, bAboutEnable);
 
-    //position the window of ProgramStatusWidget
-    MainMenu::CMainWindow * pMainWin = pStartup->MainWindow();
-    QRect scr = pMainWin->geometry();
-    pProgramStatusWidget->move( scr.center() - pProgramStatusWidget->rect().center());
     QObject::connect(pProgramStatusWidget, SIGNAL(AbortClicked(int)), this, SIGNAL(AbortClicked(int)));
     pProgramStatusWidget->exec();
     QObject::disconnect(pProgramStatusWidget, SIGNAL(AbortClicked(int)), this, SIGNAL(AbortClicked(int)));

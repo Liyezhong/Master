@@ -33,7 +33,7 @@ namespace Reagents {
  */
 /****************************************************************************/
 CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow) :
-    MainMenu::CDialogFrame(p_Parent),
+    MainMenu::CDialogFrame(p_Parent, p_MainWindow),
     mp_Ui(new Ui::CModifyReagentGroupColorDlg),
     mp_CReagentGroupColorList(NULL),
     m_strCancel(tr("Cancel")),
