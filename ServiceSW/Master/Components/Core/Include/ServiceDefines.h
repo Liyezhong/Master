@@ -21,7 +21,7 @@
 #ifndef GLOBAL_SERVICEDEFINES_H
 #define GLOBAL_SERVICEDEFINES_H
 
-#include "../Include/PlatformServiceDefines.h"
+//#include "../Include/PlatformServiceDefines.h"
 #include <QtGlobal>
 #include <QString>
 #include <QHash>
