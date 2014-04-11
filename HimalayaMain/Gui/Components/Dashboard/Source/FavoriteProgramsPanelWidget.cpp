@@ -24,9 +24,8 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
     ui->setupUi(this);
     SetButtonGroup();
 
-    mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget();
-    mp_wdgtDateTime->setWindowFlags(Qt::CustomizeWindowHint);
-
+    mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget(this);
+    mp_wdgtDateTime->setModal(true);
     CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime&));
     CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectEndDateTime(const QDateTime &));
 
