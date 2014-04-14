@@ -3,7 +3,7 @@
 }
 
 TARGET = Scheduler
-INCLUDEPATH += ../../../../Common/Components
+INCLUDEPATH += ../../../../../../Platform/Common/Components
 SOURCES += ../Source/*.cpp \
             ../Commands/Source/*.cpp \
     ../Source/RCReport.cpp
