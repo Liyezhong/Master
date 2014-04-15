@@ -159,3 +159,6 @@ for(TheComponent, HIMALAYA_COMPONENTS) {
 
 ################# end group
 LIBS += -Wl,--end-group
+
+# for yocto 6.0 SDK build
+LIBS += -lrt
