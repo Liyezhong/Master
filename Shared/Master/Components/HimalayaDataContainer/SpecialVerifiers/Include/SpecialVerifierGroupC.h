@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file SpecialVerifierGroupB.h
+/*! \file SpecialVerifierGroupC.h
  *
  *  \brief Definition file for class CSpecialVerifierGroupB.
  *

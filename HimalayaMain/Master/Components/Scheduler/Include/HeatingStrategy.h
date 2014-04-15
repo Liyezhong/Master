@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Himalaya/HimalayaMain/Master/Components/Scheduler/Source/HeatingStrategy.h
+/*! \file Himalaya/HimalayaMain/Master/Components/Scheduler/Include/HeatingStrategy.h
  *
  *  \brief HeatingStrategy class definition.
  *

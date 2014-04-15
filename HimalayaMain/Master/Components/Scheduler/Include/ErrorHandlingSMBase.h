@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CErrorHandlingSMBase.h
+/*! \file ErrorHandlingSMBase.h
  *
  *  \brief CErrorHandlingSMBase class definition.
  *

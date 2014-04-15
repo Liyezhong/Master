@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file PausePushButton.h
+/*! \file Himalaya/HimalayaMain/Gui/Components/Dashboard/Include/PausePushButton.h
  *
  *  \brief Header file for class CPausePushButton.
  *

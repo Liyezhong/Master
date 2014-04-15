@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ReagentGroupList.h
+/*! \file DataReagentGroupList.h
  *
  *  \brief ReagentGroup defination.
  *

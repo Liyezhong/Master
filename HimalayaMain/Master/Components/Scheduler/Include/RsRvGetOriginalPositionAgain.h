@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CRsRvGetOriginalPositionAgain.h
+/*! \file RsRvGetOriginalPositionAgain.h
  *
  *  \brief CRsRvGetOriginalPositionAgain class definition.
  *

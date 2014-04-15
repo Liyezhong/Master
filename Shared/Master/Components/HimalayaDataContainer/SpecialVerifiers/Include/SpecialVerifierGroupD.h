@@ -1,6 +1,6 @@
 
 /****************************************************************************/
-/*! \file SpecialVerifierGroupB.h
+/*! \file SpecialVerifierGroupD.h
  *
  *  \brief Definition file for class CSpecialVerifierGroupB.
  *

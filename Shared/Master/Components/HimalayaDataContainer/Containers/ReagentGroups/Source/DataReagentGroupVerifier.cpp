@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file DataReagentGroupListVerifier.cpp
+/*! \file DataReagentGroupVerifier.cpp
  *
  *  \brief DataReagentGroupList Verifier implementation.
  *

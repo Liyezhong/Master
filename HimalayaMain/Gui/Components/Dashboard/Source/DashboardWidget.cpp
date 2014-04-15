@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ReagentWidget.cpp.cpp
+/*! \file Himalaya/HimalayaMain/Gui/Components/Dashboard/Source/DashboardWidget.cpp
  *
  *  \brief ReagentWidget Implementation.
  *

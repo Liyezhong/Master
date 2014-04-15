@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CSchedulerStateMachine.h
+/*! \file SchedulerMachine.h
  *
  *  \brief CSchedulerStateMachine class definition.
  *

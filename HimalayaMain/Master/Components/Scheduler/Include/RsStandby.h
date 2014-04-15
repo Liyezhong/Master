@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CRsStandby.h
+/*! \file RsStandby.h
  *
  *  \brief CRsStandby class definition.
  *

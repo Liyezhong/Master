@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CRCReport.h
+/*! \file RCReport.h
  *
  *  \brief CRCReport class definition.
  *

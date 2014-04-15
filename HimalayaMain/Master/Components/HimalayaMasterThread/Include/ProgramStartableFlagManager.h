@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file HimalayaMasterThread/Include/ProgramStartableManager.h
+/*! \file HimalayaMasterThread/Include/ProgramStartableFlagManager.h
  *
  *  \brief Definition file for class ProgramStartableMaanger
  *
