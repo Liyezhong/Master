@@ -313,7 +313,9 @@ protected:
         inline void LogDebug(QString message)
         {
             qDebug() << message;
+#if 0
             Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE,Global::tTranslatableStringList()<<message);
+#endif
         }
 
         /****************************************************************************/
