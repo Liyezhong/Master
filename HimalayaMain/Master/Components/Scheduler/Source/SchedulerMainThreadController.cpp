@@ -2629,13 +2629,20 @@ void SchedulerMainThreadController::Abort()
 RVPosition_t SchedulerMainThreadController::GetRVTubePositionByStationID(const QString stationID)
 {
     RVPosition_t ret = RV_UNDEF;
+    bool ok;
     if(!stationID.isEmpty())
     {
-        bool ok;
         int position = stationID.right(stationID.length() - 1).toInt(&ok, 10);
         if(ok)
         {
-            ret = (RVPosition_t)(position * 2 - 1);
+            if(stationID.left(1) == "S")
+            {
+                ret = (RVPosition_t)(position * 2 - 1);
+            }
+            else if(stationID.left(1) == "P")
+            {
+                ret = (RVPosition_t)((position + 13) * 2 - 1);
+            }
         }
     }
     return ret;
@@ -2644,13 +2651,20 @@ RVPosition_t SchedulerMainThreadController::GetRVTubePositionByStationID(const Q
 RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const QString stationID)
 {
     RVPosition_t ret = RV_UNDEF;
+    bool ok;
     if(!stationID.isEmpty())
     {
-        bool ok;
         int position = stationID.right(stationID.length() - 1).toInt(&ok, 10);
         if(ok)
         {
-            ret = (RVPosition_t)(position * 2);
+            if(stationID.left(1) == "S")
+            {
+                ret = (RVPosition_t)(position * 2);
+            }
+            else if(stationID.left(1) == "P")
+            {
+                ret = (RVPosition_t)((position + 13) * 2);
+            }
         }
     }
     return ret;
