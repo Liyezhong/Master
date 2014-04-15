@@ -26,6 +26,11 @@
 
 namespace MsgClasses {
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdResetOperationHours
+ */
+/****************************************************************************/
 class CmdResetOperationHours : public Global::Command
 {
     friend QDataStream & operator << (QDataStream &, const CmdResetOperationHours &);

@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdALSetTempCtrlON
+ */
+/****************************************************************************/
 class CmdALSetTempCtrlON : public CmdSchedulerCommandBase
 {
 public:

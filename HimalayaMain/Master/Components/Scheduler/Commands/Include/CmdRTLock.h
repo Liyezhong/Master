@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdRTLock
+ */
+/****************************************************************************/
 class CmdRTLock : public CmdSchedulerCommandBase
 {
 public:

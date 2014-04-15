@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdRVReqActRVPosition
+ */
+/****************************************************************************/
 class CmdRVReqActRVPosition : public CmdSchedulerCommandBase
 {
 public:

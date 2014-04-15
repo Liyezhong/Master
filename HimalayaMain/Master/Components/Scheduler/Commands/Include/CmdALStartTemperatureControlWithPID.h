@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdALStartTemperatureControlWithPID
+ */
+/****************************************************************************/
 class CmdALStartTemperatureControlWithPID : public CmdSchedulerCommandBase
 {
 public:

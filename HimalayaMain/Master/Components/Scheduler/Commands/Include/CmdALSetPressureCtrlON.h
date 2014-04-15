@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdALSetPressureCtrlON
+ */
+/****************************************************************************/
 class CmdALSetPressureCtrlON : public CmdSchedulerCommandBase
 {
 public:

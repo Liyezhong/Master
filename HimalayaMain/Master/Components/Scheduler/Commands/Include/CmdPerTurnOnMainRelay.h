@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdPerTurnOnMainRelay
+ */
+/****************************************************************************/
 class CmdPerTurnOnMainRelay : public CmdSchedulerCommandBase
 {
 public:

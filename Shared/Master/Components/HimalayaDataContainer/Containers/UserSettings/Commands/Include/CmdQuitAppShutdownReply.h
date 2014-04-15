@@ -26,6 +26,11 @@
 
 namespace MsgClasses {
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdQuitAppShutdownReply
+ */
+/****************************************************************************/
 class CmdQuitAppShutdownReply : public Global::Command
 {
     friend QDataStream & operator << (QDataStream &, const CmdQuitAppShutdownReply &);

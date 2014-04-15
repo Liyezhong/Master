@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdRVStartTemperatureControlWithPID
+ */
+/****************************************************************************/
 class CmdRVStartTemperatureControlWithPID : public CmdSchedulerCommandBase
 {
 public:

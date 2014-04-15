@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdALReleasePressure
+ */
+/****************************************************************************/
 class CmdALReleasePressure : public CmdSchedulerCommandBase
 {
 public:

@@ -7,6 +7,11 @@
 namespace DataManager
 {
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdGetProgramSettingsDataContainer
+ */
+/****************************************************************************/
 class CmdGetProgramSettingsDataContainer : public Global::Command
 {
 private:

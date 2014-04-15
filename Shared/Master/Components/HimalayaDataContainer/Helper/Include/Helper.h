@@ -44,6 +44,11 @@ private:
     bool m_NonEnd;
 };
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class XmlElementReaderHelper
+ */
+/****************************************************************************/
 class XmlElementReaderHelper
 {
 public:
@@ -58,6 +63,11 @@ private:
     bool              m_IsEnd;
 };
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class XmlElementReaderHelper
+ */
+/****************************************************************************/
 class XmlElementWriterHelper
 {
 public:
@@ -69,6 +79,11 @@ private:
     QXmlStreamWriter &m_Writer;
 };
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class XmlElementReaderHelper
+ */
+/****************************************************************************/
 class XmlDocumentWriterHelper
 {
 public:

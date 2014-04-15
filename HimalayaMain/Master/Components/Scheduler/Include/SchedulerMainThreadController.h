@@ -57,6 +57,11 @@ namespace Scheduler {
 class SchedulerCommandProcessorBase;
 class CSchedulerStateMachine;
 class HeatingStrategy;
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class ProgramStepInfor
+ */
+/****************************************************************************/
 
 typedef struct {
     QString stationID;
@@ -85,12 +90,22 @@ typedef enum
     CTRL_CMD_UNKNOWN
 }ControlCommandType_t;
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of struct ProgramStepInfor
+ */
+/****************************************************************************/
 typedef struct
 {
     QString ReagentGroupID;
     QString StationID;
 }ProgramStationInfo_t;
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of struct ProgramStepInfor
+ */
+/****************************************************************************/
 typedef struct
 {
     qint64 OvenStartHeatingTime;
@@ -99,6 +114,11 @@ typedef struct
     qint64 CurStepSoakStartTime;
 }SchedulerTimeStamps_t;
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of struct ProgramStepInfor
+ */
+/****************************************************************************/
 typedef struct
 {
     QString StationID;
@@ -106,6 +126,11 @@ typedef struct
 
 }StationUseRecord_t;
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of struct ProgramStepInfor
+ */
+/****************************************************************************/
 typedef struct
 {
     CANObjectKeyLUT::CANObjectIdentifier_t FctModID;

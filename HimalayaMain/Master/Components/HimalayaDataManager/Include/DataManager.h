@@ -31,6 +31,11 @@ class CStationCommandInterface;
 class CReagentGroupCommandInterface;
 class CUserSettingsCommandInterface;
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CDataManager
+ */
+/****************************************************************************/
 class CDataManager : public CDataManagerBase
 {
     Q_OBJECT

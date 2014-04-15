@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdALVaccum
+ */
+/****************************************************************************/
 class CmdALVaccum : public CmdSchedulerCommandBase
 {
 public:

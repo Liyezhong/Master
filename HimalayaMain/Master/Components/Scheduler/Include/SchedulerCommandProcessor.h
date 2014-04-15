@@ -46,6 +46,11 @@ using namespace DeviceControl;
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of struct HardwareMonitor_t
+ */
+/****************************************************************************/
 typedef struct
 {
 	qreal			PressureAL;

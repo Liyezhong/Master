@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdIDBottleCheck
+ */
+/****************************************************************************/
 class CmdIDBottleCheck : public CmdSchedulerCommandBase
 {
 public:

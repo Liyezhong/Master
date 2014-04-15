@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdALDraining
+ */
+/****************************************************************************/
 class CmdALDraining : public CmdSchedulerCommandBase
 {
 public:

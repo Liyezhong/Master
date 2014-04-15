@@ -39,6 +39,11 @@ namespace DataManager {
 //!<  List containing macro steps and normal program steps
 typedef QList<CProgramStep*> ListOfExpandedSteps_t;
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CDataContainer
+ */
+/****************************************************************************/
 class CDataContainer: public DataManager::CDataContainerCollectionBase
 {
     Q_OBJECT

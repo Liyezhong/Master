@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdRestartConfigurationService
+ */
+/****************************************************************************/
 class CmdRestartConfigurationService : public CmdSchedulerCommandBase
 {
 public:

@@ -27,6 +27,11 @@
 #include "SchedulerStateMachineStates.h"
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CProgramStepStateMachine
+ */
+/****************************************************************************/
 class CProgramStepStateMachine : public QObject
 {
     Q_OBJECT

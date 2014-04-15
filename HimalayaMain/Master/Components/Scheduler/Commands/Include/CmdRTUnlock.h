@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdRTUnlock
+ */
+/****************************************************************************/
 class CmdRTUnlock : public CmdSchedulerCommandBase
 {
 public:

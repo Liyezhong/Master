@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdOvenStartTemperatureControl
+ */
+/****************************************************************************/
 class CmdOvenStartTemperatureControl : public CmdSchedulerCommandBase
 {
 public:

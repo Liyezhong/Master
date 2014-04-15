@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdALAllStop
+ */
+/****************************************************************************/
 class CmdALAllStop : public CmdSchedulerCommandBase
 {
 public:

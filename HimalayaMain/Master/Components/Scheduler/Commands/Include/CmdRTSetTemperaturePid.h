@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdRTSetTemperaturePid
+ */
+/****************************************************************************/
 class CmdRTSetTemperaturePid : public CmdSchedulerCommandBase
 {
 public:

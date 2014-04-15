@@ -25,6 +25,11 @@
 
 namespace MsgClasses {
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdStationSetAsFull
+ */
+/****************************************************************************/
 class CmdStationSetAsFull : public Global::Command
 {
     friend QDataStream & operator << (QDataStream &, const CmdStationSetAsFull &);

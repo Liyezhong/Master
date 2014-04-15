@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdStartAdjustmentService
+ */
+/****************************************************************************/
 class CmdStartAdjustmentService : public CmdSchedulerCommandBase
 {
 public:

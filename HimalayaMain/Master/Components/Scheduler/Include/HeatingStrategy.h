@@ -38,6 +38,11 @@ class CSchedulerStateMachine;
 class SchedulerCommandProcessorBase;
 
 // structure for monitoring each component
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of struct OTMonitor_t
+ */
+/****************************************************************************/
 typedef struct
 {
     QString						devName;

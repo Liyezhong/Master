@@ -24,6 +24,11 @@
 #include <Global/Include/Commands/Command.h>
 
 namespace NetCommands {
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdSystemState
+ */
+/****************************************************************************/
 
 class CmdSystemState : public Global::Command {
 public:

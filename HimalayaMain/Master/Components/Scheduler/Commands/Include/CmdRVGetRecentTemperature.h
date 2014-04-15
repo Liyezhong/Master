@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdRVGetRecentTemperature
+ */
+/****************************************************************************/
 class CmdRVGetRecentTemperature : public CmdSchedulerCommandBase
 {
 public:

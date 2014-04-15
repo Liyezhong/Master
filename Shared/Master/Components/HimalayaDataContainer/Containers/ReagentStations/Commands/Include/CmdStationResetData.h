@@ -26,6 +26,11 @@
 namespace MsgClasses {
 
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdStationResetData
+ */
+/****************************************************************************/
 class CmdStationResetData : public Global::Command
 {
     friend QDataStream & operator << (QDataStream &, const CmdStationResetData &);

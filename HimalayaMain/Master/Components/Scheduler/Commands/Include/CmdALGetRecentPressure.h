@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdALGetRecentPressure
+ */
+/****************************************************************************/
 class CmdALGetRecentPressure : public CmdSchedulerCommandBase
 {
 public:

@@ -26,6 +26,11 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdTemplate
+ */
+/****************************************************************************/
 class CmdTemplate : public CmdSchedulerCommandBase
 {
 public:

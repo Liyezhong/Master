@@ -25,6 +25,11 @@
 
 namespace MsgClasses {
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdStationChangeReagent
+ */
+/****************************************************************************/
 class CmdStationChangeReagent : public Global::Command
 {
     friend QDataStream & operator << (QDataStream &, const CmdStationChangeReagent &);
