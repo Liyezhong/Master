@@ -257,7 +257,6 @@ void CDashboardWidget::OnProgramAborted()
 
     emit ProgramActionStopped(DataManager::PROGRAM_STATUS_ABORTED);
 
-    //disable "Start" button, enable Retort lock button, hide End time button, now Abort button is still in "disable" status
     ui->programPanelWidget->EnableStartButton(false);
 
     QDateTime  endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
@@ -404,8 +403,7 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
     {
         //calculate the timeBeforeUseParraffin
         //RemainingTimeMeltParraffin = 12 hour - TimeCosted
-        //int RemainingTimeMeltParaffin = 12 * 60 * 60 - TimeCostedParaffinMelting;
-        int RemainingTimeMeltParaffin = 60 - TimeCostedParaffinMelting;
+        int RemainingTimeMeltParaffin = 12 * 60 * 60 - TimeCostedParaffinMelting;
         if (RemainingTimeMeltParaffin > 0)
         {
           if (RemainingTimeMeltParaffin <= timeBeforeUseParaffin)

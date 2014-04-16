@@ -11,6 +11,7 @@
 namespace MsgClasses
 {
     class CmdCurrentProgramStepInfor;
+    class CmdLockStatus;
 }
 
 namespace MainMenu
@@ -77,6 +78,7 @@ private slots:
                                 const QDateTime& startDateTime, bool IsResume);//in seconds
     void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
     void SwitchToFavoritePanel();
+    void OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd);
 
 private:
     void RetranslateUI();
@@ -96,6 +98,7 @@ private:
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
     DataManager::CDataProgramList *mp_ProgramList;
     QList<QString> m_StationList;                                //!< Station list occupied
+    QString m_strRetortNotLock;
     QString m_strNotStartRMSOFF;
     QString m_strConfirmation;
     QString m_strAbortProgram;
@@ -108,6 +111,7 @@ private:
     QString m_strNotStartExpiredReagent;
     QString m_strStartExpiredReagent;
     QString m_strNeedMeltParaffin;
+    bool m_bRetortLocked;
 };
 
 }// end namespace Dashboard

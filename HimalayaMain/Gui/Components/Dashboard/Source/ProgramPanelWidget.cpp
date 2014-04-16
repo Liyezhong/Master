@@ -21,7 +21,8 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     m_SelectedProgramId(""),
     mp_DataConnector(NULL),
     m_pUserSetting(NULL),
-    mp_ProgramList(NULL)
+    mp_ProgramList(NULL),
+    m_bRetortLocked(false)
 {
     ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Programs"));
@@ -104,6 +105,8 @@ void CProgramPanelWidget::RetranslateUI()
     m_strNotStartRMSOFF = QApplication::translate("Dashboard::CProgramPanelWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);
     m_strConfirmation = QApplication::translate("Dashboard::CProgramPanelWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
     m_strAbortProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Do you want to abort the program?", 0, QApplication::UnicodeUTF8);
+    m_strRetortNotLock = QApplication::translate("Dashboard::CProgramPanelWidget", "Please close and lock the retort, then try again!", 0, QApplication::UnicodeUTF8);
+
 
     m_strYes = QApplication::translate("Dashboard::CProgramPanelWidget", "Yes", 0, QApplication::UnicodeUTF8);
     m_strNo = QApplication::translate("Dashboard::CProgramPanelWidget", "No", 0, QApplication::UnicodeUTF8);
@@ -130,6 +133,8 @@ void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow
     ui->programRunningPanel->SetUserSettings(m_pUserSetting);
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), ui->programRunningPanel, OnUserSettingsUpdated());
     CONNECTSIGNALSLOT(p_MainWindow, ProcessStateChanged(), ui->programRunningPanel, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdLockStatus &),
+                      this, OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus&));
 
 }
 
@@ -153,6 +158,16 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
 
     if ("" == m_SelectedProgramId)
         return;
+
+    if (!m_bRetortLocked){
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(CommonString::strWarning);
+        mp_MessageDlg->SetText(m_strRetortNotLock);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->HideButtons();
+        if (mp_MessageDlg->exec())
+        return;
+    }
 
     //Check if Leica program and RMS OFF?
     DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
@@ -233,6 +248,9 @@ void CProgramPanelWidget::CheckPreConditionsToRunProgram()
                 return;
         }
     }
+
+
+
 
 
 
@@ -399,6 +417,11 @@ void CProgramPanelWidget::OnProgramActionStopped(DataManager::ProgramStatusType_
 void CProgramPanelWidget::SwitchToFavoritePanel()
 {
     ui->stackedWidget->setCurrentIndex(0);
+}
+
+void CProgramPanelWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd)
+{
+    m_bRetortLocked = cmd.IsLocked();
 }
 
 }
