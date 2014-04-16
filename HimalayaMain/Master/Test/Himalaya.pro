@@ -25,7 +25,6 @@ SUBDIRS += ../../../../Platform/Master/Components/DataLogging/Build/DataLogging.
            ../Components/HimalayaGuiController/Build/HimalayaGuiController.pro \
            ../Components/HimalayaDataManager/Build/HimalayaDataManager.pro \
            ../Components/Scheduler/Build/Scheduler.pro \
-
            ../../../../Platform/Master/Components/EventHandler/Test/EventHandler.pro \
            ../Components/Scheduler/Test/Scheduler.pro
 

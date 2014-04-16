@@ -18,7 +18,6 @@ SUBDIRS = ../../../../Platform/Master/Components/Global/Build/Global.pro \
           ../Components/Reagents/Build/Reagents.pro \
           ../Components/Settings/Build/Settings.pro \
           ../Components/Users/Build/Users.pro \
-
           ../Components/Dashboard/Test/TestDashboard.pro \
           ../Components/Reagents/Test/TestReagents.pro
 
