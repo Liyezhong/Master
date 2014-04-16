@@ -108,6 +108,7 @@ private slots:
     void OnUserRoleChanged();
     void OnProcessStateChanged();
  signals:
+    void ResetFocus(bool reset);
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram = false);
     void ProgramSelected(QString & programId, QList<QString>& selectedStationList);
     void ProgramSelected(QString & programId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);

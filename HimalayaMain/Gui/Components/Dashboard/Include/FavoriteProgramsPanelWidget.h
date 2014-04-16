@@ -49,6 +49,7 @@ namespace Dashboard {
     public slots:
         void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
     private slots:
+        void OnResetFocus(bool reset);
         void OnSelectDateTime(const QDateTime&);
         void OnEndTimeButtonClicked();
         void OnProcessStateChanged();
@@ -73,6 +74,7 @@ namespace Dashboard {
         QStringList m_FavProgramIDs;
         QString m_NewSelectedProgramId;
         QDateTime m_EndDateTime;
+        int m_LastCanBeSelectedButtonId;
 
     };
 }

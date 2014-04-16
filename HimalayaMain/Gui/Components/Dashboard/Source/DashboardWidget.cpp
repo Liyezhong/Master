@@ -53,6 +53,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     ui->programPanelWidget->SetPtrToMainWindow(mp_MainWindow, mp_DataConnector);
     m_pUserSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
     mp_ProgramList = mp_DataConnector->ProgramList;
+
+    CONNECTSIGNALSIGNAL(this, ResetFocus(bool), ui->programPanelWidget, ResetFocus(bool));
     CONNECTSIGNALSIGNAL(this, AddItemsToFavoritePanel(bool), ui->programPanelWidget, AddItemsToFavoritePanel(bool));
     CONNECTSIGNALSLOT(ui->programPanelWidget, PrepareSelectedProgramChecking(const QString&, bool), this, PrepareSelectedProgramChecking(const QString&, bool));
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply &),
@@ -345,7 +347,7 @@ void CDashboardWidget::OnUnselectProgram()
         ui->programPanelWidget->EnableStartButton(false);
         m_StationList.clear();
         int asapEndTime = 0;
-        //for UI update
+
         emit ProgramSelected(m_SelectedProgramId, m_StationList);
         emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_StationList);
         emit UpdateSelectedStationList(m_StationList);
@@ -550,7 +552,8 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
 
             if (mp_MessageDlg->exec())
             {
-                    return;
+                emit ResetFocus(true);
+                return;
             }
             return;
         }
@@ -573,9 +576,13 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
 
                 if (mp_MessageDlg->exec())
                 {
-                        return;
+                    emit ResetFocus(true);
+                    return;
                 }
                 return;
+            }
+            else {
+                emit ResetFocus(false);
             }
         }
     }

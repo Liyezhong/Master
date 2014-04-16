@@ -25,6 +25,7 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
 {
     ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Programs"));
+    CONNECTSIGNALSLOT(this, ResetFocus(bool), ui->favoriteProgramsPanel, OnResetFocus(bool));
     CONNECTSIGNALSLOT(this, AddItemsToFavoritePanel(bool), ui->favoriteProgramsPanel, AddItemsToFavoritePanel(bool));
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, PrepareSelectedProgramChecking(const QString&), this, PrepareSelectedProgramChecking(const QString&));
 

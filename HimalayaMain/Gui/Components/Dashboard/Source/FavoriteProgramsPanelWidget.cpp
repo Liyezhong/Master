@@ -18,7 +18,8 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
     ui(new Ui::CFavoriteProgramsPanelWidget),
     mp_DataConnector(NULL),
     m_ProcessRunning(false),
-    m_LastSelectedButtonId(-1)
+    m_LastSelectedButtonId(-1),
+    m_LastCanBeSelectedButtonId(-1)
 {
     ui->setupUi(this);
     SetButtonGroup();
@@ -171,9 +172,9 @@ void CFavoriteProgramsPanelWidget::UndoProgramSelection()
     {
         m_ButtonGroup.button(checkedID)->setChecked(false);
     }
-
     m_ButtonGroup.setExclusive(true);
     m_LastSelectedButtonId = -1;
+    m_LastCanBeSelectedButtonId = -1;
 }
 
 void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
@@ -189,6 +190,7 @@ void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
         m_LastSelectedButtonId = m_ButtonGroup.checkedId();
         m_NewSelectedProgramId = m_FavProgramIDs.at(m_LastSelectedButtonId);
         SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
+
         emit PrepareSelectedProgramChecking(m_NewSelectedProgramId);
     }
 }
@@ -198,4 +200,32 @@ void CFavoriteProgramsPanelWidget::OnSelectDateTime(const QDateTime& dateTime)
     m_EndDateTime = dateTime;
 }
 
+void CFavoriteProgramsPanelWidget::OnResetFocus(bool reset)
+{
+    if (reset) {
+        m_ButtonGroup.setExclusive(false);
+        int checkedID = m_ButtonGroup.checkedId();
+        if (checkedID != -1)
+        {
+            m_ButtonGroup.button(checkedID)->setChecked(false);
+        }
+        m_ButtonGroup.setExclusive(true);
+
+        if (m_LastCanBeSelectedButtonId != -1) {
+            m_ButtonGroup.setExclusive(false);
+            m_ButtonGroup.button(m_LastCanBeSelectedButtonId)->setChecked(true);
+            m_ButtonGroup.setExclusive(true);
+            m_LastSelectedButtonId = m_ButtonGroup.checkedId();
+            m_NewSelectedProgramId = m_FavProgramIDs.at(m_LastSelectedButtonId);
+            SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
+        }
+        else {
+            m_LastSelectedButtonId = -1;
+            m_LastCanBeSelectedButtonId = -1;
+        }
+    }
+    else {
+        m_LastCanBeSelectedButtonId = m_ButtonGroup.checkedId();
+    }
+}
 

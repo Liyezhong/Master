@@ -53,6 +53,7 @@ public:
     bool IsResumeRun();
     bool IsAbortEnabled();
 signals:
+    void ResetFocus(bool reset);
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
     void PrepareSelectedProgramChecking(const QString& selectedProgramId, bool bCheckEndDatetimeAgain = false);
     void OnSelectEndDateTime(const QDateTime &);
