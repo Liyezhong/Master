@@ -408,6 +408,11 @@ public:
     SchedulerStateMachine_t GetPreviousState();
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnstateChanged()
+     */
+    /****************************************************************************/
     void OnStateChanged();
 
 signals:

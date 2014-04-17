@@ -136,7 +136,7 @@ private:
     bool                            m_ImportExportThreadIsRunning;          ///< Store ImportExport thread flag value
     bool                            m_RemoteCareExportRequest;              ///< Request received from export
 
-    bool m_Simulation;  //!  Enable/disable simulation thread controller. \todo Remove later       ///<  Definition/Declaration of variable m_Simulation
+    bool m_Simulation;  ///<  Enable/disable simulation thread controller. \todo Remove later
     ProgramStartableManager          m_ProgramStartableManager;              ///< Object Managing Program Startablity
     Global::GuiUserLevel             m_AuthenticatedLevel;                   ///< The current user authenticated level
     bool                             m_ControllerCreationFlag;               ///< True if controllers are created, False if not
@@ -635,9 +635,23 @@ public:
     }
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot SendXml()
+     */
+    /****************************************************************************/
 	void SendXML();
-	  
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot SWUpateProgress()
+     */
+    /****************************************************************************/
 	void SWUpdateProgress(bool InProgress);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot SWUpadteRollbackComplete()
+     */
+    /****************************************************************************/
     void SWUpdateRollbackComplete();
 
     /****************************************************************************/
@@ -728,8 +742,23 @@ private slots:
                                       quint32 EventCode,
                                       bool UpdatedCurrentLanguage = false,
                                       bool NewLanguageAdded = false);     
-	  void ShutdownOnPowerFail();
+      /****************************************************************************/
+      /*!
+       *  \brief  Definition/Declaration of slot ShutdownOnPowerFail()
+       */
+      /****************************************************************************/
+      void ShutdownOnPowerFail();
+      /****************************************************************************/
+      /*!
+       *  \brief  Definition/Declaration of slot SetAlarmHandlerTimeout()
+       */
+      /****************************************************************************/
       void SetAlarmHandlerTimeout(quint16 timeout);
+      /****************************************************************************/
+      /*!
+       *  \brief  Definition/Declaration of slot OnFireAlarmLocalRemote()
+       */
+      /****************************************************************************/
       void OnFireAlarmLocalRemote(bool isLocalAlarm);
 signals:
       /****************************************************************************/

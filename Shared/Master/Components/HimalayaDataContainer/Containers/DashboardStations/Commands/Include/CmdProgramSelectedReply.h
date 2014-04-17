@@ -102,11 +102,11 @@ private:
     CmdProgramSelectedReply(const CmdProgramSelectedReply &);                     ///< Not implemented.
     const CmdProgramSelectedReply & operator = (const CmdProgramSelectedReply &); ///< Not implemented.
 private:
-    int m_TimeProposed;//the costed time for selected program, seconds       ///<  Definition/Declaration of variable m_TimeProposed
-    int m_CostedTimeBeforeParaffin; //seconds       ///<  Definition/Declaration of variable m_CostedTimeBeforeParaffin
-    int m_ParaffinMeltCostedtime; //seconds       ///<  Definition/Declaration of variable m_ParaffinMeltCostedtime
-    int m_WhichStepHasNoSafeReagent;       ///<  Definition/Declaration of variable m_WhichStepHasNoSafeReagent
-    QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
+    int m_TimeProposed;///< the costed time for selected program, seconds
+    int m_CostedTimeBeforeParaffin; ///< seconds
+    int m_ParaffinMeltCostedtime; ///< seconds
+    int m_WhichStepHasNoSafeReagent;       ///<  Definition/Declaration of variable m_WhichStepHasNoSafeReagent
+    QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
     
 }; // end class CmdProgramSelectedReply
 

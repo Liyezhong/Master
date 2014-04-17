@@ -71,7 +71,11 @@ typedef struct {
     bool isVacuum;       ///<  Definition/Declaration of variable isVacuum
     QString reagentGroup;       ///<  Definition/Declaration of variable reagentGroup
 } ProgramStepInfor;
-
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum ControlCommandType_t
+ */
+/****************************************************************************/
 typedef enum
 {
     CTRL_CMD_START,
@@ -155,7 +159,7 @@ typedef struct
         QTimer m_TickTimer;       ///<  Definition/Declaration of variable m_TickTimer
         QMutex m_Mutex;       ///<  Definition/Declaration of variable m_Mutex
         QQueue<Global::CommandShPtr_t> m_SchedulerCmdQueue;       ///<  Definition/Declaration of variable m_SchedulerCmdQueue
-        QMutex m_MutexDeviceControlCmdQueue;                                        /// < mutex for accessing m_DeviceControlCmdQueue       ///<  Definition/Declaration of variable m_MutexDeviceControlCmdQueue
+        QMutex m_MutexDeviceControlCmdQueue;                                        ///< mutex for accessing m_DeviceControlCmdQueue
         QQueue<Scheduler::SchedulerCommandShPtr_t> m_DeviceControlCmdQueue;                     ///< Queue(Q2) for receive respond from SechedulerCommandProcessor
         QQueue<ProgramStationInfo_t> m_ProgramStationList;       ///<  Definition/Declaration of variable m_ProgramStationList
         QList<FunctionModuleStatus_t> m_FunctionModuleStatusList;       ///<  Definition/Declaration of variable m_FunctionModuleStatusList
@@ -165,7 +169,8 @@ typedef struct
         CSchedulerStateMachine* m_SchedulerMachine;       ///<  Definition/Declaration of variable m_SchedulerMachine
         DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;       ///<  Definition/Declaration of variable mp_IDeviceProcessing
         DataManager::CDataManager       *mp_DataManager;       ///<  Definition/Declaration of variable mp_DataManager
-        int m_CurProgramStepIndex, m_FirstProgramStepIndex;       ///<  Definition/Declaration of variable m_CurProgramStepIndex       ///<  Definition/Declaration of variable m_CurProgramStepIndex
+        int m_CurProgramStepIndex;        ///<  Definition/Declaration of variable m_CurProgramStepIndex
+        int m_FirstProgramStepIndex;      ///<  Definition/Declaration of variable m_CurProgramStepIndex
         QString m_CurReagnetName;       ///<  Definition/Declaration of variable m_CurReagnetName
         ProgramStepInfor m_CurProgramStepInfo;       ///<  Definition/Declaration of variable m_CurProgramStepInfo
         QString m_CurProgramID;       ///<  Definition/Declaration of variable m_CurProgramID
@@ -183,13 +188,13 @@ typedef struct
         qreal m_TempOvenTop;       ///<  Definition/Declaration of variable m_TempOvenTop
         quint16 m_OvenLidStatus;       ///<  Definition/Declaration of variable m_OvenLidStatus
         quint16 m_RetortLockStatus;       ///<  Definition/Declaration of variable m_RetortLockStatus
-        QStringList m_UsedStationIDs;                                                 ///in a whole of program processing       ///<  Definition/Declaration of variable m_UsedStationIDs
-        SchedulerTimeStamps_t m_TimeStamps;
+        QStringList m_UsedStationIDs;        ///< in a whole of program processing
+        SchedulerTimeStamps_t m_TimeStamps;     ///<  Definition/Declaration of variable m_TimeStamps
         QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
         QString m_ReagentIdOfLastStep;       ///<  Definition/Declaration of variable m_ReagentIdOfLastStep
         bool m_PauseToBeProcessed;       ///<  Definition/Declaration of variable m_PauseToBeProcessed
         int m_ProcessCassetteCount;       ///<  Definition/Declaration of variable m_ProcessCassetteCount
-        quint32 m_EventKey; //todo: add mechanism to cash the key       ///<  Definition/Declaration of variable m_EventKey
+        quint32 m_EventKey; ///<  \todo: add mechanism to cash the key
         QSharedPointer<HeatingStrategy> mp_HeatingStrategy;       ///<  Definition/Declaration of variable mp_HeatingStrategy
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -361,7 +366,21 @@ typedef struct
           */
          /****************************************************************************/
          bool IsLastStep(int currentStepIndex,const QString& currentProgramID);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function GetSafeReagentStationList
+          *
+          *  \return from IsLastStep
+          */
+         /****************************************************************************/
          bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function WhichStepHasNoSafeReagent
+          *
+          *  \return from IsLastStep
+          */
+         /****************************************************************************/
          int WhichStepHasNoSafeReagent(const QString& ProgramID);
          /****************************************************************************/
          /*!
@@ -440,30 +459,156 @@ signals:
          void signalProgramAbort();
 
 private slots:
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot HandleIdleState
+          */
+         /****************************************************************************/
          void HandleIdleState(ControlCommandType_t ctrlCmd);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot HandleRunState
+          */
+         /****************************************************************************/
          //void HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
          void HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot HandleErrorState
+          */
+         /****************************************************************************/
          void HandleErrorState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd, SchedulerStateMachine_t currentState);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot StepStart
+          */
+         /****************************************************************************/
          void StepStart();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot CheckStepTemperature
+          *
+          *  \return return from CheckStepTemperature
+          */
+         /****************************************************************************/
          bool CheckStepTemperature();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot CheckLevelSensorTemperature
+          *
+          *  \return return from CheckLevelSensorTemperature
+          */
+         /****************************************************************************/
          bool CheckLevelSensorTemperature(qreal targetTemperature);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot SealingCheck
+          */
+         /****************************************************************************/
          void SealingCheck();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot HeatLevelSensor
+          */
+         /****************************************************************************/
          void HeatLevelSensor();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot MoveRV
+          */
+         /****************************************************************************/
          void MoveRV();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot Fill
+          */
+         /****************************************************************************/
          void Fill();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot StopFill
+          */
+         /****************************************************************************/
          void StopFill();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot Soak
+          */
+         /****************************************************************************/
          void Soak();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot Drain
+          */
+         /****************************************************************************/
          void Drain();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot StopDrain
+          */
+         /****************************************************************************/
          void StopDrain();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot Pressure
+          */
+         /****************************************************************************/
          void Pressure();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot Vaccum
+          */
+         /****************************************************************************/
          void Vaccum();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot AllStop
+          */
+         /****************************************************************************/
          void AllStop();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot Abort
+          */
+         /****************************************************************************/
          void Abort();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot SelfTest
+          *
+          *  \return return from SelfTest
+          */
+         /****************************************************************************/
          bool SelfTest(ReturnCode_t RetCode);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot Pause
+          */
+         /****************************************************************************/
          void Pause();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot MoveRVToInit
+          */
+         /****************************************************************************/
          void MoveRVToInit();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot ShutdownRetortHeater
+          */
+         /****************************************************************************/
          void ShutdownRetortHeater();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot ReleasePressure
+          */
+         /****************************************************************************/
          void ReleasePressure();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of slot ShutdownFailedHeater
+          */
+         /****************************************************************************/
          void ShutdownFailedHeater();
 
 protected:
@@ -643,6 +788,13 @@ protected:
          */
         /****************************************************************************/
         void OnTickTimer();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function OnDCLConfigurationFinished
+         *
+         *  \return from OnDCLConfigurationFinished
+         */
+        /****************************************************************************/
         void OnDCLConfigurationFinished(ReturnCode_t RetCode);
         //void DeviceInitComplete();
 

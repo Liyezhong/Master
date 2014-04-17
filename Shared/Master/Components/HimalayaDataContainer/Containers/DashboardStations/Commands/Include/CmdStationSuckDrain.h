@@ -79,9 +79,9 @@ private:
     CmdStationSuckDrain(const CmdStationSuckDrain &);                     ///< Not implemented.
     const CmdStationSuckDrain & operator = (const CmdStationSuckDrain &); ///< Not implemented.
 private:
-    QString m_StationID;       ///<  Definition/Declaration of variable m_StationID
-    bool m_IsStart;//true: start, false: completed       ///<  Definition/Declaration of variable m_IsStart
-    bool m_IsSuck; //true: suck, false:drain       ///<  Definition/Declaration of variable m_IsSuck
+    QString m_StationID;       ///<  Definition/Declaration of variable m_StationID
+    bool m_IsStart;///< true: start, false: completed
+    bool m_IsSuck; ///< true: suck, false:drain
     
 }; // end class CmdStationSuckDrain
 

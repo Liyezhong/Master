@@ -43,9 +43,9 @@ typedef struct {
     QString position;       ///<  Definition/Declaration of variable position
     QString	group;       ///<  Definition/Declaration of variable group
 } FunctionKey_t;
-typedef QMap<QString,QString> ParameterKeyValue_t;
-typedef QMap<FunctionKey_t,ParameterKeyValue_t> FunctionParameter_t;
-typedef QMap<QString,FunctionParameter_t> DeviceFunction_t;
+typedef QMap<QString,QString> ParameterKeyValue_t;       ///<  Definition/Declaration of typedef key
+typedef QMap<FunctionKey_t,ParameterKeyValue_t> FunctionParameter_t;       ///<  Definition/Declaration of typedef key
+typedef QMap<QString,FunctionParameter_t> DeviceFunction_t;       ///<  Definition/Declaration of typedef key
 
 /****************************************************************************/
 /*!

@@ -37,7 +37,7 @@ private:
     bool DeserializeContent(QXmlStreamReader& XmlStreamReader, bool CompleteData);
     bool SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool CompleteData);
 
-    ListOfErrors_t    m_ListOfErrors;   //< This will hold Hash table of Error ID's.       ///<  Definition/Declaration of variable m_ListOfErrors
+    ListOfErrors_t    m_ListOfErrors;        ///<  Definition/Declaration of variable m_ListOfErrors
     ErrorMap_t m_ErrorHash;            //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator
 
 protected:

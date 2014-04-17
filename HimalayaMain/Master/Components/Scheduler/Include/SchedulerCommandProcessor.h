@@ -159,32 +159,56 @@ public slots:
      */
     /****************************************************************************/
     virtual void pushCmd(CmdSchedulerCommandBase *cmd) { this->pushCmd4Slot(cmd); }
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot DevProcInitialisationAckn
+     */
+    /****************************************************************************/
     virtual void DevProcInitialisationAckn(quint32 instanceID, ReturnCode_t configResult)
     {
         this->DevProcInitialisationAckn4Slot(instanceID, configResult);
     }
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot DevProcConfigurationAckn
+     */
+    /****************************************************************************/
     virtual void DevProcConfigurationAckn(quint32 instanceID, ReturnCode_t hdlInfo)
     {
         this->DevProcConfigurationAckn4Slot(instanceID, hdlInfo);
     }
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot DevProcStartNormalOpModeAckn
+     */
+    /****************************************************************************/
     virtual void DevProcStartNormalOpModeAckn(quint32 instanceID, ReturnCode_t hdlInfo)
     {
         this->DevProcStartNormalOpModeAckn4Slot(instanceID, hdlInfo);
     }
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot ThrowError
+     */
+    /****************************************************************************/
     virtual void ThrowError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp)
     {
         this->ThrowError4Slot(instanceID, usErrorGroup, usErrorID, usErrorData, TimeStamp);
     }
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot DevProcDestroyAckn
+     */
+    /****************************************************************************/
     virtual void DevProcDestroyAckn()
     {
         this->DevProcDestroyAckn4Slot();
     }
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnNewCmdAdded
+     */
+    /****************************************************************************/
     virtual void OnNewCmdAdded()
     {
         this->OnNewCmdAdded4Slot();

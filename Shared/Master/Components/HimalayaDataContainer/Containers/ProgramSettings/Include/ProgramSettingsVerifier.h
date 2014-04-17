@@ -29,9 +29,9 @@
 
 namespace DataManager {
 
-#define MAX_SPEED_PROFILE   4
-#define MAX_POSITION_VALUE  4500
-#define MAX_OFFSET_VALUE    500
+#define MAX_SPEED_PROFILE   4        ///<  Definition/Declaration of macro MAX_SPEED_PROFILE
+#define MAX_POSITION_VALUE  4500     ///<  Definition/Declaration of macro MAX_POSITION_VALUE
+#define MAX_OFFSET_VALUE    500      ///<  Definition/Declaration of macro MAX_OFFSET_VALUE
 
 /****************************************************************************/
 /*!
