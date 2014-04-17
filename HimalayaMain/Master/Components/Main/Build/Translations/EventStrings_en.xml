@@ -1038,7 +1038,7 @@
 		<string id="33816596" text1="Invalid Index in program hash table." text2=""/>
 		<string id="33816592" text1="Verifying Programs.xml failed." text2=""/>
 		<string id="33816584" text1="Reading Programs.xml failed." text2=""/>
-		<string id="33816605" text1="Number of steps in Program %1 exceeds limit. Max 50 steps allowed." text2=""/>
+		<string id="33816605" text1="Number of steps in Program %1 exceeds limit. Max 14 steps allowed." text2=""/>
 		<string id="33818116" text1="Program &amp;apos;%1&amp;apos; must have &amp;apos;%2&amp;apos; step(s) at least." text2=""/>
 		<string id="33818118" text1="Duration in Step &amp;apos;%1&amp;apos; of Program &amp;apos;%2&amp;apos; exceeds limits, validated range : &amp;apos;%3&amp;apos; - &amp;apos;%4&amp;apos;." text2=""/>
 		<string id="33818119" text1="Temperature in Step &amp;apos;%1&amp;apos; of Program &amp;apos;%2&amp;apos; exceeds limits, validated range : &amp;apos;%3&amp;apos; - &amp;apos;%4&amp;apos; (Celsius)." text2=""/>
