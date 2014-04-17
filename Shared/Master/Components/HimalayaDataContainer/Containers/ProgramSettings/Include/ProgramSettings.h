@@ -30,13 +30,14 @@
 #include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"
 #include "DataManager/Containers/ContainerBase/Include/VerifierInterface.h"
 
-namespace DataManager
+namespace DataManager{
+
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of class FunctionKey_t
  */
 /****************************************************************************/
-{
+
 typedef struct {
     QString key;
     QString position;
