@@ -41,18 +41,39 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdLockStatus
+     *
+     *  \return from CmdLockStatus
+     */
+    /****************************************************************************/
     CmdLockStatus(int timeout, DataManager::LockType_t lockType, bool isLocked);
     ~CmdLockStatus();
     virtual QString GetName() const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function LockType
+     *
+     *  \return from LockType
+     */
+    /****************************************************************************/
     inline DataManager::LockType_t LockType() const {return m_LockType;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsLocked
+     *
+     *  \return from IsLocked
+     */
+    /****************************************************************************/
     inline bool IsLocked() const {return m_Locked;}
     
 private:
     CmdLockStatus(const CmdLockStatus &);                     ///< Not implemented.
     const CmdLockStatus & operator = (const CmdLockStatus &); ///< Not implemented.
 private:
-    DataManager::LockType_t m_LockType;
-    bool m_Locked;
+    DataManager::LockType_t m_LockType;       ///<  Definition/Declaration of variable m_LockType
+    bool m_Locked;       ///<  Definition/Declaration of variable m_Locked
     
 }; // end class CmdLockStatus
 

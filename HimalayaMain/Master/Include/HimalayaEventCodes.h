@@ -15,7 +15,7 @@
 const quint32 EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS	= 33619990;	///< Can not change the date and time more than 24 hours of the current system date time is %1.
 
 
-const quint32 EVENT_DM_ERROR_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817857;	///< 
+const quint32 EVENT_DM_ERROR_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817857;	///<        ///<  Definition/Declaration of variable EVENT_DM_ERROR_SOUND_PERIODIC_TIME_OUT_OF_RANGE
 
 
 const quint32 EVENT_DM_GV_BASE_CONTAINER_IS_NOT_INITIALIZED	= 33817094;	///< Group verification failed. Base container is not initialized.
@@ -39,18 +39,18 @@ const quint32 EVENT_DM_GV_USINTERFACE_IS_NOT_INITIALIZED	= 33817101;	///< Group 
 
 const quint32 EVENT_DM_INCOMPATIBLE_STEP_REAGENT_GROUP	= 33818114;	///< Program '%1' Reagents  for Step %2 and Step %3 are not compatible.
 
-const quint32 EVENT_DM_INFO_SOUND_LEVEL_OUT_OF_RANGE	= 33817861;	///< 
+const quint32 EVENT_DM_INFO_SOUND_LEVEL_OUT_OF_RANGE	= 33817861;	///<        ///<  Definition/Declaration of variable EVENT_DM_INFO_SOUND_LEVEL_OUT_OF_RANGE
 
-const quint32 EVENT_DM_INFO_SOUND_NUMBER_OUT_OF_RANGE	= 33817860;	///< 
+const quint32 EVENT_DM_INFO_SOUND_NUMBER_OUT_OF_RANGE	= 33817860;	///<        ///<  Definition/Declaration of variable EVENT_DM_INFO_SOUND_NUMBER_OUT_OF_RANGE
 
-const quint32 EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817859;	///< 
+const quint32 EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817859;	///<        ///<  Definition/Declaration of variable EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE
 
 const quint32 EVENT_DM_INVALID_PROGRAM_ID	= 33816577;	///< %1' is not a valid Program ID.
 
 
 const quint32 EVENT_DM_INVALID_STEP_ID	= 33816608;	///< Step ID %2 in Program %1 is invalid
 
-const quint32 EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE	= 33817862;	///< 
+const quint32 EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE	= 33817862;	///<        ///<  Definition/Declaration of variable EVENT_DM_PARAFFIN_TEMP_OUT_OF_RANGE
 
 const quint32 EVENT_DM_PROG_ADD_FAILED_INTERNAL_ERR	= 33816626;	///< Internal Software Error. Adding rogram failed. Please contact service.
 
@@ -92,15 +92,15 @@ const quint32 EVENT_DM_REAGENT_LIST_WRITE_FAILED	= 33816845;	///< ReagentList wr
 const quint32 EVENT_DM_REAGENT_NAME_LENGTH_CHECK_FAILED	= 33816840;	///< Reagent '%1' Name is too long (max 32 Characters)
 
 
-const quint32 EVENT_DM_RMS_CLEANING_OUT_OF_RANGE	= 33817864;	///< 
+const quint32 EVENT_DM_RMS_CLEANING_OUT_OF_RANGE	= 33817864;	///<        ///<  Definition/Declaration of variable EVENT_DM_RMS_CLEANING_OUT_OF_RANGE
 
-const quint32 EVENT_DM_RMS_PROCESSING_OUT_OF_RANGE	= 33817863;	///< 
+const quint32 EVENT_DM_RMS_PROCESSING_OUT_OF_RANGE	= 33817863;	///<        ///<  Definition/Declaration of variable EVENT_DM_RMS_PROCESSING_OUT_OF_RANGE
 
 
 const quint32 EVENT_DM_USER_PROGRAM_NAME_CONTAINS_LEICA	= 33818115;	///< User Program name can not contain 'leica' word.
 
 
-const quint32 EVENT_DM_WARN_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817858;	///< 
+const quint32 EVENT_DM_WARN_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817858;	///<        ///<  Definition/Declaration of variable EVENT_DM_WARN_SOUND_PERIODIC_TIME_OUT_OF_RANGE
 
 const quint32 EVENT_EXPORT_NO_ENOUGH_SPACE_ON_SD_CARD	= 50331649;	///< Export failed. No enough space on SD card.
 

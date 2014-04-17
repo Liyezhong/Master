@@ -64,12 +64,12 @@ class HeatingStrategy;
 /****************************************************************************/
 
 typedef struct {
-    QString stationID;
-    int durationInSeconds;
-    int temperature;
-    bool isPressure;
-    bool isVacuum;
-    QString reagentGroup;
+    QString stationID;       ///<  Definition/Declaration of variable stationID
+    int durationInSeconds;       ///<  Definition/Declaration of variable durationInSeconds
+    int temperature;       ///<  Definition/Declaration of variable temperature
+    bool isPressure;       ///<  Definition/Declaration of variable isPressure
+    bool isVacuum;       ///<  Definition/Declaration of variable isVacuum
+    QString reagentGroup;       ///<  Definition/Declaration of variable reagentGroup
 } ProgramStepInfor;
 
 typedef enum
@@ -97,8 +97,8 @@ typedef enum
 /****************************************************************************/
 typedef struct
 {
-    QString ReagentGroupID;
-    QString StationID;
+    QString ReagentGroupID;       ///<  Definition/Declaration of variable ReagentGroupID
+    QString StationID;       ///<  Definition/Declaration of variable StationID
 }ProgramStationInfo_t;
 
 /****************************************************************************/
@@ -108,10 +108,10 @@ typedef struct
 /****************************************************************************/
 typedef struct
 {
-    qint64 OvenStartHeatingTime;
-    qint64 DelayProgramStartTime;
-    qint64 PauseStartTime;
-    qint64 CurStepSoakStartTime;
+    qint64 OvenStartHeatingTime;       ///<  Definition/Declaration of variable OvenStartHeatingTime
+    qint64 DelayProgramStartTime;       ///<  Definition/Declaration of variable DelayProgramStartTime
+    qint64 PauseStartTime;       ///<  Definition/Declaration of variable PauseStartTime
+    qint64 CurStepSoakStartTime;       ///<  Definition/Declaration of variable CurStepSoakStartTime
 }SchedulerTimeStamps_t;
 
 /****************************************************************************/
@@ -121,8 +121,8 @@ typedef struct
 /****************************************************************************/
 typedef struct
 {
-    QString StationID;
-    int UsedTimes;
+    QString StationID;       ///<  Definition/Declaration of variable StationID
+    int UsedTimes;       ///<  Definition/Declaration of variable UsedTimes
 
 }StationUseRecord_t;
 
@@ -133,12 +133,12 @@ typedef struct
 /****************************************************************************/
 typedef struct
 {
-    CANObjectKeyLUT::CANObjectIdentifier_t FctModID;
-    bool IsAvialable;
-    bool IsWorking;
-    bool IsHealth;
-    qint64 StartTime;
-    qint64 StopTime;
+    CANObjectKeyLUT::CANObjectIdentifier_t FctModID;       ///<  Definition/Declaration of variable FctModID
+    bool IsAvialable;       ///<  Definition/Declaration of variable IsAvialable
+    bool IsWorking;       ///<  Definition/Declaration of variable IsWorking
+    bool IsHealth;       ///<  Definition/Declaration of variable IsHealth
+    qint64 StartTime;       ///<  Definition/Declaration of variable StartTime
+    qint64 StopTime;       ///<  Definition/Declaration of variable StopTime
 }FunctionModuleStatus_t;
 
 
@@ -152,45 +152,45 @@ typedef struct
         Q_OBJECT
 
     private:
-        QTimer m_TickTimer;
-        QMutex m_Mutex;
-        QQueue<Global::CommandShPtr_t> m_SchedulerCmdQueue;
-        QMutex m_MutexDeviceControlCmdQueue;                                        /// < mutex for accessing m_DeviceControlCmdQueue
+        QTimer m_TickTimer;       ///<  Definition/Declaration of variable m_TickTimer
+        QMutex m_Mutex;       ///<  Definition/Declaration of variable m_Mutex
+        QQueue<Global::CommandShPtr_t> m_SchedulerCmdQueue;       ///<  Definition/Declaration of variable m_SchedulerCmdQueue
+        QMutex m_MutexDeviceControlCmdQueue;                                        /// < mutex for accessing m_DeviceControlCmdQueue       ///<  Definition/Declaration of variable m_MutexDeviceControlCmdQueue
         QQueue<Scheduler::SchedulerCommandShPtr_t> m_DeviceControlCmdQueue;                     ///< Queue(Q2) for receive respond from SechedulerCommandProcessor
-        QQueue<ProgramStationInfo_t> m_ProgramStationList;
-        QList<FunctionModuleStatus_t> m_FunctionModuleStatusList;
+        QQueue<ProgramStationInfo_t> m_ProgramStationList;       ///<  Definition/Declaration of variable m_ProgramStationList
+        QList<FunctionModuleStatus_t> m_FunctionModuleStatusList;       ///<  Definition/Declaration of variable m_FunctionModuleStatusList
 
-        QThread* m_SchedulerCommandProcessorThread;
-        SchedulerCommandProcessorBase* m_SchedulerCommandProcessor;
-        CSchedulerStateMachine* m_SchedulerMachine;
-        DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;
-        DataManager::CDataManager       *mp_DataManager;
-        int m_CurProgramStepIndex, m_FirstProgramStepIndex;
-        QString m_CurReagnetName;
-        ProgramStepInfor m_CurProgramStepInfo;
-        QString m_CurProgramID;
-        QString m_NewProgramID;
-        qreal m_PressureAL;
-        qreal m_TempALLevelSensor;
-        qreal m_TempALTube1;
-        qreal m_TempALTube2;
-        qreal m_TempRV1;
-        qreal m_TempRV2;
-        RVPosition_t m_PositionRV;
-        qreal m_TempRTBottom;
-        qreal m_TempRTSide;
-        qreal m_TempOvenBottom;
-        qreal m_TempOvenTop;
-        quint16 m_OvenLidStatus;
-        quint16 m_RetortLockStatus;
-        QStringList m_UsedStationIDs;                                                 ///in a whole of program processing
+        QThread* m_SchedulerCommandProcessorThread;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessorThread
+        SchedulerCommandProcessorBase* m_SchedulerCommandProcessor;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessor
+        CSchedulerStateMachine* m_SchedulerMachine;       ///<  Definition/Declaration of variable m_SchedulerMachine
+        DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;       ///<  Definition/Declaration of variable mp_IDeviceProcessing
+        DataManager::CDataManager       *mp_DataManager;       ///<  Definition/Declaration of variable mp_DataManager
+        int m_CurProgramStepIndex, m_FirstProgramStepIndex;       ///<  Definition/Declaration of variable m_CurProgramStepIndex       ///<  Definition/Declaration of variable m_CurProgramStepIndex
+        QString m_CurReagnetName;       ///<  Definition/Declaration of variable m_CurReagnetName
+        ProgramStepInfor m_CurProgramStepInfo;       ///<  Definition/Declaration of variable m_CurProgramStepInfo
+        QString m_CurProgramID;       ///<  Definition/Declaration of variable m_CurProgramID
+        QString m_NewProgramID;       ///<  Definition/Declaration of variable m_NewProgramID
+        qreal m_PressureAL;       ///<  Definition/Declaration of variable m_PressureAL
+        qreal m_TempALLevelSensor;       ///<  Definition/Declaration of variable m_TempALLevelSensor
+        qreal m_TempALTube1;       ///<  Definition/Declaration of variable m_TempALTube1
+        qreal m_TempALTube2;       ///<  Definition/Declaration of variable m_TempALTube2
+        qreal m_TempRV1;       ///<  Definition/Declaration of variable m_TempRV1
+        qreal m_TempRV2;       ///<  Definition/Declaration of variable m_TempRV2
+        RVPosition_t m_PositionRV;       ///<  Definition/Declaration of variable m_PositionRV
+        qreal m_TempRTBottom;       ///<  Definition/Declaration of variable m_TempRTBottom
+        qreal m_TempRTSide;       ///<  Definition/Declaration of variable m_TempRTSide
+        qreal m_TempOvenBottom;       ///<  Definition/Declaration of variable m_TempOvenBottom
+        qreal m_TempOvenTop;       ///<  Definition/Declaration of variable m_TempOvenTop
+        quint16 m_OvenLidStatus;       ///<  Definition/Declaration of variable m_OvenLidStatus
+        quint16 m_RetortLockStatus;       ///<  Definition/Declaration of variable m_RetortLockStatus
+        QStringList m_UsedStationIDs;                                                 ///in a whole of program processing       ///<  Definition/Declaration of variable m_UsedStationIDs
         SchedulerTimeStamps_t m_TimeStamps;
-        QList<QString> m_StationList;
-        QString m_ReagentIdOfLastStep;
-        bool m_PauseToBeProcessed;
-        int m_ProcessCassetteCount;
-        quint32 m_EventKey; //todo: add mechanism to cash the key
-        QSharedPointer<HeatingStrategy> mp_HeatingStrategy;
+        QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
+        QString m_ReagentIdOfLastStep;       ///<  Definition/Declaration of variable m_ReagentIdOfLastStep
+        bool m_PauseToBeProcessed;       ///<  Definition/Declaration of variable m_PauseToBeProcessed
+        int m_ProcessCassetteCount;       ///<  Definition/Declaration of variable m_ProcessCassetteCount
+        quint32 m_EventKey; //todo: add mechanism to cash the key       ///<  Definition/Declaration of variable m_EventKey
+        QSharedPointer<HeatingStrategy> mp_HeatingStrategy;       ///<  Definition/Declaration of variable mp_HeatingStrategy
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         const SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
@@ -200,15 +200,78 @@ typedef struct
          */
         /****************************************************************************/
         virtual void RegisterCommands();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function HardwareMonitor
+         *
+         *  \return from HardwareMonitor
+         */
+        /****************************************************************************/
         void HardwareMonitor(const QString& StepID);
         //process commands, like: program Start, Pause, Abort.
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function ProcessNonDeviceCommand
+         *
+         *  \return from ProcessNonDeviceCommand
+         */
+        /****************************************************************************/
         void ProcessNonDeviceCommand();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function PeekNonDeviceCommand
+         *
+         *  \return from PeekNonDeviceCommand
+         */
+        /****************************************************************************/
         ControlCommandType_t PeekNonDeviceCommand();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function DequeueNonDeviceCommand
+         *
+         *  \return from DequeueNonDeviceCommand
+         */
+        /****************************************************************************/
         void DequeueNonDeviceCommand();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetReagentName
+         *
+         *  \return from GetReagentName
+         */
+        /****************************************************************************/
         QString GetReagentName(const QString& ReagentID);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetReagentGroupID
+         *
+         *  \return from GetReagentGroupID
+         */
+        /****************************************************************************/
         QString GetReagentGroupID(const QString& ReagentID);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetScenarioBySchedulerState
+         *
+         *  \return from GetScenarioBySchedulerState
+         */
+        /****************************************************************************/
         qint32 GetScenarioBySchedulerState(SchedulerStateMachine_t State, QString ReagentGroup);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function IsCleaningReagent
+         *
+         *  \return from IsCleaningReagent
+         */
+        /****************************************************************************/
         bool IsCleaningReagent(const QString& ReagentID);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function UpdateStationReagentStatus
+         *
+         *  \return from UpdateStationReagentStatus
+         */
+        /****************************************************************************/
         void UpdateStationReagentStatus();
 
         /****************************************************************************/
@@ -218,35 +281,162 @@ typedef struct
          */
         /****************************************************************************/
          bool GetNextProgramStepInformation(const QString& ProgramID, ProgramStepInfor& ProgramStepInfor, bool onlyGetFirstProgramStepIndex = false);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function GetLeftProgramStepsNeededTime
+          *
+          *  \return from GetLeftProgramStepsNeededTime
+          */
+         /****************************************************************************/
          quint32 GetLeftProgramStepsNeededTime(const QString& ProgramID, int SpecifiedStepIndex = -1);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function GetCurrentProgramStepNeededTime
+          *
+          *  \return from GetCurrentProgramStepNeededTime
+          */
+         /****************************************************************************/
          quint32 GetCurrentProgramStepNeededTime(const QString& ProgramID);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function PrepareProgramStationList
+          *
+          *  \return from PrepareProgramStationList
+          */
+         /****************************************************************************/
          bool PrepareProgramStationList(const QString& ProgramID, int beginStep = 0);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function SelectStationFromReagentID
+          *
+          *  \return from SelectStationFromReagentID
+          */
+         /****************************************************************************/
          QString SelectStationFromReagentID(const QString& ReagentID,
                                            ListOfIDs_t& unusedStationIDs,
                                            QList<StationUseRecord_t>& usedStations,
                                            bool IsLastStep);
 
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function SelectStationByReagent
+          *
+          *  \return from SelectStationByReagent
+          */
+         /****************************************************************************/
          QString SelectStationByReagent(const DataManager::CReagent* pReagent,
                                                                              ListOfIDs_t& unusedStationIDs,
                                                                              QList<StationUseRecord_t>& usedStations,
                                                                              bool bFindNewestOne,
                                                                              Global::RMSOptions_t rmsMode) const;
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function GetStationIDFromProgramStep
+          *
+          *  \return from GetStationIDFromProgramStep
+          */
+         /****************************************************************************/
          QString GetStationIDFromProgramStep(int ProgramStepIndex);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function GetRVTubePositionByStationID
+          *
+          *  \return from GetRVTubePositionByStationID
+          */
+         /****************************************************************************/
          RVPosition_t GetRVTubePositionByStationID(const QString stationID);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function GetRVSealPositionByStationID
+          *
+          *  \return from GetRVSealPositionByStationID
+          */
+         /****************************************************************************/
          RVPosition_t GetRVSealPositionByStationID(const QString stationID);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function IsLastStep
+          *
+          *  \return from IsLastStep
+          */
+         /****************************************************************************/
          bool IsLastStep(int currentStepIndex,const QString& currentProgramID);
          bool GetSafeReagentStationList(const QString& reagentGroupID, QList<QString>& stationList);
          int WhichStepHasNoSafeReagent(const QString& ProgramID);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function CreateFunctionModuleStatusList
+          *
+          *  \return from CreateFunctionModuleStatusList
+          */
+         /****************************************************************************/
          bool CreateFunctionModuleStatusList(QList<FunctionModuleStatus_t>* pList);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function SetFunctionModuleWork
+          *
+          *  \return from SetFunctionModuleWork
+          */
+         /****************************************************************************/
          bool SetFunctionModuleWork(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID, bool isWorking);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function SetFunctionModuleHealth
+          *
+          *  \return from SetFunctionModuleHealth
+          */
+         /****************************************************************************/
          bool SetFunctionModuleHealth(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID, bool isHealth);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function SetFunctionModuleStarttime
+          *
+          *  \return from SetFunctionModuleStarttime
+          */
+         /****************************************************************************/
          bool SetFunctionModuleStarttime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function SetFunctionModuleStoptime
+          *
+          *  \return from SetFunctionModuleStoptime
+          */
+         /****************************************************************************/
          bool SetFunctionModuleStoptime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function GetFailedFunctionModuleList
+          *
+          *  \return from GetFailedFunctionModuleList
+          */
+         /****************************************************************************/
          QList<FunctionModuleStatus_t> GetFailedFunctionModuleList(QList<FunctionModuleStatus_t>* pList);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function GetFunctionModuleStartworkTime
+          *
+          *  \return from GetFunctionModuleStartworkTime
+          */
+         /****************************************************************************/
          qint64 GetFunctionModuleStartworkTime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
 signals:
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of signal signalProgramStart
+          */
+         /****************************************************************************/
          void signalProgramStart(const QString& ProgramID);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of signal signalProgramPause
+          */
+         /****************************************************************************/
          void signalProgramPause();
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of signal signalProgramAbort
+          */
+         /****************************************************************************/
          void signalProgramAbort();
 
 private slots:
@@ -313,8 +503,29 @@ protected:
 //        void OnRaiseAlarmLocalRemote(Global::tRefType Ref, const HimalayaErrorHandler::CmdRaiseAlarm &Cmd);
 
         void OnProgramAction(Global::tRefType Ref, const MsgClasses::CmdProgramAction& Cmd);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function OnKeepCassetteCount
+         *
+         *  \return from OnKeepCassetteCount
+         */
+        /****************************************************************************/
         void OnKeepCassetteCount(Global::tRefType Ref, const MsgClasses::CmdKeepCassetteCount & Cmd);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function OnProgramSelected
+         *
+         *  \return from OnProgramSelected
+         */
+        /****************************************************************************/
         void OnProgramSelected(Global::tRefType Ref, const MsgClasses::CmdProgramSelected& Cmd);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function OnQuitAppShutdown
+         *
+         *  \return from OnQuitAppShutdown
+         */
+        /****************************************************************************/
         void OnQuitAppShutdown(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdown& Cmd);
     public:
         /****************************************************************************/
@@ -362,7 +573,21 @@ protected:
         /****************************************************************************/
         virtual void CleanupAndDestroyObjects();
 
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function OnActionCommandReceived
+         *
+         *  \return from OnActionCommandReceived
+         */
+        /****************************************************************************/
         void OnActionCommandReceived(Global::tRefType Ref, const NetCommands::CmdSystemAction &Cmd);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function DataManager
+         *
+         *  \return from DataManager
+         */
+        /****************************************************************************/
         void DataManager(DataManager::CDataManager *p_DataManager);
 
         /****************************************************************************/
@@ -387,7 +612,21 @@ protected:
         /****************************************************************************/
         qint64 GetOvenHeatingTime();
 
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetCurProgramID
+         *
+         *  \return from GetCurProgramID
+         */
+        /****************************************************************************/
         QString& GetCurProgramID() {return m_CurProgramID; }
+		/****************************************************************************/
+		/*!
+		 *  \brief  Definition/Declaration of function GetCurProgramStepIndex
+		 *
+		 *  \return from GetCurProgramStepIndex
+		 */
+		/****************************************************************************/
 		int	GetCurProgramStepIndex() { return m_CurProgramStepIndex; }
         /****************************************************************************/
         /**

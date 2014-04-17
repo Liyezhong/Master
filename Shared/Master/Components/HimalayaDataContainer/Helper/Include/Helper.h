@@ -36,12 +36,26 @@ namespace DataManager {
 class XmlStartElementReaderHelper
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function XmlStartElementReaderHelper
+     *
+     *  \return from XmlStartElementReaderHelper
+     */
+    /****************************************************************************/
     XmlStartElementReaderHelper(QXmlStreamReader &reader);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsValid
+     *
+     *  \return from IsValid
+     */
+    /****************************************************************************/
     bool IsValid(void);
 
 private:
-    bool m_NonEnd;
+    bool m_NonEnd;       ///<  Definition/Declaration of variable m_NonEnd
 };
 
 /****************************************************************************/
@@ -52,15 +66,29 @@ private:
 class XmlElementReaderHelper
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function XmlElementReaderHelper
+     *
+     *  \return from XmlElementReaderHelper
+     */
+    /****************************************************************************/
     XmlElementReaderHelper(QXmlStreamReader &reader, bool *hasChildren = 0);
     ~XmlElementReaderHelper(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsEnd
+     *
+     *  \return from IsEnd
+     */
+    /****************************************************************************/
     bool IsEnd(void);
 
 private:
-    QXmlStreamReader &m_Reader;
-    bool             *m_HasChildren;
-    bool              m_IsEnd;
+    QXmlStreamReader &m_Reader;       ///<  Definition/Declaration of variable m_Reader
+    bool             *m_HasChildren;       ///<  Definition/Declaration of variable m_HasChildren
+    bool              m_IsEnd;       ///<  Definition/Declaration of variable m_IsEnd
 };
 
 /****************************************************************************/
@@ -71,12 +99,19 @@ private:
 class XmlElementWriterHelper
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function XmlElementWriterHelper
+     *
+     *  \return from XmlElementWriterHelper
+     */
+    /****************************************************************************/
     XmlElementWriterHelper(QXmlStreamWriter &writer, const QString &elementName);
 
     ~XmlElementWriterHelper(void);
 
 private:
-    QXmlStreamWriter &m_Writer;
+    QXmlStreamWriter &m_Writer;       ///<  Definition/Declaration of variable m_Writer
 };
 
 /****************************************************************************/
@@ -87,12 +122,19 @@ private:
 class XmlDocumentWriterHelper
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function XmlDocumentWriterHelper
+     *
+     *  \return from XmlDocumentWriterHelper
+     */
+    /****************************************************************************/
     XmlDocumentWriterHelper(QXmlStreamWriter &writer);
 
     ~XmlDocumentWriterHelper(void);
 
 private:
-    QXmlStreamWriter &m_Writer;
+    QXmlStreamWriter &m_Writer;       ///<  Definition/Declaration of variable m_Writer
 };
 
 typedef enum
@@ -104,16 +146,58 @@ typedef enum
     HAS_CHILDREN
 } XmlReadErrorType_t;
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function ReadAttributesOfElement
+ *
+ *  \return from ReadAttributesOfElement
+ */
+/****************************************************************************/
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function ReadAttributesOfElement
+ *
+ *  \return from ReadAttributesOfElement
+ */
+/****************************************************************************/
 XmlReadErrorType_t ReadAttributesOfElement(const QString     &elementName,
                                            const QStringList &attributeNameList,
                                            QXmlStreamReader  &reader,
                                            QStringList       &attributeList);
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function ReadAttributesOfElement
+ *
+ *  \return from ReadAttributesOfElement
+ */
+/****************************************************************************/
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function ReadAttributesOfElement
+ *
+ *  \return from ReadAttributesOfElement
+ */
+/****************************************************************************/
 XmlReadErrorType_t ReadAttributesOfElement(const QString     &elementName,
                                            QXmlStreamReader  &reader,
                                            QStringList       &attributeNameList,
                                            QStringList       &attributeList);
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function WriteElementWithAttributes
+ *
+ *  \return from WriteElementWithAttributes
+ */
+/****************************************************************************/
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function WriteElementWithAttributes
+ *
+ *  \return from WriteElementWithAttributes
+ */
+/****************************************************************************/
 void WriteElementWithAttributes(const QString     &elementName,
                                 const QStringList &attributeNameList,
                                 const QStringList &attributeList,

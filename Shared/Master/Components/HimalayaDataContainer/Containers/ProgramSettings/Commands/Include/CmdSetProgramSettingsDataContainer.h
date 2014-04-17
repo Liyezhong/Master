@@ -17,14 +17,28 @@ class CmdSetProgramSettingsDataContainer : public Global::Command
 private:
     static int  m_CmdTimeout;   ///< The allowed timeout for this command.
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdSetProgramSettingsDataContainer
+     *
+     *  \return from CmdSetProgramSettingsDataContainer
+     */
+    /****************************************************************************/
     CmdSetProgramSettingsDataContainer(const CmdSetProgramSettingsDataContainer &);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function operator=
+     *
+     *  \return from operator=
+     */
+    /****************************************************************************/
     const CmdSetProgramSettingsDataContainer & operator = (const CmdSetProgramSettingsDataContainer &);
 
 protected:
 
 public:
     static QString  NAME;           ///< Command name.
-    DataManager::CProgramSettings m_ProgramSettings;
+    DataManager::CProgramSettings m_ProgramSettings;       ///<  Definition/Declaration of variable m_ProgramSettings
 
     /****************************************************************************/
     /**

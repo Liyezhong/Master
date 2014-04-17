@@ -34,6 +34,13 @@ namespace Scheduler{
 class CmdRVSetTempCtrlOFF : public CmdSchedulerCommandBase
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdRVSetTempCtrlOFF
+     *
+     *  \return from CmdRVSetTempCtrlOFF
+     */
+    /****************************************************************************/
     CmdRVSetTempCtrlOFF(int Timeout, SchedulerMainThreadController *controller);
     ~CmdRVSetTempCtrlOFF();
 
@@ -42,11 +49,46 @@ public:
 
     QString GetName() const{return NAME;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetResult
+     *
+     *  \return from GetResult
+     */
+    /****************************************************************************/
     DeviceControl::ReturnCode_t GetResult()const {return m_result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetResult
+	 *
+	 *  \return from SetResult
+	 */
+	/****************************************************************************/
 	void SetResult(DeviceControl::ReturnCode_t result) { m_result = result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \return from GetResult
+	 */
+	/****************************************************************************/
 	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
 	
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetParameters
+	 *
+	 *  \return from GetParameters
+	 */
+	/****************************************************************************/
 	QString GetParameters()const{ return GetName() + QString("()");}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetStrResult
+	 *
+	 *  \return from GetStrResult
+	 */
+	/****************************************************************************/
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
 private:
@@ -55,7 +97,7 @@ private:
     const CmdRVSetTempCtrlOFF & operator = (const CmdRVSetTempCtrlOFF &); ///< Not implemented.
 
 
-	mutable DeviceControl::ReturnCode_t m_result;
+	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
 	
 };
 

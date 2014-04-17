@@ -147,8 +147,22 @@ public:
     bool DeleteReagentGroup(const QString StepID);   // uses unique step ID
     bool DeleteReagentGroup(const unsigned int Index);  // uses order index
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetReagentGroupIndex
+     *
+     *  \return from GetReagentGroupIndex
+     */
+    /****************************************************************************/
     qint32 GetReagentGroupIndex(const QString& GroupID) { return m_OrderedListOfReagentGroupIDs.indexOf(GroupID); }   // uses unique group ID
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function UpdateOnLanguageChanged
+     *
+     *  \return from UpdateOnLanguageChanged
+     */
+    /****************************************************************************/
     void UpdateOnLanguageChanged();
 
 private:

@@ -56,6 +56,13 @@ public:
     CDataProgramList& operator=(const CDataProgramList&);
 
     void Init();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function UpdateOnLanguageChanged
+     *
+     *  \return from UpdateOnLanguageChanged
+     */
+    /****************************************************************************/
     void UpdateOnLanguageChanged();
 
     /****************************************************************************/

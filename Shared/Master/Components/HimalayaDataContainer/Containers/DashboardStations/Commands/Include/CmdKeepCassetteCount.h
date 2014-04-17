@@ -41,9 +41,23 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdKeepCassetteCount
+     *
+     *  \return from CmdKeepCassetteCount
+     */
+    /****************************************************************************/
     CmdKeepCassetteCount(int Timeout, int CassetteCount);
     ~CmdKeepCassetteCount();
     virtual QString GetName() const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CassetteCount
+     *
+     *  \return from CassetteCount
+     */
+    /****************************************************************************/
     inline int CassetteCount()const {return m_CassetteCount;}
 
 
@@ -51,7 +65,7 @@ private:
     CmdKeepCassetteCount(const CmdKeepCassetteCount &);                     ///< Not implemented.
     const CmdKeepCassetteCount & operator = (const CmdKeepCassetteCount &); ///< Not implemented.
 private:
-    int      m_CassetteCount;
+    int      m_CassetteCount;       ///<  Definition/Declaration of variable m_CassetteCount
 }; // end class CmdKeepCassetteCount
 
 /****************************************************************************/

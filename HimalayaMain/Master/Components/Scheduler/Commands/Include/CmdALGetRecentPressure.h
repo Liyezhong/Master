@@ -34,6 +34,13 @@ namespace Scheduler{
 class CmdALGetRecentPressure : public CmdSchedulerCommandBase
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdALGetRecentPressure
+     *
+     *  \return from CmdALGetRecentPressure
+     */
+    /****************************************************************************/
     CmdALGetRecentPressure(int Timeout, SchedulerMainThreadController *controller);
     ~CmdALGetRecentPressure();
 
@@ -42,13 +49,62 @@ public:
 
     QString GetName() const{return NAME;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetResult
+     *
+     *  \return from GetResult
+     */
+    /****************************************************************************/
     qreal GetResult()const {return m_result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetResult
+	 *
+	 *  \return from SetResult
+	 */
+	/****************************************************************************/
 	void SetResult(qreal result) { m_result = result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \return from GetResult
+	 */
+	/****************************************************************************/
 	bool GetResult(qreal& result) const{result = m_result; return true;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetIndex
+	 *
+	 *  \return from GetIndex
+	 */
+	/****************************************************************************/
 	quint8 GetIndex(){return m_Index;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetIndex
+	 *
+	 *  \return from SetIndex
+	 */
+	/****************************************************************************/
 	void SetIndex(quint8 Index){m_Index = Index;}
 	
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetParameters
+	 *
+	 *  \return from GetParameters
+	 */
+	/****************************************************************************/
 	QString GetParameters()const{ return GetName() + QString("(%1)").arg(m_Index);}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetStrResult
+	 *
+	 *  \return from GetStrResult
+	 */
+	/****************************************************************************/
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
 private:
@@ -57,8 +113,8 @@ private:
     const CmdALGetRecentPressure & operator = (const CmdALGetRecentPressure &); ///< Not implemented.
 
 
-	mutable qreal m_result;
-	mutable quint8 m_Index;
+	mutable qreal m_result;       ///<  Definition/Declaration of variable m_result
+	mutable quint8 m_Index;       ///<  Definition/Declaration of variable m_Index
 	
 };
 

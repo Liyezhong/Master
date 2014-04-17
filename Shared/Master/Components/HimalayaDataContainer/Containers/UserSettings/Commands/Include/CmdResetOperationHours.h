@@ -33,7 +33,17 @@ namespace MsgClasses {
 /****************************************************************************/
 class CmdResetOperationHours : public Global::Command
 {
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of friend operator<<
+     */
+    /****************************************************************************/
     friend QDataStream & operator << (QDataStream &, const CmdResetOperationHours &);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of friend operator>>
+     */
+    /****************************************************************************/
     friend QDataStream & operator >> (QDataStream &, CmdResetOperationHours &);
 
 public:
@@ -43,6 +53,13 @@ public:
     ~CmdResetOperationHours(void);
 
     virtual QString GetName(void) const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetOperationHoursType
+     *
+     *  \return from ResetOperationHoursType
+     */
+    /****************************************************************************/
     inline DataManager::ResetOperationHoursType_t ResetOperationHoursType() const {return m_ResetOperationHoursType;}
 
     static QString NAME; ///< Command name.
@@ -50,9 +67,16 @@ public:
 private:
     CmdResetOperationHours(const CmdResetOperationHours &); ///< Not implemented.
     const CmdResetOperationHours &operator = (const CmdResetOperationHours &); ///< Not implemented.
-    DataManager::ResetOperationHoursType_t m_ResetOperationHoursType;
+    DataManager::ResetOperationHoursType_t m_ResetOperationHoursType;       ///<  Definition/Declaration of variable m_ResetOperationHoursType
  }; // end class CmdResetOperationHours
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function operator<<
+ *
+ *  \return from operator<<
+ */
+/****************************************************************************/
 inline QDataStream & operator << (QDataStream &Stream, const CmdResetOperationHours &Cmd)
 {
     // copy base class data
@@ -61,6 +85,13 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdResetOperationHo
     return Stream;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function operator>>
+ *
+ *  \return from operator>>
+ */
+/****************************************************************************/
 inline QDataStream & operator >> (QDataStream &Stream, CmdResetOperationHours &Cmd)
 {
     // copy base class data

@@ -43,7 +43,7 @@ private:
     const CmdSystemState & operator = (const CmdSystemState &);   ///< Not implemented.
 
 public:
-     quint32 m_StateId;
+     quint32 m_StateId;       ///<  Definition/Declaration of variable m_StateId
 
 
 }; // end class CmdSystemState

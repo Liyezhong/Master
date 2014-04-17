@@ -34,6 +34,13 @@ namespace Scheduler{
 class CmdIDBottleCheck : public CmdSchedulerCommandBase
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdIDBottleCheck
+     *
+     *  \return from CmdIDBottleCheck
+     */
+    /****************************************************************************/
     CmdIDBottleCheck(int Timeout, SchedulerMainThreadController *controller);
     ~CmdIDBottleCheck();
 
@@ -42,15 +49,78 @@ public:
 
     QString GetName() const{return NAME;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetResult
+     *
+     *  \return from GetResult
+     */
+    /****************************************************************************/
     DeviceControl::ReturnCode_t GetResult()const {return m_result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetResult
+	 *
+	 *  \return from SetResult
+	 */
+	/****************************************************************************/
 	void SetResult(DeviceControl::ReturnCode_t result) { m_result = result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \return from GetResult
+	 */
+	/****************************************************************************/
 	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetReagentGrpID
+	 *
+	 *  \return from GetReagentGrpID
+	 */
+	/****************************************************************************/
 	QString GetReagentGrpID(){return m_ReagentGrpID;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetReagentGrpID
+	 *
+	 *  \return from SetReagentGrpID
+	 */
+	/****************************************************************************/
 	void SetReagentGrpID(QString ReagentGrpID){m_ReagentGrpID = ReagentGrpID;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetTubePos
+	 *
+	 *  \return from GetTubePos
+	 */
+	/****************************************************************************/
 	DeviceControl::RVPosition_t GetTubePos(){return m_TubePos;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetTubePos
+	 *
+	 *  \return from SetTubePos
+	 */
+	/****************************************************************************/
 	void SetTubePos(DeviceControl::RVPosition_t TubePos){m_TubePos = TubePos;}
 	
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetParameters
+	 *
+	 *  \return from GetParameters
+	 */
+	/****************************************************************************/
 	QString GetParameters()const{ return GetName() + QString("(%1,%2)").arg(m_ReagentGrpID).arg(m_TubePos);}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetStrResult
+	 *
+	 *  \return from GetStrResult
+	 */
+	/****************************************************************************/
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
 private:
@@ -59,9 +129,9 @@ private:
     const CmdIDBottleCheck & operator = (const CmdIDBottleCheck &); ///< Not implemented.
 
 
-	mutable DeviceControl::ReturnCode_t m_result;
-	mutable QString m_ReagentGrpID;
-	mutable DeviceControl::RVPosition_t m_TubePos;
+	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
+	mutable QString m_ReagentGrpID;       ///<  Definition/Declaration of variable m_ReagentGrpID
+	mutable DeviceControl::RVPosition_t m_TubePos;       ///<  Definition/Declaration of variable m_TubePos
 	
 };
 

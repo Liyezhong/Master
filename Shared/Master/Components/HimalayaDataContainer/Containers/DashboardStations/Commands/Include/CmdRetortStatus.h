@@ -41,16 +41,30 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdRetortStatus
+     *
+     *  \return from CmdRetortStatus
+     */
+    /****************************************************************************/
     CmdRetortStatus(int timeout, DataManager::RetortStatusType_t retortStatusType);
     ~CmdRetortStatus();
     virtual QString GetName() const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function RetortStatusType
+     *
+     *  \return from RetortStatusType
+     */
+    /****************************************************************************/
     inline DataManager::RetortStatusType_t RetortStatusType() const {return m_RetortStatusType;} 
     
 private:
     CmdRetortStatus(const CmdRetortStatus &);                     ///< Not implemented.
     const CmdRetortStatus & operator = (const CmdRetortStatus &); ///< Not implemented.
 private:
-    DataManager::RetortStatusType_t m_RetortStatusType;
+    DataManager::RetortStatusType_t m_RetortStatusType;       ///<  Definition/Declaration of variable m_RetortStatusType
     
 }; // end class CmdRetortStatus
 

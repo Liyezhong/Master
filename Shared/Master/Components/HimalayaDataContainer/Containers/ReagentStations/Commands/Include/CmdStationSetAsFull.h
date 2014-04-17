@@ -32,9 +32,26 @@ namespace MsgClasses {
 /****************************************************************************/
 class CmdStationSetAsFull : public Global::Command
 {
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of friend operator<<
+     */
+    /****************************************************************************/
     friend QDataStream & operator << (QDataStream &, const CmdStationSetAsFull &);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of friend operator>>
+     */
+    /****************************************************************************/
     friend QDataStream & operator >> (QDataStream &, CmdStationSetAsFull &);
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdStationSetAsFull
+     *
+     *  \return from CmdStationSetAsFull
+     */
+    /****************************************************************************/
     CmdStationSetAsFull(int timeOut, const QString& stationID);
     CmdStationSetAsFull(void);
 
@@ -42,14 +59,42 @@ public:
 
     virtual QString GetName(void) const;
 
-    static QString NAME;
+    static QString NAME;       ///<  Definition/Declaration of variable NAME
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function StationID
+     *
+     *  \return from StationID
+     */
+    /****************************************************************************/
     inline const QString StationID() const { return m_StationID; }
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdStationSetAsFull
+     *
+     *  \return from CmdStationSetAsFull
+     */
+    /****************************************************************************/
     CmdStationSetAsFull(const CmdStationSetAsFull &);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function operator=
+     *
+     *  \return from operator=
+     */
+    /****************************************************************************/
     const CmdStationSetAsFull &operator = (const CmdStationSetAsFull &);
-    QString m_StationID;
+    QString m_StationID;       ///<  Definition/Declaration of variable m_StationID
 }; // end class CmdStationSetAsFull
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function operator<<
+ *
+ *  \return from operator<<
+ */
+/****************************************************************************/
 inline QDataStream & operator << (QDataStream &Stream, const CmdStationSetAsFull &Cmd)
 {
     // copy base class data
@@ -59,6 +104,13 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdStationSetAsFull
     return Stream;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function operator>>
+ *
+ *  \return from operator>>
+ */
+/****************************************************************************/
 inline QDataStream & operator >> (QDataStream &Stream, CmdStationSetAsFull &Cmd)
 {
     // copy base class data

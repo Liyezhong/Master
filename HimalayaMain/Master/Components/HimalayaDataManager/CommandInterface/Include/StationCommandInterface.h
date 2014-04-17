@@ -43,22 +43,57 @@ public:
 private:
     void RegisterCommands();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ChangeReagentInStation
+     *
+     *  \return from ChangeReagentInStation
+     */
+    /****************************************************************************/
     void ChangeReagentInStation(Global::tRefType,
                                  const MsgClasses::CmdStationChangeReagent &,
                                  Threads::CommandChannel &);
 
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of function ResetStationData
+      *
+      *  \return from ResetStationData
+      */
+     /****************************************************************************/
      void ResetStationData(Global::tRefType,
                            const MsgClasses::CmdStationResetData &,
                            Threads::CommandChannel &);
 
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of function SetStationAsFull
+      *
+      *  \return from SetStationAsFull
+      */
+     /****************************************************************************/
      void SetStationAsFull(Global::tRefType,
                            const MsgClasses::CmdStationSetAsFull &,
                            Threads::CommandChannel &);
 
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of function SetStationAsEmpty
+      *
+      *  \return from SetStationAsEmpty
+      */
+     /****************************************************************************/
      void SetStationAsEmpty(Global::tRefType,
                             const MsgClasses::CmdStationSetAsEmpty &Cmd,
                             Threads::CommandChannel &);
 
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of function UpdateStationReagentStatus
+      *
+      *  \return from UpdateStationReagentStatus
+      */
+     /****************************************************************************/
      void UpdateStationReagentStatus(Global::tRefType,
                             const MsgClasses::CmdUpdateStationReagentStatus& Cmd,
                             Threads::CommandChannel &);

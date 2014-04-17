@@ -57,7 +57,7 @@ private:
     QReadWriteLock* mp_ReadWriteLock;           //!< Reade Write lock
 
 
-    ListOfIDs_t m_OrderedListOfReagentColorIDs;
+    ListOfIDs_t m_OrderedListOfReagentColorIDs;       ///<  Definition/Declaration of variable m_OrderedListOfReagentColorIDs
 
     ErrorMap_t m_ErrorHash;    //!< Event List for GUI and for logging purpose. This member is not copied when using copy constructor/Assignment operator
 
@@ -68,6 +68,13 @@ private:
     bool DeleteAllReagentsGroupColor();
     bool DeleteReagentGroupColor(const unsigned int Index);
     bool DeleteReagentGroupColor(const QString ID);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CheckForUniqueName
+     *
+     *  \return from CheckForUniqueName
+     */
+    /****************************************************************************/
     bool CheckForUniqueName(QString ID, QString ReagentName);
     bool ReadCompleteData(QXmlStreamReader& XmlStreamReader);
 
@@ -96,6 +103,13 @@ public:
 
     bool Read(QString Filename);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetCReagentGroupColor
+     *
+     *  \return from GetCReagentGroupColor
+     */
+    /****************************************************************************/
     CReagentGroupColor* GetCReagentGroupColor(const QString ID) {return m_ReagentGroupColorList.value(ID, NULL);}  // uses unique step ID
 
     bool AddReagentColorGroup (const CReagentGroupColor* p_ReagentGroupColor);

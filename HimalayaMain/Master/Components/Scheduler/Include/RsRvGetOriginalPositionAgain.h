@@ -38,12 +38,27 @@ public:
     SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal RvMoveToInitPosition
+     */
+    /****************************************************************************/
     void RvMoveToInitPosition();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal RvMoveToInitPositionFinished
+     */
+    /****************************************************************************/
     void RvMoveToInitPositionFinished();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal OnRvMoveToInitPosition
+     */
+    /****************************************************************************/
     void OnRvMoveToInitPosition();
 
 private:
-    QState *mp_RvMovingToInitialPosition;
+    QState *mp_RvMovingToInitialPosition;       ///<  Definition/Declaration of variable mp_RvMovingToInitialPosition
 };
 }
 #endif // RSRVGETORIGINALPOSITIONAGAIN_H

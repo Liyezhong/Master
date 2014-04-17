@@ -46,7 +46,21 @@ public:
     ~CmdProgramUpdate();
     virtual QString GetName() const;
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetProgramColorReplaced
+     *
+     *  \return from SetProgramColorReplaced
+     */
+    /****************************************************************************/
     void SetProgramColorReplaced(bool ColorReplaced) { m_ProgramColorReplaced = ColorReplaced; }
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetProgramColorReplaced
+     *
+     *  \return from GetProgramColorReplaced
+     */
+    /****************************************************************************/
     bool GetProgramColorReplaced() const { return m_ProgramColorReplaced;}
 
     /****************************************************************************/
@@ -56,14 +70,21 @@ public:
      **/
     /****************************************************************************/
     QByteArray const & GetProgramData() const { return m_ProgramByteArray;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetColorAssignedProgramData
+     *
+     *  \return from GetColorAssignedProgramData
+     */
+    /****************************************************************************/
     QByteArray const & GetColorAssignedProgramData() const { return m_ColorAssignedProgramByteArray;}
 
 private:
     CmdProgramUpdate(const CmdProgramUpdate &);                     ///< Not implemented.
     const CmdProgramUpdate & operator = (const CmdProgramUpdate &); ///< Not implemented.
     QByteArray m_ProgramByteArray;//!< Byte Array filled with Program data
-    QByteArray m_ColorAssignedProgramByteArray;
-    bool m_ProgramColorReplaced;
+    QByteArray m_ColorAssignedProgramByteArray;       ///<  Definition/Declaration of variable m_ColorAssignedProgramByteArray
+    bool m_ProgramColorReplaced;       ///<  Definition/Declaration of variable m_ProgramColorReplaced
 }; // end class CmdProgramUpdate
 
 /****************************************************************************/

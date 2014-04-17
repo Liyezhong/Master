@@ -38,7 +38,7 @@ class CProgramBase
 
 protected:
     QString m_Name;                     //!<  program name
-    QString m_NameID;
+    QString m_NameID;       ///<  Definition/Declaration of variable m_NameID       ///<  Definition/Declaration of variable m_NameID
 
     ListOfIDs_t m_OrderedListOfStepIDs; //!< Ordered list of step id's
     QString m_ID;                               //!< program ID

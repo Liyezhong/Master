@@ -39,14 +39,21 @@ namespace DataManager{
 /****************************************************************************/
 
 typedef struct {
-    QString key;
-    QString position;
-    QString	group;
+    QString key;       ///<  Definition/Declaration of variable key
+    QString position;       ///<  Definition/Declaration of variable position
+    QString	group;       ///<  Definition/Declaration of variable group
 } FunctionKey_t;
 typedef QMap<QString,QString> ParameterKeyValue_t;
 typedef QMap<FunctionKey_t,ParameterKeyValue_t> FunctionParameter_t;
 typedef QMap<QString,FunctionParameter_t> DeviceFunction_t;
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function operator<
+ *
+ *  \return from operator<
+ */
+/****************************************************************************/
 inline bool operator <(const FunctionKey_t& key1,const FunctionKey_t& key2)
 {
     return (key1.key+key1.position+key1.group < key2.key+key2.position+key2.group);
@@ -122,10 +129,45 @@ public:
      */
     /****************************************************************************/
     double GetParameterValue(const QString& DeviceKey, const QString& FunctionKey,const QString& ParameterKey, bool& ok);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetParameterValue
+     *
+     *  \return from GetParameterValue
+     */
+    /****************************************************************************/
     double GetParameterValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey,const QString& ParameterKey, bool& ok);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetParameterValue
+     *
+     *  \return from SetParameterValue
+     */
+    /****************************************************************************/
     bool SetParameterValue(const QString& DeviceKey, const QString& FunctionKey, const QString& ParameterKey, double value);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetParameterValue
+     *
+     *  \return from SetParameterValue
+     */
+    /****************************************************************************/
     bool SetParameterValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey, const QString& ParameterKey, double value);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetParameterValue
+     *
+     *  \return from SetParameterValue
+     */
+    /****************************************************************************/
     bool SetParameterValue(const QString& DeviceKey, const QString& FunctionKey,const QString& ParameterKey, const QString& value);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetParameterValue
+     *
+     *  \return from SetParameterValue
+     */
+    /****************************************************************************/
     bool SetParameterValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey, const QString& ParameterKey, const QString& value);
 
 
@@ -135,7 +177,7 @@ private:
     
     QString m_Filename;//!< filename of the XML file to read
 
-    DeviceFunction_t m_Parameters;
+    DeviceFunction_t m_Parameters;       ///<  Definition/Declaration of variable m_Parameters
 
     QReadWriteLock* mp_ReadWriteLock; //!< Lock for thread safety
 
@@ -146,10 +188,31 @@ private:
     bool DeserializeContent(QIODevice& IODevice, bool CompleteData);
 
     bool ReadAllParameters(QXmlStreamReader& XmlStreamReader);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ReadDeviceParameters
+     *
+     *  \return from ReadDeviceParameters
+     */
+    /****************************************************************************/
     bool ReadDeviceParameters(QXmlStreamReader& XmlStreamReader, const QString& DeviceKey);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ReadFunctionParameters
+     *
+     *  \return from ReadFunctionParameters
+     */
+    /****************************************************************************/
     bool ReadFunctionParameters(QXmlStreamReader &XmlStreamReader, const QString& DeviceKey, const FunctionKey_t& FunctionKey);
 
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function WriteAllParameters
+     *
+     *  \return from WriteAllParameters
+     */
+    /****************************************************************************/
     bool WriteAllParameters(QXmlStreamWriter& XmlStreamWriter);
 
     bool DeleteAll();

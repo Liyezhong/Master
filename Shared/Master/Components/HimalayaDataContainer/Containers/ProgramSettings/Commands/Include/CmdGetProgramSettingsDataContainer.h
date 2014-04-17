@@ -24,7 +24,7 @@ protected:
 
 public:
     static QString  NAME;           ///< Command name.
-    DataManager::CProgramSettings m_ProgramSettings;
+    DataManager::CProgramSettings m_ProgramSettings;       ///<  Definition/Declaration of variable m_ProgramSettings
 
     /****************************************************************************/
     /**

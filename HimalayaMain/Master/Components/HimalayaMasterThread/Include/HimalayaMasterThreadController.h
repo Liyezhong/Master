@@ -126,7 +126,7 @@ private:
 
     Threads::CommandChannel         m_CommandChannelGui;                    ///< Command channel for Gui thread controller.
     Threads::CommandChannel         m_CommandChannelSchedulerMain;          ///< Command channel for scheduler main thread controller.
-    Threads::CommandChannel         m_CommandChannelEventHandler;
+    Threads::CommandChannel         m_CommandChannelEventHandler;       ///<  Definition/Declaration of variable m_CommandChannelEventHandler
     Threads::CommandChannel         m_CommandChannelExport;                 ///< Command channel for Export
     Threads::CommandChannel         m_CommandChannelImportExport;           ///< Command channel for Import Export thread
     Global::tRefType                m_ImportExportCommandRef;               ///< Store the command reference to return the command data once export process is exited
@@ -136,7 +136,7 @@ private:
     bool                            m_ImportExportThreadIsRunning;          ///< Store ImportExport thread flag value
     bool                            m_RemoteCareExportRequest;              ///< Request received from export
 
-    bool m_Simulation;  //!  Enable/disable simulation thread controller. \todo Remove later
+    bool m_Simulation;  //!  Enable/disable simulation thread controller. \todo Remove later       ///<  Definition/Declaration of variable m_Simulation
     ProgramStartableManager          m_ProgramStartableManager;              ///< Object Managing Program Startablity
     Global::GuiUserLevel             m_AuthenticatedLevel;                   ///< The current user authenticated level
     bool                             m_ControllerCreationFlag;               ///< True if controllers are created, False if not
@@ -347,6 +347,13 @@ private:
     void ChangeUserLevelHandler(Global::tRefType Ref, const NetCommands::CmdChangeUserLevel &Cmd,
                              Threads::CommandChannel &AckCommandChannel);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetOperationHoursHandler
+     *
+     *  \return from ResetOperationHoursHandler
+     */
+    /****************************************************************************/
     void ResetOperationHoursHandler(Global::tRefType Ref, const MsgClasses::CmdResetOperationHours &Cmd,
                                     Threads::CommandChannel &AckCommandChannel);
 
@@ -481,6 +488,13 @@ protected:
     /****************************************************************************/
     virtual void SendContainersTo(Threads::CommandChannel &CommandChannel);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsCommandAllowed
+     *
+     *  \return from IsCommandAllowed
+     */
+    /****************************************************************************/
     virtual bool IsCommandAllowed(const Global::CommandShPtr_t &Cmd);
 
     /****************************************************************************/
@@ -496,6 +510,13 @@ protected:
      */
     /****************************************************************************/
     virtual void OnGoReceived();
+    /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CreateAlarmHandler
+     *
+     *  \return from CreateAlarmHandler
+     */
     /****************************************************************************/
     virtual void CreateAlarmHandler();
     /****************************************************************************/
@@ -561,6 +582,13 @@ public:
                 return m_CommandChannelGui;
         }
     }
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of function GetDataManager
+    *
+    *  \return from GetDataManager
+    */
+   /****************************************************************************/
    const DataManager::CDataManagerBase *GetDataManager() { return mp_DataManager; }
 
    /****************************************************************************/

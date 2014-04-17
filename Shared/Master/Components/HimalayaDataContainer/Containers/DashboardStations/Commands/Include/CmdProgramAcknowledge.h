@@ -41,15 +41,29 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdProgramAcknowledge
+     *
+     *  \return from CmdProgramAcknowledge
+     */
+    /****************************************************************************/
     CmdProgramAcknowledge(int Timeout, DataManager::ProgramAcknownedgeType_t acknownedgeType);
     ~CmdProgramAcknowledge();
     virtual QString GetName() const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function AcknownedgeType
+     *
+     *  \return from AcknownedgeType
+     */
+    /****************************************************************************/
     inline DataManager::ProgramAcknownedgeType_t AcknownedgeType() const {return m_AcknownedgeType;}
  private:
     CmdProgramAcknowledge(const CmdProgramAcknowledge &);                     ///< Not implemented.
     const CmdProgramAcknowledge & operator = (const CmdProgramAcknowledge &); ///< Not implemented.
 private:
-    DataManager::ProgramAcknownedgeType_t m_AcknownedgeType;
+    DataManager::ProgramAcknownedgeType_t m_AcknownedgeType;       ///<  Definition/Declaration of variable m_AcknownedgeType
     
 }; // end class CmdProgramAcknowledge
 

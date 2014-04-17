@@ -34,6 +34,13 @@ namespace Scheduler{
 class CmdTemplate : public CmdSchedulerCommandBase
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdTemplate
+     *
+     *  \return from CmdTemplate
+     */
+    /****************************************************************************/
     CmdTemplate(int Timeout, SchedulerMainThreadController *controller);
     ~CmdTemplate();
 

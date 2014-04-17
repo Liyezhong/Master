@@ -45,20 +45,20 @@ class SchedulerCommandProcessorBase;
 /****************************************************************************/
 typedef struct
 {
-    QString						devName;
-	DataManager::FunctionKey_t	funcKey;
-    bool						needCheck;
-    qreal						targetTempPadding;
-    qreal						elapseTime;
-    qreal						overTime;
+    QString						devName;       ///<  Definition/Declaration of variable devName
+	DataManager::FunctionKey_t	funcKey;       ///<  Definition/Declaration of variable funcKey
+    bool						needCheck;       ///<  Definition/Declaration of variable needCheck
+    qreal						targetTempPadding;       ///<  Definition/Declaration of variable targetTempPadding
+    qreal						elapseTime;       ///<  Definition/Declaration of variable elapseTime
+    qreal						overTime;       ///<  Definition/Declaration of variable overTime
 }OTMonitor_t;
 
 
-const quint32	HEATING_OT_CALL_FAILED		= 0x09;
-const quint32	HEATING_OT_RETORT_TOP		= 0x10;
-const quint32	HEATING_OT_RETORT_BOTTOM	= 0x11;
-const quint32	HEATING_OT_OVEN_TOP			= 0x20;
-const quint32	HEATING_OT_OVEN_BOTTOM		= 0x21;
+const quint32	HEATING_OT_CALL_FAILED		= 0x09;       ///<  Definition/Declaration of variable HEATING_OT_CALL_FAILED
+const quint32	HEATING_OT_RETORT_TOP		= 0x10;       ///<  Definition/Declaration of variable HEATING_OT_RETORT_TOP
+const quint32	HEATING_OT_RETORT_BOTTOM	= 0x11;       ///<  Definition/Declaration of variable HEATING_OT_RETORT_BOTTOM
+const quint32	HEATING_OT_OVEN_TOP			= 0x20;       ///<  Definition/Declaration of variable HEATING_OT_OVEN_TOP
+const quint32	HEATING_OT_OVEN_BOTTOM		= 0x21;       ///<  Definition/Declaration of variable HEATING_OT_OVEN_BOTTOM
 
 /****************************************************************************/
 /*!
@@ -69,26 +69,82 @@ class HeatingStrategy : public QObject
 {
     Q_OBJECT
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function HeatingStrategy
+     *
+     *  \return from HeatingStrategy
+     */
+    /****************************************************************************/
     HeatingStrategy(SchedulerMainThreadController* schedController,
                     CSchedulerStateMachine* schedMachine,
                     SchedulerCommandProcessorBase* SchedCmdProcessor,
                     DataManager::CDataManager* dataManager, qreal Interval);
     ~HeatingStrategy() {}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function StartTemperatureControlWithPID
+     *
+     *  \return from StartTemperatureControlWithPID
+     */
+    /****************************************************************************/
     DeviceControl::ReturnCode_t StartTemperatureControlWithPID(const QString& cmdName, const DataManager::FunctionKey_t& funcKey);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CheckHeatingOverTime
+     *
+     *  \return from CheckHeatingOverTime
+     */
+    /****************************************************************************/
     quint32 CheckHeatingOverTime(const HardwareMonitor_t& HWValueList); // Called by HardWareMonitor intervally
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function StartOverTimeCheck
+	 *
+	 *  \return from StartOverTimeCheck
+	 */
+	/****************************************************************************/
 	bool StartOverTimeCheck(const QString& moduleName);
 
 private:
-	SchedulerMainThreadController*	mp_SchedulerController;
-    CSchedulerStateMachine*			mp_SchedulerMachine;
-    SchedulerCommandProcessorBase*	mp_SchedulerCommandProcessor;
-    DataManager::CDataManager*		mp_DataManager;
-    qreal							m_Interval;
-    QMap<QString, OTMonitor_t>      m_MonitorList;
+	SchedulerMainThreadController*	mp_SchedulerController;       ///<  Definition/Declaration of variable mp_SchedulerController
+    CSchedulerStateMachine*			mp_SchedulerMachine;       ///<  Definition/Declaration of variable mp_SchedulerMachine
+    SchedulerCommandProcessorBase*	mp_SchedulerCommandProcessor;       ///<  Definition/Declaration of variable mp_SchedulerCommandProcessor
+    DataManager::CDataManager*		mp_DataManager;       ///<  Definition/Declaration of variable mp_DataManager
+    qreal							m_Interval;       ///<  Definition/Declaration of variable m_Interval
+    QMap<QString, OTMonitor_t>      m_MonitorList;       ///<  Definition/Declaration of variable m_MonitorList
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetTargetTempPaddingAndOverTime
+     *
+     *  \return from GetTargetTempPaddingAndOverTime
+     */
+    /****************************************************************************/
     bool GetTargetTempPaddingAndOverTime(const QString& devName, const DataManager::FunctionKey_t& funcKey, qreal& TempPadding, qreal& overTime);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ConstructMonitorList
+     *
+     *  \return from ConstructMonitorList
+     */
+    /****************************************************************************/
     void ConstructMonitorList();
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function HeatingStrategy
+     *
+     *  \return from HeatingStrategy
+     */
+    /****************************************************************************/
     HeatingStrategy(const HeatingStrategy& rhs);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function operator=
+     *
+     *  \return from operator=
+     */
+    /****************************************************************************/
     HeatingStrategy& operator=(const HeatingStrategy& rhs);
 };
 }

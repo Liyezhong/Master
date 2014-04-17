@@ -54,12 +54,33 @@ private:
     bool ReadDashboardStations(QXmlStreamReader& XmlStreamReader, bool CompleteData);
     bool DeleteAllDashboardStations();
     void AddDashboardStationWithoutVerification(const CDashboardStation *p_DashboardStation);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function Swap
+     *
+     *  \return from Swap
+     */
+    /****************************************************************************/
     void Swap(const CDashboardDataStationList &Other);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetDashboardStationList
+     *
+     *  \return from GetDashboardStationList
+     */
+    /****************************************************************************/
     ListOfDashboardStation_t & GetDashboardStationList()
     {
         return m_DashboardStationList;
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetLock
+     *
+     *  \return from GetLock
+     */
+    /****************************************************************************/
     QReadWriteLock* GetLock()
     {
         return mp_ReadWriteLock;
@@ -133,6 +154,13 @@ public:
     bool DeleteDashboardStation(const QString DashboardStationID);   // uses unique reagent ID
     bool DeleteDashboardStation(const unsigned int Index);  // uses order index
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function UpdateStationsByReagentDelete
+     *
+     *  \return from UpdateStationsByReagentDelete
+     */
+    /****************************************************************************/
     bool UpdateStationsByReagentDelete(const QString& ReagentID);
 
     /******************** INLINE FUNCTIONS **************************************/
@@ -206,6 +234,13 @@ public:
         return STATIONS;
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetOrderedListOfDashboardStationIDs
+     *
+     *  \return from GetOrderedListOfDashboardStationIDs
+     */
+    /****************************************************************************/
     const ListOfIDs_t & GetOrderedListOfDashboardStationIDs()
     {
         return m_OrderedListOfDashboardStationIDs;

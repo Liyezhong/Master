@@ -34,6 +34,13 @@ namespace Scheduler{
 class CmdOvenSetTempCtrlON : public CmdSchedulerCommandBase
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdOvenSetTempCtrlON
+     *
+     *  \return from CmdOvenSetTempCtrlON
+     */
+    /****************************************************************************/
     CmdOvenSetTempCtrlON(int Timeout, SchedulerMainThreadController *controller);
     ~CmdOvenSetTempCtrlON();
 
@@ -42,13 +49,62 @@ public:
 
     QString GetName() const{return NAME;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetResult
+     *
+     *  \return from GetResult
+     */
+    /****************************************************************************/
     DeviceControl::ReturnCode_t GetResult()const {return m_result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetResult
+	 *
+	 *  \return from SetResult
+	 */
+	/****************************************************************************/
 	void SetResult(DeviceControl::ReturnCode_t result) { m_result = result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \return from GetResult
+	 */
+	/****************************************************************************/
 	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetType
+	 *
+	 *  \return from GetType
+	 */
+	/****************************************************************************/
 	DeviceControl::OVENTempCtrlType_t GetType(){return m_Type;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetType
+	 *
+	 *  \return from SetType
+	 */
+	/****************************************************************************/
 	void SetType(DeviceControl::OVENTempCtrlType_t Type){m_Type = Type;}
 	
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetParameters
+	 *
+	 *  \return from GetParameters
+	 */
+	/****************************************************************************/
 	QString GetParameters()const{ return GetName() + QString("(%1)").arg(m_Type);}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetStrResult
+	 *
+	 *  \return from GetStrResult
+	 */
+	/****************************************************************************/
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
 private:
@@ -57,8 +113,8 @@ private:
     const CmdOvenSetTempCtrlON & operator = (const CmdOvenSetTempCtrlON &); ///< Not implemented.
 
 
-	mutable DeviceControl::ReturnCode_t m_result;
-	mutable DeviceControl::OVENTempCtrlType_t m_Type;
+	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
+	mutable DeviceControl::OVENTempCtrlType_t m_Type;       ///<  Definition/Declaration of variable m_Type
 	
 };
 

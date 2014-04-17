@@ -42,6 +42,13 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdProgramSelectedReply
+     *
+     *  \return from CmdProgramSelectedReply
+     */
+    /****************************************************************************/
     CmdProgramSelectedReply(int timeout, int timeProposed,
                       int paraffinMeltCostedtime,
                       int costedTimeBeforeParaffin,
@@ -49,10 +56,45 @@ public:
                       QList<QString>& stationList);
     ~CmdProgramSelectedReply();
     virtual QString GetName() const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function TimeProposed
+     *
+     *  \return from TimeProposed
+     */
+    /****************************************************************************/
     inline int TimeProposed()const {return m_TimeProposed;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ParaffinMeltCostedTime
+     *
+     *  \return from ParaffinMeltCostedTime
+     */
+    /****************************************************************************/
     inline int ParaffinMeltCostedTime()const {return m_ParaffinMeltCostedtime;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CostedTimeBeforeParaffin
+     *
+     *  \return from CostedTimeBeforeParaffin
+     */
+    /****************************************************************************/
     inline int CostedTimeBeforeParaffin()const {return m_CostedTimeBeforeParaffin;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function WhichStepHasNoSafeReagent
+     *
+     *  \return from WhichStepHasNoSafeReagent
+     */
+    /****************************************************************************/
     inline int WhichStepHasNoSafeReagent() const {return m_WhichStepHasNoSafeReagent;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function StationList
+     *
+     *  \return from StationList
+     */
+    /****************************************************************************/
     inline const QList<QString>& StationList()const {return m_StationList;}
 
     
@@ -60,11 +102,11 @@ private:
     CmdProgramSelectedReply(const CmdProgramSelectedReply &);                     ///< Not implemented.
     const CmdProgramSelectedReply & operator = (const CmdProgramSelectedReply &); ///< Not implemented.
 private:
-    int m_TimeProposed;//the costed time for selected program, seconds
-    int m_CostedTimeBeforeParaffin; //seconds
-    int m_ParaffinMeltCostedtime; //seconds
-    int m_WhichStepHasNoSafeReagent;
-    QList<QString> m_StationList;
+    int m_TimeProposed;//the costed time for selected program, seconds       ///<  Definition/Declaration of variable m_TimeProposed
+    int m_CostedTimeBeforeParaffin; //seconds       ///<  Definition/Declaration of variable m_CostedTimeBeforeParaffin
+    int m_ParaffinMeltCostedtime; //seconds       ///<  Definition/Declaration of variable m_ParaffinMeltCostedtime
+    int m_WhichStepHasNoSafeReagent;       ///<  Definition/Declaration of variable m_WhichStepHasNoSafeReagent
+    QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
     
 }; // end class CmdProgramSelectedReply
 

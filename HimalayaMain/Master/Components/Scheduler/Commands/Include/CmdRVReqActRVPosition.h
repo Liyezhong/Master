@@ -34,6 +34,13 @@ namespace Scheduler{
 class CmdRVReqActRVPosition : public CmdSchedulerCommandBase
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdRVReqActRVPosition
+     *
+     *  \return from CmdRVReqActRVPosition
+     */
+    /****************************************************************************/
     CmdRVReqActRVPosition(int Timeout, SchedulerMainThreadController *controller);
     ~CmdRVReqActRVPosition();
 
@@ -42,11 +49,46 @@ public:
 
     QString GetName() const{return NAME;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetResult
+     *
+     *  \return from GetResult
+     */
+    /****************************************************************************/
     DeviceControl::RVPosition_t GetResult()const {return m_result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetResult
+	 *
+	 *  \return from SetResult
+	 */
+	/****************************************************************************/
 	void SetResult(DeviceControl::RVPosition_t result) { m_result = result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \return from GetResult
+	 */
+	/****************************************************************************/
 	bool GetResult(DeviceControl::RVPosition_t& result) const{result = m_result; return true;}
 	
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetParameters
+	 *
+	 *  \return from GetParameters
+	 */
+	/****************************************************************************/
 	QString GetParameters()const{ return GetName() + QString("()");}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetStrResult
+	 *
+	 *  \return from GetStrResult
+	 */
+	/****************************************************************************/
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
 private:
@@ -55,7 +97,7 @@ private:
     const CmdRVReqActRVPosition & operator = (const CmdRVReqActRVPosition &); ///< Not implemented.
 
 
-	mutable DeviceControl::RVPosition_t m_result;
+	mutable DeviceControl::RVPosition_t m_result;       ///<  Definition/Declaration of variable m_result
 	
 };
 

@@ -41,19 +41,47 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdStationSuckDrain
+     *
+     *  \return from CmdStationSuckDrain
+     */
+    /****************************************************************************/
     CmdStationSuckDrain(int timeout, const QString& stationID, bool isStart, bool isSuck);
     ~CmdStationSuckDrain();
     virtual QString GetName() const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsStart
+     *
+     *  \return from IsStart
+     */
+    /****************************************************************************/
     inline bool IsStart() const {return m_IsStart;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsSuck
+     *
+     *  \return from IsSuck
+     */
+    /****************************************************************************/
     inline bool IsSuck() const {return m_IsSuck;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function StationID
+     *
+     *  \return from StationID
+     */
+    /****************************************************************************/
     inline const QString& StationID()const {return m_StationID;}
 private:
     CmdStationSuckDrain(const CmdStationSuckDrain &);                     ///< Not implemented.
     const CmdStationSuckDrain & operator = (const CmdStationSuckDrain &); ///< Not implemented.
 private:
-    QString m_StationID;
-    bool m_IsStart;//true: start, false: completed
-    bool m_IsSuck; //true: suck, false:drain
+    QString m_StationID;       ///<  Definition/Declaration of variable m_StationID
+    bool m_IsStart;//true: start, false: completed       ///<  Definition/Declaration of variable m_IsStart
+    bool m_IsSuck; //true: suck, false:drain       ///<  Definition/Declaration of variable m_IsSuck
     
 }; // end class CmdStationSuckDrain
 

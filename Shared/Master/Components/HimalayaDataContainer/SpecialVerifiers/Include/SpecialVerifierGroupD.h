@@ -47,10 +47,31 @@ public:
 
     bool VerifyData(CDataContainerBase* p_ContainerBase);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetErrors
+     *
+     *  \return from GetErrors
+     */
+    /****************************************************************************/
     ErrorMap_t& GetErrors() { return m_ErrorsHash;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetErrors
+     *
+     *  \return from ResetErrors
+     */
+    /****************************************************************************/
     void ResetErrors(){m_ErrorsHash.clear();}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsLocalVerifier
+     *
+     *  \return from IsLocalVerifier
+     */
+    /****************************************************************************/
     bool IsLocalVerifier(){return false;}
 
 private:

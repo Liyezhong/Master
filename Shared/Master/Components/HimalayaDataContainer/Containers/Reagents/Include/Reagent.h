@@ -40,6 +40,13 @@ private:
     bool SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool CompleteData);
     bool DeserializeContent(QXmlStreamReader& XmlStreamReader, bool CompleteData);
     bool ReadUsageLimitation(QXmlStreamReader& XmlStreamReader);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ReadHeatingInformation
+     *
+     *  \return from ReadHeatingInformation
+     */
+    /****************************************************************************/
     bool ReadHeatingInformation(QXmlStreamReader& XmlStreamReader);
 
     ListOfErrors_t    m_ListOfErrors;   ///< This will hold Hash table of Error ID's.

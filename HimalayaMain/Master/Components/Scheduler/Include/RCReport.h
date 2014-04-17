@@ -39,11 +39,21 @@ public:
     SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal RCReport
+     */
+    /****************************************************************************/
     void RCReport();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal OnRCReport
+     */
+    /****************************************************************************/
     void OnRCReport();
 
 private:
-    QState *mp_RCReport;
+    QState *mp_RCReport;       ///<  Definition/Declaration of variable mp_RCReport
 };
 }
 

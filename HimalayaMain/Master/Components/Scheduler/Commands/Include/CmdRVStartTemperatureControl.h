@@ -34,6 +34,13 @@ namespace Scheduler{
 class CmdRVStartTemperatureControl : public CmdSchedulerCommandBase
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdRVStartTemperatureControl
+     *
+     *  \return from CmdRVStartTemperatureControl
+     */
+    /****************************************************************************/
     CmdRVStartTemperatureControl(int Timeout, SchedulerMainThreadController *controller);
     ~CmdRVStartTemperatureControl();
 
@@ -42,15 +49,78 @@ public:
 
     QString GetName() const{return NAME;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetResult
+     *
+     *  \return from GetResult
+     */
+    /****************************************************************************/
     DeviceControl::ReturnCode_t GetResult()const {return m_result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetResult
+	 *
+	 *  \return from SetResult
+	 */
+	/****************************************************************************/
 	void SetResult(DeviceControl::ReturnCode_t result) { m_result = result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \return from GetResult
+	 */
+	/****************************************************************************/
 	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetNominalTemperature
+	 *
+	 *  \return from GetNominalTemperature
+	 */
+	/****************************************************************************/
 	qreal GetNominalTemperature(){return m_NominalTemperature;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetNominalTemperature
+	 *
+	 *  \return from SetNominalTemperature
+	 */
+	/****************************************************************************/
 	void SetNominalTemperature(qreal NominalTemperature){m_NominalTemperature = NominalTemperature;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetSlopeTempChange
+	 *
+	 *  \return from GetSlopeTempChange
+	 */
+	/****************************************************************************/
 	quint8 GetSlopeTempChange(){return m_SlopeTempChange;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetSlopeTempChange
+	 *
+	 *  \return from SetSlopeTempChange
+	 */
+	/****************************************************************************/
 	void SetSlopeTempChange(quint8 SlopeTempChange){m_SlopeTempChange = SlopeTempChange;}
 	
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetParameters
+	 *
+	 *  \return from GetParameters
+	 */
+	/****************************************************************************/
 	QString GetParameters()const{ return GetName() + QString("(%1,%2)").arg(m_NominalTemperature).arg(m_SlopeTempChange);}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetStrResult
+	 *
+	 *  \return from GetStrResult
+	 */
+	/****************************************************************************/
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
 private:
@@ -59,9 +129,9 @@ private:
     const CmdRVStartTemperatureControl & operator = (const CmdRVStartTemperatureControl &); ///< Not implemented.
 
 
-	mutable DeviceControl::ReturnCode_t m_result;
-	mutable qreal m_NominalTemperature;
-	mutable quint8 m_SlopeTempChange;
+	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
+	mutable qreal m_NominalTemperature;       ///<  Definition/Declaration of variable m_NominalTemperature
+	mutable quint8 m_SlopeTempChange;       ///<  Definition/Declaration of variable m_SlopeTempChange
 	
 };
 

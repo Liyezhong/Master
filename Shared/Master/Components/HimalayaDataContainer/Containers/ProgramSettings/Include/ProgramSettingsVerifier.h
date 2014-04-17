@@ -44,6 +44,13 @@ public:
     CProgramSettingsVerifier();
 
     bool VerifyData(CDataContainerBase* p_ParameterList);  // use concrete class for concrete verifier
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetSyncObject
+     *
+     *  \return from GetSyncObject
+     */
+    /****************************************************************************/
     bool GetSyncObject(QReadWriteLock* p_ReadWriteLock);
 
     /*! \todo complete implementation*/
