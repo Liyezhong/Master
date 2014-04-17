@@ -114,6 +114,13 @@ void CModifyReagentRMSDlg::SelectionChanged(QModelIndex Index)
     QString Id = m_ReagentGroupModel.data(Index, (int)Qt::UserRole).toString();
     mp_Ui->buttonValue->setEnabled(true);
     m_Reagent.SetGroupID(Id);
+
+    Global::RMSOptions_t Option = Reagents::CReagentRMSWidget::RMSPROCESSINGOPTION;
+    if (mp_DataConnector->ReagentGroupList->GetReagentGroup(Id)->IsCleaningReagentGroup())
+    {
+         Option = Reagents::CReagentRMSWidget::RMSCLEANINGOPTIONS;
+    }
+    UpdateRmsLabel(Option);
 }
 
 

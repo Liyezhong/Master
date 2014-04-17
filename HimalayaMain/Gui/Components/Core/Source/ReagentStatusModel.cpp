@@ -182,13 +182,17 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
 
     if (Index.row() < m_ReagentNames.count()) {
         p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(m_Identifiers[m_StationNames[Index.row()]])); 
+        p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]]));
     }
 
-    if (!p_Reagent)
-        return QVariant();
+    if (!p_Reagent) {
+        if ((Role == (int)Qt::DisplayRole) && (0 == Index.column()))
+            return p_Station->GetDashboardStationName();
+        else
+            return QVariant();
+    }
 
-    if (Index.row() < m_ReagentNames.count()
-            && (p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]]))))
+    if (Index.row() < m_ReagentNames.count())
     {
 
             DataManager::ReagentStatusType_t ReagentStatus = p_Station->GetReagentStatus(*p_Reagent, RMSPROCESSINGOPTION);

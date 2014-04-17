@@ -274,6 +274,12 @@ void CReagentStatusWidget::ResizeHorizontalSection()
 
 bool CReagentStatusWidget::IsProcessReagentExpired()
 {
+    if (!mp_DataConnector)
+        return false;
+
+    if (!mp_Reagent)
+        return false;
+
     QDate Expiry_Date;
     bool bExpireReagent = false;
     bool isCleaningReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(mp_Reagent->GetGroupID())->IsCleaningReagentGroup();
@@ -342,9 +348,9 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
     m_CurrentIndex = Index;
     QString Id = m_ReagentStatusModel.data(Index, (int)Qt::UserRole).toString();
     mp_DashStation = const_cast<DataManager::CDashboardStation*>(mp_DataConnector->DashboardStationList->GetDashboardStation(Id));
-    m_CurrentStationName = mp_DashStation->GetDashboardStationName();
     bool bExpireReagent = false;
     if (mp_DashStation) {
+        m_CurrentStationName = mp_DashStation->GetDashboardStationName();
         mp_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(mp_DashStation->GetDashboardReagentID()));
 
         if (Global::RMS_OFF == m_RMSOptions && Global::RMS_OFF == m_RMSCleaningOptions)
@@ -406,6 +412,12 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
             mp_Ui->btnEmpty->setEnabled(false);
             mp_Ui->btnReset->setEnabled(false);
         }
+    }
+    else
+    {
+        mp_Ui->btnFull->setEnabled(false);
+        mp_Ui->btnEmpty->setEnabled(false);
+        mp_Ui->btnReset->setEnabled(false);
     }
 }
 

@@ -319,6 +319,8 @@ void CReagentRMSWidget::OnDelete()
     if(m_MessageDlg.exec()==(int)QDialog::Accepted){
         emit RemoveReagent(mp_Reagent->GetReagentID());
     }
+
+    mp_Reagent = NULL;
 }
 
 /****************************************************************************/
