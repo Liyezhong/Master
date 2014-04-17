@@ -615,7 +615,7 @@ protected:
 
         /****************************************************************************/
         /**
-         * Called when the base class received the \ref Go signal.
+         * Called when the base class received the Go signal.
          *
          * This means that everything is fine and normal operation started.
          * We are running in our own thread now.
@@ -625,7 +625,7 @@ protected:
 
         /****************************************************************************/
         /**
-         * Called when the base class received the \ref Stop signal.
+         * Called when the base class received the Stop signal.
          *
          * This means that normal operation will stop after processing this signal.
          * We are still running in our own thread.
@@ -688,7 +688,7 @@ protected:
         /**
          * @brief log debug message.
          *
-         * @param   log message
+         * @param   message
          */
         /****************************************************************************/
         inline void LogDebug(QString message)

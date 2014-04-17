@@ -129,7 +129,7 @@ public:
     /*!
      *  \brief Create program sequence step for the given program id
      *
-     *	\iparam ProgramID = Program ID
+     *	\iparam ID = Program ID
      *
      *  \return program sequence
      */

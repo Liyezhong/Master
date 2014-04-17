@@ -92,8 +92,6 @@ private:
      *
      *  \iparam StationID = Station ID String
      *
-     *  \iparam StationType = Station Type Enum Value
-     *
      *  \return CDashboardStation Class Instance
      */
     /****************************************************************************/
@@ -136,7 +134,7 @@ public:
     /*!
      *  \brief Gets the CDashboardStation Instance associated with the particular Station ID
      *
-     *  \iparam StationID = Station ID String
+     *  \iparam DashboardStationID = Station ID String
      *
      *  \return CDashboardStation Class Instance
      */

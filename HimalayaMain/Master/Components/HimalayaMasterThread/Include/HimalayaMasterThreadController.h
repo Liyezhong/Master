@@ -396,7 +396,7 @@ private:
      *  \brief  Inform GUI and scheduler status of external status
      *  \iparam Ref = Command reference
      *  \iparam Cmd = Command
-     *  \AckCommandChannel = Command channel to send acknowledge
+     *  \param AckCommandChannel = Command channel to send acknowledge
      */
     /****************************************************************************/
     void ExternalProcessConnectionHandler(Global::tRefType Ref, const NetCommands::CmdExternalProcessState &Cmd, Threads::CommandChannel &AckCommandChannel);
@@ -407,7 +407,7 @@ private:
                  threads are created on reception of this command.
      *  \iparam Ref = Command reference
      *  \iparam Cmd = Command
-     *  \AckCommandChannel = Command channel to send acknowledge
+     *  \param AckCommandChannel = Command channel to send acknowledge
      */
     /****************************************************************************/
     void OnCmdGuiInitHandler(Global::tRefType Ref, const NetCommands::CmdGuiInit &Cmd, Threads::CommandChannel &AckCommandChannel);
@@ -473,7 +473,7 @@ protected:
      * \brief Initiate the shutdown process.
      *
      * Initiate the shutdown process. Make some project specific tasks the call
-     * \ref Shutdown to shut down software.
+     *  Shutdown to shut down software.
      */
     /****************************************************************************/
     virtual void InitiateShutdown(bool Reboot = false);
@@ -499,7 +499,7 @@ protected:
 
     /****************************************************************************/
     /**
-     * \brief This method is called when the base received the \ref Go signal.
+     * \brief This method is called when the base received the Go signal.
      *
      * This means that everything is fine and normal operation started.
      * We are running in our own thread.\n
@@ -607,8 +607,7 @@ public:
      * \brief Send command to the required channel.
      *
      * \param Container - Container class
-     * \param ContainerVerifier - Verifier class for the container
-     * \param Path - path of the file
+     * \param FileType
      *
      * \return On successful (true) or not (false)
      */
@@ -655,10 +654,11 @@ private slots:
     void SWUpdateRollbackComplete();
 
     /****************************************************************************/
-    /**
+    /*!
      * \brief Informs GUI to display/close wait dialog
      *
      * \iparam Display - true indicate display dialog, false indicates close dialog
+     * \param WaitDialogText
      */
     /****************************************************************************/
     void ShowWaitDialog(bool Display, Global::WaitDialogText_t WaitDialogText);
@@ -733,9 +733,10 @@ private slots:
        * \brief Slot for the creating containers for the type of Import.
        *
        * \param IsImport - Import is successful or not
-       * \param TypeOfImport - type of import
+       * \param ImportTypeList - type of import
        * \param UpdatedCurrentLanguage - Flag for the current language updated or not
        * \param NewLanguageAdded - Flag for the new language is added or not
+       * \param EventCode
        */
       /****************************************************************************/
       void ImportExportThreadFinished(const bool IsImport, QStringList ImportTypeList,

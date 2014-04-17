@@ -313,7 +313,7 @@ public:
     /*!
      *  \brief Sets the Station Status Value
      *
-     *  \iparam Value = Station Status Value ( ex: Empty, Full, Partially Filled, Not Used )
+     *  \iparam eValue = Station Status Value ( ex: Empty, Full, Partially Filled, Not Used )
      *
      *  \return
      */

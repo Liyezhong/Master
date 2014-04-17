@@ -90,15 +90,6 @@ public:
 //    /****************************************************************************/
 //    bool GetLockState() const {return m_Locked;}
 
-//    /****************************************************************************/
-//    /*!
-//     *  \brief Sets the Locked State of the particular reagent
-//     *
-//     *  \iparam Value = bool type , either true or false
-//     *
-//     *  \return
-//     */
-//    /****************************************************************************/
 //    void SetLockState(const bool Value){m_Locked = Value;}
 
     /****************************************************************************/
@@ -277,15 +268,6 @@ public:
 //    /****************************************************************************/
 //    QString GetMaxTime() const {return Helper::ConvertSecondsToTimeString(m_DaysUntilChange);}      // returns
 
-//    /****************************************************************************/
-//    /*!
-//     *  \brief Sets the Max Time in terms of days for the particular reagent
-//     *
-//     *  \iparam Value = time strings like "4d "
-//     *
-//     *  \return
-//     */
-//    /****************************************************************************/
 //    void SetMaxTime(const QString Value) {m_DaysUntilChange = Helper::ConvertTimeStringToSeconds(Value.trimmed());}  // for
 
     /****************************************************************************/
