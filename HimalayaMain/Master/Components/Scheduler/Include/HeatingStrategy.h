@@ -37,23 +37,37 @@ class SchedulerMainThreadController;
 class CSchedulerStateMachine;
 class SchedulerCommandProcessorBase;
 
-// structure for monitoring each component
-typedef struct
+struct FunctionModule
 {
-    QString						devName;
-	DataManager::FunctionKey_t	funcKey;
-    bool						needCheck;
-    qreal						targetTempPadding;
-    qreal						elapseTime;
-    qreal						overTime;
-}OTMonitor_t;
+    QVector<qint32>    ScenarioList;
+    qreal              TemperatureOffset;
+    qreal              MaxTemperature;
+    qreal              HeatingOverTime;
+    qreal              SlopTempChange;
+    quint32            ControllerGain;
+    quint32            ResetTime;
+    quint32            DerivateTime;
 
+};
 
-const quint32	HEATING_OT_CALL_FAILED		= 0x09;
-const quint32	HEATING_OT_RETORT_TOP		= 0x10;
-const quint32	HEATING_OT_RETORT_BOTTOM	= 0x11;
-const quint32	HEATING_OT_OVEN_TOP			= 0x20;
-const quint32	HEATING_OT_OVEN_BOTTOM		= 0x21;
+struct HeatingSensor
+{
+    QString					devName;
+    QString					sensorName;
+    QVector<FunctionModule>	functionModuleList;
+};
+
+struct RTLevelSensor : public HeatingSensor
+{
+    QString             CurrentSpeed;
+    QString             ExchangePIDTemp;
+};
+
+struct RTBottomTemperatureDiff
+{
+    QVector<qint32>		ScenarioList;
+    qreal				TempDiff;
+};
 
 /****************************************************************************/
 /*!
@@ -65,23 +79,21 @@ class HeatingStrategy : public QObject
     Q_OBJECT
 public:
     HeatingStrategy(SchedulerMainThreadController* schedController,
-                    CSchedulerStateMachine* schedMachine,
                     SchedulerCommandProcessorBase* SchedCmdProcessor,
                     DataManager::CDataManager* dataManager, qreal Interval);
     ~HeatingStrategy() {}
-    DeviceControl::ReturnCode_t StartTemperatureControlWithPID(const QString& cmdName, const DataManager::FunctionKey_t& funcKey);
-    quint32 CheckHeatingOverTime(const HardwareMonitor_t& HWValueList); // Called by HardWareMonitor intervally
-	bool StartOverTimeCheck(const QString& moduleName);
-
 private:
-	SchedulerMainThreadController*	mp_SchedulerController;
-    CSchedulerStateMachine*			mp_SchedulerMachine;
-    SchedulerCommandProcessorBase*	mp_SchedulerCommandProcessor;
-    DataManager::CDataManager*		mp_DataManager;
-    qreal							m_Interval;
-    QMap<QString, OTMonitor_t>      m_MonitorList;
-    bool GetTargetTempPaddingAndOverTime(const QString& devName, const DataManager::FunctionKey_t& funcKey, qreal& TempPadding, qreal& overTime);
-    void ConstructMonitorList();
+    SchedulerMainThreadController*      mp_SchedulerController;
+    SchedulerCommandProcessorBase*      mp_SchedulerCommandProcessor;
+    DataManager::CDataManager*          mp_DataManager;
+    qreal                               m_Interval;
+    RTLevelSensor                       m_RTLevelSensor;
+    HeatingSensor                       m_RTTop;
+    HeatingSensor                       m_RTBottom1;
+    HeatingSensor                       m_RTBottom2;
+    QVector<RTBottomTemperatureDiff>    m_RTBottomTempDiffList;
+    bool ConstructHeatingSensorList();
+    bool ConstructHeatingSensor(HeatingSensor& heatingSensor, const QStringList& sequenceList);
 private:
     HeatingStrategy(const HeatingStrategy& rhs);
     HeatingStrategy& operator=(const HeatingStrategy& rhs);

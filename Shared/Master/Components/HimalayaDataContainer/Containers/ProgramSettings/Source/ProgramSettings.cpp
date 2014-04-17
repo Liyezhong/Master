@@ -237,11 +237,30 @@ double CProgramSettings::GetParameterValue(const QString& DeviceKey, const QStri
 {
     FunctionKey_t FunctionKeyWithGroup ={"", "", ""};
     FunctionKeyWithGroup.key = FunctionKey;
-    FunctionKeyWithGroup.position = "";
-    FunctionKeyWithGroup.group = "";
+    FunctionKeyWithGroup.name = "";
+    FunctionKeyWithGroup.sequence = "";
     return this->GetParameterValue(DeviceKey, FunctionKeyWithGroup, ParameterKey, ok);
 }
+QString CProgramSettings::GetParameterStrValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey,const QString& ParameterKey)
+{
+    QString value="";
+    if(m_Parameters.contains(DeviceKey))
+    {
+        if(m_Parameters[DeviceKey].contains(FunctionKey))
+        {
+            if(m_Parameters[DeviceKey][FunctionKey].contains(ParameterKey))
+            {
+                value = m_Parameters[DeviceKey][FunctionKey][ParameterKey];
+                if (value.isEmpty())
+                {
+                    value = "0";
+                }
+            }
+        }
+    }
 
+    return value;
+}
 
 bool CProgramSettings::SetParameterValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey, const QString& ParameterKey, const QString& value)
 {
@@ -269,8 +288,8 @@ bool CProgramSettings::SetParameterValue(const QString& DeviceKey, const QString
 {
     FunctionKey_t FunctionKeyWithGroup = {"", "", ""};
     FunctionKeyWithGroup.key = FunctionKey;
-    FunctionKeyWithGroup.position = "";
-    FunctionKeyWithGroup.group  = "";
+    FunctionKeyWithGroup.name = "";
+    FunctionKeyWithGroup.sequence  = "";
     return this->SetParameterValue(DeviceKey, FunctionKeyWithGroup, ParameterKey, value);
 }
 
@@ -283,8 +302,8 @@ bool CProgramSettings::SetParameterValue(const QString& DeviceKey, const QString
 {
     FunctionKey_t FunctionKeyWithGroup = {"", "", ""};
     FunctionKeyWithGroup.key = FunctionKey;
-    FunctionKeyWithGroup.position = "";
-    FunctionKeyWithGroup.group  = "";
+    FunctionKeyWithGroup.name = "";
+    FunctionKeyWithGroup.sequence  = "";
     return this->SetParameterValue(DeviceKey, FunctionKeyWithGroup, ParameterKey, value);
 }
 
@@ -383,8 +402,8 @@ bool CProgramSettings::ReadDeviceParameters(QXmlStreamReader& XmlStreamReader, c
             if (XmlStreamReader.name() == "Function")
             {
                 FunctionKey.key  = XmlStreamReader.attributes().value("Key").toString();
-                FunctionKey.position = XmlStreamReader.attributes().value("position").toString();
-                FunctionKey.group = XmlStreamReader.attributes().value("group").toString();
+                FunctionKey.name = XmlStreamReader.attributes().value("name").toString();
+                FunctionKey.sequence = XmlStreamReader.attributes().value("sequence").toString();
                 if(ReadFunctionParameters(XmlStreamReader,DeviceKey,FunctionKey) == false)
                 {
                     break;
@@ -490,8 +509,8 @@ bool CProgramSettings::WriteAllParameters(QXmlStreamWriter& XmlStreamWriter)
             FKey = FunctionIterator.key();
             XmlStreamWriter.writeStartElement("Function");
             XmlStreamWriter.writeAttribute("Key", FKey.key);
-            XmlStreamWriter.writeAttribute("position", FKey.position);
-            XmlStreamWriter.writeAttribute("group", FKey.group);
+            XmlStreamWriter.writeAttribute("name", FKey.name);
+            XmlStreamWriter.writeAttribute("sequence", FKey.sequence);
 
             for (ParameterIterator = m_Parameters[DKey][FKey].begin();
                  ParameterIterator != m_Parameters[DKey][FKey].end(); ParameterIterator++)

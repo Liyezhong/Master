@@ -2023,7 +2023,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         ReturnCode_t retCode;
 
         // Create HeatingStrategy
-        mp_HeatingStrategy = QSharedPointer<HeatingStrategy>(new HeatingStrategy(this, m_SchedulerMachine,
+        mp_HeatingStrategy = QSharedPointer<HeatingStrategy>(new HeatingStrategy(this,
                                 m_SchedulerCommandProcessor, mp_DataManager, 0.5));
 
         //hardware not ready yet
@@ -2039,81 +2039,17 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         }
         SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_PER_MAINRELAYDO, true);
 
-        DataManager::FunctionKey_t funcKey={"Heating", "Top", "Without-Reagents"};
-        retCode = mp_HeatingStrategy->StartTemperatureControlWithPID("Retort",funcKey);
-        if( DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            //todo: error handling
-            LogDebug(QString("Failed to heat Retort side, return code: %1").arg(retCode));
-            goto ERROR;
-        }
-
         SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_SIDETEMPCTRL, true);
-
-        funcKey = {"Heating", "Bottom", "Without-Reagents"};
-        retCode = mp_HeatingStrategy->StartTemperatureControlWithPID("Retort",funcKey);
-        if( DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            //todo: error handling
-            LogDebug(QString("Failed to heat Retort bottom, return code: ").arg(retCode));
-            goto ERROR;
-        }
 
         SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_BOTTOMTEMPCTRL, true);
 
-        funcKey = {"Heating", "", "Other-Reagents"};
-        retCode = mp_HeatingStrategy->StartTemperatureControlWithPID("Rotary Valve",funcKey);
-        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            //todo: error handling
-            LogDebug(QString("Failed to heat Rotary valve, return code: ").arg(retCode));
-            goto ERROR;
-        }
-
         SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RV_TEMPCONTROL, true);
-
-        funcKey = {"Heating", "Bottom", "5064-Paraffin"};
-        retCode = mp_HeatingStrategy->StartTemperatureControlWithPID("Oven",funcKey);
-        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            //todo: error handling
-            LogDebug(QString("Failed to heat oven bottom, return code:").arg(retCode));
-            goto ERROR;
-        }
 
         SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_BOTTOMTEMPCTRL, true);
 
-        funcKey = {"Heating", "Top", "5064-Paraffin"};
-        retCode = mp_HeatingStrategy->StartTemperatureControlWithPID("Oven",funcKey);
-        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            //todo: error handling
-            LogDebug(QString("Failed to heat oven top, return code:").arg(retCode));
-            goto ERROR;
-        }
-
         SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_TOPTEMPCTRL, true);
-        m_TimeStamps.OvenStartHeatingTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
-
-        funcKey = {"Heating", "", "RVTube"};
-        retCode = mp_HeatingStrategy->StartTemperatureControlWithPID("LA",funcKey);
-        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            //todo: error handling
-            LogDebug(QString("Failed to heat tube 1, return code:").arg(retCode));
-            goto ERROR;
-        }
 
         SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE1TEMPCTRL, true);
-
-        funcKey = {"Heating", "", "WaxTrap"};
-        retCode = mp_HeatingStrategy->StartTemperatureControlWithPID("LA",funcKey);
-        if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            //todo: error handling
-            LogDebug(QString("Failed to heat tube 2, return code:").arg(retCode));
-            goto ERROR;
-        }
 
         SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL, true);
 
@@ -2161,13 +2097,6 @@ ERROR:
         LogDebug(QString("Error while init, Current state of Scheduler is: %1").arg(m_SchedulerMachine->GetCurrentState()));
     }
     m_TickTimer.start();
-
-    // Start up Heating Strategy for the specific modules
-    mp_HeatingStrategy->StartOverTimeCheck("Retort-HT-TOP-With-Paraffin");
-    mp_HeatingStrategy->StartOverTimeCheck("Retort-HT-BOTTOM-With-Paraffin");
-    mp_HeatingStrategy->StartOverTimeCheck("Oven-HT-TOP-5064-Paraffin");
-    mp_HeatingStrategy->StartOverTimeCheck("Oven-HT-BOTTOM-5064-Paraffin");
-
 }
 
 void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
@@ -2178,12 +2107,6 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
        // if(StepID == "IDLE")
 	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
-    quint32 HeatingStrategyRet = mp_HeatingStrategy->CheckHeatingOverTime(strctHWMonitor);
-    if ( 0 != HeatingStrategyRet )
-    {
-        Global::EventObject::Instance().RaiseEvent(0, HeatingStrategyRet, Scenario, true);
-    }
-
     if(strctHWMonitor.PressureAL == UNDEFINED_VALUE)
 	{
         m_PressureAL = strctHWMonitor.PressureAL;

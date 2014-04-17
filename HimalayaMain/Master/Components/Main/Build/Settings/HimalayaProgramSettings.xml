@@ -3,13 +3,13 @@
 <ProgramSettings Version="0">
     <DeviceList>
         <Device Key="LA">
-            <Function Key="AirSystemCleaning" position="" group="">
+            <Function Key="AirSystemCleaning" name="" sequence="">
                 <Parameter Key="LoopCounterForCleaning" Value="30"/>
             </Function>
-            <Function Key="Base" position="" group="">
+            <Function Key="Base" name="" sequence="">
                 <Parameter Key="PressureDrift" Value="0"/>
             </Function>
-            <Function Key="BottleCheck" position="" group="">
+            <Function Key="BottleCheck" name="" sequence="">
                 <Parameter Key="PressureBuildForBCovertime" Value="30s"/>
                 <Parameter Key="PressureBuildForBottleCheck" Value="10"/>
                 <Parameter Key="ReleaseTimeForBC" Value="4s"/>
@@ -19,7 +19,7 @@
                 <Parameter Key="ThresholdForLeakageOfReagent" Value=""/>
                 <Parameter Key="ThresholdForLeakageOfWaxBath" Value=""/>
             </Function>
-            <Function Key="Draining" position="" group="">
+            <Function Key="Draining" name="" sequence="">
                 <Parameter Key="DrainingFinishedThresholdPressure" Value="10"/>
                 <Parameter Key="DrainingFinishedThresholdTime" Value="5s"/>
                 <Parameter Key="DrainingOvertimeError" Value="4m"/>
@@ -29,14 +29,14 @@
                 <Parameter Key="TimeDelayOfDrainingFinishOfParaffin" Value="5s"/>
                 <Parameter Key="TimeDelayOfDrainingFinishOfReagent" Value="0s"/>
             </Function>
-            <Function Key="Filling" position="" group="">
+            <Function Key="Filling" name="" sequence="">
                 <Parameter Key="FillingOvertimeError" Value="4m"/>
                 <Parameter Key="FillingOvertimeINFOWarning" Value="2m"/>
                 <Parameter Key="TargetVacuum" Value="-30"/>
                 <Parameter Key="TimeDelayOfFillingFinishOfCleaning" Value="5s"/>
                 <Parameter Key="TimeDelayOfFillingFinishOfProtocol" Value="0s"/>
             </Function>
-            <Function Key="Heating" position="" group="RVTube">
+            <Function Key="Heating" name="" sequence="">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="HeatingOverTime" Value="900"/>
@@ -45,49 +45,40 @@
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
             </Function>
-            <Function Key="Heating" position="" group="WaxTrap">
-                <Parameter Key="ControllerGain" Value="6000"/>
-                <Parameter Key="DerivativeTime" Value="80"/>
-                <Parameter Key="HeatingOverTime" Value="900"/>
-                <Parameter Key="MaxTemperature" Value="100"/>
-                <Parameter Key="NominalTemperature" Value="80"/>
-                <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="SlopeTempChange" Value=""/>
-            </Function>
-            <Function Key="Overflow" position="" group="">
+            <Function Key="Overflow" name="" sequence="">
                 <Parameter Key="PressureFluctuateThreshold" Value="2.5"/>
                 <Parameter Key="PressureFluctuateTimes" Value="2"/>
                 <Parameter Key="PressureFluctuateTimesBase" Value="8"/>
             </Function>
-            <Function Key="PIDOfPressure" position="" group="">
+            <Function Key="PIDOfPressure" name="" sequence="">
                 <Parameter Key="D" Value="0"/>
                 <Parameter Key="I" Value="50000"/>
                 <Parameter Key="P" Value="30"/>
             </Function>
-            <Function Key="Pressure" position="" group="">
+            <Function Key="Pressure" name="" sequence="">
                 <Parameter Key="MaxPressure" Value="60"/>
                 <Parameter Key="TargetPressure" Value="30"/>
                 <Parameter Key="ThresholdTimeOfStable" Value="5s"/>
             </Function>
-            <Function Key="PressureVacuum" position="" group="">
+            <Function Key="PressureVacuum" name="" sequence="">
                 <Parameter Key="PressureVacuumOvertime" Value="2m"/>
             </Function>
-            <Function Key="Release" position="" group="">
+            <Function Key="Release" name="" sequence="">
                 <Parameter Key="AmbientThresholdPressure" Value="2"/>
                 <Parameter Key="ReleasingTimeout" Value="20s"/>
                 <Parameter Key="ThresholdTimeOfStable" Value="2s"/>
             </Function>
-            <Function Key="ReliefPressure" position="" group="">
+            <Function Key="ReliefPressure" name="" sequence="">
                 <Parameter Key="ReliefSuccessJudgeRules" Value="50"/>
             </Function>
-            <Function Key="Vacuum" position="" group="">
+            <Function Key="Vacuum" name="" sequence="">
                 <Parameter Key="MaxVacuum" Value="-60"/>
                 <Parameter Key="TargetVacuum" Value="-30"/>
                 <Parameter Key="ThresholdTimeOfStable" Value="5s"/>
             </Function>
         </Device>
         <Device Key="Oven">
-            <Function Key="Heating" position="Bottom" group="5064-Paraffin">
+            <Function Key="Heating" name="" sequence="">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="HeatingOverTime" Value="18000"/>
@@ -99,180 +90,122 @@
                 <Parameter Key="SlopeTempChange" Value=""/>
                 <Parameter Key="TempChangeTimeSlot" Value="28800"/>
             </Function>
-            <Function Key="Heating" position="Bottom" group="6470-Paraffin">
-                <Parameter Key="ControllerGain" Value="6000"/>
-                <Parameter Key="DerivativeTime" Value="80"/>
-                <Parameter Key="HeatingOverTime" Value="18000"/>
-                <Parameter Key="HeatingOverTimeTemp" Value="10"/>
-                <Parameter Key="MaxTemperature" Value="100"/>
-                <Parameter Key="NominalTemperature" Value="15"/>
-                <Parameter Key="NominalTemperaturePost" Value="4"/>
-                <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="SlopeTempChange" Value=""/>
-                <Parameter Key="TempChangeTimeSlot" Value="28800"/>
-            </Function>
-            <Function Key="Heating" position="Top" group="5064-Paraffin">
-                <Parameter Key="ControllerGain" Value="6000"/>
-                <Parameter Key="DerivativeTime" Value="80"/>
-                <Parameter Key="HeatingOverTime" Value="18000"/>
-                <Parameter Key="HeatingOverTimeTemp" Value="10"/>
-                <Parameter Key="MaxTemperature" Value="100"/>
-                <Parameter Key="NominalTemperature" Value="15"/>
-                <Parameter Key="NominalTemperaturePost" Value="4"/>
-                <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="SlopeTempChange" Value=""/>
-                <Parameter Key="TempChangeTimeSlot" Value="28800"/>
-            </Function>
-            <Function Key="Heating" position="Top" group="6470-Paraffin">
-                <Parameter Key="ControllerGain" Value="6000"/>
-                <Parameter Key="DerivativeTime" Value="80"/>
-                <Parameter Key="HeatingOverTime" Value="18000"/>
-                <Parameter Key="HeatingOverTimeTemp" Value="10"/>
-                <Parameter Key="MaxTemperature" Value="100"/>
-                <Parameter Key="NominalTemperature" Value="15"/>
-                <Parameter Key="NominalTemperaturePost" Value="4"/>
-                <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="SlopeTempChange" Value=""/>
-                <Parameter Key="TempChangeTimeSlot" Value="28800"/>
-            </Function>
-            <Function Key="cover sensor" position="" group="">
+            <Function Key="cover sensor" name="" sequence="">
                 <Parameter Key="StatusOfCoverSensor" Value="0"/>
             </Function>
         </Device>
         <Device Key="Retort">
-            <Function Key="Heating" position="Bottom" group="With-Paraffin">
+            <Function Key="Heating" name="RTBottom" sequence="1">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="0"/>
                 <Parameter Key="HeatingOverTime" Value="43200"/>
-                <Parameter Key="MaxTemperature" Value="87"/>
+                <Parameter Key="MaxTemperature" Value="107"/>
                 <Parameter Key="NominalTemperature" Value="2"/>
                 <Parameter Key="ResetTime" Value="30000"/>
+                <Parameter Key="ScenarioList" Value="001,002,003,004,200,202,203,204,205,206,211,212,216,217,221,222,226,227,231,232,236,237,241,242,246,247,251,252,256,257,260,271,272,276,277,281,282,286,287,291,292,296,297"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
             </Function>
-            <Function Key="Heating" position="Bottom" group="With-Reagents">
+            <Function Key="Heating" name="RTBottom" sequence="2">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="0"/>
                 <Parameter Key="HeatingOverTime" Value="10800"/>
-                <Parameter Key="MaxTemperature" Value="80"/>
+                <Parameter Key="MaxTemperature" Value="87"/>
                 <Parameter Key="NominalTemperature" Value="2"/>
                 <Parameter Key="ResetTime" Value="30000"/>
+                <Parameter Key="ScenarioList" Value="253,254,255,273,274,275,283,284,285"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
             </Function>
-            <Function Key="Heating" position="Bottom" group="Without-Reagents">
+            <Function Key="Heating" name="RTBottom" sequence="3">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="0"/>
                 <Parameter Key="HeatingOverTime" Value="900"/>
                 <Parameter Key="MaxTemperature" Value="82"/>
                 <Parameter Key="NominalTemperature" Value="2"/>
                 <Parameter Key="ResetTime" Value="30000"/>
+                <Parameter Key="ScenarioList" Value="213,214,215,223,224,225,233,234,235,243,244,245,293,294,295"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
             </Function>
-            <Function Key="Heating" position="Top" group="With-Paraffin">
+            <Function Key="Heating" name="RTTop" sequence="1">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="HeatingOverTime" Value="43200"/>
                 <Parameter Key="MaxTemperature" Value="92"/>
                 <Parameter Key="NominalTemperature" Value="7"/>
                 <Parameter Key="ResetTime" Value="1000"/>
+                <Parameter Key="ScenarioList" Value="253,254,255,273,274,275,283,284,285"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
             </Function>
-            <Function Key="Heating" position="Top" group="With-Reagents">
+            <Function Key="Heating" name="RTTop" sequence="2">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="HeatingOverTime" Value="10800"/>
                 <Parameter Key="MaxTemperature" Value="87"/>
                 <Parameter Key="NominalTemperature" Value="7"/>
                 <Parameter Key="ResetTime" Value="1000"/>
+                <Parameter Key="ScenarioList" Value="213,214,215,223,224,225,233,234,235,243,244,245,293,294,295"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
             </Function>
-            <Function Key="Heating" position="Top" group="Without-Reagents">
+            <Function Key="Heating" name="RTTop" sequence="3">
                 <Parameter Key="ControllerGain" Value="6000"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="HeatingOverTime" Value="900"/>
                 <Parameter Key="MaxTemperature" Value="112"/>
                 <Parameter Key="NominalTemperature" Value="7"/>
                 <Parameter Key="ResetTime" Value="1000"/>
+                <Parameter Key="ScenarioList" Value="001,002,003,004,200,202,203,204,205,206,211,212,216,217,221,222,226,227,231,232,236,237,241,242,246,247,251,252,256,257,260,271,272,276,277,281,282,286,287,291,292,296,297"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
             </Function>
-            <Function Key="Level Sensor" position="" group="NXP-HS">
-                <Parameter Key="ControllerGain" Value="120"/>
-                <Parameter Key="DerivativeTime" Value="80"/>
-                <Parameter Key="ExchangePIDTemp" Value="90"/>
-                <Parameter Key="HeatingOvertime" Value="120"/>
-                <Parameter Key="MaxTemperature" Value="112"/>
-                <Parameter Key="NominalTemperature" Value="95"/>
-                <Parameter Key="ResetTime" Value="1212"/>
-                <Parameter Key="SlopeTempChange" Value="10"/>
+            <Function Key="Heating" name="TempDiff" sequence="1">
+                <Parameter Key="ScenarioList" Value="271-300"/>
+                <Parameter Key="TempDifference" Value="20"/>
             </Function>
-            <Function Key="Level Sensor" position="" group="NXP-LS">
+            <Function Key="Heating" name="TempDiff" sequence="2">
+                <Parameter Key="ScenarioList" Value="200"/>
+                <Parameter Key="TempDifference" Value="15"/>
+            </Function>
+            <Function Key="Heating" name="TempDiff" sequence="3">
+                <Parameter Key="ScenarioList" Value="205"/>
+                <Parameter Key="TempDifference" Value="10"/>
+            </Function>
+            <Function Key="Level Sensor" name="LevelSensor" sequence="">
                 <Parameter Key="ControllerGain" Value="200"/>
+                <Parameter Key="CurrentSPeed" Value="Low"/>
                 <Parameter Key="DerivativeTime" Value="0"/>
                 <Parameter Key="ExchangePIDTemp" Value="90"/>
                 <Parameter Key="HeatingOvertime" Value="120"/>
                 <Parameter Key="MaxTemperature" Value="112"/>
                 <Parameter Key="NominalTemperature" Value="95"/>
                 <Parameter Key="ResetTime" Value="1000"/>
+                <Parameter Key="ScenarioList" Value="002,200,211,212,221,222,231,232,241,242,281,282,291,292"/>
                 <Parameter Key="SlopeTempChange" Value="10"/>
             </Function>
-            <Function Key="Level Sensor" position="" group="XP-HS">
+            <Function Key="Level Sensor" name="LevelSensor" sequence="11">
                 <Parameter Key="ControllerGain" Value="120"/>
+                <Parameter Key="CurrentSPeed" Value="High"/>
                 <Parameter Key="DerivativeTime" Value="80"/>
                 <Parameter Key="ExchangePIDTemp" Value="110"/>
                 <Parameter Key="HeatingOvertime" Value="120"/>
                 <Parameter Key="MaxTemperature" Value="132"/>
                 <Parameter Key="NominalTemperature" Value="115"/>
                 <Parameter Key="ResetTime" Value="1212"/>
-                <Parameter Key="SlopeTempChange" Value="6"/>
-            </Function>
-            <Function Key="Level Sensor" position="" group="XP-LS">
-                <Parameter Key="ControllerGain" Value="200"/>
-                <Parameter Key="DerivativeTime" Value="0"/>
-                <Parameter Key="ExchangePIDTemp" Value="110"/>
-                <Parameter Key="HeatingOvertime" Value="120"/>
-                <Parameter Key="MaxTemperature" Value="132"/>
-                <Parameter Key="NominalTemperature" Value="115"/>
-                <Parameter Key="ResetTime" Value="1000"/>
+                <Parameter Key="ScenarioList" Value="251,252,271,272,281,282"/>
                 <Parameter Key="SlopeTempChange" Value="6"/>
             </Function>
         </Device>
         <Device Key="Rotary Valve">
-            <Function Key="Heating" position="" group="Melting-Paraffin">
-                <Parameter Key="ControllerGain" Value=""/>
-                <Parameter Key="DerivativeTime" Value=""/>
-                <Parameter Key="MaxTemperature" Value="130"/>
-                <Parameter Key="NominalTemperature" Value="40"/>
-                <Parameter Key="ResetTime" Value=""/>
-                <Parameter Key="SlopeTempChange" Value=""/>
-            </Function>
-            <Function Key="Heating" position="" group="Other-Reagents">
-                <Parameter Key="ControllerGain" Value="6000"/>
-                <Parameter Key="DerivativeTime" Value="1000"/>
-                <Parameter Key="MaxTemperature" Value="130"/>
-                <Parameter Key="NominalTemperature" Value="100"/>
-                <Parameter Key="ResetTime" Value="1212"/>
-                <Parameter Key="SlopeTempChange" Value="80"/>
-            </Function>
-            <Function Key="Heating" position="" group="Sucking-Paraffin">
+            <Function Key="Heating" name="" sequence="">
                 <Parameter Key="ControllerGain" Value=""/>
                 <Parameter Key="DerivativeTime" Value=""/>
                 <Parameter Key="HeatingOverTime" Value="900"/>
                 <Parameter Key="MaxTemperature" Value="130"/>
-                <Parameter Key="NominalTemperature" Value="110"/>
-                <Parameter Key="ResetTime" Value=""/>
-                <Parameter Key="SlopeTempChange" Value=""/>
-            </Function>
-            <Function Key="Heating" position="" group="Xylene-Paraffin-Cleaning">
-                <Parameter Key="ControllerGain" Value=""/>
-                <Parameter Key="DerivativeTime" Value=""/>
-                <Parameter Key="MaxTemperature" Value="130"/>
                 <Parameter Key="NominalTemperature" Value="100"/>
                 <Parameter Key="ResetTime" Value=""/>
                 <Parameter Key="SlopeTempChange" Value=""/>
             </Function>
-            <Function Key="Motor" position="" group="">
+            <Function Key="Motor" name="" sequence="">
                 <Parameter Key="Position" Value=""/>
             </Function>
-            <Function Key="PositionStatus" position="" group="">
+            <Function Key="PositionStatus" name="" sequence="">
                 <Parameter Key="Sensor1" Value="0"/>
                 <Parameter Key="Sensor2" Value="0"/>
             </Function>

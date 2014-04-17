@@ -34,8 +34,8 @@ namespace DataManager
 {
 typedef struct {
     QString key;
-    QString position;
-    QString	group;
+    QString name;
+    QString	sequence;
 } FunctionKey_t;
 typedef QMap<QString,QString> ParameterKeyValue_t;
 typedef QMap<FunctionKey_t,ParameterKeyValue_t> FunctionParameter_t;
@@ -43,7 +43,7 @@ typedef QMap<QString,FunctionParameter_t> DeviceFunction_t;
 
 inline bool operator <(const FunctionKey_t& key1,const FunctionKey_t& key2)
 {
-    return (key1.key+key1.position+key1.group < key2.key+key2.position+key2.group);
+    return (key1.key+key1.name+key1.sequence < key2.key+key2.name+key2.sequence);
 }
 
 /****************************************************************************/
@@ -117,6 +117,7 @@ public:
     /****************************************************************************/
     double GetParameterValue(const QString& DeviceKey, const QString& FunctionKey,const QString& ParameterKey, bool& ok);
     double GetParameterValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey,const QString& ParameterKey, bool& ok);
+    QString GetParameterStrValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey,const QString& ParameterKey);
     bool SetParameterValue(const QString& DeviceKey, const QString& FunctionKey, const QString& ParameterKey, double value);
     bool SetParameterValue(const QString& DeviceKey, const FunctionKey_t& FunctionKey, const QString& ParameterKey, double value);
     bool SetParameterValue(const QString& DeviceKey, const QString& FunctionKey,const QString& ParameterKey, const QString& value);

@@ -29,334 +29,129 @@
 
 namespace Scheduler{
 HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
-								CSchedulerStateMachine* schedMachine,
                                 SchedulerCommandProcessorBase* SchedCmdProcessor,
                                 DataManager::CDataManager* DataManager, qreal Interval)
 								:mp_SchedulerController(schedController),
-								mp_SchedulerMachine(schedMachine),
 								mp_SchedulerCommandProcessor(SchedCmdProcessor),
                                 mp_DataManager(DataManager)
 {
     m_Interval = Interval;
-    this->ConstructMonitorList();
+    this->ConstructHeatingSensorList();
 }
 
-ReturnCode_t HeatingStrategy::StartTemperatureControlWithPID(const QString& devName, const DataManager::FunctionKey_t& funcKey)
+bool HeatingStrategy::ConstructHeatingSensorList()
 {
-    bool flag4NominalTemp  = false, flag4SlopeTempChange  = false, flag4MaxTemp = false,
-        flag4ControllerGain = false, flag4ResetTime = false, flag4DerivativeTime = false;
-	ReturnCode_t retCode = DCL_ERR_FCT_CALL_FAILED;
-
-    qreal	nominalTemp = mp_DataManager->GetProgramSettings()->GetParameterValue(devName, funcKey, "NominalTemperature", flag4NominalTemp);
-    qreal	slopeTempChange = mp_DataManager->GetProgramSettings()->GetParameterValue(devName, funcKey, "SlopeTempChange", flag4SlopeTempChange);
-    qreal	maxTemp = mp_DataManager->GetProgramSettings()->GetParameterValue(devName, funcKey, "MaxTemperature", flag4MaxTemp);
-    qreal	controllerGain = mp_DataManager->GetProgramSettings()->GetParameterValue(devName, funcKey, "ControllerGain", flag4ControllerGain);
-    qreal	resetTime = mp_DataManager->GetProgramSettings()->GetParameterValue(devName, funcKey, "ResetTime", flag4ResetTime);
-    qreal	derivativeTime = mp_DataManager->GetProgramSettings()->GetParameterValue(devName, funcKey, "DerivativeTime", flag4DerivativeTime);
-
-    if (false == flag4NominalTemp || false == flag4SlopeTempChange || false == flag4MaxTemp ||
-        false == flag4ControllerGain || false == flag4ResetTime || false == flag4DerivativeTime)
-	{
-		return DCL_ERR_FCT_CALL_FAILED;
-	}
-
-    qreal UserInputTemp = 0.0;
-    if ("Retort" == devName && "Heating" == funcKey.key) //For Retort
-	{
-        // For Ambient temperature, Retort need NOT set temperature.
-        if (false == mp_SchedulerController->GetCurProgramID().isEmpty()) // make sure program ID is NOT empty
-        {
-            UserInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
-                ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
-        }
-        if (qFuzzyCompare(UserInputTemp, -1))
-        {
-            return DCL_ERR_FCT_CALL_SUCCESS;
-        }
-
-        CmdRTStartTemperatureControlWithPID* pHeatingCmd = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
-        if ("Top" == funcKey.position)
-        {
-            pHeatingCmd->SetType(RT_SIDE);
-        }
-        else if ("Bottom" == funcKey.position)
-        {
-            pHeatingCmd->SetType(RT_BOTTOM);
-        }
-
-        pHeatingCmd->SetNominalTemperature(UserInputTemp+nominalTemp);
-        pHeatingCmd->SetSlopeTempChange(slopeTempChange);
-        pHeatingCmd->SetMaxTemperature(maxTemp);
-        pHeatingCmd->SetControllerGain(controllerGain);
-        pHeatingCmd->SetResetTime(resetTime);
-        pHeatingCmd->SetDerivativeTime(derivativeTime);
-
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
-    }
-    else if ("Oven" == devName && "Heating" == funcKey.key) //For Oven
+    // For Retort Bottom1
+    m_RTBottom1.devName = "Retort";
+    m_RTBottom1.sensorName = "RTBottom";
+    QStringList seqenceList = {"1", "2", "3"};
+    if (false == this->ConstructHeatingSensor(m_RTBottom1, seqenceList))
     {
-        UserInputTemp = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-        CmdOvenStartTemperatureControlWithPID* pHeatingCmd = new CmdOvenStartTemperatureControlWithPID(500, mp_SchedulerController);
-        if ("Top" == funcKey.position)
-        {
-            pHeatingCmd->SetType(OVEN_TOP);
-        }
-        else
-        {
-            pHeatingCmd->SetType(OVEN_BOTTOM);
-        }
-        pHeatingCmd->SetNominalTemperature(UserInputTemp+nominalTemp);
-        pHeatingCmd->SetSlopeTempChange(slopeTempChange);
-        pHeatingCmd->SetMaxTemperature(maxTemp);
-        pHeatingCmd->SetControllerGain(controllerGain);
-        pHeatingCmd->SetResetTime(resetTime);
-        pHeatingCmd->SetDerivativeTime(derivativeTime);
-
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        return false;
     }
-    else if ("Rotary Valve" == devName && "Heating" == funcKey.key) //For Rotary Valve
+
+    // For Retort Bottom2
+    m_RTBottom2.devName = "Retort";
+    m_RTBottom2.sensorName = "RTBottom";
+    seqenceList = {"1", "2", "3"};
+    if (false == this->ConstructHeatingSensor(m_RTBottom2, seqenceList))
     {
-        CmdRVStartTemperatureControlWithPID* pHeatingCmd = new CmdRVStartTemperatureControlWithPID(500, mp_SchedulerController);
-        pHeatingCmd->SetNominalTemperature(nominalTemp);
-        pHeatingCmd->SetSlopeTempChange(slopeTempChange);
-        pHeatingCmd->SetMaxTemperature(maxTemp);
-        pHeatingCmd->SetControllerGain(controllerGain);
-        pHeatingCmd->SetResetTime(resetTime);
-        pHeatingCmd->SetDerivativeTime(derivativeTime);
-
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        return false;
     }
-    else if ("LA" == devName && "Heating" == funcKey.key) //For LA
-    {
-        CmdALStartTemperatureControlWithPID* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
-        pHeatingCmd->SetType(AL_LEVELSENSOR);
-        pHeatingCmd->SetNominalTemperature(nominalTemp);
-        pHeatingCmd->SetSlopeTempChange(slopeTempChange);
-        pHeatingCmd->SetMaxTemperature(maxTemp);
-        pHeatingCmd->SetControllerGain(controllerGain);
-        pHeatingCmd->SetResetTime(resetTime);
-        pHeatingCmd->SetDerivativeTime(derivativeTime);
 
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
-
-    }
-	SchedulerCommandShPtr_t pResHeatingCmd;
-    while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd));
-    pResHeatingCmd->GetResult(retCode);
-
-    return retCode;
-}
-
-bool HeatingStrategy::GetTargetTempPaddingAndOverTime(const QString& devName, const DataManager::FunctionKey_t& funcKey, qreal& TempPadding, qreal& overTime)
-{
-    bool ok = false;
-    if ("Retort" == devName || "LA" == devName || "Rotary Valve" == devName)
-    {
-        TempPadding = mp_DataManager->GetProgramSettings()->GetParameterValue(devName, funcKey, "NominalTemperature", ok);
-        if (false == ok)
-        {
-            return false;
-        }
-    }
-    else
-    {
-        TempPadding = mp_DataManager->GetProgramSettings()->GetParameterValue(devName, funcKey, "HeatingOverTimeTemp", ok);
-        if (false == ok)
-        {
-            return false;
-        }
-    }
-    overTime = mp_DataManager->GetProgramSettings()->GetParameterValue(devName, funcKey, "HeatingOverTime", ok);
-    if (false == ok)
+    // For Retort Top
+    m_RTTop.devName = "Retort";
+    m_RTTop.sensorName = "RTTop";
+    seqenceList = {"1", "2", "3"};
+    if (false == this->ConstructHeatingSensor(m_RTTop, seqenceList))
     {
         return false;
     }
     return true;
 }
 
-void HeatingStrategy::ConstructMonitorList()
+bool HeatingStrategy::ConstructHeatingSensor(HeatingSensor& heatingSensor, const QStringList& sequenceList)
 {
-    // For Retort
-    QString devName = "Retort";
-    DataManager::FunctionKey_t funcKey = {"Heating", "Bottom", "With-Paraffin"};
-    qreal tempPadding = 0.0;
-    qreal overTime = 0.0;
-    if (this->GetTargetTempPaddingAndOverTime(devName, funcKey,tempPadding, overTime))
-    {
-        OTMonitor_t monitorVal={devName, funcKey, false, tempPadding, 0.0, overTime};
-        m_MonitorList.insert("Retort-HT-BOTTOM-With-Paraffin",monitorVal);
-    }
+   DataManager::FunctionKey_t funcKey;
+   funcKey.key = "Heating";
+   funcKey.name = heatingSensor.sensorName;
 
-    funcKey = {"Heating", "Bottom", "Without-Reagents"};
-    if (this->GetTargetTempPaddingAndOverTime(devName, funcKey,tempPadding, overTime))
-    {
-        OTMonitor_t monitorVal={devName, funcKey, false, tempPadding, 0.0, overTime};
-        m_MonitorList.insert("Retort-HT-BOTTOM-Without-Reagents",monitorVal);
-    }
+   QStringList::const_iterator seqIter = sequenceList.begin();
+   for (; seqIter!=sequenceList.end(); ++seqIter)
+   {
+       FunctionModule funcModule;
 
-    funcKey = {"Heating", "Bottom", "With-Reagents"};
-    if (this->GetTargetTempPaddingAndOverTime(devName, funcKey,tempPadding, overTime))
-    {
-        OTMonitor_t monitorVal={devName, funcKey, false, tempPadding, 0.0, overTime};
-        m_MonitorList.insert("Retort-HT-BOTTOM-With-Reagents",monitorVal);
-    }
+       // Firstly, get the scenario list
+       funcKey.sequence = *seqIter;
+       QString strScenarioList = mp_DataManager->GetProgramSettings()->GetParameterStrValue(heatingSensor.devName, funcKey, "ScenarioList");
+       QStringList  strList = strScenarioList.split(",");
+       QStringList::const_iterator strIter = strList.begin();
+       qint32 scenario = 0;
+       bool ok = false;
+       for (; strIter != strList.end(); ++strIter)
+       {
+           scenario = (*strIter).toInt(&ok);
+           if (false == ok)
+           {
+               return false;
+           }
+           funcModule.ScenarioList.push_back(scenario);
+       }
 
-    funcKey = {"Heating", "Top", "With-Paraffin"};
-    if (this->GetTargetTempPaddingAndOverTime(devName, funcKey,tempPadding, overTime))
-    {
-        OTMonitor_t monitorVal={devName, funcKey, false, tempPadding, 0.0, overTime};
-        m_MonitorList.insert("Retort-HT-TOP-With-Paraffin",monitorVal);
-    }
+       // Get the others
+       qreal temperatureOffset = mp_DataManager->GetProgramSettings()->GetParameterValue(heatingSensor.devName, funcKey, "NominalTemperature", ok);
+       if (false == ok)
+       {
+           return false;
+       }
+       funcModule.TemperatureOffset = temperatureOffset;
 
-    funcKey = {"Heating", "Top", "Without-Reagents"};
-    if (this->GetTargetTempPaddingAndOverTime(devName, funcKey,tempPadding, overTime))
-    {
-        OTMonitor_t monitorVal={devName, funcKey, false, tempPadding, 0.0, overTime};
-        m_MonitorList.insert("Retort-HT-TOP-Without-Reagents",monitorVal);
-    }
+       qreal maxTemperature= mp_DataManager->GetProgramSettings()->GetParameterValue(heatingSensor.devName, funcKey, "MaxTemperature", ok);
+       if (false == ok)
+       {
+           return false;
+       }
+       funcModule.MaxTemperature = maxTemperature;
 
-    funcKey = {"Heating", "Top", "With-Reagents"};
-    if (this->GetTargetTempPaddingAndOverTime(devName, funcKey,tempPadding, overTime))
-    {
-        OTMonitor_t monitorVal={devName, funcKey, false, tempPadding, 0.0, overTime};
-        m_MonitorList.insert("Retort-HT-TOP-With-Reagents",monitorVal);
-    }
+       qreal heatingOverTime= mp_DataManager->GetProgramSettings()->GetParameterValue(heatingSensor.devName, funcKey, "HeatingOverTime", ok);
+       if (false == ok)
+       {
+           return false;
+       }
+       funcModule.HeatingOverTime = heatingOverTime;
 
-    //For Oven
-    devName = "Oven";
-    funcKey = {"Heating", "Top", "5064-Paraffin"};
-    if (this->GetTargetTempPaddingAndOverTime(devName, funcKey,tempPadding, overTime))
-    {
-        OTMonitor_t monitorVal={devName, funcKey, false, tempPadding, 0.0, overTime};
-        m_MonitorList.insert("Oven-HT-TOP-5064-Paraffin",monitorVal);
-    }
+       qreal slopTempChange= mp_DataManager->GetProgramSettings()->GetParameterValue(heatingSensor.devName, funcKey, "SlopeTempChange", ok);
+       if (false == ok)
+       {
+           return false;
+       }
+       funcModule.SlopTempChange = slopTempChange;
 
-    funcKey = {"Heating", "Top", "6470-Paraffin"};
-    if (this->GetTargetTempPaddingAndOverTime(devName, funcKey,tempPadding, overTime))
-    {
-        OTMonitor_t monitorVal={devName, funcKey, false, tempPadding,  0.0, overTime};
-        m_MonitorList.insert("Oven-HT-TOP-6470-Paraffin",monitorVal);
-    }
+       qreal controllerGain= mp_DataManager->GetProgramSettings()->GetParameterValue(heatingSensor.devName, funcKey, "ControllerGain", ok);
+       if (false == ok)
+       {
+           return false;
+       }
+       funcModule.ControllerGain = controllerGain;
 
-    funcKey = {"Heating", "Bottom", "5064-Paraffin"};
-    if (this->GetTargetTempPaddingAndOverTime(devName, funcKey,tempPadding, overTime))
-    {
-        OTMonitor_t monitorVal={devName, funcKey, false, tempPadding, 0.0, overTime};
-        m_MonitorList.insert("Oven-HT-BOTTOM-5064-Paraffin",monitorVal);
-    }
+       qreal resetTime= mp_DataManager->GetProgramSettings()->GetParameterValue(heatingSensor.devName, funcKey, "ResetTime", ok);
+       if (false == ok)
+       {
+           return false;
+       }
+       funcModule.ResetTime = resetTime;
 
-    funcKey = {"Heating", "Bottom", "6470-Paraffin"};
-    if (this->GetTargetTempPaddingAndOverTime(devName, funcKey,tempPadding, overTime))
-    {
-        OTMonitor_t monitorVal={devName, funcKey, false, tempPadding, 0.0, overTime};
-        m_MonitorList.insert("Oven-HT-BOTTOM-6470-Paraffin",monitorVal);
-    }
+       qreal derivateTime= mp_DataManager->GetProgramSettings()->GetParameterValue(heatingSensor.devName, funcKey, "DerivateTime", ok);
+       if (false == ok)
+       {
+           return false;
+       }
+       funcModule.DerivateTime = derivateTime;
 
-    //For Rotary Valve
-    devName = "Rotary Valve";
-    funcKey = {"Heating", "", "Sucking-Paraffin"};
-    if (this->GetTargetTempPaddingAndOverTime(devName, funcKey,tempPadding, overTime))
-    {
-        OTMonitor_t monitorVal={devName, funcKey, false, tempPadding, 0.0, overTime};
-        m_MonitorList.insert("RV-HT-Sucking-Paraffin",monitorVal);
-    }
+       heatingSensor.functionModuleList.push_back(funcModule);
+   }
 
-    // For LA
-    devName = "LA";
-    funcKey = {"Heating", "", "RVTube"};
-    if (this->GetTargetTempPaddingAndOverTime(devName, funcKey,tempPadding, overTime))
-    {
-        OTMonitor_t monitorVal={devName, funcKey, false, tempPadding, 0.0, overTime};
-        m_MonitorList.insert("LA-HT-RVTube",monitorVal);
-    }
-    funcKey = {"Heating", "", "WaxTrap"};
-    if (this->GetTargetTempPaddingAndOverTime(devName, funcKey,tempPadding, overTime))
-    {
-        OTMonitor_t monitorVal={devName, funcKey, false, tempPadding, 0.0, overTime};
-        m_MonitorList.insert("LA-HT-WaxTrap",monitorVal);
-    }
+   return true;
 }
-
-quint32 HeatingStrategy::CheckHeatingOverTime(const HardwareMonitor_t& HWValueList)
-{
-    QMap<QString, OTMonitor_t>::iterator iter;
-    for (iter = m_MonitorList.begin(); iter!= m_MonitorList.end(); ++iter)
-    {
-        if (true == iter.value().needCheck)
-        {
-            iter.value().elapseTime += m_Interval;
-
-            // Get the Temp offset
-            if (iter.value().elapseTime > iter.value().overTime)
-            {
-                bool ok = false;
-                QString devName = iter.value().devName;
-                DataManager::FunctionKey_t funcKey = iter.value().funcKey;
-                qreal userInputTemp = 0.0;
-                if ("Retort" == devName)
-                {
-                    if (false == mp_SchedulerController->GetCurProgramID().isEmpty())
-                    {
-                        userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
-                                ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
-                    }
-
-                }
-                else if ("Oven" == devName)
-                {
-                    userInputTemp = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-                }
-                else
-                {
-                   userInputTemp = 0.0;
-                }
-
-                if (iter.value().targetTempPadding+userInputTemp < 100) // Hard code.
-                {
-                    // Once the error occurs, the sensor needn't be checked.
-                    iter.value().needCheck = false;
-
-                    if ("Retort-HT-TOP-With-Paraffin" == iter.key())
-                    {
-                        return HEATING_OT_RETORT_TOP;
-                    }
-                    else if ("Retort-HT-BOTTOM-With-Paraffin" == iter.key())
-                    {
-                        return HEATING_OT_RETORT_BOTTOM;
-                    }
-                    else if ("Oven-HT-TOP-5064-Paraffin" == iter.key())
-                    {
-                        return HEATING_OT_OVEN_TOP;
-                    }
-                    else if ("Oven-HT-BOTTOM-5064-Paraffin" == iter.key())
-                    {
-                        return HEATING_OT_OVEN_BOTTOM;
-                    }
-                }
-            }
-            else
-            {
-                continue;
-            }
-        }
-        else
-        {
-            continue;
-        }
-    }
-    return 0;
-}
-
-bool HeatingStrategy::StartOverTimeCheck(const QString& moduleName)
-{
-    if (m_MonitorList.contains(moduleName))
-    {
-        m_MonitorList[moduleName].needCheck = true;
-        return true;
-    }
-    return false;
-}
-
-
 }// end of namespace Scheduler
 
