@@ -208,10 +208,16 @@ Qt::ItemFlags CProgramModel::flags(const QModelIndex &Index) const
                         return Qt::ItemIsSelectable;
                     }
                 }
+
+                bool ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
+                bool CanEdit = Core::CGlobalHelper::CheckIfCanEdit();
+                if ( ProcessRunning == true || CanEdit == false ) {
+                    return Qt::ItemIsSelectable;
+                }
             }
             return QAbstractItemModel::flags(Index) | Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
         }
-        else {
+        else {         
             return Qt::ItemIsSelectable;
         }
     }

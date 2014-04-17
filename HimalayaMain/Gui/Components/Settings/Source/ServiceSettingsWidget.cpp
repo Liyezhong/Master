@@ -24,7 +24,8 @@
 #include "Settings/Include/ServiceSettingsWidget.h"
 #include "ui_ServiceSettingsWidget.h"
 #include "MainMenu/Include/MessageDlg.h"
-#include <Dashboard/Include/CommonString.h>
+#include "Dashboard/Include/CommonString.h"
+#include "Core/Include/GlobalHelper.h"
 
 namespace Settings {
 
@@ -296,7 +297,7 @@ void CServiceSettingsWidget::ResetButtons()
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if (((m_CurrentUserRole == MainMenu::CMainWindow::Admin) ||
          (m_CurrentUserRole == MainMenu::CMainWindow::Service)) &&
-         (!m_ProcessRunning))
+         (!m_ProcessRunning) && Core::CGlobalHelper::CheckIfCanEdit() == true)
     {
         //Edit Mode
         mp_Ui->btnResetOperationHour->setEnabled(true);

@@ -24,7 +24,8 @@
 #include "Reagents/Include/ReagentRMSWidget.h"
 #include "Reagents/Include/ModifyReagentRMSDlg.h"
 #include "ui_ReagentsWidget.h"
-#include <Dashboard/Include/CommonString.h>
+#include "Dashboard/Include/CommonString.h"
+#include "Core/Include/GlobalHelper.h"
 
 namespace Reagents {
 
@@ -393,10 +394,17 @@ void CReagentRMSWidget::UpdateButtons(QString Id)
         if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
              m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
                 (!m_ProcessRunning)) {
-            //Edit Mode
-            mp_Ui->btnNew->setEnabled(true);
-            mp_Ui->btnEdit->setEnabled(true);
-            mp_Ui->btnDelete->setEnabled(true);
+
+            if (Core::CGlobalHelper::CheckIfCanEdit(Id, 2) == false) {
+                mp_Ui->btnEdit->setEnabled(false);
+                mp_Ui->btnDelete->setEnabled(false);
+            }
+            else {
+                //Edit Mode
+                mp_Ui->btnNew->setEnabled(true);
+                mp_Ui->btnEdit->setEnabled(true);
+                mp_Ui->btnDelete->setEnabled(true);
+            }
 
         }
         else {
@@ -422,10 +430,19 @@ void CReagentRMSWidget::OnUserRoleChanged()
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
             (!m_ProcessRunning)) {
-        //Edit Mode
-        mp_Ui->btnNew->setEnabled(true);
-        mp_Ui->groupRMS->setEnabled(true);
-        mp_Ui->CleaningReagent_GroupRMS->setEnabled(true);
+
+        if (Core::CGlobalHelper::CheckIfCanEdit() == false ) {
+            mp_Ui->groupRMS->setEnabled(false);
+            mp_Ui->CleaningReagent_GroupRMS->setEnabled(false);
+            mp_TableWidget->clearSelection();
+            mp_TableWidgetCleaning->clearSelection();
+        }
+        else {
+            //Edit Mode
+            mp_Ui->btnNew->setEnabled(true);
+            mp_Ui->groupRMS->setEnabled(true);
+            mp_Ui->CleaningReagent_GroupRMS->setEnabled(true);
+        }
     }
     else {
         mp_Ui->btnNew->setEnabled(false);
@@ -447,11 +464,20 @@ void CReagentRMSWidget::OnProcessStateChanged()
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
             (!m_ProcessRunning)) {
 
-        mp_Ui->btnNew->setEnabled(true);
-        mp_Ui->btnEdit->setEnabled(true);
-        mp_Ui->btnDelete->setEnabled(true);
-        mp_Ui->groupRMS->setEnabled(true);
-        mp_Ui->CleaningReagent_GroupRMS->setEnabled(true);
+        if (Core::CGlobalHelper::CheckIfCanEdit() == false ) {
+            mp_Ui->btnNew->setEnabled(true);
+            mp_Ui->groupRMS->setEnabled(false);
+            mp_Ui->CleaningReagent_GroupRMS->setEnabled(false);
+            mp_TableWidget->clearSelection();
+            mp_TableWidgetCleaning->clearSelection();
+        }
+        else {
+            mp_Ui->btnNew->setEnabled(true);
+            mp_Ui->btnEdit->setEnabled(true);
+            mp_Ui->btnDelete->setEnabled(true);
+            mp_Ui->groupRMS->setEnabled(true);
+            mp_Ui->CleaningReagent_GroupRMS->setEnabled(true);
+        }
 
     }
     else {
@@ -473,12 +499,19 @@ void CReagentRMSWidget::ResetButtons()
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
-        //Edit Mode
-        mp_Ui->btnNew->setEnabled(true);
-        mp_Ui->btnEdit->setEnabled(false);
-        mp_Ui->btnDelete->setEnabled(false);
-        mp_Ui->groupRMS->setEnabled(true);
-        mp_Ui->CleaningReagent_GroupRMS->setEnabled(true);
+        if (Core::CGlobalHelper::CheckIfCanEdit() == false ) {
+            mp_Ui->groupRMS->setEnabled(false);
+            mp_Ui->CleaningReagent_GroupRMS->setEnabled(false);
+            mp_Ui->btnNew->setEnabled(true);
+        }
+        else {
+            //Edit Mode
+            mp_Ui->btnNew->setEnabled(true);
+            mp_Ui->btnEdit->setEnabled(false);
+            mp_Ui->btnDelete->setEnabled(false);
+            mp_Ui->groupRMS->setEnabled(true);
+            mp_Ui->CleaningReagent_GroupRMS->setEnabled(true);
+        }
     }
     else {
         //View Mode

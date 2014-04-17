@@ -180,15 +180,23 @@ void CProgramWidget::OnEdit()
              m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
                 (!m_ProcessRunning))
         {
-            //Edit Mode
-            bool bRevertSelectedProgram = false;
-            if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram, mp_Program->GetID()))
-               return;
-            if (bRevertSelectedProgram)
-                emit UnselectProgram();
+            // View Mode
+            if (mp_Ui->btnEdit->text() == m_strView) {
+                mp_ModifyProgramDlg->SetButtonType(EDIT_BTN_CLICKED);
+                mp_ModifyProgramDlg->SetDialogTitle(m_strViewProgram);
+            }
+            else {
 
-            mp_ModifyProgramDlg->SetButtonType(EDIT_BTN_CLICKED);
-            mp_ModifyProgramDlg->SetDialogTitle(m_strEditProgram);
+                //Edit Mode
+                bool bRevertSelectedProgram = false;
+                if (!Core::CGlobalHelper::CheckSelectedProgram(bRevertSelectedProgram, mp_Program->GetID()))
+                   return;
+                if (bRevertSelectedProgram)
+                    emit UnselectProgram();
+
+                mp_ModifyProgramDlg->SetButtonType(EDIT_BTN_CLICKED);
+                mp_ModifyProgramDlg->SetDialogTitle(m_strEditProgram);
+            }
         }
         else
         {
@@ -316,8 +324,8 @@ void CProgramWidget::OnProcessStateChanged()
         m_UserProgramCount = GetNumberOfUserPrograms();
         if(m_UserProgramCount< MAX_USER_PROGRAMS)
         {
-        mp_Ui->btnNew->setEnabled(true);
-        mp_Ui->btnCopy->setEnabled(true);
+            mp_Ui->btnNew->setEnabled(true);
+            mp_Ui->btnCopy->setEnabled(true);
 
         }
         else
@@ -359,6 +367,26 @@ void CProgramWidget::showEvent(QShowEvent *)
 /****************************************************************************/
 void CProgramWidget::SelectionChanged(QModelIndex Index)
 {
+    if (Core::CGlobalHelper::CheckIfCanEdit() == false) {
+        mp_Ui->btnEdit->setText(m_strView);
+
+        m_ProgramID = m_ProgramModel.data(Index, (int)Qt::UserRole).toString();
+        int SelectedIndex = Index.row();
+        m_ProgramModel.SelectedRowIndex(SelectedIndex);
+        mp_Program = mp_DataConnector->ProgramList->GetProgram(m_ProgramID);
+
+        if (mp_Program->GetID().at(0) == 'C') {
+            mp_Ui->btnEdit->setEnabled(false);
+        }
+        else {
+            mp_Ui->btnEdit->setEnabled(true);
+        }
+        mp_Ui->btnNew->setEnabled(false);
+        mp_Ui->btnCopy->setEnabled(false);
+        mp_Ui->btnDelete->setEnabled(false);
+        return ;
+    }
+
     m_ProgramID = m_ProgramModel.data(Index, (int)Qt::UserRole).toString();
     int SelectedIndex = Index.row();
     m_ProgramModel.SelectedRowIndex(SelectedIndex);
@@ -405,11 +433,22 @@ void CProgramWidget::SelectionChanged(QModelIndex Index)
                 if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
                      m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
                         (!m_ProcessRunning)) {
-                    //Edit Mode
-					mp_Ui->btnEdit->setText(m_strEdit);
-                    mp_Ui->btnEdit->setEnabled(!IsLeicaProgram);
-                    mp_Ui->btnCopy->setEnabled(!IsLeicaProgram);
-                    mp_Ui->btnDelete->setEnabled(!IsLeicaProgram);
+
+                    // if the program has run and be paused, edit or delete program is not permitted.
+                    if (Core::CGlobalHelper::CheckIfCanEdit(mp_Program->
+                                                            GetID(), 1) == false) {
+                        mp_Ui->btnEdit->setText(m_strView);
+                        mp_Ui->btnEdit->setEnabled(!IsLeicaProgram);
+                        mp_Ui->btnCopy->setEnabled(true);
+                        mp_Ui->btnDelete->setEnabled(false);
+                    }
+                    else {
+                        //Edit Mode
+                        mp_Ui->btnEdit->setText(m_strEdit);
+                        mp_Ui->btnEdit->setEnabled(!IsLeicaProgram);
+                        mp_Ui->btnCopy->setEnabled(!IsLeicaProgram);
+                        mp_Ui->btnDelete->setEnabled(!IsLeicaProgram);
+                    }
                 }
                 else {
                     mp_Ui->btnEdit->setText(m_strView);
@@ -455,6 +494,15 @@ void CProgramWidget::OnCancelClicked()
 /****************************************************************************/
 void CProgramWidget::ResetButtons()
 {
+    if (Core::CGlobalHelper::CheckIfCanEdit() == false) {
+        //View Mode
+        mp_Ui->btnEdit->setEnabled(false);
+        mp_Ui->btnDelete->setEnabled(false);
+        mp_Ui->btnCopy->setEnabled(false);
+        mp_Ui->btnNew->setEnabled(false);
+        return;
+    }
+
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
             (!m_ProcessRunning)) {

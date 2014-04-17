@@ -349,6 +349,14 @@ void CReagentStatusWidget::SelectionChanged(QModelIndex Index)
     QString Id = m_ReagentStatusModel.data(Index, (int)Qt::UserRole).toString();
     mp_DashStation = const_cast<DataManager::CDashboardStation*>(mp_DataConnector->DashboardStationList->GetDashboardStation(Id));
     bool bExpireReagent = false;
+
+    if (Core::CGlobalHelper::CheckIfCanEdit(Id, 4)==false) {
+        mp_Ui->btnFull->setEnabled(false);
+        mp_Ui->btnEmpty->setEnabled(false);
+        mp_Ui->btnReset->setEnabled(false);
+        return;
+    }
+
     if (mp_DashStation) {
         m_CurrentStationName = mp_DashStation->GetDashboardStationName();
         mp_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(mp_DashStation->GetDashboardReagentID()));

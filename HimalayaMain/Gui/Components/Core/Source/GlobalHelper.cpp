@@ -33,6 +33,9 @@ QString CGlobalHelper::m_strWarning = "";
 QString CGlobalHelper::m_strYes = "";
 QString CGlobalHelper::m_strCancel = "";
 QString CGlobalHelper::SELECTED_PROGRAM_NAME = "";
+bool CGlobalHelper::m_programIsPaused = false;
+QStringList CGlobalHelper::m_StationList;
+Core::CDataConnector* CGlobalHelper::p_StaticDataConnector = NULL;
 
 /****************************************************************************/
 /*!
@@ -42,7 +45,9 @@ QString CGlobalHelper::SELECTED_PROGRAM_NAME = "";
 CGlobalHelper::CGlobalHelper(Core::CDataConnector *p_DataConnector) : QObject(),
     mp_DataConnector(p_DataConnector)
 {
-
+    if (p_StaticDataConnector == NULL) {
+        p_StaticDataConnector = p_DataConnector;
+    }
 }
 
 /****************************************************************************/
@@ -127,6 +132,89 @@ void CGlobalHelper::OnProgramSelected(QString& programId, QList<QString>& statio
     {
         SELECTED_PROGRAM_NAME = pProgram->GetName();
     }
+}
+
+QString CGlobalHelper::GetSelectedProgramId()
+{
+    return m_selectedProgramId;
+}
+
+void CGlobalHelper::UnselectProgram()
+{
+    m_selectedProgramId = "";
+    SELECTED_PROGRAM_NAME = "";
+    m_StationList.clear();
+}
+
+bool CGlobalHelper::CheckIfCanEdit(const QString& id, int checkType)
+{
+    if (p_StaticDataConnector == NULL) {
+        return true;
+    }
+
+    if ( m_selectedProgramId.isEmpty() || !m_programIsPaused ) {
+        return true;
+    }
+
+    switch (checkType){
+    case 0: // no id
+        if (!m_selectedProgramId.isEmpty() && m_programIsPaused) {
+            return false;
+        }
+        break;
+    case 1:  // program id
+        if (m_selectedProgramId == id && m_programIsPaused) {
+            return false;
+        }
+        break;
+    case 2: { // reagent id
+        const DataManager::CProgram* pProgram = p_StaticDataConnector->ProgramList->GetProgram(m_selectedProgramId);
+        if (pProgram) {
+            QStringList list = pProgram->GetReagentIDList();
+            if (list.contains(id) && m_programIsPaused)
+                return false;
+        }
+        break;
+    }
+    case 3: {  // reagent group id
+        const DataManager::CProgram* pProgram = p_StaticDataConnector->ProgramList->GetProgram(m_selectedProgramId);
+        if (pProgram) {
+            QStringList list = pProgram->GetReagentIDList();
+            for(int i=0; i<list.size(); i++) {
+                QString reagentGroupId = p_StaticDataConnector->ReagentList->GetReagent(list.at(i))->GetGroupID();
+                if (reagentGroupId == id && m_programIsPaused)
+                    return false;
+            }
+        }
+        break;
+    }
+    case 4: { // station id
+        for(int i=0; i<m_StationList.size(); i++) {            
+            if (m_StationList.at(i) == id && m_programIsPaused)
+                return false;
+        }
+        break;
+    }
+    default:
+        break;
+    }
+
+    return true;
+}
+
+void CGlobalHelper::SetStationList(const QStringList &list)
+{
+    m_StationList = list;
+}
+
+bool CGlobalHelper::GetProgramPaused()
+{
+    return m_programIsPaused;
+}
+
+void CGlobalHelper::SetProgramPaused(bool pauseFlag)
+{
+    m_programIsPaused = pauseFlag;
 }
 
 /****************************************************************************/

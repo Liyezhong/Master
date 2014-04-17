@@ -5,7 +5,8 @@
 #include "MainMenu/Include/SliderControl.h"
 #include "Reagents/Include/ReagentGroupWidget.h"
 #include "ui_ReagentGroupWidget.h"
-#include <Dashboard/Include/CommonString.h>
+#include "Dashboard/Include/CommonString.h"
+#include "Core/Include/GlobalHelper.h"
 
 namespace Reagents {
 
@@ -166,8 +167,13 @@ void CReagentGroupWidget::SelectionChanged(QModelIndex Index)
         if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
              m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
                 (!m_ProcessRunning)) {
-            //Edit Mode
-            mp_Ui->btnEdit->setEnabled(true);
+            if (Core::CGlobalHelper::CheckIfCanEdit(Id, 3) == false) {
+                mp_Ui->btnEdit->setEnabled(false);
+            }
+            else {
+                //Edit Mode
+                mp_Ui->btnEdit->setEnabled(true);
+            }
 
         }
         else {

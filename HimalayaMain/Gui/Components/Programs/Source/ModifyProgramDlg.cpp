@@ -26,6 +26,7 @@
 
 #include "Global/Include/Utils.h"
 #include "Global/Include/Exception.h"
+#include "Core/Include/GlobalHelper.h"
 
 #include "Programs/Include/ModifyProgramDlg.h"
 #include "DataManager/Helper/Include/Helper.h"
@@ -204,15 +205,22 @@ void CModifyProgramDlg::InitDialog(DataManager::CProgram const *p_Program)
     {
         mp_Ui->btnPrgIcon->setIcon(QIcon(""));
     }
-    else if((m_ButtonType != COPY_BTN_CLICKED) && (m_Program.IsLeicaProgram() || m_Program.GetID().at(0) == 'C')) {
-        mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/Program/Icon_Leica.png"));
+    else if((m_ButtonType != COPY_BTN_CLICKED) && (m_Program.IsLeicaProgram() || m_Program.GetID().at(0) == 'C' ||
+                                                   Core::CGlobalHelper::CheckIfCanEdit(m_Program.GetID(), 1) == false )) {
+        if (Core::CGlobalHelper::CheckIfCanEdit(m_Program.GetID(), 1) == false) {
+            mp_Ui->btnPrgIcon->setIcon(QIcon(QString(":/HimalayaImages/Icons/Program/"+m_Program.GetIcon()+".png")));
+        }
+        else {
+            mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/Program/Icon_Leica.png"));
+        }
         mp_Ui->btnEdit->setEnabled(false);
         mp_Ui->btnCopy->setEnabled(false);
         mp_Ui->btnDelete->setEnabled(false);
         mp_Ui->btnNew->setEnabled(false);
         mp_Ui->btnPrgName->setEnabled(false);
+        mp_Ui->btnSave->setEnabled(false);
         ButtonPrgIconEnable(false);
-    } else {
+    } else {        
         mp_Ui->btnPrgIcon->setIcon(QIcon(QString(":/HimalayaImages/Icons/Program/"+m_Program.GetIcon()+".png")));
     }
 
@@ -540,8 +548,11 @@ void CModifyProgramDlg::OnCancel()
 /****************************************************************************/
 void CModifyProgramDlg::OnSelectionChanged(QModelIndex Index)
 {
+    if (m_ButtonType == EDIT_BTN_CLICKED && Core::CGlobalHelper::CheckIfCanEdit(m_Program.GetID(), 1) == false)
+        return;
+
     m_RowIndex = Index.row();
-    qDebug() << "In OnSelectionChanged m_RowIndex = " << m_RowIndex << "\n";
+
     QString Id = m_StepModel.data(Index, (int)Qt::UserRole).toString();
     //Inform the model about the current row.
     m_StepModel.SetIndex(Index);
@@ -588,12 +599,25 @@ void CModifyProgramDlg::OnProcessStateChanged()
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
         (!m_ProcessRunning)) {
-        //Edit Mode
-        mp_Ui->btnPrgName->setEnabled(true);
-        ButtonPrgIconEnable(true);
-        mp_Ui->btnNew->setEnabled(true);
-        mp_Ui->btnCancel->setEnabled(true);
-        mp_Ui->btnSave->setEnabled(true);
+        if (m_ButtonType == EDIT_BTN_CLICKED && Core::CGlobalHelper::CheckIfCanEdit(m_Program.GetID(), 1) == false) {
+            // View Mode
+            mp_Ui->btnPrgName->setEnabled(false);
+            ButtonPrgIconEnable(false);
+            mp_Ui->btnCancel->setEnabled(true);
+            mp_Ui->btnDelete->setEnabled(false);
+            mp_Ui->btnNew->setEnabled(false);
+            mp_Ui->btnEdit->setEnabled(false);
+            mp_Ui->btnCopy->setEnabled(false);
+            mp_Ui->btnSave->setEnabled(false);
+        }
+        else {
+            //Edit Mode
+            mp_Ui->btnPrgName->setEnabled(true);
+            ButtonPrgIconEnable(true);
+            mp_Ui->btnNew->setEnabled(true);
+            mp_Ui->btnCancel->setEnabled(true);
+            mp_Ui->btnSave->setEnabled(true);
+        }
     }
     else {
         if (m_ProcessRunning) {
@@ -608,6 +632,7 @@ void CModifyProgramDlg::OnProcessStateChanged()
             mp_Ui->btnNew->setEnabled(false);
             mp_Ui->btnEdit->setEnabled(false);
             mp_Ui->btnCopy->setEnabled(false);
+            mp_Ui->btnSave->setEnabled(false);
         }
     }
 }
@@ -701,14 +726,28 @@ void CModifyProgramDlg::showEvent(QShowEvent *p_Event)
         else {
             if(!m_Program.IsLeicaProgram())
             {
-                mp_Ui->btnNew->setEnabled(true);
-                mp_Ui->btnCancel->setEnabled(true);
-                mp_Ui->btnSave->setEnabled(true);
-                mp_Ui->btnDelete->setEnabled(false);
-                mp_Ui->btnCopy->setEnabled(false);
-                mp_Ui->btnEdit->setEnabled(false);
-                mp_Ui->btnPrgName->setEnabled(true);
-                ButtonPrgIconEnable(true);
+                if (m_ButtonType == EDIT_BTN_CLICKED && Core::CGlobalHelper::CheckIfCanEdit(m_Program.GetID(), 1) == false) {
+                    //View Mode
+                    mp_Ui->btnPrgName->setEnabled(false);
+                    ButtonPrgIconEnable(false);
+                    mp_Ui->btnCancel->setEnabled(true);
+                    mp_Ui->btnCopy->setEnabled(false);
+                    mp_Ui->btnDelete->setEnabled(false);
+                    mp_Ui->btnNew->setEnabled(false);
+                    mp_Ui->btnEdit->setEnabled(false);
+                    mp_Ui->btnSave->setEnabled(false);
+                    mp_Ui->btnCancel->setText(m_strClose);
+                }
+                else {
+                    mp_Ui->btnNew->setEnabled(true);
+                    mp_Ui->btnCancel->setEnabled(true);
+                    mp_Ui->btnSave->setEnabled(true);
+                    mp_Ui->btnDelete->setEnabled(false);
+                    mp_Ui->btnCopy->setEnabled(false);
+                    mp_Ui->btnEdit->setEnabled(false);
+                    mp_Ui->btnPrgName->setEnabled(true);
+                    ButtonPrgIconEnable(true);
+                }
             }
         }
     }

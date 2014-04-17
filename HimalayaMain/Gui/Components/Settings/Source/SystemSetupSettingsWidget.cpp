@@ -24,6 +24,7 @@
 #include "Global/Include/Utils.h"
 #include "Settings/Include/SystemSetupSettingsWidget.h"
 #include "ui_SystemSetupSettingsWidget.h"
+#include "Core/Include/GlobalHelper.h"
 
 namespace Settings {
 
@@ -220,6 +221,17 @@ void CSystemSetupSettingsWidget::OnProcessStateChanged()
 void CSystemSetupSettingsWidget::ResetButtons()
 {
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+
+    if (Core::CGlobalHelper::CheckIfCanEdit() == false) {
+        if (m_CurrentUserRole == MainMenu::CMainWindow::Service) {
+            mp_Ui->btnSave->setEnabled(true);
+        }
+        else {
+            mp_Ui->btnSave->setEnabled(false);
+        }
+        return ;
+    }
+
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&

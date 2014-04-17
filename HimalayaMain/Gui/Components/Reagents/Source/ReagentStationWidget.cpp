@@ -167,9 +167,13 @@ void CReagentStationWidget::SelectionChanged(QModelIndex Index)
         if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
              m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
                 (!m_ProcessRunning)) {
-            //Edit Mode
-            mp_Ui->btnEdit->setEnabled(true);
-
+            if (Core::CGlobalHelper::CheckIfCanEdit(Id, 4) == false) {
+                mp_Ui->btnEdit->setEnabled(false);
+            }
+            else {
+                //Edit Mode
+                mp_Ui->btnEdit->setEnabled(true);
+            }
         }
         else {
             mp_Ui->btnEdit->setEnabled(false);

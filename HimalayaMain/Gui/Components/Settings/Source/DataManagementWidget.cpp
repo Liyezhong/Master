@@ -23,6 +23,8 @@
 #include "Global/Include/Exception.h"
 #include "ui_DataManagementWidget.h"
 #include <QEvent>
+#include "Core/Include/GlobalHelper.h"
+
 namespace Settings {
 
 /****************************************************************************/
@@ -122,6 +124,16 @@ void CDataManagementWidget:: RemoteSWUpdate()
 /****************************************************************************/
 void CDataManagementWidget::ResetButtons()
 {
+    if (Core::CGlobalHelper::CheckIfCanEdit() == false) {
+        mp_Ui->saveusbButton->setEnabled(false);
+        mp_Ui->importButton->setEnabled(false);
+        mp_Ui->serviceExportButton->setEnabled(false);
+        mp_Ui->SWUpdateButton->setEnabled(false);
+        mp_Ui->RemoteSWUpdateButton->setEnabled(false);
+
+        return ;
+    }
+
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service)

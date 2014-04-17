@@ -7,6 +7,7 @@
 #include "Core/Include/Startup.h"
 
 #include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
+#include "Core/Include/GlobalHelper.h"
 
 
 using namespace Dashboard;
@@ -114,7 +115,7 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
     }
 
     if (!mp_DataConnector)
-    return;
+        return;
 
     m_FavProgramIDs.clear();
     mp_ProgramList = mp_DataConnector->ProgramList;
@@ -140,7 +141,6 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         }
         else
             strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(ProgramId)->GetIcon() + ".png";
-        qDebug()<<"CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel  ---iconname="<<strIconName;
 
         //enable this button and use it
         m_ButtonGroup.button(j)->setEnabled(true);
@@ -174,6 +174,7 @@ void CFavoriteProgramsPanelWidget::UndoProgramSelection()
     m_ButtonGroup.setExclusive(true);
     m_LastSelectedButtonId = -1;
     m_LastCanBeSelectedButtonId = -1;
+    Core::CGlobalHelper::UnselectProgram();
 }
 
 void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()

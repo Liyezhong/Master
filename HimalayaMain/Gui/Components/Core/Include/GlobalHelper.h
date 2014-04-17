@@ -40,7 +40,13 @@ public:
                               QString operatedProgramID = "");
     static QString TimeToString(int seconds, bool showSeconds=false) ;
     static void RetranslateUI();
+    static QString GetSelectedProgramId();
+    static bool GetProgramPaused();
+    static void SetProgramPaused(bool pauseFlag);
+    static void UnselectProgram();
+    static void SetStationList(const QStringList& list);
 
+    static bool CheckIfCanEdit(const QString& name="", int CheckType=0);  // type 0: No Id 1:Program Name 2: Reagent Name 3: Station 4:ReagentGroup
 public slots:
     void OnProgramSelected(QString&, QList<QString>&);
 private:
@@ -50,6 +56,9 @@ private:
     static QString m_strCancel;
     static QString m_strYes;
     static QString SELECTED_PROGRAM_NAME;
+    static bool m_programIsPaused;
+    static QStringList m_StationList;
+    static Core::CDataConnector *p_StaticDataConnector;
     Core::CDataConnector *mp_DataConnector;
 };
 

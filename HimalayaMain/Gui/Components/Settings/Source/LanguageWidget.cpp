@@ -189,6 +189,11 @@ void CLanguageWidget::OnProcessStateChanged()
 /****************************************************************************/
 void CLanguageWidget::ResetButtons()
 {
+    if (m_LanguageNativeNameList.size()==0) {
+        mp_Ui->btnApply->setEnabled(false);
+        return ;
+    }
+
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||

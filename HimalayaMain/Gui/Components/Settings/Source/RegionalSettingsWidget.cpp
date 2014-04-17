@@ -24,6 +24,7 @@
 #include "MainMenu/Include/MainWindow.h"
 #include "Settings/Include/RegionalSettingsWidget.h"
 #include "ui_RegionalSettingsWidget.h"
+#include "Core/Include/GlobalHelper.h"
 
 namespace Settings {
 
@@ -188,8 +189,13 @@ void CRegionalSettingsWidget::ResetButtons()
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) && (!m_ProcessRunning)) {
-        //Edit Mode
-        mp_Ui->btnApply->setEnabled(true);
+        if (Core::CGlobalHelper::CheckIfCanEdit() == false) {
+            mp_Ui->btnApply->setEnabled(false);
+        }
+        else {
+            //Edit Mode
+            mp_Ui->btnApply->setEnabled(true);
+        }
     }
     else {
         mp_Ui->btnApply->setEnabled(false);

@@ -11,6 +11,7 @@
 #include "Dashboard/Include/CommonString.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardStation.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
+#include "Core/Include/GlobalHelper.h"
 
 namespace Dashboard {
 CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
@@ -146,6 +147,7 @@ void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime,
         OnProgramStartReadyUpdated();
     m_StationList.clear();
     m_StationList = selectedStationList;
+    Core::CGlobalHelper::SetStationList(selectedStationList);
 }
 
 void CProgramPanelWidget::SelectEndDateTime(const QDateTime & dateTime)
@@ -280,18 +282,16 @@ bool CProgramPanelWidget::CheckPreConditionsToAbortProgram()
 
 void CProgramPanelWidget::OnButtonClicked(int whichBtn)
 {
-    qDebug()<<"CProgramPanelWidget::OnButtonClicked btn = "<<whichBtn;
-
     if ( whichBtn == Dashboard::firstButton ) {
-        switch(m_ProgramNextAction)
-        {
-            ui->startButton->setEnabled(false);//protect to click twice in a short time
-            default:
-            break;
-            case DataManager::PROGRAM_START:
-            {
-                qDebug()<<"CProgramPanelWidget::OnButtonClicked btn = DataManager::PROGRAM_START";
+        Core::CGlobalHelper::SetProgramPaused(false);
+        ui->startButton->setEnabled(false);//protect to click twice in a short time
 
+        switch(m_ProgramNextAction)
+        {      
+            default:
+                break;
+            case DataManager::PROGRAM_START:
+            {               
                 if (m_IsResumeRun)
                 {
                     QString strTempProgramId;
@@ -313,12 +313,8 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
             break;
             case DataManager::PROGRAM_ABORT:
             {
-                qDebug()<<"CProgramPanelWidget::OnButtonClicked btn = DataManager::PROGRAM_ABORT";
-
                 if(CheckPreConditionsToAbortProgram()) {
                     ui->pauseButton->setEnabled(false);
-                    qDebug()<<"CProgramPanelWidget::OnButtonClicked send command DataManager::PROGRAM_ABORT  to master";
-
                     mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_ABORT);
                     m_ProgramNextAction = DataManager::PROGRAM_START;
 
@@ -329,6 +325,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
     }
     else if (whichBtn == Dashboard::secondButton)//pause
     {
+        Core::CGlobalHelper::SetProgramPaused(true);
         ui->pauseButton->setEnabled(false);//protect to click twice in a short time
         ui->startButton->setEnabled(false);
         if(CheckPreConditionsToPauseProgram())
@@ -338,7 +335,6 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
         } else {
             // Take Necessary Action
         }
-
     }
 }
 
@@ -390,9 +386,6 @@ void CProgramPanelWidget::OnProgramStartReadyUpdated()
 void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType,
                                                      int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume)
 {
-
-    qDebug()<<__FUNCTION__<<" remainingTimeTotal = "<< remainingTimeTotal ;
-
     Q_UNUSED(remainingTimeTotal);
     Q_UNUSED(startDateTime);
     Q_UNUSED(IsResume);
