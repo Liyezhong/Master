@@ -50,7 +50,6 @@ namespace Dashboard {
         void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
     private slots:
         void OnResetFocus(bool reset);
-        void OnSelectDateTime(const QDateTime&);
         void OnEndTimeButtonClicked();
         void OnProcessStateChanged();
         void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady);
@@ -59,7 +58,8 @@ namespace Dashboard {
     signals:
         void PrepareSelectedProgramChecking(const QString& selectedProgramId);
         void OnSelectEndDateTime(const QDateTime &);
-
+        void RequstAsapDateTime();
+        void SendAsapDateTime(int);
     private:
         void SetButtonGroup();
         QMap<int, QLabel*> m_mapLabel;//(label Id <--> QLabel)
@@ -70,10 +70,8 @@ namespace Dashboard {
         bool m_ProcessRunning;
         Dashboard::CDashboardDateTimeWidget *mp_wdgtDateTime;
         int m_LastSelectedButtonId;
-        QDateTime m_ProgramEndDateTime;
         QStringList m_FavProgramIDs;
         QString m_NewSelectedProgramId;
-        QDateTime m_EndDateTime;
         int m_LastCanBeSelectedButtonId;
 
     };

@@ -40,7 +40,8 @@ const int ONE_WEEK_TIME_OFFSET_VALUE = (7 * 24 * 60 * 60);
 CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent, QMainWindow *pMainWindow)
     : CDialogFrame(p_Parent, pMainWindow),
     mp_Ui(new Ui::CDashboardDateTimeWidget),
-	mp_UserSetting(NULL)
+    mp_UserSetting(NULL),
+    m_IsClickedOK(false)
 {
 
     mp_Ui->setupUi(GetContentFrame());
@@ -214,60 +215,8 @@ void CDashboardDateTimeWidget::RefreshDateTime(Global::TimeFormat TimeFormat)
 /****************************************************************************/
 void CDashboardDateTimeWidget::OnOK()
 {
-    // make it UTC
-    m_selDateTime.setTimeSpec(Qt::UTC);
-
-    m_selDateTime.setDate(QDate(mp_YearWheel->GetCurrentData().toInt(),
-                             mp_MonthWheel->GetCurrentData().toInt(),
-                             mp_DayWheel->GetCurrentData().toInt()));
-
-    m_selDateTime.setTime(QTime(mp_HourWheel->GetCurrentData().toInt(), mp_MinWheel->GetCurrentData().toInt()));
-
-
-    // get adjusted time
-    QDateTime CurTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
-    int secsDifference = CurTime.secsTo(m_selDateTime);
-    qDebug() << "Date Time Difference is" << secsDifference;
-
-    QString strEndTime("");
-    if(secsDifference > ONE_WEEK_TIME_OFFSET_VALUE) {
-        strEndTime = m_strLaterEndTime;
-    } else {
-        QTime selTime = m_selDateTime.time();
-        QTime asapTime = m_ASAPDateTime.time();
-
-        int selHour = selTime.hour();
-        int selMin= selTime.minute();
-
-        int asapHour = asapTime.hour();
-        int asapMin= asapTime.minute();
-        QDateTime tempSelDatetime, tempAsapDatetime;
-        tempSelDatetime.setDate(m_selDateTime.date());
-        selTime.setHMS(selHour, selMin, 0);
-        tempSelDatetime.setTime(selTime);
-
-        tempAsapDatetime.setDate(m_ASAPDateTime.date());
-        asapTime.setHMS(asapHour, asapMin, 0);
-        tempAsapDatetime.setTime(asapTime);
-
-        if(tempSelDatetime < tempAsapDatetime)  {
-            strEndTime = m_strEarlierEndTime;
-        }
-    }
-
-    if ("" != strEndTime)
-    {
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(tr("Warning"));
-        mp_MessageDlg->SetText(strEndTime);
-        mp_MessageDlg->SetButtonText(1, tr("OK"));
-        mp_MessageDlg->HideButtons();    // Hiding First Two Buttons in the Message Dialog
-        (void)mp_MessageDlg->exec();
-    }
-    else{
-        emit OnSelectDateTime(m_selDateTime);
-        accept();
-    }
+    m_IsClickedOK = true;
+    emit RequstAsapDateTime();
 }
 
 
@@ -306,8 +255,76 @@ void CDashboardDateTimeWidget::OnCancel()
 
 void CDashboardDateTimeWidget::OnSetASAPDateTime()
 {
-    if (mp_UserSetting) {
-        RefreshDateTime(mp_UserSetting->GetTimeFormat());
+    emit RequstAsapDateTime();
+}
+
+void CDashboardDateTimeWidget::OnGetASAPDateTime(int asapDateTime)
+{
+    m_ASAPDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapDateTime);
+    if (m_IsClickedOK)
+    {
+        // make it UTC
+        m_selDateTime.setTimeSpec(Qt::UTC);
+
+        m_selDateTime.setDate(QDate(mp_YearWheel->GetCurrentData().toInt(),
+                                 mp_MonthWheel->GetCurrentData().toInt(),
+                                 mp_DayWheel->GetCurrentData().toInt()));
+
+        m_selDateTime.setTime(QTime(mp_HourWheel->GetCurrentData().toInt(), mp_MinWheel->GetCurrentData().toInt()));
+
+
+        // get adjusted time
+        QDateTime CurTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+        int secsDifference = CurTime.secsTo(m_selDateTime);
+        qDebug() << "Date Time Difference is" << secsDifference;
+
+        QString strEndTime("");
+        if(secsDifference > ONE_WEEK_TIME_OFFSET_VALUE) {
+            strEndTime = m_strLaterEndTime;
+        } else {
+            QTime selTime = m_selDateTime.time();
+            QTime asapTime = m_ASAPDateTime.time();
+
+            int selHour = selTime.hour();
+            int selMin= selTime.minute();
+
+            int asapHour = asapTime.hour();
+            int asapMin= asapTime.minute();
+            QDateTime tempSelDatetime, tempAsapDatetime;
+            tempSelDatetime.setDate(m_selDateTime.date());
+            selTime.setHMS(selHour, selMin, 0);
+            tempSelDatetime.setTime(selTime);
+
+            tempAsapDatetime.setDate(m_ASAPDateTime.date());
+            asapTime.setHMS(asapHour, asapMin, 0);
+            tempAsapDatetime.setTime(asapTime);
+
+            if(tempSelDatetime < tempAsapDatetime)  {
+                strEndTime = m_strEarlierEndTime;
+            }
+        }
+
+        if ("" != strEndTime)
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(tr("Warning"));
+            mp_MessageDlg->SetText(strEndTime);
+            mp_MessageDlg->SetButtonText(1, tr("OK"));
+            mp_MessageDlg->HideButtons();    // Hiding First Two Buttons in the Message Dialog
+            (void)mp_MessageDlg->exec();
+        }
+        else{
+            m_ASAPDateTime = m_selDateTime;
+            emit OnSelectDateTime(m_selDateTime);
+            accept();
+        }
+        m_IsClickedOK = false;
+    }
+    else
+    {
+        if (mp_UserSetting) {
+            RefreshDateTime(mp_UserSetting->GetTimeFormat());
+        }
     }
 }
 

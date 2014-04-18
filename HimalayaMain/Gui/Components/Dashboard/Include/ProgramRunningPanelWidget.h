@@ -51,11 +51,12 @@ namespace Dashboard {
     private slots:
         void UpdateProgress();
         void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
+        void OnUserSetEndDateTime(const QDateTime& dateTime);
         void OnUserSettingsUpdated();
         void OnProcessStateChanged();
         void OnProgramDetail();
     private:
-        void UpdateDateTime(const QDateTime & selDateTime);
+        void UpdateDateTime();
         void RetranslateUI();
         void GetStationNameList(QList<QString>& stationNameList);
         Ui::CProgramRunningPanelWidget *ui;

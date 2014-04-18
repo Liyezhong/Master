@@ -70,9 +70,10 @@ private:
     QString m_strCheckEmptyStation;
     static QString m_SelectedProgramId;
     QList<QString> m_StationList;
-    int m_TimeProposed;
+    int m_TimeProposedForProgram;           //!< Time costed only for the whole program, exclude the time for the delayed time
+    int m_CostedTimeBeforeParaffin;         //!< Time costed before the program step of paraffin.
     QDateTime m_EndDateTime;
-    bool m_CheckEndDatetimeAgain;
+    QDateTime m_ParaffinStartHeatingTime;
     QString m_strResetEndTime;
     QString m_strInputCassetteBoxTitle;
     bool m_ProgramStartReady;
@@ -86,15 +87,21 @@ private:
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;        //!< Current user role
     bool m_ProcessRunning;                      //!< Process running state
     bool m_IsDraining;
-
+    bool m_bRetortLocked;
+    QString m_strRetortNotLock;
+    QString m_strNotStartRMSOFF;
+    QString m_strNotStartExpiredReagent;
+    int m_iWhichStepHasNoSafeReagent;
+    QString m_strStartExpiredReagent;
 public slots:
     void OnUnselectProgram();
 
 
 private slots:
-    void PrepareSelectedProgramChecking(const QString& selectedProgramId, bool bCheckEndDatetimeAgain);
+    void PrepareSelectedProgramChecking(const QString& selectedProgramId);
     void OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd);
     void OnSelectEndDateTime(const QDateTime&);
+    void RequstAsapDateTime();
     void OnProgramStartReadyUpdated();
     void OnProgramWillComplete();
     void OnProgramAborted();
@@ -107,6 +114,7 @@ private slots:
     void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd);
     void OnUserRoleChanged();
     void OnProcessStateChanged();
+    void CheckPreConditionsToRunProgram();
  signals:
     void ResetFocus(bool reset);
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram = false);
@@ -120,6 +128,8 @@ private slots:
     void UndoProgramSelection();
     void OnInteractStart();    
     void UpdateProgram(DataManager::CProgram &);
+    void SendAsapDateTime(int asapDateTime);
+
 };
 
 } // end namespace Dashboard

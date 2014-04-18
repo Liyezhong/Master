@@ -21,8 +21,7 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     m_SelectedProgramId(""),
     mp_DataConnector(NULL),
     m_pUserSetting(NULL),
-    mp_ProgramList(NULL),
-    m_bRetortLocked(false)
+    mp_ProgramList(NULL)
 {
     ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Programs"));
@@ -31,6 +30,10 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, PrepareSelectedProgramChecking(const QString&), this, PrepareSelectedProgramChecking(const QString&));
 
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&), this, OnSelectEndDateTime(const QDateTime &));
+    CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&),
+                      ui->programRunningPanel, OnUserSetEndDateTime(const QDateTime&));
+    CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, RequstAsapDateTime(), this, RequstAsapDateTime());
+    CONNECTSIGNALSIGNAL(this, SendAsapDateTime(int), ui->favoriteProgramsPanel, SendAsapDateTime(int));
 
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, QList<QString>&),
                       ui->favoriteProgramsPanel, ProgramSelected(QString&, int, bool));
@@ -102,10 +105,8 @@ void CProgramPanelWidget::RetranslateUI()
 {
     SetPanelTitle(QApplication::translate("Dashboard::CProgramPanelWidget", "Programs",
                                                                  0, QApplication::UnicodeUTF8));
-    m_strNotStartRMSOFF = QApplication::translate("Dashboard::CProgramPanelWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);
     m_strConfirmation = QApplication::translate("Dashboard::CProgramPanelWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
     m_strAbortProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Do you want to abort the program?", 0, QApplication::UnicodeUTF8);
-    m_strRetortNotLock = QApplication::translate("Dashboard::CProgramPanelWidget", "Please close and lock the retort, then try again!", 0, QApplication::UnicodeUTF8);
 
 
     m_strYes = QApplication::translate("Dashboard::CProgramPanelWidget", "Yes", 0, QApplication::UnicodeUTF8);
@@ -115,8 +116,6 @@ void CProgramPanelWidget::RetranslateUI()
     m_strWarning = QApplication::translate("Dashboard::CProgramPanelWidget", "Warning", 0, QApplication::UnicodeUTF8);
     m_strProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Program", 0, QApplication::UnicodeUTF8);
     m_strInformation = QApplication::translate("Dashboard::CProgramPanelWidget", "Information", 0, QApplication::UnicodeUTF8);
-    m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CProgramPanelWidget", "Reagents needed for this program are expired! You can't operate this program.", 0, QApplication::UnicodeUTF8);
-    m_strStartExpiredReagent =  QApplication::translate("Dashboard::CProgramPanelWidget", "Do you want to Start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
     m_strNeedMeltParaffin  = QApplication::translate("Dashboard::CProgramPanelWidget", "Still it will cost some time to melt paraffin, the current selected program can not run now.", 0, QApplication::UnicodeUTF8);
 
 }
@@ -133,9 +132,6 @@ void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow
     ui->programRunningPanel->SetUserSettings(m_pUserSetting);
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), ui->programRunningPanel, OnUserSettingsUpdated());
     CONNECTSIGNALSLOT(p_MainWindow, ProcessStateChanged(), ui->programRunningPanel, OnProcessStateChanged());
-    CONNECTSIGNALSLOT(mp_DataConnector, RetortLockStatusChanged(const MsgClasses::CmdLockStatus &),
-                      this, OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus&));
-
 }
 
 void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList)
@@ -152,113 +148,6 @@ void CProgramPanelWidget::SelectEndDateTime(const QDateTime & dateTime)
 {
     m_EndDateTime = dateTime;
 }
-
-void CProgramPanelWidget::CheckPreConditionsToRunProgram()
-{
-
-    if ("" == m_SelectedProgramId)
-        return;
-
-    if (!m_bRetortLocked){
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(CommonString::strWarning);
-        mp_MessageDlg->SetText(m_strRetortNotLock);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-        mp_MessageDlg->HideButtons();
-        if (mp_MessageDlg->exec())
-        return;
-    }
-
-    //Check if Leica program and RMS OFF?
-    DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
-    bool bShowRMSOffWarning = false;
-    bool isLeicaProgram = mp_ProgramList->GetProgram(m_SelectedProgramId)->IsLeicaProgram();
-    if (m_SelectedProgramId.at(0) == 'C')
-    {
-        if ((Global::RMS_OFF == userSetting->GetModeRMSCleaning()) && isLeicaProgram)
-        {
-            bShowRMSOffWarning = true;
-        }
-    }
-    else
-    {
-        if ((Global::RMS_OFF == userSetting->GetModeRMSProcessing()) && isLeicaProgram)
-        {
-            bShowRMSOffWarning = true;
-        }
-    }
-
-    if (bShowRMSOffWarning)
-    {
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->SetTitle(CommonString::strWarning);
-        mp_MessageDlg->SetText(m_strNotStartRMSOFF);
-        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-        mp_MessageDlg->HideButtons();
-        if (mp_MessageDlg->exec())
-        return;
-    }
-
-    DataManager::ReagentStatusType_t reagentStatus = DataManager::REAGENT_STATUS_NORMAL;
-
-    for(int i = 0; i<m_StationList.size(); i++)
-    {
-        QString stationID = m_StationList.at(i);
-        DataManager::CDashboardStation *p_Station = mp_DataConnector->DashboardStationList->GetDashboardStation(stationID);
-        QString reagentID = p_Station->GetDashboardReagentID();
-        DataManager::CReagent const *p_Reagent = mp_DataConnector->ReagentList->GetReagent(reagentID);
-
-        DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID());
-        bool isClearingGroup = p_ReagentGroup->IsCleaningReagentGroup();
-        Global::RMSOptions_t RMSOption = Global::RMS_OFF;
-        if ( isClearingGroup )
-            RMSOption = userSetting->GetModeRMSCleaning();
-        else
-            RMSOption = userSetting->GetModeRMSProcessing();
-
-        reagentStatus = p_Station->GetReagentStatus(*p_Reagent, RMSOption);
-
-        if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
-            break;
-    }
-
-    if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED ) {
-        MainMenu::CMainWindow::UserRole_t userRole = MainMenu::CMainWindow::GetCurrentUserRole();
-        if (userRole == MainMenu::CMainWindow::Operator)
-        {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(m_strWarning);
-            mp_MessageDlg->SetText(m_strNotStartExpiredReagent);
-            mp_MessageDlg->SetButtonText(1, m_strOK);
-            mp_MessageDlg->HideButtons();
-            if (mp_MessageDlg->exec())
-                return;
-        }
-        else if(userRole == MainMenu::CMainWindow::Admin ||
-            userRole == MainMenu::CMainWindow::Service)
-        {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(m_strWarning);
-            mp_MessageDlg->SetText(m_strStartExpiredReagent);
-            mp_MessageDlg->SetButtonText(3, m_strNo);
-            mp_MessageDlg->SetButtonText(1, m_strYes);
-            mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
-
-            if (!mp_MessageDlg->exec())
-                return;
-        }
-    }
-
-
-
-
-
-
-    //check End Datetime again
-    //m_NewSelectedProgramId = m_SelectedProgramId;
-    emit PrepareSelectedProgramChecking(m_SelectedProgramId, true);
-}
-
 
 bool CProgramPanelWidget::CheckPreConditionsToPauseProgram()
 {
@@ -308,7 +197,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
                     return;
                 }
 
-                CheckPreConditionsToRunProgram();
+                emit CheckPreConditionsToRunProgram();
             }
             break;
             case DataManager::PROGRAM_ABORT:
@@ -390,9 +279,6 @@ void CProgramPanelWidget::OnProgramStartReadyUpdated()
 void CProgramPanelWidget::OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType,
                                                      int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume)
 {
-
-    qDebug()<<__FUNCTION__<<" remainingTimeTotal = "<< remainingTimeTotal ;
-
     Q_UNUSED(remainingTimeTotal);
     Q_UNUSED(startDateTime);
     Q_UNUSED(IsResume);
@@ -417,11 +303,6 @@ void CProgramPanelWidget::OnProgramActionStopped(DataManager::ProgramStatusType_
 void CProgramPanelWidget::SwitchToFavoritePanel()
 {
     ui->stackedWidget->setCurrentIndex(0);
-}
-
-void CProgramPanelWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd)
-{
-    m_bRetortLocked = cmd.IsLocked();
 }
 
 }
