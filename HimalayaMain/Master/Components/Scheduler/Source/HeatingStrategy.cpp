@@ -30,43 +30,249 @@
 namespace Scheduler{
 HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
                                 SchedulerCommandProcessorBase* SchedCmdProcessor,
-                                DataManager::CDataManager* DataManager, qreal Interval)
+                                DataManager::CDataManager* DataManager)
 								:mp_SchedulerController(schedController),
 								mp_SchedulerCommandProcessor(SchedCmdProcessor),
                                 mp_DataManager(DataManager)
 {
-    m_Interval = Interval;
+    m_CurScenario = 0;
     this->ConstructHeatingSensorList();
+}
+DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMonitor_t& strctHWMonitor, qint32 scenario)
+{
+    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+    //Firstly, set temperature for each sensor
+    if (scenario != m_CurScenario)
+    {
+        m_CurScenario = scenario;
+        // For Level Sensor
+        retCode = this->StartLevelSensorTemperatureControl(strctHWMonitor);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+        //For RTTop
+        retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+        //For RTBottom
+        retCode = StartRTTemperatureControl(m_RTBottom, RT_BOTTOM);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+    }
+
+    //check Heating Overtime
+    qint64 now = QDateTime::currentMSecsSinceEpoch();
+    // For Level Sensor
+    if (now - m_RTLevelSensor.heatingStartTime >= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].HeatingOverTime*1000)
+    {
+        if (strctHWMonitor.TempALLevelSensor < m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature)
+        {
+            return DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME;
+        }
+    }
+    // For Retort Top
+    if (now - m_RTTop.heatingStartTime >= m_RTTop.functionModuleList[m_RTTop.curModuleId].HeatingOverTime*1000)
+    {
+        if (strctHWMonitor.TempALLevelSensor < m_RTTop.functionModuleList[m_RTTop.curModuleId].MaxTemperature)
+        {
+            return DCL_ERR_DEV_RETORT_SIDTOP_SIDEMID_HEATING_ELEMENT_FAILED;
+        }
+    }
+    // For Retort Bottom
+    if (now - m_RTBottom.heatingStartTime >= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].HeatingOverTime*1000)
+    {
+        if (strctHWMonitor.TempALLevelSensor < m_RTBottom.functionModuleList[m_RTBottom.curModuleId].MaxTemperature)
+        {
+            return DCL_ERR_DEV_RETORT_BOTTOM_SIDELOW_HEATING_ELEMENT_FAILED;
+        }
+    }
+
+    return DCL_ERR_FCT_CALL_SUCCESS;
+}
+
+
+DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor)
+{
+    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+
+    //For LevelSensor
+    QMap<QString, FunctionModule>::const_iterator iter = m_RTLevelSensor.functionModuleList.begin();
+    for (; iter!=m_RTLevelSensor.functionModuleList.end(); ++iter)
+    {
+        // Current(new) scenario belongs to the specific scenario list
+        if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
+        {
+            // Check for High or Low speed
+            if (m_RTLevelSensor.ExchangePIDTempList[iter->Id] >= strctHWMonitor.TempALLevelSensor)
+            {
+                if ("High" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
+                {
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            else if (m_RTLevelSensor.ExchangePIDTempList[iter->Id] < strctHWMonitor.TempALLevelSensor)
+            {
+                if ("Low" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
+                {
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+        }
+    }
+
+    // Found out the level sensor's function module
+    if (iter != m_RTLevelSensor.functionModuleList.end())
+    {
+        CmdALStartTemperatureControlWithPID* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
+        pHeatingCmd->SetType(AL_LEVELSENSOR);
+        pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset);
+        pHeatingCmd->SetSlopeTempChange(iter->SlopTempChange);
+        pHeatingCmd->SetMaxTemperature(iter->MaxTemperature);
+        pHeatingCmd->SetControllerGain(iter->ControllerGain);
+        pHeatingCmd->SetResetTime(iter->ResetTime);
+        pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        SchedulerCommandShPtr_t pResHeatingCmd;
+        while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd));
+        pResHeatingCmd->GetResult(retCode);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+        else
+        {
+            m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+            m_RTLevelSensor.curModuleId = iter->Id;
+        }
+    }
+
+    // The current scenario is NOT related to Level Sensor's ones.
+    return DCL_ERR_FCT_CALL_SUCCESS;
+}
+
+DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSensor& heatingSensor, RTTempCtrlType_t RTType)
+{
+    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+
+    //For LevelSensor
+    QMap<QString, FunctionModule>::const_iterator iter = heatingSensor.functionModuleList.begin();
+    for (; iter!=heatingSensor.functionModuleList.end(); ++iter)
+    {
+        // Current(new) scenario belongs to the specific scenario list
+        if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
+        {
+            break;
+        }
+    }
+
+    // Found out the heating sensor's function module
+    if (iter != heatingSensor.functionModuleList.end())
+    {
+        CmdRTStartTemperatureControlWithPID* pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
+        pHeatingCmd->SetType(RTType);
+        pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset);
+        pHeatingCmd->SetSlopeTempChange(iter->SlopTempChange);
+        pHeatingCmd->SetMaxTemperature(iter->MaxTemperature);
+        pHeatingCmd->SetControllerGain(iter->ControllerGain);
+        pHeatingCmd->SetResetTime(iter->ResetTime);
+        pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        SchedulerCommandShPtr_t pResHeatingCmd;
+        while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd));
+        pResHeatingCmd->GetResult(retCode);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+        else
+        {
+            heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+            heatingSensor.curModuleId = iter->Id;
+        }
+    }
+
+    // The current scenario is NOT related to Level Sensor's ones.
+    return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
 bool HeatingStrategy::ConstructHeatingSensorList()
 {
-    // For Retort Bottom1
-    m_RTBottom1.devName = "Retort";
-    m_RTBottom1.sensorName = "RTBottom";
-    QStringList seqenceList = {"1", "2", "3"};
-    if (false == this->ConstructHeatingSensor(m_RTBottom1, seqenceList))
+    //For Retort Level Sensor
+    m_RTLevelSensor.devName = "Retort";
+    m_RTLevelSensor.sensorName = "LevelSensor";
+    QStringList sequenceList = {"11", "12", "21", "22"};
+    if (false == this->ConstructHeatingSensor(m_RTLevelSensor, sequenceList))
     {
         return false;
+    }
+    // Add Current Speed (low or high) list and PID exchanging Temperature list
+    QStringList::const_iterator iter = sequenceList.begin();
+    for(; iter!=sequenceList.end(); ++iter)
+    {
+        DataManager::FunctionKey_t funcKey;
+        funcKey.key = "Heating";
+        funcKey.name = m_RTLevelSensor.sensorName;
+        funcKey.sequence = *iter;
+        QString curSpeed = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_RTLevelSensor.devName, funcKey, "CurrentSPeed");
+        m_RTLevelSensor.CurrentSpeedList.insert(*iter, curSpeed);
+        bool ok = false;
+        qreal exchangePIDtmp = mp_DataManager->GetProgramSettings()->GetParameterValue(m_RTLevelSensor.devName, funcKey, "ExchangePIDTemp", ok);
+        if (false == ok)
+        {
+            return false;
+        }
+        m_RTLevelSensor.ExchangePIDTempList.insert(*iter, exchangePIDtmp);
     }
 
-    // For Retort Bottom2
-    m_RTBottom2.devName = "Retort";
-    m_RTBottom2.sensorName = "RTBottom";
-    seqenceList = {"1", "2", "3"};
-    if (false == this->ConstructHeatingSensor(m_RTBottom2, seqenceList))
-    {
-        return false;
-    }
 
     // For Retort Top
     m_RTTop.devName = "Retort";
     m_RTTop.sensorName = "RTTop";
-    seqenceList = {"1", "2", "3"};
-    if (false == this->ConstructHeatingSensor(m_RTTop, seqenceList))
+    sequenceList = {"1", "2", "3"};
+    if (false == this->ConstructHeatingSensor(m_RTTop, sequenceList))
     {
         return false;
     }
+
+    // For Retort Bottom
+    m_RTBottom.devName = "Retort";
+    m_RTBottom.sensorName = "RTBottom";
+    sequenceList = {"1", "2", "3"};
+    if (false == this->ConstructHeatingSensor(m_RTBottom, sequenceList))
+    {
+        return false;
+    }
+    // Add Temperature difference for each sequence
+    iter = sequenceList.begin();
+    for (; iter!= sequenceList.end(); ++iter)
+    {
+        DataManager::FunctionKey_t funcKey;
+        funcKey.key = "Heating";
+        funcKey.name = m_RTBottom.sensorName;
+        funcKey.sequence = *iter;
+        bool ok = false;
+        qreal tempDiff = mp_DataManager->GetProgramSettings()->GetParameterValue(m_RTBottom.devName, funcKey, "TempDifference", ok);
+        if (false == ok)
+        {
+            return false;
+        }
+        m_RTBottom.TemperatureDiffList.insert(*iter, tempDiff);
+    }
+
     return true;
 }
 
@@ -80,6 +286,7 @@ bool HeatingStrategy::ConstructHeatingSensor(HeatingSensor& heatingSensor, const
    for (; seqIter!=sequenceList.end(); ++seqIter)
    {
        FunctionModule funcModule;
+       funcModule.Id = *seqIter;
 
        // Firstly, get the scenario list
        funcKey.sequence = *seqIter;
@@ -141,14 +348,14 @@ bool HeatingStrategy::ConstructHeatingSensor(HeatingSensor& heatingSensor, const
        }
        funcModule.ResetTime = resetTime;
 
-       qreal derivateTime= mp_DataManager->GetProgramSettings()->GetParameterValue(heatingSensor.devName, funcKey, "DerivateTime", ok);
+       qreal derivativeTime= mp_DataManager->GetProgramSettings()->GetParameterValue(heatingSensor.devName, funcKey, "DerivativeTime", ok);
        if (false == ok)
        {
            return false;
        }
-       funcModule.DerivateTime = derivateTime;
+       funcModule.DerivativeTime = derivativeTime;
 
-       heatingSensor.functionModuleList.push_back(funcModule);
+       heatingSensor.functionModuleList.insert(*seqIter, funcModule);
    }
 
    return true;

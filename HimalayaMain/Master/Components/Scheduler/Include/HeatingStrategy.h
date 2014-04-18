@@ -11,7 +11,7 @@
  *
  *       Leica Biosystems SH CN.
  *
- *  (C) Copyright 2014 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2014 by Leica Biosystems Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -39,6 +39,7 @@ class SchedulerCommandProcessorBase;
 
 struct FunctionModule
 {
+    QString            Id;
     QVector<qint32>    ScenarioList;
     qreal              TemperatureOffset;
     qreal              MaxTemperature;
@@ -46,27 +47,29 @@ struct FunctionModule
     qreal              SlopTempChange;
     quint32            ControllerGain;
     quint32            ResetTime;
-    quint32            DerivateTime;
+    quint32            DerivativeTime;
 
 };
 
 struct HeatingSensor
 {
-    QString					devName;
-    QString					sensorName;
-    QVector<FunctionModule>	functionModuleList;
+    QString							devName;
+    QString							sensorName;
+    QMap<QString, FunctionModule>	functionModuleList;
+	qint64							heatingStartTime;
+	QString							curModuleId;
 };
 
 struct RTLevelSensor : public HeatingSensor
 {
-    QString             CurrentSpeed;
-    QString             ExchangePIDTemp;
+	QMap<QString, QString>	CurrentSpeedList;
+	QMap<QString, qreal>	ExchangePIDTempList;
 };
 
-struct RTBottomTemperatureDiff
+
+struct RTBottomSensor : public HeatingSensor
 {
-    QVector<qint32>		ScenarioList;
-    qreal				TempDiff;
+    QMap<QString, qreal>    TemperatureDiffList;
 };
 
 /****************************************************************************/
@@ -80,24 +83,24 @@ class HeatingStrategy : public QObject
 public:
     HeatingStrategy(SchedulerMainThreadController* schedController,
                     SchedulerCommandProcessorBase* SchedCmdProcessor,
-                    DataManager::CDataManager* dataManager, qreal Interval);
+                    DataManager::CDataManager* dataManager);
     ~HeatingStrategy() {}
+    DeviceControl::ReturnCode_t RunHeatingStrategy(const HardwareMonitor_t& strctHWMonitor, qint32 scenario);
 private:
     SchedulerMainThreadController*      mp_SchedulerController;
     SchedulerCommandProcessorBase*      mp_SchedulerCommandProcessor;
     DataManager::CDataManager*          mp_DataManager;
-    qreal                               m_Interval;
+	qint32								m_CurScenario;
     RTLevelSensor                       m_RTLevelSensor;
     HeatingSensor                       m_RTTop;
-    HeatingSensor                       m_RTBottom1;
-    HeatingSensor                       m_RTBottom2;
-    QVector<RTBottomTemperatureDiff>    m_RTBottomTempDiffList;
+    RTBottomSensor                      m_RTBottom;
     bool ConstructHeatingSensorList();
     bool ConstructHeatingSensor(HeatingSensor& heatingSensor, const QStringList& sequenceList);
+	DeviceControl::ReturnCode_t StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor);
+	DeviceControl::ReturnCode_t StartRTTemperatureControl(HeatingSensor& heatingSensor, RTTempCtrlType_t RTType);
 private:
     HeatingStrategy(const HeatingStrategy& rhs);
     HeatingStrategy& operator=(const HeatingStrategy& rhs);
 };
 }
-
 #endif // SCHEDULERMACHINE_H

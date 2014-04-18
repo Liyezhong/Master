@@ -2022,10 +2022,6 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
     {
         ReturnCode_t retCode;
 
-        // Create HeatingStrategy
-        mp_HeatingStrategy = QSharedPointer<HeatingStrategy>(new HeatingStrategy(this,
-                                m_SchedulerCommandProcessor, mp_DataManager, 0.5));
-
         //hardware not ready yet
         m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, this));
         SchedulerCommandShPtr_t resPerTurnOnRelay;
@@ -2111,6 +2107,11 @@ ERROR:
         LogDebug(QString("Error while init, Current state of Scheduler is: %1").arg(m_SchedulerMachine->GetCurrentState()));
     }
     m_TickTimer.start();
+
+	// Create HeatingStrategy
+	mp_HeatingStrategy = QSharedPointer<HeatingStrategy>(new HeatingStrategy(this,
+							m_SchedulerCommandProcessor, mp_DataManager));
+
 }
 
 void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
