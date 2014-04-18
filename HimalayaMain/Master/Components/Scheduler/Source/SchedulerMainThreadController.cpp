@@ -2055,15 +2055,29 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
 
         bool ok;
         qreal pressureDrift = mp_DataManager->GetProgramSettings()->GetParameterValue("LA", "Base", "PressureDrift", ok);
-        if(ok)
+        if((ok)&&(pressureDrift != 0)&&(pressureDrift<3)&&(pressureDrift>(-3)))//todo: verify this
         {
-
-            pressureDrift= m_SchedulerCommandProcessor->ALGetRecentPressure();
-            if(UNDEFINED_VALUE != pressureDrift)
+            m_SchedulerCommandProcessor->ALSetPressureDrift(pressureDrift);
+        }
+        else
+        {
+            quint32 counter = 0;
+            pressureDrift = UNDEFINED_4_BYTE;
+            while((pressureDrift == UNDEFINED_4_BYTE)&&(counter <10))
+            {
+                pressureDrift= m_SchedulerCommandProcessor->ALGetRecentPressure();
+                counter++;
+            }
+            if(UNDEFINED_4_BYTE != pressureDrift)
             {
                 mp_DataManager->GetProgramSettings()->SetParameterValue("LA", "Base", "PressureDrift", pressureDrift);
+                m_SchedulerCommandProcessor->ALSetPressureDrift(pressureDrift);
             }
-            m_SchedulerCommandProcessor->ALSetPressureDrift(pressureDrift);
+            else
+            {
+                mp_DataManager->GetProgramSettings()->SetParameterValue("LA", "Base", "PressureDrift", 0);
+                m_SchedulerCommandProcessor->ALSetPressureDrift(0);
+            }
         }
         CreateFunctionModuleStatusList(&m_FunctionModuleStatusList);
 
