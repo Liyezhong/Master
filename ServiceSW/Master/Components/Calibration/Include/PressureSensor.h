@@ -43,11 +43,26 @@ public:
     explicit CPressureSensor(QWidget *parent = 0);
     ~CPressureSensor();
 
+protected:
+    void changeEvent(QEvent *p_Event);
+
 private Q_SLOTS:
     void StartCalibration(void);
     
 private:
-    Ui::CPressureSensor *ui;
+    Ui::CPressureSensor *mp_Ui;
+
+signals:
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted for pressure sensor calibration
+     */
+    /****************************************************************************/
+    void CalibrationPressureSensor();
+
+private slots:
+    void RetranslateUI();
+
 };
 
 

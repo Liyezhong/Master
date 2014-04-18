@@ -19,12 +19,8 @@
 /****************************************************************************/
 
 #include "Calibration/Include/PressureSensor.h"
-
-#include <QDebug>
-
-#include "Calibration/Include/PressureSensorCalibrate.h"
-
 #include "ui_PressureSensor.h"
+#include "Global/Include/Utils.h"
 
 namespace Calibration {
 
@@ -37,28 +33,55 @@ namespace Calibration {
 /****************************************************************************/
 CPressureSensor::CPressureSensor(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CPressureSensor)
+    mp_Ui(new Ui::CPressureSensor)
 {
-    ui->setupUi(this);
-
-    (void)connect(ui->startButton,
-                  SIGNAL(clicked()),
-                  this,
-                  SLOT(StartCalibration()) );
+    mp_Ui->setupUi(this);
+    CONNECTSIGNALSLOTGUI(mp_Ui->startButton, clicked(), this, StartCalibration());
 }
 
 CPressureSensor::~CPressureSensor()
 {
-    delete ui;
+    try {
+        delete mp_Ui;
+    }
+    catch (...) {
+        // to please Lint
+    }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Event handler for change events
+ *
+ *  \iparam p_Event = Change event
+ */
+/****************************************************************************/
+void CPressureSensor::changeEvent(QEvent *p_Event)
+{
+    QWidget::changeEvent(p_Event);
+    switch (p_Event->type()) {
+    case QEvent::LanguageChange:
+        mp_Ui->retranslateUi(this);
+        RetranslateUI();
+        break;
+    default:
+        break;
+    }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Translates the strings in UI to the selected language
+ */
+/****************************************************************************/
+void CPressureSensor::RetranslateUI()
+{
 }
 
 void CPressureSensor::StartCalibration(void)
 {
-    qDebug() << "Pressure Sensor: start calibration";
-
-    CPressureSensorCalibrate Calibrate;
-
-    Calibrate.Run();
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CALIBRATION_PRESSURE_SENSOR);
+    emit CalibrationPressureSensor();
 }
 
 } // namespace Calibration

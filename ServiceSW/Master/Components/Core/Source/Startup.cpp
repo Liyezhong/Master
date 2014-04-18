@@ -192,7 +192,7 @@ CStartup::CStartup() : QObject()
                  this, SLOT(OnGuiOvenEmptyHeatingTest()))) {
         qDebug() << "CStartup: cannot connect 'GuiOvenEmptyHeatingTest' signal";
     }
-
+mp_PressureSensor
     if (!connect(mp_ServiceConnector->GetWaitDlgPtr(), SIGNAL(rejected()),
                  this, SLOT(OnGuiAbortTest()))) {
         qDebug() << "CStartup: cannot connect 'GuiAbortTest' signal";
