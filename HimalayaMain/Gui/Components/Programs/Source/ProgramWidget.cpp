@@ -367,6 +367,13 @@ void CProgramWidget::showEvent(QShowEvent *)
 /****************************************************************************/
 void CProgramWidget::SelectionChanged(QModelIndex Index)
 {
+    if (Index.column() == 1)  // apply column
+    {
+        Qt::ItemFlags flags = m_ProgramModel.flags(Index);
+        if (flags == Qt::ItemIsSelectable)  // if the column is disabled, no action will be done.
+            return ;
+    }
+
     if (Core::CGlobalHelper::CheckIfCanEdit() == false) {
         mp_Ui->btnEdit->setText(m_strView);
 
@@ -509,15 +516,14 @@ void CProgramWidget::ResetButtons()
         //Edit Mode
         mp_Ui->btnEdit->setEnabled(false);
         mp_Ui->btnDelete->setEnabled(false);
+        mp_Ui->btnCopy->setEnabled(false);
         m_UserProgramCount = GetNumberOfUserPrograms();
         if (mp_DataConnector->ProgramList->GetNumberOfPrograms() < MAX_PROGRAMS
                 &&  m_UserProgramCount < MAX_USER_PROGRAMS) {
             mp_Ui->btnNew->setEnabled(true);
-            mp_Ui->btnCopy->setEnabled(true);
         }
         else {
             mp_Ui->btnNew->setEnabled(false);
-            mp_Ui->btnCopy->setEnabled(false);
         }
     }
     else {
