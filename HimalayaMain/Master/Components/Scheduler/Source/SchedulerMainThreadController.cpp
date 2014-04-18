@@ -409,7 +409,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
                 else
                 {
-                    LogDebug("Precheck Sealing Check Failed");
+                    LogDebug("Precheck Position Check Failed");
                     Global::EventObject::Instance().RaiseEvent(0, 500030001, Scenario, false);
                     m_SchedulerMachine->SendErrorSignal();
                 }
