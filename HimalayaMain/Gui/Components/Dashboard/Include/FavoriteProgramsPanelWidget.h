@@ -74,7 +74,8 @@ namespace Dashboard {
         QStringList m_FavProgramIDs;
         QString m_NewSelectedProgramId;
         QDateTime m_EndDateTime;
-        int m_LastCanBeSelectedButtonId;
+		int m_LastCanBeSelectedButtonId;
+        QDateTime m_lastSetAsapDatetime;
 
     };
 }

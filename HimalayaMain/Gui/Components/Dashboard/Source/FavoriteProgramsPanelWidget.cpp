@@ -160,7 +160,9 @@ void CFavoriteProgramsPanelWidget::ProgramSelected(QString& programId, int asapE
 {
     Q_UNUSED(programId);
     Q_UNUSED(bProgramStartReady);
-    m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+    QDateTime curDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+    m_lastSetAsapDatetime = curDateTime;
+    m_ProgramEndDateTime = curDateTime.addSecs(asapEndTime);
 }
 
 void CFavoriteProgramsPanelWidget::UndoProgramSelection()
@@ -182,7 +184,9 @@ void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
     if ((m_LastSelectedButtonId == m_ButtonGroup.checkedId()) && (m_FavProgramIDs.at(0) != "C01"))
     {   //show Datetime dialog
         mp_wdgtDateTime->UpdateProgramName();
-        mp_wdgtDateTime->SetASAPDateTime(m_ProgramEndDateTime);
+        int elapseSec = Global::AdjustedTime::Instance().GetCurrentDateTime().secsTo(m_lastSetAsapDatetime);
+        QDateTime tempDatetime = m_ProgramEndDateTime;
+        mp_wdgtDateTime->SetASAPDateTime(tempDatetime.addSecs(elapseSec));
         mp_wdgtDateTime->show();
     }
     else
