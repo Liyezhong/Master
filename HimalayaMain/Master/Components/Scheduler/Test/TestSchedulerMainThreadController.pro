@@ -1,13 +1,12 @@
-!include("TestRsRvGetOriginalPositionAgain.pri") {
-    error("TestRsRvGetOriginalPositionAgain.pri not found")
+!include("TestSchedulerMainThreadController.pri") {
+    error("TestSchedulerMainThreadController.pri not found")
 }
 
-TARGET = utTestRsRvGetOriginalPositionAgain
+TARGET = utTestSchedulerMainThreadController
 
-
-SOURCES += ../Source/*.cpp \
-            ../Commands/Source/*.cpp
-SOURCES +=  TestRsRvGetOriginalPositionAgain.cpp
+SOURCES += ../Source/*.cpp
+SOURCES += ../Commands/Source/*.cpp
+SOURCES += TestSchedulerMainThreadController.cpp
 
 INCLUDEPATH += ../../../../../../Platform/Common/Components/
 

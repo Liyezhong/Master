@@ -126,6 +126,8 @@ typedef struct
     class SchedulerMainThreadController : public Threads::ThreadController {
         Q_OBJECT
 
+		// add "friend class TestSchedulerController" for UT
+        friend class TestSchedulerController;
     private:
         QTimer m_TickTimer;
         QMutex m_Mutex;

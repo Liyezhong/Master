@@ -60,10 +60,10 @@ public:
 
     ~TestRsStandby()
     {
-//        delete MockTestRsStandby;
-//        delete mp_ErrorWaitState;
-//        delete mp_ErrorState;
-//        delete mp_SchedulerMachine;
+        delete MockTestRsStandby;
+        delete mp_ErrorWaitState;
+        delete mp_ErrorState;
+        delete mp_SchedulerMachine;
     }
 
 private:

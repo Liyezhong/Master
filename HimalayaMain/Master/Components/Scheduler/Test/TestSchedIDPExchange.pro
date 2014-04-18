@@ -8,10 +8,13 @@ SOURCES += ../Source/*.cpp \
 			../Commands/Source/*.cpp \
                         TestSchedIDPExchange.cpp
 
+INCLUDEPATH += ../../../../../../Platform/Common/Components/
+
 HEADERS += ../Include/*.h \
             ../../../../../../Platform/Master/Components/DeviceControl/Include/Interface/*.h \
             ../../../../../../Platform/Master/Components/DeviceControl/Include/Global/*.h \
-            ../Commands/Include/*.h \
+            ../../../../../../Platform/Common/Components/FunctionModules/*.h \
+                ../Commands/Include/*.h \
             Mock/MockIDeviceProcessing.h
 
 UseDepLibs(Global DataLogging Threads NetCommands DeviceControl DataManager RemoteCareManager \

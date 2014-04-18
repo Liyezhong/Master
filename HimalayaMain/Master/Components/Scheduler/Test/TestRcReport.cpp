@@ -56,6 +56,7 @@ private:
 
 private slots:
     void CaseSignal();
+    void CaseErrorHandlingSMBase();
 };
 
 void TestRcReport::CaseSignal()
@@ -82,6 +83,12 @@ void TestRcReport::CaseSignal()
     QCOMPARE(Scheduler::SM_ERR_RC_REPORT, RCReport->GetCurrentState(statesList));
 }
 
+void TestRcReport::CaseErrorHandlingSMBase()
+{
+    CErrorHandlingSMBase *base = new CErrorHandlingSMBase(mp_SchedulerMachine, mp_ErrorState);
+    QCOMPARE(Scheduler::SM_ERROR, base->GetCurrentState(mp_SchedulerMachine->configuration()));
+    delete base;
+}
 
 } // end namespace EventHandler
 

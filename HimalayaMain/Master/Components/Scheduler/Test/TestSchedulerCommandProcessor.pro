@@ -1,13 +1,12 @@
-!include("TestRsRvGetOriginalPositionAgain.pri") {
-    error("TestRsRvGetOriginalPositionAgain.pri not found")
+!include("TestSchedulerCommandProcessor.pri") {
+    error("TestSchedulerCommandProcessor.pri not found")
 }
 
-TARGET = utTestRsRvGetOriginalPositionAgain
-
+TARGET = utTestSchedulerCommandProcessor
 
 SOURCES += ../Source/*.cpp \
             ../Commands/Source/*.cpp
-SOURCES +=  TestRsRvGetOriginalPositionAgain.cpp
+SOURCES +=  TestSchedulerCommandProcessor.cpp
 
 INCLUDEPATH += ../../../../../../Platform/Common/Components/
 
