@@ -54,12 +54,9 @@ private:
 
     bool m_UserRoleChanged;                                     //!< Flag to Verify the Change in User Role
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
-    int m_ParaffinStepIndex;
     QString m_strProgram;
     QString m_strInformation;
     QString m_strOK, m_strNo;
-    QString m_strNotStartExpiredReagent;
-    QString m_strStartExpiredReagent;
     QString m_strNeedMeltParaffin;
     DataManager::CHimalayaUserSettings* m_pUserSetting;
 
@@ -82,7 +79,6 @@ signals:
     void ProgramAction(const QString& programID, DataManager::ProgramActionType_t actionType);
     void UpdateDashboardSceneReagentStations(QString& ProgramID);
     void ProgramSelected(QString & programId, QList<QString>& selectedStationList);
-    void OnSelectEndDateTime(const QDateTime &);
     void OnInteractStart();
 public slots:
     void OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd);

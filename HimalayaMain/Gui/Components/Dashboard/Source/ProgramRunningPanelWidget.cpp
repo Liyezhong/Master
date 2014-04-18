@@ -172,11 +172,17 @@ void CProgramRunningPanelWidget::OnUserSettingsUpdated()
    {
         m_CurDateFormat = mp_UserSettings->GetDateFormat();
         m_CurTimeFormat = mp_UserSettings->GetTimeFormat();
-        UpdateDateTime(m_ProgramEndDateTime);
+        UpdateDateTime();
    }
 }
 
-void CProgramRunningPanelWidget::UpdateDateTime(const QDateTime &selDateTime)
+void CProgramRunningPanelWidget::OnUserSetEndDateTime(const QDateTime& dateTime)
+{
+    m_ProgramEndDateTime = dateTime;
+    UpdateDateTime();
+}
+
+void CProgramRunningPanelWidget::UpdateDateTime()
 {
     QString DateStr;
     QString TimeStr;
@@ -184,17 +190,17 @@ void CProgramRunningPanelWidget::UpdateDateTime(const QDateTime &selDateTime)
     switch(m_CurDateFormat) {
         case Global::DATE_INTERNATIONAL:
         {
-            DateStr = QString("%1").arg(selDateTime.date().toString("dd.MM.yyyy"));
+            DateStr = QString("%1").arg(m_ProgramEndDateTime.date().toString("dd.MM.yyyy"));
         }
         break;
         case Global::DATE_ISO:
         {
-            DateStr = QString("%1").arg(selDateTime.date().toString("yyyy-MM-dd"));
+            DateStr = QString("%1").arg(m_ProgramEndDateTime.date().toString("yyyy-MM-dd"));
         }
         break;
         case Global::DATE_US:
         {
-            DateStr = QString("%1").arg(selDateTime.date().toString("MM/dd/yyyy"));
+            DateStr = QString("%1").arg(m_ProgramEndDateTime.date().toString("MM/dd/yyyy"));
         }
         break;
         case Global::DATE_UNDEFINED:
@@ -207,12 +213,12 @@ void CProgramRunningPanelWidget::UpdateDateTime(const QDateTime &selDateTime)
     switch(m_CurTimeFormat) {
         case Global::TIME_12:
         {
-            TimeStr = QString("%1").arg(selDateTime.time().toString("hh:mm p.m"));
+            TimeStr = QString("%1").arg(m_ProgramEndDateTime.time().toString("hh:mm p.m"));
         }
             break;
         case Global::TIME_24:
         {
-            TimeStr = QString("%1").arg(selDateTime.time().toString("hh:mm"));
+            TimeStr = QString("%1").arg(m_ProgramEndDateTime.time().toString("hh:mm"));
         }
             break;
         case Global::TIME_UNDEFINED:
@@ -240,7 +246,7 @@ void CProgramRunningPanelWidget::ProgramSelected(QString& programId, int asapEnd
     m_selectedStationList = selectedStationList;
     Q_UNUSED(bProgramStartReady);
     m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
-    UpdateDateTime(m_ProgramEndDateTime);
+    UpdateDateTime();
 }
 
 int CProgramRunningPanelWidget::GetStepRemainingTime()

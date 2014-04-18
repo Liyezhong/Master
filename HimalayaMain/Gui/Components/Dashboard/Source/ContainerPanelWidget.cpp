@@ -37,7 +37,6 @@ CContainerPanelWidget::CContainerPanelWidget(QWidget *p_Parent): MainMenu::CPane
                                    mp_Ui(new Ui::CContainerPanelWidget),mp_MainWindow(NULL),
                                    mp_DataConnector(NULL),
                                    m_UserRoleChanged(false),
-                                   m_ParaffinStepIndex(-1),
                                    m_strProgram(tr("Program")),
                                    m_strInformation(tr("Information")),
                                    m_strOK(tr("OK")),
@@ -119,8 +118,6 @@ void CContainerPanelWidget::RetranslateUI()
     m_strWarning = QApplication::translate("Dashboard::CContainerPanelWidget", "Warning", 0, QApplication::UnicodeUTF8);
     m_strProgram = QApplication::translate("Dashboard::CContainerPanelWidget", "Program", 0, QApplication::UnicodeUTF8);
     m_strInformation = QApplication::translate("Dashboard::CContainerPanelWidget", "Information", 0, QApplication::UnicodeUTF8);
-    m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CContainerPanelWidget", "Reagents needed for this program are expired! You can't operate this program.", 0, QApplication::UnicodeUTF8);
-    m_strStartExpiredReagent =  QApplication::translate("Dashboard::CContainerPanelWidget", "Do you want to Start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
     m_strNeedMeltParaffin  = QApplication::translate("Dashboard::CContainerPanelWidget", "Still it will cost some time to melt paraffin, the current selected program can not run now.", 0, QApplication::UnicodeUTF8);
 }
 

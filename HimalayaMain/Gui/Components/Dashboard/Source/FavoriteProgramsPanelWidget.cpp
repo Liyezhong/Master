@@ -7,7 +7,6 @@
 #include "Core/Include/Startup.h"
 
 #include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
-#include "Core/Include/GlobalHelper.h"
 
 
 using namespace Dashboard;
@@ -27,9 +26,9 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
 
     mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget(this);
     mp_wdgtDateTime->setModal(true);
-    CONNECTSIGNALSLOT(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectDateTime(const QDateTime&));
     CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectEndDateTime(const QDateTime &));
-
+    CONNECTSIGNALSIGNAL(mp_wdgtDateTime, RequstAsapDateTime(), this, RequstAsapDateTime());
+    CONNECTSIGNALSLOT(this, SendAsapDateTime(int), mp_wdgtDateTime, OnGetASAPDateTime(int));
     CONNECTSIGNALSLOT(ui->BtnProgram1, clicked(bool), this, OnEndTimeButtonClicked());
     CONNECTSIGNALSLOT(ui->BtnProgram2, clicked(bool), this, OnEndTimeButtonClicked());
     CONNECTSIGNALSLOT(ui->BtnProgram3, clicked(bool), this, OnEndTimeButtonClicked());
@@ -115,7 +114,7 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
     }
 
     if (!mp_DataConnector)
-        return;
+    return;
 
     m_FavProgramIDs.clear();
     mp_ProgramList = mp_DataConnector->ProgramList;
@@ -141,6 +140,7 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         }
         else
             strIconName = ":/HimalayaImages/Icons/Program/"+ mp_ProgramList->GetProgram(ProgramId)->GetIcon() + ".png";
+        qDebug()<<"CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel  ---iconname="<<strIconName;
 
         //enable this button and use it
         m_ButtonGroup.button(j)->setEnabled(true);
@@ -160,9 +160,7 @@ void CFavoriteProgramsPanelWidget::ProgramSelected(QString& programId, int asapE
 {
     Q_UNUSED(programId);
     Q_UNUSED(bProgramStartReady);
-    QDateTime curDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
-    m_lastSetAsapDatetime = curDateTime;
-    m_ProgramEndDateTime = curDateTime.addSecs(asapEndTime);
+    emit SendAsapDateTime(asapEndTime);
 }
 
 void CFavoriteProgramsPanelWidget::UndoProgramSelection()
@@ -176,7 +174,6 @@ void CFavoriteProgramsPanelWidget::UndoProgramSelection()
     m_ButtonGroup.setExclusive(true);
     m_LastSelectedButtonId = -1;
     m_LastCanBeSelectedButtonId = -1;
-    Core::CGlobalHelper::UnselectProgram();
 }
 
 void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
@@ -184,9 +181,6 @@ void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
     if ((m_LastSelectedButtonId == m_ButtonGroup.checkedId()) && (m_FavProgramIDs.at(0) != "C01"))
     {   //show Datetime dialog
         mp_wdgtDateTime->UpdateProgramName();
-        int elapseSec = Global::AdjustedTime::Instance().GetCurrentDateTime().secsTo(m_lastSetAsapDatetime);
-        QDateTime tempDatetime = m_ProgramEndDateTime;
-        mp_wdgtDateTime->SetASAPDateTime(tempDatetime.addSecs(elapseSec));
         mp_wdgtDateTime->show();
     }
     else
@@ -197,11 +191,6 @@ void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
 
         emit PrepareSelectedProgramChecking(m_NewSelectedProgramId);
     }
-}
-
-void CFavoriteProgramsPanelWidget::OnSelectDateTime(const QDateTime& dateTime)
-{
-    m_EndDateTime = dateTime;
 }
 
 void CFavoriteProgramsPanelWidget::OnResetFocus(bool reset)

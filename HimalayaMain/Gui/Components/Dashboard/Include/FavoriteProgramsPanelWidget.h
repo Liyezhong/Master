@@ -59,7 +59,8 @@ namespace Dashboard {
     signals:
         void PrepareSelectedProgramChecking(const QString& selectedProgramId);
         void OnSelectEndDateTime(const QDateTime &);
-
+        void RequstAsapDateTime();
+        void SendAsapDateTime(int);
     private:
         void SetButtonGroup();
         QMap<int, QLabel*> m_mapLabel;//(label Id <--> QLabel)

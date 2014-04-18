@@ -56,14 +56,17 @@ public:
 signals:
     void ResetFocus(bool reset);
     void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
-    void PrepareSelectedProgramChecking(const QString& selectedProgramId, bool bCheckEndDatetimeAgain = false);
+    void PrepareSelectedProgramChecking(const QString& selectedProgramId);
     void OnSelectEndDateTime(const QDateTime &);
+    void RequstAsapDateTime();
+    void SendAsapDateTime(int);
     void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
     void ProgramActionStopped(DataManager::ProgramStatusType_t);
     void ProgramActionStarted(DataManager::ProgramActionType_t, int remainingTimeTotal, const QDateTime& startDateTime, bool IsResume);
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
     void UndoProgramSelection();
     void UpdateProgram(DataManager::CProgram &);
+    void CheckPreConditionsToRunProgram();
 protected:
     void changeEvent(QEvent *p_Event);
 
@@ -78,11 +81,9 @@ private slots:
                                 const QDateTime& startDateTime, bool IsResume);//in seconds
     void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
     void SwitchToFavoritePanel();
-    void OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd);
 
 private:
     void RetranslateUI();
-    void CheckPreConditionsToRunProgram();
     bool CheckPreConditionsToPauseProgram();
     bool CheckPreConditionsToAbortProgram();
 
@@ -98,8 +99,6 @@ private:
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
     DataManager::CDataProgramList *mp_ProgramList;
     QList<QString> m_StationList;                                //!< Station list occupied
-    QString m_strRetortNotLock;
-    QString m_strNotStartRMSOFF;
     QString m_strConfirmation;
     QString m_strAbortProgram;
 
@@ -108,10 +107,8 @@ private:
     QString m_strProgram;
     QString m_strInformation;
     QString m_strOK, m_strNo;
-    QString m_strNotStartExpiredReagent;
-    QString m_strStartExpiredReagent;
     QString m_strNeedMeltParaffin;
-    bool m_bRetortLocked;
+
 };
 
 }// end namespace Dashboard

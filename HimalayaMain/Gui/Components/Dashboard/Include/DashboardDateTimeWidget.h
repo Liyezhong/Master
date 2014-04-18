@@ -76,9 +76,11 @@ private:
     bool m_ProcessRunning;                  //!< Process running state
     QDateTime m_selDateTime;                //!< Selected Date and Time
     QDateTime m_ASAPDateTime;
+    QDateTime m_lastSetDateTime;
     QString m_strEndTimeForProgram;
     QString m_strEarlierEndTime;
     QString m_strLaterEndTime;
+    bool m_IsClickedOK;
     void RetranslateUI();
 
 protected:
@@ -90,9 +92,11 @@ public slots:
     void OnCancel();
     void UpdateProgramName();
     void OnSetASAPDateTime();
+    void OnGetASAPDateTime(int);
 
 signals:
     void OnSelectDateTime(const QDateTime& selDateTime);
+    void RequstAsapDateTime();
 
 };
 

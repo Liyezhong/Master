@@ -37,8 +37,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     mp_DataConnector(p_DataConnector),
     mp_MainWindow(p_Parent),
     m_ParaffinStepIndex(-1),
-    m_TimeProposed(0),
-    m_CheckEndDatetimeAgain(false),
+    m_TimeProposedForProgram(0),
+    m_CostedTimeBeforeParaffin(0),
     m_ProgramStartReady(false),
     m_IsWaitingCleaningProgram(false),
     m_CurProgramStepIndex(-1),
@@ -56,12 +56,17 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSIGNAL(this, ResetFocus(bool), ui->programPanelWidget, ResetFocus(bool));
     CONNECTSIGNALSIGNAL(this, AddItemsToFavoritePanel(bool), ui->programPanelWidget, AddItemsToFavoritePanel(bool));
-    CONNECTSIGNALSLOT(ui->programPanelWidget, PrepareSelectedProgramChecking(const QString&, bool), this, PrepareSelectedProgramChecking(const QString&, bool));
+    CONNECTSIGNALSLOT(ui->programPanelWidget, PrepareSelectedProgramChecking(const QString&), this, PrepareSelectedProgramChecking(const QString&));
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply &),
                       this, OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply&));
 
     CONNECTSIGNALSLOT(ui->programPanelWidget, OnSelectEndDateTime(const QDateTime&),
                         this, OnSelectEndDateTime(const QDateTime &));
+
+    CONNECTSIGNALSIGNAL(this, SendAsapDateTime(int), ui->programPanelWidget, SendAsapDateTime(int));
+
+    CONNECTSIGNALSLOT(ui->programPanelWidget, RequstAsapDateTime(),
+                        this, RequstAsapDateTime());
 
     CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int, bool, QList<QString>&),
                        ui->programPanelWidget, ProgramSelected(QString&, int, bool, QList<QString>&));
@@ -89,6 +94,9 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSIGNAL(this, ProgramActionStopped(DataManager::ProgramStatusType_t),
                         ui->programPanelWidget, ProgramActionStopped(DataManager::ProgramStatusType_t));
+
+    CONNECTSIGNALSLOT(ui->programPanelWidget, CheckPreConditionsToRunProgram(),
+                      this, CheckPreConditionsToRunProgram());
 
     CONNECTSIGNALSLOT(mp_DataConnector, ProgramWillComplete(),
                       this, OnProgramWillComplete());
@@ -152,6 +160,8 @@ void CDashboardWidget::OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCur
 
 void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd)
 {
+    m_bRetortLocked = cmd.IsLocked();
+
     if (cmd.IsLocked())
     {
         //enable the "OK"
@@ -189,8 +199,8 @@ void CDashboardWidget::OnProgramWillComplete()
     {
         m_IsDraining = true;
 
-        //Resume ProgressBar and EndTime countdown
-        emit ProgramActionStarted(DataManager::PROGRAM_START, m_TimeProposed, Global::AdjustedTime::Instance().GetCurrentDateTime(), true);
+        //Resume EndTime countdown
+        emit ProgramActionStarted(DataManager::PROGRAM_START, 0, Global::AdjustedTime::Instance().GetCurrentDateTime(), true);
 
         mp_DataConnector->SendProgramAction(m_SelectedProgramId, DataManager::PROGRAM_DRAIN);
         //disable pause and abort
@@ -311,7 +321,9 @@ void CDashboardWidget::OnProgramCompleted()
 void CDashboardWidget::OnProgramRunBegin()
 {
     bool isResumeRun = ui->programPanelWidget->IsResumeRun();
-    emit ProgramActionStarted(DataManager::PROGRAM_START, m_TimeProposed, Global::AdjustedTime::Instance().GetCurrentDateTime(), isResumeRun);
+    QDateTime curDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+    int remainingTime = curDateTime.secsTo(m_EndDateTime);
+    emit ProgramActionStarted(DataManager::PROGRAM_START, remainingTime, curDateTime, isResumeRun);
     ui->programPanelWidget->IsResumeRun(true);
 
     if (m_SelectedProgramId.at(0) == 'C')
@@ -356,6 +368,7 @@ void CDashboardWidget::OnUnselectProgram()
 
 bool CDashboardWidget::IsParaffinInProgram(const DataManager::CProgram* p_Program)
 {
+    m_ParaffinStepIndex = -1;
     if (!mp_DataConnector)
     {
         Q_ASSERT(0);
@@ -368,7 +381,7 @@ bool CDashboardWidget::IsParaffinInProgram(const DataManager::CProgram* p_Progra
         QString ReagentGroupID = mp_DataConnector->ReagentList->GetReagent(ReagentIDList.at(i))->GetGroupID();
         DataManager::CReagentGroup* pReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupID);
         if(pReagentGroup->IsParraffin()){
-            m_ParaffinStepIndex= i;
+            m_ParaffinStepIndex = i;
             return true;
         }
     }
@@ -403,7 +416,8 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
     {
         //calculate the timeBeforeUseParraffin
         //RemainingTimeMeltParraffin = 12 hour - TimeCosted
-        int RemainingTimeMeltParaffin = 12 * 60 * 60 - TimeCostedParaffinMelting;
+        //int RemainingTimeMeltParaffin = 12 * 60 * 60 - TimeCostedParaffinMelting;
+         int RemainingTimeMeltParaffin = 6 * 60 - TimeCostedParaffinMelting;
         if (RemainingTimeMeltParaffin > 0)
         {
           if (RemainingTimeMeltParaffin <= timeBeforeUseParaffin)
@@ -421,9 +435,176 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
     return (TimeActual + TimeDelta);//seconds
 }
 
-void CDashboardWidget::PrepareSelectedProgramChecking(const QString& selectedProgramId, bool bCheckEndDatetimeAgain)
+void CDashboardWidget::CheckPreConditionsToRunProgram()
 {
-    m_CheckEndDatetimeAgain = bCheckEndDatetimeAgain;
+
+    if ("" == m_SelectedProgramId)
+        return;
+
+    if (!m_bRetortLocked){
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(CommonString::strWarning);
+        mp_MessageDlg->SetText(m_strRetortNotLock);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->HideButtons();
+        if (mp_MessageDlg->exec())
+        return;
+    }
+
+    //Check if Leica program and RMS OFF?
+    DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
+    bool bShowRMSOffWarning = false;
+    bool isLeicaProgram = mp_ProgramList->GetProgram(m_SelectedProgramId)->IsLeicaProgram();
+    if (m_SelectedProgramId.at(0) == 'C')
+    {
+        if ((Global::RMS_OFF == userSetting->GetModeRMSCleaning()) && isLeicaProgram)
+        {
+            bShowRMSOffWarning = true;
+        }
+    }
+    else
+    {
+        if ((Global::RMS_OFF == userSetting->GetModeRMSProcessing()) && isLeicaProgram)
+        {
+            bShowRMSOffWarning = true;
+        }
+    }
+
+    if (bShowRMSOffWarning)
+    {
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(CommonString::strWarning);
+        mp_MessageDlg->SetText(m_strNotStartRMSOFF);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->HideButtons();
+        if (mp_MessageDlg->exec())
+        return;
+    }
+
+    DataManager::ReagentStatusType_t reagentStatus = DataManager::REAGENT_STATUS_NORMAL;
+
+    for(int i = 0; i<m_StationList.size(); i++)
+    {
+        QString stationID = m_StationList.at(i);
+        DataManager::CDashboardStation *p_Station = mp_DataConnector->DashboardStationList->GetDashboardStation(stationID);
+        QString reagentID = p_Station->GetDashboardReagentID();
+        DataManager::CReagent const *p_Reagent = mp_DataConnector->ReagentList->GetReagent(reagentID);
+
+        DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID());
+        bool isClearingGroup = p_ReagentGroup->IsCleaningReagentGroup();
+        Global::RMSOptions_t RMSOption = Global::RMS_OFF;
+        if ( isClearingGroup )
+            RMSOption = userSetting->GetModeRMSCleaning();
+        else
+            RMSOption = userSetting->GetModeRMSProcessing();
+
+        reagentStatus = p_Station->GetReagentStatus(*p_Reagent, RMSOption);
+
+        if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
+            break;
+    }
+
+    if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED ) {
+        MainMenu::CMainWindow::UserRole_t userRole = MainMenu::CMainWindow::GetCurrentUserRole();
+        if (userRole == MainMenu::CMainWindow::Operator)
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(CommonString::strWarning);
+            mp_MessageDlg->SetText(m_strNotStartExpiredReagent);
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->HideButtons();
+            if (mp_MessageDlg->exec())
+                return;
+        }
+        else if(userRole == MainMenu::CMainWindow::Admin ||
+            userRole == MainMenu::CMainWindow::Service)
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(CommonString::strWarning);
+            mp_MessageDlg->SetText(m_strStartExpiredReagent);
+            mp_MessageDlg->SetButtonText(3, CommonString::strNo);
+            mp_MessageDlg->SetButtonText(1, CommonString::strYes);
+            mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
+
+            if (!mp_MessageDlg->exec())
+                return;
+        }
+    }
+
+
+    //Check safe reagent
+    if ((m_SelectedProgramId.at(0) != 'C') && (m_iWhichStepHasNoSafeReagent  != -1))
+    {
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(CommonString::strWarning);
+        QString strTemp = m_strCheckSafeReagent.arg(QString::number(m_iWhichStepHasNoSafeReagent +1)).arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
+        mp_MessageDlg->SetText(strTemp);
+        mp_MessageDlg->SetButtonText(1, CommonString::strYes);
+        mp_MessageDlg->SetButtonText(3, CommonString::strNo);
+        mp_MessageDlg->HideCenterButton();
+        if (!mp_MessageDlg->exec())
+        {
+            return;
+        }
+    }
+
+    if (m_SelectedProgramId.at(0) != 'C')
+    {
+        bool bCanotRun = true;
+        int paraffinMeltCostedTime = Global::AdjustedTime::Instance().GetCurrentDateTime().secsTo(m_ParaffinStartHeatingTime);
+        int asapEndTime = GetASAPTime(m_TimeProposedForProgram,
+                                      m_CostedTimeBeforeParaffin, -paraffinMeltCostedTime, bCanotRun);
+
+        asapEndTime = asapEndTime - 60;//60 seconds: buffer time for "select program" and "Run" operation.
+        QDateTime newAsapEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+        if (newAsapEndDateTime > m_EndDateTime)
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->SetTitle(CommonString::strWarning);
+            mp_MessageDlg->SetText(m_strResetEndTime);
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->HideButtons();
+            if (mp_MessageDlg->exec())
+            {
+                return;
+            }
+            return;
+        }
+    }
+
+    if ( mp_DataConnector)
+    {
+        //input cassette number
+        if (m_SelectedProgramId.at(0) != 'C' && Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
+        {
+            CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget(NULL, mp_MainWindow);
+            pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
+            pCassetteInput->SetDialogTitle(m_strInputCassetteBoxTitle);
+            pCassetteInput->exec();
+
+            int cassetteNumber = pCassetteInput->CassetteNumber();
+            if (-1 == cassetteNumber)
+                return;//clicked Cancel button
+
+            mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
+            delete pCassetteInput;
+        }
+    }
+
+    QString strTempProgramId(m_SelectedProgramId);
+    if (m_SelectedProgramId.at(0) == 'C')
+    {
+        strTempProgramId.append("_");
+        QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
+        strTempProgramId.append(strReagentIDOfLastStep);
+    }
+
+    mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
+    ui->programPanelWidget->ChangeStartButtonToStopState();
+}
+
+void CDashboardWidget::PrepareSelectedProgramChecking(const QString& selectedProgramId)
+{
     m_NewSelectedProgramId = selectedProgramId;
     (void)this->IsParaffinInProgram(mp_ProgramList->GetProgram(selectedProgramId));//to get m_ParaffinStepIndex
     //Notify Master, to get the time costed for paraffin Melting
@@ -462,79 +643,14 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     }
 
     //get the proposed program end DateTime
+    m_TimeProposedForProgram = cmd.TimeProposed();
+    m_ParaffinStartHeatingTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(-cmd.ParaffinMeltCostedTime());
+    m_CostedTimeBeforeParaffin = cmd.CostedTimeBeforeParaffin();
+    m_iWhichStepHasNoSafeReagent = cmd.WhichStepHasNoSafeReagent();
     bool bCanotRun = true;
     int asapEndTime = GetASAPTime(cmd.TimeProposed(),
-                                  cmd.ParaffinMeltCostedTime(), cmd.CostedTimeBeforeParaffin(), bCanotRun);
-    if (m_CheckEndDatetimeAgain)
-    {
-        //Check safe reagent
-        int iWhichStepHasNoSafeReagent = cmd.WhichStepHasNoSafeReagent();
-        if ((m_SelectedProgramId.at(0) != 'C') && (iWhichStepHasNoSafeReagent  != -1))
-        {
-            mp_MessageDlg->SetIcon(QMessageBox::Warning);
-            mp_MessageDlg->SetTitle(CommonString::strWarning);
-            QString strTemp = m_strCheckSafeReagent.arg(QString::number(iWhichStepHasNoSafeReagent +1)).arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
-            mp_MessageDlg->SetText(strTemp);
-            mp_MessageDlg->SetButtonText(1, CommonString::strYes);
-            mp_MessageDlg->SetButtonText(3, CommonString::strNo);
-            mp_MessageDlg->HideCenterButton();
-            if (!mp_MessageDlg->exec())
-            {
-                return;
-            }
-        }
+                                  cmd.CostedTimeBeforeParaffin(), cmd.ParaffinMeltCostedTime(), bCanotRun);
 
-        m_CheckEndDatetimeAgain = false;
-        if (m_SelectedProgramId.at(0) != 'C')
-        {
-            asapEndTime = asapEndTime - 60;//60 seconds: buffer time for "select program" and "Run" operation.
-            QDateTime endDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
-            if (endDateTime > m_EndDateTime)
-            {
-                mp_MessageDlg->SetIcon(QMessageBox::Warning);
-                mp_MessageDlg->SetTitle(CommonString::strWarning);
-                mp_MessageDlg->SetText(m_strResetEndTime);
-                mp_MessageDlg->SetButtonText(1, CommonString::strOK);
-                mp_MessageDlg->HideButtons();
-                if (mp_MessageDlg->exec())
-                {
-                    return;
-                }
-                return;
-            }
-        }
-
-        if ( mp_DataConnector)
-        {
-            //input cassette number
-            if (m_SelectedProgramId.at(0) != 'C' && Global::RMS_CASSETTES == mp_DataConnector->SettingsInterface->GetUserSettings()->GetModeRMSProcessing())
-            {
-                CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget(NULL, mp_MainWindow);
-                pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
-                pCassetteInput->SetDialogTitle(m_strInputCassetteBoxTitle);
-                pCassetteInput->exec();
-
-                int cassetteNumber = pCassetteInput->CassetteNumber();
-                if (-1 == cassetteNumber)
-                    return;//clicked Cancel button
-
-                mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
-                delete pCassetteInput;
-            }
-        }
-
-        QString strTempProgramId(m_SelectedProgramId);
-        if (m_SelectedProgramId.at(0) == 'C')
-        {
-            strTempProgramId.append("_");
-            QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
-            strTempProgramId.append(strReagentIDOfLastStep);
-        }
-
-        mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
-        ui->programPanelWidget->ChangeStartButtonToStopState();
-        return;
-    }
 
     //firstly check whether there is any station not existing for some program steps
     for (int i = 0; i < stationList.count(); i++)
@@ -589,8 +705,6 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_StationList.clear();
     m_StationList = stationList;
 
-
-    m_TimeProposed = cmd.TimeProposed();
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 
 
@@ -624,12 +738,25 @@ void CDashboardWidget::RetranslateUI()
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
     m_strRetortContaminated  = QApplication::translate("Dashboard::CDashboardWidget", "The retort is contaminated, please lock the retort and select Cleaning Program to run!", 0, QApplication::UnicodeUTF8);
     m_strProgramIsAborted  = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is aborted!", 0, QApplication::UnicodeUTF8);
+    m_strRetortNotLock = QApplication::translate("Dashboard::CDashboardWidget", "Please close and lock the retort, then try again!", 0, QApplication::UnicodeUTF8);
+    m_strNotStartRMSOFF = QApplication::translate("Dashboard::CDashboardWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);
+    m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CDashboardWidget", "Reagents needed for this program are expired! You can't operate this program.", 0, QApplication::UnicodeUTF8);
+    m_strStartExpiredReagent =  QApplication::translate("Dashboard::CDashboardWidget", "Do you want to Start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
 
 }
 
 void CDashboardWidget::OnSelectEndDateTime(const QDateTime& dateTime)
 {
     m_EndDateTime = dateTime;
+}
+
+void CDashboardWidget::RequstAsapDateTime()
+{
+    bool bCanotRun = true;
+    int paraffinMeltCostedTime = Global::AdjustedTime::Instance().GetCurrentDateTime().secsTo(m_ParaffinStartHeatingTime);
+    int asapEndTime = GetASAPTime(m_TimeProposedForProgram,
+                                  m_CostedTimeBeforeParaffin, -paraffinMeltCostedTime, bCanotRun);
+    emit SendAsapDateTime(asapEndTime);
 }
 
 void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd)
