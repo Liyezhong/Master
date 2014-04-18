@@ -57,6 +57,7 @@ private:
     int GetASAPTime(int, int, int, bool&);
     void RetranslateUI();
     void TakeOutSpecimenAndWaitRunCleaning();
+    void SetCassetteNumber();
     Ui::CDashboardWidget *ui;
     Core::CDataConnector *mp_DataConnector;          //!< Data object
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
@@ -93,6 +94,8 @@ private:
     QString m_strNotStartExpiredReagent;
     int m_iWhichStepHasNoSafeReagent;
     QString m_strStartExpiredReagent;
+    QString m_strChangeCassetteBoxTitle;
+    QString m_strAddCassete;
 public slots:
     void OnUnselectProgram();
 

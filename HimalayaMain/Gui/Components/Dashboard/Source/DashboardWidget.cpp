@@ -26,6 +26,7 @@
 #include <Dashboard/Include/FavoriteProgramsPanelWidget.h>
 #include "Dashboard/Include/CassetteNumberInputWidget.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
+#include "Core/Include/GlobalHelper.h"
 
 using namespace Dashboard;
 
@@ -169,6 +170,20 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus
         {
             mp_MessageDlg->EnableButton(1, true);
         }
+
+        if (Core::CGlobalHelper::GetProgramPaused() && (m_pUserSetting->GetModeRMSProcessing() == Global::RMS_CASSETTES) && (m_SelectedProgramId.at(0) != 'C'))
+        {
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+            mp_MessageDlg->SetTitle(CommonString::strInforMsg);
+            mp_MessageDlg->SetText(m_strAddCassete);
+            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->SetButtonText(3, CommonString::strNo);
+            mp_MessageDlg->HideCenterButton();
+            if (mp_MessageDlg->exec())
+            {
+                SetCassetteNumber();
+            }
+        }
     }
 }
 
@@ -248,6 +263,27 @@ void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
             mp_MainWindow->SetTabWidgetIndex();
             emit SwitchToFavoritePanel();
         }
+    }
+}
+
+void CDashboardWidget::SetCassetteNumber()
+{
+    if ( mp_DataConnector)
+    {
+        //input cassette number
+        CCassetteNumberInputWidget *pCassetteInput = new Dashboard::CCassetteNumberInputWidget();
+        pCassetteInput->setWindowFlags(Qt::CustomizeWindowHint);
+        pCassetteInput->SetDialogTitle(m_strChangeCassetteBoxTitle);
+        QRect scr = mp_MainWindow->geometry();
+        pCassetteInput->move( scr.center() - pCassetteInput->rect().center());
+        pCassetteInput->exec();
+
+        int cassetteNumber = pCassetteInput->CassetteNumber();
+        if (-1 == cassetteNumber)
+            return;//clicked Cancel button
+
+        mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
+        delete pCassetteInput;
     }
 }
 
@@ -742,7 +778,8 @@ void CDashboardWidget::RetranslateUI()
     m_strNotStartRMSOFF = QApplication::translate("Dashboard::CDashboardWidget", "Leica Program can't be operated with RMS OFF.", 0, QApplication::UnicodeUTF8);
     m_strNotStartExpiredReagent = QApplication::translate("Dashboard::CDashboardWidget", "Reagents needed for this program are expired! You can't operate this program.", 0, QApplication::UnicodeUTF8);
     m_strStartExpiredReagent =  QApplication::translate("Dashboard::CDashboardWidget", "Do you want to Start the Program with Expired Reagents?", 0, QApplication::UnicodeUTF8);
-
+    m_strChangeCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter the total number of cassetts in the retort:", 0, QApplication::UnicodeUTF8);
+    m_strAddCassete = QApplication::translate("Dashboard::CDashboardWidget", "Did you add new cassetts?", 0, QApplication::UnicodeUTF8);
 }
 
 void CDashboardWidget::OnSelectEndDateTime(const QDateTime& dateTime)
