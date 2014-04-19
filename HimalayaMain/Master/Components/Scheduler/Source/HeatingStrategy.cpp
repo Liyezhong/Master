@@ -182,9 +182,24 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
     // Found out the heating sensor's function module
     if (iter != heatingSensor.functionModuleList.end())
     {
+		// Get the userInput temperature
+		qreal userInputTemp = 0.0;
+		if (false == mp_SchedulerController->GetCurProgramID().isEmpty()) // make sure program ID is NOT empty
+        {   
+            userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
+                ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
+        }   
+		else
+		{
+			return DCL_ERR_FCT_CALL_SUCCESS;
+		}
+        if (qFuzzyCompare(userInputTemp, -1))
+        {   
+            return DCL_ERR_FCT_CALL_SUCCESS;
+        }  
         CmdRTStartTemperatureControlWithPID* pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
         pHeatingCmd->SetType(RTType);
-        pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset);
+        pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset+userInputTemp);
         pHeatingCmd->SetSlopeTempChange(iter->SlopTempChange);
         pHeatingCmd->SetMaxTemperature(iter->MaxTemperature);
         pHeatingCmd->SetControllerGain(iter->ControllerGain);
@@ -214,6 +229,8 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     //For Retort Level Sensor
     m_RTLevelSensor.devName = "Retort";
     m_RTLevelSensor.sensorName = "LevelSensor";
+    m_RTLevelSensor.heatingStartTime = 0;
+    m_RTLevelSensor.curModuleId = "";
     QStringList sequenceList = {"11", "12", "21", "22"};
     if (false == this->ConstructHeatingSensor(m_RTLevelSensor, sequenceList))
     {
@@ -242,6 +259,8 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     // For Retort Top
     m_RTTop.devName = "Retort";
     m_RTTop.sensorName = "RTTop";
+    m_RTTop.heatingStartTime = 0;
+    m_RTTop.curModuleId = "";
     sequenceList = {"1", "2", "3"};
     if (false == this->ConstructHeatingSensor(m_RTTop, sequenceList))
     {
@@ -251,6 +270,8 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     // For Retort Bottom
     m_RTBottom.devName = "Retort";
     m_RTBottom.sensorName = "RTBottom";
+    m_RTBottom.heatingStartTime = 0;
+    m_RTBottom.curModuleId = "";
     sequenceList = {"1", "2", "3"};
     if (false == this->ConstructHeatingSensor(m_RTBottom, sequenceList))
     {

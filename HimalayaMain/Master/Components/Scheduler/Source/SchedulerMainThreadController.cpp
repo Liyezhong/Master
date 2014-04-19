@@ -2122,6 +2122,13 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
        // if(StepID == "IDLE")
 	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
+
+    // Run Heating Strategy
+    DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
+    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+    {
+        //Error Handling
+    }
     if(strctHWMonitor.PressureAL == UNDEFINED_VALUE)
 	{
         m_PressureAL = strctHWMonitor.PressureAL;
