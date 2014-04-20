@@ -280,9 +280,8 @@ typedef struct
         void UpdateStationReagentStatus();
 
         /****************************************************************************/
-        /**
-         *
-         * pop Command from Q2
+        /*!
+         *  \brief pop Command from Q2
          */
         /****************************************************************************/
          bool GetNextProgramStepInformation(const QString& ProgramID, ProgramStepInfor& ProgramStepInfor, bool onlyGetFirstProgramStepIndex = false);
@@ -615,8 +614,7 @@ protected:
 
         /****************************************************************************/
         /**
-         * Called when the base class received the Go signal.
-         *
+         *  \brief Called when the base class received the Go signal.
          * This means that everything is fine and normal operation started.
          * We are running in our own thread now.
          */
@@ -625,8 +623,7 @@ protected:
 
         /****************************************************************************/
         /**
-         * Called when the base class received the Stop signal.
-         *
+         *  \brief Called when the base class received the Stop signal.
          * This means that normal operation will stop after processing this signal.
          * We are still running in our own thread.
          */
@@ -635,14 +632,14 @@ protected:
         
         /****************************************************************************/
         /**
-         * Called when power failure is to expect.
+         *  \brief Called when power failure is to expect.
          */
         /****************************************************************************/
     virtual void OnPowerFail(const Global::PowerFailStages PowerFailStage);
 
         /****************************************************************************/
         /**
-         * Called when a local/remote alarm raises.
+         *  \brief Called when a local/remote alarm raises.
          */
         /****************************************************************************/
 //        void OnRaiseAlarmLocalRemote(Global::tRefType Ref, const HimalayaErrorHandler::CmdRaiseAlarm &Cmd);
@@ -706,14 +703,14 @@ protected:
 
         /****************************************************************************/
         /**
-         * Create and configure your objects.
+         *  \brief Create and configure your objects.
          */
         /****************************************************************************/
         virtual void CreateAndInitializeObjects();
 
         /****************************************************************************/
         /**
-         * Cleanup and destroy your objects.
+         *  \brief Cleanup and destroy your objects.
          */
         /****************************************************************************/
         virtual void CleanupAndDestroyObjects();
@@ -737,22 +734,19 @@ protected:
 
         /****************************************************************************/
         /**
-         *
-         * push Command to Q2
+         *  \brief push Command to Q2
          */
         /****************************************************************************/
         void PushDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t CmdPtr);
 
         /****************************************************************************/
         /**
-         *
-         * pop Command from Q2
+         *  \brief pop Command from Q2
          */
         /****************************************************************************/
          bool PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd);
         /**
-         *
-         * Get the time(in seconds) that Oven has been heated
+         *  \brief Get the time(in seconds) that Oven has been heated
          */
         /****************************************************************************/
         qint64 GetOvenHeatingTime();
@@ -775,8 +769,7 @@ protected:
 		int	GetCurProgramStepIndex() { return m_CurProgramStepIndex; }
         /****************************************************************************/
         /**
-         *
-         * push Command to Q2
+         *  \brief push Command to Q2
          */
         /****************************************************************************/
         void SetSchedCommandProcessor( Scheduler::SchedulerCommandProcessorBase* pSchedCmdProcessor ) { m_SchedulerCommandProcessor = pSchedCmdProcessor; }
