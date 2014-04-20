@@ -209,6 +209,8 @@ typedef struct
         /*!
          *  \brief  Definition/Declaration of function HardwareMonitor
          *
+         *  \param StepID = const QString type parameter
+         *
          *  \return from HardwareMonitor
          */
         /****************************************************************************/
@@ -242,6 +244,8 @@ typedef struct
         /*!
          *  \brief  Definition/Declaration of function GetReagentName
          *
+         *  \param ReagentID = const QString type parameter
+         *
          *  \return from GetReagentName
          */
         /****************************************************************************/
@@ -249,6 +253,8 @@ typedef struct
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function GetReagentGroupID
+         *
+         *  \param ReagentID = const QString type parameter
          *
          *  \return from GetReagentGroupID
          */
@@ -258,6 +264,9 @@ typedef struct
         /*!
          *  \brief  Definition/Declaration of function GetScenarioBySchedulerState
          *
+         *  \param State = SchedulerStateMachine_t type parameter
+         *  \param ReagentGroup =  QString type parameter
+         *
          *  \return from GetScenarioBySchedulerState
          */
         /****************************************************************************/
@@ -265,6 +274,8 @@ typedef struct
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function IsCleaningReagent
+         *
+         *  \param ReagentID = const QString type parameter
          *
          *  \return from IsCleaningReagent
          */
@@ -289,6 +300,9 @@ typedef struct
          /*!
           *  \brief  Definition/Declaration of function GetLeftProgramStepsNeededTime
           *
+          *  \param ProgramID = const QString type parameter
+          *  \param SpecifiedStepIndex =  int type parameter
+          *
           *  \return from GetLeftProgramStepsNeededTime
           */
          /****************************************************************************/
@@ -296,6 +310,8 @@ typedef struct
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function GetCurrentProgramStepNeededTime
+          *
+          *  \param ProgramID = const QString type parameter
           *
           *  \return from GetCurrentProgramStepNeededTime
           */
@@ -305,6 +321,9 @@ typedef struct
          /*!
           *  \brief  Definition/Declaration of function PrepareProgramStationList
           *
+          *  \param ProgramID = const QString type parameter
+          *  \param beginStep =  int type parameter
+          *
           *  \return from PrepareProgramStationList
           */
          /****************************************************************************/
@@ -312,6 +331,9 @@ typedef struct
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function SelectStationFromReagentID
+          *
+          *  \param ReagentID = const QString type parameter
+          *  \param  =  type parameter
           *
           *  \return from SelectStationFromReagentID
           */
@@ -325,6 +347,9 @@ typedef struct
          /*!
           *  \brief  Definition/Declaration of function SelectStationByReagent
           *
+          *  \param pReagent = const DataManager::CReagent type parameter
+          *  \param  =  type parameter
+          *
           *  \return from SelectStationByReagent
           */
          /****************************************************************************/
@@ -337,6 +362,8 @@ typedef struct
          /*!
           *  \brief  Definition/Declaration of function GetStationIDFromProgramStep
           *
+          *  \param ProgramStepIndex = int type parameter
+          *
           *  \return from GetStationIDFromProgramStep
           */
          /****************************************************************************/
@@ -344,6 +371,8 @@ typedef struct
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function GetRVTubePositionByStationID
+          *
+          *  \param stationID = const QString type parameter
           *
           *  \return from GetRVTubePositionByStationID
           */
@@ -353,6 +382,8 @@ typedef struct
          /*!
           *  \brief  Definition/Declaration of function GetRVSealPositionByStationID
           *
+          *  \param stationID = const QString type parameter
+          *
           *  \return from GetRVSealPositionByStationID
           */
          /****************************************************************************/
@@ -360,6 +391,9 @@ typedef struct
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function IsLastStep
+          *
+          *  \param currentStepIndex = int type parameter
+          *  \param currentProgramID = const QString type parameter
           *
           *  \return from IsLastStep
           */
@@ -385,6 +419,8 @@ typedef struct
          /*!
           *  \brief  Definition/Declaration of function CreateFunctionModuleStatusList
           *
+          *  \param pList = QList<FunctionModuleStatus_t> type parameter
+          *
           *  \return from CreateFunctionModuleStatusList
           */
          /****************************************************************************/
@@ -392,6 +428,10 @@ typedef struct
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function SetFunctionModuleWork
+          *
+          *  \param pList = QList<FunctionModuleStatus_t> type parameter
+          *  \param ID =  CANObjectKeyLUT::CANObjectIdentifier_t type parameter
+          *  \param isWorking =  bool type parameter
           *
           *  \return from SetFunctionModuleWork
           */
@@ -401,6 +441,10 @@ typedef struct
          /*!
           *  \brief  Definition/Declaration of function SetFunctionModuleHealth
           *
+          *  \param pList = QList<FunctionModuleStatus_t> type parameter
+          *  \param ID =  CANObjectKeyLUT::CANObjectIdentifier_t type parameter
+          *  \param isHealth =  bool type parameter
+          *
           *  \return from SetFunctionModuleHealth
           */
          /****************************************************************************/
@@ -408,6 +452,9 @@ typedef struct
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function SetFunctionModuleStarttime
+          *
+          *  \param pList = QList<FunctionModuleStatus_t> type parameter
+          *  \param ID =  CANObjectKeyLUT::CANObjectIdentifier_t type parameter
           *
           *  \return from SetFunctionModuleStarttime
           */
@@ -417,6 +464,9 @@ typedef struct
          /*!
           *  \brief  Definition/Declaration of function SetFunctionModuleStoptime
           *
+          *  \param pList = QList<FunctionModuleStatus_t> type parameter
+          *  \param ID =  CANObjectKeyLUT::CANObjectIdentifier_t type parameter
+          *
           *  \return from SetFunctionModuleStoptime
           */
          /****************************************************************************/
@@ -425,6 +475,8 @@ typedef struct
          /*!
           *  \brief  Definition/Declaration of function GetFailedFunctionModuleList
           *
+          *  \param pList = QList<FunctionModuleStatus_t> type parameter
+          *
           *  \return from GetFailedFunctionModuleList
           */
          /****************************************************************************/
@@ -432,6 +484,9 @@ typedef struct
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function GetFunctionModuleStartworkTime
+          *
+          *  \param pList = QList<FunctionModuleStatus_t> type parameter
+          *  \param ID =  CANObjectKeyLUT::CANObjectIdentifier_t type parameter
           *
           *  \return from GetFunctionModuleStartworkTime
           */
@@ -494,6 +549,8 @@ private slots:
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of slot CheckLevelSensorTemperature
+          *
+          *  \param targetTemperature = qreal type parameter
           *
           *  \return return from CheckLevelSensorTemperature
           */
@@ -649,6 +706,9 @@ protected:
         /*!
          *  \brief  Definition/Declaration of function OnKeepCassetteCount
          *
+         *  \param Ref = Global::tRefType type parameter
+         *  \param MsgClasses =  const type parameter
+         *
          *  \return from OnKeepCassetteCount
          */
         /****************************************************************************/
@@ -657,6 +717,9 @@ protected:
         /*!
          *  \brief  Definition/Declaration of function OnProgramSelected
          *
+         *  \param Ref = Global::tRefType type parameter
+         *  \param MsgClasses =  const type parameter
+         *
          *  \return from OnProgramSelected
          */
         /****************************************************************************/
@@ -664,6 +727,9 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function OnQuitAppShutdown
+         *
+         *  \param Ref = Global::tRefType type parameter
+         *  \param MsgClasses =  const type parameter
          *
          *  \return from OnQuitAppShutdown
          */
@@ -719,6 +785,9 @@ protected:
         /*!
          *  \brief  Definition/Declaration of function OnActionCommandReceived
          *
+         *  \param Ref = Global::tRefType type parameter
+         *  \param NetCommands =  const type parameter
+         *
          *  \return from OnActionCommandReceived
          */
         /****************************************************************************/
@@ -726,6 +795,8 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function DataManager
+         *
+         *  \param p_DataManager = DataManager::CDataManager type parameter
          *
          *  \return from DataManager
          */
@@ -745,6 +816,7 @@ protected:
          */
         /****************************************************************************/
          bool PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd);
+        /****************************************************************************/
         /**
          *  \brief Get the time(in seconds) that Oven has been heated
          */
@@ -784,6 +856,8 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function OnDCLConfigurationFinished
+         *
+         *  \param RetCode = ReturnCode_t type parameter
          *
          *  \return from OnDCLConfigurationFinished
          */

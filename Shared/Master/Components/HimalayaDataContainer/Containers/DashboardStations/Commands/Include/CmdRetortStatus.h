@@ -45,6 +45,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdRetortStatus
      *
+     *  \param timeout = int type parameter
+     *  \param retortStatusType =  DataManager::RetortStatusType_t type parameter
+     *
      *  \return from CmdRetortStatus
      */
     /****************************************************************************/

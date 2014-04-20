@@ -45,6 +45,10 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdProgramSelected
      *
+     *  \param Timeout = int type parameter
+     *  \param ProgramID =  const QString type parameter
+     *  \param ParaffinStepIndex =  int type parameter
+     *
      *  \return from CmdProgramSelected
      */
     /****************************************************************************/

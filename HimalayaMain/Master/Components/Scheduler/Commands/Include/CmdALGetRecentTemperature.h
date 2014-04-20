@@ -38,6 +38,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdALGetRecentTemperature
      *
+     *  \param Timeout = int type parameter
+     *  \param controller =  SchedulerMainThreadController type parameter
+     *
      *  \return from CmdALGetRecentTemperature
      */
     /****************************************************************************/
@@ -61,6 +64,8 @@ public:
 	/*!
 	 *  \brief  Definition/Declaration of function SetResult
 	 *
+	 *  \param result = qreal type parameter
+	 *
 	 *  \return from SetResult
 	 */
 	/****************************************************************************/
@@ -68,6 +73,8 @@ public:
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \param result = qreal type parameter
 	 *
 	 *  \return from GetResult
 	 */
@@ -85,6 +92,8 @@ public:
 	/*!
 	 *  \brief  Definition/Declaration of function SetType
 	 *
+	 *  \param Type = DeviceControl::ALTempCtrlType_t type parameter
+	 *
 	 *  \return from SetType
 	 */
 	/****************************************************************************/
@@ -100,6 +109,8 @@ public:
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function SetIndex
+	 *
+	 *  \param Index = quint8 type parameter
 	 *
 	 *  \return from SetIndex
 	 */

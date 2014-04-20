@@ -117,6 +117,10 @@ private:
     /*!
      *  \brief  Definition/Declaration of function AddStation
      *
+     *  \param StationID = QString type parameter
+     *  \param ReagentID =  QString type parameter
+     *  \param Station = CDashboardStation type parameter
+     *
      *  \return from AddStation
      */
     /****************************************************************************/
@@ -126,6 +130,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function CDataContainer
+     *
+     *  \param p_HimalayaMasterThreadController = Threads::MasterThreadController type parameter
      *
      *  \return from CDataContainer
      */
@@ -143,6 +149,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetReagentName
+     *
+     *  \param ReagentID = QString type parameter
      *
      *  \return from GetReagentName
      */

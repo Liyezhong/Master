@@ -46,6 +46,11 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdCurrentProgramStepInfor
      *
+     *  \param timeout = int type parameter
+     *  \param stepName =  const QString type parameter
+     *  \param curProgramStepIndex =  int type parameter
+     *  \param curRemainingTime =  int type parameter
+     *
      *  \return from CmdCurrentProgramStepInfor
      */
     /****************************************************************************/

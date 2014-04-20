@@ -38,6 +38,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdRVStartTemperatureControlWithPID
      *
+     *  \param Timeout = int type parameter
+     *  \param controller =  SchedulerMainThreadController type parameter
+     *
      *  \return from CmdRVStartTemperatureControlWithPID
      */
     /****************************************************************************/
@@ -61,6 +64,8 @@ public:
 	/*!
 	 *  \brief  Definition/Declaration of function SetResult
 	 *
+	 *  \param result = DeviceControl::ReturnCode_t type parameter
+	 *
 	 *  \return from SetResult
 	 */
 	/****************************************************************************/
@@ -68,6 +73,8 @@ public:
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \param result = DeviceControl::ReturnCode_t type parameter
 	 *
 	 *  \return from GetResult
 	 */
@@ -85,6 +92,8 @@ public:
 	/*!
 	 *  \brief  Definition/Declaration of function SetNominalTemperature
 	 *
+	 *  \param NominalTemperature = qreal type parameter
+	 *
 	 *  \return from SetNominalTemperature
 	 */
 	/****************************************************************************/
@@ -100,6 +109,8 @@ public:
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function SetSlopeTempChange
+	 *
+	 *  \param SlopeTempChange = quint8 type parameter
 	 *
 	 *  \return from SetSlopeTempChange
 	 */
@@ -117,6 +128,8 @@ public:
 	/*!
 	 *  \brief  Definition/Declaration of function SetMaxTemperature
 	 *
+	 *  \param MaxTemperature = quint16 type parameter
+	 *
 	 *  \return from SetMaxTemperature
 	 */
 	/****************************************************************************/
@@ -132,6 +145,8 @@ public:
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function SetControllerGain
+	 *
+	 *  \param ControllerGain = quint16 type parameter
 	 *
 	 *  \return from SetControllerGain
 	 */
@@ -149,6 +164,8 @@ public:
 	/*!
 	 *  \brief  Definition/Declaration of function SetResetTime
 	 *
+	 *  \param ResetTime = quint16 type parameter
+	 *
 	 *  \return from SetResetTime
 	 */
 	/****************************************************************************/
@@ -164,6 +181,8 @@ public:
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function SetDerivativeTime
+	 *
+	 *  \param DerivativeTime = quint16 type parameter
 	 *
 	 *  \return from SetDerivativeTime
 	 */

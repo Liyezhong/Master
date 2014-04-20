@@ -62,6 +62,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CopyFromOther
      *
+     *  \param Station = const CDashboardStation type parameter
+     *
      *  \return from CopyFromOther
      */
     /****************************************************************************/

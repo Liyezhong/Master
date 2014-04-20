@@ -38,6 +38,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdOvenSetTempCtrlOFF
      *
+     *  \param Timeout = int type parameter
+     *  \param controller =  SchedulerMainThreadController type parameter
+     *
      *  \return from CmdOvenSetTempCtrlOFF
      */
     /****************************************************************************/
@@ -61,6 +64,8 @@ public:
 	/*!
 	 *  \brief  Definition/Declaration of function SetResult
 	 *
+	 *  \param result = DeviceControl::ReturnCode_t type parameter
+	 *
 	 *  \return from SetResult
 	 */
 	/****************************************************************************/
@@ -68,6 +73,8 @@ public:
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \param result = DeviceControl::ReturnCode_t type parameter
 	 *
 	 *  \return from GetResult
 	 */
@@ -84,6 +91,8 @@ public:
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function Settype
+	 *
+	 *  \param type = DeviceControl::OVENTempCtrlType_t type parameter
 	 *
 	 *  \return from Settype
 	 */

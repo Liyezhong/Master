@@ -60,6 +60,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CDataManager
      *
+     *  \param p_HimalayaMasterThreadController = Threads::MasterThreadController type parameter
+     *
      *  \return from CDataManager
      */
     /****************************************************************************/
@@ -67,6 +69,9 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function CDataManager
+     *
+     *  \param p_HimalayaMasterThreadController = Threads::MasterThreadController type parameter
+     *  \param Path =  QString type parameter
      *
      *  \return from CDataManager
      */
@@ -103,6 +108,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function GetProgramList
      *
+     *  \param p_ProgramList = CDataProgramList type parameter
+     *
      *  \return from GetProgramList
      */
     /****************************************************************************/
@@ -120,6 +127,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function GetProgramSettings
      *
+     *  \param p_ProgramList = CProgramSettings type parameter
+     *
      *  \return from GetProgramSettings
      */
     /****************************************************************************/
@@ -136,6 +145,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetReagentGroupList
+     *
+     *  \param p_ReagentGroupList = CDataReagentGroupList type parameter
      *
      *  \return from GetReagentGroupList
      */
@@ -155,6 +166,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function GetStationList
      *
+     *  \param p_StationList = CDashboardDataStationList type parameter
+     *
      *  \return from GetStationList
      */
     /****************************************************************************/
@@ -171,6 +184,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetReagentList
+     *
+     *  \param p_ReagentList = CDataReagentList type parameter
      *
      *  \return from GetReagentList
      */

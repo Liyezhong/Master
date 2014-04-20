@@ -38,6 +38,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdRTStartTemperatureControl
      *
+     *  \param Timeout = int type parameter
+     *  \param controller =  SchedulerMainThreadController type parameter
+     *
      *  \return from CmdRTStartTemperatureControl
      */
     /****************************************************************************/
@@ -61,6 +64,8 @@ public:
 	/*!
 	 *  \brief  Definition/Declaration of function SetResult
 	 *
+	 *  \param result = DeviceControl::ReturnCode_t type parameter
+	 *
 	 *  \return from SetResult
 	 */
 	/****************************************************************************/
@@ -68,6 +73,8 @@ public:
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \param result = DeviceControl::ReturnCode_t type parameter
 	 *
 	 *  \return from GetResult
 	 */
@@ -85,6 +92,8 @@ public:
 	/*!
 	 *  \brief  Definition/Declaration of function SetType
 	 *
+	 *  \param Type = DeviceControl::RTTempCtrlType_t type parameter
+	 *
 	 *  \return from SetType
 	 */
 	/****************************************************************************/
@@ -101,6 +110,8 @@ public:
 	/*!
 	 *  \brief  Definition/Declaration of function SetNominalTemperature
 	 *
+	 *  \param NominalTemperature = qreal type parameter
+	 *
 	 *  \return from SetNominalTemperature
 	 */
 	/****************************************************************************/
@@ -116,6 +127,8 @@ public:
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function SetSlopeTempChange
+	 *
+	 *  \param SlopeTempChange = quint8 type parameter
 	 *
 	 *  \return from SetSlopeTempChange
 	 */

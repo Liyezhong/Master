@@ -40,6 +40,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function XmlStartElementReaderHelper
      *
+     *  \param reader = QXmlStreamReader type parameter
+     *
      *  \return from XmlStartElementReaderHelper
      */
     /****************************************************************************/
@@ -69,6 +71,9 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function XmlElementReaderHelper
+     *
+     *  \param reader = QXmlStreamReader type parameter
+     *  \param hasChildren =  bool type parameter
      *
      *  \return from XmlElementReaderHelper
      */
@@ -103,6 +108,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function XmlElementWriterHelper
      *
+     *  \param writer = QXmlStreamWriter type parameter
+     *  \param elementName =  const QString type parameter
+     *
      *  \return from XmlElementWriterHelper
      */
     /****************************************************************************/
@@ -125,6 +133,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function XmlDocumentWriterHelper
+     *
+     *  \param writer = QXmlStreamWriter type parameter
      *
      *  \return from XmlDocumentWriterHelper
      */

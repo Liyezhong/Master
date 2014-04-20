@@ -45,6 +45,10 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdLockStatus
      *
+     *  \param timeout = int type parameter
+     *  \param lockType =  DataManager::LockType_t type parameter
+     *  \param isLocked =  bool type parameter
+     *
      *  \return from CmdLockStatus
      */
     /****************************************************************************/

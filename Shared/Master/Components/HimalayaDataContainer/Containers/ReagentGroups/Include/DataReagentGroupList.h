@@ -151,6 +151,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function GetReagentGroupIndex
      *
+     *  \param GroupID = const QString type parameter
+     *
      *  \return from GetReagentGroupIndex
      */
     /****************************************************************************/

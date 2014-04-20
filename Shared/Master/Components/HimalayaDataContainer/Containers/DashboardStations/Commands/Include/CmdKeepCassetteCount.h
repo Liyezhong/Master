@@ -45,6 +45,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdKeepCassetteCount
      *
+     *  \param Timeout = int type parameter
+     *  \param CassetteCount =  int type parameter
+     *
      *  \return from CmdKeepCassetteCount
      */
     /****************************************************************************/

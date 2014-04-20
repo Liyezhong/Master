@@ -73,6 +73,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function HeatingStrategy
      *
+     *  \param schedController = SchedulerMainThreadController type parameter
+     *  \param  =  type parameter
+     *
      *  \return from HeatingStrategy
      */
     /****************************************************************************/
@@ -85,6 +88,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function StartTemperatureControlWithPID
      *
+     *  \param cmdName = const QString type parameter
+     *  \param DataManager =  const type parameter
+     *
      *  \return from StartTemperatureControlWithPID
      */
     /****************************************************************************/
@@ -93,6 +99,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CheckHeatingOverTime
      *
+     *  \param HWValueList = const HardwareMonitor_t type parameter
+     *
      *  \return from CheckHeatingOverTime
      */
     /****************************************************************************/
@@ -100,6 +108,8 @@ public:
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function StartOverTimeCheck
+	 *
+	 *  \param moduleName = const QString type parameter
 	 *
 	 *  \return from StartOverTimeCheck
 	 */
@@ -116,6 +126,11 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetTargetTempPaddingAndOverTime
+     *
+     *  \param devName = const QString type parameter
+     *  \param funcKey =  const DataManager::FunctionKey_t type parameter
+     *  \param TempPadding =  qreal type parameter
+     *  \param overTime =  qreal type parameter
      *
      *  \return from GetTargetTempPaddingAndOverTime
      */
@@ -134,6 +149,8 @@ private:
     /*!
      *  \brief  Definition/Declaration of function HeatingStrategy
      *
+     *  \param rhs = const HeatingStrategy type parameter
+     *
      *  \return from HeatingStrategy
      */
     /****************************************************************************/
@@ -141,6 +158,7 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function operator=
+     *
      *
      *  \return from operator=
      */

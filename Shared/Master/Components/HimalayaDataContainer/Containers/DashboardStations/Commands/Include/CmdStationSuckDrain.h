@@ -45,6 +45,11 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdStationSuckDrain
      *
+     *  \param timeout = int type parameter
+     *  \param stationID =  const QString type parameter
+     *  \param isStart =  bool type parameter
+     *  \param isSuck =  bool type parameter
+     *
      *  \return from CmdStationSuckDrain
      */
     /****************************************************************************/

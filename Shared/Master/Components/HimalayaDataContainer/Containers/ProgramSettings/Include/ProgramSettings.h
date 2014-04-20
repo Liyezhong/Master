@@ -125,6 +125,10 @@ public:
     /****************************************************************************/
     /*!
      *  \brief get parameter's value
+     *  \param DeviceKey = const QString type parameter
+     *  \param FunctionKey =  const QString type parameter
+     *  \param ParameterKey = const QString type parameter
+     *  \param ok =  bool type parameter
      *  \return parameter value
      */
     /****************************************************************************/
@@ -132,6 +136,11 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetParameterValue
+     *
+     *  \param DeviceKey = const QString type parameter
+     *  \param FunctionKey =  const FunctionKey_t type parameter
+     *  \param ParameterKey = const QString type parameter
+     *  \param ok =  bool type parameter
      *
      *  \return from GetParameterValue
      */
@@ -141,6 +150,11 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetParameterValue
      *
+     *  \param DeviceKey = const QString type parameter
+     *  \param FunctionKey =  const QString type parameter
+     *  \param ParameterKey =  const QString type parameter
+     *  \param value =  double type parameter
+     *
      *  \return from SetParameterValue
      */
     /****************************************************************************/
@@ -148,6 +162,11 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetParameterValue
+     *
+     *  \param DeviceKey = const QString type parameter
+     *  \param FunctionKey =  const FunctionKey_t type parameter
+     *  \param ParameterKey =  const QString type parameter
+     *  \param value =  double type parameter
      *
      *  \return from SetParameterValue
      */
@@ -157,6 +176,11 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetParameterValue
      *
+     *  \param DeviceKey = const QString type parameter
+     *  \param FunctionKey =  const QString type parameter
+     *  \param ParameterKey = const QString type parameter
+     *  \param value =  const QString type parameter
+     *
      *  \return from SetParameterValue
      */
     /****************************************************************************/
@@ -164,6 +188,11 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetParameterValue
+     *
+     *  \param DeviceKey = const QString type parameter
+     *  \param FunctionKey =  const FunctionKey_t type parameter
+     *  \param ParameterKey =  const QString type parameter
+     *  \param value =  const QString type parameter
      *
      *  \return from SetParameterValue
      */
@@ -192,6 +221,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function ReadDeviceParameters
      *
+     *  \param XmlStreamReader = QXmlStreamReader type parameter
+     *  \param DeviceKey =  const QString type parameter
+     *
      *  \return from ReadDeviceParameters
      */
     /****************************************************************************/
@@ -199,6 +231,10 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ReadFunctionParameters
+     *
+     *  \param XmlStreamReader = QXmlStreamReader type parameter
+     *  \param DeviceKey =  const QString type parameter
+     *  \param FunctionKey =  const FunctionKey_t type parameter
      *
      *  \return from ReadFunctionParameters
      */
@@ -209,6 +245,8 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function WriteAllParameters
+     *
+     *  \param XmlStreamWriter = QXmlStreamWriter type parameter
      *
      *  \return from WriteAllParameters
      */

@@ -49,6 +49,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdStationSetAsFull
      *
+     *  \param timeOut = int type parameter
+     *  \param stationID =  const QString type parameter
+     *
      *  \return from CmdStationSetAsFull
      */
     /****************************************************************************/

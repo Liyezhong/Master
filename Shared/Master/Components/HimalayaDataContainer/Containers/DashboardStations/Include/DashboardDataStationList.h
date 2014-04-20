@@ -58,6 +58,8 @@ private:
     /*!
      *  \brief  Definition/Declaration of function Swap
      *
+     *  \param Other = const CDashboardDataStationList type parameter
+     *
      *  \return from Swap
      */
     /****************************************************************************/
@@ -155,6 +157,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function UpdateStationsByReagentDelete
+     *
+     *  \param ReagentID = const QString type parameter
      *
      *  \return from UpdateStationsByReagentDelete
      */

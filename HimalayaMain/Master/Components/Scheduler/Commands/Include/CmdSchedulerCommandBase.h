@@ -132,6 +132,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function GetResult
      *
+     *  \param result = DeviceControl::ReturnCode_t type parameter
+     *
      *  \return from GetResult
      */
     /****************************************************************************/
@@ -518,6 +520,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function GetResult
      *
+     *  \param result = DeviceControl::CBaseDevice type parameter
+     *
      *  \return from GetResult
      */
     /****************************************************************************/
@@ -876,6 +880,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function GetResult
      *
+     *  \param result = DeviceControl::TempCtrlState_t type parameter
+     *
      *  \return from GetResult
      */
     /****************************************************************************/
@@ -1227,6 +1233,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function GetResult
      *
+     *  \param result = qreal type parameter
+     *
      *  \return from GetResult
      */
     /****************************************************************************/
@@ -1311,6 +1319,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetResult
+     *
+     *  \param result = DeviceControl::ReturnCode_t type parameter
      *
      *  \return from SetResult
      */
@@ -1662,6 +1672,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetResult
+     *
+     *  \param result = qreal type parameter
      *
      *  \return from SetResult
      */
@@ -2020,6 +2032,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetResult
+     *
+     *  \param result = DeviceControl::TempCtrlState_t type parameter
      *
      *  \return from SetResult
      */

@@ -117,6 +117,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function ALSetPressureDrift
      *
+     *  \param pressureDrift = qreal type parameter
+     *
      *  \return from ALSetPressureDrift
      */
     /****************************************************************************/
@@ -235,6 +237,8 @@ private:
     /*!
      *  \brief  Definition/Declaration of function pushCmd4Slot
      *
+     *  \param cmd = CmdSchedulerCommandBase type parameter
+     *
      *  \return from pushCmd4Slot
      */
     /****************************************************************************/
@@ -242,6 +246,9 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function DevProcInitialisationAckn4Slot
+     *
+     *  \param instanceID = quint32 type parameter
+     *  \param configResult =  ReturnCode_t type parameter
      *
      *  \return from DevProcInitialisationAckn4Slot
      */
@@ -251,6 +258,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function DevProcConfigurationAckn4Slot
      *
+     *  \param instanceID = quint32 type parameter
+     *  \param hdlInfo =  ReturnCode_t type parameter
+     *
      *  \return from DevProcConfigurationAckn4Slot
      */
     /****************************************************************************/
@@ -259,6 +269,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function DevProcStartNormalOpModeAckn4Slot
      *
+     *  \param instanceID = quint32 type parameter
+     *  \param hdlInfo =  ReturnCode_t type parameter
+     *
      *  \return from DevProcStartNormalOpModeAckn4Slot
      */
     /****************************************************************************/
@@ -266,6 +279,12 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ThrowError4Slot
+     *
+     *  \param instanceID = quint32 type parameter
+     *  \param usErrorGroup =  quint16 type parameter
+     *  \param usErrorID =  quint16 type parameter
+     *  \param usErrorData =  quint16 type parameter
+     *  \param TimeStamp = const QDateTime type parameter
      *
      *  \return from ThrowError4Slot
      */
@@ -338,6 +357,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function ALSetPressureDrift
      *
+     *  \param pressureDrift = qreal type parameter
+     *
      *  \return from ALSetPressureDrift
      */
     /****************************************************************************/
@@ -367,6 +388,8 @@ private:
     /*!
      *  \brief  Definition/Declaration of function pushCmd4Slot
      *
+     *  \param cmd = CmdSchedulerCommandBase type parameter
+     *
      *  \return from pushCmd4Slot
      */
     /****************************************************************************/
@@ -374,6 +397,9 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function DevProcInitialisationAckn4Slot
+     *
+     *  \param instanceID = quint32 type parameter
+     *  \param configResult =  ReturnCode_t type parameter
      *
      *  \return from DevProcInitialisationAckn4Slot
      */
@@ -383,6 +409,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function DevProcConfigurationAckn4Slot
      *
+     *  \param instanceID = quint32 type parameter
+     *  \param hdlInfo =  ReturnCode_t type parameter
+     *
      *  \return from DevProcConfigurationAckn4Slot
      */
     /****************************************************************************/
@@ -391,6 +420,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function DevProcStartNormalOpModeAckn4Slot
      *
+     *  \param instanceID = quint32 type parameter
+     *  \param hdlInfo =  ReturnCode_t type parameter
+     *
      *  \return from DevProcStartNormalOpModeAckn4Slot
      */
     /****************************************************************************/
@@ -398,6 +430,12 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ThrowError4Slot
+     *
+     *  \param instanceID = quint32 type parameter
+     *  \param usErrorGroup =  quint16 type parameter
+     *  \param usErrorID =  quint16 type parameter
+     *  \param usErrorData =  quint16 type parameter
+     *  \param TimeStamp = const QDateTime type parameter
      *
      *  \return from ThrowError4Slot
      */

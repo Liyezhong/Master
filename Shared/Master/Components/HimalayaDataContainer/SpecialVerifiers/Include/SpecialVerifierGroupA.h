@@ -97,6 +97,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function IsCompatible
      *
+     *  \param currentReagentGroupID = const QString type parameter
+     *  \param PreviousReagentGroupID =  const QString type parameter
+     *
      *  \return from IsCompatible
      */
     /****************************************************************************/

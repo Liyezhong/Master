@@ -46,6 +46,10 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdProgramSelectedReply
      *
+     *  \param timeout = int type parameter
+     *  \param timeProposed =  int type parameter
+     *  \param  =  type parameter
+     *
      *  \return from CmdProgramSelectedReply
      */
     /****************************************************************************/

@@ -38,6 +38,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdRTGetTemperatureControlState
      *
+     *  \param Timeout = int type parameter
+     *  \param controller =  SchedulerMainThreadController type parameter
+     *
      *  \return from CmdRTGetTemperatureControlState
      */
     /****************************************************************************/
@@ -61,6 +64,8 @@ public:
 	/*!
 	 *  \brief  Definition/Declaration of function SetResult
 	 *
+	 *  \param result = DeviceControl::TempCtrlState_t type parameter
+	 *
 	 *  \return from SetResult
 	 */
 	/****************************************************************************/
@@ -68,6 +73,8 @@ public:
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \param result = DeviceControl::TempCtrlState_t type parameter
 	 *
 	 *  \return from GetResult
 	 */
@@ -84,6 +91,8 @@ public:
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function SetType
+	 *
+	 *  \param Type = DeviceControl::RTTempCtrlType_t type parameter
 	 *
 	 *  \return from SetType
 	 */

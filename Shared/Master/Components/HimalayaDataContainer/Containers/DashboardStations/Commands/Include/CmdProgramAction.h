@@ -46,6 +46,11 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdProgramAction
      *
+     *  \param timeout = int type parameter
+     *  \param programID =  const QString type parameter
+     *  \param actionType =  DataManager::ProgramActionType_t type parameter
+     *  \param  =  type parameter
+     *
      *  \return from CmdProgramAction
      */
     /****************************************************************************/

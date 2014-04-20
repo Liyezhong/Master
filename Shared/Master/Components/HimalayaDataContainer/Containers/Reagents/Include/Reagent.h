@@ -44,6 +44,8 @@ private:
     /*!
      *  \brief  Definition/Declaration of function ReadHeatingInformation
      *
+     *  \param XmlStreamReader = QXmlStreamReader type parameter
+     *
      *  \return from ReadHeatingInformation
      */
     /****************************************************************************/

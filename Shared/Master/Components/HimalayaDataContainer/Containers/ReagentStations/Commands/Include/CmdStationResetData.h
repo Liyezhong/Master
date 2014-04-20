@@ -51,6 +51,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdStationResetData
      *
+     *  \param timeOut = int type parameter
+     *  \param stationID =  const QString type parameter
+     *
      *  \return from CmdStationResetData
      */
     /****************************************************************************/

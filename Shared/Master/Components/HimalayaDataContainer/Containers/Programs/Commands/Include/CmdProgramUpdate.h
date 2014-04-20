@@ -50,6 +50,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetProgramColorReplaced
      *
+     *  \param ColorReplaced = bool type parameter
+     *
      *  \return from SetProgramColorReplaced
      */
     /****************************************************************************/

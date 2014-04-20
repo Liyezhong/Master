@@ -45,6 +45,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdProgramAcknowledge
      *
+     *  \param Timeout = int type parameter
+     *  \param acknownedgeType =  DataManager::ProgramAcknownedgeType_t type parameter
+     *
      *  \return from CmdProgramAcknowledge
      */
     /****************************************************************************/

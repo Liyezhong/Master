@@ -297,6 +297,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function NotifyPause
      *
+     *  \param PreviousState = SchedulerStateMachine_t type parameter
+     *
      *  \return from NotifyPause
      */
     /****************************************************************************/
@@ -385,6 +387,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function UpdateCurrentState
+     *
+     *  \param currentState = SchedulerStateMachine_t type parameter
      *
      *  \return from UpdateCurrentState
      */

@@ -351,6 +351,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function ResetOperationHoursHandler
      *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param MsgClasses =  const type parameter
+     *
      *  \return from ResetOperationHoursHandler
      */
     /****************************************************************************/
@@ -472,6 +475,8 @@ protected:
     /**
      * \brief Initiate the shutdown process.
      *
+     *  \param Reboot = bool type parameter
+     *
      * Initiate the shutdown process. Make some project specific tasks the call
      *  Shutdown to shut down software.
      */
@@ -491,6 +496,8 @@ protected:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function IsCommandAllowed
+     *
+     *  \param Cmd = const Global::CommandShPtr_t type parameter
      *
      *  \return from IsCommandAllowed
      */

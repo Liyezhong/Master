@@ -304,6 +304,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetCassetteCount
      *
+     *  \param CassetteCount = int type parameter
+     *
      *  \return from SetCassetteCount
      */
     /****************************************************************************/
@@ -321,6 +323,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetReagentIdOfLastStep
+     *
+     *  \param reagentID = QString type parameter
      *
      *  \return from SetReagentIdOfLastStep
      */
@@ -348,6 +352,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetOperationHours
      *
+     *  \param operationHours = int type parameter
+     *
      *  \return from SetOperationHours
      */
     /****************************************************************************/
@@ -363,6 +369,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetActiveCarbonHours
+     *
+     *  \param operationHours = int type parameter
      *
      *  \return from SetActiveCarbonHours
      */
@@ -381,6 +389,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetOperationLastResetDate
      *
+     *  \param resetDate = QString type parameter
+     *
      *  \return from SetOperationLastResetDate
      */
     /****************************************************************************/
@@ -396,6 +406,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetActiveCarbonLastResetDate
+     *
+     *  \param resetDate = QString type parameter
      *
      *  \return from SetActiveCarbonLastResetDate
      */
@@ -413,6 +425,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetUseExhaustSystem
+     *
+     *  \param checked = int type parameter
      *
      *  \return from SetUseExhaustSystem
      */

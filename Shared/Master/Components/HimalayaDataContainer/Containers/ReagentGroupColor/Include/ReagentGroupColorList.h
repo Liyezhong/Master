@@ -72,6 +72,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function CheckForUniqueName
      *
+     *  \param ID = QString type parameter
+     *  \param ReagentName =  QString type parameter
+     *
      *  \return from CheckForUniqueName
      */
     /****************************************************************************/
@@ -106,6 +109,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetCReagentGroupColor
+     *
+     *  \param ID = const QString type parameter
      *
      *  \return from GetCReagentGroupColor
      */
@@ -177,6 +182,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief set's the fileName of the ReagentGroupColor list
+     *
+     *  \param Value = const QString type parameter
      *
      *  \return File name String
      */

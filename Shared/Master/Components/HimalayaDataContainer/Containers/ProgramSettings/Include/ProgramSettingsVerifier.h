@@ -48,6 +48,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function GetSyncObject
      *
+     *  \param p_ReadWriteLock = QReadWriteLock type parameter
+     *
      *  \return from GetSyncObject
      */
     /****************************************************************************/
