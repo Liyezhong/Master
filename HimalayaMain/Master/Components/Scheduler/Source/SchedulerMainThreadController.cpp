@@ -2124,8 +2124,8 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
 
     // Run Heating Strategy
-    DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
-    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+    ////DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
+    ////if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
     {
         //Error Handling
     }
