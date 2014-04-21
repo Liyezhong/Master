@@ -89,7 +89,7 @@
 #include <Global/Include/Commands/CmdShutDown.h>
 
 namespace Himalaya {
-const quint32 ERROR_CODE_HIMALAYA_CONSTRUCTION_FAILED = 1;
+const quint32 ERROR_CODE_HIMALAYA_CONSTRUCTION_FAILED = 1;       ///<  Definition/Declaration of variable ERROR_CODE_HIMALAYA_CONSTRUCTION_FAILED
 const Global::gSubComponentType SUBCOMPONENT_ERRORHANDLER   = 0x0001;   ///< Subcomponent id for error handler.
 
 /****************************************************************************/

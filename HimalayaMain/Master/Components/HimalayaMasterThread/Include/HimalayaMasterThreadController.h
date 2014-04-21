@@ -352,8 +352,8 @@ private:
      *  \brief  Definition/Declaration of function ResetOperationHoursHandler
      *
      *  \param Ref = Global::tRefType type parameter
-     *  \param MsgClasses =  const type parameter
-     *
+     *  \param Cmd
+     *  \param AckCommandChannel
      *  \return from ResetOperationHoursHandler
      */
     /****************************************************************************/

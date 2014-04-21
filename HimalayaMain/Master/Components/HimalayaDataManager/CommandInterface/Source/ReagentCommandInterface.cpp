@@ -70,7 +70,7 @@ void CReagentCommandInterface::RegisterCommands() {
  * \brief Function which handles CmdReagentAdd
  *  \iparam Ref = Command reference
  *  \iparam Cmd = Command
- *  \AckCommandChannel = Command channel to send acknowledge
+ *  \param AckCommandChannel = Command channel to send acknowledge
  */
 /****************************************************************************/
 void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses::CmdReagentAdd &Cmd, Threads::CommandChannel &AckCommandChannel)
@@ -114,7 +114,7 @@ void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses
  * \brief Function which handles CmdReagentRemove
  *  \iparam Ref = Command reference
  *  \iparam Cmd = Command
- *  \AckCommandChannel = Command channel to send acknowledge
+ *  \param AckCommandChannel = Command channel to send acknowledge
  */
 /****************************************************************************/
 void CReagentCommandInterface::DeleteReagent(Global::tRefType Ref, const MsgClasses::CmdReagentRemove &Cmd, Threads::CommandChannel &AckCommandChannel)
@@ -150,7 +150,7 @@ void CReagentCommandInterface::DeleteReagent(Global::tRefType Ref, const MsgClas
  * \brief Function which handles CmdReagentUpdate
  *  \iparam Ref = Command reference
  *  \iparam Cmd = Command
- *  \AckCommandChannel = Command channel to send acknowledge
+ *  \param AckCommandChannel = Command channel to send acknowledge
  */
 /****************************************************************************/
 void CReagentCommandInterface::UpdateReagent(Global::tRefType Ref, const MsgClasses::CmdReagentUpdate &Cmd, Threads::CommandChannel &AckCommandChannel)
@@ -224,7 +224,7 @@ void CReagentCommandInterface::UpdateReagent(CReagent &Reagent)
 /****************************************************************************/
 /**
  * \brief Slot called when reagent list in Updated by RMS component
- *  \iparam Reagent = Updated reagent list
+ * \iparam ReagentList = Updated reagent list
  */
 /****************************************************************************/
 void CReagentCommandInterface::UpdateReagentContainer(CDataReagentList &ReagentList)

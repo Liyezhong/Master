@@ -80,9 +80,6 @@ private:
      /*!
       *  \brief  Definition/Declaration of function SetStationAsEmpty
       *
-      *  \param Global::tRefType =  type parameter
-      *  \param  =  type parameter
-      *
       *  \return from SetStationAsEmpty
       */
      /****************************************************************************/
@@ -93,9 +90,6 @@ private:
      /****************************************************************************/
      /*!
       *  \brief  Definition/Declaration of function UpdateStationReagentStatus
-      *
-      *  \param Global::tRefType =  type parameter
-      *  \param  =  type parameter
       *
       *  \return from UpdateStationReagentStatus
       */

@@ -59,7 +59,7 @@ void CProgramCommandInterface::RegisterCommands() {
  * \brief Function which handles CmdNewProgram
  *  \iparam Ref = Command reference
  *  \iparam Cmd = Command
- *  \AckCommandChannel = Command channel to send acknowledge
+ *  \param AckCommandChannel = Command channel to send acknowledge
  */
 /****************************************************************************/
 void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses::CmdNewProgram &Cmd, Threads::CommandChannel &AckCommandChannel)
@@ -121,7 +121,7 @@ void CProgramCommandInterface::AddProgram(Global::tRefType Ref, const MsgClasses
  * \brief Function which handles CmdProgramDeleteItem
  *  \iparam Ref = Command reference
  *  \iparam Cmd = Command
- *  \AckCommandChannel = Command channel to send acknowledge
+ *  \param AckCommandChannel = Command channel to send acknowledge
  */
 /****************************************************************************/
 void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClasses::CmdProgramDeleteItem &Cmd, Threads::CommandChannel &AckCommandChannel)
@@ -170,7 +170,7 @@ void CProgramCommandInterface::DeleteProgram(Global::tRefType Ref, const MsgClas
  * \brief Function which handles CmdProgramUpdate
  *  \iparam Ref = Command reference
  *  \iparam Cmd = Command
- *  \AckCommandChannel = Command channel to send acknowledge
+ *  \param AckCommandChannel = Command channel to send acknowledge
  */
 /****************************************************************************/
 void CProgramCommandInterface::UpdateProgram(Global::tRefType Ref, const MsgClasses::CmdProgramUpdate &Cmd, Threads::CommandChannel &AckCommandChannel)

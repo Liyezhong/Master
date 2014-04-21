@@ -707,7 +707,6 @@ protected:
          *  \brief  Definition/Declaration of function OnKeepCassetteCount
          *
          *  \param Ref = Global::tRefType type parameter
-         *  \param MsgClasses =  const type parameter
          *
          *  \return from OnKeepCassetteCount
          */
@@ -718,7 +717,6 @@ protected:
          *  \brief  Definition/Declaration of function OnProgramSelected
          *
          *  \param Ref = Global::tRefType type parameter
-         *  \param MsgClasses =  const type parameter
          *
          *  \return from OnProgramSelected
          */
@@ -729,7 +727,6 @@ protected:
          *  \brief  Definition/Declaration of function OnQuitAppShutdown
          *
          *  \param Ref = Global::tRefType type parameter
-         *  \param MsgClasses =  const type parameter
          *
          *  \return from OnQuitAppShutdown
          */
@@ -786,7 +783,6 @@ protected:
          *  \brief  Definition/Declaration of function OnActionCommandReceived
          *
          *  \param Ref = Global::tRefType type parameter
-         *  \param NetCommands =  const type parameter
          *
          *  \return from OnActionCommandReceived
          */

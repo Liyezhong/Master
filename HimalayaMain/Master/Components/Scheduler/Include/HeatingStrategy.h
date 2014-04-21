@@ -89,7 +89,7 @@ public:
      *  \brief  Definition/Declaration of function StartTemperatureControlWithPID
      *
      *  \param cmdName = const QString type parameter
-     *  \param DataManager =  const type parameter
+     *  \param funcKey =  const type parameter
      *
      *  \return from StartTemperatureControlWithPID
      */
