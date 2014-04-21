@@ -58,6 +58,11 @@ CProgramStep::CProgramStep(QString StepID):
 /*!
  *  \brief Constructor
  *  \iparam StepID
+ *  \param ReagentID
+ *  \param Duration
+ *  \param Temperature
+ *  \param Pressure
+ *  \param Vacuum
  */
 /****************************************************************************/
 CProgramStep::CProgramStep(const QString StepID, const QString ReagentID, const QString Duration,

@@ -95,9 +95,9 @@ private:
      /*!
       *  \brief  Definition/Declaration of function UpdateStationReagentStatus
       *
-      *  \brief Cmd
-      *  \brief Ref
-      *  \brief AckCommandChannel
+      *  \param Cmd
+      *  \param Ref
+      *  \param AckCommandChannel
       *
       *  \return from UpdateStationReagentStatus
       */

@@ -32,6 +32,7 @@ QString CmdReagentGroupUpdate::NAME = "MsgClasses::CmdReagentGroupUpdate";
  *
  * \param[in]   timeOut     Timeout for command.
  * \param[in]   groupId   Unique reagent id.
+ * \param ColorId
  */
 /****************************************************************************/
 CmdReagentGroupUpdate::CmdReagentGroupUpdate(int timeOut,

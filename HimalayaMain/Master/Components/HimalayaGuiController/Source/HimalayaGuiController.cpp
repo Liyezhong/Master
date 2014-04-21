@@ -420,6 +420,8 @@ void HimalayaGuiController::OnStopReceived() {
 /**
  * \brief Power will fail shortly.
  *
+ * \param PowerFailStage =  Global::PowerFailStages type parameter
+ *
  * Power will fail shortly.
  */
 /****************************************************************************/

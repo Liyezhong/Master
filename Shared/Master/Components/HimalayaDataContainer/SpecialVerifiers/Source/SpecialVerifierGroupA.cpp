@@ -44,6 +44,7 @@ CSpecialVerifierGroupA::CSpecialVerifierGroupA() :
  *  \iparam p_DataProgramList = Pointer to a Program list
  *  \iparam p_DataReagentList = Pointer to a Reagent list
  *  \iparam p_DataStationList = Pointer to a Station list
+ *  \param pDataReagentGroupList
  */
 /****************************************************************************/
 CSpecialVerifierGroupA::CSpecialVerifierGroupA(CDataProgramList* p_DataProgramList, CDataReagentList* p_DataReagentList,

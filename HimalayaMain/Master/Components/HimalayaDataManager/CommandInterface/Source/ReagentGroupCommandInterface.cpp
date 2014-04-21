@@ -32,6 +32,7 @@ namespace DataManager {
  *
  *  \param[in] p_MasterThreadController reference to master thread controllor
  *  \param[in] p_DataContainer          reference to data container
+ *  \param p_DataManager
  */
 /****************************************************************************/
 

@@ -162,7 +162,7 @@ private:
     /*!
      *  \brief  Definition/Declaration of function operator=
      *
-     *  \param& rhs
+     *  \param  rhs
      *
      *  \return from operator=
      */

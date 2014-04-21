@@ -39,6 +39,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function MApplication
      *
+     *  \param argc
+     *  \param argv
+     *
      *  \return from MApplication
      */
     /****************************************************************************/
@@ -53,6 +56,9 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function notify
+     *
+     *  \param object
+     *  \param event
      *
      *  \return from notify
      */
@@ -91,6 +97,9 @@ public:
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of function myMessageOutput
+ *
+ *  \param type = QtMsgType type parameter
+ *  \param msg =  char type parameter
  *
  *  \return from myMessageOutput
  */

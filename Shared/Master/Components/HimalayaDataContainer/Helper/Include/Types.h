@@ -26,10 +26,15 @@
 
 #include "Global/Include/TranslatableString.h"
 
-typedef QHash<quint32, Global::tTranslatableStringList> ErrorHash_t;
-typedef QList<ErrorHash_t *>                            ListOfErrors_t;
+typedef QHash<quint32, Global::tTranslatableStringList> ErrorHash_t; ///<ErrorHash_t
+typedef QList<ErrorHash_t *>                            ListOfErrors_t; ///<ListOfErrors_t
 
 // data container type
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum DataContainerType_t
+ */
+/****************************************************************************/
 typedef enum
 {
     UNDEFINED_DATA_CONTAINER = -1,

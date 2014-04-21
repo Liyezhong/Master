@@ -157,6 +157,7 @@ bool CProgramBase::GetProgramStep(unsigned int Index, CProgramStep &ProgramStep)
 /*!
  *  \brief Adds program step to program
  *  \iparam p_ProgramStep = Program step to add
+ *  \param RowIndex = quint8 type parameter
  *
  *  \return true = add success , false - add failed
  */

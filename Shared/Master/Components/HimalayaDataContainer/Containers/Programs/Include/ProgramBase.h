@@ -70,6 +70,8 @@ protected:
      *  \brief Assignment operator
      *
      *  \iparam ProgramBase = const reference to sourceprogram base object
+     *
+     *  \return from CProgramBase& operator =
      */
     /****************************************************************************/
     //lint -efunc(1529, =)

@@ -1,7 +1,7 @@
 /****************************************************************************/
 /*! \file   ProgramSettingsVerifier.h
  *
- *  \brief  .
+ *  \brief   ProgramSettingsVerifier class implementation.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2013-04-03
