@@ -202,7 +202,7 @@ DataManager::CDashboardStation *CDashboardStationItem::GetDashboardStation() con
 /*!
  *  \brief Sets the data manager station data object
  *
- *  \iparam p_Station = Station data object
+ *  \iparam p_DashboardStation = Station data object
  */
 /****************************************************************************/
 void CDashboardStationItem::SetDashboardStation(DataManager::CDashboardStation* p_DashboardStation)

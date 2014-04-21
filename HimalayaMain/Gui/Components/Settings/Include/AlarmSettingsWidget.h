@@ -52,7 +52,7 @@ public:
     /*!
      *  \brief Sets pointer to DataConnector object
      *
-     *  \iparam p_DataConnecotr
+     *  \iparam p_DataConnector
      */
     /****************************************************************************/
     void SetDataConnector(Core::CDataConnector *p_DataConnector)

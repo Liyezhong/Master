@@ -81,7 +81,7 @@ public:
     /****************************************************************************/
     /**
      * \brief Sets the currently selected reagent in the table
-     * \iparam ReagentName
+     * \iparam Value
      */
     /****************************************************************************/
     void SetRMSOption(Global::RMSOptions_t Value){

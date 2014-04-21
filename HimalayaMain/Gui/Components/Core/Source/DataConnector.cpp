@@ -360,7 +360,8 @@ void CDataConnector::SendDateTime(QDateTime DateTime)
 /*!
  *  \brief Sends updated Dashboard Station Change Reagent data to the master
  *
- *  \iparam p_Reagent = Reagent data object
+ *  \param StationId
+ *  \param ReagentId
  */
 /****************************************************************************/
 void CDataConnector::SendStationChangeReagent(const QString& StationId, const QString& ReagentId)
@@ -412,7 +413,7 @@ void CDataConnector::SendRMSChanged(Global::RMSOptions_t rmsOption)
 /*!
  *  \brief Sends updated Reagent data to the master
  *
- *  \iparam p_Reagent = Reagent data object
+ *  \param ReagentGroup
  */
 /****************************************************************************/
 void CDataConnector::SendReagentGroupUpdate(DataManager::CReagentGroup &ReagentGroup)
@@ -429,7 +430,7 @@ void CDataConnector::SendReagentGroupUpdate(DataManager::CReagentGroup &ReagentG
 /*!
  *  \brief Sends updated Reagent data to the master
  *
- *  \iparam p_Reagent = Reagent data object
+ *  \iparam Reagent = Reagent data object
  */
 /****************************************************************************/
 void CDataConnector::SendReagentUpdate(DataManager::CReagent &Reagent)
@@ -1020,7 +1021,7 @@ void CDataConnector::ProcessStateHandler(Global::tRefType Ref, const NetCommands
 /*!
  *  \brief Sends the Updated/Modified settings to the master
  *
- *  \iparam Settings = Settings reference
+ *  \iparam settings = Settings reference
  */
 /****************************************************************************/
 void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &settings)

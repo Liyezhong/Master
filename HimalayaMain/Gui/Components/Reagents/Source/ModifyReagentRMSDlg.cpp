@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ModifyReagentDlg.cpp
+/*! \file ModifyReagentRMSDlg.cpp
  *
  *  \brief ModifyReagentDlg Implementation.
  *

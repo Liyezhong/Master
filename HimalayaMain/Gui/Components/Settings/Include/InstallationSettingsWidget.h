@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file OvenSettingsWidget.h
+/*! \file InstallationSettingsWidget.h
  *
  *  \brief OvenSettingsWidget definition.
  *

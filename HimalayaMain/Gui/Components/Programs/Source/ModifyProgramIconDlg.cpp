@@ -69,8 +69,7 @@ CModifyProgramIconDlg::CModifyProgramIconDlg(QWidget *p_Parent, MainMenu::CMainW
 /****************************************************************************/
 /*!
  *  \brief Constructor
- *
- *  \Function to create Map of PushButton and Creation of Button Group.
+ *  Function to create Map of PushButton and Creation of Button Group.
  */
 /****************************************************************************/
 void CModifyProgramIconDlg ::SetButtonGroup()

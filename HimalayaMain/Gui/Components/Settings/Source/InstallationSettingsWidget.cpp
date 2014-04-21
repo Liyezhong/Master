@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file OvenSettingsWidget.cpp
+/*! \file InstallationSettingsWidget.cpp
  *
  *  \brief OvenSettingsWidget implementation.
  *

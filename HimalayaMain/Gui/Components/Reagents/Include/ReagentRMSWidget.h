@@ -145,8 +145,6 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief This signal is emitted Whenever Reagent Processing mode is changes
-     *
-     *  \iparam ReagentID = Selected reagent id.
      */
     /****************************************************************************/
     void RMSChanged(const Global::RMSOptions_t);
@@ -156,8 +154,6 @@ signals:
     /****************************************************************************/
     /*!
      *  \brief This signal is emitted to delete the selected reagent.
-     *
-     *  \iparam ReagentID = Selected reagent id.
      */
     /****************************************************************************/
     void RMSSettingChanged(DataManager::CUserSettings &);

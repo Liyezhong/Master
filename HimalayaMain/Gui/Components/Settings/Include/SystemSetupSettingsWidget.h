@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file AgitationSettingsWidget.h
+/*! \file SystemSetupSettingsWidget.h
  *
  *  \brief AgitationSettingsWidget definition.
  *

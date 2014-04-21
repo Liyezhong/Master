@@ -58,7 +58,8 @@ CReagentStationEditModel::CReagentStationEditModel(QObject *p_Parent) :
  *
  *  \iparam p_ReagentList = Reagent data
  *  \iparam Columns = Table columns
- *  \iparam BLCheck = True for displaying reagents in bathlayout else False.
+ *  \param p_ReagentGroupList
+ *  \param p_DashboardDataStationList
  */
  /****************************************************************************/
 void CReagentStationEditModel :: SetRequiredContainers(DataManager::CDataReagentList *p_ReagentList,
@@ -305,7 +306,8 @@ Qt::ItemFlags CReagentStationEditModel::flags(const QModelIndex &Index) const
 /*!
  *  \brief Returns item model flags of a cell
  *
- *  \iparam Index = Index of a table cell
+ *  \iparam Row
+ *  \param  Column
  *
  *  \return Flags of the cell
  */

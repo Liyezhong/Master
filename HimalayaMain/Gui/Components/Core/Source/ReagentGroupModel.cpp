@@ -209,7 +209,7 @@ QVariant CReagentGroupModel::headerData(int Section, Qt::Orientation Orientation
 /****************************************************************************/
 /*!
  *  \brief This Function Gets Reagent ID of given Reagent Long name.
- *  \iparam ReagentLongName
+ *  \iparam ReagentName
  */
 /****************************************************************************/
 QString CReagentGroupModel::GetReagentID(const QString ReagentName)

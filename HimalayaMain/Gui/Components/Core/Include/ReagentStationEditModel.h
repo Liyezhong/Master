@@ -69,7 +69,7 @@ public:
     /****************************************************************************/
     /**
      * \brief Returns the position of Reagent to be selected
-     * \iparam ReagentName
+     * \iparam ReagentID
      * \return m_ReagentNames = Position of Reagent in the table
      */
     /****************************************************************************/

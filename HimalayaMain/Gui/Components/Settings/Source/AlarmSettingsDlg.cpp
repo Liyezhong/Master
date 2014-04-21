@@ -28,8 +28,10 @@ namespace Settings {
 /*!
  *  \brief Constructor
  *
- *  \iparam Error = Error tone (true) or not (false)
+ *  \param  DialogType
  *  \iparam p_Parent = Parent object
+ *
+ *  \return return from CAlarmSettingsDlg
  */
 /****************************************************************************/
 CAlarmSettingsDlg::CAlarmSettingsDlg(AlarmDialogType DialogType, QWidget *p_Parent) :
@@ -150,9 +152,6 @@ void CAlarmSettingsDlg::showEvent(QShowEvent *p_Event)
 /****************************************************************************/
 /*!
  *  \brief Updates the content of the dialog
- *
- *  \iparam Volume = Sound volume
- *  \iparam Sound = Selected alarm sound
  */
 /****************************************************************************/
 void CAlarmSettingsDlg::UpdateDisplay(void)

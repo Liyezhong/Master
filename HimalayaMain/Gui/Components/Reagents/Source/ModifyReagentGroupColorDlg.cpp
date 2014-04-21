@@ -56,8 +56,7 @@ CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, Main
 /****************************************************************************/
 /*!
  *  \brief Constructor
- *
- *  \Function to create Map of PushButton and Creation of Button Group.
+ *  Function to create Map of PushButton and Creation of Button Group.
  */
 /****************************************************************************/
 void CModifyReagentGroupColorDlg ::SetButtonGroup()
@@ -103,8 +102,8 @@ CModifyReagentGroupColorDlg::~CModifyReagentGroupColorDlg()
 
 /****************************************************************************/
 /*!
-     *  \Set pointer to CReagentGroupColorList
-     */
+ *  \brief Set pointer to CReagentGroupColorList
+ */
 /****************************************************************************/
 void CModifyReagentGroupColorDlg:: SetReagentGroupColorListptr(DataManager::CReagentGroupColorList  *p_CReagentGroupColorList)
 {

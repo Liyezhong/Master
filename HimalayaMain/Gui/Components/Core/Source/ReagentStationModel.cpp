@@ -57,7 +57,7 @@ CReagentStationModel::CReagentStationModel(QObject *p_Parent) : QAbstractTableMo
  *
  *  \iparam p_ReagentList = Reagent data
  *  \iparam Columns = Table columns
- *  \iparam BLCheck = True for displaying reagents in bathlayout else False.
+ *  \iparam p_StationList
  */
  /****************************************************************************/
 void CReagentStationModel::SetRequiredContainers(DataManager::CDataReagentList *p_ReagentList,
@@ -265,10 +265,6 @@ void CReagentStationModel::SetUserSettings(DataManager::CUserSettings *p_UserSet
 /****************************************************************************/
 /*!
  *  \brief Returns item model flags of a cell
- *
- *  \iparam Index = Index of a table cell
- *
- *  \return Flags of the cell
  */
 /****************************************************************************/
 void CReagentStationModel::ResetAndUpdateModel()

@@ -119,8 +119,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Gets station selected
-     *
-     *  \oparam m_Selected = True if station is selected else False.
      */
     /****************************************************************************/
     bool GetStationSelect(){return m_StationSelected;}
@@ -138,8 +136,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Gets Station group type
-     *
-     *  \iparam StationGroupType_t = Station Group type.
      */
     /****************************************************************************/
     StationGroupType_t GetStationGroup(){ return m_DashboardStationGroup; }

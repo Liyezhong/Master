@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ReagentWidget.cpp.cpp
+/*! \file ReagentRMSWidget.cpp
  *
  *  \brief ReagentWidget Implementation.
  *
@@ -381,7 +381,7 @@ void CReagentRMSWidget::SelectionChangedCleaningTable(QModelIndex Index)
 /*!
  *  \brief Called when the selection of the table is changed
  *
- *  \iparam Index = Reagent ID
+ *  \iparam Id = Reagent ID
  */
 /****************************************************************************/
 void CReagentRMSWidget::UpdateButtons(QString Id)

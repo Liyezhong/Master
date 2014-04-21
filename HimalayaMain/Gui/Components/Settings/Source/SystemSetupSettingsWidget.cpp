@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file AgitationSettingsWidget.cpp
+/*! \file SystemSetupSettingsWidget.cpp
  *
  *  \brief AgitationSettingsWidget implementation.
  *

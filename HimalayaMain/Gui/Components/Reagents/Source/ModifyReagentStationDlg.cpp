@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ModifyReagentStatusDlg.cpp
+/*! \file ModifyReagentStationDlg.cpp
  *
  *  \brief ModifyReagentStatusDlg Implementation.
  *

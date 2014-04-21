@@ -55,7 +55,6 @@ m_CurrentIndex(0)
  *  \brief Initializes the program data
  *
  *  \iparam p_ProgramList = Program data
- *  \iparam p_ProgramSequenceList = ProgramSequenceList data
  *  \iparam Columns = Table columns
  */
 /****************************************************************************/
