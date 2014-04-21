@@ -78,7 +78,7 @@ CDashboardStation::CDashboardStation(const QString ID)
 /*!
  *  \brief Copy Constructor
  *
- *  \iparam DashboardStation = Instance of the CDashboardStation class
+ *  \iparam  ExistingStation
  *
  *  \return
  */

@@ -306,7 +306,6 @@ bool CProgramSettings::DeleteAll()
  *  \brief Reads all the Groups from the xml stream
  *
  *  \iparam XmlStreamReader = Reference to xml stream to read from
- *  \iparam CompleteData = true to read Complete data of object
  *
  *  \return true - read success or false - read failure
  */

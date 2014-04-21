@@ -178,9 +178,8 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
 /*!
  *  \brief  Verifies the program step
  *
- *  \iparam Program - Pointer to CProgram
+ *  \iparam p_Program - Pointer to CProgram
  *  \iparam VerifiedData = verifier flag value
- *  \iparam ErrorDescription = Description of the error
  *
  */
 /****************************************************************************/
@@ -281,7 +280,7 @@ void CDataProgramListVerifier::CheckProgramStep(CProgram* p_Program, bool &Verif
  *
  *  \iparam SplitList - String list for the date format
  *  \iparam VerifiedData = verifier flag value
- *  \iparam ErrorDescription = Description of the error
+ *  \iparam ProgramName
  *
  */
 /****************************************************************************/

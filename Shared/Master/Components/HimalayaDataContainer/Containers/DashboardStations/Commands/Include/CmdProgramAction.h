@@ -49,7 +49,7 @@ public:
      *  \param timeout = int type parameter
      *  \param programID =  const QString type parameter
      *  \param actionType =  DataManager::ProgramActionType_t type parameter
-     *  \param  =  type parameter
+     *  \param programEndDateTime =  type parameter
      *
      *  \return from CmdProgramAction
      */
@@ -86,9 +86,9 @@ private:
     CmdProgramAction(const CmdProgramAction &);                     ///< Not implemented.
     const CmdProgramAction & operator = (const CmdProgramAction &); ///< Not implemented.
 private:
-    QString      m_ProgramID;       ///<  Definition/Declaration of variable m_ProgramID
-    DataManager::ProgramActionType_t m_ActionType;       ///<  Definition/Declaration of variable m_ActionType
-    QDateTime m_ProgramEndDateTime;       ///<  Definition/Declaration of variable m_ProgramEndDateTime
+    QString      m_ProgramID;       ///<  Definition/Declaration of variable m_ProgramID
+    DataManager::ProgramActionType_t m_ActionType;       ///<  Definition/Declaration of variable m_ActionType
+    QDateTime m_ProgramEndDateTime;       ///<  Definition/Declaration of variable m_ProgramEndDateTime
 }; // end class CmdProgramAction
 
 /****************************************************************************/

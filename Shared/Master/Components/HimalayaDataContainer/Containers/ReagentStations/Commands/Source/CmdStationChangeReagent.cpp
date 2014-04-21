@@ -30,8 +30,8 @@ QString CmdStationChangeReagent::NAME = "MsgClasses::CmdStationChangeReagent";
 /*!
  *  \brief   Constructor for sending
  *
- * \param[in]   Timeout     Timeout for command.
- * \param[in]   ReagentID   Unique reagent id.
+ * \param[in]   timeOut     Timeout for command.
+ * \param[in]   stationID   Unique reagent id.
  */
 /****************************************************************************/
 CmdStationChangeReagent::CmdStationChangeReagent(int timeOut, const QString& stationID, const QString& reagentID)

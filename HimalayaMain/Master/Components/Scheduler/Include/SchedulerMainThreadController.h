@@ -333,7 +333,9 @@ typedef struct
           *  \brief  Definition/Declaration of function SelectStationFromReagentID
           *
           *  \param ReagentID = const QString type parameter
-          *  \param  =  type parameter
+          *  \param unusedStationIDs
+          *  \param usedStations
+          *  \param IsLastStep
           *
           *  \return from SelectStationFromReagentID
           */
@@ -348,7 +350,10 @@ typedef struct
           *  \brief  Definition/Declaration of function SelectStationByReagent
           *
           *  \param pReagent = const DataManager::CReagent type parameter
-          *  \param  =  type parameter
+          *  \param unusedStationIDs
+          *  \param usedStations
+          *  \param bFindNewestOne
+          *  \param rmsMode
           *
           *  \return from SelectStationByReagent
           */

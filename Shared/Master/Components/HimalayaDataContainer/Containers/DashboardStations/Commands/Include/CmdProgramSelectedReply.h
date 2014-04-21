@@ -46,9 +46,12 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CmdProgramSelectedReply
      *
-     *  \param timeout = int type parameter
-     *  \param timeProposed =  int type parameter
-     *  \param  =  type parameter
+     *  \param timeout
+     *  \param timeProposed
+     *  \param paraffinMeltCostedtime
+     *  \param costedTimeBeforeParaffin
+     *  \param whichStepHasNoSafeReagent
+     *  \param stationList
      *
      *  \return from CmdProgramSelectedReply
      */

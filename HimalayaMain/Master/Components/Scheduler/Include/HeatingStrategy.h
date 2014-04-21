@@ -73,8 +73,11 @@ public:
     /*!
      *  \brief  Definition/Declaration of function HeatingStrategy
      *
-     *  \param schedController = SchedulerMainThreadController type parameter
-     *  \param  =  type parameter
+     *  \param schedController
+     *  \param schedMachine
+     *  \param SchedCmdProcessor
+     *  \param dataManager
+     *  \param Interval
      *
      *  \return from HeatingStrategy
      */
@@ -159,6 +162,7 @@ private:
     /*!
      *  \brief  Definition/Declaration of function operator=
      *
+     *  \param& rhs
      *
      *  \return from operator=
      */

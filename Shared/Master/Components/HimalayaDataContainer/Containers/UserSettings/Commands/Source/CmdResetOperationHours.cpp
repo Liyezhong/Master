@@ -29,7 +29,7 @@ QString CmdResetOperationHours::NAME = "MsgClasses::CmdResetOperationHours";
 /*!
  *  \brief   Constructor for sending
  *
- * \param[in]   Timeout     Timeout for command.
+ * \param[in]   timeOut     Timeout for command.
  */
 /****************************************************************************/
 CmdResetOperationHours::CmdResetOperationHours(int timeOut, DataManager::ResetOperationHoursType_t resetOperationHoursType)

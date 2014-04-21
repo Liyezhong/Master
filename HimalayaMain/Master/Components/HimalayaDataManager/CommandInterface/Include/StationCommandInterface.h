@@ -80,6 +80,10 @@ private:
      /*!
       *  \brief  Definition/Declaration of function SetStationAsEmpty
       *
+      *  \param AckCommandChannel
+      *  \param Cmd
+      *  \param Ref
+      *
       *  \return from SetStationAsEmpty
       */
      /****************************************************************************/
@@ -90,6 +94,10 @@ private:
      /****************************************************************************/
      /*!
       *  \brief  Definition/Declaration of function UpdateStationReagentStatus
+      *
+      *  \brief Cmd
+      *  \brief Ref
+      *  \brief AckCommandChannel
       *
       *  \return from UpdateStationReagentStatus
       */

@@ -30,8 +30,8 @@ QString CmdStationSetAsEmpty::NAME = "MsgClasses::CmdStationSetAsEmpty";
 /*!
  *  \brief   Constructor for sending
  *
- * \param[in]   Timeout     Timeout for command.
- * \param[in]   ReagentID   Unique reagent id.
+ * \param[in]   timeout     Timeout for command.
+ * \param[in]   stationID   Unique reagent id.
  */
 /****************************************************************************/
 CmdStationSetAsEmpty::CmdStationSetAsEmpty(int timeout,

@@ -32,7 +32,7 @@ QString CmdReagentUpdate::NAME = "MsgClasses::CmdReagentUpdate";
  *  \brief   Constructor for sending
  *
  * \param[in]   Timeout             Timeout for command.
- * \param[in]   ReagentSettings     Reagent settings.
+ * \param[in]   ReagentDataStream
  */
 /****************************************************************************/
 CmdReagentUpdate::CmdReagentUpdate(int Timeout, const QDataStream &ReagentDataStream) :

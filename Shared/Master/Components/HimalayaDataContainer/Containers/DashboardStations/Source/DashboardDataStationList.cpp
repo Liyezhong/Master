@@ -510,7 +510,7 @@ const CDashboardStation* CDashboardDataStationList::GetDashboardStation(const un
  *  \brief Gets the dashboard station based on the station index
  *
  *  \iparam Index = Dashboard Station Index
- *  \iparam Station = Instance of Station Class
+ *  \iparam DashboardStation = Instance of Station Class
  *
  *  \return True or False
  */

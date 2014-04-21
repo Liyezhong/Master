@@ -30,7 +30,7 @@ QString CmdQuitAppShutdownReply::NAME = "MsgClasses::CmdQuitAppShutdownReply";
 /*!
  *  \brief   Constructor for sending
  *
- * \param[in]   Timeout     Timeout for command.
+ * \param[in]   TimeOut     Timeout for command.
  */
 /****************************************************************************/
 CmdQuitAppShutdownReply::CmdQuitAppShutdownReply(int TimeOut, DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType)

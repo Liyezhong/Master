@@ -200,7 +200,6 @@ bool CDataReagentList::SerializeContent(QIODevice& IODevice, bool CompleteData)
  *  \brief This writes the single reagent
  *
  *  \iparam XmlStreamWriter = Instance of the XmlStreamWriter
- *  \iparam ReagentType = Reagent Type  LEICA and USER
  *  \iparam CompleteData = bool type if true writes Complete data of object
  *
  *  \return True or False
@@ -334,7 +333,6 @@ bool CDataReagentList::DeserializeContent(QIODevice& IODevice, bool CompleteData
  *  \brief This reads the single reagent
  *
  *  \iparam XmlStreamReader = Instance of the XmlStreamReader
- *  \iparam NodeName = Name of the node in the Xml file
  *  \iparam CompleteData = bool type if true writes Complete data of object
  *
  *  \return True or False

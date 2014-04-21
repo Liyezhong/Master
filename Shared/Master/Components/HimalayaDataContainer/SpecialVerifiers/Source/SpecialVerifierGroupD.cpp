@@ -39,8 +39,7 @@ CSpecialVerifierGroupD::CSpecialVerifierGroupD() : mp_DStationList(NULL)
 /*!
  *  \brief  Constructor
  *
- *  \iparam p_DataStationList = Pointer to a Station list
- *  \iparam p_StationMatrix = Pointer to a Station matrix
+ *  \iparam p_DataStationList
  */
 /****************************************************************************/
 CSpecialVerifierGroupD::CSpecialVerifierGroupD(CDashboardDataStationList* p_DataStationList)

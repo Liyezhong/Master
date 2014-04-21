@@ -52,7 +52,7 @@ CProgramBase::CProgramBase(const QString ID, const QString Name)
 /*!
  *  \brief Constructor
  *  \iparam ID = program ID
- *  \iparam ShortName = program short name
+ *  \iparam Name = program short name
  *  \iparam LongName = program long name
  */
 /****************************************************************************/
