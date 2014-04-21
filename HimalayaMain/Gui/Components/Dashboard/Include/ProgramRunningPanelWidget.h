@@ -24,6 +24,11 @@ namespace Dashboard {
         class CProgramRunningPanelWidget;
     }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class Dashboard::CProgramRunningPanelWidget
+ */
+/****************************************************************************/
     class CProgramRunningPanelWidget : public Dashboard::CIconTitlePanelFrame
     {
         Q_OBJECT

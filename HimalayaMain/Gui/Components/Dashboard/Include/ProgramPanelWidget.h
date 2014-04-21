@@ -36,6 +36,11 @@ namespace Ui {
     class CProgramPanelWidget;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class Dashboard::CProgramPanelWidget
+ */
+/****************************************************************************/
 class CProgramPanelWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT

@@ -12,6 +12,11 @@ namespace Dashboard {
         class CCassetteNumberInputWidget;
     }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class Dashboard::CCassetteNumberInputWidget
+ */
+/****************************************************************************/
     class CCassetteNumberInputWidget : public MainMenu::CDialogFrame
     {
         Q_OBJECT

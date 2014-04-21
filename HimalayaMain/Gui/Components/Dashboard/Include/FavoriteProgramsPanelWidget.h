@@ -36,6 +36,11 @@ namespace Dashboard {
     class CFavoriteProgramsPanelWidget;
     }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class Dashboard::CFavoriteProgramsPanelWidget
+ */
+/****************************************************************************/
     class CFavoriteProgramsPanelWidget : public QWidget
     {
         Q_OBJECT

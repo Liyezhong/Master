@@ -25,6 +25,11 @@ namespace Ui {
     class CDashboardProgramStatusWidget;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class Dashboard::CDashboardProgramStatusWidget
+ */
+/****************************************************************************/
 class CDashboardProgramStatusWidget : public MainMenu::CDialogFrame
 {
     Q_OBJECT

@@ -7,6 +7,11 @@ namespace Ui {
 class SplashWidget;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class SplashWidget
+ */
+/****************************************************************************/
 class SplashWidget : public QDialog
 {
     Q_OBJECT

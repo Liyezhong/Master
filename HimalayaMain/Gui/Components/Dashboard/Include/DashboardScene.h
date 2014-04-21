@@ -33,6 +33,11 @@ namespace Core {
     class CDataConnector;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class PipePathAndOrientation
+ */
+/****************************************************************************/
 struct PipePathAndOrientation
 {
     PipePathAndOrientation()

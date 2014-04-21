@@ -40,6 +40,11 @@ namespace Ui {
     class CDashboardWidget;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class Dashboard::CDashboardWidget
+ */
+/****************************************************************************/
 class CDashboardWidget : public QWidget
 {
     Q_OBJECT

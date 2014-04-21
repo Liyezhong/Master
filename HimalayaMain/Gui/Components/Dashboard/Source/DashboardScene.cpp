@@ -339,6 +339,11 @@ void CDashboardScene::CreateAllPipe()
     addItem(m_WholePipeGraphicsRectItem);
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class Dashboard::CPipeGraphicsPathItem
+ */
+/****************************************************************************/
 class CPipeGraphicsPathItem: public QGraphicsPathItem
 {
 public:

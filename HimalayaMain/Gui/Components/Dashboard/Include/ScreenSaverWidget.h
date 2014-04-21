@@ -7,6 +7,11 @@ namespace Ui {
 class ScreenSaverWidget;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class ScreenSaverWidget
+ */
+/****************************************************************************/
 class ScreenSaverWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
