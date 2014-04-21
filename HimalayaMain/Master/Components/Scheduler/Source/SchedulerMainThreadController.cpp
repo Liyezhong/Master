@@ -2157,17 +2157,17 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 	{
         m_TempRV2 = strctHWMonitor.TempRV2;
 	}
-	if(strctHWMonitor.TempRTBottom != UNDEFINED_VALUE)
+    if(strctHWMonitor.TempRTBottom1 != UNDEFINED_VALUE)
 	{
-        m_TempRTBottom = strctHWMonitor.TempRTBottom;
+        m_TempRTBottom = strctHWMonitor.TempRTBottom1;
 	}
 	if(strctHWMonitor.TempRTSide!= UNDEFINED_VALUE)
 	{
         m_TempRTSide = strctHWMonitor.TempRTSide;
 	}
-	if(strctHWMonitor.TempOvenBottom != UNDEFINED_VALUE)
+    if(strctHWMonitor.TempOvenBottom1 != UNDEFINED_VALUE)
 	{
-        m_TempOvenBottom = strctHWMonitor.TempOvenBottom;
+        m_TempOvenBottom = strctHWMonitor.TempOvenBottom1;
 	}
 	if(strctHWMonitor.TempOvenTop != UNDEFINED_VALUE)
 	{
@@ -2241,6 +2241,25 @@ bool SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::Schedule
     m_MutexDeviceControlCmdQueue.unlock();
     return ret;
 }
+
+bool SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd, const QString& CmdName)
+{
+    bool ret = false;
+    m_MutexDeviceControlCmdQueue.lock();
+    QQueue<Scheduler::SchedulerCommandShPtr_t>::iterator iter = m_DeviceControlCmdQueue.begin();
+    for (; iter!= m_DeviceControlCmdQueue.end(); ++iter)
+    {
+        if (CmdName == (*iter)->GetName())
+        {
+            PtrCmd = (*iter);
+            m_DeviceControlCmdQueue.removeOne(*iter);
+            ret = true;
+        }
+    }
+    m_MutexDeviceControlCmdQueue.unlock();
+    return ret;
+}
+
 
 void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t CmdPtr)
 {

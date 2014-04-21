@@ -153,7 +153,7 @@ SchedulerCommandProcessor<DP>::~SchedulerCommandProcessor()
 template <class DP>
 HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
 {
-    HardwareMonitor_t strctHWMonitor ={0.0, 0.0, 0.0, 0.0, 0.0, 0.0, RV_UNDEF, 0.0, 0.0, 0.0, 0.0, 0, 0};
+    HardwareMonitor_t strctHWMonitor ={0.0, 0.0, 0.0, 0.0, 0.0, 0.0, RV_UNDEF, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0};
 
 	strctHWMonitor.PressureAL			= mp_IDeviceProcessing->ALGetRecentPressure();
 	strctHWMonitor.TempALLevelSensor	= mp_IDeviceProcessing->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
@@ -162,9 +162,11 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
 	strctHWMonitor.TempRV1				= mp_IDeviceProcessing->RVGetRecentTemperature(0);
 	strctHWMonitor.TempRV2				= mp_IDeviceProcessing->RVGetRecentTemperature(1);
 	strctHWMonitor.PositionRV			= mp_IDeviceProcessing->RVReqActRVPosition();
-    strctHWMonitor.TempRTBottom			= mp_IDeviceProcessing->RTGetRecentTemperature(RT_BOTTOM,0);
+    strctHWMonitor.TempRTBottom1		= mp_IDeviceProcessing->RTGetRecentTemperature(RT_BOTTOM,0);
+    strctHWMonitor.TempRTBottom2		= mp_IDeviceProcessing->RTGetRecentTemperature(RT_BOTTOM,1);
 	strctHWMonitor.TempRTSide			= mp_IDeviceProcessing->RTGetRecentTemperature(RT_SIDE,0);
-	strctHWMonitor.TempOvenBottom		= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_BOTTOM,0);
+    strctHWMonitor.TempOvenBottom1		= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_BOTTOM,0);
+    strctHWMonitor.TempOvenBottom2		= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_BOTTOM,2);
 	strctHWMonitor.TempOvenTop			= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_TOP,0);
 	strctHWMonitor.OvenLidStatus		= mp_IDeviceProcessing->OvenGetRecentLidStatus();
 	strctHWMonitor.RetortLockStatus		= mp_IDeviceProcessing->RTGetRecentLockStatus();

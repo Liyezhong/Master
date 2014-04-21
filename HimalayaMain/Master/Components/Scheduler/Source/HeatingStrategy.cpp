@@ -41,7 +41,27 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
 DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMonitor_t& strctHWMonitor, qint32 scenario)
 {
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    //Firstly, set temperature for each sensor
+    // Firstly, check if current temperature exceeds max temperature for each sensor
+    //For Level Sensor
+    if (false == m_RTLevelSensor.curModuleId.isEmpty() &&
+            m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature <= strctHWMonitor.TempALLevelSensor)
+    {
+        return DCL_ERR_DEV_RETORT_LEVELSENSOR_TEMPERATURE_OVERRANGE;
+    }
+    //For Retort Top Sensor
+    if (false == m_RTTop.curModuleId.isEmpty() &&
+            m_RTTop.functionModuleList[m_RTTop.curModuleId].MaxTemperature <= strctHWMonitor.TempRTSide)
+    {
+        return DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERANGE;
+    }
+    //For Retort Bottom Sensor
+    if (false == m_RTBottom.curModuleId.isEmpty() &&
+            m_RTBottom.functionModuleList[m_RTBottom.curModuleId].MaxTemperature <= strctHWMonitor.TempRTBottom1)
+    {
+        return DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE;
+    }
+
+    // Set temperature for each sensor
     if (scenario != m_CurScenario)
     {
         m_CurScenario = scenario;
@@ -65,28 +85,39 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         }
     }
 
+    // Check temperature difference of two Retort bottom sensors
+    if (false == m_RTBottom.curModuleId.isEmpty())
+    {
+        if (std::abs(strctHWMonitor.TempOvenBottom1 - strctHWMonitor.TempOvenBottom2) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
+        {
+            //return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
+        }
+    }
     //check Heating Overtime
     qint64 now = QDateTime::currentMSecsSinceEpoch();
     // For Level Sensor
-    if (now - m_RTLevelSensor.heatingStartTime >= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].HeatingOverTime*1000)
+    if (false ==m_RTLevelSensor.curModuleId.isEmpty() &&
+            now - m_RTLevelSensor.heatingStartTime >= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].HeatingOverTime*1000)
     {
-        if (strctHWMonitor.TempALLevelSensor < m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature)
+        if (strctHWMonitor.TempALLevelSensor <= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].TargetTemperature)
         {
             return DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME;
         }
     }
     // For Retort Top
-    if (now - m_RTTop.heatingStartTime >= m_RTTop.functionModuleList[m_RTTop.curModuleId].HeatingOverTime*1000)
+    if (false == m_RTTop.curModuleId.isEmpty() &&
+            now - m_RTTop.heatingStartTime >= m_RTTop.functionModuleList[m_RTTop.curModuleId].HeatingOverTime*1000)
     {
-        if (strctHWMonitor.TempALLevelSensor < m_RTTop.functionModuleList[m_RTTop.curModuleId].MaxTemperature)
+        if (strctHWMonitor.TempALLevelSensor >= m_RTTop.functionModuleList[m_RTTop.curModuleId].TargetTemperature)
         {
             return DCL_ERR_DEV_RETORT_SIDTOP_SIDEMID_HEATING_ELEMENT_FAILED;
         }
     }
     // For Retort Bottom
-    if (now - m_RTBottom.heatingStartTime >= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].HeatingOverTime*1000)
+    if ( false == m_RTBottom.curModuleId.isEmpty() &&
+         now - m_RTBottom.heatingStartTime >= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].HeatingOverTime*1000)
     {
-        if (strctHWMonitor.TempALLevelSensor < m_RTBottom.functionModuleList[m_RTBottom.curModuleId].MaxTemperature)
+        if (strctHWMonitor.TempALLevelSensor >= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].TargetTemperature)
         {
             return DCL_ERR_DEV_RETORT_BOTTOM_SIDELOW_HEATING_ELEMENT_FAILED;
         }
@@ -101,7 +132,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
 
     //For LevelSensor
-    QMap<QString, FunctionModule>::const_iterator iter = m_RTLevelSensor.functionModuleList.begin();
+    QMap<QString, FunctionModule>::iterator iter = m_RTLevelSensor.functionModuleList.begin();
     for (; iter!=m_RTLevelSensor.functionModuleList.end(); ++iter)
     {
         // Current(new) scenario belongs to the specific scenario list
@@ -147,7 +178,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
         SchedulerCommandShPtr_t pResHeatingCmd;
-        while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd));
+        while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName()));
         pResHeatingCmd->GetResult(retCode);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
@@ -157,6 +188,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         {
             m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             m_RTLevelSensor.curModuleId = iter->Id;
+            iter->TargetTemperature = iter->TemperatureOffset;
         }
     }
 
@@ -168,8 +200,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
 {
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
 
-    //For LevelSensor
-    QMap<QString, FunctionModule>::const_iterator iter = heatingSensor.functionModuleList.begin();
+    QMap<QString, FunctionModule>::iterator iter = heatingSensor.functionModuleList.begin();
     for (; iter!=heatingSensor.functionModuleList.end(); ++iter)
     {
         // Current(new) scenario belongs to the specific scenario list
@@ -193,7 +224,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
 		{
 			return DCL_ERR_FCT_CALL_SUCCESS;
 		}
-        if (qFuzzyCompare(userInputTemp, -1))
+        if (qFuzzyCompare(userInputTemp+1, 0.0+1))
         {   
             return DCL_ERR_FCT_CALL_SUCCESS;
         }  
@@ -207,7 +238,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
         SchedulerCommandShPtr_t pResHeatingCmd;
-        while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd));
+        while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName()));
         pResHeatingCmd->GetResult(retCode);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
@@ -217,6 +248,8 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         {
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
+            iter->TargetTemperature = iter->TemperatureOffset+userInputTemp;
+            return DCL_ERR_FCT_CALL_SUCCESS;
         }
     }
 
@@ -375,6 +408,7 @@ bool HeatingStrategy::ConstructHeatingSensor(HeatingSensor& heatingSensor, const
            return false;
        }
        funcModule.DerivativeTime = derivativeTime;
+       funcModule.TargetTemperature = 0.0; //Initialize target temperature to zero
 
        heatingSensor.functionModuleList.insert(*seqIter, funcModule);
    }

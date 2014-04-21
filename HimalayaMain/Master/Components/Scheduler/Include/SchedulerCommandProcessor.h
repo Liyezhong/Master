@@ -55,9 +55,11 @@ typedef struct
 	qreal			TempRV1;
 	qreal			TempRV2;
 	RVPosition_t	PositionRV;
-	qreal			TempRTBottom;
+    qreal			TempRTBottom1;
+    qreal			TempRTBottom2;
 	qreal			TempRTSide;
-	qreal			TempOvenBottom;
+    qreal			TempOvenBottom1;
+    qreal			TempOvenBottom2;
 	qreal			TempOvenTop;
 	quint16			OvenLidStatus;
 	quint16			RetortLockStatus;

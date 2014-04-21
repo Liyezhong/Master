@@ -359,6 +359,14 @@ protected:
          */
         /****************************************************************************/
          bool PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd);
+
+        /****************************************************************************/
+        /**
+         *
+         * pop Command from Q2
+         */
+        /****************************************************************************/
+         bool PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd, const QString& CmdName);
         /**
          *
          * Get the time(in seconds) that Oven has been heated
