@@ -28,7 +28,7 @@ SUBDIRS = ../Components/Calibration/Build/Calibration.pro \
           ../../../../Platform/ServiceSW/Components/LogViewer/Build/LogViewer.pro \
           ../../../../Platform/ServiceSW/Components/Settings/Build/Settings.pro \
           ../Components/SystemTracking/Build/SystemTracking.pro \
-          ../Components/LogViewer/Build/LogViewer.pro \
+          ../Components/LogViewerDialog/Build/LogViewerDialog.pro \
           ../Components/Diagnostics/Build/Diagnostics.pro \
 #         ../Components/DiagnosticsManufacturing/Build/DiagnosticsManufacturing.pro \
           ../Components/ServiceUpdates/Build/ServiceUpdates.pro \
@@ -37,7 +37,7 @@ SUBDIRS = ../Components/Calibration/Build/Calibration.pro \
           ../Components/ServiceMasterThreadController/Build/ServiceMasterThreadController.pro \
 #          ../Components/ServiceDeviceController/Build/ServiceDeviceController.pro \
           ../Components/SystemTracking/Test/TestSystemTracking.pro \
-          ../Components/LogViewer/Test/TestLogViewer.pro \
+#          ../Components/LogViewer/Test/TestLogViewer.pro \
           ../Components/Diagnostics/Test/TestDiagnostics.pro \
 #          ../Components/DiagnosticsManufacturing/Test/TestDiagnosticsManufacturing.pro \
           ../Components/ServiceUpdates/Test/TestServiceUpdates.pro \

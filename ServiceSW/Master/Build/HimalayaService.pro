@@ -32,7 +32,7 @@ SUBDIRS = ../../../../Platform/Master/Components/Global/Build/Global.pro \
           ../Components/ServiceWidget/Build/ServiceWidget.pro \
           ../Components/Calibration/Build/Calibration.pro \
           ../Components/SystemTracking/Build/SystemTracking.pro \
-          ../Components/LogViewer/Build/LogViewer.pro \
+          ../Components/LogViewerDialog/Build/LogViewerDialog.pro \
           ../Components/Diagnostics/Build/Diagnostics.pro \
           ../Components/ServiceUpdates/Build/ServiceUpdates.pro \
           ../Components/Core/Build/Core.pro \

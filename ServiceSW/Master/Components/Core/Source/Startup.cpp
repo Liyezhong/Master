@@ -19,7 +19,10 @@
 /****************************************************************************/
 
 #include "Core/Include/Startup.h"
-
+#include "LogViewerDialog/Include/LogContentDlg.h"
+#include "LogViewerDialog/Include/SystemLogViewerDlg.h"
+#include <QTextStream>
+#include <QApplication>
 
 
 namespace Core {
@@ -29,7 +32,9 @@ namespace Core {
  *  \brief Constructor
  */
 /****************************************************************************/
-CStartup::CStartup() : QObject()
+CStartup::CStartup() : QObject(),
+    mp_LogContentDlg(NULL),
+    mp_SystemLogContentDlg(NULL)
 {
     // GUI components
     mp_Clock = new QTimer();    
@@ -90,10 +95,21 @@ CStartup::CStartup() : QObject()
                   SLOT(UpdateGUI()));
     // Log Viewer
     mp_LogViewerGroup = new MainMenu::CMenuGroup;
-    mp_SystemLogViewer = new LogViewer::CSystemLogViewer;
-    mp_RecoveryAction = new LogViewer::CRecoveryAction;
-    mp_ServiceLogViewer = new LogViewer::CServiceLogViewer;
-    mp_SoftwareUpdateLogViewer = new LogViewer::CSoftwareUpdateLog;
+//    mp_SystemLogViewer = new LogViewer::CSystemLogViewer;
+//    mp_RecoveryAction = new LogViewer::CRecoveryAction;
+//    mp_ServiceLogViewer = new LogViewer::CServiceLogViewer;
+//    mp_SoftwareUpdateLogViewer = new LogViewer::CSoftwareUpdateLog;
+
+    mp_SystemLogViewer = new LogViewer::CLogViewer("HimalayaEvents_12345678", Global::SystemPaths::Instance().GetLogfilesPath());
+    mp_RecoveryAction = new LogViewer::CLogViewer("RecoveryActionText", Global::SystemPaths::Instance().GetSettingsPath());
+    mp_ServiceLogViewer = new LogViewer::CLogViewer("Leica_ST_Service", Global::SystemPaths::Instance().GetLogfilesPath());
+    mp_SoftwareUpdateLogViewer = new LogViewer::CLogViewer("TC000411_", Global::SystemPaths::Instance().GetLogfilesPath());
+
+    CONNECTSIGNALSLOT(mp_SystemLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+    CONNECTSIGNALSLOT(mp_RecoveryAction , DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+    CONNECTSIGNALSLOT(mp_ServiceLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+    CONNECTSIGNALSLOT(mp_SoftwareUpdateLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
+
 
     //Diagnostics
     mp_DiagnosticsGroup = new MainMenu::CMenuGroup;
@@ -240,6 +256,12 @@ CStartup::~CStartup()
         delete mp_RecoveryAction;
         delete mp_SystemLogViewer;
         delete mp_LogViewerGroup;
+        if (mp_LogContentDlg) {
+            delete mp_LogContentDlg;
+        }
+        if (mp_SystemLogContentDlg) {
+            delete mp_SystemLogContentDlg;
+        }
 
         // System Tracking
         delete mp_LaSystemConfig;
@@ -674,5 +696,65 @@ void CStartup::OnGuiOvenEmptyHeatingTest()
 {
     mp_ServiceConnector->ShowBusyDialog("Heating Oven(empty) in progress...", false);
     emit OvenHeatingTest(Service::HEATER_OVEN, Service::HEATING_OVEN_EMPTY);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Slot called to display log information
+ *  \iparam FileName = Log file name
+ *  \iparam FilePath = Log file path
+ */
+/****************************************************************************/
+void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
+{
+//    qDebug()<<"CStartup::DisplayLogInformation  Filename="<<FileName<<"  FilePath="<<FilePath;
+
+    QString Path = FilePath + "/" + FileName;
+    if (FileName.startsWith("HimalayaEvents_12345678")) {  // System log
+        if (mp_SystemLogContentDlg != NULL) {
+            delete mp_SystemLogContentDlg;
+            mp_SystemLogContentDlg = NULL;
+        }
+        mp_SystemLogContentDlg = new LogViewer::CSystemLogViewerDlg(mp_MainWindow);
+        mp_SystemLogContentDlg->setModal(true);
+        mp_SystemLogContentDlg->resize(720, 500);
+        mp_SystemLogContentDlg->SetDialogTitle(FileName.remove(".log", Qt::CaseSensitive));
+        mp_SystemLogContentDlg->InitDialog(Path);
+        mp_SystemLogContentDlg->show();
+    }
+    else {
+        QStringList HeaderLabels;
+        QList<int> Columns;
+
+        if (FileName.startsWith("Leica_ST_Service")) {  // Service log
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
+            Columns.append(0);
+            Columns.append(3);
+        }
+        else if (FileName.startsWith("RecoveryActionText")) { // Recovery Action
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Error", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Recovery Action Text", 0, QApplication::UnicodeUTF8));
+            Columns.append(0);
+            Columns.append(1);
+            Columns.append(2);
+        }
+        else if (FileName.startsWith("TC000411_"))  {// SW Update log
+        }
+
+        if (mp_LogContentDlg != NULL) {
+            delete mp_LogContentDlg;
+            mp_LogContentDlg = NULL;
+        }
+
+        mp_LogContentDlg = new LogViewer::CLogContentDlg(HeaderLabels, Columns, mp_MainWindow);
+        mp_LogContentDlg->setModal(true);
+        mp_LogContentDlg->resize(720, 500);
+        mp_LogContentDlg->SetDialogTitle(FileName.remove(".log", Qt::CaseSensitive));
+        (void) mp_LogContentDlg->InitDialog(Path);
+        mp_LogContentDlg->show();
+    }
 }
 } // end namespace Core

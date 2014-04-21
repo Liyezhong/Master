@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LogViewer::CSystemLogViewer</class>
- <widget class="QWidget" name="LogViewer::CSystemLogViewer">
+ <class>LogViewer::CLogContentDlg</class>
+ <widget class="QWidget" name="LogViewer::CLogContentDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>162</width>
-    <height>107</height>
+    <width>132</width>
+    <height>94</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,9 +48,9 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="showLogBtn">
+        <widget class="QPushButton" name="closeBtn">
          <property name="text">
-          <string>Show Log</string>
+          <string>Close</string>
          </property>
         </widget>
        </item>

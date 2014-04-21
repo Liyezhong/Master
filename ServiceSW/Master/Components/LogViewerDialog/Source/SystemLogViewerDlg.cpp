@@ -18,11 +18,14 @@
  */
 /****************************************************************************/
 
-#include "Global/Include/SystemPaths.h"
-#include "LogViewer/Include/SystemLogViewerDlg.h"
-#include "ui_SystemLogViewerDlg.h"
 #include <QTextStream>
 #include <QDebug>
+
+#include "Global/Include/SystemPaths.h"
+#include "LogViewerDialog/Include/SystemLogViewerDlg.h"
+#include "ui_SystemLogViewerDlg.h"
+#include "Global/Include/GlobalDefines.h"
+#include "LogViewerDialog/Include/RecoveryActionFilter.h"
 
 namespace LogViewer {
 
@@ -33,17 +36,20 @@ namespace LogViewer {
  *  \iparam p_Parent = Parent widget
  */
 /****************************************************************************/
-CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CSystemLogViewerDlg)
+CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CSystemLogViewerDlg),
+    mp_LogFilter(NULL),
+    mp_RecoveryActionFilter(NULL)
 {
+
+    m_EventTypes = LogViewer::CLogFilter::m_AllTypes;
+
     mp_Ui->setupUi(GetContentFrame());
     m_LogFilePath = "";
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->resize(600,350);
 
-    m_Model.setHorizontalHeaderLabels(QStringList() << "Date" << "TimeStamp" << "Event ID" << "Type" << "Description");
     mp_TableWidget->horizontalHeader()->show();
 
-    mp_TableWidget->setModel(&m_Model);
     mp_TableWidget->horizontalHeader()->resizeSection(0, 95);
     mp_TableWidget->horizontalHeader()->resizeSection(3, 75);
 //    mp_TableWidget->setWordWrap(true);
@@ -55,7 +61,11 @@ CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogF
 
     mp_RecoveryActionDlg = new MainMenu::CTextDialog(this);
     mp_RecoveryActionDlg->SetCaption(tr(""));
-    mp_Ui->allBtn->setChecked(true);    
+    mp_Ui->allBtn->setChecked(true);
+    ResetButtons(false);
+    mp_Ui->showDetailsBtn->setEnabled(false);
+
+    mp_Ui->recoveryActionBtn->setEnabled(false);
 
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
 
@@ -64,7 +74,6 @@ CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogF
     connect(mp_Ui->infoBtn, SIGNAL(clicked()), this, SLOT(FilteredInfoLog()));
     connect(mp_Ui->undefinedBtn, SIGNAL(clicked()), this, SLOT(FilteredUndefinedLog()));
     connect(mp_Ui->warningBtn, SIGNAL(clicked()), this, SLOT(FilteredWarningLog()));
-    connect(mp_Ui->infoErrorBtn, SIGNAL(clicked()), this, SLOT(FilteredInfoErrorLog()));
 
     connect(mp_TableWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(SelectionChanged(QModelIndex)));
     connect(mp_Ui->showDetailsBtn, SIGNAL(clicked()), this, SLOT(ShowRecoveryActionDetails()));
@@ -85,6 +94,12 @@ CSystemLogViewerDlg::~CSystemLogViewerDlg()
         delete mp_TableWidget;
         delete mp_RecoveryActionDlg;
         delete mp_MessageDlg;
+        if (mp_LogFilter) {
+            delete mp_LogFilter;
+        }
+        if (mp_RecoveryActionFilter) {
+            delete mp_RecoveryActionFilter;
+        }
         m_SelectedRowValues.clear();
     }
     catch (...) {
@@ -102,28 +117,15 @@ void CSystemLogViewerDlg::SelectionChanged(QModelIndex Index)
 {
     QItemSelectionModel* SelectionModel = mp_TableWidget->selectionModel();
     m_SelectedRowValues = SelectionModel->selectedIndexes(); //!< list of "selected" items
-}
 
-/****************************************************************************/
-/*!
- *  \brief  To add data item to the table
- *  \iparam Date = Date of the log event
- *  \iparam TimeStamp = Time stamp for log event
- *  \iparam EventID = Event Id
- *  \iparam Type = Log event type
- *  \iparam Desc = Log event description
- */
-/****************************************************************************/
-void CSystemLogViewerDlg::AddItem(QString Date, QString TimeStamp, QString EventID, QString Type, QString Desc)
-{
-    QList<QStandardItem *> ItemList;
-    ItemList << new QStandardItem(Date);
-    ItemList << new QStandardItem(TimeStamp);
-    ItemList << new QStandardItem(EventID);
-    ItemList << new QStandardItem(Type);
-    ItemList << new QStandardItem(Desc);
-
-    m_Model.appendRow(ItemList);
+    QString Type = m_SelectedRowValues.at(3).data((int)Qt::DisplayRole).toString();
+    if (Type.compare("Error")==0 || Type.compare("Fatal Error")==0) {
+        mp_Ui->recoveryActionBtn->setEnabled(true);
+    }
+    else {
+        mp_Ui->recoveryActionBtn->setEnabled(false);
+    }
+    mp_Ui->showDetailsBtn->setEnabled(true);
 }
 
 /****************************************************************************/
@@ -156,36 +158,71 @@ int CSystemLogViewerDlg::RecoveryActionDialog()
             mp_MessageDlg->show();
         }
         else {
+            QString Path = Global::SystemPaths::Instance().GetSettingsPath() + "/RecoveryActionText.txt";
 
-            QString Path = Global::SystemPaths::Instance().GetLogfilesPath() + "/Recovery_Action.txt";
-
-            QFile File(Path);
-            if(!File.open(QIODevice::ReadOnly | QIODevice::Text))
-            {
-                return 0;
+            if (mp_RecoveryActionFilter == NULL) {
+                mp_RecoveryActionFilter = new LogViewer::CRecoveryActionFilter(Path);
             }
 
-            QTextStream Text(&File);
-            while(!Text.atEnd())
-            {
-                QString Description = m_SelectedRowValues.at(4).data((int)Qt::DisplayRole).toString();
-                QString DescriptionInFile = Text.readLine();
-                if(DescriptionInFile.contains(Description))
-                {
-                    QStringList List = DescriptionInFile.split(";");
-                    QString Text = List.at(0) + "\n\n";
-                    Text.append(List.at(1));
-                    Text.append("\n\n");
-                    Text.append(List.at(2));
-                    mp_RecoveryActionDlg->SetDialogTitle(tr("Recovery Action"));
-                    mp_RecoveryActionDlg->resize(428, 428);
-                    mp_RecoveryActionDlg->SetText(Text);
-                    mp_RecoveryActionDlg->show();
-                }
+            QString EventId = m_SelectedRowValues.at(2).data((int)Qt::DisplayRole).toString();
+            QString Line = QString(mp_RecoveryActionFilter->GetRecoveryAtionText(EventId));
+            QStringList List = Line.split(";");
+            if (List.size()>0) {
+                QString InputText = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Error Code: ",
+                                                            0, QApplication::UnicodeUTF8) + List.at(0) + "\n\n";
+                InputText.append(QApplication::translate("LogViewer::CSystemLogViewerDlg", "Description: ",
+                                                         0, QApplication::UnicodeUTF8));
+                if (List.count() > 1)
+                    InputText.append(List.at(1));
+                InputText.append("\n\n");
+                InputText.append(QApplication::translate("LogViewer::CSystemLogViewerDlg", "Recovery Action Text: ",
+                                                         0, QApplication::UnicodeUTF8));
+                if (List.count() > 2)
+                    InputText.append(List.at(2));
+                mp_RecoveryActionDlg->SetDialogTitle(QApplication::translate("LogViewer::CSystemLogViewerDlg",
+                                                      "Recovery Action Text", 0, QApplication::UnicodeUTF8));
+                mp_RecoveryActionDlg->resize(428, 428);
+                mp_RecoveryActionDlg->SetText(InputText);
+                mp_RecoveryActionDlg->show();
             }
-            File.close();
+            else {
+                mp_MessageDlg->SetTitle(QApplication::translate("LogViewer::CSystemLogViewerDlg",
+                                                                "Service Help Text", 0, QApplication::UnicodeUTF8));
+                mp_MessageDlg->SetButtonText(1, QApplication::translate("LogViewer::CSystemLogViewerDlg",
+                                                                        "Ok", 0, QApplication::UnicodeUTF8));
+                mp_MessageDlg->HideButtons();
+                mp_MessageDlg->SetText(QApplication::translate("LogViewer::CSystemLogViewerDlg",
+                                                               "Recovery Action Text is not available.",
+                                                               0, QApplication::UnicodeUTF8));
+                mp_MessageDlg->SetIcon(QMessageBox::Warning);
+                mp_MessageDlg->show();
+
+            }
         }
     }
+}
+
+void CSystemLogViewerDlg::SetTableModel()
+{
+    QStringList HeaderLabels;
+
+
+    qDebug()<<"m_EventTypes = "<<m_EventTypes;
+
+
+    mp_Model = mp_LogFilter->GetItemModel(m_EventTypes);
+
+    HeaderLabels.append(QApplication::translate("LogViewer::CSystemLogViewerDlg", "Date", 0, QApplication::UnicodeUTF8));
+    HeaderLabels.append(QApplication::translate("LogViewer::CSystemLogViewerDlg", "TimeStamp", 0, QApplication::UnicodeUTF8));
+    HeaderLabels.append(QApplication::translate("LogViewer::CSystemLogViewerDlg", "Event ID", 0, QApplication::UnicodeUTF8));
+    HeaderLabels.append(QApplication::translate("LogViewer::CSystemLogViewerDlg", "Type", 0, QApplication::UnicodeUTF8));
+    HeaderLabels.append(QApplication::translate("LogViewer::CSystemLogViewerDlg", "Description", 0, QApplication::UnicodeUTF8));
+
+    mp_Model->setHorizontalHeaderLabels(HeaderLabels);
+
+
+    mp_TableWidget->setModel(mp_Model);
+
 }
 
 /****************************************************************************/
@@ -197,26 +234,19 @@ int CSystemLogViewerDlg::RecoveryActionDialog()
 /****************************************************************************/
 int CSystemLogViewerDlg::InitDialog(QString Path)
 {
-    m_LogFilePath = Path;
-    QFile File(Path);
-    if(!File.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        return 0;
-    }
+    QList<int> Columns;
+    Columns.append(0);
+    Columns.append(1);
+    Columns.append(2);
+    Columns.append(3);
 
-    QTextStream Text(&File);
-    while(!Text.atEnd())
+    m_LogFilePath = Path;
+    mp_LogFilter = new CLogFilter(Path, Columns, true);
+    if (mp_LogFilter->InitData() == false )
     {
-        QString LogData = Text.readLine();
-        if(LogData.contains(";"))
-        {
-            QStringList List = LogData.split(";");
-            QStringList DateTime = List.at(0).split(" ");
-            SetLogInformation(DateTime.at(0), DateTime.at(1), List.at(1), List.at(2), List.at(3));
-            AddItem(DateTime.at(0), DateTime.at(1), List.at(1), List.at(2), List.at(3));
-        }
+        return false;
     }
-    File.close();
+    SetTableModel();
 }
 
 /****************************************************************************/
@@ -252,25 +282,23 @@ void CSystemLogViewerDlg::ShowRecoveryActionDetails()
 
 /****************************************************************************/
 /*!
- *  \brief  To set the Log information
- *  \iparam Date = Date of the log event
- *  \iparam TimeStamp = Time stamp for log event
- *  \iparam EventID = Event Id
- *  \iparam Type = Log event type
- *  \iparam Desc = Log event description
+ *  \brief Reset Buttons
+ *  \iparam EnableFlag = true:enable, false:disable
  */
 /****************************************************************************/
-void CSystemLogViewerDlg::SetLogInformation(QString Date, QString TimeStamp, QString EventID, QString Type, QString Desc)
+void CSystemLogViewerDlg::ResetButtons(bool EnableFlag)
 {
-    LogInfo_t* LogInfo = new LogInfo_t;
-    LogInfo->Date = Date;
-    LogInfo->TimeStamp = TimeStamp;
-    LogInfo->EventID = EventID;
-    LogInfo->Type = Type;
-    LogInfo->Desc = Desc;
+    mp_Ui->errorBtn->setEnabled(EnableFlag);
+    mp_Ui->infoBtn->setEnabled(EnableFlag);
+    mp_Ui->warningBtn->setEnabled(EnableFlag);
+    mp_Ui->undefinedBtn->setEnabled(EnableFlag);
 
-    m_LogInformation.append(LogInfo);
+    mp_Ui->errorBtn->setChecked(false);
+    mp_Ui->infoBtn->setChecked(false);
+    mp_Ui->warningBtn->setChecked(false);
+    mp_Ui->undefinedBtn->setChecked(false);
 }
+
 
 /****************************************************************************/
 /*!
@@ -279,10 +307,22 @@ void CSystemLogViewerDlg::SetLogInformation(QString Date, QString TimeStamp, QSt
 /****************************************************************************/
 void CSystemLogViewerDlg::CompleteLogInfo()
 {
-    mp_Ui->recoveryActionBtn->setEnabled(true);
-    m_Model.clear();
-    m_Model.setHorizontalHeaderLabels(QStringList() << "Date" << "TimeStamp" << "Event ID" << "Type" << "Description");
-    InitDialog(m_LogFilePath);
+    mp_Ui->showDetailsBtn->setEnabled(false);
+    mp_Ui->recoveryActionBtn->setEnabled(false);
+    mp_TableWidget->clearSelection();
+
+    if (mp_Ui->allBtn->isChecked()) {
+        ResetButtons(false);
+
+        m_EventTypes = LogViewer::CLogFilter::m_AllTypes;
+        SetTableModel();
+    }
+    else {
+        ResetButtons(true);
+        mp_TableWidget->setModel(NULL);
+        m_EventTypes = 0;
+    }
+
 }
 
 /****************************************************************************/
@@ -292,17 +332,24 @@ void CSystemLogViewerDlg::CompleteLogInfo()
 /****************************************************************************/
 void CSystemLogViewerDlg::FilteredErrorLog()
 {
-    mp_Ui->recoveryActionBtn->setEnabled(true);
-    m_Model.clear();
-    m_Model.setHorizontalHeaderLabels(QStringList() << "Date" << "TimeStamp" << "Event ID" << "Type" << "Description");
-    for(int i=0;i < m_LogInformation.count(); i++)
-    {
-        LogInfo_t* LogInfo = new LogInfo_t;
-        LogInfo = m_LogInformation.at(i);
-        if(LogInfo->Type == QString("Error"))
-        {
-            AddItem(LogInfo->Date, LogInfo->TimeStamp, LogInfo->EventID, LogInfo->Type, LogInfo->Desc);
-        }
+    mp_Ui->showDetailsBtn->setEnabled(false);
+    mp_Ui->recoveryActionBtn->setEnabled(false);
+    mp_TableWidget->clearSelection();
+
+    mp_TableWidget->clearSelection();
+    if (mp_Ui->errorBtn->isChecked()) {
+        m_EventTypes |= (1<<Global::EVTTYPE_ERROR);
+        m_EventTypes |= (1<<Global::EVTTYPE_FATAL_ERROR);
+    }
+    else {
+        m_EventTypes &= (0xFF-(1<<Global::EVTTYPE_ERROR));
+        m_EventTypes &= (0xFF-(1<<Global::EVTTYPE_FATAL_ERROR));
+    }
+    if (m_EventTypes == 0) {
+        mp_TableWidget->setModel(NULL);
+    }
+    else {
+       SetTableModel();
     }
 }
 
@@ -313,17 +360,21 @@ void CSystemLogViewerDlg::FilteredErrorLog()
 /****************************************************************************/
 void CSystemLogViewerDlg::FilteredInfoLog()
 {
+    mp_Ui->showDetailsBtn->setEnabled(false);
     mp_Ui->recoveryActionBtn->setEnabled(false);
-    m_Model.clear();
-    m_Model.setHorizontalHeaderLabels(QStringList() << "Date" << "TimeStamp" << "Event ID" << "Type" << "Description");
-    for(int i=0;i < m_LogInformation.count(); i++)
-    {
-        LogInfo_t* LogInfo = new LogInfo_t;
-        LogInfo = m_LogInformation.at(i);
-        if(LogInfo->Type == QString("Info"))
-        {
-            AddItem(LogInfo->Date, LogInfo->TimeStamp, LogInfo->EventID, LogInfo->Type, LogInfo->Desc);
-        }
+    mp_TableWidget->clearSelection();
+
+    if (mp_Ui->infoBtn->isChecked()) {
+        m_EventTypes |= (1<<Global::EVTTYPE_INFO);
+    }
+    else {
+        m_EventTypes &= (0xFF-(1<<Global::EVTTYPE_INFO));
+    }
+    if (m_EventTypes == 0) {
+        mp_TableWidget->setModel(NULL);
+    }
+    else {
+       SetTableModel();
     }
 }
 
@@ -334,20 +385,23 @@ void CSystemLogViewerDlg::FilteredInfoLog()
 /****************************************************************************/
 void CSystemLogViewerDlg::FilteredUndefinedLog()
 {
+    mp_Ui->showDetailsBtn->setEnabled(false);
     mp_Ui->recoveryActionBtn->setEnabled(false);
-    m_Model.clear();
-    m_Model.setHorizontalHeaderLabels(QStringList() << "Date" << "TimeStamp" << "Event ID" << "Type" << "Description");
-    for(int i=0;i < m_LogInformation.count(); i++)
-    {
-        LogInfo_t* LogInfo = new LogInfo_t;
-        LogInfo = m_LogInformation.at(i);
-        if(LogInfo->Type == QString("Undefined"))
-        {
-            AddItem(LogInfo->Date, LogInfo->TimeStamp, LogInfo->EventID, LogInfo->Type, LogInfo->Desc);
-        }
+    mp_TableWidget->clearSelection();
+
+    if (mp_Ui->undefinedBtn->isChecked()) {
+        m_EventTypes |= (1<<Global::EVTTYPE_UNDEFINED);
+    }
+    else {
+        m_EventTypes &= (0xFF-(1<<Global::EVTTYPE_UNDEFINED));
+    }
+    if (m_EventTypes == 0) {
+        mp_TableWidget->setModel(NULL);
+    }
+    else {
+       SetTableModel();
     }
 }
-
 /****************************************************************************/
 /*!
  *  \brief To display filtered log information for event type Warning
@@ -355,39 +409,21 @@ void CSystemLogViewerDlg::FilteredUndefinedLog()
 /****************************************************************************/
 void CSystemLogViewerDlg::FilteredWarningLog()
 {
+    mp_Ui->showDetailsBtn->setEnabled(false);
     mp_Ui->recoveryActionBtn->setEnabled(false);
-    m_Model.clear();
-    m_Model.setHorizontalHeaderLabels(QStringList() << "Date" << "TimeStamp" << "Event ID" << "Type" << "Description");
-    for(int i=0;i < m_LogInformation.count(); i++)
-    {
-        LogInfo_t* LogInfo = new LogInfo_t;
-        LogInfo = m_LogInformation.at(i);
-        if(LogInfo->Type == QString("Warning"))
-        {
-            AddItem(LogInfo->Date, LogInfo->TimeStamp, LogInfo->EventID, LogInfo->Type, LogInfo->Desc);
-        }
+    mp_TableWidget->clearSelection();
+
+    if (mp_Ui->warningBtn->isChecked()) {
+        m_EventTypes |= (1<<Global::EVTTYPE_WARNING);
+    }
+    else {
+        m_EventTypes &= (0xFF-(1<<Global::EVTTYPE_WARNING));
+    }
+    if (m_EventTypes == 0) {
+        mp_TableWidget->setModel(NULL);
+    }
+    else {
+       SetTableModel();
     }
 }
-
-/****************************************************************************/
-/*!
- *  \brief To display filtered log information for event type Info and Error
- */
-/****************************************************************************/
-void CSystemLogViewerDlg::FilteredInfoErrorLog()
-{
-    mp_Ui->recoveryActionBtn->setEnabled(true);
-    m_Model.clear();
-    m_Model.setHorizontalHeaderLabels(QStringList() << "Date" << "TimeStamp" << "Event ID" << "Type" << "Description");
-    for(int i=0;i < m_LogInformation.count(); i++)
-    {
-        LogInfo_t* LogInfo = new LogInfo_t;
-        LogInfo = m_LogInformation.at(i);
-        if(LogInfo->Type == QString("Info") || LogInfo->Type == QString("Error"))
-        {
-            AddItem(LogInfo->Date, LogInfo->TimeStamp, LogInfo->EventID, LogInfo->Type, LogInfo->Desc);
-        }
-    }
 }
-
-}   // end of namespace LogViewer

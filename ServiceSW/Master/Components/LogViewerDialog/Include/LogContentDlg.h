@@ -1,11 +1,12 @@
 /****************************************************************************/
-/*! \file RecoveryActionDlg.h
+/*! \file LogContentDlg.h
  *
- *  \brief recovery action dialog
- *  This calss displays trouble shooting information for the Errors.
+ *  \brief Log Content dialog
+ *  This class implements common log content dialog to display detail information for a log file.
+ *
  *   $Version: $ 0.1
- *   $Date:    $ 2013-05-07
- *   $Author:  $ Soumya. D
+ *   $Date:    $ 2014-04-14
+ *   $Author:  $ Sunny Qu
  *
  *  \b Company:
  *
@@ -18,43 +19,34 @@
  */
 /****************************************************************************/
 
-#ifndef LOGVIEWER_RECOVERYACTIONDLG_H
-#define LOGVIEWER_RECOVERYACTIONDLG_H
+#ifndef LOGVIEWER_LOGCONTENTDLG_H
+#define LOGVIEWER_LOGCONTENTDLG_H
 
 #include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/BaseTable.h"
 #include <QStandardItemModel>
 #include <QFile>
 #include <QTextStream>
+#include "LogViewerDialog/Include/LogFilter.h"
 
 namespace LogViewer {
 
 namespace Ui {
-    class CRecoveryActionDlg;
+    class CLogContentDlg;
 }
 
 /****************************************************************************/
 /**
- * \brief This class implements RecoveryAction Dialog
+ * \brief This implements the class CLogContentDlg
  */
 /****************************************************************************/
-class CRecoveryActionDlg : public MainMenu::CDialogFrame
+class CLogContentDlg : public MainMenu::CDialogFrame
 {
-    Q_OBJECT   
+    Q_OBJECT
 
 public:
-    CRecoveryActionDlg(QWidget *p_Parent = NULL);
-    ~CRecoveryActionDlg();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  To add data item to the table
-     *  \iparam EventID = Log Event ID
-     *  \iparam Description = Event description
-     *  \iparam RecoveryAction = Recovery action to be taken
-     */
-    /****************************************************************************/
-    void AddItem(QString EventID, QString Description, QString RecoveryAction);
+    CLogContentDlg(const QStringList& HeaderLabels, QList<int>& Columns, QWidget *p_Parent = NULL);
+    ~CLogContentDlg();
 
 
     /****************************************************************************/
@@ -66,13 +58,18 @@ public:
     /****************************************************************************/
     int InitDialog(QString FilePath);
 
-private:
-    Ui::CRecoveryActionDlg *mp_Ui;               //!< User Interface
-    MainMenu::CBaseTable *mp_TableWidget;        //!< Table for the recovery action dialog files
-    QStandardItemModel m_Model;                  //!< Model for the table
 
+    void SetTableWidgetSize(qint32 Width, qint32 Height);
+
+private:
+    Ui::CLogContentDlg *mp_Ui;         //!< User Interface
+    MainMenu::CBaseTable *mp_TableWidget;    //!< Table for the log content information
+    QStandardItemModel *mp_Model;              //!< Model for the log content dialog table
+    QStringList m_HeaderLabels;         //!< Header tables for the table widget
+    QList<int> m_Columns;              //!< Columns for the table widget
+    CLogFilter *mp_LogFilter;          //!< Log Filter to get the models for table widget.
 };
 
 }   // end namespace LogViewer
 
-#endif // LOGVIEWER_RECOVERYACTIONDLG_H
+#endif // LOGVIEWER_LOGCONTENTDLG_H

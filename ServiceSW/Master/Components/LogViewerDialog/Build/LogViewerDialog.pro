@@ -1,14 +1,15 @@
 #-------------------------------------------------
 #
 # Project created by QtCreator 2013-01-16T16:50:09
+# Rename LogViewer to LogViewerDialog by Sunny 2014-04-14
 #
 #-------------------------------------------------
 
-!include(LogViewer.pri) {
-    error("LogViewer.pri not found")
+!include(LogViewerDialog.pri) {
+    error("LogViewerDialog.pri not found")
 }
 
-TARGET = LogViewer
+TARGET = LogViewerDialog
 
 HEADERS *= ../Include/*.h   # header file location
 

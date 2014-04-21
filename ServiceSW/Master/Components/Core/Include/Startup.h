@@ -44,10 +44,9 @@
 #include "SystemTracking/Include/RotaryValve.h"
 #include "SystemTracking/Include/LaSystem.h"
 
-#include "LogViewer/Include/SystemLogViewer.h"
-#include "LogViewer/Include/RecoveryAction.h"
-#include "LogViewer/Include/ServiceLogViewer.h"
-#include "LogViewer/Include/SoftwareUpdateLog.h"
+#include "LogViewer/Include/LogViewer.h"
+#include "LogViewerDialog/Include/LogContentDlg.h"
+#include "LogViewerDialog/Include/SystemLogViewerDlg.h"
 
 #include "Calibration/Include/PressureSensor.h"
 #include "Calibration/Include/Touchscreen.h"
@@ -117,10 +116,15 @@ private:
 
     // Log Viewer
     MainMenu::CMenuGroup                    *mp_LogViewerGroup;             //!< Log information of module data
-    LogViewer::CSystemLogViewer             *mp_SystemLogViewer;            //!< System Log information
-    LogViewer::CRecoveryAction              *mp_RecoveryAction;             //!< Provides Recovery action Help pages.
-    LogViewer::CServiceLogViewer            *mp_ServiceLogViewer;           //!< Service Log Viewer
-    LogViewer::CSoftwareUpdateLog           *mp_SoftwareUpdateLogViewer;    //!< Software Update Log Viewer
+
+    LogViewer::CLogViewer             *mp_SystemLogViewer;            //!< System Log information
+    LogViewer::CLogViewer              *mp_RecoveryAction;             //!< Provides Recovery action Help pages.
+    LogViewer::CLogViewer            *mp_ServiceLogViewer;           //!< Service Log Viewer
+    LogViewer::CLogViewer           *mp_SoftwareUpdateLogViewer;    //!< Software Update Log Viewer
+    LogViewer::CLogContentDlg       *mp_LogContentDlg;              //!< Log Content Dialog
+    LogViewer::CSystemLogViewerDlg  *mp_SystemLogContentDlg;        //!< System Log Content Dialog
+
+
 
     //Diagnostics
     MainMenu::CMenuGroup                    *mp_DiagnosticsGroup;
@@ -160,6 +164,8 @@ private:
     bool CurrentlyActive(MainMenu::CMenuGroup *p_Group, QWidget *p_Panel);
 
 public slots:
+    void DisplayLogInformation(QString FileName, QString FilePath);
+
     void OnDeviceInitRequest();
 
     void OnServiceImportExportRequest(bool IsImport);

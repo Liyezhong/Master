@@ -29,6 +29,8 @@
 #include "MainMenu/Include/MessageDlg.h"
 #include <QStandardItemModel>
 #include <QFile>
+#include "LogViewerDialog/Include/LogFilter.h"
+#include "LogViewerDialog/Include/RecoveryActionFilter.h"
 
 namespace LogViewer {
 
@@ -62,18 +64,6 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  To add data item to the table
-     *  \iparam Date = Date of the log event
-     *  \iparam TimeStamp = Time stamp for log event
-     *  \iparam EventID = Event Id
-     *  \iparam Type = Log event type
-     *  \iparam Desc = Log event description
-     */
-    /****************************************************************************/
-    void AddItem(QString Date, QString TimeStamp, QString EventID, QString Type, QString Desc);
-
-    /****************************************************************************/
-    /*!
      *  \brief  To initialize the pop up dialog
      *  \iparam Path = Log file path
      *  \return retruns 0, if file open gets failed.
@@ -81,27 +71,35 @@ public:
     /****************************************************************************/
     int InitDialog(QString Path);
 
-    /****************************************************************************/
-    /*!
-     *  \brief  To set the Log information
-     *  \iparam Date = Date of the log event
-     *  \iparam TimeStamp = Time stamp for log event
-     *  \iparam EventID = Event Id
-     *  \iparam Type = Log event type
-     *  \iparam Desc = Log event description
-     */
-    /****************************************************************************/
-    void SetLogInformation(QString Date, QString TimeStamp, QString EventID, QString Type, QString Desc);
-
 private:
     Ui::CSystemLogViewerDlg *mp_Ui;                 //!< User Interface
     MainMenu::CBaseTable *mp_TableWidget;           //!< Table for the system log information
-    QStandardItemModel m_Model;                     //!< Model for the System log dialog table
+    QStandardItemModel *mp_Model;                     //!< Model for the System log dialog table
     MainMenu::CTextDialog *mp_RecoveryActionDlg;    //!< Recovery action text dialog
     MainMenu::CMessageDlg *mp_MessageDlg;           //!< Information message dialog
     LogInformation_t m_LogInformation;              //!< QList of log information
     QString m_LogFilePath;                          //!< Stores log file path
     QModelIndexList m_SelectedRowValues;              //!< Model Index list stores selected row values
+    CLogFilter* mp_LogFilter;                       //!< Log filter to get model list.
+    quint8 m_EventTypes;                           //!< Event Types of previously diaplayed.
+    CRecoveryActionFilter *mp_RecoveryActionFilter; //!< Recovery Action Filter to get Recovery Action Text
+    QHash<QString, qint64> m_PositionItems;
+
+private:
+    /****************************************************************************/
+    /*!
+     *  \brief  Reset Enable Status for Buttons.
+     *  \iparam EnableFlag = Enable Status
+     */
+    /****************************************************************************/
+    void ResetButtons(bool EnableFlag);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Set Header Labels for TableWidget
+     */
+    /****************************************************************************/
+    void SetTableModel();
 
 public slots:
     int RecoveryActionDialog();
@@ -110,7 +108,6 @@ public slots:
     void FilteredInfoLog();
     void FilteredUndefinedLog();
     void FilteredWarningLog();
-    void FilteredInfoErrorLog();
     void SelectionChanged(QModelIndex Index);
     void ShowRecoveryActionDetails();
 

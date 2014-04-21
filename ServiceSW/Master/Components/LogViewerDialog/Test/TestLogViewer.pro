@@ -16,7 +16,7 @@ CONFIG += qtestlib
 CONFIG += qt
 DEPENDPATH += ../../../../
 
-UseLibs(Core ServiceDataManager LogViewer)
+UseLibs(Core ServiceDataManager LogViewerDialog)
 UsePlatformGUILibs(MainMenu KeyBoard Application)
 UsePlatformLibs(DataManager Global)
 UsePlatformServiceLibs(LogViewer)
