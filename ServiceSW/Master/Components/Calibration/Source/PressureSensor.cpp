@@ -80,7 +80,7 @@ void CPressureSensor::RetranslateUI()
 
 void CPressureSensor::StartCalibration(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CALIBRATION_PRESSURE_SENSOR);
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CALIBRATION_PRESSURE_SENSOR);
     emit CalibrationPressureSensor();
 }
 
