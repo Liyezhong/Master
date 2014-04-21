@@ -87,10 +87,14 @@ private:
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
     quint8 m_RowIndex;
 
-    QString m_strSelectIcon, m_strConfirmMsg;
-    QString m_strYes, m_strOK, m_strClose;
+    QString m_strSelectIcon;
+    QString m_strConfirmMsg;
+    QString m_strYes;
+    QString m_strOK;
+    QString m_strClose;
     QString m_strCancel;
-    QString m_strDelProgramStep, m_strEnterValidName;
+    QString m_strDelProgramStep;
+    QString m_strEnterValidName;
 
 protected:
     void showEvent(QShowEvent *p_Event);

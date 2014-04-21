@@ -124,7 +124,8 @@ private:
     QTimer* m_pStartBlinkingTimer;
     QGraphicsPathItem* m_pWorkingPipeGraphicsRectItem;
     QList<QGraphicsPathItem*> m_pGraphicsPathItemPipeList;
-    QGraphicsPathItem* m_WholePipeGraphicsRectItem, * m_UsedPipeGraphicsRectItem;
+    QGraphicsPathItem* m_WholePipeGraphicsRectItem;
+    QGraphicsPathItem* m_UsedPipeGraphicsRectItem;
     int m_currentTimerOrder;
     QString m_SuckDrainStationId;
     QList<QString> m_SelectedStationList;

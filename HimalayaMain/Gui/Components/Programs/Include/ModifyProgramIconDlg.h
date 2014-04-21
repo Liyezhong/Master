@@ -55,7 +55,9 @@ private:
     QStringList m_IconName;                          //!< store Icon name
 
     QString m_strConfirmMsg;
-    QString m_strOK, m_strCancel, m_strClose;
+    QString m_strOK;
+    QString m_strCancel;
+    QString m_strClose;
 
     void RetranslateUI();
 

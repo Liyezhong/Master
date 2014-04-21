@@ -52,9 +52,13 @@ private:
     DataManager::CReagent *mp_Reagent;              //!< Reagent object
     DataManager::CDashboardStation *mp_DashStation;        //!< Station object
     QStringList m_ReagentList;                      //!< List of Reagents
-    Global::RMSOptions_t m_RMSOptions, m_RMSCleaningOptions;
+    Global::RMSOptions_t m_RMSOptions;
+    Global::RMSOptions_t m_RMSCleaningOptions;
     QModelIndex m_CurrentIndex;
-    QString m_strSetAsEmpty, m_strResetData, m_strSetAsFull, m_CurrentStationName;
+    QString m_strSetAsEmpty;
+    QString m_strResetData;
+    QString m_strSetAsFull;
+    QString m_CurrentStationName;
     QList<QString> m_StationList;
     QString m_strConfirmMsg;
     QString m_strYes;

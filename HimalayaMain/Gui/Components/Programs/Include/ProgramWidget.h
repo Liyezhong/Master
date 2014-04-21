@@ -79,7 +79,10 @@ private:
     bool m_UserChanged;
     int m_UserProgramCount;                     //!< Count of User Programs
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
-    QString m_strEditProgram, m_strViewProgram, m_strNewProgram, m_strDelProgram;
+    QString m_strEditProgram;
+    QString m_strViewProgram;
+    QString m_strNewProgram;
+    QString m_strDelProgram;
     QString m_strNotEditProgram;
     QString m_strView;
     QString m_strEdit;

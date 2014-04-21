@@ -105,10 +105,12 @@ private:
     QString m_strAbortProgram;
 
     QString m_strWarning;
-    QString m_strYes, m_strCancel;
+    QString m_strYes;
+    QString m_strCancel;
     QString m_strProgram;
     QString m_strInformation;
-    QString m_strOK, m_strNo;
+    QString m_strOK;
+    QString m_strNo;
     QString m_strNotStartExpiredReagent;
     QString m_strStartExpiredReagent;
     QString m_strNeedMeltParaffin;

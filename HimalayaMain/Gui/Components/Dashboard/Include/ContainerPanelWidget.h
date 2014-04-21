@@ -57,7 +57,8 @@ private:
     int m_ParaffinStepIndex;
     QString m_strProgram;
     QString m_strInformation;
-    QString m_strOK, m_strNo;
+    QString m_strOK;
+    QString m_strNo;
     QString m_strNotStartExpiredReagent;
     QString m_strStartExpiredReagent;
     QString m_strNeedMeltParaffin;
