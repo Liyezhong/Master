@@ -185,7 +185,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
         p_Station = const_cast<DataManager::CDashboardStation*>(mp_StationList->GetDashboardStation(m_StationIdentifiers[m_StationNames[Index.row()]]));
     }
 
-    if (!p_Reagent) {
+    if (!p_Reagent && p_Station) {
         if ((Role == (int)Qt::DisplayRole) && (0 == Index.column()))
             return p_Station->GetDashboardStationName();
         else
