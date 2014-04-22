@@ -99,7 +99,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     if (false ==m_RTLevelSensor.curModuleId.isEmpty() &&
             now - m_RTLevelSensor.heatingStartTime >= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].HeatingOverTime*1000)
     {
-        if (strctHWMonitor.TempALLevelSensor <= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].TargetTemperature)
+        if (strctHWMonitor.TempALLevelSensor <= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].OTTargetTemperature)
         {
             return DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME;
         }
@@ -108,7 +108,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     if (false == m_RTTop.curModuleId.isEmpty() &&
             now - m_RTTop.heatingStartTime >= m_RTTop.functionModuleList[m_RTTop.curModuleId].HeatingOverTime*1000)
     {
-        if (strctHWMonitor.TempALLevelSensor >= m_RTTop.functionModuleList[m_RTTop.curModuleId].TargetTemperature)
+        if (strctHWMonitor.TempALLevelSensor >= m_RTTop.functionModuleList[m_RTTop.curModuleId].OTTargetTemperature)
         {
             return DCL_ERR_DEV_RETORT_SIDTOP_SIDEMID_HEATING_ELEMENT_FAILED;
         }
@@ -117,7 +117,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     if ( false == m_RTBottom.curModuleId.isEmpty() &&
          now - m_RTBottom.heatingStartTime >= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].HeatingOverTime*1000)
     {
-        if (strctHWMonitor.TempALLevelSensor >= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].TargetTemperature)
+        if (strctHWMonitor.TempALLevelSensor >= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].OTTargetTemperature)
         {
             return DCL_ERR_DEV_RETORT_BOTTOM_SIDELOW_HEATING_ELEMENT_FAILED;
         }
@@ -188,7 +188,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         {
             m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             m_RTLevelSensor.curModuleId = iter->Id;
-            iter->TargetTemperature = iter->TemperatureOffset;
+            iter->OTTargetTemperature = iter->TemperatureOffset;
         }
     }
 
@@ -248,7 +248,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         {
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
-            iter->TargetTemperature = iter->TemperatureOffset+userInputTemp;
+            iter->OTTargetTemperature = iter->TemperatureOffset+userInputTemp;
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
     }
@@ -408,7 +408,7 @@ bool HeatingStrategy::ConstructHeatingSensor(HeatingSensor& heatingSensor, const
            return false;
        }
        funcModule.DerivativeTime = derivativeTime;
-       funcModule.TargetTemperature = 0.0; //Initialize target temperature to zero
+       funcModule.OTTargetTemperature = 0.0; //Initialize target temperature to zero
 
        heatingSensor.functionModuleList.insert(*seqIter, funcModule);
    }

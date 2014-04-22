@@ -42,7 +42,7 @@ struct FunctionModule
     QString            Id;
     QVector<qint32>    ScenarioList;
     qreal              TemperatureOffset;
-    qreal              TargetTemperature;
+    qreal              OTTargetTemperature;
     qreal              MaxTemperature;
     qreal              HeatingOverTime;
     qreal              SlopTempChange;
