@@ -1155,6 +1155,22 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         m_SchedulerMachine->NotifyRsShutdownFailedHeaterFinished();
         Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, true);
     }
+    else if(SM_ERR_RS_RELEASE_PRESSURE_AT_RS_STADNDBY_WITHTISSUE == currentState)
+    {
+        m_SchedulerMachine->NotifyRsReleasePressureAtRsStandByWithTissue();
+    }
+    else if (SM_ERR_RS_SHUTDOWN_FAILED_HEATER_AT_RS_STADNDBY_WITHTISSUE == currentState)
+    {
+        m_SchedulerMachine->NotifyRsShutdownFailedHeaterAtRsStandByWithTissue();
+    }
+    else if (SM_ERR_RS_RT_BOTTOM_STOP_TEMP_CTRL_AT_RS_STADNDBY_WITHTISSUE == currentState)
+    {
+        m_SchedulerMachine->NotifyRsRTBottomStopTempCtrlAtRsStandByWithTissue();
+    }
+    else if (SM_ERR_RS_RT_TOP_STOP_TEMP_CTRL_AT_RS_STADNDBY_WITHTISSUE == currentState)
+    {
+        m_SchedulerMachine->NotifyRsRTTopStopTempCtrlAtRsStandByWithTissue();
+    }
 }
 
 ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()

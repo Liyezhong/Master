@@ -17,10 +17,10 @@
  *
  */
 /****************************************************************************/
-#include "../Include/SchedulerMachine.h"
-#include "../Include/HimalayaDeviceEventCodes.h"
-#include "QDebug"
-#include "QDateTime"
+#include "Scheduler/Include/SchedulerMachine.h"
+#include "Scheduler/Include/HimalayaDeviceEventCodes.h"
+#include <QDebug>
+#include <QDateTime>
 
 namespace Scheduler
 {
@@ -48,6 +48,7 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     mp_RSRvGetOriginalPositionAgain = new CRsRvGetOriginalPositionAgain(mp_SchedulerMachine, mp_ErrorState );
     mp_RCReport = new CRCReport(mp_SchedulerMachine, mp_ErrorState );
     mp_RSStandby = new CRsStandby(mp_SchedulerMachine, mp_ErrorState);
+    mp_RSStandbyWithTissue = new CRsStandbyWithTissue(mp_SchedulerMachine, mp_ErrorState);
 
     mp_InitState->addTransition(this, SIGNAL(SchedulerInitComplete()), mp_IdleState);
     mp_IdleState->addTransition(this, SIGNAL(RunSignal()), mp_BusyState);
@@ -106,6 +107,12 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     connect(this, SIGNAL(sigShutdownFailedHeater()), mp_RSStandby, SIGNAL(ShutdownFailedHeater()));
     connect(this, SIGNAL(sigShutdownFailedHeaterFinished()), mp_RSStandby, SIGNAL(ShutdownFailedHeaterFinished()));
 
+    connect(this, SIGNAL(sigReleasePressureAtRsStandByWithTissue()), mp_RSStandbyWithTissue, SIGNAL(ReleasePressure()));
+    connect(this, SIGNAL(sigShutdownFailedHeaterAtRsStandByWithTissue()), mp_RSStandbyWithTissue, SIGNAL(ShutdownFailedHeater()));
+    connect(this, SIGNAL(sigShutdownFailedHeaterFinishedAtRsStandByWithTissue()), mp_RSStandbyWithTissue, SIGNAL(ShutdownFailedHeaterFinished()));
+    connect(this, SIGNAL(sigRTBottomStopTempCtrlAtRsStandByWithTissue()), mp_RSStandbyWithTissue, SIGNAL(RTBottomStopTempCtrl()));
+    connect(this, SIGNAL(sigRTTopStopTempCtrlAtRsStandByWithTissue()), mp_RSStandbyWithTissue, SIGNAL(RTTopStopTempCtrl()));
+
     connect(mp_ProgramStepStates, SIGNAL(OnInit()), this, SIGNAL(sigOnInit()));
     connect(mp_ProgramStepStates, SIGNAL(OnHeatLevelSensorTempS1()), this, SIGNAL(sigOnHeatLevelSensorTempS1()));
     connect(mp_ProgramStepStates, SIGNAL(OnHeatLevelSensorTempS2()), this, SIGNAL(sigOnHeatLevelSensorTempS2()));
@@ -126,8 +133,14 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     connect(mp_ProgramStepStates, SIGNAL(OnStateExited()), this, SLOT(OnStateChanged()));
     connect(mp_RSRvGetOriginalPositionAgain, SIGNAL(OnRvMoveToInitPosition()), this, SIGNAL(sigOnRsRvMoveToInitPosition()));
     connect(mp_RCReport, SIGNAL(OnRCReport()), this, SIGNAL(sigOnRCReport()));
+
     connect(mp_RSStandby, SIGNAL(OnReleasePressure()), this, SIGNAL(sigOnRsReleasePressure()));
     connect(mp_RSStandby, SIGNAL(OnShutdownFailedHeater()), this, SIGNAL(sigOnRsShutdownFailedHeater()));
+
+    connect(mp_RSStandbyWithTissue, SIGNAL(OnReleasePressure()), this, SIGNAL(sigOnRsReleasePressureAtRsStandByWithTissue()));
+    connect(mp_RSStandbyWithTissue, SIGNAL(OnShutdownFailedHeater()), this, SIGNAL(sigOnRsShutdownFailedHeaterAtRsStandByWithTissue()));
+    connect(mp_RSStandbyWithTissue, SIGNAL(OnRTBottomStopTempCtrl()), this, SIGNAL(sigOnRsRTBottomStopTempCtrlAtRsStandByWithTissue()));
+    connect(mp_RSStandbyWithTissue, SIGNAL(OnRTTopStopTempCtrl()), this, SIGNAL(sigOnRsRTTopStopTempCtrlAtRsStandByWithTissue()));
 }
 
 void CSchedulerStateMachine::OnStateChanged()
@@ -178,6 +191,9 @@ CSchedulerStateMachine::~CSchedulerStateMachine()
 
     delete mp_RSStandby;
     mp_RSStandby = NULL;
+
+    delete mp_RSStandbyWithTissue;
+    mp_RSStandbyWithTissue = NULL;
 
     delete mp_ProgramStepStates;
     mp_ProgramStepStates = NULL;
@@ -420,6 +436,31 @@ void CSchedulerStateMachine::NotifyRsShutdownFailedHeater()
 void CSchedulerStateMachine::NotifyRsShutdownFailedHeaterFinished()
 {
     emit sigShutdownFailedHeaterFinished();
+}
+
+void CSchedulerStateMachine::NotifyRsReleasePressureAtRsStandByWithTissue()
+{
+    emit sigReleasePressureAtRsStandByWithTissue();
+}
+
+void CSchedulerStateMachine::NotifyRsShutdownFailedHeaterAtRsStandByWithTissue()
+{
+    emit sigShutdownFailedHeaterAtRsStandByWithTissue();
+}
+
+void CSchedulerStateMachine::NotifyRsShutdownFailedHeaterFinishedAtRsStandByWithTissue()
+{
+    emit sigShutdownFailedHeaterFinishedAtRsStandByWithTissue();
+}
+
+void CSchedulerStateMachine::NotifyRsRTBottomStopTempCtrlAtRsStandByWithTissue()
+{
+    emit sigRTBottomStopTempCtrlAtRsStandByWithTissue();
+}
+
+void CSchedulerStateMachine::NotifyRsRTTopStopTempCtrlAtRsStandByWithTissue()
+{
+    emit sigRTTopStopTempCtrlAtRsStandByWithTissue();
 }
 
 void CSchedulerStateMachine::NotifyResume()

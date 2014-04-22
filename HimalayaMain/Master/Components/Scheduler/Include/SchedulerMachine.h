@@ -23,10 +23,10 @@
 #define SCHEDULERMACHINE_H
 
 #include <QStateMachine>
-//#include "SchedulerMainThreadController.h"
 #include "ProgramStepStateMachine.h"
 #include "RsRvGetOriginalPositionAgain.h"
 #include "RsStandby.h"
+#include "RsStandbyWithTissue.h"
 #include "RCReport.h"
 
 namespace Scheduler{
@@ -52,6 +52,7 @@ private:
     CRsRvGetOriginalPositionAgain *mp_RSRvGetOriginalPositionAgain;
     CRsStandby *mp_RSStandby;
     CRCReport *mp_RCReport;
+    CRsStandbyWithTissue *mp_RSStandbyWithTissue;
     SchedulerStateMachine_t m_PreviousState;
     SchedulerStateMachine_t m_CurrentState;
 
@@ -101,6 +102,11 @@ public:
     void NotifyRsReleasePressure();
     void NotifyRsShutdownFailedHeater();
     void NotifyRsShutdownFailedHeaterFinished();
+    void NotifyRsReleasePressureAtRsStandByWithTissue();
+	void NotifyRsShutdownFailedHeaterAtRsStandByWithTissue();
+	void NotifyRsShutdownFailedHeaterFinishedAtRsStandByWithTissue();
+	void NotifyRsRTBottomStopTempCtrlAtRsStandByWithTissue();
+	void NotifyRsRTTopStopTempCtrlAtRsStandByWithTissue();
 
     void UpdateCurrentState(SchedulerStateMachine_t currentState);
     SchedulerStateMachine_t GetCurrentState();
@@ -158,6 +164,12 @@ signals:
     void sigShutdownFailedHeater();
     void sigShutdownFailedHeaterFinished();
 
+    void sigReleasePressureAtRsStandByWithTissue();
+    void sigShutdownFailedHeaterAtRsStandByWithTissue();
+    void sigShutdownFailedHeaterFinishedAtRsStandByWithTissue();
+    void sigRTBottomStopTempCtrlAtRsStandByWithTissue();
+    void sigRTTopStopTempCtrlAtRsStandByWithTissue();
+
     void sigOnInit();
     void sigOnHeatLevelSensorTempS1();
     void sigOnHeatLevelSensorTempS2();
@@ -179,6 +191,11 @@ signals:
     void sigOnRsShutdownFailedHeater();
     void sigOnRVPositionCheck();
     void sigOnSealingCheck();
+
+    void sigOnRsReleasePressureAtRsStandByWithTissue();
+    void sigOnRsShutdownFailedHeaterAtRsStandByWithTissue();
+    void sigOnRsRTBottomStopTempCtrlAtRsStandByWithTissue();
+    void sigOnRsRTTopStopTempCtrlAtRsStandByWithTissue();
 };
 }
 
