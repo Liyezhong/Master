@@ -31,6 +31,7 @@ namespace Programs {
  *  \brief Constructor
  *
  *  \iparam p_Parent = Parent object
+ *  \param p_MainWindow =  MainMenu::CMainWindow type parameter
  */
 /****************************************************************************/
 CModifyProgramIconDlg::CModifyProgramIconDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow) :
@@ -143,6 +144,8 @@ void CModifyProgramIconDlg::OnOk()
 /****************************************************************************/
 /*!
  *  \brief Selects the Icon in the Widget
+ *
+ *  \param Id = int type parameter
  */
 /****************************************************************************/
  void CModifyProgramIconDlg::OnIconGroup(int Id)

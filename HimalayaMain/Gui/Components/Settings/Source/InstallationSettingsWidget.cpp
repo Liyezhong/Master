@@ -213,6 +213,8 @@ void CInstallationSettingsWidget::OnESCClicked()
 /****************************************************************************/
 /*!
  *  \brief this function is called when keyboard ok clickeds
+ *
+ *  \param EnteredText = QString type parameter
  */
 /****************************************************************************/
 void CInstallationSettingsWidget::OnOkClicked(QString EnteredText)

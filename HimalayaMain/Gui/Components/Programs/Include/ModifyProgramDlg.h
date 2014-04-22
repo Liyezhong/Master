@@ -136,6 +136,8 @@ private:
     /*!
      *  \brief  Definition/Declaration of function ButtonPrgIconEnable
      *
+     *  \param enable = bool type parameter
+     *
      *  \return from ButtonPrgIconEnable
      */
     /****************************************************************************/

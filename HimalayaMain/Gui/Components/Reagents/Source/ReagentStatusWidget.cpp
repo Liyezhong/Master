@@ -191,6 +191,8 @@ void CReagentStatusWidget::OnSetAsFull()
 /****************************************************************************/
 /*!
  *  \brief Displays a dialog for the modification of a staining reagent
+ *
+ *  \param RMSValue =  Global::RMSOptions_t type parameter
  */
 /****************************************************************************/
 void CReagentStatusWidget::RMSChanged(const Global::RMSOptions_t RMSValue)

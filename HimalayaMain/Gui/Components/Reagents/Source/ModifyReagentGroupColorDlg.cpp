@@ -30,6 +30,7 @@ namespace Reagents {
  *  \brief Constructor
  *
  *  \iparam p_Parent = Parent object
+ *  \param p_MainWindow =  MainMenu::CMainWindow type parameter
  */
 /****************************************************************************/
 CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow) :
@@ -189,6 +190,8 @@ void CModifyReagentGroupColorDlg::OnProcessStateChanged()
 /****************************************************************************/
 /**
  * \brief Slot will be called when ButtonGroup is clicked
+ *
+ *  \param Id = int type parameter
  */
 /****************************************************************************/
 

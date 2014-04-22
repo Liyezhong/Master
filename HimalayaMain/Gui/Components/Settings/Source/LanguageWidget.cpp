@@ -253,7 +253,7 @@ void CLanguageWidget::InitDialog()
 /*!
  *  \brief Used to set pointer to mainwindow, used to retreive user role and
  *         process state changed.
- *  iparam p_MainWindow = Reference to Mainwindow
+ *  \iparam p_MainWindow = Reference to Mainwindow
  *  \iparam p_DataConnector = Reference to DataConnector
  */
 /****************************************************************************/

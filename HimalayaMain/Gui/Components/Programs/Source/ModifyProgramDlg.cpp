@@ -629,6 +629,8 @@ void CModifyProgramDlg::OnESCClicked()
 /****************************************************************************/
 /*!
  *  \brief This slot is called when OK button on Keyboard is clicked.
+ *
+ *  \param EnteredText = QString type parameter
  */
 /****************************************************************************/
 void CModifyProgramDlg::OnOkClicked(QString EnteredText)

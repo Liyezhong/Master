@@ -52,6 +52,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetPanelIcon
      *
+     *  \param icon =  QString type parameter
+     *
      *  \return from SetPanelIcon
      */
     /****************************************************************************/

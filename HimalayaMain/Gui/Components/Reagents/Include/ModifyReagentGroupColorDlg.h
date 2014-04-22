@@ -76,6 +76,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetReagentGroupList
      *
+     *  \param ReagentGroupList = DataManager::CDataReagentGroupList type parameter
+     *  \param ReagentGroup =  DataManager::CReagentGroup type parameter
+     *
      *  \return from SetReagentGroupList
      */
     /****************************************************************************/

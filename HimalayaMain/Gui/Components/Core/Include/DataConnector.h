@@ -124,6 +124,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function EmitUpdateModeSignal
      *
+     *  \param Mode = QString type parameter
+     *
      *  \return from EmitUpdateModeSignal
      */
     /****************************************************************************/
@@ -664,6 +666,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function UpdateStationResetDataHandler
      *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Command =  MsgClasses::CmdStationResetData type parameter
+     *
      *  \return from UpdateStationResetDataHandler
      */
     /****************************************************************************/
@@ -671,6 +676,9 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function UpdateStationSetAsEmptyHandler
+     *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Command =  MsgClasses::CmdStationSetAsEmpty type parameter
      *
      *  \return from UpdateStationSetAsEmptyHandler
      */
@@ -680,6 +688,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function UpdateStationSetAsFullHandler
      *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Command =  MsgClasses::CmdStationSetAsFull type parameter
+     *
      *  \return from UpdateStationSetAsFullHandler
      */
     /****************************************************************************/
@@ -687,6 +698,9 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function UpdateStationReagentStatus
+     *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Command =  MsgClasses::CmdUpdateStationReagentStatus type parameter
      *
      *  \return from UpdateStationReagentStatus
      */
@@ -697,6 +711,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function CurrentProgramStepInfoHandler
      *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Command =  MsgClasses::CmdCurrentProgramStepInfor type parameter
+     *
      *  \return from CurrentProgramStepInfoHandler
      */
     /****************************************************************************/
@@ -704,6 +721,9 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ProgramAcknowledgeHandler
+     *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Command =  MsgClasses::CmdProgramAcknowledge type parameter
      *
      *  \return from ProgramAcknowledgeHandler
      */
@@ -713,6 +733,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function StationParaffinBathStatusHandler
      *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Command =  MsgClasses::CmdStationSuckDrain type parameter
+     *
      *  \return from StationParaffinBathStatusHandler
      */
     /****************************************************************************/
@@ -720,6 +743,9 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ProgramSelectedReplyHandler
+     *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Command =  MsgClasses::CmdProgramSelectedReply type parameter
      *
      *  \return from ProgramSelectedReplyHandler
      */
@@ -729,6 +755,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function RetortLockStatusHandler
      *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Command =  MsgClasses::CmdLockStatus type parameter
+     *
      *  \return from RetortLockStatusHandler
      */
     /****************************************************************************/
@@ -736,6 +765,9 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function AppQuitSystemShutdownRelyHandler
+     *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Command =  MsgClasses::CmdQuitAppShutdownReply type parameter
      *
      *  \return from AppQuitSystemShutdownRelyHandler
      */

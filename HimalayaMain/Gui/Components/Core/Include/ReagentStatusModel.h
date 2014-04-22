@@ -92,6 +92,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetRMSCleaningOption
      *
+     *  \param Value = Global::RMSOptions_t type parameter
+     *
      *  \return from SetRMSCleaningOption
      */
     /****************************************************************************/

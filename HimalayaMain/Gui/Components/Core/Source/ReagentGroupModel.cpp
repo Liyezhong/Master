@@ -52,6 +52,7 @@ CReagentGroupModel::CReagentGroupModel(QObject *p_Parent) : QAbstractTableModel(
  *  \brief Initializes the reagent group data
  *
  *  \iparam p_ReagentGroupList = Reagent data
+ *  \param Columns =  qint32 type parameter
  */
  /****************************************************************************/
 void CReagentGroupModel::SetReagentGroupList(DataManager::CDataReagentGroupList *p_ReagentGroupList, qint32 Columns)
@@ -209,7 +210,10 @@ QVariant CReagentGroupModel::headerData(int Section, Qt::Orientation Orientation
 /****************************************************************************/
 /*!
  *  \brief This Function Gets Reagent ID of given Reagent Long name.
+ *
  *  \iparam ReagentName
+ *
+ *  \return return from GetReagentID
  */
 /****************************************************************************/
 QString CReagentGroupModel::GetReagentID(const QString ReagentName)

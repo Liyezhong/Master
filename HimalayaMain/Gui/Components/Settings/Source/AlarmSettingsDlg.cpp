@@ -369,6 +369,8 @@ void CAlarmSettingsDlg::OnPlayTone()
 /****************************************************************************/
 /*!
  *  \brief Called when the periodic slider is changed.
+ *
+ *  \param Position = MainMenu::CSliderControl::Position_t type parameter
  */
 /****************************************************************************/
 void CAlarmSettingsDlg::OnPeriodicChanged(MainMenu::CSliderControl::Position_t Position)

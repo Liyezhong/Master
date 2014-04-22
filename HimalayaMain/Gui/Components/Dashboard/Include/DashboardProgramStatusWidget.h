@@ -39,6 +39,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CDashboardProgramStatusWidget
      *
+     *  \param parent = QWidget type parameter
+     *
      *  \return from CDashboardProgramStatusWidget
      */
     /****************************************************************************/
@@ -47,6 +49,15 @@ public:
      /****************************************************************************/
      /*!
       *  \brief  Definition/Declaration of function InitDialog
+      *
+      *  \param p_Program
+      *  \param pDataConnector
+      *  \param StationNameList
+      *  \param CurProgramStepIndex
+      *  \param StepRemainingTime
+      *  \param ProgramRemainingTime
+      *  \param endDateTime
+      *  \param bAbortButtonEnabled
       *
       *  \return from InitDialog
       */
@@ -58,6 +69,8 @@ protected:
      /****************************************************************************/
      /*!
       *  \brief  Definition/Declaration of function changeEvent
+      *
+      *  \param p_Event = QEvent type parameter
       *
       *  \return from changeEvent
       */

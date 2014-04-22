@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file PausePushButton.h
+/*! \file Himalaya/HimalayaMain/Gui/Components/Dashboard/Source/PausePushButton.h
  *
  *  \brief Header file for class CPausePushButton.
  *
@@ -39,6 +39,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function CPausePushButton
+     *
+     *  \param p_Parent = QWidget type parameter
      *
      *  \return from CPausePushButton
      */

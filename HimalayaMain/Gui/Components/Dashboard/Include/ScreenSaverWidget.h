@@ -21,6 +21,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function ScreenSaverWidget
      *
+     *  \param parent
+     *
      *  \return from ScreenSaverWidget
      */
     /****************************************************************************/

@@ -35,6 +35,7 @@ const int ONE_WEEK_TIME_OFFSET_VALUE = (7 * 24 * 60 * 60);       ///<  Definiti
  *  \brief Constructor
  *
  *  \iparam p_Parent = Parent object
+ *  \param pMainWindow =  QMainWindow type parameter
  */
 /****************************************************************************/
 CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent, QMainWindow *pMainWindow)

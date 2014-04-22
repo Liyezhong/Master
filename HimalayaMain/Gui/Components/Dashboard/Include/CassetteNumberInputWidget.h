@@ -26,6 +26,9 @@ namespace Dashboard {
         /*!
          *  \brief  Definition/Declaration of function CCassetteNumberInputWidget
          *
+         *  \param pParent = QWidget type parameter
+         *  \param pMainWindow
+         *
          *  \return from CCassetteNumberInputWidget
          */
         /****************************************************************************/

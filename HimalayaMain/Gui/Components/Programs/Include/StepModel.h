@@ -63,6 +63,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function ShowStation
      *
+     *  \param bSet = bool type parameter
+     *
      *  \return from ShowStation
      */
     /****************************************************************************/
@@ -79,6 +81,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetCurSelectRowIndex
      *
+     *  \param index = int type parameter
+     *
      *  \return from SetCurSelectRowIndex
      */
     /****************************************************************************/
@@ -87,6 +91,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function ShowPV
      *
+     *  \param Step = DataManager::CProgramStep type parameter
+     *
      *  \return from ShowPV
      */
     /****************************************************************************/
@@ -94,6 +100,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ShowTemperature
+     *
+     *  \param Step = DataManager::CProgramStep type parameter
      *
      *  \return from ShowTemperature
      */

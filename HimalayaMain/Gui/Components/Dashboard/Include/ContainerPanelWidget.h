@@ -78,6 +78,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CContainerPanelWidget
      *
+     *  \param p_Parent = QWidget type parameter
+     *
      *  \return from CContainerPanelWidget
      */
     /****************************************************************************/
@@ -87,6 +89,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetPtrToMainWindow
      *
+     *  \param p_MainWindow = MainMenu::CMainWindow type parameter
+     *  \param p_DataConnector =  Core::CDataConnector type parameter
+     *
      *  \return from SetPtrToMainWindow
      */
     /****************************************************************************/
@@ -94,6 +99,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function UpdateRetortStatus
+     *
+     *  \param retortStatusType = DataManager::ContainerStatusType_t type parameter
      *
      *  \return from UpdateRetortStatus
      */
@@ -115,6 +122,8 @@ protected:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function changeEvent
+     *
+     *  \param p_Event = QEvent type parameter
      *
      *  \return from changeEvent
      */

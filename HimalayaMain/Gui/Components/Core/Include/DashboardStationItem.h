@@ -95,6 +95,8 @@ private:
     /*!
      *  \brief  Definition/Declaration of function OnCompletedSuckDrain
      *
+     *  \param isSuck = bool type parameter
+     *
      *  \return from OnCompletedSuckDrain
      */
     /****************************************************************************/
@@ -102,6 +104,11 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function DrawGlowBoundaryText
+     *
+     *  \param textFont = QFont type parameter
+     *  \param text =  QString type parameter
+     *  \param rect =  QRect type parameter
+     *  \param painter =  QPainter type parameter
      *
      *  \return from DrawGlowBoundaryText
      */
@@ -123,6 +130,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function DrawStationItemLabel
      *
+     *  \param painter = QPainter type parameter
+     *
      *  \return from DrawStationItemLabel
      */
     /****************************************************************************/
@@ -130,6 +139,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function FillReagentColor
+     *
+     *  \param Painter = QPainter type parameter
      *
      *  \return from FillReagentColor
      */
@@ -139,6 +150,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetContainerStatus
      *
+     *  \param containerStatus = DataManager::ContainerStatusType_t type parameter
+     *
      *  \return from SetContainerStatus
      */
     /****************************************************************************/
@@ -147,6 +160,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetContainerRetortLockedStatus
      *
+     *  \param locked = bool type parameter
+     *
      *  \return from SetContainerRetortLockedStatus
      */
     /****************************************************************************/
@@ -154,6 +169,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function EnableBlink
+     *
+     *  \param bEnable = bool type parameter
      *
      *  \return from EnableBlink
      */
@@ -205,6 +222,10 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SuckDrain
+     *
+     *  \param isStart = bool type parameter
+     *  \param isSuck
+     *  \param ReagentColorValue
      *
      *  \return from SuckDrain
      */

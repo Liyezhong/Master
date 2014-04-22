@@ -49,6 +49,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetUserSettings
      *
+     *  \param p_UserSettings = DataManager::CHimalayaUserSettings type parameter
+     *
      *  \return from SetUserSettings
      */
     /****************************************************************************/
@@ -76,6 +78,8 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetFormattedDateString
+     *
+     *  \param dateTime =  QDateTime type parameter
      *
      *  \return from GetFormattedDateString
      */

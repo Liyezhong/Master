@@ -95,6 +95,8 @@ private:
     /*!
      *  \brief  Definition/Declaration of function AddStepsToExpandedStepList
      *
+     *  \param Program = CProgram type parameter
+     *
      *  \return from AddStepsToExpandedStepList
      */
     /****************************************************************************/
@@ -110,6 +112,10 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function CompareSteps
+     *
+     *  \param CurrentProgramStep = CProgramStep type parameter
+     *  \param NextProgramStep =  CProgramStep type parameter
+     *  \param OK =  bool type parameter
      *
      *  \return from CompareSteps
      */
@@ -133,6 +139,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function RefreshExpandedStepList
      *
+     *  \param ProgramID = QString type parameter
+     *
      *  \return from RefreshExpandedStepList
      */
     /****************************************************************************/
@@ -152,6 +160,10 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetProgramStepExpanded
+     *
+     *  \param Index =  unsigned int type parameter
+     *  \param p_Program =  CProgram type parameter
+     *  \param p_ProgStep =  CProgramStep type parameter
      *
      *  \return from GetProgramStepExpanded
      */

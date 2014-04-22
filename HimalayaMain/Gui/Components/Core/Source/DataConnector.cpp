@@ -1096,6 +1096,9 @@ void CDataConnector::RetranslateUI()
 /****************************************************************************/
 /*!
  *  \brief This slot is called when  ---- is emitted.
+ *
+ *  \param Name =  QString type parameter
+ *  \param ParamList =  QStringList type parameter
  */
 /****************************************************************************/
 void CDataConnector::SendDataImportExport(const QString Name, const QStringList &ParamList)
@@ -1592,6 +1595,8 @@ void CDataConnector::OnReagentAck(Global::tRefType Ref, const Global::AckOKNOK &
 /****************************************************************************/
 /*!
  *  \brief OnCurrentTabChanged
+ *
+ *  \param CurrentTabIndex = int type parameter
  */
 /****************************************************************************/
 void CDataConnector::OnCurrentTabChanged(int CurrentTabIndex)

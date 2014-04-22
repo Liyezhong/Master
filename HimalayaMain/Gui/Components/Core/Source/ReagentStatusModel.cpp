@@ -392,7 +392,10 @@ QVariant CReagentStatusModel::headerData(int Section, Qt::Orientation Orientatio
 /****************************************************************************/
 /*!
  *  \brief This Function Gets Reagent ID of given Reagent Long name.
+ *
  *  \iparam ReagentName
+ *
+ *  \return return from GetReagentID
  */
 /****************************************************************************/
 QString CReagentStatusModel::GetReagentID(const QString ReagentName)

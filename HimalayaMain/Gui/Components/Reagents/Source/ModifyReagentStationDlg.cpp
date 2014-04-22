@@ -30,6 +30,8 @@ namespace Reagents {
  *  \brief Constructor
  *
  *  \iparam p_Parent = Parent object
+ *  \param p_MainWindow =  MainMenu::CMainWindow type parameter
+ *  \param p_DataConnector =  Core::CDataConnector type parameter
  */
 /****************************************************************************/
 CModifyReagentStationDlg::CModifyReagentStationDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector) :

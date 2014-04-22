@@ -111,6 +111,8 @@ public:
 	/*!
 	 *  \brief  Definition/Declaration of function GetReagentLongName
 	 *
+	 *  \param ReagentId = QString type parameter
+	 *
 	 *  \return from GetReagentLongName
 	 */
 	/****************************************************************************/
@@ -118,6 +120,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetUserSettings
+     *
+     *  \param p_UserSettings = DataManager::CUserSettings type parameter
      *
      *  \return from SetUserSettings
      */

@@ -49,6 +49,10 @@ struct PipePathAndOrientation
     /*!
      *  \brief  Definition/Declaration of function PipePathAndOrientation
      *
+     *  \param painterPath
+     *  \param orientation
+     *  \param brushOrigin
+     *
      *  \return from PipePathAndOrientation
      */
     /****************************************************************************/
@@ -84,6 +88,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function UpdateRetortStatus
      *
+     *  \param retortStatusType = DataManager::ContainerStatusType_t type parameter
+     *
      *  \return from UpdateRetortStatus
      */
     /****************************************************************************/
@@ -91,6 +97,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function UpdateRetortLockedStatus
+     *
+     *  \param locked = bool type parameter
      *
      *  \return from UpdateRetortLockedStatus
      */
@@ -108,6 +116,10 @@ public:
     /*!
      *  \brief  Definition/Declaration of function OnStationSuckDrain
      *
+     *  \param StationId =  QString type parameter
+     *  \param IsStart =  bool type parameter
+     *  \param IsSuck =  bool type parameter
+     *
      *  \return from OnStationSuckDrain
      */
     /****************************************************************************/
@@ -123,6 +135,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ExpiredReagentStationBlinking
+     *
+     *  \param bStart = bool type parameter
      *
      *  \return from ExpiredReagentStationBlinking
      */
@@ -203,6 +217,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function AddPathLeftTopArc
      *
+     *  \param path = QPainterPath type parameter
+     *  \param pnt =  QPointF type parameter
+     *
      *  \return from AddPathLeftTopArc
      */
     /****************************************************************************/
@@ -210,6 +227,9 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function AddPathRightTopArc
+     *
+     *  \param path = QPainterPath type parameter
+     *  \param pnt =  QPointF type parameter
      *
      *  \return from AddPathRightTopArc
      */
@@ -219,6 +239,10 @@ private:
     /*!
      *  \brief  Definition/Declaration of function MakeHorizontalPipePath
      *
+     *  \param stationID =  QString type parameter
+     *  \param otherStationID =  QString type parameter
+     *  \param bShooter =  bool type parameter
+     *
      *  \return from MakeHorizontalPipePath
      */
     /****************************************************************************/
@@ -226,6 +250,12 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function MakeHorizontalBinaryPipePath
+     *
+     *  \param stationID
+     *  \param OtherStationID
+     *  \param MidTopStationID
+     *  \param IsReturnLeftOne
+     *  \param bShortor
      *
      *  \return from MakeHorizontalBinaryPipePath
      */
@@ -252,6 +282,8 @@ private:
     /*!
      *  \brief  Definition/Declaration of function GetPipeList
      *
+     *  \param StationID =  QString type parameter
+     *
      *  \return from GetPipeList
      */
     /****************************************************************************/
@@ -259,6 +291,8 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function RepresentCurrentWorkingPipe
+     *
+     *  \param StationID =  QString type parameter
      *
      *  \return from RepresentCurrentWorkingPipe
      */
@@ -277,6 +311,9 @@ private:
     /*!
      *  \brief  Definition/Declaration of function RepresentUsedPipe
      *
+     *  \param selectedStationList =  QList<QString> type parameter
+     *  \param isRunning =  bool type parameter
+     *
      *  \return from RepresentUsedPipe
      */
     /****************************************************************************/
@@ -292,6 +329,8 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function EnableBlink
+     *
+     *  \param bEnable = bool type parameter
      *
      *  \return from EnableBlink
      */

@@ -126,6 +126,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetRadioButtonStatus
      *
+     *  \param Pressure =  QString type parameter
+     *  \param Vaccum =  QString type parameter
+     *
      *  \return from SetRadioButtonStatus
      */
     /****************************************************************************/

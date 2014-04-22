@@ -78,6 +78,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetUserSettings
      *
+     *  \param p_UserSettings = DataManager::CUserSettings type parameter
+     *
      *  \return from SetUserSettings
      */
     /****************************************************************************/

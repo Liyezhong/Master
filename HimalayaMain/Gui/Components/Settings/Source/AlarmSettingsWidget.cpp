@@ -238,6 +238,8 @@ void CAlarmSettingsWidget::OnProcessStateChanged()
 /****************************************************************************/
 /*!
  *  \brief This slot is called when Alarm Setting changes
+ *
+ *  \param Settings = DataManager::CUserSettings type parameter
  */
 /****************************************************************************/
 void CAlarmSettingsWidget:: AlarmSettingsChange(DataManager::CUserSettings &Settings)

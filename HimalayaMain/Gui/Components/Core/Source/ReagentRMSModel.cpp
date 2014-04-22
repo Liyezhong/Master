@@ -318,6 +318,8 @@ QVariant CReagentRMSModel::headerData(int Section, Qt::Orientation Orientation, 
  *  \brief This Function Gets Reagent ID of given Reagent Long name.
  *
  *  \iparam ReagentName
+ *
+ *  \return return from GetReagentID
  */
 /****************************************************************************/
 QString CReagentRMSModel::GetReagentID(const QString ReagentName)
@@ -331,6 +333,8 @@ QString CReagentRMSModel::GetReagentID(const QString ReagentName)
  *  \brief This Function Gets Reagent ID of given Reagent Long name.
  *
  *  \iparam Index
+ *
+ *  \return  return from GetReagentID
  */
 /****************************************************************************/
 QString CReagentRMSModel::GetReagentID(int Index)

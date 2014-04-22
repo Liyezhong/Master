@@ -30,6 +30,7 @@ namespace Settings {
  *
  *  \iparam p_Data = Global data connector
  *  \iparam p_Parent = Parent object
+ *  \param  p_Keyboard
  */
 /****************************************************************************/
 CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWindow *p_Parent,

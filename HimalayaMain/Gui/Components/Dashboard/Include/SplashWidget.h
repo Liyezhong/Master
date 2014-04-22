@@ -21,6 +21,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SplashWidget
      *
+     *  \param parent
+     *
      *  \return from SplashWidget
      */
     /****************************************************************************/

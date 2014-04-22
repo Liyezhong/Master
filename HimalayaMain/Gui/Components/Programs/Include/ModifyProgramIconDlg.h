@@ -76,6 +76,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function EnableAvailableIcon
      *
+     *  \param pProgramList = DataManager::CDataProgramList type parameter
+     *
      *  \return from EnableAvailableIcon
      */
     /****************************************************************************/

@@ -54,6 +54,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CDashboardWidget
      *
+     *  \param p_DataConnector
+     *  \param p_Parent
+     *
      *  \return from CDashboardWidget
      */
     /****************************************************************************/
@@ -73,6 +76,8 @@ protected:
     /*!
      *  \brief  Definition/Declaration of function changeEvent
      *
+     *  \param p_Event = QEvent type parameter
+     *
      *  \return from changeEvent
      */
     /****************************************************************************/
@@ -82,6 +87,8 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function IsParaffinInProgram
+     *
+     *  \param p_Program =  DataManager::CProgram type parameter
      *
      *  \return from IsParaffinInProgram
      */

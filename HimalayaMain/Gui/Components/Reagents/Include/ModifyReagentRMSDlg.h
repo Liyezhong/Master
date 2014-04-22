@@ -96,6 +96,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function EnableElements
      *
+     *  \param m_Enable = bool type parameter
+     *
      *  \return from EnableElements
      */
     /****************************************************************************/
@@ -124,6 +126,8 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ShowReagentValue
+     *
+     *  \param Option = Global::RMSOptions_t type parameter
      *
      *  \return from ShowReagentValue
      */

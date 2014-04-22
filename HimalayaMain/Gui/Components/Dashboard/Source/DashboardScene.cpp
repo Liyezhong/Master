@@ -37,6 +37,7 @@ const int JointHeight = 10;
  *
  *  \iparam p_DataConnector = Global data container
  *  \iparam p_Parent = Parent object
+ *  \param  p_MainWindow
  */
 /****************************************************************************/
 CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
@@ -351,6 +352,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CPipeGraphicsPathItem
      *
+     *  \param path =  QPainterPath type parameter
+     *  \param brushOrigin =  QPointF type parameter
+     *
      *  \return from CPipeGraphicsPathItem
      */
     /****************************************************************************/
@@ -361,6 +365,10 @@ public:
   /****************************************************************************/
   /*!
    *  \brief  Definition/Declaration of function paint
+   *
+   *  \param painter = QPainter type parameter
+   *  \param option =  QStyleOptionGraphicsItem type parameter
+   *  \param widget =  QWidget type parameter
    *
    *  \return from paint
    */

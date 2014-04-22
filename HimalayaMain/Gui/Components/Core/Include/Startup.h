@@ -60,6 +60,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function InitialiseDeviceMode
      *
+     *  \param Mode = QString type parameter
+     *
      *  \return from InitialiseDeviceMode
      */
     /****************************************************************************/

@@ -194,6 +194,8 @@ void CNetworkSettingsWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWin
 /****************************************************************************/
 /*!
  *  \brief This slot is called when DirectConnection checkBox state is changed.
+ *
+ *  \param State = int type parameter
  */
 /****************************************************************************/
 void CNetworkSettingsWidget::OnDirectConnectionStateChanged(int State)
@@ -356,6 +358,8 @@ void CNetworkSettingsWidget::OnESCClicked()
 /****************************************************************************/
 /*!
  *  \brief This slot is called when Ok button on KeyBoard is pressed.
+ *
+ *  \param EnteredText = QString type parameter
  */
 /****************************************************************************/
 void CNetworkSettingsWidget::OnOkClicked(QString EnteredText)

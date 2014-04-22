@@ -50,6 +50,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CProgramPanelWidget
      *
+     *  \param parent = QWidget type parameter
+     *
      *  \return from CProgramPanelWidget
      */
     /****************************************************************************/
@@ -59,6 +61,9 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetPtrToMainWindow
+     *
+     *  \param p_MainWindow = MainMenu::CMainWindow type parameter
+     *  \param p_DataConnector =  Core::CDataConnector type parameter
      *
      *  \return from SetPtrToMainWindow
      */
@@ -84,6 +89,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function EnableStartButton
      *
+     *  \param bEnable = bool type parameter
+     *
      *  \return from EnableStartButton
      */
     /****************************************************************************/
@@ -92,6 +99,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function EnablePauseButton
      *
+     *  \param bEnable = bool type parameter
+     *
      *  \return from EnablePauseButton
      */
     /****************************************************************************/
@@ -99,6 +108,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function IsResumeRun
+     *
+     *  \param bSet = bool type parameter
      *
      *  \return from IsResumeRun
      */
@@ -179,6 +190,8 @@ protected:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function changeEvent
+     *
+     *  \param p_Event = QEvent type parameter
      *
      *  \return from changeEvent
      */

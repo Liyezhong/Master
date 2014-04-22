@@ -51,6 +51,7 @@ const QString UNLOADER_STEP_ID = "S7";           //!< Unloader id
  *  \brief Constructor
  *
  *  \iparam p_Parent = Parent widget
+ *  \param p_DataConnector =  Core::CDataConnector type parameter
  *  \iparam p_MainWindow = MainWindow widget
  */
 /****************************************************************************/

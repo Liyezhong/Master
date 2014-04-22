@@ -53,6 +53,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function dataStatus
      *
+     *  \param Index =  QModelIndex type parameter
+     *  \param Role =  int type parameter
+     *
      *  \return from dataStatus
      */
     /****************************************************************************/
@@ -132,6 +135,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function IsReagentPresentInBL
      *
+     *  \param ReagentID = QString type parameter
+     *
      *  \return from IsReagentPresentInBL
      */
     /****************************************************************************/
@@ -140,6 +145,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function UpdateList
+     *
+     *  \param p_Reagent =  DataManager::CReagent type parameter
      *
      *  \return from UpdateList
      */

@@ -38,6 +38,8 @@ namespace Dashboard {
         /*!
          *  \brief  Definition/Declaration of function CProgramRunningPanelWidget
          *
+         *  \param parent = QWidget type parameter
+         *
          *  \return from CProgramRunningPanelWidget
          */
         /****************************************************************************/
@@ -46,6 +48,8 @@ namespace Dashboard {
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function SetUserSettings
+         *
+         *  \param pUserSettings = DataManager::CUserSettings type parameter
          *
          *  \return from SetUserSettings
          */
@@ -79,6 +83,8 @@ namespace Dashboard {
         /*!
          *  \brief  Definition/Declaration of function EnableProgramDetailButton
          *
+         *  \param bEnable = bool type parameter
+         *
          *  \return from EnableProgramDetailButton
          */
         /****************************************************************************/
@@ -109,6 +115,8 @@ namespace Dashboard {
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function changeEvent
+         *
+         *  \param p_Event = QEvent type parameter
          *
          *  \return from changeEvent
          */
@@ -158,6 +166,8 @@ namespace Dashboard {
         /*!
          *  \brief  Definition/Declaration of function UpdateDateTime
          *
+         *  \param selDateTime =  QDateTime type parameter
+         *
          *  \return from UpdateDateTime
          */
         /****************************************************************************/
@@ -173,6 +183,8 @@ namespace Dashboard {
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function GetStationNameList
+         *
+         *  \param stationNameList = QList<QString> type parameter
          *
          *  \return from GetStationNameList
          */

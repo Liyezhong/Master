@@ -49,6 +49,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function dataStatus
      *
+     *  \param Index =  QModelIndex type parameter
+     *  \param Role =  int type parameter
+     *
      *  \return from dataStatus
      */
     /****************************************************************************/
@@ -83,6 +86,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetReagentLongName
+     *
+     *  \param Row = int type parameter
      *
      *  \return from GetReagentLongName
      */

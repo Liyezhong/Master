@@ -60,6 +60,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetASAPDateTime
      *
+     *  \param DateTime =  QDateTime type parameter
+     *
      *  \return from SetASAPDateTime
      */
     /****************************************************************************/
@@ -67,6 +69,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetUserSettings
+     *
+     *  \param p_UserSettings = DataManager::CUserSettings type parameter
      *
      *  \return from SetUserSettings
      */
@@ -100,6 +104,8 @@ protected:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function showEvent
+     *
+     *  \param p_Event = QShowEvent type parameter
      *
      *  \return from showEvent
      */

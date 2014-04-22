@@ -40,6 +40,9 @@ public:
     /*!
      *  \brief  Definition/Declaration of function CheckSelectedProgram
      *
+     *  \param bRevertSelectProgram
+     *  \param operatedProgramID
+     *
      *  \return from CheckSelectedProgram
      */
     /****************************************************************************/
@@ -48,6 +51,9 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function TimeToString
+     *
+     *  \param seconds = int type parameter
+     *  \param showSeconds =  bool type parameter
      *
      *  \return from TimeToString
      */

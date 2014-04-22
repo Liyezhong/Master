@@ -53,6 +53,8 @@ public:
     /*!
      *  \brief  Definition/Declaration of function SetColumnNumber
      *
+     *  \param value = qint32 type parameter
+     *
      *  \return from SetColumnNumber
      */
     /****************************************************************************/
@@ -63,6 +65,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SelectedRowIndex
+     *
+     *  \param Index = int type parameter
      *
      *  \return from SelectedRowIndex
      */

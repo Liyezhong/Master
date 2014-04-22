@@ -50,6 +50,8 @@ namespace Dashboard {
         /*!
          *  \brief  Definition/Declaration of function CFavoriteProgramsPanelWidget
          *
+         *  \param parent = QWidget type parameter
+         *
          *  \return from CFavoriteProgramsPanelWidget
          */
         /****************************************************************************/
@@ -58,6 +60,9 @@ namespace Dashboard {
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function SetPtrToMainWindow
+         *
+         *  \param p_MainWindow = MainMenu::CMainWindow type parameter
+         *  \param p_DataConnector =  Core::CDataConnector type parameter
          *
          *  \return from SetPtrToMainWindow
          */
