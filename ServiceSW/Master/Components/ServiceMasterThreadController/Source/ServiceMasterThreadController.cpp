@@ -323,8 +323,6 @@ void ServiceMasterThreadController::AddAndConnectController(ThreadController *pC
     // connect some signals
     CONNECTSIGNALSLOT(this, SendStop(), pController, Stop());
 
-    // connect heartbeat signals
-    CONNECTSIGNALSLOT(pController, HeartbeatSignal(const Global::gSourceType &), this, HeartbeatSlot(const Global::gSourceType &));
     // and set controllers heartbeat timeout
     pController->SetHeartbeatTimeout(m_ControllerHeartbeatTimeout);
     // remember its ID for heartbeat checks

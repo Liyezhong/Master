@@ -156,21 +156,20 @@ void DeviceProcessor::Initialize()
     {
         mp_TempTube2 = new WrapperFmTempControl("temp_tube2", pTemperature, this);
     }
-
-
+*/
     // Pressure control
-    CPressureControl *pPressure;
+   /* CPressureControl *pPressure;
 
     pPressure = NULL;
     pPressure = static_cast<CPressureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALPressureCtrlKey));
     if (NULL != pPressure)
     {
         mp_PressPump = new WrapperFmPressureControl("pressurectrl", pPressure, this);
-    }
+    }*/
 
 
     // Stepper motor control
-    CStepperMotor *pMotor;
+   /* CStepperMotor *pMotor;
 
     pMotor = NULL;
     pMotor = static_cast<CStepperMotor *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_ROTARY_VALVE, CANObjectKeyLUT::m_RVMotorKey));
