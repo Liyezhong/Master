@@ -117,61 +117,61 @@ private:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnEdit
      */
     /****************************************************************************/
     void OnEdit();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnNew
      */
     /****************************************************************************/
     void OnNew();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCopy
      */
     /****************************************************************************/
     void OnCopy();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnDelete
      */
     /****************************************************************************/
     void OnDelete();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SelectionChanged
      */
     /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnUserRoleChanged
      */
     /****************************************************************************/
     void OnUserRoleChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of CloseDialogs
      */
     /****************************************************************************/
     void CloseDialogs();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCurrentTabChanged
      */
     /****************************************************************************/
     void OnCurrentTabChanged(int CurrentIndex);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCancelClicked
      */
     /****************************************************************************/
     void OnCancelClicked();
@@ -299,3 +299,4 @@ signals:
 } // end namespace Programs
 
 #endif // PROGRAMS_PROGRAMWIDGET_H
+

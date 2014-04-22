@@ -80,13 +80,13 @@ private:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnClose
      */
     /****************************************************************************/
     void OnClose();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnAbort
      */
     /****************************************************************************/
     void OnAbort();
@@ -100,3 +100,4 @@ signals:
 };
 }
 #endif // DASHBOARDPROGRAMSTATUS_H
+

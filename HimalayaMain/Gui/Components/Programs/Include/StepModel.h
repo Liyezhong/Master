@@ -116,7 +116,7 @@ private:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateStepModel
      */
     /****************************************************************************/
     void UpdateStepModel();
@@ -125,3 +125,4 @@ private slots:
 } // end namespace Programs
 
 #endif // PROGRAMS_STEPMODEL_H
+

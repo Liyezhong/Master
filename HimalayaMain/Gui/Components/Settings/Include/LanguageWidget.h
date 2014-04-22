@@ -78,19 +78,19 @@ protected:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnBtnApplyClicked
      */
     /****************************************************************************/
     void OnBtnApplyClicked();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SelectionChanged
      */
     /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
@@ -110,3 +110,4 @@ signals:
 } // end namespace Settings
 
 #endif // SETTINGS_LANGUAGEWIDGET_H
+

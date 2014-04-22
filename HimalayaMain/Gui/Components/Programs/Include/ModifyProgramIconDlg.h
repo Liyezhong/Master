@@ -44,7 +44,7 @@ class CModifyProgramIconDlg : public MainMenu::CDialogFrame
 
 private:
     Ui::CModifyProgramIconDlg *mp_Ui;               //!< User interface
-    MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object       ///<  Definition/Declaration of variable m_MessageDlg
+    MainMenu::CMessageDlg m_MessageDlg;             ///<  Definition/Declaration of variable m_MessageDlg
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
     //UI related
@@ -84,31 +84,31 @@ public:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnOk
      */
     /****************************************************************************/
     void OnOk();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCancel
      */
     /****************************************************************************/
     void OnCancel();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnIconGroup
      */
     /****************************************************************************/
     void OnIconGroup(int Id);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SetButtonGroup
      */
     /****************************************************************************/
     void SetButtonGroup();
@@ -142,3 +142,4 @@ signals:
 }
 
 #endif // MODIFYPROGRAMICONDLG_H
+

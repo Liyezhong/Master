@@ -232,3 +232,4 @@ signals:
 } // end namespace NetLayer
 
 #endif // NETLAYER_MASTERLINKDEVICE_H
+

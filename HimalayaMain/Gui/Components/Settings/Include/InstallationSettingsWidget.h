@@ -76,19 +76,19 @@ protected:
  private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnEditclicked
      */
     /****************************************************************************/
     void OnEditclicked();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnOkClicked
      */
     /****************************************************************************/
     void OnOkClicked(QString EnteredText);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnESCClicked
      */
     /****************************************************************************/
     void OnESCClicked();
@@ -98,3 +98,4 @@ protected:
 } // end namespace Settings
 
 #endif // SETTINGS_OVENSETTINGSWIDGET_H
+

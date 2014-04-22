@@ -300,61 +300,61 @@ private:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateDashboardStations
      */
     /****************************************************************************/
     void UpdateDashboardStations();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateDashboardStation
      */
     /****************************************************************************/
     void UpdateDashboardStation(const QString& strStationId);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateDashboardSceneReagentsForProgram
      */
     /****************************************************************************/
     void UpdateDashboardSceneReagentsForProgram(QString&, QList<QString>&);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of PipeSuckDrainAnimation
      */
     /****************************************************************************/
     void PipeSuckDrainAnimation();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of BlinkingStation
      */
     /****************************************************************************/
     void BlinkingStation();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnUpdateUserSettings
      */
     /****************************************************************************/
     void OnUpdateUserSettings();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnInteractStart
      */
     /****************************************************************************/
     void OnInteractStart();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnAppIdle
      */
     /****************************************************************************/
     void OnAppIdle();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCurrentTabChanged
      */
     /****************************************************************************/
     void OnCurrentTabChanged(int);
@@ -364,3 +364,4 @@ private slots:
 } // end namespace Dashboard
 
 #endif // DASHBOARD_DASHBOARDSCENE_H
+

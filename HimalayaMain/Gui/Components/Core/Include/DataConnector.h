@@ -138,165 +138,165 @@ public:
 public slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendDateTime
      */
     /****************************************************************************/
     void SendDateTime(QDateTime DateTime);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendReagentUpdate
      */
     /****************************************************************************/
     void SendReagentUpdate(DataManager::CReagent &Reagent);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendReagentGroupUpdate
      */
     /****************************************************************************/
     void SendReagentGroupUpdate(DataManager::CReagentGroup &ReagentGroup);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendStationChangeReagent
      */
     /****************************************************************************/
     void SendStationChangeReagent(const QString& StationId, const QString& ReagentId);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendStationResetData
      */
     /****************************************************************************/
     void SendStationResetData(const QString& StationId);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendStationSetAsEmpty
      */
     /****************************************************************************/
     void SendStationSetAsEmpty(const QString StationId);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendStationSetAsFull
      */
     /****************************************************************************/
     void SendStationSetAsFull(const QString& StationId);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendRMSChanged
      */
     /****************************************************************************/
     void SendRMSChanged(Global::RMSOptions_t);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendUpdatedSettings
      */
     /****************************************************************************/
     void SendUpdatedSettings(DataManager::CUserSettings &Settings);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendCmdPlayTestToneAlarm
      */
     /****************************************************************************/
     void SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, bool Type);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendReagentAdd
      */
     /****************************************************************************/
     void SendReagentAdd(DataManager::CReagent &Reagent);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendReagentRemove
      */
     /****************************************************************************/
     void SendReagentRemove(QString ReagentID);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendProgramUpdate
      */
     /****************************************************************************/
     void SendProgramUpdate(DataManager::CProgram &Program);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendProgramAdd
      */
     /****************************************************************************/
     void SendProgramAdd(DataManager::CProgram &Program);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendProgramRemove
      */
     /****************************************************************************/
     void SendProgramRemove(QString &ProgramID);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendDataImportExport
      */
     /****************************************************************************/
     void SendDataImportExport(const QString Name, const QStringList &ParamList);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendSWUpdate
      */
     /****************************************************************************/
     void SendSWUpdate(bool USBUpdate);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendProgramColorUpdate
      */
     /****************************************************************************/
     void SendProgramColorUpdate(DataManager::CProgram &ColorReplacedProgram,
                                 DataManager::CProgram &ColorAssignedProgram);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendProgramAction
      */
     /****************************************************************************/
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType,
                            const QDateTime& ProgramEndDateTime = QDateTime::currentDateTime());
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendKeepCassetteCount
      */
     /****************************************************************************/
     void SendKeepCassetteCount(int CassetteCount);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendProgramSelected
      */
     /****************************************************************************/
     void SendProgramSelected(const QString& ProgramID, int ParaffinStepIndex);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendUserLevel
      */
     /****************************************************************************/
     void SendUserLevel(QDataStream &DataStream);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendChangepassword
      */
     /****************************************************************************/
     void SendChangepassword(QDataStream &DataStream);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendSelectedDayRunLogFile
      */
     /****************************************************************************/
     void SendSelectedDayRunLogFile(const QString &FileName);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCurrentTabChanged
      */
     /****************************************************************************/
     void OnCurrentTabChanged(int CurrentTabIndex);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendAppQuitSystemShutdown
      */
     /****************************************************************************/
     void SendAppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendResetOperationDays
      */
     /****************************************************************************/
     void SendResetOperationDays(DataManager::ResetOperationHoursType_t);
@@ -787,9 +787,12 @@ private:
     QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
     QString m_strDeviceCommunication;       ///<  Definition/Declaration of variable m_strDeviceCommunication
     QString m_strSavingSettings;       ///<  Definition/Declaration of variable m_strSavingSettings
-    QString m_strUserExport, m_strExportUserData;       ///<  Definition/Declaration of variable m_strUserExport
-    QString m_strServiceExport, m_strExportServiceData;       ///<  Definition/Declaration of variable m_strServiceExport
-    QString m_strImport, m_strImportData;       ///<  Definition/Declaration of variable m_strImport
+    QString m_strUserExport;            ///<  Definition/Declaration of variablem_strUserExport
+    QString m_strExportUserData;       ///<  Definition/Declaration of variable m_strExportUserData
+    QString m_strServiceExport;         ///<  Definition/Declaration of variable m_strServiceExport
+    QString m_strExportServiceData;       ///<  Definition/Declaration of variable m_strExportServiceData
+    QString m_strImport;            ///<  Definition/Declaration of variable m_strImport
+    QString m_strImportData;       ///<  Definition/Declaration of variable m_strImportData
     QString m_strLogFile;       ///<  Definition/Declaration of variable m_strLogFile
     QString m_strGettingDailyLog;       ///<  Definition/Declaration of variable m_strGettingDailyLog
     QString m_strTurnOffSwitch;       ///<  Definition/Declaration of variable m_strTurnOffSwitch
@@ -798,37 +801,37 @@ private:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnMasterConnected
      */
     /****************************************************************************/
     void OnMasterConnected(const QString &name);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnMasterDisconnected
      */
     /****************************************************************************/
     void OnMasterDisconnected(const QString &name);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCmdTimeout
      */
     /****************************************************************************/
     void OnCmdTimeout(Global::tRefType Ref, const QString &CommandName);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SetDateTime
      */
     /****************************************************************************/
     void SetDateTime(QDateTime DateTime);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of RetranslateUI
      */
     /****************************************************************************/
     void RetranslateUI();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnEventReportAck
      */
     /****************************************************************************/
     void OnEventReportAck(NetCommands::ClickedButton_t ClickedButton, Global::tRefType CmdRef, quint64 EventKey);
@@ -838,3 +841,4 @@ private slots:
 } // end namespace Core
 
 #endif // CORE_DATACONNECTOR_H
+

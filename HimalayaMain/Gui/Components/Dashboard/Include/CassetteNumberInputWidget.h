@@ -60,13 +60,13 @@ namespace Dashboard {
     private slots:
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of slot UpdateReagentList
+         *  \brief  Definition/Declaration of OnOK
          */
         /****************************************************************************/
         void OnOK();
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of slot UpdateReagentList
+         *  \brief  Definition/Declaration of OnCancel
          */
         /****************************************************************************/
         void OnCancel();
@@ -74,3 +74,4 @@ namespace Dashboard {
 }
 
 #endif // CASSETTEINPUT_H
+

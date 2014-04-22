@@ -26,11 +26,11 @@
 
 namespace Dashboard {
 
-const int PipeWidth = 5;       ///<  Definition/Declaration of variable PipeWidth
+const int PipeWidth = 5;       ///<  Definition/Declaration of variable PipeWidth
 const int JointHeight = 10;
 
 //!< Timing interval for the water animation in milliseconds
-#define ANIMATION_INTERVAL 500
+#define ANIMATION_INTERVAL 500     ///<  Definition/Declaration of macro ANIMATION_INTERVAL
 /****************************************************************************/
 /*!
  *  \brief Constructor
@@ -371,7 +371,7 @@ public:
         QGraphicsPathItem::paint(painter, option, widget);
   }
 private:
-  const QPointF m_BrushOrigin;       ///<  Definition/Declaration of variable m_BrushOrigin
+  const QPointF m_BrushOrigin;       ///<  Definition/Declaration of variable m_BrushOrigin
 };
 
 void CDashboardScene::RepresentUsedPipe(const QList<QString>& selectedStationList, bool isRunning)

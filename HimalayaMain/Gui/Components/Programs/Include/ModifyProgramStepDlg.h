@@ -141,37 +141,37 @@ protected:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnOk
      */
     /****************************************************************************/
     void OnOk();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCancel
      */
     /****************************************************************************/
     void OnCancel();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnSelectionChanged
      */
     /****************************************************************************/
     void OnSelectionChanged(QModelIndex);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of ReagentTableUpdate
      */
     /****************************************************************************/
     void ReagentTableUpdate();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateUserSetting
      */
     /****************************************************************************/
     void UpdateUserSetting();
@@ -199,3 +199,4 @@ signals:
 } // end namespace Programs
 
 #endif // PROGRAMS_MODIFYPROGRAMSTEPDLG_H
+

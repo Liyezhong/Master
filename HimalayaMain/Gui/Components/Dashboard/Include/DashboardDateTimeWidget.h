@@ -145,3 +145,4 @@ signals:
 } // end namespace Dashboard
 
 #endif // DASHBOARD_DATETIMEWIDGET_H
+

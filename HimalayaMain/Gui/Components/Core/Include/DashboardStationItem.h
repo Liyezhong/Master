@@ -28,7 +28,11 @@
 #include "Reagents/Include/ReagentRMSWidget.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 
-
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum StationGroupType_t
+ */
+/****************************************************************************/
 typedef enum {
     STATIONS_GROUP_RETORT,
     STATIONS_GROUP_PARAFFINBATH,
@@ -236,43 +240,43 @@ signals:
 public slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateImage
      */
     /****************************************************************************/
     void UpdateImage();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateDashboardScene
      */
     /****************************************************************************/
     void UpdateDashboardScene(QString StationID);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateDashboardStationItemReagent
      */
     /****************************************************************************/
     void UpdateDashboardStationItemReagent(bool RefreshFlag=true);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SuckDrainAnimation
      */
     /****************************************************************************/
     void SuckDrainAnimation();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of DrawStationItemImage
      */
     /****************************************************************************/
     void DrawStationItemImage();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateDashboardStationItemReagentWhenReagentUpdated
      */
     /****************************************************************************/
     void UpdateDashboardStationItemReagentWhenReagentUpdated();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateDashboardStationItemWhenReagentGroupUpdated
      */
     /****************************************************************************/
     void UpdateDashboardStationItemWhenReagentGroupUpdated();
@@ -280,7 +284,7 @@ public slots:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateUserSettings
      */
     /****************************************************************************/
     void UpdateUserSettings();
@@ -289,4 +293,5 @@ private slots:
 } // end namespace Core
 
 #endif // CORE_DASHBOARDSTATIONITEM_H
+
 

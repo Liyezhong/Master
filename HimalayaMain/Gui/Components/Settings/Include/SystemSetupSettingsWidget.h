@@ -72,19 +72,19 @@ protected:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnUserRoleChanged
      */
     /****************************************************************************/
     void OnUserRoleChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnApply
      */
     /****************************************************************************/
     void OnApply();
@@ -102,3 +102,4 @@ signals:
 } // end namespace Settings
 
 #endif // SETTINGS_AGITATIONSETTINGSWIDGET_H
+

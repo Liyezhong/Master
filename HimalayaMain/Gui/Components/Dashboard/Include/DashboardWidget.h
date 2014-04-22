@@ -144,7 +144,7 @@ private:
 public slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnUnselectProgram
      */
     /****************************************************************************/
     void OnUnselectProgram();
@@ -153,91 +153,91 @@ public slots:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of PrepareSelectedProgramChecking
      */
     /****************************************************************************/
     void PrepareSelectedProgramChecking(const QString& selectedProgramId, bool bCheckEndDatetimeAgain);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProgramSelectedReply
      */
     /****************************************************************************/
     void OnProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& cmd);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnSelectEndDateTime
      */
     /****************************************************************************/
     void OnSelectEndDateTime(const QDateTime&);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProgramStartReadyUpdated
      */
     /****************************************************************************/
     void OnProgramStartReadyUpdated();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProgramWillComplete
      */
     /****************************************************************************/
     void OnProgramWillComplete();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProgramAborted
      */
     /****************************************************************************/
     void OnProgramAborted();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProgramBeginAbort
      */
     /****************************************************************************/
     void OnProgramBeginAbort();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProgramCompleted
      */
     /****************************************************************************/
     void OnProgramCompleted();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProgramRunBegin
      */
     /****************************************************************************/
     void OnProgramRunBegin();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProgramPaused
      */
     /****************************************************************************/
     void OnProgramPaused();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnStationSuckDrain
      */
     /****************************************************************************/
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnRetortLockStatusChanged
      */
     /****************************************************************************/
     void OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCurrentProgramStepInforUpdated
      */
     /****************************************************************************/
     void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & cmd);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnUserRoleChanged
      */
     /****************************************************************************/
     void OnUserRoleChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
@@ -313,3 +313,4 @@ private slots:
 } // end namespace Dashboard
 
 #endif // CDASHBOARDWIDGET2_H
+

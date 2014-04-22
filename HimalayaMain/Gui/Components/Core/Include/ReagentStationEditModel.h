@@ -145,3 +145,4 @@ private:
 } // end namespace Core
 
 #endif // CORE_REAGENTSTATIONEDITMODEL_H
+

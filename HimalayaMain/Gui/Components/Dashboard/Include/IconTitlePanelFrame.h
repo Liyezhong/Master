@@ -69,3 +69,4 @@ protected:
 } // end namespace Dashboard
 
 #endif // DASHBOARD_ICONTITLEPANELFRAME_H
+

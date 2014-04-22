@@ -68,44 +68,44 @@ namespace Dashboard {
     public slots:
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of slot UpdateReagentList
+         *  \brief  Definition/Declaration of AddItemsToFavoritePanel
          */
         /****************************************************************************/
         void AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram);
     private slots:
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of slot UpdateReagentList
+         *  \brief  Definition/Declaration of OnSelectDateTime
          */
         /****************************************************************************/
         void OnSelectDateTime(const QDateTime&);
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of slot UpdateReagentList
+         *  \brief  Definition/Declaration of OnEndTimeButtonClicked
          */
         /****************************************************************************/
         void OnEndTimeButtonClicked();
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of slot UpdateReagentList
+         *  \brief  Definition/Declaration of OnProcessStateChanged
          */
         /****************************************************************************/
         void OnProcessStateChanged();
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of slot UpdateReagentList
+         *  \brief  Definition/Declaration of ProgramSelected
          */
         /****************************************************************************/
         void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady);
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of slot UpdateReagentList
+         *  \brief  Definition/Declaration of UndoProgramSelection
          */
         /****************************************************************************/
         void UndoProgramSelection();
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of slot UpdateReagentList
+         *  \brief  Definition/Declaration of UpdateProgram
          */
         /****************************************************************************/
         void UpdateProgram(DataManager::CProgram &Program);
@@ -132,7 +132,7 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void SetButtonGroup();
-        QMap<int, QLabel*> m_mapLabel;//(label Id <--> QLabel)       ///<  Definition/Declaration of variable m_mapLabel
+        QMap<int, QLabel*> m_mapLabel;///< (label Id <--> QLabel)
         Ui::CFavoriteProgramsPanelWidget *ui;       ///<  Definition/Declaration of variable ui
         QButtonGroup m_ButtonGroup;       ///<  Definition/Declaration of variable m_ButtonGroup
         Core::CDataConnector *mp_DataConnector;                     //!< Global data container
@@ -148,3 +148,4 @@ namespace Dashboard {
     };
 }
 #endif // FAVORITEPROGRAMSPANELWIDGET_H
+

@@ -105,43 +105,43 @@ public:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnSetAsEmpty
      */
     /****************************************************************************/
     void OnSetAsEmpty();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnSetAsFull
      */
     /****************************************************************************/
     void OnSetAsFull();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnResetData
      */
     /****************************************************************************/
     void OnResetData();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SelectionChanged
      */
     /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnUserRoleChanged
      */
     /****************************************************************************/
     void OnUserRoleChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of StationReagentUpdated
      */
     /****************************************************************************/
     void StationReagentUpdated(const QString&);
@@ -149,19 +149,19 @@ private slots:
 public slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of RMSChanged
      */
     /****************************************************************************/
     void RMSChanged(const Global::RMSOptions_t RMSValue);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of RMSCleaningChanged
      */
     /****************************************************************************/
     void RMSCleaningChanged(const Global::RMSOptions_t RMSValue);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateSelectedStationList
      */
     /****************************************************************************/
     void UpdateSelectedStationList(QList<QString>&);
@@ -210,3 +210,4 @@ signals:
 } // end namespace Reagents
 
 #endif // REAGENTSTATUSWIDGET_H
+

@@ -118,3 +118,4 @@ private:
 } // end namespace Core
 
 #endif // CORE_STARTUP_H
+

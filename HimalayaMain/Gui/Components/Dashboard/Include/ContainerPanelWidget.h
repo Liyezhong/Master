@@ -100,7 +100,8 @@ public:
     /****************************************************************************/
     void UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType);
     static QString m_strWarning;       ///<  Definition/Declaration of variable m_strWarning
-    static QString m_strYes, m_strCancel;       ///<  Definition/Declaration of variable m_strYes
+    static QString m_strYes;          ///<  Definition/Declaration of variable m_strYes
+    static QString m_strCancel;       ///<   Definition/Declaration of variable m_strCancel
 
 protected:
     /****************************************************************************/
@@ -162,13 +163,13 @@ signals:
 public slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnRetortLockStatusChanged
      */
     /****************************************************************************/
     void OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus& cmd);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnStationSuckDrain
      */
     /****************************************************************************/
     void OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd);
@@ -177,3 +178,4 @@ public slots:
 
 }
 #endif // CONTAINERPANELWIDGET_H
+

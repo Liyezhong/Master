@@ -34,7 +34,7 @@ private:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of AppIdleForLongTime
      */
     /****************************************************************************/
     void AppIdleForLongTime();
@@ -42,10 +42,11 @@ private slots:
 public slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnInteractStart
      */
     /****************************************************************************/
     void OnInteractStart();
 };
 
 #endif // SCREENSAVERWIDGET_H
+

@@ -75,14 +75,14 @@ protected:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnApply
      */
     /****************************************************************************/
     void OnApply();
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
@@ -99,3 +99,4 @@ signals:
 } // end namespace Settings
 
 #endif // SETTINGS_REGIONALSETTINGSWIDGET_H
+

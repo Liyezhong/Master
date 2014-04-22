@@ -86,20 +86,20 @@ namespace Dashboard {
     public slots:
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of slot UpdateReagentList
+         *  \brief  Definition/Declaration of OnProgramActionStarted
          */
         /****************************************************************************/
         void OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType, int remainingTimeTotal,
                                     const QDateTime& startDateTime, bool IsResume);//in seconds
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of slot UpdateReagentList
+         *  \brief  Definition/Declaration of OnProgramActionStopped
          */
         /****************************************************************************/
         void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
         /****************************************************************************/
         /*!
-         *  \brief  Definition/Declaration of slot UpdateReagentList
+         *  \brief  Definition/Declaration of OnCurrentProgramStepInforUpdated
          */
         /****************************************************************************/
         void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
@@ -200,3 +200,4 @@ namespace Dashboard {
 }
 
 #endif // PROGRAMRUNNINGPANELWIDGET_H
+

@@ -145,91 +145,91 @@ private:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnEditName
      */
     /****************************************************************************/
     void OnEditName();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnEdit
      */
     /****************************************************************************/
     void OnEdit();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnNew
      */
     /****************************************************************************/
     void OnNew();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCopy
      */
     /****************************************************************************/
     void OnCopy();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnDelete
      */
     /****************************************************************************/
     void OnDelete();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnSave
      */
     /****************************************************************************/
     void OnSave();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCancel
      */
     /****************************************************************************/
     void OnCancel();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnSelectionChanged
      */
     /****************************************************************************/
     void OnSelectionChanged(QModelIndex);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateProgramStepTable
      */
     /****************************************************************************/
     void UpdateProgramStepTable(DataManager::CProgramStep* ProgramStep, bool AddProgramStep);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of CloseDialogs
      */
     /****************************************************************************/
     void CloseDialogs();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnIconClicked
      */
     /****************************************************************************/
     void OnIconClicked();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateProgramIcon
      */
     /****************************************************************************/
     void UpdateProgramIcon(DataManager::CProgram *Program);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnOkClicked
      */
     /****************************************************************************/
     void OnOkClicked(QString EnteredText);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnESCClicked
      */
     /****************************************************************************/
     void OnESCClicked();
@@ -298,3 +298,4 @@ signals:
 } // end namespace Programs
 
 #endif // PROGRAMS_MODIFYPROGRAMDLG_H
+

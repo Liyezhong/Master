@@ -85,55 +85,55 @@ public:
 private slots:    
      /****************************************************************************/
      /*!
-      *  \brief  Definition/Declaration of slot UpdateReagentList
+      *  \brief  Definition/Declaration of OnOkClicked
       */
      /****************************************************************************/
      void OnOkClicked(QString EnteredText);
      /****************************************************************************/
      /*!
-      *  \brief  Definition/Declaration of slot UpdateReagentList
+      *  \brief  Definition/Declaration of OnESCClicked
       */
      /****************************************************************************/
      void OnESCClicked();
      /****************************************************************************/
      /*!
-      *  \brief  Definition/Declaration of slot UpdateReagentList
+      *  \brief  Definition/Declaration of OnProcessStateChanged
       */
      /****************************************************************************/
      void OnProcessStateChanged();
      /****************************************************************************/
      /*!
-      *  \brief  Definition/Declaration of slot UpdateReagentList
+      *  \brief  Definition/Declaration of OnDirectConnectionStateChanged
       */
      /****************************************************************************/
      void OnDirectConnectionStateChanged(int State);
      /****************************************************************************/
      /*!
-      *  \brief  Definition/Declaration of slot UpdateReagentList
+      *  \brief  Definition/Declaration of OnProxyUserName
       */
      /****************************************************************************/
      void OnProxyUserName();
      /****************************************************************************/
      /*!
-      *  \brief  Definition/Declaration of slot UpdateReagentList
+      *  \brief  Definition/Declaration of OnProxyPassword
       */
      /****************************************************************************/
      void OnProxyPassword();
      /****************************************************************************/
      /*!
-      *  \brief  Definition/Declaration of slot UpdateReagentList
+      *  \brief  Definition/Declaration of OnProxyIPAddress
       */
      /****************************************************************************/
      void OnProxyIPAddress();
      /****************************************************************************/
      /*!
-      *  \brief  Definition/Declaration of slot UpdateReagentList
+      *  \brief  Definition/Declaration of OnProxyPort
       */
      /****************************************************************************/
      void OnProxyPort();
      /****************************************************************************/
      /*!
-      *  \brief  Definition/Declaration of slot UpdateReagentList
+      *  \brief  Definition/Declaration of OnSave
       */
      /****************************************************************************/
      void OnSave();
@@ -150,3 +150,4 @@ signals:
 } // end namespace Settings
 
 #endif // SETTINGS_NETWORKSETTINGSWIDGET_H
+

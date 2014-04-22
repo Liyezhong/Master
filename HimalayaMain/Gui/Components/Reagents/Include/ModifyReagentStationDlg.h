@@ -47,8 +47,8 @@ class CModifyReagentStationDlg : public MainMenu::CDialogFrame
 private:
     Ui::CModifyReagentStationDlg *mp_Ui;                   //!< User interface
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
-    MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object       ///<  Definition/Declaration of variable m_MessageDlg
-    DataManager::CDashboardStation m_EditedStation;
+    MainMenu::CMessageDlg m_MessageDlg;             //!< Message dialog object
+    DataManager::CDashboardStation m_EditedStation; //!< Definition/Declaration of variable m_EditedStation
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
     //UI related
@@ -84,25 +84,25 @@ private:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnOk
      */
     /****************************************************************************/
     void OnOk();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCancel
      */
     /****************************************************************************/
     void OnCancel();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SelectionChanged
      */
     /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
@@ -144,3 +144,4 @@ signals:
 }
 
 #endif // MODIFYREAGENTSTATUSDLG_H
+

@@ -90,49 +90,49 @@ protected:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnUserRoleChanged
      */
     /****************************************************************************/
     void OnUserRoleChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnResetOperationDays
      */
     /****************************************************************************/
     void OnResetOperationDays();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnResetCarbonFilter
      */
     /****************************************************************************/
     void OnResetCarbonFilter();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCheckBoxUseExhaustSystem
      */
     /****************************************************************************/
     void OnCheckBoxUseExhaustSystem(bool checked);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnSaveSetting
      */
     /****************************************************************************/
     void OnSaveSetting();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnShutdown
      */
     /****************************************************************************/
     void OnShutdown();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnStartServiceApp
      */
     /****************************************************************************/
     void OnStartServiceApp();
@@ -160,3 +160,4 @@ signals:
 } // end namespace Settings
 
 #endif // SETTINGS_SERVICESETTINGSWIDGET_H
+

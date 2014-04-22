@@ -119,13 +119,13 @@ signals:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnUserRoleChanged
      */
     /****************************************************************************/
     void OnUserRoleChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of PanelSelected
      */
     /****************************************************************************/
     void PanelSelected(int Index);
@@ -136,3 +136,4 @@ private slots:
 } // end namespace Reagents
 
 #endif // REAGENTS_REAGENTWIDGET_H
+

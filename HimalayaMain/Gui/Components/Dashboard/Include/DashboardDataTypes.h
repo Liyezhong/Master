@@ -45,7 +45,11 @@ namespace Dashboard {
 
 const int firstButton = 1;       ///<  Definition/Declaration of variable firstButton
 const int secondButton = 2;       ///<  Definition/Declaration of variable secondButton
-
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class Dashboard::CProgramRunningPanelWidget
+ */
+/****************************************************************************/
 typedef enum
 {
     OP_NONE = -1,
@@ -58,3 +62,4 @@ typedef enum
 
 
 #endif // DASHBOARD_DASHBOARDDATATYPES_H
+

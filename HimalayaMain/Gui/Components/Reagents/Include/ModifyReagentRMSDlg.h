@@ -60,7 +60,7 @@ private:
     Reagents::ButtonType_t m_ButtonType;            //!< Informs which button was clicked
     bool m_ProcessRunning;                          //!< Process running state
     DataManager::CDataReagentList m_ReagentCloneList;   //!< ReagentList local object
-    MainMenu::CMessageDlg* mp_MessageDlg;             //! Message dialog object       ///<  Definition/Declaration of variable mp_MessageDlg
+    MainMenu::CMessageDlg* mp_MessageDlg;             //!< Message dialog object
     MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
     Core::CReagentGroupModel m_ReagentGroupModel;             //!< Model for the table
     DataManager::CDataReagentGroupList *mp_ReagentGroupList;  //!< Reagent list
@@ -135,43 +135,43 @@ private:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnOk
      */
     /****************************************************************************/
     void OnOk();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCancel
      */
     /****************************************************************************/
     void OnCancel();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnEditName
      */
     /****************************************************************************/
     void OnEditName();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnEditCassetteValue
      */
     /****************************************************************************/
     void OnEditCassetteValue();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnOkClicked
      */
     /****************************************************************************/
     void OnOkClicked(QString EnteredText);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnESCClicked
      */
     /****************************************************************************/
     void OnESCClicked();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SelectionChanged
      */
     /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
@@ -210,3 +210,4 @@ signals:
 } // end namespace Reagents
 
 #endif // REAGENTS_MODIFYREAGENTDLG_H
+

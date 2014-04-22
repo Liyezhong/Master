@@ -15,3 +15,4 @@ namespace CommonString
     void RetranslateUIString();
 }
 #endif
+

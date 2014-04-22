@@ -94,7 +94,7 @@ public:
 public slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateReagentGroupList
      */
     /****************************************************************************/
     void UpdateReagentGroupList();
@@ -113,3 +113,4 @@ private:
 } // end namespace Core
 
 #endif // CORE_ReagentGroupModel_H
+

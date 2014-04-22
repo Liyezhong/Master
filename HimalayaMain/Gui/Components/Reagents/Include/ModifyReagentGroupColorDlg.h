@@ -45,9 +45,9 @@ class CModifyReagentGroupColorDlg : public MainMenu::CDialogFrame
     Q_OBJECT
 
 private:
-    Ui::CModifyReagentGroupColorDlg *mp_Ui;                   //!< User interface
-    MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object       ///<  Definition/Declaration of variable m_MessageDlg
-    DataManager::CReagentGroup m_ReagentGroup;
+    Ui::CModifyReagentGroupColorDlg *mp_Ui;                   ///< User interface
+    MainMenu::CMessageDlg m_MessageDlg;               ///<  Definition/Declaration of variable m_MessageDlg
+    DataManager::CReagentGroup m_ReagentGroup;        ///<  Definition/Declaration of variable m_ReagentGroup
     DataManager::CReagentGroupColorList *mp_CReagentGroupColorList;       ///<  Definition/Declaration of variable mp_CReagentGroupColorList
     QMap<int, QPushButton*> m_QPushButtonMap;       ///<  Definition/Declaration of variable m_QPushButtonMap
     //Flags
@@ -84,25 +84,25 @@ public:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnOk
      */
     /****************************************************************************/
     void OnOk();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCancel
      */
     /****************************************************************************/
     void OnCancel();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnButtonGroup
      */
     /****************************************************************************/
     void OnButtonGroup(int Id);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
@@ -110,7 +110,7 @@ private slots:
 public slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateReagentGroupColor
      */
     /****************************************************************************/
     void UpdateReagentGroupColor();
@@ -138,3 +138,4 @@ signals:
 }
 
 #endif // ModifyReagentGroupColorDlg_H
+

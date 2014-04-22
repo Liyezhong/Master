@@ -85,37 +85,37 @@ private:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnNoteEdit
      */
     /****************************************************************************/
     void OnNoteEdit();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnWarningEdit
      */
     /****************************************************************************/
     void OnWarningEdit();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnErrorEdit
      */
     /****************************************************************************/
     void OnErrorEdit();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateLabels
      */
     /****************************************************************************/
     void UpdateLabels();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of AlarmSettingsChange
      */
     /****************************************************************************/
     void AlarmSettingsChange(DataManager::CUserSettings &Settings);
@@ -137,3 +137,4 @@ signals:
 } // end namespace Settings
 
 #endif // SETTINGS_ALARMSETTINGSWIDGET_H
+

@@ -75,3 +75,4 @@ private:
 } // end namespace Core
 
 #endif // CORE_GLOBALHELPER_H
+

@@ -167,103 +167,103 @@ signals:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnEdit
      */
     /****************************************************************************/
     void OnEdit();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnNew
      */
     /****************************************************************************/
     void OnNew();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnDelete
      */
     /****************************************************************************/
     void OnDelete();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SelectionChanged
      */
     /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SelectionChangedCleaningTable
      */
     /****************************************************************************/
     void SelectionChangedCleaningTable(QModelIndex Index);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnUserRoleChanged
      */
     /****************************************************************************/
     void OnUserRoleChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of CloseDialogs
      */
     /****************************************************************************/
     void CloseDialogs();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnRMSOFF
      */
     /****************************************************************************/
     void OnRMSOFF();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnRMSCassettes
      */
     /****************************************************************************/
     void OnRMSCassettes();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnRMSCycles
      */
     /****************************************************************************/
     void OnRMSCycles();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnRMSDays
      */
     /****************************************************************************/
     void OnRMSDays();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCancelPressed
      */
     /****************************************************************************/
     void OnCancelPressed();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCleaningRMSOFF
      */
     /****************************************************************************/
     void OnCleaningRMSOFF();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCleaningRMSCycles
      */
     /****************************************************************************/
     void OnCleaningRMSCycles();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnCleaningRMSDays
      */
     /****************************************************************************/
     void OnCleaningRMSDays();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateUserSetting
      */
     /****************************************************************************/
     void UpdateUserSetting();
@@ -272,3 +272,4 @@ private slots:
 } // end namespace Reagents
 
 #endif // REAGENTS_REAGENTSWIDGET_H
+

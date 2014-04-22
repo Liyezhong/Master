@@ -40,3 +40,4 @@ public:
 } // end namespace Programs
 
 #endif // PROGRAMS_COLORBUTTON_H
+

@@ -188,7 +188,7 @@ protected:
 public slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProgramStartReadyUpdated
      */
     /****************************************************************************/
      void OnProgramStartReadyUpdated();
@@ -196,38 +196,38 @@ public slots:
 private slots:
      /****************************************************************************/
      /*!
-      *  \brief  Definition/Declaration of slot UpdateReagentList
+      *  \brief  Definition/Declaration of OnButtonClicked
       */
      /****************************************************************************/
     void OnButtonClicked(int whichBtn);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProgramSelected
      */
     /****************************************************************************/
     void OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SelectEndDateTime
      */
     /****************************************************************************/
     void SelectEndDateTime(const QDateTime &);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProgramActionStarted
      */
     /****************************************************************************/
     void OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType, int remainingTimeTotal,
                                 const QDateTime& startDateTime, bool IsResume);//in seconds
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProgramActionStopped
      */
     /****************************************************************************/
     void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SwitchToFavoritePanel
      */
     /****************************************************************************/
     void SwitchToFavoritePanel();
@@ -297,3 +297,4 @@ private:
 }// end namespace Dashboard
 
 #endif // PROGRAMPANELWIDGET_H
+

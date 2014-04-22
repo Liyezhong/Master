@@ -78,7 +78,7 @@ private:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnUpdateProgramList
      */
     /****************************************************************************/
     void OnUpdateProgramList();
@@ -95,3 +95,4 @@ signals:
 } // end namespace Programs
 
 #endif // PROGRAMS_PROGRAMMODEL_H
+

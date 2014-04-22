@@ -91,25 +91,25 @@ signals:
 public slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of Go
      */
     /****************************************************************************/
     void Go();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of Stop
      */
     /****************************************************************************/
     void Stop();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of SendMessageToMaster
      */
     /****************************************************************************/
     bool SendMessageToMaster(const QString &, const QByteArray &, Global::tRefType Ref);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of ForwardMsgToRecipient
      */
     /****************************************************************************/
     void ForwardMsgToRecipient(const QString &cmdname, const QByteArray &barray);
@@ -124,3 +124,4 @@ private:
 }  // namespace
 
 #endif
+

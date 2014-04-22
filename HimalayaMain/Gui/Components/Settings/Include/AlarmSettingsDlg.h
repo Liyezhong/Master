@@ -44,6 +44,11 @@ class CAlarmSettingsDlg : public MainMenu::CDialogFrame
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of enum AlarmDialogType
+     */
+    /****************************************************************************/
     typedef enum {
         Information = 0,
         Warning = 1,
@@ -101,25 +106,25 @@ protected:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnPeriodicChanged
      */
     /****************************************************************************/
     void OnPeriodicChanged(MainMenu::CSliderControl::Position_t Position);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnProcessStateChanged
      */
     /****************************************************************************/
     void OnProcessStateChanged();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnApply
      */
     /****************************************************************************/
     void OnApply();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of OnPlayTone
      */
     /****************************************************************************/
     void OnPlayTone();
@@ -137,3 +142,4 @@ signals:
 } // end namespace Settings
 
 #endif // SETTINGS_ALARMSETTINGSDLG_H
+

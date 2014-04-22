@@ -109,3 +109,4 @@ signals:
 
 } //end of namespace
 #endif // DATAMANAGEMENTWIDGET_H
+

@@ -58,25 +58,25 @@ private:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of PropagateDateTime
      */
     /****************************************************************************/
     void PropagateDateTime();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UserSettingsUpdated
      */
     /****************************************************************************/
     void UserSettingsUpdated();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of PanelSelected
      */
     /****************************************************************************/
     void PanelSelected(int Index);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot UpdateReagentList
+     *  \brief  Definition/Declaration of UpdateLanguages
      */
     /****************************************************************************/
     void UpdateLanguages();
@@ -93,3 +93,4 @@ signals:
 } // end namespace Settings
 
 #endif // SETTINGS_SETTINGSWIDGET_H
+
