@@ -36,21 +36,40 @@ class CGlobalHelper : public QObject
 public:
     CGlobalHelper(Core::CDataConnector *p_DataConnector);
     virtual ~CGlobalHelper();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CheckSelectedProgram
+     *
+     *  \return from CheckSelectedProgram
+     */
+    /****************************************************************************/
     static bool CheckSelectedProgram(bool& bRevertSelectProgram,
                               QString operatedProgramID = "");
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function TimeToString
+     *
+     *  \return from TimeToString
+     */
+    /****************************************************************************/
     static QString TimeToString(int seconds, bool showSeconds=false) ;
     static void RetranslateUI();
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnProgramSelected
+     */
+    /****************************************************************************/
     void OnProgramSelected(QString&, QList<QString>&);
 private:
-    static QString m_selectedProgramId;
-    static QString m_strMsgUnselect;
-    static QString m_strWarning;
-    static QString m_strCancel;
-    static QString m_strYes;
-    static QString SELECTED_PROGRAM_NAME;
-    Core::CDataConnector *mp_DataConnector;
+    static QString m_selectedProgramId;       ///<  Definition/Declaration of variable m_selectedProgramId
+    static QString m_strMsgUnselect;       ///<  Definition/Declaration of variable m_strMsgUnselect
+    static QString m_strWarning;       ///<  Definition/Declaration of variable m_strWarning
+    static QString m_strCancel;       ///<  Definition/Declaration of variable m_strCancel
+    static QString m_strYes;       ///<  Definition/Declaration of variable m_strYes
+    static QString SELECTED_PROGRAM_NAME;       ///<  Definition/Declaration of variable SELECTED_PROGRAM_NAME
+    Core::CDataConnector *mp_DataConnector;       ///<  Definition/Declaration of variable mp_DataConnector
 };
 
 } // end namespace Core

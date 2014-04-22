@@ -52,11 +52,11 @@ private:
     DataManager::CHimalayaUserSettings *mp_UserSettings;  //!< Data object
     DataManager::CHimalayaUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
     MainMenu::CMainWindow *mp_MainWindow;           //!< Used to inform Mainwindow settings.
-     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     Global::DateFormat m_DateFormat;                //!< Date format
     Global::TimeFormat m_TimeFormat;                //!< Time Format
     Global::TemperatureFormat m_TemperatureFormat;  //!< Temperature Format
-    QTranslator *translator;
+    QTranslator *translator;       ///<  Definition/Declaration of variable translator
     //Flags
     bool m_ProcessRunning;                  //!< Process running state
     void RetranslateUI();
@@ -73,11 +73,26 @@ protected:
     void showEvent(QShowEvent *p_Event);
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnApply();
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal RegionalSettingsChanged
+     */
+    /****************************************************************************/
     void RegionalSettingsChanged(DataManager::CUserSettings &Settings);
 };
 

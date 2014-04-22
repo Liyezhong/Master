@@ -46,34 +46,73 @@ class CModifyReagentGroupColorDlg : public MainMenu::CDialogFrame
 
 private:
     Ui::CModifyReagentGroupColorDlg *mp_Ui;                   //!< User interface
-    MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object
+    MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object       ///<  Definition/Declaration of variable m_MessageDlg
     DataManager::CReagentGroup m_ReagentGroup;
-    DataManager::CReagentGroupColorList *mp_CReagentGroupColorList;
-    QMap<int, QPushButton*> m_QPushButtonMap;
+    DataManager::CReagentGroupColorList *mp_CReagentGroupColorList;       ///<  Definition/Declaration of variable mp_CReagentGroupColorList
+    QMap<int, QPushButton*> m_QPushButtonMap;       ///<  Definition/Declaration of variable m_QPushButtonMap
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
     //UI related
     QStringList m_ColorNames;                       //!< store color names
-    QButtonGroup m_ButtonGroup;
-    QString m_strCancel;
-    QString m_strClose;
-    QString m_strOK;
+    QButtonGroup m_ButtonGroup;       ///<  Definition/Declaration of variable m_ButtonGroup
+    QString m_strCancel;       ///<  Definition/Declaration of variable m_strCancel
+    QString m_strClose;       ///<  Definition/Declaration of variable m_strClose
+    QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
     void SetButtonGroup();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function RetranslateUI
+     *
+     *  \return from RetranslateUI
+     */
+    /****************************************************************************/
     void RetranslateUI();
 
 public:
     explicit CModifyReagentGroupColorDlg(QWidget *p_Parent = NULL,
                                MainMenu::CMainWindow *p_MainWindow = NULL);
     virtual ~CModifyReagentGroupColorDlg();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetReagentGroupList
+     *
+     *  \return from SetReagentGroupList
+     */
+    /****************************************************************************/
     void SetReagentGroupList(DataManager::CDataReagentGroupList &ReagentGroupList, const DataManager::CReagentGroup &ReagentGroup);
     void SetReagentGroupColorListptr(DataManager::CReagentGroupColorList  *p_CReagentGroupColorList);
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnOk();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCancel();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnButtonGroup(int Id);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateReagentGroupColor();
 protected:
     void changeEvent(QEvent *p_Event);

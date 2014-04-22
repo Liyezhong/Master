@@ -26,7 +26,7 @@
 
 namespace Dashboard {
 
-const int PipeWidth = 5;
+const int PipeWidth = 5;       ///<  Definition/Declaration of variable PipeWidth
 const int JointHeight = 10;
 
 //!< Timing interval for the water animation in milliseconds
@@ -347,17 +347,31 @@ void CDashboardScene::CreateAllPipe()
 class CPipeGraphicsPathItem: public QGraphicsPathItem
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CPipeGraphicsPathItem
+     *
+     *  \return from CPipeGraphicsPathItem
+     */
+    /****************************************************************************/
     CPipeGraphicsPathItem(const QPainterPath &path, const QPointF& brushOrigin):QGraphicsPathItem(path),
         m_BrushOrigin(brushOrigin)
     {}
 
+  /****************************************************************************/
+  /*!
+   *  \brief  Definition/Declaration of function paint
+   *
+   *  \return from paint
+   */
+  /****************************************************************************/
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0)
   {
         painter->setBrushOrigin(m_BrushOrigin);
         QGraphicsPathItem::paint(painter, option, widget);
   }
 private:
-  const QPointF m_BrushOrigin;
+  const QPointF m_BrushOrigin;       ///<  Definition/Declaration of variable m_BrushOrigin
 };
 
 void CDashboardScene::RepresentUsedPipe(const QList<QString>& selectedStationList, bool isRunning)

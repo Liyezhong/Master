@@ -45,6 +45,13 @@ public:
     explicit CServiceSettingsWidget(QWidget *p_Parent = 0);
     ~CServiceSettingsWidget();
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetUserSettings
+     *
+     *  \return from SetUserSettings
+     */
+    /****************************************************************************/
     void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
 private:
     Ui::CServiceSettingsWidget *mp_Ui;  //!< User interface
@@ -52,32 +59,101 @@ private:
     //Flags
     bool m_ProcessRunning;                  //!< Process running state
     //UI related
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     DataManager::CHimalayaUserSettings *mp_UserSettings;  //!< Data object
     DataManager::CHimalayaUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
 
     void RetranslateUI();
     void ResetButtons();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetFormattedCurrentDateString
+     *
+     *  \return from GetFormattedCurrentDateString
+     */
+    /****************************************************************************/
     QString GetFormattedCurrentDateString();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetFormattedDateString
+     *
+     *  \return from GetFormattedDateString
+     */
+    /****************************************************************************/
     QString GetFormattedDateString(const QDateTime& dateTime);
-    QString m_strShutdownConfirm;
+    QString m_strShutdownConfirm;       ///<  Definition/Declaration of variable m_strShutdownConfirm
 
 protected:
     void changeEvent(QEvent *p_Event);
     void showEvent(QShowEvent *p_Event);
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnUserRoleChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnResetOperationDays();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnResetCarbonFilter();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCheckBoxUseExhaustSystem(bool checked);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnSaveSetting();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnShutdown();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnStartServiceApp();
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ServiceSettingsChanged
+     */
+    /****************************************************************************/
     void ServiceSettingsChanged(DataManager::CUserSettings &Settings);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ResetOperationDays
+     */
+    /****************************************************************************/
     void ResetOperationDays(DataManager::ResetOperationHoursType_t resetOperationHoursType);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal AppQuitSystemShutdown
+     */
+    /****************************************************************************/
     void AppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);
 };
 

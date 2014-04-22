@@ -53,7 +53,7 @@ private:
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
     //UI related
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();
 public:
@@ -74,8 +74,23 @@ protected:
     void showEvent(QShowEvent *p_Event);
 
  private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnEditclicked();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnOkClicked(QString EnteredText);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnESCClicked();
 
 };

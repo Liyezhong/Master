@@ -65,7 +65,7 @@ private:
     DataManager::CProgram const *mp_Program;    //!< Currently selected program
     CProgramModel m_ProgramModel;               //!< Model of the program table
     CModifyProgramDlg *mp_ModifyProgramDlg;     //!< Modify program dialog
-    MainMenu::CMessageDlg ConfirmationMessageDlg;
+    MainMenu::CMessageDlg ConfirmationMessageDlg;       ///<  Definition/Declaration of variable ConfirmationMessageDlg
     MainMenu::CMainWindow *mp_MainWindow;       //!< Reference to main window
     MainMenu::CMessageDlg m_MessageDlg;         //!< Information Message Dialog
     bool m_UserRoleChanged;                     //!< True if user Role changed else false
@@ -75,20 +75,20 @@ private:
     ButtonType_t m_ButtonType;                  //!< Informs which button was clicked
     bool m_ColorReplaced;                       //!< Flag for program color change.
     QString m_ProgramID;                        //!< Program ID
-    QModelIndex m_CurrentIndex;
-    bool m_UserChanged;
+    QModelIndex m_CurrentIndex;       ///<  Definition/Declaration of variable m_CurrentIndex
+    bool m_UserChanged;       ///<  Definition/Declaration of variable m_UserChanged
     int m_UserProgramCount;                     //!< Count of User Programs
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
-    QString m_strEditProgram;
-    QString m_strViewProgram;
-    QString m_strNewProgram;
-    QString m_strDelProgram;
-    QString m_strNotEditProgram;
-    QString m_strView;
-    QString m_strEdit;
-    QString m_strConfirmMsg;
-    QString m_strYes;
-    QString m_strCancel;
+    QString m_strEditProgram;       ///<  Definition/Declaration of variable m_strEditProgram
+    QString m_strViewProgram;       ///<  Definition/Declaration of variable m_strViewProgram
+    QString m_strNewProgram;       ///<  Definition/Declaration of variable m_strNewProgram
+    QString m_strDelProgram;       ///<  Definition/Declaration of variable m_strDelProgram
+    QString m_strNotEditProgram;       ///<  Definition/Declaration of variable m_strNotEditProgram
+    QString m_strView;       ///<  Definition/Declaration of variable m_strView
+    QString m_strEdit;       ///<  Definition/Declaration of variable m_strEdit
+    QString m_strConfirmMsg;       ///<  Definition/Declaration of variable m_strConfirmMsg
+    QString m_strYes;       ///<  Definition/Declaration of variable m_strYes
+    QString m_strCancel;       ///<  Definition/Declaration of variable m_strCancel
 
 
 protected:
@@ -98,6 +98,13 @@ public:
     explicit CProgramWidget(Core::CDataConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent = NULL,
                             KeyBoard::CKeyBoard *p_KeyBoard = NULL);
     ~CProgramWidget();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsFlagSet
+     *
+     *  \return from IsFlagSet
+     */
+    /****************************************************************************/
     bool IsFlagSet() { if(m_UserChanged == true) return true; else return false;}
     int GetNumberOfUserPrograms();
 
@@ -108,15 +115,65 @@ private:
     void RetranslateUI();
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnEdit();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnNew();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCopy();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnDelete();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnUserRoleChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void CloseDialogs();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCurrentTabChanged(int CurrentIndex);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCancelClicked();
 
 protected:
@@ -231,6 +288,11 @@ signals:
     /****************************************************************************/
     void ProgramColorReplaced(DataManager::CProgram &ColorReplacedProgram,
                               DataManager::CProgram &ColorAssignedProgram);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UnselectProgram
+     */
+    /****************************************************************************/
     void UnselectProgram();
 };
 

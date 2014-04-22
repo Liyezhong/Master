@@ -38,6 +38,13 @@ class CPausePushButton : public QPushButton
 public:
     explicit CPausePushButton(QWidget *p_Parent = 0);
     virtual ~ CPausePushButton();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function setText
+     *
+     *  \return from setText
+     */
+    /****************************************************************************/
     void setText(const QString &text) { Q_UNUSED(text); };
 private:
     void paintEvent(QPaintEvent *);   

@@ -53,10 +53,10 @@ class CDashboardStationItem : public QObject, public QGraphicsItem
 
 private:
     Core::CDataConnector *mp_DataConnector;              //!< Global data container
-    DataManager::CHimalayaUserSettings m_UserSettings;
-    Global::RMSOptions_t m_CurRMSMode;
+    DataManager::CHimalayaUserSettings m_UserSettings;       ///<  Definition/Declaration of variable m_UserSettings
+    Global::RMSOptions_t m_CurRMSMode;       ///<  Definition/Declaration of variable m_CurRMSMode
     DataManager::CDashboardStation *mp_DashboardStation; //!< Dashboard Station object
-    QString m_StationItemID;
+    QString m_StationItemID;       ///<  Definition/Declaration of variable m_StationItemID
     StationGroupType_t m_DashboardStationGroup;          //!< Dashboard StationGroup object
     QString m_DashboardStationID;                        //!< Dashboard Station ID
     QPixmap m_Image;                                     //!< Background image.
@@ -76,18 +76,32 @@ private:
 
     int m_CurrentBoundingRectReagentHeight;                //!< current container Bounding Rect Height
 
-    QTimer* mp_SuckDrainTimer;
+    QTimer* mp_SuckDrainTimer;       ///<  Definition/Declaration of variable mp_SuckDrainTimer
     bool m_ReagentExpiredFlag;                           //!< Indicates if the reagent in a station is expired.
     bool m_StationSelected;                              //!< Indicates if the station is selected for the program
-    QString m_CurrentReagentColorValue;
-    QString m_ReagentDisplayColorValue;
-    DataManager::ContainerStatusType_t m_ContainerStatusType;
-    bool m_ExpiredColorRed;
-    bool m_EnableBlink;
-    bool m_IsRetortContaminated;
+    QString m_CurrentReagentColorValue;       ///<  Definition/Declaration of variable m_CurrentReagentColorValue
+    QString m_ReagentDisplayColorValue;       ///<  Definition/Declaration of variable m_ReagentDisplayColorValue
+    DataManager::ContainerStatusType_t m_ContainerStatusType;       ///<  Definition/Declaration of variable m_ContainerStatusType
+    bool m_ExpiredColorRed;       ///<  Definition/Declaration of variable m_ExpiredColorRed
+    bool m_EnableBlink;       ///<  Definition/Declaration of variable m_EnableBlink
+    bool m_IsRetortContaminated;       ///<  Definition/Declaration of variable m_IsRetortContaminated
     bool m_RetortLocked;								 //!< Indicates if the retort is locked or not
     QPixmap m_RawImage4Cleaning;                         //!< Big Image with customized BDiagPattern for Cleaning reagent
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function OnCompletedSuckDrain
+     *
+     *  \return from OnCompletedSuckDrain
+     */
+    /****************************************************************************/
     void OnCompletedSuckDrain(bool isSuck);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DrawGlowBoundaryText
+     *
+     *  \return from DrawGlowBoundaryText
+     */
+    /****************************************************************************/
     void DrawGlowBoundaryText(QFont& textFont, QString& text, QRect& rect, QPainter& painter);
 public:
     explicit CDashboardStationItem(Core::CDataConnector *p_DataConnector,                                   
@@ -101,10 +115,45 @@ public:
     bool IsEmpty();
     void LoadStationImages(QPainter & Painter);
     void DrawReagentName(QPainter & Painter);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DrawStationItemLabel
+     *
+     *  \return from DrawStationItemLabel
+     */
+    /****************************************************************************/
     void DrawStationItemLabel(QPainter & painter);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function FillReagentColor
+     *
+     *  \return from FillReagentColor
+     */
+    /****************************************************************************/
     void FillReagentColor(QPainter & Painter);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetContainerStatus
+     *
+     *  \return from SetContainerStatus
+     */
+    /****************************************************************************/
     void SetContainerStatus(DataManager::ContainerStatusType_t containerStatus);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetContainerRetortLockedStatus
+     *
+     *  \return from SetContainerRetortLockedStatus
+     */
+    /****************************************************************************/
     void SetContainerRetortLockedStatus(bool locked);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function EnableBlink
+     *
+     *  \return from EnableBlink
+     */
+    /****************************************************************************/
     void EnableBlink(bool bEnable);
     /****************************************************************************/
     /*!
@@ -141,9 +190,37 @@ public:
     StationGroupType_t GetStationGroup(){ return m_DashboardStationGroup; }
 
     QRectF boundingRect() const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function PauseSuckDrain
+     *
+     *  \return from PauseSuckDrain
+     */
+    /****************************************************************************/
     void PauseSuckDrain();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SuckDrain
+     *
+     *  \return from SuckDrain
+     */
+    /****************************************************************************/
     void SuckDrain(bool isStart = true, bool isSuck = true, const QString& ReagentColorValue = "#FFFFFF");
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetStationItemID
+     *
+     *  \return from GetStationItemID
+     */
+    /****************************************************************************/
     const QString& GetStationItemID() const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsReagentExpired
+     *
+     *  \return from IsReagentExpired
+     */
+    /****************************************************************************/
     bool IsReagentExpired();
 protected:
     void paint(QPainter *p_Painter, const QStyleOptionGraphicsItem *, QWidget *);
@@ -157,15 +234,55 @@ signals:
     void Released();
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateImage();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateDashboardScene(QString StationID);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateDashboardStationItemReagent(bool RefreshFlag=true);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SuckDrainAnimation();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void DrawStationItemImage();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateDashboardStationItemReagentWhenReagentUpdated();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateDashboardStationItemWhenReagentGroupUpdated();
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateUserSettings();
 };
 

@@ -45,27 +45,97 @@ class CDataContainer: public QObject
     Q_OBJECT
 private:
     ListOfExpandedSteps_t m_ExpandedStepList;   //!< Normal steps + Macro steps
-    bool m_IsInitialized;
+    bool m_IsInitialized;       ///<  Definition/Declaration of variable m_IsInitialized
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function InitContainers
+     *
+     *  \return from InitContainers
+     */
+    /****************************************************************************/
     bool InitContainers();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DeinitContainers
+     *
+     *  \return from DeinitContainers
+     */
+    /****************************************************************************/
     bool DeinitContainers();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetDCProgramList
+     *
+     *  \return from ResetDCProgramList
+     */
+    /****************************************************************************/
     bool ResetDCProgramList();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetDCReagentList
+     *
+     *  \return from ResetDCReagentList
+     */
+    /****************************************************************************/
     bool ResetDCReagentList();
     bool ResetDCReagentGroupList();
     bool ResetDCDashboardStationList();
     bool ResetDCReagentGroupColorList();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetDCUserSettings
+     *
+     *  \return from ResetDCUserSettings
+     */
+    /****************************************************************************/
     bool ResetDCUserSettings();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function AddStepsToExpandedStepList
+     *
+     *  \return from AddStepsToExpandedStepList
+     */
+    /****************************************************************************/
     bool AddStepsToExpandedStepList(CProgram &Program);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetDCDeviceConfiguration
+     *
+     *  \return from ResetDCDeviceConfiguration
+     */
+    /****************************************************************************/
     bool ResetDCDeviceConfiguration();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CompareSteps
+     *
+     *  \return from CompareSteps
+     */
+    /****************************************************************************/
     bool CompareSteps(CProgramStep& CurrentProgramStep, CProgramStep& NextProgramStep, bool& OK);
 public:
     CDataContainer();
     ~CDataContainer();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function RefreshProgramStepStationlist
+     *
+     *  \return from RefreshProgramStepStationlist
+     */
+    /****************************************************************************/
     bool RefreshProgramStepStationlist();
 
     /* Methods to handle expanded step list */
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function RefreshExpandedStepList
+     *
+     *  \return from RefreshExpandedStepList
+     */
+    /****************************************************************************/
     bool RefreshExpandedStepList(QString ProgramID);
 
     /****************************************************************************/
@@ -79,6 +149,13 @@ public:
     /****************************************************************************/
     int GetNumberOfStepsInExpandedList() {return m_ExpandedStepList.count();}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetProgramStepExpanded
+     *
+     *  \return from GetProgramStepExpanded
+     */
+    /****************************************************************************/
     bool GetProgramStepExpanded(const unsigned int Index, const CProgram* p_Program, CProgramStep* p_ProgStep);
 
     // praefix mp_ left because members are intentially accessible from outside (public)
@@ -88,7 +165,7 @@ public:
     CDashboardDataStationList* DashboardStationList;  //!< Container for Dashboard stations
     CUserSettingsInterface *SettingsInterface; //!< Provides interface to read the Settings info from xml
     CDeviceConfigurationInterface *DeviceConfigurationInterface;  //!< Provides interface to read the Device configuration from xml
-    CReagentGroupColorList *ReagentGroupColorList;
+    CReagentGroupColorList *ReagentGroupColorList;       ///<  Definition/Declaration of variable ReagentGroupColorList
 };
 
 } // namespace DataManager

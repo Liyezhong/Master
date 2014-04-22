@@ -79,22 +79,22 @@ private:
     bool m_ColorReplaced;                           //!< True if program color is replaced
     QList<DataManager::CProgramStep *> m_ListOfProgramSteps; //!< Container for Program Step pointers.
     MainMenu::CContentScroller m_ContentScroller;       //!< ContentScroller object
-    DataManager::CReagentGroup m_ReagentGroup;
+    DataManager::CReagentGroup m_ReagentGroup;       ///<  Definition/Declaration of variable m_ReagentGroup
     MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
     CModifyProgramIconDlg *mp_ModifyProgramIconDlg;     //!< Edit Program Icon dialog
     DataManager::CProgramStep m_LeicaProgramStepOne;           //!< ProgramStep object
     QString m_Icon;                                   //!< Program Icon Name
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
-    quint8 m_RowIndex;
+    quint8 m_RowIndex;       ///<  Definition/Declaration of variable m_RowIndex
 
-    QString m_strSelectIcon;
-    QString m_strConfirmMsg;
-    QString m_strYes;
-    QString m_strOK;
-    QString m_strClose;
-    QString m_strCancel;
-    QString m_strDelProgramStep;
-    QString m_strEnterValidName;
+    QString m_strSelectIcon;       ///<  Definition/Declaration of variable m_strSelectIcon
+    QString m_strConfirmMsg;       ///<  Definition/Declaration of variable m_strConfirmMsg
+    QString m_strYes;       ///<  Definition/Declaration of variable m_strYes
+    QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
+    QString m_strClose;       ///<  Definition/Declaration of variable m_strClose
+    QString m_strCancel;       ///<  Definition/Declaration of variable m_strCancel
+    QString m_strDelProgramStep;       ///<  Definition/Declaration of variable m_strDelProgramStep
+    QString m_strEnterValidName;       ///<  Definition/Declaration of variable m_strEnterValidName
 
 protected:
     void showEvent(QShowEvent *p_Event);
@@ -132,24 +132,106 @@ private:
     DataManager::CProgramStep *SelectedStep();
     void RetranslateUI();
     void ResetButtons(DataManager::CProgram &CurrentProgram, bool SelectionChanged);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ButtonPrgIconEnable
+     *
+     *  \return from ButtonPrgIconEnable
+     */
+    /****************************************************************************/
     void ButtonPrgIconEnable(bool enable);
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnEditName();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnEdit();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnNew();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCopy();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnDelete();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnSave();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCancel();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnSelectionChanged(QModelIndex);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateProgramStepTable(DataManager::CProgramStep* ProgramStep, bool AddProgramStep);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void CloseDialogs();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnIconClicked();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateProgramIcon(DataManager::CProgram *Program);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnOkClicked(QString EnteredText);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnESCClicked();
 signals:
 

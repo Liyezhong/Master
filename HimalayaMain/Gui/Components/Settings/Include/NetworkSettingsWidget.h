@@ -61,15 +61,15 @@ private:
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
     //UI related
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Reference to Keyboard widget
     ButtonType_t m_ButtonType;                      //!< Button Type
     DataManager::CHimalayaUserSettings m_UserSettings;      //!< UserSettings object
     QString m_Password;                             //!< String to hold Password
-    QString m_strEnterProxyName;
-    QString m_strEnterProxyPassword;
-    QString m_strEnterProxyIP;
-    QString m_strEnterProxyPort;
+    QString m_strEnterProxyName;       ///<  Definition/Declaration of variable m_strEnterProxyName
+    QString m_strEnterProxyPassword;       ///<  Definition/Declaration of variable m_strEnterProxyPassword
+    QString m_strEnterProxyIP;       ///<  Definition/Declaration of variable m_strEnterProxyIP
+    QString m_strEnterProxyPort;       ///<  Definition/Declaration of variable m_strEnterProxyPort
 
     void RetranslateUI();
     void ResetButtons();
@@ -83,17 +83,67 @@ public:
      void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
 
 private slots:    
-    void OnOkClicked(QString EnteredText);
-    void OnESCClicked();
-    void OnProcessStateChanged();
-    void OnDirectConnectionStateChanged(int State);
-    void OnProxyUserName();
-    void OnProxyPassword();
-    void OnProxyIPAddress();
-    void OnProxyPort();
-    void OnSave();
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of slot UpdateReagentList
+      */
+     /****************************************************************************/
+     void OnOkClicked(QString EnteredText);
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of slot UpdateReagentList
+      */
+     /****************************************************************************/
+     void OnESCClicked();
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of slot UpdateReagentList
+      */
+     /****************************************************************************/
+     void OnProcessStateChanged();
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of slot UpdateReagentList
+      */
+     /****************************************************************************/
+     void OnDirectConnectionStateChanged(int State);
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of slot UpdateReagentList
+      */
+     /****************************************************************************/
+     void OnProxyUserName();
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of slot UpdateReagentList
+      */
+     /****************************************************************************/
+     void OnProxyPassword();
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of slot UpdateReagentList
+      */
+     /****************************************************************************/
+     void OnProxyIPAddress();
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of slot UpdateReagentList
+      */
+     /****************************************************************************/
+     void OnProxyPort();
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of slot UpdateReagentList
+      */
+     /****************************************************************************/
+     void OnSave();
 
 signals:
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of signal SettingsChanged
+      */
+     /****************************************************************************/
      void SettingsChanged(DataManager::CUserSettings &Settings);
 };
 

@@ -40,15 +40,15 @@ private:
     DataManager::CReagent m_SelectedReagent;        //!< Currently selected reagent
     MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
     bool m_UserRoleChanged;                         //!< True if user Role changed else false
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //!< Current user role
     bool m_ProcessRunning;                          //!< Process running state
     bool m_ShowMessageDialog;                       //!< To show Information Message Dialog
     DataManager::CReagent *mp_Reagent;              //!< Reagent object
     DataManager::CDashboardStation *mp_DashStation;        //!< Station object
     CModifyReagentStationDlg *mp_ModifiyReagentStationDlg;        //!< Edit reagent dialog
-    KeyBoard::CKeyBoard *mp_KeyBoard;
-    QString m_strSelectReagent;
-    QList<QString> m_StationList;
+    KeyBoard::CKeyBoard *mp_KeyBoard;       ///<  Definition/Declaration of variable mp_KeyBoard
+    QString m_strSelectReagent;       ///<  Definition/Declaration of variable m_strSelectReagent
+    QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
 protected:
     void showEvent(QShowEvent *);
     void changeEvent(QEvent *p_Event);
@@ -67,10 +67,35 @@ public:
                             MainMenu::CMainWindow *p_MainWindow,
                             KeyBoard::CKeyBoard *p_KeyBoard = NULL);
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnEdit();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnUserRoleChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void StationReagentUpdated(const QString&);
 signals:
     /****************************************************************************/
@@ -80,11 +105,31 @@ signals:
      */
     /****************************************************************************/
     void UpdateReagentList();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UpdateStationChangeReagent
+     */
+    /****************************************************************************/
     void UpdateStationChangeReagent(const QString&, const QString&);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UpdateStationSetAsEmpty
+     */
+    /****************************************************************************/
     void UpdateStationSetAsEmpty(const QString&);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UnselectProgram
+     */
+    /****************************************************************************/
     void UnselectProgram();
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateSelectedStationList(QList<QString>&);
 
 

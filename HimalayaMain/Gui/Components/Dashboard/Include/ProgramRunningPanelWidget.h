@@ -34,53 +34,168 @@ namespace Dashboard {
         Q_OBJECT
 
     public:
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function CProgramRunningPanelWidget
+         *
+         *  \return from CProgramRunningPanelWidget
+         */
+        /****************************************************************************/
         explicit CProgramRunningPanelWidget(QWidget *parent = 0);
         ~CProgramRunningPanelWidget();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function SetUserSettings
+         *
+         *  \return from SetUserSettings
+         */
+        /****************************************************************************/
         void SetUserSettings(DataManager::CUserSettings *pUserSettings);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetStepRemainingTime
+         *
+         *  \return from GetStepRemainingTime
+         */
+        /****************************************************************************/
         int  GetStepRemainingTime();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetProgramRemainingTime
+         *
+         *  \return from GetProgramRemainingTime
+         */
+        /****************************************************************************/
         int GetProgramRemainingTime();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetEndDateTime
+         *
+         *  \return from GetEndDateTime
+         */
+        /****************************************************************************/
         const QString GetEndDateTime();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function EnableProgramDetailButton
+         *
+         *  \return from EnableProgramDetailButton
+         */
+        /****************************************************************************/
         void EnableProgramDetailButton(bool bEnable);
     public slots:
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot UpdateReagentList
+         */
+        /****************************************************************************/
         void OnProgramActionStarted(DataManager::ProgramActionType_t ProgramActionType, int remainingTimeTotal,
                                     const QDateTime& startDateTime, bool IsResume);//in seconds
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot UpdateReagentList
+         */
+        /****************************************************************************/
         void OnProgramActionStopped(DataManager::ProgramStatusType_t ProgramStatusType);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot UpdateReagentList
+         */
+        /****************************************************************************/
         void OnCurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor &);
 
 
     protected:
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function changeEvent
+         *
+         *  \return from changeEvent
+         */
+        /****************************************************************************/
         void changeEvent(QEvent *p_Event);
 
     signals:
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of signal AbortClicked
+         */
+        /****************************************************************************/
         void AbortClicked(int);
     private slots:
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot UpdateProgress
+         */
+        /****************************************************************************/
         void UpdateProgress();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot ProgramSelected
+         */
+        /****************************************************************************/
         void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot OnUserSettingsUpdated
+         */
+        /****************************************************************************/
         void OnUserSettingsUpdated();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot OnProcessStateChanged
+         */
+        /****************************************************************************/
         void OnProcessStateChanged();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot OnProgramDetail
+         */
+        /****************************************************************************/
         void OnProgramDetail();
     private:
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function UpdateDateTime
+         *
+         *  \return from UpdateDateTime
+         */
+        /****************************************************************************/
         void UpdateDateTime(const QDateTime & selDateTime);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function RetranslateUI
+         *
+         *  \return from RetranslateUI
+         */
+        /****************************************************************************/
         void RetranslateUI();
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function GetStationNameList
+         *
+         *  \return from GetStationNameList
+         */
+        /****************************************************************************/
         void GetStationNameList(QList<QString>& stationNameList);
-        Ui::CProgramRunningPanelWidget *ui;
-        QTimer* mp_ProgressTimer;
-        int m_CurStepRemainingTime;
-        int m_CurRemainingTime;
-        int m_remainingTimeTotal;
-        int m_curRemainingTimeTotal;
-        QString m_strAborted;
-        QString m_strCompleted;
-        QString m_strAborting;
-        QDateTime m_ProgramEndDateTime;
-        DataManager::CUserSettings *mp_UserSettings;
-        Global::DateFormat m_CurDateFormat;
-        Global::TimeFormat m_CurTimeFormat;
-        QString m_DateTimeStr;
-        QString m_selectedProgramId;
-        QList<QString> m_selectedStationList;
-        int m_CurProgramStepIndex;
-        bool m_isAborting;
+        Ui::CProgramRunningPanelWidget *ui;       ///<  Definition/Declaration of variable ui
+        QTimer* mp_ProgressTimer;       ///<  Definition/Declaration of variable mp_ProgressTimer
+        int m_CurStepRemainingTime;       ///<  Definition/Declaration of variable m_CurStepRemainingTime
+        int m_CurRemainingTime;       ///<  Definition/Declaration of variable m_CurRemainingTime
+        int m_remainingTimeTotal;       ///<  Definition/Declaration of variable m_remainingTimeTotal
+        int m_curRemainingTimeTotal;       ///<  Definition/Declaration of variable m_curRemainingTimeTotal
+        QString m_strAborted;       ///<  Definition/Declaration of variable m_strAborted
+        QString m_strCompleted;       ///<  Definition/Declaration of variable m_strCompleted
+        QString m_strAborting;       ///<  Definition/Declaration of variable m_strAborting
+        QDateTime m_ProgramEndDateTime;       ///<  Definition/Declaration of variable m_ProgramEndDateTime
+        DataManager::CUserSettings *mp_UserSettings;       ///<  Definition/Declaration of variable mp_UserSettings
+        Global::DateFormat m_CurDateFormat;       ///<  Definition/Declaration of variable m_CurDateFormat
+        Global::TimeFormat m_CurTimeFormat;       ///<  Definition/Declaration of variable m_CurTimeFormat
+        QString m_DateTimeStr;       ///<  Definition/Declaration of variable m_DateTimeStr
+        QString m_selectedProgramId;       ///<  Definition/Declaration of variable m_selectedProgramId
+        QList<QString> m_selectedStationList;       ///<  Definition/Declaration of variable m_selectedStationList
+        int m_CurProgramStepIndex;       ///<  Definition/Declaration of variable m_CurProgramStepIndex
+        bool m_isAborting;       ///<  Definition/Declaration of variable m_isAborting
     };
 }
 

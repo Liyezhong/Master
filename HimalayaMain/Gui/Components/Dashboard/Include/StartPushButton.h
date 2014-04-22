@@ -38,12 +38,26 @@ class CStartPushButton : public QPushButton
 public:
     explicit CStartPushButton(QWidget *p_Parent = 0);
     virtual ~ CStartPushButton();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function setText
+     *
+     *  \return from setText
+     */
+    /****************************************************************************/
     void setText(const QString &text);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsStartStatus
+     *
+     *  \return from IsStartStatus
+     */
+    /****************************************************************************/
     void IsStartStatus(bool);
 private:
     void paintEvent(QPaintEvent *);
-    QString m_Text;
-    bool m_IsStartStatus;
+    QString m_Text;       ///<  Definition/Declaration of variable m_Text
+    bool m_IsStartStatus;       ///<  Definition/Declaration of variable m_IsStartStatus
 };
 
 } // end namespace Dashboard

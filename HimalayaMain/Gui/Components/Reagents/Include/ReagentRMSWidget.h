@@ -64,9 +64,9 @@ private:
     Ui::CReagentRMSWidget *mp_Ui;                     //!< User interface
     DataManager::CHimalayaUserSettings m_UserSettings;    //!< Data object
     //Flags
-    bool m_ProcessRunning;
+    bool m_ProcessRunning;       ///<  Definition/Declaration of variable m_ProcessRunning
     //UI related
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
     MainMenu::CBaseTable *mp_TableWidgetCleaning;           //!< Reagent table
     Core::CReagentRMSModel m_ReagentRMSModel;             //!< Model for the table
@@ -78,12 +78,12 @@ private:
     MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
     bool m_ShowMessageDialog;                       //!< To show Information Message Dialog
     DataManager::CReagent const *mp_Reagent;        //!< Reagent object
-    QString m_strNewReagent;
-    QString m_strEditReagent;
-    QString m_strConfirmDelReagent;
-    QString m_strConfirmMsg;
-    QString m_strYes;
-    QString m_strCancel;
+    QString m_strNewReagent;       ///<  Definition/Declaration of variable m_strNewReagent
+    QString m_strEditReagent;       ///<  Definition/Declaration of variable m_strEditReagent
+    QString m_strConfirmDelReagent;       ///<  Definition/Declaration of variable m_strConfirmDelReagent
+    QString m_strConfirmMsg;       ///<  Definition/Declaration of variable m_strConfirmMsg
+    QString m_strYes;       ///<  Definition/Declaration of variable m_strYes
+    QString m_strCancel;       ///<  Definition/Declaration of variable m_strCancel
 public:
     explicit CReagentRMSWidget(QWidget *p_Parent = 0);
     ~CReagentRMSWidget();
@@ -92,8 +92,8 @@ public:
                             DataManager::CDataReagentList *p_ReagentList,
                             MainMenu::CMainWindow *p_MainWindow,
                             KeyBoard::CKeyBoard *p_KeyBoard = NULL);
-    static Global::RMSOptions_t RMSPROCESSINGOPTION;
-    static Global::RMSOptions_t RMSCLEANINGOPTIONS;
+    static Global::RMSOptions_t RMSPROCESSINGOPTION;       ///<  Definition/Declaration of variable RMSPROCESSINGOPTION
+    static Global::RMSOptions_t RMSCLEANINGOPTIONS;       ///<  Definition/Declaration of variable RMSCLEANINGOPTIONS
 
 private:
     void PopulateReagentList();
@@ -149,6 +149,11 @@ signals:
     /****************************************************************************/
     void RMSChanged(const Global::RMSOptions_t);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal RMSCleaningChanged
+     */
+    /****************************************************************************/
     void RMSCleaningChanged(const Global::RMSOptions_t);
 
     /****************************************************************************/
@@ -160,22 +165,107 @@ signals:
 
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnEdit();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnNew();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnDelete();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SelectionChangedCleaningTable(QModelIndex Index);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnUserRoleChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void CloseDialogs();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnRMSOFF();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnRMSCassettes();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnRMSCycles();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnRMSDays();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCancelPressed();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCleaningRMSOFF();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCleaningRMSCycles();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCleaningRMSDays();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateUserSetting();
 };
 

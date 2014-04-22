@@ -37,6 +37,13 @@ namespace Settings {
 //! Maximal scroll wheel temperature in degree Fahrenheit
 #define MAX_FARENHEIT_TEMP    158
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function GetTemperatureMap
+ *
+ *  \return from GetTemperatureMap
+ */
+/****************************************************************************/
 QMap<int, int> GetTemperatureMap(int MinC, int MaxC, int StepC)
 {
     QMap<int, int> MapTemp;
@@ -51,7 +58,7 @@ QMap<int, int> GetTemperatureMap(int MinC, int MaxC, int StepC)
     return MapTemp;
 }
 
-static QMap<int, int> s_MapTemperature =
+static QMap<int, int> s_MapTemperature =       ///<  Definition/Declaration of variable s_MapTemperature
         GetTemperatureMap(MIN_CENTIGRADE_TEMP, MAX_CENTIGRADE_TEMP, 1);
 
 

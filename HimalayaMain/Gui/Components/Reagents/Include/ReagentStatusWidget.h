@@ -46,23 +46,23 @@ private:
     Core::CDataConnector *mp_DataConnector;         //!< Global data container
     DataManager::CDataReagentList *mp_ReagentList;  //!< Reagent list
     DataManager::CReagent m_SelectedReagent;        //!< Currently selected reagent
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //!< Current user role
     bool m_ProcessRunning;                          //!< Process running state
     bool m_ShowMessageDialog;                       //!< To show Information Message Dialog
     DataManager::CReagent *mp_Reagent;              //!< Reagent object
     DataManager::CDashboardStation *mp_DashStation;        //!< Station object
     QStringList m_ReagentList;                      //!< List of Reagents
-    Global::RMSOptions_t m_RMSOptions;
-    Global::RMSOptions_t m_RMSCleaningOptions;
-    QModelIndex m_CurrentIndex;
-    QString m_strSetAsEmpty;
-    QString m_strResetData;
-    QString m_strSetAsFull;
-    QString m_CurrentStationName;
-    QList<QString> m_StationList;
-    QString m_strConfirmMsg;
-    QString m_strYes;
-    QString m_strNo;
+    Global::RMSOptions_t m_RMSOptions;       ///<  Definition/Declaration of variable m_RMSOptions
+    Global::RMSOptions_t m_RMSCleaningOptions;       ///<  Definition/Declaration of variable m_RMSCleaningOptions
+    QModelIndex m_CurrentIndex;       ///<  Definition/Declaration of variable m_CurrentIndex
+    QString m_strSetAsEmpty;       ///<  Definition/Declaration of variable m_strSetAsEmpty
+    QString m_strResetData;       ///<  Definition/Declaration of variable m_strResetData
+    QString m_strSetAsFull;       ///<  Definition/Declaration of variable m_strSetAsFull
+    QString m_CurrentStationName;       ///<  Definition/Declaration of variable m_CurrentStationName
+    QList<QString> m_StationList;       ///<  Definition/Declaration of variable m_StationList
+    QString m_strConfirmMsg;       ///<  Definition/Declaration of variable m_strConfirmMsg
+    QString m_strYes;       ///<  Definition/Declaration of variable m_strYes
+    QString m_strNo;       ///<  Definition/Declaration of variable m_strNo
 protected:
     void showEvent(QShowEvent *);
     void changeEvent(QEvent *p_Event);
@@ -71,8 +71,29 @@ private:
     void ResizeHorizontalSection();
     void RetranslateUI();
     void ResetButtons();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ControlColumnShow
+     *
+     *  \return from ControlColumnShow
+     */
+    /****************************************************************************/
     void ControlColumnShow();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsProcessReagentExpired
+     *
+     *  \return from IsProcessReagentExpired
+     */
+    /****************************************************************************/
     bool IsProcessReagentExpired();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsCleaningReagentExpired
+     *
+     *  \return from IsCleaningReagentExpired
+     */
+    /****************************************************************************/
     bool IsCleaningReagentExpired();
 public:
     explicit CReagentStatusWidget(QWidget *p_Parent = 0);
@@ -82,17 +103,67 @@ public:
                             DataManager::CDataReagentList *p_ReagentList,
                             KeyBoard::CKeyBoard *p_KeyBoard = NULL);
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnSetAsEmpty();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnSetAsFull();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnResetData();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnUserRoleChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void StationReagentUpdated(const QString&);
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void RMSChanged(const Global::RMSOptions_t RMSValue);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void RMSCleaningChanged(const Global::RMSOptions_t RMSValue);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateSelectedStationList(QList<QString>&);
 
 signals:
@@ -103,10 +174,35 @@ signals:
      */
     /****************************************************************************/
     void UpdateReagentList();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UpdateStationChangeReagent
+     */
+    /****************************************************************************/
     void UpdateStationChangeReagent(const QString&, const QString&);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UpdateStationSetAsEmpty
+     */
+    /****************************************************************************/
     void UpdateStationSetAsEmpty(const QString&);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UpdateStationSetAsFull
+     */
+    /****************************************************************************/
     void UpdateStationSetAsFull(const QString&);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UpdateStationResetData
+     */
+    /****************************************************************************/
     void UpdateStationResetData(const QString&);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UnselectProgram
+     */
+    /****************************************************************************/
     void UnselectProgram();
 
 };

@@ -52,7 +52,7 @@ private:
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
     //UI related
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
 
 public:
     explicit CSystemSetupSettingsWidget(QWidget *p_Parent = NULL);
@@ -70,11 +70,31 @@ protected:
     void showEvent(QShowEvent *p_Event);
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnUserRoleChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnApply();
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal TemperatureChanged
+     */
+    /****************************************************************************/
     void TemperatureChanged(DataManager::CUserSettings &Settings);
 };
 

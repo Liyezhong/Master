@@ -17,14 +17,26 @@ class SplashWidget : public QDialog
     Q_OBJECT
     
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SplashWidget
+     *
+     *  \return from SplashWidget
+     */
+    /****************************************************************************/
     explicit SplashWidget(QWidget *parent = 0);
     ~SplashWidget();
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnProgramSelected
+     */
+    /****************************************************************************/
     void ShowModel();
 
 private:
-    Ui::SplashWidget *ui;
+    Ui::SplashWidget *ui;       ///<  Definition/Declaration of variable ui
 };
 
 #endif // SPLASHWIDGET_H

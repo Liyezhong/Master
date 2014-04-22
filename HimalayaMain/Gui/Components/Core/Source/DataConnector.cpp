@@ -48,7 +48,7 @@
 
 
 namespace Core {
-const int COMMAND_TIME_OUT = 5000;
+const int COMMAND_TIME_OUT = 5000;       ///<  Definition/Declaration of variable COMMAND_TIME_OUT
 
 /****************************************************************************/
 /*!

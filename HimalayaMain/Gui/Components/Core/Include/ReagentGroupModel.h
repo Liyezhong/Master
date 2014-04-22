@@ -45,6 +45,13 @@ public:
     int rowCount(const QModelIndex &) const;
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &Index, int Role) const;  //data Reagent SubMenu
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function dataStatus
+     *
+     *  \return from dataStatus
+     */
+    /****************************************************************************/
     QVariant dataStatus(const QModelIndex &Index, int Role) const; //data Reagent Staus SubMenu
 
     QVariant headerData(int Section, Qt::Orientation Orientation, int Role) const;
@@ -73,11 +80,23 @@ public:
 
     void SetVisibleRowCount(int RowCount);
     QString GetReagentID(const QString ReagentName);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetReagentLongName
+     *
+     *  \return from GetReagentLongName
+     */
+    /****************************************************************************/
     QString GetReagentLongName(int Row);
     bool ContainsReagent(QString ReagentID);
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateReagentGroupList();
 private:
 

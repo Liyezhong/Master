@@ -80,17 +80,17 @@ private:
     DataManager::CUserSettings *mp_UserSettings;        //!< Data object
     CStepModel m_StepModel;                             //!< Model of the program table
     Core::CDataConnector *mp_DataConnector;             //!< Global data container
-    DataManager::CProgram *mp_Program;
+    DataManager::CProgram *mp_Program;       ///<  Definition/Declaration of variable mp_Program
     Core::CReagentStationEditModel m_ReagentEditModel;  //!< Model for the table
-    QString m_ReagentID;
-    QPixmap* m_pAmbientTempraturePixmap;
-    QPixmap* m_pAmbientTempratureBigPixmap;
-    QString m_strConfirmMsg;
-    QString m_strOK;
-    QString m_strDiffTemp;
-    QString m_strInforMsg;
-    QString m_strYes;
-    QString m_strNo;
+    QString m_ReagentID;       ///<  Definition/Declaration of variable m_ReagentID
+    QPixmap* m_pAmbientTempraturePixmap;       ///<  Definition/Declaration of variable m_pAmbientTempraturePixmap
+    QPixmap* m_pAmbientTempratureBigPixmap;       ///<  Definition/Declaration of variable m_pAmbientTempratureBigPixmap
+    QString m_strConfirmMsg;       ///<  Definition/Declaration of variable m_strConfirmMsg
+    QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
+    QString m_strDiffTemp;       ///<  Definition/Declaration of variable m_strDiffTemp
+    QString m_strInforMsg;       ///<  Definition/Declaration of variable m_strInforMsg
+    QString m_strYes;       ///<  Definition/Declaration of variable m_strYes
+    QString m_strNo;       ///<  Definition/Declaration of variable m_strNo
 private:
     void showEvent(QShowEvent *p_Event);
     void RetranslateUI();
@@ -109,12 +109,26 @@ public:
      */
     /****************************************************************************/
     void SetButtonType(ButtonType_t ButtonType) { m_ModifyProgramDlgButtonType = ButtonType;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetButtonType
+     *
+     *  \return from GetButtonType
+     */
+    /****************************************************************************/
     ButtonType_t GetButtonType(){return m_ModifyProgramDlgButtonType;}
 
     void SetProgramStep(DataManager::CProgramStep *p_ProgramStep);
     void NewProgramStep();
     void SelectRow(qint32 Row);
     void ResetButtons(bool Disable);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetRadioButtonStatus
+     *
+     *  \return from SetRadioButtonStatus
+     */
+    /****************************************************************************/
     void SetRadioButtonStatus(const QString &Pressure, const QString &Vaccum);
 
 private:
@@ -125,11 +139,41 @@ protected:
     void changeEvent(QEvent *p_Event);
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnOk();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCancel();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnSelectionChanged(QModelIndex);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void ReagentTableUpdate();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateUserSetting();
 
 signals:

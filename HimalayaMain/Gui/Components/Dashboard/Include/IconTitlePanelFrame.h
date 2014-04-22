@@ -48,6 +48,13 @@ public:
     void SetContent(QLayout *p_Content);
     QWidget *GetContentFrame();
     
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetPanelIcon
+     *
+     *  \return from SetPanelIcon
+     */
+    /****************************************************************************/
     void SetPanelIcon(const QString& icon);
 
 private:

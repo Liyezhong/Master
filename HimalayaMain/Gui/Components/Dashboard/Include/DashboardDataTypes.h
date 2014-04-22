@@ -43,8 +43,8 @@ namespace Dashboard {
 //qint8 RetortBoundingRectWidth;
 //qint8 RetortBoundingRectHeight;
 
-const int firstButton = 1;
-const int secondButton = 2;
+const int firstButton = 1;       ///<  Definition/Declaration of variable firstButton
+const int secondButton = 2;       ///<  Definition/Declaration of variable secondButton
 
 typedef enum
 {

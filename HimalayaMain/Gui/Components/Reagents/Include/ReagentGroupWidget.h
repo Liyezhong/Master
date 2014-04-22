@@ -62,13 +62,13 @@ private:
     DataManager::CDataReagentGroupList *mp_ReagentGroupList;  //!< Reagent list
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //!< Current user role
     bool m_ProcessRunning;                          //!< Process running state
     bool m_ShowMessageDialog;                       //!< To show Information Message Dialog
     DataManager::CReagentGroup const *mp_ReagentGroup;        //!< Reagent object
     DataManager::CReagentGroupColorList *mp_CReagentGroupColorList; //!< CReagentGroupColor object
     CModifyReagentGroupColorDlg *mp_ModifyReagentColorDlg;        //!< Edit reagent dialog
-    QString m_strSelectColor;
+    QString m_strSelectColor;       ///<  Definition/Declaration of variable m_strSelectColor
 signals:
 
     /****************************************************************************/
@@ -111,10 +111,35 @@ public:
                                         MainMenu::CMainWindow *p_MainWindow);
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnEdit();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnUserRoleChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnUpdateReagentGroup(DataManager::CReagentGroup&);
 };
 

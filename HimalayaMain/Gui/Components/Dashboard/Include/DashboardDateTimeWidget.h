@@ -56,7 +56,21 @@ public:
     explicit CDashboardDateTimeWidget(QWidget *p_Parent = 0, QMainWindow *pMainWindow = 0);
     virtual ~CDashboardDateTimeWidget();
     void RefreshDateTime(Global::TimeFormat TimeFormat = Global::TIME_24);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetASAPDateTime
+     *
+     *  \return from SetASAPDateTime
+     */
+    /****************************************************************************/
     void SetASAPDateTime(const QDateTime& DateTime);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetUserSettings
+     *
+     *  \return from SetUserSettings
+     */
+    /****************************************************************************/
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
 
 private:
@@ -70,28 +84,60 @@ private:
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
 
-    DataManager::CUserSettings *mp_UserSetting;
+    DataManager::CUserSettings *mp_UserSetting;       ///<  Definition/Declaration of variable mp_UserSetting
 
     //Flags
     bool m_ProcessRunning;                  //!< Process running state
     QDateTime m_selDateTime;                //!< Selected Date and Time
-    QDateTime m_ASAPDateTime;
-    QString m_strEndTimeForProgram;
-    QString m_strEarlierEndTime;
-    QString m_strLaterEndTime;
+    QDateTime m_ASAPDateTime;       ///<  Definition/Declaration of variable m_ASAPDateTime
+    QString m_strEndTimeForProgram;       ///<  Definition/Declaration of variable m_strEndTimeForProgram
+    QString m_strEarlierEndTime;       ///<  Definition/Declaration of variable m_strEarlierEndTime
+    QString m_strLaterEndTime;       ///<  Definition/Declaration of variable m_strLaterEndTime
     void RetranslateUI();
 
 protected:
     void changeEvent(QEvent *p_Event);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function showEvent
+     *
+     *  \return from showEvent
+     */
+    /****************************************************************************/
     void showEvent(QShowEvent *p_Event);
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnOK
+     */
+    /****************************************************************************/
     void OnOK();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnCancel
+     */
+    /****************************************************************************/
     void OnCancel();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateProgramName
+     */
+    /****************************************************************************/
     void UpdateProgramName();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnSetASAPDateTime
+     */
+    /****************************************************************************/
     void OnSetASAPDateTime();
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal OnSelectDateTime
+     */
+    /****************************************************************************/
     void OnSelectDateTime(const QDateTime& selDateTime);
 
 };

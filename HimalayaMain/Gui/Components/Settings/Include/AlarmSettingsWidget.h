@@ -67,7 +67,7 @@ private:
     Settings::CAlarmSettingsDlg *mp_Information;   //!< Note alarm dialog
     Settings::CAlarmSettingsDlg *mp_Warning;   //!< Note alarm dialog
     DataManager::CHimalayaUserSettings m_UserSettings;  //!< Data object
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     Core::CDataConnector *mp_DataConnector; //!< DataConnector object
     void RetranslateUI();
     void ResetButtons();
@@ -77,17 +77,47 @@ private:
     //UI related
 
     // texts to be displayed on the widget
-    QString m_TextSound;
-    QString m_TextVolume;
-    QString m_TextPeriodicOff;
-    QString m_TextPeriodicTime;
+    QString m_TextSound;       ///<  Definition/Declaration of variable m_TextSound
+    QString m_TextVolume;       ///<  Definition/Declaration of variable m_TextVolume
+    QString m_TextPeriodicOff;       ///<  Definition/Declaration of variable m_TextPeriodicOff
+    QString m_TextPeriodicTime;       ///<  Definition/Declaration of variable m_TextPeriodicTime
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnNoteEdit();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnWarningEdit();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnErrorEdit();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateLabels();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void AlarmSettingsChange(DataManager::CUserSettings &Settings);
 
 protected:
@@ -95,6 +125,11 @@ protected:
     void showEvent(QShowEvent *p_Event);
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal AlarmSettingsChanged
+     */
+    /****************************************************************************/
     void AlarmSettingsChanged(DataManager::CUserSettings &Settings);
     void PlayTestTone(quint8 , quint8 , bool );
 };

@@ -36,9 +36,23 @@ class CPausePushButton : public QPushButton
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CPausePushButton
+     *
+     *  \return from CPausePushButton
+     */
+    /****************************************************************************/
     explicit CPausePushButton(QWidget *p_Parent = 0);
     virtual ~ CPausePushButton();
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function paintEvent
+     *
+     *  \return from paintEvent
+     */
+    /****************************************************************************/
     void paintEvent(QPaintEvent *);   
 };
 

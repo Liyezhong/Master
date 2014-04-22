@@ -47,9 +47,9 @@ public:
 
 private:
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
-    Ui::CDataManagementWidget *mp_Ui;
+    Ui::CDataManagementWidget *mp_Ui;       ///<  Definition/Declaration of variable mp_Ui
     bool m_ProcessRunning;                          //!< Process running state
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
 
     void RetranslateUI();
     void ResetButtons();
@@ -60,15 +60,50 @@ protected:
 
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot ServiceExportDialog
+     */
+    /****************************************************************************/
     void ServiceExportDialog();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot SaveToUSBDialog
+     */
+    /****************************************************************************/
     void SaveToUSBDialog();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot ImportDialog
+     */
+    /****************************************************************************/
     void ImportDialog();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot SWUpdate
+     */
+    /****************************************************************************/
     void SWUpdate();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot RemoteSWUpdate
+     */
+    /****************************************************************************/
     void RemoteSWUpdate();
 
 signals:
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ExecSending
+     */
+    /****************************************************************************/
     void ExecSending(const QString, const QStringList &);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal EmitSWUpdate
+     */
+    /****************************************************************************/
     void EmitSWUpdate(bool);
 };
 

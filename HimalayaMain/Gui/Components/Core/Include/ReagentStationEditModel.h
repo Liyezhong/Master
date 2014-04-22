@@ -107,7 +107,21 @@ public:
 
     void SetVisibleRowCount(int RowCount);
     QString GetReagentID(int Row);
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetReagentLongName
+	 *
+	 *  \return from GetReagentLongName
+	 */
+	/****************************************************************************/
 	QString GetReagentLongName(QString ReagentId);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetUserSettings
+     *
+     *  \return from SetUserSettings
+     */
+    /****************************************************************************/
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
     void UpdateReagentList();
 
@@ -118,14 +132,14 @@ private:
     DataManager::CDashboardDataStationList *mp_DashboardDataStationList; //!< DashboardDataStationList
     QMap<QString, QString> m_Identifiers;               //!< Identifiers of reagents currently displayed
     QStringList m_ReagentNames;                         //!< Long names of reagents currently displayed
-    QStringList m_ReagentID;
+    QStringList m_ReagentID;       ///<  Definition/Declaration of variable m_ReagentID
     qint32 m_Columns;                                   //!< Number of table columns
     Programs::CModifyProgramStepDlg *mp_Parent;         //!< Reference to ModifyProgramStep Dialog
     bool m_FilterLeicaReagent;                          //!< Filter Leica Reagent if set to true
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object    
-    bool m_ModifiedProgramStepDlg;
+    bool m_ModifiedProgramStepDlg;       ///<  Definition/Declaration of variable m_ModifiedProgramStepDlg
 };
 
 } // end namespace Core

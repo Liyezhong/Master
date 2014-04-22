@@ -120,6 +120,13 @@ public:
 
     void OnAckDateAndTime(Global::tRefType Ref, const Global::AckOKNOK &Ack);
     void OnAckTwoPhase(Global::tRefType Ref, const Global::AckOKNOK &Ack);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function EmitUpdateModeSignal
+     *
+     *  \return from EmitUpdateModeSignal
+     */
+    /****************************************************************************/
     void EmitUpdateModeSignal(QString Mode);
     void OnAck(Global::tRefType Ref, const Global::AckOKNOK &Ack);
     void RequestDayRunLogFileNames();
@@ -129,43 +136,176 @@ public:
 
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendDateTime(QDateTime DateTime);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendReagentUpdate(DataManager::CReagent &Reagent);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendReagentGroupUpdate(DataManager::CReagentGroup &ReagentGroup);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendStationChangeReagent(const QString& StationId, const QString& ReagentId);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendStationResetData(const QString& StationId);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendStationSetAsEmpty(const QString StationId);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendStationSetAsFull(const QString& StationId);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendRMSChanged(Global::RMSOptions_t);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendUpdatedSettings(DataManager::CUserSettings &Settings);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, bool Type);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendReagentAdd(DataManager::CReagent &Reagent);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendReagentRemove(QString ReagentID);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendProgramUpdate(DataManager::CProgram &Program);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendProgramAdd(DataManager::CProgram &Program);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendProgramRemove(QString &ProgramID);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendDataImportExport(const QString Name, const QStringList &ParamList);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendSWUpdate(bool USBUpdate);
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendProgramColorUpdate(DataManager::CProgram &ColorReplacedProgram,
                                 DataManager::CProgram &ColorAssignedProgram);
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType,
                            const QDateTime& ProgramEndDateTime = QDateTime::currentDateTime());
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendKeepCassetteCount(int CassetteCount);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendProgramSelected(const QString& ProgramID, int ParaffinStepIndex);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendUserLevel(QDataStream &DataStream);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendChangepassword(QDataStream &DataStream);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendSelectedDayRunLogFile(const QString &FileName);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCurrentTabChanged(int CurrentTabIndex);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendAppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SendResetOperationDays(DataManager::ResetOperationHoursType_t);
 
 signals:
 
     /****************************************************************************/
     /*!
-     *  \brief
+     *  \brief  Definition/Declaration of signal ReagentGroupUpdated
      */
     /****************************************************************************/
     void ReagentGroupUpdated();
@@ -212,10 +352,20 @@ signals:
      *  \brief
      */
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ReagentGroupColorUpdated
+     */
+    /****************************************************************************/
     void ReagentGroupColorUpdated();
     /****************************************************************************/
     /*!
      *  \brief
+     */
+    /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ProgramsUpdated
      */
     /****************************************************************************/
     void ProgramsUpdated();
@@ -224,10 +374,20 @@ signals:
      *  \brief
      */
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ProgramsInitialized
+     */
+    /****************************************************************************/
     void ProgramsInitialized(bool);
     /****************************************************************************/
     /*!
      *  \brief
+     */
+    /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ProgramsDeleted
      */
     /****************************************************************************/
     void ProgramsDeleted();
@@ -236,10 +396,20 @@ signals:
      *  \brief
      */
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ReagentsUpdated
+     */
+    /****************************************************************************/
     void ReagentsUpdated();
     /****************************************************************************/
     /*!
      *  \brief
+     */
+    /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UserSettingsUpdated
      */
     /****************************************************************************/
     void UserSettingsUpdated();
@@ -248,16 +418,31 @@ signals:
      *  \brief
      */
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UpdateMode
+     */
+    /****************************************************************************/
     void UpdateMode(const QString &);
     /****************************************************************************/
     /*!
      *  \brief
      */
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal DateTimeAcked
+     */
+    /****************************************************************************/
     void DateTimeAcked();
     /****************************************************************************/
     /*!
      *  \brief
+     */
+    /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal RemoveProgram
      */
     /****************************************************************************/
     void RemoveProgram(QString &);
@@ -273,16 +458,31 @@ signals:
      *  \brief
      */
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal StopTimers
+     */
+    /****************************************************************************/
     void StopTimers();
     /****************************************************************************/
     /*!
      *  \brief
      */
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ReCalculateEndTimes
+     */
+    /****************************************************************************/
     void ReCalculateEndTimes();
     /****************************************************************************/
     /*!
      *  \brief
+     */
+    /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ShowManualProgramDlg
      */
     /****************************************************************************/
     void ShowManualProgramDlg(QString);
@@ -327,10 +527,20 @@ signals:
      *  \brief
      */
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal DeviceConfigurationUpdated
+     */
+    /****************************************************************************/
     void DeviceConfigurationUpdated();
     /****************************************************************************/
     /*!
      *  \brief
+     */
+    /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal RevertChangedUserSettings
      */
     /****************************************************************************/
     void RevertChangedUserSettings();
@@ -339,10 +549,20 @@ signals:
      *  \brief
      */
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal RevertChangedProgram
+     */
+    /****************************************************************************/
     void RevertChangedProgram();
     /****************************************************************************/
     /*!
      *  \brief
+     */
+    /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal RevertChangedReagent
      */
     /****************************************************************************/
     void RevertChangedReagent();
@@ -351,19 +571,84 @@ signals:
      *  \brief
      */
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal EndGUIInitialization
+     */
+    /****************************************************************************/
     void EndGUIInitialization();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal StartProgramAction
+     */
+    /****************************************************************************/
     void StartProgramAction(DataManager::ProgramActionType_t ActionType);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal CurrentProgramStepInforUpdated
+     */
+    /****************************************************************************/
     void CurrentProgramStepInforUpdated(const MsgClasses::CmdCurrentProgramStepInfor & Command);
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of signal ProgramStartReady
+	 */
+	/****************************************************************************/
 	void ProgramStartReady();
     void ProgramSelfTestFailed();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ProgramWillComplete
+     */
+    /****************************************************************************/
     void ProgramWillComplete();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ProgramAborted
+     */
+    /****************************************************************************/
     void ProgramAborted();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ProgramBeginAbort
+     */
+    /****************************************************************************/
     void ProgramBeginAbort();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ProgramCompleted
+     */
+    /****************************************************************************/
     void ProgramCompleted();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ProgramRunBegin
+     */
+    /****************************************************************************/
     void ProgramRunBegin();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ProgramPaused
+     */
+    /****************************************************************************/
     void ProgramPaused();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal RetortLockStatusChanged
+     */
+    /****************************************************************************/
     void RetortLockStatusChanged(const MsgClasses::CmdLockStatus& Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ProgramSelectedReply
+     */
+    /****************************************************************************/
     void ProgramSelectedReply(const MsgClasses::CmdProgramSelectedReply& Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal StationSuckDrain
+     */
+    /****************************************************************************/
     void StationSuckDrain(const MsgClasses::CmdStationSuckDrain& Command);
 private:
     void ConfFileHandler(Global::tRefType Ref, const NetCommands::CmdConfigurationFile &Command);
@@ -375,16 +660,86 @@ private:
     void UpdateReagentHandler(Global::tRefType Ref, const MsgClasses::CmdReagentUpdate &Command);
     void UpdateReagentGroupHandler(Global::tRefType Ref, const MsgClasses::CmdReagentGroupUpdate &Command);
     void UpdateStationChangeReagentHandler(Global::tRefType Ref, const MsgClasses::CmdStationChangeReagent &Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function UpdateStationResetDataHandler
+     *
+     *  \return from UpdateStationResetDataHandler
+     */
+    /****************************************************************************/
     void UpdateStationResetDataHandler(Global::tRefType Ref, const MsgClasses::CmdStationResetData &Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function UpdateStationSetAsEmptyHandler
+     *
+     *  \return from UpdateStationSetAsEmptyHandler
+     */
+    /****************************************************************************/
     void UpdateStationSetAsEmptyHandler(Global::tRefType Ref, const MsgClasses::CmdStationSetAsEmpty &Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function UpdateStationSetAsFullHandler
+     *
+     *  \return from UpdateStationSetAsFullHandler
+     */
+    /****************************************************************************/
     void UpdateStationSetAsFullHandler(Global::tRefType Ref, const MsgClasses::CmdStationSetAsFull &Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function UpdateStationReagentStatus
+     *
+     *  \return from UpdateStationReagentStatus
+     */
+    /****************************************************************************/
     void UpdateStationReagentStatus(Global::tRefType Ref, const MsgClasses::CmdUpdateStationReagentStatus &Command);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CurrentProgramStepInfoHandler
+     *
+     *  \return from CurrentProgramStepInfoHandler
+     */
+    /****************************************************************************/
     void CurrentProgramStepInfoHandler(Global::tRefType Ref, const MsgClasses::CmdCurrentProgramStepInfor & Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ProgramAcknowledgeHandler
+     *
+     *  \return from ProgramAcknowledgeHandler
+     */
+    /****************************************************************************/
     void ProgramAcknowledgeHandler(Global::tRefType Ref, const MsgClasses::CmdProgramAcknowledge& Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function StationParaffinBathStatusHandler
+     *
+     *  \return from StationParaffinBathStatusHandler
+     */
+    /****************************************************************************/
     void StationParaffinBathStatusHandler(Global::tRefType Ref, const MsgClasses::CmdStationSuckDrain & Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ProgramSelectedReplyHandler
+     *
+     *  \return from ProgramSelectedReplyHandler
+     */
+    /****************************************************************************/
     void ProgramSelectedReplyHandler(Global::tRefType Ref, const MsgClasses::CmdProgramSelectedReply & Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function RetortLockStatusHandler
+     *
+     *  \return from RetortLockStatusHandler
+     */
+    /****************************************************************************/
     void RetortLockStatusHandler(Global::tRefType Ref, const MsgClasses::CmdLockStatus & Command);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function AppQuitSystemShutdownRelyHandler
+     *
+     *  \return from AppQuitSystemShutdownRelyHandler
+     */
+    /****************************************************************************/
     void AppQuitSystemShutdownRelyHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdownReply & Command);
 
     void EventStringHandler(Global::tRefType ref, const NetCommands::CmdEventStrings &Command);
@@ -409,9 +764,9 @@ private:
     QFile *mp_LanguageFile;                         //!< Lanugage file object (qm file)
     QFile *mp_OldFile;                              //!< Old/Previous language file(qm file)
     QTranslator m_Translator;                       //!< Language translator
-    QProcess* m_pServiceProcess;
-    bool m_UpdateProgramColor;
-    bool m_AddProgramWithUpdateColor;
+    QProcess* m_pServiceProcess;       ///<  Definition/Declaration of variable m_pServiceProcess
+    bool m_UpdateProgramColor;       ///<  Definition/Declaration of variable m_UpdateProgramColor
+    bool m_AddProgramWithUpdateColor;       ///<  Definition/Declaration of variable m_AddProgramWithUpdateColor
     quint32 m_LanguageChangeCount;                  //!< Count of language changes
     QHash<quint32, ScheduledStations_t> m_ScheduledStationsHash;    //!< Scheduled Stations hash
     MainMenu::CMsgBoxManager *mp_MesgBoxManager;              //!< Msg Box manager for CmdEventReport
@@ -419,33 +774,63 @@ private:
     quint32 m_BottleCount;                          ///< Leica Bottle count
     bool m_GuiAllConfigurationReceived;             //!< True -if all configuration data (XML)from Main is received
     bool m_GuiInit;                                 //!< True - if Gui is getting initialized
-    int m_CurrentTabIndex;
-    QString m_strCommunicationError;
-    QString m_strChangeNotSave;
-    QString m_strStartup;
-    QString m_strInitDevCom;
-    QString m_strDisconnect;
-    QString m_strReinitDeviceCommunication;
-    QString m_strError;
-    QString m_strInformation;
-    QString m_strWarning;
-    QString m_strOK;
-    QString m_strDeviceCommunication;
-    QString m_strSavingSettings;
-    QString m_strUserExport, m_strExportUserData;
-    QString m_strServiceExport, m_strExportServiceData;
-    QString m_strImport, m_strImportData;
-    QString m_strLogFile;
-    QString m_strGettingDailyLog;
-    QString m_strTurnOffSwitch;
+    int m_CurrentTabIndex;       ///<  Definition/Declaration of variable m_CurrentTabIndex
+    QString m_strCommunicationError;       ///<  Definition/Declaration of variable m_strCommunicationError
+    QString m_strChangeNotSave;       ///<  Definition/Declaration of variable m_strChangeNotSave
+    QString m_strStartup;       ///<  Definition/Declaration of variable m_strStartup
+    QString m_strInitDevCom;       ///<  Definition/Declaration of variable m_strInitDevCom
+    QString m_strDisconnect;       ///<  Definition/Declaration of variable m_strDisconnect
+    QString m_strReinitDeviceCommunication;       ///<  Definition/Declaration of variable m_strReinitDeviceCommunication
+    QString m_strError;       ///<  Definition/Declaration of variable m_strError
+    QString m_strInformation;       ///<  Definition/Declaration of variable m_strInformation
+    QString m_strWarning;       ///<  Definition/Declaration of variable m_strWarning
+    QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
+    QString m_strDeviceCommunication;       ///<  Definition/Declaration of variable m_strDeviceCommunication
+    QString m_strSavingSettings;       ///<  Definition/Declaration of variable m_strSavingSettings
+    QString m_strUserExport, m_strExportUserData;       ///<  Definition/Declaration of variable m_strUserExport
+    QString m_strServiceExport, m_strExportServiceData;       ///<  Definition/Declaration of variable m_strServiceExport
+    QString m_strImport, m_strImportData;       ///<  Definition/Declaration of variable m_strImport
+    QString m_strLogFile;       ///<  Definition/Declaration of variable m_strLogFile
+    QString m_strGettingDailyLog;       ///<  Definition/Declaration of variable m_strGettingDailyLog
+    QString m_strTurnOffSwitch;       ///<  Definition/Declaration of variable m_strTurnOffSwitch
     MainMenu::CWaitDialog *mp_WaitDlgExecChanged;    //!< Displayed when Execution Chaged command recved
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnMasterConnected(const QString &name);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnMasterDisconnected(const QString &name);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnCmdTimeout(Global::tRefType Ref, const QString &CommandName);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void SetDateTime(QDateTime DateTime);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void RetranslateUI();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UpdateReagentList
+     */
+    /****************************************************************************/
     void OnEventReportAck(NetCommands::ClickedButton_t ClickedButton, Global::tRefType CmdRef, quint64 EventKey);
 
 };
