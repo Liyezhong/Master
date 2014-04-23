@@ -19,6 +19,7 @@
 /****************************************************************************/
 #include "Scheduler/Include/SchedulerMachine.h"
 #include "Scheduler/Include/HimalayaDeviceEventCodes.h"
+#include <Global/Include/Commands/Command.h>
 #include <QDebug>
 #include <QDateTime>
 
@@ -145,8 +146,7 @@ CSchedulerStateMachine::CSchedulerStateMachine()
 
 void CSchedulerStateMachine::OnStateChanged()
 {
-    m_PreviousState = m_CurrentState;
-    qDebug()<<"DBG"<< QDateTime::currentDateTime()<<"Previous state is: "<<hex<<m_PreviousState;
+    //m_PreviousState = m_CurrentState;
 #if 0
     quint32 stateid = STR_UNEXPECTED_STATE;
     switch(currentState)
@@ -213,6 +213,10 @@ void CSchedulerStateMachine::UpdateCurrentState(SchedulerStateMachine_t currentS
 {
     if(m_CurrentState != currentState )
     {
+        QString msg = QString("%1 Previous state: %2, Current State: %3").arg(QDateTime::currentDateTime().toString()).arg(m_CurrentState,0,16).arg(currentState, 0, 16);
+        Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE,Global::tTranslatableStringList()<<msg);
+        qDebug()<<"DBG"<< QDateTime::currentDateTime()<<"Previous state is: "<<hex<<m_CurrentState<<" Current State is:" <<hex<<currentState;
+        m_PreviousState = m_CurrentState;
         m_CurrentState = currentState;
     }
 }

@@ -207,7 +207,7 @@ void SchedulerMainThreadController::OnTickTimer()
 
     SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
     m_SchedulerMachine->UpdateCurrentState(currentState);
-    LogDebug(QString("%1 Scheduler state: %2").arg(QDateTime::currentDateTime().toString()).arg(currentState,0,16));
+    //LogDebug(QString("%1 Scheduler state: %2").arg(QDateTime::currentDateTime().toString()).arg(currentState,0,16));
     switch(currentState & 0xFF)
     {
     case SM_INIT:
@@ -265,7 +265,8 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
             //LOG_STR_ARG(STR_START_PROGRAM, Global::FmtArgs()<<ProgramName);
 
-            LogDebug(QString("Start Step: %1").arg(m_CurProgramID));
+            LogDebug(QString("Start Program: %1").arg(ProgramName));
+            LogDebug(QString("Start Step: %1").arg(m_CurProgramStepIndex));
             m_SchedulerMachine->SendRunSignal();
             //send command to main controller to tell the left time
             quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
@@ -377,7 +378,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ST_VOLTAGE_CHECKING == stepState)
         {
-            LogDebug("Precheck Vlotage Check OK");
+            LogDebug("Precheck Voltage Check OK");
             m_SchedulerMachine->NotifyStVoltageOK(); //todo: update later
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
@@ -513,7 +514,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
                 else if(DCL_ERR_UNDEFINED != retCode)
                 {
-                    LogDebug(QString("Unexpected ret code: %1").arg(retCode));
+                    //LogDebug(QString("Unexpected ret code: %1").arg(retCode));
                     resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
                 }
                 //LOG_STR_ARG(STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT, Global::tTranslatableStringList()<<Global::TranslatableString(resid));
@@ -948,7 +949,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(m_CurProgramStepIndex != -1)
             {
                 //start next step
-                LogDebug(QString("Start step %1").arg(m_CurProgramID));
+                LogDebug(QString("Start Step %1").arg(m_CurProgramStepIndex));
                 m_SchedulerMachine->NotifyStepFinished();
                 //send command to main controller to tell the left time
                 quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
@@ -1086,7 +1087,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
 
     if (SM_ERR_WAIT == currentState)
     {
-        LogDebug("Scheduler waitting event handler give instruction!");
+        //LogDebug("Scheduler waitting event handler give instruction!");
         if(CTRL_CMD_RC_RESTART == ctrlCmd)
         {
             if(((m_SchedulerMachine->GetPreviousState()) & 0xFFFF)==PSSM_ST)
