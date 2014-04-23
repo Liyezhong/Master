@@ -34,7 +34,12 @@ CRecoveryActionFilter::CRecoveryActionFilter(const QString& Path)
 
 CRecoveryActionFilter::~CRecoveryActionFilter()
 {
-    m_ItemPositons.clear();
+    try {
+        m_ItemPositons.clear();
+    }
+    catch (...) {
+
+    }
 }
 
 const QString CRecoveryActionFilter::CheckFromFile(const QString& EventId)
@@ -45,7 +50,7 @@ const QString CRecoveryActionFilter::CheckFromFile(const QString& EventId)
         return "";
     }
 
-    File.seek(m_Position);
+    (void)File.seek(m_Position);
 
     while(!File.atEnd()) {
         qint64 Position = File.pos();
@@ -67,7 +72,7 @@ const QString CRecoveryActionFilter::CheckFromFile(const QString& EventId)
     return "";
 }
 
-const QString CRecoveryActionFilter::GetRecoveryAtionText(const QString &EventId)
+const QString CRecoveryActionFilter::GetRecoveryActionText(const QString &EventId)
 {
     quint64 Position = m_ItemPositons.value(EventId);
 
@@ -76,7 +81,7 @@ const QString CRecoveryActionFilter::GetRecoveryAtionText(const QString &EventId
         if(!File.open(QIODevice::ReadOnly | QIODevice::Text)) {
             return "";
         }
-        File.seek(Position);
+        (void)File.seek(Position);
         QByteArray Line = File.readLine();
         return QString(Line);
     }

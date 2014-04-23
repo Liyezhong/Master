@@ -27,13 +27,7 @@
 
 namespace LogViewer {
 
-/****************************************************************************/
-/*!
- *  \brief Constructor
- *
- *  \iparam p_Parent = Parent widget
- */
-/****************************************************************************/
+
 CLogContentDlg::CLogContentDlg(const QStringList& HeaderLabels, QList<int> &Columns, QWidget *p_Parent) :
     MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CLogContentDlg),
     mp_Model(NULL),
@@ -44,7 +38,7 @@ CLogContentDlg::CLogContentDlg(const QStringList& HeaderLabels, QList<int> &Colu
 
     mp_Ui->setupUi(GetContentFrame());
     mp_TableWidget = new MainMenu::CBaseTable;
-    mp_TableWidget->resize(600,450);
+    mp_TableWidget->resize(600,400);
 
     mp_TableWidget->setWordWrap(true);
 
@@ -56,15 +50,10 @@ CLogContentDlg::CLogContentDlg(const QStringList& HeaderLabels, QList<int> &Colu
     mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
     mp_Ui->widget->SetContent(mp_TableWidget);
 
-    connect(mp_Ui->closeBtn, SIGNAL(clicked()), this, SLOT(close()));
+    (void)connect(mp_Ui->closeBtn, SIGNAL(clicked()), this, SLOT(close()));
 
 }
 
-/****************************************************************************/
-/*!
- *  \brief Destructor
- */
-/****************************************************************************/
 CLogContentDlg::~CLogContentDlg()
 {
     try {
@@ -76,13 +65,6 @@ CLogContentDlg::~CLogContentDlg()
     }
 }
 
-/****************************************************************************/
-/*!
- *  \brief  To initialize the pop up dialog
- *  \iparam FilePath = Log file path
- *  \return retruns 0, if file open gets failed.
- */
-/****************************************************************************/
 int CLogContentDlg::InitDialog(QString FilePath)
 {
     mp_LogFilter = new CLogFilter(FilePath, m_Columns);

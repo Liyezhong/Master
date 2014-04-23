@@ -33,33 +33,102 @@
 
 namespace LogViewer {
 
+/****************************************************************************/
+/**
+ * \brief This implements the class CLogFilter
+ */
+/****************************************************************************/
 class CLogFilter : public QObject {
     Q_OBJECT
 private:
-    QVector<QStringList> m_LogItems;
+    QVector<QStringList> m_LogItems; //!< The list of log items
 
-    QMap<int, int> m_SubItems[6];
-    QString m_Filename;
-    QList<int> m_Columns;
-    bool m_needClassify;
-    QStandardItemModel m_Model;
-    QStandardItemModel m_SubModel;
-    QMap<QString, QString> m_FileInfo;
+    QMap<int, int> m_SubItems[6]; //!< The map of sub items ,the key = event type , value = log index
+    QString m_Filename; //!< Systems Log file name
+    QList<int> m_Columns; //!< Columns for the table widget
+    bool m_needClassify; //!< Flag for need classify
+    QStandardItemModel m_Model; //!< Model for the log dialog table
+    QStandardItemModel m_SubModel; //!< no use ?
+    QMap<QString, QString> m_FileInfo;//!< The map of file info
     quint32   m_LogIndex;
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Add Recovery action item to Model of the dialog table
+     *  \param  data = The line of log data;
+     */
+    /****************************************************************************/
     void AddItem4RecoveryAction(QString& data);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Add item to Model of the dialog table
+     *  \param  line = The line of log data;
+     */
+    /****************************************************************************/
     void AddItem4Log(QString& data);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Add item to Model of the dialog table if need classify
+     *  \param  line = The line of log data;
+     */
+    /****************************************************************************/
     void AddItem4LogNeedClassify(QString& data);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Check file info to m_FileInfo
+     *  \param  line = The line of log data;
+     *  \return retruns false, if check failed.
+     */
+    /****************************************************************************/
     bool CheckFileInfo(const QString& line);
 
 public:
     static quint8 m_AllTypes;
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam Flilename = Log file name
+     *  \iparam Columns = Columns for the table widget
+     *  \iparam p_Parent = Parent widget
+     */
+    /****************************************************************************/
     CLogFilter(const QString& Filename, const QList<qint32>& Columns, bool NeedClassify=false);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CLogFilter();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  To initialize data by the file
+     *  \return retruns false, if file open gets failed.
+     */
+    /****************************************************************************/
     bool InitData();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To get item model
+     *  \iparam EventTypes = Event Types
+     *  \return Model pointer
+     */
+    /****************************************************************************/
     QStandardItemModel* GetItemModel( quint64 EventTypes = LogViewer::CLogFilter::m_AllTypes);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To get log file info
+     *  \return The file info map
+     */
+    /****************************************************************************/
     const QMap<QString, QString>& GetFileInfo( );
 
 

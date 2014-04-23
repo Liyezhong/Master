@@ -46,14 +46,12 @@ CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogF
     mp_Ui->setupUi(GetContentFrame());
     m_LogFilePath = "";
     mp_TableWidget = new MainMenu::CBaseTable;
-    mp_TableWidget->resize(600,350);
+    mp_TableWidget->resize(600,330);
 
     mp_TableWidget->horizontalHeader()->show();
 
     mp_TableWidget->horizontalHeader()->resizeSection(0, 95);
     mp_TableWidget->horizontalHeader()->resizeSection(3, 75);
-//    mp_TableWidget->setWordWrap(true);
-//    mp_TableWidget->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
@@ -69,16 +67,16 @@ CSystemLogViewerDlg::CSystemLogViewerDlg(QWidget *p_Parent) : MainMenu::CDialogF
 
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
 
-    connect(mp_Ui->allBtn, SIGNAL(clicked()), this, SLOT(CompleteLogInfo()));
-    connect(mp_Ui->errorBtn, SIGNAL(clicked()), this, SLOT(FilteredErrorLog()));
-    connect(mp_Ui->infoBtn, SIGNAL(clicked()), this, SLOT(FilteredInfoLog()));
-    connect(mp_Ui->undefinedBtn, SIGNAL(clicked()), this, SLOT(FilteredUndefinedLog()));
-    connect(mp_Ui->warningBtn, SIGNAL(clicked()), this, SLOT(FilteredWarningLog()));
+    (void)connect(mp_Ui->allBtn, SIGNAL(clicked()), this, SLOT(CompleteLogInfo()));
+    (void)connect(mp_Ui->errorBtn, SIGNAL(clicked()), this, SLOT(FilteredErrorLog()));
+    (void)connect(mp_Ui->infoBtn, SIGNAL(clicked()), this, SLOT(FilteredInfoLog()));
+    (void)connect(mp_Ui->undefinedBtn, SIGNAL(clicked()), this, SLOT(FilteredUndefinedLog()));
+    (void)connect(mp_Ui->warningBtn, SIGNAL(clicked()), this, SLOT(FilteredWarningLog()));
 
-    connect(mp_TableWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(SelectionChanged(QModelIndex)));
-    connect(mp_Ui->showDetailsBtn, SIGNAL(clicked()), this, SLOT(ShowRecoveryActionDetails()));
-    connect(mp_Ui->recoveryActionBtn, SIGNAL(clicked()), this, SLOT(RecoveryActionDialog()));
-    connect(mp_Ui->closeBtn, SIGNAL(clicked()), this, SLOT(close()));
+    (void)connect(mp_TableWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(SelectionChanged(QModelIndex)));
+    (void)connect(mp_Ui->showDetailsBtn, SIGNAL(clicked()), this, SLOT(ShowRecoveryActionDetails()));
+    (void)connect(mp_Ui->recoveryActionBtn, SIGNAL(clicked()), this, SLOT(RecoveryActionDialog()));
+    (void)connect(mp_Ui->closeBtn, SIGNAL(clicked()), this, SLOT(close()));
 
 }
 
@@ -107,12 +105,6 @@ CSystemLogViewerDlg::~CSystemLogViewerDlg()
     }
 }
 
-/****************************************************************************/
-/*!
- *  \brief To get the index of selected row from the table
- *  \iparam Index = Index of the row
- */
-/****************************************************************************/
 void CSystemLogViewerDlg::SelectionChanged(QModelIndex Index)
 {
     QItemSelectionModel* SelectionModel = mp_TableWidget->selectionModel();
@@ -128,13 +120,7 @@ void CSystemLogViewerDlg::SelectionChanged(QModelIndex Index)
     mp_Ui->showDetailsBtn->setEnabled(true);
 }
 
-/****************************************************************************/
-/*!
- *  \brief  To initialize the pop up dialog
- *  \return retruns 0, if file open gets failed.
- */
-/****************************************************************************/
-int CSystemLogViewerDlg::RecoveryActionDialog()
+void CSystemLogViewerDlg::RecoveryActionDialog()
 {
     if(m_SelectedRowValues.count() == 0)
     {
@@ -165,7 +151,7 @@ int CSystemLogViewerDlg::RecoveryActionDialog()
             }
 
             QString EventId = m_SelectedRowValues.at(2).data((int)Qt::DisplayRole).toString();
-            QString Line = QString(mp_RecoveryActionFilter->GetRecoveryAtionText(EventId));
+            QString Line = QString(mp_RecoveryActionFilter->GetRecoveryActionText(EventId));
             QStringList List = Line.split(";");
             if (List.size()>0) {
                 QString InputText = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Error Code: ",
@@ -206,10 +192,6 @@ void CSystemLogViewerDlg::SetTableModel()
 {
     QStringList HeaderLabels;
 
-
-    qDebug()<<"m_EventTypes = "<<m_EventTypes;
-
-
     mp_Model = mp_LogFilter->GetItemModel(m_EventTypes);
 
     HeaderLabels.append(QApplication::translate("LogViewer::CSystemLogViewerDlg", "Date", 0, QApplication::UnicodeUTF8));
@@ -225,14 +207,7 @@ void CSystemLogViewerDlg::SetTableModel()
 
 }
 
-/****************************************************************************/
-/*!
- *  \brief  To initialize the pop up dialog
- *  \iparam Path = Log file path
- *  \return retruns 0, if file open gets failed.
- */
-/****************************************************************************/
-int CSystemLogViewerDlg::InitDialog(QString Path)
+bool CSystemLogViewerDlg::InitDialog(QString Path)
 {
     QList<int> Columns;
     Columns.append(0);
@@ -247,13 +222,9 @@ int CSystemLogViewerDlg::InitDialog(QString Path)
         return false;
     }
     SetTableModel();
+    return true;
 }
 
-/****************************************************************************/
-/*!
- *  \brief  To display selected EventID information
- */
-/****************************************************************************/
 void CSystemLogViewerDlg::ShowRecoveryActionDetails()
 {
     if(m_SelectedRowValues.count() == 0)
@@ -280,12 +251,6 @@ void CSystemLogViewerDlg::ShowRecoveryActionDetails()
     }
 }
 
-/****************************************************************************/
-/*!
- *  \brief Reset Buttons
- *  \iparam EnableFlag = true:enable, false:disable
- */
-/****************************************************************************/
 void CSystemLogViewerDlg::ResetButtons(bool EnableFlag)
 {
     mp_Ui->errorBtn->setEnabled(EnableFlag);
@@ -299,12 +264,6 @@ void CSystemLogViewerDlg::ResetButtons(bool EnableFlag)
     mp_Ui->undefinedBtn->setChecked(false);
 }
 
-
-/****************************************************************************/
-/*!
- *  \brief To display complete log information
- */
-/****************************************************************************/
 void CSystemLogViewerDlg::CompleteLogInfo()
 {
     mp_Ui->showDetailsBtn->setEnabled(false);
@@ -325,11 +284,6 @@ void CSystemLogViewerDlg::CompleteLogInfo()
 
 }
 
-/****************************************************************************/
-/*!
- *  \brief To display filtered log information for event type Error
- */
-/****************************************************************************/
 void CSystemLogViewerDlg::FilteredErrorLog()
 {
     mp_Ui->showDetailsBtn->setEnabled(false);
@@ -338,12 +292,12 @@ void CSystemLogViewerDlg::FilteredErrorLog()
 
     mp_TableWidget->clearSelection();
     if (mp_Ui->errorBtn->isChecked()) {
-        m_EventTypes |= (1<<Global::EVTTYPE_ERROR);
-        m_EventTypes |= (1<<Global::EVTTYPE_FATAL_ERROR);
+        m_EventTypes |= (1<<(int)Global::EVTTYPE_ERROR);
+        m_EventTypes |= (1<<(int)Global::EVTTYPE_FATAL_ERROR);
     }
     else {
-        m_EventTypes &= (0xFF-(1<<Global::EVTTYPE_ERROR));
-        m_EventTypes &= (0xFF-(1<<Global::EVTTYPE_FATAL_ERROR));
+        m_EventTypes &= (0xFF-(1<<(int)Global::EVTTYPE_ERROR));
+        m_EventTypes &= (0xFF-(1<<(int)Global::EVTTYPE_FATAL_ERROR));
     }
     if (m_EventTypes == 0) {
         mp_TableWidget->setModel(NULL);
@@ -353,11 +307,6 @@ void CSystemLogViewerDlg::FilteredErrorLog()
     }
 }
 
-/****************************************************************************/
-/*!
- *  \brief To display filtered log information for event type Info
- */
-/****************************************************************************/
 void CSystemLogViewerDlg::FilteredInfoLog()
 {
     mp_Ui->showDetailsBtn->setEnabled(false);
@@ -365,10 +314,10 @@ void CSystemLogViewerDlg::FilteredInfoLog()
     mp_TableWidget->clearSelection();
 
     if (mp_Ui->infoBtn->isChecked()) {
-        m_EventTypes |= (1<<Global::EVTTYPE_INFO);
+        m_EventTypes |= (1<<(int)Global::EVTTYPE_INFO);
     }
     else {
-        m_EventTypes &= (0xFF-(1<<Global::EVTTYPE_INFO));
+        m_EventTypes &= (0xFF-(1<<(int)Global::EVTTYPE_INFO));
     }
     if (m_EventTypes == 0) {
         mp_TableWidget->setModel(NULL);
@@ -378,11 +327,6 @@ void CSystemLogViewerDlg::FilteredInfoLog()
     }
 }
 
-/****************************************************************************/
-/*!
- *  \brief To display filtered log information for event type Undefined
- */
-/****************************************************************************/
 void CSystemLogViewerDlg::FilteredUndefinedLog()
 {
     mp_Ui->showDetailsBtn->setEnabled(false);
@@ -390,10 +334,10 @@ void CSystemLogViewerDlg::FilteredUndefinedLog()
     mp_TableWidget->clearSelection();
 
     if (mp_Ui->undefinedBtn->isChecked()) {
-        m_EventTypes |= (1<<Global::EVTTYPE_UNDEFINED);
+        m_EventTypes |= (1<<(int)Global::EVTTYPE_UNDEFINED);
     }
     else {
-        m_EventTypes &= (0xFF-(1<<Global::EVTTYPE_UNDEFINED));
+        m_EventTypes &= (0xFF-(1<<(int)Global::EVTTYPE_UNDEFINED));
     }
     if (m_EventTypes == 0) {
         mp_TableWidget->setModel(NULL);
@@ -402,11 +346,7 @@ void CSystemLogViewerDlg::FilteredUndefinedLog()
        SetTableModel();
     }
 }
-/****************************************************************************/
-/*!
- *  \brief To display filtered log information for event type Warning
- */
-/****************************************************************************/
+
 void CSystemLogViewerDlg::FilteredWarningLog()
 {
     mp_Ui->showDetailsBtn->setEnabled(false);
@@ -414,10 +354,10 @@ void CSystemLogViewerDlg::FilteredWarningLog()
     mp_TableWidget->clearSelection();
 
     if (mp_Ui->warningBtn->isChecked()) {
-        m_EventTypes |= (1<<Global::EVTTYPE_WARNING);
+        m_EventTypes |= (1<<(int)Global::EVTTYPE_WARNING);
     }
     else {
-        m_EventTypes &= (0xFF-(1<<Global::EVTTYPE_WARNING));
+        m_EventTypes &= (0xFF-(1<<(int)Global::EVTTYPE_WARNING));
     }
     if (m_EventTypes == 0) {
         mp_TableWidget->setModel(NULL);

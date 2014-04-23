@@ -102,8 +102,8 @@ CStartup::CStartup() : QObject(),
 
     mp_SystemLogViewer = new LogViewer::CLogViewer("HimalayaEvents_12345678", Global::SystemPaths::Instance().GetLogfilesPath());
     mp_RecoveryAction = new LogViewer::CLogViewer("RecoveryActionText", Global::SystemPaths::Instance().GetSettingsPath());
-    mp_ServiceLogViewer = new LogViewer::CLogViewer("Leica_ST_Service", Global::SystemPaths::Instance().GetLogfilesPath());
-    mp_SoftwareUpdateLogViewer = new LogViewer::CLogViewer("TC000411_", Global::SystemPaths::Instance().GetLogfilesPath());
+    mp_ServiceLogViewer = new LogViewer::CLogViewer("Himalaya_Service", Global::SystemPaths::Instance().GetLogfilesPath());
+    mp_SoftwareUpdateLogViewer = new LogViewer::CLogViewer("Himalaya_SW_Update_Events", Global::SystemPaths::Instance().GetLogfilesPath());
 
     CONNECTSIGNALSLOT(mp_SystemLogViewer, DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
     CONNECTSIGNALSLOT(mp_RecoveryAction , DisplayLogFileContents(QString, QString), this, DisplayLogInformation(QString, QString));
@@ -707,8 +707,6 @@ void CStartup::OnGuiOvenEmptyHeatingTest()
 /****************************************************************************/
 void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
 {
-//    qDebug()<<"CStartup::DisplayLogInformation  Filename="<<FileName<<"  FilePath="<<FilePath;
-
     QString Path = FilePath + "/" + FileName;
     if (FileName.startsWith("HimalayaEvents_12345678")) {  // System log
         if (mp_SystemLogContentDlg != NULL) {
@@ -717,7 +715,8 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
         }
         mp_SystemLogContentDlg = new LogViewer::CSystemLogViewerDlg(mp_MainWindow);
         mp_SystemLogContentDlg->setModal(true);
-        mp_SystemLogContentDlg->resize(720, 500);
+        mp_SystemLogContentDlg->resize(720, 450);
+        //mp_SystemLogContentDlg->setGeometry(110, 300, 720, 480);
         mp_SystemLogContentDlg->SetDialogTitle(FileName.remove(".log", Qt::CaseSensitive));
         mp_SystemLogContentDlg->InitDialog(Path);
         mp_SystemLogContentDlg->show();
@@ -726,7 +725,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
         QStringList HeaderLabels;
         QList<int> Columns;
 
-        if (FileName.startsWith("Leica_ST_Service")) {  // Service log
+        if (FileName.startsWith("Himalaya_Service")) {  // Service log
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8));
             HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
@@ -741,7 +740,14 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
             Columns.append(1);
             Columns.append(2);
         }
-        else if (FileName.startsWith("TC000411_"))  {// SW Update log
+        else if (FileName.startsWith("Himalaya_SW_Update_Events"))  {// SW Update log
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Type", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
+            Columns.append(0);
+            Columns.append(3);
+            Columns.append(5);
         }
 
         if (mp_LogContentDlg != NULL) {
@@ -751,7 +757,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
 
         mp_LogContentDlg = new LogViewer::CLogContentDlg(HeaderLabels, Columns, mp_MainWindow);
         mp_LogContentDlg->setModal(true);
-        mp_LogContentDlg->resize(720, 500);
+        mp_LogContentDlg->resize(720, 450);
         mp_LogContentDlg->SetDialogTitle(FileName.remove(".log", Qt::CaseSensitive));
         (void) mp_LogContentDlg->InitDialog(Path);
         mp_LogContentDlg->show();

@@ -22,15 +22,16 @@
 
 #include "LogViewerDialog/Include/LogFilter.h"
 #include "Global/Include/GlobalDefines.h"
+//lint -sem( QList::operator<<, custodial(1) )
 
 namespace LogViewer {
 
 quint8 CLogFilter::m_AllTypes = (1<<(int)Global::EVTTYPE_UNDEFINED) +
-        (1<<Global::EVTTYPE_DEBUG) +
-        (1<<Global::EVTTYPE_INFO) +
-        (1<<Global::EVTTYPE_WARNING) +
-        (1<<Global::EVTTYPE_ERROR) +
-        (1<<Global::EVTTYPE_FATAL_ERROR);
+        (1<<(int)Global::EVTTYPE_DEBUG) +
+        (1<<(int)Global::EVTTYPE_INFO) +
+        (1<<(int)Global::EVTTYPE_WARNING) +
+        (1<<(int)Global::EVTTYPE_ERROR) +
+        (1<<(int)Global::EVTTYPE_FATAL_ERROR);
 
 CLogFilter::CLogFilter(const QString& Filename, const QList<qint32>& Columns, bool NeedClassify):m_LogIndex(0)
 {
@@ -41,10 +42,15 @@ CLogFilter::CLogFilter(const QString& Filename, const QList<qint32>& Columns, bo
 
 CLogFilter::~CLogFilter()
 {
-    m_Columns.clear();
-    m_Model.clear();
-    m_SubModel.clear();
-    m_LogItems.clear();
+    try {
+        m_Columns.clear();
+        m_Model.clear();
+        m_SubModel.clear();
+        m_LogItems.clear();
+    }
+    catch (...) {
+
+    }
 }
 
 void CLogFilter::AddItem4Log(QString &data)
@@ -88,22 +94,22 @@ void CLogFilter::AddItem4LogNeedClassify(QString &data)
 
     QString Type = List.at(2);
     if (Type.compare("Undefined Type")==0) {
-        m_SubItems[Global::EVTTYPE_UNDEFINED].insert(m_LogIndex, m_LogIndex);
+        (void) m_SubItems[Global::EVTTYPE_UNDEFINED].insert(m_LogIndex, m_LogIndex);
     }
     else if (Type.compare("Debug") == 0) {
-        m_SubItems[Global::EVTTYPE_DEBUG].insert(m_LogIndex, m_LogIndex);
+        (void) m_SubItems[Global::EVTTYPE_DEBUG].insert(m_LogIndex, m_LogIndex);
     }
     else if (Type.compare("Error") == 0) {
-        m_SubItems[Global::EVTTYPE_ERROR].insert(m_LogIndex, m_LogIndex);
+        (void) m_SubItems[Global::EVTTYPE_ERROR].insert(m_LogIndex, m_LogIndex);
     }
     else if (Type.compare("Info") == 0) {
-        m_SubItems[Global::EVTTYPE_INFO].insert(m_LogIndex, m_LogIndex);
+        (void) m_SubItems[Global::EVTTYPE_INFO].insert(m_LogIndex, m_LogIndex);
     }
     else if (Type.compare("Warning") == 0) {
-        m_SubItems[Global::EVTTYPE_WARNING].insert(m_LogIndex, m_LogIndex);
+        (void) m_SubItems[Global::EVTTYPE_WARNING].insert(m_LogIndex, m_LogIndex);
     }
     else if (Type.compare("Fatal Error") == 0) {
-        m_SubItems[Global::EVTTYPE_FATAL_ERROR].insert(m_LogIndex, m_LogIndex);
+        (void) m_SubItems[Global::EVTTYPE_FATAL_ERROR].insert(m_LogIndex, m_LogIndex);
     }
     m_LogIndex++;
 }
@@ -127,7 +133,7 @@ bool CLogFilter::CheckFileInfo(const QString &line)
                 line.startsWith("FileName") ||
                 line.startsWith("System")) {
             QStringList list = line.split(":");
-            m_FileInfo.insert(list.at(0), list.at(1));
+            (void) m_FileInfo.insert(list.at(0), list.at(1));
             return true;
         }
     }
@@ -137,7 +143,7 @@ bool CLogFilter::CheckFileInfo(const QString &line)
                 line.startsWith("OperatingMode") ||
                 line.startsWith("Serial Number")) {
             QStringList list = line.split(":");
-            m_FileInfo.insert(list.at(0), list.at(1));
+            (void) m_FileInfo.insert(list.at(0), list.at(1));
             return true;
         }
     }
@@ -212,15 +218,15 @@ QStandardItemModel* CLogFilter::GetItemModel(quint64 EventTypes)
             QMap<int, int> Numbers;
 
             // get index list for event types
-            for (int i=Global::EVTTYPE_UNDEFINED; i<=Global::EVTTYPE_FATAL_ERROR; i++) {
-                if (EventTypes&(1<<i)) {
+            for (int i=(int)Global::EVTTYPE_UNDEFINED; i<=(int)Global::EVTTYPE_FATAL_ERROR; i++) {
+                if ((int)EventTypes&(1<<i)) {
                     if (Numbers.size()==0) {
                         Numbers = m_SubItems[i];
                     }
                     else {
                         QList<int> SubList = m_SubItems[i].values();
                         for(int a=0; a<SubList.size(); a++) {
-                            Numbers.insert(SubList.at(a), SubList.at(a));
+                            (void) Numbers.insert(SubList.at(a), SubList.at(a));
                         }
                     }
                 }

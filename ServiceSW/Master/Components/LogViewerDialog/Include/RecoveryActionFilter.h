@@ -27,18 +27,54 @@
 
 namespace LogViewer {
 
+/****************************************************************************/
+/**
+ * \brief This implements the class CRecoveryActionFilter
+ */
+/****************************************************************************/
 class CRecoveryActionFilter : public QObject {
     Q_OBJECT
 private:
-    QString m_Path;
-    QHash<QString, qint64> m_ItemPositons;
-    qint64  m_Position;
+    QString m_Path; //!< Recovery action configuration file path
+    QHash<QString, qint64> m_ItemPositons; //!< Store event id and file position by Qhash
+    qint64  m_Position; //!< position for Recovery action file
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *
+     *  \iparam Path = Recovery Action configuration file path
+     */
+    /****************************************************************************/
     CRecoveryActionFilter(const QString& Path);
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CRecoveryActionFilter();
-    const QString GetRecoveryAtionText(const QString& EventId );
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief To get recovery action text by event id
+     *  \param EventId = event id
+     *  \return The text of recovery action
+     */
+    /****************************************************************************/
+    const QString GetRecoveryActionText(const QString& EventId );
 private:
+
+    /****************************************************************************/
+    /*!
+     *  \brief To check the line from Recovery Ation file by event id
+     *  \param EventId = event id
+     *  \return The text of recovery action
+     */
+    /****************************************************************************/
     const QString CheckFromFile(const QString& EventId);
 };
 }

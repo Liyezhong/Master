@@ -45,7 +45,20 @@ class CLogContentDlg : public MainMenu::CDialogFrame
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *
+     *  \iparam p_Parent = Parent widget
+     */
+    /****************************************************************************/
     CLogContentDlg(const QStringList& HeaderLabels, QList<int>& Columns, QWidget *p_Parent = NULL);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CLogContentDlg();
 
 
@@ -57,9 +70,6 @@ public:
      */
     /****************************************************************************/
     int InitDialog(QString FilePath);
-
-
-    void SetTableWidgetSize(qint32 Width, qint32 Height);
 
 private:
     Ui::CLogContentDlg *mp_Ui;         //!< User Interface

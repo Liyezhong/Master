@@ -34,17 +34,6 @@
 
 namespace LogViewer {
 
-//!< Structure for Log information
-typedef struct {
-    QString Date;           //!< Log date
-    QString TimeStamp;      //!< Timestamp for logged event
-    QString EventID;        //!< Event Id
-    QString Type;           //!< Log type
-    QString Desc;           //!< Log description
-} LogInfo_t;                //!< Structure variable for LogInfo
-
-typedef QList<LogInfo_t*> LogInformation_t;     //!< List of Log events
-
 namespace Ui {
 class CSystemLogViewerDlg;
 }
@@ -54,22 +43,35 @@ class CSystemLogViewerDlg;
  * \brief This is implements SystemLogViewer dialog
  */
 /****************************************************************************/
-class CSystemLogViewerDlg : public MainMenu::CDialogFrame
+class  CSystemLogViewerDlg : public MainMenu::CDialogFrame
 {
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *
+     *  \iparam p_Parent = Parent widget
+     */
+    /****************************************************************************/
     CSystemLogViewerDlg(QWidget *p_Parent = NULL);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~CSystemLogViewerDlg();
 
     /****************************************************************************/
     /*!
      *  \brief  To initialize the pop up dialog
      *  \iparam Path = Log file path
-     *  \return retruns 0, if file open gets failed.
+     *  \return retruns false, if file open gets failed.
      */
     /****************************************************************************/
-    int InitDialog(QString Path);
+    bool InitDialog(QString Path);
 
 private:
     Ui::CSystemLogViewerDlg *mp_Ui;                 //!< User Interface
@@ -77,7 +79,6 @@ private:
     QStandardItemModel *mp_Model;                     //!< Model for the System log dialog table
     MainMenu::CTextDialog *mp_RecoveryActionDlg;    //!< Recovery action text dialog
     MainMenu::CMessageDlg *mp_MessageDlg;           //!< Information message dialog
-    LogInformation_t m_LogInformation;              //!< QList of log information
     QString m_LogFilePath;                          //!< Stores log file path
     QModelIndexList m_SelectedRowValues;              //!< Model Index list stores selected row values
     CLogFilter* mp_LogFilter;                       //!< Log filter to get model list.
@@ -88,8 +89,8 @@ private:
 private:
     /****************************************************************************/
     /*!
-     *  \brief  Reset Enable Status for Buttons.
-     *  \iparam EnableFlag = Enable Status
+     *  \brief Reset Buttons
+     *  \iparam EnableFlag = true:enable, false:disable
      */
     /****************************************************************************/
     void ResetButtons(bool EnableFlag);
@@ -102,13 +103,61 @@ private:
     void SetTableModel();
 
 public slots:
-    int RecoveryActionDialog();
+    /****************************************************************************/
+    /*!
+     *  \brief  To initialize the pop up dialog
+     */
+    /****************************************************************************/
+    void RecoveryActionDialog();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To display complete log information
+     */
+    /****************************************************************************/
     void CompleteLogInfo();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To display filtered log information for event type Error
+     */
+    /****************************************************************************/
     void FilteredErrorLog();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To display filtered log information for event type Info
+     */
+    /****************************************************************************/
     void FilteredInfoLog();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To display filtered log information for event type Undefined
+     */
+    /****************************************************************************/
     void FilteredUndefinedLog();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To display filtered log information for event type Warning
+     */
+    /****************************************************************************/
     void FilteredWarningLog();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To get the index of selected row from the table
+     *  \iparam Index = Index of the row
+     */
+    /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  To display selected EventID information
+     */
+    /****************************************************************************/
     void ShowRecoveryActionDetails();
 
 };
