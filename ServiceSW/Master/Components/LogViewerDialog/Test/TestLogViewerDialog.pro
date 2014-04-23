@@ -1,8 +1,13 @@
-!include("TestLogViewer.pri"):error("TestLogViewer.pri not found")
+#-------------------------------------------------
+#
+# Project created by QtCreator 2014-04-21T16:01:21
+#
+#-------------------------------------------------
+!include("TestLogViewerDialog.pri"):error("TestLogViewerDialog.pri not found")
 
-TARGET 	 = utTestLogViewer
+TARGET 	 = TestLogViewerDialog
 CONFIG   += console
-SOURCES  += TestLogViewer.cpp
+SOURCES  += TestLogViewerDialog.cpp
 TEMPLATE  = app
 
 
@@ -11,6 +16,11 @@ INCLUDEPATH += ../../ \
                ../../../../../../Platform/Master/Components \
                ../../../../../../Platform/Gui/Components \
                ../../../../../../Platform/ServiceSW/Components \
+               ../Include/
+
+HEADERS += ../Include/*.h
+HEADERS += ../../../../../../Platform/ServiceSW/Components/
+
 
 CONFIG += qtestlib
 CONFIG += qt

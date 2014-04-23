@@ -37,7 +37,7 @@ SUBDIRS = ../Components/Calibration/Build/Calibration.pro \
           ../Components/ServiceMasterThreadController/Build/ServiceMasterThreadController.pro \
 #          ../Components/ServiceDeviceController/Build/ServiceDeviceController.pro \
           ../Components/SystemTracking/Test/TestSystemTracking.pro \
-#          ../Components/LogViewer/Test/TestLogViewer.pro \
+          ../Components/LogViewerDialog/Test/TestLogViewerDialog.pro \
           ../Components/Diagnostics/Test/TestDiagnostics.pro \
 #          ../Components/DiagnosticsManufacturing/Test/TestDiagnosticsManufacturing.pro \
           ../Components/ServiceUpdates/Test/TestServiceUpdates.pro \
