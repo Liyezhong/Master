@@ -190,6 +190,12 @@ signals:
      */
     /****************************************************************************/
     void UpdateProgram(DataManager::CProgram &);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal CheckPreConditionsToRunProgram
+     *
+     */
+    /****************************************************************************/
     void CheckPreConditionsToRunProgram();
 protected:
     /****************************************************************************/
@@ -259,14 +265,7 @@ private:
      */
     /****************************************************************************/
     void RetranslateUI();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function CheckPreConditionsToRunProgram
-     *
-     *  \return from CheckPreConditionsToRunProgram
-     */
-    /****************************************************************************/
-    void CheckPreConditionsToRunProgram();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function CheckPreConditionsToPauseProgram
