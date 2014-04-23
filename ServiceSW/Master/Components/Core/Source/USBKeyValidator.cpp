@@ -38,8 +38,9 @@ CUSBKeyValidator::CUSBKeyValidator(Core::CStartup* StartUp) :
     mp_KeyBoardWidget->SetMinCharLength(4);
     mp_KeyBoardWidget->SetLineEditValidatorExpression(REGEXP_NUMERIC_VALIDATOR);
     mp_KeyBoardWidget->DisplayNumericKeyBoard();
-    mp_KeyBoardWidget->show();
+    //mp_KeyBoardWidget->show();
     ConnectKeyBoardSignalSlots();
+    mp_StartUp->ServiceGuiInit();
 }
 
 CUSBKeyValidator::~CUSBKeyValidator()
