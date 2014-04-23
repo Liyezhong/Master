@@ -57,7 +57,7 @@ struct HeatingSensor
     QString							devName;
     QString							sensorName;
     QMap<QString, FunctionModule>	functionModuleList;
-	qint64							heatingStartTime;
+    qint64							heatingStartTime;
 	QString							curModuleId;
 };
 
@@ -71,6 +71,26 @@ struct RTLevelSensor : public HeatingSensor
 struct RTBottomSensor : public HeatingSensor
 {
     QMap<QString, qreal>    TemperatureDiffList;
+};
+
+struct OvenSensor : public HeatingSensor
+{
+    QMap<QString, qreal>                    OTTempOffsetList;
+    QMap< QString, QPair<qreal,qreal> >     ParaffinTempRangeList;
+    QMap< QString, QPair<qreal, qreal> >    TimeRangeList;
+    QMap<QString, bool>						StartTempFlagList;
+
+};
+
+struct RVSensor : public HeatingSensor
+{
+    QMap<QString, bool>     CheckOTUserInputFlagList;
+    QMap<QString, bool>     UserInputFlagList;
+};
+
+struct LASensor : public HeatingSensor
+{
+    QMap<QString, bool>		StartTempFlagList;
 };
 
 /****************************************************************************/
@@ -108,10 +128,21 @@ private:
     RTLevelSensor                       m_RTLevelSensor;
     HeatingSensor                       m_RTTop;
     RTBottomSensor                      m_RTBottom;
+    OvenSensor                          m_OvenTop;
+    OvenSensor                          m_OvenBottom;
+    RVSensor                            m_RVRod;
+    LASensor							m_LARVTube;
+    LASensor							m_LAWaxTrap;
+
     bool ConstructHeatingSensorList();
     bool ConstructHeatingSensor(HeatingSensor& heatingSensor, const QStringList& sequenceList);
+	inline bool CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp);
 	DeviceControl::ReturnCode_t StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor);
-	DeviceControl::ReturnCode_t StartRTTemperatureControl(HeatingSensor& heatingSensor, RTTempCtrlType_t RTType);
+    DeviceControl::ReturnCode_t StartRTTemperatureControl(HeatingSensor& heatingSensor, RTTempCtrlType_t RTType);
+    DeviceControl::ReturnCode_t StartOvenTemperatureControl(OvenSensor& heatingSensor, OVENTempCtrlType_t OvenType);
+    DeviceControl::ReturnCode_t StartRVTemperatureControl(RVSensor& heatingSensor);
+    DeviceControl::ReturnCode_t StartLATemperatureControl(LASensor& heatingSensor,ALTempCtrlType_t LAType);
+	inline bool CheckSensorHeatingOverTime(const HeatingSensor& heatingSensor, qreal HWTemp);
 private:
     /****************************************************************************/
     /*!
