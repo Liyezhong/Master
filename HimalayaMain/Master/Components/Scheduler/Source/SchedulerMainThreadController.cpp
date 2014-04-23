@@ -2141,8 +2141,8 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
 
     // Run Heating Strategy
-    ////DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
-    ////if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+    DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
+    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
     {
         //Error Handling
     }
@@ -2150,10 +2150,12 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 	{
         m_PressureAL = strctHWMonitor.PressureAL;
 	}
+#if 0
     if(m_PressureAL < -45 || m_PressureAL > 45){
         quint32 EVENT_LA_PressureSensor_OutofRange = 34; //only for test
         Global::EventObject::Instance().RaiseEvent(0,EVENT_LA_PressureSensor_OutofRange,Scenario,true);
     }
+#endif
 	if(strctHWMonitor.TempALLevelSensor != UNDEFINED_VALUE)
 	{
         m_TempALLevelSensor = strctHWMonitor.TempALLevelSensor;
