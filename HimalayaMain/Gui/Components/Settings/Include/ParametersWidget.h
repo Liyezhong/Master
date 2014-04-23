@@ -64,3 +64,4 @@ signals:
 } // end namespace Settings
 
 #endif // SETTINGS_PARAMETERSWIDGET_H
+

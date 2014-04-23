@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Startup.h
+/*! \file Himalaya/HimalayaMain/Gui/Components/Core/Include/Startup.h
  *
  *  \brief Startup definition.
  *
@@ -56,13 +56,50 @@ class CStartup : public QObject
 public:
     CStartup();
     virtual ~CStartup();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function InitialiseDeviceMode
+     *
+     *  \param Mode = QString type parameter
+     *
+     *  \return from InitialiseDeviceMode
+     */
+    /****************************************************************************/
     void InitialiseDeviceMode(QString Mode);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function instance
+     *
+     *  \return from instance
+     */
+    /****************************************************************************/
     static CStartup* instance() { return self; }
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function MainWindow
+     *
+     *  \return from MainWindow
+     */
+    /****************************************************************************/
     MainMenu::CMainWindow* MainWindow() { return &m_MainWindow; }
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DataConnector
+     *
+     *  \return from DataConnector
+     */
+    /****************************************************************************/
     Core::CDataConnector* DataConnector() { return mp_DataConnector; }
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function Dashboard
+     *
+     *  \return from Dashboard
+     */
+    /****************************************************************************/
     Dashboard::CDashboardWidget* Dashboard() { return mp_Dashboard; }
 private:
-    Core::CGlobalHelper* mp_GlobalHelper;
+    Core::CGlobalHelper* mp_GlobalHelper;       ///<  Definition/Declaration of variable mp_GlobalHelper
     // Data Manager Components
     Core::CDataConnector *mp_DataConnector; //!< Connects data manager to the network
     // GUI components
@@ -72,14 +109,15 @@ private:
     Reagents::CReagentWidget *mp_Reagents; //!< Reagents screen
     Settings::CSettingsWidget *mp_Settings; //!< Settings screen
     Users::CUserPrivilegeWidget *mp_Users;  //!< Users screen
-    ScreenSaverWidget* mp_ScreenSaver;
+    ScreenSaverWidget* mp_ScreenSaver;       ///<  Definition/Declaration of variable mp_ScreenSaver
     KeyBoard::CKeyBoard *mp_KeyBoardWidget; //!< On-screen Keyboard
     QString m_Mode;							//!< GUI mode
-    static CStartup *self;
-    SplashWidget    *mp_SplashWidget;
+    static CStartup *self;       ///<  Definition/Declaration of variable self
+    SplashWidget    *mp_SplashWidget;       ///<  Definition/Declaration of variable mp_SplashWidget
 
 };
 
 } // end namespace Core
 
 #endif // CORE_STARTUP_H
+

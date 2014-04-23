@@ -47,13 +47,13 @@ private:
 protected:
     QString m_GroupID;                      //!< Reagent Group ID
     QString m_GroupName;                    //!< Reagent Name
-    QString m_GroupNameID;                  //1< GroupName string id
+    QString m_GroupNameID;                  //!< GroupName string id
     QString m_Color;                        //!< Reagent Color
     bool m_IsCleaningReagentGroup;          //!< is it a cleaning reagent?
     bool m_IsParraffinGroup;                //!< is it a parraffin reagent?
     bool m_Locked;                          //!< locked stats for reagent , true user cannot chnage its parameters
-    int  m_MinTemp;                         //!<Tempature range for reagent group, min value in CELSIUS
-    int  m_MaxTemp;                         //!<Tempature range for reagent group, max value in CELSIUS
+    int  m_MinTemp;                         //!< Tempature range for reagent group, min value in CELSIUS
+    int  m_MaxTemp;                         //!< Tempature range for reagent group, max value in CELSIUS
 
 
 public:
@@ -178,7 +178,21 @@ public:
      */
     void IsParraffin(bool bSet){ m_IsParraffinGroup = bSet;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetMinTemprature
+     *
+     *  \return from GetMinTemprature
+     */
+    /****************************************************************************/
     int  GetMinTemprature() const {return m_MinTemp;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetMaxTemprature
+     *
+     *  \return from GetMaxTemprature
+     */
+    /****************************************************************************/
     int  GetMaxTemprature() const {return m_MaxTemp;}
 
     /****************************************************************************/

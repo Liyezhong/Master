@@ -1,7 +1,7 @@
 /****************************************************************************/
 /*! \file   ProgramSettingsVerifier.h
  *
- *  \brief  .
+ *  \brief   ProgramSettingsVerifier class implementation.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2013-04-03
@@ -29,9 +29,9 @@
 
 namespace DataManager {
 
-#define MAX_SPEED_PROFILE   4
-#define MAX_POSITION_VALUE  4500
-#define MAX_OFFSET_VALUE    500
+#define MAX_SPEED_PROFILE   4        ///<  Definition/Declaration of macro MAX_SPEED_PROFILE
+#define MAX_POSITION_VALUE  4500     ///<  Definition/Declaration of macro MAX_POSITION_VALUE
+#define MAX_OFFSET_VALUE    500      ///<  Definition/Declaration of macro MAX_OFFSET_VALUE
 
 /****************************************************************************/
 /*!
@@ -44,6 +44,15 @@ public:
     CProgramSettingsVerifier();
 
     bool VerifyData(CDataContainerBase* p_ParameterList);  // use concrete class for concrete verifier
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetSyncObject
+     *
+     *  \param p_ReadWriteLock = QReadWriteLock type parameter
+     *
+     *  \return from GetSyncObject
+     */
+    /****************************************************************************/
     bool GetSyncObject(QReadWriteLock* p_ReadWriteLock);
 
     /*! \todo complete implementation*/

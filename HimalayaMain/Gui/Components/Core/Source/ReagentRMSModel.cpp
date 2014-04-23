@@ -60,7 +60,6 @@ CReagentRMSModel::CReagentRMSModel(QObject *p_Parent) : QAbstractTableModel(p_Pa
  *
  *  \iparam p_ReagentList = Reagent data
  *  \iparam Columns = Table columns
- *  \iparam BLCheck = True for displaying reagents in bathlayout else False.
  */
 /****************************************************************************/
 void CReagentRMSModel::SetReagentList(DataManager::CDataReagentList *p_ReagentList, qint32 Columns)
@@ -319,6 +318,8 @@ QVariant CReagentRMSModel::headerData(int Section, Qt::Orientation Orientation, 
  *  \brief This Function Gets Reagent ID of given Reagent Long name.
  *
  *  \iparam ReagentName
+ *
+ *  \return return from GetReagentID
  */
 /****************************************************************************/
 QString CReagentRMSModel::GetReagentID(const QString ReagentName)
@@ -331,7 +332,9 @@ QString CReagentRMSModel::GetReagentID(const QString ReagentName)
 /*!
  *  \brief This Function Gets Reagent ID of given Reagent Long name.
  *
- *  \iparam ReagentName
+ *  \iparam Index
+ *
+ *  \return  return from GetReagentID
  */
 /****************************************************************************/
 QString CReagentRMSModel::GetReagentID(int Index)
@@ -456,7 +459,8 @@ Qt::ItemFlags CReagentRMSModel::flags(const QModelIndex &Index) const
 /*!
  *  \brief Returns item model flags of a cell
  *
- *  \iparam Index = Index of a table cell
+ *  \iparam Row
+ *  \param  Column
  *
  *  \return Flags of the cell
  */
@@ -468,10 +472,6 @@ QModelIndex CReagentRMSModel::CreateIndex(int Row, int Column)
 /****************************************************************************/
 /*!
  *  \brief Returns item model flags of a cell
- *
- *  \iparam Index = Index of a table cell
- *
- *  \return Flags of the cell
  */
 /****************************************************************************/
 void CReagentRMSModel::ResetAndUpdateModel()

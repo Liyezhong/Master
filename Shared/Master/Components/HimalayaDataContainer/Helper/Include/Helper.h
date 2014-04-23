@@ -36,50 +36,121 @@ namespace DataManager {
 class XmlStartElementReaderHelper
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function XmlStartElementReaderHelper
+     *
+     *  \param reader = QXmlStreamReader type parameter
+     *
+     *  \return from XmlStartElementReaderHelper
+     */
+    /****************************************************************************/
     XmlStartElementReaderHelper(QXmlStreamReader &reader);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsValid
+     *
+     *  \return from IsValid
+     */
+    /****************************************************************************/
     bool IsValid(void);
 
 private:
-    bool m_NonEnd;
+    bool m_NonEnd;       ///<  Definition/Declaration of variable m_NonEnd
 };
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class XmlElementReaderHelper
+ */
+/****************************************************************************/
 class XmlElementReaderHelper
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function XmlElementReaderHelper
+     *
+     *  \param reader = QXmlStreamReader type parameter
+     *  \param hasChildren =  bool type parameter
+     *
+     *  \return from XmlElementReaderHelper
+     */
+    /****************************************************************************/
     XmlElementReaderHelper(QXmlStreamReader &reader, bool *hasChildren = 0);
     ~XmlElementReaderHelper(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsEnd
+     *
+     *  \return from IsEnd
+     */
+    /****************************************************************************/
     bool IsEnd(void);
 
 private:
-    QXmlStreamReader &m_Reader;
-    bool             *m_HasChildren;
-    bool              m_IsEnd;
+    QXmlStreamReader &m_Reader;       ///<  Definition/Declaration of variable m_Reader
+    bool             *m_HasChildren;       ///<  Definition/Declaration of variable m_HasChildren
+    bool              m_IsEnd;       ///<  Definition/Declaration of variable m_IsEnd
 };
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class XmlElementReaderHelper
+ */
+/****************************************************************************/
 class XmlElementWriterHelper
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function XmlElementWriterHelper
+     *
+     *  \param writer = QXmlStreamWriter type parameter
+     *  \param elementName =  const QString type parameter
+     *
+     *  \return from XmlElementWriterHelper
+     */
+    /****************************************************************************/
     XmlElementWriterHelper(QXmlStreamWriter &writer, const QString &elementName);
 
     ~XmlElementWriterHelper(void);
 
 private:
-    QXmlStreamWriter &m_Writer;
+    QXmlStreamWriter &m_Writer;       ///<  Definition/Declaration of variable m_Writer
 };
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class XmlElementReaderHelper
+ */
+/****************************************************************************/
 class XmlDocumentWriterHelper
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function XmlDocumentWriterHelper
+     *
+     *  \param writer = QXmlStreamWriter type parameter
+     *
+     *  \return from XmlDocumentWriterHelper
+     */
+    /****************************************************************************/
     XmlDocumentWriterHelper(QXmlStreamWriter &writer);
 
     ~XmlDocumentWriterHelper(void);
 
 private:
-    QXmlStreamWriter &m_Writer;
+    QXmlStreamWriter &m_Writer;       ///<  Definition/Declaration of variable m_Writer
 };
-
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum  XmlReadErrorType_t
+ */
+/****************************************************************************/
 typedef enum
 {
     WRONG_NAME = -256,
@@ -89,16 +160,39 @@ typedef enum
     HAS_CHILDREN
 } XmlReadErrorType_t;
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function ReadAttributesOfElement
+ *
+ *  \return from ReadAttributesOfElement
+ */
+/****************************************************************************/
 XmlReadErrorType_t ReadAttributesOfElement(const QString     &elementName,
                                            const QStringList &attributeNameList,
                                            QXmlStreamReader  &reader,
                                            QStringList       &attributeList);
 
+
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function ReadAttributesOfElement
+ *
+ *  \return from ReadAttributesOfElement
+ */
+/****************************************************************************/
 XmlReadErrorType_t ReadAttributesOfElement(const QString     &elementName,
                                            QXmlStreamReader  &reader,
                                            QStringList       &attributeNameList,
                                            QStringList       &attributeList);
 
+
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function WriteElementWithAttributes
+ *
+ *  \return from WriteElementWithAttributes
+ */
+/****************************************************************************/
 void WriteElementWithAttributes(const QString     &elementName,
                                 const QStringList &attributeNameList,
                                 const QStringList &attributeList,

@@ -97,6 +97,11 @@ public:
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateReagentList();
 private:
 
@@ -106,16 +111,17 @@ private:
     QStringList m_ReagentNames;                         //!< Long names of reagents currently displayed
     QStringList m_StationIDs;                            //!< List of station ID
     QStringList m_StationNames;                         //!< station names
-    QString m_CurrentReagentName;
+    QString m_CurrentReagentName;       ///<  Definition/Declaration of variable m_CurrentReagentName
     qint32 m_Columns;                                   //!< Number of table columns
     Programs::CModifyProgramStepDlg *mp_Parent;         //!< Reference to ModifyProgramStep Dialog
     bool m_FilterLeicaReagent;                          //!< Filter Leica Reagent if set to true
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
-    Global::DateFormat  m_DateFormat;
+    Global::DateFormat  m_DateFormat;       ///<  Definition/Declaration of variable m_DateFormat
 };
 
 } // end namespace Core
 
 #endif // CORE_REAGENTSTATUSMODEL_H
+

@@ -29,7 +29,8 @@ QString CmdNewProgram::NAME = "MsgClasses::CmdNewProgram";
  *  \brief   Constructor
  *
  * \param[in]   Timeout     Timeout for command.
- * \param[in]   Program     The changed program.
+ * \param  ProgramDataStream
+ * \param  ProgramSequenceDataStream
  */
 /****************************************************************************/
 CmdNewProgram::CmdNewProgram(int Timeout, const QDataStream &ProgramDataStream,
@@ -46,7 +47,7 @@ CmdNewProgram::CmdNewProgram(int Timeout, const QDataStream &ProgramDataStream,
  *  \brief   Constructor
  *
  * \param[in]   Timeout     Timeout for command.
- * \param[in]   Program     The changed program.
+ * \param[in]   ProgramDataStream
  */
 /****************************************************************************/
 CmdNewProgram::CmdNewProgram(int Timeout, const QDataStream &ProgramDataStream)

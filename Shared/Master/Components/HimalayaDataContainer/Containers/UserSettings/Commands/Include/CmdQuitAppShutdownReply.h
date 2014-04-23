@@ -26,9 +26,24 @@
 
 namespace MsgClasses {
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdQuitAppShutdownReply
+ */
+/****************************************************************************/
 class CmdQuitAppShutdownReply : public Global::Command
 {
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of friend operator<<
+     */
+    /****************************************************************************/
     friend QDataStream & operator << (QDataStream &, const CmdQuitAppShutdownReply &);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of friend operator>>
+     */
+    /****************************************************************************/
     friend QDataStream & operator >> (QDataStream &, CmdQuitAppShutdownReply &);
 
 public:
@@ -40,15 +55,29 @@ public:
     virtual QString GetName(void) const;
 
     static QString NAME; ///< Command name.
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function QuitAppShutdownActionType
+     *
+     *  \return from QuitAppShutdownActionType
+     */
+    /****************************************************************************/
     inline DataManager::QuitAppShutdownActionType_t QuitAppShutdownActionType() const {return m_quitAppShutdownActionType;}
 
 private:
     CmdQuitAppShutdownReply(const CmdQuitAppShutdownReply &); ///< Not implemented.
     const CmdQuitAppShutdownReply &operator = (const CmdQuitAppShutdownReply &); ///< Not implemented.
-    DataManager::QuitAppShutdownActionType_t m_quitAppShutdownActionType;
+    DataManager::QuitAppShutdownActionType_t m_quitAppShutdownActionType;       ///<  Definition/Declaration of variable m_quitAppShutdownActionType
 
  }; // end class CmdQuitAppShutdownReply
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function operator<<
+ *
+ *  \return from operator<<
+ */
+/****************************************************************************/
 inline QDataStream & operator << (QDataStream &Stream, const CmdQuitAppShutdownReply &Cmd)
 {
     // copy base class data
@@ -57,6 +86,13 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdQuitAppShutdownR
     return Stream;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function operator>>
+ *
+ *  \return from operator>>
+ */
+/****************************************************************************/
 inline QDataStream & operator >> (QDataStream &Stream, CmdQuitAppShutdownReply &Cmd)
 {
     // copy base class data

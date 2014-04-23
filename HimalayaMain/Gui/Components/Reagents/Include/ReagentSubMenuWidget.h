@@ -47,3 +47,4 @@ signals:
 };
 }
 #endif // REAGENTSUBMENUWIDGET_H
+

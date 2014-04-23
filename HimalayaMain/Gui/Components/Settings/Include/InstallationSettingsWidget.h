@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file OvenSettingsWidget.h
+/*! \file InstallationSettingsWidget.h
  *
  *  \brief OvenSettingsWidget definition.
  *
@@ -53,7 +53,7 @@ private:
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
     //UI related
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();
 public:
@@ -74,8 +74,23 @@ protected:
     void showEvent(QShowEvent *p_Event);
 
  private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnEditclicked
+     */
+    /****************************************************************************/
     void OnEditclicked();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnOkClicked
+     */
+    /****************************************************************************/
     void OnOkClicked(QString EnteredText);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnESCClicked
+     */
+    /****************************************************************************/
     void OnESCClicked();
 
 };
@@ -83,3 +98,4 @@ protected:
 } // end namespace Settings
 
 #endif // SETTINGS_OVENSETTINGSWIDGET_H
+

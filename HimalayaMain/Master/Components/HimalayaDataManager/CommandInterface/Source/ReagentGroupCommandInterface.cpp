@@ -30,8 +30,9 @@ namespace DataManager {
 /*!
  *  \brief Constructor
  *
- *  \param[in] masterThreadController reference to master thread controllor
- *  \param[in] dataContainer          reference to data container
+ *  \param[in] p_MasterThreadController reference to master thread controllor
+ *  \param[in] p_DataContainer          reference to data container
+ *  \param p_DataManager
  */
 /****************************************************************************/
 

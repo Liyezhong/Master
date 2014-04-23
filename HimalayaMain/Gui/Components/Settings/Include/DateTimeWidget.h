@@ -58,3 +58,4 @@ private:
 } // end namespace Settings
 
 #endif // SETTINGS_DATETIMEWIDGET_H
+

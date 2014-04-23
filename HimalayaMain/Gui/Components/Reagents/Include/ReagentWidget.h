@@ -58,13 +58,13 @@ private:
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
     bool m_UserRoleChanged;                         //!< True if user Role changed else false
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole; //!< Current user role
     bool m_ProcessRunning;                          //!< Process running state
     bool m_ShowMessageDialog;                       //!< To show Information Message Dialog
     DataManager::CReagent const *mp_Reagent;        //!< Reagent object
     DataManager::CUserSettings *mp_UserSettings;    //!< Data object
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Keyboard object
-    MainMenu::CMainWindow *p_Parent;
+    MainMenu::CMainWindow *p_Parent;       ///<  Definition/Declaration of variable p_Parent
 
 protected:
       void changeEvent(QEvent *p_Event);
@@ -74,6 +74,15 @@ public:
                                MainMenu::CMainWindow *p_Parent = NULL,
                                KeyBoard::CKeyBoard *p_KeyBoard = NULL);
     ~CReagentWidget();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetUserSettings
+     *
+     *  \param p_UserSettings = DataManager::CUserSettings type parameter
+     *
+     *  \return from SetUserSettings
+     */
+    /****************************************************************************/
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
 
 
@@ -96,11 +105,31 @@ signals:
      */
     /****************************************************************************/
     void RMSValueChanged(Global::RMSOptions_t);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UnselectProgram
+     */
+    /****************************************************************************/
     void UnselectProgram();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UpdateSelectedStationList
+     */
+    /****************************************************************************/
     void UpdateSelectedStationList(QList<QString>&);
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnUserRoleChanged
+     */
+    /****************************************************************************/
     void OnUserRoleChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of PanelSelected
+     */
+    /****************************************************************************/
     void PanelSelected(int Index);
 
 
@@ -109,3 +138,4 @@ private slots:
 } // end namespace Reagents
 
 #endif // REAGENTS_REAGENTWIDGET_H
+

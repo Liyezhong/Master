@@ -60,27 +60,27 @@ private:
     Reagents::ButtonType_t m_ButtonType;            //!< Informs which button was clicked
     bool m_ProcessRunning;                          //!< Process running state
     DataManager::CDataReagentList m_ReagentCloneList;   //!< ReagentList local object
-    MainMenu::CMessageDlg* mp_MessageDlg;             //! Message dialog object
+    MainMenu::CMessageDlg* mp_MessageDlg;             //!< Message dialog object
     MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
     Core::CReagentGroupModel m_ReagentGroupModel;             //!< Model for the table
     DataManager::CDataReagentGroupList *mp_ReagentGroupList;  //!< Reagent list
-    Global::RMSOptions_t m_RMSOption;
-    bool m_SelectionFlag;
-    QString m_strCassettesUntilChange;
-    QString m_strCyclesUntilChange;
-    QString m_strDaysUntilChange;
-    QString m_strEnterValidName;
-    QString m_strReagentNameHasLaicaString;
-    QString m_strInputReagentSameName;
-    QString m_strEnterValidData;
-    QString m_strSelectReagentGroup;
-    QString m_strReagentAddFailed;
-    QString m_strReagentCopyFailed;
-    QString m_strEnterCassetteValue;
-    QString m_strEnterCycleValue;
-    QString m_strEnterDayValue;
-    QString m_strInforMsg;
-    QString m_strOK;
+    Global::RMSOptions_t m_RMSOption;       ///<  Definition/Declaration of variable m_RMSOption
+    bool m_SelectionFlag;       ///<  Definition/Declaration of variable m_SelectionFlag
+    QString m_strCassettesUntilChange;       ///<  Definition/Declaration of variable m_strCassettesUntilChange
+    QString m_strCyclesUntilChange;       ///<  Definition/Declaration of variable m_strCyclesUntilChange
+    QString m_strDaysUntilChange;       ///<  Definition/Declaration of variable m_strDaysUntilChange
+    QString m_strEnterValidName;       ///<  Definition/Declaration of variable m_strEnterValidName
+    QString m_strReagentNameHasLaicaString;       ///<  Definition/Declaration of variable m_strReagentNameHasLaicaString
+    QString m_strInputReagentSameName;       ///<  Definition/Declaration of variable m_strInputReagentSameName
+    QString m_strEnterValidData;       ///<  Definition/Declaration of variable m_strEnterValidData
+    QString m_strSelectReagentGroup;       ///<  Definition/Declaration of variable m_strSelectReagentGroup
+    QString m_strReagentAddFailed;       ///<  Definition/Declaration of variable m_strReagentAddFailed
+    QString m_strReagentCopyFailed;       ///<  Definition/Declaration of variable m_strReagentCopyFailed
+    QString m_strEnterCassetteValue;       ///<  Definition/Declaration of variable m_strEnterCassetteValue
+    QString m_strEnterCycleValue;       ///<  Definition/Declaration of variable m_strEnterCycleValue
+    QString m_strEnterDayValue;       ///<  Definition/Declaration of variable m_strEnterDayValue
+    QString m_strInforMsg;       ///<  Definition/Declaration of variable m_strInforMsg
+    QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
 
 
 public:
@@ -92,6 +92,15 @@ public:
                     const DataManager::CDataReagentGroupList *p_ReagentGroupList,
                     Global::RMSOptions_t Option);
     void UpdateRmsLabel(Global::RMSOptions_t Option);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function EnableElements
+     *
+     *  \param m_Enable = bool type parameter
+     *
+     *  \return from EnableElements
+     */
+    /****************************************************************************/
     void EnableElements(bool m_Enable);
 
     /****************************************************************************/
@@ -104,20 +113,71 @@ public:
     void SetButtonType(ButtonType_t ButtonType) { m_ButtonType = ButtonType;}
 
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function Init
+     *
+     *  \return from Init
+     */
+    /****************************************************************************/
     void Init();
     void RetranslateUI();
     void ResizeHorizontalSection();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ShowReagentValue
+     *
+     *  \param Option = Global::RMSOptions_t type parameter
+     *
+     *  \return from ShowReagentValue
+     */
+    /****************************************************************************/
     void ShowReagentValue(Global::RMSOptions_t Option);
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnOk
+     */
+    /****************************************************************************/
     void OnOk();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnCancel
+     */
+    /****************************************************************************/
     void OnCancel();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnEditName
+     */
+    /****************************************************************************/
     void OnEditName();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnEditCassetteValue
+     */
+    /****************************************************************************/
     void OnEditCassetteValue();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnOkClicked
+     */
+    /****************************************************************************/
     void OnOkClicked(QString EnteredText);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnESCClicked
+     */
+    /****************************************************************************/
     void OnESCClicked();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of SelectionChanged
+     */
+    /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
 
 protected:
@@ -154,3 +214,4 @@ signals:
 } // end namespace Reagents
 
 #endif // REAGENTS_MODIFYREAGENTDLG_H
+

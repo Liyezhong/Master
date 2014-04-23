@@ -46,23 +46,28 @@ using namespace DeviceControl;
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of struct HardwareMonitor_t
+ */
+/****************************************************************************/
 typedef struct
 {
-	qreal			PressureAL;
-	qreal			TempALLevelSensor;
-	qreal			TempALTube1;
-	qreal			TempALTube2;
-	qreal			TempRV1;
-	qreal			TempRV2;
-	RVPosition_t	PositionRV;
     qreal			TempRTBottom1;
     qreal			TempRTBottom2;
-	qreal			TempRTSide;
     qreal			TempOvenBottom1;
     qreal			TempOvenBottom2;
-	qreal			TempOvenTop;
-	quint16			OvenLidStatus;
-	quint16			RetortLockStatus;
+	qreal			PressureAL;       ///<  Definition/Declaration of variable PressureAL
+	qreal			TempALLevelSensor;       ///<  Definition/Declaration of variable TempALLevelSensor
+	qreal			TempALTube1;       ///<  Definition/Declaration of variable TempALTube1
+	qreal			TempALTube2;       ///<  Definition/Declaration of variable TempALTube2
+	qreal			TempRV1;       ///<  Definition/Declaration of variable TempRV1
+	qreal			TempRV2;       ///<  Definition/Declaration of variable TempRV2
+	RVPosition_t	PositionRV;       ///<  Definition/Declaration of variable PositionRV
+	qreal			TempRTSide;       ///<  Definition/Declaration of variable TempRTSide
+	qreal			TempOvenTop;       ///<  Definition/Declaration of variable TempOvenTop
+	quint16			OvenLidStatus;       ///<  Definition/Declaration of variable OvenLidStatus
+	quint16			RetortLockStatus;       ///<  Definition/Declaration of variable RetortLockStatus
 } HardwareMonitor_t;
 
 class SchedulerMainThreadController;
@@ -86,9 +91,39 @@ public:
     /****************************************************************************/
     SchedulerCommandProcessorBase(){}
     virtual ~SchedulerCommandProcessorBase(){}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function HardwareMonitor
+	 *
+	 *  \return from HardwareMonitor
+	 */
+	/****************************************************************************/
 	virtual HardwareMonitor_t HardwareMonitor() = 0;
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function ALBreakAllOperation
+	 *
+	 *  \return from ALBreakAllOperation
+	 */
+	/****************************************************************************/
 	virtual DeviceControl::ReturnCode_t ALBreakAllOperation() = 0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ALGetRecentPressure
+     *
+     *  \return from ALGetRecentPressure
+     */
+    /****************************************************************************/
     virtual qreal ALGetRecentPressure() = 0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ALSetPressureDrift
+     *
+     *  \param pressureDrift = qreal type parameter
+     *
+     *  \return from ALSetPressureDrift
+     */
+    /****************************************************************************/
     virtual void ALSetPressureDrift(qreal pressureDrift) = 0;
 
 signals:
@@ -99,7 +134,17 @@ signals:
      */
     /****************************************************************************/
     void onCmdFinished(Global::CommandShPtr_t *cmd, bool result);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal DCLConfigurationFinished
+     */
+    /****************************************************************************/
     void DCLConfigurationFinished(ReturnCode_t RetCode);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal NewCmdAdded
+     */
+    /****************************************************************************/
     void NewCmdAdded();
 
 public slots:
@@ -118,32 +163,56 @@ public slots:
      */
     /****************************************************************************/
     virtual void pushCmd(CmdSchedulerCommandBase *cmd) { this->pushCmd4Slot(cmd); }
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot DevProcInitialisationAckn
+     */
+    /****************************************************************************/
     virtual void DevProcInitialisationAckn(quint32 instanceID, ReturnCode_t configResult)
     {
         this->DevProcInitialisationAckn4Slot(instanceID, configResult);
     }
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot DevProcConfigurationAckn
+     */
+    /****************************************************************************/
     virtual void DevProcConfigurationAckn(quint32 instanceID, ReturnCode_t hdlInfo)
     {
         this->DevProcConfigurationAckn4Slot(instanceID, hdlInfo);
     }
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot DevProcStartNormalOpModeAckn
+     */
+    /****************************************************************************/
     virtual void DevProcStartNormalOpModeAckn(quint32 instanceID, ReturnCode_t hdlInfo)
     {
         this->DevProcStartNormalOpModeAckn4Slot(instanceID, hdlInfo);
     }
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot ThrowError
+     */
+    /****************************************************************************/
     virtual void ThrowError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp)
     {
         this->ThrowError4Slot(instanceID, usErrorGroup, usErrorID, usErrorData, TimeStamp);
     }
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot DevProcDestroyAckn
+     */
+    /****************************************************************************/
     virtual void DevProcDestroyAckn()
     {
         this->DevProcDestroyAckn4Slot();
     }
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnNewCmdAdded
+     */
+    /****************************************************************************/
     virtual void OnNewCmdAdded()
     {
         this->OnNewCmdAdded4Slot();
@@ -158,13 +227,86 @@ private:
      */
     /****************************************************************************/
     virtual bool newCmdComing() =0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function run4Slot
+     *
+     *  \return from run4Slot
+     */
+    /****************************************************************************/
     virtual void run4Slot() = 0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function pushCmd4Slot
+     *
+     *  \param cmd = CmdSchedulerCommandBase type parameter
+     *
+     *  \return from pushCmd4Slot
+     */
+    /****************************************************************************/
     virtual void pushCmd4Slot(CmdSchedulerCommandBase *cmd) = 0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DevProcInitialisationAckn4Slot
+     *
+     *  \param instanceID = quint32 type parameter
+     *  \param configResult =  ReturnCode_t type parameter
+     *
+     *  \return from DevProcInitialisationAckn4Slot
+     */
+    /****************************************************************************/
     virtual void DevProcInitialisationAckn4Slot(quint32 instanceID, ReturnCode_t configResult) = 0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DevProcConfigurationAckn4Slot
+     *
+     *  \param instanceID = quint32 type parameter
+     *  \param hdlInfo =  ReturnCode_t type parameter
+     *
+     *  \return from DevProcConfigurationAckn4Slot
+     */
+    /****************************************************************************/
     virtual void DevProcConfigurationAckn4Slot(quint32 instanceID, ReturnCode_t hdlInfo) = 0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DevProcStartNormalOpModeAckn4Slot
+     *
+     *  \param instanceID = quint32 type parameter
+     *  \param hdlInfo =  ReturnCode_t type parameter
+     *
+     *  \return from DevProcStartNormalOpModeAckn4Slot
+     */
+    /****************************************************************************/
     virtual void DevProcStartNormalOpModeAckn4Slot(quint32 instanceID, ReturnCode_t hdlInfo) = 0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ThrowError4Slot
+     *
+     *  \param instanceID = quint32 type parameter
+     *  \param usErrorGroup =  quint16 type parameter
+     *  \param usErrorID =  quint16 type parameter
+     *  \param usErrorData =  quint16 type parameter
+     *  \param TimeStamp = const QDateTime type parameter
+     *
+     *  \return from ThrowError4Slot
+     */
+    /****************************************************************************/
     virtual void ThrowError4Slot(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp) = 0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DevProcDestroyAckn4Slot
+     *
+     *  \return from DevProcDestroyAckn4Slot
+     */
+    /****************************************************************************/
     virtual void DevProcDestroyAckn4Slot() = 0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function OnNewCmdAdded4Slot
+     *
+     *  \return from OnNewCmdAdded4Slot
+     */
+    /****************************************************************************/
     virtual void OnNewCmdAdded4Slot() = 0;
     SchedulerCommandProcessorBase(const SchedulerCommandProcessorBase&);              			///< Not implemented.
     const SchedulerCommandProcessorBase& operator=(const SchedulerCommandProcessorBase&);		///< Not implemented.
@@ -189,9 +331,39 @@ public:
     /****************************************************************************/
     explicit SchedulerCommandProcessor(SchedulerMainThreadController *controller);
     ~SchedulerCommandProcessor();
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function HardwareMonitor
+	 *
+	 *  \return from HardwareMonitor
+	 */
+	/****************************************************************************/
 	virtual HardwareMonitor_t HardwareMonitor();
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function ALBreakAllOperation
+	 *
+	 *  \return from ALBreakAllOperation
+	 */
+	/****************************************************************************/
 	virtual DeviceControl::ReturnCode_t ALBreakAllOperation() { return mp_IDeviceProcessing->ALBreakAllOperation(); } 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ALGetRecentPressure
+     *
+     *  \return from ALGetRecentPressure
+     */
+    /****************************************************************************/
     virtual qreal ALGetRecentPressure() { return mp_IDeviceProcessing->ALGetRecentPressure(); }
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ALSetPressureDrift
+     *
+     *  \param pressureDrift = qreal type parameter
+     *
+     *  \return from ALSetPressureDrift
+     */
+    /****************************************************************************/
     virtual void ALSetPressureDrift(qreal pressureDrift) { mp_IDeviceProcessing->ALSetPressureDrift(pressureDrift); }
 #ifdef GOOGLE_MOCK
     void SetIDeviceProcessing(DP* IDeviceProcessing) { mp_IDeviceProcessing = IDeviceProcessing; }
@@ -206,27 +378,107 @@ private:
      */
     /****************************************************************************/
     virtual bool newCmdComing();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function run4Slot
+     *
+     *  \return from run4Slot
+     */
+    /****************************************************************************/
     virtual void run4Slot();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function pushCmd4Slot
+     *
+     *  \param cmd = CmdSchedulerCommandBase type parameter
+     *
+     *  \return from pushCmd4Slot
+     */
+    /****************************************************************************/
     virtual void pushCmd4Slot(CmdSchedulerCommandBase *cmd);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DevProcInitialisationAckn4Slot
+     *
+     *  \param instanceID = quint32 type parameter
+     *  \param configResult =  ReturnCode_t type parameter
+     *
+     *  \return from DevProcInitialisationAckn4Slot
+     */
+    /****************************************************************************/
     virtual void DevProcInitialisationAckn4Slot(quint32 instanceID, ReturnCode_t configResult);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DevProcConfigurationAckn4Slot
+     *
+     *  \param instanceID = quint32 type parameter
+     *  \param hdlInfo =  ReturnCode_t type parameter
+     *
+     *  \return from DevProcConfigurationAckn4Slot
+     */
+    /****************************************************************************/
     virtual void DevProcConfigurationAckn4Slot(quint32 instanceID, ReturnCode_t hdlInfo);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DevProcStartNormalOpModeAckn4Slot
+     *
+     *  \param instanceID = quint32 type parameter
+     *  \param hdlInfo =  ReturnCode_t type parameter
+     *
+     *  \return from DevProcStartNormalOpModeAckn4Slot
+     */
+    /****************************************************************************/
     virtual void DevProcStartNormalOpModeAckn4Slot(quint32 instanceID, ReturnCode_t hdlInfo);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ThrowError4Slot
+     *
+     *  \param instanceID = quint32 type parameter
+     *  \param usErrorGroup =  quint16 type parameter
+     *  \param usErrorID =  quint16 type parameter
+     *  \param usErrorData =  quint16 type parameter
+     *  \param TimeStamp = const QDateTime type parameter
+     *
+     *  \return from ThrowError4Slot
+     */
+    /****************************************************************************/
     virtual void ThrowError4Slot(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DevProcDestroyAckn4Slot
+     *
+     *  \return from DevProcDestroyAckn4Slot
+     */
+    /****************************************************************************/
     virtual void DevProcDestroyAckn4Slot();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function OnNewCmdAdded4Slot
+     *
+     *  \return from OnNewCmdAdded4Slot
+     */
+    /****************************************************************************/
     virtual void OnNewCmdAdded4Slot();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ExecuteCmd
+     *
+     *  \return from ExecuteCmd
+     */
+    /****************************************************************************/
     void ExecuteCmd();
     SchedulerCommandProcessor(const SchedulerCommandProcessor&);                      ///< Not implemented.
     const SchedulerCommandProcessor& operator=(const SchedulerCommandProcessor&);     ///< Not implemented.
 
 
 private:
-    SchedulerMainThreadController *mp_SchedulerThreadController;
-    DP *mp_IDeviceProcessing;
+    SchedulerMainThreadController *mp_SchedulerThreadController;       ///<  Definition/Declaration of variable mp_SchedulerThreadController
+    DP *mp_IDeviceProcessing;       ///<  Definition/Declaration of variable mp_IDeviceProcessing
 
-    QQueue<Scheduler::SchedulerCommandShPtr_t> m_Cmds;
-    Scheduler::SchedulerCommandShPtr_t m_currentCmd;
-    QMutex m_CmdMutex;
+    QQueue<Scheduler::SchedulerCommandShPtr_t> m_Cmds;       ///<  Definition/Declaration of variable m_Cmds
+    Scheduler::SchedulerCommandShPtr_t m_currentCmd;       ///<  Definition/Declaration of variable m_currentCmd
+    QMutex m_CmdMutex;       ///<  Definition/Declaration of variable m_CmdMutex
 };
 
 } // end of namespace Scheduler

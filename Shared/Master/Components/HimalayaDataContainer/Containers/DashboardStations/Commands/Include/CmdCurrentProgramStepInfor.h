@@ -42,19 +42,52 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdCurrentProgramStepInfor
+     *
+     *  \param timeout = int type parameter
+     *  \param stepName =  const QString type parameter
+     *  \param curProgramStepIndex =  int type parameter
+     *  \param curRemainingTime =  int type parameter
+     *
+     *  \return from CmdCurrentProgramStepInfor
+     */
+    /****************************************************************************/
     CmdCurrentProgramStepInfor(int timeout, const QString& stepName, int curProgramStepIndex, int curRemainingTime);
     ~CmdCurrentProgramStepInfor();
     virtual QString GetName() const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function StepName
+     *
+     *  \return from StepName
+     */
+    /****************************************************************************/
     inline const QString& StepName() const {return m_StepName;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CurRemainingTime
+     *
+     *  \return from CurRemainingTime
+     */
+    /****************************************************************************/
     inline int CurRemainingTime()const {return m_CurRemainingTime;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CurProgramStepIndex
+     *
+     *  \return from CurProgramStepIndex
+     */
+    /****************************************************************************/
     inline int CurProgramStepIndex() const {return m_CurProgramStepIndex;}
 private:
     CmdCurrentProgramStepInfor(const CmdCurrentProgramStepInfor &);                     ///< Not implemented.
     const CmdCurrentProgramStepInfor & operator = (const CmdCurrentProgramStepInfor &); ///< Not implemented.
 private:
-    QString m_StepName;
-    int m_CurProgramStepIndex;
-    int   m_CurRemainingTime;
+    QString m_StepName;       ///<  Definition/Declaration of variable m_StepName
+    int m_CurProgramStepIndex;       ///<  Definition/Declaration of variable m_CurProgramStepIndex
+    int   m_CurRemainingTime;       ///<  Definition/Declaration of variable m_CurRemainingTime
     
 }; // end class CmdCurrentProgramStepInfor
 

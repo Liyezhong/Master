@@ -50,7 +50,7 @@ private:
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     Settings::CLanguageModel m_LanguageModel;       //!< Language Model object
     Core::CDataConnector *mp_DataConnector;         //!< DataConnector object
     QStringList m_LanguageList;                     //!< List of Languages
@@ -76,8 +76,23 @@ protected:
     void showEvent(QShowEvent *);
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnBtnApplyClicked
+     */
+    /****************************************************************************/
     void OnBtnApplyClicked();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnProcessStateChanged
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of SelectionChanged
+     */
+    /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
 
 signals:
@@ -95,3 +110,4 @@ signals:
 } // end namespace Settings
 
 #endif // SETTINGS_LANGUAGEWIDGET_H
+

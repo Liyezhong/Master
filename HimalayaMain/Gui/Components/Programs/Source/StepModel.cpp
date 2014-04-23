@@ -57,6 +57,8 @@ CStepModel::CStepModel(QObject *p_Parent) : QAbstractTableModel(p_Parent),
  *  \brief Initializes the program data
  *
  *  \iparam p_Program = Program data
+ *  \param  p_UserSettings
+ *  \param  p_ReagentGroupList
  *  \iparam p_ReagentList = Reagent list
  *  \iparam Columns = Table columns
  */

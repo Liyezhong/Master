@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file PausePushButton.h
+/*! \file Himalaya/HimalayaMain/Gui/Components/Dashboard/Include/PausePushButton.h
  *
  *  \brief Header file for class CPausePushButton.
  *
@@ -38,6 +38,15 @@ class CPausePushButton : public QPushButton
 public:
     explicit CPausePushButton(QWidget *p_Parent = 0);
     virtual ~ CPausePushButton();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function setText
+     *
+     *  \param text =  QString type parameter
+     *
+     *  \return from setText
+     */
+    /****************************************************************************/
     void setText(const QString &text) { Q_UNUSED(text); };
 private:
     void paintEvent(QPaintEvent *);   
@@ -46,3 +55,4 @@ private:
 } // end namespace Dashboard
 
 #endif // DASHBOARD_PAUSEPUSHBUTTON_H
+

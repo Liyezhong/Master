@@ -47,19 +47,19 @@ class CModifyReagentStationDlg : public MainMenu::CDialogFrame
 private:
     Ui::CModifyReagentStationDlg *mp_Ui;                   //!< User interface
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
-    MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object
-    DataManager::CDashboardStation m_EditedStation;
+    MainMenu::CMessageDlg m_MessageDlg;             //!< Message dialog object
+    DataManager::CDashboardStation m_EditedStation; //!< Definition/Declaration of variable m_EditedStation
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
     //UI related
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     MainMenu::CBaseTable *mp_TableWidget;           //!< Reagent table
     Core::CReagentStationEditModel m_ReagentsDataModel;             //!< Model for the table
     Core::CDataConnector *mp_DataConnector;         //!< Global data container
-    QString m_strCancel;
-    QString m_strClose;
-    QString m_strInforMsg;
-    QString m_strOK;
+    QString m_strCancel;       ///<  Definition/Declaration of variable m_strCancel
+    QString m_strClose;       ///<  Definition/Declaration of variable m_strClose
+    QString m_strInforMsg;       ///<  Definition/Declaration of variable m_strInforMsg
+    QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
 
 public:
     explicit CModifyReagentStationDlg(QWidget *p_Parent = NULL,
@@ -71,13 +71,40 @@ public:
 
 private:
     void RetranslateUI();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function PopulateReagentList
+     *
+     *  \return from PopulateReagentList
+     */
+    /****************************************************************************/
     void PopulateReagentList();
     void ResizeHorizontalSection();
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnOk
+     */
+    /****************************************************************************/
     void OnOk();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnCancel
+     */
+    /****************************************************************************/
     void OnCancel();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of SelectionChanged
+     */
+    /****************************************************************************/
     void SelectionChanged(QModelIndex Index);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnProcessStateChanged
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
 protected:
     void changeEvent(QEvent *p_Event);
@@ -106,9 +133,15 @@ signals:
      */
     /****************************************************************************/
     void UpdateStationChangeReagent(const QString&, const QString&);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UnselectProgram
+     */
+    /****************************************************************************/
     void UnselectProgram();
 
 };
 }
 
 #endif // MODIFYREAGENTSTATUSDLG_H
+

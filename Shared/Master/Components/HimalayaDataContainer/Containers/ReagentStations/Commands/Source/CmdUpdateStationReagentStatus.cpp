@@ -30,9 +30,9 @@ QString CmdUpdateStationReagentStatus::NAME = "MsgClasses::CmdUpdateStationReage
 /*!
  *  \brief   Constructor for sending
  *
- * \param[in]   Timeout     Timeout for command.
- * \param[in]   ReagentID   Unique Station id.
- * \param[in]   CassetteCount   if RMS os Cassete, we should give CassetteCount
+ * \param[in]   timeOut     Timeout for command.
+ * \param[in]   stationIDs   Unique Station id.
+ * \param[in]   cassetteCount   if RMS os Cassete, we should give CassetteCount
  */
 /****************************************************************************/
 CmdUpdateStationReagentStatus::CmdUpdateStationReagentStatus(int timeOut, const QStringList& stationIDs, int cassetteCount)

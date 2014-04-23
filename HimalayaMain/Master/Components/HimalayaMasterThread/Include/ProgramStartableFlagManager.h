@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file HimalayaMasterThread/Include/ProgramStartableManager.h
+/*! \file HimalayaMasterThread/Include/ProgramStartableFlagManager.h
  *
  *  \brief Definition file for class ProgramStartableMaanger
  *
@@ -53,7 +53,7 @@ class ProgramStartableManager : public QObject {
     Q_OBJECT
 private:
     //Data Members
-    Himalaya::HimalayaMasterThreadController *mp_HimalayaMasterThreadController; //! <Himalaya Master thread controller.
+    Himalaya::HimalayaMasterThreadController *mp_HimalayaMasterThreadController; ///< Himalaya Master thread controller.
     // The below pointers to containers are used so that every method in the class
     // doesnt have to retrieve it every time. The below pointers are initialized
     // in constructor and can be used throughout the class.

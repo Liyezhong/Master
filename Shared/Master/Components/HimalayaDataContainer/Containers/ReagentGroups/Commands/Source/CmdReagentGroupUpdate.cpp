@@ -30,8 +30,9 @@ QString CmdReagentGroupUpdate::NAME = "MsgClasses::CmdReagentGroupUpdate";
 /*!
  *  \brief   Constructor for sending
  *
- * \param[in]   Timeout     Timeout for command.
- * \param[in]   ReagentID   Unique reagent id.
+ * \param[in]   timeOut     Timeout for command.
+ * \param[in]   groupId   Unique reagent id.
+ * \param ColorId
  */
 /****************************************************************************/
 CmdReagentGroupUpdate::CmdReagentGroupUpdate(int timeOut,

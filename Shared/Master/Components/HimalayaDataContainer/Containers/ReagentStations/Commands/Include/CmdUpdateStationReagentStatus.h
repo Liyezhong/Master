@@ -26,9 +26,24 @@
 
 namespace MsgClasses {
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdUpdateStationReagentStatus
+ */
+/****************************************************************************/
 class CmdUpdateStationReagentStatus : public Global::Command
 {
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of friend operator<<
+     */
+    /****************************************************************************/
     friend QDataStream & operator << (QDataStream &, const CmdUpdateStationReagentStatus &);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of friend operator>>
+     */
+    /****************************************************************************/
     friend QDataStream & operator >> (QDataStream &, CmdUpdateStationReagentStatus &);
 
 public:
@@ -41,17 +56,38 @@ public:
     virtual QString GetName(void) const;
 
     static QString NAME; ///< Command name.
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CassetteCount
+     *
+     *  \return from CassetteCount
+     */
+    /****************************************************************************/
     inline int CassetteCount()const{return m_CassetteCount;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function StationIDs
+     *
+     *  \return from StationIDs
+     */
+    /****************************************************************************/
     inline const QStringList& StationIDs() const {return m_StationIDs;}
     
 
 private:
     CmdUpdateStationReagentStatus(const CmdUpdateStationReagentStatus &); ///< Not implemented.
     const CmdUpdateStationReagentStatus &operator = (const CmdUpdateStationReagentStatus &); ///< Not implemented.
-    int m_CassetteCount;
-    QStringList m_StationIDs;
+    int m_CassetteCount;       ///<  Definition/Declaration of variable m_CassetteCount
+    QStringList m_StationIDs;       ///<  Definition/Declaration of variable m_StationIDs
 }; // end class CmdUpdateStationReagentStatus
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function operator<<
+ *
+ *  \return from operator<<
+ */
+/****************************************************************************/
 inline QDataStream & operator << (QDataStream &Stream, const CmdUpdateStationReagentStatus &Cmd)
 {
     // copy base class data
@@ -62,6 +98,13 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdUpdateStationRea
     return Stream;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function operator>>
+ *
+ *  \return from operator>>
+ */
+/****************************************************************************/
 inline QDataStream & operator >> (QDataStream &Stream, CmdUpdateStationReagentStatus &Cmd)
 {
     // copy base class data

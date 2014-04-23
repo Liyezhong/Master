@@ -45,7 +45,7 @@ CReagentGroupColorList::CReagentGroupColorList() :m_Version(0), m_DataVerificati
 /*!
  *  \brief Copy Constructor
  *
- *  \iparam ReagentList = Instance of the CReagentGroupColorList class
+ *  \iparam ReagentGroupColorList = Instance of the CReagentGroupColorList class
  *
  *  \return
  */
@@ -640,7 +640,6 @@ bool CReagentGroupColorList::ReadCompleteData(QXmlStreamReader& XmlStreamReader)
  *  \brief Get program Sequence Object
  *
  *  \iparam Index - Index of the program sequence list
- *  \iparam ReagentGroup - Program sequence class
  *
  *  \return  True-success else false
  */

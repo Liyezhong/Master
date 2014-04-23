@@ -26,9 +26,24 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdOvenGetRecentTemperature
+ */
+/****************************************************************************/
 class CmdOvenGetRecentTemperature : public CmdSchedulerCommandBase
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdOvenGetRecentTemperature
+     *
+     *  \param Timeout = int type parameter
+     *  \param controller =  SchedulerMainThreadController type parameter
+     *
+     *  \return from CmdOvenGetRecentTemperature
+     */
+    /****************************************************************************/
     CmdOvenGetRecentTemperature(int Timeout, SchedulerMainThreadController *controller);
     ~CmdOvenGetRecentTemperature();
 
@@ -37,15 +52,86 @@ public:
 
     QString GetName() const{return NAME;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetResult
+     *
+     *  \return from GetResult
+     */
+    /****************************************************************************/
     qreal GetResult()const {return m_result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetResult
+	 *
+	 *  \param result = qreal type parameter
+	 *
+	 *  \return from SetResult
+	 */
+	/****************************************************************************/
 	void SetResult(qreal result) { m_result = result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \param result = qreal type parameter
+	 *
+	 *  \return from GetResult
+	 */
+	/****************************************************************************/
 	bool GetResult(qreal& result) const{result = m_result; return true;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetType
+	 *
+	 *  \return from GetType
+	 */
+	/****************************************************************************/
 	DeviceControl::OVENTempCtrlType_t GetType(){return m_Type;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetType
+	 *
+	 *  \param Type = DeviceControl::OVENTempCtrlType_t type parameter
+	 *
+	 *  \return from SetType
+	 */
+	/****************************************************************************/
 	void SetType(DeviceControl::OVENTempCtrlType_t Type){m_Type = Type;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetIndex
+	 *
+	 *  \return from GetIndex
+	 */
+	/****************************************************************************/
 	quint8 GetIndex(){return m_Index;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetIndex
+	 *
+	 *  \param Index = quint8 type parameter
+	 *
+	 *  \return from SetIndex
+	 */
+	/****************************************************************************/
 	void SetIndex(quint8 Index){m_Index = Index;}
 	
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetParameters
+	 *
+	 *  \return from GetParameters
+	 */
+	/****************************************************************************/
 	QString GetParameters()const{ return GetName() + QString("(%1,%2)").arg(m_Type).arg(m_Index);}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetStrResult
+	 *
+	 *  \return from GetStrResult
+	 */
+	/****************************************************************************/
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
 private:
@@ -54,9 +140,9 @@ private:
     const CmdOvenGetRecentTemperature & operator = (const CmdOvenGetRecentTemperature &); ///< Not implemented.
 
 
-	mutable qreal m_result;
-	mutable DeviceControl::OVENTempCtrlType_t m_Type;
-	mutable quint8 m_Index;
+	mutable qreal m_result;       ///<  Definition/Declaration of variable m_result
+	mutable DeviceControl::OVENTempCtrlType_t m_Type;       ///<  Definition/Declaration of variable m_Type
+	mutable quint8 m_Index;       ///<  Definition/Declaration of variable m_Index
 	
 };
 

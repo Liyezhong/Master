@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CRsRvGetOriginalPositionAgain.cpp
+/*! \file RsRvGetOriginalPositionAgain.cpp
  *
  *  \brief CRsRvGetOriginalPositionAgain class definition.
  *

@@ -56,11 +56,32 @@ public:
 
     bool VerifyData(CDataContainerBase* p_ContainerBase);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetErrors
+     *
+     *  \return from GetErrors
+     */
+    /****************************************************************************/
     ErrorMap_t& GetErrors() { return m_ErrorsHash;}
 
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetErrors
+     *
+     *  \return from ResetErrors
+     */
+    /****************************************************************************/
     void ResetErrors(){m_ErrorsHash.clear();}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsLocalVerifier
+     *
+     *  \return from IsLocalVerifier
+     */
+    /****************************************************************************/
     bool IsLocalVerifier(){return false;}
 
 private:
@@ -69,9 +90,19 @@ private:
     CDataProgramList* mp_DProgramList; ///< Container for the Program list
     CDataReagentList* mp_DReagentList; ///< Container for the Reagent list
     CDashboardDataStationList* mp_DStationList; ///< Container for the Station list
-    CDataReagentGroupList* m_pDataReagentGroupList;
+    CDataReagentGroupList* m_pDataReagentGroupList;       ///<  Definition/Declaration of variable m_pDataReagentGroupList
     ErrorMap_t m_ErrorsHash;          //!< To store Error ID and any arguments associated
 	bool CheckData();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsCompatible
+     *
+     *  \param currentReagentGroupID = const QString type parameter
+     *  \param PreviousReagentGroupID =  const QString type parameter
+     *
+     *  \return from IsCompatible
+     */
+    /****************************************************************************/
     bool IsCompatible(const QString& currentReagentGroupID, const QString& PreviousReagentGroupID);
 };
 

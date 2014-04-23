@@ -90,6 +90,7 @@ CDashboardDataStationList::CDashboardDataStationList(const CDashboardDataStation
  *         This function should be called from CopyConstructor or
  *         Assignment operator only.
 .*  \note  Method for internal use only
+ *  \param Other
  *  \return
  */
 /****************************************************************************/
@@ -510,7 +511,7 @@ const CDashboardStation* CDashboardDataStationList::GetDashboardStation(const un
  *  \brief Gets the dashboard station based on the station index
  *
  *  \iparam Index = Dashboard Station Index
- *  \iparam Station = Instance of Station Class
+ *  \iparam DashboardStation = Instance of Station Class
  *
  *  \return True or False
  */

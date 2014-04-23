@@ -25,9 +25,24 @@
 
 namespace MsgClasses {
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdStationChangeReagent
+ */
+/****************************************************************************/
 class CmdStationChangeReagent : public Global::Command
 {
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of friend operator<<
+     */
+    /****************************************************************************/
     friend QDataStream & operator << (QDataStream &, const CmdStationChangeReagent &);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of friend operator>>
+     */
+    /****************************************************************************/
     friend QDataStream & operator >> (QDataStream &, CmdStationChangeReagent &);
 
 public:
@@ -39,17 +54,38 @@ public:
     virtual QString GetName(void) const;
 
     static QString NAME; ///< Command name.
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function StationID
+     *
+     *  \return from StationID
+     */
+    /****************************************************************************/
     const QString& StationID()const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ReagentID
+     *
+     *  \return from ReagentID
+     */
+    /****************************************************************************/
     const QString& ReagentID()const;
 
 private:
     CmdStationChangeReagent(const CmdStationChangeReagent &); ///< Not implemented.
     const CmdStationChangeReagent &operator = (const CmdStationChangeReagent &); ///< Not implemented.
 
-    QString m_StationID;
-    QString m_ReagentID;
+    QString m_StationID;       ///<  Definition/Declaration of variable m_StationID
+    QString m_ReagentID;       ///<  Definition/Declaration of variable m_ReagentID
 }; // end class CmdStationChangeReagent
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function operator<<
+ *
+ *  \return from operator<<
+ */
+/****************************************************************************/
 inline QDataStream & operator << (QDataStream &Stream, const CmdStationChangeReagent &Cmd)
 {
     // copy base class data
@@ -60,6 +96,13 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdStationChangeRea
     return Stream;
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function operator>>
+ *
+ *  \return from operator>>
+ */
+/****************************************************************************/
 inline QDataStream & operator >> (QDataStream &Stream, CmdStationChangeReagent &Cmd)
 {
     // copy base class data

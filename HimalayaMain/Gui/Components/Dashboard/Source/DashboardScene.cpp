@@ -26,17 +26,18 @@
 
 namespace Dashboard {
 
-const int PipeWidth = 5;
+const int PipeWidth = 5;       ///<  Definition/Declaration of variable PipeWidth
 const int JointHeight = 10;
 
 //!< Timing interval for the water animation in milliseconds
-#define ANIMATION_INTERVAL 500
+#define ANIMATION_INTERVAL 500     ///<  Definition/Declaration of macro ANIMATION_INTERVAL
 /****************************************************************************/
 /*!
  *  \brief Constructor
  *
  *  \iparam p_DataConnector = Global data container
  *  \iparam p_Parent = Parent object
+ *  \param  p_MainWindow
  */
 /****************************************************************************/
 CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
@@ -339,20 +340,46 @@ void CDashboardScene::CreateAllPipe()
     addItem(m_WholePipeGraphicsRectItem);
 }
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class Dashboard::CPipeGraphicsPathItem
+ */
+/****************************************************************************/
 class CPipeGraphicsPathItem: public QGraphicsPathItem
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CPipeGraphicsPathItem
+     *
+     *  \param path =  QPainterPath type parameter
+     *  \param brushOrigin =  QPointF type parameter
+     *
+     *  \return from CPipeGraphicsPathItem
+     */
+    /****************************************************************************/
     CPipeGraphicsPathItem(const QPainterPath &path, const QPointF& brushOrigin):QGraphicsPathItem(path),
         m_BrushOrigin(brushOrigin)
     {}
 
+  /****************************************************************************/
+  /*!
+   *  \brief  Definition/Declaration of function paint
+   *
+   *  \param painter = QPainter type parameter
+   *  \param option =  QStyleOptionGraphicsItem type parameter
+   *  \param widget =  QWidget type parameter
+   *
+   *  \return from paint
+   */
+  /****************************************************************************/
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0)
   {
         painter->setBrushOrigin(m_BrushOrigin);
         QGraphicsPathItem::paint(painter, option, widget);
   }
 private:
-  const QPointF m_BrushOrigin;
+  const QPointF m_BrushOrigin;       ///<  Definition/Declaration of variable m_BrushOrigin
 };
 
 void CDashboardScene::RepresentUsedPipe(const QList<QString>& selectedStationList, bool isRunning)

@@ -26,9 +26,24 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdALSetTempCtrlON
+ */
+/****************************************************************************/
 class CmdALSetTempCtrlON : public CmdSchedulerCommandBase
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdALSetTempCtrlON
+     *
+     *  \param Timeout = int type parameter
+     *  \param controller =  SchedulerMainThreadController type parameter
+     *
+     *  \return from CmdALSetTempCtrlON
+     */
+    /****************************************************************************/
     CmdALSetTempCtrlON(int Timeout, SchedulerMainThreadController *controller);
     ~CmdALSetTempCtrlON();
 
@@ -37,13 +52,68 @@ public:
 
     QString GetName() const{return NAME;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetResult
+     *
+     *  \return from GetResult
+     */
+    /****************************************************************************/
     DeviceControl::ReturnCode_t GetResult()const {return m_result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetResult
+	 *
+	 *  \param result = DeviceControl::ReturnCode_t type parameter
+	 *
+	 *  \return from SetResult
+	 */
+	/****************************************************************************/
 	void SetResult(DeviceControl::ReturnCode_t result) { m_result = result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \param result = DeviceControl::ReturnCode_t type parameter
+	 *
+	 *  \return from GetResult
+	 */
+	/****************************************************************************/
 	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetType
+	 *
+	 *  \return from GetType
+	 */
+	/****************************************************************************/
 	DeviceControl::ALTempCtrlType_t GetType(){return m_Type;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetType
+	 *
+	 *  \param Type = DeviceControl::ALTempCtrlType_t type parameter
+	 *
+	 *  \return from SetType
+	 */
+	/****************************************************************************/
 	void SetType(DeviceControl::ALTempCtrlType_t Type){m_Type = Type;}
 	
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetParameters
+	 *
+	 *  \return from GetParameters
+	 */
+	/****************************************************************************/
 	QString GetParameters()const{ return GetName() + QString("(%1)").arg(m_Type);}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetStrResult
+	 *
+	 *  \return from GetStrResult
+	 */
+	/****************************************************************************/
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
 private:
@@ -52,8 +122,8 @@ private:
     const CmdALSetTempCtrlON & operator = (const CmdALSetTempCtrlON &); ///< Not implemented.
 
 
-	mutable DeviceControl::ReturnCode_t m_result;
-	mutable DeviceControl::ALTempCtrlType_t m_Type;
+	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
+	mutable DeviceControl::ALTempCtrlType_t m_Type;       ///<  Definition/Declaration of variable m_Type
 	
 };
 

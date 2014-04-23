@@ -1,6 +1,6 @@
 
 /****************************************************************************/
-/*! \file ReagentWidget.cpp.cpp
+/*! \file ReagentWidget.cpp
  *
  *  \brief ReagentWidget Implementation.
  *
@@ -31,10 +31,11 @@ namespace Reagents {
 /*!
  *  \brief Constructor
  *
- *  \iparam p_ReagentList = Reference to Global reagent list
  *  \iparam p_Parent = Reference to Parent object
  *  \iparam p_KeyBoard = Reference to Keyboard widget
  *  \iparam p_DataConnector = Reference to DataConnector
+ *
+ *  \return return from CReagentWidget
  */
 /****************************************************************************/
 CReagentWidget::CReagentWidget(Core::CDataConnector *p_DataConnector,

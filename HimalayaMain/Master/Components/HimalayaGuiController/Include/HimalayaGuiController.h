@@ -58,6 +58,13 @@ protected:
     virtual void OnStopReceived();
     virtual void OnPowerFail(const Global::PowerFailStages PowerFailStage);
     virtual void OnReadyToWork();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function OnStopWorking
+     *
+     *  \return from OnStopWorking
+     */
+    /****************************************************************************/
     virtual void OnStopWorking();
 
 
@@ -75,6 +82,11 @@ private:
     ExternalProcessControl::ExternalProcessDevice   *m_myGuiDevice;
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SendConfigurationFiles
+     */
+    /****************************************************************************/
     void SendConfigurationFiles();
 };
 

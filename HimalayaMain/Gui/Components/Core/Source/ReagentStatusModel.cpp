@@ -62,7 +62,6 @@ CReagentStatusModel::CReagentStatusModel(QObject *p_Parent) : QAbstractTableMode
  *  \iparam p_ReagentGroupList = ReagentGroup data
  *  \iparam p_StationList = Station data
  *  \iparam Columns = Table columns
- *  \iparam BLCheck = True for displaying reagents in bathlayout else False.
  */
  /****************************************************************************/
 void CReagentStatusModel::SetRequiredContainers(DataManager::CDataReagentList *p_ReagentList,
@@ -397,7 +396,10 @@ QVariant CReagentStatusModel::headerData(int Section, Qt::Orientation Orientatio
 /****************************************************************************/
 /*!
  *  \brief This Function Gets Reagent ID of given Reagent Long name.
- *  \iparam ReagentLongName
+ *
+ *  \iparam ReagentName
+ *
+ *  \return return from GetReagentID
  */
 /****************************************************************************/
 QString CReagentStatusModel::GetReagentID(const QString ReagentName)
@@ -441,8 +443,6 @@ void CReagentStatusModel::SetUserSettings(DataManager::CUserSettings *p_UserSett
 /****************************************************************************/
 /*!
  *  \brief Returns item model flags of a cell
- *
- *  \iparam Index = Index of a table cell
  *
  *  \return Flags of the cell
  */

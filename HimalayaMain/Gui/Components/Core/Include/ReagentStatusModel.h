@@ -81,13 +81,22 @@ public:
     /****************************************************************************/
     /**
      * \brief Sets the currently selected reagent in the table
-     * \iparam ReagentName
+     * \iparam Value
      */
     /****************************************************************************/
     void SetRMSOption(Global::RMSOptions_t Value){
         RMSPROCESSINGOPTION = Value;
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetRMSCleaningOption
+     *
+     *  \param Value = Global::RMSOptions_t type parameter
+     *
+     *  \return from SetRMSCleaningOption
+     */
+    /****************************************************************************/
     void SetRMSCleaningOption(Global::RMSOptions_t Value){
         RMSCLEANINGOPTIONS = Value;
     }
@@ -112,9 +121,14 @@ public:
     QString GetReagentID(const QString ReagentName);
     bool ContainsReagent(QString ReagentID);
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
-    static Global::RMSOptions_t RMSPROCESSINGOPTION;
-    static Global::RMSOptions_t RMSCLEANINGOPTIONS;
+    static Global::RMSOptions_t RMSPROCESSINGOPTION;       ///<  Definition/Declaration of variable RMSPROCESSINGOPTION
+    static Global::RMSOptions_t RMSCLEANINGOPTIONS;       ///<  Definition/Declaration of variable RMSCLEANINGOPTIONS
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateReagentList();
 private:
 
@@ -138,3 +152,4 @@ private:
 } // end namespace Core
 
 #endif // CORE_REAGENTSTATUSMODEL_H
+

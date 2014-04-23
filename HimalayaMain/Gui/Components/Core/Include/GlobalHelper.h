@@ -36,8 +36,28 @@ class CGlobalHelper : public QObject
 public:
     CGlobalHelper(Core::CDataConnector *p_DataConnector);
     virtual ~CGlobalHelper();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CheckSelectedProgram
+     *
+     *  \param bRevertSelectProgram
+     *  \param operatedProgramID
+     *
+     *  \return from CheckSelectedProgram
+     */
+    /****************************************************************************/
     static bool CheckSelectedProgram(bool& bRevertSelectProgram,
                               QString operatedProgramID = "");
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function TimeToString
+     *
+     *  \param seconds = int type parameter
+     *  \param showSeconds =  bool type parameter
+     *
+     *  \return from TimeToString
+     */
+    /****************************************************************************/
     static QString TimeToString(int seconds, bool showSeconds=false) ;
     static void RetranslateUI();
     static QString GetSelectedProgramId();
@@ -48,6 +68,11 @@ public:
 
     static bool CheckIfCanEdit(const QString& name="", int CheckType=0);  // type 0: No Id 1:Program Name 2: Reagent Name 3: Station 4:ReagentGroup
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnProgramSelected
+     */
+    /****************************************************************************/
     void OnProgramSelected(QString&, QList<QString>&);
 private:
     static QString m_selectedProgramId;
@@ -65,3 +90,4 @@ private:
 } // end namespace Core
 
 #endif // CORE_GLOBALHELPER_H
+

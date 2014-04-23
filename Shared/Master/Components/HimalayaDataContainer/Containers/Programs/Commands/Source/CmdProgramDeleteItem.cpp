@@ -29,7 +29,6 @@ QString CmdProgramDeleteItem::NAME = "MsgClasses::CmdProgramDeleteItem";
  *  \brief   Constructor
  *
  * \param[in]   Timeout     Timeout for command.
- * \param[in]   ItemName    Item name.
  * \param[in]   ItemId      Item ID.
  */
 /****************************************************************************/

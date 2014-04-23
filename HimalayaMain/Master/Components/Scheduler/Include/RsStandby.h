@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CRsStandby.h
+/*! \file RsStandby.h
  *
  *  \brief CRsStandby class definition.
  *
@@ -38,15 +38,40 @@ public:
     SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ReleasePressure
+     */
+    /****************************************************************************/
     void ReleasePressure();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ShutdownFailedHeater
+     */
+    /****************************************************************************/
     void ShutdownFailedHeater();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal ShutdownFailedHeaterFinished
+     */
+    /****************************************************************************/
     void ShutdownFailedHeaterFinished();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal OnReleasePressure
+     */
+    /****************************************************************************/
     void OnReleasePressure();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal OnShutdownFailedHeater
+     */
+    /****************************************************************************/
     void OnShutdownFailedHeater();
 
 private:
-    QState *mp_ReleasePressure;
-    QState *mp_ShutdownFailedHeater;
+    QState *mp_ReleasePressure;       ///<  Definition/Declaration of variable mp_ReleasePressure
+    QState *mp_ShutdownFailedHeater;       ///<  Definition/Declaration of variable mp_ShutdownFailedHeater
 };
 }
 

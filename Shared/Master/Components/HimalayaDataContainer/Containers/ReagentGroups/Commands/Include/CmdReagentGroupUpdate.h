@@ -26,6 +26,11 @@
 namespace MsgClasses {
 
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdReagentGroupUpdate
+ */
+/****************************************************************************/
 class CmdReagentGroupUpdate : public Global::Command
 {
     friend QDataStream & operator << (QDataStream &, const CmdReagentGroupUpdate &);
@@ -38,14 +43,42 @@ public:
 
     virtual QString GetName(void) const;
 
-    static QString NAME;
+    static QString NAME;       ///<  Definition/Declaration of variable NAME
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GroupId
+     *
+     *  \return from GroupId
+     */
+    /****************************************************************************/
     inline const QString& GroupId()const {return m_GroupId;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GroupColor
+     *
+     *  \return from GroupColor
+     */
+    /****************************************************************************/
     inline const QString& GroupColor()const {return m_Color;}
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdReagentGroupUpdate
+     *
+     *  \return from CmdReagentGroupUpdate
+     */
+    /****************************************************************************/
     CmdReagentGroupUpdate(const CmdReagentGroupUpdate &);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function operator=
+     *
+     *  \return from operator=
+     */
+    /****************************************************************************/
     const CmdReagentGroupUpdate &operator = (const CmdReagentGroupUpdate &);
-    QString m_Color;
-    QString m_GroupId;
+    QString m_Color;       ///<  Definition/Declaration of variable m_Color
+    QString m_GroupId;       ///<  Definition/Declaration of variable m_GroupId
 }; // end class CmdReagentGroupUpdate
 
 /****************************************************************************/

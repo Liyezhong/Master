@@ -82,3 +82,4 @@ signals:
 
 }//End of nameSpace Settnigs
 #endif // FILEVIEWWIDGET_H
+

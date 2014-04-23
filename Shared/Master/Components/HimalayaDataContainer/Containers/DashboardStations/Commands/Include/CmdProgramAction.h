@@ -42,20 +42,53 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdProgramAction
+     *
+     *  \param timeout = int type parameter
+     *  \param programID =  const QString type parameter
+     *  \param actionType =  DataManager::ProgramActionType_t type parameter
+     *  \param programEndDateTime =  type parameter
+     *
+     *  \return from CmdProgramAction
+     */
+    /****************************************************************************/
     CmdProgramAction(int timeout, const QString& programID, DataManager::ProgramActionType_t actionType,
                      const QDateTime programEndDateTime);
     ~CmdProgramAction();
     virtual QString GetName() const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetProgramID
+     *
+     *  \return from GetProgramID
+     */
+    /****************************************************************************/
     inline const QString& GetProgramID()const {return m_ProgramID;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ProgramActionType
+     *
+     *  \return from ProgramActionType
+     */
+    /****************************************************************************/
     inline DataManager::ProgramActionType_t ProgramActionType() const {return m_ActionType;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ProgramEndDateTime
+     *
+     *  \return from ProgramEndDateTime
+     */
+    /****************************************************************************/
     inline const QDateTime& ProgramEndDateTime()const {return m_ProgramEndDateTime;}
 private:
     CmdProgramAction(const CmdProgramAction &);                     ///< Not implemented.
     const CmdProgramAction & operator = (const CmdProgramAction &); ///< Not implemented.
 private:
-    QString      m_ProgramID;
-    DataManager::ProgramActionType_t m_ActionType;
-    QDateTime m_ProgramEndDateTime;
+    QString      m_ProgramID;       ///<  Definition/Declaration of variable m_ProgramID
+    DataManager::ProgramActionType_t m_ActionType;       ///<  Definition/Declaration of variable m_ActionType
+    QDateTime m_ProgramEndDateTime;       ///<  Definition/Declaration of variable m_ProgramEndDateTime
 }; // end class CmdProgramAction
 
 /****************************************************************************/

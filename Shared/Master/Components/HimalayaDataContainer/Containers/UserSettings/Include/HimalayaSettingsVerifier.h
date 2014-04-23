@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file  \file HimalayaSettingsVerifier.h
+/*! \file HimalayaSettingsVerifier.h
  *
  *  \brief definition file for class HimalayaSettingVerifier.
  *

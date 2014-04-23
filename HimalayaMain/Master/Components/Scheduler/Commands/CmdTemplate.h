@@ -26,9 +26,24 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdTemplate
+ */
+/****************************************************************************/
 class CmdTemplate : public CmdSchedulerCommandBase
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdTemplate
+     *
+     *  \param Timeout = int type parameter
+     *  \param controller =  SchedulerMainThreadController type parameter
+     *
+     *  \return from CmdTemplate
+     */
+    /****************************************************************************/
     CmdTemplate(int Timeout, SchedulerMainThreadController *controller);
     ~CmdTemplate();
 

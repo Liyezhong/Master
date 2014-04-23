@@ -40,6 +40,15 @@ private:
     bool SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool CompleteData);
     bool DeserializeContent(QXmlStreamReader& XmlStreamReader, bool CompleteData);
     bool ReadUsageLimitation(QXmlStreamReader& XmlStreamReader);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ReadHeatingInformation
+     *
+     *  \param XmlStreamReader = QXmlStreamReader type parameter
+     *
+     *  \return from ReadHeatingInformation
+     */
+    /****************************************************************************/
     bool ReadHeatingInformation(QXmlStreamReader& XmlStreamReader);
 
     ListOfErrors_t    m_ListOfErrors;   ///< This will hold Hash table of Error ID's.
@@ -83,15 +92,6 @@ public:
 //    /****************************************************************************/
 //    bool GetLockState() const {return m_Locked;}
 
-//    /****************************************************************************/
-//    /*!
-//     *  \brief Sets the Locked State of the particular reagent
-//     *
-//     *  \iparam Value = bool type , either true or false
-//     *
-//     *  \return
-//     */
-//    /****************************************************************************/
 //    void SetLockState(const bool Value){m_Locked = Value;}
 
     /****************************************************************************/
@@ -270,15 +270,6 @@ public:
 //    /****************************************************************************/
 //    QString GetMaxTime() const {return Helper::ConvertSecondsToTimeString(m_DaysUntilChange);}      // returns
 
-//    /****************************************************************************/
-//    /*!
-//     *  \brief Sets the Max Time in terms of days for the particular reagent
-//     *
-//     *  \iparam Value = time strings like "4d "
-//     *
-//     *  \return
-//     */
-//    /****************************************************************************/
 //    void SetMaxTime(const QString Value) {m_DaysUntilChange = Helper::ConvertTimeStringToSeconds(Value.trimmed());}  // for
 
     /****************************************************************************/

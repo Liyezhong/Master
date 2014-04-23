@@ -38,7 +38,7 @@ class CProgramBase
 
 protected:
     QString m_Name;                     //!<  program name
-    QString m_NameID;
+    QString m_NameID;       ///<  Definition/Declaration of variable m_NameID       ///<  Definition/Declaration of variable m_NameID
 
     ListOfIDs_t m_OrderedListOfStepIDs; //!< Ordered list of step id's
     QString m_ID;                               //!< program ID
@@ -46,13 +46,6 @@ protected:
     unsigned int m_NextFreeStepID;              //!< Next available program ID
     ListOfProgramSteps_t m_StepList;            //!< Step List
     //This is made protected so that CProgram can set NextFreeStepId
-    /****************************************************************************/
-    /*!
-     *  \brief Sets the next free step ID to use
-     *
-     *  \iparam Value = Value of next available step ids
-     */
-    /****************************************************************************/
     //void SetNextFreeStepID(const QString Value);
 
     //!< Made protected so that client classes don't call this explicitly.
@@ -77,6 +70,8 @@ protected:
      *  \brief Assignment operator
      *
      *  \iparam ProgramBase = const reference to sourceprogram base object
+     *
+     *  \return from CProgramBase& operator =
      */
     /****************************************************************************/
     //lint -efunc(1529, =)

@@ -346,7 +346,7 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
 
 /****************************************************************************/
 /**
- * \brief This method is called when the base class received the \ref Go signal.
+ * \brief This method is called when the base class received the Go signal.
  *
  * This means that everything is fine and normal operation started.
  * We are running in our own thread now.
@@ -403,7 +403,7 @@ void HimalayaGuiController::OnStopWorking()
 
 /****************************************************************************/
 /**
- * \brief This method is called when the base class received the \ref Stop signal.
+ * \brief This method is called when the base class received the Stop signal.
  *
  * This means that normal operation will stop after processing this signal.
  * We are still running in our own thread.\n
@@ -419,6 +419,8 @@ void HimalayaGuiController::OnStopReceived() {
 /****************************************************************************/
 /**
  * \brief Power will fail shortly.
+ *
+ * \param PowerFailStage =  Global::PowerFailStages type parameter
  *
  * Power will fail shortly.
  */

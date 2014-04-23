@@ -30,6 +30,7 @@ namespace Reagents {
  *  \brief Constructor
  *
  *  \iparam p_Parent = Parent object
+ *  \param p_MainWindow =  MainMenu::CMainWindow type parameter
  */
 /****************************************************************************/
 CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow) :
@@ -56,8 +57,7 @@ CModifyReagentGroupColorDlg::CModifyReagentGroupColorDlg(QWidget *p_Parent, Main
 /****************************************************************************/
 /*!
  *  \brief Constructor
- *
- *  \Function to create Map of PushButton and Creation of Button Group.
+ *  Function to create Map of PushButton and Creation of Button Group.
  */
 /****************************************************************************/
 void CModifyReagentGroupColorDlg ::SetButtonGroup()
@@ -103,8 +103,8 @@ CModifyReagentGroupColorDlg::~CModifyReagentGroupColorDlg()
 
 /****************************************************************************/
 /*!
-     *  \Set pointer to CReagentGroupColorList
-     */
+ *  \brief Set pointer to CReagentGroupColorList
+ */
 /****************************************************************************/
 void CModifyReagentGroupColorDlg:: SetReagentGroupColorListptr(DataManager::CReagentGroupColorList  *p_CReagentGroupColorList)
 {
@@ -190,6 +190,8 @@ void CModifyReagentGroupColorDlg::OnProcessStateChanged()
 /****************************************************************************/
 /**
  * \brief Slot will be called when ButtonGroup is clicked
+ *
+ *  \param Id = int type parameter
  */
 /****************************************************************************/
 

@@ -49,25 +49,54 @@ public:
     bool setData(const QModelIndex &Index, const QVariant &Value, int Role);
     void SetVisibleRowCount(int RowCount);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetColumnNumber
+     *
+     *  \param value = qint32 type parameter
+     *
+     *  \return from SetColumnNumber
+     */
+    /****************************************************************************/
     void SetColumnNumber(qint32 value) {  m_Columns = value; }
     void ResetandUpdateModel();
     void SetUserRole(MainMenu::CMainWindow::UserRole_t UserRole);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SelectedRowIndex
+     *
+     *  \param Index = int type parameter
+     *
+     *  \return from SelectedRowIndex
+     */
+    /****************************************************************************/
     void SelectedRowIndex(int Index);
 private:
     DataManager::CDataProgramList *mp_ProgramList;   //!< Program list
     qint32 m_Columns;                               //!< Number of table columns
     qint32 m_VisibleRowCount;                       //!< Number of rows visible in the table
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
-    int m_CurrentIndex;
-    QStringList m_ProgramIDList;
+    int m_CurrentIndex;       ///<  Definition/Declaration of variable m_CurrentIndex
+    QStringList m_ProgramIDList;       ///<  Definition/Declaration of variable m_ProgramIDList
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnUpdateProgramList
+     */
+    /****************************************************************************/
     void OnUpdateProgramList();
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal FavoriteProgramListUpdated
+     */
+    /****************************************************************************/
     void FavoriteProgramListUpdated(DataManager::CProgram &);
 };
 
 } // end namespace Programs
 
 #endif // PROGRAMS_PROGRAMMODEL_H
+

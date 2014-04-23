@@ -7,6 +7,11 @@
 namespace DataManager
 {
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdGetProgramSettingsDataContainer
+ */
+/****************************************************************************/
 class CmdGetProgramSettingsDataContainer : public Global::Command
 {
 private:
@@ -19,7 +24,7 @@ protected:
 
 public:
     static QString  NAME;           ///< Command name.
-    DataManager::CProgramSettings m_ProgramSettings;
+    DataManager::CProgramSettings m_ProgramSettings;       ///<  Definition/Declaration of variable m_ProgramSettings
 
     /****************************************************************************/
     /**

@@ -28,13 +28,14 @@
 
 namespace Dashboard {
 
-const int ONE_WEEK_TIME_OFFSET_VALUE = (7 * 24 * 60 * 60);
+const int ONE_WEEK_TIME_OFFSET_VALUE = (7 * 24 * 60 * 60);       ///<  Definition/Declaration of variable ONE_WEEK_TIME_OFFSET_VALUE
 
 /****************************************************************************/
 /*!
  *  \brief Constructor
  *
  *  \iparam p_Parent = Parent object
+ *  \param pMainWindow =  QMainWindow type parameter
  */
 /****************************************************************************/
 CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent, QMainWindow *pMainWindow)

@@ -59,10 +59,53 @@ public:
     void SetModifyProgramDlgPtr(CModifyProgramDlg *p_ModifyProgram);
     void SetVisibleRowCount(int RowCount);
     qint32 GetIndex();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ShowStation
+     *
+     *  \param bSet = bool type parameter
+     *
+     *  \return from ShowStation
+     */
+    /****************************************************************************/
     void ShowStation(bool bSet);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetStationNameList
+     *
+     *  \return from SetStationNameList
+     */
+    /****************************************************************************/
     void SetStationNameList(QList<QString>&);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetCurSelectRowIndex
+     *
+     *  \param index = int type parameter
+     *
+     *  \return from SetCurSelectRowIndex
+     */
+    /****************************************************************************/
     void SetCurSelectRowIndex(int index);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ShowPV
+     *
+     *  \param Step = DataManager::CProgramStep type parameter
+     *
+     *  \return from ShowPV
+     */
+    /****************************************************************************/
     QString ShowPV(DataManager::CProgramStep *Step) const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ShowTemperature
+     *
+     *  \param Step = DataManager::CProgramStep type parameter
+     *
+     *  \return from ShowTemperature
+     */
+    /****************************************************************************/
     QVariant ShowTemperature(DataManager::CProgramStep *Step) const;
 private:
     DataManager::CProgram *mp_Program;                  //!< Program displayed in the table
@@ -72,17 +115,22 @@ private:
     CModifyProgramDlg *mp_ModifyProgramDlg;             //!< View pointer
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
     DataManager::CDataReagentGroupList *mp_ReagentGroupList; //!< Reagent group list
-    QStringList m_ReagentID;
+    QStringList m_ReagentID;       ///<  Definition/Declaration of variable m_ReagentID
     DataManager::CUserSettings *mp_UserSettings;    //!< Data object
-    QList<QString> mp_DashboardStationNameList;
-    bool m_IsShowStation;
-    int m_CurSelectRowIndex;
+    QList<QString> mp_DashboardStationNameList;       ///<  Definition/Declaration of variable mp_DashboardStationNameList
+    bool m_IsShowStation;       ///<  Definition/Declaration of variable m_IsShowStation
+    int m_CurSelectRowIndex;       ///<  Definition/Declaration of variable m_CurSelectRowIndex
 
 private slots:
-
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of UpdateStepModel
+     */
+    /****************************************************************************/
     void UpdateStepModel();
 };
 
 } // end namespace Programs
 
 #endif // PROGRAMS_STEPMODEL_H
+

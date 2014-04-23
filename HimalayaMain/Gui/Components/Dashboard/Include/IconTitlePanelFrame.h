@@ -48,6 +48,15 @@ public:
     void SetContent(QLayout *p_Content);
     QWidget *GetContentFrame();
     
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetPanelIcon
+     *
+     *  \param icon =  QString type parameter
+     *
+     *  \return from SetPanelIcon
+     */
+    /****************************************************************************/
     void SetPanelIcon(const QString& icon);
 
 private:
@@ -62,3 +71,4 @@ protected:
 } // end namespace Dashboard
 
 #endif // DASHBOARD_ICONTITLEPANELFRAME_H
+

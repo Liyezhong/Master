@@ -41,10 +41,35 @@ public:
 
     static QString NAME;    ///< Command name.
     /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdProgramSelected
+     *
+     *  \param Timeout = int type parameter
+     *  \param ProgramID =  const QString type parameter
+     *  \param ParaffinStepIndex =  int type parameter
+     *
+     *  \return from CmdProgramSelected
+     */
+    /****************************************************************************/
     CmdProgramSelected(int Timeout, const QString& ProgramID, int ParaffinStepIndex);
     ~CmdProgramSelected();
     virtual QString GetName() const;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetProgramID
+     *
+     *  \return from GetProgramID
+     */
+    /****************************************************************************/
     inline const QString& GetProgramID()const {return m_ProgramID;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ParaffinStepIndex
+     *
+     *  \return from ParaffinStepIndex
+     */
+    /****************************************************************************/
     inline int ParaffinStepIndex()const { return m_ParaffinStepIndex; }
 
 
@@ -52,8 +77,8 @@ private:
     CmdProgramSelected(const CmdProgramSelected &);                     ///< Not implemented.
     const CmdProgramSelected & operator = (const CmdProgramSelected &); ///< Not implemented.
 private:
-    QString      m_ProgramID;
-    int m_ParaffinStepIndex;
+    QString      m_ProgramID;       ///<  Definition/Declaration of variable m_ProgramID
+    int m_ParaffinStepIndex;       ///<  Definition/Declaration of variable m_ParaffinStepIndex
 }; // end class CmdProgramSelected
 
 /****************************************************************************/

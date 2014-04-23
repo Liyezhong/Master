@@ -52,7 +52,7 @@ public:
     /*!
      *  \brief Sets pointer to DataConnector object
      *
-     *  \iparam p_DataConnecotr
+     *  \iparam p_DataConnector
      */
     /****************************************************************************/
     void SetDataConnector(Core::CDataConnector *p_DataConnector)
@@ -67,7 +67,7 @@ private:
     Settings::CAlarmSettingsDlg *mp_Information;   //!< Note alarm dialog
     Settings::CAlarmSettingsDlg *mp_Warning;   //!< Note alarm dialog
     DataManager::CHimalayaUserSettings m_UserSettings;  //!< Data object
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
     Core::CDataConnector *mp_DataConnector; //!< DataConnector object
     void RetranslateUI();
     void ResetButtons();
@@ -77,17 +77,47 @@ private:
     //UI related
 
     // texts to be displayed on the widget
-    QString m_TextSound;
-    QString m_TextVolume;
-    QString m_TextPeriodicOff;
-    QString m_TextPeriodicTime;
+    QString m_TextSound;       ///<  Definition/Declaration of variable m_TextSound
+    QString m_TextVolume;       ///<  Definition/Declaration of variable m_TextVolume
+    QString m_TextPeriodicOff;       ///<  Definition/Declaration of variable m_TextPeriodicOff
+    QString m_TextPeriodicTime;       ///<  Definition/Declaration of variable m_TextPeriodicTime
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnNoteEdit
+     */
+    /****************************************************************************/
     void OnNoteEdit();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnWarningEdit
+     */
+    /****************************************************************************/
     void OnWarningEdit();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnErrorEdit
+     */
+    /****************************************************************************/
     void OnErrorEdit();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnProcessStateChanged
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of UpdateLabels
+     */
+    /****************************************************************************/
     void UpdateLabels();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of AlarmSettingsChange
+     */
+    /****************************************************************************/
     void AlarmSettingsChange(DataManager::CUserSettings &Settings);
 
 protected:
@@ -95,6 +125,11 @@ protected:
     void showEvent(QShowEvent *p_Event);
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal AlarmSettingsChanged
+     */
+    /****************************************************************************/
     void AlarmSettingsChanged(DataManager::CUserSettings &Settings);
     void PlayTestTone(quint8 , quint8 , bool );
 };
@@ -102,3 +137,4 @@ signals:
 } // end namespace Settings
 
 #endif // SETTINGS_ALARMSETTINGSWIDGET_H
+

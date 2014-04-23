@@ -79,18 +79,22 @@ private:
     bool m_ColorReplaced;                           //!< True if program color is replaced
     QList<DataManager::CProgramStep *> m_ListOfProgramSteps; //!< Container for Program Step pointers.
     MainMenu::CContentScroller m_ContentScroller;       //!< ContentScroller object
-    DataManager::CReagentGroup m_ReagentGroup;
+    DataManager::CReagentGroup m_ReagentGroup;       ///<  Definition/Declaration of variable m_ReagentGroup
     MainMenu::CMessageDlg m_MessageDlg;             //!< Information Message Dialog
     CModifyProgramIconDlg *mp_ModifyProgramIconDlg;     //!< Edit Program Icon dialog
     DataManager::CProgramStep m_LeicaProgramStepOne;           //!< ProgramStep object
     QString m_Icon;                                   //!< Program Icon Name
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
-    quint8 m_RowIndex;
+    quint8 m_RowIndex;       ///<  Definition/Declaration of variable m_RowIndex
 
-    QString m_strSelectIcon, m_strConfirmMsg;
-    QString m_strYes, m_strOK, m_strClose;
-    QString m_strCancel;
-    QString m_strDelProgramStep, m_strEnterValidName;
+    QString m_strSelectIcon;       ///<  Definition/Declaration of variable m_strSelectIcon
+    QString m_strConfirmMsg;       ///<  Definition/Declaration of variable m_strConfirmMsg
+    QString m_strYes;       ///<  Definition/Declaration of variable m_strYes
+    QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
+    QString m_strClose;       ///<  Definition/Declaration of variable m_strClose
+    QString m_strCancel;       ///<  Definition/Declaration of variable m_strCancel
+    QString m_strDelProgramStep;       ///<  Definition/Declaration of variable m_strDelProgramStep
+    QString m_strEnterValidName;       ///<  Definition/Declaration of variable m_strEnterValidName
 
 protected:
     void showEvent(QShowEvent *p_Event);
@@ -128,24 +132,108 @@ private:
     DataManager::CProgramStep *SelectedStep();
     void RetranslateUI();
     void ResetButtons(DataManager::CProgram &CurrentProgram, bool SelectionChanged);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ButtonPrgIconEnable
+     *
+     *  \param enable = bool type parameter
+     *
+     *  \return from ButtonPrgIconEnable
+     */
+    /****************************************************************************/
     void ButtonPrgIconEnable(bool enable);
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnEditName
+     */
+    /****************************************************************************/
     void OnEditName();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnEdit
+     */
+    /****************************************************************************/
     void OnEdit();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnNew
+     */
+    /****************************************************************************/
     void OnNew();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnCopy
+     */
+    /****************************************************************************/
     void OnCopy();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnDelete
+     */
+    /****************************************************************************/
     void OnDelete();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnSave
+     */
+    /****************************************************************************/
     void OnSave();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnCancel
+     */
+    /****************************************************************************/
     void OnCancel();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnSelectionChanged
+     */
+    /****************************************************************************/
     void OnSelectionChanged(QModelIndex);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnProcessStateChanged
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of UpdateProgramStepTable
+     */
+    /****************************************************************************/
     void UpdateProgramStepTable(DataManager::CProgramStep* ProgramStep, bool AddProgramStep);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of CloseDialogs
+     */
+    /****************************************************************************/
     void CloseDialogs();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnIconClicked
+     */
+    /****************************************************************************/
     void OnIconClicked();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of UpdateProgramIcon
+     */
+    /****************************************************************************/
     void UpdateProgramIcon(DataManager::CProgram *Program);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnOkClicked
+     */
+    /****************************************************************************/
     void OnOkClicked(QString EnteredText);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnESCClicked
+     */
+    /****************************************************************************/
     void OnESCClicked();
 signals:
 
@@ -212,3 +300,4 @@ signals:
 } // end namespace Programs
 
 #endif // PROGRAMS_MODIFYPROGRAMDLG_H
+

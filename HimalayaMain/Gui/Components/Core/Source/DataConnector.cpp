@@ -48,7 +48,7 @@
 
 
 namespace Core {
-const int COMMAND_TIME_OUT = 5000;
+const int COMMAND_TIME_OUT = 5000;       ///<  Definition/Declaration of variable COMMAND_TIME_OUT
 
 /****************************************************************************/
 /*!
@@ -360,7 +360,8 @@ void CDataConnector::SendDateTime(QDateTime DateTime)
 /*!
  *  \brief Sends updated Dashboard Station Change Reagent data to the master
  *
- *  \iparam p_Reagent = Reagent data object
+ *  \param StationId
+ *  \param ReagentId
  */
 /****************************************************************************/
 void CDataConnector::SendStationChangeReagent(const QString& StationId, const QString& ReagentId)
@@ -412,7 +413,7 @@ void CDataConnector::SendRMSChanged(Global::RMSOptions_t rmsOption)
 /*!
  *  \brief Sends updated Reagent data to the master
  *
- *  \iparam p_Reagent = Reagent data object
+ *  \param ReagentGroup
  */
 /****************************************************************************/
 void CDataConnector::SendReagentGroupUpdate(DataManager::CReagentGroup &ReagentGroup)
@@ -429,7 +430,7 @@ void CDataConnector::SendReagentGroupUpdate(DataManager::CReagentGroup &ReagentG
 /*!
  *  \brief Sends updated Reagent data to the master
  *
- *  \iparam p_Reagent = Reagent data object
+ *  \iparam Reagent = Reagent data object
  */
 /****************************************************************************/
 void CDataConnector::SendReagentUpdate(DataManager::CReagent &Reagent)
@@ -1020,7 +1021,7 @@ void CDataConnector::ProcessStateHandler(Global::tRefType Ref, const NetCommands
 /*!
  *  \brief Sends the Updated/Modified settings to the master
  *
- *  \iparam Settings = Settings reference
+ *  \iparam settings = Settings reference
  */
 /****************************************************************************/
 void CDataConnector::SendUpdatedSettings(DataManager::CUserSettings &settings)
@@ -1095,6 +1096,9 @@ void CDataConnector::RetranslateUI()
 /****************************************************************************/
 /*!
  *  \brief This slot is called when  ---- is emitted.
+ *
+ *  \param Name =  QString type parameter
+ *  \param ParamList =  QStringList type parameter
  */
 /****************************************************************************/
 void CDataConnector::SendDataImportExport(const QString Name, const QStringList &ParamList)
@@ -1591,6 +1595,8 @@ void CDataConnector::OnReagentAck(Global::tRefType Ref, const Global::AckOKNOK &
 /****************************************************************************/
 /*!
  *  \brief OnCurrentTabChanged
+ *
+ *  \param CurrentTabIndex = int type parameter
  */
 /****************************************************************************/
 void CDataConnector::OnCurrentTabChanged(int CurrentTabIndex)

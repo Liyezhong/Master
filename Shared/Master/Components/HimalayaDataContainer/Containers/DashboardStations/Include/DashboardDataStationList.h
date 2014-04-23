@@ -54,12 +54,35 @@ private:
     bool ReadDashboardStations(QXmlStreamReader& XmlStreamReader, bool CompleteData);
     bool DeleteAllDashboardStations();
     void AddDashboardStationWithoutVerification(const CDashboardStation *p_DashboardStation);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function Swap
+     *
+     *  \param Other = const CDashboardDataStationList type parameter
+     *
+     *  \return from Swap
+     */
+    /****************************************************************************/
     void Swap(const CDashboardDataStationList &Other);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetDashboardStationList
+     *
+     *  \return from GetDashboardStationList
+     */
+    /****************************************************************************/
     ListOfDashboardStation_t & GetDashboardStationList()
     {
         return m_DashboardStationList;
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetLock
+     *
+     *  \return from GetLock
+     */
+    /****************************************************************************/
     QReadWriteLock* GetLock()
     {
         return mp_ReadWriteLock;
@@ -70,8 +93,6 @@ private:
      *  \brief Creates a Dashboard Station with the Station ID passed
      *
      *  \iparam StationID = Station ID String
-     *
-     *  \iparam StationType = Station Type Enum Value
      *
      *  \return CDashboardStation Class Instance
      */
@@ -115,7 +136,7 @@ public:
     /*!
      *  \brief Gets the CDashboardStation Instance associated with the particular Station ID
      *
-     *  \iparam StationID = Station ID String
+     *  \iparam DashboardStationID = Station ID String
      *
      *  \return CDashboardStation Class Instance
      */
@@ -133,6 +154,15 @@ public:
     bool DeleteDashboardStation(const QString DashboardStationID);   // uses unique reagent ID
     bool DeleteDashboardStation(const unsigned int Index);  // uses order index
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function UpdateStationsByReagentDelete
+     *
+     *  \param ReagentID = const QString type parameter
+     *
+     *  \return from UpdateStationsByReagentDelete
+     */
+    /****************************************************************************/
     bool UpdateStationsByReagentDelete(const QString& ReagentID);
 
     /******************** INLINE FUNCTIONS **************************************/
@@ -206,6 +236,13 @@ public:
         return STATIONS;
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetOrderedListOfDashboardStationIDs
+     *
+     *  \return from GetOrderedListOfDashboardStationIDs
+     */
+    /****************************************************************************/
     const ListOfIDs_t & GetOrderedListOfDashboardStationIDs()
     {
         return m_OrderedListOfDashboardStationIDs;

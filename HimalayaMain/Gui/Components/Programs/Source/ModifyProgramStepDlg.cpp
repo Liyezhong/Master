@@ -51,6 +51,7 @@ const QString UNLOADER_STEP_ID = "S7";           //!< Unloader id
  *  \brief Constructor
  *
  *  \iparam p_Parent = Parent widget
+ *  \param p_DataConnector =  Core::CDataConnector type parameter
  *  \iparam p_MainWindow = MainWindow widget
  */
 /****************************************************************************/
@@ -245,8 +246,6 @@ void CModifyProgramStepDlg::InitTemperatureWidget(const DataManager::CReagent * 
  *  \brief Sets the data displayed in the dialog
  *
  *  \iparam p_ProgramStep = Program step to be displayed
- *  \iparam p_ReagentList = Reagent list for the table
- *  \iparam p_StationList = Station list for the table
  */
 /****************************************************************************/
 void CModifyProgramStepDlg::SetProgramStep(DataManager::CProgramStep *p_ProgramStep)
@@ -286,9 +285,6 @@ void CModifyProgramStepDlg::SetProgramStep(DataManager::CProgramStep *p_ProgramS
 /****************************************************************************/
 /*!
  *  \brief Sets the data displayed in the New program step dialog
- *
- *  \iparam p_ReagentList = Reagent list for the table
- *  \iparam p_StationList = Station list for the table
  */
 /**************************************************************************/////////////****/
 void CModifyProgramStepDlg::NewProgramStep()

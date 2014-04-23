@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ModifyReagentDlg.cpp
+/*! \file ModifyReagentRMSDlg.cpp
  *
  *  \brief ModifyReagentDlg Implementation.
  *
@@ -165,6 +165,8 @@ void CModifyReagentRMSDlg::changeEvent(QEvent *p_Event)
  *  \brief Sets the content of the dialog
  *
  *  \iparam p_Reagent = Reference of the reagent to be edited
+ *  \param p_ReagentGroupList
+ *  \param Option
  */
 /****************************************************************************/
 void CModifyReagentRMSDlg::InitDialog(DataManager::CReagent const *p_Reagent,
@@ -509,6 +511,8 @@ void CModifyReagentRMSDlg::OnEditCassetteValue()
 /****************************************************************************/
 /*!
  *  \brief This slot is called when OK button on Keyboard is clicked.
+ *
+ *  \param EnteredText = QString type parameter
  */
 /****************************************************************************/
 void CModifyReagentRMSDlg::OnOkClicked(QString EnteredText)

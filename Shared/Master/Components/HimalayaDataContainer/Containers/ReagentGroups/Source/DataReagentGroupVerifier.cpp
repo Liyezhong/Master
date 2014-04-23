@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file DataReagentGroupListVerifier.cpp
+/*! \file DataReagentGroupVerifier.cpp
  *
  *  \brief DataReagentGroupList Verifier implementation.
  *
@@ -40,7 +40,7 @@ CDataReagentGroupListVerifier::CDataReagentGroupListVerifier() : mp_DPSL(NULL)
 /*!
  *  \brief Function to verify the data present in xml
 
- *  \iparam p_ProgramSequenceList
+ *  \iparam p_ReagentGroupList
  *
  *  \return Changed something (true) or not (false)
  */

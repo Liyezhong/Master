@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Main.cpp
+/*! \file Himalaya/HimalayaMain/Gui/Components/Main/Source/Main.cpp
  *
  *  \brief Main implementation.
  *

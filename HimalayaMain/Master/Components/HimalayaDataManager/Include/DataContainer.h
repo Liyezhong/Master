@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ObsoleteDataContainer.h
+/*! \file Himalaya/HimalayaMain/Master/Components/HimalayaDataManager/Include/DataContainer.h
  *
  *  \brief Definition file for class CDataContainer.
  *
@@ -39,25 +39,122 @@ namespace DataManager {
 //!<  List containing macro steps and normal program steps
 typedef QList<CProgramStep*> ListOfExpandedSteps_t;
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CDataContainer
+ */
+/****************************************************************************/
 class CDataContainer: public DataManager::CDataContainerCollectionBase
 {
     Q_OBJECT
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function DeinitializeContainers
+     *
+     *  \return from DeinitializeContainers
+     */
+    /****************************************************************************/
     bool DeinitializeContainers();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetDCReagentGroupList
+     *
+     *  \return from ResetDCReagentGroupList
+     */
+    /****************************************************************************/
     bool ResetDCReagentGroupList();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetDCReagentList
+     *
+     *  \return from ResetDCReagentList
+     */
+    /****************************************************************************/
     bool ResetDCReagentList();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetDCReagentGroupColorList
+     *
+     *  \return from ResetDCReagentGroupColorList
+     */
+    /****************************************************************************/
     bool ResetDCReagentGroupColorList();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetDCProgramList
+     *
+     *  \return from ResetDCProgramList
+     */
+    /****************************************************************************/
     bool ResetDCProgramList();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetDCProgramSettings
+     *
+     *  \return from ResetDCProgramSettings
+     */
+    /****************************************************************************/
     bool ResetDCProgramSettings();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetDCStationList
+     *
+     *  \return from ResetDCStationList
+     */
+    /****************************************************************************/
     bool ResetDCStationList();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetDCUserSettings
+     *
+     *  \return from ResetDCUserSettings
+     */
+    /****************************************************************************/
     bool ResetDCUserSettings(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function AddStation
+     *
+     *  \param StationID = QString type parameter
+     *  \param ReagentID =  QString type parameter
+     *  \param Station = CDashboardStation type parameter
+     *
+     *  \return from AddStation
+     */
+    /****************************************************************************/
     void AddStation(QString StationID, QString ReagentID,CDashboardStation &Station);
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CDataContainer
+     *
+     *  \param p_HimalayaMasterThreadController = Threads::MasterThreadController type parameter
+     *
+     *  \return from CDataContainer
+     */
+    /****************************************************************************/
     CDataContainer(Threads::MasterThreadController *p_HimalayaMasterThreadController);
     ~CDataContainer();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function InitializeContainers
+     *
+     *  \return from InitializeContainers
+     */
+    /****************************************************************************/
     bool InitializeContainers();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetReagentName
+     *
+     *  \param ReagentID = QString type parameter
+     *
+     *  \return from GetReagentName
+     */
+    /****************************************************************************/
     QString GetReagentName(QString ReagentID);
 
     // prefix mp_ left because members are intentially accessible from outside (public)

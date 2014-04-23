@@ -126,7 +126,7 @@ private:
 
     Threads::CommandChannel         m_CommandChannelGui;                    ///< Command channel for Gui thread controller.
     Threads::CommandChannel         m_CommandChannelSchedulerMain;          ///< Command channel for scheduler main thread controller.
-    Threads::CommandChannel         m_CommandChannelEventHandler;
+    Threads::CommandChannel         m_CommandChannelEventHandler;       ///<  Definition/Declaration of variable m_CommandChannelEventHandler
     Threads::CommandChannel         m_CommandChannelExport;                 ///< Command channel for Export
     Threads::CommandChannel         m_CommandChannelImportExport;           ///< Command channel for Import Export thread
     Global::tRefType                m_ImportExportCommandRef;               ///< Store the command reference to return the command data once export process is exited
@@ -136,7 +136,7 @@ private:
     bool                            m_ImportExportThreadIsRunning;          ///< Store ImportExport thread flag value
     bool                            m_RemoteCareExportRequest;              ///< Request received from export
 
-    bool m_Simulation;  //!  Enable/disable simulation thread controller. \todo Remove later
+    bool m_Simulation;  ///<  Enable/disable simulation thread controller. \todo Remove later
     ProgramStartableManager          m_ProgramStartableManager;              ///< Object Managing Program Startablity
     Global::GuiUserLevel             m_AuthenticatedLevel;                   ///< The current user authenticated level
     bool                             m_ControllerCreationFlag;               ///< True if controllers are created, False if not
@@ -347,6 +347,16 @@ private:
     void ChangeUserLevelHandler(Global::tRefType Ref, const NetCommands::CmdChangeUserLevel &Cmd,
                              Threads::CommandChannel &AckCommandChannel);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetOperationHoursHandler
+     *
+     *  \param Ref = Global::tRefType type parameter
+     *  \param Cmd
+     *  \param AckCommandChannel
+     *  \return from ResetOperationHoursHandler
+     */
+    /****************************************************************************/
     void ResetOperationHoursHandler(Global::tRefType Ref, const MsgClasses::CmdResetOperationHours &Cmd,
                                     Threads::CommandChannel &AckCommandChannel);
 
@@ -389,7 +399,7 @@ private:
      *  \brief  Inform GUI and scheduler status of external status
      *  \iparam Ref = Command reference
      *  \iparam Cmd = Command
-     *  \AckCommandChannel = Command channel to send acknowledge
+     *  \param AckCommandChannel = Command channel to send acknowledge
      */
     /****************************************************************************/
     void ExternalProcessConnectionHandler(Global::tRefType Ref, const NetCommands::CmdExternalProcessState &Cmd, Threads::CommandChannel &AckCommandChannel);
@@ -400,7 +410,7 @@ private:
                  threads are created on reception of this command.
      *  \iparam Ref = Command reference
      *  \iparam Cmd = Command
-     *  \AckCommandChannel = Command channel to send acknowledge
+     *  \param AckCommandChannel = Command channel to send acknowledge
      */
     /****************************************************************************/
     void OnCmdGuiInitHandler(Global::tRefType Ref, const NetCommands::CmdGuiInit &Cmd, Threads::CommandChannel &AckCommandChannel);
@@ -465,8 +475,10 @@ protected:
     /**
      * \brief Initiate the shutdown process.
      *
+     *  \param Reboot = bool type parameter
+     *
      * Initiate the shutdown process. Make some project specific tasks the call
-     * \ref Shutdown to shut down software.
+     *  Shutdown to shut down software.
      */
     /****************************************************************************/
     virtual void InitiateShutdown(bool Reboot = false);
@@ -481,11 +493,20 @@ protected:
     /****************************************************************************/
     virtual void SendContainersTo(Threads::CommandChannel &CommandChannel);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsCommandAllowed
+     *
+     *  \param Cmd = const Global::CommandShPtr_t type parameter
+     *
+     *  \return from IsCommandAllowed
+     */
+    /****************************************************************************/
     virtual bool IsCommandAllowed(const Global::CommandShPtr_t &Cmd);
 
     /****************************************************************************/
     /**
-     * \brief This method is called when the base received the \ref Go signal.
+     * \brief This method is called when the base received the Go signal.
      *
      * This means that everything is fine and normal operation started.
      * We are running in our own thread.\n
@@ -496,6 +517,13 @@ protected:
      */
     /****************************************************************************/
     virtual void OnGoReceived();
+    /****************************************************************************/
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CreateAlarmHandler
+     *
+     *  \return from CreateAlarmHandler
+     */
     /****************************************************************************/
     virtual void CreateAlarmHandler();
     /****************************************************************************/
@@ -561,6 +589,13 @@ public:
                 return m_CommandChannelGui;
         }
     }
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of function GetDataManager
+    *
+    *  \return from GetDataManager
+    */
+   /****************************************************************************/
    const DataManager::CDataManagerBase *GetDataManager() { return mp_DataManager; }
 
    /****************************************************************************/
@@ -579,8 +614,7 @@ public:
      * \brief Send command to the required channel.
      *
      * \param Container - Container class
-     * \param ContainerVerifier - Verifier class for the container
-     * \param Path - path of the file
+     * \param FileType
      *
      * \return On successful (true) or not (false)
      */
@@ -607,16 +641,31 @@ public:
     }
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot SendXml()
+     */
+    /****************************************************************************/
 	void SendXML();
-	  
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot SWUpateProgress()
+     */
+    /****************************************************************************/
 	void SWUpdateProgress(bool InProgress);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot SWUpadteRollbackComplete()
+     */
+    /****************************************************************************/
     void SWUpdateRollbackComplete();
 
     /****************************************************************************/
-    /**
+    /*!
      * \brief Informs GUI to display/close wait dialog
      *
      * \iparam Display - true indicate display dialog, false indicates close dialog
+     * \param WaitDialogText
      */
     /****************************************************************************/
     void ShowWaitDialog(bool Display, Global::WaitDialogText_t WaitDialogText);
@@ -691,17 +740,33 @@ private slots:
        * \brief Slot for the creating containers for the type of Import.
        *
        * \param IsImport - Import is successful or not
-       * \param TypeOfImport - type of import
+       * \param ImportTypeList - type of import
        * \param UpdatedCurrentLanguage - Flag for the current language updated or not
        * \param NewLanguageAdded - Flag for the new language is added or not
+       * \param EventCode
        */
       /****************************************************************************/
       void ImportExportThreadFinished(const bool IsImport, QStringList ImportTypeList,
                                       quint32 EventCode,
                                       bool UpdatedCurrentLanguage = false,
                                       bool NewLanguageAdded = false);     
-	  void ShutdownOnPowerFail();
+      /****************************************************************************/
+      /*!
+       *  \brief  Definition/Declaration of slot ShutdownOnPowerFail()
+       */
+      /****************************************************************************/
+      void ShutdownOnPowerFail();
+      /****************************************************************************/
+      /*!
+       *  \brief  Definition/Declaration of slot SetAlarmHandlerTimeout()
+       */
+      /****************************************************************************/
       void SetAlarmHandlerTimeout(quint16 timeout);
+      /****************************************************************************/
+      /*!
+       *  \brief  Definition/Declaration of slot OnFireAlarmLocalRemote()
+       */
+      /****************************************************************************/
       void OnFireAlarmLocalRemote(bool isLocalAlarm);
 signals:
       /****************************************************************************/

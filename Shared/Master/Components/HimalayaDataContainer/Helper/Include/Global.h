@@ -25,7 +25,11 @@
 
 namespace DataManager {
 
-
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum ReagentStatusType_t
+ */
+/****************************************************************************/
  typedef enum  {
         PROGRAM_START = 0,
         PROGRAM_PAUSE,
@@ -33,19 +37,31 @@ namespace DataManager {
         PROGRAM_DRAIN,
         PROGRAM_UNDEFINED
     } ProgramActionType_t;
-
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum LockType_t
+ */
+/****************************************************************************/
 typedef enum  {
     RETORT_LOCK = 0,
     PARAFFIN_BATH_LOCK,
     LOCKTYPE_UNDEFINED
    } LockType_t;
-
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum ProgramStatusType_t
+ */
+/****************************************************************************/
 typedef enum  {
         PROGRAM_STATUS_COMPLETED = 0,
         PROGRAM_STATUS_ABORTED,
         PROGRAM_STATUS_PAUSED
    } ProgramStatusType_t;
-
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum ProgramAcknownedgeType_t
+ */
+/****************************************************************************/
 typedef enum  {
         PROGRAM_READY = 0,
         PROGRAM_WILL_COMPLETE,
@@ -62,7 +78,11 @@ typedef enum  {
         PROGRAM_SELFTEST_FAILED
 
     } ProgramAcknownedgeType_t;
-    
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum RetortStatusType_t
+ */
+/****************************************************************************/
 typedef enum  {
         RETORT_EMPTYCLEAN = 0,
         RETORT_SCUKING,
@@ -71,7 +91,11 @@ typedef enum  {
         RETORT_CONTAMINATED,
         RETORT_UNDEFINED
     } RetortStatusType_t;
-    
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum ReagentStatusType_t
+ */
+/****************************************************************************/
 typedef enum  {
         CONTAINER_STATUS_EMPTY = 0,
         CONTAINER_STATUS_SCUKING,
@@ -81,20 +105,32 @@ typedef enum  {
         CONTAINER_STATUS_CONTAMINATED,
         CONTAINER_STATUS_NOTUSED
     } ContainerStatusType_t;
-
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum ReagentStatusType_t
+ */
+/****************************************************************************/
 typedef enum {
     RESETOPERATIONHOURS_WHOLEMACHINEOPERATION = 0,
     RESETOPERATIONHOURS_ACTIVECARBONFILTER,
     RESETOPERATIONHOURS_UNDEFINED
 } ResetOperationHoursType_t;
-
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum ReagentStatusType_t
+ */
+/****************************************************************************/
 typedef enum {
     QUITAPPSHUTDOWNACTIONTYPE_QUITAPP = 0,
     QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN,
     QUITAPPSHUTDOWNACTIONTYPE_UNDEFINED
 } QuitAppShutdownActionType_t;
 
-
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of enum ReagentStatusType_t
+ */
+/****************************************************************************/
 typedef enum  {
     REAGENT_STATUS_NOT_IN_STATION = 0, ///< Reagent is newly created, but has not been placed into a station.
     REAGENT_STATUS_NORMAL, ///< Reagent is in a station, and can be used normally.
@@ -103,10 +139,17 @@ typedef enum  {
 } ReagentStatusType_t;
 
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function LEICA
+ *
+ *  \return from LEICA
+ */
+/****************************************************************************/
 const QString LEICA("leica");
 
 /****************************************************************************/
-/*
+/*!
  *  \brief  Check if the system is now idle,
  *          which means no processing is running.
  */
@@ -114,7 +157,7 @@ const QString LEICA("leica");
 bool IsSystemIdle(void);
 
 /****************************************************************************/
-/*
+/*!
  *  \brief  Set the system idle status.
  */
 /****************************************************************************/

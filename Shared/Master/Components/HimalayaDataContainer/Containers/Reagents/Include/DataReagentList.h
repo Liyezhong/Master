@@ -218,6 +218,13 @@ public:
     // uses unique reagent ID
     CReagent* GetReagent(const QString ReagentID) const {return m_ReagentList.value(ReagentID, NULL);}
 
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function UpdateOnLanguageChanged
+         *
+         *  \return from UpdateOnLanguageChanged
+         */
+        /****************************************************************************/
         void UpdateOnLanguageChanged();
 };
 

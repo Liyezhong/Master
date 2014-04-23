@@ -55,6 +55,11 @@ CProgram::CProgram(const QString ID) : CProgramBase(ID,"",""),
 /*!
  *  \brief Constructor
  *  \iparam ID = program ID
+ *  \param Name =  QString type parameter
+ *  \param LongName =  QString type parameter
+ *  \param IsLeicaProgram =  bool type parameter
+ *  \param Icon =  QString type parameter
+ *  \param Favorite =  bool type parameter
  */
 /****************************************************************************/
 CProgram::CProgram(const QString ID, const QString Name, const QString LongName, bool IsLeicaProgram, QString Icon, bool Favorite):

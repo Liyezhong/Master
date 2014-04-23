@@ -933,7 +933,7 @@ CDataProgramList& CDataProgramList::operator = (const CDataProgramList& SourcePr
 /*!
  *  \brief Verifies if the Program name is unique from ones existed
  *
- *  \iparam Name = Name of the Program
+ *  \param p_Program
  *
  *  \return On Not existed (True) or not (False)
  */

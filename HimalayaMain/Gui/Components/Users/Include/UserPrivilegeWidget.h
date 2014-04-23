@@ -55,7 +55,7 @@ private:
     QString m_PwdType;                              //!< Type of the password is stored i.e. Old, New and Confirm
     MainMenu::CMainWindow::UserRole_t m_UserLevel;  //!< Current user Level
     void RetranslateUI();
-	QTimer* m_Timer;
+	QTimer* m_Timer;       ///<  Definition/Declaration of variable m_Timer
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();
     /****************************************************************************/
@@ -75,16 +75,66 @@ protected:
     void changeEvent(QEvent *p_Event);
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnBtnServiceClicked
+     */
+    /****************************************************************************/
     void OnBtnServiceClicked();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnBtnAdministratorClicked
+     */
+    /****************************************************************************/
     void OnBtnAdministratorClicked();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnBtnUserClicked
+     */
+    /****************************************************************************/
     void OnBtnUserClicked();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnBtnChangePasswordClicked
+     */
+    /****************************************************************************/
     void OnBtnChangePasswordClicked();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnOkClicked
+     */
+    /****************************************************************************/
     void OnOkClicked(QString EnteredString);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnESCClicked
+     */
+    /****************************************************************************/
     void OnESCClicked();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of AppIdleForLongTime
+     */
+    /****************************************************************************/
 	void AppIdleForLongTime();
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot UserAuthenticated
+     */
+    /****************************************************************************/
     void UserAuthenticated(const qint32 &AuthenticatedLevel);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot ChangeInAdminPassword
+     */
+    /****************************************************************************/
     void ChangeInAdminPassword(const QString &PasswordType);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnInteractStart
+     */
+    /****************************************************************************/
     void OnInteractStart();
 signals:
     /****************************************************************************/
@@ -108,3 +158,4 @@ signals:
 } // end namespace Users
 
 #endif // USERPRIVILEGEWIDGET_H
+

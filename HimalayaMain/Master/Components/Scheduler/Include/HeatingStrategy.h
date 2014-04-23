@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Himalaya/HimalayaMain/Master/Components/Scheduler/Source/HeatingStrategy.h
+/*! \file Himalaya/HimalayaMain/Master/Components/Scheduler/Include/HeatingStrategy.h
  *
  *  \brief HeatingStrategy class definition.
  *
@@ -82,6 +82,19 @@ class HeatingStrategy : public QObject
 {
     Q_OBJECT
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function HeatingStrategy
+     *
+     *  \param schedController
+     *  \param schedMachine
+     *  \param SchedCmdProcessor
+     *  \param dataManager
+     *  \param Interval
+     *
+     *  \return from HeatingStrategy
+     */
+    /****************************************************************************/
     HeatingStrategy(SchedulerMainThreadController* schedController,
                     SchedulerCommandProcessorBase* SchedCmdProcessor,
                     DataManager::CDataManager* dataManager);
@@ -100,7 +113,25 @@ private:
 	DeviceControl::ReturnCode_t StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor);
 	DeviceControl::ReturnCode_t StartRTTemperatureControl(HeatingSensor& heatingSensor, RTTempCtrlType_t RTType);
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function HeatingStrategy
+     *
+     *  \param rhs = const HeatingStrategy type parameter
+     *
+     *  \return from HeatingStrategy
+     */
+    /****************************************************************************/
     HeatingStrategy(const HeatingStrategy& rhs);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function operator=
+     *
+     *  \param  rhs
+     *
+     *  \return from operator=
+     */
+    /****************************************************************************/
     HeatingStrategy& operator=(const HeatingStrategy& rhs);
 };
 }

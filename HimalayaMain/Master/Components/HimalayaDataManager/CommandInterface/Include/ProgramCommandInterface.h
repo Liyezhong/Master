@@ -46,6 +46,11 @@ private:
     void DeleteProgram(Global::tRefType, const MsgClasses::CmdProgramDeleteItem &Cmd, Threads::CommandChannel &AckCommandChannel);
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal StartableProgramEdited
+     */
+    /****************************************************************************/
     void StartableProgramEdited(const QString &ProgramID);
 
 };

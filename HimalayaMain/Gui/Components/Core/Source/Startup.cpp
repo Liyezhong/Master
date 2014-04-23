@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file Startup.cpp
+/*! \file Himalaya/HimalayaMain/Gui/Components/Core/Source/Startup.cpp
  *
  *  \brief Startup implementation.
  *

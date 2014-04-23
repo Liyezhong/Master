@@ -44,6 +44,11 @@ class CAlarmSettingsDlg : public MainMenu::CDialogFrame
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of enum AlarmDialogType
+     */
+    /****************************************************************************/
     typedef enum {
         Information = 0,
         Warning = 1,
@@ -58,7 +63,7 @@ public:
     ~CAlarmSettingsDlg();
     void UpdateDisplay(void);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
-    bool m_Type;
+    bool m_Type;       ///<  Definition/Declaration of variable m_Type
 
     /****************************************************************************/
     /*!
@@ -82,7 +87,7 @@ private:
     MainMenu::CScrollWheel *mp_VolumeScrollWheel; //!< Volume scroll wheel
     MainMenu::CScrollWheel *mp_SoundScrollWheel; //!< Volume scroll wheel
     MainMenu::CScrollWheel *mp_MinWheel;        //!< Minut scroll wheel
-    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //! < Current user role
+    MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
 
     QButtonGroup m_ButtonGroup; //!< Groups radio buttons for sound selection
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
@@ -99,12 +104,37 @@ protected:
     void showEvent(QShowEvent *p_Event);
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnPeriodicChanged
+     */
+    /****************************************************************************/
     void OnPeriodicChanged(MainMenu::CSliderControl::Position_t Position);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnProcessStateChanged
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnApply
+     */
+    /****************************************************************************/
     void OnApply();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnPlayTone
+     */
+    /****************************************************************************/
     void OnPlayTone();
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal AlarmSettingsChanged
+     */
+    /****************************************************************************/
     void AlarmSettingsChanged(DataManager::CUserSettings &Settings);
     void PlayTestTone( quint8, quint8, bool );
 };
@@ -112,3 +142,4 @@ signals:
 } // end namespace Settings
 
 #endif // SETTINGS_ALARMSETTINGSDLG_H
+

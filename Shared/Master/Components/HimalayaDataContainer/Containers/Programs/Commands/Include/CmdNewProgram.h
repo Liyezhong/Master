@@ -50,6 +50,13 @@ public:
      **/
     /****************************************************************************/
     QByteArray const & GetProgramData() const { return m_ProgramByteArray;}
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetProgramSequenceData
+     *
+     *  \return from GetProgramSequenceData
+     */
+    /****************************************************************************/
     QByteArray const & GetProgramSequenceData() const { return m_ProgramSequenceByteArray; }
 
 

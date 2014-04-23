@@ -26,9 +26,24 @@
 
 namespace Scheduler{
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of class CmdRVReqMoveToRVPosition
+ */
+/****************************************************************************/
 class CmdRVReqMoveToRVPosition : public CmdSchedulerCommandBase
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CmdRVReqMoveToRVPosition
+     *
+     *  \param Timeout = int type parameter
+     *  \param controller =  SchedulerMainThreadController type parameter
+     *
+     *  \return from CmdRVReqMoveToRVPosition
+     */
+    /****************************************************************************/
     CmdRVReqMoveToRVPosition(int Timeout, SchedulerMainThreadController *controller);
     ~CmdRVReqMoveToRVPosition();
 
@@ -37,13 +52,68 @@ public:
 
     QString GetName() const{return NAME;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetResult
+     *
+     *  \return from GetResult
+     */
+    /****************************************************************************/
     DeviceControl::ReturnCode_t GetResult()const {return m_result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetResult
+	 *
+	 *  \param result = DeviceControl::ReturnCode_t type parameter
+	 *
+	 *  \return from SetResult
+	 */
+	/****************************************************************************/
 	void SetResult(DeviceControl::ReturnCode_t result) { m_result = result;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetResult
+	 *
+	 *  \param result = DeviceControl::ReturnCode_t type parameter
+	 *
+	 *  \return from GetResult
+	 */
+	/****************************************************************************/
 	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetRVPosition
+	 *
+	 *  \return from GetRVPosition
+	 */
+	/****************************************************************************/
 	DeviceControl::RVPosition_t GetRVPosition(){return m_RVPosition;}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function SetRVPosition
+	 *
+	 *  \param RVPosition = DeviceControl::RVPosition_t type parameter
+	 *
+	 *  \return from SetRVPosition
+	 */
+	/****************************************************************************/
 	void SetRVPosition(DeviceControl::RVPosition_t RVPosition){m_RVPosition = RVPosition;}
 	
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetParameters
+	 *
+	 *  \return from GetParameters
+	 */
+	/****************************************************************************/
 	QString GetParameters()const{ return GetName() + QString("(%1)").arg(m_RVPosition);}
+	/****************************************************************************/
+	/*!
+	 *  \brief  Definition/Declaration of function GetStrResult
+	 *
+	 *  \return from GetStrResult
+	 */
+	/****************************************************************************/
 	QString GetStrResult()const{ return QString("%1").arg(m_result);}
 
 private:
@@ -52,8 +122,8 @@ private:
     const CmdRVReqMoveToRVPosition & operator = (const CmdRVReqMoveToRVPosition &); ///< Not implemented.
 
 
-	mutable DeviceControl::ReturnCode_t m_result;
-	mutable DeviceControl::RVPosition_t m_RVPosition;
+	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
+	mutable DeviceControl::RVPosition_t m_RVPosition;       ///<  Definition/Declaration of variable m_RVPosition
 	
 };
 

@@ -36,6 +36,10 @@ namespace Core {
  *
  *  \iparam p_DataConnector = Instance of Data Container
  *  \iparam p_Parent = Parent item
+ *  \param StationGroup
+ *  \param StationItemID
+ *  \param StationLabel
+ *  \param p_DashboardStation
  */
 /****************************************************************************/
 CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnector,
@@ -202,7 +206,7 @@ DataManager::CDashboardStation *CDashboardStationItem::GetDashboardStation() con
 /*!
  *  \brief Sets the data manager station data object
  *
- *  \iparam p_Station = Station data object
+ *  \iparam p_DashboardStation = Station data object
  */
 /****************************************************************************/
 void CDashboardStationItem::SetDashboardStation(DataManager::CDashboardStation* p_DashboardStation)
@@ -337,6 +341,8 @@ void CDashboardStationItem::UpdateDashboardStationItemWhenReagentGroupUpdated()
 /****************************************************************************/
 /*!
  *  \brief Update Dashboard Station Items Reagent Properties when Reagents are updated
+ *
+ *  \param RefreshFlag = bool type parameter
  *
  */
 /****************************************************************************/

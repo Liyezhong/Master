@@ -55,3 +55,4 @@ private:
 } // end namespace Settings
 
 #endif // SETTINGS_LANGUAGEWIDGET_H
+

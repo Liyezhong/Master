@@ -14,10 +14,9 @@ namespace Reagents {
 /*!
  *  \brief Constructor
  *
- *  \iparam p_ReagentList = Reference to Global reagent list
- *  \iparam p_Parent = Reference to Parent object
- *  \iparam p_KeyBoard = Reference to Keyboard widget
- *  \iparam p_DataConnector = Reference to DataConnector
+ *  \param p_Parent
+ *
+ *  \return return from CReagentGroupWidget
  */
 /****************************************************************************/
 CReagentGroupWidget::CReagentGroupWidget(QWidget *p_Parent):

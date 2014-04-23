@@ -56,15 +56,41 @@ private:
     void RetranslateUI();
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of PropagateDateTime
+     */
+    /****************************************************************************/
     void PropagateDateTime();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of UserSettingsUpdated
+     */
+    /****************************************************************************/
     void UserSettingsUpdated();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of PanelSelected
+     */
+    /****************************************************************************/
     void PanelSelected(int Index);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of UpdateLanguages
+     */
+    /****************************************************************************/
     void UpdateLanguages();
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SettingsChanged
+     */
+    /****************************************************************************/
     void SettingsChanged(DataManager::CUserSettings &Settings);
 };
 
 } // end namespace Settings
 
 #endif // SETTINGS_SETTINGSWIDGET_H
+

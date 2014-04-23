@@ -15,10 +15,9 @@ namespace Reagents {
 /*!
  *  \brief Constructor
  *
- *  \iparam p_ReagentList = Reference to Global reagent list
  *  \iparam p_Parent = Reference to Parent object
- *  \iparam p_KeyBoard = Reference to Keyboard widget
- *  \iparam p_DataConnector = Reference to DataConnector
+ *
+ *  \return return from CReagentStatusWidget
  */
 /****************************************************************************/
 CReagentStatusWidget::CReagentStatusWidget(QWidget *p_Parent):
@@ -192,6 +191,8 @@ void CReagentStatusWidget::OnSetAsFull()
 /****************************************************************************/
 /*!
  *  \brief Displays a dialog for the modification of a staining reagent
+ *
+ *  \param RMSValue =  Global::RMSOptions_t type parameter
  */
 /****************************************************************************/
 void CReagentStatusWidget::RMSChanged(const Global::RMSOptions_t RMSValue)

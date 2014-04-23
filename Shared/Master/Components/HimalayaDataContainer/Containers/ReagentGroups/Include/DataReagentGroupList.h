@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ReagentGroupList.h
+/*! \file DataReagentGroupList.h
  *
  *  \brief ReagentGroup defination.
  *
@@ -129,7 +129,7 @@ public:
     /*!
      *  \brief Create program sequence step for the given program id
      *
-     *	\iparam ProgramID = Program ID
+     *	\iparam ID = Program ID
      *
      *  \return program sequence
      */
@@ -147,8 +147,24 @@ public:
     bool DeleteReagentGroup(const QString StepID);   // uses unique step ID
     bool DeleteReagentGroup(const unsigned int Index);  // uses order index
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetReagentGroupIndex
+     *
+     *  \param GroupID = const QString type parameter
+     *
+     *  \return from GetReagentGroupIndex
+     */
+    /****************************************************************************/
     qint32 GetReagentGroupIndex(const QString& GroupID) { return m_OrderedListOfReagentGroupIDs.indexOf(GroupID); }   // uses unique group ID
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function UpdateOnLanguageChanged
+     *
+     *  \return from UpdateOnLanguageChanged
+     */
+    /****************************************************************************/
     void UpdateOnLanguageChanged();
 
 private:

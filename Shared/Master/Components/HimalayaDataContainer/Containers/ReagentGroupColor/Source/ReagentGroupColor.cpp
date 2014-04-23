@@ -170,7 +170,7 @@ QDataStream& operator <<(QDataStream& OutDataStream, const CReagentGroupColor& R
  *  \brief Input stream Operator which reads the data from Input parameter.
  *
  *  \iparam InDataStream = Instance of the DataStream
- *  \iparam ReagentGroup = CReagentGroup class object
+ *  \iparam ReagentGroupColor = CReagentGroup class object
  *
  *  \return Input Stream
  */

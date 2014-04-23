@@ -21,8 +21,8 @@ private:
 protected:
 public:
     static QString  NAME;           ///< Command name.
-    CDashboardDataStationList m_StationList;
-    CDataReagentList m_ReagentList;
+    CDashboardDataStationList m_StationList;       ///<  Definition/Declaration of variable m_StationList
+    CDataReagentList m_ReagentList;       ///<  Definition/Declaration of variable m_ReagentList
 
     /****************************************************************************/
     /**

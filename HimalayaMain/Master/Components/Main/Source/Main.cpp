@@ -35,14 +35,34 @@
 class MApplication : public QCoreApplication
 {
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function MApplication
+     *
+     *  \param argc
+     *  \param argv
+     *
+     *  \return from MApplication
+     */
+    /****************************************************************************/
     MApplication (int &argc, char ** argv )
         : QCoreApplication ( argc, argv )
     {};
 
     ~MApplication() {};
 
-    Himalaya::HimalayaMasterThreadController TheMasterThreadController;
+    Himalaya::HimalayaMasterThreadController TheMasterThreadController;       ///<  Definition/Declaration of variable TheMasterThreadController
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function notify
+     *
+     *  \param object
+     *  \param event
+     *
+     *  \return from notify
+     */
+    /****************************************************************************/
     virtual bool notify(QObject * object, QEvent * event)
     {
         try
@@ -74,6 +94,16 @@ public:
     }
 };
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function myMessageOutput
+ *
+ *  \param type = QtMsgType type parameter
+ *  \param msg =  char type parameter
+ *
+ *  \return from myMessageOutput
+ */
+/****************************************************************************/
 void myMessageOutput(QtMsgType type, const char *msg)
  {
      switch (type) {

@@ -49,6 +49,16 @@ public:
     int rowCount(const QModelIndex &) const;
     int columnCount(const QModelIndex &) const;
     QVariant data(const QModelIndex &Index, int Role) const;  //data Reagent SubMenu
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function dataStatus
+     *
+     *  \param Index =  QModelIndex type parameter
+     *  \param Role =  int type parameter
+     *
+     *  \return from dataStatus
+     */
+    /****************************************************************************/
     QVariant dataStatus(const QModelIndex &Index, int Role) const; //data Reagent Staus SubMenu
     QVariant headerData(int Section, Qt::Orientation Orientation, int Role) const;
     Qt::ItemFlags flags(const QModelIndex &Index) const;
@@ -121,11 +131,34 @@ public:
     QString GetReagentID(int Index);
     QString GetReagentLongName(int Row);
     bool ContainsReagent(QString ReagentID);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function IsReagentPresentInBL
+     *
+     *  \param ReagentID = QString type parameter
+     *
+     *  \return from IsReagentPresentInBL
+     */
+    /****************************************************************************/
     bool IsReagentPresentInBL(QString ReagentID);
     void SetUserSettings(DataManager::CUserSettings *p_UserSettings);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function UpdateList
+     *
+     *  \param p_Reagent =  DataManager::CReagent type parameter
+     *
+     *  \return from UpdateList
+     */
+    /****************************************************************************/
     void UpdateList( DataManager::CReagent *p_Reagent);
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of UpdateReagentList
+     */
+    /****************************************************************************/
     void UpdateReagentList();
 
 private:
@@ -133,9 +166,9 @@ private:
     DataManager::CDataReagentGroupList *mp_ReagentGroupList; //!< Reagent group list
     QMap<QString, QString> m_Identifiers;               //!< Identifiers of reagents currently displayed
     QStringList m_ReagentNames;                         //!< Long names of reagents currently displayed
-    QStringList m_ReagentID;
+    QStringList m_ReagentID;       ///<  Definition/Declaration of variable m_ReagentID
     QStringList m_CleaningGroupReagentNames;                         //!< Long names of reagents currently displayed
-    QStringList m_CleaningGroupReagentID;
+    QStringList m_CleaningGroupReagentID;       ///<  Definition/Declaration of variable m_CleaningGroupReagentID
     qint32 m_Columns;                                   //!< Number of table columns
     QString m_CurrentReagentName;                       //!< Current Reagent Name
     Programs::CModifyProgramStepDlg *mp_Parent;         //!< Reference to ModifyProgramStep Dialog
@@ -145,9 +178,10 @@ private:
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     QPixmap m_PixmapTickOk;                             //!< Pixmap for TickOk png
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object
-    bool m_CleaningReagent;
+    bool m_CleaningReagent;       ///<  Definition/Declaration of variable m_CleaningReagent
 };
 
 } // end namespace Core
 
 #endif // CORE_ReagentRMSModel_H
+

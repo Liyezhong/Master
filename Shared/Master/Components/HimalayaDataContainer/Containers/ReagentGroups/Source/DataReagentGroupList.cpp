@@ -476,7 +476,7 @@ bool CDataReagentGroupList::GetReagentGroup(const unsigned int Index, CReagentGr
 /*!
  *  \brief Deep Copies the ReagentGroup content ReagentGroup Instance by ReagentGroup ID
  *
- *  \iparam ReagentGroupID = ID of the ReagentGroup
+ *  \iparam ID = ID of the ReagentGroup
  *  \iparam ReagentGroup =  CReagentGroup Instance
  *
  *  \return True or False

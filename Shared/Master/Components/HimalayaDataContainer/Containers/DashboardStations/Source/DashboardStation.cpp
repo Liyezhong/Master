@@ -78,7 +78,7 @@ CDashboardStation::CDashboardStation(const QString ID)
 /*!
  *  \brief Copy Constructor
  *
- *  \iparam DashboardStation = Instance of the CDashboardStation class
+ *  \iparam  ExistingStation
  *
  *  \return
  */
@@ -322,6 +322,9 @@ void CDashboardStation::ResetData(void)
 /****************************************************************************/
 /*!
  *  \brief  Get the status of a reagent
+ *
+ *  \param Reagent =  DataManager::CReagent type parameter
+ *  \param Option =  Global::RMSOptions_t type parameter
  *
  *  \return DataManager::ReagentStatusType_t
  *

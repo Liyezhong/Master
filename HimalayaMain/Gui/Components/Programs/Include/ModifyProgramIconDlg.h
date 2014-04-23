@@ -44,32 +44,75 @@ class CModifyProgramIconDlg : public MainMenu::CDialogFrame
 
 private:
     Ui::CModifyProgramIconDlg *mp_Ui;               //!< User interface
-    MainMenu::CMessageDlg m_MessageDlg;             //! Message dialog object
+    MainMenu::CMessageDlg m_MessageDlg;             ///<  Definition/Declaration of variable m_MessageDlg
     //Flags
     bool m_ProcessRunning;                          //!< Process running state
     //UI related
     QStringList m_ProgramIconNames;                 //!< store Icon List names
-    DataManager::CProgram m_Program;
-    QButtonGroup m_ButtonGroup;
-    QMap<int, QPushButton*> m_QPushButtonMap;
+    DataManager::CProgram m_Program;       ///<  Definition/Declaration of variable m_Program
+    QButtonGroup m_ButtonGroup;       ///<  Definition/Declaration of variable m_ButtonGroup
+    QMap<int, QPushButton*> m_QPushButtonMap;       ///<  Definition/Declaration of variable m_QPushButtonMap
     QStringList m_IconName;                          //!< store Icon name
 
-    QString m_strConfirmMsg;
-    QString m_strOK, m_strCancel, m_strClose;
+    QString m_strConfirmMsg;       ///<  Definition/Declaration of variable m_strConfirmMsg
+    QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
+    QString m_strCancel;       ///<  Definition/Declaration of variable m_strCancel
+    QString m_strClose;       ///<  Definition/Declaration of variable m_strClose
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function RetranslateUI
+     *
+     *  \return from RetranslateUI
+     */
+    /****************************************************************************/
     void RetranslateUI();
 
 public:
     explicit CModifyProgramIconDlg(QWidget *p_Parent = NULL,
                                    MainMenu::CMainWindow *p_MainWindow = NULL);
     virtual ~CModifyProgramIconDlg();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function EnableAvailableIcon
+     *
+     *  \param pProgramList = DataManager::CDataProgramList type parameter
+     *
+     *  \return from EnableAvailableIcon
+     */
+    /****************************************************************************/
     void EnableAvailableIcon(DataManager::CDataProgramList* pProgramList);
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnOk
+     */
+    /****************************************************************************/
     void OnOk();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnCancel
+     */
+    /****************************************************************************/
     void OnCancel();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnProcessStateChanged
+     */
+    /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnIconGroup
+     */
+    /****************************************************************************/
     void OnIconGroup(int Id);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of SetButtonGroup
+     */
+    /****************************************************************************/
     void SetButtonGroup();
 protected:
     void changeEvent(QEvent *p_Event);
@@ -101,3 +144,4 @@ signals:
 }
 
 #endif // MODIFYPROGRAMICONDLG_H
+

@@ -41,16 +41,16 @@ class CDashboardStation
 {
     friend class CDashboardDataStationList;
 private:
-    QString                     m_DashboardStationID;
-    QString                     m_DashboardStationName;
-    bool                        m_IsParaffinBath;
-    QString                     m_ReagentID;
-    QDate                       m_ReagentExchangeDate;
-    int                         m_ReagentActualCassettes;
-    int                         m_ReagentActualCycles;
-    QString                     m_ReagentStatus;
-    DashboardStationStatus_t    m_DashboardStationStatus;
-    DashboardStationType_t      m_DashboardStationType;
+    QString                     m_DashboardStationID;       ///<  Definition/Declaration of variable m_DashboardStationID
+    QString                     m_DashboardStationName;       ///<  Definition/Declaration of variable m_DashboardStationName
+    bool                        m_IsParaffinBath;       ///<  Definition/Declaration of variable m_IsParaffinBath
+    QString                     m_ReagentID;       ///<  Definition/Declaration of variable m_ReagentID
+    QDate                       m_ReagentExchangeDate;       ///<  Definition/Declaration of variable m_ReagentExchangeDate
+    int                         m_ReagentActualCassettes;       ///<  Definition/Declaration of variable m_ReagentActualCassettes
+    int                         m_ReagentActualCycles;       ///<  Definition/Declaration of variable m_ReagentActualCycles
+    QString                     m_ReagentStatus;       ///<  Definition/Declaration of variable m_ReagentStatus
+    DashboardStationStatus_t    m_DashboardStationStatus;       ///<  Definition/Declaration of variable m_DashboardStationStatus
+    DashboardStationType_t      m_DashboardStationType;       ///<  Definition/Declaration of variable m_DashboardStationType
     bool SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool CompleteData);
     bool DeserializeContent(QXmlStreamReader& XmlStreamReader, bool CompleteData);
 
@@ -58,6 +58,15 @@ public:
     CDashboardStation();
     CDashboardStation(const QString ID);
     CDashboardStation(const CDashboardStation& ExistingStation);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CopyFromOther
+     *
+     *  \param Station = const CDashboardStation type parameter
+     *
+     *  \return from CopyFromOther
+     */
+    /****************************************************************************/
     void CopyFromOther(const CDashboardStation& Station);
     friend QDataStream& operator <<(QDataStream& OutDataStream, const CDashboardStation& Station);
     friend QDataStream& operator >>(QDataStream& InDataStream, CDashboardStation& Station);
@@ -306,7 +315,7 @@ public:
     /*!
      *  \brief Sets the Station Status Value
      *
-     *  \iparam Value = Station Status Value ( ex: Empty, Full, Partially Filled, Not Used )
+     *  \iparam eValue = Station Status Value ( ex: Empty, Full, Partially Filled, Not Used )
      *
      *  \return
      */
