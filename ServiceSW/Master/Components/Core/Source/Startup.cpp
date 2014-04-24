@@ -44,6 +44,8 @@ CStartup::CStartup() : QObject(),
     // ServiceConnector
     mp_ServiceConnector = new Core::CServiceGUIConnector(mp_MainWindow);
 
+    mp_CalibrationHandler = new Core::CCalibrationHanlder(mp_ServiceConnector, mp_MainWindow);
+
     // System tracking
     mp_SystemTrackingGroup = new MainMenu::CHiMenuGroup;
     mp_CurrentConfiguration =
@@ -213,6 +215,9 @@ CStartup::CStartup() : QObject(),
                  this, SLOT(OnGuiAbortTest()))) {
         qDebug() << "CStartup: cannot connect 'GuiAbortTest' signal";
     }
+    /* Calibration Signals */
+    CONNECTSIGNALSIGNAL(mp_CalibrationHandler, OvenLidInitCalibrationRequest(), this, OvenLidInitCalibrationRequest());
+
     CONNECTSIGNALSLOT(this, SetSettingsButtonStatus(), mp_Setting, ResetButtonStatus());
     CONNECTSIGNALSLOT(this, UpdateGUIConnector(Core::CServiceGUIConnector*, MainMenu::CMainWindow*), mp_Setting, UpdateGUIConnector(Core::CServiceGUIConnector*, MainMenu::CMainWindow*));
 

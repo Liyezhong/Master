@@ -158,7 +158,7 @@ void DeviceProcessor::Initialize()
     }
 */
     // Pressure control
-   /* CPressureControl *pPressure;
+    /*CPressureControl *pPressure;
 
     pPressure = NULL;
     pPressure = static_cast<CPressureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALPressureCtrlKey));
@@ -784,6 +784,18 @@ qint32 DeviceProcessor::TestLSensorDetecting(quint32 DeviceId, qint32 Pos)
     return Ret;
 }
 
+/****************************************************************************/
+void DeviceProcessor::OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdType)
+{
+    qDebug()<<"DeviceProcessor::OnCalibrateDevice";
+    if(!IsInitialized())
+    {
+        //ReturnErrorMessagetoMain(Service::CMessageString::MSG_DEVICE_NOTYET_READY);
+        //emit ReturnCalibrationInitMessagetoMain("", false);
+        return;
+    }
+    //(void) mp_CalibrationHandler->OnCalibrateDevice(CmdType);
+}
 
 
 } // end namespace DeviceControl

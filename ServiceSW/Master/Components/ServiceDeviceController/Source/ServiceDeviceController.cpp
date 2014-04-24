@@ -30,6 +30,8 @@
 #include "Application/Include/Application.h"
 
 #include "DeviceControl/Include/Interface/IDeviceProcessing.h"
+#include <ServiceDeviceController/Include/Commands/CmdCalibrateDevice.h>
+
 namespace DeviceControl {
 
 /****************************************************************************/
@@ -174,6 +176,10 @@ void ServiceDeviceController::RegisterCommands(){
 
     RegisterCommandForProcessing<DeviceCommandProcessor::CmdLSensorDetectingTest, ServiceDeviceController>
             (&ServiceDeviceController::OnSDC_LSensorDetectingTest, this);
+
+    //RegisterCommandForProcessing<DeviceCommandProcessor::CmdCalibrateDevice, ServiceDeviceController>
+      //      (&ServiceDeviceController::OnCmdCalibrateDevice, this);
+
 }
 
 /****************************************************************************/
@@ -374,6 +380,21 @@ void ServiceDeviceController::OnSDC_LSensorDetectingTest(Global::tRefType Ref, c
     else
     {
         ReturnErrorMessagetoMain(Service::MSG_DEVICEDATACONTAINERS_MISSING);
+    }
+}
+
+/****************************************************************************/
+void ServiceDeviceController::OnCmdCalibrateDevice(Global::tRefType Ref, const DeviceCommandProcessor::CmdCalibrateDevice &Cmd)
+{
+    SendAcknowledgeOK(Ref);
+    if(m_DeviceDataContainers)
+    {
+        emit CalibrateDevice(Cmd.m_CommandType);
+    }
+    else
+    {
+        //ReturnErrorMessagetoMain(Service::CMessageString::MSG_DEVICEDATACONTAINERS_MISSING);
+        //ReturnCalibrationInitMessagetoMain(Service::CMessageString::MSG_DEVICEDATACONTAINERS_MISSING, false);
     }
 }
 

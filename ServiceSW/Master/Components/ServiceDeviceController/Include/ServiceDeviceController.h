@@ -35,9 +35,9 @@
 #if 0
 #include <ServiceDeviceController/Include/Commands/CmdGetDeviceCANID.h>
 #include <ServiceDeviceController/Include/Commands/CmdGetDeviceFirmwareInfo.h>
-#include <ServiceDeviceController/Include/Commands/CmdCalibrateDevice.h>
 #endif
 
+#include <ServiceDeviceController/Include/Commands/CmdCalibrateDevice.h>
 #include <ServiceDeviceController/Include/Commands/CmdAbortTest.h>
 #include <ServiceDeviceController/Include/Commands/CmdHeatingTest.h>
 #include <ServiceDeviceController/Include/Commands/CmdRotaryValveTest.h>
@@ -159,6 +159,15 @@ public:
     virtual void GetUnInitializedDevices(QList<quint32> &);
     /****************************************************************************/
 
+    /****************************************************************************/
+    /**
+     * \brief Command of type CmdCalibrateDevice received.
+     *
+     * \iparam       Ref                 Reference of command.
+     * \iparam       Cmd                 Command.
+     */
+    /****************************************************************************/
+    void OnCmdCalibrateDevice(Global::tRefType Ref, const DeviceCommandProcessor::CmdCalibrateDevice &Cmd);
 
 public slots:
     /**
@@ -223,6 +232,15 @@ signals:
     /****************************************************************************/
     void SDC_LSensorDetectingTest(Global::tRefType Ref, quint32 id,
                            qint32 Position);
+
+    /****************************************************************************/
+    /**
+     * \brief CalibrateDevice Signal
+     * \iparam       CmdType         Command type
+     */
+    /****************************************************************************/
+    void CalibrateDevice(Service::DeviceCalibrationCmdType CmdType);
+
 protected:
     /**
      * \brief This method is called when the base received the \ref Go signal.

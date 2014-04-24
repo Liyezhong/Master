@@ -133,6 +133,15 @@ public slots:
     void OnLSensorDetectingTest(Global::tRefType Ref, quint32 id,
                          qint32 Position);
 
+    /****************************************************************************/
+    /**
+     * \brief Calibrate Device
+     *
+     * \iparam       CmdType            Command type
+     */
+    /****************************************************************************/
+    void OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdType);
+
 signals:
 
     /****************************************************************************/

@@ -60,7 +60,7 @@
 #include "Diagnostics/Include/RotaryValve.h"
 #include "Diagnostics/Include/LaSystem.h"
 #include "Diagnostics/Include/System.h"
-
+#include "Core/Include/CalibrationHandler.h"
 #include <QTimer>
 
 namespace Core {
@@ -155,6 +155,7 @@ private:
 
     QEventLoop m_LoopCalibrationStart; //!< Loop for blocking commands.
 
+    Core::CCalibrationHanlder *mp_CalibrationHandler;
 
 private slots:
     void SetDateTime(QDateTime DateTime);
@@ -228,6 +229,14 @@ signals:
 
     /* Oven signals */
     void OvenHeatingTest(quint8, quint8);
+
+    /****************************************************************************/
+    /**
+     * \brief Signal emitted for ovenlid init calibration
+     */
+    /****************************************************************************/
+    void OvenLidInitCalibrationRequest();
+
     /****************************************************************************/
     /**
      * \brief Signal emitted for setting button status

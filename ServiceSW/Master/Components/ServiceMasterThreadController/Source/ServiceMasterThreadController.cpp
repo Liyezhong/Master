@@ -186,6 +186,11 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
         qDebug() << "CStartup: cannot connect 'OvenHeatingTest' signal";
     }
 
+    if (!connect(mp_GUIStartup, SIGNAL(OvenLidInitCalibrationRequest()),
+                 this, SLOT(sendOvenLidInitCalibrationCommand()))) {
+        qDebug() << "CStartup: cannot connect 'OvenLidInitCalibrationRequest' signal";
+    }
+
     mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
 
    /* mp_DataManager = new DataManager::CDataManager(this);
@@ -1442,6 +1447,13 @@ void ServiceMasterThreadController::sendOvenHeatingTestCommand(quint8 HeaterInde
     qDebug()<<"ServiceMasterThreadController::sendOvenHeatingTestCommand";
     SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdHeatingTest(DEVICE_INSTANCE_ID_OVEN, HeaterIndex, CmdType)),
                 m_CommandChannelDeviceThread);
+}
+
+/****************************************************************************/
+void ServiceMasterThreadController::sendOvenLidInitCalibrationCommand()
+{
+   // qDebug()<<"ServiceMasterThreadController::sendOvenLidInitCalibrationCommand";
+    //(void) SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdCalibrateDevice(Service::DEVICE_OVENLID_INIT)), m_CommandChannelDeviceThread);
 }
 
 } // end namespace Threads
