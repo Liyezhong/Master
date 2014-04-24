@@ -2139,6 +2139,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
        // if(StepID == "IDLE")
 	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
+    LogDebug(strctHWMonitor.toLogString());
 
     // Run Heating Strategy
     DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
