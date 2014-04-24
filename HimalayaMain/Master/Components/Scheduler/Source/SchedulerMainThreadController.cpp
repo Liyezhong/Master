@@ -2299,6 +2299,7 @@ void SchedulerMainThreadController::HeatLevelSensor()
     SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
     if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1 == stepState)
     {
+#if 0
         CmdALStartTemperatureControlWithPID* cmd  = new CmdALStartTemperatureControlWithPID(500, this);
         cmd->SetType(AL_LEVELSENSOR);
         //todo: get temperature here
@@ -2309,10 +2310,12 @@ void SchedulerMainThreadController::HeatLevelSensor()
         cmd->SetResetTime(1000);
         cmd->SetDerivativeTime(80);
         m_SchedulerCommandProcessor->pushCmd(cmd);
+#endif
         SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_LEVELSENSORTEMPCTRL, true);
     }
     else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2 == stepState)
     {
+#if 0
         CmdALStartTemperatureControlWithPID* cmd  = new CmdALStartTemperatureControlWithPID(500, this);
         cmd->SetType(AL_LEVELSENSOR);
         //todo: get temperature here
@@ -2323,6 +2326,7 @@ void SchedulerMainThreadController::HeatLevelSensor()
         cmd->SetResetTime(1000);
         cmd->SetDerivativeTime(0);
         m_SchedulerCommandProcessor->pushCmd(cmd);
+#endif
     }
 }
 

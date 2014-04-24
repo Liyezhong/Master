@@ -308,6 +308,10 @@
             </Function>
         </Device>
         <Device Key="Rotary Valve">
+            <Function Key="Heating" name="RVOutlet" sequence="1">
+                <Parameter Key="HeatingOverTime" Value="900"/>
+                <Parameter Key="ScenarioList" Value="260"/>
+            </Function>
             <Function Key="Heating" name="RVRod" sequence="1">
                 <Parameter Key="ControllerGain" Value="0"/>
                 <Parameter Key="DerivativeTime" Value="0"/>
@@ -322,7 +326,7 @@
             <Function Key="Heating" name="RVRod" sequence="2">
                 <Parameter Key="ControllerGain" Value="0"/>
                 <Parameter Key="DerivativeTime" Value="0"/>
-                <Parameter Key="HeatingOverTime" Value="900"/>
+                <Parameter Key="HeatingOverTime" Value="-1"/>
                 <Parameter Key="MaxTemperature" Value="130"/>
                 <Parameter Key="NominalTemperature" Value="110"/>
                 <Parameter Key="OverTimeTempOffset" Value="0"/>

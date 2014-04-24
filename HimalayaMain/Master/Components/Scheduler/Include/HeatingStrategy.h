@@ -84,8 +84,17 @@ struct OvenSensor : public HeatingSensor
 
 struct RVSensor : public HeatingSensor
 {
-    QMap<QString, bool>     CheckOTUserInputFlagList;
     QMap<QString, bool>     UserInputFlagList;
+};
+
+struct RVOutlet 
+{
+    QString				devName;
+    QString				sensorName;
+    qreal				HeatingOverTime;
+    qint64				heatingStartTime;
+    QVector<qint32>		ScenarioList;
+	bool				needCheckOT;
 };
 
 struct LASensor : public HeatingSensor
@@ -131,6 +140,7 @@ private:
     OvenSensor                          m_OvenTop;
     OvenSensor                          m_OvenBottom;
     RVSensor                            m_RVRod;
+	RVOutlet							m_RVOutlet;
     LASensor							m_LARVTube;
     LASensor							m_LAWaxTrap;
 
@@ -141,8 +151,10 @@ private:
     DeviceControl::ReturnCode_t StartRTTemperatureControl(HeatingSensor& heatingSensor, RTTempCtrlType_t RTType);
     DeviceControl::ReturnCode_t StartOvenTemperatureControl(OvenSensor& heatingSensor, OVENTempCtrlType_t OvenType);
     DeviceControl::ReturnCode_t StartRVTemperatureControl(RVSensor& heatingSensor);
+    inline void StartRVOutletHeatingOTCalculation();
     DeviceControl::ReturnCode_t StartLATemperatureControl(LASensor& heatingSensor,ALTempCtrlType_t LAType);
 	inline bool CheckSensorHeatingOverTime(const HeatingSensor& heatingSensor, qreal HWTemp);
+	inline bool CheckRVOutletHeatingOverTime(qreal HWTemp);
 private:
     /****************************************************************************/
     /*!
