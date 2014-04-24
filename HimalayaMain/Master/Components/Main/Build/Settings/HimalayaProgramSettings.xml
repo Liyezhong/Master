@@ -204,7 +204,7 @@
                 <Parameter Key="MaxTemperature" Value="132"/>
                 <Parameter Key="NominalTemperature" Value="115"/>
                 <Parameter Key="ResetTime" Value="1212"/>
-                <Parameter Key="ScenarioList" Value="251,252,271,272,281,282"/>
+                <Parameter Key="ScenarioList" Value="251,271,281"/>
                 <Parameter Key="SlopeTempChange" Value="6"/>
             </Function>
             <Function Key="Heating" name="LevelSensor" sequence="12">
@@ -216,7 +216,7 @@
                 <Parameter Key="MaxTemperature" Value="132"/>
                 <Parameter Key="NominalTemperature" Value="115"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="ScenarioList" Value="251,252,271,272,281,282"/>
+                <Parameter Key="ScenarioList" Value="251,271,281"/>
                 <Parameter Key="SlopeTempChange" Value="6"/>
             </Function>
             <Function Key="Heating" name="LevelSensor" sequence="21">
@@ -228,7 +228,7 @@
                 <Parameter Key="MaxTemperature" Value="112"/>
                 <Parameter Key="NominalTemperature" Value="95"/>
                 <Parameter Key="ResetTime" Value="1212"/>
-                <Parameter Key="ScenarioList" Value="002,200,211,212,221,222,231,232,241,242,281,282,291,292"/>
+                <Parameter Key="ScenarioList" Value="002,200,211,221,231,241,281,291"/>
                 <Parameter Key="SlopeTempChange" Value="10"/>
             </Function>
             <Function Key="Heating" name="LevelSensor" sequence="22">
@@ -240,7 +240,7 @@
                 <Parameter Key="MaxTemperature" Value="112"/>
                 <Parameter Key="NominalTemperature" Value="95"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="ScenarioList" Value="002,200,211,212,221,222,231,232,241,242,281,282,291,292"/>
+                <Parameter Key="ScenarioList" Value="002,200,211,221,231,241,281,291"/>
                 <Parameter Key="SlopeTempChange" Value="10"/>
             </Function>
             <Function Key="Heating" name="RTBottom" sequence="1">
