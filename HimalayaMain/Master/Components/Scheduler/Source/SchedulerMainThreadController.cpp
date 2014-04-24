@@ -1085,7 +1085,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         cmdName = cmd->GetName();
     }
 
-    if (SM_ERR_WAIT == currentState)
+    if (SM_ERR_WAIT == currentState && CTRL_CMD_NONE != ctrlCmd)
     {
         //LogDebug("Scheduler waitting event handler give instruction!");
         if(CTRL_CMD_RC_RESTART == ctrlCmd)
