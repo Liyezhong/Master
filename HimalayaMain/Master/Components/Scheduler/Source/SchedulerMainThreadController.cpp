@@ -2218,7 +2218,8 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         {
             // retort is open, turn on the fan
             m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
-            if((m_SchedulerMachine->GetCurrentState() & 0xF)== SM_BUSY)
+            SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
+            if(((currentState & 0xF) == SM_BUSY)&&(currentState != PSSM_PAUSE)&&(currentState != PSSM_PAUSE_DRAIN))
             {
                 Global::EventObject::Instance().RaiseEvent(0, 500010461, Scenario, true);
                 m_SchedulerMachine->SendErrorSignal();
