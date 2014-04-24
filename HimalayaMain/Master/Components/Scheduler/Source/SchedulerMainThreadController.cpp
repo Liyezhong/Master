@@ -2267,14 +2267,13 @@ bool SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::Schedule
 {
     bool ret = false;
     m_MutexDeviceControlCmdQueue.lock();
-    QQueue<Scheduler::SchedulerCommandShPtr_t>::iterator iter = m_DeviceControlCmdQueue.begin();
-    for (; iter!= m_DeviceControlCmdQueue.end(); ++iter)
+    for (int i=0; i<m_DeviceControlCmdQueue.size(); ++i)
     {
-        if (CmdName == (*iter)->GetName())
+        if (CmdName == m_DeviceControlCmdQueue.at(i)->GetName())
         {
-            PtrCmd = (*iter);
-            m_DeviceControlCmdQueue.removeOne(*iter);
-            ret = true;
+            PtrCmd = m_DeviceControlCmdQueue.at(i);
+            m_DeviceControlCmdQueue.removeAt(i);
+            return true;
         }
     }
     m_MutexDeviceControlCmdQueue.unlock();

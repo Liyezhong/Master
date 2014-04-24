@@ -312,8 +312,9 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
     {
 		// Get the userInput temperature
 		qreal userInputTemp = 0.0;
-		if (false == mp_SchedulerController->GetCurProgramID().isEmpty()) // make sure program ID is NOT empty
-        {   
+        // make sure program ID is NOT empty and current Program Step Index is NOT -1
+        if (false == mp_SchedulerController->GetCurProgramID().isEmpty() && -1 != mp_SchedulerController->GetCurProgramStepIndex())
+        {
             userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
                 ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
         }   
