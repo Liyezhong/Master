@@ -39,7 +39,7 @@ const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,5}$"; //!< Reg expression fo
  */
 /****************************************************************************/
 CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoard *p_KeyBoard, MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector) :
-    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyReagentRMSDlg), mp_MainWindow(p_MainWindow), mp_DataConnector(p_DataConnector),
+    MainMenu::CDialogFrame(p_Parent, p_MainWindow), mp_Ui(new Ui::CModifyReagentRMSDlg), mp_DataConnector(p_DataConnector),
     m_strCassettesUntilChange(tr("Cassettes until change")),
     m_strCyclesUntilChange(tr("Cycles until change")),
     m_strDaysUntilChange(tr("Days until change")),

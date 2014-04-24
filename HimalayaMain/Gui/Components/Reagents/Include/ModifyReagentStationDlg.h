@@ -46,7 +46,6 @@ class CModifyReagentStationDlg : public MainMenu::CDialogFrame
 
 private:
     Ui::CModifyReagentStationDlg *mp_Ui;                   //!< User interface
-    MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     MainMenu::CMessageDlg m_MessageDlg;             //!< Message dialog object
     DataManager::CDashboardStation m_EditedStation; //!< Definition/Declaration of variable m_EditedStation
     //Flags

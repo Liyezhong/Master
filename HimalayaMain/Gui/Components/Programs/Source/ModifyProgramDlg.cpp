@@ -56,7 +56,6 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
                                      Core::CDataConnector *p_DataConnector) :
                                      MainMenu::CDialogFrame(p_Parent),
                                      mp_Ui(new Ui::CModifyProgramDlg),
-                                     mp_MainWindow(p_MainWindow),
                                      mp_DataConnector(p_DataConnector),
                                      m_ProgNameBtnClicked(false),
                                      m_ProgShortNameBtnClicked(false),
@@ -76,7 +75,7 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
 
 {
     mp_Ui->setupUi(GetContentFrame());
-    mp_ModifyProgramIconDlg = new Programs::CModifyProgramIconDlg(this, mp_MainWindow);
+    mp_ModifyProgramIconDlg = new Programs::CModifyProgramIconDlg(this, p_MainWindow);
     mp_KeyBoardWidget = p_KeyBoard;
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->horizontalHeader()->show();
@@ -93,7 +92,7 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
     CONNECTSIGNALSLOT(mp_TableWidget,clicked(QModelIndex), this, OnSelectionChanged(QModelIndex));
     CONNECTSIGNALSLOT(mp_Ui->btnPrgName, clicked(), this, OnEditName());
     CONNECTSIGNALSLOT(mp_Ui->btnPrgIcon, clicked(), this, OnIconClicked());
-    CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(p_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
     CONNECTSIGNALSIGNAL(this, ReagentsUpdated(), mp_ModifyProgStepDlg, ReagentsUpdated());
     CONNECTSIGNALSLOT(this, UpdateStepModel(), &m_StepModel, UpdateStepModel());
 

@@ -35,7 +35,7 @@ namespace Programs {
  */
 /****************************************************************************/
 CModifyProgramIconDlg::CModifyProgramIconDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow) :
-    MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CModifyProgramIconDlg),
+    MainMenu::CDialogFrame(p_Parent, p_MainWindow), mp_Ui(new Ui::CModifyProgramIconDlg),
     m_strConfirmMsg(tr("Information Message")),
     m_strOK(tr("Ok")), m_strCancel(tr("Cancel")), m_strClose(tr("Close"))
 {

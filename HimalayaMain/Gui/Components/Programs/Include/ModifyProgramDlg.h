@@ -59,7 +59,6 @@ private:
     Ui::CModifyProgramDlg *mp_Ui;                   //!< User interface
     CModifyProgramStepDlg *mp_ModifyProgStepDlg;    //!< Program step edit dialog
     MainMenu::CBaseTable *mp_TableWidget;           //!< Program step table
-    MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     Core::CDataConnector *mp_DataConnector;         //!< Global data container
     DataManager::CProgram m_Program;                //!< Temporary/local Program data used for New Program
     DataManager::CProgramStep m_SelectedStep;       //!< Currently selected program step

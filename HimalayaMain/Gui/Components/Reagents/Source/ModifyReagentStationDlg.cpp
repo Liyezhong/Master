@@ -35,7 +35,7 @@ namespace Reagents {
  */
 /****************************************************************************/
 CModifyReagentStationDlg::CModifyReagentStationDlg(QWidget *p_Parent, MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector) :
-    MainMenu::CDialogFrame(p_Parent, p_MainWindow), mp_Ui(new Ui::CModifyReagentStationDlg), mp_MainWindow(p_MainWindow), mp_DataConnector(p_DataConnector)
+    MainMenu::CDialogFrame(p_Parent, p_MainWindow), mp_Ui(new Ui::CModifyReagentStationDlg), mp_DataConnector(p_DataConnector)
 {
     mp_Ui->setupUi(GetContentFrame());
     m_ProcessRunning = false ;
@@ -54,7 +54,7 @@ CModifyReagentStationDlg::CModifyReagentStationDlg(QWidget *p_Parent, MainMenu::
     CONNECTSIGNALSLOT(mp_TableWidget, pressed(QModelIndex), this, SelectionChanged(QModelIndex));
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
     CONNECTSIGNALSLOT(mp_Ui->btnOk, clicked(), this, OnOk());
-    CONNECTSIGNALSLOT(mp_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
+    CONNECTSIGNALSLOT(p_MainWindow, ProcessStateChanged(), this, OnProcessStateChanged());
     // Init Message dialog
     m_MessageDlg.SetTitle(m_strInforMsg);
     m_MessageDlg.SetIcon(QMessageBox::Information);

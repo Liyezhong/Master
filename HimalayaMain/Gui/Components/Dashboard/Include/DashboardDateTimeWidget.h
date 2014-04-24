@@ -85,7 +85,6 @@ private:
     MainMenu::CScrollWheel *mp_YearWheel;   //!< Year scroll wheel
     MainMenu::CScrollWheel *mp_HourWheel;   //!< Hour scroll wheel
     MainMenu::CScrollWheel *mp_MinWheel;    //!< Minute scroll wheel
-    MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     MainMenu::CMessageDlg   *mp_MessageDlg;                      //!< Message Dialogue
 
     DataManager::CUserSettings *mp_UserSetting;       ///<  Definition/Declaration of variable mp_UserSetting

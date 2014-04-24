@@ -60,7 +60,7 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
                                             mp_Ui(new Ui::CModifyProgramStepDlg), mp_TableWidget(NULL),
                                             mp_ScrollWheelHour(NULL), mp_ScrollWheelMin(NULL),
                                             mp_ScrollWheelTemp(NULL), mp_MessageBox(new MainMenu::CMessageDlg(this)),
-                                            mp_MainWindow(p_MainWindow), mp_ProgramStep(NULL),
+                                            mp_ProgramStep(NULL),
                                             mp_ReagentList(NULL), m_RowSelected(-1),
                                             m_RowNotSelected(true), m_NewProgramStep(false),
                                             m_ProcessRunning(false),

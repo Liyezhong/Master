@@ -52,7 +52,6 @@ class CModifyReagentRMSDlg : public MainMenu::CDialogFrame
 private:
     Ui::CModifyReagentRMSDlg *mp_Ui;                   //!< User interface
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Reference to Keyboard widget
-    MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
     Core::CDataConnector *mp_DataConnector;         //!< DataConnector local object
     DataManager::CReagent m_Reagent;                //!< Local reagent object    
     bool m_ReagentNameBtnClicked;                   //!< Reagent Name btn clicked status

@@ -90,7 +90,6 @@ private:
     MainMenu::CMainWindow::UserRole_t m_CurrentUserRole;    //!< Current user role
 
     QButtonGroup m_ButtonGroup; //!< Groups radio buttons for sound selection
-    MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     DataManager::CHimalayaUserSettings *mp_UserSettings;    //!< Data object
     DataManager::CHimalayaUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
     //Flags

@@ -37,7 +37,6 @@ namespace Settings {
 CAlarmSettingsDlg::CAlarmSettingsDlg(AlarmDialogType DialogType, QWidget *p_Parent) :
     MainMenu::CDialogFrame(p_Parent), m_Type(false), mp_Ui(new Ui::CAlarmSettingsDlg),
     m_CurrentUserRole(MainMenu::CMainWindow::Service),
-    mp_MainWindow(NULL),
     mp_UserSettings(NULL),
     m_ProcessRunning(false),
     m_AlarmScreen(DialogType)

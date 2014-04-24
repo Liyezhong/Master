@@ -65,7 +65,6 @@ private:
     MainMenu::CScrollWheel *mp_ScrollWheelMin;          //!< Time of the program step (minutes)
     MainMenu::CScrollWheel *mp_ScrollWheelTemp;         //!< Temperature of the program step
     MainMenu::CMessageDlg *mp_MessageBox;               //!< Message dialog object
-    MainMenu::CMainWindow *mp_MainWindow;               //!< Reference to main window.
     DataManager::CProgramStep *mp_ProgramStep;          //!< The data of the dialog
     DataManager::CProgramStep m_ProgramStep;            //!< Local Program Step object.
     DataManager::CDataReagentList *mp_ReagentList;      //!< Global reagent list
