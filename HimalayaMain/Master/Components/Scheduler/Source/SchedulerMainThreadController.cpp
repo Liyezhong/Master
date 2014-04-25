@@ -2147,7 +2147,9 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
     if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
     {
-        //Error Handling
+        LogDebug(QString("Heating Strategy got an error at event %1 and scenario %2").arg(retCode,Scenario));
+        Global::EventObject::Instance().RaiseEvent(0, retCode, Scenario, true);
+        m_SchedulerMachine->SendErrorSignal();
     }
     if(strctHWMonitor.PressureAL == UNDEFINED_VALUE)
 	{

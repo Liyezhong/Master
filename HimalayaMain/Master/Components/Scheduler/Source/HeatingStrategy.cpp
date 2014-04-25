@@ -83,6 +83,8 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     {
         return DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE;
     }
+
+    //For LA Wax Trap
     if (false == this->CheckSensorCurrentTemperature(m_LAWaxTrap, strctHWMonitor.TempALTube2))
     {
         return DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE;
@@ -160,7 +162,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     {
         if (std::abs(strctHWMonitor.TempOvenBottom1 - strctHWMonitor.TempOvenBottom2) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
         {
-            //return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
+            return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
         }
     }
 
@@ -238,7 +240,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
             // Check for High or Low speed
             if (m_RTLevelSensor.ExchangePIDTempList[iter->Id] >= strctHWMonitor.TempALLevelSensor)
             {
-                if ("High" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
+                if ("Low" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
                 {
                     break;
                 }
@@ -251,11 +253,11 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
             {
                 if ("Low" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
                 {
-                    break;
+                    continue;
                 }
                 else
                 {
-                    continue;
+                    break;
                 }
             }
 
