@@ -24,6 +24,8 @@
 #include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/MenuGroup.h"
 #include "Calibration/Include/PressureSensor.h"
+#include "Calibration/Include/Touchscreen.h"
+
 
 namespace Core {
 
@@ -39,7 +41,7 @@ public:
     CCalibrationHanlder(Core::CServiceGUIConnector *p_ServiceGUIConnector, MainMenu::CMainWindow *p_MainWindow);
     ~CCalibrationHanlder();
 
-    void LoadCalibrationGUIComponenets(bool TouchScreenCalibrationDone);
+    void LoadCalibrationGUIComponenets();
 
 private:
     Core::CServiceGUIConnector              *mp_ServiceConnector;           //!< Service GUI connector object
@@ -48,7 +50,9 @@ private:
 
     // Calibration
     MainMenu::CMenuGroup                    *mp_CalibrationGroup;           //!< Menu group containing calibration dialogs
-    Calibration::CPressureSensor            *mp_PressureSensor;                    //!< Calibration for the oven lid.
+    Calibration::CPressureSensor            *mp_PressureSensor;             //!< Calibration for the pressure sensor.
+    Calibration::CTouchscreen               *mp_Touchscreen;                //!< Starter for the touchscreen calibration
+
 
     bool PerformCalibration(QString Title, QString GBox, QString Instr);
 

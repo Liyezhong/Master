@@ -45,8 +45,7 @@ namespace DeviceControl {
 ServiceDeviceController::ServiceDeviceController(Global::gSourceType TheHeartBeatSource)
     : DeviceCommandProcessor::DeviceCommandProcessorThreadController(TheHeartBeatSource, "HimalayaDeviceCommand")
      , m_ProcessSettings(false)
-     , m_Adjustment(false)
-     , m_DeviceDataContainers(false){
+{
     //qRegisterMetaType<DeviceControl::DevInstanceID_t>("DeviceControl::DevInstanceID_t");
     qRegisterMetaType<Service::DeviceCalibrationCmdType>("Service::DeviceCalibrationCmdType");
 }
@@ -154,6 +153,10 @@ void ServiceDeviceController::ConnectSignalsnSlots()
     if (!connect(mp_DeviceProcessor, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool)),
                  this, SLOT(ReturnCalibrationInitMessagetoMain(QString,bool)))) {
         qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ReturnCalibrationInitMessagetoMain' signal";
+    }
+    if (!connect(this, SIGNAL(CalibrateDevice(Service::DeviceCalibrationCmdType)),
+                 mp_DeviceProcessor, SLOT(OnCalibrateDevice(Service::DeviceCalibrationCmdType)))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'CalibrateDevice' signal";
     }
 }
 
@@ -402,15 +405,15 @@ void ServiceDeviceController::OnSDC_LSensorDetectingTest(Global::tRefType Ref, c
 void ServiceDeviceController::OnCmdCalibrateDevice(Global::tRefType Ref, const DeviceCommandProcessor::CmdCalibrateDevice &Cmd)
 {
     SendAcknowledgeOK(Ref);
-    if(m_DeviceDataContainers)
+    //if(m_DeviceDataContainers)
     {
         emit CalibrateDevice(Cmd.m_CommandType);
     }
-    else
+    /*else
     {
         ReturnErrorMessagetoMain(Service::CMessageString::MSG_DEVICEDATACONTAINERS_MISSING);
         ReturnCalibrationInitMessagetoMain(Service::CMessageString::MSG_DEVICEDATACONTAINERS_MISSING, false);
-    }
+    }*/
 }
 
 } //End Of namespace DeviceControl

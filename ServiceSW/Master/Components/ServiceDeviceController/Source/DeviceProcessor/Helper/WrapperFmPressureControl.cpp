@@ -25,6 +25,8 @@
 #include <QTimer>
 #include "Global/Include/SystemPaths.h"
 #include <QtDebug>
+#include <unistd.h>
+
 const qint32 UNDEFINED = -1; //!< undefined value for pressure and control status
 const qint32 TOLERANCE = 10; //!< tolerance value for calculating inside and outside range
 
@@ -42,10 +44,10 @@ WrapperFmPressureControl::WrapperFmPressureControl(QString Name, CPressureContro
     WrapperBase(Name, pParent), m_pPressureControl(pPressureControl)
 {
     Reset();
-    connect(m_pPressureControl, SIGNAL(ReportActPressure(quint32, ReturnCode_t, quint8, qreal)),
-            this, SLOT(OnGetPressure(quint32, ReturnCode_t, quint8, qreal)));
-    connect(m_pPressureControl, SIGNAL(ReportRefPressure(quint32, ReturnCode_t, qreal)),
-            this, SLOT(OnSetPressure(quint32, ReturnCode_t, qreal)));
+    connect(m_pPressureControl, SIGNAL(ReportActPressure(quint32, ReturnCode_t, quint8, float)),
+            this, SLOT(OnGetPressure(quint32, ReturnCode_t, quint8, float)));
+    connect(m_pPressureControl, SIGNAL(ReportRefPressure(quint32, ReturnCode_t, float)),
+            this, SLOT(OnSetPressure(quint32, ReturnCode_t, float)));
     connect(m_pPressureControl, SIGNAL(ReportActStatus(quint32, ReturnCode_t, PressureCtrlStatus_t, PressureCtrlMainsVoltage_t)),
             this, SLOT(OnPressureControlStatus(quint32, ReturnCode_t, PressureCtrlStatus_t, PressureCtrlMainsVoltage_t)));
     connect(m_pPressureControl, SIGNAL(ReportActOperatingMode(quint32, ReturnCode_t, PressureCtrlOperatingMode_t)),
@@ -58,11 +60,13 @@ WrapperFmPressureControl::WrapperFmPressureControl(QString Name, CPressureContro
             this, SLOT(OnGetFanSpeed(quint32, ReturnCode_t, quint8, quint16)));
     connect(m_pPressureControl, SIGNAL(ReportHardwareStatus(quint32, ReturnCode_t, quint8, quint8, quint8, quint8, quint16)),
             this, SLOT(OnGetHardwareStatus(quint32, ReturnCode_t, quint8, quint8, quint8, quint8, quint16)));
-    connect(m_pPressureControl, SIGNAL(ReportPressureRange(quint32, ReturnCode_t, bool, qreal)),
-            this, SLOT(OnPressureRange(quint32, ReturnCode_t, bool, qreal)));
+    connect(m_pPressureControl, SIGNAL(ReportPressureRange(quint32, ReturnCode_t, bool, float)),
+            this, SIGNAL(OnPressureRange(quint32, ReturnCode_t, bool, float)));
 
     connect(m_pPressureControl, SIGNAL(ReportRefValveState(quint32,ReturnCode_t,quint8,quint8)),
             this, SLOT(OnSetValve(quint32,ReturnCode_t,quint8,quint8)));
+    connect(m_pPressureControl, SIGNAL(ReportRefFanState(quint32,ReturnCode_t,quint8)),
+            this, SLOT(OnSetFan(quint32,ReturnCode_t,quint8)));
     connect(m_pPressureControl, SIGNAL(ReportError(quint32, quint16, quint16, quint16, QDateTime)),
             this, SLOT(OnError(quint32,quint16,quint16,quint16,QDateTime)));
 
@@ -95,7 +99,7 @@ WrapperFmPressureControl::WrapperFmPressureControl(QString Name, CPressureContro
  *
  */
 /****************************************************************************/
-bool WrapperFmPressureControl::StartPressureControl(quint8 flag, qreal NominalPressure)
+bool WrapperFmPressureControl::StartPressureControl(quint8 flag, float NominalPressure)
 {
     return SetPressure(flag, NominalPressure);
 }
@@ -111,7 +115,7 @@ bool WrapperFmPressureControl::StartPressureControl(quint8 flag, qreal NominalPr
  *
  */
 /****************************************************************************/
-void WrapperFmPressureControl::OnSetPressure(quint32 /*InstanceID*/, ReturnCode_t ReturnCode, qreal Pressure)
+void WrapperFmPressureControl::OnSetPressure(quint32 /*InstanceID*/, ReturnCode_t ReturnCode, float Pressure)
 {
     qint32 ret = 1;
     //m_CurrentPressure = Pressure;
@@ -159,7 +163,21 @@ void WrapperFmPressureControl::OnSetValve(quint32 /*InstanceID*/, ReturnCode_t R
     }
 }
 
-
+void WrapperFmPressureControl::OnSetFan(quint32 /*InstanceID*/, ReturnCode_t ReturnCode, quint8 FanState)
+{
+    qint32 ret = 1;
+    if (!HandleErrorCode(ReturnCode)) {
+        ret = UNDEFINED;
+    }
+    if (m_LoopSetFan.isRunning())
+    {
+        m_LoopSetFan.exit(ret);
+    }
+    else
+    {
+        Log(tr("NOTICE: Unexpected action acknowledgement."));
+    }
+}
 /****************************************************************************/
 /*!
  *  \brief Script-API:Get actual pressure
@@ -175,10 +193,10 @@ void WrapperFmPressureControl::OnSetValve(quint32 /*InstanceID*/, ReturnCode_t R
  *
  */
 /****************************************************************************/
-qreal WrapperFmPressureControl::GetPressure(quint8 Index)
+float WrapperFmPressureControl::GetPressure(quint8 Index)
 {
 
-    qreal RetValue;
+    float RetValue;
     static qint64 LastTime = 0;
     qint64 Now = QDateTime::currentMSecsSinceEpoch();
 
@@ -220,7 +238,7 @@ qreal WrapperFmPressureControl::GetPressure(quint8 Index)
  *
  */
 /****************************************************************************/
-bool WrapperFmPressureControl::SetPressure(quint8 flag, qreal NominalPressure)
+bool WrapperFmPressureControl::SetPressure(quint8 flag, float NominalPressure)
 {
     //m_TargetPressure = NominalPressure;
     m_TargetPressure = NominalPressure + m_PressureDrift;
@@ -229,6 +247,16 @@ bool WrapperFmPressureControl::SetPressure(quint8 flag, qreal NominalPressure)
         return false;
     }
     qint32 ret = m_LoopSetPressure.exec();
+    return (ret == 1);
+}
+
+bool WrapperFmPressureControl::SetFan(quint8 State)
+{
+    bool ok = HandleErrorCode(m_pPressureControl->SetFan(State));
+    if (!ok) {
+        return false;
+    }
+    qint32 ret = m_LoopSetFan.exec();
     return (ret == 1);
 }
 
@@ -269,7 +297,7 @@ bool WrapperFmPressureControl::SetCalibration(bool Enable)
  *
  */
 /****************************************************************************/
-bool WrapperFmPressureControl::SetTargetPressure(quint8 flag, qint8 pressure)
+bool WrapperFmPressureControl::SetTargetPressure(quint8 flag, float pressure)
 {
     if(pressure > 0)
     {
@@ -282,6 +310,7 @@ bool WrapperFmPressureControl::SetTargetPressure(quint8 flag, qint8 pressure)
         SetValve(0, 0);
         //open valve 2
         SetValve(1, 1);
+        (void)usleep(200*1000);//should sleep for 0.2 sec
         SetPressure(flag, pressure);
     }
     else if(pressure < 0)
@@ -295,6 +324,7 @@ bool WrapperFmPressureControl::SetTargetPressure(quint8 flag, qint8 pressure)
         SetValve(0, 1);
         //close valve 2
         SetValve(1, 0);
+        (void)usleep(200*1000);//should sleep for 0.2 sec
         SetPressure(flag, pressure);
     }
     return true;
@@ -331,7 +361,7 @@ qint32 WrapperFmPressureControl::Draining(quint32 DelayTime, quint32 TubePositio
     qint32 RetValue = DRAINGING_RET_OK;
     QTimer timer;
     QDateTime beforeDraining = QDateTime::currentDateTime();
-    qreal CurrentPressure = 0;
+    float CurrentPressure = 0;
     bool PressureHasBeenSetup = false;
     qint32 counter = 0;
     qint32 TimeSlotPassed = 0;
@@ -347,6 +377,7 @@ qint32 WrapperFmPressureControl::Draining(quint32 DelayTime, quint32 TubePositio
     }
 
     SetTargetPressure(17, m_WorkingPressurePositive);
+    SetFan(1);
     Log(tr("Set target pressure finished."));
     timer.setSingleShot(false);
     timer.start(DRAINGING_POLLING_TIME);
@@ -427,6 +458,7 @@ SORTIE:
     }
     //stop compressor
     StopCompressor();
+    SetFan(0);
     //close both valve
     SetValve(0,0);
     SetValve(1,0);
@@ -564,7 +596,7 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
     QTimer timer;
     quint32 counter = 0;
     qint64 StopTimeMs = 0;
-    QList<qreal> PressureBuf;
+    QList<float> PressureBuf;
     int levelSensorState = 0xFF;
     bool stop = false;
     bool WarnShowed = false;
@@ -581,6 +613,7 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
     }
     Log(tr("Start Sucking now."));
     SetTargetPressure(25, m_WorkingPressureNegative);
+    SetFan(1);
 
     //set timeout to 2 minutes
     timer.setSingleShot(false);
@@ -653,7 +686,7 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
                 goto SORTIE;
             }
             //check pressure here
-            qreal CurrentPressure = GetPressure(0);
+            float CurrentPressure = GetPressure(0);
             if(CurrentPressure != (-1))
             {
                 PressureBuf.append(CurrentPressure);
@@ -662,9 +695,9 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
             {
 #if 1
                 //with 4 wire pump
-                qreal Sum = 0;
-                qreal DeltaSum = 0;
-                qreal lastValue = PressureBuf.at(0);
+                float Sum = 0;
+                float DeltaSum = 0;
+                float lastValue = PressureBuf.at(0);
                 for(qint32 i = 0; i < PressureBuf.length(); i++)
                 {
                      Sum += PressureBuf.at(i);
@@ -676,6 +709,10 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
                 {
                     Log(tr("Overflow occured! Exit now"));
                     RetValue = SUCKING_RET_OVERFLOW;
+                    for(qint32 i = 0; i < PressureBuf.length(); i++)
+                    {
+                         Log(tr("Over Flow Pressure %1 is: %2").arg(i).arg(PressureBuf.at(i)));
+                    }
                     goto SORTIE;
                 }
                 else if(((Sum/ PressureBuf.length()) < SUCKING_INSUFFICIENT_PRESSURE)&&(DeltaSum > SUCKING_INSUFFICIENT_4SAMPLE_DELTASUM))
@@ -683,6 +720,10 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
                     if((TubePosition > 13) && (TubePosition <=16))
                     {
                         Log(tr("Insufficient reagent in the station! Exit now"));
+                        for(qint32 i = 0; i < PressureBuf.length(); i++)
+                        {
+                             Log(tr("Insufficient Pressure %1 is: %2").arg(i).arg(PressureBuf.at(i)));
+                        }
                         RetValue = SUCKING_RET_INSUFFICIENT;
                         goto SORTIE;
                     }
@@ -703,12 +744,12 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
 
                     if(i < SUCKING_OVERFLOW_WINDOW_SIZE)
                     {   continue;   }
-                    qreal sum = 0;
+                    float sum = 0;
                     for(qint32 j = (i - SUCKING_OVERFLOW_WINDOW_SIZE); j < i ; j++)
                     {
                         sum += qAbs(PressureBuf.at(j));
                     }
-                    qreal average = sum/SUCKING_OVERFLOW_WINDOW_SIZE;
+                    float average = sum/SUCKING_OVERFLOW_WINDOW_SIZE;
                     if(( average + SUCKING_OVERFLOW_TOLERANCE) <= qAbs(PressureBuf.at(i)))
                     {
                          ExceptPointNum++;
@@ -730,12 +771,12 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
                 {
                    if(i < SUCKING_OVERFLOW_WINDOW_SIZE)
                    {   continue;   }
-                   qreal sum = 0;
+                   float sum = 0;
                    for(qint32 j = (i - SUCKING_OVERFLOW_WINDOW_SIZE); j < i ; j++)
                    {
                        sum += qAbs(PressureBuf.at(j));
                    }
-                   qreal average = sum/SUCKING_OVERFLOW_WINDOW_SIZE;
+                   float average = sum/SUCKING_OVERFLOW_WINDOW_SIZE;
                    if((( average + SUCKING_OVERFLOW_TOLERANCE) <= qAbs(PressureBuf.at(i)))&& average > SUCKING_OVERFLOW_THRESHOLD)
                    {
                         ExceptPointNum++;
@@ -765,6 +806,7 @@ SORTIE:
     }
     //ReleasePressure();
     StopCompressor();
+    SetFan(0);
     return RetValue;
 }
 /****************************************************************************/
@@ -806,7 +848,7 @@ bool WrapperFmPressureControl::Pressure()
      QTimer timer;
      bool stop = false;
      quint32 TimeSlotPassed = 0;
-     qreal CurrentPressure;
+     float CurrentPressure;
 
      connect(&timer, SIGNAL(timeout()), this, SLOT(PressureTimerCB()));
 
@@ -820,6 +862,7 @@ bool WrapperFmPressureControl::Pressure()
     //start compressor
     Log(tr("Start to setup pressure now."));
     SetTargetPressure(1, m_WorkingPressurePositive);
+    SetFan(1);
     IsPIDDataSteady(0,  0,  0,  0, true);
     timer.start(PRESSURE_POLLING_TIME);
 
@@ -829,6 +872,7 @@ bool WrapperFmPressureControl::Pressure()
         {
              Log(tr("Current procedure has been interrupted, exit now."));
              timer.stop();
+             SetFan(0);
              return true;
         }
         TimeSlotPassed++;
@@ -851,6 +895,7 @@ bool WrapperFmPressureControl::Pressure()
                 //close both valve
                 SetValve(0,0);
                 SetValve(1,0);
+                SetFan(0);
                 return true;
             }
         }
@@ -861,6 +906,7 @@ bool WrapperFmPressureControl::Pressure()
     {
          Log(tr("Current procedure has been interrupted, exit now."));
          timer.stop();
+         SetFan(0);
          return true;
     }
     timer.stop();
@@ -869,6 +915,7 @@ bool WrapperFmPressureControl::Pressure()
     //SetPressure(5, m_WorkingPressurePositive);//should be 1
 
     Log(tr("Finished, exit!"));
+    SetFan(0);
     return true;
 }
 
@@ -904,9 +951,9 @@ void WrapperFmPressureControl::PressureTimerCB(void)
  *
  */
 /****************************************************************************/
-bool WrapperFmPressureControl::IsPIDDataSteady(qreal TargetValue, qreal CurrentValue, qreal Tolerance, qint32 Num, bool Init)
+bool WrapperFmPressureControl::IsPIDDataSteady(float TargetValue, float CurrentValue, float Tolerance, qint32 Num, bool Init)
 {
-    static QList<qreal> valueList;
+    static QList<float> valueList;
 
     bool ret = false;
     if(Init)
@@ -918,7 +965,7 @@ bool WrapperFmPressureControl::IsPIDDataSteady(qreal TargetValue, qreal CurrentV
     }
     else
     {
-        qreal diff = (CurrentValue > TargetValue) ? (CurrentValue - TargetValue) : (TargetValue - CurrentValue );
+        float diff = (CurrentValue > TargetValue) ? (CurrentValue - TargetValue) : (TargetValue - CurrentValue );
         valueList.append(diff);
         if(valueList.size() >= Num)
         {
@@ -959,7 +1006,7 @@ bool WrapperFmPressureControl::Vaccum()
      QTimer timer;
      quint32 TimeSlotPassed = 0;
      bool stop = false;
-     qreal CurrentPressure;
+     float CurrentPressure;
      connect(&timer, SIGNAL(timeout()), this, SLOT(VaccumTimerCB()));
 
      //release pressure
@@ -971,6 +1018,7 @@ bool WrapperFmPressureControl::Vaccum()
     //start compressor
     Log(tr("Start to setup vaccum now."));
     SetTargetPressure(9, m_WorkingPressureNegative);
+    SetFan(1);
     IsPIDDataSteady(0,  0,  0,  0, true);
     timer.start(VACCUM_POLLING_TIME);
     while(!stop)
@@ -979,6 +1027,7 @@ bool WrapperFmPressureControl::Vaccum()
         {
              Log(tr("Current procedure has been interrupted, exit now."));
              timer.stop();
+             SetFan(0);
              return true;
         }
         TimeSlotPassed++;
@@ -1001,6 +1050,7 @@ bool WrapperFmPressureControl::Vaccum()
                 //close both valve
                 SetValve(0,0);
                 SetValve(1,0);
+                SetFan(0);
                 return true;
             }
         }
@@ -1012,6 +1062,7 @@ bool WrapperFmPressureControl::Vaccum()
     {
          Log(tr("Current procedure has been interrupted, exit now."));
          timer.stop();
+         SetFan(0);
          return true;
     }
     timer.stop();
@@ -1019,6 +1070,7 @@ bool WrapperFmPressureControl::Vaccum()
     //StopCompressor();
     //SetPressure(13, m_WorkingPressureNegative);//should be 1
     Log(tr("Finished, exit!"));
+    SetFan(0);
     return true;
 }
 
@@ -1087,38 +1139,41 @@ bool WrapperFmPressureControl::ReleasePressure(void)
         m_LoopAgitationTimer.exit(RELEASE_PRESSURE_PROCEDURE_INTERRUPT);
     }
     connect(&timer, SIGNAL(timeout()), this, SLOT(ReleasePressureTimerCB()));
-   //close both valve
+    //close both valve
     StopCompressor();
+    SetFan(0);
     Log(tr("Close Both Valves"));
-   SetValve(0,0);
-   SetValve(1,0);
-   qreal CurrentPressure = GetPressure(0);
+    (void)usleep(100*1000);//should sleep for 0.1 sec
+    SetValve(0,0);
+    SetValve(1,0);
+    float CurrentPressure = GetPressure(0);
 
-   timer.setSingleShot(false);
-   timer.start(500);
-   Log(tr("Wait for current pressure get to ZERO"));
-   while((CurrentPressure > 2)||(CurrentPressure < (-2)))
-   {
-       CurrentPressure = GetPressure(0);
-       if (m_LoopReleasePressureTimer.exec() == RELEASE_PRESSURE_PROCEDURE_INTERRUPT)
-       {
-           Log(tr("Current procedure has been interrupted, exit now."));
-           timer.stop();
-           return false;
-       }
-       TimeSlotPassed++;
-       if(TimeSlotPassed*500 > RELEASE_PRESSURE_MAX_TIME)
-       {
-           Log(tr("Warning: Release Pressure exceed maximum setup time, exit!"));
-           //stop compressor
-           StopCompressor();
-           //close both valve
-           SetValve(0,0);
-           SetValve(1,0);
-           return false;
-       }
-   }
-   return true;
+    timer.setSingleShot(false);
+    timer.start(500);
+    Log(tr("Wait for current pressure get to ZERO"));
+    while((CurrentPressure > 2)||(CurrentPressure < (-2)))
+    {
+        CurrentPressure = GetPressure(0);
+        if (m_LoopReleasePressureTimer.exec() == RELEASE_PRESSURE_PROCEDURE_INTERRUPT)
+        {
+            Log(tr("Current procedure has been interrupted, exit now."));
+            timer.stop();
+            return false;
+        }
+        TimeSlotPassed++;
+        if(TimeSlotPassed*500 > RELEASE_PRESSURE_MAX_TIME)
+        {
+            Log(tr("Warning: Release Pressure exceed maximum setup time, exit!"));
+            //stop compressor
+            StopCompressor();
+            //close both valve
+            (void)usleep(100*1000);//should sleep for 0.1 sec
+            SetValve(0,0);
+            SetValve(1,0);
+            return false;
+        }
+    }
+    return true;
 }
 
 /****************************************************************************/
@@ -1164,7 +1219,7 @@ void WrapperFmPressureControl::ReleasePressureTimerCB(void)
  *
  */
 /****************************************************************************/
-void WrapperFmPressureControl::OnGetPressure(quint32 /*InstanceID*/, ReturnCode_t ReturnCode, quint8 Index, qreal Pressure)
+void WrapperFmPressureControl::OnGetPressure(quint32 /*InstanceID*/, ReturnCode_t ReturnCode, quint8 Index, float Pressure)
 {
     Q_UNUSED(Index)
 
@@ -1880,15 +1935,16 @@ void WrapperFmPressureControl::GetWorkingPressure()
     Log(tr("The Positive pressure is: %1").arg(m_WorkingPressurePositive));
     Log(tr("The Negative pressure is: %1").arg(m_WorkingPressureNegative));
 }
-qreal WrapperFmPressureControl::ReadPressureDrift(void)
+
+float WrapperFmPressureControl::ReadPressureDrift(void)
 {
     QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/PressureNullDrift.txt";
-    qreal pressureDrift = 0;
+    float pressureDrift = 0;
     FILE* pFile;
 
     if ((pFile = fopen(FileName.toStdString().c_str(), "r")) == NULL)
     {
-       // Log(tr("Cannot open PressureNullDrift.txt.\n"));
+        Log(tr("Cannot open %1.\n").arg(FileName.toStdString().c_str()));
         return 0;
     }
 
@@ -1916,6 +1972,26 @@ void WrapperFmPressureControl::WritePressureDrift(float PressureDrift)
     fprintf(pFile, "%s", msg.toStdString().c_str());
     fflush(pFile);
     fclose(pFile);
+    system("sync");
     m_PressureDrift = PressureDrift;
+}
+
+void WrapperFmPressureControl::GetValveOperationTime(quint8 ValveIndex)
+{
+    quint32 value = m_pPressureControl->GetValveOperationTime(ValveIndex);
+    Log(tr("The Valve %1's operation time is: %2").arg(ValveIndex).arg(value));
+}
+
+void WrapperFmPressureControl::ResetValveOperationTime()
+{
+    bool ok = HandleErrorCode(m_pPressureControl->ResetValveOperationTime());
+    if (!ok)
+    {
+        Log(tr("Successfully reset Valves' state to 0"));
+    }
+    else
+    {
+        Log(tr("Failed reset Valves' state to 0"));
+    }
 }
 #endif //PRE_ALFA_TEST

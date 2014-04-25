@@ -24,18 +24,12 @@
 #include <ServiceDeviceController/Include/ServiceDeviceController.h>
 #include "DeviceControl/Include/SlaveModules/DigitalOutput.h"
 #include "DeviceControl/Include/SlaveModules/BaseModule.h"
-
-
-#if 0
-#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperDeviceXyz.h>
-#endif
-
-//#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmBaseModule.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmStepperMotor.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmTempControl.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmPressureControl.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperUtils.h>
 #include "Core/Include/CMessageString.h"
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 
 namespace DeviceControl {
 
@@ -77,42 +71,32 @@ void DeviceProcessor::Connect()
 /****************************************************************************/
 void DeviceProcessor::CreateWrappers()
 {
-#if 0
-    /* Connect All Reference Run Acks for Motor Reference Run commands */
-    if (!connect(static_cast<CStepperMotor *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_LOADER, CANObjectKeyLUT::m_MotorDrawerKey)),
-                 SIGNAL(ReportReferenceMovementAckn(quint32 , ReturnCode_t , qint32 )),
-                 this, SLOT(ReferenceMovementAck(quint32 , ReturnCode_t , qint32 )))){
-        qDebug()<<"DeviceProcessor::Initialize() cannot connect 'ReportReferenceMovementAckn' signal";
-    }
-    if (!connect(static_cast<CStepperMotor *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_UNLOADER, CANObjectKeyLUT::m_MotorDrawerKey)),
-                 SIGNAL(ReportReferenceMovementAckn(quint32 , ReturnCode_t , qint32 )),
-                 this, SLOT(ReferenceMovementAck(quint32 , ReturnCode_t , qint32 )))){
-        qDebug()<<"DeviceProcessor::Initialize() cannot connect 'ReportReferenceMovementAckn' signal";
+    /* Create Calibration Handler */
+    /*if(NULL != mp_CalibrationHandler)
+    {
+        delete mp_CalibrationHandler;
+        mp_CalibrationHandler = NULL;
     }
 
-    /* Create Wrappers for Device Interaction */
-    CDeviceBase *pDevice = m_rIdevProc.GetDevice(DEVICE_INSTANCE_ID_XYZ_1);
-    mp_xyzDeviceLeft = new WrapperDeviceXyz("LeftXyz", (CDeviceXyz *)pDevice, this);
+    mp_CalibrationHandler = new CalibrationHandler(*this);
 
-    pDevice = m_rIdevProc.GetDevice(DEVICE_INSTANCE_ID_XYZ_2);
-    mp_xyzDeviceRight = new WrapperDeviceXyz("RightXyz", (CDeviceXyz *)pDevice, this);
-
-
-
-    /* Create wrapper objects for Stepper Motors needing calibration */
-    CStepperMotor *mp_Motor = static_cast<CStepperMotor *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenCoverMotorKey));
-    mp_MotorOvenLid = new WrapperFmStepperMotor("Oven Lid", mp_Motor, this);
-
-    mp_Motor = static_cast<CStepperMotor *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_LOADER, CANObjectKeyLUT::m_MotorDrawerKey));
-    mp_MotorLoader = new WrapperFmStepperMotor("Drawer Loader", mp_Motor, this);
-
-    mp_Motor = static_cast<CStepperMotor *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_UNLOADER, CANObjectKeyLUT::m_MotorDrawerKey));
-    mp_MotorUnLoader = new WrapperFmStepperMotor("Drawer UnLoader", mp_Motor, this);
-#endif
     if (!connect(mp_CalibrationHandler, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool)), this, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool))))
     {
         qDebug()<<"ERROR: can't connect ReturnCalibrationInitMessagetoMain signal ";
     }
+    if (!connect(mp_CalibrationHandler, SIGNAL(ReturnErrorMessagetoMain(QString)), this, SIGNAL(ReturnErrorMessagetoMain(QString))))
+    {
+        qDebug()<<"ERROR: can't connect ReturnErrorMessagetoMain signal ";
+    }
+    if (!connect(mp_CalibrationHandler, SIGNAL(ReturnMessagetoMain(QString)), this, SIGNAL(ReturnMessagetoMain(QString))))
+    {
+        qDebug()<<"ERROR: can't connect ReturnErrorMessagetoMain signal ";
+    }
+    if (!connect(mp_CalibrationHandler, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool)), this, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool))))
+    {
+        qDebug()<<"ERROR: can't connect ReturnCalibrationInitMessagetoMain signal ";
+    }
+   */
 
     // Temperature control
     /*CTemperatureControl *pTemperature;
@@ -159,16 +143,14 @@ void DeviceProcessor::CreateWrappers()
         mp_TempTube2 = new WrapperFmTempControl("temp_tube2", pTemperature, this);
     }
 */
-    // Pressure control
-    /*CPressureControl *pPressure;
 
-    pPressure = NULL;
+    // Pressure control
+    CPressureControl *pPressure = NULL;
     pPressure = static_cast<CPressureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALPressureCtrlKey));
     if (NULL != pPressure)
     {
         mp_PressPump = new WrapperFmPressureControl("pressurectrl", pPressure, this);
-    }*/
-
+    }
 
     // Stepper motor control
    /* CStepperMotor *pMotor;
@@ -797,13 +779,37 @@ qint32 DeviceProcessor::TestLSensorDetecting(quint32 DeviceId, qint32 Pos)
 void DeviceProcessor::OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdType)
 {
     qDebug()<<"DeviceProcessor::OnCalibrateDevice";
-    if(!IsInitialized())
+    if(!IsInitialized()){
+        Initialize();
+    }
+
+    if(!mp_PressPump)
     {
         ReturnErrorMessagetoMain(Service::CMessageString::MSG_DEVICE_NOTYET_READY);
         emit ReturnCalibrationInitMessagetoMain("", false);
         return;
     }
-    (void) mp_CalibrationHandler->OnCalibrateDevice(CmdType);
+
+    if(!mp_PressPump->ReleasePressure())
+    {
+       emit ReturnErrorMessagetoMain(Service::CMessageString::MSG_DEVICE_RELEASE_PRESSURE_FAILED);
+       return;
+    }
+
+    float CurrentPressure = mp_PressPump->GetPressure(0);
+    if (CurrentPressure < 2 && CurrentPressure > -2)
+    {
+        //Calibration to 0 (+/-0.2Kpa) and save to the config file;
+        mp_PressPump->WritePressureDrift(CurrentPressure);
+        emit ReturnMessagetoMain(Service::CMessageString::MSG_DEVICE_PRESSURE_SENSOR_CALIBRATION_SUCCESS);
+        return;
+    }
+    else
+    {
+        emit ReturnErrorMessagetoMain(Service::CMessageString::MSG_DEVICE_PRESSURE_SENSOR_CALIBRATION_FAILED);
+        return;
+    }
+
 }
 
 

@@ -52,9 +52,9 @@ class WrapperFmPressureControl : public WrapperBase
     WrapperFmPressureControl(QString Name, CPressureControl *pPressureControl, QObject *pParent);
 
  public slots:
-    bool StartPressureControl(quint8 flag, qreal NominalPressure);
+    bool StartPressureControl(quint8 flag, float NominalPressure);
     bool StopPressureControl();
-    qreal GetPressure(quint8 Index = 0);
+    float GetPressure(quint8 Index = 0);
     QString GetPressureControlState();
     QString GetMainsVoltageState();
     bool IsPressureControlOn();
@@ -67,7 +67,8 @@ class WrapperFmPressureControl : public WrapperBase
     HardwareStatus_t *GetHardwareStatus();
     void Reset();
     bool SetValve(quint8 ValveIndex, quint8 ValveState);
-    bool SetTargetPressure(quint8 flag, qint8 pressure);
+    bool SetFan(quint8 State);
+    bool SetTargetPressure(quint8 flag, float pressure);
     bool SetCalibration(bool Enable);
     qint32 Draining(quint32 DelayTime = 2000, quint32 TubePosition = 0);
     qint32 Sucking(quint32 DelayTime = 0, quint32 TubePosition = 0,  bool IsAgitation = false);
@@ -79,14 +80,16 @@ class WrapperFmPressureControl : public WrapperBase
 
     void SetWorkingPressure(qint32 WorkingPressure);
     void GetWorkingPressure(void);
+    void GetValveOperationTime(quint8 ValveIndex);
+    void ResetValveOperationTime();
 #if 1
-    bool SetPressure(quint8 flag, qreal NominalPressure);
-    qreal ReadPressureDrift(void);
+    bool SetPressure(quint8 flag, float NominalPressure);
+    float ReadPressureDrift(void);
     void WritePressureDrift(float PressureDrift);
 #endif
 private slots:
-    void OnGetPressure(quint32, ReturnCode_t ReturnCode, quint8 Index, qreal Pressure);
-    void OnSetPressure(quint32, ReturnCode_t ReturnCode, qreal Pressure);
+    void OnGetPressure(quint32, ReturnCode_t ReturnCode, quint8 Index, float Pressure);
+    void OnSetPressure(quint32, ReturnCode_t ReturnCode, float Pressure);
     void OnPressureControlStatus(quint32, ReturnCode_t ReturnCode, PressureCtrlStatus_t PressureCtrlStatus, PressureCtrlMainsVoltage_t MainsVoltage);
     void OnSetPressureCtrlOpMode(quint32, ReturnCode_t ReturnCode, PressureCtrlOperatingMode_t PressureCtrlOpMode);
     void OnResetPumpOperatingTime(quint32, ReturnCode_t ReturnCode, quint8 Index);
@@ -95,6 +98,7 @@ private slots:
     void OnGetHardwareStatus(quint32, ReturnCode_t ReturnCode, quint8 Sensors, quint8 Fans,
                              quint8 Heaters, quint8 Pids, quint16 Current);
     void OnSetValve(quint32 /*InstanceID*/, ReturnCode_t ReturnCode, quint8 ValveIndex, quint8 ValveState);
+    void OnSetFan(quint32 /*InstanceID*/, ReturnCode_t ReturnCode, quint8 FanState);
     void DrainingTimerCB(void);
     void AgitationTimerCB(void);
     void SuckingTimerCB(void);
@@ -119,12 +123,12 @@ signals:
      *  \iparam Pressure = Pressure currently measured
      */
     /****************************************************************************/
-    void OnPressureRange(quint32, ReturnCode_t ReturnCode, bool InRange, qreal Pressure);
+    void OnPressureRange(quint32, ReturnCode_t ReturnCode, bool InRange, float Pressure);
 
   private:
     bool SetOperatingMode(PressureCtrlOperatingMode_t PressureCtrlOpMode);
     bool SetPressureCtrlON();
-    bool IsPIDDataSteady(qreal TargetValue, qreal CurrentValue, qreal Tolerance, qint32 Num, bool Init);
+    bool IsPIDDataSteady(float TargetValue, float CurrentValue, float Tolerance, qint32 Num, bool Init);
     bool SetPressureControlStatus(PressureCtrlStatus_t PressureCtrlStatus);
     bool IsPressureControlOff();
     bool IsInsideRange();
@@ -143,6 +147,7 @@ signals:
     QEventLoop m_LoopGetFanSpeed;               //!< Loop for blocking commands.
     QEventLoop m_LoopGetHardwareStatus;         //!< Loop for blocking commands.
     QEventLoop m_LoopSetValve;                  //!< Loop for blocking commands.
+    QEventLoop m_LoopSetFan;                    //!< Loop for blocking commands.
 
     QEventLoop m_LoopDrainingTimer;
     QEventLoop m_LoopSuckingTimer;
@@ -153,8 +158,8 @@ signals:
     QEventLoop m_LoopReleasePressureTimer;
 
     CPressureControl *m_pPressureControl;                //!< Pointer to the Pressure Control function module
-    qreal m_TargetPressure;                              //!< Target pressure; for verification of action result.
-    qreal m_CurrentPressure;                             //!< Current pressure
+    float m_TargetPressure;                              //!< Target pressure; for verification of action result.
+    float m_CurrentPressure;                             //!< Current pressure
     PressureCtrlStatus_t m_TargetPressureCtrlStatus;     //!< Target pressure control status; for verification of action result.
     PressureCtrlStatus_t m_CurrentPressureCtrlStatus;    //!< Current pressure control status
     PressureCtrlOperatingMode_t m_TargetOperatingMode;   //!< Target operatig mode; for verification of action result.
@@ -170,7 +175,7 @@ signals:
     VaccumCfg_t m_VaccumCfgData;
     qint32 m_WorkingPressurePositive;
     qint32 m_WorkingPressureNegative;
-    qreal m_PressureDrift;
+    float m_PressureDrift;
 #endif
 };
 

@@ -25,7 +25,6 @@
 #include <Global/Include/GlobalDefines.h>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Core/Include/ServiceDefines.h"
-#include <ServiceDeviceController/Include/DeviceProcessor/CalibrationHandler.h>
 
 
 class WrapperUtils;
@@ -303,7 +302,6 @@ private:
     WrapperFmStepperMotor*      mp_MotorRV;
     // Pressure control module
     WrapperFmPressureControl*   mp_PressPump;
-    CalibrationHandler*         mp_CalibrationHandler;  //!< Calibration Handler helper class
 };
 
 } // end namespace DeviceCommandProcessor

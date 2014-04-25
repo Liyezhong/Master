@@ -321,8 +321,6 @@ private:
     DeviceProcessor *mp_DeviceProcessor; //!< DeviceProcessor Reference to make device calls.
 
     bool m_ProcessSettings;
-    bool m_Adjustment;
-    bool m_DeviceDataContainers;
 };
 
 

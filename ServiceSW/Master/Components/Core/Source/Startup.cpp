@@ -21,6 +21,7 @@
 #include "Core/Include/Startup.h"
 #include "LogViewerDialog/Include/LogContentDlg.h"
 #include "LogViewerDialog/Include/SystemLogViewerDlg.h"
+#include "Core/Include/CMessageString.h"
 #include <QTextStream>
 #include <QApplication>
 
@@ -40,6 +41,9 @@ CStartup::CStartup() : QObject(),
     mp_Clock = new QTimer();    
     mp_MainWindow = new MainMenu::CMainWindow();
     mp_MessageBox = new MainMenu::CMessageDlg(mp_MainWindow);
+
+    // Initialize Strings
+    Service::CMessageString::RetranslateUI();
 
     // ServiceConnector
     mp_ServiceConnector = new Core::CServiceGUIConnector(mp_MainWindow);
@@ -122,11 +126,6 @@ CStartup::CStartup() : QObject(),
 
     //Diagnostics1 Manufacturing
     mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
-
-    // Calibration
-    mp_CalibrationGroup = new MainMenu::CMenuGroup;
-    mp_PressureSensor = new Calibration::CPressureSensor;
-    mp_Touchscreen = new Calibration::CTouchscreen(mp_MainWindow);
 
     // Software upate
     mp_ServiceUpdateGroup = new MainMenu::CMenuGroup;
@@ -221,6 +220,8 @@ CStartup::CStartup() : QObject(),
     CONNECTSIGNALSLOT(this, SetSettingsButtonStatus(), mp_Setting, ResetButtonStatus());
     CONNECTSIGNALSLOT(this, UpdateGUIConnector(Core::CServiceGUIConnector*, MainMenu::CMainWindow*), mp_Setting, UpdateGUIConnector(Core::CServiceGUIConnector*, MainMenu::CMainWindow*));
 
+    CONNECTSIGNALSLOT(mp_MainWindow, onChangeEvent(), this, RetranslateUI());
+
     m_DateTime.setTime_t(0);
     mp_Clock->start(60000);
 }
@@ -234,9 +235,6 @@ CStartup::~CStartup()
 {
     try {
         // Calibration
-        delete mp_Touchscreen;
-        delete mp_PressureSensor;
-        delete mp_CalibrationGroup;
         delete mp_CalibrationHandler;
 
         // Service Update
@@ -342,10 +340,7 @@ void CStartup::LoadCommonComponenetsOne()
 /****************************************************************************/
 void CStartup::LoadCommonComponenetsTwo()
 {
-    // Calibration
-    mp_CalibrationGroup->AddPanel("Pressure Sensor", mp_PressureSensor);
-    mp_CalibrationGroup->AddPanel("Touchscreen", mp_Touchscreen);
-    mp_MainWindow->AddMenuGroup(mp_CalibrationGroup, "Calibration");
+    mp_CalibrationHandler->LoadCalibrationGUIComponenets();
 
     // Service update
     mp_ServiceUpdateGroup->AddPanel("Firmware Update", mp_FirmwareUpdate);
@@ -759,5 +754,20 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
         (void) mp_LogContentDlg->InitDialog(Path);
         mp_LogContentDlg->show();
     }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Translates the strings in UI to the selected language
+ */
+/****************************************************************************/
+void CStartup::RetranslateUI()
+{
+    Service::CMessageString::RetranslateUI();
+    /*if (mp_ServiceConnector->GetSoftwareMode() == PlatformService::SERVICE_MODE) {
+        ServiceGuiInit();
+    } else {
+        ManufacturingGuiInit();
+    }*/
 }
 } // end namespace Core

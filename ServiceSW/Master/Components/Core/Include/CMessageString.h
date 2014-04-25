@@ -209,6 +209,11 @@ public:
     static QString MSG_DEVICE_NOTYET_READY;                       //!< Devices not ready yet
     static QString MSG_DEVICE_SHUTDOWN;                           //!< Devices not ready yet
     static QString MSG_SERIALNUMBER_ERROR;                        //!< Set module serial number error message
+    static QString MSG_DEVICE_RELEASE_PRESSURE_FAILED;            //!< Release pressure failed.
+    static QString MSG_DEVICE_PRESSURE_SENSOR_CALIBRATION_FAILED; //!< Pressure sensor calibration failed.
+    static QString MSG_DEVICE_PRESSURE_SENSOR_CALIBRATION_SUCCESS; //!< Pressure sensor calibration successfull.
+
+
 
     static void RetranslateUI();
 };

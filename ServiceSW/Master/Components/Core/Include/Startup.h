@@ -137,11 +137,6 @@ private:
     // Diagnostics1 Manufacturing
     MainMenu::CMenuGroup                    *mp_DiagnosticsManufGroup;
 
-    // Calibration
-    MainMenu::CMenuGroup                    *mp_CalibrationGroup;           //!< Menu group containing calibration dialogs
-    Calibration::CPressureSensor            *mp_PressureSensor;             //!< Calibration page for the pressure sensor
-    Calibration::CTouchscreen               *mp_Touchscreen;                //!< Starter for the touchscreen calibration
-
     //Service Updates
     MainMenu::CMenuGroup                    *mp_ServiceUpdateGroup;         //!< Menu group containing Service Update dialogs
     ServiceUpdates::CFirmwareUpdate         *mp_FirmwareUpdate;             //!< Firmware update page
@@ -197,7 +192,7 @@ public slots:
 
     /* Oven slots */
     void OnGuiOvenEmptyHeatingTest();
-
+    void RetranslateUI();
 signals:
     void DeviceInitRequest(void);
 

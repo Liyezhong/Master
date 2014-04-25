@@ -38,6 +38,7 @@ CCalibrationHanlder::CCalibrationHanlder(CServiceGUIConnector *p_ServiceGUIConne
 {
     mp_CalibrationGroup = new MainMenu::CMenuGroup;
     mp_PressureSensor = new Calibration::CPressureSensor();
+    mp_Touchscreen = new Calibration::CTouchscreen(mp_MainWindow);
     CONNECTSIGNALSLOT(mp_PressureSensor, CalibrationPressureSensor(), this, OnPressureSensorCalibration());
 }
 
@@ -181,5 +182,22 @@ void CCalibrationHanlder::ShowCalibrationInitMessagetoMain(const QString &Messag
 void CCalibrationHanlder::EnableCalibrationGroup(bool Status)
 {
 }
+
+/****************************************************************************/
+/*!
+ *  \brief Adds GUI Calibration Components
+ *
+ */
+/****************************************************************************/
+void CCalibrationHanlder::LoadCalibrationGUIComponenets()
+{
+    mp_CalibrationGroup->AddPanel(QApplication::translate("Core::CCalibrationHanlder", "Pressure Sensor",
+                                                          0, QApplication::UnicodeUTF8), mp_PressureSensor);
+    mp_CalibrationGroup->AddPanel(QApplication::translate("Core::CCalibrationHanlder", "Touchscreen",
+                                                          0, QApplication::UnicodeUTF8), mp_Touchscreen);
+    mp_MainWindow->AddMenuGroup(mp_CalibrationGroup, QApplication::translate("Core::CCalibrationHanlder", "Calibration"
+                                                                                          , 0, QApplication::UnicodeUTF8));
+}
+
 
 } // end of namespace Core
