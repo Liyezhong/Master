@@ -191,6 +191,15 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
         qDebug() << "CStartup: cannot connect 'OvenLidInitCalibrationRequest' signal";
     }
 
+    if (!connect(mp_GUIStartup, SIGNAL(PressureSensorCalibrationRequest()),
+                 this, SLOT(sendPressureSensorCalibrationCommand()))) {
+        qDebug() << "CStartup: cannot connect 'PressureSensorCalibrationRequest' signal";
+    }
+
+    if (!connect(this, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool)),
+                 mp_GUIStartup, SLOT(ShowCalibrationInitMessagetoMain(QString,bool)))) {
+        qDebug() << "CStartup: cannot connect 'ReturnCalibrationInitMessagetoMain' signal";
+    }
     mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
 
    /* mp_DataManager = new DataManager::CDataManager(this);
@@ -278,6 +287,7 @@ void ServiceMasterThreadController::RegisterCommands() {
     RegisterCommandForProcessing<DeviceCommandProcessor::CmdGetDataContainers, ServiceMasterThreadController>
             (&ServiceMasterThreadController::OnGetDataContainersCommand, this);
 #endif
+
 }
 /****************************************************************************/
 
@@ -1377,6 +1387,9 @@ void ServiceMasterThreadController::OnReturnMessageCommand(Global::tRefType Ref,
     case Service::GUIMSGTYPE_FIRMWAREINFO:
         //emit ReturnFirmwareMessagetoMain(Cmd.m_ReturnMessage, Cmd.m_FirwmwareInfo);
         break;
+    case Service::GUIMSGTYPE_INITCALIBRATION:
+        emit ReturnCalibrationInitMessagetoMain(Cmd.m_ReturnMessage, Cmd.m_CalibStatus);
+        break;
     default:
         emit returnMessageToGUI(Cmd.m_ReturnMessage);
         break;
@@ -1452,8 +1465,15 @@ void ServiceMasterThreadController::sendOvenHeatingTestCommand(quint8 HeaterInde
 /****************************************************************************/
 void ServiceMasterThreadController::sendOvenLidInitCalibrationCommand()
 {
-   // qDebug()<<"ServiceMasterThreadController::sendOvenLidInitCalibrationCommand";
-    //(void) SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdCalibrateDevice(Service::DEVICE_OVENLID_INIT)), m_CommandChannelDeviceThread);
+    qDebug()<<"ServiceMasterThreadController::sendOvenLidInitCalibrationCommand";
+    (void) SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdCalibrateDevice(Service::DEVICE_OVENLID_INIT)), m_CommandChannelDeviceThread);
+}
+
+/****************************************************************************/
+void ServiceMasterThreadController::sendPressureSensorCalibrationCommand()
+{
+    qDebug()<<"ServiceMasterThreadController::sendPressureSensorCalibrationCommand";
+    (void) SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdCalibrateDevice(Service::DEVICE_PRESSURE_SENSOR)), m_CommandChannelDeviceThread);
 }
 
 } // end namespace Threads

@@ -53,20 +53,18 @@ private:
     bool PerformCalibration(QString Title, QString GBox, QString Instr);
 
 signals:
-
-    /****************************************************************************/
-    /**
-     * \brief Signal emitted for OvenLid calibration
-     */
-    /****************************************************************************/
-    void OvenLidCalibrationRequest();
     /****************************************************************************/
     /**
      * \brief Signal emitted for ovenlid init calibration
      */
     /****************************************************************************/
     void OvenLidInitCalibrationRequest();
-
+    /****************************************************************************/
+    /**
+     * \brief Signal emitted for PressureSensor calibration
+     */
+    /****************************************************************************/
+    void PressureSensorCalibrationRequest();
 
 public slots:
 

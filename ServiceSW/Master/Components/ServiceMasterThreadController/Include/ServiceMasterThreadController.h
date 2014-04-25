@@ -325,7 +325,15 @@ signals:
        */
       /****************************************************************************/
       void ReturnErrorMessagetoMain(const QString &Message);
-
+      /****************************************************************************/
+      /**
+       * \brief Returns Calibration Init message to Main Thread Controller.
+       *
+       * \iparam   Message    QString message to be sent.
+       * \iparam   OkStatus
+       */
+      /****************************************************************************/
+      void ReturnCalibrationInitMessagetoMain(const QString &Message, bool OkStatus);
 private slots:
     /****************************************************************************/
     /**
@@ -431,6 +439,12 @@ private slots:
     /****************************************************************************/
     void sendOvenLidInitCalibrationCommand();
 
+    /****************************************************************************/
+    /**
+     * \brief sendPressureSensorCalibrationCommand.
+     */
+    /****************************************************************************/
+    void sendPressureSensorCalibrationCommand();
 protected:
 
     /****************************************************************************/

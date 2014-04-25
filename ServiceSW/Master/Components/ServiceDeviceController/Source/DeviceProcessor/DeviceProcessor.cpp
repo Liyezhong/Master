@@ -35,7 +35,7 @@
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmTempControl.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmPressureControl.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperUtils.h>
-
+#include "Core/Include/CMessageString.h"
 
 namespace DeviceControl {
 
@@ -75,10 +75,8 @@ void DeviceProcessor::Connect()
 }
 
 /****************************************************************************/
-void DeviceProcessor::Initialize()
+void DeviceProcessor::CreateWrappers()
 {
-    mp_Utils = new WrapperUtils(this);
-
 #if 0
     /* Connect All Reference Run Acks for Motor Reference Run commands */
     if (!connect(static_cast<CStepperMotor *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_LOADER, CANObjectKeyLUT::m_MotorDrawerKey)),
@@ -111,6 +109,10 @@ void DeviceProcessor::Initialize()
     mp_Motor = static_cast<CStepperMotor *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_UNLOADER, CANObjectKeyLUT::m_MotorDrawerKey));
     mp_MotorUnLoader = new WrapperFmStepperMotor("Drawer UnLoader", mp_Motor, this);
 #endif
+    if (!connect(mp_CalibrationHandler, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool)), this, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool))))
+    {
+        qDebug()<<"ERROR: can't connect ReturnCalibrationInitMessagetoMain signal ";
+    }
 
     // Temperature control
     /*CTemperatureControl *pTemperature;
@@ -178,8 +180,15 @@ void DeviceProcessor::Initialize()
         mp_MotorRV = new WrapperFmStepperMotor("motor_rv", pMotor, this);
     }
 */
+}
 
+/****************************************************************************/
+void DeviceProcessor::Initialize()
+{
+    (void) CreateWrappers();
     m_IsConfigured = true;
+
+    mp_Utils = new WrapperUtils(this);
 }
 
 /****************************************************************************/
@@ -790,11 +799,11 @@ void DeviceProcessor::OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdTyp
     qDebug()<<"DeviceProcessor::OnCalibrateDevice";
     if(!IsInitialized())
     {
-        //ReturnErrorMessagetoMain(Service::CMessageString::MSG_DEVICE_NOTYET_READY);
-        //emit ReturnCalibrationInitMessagetoMain("", false);
+        ReturnErrorMessagetoMain(Service::CMessageString::MSG_DEVICE_NOTYET_READY);
+        emit ReturnCalibrationInitMessagetoMain("", false);
         return;
     }
-    //(void) mp_CalibrationHandler->OnCalibrateDevice(CmdType);
+    (void) mp_CalibrationHandler->OnCalibrateDevice(CmdType);
 }
 
 

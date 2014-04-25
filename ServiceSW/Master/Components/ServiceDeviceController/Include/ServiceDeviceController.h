@@ -185,6 +185,15 @@ public slots:
      */
     /****************************************************************************/
     void ReturnErrorMessagetoMain(const QString &Message);
+    /****************************************************************************/
+    /**
+     * \brief Returns CalibrationInit Info message to Main Thread Controller.
+     *
+     * \iparam   Message    QString message to be sent.
+     * \iparam   OkStatus   Calibration init status
+     */
+    /****************************************************************************/
+    void ReturnCalibrationInitMessagetoMain(const QString &Message, bool OkStatus);
 #if 0
     /****************************************************************************/
     /**

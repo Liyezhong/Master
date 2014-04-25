@@ -43,7 +43,6 @@ CStartup::CStartup() : QObject(),
 
     // ServiceConnector
     mp_ServiceConnector = new Core::CServiceGUIConnector(mp_MainWindow);
-
     mp_CalibrationHandler = new Core::CCalibrationHanlder(mp_ServiceConnector, mp_MainWindow);
 
     // System tracking
@@ -217,6 +216,7 @@ CStartup::CStartup() : QObject(),
     }
     /* Calibration Signals */
     CONNECTSIGNALSIGNAL(mp_CalibrationHandler, OvenLidInitCalibrationRequest(), this, OvenLidInitCalibrationRequest());
+    CONNECTSIGNALSIGNAL(mp_CalibrationHandler, PressureSensorCalibrationRequest(), this, PressureSensorCalibrationRequest());
 
     CONNECTSIGNALSLOT(this, SetSettingsButtonStatus(), mp_Setting, ResetButtonStatus());
     CONNECTSIGNALSLOT(this, UpdateGUIConnector(Core::CServiceGUIConnector*, MainMenu::CMainWindow*), mp_Setting, UpdateGUIConnector(Core::CServiceGUIConnector*, MainMenu::CMainWindow*));
@@ -237,6 +237,7 @@ CStartup::~CStartup()
         delete mp_Touchscreen;
         delete mp_PressureSensor;
         delete mp_CalibrationGroup;
+        delete mp_CalibrationHandler;
 
         // Service Update
         delete mp_Setting;
@@ -506,16 +507,7 @@ void CStartup::ShowErrorMessage(const QString &Message)
 /****************************************************************************/
 void CStartup::ShowCalibrationInitMessagetoMain(const QString &Message, bool OkStatus)
 {
-    qint32 ret = -1;
-    if(OkStatus)
-    {
-        ret = 1;
-    }
-    if (m_LoopCalibrationStart.isRunning()) {
-        m_LoopCalibrationStart.exit(ret);
-    } else {
-        qDebug()<<"NOTICE: Unexpected action acknowledgement for Calibration";
-    }
+    mp_CalibrationHandler->ShowCalibrationInitMessagetoMain(Message, OkStatus);
 }
 
 void CStartup::OnServiceImportExportRequest(bool IsImport)

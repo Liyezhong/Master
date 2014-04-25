@@ -25,6 +25,7 @@
 #include <Global/Include/GlobalDefines.h>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Core/Include/ServiceDefines.h"
+#include <ServiceDeviceController/Include/DeviceProcessor/CalibrationHandler.h>
 
 
 class WrapperUtils;
@@ -91,7 +92,12 @@ public:
     /****************************************************************************/
     bool IsInitialized();
     /****************************************************************************/
-
+    /****************************************************************************/
+    /**
+     * \brief Helper function to create wrappers
+     */
+    /****************************************************************************/
+    void CreateWrappers();
 public slots:
     /****************************************************************************/
     /**
@@ -160,6 +166,15 @@ signals:
      */
     /****************************************************************************/
     void ReturnErrorMessagetoMain(const QString &Message);
+    /****************************************************************************/
+    /**
+     * \brief Returns Calibration Init message to Main Thread Controller.
+     *
+     * \iparam   Message    QString message to be sent.
+     * \iparam   OkStatus   Calibration status
+     */
+    /****************************************************************************/
+    void ReturnCalibrationInitMessagetoMain(const QString &Message, bool OkStatus);
 #if 0
     /****************************************************************************/
     /**
@@ -288,6 +303,7 @@ private:
     WrapperFmStepperMotor*      mp_MotorRV;
     // Pressure control module
     WrapperFmPressureControl*   mp_PressPump;
+    CalibrationHandler*         mp_CalibrationHandler;  //!< Calibration Handler helper class
 };
 
 } // end namespace DeviceCommandProcessor

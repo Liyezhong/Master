@@ -152,7 +152,8 @@ enum DeviceCalibrationCmdType {
     DEVICE_XYZ2_LEVELSENSOR_INIT,   ///< Level Sensor XYZ2
     DEVICE_OVENLID_INIT,            ///< Oven LID
     DEVICE_DRAWERLOADER_INIT,       ///< Loader Calibration
-    DEVICE_DRAWERUNLOADER_INIT      ///< UnLoader Calibration
+    DEVICE_DRAWERUNLOADER_INIT,      ///< UnLoader Calibration
+    DEVICE_PRESSURE_SENSOR          ///< pressure sensor Calibration
 };
 
 /****************************************************************************/

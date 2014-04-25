@@ -38,7 +38,7 @@ CCalibrationHanlder::CCalibrationHanlder(CServiceGUIConnector *p_ServiceGUIConne
 {
     mp_CalibrationGroup = new MainMenu::CMenuGroup;
     mp_PressureSensor = new Calibration::CPressureSensor();
-    CONNECTSIGNALSLOTGUI(mp_PressureSensor, CalibrationPressureSensor(), this, OnPressureSensorCalibration());
+    CONNECTSIGNALSLOT(mp_PressureSensor, CalibrationPressureSensor(), this, OnPressureSensorCalibration());
 }
 
 /****************************************************************************/
@@ -60,14 +60,14 @@ CCalibrationHanlder::~CCalibrationHanlder()
 
 /****************************************************************************/
 /*!
- *  \brief OvenLidCalibrationRequest
+ *  \brief PressureSensorCalibration
  *
  */
 /****************************************************************************/
 void CCalibrationHanlder::OnPressureSensorCalibration()
 {
     //mp_ServiceConnector->ShowBusyDialog();
-    //emit OvenLidInitCalibrationRequest();
+    /*emit OvenLidInitCalibrationRequest();
     QString Title( QApplication::translate("Core::CCalibrationHanlder", "Oven LID/COVER Calibration",
                                            0, QApplication::UnicodeUTF8));
     QString GBox( QApplication::translate("Core::CCalibrationHanlder", "Oven LID/COVER",
@@ -78,8 +78,8 @@ void CCalibrationHanlder::OnPressureSensorCalibration()
     if(!PerformCalibration(Title, GBox, Instr))
     {
         return;
-    }
-    emit OvenLidCalibrationRequest();
+    }*/
+    emit PressureSensorCalibrationRequest();
 }
 
 /****************************************************************************/

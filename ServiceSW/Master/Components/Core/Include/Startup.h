@@ -151,10 +151,6 @@ private:
 
     //Message Box, Busy Box, Generic PoP Up.
     MainMenu::CMessageDlg *mp_MessageBox;
-
-
-    QEventLoop m_LoopCalibrationStart; //!< Loop for blocking commands.
-
     Core::CCalibrationHanlder *mp_CalibrationHandler;
 
 private slots:
@@ -236,6 +232,13 @@ signals:
      */
     /****************************************************************************/
     void OvenLidInitCalibrationRequest();
+
+    /****************************************************************************/
+    /**
+     * \brief Signal emitted for PressureSensor calibration
+     */
+    /****************************************************************************/
+    void PressureSensorCalibrationRequest();
 
     /****************************************************************************/
     /**

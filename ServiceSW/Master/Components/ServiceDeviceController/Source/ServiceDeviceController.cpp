@@ -31,6 +31,7 @@
 
 #include "DeviceControl/Include/Interface/IDeviceProcessing.h"
 #include <ServiceDeviceController/Include/Commands/CmdCalibrateDevice.h>
+#include <Core/Include/CMessageString.h>
 
 namespace DeviceControl {
 
@@ -149,6 +150,11 @@ void ServiceDeviceController::ConnectSignalsnSlots()
                  mp_DeviceProcessor, SLOT(OnLSensorDetectingTest(Global::tRefType,DeviceControl::DevInstanceID_t,qint32)))) {
         qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'OnLSensorDetectingTest' signal";
     }
+
+    if (!connect(mp_DeviceProcessor, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool)),
+                 this, SLOT(ReturnCalibrationInitMessagetoMain(QString,bool)))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ReturnCalibrationInitMessagetoMain' signal";
+    }
 }
 
 /****************************************************************************/
@@ -177,8 +183,8 @@ void ServiceDeviceController::RegisterCommands(){
     RegisterCommandForProcessing<DeviceCommandProcessor::CmdLSensorDetectingTest, ServiceDeviceController>
             (&ServiceDeviceController::OnSDC_LSensorDetectingTest, this);
 
-    //RegisterCommandForProcessing<DeviceCommandProcessor::CmdCalibrateDevice, ServiceDeviceController>
-      //      (&ServiceDeviceController::OnCmdCalibrateDevice, this);
+    RegisterCommandForProcessing<DeviceCommandProcessor::CmdCalibrateDevice, ServiceDeviceController>
+            (&ServiceDeviceController::OnCmdCalibrateDevice, this);
 
 }
 
@@ -309,6 +315,15 @@ void ServiceDeviceController::ReturnErrorMessagetoMain(const QString &Message)
     SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(commandPtr));
 }
 
+/****************************************************************************/
+void ServiceDeviceController::ReturnCalibrationInitMessagetoMain(const QString &Message, bool OkStatus)
+{
+    DeviceCommandProcessor::CmdReturnMessage* commandPtr(new DeviceCommandProcessor::CmdReturnMessage(Message));
+    commandPtr->m_MessageType = Service::GUIMSGTYPE_INITCALIBRATION;
+    commandPtr->m_CalibStatus = OkStatus;
+    SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(commandPtr));
+}
+
 #if 0
 
 /****************************************************************************/
@@ -393,8 +408,8 @@ void ServiceDeviceController::OnCmdCalibrateDevice(Global::tRefType Ref, const D
     }
     else
     {
-        //ReturnErrorMessagetoMain(Service::CMessageString::MSG_DEVICEDATACONTAINERS_MISSING);
-        //ReturnCalibrationInitMessagetoMain(Service::CMessageString::MSG_DEVICEDATACONTAINERS_MISSING, false);
+        ReturnErrorMessagetoMain(Service::CMessageString::MSG_DEVICEDATACONTAINERS_MISSING);
+        ReturnCalibrationInitMessagetoMain(Service::CMessageString::MSG_DEVICEDATACONTAINERS_MISSING, false);
     }
 }
 
