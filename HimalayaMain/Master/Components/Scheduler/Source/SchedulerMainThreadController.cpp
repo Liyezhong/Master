@@ -2076,9 +2076,10 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         {
             quint32 counter = 0;
             pressureDrift = UNDEFINED_4_BYTE;
-            while((pressureDrift == UNDEFINED_4_BYTE)&&(counter <10))
+            while((pressureDrift == UNDEFINED_4_BYTE)&&(counter <50))
             {
                 pressureDrift= m_SchedulerCommandProcessor->ALGetRecentPressure();
+                usleep(1000);
                 counter++;
             }
             if(UNDEFINED_4_BYTE != pressureDrift)
