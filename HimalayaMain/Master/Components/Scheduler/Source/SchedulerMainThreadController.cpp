@@ -2274,6 +2274,7 @@ bool SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::Schedule
         {
             PtrCmd = m_DeviceControlCmdQueue.at(i);
             m_DeviceControlCmdQueue.removeAt(i);
+			m_MutexDeviceControlCmdQueue.unlock();
             return true;
         }
     }
