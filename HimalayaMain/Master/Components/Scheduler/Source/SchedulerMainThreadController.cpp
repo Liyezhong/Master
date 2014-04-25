@@ -61,6 +61,7 @@
 #include "float.h"
 #include "Global/Include/EventObject.h"
 #include "Scheduler/Include/HeatingStrategy.h"
+#include <unistd.h>
 
 
 using namespace DataManager;
