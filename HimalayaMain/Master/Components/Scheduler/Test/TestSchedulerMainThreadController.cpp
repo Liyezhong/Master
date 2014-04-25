@@ -21,6 +21,50 @@ using::testing::Lt;
 #include "HimalayaMasterThread/Include/HimalayaMasterThreadController.h"
 #include "HimalayaDataManager/Include/DataManager.h"
 
+#include "Scheduler/Include/SchedulerMainThreadController.h"
+#include "Scheduler/Include/HimalayaDeviceEventCodes.h"
+#include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
+#include "Scheduler/Commands/Include/CmdALStartTemperatureControlWithPID.h"
+#include "Scheduler/Commands/Include/CmdALFilling.h"
+#include "Scheduler/Commands/Include/CmdALDraining.h"
+#include "Scheduler/Commands/Include/CmdALPressure.h"
+#include "Scheduler/Commands/Include/CmdALVaccum.h"
+#include "Scheduler/Commands/Include/CmdALAllStop.h"
+#include "Scheduler/Commands/Include/CmdRVStartTemperatureControlWithPID.h"
+#include "Scheduler/Commands/Include/CmdRTStartTemperatureControlWithPID.h"
+#include "Scheduler/Commands/Include/CmdOvenStartTemperatureControlWithPID.h"
+#include "Scheduler/Commands/Include/CmdPerTurnOnMainRelay.h"
+#include "Scheduler/Commands/Include/CmdPerTurnOffMainRelay.h"
+#include "Scheduler/Commands/Include/CmdALTurnOnFan.h"
+#include "Scheduler/Commands/Include/CmdALTurnOffFan.h"
+#include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
+#include "Scheduler/Commands/Include/CmdIDBottleCheck.h"
+#include "Scheduler/Commands/Include/CmdIDSealingCheck.h"
+#include "Scheduler/Commands/Include/CmdRVSetTempCtrlOFF.h"
+#include "Scheduler/Commands/Include/CmdRTSetTempCtrlOFF.h"
+#include "Scheduler/Commands/Include/CmdOvenSetTempCtrlOFF.h"
+#include "Scheduler/Commands/Include/CmdALSetTempCtrlOFF.h"
+#include "Scheduler/Include/SchedulerCommandProcessor.h"
+#include "HimalayaDataManager/Include/DataManager.h"
+#include "HimalayaDataContainer/Containers/ProgramSettings/Include/ProgramSettings.h"
+#include "Global/Include/GlobalDefines.h"
+#include <Scheduler/Commands/Include/CmdRTLock.h>
+#include <Scheduler/Commands/Include/CmdRTUnlock.h>
+#include <HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h>
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdKeepCassetteCount.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelected.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramSelectedReply.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdStationSuckDrain.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
+#include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
+#include "NetCommands/Include/CmdSystemAction.h"
+#include "float.h"
+#include "Global/Include/EventObject.h"
+#include "Scheduler/Include/HeatingStrategy.h"
+
 
 // Run exec for a maximum of TIMEOUT msecs
 #define QCOREAPPLICATION_EXEC(TIMEOUT) \
@@ -199,9 +243,11 @@ public:
             mp_HMThreadController(new Himalaya::HimalayaMasterThreadController())
     {
         m_pSchedulerMainController->SetSchedCommandProcessor(mp_SchdCmdProcessor);
-        Global::SystemPaths::Instance().SetSettingsPath("../Settings");
-        DataManager::CDataManager *mp_DataManager = new DataManager::CDataManager(mp_HMThreadController);
+        Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
+        mp_DataManager = new DataManager::CDataManager(mp_HMThreadController);
+
         m_pSchedulerMainController->DataManager(mp_DataManager);
+
         reinterpret_cast<SchedulerCommandProcessor<MockIDeviceProcessing> *>(mp_SchdCmdProcessor)->SetIDeviceProcessing(mp_IDeviceProcessing);
     }
 
@@ -241,34 +287,39 @@ public:
         QString programID = "L02";
 
         {
+            MsgClasses::CmdProgramSelected command(5000, programID, 1);
+            Global::tRefType ref = m_pSchedulerMainController->GetNewCommandRef();
+            m_pSchedulerMainController->OnProgramSelected(ref, command);
+            QCOREAPPLICATION_EXEC(20000);
+        }
+
+        {
             MsgClasses::CmdProgramAction cmd(5000, programID, DataManager::PROGRAM_START, m_EndDateTime);
             Global::tRefType ref = m_pSchedulerMainController->GetNewCommandRef();
             m_pSchedulerMainController->OnProgramAction(ref, cmd);
-            QCOREAPPLICATION_EXEC(5000);
+            QCOREAPPLICATION_EXEC(20000);
         }
 
-#if 1
         {
             MsgClasses::CmdProgramAction cmd(5000, programID, DataManager::PROGRAM_PAUSE, m_EndDateTime);
             Global::tRefType ref = m_pSchedulerMainController->GetNewCommandRef();
             m_pSchedulerMainController->OnProgramAction(ref, cmd);
-//            QCOREAPPLICATION_EXEC(1000);
+            QCOREAPPLICATION_EXEC(5000);
         }
 
         {
             MsgClasses::CmdProgramAction cmd(5000, programID, DataManager::PROGRAM_DRAIN, m_EndDateTime);
             Global::tRefType ref = m_pSchedulerMainController->GetNewCommandRef();
             m_pSchedulerMainController->OnProgramAction(ref, cmd);
-//            QCOREAPPLICATION_EXEC(1000);
+            QCOREAPPLICATION_EXEC(20000);
         }
 
         {
             MsgClasses::CmdProgramAction cmd(5000, programID, DataManager::PROGRAM_ABORT, m_EndDateTime);
             Global::tRefType ref = m_pSchedulerMainController->GetNewCommandRef();
             m_pSchedulerMainController->OnProgramAction(ref, cmd);
-//            QCOREAPPLICATION_EXEC(1000);
+            QCOREAPPLICATION_EXEC(5000);
         }
-#endif
     }
 
     void CleanupAndDestroyObjects()
@@ -279,11 +330,11 @@ public:
 
     ~TestSchedulerController()
     {
-//        delete mp_DataManager;
         delete mp_HMThreadController;
         delete mp_IDeviceProcessing;
         delete m_pSchedulerMainController;
         delete mp_SchdCmdProcessor;
+        delete mp_DataManager;
     }
 
 private:
@@ -312,24 +363,26 @@ class TestSchedulerMainThreadController : public QObject {
 public:
     TestSchedulerMainThreadController()
     {
-       mp_IDeviceProcessing = schedulerController.mp_IDeviceProcessing;
-       m_pSchedulerMainController = schedulerController.m_pSchedulerMainController;
-       mp_SchdCmdProcessor = schedulerController.mp_SchdCmdProcessor;
+       schedulerController = new TestSchedulerController;
+       mp_IDeviceProcessing = schedulerController->mp_IDeviceProcessing;
+       m_pSchedulerMainController = schedulerController->m_pSchedulerMainController;
+       mp_SchdCmdProcessor = schedulerController->mp_SchdCmdProcessor;
     }
 
     ~TestSchedulerMainThreadController()
     {
+       delete schedulerController;
     }
 
 private:
-    TestSchedulerController schedulerController;
+    TestSchedulerController *schedulerController;
     MockIDeviceProcessing    *mp_IDeviceProcessing;
     SchedulerMainThreadController *m_pSchedulerMainController;
     SchedulerCommandProcessorBase  *mp_SchdCmdProcessor;
 
 private slots:
     void initTestCase();
-    void Case1();
+    void caseMisc();
     void caseProgramAction();
     void cleanupTestCase();
 };
@@ -347,23 +400,23 @@ void TestSchedulerMainThreadController::initTestCase()
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
     EXPECT_CALL(*mp_IDeviceProcessing, PerTurnOnMainRelay())
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
     EXPECT_CALL(*mp_IDeviceProcessing, RTStartTemperatureControlWithPID(_, _, _, _, _, _, _))
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
     EXPECT_CALL(*mp_IDeviceProcessing, RVStartTemperatureControlWithPID(_, _, _, _, _, _))
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
     EXPECT_CALL(*mp_IDeviceProcessing, OvenStartTemperatureControlWithPID(_, _, _, _, _, _, _))
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
     EXPECT_CALL(*mp_IDeviceProcessing, ALStartTemperatureControlWithPID(_, _, _, _, _, _, _))
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
     EXPECT_CALL(*mp_IDeviceProcessing, ALGetRecentPressure())
@@ -371,12 +424,12 @@ void TestSchedulerMainThreadController::initTestCase()
             .WillRepeatedly(Return(100));
 
     EXPECT_CALL(*mp_IDeviceProcessing, ALSetPressureDrift(_))
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
 //-----------------------------------------------------------------------
     EXPECT_CALL(*mp_IDeviceProcessing, ALTurnOnFan())
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
     EXPECT_CALL(*mp_IDeviceProcessing, ALTurnOffFan())
@@ -384,85 +437,90 @@ void TestSchedulerMainThreadController::initTestCase()
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
     EXPECT_CALL(*mp_IDeviceProcessing, ALGetRecentPressure())
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(10.0));
 
     EXPECT_CALL(*mp_IDeviceProcessing, ALGetRecentTemperature(_, _))
-            .Times(AtLeast(3))
+//            .Times(AtLeast(3))
             .WillRepeatedly(Return(10.0));
 
     EXPECT_CALL(*mp_IDeviceProcessing, RVGetRecentTemperature(_))
-            .Times(AtLeast(2))
+//            .Times(AtLeast(2))
             .WillRepeatedly(Return(10.0));
 
     EXPECT_CALL(*mp_IDeviceProcessing, RTGetRecentTemperature(_, _))
-            .Times(AtLeast(2))
+//            .Times(AtLeast(2))
             .WillRepeatedly(Return(10.0));
 
     EXPECT_CALL(*mp_IDeviceProcessing, RVReqActRVPosition())
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(RV_TUBE_1));
 
     EXPECT_CALL(*mp_IDeviceProcessing, OvenGetRecentTemperature(_, _))
-            .Times(AtLeast(2))
+//            .Times(AtLeast(2))
             .WillRepeatedly(Return(10.0));
 
     EXPECT_CALL(*mp_IDeviceProcessing, OvenGetRecentLidStatus())
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(10.0));
 
     EXPECT_CALL(*mp_IDeviceProcessing, RTGetRecentLockStatus())
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(1));
     EXPECT_CALL(*mp_IDeviceProcessing, IDSealingCheck(_))
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(1.0));
 
     EXPECT_CALL(*mp_IDeviceProcessing, ALBreakAllOperation())
-            .Times(AtLeast(1))
+//            .Times(AtLeaCRsStandbyWithTissuest(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
     EXPECT_CALL(*mp_IDeviceProcessing, ALAllStop())
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
     EXPECT_CALL(*mp_IDeviceProcessing, ALFilling(_))
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
     EXPECT_CALL(*mp_IDeviceProcessing, ALDraining(_))
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
     EXPECT_CALL(*mp_IDeviceProcessing, ALPressure())
-            .Times(AtLeast(1))
+//            .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
     EXPECT_CALL(*mp_IDeviceProcessing, ALVaccum())
+//            .Times(AtLeast(1))
+            .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
+    EXPECT_CALL(*mp_IDeviceProcessing, IDBottleCheck(_, _))
             .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
+
     // --------------------------------------------------------------------
 
-    schedulerController.mp_IDeviceProcessing->InitializationFinished();
+    mp_IDeviceProcessing->InitializationFinished();
     QCOREAPPLICATION_EXEC(1000 * 5);
-    schedulerController.mp_IDeviceProcessing->ConfigurationFinished();
+    mp_IDeviceProcessing->ConfigurationFinished();
     QCOREAPPLICATION_EXEC(1000 * 5);
 }
 
-void TestSchedulerMainThreadController::Case1()
+void TestSchedulerMainThreadController::caseMisc()
 {
-    schedulerController.misc();
+    schedulerController->misc();
 }
 
 void TestSchedulerMainThreadController::caseProgramAction()
 {
-    schedulerController.programAction();
+    schedulerController->programAction();
 }
 
 
 void TestSchedulerMainThreadController::cleanupTestCase()
 {
-    schedulerController.CleanupAndDestroyObjects();
+    schedulerController->CleanupAndDestroyObjects();
 }
 
 } // end namespace Scheduler
