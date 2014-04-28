@@ -54,7 +54,7 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
                                      KeyBoard::CKeyBoard *p_KeyBoard,
                                      MainMenu::CMainWindow *p_MainWindow,
                                      Core::CDataConnector *p_DataConnector) :
-                                     MainMenu::CDialogFrame(p_Parent),
+                                     MainMenu::CDialogFrame(p_Parent, p_MainWindow),
                                      mp_Ui(new Ui::CModifyProgramDlg),
                                      mp_DataConnector(p_DataConnector),
                                      m_ProgNameBtnClicked(false),
