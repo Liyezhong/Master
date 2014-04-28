@@ -111,7 +111,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
             return retCode;
         }
         //For RTBottom
-         mp_SchedulerController->LogDebug(QString("RTBottom current scenario is: %1").arg(scenario));
         retCode = StartRTTemperatureControl(m_RTBottom, RT_BOTTOM);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
@@ -159,9 +158,9 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     !!!!!!!uncomment return code when simulator is ready.
     *
     ***********************************************************/
-    if (false == m_RTBottom.curModuleId.isEmpty())
+    if (false == m_RTBottom.curModuleId.isEmpty() &&
+            -1!= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].ScenarioList.indexOf(m_CurScenario))
     {
-        mp_SchedulerController->LogDebug(QString("RTBottom currentModule Id is %1 and scenario %2").arg(m_RTBottom.curModuleId).arg(scenario));
         if (std::abs(strctHWMonitor.TempOvenBottom1 - strctHWMonitor.TempOvenBottom2) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
         {
             return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
@@ -219,10 +218,27 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
 
 bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)
 {
-    if (false == heatingSensor.curModuleId.isEmpty() &&
-            heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature <HWTemp)
+    if (false == heatingSensor.curModuleId.isEmpty())
     {
-        return false;
+        return true;
+    }
+
+    //For Scenarios NON-related sensors(Oven and LA)
+    if (1 == heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.size()
+            && 0 == heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.at(0))
+    {
+        if (heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature <HWTemp)
+        {
+            return false;
+        }
+    }
+    //For Scenarios related Sensors (Retort and Rotary valve)
+    if (-1 != heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.indexOf(m_CurScenario))
+    {
+        if (heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature <HWTemp)
+        {
+            return false;
+        }
     }
 
     return true;
@@ -307,7 +323,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         // Current(new) scenario belongs to the specific scenario list
         if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
         {
-             mp_SchedulerController->LogDebug(QString("StarRTBottom current scenario is: %1").arg(m_CurScenario));
             break;
         }
     }
@@ -619,7 +634,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         }
         m_RTBottom.TemperatureDiffList.insert(*iter, tempDiff);
     }
-mp_SchedulerController->LogDebug(QString("Construct RTBottom currentModule Id is %1").arg(m_RTBottom.curModuleId));
+
     //For Oven Top
     m_OvenTop.devName = "Oven";
     m_OvenTop.sensorName = "OvenTop";
