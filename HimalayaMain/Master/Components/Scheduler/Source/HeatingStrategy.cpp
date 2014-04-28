@@ -309,6 +309,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
             m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             m_RTLevelSensor.curModuleId = iter->Id;
             iter->OTTargetTemperature = iter->TemperatureOffset;
+
+            //Just for debug
+            mp_SchedulerController->LogDebug(QString("LevelSensor - Scenario is %1").arg(m_CurScenario));
+            mp_SchedulerController->LogDebug(QString("LevelSensor - current sequence is: %1").arg(iter->Id));
         }
     }
 
