@@ -111,6 +111,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
             return retCode;
         }
         //For RTBottom
+         mp_SchedulerController->LogDebug(QString("RTBottom current scenario is: %1").arg(scenario));
         retCode = StartRTTemperatureControl(m_RTBottom, RT_BOTTOM);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
@@ -306,6 +307,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         // Current(new) scenario belongs to the specific scenario list
         if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
         {
+             mp_SchedulerController->LogDebug(QString("StarRTBottom current scenario is: %1").arg(m_CurScenario));
             break;
         }
     }
@@ -617,7 +619,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         }
         m_RTBottom.TemperatureDiffList.insert(*iter, tempDiff);
     }
-
+mp_SchedulerController->LogDebug(QString("Construct RTBottom currentModule Id is %1").arg(m_RTBottom.curModuleId));
     //For Oven Top
     m_OvenTop.devName = "Oven";
     m_OvenTop.sensorName = "OvenTop";
