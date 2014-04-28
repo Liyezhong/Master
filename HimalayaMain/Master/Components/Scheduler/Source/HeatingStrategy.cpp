@@ -821,6 +821,8 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(const HeatingSensor& heatingSen
     {
         if (HWTemp < heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
         {
+            mp_SchedulerController->LogDebug(QString("Time elapse is %1 seconds").arg((now-heatingSensor.heatingStartTime)/1000));
+            mp_SchedulerController->LogDebug(QString("current HW temperature is: %1").arg(HWTemp));
             return false;
         }
     }
