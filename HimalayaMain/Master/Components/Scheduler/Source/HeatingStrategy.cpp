@@ -160,6 +160,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     ***********************************************************/
     if (false == m_RTBottom.curModuleId.isEmpty())
     {
+        mp_SchedulerController->LogDebug(QString("RTBottom currentModule Id is %1 and scenario %2").arg(m_RTBottom.curModuleId).arg(scenario));
         if (std::abs(strctHWMonitor.TempOvenBottom1 - strctHWMonitor.TempOvenBottom2) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
         {
             return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
