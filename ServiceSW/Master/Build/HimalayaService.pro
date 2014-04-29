@@ -42,3 +42,7 @@ SUBDIRS = ../../../../Platform/Master/Components/Global/Build/Global.pro \
           ../Components/Main/Build/Main.pro
 
 CONFIG += ordered
+
+#TRANSLATIONS = ../Components/Main/Build/TranslationsService/HimalayaService_en.pm \
+#               ../Components/Main/Build/TranslationsService/HimalayaService_zh.pm
+
