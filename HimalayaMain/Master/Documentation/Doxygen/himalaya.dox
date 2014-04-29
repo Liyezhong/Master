@@ -407,7 +407,7 @@ EXTRACT_ALL            = NO
 # be included in the documentation.
 # The default value is: NO.
 
-EXTRACT_PRIVATE        = YES
+EXTRACT_PRIVATE        = NO
 
 # If the EXTRACT_PACKAGE tag is set to YES all members with package or internal
 # scope will be included in the documentation.
@@ -746,9 +746,9 @@ WARN_LOGFILE           = "warnings.log"
 # spaces.
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = ../../../Gui \
-                         ../../../../Shared/Gui
-
+INPUT                  = ../..
+INPUT                 += ../../../../Shared/Master
+INPUT                 += ../../../../../Platform/Master
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
 # libiconv (or the iconv built into libc) for the transcoding. See the libiconv
@@ -785,6 +785,7 @@ RECURSIVE              = YES
 EXCLUDE                = ../../../../../Platform/Master/Test \
                          ../../../../../Platform/Master/ExternalPackages \
                          ../../../../Shared/Gui/Components/kineticscroller
+EXCLUDE               += ../../../../../Platform/Master/Components/TestStubDataManager
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
@@ -802,6 +803,7 @@ EXCLUDE_SYMLINKS       = NO
 
 EXCLUDE_PATTERNS       = .svn \
                          *moc_*
+EXCLUDE_PATTERNS      +=  */Test/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -1547,7 +1549,7 @@ EXTRA_SEARCH_MAPPINGS  =
 # If the GENERATE_LATEX tag is set to YES doxygen will generate LaTeX output.
 # The default value is: YES.
 
-GENERATE_LATEX         = NO
+GENERATE_LATEX         = YES
 
 # The LATEX_OUTPUT tag is used to specify where the LaTeX docs will be put. If a
 # relative path is entered the value of OUTPUT_DIRECTORY will be put in front of

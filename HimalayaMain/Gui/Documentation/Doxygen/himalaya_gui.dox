@@ -307,7 +307,7 @@ EXTRACT_ALL            = NO
 # If the EXTRACT_PRIVATE tag is set to YES all private members of a class
 # will be included in the documentation.
 
-EXTRACT_PRIVATE        = YES
+EXTRACT_PRIVATE        = NO
 
 # If the EXTRACT_STATIC tag is set to YES all static members of a file
 # will be included in the documentation.
@@ -584,8 +584,9 @@ WARN_LOGFILE           = "warnings.log"
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  = ../.. \
-                         ../../../../Shared/Gui
+INPUT                  = ../..
+INPUT                 += ../../../../Shared/Gui
+INPUT                 += ../../../../../Platform/Gui/Components/KeyBoard
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
@@ -614,7 +615,7 @@ RECURSIVE              = YES
 # excluded from the INPUT source files. This way you can easily exclude a
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
 
-EXCLUDE                = ../../../../Shared/Gui/Components/kineticscroller
+EXCLUDE                = ../../GuiStub ../../Test ../../../../Shared/Gui/Components/kineticscroller ../../../../../Platform/Master/Test ../../../../../Platform/ExternalPackages 
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or
 # directories that are symbolic links (a Unix filesystem feature) are excluded
@@ -629,8 +630,9 @@ EXCLUDE_SYMLINKS       = NO
 # for example use the pattern */test/*
 
 EXCLUDE_PATTERNS       = .svn \
-                         *moc_* \
-                         */Build/*
+                         *moc_*
+EXCLUDE_PATTERNS      = */Build/*
+EXCLUDE_PATTERNS      +=  */Test/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -1039,7 +1041,7 @@ SERVER_BASED_SEARCH    = NO
 # If the GENERATE_LATEX tag is set to YES (the default) Doxygen will
 # generate Latex output.
 
-GENERATE_LATEX         = NO
+GENERATE_LATEX         = YES
 
 # The LATEX_OUTPUT tag is used to specify where the LaTeX docs will be put.
 # If a relative path is entered the value of OUTPUT_DIRECTORY will be
