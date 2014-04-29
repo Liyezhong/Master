@@ -319,6 +319,13 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
             m_RTLevelSensor.StartTempFlagList[iter->Id] = true;
 
             //Just for debug
+            mp_SchedulerController->LogDebug(QString("targ temp is %1").arg(iter->TemperatureOffset));
+            mp_SchedulerController->LogDebug(QString("SlopTempChange is %1").arg(iter->SlopTempChange));
+            mp_SchedulerController->LogDebug(QString("MaxTemperature is %1").arg(iter->MaxTemperature));
+            mp_SchedulerController->LogDebug(QString("ControllerGain is %1").arg(iter->ControllerGain));
+            mp_SchedulerController->LogDebug(QString("ResetTime is %1").arg(iter->ResetTime));
+            mp_SchedulerController->LogDebug(QString("DerivativeTime is %1").arg(iter->DerivativeTime));
+
             mp_SchedulerController->LogDebug(QString("LevelSensor - Scenario is %1").arg(m_CurScenario));
             mp_SchedulerController->LogDebug(QString("LevelSensor - current sequence is: %1").arg(iter->Id));
         }
