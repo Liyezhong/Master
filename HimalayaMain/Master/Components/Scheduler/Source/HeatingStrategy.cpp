@@ -316,17 +316,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         SchedulerCommandShPtr_t pResHeatingCmd;
         while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName()));
         pResHeatingCmd->GetResult(retCode);
+
+
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
-            return retCode;
-        }
-        else
-        {
-            m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
-            m_RTLevelSensor.curModuleId = iter->Id;
-            iter->OTTargetTemperature = iter->TemperatureOffset;
-            m_RTLevelSensor.StartTempFlagList[iter->Id] = true;
-
             //Just for debug
             mp_SchedulerController->LogDebug(QString("targ temp is %1").arg(iter->TemperatureOffset));
             mp_SchedulerController->LogDebug(QString("SlopTempChange is %1").arg(iter->SlopTempChange));
@@ -337,6 +330,16 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
 
             mp_SchedulerController->LogDebug(QString("LevelSensor - Scenario is %1").arg(m_CurScenario));
             mp_SchedulerController->LogDebug(QString("LevelSensor - current sequence is: %1").arg(iter->Id));
+            return retCode;
+        }
+        else
+        {
+            m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+            m_RTLevelSensor.curModuleId = iter->Id;
+            iter->OTTargetTemperature = iter->TemperatureOffset;
+            m_RTLevelSensor.StartTempFlagList[iter->Id] = true;
+
+
         }
     }
 
