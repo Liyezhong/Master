@@ -95,9 +95,11 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     Set temperature for each sensor
     *
     ***************************************************/
+    bool scenariochanged = false; //used for Level Sensor
     if (scenario != m_CurScenario)
     {
         m_CurScenario = scenario;
+        scenariochanged = true;
         //For RTTop
         retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -123,7 +125,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     }
 
     // For Level Sensor
-    retCode = this->StartLevelSensorTemperatureControl(strctHWMonitor);
+    retCode = this->StartLevelSensorTemperatureControl(strctHWMonitor, scenariochanged);
     if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
     {
         return retCode;
@@ -249,7 +251,7 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
     return true;
 }
 
-DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor)
+DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor, bool ScenarioChanged)
 {
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
 
@@ -257,7 +259,12 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
     QMap<QString, FunctionModule>::iterator iter = m_RTLevelSensor.functionModuleList.begin();
     for (; iter!=m_RTLevelSensor.functionModuleList.end(); ++iter)
     {
-        // Firstly check if the StartTemperaturePID has been set or not
+        // Firstly, check if scenario changed. If yes, set the flag
+        if (true == ScenarioChanged)
+        {
+            m_RTLevelSensor.StartTempFlagList[iter->Id] = false;
+        }
+        // check if the StartTemperaturePID has been set or not
         if (true == m_RTLevelSensor.StartTempFlagList[iter->Id])
         {
             continue;

@@ -148,7 +148,7 @@ private:
     bool ConstructHeatingSensorList();
     bool ConstructHeatingSensor(HeatingSensor& heatingSensor, const QStringList& sequenceList);
 	inline bool CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp);
-	DeviceControl::ReturnCode_t StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor);
+    DeviceControl::ReturnCode_t StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor, bool ScenarioChanged);
     DeviceControl::ReturnCode_t StartRTTemperatureControl(HeatingSensor& heatingSensor, RTTempCtrlType_t RTType);
     DeviceControl::ReturnCode_t StartOvenTemperatureControl(OvenSensor& heatingSensor, OVENTempCtrlType_t OvenType);
     DeviceControl::ReturnCode_t StartRVTemperatureControl(RVSensor& heatingSensor);
