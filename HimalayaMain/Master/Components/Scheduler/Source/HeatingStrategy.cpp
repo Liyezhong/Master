@@ -261,7 +261,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
             // Check for High or Low speed
             if (m_RTLevelSensor.ExchangePIDTempList[iter->Id] >= strctHWMonitor.TempALLevelSensor)
             {
-                if ("Low" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
+                if ("High" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
                 {
                     break;
                 }
@@ -274,11 +274,11 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
             {
                 if ("Low" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
                 {
-                    continue;
+                    break;
                 }
                 else
                 {
-                    break;
+                    continue;
                 }
             }
 
