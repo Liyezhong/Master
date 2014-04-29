@@ -113,6 +113,19 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
             return retCode;
         }
 
+        // For Oven Top
+        retCode = StartOvenTemperatureControl(m_OvenTop, OVEN_TOP);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+        //For Oven Bottom
+        retCode = StartOvenTemperatureControl(m_OvenBottom, OVEN_BOTTOM);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+
         //For RVRod
         retCode = StartRVTemperatureControl(m_RVRod);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -122,35 +135,24 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
 
         //For RVOutlet
         StartRVOutletHeatingOTCalculation();
+
+        //For LA RVTube
+        retCode = StartLATemperatureControl(m_LARVTube, AL_TUBE1);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+        //For LA WaxTrap
+        retCode = StartLATemperatureControl(m_LAWaxTrap, AL_TUBE2);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
+
     }
 
     // For Level Sensor
     retCode = this->StartLevelSensorTemperatureControl(strctHWMonitor, scenariochanged);
-    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-    {
-        return retCode;
-    }
-
-    // For Oven Top
-    retCode = StartOvenTemperatureControl(m_OvenTop, OVEN_TOP);
-    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-    {
-        return retCode;
-    }
-    //For Oven Bottom
-    retCode = StartOvenTemperatureControl(m_OvenBottom, OVEN_BOTTOM);
-    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-    {
-        return retCode;
-    }
-    //For LA RVTube
-    retCode = StartLATemperatureControl(m_LARVTube, AL_TUBE1);
-    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-    {
-        return retCode;
-    }
-    //For LA WaxTrap
-    retCode = StartLATemperatureControl(m_LAWaxTrap, AL_TUBE2);
     if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
     {
         return retCode;
@@ -427,15 +429,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
 
         if (meltingRange.first<=userInputMeltingPoint && meltingRange.second>=userInputMeltingPoint && timeRange.first<=timeElapse && timeRange.second>=timeElapse)
         {
-            // We only need set the temperature, so we have a check list for this
-            if (false == heatingSensor.StartTempFlagList[iter->Id])
-            {
-                break;
-            }
-            else
-            {
-                continue;
-            }
+            break;
         }
     }
 
@@ -464,7 +458,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             iter->OTTargetTemperature = heatingSensor.OTTempOffsetList[iter->Id]+userInputMeltingPoint;
-            heatingSensor.StartTempFlagList[iter->Id] = true;
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
     }
@@ -528,23 +521,11 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRVTemperatureControl(RVSensor&
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
-DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(LASensor& heatingSensor,ALTempCtrlType_t LAType)
+DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSensor& heatingSensor,ALTempCtrlType_t LAType)
 {
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
 
     QMap<QString, FunctionModule>::iterator iter = heatingSensor.functionModuleList.begin();
-    for(; iter!=heatingSensor.functionModuleList.end(); ++iter)
-    {
-        // We only need set the temperature, so we have a check list for this
-        if (false == heatingSensor.StartTempFlagList[iter->Id])
-        {
-            break;
-        }
-        else
-        {
-            continue;
-        }
-    }
 
     // Found out the heating sensor's function module
     if (iter != heatingSensor.functionModuleList.end())
@@ -568,7 +549,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(LASensor&
         }
         else
         {
-            heatingSensor.StartTempFlagList[iter->Id] = true;
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             iter->OTTargetTemperature = iter->TemperatureOffset;
@@ -710,9 +690,6 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         timePair.first = strList[0].toDouble(&ok);
         timePair.second = strList[1].toDouble(&ok);
         m_OvenTop.TimeRangeList.insert(*iter,timePair);
-
-        //Flag list for checking if StartTemp command has been sent out
-        m_OvenTop.StartTempFlagList.insert(*iter, false);
     }
 
     //For Oven Bottom
@@ -725,7 +702,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     {
         return false;
     }
-    //Add other attributes for Oven Top
+    //Add other attributes for Oven Bottom
     iter = sequenceList.begin();
     for (; iter != sequenceList.end(); ++iter)
     {
@@ -758,9 +735,6 @@ bool HeatingStrategy::ConstructHeatingSensorList()
         timePair.first = strList[0].toDouble(&ok);
         timePair.second = strList[1].toDouble(&ok);
         m_OvenBottom.TimeRangeList.insert(*iter,timePair);
-
-        //Flag list for checking if StartTemp command has been sent out
-        m_OvenBottom.StartTempFlagList.insert(*iter, false);
     }
 
     //For Rotary Valve Rod
@@ -827,7 +801,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     {
         return false;
     }
-    m_LARVTube.StartTempFlagList.insert("1", false);
+
     //For LA Wax Trap
     m_LAWaxTrap.devName = "LA";
     m_LAWaxTrap.sensorName = "WaxTrap";
@@ -838,7 +812,6 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     {
         return false;
     }
-    m_LAWaxTrap.StartTempFlagList.insert("1", false);
     return true;
 }
 
