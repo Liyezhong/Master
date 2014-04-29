@@ -73,7 +73,7 @@ void ServiceDeviceController::CreateAndInitializeObjects(){
     // now register commands
     DeviceCommandProcessorThreadController::CreateAndInitializeObjects();
     RegisterCommands();
-    mp_DeviceProcessor = new DeviceProcessor(*this, *m_pDeviceProcessing);
+    mp_DeviceProcessor = new DeviceProcessor(*m_pDeviceProcessing);
     ConnectSignalsnSlots();
     RequestForDataContainers();
 }
@@ -405,15 +405,7 @@ void ServiceDeviceController::OnSDC_LSensorDetectingTest(Global::tRefType Ref, c
 void ServiceDeviceController::OnCmdCalibrateDevice(Global::tRefType Ref, const DeviceCommandProcessor::CmdCalibrateDevice &Cmd)
 {
     SendAcknowledgeOK(Ref);
-    //if(m_DeviceDataContainers)
-    {
-        emit CalibrateDevice(Cmd.m_CommandType);
-    }
-    /*else
-    {
-        ReturnErrorMessagetoMain(Service::CMessageString::MSG_DEVICEDATACONTAINERS_MISSING);
-        ReturnCalibrationInitMessagetoMain(Service::CMessageString::MSG_DEVICEDATACONTAINERS_MISSING, false);
-    }*/
+    emit CalibrateDevice(Cmd.m_CommandType);
 }
 
 } //End Of namespace DeviceControl

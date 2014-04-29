@@ -72,7 +72,11 @@ signals:
 
 public slots:
 
-    /* Calibration Slots */
+    /****************************************************************************/
+    /**
+     * \brief slot for Pressure Sensor calibration
+     */
+    /****************************************************************************/
     void OnPressureSensorCalibration();
 
     /* Return Message Slots */

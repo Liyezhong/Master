@@ -70,7 +70,7 @@ public:
      * \param[in]   IDeviceProcessing           Reference of IDeviceProcessing.
      */
     /****************************************************************************/
-    DeviceProcessor(ServiceDeviceController &rDCP, IDeviceProcessing &iDevProc);
+    DeviceProcessor(IDeviceProcessing &iDevProc);
     /****************************************************************************/
     /**
      * \brief To initiate device connections
@@ -140,7 +140,7 @@ public slots:
 
     /****************************************************************************/
     /**
-     * \brief Calibrate Device
+     * \brief Calibrate Device, currently only calibrate pressure sensor for Himalaya
      *
      * \iparam       CmdType            Command type
      */
@@ -174,31 +174,7 @@ signals:
      */
     /****************************************************************************/
     void ReturnCalibrationInitMessagetoMain(const QString &Message, bool OkStatus);
-#if 0
-    /****************************************************************************/
-    /**
-     * \brief Returns CANID message to Main Thread Controller.
-     *
-     * \param[in]   Message    QString message to be sent.
-     */
-    /****************************************************************************/
-    void ReturnCANIDMessagetoMain(const QString &Message, QString canID, QString ExpectedCanID);
-    /****************************************************************************/
-    /**
-     * \brief Returns Firmware Info message to Main Thread Controller.
-     *
-     * \param[in]   Message    QString message to be sent.
-     */
-    /****************************************************************************/
-    void ReturnFirmwareMessagetoMain(const QString &Message, QString firmwareInfo);
-    /****************************************************************************/
-    /**
-     * \brief Returns Rack RFID message to Main Thread Controller.
-     *
-     * \param[in]   Message    QString message to be sent.
-     */
 
-#endif
 private:
 
     /****************************************************************************/
@@ -253,28 +229,7 @@ private:
     qint32 MoveRVToInitPos(quint32 DeviceId);
     qint32 MoveRVToTubePos(quint32 DeviceId, qint32 Pos);
     qint32 MoveRVToSealPos(quint32 DeviceId, qint32 Pos);
-#if 0
-    /**
-     * \brief To convert device layer codes into meaningful strings.
-     *
-     * \param[in]       ReturnCode_t         ReturnCode from device layer
-     * \return          QString              String to indicate sucess or failure
-     */
-    /****************************************************************************/
-    QString ReturnStringForID(ReturnCode_t HdlInfo);
-    /****************************************************************************/
-    /**
-     * \brief To check if device action was successful or not.
-     *
-     * \param[in]       ReturnCode_t         ReturnCode from device layer
-     * \return          bool               bool indicate sucess or failure
-     */
-    /****************************************************************************/
-    bool CheckHardwareInfo(ReturnCode_t HdlInfo);
 
-#endif
-
-    ServiceDeviceController     &m_rCDCP;               //!< ServiceDevice Controller Reference
     IDeviceProcessing           &m_rIdevProc;           //!< IDeviceProcessing reference to interact with device
     bool                        m_IsConfigured;         //!< Indicates if configuration is successfully completed
     TestState_t                 m_CurrentAction;
@@ -282,11 +237,6 @@ private:
     bool                        m_WaterDeviceInit;
     bool                        m_HoodDeviceInit;
     bool                        m_DeviceLightInit;
-
-#if 0
-    WrapperDeviceXyz*           mp_xyzDeviceLeft;       //!< Wrapper for XYZ device to simplify device interaction
-#endif
-
     bool                        m_UserAbort;
     WrapperUtils*               mp_Utils;
     // Temperature control modules

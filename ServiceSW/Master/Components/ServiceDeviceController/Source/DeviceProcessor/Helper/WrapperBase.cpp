@@ -54,11 +54,11 @@ void WrapperBase::Log(const QString& Message)
 
 /****************************************************************************/
 /*!
- *   \brief Handles the ReturnCode of the DeviceControl layer.
+ *  \brief  Handles the ReturnCode of the DeviceControl layer.
  *
- *   \todo Log() shall handle last errors
+ *  \iparam ReturnCode = ReturnCode of DeviceControl Layer
  *
- *  \iparam   ReturnCode   ReturnCode of DeviceControl Layer
+ *  \return Returns false in case of an error, else true
  */
 /****************************************************************************/
 bool WrapperBase::HandleErrorCode(DeviceControl::ReturnCode_t ReturnCode)
@@ -70,8 +70,6 @@ bool WrapperBase::HandleErrorCode(DeviceControl::ReturnCode_t ReturnCode)
     switch(ReturnCode)
     {
     case DCL_ERR_FCT_CALL_SUCCESS://0
-        // TODO remove
-        //msg = tr("Success");
         break;
 
     case DCL_ERR_FCT_CALL_FAILED://1
@@ -83,7 +81,7 @@ bool WrapperBase::HandleErrorCode(DeviceControl::ReturnCode_t ReturnCode)
         break;
 
     case DCL_ERR_FCT_NOT_IMPLEMENTED://3
-        msg = tr("Temporary return value for bare functions, should be removed at the end");
+        msg = tr("A method was called which is not implemented or not applicable");
         break;
 
     case DCL_ERR_INVALID_STATE://10
@@ -91,7 +89,7 @@ bool WrapperBase::HandleErrorCode(DeviceControl::ReturnCode_t ReturnCode)
         break ;
 
     case DCL_ERR_NOT_INITIALIZED://11
-        msg = tr("A method was called before complete initialisation was done");
+        msg = tr("A method was called before complete initialization was done or initialization failed");
         break;
 
     case  DCL_ERR_TIMEOUT://12
@@ -99,11 +97,11 @@ bool WrapperBase::HandleErrorCode(DeviceControl::ReturnCode_t ReturnCode)
         break;
 
     case DCL_ERR_INVALID_PARAM://13
-        msg = tr("One ore more invalid parameters were passed to the method");
+        msg = tr("One or more invalid parameters were passed to the method");
         break;
 
     case DCL_ERR_INTERNAL_ERR://14
-        msg = tr("The error reason is internal, further information is available at ...");
+        msg = tr("The error reason is internal");
         break;
 
     case DCL_ERR_EXTERNAL_ERROR://15
@@ -135,9 +133,9 @@ bool WrapperBase::HandleErrorCode(DeviceControl::ReturnCode_t ReturnCode)
         break;
     }
     if (!msg.isEmpty()) {
-        msg.prepend("DCL ERROR ");
+        msg = msg.prepend("DCL ERROR ");
         Log(msg);
-        m_LastErrors.append(Name() + ": " + msg);
+        m_LastErrors.append(GetName() + ": " + msg);
         TruncateErrorQueue();
         return false;
     } else {
@@ -174,6 +172,27 @@ void WrapperBase::TruncateErrorQueue()
     while (m_LastErrors.size() > m_ErrorQueueSize) {
         m_LastErrors.removeFirst();
     }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief  This slot is called when an error was received from the Slave
+ *
+ *  \iparam ErrorCode = Error code
+ *  \iparam ErrorData = Error data
+ *  \iparam ErrorTime = Error time
+ */
+/****************************************************************************/
+void WrapperBase::OnError(quint32 InstanceID, quint16 ErrorGroup, quint16 ErrorCode, quint16 ErrorData, QDateTime ErrorTime)
+{
+    Log(
+        QString() +
+        "Instance ID: "  + QString().setNum(InstanceID) +
+        "Error Group: "  + QString().setNum(ErrorGroup) +
+        "Error Code: "   + QString().setNum(ErrorCode) +
+        ", Error Data: " + QString().setNum(ErrorData) +
+        ", Error Time: " + ErrorTime.toString()
+    );
 }
 
 QString WrapperBase::GetNameByInstanceID(quint32 instanceID)
@@ -258,12 +277,6 @@ void WrapperBase::ShowProperties()
  *   The Wait() method waits for all pending asynchronous actions of a class instance
  *   to finish. It also has an optional parameter "Timeout" which behaves as
  *   described above.
- *
- *   Examples:
- *   \dontinclude loader.js
- *   \skipline [Loader.Open/Close]
- *   \until    [Loader.Open/Close]
- *
  */
 /****************************************************************************/
 

@@ -24,6 +24,7 @@
 #include "Global/Include/UITranslator.h"
 #include "MainMenu//Include/MsgBoxManager.h"
 #include <Global/Include/SystemPaths.h>
+#include <Core/Include/CMessageString.h>
 
 namespace Core {
 
@@ -176,7 +177,26 @@ void CServiceGUIConnector::ShowBusyDialog(QString MessageText, bool HideAbort)
     }
 }
 
-
+/****************************************************************************/
+/*!
+ *  \brief Show Busy Dialog
+ */
+/****************************************************************************/
+void CServiceGUIConnector::ShowBusyDialog()
+{
+    if(m_MessageDlg)
+    {
+        return;
+    }
+    QTimer timer;
+    timer.setSingleShot(true);
+    timer.setInterval(10000);
+    timer.start();
+    CONNECTSIGNALSLOT(&timer, timeout(), this, HandleTimeout());
+    mp_WaitDialog->SetText(QApplication::translate("Core::CServiceGUIConnector", "Requested operation is in progress...", 0, QApplication::UnicodeUTF8));
+    mp_WaitDialog->show();
+    mp_WaitDialog->HideAbort();
+}
 
 /****************************************************************************/
 /*!
@@ -361,6 +381,18 @@ void CServiceGUIConnector::ServiceParametersUpdates(DataManager::CServiceParamet
     }
     emit UpdateServiceParameters(mp_ServiceParameters);
 }
+
+/****************************************************************************/
+/*!
+ *  \brief Show ShowBasicColorTestDialog
+ */
+/****************************************************************************/
+void CServiceGUIConnector::HandleTimeout()
+{
+    (void) mp_WaitDialog->close();
+    ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Service::CMessageString::MSG_DEVICECOMMAND_TIMEOUT);
+}
+
 
 } // end namespace Core
 

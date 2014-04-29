@@ -96,6 +96,7 @@ public:
 
     void ShowMessageDialog(Global::GUIMessageType MessageType, QString MessageText);
     void ShowBusyDialog(QString MessageText, bool HideAbort = true);
+    void ShowBusyDialog();
     void HideBusyDialog();
 
     DataManager::CModuleDataList* GetModuleListContainer();
@@ -117,7 +118,7 @@ public slots:
 
     void SendAddModule(DataManager::CModule &Module);
     void ServiceParametersUpdates(DataManager::CServiceParameters *ServiceParameters);
-
+    void HandleTimeout();
 signals:
     void ModuleListContainerInitialized(DataManager::CModuleDataList& ModuleList);
 

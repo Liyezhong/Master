@@ -67,19 +67,7 @@ CCalibrationHanlder::~CCalibrationHanlder()
 /****************************************************************************/
 void CCalibrationHanlder::OnPressureSensorCalibration()
 {
-    //mp_ServiceConnector->ShowBusyDialog();
-    /*emit OvenLidInitCalibrationRequest();
-    QString Title( QApplication::translate("Core::CCalibrationHanlder", "Oven LID/COVER Calibration",
-                                           0, QApplication::UnicodeUTF8));
-    QString GBox( QApplication::translate("Core::CCalibrationHanlder", "Oven LID/COVER",
-                                          0, QApplication::UnicodeUTF8));
-    QString Instr( QApplication::translate("Core::CCalibrationHanlder",
-            "Set the Oven Lid in its final rear closing positon.\nPress Next button to calibrate the Oven Lid/Cover.",
-                                           0, QApplication::UnicodeUTF8));
-    if(!PerformCalibration(Title, GBox, Instr))
-    {
-        return;
-    }*/
+    mp_ServiceConnector->ShowBusyDialog();
     emit PressureSensorCalibrationRequest();
 }
 

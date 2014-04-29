@@ -34,15 +34,15 @@
 namespace DeviceControl {
 
 /****************************************************************************/
-DeviceProcessor::DeviceProcessor(ServiceDeviceController &rCDCP, IDeviceProcessing &iDevProc)
-    : m_rCDCP(rCDCP)
-    , m_IsConfigured(false)
+DeviceProcessor::DeviceProcessor(IDeviceProcessing &iDevProc)
+    : m_IsConfigured(false)
     , m_rIdevProc(iDevProc)
     , m_CurrentAction(TEST_OTHER_RUNS)
     , m_ExhaustInit(false)
     , m_HoodDeviceInit(false)
     , m_WaterDeviceInit(false)
     , m_DeviceLightInit(false)
+    , mp_PressPump(NULL)
 {
 #if 0
     qRegisterMetaType<Global::LiquidLevelState>("Global::LiquidLevelState");
@@ -775,13 +775,15 @@ qint32 DeviceProcessor::TestLSensorDetecting(quint32 DeviceId, qint32 Pos)
     return Ret;
 }
 
-/****************************************************************************/
 void DeviceProcessor::OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdType)
 {
+    Q_UNUSED(CmdType);
     qDebug()<<"DeviceProcessor::OnCalibrateDevice";
     if(!IsInitialized()){
         Initialize();
     }
+    if (!mp_PressPump)
+        return;
 
     if(!mp_PressPump)
     {

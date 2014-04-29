@@ -27,6 +27,9 @@
 #include <QObject>
 #include <QStringList>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "DeviceControl/Include/SlaveModules/Module.h"
+
+using namespace DeviceControl;
 
 /****************************************************************************/
 /*!  \brief Base functionality for Utility, Device and Function Module wrappers.
@@ -39,20 +42,24 @@ class WrapperBase : public QObject
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Constructor
+     *
+     *  \iparam Name = Name of the device for logging and the QtScript identifier
+     *  \iparam Parent = Pointer to parent for QObject hierarchy and auto-delete
+     *  \iparam p_Module = Slave module used by the wrapper
+     */
+    /****************************************************************************/
+    inline WrapperBase(const QString& Name, QObject *Parent, const CModule *p_Module = NULL):
+        QObject(Parent), m_Name(Name), m_LastErrors(), m_ErrorQueueSize(50), mp_Module(p_Module) {};
 
     /****************************************************************************/
     /*!
-     *   \brief Constructor
-     *
-     *   \todo Enforce correct usage.
-     *
-     *  \iparam   Name    The Name of the Device as used for logging and QtScript identifier.
-     *  \iparam   Parent  Pointer to parent for QObject Hierarchy and auto-delete.
-     *
+     *  \brief  Destructor
      */
     /****************************************************************************/
-    inline WrapperBase(const QString& Name, QObject *Parent):
-        QObject(Parent), m_Name(Name), m_LastErrors(), m_ErrorQueueSize(50) {};
+    virtual ~WrapperBase() { mp_Module = NULL; }
 
     /****************************************************************************/
     /*!
@@ -63,17 +70,28 @@ public:
      *   \return device name
      */
     /****************************************************************************/
-    inline const QString& GetName() { return m_Name; }
+    inline const QString &GetName() const { return m_Name; }
+
+    /****************************************************************************/
+    /*!
+     *   \brief  Returns the Slave module the wrapper is representing
+     *
+     *   \return Pointer to the module or NULL in case of a device
+     */
+    /****************************************************************************/
+    const CModule *GetSlaveModule() const { return mp_Module; }
+
+    /****************************************************************************/
+    /*!
+     *   \brief  Can be used to disconnect all signals connected by a script
+     *
+     *   \return True in case of success, else false
+     */
+    /****************************************************************************/
+    virtual bool DisconnectSignals() { return true; }
     QString GetNameByInstanceID(quint32 instanceID);
 public slots:
     void Log(const QString &);
-
-    /****************************************************************************/
-    /*!  \brief  Script-API: get the device name
-     *   \return device name
-     */
-    /****************************************************************************/
-    inline QString Name() { return m_Name; }
 
     /****************************************************************************/
     /*!  \brief  Script-API: get last errors
@@ -111,12 +129,16 @@ signals:
 protected:
     bool HandleErrorCode(DeviceControl::ReturnCode_t ReturnCode);
 
+private slots:
+    //void OnError(quint32 ErrorCode, quint16 ErrorData, QDateTime ErrorTime);
+    void OnError(quint32 InstanceID, quint16 ErrorGroup, quint16 ErrorCode, quint16 ErrorData, QDateTime ErrorTime);
 
 private:
     void TruncateErrorQueue();
     QString m_Name;          //!< Name of the Device or FunctionModule.
     QStringList m_LastErrors; //!< Last error message from DeviceControl layer.
     qint32 m_ErrorQueueSize; //!< Size of error list. 
+    const CModule *mp_Module;   //!< The module to be wrapped
 };
 
 #endif
