@@ -98,12 +98,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     if (scenario != m_CurScenario)
     {
         m_CurScenario = scenario;
-        // For Level Sensor
-        retCode = this->StartLevelSensorTemperatureControl(strctHWMonitor);
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            return retCode;
-        }
         //For RTTop
         retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -127,6 +121,14 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         //For RVOutlet
         StartRVOutletHeatingOTCalculation();
     }
+
+    // For Level Sensor
+    retCode = this->StartLevelSensorTemperatureControl(strctHWMonitor);
+    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+    {
+        return retCode;
+    }
+
     // For Oven Top
     retCode = StartOvenTemperatureControl(m_OvenTop, OVEN_TOP);
     if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -255,6 +257,11 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
     QMap<QString, FunctionModule>::iterator iter = m_RTLevelSensor.functionModuleList.begin();
     for (; iter!=m_RTLevelSensor.functionModuleList.end(); ++iter)
     {
+        // Firstly check if the StartTemperaturePID has been set or not
+        if (true == m_RTLevelSensor.StartTempFlagList[iter->Id])
+        {
+            continue;
+        }
         // Current(new) scenario belongs to the specific scenario list
         if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
         {
@@ -309,6 +316,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
             m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             m_RTLevelSensor.curModuleId = iter->Id;
             iter->OTTargetTemperature = iter->TemperatureOffset;
+            m_RTLevelSensor.StartTempFlagList[iter->Id] = true;
 
             //Just for debug
             mp_SchedulerController->LogDebug(QString("LevelSensor - Scenario is %1").arg(m_CurScenario));
@@ -601,6 +609,9 @@ bool HeatingStrategy::ConstructHeatingSensorList()
             return false;
         }
         m_RTLevelSensor.ExchangePIDTempList.insert(*iter, exchangePIDtmp);
+
+        //Flag list for checking if StartTemp command has been sent out
+        m_RTLevelSensor.StartTempFlagList.insert(*iter, false);
     }
 
 
