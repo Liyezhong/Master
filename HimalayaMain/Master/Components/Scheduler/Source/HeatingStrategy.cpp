@@ -821,11 +821,22 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(const HeatingSensor& heatingSen
     if (false== heatingSensor.curModuleId.isEmpty() &&
             now-heatingSensor.heatingStartTime >= heatingSensor.functionModuleList[heatingSensor.curModuleId].HeatingOverTime*1000)
     {
-        if (HWTemp < heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
+        //For Scenarios NON-related sensors(Oven and LA)
+        if (1 == heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.size()
+                && 0 == heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.at(0))
         {
-            mp_SchedulerController->LogDebug(QString("Time elapse is %1 seconds").arg((now-heatingSensor.heatingStartTime)/1000));
-            mp_SchedulerController->LogDebug(QString("current HW temperature is: %1").arg(HWTemp));
-            return false;
+            if (HWTemp < heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
+            {
+                return false;
+            }
+        }
+        //For Scenarios related Sensors (Retort and Rotary valve)
+        if (-1 != heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.indexOf(m_CurScenario))
+        {
+            if (HWTemp < heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
+            {
+                return false;
+            }
         }
     }
     return true;
