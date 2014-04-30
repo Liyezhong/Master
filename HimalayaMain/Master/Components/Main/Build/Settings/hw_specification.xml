@@ -147,6 +147,12 @@
                     <configuration enabled="1" timestamp="0" polarity="1" threshold="1" interval="10" debounce="5"/>
                 </functionmodule>
             </functionmodules>
+              <functionmodule type="digital_in" key="local_alarm_status" name="local_alarm_status" interface="11">
+                    <configuration enabled="1" timestamp="0" polarity="1" threshold="1" interval="10" debounce="5"/>
+                </functionmodule>
+              <functionmodule type="digital_in" key="remote_alarm_status" name="remote_alarm_status" interface="12">
+                    <configuration enabled="1" timestamp="0" polarity="1" threshold="1" interval="10" debounce="5"/>
+                </functionmodule>
         </slave>
 
 <!-- ************************************************************************************************* -->
@@ -195,6 +201,8 @@
                 <functionmodule key="PER_remote_alarm_ctrl_digital_output" fct_instanceID="0x7000F"/>
                 <functionmodule key="PER_local_alarm_ctrl_digital_output" fct_instanceID="0x8000F"/>
                 <functionmodule key="PER_main_relay_digital_output" fct_instanceID="0x6000F"/>
+                <functionmodule key="PER_local_alarm_digital_input" fct_instanceID="0xB000F"/>
+                <functionmodule key="PER_remote_alarm__digital_input" fct_instanceID="0xC000F"/>
             </functionmodules>
         </device>
     </devices>
