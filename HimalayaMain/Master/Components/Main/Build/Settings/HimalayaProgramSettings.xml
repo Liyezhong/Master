@@ -228,7 +228,7 @@
                 <Parameter Key="MaxTemperature" Value="112"/>
                 <Parameter Key="NominalTemperature" Value="95"/>
                 <Parameter Key="ResetTime" Value="1212"/>
-                <Parameter Key="ScenarioList" Value="002,200,211,221,231,241,281,291"/>
+                <Parameter Key="ScenarioList" Value="002,200,211,221,231,241,291"/>
                 <Parameter Key="SlopeTempChange" Value="10"/>
             </Function>
             <Function Key="Heating" name="LevelSensor" sequence="22">
@@ -240,7 +240,7 @@
                 <Parameter Key="MaxTemperature" Value="112"/>
                 <Parameter Key="NominalTemperature" Value="95"/>
                 <Parameter Key="ResetTime" Value="1000"/>
-                <Parameter Key="ScenarioList" Value="002,200,211,221,231,241,281,291"/>
+                <Parameter Key="ScenarioList" Value="002,200,211,221,231,241,291"/>
                 <Parameter Key="SlopeTempChange" Value="10"/>
             </Function>
             <Function Key="Heating" name="RTBottom" sequence="1">
