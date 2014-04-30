@@ -59,6 +59,7 @@ struct HeatingSensor
     QMap<QString, FunctionModule>	functionModuleList;
     qint64							heatingStartTime;
 	QString							curModuleId;
+    bool                            OTCheckPassed; // flag to indicate if OT checking is passed or not
 };
 
 struct RTLevelSensor : public HeatingSensor
@@ -95,6 +96,7 @@ struct RVOutlet
     qint64				heatingStartTime;
     QVector<qint32>		ScenarioList;
 	bool				needCheckOT;
+    bool                OTCheckPassed; // flag to indicate if OT checking is passed or not
 };
 
 
@@ -149,7 +151,7 @@ private:
     DeviceControl::ReturnCode_t StartRVTemperatureControl(RVSensor& heatingSensor);
     inline void StartRVOutletHeatingOTCalculation();
     DeviceControl::ReturnCode_t StartLATemperatureControl(HeatingSensor& heatingSensor,ALTempCtrlType_t LAType);
-	inline bool CheckSensorHeatingOverTime(const HeatingSensor& heatingSensor, qreal HWTemp);
+    inline bool CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, qreal HWTemp);
 	inline bool CheckRVOutletHeatingOverTime(qreal HWTemp);
 private:
     /****************************************************************************/

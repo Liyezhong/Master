@@ -206,7 +206,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     {
         return DCL_ERR_DEV_WAXBATH_TSENSORUP_HEATING_ABNORMAL;
     }
-    //For RV Outlet, and RV Rod is NOT needed to check Heating overtime.
+    //For RV Outlet, Please note RV Rod(sensor 1) is NOT needed to check Heating overtime.
     if (false == this->CheckRVOutletHeatingOverTime(strctHWMonitor.TempRV2))
     {
         return DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_NOTREACHTARGET;
@@ -336,6 +336,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         {
             m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             m_RTLevelSensor.curModuleId = iter->Id;
+            m_RTLevelSensor.OTCheckPassed = false;
             iter->OTTargetTemperature = iter->TemperatureOffset;
             m_RTLevelSensor.StartTempFlagList[iter->Id] = true;
 
@@ -400,6 +401,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         {
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
+            heatingSensor.OTCheckPassed = false;
             iter->OTTargetTemperature = iter->TemperatureOffset+userInputTemp;
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
@@ -460,6 +462,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
         {
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
+            heatingSensor.OTCheckPassed = false;
             iter->OTTargetTemperature = heatingSensor.OTTempOffsetList[iter->Id]+userInputMeltingPoint;
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
@@ -516,6 +519,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRVTemperatureControl(RVSensor&
         {
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
+            heatingSensor.OTCheckPassed = false;
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
     }
@@ -554,6 +558,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSe
         {
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
+            heatingSensor.OTCheckPassed = false;
             iter->OTTargetTemperature = iter->TemperatureOffset;
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
@@ -574,6 +579,7 @@ void HeatingStrategy::StartRVOutletHeatingOTCalculation()
     }
     m_RVOutlet.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
     m_RVOutlet.needCheckOT = true;
+    m_RVOutlet.OTCheckPassed = false;
 
 }
 
@@ -584,6 +590,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RTLevelSensor.sensorName = "LevelSensor";
     m_RTLevelSensor.heatingStartTime = 0;
     m_RTLevelSensor.curModuleId = "";
+    m_RTLevelSensor.OTCheckPassed = false;
     QStringList sequenceList = {"11", "12", "21", "22"};
     if (false == this->ConstructHeatingSensor(m_RTLevelSensor, sequenceList))
     {
@@ -617,6 +624,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RTTop.sensorName = "RTTop";
     m_RTTop.heatingStartTime = 0;
     m_RTTop.curModuleId = "";
+    m_RTTop.OTCheckPassed = false;
     sequenceList = {"1", "2", "3"};
     if (false == this->ConstructHeatingSensor(m_RTTop, sequenceList))
     {
@@ -628,6 +636,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RTBottom.sensorName = "RTBottom";
     m_RTBottom.heatingStartTime = 0;
     m_RTBottom.curModuleId = "";
+    m_RTBottom.OTCheckPassed = false;
     sequenceList = {"1", "2", "3"};
     if (false == this->ConstructHeatingSensor(m_RTBottom, sequenceList))
     {
@@ -655,6 +664,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_OvenTop.sensorName = "OvenTop";
     m_OvenTop.heatingStartTime = 0;
     m_OvenTop.curModuleId = "";
+    m_OvenTop.OTCheckPassed = false;
     sequenceList = {"1", "2", "3", "4"};
     if (false == this->ConstructHeatingSensor(m_OvenTop, sequenceList))
     {
@@ -700,6 +710,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_OvenBottom.sensorName = "OvenBottom";
     m_OvenBottom.heatingStartTime = 0;
     m_OvenBottom.curModuleId = "";
+    m_OvenBottom.OTCheckPassed = false;
     sequenceList = {"1", "2", "3", "4"};
     if (false == this->ConstructHeatingSensor(m_OvenBottom, sequenceList))
     {
@@ -745,6 +756,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RVRod.sensorName = "RVRod";
     m_RVRod.heatingStartTime = 0;
     m_RVRod.curModuleId = "";
+    m_RVRod.OTCheckPassed = false;
     sequenceList = {"1", "2", "3", "4"};
     if (false == this->ConstructHeatingSensor(m_RVRod, sequenceList))
     {
@@ -775,6 +787,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RVOutlet.sensorName = "RVOutlet";
     m_RVOutlet.heatingStartTime = 0;
     m_RVOutlet.needCheckOT = false;
+    m_RVOutlet.OTCheckPassed = false;
 
     DataManager::FunctionKey_t funcKey;
     funcKey.key = "Heating";
@@ -799,6 +812,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_LARVTube.sensorName = "RVTube";
     m_LARVTube.heatingStartTime = 0;
     m_LARVTube.curModuleId = "";
+    m_LARVTube.OTCheckPassed = false;
     sequenceList = {"1"};
     if (false == this->ConstructHeatingSensor(m_LARVTube, sequenceList))
     {
@@ -810,6 +824,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_LAWaxTrap.sensorName = "WaxTrap";
     m_LAWaxTrap.heatingStartTime = 0;
     m_LAWaxTrap.curModuleId = "";
+    m_LAWaxTrap.OTCheckPassed = false;
     sequenceList = {"1"};
     if (false == this->ConstructHeatingSensor(m_LAWaxTrap, sequenceList))
     {
@@ -818,8 +833,18 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     return true;
 }
 
-bool HeatingStrategy::CheckSensorHeatingOverTime(const HeatingSensor& heatingSensor, qreal HWTemp)
+bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, qreal HWTemp)
 {
+    if (true == heatingSensor.OTCheckPassed)
+    {
+        return true;
+    }
+
+    if (HWTemp >= heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
+    {
+        heatingSensor.OTCheckPassed = true;
+    }
+
     qint64 now = QDateTime::currentMSecsSinceEpoch();
     if (false== heatingSensor.curModuleId.isEmpty() &&
             now-heatingSensor.heatingStartTime >= heatingSensor.functionModuleList[heatingSensor.curModuleId].HeatingOverTime*1000)
@@ -847,6 +872,15 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(const HeatingSensor& heatingSen
 
 bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
 {
+    if (true == m_RVOutlet.OTCheckPassed)
+    {
+        return true;
+    }
+
+    if (HWTemp >= mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath())
+    {
+        m_RVOutlet.OTCheckPassed = true;
+    }
     qint64 now = QDateTime::currentMSecsSinceEpoch();
     if (true == m_RVOutlet.needCheckOT &&
             now-m_RVOutlet.heatingStartTime >= m_RVOutlet.HeatingOverTime*1000)
