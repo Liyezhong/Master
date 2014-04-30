@@ -2139,8 +2139,6 @@ ERROR:
 
 void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 {
-    Q_UNUSED(StepID)
-
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
        // if(StepID == "IDLE")
@@ -2492,6 +2490,17 @@ void SchedulerMainThreadController::Fill()
     CmdALFilling* cmd  = new CmdALFilling(500, this);
     //todo: get delay time here
     cmd->SetDelayTime(2000);
+    QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
+    quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
+    // For paraffin, Insufficient Check is NOT needed.
+    if (272 == Scenario)
+    {
+        cmd->SetEnableInsufficientCheck(false);
+    }
+    else
+    {
+        cmd->SetEnableInsufficientCheck(true);
+    }
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     // acknowledge to gui

@@ -383,7 +383,8 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd()
 	}
 	else if  ("Scheduler::ALFilling" == cmdName)
 	{
-        m_currentCmd->SetResult(mp_IDeviceProcessing->ALFilling(qSharedPointerDynamicCast<CmdALFilling>(m_currentCmd)->GetDelayTime()));
+        m_currentCmd->SetResult(mp_IDeviceProcessing->ALFilling(qSharedPointerDynamicCast<CmdALFilling>(m_currentCmd)->GetDelayTime(),
+                                                                qSharedPointerDynamicCast<CmdALFilling>(m_currentCmd)->GetEnableInsufficientCheck()));
 	}
 	else if  ("Scheduler::ALGetRecentPressure" == cmdName)
 	{
