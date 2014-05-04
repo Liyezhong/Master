@@ -140,7 +140,7 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, DCLConfigurationFinished(ReturnCode_t),
                       this,OnDCLConfigurationFinished(ReturnCode_t))
 
-    m_TickTimer.setInterval(500);
+    m_TickTimer.setInterval(3000);
 
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRVPositionCheck(), this, MoveRVToInit());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnSealingCheck(), this, SealingCheck());
