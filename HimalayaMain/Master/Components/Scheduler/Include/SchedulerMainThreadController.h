@@ -772,6 +772,30 @@ protected:
 
         /****************************************************************************/
         /**
+         * @brief raise error to event handler
+         *
+         *  \iparam    EventKey
+         *  \iparam    EventID
+         *  \iparam    Scenario
+         *  \bparam    ActionResult
+         *
+         ****************************************************************************/
+        virtual void RaiseError(const quint32 EventKey, const quint32 EventID, const quint32 Scenario,
+                                  const bool ActionResult, const bool Active = true)
+        {
+            if(EventKey == 0)
+            {
+                Global::EventObject::Instance().RaiseEvent(EventKey, EventID, Scenario, ActionResult,Active,
+                                                       Global::tTranslatableStringList()<<QString("(%1 %2)").arg(EventID).arg(Scenario));
+            }
+            else
+            {
+                Global::EventObject::Instance().RaiseEvent(EventKey, EventID, Scenario, ActionResult,Active);
+            }
+        }
+
+        /****************************************************************************/
+        /**
          * @brief Destructor.
          */
         /****************************************************************************/

@@ -400,19 +400,19 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
                 {
                     LogDebug("Precheck Position Check exceed upper limit");
-                    Global::EventObject::Instance().RaiseEvent(0, 500030021, Scenario, false);
+                    RaiseError(0, 500030021, Scenario, false);
                     m_SchedulerMachine->SendErrorSignal();
                 }
                 else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
                 {
                     LogDebug("Precheck Position Check internal step retry");
-                    Global::EventObject::Instance().RaiseEvent(0, 500030011, Scenario, false);
+                    RaiseError(0, 500030011, Scenario, false);
                     m_SchedulerMachine->SendErrorSignal();
                 }
                 else
                 {
                     LogDebug("Precheck Position Check Failed");
-                    Global::EventObject::Instance().RaiseEvent(0, 500030001, Scenario, false);
+                    RaiseError(0, 500030001, Scenario, false);
                     m_SchedulerMachine->SendErrorSignal();
                 }
             }
@@ -429,7 +429,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             Q_UNUSED(currentPressure);
            // if((currentPressure < 0.0000001)&&(currentPressure > (-0.00000001))) //todo: verify pressure tolerence later
            // {
-           //     Global::EventObject::Instance().RaiseEvent(0, 513040020, GetScenarioBySchedulerState(stepState, GetReagentGroupID(m_CurReagnetName)), true);
+           //     RaiseError(0, 513040020, GetScenarioBySchedulerState(stepState, GetReagentGroupID(m_CurReagnetName)), true);
            //     m_SchedulerMachine->SendErrorSignal();
            // }
            // else
@@ -604,7 +604,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         {
                             LogDebug("Program Step Heating Level sensor stage 1 timeout");
                             //level sensor heating overtime
-                            Global::EventObject::Instance().RaiseEvent(0, 513015312, GetScenarioBySchedulerState(stepState, GetReagentGroupID(m_CurReagnetName)), true);
+                            RaiseError(0, 513015312, GetScenarioBySchedulerState(stepState, GetReagentGroupID(m_CurReagnetName)), true);
                             m_SchedulerMachine->SendErrorSignal();
                         }
                     }
@@ -640,7 +640,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                         {
                             //level sensor heating overtime
                             LogDebug("Program Step Heating Level sensor stage 2 timeout");
-                            Global::EventObject::Instance().RaiseEvent(0, 513015312, GetScenarioBySchedulerState(stepState, GetReagentGroupID(m_CurReagnetName)), true);
+                            RaiseError(0, 513015312, GetScenarioBySchedulerState(stepState, GetReagentGroupID(m_CurReagnetName)), true);
                             m_SchedulerMachine->SendErrorSignal();
                         }
                     }
@@ -673,13 +673,13 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     {
                         //fail to move to seal, raise event here
                         LogDebug(QString("Program Step Move to tube(before)%1 internal steps retry").arg(targetPos));
-                        Global::EventObject::Instance().RaiseEvent(0, 500030011, Scenario, true);
+                        RaiseError(0, 500030011, Scenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                     else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
                     {
                         LogDebug(QString("Program Step Move to tube(before)%1 exceed upper limit").arg(targetPos));
-                        Global::EventObject::Instance().RaiseEvent(0, 500030021, Scenario, true);
+                        RaiseError(0, 500030021, Scenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                 }
@@ -709,7 +709,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else if( DCL_ERR_DEV_LA_FILLING_INSUFFICIENT == retCode)
                 {
                     LogDebug(QString("Program Step Filling Insufficient"));
-                    Global::EventObject::Instance().RaiseEvent(0, 500040161, Scenario, true);
+                    RaiseError(0, 500040161, Scenario, true);
                     m_SchedulerMachine->SendErrorSignal();
                 }
             }
@@ -748,7 +748,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     {
                         //fail to move to seal, raise event here
                         LogDebug(QString("Program Step Move to Seal %1 internal step retry").arg(targetPos));
-                        Global::EventObject::Instance().RaiseEvent(0, 500030011, Scenario, true);
+                        RaiseError(0, 500030011, Scenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                 }
@@ -864,7 +864,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     {
                         //fail to move to seal, raise event here
                         LogDebug(QString("Program Step Move to Tube(after) %1 Internal Steps Failed").arg(targetPos));
-                        Global::EventObject::Instance().RaiseEvent(0, 500030011, Scenario, true);
+                        RaiseError(0, 500030011, Scenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                     else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
@@ -931,7 +931,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else if(DCL_ERR_DEV_LA_DRAINING_TIMEOUT_BUILDPRESSURE == retCode)
                 {
                     LogDebug(QString("Program Step Draining Build Pressure timeout"));
-                    Global::EventObject::Instance().RaiseEvent(0, 500040201, Scenario, true);
+                    RaiseError(0, 500040201, Scenario, true);
                     m_SchedulerMachine->SendErrorSignal();
                 }
             }
@@ -1132,20 +1132,20 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             if( DCL_ERR_FCT_CALL_SUCCESS == retCode )
             {
                 LogDebug("Response Move to initial position again succeed!");
-                Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, true);
+                RaiseError(m_EventKey, 0, 0, true);
                 m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
             }
             else
             {
                 LogDebug("Response Move to initial position again failed!");
-                Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, false);
+                RaiseError(m_EventKey, 0, 0, false);
                 m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
             }
         }
     }
     else if(SM_ERR_RC_REPORT == currentState)
     {
-        Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, true);
+        RaiseError(m_EventKey, 0, 0, true);
         m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
     }
     else if(SM_ERR_RS_RELEASE_PRESSURE == currentState)
@@ -1155,7 +1155,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if(SM_ERR_RS_SHUTDOWN_FAILED_HEATER == currentState)
     {
         m_SchedulerMachine->NotifyRsShutdownFailedHeaterFinished();
-        Global::EventObject::Instance().RaiseEvent(m_EventKey, 0, 0, true);
+        RaiseError(m_EventKey, 0, 0, true);
     }
     else if(SM_ERR_RS_RELEASE_PRESSURE_AT_RS_STADNDBY_WITHTISSUE == currentState)
     {
@@ -2152,7 +2152,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             LogDebug(QString("Heating Strategy got an error at event %1 and scenario %2").arg(retCode).arg(Scenario));
-            Global::EventObject::Instance().RaiseEvent(0, retCode, Scenario, true);
+            RaiseError(0, retCode, Scenario, true);
             m_SchedulerMachine->SendErrorSignal();
         }
     }
@@ -2163,7 +2163,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 #if 0
     if(m_PressureAL < -45 || m_PressureAL > 45){
         quint32 EVENT_LA_PressureSensor_OutofRange = 34; //only for test
-        Global::EventObject::Instance().RaiseEvent(0,EVENT_LA_PressureSensor_OutofRange,Scenario,true);
+        RaiseError(0,EVENT_LA_PressureSensor_OutofRange,Scenario,true);
     }
 #endif
 	if(strctHWMonitor.TempALLevelSensor != UNDEFINED_VALUE)
@@ -2231,7 +2231,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
             if(((currentState & 0xF) == SM_BUSY)&&(currentState != PSSM_PAUSE)&&(currentState != PSSM_PAUSE_DRAIN))
             {
-                Global::EventObject::Instance().RaiseEvent(0, 500010461, Scenario, true);
+                RaiseError(0, 500010461, Scenario, true);
                 m_SchedulerMachine->SendErrorSignal();
             }
             MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, false));
