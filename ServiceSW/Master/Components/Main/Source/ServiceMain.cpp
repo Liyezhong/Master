@@ -80,7 +80,7 @@ int main(int Argc, char *p_Argv[])
 
     Core::CStartup Startup;
     Threads::ServiceMasterThreadController TheMasterThreadController(&Startup);
-    TheMasterThreadController.SetEventLoggerBaseFileName("Leica_ST_Service");
+    TheMasterThreadController.SetEventLoggerBaseFileName("Himalaya_Service");
     QThread thrMasterThread;
 
     if(Argc>=2)

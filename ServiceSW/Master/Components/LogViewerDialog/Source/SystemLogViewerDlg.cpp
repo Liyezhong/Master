@@ -26,6 +26,7 @@
 #include "ui_SystemLogViewerDlg.h"
 #include "Global/Include/GlobalDefines.h"
 #include "LogViewerDialog/Include/RecoveryActionFilter.h"
+#include "Global/Include/EventObject.h"
 
 namespace LogViewer {
 
@@ -227,6 +228,7 @@ bool CSystemLogViewerDlg::InitDialog(QString Path)
 
 void CSystemLogViewerDlg::ShowRecoveryActionDetails()
 {
+    Global::EventObject::Instance().RaiseEvent(67179031);//EVENT_GUI_LOGVIEWER_SYSTEMLOG_SERVICEHELPTEXT_FOR_ERROR);
     if(m_SelectedRowValues.count() == 0)
     {
         mp_MessageDlg->SetTitle(tr("Waring"));

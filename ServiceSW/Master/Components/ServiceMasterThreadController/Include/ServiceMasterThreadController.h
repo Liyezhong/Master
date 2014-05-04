@@ -39,6 +39,8 @@
 #include <QSet>
 #include <QThread>
 
+#include <EventHandler/Include/HimalayaEventHandlerThreadController.h>
+
 const quint32 THREAD_ID_EXPORT         = 0x0105;  ///< Export
 
 
@@ -117,7 +119,7 @@ private:
 
     // Handlers for Thread Controllers.
     DataLogging::DataLoggingThreadController    *mp_DataLoggingThreadController;    ///< Pointer to the DataLoggingComponent
-    EventHandler::EventHandlerThreadController  *mp_EventThreadController;          ///< Pointer to the system event handling object.
+    EventHandler::HimalayaEventHandlerThreadController *mp_EventThreadController;          ///< Pointer to the system event handling object.
     DeviceControl::ServiceDeviceController      *mp_DeviceThreadController;         ///< Pointer to the GUI handling object.
 
     Global::gSourceType                         m_HeartBeatSourceDataLogging;       ///< Heart Beat Source ID of the DataLogging component.

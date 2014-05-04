@@ -272,6 +272,10 @@ void ServiceMasterThreadController::CreateAndInitializeObjects() {
     mp_DataLoggingThreadController->SetEventLoggerMaxFileSize(m_EventLoggerMaxFileSize);
     mp_DataLoggingThreadController->SetDayEventLoggerMaxFileCount(m_DayEventLoggerMaxFileCount);
 
+    // read event strings. language and fallback language is English
+    ReadEventTranslations(QLocale::English, QLocale::English);
+
+
     ServiceMasterThreadController::RegisterCommands();
 }
 
@@ -367,10 +371,12 @@ void ServiceMasterThreadController::CreateBasicControllersAndThreads() {
     // create system's event handler
     // if an exception occures, the instance must be deleted manually!
     QStringList FileName;
-    FileName.append(Global::SystemPaths::Instance().GetSettingsPath()+QDir::separator()+"EventConfigService.csv");
-    mp_EventThreadController = new EventHandler::EventHandlerThreadController(m_HeartBeatSourceEventHandler, m_RebootCount, FileName);
+    FileName.append(Global::SystemPaths::Instance().GetSettingsPath()+QDir::separator()+"EventConfigService.xml");
+    mp_EventThreadController = new EventHandler::HimalayaEventHandlerThreadController(m_HeartBeatSourceEventHandler, m_RebootCount, FileName);
+
 
     mp_EventThreadController->ConnectToEventObject();
+    mp_DataLoggingThreadController->EnableImmediateLogging(true);
 
     // create system's Device handler
     mp_DeviceThreadController = new DeviceControl::ServiceDeviceController(m_HeartBeatSourceDeviceHandler);
@@ -786,7 +792,8 @@ void ServiceMasterThreadController::SendAcknowledgeNOK(Global::tRefType Ref, Com
 }
 
 /****************************************************************************/
-void ServiceMasterThreadController::ReadEventTranslations(QLocale::Language Language, QLocale::Language FallbackLanguage) const {
+void ServiceMasterThreadController::ReadEventTranslations(QLocale::Language Language, QLocale::Language FallbackLanguage) const
+{
     const QString StringsFileName = Global::SystemPaths::Instance().GetTranslationsPath()
             + "/EventStrings_" + Global::LanguageToLanguageCode(Language) + ".xml";
     // cleanup translator strings. For event strings.
@@ -799,10 +806,12 @@ void ServiceMasterThreadController::ReadEventTranslations(QLocale::Language Lang
     LanguageList << Language << FallbackLanguage;
     TranslatorDataFile.ReadStrings(StringsFileName, LanguageList);
     // check if there is still a language in LanguageList
-    if(!LanguageList.isEmpty()) {
+    if(!LanguageList.isEmpty())
+    {
         // Uh oh... some languages could not be read.
         // send some error messages.
-        for(QSet<QLocale::Language>::const_iterator it = LanguageList.constBegin(); it != LanguageList.constEnd(); ++it) {
+        for(QSet<QLocale::Language>::const_iterator it = LanguageList.constBegin(); it != LanguageList.constEnd(); ++it)
+        {
             Global::EventObject::Instance().RaiseEvent(DataManager::EVENT_DM_ERROR_LANG_NOT_FOUND,
                                                        Global::FmtArgs() << Global::LanguageToString(*it));
         }
@@ -815,6 +824,7 @@ void ServiceMasterThreadController::ReadEventTranslations(QLocale::Language Lang
         // Set language data. No default no fallback.
         Global::EventTranslator::TranslatorInstance().SetLanguageData(it.key(), it.value(), false, false);
     }
+
     // set default language
     Global::EventTranslator::TranslatorInstance().SetDefaultLanguage(Language);
     // set fallback language
