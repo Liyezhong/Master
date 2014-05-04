@@ -153,9 +153,7 @@ bool CDataProgramListVerifier::VerifyData(CDataContainerBase* p_DataProgramList)
                 VerifiedData = false;
             }
 
-            QString NextStepID = p_Program->GetNextFreeStepID(false).mid(0);
-
-            if (!(NextStepID.toInt() >= PROGRAM_STEPS_MIN)) {
+            if (p_Program->GetNumberOfSteps() < PROGRAM_STEPS_MIN) {
                 Global::EventObject::Instance().RaiseEvent(EVENT_DM_PROG_STEP_COUNT_LESS_LIMIT,
                                                            Global::tTranslatableStringList() <<  p_Program->GetName()
                                                            << QString::number(PROGRAM_STEPS_MIN) << QString::number(PROGRAM_STEPS_MAX),
