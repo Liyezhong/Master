@@ -7,7 +7,7 @@
                 <Parameter Key="LoopCounterForCleaning" Value="30"/>
             </Function>
             <Function Key="Base" name="" sequence="">
-                <Parameter Key="PressureDrift" Value="4.29497e+09"/>
+                <Parameter Key="PressureDrift" Value="1.9"/>
             </Function>
             <Function Key="BottleCheck" name="" sequence="">
                 <Parameter Key="PressureBuildForBCovertime" Value="30s"/>

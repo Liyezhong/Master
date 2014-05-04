@@ -166,7 +166,7 @@ HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
     strctHWMonitor.TempRTBottom2		= mp_IDeviceProcessing->RTGetRecentTemperature(RT_BOTTOM,1);
 	strctHWMonitor.TempRTSide			= mp_IDeviceProcessing->RTGetRecentTemperature(RT_SIDE,0);
     strctHWMonitor.TempOvenBottom1		= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_BOTTOM,0);
-    strctHWMonitor.TempOvenBottom2		= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_BOTTOM,2);
+    strctHWMonitor.TempOvenBottom2		= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_BOTTOM,1);
 	strctHWMonitor.TempOvenTop			= mp_IDeviceProcessing->OvenGetRecentTemperature(OVEN_TOP,0);
 	strctHWMonitor.OvenLidStatus		= mp_IDeviceProcessing->OvenGetRecentLidStatus();
 	strctHWMonitor.RetortLockStatus		= mp_IDeviceProcessing->RTGetRecentLockStatus();
