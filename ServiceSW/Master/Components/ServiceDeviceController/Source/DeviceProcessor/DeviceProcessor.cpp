@@ -803,7 +803,8 @@ void DeviceProcessor::OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdTyp
     {
         //Calibration to 0 (+/-0.2Kpa) and save to the config file;
         mp_PressPump->WritePressureDrift(CurrentPressure);
-        emit ReturnMessagetoMain(Service::CMessageString::MSG_DEVICE_PRESSURE_SENSOR_CALIBRATION_SUCCESS);
+        QString strDriftTip = QString("%1").arg(CurrentPressure);
+        emit ReturnMessagetoMain(Service::CMessageString::MSG_DEVICE_PRESSURE_SENSOR_CALIBRATION_SUCCESS + strDriftTip);
         return;
     }
     else

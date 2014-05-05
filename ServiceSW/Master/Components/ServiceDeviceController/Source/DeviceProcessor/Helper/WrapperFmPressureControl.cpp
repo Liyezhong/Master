@@ -27,7 +27,7 @@
 #include <QtDebug>
 #include <unistd.h>
 
-const qint32 UNDEFINED = -1; //!< undefined value for pressure and control status
+const qint32 UNDEFINED = -999999; //!< undefined value for pressure and control status
 const qint32 TOLERANCE = 10; //!< tolerance value for calculating inside and outside range
 
 /****************************************************************************/
@@ -193,7 +193,7 @@ void WrapperFmPressureControl::OnSetFan(quint32 /*InstanceID*/, ReturnCode_t Ret
  *
  */
 /****************************************************************************/
-float WrapperFmPressureControl::GetPressure(quint8 Index)
+float WrapperFmPressureControl::GetPressure(quint8 sensorIndex)
 {
 
     float RetValue;
@@ -202,7 +202,7 @@ float WrapperFmPressureControl::GetPressure(quint8 Index)
 
     if((Now - LastTime) > 200)
     {
-        bool ok = HandleErrorCode(m_pPressureControl->ReqActPressure(Index));
+        bool ok = HandleErrorCode(m_pPressureControl->ReqActPressure(sensorIndex));
         if (!ok)
         {
             RetValue = UNDEFINED;

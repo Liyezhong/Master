@@ -415,7 +415,7 @@ void CMessageString::RetranslateUI()
     MSG_SERIALNUMBER_ERROR = (QApplication::translate("Service", "ERROR: Set Module SerialNumber Failure.", 0, QApplication::UnicodeUTF8));                                    //!< Set module serial number error message
     MSG_DEVICE_RELEASE_PRESSURE_FAILED = (QApplication::translate("Service", "ERROR: Release pressure failure.", 0, QApplication::UnicodeUTF8));                       //!< release pressure failed.
     MSG_DEVICE_PRESSURE_SENSOR_CALIBRATION_FAILED = (QApplication::translate("Service", "ERROR: Pressure sensor calibration failure, Please confirm the air system is not blocked and open the retort lid do calibrate again!", 0, QApplication::UnicodeUTF8));            //!< Pressure sensor calibration failed.
-    MSG_DEVICE_PRESSURE_SENSOR_CALIBRATION_SUCCESS = (QApplication::translate("Service", " Pressure sensor calibration is successful! ", 0, QApplication::UnicodeUTF8));           //!< Pressure sensor calibration successfull.
+    MSG_DEVICE_PRESSURE_SENSOR_CALIBRATION_SUCCESS = (QApplication::translate("Service", " Pressure sensor calibration is successful! Pressure drift value:", 0, QApplication::UnicodeUTF8));           //!< Pressure sensor calibration successfull.
 
 }
 
