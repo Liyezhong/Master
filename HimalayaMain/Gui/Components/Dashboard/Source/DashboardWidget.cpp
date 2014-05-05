@@ -176,7 +176,7 @@ void CDashboardWidget::OnRetortLockStatusChanged(const MsgClasses::CmdLockStatus
             mp_MessageDlg->SetIcon(QMessageBox::Information);
             mp_MessageDlg->SetTitle(CommonString::strInforMsg);
             mp_MessageDlg->SetText(m_strAddCassete);
-            mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+            mp_MessageDlg->SetButtonText(1, CommonString::strYes);
             mp_MessageDlg->SetButtonText(3, CommonString::strNo);
             mp_MessageDlg->HideCenterButton();
             if (mp_MessageDlg->exec())
