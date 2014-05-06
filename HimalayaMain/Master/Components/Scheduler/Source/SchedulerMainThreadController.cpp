@@ -1718,9 +1718,16 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
 {
     m_Mutex.lock();
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType(),
-                                                                                        Cmd.ProgramEndDateTime())));
+                                                                                     Cmd.ProgramEndDateTime())));
     m_Mutex.unlock();
     this->SendAcknowledgeOK(Ref);
+
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000, "S8" , true, true));
+    Q_ASSERT(commandPtr);
+    //Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+    return;
 
     //Check for Service
     DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
@@ -2129,11 +2136,11 @@ ERROR:
         //for debug
         LogDebug(QString("Error while init, Current state of Scheduler is: %1").arg(m_SchedulerMachine->GetCurrentState()));
     }
-    m_TickTimer.start();
+    //m_TickTimer.start();
 
 	// Create HeatingStrategy
-	mp_HeatingStrategy = QSharedPointer<HeatingStrategy>(new HeatingStrategy(this,
-							m_SchedulerCommandProcessor, mp_DataManager));
+   // mp_HeatingStrategy = QSharedPointer<HeatingStrategy>(new HeatingStrategy(this,
+        //					m_SchedulerCommandProcessor, mp_DataManager));
 
 }
 

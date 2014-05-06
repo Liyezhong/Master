@@ -68,7 +68,7 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     m_btnGroup.addButton(ui->pauseButton, Dashboard::secondButton);
 
     CONNECTSIGNALSLOT(&m_btnGroup, buttonClicked(int), this, OnButtonClicked(int));
-    ui->startButton->setEnabled(false);
+    ui->startButton->setEnabled(true);
     ui->pauseButton->setEnabled(false);
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
 
