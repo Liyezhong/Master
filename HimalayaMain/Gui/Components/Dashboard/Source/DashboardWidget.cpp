@@ -473,9 +473,6 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
 
 void CDashboardWidget::CheckPreConditionsToRunProgram()
 {
-    mp_DataConnector->SendProgramAction("", DataManager::PROGRAM_START, m_EndDateTime);
-    ui->programPanelWidget->ChangeStartButtonToStopState();
-    return;
 
     if ("" == m_SelectedProgramId)
         return;
