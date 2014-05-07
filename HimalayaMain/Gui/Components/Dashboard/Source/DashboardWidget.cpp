@@ -201,7 +201,7 @@ void CDashboardWidget::OnProgramWillComplete()
     emit UpdateUserSetting(*m_pUserSetting);
 
     mp_MessageDlg->SetIcon(QMessageBox::Information);
-    mp_MessageDlg->SetTitle(CommonString::strWarning);
+    mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
     QString strTemp(m_strProgramComplete);
     strTemp = strTemp.arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME);
     mp_MessageDlg->SetText(strTemp);
@@ -237,8 +237,8 @@ void CDashboardWidget::OnProgramBeginAbort()
 //this function will be invoked after program Abort and completed
 void CDashboardWidget::TakeOutSpecimenAndWaitRunCleaning()
 {
-    mp_MessageDlg->SetIcon(QMessageBox::Warning);
-    mp_MessageDlg->SetTitle(CommonString::strWarning);
+    mp_MessageDlg->SetIcon(QMessageBox::Information);
+    mp_MessageDlg->SetTitle(CommonString::strConfirmMsg);
     mp_MessageDlg->SetText(m_strTakeOutSpecimen);
     mp_MessageDlg->SetButtonText(1, CommonString::strOK);
     mp_MessageDlg->HideButtons();
