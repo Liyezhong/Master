@@ -558,7 +558,23 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSe
         {
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
-            heatingSensor.OTCheckPassed = false;
+
+            // For LA RV Tube and LA Wax Trap, we only check HeatingOverTime for the scenario which belong to OTScenarioList
+            if (AL_TUBE1 == LAType || AL_TUBE2 == LAType)
+            {
+                if (-1 != static_cast<LASensor&>(heatingSensor).OTCheckScenarioList[iter->Id].indexOf(m_CurScenario))
+                {
+                    heatingSensor.OTCheckPassed = false;
+                }
+                else
+                {
+                    heatingSensor.OTCheckPassed = true;
+                }
+            }
+            else //for Retort Level Sensor
+            {
+                heatingSensor.OTCheckPassed = false;
+            }
             iter->OTTargetTemperature = iter->TemperatureOffset;
             return DCL_ERR_FCT_CALL_SUCCESS;
         }
@@ -818,6 +834,32 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     {
         return false;
     }
+    //Add other attributes for LA RV Tube 
+    iter = sequenceList.begin();
+    for (; iter != sequenceList.end(); ++iter)
+    {
+       //For checking if user input temperature is needed
+        DataManager::FunctionKey_t funcKey;
+        funcKey.key = "Heating";
+        funcKey.name = m_LARVTube.sensorName;
+        funcKey.sequence = *iter;
+        QString strOTList = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_LARVTube.devName, funcKey, "OTScenarioList");
+        QStringList  strList = strOTList.split(",");
+        QStringList::const_iterator strIter = strList.begin();
+        qint32 scenario = 0;
+        bool ok = false;
+        QVector<qint32> OTCheckList;
+        for (; strIter != strList.end(); ++strIter)
+        {
+            scenario = (*strIter).toInt(&ok);
+            if (false == ok)
+            {
+                return false;
+            }
+            OTCheckList.push_back(scenario);
+        }
+        m_LARVTube.OTCheckScenarioList.insert(*iter, OTCheckList);
+    }
 
     //For LA Wax Trap
     m_LAWaxTrap.devName = "LA";
@@ -830,6 +872,34 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     {
         return false;
     }
+
+    //Add other attributes for LA Wax Trap
+    iter = sequenceList.begin();
+    for (; iter != sequenceList.end(); ++iter)
+    {
+       //For checking if user input temperature is needed
+        DataManager::FunctionKey_t funcKey;
+        funcKey.key = "Heating";
+        funcKey.name = m_LAWaxTrap.sensorName;
+        funcKey.sequence = *iter;
+        QString strOTList = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_LAWaxTrap.devName, funcKey, "OTScenarioList");
+        QStringList  strList = strOTList.split(",");
+        QStringList::const_iterator strIter = strList.begin();
+        qint32 scenario = 0;
+        bool ok = false;
+        QVector<qint32> OTCheckList;
+        for (; strIter != strList.end(); ++strIter)
+        {
+            scenario = (*strIter).toInt(&ok);
+            if (false == ok)
+            {
+                return false;
+            }
+            OTCheckList.push_back(scenario);
+        }
+        m_LAWaxTrap.OTCheckScenarioList.insert(*iter, OTCheckList);
+    }
+
     return true;
 }
 

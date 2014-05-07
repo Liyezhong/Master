@@ -99,6 +99,10 @@ struct RVOutlet
     bool                OTCheckPassed; // flag to indicate if OT checking is passed or not
 };
 
+struct LASensor : public HeatingSensor
+{
+    QMap< QString, QVector<qint32> >     OTCheckScenarioList;
+};
 
 /****************************************************************************/
 /*!
@@ -139,8 +143,8 @@ private:
     OvenSensor                          m_OvenBottom;
     RVSensor                            m_RVRod;
 	RVOutlet							m_RVOutlet;
-    HeatingSensor						m_LARVTube;
-    HeatingSensor						m_LAWaxTrap;
+    LASensor                            m_LARVTube;
+    LASensor                            m_LAWaxTrap;
 
     bool ConstructHeatingSensorList();
     bool ConstructHeatingSensor(HeatingSensor& heatingSensor, const QStringList& sequenceList);

@@ -44,6 +44,7 @@
                 <Parameter Key="NominalTemperature" Value="80"/>
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
+                <Parameter Key="OTScenarioList" Value="260"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
             </Function>
             <Function Key="Heating" name="WaxTrap" sequence="1">
@@ -54,6 +55,7 @@
                 <Parameter Key="NominalTemperature" Value="80"/>
                 <Parameter Key="ResetTime" Value="1000"/>
                 <Parameter Key="ScenarioList" Value="0"/>
+                <Parameter Key="OTScenarioList" Value="260"/>
                 <Parameter Key="SlopeTempChange" Value=""/>
             </Function>
             <Function Key="Overflow" name="" sequence="">
