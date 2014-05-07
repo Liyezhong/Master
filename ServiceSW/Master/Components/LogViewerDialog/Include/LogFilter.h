@@ -9,9 +9,9 @@
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Biosystems Shanghai.
  *
- *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2010 by Leica Biosystems Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -23,7 +23,6 @@
 
 #include <QVector>
 #include <QList>
-#include <QStandardItem>
 #include <QStandardItemModel>
 #include <QString>
 #include <QStringList>
@@ -84,6 +83,13 @@ private:
      */
     /****************************************************************************/
     bool CheckFileInfo(const QString& line);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Release resource.
+     */
+    /****************************************************************************/
+    void ReleaseModelItem();
 
 public:
     static quint8 m_AllTypes;

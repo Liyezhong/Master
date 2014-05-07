@@ -9,9 +9,9 @@
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Biosystems Shanghai.
  *
- *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2010 by Leica Biosystems Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -44,12 +44,27 @@ CLogFilter::~CLogFilter()
 {
     try {
         m_Columns.clear();
+        ReleaseModelItem();
         m_Model.clear();
         m_SubModel.clear();
         m_LogItems.clear();
     }
     catch (...) {
 
+    }
+}
+
+void CLogFilter::ReleaseModelItem()
+{
+    QList<QStandardItem *> list;
+    for(int i=0; i<m_Model.rowCount(); i++) {
+        list = m_Model.takeRow(i);
+        for(int j=0; j<list.size(); j++) {
+            if (list[j]) {
+                delete list[j];
+            }
+        }
+        list.clear();
     }
 }
 
@@ -154,6 +169,7 @@ bool CLogFilter::CheckFileInfo(const QString &line)
 bool CLogFilter::InitData()
 {
     bool skipHeader = false;
+    ReleaseModelItem();
     m_Model.clear();
     QFile File(m_Filename);
     bool Flag = false;
@@ -202,6 +218,7 @@ QStandardItemModel* CLogFilter::GetItemModel(quint64 EventTypes)
         return RetModel;
     }
     else {
+        ReleaseModelItem();
         m_Model.clear();
         if (EventTypes == m_AllTypes) {
             for(int i=0; i<m_LogItems.size(); i++) {

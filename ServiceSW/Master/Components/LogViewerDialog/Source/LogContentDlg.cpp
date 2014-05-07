@@ -9,9 +9,9 @@
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Biosystems Shanghai.
  *
- *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2010 by Leica Biosystems Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -31,11 +31,10 @@ namespace LogViewer {
 CLogContentDlg::CLogContentDlg(const QStringList& HeaderLabels, QList<int> &Columns, QWidget *p_Parent) :
     MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CLogContentDlg),
     mp_Model(NULL),
-    mp_LogFilter(NULL)
+    mp_LogFilter(NULL),
+    m_HeaderLabels(HeaderLabels),
+    m_Columns(Columns)
 {
-    m_HeaderLabels = HeaderLabels;
-    m_Columns = Columns;
-
     mp_Ui->setupUi(GetContentFrame());
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->resize(600,400);

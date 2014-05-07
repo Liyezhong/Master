@@ -9,9 +9,9 @@
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Biosystems Shanghai.
  *
- *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2010 by Leica Biosystems Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -108,6 +108,8 @@ CSystemLogViewerDlg::~CSystemLogViewerDlg()
 
 void CSystemLogViewerDlg::SelectionChanged(QModelIndex Index)
 {
+    Q_UNUSED(Index);
+
     QItemSelectionModel* SelectionModel = mp_TableWidget->selectionModel();
     m_SelectedRowValues = SelectionModel->selectedIndexes(); //!< list of "selected" items
 
@@ -194,6 +196,8 @@ void CSystemLogViewerDlg::SetTableModel()
     QStringList HeaderLabels;
 
     mp_Model = mp_LogFilter->GetItemModel(m_EventTypes);
+    if (mp_Model->rowCount() == 0)
+        return ;
 
     HeaderLabels.append(QApplication::translate("LogViewer::CSystemLogViewerDlg", "Date", 0, QApplication::UnicodeUTF8));
     HeaderLabels.append(QApplication::translate("LogViewer::CSystemLogViewerDlg", "TimeStamp", 0, QApplication::UnicodeUTF8));
