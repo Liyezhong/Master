@@ -73,6 +73,18 @@ public:
     /****************************************************************************/
     bool InitDialog(QString Path);
 
+protected:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function changeEvent
+     *
+     *  \param p_Event = QEvent type parameter
+     *
+     *  \return from changeEvent
+     */
+    /****************************************************************************/
+    void changeEvent(QEvent *p_Event);
+
 private:
     Ui::CSystemLogViewerDlg *mp_Ui;                 //!< User Interface
     MainMenu::CBaseTable *mp_TableWidget;           //!< Table for the system log information
@@ -85,6 +97,22 @@ private:
     quint8 m_EventTypes;                           //!< Event Types of previously diaplayed.
     CRecoveryActionFilter *mp_RecoveryActionFilter; //!< Recovery Action Filter to get Recovery Action Text
     QHash<QString, qint64> m_PositionItems;
+    QString m_strOK;
+    QString m_strWarning;
+    QString m_strMsgSelectRowText;
+    QString m_strMsgRecoveryActionTitle;
+    QString m_strMsgRecoveryActionText;
+    QString m_strErrorCode;
+    QString m_strDescription;
+    QString m_strRecoveryActionText;
+    QString m_strRecoveryActionTitle;
+    QString m_strMsgServerHelpTitle;
+    QString m_strMsgServerHelpText;
+    QString m_strDate;
+    QString m_strTimeStamp;
+    QString m_strEventID;
+    QString m_strType;
+    QString m_strRecoveryActionInfoTitle;
 
 private:
     /****************************************************************************/
@@ -101,6 +129,15 @@ private:
      */
     /****************************************************************************/
     void SetTableModel();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function RetranslateUI
+     *
+     *  \return from RetranslateUI
+     */
+    /****************************************************************************/
+    void RetranslateUI();
 
 public slots:
     /****************************************************************************/

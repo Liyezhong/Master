@@ -43,7 +43,7 @@ CStartup::CStartup() : QObject(),
     mp_MessageBox = new MainMenu::CMessageDlg(mp_MainWindow);
 
     // Initialize Strings
-    Service::CMessageString::RetranslateUI();
+    RetranslateUI();
 
     // ServiceConnector
     mp_ServiceConnector = new Core::CServiceGUIConnector(mp_MainWindow);
@@ -718,25 +718,25 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
         QList<int> Columns;
 
         if (FileName.startsWith("Himalaya_Service")) {  // Service log
-            HeaderLabels.append(QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8));
-            HeaderLabels.append(QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8));
-            HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(m_strDate);
+            HeaderLabels.append(m_strTimeStamp);
+            HeaderLabels.append(m_strDescription);
             Columns.append(0);
             Columns.append(3);
         }
         else if (FileName.startsWith("RecoveryActionText")) { // Recovery Action
-            HeaderLabels.append(QApplication::translate("Core::CStartup", "Error", 0, QApplication::UnicodeUTF8));
-            HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
-            HeaderLabels.append(QApplication::translate("Core::CStartup", "Recovery Action Text", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(m_strError);
+            HeaderLabels.append(m_strDescription);
+            HeaderLabels.append(m_strRecoveryActionText);
             Columns.append(0);
             Columns.append(1);
             Columns.append(2);
         }
         else if (FileName.startsWith("Himalaya_SW_Update_Events"))  {// SW Update log
-            HeaderLabels.append(QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8));
-            HeaderLabels.append(QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8));
-            HeaderLabels.append(QApplication::translate("Core::CStartup", "Type", 0, QApplication::UnicodeUTF8));
-            HeaderLabels.append(QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8));
+            HeaderLabels.append(m_strDate);
+            HeaderLabels.append(m_strTimeStamp);
+            HeaderLabels.append(m_strType);
+            HeaderLabels.append(m_strDescription);
             Columns.append(0);
             Columns.append(3);
             Columns.append(5);
@@ -764,6 +764,13 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
 void CStartup::RetranslateUI()
 {
     Service::CMessageString::RetranslateUI();
+
+    m_strDate = QApplication::translate("Core::CStartup", "Date", 0, QApplication::UnicodeUTF8);
+    m_strError = QApplication::translate("Core::CStartup", "Error", 0, QApplication::UnicodeUTF8);
+    m_strType = QApplication::translate("Core::CStartup", "Type", 0, QApplication::UnicodeUTF8);
+    m_strTimeStamp = QApplication::translate("Core::CStartup", "TimeStamp", 0, QApplication::UnicodeUTF8);
+    m_strDescription = QApplication::translate("Core::CStartup", "Description", 0, QApplication::UnicodeUTF8);
+    m_strRecoveryActionText = QApplication::translate("Core::CStartup", "Recovery Action Text", 0, QApplication::UnicodeUTF8);
     /*if (mp_ServiceConnector->GetSoftwareMode() == PlatformService::SERVICE_MODE) {
         ServiceGuiInit();
     } else {

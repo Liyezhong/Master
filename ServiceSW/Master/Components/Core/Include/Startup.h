@@ -148,6 +148,13 @@ private:
     MainMenu::CMessageDlg *mp_MessageBox;
     Core::CCalibrationHanlder *mp_CalibrationHandler;
 
+    QString m_strDate;
+    QString m_strTimeStamp;
+    QString m_strDescription;
+    QString m_strError;
+    QString m_strRecoveryActionText;
+    QString m_strType;
+
 private slots:
     void SetDateTime(QDateTime DateTime);
     void UpdateDateTime();
