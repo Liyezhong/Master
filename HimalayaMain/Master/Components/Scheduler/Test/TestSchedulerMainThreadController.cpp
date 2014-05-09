@@ -145,7 +145,7 @@ public:
 
     MOCK_METHOD1(ALDraining, ReturnCode_t(quint32 DelayTime));
 
-    MOCK_METHOD1(ALFilling, ReturnCode_t(quint32 DelayTime));
+    MOCK_METHOD2(ALFilling, ReturnCode_t(quint32 DelayTime, bool EnableInsufficientCheck));
 
     MOCK_METHOD0(ALGetRecentPressure, qreal());
 
@@ -479,7 +479,7 @@ void TestSchedulerMainThreadController::initTestCase()
 //            .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 
-    EXPECT_CALL(*mp_IDeviceProcessing, ALFilling(_))
+    EXPECT_CALL(*mp_IDeviceProcessing, ALFilling(_, _))
 //            .Times(AtLeast(1))
             .WillRepeatedly(Return(DCL_ERR_FCT_CALL_SUCCESS));
 

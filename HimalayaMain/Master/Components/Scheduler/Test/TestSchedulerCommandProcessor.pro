@@ -19,3 +19,4 @@ HEADERS += ../Include/*.h \
 UseDepLibs(Global DataLogging Threads NetCommands DeviceControl DataManager RemoteCareManager \
            RemoteCareController HeartBeatManager EventHandler GPIOManager ExternalProcessController \
            NetworkComponents StateMachines PasswordManager SWUpdateManager ExportController ImportExport)
+LIBS += -ldl
