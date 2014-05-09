@@ -230,6 +230,56 @@ float WrapperFmPressureControl::GetPressure(quint8 sensorIndex)
 
 /****************************************************************************/
 /*!
+ *  \brief Script-API:Get actual pressure from pressure sensor
+ *
+ * This method performs reading of actual pressure
+ *
+ *  Examples:
+ *  \dontinclude pressurecontrol.js
+ *  \skipline [PressureControl.GetPressure]
+ *  \until    [PressureControl.GetPressure]
+ *
+ *  \return actualpressure, else UNDEFINED in caseof error
+ *
+ */
+/****************************************************************************/
+float WrapperFmPressureControl::GetPressureFromSensor(quint8 sensorIndex)
+{
+
+    float RetValue = UNDEFINED;
+    static qint64 LastTime = 0;
+    qint64 Now = QDateTime::currentMSecsSinceEpoch();
+
+    if((Now - LastTime) > 200)
+    {
+        bool ok = HandleErrorCode(m_pPressureControl->ReqActPressure(sensorIndex));
+        if (!ok)
+        {
+            RetValue = UNDEFINED;
+        }
+        else
+        {
+            qint32 ret = m_LoopGetPressure.exec();
+            if (ret != 1)
+            {
+                RetValue = UNDEFINED;
+            }
+            else
+            {
+                RetValue = m_CurrentPressure;
+            }
+        }
+        LastTime = QDateTime::currentMSecsSinceEpoch();
+    }
+    else
+    {
+        RetValue = m_CurrentPressure;
+    }
+    return RetValue;
+}
+
+/****************************************************************************/
+/*!
  *  \brief Helper function, to set the pressure of Oven
  *
  *  \iparam NominalPressure Pressure to be set
