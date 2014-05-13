@@ -2489,7 +2489,7 @@ void SchedulerMainThreadController::Fill()
     LogDebug("Send cmd to DCL to Fill");
     CmdALFilling* cmd  = new CmdALFilling(500, this);
     //todo: get delay time here
-    if(m_NewProgramID.at(0) == 'C')// only cleaning program need to suck another 2 seconds after level sensor triggering.
+    if(!m_CurProgramID.isEmpty() && m_CurProgramID.at(0) == 'C')// only cleaning program need to suck another 2 seconds after level sensor triggering.
     {
         cmd->SetDelayTime(2000);
     }
