@@ -2489,7 +2489,14 @@ void SchedulerMainThreadController::Fill()
     LogDebug("Send cmd to DCL to Fill");
     CmdALFilling* cmd  = new CmdALFilling(500, this);
     //todo: get delay time here
-    cmd->SetDelayTime(2000);
+    if(m_NewProgramID.at(0) == 'C')// only cleaning program need to suck another 2 seconds after level sensor triggering.
+    {
+        cmd->SetDelayTime(2000);
+    }
+    else
+    {
+        cmd->SetDelayTime(0);
+    }
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
     // For paraffin, Insufficient Check is NOT needed.
