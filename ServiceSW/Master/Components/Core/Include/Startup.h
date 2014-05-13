@@ -158,7 +158,7 @@ private:
 private slots:
     void SetDateTime(QDateTime DateTime);
     void UpdateDateTime();
-
+    void OnSelectTestOptions(int index);
 private:
     bool CurrentlyActive(MainMenu::CMenuGroup *p_Group, QWidget *p_Panel);
 

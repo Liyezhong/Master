@@ -23,8 +23,8 @@
 
 namespace MainMenu {
 
-CDlgWizardBase::CDlgWizardBase(QWidget *parent) :
-    MainMenu::CDialogFrame(parent),
+CDlgWizardBase::CDlgWizardBase(QWidget *parent, QMainWindow *pMainWindow) :
+    MainMenu::CDialogFrame(parent, pMainWindow),
     ui(new Ui::CDlgWizardBase)
 {
     ui->setupUi(this->GetContentFrame());

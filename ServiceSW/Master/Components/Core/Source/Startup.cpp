@@ -24,7 +24,8 @@
 #include "Core/Include/CMessageString.h"
 #include <QTextStream>
 #include <QApplication>
-
+#include <ServiceWidget/Include/DlgWizardSelectTestOptions.h>
+#include <Core/Include/SelectTestOptions.h>
 
 namespace Core {
 
@@ -365,8 +366,18 @@ void CStartup::LoadCommonComponenetsTwo()
 void CStartup::GuiInit()
 {
     mp_USBKeyValidator = new Core::CUSBKeyValidator(this);
+
+    MainMenu::CDlgWizardSelectTestOptions* pDlgWizardSelectTestOptions = new MainMenu::CDlgWizardSelectTestOptions(NULL, mp_MainWindow);
+    CONNECTSIGNALSLOT(pDlgWizardSelectTestOptions, ClickedNextButton(int), this, OnSelectTestOptions(int));
+    pDlgWizardSelectTestOptions->exec();
+    delete pDlgWizardSelectTestOptions;
+
 }
 
+void CStartup::OnSelectTestOptions(int index)
+{
+    CSelectTestOptions::SetCurTestMode(ManufacturalTestMode_t(index));
+}
 /****************************************************************************/
 /*!
  *  \brief Initializes the Service user interface
