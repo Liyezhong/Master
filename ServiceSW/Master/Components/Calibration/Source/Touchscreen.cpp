@@ -22,7 +22,7 @@
 /****************************************************************************/
 
 #include "Calibration/Include/Touchscreen.h"
-//#include "Main/Include/HimalayaServiceEventCodes.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 #include "Global/Include/Utils.h"
 #include "ui_Touchscreen.h"
 #include <QDebug>
@@ -83,7 +83,7 @@ void CTouchscreen::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CTouchscreen::TouchScreenCalibration()
 {
-    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CALIBRATION_TOUCHSCREEN);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CALIBRATION_TOUCHSCREEN);
 
     if (QFile::exists(qApp->applicationDirPath() + "/TouchscreenCalibration.sh") && QFile::exists(qApp->applicationDirPath() + "/himalaya_service")) {
         if(mp_MainWindow->GetSaMUserMode() == QString("Service")) {

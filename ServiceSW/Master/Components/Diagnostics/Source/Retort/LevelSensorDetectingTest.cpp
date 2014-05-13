@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/WaitDialog.h"
@@ -223,6 +224,7 @@ void CLevelSensorDetectingTest::ForthConfirmResult(void)
 
 void CLevelSensorDetectingTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_SUCCESS);
     qDebug() << "Level sensor detecting test succeeded!";
 
     // display success message
@@ -246,6 +248,7 @@ void CLevelSensorDetectingTest::Succeed(void)
 
 void CLevelSensorDetectingTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_FAILURE);
     qDebug() << "Level sensor detecting test failed!";
 
     // display failure message

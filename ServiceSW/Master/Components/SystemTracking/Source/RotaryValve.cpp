@@ -24,6 +24,7 @@
 
 #include "SystemTracking/Include/DlgModifyModule.h"
 #include "SystemTracking/Include/DlgModifySubModule.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "ui_RotaryValve.h"
 
@@ -117,6 +118,7 @@ void CRotaryValve::UpdateSubModule(DataManager::CSubModule &SubModule)
 
 void CRotaryValve::ModifyRotaryValve(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_ROTARYVALVE_MODULE);
     qDebug() << "CRotaryValve::ModifyRotaryValve !";
 
     DataManager::CModuleDataList *pModuleList =
@@ -153,6 +155,7 @@ void CRotaryValve::ModifyRotaryValve(void)
 
 void CRotaryValve::ModifyHeater(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_ROTARYVALVE_HEATER_MODULE);
     qDebug() << "CRotaryValve::ModifyHeater !";
 
     this->ModifySubModule(MODULE_ROTARYVALVE, SUBMODULE_HEATER);
@@ -160,6 +163,7 @@ void CRotaryValve::ModifyHeater(void)
 
 void CRotaryValve::ModifyMotor(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_ROTARYVALVE_MOTOR_MODULE);
     qDebug() << "CRotaryValve::ModifyMotor !";
 
     this->ModifySubModule(MODULE_ROTARYVALVE, SUBMODULE_MOTOR);

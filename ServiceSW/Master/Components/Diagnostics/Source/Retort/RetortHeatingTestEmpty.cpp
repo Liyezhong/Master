@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 
@@ -82,6 +83,7 @@ void CHeatingTestEmpty::StartHeating(void)
 
 void CHeatingTestEmpty::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST_SUCCESS);
     qDebug() << "Retort Heating test empty succeeded!";
 
     // display success message
@@ -107,6 +109,7 @@ void CHeatingTestEmpty::Succeed(void)
 
 void CHeatingTestEmpty::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST_FAILURE);
     qDebug() << "Retort Heating test empty failed!";
 
     // display failure message

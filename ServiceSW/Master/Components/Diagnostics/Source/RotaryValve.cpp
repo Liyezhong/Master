@@ -30,6 +30,7 @@
 #include "Diagnostics/Include/RotaryValve/InitializingTest.h"
 #include "Diagnostics/Include/RotaryValve/SelectingTest.h"
 #include "Diagnostics/Include/RotaryValve/SealingTest.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 
 namespace Diagnostics {
@@ -68,6 +69,7 @@ CRotaryValve::~CRotaryValve()
 
 void CRotaryValve::StartInitializingTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST);
     qDebug() << "Rotary Valve: start initializing test";
 
     RotaryValve::CInitializingTest test;
@@ -95,6 +97,7 @@ void CRotaryValve::StartSelectingTest(void)
         return;
     }
 
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST);
     qDebug() << "Rotary Valve: start selecting test";
 
     RotaryValve::CSelectingTest test;
@@ -123,6 +126,7 @@ void CRotaryValve::StartSealingTest(void)
         return;
     }
 
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST);
     qDebug() << "Rotary Valve: start sealing test";
 
     RotaryValve::CSealingTest test;
@@ -132,6 +136,7 @@ void CRotaryValve::StartSealingTest(void)
 
 void CRotaryValve::StartHeatingTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_TEST);
     qDebug() << "Rotary Valve: start heatint property test";
 
     // RotaryValve::CHeatingTest test;

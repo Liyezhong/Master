@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/WaitDialog.h"
@@ -155,6 +156,7 @@ void CAirSystemTest::ForthReleaseVaccuum(void)
 
 void CAirSystemTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST_SUCCESS);
     qDebug() << "Air System test succeeded!";
 
     // display success message
@@ -176,6 +178,7 @@ void CAirSystemTest::Succeed(void)
 
 void CAirSystemTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST_FAILURE);
     qDebug() << "Air System test failed!";
 
     // display failure message

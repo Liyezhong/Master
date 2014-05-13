@@ -18,6 +18,7 @@
  */
 /****************************************************************************/
 
+#include "Main/Include/HimalayaServiceEventCodes.h"
 #include "Calibration/Include/PressureSensor.h"
 #include "ui_PressureSensor.h"
 #include "Global/Include/Utils.h"
@@ -80,7 +81,7 @@ void CPressureSensor::RetranslateUI()
 
 void CPressureSensor::StartCalibration(void)
 {
-    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CALIBRATION_PRESSURE_SENSOR);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CALIBRATION_PRESSURE_SENSOR);
     emit CalibrationPressureSensor();
 }
 

@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 
@@ -179,6 +180,7 @@ void CLidLockTest::ThirdCheckOpen(void)
 
 void CLidLockTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST_SUCCESS);
     qDebug() << "Lid lock test succeeded!";
 
     // display success message
@@ -200,6 +202,7 @@ void CLidLockTest::Succeed(void)
 
 void CLidLockTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST_FAILURE);
     qDebug() << "Lid lock test failed!";
 
     // display failure message

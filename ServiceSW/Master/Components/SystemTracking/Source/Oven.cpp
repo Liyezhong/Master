@@ -24,6 +24,7 @@
 
 #include "SystemTracking/Include/DlgModifyModule.h"
 #include "SystemTracking/Include/DlgModifySubModule.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "ui_Oven.h"
 
@@ -117,6 +118,7 @@ void COven::UpdateSubModule(DataManager::CSubModule &SubModule)
 
 void COven::ModifyOven(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_OVEN_MODULE);
     qDebug() << "COven::ModifyOven !";
 
     DataManager::CModuleDataList *pModuleList =
@@ -152,6 +154,7 @@ void COven::ModifyOven(void)
 
 void COven::ModifyHeater(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_OVEN_HEATER_MODULE);
     qDebug() << "COven::ModifyHeater !";
 
     this->ModifySubModule(MODULE_OVEN, SUBMODULE_HEATER);
@@ -159,6 +162,7 @@ void COven::ModifyHeater(void)
 
 void COven::ModifyCoverSensor(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_OVEN_COVER_SENSOR_MODULE);
     qDebug() << "COven::ModifyCoverSensor !";
 
     this->ModifySubModule(MODULE_OVEN, SUBMODULE_COVERSENSOR);

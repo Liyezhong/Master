@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/WaitDialog.h"
@@ -75,6 +76,7 @@ void CLevelSensorHeatingTest::StartHeating(void)
 
 void CLevelSensorHeatingTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST_SUCCESS);
     qDebug() << "Level sensor heating test succeeded!";
 
     // display success message
@@ -102,6 +104,7 @@ void CLevelSensorHeatingTest::Succeed(void)
 
 void CLevelSensorHeatingTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST_FAILURE);
     qDebug() << "Level sensor heating test failed!";
 
     // display failure message

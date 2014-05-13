@@ -26,7 +26,9 @@
 
 //#include "EventHandler/Include/CrisisEventHandler.h"
 
-#include "../Include/HimalayaEventCodes.h"
+//#include "../Include/HimalayaEventCodes.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
+#include "Global/Include/Utils.h"
 
 #include "ui_MainControl.h"
 
@@ -106,6 +108,8 @@ void CMainControl::UpdateSubModule(DataManager::CSubModule &SubModule)
 
 void CMainControl::ModifyASB3(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_MAIN_CONTROL_SUBMODULE,
+                                               Global::tTranslatableStringList()<<"ASB3");
     qDebug() << "CMainControl::ModifyASB3 !";
 
     this->ModifySubModule(MODULE_MAINCONTROL, SUBMODULE_ASB3);
@@ -113,6 +117,8 @@ void CMainControl::ModifyASB3(void)
 
 void CMainControl::ModifyASB5(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_MAIN_CONTROL_SUBMODULE,
+                                               Global::tTranslatableStringList()<<"ASB5");
     qDebug() << "CMainControl::ModifyASB5 !";
 
     this->ModifySubModule(MODULE_MAINCONTROL, SUBMODULE_ASB5);
@@ -120,6 +126,8 @@ void CMainControl::ModifyASB5(void)
 
 void CMainControl::ModifyASB15(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_MAIN_CONTROL_SUBMODULE,
+                                               Global::tTranslatableStringList()<<"ASB15");
     qDebug() << "CMainControl::ModifyASB15 !";
 
     this->ModifySubModule(MODULE_MAINCONTROL, SUBMODULE_ASB15);
@@ -127,6 +135,8 @@ void CMainControl::ModifyASB15(void)
 
 void CMainControl::ModifyTouchScreen(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_MAIN_CONTROL_SUBMODULE,
+                                               Global::tTranslatableStringList()<<"Touch Screen");
     qDebug() << "CMainControl::ModifyTouchScreen !";
 
     this->ModifySubModule(MODULE_MAINCONTROL, SUBMODULE_TOUCHSCREEN);

@@ -27,6 +27,9 @@
 #include "Diagnostics/Include/Oven/OvenHeatingTestEmpty.h"
 #include "Diagnostics/Include/Oven/OvenHeatingTestWithLiquid.h"
 #include "Diagnostics/Include/Oven/CoverSensorTest.h"
+#include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
+
 
 
 namespace Diagnostics {
@@ -55,6 +58,7 @@ COven::~COven()
 
 void COven::StartHeatingTestEmpty(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST);
     qDebug() << "Oven: start heating test empty";
 
     //Oven::CHeatingTestEmpty test;
@@ -66,6 +70,7 @@ void COven::StartHeatingTestEmpty(void)
 
 void COven::StartHeatingTestWithLiquid(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST);
     qDebug() << "Oven: start heating test with liquid";
 
     //Oven::CHeatingTestWithLiquid test;
@@ -76,6 +81,7 @@ void COven::StartHeatingTestWithLiquid(void)
 
 void COven::StartCoverSensorTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST);
     qDebug() << "Oven: start cover sensor test";
 
     //Oven::CCoverSensorTest test;
