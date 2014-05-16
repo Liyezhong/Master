@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/WaitDialog.h"
@@ -166,6 +167,7 @@ void CFillingNDrainingTest::FifthDrain(void)
 
 void CFillingNDrainingTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_SUCCESS);
     qDebug() << "Filling and Draining Test succeeded!";
 
     // display success message
@@ -187,6 +189,7 @@ void CFillingNDrainingTest::Succeed(void)
 
 void CFillingNDrainingTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_FAILURE);
     qDebug() << "Filling and Draining Test failed!";
 
     // display failure message

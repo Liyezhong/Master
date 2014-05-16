@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 
@@ -71,6 +72,7 @@ void CVoltageTest::FirstConfirmVoltage(void)
 
 void CVoltageTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST_SUCCESS);
     qDebug() << "110V/220V Switching Test succeeded!";
 
     // display success message
@@ -92,6 +94,7 @@ void CVoltageTest::Succeed(void)
 
 void CVoltageTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST_FAILURE);
     qDebug() << "110V/220V Switching Test failed!";
 
     // display failure message

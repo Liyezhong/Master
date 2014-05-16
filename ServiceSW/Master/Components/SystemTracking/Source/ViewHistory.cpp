@@ -23,6 +23,7 @@
 #include <QFileInfoList>
 
 #include "Global/Include/SystemPaths.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "ui_ViewHistory.h"
 
@@ -162,6 +163,8 @@ void CViewHistory::ExecDialog(void)
         return;
     }
 
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_VIEWHISTORY_INSTRUMENT_SHOWDETAILS,
+                                               Global::tTranslatableStringList()<<m_InstrumentHistoryName);
     mp_ViewHistoryDlg->SetDialogTitle(tr("Module History"));
     mp_ViewHistoryDlg->resize(600,550);
 

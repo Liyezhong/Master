@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/WaitDialog.h"
@@ -172,6 +173,7 @@ void CSelectingTest::FifthCheckBubbles(void)
 
 void CSelectingTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST_SUCCESS);
     qDebug() << "Rotary Valve selecting test succeeded!";
 
     // display success message
@@ -193,6 +195,7 @@ void CSelectingTest::Succeed(void)
 
 void CSelectingTest::Fail(void)
 {
+     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST_FAILURE);
     qDebug() << "Rotary Valve selecting test failed!";
 
     // display failure message

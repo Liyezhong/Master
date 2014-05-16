@@ -31,6 +31,8 @@
 #include "Diagnostics/Include/System/UsbTest.h"
 #include "Diagnostics/Include/System/MainsRelayTest.h"
 #include "Diagnostics/Include/System/VoltageTest.h"
+#include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 
 namespace Diagnostics {
@@ -94,6 +96,7 @@ CSystem::~CSystem()
 
 void CSystem::StartBottleCheckingTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_BOTTLE_CHECKING_TEST);
     qDebug() << "System: start bottle checking test";
 
     System::CBottleCheckingTest test;
@@ -103,6 +106,7 @@ void CSystem::StartBottleCheckingTest(void)
 
 void CSystem::StartFillingNDrainingTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST);
     qDebug() << "System: start filling and draining test";
 
     System::CFillingNDrainingTest test;
@@ -112,11 +116,13 @@ void CSystem::StartFillingNDrainingTest(void)
 
 void CSystem::StartOverflowTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST);
     qDebug() << "System: start overflow test";
 }
 
 void CSystem::StartSpeakerTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST);
     qDebug() << "System: start speaker test";
 
     System::CSpeakerTest test;
@@ -126,6 +132,7 @@ void CSystem::StartSpeakerTest(void)
 
 void CSystem::StartAlarmTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST);
     qDebug() << "System: start alarm test";
 
     System::CAlarmTest test;
@@ -135,11 +142,13 @@ void CSystem::StartAlarmTest(void)
 
 void CSystem::StartEthernetTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ETHERNET_TEST);
     qDebug() << "System: start ethernet test";
 }
 
 void CSystem::StartUsbTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST);
     qDebug() << "System: start USB test";
 
     System::CUsbTest test;
@@ -149,6 +158,7 @@ void CSystem::StartUsbTest(void)
 
 void CSystem::StartMainsRelayTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST);
     qDebug() << "System: start Mains relay test";
 
     System::CMainsRelayTest test;
@@ -158,6 +168,7 @@ void CSystem::StartMainsRelayTest(void)
 
 void CSystem::StartVoltageTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST);
     qDebug() << "System: start 110V/220V switching test";
 
     System::CVoltageTest test;

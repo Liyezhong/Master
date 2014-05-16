@@ -18,6 +18,7 @@
  */
 /****************************************************************************/
 
+#include "Main/Include/HimalayaServiceEventCodes.h"
 #include "ServiceUpdates/Include/FirmwareUpdate.h"
 
 #include "Global/Include/Utils.h"
@@ -72,7 +73,7 @@ CFirmwareUpdate::~CFirmwareUpdate(void)
 
 void CFirmwareUpdate::UpdateFirmware(void)
 {
-
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SERVICEUPDATES_FIRMWARE_UPDATE);
 }
 
 } // end namespace ServiceUpdates

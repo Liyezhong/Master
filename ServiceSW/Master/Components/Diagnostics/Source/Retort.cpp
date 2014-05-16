@@ -31,6 +31,8 @@
 #include "Diagnostics/Include/Retort/RetortHeatingTestEmpty.h"
 #include "Diagnostics/Include/Retort/RetortHeatingTestWithLiquid.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
+
 
 namespace Diagnostics {
 
@@ -73,6 +75,7 @@ CRetort::~CRetort()
 
 void CRetort::StartLidLockTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST);
     qDebug() << "Retort: start lid lock test";
 
     //Retort::CLidLockTest test;
@@ -82,6 +85,7 @@ void CRetort::StartLidLockTest(void)
 
 void CRetort::StartLevelSensorHeatingTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST);
     qDebug() << "Retort: start level sensor heating test";
 
     //Retort::CLevelSensorHeatingTest test;
@@ -93,6 +97,7 @@ void CRetort::StartLevelSensorHeatingTest(void)
 
 void CRetort::StartLevelSensorDetectingTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST);
     qDebug() << "Retort: start level sensor detecting test";
 
     Retort::CLevelSensorDetectingTest test;
@@ -106,6 +111,7 @@ void CRetort::StartLevelSensorDetectingTest(void)
 
 void CRetort::StartHeatingTestEmpty(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST);
     qDebug() << "Retort: start heating test empty";
 
     //Retort::CHeatingTestEmpty test;
@@ -117,6 +123,7 @@ void CRetort::StartHeatingTestEmpty(void)
 
 void CRetort::StartHeatingTestWithLiquid(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST);
     qDebug() << "Retort: start heating test with liquid";
 
     //Retort::CHeatingTestWithLiquid test;
@@ -128,6 +135,8 @@ void CRetort::StartHeatingTestWithLiquid(void)
 
 void CRetort::OnStartLevelSensorDetectTest(qint32 Position)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST,
+                                               Global::tTranslatableStringList()<<QString::number(Position));
     qDebug() << "Retort: start level sensor detecting test with bottle position";
 
     emit GuiLevelSensorDetectingTest(Position);

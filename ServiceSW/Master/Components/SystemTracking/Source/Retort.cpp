@@ -24,6 +24,7 @@
 
 #include "SystemTracking/Include/DlgModifyModule.h"
 #include "SystemTracking/Include/DlgModifySubModule.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "ui_Retort.h"
 
@@ -122,6 +123,7 @@ void CRetort::UpdateSubModule(DataManager::CSubModule &SubModule)
 
 void CRetort::ModifyRetort(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_RETORT_MODULE);
     qDebug() << "CRetort::ModifyRetort !";
 
     DataManager::CModuleDataList *pModuleList =
@@ -158,6 +160,7 @@ void CRetort::ModifyRetort(void)
 
 void CRetort::ModifyHeater(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_RETORT_HEATER_MODULE);
     qDebug() << "CRetort::ModifyHeater !";
 
     this->ModifySubModule(MODULE_RETORT, SUBMODULE_HEATER);
@@ -165,6 +168,7 @@ void CRetort::ModifyHeater(void)
 
 void CRetort::ModifyLidLock(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_RETORT_LIDLOCK_MODULE);
     qDebug() << "CRetort::ModifyLidLock !";
 
     this->ModifySubModule(MODULE_RETORT, SUBMODULE_LIDLOCK);
@@ -172,6 +176,7 @@ void CRetort::ModifyLidLock(void)
 
 void CRetort::ModifyLevelSensor(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_RETORT_LEVELSENSOR_MODULE);
     qDebug() << "CRetort::ModifyLevelSensor !";
 
     this->ModifySubModule(MODULE_RETORT, SUBMODULE_LEVELSENSOR);

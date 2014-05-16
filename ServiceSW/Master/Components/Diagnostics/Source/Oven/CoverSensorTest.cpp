@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 
@@ -125,6 +126,7 @@ void CCoverSensorTest::SecondCheckClose(void)
 
 void CCoverSensorTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_SUCCESS);
     qDebug() << "Cover sensor test succeeded!";
 
     // display success message
@@ -146,6 +148,7 @@ void CCoverSensorTest::Succeed(void)
 
 void CCoverSensorTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_FAILURE);
     qDebug() << "Cover sensor test failed!";
 
     // display failure message

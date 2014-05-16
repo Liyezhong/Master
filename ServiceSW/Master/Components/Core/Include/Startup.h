@@ -93,6 +93,16 @@ public:
     void ServiceGuiInit();
     void ManufacturingGuiInit();
 
+    /****************************************************************************/
+    /**
+     * \brief Gets current user mode
+     * \return Current user mode
+     */
+    /****************************************************************************/
+    QString GetCurrentUserMode() {
+        return m_CurrentUserMode;
+    }
+
 private:
 
     QTimer      *mp_Clock;                                  //!< The main clock
@@ -147,6 +157,7 @@ private:
     //Message Box, Busy Box, Generic PoP Up.
     MainMenu::CMessageDlg *mp_MessageBox;
     Core::CCalibrationHanlder *mp_CalibrationHandler;
+    QString m_CurrentUserMode;                                              //!< Stores current user mode
 
     QString m_strDate;
     QString m_strTimeStamp;
@@ -158,7 +169,7 @@ private:
 private slots:
     void SetDateTime(QDateTime DateTime);
     void UpdateDateTime();
-
+    void OnSelectTestOptions(int index);
 private:
     bool CurrentlyActive(MainMenu::CMenuGroup *p_Group, QWidget *p_Panel);
 

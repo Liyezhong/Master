@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 
@@ -110,6 +111,7 @@ void CMainsRelayTest::SecondConfirmResult(void)
 
 void CMainsRelayTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_SUCCESS);
     qDebug() << "Mains Relay Test succeeded!";
 
     // display success message
@@ -131,6 +133,7 @@ void CMainsRelayTest::Succeed(void)
 
 void CMainsRelayTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_FAILURE);
     qDebug() << "Mains Relay Test failed!";
 
     // display failure message

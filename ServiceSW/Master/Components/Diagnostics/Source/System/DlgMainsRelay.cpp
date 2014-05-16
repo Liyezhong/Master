@@ -21,6 +21,8 @@
 #include "Diagnostics/Include/System/DlgMainsRelay.h"
 
 #include "ui_DlgMainsRelay.h"
+#include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 namespace Diagnostics {
 

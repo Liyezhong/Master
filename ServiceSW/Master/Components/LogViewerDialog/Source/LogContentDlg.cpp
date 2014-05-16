@@ -18,7 +18,9 @@
  */
 /****************************************************************************/
 
+#include "Main/Include/HimalayaServiceEventCodes.h"
 #include "Global/Include/SystemPaths.h"
+#include "Global/Include/EventObject.h"
 #include "LogViewerDialog/Include/LogContentDlg.h"
 #include "LogViewerDialog/Include/LogFilter.h"
 #include "ui_LogContentDlg.h"
@@ -66,6 +68,7 @@ CLogContentDlg::~CLogContentDlg()
 
 int CLogContentDlg::InitDialog(QString FilePath)
 {
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_LOGCONTENT_DISPLAY_INFO);
     mp_LogFilter = new CLogFilter(FilePath, m_Columns);
     if (mp_LogFilter->InitData() == false )
     {

@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "SystemTracking/Include/DlgModifySubModule.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "ui_LaSystem.h"
 
@@ -126,6 +127,7 @@ void CLaSystem::UpdateSubModule(DataManager::CSubModule &SubModule)
 
 void CLaSystem::ModifyPump(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_LASYSTEM_PUMP_MODULE);
     qDebug() << "CLaSystem::ModifyPump !";
 
     this->ModifySubModule(MODULE_LASYSTEM, SUBMODULE_PUMP);
@@ -133,6 +135,7 @@ void CLaSystem::ModifyPump(void)
 
 void CLaSystem::ModifyValve1(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_LASYSTEM_VALVE1_MODULE);
     qDebug() << "CLaSystem::ModifyValve1 !";
 
     this->ModifySubModule(MODULE_LASYSTEM, SUBMODULE_VALVE1);
@@ -140,6 +143,7 @@ void CLaSystem::ModifyValve1(void)
 
 void CLaSystem::ModifyValve2(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_LASYSTEM_VALVE2_MODULE);
     qDebug() << "CLaSystem::ModifyValve2 !";
 
     this->ModifySubModule(MODULE_LASYSTEM, SUBMODULE_VALVE2);
@@ -147,6 +151,7 @@ void CLaSystem::ModifyValve2(void)
 
 void CLaSystem::ModifyHeatingBelt1(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_LASYSTEM_HEATING_BELT1_MODULE);
     qDebug() << "CLaSystem::ModifyHeatingBelt1 !";
 
     this->ModifySubModule(MODULE_LASYSTEM, SUBMODULE_HEATINGBELT1);
@@ -154,6 +159,7 @@ void CLaSystem::ModifyHeatingBelt1(void)
 
 void CLaSystem::ModifyHeatingBelt2(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_LASYSTEM_HEATING_BELT2_MODULE);
     qDebug() << "CLaSystem::ModifyHeatingBelt2 !";
 
     this->ModifySubModule(MODULE_LASYSTEM, SUBMODULE_HEATINGBELT2);
@@ -161,6 +167,7 @@ void CLaSystem::ModifyHeatingBelt2(void)
 
 void CLaSystem::ModifyPressureSensor(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_LASYSTEM_PRESSURE_SENSOR_MODULE);
     qDebug() << "CLaSystem::ModifyPressureSensor !";
 
     this->ModifySubModule(MODULE_LASYSTEM, SUBMODULE_PRESSURESENSOR);
@@ -168,6 +175,7 @@ void CLaSystem::ModifyPressureSensor(void)
 
 void CLaSystem::ModifyCarbonFilter(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_LASYSTEM_CARBON_FILTER_MODULE);
     qDebug() << "CLaSystem::ModifyCarbonFilter !";
 
     this->ModifySubModule(MODULE_LASYSTEM, SUBMODULE_CARBONFILTER);
@@ -175,6 +183,7 @@ void CLaSystem::ModifyCarbonFilter(void)
 
 void CLaSystem::ModifyFan(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_LASYSTEM_FAN_MODULE);
     qDebug() << "CLaSystem::ModifyFan !";
 
     this->ModifySubModule(MODULE_LASYSTEM, SUBMODULE_FAN);

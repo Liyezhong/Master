@@ -27,6 +27,8 @@
 #include "Diagnostics/Include/LaSystem/HeatingBelt1Test.h"
 #include "Diagnostics/Include/LaSystem/HeatingBelt2Test.h"
 #include "Diagnostics/Include/LaSystem/AirSystemTest.h"
+#include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 namespace Diagnostics {
 
@@ -59,6 +61,7 @@ CLaSystem::~CLaSystem()
 
 void CLaSystem::StartHeatingBelt1Test(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT1_TEST);
     qDebug() << "L&&A System: start heating belt 1 test";
 
     //LaSystem::CHeatingBelt1Test test;
@@ -70,6 +73,7 @@ void CLaSystem::StartHeatingBelt1Test(void)
 
 void CLaSystem::StartHeatingBelt2Test(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT2_TEST);
     qDebug() << "L&&A System: start heating belt 2 test";
 
     //LaSystem::CHeatingBelt2Test test;
@@ -82,6 +86,7 @@ void CLaSystem::StartHeatingBelt2Test(void)
 
 void CLaSystem::StartAirSystemTest(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST);
     qDebug() << "L&&A System: start air system test";
 
     //LaSystem::CAirSystemTest test;

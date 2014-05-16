@@ -1,935 +1,347 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <EventConfigure>
 	<Source Name="HimalayaService">
-		<Event Code="" ErrorID="67174401" ErrorType="Info" AlarmType="No" Name="EVENT_LOGIN_MANUFACTURING">
-			<Step ID="0" Type="MSG" StringID="67174401" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728833" Name="EVENT_LOGIN_MANUFACTURING">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728833" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174402" ErrorType="Info" AlarmType="No" Name="EVENT_LOGIN_SERVICE">
-			<Step ID="0" Type="MSG" StringID="67174402" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728834" Name="EVENT_LOGIN_SERVICE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728834" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174403" ErrorType="Info" AlarmType="No" Name="EVENT_COLORADOSERVICE_START">
-			<Step ID="0" Type="MSG" StringID="67174403" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728835" Name="EVENT_HIMALAYASERVICE_START">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728835" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174404" ErrorType="Info" AlarmType="No" Name="EVENT_PASSWORD__INCORRECT">
-			<Step ID="0" Type="MSG" StringID="67174404" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728836" Name="EVENT_PASSWORD_INCORRECT">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728836" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174405" ErrorType="Info" AlarmType="No" Name="EVENT_PASSWORD__NOT_MATCHING">
-			<Step ID="0" Type="MSG" StringID="67174405" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728837" Name="EVENT_PASSWORD_NOT_MATCHING">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728837" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174406" ErrorType="Info" AlarmType="No" Name="EVENT_LOGIN_SERVICEUSER">
-			<Step ID="0" Type="MSG" StringID="67174406" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728838" Name="EVENT_LOGIN_SERVICEUSER">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728838" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174407" ErrorType="Info" AlarmType="No" Name="EVENT_LOGIN_MANUFUSER">
-			<Step ID="0" Type="MSG" StringID="67174407" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728839" Name="EVENT_LOGIN_MANUFUSER">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728839" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174408" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_X1_REFRUN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174408" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728840" Name="EVENT_GUI_LOGVIEWER_LOGCONTENT_DISPLAY_INFO">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728840" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174409" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_Y1_REFRUN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174409" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728841" Name="EVENT_GUI_LOGVIEWER_SYSTEMLOG_FILTERERING">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728841" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174410" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_Z1_REFRUN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174410" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728842" Name="EVENT_GUI_LOGVIEWER_SYSTEMLOG_DETAILED_INFO">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728842" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174411" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_DRAWERLOADER_REFRUN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174411" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728843" Name="EVENT_GUI_LOGVIEWER_SYSTEMLOG_SERVICERECOVERYACTION_FOR_ERROR">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728843" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174412" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVENLID_REFRUN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174412" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728844" Name="EVENT_GUI_LOGVIEWER_SERVICERECOVERYACTION_DISPLAY_INFO">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728844" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174413" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_RACKTRF_REFRUN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174413" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728845" Name="EVENT_GUI_LOGVIEWER_SERVICELOG_DISPLAY_INFO">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728845" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174415" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_AGITATION_REFRUN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174415" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728846" Name="EVENT_GUI_LOGVIEWER_SYSTEMLOG_DISPLAY_INFO">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728846" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174416" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_X2_REFRUN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174416" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728847" Name="EVENT_GUI_LOGVIEWER_SOFTWAREUPDATELOG_DISPLAY_INFO">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728847" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174417" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_Y2_REFRUN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174417" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728848" Name="EVENT_GUI_CALIBRATION_PRESSURE_SENSOR">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728848" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174418" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_Z2_REFRUN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174418" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728849" Name="EVENT_GUI_CALIBRATION_TOUCHSCREEN">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728849" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174419" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_DRAWERUNLOADER_REFRUN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174419" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728850" Name="EVENT_GUI_SERVICEUPDATES_FIRMWARE_UPDATE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728850" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174420" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_X1_REFRUN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174420" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728851" Name="EVENT_GUI_SERVICEUPDATES_DATAMANAGEMENT_IMPORT">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728851" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174421" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_Y1_REFRUN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174421" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728852" Name="EVENT_GUI_SERVICEUPDATES_DATAMANAGEMENT_EXPORT">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728852" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174422" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_Z1_REFRUN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174422" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728853" Name="EVENT_GUI_CURRENTCONFIG_MODULEINFO_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728853" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174423" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_DRAWERLOADER_REFRUN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174423" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728854" Name="EVENT_GUI_CURRENTCONFIG_SUBMODULEINFO_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728854" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174424" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVENLID_REFRUN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174424" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728855" Name="EVENT_GUI_MODIFY_RETORT_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728855" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174425" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_RACKTRF_REFRUN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174425" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728856" Name="EVENT_GUI_MODIFY_RETORT_HEATER_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728856" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174426" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_AGITATION_REFRUN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174426" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728857" Name="EVENT_GUI_MODIFY_RETORT_LIDLOCK_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728857" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174427" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_X2_REFRUN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174427" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728858" Name="EVENT_GUI_MODIFY_RETORT_LEVELSENSOR_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728858" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174428" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_Y2_REFRUN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174428" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728859" Name="EVENT_GUI_MODIFY_MAIN_CONTROL_SUBMODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728859" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174429" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_Z2_REFRUN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174429" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728860" Name="EVENT_GUI_MODIFY_OVEN_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728860" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174430" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_DRAWERUNLOADER_REFRUN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174430" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728861" Name="EVENT_GUI_MODIFY_OVEN_HEATER_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728861" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174431" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LOADERRFID_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174431" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728862" Name="EVENT_GUI_MODIFY_OVEN_COVER_SENSOR_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728862" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174432" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LOADERRFID_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174432" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728863" Name="EVENT_GUI_MODIFY_ROTARYVALVE_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728863" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174433" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LOADERINIT_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174433" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728864" Name="EVENT_GUI_MODIFY_ROTARYVALVE_HEATER_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728864" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174434" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LOADERINIT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174434" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728865" Name="EVENT_GUI_MODIFY_ROTARYVALVE_MOTOR_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728865" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174435" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LOADEROPEN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174435" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728866" Name="EVENT_GUI_MODIFY_LASYSTEM_PUMP_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728866" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174436" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LOADEROPEN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174436" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728867" Name="EVENT_GUI_MODIFY_LASYSTEM_VALVE1_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728867" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174437" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LOADERCLOSE_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174437" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728868" Name="EVENT_GUI_MODIFY_LASYSTEM_VALVE2_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728868" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174438" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LOADERCLOSE_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174438" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728869" Name="EVENT_GUI_MODIFY_LASYSTEM_HEATING_BELT1_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728869" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174439" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LOADER_REDLED_ON">
-			<Step ID="0" Type="MSG" StringID="67174439" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728870" Name="EVENT_GUI_MODIFY_LASYSTEM_HEATING_BELT2_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728870" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174440" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LOADER_GREENLED_ON">
-			<Step ID="0" Type="MSG" StringID="67174440" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728871" Name="EVENT_GUI_MODIFY_LASYSTEM_PRESSURE_SENSOR_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728871" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174441" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LOADER_LED_OFF">
-			<Step ID="0" Type="MSG" StringID="67174441" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728872" Name="EVENT_GUI_MODIFY_LASYSTEM_CARBON_FILTER_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728872" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174442" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_UNLOADERRFID_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174442" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728873" Name="EVENT_GUI_MODIFY_LASYSTEM_FAN_MODULE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728873" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174443" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_UNLOADERRFID_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174443" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728874" Name="EVENT_GUI_VIEWHISTORY_INSTRUMENT_SHOWDETAILS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728874" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174444" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_UNLOADERINIT_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174444" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728875" Name="EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728875" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174445" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_UNLOADERINIT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174445" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728876" Name="EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728876" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174446" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_UNLOADEROPEN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174446" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728877" Name="EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728877" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174447" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_UNLOADEROPEN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174447" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728878" Name="EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728878" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174448" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_UNLOADERCLOSE_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174448" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728879" Name="EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728879" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174449" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_UNLOADERCLOSE_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174449" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728880" Name="EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728880" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174450" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_UNLOADER_REDLED_ON">
-			<Step ID="0" Type="MSG" StringID="67174450" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728881" Name="EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728881" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174451" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_UNLOADER_GREENLED_ON">
-			<Step ID="0" Type="MSG" StringID="67174451" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728882" Name="EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728882" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174452" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_UNLOADER_LED_OFF">
-			<Step ID="0" Type="MSG" StringID="67174452" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728883" Name="EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728883" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174453" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_AGITATION_SETSPEED_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174453" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728884" Name="EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728884" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174454" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_AGITATION_SETSPEED_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174454" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728885" Name="EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728885" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174455" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVENINIT_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174455" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728886" Name="EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_EMPTY_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728886" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174456" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVENINIT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174456" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728887" Name="EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728887" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174457" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVENOPEN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174457" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728888" Name="EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728888" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174458" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVENOPEN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174458" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728889" Name="EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728889" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174459" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVENCLOSE_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174459" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728890" Name="EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728890" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174460" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVENCLOSE_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174460" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728891" Name="EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728891" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174461" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_YZ1LEVELSENSOR_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174461" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728892" Name="EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728892" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174462" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_YZ1LEVELSENSOR_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174462" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728893" Name="EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728893" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174463" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_YZ2LEVELSENSOR_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174463" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728894" Name="EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728894" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174464" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_YZ2LEVELSENSOR_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174464" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728895" Name="EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728895" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174465" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1INIT_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174465" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728896" Name="EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728896" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174466" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1INIT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174466" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728897" Name="EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728897" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174467" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1MOVETOSTN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174467" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728898" Name="EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728898" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174468" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1MOVETOSTN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174468" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728899" Name="EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728899" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174469" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1LOWERRACK_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174469" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728900" Name="EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728900" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174470" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1LOWERRACK_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174470" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728901" Name="EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728901" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174471" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1ATTACHRACK_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174471" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728902" Name="EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728902" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174472" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1ATTACHRACK_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174472" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728903" Name="EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728903" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174473" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1LIFTRACK_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174473" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728904" Name="EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728904" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174474" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1LIFTRACK_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174474" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728905" Name="EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728905" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174475" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1READRFID_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174475" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728906" Name="EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728906" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174476" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1READRFID_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174476" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728907" Name="EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728907" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174477" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1DETACHRACK_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174477" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728908" Name="EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728908" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174478" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1DETACHRACK_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174478" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728909" Name="EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728909" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174479" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2INIT_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174479" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728910" Name="EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728910" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174480" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2INIT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174480" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728911" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT1_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728911" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174481" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2MOVETOSTN_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174481" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728912" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT1_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728912" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174482" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2MOVETOSTN_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174482" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728913" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT1_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728913" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174483" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2LOWERRACK_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174483" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728914" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT2_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728914" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174484" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2LOWERRACK_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174484" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728915" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT2_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728915" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174485" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2ATTACHRACK_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174485" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728916" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT2_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728916" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174486" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2ATTACHRACK_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174486" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728917" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728917" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174487" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2LIFTRACK_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174487" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728918" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728918" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174488" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2LIFTRACK_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174488" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728919" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728919" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174489" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2READRFID_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174489" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728920" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_BOTTLE_CHECKING_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728920" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174490" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2READRFID_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174490" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728921" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_BOTTLE_CHECKING_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728921" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174491" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2DETACHRACK_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174491" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728922" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_BOTTLE_CHECKING_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728922" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174492" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2DETACHRACK_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174492" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728923" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728923" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174493" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_REQUESTCANID_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174493" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728924" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728924" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174494" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_REQUESTFWINFO_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174494" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728925" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728925" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174495" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_SLIDEIDINIT_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174495" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728926" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728926" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174496" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_SLIDEIDINIT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174496" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728927" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728927" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174497" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_SLIDEIDSTARTCOUNT_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174497" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728928" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728928" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174498" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_SLIDEIDSTARTCOUNT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174498" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728929" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728929" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174499" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_EXHAUSTINIT_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174499" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728930" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728930" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174500" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_EXHAUSTINIT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174500" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728931" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728931" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174501" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_EXHAUSTON_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174501" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728932" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728932" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174502" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_EXHAUSTON_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174502" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728933" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728933" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174503" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_EXHAUSTOFF_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174503" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728934" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728934" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174504" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_EXHAUSTOFF_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174504" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728935" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ETHERNET_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728935" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174505" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_EXHAUST_AIRFLOWOK">
-			<Step ID="0" Type="MSG" StringID="67174505" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728936" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ETHERNET_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728936" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174506" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_EXHAUST_AIRFLOWNOK">
-			<Step ID="0" Type="MSG" StringID="67174506" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728937" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ETHERNET_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728937" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174507" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_EXHAUST_FAN1CURRENTOK">
-			<Step ID="0" Type="MSG" StringID="67174507" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728938" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728938" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174508" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_EXHAUST_FAN2CURRENTOK">
-			<Step ID="0" Type="MSG" StringID="67174508" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728939" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728939" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174509" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_EXHAUST_FAN1CURRENTNOK">
-			<Step ID="0" Type="MSG" StringID="67174509" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728940" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728940" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174511" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_EXHAUST_FAN2CURRENTNOK">
-			<Step ID="0" Type="MSG" StringID="67174511" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728941" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728941" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174512" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_WATERINIT_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174512" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728942" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728942" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174513" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_WATERINIT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174513" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728943" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728943" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174514" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_WATERVALVEON_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174514" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728944" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728944" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174515" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_WATERVALVEON_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174515" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728945" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST_SUCCESS">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728945" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event Code="" ErrorID="67174516" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_WATERVALVEOFF_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174516" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174517" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_WATERVALVEOFF_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174517" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174518" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LIGHTINIT_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174518" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174519" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LIGHTINIT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174519" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174520" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LIGHTON_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174520" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174521" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LIGHTON_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174521" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174522" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LIGHTOFF_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174522" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174523" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_LIGHTOFF_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174523" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174524" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HOODINIT_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174524" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174525" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HOODINIT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174525" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174526" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HOOD_OPEN">
-			<Step ID="0" Type="MSG" StringID="67174526" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174527" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HOOD_CLOSE">
-			<Step ID="0" Type="MSG" StringID="67174527" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174528" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_RFIDCONSUMABLESINIT_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174528" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174529" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_RFIDCONSUMABLESINIT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174529" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174530" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_RFIDCONSUMABLES_READREQUEST">
-			<Step ID="0" Type="MSG" StringID="67174530" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174531" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_GETSTATIONEDGES_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174531" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174532" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_GETSTATIONEDGES_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174532" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174533" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_CALIBRATION_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174533" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174534" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_CALIBRATION_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174534" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174535" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_WATERSENSOR_BLOCKED">
-			<Step ID="0" Type="MSG" StringID="67174535" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174536" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_WATERSENSOR_BLOCKCLEARED">
-			<Step ID="0" Type="MSG" StringID="67174536" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174537" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1READLIQUIDLEVEL_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174537" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174538" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1READLIQUIDLEVEL_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174538" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174539" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1STARTSLIDECOUNT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174539" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174540" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2READLIQUIDLEVEL_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174540" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174541" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2READLIQUIDLEVEL_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174541" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174542" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTESINIT_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174542" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174543" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTESINIT_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174543" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174544" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES_STARTEST_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174544" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174545" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES_STARTEST_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174545" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174546" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVEN_STARTEST_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174546" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174547" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVEN_STARTEST_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174547" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174548" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_SLIDEIDENDTEST_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174548" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174549" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_ENDTESTTESTPROGRAM_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174549" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174550" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1LSENSORCALIB_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174550" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174551" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1LSENSORCALIB_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174551" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174552" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1LGETSTNEDGES_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174552" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174553" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ1LGETSTNEDGES_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174553" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174554" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2LSENSORCALIB_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174554" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174555" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2LSENSORCALIB_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174555" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174556" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2LGETSTNEDGES_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174556" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174557" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_XYZ2LGETSTNEDGES_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174557" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174558" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_SLIDECOUNT_RESULT">
-			<Step ID="0" Type="MSG" StringID="67174558" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174559" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVEN_HEATSUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174559" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174656" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVEN_HEATFAILURE">
-			<Step ID="0" Type="MSG" StringID="67174656" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174657" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVEN_INT_TEMPERATURE">
-			<Step ID="0" Type="MSG" StringID="67174657" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174658" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_OVEN_EXT_TEMPERATURE">
-			<Step ID="0" Type="MSG" StringID="67174658" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174659" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES_HEATSUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174659" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174660" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES_HEATFAILURE">
-			<Step ID="0" Type="MSG" StringID="67174660" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174661" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES1_INT_TEMPERATURE">
-			<Step ID="0" Type="MSG" StringID="67174661" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174662" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES1_EXT_TEMPERATURE">
-			<Step ID="0" Type="MSG" StringID="67174662" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174663" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES2_INT_TEMPERATURE">
-			<Step ID="0" Type="MSG" StringID="67174663" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174664" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES2_EXT_TEMPERATURE">
-			<Step ID="0" Type="MSG" StringID="67174664" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174665" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES3_INT_TEMPERATURE">
-			<Step ID="0" Type="MSG" StringID="67174665" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174666" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES3_EXT_TEMPERATURE">
-			<Step ID="0" Type="MSG" StringID="67174666" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174667" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES4_INT_TEMPERATURE">
-			<Step ID="0" Type="MSG" StringID="67174667" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174668" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES4_EXT_TEMPERATURE">
-			<Step ID="0" Type="MSG" StringID="67174668" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174669" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES1_ASMBLY_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174669" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174670" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES1_ASMBLY_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174670" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174671" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES2_ASMBLY_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174671" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174672" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES2_ASMBLY_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174672" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174674" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES3_ASMBLY_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174674" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174675" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES3_ASMBLY_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174675" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174676" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES4_ASMBLY_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174676" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174677" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICE_HCUVETTES4_ASMBLY_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174677" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174678" ErrorType="Info" AlarmType="No" Name="EVENT_FIRMWARE_UPDATE_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174678" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174679" ErrorType="Info" AlarmType="No" Name="EVENT_FIRMWARE_UPDATE_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174679" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174680" ErrorType="Info" AlarmType="No" Name="EVENT_FIRMWARE_FILENOTFOUND_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174680" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174681" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICEUPDATEMODE_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174681" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174682" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICENORMALMODE_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174682" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174683" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICERECONFIGURE_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67174683" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67174684" ErrorType="Info" AlarmType="No" Name="EVENT_DEVICERECONFIGURE_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67174684" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179008" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_CURRENTCONFIG_MODULEINFO_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179008" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179009" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_CURRENTCONFIG_SUBMODULEINFO_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179009" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179010" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_ADDMODIFY_MODULE">
-			<Step ID="0" Type="MSG" StringID="67179010" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179011" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_ADDMODIFY_MANUALFILL_MODULEINFO">
-			<Step ID="0" Type="MSG" StringID="67179011" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179012" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_ADDMODIFY_SAVE_MODULE_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67179012" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179013" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_ADDMODIFY_SAVE_MODULE_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67179013" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179014" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_ADDMODIFY_REMOVE_MODULE_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67179014" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179015" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_ADDMODIFY_REMOVE_MODULE_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67179015" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179016" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_ADDMODIFY_READ_SERIALNUMBER">
-			<Step ID="0" Type="MSG" StringID="67179016" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179017" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_ADDMODIFY_COVERSLIPPER_VERSION">
-			<Step ID="0" Type="MSG" StringID="67179017" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179024" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_ADDMODIFY_SAVE_AND_OVERWRITE_CONFIGURATION_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67179024" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179025" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_ADDMODIFY_SAVE_AND_OVERWRITE_CONFIGURATION_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67179025" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179026" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_VIEWHISTORY_TIMESTAMP_SHOWDETAILS">
-			<Step ID="0" Type="MSG" StringID="67179026" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179027" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_VIEWHISTORY_TIMESTAMP_SHOWDIFFERENCE">
-			<Step ID="0" Type="MSG" StringID="67179027" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179028" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_LOGVIEWER_SYSTEMLOG_DISPLAY_INFO">
-			<Step ID="0" Type="MSG" StringID="67179028" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179029" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_LOGVIEWER_SYSTEMLOG_FILTERERING">
-			<Step ID="0" Type="MSG" StringID="67179029" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179030" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_LOGVIEWER_SYSTEMLOG_DETAILED_INFO">
-			<Step ID="0" Type="MSG" StringID="67179030" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179031" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_LOGVIEWER_SYSTEMLOG_SERVICEHELPTEXT_FOR_ERROR">
-			<Step ID="0" Type="MSG" StringID="67179031" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179032" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_LOGVIEWER_SERVICEHELPTEXT_DISPLAY_INFO">
-			<Step ID="0" Type="MSG" StringID="67179032" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179033" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_LOGVIEWER_SERVICELOG_DISPLAY_INFO">
-			<Step ID="0" Type="MSG" StringID="67179033" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179040" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_LOGVIEWER_SOFTWAREUPDATELOG_DISPLAY_INFO">
-			<Step ID="0" Type="MSG" StringID="67179040" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179041" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XAXISLEFT_MOVE_YZARM_SAFE_POSITION">
-			<Step ID="0" Type="MSG" StringID="67179041" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179042" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XAXISLEFT_REFERENCE_RUN">
-			<Step ID="0" Type="MSG" StringID="67179042" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179043" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XAXISRIGHT_MOVE_YZARM_SAFE_POSITION">
-			<Step ID="0" Type="MSG" StringID="67179043" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179044" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XAXISRIGHT_REFERENCE_RUN">
-			<Step ID="0" Type="MSG" StringID="67179044" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179045" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XARMLEFT_REFERENCE_RUN">
-			<Step ID="0" Type="MSG" StringID="67179045" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179046" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XARMLEFT_LEVEL_SENSOR_TEST">
-			<Step ID="0" Type="MSG" StringID="67179046" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179047" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XARMLEFT_RFID_TEST">
-			<Step ID="0" Type="MSG" StringID="67179047" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179048" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XARMLEFT_FIRMWARE_INFO">
-			<Step ID="0" Type="MSG" StringID="67179048" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179049" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XARMLEFT_CANID_REQUEST">
-			<Step ID="0" Type="MSG" StringID="67179049" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179056" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XARMRIGHT_REFERENCE_RUN">
-			<Step ID="0" Type="MSG" StringID="67179056" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179057" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XARMRIGHT_LEVEL_SENSOR_TEST">
-			<Step ID="0" Type="MSG" StringID="67179057" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179058" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XARMRIGHT_RFID_TEST">
-			<Step ID="0" Type="MSG" StringID="67179058" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179059" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XARMRIGHT_FIRMWARE_INFO">
-			<Step ID="0" Type="MSG" StringID="67179059" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179060" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_XARMRIGHT_CANID_REQUEST">
-			<Step ID="0" Type="MSG" StringID="67179060" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179061" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_AGITATOR_REFERENCE_RUN">
-			<Step ID="0" Type="MSG" StringID="67179061" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179062" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_AGITATOR_SPEED_TEST">
-			<Step ID="0" Type="MSG" StringID="67179062" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179063" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERLOADER_REFERENCE_RUN">
-			<Step ID="0" Type="MSG" StringID="67179063" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179064" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERLOADER_OPEN_CLOSE_TEST">
-			<Step ID="0" Type="MSG" StringID="67179064" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179065" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERLOADER_LED_TEST">
-			<Step ID="0" Type="MSG" StringID="67179065" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179072" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERLOADER_RFID_TEST">
-			<Step ID="0" Type="MSG" StringID="67179072" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179073" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERLOADER_TEACH_DRAWER">
-			<Step ID="0" Type="MSG" StringID="67179073" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179074" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERLOADER_FIRMWARE_INFO">
-			<Step ID="0" Type="MSG" StringID="67179074" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179075" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERLOADER_READ_CANID">
-			<Step ID="0" Type="MSG" StringID="67179075" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179076" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERUNLOADER_REFERENCE_RUN">
-			<Step ID="0" Type="MSG" StringID="67179076" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179077" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERUNLOADER_OPEN_CLOSE_TEST">
-			<Step ID="0" Type="MSG" StringID="67179077" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179078" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERUNLOADER_LED_TEST">
-			<Step ID="0" Type="MSG" StringID="67179078" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179079" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERUNLOADER_RFID_TEST">
-			<Step ID="0" Type="MSG" StringID="67179079" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179080" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERUNLOADER_TEACH_DRAWER">
-			<Step ID="0" Type="MSG" StringID="67179080" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179081" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERUNLOADER_FIRMWARE_INFO">
-			<Step ID="0" Type="MSG" StringID="67179081" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179088" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DRAWERUNLOADER_READ_CANID">
-			<Step ID="0" Type="MSG" StringID="67179088" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179089" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_TEST">
-			<Step ID="0" Type="MSG" StringID="67179089" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179090" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_OVEN_PHOTOSENSOR_TEST">
-			<Step ID="0" Type="MSG" StringID="67179090" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179091" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_OVEN_SLIDE_COUNT">
-			<Step ID="0" Type="MSG" StringID="67179091" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179092" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_OVEN_LID_REFERENCE_RUN">
-			<Step ID="0" Type="MSG" StringID="67179092" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179093" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_OVEN_LID_CALIBRATION">
-			<Step ID="0" Type="MSG" StringID="67179093" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179094" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_OVEN_FIRMWARE_INFO">
-			<Step ID="0" Type="MSG" StringID="67179094" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179095" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_OVEN_READ_CANID">
-			<Step ID="0" Type="MSG" StringID="67179095" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179096" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_HEATED_CUVETTE_TEST">
-			<Step ID="0" Type="MSG" StringID="67179096" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179097" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_HEATED_CUVETTE_FIRMWARE_INFO">
-			<Step ID="0" Type="MSG" StringID="67179097" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179104" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_HEATED_CUVETTE_READ_CANID">
-			<Step ID="0" Type="MSG" StringID="67179104" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179105" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_AIREXHAUST_FAN_ON">
-			<Step ID="0" Type="MSG" StringID="67179105" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179106" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_AIREXHAUST_FAN_OFF">
-			<Step ID="0" Type="MSG" StringID="67179106" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179107" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_AIREXHAUST_AIRFLOWSTATUS">
-			<Step ID="0" Type="MSG" StringID="67179107" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179108" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_AIREXHAUST_FAN_CURRENT">
-			<Step ID="0" Type="MSG" StringID="67179108" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179109" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DISPLAY_BASICCOLORTEST_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67179109" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179110" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DISPLAY_BASICCOLORTEST_FAILED">
-			<Step ID="0" Type="MSG" StringID="67179110" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179111" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DISPLAY_DEVICEILLUMINATIONLIGHT_ON">
-			<Step ID="0" Type="MSG" StringID="67179111" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179112" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_DISPLAY_DEVICEILLUMINATIONLIGHT_OFF">
-			<Step ID="0" Type="MSG" StringID="67179112" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179113" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_CONSUMABLES_CANID">
-			<Step ID="0" Type="MSG" StringID="67179113" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179120" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_CONSUMABLES_FIRMWARE_INFO">
-			<Step ID="0" Type="MSG" StringID="67179120" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179121" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_CONSUMABLES_KIT_INFO">
-			<Step ID="0" Type="MSG" StringID="67179121" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179122" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_CONSUMABLES_BOTTLE_INFO">
-			<Step ID="0" Type="MSG" StringID="67179122" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179123" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_COVERHOOD_STATUS">
-			<Step ID="0" Type="MSG" StringID="67179123" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179124" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_SOFTSWITCH_TEST_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67179124" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179125" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_SOFTSWITCH_TEST_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67179125" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179126" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_LED_TEST_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67179126" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179127" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_LED_TEST_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67179127" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179128" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_WATERSTATION_WATERVALVETEST_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67179128" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179129" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_WATERSTATION_WATERVALVETEST_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67179129" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179136" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_WATERSTATION_DRAINSENSORTEST_SUCCESS">
-			<Step ID="0" Type="MSG" StringID="67179136" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179137" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_WATERSTATION_DRAINSENSORTEST_FAILURE">
-			<Step ID="0" Type="MSG" StringID="67179137" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179138" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_TRANSFERSTATION_REFERENCE_RUN">
-			<Step ID="0" Type="MSG" StringID="67179138" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179139" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_TRANSFERSTATION_FIRMWARE_INFO">
-			<Step ID="0" Type="MSG" StringID="67179139" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179140" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_TRANSFERSTATION_CANID">
-			<Step ID="0" Type="MSG" StringID="67179140" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179141" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_DIAGNOSTICS_ENDTEST">
-			<Step ID="0" Type="MSG" StringID="67179141" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179142" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_CALIBRATION_ARMLEVELSENSORLEFT_TEST">
-			<Step ID="0" Type="MSG" StringID="67179142" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179143" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_CALIBRATION_ARMLEVELSENSORRIGHT_TEST">
-			<Step ID="0" Type="MSG" StringID="67179143" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179144" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_CALIBRATION_WATERTUB_LEVELSENSOR_TEST">
-			<Step ID="0" Type="MSG" StringID="67179144" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179145" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_CALIBRATION_TOUCHSCREEN">
-			<Step ID="0" Type="MSG" StringID="67179145" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179152" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_CALIBRATION_JOYSTICK">
-			<Step ID="0" Type="MSG" StringID="67179152" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179153" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_CALIBRATION_OVENLID">
-			<Step ID="0" Type="MSG" StringID="67179153" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179154" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_CALIBRATION_DRAWERLOADER">
-			<Step ID="0" Type="MSG" StringID="67179154" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179155" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_CALIBRATION_DRAWERUNLOADER">
-			<Step ID="0" Type="MSG" StringID="67179155" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179156" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_SERVICEUPDATES_FIRMWARE_INFO_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179156" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179157" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_SERVICEUPDATES_RFIDVALUES_DRAWER_LEFT">
-			<Step ID="0" Type="MSG" StringID="67179157" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179158" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_SERVICEUPDATES_RFIDVALUES_DRAWER_RIGHT">
-			<Step ID="0" Type="MSG" StringID="67179158" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179159" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_SERVICEUPDATES_RFIDVALUES_YZMODULE">
-			<Step ID="0" Type="MSG" StringID="67179159" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179160" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_SERVICEUPDATES_DATAMANAGEMENT_IMPORT">
-			<Step ID="0" Type="MSG" StringID="67179160" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179161" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_SERVICEUPDATES_DATAMANAGEMENT_EXPORT">
-			<Step ID="0" Type="MSG" StringID="67179161" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179264" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_SERVICEUPDATES_SETTINGS_LANGUAGE">
-			<Step ID="0" Type="MSG" StringID="67179264" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179265" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_SERVICEUPDATES_SETTINGS_DATETIME">
-			<Step ID="0" Type="MSG" StringID="67179265" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179266" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_SERVICEUPDATES_SETTINGS_NETWORK">
-			<Step ID="0" Type="MSG" StringID="67179266" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179267" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_XAXIS_TEST_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179267" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179268" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_XAXIS_SENDTESTREPORT_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179268" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179269" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_XARMLEFT_TEST_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179269" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179270" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_XARMLEFT_SENDTESTREPORT_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179270" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179271" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_XARMRIGHT_TEST_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179271" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179272" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_XARMRIGHT_SENDTESTREPORT_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179272" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179273" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_AGITATOR_TEST_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179273" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179280" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_AGITATOR_SENDTESTREPORT_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179280" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179281" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_DRAWERLOADER_TEST_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179281" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179282" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_DRAWERLOADER_SENDTESTREPORT_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179282" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179283" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_DRAWERUNLOADER_TEST_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179283" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179284" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_DRAWERUNLOADER_SENDTESTREPORT_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179284" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179285" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_OVEN_TEST_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179285" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179286" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_OVEN_SENDTESTREPORT_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179286" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179287" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_HEATEDCUVETTES_TEST_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179287" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179288" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_HEATEDCUVETTES_SENDTESTREPORT_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179288" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179289" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_AIREXHAUST_TEST_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179289" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179296" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_AIREXHAUST_SENDTESTREPORT_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179296" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179297" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_TRANSFERSTATION_TEST_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179297" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179298" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_TRANSFERSTATION_SENDTESTREPORT_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179298" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179299" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_WATERSTATION_TEST_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179299" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="67179300" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_MANUF_WATERSTATION_SENDTESTREPORT_REQUESTED">
-			<Step ID="0" Type="MSG" StringID="67179300" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar="No"/>
+		<Event AlarmType="No" Code="" ErrorID="100728946" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST_FAILURE">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728946" Type="MSG" UserLog="TRUE"/>
 		</Event>
 	</Source>
 </EventConfigure>

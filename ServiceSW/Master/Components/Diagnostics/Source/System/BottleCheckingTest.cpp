@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/WaitDialog.h"
@@ -122,6 +123,7 @@ void CBottleCheckingTest::ThirdBottleCheck(void)
 
 void CBottleCheckingTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_BOTTLE_CHECKING_TEST_SUCCESS);
     qDebug() << "Bottle Checking Test succeeded!";
 
     // display success message
@@ -143,6 +145,7 @@ void CBottleCheckingTest::Succeed(void)
 
 void CBottleCheckingTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_BOTTLE_CHECKING_TEST_FAILURE);
     qDebug() << "Bottle Checking Test failed!";
 
     // display failure message

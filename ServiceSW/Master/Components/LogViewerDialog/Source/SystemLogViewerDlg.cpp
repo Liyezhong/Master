@@ -21,6 +21,7 @@
 #include <QTextStream>
 #include <QDebug>
 
+#include "Main/Include/HimalayaServiceEventCodes.h"
 #include "Global/Include/SystemPaths.h"
 #include "LogViewerDialog/Include/SystemLogViewerDlg.h"
 #include "ui_SystemLogViewerDlg.h"
@@ -125,6 +126,8 @@ void CSystemLogViewerDlg::SelectionChanged(QModelIndex Index)
 
 void CSystemLogViewerDlg::RecoveryActionDialog()
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_SERVICERECOVERYACTION_FOR_ERROR);
+
     if(m_SelectedRowValues.count() == 0)
     {
         mp_MessageDlg->SetTitle(m_strWarning);
@@ -237,6 +240,7 @@ void CSystemLogViewerDlg::RetranslateUI()
 
 bool CSystemLogViewerDlg::InitDialog(QString Path)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_DETAILED_INFO);
     QList<int> Columns;
     Columns.append(0);
     Columns.append(1);
@@ -267,7 +271,7 @@ void CSystemLogViewerDlg::changeEvent(QEvent *p_Event)
 
 void CSystemLogViewerDlg::ShowRecoveryActionDetails()
 {
-    Global::EventObject::Instance().RaiseEvent(67179031);//EVENT_GUI_LOGVIEWER_SYSTEMLOG_SERVICEHELPTEXT_FOR_ERROR);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICERECOVERYACTION_DISPLAY_INFO);
     if(m_SelectedRowValues.count() == 0)
     {
         mp_MessageDlg->SetTitle(m_strWarning);
@@ -327,6 +331,8 @@ void CSystemLogViewerDlg::CompleteLogInfo()
 
 void CSystemLogViewerDlg::FilteredErrorLog()
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_FILTERERING,
+                                               Global::tTranslatableStringList() << "Error");
     mp_Ui->showDetailsBtn->setEnabled(false);
     mp_Ui->recoveryActionBtn->setEnabled(false);
     mp_TableWidget->clearSelection();
@@ -350,6 +356,8 @@ void CSystemLogViewerDlg::FilteredErrorLog()
 
 void CSystemLogViewerDlg::FilteredInfoLog()
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_FILTERERING,
+                                               Global::tTranslatableStringList() << "Info");
     mp_Ui->showDetailsBtn->setEnabled(false);
     mp_Ui->recoveryActionBtn->setEnabled(false);
     mp_TableWidget->clearSelection();
@@ -370,6 +378,8 @@ void CSystemLogViewerDlg::FilteredInfoLog()
 
 void CSystemLogViewerDlg::FilteredUndefinedLog()
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_FILTERERING,
+                                               Global::tTranslatableStringList() << "Undefined");
     mp_Ui->showDetailsBtn->setEnabled(false);
     mp_Ui->recoveryActionBtn->setEnabled(false);
     mp_TableWidget->clearSelection();
@@ -390,6 +400,8 @@ void CSystemLogViewerDlg::FilteredUndefinedLog()
 
 void CSystemLogViewerDlg::FilteredWarningLog()
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_FILTERERING,
+                                               Global::tTranslatableStringList() << "Warning");
     mp_Ui->showDetailsBtn->setEnabled(false);
     mp_Ui->recoveryActionBtn->setEnabled(false);
     mp_TableWidget->clearSelection();

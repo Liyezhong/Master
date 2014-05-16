@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/WaitDialog.h"
@@ -164,6 +165,7 @@ void CSealingTest::ForthSealing(void)
 
 void CSealingTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST_SUCCESS);
     qDebug() << "Rotary Valve sealing test succeeded!";
 
     // display success message
@@ -185,6 +187,7 @@ void CSealingTest::Succeed(void)
 
 void CSealingTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST_FAILURE);
     qDebug() << "Rotary Valve sealing test failed!";
 
     // display failure message

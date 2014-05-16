@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/WaitDialog.h"
@@ -78,6 +79,7 @@ void CHeatingBelt2Test::StartHeating(void)
 
 void CHeatingBelt2Test::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT2_TEST_SUCCESS);
     qDebug() << "Heating belt 2 test succeeded!";
 
     // display success message
@@ -99,6 +101,7 @@ void CHeatingBelt2Test::Succeed(void)
 
 void CHeatingBelt2Test::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT2_TEST_FAILURE);
     qDebug() << "Heating belt 2 test failed!";
 
     // display failure message

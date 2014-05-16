@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 
@@ -142,6 +143,7 @@ void CUsbTest::SecondCheckStatus(void)
 
 void CUsbTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST_SUCCESS);
     qDebug() << "USB Test succeeded!";
 
     // display success message
@@ -163,6 +165,7 @@ void CUsbTest::Succeed(void)
 
 void CUsbTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST_FAILURE);
     qDebug() << "USB Test failed!";
 
     // display failure message

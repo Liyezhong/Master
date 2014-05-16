@@ -1,314 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
 <strings version="1">
 	<language name="en">
-		<string id="67174401" text1="Manufacturing user logged in" text2=""/>
-		<string id="67174402" text1="Service user logged in" text2=""/>
-		<string id="67174403" text1="Service and Manufacturing SW Start" text2=""/>
-		<string id="67174404" text1="Password Incorrect" text2=""/>
-		<string id="67174405" text1="Password Not matching" text2=""/>
-		<string id="67174406" text1="Logged in Service User Name : %1" text2=""/>
-		<string id="67174407" text1="Logged in Manufacturing User Name : %1" text2=""/>
-		<string id="67174408" text1="X Axis left reference run Successful" text2=""/>
-		<string id="67174409" text1="Y Axis left reference run Successful" text2=""/>
-		<string id="67174410" text1="Z Axis left reference run Successful" text2=""/>
-		<string id="67174411" text1="Drawer reference run Successful" text2=""/>
-		<string id="67174412" text1="Oven Lid reference run Successful" text2=""/>
-		<string id="67174413" text1="Rack Transfer reference run Successful" text2=""/>
-		<string id="67174415" text1="Agitation reference run Successful" text2=""/>
-		<string id="67174416" text1="X Axis right reference run Successful" text2=""/>
-		<string id="67174417" text1="Y Axis right reference run Successful" text2=""/>
-		<string id="67174418" text1="Z Axis right reference run Successful" text2=""/>
-		<string id="67174419" text1="Drawer reference run Failed" text2=""/>
-		<string id="67174420" text1="X Axis left reference run Failed" text2=""/>
-		<string id="67174421" text1="Y Axis left reference run Failed" text2=""/>
-		<string id="67174422" text1="Z Axis left reference run Failed" text2=""/>
-		<string id="67174423" text1="Drawer loader reference run successful" text2=""/>
-		<string id="67174424" text1="Oven Lid reference run failed" text2=""/>
-		<string id="67174425" text1="Rack Transfer reference run failed" text2=""/>
-		<string id="67174426" text1="Agitation reference run failed" text2=""/>
-		<string id="67174427" text1="X Axis right reference run Failed" text2=""/>
-		<string id="67174428" text1="Y Axis right reference run Failed" text2=""/>
-		<string id="67174429" text1="Z Axis right reference run Failed" text2=""/>
-		<string id="67174430" text1="Drawer loader reference run failed" text2=""/>
-		<string id="67174431" text1="Drawer loader RFID read successful" text2=""/>
-		<string id="67174432" text1="Drawer loader RFID read failure" text2=""/>
-		<string id="67174433" text1="Drawer loader Initialization successful" text2=""/>
-		<string id="67174434" text1="Drawer loader Initialization failed" text2=""/>
-		<string id="67174435" text1="Drawer loader open successful" text2=""/>
-		<string id="67174436" text1="Drawer loader open failed" text2=""/>
-		<string id="67174437" text1="Drawer loader close successful" text2=""/>
-		<string id="67174438" text1="Drawer loader close failed" text2=""/>
-		<string id="67174439" text1="Drawer loader RED LED ON successful" text2=""/>
-		<string id="67174440" text1="Drawer loader GREEN LED ON successful" text2=""/>
-		<string id="67174441" text1="Drawer loader LED OFF success" text2=""/>
-		<string id="67174442" text1="Drawer unloader RFID read successful" text2=""/>
-		<string id="67174443" text1="Drawer unloader RFID read failure" text2=""/>
-		<string id="67174444" text1="Drawer unloader Initialization successful" text2=""/>
-		<string id="67174445" text1="Drawer unloader Initialization failed" text2=""/>
-		<string id="67174446" text1="Drawer unloader open successful" text2=""/>
-		<string id="67174447" text1="Drawer unloader open failed" text2=""/>
-		<string id="67174448" text1="Drawer unloader close successful" text2=""/>
-		<string id="67174449" text1="Drawer unloader close failed" text2=""/>
-		<string id="67174450" text1="Drawer unloader RED LED ON successful" text2=""/>
-		<string id="67174451" text1="Drawer unloader GREEN LED ON successful" text2=""/>
-		<string id="67174452" text1="Drawer unloader LED OFF successful" text2=""/>
-		<string id="67174453" text1="Agitation setSpeed successful" text2=""/>
-		<string id="67174454" text1="Agitaion setSpeed failure" text2=""/>
-		<string id="67174455" text1="Oven Initialization successful" text2=""/>
-		<string id="67174456" text1="Oven Initialization failed" text2=""/>
-		<string id="67174457" text1="Oven Lid open successful" text2=""/>
-		<string id="67174458" text1="Oven Lid open failed" text2=""/>
-		<string id="67174459" text1="Oven Lid close successful" text2=""/>
-		<string id="67174460" text1="Oven Lid close failed" text2=""/>
-		<string id="67174461" text1="X Arm left level sensor read successful" text2=""/>
-		<string id="67174462" text1="X Arm left level sensor read failed" text2=""/>
-		<string id="67174463" text1="X Arm right level sensor read successful" text2=""/>
-		<string id="67174464" text1="X Arm right level sensor read failed" text2=""/>
-		<string id="67174465" text1="XYZ left Initialization successful" text2=""/>
-		<string id="67174466" text1="XYZ left Initialization failed" text2=""/>
-		<string id="67174467" text1="XYZ left move to station successful" text2=""/>
-		<string id="67174468" text1="XYZ left move to station failed" text2=""/>
-		<string id="67174469" text1="XYZ left lower rack successful" text2=""/>
-		<string id="67174470" text1="XYZ left lower rack failed" text2=""/>
-		<string id="67174471" text1="XYZ left attach rack successful" text2=""/>
-		<string id="67174472" text1="XYZ left attach rack failed" text2=""/>
-		<string id="67174473" text1="XYZ left lift rack successful" text2=""/>
-		<string id="67174474" text1="XYZ left lift rack failed" text2=""/>
-		<string id="67174475" text1="XYZ left read RFID successful" text2=""/>
-		<string id="67174476" text1="XYZ left read RFID failed" text2=""/>
-		<string id="67174477" text1="XYZ left detach rack succssful" text2=""/>
-		<string id="67174478" text1="XYZ left detach rack failed" text2=""/>
-		<string id="67174479" text1="XYZ rightInitialization successful" text2=""/>
-		<string id="67174480" text1="XYZ right Initialization failed" text2=""/>
-		<string id="67174481" text1="XYZ right move to station successful" text2=""/>
-		<string id="67174482" text1="XYZ right move to station failed" text2=""/>
-		<string id="67174483" text1="XYZ right lower rack successful" text2=""/>
-		<string id="67174484" text1="XYZ right lower rack failed" text2=""/>
-		<string id="67174485" text1="XYZ right attach rack successful" text2=""/>
-		<string id="67174486" text1="XYZ right attach rack failed" text2=""/>
-		<string id="67174487" text1="XYZ right lift rack successful" text2=""/>
-		<string id="67174488" text1="XYZ right lift rack failed" text2=""/>
-		<string id="67174489" text1="XYZ right read RFID successful" text2=""/>
-		<string id="67174490" text1="XYZ right read RFID failed" text2=""/>
-		<string id="67174491" text1="XYZ right detach rack succssful" text2=""/>
-		<string id="67174492" text1="XYZ right detach rack failed" text2=""/>
-		<string id="67174493" text1="Request for CAN ID successful" text2=""/>
-		<string id="67174494" text1="Request for Firmware Info successful" text2=""/>
-		<string id="67174495" text1="Slide ID Initialization successful" text2=""/>
-		<string id="67174496" text1="Slide ID Initialization failed" text2=""/>
-		<string id="67174497" text1="Slide ID start count successful" text2=""/>
-		<string id="67174498" text1="Slide ID start count failed" text2=""/>
-		<string id="67174499" text1="Exhaust device Initialization successful" text2=""/>
-		<string id="67174500" text1="Exhaust device Initialization failed" text2=""/>
-		<string id="67174501" text1="Exhaust fans ON successful" text2=""/>
-		<string id="67174502" text1="Exhaust fans ON failed" text2=""/>
-		<string id="67174503" text1="Exhaust fans OFF successful" text2=""/>
-		<string id="67174504" text1="Exhaust fans OFF failed" text2=""/>
-		<string id="67174505" text1="Exhaust device Airflow status OK" text2=""/>
-		<string id="67174506" text1="Exhaust device Airflow status Not OK" text2=""/>
-		<string id="67174507" text1="Exhaust device Fan1 current OK" text2=""/>
-		<string id="67174508" text1="Exhaust device Fan2 current OK" text2=""/>
-		<string id="67174509" text1="Exhaust device Fan1 current Not OK" text2=""/>
-		<string id="67174511" text1="Exhaust device Fan2 current Not OK" text2=""/>
-		<string id="67174512" text1="Water device Initialization successful" text2=""/>
-		<string id="67174513" text1="Water device Initialization failed" text2=""/>
-		<string id="67174514" text1="Water valve ON successful" text2=""/>
-		<string id="67174515" text1="Water valve ON failed" text2=""/>
-		<string id="67174516" text1="Water valve OFF successful" text2=""/>
-		<string id="67174517" text1="Water valve OFF failed" text2=""/>
-		<string id="67174518" text1="Light device Initialization successful" text2=""/>
-		<string id="67174519" text1="Light device Initalization failed" text2=""/>
-		<string id="67174520" text1="Light device ON successful" text2=""/>
-		<string id="67174521" text1="Light device ON failed" text2=""/>
-		<string id="67174522" text1="Light device OFF successful" text2=""/>
-		<string id="67174523" text1="Light device OFF failed" text2=""/>
-		<string id="67174524" text1="Hood device Initialization successful" text2=""/>
-		<string id="67174525" text1="Hood device Initialization failed" text2=""/>
-		<string id="67174526" text1="Hood is opened" text2=""/>
-		<string id="67174527" text1="Hood is closed" text2=""/>
-		<string id="67174528" text1="RFID consumables Initialization successful" text2=""/>
-		<string id="67174529" text1="RFID consumables Initialization failed" text2=""/>
-		<string id="67174530" text1="RFID consumables read request" text2=""/>
-		<string id="67174531" text1="Get Station edges successful" text2=""/>
-		<string id="67174532" text1="Get Station edges failed" text2=""/>
-		<string id="67174533" text1="Device Joystick calibration successful" text2=""/>
-		<string id="67174534" text1="Device Joystick calibration failed" text2=""/>
-		<string id="67174535" text1="Water sensor blocked" text2=""/>
-		<string id="67174536" text1="Water sensor block cleared" text2=""/>
-		<string id="67174537" text1="XYZ left read liquid level successful" text2=""/>
-		<string id="67174538" text1="XYZ left read liquid level failed" text2=""/>
-		<string id="67174539" text1="XYZ left start slide count failure" text2=""/>
-		<string id="67174540" text1="XYZ right read liquid level successful" text2=""/>
-		<string id="67174541" text1="XYZ right read liquid level failed" text2=""/>
-		<string id="67174542" text1="Heated Cuvettes Initialization successful" text2=""/>
-		<string id="67174543" text1="Heated Cuvettes Initialization failed" text2=""/>
-		<string id="67174544" text1="Heated Cuvettes heating test successful" text2=""/>
-		<string id="67174545" text1="Heated Cuvettes heating test failed" text2=""/>
-		<string id="67174546" text1="Oven heating test successful" text2=""/>
-		<string id="67174547" text1="Oven heating test failed" text2=""/>
-		<string id="67174548" text1="Slide count failed. Slide count is not 30" text2=""/>
-		<string id="67174549" text1="Simple program successful" text2=""/>
-		<string id="67174550" text1="XYZ left level sensor calibration successful" text2=""/>
-		<string id="67174551" text1="XYZ left level sensor calibration failed" text2=""/>
-		<string id="67174552" text1="XYZ left get station edges successful" text2=""/>
-		<string id="67174553" text1="XYZ left get station edges failed" text2=""/>
-		<string id="67174554" text1="XYZ right level sensor calibration successful" text2=""/>
-		<string id="67174555" text1="XYZ right level sensor calibration failed" text2=""/>
-		<string id="67174556" text1="XYZ right get station edges successful" text2=""/>
-		<string id="67174557" text1="XYZ right get station edges failed" text2=""/>
-		<string id="67174558" text1="Slide Count result : %1" text2=""/>
-		<string id="67174559" text1="Oven heating successful" text2=""/>
-		<string id="67174656" text1="Oven heating failed" text2=""/>
-		<string id="67174657" text1="Internal Sensor Oven temperature : %1" text2=""/>
-		<string id="67174658" text1="External Sensor Oven temperature : %1" text2=""/>
-		<string id="67174659" text1="Heated cuvettes heating successful" text2=""/>
-		<string id="67174660" text1="Heated cuvettes heating failed" text2=""/>
-		<string id="67174661" text1="Heated cuvette1 internal temperature : %1" text2=""/>
-		<string id="67174662" text1="Heated cuvette1 external temperature : %1" text2=""/>
-		<string id="67174663" text1="Heated cuvette2 internal temperature : %1" text2=""/>
-		<string id="67174664" text1="Heated cuvette2 external temperature : %1" text2=""/>
-		<string id="67174665" text1="Heated cuvette3 internal temperature : %1" text2=""/>
-		<string id="67174666" text1="Heated cuvette3 external temperature : %1" text2=""/>
-		<string id="67174667" text1="Heated cuvette4 internal temperature : %1" text2=""/>
-		<string id="67174668" text1="Heated cuvette4 external temperature : %1" text2=""/>
-		<string id="67174669" text1="Heated cuvettes1 assembly test successful" text2=""/>
-		<string id="67174670" text1="Heated cuvettes1 assembly test failed" text2=""/>
-		<string id="67174671" text1="Heated cuvettes2 assembly test successful" text2=""/>
-		<string id="67174672" text1="Heated cuvettes2 assembly test failed" text2=""/>
-		<string id="67174674" text1="Heated cuvettes3 assembly test successful" text2=""/>
-		<string id="67174675" text1="Heated cuvettes3 assembly test failed" text2=""/>
-		<string id="67174676" text1="Heated cuvettes4 assembly test successful" text2=""/>
-		<string id="67174677" text1="Heated cuvettes4 assembly test failed" text2=""/>
-		<string id="67174678" text1="Firmware update successful : %1" text2=""/>
-		<string id="67174679" text1="Firmware update failed : %1" text2=""/>
-		<string id="67174680" text1="Firmware file not found : %1" text2=""/>
-		<string id="67174681" text1="Setting device to update mode successful" text2=""/>
-		<string id="67174682" text1="Setting device to normal mode successful" text2=""/>
-		<string id="67174683" text1="Device Reconfiguration successful" text2=""/>
-		<string id="67174684" text1="Device Reconfiguration failed" text2=""/>
-		<string id="67179008" text1="Current configuration module info requested:%1" text2=""/>
-		<string id="67179009" text1="Current configuration submodule info requested:%1" text2=""/>
-		<string id="67179010" text1="Add/Modify module info:%1" text2=""/>
-		<string id="67179011" text1="Manual fill of module information" text2=""/>
-		<string id="67179012" text1="Save module configuration successful" text2=""/>
-		<string id="67179013" text1="Save module configuration failed" text2=""/>
-		<string id="67179014" text1="Remove module successful" text2=""/>
-		<string id="67179015" text1="Remove module failed" text2=""/>
-		<string id="67179016" text1="Reading existing SerialNumber " text2=""/>
-		<string id="67179017" text1="Module Cover Slipper version %1 is requested" text2=""/>
-		<string id="67179024" text1="Save and Overwrite configuration successful " text2=""/>
-		<string id="67179025" text1="Save and Overwrite configuration failed" text2=""/>
-		<string id="67179026" text1="View history Module timestamp %1 is selected for module details" text2=""/>
-		<string id="67179027" text1="Timestamp %1 and %2 is selected for module list show difference " text2=""/>
-		<string id="67179028" text1="System log information for %1 is requested" text2=""/>
-		<string id="67179029" text1="System log info filtering is requested based on %1" text2=""/>
-		<string id="67179030" text1="Detailed info of selected log is requested" text2=""/>
-		<string id="67179031" text1="Service help text is requested for selected error" text2=""/>
-		<string id="67179032" text1="Service help text file info display is requested " text2=""/>
-		<string id="67179033" text1="Service log information display is requested" text2=""/>
-		<string id="67179040" text1="Software update log information display is requested" text2=""/>
-		<string id="67179041" text1="Move YZ arm to safe position " text2=""/>
-		<string id="67179042" text1="X Axis left reference run is requested" text2=""/>
-		<string id="67179043" text1="Move YZ arm to safe position " text2=""/>
-		<string id="67179044" text1="X Axis right reference run is requested" text2=""/>
-		<string id="67179045" text1="X Arm Left reference run is requested" text2=""/>
-		<string id="67179046" text1="X Arm Left level sensor test is requested" text2=""/>
-		<string id="67179047" text1="X Arm Left RFID test is requested" text2=""/>
-		<string id="67179048" text1="X Arm Left firmware info is requested" text2=""/>
-		<string id="67179049" text1="X Arm Left CANID is requested" text2=""/>
-		<string id="67179056" text1="X Arm Right reference run is requested" text2=""/>
-		<string id="67179057" text1="X Arm Right level sensor test is requested" text2=""/>
-		<string id="67179058" text1="X Arm Right RFID test is requested" text2=""/>
-		<string id="67179059" text1="X Arm Right firmware info is requested" text2=""/>
-		<string id="67179060" text1="X Arm Right CANID is requested" text2=""/>
-		<string id="67179061" text1="Agitator reference run is requested" text2=""/>
-		<string id="67179062" text1="Agitation speed test is requested" text2=""/>
-		<string id="67179063" text1="Service: Reference run for drawer loader is requested" text2=""/>
-		<string id="67179064" text1="Service: Open/Close test for drawer loader is requested" text2=""/>
-		<string id="67179065" text1="Service: LED test for drawer loader is requested" text2=""/>
-		<string id="67179072" text1="Service: RFID test for drawer loader is requested" text2=""/>
-		<string id="67179073" text1="Service: Teach drawer test is requested" text2=""/>
-		<string id="67179074" text1="Service: Firmware information for drawer loader is requested" text2=""/>
-		<string id="67179075" text1="Service: Drawer loader read CANID test is requested" text2=""/>
-		<string id="67179076" text1="Service: Reference run for drawer unloader is requested" text2=""/>
-		<string id="67179077" text1="Service: Open/Close test for drawer unloader is requested" text2=""/>
-		<string id="67179078" text1="Service: LED test for drawer unloader is requested" text2=""/>
-		<string id="67179079" text1="Service: RFID test for drawer unloader is requested" text2=""/>
-		<string id="67179080" text1="Service: Teach drawer test is requested" text2=""/>
-		<string id="67179081" text1="Service: Firmware information for drawer unloader is requested" text2=""/>
-		<string id="67179088" text1="Service: Drawer unloader read CANID test is requested" text2=""/>
-		<string id="67179089" text1="Service: Oven heating test" text2=""/>
-		<string id="67179090" text1="Service: Oven photo sensor test" text2=""/>
-		<string id="67179091" text1="Service: Oven slide count test" text2=""/>
-		<string id="67179092" text1="Service: Oven lid reference run" text2=""/>
-		<string id="67179093" text1="Service: Oven lid calibration" text2=""/>
-		<string id="67179094" text1="Service: Oven firmware information is requested" text2=""/>
-		<string id="67179095" text1="Service: Oven Read Can Id is requested" text2=""/>
-		<string id="67179096" text1="Service: Heated cuvette test is requested" text2=""/>
-		<string id="67179097" text1="Service: Oven firmware information is requested" text2=""/>
-		<string id="67179104" text1="Service: Oven Read Can Id is requested" text2=""/>
-		<string id="67179105" text1="Service: Air exhaust fan is ON" text2=""/>
-		<string id="67179106" text1="Service: Air exhaust fan is OFF" text2=""/>
-		<string id="67179107" text1="Service: Check air exhaust airflow status is requested" text2=""/>
-		<string id="67179108" text1="Service: Air exhaust check fan current is requested " text2=""/>
-		<string id="67179109" text1="Basic color test completed successfully" text2=""/>
-		<string id="67179110" text1="Basic color test failed" text2=""/>
-		<string id="67179111" text1="Device illumination light is ON" text2=""/>
-		<string id="67179112" text1="Device illumination light is OFF" text2=""/>
-		<string id="67179113" text1="Consumables CANID is requested" text2=""/>
-		<string id="67179120" text1="Consumables Firmware information is requested" text2=""/>
-		<string id="67179121" text1="Consumables Kit Information is requested" text2=""/>
-		<string id="67179122" text1="Consumables Bottle Information is requested" text2=""/>
-		<string id="67179123" text1="Cover hood status: %1" text2=""/>
-		<string id="67179124" text1="Softswitch test completed successfully" text2=""/>
-		<string id="67179125" text1="Softswitch test failed" text2=""/>
-		<string id="67179126" text1="LED test completed successfully" text2=""/>
-		<string id="67179127" text1="LED test failed" text2=""/>
-		<string id="67179128" text1="Water valves test completed successfully" text2=""/>
-		<string id="67179129" text1="Water valves test failed" text2=""/>
-		<string id="67179136" text1="Drain Sensor test completed successfully" text2=""/>
-		<string id="67179137" text1="Drain Sensor test failed" text2=""/>
-		<string id="67179138" text1="Transfer station reference run is requested" text2=""/>
-		<string id="67179139" text1="Transfer station firmware info is requested" text2=""/>
-		<string id="67179140" text1="Transfer station CANID is requested" text2=""/>
-		<string id="67179141" text1="End test is requested" text2=""/>
-		<string id="67179142" text1="Arm level sensor left calibration" text2=""/>
-		<string id="67179143" text1="Arm level sensor right calibration" text2=""/>
-		<string id="67179144" text1="Water tub level sensor calibration" text2=""/>
-		<string id="67179145" text1="Touchscreen calibration is requested" text2=""/>
-		<string id="67179152" text1="Joystick calibration is requested" text2=""/>
-		<string id="67179153" text1="Oven lid calibration is requested" text2=""/>
-		<string id="67179154" text1="Drawer loader calibration is requested" text2=""/>
-		<string id="67179155" text1="Drawer unloader calibration is requested" text2=""/>
-		<string id="67179156" text1="Service Updates: Firmware info is requested" text2=""/>
-		<string id="67179157" text1="RFID values of Drawer left (Golden std. rack) is requested" text2=""/>
-		<string id="67179158" text1="RFID values of Drawer right (Golden std. rack) is requested" text2=""/>
-		<string id="67179159" text1="RFID value of YZ Module is requested" text2=""/>
-		<string id="67179160" text1="Import of data is requested" text2=""/>
-		<string id="67179161" text1="Export of data is requested" text2=""/>
-		<string id="67179264" text1="Language settings is selected" text2=""/>
-		<string id="67179265" text1="Date/Time settings is requested" text2=""/>
-		<string id="67179266" text1="Network settings is requested" text2=""/>
-		<string id="67179267" text1="Manufacturing: XAxis module test is requested " text2=""/>
-		<string id="67179268" text1="Manufacturing: XAxis send test report " text2=""/>
-		<string id="67179269" text1="Manufacturing: XArmLeft module test is requested " text2=""/>
-		<string id="67179270" text1="Manufacturing: XArmLeft send test report " text2=""/>
-		<string id="67179271" text1="Manufacturing: XArmRight module test is requested " text2=""/>
-		<string id="67179272" text1="Manufacturing: XArmRight send test report " text2=""/>
-		<string id="67179273" text1="Manufacturing: Agitator module test is requested " text2=""/>
-		<string id="67179280" text1="Manufacturing: Agitator send test report " text2=""/>
-		<string id="67179281" text1="Manufacturing: Drawer loader module test is requested " text2=""/>
-		<string id="67179282" text1="Manufacturing: Drawer loader send test report " text2=""/>
-		<string id="67179283" text1="Manufacturing: Drawer unloader module test is requested " text2=""/>
-		<string id="67179284" text1="Manufacturing: Drawer unloader send test report " text2=""/>
-		<string id="67179285" text1="Manufacturing: Oven module test is requested " text2=""/>
-		<string id="67179286" text1="Manufacturing: Oven send test report " text2=""/>
-		<string id="67179287" text1="Manufacturing: Heated Cuvette module test is requested " text2=""/>
-		<string id="67179288" text1="Manufacturing: Heated Cuvette send test report " text2=""/>
-		<string id="67179289" text1="Manufacturing: AirExhaust module test is requested " text2=""/>
-		<string id="67179296" text1="Manufacturing: AirExhaust send test report " text2=""/>
-		<string id="67179297" text1="Manufacturing: Transfer Station module test is requested " text2=""/>
-		<string id="67179298" text1="Manufacturing: Transfer Station send test report " text2=""/>
-		<string id="67179299" text1="Manufacturing: Water Station module test is requested " text2=""/>
-		<string id="67179300" text1="Manufacturing: Water Station send test report " text2=""/>
+		<string id="100728833" text1="Manufacturing user logged in" text2=""/>
+		<string id="100728834" text1="Service user logged in" text2=""/>
+		<string id="100728835" text1="Service and Manufacturing SW Start" text2=""/>
+		<string id="100728836" text1="Password Incorrect" text2=""/>
+		<string id="100728837" text1="Password Not matching" text2=""/>
+		<string id="100728838" text1="Logged in Service User Name : %1" text2=""/>
+		<string id="100728839" text1="Logged in Manufacturing User Name : %1" text2=""/>
+		<string id="100728840" text1="log content display is requested" text2=""/>
+		<string id="100728841" text1="System log info filtering is requested based on %1" text2=""/>
+		<string id="100728842" text1="Detailed info of selected log is requested" text2=""/>
+		<string id="100728843" text1="Service recovery action is requested for selected error" text2=""/>
+		<string id="100728844" text1="Service recovery action file info display is requested " text2=""/>
+		<string id="100728845" text1="Service log information display is requested" text2=""/>
+		<string id="100728846" text1="System log information display is requested" text2=""/>
+		<string id="100728847" text1="Software update log information display is requested" text2=""/>
+		<string id="100728848" text1="Pressure sensor calibration is requested" text2=""/>
+		<string id="100728849" text1="Touchscreen calibration is requested" text2=""/>
+		<string id="100728850" text1="Firmware update is requested" text2=""/>
+		<string id="100728851" text1="Import of data is requested" text2=""/>
+		<string id="100728852" text1="Export of data is requested" text2=""/>
+		<string id="100728853" text1="Current configuration module info requested:%1" text2=""/>
+		<string id="100728854" text1="Current configuration submodule info requested:%1" text2=""/>
+		<string id="100728855" text1="Modify retort info" text2=""/>
+		<string id="100728856" text1="Modify retort heater module info" text2=""/>
+		<string id="100728857" text1="Modify retort lid lock module info" text2=""/>
+		<string id="100728858" text1="Modify retort level sensor module info" text2=""/>
+		<string id="100728859" text1="Modify main control submodule info:%1" text2=""/>
+		<string id="100728860" text1="Modify oven info" text2=""/>
+		<string id="100728861" text1="Modify oven heater module info" text2=""/>
+		<string id="100728862" text1="Modify oven cover sensor module info" text2=""/>
+		<string id="100728863" text1="Modify retary valve module info" text2=""/>
+		<string id="100728864" text1="Modify retary valve heater module info" text2=""/>
+		<string id="100728865" text1="Modify retary valve motor module info" text2=""/>
+		<string id="100728866" text1="Modify L&amp;A system pump module info" text2=""/>
+		<string id="100728867" text1="Modify L&amp;A system valve 1 module info" text2=""/>
+		<string id="100728868" text1="Modify L&amp;A system valve 2 module info" text2=""/>
+		<string id="100728869" text1="Modify L&amp;A system heating belt 1 module info" text2=""/>
+		<string id="100728870" text1="Modify L&amp;A system heating belt 2 module info" text2=""/>
+		<string id="100728871" text1="Modify L&amp;A system pressure sensor module info" text2=""/>
+		<string id="100728872" text1="Modify L&amp;A system carbon filter module info" text2=""/>
+		<string id="100728873" text1="Modify L&amp;A system fan module info" text2=""/>
+		<string id="100728874" text1="View history Module instrument %1 is selected for module details" text2=""/>
+		<string id="100728875" text1="Retort lid lock test is requested" text2=""/>
+		<string id="100728876" text1="Retort lid lock test completed successfully" text2=""/>
+		<string id="100728877" text1="Retort lid lock test failed" text2=""/>
+		<string id="100728878" text1="Retort level sensor heating test is requested" text2=""/>
+		<string id="100728879" text1="Retort level sensor heating test completed successfully" text2=""/>
+		<string id="100728880" text1="Retort level sensor heating test failed" text2=""/>
+		<string id="100728881" text1="Retort level sensor detecting test with bottle position %1 is requested" text2=""/>
+		<string id="100728882" text1="Retort level sensor detecting test completed successfully" text2=""/>
+		<string id="100728883" text1="Retort level sensor detecting test failed" text2=""/>
+		<string id="100728884" text1="Retort heating test empty is requested" text2=""/>
+		<string id="100728885" text1="Retort heating test empty completed successfully" text2=""/>
+		<string id="100728886" text1="Retort heating test empty failed" text2=""/>
+		<string id="100728887" text1="Retort heating test with liquid is requested" text2=""/>
+		<string id="100728888" text1="Retort heating test with liquid completed successfully" text2=""/>
+		<string id="100728889" text1="Retort heating test with liquid failed" text2=""/>
+		<string id="100728890" text1="Oven heating test empty is requested" text2=""/>
+		<string id="100728891" text1="Oven heating test empty completed successfully" text2=""/>
+		<string id="100728892" text1="Oven heating test empty failed" text2=""/>
+		<string id="100728893" text1="Oven heating test with liquid is requested" text2=""/>
+		<string id="100728894" text1="Oven heating test with liquid completed successfully" text2=""/>
+		<string id="100728895" text1="Oven heating test with liquid failed" text2=""/>
+		<string id="100728896" text1="Oven cover sensor test is requested" text2=""/>
+		<string id="100728897" text1="Oven cover sensor test completed successfully" text2=""/>
+		<string id="100728898" text1="Oven cover sensor test failed" text2=""/>
+		<string id="100728899" text1="Rotary valve initializing test is requested" text2=""/>
+		<string id="100728900" text1="Rotary valve initializing test completed successfully" text2=""/>
+		<string id="100728901" text1="Rotary valve initializing test failed" text2=""/>
+		<string id="100728902" text1="Rotary valve selecting test is requested" text2=""/>
+		<string id="100728903" text1="Rotary valve selecting test completed successfully" text2=""/>
+		<string id="100728904" text1="Rotary valve selecting test failed" text2=""/>
+		<string id="100728905" text1="Rotary valve sealing test is requested" text2=""/>
+		<string id="100728906" text1="Rotary valve sealing test completed successfully" text2=""/>
+		<string id="100728907" text1="Rotary valve sealing test failed" text2=""/>
+		<string id="100728908" text1="Rotary valve heating property test is requested" text2=""/>
+		<string id="100728909" text1="Rotary valve heating property test completed successfully" text2=""/>
+		<string id="100728910" text1="Rotary valve heating property test failed" text2=""/>
+		<string id="100728911" text1="L&amp;A system heating belt 1 test is requested" text2=""/>
+		<string id="100728912" text1="L&amp;A system heating belt 1 test completed successfully" text2=""/>
+		<string id="100728913" text1="L&amp;A system heating belt 1 test failed" text2=""/>
+		<string id="100728914" text1="L&amp;A system heating belt 2 test is requested" text2=""/>
+		<string id="100728915" text1="L&amp;A system heating belt 2 test completed successfully" text2=""/>
+		<string id="100728916" text1="L&amp;A system heating belt 2 test failed" text2=""/>
+		<string id="100728917" text1="L&amp;A system air system test is requested" text2=""/>
+		<string id="100728918" text1="L&amp;A system air system test completed successfully" text2=""/>
+		<string id="100728919" text1="L&amp;A system air system test failed" text2=""/>
+		<string id="100728920" text1="System bottle checking test is requested" text2=""/>
+		<string id="100728921" text1="System bottle checking test completed successfully" text2=""/>
+		<string id="100728922" text1="System bottle checking test failed" text2=""/>
+		<string id="100728923" text1="System filling and draining test is requested" text2=""/>
+		<string id="100728924" text1="System filling and draining test completed successfully" text2=""/>
+		<string id="100728925" text1="System filling and draining test failed" text2=""/>
+		<string id="100728926" text1="System overflow test is requested" text2=""/>
+		<string id="100728927" text1="System overflow test completed successfully" text2=""/>
+		<string id="100728928" text1="System overflow test failed" text2=""/>
+		<string id="100728929" text1="System speaker test is requested" text2=""/>
+		<string id="100728930" text1="System speaker test completed successfully" text2=""/>
+		<string id="100728931" text1="System speaker test failed" text2=""/>
+		<string id="100728932" text1="System alarm test is requested" text2=""/>
+		<string id="100728933" text1="System alarm test completed successfully" text2=""/>
+		<string id="100728934" text1="System alarm test is failed" text2=""/>
+		<string id="100728935" text1="System ethernet test is requested" text2=""/>
+		<string id="100728936" text1="System ethernet test completed successfully" text2=""/>
+		<string id="100728937" text1="System ethernet test failed" text2=""/>
+		<string id="100728938" text1="System usb test is requested" text2=""/>
+		<string id="100728939" text1="System usb test completed successfully" text2=""/>
+		<string id="100728940" text1="System usb test failed" text2=""/>
+		<string id="100728941" text1="System mains relay test is requested" text2=""/>
+		<string id="100728942" text1="System mains relay test completed successfully" text2=""/>
+		<string id="100728943" text1="System mains relay test is failed" text2=""/>
+		<string id="100728944" text1="System 110V/220V switching test is requested" text2=""/>
+		<string id="100728945" text1="System 110V/220V switching test completed successfully" text2=""/>
+		<string id="100728946" text1="System 110V/220V switching test failed" text2=""/>
 	</language>
 </strings>

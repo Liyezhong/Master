@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 
@@ -102,6 +103,7 @@ void CAlarmTest::SecondConfirmResult(void)
 
 void CAlarmTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS);
     qDebug() << "Alarm Test succeeded!";
 
     // display success message
@@ -123,6 +125,7 @@ void CAlarmTest::Succeed(void)
 
 void CAlarmTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE);
     qDebug() << "Alarm Test failed!";
 
     // display failure message

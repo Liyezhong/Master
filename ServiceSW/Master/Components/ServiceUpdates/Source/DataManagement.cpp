@@ -18,6 +18,7 @@
  */
 /****************************************************************************/
 
+#include "Main/Include/HimalayaServiceEventCodes.h"
 #include "ServiceUpdates/Include/DataManagement.h"
 
 #include "Global/Include/Utils.h"
@@ -67,6 +68,7 @@ CDataManagement::~CDataManagement(void)
 
 void CDataManagement::Export(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SERVICEUPDATES_DATAMANAGEMENT_EXPORT);
     mp_WaitDialog->SetDialogTitle(tr("Service Export"));
     mp_WaitDialog->SetText(tr("Exporting data ..."));
     mp_WaitDialog->SetTimeout(10000);
@@ -84,6 +86,7 @@ void CDataManagement::Export(void)
 
 void CDataManagement::Import(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SERVICEUPDATES_DATAMANAGEMENT_IMPORT);
     mp_WaitDialog->SetDialogTitle(tr("Import"));
     mp_WaitDialog->SetText(tr("Importing data ..."));
     mp_WaitDialog->SetTimeout(10000);

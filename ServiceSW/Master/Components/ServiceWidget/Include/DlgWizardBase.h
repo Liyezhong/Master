@@ -42,7 +42,7 @@ class CDlgWizardBase : public MainMenu::CDialogFrame
     Q_OBJECT
     
 public:
-    explicit CDlgWizardBase(QWidget *parent = 0);
+    explicit CDlgWizardBase(QWidget *parent = 0, QMainWindow *pMainWindow = 0);
     ~CDlgWizardBase();
 
     void AddWidget(QWidget *pContent);

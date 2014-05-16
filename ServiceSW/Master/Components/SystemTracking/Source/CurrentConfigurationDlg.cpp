@@ -20,6 +20,8 @@
 
 #include "SystemTracking/Include/CurrentConfigurationDlg.h"
 #include "ui_CurrentConfigurationDlg.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
+#include "Global/Include/Utils.h"
 
 namespace SystemTracking {
 
@@ -125,6 +127,8 @@ void CCurrentConfigurationDlg::ExecDialog()
     }
     else
     {
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CURRENTCONFIG_SUBMODULEINFO_REQUESTED,
+                                                   Global::tTranslatableStringList() << m_ModuleName.toString());
         mp_SubModule = const_cast<DataManager::CModule*>(mp_Module)->GetSubModuleInfo(m_ModuleName.toString());
         int Count = mp_SubModule->GetNumberOfParameters();
         QString Text;

@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 
@@ -94,6 +95,7 @@ void CSpeakerTest::SecondConfirmResult(void)
 
 void CSpeakerTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_SUCCESS);
     qDebug() << "Speaker Test succeeded!";
 
     // display success message
@@ -115,6 +117,7 @@ void CSpeakerTest::Succeed(void)
 
 void CSpeakerTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_FAILURE);
     qDebug() << "Speaker Test failed!";
 
     // display failure message

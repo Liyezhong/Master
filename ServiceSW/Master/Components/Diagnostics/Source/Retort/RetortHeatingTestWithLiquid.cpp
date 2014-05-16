@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/WaitDialog.h"
@@ -105,6 +106,7 @@ void CHeatingTestWithLiquid::SecondStartHeating(void)
 
 void CHeatingTestWithLiquid::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_SUCCESS);
     qDebug() << "Retort Heating test with liquid succeeded!";
 
     // display success message
@@ -128,6 +130,7 @@ void CHeatingTestWithLiquid::Succeed(void)
 
 void CHeatingTestWithLiquid::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_FAILURE);
     qDebug() << "Retort Heating test with liquid failed!";
 
     // display failure message

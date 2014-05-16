@@ -18,13 +18,15 @@
  */
 /****************************************************************************/
 
+#include "Main/Include/HimalayaServiceEventCodes.h"
 #include "Core/Include/Startup.h"
 #include "LogViewerDialog/Include/LogContentDlg.h"
 #include "LogViewerDialog/Include/SystemLogViewerDlg.h"
 #include "Core/Include/CMessageString.h"
 #include <QTextStream>
 #include <QApplication>
-
+#include <ServiceWidget/Include/DlgWizardSelectTestOptions.h>
+#include <Core/Include/SelectTestOptions.h>
 
 namespace Core {
 
@@ -44,6 +46,8 @@ CStartup::CStartup() : QObject(),
 
     // Initialize Strings
     RetranslateUI();
+
+    m_CurrentUserMode = QString("");
 
     // ServiceConnector
     mp_ServiceConnector = new Core::CServiceGUIConnector(mp_MainWindow);
@@ -365,8 +369,18 @@ void CStartup::LoadCommonComponenetsTwo()
 void CStartup::GuiInit()
 {
     mp_USBKeyValidator = new Core::CUSBKeyValidator(this);
+
+    MainMenu::CDlgWizardSelectTestOptions* pDlgWizardSelectTestOptions = new MainMenu::CDlgWizardSelectTestOptions(NULL, mp_MainWindow);
+    CONNECTSIGNALSLOT(pDlgWizardSelectTestOptions, ClickedNextButton(int), this, OnSelectTestOptions(int));
+    pDlgWizardSelectTestOptions->exec();
+    delete pDlgWizardSelectTestOptions;
+
 }
 
+void CStartup::OnSelectTestOptions(int index)
+{
+    CSelectTestOptions::SetCurTestMode(ManufacturalTestMode_t(index));
+}
 /****************************************************************************/
 /*!
  *  \brief Initializes the Service user interface
@@ -374,6 +388,7 @@ void CStartup::GuiInit()
 /****************************************************************************/
 void CStartup::ServiceGuiInit()
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_SERVICEUSER, Global::tTranslatableStringList() << GetCurrentUserMode());
     LoadCommonComponenetsOne();
 
     mp_MainWindow->SetUserIcon(MainMenu::CMainWindow::Service);
@@ -399,6 +414,7 @@ void CStartup::ServiceGuiInit()
 /****************************************************************************/
 void CStartup::ManufacturingGuiInit()
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_MANUFACTURING, Global::tTranslatableStringList() << GetCurrentUserMode());
     LoadCommonComponenetsOne();
     emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
 
@@ -701,6 +717,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
 {
     QString Path = FilePath + "/" + FileName;
     if (FileName.startsWith("HimalayaEvents_12345678")) {  // System log
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SYSTEMLOG_DISPLAY_INFO);
         if (mp_SystemLogContentDlg != NULL) {
             delete mp_SystemLogContentDlg;
             mp_SystemLogContentDlg = NULL;
@@ -718,6 +735,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
         QList<int> Columns;
 
         if (FileName.startsWith("Himalaya_Service")) {  // Service log
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICELOG_DISPLAY_INFO);
             HeaderLabels.append(m_strDate);
             HeaderLabels.append(m_strTimeStamp);
             HeaderLabels.append(m_strDescription);
@@ -725,6 +743,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
             Columns.append(3);
         }
         else if (FileName.startsWith("RecoveryActionText")) { // Recovery Action
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SERVICERECOVERYACTION_DISPLAY_INFO);
             HeaderLabels.append(m_strError);
             HeaderLabels.append(m_strDescription);
             HeaderLabels.append(m_strRecoveryActionText);
@@ -733,6 +752,7 @@ void CStartup::DisplayLogInformation(QString FileName, QString FilePath)
             Columns.append(2);
         }
         else if (FileName.startsWith("Himalaya_SW_Update_Events"))  {// SW Update log
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_LOGVIEWER_SOFTWAREUPDATELOG_DISPLAY_INFO);
             HeaderLabels.append(m_strDate);
             HeaderLabels.append(m_strTimeStamp);
             HeaderLabels.append(m_strType);

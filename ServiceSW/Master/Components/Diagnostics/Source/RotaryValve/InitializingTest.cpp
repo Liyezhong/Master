@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include "Global/Include/Utils.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/WaitDialog.h"
@@ -80,6 +81,7 @@ void CInitializingTest::StartInitializing(void)
 
 void CInitializingTest::Succeed(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST_SUCCESS);
     qDebug() << "Rotary Valve Initializing succeeded!";
 
     // display success message
@@ -101,6 +103,7 @@ void CInitializingTest::Succeed(void)
 
 void CInitializingTest::Fail(void)
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST_FAILURE);
     qDebug() << "Rotary Valve Initializing failed!";
 
     // display failure message
