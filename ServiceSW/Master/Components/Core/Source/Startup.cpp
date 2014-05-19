@@ -52,6 +52,8 @@ CStartup::CStartup() : QObject(),
     // ServiceConnector
     mp_ServiceConnector = new Core::CServiceGUIConnector(mp_MainWindow);
     mp_CalibrationHandler = new Core::CCalibrationHanlder(mp_ServiceConnector, mp_MainWindow);
+    mp_ManaufacturingDiagnosticsHandler = new Core::CManufacturingDiagnosticsHandler(mp_ServiceConnector, mp_MainWindow);
+
 
     // System tracking
     mp_SystemTrackingGroup = new MainMenu::CHiMenuGroup;
@@ -418,7 +420,7 @@ void CStartup::ManufacturingGuiInit()
     LoadCommonComponenetsOne();
     emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
 
-    mp_MainWindow->AddMenuGroup(mp_DiagnosticsManufGroup, "Diagnostics");
+    mp_ManaufacturingDiagnosticsHandler->LoadManufDiagnosticsComponents();
 
     LoadCommonComponenetsTwo();
 }

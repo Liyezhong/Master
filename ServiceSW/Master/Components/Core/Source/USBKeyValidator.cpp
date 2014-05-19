@@ -40,7 +40,8 @@ CUSBKeyValidator::CUSBKeyValidator(Core::CStartup* StartUp) :
     mp_KeyBoardWidget->DisplayNumericKeyBoard();
     //mp_KeyBoardWidget->show();
     ConnectKeyBoardSignalSlots();
-    mp_StartUp->ServiceGuiInit();
+ //   mp_StartUp->ServiceGuiInit();
+     mp_StartUp->ManufacturingGuiInit();
 }
 
 CUSBKeyValidator::~CUSBKeyValidator()

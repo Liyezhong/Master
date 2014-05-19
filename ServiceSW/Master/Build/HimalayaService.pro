@@ -34,12 +34,14 @@ SUBDIRS = ../../../../Platform/Master/Components/Global/Build/Global.pro \
           ../Components/SystemTracking/Build/SystemTracking.pro \
           ../Components/LogViewerDialog/Build/LogViewerDialog.pro \
           ../Components/Diagnostics/Build/Diagnostics.pro \
+          ../Components/DiagnosticsManufacturing/Build/DiagnosticsManufacturing.pro \
           ../Components/ServiceUpdates/Build/ServiceUpdates.pro \
           ../Components/Core/Build/Core.pro \
           ../Components/ServiceDeviceController/Build/ServiceDeviceController.pro \
           ../Components/ServiceMasterThreadController/Build/ServiceMasterThreadController.pro \
           ../Components/ServiceDataManager/Build/ServiceDataManager.pro \
           ../Components/Main/Build/Main.pro
+
 
 CONFIG += ordered
 

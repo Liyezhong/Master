@@ -65,6 +65,7 @@ HIMALAYA_COMPONENTS = TestCases  \
                       SystemTracking \
                       LogViewerDialog \
                       Diagnostics \
+                      DiagnosticsManufacturing \
                       ServiceUpdates \
                       ServiceMasterThreadController \
                       ServiceDeviceController \

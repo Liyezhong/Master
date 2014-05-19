@@ -21,7 +21,7 @@
 #ifndef GLOBAL_SERVICEDEFINES_H
 #define GLOBAL_SERVICEDEFINES_H
 
-//#include "../Include/PlatformServiceDefines.h"
+#include "../Include/PlatformServiceDefines.h"
 #include <QtGlobal>
 #include <QString>
 #include <QHash>
@@ -155,6 +155,53 @@ enum DeviceCalibrationCmdType {
     DEVICE_DRAWERUNLOADER_INIT,      ///< UnLoader Calibration
     DEVICE_PRESSURE_SENSOR          ///< pressure sensor Calibration
 };
+
+/****************************************************************************/
+/**
+ * \brief Enum containing module Test Names
+ */
+/****************************************************************************/
+typedef enum ModuleTestNames {
+    EBOX_ASB3,                          ///< ASB3 test
+    EBOX_ASB5,                          ///< ASB5 test
+    EBOX_ASB15,                         ///< ASB15 test
+    RETORT_LEVEL_SENSOR_DETECTING,      ///< Retort level sensor detecting test
+    RETORT_HEATING_WITH_LIQUID,         ///< Retort heating test with liquid
+    RETORT_HEATING_EMPTY,               ///< Retort heating test (empty)
+    OVEN_COVER_SENSOR,                  ///< Oven cover sensor test
+    OVEN_HEATING_EMPTY,                 ///< Oven heating test (empty)
+    OVEN_HEATING_WITH_WATER,            ///< Oven heating test with water
+    ROTARY_VALVE_INITIALIZING,          ///< Rotary valve initializing test
+    ROTARY_VALVE_SELECTION_FUNCTION,    ///< Rotary valve selection function test
+    ROTARY_VALVE_SEALING_FUNCTION,      ///< Rotary valve sealing function test
+    LA_SYSTEM_PUMP_VALVE_CONTROL,       ///< LA System pump and valve control test
+    LA_SYSTEM_HEATING_LIQUID_TUBE,      ///< LA System heating test for liquid tube
+    LA_SYSTEM_HEATING_AIR_TUBE,         ///< LA System heating test for air tube
+    SYSTEM_SEALING_TEST,                ///< System sealing test
+    SYSTEM_PRESSURE_VACUUM_ON_GENERATION, ///< System pressure vacuum on generation test
+    SYSTEM_FILL_DRAINING,                ///< System filling and draining test
+    SYSTEM_OVERFLOW,                     ///< System overflow test
+    SYSTEM_SPEARKER,                     ///< System speaker test
+    SYSTEM_REMOTE_LOCAL_ALARM,           ///< System remote and local alarm test
+    SYSTEM_USB,                          ///< System usb test
+    SYSTEM_FAN                           ///< System fan test
+} ModuleTestNames_t;
+
+/****************************************************************************/
+/**
+ * \brief Enum containing module Names
+ */
+/****************************************************************************/
+typedef enum ModuleNames {
+    EBOX,                     ///< E Box
+    RETORT,                 ///< Retort Module
+    OVEN,                ///< Oven Module
+    ROTARY_VALVE,                   ///< Rotary Valve Module
+    LA_SYSTEM,              ///< L&A System Module
+    SYSTEM            ///< System
+} ModuleNames_t;
+
+
 
 /****************************************************************************/
 /**

@@ -61,6 +61,7 @@
 #include "Diagnostics/Include/LaSystem.h"
 #include "Diagnostics/Include/System.h"
 #include "Core/Include/CalibrationHandler.h"
+#include "Core/Include/ManufacturingDiagnosticsHandler.h"
 #include <QTimer>
 
 namespace Core {
@@ -87,6 +88,8 @@ public:
     int Mode;
 
     Core::CServiceGUIConnector *mp_ServiceConnector;
+    Core::CManufacturingDiagnosticsHandler *mp_ManaufacturingDiagnosticsHandler;    //!< Manufacturing diagnostics handler object
+
 
     void LoadCommonComponenetsOne();    // System Tracking and Log Viewer Tab
     void LoadCommonComponenetsTwo();    // Calibration and Service Updates Tab
