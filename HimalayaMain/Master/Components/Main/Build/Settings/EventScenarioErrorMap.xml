@@ -150,8 +150,8 @@
        <event id="500050301"    name="EVENT_MC_Voltage_24V_ASB3_OutofRange"/>
        <event id="500050311"    name="EVENT_MC_Voltage_24V_ASB5_OutofRange"/>
        <event id="500050321"    name="EVENT_MC_Voltage_24V_ASB15_OutofRange"/>
-       <event id="500050301"    name="EVENT_MC_RemoteAlarm_Unconnected"/>
-       <event id="500050301"    name="EVENT_MC_LocalAlarm_Unconnected"/>
+       <event id="500050401"    name="EVENT_MC_RemoteAlarm_Unconnected"/>
+       <event id="500050411"    name="EVENT_MC_LocalAlarm_Unconnected"/>
   </group>
 </eventlist>
 
@@ -1467,12 +1467,6 @@
         <error errorid="513050301">
             <scenario type="all"/>
         </error>
-        <error errorid="512050401">
-            <scenario type="all"/>
-        </error>
-        <error errorid="512050402">
-            <scenario type="all"/>
-        </error>
     </event>
     <event eventid="500050311">
         <error errorid="513050310">
@@ -1504,19 +1498,14 @@
             <scenario type="all"/>
         </error>
     </event>
-    <event eventid="500060010">
-        <error errorid="513060010">
-            <scenario type="single" id="001"/>
+    <event eventid="500050401">
+        <error errorid="512050401">
+            <scenario type="all"/>
         </error>
     </event>
-    <event eventid="500060020">
-        <error errorid="513060020">
-            <scenario type="single" id="001"/>
-            <scenario type="single" id="507"/>
-        </error>
-    </event>
-    <event eventid="500060100">
-        <error errorid="513060100">
+    <event eventid="500050411">
+        <error errorid="512050411">
+            <scenario type="all"/>
         </error>
     </event>
 </correspondinglist>
