@@ -180,9 +180,6 @@ private:
     QString m_strType;
     QString m_DeviceName;                                                   //!< Name of the device
     QTimer m_WindowStatusResetTimer;                                        //!< Timer for Window status reset
-    QString m_CurrentUserMode;                                              //!< Stores current user mode
-
-    bool CurrentlyActive(MainMenu::CMenuGroup *p_Group, QWidget *p_Panel);
 
 private slots:
     void SetDateTime(QDateTime DateTime);
