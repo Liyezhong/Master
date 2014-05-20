@@ -95,7 +95,7 @@ public:
     void LoadCommonComponenetsTwo();    // Calibration and Service Updates Tab
     void ServiceGuiInit();
     void ManufacturingGuiInit();
-    void InitMainufacturingDiagnostic();
+    void InitManufacturingDiagnostic();
   /****************************************************************************/
     /**
      * \brief Sets the current user mode

@@ -40,7 +40,8 @@ CStartup::CStartup() : QObject(),
     mp_SystemLogContentDlg(NULL),
     m_DeviceName(""),
     m_WindowStatusResetTimer(this),
-    m_CurrentUserMode("")
+    m_CurrentUserMode(""),
+    mp_ManaufacturingDiagnosticsHandler(NULL)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestNames>("Service::ModuleTestNames");
@@ -480,8 +481,6 @@ void CStartup::StartTimer()
 void CStartup::OnSelectTestOptions(int index)
 {
     CSelectTestOptions::SetCurTestMode(ManufacturalTestMode_t(index));
-
-    InitMainufacturingDiagnostic();
 }
 
 /****************************************************************************/
@@ -493,6 +492,8 @@ void CStartup::OnSelectTestOptions(int index)
 /****************************************************************************/
 void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, QString UserMode)
 {
+    qDebug()<<"CStartup::InitializeGui  "<<SoftwareMode;
+
     SetCurrentUserMode(UserMode);
     if (SoftwareMode == PlatformService::SERVICE_MODE)
     {
@@ -521,7 +522,8 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
 
         delete pDlgWizardSelectTestOptions;
 
-        ManufacturingGuiInit();
+        InitManufacturingDiagnostic();
+
         QTimer::singleShot(50, this, SLOT(FileExistanceCheck()));
     }
 }
@@ -552,8 +554,12 @@ void CStartup::ServiceGuiInit()
     LoadCommonComponenetsTwo();
 }
 
-void CStartup::InitMainufacturingDiagnostic()
+void CStartup::InitManufacturingDiagnostic()
 {
+    if (mp_ManaufacturingDiagnosticsHandler) {
+        delete mp_ManaufacturingDiagnosticsHandler;
+        mp_ManaufacturingDiagnosticsHandler = NULL;
+    }
     mp_ManaufacturingDiagnosticsHandler = new Core::CManufacturingDiagnosticsHandler(mp_ServiceConnector, mp_MainWindow);
 
     /* Manufacturing Tests */
@@ -568,6 +574,9 @@ void CStartup::InitMainufacturingDiagnostic()
 /****************************************************************************/
 void CStartup::ManufacturingGuiInit()
 {
+    qDebug()<<"CStartup::ManufacturingGuiInit";
+
+
     Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_MANUFACTURING, Global::tTranslatableStringList() << GetCurrentUserMode());
     LoadCommonComponenetsOne();
     emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
@@ -575,6 +584,8 @@ void CStartup::ManufacturingGuiInit()
     mp_ManaufacturingDiagnosticsHandler->LoadManufDiagnosticsComponents();
 
     LoadCommonComponenetsTwo();
+
+    qDebug()<<"CStartup::ManufacturingGuiInit finished";
 }
 
 /****************************************************************************/
