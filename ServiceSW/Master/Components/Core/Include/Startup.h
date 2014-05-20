@@ -95,6 +95,7 @@ public:
     void LoadCommonComponenetsTwo();    // Calibration and Service Updates Tab
     void ServiceGuiInit();
     void ManufacturingGuiInit();
+    void InitMainufacturingDiagnostic();
 
     /****************************************************************************/
     /**
@@ -270,6 +271,14 @@ signals:
      */
     /*******************************************************************************/
     void UpdateGUIConnector(Core::CServiceGUIConnector *DataConnector, MainMenu::CMainWindow *MainWindow);
+
+    /****************************************************************************/
+    /**
+       * \brief Signal emitted to perform manufacturing tests
+       * \iparam Test = Test name
+       */
+    /****************************************************************************/
+    void PerformManufacturingTest(Service::ModuleTestNames Test);
 };
 
 } // end namespace Core

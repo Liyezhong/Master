@@ -130,6 +130,8 @@ bool CManufacturingDiagnosticsHandler::GetTestResponse()
 /****************************************************************************/
 void CManufacturingDiagnosticsHandler::PerformManufOvenTests()
 {
+    qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufOvenTests ---";
+    emit PerformManufacturingTest(Service::OVEN_COVER_SENSOR);
 #if 0
     QString Title;
     QString GBox;

@@ -39,6 +39,9 @@ CStartup::CStartup() : QObject(),
     mp_LogContentDlg(NULL),
     mp_SystemLogContentDlg(NULL)
 {
+    qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
+    qRegisterMetaType<Service::ModuleTestNames>("Service::ModuleTestNames");
+
     // GUI components
     mp_Clock = new QTimer();    
     mp_MainWindow = new MainMenu::CMainWindow();
@@ -52,8 +55,6 @@ CStartup::CStartup() : QObject(),
     // ServiceConnector
     mp_ServiceConnector = new Core::CServiceGUIConnector(mp_MainWindow);
     mp_CalibrationHandler = new Core::CCalibrationHanlder(mp_ServiceConnector, mp_MainWindow);
-    mp_ManaufacturingDiagnosticsHandler = new Core::CManufacturingDiagnosticsHandler(mp_ServiceConnector, mp_MainWindow);
-
 
     // System tracking
     mp_SystemTrackingGroup = new MainMenu::CHiMenuGroup;
@@ -382,6 +383,8 @@ void CStartup::GuiInit()
 void CStartup::OnSelectTestOptions(int index)
 {
     CSelectTestOptions::SetCurTestMode(ManufacturalTestMode_t(index));
+
+    InitMainufacturingDiagnostic();
 }
 /****************************************************************************/
 /*!
@@ -407,6 +410,15 @@ void CStartup::ServiceGuiInit()
 
     emit SetSettingsButtonStatus();
     LoadCommonComponenetsTwo();
+}
+
+void CStartup::InitMainufacturingDiagnostic()
+{
+    mp_ManaufacturingDiagnosticsHandler = new Core::CManufacturingDiagnosticsHandler(mp_ServiceConnector, mp_MainWindow);
+
+    /* Manufacturing Tests */
+    CONNECTSIGNALSIGNAL(mp_ManaufacturingDiagnosticsHandler, PerformManufacturingTest(Service::ModuleTestNames), this, PerformManufacturingTest(Service::ModuleTestNames));
+    ManufacturingGuiInit();
 }
 
 /****************************************************************************/

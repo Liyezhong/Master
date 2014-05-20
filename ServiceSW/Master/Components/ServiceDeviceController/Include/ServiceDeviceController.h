@@ -42,6 +42,7 @@
 #include <ServiceDeviceController/Include/Commands/CmdHeatingTest.h>
 #include <ServiceDeviceController/Include/Commands/CmdRotaryValveTest.h>
 #include <ServiceDeviceController/Include/Commands/CmdLSensorDetectingTest.h>
+#include <ServiceDeviceController/Include/Commands/CmdModuleManufacturingTest.h>
 
 #include <ServiceDeviceController/Include/DeviceProcessor/DeviceProcessor.h>
 
@@ -169,6 +170,17 @@ public:
     /****************************************************************************/
     void OnCmdCalibrateDevice(Global::tRefType Ref, const DeviceCommandProcessor::CmdCalibrateDevice &Cmd);
 
+
+    /****************************************************************************/
+    /**
+     * \brief Command of type CmdModuleManufacturingTest received.
+     *
+     * \iparam       Ref                 Reference of command.
+     * \iparam       Cmd                 Command.
+     */
+    /****************************************************************************/
+    void OnCmdModuleManufacturingTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdModuleManufacturingTest &Cmd);
+
 public slots:
     /**
      * \brief Returns a message to Main Thread Controller.
@@ -249,6 +261,14 @@ signals:
      */
     /****************************************************************************/
     void CalibrateDevice(Service::DeviceCalibrationCmdType CmdType);
+
+    /****************************************************************************/
+    /**
+     * \brief ModuleManufacturingTest Signal
+     * \iparam       CmdType         Module Test Name
+     */
+    /****************************************************************************/
+    void ModuleManufacturingTest(Service::ModuleTestNames TestName);
 
 protected:
     /**

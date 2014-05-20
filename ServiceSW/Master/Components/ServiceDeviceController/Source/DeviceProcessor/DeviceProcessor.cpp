@@ -815,5 +815,8 @@ void DeviceProcessor::OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdTyp
 
 }
 
-
+void DeviceProcessor::OnModuleManufacturingTest(Service::ModuleTestNames TestName)
+{
+    qDebug()<<"DeviceProcessor::OnModuleManufacturingTest  test="<<TestName;
+}
 } // end namespace DeviceControl

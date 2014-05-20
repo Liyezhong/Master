@@ -20,6 +20,7 @@
 /****************************************************************************/
 
 #include "DiagnosticsManufacturing/Include/OvenManufacturing.h"
+#include "Core/Include/SelectTestOptions.h"
 #include "ui_OvenManufacturing.h"
 #include <QDebug>
 #include <QTableWidgetItem>
@@ -73,8 +74,13 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
 
     mp_TableWidget->horizontalHeader()->show();
 
-    AddItem("1", QApplication::translate("DiagnosticsManufacturing::COven", "Cover sensor test", 0, QApplication::UnicodeUTF8));
-    AddItem("2", QApplication::translate("DiagnosticsManufacturing::COven", "Heating test (with water)", 0, QApplication::UnicodeUTF8));
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
+        AddItem("1", QApplication::translate("DiagnosticsMaMANUFACTURAL_ENDTESTnufacturing::COven", "Cover sensor test", 0, QApplication::UnicodeUTF8));
+        AddItem("2", QApplication::translate("DiagnosticsManufacturing::COven", "Heating test (with water)", 0, QApplication::UnicodeUTF8));
+    }
+    else {
+        AddItem("2", QApplication::translate("DiagnosticsManufacturing::COven", "Heating test (empty)", 0, QApplication::UnicodeUTF8));
+    }
 
     mp_TableWidget->setModel(&m_Model);
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size

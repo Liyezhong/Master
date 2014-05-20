@@ -147,6 +147,16 @@ public slots:
     /****************************************************************************/
     void OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdType);
 
+    /****************************************************************************/
+    /**
+     * \brief Module Manufacturing Test for Himalaya Manufacturing Diagnostic
+     *
+     * \iparam       TestName            Module Test Name
+     */
+    /****************************************************************************/
+    void OnModuleManufacturingTest(Service::ModuleTestNames TestName);
+
+
 signals:
 
     /****************************************************************************/

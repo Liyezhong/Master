@@ -158,6 +158,12 @@ void ServiceDeviceController::ConnectSignalsnSlots()
                  mp_DeviceProcessor, SLOT(OnCalibrateDevice(Service::DeviceCalibrationCmdType)))) {
         qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'CalibrateDevice' signal";
     }
+
+    // for Manufacturing Diagnostic
+    if (!connect(this, SIGNAL(ModuleManufacturingTest(Service::ModuleTestNames)),
+                 mp_DeviceProcessor, SLOT(OnModuleManufacturingTest(Service::ModuleTestNames)))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ModuleManufacturingTest' signal";
+    }
 }
 
 /****************************************************************************/
@@ -189,6 +195,8 @@ void ServiceDeviceController::RegisterCommands(){
     RegisterCommandForProcessing<DeviceCommandProcessor::CmdCalibrateDevice, ServiceDeviceController>
             (&ServiceDeviceController::OnCmdCalibrateDevice, this);
 
+    RegisterCommandForProcessing<DeviceCommandProcessor::CmdModuleManufacturingTest, ServiceDeviceController>
+            (&ServiceDeviceController::OnCmdModuleManufacturingTest, this);
 }
 
 /****************************************************************************/
@@ -406,6 +414,16 @@ void ServiceDeviceController::OnCmdCalibrateDevice(Global::tRefType Ref, const D
 {
     SendAcknowledgeOK(Ref);
     emit CalibrateDevice(Cmd.m_CommandType);
+}
+
+/****************************************************************************/
+void ServiceDeviceController::OnCmdModuleManufacturingTest(Global::tRefType Ref, const DeviceCommandProcessor::CmdModuleManufacturingTest &Cmd)
+{
+    SendAcknowledgeOK(Ref);
+
+    qDebug()<<"ServiceDeviceController::OnCmdModuleManufacturingTest CmdType="<<Cmd.m_CommandType;
+
+    emit ModuleManufacturingTest(Cmd.m_CommandType);
 }
 
 } //End Of namespace DeviceControl
