@@ -227,7 +227,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
 
 bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)
 {
-    if (false == heatingSensor.curModuleId.isEmpty())
+    if (true == heatingSensor.curModuleId.isEmpty())
     {
         return true;
     }
