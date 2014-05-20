@@ -206,6 +206,7 @@ public slots:
      */
     /****************************************************************************/
     void ReturnCalibrationInitMessagetoMain(const QString &Message, bool OkStatus);
+
 #if 0
     /****************************************************************************/
     /**

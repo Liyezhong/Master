@@ -307,13 +307,11 @@ void ServiceDeviceController::InitDevices()
     qDebug()<<"ServiceDeviceController::InitDevices()";
 }
 
-
-
-
-
 /****************************************************************************/
 void ServiceDeviceController::ReturnMessagetoMain(const QString &Message)
 {
+    qDebug()<<"ServiceDeviceController::ReturnMessagetoMain()  --Message="<<Message;
+
     DeviceCommandProcessor::CmdReturnMessage* commandPtr(new DeviceCommandProcessor::CmdReturnMessage(Message));
     SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(commandPtr));
 }
@@ -321,6 +319,8 @@ void ServiceDeviceController::ReturnMessagetoMain(const QString &Message)
 /****************************************************************************/
 void ServiceDeviceController::ReturnErrorMessagetoMain(const QString &Message)
 {
+    qDebug()<<"ServiceDeviceController::ReturnErrorMessagetoMain()  --Message="<<Message;
+
     DeviceCommandProcessor::CmdReturnMessage* commandPtr(new DeviceCommandProcessor::CmdReturnMessage(Message));
     commandPtr->m_MessageType = Service::GUIMSGTYPE_ERROR;
     SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(commandPtr));

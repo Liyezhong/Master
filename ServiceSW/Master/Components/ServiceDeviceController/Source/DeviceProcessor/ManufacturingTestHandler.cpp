@@ -1,24 +1,24 @@
 /****************************************************************************/
-/*! \file DeviceProcessor.cpp
+/*! \file ManufacturingTestHandler.cpp
  *
- *  \brief Implementation file for class DeviceProcessor.
+ *  \brief Implementation file for class ManufacturingTestHandler.
  *
  *  $Version:   $ 0.1
- *  $Date:      $ 2013-05-22
- *  $Author:    $ Brandon Shao
+ *  $Date:      $ 2014-05-20
+ *  $Author:    $ Sunny Qu
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Biosystems Shanghai.
  *
- *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2010 by Leica Biosystems Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
  */
 /****************************************************************************/
 
-#include <ServiceDeviceController/Include/DeviceProcessor/DeviceProcessor.h>
+#include <ServiceDeviceController/Include/DeviceProcessor/ManufacturingTestHandler.h>
 
 #include "DeviceControl/Include/Interface/IDeviceProcessing.h"
 #include <ServiceDeviceController/Include/ServiceDeviceController.h>
@@ -34,7 +34,7 @@
 namespace DeviceControl {
 
 /****************************************************************************/
-DeviceProcessor::DeviceProcessor(IDeviceProcessing &iDevProc)
+ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
     : m_IsConfigured(false)
     , m_rIdevProc(iDevProc)
     , m_CurrentAction(TEST_OTHER_RUNS)
@@ -43,7 +43,6 @@ DeviceProcessor::DeviceProcessor(IDeviceProcessing &iDevProc)
     , m_WaterDeviceInit(false)
     , m_DeviceLightInit(false)
     , mp_PressPump(NULL)
-    , mp_ManufacturingTestHandler(NULL)
 {
 #if 0
     qRegisterMetaType<Global::LiquidLevelState>("Global::LiquidLevelState");
@@ -65,42 +64,17 @@ DeviceProcessor::DeviceProcessor(IDeviceProcessing &iDevProc)
 }
 
 /****************************************************************************/
-void DeviceProcessor::Connect()
+void ManufacturingTestHandler::Connect()
 {
 }
 
 /****************************************************************************/
-void DeviceProcessor::CreateWrappers()
+void ManufacturingTestHandler::CreateWrappers()
 {
-    /* Create Calibration Handler */
-    /*if(NULL != mp_CalibrationHandler)
-    {
-        delete mp_CalibrationHandler;
-        mp_CalibrationHandler = NULL;
-    }
-
-    mp_CalibrationHandler = new CalibrationHandler(*this);
-
-    if (!connect(mp_CalibrationHandler, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool)), this, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool))))
-    {
-        qDebug()<<"ERROR: can't connect ReturnCalibrationInitMessagetoMain signal ";
-    }
-    if (!connect(mp_CalibrationHandler, SIGNAL(ReturnErrorMessagetoMain(QString)), this, SIGNAL(ReturnErrorMessagetoMain(QString))))
-    {
-        qDebug()<<"ERROR: can't connect ReturnErrorMessagetoMain signal ";
-    }
-    if (!connect(mp_CalibrationHandler, SIGNAL(ReturnMessagetoMain(QString)), this, SIGNAL(ReturnMessagetoMain(QString))))
-    {
-        qDebug()<<"ERROR: can't connect ReturnErrorMessagetoMain signal ";
-    }
-    if (!connect(mp_CalibrationHandler, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool)), this, SIGNAL(ReturnCalibrationInitMessagetoMain(QString,bool))))
-    {
-        qDebug()<<"ERROR: can't connect ReturnCalibrationInitMessagetoMain signal ";
-    }
-   */
+    qDebug()<<"ManufacturingTestHandler::CreateWrappers" ;
 
     // Temperature control
-    /*CTemperatureControl *pTemperature;
+    CTemperatureControl *pTemperature;
 
     pTemperature = NULL;
     pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_ROTARY_VALVE, CANObjectKeyLUT::m_RVTempCtrlKey));
@@ -143,14 +117,19 @@ void DeviceProcessor::CreateWrappers()
     {
         mp_TempTube2 = new WrapperFmTempControl("temp_tube2", pTemperature, this);
     }
-*/
 
-    // Pressure control
-    CPressureControl *pPressure = NULL;
-    pPressure = static_cast<CPressureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALPressureCtrlKey));
-    if (NULL != pPressure)
+    pTemperature = NULL;
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenTopTempCtrlKey));
+    if (NULL != pTemperature)
     {
-        mp_PressPump = new WrapperFmPressureControl("pressurectrl", pPressure, this);
+        mp_TempOvenTop = new WrapperFmTempControl("temp_oven_top", pTemperature, this);
+    }
+
+    pTemperature = NULL;
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenBottomTempCtrlKey));
+    if (NULL != pTemperature)
+    {
+        mp_TempOvenBottom = new WrapperFmTempControl("temp_oven_bottom", pTemperature, this);
     }
 
     // Stepper motor control
@@ -163,29 +142,10 @@ void DeviceProcessor::CreateWrappers()
         mp_MotorRV = new WrapperFmStepperMotor("motor_rv", pMotor, this);
     }
 */
-
-    /* Create Manufacturing Test Handler*/
-    if(NULL != mp_ManufacturingTestHandler)
-    {
-        delete mp_ManufacturingTestHandler;
-        mp_ManufacturingTestHandler = NULL;
-    }
-    mp_ManufacturingTestHandler = new ManufacturingTestHandler(m_rIdevProc);
-
-    /* Return Messages signals connected here */
-    if (!connect(mp_ManufacturingTestHandler, SIGNAL(ReturnMessagetoMain(const QString)),
-                this, SIGNAL(ReturnMessagetoMain(const QString)))) {
-        qDebug() << "DeviceProcessor::CreateWrappers cannot connect 'ReturnMessagetoMain' signal";
-    }
-    if (!connect(mp_ManufacturingTestHandler, SIGNAL(ReturnErrorMessagetoMain(QString)),
-                this, SIGNAL(ReturnErrorMessagetoMain(const QString)))) {
-        qDebug() << "DeviceProcessor::CreateWrappers cannot connect 'ReturnErrorMessagetoMain' signal";
-    }
-
 }
 
 /****************************************************************************/
-void DeviceProcessor::Initialize()
+void ManufacturingTestHandler::Initialize()
 {
     (void) CreateWrappers();
     m_IsConfigured = true;
@@ -194,7 +154,7 @@ void DeviceProcessor::Initialize()
 }
 
 /****************************************************************************/
-bool DeviceProcessor::IsInitialized()
+bool ManufacturingTestHandler::IsInitialized()
 {
     return m_IsConfigured;
 }
@@ -202,7 +162,7 @@ bool DeviceProcessor::IsInitialized()
 
 #if 0
 /****************************************************************************/
-QString DeviceProcessor::ReturnStringForID(ReturnCode_t HdlInfo)
+QString ManufacturingTestHandler::ReturnStringForID(ReturnCode_t HdlInfo)
 {
     if(DCL_ERR_FCT_CALL_SUCCESS == HdlInfo)
     {
@@ -212,7 +172,7 @@ QString DeviceProcessor::ReturnStringForID(ReturnCode_t HdlInfo)
 }
 
 /****************************************************************************/
-bool DeviceProcessor::CheckHardwareInfo(ReturnCode_t HdlInfo)
+bool ManufacturingTestHandler::CheckHardwareInfo(ReturnCode_t HdlInfo)
 {
     if(DCL_ERR_FCT_CALL_SUCCESS == HdlInfo)
     {
@@ -223,9 +183,9 @@ bool DeviceProcessor::CheckHardwareInfo(ReturnCode_t HdlInfo)
 #endif
 
 /****************************************************************************/
-void DeviceProcessor::OnAbortTest(Global::tRefType Ref, quint32 id)
+void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id)
 {
-    qDebug()<<"DeviceProcessor::OnAbortTest";
+    qDebug()<<"ManufacturingTestHandler::OnAbortTest";
     if(!IsInitialized()){
         Initialize();
     }
@@ -244,11 +204,11 @@ void DeviceProcessor::OnAbortTest(Global::tRefType Ref, quint32 id)
 
 
 /****************************************************************************/
-void DeviceProcessor::OnLSensorDetectingTest(Global::tRefType Ref, quint32 id,
+void ManufacturingTestHandler::OnLSensorDetectingTest(Global::tRefType Ref, quint32 id,
                                       qint32 Position)
 {
 
-    qDebug()<<"DeviceProcessor::OnLSensorDetectingTest";
+    qDebug()<<"ManufacturingTestHandler::OnLSensorDetectingTest";
     if(!IsInitialized()){
         Initialize();
     }
@@ -299,12 +259,12 @@ void DeviceProcessor::OnLSensorDetectingTest(Global::tRefType Ref, quint32 id,
 }
 
 /****************************************************************************/
-void DeviceProcessor::OnHeatingTest(Global::tRefType Ref, quint32 id,
+void ManufacturingTestHandler::OnHeatingTest(Global::tRefType Ref, quint32 id,
                                       quint8 HeaterIndex, quint8 CmdType)
 {
     m_UserAbort = false;
 
-    qDebug()<<"DeviceProcessor::OnHeatingTest";
+    qDebug()<<"ManufacturingTestHandler::OnHeatingTest";
     if(!IsInitialized()){
         Initialize();
     }
@@ -444,12 +404,12 @@ void DeviceProcessor::OnHeatingTest(Global::tRefType Ref, quint32 id,
 }
 
 /****************************************************************************/
-void DeviceProcessor::OnRotaryValveTest(Global::tRefType Ref, quint32 id,
+void ManufacturingTestHandler::OnRotaryValveTest(Global::tRefType Ref, quint32 id,
                      qint32 Position, quint8 CmdType)
 {
     m_UserAbort = false;
 
-    qDebug()<<"DeviceProcessor::OnRotaryValveTest";
+    qDebug()<<"ManufacturingTestHandler::OnRotaryValveTest";
     if(!IsInitialized()){
         Initialize();
     }
@@ -508,7 +468,7 @@ void DeviceProcessor::OnRotaryValveTest(Global::tRefType Ref, quint32 id,
 }
 
 /****************************************************************************/
-qint32 DeviceProcessor::TestRVHeating(quint32 DeviceId)
+qint32 ManufacturingTestHandler::TestRVHeating(quint32 DeviceId)
 {
 
     quint32 WaitSec(0);
@@ -555,7 +515,7 @@ qint32 DeviceProcessor::TestRVHeating(quint32 DeviceId)
 }
 
 /****************************************************************************/
-qint32 DeviceProcessor::TestLSensorHeating(quint32 DeviceId)
+qint32 ManufacturingTestHandler::TestLSensorHeating(quint32 DeviceId)
 {
     quint32 WaitSec(0);
     qint32  LSensorStatus(-1);
@@ -602,7 +562,7 @@ qint32 DeviceProcessor::TestLSensorHeating(quint32 DeviceId)
 
 
 /****************************************************************************/
-qint32 DeviceProcessor::TestOvenHeating(quint32 DeviceId)
+qint32 ManufacturingTestHandler::TestOvenHeating(quint32 DeviceId)
 {
     quint32 WaitSec(0);
     qint32  OvenStatus(-1);
@@ -654,7 +614,7 @@ qint32 DeviceProcessor::TestOvenHeating(quint32 DeviceId)
 }
 
 
-qint32 DeviceProcessor::TestTubeHeating(quint32 DeviceId, quint8 TubeIndex)
+qint32 ManufacturingTestHandler::TestTubeHeating(quint32 DeviceId, quint8 TubeIndex)
 {
 
     quint32 WaitSec(0);
@@ -713,7 +673,7 @@ qint32 DeviceProcessor::TestTubeHeating(quint32 DeviceId, quint8 TubeIndex)
 
 }
 
-qint32 DeviceProcessor::MoveRVToInitPos(quint32 DeviceId)
+qint32 ManufacturingTestHandler::MoveRVToInitPos(quint32 DeviceId)
 {
     if ( !mp_MotorRV->MoveToInitialPosition() )
     {
@@ -723,7 +683,7 @@ qint32 DeviceProcessor::MoveRVToInitPos(quint32 DeviceId)
     return 0;
 }
 
-qint32 DeviceProcessor::MoveRVToTubePos(quint32 DeviceId, qint32 Pos)
+qint32 ManufacturingTestHandler::MoveRVToTubePos(quint32 DeviceId, qint32 Pos)
 {
     if ( !mp_MotorRV->MoveToTubePosition(Pos) )
     {
@@ -739,7 +699,7 @@ qint32 DeviceProcessor::MoveRVToTubePos(quint32 DeviceId, qint32 Pos)
     return 0;
 }
 
-qint32 DeviceProcessor::MoveRVToSealPos(quint32 DeviceId, qint32 Pos)
+qint32 ManufacturingTestHandler::MoveRVToSealPos(quint32 DeviceId, qint32 Pos)
 {
     if ( !mp_MotorRV->MoveToSealPosition(Pos) )
     {
@@ -763,7 +723,7 @@ qint32 DeviceProcessor::MoveRVToSealPos(quint32 DeviceId, qint32 Pos)
 
 }
 
-qint32 DeviceProcessor::TestLSensorDetecting(quint32 DeviceId, qint32 Pos)
+qint32 ManufacturingTestHandler::TestLSensorDetecting(quint32 DeviceId, qint32 Pos)
 {
     qint32 Ret;
 
@@ -795,10 +755,10 @@ qint32 DeviceProcessor::TestLSensorDetecting(quint32 DeviceId, qint32 Pos)
     return Ret;
 }
 
-void DeviceProcessor::OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdType)
+void ManufacturingTestHandler::OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdType)
 {
     Q_UNUSED(CmdType);
-    qDebug()<<"DeviceProcessor::OnCalibrateDevice";
+    qDebug()<<"ManufacturingTestHandler::OnCalibrateDevice";
     if(!IsInitialized()){
         Initialize();
     }
@@ -835,17 +795,43 @@ void DeviceProcessor::OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdTyp
 
 }
 
-void DeviceProcessor::OnModuleManufacturingTest(Service::ModuleTestNames TestName)
+void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTestNames TestName)
 {
-    qDebug()<<"DeviceProcessor::OnModuleManufacturingTest  test="<<TestName;
+    qDebug()<<"ManufacturingTestHandler::PerformModuleManufacturingTest  test="<<TestName;
     if(!IsInitialized()){
         Initialize();
     }
 
-    if (mp_ManufacturingTestHandler) {
-        mp_ManufacturingTestHandler->PerformModuleManufacturingTest(TestName);
-    }
+    switch (TestName) {
+    case Service::OVEN_COVER_SENSOR :
+        TestOvenCoverSensor();
+        //break;
+    case Service::OVEN_HEATING_EMPTY:{
+        int id = DEVICE_INSTANCE_ID_OVEN;
+        if(DEVICE_INSTANCE_ID_OVEN == id)
+        {
+            if ( NULL == mp_TempOvenTop || NULL == mp_TempOvenBottom )
+            {
+                emit ReturnErrorMessagetoMain(Service::MSG_DEVICE_NOT_INITIALIZED);
+                return;
+            }
 
+            if ( 0 == TestOvenHeating(id) )
+            {
+                emit ReturnMessagetoMain(Service::MSG_OVEN_HEATING_SUCCESS);
+            }
+            else
+            {
+                emit ReturnErrorMessagetoMain(Service::MSG_OVEN_HEATING_FAILURE);
+            }
+        }
+        break;
+    }
+    }
 }
 
+qint32 ManufacturingTestHandler::TestOvenCoverSensor()
+{
+
+}
 } // end namespace DeviceControl

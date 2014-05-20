@@ -1,31 +1,30 @@
 /****************************************************************************/
-/*! \file DeviceProcessor.h
+/*! \file ManufacturingTestHandler.h
  *
- *  \brief Definition file for class DeviceProcessor.
+ *  \brief Definition file for class ManufacturingTestHandler.
  *
  *  $Version:   $ 0.1
- *  $Date:      $ 2013-03-22
- *  $Author:    $ Srivathsa HH
+ *  $Date:      $ 2014-05-20
+ *  $Author:    $ Sunny Qu
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Biosystems Shanghai.
  *
- *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2010 by Leica Biosystems Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
  */
 /****************************************************************************/
 
-#ifndef DEVICECOMMANDPROCESSOR_DEVICE_COMMANDPROCESSOR_H
-#define DEVICECOMMANDPROCESSOR_DEVICE_COMMANDPROCESSOR_H
+#ifndef MANUFACTURING_TEST_HANDLER_H
+#define MANUFACTURING_TEST_HANDLER_H
 
 
 #include <Global/Include/GlobalDefines.h>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Core/Include/ServiceDefines.h"
-#include "ServiceDeviceController/Include/DeviceProcessor/ManufacturingTestHandler.h"
 
 
 class WrapperUtils;
@@ -39,6 +38,16 @@ namespace DeviceControl {
 class ServiceDeviceController;
 class IDeviceProcessing;
 
+typedef enum {
+    TEST_X_REF_RUN,
+    TEST_YZ_REF_RUN,
+    TEST_AGITATOR_REF_RUN,
+    TEST_TRANSTN_REF_RUN,
+    TEST_OVENLID_REF_RUN,
+    TEST_DRAWER_REF_RUN,
+    TEST_OTHER_RUNS
+}TestState_t;
+
 /****************************************************************************/
 /**
  * \brief This class is a helper to do handle device processing related commands.
@@ -49,7 +58,7 @@ class IDeviceProcessing;
  */
 /****************************************************************************/
 
-class DeviceProcessor : public QObject
+class ManufacturingTestHandler : public QObject
 {
     Q_OBJECT
 
@@ -61,7 +70,7 @@ public:
      * \param[in]   IDeviceProcessing           Reference of IDeviceProcessing.
      */
     /****************************************************************************/
-    DeviceProcessor(IDeviceProcessing &iDevProc);
+    ManufacturingTestHandler(IDeviceProcessing &iDevProc);
     /****************************************************************************/
     /**
      * \brief To initiate device connections
@@ -145,7 +154,7 @@ public slots:
      * \iparam       TestName            Module Test Name
      */
     /****************************************************************************/
-    void OnModuleManufacturingTest(Service::ModuleTestNames TestName);
+    void PerformModuleManufacturingTest(Service::ModuleTestNames TestName);
 
 
 signals:
@@ -231,6 +240,13 @@ private:
     qint32 MoveRVToTubePos(quint32 DeviceId, qint32 Pos);
     qint32 MoveRVToSealPos(quint32 DeviceId, qint32 Pos);
 
+    /****************************************************************************/
+    /**
+     * \brief To Test detecting of cover sensor of Oven
+     */
+    /****************************************************************************/
+    qint32 TestOvenCoverSensor();
+
 
 
     IDeviceProcessing           &m_rIdevProc;           //!< IDeviceProcessing reference to interact with device
@@ -255,7 +271,8 @@ private:
     WrapperFmStepperMotor*      mp_MotorRV;
     // Pressure control module
     WrapperFmPressureControl*   mp_PressPump;
-    ManufacturingTestHandler*   mp_ManufacturingTestHandler; //!< Manufacturing Test Handler helper class
+
+
 };
 
 } // end namespace DeviceCommandProcessor
