@@ -37,7 +37,10 @@ namespace Core {
 /****************************************************************************/
 CStartup::CStartup() : QObject(),
     mp_LogContentDlg(NULL),
-    mp_SystemLogContentDlg(NULL)
+    mp_SystemLogContentDlg(NULL),
+    m_DeviceName(""),
+    m_WindowStatusResetTimer(this),
+    m_CurrentUserMode("")
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestNames>("Service::ModuleTestNames");
@@ -46,6 +49,9 @@ CStartup::CStartup() : QObject(),
     mp_Clock = new QTimer();    
     mp_MainWindow = new MainMenu::CMainWindow();
     mp_MessageBox = new MainMenu::CMessageDlg(mp_MainWindow);
+
+    CONNECTSIGNALSLOT(this, LogOffSystem(), mp_MainWindow, hide());
+    CONNECTSIGNALSLOT(this, LogOnSystem(), mp_MainWindow, show());
 
     // Initialize Strings
     RetranslateUI();
@@ -105,6 +111,7 @@ CStartup::CStartup() : QObject(),
                   SIGNAL(ModuleListChanged()),
                   mp_ViewHistory,
                   SLOT(UpdateGUI()));
+
     // Log Viewer
     mp_LogViewerGroup = new MainMenu::CMenuGroup;
 //    mp_SystemLogViewer = new LogViewer::CSystemLogViewer;
@@ -228,7 +235,7 @@ CStartup::CStartup() : QObject(),
     CONNECTSIGNALSLOT(this, UpdateGUIConnector(Core::CServiceGUIConnector*, MainMenu::CMainWindow*), mp_Setting, UpdateGUIConnector(Core::CServiceGUIConnector*, MainMenu::CMainWindow*));
 
     CONNECTSIGNALSLOT(mp_MainWindow, onChangeEvent(), this, RetranslateUI());
-
+    CONNECTSIGNALSLOT(mp_ServiceConnector, ServiceParametersChanged(), this, UpdateParameters());
     m_DateTime.setTime_t(0);
     mp_Clock->start(60000);
 }
@@ -289,6 +296,8 @@ CStartup::~CStartup()
         // GUI Components
         delete mp_MainWindow;
         delete mp_Clock;
+
+        delete mp_USBKeyValidator;
     }
     catch (...) {}
 }
@@ -371,13 +380,101 @@ void CStartup::LoadCommonComponenetsTwo()
 /****************************************************************************/
 void CStartup::GuiInit()
 {
-    mp_USBKeyValidator = new Core::CUSBKeyValidator(this);
+    mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("Himalaya");
 
-    MainMenu::CDlgWizardSelectTestOptions* pDlgWizardSelectTestOptions = new MainMenu::CDlgWizardSelectTestOptions(NULL, mp_MainWindow);
-    CONNECTSIGNALSLOT(pDlgWizardSelectTestOptions, ClickedNextButton(int), this, OnSelectTestOptions(int));
-    pDlgWizardSelectTestOptions->exec();
-    delete pDlgWizardSelectTestOptions;
+    CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
+                       this, InitializeGui(PlatformService::SoftwareModeType_t,QString));
 
+    CONNECTSIGNALSLOT(this, SetDeviceName(QString), mp_USBKeyValidator, SetDeviceName(QString));
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Initializes the GUI in debug mode
+ *  \iparam debugMode = Software mode
+ */
+/****************************************************************************/
+void CStartup::GuiInit(QString debugMode)
+{
+    if (debugMode.startsWith("Service"))
+    {
+        ServiceGuiInit();
+        (void) FileExistanceCheck();
+    }
+    else if (debugMode.startsWith("ts_Service"))
+    {
+        ServiceGuiInit();
+        (void) FileExistanceCheck();
+    }
+    else if (debugMode.startsWith("ts_Manufacturing"))
+    {
+        ManufacturingGuiInit();
+        (void) FileExistanceCheck();
+    }
+    else
+    {
+        if (debugMode.startsWith("Manufacturing"))
+        {
+            ManufacturingGuiInit();
+            (void) FileExistanceCheck();
+        }
+        else
+        {
+            if (mp_USBKeyValidator)
+            {
+                delete mp_USBKeyValidator;
+            }
+            mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator(m_DeviceName);
+            CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
+                               this, InitializeGui(PlatformService::SoftwareModeType_t,QString));
+            CONNECTSIGNALSLOT(this, SetDeviceName(QString), mp_USBKeyValidator, SetDeviceName(QString));
+        }
+    }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Slot called aftr 20 minutes of idle time
+ *
+ */
+/****************************************************************************/
+void CStartup::IdleTimeout()
+{
+    //Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_TIMEOUT_LOGOFF_SYSTEM);
+    m_WindowStatusResetTimer.stop();
+    emit LogOffSystem();
+
+    if(NULL != mp_USBKeyValidator)
+    {
+        delete mp_USBKeyValidator;
+        mp_USBKeyValidator = NULL;
+    }
+    mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator(m_DeviceName, true);
+    CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
+                       this, InitializeGui(PlatformService::SoftwareModeType_t,QString));
+    CONNECTSIGNALSLOT(this, SetDeviceName(QString), mp_USBKeyValidator, SetDeviceName(QString));
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Slot called to start timer
+ *
+ */
+/****************************************************************************/
+void CStartup::StartTimer()
+{
+    //Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_SYSTEM_IDLE_TIMER_START);
+    if (!connect(mp_MainWindow, SIGNAL(OnWindowActivated()), this, SLOT(ResetWindowStatusTimer()))) {
+        qDebug() << "CStartup: cannot connect 'OnWindowActivated' signal";
+    }
+
+    if(!QObject::connect(&m_WindowStatusResetTimer, SIGNAL(timeout()), this, SLOT(IdleTimeout()))) {
+        /// \todo error. throw exception?
+        qDebug() << "Can not connect m_WindowStatusResetTimer::timeout() with this::RefreshDateTime()";
+    }
+
+    m_WindowStatusResetTimer.setInterval(1200000); /// for Test
+    m_WindowStatusResetTimer.start();
 }
 
 void CStartup::OnSelectTestOptions(int index)
@@ -386,6 +483,49 @@ void CStartup::OnSelectTestOptions(int index)
 
     InitMainufacturingDiagnostic();
 }
+
+/****************************************************************************/
+/*!
+ *  \brief Initializes the GUI
+ *  \iparam SoftwareMode = Software mode
+ *  \iparam UserMode = Usser name
+ */
+/****************************************************************************/
+void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, QString UserMode)
+{
+    SetCurrentUserMode(UserMode);
+    if (SoftwareMode == PlatformService::SERVICE_MODE)
+    {
+        if(!mp_USBKeyValidator->GetSystemLogOff())
+        {
+            ServiceGuiInit();
+            QTimer::singleShot(50, this, SLOT(FileExistanceCheck()));
+            StartTimer();
+        }
+        else
+        {
+            emit LogOnSystem();
+        }
+    }
+    else if (SoftwareMode == PlatformService::MANUFACTURING_MODE)
+    {
+        mp_USBKeyValidator->HideKeyBoard();
+        MainMenu::CDlgWizardSelectTestOptions* pDlgWizardSelectTestOptions = new MainMenu::CDlgWizardSelectTestOptions(NULL, NULL);
+        CONNECTSIGNALSLOT(pDlgWizardSelectTestOptions, ClickedNextButton(int), this, OnSelectTestOptions(int));
+        pDlgWizardSelectTestOptions->exec();
+        if (QDialog::Rejected == pDlgWizardSelectTestOptions->result())
+        {
+            delete pDlgWizardSelectTestOptions;
+            return;
+        }
+
+        delete pDlgWizardSelectTestOptions;
+
+        ManufacturingGuiInit();
+        QTimer::singleShot(50, this, SLOT(FileExistanceCheck()));
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Initializes the Service user interface
@@ -435,6 +575,115 @@ void CStartup::ManufacturingGuiInit()
     mp_ManaufacturingDiagnosticsHandler->LoadManufDiagnosticsComponents();
 
     LoadCommonComponenetsTwo();
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Xml file existance check
+ */
+/****************************************************************************/
+int CStartup::FileExistanceCheck()
+{
+    return 1;
+
+    int Result = 0;
+    QDir Directory(Global::SystemPaths::Instance().GetSettingsPath());
+    Directory.setFilter(QDir::AllEntries);
+
+    QStringList FileNames, MissingFileNames;
+
+    QFileInfoList List = Directory.entryInfoList();
+    for (int i = 0; i < List.size(); i++)
+    {
+        QFileInfo fileInfo = List.at(i);
+        FileNames.append(fileInfo.fileName());
+    }
+
+    if(!FileNames.contains("DeviceConfiguration.xml"))
+        MissingFileNames.append("DeviceConfiguration.xml");
+    if(!FileNames.contains("InstrumentHistory.xml"))
+        MissingFileNames.append("InstrumentHistory.xml");
+    if(!FileNames.contains("InstrumentHistoryArchive.xml"))
+        MissingFileNames.append("InstrumentHistoryArchive.xml");
+    if(!FileNames.contains("ServiceParameters.xml"))
+        MissingFileNames.append("ServiceParameters.xml");
+    if(!FileNames.contains("hw_specification.xml"))
+        MissingFileNames.append("hw_specification.xml");
+
+    if (!Directory.cd("Instrument"))
+    {
+         MissingFileNames.append("Instrument/ProcessSettings.xml");
+         MissingFileNames.append("Instrument/Adjustment.xml");
+    }
+    else
+    {
+        QFileInfoList FileList = Directory.entryInfoList();
+        for (int i = 0; i < FileList.size(); i++)
+        {
+            QFileInfo fileInfor = FileList.at(i);
+            FileNames.append(fileInfor.fileName());
+        }
+
+        if(!FileNames.contains("Adjustment.xml"))
+            MissingFileNames.append("Adjustment.xml");
+        if(!FileNames.contains("ProcessSettings.xml"))
+            MissingFileNames.append("ProcessSettings.xml");
+     }
+
+    if(MissingFileNames.count() > 0)
+    {
+        mp_MessageBox->setModal(true);
+        mp_MessageBox->SetTitle(tr("Missing Xml files"));
+        mp_MessageBox->SetButtonText(1, "Ok");
+        mp_MessageBox->HideButtons();
+        QString Text = QApplication::translate("Core::CStartup", "The following XML files are not present.\n", 0, QApplication::UnicodeUTF8);
+        for(int i=0; i<MissingFileNames.count(); i++)
+        {
+            Text.append(MissingFileNames[i]);
+            Text.append("\n");
+        }
+        mp_MessageBox->SetText(Text);
+        mp_MessageBox->show();
+        Result = mp_MessageBox->exec();
+        //Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_XML_FILES_MISSING, Global::tTranslatableStringList() << Text);
+        if(Result)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Slot called to reset window status timer
+ *
+ */
+/****************************************************************************/
+void CStartup::ResetWindowStatusTimer()
+{
+//    Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_RESET_WINDOW_TIMER);
+    qDebug() << "ResetWindowStatusTimer";
+    if (!mp_MainWindow->isHidden())
+    {
+        m_WindowStatusResetTimer.start();
+    }
+}
+/****************************************************************************/
+/*!
+ *  \brief Slot called to updating timer and device name
+ */
+/****************************************************************************/
+void CStartup::UpdateParameters()
+{
+    if (mp_ServiceConnector != NULL)
+    {
+        //m_WindowStatusResetTimer.setInterval(mp_ServiceConnector->GetServiceParameters()->GetSystemLogOffTime());
+        m_WindowStatusResetTimer.setInterval(60000);
+        //m_DeviceName = mp_ServiceConnector->GetDeviceConfigurationInterface()->GetDeviceConfiguration()->GetValue("DEVICENAME");
+        m_DeviceName = "Himalaya";
+    }
+    emit SetDeviceName(m_DeviceName);
 }
 
 /****************************************************************************/
@@ -811,4 +1060,5 @@ void CStartup::RetranslateUI()
         ManufacturingGuiInit();
     }*/
 }
+
 } // end namespace Core

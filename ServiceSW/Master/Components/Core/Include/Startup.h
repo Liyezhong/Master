@@ -23,7 +23,7 @@
 
 #include "ServiceMasterThreadController/Include/ServiceMasterThreadController.h"
 #include "Core/Include/ServiceGUIConnector.h"
-#include "Core/Include/USBKeyValidator.h"
+#include "ServiceKeyValidator/Include/USBKeyValidator.h"
 
 #include "Core/Include/ServiceDefines.h"
 
@@ -64,7 +64,7 @@
 #include "Core/Include/ManufacturingDiagnosticsHandler.h"
 #include <QTimer>
 
-namespace Core {
+namespace ServiceKeyValidator {
     class CUSBKeyValidator;
 }
 
@@ -84,7 +84,7 @@ public:
     virtual ~CStartup();
     qint32 NetworkInit();
     void GuiInit();
-
+    void GuiInit(QString debugMode);
     int Mode;
 
     Core::CServiceGUIConnector *mp_ServiceConnector;
@@ -96,6 +96,15 @@ public:
     void ServiceGuiInit();
     void ManufacturingGuiInit();
     void InitMainufacturingDiagnostic();
+  /****************************************************************************/
+    /**
+     * \brief Sets the current user mode
+     * \iparam UserMode = Current user mode
+     */
+    /****************************************************************************/
+    void SetCurrentUserMode(QString UserMode) {
+        m_CurrentUserMode = UserMode;
+    }
 
     /****************************************************************************/
     /**
@@ -114,7 +123,7 @@ private:
 
     // GUI components   
     MainMenu::CMainWindow                   *mp_MainWindow;                 //!< The main window of the application
-    Core::CUSBKeyValidator                  *mp_USBKeyValidator;
+    ServiceKeyValidator::CUSBKeyValidator                  *mp_USBKeyValidator;
 
     // System Tracking
     MainMenu::CHiMenuGroup                  *mp_SystemTrackingGroup;        //!< Menu group containing System Tracking data
@@ -169,11 +178,18 @@ private:
     QString m_strError;
     QString m_strRecoveryActionText;
     QString m_strType;
+    QString m_DeviceName;                                                   //!< Name of the device
+    QTimer m_WindowStatusResetTimer;                                        //!< Timer for Window status reset
+    QString m_CurrentUserMode;                                              //!< Stores current user mode
+
+    bool CurrentlyActive(MainMenu::CMenuGroup *p_Group, QWidget *p_Panel);
 
 private slots:
     void SetDateTime(QDateTime DateTime);
     void UpdateDateTime();
     void OnSelectTestOptions(int index);
+	void InitializeGui(PlatformService::SoftwareModeType_t, QString);
+    int FileExistanceCheck();
 private:
     bool CurrentlyActive(MainMenu::CMenuGroup *p_Group, QWidget *p_Panel);
 
@@ -215,6 +231,12 @@ public slots:
     /* Oven slots */
     void OnGuiOvenEmptyHeatingTest();
     void RetranslateUI();
+
+    void IdleTimeout();
+    void ResetWindowStatusTimer();
+    void UpdateParameters();
+    void StartTimer();
+
 signals:
     void DeviceInitRequest(void);
 
@@ -271,7 +293,26 @@ signals:
      */
     /*******************************************************************************/
     void UpdateGUIConnector(Core::CServiceGUIConnector *DataConnector, MainMenu::CMainWindow *MainWindow);
+  /*******************************************************************************/
+    /*!
+     *  \brief Signal emitted for logging off the system
+     */
+    /*******************************************************************************/
+    void LogOffSystem();
 
+    /*******************************************************************************/
+    /*!
+     *  \brief Signal is emitted for log on to the system
+     */
+    /*******************************************************************************/
+    void LogOnSystem();
+    /*******************************************************************************/
+    /*!
+     *  \brief Signal emitted to set the deviceName
+     */
+    /*******************************************************************************/
+    void SetDeviceName(QString);
+	
     /****************************************************************************/
     /**
        * \brief Signal emitted to perform manufacturing tests

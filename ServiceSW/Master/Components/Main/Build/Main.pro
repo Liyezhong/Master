@@ -29,6 +29,7 @@ PLATFORM_COMPONENTS = NetworkComponents \
                       GPIOManager \
                       ExportController \
                       ImportExport \
+                      PasswordManager \
                       Global
 
 ################# list used platform gui libraries #################
@@ -40,7 +41,9 @@ PLATFORM_GUI_COMPONENTS = Application \
 ################# list used platform service SW libraries #################
 PLATFORM_SERVICESW_COMPONENTS_DIR = ../../../../../../Platform/ServiceSW/Components
 PLATFORM_SERVICESW_COMPONENTS = LogViewer \
-                                Settings
+                                Settings \
+                      ServiceKeyValidator
+
 
 ################# list used shared libraries #################
 SHARED_COMPONENTS_DIR = ../../../../../Shared/Gui/Components

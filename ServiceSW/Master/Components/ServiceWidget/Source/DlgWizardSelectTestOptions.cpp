@@ -29,7 +29,9 @@ CDlgWizardSelectTestOptions::CDlgWizardSelectTestOptions(QWidget *parent, QMainW
 {
     m_pDlgSelectTestOptions = new CDlgSelectTestOptions(parent);
     this->AddWidget(m_pDlgSelectTestOptions);
+    this->move(35, 100);
     this->DisableNext();
+    this->HideCancel();
     CONNECTSIGNALSLOT(m_pDlgSelectTestOptions, RadioBtnSelected(int), this, OnRadioBtnSelected(int));
     CONNECTSIGNALSLOT(this, accepted(), this, OnClickedNextButton());
 }

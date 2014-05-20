@@ -86,7 +86,7 @@ int main(int Argc, char *p_Argv[])
     if(Argc>=2)
     {
         Global::ToConsole("Software in Debug Mode");
-        Startup.GuiInit();
+        Startup.GuiInit(p_Argv[1]);
     }
     else
     {
