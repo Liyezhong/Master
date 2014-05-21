@@ -29,5 +29,7 @@ SUBDIRS += ../../../../Platform/Master/Components/DataLogging/Build/DataLogging.
            ../Components/Scheduler/Test/Scheduler.pro
 
 SUBDIRS += ../../../../Platform/Master/Components/DeviceControl/Test/DeviceControl.pro
+SUBDIRS += ../../../../Platform/Master/Components/DataManager/Test/DataManager.pro
+
 
 CONFIG += ordered
