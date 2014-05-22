@@ -17,9 +17,14 @@
  *
  */
 /****************************************************************************/
+#include "Global/Include/Commands/Command.h"
+#include "Global/Include/Utils.h"
 #include "Scheduler/Include/SchedulerMachine.h"
 #include "Scheduler/Include/HimalayaDeviceEventCodes.h"
-#include <Global/Include/Commands/Command.h>
+#include "Scheduler/Include/SchedulerMainThreadController.h"
+#include "Scheduler/Include/SchedulerCommandProcessor.h"
+#include "Scheduler/Commands/Include/CmdRTSetTempCtrlOFF.h"
+#include "Scheduler/Commands/Include/CmdALAllStop.h"
 #include <QDebug>
 #include <QDateTime>
 
@@ -30,7 +35,9 @@ namespace Scheduler
  *  \brief    Constructor
  */
 /****************************************************************************/
-CSchedulerStateMachine::CSchedulerStateMachine()
+CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* SchedulerThreadController)
+    :mp_SchedulerThreadController(SchedulerThreadController)
+    ,mp_SchedulerCommandProcessor(NULL)
 {
     m_PreviousState = SM_UNDEF;
     m_CurrentState = SM_UNDEF;
@@ -41,15 +48,15 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     mp_BusyState = new QState(mp_SchedulerMachine);
     mp_ErrorState = new QState(mp_SchedulerMachine);
     mp_ErrorWaitState = new QState(mp_ErrorState);
-    mp_ProgramStepStates = new CProgramStepStateMachine(mp_BusyState, mp_ErrorState);
-
+    mp_ErrorRSStandbyWithTissueState = new QState(mp_ErrorState);
     mp_SchedulerMachine->setInitialState(mp_InitState);
     mp_ErrorState->setInitialState(mp_ErrorWaitState);
 
+    mp_ProgramStepStates = new CProgramStepStateMachine(mp_BusyState, mp_ErrorState);
     mp_RSRvGetOriginalPositionAgain = new CRsRvGetOriginalPositionAgain(mp_SchedulerMachine, mp_ErrorState );
     mp_RCReport = new CRCReport(mp_SchedulerMachine, mp_ErrorState );
+    mp_RSStandbyWithTissue = new CRsStandbyWithTissue(mp_SchedulerMachine, mp_ErrorRSStandbyWithTissueState);
     mp_RSStandby = new CRsStandby(mp_SchedulerMachine, mp_ErrorState);
-    mp_RSStandbyWithTissue = new CRsStandbyWithTissue(mp_SchedulerMachine, mp_ErrorState);
 
     mp_InitState->addTransition(this, SIGNAL(SchedulerInitComplete()), mp_IdleState);
     mp_IdleState->addTransition(this, SIGNAL(RunSignal()), mp_BusyState);
@@ -62,6 +69,10 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     connect(mp_IdleState, SIGNAL(exited()), this, SLOT(OnStateChanged()));
     connect(mp_BusyState, SIGNAL(exited()), this, SLOT(OnStateChanged()));
     connect(mp_ErrorState, SIGNAL(exited()), this, SLOT(OnStateChanged()));
+
+    //RS_Standby_WithTissue related logic
+    mp_ErrorWaitState->addTransition(this, SIGNAL(EnterRsStandbyWithTissue()), mp_ErrorRSStandbyWithTissueState);
+    mp_ErrorRSStandbyWithTissueState->addTransition(mp_RSStandbyWithTissue, SIGNAL(TasksDone(bool)), mp_ErrorWaitState);
 
     connect(this, SIGNAL(sigStInitOK()), mp_ProgramStepStates, SIGNAL(StInitOK()));
     connect(this, SIGNAL(sigStTempOK()), mp_ProgramStepStates, SIGNAL(StTempOK()));
@@ -108,12 +119,6 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     connect(this, SIGNAL(sigShutdownFailedHeater()), mp_RSStandby, SIGNAL(ShutdownFailedHeater()));
     connect(this, SIGNAL(sigShutdownFailedHeaterFinished()), mp_RSStandby, SIGNAL(ShutdownFailedHeaterFinished()));
 
-    connect(this, SIGNAL(sigReleasePressureAtRsStandByWithTissue()), mp_RSStandbyWithTissue, SIGNAL(ReleasePressure()));
-    connect(this, SIGNAL(sigShutdownFailedHeaterAtRsStandByWithTissue()), mp_RSStandbyWithTissue, SIGNAL(ShutdownFailedHeater()));
-    connect(this, SIGNAL(sigShutdownFailedHeaterFinishedAtRsStandByWithTissue()), mp_RSStandbyWithTissue, SIGNAL(ShutdownFailedHeaterFinished()));
-    connect(this, SIGNAL(sigRTBottomStopTempCtrlAtRsStandByWithTissue()), mp_RSStandbyWithTissue, SIGNAL(RTBottomStopTempCtrl()));
-    connect(this, SIGNAL(sigRTTopStopTempCtrlAtRsStandByWithTissue()), mp_RSStandbyWithTissue, SIGNAL(RTTopStopTempCtrl()));
-
     connect(mp_ProgramStepStates, SIGNAL(OnInit()), this, SIGNAL(sigOnInit()));
     connect(mp_ProgramStepStates, SIGNAL(OnHeatLevelSensorTempS1()), this, SIGNAL(sigOnHeatLevelSensorTempS1()));
     connect(mp_ProgramStepStates, SIGNAL(OnHeatLevelSensorTempS2()), this, SIGNAL(sigOnHeatLevelSensorTempS2()));
@@ -138,10 +143,11 @@ CSchedulerStateMachine::CSchedulerStateMachine()
     connect(mp_RSStandby, SIGNAL(OnReleasePressure()), this, SIGNAL(sigOnRsReleasePressure()));
     connect(mp_RSStandby, SIGNAL(OnShutdownFailedHeater()), this, SIGNAL(sigOnRsShutdownFailedHeater()));
 
-    connect(mp_RSStandbyWithTissue, SIGNAL(OnReleasePressure()), this, SIGNAL(sigOnRsReleasePressureAtRsStandByWithTissue()));
-    connect(mp_RSStandbyWithTissue, SIGNAL(OnShutdownFailedHeater()), this, SIGNAL(sigOnRsShutdownFailedHeaterAtRsStandByWithTissue()));
-    connect(mp_RSStandbyWithTissue, SIGNAL(OnRTBottomStopTempCtrl()), this, SIGNAL(sigOnRsRTBottomStopTempCtrlAtRsStandByWithTissue()));
-    connect(mp_RSStandbyWithTissue, SIGNAL(OnRTTopStopTempCtrl()), this, SIGNAL(sigOnRsRTTopStopTempCtrlAtRsStandByWithTissue()));
+
+    CONNECTSIGNALSLOT(mp_RSStandbyWithTissue, RTStopTempCtrl(DeviceControl::RTTempCtrlType_t), this, OnRsRTStopTempCtrl(DeviceControl::RTTempCtrlType_t));
+    CONNECTSIGNALSLOT(mp_RSStandbyWithTissue, ShutdownFailedHeater(), this, OnRsShutdownFailedHeater());
+    CONNECTSIGNALSLOT(mp_RSStandbyWithTissue, ReleasePressure(), this, OnRsReleasePressure());
+    CONNECTSIGNALSLOT(mp_RSStandbyWithTissue, TasksDone(bool), this, OnTasksDone(bool));
 }
 
 void CSchedulerStateMachine::OnStateChanged()
@@ -170,6 +176,28 @@ void CSchedulerStateMachine::OnStateChanged()
 #endif
 }
 
+void CSchedulerStateMachine::OnRsRTStopTempCtrl(DeviceControl::RTTempCtrlType_t Type)
+{
+    CmdRTSetTempCtrlOFF* cmd = new CmdRTSetTempCtrlOFF(500, mp_SchedulerThreadController);
+    cmd->SetType(Type);
+    mp_SchedulerCommandProcessor->pushCmd(cmd);
+}
+
+void CSchedulerStateMachine::OnRsShutdownFailedHeater()
+{
+    mp_SchedulerThreadController->ShutdownFailedHeater();
+}
+
+void CSchedulerStateMachine::OnRsReleasePressure()
+{
+    mp_SchedulerCommandProcessor->ALBreakAllOperation();
+    mp_SchedulerCommandProcessor->pushCmd(new CmdALAllStop(500, mp_SchedulerThreadController));
+}
+void CSchedulerStateMachine::OnTasksDone(bool flag)
+{
+    Global::EventObject::Instance().RaiseEvent(mp_SchedulerThreadController->GetEventKey(), 0, 0, flag);
+}
+
 /****************************************************************************/
 /*!
  *  \brief    Destructor
@@ -177,14 +205,29 @@ void CSchedulerStateMachine::OnStateChanged()
 /****************************************************************************/
 CSchedulerStateMachine::~CSchedulerStateMachine()
 {
-    delete mp_ErrorWaitState;
-    mp_ErrorWaitState = NULL;
+    delete mp_SchedulerMachine;
+    mp_SchedulerMachine = NULL;
+
+    delete mp_InitState;
+    mp_InitState = NULL;
 
     delete mp_IdleState;
     mp_IdleState = NULL;
 
-    delete mp_InitState;
-    mp_InitState = NULL;
+    delete mp_BusyState;
+    mp_BusyState = NULL;
+
+    delete mp_ErrorState;
+    mp_ErrorState = NULL;
+
+    delete mp_ErrorWaitState;
+    mp_ErrorWaitState = NULL;
+
+    delete mp_ErrorRSStandbyWithTissueState;
+    mp_ErrorRSStandbyWithTissueState = NULL;
+
+    delete mp_ProgramStepStates;
+    mp_ProgramStepStates = NULL;
 
     delete mp_RSRvGetOriginalPositionAgain;
     mp_RSRvGetOriginalPositionAgain = NULL;
@@ -195,17 +238,8 @@ CSchedulerStateMachine::~CSchedulerStateMachine()
     delete mp_RSStandbyWithTissue;
     mp_RSStandbyWithTissue = NULL;
 
-    delete mp_ProgramStepStates;
-    mp_ProgramStepStates = NULL;
-
-    delete mp_ErrorState;
-    mp_ErrorState = NULL;
-
-    delete mp_BusyState;
-    mp_BusyState = NULL;
-
-    delete mp_SchedulerMachine;
-    mp_SchedulerMachine = NULL;
+    delete mp_RCReport;
+    mp_RCReport = NULL;
 }
 
 //mp_SelfTestStateMachine
@@ -264,11 +298,16 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
     {
         if(mp_SchedulerMachine->configuration().contains(mp_ErrorWaitState))
         {
-            currentState = SM_ERR_WAIT;
+            return SM_ERR_WAIT;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRSStandbyWithTissueState))
+        {
+            return SM_ERR_RS_STANDBY_WITH_TISSUE;
         }
         else if((currentState = mp_RSRvGetOriginalPositionAgain->GetCurrentState(mp_SchedulerMachine->configuration())) != SM_UNDEF);
         else if((currentState = mp_RCReport->GetCurrentState(mp_SchedulerMachine->configuration())) != SM_UNDEF);
         else if((currentState = mp_RSStandby->GetCurrentState(mp_SchedulerMachine->configuration())) != SM_UNDEF);
+
     }else if(mp_SchedulerMachine->configuration().contains(mp_BusyState))
     {
         currentState = mp_ProgramStepStates->GetCurrentState(mp_SchedulerMachine->configuration());
@@ -396,6 +435,7 @@ void CSchedulerStateMachine::NotifyError()
     emit sigError();
 }
 
+
 void CSchedulerStateMachine::NotifyPause(SchedulerStateMachine_t PreviousState)
 {
     Q_UNUSED(PreviousState);
@@ -440,31 +480,6 @@ void CSchedulerStateMachine::NotifyRsShutdownFailedHeater()
 void CSchedulerStateMachine::NotifyRsShutdownFailedHeaterFinished()
 {
     emit sigShutdownFailedHeaterFinished();
-}
-
-void CSchedulerStateMachine::NotifyRsReleasePressureAtRsStandByWithTissue()
-{
-    emit sigReleasePressureAtRsStandByWithTissue();
-}
-
-void CSchedulerStateMachine::NotifyRsShutdownFailedHeaterAtRsStandByWithTissue()
-{
-    emit sigShutdownFailedHeaterAtRsStandByWithTissue();
-}
-
-void CSchedulerStateMachine::NotifyRsShutdownFailedHeaterFinishedAtRsStandByWithTissue()
-{
-    emit sigShutdownFailedHeaterFinishedAtRsStandByWithTissue();
-}
-
-void CSchedulerStateMachine::NotifyRsRTBottomStopTempCtrlAtRsStandByWithTissue()
-{
-    emit sigRTBottomStopTempCtrlAtRsStandByWithTissue();
-}
-
-void CSchedulerStateMachine::NotifyRsRTTopStopTempCtrlAtRsStandByWithTissue()
-{
-    emit sigRTTopStopTempCtrlAtRsStandByWithTissue();
 }
 
 void CSchedulerStateMachine::NotifyResume()
@@ -539,5 +554,14 @@ void CSchedulerStateMachine::NotifyResumeDrain()
     }
 }
 
+void CSchedulerStateMachine::EnterRsStandByWithTissue()
+{
+    emit EnterRsStandbyWithTissue();
+}
+
+void CSchedulerStateMachine::HandleRsStandByWithTissueWorkFlow(bool flag)
+{
+    mp_RSStandbyWithTissue->OnHandleWorkFlow(flag);
+}
 
 }

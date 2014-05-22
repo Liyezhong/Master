@@ -23,6 +23,7 @@
 #define SCHEDULERMACHINE_H
 
 #include <QStateMachine>
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "ProgramStepStateMachine.h"
 #include "RsRvGetOriginalPositionAgain.h"
 #include "RsStandby.h"
@@ -32,6 +33,7 @@
 namespace Scheduler{
 
 class SchedulerMainThreadController;
+class SchedulerCommandProcessorBase;
 
 /****************************************************************************/
 /*!
@@ -42,25 +44,36 @@ class CSchedulerStateMachine : public QObject
 {
     Q_OBJECT
 private:
-    CRsStandbyWithTissue *mp_RSStandbyWithTissue;
-    QStateMachine* mp_SchedulerMachine;       ///<  Definition/Declaration of variable mp_SchedulerMachine
-    QState* mp_InitState;       ///<  Definition/Declaration of variable mp_InitState
-    QState* mp_IdleState;       ///<  Definition/Declaration of variable mp_IdleState
-    QState* mp_ErrorState;       ///<  Definition/Declaration of variable mp_ErrorState
-    QState* mp_BusyState;       ///<  Definition/Declaration of variable mp_BusyState
-    QState* mp_ErrorWaitState;       ///<  Definition/Declaration of variable mp_ErrorWaitState
-    CProgramStepStateMachine *mp_ProgramStepStates;       ///<  Definition/Declaration of variable mp_ProgramStepStates
-    CRsRvGetOriginalPositionAgain *mp_RSRvGetOriginalPositionAgain;       ///<  Definition/Declaration of variable mp_RSRvGetOriginalPositionAgain
-    CRsStandby *mp_RSStandby;       ///<  Definition/Declaration of variable mp_RSStandby
-    CRCReport *mp_RCReport;       ///<  Definition/Declaration of variable mp_RCReport
-    SchedulerStateMachine_t m_PreviousState;       ///<  Definition/Declaration of variable m_PreviousState
-    SchedulerStateMachine_t m_CurrentState;       ///<  Definition/Declaration of variable m_CurrentState
+    QStateMachine* mp_SchedulerMachine;			///<  Scheduler state machine 
+    QState* mp_InitState;       				///<  Initial state  
+    QState* mp_IdleState;						///<  Idle state 
+    QState* mp_BusyState;						///<  Busy state
+    QState* mp_ErrorState;						///<  Error state 
+    QState* mp_ErrorWaitState;					///<  Error Sate's sub state: error wait state
+    QState* mp_ErrorRSStandbyWithTissueState;	///<  Error Sate's sub state: handle RS_STandby_WithTissue related logic 
+    CProgramStepStateMachine *mp_ProgramStepStates;						///<  Definition/Declaration of variable mp_ProgramStepStates
+    CRsRvGetOriginalPositionAgain *mp_RSRvGetOriginalPositionAgain;		///<  Definition/Declaration of variable mp_RSRvGetOriginalPositionAgain
+    CRsStandby *mp_RSStandby;											///<  Definition/Declaration of variable mp_RSStandby
+    CRsStandbyWithTissue *mp_RSStandbyWithTissue;						///<  Definition/Declaration of variable mp_RSStandbyWithTissue
+    CRCReport *mp_RCReport;												///<  Definition/Declaration of variable mp_RCReport
+    SchedulerStateMachine_t m_PreviousState;							///<  Definition/Declaration of variable m_PreviousState
+    SchedulerStateMachine_t m_CurrentState;								///<  Definition/Declaration of variable m_CurrentState
+	SchedulerMainThreadController *mp_SchedulerThreadController;		///<  Definition/Declaration of variable mp_SchedulerThreadController
+    SchedulerCommandProcessorBase* mp_SchedulerCommandProcessor;         ///< Pointer of SchedulerMainThreadController's SchedulerCommandProcessor
 
 
 
 public:
-    CSchedulerStateMachine();
+    CSchedulerStateMachine(SchedulerMainThreadController* SchedulerThreadController);
     ~CSchedulerStateMachine();
+    /****************************************************************************/
+    /*!
+     *  \brief  Set Scheduler Command Processor
+     *
+     *  \return from void
+     */
+    /****************************************************************************/
+     void SetSchedCommandProcessor( Scheduler::SchedulerCommandProcessorBase* pSchedCmdProcessor ) { mp_SchedulerCommandProcessor = pSchedCmdProcessor; }
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function Start
@@ -384,11 +397,6 @@ public:
      */
     /****************************************************************************/
     void NotifyRsShutdownFailedHeaterFinished();
-    void NotifyRsReleasePressureAtRsStandByWithTissue();
-	void NotifyRsShutdownFailedHeaterAtRsStandByWithTissue();
-	void NotifyRsShutdownFailedHeaterFinishedAtRsStandByWithTissue();
-	void NotifyRsRTBottomStopTempCtrlAtRsStandByWithTissue();
-	void NotifyRsRTTopStopTempCtrlAtRsStandByWithTissue();
 
     /****************************************************************************/
     /*!
@@ -400,6 +408,28 @@ public:
      */
     /****************************************************************************/
     void UpdateCurrentState(SchedulerStateMachine_t currentState);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Enter to Rs_Standby_WithTissue sub state machine 
+     *
+     *  \param void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void EnterRsStandByWithTissue();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for Rs_Standby_WithTissue 
+     *
+     *  \param flag - indicate if the execution succeeds or not
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRsStandByWithTissueWorkFlow(bool flag);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetCurrentState
@@ -424,7 +454,41 @@ private slots:
      */
     /****************************************************************************/
     void OnStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to stop Retort temperature control 
+     *  \param	Retort temperature sensor type (RT_SIDE or RT_BOTTOM) 
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnRsRTStopTempCtrl(DeviceControl::RTTempCtrlType_t Type);
 
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to stop the failed heating element or ASB 
+     *  \param	void
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnRsShutdownFailedHeater(); 
+
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to release the pressure
+     *  \param	void
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnRsReleasePressure(); 
+
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to handle the actions when all the tasks are done.
+     *  \param	bool flag to indicate if the whole execution succeeds or not
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnTasksDone(bool flag);
 signals:
     /****************************************************************************/
     /*!
@@ -456,6 +520,13 @@ signals:
      */
     /****************************************************************************/
     void ErrorSignal();
+
+    /****************************************************************************/
+    /*!
+     *  \brief signal to enter RS_StandBy_WithTissue state 
+     */
+    /****************************************************************************/
+    void EnterRsStandbyWithTissue();
 
     /****************************************************************************/
     /*!

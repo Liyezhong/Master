@@ -228,17 +228,13 @@ void SchedulerCommandProcessor<DP>::OnNewCmdAdded4Slot()
 {
     if(newCmdComing())
     {
-        //qDebug()<< "sec thread got msg! current thread id is: "<<QThread::currentThreadId();
-//        LOG_STR_ARG(STR_EXECUTE_COMMAND,Global::tTranslatableStringList()<<Global::TranslatableString(m_currentCmd->GetParameters()));
         this->ExecuteCmd();
         mp_SchedulerThreadController->PushDeviceControlCmdQueue(m_currentCmd);
-//        LOG_STR_ARG(STR_EXECUTE_COMMAND_RESULT,Global::tTranslatableStringList()<<Global::TranslatableString(m_currentCmd->GetName())
-//                    <<Global::TranslatableString(m_currentCmd->GetStrResult()));
     }
 }
 
 template <class DP>
-void SchedulerCommandProcessor<DP>::pushCmd4Slot(CmdSchedulerCommandBase* cmd)
+void SchedulerCommandProcessor<DP>:: pushCmd4Slot(CmdSchedulerCommandBase* cmd)
 {
     m_CmdMutex.lock();
     m_Cmds.push_front(Scheduler::SchedulerCommandShPtr_t(cmd));

@@ -168,7 +168,7 @@ typedef struct
         QList<FunctionModuleStatus_t> m_FunctionModuleStatusList;       ///<  Definition/Declaration of variable m_FunctionModuleStatusList
 
         QThread* m_SchedulerCommandProcessorThread;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessorThread
-        SchedulerCommandProcessorBase* m_SchedulerCommandProcessor;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessor
+        SchedulerCommandProcessorBase*  m_SchedulerCommandProcessor;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessor
         CSchedulerStateMachine* m_SchedulerMachine;       ///<  Definition/Declaration of variable m_SchedulerMachine
         DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;       ///<  Definition/Declaration of variable mp_IDeviceProcessing
         DataManager::CDataManager       *mp_DataManager;       ///<  Definition/Declaration of variable mp_DataManager
@@ -668,13 +668,6 @@ private slots:
           */
          /****************************************************************************/
          void ReleasePressure();
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot ShutdownFailedHeater
-          */
-         /****************************************************************************/
-         void ShutdownFailedHeater();
-
 protected:
 
         /****************************************************************************/
@@ -752,8 +745,7 @@ protected:
          */
         /****************************************************************************/
         SchedulerMainThreadController(
-            Global::gSourceType TheHeartBeatSource
-        );
+            Global::gSourceType TheHeartBeatSource);
 
         /****************************************************************************/
         /**
@@ -769,7 +761,16 @@ protected:
             Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_ID_DEBUG_MESSAGE,Global::tTranslatableStringList()<<message);
 #endif
         }
-
+        /****************************************************************************/
+        /**
+         * @brief   return current Event key
+         *
+         * @param   void
+         *
+         * @return  void
+         */
+        /****************************************************************************/
+        quint32 GetEventKey(){ return m_EventKey; }
         /****************************************************************************/
         /**
          * @brief raise error to event handler
@@ -882,8 +883,9 @@ protected:
 		/****************************************************************************/
 		int	GetCurProgramStepIndex() { return m_CurProgramStepIndex; }
         /****************************************************************************/
+        /****************************************************************************/
         /**
-         *  \brief push Command to Q2
+         *  \brief Set Scheduler Command processor
          */
         /****************************************************************************/
         void SetSchedCommandProcessor( Scheduler::SchedulerCommandProcessorBase* pSchedCmdProcessor ) { m_SchedulerCommandProcessor = pSchedCmdProcessor; }
@@ -905,7 +907,15 @@ protected:
          */
         /****************************************************************************/
         void OnDCLConfigurationFinished(ReturnCode_t RetCode);
-        //void DeviceInitComplete();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  slot to shut down all the failed heaters
+         *  \param  void
+         *  \return void
+         */
+        /****************************************************************************/
+        void ShutdownFailedHeater();
 
     };
 

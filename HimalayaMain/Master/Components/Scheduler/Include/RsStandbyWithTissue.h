@@ -19,6 +19,7 @@
 /****************************************************************************/
 #ifndef RSSTANDBY_WITH_TISSUE_H
 #define RSSTANDBY_WITH_TISSUE_H
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "ErrorHandlingSMBase.h"
 #include <QStateMachine>
 
@@ -36,23 +37,23 @@ public:
     CRsStandbyWithTissue (QStateMachine* pStateMachine, QState* pParentState);
     ~CRsStandbyWithTissue();
     SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
+    void OnHandleWorkFlow(bool flag);
 
 signals:
-    void ReleasePressure();
+    void RTStopTempCtrl(DeviceControl::RTTempCtrlType_t);
     void ShutdownFailedHeater();
-    void ShutdownFailedHeaterFinished();
-    void RTBottomStopTempCtrl();
-    void RTTopStopTempCtrl();
-    void OnReleasePressure();
-    void OnShutdownFailedHeater();
-    void OnRTBottomStopTempCtrl();
-    void OnRTTopStopTempCtrl();
+    void ReleasePressure();
+    void TasksDone(bool);
 
+    void SigOnRTBottomStopTempCtrl();
+    void SigOnRTSideStopTempCtrl();
+    void SigOnShutdownFailedHeater();
+    void SigOnReleasePressure();
 private:
-    QState *mp_ReleasePressure;
-    QState *mp_ShutdownFailedHeater;
     QState *mp_RTBottomStopTempCtrl;
-    QState *mp_RTTopStopTempCtrl;
+    QState *mp_RTSideStopTempCtrl;
+    QState *mp_ShutdownFailedHeater;
+    QState *mp_ReleasePressure;
 };
 }
 #endif // RSSTANDBY_WITH_TISSUE_H

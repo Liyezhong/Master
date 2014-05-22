@@ -75,8 +75,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         : Threads::ThreadController(TheHeartBeatSource, "SchedulerMainThread")
         , m_TickTimer(this)
         , m_SchedulerCommandProcessorThread(new QThread())
-        , m_SchedulerCommandProcessor(NULL)
-        , m_SchedulerMachine(new CSchedulerStateMachine())
+        , m_SchedulerMachine(new CSchedulerStateMachine(this))
         , mp_DataManager(NULL)
         , m_CurProgramStepIndex(-1)
         , m_FirstProgramStepIndex(0)
@@ -124,11 +123,6 @@ void SchedulerMainThreadController::RegisterCommands()
 void SchedulerMainThreadController::CreateAndInitializeObjects()
 {
 
-    //create the SchedulerCommandProcessor thread
-    //m_SchedulerCommandProcessorThread = new QThread();
-    ////m_SchedulerCommandProcessor = new SchedulerCommandProcessor(this, mp_IDeviceProcessing);
-    //CONNECTSIGNALSLOT(&m_SchedulerCommandProcessor, timeout(), m_SchedulerCommandProcessor, run());
-
     m_SchedulerCommandProcessor->moveToThread(m_SchedulerCommandProcessorThread);
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessorThread, started(), m_SchedulerCommandProcessor, run());
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, destroyed(), m_SchedulerCommandProcessorThread, quit());
@@ -141,6 +135,9 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
                       this,OnDCLConfigurationFinished(ReturnCode_t))
 
     m_TickTimer.setInterval(500);
+
+    //Set SchedulerCommand Processor for State machine
+    m_SchedulerMachine->SetSchedCommandProcessor(m_SchedulerCommandProcessor);
 
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRVPositionCheck(), this, MoveRVToInit());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnSealingCheck(), this, SealingCheck());
@@ -163,7 +160,7 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRCReport(), this, ShutdownRetortHeater());
 
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsReleasePressure(), this, ReleasePressure());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsShutdownFailedHeater(), this, ShutdownFailedHeater());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsShutdownFailedHeater(), this, OnShutdownFailedHeater());
 
     //command queue reset
     m_SchedulerCmdQueue.clear();
@@ -1119,9 +1116,27 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             m_SchedulerMachine->NotifyRsReleasePressure();
             DequeueNonDeviceCommand();
         }
+        else if(CTRL_CMD_RS_STANDBY_WITHTISSUE == ctrlCmd)
+        {
+            LogDebug("Go to RS_STandby_WithTissue");
+            m_SchedulerMachine->EnterRsStandByWithTissue();
+            DequeueNonDeviceCommand();
+        }
         else
         {
             LogDebug(QString("Unknown Command: %1").arg(ctrlCmd, 0, 16));
+        }
+    }
+    else if (SM_ERR_RS_STANDBY_WITH_TISSUE == currentState)
+    {
+        LogDebug(QString("RS_STandBy_WithTissue Response: %1").arg(retCode));
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            m_SchedulerMachine->HandleRsStandByWithTissueWorkFlow(false);
+        }
+        else
+        {
+            m_SchedulerMachine->HandleRsStandByWithTissueWorkFlow(true);
         }
     }
     else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
@@ -1156,22 +1171,6 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         m_SchedulerMachine->NotifyRsShutdownFailedHeaterFinished();
         RaiseError(m_EventKey, 0, 0, true);
-    }
-    else if(SM_ERR_RS_RELEASE_PRESSURE_AT_RS_STADNDBY_WITHTISSUE == currentState)
-    {
-        m_SchedulerMachine->NotifyRsReleasePressureAtRsStandByWithTissue();
-    }
-    else if (SM_ERR_RS_SHUTDOWN_FAILED_HEATER_AT_RS_STADNDBY_WITHTISSUE == currentState)
-    {
-        m_SchedulerMachine->NotifyRsShutdownFailedHeaterAtRsStandByWithTissue();
-    }
-    else if (SM_ERR_RS_RT_BOTTOM_STOP_TEMP_CTRL_AT_RS_STADNDBY_WITHTISSUE == currentState)
-    {
-        m_SchedulerMachine->NotifyRsRTBottomStopTempCtrlAtRsStandByWithTissue();
-    }
-    else if (SM_ERR_RS_RT_TOP_STOP_TEMP_CTRL_AT_RS_STADNDBY_WITHTISSUE == currentState)
-    {
-        m_SchedulerMachine->NotifyRsRTTopStopTempCtrlAtRsStandByWithTissue();
     }
 }
 

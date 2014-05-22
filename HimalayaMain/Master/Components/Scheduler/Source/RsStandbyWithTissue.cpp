@@ -34,21 +34,22 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(QStateMachine* pStateMachine, QState*
 {
     if(pParentState)
     {
-        mp_ReleasePressure = new QState(pParentState);
-        mp_ShutdownFailedHeater = new QState(pParentState);
         mp_RTBottomStopTempCtrl = new QState(pParentState);
-        mp_RTTopStopTempCtrl = new QState(pParentState);
+        mp_RTSideStopTempCtrl = new QState(pParentState);
+        mp_ShutdownFailedHeater = new QState(pParentState);
+        mp_ReleasePressure = new QState(pParentState);
         QState *pInitState = (QState*)pParentState->initialState();
 
         pInitState->addTransition(this, SIGNAL(RTBottomStopTempCtrl()), mp_RTBottomStopTempCtrl);
-        mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(RTTopStopTempCtrl()), mp_ReleasePressure);
-        mp_ReleasePressure->addTransition(this, SIGNAL(ShutdownFailedHeater()), mp_ShutdownFailedHeater);
-        mp_ShutdownFailedHeater->addTransition(this, SIGNAL(ShutdownFailedHeaterFinished()), pInitState);
-        connect(mp_ReleasePressure, SIGNAL(entered()), this, SIGNAL(OnReleasePressure()));
+        mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(RTSideStopTempCtrl()), mp_RTSideStopTempCtrl);
+        mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(ShutdownFailedHeater()), mp_ShutdownFailedHeater);
+        mp_ShutdownFailedHeater->addTransition(this, SIGNAL(ReleasePressure()), mp_ReleasePressure);
+        mp_ReleasePressure->addTransition(this,SIGNAL(TasksDone(bool)), pInitState);
 
-        connect(mp_ShutdownFailedHeater, SIGNAL(entered()), this, SIGNAL(OnShutdownFailedHeater()));
-        connect(mp_RTBottomStopTempCtrl, SIGNAL(entered()), this, SIGNAL(OnRTBottomStopTempCtrl()));
-        connect(mp_RTTopStopTempCtrl, SIGNAL(entered()), this, SIGNAL(OnRTTopStopTempCtrl()));
+		//For error cases
+        mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), pInitState);
+        mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), pInitState);
+        mp_ShutdownFailedHeater->addTransition(this, SIGNAL(TasksDone(bool)), pInitState);
     }
 }
 
@@ -59,17 +60,19 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(QStateMachine* pStateMachine, QState*
 /****************************************************************************/
 CRsStandbyWithTissue::~CRsStandbyWithTissue()
 {
+    delete mp_RTBottomStopTempCtrl;
+    mp_RTBottomStopTempCtrl = NULL;
+
+    delete mp_RTSideStopTempCtrl;
+    mp_RTSideStopTempCtrl = NULL;
+
     delete mp_ReleasePressure;
     mp_ReleasePressure = NULL;
 
     delete mp_ShutdownFailedHeater;
     mp_ShutdownFailedHeater = NULL;
 
-    delete mp_RTBottomStopTempCtrl;
-    mp_RTBottomStopTempCtrl = NULL;
 
-    delete mp_RTTopStopTempCtrl;
-    mp_RTTopStopTempCtrl = NULL;
 }
 
 /****************************************************************************/
@@ -83,23 +86,55 @@ CRsStandbyWithTissue::~CRsStandbyWithTissue()
 /****************************************************************************/
 SchedulerStateMachine_t CRsStandbyWithTissue::GetCurrentState(QSet<QAbstractState*> statesList)
 {
-    SchedulerStateMachine_t currentState = SM_UNDEF;
-    if(statesList.contains(mp_ReleasePressure))
+    SchedulerStateMachine_t currentState = SM_ERR_RS_STANDBY_WITH_TISSUE;
+
+    if (statesList.contains(mp_RTBottomStopTempCtrl))
     {
-        currentState = SM_ERR_RS_RELEASE_PRESSURE_AT_RS_STADNDBY_WITHTISSUE;
+        currentState = SM_ERR_RS_STANDBY_WITH_TISSUE_RT_BOTTOM_STOP_TEMPCTRL;
+    }
+    else if (statesList.contains(mp_RTSideStopTempCtrl))
+    {
+        currentState =SM_ERR_RS_STANDBY_WITH_TISSUE_RT_SIDE_STOP_TEMPCTRL;
     }
     else if(statesList.contains(mp_ShutdownFailedHeater))
     {
-        currentState = SM_ERR_RS_SHUTDOWN_FAILED_HEATER_AT_RS_STADNDBY_WITHTISSUE;
+        currentState =SM_ERR_RS_STANDBY_WITH_TISSUE_SHUTDOWN_FAILED_HEATER;
     }
-    else if (statesList.contains(mp_RTBottomStopTempCtrl))
+    else if(statesList.contains(mp_ReleasePressure))
     {
-        currentState = SM_ERR_RS_RT_BOTTOM_STOP_TEMP_CTRL_AT_RS_STADNDBY_WITHTISSUE;
+        currentState = SM_ERR_RS_STANDBY_WITH_TISSUE_RELEASE_PRESSURE;
     }
-    else if (statesList.contains(mp_RTTopStopTempCtrl))
-    {
-        currentState = SM_ERR_RS_RT_TOP_STOP_TEMP_CTRL_AT_RS_STADNDBY_WITHTISSUE;
-    }
+
     return currentState;
+}
+
+void CRsStandbyWithTissue::OnHandleWorkFlow(bool flag)
+{
+    if (false == flag)
+    {
+        emit TasksDone(false);
+        return;
+    }
+	SchedulerStateMachine_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
+	switch (currentState)
+	{
+    case SM_ERR_RS_STANDBY_WITH_TISSUE:
+        emit RTStopTempCtrl(DeviceControl::RT_BOTTOM);
+        break;
+	case SM_ERR_RS_STANDBY_WITH_TISSUE_RT_BOTTOM_STOP_TEMPCTRL:
+        emit RTStopTempCtrl(DeviceControl::RT_SIDE);
+        break;
+    case SM_ERR_RS_STANDBY_WITH_TISSUE_RT_SIDE_STOP_TEMPCTRL:
+        emit ShutdownFailedHeater();
+        break;
+    case SM_ERR_RS_STANDBY_WITH_TISSUE_SHUTDOWN_FAILED_HEATER:
+        emit ReleasePressure();
+        break;
+    case SM_ERR_RS_STANDBY_WITH_TISSUE_RELEASE_PRESSURE:
+        emit TasksDone(true);
+        break;
+    default:
+        break;
+	}
 }
 }
