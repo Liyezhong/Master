@@ -19,6 +19,6 @@ HEADERS +=  ../Include/*.h \
 
 SOURCES +=  ../Source/*.cpp \
     ../Source/TestCaseGuide.cpp \
-    ../Source/CTestCaseFactory.cpp \
-    ../Source/TestCase.cpp
+    ../Source/TestCase.cpp \
+    ../Source/TestCaseFactory.cpp
 
