@@ -539,6 +539,7 @@ void CStartup::ServiceGuiInit()
     LoadCommonComponenetsOne();
 
     mp_MainWindow->SetUserIcon(MainMenu::CMainWindow::Service);
+    mp_MainWindow->SetUserMode("SERVICE");
     emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
 
 
@@ -579,6 +580,7 @@ void CStartup::ManufacturingGuiInit()
 
     Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_MANUFACTURING, Global::tTranslatableStringList() << GetCurrentUserMode());
     LoadCommonComponenetsOne();
+    mp_MainWindow->SetUserMode("MANUFACTURING");
     emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
 
     mp_ManaufacturingDiagnosticsHandler->LoadManufDiagnosticsComponents();
