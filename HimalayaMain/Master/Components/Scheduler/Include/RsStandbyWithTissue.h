@@ -50,6 +50,7 @@ signals:
     void SigOnShutdownFailedHeater();
     void SigOnReleasePressure();
 private:
+    QState *mp_Initial;
     QState *mp_RTBottomStopTempCtrl;
     QState *mp_RTSideStopTempCtrl;
     QState *mp_ShutdownFailedHeater;

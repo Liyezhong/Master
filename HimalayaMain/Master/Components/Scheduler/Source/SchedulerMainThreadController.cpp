@@ -160,7 +160,7 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRCReport(), this, ShutdownRetortHeater());
 
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsReleasePressure(), this, ReleasePressure());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsShutdownFailedHeater(), this, OnShutdownFailedHeater());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsShutdownFailedHeater(), this, ShutdownFailedHeater());
 
     //command queue reset
     m_SchedulerCmdQueue.clear();

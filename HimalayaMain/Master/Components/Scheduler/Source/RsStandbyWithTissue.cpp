@@ -34,22 +34,23 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(QStateMachine* pStateMachine, QState*
 {
     if(pParentState)
     {
+        mp_Initial = new QState(pParentState);
         mp_RTBottomStopTempCtrl = new QState(pParentState);
         mp_RTSideStopTempCtrl = new QState(pParentState);
         mp_ShutdownFailedHeater = new QState(pParentState);
         mp_ReleasePressure = new QState(pParentState);
-        QState *pInitState = (QState*)pParentState->initialState();
+        pParentState->setInitialState(mp_Initial);
 
-        pInitState->addTransition(this, SIGNAL(RTBottomStopTempCtrl()), mp_RTBottomStopTempCtrl);
+        mp_Initial->addTransition(this, SIGNAL(RTBottomStopTempCtrl()), mp_RTBottomStopTempCtrl);
         mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(RTSideStopTempCtrl()), mp_RTSideStopTempCtrl);
         mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(ShutdownFailedHeater()), mp_ShutdownFailedHeater);
         mp_ShutdownFailedHeater->addTransition(this, SIGNAL(ReleasePressure()), mp_ReleasePressure);
-        mp_ReleasePressure->addTransition(this,SIGNAL(TasksDone(bool)), pInitState);
+        mp_ReleasePressure->addTransition(this,SIGNAL(TasksDone(bool)), mp_Initial);
 
 		//For error cases
-        mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), pInitState);
-        mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), pInitState);
-        mp_ShutdownFailedHeater->addTransition(this, SIGNAL(TasksDone(bool)), pInitState);
+        mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial);
+        mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial);
+        mp_ShutdownFailedHeater->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial);
     }
 }
 
