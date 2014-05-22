@@ -142,7 +142,8 @@ typedef struct {
 
 /****************************************************************************/
 /**
- * \brief CServiceParameters definition
+ * \brief CServiceParameters definition//    FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/ServiceParameters.xml";
+//    SetFilename(FileName);
  */
 /****************************************************************************/
 class CServiceParameters : public CDataContainerBase {

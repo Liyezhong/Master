@@ -12,8 +12,10 @@ TARGET = DiagnosticsManufacturing
 
 HEADERS *= ../Include/*.h \          # header file location
     ../Include/TestReportGeneration.h \    
+    ../Include/TestCaseReporter.h
 
-SOURCES *= ../Source/*.cpp        # source file location
+SOURCES *= ../Source/*.cpp \         # source file location
+    ../Source/TestCaseReporter.cpp
 
 FORMS += ../Forms/*.ui
 

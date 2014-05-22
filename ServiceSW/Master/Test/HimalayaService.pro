@@ -30,7 +30,7 @@ SUBDIRS = ../Components/Calibration/Build/Calibration.pro \
           ../Components/SystemTracking/Build/SystemTracking.pro \
           ../Components/LogViewerDialog/Build/LogViewerDialog.pro \
           ../Components/Diagnostics/Build/Diagnostics.pro \
-#         ../Components/DiagnosticsManufacturing/Build/DiagnosticsManufacturing.pro \
+         ../Components/DiagnosticsManufacturing/Build/DiagnosticsManufacturing.pro \
           ../Components/ServiceUpdates/Build/ServiceUpdates.pro \
           ../Components/Core/Build/Core.pro \
           ../Components/ServiceDataManager/Build/ServiceDataManager.pro \
@@ -39,7 +39,7 @@ SUBDIRS = ../Components/Calibration/Build/Calibration.pro \
           ../Components/SystemTracking/Test/TestSystemTracking.pro \
           ../Components/LogViewerDialog/Test/TestLogViewerDialog.pro \
           ../Components/Diagnostics/Test/TestDiagnostics.pro \
-#          ../Components/DiagnosticsManufacturing/Test/TestDiagnosticsManufacturing.pro \
+          ../Components/DiagnosticsManufacturing/Test/TestDiagnosticsManufacturing.pro \
           ../Components/ServiceUpdates/Test/TestServiceUpdates.pro \
           ../Components/ImportExport/Test/TestServiceImportExportHandler.pro \
           ../Components/ServiceDataManager/Test/TestServiceDataManager.pro \

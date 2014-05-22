@@ -1,0 +1,23 @@
+Module Name: Oven
+Time Stamp: 2014/05/22-05:53:23
+Serial Number: 123456
+OvenHeatingWater:
+	Name: OvenHeatingWater
+	Result: PASS
+	AmbTempHigh : 40
+	AmbTempLow : 10
+	DepartureHigh : 10
+	DepartureLow : -5
+	DurationTime : 00:40
+	TargetTemp : 55
+OvenHeatingEmpty:
+	Name: OvenHeatingEmpty
+	Result: FAIL
+	AmbTempHigh : 40
+	AmbTempLow : 10
+	DepartureHigh : 10
+	DepartureLow : -5
+	DurationTime : 00:30
+	TargetTemp : 55
+	CurrentTemp : 40
+	Heating Time : 00:30

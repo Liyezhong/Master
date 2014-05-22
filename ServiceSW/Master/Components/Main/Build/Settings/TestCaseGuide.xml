@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE TestCaseGuide>
+<TestCaseGuide Version="1">
+    <OvenHeatingEmpty>
+		<Guide>
+			<Step>the empty first step</Step>
+			<Step>the empty second step</Step>
+		</Guide>
+	</OvenHeatingEmpty>
+	<OvenHeatingWater>
+		<Guide>
+			<Step>the water first step</Step>
+			<Step>the water second step</Step>
+		</Guide>
+		<Guide>
+			<Step>the water second guide first step</Step>
+			<Step>the water second guide second step</Step>
+		</Guide>
+	</OvenHeatingWater>
+</TestCaseGuide>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE TestCaseConfig>
+<TestCaseConfig Version="1">
+	<Oven>
+		<OvenHeatingEmpty AmbTempLow="10" AmbTempHigh="40" DurationTime="00:30" TargetTemp="55" DepartureLow="-5" DepartureHigh="10"/>
+		<OvenHeatingWater AmbTempLow="10" AmbTempHigh="40" DurationTime="00:40" TargetTemp="55" DepartureLow="-5" DepartureHigh="10"/>
+	</Oven>
+</TestCaseConfig>
