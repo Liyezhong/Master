@@ -89,7 +89,11 @@ SchedulerStateMachine_t CRsStandbyWithTissue::GetCurrentState(QSet<QAbstractStat
 {
     SchedulerStateMachine_t currentState = SM_ERR_RS_STANDBY_WITH_TISSUE;
 
-    if (statesList.contains(mp_RTBottomStopTempCtrl))
+    if (statesList.contains(mp_Initial))
+    {
+        currentState = SM_ERR_RS_STANDBY_WITH_TISSUE;
+    }
+    else if (statesList.contains(mp_RTBottomStopTempCtrl))
     {
         currentState = SM_ERR_RS_STANDBY_WITH_TISSUE_RT_BOTTOM_STOP_TEMPCTRL;
     }
