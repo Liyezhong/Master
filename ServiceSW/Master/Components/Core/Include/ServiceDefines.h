@@ -68,7 +68,9 @@ enum GUIReturnMessageType {
     GUIMSGTYPE_HOODSTATUS,      ///< Hood Status Message.
     GUIMSGTYPE_KITINFO,         ///< KIT Info Message.
     GUIMSGTYPE_BOTTLEINFO,      ///< Bottle Info Message.
-    GUIMSGTYPE_INITCALIBRATION  ///< Init for Calibration Message.
+    GUIMSGTYPE_INITCALIBRATION,  ///< Init for Calibration Message.
+    GUIMSGTYPE_HEATINGSTATUS,  ///< Refresh Heating Status Message.
+    GUIMSGTYPE_MANUFMSGMODE     ///< Manufacturing report Message.
 };
 
 /****************************************************************************/
@@ -201,7 +203,7 @@ typedef enum ModuleNames {
     SYSTEM            ///< System
 } ModuleNames_t;
 
-
+typedef QMap<QString, QString>  ModuleTestStatus;
 
 /****************************************************************************/
 /**
@@ -219,9 +221,10 @@ const qint32 TEST_LS_HEATING_MAX_TEMP = 110;
 const qint32 TEST_LS_HEATING_TIME = 100;
 
 const qint32 TEST_OVEN_HEATING_TEMP = 100;
-const qint32 TEST_OVEN_HEATING_MIN_TEMP = 90;
-const qint32 TEST_OVEN_HEATING_MAX_TEMP = 110;
-const qint32 TEST_OVEN_HEATING_TIME = 10;
+const qint32 TEST_OVEN_HEATING_MIN_TEMP = 50;
+const qint32 TEST_OVEN_HEATING_MAX_TEMP = 60;
+const qint32 TEST_OVEN_HEATING_TIME_EMPTY = 1*60;
+const qint32 TEST_OVEN_HEATING_TIME_WITH_WATER = 40*60;
 
 const qint32 TEST_TUBE_HEATING_TEMP = 80;
 const qint32 TEST_TUBE_HEATING_MIN_TEMP = 75;
@@ -397,6 +400,7 @@ const QString MSG_RV_MOVETO_SEALPOS_FAILURE("ERROR: Moving Rotary Valve to Seal 
 const QString MSG_RV_MOVETO_SEALPOS_SUCCESS("Moving Rotary Valve to Seal Position Test successful");
 const QString MSG_OVEN_HEATING_FAILURE("ERROR: Oven Heating Test Failed!!!");
 const QString MSG_OVEN_HEATING_SUCCESS("Oven Heating Test successful");
+const QString MSG_OVEN_COVER_SENSOR_SUCCESS("Oven Cover Sensor Test successful");
 const QString MSG_TUBE1_HEATING_FAILURE("ERROR: Belt1 Heating Test Failed!!!");
 const QString MSG_TUBE1_HEATING_SUCCESS("Belt1 Heating Test successful");
 const QString MSG_TUBE2_HEATING_FAILURE("ERROR: Belt2 Heating Test Failed!!!");

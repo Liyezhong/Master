@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef DIAGNOSTICSMANUFACTURING_OVEN_H
-#define DIAGNOSTICSMANUFACTURING_OVEN_H
+#ifndef OVEN_DIAGNOSTICSMANUFACTURING_H
+#define OVEN_DIAGNOSTICSMANUFACTURING_H
 
 #include "DiagnosticsManufacturing/Include/TestReportGeneration.h"
 #include "DiagnosticsManufacturing/Include/OvenManufacturing.h"
@@ -33,6 +33,7 @@
 #include <QWidget>
 #include <QPixmap>
 #include <QEvent>
+#include "DiagnosticsManufacturing/Include/HeatingTestDialog.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -60,7 +61,7 @@ public:
      *  \iparam Test = Test name
      */
     /****************************************************************************/
-    void AddItem(QString SerialNumber, QString Test);
+    void AddItem(const QString &SerialNumber, const QString &Test, const QString &ModuleTestName);
 
     /****************************************************************************/
     /*!
@@ -93,7 +94,7 @@ private:
     QStringList m_TestResult;                                           //!< StringList stores test result
     MainMenu::CMessageDlg *mp_MessageDlg;                               //!< Information dialog
     QString m_FinalTestResult;                                          //!< Stores Final test result
-
+    DiagnosticsManufacturing::CHeatingTestDialog* mp_HeatingDlg;
 
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();
@@ -104,16 +105,16 @@ signals:
      *  \brief Signal emitted for module test
      */
     /****************************************************************************/
-    void BeginModuleTest(Service::ModuleNames_t);
+    void BeginModuleTest(Service::ModuleNames_t, const QStringList &TestCaseList);
 
 private slots:
     void OnOkClicked(QString EnteredString);
     void OnESCClicked();
     void RetranslateUI();
-
+    void HandleTimeout();
 public slots:
     void BeginTest();
-    void SetTestResult(Service::ModuleTestNames TestName, bool Result);
+    void SetTestResult(const QString &TestName, bool Result);
     void SendTestReport();
     void ResetTestStatus();
 

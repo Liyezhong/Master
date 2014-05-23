@@ -94,7 +94,7 @@ public:
     void SetUserSettingInterface(
             DataManager::CUserSettingsInterface *UserSettingInterface);
 
-    void ShowMessageDialog(Global::GUIMessageType MessageType, QString MessageText);
+    void ShowMessageDialog(Global::GUIMessageType MessageType, QString MessageText, bool NeedClickFlag=false);
     void ShowBusyDialog(QString MessageText, bool HideAbort = true);
     void ShowBusyDialog();
     void HideBusyDialog();

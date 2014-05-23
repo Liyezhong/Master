@@ -24,6 +24,7 @@
 #include "ui_OvenManufacturing.h"
 #include <QDebug>
 #include <QTableWidgetItem>
+#include "DiagnosticsManufacturing/Include/HeatingTestDialog.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -47,15 +48,16 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
     , mp_TestReport(NULL)
     , mp_MessageDlg(NULL)
     , m_FinalTestResult("NA")
+    , mp_HeatingDlg(NULL)
 {
     mp_Ui->setupUi(this);
     mp_Ui->ovenSNEdit->installEventFilter(this);
     mp_Ui->ovenSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
-    SetLineEditText(QString("006XXXXX"));
+    SetLineEditText(QString("14-HIM-OV-XXXXX"));
 
-    mp_Ui->ovenSNEdit->setText("006XXXXX");
+    mp_Ui->ovenSNEdit->setText("14-HIM-OV-XXXXX");
 
     m_TestReport.insert("ModuleName", "Oven");
     m_TestNames.append("ModuleName");
@@ -65,7 +67,8 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
 
     m_TestResult << "NA" << "NA";
 
-    mp_MessageDlg = new MainMenu::CMessageDlg();
+
+    mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
 
     mp_TableWidget = new MainMenu::CBaseTable;
 
@@ -75,11 +78,11 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
     mp_TableWidget->horizontalHeader()->show();
 
     if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
-        AddItem("1", QApplication::translate("DiagnosticsMaMANUFACTURAL_ENDTESTnufacturing::COven", "Cover sensor test", 0, QApplication::UnicodeUTF8));
-        AddItem("2", QApplication::translate("DiagnosticsManufacturing::COven", "Heating test (with water)", 0, QApplication::UnicodeUTF8));
+        AddItem("1", QApplication::translate("DiagnosticsMaMANUFACTURAL_ENDTESTnufacturing::COven", "Cover sensor test", 0, QApplication::UnicodeUTF8), "OvenCoverSensor");
+        AddItem("2", QApplication::translate("DiagnosticsManufacturing::COven", "Heating test (with water)", 0, QApplication::UnicodeUTF8), "OvenHeatingWater");
     }
     else {
-        AddItem("2", QApplication::translate("DiagnosticsManufacturing::COven", "Heating test (empty)", 0, QApplication::UnicodeUTF8));
+        AddItem("1", QApplication::translate("DiagnosticsManufacturing::COven", "Heating test (empty)", 0, QApplication::UnicodeUTF8), "OvenHeatingEmpty");
     }
 
     mp_TableWidget->setModel(&m_Model);
@@ -115,6 +118,9 @@ COven::~COven()
         delete mp_KeyBoardWidget;
         delete mp_TableWidget;
         delete mp_Ui;
+        if (mp_HeatingDlg) {
+            delete mp_HeatingDlg;
+        }
      }
      catch (...) {
          // to please Lint
@@ -180,7 +186,7 @@ bool COven::eventFilter(QObject *p_Object, QEvent *p_Event)
  *  \iparam Test = Test name
  */
 /****************************************************************************/
-void COven::AddItem(QString SerialNumber, QString Test)
+void COven::AddItem(const QString &SerialNumber, const QString &Test, const QString &ModuleTestName)
 {
     QList<QStandardItem *> ItemList;
 
@@ -189,6 +195,7 @@ void COven::AddItem(QString SerialNumber, QString Test)
     itemCheckFlag->setEditable(true);
     itemCheckFlag->setSelectable(true);
     itemCheckFlag->setCheckable(true);
+    itemCheckFlag->setToolTip(ModuleTestName);
     ItemList << itemCheckFlag;
 
     ItemList << new QStandardItem(SerialNumber);
@@ -202,7 +209,6 @@ void COven::AddItem(QString SerialNumber, QString Test)
     QStandardItem *item = new QStandardItem;
     item->setData(SetPixmap, (int) Qt::DecorationRole);
     ItemList << item;
-
 
     m_Model.setHorizontalHeaderLabels(QStringList() << ""
                                                     << QApplication::translate("DiagnosticsManufacturing::COven", "Nr.", 0, QApplication::UnicodeUTF8)
@@ -219,6 +225,7 @@ void COven::AddItem(QString SerialNumber, QString Test)
 /****************************************************************************/
 void COven::OnOkClicked(QString EnteredString)
 {
+
     mp_KeyBoardWidget->hide();
     m_LineEditString.chop(5);
     m_LineEditString.append(EnteredString.simplified());
@@ -280,12 +287,50 @@ void COven::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void COven::BeginTest()
 {
-    emit BeginModuleTest(Service::OVEN);
-#if 0
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_XAXIS_TEST_REQUESTED);
-    ResetTestStatus();
-    emit BeginModuleTest(Service::X_AXIS);
-#endif
+    qDebug()<<"COven::BeginTest  ";
+    QStringList TestCaseList;
+    for(int i=0; i<m_Model.rowCount(); i++) {
+        QModelIndex ModelIndex = m_Model.index(i, 0);
+        QStandardItem* item = m_Model.itemFromIndex(ModelIndex);
+        Qt::CheckState State = item->checkState();
+        qDebug()<<"checkable="<<item->checkState()<<" selected="<<item->isSelectable()<<" tooltip="<<item->toolTip();
+
+        if (State == Qt::Checked) {
+
+            TestCaseList.append(item->toolTip());
+        }
+    }
+    if (TestCaseList.count() == 0) {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::COven",
+                                                        "Error", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::COven",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
+                                                       "Please select a test.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Critical);
+        mp_MessageDlg->show();
+    }
+    else {
+        emit BeginModuleTest(Service::OVEN, TestCaseList);
+
+        qDebug()<<"COven::BeginTest   --- emitted";
+    }
+    return ;
+
+//    mp_HeatingDlg->HideAbort();
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Show ShowBasicColorTestDialog
+ */
+/****************************************************************************/
+void COven::HandleTimeout()
+{
+    qDebug()<<"COven::HandleTimeout";
+    (void) mp_HeatingDlg->close();
+//    ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Service::CMessageString::MSG_DEVICECOMMAND_TIMEOUT);
 }
 
 /****************************************************************************/
@@ -295,7 +340,7 @@ void COven::BeginTest()
  *  \iparam Result = Result of the test
  */
 /****************************************************************************/
-void COven::SetTestResult(Service::ModuleTestNames TestName, bool Result)
+void COven::SetTestResult(const QString &TestName, bool Result)
 {
     QString ModuleTestName;
     QString TestResult;    
@@ -303,41 +348,22 @@ void COven::SetTestResult(Service::ModuleTestNames TestName, bool Result)
     QPixmap PixMapFail(QString(":/Large/CheckBoxLarge/CheckBox-Crossed_large_red.png"));
     QPixmap SetPixMap;
 
-#if 0
-    switch (TestName) {
-    case Service::X1_REFERENCE_RUN:
-        ModuleTestName = QString("X1 Reference Run");
-        if (Result) {
-            if (!PixMapPass.isNull())
-                SetPixMap = (PixMapPass.scaled(45,45,Qt::KeepAspectRatio));
-            (void) m_Model.setData(m_Model.index(0, 2), SetPixMap, (int) Qt::DecorationRole);
-            m_TestResult[0] = "true";
-        } else {
-            if (!PixMapFail.isNull())
-                SetPixMap = (PixMapFail.scaled(45,45,Qt::KeepAspectRatio));
-            (void) m_Model.setData(m_Model.index(0, 2), SetPixMap, (int) Qt::DecorationRole);
-            m_TestResult[0] = "false";
+    qDebug()<<"COven::SetTestResult--"<<TestName<<" Test Result ="<<Result;
+    for(int i=0; i<m_Model.rowCount(); i++) {
+        QStandardItem *item = m_Model.item(i, 0);
+        if (item->toolTip() == TestName) {
+            if (Result) {
+                if (!PixMapPass.isNull())
+                    SetPixMap = (PixMapPass.scaled(45,45,Qt::KeepAspectRatio));
+            }
+            else {
+                if (!PixMapFail.isNull())
+                    SetPixMap = (PixMapFail.scaled(45,45,Qt::KeepAspectRatio));
+            }
+            (void) m_Model.setData(m_Model.index(i, 3), SetPixMap, (int) Qt::DecorationRole);
+            break;
         }
-        break;
-    case Service::X2_REFERENCE_RUN:
-        ModuleTestName = QString("X2 Reference Run");
-        if (Result) {
-            if (!PixMapPass.isNull())
-                SetPixMap = (PixMapPass.scaled(45,45,Qt::KeepAspectRatio));
-            (void) m_Model.setData(m_Model.index(1, 2), SetPixMap, (int) Qt::DecorationRole);
-            m_TestResult[1] = "true";
-        } else {
-            if (!PixMapFail.isNull())
-                SetPixMap = (PixMapFail.scaled(45,45,Qt::KeepAspectRatio));
-            (void) m_Model.setData(m_Model.index(1, 2), SetPixMap, (int) Qt::DecorationRole);
-            m_TestResult[1] = "false";
-        }
-        break;
-    default:
-        // do nothing
-        break;
     }
-#endif
 
     if (Result)  {
         TestResult = QString("PASS");
@@ -374,7 +400,7 @@ void COven::SetTestResult(Service::ModuleTestNames TestName, bool Result)
         m_TestNames.append(ModuleTestName);
         m_TestReport.insert(ModuleTestName, TestResult);
     }
-    mp_Ui->sendTestReportBtn->setEnabled(true);
+//    mp_Ui->sendTestReportBtn->setEnabled(true);
 }
 
 /****************************************************************************/
@@ -459,7 +485,7 @@ void COven::ResetTestStatus()
 /****************************************************************************/
 void COven::RetranslateUI()
 {
-
+#if 0
     m_Model.setHorizontalHeaderLabels(QStringList() << QApplication::translate("DiagnosticsManufacturing::COven",
                                                                                "Nr.", 0, QApplication::UnicodeUTF8)
                                                     << QApplication::translate("DiagnosticsManufacturing::COven",
@@ -494,6 +520,7 @@ void COven::RetranslateUI()
 
     mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
                                                    "Test report save failed.", 0, QApplication::UnicodeUTF8));
+#endif
 }
 
 }  // end namespace DiagnosticsManufacturing

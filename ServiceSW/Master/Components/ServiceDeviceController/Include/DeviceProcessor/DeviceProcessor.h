@@ -176,6 +176,24 @@ signals:
     /****************************************************************************/
     void ReturnCalibrationInitMessagetoMain(const QString &Message, bool OkStatus);
 
+    /****************************************************************************/
+    /**
+     * \brief Refresh heating status to GUI.
+     *
+     * \iparam   Message    QString message to be sent.
+     * \iparam   Status     Heating Status
+     */
+    /****************************************************************************/
+    void RefreshHeatingStatustoMain(const QString &Message, const Service::ModuleTestStatus &Status);
+
+    /****************************************************************************/
+    /**
+     * \brief Returns RFIDConsumables message to Main Thread Controller.
+     *
+     * \iparam   TestResult = Test result
+     */
+    /****************************************************************************/
+    void ReturnManufacturingTestMsg(bool TestResult);
 private:
 
     /****************************************************************************/

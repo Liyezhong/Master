@@ -27,6 +27,7 @@
 #include <QApplication>
 #include <ServiceWidget/Include/DlgWizardSelectTestOptions.h>
 #include <Core/Include/SelectTestOptions.h>
+#include "DiagnosticsManufacturing/Include/StatusConfirmDialog.h"
 
 namespace Core {
 
@@ -41,10 +42,12 @@ CStartup::CStartup() : QObject(),
     m_DeviceName(""),
     m_WindowStatusResetTimer(this),
     m_CurrentUserMode(""),
-    mp_ManaufacturingDiagnosticsHandler(NULL)
+    mp_ManaufacturingDiagnosticsHandler(NULL),
+    mp_HeatingStatusDlg(NULL)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestNames>("Service::ModuleTestNames");
+    qRegisterMetaType<Service::ModuleTestStatus>("Service::ModuleTestStatus");
 
     // GUI components
     mp_Clock = new QTimer();    
@@ -409,14 +412,14 @@ void CStartup::GuiInit(QString debugMode)
     }
     else if (debugMode.startsWith("ts_Manufacturing"))
     {
-        ManufacturingGuiInit();
+        InitManufacturingDiagnostic();
         (void) FileExistanceCheck();
     }
     else
     {
         if (debugMode.startsWith("Manufacturing"))
         {
-            ManufacturingGuiInit();
+            InitManufacturingDiagnostic();
             (void) FileExistanceCheck();
         }
         else
@@ -788,12 +791,87 @@ void CStartup::ShowErrorMessage(const QString &Message)
 
 /****************************************************************************/
 /*!
+ *  \brief Refresh heating status for heating test.
+ *
+ */
+/****************************************************************************/
+void CStartup::RefreshHeatingStatus(const QString &Message, const Service::ModuleTestStatus &Status)
+{
+    qDebug()<<"CStartup::RefreshHeatingStatus --"<<Message;
+
+    if (Message == "OvenHeatingEmpty" || Message == "OvenHeatingWater") {
+        if (mp_HeatingStatusDlg == NULL) {
+            bool Flag = false;
+            if (Message == "OvenHeatingEmpty")
+                Flag = true;
+            mp_HeatingStatusDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Flag, mp_MainWindow);
+            mp_HeatingStatusDlg->HideAbort();
+            mp_HeatingStatusDlg->show();
+            mp_HeatingStatusDlg->UpdateLabel(Status);
+        }
+        else {
+            mp_HeatingStatusDlg->UpdateLabel(Status);
+        }
+    }
+    else if (Message == "OvenCoverSensor") {
+        static bool OpenFlag = true;
+        QString TestStatus;
+        DiagnosticsManufacturing::CStatusConfirmDialog *dlg = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
+
+        if (OpenFlag) {
+            TestStatus ="Open";
+        }
+        else {
+            TestStatus = "Close";
+        }
+        dlg->SetText(QString("Do you see the coven sensor status shows '%1' ?").arg(TestStatus));
+
+        dlg->UpdateLabel(Status);
+        int result = dlg->exec();
+        qDebug()<<"StatusconfirmDlg return : "<<result;
+        delete dlg;
+        if (result == 0) { // yes
+            mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
+            OpenFlag = !OpenFlag;
+        }
+        else {
+            mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(false);
+            OpenFlag = true; // initial to open status.
+        }
+
+    }
+
+//    mp_ServiceConnector->HideBusyDialog();
+//    mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Message);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Returns message for manufacturing tests
+ *  \iparam Result = true or false
+ */
+/****************************************************************************/
+void CStartup::OnReturnManufacturingMsg(bool Result)
+{
+    if (mp_HeatingStatusDlg) {
+        mp_HeatingStatusDlg->close();
+        delete mp_HeatingStatusDlg;
+        mp_HeatingStatusDlg = NULL;
+    }
+    qDebug()<<"CStartup::OnReturnManufacturingMsg Result="<<Result;
+    mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(Result);
+}
+
+
+/****************************************************************************/
+/*!
  *  \brief Throws open a Pop Up Message with Custom Messages
  *
  */
 /****************************************************************************/
 void CStartup::ShowCalibrationInitMessagetoMain(const QString &Message, bool OkStatus)
 {
+    qDebug()<<"CStartup::ShowCalibrationInitMessagetoMain";
     mp_CalibrationHandler->ShowCalibrationInitMessagetoMain(Message, OkStatus);
 }
 
@@ -833,6 +911,9 @@ void CStartup::ExportFinished(bool Failed)
 /****************************************************************************/
 void CStartup::OnGuiAbortTest()
 {
+    qDebug()<<"CStartup::OnGuiAbortTest -- emit AbortTest";
+
+// Disabled by Sunny on May, 21, 2014 for test
     //ShowErrorMessage("Test failed");
     emit AbortTest();
 }

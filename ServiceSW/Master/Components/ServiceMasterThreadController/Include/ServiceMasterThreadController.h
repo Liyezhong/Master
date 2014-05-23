@@ -336,6 +336,25 @@ signals:
        */
       /****************************************************************************/
       void ReturnCalibrationInitMessagetoMain(const QString &Message, bool OkStatus);
+
+      /****************************************************************************/
+      /**
+       * \brief Returns Heating Status to Main Thread Controller.
+       *
+       * \iparam   Message    QString message to be sent.
+       * \iparam   status     Heating status
+       */
+      /****************************************************************************/
+      void RefreshHeatingStatustoMain(const QString &Message, const Service::ModuleTestStatus &status);
+
+      /****************************************************************************/
+      /**
+       * \brief Returns Manufacturing Test message to Main Thread Controller.
+       *
+       * \iparam   TestResult = Test result
+       */
+      /****************************************************************************/
+      void ReturnManufacturingMsgtoMain(bool TestResult);
 private slots:
     /****************************************************************************/
     /**

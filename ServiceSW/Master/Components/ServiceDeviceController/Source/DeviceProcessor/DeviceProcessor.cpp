@@ -28,6 +28,7 @@
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmTempControl.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmPressureControl.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperUtils.h>
+#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalInput.h>
 #include "Core/Include/CMessageString.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 
@@ -181,6 +182,16 @@ void DeviceProcessor::CreateWrappers()
                 this, SIGNAL(ReturnErrorMessagetoMain(const QString)))) {
         qDebug() << "DeviceProcessor::CreateWrappers cannot connect 'ReturnErrorMessagetoMain' signal";
     }
+    if (!connect(mp_ManufacturingTestHandler, SIGNAL(RefreshHeatingStatustoMain(QString,Service::ModuleTestStatus)),
+                this, SIGNAL(RefreshHeatingStatustoMain(QString,Service::ModuleTestStatus)))) {
+        qDebug() << "DeviceProcessor::CreateWrappers cannot connect 'RefreshHeatingStatustoMain' signal";
+    }
+
+    if (!connect(mp_ManufacturingTestHandler, SIGNAL(ReturnManufacturingTestMsg(bool)),
+                this, SIGNAL(ReturnManufacturingTestMsg(bool)))) {
+        qDebug() << "DeviceProcessor::CreateWrappers cannot connect 'RefreshHeatingStatustoMain' signal";
+    }
+
 
 }
 
@@ -608,7 +619,7 @@ qint32 DeviceProcessor::TestOvenHeating(quint32 DeviceId)
     qint32  OvenStatus(-1);
     qreal   CurrentTempTop(0), CurrentTempBottom(0);
 
-    WaitSec = Service::TEST_OVEN_HEATING_TIME;
+    WaitSec = Service::TEST_OVEN_HEATING_TIME_EMPTY;
 
     mp_TempOvenTop->StartTemperatureControl(Service::TEST_OVEN_HEATING_TEMP);
     mp_TempOvenBottom->StartTemperatureControl(Service::TEST_OVEN_HEATING_TEMP);

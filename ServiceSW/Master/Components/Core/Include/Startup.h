@@ -181,6 +181,8 @@ private:
     QString m_DeviceName;                                                   //!< Name of the device
     QTimer m_WindowStatusResetTimer;                                        //!< Timer for Window status reset
 
+    DiagnosticsManufacturing::CHeatingTestDialog *mp_HeatingStatusDlg;
+
 private slots:
     void SetDateTime(QDateTime DateTime);
     void UpdateDateTime();
@@ -201,6 +203,11 @@ public slots:
     void ShowMessage(const QString &Message);
     void ShowErrorMessage(const QString &Message);
     void ShowCalibrationInitMessagetoMain(const QString &Message, bool OkStatus);
+
+    /* Refresh heating status */
+    void RefreshHeatingStatus(const QString &Message, const Service::ModuleTestStatus &Status);
+    void OnReturnManufacturingMsg(bool Result);
+
 
     void ImportFinished(bool Failed);
 

@@ -53,7 +53,9 @@ private:
 
     QEventLoop                                   m_LoopManufacturingTest;    //!< Loop for blocking Manufacturing Test command
 
-    void PerformManufOvenTests();
+    bool ShowGuide(const QString &TestCaseName, int Index = 0);
+    void ShowFailedResult(const QString &TestCaseName);
+    void PerformManufOvenTests(const QStringList &TestCaseList);
     bool GetTestResponse();
 
 signals:
@@ -66,7 +68,7 @@ signals:
     void PerformManufacturingTest(Service::ModuleTestNames Test);
 
 public slots:
-    void BeginManufacturingSWTests(Service::ModuleNames_t);
+    void BeginManufacturingSWTests(Service::ModuleNames_t, const QStringList &TestCaseList);
     void OnReturnManufacturingMsg(bool Result);
 
     /* Return Message Slots */

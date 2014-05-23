@@ -25,6 +25,7 @@
 #include <Global/Include/GlobalDefines.h>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Core/Include/ServiceDefines.h"
+#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalInput.h>
 
 
 class WrapperUtils;
@@ -185,6 +186,24 @@ signals:
     /****************************************************************************/
     void ReturnCalibrationInitMessagetoMain(const QString &Message, bool OkStatus);
 
+    /****************************************************************************/
+    /**
+     * \brief Refresh heating status to GUI.
+     *
+     * \iparam   Message    QString message to be sent.
+     * \iparam   Status     Heating Status
+     */
+    /****************************************************************************/
+    void RefreshHeatingStatustoMain(const QString &Message, const Service::ModuleTestStatus &Status);
+
+    /****************************************************************************/
+    /**
+     * \brief Returns RFIDConsumables message to Main Thread Controller.
+     *
+     * \iparam   TestResult = Test result
+     */
+    /****************************************************************************/
+    void ReturnManufacturingTestMsg(bool TestResult);
 private:
 
     /****************************************************************************/
@@ -200,9 +219,10 @@ private:
      * \brief To Test heating of oven
      *
      * \param[in]       DeviceId            Device Instance ID
+     * \param[in]       DeviceId            Device Instance ID
      */
     /****************************************************************************/
-    qint32 TestOvenHeating(quint32 DeviceId);
+    qint32 TestOvenHeating(quint32 DeviceId, bool EmptyFlag=true);
     /****************************************************************************/
     /**
      * \brief To Test heating of level sensor
@@ -232,7 +252,7 @@ private:
     /**
      * \brief To Test detecting of level sensor
      *
-     * \param[in]       DeviceId            Device Instance ID
+     param[in]       DeviceId            Device Instance ID
      ** \param[in]      Position            Tube position for sucking
      */
     /****************************************************************************/
@@ -246,6 +266,14 @@ private:
      */
     /****************************************************************************/
     qint32 TestOvenCoverSensor();
+
+    /****************************************************************************/
+    /**
+     * \brief To Test detecting of cover sensor of Oven
+     * \param[in]       EmptyFlag            Heating Empty or not.
+     */
+    /****************************************************************************/
+    qint32 TestOvenHeating1(bool EmptyFlag);
 
 
 
@@ -271,6 +299,8 @@ private:
     WrapperFmStepperMotor*      mp_MotorRV;
     // Pressure control module
     WrapperFmPressureControl*   mp_PressPump;
+
+    WrapperFmDigitalInput*      mp_DigitalInpputOven;
 
 
 };

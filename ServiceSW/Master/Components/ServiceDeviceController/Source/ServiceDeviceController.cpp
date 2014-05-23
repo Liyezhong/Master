@@ -130,6 +130,11 @@ void ServiceDeviceController::ConnectSignalsnSlots()
         qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ReturnErrorMessagetoMain' signal";
     }
 
+    if (!connect(mp_DeviceProcessor, SIGNAL(ReturnErrorMessagetoMain(const QString)),
+                 this, SLOT(ReturnErrorMessagetoMain(QString)))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ReturnErrorMessagetoMain' signal";
+    }
+
     if (!connect(this, SIGNAL(SDC_AbortTest(Global::tRefType,DeviceControl::DevInstanceID_t)),
                  mp_DeviceProcessor, SLOT(OnAbortTest(Global::tRefType,DeviceControl::DevInstanceID_t)))) {
         qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'OnAbortTest' signal";
@@ -163,6 +168,15 @@ void ServiceDeviceController::ConnectSignalsnSlots()
     if (!connect(this, SIGNAL(ModuleManufacturingTest(Service::ModuleTestNames)),
                  mp_DeviceProcessor, SLOT(OnModuleManufacturingTest(Service::ModuleTestNames)))) {
         qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ModuleManufacturingTest' signal";
+    }
+    if (!connect(mp_DeviceProcessor, SIGNAL(RefreshHeatingStatustoMain(QString,Service::ModuleTestStatus)),
+                 this, SLOT(RefreshHeatingStatustoMain(QString,Service::ModuleTestStatus)))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'RefreshHeatingStatustoMain' signal";
+    }
+
+    if (!connect(mp_DeviceProcessor, SIGNAL(ReturnManufacturingTestMsg(bool)),
+                 this, SLOT(ReturnManufacturingTestMsg(bool)))) {
+        qDebug() << "ServiceDeviceController::ReturnManufacturingTestMsg cannot connect 'ReturnManufacturingTestMsg' signal";
     }
 }
 
@@ -329,11 +343,39 @@ void ServiceDeviceController::ReturnErrorMessagetoMain(const QString &Message)
 /****************************************************************************/
 void ServiceDeviceController::ReturnCalibrationInitMessagetoMain(const QString &Message, bool OkStatus)
 {
+
+    qDebug()<<"ServiceDeviceController::ReturnCalibrationInitMessagetoMain()  --Message="<<Message;
+
     DeviceCommandProcessor::CmdReturnMessage* commandPtr(new DeviceCommandProcessor::CmdReturnMessage(Message));
     commandPtr->m_MessageType = Service::GUIMSGTYPE_INITCALIBRATION;
     commandPtr->m_CalibStatus = OkStatus;
     SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(commandPtr));
 }
+
+/****************************************************************************/
+void ServiceDeviceController::RefreshHeatingStatustoMain(const QString &Message, const Service::ModuleTestStatus &Status)
+{
+
+    qDebug()<<"ServiceDeviceController::RefreshHeatingStatustoMain()  --Message="<<Message << " Status:"<<Status;
+
+    DeviceCommandProcessor::CmdReturnMessage* commandPtr(new DeviceCommandProcessor::CmdReturnMessage(Message));
+    commandPtr->m_MessageType = Service::GUIMSGTYPE_HEATINGSTATUS;
+    commandPtr->m_Status = Status;
+    SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(commandPtr));
+}
+
+/****************************************************************************/
+void ServiceDeviceController::ReturnManufacturingTestMsg(bool TestResult)
+{
+    qDebug()<<"ServiceDeviceController::ReturnManufacturingTestMsg TestResult="<<TestResult;
+
+    DeviceCommandProcessor::CmdReturnMessage* commandPtr(new DeviceCommandProcessor::CmdReturnMessage(Service::CMessageString::MSG_MANUFACTURINGTEST_RESULT));
+    commandPtr->m_ModuleTestResult = TestResult;
+    commandPtr->m_MessageType = Service::GUIMSGTYPE_MANUFMSGMODE;
+    SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(commandPtr));
+}
+
+
 
 #if 0
 

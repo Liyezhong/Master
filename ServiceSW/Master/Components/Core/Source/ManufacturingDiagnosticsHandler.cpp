@@ -22,6 +22,9 @@
 #include "Core/Include/ManufacturingDiagnosticsHandler.h"
 #include "Core/Include/CMessageString.h"
 #include "DiagnosticsManufacturing/Include/OvenManufacturing.h"
+#include "DiagnosticsManufacturing/Include/HeatingTestDialog.h"
+
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 namespace Core {
 
@@ -42,7 +45,7 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
     mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
     mp_OvenManuf = new DiagnosticsManufacturing::COven(mp_ServiceConnector, mp_MainWindow);
 
-    CONNECTSIGNALSLOTGUI(mp_OvenManuf, BeginModuleTest(Service::ModuleNames_t), this, BeginManufacturingSWTests(Service::ModuleNames_t));
+    CONNECTSIGNALSLOTGUI(mp_OvenManuf, BeginModuleTest(Service::ModuleNames_t, QStringList), this, BeginManufacturingSWTests(Service::ModuleNames_t, QStringList));
 
 
     /* Manufacturing SW Reset status */
@@ -87,12 +90,12 @@ void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
  *  \iparam ModuleName = Name of the module
  */
 /****************************************************************************/
-void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::ModuleNames_t ModuleName)
+void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::ModuleNames_t ModuleName, const QStringList &TestCaseList)
 {
     qDebug()<<"CManufacturingDiagnosticsHandler::BeginManufacturingSWTests : ModuleName="<<ModuleName;
     switch(ModuleName) {
     case Service::OVEN:
-        PerformManufOvenTests();
+        PerformManufOvenTests(TestCaseList);
         break;
     default:
         break;
@@ -107,15 +110,16 @@ void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::Module
 /****************************************************************************/
 bool CManufacturingDiagnosticsHandler::GetTestResponse()
 {
-    mp_ServiceConnector->ShowBusyDialog();
+//    mp_ServiceConnector->ShowBusyDialog();
     QTimer timer;
     qint32 ret;
+    quint32 interval = 1000 * 3 * 60 * 60; // 3 hours.
     timer.setSingleShot(true);
-    timer.setInterval(900000);
+    timer.setInterval(interval);
     timer.start();
     CONNECTSIGNALSLOT(&timer, timeout(), &m_LoopManufacturingTest, quit());
     ret = m_LoopManufacturingTest.exec();
-    mp_ServiceConnector->HideBusyDialog();
+//    mp_ServiceConnector->HideBusyDialog();
     if (ret != 1)
     {
         return false;
@@ -123,15 +127,138 @@ bool CManufacturingDiagnosticsHandler::GetTestResponse()
     return true;
 }
 
+bool CManufacturingDiagnosticsHandler::ShowGuide(const QString &TestCaseName, int Index)
+{
+    QString GuideText = TestCaseName;
+    qDebug() << "ShowGuide :"<<TestCaseName;
+
+    if (TestCaseName == "OvenCoverSensor") {
+        if (Index == 0) {
+            GuideText = "Please open the oven cover manually.";
+        }
+        else if (Index == 1){
+            GuideText = "Please close the oven cover manually.";
+        }
+    }
+    else if (TestCaseName == "OvenHeatingEmpty") {
+        GuideText = "Please remove the wax baths.";
+    }
+    else if (TestCaseName == "OvenHeatingWater") {
+        GuideText = "Please fill water into 3 paraffin baths to maximum level.";
+    }
+
+    // display success message
+    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    dlg->SetTitle(TestCaseName);
+    dlg->SetIcon(QMessageBox::Information);
+    dlg->SetText(GuideText);
+    dlg->HideCenterButton();
+    dlg->SetButtonText(3, tr("Next"));
+    dlg->SetButtonText(1, tr("Cancel"));
+    if (Index == 1) {
+        dlg->EnableButton(1, false);
+    }
+
+//    CONNECTSIGNALSLOT(dlg, ButtonRightClicked(), dlg, accept() );
+
+    int ret = dlg->exec();
+
+    qDebug()<<"return code = "<<ret;
+
+    delete dlg;
+
+    if ( ret == 0 )
+        return true;
+
+    return false;
+}
+
+void CManufacturingDiagnosticsHandler::ShowFailedResult(const QString &TestCaseName)
+{
+    DiagnosticsManufacturing::CHeatingTestDialog *dlg = new DiagnosticsManufacturing::CHeatingTestDialog(true, mp_MainWindow);
+    QString Text = TestCaseName;
+    Service::ModuleTestStatus Status;
+    Status.insert("Duration", "0");
+    Text.append(" ");
+    Text.append("Test Failed !");
+    dlg->SetDialogTitle("Error");
+    dlg->SetText(Text);
+    dlg->HideAbort(false);
+    dlg->show();
+}
+
 /****************************************************************************/
 /*!
  *  \brief Function called for Module tests for manufacturing SW
  */
 /****************************************************************************/
-void CManufacturingDiagnosticsHandler::PerformManufOvenTests()
+void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QStringList &TestCaseList)
 {
-    qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufOvenTests ---";
-    emit PerformManufacturingTest(Service::OVEN_COVER_SENSOR);
+    QString TestCaseDisplayText;
+    quint32 FailureId(0);
+    quint32 OkId(0);
+    qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufOvenTests ---" << TestCaseList;
+    for(int i=0; i<TestCaseList.size(); i++) {
+        QString TestCaseName = TestCaseList.at(i);
+
+        bool NextFlag = ShowGuide(TestCaseName, 0);
+        if (NextFlag == false) {
+            break;
+        }
+
+        if (TestCaseName == "OvenCoverSensor") {
+            FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_SUCCESS;
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST);
+            TestCaseDisplayText = "Oven Cover Sensor Test";
+            emit PerformManufacturingTest(Service::OVEN_COVER_SENSOR);
+        }
+        else if (TestCaseName == "OvenHeatingEmpty") {
+            FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_SUCCESS;
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST);
+            TestCaseDisplayText = "Oven Heating Test (empty) ";
+            emit PerformManufacturingTest(Service::OVEN_HEATING_EMPTY);
+
+        }
+        else if (TestCaseName == "OvenHeatingWater") {
+            FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST_SUCCESS;
+            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST);
+            TestCaseDisplayText = "Oven Heating Test (with water)";
+            emit PerformManufacturingTest(Service::OVEN_HEATING_WITH_WATER);
+        }
+
+        bool Result = GetTestResponse();
+
+        if (TestCaseName == "OvenCoverSensor") {
+            if (Result == true) {
+                NextFlag = ShowGuide(TestCaseName, 1);
+                if (NextFlag == false)
+                    break;
+                emit PerformManufacturingTest(Service::OVEN_COVER_SENSOR);
+                Result = GetTestResponse();
+            }
+        }
+
+        if (Result == false) {
+            Global::EventObject::Instance().RaiseEvent(FailureId);
+            QString Text = QString("%1 %2").arg(TestCaseDisplayText, "- Fail");
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
+
+            if (TestCaseName != "OvenCoverSensor") {
+                ShowFailedResult(TestCaseDisplayText);
+            }
+
+        }
+        else {
+            Global::EventObject::Instance().RaiseEvent(OkId);
+            QString Text = QString("%1 %2").arg(TestCaseDisplayText, "- Success");
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+        }
+        mp_OvenManuf->SetTestResult(TestCaseName, Result);
+    }
+
 #if 0
     QString Title;
     QString GBox;
@@ -236,6 +363,7 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests()
 /****************************************************************************/
 void CManufacturingDiagnosticsHandler::OnReturnManufacturingMsg(bool Result)
 {
+    qDebug()<<"CManufacturingDiagnosticsHandler::OnReturnManufacturingMsg Result="<<Result;
     qint32 ret(-1);
     if(Result) {
         ret = 1;

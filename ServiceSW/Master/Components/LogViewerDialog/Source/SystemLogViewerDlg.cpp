@@ -4,8 +4,8 @@
  *  \brief System Log Viewer implementation.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 2013-05-07
- *   $Author:  $ Soumya. D
+ *   $Date:    $ 2014-05-22
+ *   $Author:  $ Sunny Qu
  *
  *  \b Company:
  *

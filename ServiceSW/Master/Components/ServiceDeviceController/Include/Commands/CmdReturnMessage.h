@@ -76,6 +76,8 @@ public:
     QString m_RefLiquidLevelEmpty;      ///< Empty liquid level ref information
 
     bool m_CalibStatus;
+    Service::ModuleTestStatus m_Status;
+    bool m_ModuleTestResult;
 
     /****************************************************************************/
     /**

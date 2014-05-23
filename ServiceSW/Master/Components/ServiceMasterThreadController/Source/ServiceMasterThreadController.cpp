@@ -104,7 +104,6 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
         qDebug() << "CStartup: cannot connect 'ReturnErrorMessagetoMain' signal";
     }
 
-
     if (!connect(mp_GUIStartup,
        SIGNAL(ImportExportDataFileRequest(const QString &, const QByteArray &)),
                  this,
@@ -205,6 +204,17 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     // Manufacturing Tests
     if (!connect(mp_GUIStartup, SIGNAL(PerformManufacturingTest(Service::ModuleTestNames)), this, SLOT(sendManufacturingTestCommand(Service::ModuleTestNames)))) {
         qDebug() << "CStartup: cannot connect 'PerformManufacturingTest' signal";
+    }
+
+    // Refresh heating status to GUI
+    if (!connect(this, SIGNAL(RefreshHeatingStatustoMain(QString, Service::ModuleTestStatus)),
+                 mp_GUIStartup, SLOT(RefreshHeatingStatus(QString, Service::ModuleTestStatus)))) {
+        qDebug() << "CStartup: cannot connect 'RefreshHeatingStatustoMain' signal";
+    }
+
+    if (!connect(this, SIGNAL(ReturnManufacturingMsgtoMain(bool )),
+                 mp_GUIStartup, SLOT(OnReturnManufacturingMsg(bool )))) {
+        qDebug() << "CStartup: cannot connect 'ReturnManufacturingMsgtoMain' signal";
     }
 
     mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
@@ -1389,6 +1399,8 @@ void ServiceMasterThreadController::OnGetDataContainersCommand(Global::tRefType 
 /****************************************************************************/
 void ServiceMasterThreadController::OnReturnMessageCommand(Global::tRefType Ref, const DeviceCommandProcessor::CmdReturnMessage &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
+    qDebug()<<" ServiceMasterThreadController::OnReturnMessageCommand CmdType="<<Cmd.m_MessageType;
+
     SendAcknowledgeOK(Ref, AckCommandChannel);
     switch(Cmd.m_MessageType)
     {
@@ -1406,6 +1418,12 @@ void ServiceMasterThreadController::OnReturnMessageCommand(Global::tRefType Ref,
         break;
     case Service::GUIMSGTYPE_INITCALIBRATION:
         emit ReturnCalibrationInitMessagetoMain(Cmd.m_ReturnMessage, Cmd.m_CalibStatus);
+        break;
+    case Service::GUIMSGTYPE_HEATINGSTATUS:
+        emit RefreshHeatingStatustoMain(Cmd.m_ReturnMessage, Cmd.m_Status);
+        break;
+    case Service::GUIMSGTYPE_MANUFMSGMODE:
+        emit ReturnManufacturingMsgtoMain(Cmd.m_ModuleTestResult);
         break;
     default:
         emit returnMessageToGUI(Cmd.m_ReturnMessage);
