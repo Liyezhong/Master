@@ -91,6 +91,7 @@ typedef enum
     CTRL_CMD_RC_RESTART,
     CTRL_CMD_RS_STANDBY,
     CTRL_CMD_RS_STANDBY_WITHTISSUE,
+    CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME,
     CTRL_CMD_NONE,
     CTRL_CMD_UNKNOWN
 }ControlCommandType_t;
@@ -889,6 +890,15 @@ protected:
          */
         /****************************************************************************/
         void SetSchedCommandProcessor( Scheduler::SchedulerCommandProcessorBase* pSchedCmdProcessor ) { m_SchedulerCommandProcessor = pSchedCmdProcessor; }
+
+        /****************************************************************************/
+        /**
+         *  \brief Restart Level sensor's temperature in case of RC_Levelsensor_Heating_Overtime
+         *  \param  void
+         *  \return DeviceControl::ReturnCode_t - success or failure code
+         */
+        /****************************************************************************/
+        DeviceControl::ReturnCode_t RestartLevelSensorTempCtrl();
     public slots:
 
         /****************************************************************************/

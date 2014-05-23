@@ -1122,6 +1122,12 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             m_SchedulerMachine->EnterRsStandByWithTissue();
             DequeueNonDeviceCommand();
         }
+        else if(CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME == ctrlCmd)
+        {
+            LogDebug("Go to RC_Levelsensor_Heating_Overtime");
+            m_SchedulerMachine->EnterRcLevelsensorHeatingOvertime();
+            DequeueNonDeviceCommand();
+        }
         else
         {
             LogDebug(QString("Unknown Command: %1").arg(ctrlCmd, 0, 16));
@@ -1137,6 +1143,18 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         else
         {
             m_SchedulerMachine->HandleRsStandByWithTissueWorkFlow(true);
+        }
+    }
+    else if (SM_ERR_RC_LEVELSENSOR_HEATING_OVERTIME == currentState)
+    {
+        LogDebug(QString("RC_Levelsensor_Heating_Overtime Response: %1").arg(retCode));
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow(false);
+        }
+        else
+        {
+            m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow(true);
         }
     }
     else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
@@ -1240,9 +1258,13 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             return CTRL_CMD_RS_STANDBY;
         }
-        if(cmd == "RS_standby_WithTissue")
+        if(cmd == "RS_Standby_WithTissue")
         {
             return CTRL_CMD_RS_STANDBY_WITHTISSUE;
+        }
+        if (cmd == "RC_Levelsensor_Heating_Overtime")
+        {
+            return CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME;
         }
     }
 //    HimalayaErrorHandler::CmdRaiseAlarm* pCmdRaiseAlarm = dynamic_cast<HimalayaErrorHandler::CmdRaiseAlarm*>(pt.GetPointerToUserData());
@@ -1701,15 +1723,11 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
     return leftTime;
 }
 
-//void SchedulerMainThreadController::OnRaiseAlarmLocalRemote(Global::tRefType Ref,
-//                                                            const HimalayaErrorHandler::CmdRaiseAlarm &Cmd)
-//{
-//    Q_UNUSED(Ref);
-//    m_Mutex.lock();
-//    //m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new HimalayaErrorHandler::CmdRaiseAlarm(Cmd.m_localAlarm)));
-//    m_Mutex.unlock();
-//    this->SendAcknowledgeOK(Ref);
-//}
+DeviceControl::ReturnCode_t SchedulerMainThreadController::RestartLevelSensorTempCtrl()
+{
+    HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
+    return mp_HeatingStrategy->ReStartLevelSensorTemperatureControl(strctHWMonitor);
+}
 
 //client-->master
 void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
@@ -2422,6 +2440,8 @@ void SchedulerMainThreadController::ShutdownFailedHeater()
                (dynamic_cast<CmdRTSetTempCtrlOFF*>(cmd))->SetType(RT_SIDE);
                m_SchedulerCommandProcessor->pushCmd(cmd);
                SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_SIDETEMPCTRL, false);
+               break;
+           default:
                break;
            }
         }

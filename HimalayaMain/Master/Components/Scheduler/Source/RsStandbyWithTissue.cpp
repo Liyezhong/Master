@@ -61,6 +61,9 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(QStateMachine* pStateMachine, QState*
 /****************************************************************************/
 CRsStandbyWithTissue::~CRsStandbyWithTissue()
 {
+    delete mp_Initial;
+    mp_Initial = NULL;
+
     delete mp_RTBottomStopTempCtrl;
     mp_RTBottomStopTempCtrl = NULL;
 

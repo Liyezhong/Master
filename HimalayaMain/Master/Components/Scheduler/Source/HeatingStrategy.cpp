@@ -95,11 +95,15 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     Set temperature for each sensor
     *
     ***************************************************/
-    bool scenariochanged = false; //used for Level Sensor
     if (scenario != m_CurScenario)
     {
         m_CurScenario = scenario;
-        scenariochanged = true;
+        // For Level Sensor
+        retCode = this->StartLevelSensorTemperatureControl(strctHWMonitor);
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            return retCode;
+        }
         //For RTTop
         retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -151,17 +155,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
 
     }
 
-    // For Level Sensor
-    retCode = this->StartLevelSensorTemperatureControl(strctHWMonitor, scenariochanged);
-    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-    {
-        return retCode;
-    }
 
     /***********************************************************
      *
     Check temperature difference of two Retort bottom sensors
-    !!!!!!!uncomment return code when simulator is ready.
     *
     ***********************************************************/
     if (false == m_RTBottom.curModuleId.isEmpty() &&
@@ -169,9 +166,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     {
         if (std::abs(strctHWMonitor.TempRTBottom1 - strctHWMonitor.TempRTBottom2) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
         {
-            mp_SchedulerController->LogDebug(QString("The temperature difference is: %1f").arg(std::abs(strctHWMonitor.TempRTBottom1 - strctHWMonitor.TempRTBottom2)));
-            mp_SchedulerController->LogDebug(QString("Temperature Bottm1 is: %1 and Bottom2 is: %2").arg(strctHWMonitor.TempRTBottom1).arg(strctHWMonitor.TempRTBottom2));
-            mp_SchedulerController->LogDebug(QString("Allowed temperature difference is: %1").arg(m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId]));
             return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
         }
     }
@@ -225,6 +219,11 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
+DeviceControl::ReturnCode_t HeatingStrategy::ReStartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor)
+{
+    return this->StartLevelSensorTemperatureControl(strctHWMonitor);
+}
+
 bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)
 {
     if (true == heatingSensor.curModuleId.isEmpty())
@@ -253,7 +252,7 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
     return true;
 }
 
-DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor, bool ScenarioChanged)
+DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor)
 {
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
 
@@ -261,16 +260,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
     QMap<QString, FunctionModule>::iterator iter = m_RTLevelSensor.functionModuleList.begin();
     for (; iter!=m_RTLevelSensor.functionModuleList.end(); ++iter)
     {
-        // Firstly, check if scenario changed. If yes, set the flag
-        if (true == ScenarioChanged)
-        {
-            m_RTLevelSensor.StartTempFlagList[iter->Id] = false;
-        }
-        // check if the StartTemperaturePID has been set or not
-        if (true == m_RTLevelSensor.StartTempFlagList[iter->Id])
-        {
-            continue;
-        }
         // Current(new) scenario belongs to the specific scenario list
         if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
         {
@@ -320,16 +309,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
 
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
-            //Just for debug
-            mp_SchedulerController->LogDebug(QString("targ temp is %1").arg(iter->TemperatureOffset));
-            mp_SchedulerController->LogDebug(QString("SlopTempChange is %1").arg(iter->SlopTempChange));
-            mp_SchedulerController->LogDebug(QString("MaxTemperature is %1").arg(iter->MaxTemperature));
-            mp_SchedulerController->LogDebug(QString("ControllerGain is %1").arg(iter->ControllerGain));
-            mp_SchedulerController->LogDebug(QString("ResetTime is %1").arg(iter->ResetTime));
-            mp_SchedulerController->LogDebug(QString("DerivativeTime is %1").arg(iter->DerivativeTime));
-
-            mp_SchedulerController->LogDebug(QString("LevelSensor - Scenario is %1").arg(m_CurScenario));
-            mp_SchedulerController->LogDebug(QString("LevelSensor - current sequence is: %1").arg(iter->Id));
             return retCode;
         }
         else
@@ -338,13 +317,9 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
             m_RTLevelSensor.curModuleId = iter->Id;
             m_RTLevelSensor.OTCheckPassed = false;
             iter->OTTargetTemperature = iter->TemperatureOffset;
-            m_RTLevelSensor.StartTempFlagList[iter->Id] = true;
-
-
         }
     }
 
-    // The current scenario is NOT related to Level Sensor's ones.
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
@@ -629,9 +604,6 @@ bool HeatingStrategy::ConstructHeatingSensorList()
             return false;
         }
         m_RTLevelSensor.ExchangePIDTempList.insert(*iter, exchangePIDtmp);
-
-        //Flag list for checking if StartTemp command has been sent out
-        m_RTLevelSensor.StartTempFlagList.insert(*iter, false);
     }
 
 

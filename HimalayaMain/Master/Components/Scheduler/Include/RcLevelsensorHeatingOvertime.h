@@ -1,10 +1,10 @@
 /****************************************************************************/
-/*! \file CRsStandbyWithTissue.h
+/*! \file	CRcLevelSensorHeatingOvertime.h
  *
- *  \brief CRsStandby class definition.
+ *  \brief	state machine class for recovery RC_LevelSensor_Heating_Overtime 
  *
  *   $Version: $ 0.1
- *   $Date:    $ 22.04.2014
+ *   $Date:    $ May 23rd, 2014
  *   $Author:  $ Songtao Yu
  *
  *  \b Company:
@@ -17,9 +17,8 @@
  *
  */
 /****************************************************************************/
-#ifndef RSSTANDBY_WITH_TISSUE_H
-#define RSSTANDBY_WITH_TISSUE_H
-#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#ifndef RC_LEVELSENSOR_HEATING_OVERTIME_H
+#define RC_LEVELSENSOR_HEATING_OVERTIME_H
 #include "ErrorHandlingSMBase.h"
 #include <QStateMachine>
 
@@ -27,30 +26,25 @@ namespace Scheduler{
 
 /****************************************************************************/
 /*!
- * \brief Error Handling State machine for RS_Standby_WithTissue
+ * \brief Error Handling State machine for RC_LevelSensor_Heating_Overtime 
  */
 /****************************************************************************/
-class  CRsStandbyWithTissue : public CErrorHandlingSMBase
+class  CRcLevelSensorHeatingOvertime : public CErrorHandlingSMBase
 {
     Q_OBJECT
 public:
-    CRsStandbyWithTissue (QStateMachine* pStateMachine, QState* pParentState);
-    ~CRsStandbyWithTissue();
+     CRcLevelSensorHeatingOvertime(QStateMachine* pStateMachine, QState* pParentState);
+    ~CRcLevelSensorHeatingOvertime();
     SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
     void OnHandleWorkFlow(bool flag);
 
 signals:
-    void RTStopTempCtrl(DeviceControl::RTTempCtrlType_t);
-    void ShutdownFailedHeater();
-    void ReleasePressure();
+    void RestartLevelSensorTempControl();
     void TasksDone(bool);
 
 private:
     QState *mp_Initial;
-    QState *mp_RTBottomStopTempCtrl;
-    QState *mp_RTSideStopTempCtrl;
-    QState *mp_ShutdownFailedHeater;
-    QState *mp_ReleasePressure;
+    QState *mp_RestartLevelSensorTempControl;
 };
 }
-#endif // RSSTANDBY_WITH_TISSUE_H
+#endif // RC_LEVELSENSOR_HEATING_OVERTIME_H

@@ -49,14 +49,16 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorState = new QState(mp_SchedulerMachine);
     mp_ErrorWaitState = new QState(mp_ErrorState);
     mp_ErrorRSStandbyWithTissueState = new QState(mp_ErrorState);
+    mp_ErrorRCLevelSensorHeatingOvertimeState = new QState(mp_ErrorState);
     mp_SchedulerMachine->setInitialState(mp_InitState);
     mp_ErrorState->setInitialState(mp_ErrorWaitState);
 
     mp_ProgramStepStates = new CProgramStepStateMachine(mp_BusyState, mp_ErrorState);
     mp_RSRvGetOriginalPositionAgain = new CRsRvGetOriginalPositionAgain(mp_SchedulerMachine, mp_ErrorState );
     mp_RCReport = new CRCReport(mp_SchedulerMachine, mp_ErrorState );
-    mp_RSStandbyWithTissue = new CRsStandbyWithTissue(mp_SchedulerMachine, mp_ErrorRSStandbyWithTissueState);
     mp_RSStandby = new CRsStandby(mp_SchedulerMachine, mp_ErrorState);
+    mp_RSStandbyWithTissue = new CRsStandbyWithTissue(mp_SchedulerMachine, mp_ErrorRSStandbyWithTissueState);
+    mp_RcLevelSensorHeatingOvertime = new CRcLevelSensorHeatingOvertime(mp_SchedulerMachine, mp_ErrorRCLevelSensorHeatingOvertimeState);
 
     mp_InitState->addTransition(this, SIGNAL(SchedulerInitComplete()), mp_IdleState);
     mp_IdleState->addTransition(this, SIGNAL(RunSignal()), mp_BusyState);
@@ -71,8 +73,13 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     connect(mp_ErrorState, SIGNAL(exited()), this, SLOT(OnStateChanged()));
 
     //RS_Standby_WithTissue related logic
-    mp_ErrorWaitState->addTransition(this, SIGNAL(EnterRsStandbyWithTissue()), mp_ErrorRSStandbyWithTissueState);
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsStandByWithTissue()), mp_ErrorRSStandbyWithTissueState);
     mp_ErrorRSStandbyWithTissueState->addTransition(mp_RSStandbyWithTissue, SIGNAL(TasksDone(bool)), mp_ErrorWaitState);
+
+    //RC_Levelsensor_Heating_Overtime related logic
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcLevelsensorHeatingOvertime()), mp_ErrorRCLevelSensorHeatingOvertimeState);
+    mp_ErrorRCLevelSensorHeatingOvertimeState->addTransition(mp_RcLevelSensorHeatingOvertime, SIGNAL(TasksDone(bool)), mp_ErrorWaitState);
+
 
     connect(this, SIGNAL(sigStInitOK()), mp_ProgramStepStates, SIGNAL(StInitOK()));
     connect(this, SIGNAL(sigStTempOK()), mp_ProgramStepStates, SIGNAL(StTempOK()));
@@ -148,6 +155,9 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_RSStandbyWithTissue, ShutdownFailedHeater(), this, OnRsShutdownFailedHeater());
     CONNECTSIGNALSLOT(mp_RSStandbyWithTissue, ReleasePressure(), this, OnRsReleasePressure());
     CONNECTSIGNALSLOT(mp_RSStandbyWithTissue, TasksDone(bool), this, OnTasksDone(bool));
+
+    CONNECTSIGNALSLOT(mp_RcLevelSensorHeatingOvertime, RestartLevelSensorTempControl(), this, OnRestartLevelSensorTempControl());
+    CONNECTSIGNALSLOT(mp_RcLevelSensorHeatingOvertime, TasksDone(bool), this, OnTasksDone(bool));
 }
 
 void CSchedulerStateMachine::OnStateChanged()
@@ -193,6 +203,11 @@ void CSchedulerStateMachine::OnRsReleasePressure()
     mp_SchedulerCommandProcessor->ALBreakAllOperation();
     mp_SchedulerCommandProcessor->pushCmd(new CmdALAllStop(500, mp_SchedulerThreadController));
 }
+void CSchedulerStateMachine::OnRestartLevelSensorTempControl()
+{
+   mp_SchedulerThreadController->RestartLevelSensorTempCtrl();
+}
+
 void CSchedulerStateMachine::OnTasksDone(bool flag)
 {
     Global::EventObject::Instance().RaiseEvent(mp_SchedulerThreadController->GetEventKey(), 0, 0, flag);
@@ -223,9 +238,6 @@ CSchedulerStateMachine::~CSchedulerStateMachine()
     delete mp_ErrorWaitState;
     mp_ErrorWaitState = NULL;
 
-    delete mp_ErrorRSStandbyWithTissueState;
-    mp_ErrorRSStandbyWithTissueState = NULL;
-
     delete mp_ProgramStepStates;
     mp_ProgramStepStates = NULL;
 
@@ -235,8 +247,17 @@ CSchedulerStateMachine::~CSchedulerStateMachine()
     delete mp_RSStandby;
     mp_RSStandby = NULL;
 
+    delete mp_ErrorRSStandbyWithTissueState;
+    mp_ErrorRSStandbyWithTissueState = NULL;
+
     delete mp_RSStandbyWithTissue;
     mp_RSStandbyWithTissue = NULL;
+
+    delete mp_ErrorRCLevelSensorHeatingOvertimeState;
+    mp_ErrorRCLevelSensorHeatingOvertimeState = NULL;
+
+    delete mp_RcLevelSensorHeatingOvertime;
+    mp_RcLevelSensorHeatingOvertime = NULL;
 
     delete mp_RCReport;
     mp_RCReport = NULL;
@@ -303,6 +324,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRSStandbyWithTissueState))
         {
             return SM_ERR_RS_STANDBY_WITH_TISSUE;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRCLevelSensorHeatingOvertimeState))
+        {
+            return SM_ERR_RC_LEVELSENSOR_HEATING_OVERTIME;
         }
         else if((currentState = mp_RSRvGetOriginalPositionAgain->GetCurrentState(mp_SchedulerMachine->configuration())) != SM_UNDEF);
         else if((currentState = mp_RCReport->GetCurrentState(mp_SchedulerMachine->configuration())) != SM_UNDEF);
@@ -556,12 +581,23 @@ void CSchedulerStateMachine::NotifyResumeDrain()
 
 void CSchedulerStateMachine::EnterRsStandByWithTissue()
 {
-    emit EnterRsStandbyWithTissue();
+    emit SigEnterRsStandByWithTissue();
 }
 
 void CSchedulerStateMachine::HandleRsStandByWithTissueWorkFlow(bool flag)
 {
     mp_RSStandbyWithTissue->OnHandleWorkFlow(flag);
+}
+
+void CSchedulerStateMachine::EnterRcLevelsensorHeatingOvertime()
+{
+    emit SigEnterRcLevelsensorHeatingOvertime();
+}
+
+
+void CSchedulerStateMachine::HandleRcLevelSensorHeatingOvertimeWorkFlow(bool flag)
+{
+    mp_RcLevelSensorHeatingOvertime->OnHandleWorkFlow(flag);
 }
 
 }

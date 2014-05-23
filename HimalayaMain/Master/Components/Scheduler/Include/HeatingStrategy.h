@@ -66,7 +66,6 @@ struct RTLevelSensor : public HeatingSensor
 {
 	QMap<QString, QString>	CurrentSpeedList;
 	QMap<QString, qreal>	ExchangePIDTempList;
-    QMap<QString, bool>     StartTempFlagList;
 };
 
 
@@ -130,7 +129,29 @@ public:
                     SchedulerCommandProcessorBase* SchedCmdProcessor,
                     DataManager::CDataManager* dataManager);
     ~HeatingStrategy() {}
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Run and check Heating strategy logic for each time interval (500ms)
+     *
+     *  \param  strtHWMonitor - current temperature of level sensor
+     *  \param  scenario - current scenario in Scheduler main controller
+     *
+     *  \return DeviceControl::ReturnCode_t - success or failure code
+     */
+    /****************************************************************************/
     DeviceControl::ReturnCode_t RunHeatingStrategy(const HardwareMonitor_t& strctHWMonitor, qint32 scenario);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Restart level sensor temperature control for recovery RC_LevelSensor_Heating_Overtime
+     *
+     *  \param  strtHWMonitor - current temperature of level sensor
+     *
+     *  \return DeviceControl::ReturnCode_t - success or failure code
+     */
+    /****************************************************************************/
+    DeviceControl::ReturnCode_t ReStartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor);
 private:
     SchedulerMainThreadController*      mp_SchedulerController;
     SchedulerCommandProcessorBase*      mp_SchedulerCommandProcessor;
@@ -149,7 +170,7 @@ private:
     bool ConstructHeatingSensorList();
     bool ConstructHeatingSensor(HeatingSensor& heatingSensor, const QStringList& sequenceList);
 	inline bool CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp);
-    DeviceControl::ReturnCode_t StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor, bool ScenarioChanged);
+    DeviceControl::ReturnCode_t StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor);
     DeviceControl::ReturnCode_t StartRTTemperatureControl(HeatingSensor& heatingSensor, RTTempCtrlType_t RTType);
     DeviceControl::ReturnCode_t StartOvenTemperatureControl(OvenSensor& heatingSensor, OVENTempCtrlType_t OvenType);
     DeviceControl::ReturnCode_t StartRVTemperatureControl(RVSensor& heatingSensor);

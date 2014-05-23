@@ -28,6 +28,7 @@
 #include "RsRvGetOriginalPositionAgain.h"
 #include "RsStandby.h"
 #include "RsStandbyWithTissue.h"
+#include "RcLevelsensorHeatingOvertime.h"
 #include "RCReport.h"
 
 namespace Scheduler{
@@ -50,11 +51,13 @@ private:
     QState* mp_BusyState;						///<  Busy state
     QState* mp_ErrorState;						///<  Error state 
     QState* mp_ErrorWaitState;					///<  Error Sate's sub state: error wait state
-    QState* mp_ErrorRSStandbyWithTissueState;	///<  Error Sate's sub state: handle RS_STandby_WithTissue related logic 
+    QState* mp_ErrorRSStandbyWithTissueState;	///<  Error Sate's sub state: handle RS_STandby_WithTissue related logic
+    QState* mp_ErrorRCLevelSensorHeatingOvertimeState;                  ///<  Error Sate's sub state: handle RC_Levelsensor_Heating_Overtime related logic
     CProgramStepStateMachine *mp_ProgramStepStates;						///<  Definition/Declaration of variable mp_ProgramStepStates
     CRsRvGetOriginalPositionAgain *mp_RSRvGetOriginalPositionAgain;		///<  Definition/Declaration of variable mp_RSRvGetOriginalPositionAgain
     CRsStandby *mp_RSStandby;											///<  Definition/Declaration of variable mp_RSStandby
     CRsStandbyWithTissue *mp_RSStandbyWithTissue;						///<  Definition/Declaration of variable mp_RSStandbyWithTissue
+    CRcLevelSensorHeatingOvertime *mp_RcLevelSensorHeatingOvertime;     ///<  Definition/Declaration of variable mp_RSStandbyWithTissue
     CRCReport *mp_RCReport;												///<  Definition/Declaration of variable mp_RCReport
     SchedulerStateMachine_t m_PreviousState;							///<  Definition/Declaration of variable m_PreviousState
     SchedulerStateMachine_t m_CurrentState;								///<  Definition/Declaration of variable m_CurrentState
@@ -422,6 +425,17 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief Enter to Rc_Levelsensor_Heating_Overtime sub state machine
+     *
+     *  \param void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void EnterRcLevelsensorHeatingOvertime();
+
+    /****************************************************************************/
+    /*!
      *  \brief Handle the whole work flow for Rs_Standby_WithTissue 
      *
      *  \param flag - indicate if the execution succeeds or not
@@ -430,6 +444,17 @@ public:
      */
     /****************************************************************************/
     void HandleRsStandByWithTissueWorkFlow(bool flag);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for Rc_Levelsensor_Heating_Overtime
+     *
+     *  \param flag - indicate if the execution succeeds or not
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRcLevelSensorHeatingOvertimeWorkFlow(bool flag);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetCurrentState
@@ -483,6 +508,16 @@ private slots:
 
     /****************************************************************************/
     /*!
+     *  \brief	Slot to restart Level sensor temperature control in case of
+     *          RC_Levelsensor_Heating_Overtime
+     *  \param	void
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnRestartLevelSensorTempControl();
+
+    /****************************************************************************/
+    /*!
      *  \brief	Slot to handle the actions when all the tasks are done.
      *  \param	bool flag to indicate if the whole execution succeeds or not
      *  \return	void
@@ -526,7 +561,22 @@ signals:
      *  \brief signal to enter RS_StandBy_WithTissue state 
      */
     /****************************************************************************/
-    void EnterRsStandbyWithTissue();
+    void SigEnterRsStandByWithTissue();
+
+    /****************************************************************************/
+    /*!
+     *  \brief signal to enter RC_Levelsensor_Heating_Overtime state
+     */
+    /****************************************************************************/
+    void SigEnterRcLevelsensorHeatingOvertime();
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief signal to enter RC_Levelsensor_Heating_Overtime state
+     */
+    /****************************************************************************/
+    void sigEnterRcLevelsensorHeatingOvertime();
 
     /****************************************************************************/
     /*!
