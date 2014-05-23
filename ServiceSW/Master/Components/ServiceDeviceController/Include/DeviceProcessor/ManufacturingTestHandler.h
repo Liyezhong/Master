@@ -218,11 +218,10 @@ private:
     /**
      * \brief To Test heating of oven
      *
-     * \param[in]       DeviceId            Device Instance ID
-     * \param[in]       DeviceId            Device Instance ID
+     * \param[in]       EmptyFlag           Heating Empty or with Water
      */
     /****************************************************************************/
-    qint32 TestOvenHeating(quint32 DeviceId, bool EmptyFlag=true);
+    qint32 TestOvenHeating(bool EmptyFlag=true);
     /****************************************************************************/
     /**
      * \brief To Test heating of level sensor
@@ -266,15 +265,6 @@ private:
      */
     /****************************************************************************/
     qint32 TestOvenCoverSensor();
-
-    /****************************************************************************/
-    /**
-     * \brief To Test detecting of cover sensor of Oven
-     * \param[in]       EmptyFlag            Heating Empty or not.
-     */
-    /****************************************************************************/
-    qint32 TestOvenHeating1(bool EmptyFlag);
-
 
 
     IDeviceProcessing           &m_rIdevProc;           //!< IDeviceProcessing reference to interact with device

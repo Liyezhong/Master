@@ -31,6 +31,8 @@
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalInput.h>
 #include "Core/Include/CMessageString.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "ServiceDataManager/Include/TestCase.h"
 
 namespace DeviceControl {
 
@@ -571,43 +573,48 @@ qint32 ManufacturingTestHandler::TestLSensorHeating(quint32 DeviceId)
 
 
 /****************************************************************************/
-qint32 ManufacturingTestHandler::TestOvenHeating(quint32 DeviceId, bool EmptyFlag)
+qint32 ManufacturingTestHandler::TestOvenHeating(bool EmptyFlag)
 {
     quint32 WaitSec(0);
     quint32 SumSec(0);
     qint32  OvenStatus(-1);
-    qreal   CurrentTempTop(0), CurrentTempBottom(0), CurrentTempBottom2(0);
+    qreal   CurrentTempTop(0), CurrentTempBottom1(0), CurrentTempBottom2(0);
 
+    QString TestCaseName;
     if (EmptyFlag) {
-        WaitSec = Service::TEST_OVEN_HEATING_TIME_EMPTY;
+        TestCaseName = "OvenHeatingEmpty";
     }
     else {
-        WaitSec = Service::TEST_OVEN_HEATING_TIME_WITH_WATER;
+        TestCaseName = "OvenHeatingWater";
     }
+
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    QTime DurationTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm");
+    qreal TargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureLow").toDouble();
+
+    qDebug()<<"DurationTime="<<p_TestCase->GetParameter("DurationTime")<<" TargetTemp="<<TargetTemp;
+
+    WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60;
+
     SumSec = WaitSec;
 
-    qDebug()<<"mp_TempOvenTop StartTemperatureControl result="<<mp_TempOvenTop->StartTemperatureControl(Service::TEST_OVEN_HEATING_TEMP);
-    qDebug()<<"mp_TempOvenBottom StartTemperatureControl result="<<mp_TempOvenBottom->StartTemperatureControl(Service::TEST_OVEN_HEATING_TEMP);
+    mp_TempOvenTop->StartTemperatureControl(Service::TEST_OVEN_HEATING_TEMP);
+    mp_TempOvenBottom->StartTemperatureControl(Service::TEST_OVEN_HEATING_TEMP);
 
     while (!m_UserAbort && WaitSec)
     {
         CurrentTempTop = mp_TempOvenTop->GetTemperature(0);
-        CurrentTempBottom = mp_TempOvenBottom->GetTemperature(0);
+        CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
         CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
 
-        qDebug() << "Current Temperature: [Oven Top] " << CurrentTempTop << ", [Oven Bottom] " << CurrentTempBottom<<" "<<CurrentTempBottom2;
-
-        if (CurrentTempTop == -1 || CurrentTempBottom == -1 || CurrentTempBottom2 == -1) {
+        if (CurrentTempTop == -1 || CurrentTempBottom1 == -1 || CurrentTempBottom2 == -1) {
             mp_Utils->Pause(10);
             continue;
         }
 
-        if ( CurrentTempTop > Service::TEST_OVEN_HEATING_MIN_TEMP &&
-             CurrentTempTop < Service::TEST_OVEN_HEATING_MAX_TEMP &&
-             CurrentTempBottom > Service::TEST_OVEN_HEATING_MIN_TEMP &&
-             CurrentTempBottom < Service::TEST_OVEN_HEATING_MAX_TEMP &&
-             CurrentTempBottom2 > Service::TEST_OVEN_HEATING_MIN_TEMP &&
-             CurrentTempBottom2 < Service::TEST_OVEN_HEATING_MAX_TEMP)
+        if ( CurrentTempTop >= TargetTemp &&
+             CurrentTempBottom1 >= TargetTemp &&
+             CurrentTempBottom2 >= TargetTemp )
         {
             OvenStatus = 1;
             break;
@@ -615,17 +622,14 @@ qint32 ManufacturingTestHandler::TestOvenHeating(quint32 DeviceId, bool EmptyFla
 
         mp_Utils->Pause(1000);
         Service::ModuleTestStatus Status;
-        QString TopValue;
-        TopValue = QString("%1").arg(CurrentTempTop);
-        QString BottomValue;
-        BottomValue = QString("%1").arg(CurrentTempBottom);
-        QString BottomValue2;
-        BottomValue2 = QString("%1").arg(CurrentTempBottom2);
+        QString TopValue = QString("%1").arg(CurrentTempTop);
+        QString BottomValue1 = QString("%1").arg(CurrentTempBottom1);
+        QString BottomValue2 = QString("%1").arg(CurrentTempBottom2);
         QString UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
 
         Status.insert("UsedTime", UsedTime);
         Status.insert("CurrentTempTop", TopValue);
-        Status.insert("CurrentTempBottom1", BottomValue);
+        Status.insert("CurrentTempBottom1", BottomValue1);
         Status.insert("CurrentTempBottom2", BottomValue2);
         if (WaitSec == SumSec) {
             QString TargetTemp = QString("%1").arg(Service::TEST_OVEN_HEATING_MIN_TEMP);
@@ -857,58 +861,37 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
     case Service::OVEN_COVER_SENSOR :
         TestOvenCoverSensor();
         break;
-    case Service::OVEN_HEATING_EMPTY:{
-#if 1
-        int id = DEVICE_INSTANCE_ID_OVEN;
-        qDebug()<<"Test Heating Empty----";
-        if(DEVICE_INSTANCE_ID_OVEN == id)
+    case Service::OVEN_HEATING_EMPTY:
+        if ( NULL == mp_TempOvenTop || NULL == mp_TempOvenBottom )
         {
-            if ( NULL == mp_TempOvenTop || NULL == mp_TempOvenBottom )
-            {
-                emit ReturnErrorMessagetoMain(Service::MSG_DEVICE_NOT_INITIALIZED);
-                return;
-            }
-
-            if ( 0 == TestOvenHeating(id) )
-            {
-              //  emit ReturnMessagetoMain(Service::MSG_OVEN_HEATING_SUCCESS);
-                emit ReturnManufacturingTestMsg(true);
-            }
-            else
-            {
-               // emit ReturnErrorMessagetoMain(Service::MSG_OVEN_HEATING_FAILURE);
-                emit ReturnManufacturingTestMsg(false);
-            }
+            emit ReturnErrorMessagetoMain(Service::MSG_DEVICE_NOT_INITIALIZED);
+            return;
         }
-#endif
-//        TestOvenHeating1(true);
+        if ( 0 == TestOvenHeating(true) )
+        {
+            emit ReturnManufacturingTestMsg(true);
+        }
+        else
+        {
+            emit ReturnManufacturingTestMsg(false);
+        }
         break;
-    }
-    case Service::OVEN_HEATING_WITH_WATER:{
-#if 1
-        int id = DEVICE_INSTANCE_ID_OVEN;
-        qDebug()<<"Test Heating Empty----";
-        if(DEVICE_INSTANCE_ID_OVEN == id)
-        {
-            if ( NULL == mp_TempOvenTop || NULL == mp_TempOvenBottom )
-            {
-                emit ReturnErrorMessagetoMain(Service::MSG_DEVICE_NOT_INITIALIZED);
-                return;
-            }
 
-            if ( 0 == TestOvenHeating(id, false) )
-            {
-              //  emit ReturnMessagetoMain(Service::MSG_OVEN_HEATING_SUCCESS);
-                emit ReturnManufacturingTestMsg(true);
-            }
-            else
-            {
-               // emit ReturnErrorMessagetoMain(Service::MSG_OVEN_HEATING_FAILURE);
-                emit ReturnManufacturingTestMsg(false);
-            }
+    case Service::OVEN_HEATING_WITH_WATER:
+        if ( NULL == mp_TempOvenTop || NULL == mp_TempOvenBottom )
+        {
+            emit ReturnErrorMessagetoMain(Service::MSG_DEVICE_NOT_INITIALIZED);
+            return;
         }
-#endif
-    }
+
+        if ( 0 == TestOvenHeating(false) )
+        {
+            emit ReturnManufacturingTestMsg(true);
+        }
+        else
+        {
+            emit ReturnManufacturingTestMsg(false);
+        }
         break;
     default:
         break;
@@ -919,7 +902,6 @@ qint32 ManufacturingTestHandler::TestOvenCoverSensor()
 {
     qDebug()<<"Test Cover Sensor----";
     mp_Utils->Pause(200);
-   // emit ReturnMessagetoMain(Service::MSG_OVEN_COVER_SENSOR_SUCCESS);
     Service::ModuleTestStatus Status;
 
     if (mp_DigitalInpputOven == NULL) {
@@ -939,21 +921,5 @@ qint32 ManufacturingTestHandler::TestOvenCoverSensor()
 
     return 0;
 }
-
-qint32 ManufacturingTestHandler::TestOvenHeating1(bool Flag)
-{
-    qDebug()<<"Test Oven Heating flag = ----"<<Flag;
-    mp_Utils->Pause(5000);
-    if (Flag == false) {  // water
-        ;//emit ReturnErrorMessagetoMain(Service::MSG_OVEN_HEATING_FAILURE);
-    }
-    else { // empty
-        ;//emit ReturnMessagetoMain(Service::MSG_OVEN_HEATING_SUCCESS);
-    }
-
-    emit ReturnManufacturingTestMsg(Flag);
-    return 0;
-}
-
 
 } // end namespace DeviceControl

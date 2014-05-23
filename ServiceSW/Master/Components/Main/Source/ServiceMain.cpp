@@ -23,6 +23,7 @@
 #include "Core/Include/Startup.h"
 #include <Global/Include/AlarmPlayer.h>
 #include <EventHandler/Include/StateHandler.h>
+#include "ServiceDataManager/Include/TestCaseFactory.h"
 
 /****************************************************************************/
 /*!
@@ -81,6 +82,10 @@ int main(int Argc, char *p_Argv[])
     Core::CStartup Startup;
     Threads::ServiceMasterThreadController TheMasterThreadController(&Startup);
     TheMasterThreadController.SetEventLoggerBaseFileName("Himalaya_Service");
+
+    QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseConfig.xml";
+    DataManager::CTestCaseFactory::Instance().InitData(FileName);
+
     QThread thrMasterThread;
 
     if(Argc>=2)
