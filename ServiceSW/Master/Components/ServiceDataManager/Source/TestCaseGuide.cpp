@@ -1,16 +1,34 @@
+/****************************************************************************/
+/*! \file TestCaseGuide.cpp
+ *
+ *  \brief Implementation file for class CTestCaseGuide.
+ *
+ *   $Version: $ 0.1
+ *   $Date:    $ 2014-5-21
+ *   $Author:  $ Dixiong.li
+ *
+ *  \b Company:
+ *
+ *       Leica Biosystems R&D Center Shanghai.
+ *
+ *  (C) Copyright 2010 by LBS R&D Center Shanghai. All rights reserved.
+ *  This is unpublished proprietary source code of Leica. The copyright notice
+ *  does not evidence any actual or intended publication.
+ *
+ */
+/****************************************************************************/
+#include <QDebug>
+#include <QFile>
+#include <QtXml/QXmlStreamReader>
 #include "DataManager/Helper/Include/Helper.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
-#include <Global/Include/SystemPaths.h>
-#include <QDebug>
 
 namespace DataManager {
 
-CTestCaseGuide::CTestCaseGuide() : CDataContainerBase(),
-    m_Version(1)
+CTestCaseGuide CTestCaseGuide::m_TestCaseGuide;
+
+CTestCaseGuide::CTestCaseGuide()
 {
-    if (!InitData()) {
-        qDebug()<<"CTestCaseGuide: InitData from config file error.";
-    }
 }
 
 CTestCaseGuide::~CTestCaseGuide()
@@ -30,13 +48,13 @@ GuideSteps CTestCaseGuide::GetGuideSteps(const QString& CaseName, int index)
     else {
         qDebug()<<"CTestCaseGuide::Get guide string failed.";
     }
+
     return Steps;
 }
 
-bool CTestCaseGuide::InitData()
+bool CTestCaseGuide::InitData(QString FileName)
 {
     bool Result = true;
-    QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide.xml";
     QFile File(FileName);
     if (!QFile::exists(FileName)) {
         return false;
@@ -51,16 +69,9 @@ bool CTestCaseGuide::InitData()
         return false;
     }
 
-    m_FileName = FileName;
-
     File.close();
 
     return Result;
-}
-
-bool CTestCaseGuide::SerializeContent(QIODevice& IODevice, bool CompleteData)
-{
-    return true;
 }
 
 bool CTestCaseGuide::DeserializeContent(QIODevice& IODevice, bool CompleteData)
@@ -82,8 +93,6 @@ bool CTestCaseGuide::DeserializeContent(QIODevice& IODevice, bool CompleteData)
         qDebug() << " attribute ServiceParameters <Version> is missing => abort reading";
         return false;
     }
-
-    SetVerion(XmlStreamReader.attributes().value("Version").toString().toInt());
 
     while ((!XmlStreamReader.atEnd()))
     {

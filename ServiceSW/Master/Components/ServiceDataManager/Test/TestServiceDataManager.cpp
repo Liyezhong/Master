@@ -117,13 +117,13 @@ void CTestServiceDataManager::TestTestCase()
 
 void CTestServiceDataManager::TestTestCaseGuide()
 {
-    CTestCaseGuide *Guide = new CTestCaseGuide;
-    GuideSteps OvenEmptyGuideSteps = Guide->GetGuideSteps("OvenHeatingEmpty", 0);
+    QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide.xml";
+    CTestCaseGuide::Instance().InitData(FileName);
+
+    GuideSteps OvenEmptyGuideSteps =  CTestCaseGuide::Instance().GetGuideSteps("OvenHeatingEmpty", 0);
 
     QVERIFY(OvenEmptyGuideSteps.length() == 2);
     QCOMPARE(OvenEmptyGuideSteps[0], QString("the empty first step"));
-
-    delete Guide;
 }
 
 void CTestServiceDataManager::TestTestCaseFactory()

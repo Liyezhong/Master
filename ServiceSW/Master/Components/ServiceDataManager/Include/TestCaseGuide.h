@@ -17,7 +17,6 @@
  *
  */
 /****************************************************************************/
-
 #ifndef TESTCASEGUIDE_H
 #define TESTCASEGUIDE_H
 
@@ -26,14 +25,45 @@
 #include <QList>
 #include <QHash>
 
-#include "DataManager/Containers/ContainerBase/Include/DataContainerBase.h"
-#include "DataManager/Helper/Include/Types.h"
 namespace DataManager {
 
 typedef QList<QString> GuideSteps;
 
-class CTestCaseGuide : public CDataContainerBase {
+class CTestCaseGuide
+{
 public:
+
+    /****************************************************************************/
+    /**
+     * \brief Get reference to instance.
+     * \return  Reference to instance.
+     */
+    /****************************************************************************/
+    static CTestCaseGuide &Instance(){
+        return m_TestCaseGuide;
+    }
+
+    /****************************************************************************/
+    /**
+     * \brief Initialization test case guide from config file.
+     * \param FileName = config file
+     * \return false if failed.
+     */
+    /****************************************************************************/
+    bool InitData(QString FileName);
+
+    /****************************************************************************/
+    /**
+     * \brief Get Guide string list all of steps by test case name.
+     * \param CaseName = test case name, index = index of Guide
+     * \return GuideSteps.
+     */
+    /****************************************************************************/
+    GuideSteps GetGuideSteps(const QString& CaseName, int index);
+
+private:
+    static CTestCaseGuide m_TestCaseGuide;   ///< The one and only instance.
+    QHash<QString, QList<GuideSteps> > m_GuideHash; //!< Stroes all test case guide, key=test case name
 
     /****************************************************************************/
     /**
@@ -46,87 +76,13 @@ public:
 
     /****************************************************************************/
     /**
-     * \brief Get Guide string list all of steps by test case name.
-     * \param CaseName = test case name, index = index of Guide
-     * \return GuideSteps.
+     * \brief Disable copy and assignment
+     *
      */
     /****************************************************************************/
-    GuideSteps GetGuideSteps(const QString& CaseName, int index);
+    Q_DISABLE_COPY(CTestCaseGuide)
+    /****************************************************************************/
 
-    /****************************************************************************/
-    /**
-     * \brief Sets Version number
-     * \iparam Value = Value to set
-     */
-    /****************************************************************************/
-    void SetVerion(int Value) {
-        m_Version = Value;
-    }
-
-    /****************************************************************************/
-    /**
-     * \brief Gets Version number
-     * \return Version number
-     */
-    /****************************************************************************/
-    int GetVersion() {
-        return m_Version;
-    }
-
-    /****************************************************************************/
-    /**
-     * \brief Returns the Filename
-     * \return File name
-     */
-    /****************************************************************************/
-    QString GetFilename() {
-        return m_FileName;
-    }
-
-    /****************************************************************************/
-    /**
-     * \brief Sets data verification mode
-     * \iparam Value = Value to set
-     */
-    /****************************************************************************/
-    void SetDataVerificationMode(bool Value) {
-        m_DataVerificationMode = Value;
-    }
-
-    /****************************************************************************/
-    /**
-     * \brief Returns Data verification mode
-     * \return True or False
-     */
-    /****************************************************************************/
-    bool GetDataVerificationMode() {
-        return m_DataVerificationMode;
-    }
-
-    /****************************************************************************/
-    /**
-     * \brief Returns the Data container type
-     * \return Data container type
-     */
-    /****************************************************************************/
-    DataContainerType_t GetDataContainerType() { return PARAMETER; }
-
-private:
-    QHash<QString, QList<GuideSteps> > m_GuideHash; //!< Stroes all test case guide, key=test case name
-
-    int m_Version;                          //!< Stores the version number of the file
-    bool m_DataVerificationMode;            //!< Store the Date verification mode flag
-    QString m_FileName;                     //!< Store the file name
-
-    /****************************************************************************/
-    /**
-     * \brief Init data from config file
-     * \return True or False
-     */
-    /****************************************************************************/
-    bool InitData();
-
-    bool SerializeContent(QIODevice& IODevice, bool CompleteData);
     bool DeserializeContent(QIODevice& IODevice, bool CompleteData);
 };
 
