@@ -65,7 +65,7 @@ signals:
        * \iparam Test = Test name
        */
     /****************************************************************************/
-    void PerformManufacturingTest(Service::ModuleTestNames Test);
+    void PerformManufacturingTest(Service::ModuleTestCaseID Test);
 
 public slots:
     void BeginManufacturingSWTests(Service::ModuleNames_t, const QStringList &TestCaseList);

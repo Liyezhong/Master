@@ -46,7 +46,7 @@ CStartup::CStartup() : QObject(),
     mp_HeatingStatusDlg(NULL)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
-    qRegisterMetaType<Service::ModuleTestNames>("Service::ModuleTestNames");
+    qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");
     qRegisterMetaType<Service::ModuleTestStatus>("Service::ModuleTestStatus");
 
     // GUI components
@@ -567,7 +567,7 @@ void CStartup::InitManufacturingDiagnostic()
     mp_ManaufacturingDiagnosticsHandler = new Core::CManufacturingDiagnosticsHandler(mp_ServiceConnector, mp_MainWindow);
 
     /* Manufacturing Tests */
-    CONNECTSIGNALSIGNAL(mp_ManaufacturingDiagnosticsHandler, PerformManufacturingTest(Service::ModuleTestNames), this, PerformManufacturingTest(Service::ModuleTestNames));
+    CONNECTSIGNALSIGNAL(mp_ManaufacturingDiagnosticsHandler, PerformManufacturingTest(Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID));
     ManufacturingGuiInit();
 }
 

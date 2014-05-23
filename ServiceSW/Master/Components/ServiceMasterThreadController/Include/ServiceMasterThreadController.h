@@ -472,7 +472,7 @@ private slots:
      * \iparam Test = Module test name
      */
     /****************************************************************************/
-    void sendManufacturingTestCommand(Service::ModuleTestNames Test);
+    void sendManufacturingTestCommand(Service::ModuleTestCaseID Test);
 
 protected:
 

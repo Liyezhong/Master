@@ -323,7 +323,7 @@ signals:
        * \iparam Test = Test name
        */
     /****************************************************************************/
-    void PerformManufacturingTest(Service::ModuleTestNames Test);
+    void PerformManufacturingTest(Service::ModuleTestCaseID Test);
 };
 
 } // end namespace Core

@@ -846,7 +846,7 @@ void ManufacturingTestHandler::OnCalibrateDevice(Service::DeviceCalibrationCmdTy
 
 }
 
-void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTestNames TestName)
+void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTestCaseID TestName)
 {
     qDebug()<<"ManufacturingTestHandler::PerformModuleManufacturingTest  test="<<TestName;
     if(!IsInitialized()){

@@ -53,7 +53,7 @@ protected:
 public:
     static QString  NAME;                                   ///< Command name.
 
-    Service::ModuleTestNames m_CommandType;              ///< Type of end test requested
+    Service::ModuleTestCaseID m_CommandType;              ///< Type of end test requested
     /****************************************************************************/
     /**
      * \brief Constructor.
@@ -61,7 +61,7 @@ public:
      * \iparam CmdType = Command type
      */
     /****************************************************************************/
-    CmdModuleManufacturingTest(Service::ModuleTestNames CmdType);
+    CmdModuleManufacturingTest(Service::ModuleTestCaseID CmdType);
     /****************************************************************************/
     /**
      * \brief Destructor.

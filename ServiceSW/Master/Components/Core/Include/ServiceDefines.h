@@ -163,7 +163,7 @@ enum DeviceCalibrationCmdType {
  * \brief Enum containing module Test Names
  */
 /****************************************************************************/
-typedef enum ModuleTestNames {
+typedef enum ModuleTestCaseID {
     EBOX_ASB3,                          ///< ASB3 test
     EBOX_ASB5,                          ///< ASB5 test
     EBOX_ASB15,                         ///< ASB15 test
@@ -187,7 +187,7 @@ typedef enum ModuleTestNames {
     SYSTEM_REMOTE_LOCAL_ALARM,           ///< System remote and local alarm test
     SYSTEM_USB,                          ///< System usb test
     SYSTEM_FAN                           ///< System fan test
-} ModuleTestNames_t;
+} ModuleTestCaseID_t;
 
 /****************************************************************************/
 /**

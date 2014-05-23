@@ -83,7 +83,7 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
 {
     // register the metytype for gSourceType
     qRegisterMetaType<Global::gSourceType>("Global::gSourceType");
-    qRegisterMetaType<Service::ModuleTestNames>("Service::ModuleTestNames");
+    qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");
     CONNECTSIGNALSLOT(&m_ShutdownSharedMemTimer, timeout(), this, ExternalMemShutdownCheck());
     m_ShutdownSharedMemTimer.setInterval(500);
     m_ShutdownSharedMemTimer.setSingleShot(false);
@@ -202,7 +202,7 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     }
 
     // Manufacturing Tests
-    if (!connect(mp_GUIStartup, SIGNAL(PerformManufacturingTest(Service::ModuleTestNames)), this, SLOT(sendManufacturingTestCommand(Service::ModuleTestNames)))) {
+    if (!connect(mp_GUIStartup, SIGNAL(PerformManufacturingTest(Service::ModuleTestCaseID)), this, SLOT(sendManufacturingTestCommand(Service::ModuleTestCaseID)))) {
         qDebug() << "CStartup: cannot connect 'PerformManufacturingTest' signal";
     }
 
@@ -1513,7 +1513,7 @@ void ServiceMasterThreadController::sendPressureSensorCalibrationCommand()
 
 
 /****************************************************************************/
-void ServiceMasterThreadController::sendManufacturingTestCommand(Service::ModuleTestNames Test)
+void ServiceMasterThreadController::sendManufacturingTestCommand(Service::ModuleTestCaseID Test)
 {
     qDebug()<<"ServiceMasterThreadController::sendManufacturingTestCommand -- modulename="<<Test;
     (void) SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdModuleManufacturingTest(Test)), m_CommandChannelDeviceThread);

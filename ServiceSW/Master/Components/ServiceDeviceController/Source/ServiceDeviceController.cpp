@@ -165,8 +165,8 @@ void ServiceDeviceController::ConnectSignalsnSlots()
     }
 
     // for Manufacturing Diagnostic
-    if (!connect(this, SIGNAL(ModuleManufacturingTest(Service::ModuleTestNames)),
-                 mp_DeviceProcessor, SLOT(OnModuleManufacturingTest(Service::ModuleTestNames)))) {
+    if (!connect(this, SIGNAL(ModuleManufacturingTest(Service::ModuleTestCaseID)),
+                 mp_DeviceProcessor, SLOT(OnModuleManufacturingTest(Service::ModuleTestCaseID)))) {
         qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ModuleManufacturingTest' signal";
     }
     if (!connect(mp_DeviceProcessor, SIGNAL(RefreshHeatingStatustoMain(QString,Service::ModuleTestStatus)),
