@@ -38,7 +38,6 @@ namespace DeviceControl {
 DeviceProcessor::DeviceProcessor(IDeviceProcessing &iDevProc)
     : m_IsConfigured(false)
     , m_rIdevProc(iDevProc)
-    , m_CurrentAction(TEST_OTHER_RUNS)
     , m_ExhaustInit(false)
     , m_HoodDeviceInit(false)
     , m_WaterDeviceInit(false)
@@ -182,16 +181,15 @@ void DeviceProcessor::CreateWrappers()
                 this, SIGNAL(ReturnErrorMessagetoMain(const QString)))) {
         qDebug() << "DeviceProcessor::CreateWrappers cannot connect 'ReturnErrorMessagetoMain' signal";
     }
-    if (!connect(mp_ManufacturingTestHandler, SIGNAL(RefreshHeatingStatustoMain(QString,Service::ModuleTestStatus)),
-                this, SIGNAL(RefreshHeatingStatustoMain(QString,Service::ModuleTestStatus)))) {
-        qDebug() << "DeviceProcessor::CreateWrappers cannot connect 'RefreshHeatingStatustoMain' signal";
+    if (!connect(mp_ManufacturingTestHandler, SIGNAL(RefreshTestStatustoMain(QString,Service::ModuleTestStatus)),
+                this, SIGNAL(RefreshTestStatustoMain(QString,Service::ModuleTestStatus)))) {
+        qDebug() << "DeviceProcessor::CreateWrappers cannot connect 'RefreshTestStatustoMain' signal";
     }
 
     if (!connect(mp_ManufacturingTestHandler, SIGNAL(ReturnManufacturingTestMsg(bool)),
                 this, SIGNAL(ReturnManufacturingTestMsg(bool)))) {
-        qDebug() << "DeviceProcessor::CreateWrappers cannot connect 'RefreshHeatingStatustoMain' signal";
+        qDebug() << "DeviceProcessor::CreateWrappers cannot connect 'RefreshTestStatustoMain' signal";
     }
-
 
 }
 

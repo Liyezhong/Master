@@ -25,6 +25,8 @@
 #include <QDebug>
 #include <QTableWidgetItem>
 #include "DiagnosticsManufacturing/Include/HeatingTestDialog.h"
+#include "Core/Include/ServiceDefines.h"
+#include "ServiceDataManager/Include/TestCaseGuide.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -48,7 +50,6 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
     , mp_TestReport(NULL)
     , mp_MessageDlg(NULL)
     , m_FinalTestResult("NA")
-    , mp_HeatingDlg(NULL)
 {
     mp_Ui->setupUi(this);
     mp_Ui->ovenSNEdit->installEventFilter(this);
@@ -73,16 +74,15 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
     mp_TableWidget = new MainMenu::CBaseTable;
 
     mp_TableWidget->resize(SET_FIXED_TABLE_WIDTH, SET_FIXED_TABLE_HEIGHT);
-    //mp_TableWidget->SetVisibleRows(VISIBLE_TABLE_ROWS);
 
     mp_TableWidget->horizontalHeader()->show();
 
     if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
-        AddItem("1", QApplication::translate("DiagnosticsMaMANUFACTURAL_ENDTESTnufacturing::COven", "Cover sensor test", 0, QApplication::UnicodeUTF8), "OvenCoverSensor");
-        AddItem("2", QApplication::translate("DiagnosticsManufacturing::COven", "Heating test (with water)", 0, QApplication::UnicodeUTF8), "OvenHeatingWater");
+        AddItem(1, Service::OVEN_COVER_SENSOR);
+        AddItem(2, Service::OVEN_HEATING_WITH_WATER);
     }
     else {
-        AddItem("1", QApplication::translate("DiagnosticsManufacturing::COven", "Heating test (empty)", 0, QApplication::UnicodeUTF8), "OvenHeatingEmpty");
+        AddItem(1, Service::OVEN_HEATING_EMPTY);
     }
 
     mp_TableWidget->setModel(&m_Model);
@@ -118,9 +118,7 @@ COven::~COven()
         delete mp_KeyBoardWidget;
         delete mp_TableWidget;
         delete mp_Ui;
-        if (mp_HeatingDlg) {
-            delete mp_HeatingDlg;
-        }
+
      }
      catch (...) {
          // to please Lint
@@ -182,11 +180,11 @@ bool COven::eventFilter(QObject *p_Object, QEvent *p_Event)
 /****************************************************************************/
 /*!
  *  \brief  To add data item to the table
- *  \iparam SerialNumber = Serial number of the module
- *  \iparam Test = Test name
+ *  \iparam Index = Test case No.
+ *  \iparam
  */
 /****************************************************************************/
-void COven::AddItem(const QString &SerialNumber, const QString &Test, const QString &ModuleTestName)
+void COven::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
 {
     QList<QStandardItem *> ItemList;
 
@@ -195,11 +193,11 @@ void COven::AddItem(const QString &SerialNumber, const QString &Test, const QStr
     itemCheckFlag->setEditable(true);
     itemCheckFlag->setSelectable(true);
     itemCheckFlag->setCheckable(true);
-    itemCheckFlag->setToolTip(ModuleTestName);
+    itemCheckFlag->setToolTip(DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id));
     ItemList << itemCheckFlag;
 
-    ItemList << new QStandardItem(SerialNumber);
-    ItemList << new QStandardItem(Test);
+    ItemList << new QStandardItem(QString("%1").arg(Index));
+    ItemList << new QStandardItem(DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id));
 
     QPixmap SetPixmap;
     QPixmap PixMap(QString(":/Large/CheckBoxLarge/CheckBox-enabled-large.png"));
@@ -288,7 +286,7 @@ void COven::DisconnectKeyBoardSignalSlots()
 void COven::BeginTest()
 {
     qDebug()<<"COven::BeginTest  ";
-    QStringList TestCaseList;
+    QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
         QModelIndex ModelIndex = m_Model.index(i, 0);
         QStandardItem* item = m_Model.itemFromIndex(ModelIndex);
@@ -297,7 +295,8 @@ void COven::BeginTest()
 
         if (State == Qt::Checked) {
 
-            TestCaseList.append(item->toolTip());
+            Service::ModuleTestCaseID Id = DataManager::CTestCaseGuide::Instance().GetTestCaseId(item->toolTip());
+            TestCaseList.append(Id);
         }
     }
     if (TestCaseList.count() == 0) {
@@ -307,51 +306,39 @@ void COven::BeginTest()
                                                                 "Ok", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
         mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
-                                                       "Please select a test.", 0, QApplication::UnicodeUTF8));
+                                                       "Please select a test case.", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetIcon(QMessageBox::Critical);
         mp_MessageDlg->show();
     }
     else {
+        EnableButton(false);
+
         emit BeginModuleTest(Service::OVEN, TestCaseList);
+
 
         qDebug()<<"COven::BeginTest   --- emitted";
     }
     return ;
 
-//    mp_HeatingDlg->HideAbort();
-}
-
-/****************************************************************************/
-/*!
- *  \brief Show ShowBasicColorTestDialog
- */
-/****************************************************************************/
-void COven::HandleTimeout()
-{
-    qDebug()<<"COven::HandleTimeout";
-    (void) mp_HeatingDlg->close();
-//    ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Service::CMessageString::MSG_DEVICECOMMAND_TIMEOUT);
+//    ->HideAbort();
 }
 
 /****************************************************************************/
 /*!
  *  \brief Slot called for agitator tests
- *  \iparam TestName = Test name
+ *  \iparam Id = Test case Id
  *  \iparam Result = Result of the test
  */
 /****************************************************************************/
-void COven::SetTestResult(const QString &TestName, bool Result)
+void COven::SetTestResult(Service::ModuleTestCaseID Id, bool Result)
 {
-    QString ModuleTestName;
-    QString TestResult;    
     QPixmap PixMapPass(QString(":/Large/CheckBoxLarge/CheckBox-Checked_large_green.png"));
     QPixmap PixMapFail(QString(":/Large/CheckBoxLarge/CheckBox-Crossed_large_red.png"));
     QPixmap SetPixMap;
 
-    qDebug()<<"COven::SetTestResult--"<<TestName<<" Test Result ="<<Result;
     for(int i=0; i<m_Model.rowCount(); i++) {
         QStandardItem *item = m_Model.item(i, 0);
-        if (item->toolTip() == TestName) {
+        if (item->toolTip() == DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id)) {
             if (Result) {
                 if (!PixMapPass.isNull())
                     SetPixMap = (PixMapPass.scaled(45,45,Qt::KeepAspectRatio));
@@ -365,42 +352,11 @@ void COven::SetTestResult(const QString &TestName, bool Result)
         }
     }
 
-    if (Result)  {
-        TestResult = QString("PASS");
-    } else {
-        TestResult = QString("FAIL");
-    }
+}
 
-    if (m_TestResult.contains("NA")) {
-//        mp_Ui->testSuccessLabel->setPixmap(QPixmap(QString::fromUtf8
-//                                                   (":/Large/CheckBoxLarge/CheckBox-enabled-large.png")));
-        m_FinalTestResult = QString("NA");
-    } else if (m_TestResult.contains("false")) {
-//        mp_Ui->testSuccessLabel->setPixmap(QPixmap(QString::fromUtf8
-//                                                   (":/Large/CheckBoxLarge/CheckBox-Crossed_large_red.png")));
-        m_FinalTestResult = QString("FAIL");
-    } else if (m_TestResult.contains("true")) {
- //       mp_Ui->testSuccessLabel->setPixmap(QPixmap(QString::fromUtf8
- //                                                  (":/Large/CheckBoxLarge/CheckBox-Checked_large_green.png")));
-        m_FinalTestResult = QString("PASS");
-    }
-
-    if (m_TestNames.contains("TestResult")) {
-        m_TestReport.remove("TestResult");
-        m_TestReport.insert("TestResult", m_FinalTestResult);
-    } else {
-        m_TestNames.append("TestResult");
-        m_TestReport.insert("TestResult", m_FinalTestResult);
-    }
-
-    if (m_TestNames.contains(ModuleTestName)) {
-        m_TestReport.remove(ModuleTestName);
-        m_TestReport.insert(ModuleTestName, TestResult);
-    } else {
-        m_TestNames.append(ModuleTestName);
-        m_TestReport.insert(ModuleTestName, TestResult);
-    }
-//    mp_Ui->sendTestReportBtn->setEnabled(true);
+void COven::EnableButton(bool EnableFlag)
+{
+    mp_Ui->beginTestBtn->setEnabled(EnableFlag);
 }
 
 /****************************************************************************/

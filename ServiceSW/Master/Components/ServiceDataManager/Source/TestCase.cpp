@@ -22,10 +22,10 @@
 
 namespace DataManager {
 
-CTestCase::CTestCase(QString ModuleName, QString CaseName, QString Status):
+CTestCase::CTestCase(QString ModuleName, QString CaseName, bool Status):
     m_ModuleName(ModuleName),
     m_CaseName(CaseName),
-    m_Status(Status)
+    m_Status(false)
 {
 
 }
@@ -72,6 +72,11 @@ QString CTestCase::GenReport()
 void CTestCase::AddResult(const QString& Key, const QString& Value)
 {
     m_Results.insert(Key, Value);
+}
+
+QMap<QString, QString>& CTestCase::GetResult()
+{
+    return m_Results;
 }
 
 void CTestCase::AddParameter(const QString& ParamName, const QString& ParamValue)

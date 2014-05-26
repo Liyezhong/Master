@@ -215,7 +215,7 @@ public slots:
      * \iparam   Status     Heating Status
      */
     /****************************************************************************/
-    void RefreshHeatingStatustoMain(const QString &Message, const Service::ModuleTestStatus &Status);
+    void RefreshTestStatustoMain(const QString &Message, const Service::ModuleTestStatus &Status);
 
     /****************************************************************************/
     /**

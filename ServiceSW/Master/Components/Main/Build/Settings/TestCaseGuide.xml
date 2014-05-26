@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE TestCaseGuide>
 <TestCaseGuide Version="1">
-    <OvenHeatingEmpty>
+    <OvenCoverSensor Description="Cover sensor test">
 		<Guide>
-			<Step>the empty first step</Step>
-			<Step>the empty second step</Step>
+			<Step>Please open the cover sensor manually.</Step>
+		</Guide>
+		<Guide>
+			<Step>Please close the cover sensor manually.</Step>
+		</Guide>
+	</OvenCoverSensor>
+    <OvenHeatingEmpty Description="Heating test (empty)">
+		<Guide>
+			<Step>Please take out the wax baths.</Step>
 		</Guide>
 	</OvenHeatingEmpty>
-	<OvenHeatingWater>
+	<OvenHeatingWater Description="Heating test (with water)">
 		<Guide>
-			<Step>the water first step</Step>
-			<Step>the water second step</Step>
-		</Guide>
-		<Guide>
-			<Step>the water second guide first step</Step>
-			<Step>the water second guide second step</Step>
+			<Step>Please fill water into paraffin baths to maximum level</Step>
 		</Guide>
 	</OvenHeatingWater>
 </TestCaseGuide>

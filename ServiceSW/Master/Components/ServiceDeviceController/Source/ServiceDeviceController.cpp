@@ -169,9 +169,9 @@ void ServiceDeviceController::ConnectSignalsnSlots()
                  mp_DeviceProcessor, SLOT(OnModuleManufacturingTest(Service::ModuleTestCaseID)))) {
         qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ModuleManufacturingTest' signal";
     }
-    if (!connect(mp_DeviceProcessor, SIGNAL(RefreshHeatingStatustoMain(QString,Service::ModuleTestStatus)),
-                 this, SLOT(RefreshHeatingStatustoMain(QString,Service::ModuleTestStatus)))) {
-        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'RefreshHeatingStatustoMain' signal";
+    if (!connect(mp_DeviceProcessor, SIGNAL(RefreshTestStatustoMain(QString,Service::ModuleTestStatus)),
+                 this, SLOT(RefreshTestStatustoMain(QString,Service::ModuleTestStatus)))) {
+        qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'RefreshTestStatustoMain' signal";
     }
 
     if (!connect(mp_DeviceProcessor, SIGNAL(ReturnManufacturingTestMsg(bool)),
@@ -353,10 +353,10 @@ void ServiceDeviceController::ReturnCalibrationInitMessagetoMain(const QString &
 }
 
 /****************************************************************************/
-void ServiceDeviceController::RefreshHeatingStatustoMain(const QString &Message, const Service::ModuleTestStatus &Status)
+void ServiceDeviceController::RefreshTestStatustoMain(const QString &Message, const Service::ModuleTestStatus &Status)
 {
 
-    qDebug()<<"ServiceDeviceController::RefreshHeatingStatustoMain()  --Message="<<Message << " Status:"<<Status;
+    qDebug()<<"ServiceDeviceController::RefreshTestStatustoMain()  --Message="<<Message << " Status:"<<Status;
 
     DeviceCommandProcessor::CmdReturnMessage* commandPtr(new DeviceCommandProcessor::CmdReturnMessage(Message));
     commandPtr->m_MessageType = Service::GUIMSGTYPE_HEATINGSTATUS;

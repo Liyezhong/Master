@@ -207,9 +207,9 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     }
 
     // Refresh heating status to GUI
-    if (!connect(this, SIGNAL(RefreshHeatingStatustoMain(QString, Service::ModuleTestStatus)),
-                 mp_GUIStartup, SLOT(RefreshHeatingStatus(QString, Service::ModuleTestStatus)))) {
-        qDebug() << "CStartup: cannot connect 'RefreshHeatingStatustoMain' signal";
+    if (!connect(this, SIGNAL(RefreshTestStatustoMain(QString, Service::ModuleTestStatus)),
+                 mp_GUIStartup, SLOT(RefreshTestStatus(QString, Service::ModuleTestStatus)))) {
+        qDebug() << "CStartup: cannot connect 'RefreshTestStatustoMain' signal";
     }
 
     if (!connect(this, SIGNAL(ReturnManufacturingMsgtoMain(bool )),
@@ -1420,7 +1420,7 @@ void ServiceMasterThreadController::OnReturnMessageCommand(Global::tRefType Ref,
         emit ReturnCalibrationInitMessagetoMain(Cmd.m_ReturnMessage, Cmd.m_CalibStatus);
         break;
     case Service::GUIMSGTYPE_HEATINGSTATUS:
-        emit RefreshHeatingStatustoMain(Cmd.m_ReturnMessage, Cmd.m_Status);
+        emit RefreshTestStatustoMain(Cmd.m_ReturnMessage, Cmd.m_Status);
         break;
     case Service::GUIMSGTYPE_MANUFMSGMODE:
         emit ReturnManufacturingMsgtoMain(Cmd.m_ModuleTestResult);

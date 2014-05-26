@@ -184,7 +184,7 @@ signals:
      * \iparam   Status     Heating Status
      */
     /****************************************************************************/
-    void RefreshHeatingStatustoMain(const QString &Message, const Service::ModuleTestStatus &Status);
+    void RefreshTestStatustoMain(const QString &Message, const Service::ModuleTestStatus &Status);
 
     /****************************************************************************/
     /**
@@ -253,7 +253,6 @@ private:
 
     IDeviceProcessing           &m_rIdevProc;           //!< IDeviceProcessing reference to interact with device
     bool                        m_IsConfigured;         //!< Indicates if configuration is successfully completed
-    TestState_t                 m_CurrentAction;
     bool                        m_ExhaustInit;
     bool                        m_WaterDeviceInit;
     bool                        m_HoodDeviceInit;

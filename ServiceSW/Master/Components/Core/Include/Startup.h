@@ -205,7 +205,7 @@ public slots:
     void ShowCalibrationInitMessagetoMain(const QString &Message, bool OkStatus);
 
     /* Refresh heating status */
-    void RefreshHeatingStatus(const QString &Message, const Service::ModuleTestStatus &Status);
+    void RefreshTestStatus(const QString &Message, const Service::ModuleTestStatus &Status);
     void OnReturnManufacturingMsg(bool Result);
 
 

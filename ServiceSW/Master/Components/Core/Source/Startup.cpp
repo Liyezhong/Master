@@ -28,6 +28,7 @@
 #include <ServiceWidget/Include/DlgWizardSelectTestOptions.h>
 #include <Core/Include/SelectTestOptions.h>
 #include "DiagnosticsManufacturing/Include/StatusConfirmDialog.h"
+#include "ServiceDataManager/Include/TestCaseGuide.h"
 
 namespace Core {
 
@@ -795,16 +796,14 @@ void CStartup::ShowErrorMessage(const QString &Message)
  *
  */
 /****************************************************************************/
-void CStartup::RefreshHeatingStatus(const QString &Message, const Service::ModuleTestStatus &Status)
+void CStartup::RefreshTestStatus(const QString &Message, const Service::ModuleTestStatus &Status)
 {
-    qDebug()<<"CStartup::RefreshHeatingStatus --"<<Message;
+    qDebug()<<"CStartup::RefreshTestStatus --"<<Message;
+    Service::ModuleTestCaseID Id = DataManager::CTestCaseGuide::Instance().GetTestCaseId(Message);
 
-    if (Message == "OvenHeatingEmpty" || Message == "OvenHeatingWater") {
+    if (Id == Service::OVEN_HEATING_EMPTY || Id == Service::OVEN_HEATING_WITH_WATER ) {
         if (mp_HeatingStatusDlg == NULL) {
-            bool Flag = false;
-            if (Message == "OvenHeatingEmpty")
-                Flag = true;
-            mp_HeatingStatusDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Flag, mp_MainWindow);
+            mp_HeatingStatusDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Id, mp_MainWindow);
             mp_HeatingStatusDlg->HideAbort();
             mp_HeatingStatusDlg->show();
             mp_HeatingStatusDlg->UpdateLabel(Status);
@@ -813,7 +812,7 @@ void CStartup::RefreshHeatingStatus(const QString &Message, const Service::Modul
             mp_HeatingStatusDlg->UpdateLabel(Status);
         }
     }
-    else if (Message == "OvenCoverSensor") {
+    else if (Id == Service::OVEN_COVER_SENSOR) {
         static bool OpenFlag = true;
         QString TestStatus;
         DiagnosticsManufacturing::CStatusConfirmDialog *dlg = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
@@ -838,7 +837,6 @@ void CStartup::RefreshHeatingStatus(const QString &Message, const Service::Modul
             mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(false);
             OpenFlag = true; // initial to open status.
         }
-
     }
 
 //    mp_ServiceConnector->HideBusyDialog();

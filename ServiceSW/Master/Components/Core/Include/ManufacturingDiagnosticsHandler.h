@@ -24,6 +24,7 @@
 #include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/MenuGroup.h"
 #include "DiagnosticsManufacturing/Include/OvenManufacturing.h"
+#include "Core/Include/ServiceDefines.h"
 
 namespace Core {
 
@@ -53,9 +54,9 @@ private:
 
     QEventLoop                                   m_LoopManufacturingTest;    //!< Loop for blocking Manufacturing Test command
 
-    bool ShowGuide(const QString &TestCaseName, int Index = 0);
-    void ShowFailedResult(const QString &TestCaseName);
-    void PerformManufOvenTests(const QStringList &TestCaseList);
+    bool ShowGuide(Service::ModuleTestCaseID Id, int Index = 0);
+    void ShowHeatingFailedResult(Service::ModuleTestCaseID Id);
+    void PerformManufOvenTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     bool GetTestResponse();
 
 signals:
@@ -68,7 +69,7 @@ signals:
     void PerformManufacturingTest(Service::ModuleTestCaseID Test);
 
 public slots:
-    void BeginManufacturingSWTests(Service::ModuleNames_t, const QStringList &TestCaseList);
+    void BeginManufacturingSWTests(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
     void OnReturnManufacturingMsg(bool Result);
 
     /* Return Message Slots */

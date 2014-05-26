@@ -26,17 +26,9 @@
 #include "DiagnosticsManufacturing/Include/HeatingTestDialog.h"
 #include "ui_HeatingTestDialog.h"
 #include <QDebug>
+#include "ServiceDataManager/Include/TestCaseGuide.h"
 
 namespace DiagnosticsManufacturing {
-
- // the following code is for test.
-QString CHeatingTestDialog::m_Duration = "";
-QString CHeatingTestDialog::m_UsedTime = "";
-QString CHeatingTestDialog::m_Target = "";
-QString CHeatingTestDialog::m_Top = "";
-QString CHeatingTestDialog::m_Bottom1 = "";
-QString CHeatingTestDialog::m_Bottom2 = "";
-//
 
 /****************************************************************************/
 /*!
@@ -45,7 +37,7 @@ QString CHeatingTestDialog::m_Bottom2 = "";
  *  \iparam p_Parent = Parent widget
  */
 /****************************************************************************/
-CHeatingTestDialog::CHeatingTestDialog(bool EmptyFlag, QWidget *p_Parent) :
+CHeatingTestDialog::CHeatingTestDialog(Service::ModuleTestCaseID TestCaseId, QWidget *p_Parent) :
     MainMenu::CDialogFrame(p_Parent),
     mp_Ui(new Ui::CHeatingTestDialog)
 {
@@ -58,36 +50,12 @@ CHeatingTestDialog::CHeatingTestDialog(bool EmptyFlag, QWidget *p_Parent) :
     m_IsBlgProcessStarted = false;
     setModal(true);
 
-    if (EmptyFlag) {
-        this->SetDialogTitle("Oven Heating Test (Empty)");
-    }
-    else {
-        this->SetDialogTitle("Oven Heating Test (with Water)");
-    }
+    QString Description = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(TestCaseId);
+    this->SetDialogTitle(Description);
 
     CONNECTSIGNALSLOTGUI(mp_Ui->abortButton, clicked(), this, AbortWaitDialog());
     CONNECTSIGNALSLOTGUI(&m_Timer, timeout(), this, reject());
     CONNECTSIGNALSIGNALGUI(&m_Timer, timeout(), this, Timeout());    
-
-    // the following code is for test.
-    if (m_Duration != "") {
-        mp_Ui->labelDuration->setText(m_Duration);
-    }
-    if (m_UsedTime != "") {
-        mp_Ui->labelUsedTime->setText(m_UsedTime);
-    }
-    if (m_Target != "") {
-        mp_Ui->labelTargetTemp->setText(m_Target);
-    }
-    if (m_Top != "") {
-        mp_Ui->labelCurTempTop->setText(m_Top);
-    }
-    if (m_Bottom1 != "") {
-        mp_Ui->labelCurTempBottom1->setText(m_Bottom1);
-    }
-    if (m_Bottom2 != "") {
-        mp_Ui->labelCurTempBottom2->setText(m_Bottom2);
-    }
 }
 
 /****************************************************************************/
@@ -137,13 +105,6 @@ void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
     if (Status.value("TargetTemp") != NULL) {
         mp_Ui->labelTargetTemp->setText(Status.value("TargetTemp"));
     }
-
-    m_Duration = mp_Ui->labelDuration->text();
-    m_UsedTime = mp_Ui->labelUsedTime->text();
-    m_Target = mp_Ui->labelTargetTemp->text();
-    m_Top = mp_Ui->labelCurTempTop->text();
-    m_Bottom1 = mp_Ui->labelCurTempBottom1->text();
-    m_Bottom2 = mp_Ui->labelCurTempBottom2->text();
 }
 
 

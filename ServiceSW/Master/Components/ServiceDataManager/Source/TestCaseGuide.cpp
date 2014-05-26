@@ -34,6 +34,8 @@ CTestCaseGuide::CTestCaseGuide()
 CTestCaseGuide::~CTestCaseGuide()
 {
     m_GuideHash.clear();
+    m_TestCaseDescriptionHash.clear();
+    m_TestCaseIDHash.clear();
 }
 
 GuideSteps CTestCaseGuide::GetGuideSteps(const QString& CaseName, int index)
@@ -50,6 +52,22 @@ GuideSteps CTestCaseGuide::GetGuideSteps(const QString& CaseName, int index)
     }
 
     return Steps;
+}
+
+QString CTestCaseGuide::GetTestCaseName(Service::ModuleTestCaseID Id)
+{
+    return m_TestCaseIDHash.value(Id);
+}
+
+Service::ModuleTestCaseID CTestCaseGuide::GetTestCaseId(const QString &TestCaseName)
+{
+    return m_TestCaseIDHash.key(TestCaseName);
+}
+
+QString CTestCaseGuide::GetTestCaseDescription(Service::ModuleTestCaseID Id)
+{
+    QString TestCaseName = m_TestCaseIDHash.value(Id);
+    return m_TestCaseDescriptionHash.value(TestCaseName);
 }
 
 bool CTestCaseGuide::InitData(QString FileName)
@@ -82,7 +100,7 @@ bool CTestCaseGuide::DeserializeContent(QIODevice& IODevice, bool CompleteData)
     QXmlStreamReader XmlStreamReader;
     XmlStreamReader.setDevice(&IODevice);
 
-    // look for node <ServiceParameters>
+    // look for node <TestCaseGuide>
     if (!Helper::ReadNode(XmlStreamReader, "TestCaseGuide")) {
         qDebug() << "DeserializeContent: abort reading. Node not found: TestCaseGuide";
         return false;
@@ -98,10 +116,17 @@ bool CTestCaseGuide::DeserializeContent(QIODevice& IODevice, bool CompleteData)
     {
         (void) XmlStreamReader.readNext();
         QString ElementName = XmlStreamReader.name().toString();
+        QXmlStreamAttributes Attributes = XmlStreamReader.attributes();
 
         if (XmlStreamReader.isStartElement()) {
             if (ElementName == "Step") {
                 Steps<<XmlStreamReader.readElementText();
+            }
+            else if (ElementName != "TestCaseGuide" && ElementName != "Guide") {
+                if (Attributes.size()>0) {
+                    m_TestCaseDescriptionHash.insert(ElementName, Attributes[0].value().toString());
+                }
+                SavetoIDHash(ElementName);
             }
         }
         else if (XmlStreamReader.isEndElement()) {
@@ -120,6 +145,24 @@ bool CTestCaseGuide::DeserializeContent(QIODevice& IODevice, bool CompleteData)
 
     }
     return Result;
+}
+
+void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
+{
+    Service::ModuleTestCaseID Id;
+
+    qDebug()<<"SavetoIdHash name="<<TestCaseName;
+    if (TestCaseName == "OvenHeatingEmpty") {
+        Id = Service::OVEN_HEATING_EMPTY;
+    }
+    else if (TestCaseName == "OvenHeatingWater") {
+        Id = Service::OVEN_HEATING_WITH_WATER;
+    }
+    else if (TestCaseName == "OvenCoverSensor") {
+        Id = Service::OVEN_COVER_SENSOR;
+    }
+
+    m_TestCaseIDHash.insert(Id, TestCaseName);
 }
 
 } //end of namespace Datamanager

@@ -34,6 +34,7 @@
 #include <QPixmap>
 #include <QEvent>
 #include "DiagnosticsManufacturing/Include/HeatingTestDialog.h"
+#include "Core/Include/ServiceDefines.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -56,12 +57,30 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  To add data item to the table
-     *  \iparam SerialNumber = Serial number of the module
-     *  \iparam Test = Test name
+     *  \brief  Set result to test case
+     *  \iparam Id = Test Case Id
+     *  \iparam Result = Test result
      */
     /****************************************************************************/
-    void AddItem(const QString &SerialNumber, const QString &Test, const QString &ModuleTestName);
+    void SetTestResult(Service::ModuleTestCaseID Id, bool Result);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Enable 'begin test' button
+     *  \iparam EnableFlag = Enable or Disable
+     */
+    /****************************************************************************/
+    void EnableButton(bool EnableFlag);
+
+private:
+    /****************************************************************************/
+    /*!
+     *  \brief  To add data item to the table
+     *  \iparam Index = Test Case No.
+     *  \iparam Id = Test Case Id
+     */
+    /****************************************************************************/
+    void AddItem(quint8 Index, Service::ModuleTestCaseID_t Id);
 
     /****************************************************************************/
     /*!
@@ -94,7 +113,6 @@ private:
     QStringList m_TestResult;                                           //!< StringList stores test result
     MainMenu::CMessageDlg *mp_MessageDlg;                               //!< Information dialog
     QString m_FinalTestResult;                                          //!< Stores Final test result
-    DiagnosticsManufacturing::CHeatingTestDialog* mp_HeatingDlg;
 
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();
@@ -105,16 +123,14 @@ signals:
      *  \brief Signal emitted for module test
      */
     /****************************************************************************/
-    void BeginModuleTest(Service::ModuleNames_t, const QStringList &TestCaseList);
+    void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
 
 private slots:
     void OnOkClicked(QString EnteredString);
     void OnESCClicked();
     void RetranslateUI();
-    void HandleTimeout();
 public slots:
     void BeginTest();
-    void SetTestResult(const QString &TestName, bool Result);
     void SendTestReport();
     void ResetTestStatus();
 

@@ -345,7 +345,7 @@ signals:
        * \iparam   status     Heating status
        */
       /****************************************************************************/
-      void RefreshHeatingStatustoMain(const QString &Message, const Service::ModuleTestStatus &status);
+      void RefreshTestStatustoMain(const QString &Message, const Service::ModuleTestStatus &status);
 
       /****************************************************************************/
       /**

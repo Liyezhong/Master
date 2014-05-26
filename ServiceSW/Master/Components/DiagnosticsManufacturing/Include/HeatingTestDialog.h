@@ -43,7 +43,7 @@ class CHeatingTestDialog : public MainMenu::CDialogFrame
     friend class  CTestMainMenu;
 
 public:
-    explicit CHeatingTestDialog(bool EmptyFlag, QWidget *p_Parent = 0);
+    explicit CHeatingTestDialog(Service::ModuleTestCaseID TestCaseId, QWidget *p_Parent = 0);
     virtual ~CHeatingTestDialog();
     void SetText(QString Text);
     void UpdateLabel(const Service::ModuleTestStatus &Status);
@@ -92,13 +92,6 @@ signals:
      */
     /****************************************************************************/
     void AbortBlgProcess(bool IsBLGProcessAborted);
-public:
-    static QString m_Duration;
-    static QString m_UsedTime;
-    static QString m_Target;
-    static QString m_Top;
-    static QString m_Bottom1;
-    static QString m_Bottom2;
 };
 
 } // end namespace DiagnosticsManufacturing

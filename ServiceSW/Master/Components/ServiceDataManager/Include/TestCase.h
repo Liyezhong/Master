@@ -60,27 +60,34 @@ public:
 
     /****************************************************************************/
     /**
-     * \brief Set status for this test case.
-     * \param Status = Pass or FAIL.
+     * \brief Get result for this test case.
      */
     /****************************************************************************/
-    void SetStatus(const QString Status){
+    QMap<QString, QString>& GetResult();
+
+    /****************************************************************************/
+    /**
+     * \brief Set status for this test case.
+     * \param Status = true or false (Pass or FAIL).
+     */
+    /****************************************************************************/
+    void SetStatus(bool Status){
         m_Status = Status;
     }
 
 private:
     QString m_ModuleName;                  ///< Store module name
     QString m_CaseName;                    ///< Store test case name
-    QString m_Status;                      ///< Store test case Status PASS or FAIL
+    bool m_Status;                      ///< Store test case Status true-PASS or false-FAIL
     QMap<QString, QString> m_Parameters;   ///< Store test case parameters
-    QMap<QString, QString> m_Results;      ///< Stroe test Case results
+    QMap<QString, QString> m_Results;      ///< Store test Case results
 
     /****************************************************************************/
     /**
      * \brief Default constructor.
      */
     /****************************************************************************/
-    CTestCase(QString ModuleName, QString CaseName, QString Status = "PASS");
+    CTestCase(QString ModuleName, QString CaseName, bool Status = false);
 
     /****************************************************************************/
     /**

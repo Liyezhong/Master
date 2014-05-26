@@ -23,6 +23,9 @@
 #include "Core/Include/CMessageString.h"
 #include "DiagnosticsManufacturing/Include/OvenManufacturing.h"
 #include "DiagnosticsManufacturing/Include/HeatingTestDialog.h"
+#include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "ServiceDataManager/Include/TestCase.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
 
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
@@ -45,7 +48,7 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
     mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
     mp_OvenManuf = new DiagnosticsManufacturing::COven(mp_ServiceConnector, mp_MainWindow);
 
-    CONNECTSIGNALSLOTGUI(mp_OvenManuf, BeginModuleTest(Service::ModuleNames_t, QStringList), this, BeginManufacturingSWTests(Service::ModuleNames_t, QStringList));
+    CONNECTSIGNALSLOTGUI(mp_OvenManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
 
 
     /* Manufacturing SW Reset status */
@@ -90,7 +93,7 @@ void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
  *  \iparam ModuleName = Name of the module
  */
 /****************************************************************************/
-void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::ModuleNames_t ModuleName, const QStringList &TestCaseList)
+void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::ModuleNames_t ModuleName, const QList<Service::ModuleTestCaseID> &TestCaseList)
 {
     qDebug()<<"CManufacturingDiagnosticsHandler::BeginManufacturingSWTests : ModuleName="<<ModuleName;
     switch(ModuleName) {
@@ -127,24 +130,17 @@ bool CManufacturingDiagnosticsHandler::GetTestResponse()
     return true;
 }
 
-bool CManufacturingDiagnosticsHandler::ShowGuide(const QString &TestCaseName, int Index)
+bool CManufacturingDiagnosticsHandler::ShowGuide(Service::ModuleTestCaseID Id, int Index)
 {
-    QString GuideText = TestCaseName;
-    qDebug() << "ShowGuide :"<<TestCaseName;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    QStringList Steps = DataManager::CTestCaseGuide::Instance().GetGuideSteps(TestCaseName, Index);
+    QString GuideText;
 
-    if (TestCaseName == "OvenCoverSensor") {
-        if (Index == 0) {
-            GuideText = "Please open the oven cover manually.";
+    for(int i=0; i<Steps.size(); i++) {
+        GuideText.append(Steps.at(i));
+        if (i <= Steps.size()-1 ) {
+            GuideText.append("\n");
         }
-        else if (Index == 1){
-            GuideText = "Please close the oven cover manually.";
-        }
-    }
-    else if (TestCaseName == "OvenHeatingEmpty") {
-        GuideText = "Please remove the wax baths.";
-    }
-    else if (TestCaseName == "OvenHeatingWater") {
-        GuideText = "Please fill water into 3 paraffin baths to maximum level.";
     }
 
     // display success message
@@ -173,14 +169,18 @@ bool CManufacturingDiagnosticsHandler::ShowGuide(const QString &TestCaseName, in
     return false;
 }
 
-void CManufacturingDiagnosticsHandler::ShowFailedResult(const QString &TestCaseName)
+void CManufacturingDiagnosticsHandler::ShowHeatingFailedResult(Service::ModuleTestCaseID Id)
 {
-    DiagnosticsManufacturing::CHeatingTestDialog *dlg = new DiagnosticsManufacturing::CHeatingTestDialog(true, mp_MainWindow);
-    QString Text = TestCaseName;
-    Service::ModuleTestStatus Status;
-    Status.insert("Duration", "0");
+    DiagnosticsManufacturing::CHeatingTestDialog *dlg = new DiagnosticsManufacturing::CHeatingTestDialog(Id, mp_MainWindow);
+    QString Text = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    Service::ModuleTestStatus Status = p_TestCase->GetResult();
+    dlg->UpdateLabel(Status);
+
     Text.append(" ");
-    Text.append("Test Failed !");
+    Text.append("Failed !");
     dlg->SetDialogTitle("Error");
     dlg->SetText(Text);
     dlg->HideAbort(false);
@@ -192,166 +192,73 @@ void CManufacturingDiagnosticsHandler::ShowFailedResult(const QString &TestCaseN
  *  \brief Function called for Module tests for manufacturing SW
  */
 /****************************************************************************/
-void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QStringList &TestCaseList)
+void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service::ModuleTestCaseID> &TestCaseList)
 {
-    QString TestCaseDisplayText;
     quint32 FailureId(0);
     quint32 OkId(0);
+    quint32 EventId(0);
     qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufOvenTests ---" << TestCaseList;
     for(int i=0; i<TestCaseList.size(); i++) {
-        QString TestCaseName = TestCaseList.at(i);
+        Service::ModuleTestCaseID Id = TestCaseList.at(i);
 
-        bool NextFlag = ShowGuide(TestCaseName, 0);
+        bool NextFlag = ShowGuide(Id, 0);
         if (NextFlag == false) {
             break;
         }
 
-        if (TestCaseName == "OvenCoverSensor") {
+        switch( Id ) {
+        case Service::OVEN_COVER_SENSOR:
+            EventId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_SUCCESS;
-            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST);
-            TestCaseDisplayText = "Oven Cover Sensor Test";
-            emit PerformManufacturingTest(Service::OVEN_COVER_SENSOR);
-        }
-        else if (TestCaseName == "OvenHeatingEmpty") {
+            break;
+        case Service::OVEN_HEATING_EMPTY:
+            EventId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_SUCCESS;
-            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST);
-            TestCaseDisplayText = "Oven Heating Test (empty) ";
-            emit PerformManufacturingTest(Service::OVEN_HEATING_EMPTY);
-
-        }
-        else if (TestCaseName == "OvenHeatingWater") {
+            break;
+        case Service::OVEN_HEATING_WITH_WATER:
+            EventId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST_SUCCESS;
-            Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST);
-            TestCaseDisplayText = "Oven Heating Test (with water)";
-            emit PerformManufacturingTest(Service::OVEN_HEATING_WITH_WATER);
+            break;
         }
+
+        Global::EventObject::Instance().RaiseEvent(EventId);
+        emit PerformManufacturingTest(Id);
 
         bool Result = GetTestResponse();
 
-        if (TestCaseName == "OvenCoverSensor") {
-            if (Result == true) {
-                NextFlag = ShowGuide(TestCaseName, 1);
-                if (NextFlag == false)
-                    break;
-                emit PerformManufacturingTest(Service::OVEN_COVER_SENSOR);
-                Result = GetTestResponse();
-            }
+        if (Id == Service::OVEN_COVER_SENSOR && Result == true) {
+            NextFlag = ShowGuide(Id, 1);
+            if (NextFlag == false)
+                break;
+            emit PerformManufacturingTest(Service::OVEN_COVER_SENSOR);
+            Result = GetTestResponse();
         }
 
         if (Result == false) {
             Global::EventObject::Instance().RaiseEvent(FailureId);
-            QString Text = QString("%1 %2").arg(TestCaseDisplayText, "- Fail");
+            QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+            QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+            DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+            QString Text = QString("%1 %2\n%3").arg(TestCaseDescription, "- Fail", p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
-            if (TestCaseName != "OvenCoverSensor") {
-                ShowFailedResult(TestCaseDisplayText);
+            if (Id != Service::OVEN_COVER_SENSOR) {
+                ShowHeatingFailedResult(Id);
             }
 
         }
         else {
             Global::EventObject::Instance().RaiseEvent(OkId);
-            QString Text = QString("%1 %2").arg(TestCaseDisplayText, "- Success");
+            QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+            QString Text = QString("%1 %2").arg(TestCaseDescription, "- Success");
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
-        mp_OvenManuf->SetTestResult(TestCaseName, Result);
+        mp_OvenManuf->SetTestResult(Id, Result);
     }
-
-#if 0
-    QString Title;
-    QString GBox;
-    QString Instr;
-
-    qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufOvenTests -- emit ASB3_0_FWUPDATE";
-
-    emit PerformManufacturingTest(Service::ASB3_0_FWUPDATE);
-    if(!GetTestResponse())
-    {
-        mp_OvenManuf->SetTestResult(Service::OVEN_FIRMWARE_UPDATE, false);
-        Title = ( QApplication::translate("Core::CStartup", "Firmware Update Failed", 0, QApplication::UnicodeUTF8));
-        GBox = Service::CMessageString::MSG_ASB3_0_FWUPDATE_FAILURE;
-        Instr = ( QApplication::translate("Core::CStartup", "Firmware update failed ! Are you sure you want to continue with the tests.\nPress Next button to continue and Abort button to abort.",
-                                          0, QApplication::UnicodeUTF8));
-        mp_ServiceConnector->SetPopUpDialogBackNext(Title, GBox, Instr);
-        MainMenu::ButtonPress_t Response1 = mp_ServiceConnector->GetPopUpResponse();
-        mp_ServiceConnector->ClosePopUp();
-        if (MainMenu::BTN_NEXT_PRESSED != Response1)
-        {
-            return;
-        }
-    }
-    else
-    {
-        mp_OvenManuf->SetTestResult(Service::OVEN_FIRMWARE_UPDATE, true);
-    }
-
-    emit PerformManufacturingTest(Service::ASB12_0_FWUPDATE);
-    if(!GetTestResponse())
-    {
-        Title = ( QApplication::translate("Core::CStartup", "Firmware Update Failed", 0, QApplication::UnicodeUTF8));
-        GBox = Service::CMessageString::MSG_ASB12_0_FWUPDATE_FAILURE;
-        Instr = ( QApplication::translate("Core::CStartup", "Firmware update failed ! Are you sure you want to continue with the tests.\nPress Next button to continue and Abort button to abort.",
-                                          0, QApplication::UnicodeUTF8));
-        mp_ServiceConnector->SetPopUpDialogBackNext(Title, GBox, Instr);
-        MainMenu::ButtonPress_t Response1 = mp_ServiceConnector->GetPopUpResponse();
-        mp_ServiceConnector->ClosePopUp();
-        if (MainMenu::BTN_NEXT_PRESSED != Response1)
-        {
-            return;
-        }
-    }
-
-    (void) OnOvenHeatingTest();
-
-    emit PerformManufacturingTest(Service::OVEN_PHOTOSENSOR_TEST);
-    if(!GetTestResponse())
-    {
-        mp_OvenManuf->SetTestResult(Service::OVEN_PHOTOSENSOR_TEST, false);
-    }
-    else
-    {
-        mp_OvenManuf->SetTestResult(Service::OVEN_PHOTOSENSOR_TEST, true);
-    }
-
-    QString Title_ =  QApplication::translate("Core::CManufacturingDiagnosticsHandler", "Slide Count",
-                                              0, QApplication::UnicodeUTF8);
-    QString GBox_ =  QApplication::translate("Core::CManufacturingDiagnosticsHandler", "Slide Count",
-                                             0, QApplication::UnicodeUTF8);
-    QString Instr_ =  QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                      "Place the golden standard rack with 30 slides in R29 station. Do you confirm the rack is in place? ",
-                                              0, QApplication::UnicodeUTF8);
-    mp_ServiceConnector->SetPopUpDialogYesNo(Title_, GBox_, Instr_);
-    MainMenu::ButtonPress_t Response_1 = mp_ServiceConnector->GetPopUpResponse();
-    mp_ServiceConnector->ClosePopUp();
-    if ((MainMenu::BTN_ABORT_PRESSED == Response_1) ||
-            (MainMenu::BTN_CANCEL_PRESSED == Response_1) ||
-            (MainMenu::BTN_NO_PRESSED == Response_1)) {
-        ShowMessage( QApplication::translate("Core::CManufacturingDiagnosticsHandler", "Manufacturing Test Aborted!",
-                                             0, QApplication::UnicodeUTF8));
-        return;
-    }
-    emit PerformManufacturingTest(Service::OVEN_SLIDECOUNT_TEST);
-    if(!GetTestResponse())
-    {
-        mp_OvenManuf->SetTestResult(Service::OVEN_SLIDECOUNT_TEST, false);
-    }
-    else
-    {
-        mp_OvenManuf->SetTestResult(Service::OVEN_SLIDECOUNT_TEST, true);
-    }
-
-    emit PerformManufacturingTestCANID(Service::OVEN_CANID);
-    if(!GetTestResponse())
-    {
-        mp_OvenManuf->SetTestResult(Service::OVEN_CANID, false);
-    }
-    else
-    {
-        mp_OvenManuf->SetTestResult(Service::OVEN_CANID, true);
-    }
-#endif
+    mp_OvenManuf->EnableButton(true);
 }
 
 

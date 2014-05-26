@@ -24,6 +24,7 @@
 #include <Global/Include/AlarmPlayer.h>
 #include <EventHandler/Include/StateHandler.h>
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "ServiceDataManager/Include/TestCaseGuide.h"
 
 /****************************************************************************/
 /*!
@@ -85,6 +86,10 @@ int main(int Argc, char *p_Argv[])
 
     QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseConfig.xml";
     DataManager::CTestCaseFactory::Instance().InitData(FileName);
+
+    FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/TestCaseGuide.xml";
+    DataManager::CTestCaseGuide::Instance().InitData(FileName);
+
 
     QThread thrMasterThread;
 

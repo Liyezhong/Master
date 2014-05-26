@@ -20,6 +20,7 @@
 #ifndef TESTCASEGUIDE_H
 #define TESTCASEGUIDE_H
 
+#include "Core/Include/ServiceDefines.h"
 #include <QString>
 #include <QIODevice>
 #include <QList>
@@ -61,9 +62,38 @@ public:
     /****************************************************************************/
     GuideSteps GetGuideSteps(const QString& CaseName, int index);
 
+    /****************************************************************************/
+    /**
+     * \brief Get test case name by test case id.
+     * \param Id = test case id
+     * \return Test case name.
+     */
+    /****************************************************************************/
+    QString GetTestCaseName(Service::ModuleTestCaseID Id);
+
+    /****************************************************************************/
+    /**
+     * \brief Get test case id by test case name.
+     * \param Id = test case name
+     * \return Test case id.
+     */
+    /****************************************************************************/
+    Service::ModuleTestCaseID GetTestCaseId(const QString &TestCaseName);
+
+    /****************************************************************************/
+    /**
+     * \brief Get test case discription by test case id.
+     * \param Id = test case id
+     * \return Test case display text.
+     */
+    /****************************************************************************/
+    QString GetTestCaseDescription(Service::ModuleTestCaseID Id);
+
 private:
     static CTestCaseGuide m_TestCaseGuide;   ///< The one and only instance.
     QHash<QString, QList<GuideSteps> > m_GuideHash; //!< Stroes all test case guide, key=test case name
+    QHash<QString, QString> m_TestCaseDescriptionHash; //!< Stores all test case display text, key=test case name
+    QHash<Service::ModuleTestCaseID, QString> m_TestCaseIDHash;  //!< Stores all test case ID, key=ID, value=test case name
 
     /****************************************************************************/
     /**
@@ -84,6 +114,8 @@ private:
     /****************************************************************************/
 
     bool DeserializeContent(QIODevice& IODevice, bool CompleteData);
+
+    void SavetoIDHash(const QString &TestCaseName);
 };
 
 } //end of namespace Datamanager
