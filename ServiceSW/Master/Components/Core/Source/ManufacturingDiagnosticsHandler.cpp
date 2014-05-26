@@ -133,6 +133,7 @@ bool CManufacturingDiagnosticsHandler::GetTestResponse()
 bool CManufacturingDiagnosticsHandler::ShowGuide(Service::ModuleTestCaseID Id, int Index)
 {
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
     QStringList Steps = DataManager::CTestCaseGuide::Instance().GetGuideSteps(TestCaseName, Index);
     QString GuideText;
 
@@ -145,7 +146,7 @@ bool CManufacturingDiagnosticsHandler::ShowGuide(Service::ModuleTestCaseID Id, i
 
     // display success message
     MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_MainWindow);
-    dlg->SetTitle(TestCaseName);
+    dlg->SetTitle(TestCaseDescription);
     dlg->SetIcon(QMessageBox::Information);
     dlg->SetText(GuideText);
     dlg->HideCenterButton();
@@ -237,11 +238,14 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service
             Result = GetTestResponse();
         }
 
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+        p_TestCase->SetStatus(Result);
+
         if (Result == false) {
             Global::EventObject::Instance().RaiseEvent(FailureId);
             QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-            QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
-            DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
             QString Text = QString("%1 %2\n%3").arg(TestCaseDescription, "- Fail", p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 

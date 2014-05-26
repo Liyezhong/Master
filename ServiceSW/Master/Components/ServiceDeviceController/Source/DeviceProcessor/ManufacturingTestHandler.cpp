@@ -198,7 +198,7 @@ qint32 ManufacturingTestHandler::TestOvenHeating(Service::ModuleTestCaseID Id)
     if ( OvenStatus == -1 )  // failed.
     {
         p_TestCase->SetStatus(false);
-        p_TestCase->AddResult("FailReason", Service::MSG_HEATING_FAIL);
+ //       p_TestCase->AddResult("FailReason", Service::MSG_HEATING_FAIL);
         if (m_UserAbort)
         {
             return 1;
@@ -279,6 +279,7 @@ void ManufacturingTestHandler::SetFailReason(Service::ModuleTestCaseID Id, const
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     p_TestCase->AddResult("FailReason", FailMsg);
+    p_TestCase->SetStatus(false);
 
 }
 
