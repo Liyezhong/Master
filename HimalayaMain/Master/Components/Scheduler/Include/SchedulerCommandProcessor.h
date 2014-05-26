@@ -53,10 +53,10 @@ namespace Scheduler{
 /****************************************************************************/
 typedef struct
 {
-    qreal			TempRTBottom1;
-    qreal			TempRTBottom2;
-    qreal			TempOvenBottom1;
-    qreal			TempOvenBottom2;
+    qreal			TempRTBottom1;      ///<  Definition/Declaration of variable TempRTBottom1
+    qreal			TempRTBottom2;      ///<  Definition/Declaration of variable TempRTBottom2
+    qreal			TempOvenBottom1;    ///<  Definition/Declaration of variable TempOvenBottom1
+    qreal			TempOvenBottom2;    ///<  Definition/Declaration of variable TempOvenBottom2
 	qreal			PressureAL;       ///<  Definition/Declaration of variable PressureAL
 	qreal			TempALLevelSensor;       ///<  Definition/Declaration of variable TempALLevelSensor
 	qreal			TempALTube1;       ///<  Definition/Declaration of variable TempALTube1
@@ -68,6 +68,14 @@ typedef struct
 	qreal			TempOvenTop;       ///<  Definition/Declaration of variable TempOvenTop
 	quint16			OvenLidStatus;       ///<  Definition/Declaration of variable OvenLidStatus
 	quint16			RetortLockStatus;       ///<  Definition/Declaration of variable RetortLockStatus
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function toLogString
+     *
+     *  \return from toLogString
+     */
+    /****************************************************************************/
     QString toLogString(){
         return QString("RTb1(%1)RTb2(%2)RTs(%3)RTl(%4)").arg(TempRTBottom1).arg(TempRTBottom2).arg(TempRTSide).arg(RetortLockStatus) +
                 QString("OVb1(%1)OVb2(%2)OVt(%3)OVl(%4)").arg(TempOvenBottom1).arg(TempOvenBottom2).arg(TempOvenTop).arg(OvenLidStatus) +
@@ -135,13 +143,15 @@ signals:
     /****************************************************************************/
     /**
      * @brief emit the signal when command be finished!
-     *
+     *  \param  cmd
+     *  \param  result
      */
     /****************************************************************************/
     void onCmdFinished(Global::CommandShPtr_t *cmd, bool result);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal DCLConfigurationFinished
+     *  \param  RetCode
      */
     /****************************************************************************/
     void DCLConfigurationFinished(ReturnCode_t RetCode);
@@ -164,13 +174,15 @@ public slots:
     /****************************************************************************/
     /**
      * @brief controller call this function to add a new command to process.
-     *
+     *  \param cmd
      */
     /****************************************************************************/
     virtual void pushCmd(CmdSchedulerCommandBase *cmd) { this->pushCmd4Slot(cmd); }
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of slot DevProcInitialisationAckn
+     *  \param  instanceID
+     *  \param  configResult
      */
     /****************************************************************************/
     virtual void DevProcInitialisationAckn(quint32 instanceID, ReturnCode_t configResult)
@@ -180,6 +192,8 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of slot DevProcConfigurationAckn
+     *  \param  instanceID
+     *  \param  hdlInfo
      */
     /****************************************************************************/
     virtual void DevProcConfigurationAckn(quint32 instanceID, ReturnCode_t hdlInfo)
@@ -189,6 +203,8 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of slot DevProcStartNormalOpModeAckn
+     *  \param  instanceID
+     *  \param  hdlInfo
      */
     /****************************************************************************/
     virtual void DevProcStartNormalOpModeAckn(quint32 instanceID, ReturnCode_t hdlInfo)
@@ -198,6 +214,11 @@ public slots:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of slot ThrowError
+     *  \param  instanceID
+     *  \param  usErrorGroup
+     *  \param  usErrorID
+     *  \param  usErrorData
+     *  \param  TimeStamp
      */
     /****************************************************************************/
     virtual void ThrowError(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp)
@@ -331,6 +352,7 @@ public:
     /****************************************************************************/
     /**
      * @brief constructor and destructor.
+     * \param controller
      *
      */
     /****************************************************************************/

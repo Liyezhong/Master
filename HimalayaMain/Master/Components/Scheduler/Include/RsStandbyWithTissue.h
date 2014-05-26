@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file CRsStandbyWithTissue.h
+/*! \file RsStandbyWithTissue.h
  *
- *  \brief CRsStandby class definition.
+ *  \brief RsStandby class definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 22.04.2014
@@ -34,23 +34,84 @@ class  CRsStandbyWithTissue : public CErrorHandlingSMBase
 {
     Q_OBJECT
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function HeatingStrategy
+     *
+     *  \param pStateMachine = pointer QStateMachine
+     *  \param pParentState = pointer QState
+     *
+     */
+    /****************************************************************************/
     CRsStandbyWithTissue (QStateMachine* pStateMachine, QState* pParentState);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  desctruction CRsStandbyWithTissue
+     */
+    /****************************************************************************/
     ~CRsStandbyWithTissue();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetCurrentState
+     *
+     *  \param statesList = QSet<QAbstractState*>
+     *
+     *	\return SchedulerStateMachine_t
+     */
+    /****************************************************************************/
     SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function OnHandleWorkFlow
+     *
+     *  \param flag = bool
+     *
+     */
+    /****************************************************************************/
     void OnHandleWorkFlow(bool flag);
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function RTStopTempCtrl
+     *
+     */
+    /****************************************************************************/
     void RTStopTempCtrl(DeviceControl::RTTempCtrlType_t);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ShutdownFailedHeater
+     *
+     */
+    /****************************************************************************/
     void ShutdownFailedHeater();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ReleasePressure
+     *
+     */
+    /****************************************************************************/
     void ReleasePressure();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function TasksDone
+     *
+     */
+    /****************************************************************************/
     void TasksDone(bool);
 
 private:
-    QState *mp_Initial;
-    QState *mp_RTBottomStopTempCtrl;
-    QState *mp_RTSideStopTempCtrl;
-    QState *mp_ShutdownFailedHeater;
-    QState *mp_ReleasePressure;
+    QState *mp_Initial;                 //!< the current state
+    QState *mp_RTBottomStopTempCtrl;    //!< RT Bottom stop tempature control state
+    QState *mp_RTSideStopTempCtrl;      //!< RT Top stop tempatrue control state
+    QState *mp_ShutdownFailedHeater;    //!< shutdown failed heater state
+    QState *mp_ReleasePressure;         //!< release pressure
 };
 }
 #endif // RSSTANDBY_WITH_TISSUE_H

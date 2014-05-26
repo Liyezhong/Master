@@ -468,6 +468,7 @@ protected:
     /****************************************************************************/
     /**
      * \brief Power will fail shortly.
+     * \param PowerFailStage
      */
     /****************************************************************************/
     virtual void OnPowerFail(const Global::PowerFailStages PowerFailStage);

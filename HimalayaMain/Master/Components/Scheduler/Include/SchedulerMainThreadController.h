@@ -505,6 +505,7 @@ signals:
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of signal signalProgramStart
+          *  \param ProgramID
           */
          /****************************************************************************/
          void signalProgramStart(const QString& ProgramID);
@@ -692,6 +693,7 @@ protected:
         /****************************************************************************/
         /**
          *  \brief Called when power failure is to expect.
+         *  \param  PowerFailStage
          */
         /****************************************************************************/
     virtual void OnPowerFail(const Global::PowerFailStages PowerFailStage);
@@ -703,6 +705,13 @@ protected:
         /****************************************************************************/
 //        void OnRaiseAlarmLocalRemote(Global::tRefType Ref, const HimalayaErrorHandler::CmdRaiseAlarm &Cmd);
 
+         /****************************************************************************/
+         /**
+          *   \brief Definition/Declaration of function OnProgramAction
+          *   \param Ref
+          *   \param Cmd
+          */
+         /****************************************************************************/
         void OnProgramAction(Global::tRefType Ref, const MsgClasses::CmdProgramAction& Cmd);
         /****************************************************************************/
         /*!
@@ -766,8 +775,6 @@ protected:
         /**
          * @brief   return current Event key
          *
-         * @param   void
-         *
          * @return  void
          */
         /****************************************************************************/
@@ -779,9 +786,10 @@ protected:
          *  \iparam    EventKey
          *  \iparam    EventID
          *  \iparam    Scenario
-         *  \bparam    ActionResult
-         *
-         ****************************************************************************/
+         *  \iparam    ActionResult
+         *  \iparam    Active
+         */
+         /****************************************************************************/
         virtual void RaiseError(const quint32 EventKey, const quint32 EventID, const quint32 Scenario,
                                   const bool ActionResult, const bool Active = true)
         {
@@ -842,6 +850,7 @@ protected:
         /****************************************************************************/
         /**
          *  \brief push Command to Q2
+         *  \param CmdPtr
          */
         /****************************************************************************/
         void PushDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t CmdPtr);
@@ -849,20 +858,25 @@ protected:
         /****************************************************************************/
         /**
          *  \brief pop Command from Q2
+         *  \param PtrCmd
+         *  \return from PopDeviceControlCmdQueue of bool
          */
         /****************************************************************************/
          bool PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd);
 
         /****************************************************************************/
         /**
-         *
-         * pop Command from Q2
+         *  \brief Definition/Declaration of function PopDeviceControlCmdQueue
+         *  \iparam PtrCmd
+         *  \iparam CmdName
+         *  \return from PopDeviceControlCmdQueue
          */
         /****************************************************************************/
          bool PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd, const QString& CmdName);
         /****************************************************************************/
         /**
          *  \brief Get the time(in seconds) that Oven has been heated
+         *  \return from GetOvenHeatingTime of qint64
          */
         /****************************************************************************/
         qint64 GetOvenHeatingTime();
@@ -882,11 +896,12 @@ protected:
 		 *  \return from GetCurProgramStepIndex
 		 */
 		/****************************************************************************/
-		int	GetCurProgramStepIndex() { return m_CurProgramStepIndex; }
-        /****************************************************************************/
+        int	GetCurProgramStepIndex() { return m_CurProgramStepIndex; }
+
         /****************************************************************************/
         /**
          *  \brief Set Scheduler Command processor
+         *  \param pSchedCmdProcessor
          */
         /****************************************************************************/
         void SetSchedCommandProcessor( Scheduler::SchedulerCommandProcessorBase* pSchedCmdProcessor ) { m_SchedulerCommandProcessor = pSchedCmdProcessor; }
@@ -894,7 +909,6 @@ protected:
         /****************************************************************************/
         /**
          *  \brief Restart Level sensor's temperature in case of RC_Levelsensor_Heating_Overtime
-         *  \param  void
          *  \return DeviceControl::ReturnCode_t - success or failure code
          */
         /****************************************************************************/
@@ -921,8 +935,6 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  slot to shut down all the failed heaters
-         *  \param  void
-         *  \return void
          */
         /****************************************************************************/
         void ShutdownFailedHeater();

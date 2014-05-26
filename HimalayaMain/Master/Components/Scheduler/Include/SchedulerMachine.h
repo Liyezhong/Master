@@ -1,7 +1,7 @@
 /****************************************************************************/
 /*! \file SchedulerMachine.h
  *
- *  \brief CSchedulerStateMachine class definition.
+ *  \brief SchedulerStateMachine class definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 02.01.2014
@@ -67,11 +67,22 @@ private:
 
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CSchedulerStateMachine
+     *
+     *  \param  SchedulerThreadController
+     *
+     *  \return from void
+     */
+    /****************************************************************************/
     CSchedulerStateMachine(SchedulerMainThreadController* SchedulerThreadController);
     ~CSchedulerStateMachine();
     /****************************************************************************/
     /*!
      *  \brief  Set Scheduler Command Processor
+     *
+     *  \param  pSchedCmdProcessor
      *
      *  \return from void
      */
@@ -416,8 +427,6 @@ public:
     /*!
      *  \brief Enter to Rs_Standby_WithTissue sub state machine 
      *
-     *  \param void
-     *
      *  \return void
      */
     /****************************************************************************/
@@ -426,8 +435,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Enter to Rc_Levelsensor_Heating_Overtime sub state machine
-     *
-     *  \param void
      *
      *  \return void
      */
@@ -820,10 +827,39 @@ signals:
     /****************************************************************************/
     void sigShutdownFailedHeaterFinished();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigReleasePressureAtRsStandByWithTissue
+     */
+    /****************************************************************************/
     void sigReleasePressureAtRsStandByWithTissue();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigShutdownFailedHeaterAtRsStandByWithTissue
+     */
+    /****************************************************************************/
     void sigShutdownFailedHeaterAtRsStandByWithTissue();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigShutdownFailedHeaterFinishedAtRsStandByWithTissue
+     */
+    /****************************************************************************/
     void sigShutdownFailedHeaterFinishedAtRsStandByWithTissue();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigRTBottomStopTempCtrlAtRsStandByWithTissue
+     */
+    /****************************************************************************/
     void sigRTBottomStopTempCtrlAtRsStandByWithTissue();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigRTTopStopTempCtrlAtRsStandByWithTissue
+     */
+    /****************************************************************************/
     void sigRTTopStopTempCtrlAtRsStandByWithTissue();
 
     /****************************************************************************/
@@ -953,9 +989,32 @@ signals:
     /****************************************************************************/
     void sigOnSealingCheck();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigOnRsReleasePressureAtRsStandByWithTissue
+     */
+    /****************************************************************************/
     void sigOnRsReleasePressureAtRsStandByWithTissue();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigOnRsShutdownFailedHeaterAtRsStandByWithTissue
+     */
+    /****************************************************************************/
     void sigOnRsShutdownFailedHeaterAtRsStandByWithTissue();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigOnRsRTBottomStopTempCtrlAtRsStandByWithTissue
+     */
+    /****************************************************************************/
     void sigOnRsRTBottomStopTempCtrlAtRsStandByWithTissue();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigOnRsRTTopStopTempCtrlAtRsStandByWithTissue
+     */
+    /****************************************************************************/
     void sigOnRsRTTopStopTempCtrlAtRsStandByWithTissue();
 };
 }

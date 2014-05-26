@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file	CRcLevelSensorHeatingOvertime.h
+/*! \file	RcLevelsensorHeatingOvertime.h
  *
  *  \brief	state machine class for recovery RC_LevelSensor_Heating_Overtime 
  *
@@ -33,18 +33,66 @@ class  CRcLevelSensorHeatingOvertime : public CErrorHandlingSMBase
 {
     Q_OBJECT
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function CRcLevelSensorHeatingOvertime
+     *
+     *  \param pStateMachine = pointer QStateMachine
+     *  \param pParentState = pointer QState
+     *
+     */
+    /****************************************************************************/
      CRcLevelSensorHeatingOvertime(QStateMachine* pStateMachine, QState* pParentState);
+
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of function ~CRcLevelSensorHeatingOvertime
+      *
+      */
+     /****************************************************************************/
     ~CRcLevelSensorHeatingOvertime();
+
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of function GetCurrentState
+      *
+      *  \param statesList = QSet<QAbstractState*>
+      *
+      *	\return SchedulerStateMachine_t
+      */
+     /****************************************************************************/
     SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function OnHandleWorkFlow
+     *
+     *  \param flag
+     *
+     */
+    /****************************************************************************/
     void OnHandleWorkFlow(bool flag);
 
 signals:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function RestartLevelSensorTempControl
+     *
+     */
+    /****************************************************************************/
     void RestartLevelSensorTempControl();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function TasksDone
+     *
+     */
+    /****************************************************************************/
     void TasksDone(bool);
 
 private:
-    QState *mp_Initial;
-    QState *mp_RestartLevelSensorTempControl;
+    QState *mp_Initial;                         //!< the current state
+    QState *mp_RestartLevelSensorTempControl;   //!< the restart levelSensor temperature control
 };
 }
 #endif // RC_LEVELSENSOR_HEATING_OVERTIME_H
