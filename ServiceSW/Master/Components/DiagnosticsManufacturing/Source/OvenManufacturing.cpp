@@ -366,6 +366,7 @@ void COven::EnableButton(bool EnableFlag)
 /****************************************************************************/
 void COven::SendTestReport()
 {
+#if 0
 //    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_XAXIS_SENDTESTREPORT_REQUESTED);
 
     if (m_LineEditString.isEmpty()) {
@@ -408,6 +409,7 @@ void COven::SendTestReport()
             mp_MessageDlg->show();
         }
     }
+#endif
 }
 
 /****************************************************************************/

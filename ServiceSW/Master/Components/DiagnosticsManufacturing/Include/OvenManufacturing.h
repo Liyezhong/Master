@@ -52,7 +52,20 @@ class COven : public QWidget
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *  \iparam p_DataConnector = Service GUI connector object
+     *  \iparam p_Parent = Parent widget
+     */
+    /****************************************************************************/
     explicit COven(Core::CServiceGUIConnector *p_DataConnector = NULL, MainMenu::CMainWindow *p_Parent = NULL);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     ~COven();
 
     /****************************************************************************/
@@ -126,8 +139,26 @@ signals:
     void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief This function is called when OK is clicked
+     *  \iparam EnteredString = Stores line edit string
+     */
+    /****************************************************************************/
     void OnOkClicked(QString EnteredString);
+
+    /****************************************************************************/
+    /*!
+     *  \brief This function hides the keyboard when Esc is clicked
+     */
+    /****************************************************************************/
     void OnESCClicked();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Connects signals and slots of keyboard.
+     */
+    /****************************************************************************/
     void RetranslateUI();
 public slots:
     void BeginTest();

@@ -43,13 +43,73 @@ class CStatusConfirmDialog : public MainMenu::CDialogFrame
     friend class  CTestMainMenu;
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *
+     *  \iparam p_Parent = Parent widget
+     */
+    /****************************************************************************/
     explicit CStatusConfirmDialog(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     virtual ~CStatusConfirmDialog();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Sets the text displayed in the wait dialog
+     *
+     *  \iparam Text = Label text
+     */
+    /****************************************************************************/
     void SetText(QString Text);
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief Update label status
+     *
+     *  \iparam Status = Label test status
+     */
+    /****************************************************************************/
     void UpdateLabel(const Service::ModuleTestStatus &Status);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Activates a timeout timer
+     *
+     *  \iparam Milliseconds = Timeout in milliseconds
+     */
+    /****************************************************************************/
     void SetTimeout(qint32 MilliSeconds);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Abort wait dialog
+     */
+    /****************************************************************************/
     void HideAbort(bool HideFlag=true);
-    void show();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Overrides the show function of QDialog
+     *
+     *      If the abort button of this message box is enabled, this method will
+     *      immediately show the dialog. If this is not the case, the dialog will
+     *      be shown after a time of 500 ms.
+     */
+    /****************************************************************************/
+    void Show();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Abort Bathlayout generating process
+     */
+    /****************************************************************************/
     void BlgProcessProgress(bool IsBlgProcessStarted);
 public slots:
     void done(int Result);

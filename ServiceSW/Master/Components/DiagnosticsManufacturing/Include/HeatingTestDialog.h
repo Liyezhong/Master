@@ -43,18 +43,103 @@ class CHeatingTestDialog : public MainMenu::CDialogFrame
     friend class  CTestMainMenu;
 
 public:
+    /****************************************************************************/
+    /*!
+     *  \brief Constructor
+     *
+     *  \iparam p_Parent = Parent widget
+     */
+    /****************************************************************************/
     explicit CHeatingTestDialog(Service::ModuleTestCaseID TestCaseId, QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Destructor
+     */
+    /****************************************************************************/
     virtual ~CHeatingTestDialog();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Sets the text displayed in the wait dialog
+     *
+     *  \iparam Text = Label text
+     */
+    /****************************************************************************/
     void SetText(QString Text);
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief Update label status
+     *
+     *  \iparam Status = Label test status
+     */
+    /****************************************************************************/
     void UpdateLabel(const Service::ModuleTestStatus &Status);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Activates a timeout timer
+     *
+     *  \iparam Milliseconds = Timeout in milliseconds
+     */
+    /****************************************************************************/
     void SetTimeout(qint32 MilliSeconds);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Hides the abort button of the dialog
+     */
+    /****************************************************************************/
     void HideAbort(bool HideFlag=true);
-    void show();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Overrides the show function of QDialog
+     *
+     *      If the abort button of this message box is enabled, this method will
+     *      immediately show the dialog. If this is not the case, the dialog will
+     *      be shown after a time of 500 ms.
+     */
+    /****************************************************************************/
+    void Show();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Abort Bathlayout generating process
+     */
+    /****************************************************************************/
     void BlgProcessProgress(bool IsBlgProcessStarted);
+
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief Overrides the done function of QDialog
+     *
+     *      Only If the message box is not locked, the dialog will be closed
+     *      immediately.
+     *
+     *  \iparam Result = Dialog result code
+     */
+    /****************************************************************************/
     void done(int Result);
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief Filters all mouse events
+     *
+     *      There can be a small period of time in which the wait dialog is not
+     *      displayed. This is required so that the wait dialog does not have to
+     *      be displayed everytime network communication takes place.
+     *
+     *  \iparam p_Object = Object that is watched
+     *  \iparam p_Event = Current event
+     *
+     *  \return True if an event should be filtered
+     */
+    /****************************************************************************/
     bool eventFilter(QObject *p_Object, QEvent *p_Event);
 
 private:
@@ -73,8 +158,29 @@ private:
     Q_DISABLE_COPY(CHeatingTestDialog)
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief Blocks the dialog for closing
+     *
+     *      This function helps to assure that the dialog is displayed for at
+     *      least 500 ms. This needed avoid the flickering of the dialog, when
+     *      it is displayed only for a short period of time.
+     */
+    /****************************************************************************/
     void LockDialog();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Unblocks the dialog for closing
+     */
+    /****************************************************************************/
     void UnlockDialog();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Abort wait dialog
+     */
+    /****************************************************************************/
     void AbortWaitDialog();
 
 signals:

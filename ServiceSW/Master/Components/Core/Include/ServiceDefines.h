@@ -353,12 +353,12 @@ const QString CANID_UNLOADER("0x0104");
 const QString CANID_OVEN("0x0003");
 const QString CANID_HCUVETTES("0x0005");
 const QString CANID_RACKTRANSFER("0x0202");
-const QString CANID_SLIDEID("0x????");
-const QString CANID_AGITATION("0x????");
-const QString CANID_EXHAUST("0x????");
-const QString CANID_WATER("0x????");
-const QString CANID_HOOD("0x????");
-const QString CANID_LIGHT("0x????");
+const QString CANID_SLIDEID("0x?\?\?");
+const QString CANID_AGITATION("0x?\?\?\?");
+const QString CANID_EXHAUST("0x?\?\?\?");
+const QString CANID_WATER("0x?\?\?\?");
+const QString CANID_HOOD("0x?\?\?\?");
+const QString CANID_LIGHT("0x?\?\?\?");
 
 /****************************************************************************/
 const QString MSG_XYZ1_FIRMWAREINFO("YZ Firmware Info : ");

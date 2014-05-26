@@ -84,11 +84,12 @@ void CHeatingTestDialog::SetText(QString Text)
 //    mp_Ui->contentLabel->setText(QString("%1").arg(Text));
 }
 
+
 /****************************************************************************/
 /*!
- *  \brief Sets the text displayed in the wait dialog
+ *  \brief Update label status
  *
- *  \iparam Text = Label text
+ *  \iparam Status = Label test status
  */
 /****************************************************************************/
 void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
@@ -176,7 +177,7 @@ void CHeatingTestDialog::HideAbort(bool HideFlag)
  *      be shown after a time of 500 ms.
  */
 /****************************************************************************/
-void CHeatingTestDialog::show()
+void CHeatingTestDialog::Show()
 {
     if(m_AbortButtonVisible == true) {
         CDialogFrame::show();

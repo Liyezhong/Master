@@ -78,7 +78,7 @@ public:
 private:
     QString m_ModuleName;                  ///< Store module name
     QString m_CaseName;                    ///< Store test case name
-    bool m_Status;                      ///< Store test case Status true-PASS or false-FAIL
+    bool m_Status;                         ///< Store test case Status true-PASS or false-FAIL
     QMap<QString, QString> m_Parameters;   ///< Store test case parameters
     QMap<QString, QString> m_Results;      ///< Store test Case results
 

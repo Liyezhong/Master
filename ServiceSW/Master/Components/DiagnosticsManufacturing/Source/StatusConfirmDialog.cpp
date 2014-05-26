@@ -85,9 +85,9 @@ void CStatusConfirmDialog::SetText(QString Text)
 
 /****************************************************************************/
 /*!
- *  \brief Sets the text displayed in the wait dialog
+ *  \brief Update label status
  *
- *  \iparam Text = Label text
+ *  \iparam Status = Label test status
  */
 /****************************************************************************/
 void CStatusConfirmDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
@@ -99,9 +99,6 @@ void CStatusConfirmDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
 //    SetText(ConfirmText);
     mp_Ui->labelStatusValue->setText(CoverSensorStatus);
 }
-
-
-
 
 /****************************************************************************/
 /*!
@@ -164,7 +161,7 @@ void CStatusConfirmDialog::HideAbort(bool HideFlag)
  *      be shown after a time of 500 ms.
  */
 /****************************************************************************/
-void CStatusConfirmDialog::show()
+void CStatusConfirmDialog::Show()
 {
     if(m_AbortButtonVisible == true) {
         CDialogFrame::show();

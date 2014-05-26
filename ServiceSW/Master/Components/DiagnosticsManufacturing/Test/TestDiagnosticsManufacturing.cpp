@@ -28,6 +28,9 @@
 #include "Global/Include/SystemPaths.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "DiagnosticsManufacturing/Include/TestCaseReporter.h"
+#include "DiagnosticsManufacturing/Include/OvenManufacturing.h"
+#include "DiagnosticsManufacturing/Include/HeatingTestDialog.h"
+//#include "Core/Include/ManufacturingDiagnosticsHandler.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -71,6 +74,13 @@ private slots:
     /****************************************************************************/
     void utTestTestCaseReporter();
 
+    /****************************************************************************/
+    /**
+     * \brief Test Oven manufacturing
+     */
+    /****************************************************************************/
+    void utTestOvenManufacturing();
+
 }; // end class CTestDiagnosticsManufacturing
 
 /****************************************************************************/
@@ -98,12 +108,26 @@ void CTestDiagnosticsManufacturing::utTestTestCaseReporter()
     DataManager::CTestCaseFactory::Instance().InitData(FileName);
 
     DataManager::CTestCase* TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase("OvenHeatingEmpty");
-    TestCase->SetStatus("FAIL");
+    TestCase->SetStatus(false);
     TestCase->AddResult("Heating Time", "00:30");
     TestCase->AddResult("CurrentTemp", "40");
 
     CTestCaseReporter Reporter("Oven", "123456");
     Reporter.GenReportFile();
+}
+
+void CTestDiagnosticsManufacturing::utTestOvenManufacturing()
+{
+    MainMenu::CMainWindow MainWindow;
+    Core::CServiceGUIConnector *p_ServiceConnector = new Core::CServiceGUIConnector(&MainWindow);
+
+    COven* p_OvenManf = new COven(p_ServiceConnector, &MainWindow);
+
+    p_OvenManf->SetTestResult(Service::OVEN_COVER_SENSOR, true);
+
+    CHeatingTestDialog* p_HeatingDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Service::OVEN_COVER_SENSOR, &MainWindow);
+    p_HeatingDlg->BlgProcessProgress(true);
+
 }
 
 } // end namespace DiagnosticsManufacturing
