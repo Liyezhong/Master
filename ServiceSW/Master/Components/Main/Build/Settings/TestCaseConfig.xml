@@ -4,6 +4,11 @@
 	<Oven>
 		<OvenHeatingEmpty AmbTempLow="10" AmbTempHigh="40" DurationTime="00:15" TargetTemp="55" DepartureLow="-5" DepartureHigh="10"/>
 		<OvenHeatingWater AmbTempLow="10" AmbTempHigh="40" DurationTime="00:40" TargetTemp="55" DepartureLow="-5" DepartureHigh="10"/>
-		<OvenCoverSensor Paramater="N/A"/>
+		<OvenCoverSensor Parameter="N/A"/>
 	</Oven>
+	<RotaryValve>
+		<RVInitialize Parameter="N/A"/>
+		<RVSelectionTestM Position="0" Pressure="30" />
+		<RVSelectionTestS Position="7" Pressure="30" />
+	</RotaryValve>
 </TestCaseConfig>

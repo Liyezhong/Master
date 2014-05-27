@@ -56,9 +56,9 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
     mp_Ui->ovenSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
-    SetLineEditText(QString("14-HIM-OV-XXXXX"));
+    SetLineEditText(QString("14-HIM-WB-XXXXX"));
 
-    mp_Ui->ovenSNEdit->setText("14-HIM-OV-XXXXX");
+    mp_Ui->ovenSNEdit->setText("14-HIM-WB-XXXXX");
 
     m_TestReport.insert("ModuleName", "Oven");
     m_TestNames.append("ModuleName");
