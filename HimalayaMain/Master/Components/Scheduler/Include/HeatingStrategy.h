@@ -187,14 +187,15 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  Restart level sensor temperature control for recovery RC_LevelSensor_Heating_Overtime
+     *  \brief  Restart level sensor temperature control for recovery RC_LevelSensor_Heating_Overtime when
+     *          Scheduler is in Error state
      *
      *  \param  strctHWMonitor - current temperature of level sensor
      *
-     *  \return DeviceControl::ReturnCode_t - success or failure code
+     *  \return void
      */
     /****************************************************************************/
-    DeviceControl::ReturnCode_t ReStartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor);
+    void ReStartLevelSensorTemperatureControlInError(const HardwareMonitor_t& strctHWMonitor);
 
 private slots:
     /****************************************************************************/

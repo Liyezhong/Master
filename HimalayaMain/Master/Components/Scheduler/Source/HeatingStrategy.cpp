@@ -221,9 +221,54 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
-DeviceControl::ReturnCode_t HeatingStrategy::ReStartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor)
+void HeatingStrategy::ReStartLevelSensorTemperatureControlInError(const HardwareMonitor_t& strctHWMonitor)
 {
-    return this->StartLevelSensorTemperatureControl(strctHWMonitor);
+    QMap<QString, FunctionModule>::iterator iter = m_RTLevelSensor.functionModuleList.begin();
+    for (; iter!=m_RTLevelSensor.functionModuleList.end(); ++iter)
+    {
+        // Current(new) scenario belongs to the specific scenario list
+        if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
+        {
+            // Check for High or Low speed
+            if (m_RTLevelSensor.ExchangePIDTempList[iter->Id] >= strctHWMonitor.TempALLevelSensor)
+            {
+                if ("High" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
+                {
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            else if (m_RTLevelSensor.ExchangePIDTempList[iter->Id] < strctHWMonitor.TempALLevelSensor)
+            {
+                if ("Low" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
+                {
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+        }
+    }
+
+    // Found out the level sensor's function module
+    if (iter != m_RTLevelSensor.functionModuleList.end())
+    {
+        CmdALStartTemperatureControlWithPID* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
+        pHeatingCmd->SetType(AL_LEVELSENSOR);
+        pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset);
+        pHeatingCmd->SetSlopeTempChange(iter->SlopTempChange);
+        pHeatingCmd->SetMaxTemperature(iter->MaxTemperature);
+        pHeatingCmd->SetControllerGain(iter->ControllerGain);
+        pHeatingCmd->SetResetTime(iter->ResetTime);
+        pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
 }
 
 bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)

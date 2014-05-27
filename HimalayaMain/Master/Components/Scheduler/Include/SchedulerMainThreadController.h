@@ -909,10 +909,10 @@ protected:
         /****************************************************************************/
         /**
          *  \brief Restart Level sensor's temperature in case of RC_Levelsensor_Heating_Overtime
-         *  \return DeviceControl::ReturnCode_t - success or failure code
+         *  \return void
          */
         /****************************************************************************/
-        DeviceControl::ReturnCode_t RestartLevelSensorTempCtrl();
+        void RestartLevelSensorTempCtrlInError();
     public slots:
 
         /****************************************************************************/

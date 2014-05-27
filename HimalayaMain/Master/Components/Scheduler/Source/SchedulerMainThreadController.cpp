@@ -1727,10 +1727,10 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
     return leftTime;
 }
 
-DeviceControl::ReturnCode_t SchedulerMainThreadController::RestartLevelSensorTempCtrl()
+void SchedulerMainThreadController::RestartLevelSensorTempCtrlInError()
 {
     HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
-    return mp_HeatingStrategy->ReStartLevelSensorTemperatureControl(strctHWMonitor);
+    mp_HeatingStrategy->ReStartLevelSensorTemperatureControlInError(strctHWMonitor);
 }
 
 //client-->master
