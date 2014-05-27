@@ -114,8 +114,96 @@ void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id)
 
 }
 
+qint32 ManufacturingTestHandler::TestOvenHeatingWater()
+{
+    quint32 WaitSec(0);
+    quint32 SumSec(0);
+    qreal   CurrentTempTop(0), CurrentTempBottom1(0), CurrentTempBottom2(0);
+    QString TopValue;
+    QString BottomValue1;
+    QString BottomValue2;
+    QString UsedTime;
+    Service::ModuleTestStatus Status;
+
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::OVEN_HEATING_WITH_WATER);
+
+
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    QTime DurationTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
+    qreal TargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureLow").toDouble();
+    qreal TopTargetTemp = p_TestCase->GetParameter("TopTargetTemp").toDouble();
+    qreal BottomTargetTemp = p_TestCase->GetParameter("BottomTargetTemp").toDouble();
+
+    qDebug()<<"DurationTime="<<p_TestCase->GetParameter("DurationTime")<<" TargetTemp="<<TargetTemp;
+
+    WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
+
+    SumSec = WaitSec;
+
+    mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
+    mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
+
+    while (!m_UserAbort && WaitSec)
+    {
+        CurrentTempTop = mp_TempOvenTop->GetTemperature(0);
+        CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
+        CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
+
+        if (CurrentTempTop == -1 || CurrentTempBottom1 == -1 || CurrentTempBottom2 == -1) {
+            mp_Utils->Pause(1000);
+            WaitSec--;
+            continue;
+        }
+
+        mp_Utils->Pause(1000);
+        TopValue = QString("%1").arg(CurrentTempTop);
+        BottomValue1 = QString("%1").arg(CurrentTempBottom1);
+        BottomValue2 = QString("%1").arg(CurrentTempBottom2);
+        UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
+
+        Status.clear();
+        Status.insert("UsedTime", UsedTime);
+        Status.insert("CurrentTempTop", TopValue);
+        Status.insert("CurrentTempBottom1", BottomValue1);
+        Status.insert("CurrentTempBottom2", BottomValue2);
+        if (WaitSec == SumSec) {
+            QString TargetTemp = QString("%1").arg(Service::TEST_OVEN_HEATING_MIN_TEMP);
+            Status.insert("TargetTemp", TargetTemp);
+
+            QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
+            Status.insert("Duration", Duration);
+            p_TestCase->AddResult("Duration", Duration);
+            p_TestCase->AddResult("TargetTemp", TargetTemp);
+        }
+
+        emit RefreshTestStatustoMain(TestCaseName, Status);
+
+        WaitSec--;
+    }
+
+    mp_TempOvenTop->StopTemperatureControl();
+    mp_TempOvenBottom->StopTemperatureControl();
+
+    p_TestCase->AddResult("UsedTime", UsedTime);
+    p_TestCase->AddResult("CurrentTempTop", TopValue);
+    p_TestCase->AddResult("CurrentTempBottom1", BottomValue1);
+    p_TestCase->AddResult("CurrentTempBottom2", BottomValue2);
+
+    Status.clear();
+    Status.insert("OvenHeatingWaterStatus", "Finished");
+    emit RefreshTestStatustoMain(TestCaseName, Status);
+
+    if (m_UserAbort) {
+        return 1;
+    }
+    else {
+
+        return 0;
+    }
+}
+
 /****************************************************************************/
-qint32 ManufacturingTestHandler::TestOvenHeating(Service::ModuleTestCaseID Id)
+qint32 ManufacturingTestHandler::TestOvenHeating()
 {
     quint32 WaitSec(0);
     quint32 SumSec(0);
@@ -126,21 +214,25 @@ qint32 ManufacturingTestHandler::TestOvenHeating(Service::ModuleTestCaseID Id)
     QString BottomValue2;
     QString UsedTime;
 
+    Service::ModuleTestCaseID Id = Service::OVEN_HEATING_EMPTY;
+
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
 
 
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-    QTime DurationTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm");
+    QTime DurationTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
     qreal TargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureLow").toDouble();
+    qreal TopTargetTemp = p_TestCase->GetParameter("TopTargetTemp").toDouble();
+    qreal BottomTargetTemp = p_TestCase->GetParameter("BottomTargetTemp").toDouble();
 
     qDebug()<<"DurationTime="<<p_TestCase->GetParameter("DurationTime")<<" TargetTemp="<<TargetTemp;
 
-    WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60;
+    WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
 
     SumSec = WaitSec;
 
-    mp_TempOvenTop->StartTemperatureControl(Service::TEST_OVEN_HEATING_TEMP);
-    mp_TempOvenBottom->StartTemperatureControl(Service::TEST_OVEN_HEATING_TEMP);
+    mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
+    mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
 
     while (!m_UserAbort && WaitSec)
     {
@@ -218,6 +310,10 @@ qint32 ManufacturingTestHandler::TestOvenHeating(Service::ModuleTestCaseID Id)
 
 qint32 ManufacturingTestHandler::TestOvenCoverSensor()
 {
+    qDebug()<<"Slave 3 voltage = " << m_rIdevProc.IDGetSlaveVoltage(DeviceControl::Slave_3);
+    qDebug()<<"Slave 5 voltage = " << m_rIdevProc.IDGetSlaveVoltage(DeviceControl::Slave_5);
+    qDebug()<<"Slave 15 voltage = " << m_rIdevProc.IDGetSlaveVoltage(DeviceControl::Slave_15);
+
 
     if (mp_DigitalInpputOven == NULL) {
         SetFailReason(Service::OVEN_COVER_SENSOR, Service::MSG_DEVICE_NOT_INITIALIZED);
@@ -252,7 +348,6 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
     case Service::OVEN_COVER_SENSOR :
         TestOvenCoverSensor();
         break;
-    case Service::OVEN_HEATING_EMPTY:
     case Service::OVEN_HEATING_WITH_WATER:
         if ( NULL == mp_TempOvenTop || NULL == mp_TempOvenBottom )
         {
@@ -260,7 +355,19 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
             emit ReturnManufacturingTestMsg(false);
             return;
         }
-        else if ( 0 == TestOvenHeating(TestId) )
+        else if ( 0 != TestOvenHeatingWater()) {
+            emit ReturnManufacturingTestMsg(false);
+            return ;
+        }
+        break;
+    case Service::OVEN_HEATING_EMPTY:
+        if ( NULL == mp_TempOvenTop || NULL == mp_TempOvenBottom )
+        {
+            SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
+            emit ReturnManufacturingTestMsg(false);
+            return;
+        }
+        else if ( 0 == TestOvenHeating() )
         {
             emit ReturnManufacturingTestMsg(true);
         }

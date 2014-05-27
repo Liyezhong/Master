@@ -53,6 +53,9 @@ CHeatingTestDialog::CHeatingTestDialog(Service::ModuleTestCaseID TestCaseId, QWi
     QString Description = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(TestCaseId);
     this->SetDialogTitle(Description);
 
+    mp_Ui->labelExtTemp->hide();
+    mp_Ui->labelExtTempName->hide();
+
     CONNECTSIGNALSLOTGUI(mp_Ui->abortButton, clicked(), this, AbortWaitDialog());
     CONNECTSIGNALSLOTGUI(&m_Timer, timeout(), this, reject());
     CONNECTSIGNALSIGNALGUI(&m_Timer, timeout(), this, Timeout());    
@@ -100,6 +103,11 @@ void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
     mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempTop"));
     mp_Ui->labelCurTempBottom1->setText(Status.value("CurrentTempBottom1"));
     mp_Ui->labelCurTempBottom2->setText(Status.value("CurrentTempBottom2"));
+    if (Status.value("ExternalTemp") != NULL) {
+        mp_Ui->labelExtTemp->show();
+        mp_Ui->labelExtTempName->show();
+        mp_Ui->labelExtTemp->setText(Status.value("ExternalTemp"));
+    }
     if (Status.value("Duration") != NULL) {
         mp_Ui->labelDuration->setText(Status.value("Duration"));
     }

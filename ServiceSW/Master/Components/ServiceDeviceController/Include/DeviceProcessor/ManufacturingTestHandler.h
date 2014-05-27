@@ -157,10 +157,17 @@ private:
     /**
      * \brief To Test heating of oven
      *
-     * \param[in]       Id           Heating Empty or with Water
      */
     /****************************************************************************/
-    qint32 TestOvenHeating(Service::ModuleTestCaseID Id);
+    qint32 TestOvenHeating();
+
+    /****************************************************************************/
+    /**
+     * \brief To Test heating of oven with water
+     */
+    /****************************************************************************/
+    qint32 TestOvenHeatingWater( );
+
 
     /****************************************************************************/
     /**

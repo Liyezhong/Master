@@ -312,6 +312,7 @@ void COven::BeginTest()
     }
     else {
         EnableButton(false);
+        mp_Ui->widget->setFocus();
 
         emit BeginModuleTest(Service::OVEN, TestCaseList);
 

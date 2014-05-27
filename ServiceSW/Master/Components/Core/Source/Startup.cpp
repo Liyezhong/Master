@@ -29,6 +29,9 @@
 #include <Core/Include/SelectTestOptions.h>
 #include "DiagnosticsManufacturing/Include/StatusConfirmDialog.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "ServiceDataManager/Include/TestCase.h"
+#include "DiagnosticsManufacturing/Include/UserInputDialog.h"
 
 namespace Core {
 
@@ -809,7 +812,34 @@ void CStartup::RefreshTestStatus(const QString &Message, const Service::ModuleTe
             mp_HeatingStatusDlg->UpdateLabel(Status);
         }
         else {
-            mp_HeatingStatusDlg->UpdateLabel(Status);
+            if ( Id == Service::OVEN_HEATING_WITH_WATER && Status.value("OvenHeatingWaterStatus")=="Finished" ) {
+                mp_HeatingStatusDlg->close();
+                mp_HeatingStatusDlg = NULL;
+                DiagnosticsManufacturing::CUserInputDialog *dlg = new DiagnosticsManufacturing::CUserInputDialog(mp_MainWindow);
+                dlg->exec();
+                QString InputValueStr = dlg->GetInputValue();
+
+                delete dlg;
+
+                QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+                DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+                p_TestCase->AddResult("ExternalTemp", InputValueStr);
+                qreal MinValue = p_TestCase->GetParameter("TargetTemp").toDouble()+p_TestCase->GetParameter("DepartureLow").toDouble();
+                qreal MaxValue = p_TestCase->GetParameter("TargetTemp").toDouble()+p_TestCase->GetParameter("DepartureHigh").toDouble();
+                qreal InputValue = InputValueStr.toDouble();
+
+                qDebug()<<"MinValue="<<MinValue<<" MaxValue="<<MaxValue<<" InputValue="<<InputValue;
+
+                int result = false;
+                if (InputValue >= MinValue && InputValue <= MaxValue) {
+                    result = true;
+                }
+                mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(result);
+
+            }
+            else {
+                mp_HeatingStatusDlg->UpdateLabel(Status);
+            }
         }
     }
     else if (Id == Service::OVEN_COVER_SENSOR) {

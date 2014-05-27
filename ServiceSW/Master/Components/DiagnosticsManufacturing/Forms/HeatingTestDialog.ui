@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>253</height>
+    <height>248</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -62,7 +62,7 @@
       <x>10</x>
       <y>30</y>
       <width>321</width>
-      <height>141</height>
+      <height>131</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -150,6 +150,20 @@
        </property>
       </widget>
      </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="labelExtTempName">
+       <property name="text">
+        <string>External Test Temprature:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLabel" name="labelExtTemp">
+       <property name="text">
+        <string>45</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -157,7 +171,7 @@
    <property name="geometry">
     <rect>
      <x>230</x>
-     <y>200</y>
+     <y>190</y>
      <width>151</width>
      <height>51</height>
     </rect>
