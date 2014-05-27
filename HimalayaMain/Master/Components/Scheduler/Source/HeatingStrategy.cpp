@@ -26,6 +26,7 @@
 #include "Scheduler/Commands/Include/CmdOvenStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdRTStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdALStartTemperatureControlWithPID.h"
+#include "Scheduler/Commands/Include/CmdALSetTempCtrlOFF.h"
 
 namespace Scheduler{
 HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
@@ -35,6 +36,7 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
 								mp_SchedulerCommandProcessor(SchedCmdProcessor),
                                 mp_DataManager(DataManager)
 {
+    CONNECTSIGNALSLOT(mp_SchedulerCommandProcessor, ReportLevelSensorStatus1(), this, OnReportLevelSensorStatus1());
     m_CurScenario = 0;
     this->ConstructHeatingSensorList();
 }
@@ -1020,4 +1022,22 @@ bool HeatingStrategy::ConstructHeatingSensor(HeatingSensor& heatingSensor, const
 
    return true;
 }
+
+void HeatingStrategy::OnReportLevelSensorStatus1()
+{
+    if (m_RTLevelSensor.curModuleId.isEmpty())
+    {
+        return;
+    }
+
+    CmdALSetTempCtrlOFF* pHeatingCmd = new CmdALSetTempCtrlOFF(500, mp_SchedulerController);
+    pHeatingCmd->Settype(AL_LEVELSENSOR);
+    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+
+    SchedulerCommandShPtr_t pResHeatingCmd;
+    while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName()));
+    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+    pResHeatingCmd->GetResult(retCode);
+}
+
 }// end of namespace Scheduler

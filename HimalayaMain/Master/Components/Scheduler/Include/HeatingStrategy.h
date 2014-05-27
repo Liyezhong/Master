@@ -195,6 +195,15 @@ public:
      */
     /****************************************************************************/
     DeviceControl::ReturnCode_t ReStartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor);
+
+private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  slot function to stop level sensor heating
+     *
+     */
+    /****************************************************************************/
+    void OnReportLevelSensorStatus1();
 private:
     SchedulerMainThreadController*      mp_SchedulerController;         //!< point class of SchedulerMainThreadController
     SchedulerCommandProcessorBase*      mp_SchedulerCommandProcessor;   //!< point class of SchedulerCommandProcessorBase

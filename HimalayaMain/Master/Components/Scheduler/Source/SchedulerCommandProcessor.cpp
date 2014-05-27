@@ -195,32 +195,10 @@ void SchedulerCommandProcessor<DP>::run4Slot()
     CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportError(quint32, quint16, quint16, quint16, const QDateTime &),
                       this, ThrowError(quint32, quint16, quint16, quint16, const QDateTime &));
     CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportDestroyFinished(), this, DevProcDestroyAckn());
+    CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportLevelSensorStatus1(), this, ReportLevelSensorStatus1());
 
     CONNECTSIGNALSLOT(this, NewCmdAdded(), this, OnNewCmdAdded());
-    /*CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportConfigurationFinished(DevInstanceID_t, ReturnCode_t),
-                      this, DevProcConfigurationAckn(DevInstanceID_t, ReturnCode_t));
-    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportStartNormalOperationMode(DevInstanceID_t, ReturnCode_t),
-                      this, DevProcStartNormalOpModeAckn(DevInstanceID_t, ReturnCode_t));
-    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportError(DevInstanceID_t, quint16, quint16, quint16, const QDateTime &),
-                      this, ThrowError(DevInstanceID_t, quint16, quint16, quint16, const QDateTime &));
-    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportDestroyFinished(), this, DevProcDestroyAckn());
-    */
 
-
-    /*
-        while(true)
-        {
-    qDebug()<< "this is second thread, id is: "<<QThread::currentThreadId();
-            if(newCmdComing())
-            {
-        qDebug()<< "sec thread got msg! current thread id is: "<<QThread::currentThreadId();
-                CmdSchedulerCommandBase *scmd = dynamic_cast<CmdSchedulerCommandBase *> (m_currentCmd.GetPointerToUserData());
-                scmd->Execute();
-    //            (&m_currentCmd)->Execute();
-            }
-        usleep(200*1000);
-        }
-    */
 }
 
 template <class DP>

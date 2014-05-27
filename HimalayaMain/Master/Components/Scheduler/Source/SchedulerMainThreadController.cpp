@@ -1072,15 +1072,19 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
 
 void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd, SchedulerStateMachine_t currentState)
 {
-    ReturnCode_t retCode;
+    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
     QString cmdName = "";
-    if(cmd != NULL)
+    if(false == cmd.isNull())
     {
         if(!(cmd->GetResult(retCode)))
         {
             retCode = DCL_ERR_UNDEFINED;
         }
         cmdName = cmd->GetName();
+    }
+    else
+    {
+        retCode = DCL_ERR_FCT_CALL_SUCCESS;
     }
 
     if (SM_ERR_WAIT == currentState && CTRL_CMD_NONE != ctrlCmd)
