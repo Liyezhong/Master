@@ -32,6 +32,7 @@ namespace Scheduler{
 /****************************************************************************/
 CRsStandbyWithTissue::CRsStandbyWithTissue(QStateMachine* pStateMachine, QState* pParentState) : CErrorHandlingSMBase(pStateMachine, pParentState)
 {
+    qRegisterMetaType<DeviceControl::RTTempCtrlType_t>("DeviceControl::RTTempCtrlType_t");
     if(pParentState)
     {
         mp_Initial = new QState(pParentState);
@@ -41,8 +42,8 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(QStateMachine* pStateMachine, QState*
         mp_ReleasePressure = new QState(pParentState);
         pParentState->setInitialState(mp_Initial);
 
-        mp_Initial->addTransition(this, SIGNAL(RTBottomStopTempCtrl()), mp_RTBottomStopTempCtrl);
-        mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(RTSideStopTempCtrl()), mp_RTSideStopTempCtrl);
+        mp_Initial->addTransition(this, SIGNAL(RTStopTempCtrl(DeviceControl::RTTempCtrlType_t)), mp_RTBottomStopTempCtrl);
+        mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(RTStopTempCtrl(DeviceControl::RTTempCtrlType_t)), mp_RTSideStopTempCtrl);
         mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(ShutdownFailedHeater()), mp_ShutdownFailedHeater);
         mp_ShutdownFailedHeater->addTransition(this, SIGNAL(ReleasePressure()), mp_ReleasePressure);
         mp_ReleasePressure->addTransition(this,SIGNAL(TasksDone(bool)), mp_Initial);

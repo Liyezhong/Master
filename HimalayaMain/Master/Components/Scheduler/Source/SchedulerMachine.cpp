@@ -39,6 +39,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     :mp_SchedulerThreadController(SchedulerThreadController)
     ,mp_SchedulerCommandProcessor(NULL)
 {
+    qRegisterMetaType<DeviceControl::RTTempCtrlType_t>("DeviceControl::RTTempCtrlType_t");
     m_PreviousState = SM_UNDEF;
     m_CurrentState = SM_UNDEF;
 
@@ -186,10 +187,10 @@ void CSchedulerStateMachine::OnStateChanged()
 #endif
 }
 
-void CSchedulerStateMachine::OnRsRTStopTempCtrl(DeviceControl::RTTempCtrlType_t Type)
+void CSchedulerStateMachine::OnRsRTStopTempCtrl(DeviceControl::RTTempCtrlType_t type)
 {
     CmdRTSetTempCtrlOFF* cmd = new CmdRTSetTempCtrlOFF(500, mp_SchedulerThreadController);
-    cmd->SetType(Type);
+    cmd->SetType(type);
     mp_SchedulerCommandProcessor->pushCmd(cmd);
 }
 

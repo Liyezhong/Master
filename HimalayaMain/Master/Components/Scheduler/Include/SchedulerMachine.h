@@ -493,7 +493,7 @@ private slots:
      *  \return	void
      */
     /****************************************************************************/
-    void OnRsRTStopTempCtrl(DeviceControl::RTTempCtrlType_t Type);
+    void OnRsRTStopTempCtrl(DeviceControl::RTTempCtrlType_t type);
 
     /****************************************************************************/
     /*!

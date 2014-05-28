@@ -329,6 +329,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         cmdName = cmd->GetName();
     }
+
     if(CTRL_CMD_ABORT == ctrlCmd)
     {
         LogDebug(QString("Scheduler received command: ABORT"));
@@ -1122,7 +1123,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         }
         else if(CTRL_CMD_RS_STANDBY_WITHTISSUE == ctrlCmd)
         {
-            LogDebug("Go to RS_STandby_WithTissue");
+            LogDebug("Go to RS_STandby_withTissue");
             m_SchedulerMachine->EnterRsStandByWithTissue();
             DequeueNonDeviceCommand();
         }
@@ -1245,28 +1246,29 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         m_EventKey = pCmdSystemAction->GetEventKey();
 
         LogDebug(QString("Get action: %1").arg(cmd));
+        cmd = cmd.toLower();
 
-        if(cmd == "RS_RV_GetOriginalPositionAgain")
+        if(cmd == "rs_rv_getoriginalpositionagain")
         {
             return CTRL_CMD_RS_GET_ORIGINAL_POSITION_AGAIN;
         }
-        if(cmd == "RC_Restart")
+        if(cmd == "rc_restart")
         {
             return CTRL_CMD_RC_RESTART;
         }
-        if(cmd == "RC_Report")
+        if(cmd == "rc_report")
         {
             return CTRL_CMD_RC_REPORT;
         }
-        if(cmd == "RS_Standby")
+        if(cmd == "rs_standby")
         {
             return CTRL_CMD_RS_STANDBY;
         }
-        if(cmd == "RS_Standby_WithTissue")
+        if(cmd == "rs_standby_withtissue")
         {
             return CTRL_CMD_RS_STANDBY_WITHTISSUE;
         }
-        if (cmd == "RC_Levelsensor_Heating_Overtime")
+        if (cmd == "rs_levelsensor_heating_overtime")
         {
             return CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME;
         }
@@ -2171,7 +2173,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     {
         DeviceControl::ReturnCode_t retCode = mp_HeatingStrategy->RunHeatingStrategy(strctHWMonitor, Scenario);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
+        {      
             LogDebug(QString("Heating Strategy got an error at event %1 and scenario %2").arg(retCode).arg(Scenario));
             RaiseError(0, retCode, Scenario, true);
             m_SchedulerMachine->SendErrorSignal();
