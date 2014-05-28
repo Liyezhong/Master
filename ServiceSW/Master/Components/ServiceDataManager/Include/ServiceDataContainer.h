@@ -26,7 +26,7 @@
 
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationInterface.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
-#include "DataManager/Containers/InstrumentHistory/Include/ModuleDataList.h"
+#include "ServiceDataManager/Include/ModuleDataList.h"
 #include <ServiceMasterThreadController/Include/ServiceMasterThreadController.h>
 
 namespace DataManager {
@@ -53,7 +53,7 @@ public:
     Threads::ServiceMasterThreadController *mp_ServiceMasterThreadController; //!< We use it for  broadcasting command
 
     // prefix mp_ left because members are intentially accessible from outside (public)
-    CModuleDataList *ModuleList;                                    //!< Container for Instrument History
+    ServiceDataManager::CModuleDataList *ModuleList;                //!< Container for Instrument History
     CDeviceConfigurationInterface* DeviceConfigurationInterface;    //!< Container for Device configuration
     CUserSettingsInterface *SettingsInterface;                      //!< Provides interface to read the Settings info from xml
 

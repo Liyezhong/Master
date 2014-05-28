@@ -23,10 +23,10 @@
 
 #include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/BaseTable.h"
-#include "MainMenu/Include/TextDialog.h"
 #include <QStandardItemModel>
-#include <DataManager/Containers/InstrumentHistory/Include/Module.h>
-#include <DataManager/Containers/InstrumentHistory/Include/SubModule.h>
+#include "ServiceDataManager/Include/Module.h"
+#include "ServiceDataManager/Include/SubModule.h"
+#include "SystemTracking/Include/CurrentConfigParameterDlg.h"
 #include "MainMenu/Include/MessageDlg.h"
 
 namespace SystemTracking {
@@ -42,11 +42,21 @@ class CCurrentConfigurationDlg;
 /****************************************************************************/
 class CCurrentConfigurationDlg : public MainMenu::CDialogFrame
 {
-
     Q_OBJECT
-
 public:
+    /****************************************************************************/
+    /**
+     * \brief  Default constructor.
+     * \iparam p_Parent = parent of widget
+     */
+    /****************************************************************************/
     explicit CCurrentConfigurationDlg(QWidget *p_Parent = NULL);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CCurrentConfigurationDlg();
 
     /****************************************************************************/
@@ -63,25 +73,46 @@ public:
      *  \iparam Module = Module object
      */
     /****************************************************************************/
-    void InitDialog(DataManager::CModule *p_Module);
+    void InitDialog(ServiceDataManager::CModule *p_Module);
 
+protected:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function changeEvent
+     *
+     *  \param p_Event = QEvent type parameter
+     *
+     *  \return from changeEvent
+     */
+    /****************************************************************************/
+    void changeEvent(QEvent *p_Event);
 
 public slots:
+    /****************************************************************************/
+    /*!
+    *  \brief  Pop's up a dialog for SubModule parameters.
+    */
+    /****************************************************************************/
     void ExecDialog();
 
 private:
-    Ui::CCurrentConfigurationDlg *mp_Ui;        //!< Userinterface
-    MainMenu::CBaseTable *mp_TableWidget;       //!< Table for submodule list
-    MainMenu::CTextDialog *mp_ExecDialog;       //!< Text dialog for submodule information
-    QStandardItemModel m_Model;                 //!< Model for the table
+    Ui::CCurrentConfigurationDlg *mp_Ui;                         //!< Userinterface
+    MainMenu::CBaseTable *mp_TableWidget;                        //!< Table for submodule list
+    QStandardItemModel m_Model;                                  //!< Model for the table
 
-    DataManager::CModule *mp_Module;            //!< Selected module name
-    DataManager::CSubModule *mp_SubModule;      //!< Selected Submodule name
-    QVariant m_ModuleName;                      //!< Stores module name
-    MainMenu::CMessageDlg *mp_MessageDialog;    //!< Information message dialog
+    ServiceDataManager::CModule *mp_Module;                             //!< Selected module name
+    ServiceDataManager::CSubModule *mp_SubModule;                       //!< Selected Submodule name
+    QVariant m_SubModuleName;                                    //!< Stores sub module name
+    MainMenu::CMessageDlg *mp_MessageDialog;                     //!< Information message dialog
+    SystemTracking::CCurrentConfigParameterDlg *mp_ParameterDlg; //!< Current Configuration parameter dialog
+
+    QString m_strOk;
+    QString m_strSelectSubModuleMsgTitle;
+    QString m_strSelectSubModuleMsgText;
 
 private slots:
      void SelectionChanged(QModelIndex Index);
+     void RetranslateUI();
 };
 
 }   // end namespace SystemTracking

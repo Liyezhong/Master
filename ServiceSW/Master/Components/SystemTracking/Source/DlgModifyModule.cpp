@@ -34,7 +34,7 @@ namespace SystemTracking {
  *  \iparam p_Parent = Parent widget
  */
 /****************************************************************************/
-CDlgModifyModule::CDlgModifyModule(DataManager::CModule &Module,
+CDlgModifyModule::CDlgModifyModule(ServiceDataManager::CModule &Module,
                                    bool HasBoard,
                                    QWidget *p_Parent)
     : MainMenu::CDialogFrame(p_Parent)

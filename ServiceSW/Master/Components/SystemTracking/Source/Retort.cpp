@@ -73,12 +73,12 @@ CRetort::~CRetort()
     catch (...) { }
 }
 
-void CRetort::UpdateModule(DataManager::CModule &Module)
+void CRetort::UpdateModule(ServiceDataManager::CModule &Module)
 {
     qDebug() << "CRetort::UpdateModule !"
              << Module.GetModuleName();
 
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -93,12 +93,12 @@ void CRetort::UpdateModule(DataManager::CModule &Module)
     emit ModuleListChanged();
 }
 
-void CRetort::UpdateSubModule(DataManager::CSubModule &SubModule)
+void CRetort::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 {
     qDebug() << "CRetort::UpdateSubModule !"
              << SubModule.GetSubModuleName();
 
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -106,7 +106,7 @@ void CRetort::UpdateSubModule(DataManager::CSubModule &SubModule)
         return;
     }
 
-    DataManager::CModule *pModule = pModuleList->GetModule(MODULE_RETORT);
+    ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_RETORT);
     if (0 == pModule)
     {
         qDebug() << "CRetort::UpdateSubModule(): Invalid module : "
@@ -126,7 +126,7 @@ void CRetort::ModifyRetort(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_RETORT_MODULE);
     qDebug() << "CRetort::ModifyRetort !";
 
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -134,7 +134,7 @@ void CRetort::ModifyRetort(void)
         return;
     }
 
-    DataManager::CModule *pModule = pModuleList->GetModule(MODULE_RETORT);
+    ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_RETORT);
     if (0 == pModule)
     {
         qDebug() << "CRetort::ModifyRetort(): Invalid module : "
@@ -142,7 +142,7 @@ void CRetort::ModifyRetort(void)
         return;
     }
 
-    DataManager::CModule Module = *pModule;
+    ServiceDataManager::CModule Module = *pModule;
 
     CDlgModifyModule *dlg = new CDlgModifyModule(Module);
 
@@ -185,7 +185,7 @@ void CRetort::ModifyLevelSensor(void)
 void CRetort::ModifySubModule(const QString &ModuleName,
                               const QString &SubModuleName)
 {
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -193,7 +193,7 @@ void CRetort::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CModule *pModule = pModuleList->GetModule(ModuleName);
+    ServiceDataManager::CModule *pModule = pModuleList->GetModule(ModuleName);
     if (0 == pModule)
     {
         qDebug() << "CRetort::ModifySubModule(): Invalid module : "
@@ -201,7 +201,7 @@ void CRetort::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CSubModule *pSubModule =
+    ServiceDataManager::CSubModule *pSubModule =
             pModule->GetSubModuleInfo(SubModuleName);
     if (0 == pSubModule)
     {
@@ -210,7 +210,7 @@ void CRetort::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CSubModule SubModule = *pSubModule;
+    ServiceDataManager::CSubModule SubModule = *pSubModule;
 
     CDlgModifySubModule *dlg = new CDlgModifySubModule(SubModule);
 

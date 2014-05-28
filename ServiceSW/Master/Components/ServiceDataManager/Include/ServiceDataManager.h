@@ -46,7 +46,7 @@ public:
     quint32 InitDataContainer();
     bool IsInitialized() const { return mp_ServiceDataContainer; }
 
-    CModuleDataList *GetModuleList(void);
+    ServiceDataManager::CModuleDataList *GetModuleList(void);
 
 private:
     ServiceDataContainer* mp_ServiceDataContainer;

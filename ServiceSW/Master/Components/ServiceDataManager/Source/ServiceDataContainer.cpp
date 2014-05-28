@@ -21,7 +21,7 @@
 #include <QDebug>
 #include  "ServiceDataManager/Include/ServiceDataContainer.h"
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationVerifier.h"
-#include "DataManager/Containers/InstrumentHistory/Include/ModuleDataListVerifier.h"
+#include "ServiceDataManager/Include/ModuleDataListVerifier.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsVerifier.h"
 
 namespace DataManager {
@@ -61,7 +61,7 @@ bool ServiceDataContainer::InitContainers()
         return false;
     }
     DeviceConfigurationInterface = new CDeviceConfigurationInterface();
-    ModuleList = new CModuleDataList();
+    ModuleList = new ServiceDataManager::CModuleDataList();
     m_IsInitialized = true;
     SettingsInterface->SetDataVerificationMode(false);
     DeviceConfigurationInterface->SetDataVerificationMode(false);

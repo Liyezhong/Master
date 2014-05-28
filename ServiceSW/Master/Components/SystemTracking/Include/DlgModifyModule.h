@@ -28,7 +28,7 @@
 
 #include "KeyBoard/Include/KeyBoard.h"
 
-#include "DataManager/Containers/InstrumentHistory/Include/Module.h"
+#include "ServiceDataManager/Include/Module.h"
 
 namespace SystemTracking {
 
@@ -45,7 +45,7 @@ class CDlgModifyModule : public MainMenu::CDialogFrame
     Q_OBJECT
 
 public:
-    explicit CDlgModifyModule(DataManager::CModule &Module,
+    explicit CDlgModifyModule(ServiceDataManager::CModule &Module,
                               bool HasBoard = false,
                               QWidget *p_Parent = 0);
     ~CDlgModifyModule();
@@ -57,9 +57,9 @@ Q_SIGNALS:
      *  \iparam Module = Modified Module.
      */
     /****************************************************************************/
-    void UpdateModule(DataManager::CModule &Module);
+    void UpdateModule(ServiceDataManager::CModule &Module);
 
-    void AutoDetect(DataManager::CModule &Module);
+    void AutoDetect(ServiceDataManager::CModule &Module);
 
 public Q_SLOTS:
     void UpdateGUI(void);
@@ -79,7 +79,7 @@ private Q_SLOTS:
 
 private:
     Ui::CDlgModifyModule   *mp_Ui;                  //!< User Interface
-    DataManager::CModule   *mp_Module;              //!< Current module object
+    ServiceDataManager::CModule   *mp_Module;              //!< Current module object
     KeyBoard::CKeyBoard    *mp_KeyBoardWidget;      //!< Key board widget
     MainMenu::CMessageDlg  *mp_MessageDlg;          //!< Information dialog
 

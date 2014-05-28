@@ -26,8 +26,8 @@
 #include <QStandardItemModel>
 #include "Core/Include/ServiceGUIConnector.h"
 
-#include "DataManager/Containers/InstrumentHistory/Include/ModuleDataList.h"
-#include "DataManager/Containers/InstrumentHistory/Include/Module.h"
+#include "ServiceDataManager/Include/ModuleDataList.h"
+//#include "ServiceDataManager/Include/Module.h"
 #include "SystemTracking/Include/CurrentConfigurationDlg.h"
 #include "MainMenu/Include/MessageDlg.h"
 
@@ -47,7 +47,19 @@ class CCurrentConfiguration : public QWidget
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief  Default constructor.
+     * \iparam p_DataConnector = service Gui connector, p_Parent = parent of widget
+     */
+    /****************************************************************************/
     explicit CCurrentConfiguration(Core::CServiceGUIConnector *p_DataConnector, QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CCurrentConfiguration();
 
     /****************************************************************************/
@@ -59,9 +71,31 @@ public:
     void AddItem(const QString &ModuleName);
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Pop's up a dialog for SubModuleList.
+     */
+    /****************************************************************************/
     void ExecDialog(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for updating the GUI
+     */
+    /****************************************************************************/
     void UpdateGUI(void);
+
+protected:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function changeEvent
+     *
+     *  \param p_Event = QEvent type parameter
+     *
+     *  \return from changeEvent
+     */
+    /****************************************************************************/
+    void changeEvent(QEvent *p_Event);
 
 private:
     Ui::CCurrentConfiguration *mp_Ui;                           //!< User Interface
@@ -69,13 +103,26 @@ private:
     QStandardItemModel m_Model;                                 //!< Model for the table
     SystemTracking::CCurrentConfigurationDlg *mp_ConfigDialog;  //!< Current configuration dialog
     Core::CServiceGUIConnector *mp_DataConnector;               //!< Global data connector
-    DataManager::CModuleDataList *mp_ModuleList;                //!< Current list of modules
-    DataManager::CModule *mp_Module;                            //!< Selected Module
+    ServiceDataManager::CModuleDataList *mp_ModuleList;                //!< Current list of modules
+    ServiceDataManager::CModule *mp_Module;                            //!< Selected Module
     QVariant m_ModuleName;                                      //!< Stores Module name
     MainMenu::CMessageDlg *mp_MessageDialog;                    //!< Information message dialog
 
+    QString m_strOk;
+    QString m_strSelectModuleTitle;
+    QString m_strSelectModuleText;
+
 private slots:
      void SelectionChanged(QModelIndex Index);
+
+     /****************************************************************************/
+     /*!
+      *  \brief  Definition/Declaration of function RetranslateUI
+      *
+      *  \return from RetranslateUI
+      */
+     /****************************************************************************/
+     void RetranslateUI();
 };
 
 } // end namespace SystemTracking

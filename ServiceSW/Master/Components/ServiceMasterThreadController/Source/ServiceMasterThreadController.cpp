@@ -217,14 +217,14 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
         qDebug() << "CStartup: cannot connect 'ReturnManufacturingMsgtoMain' signal";
     }
 
-    mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
+    //mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
 
    /* mp_DataManager = new DataManager::CDataManager(this);
     mp_DataManagerBase = mp_DataManager;
 
-    mp_GUIStartup->mp_ServiceConnector->SetModuleListContainer(
-                mp_ServiceDataManager->GetModuleList());
-
+   mp_GUIStartup->mp_ServiceConnector->SetModuleListContainer(
+                mp_ServiceDataManager->GetModuleList());*/
+/*
     mp_GUIStartup->mp_ServiceConnector->SetDeviceConfigurationInterface(
                 mp_ServiceDataManager->GetDeviceConfigurationInterface());
 
@@ -268,6 +268,12 @@ ServiceMasterThreadController::~ServiceMasterThreadController() {
         {
             delete mp_ImportExportThread;
             mp_ImportExportThread = 0;
+        }
+
+        if (0 != mp_DataManager)
+        {
+            delete mp_DataManager;
+            mp_DataManager = 0;
         }
 
     } catch(...) {
@@ -599,7 +605,7 @@ void ServiceMasterThreadController::RegisterCommandRoutingChannel(const QString 
     }
     // everything OK
     static_cast<void>(
-                // we DO NOT NEED the return value of insert
+                // we DO NOT NEED the return value of insert mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
                 m_TCCommandRoutes.insert(CommandName, pTargetCommandChannel)
                 );
 }
@@ -855,6 +861,10 @@ void ServiceMasterThreadController::OnGoReceived()
     CreateBasicControllersAndThreads();
     // all objects created from now on, live in this thread so they are served by the
     // signal/slot mechanism in this event loop.
+
+    mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
+    mp_GUIStartup->mp_ServiceConnector->SetModuleListContainer(
+                mp_ServiceDataManager->GetModuleList());
 
     try {
         // Initialize controllers

@@ -15,7 +15,11 @@ HEADERS +=  ../Include/*.h \
     ../Include/TestCaseParameters.h \
     ../Include/TestCaseGuide.h \
     ../Include/TestCaseFactory.h \
-    ../Include/TestCase.h
+    ../Include/TestCase.h \
+    ../Include/SubModule.h \
+    ../Include/ModuleDataList.h \
+    ../Include/Module.h \
+    ../Include/ModuleDataListVerifier.h
 
 SOURCES +=  ../Source/*.cpp \
     ../Source/TestCaseGuide.cpp \

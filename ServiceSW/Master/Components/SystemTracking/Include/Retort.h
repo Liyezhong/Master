@@ -45,9 +45,9 @@ Q_SIGNALS:
     void ModuleListChanged(void);
 
 public Q_SLOTS:
-    void UpdateModule(DataManager::CModule &Module);
+    void UpdateModule(ServiceDataManager::CModule &Module);
 
-    void UpdateSubModule(DataManager::CSubModule &SubModule);
+    void UpdateSubModule(ServiceDataManager::CSubModule &SubModule);
 
     void ModifyRetort(void);
 

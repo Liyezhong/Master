@@ -97,12 +97,12 @@ CLaSystem::~CLaSystem()
     catch (...) { }
 }
 
-void CLaSystem::UpdateSubModule(DataManager::CSubModule &SubModule)
+void CLaSystem::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 {
     qDebug() << "CLaSystem::UpdateSubModule : "
              << SubModule.GetSubModuleName();
 
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -110,7 +110,7 @@ void CLaSystem::UpdateSubModule(DataManager::CSubModule &SubModule)
         return;
     }
 
-    DataManager::CModule *pModule = pModuleList->GetModule(MODULE_LASYSTEM);
+    ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_LASYSTEM);
     if (0 == pModule)
     {
         qDebug() << "CLaSystem::UpdateSubModule(): Invalid module : "
@@ -192,7 +192,7 @@ void CLaSystem::ModifyFan(void)
 void CLaSystem::ModifySubModule(const QString &ModuleName,
                                 const QString &SubModuleName)
 {
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -200,7 +200,7 @@ void CLaSystem::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CModule *pModule = pModuleList->GetModule(ModuleName);
+    ServiceDataManager::CModule *pModule = pModuleList->GetModule(ModuleName);
     if (0 == pModule)
     {
         qDebug() << "CLaSystem::ModifySubModule(): Invalid module : "
@@ -208,7 +208,7 @@ void CLaSystem::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CSubModule *pSubModule =
+    ServiceDataManager::CSubModule *pSubModule =
             pModule->GetSubModuleInfo(SubModuleName);
     if (0 == pSubModule)
     {
@@ -217,16 +217,16 @@ void CLaSystem::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CSubModule SubModule = *pSubModule;
+    ServiceDataManager::CSubModule SubModule = *pSubModule;
 
     CDlgModifySubModule *dlg = new CDlgModifySubModule(SubModule);
 
     dlg->UpdateGUI();
 
     (void)connect(dlg,
-                  SIGNAL(UpdateSubModule(DataManager::CSubModule&)),
+                  SIGNAL(UpdateSubModule(ServiceDataManager::CSubModule&)),
                   this,
-                  SLOT(UpdateSubModule(DataManager::CSubModule&)) );
+                  SLOT(UpdateSubModule(ServiceDataManager::CSubModule&)) );
 
     dlg->exec();
 

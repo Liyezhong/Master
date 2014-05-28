@@ -45,7 +45,7 @@ Q_SIGNALS:
     void ModuleListChanged(void);
 
 public Q_SLOTS:
-    void UpdateSubModule(DataManager::CSubModule &SubModule);
+    void UpdateSubModule(ServiceDataManager::CSubModule &SubModule);
 
     void ModifyPump(void);
 

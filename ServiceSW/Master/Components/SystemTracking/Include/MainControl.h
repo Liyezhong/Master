@@ -45,7 +45,7 @@ Q_SIGNALS:
     void ModuleListChanged(void);
 
 public Q_SLOTS:
-    void UpdateSubModule(DataManager::CSubModule &SubModule);
+    void UpdateSubModule(ServiceDataManager::CSubModule &SubModule);
 
     void ModifyASB3(void);
 
@@ -56,7 +56,7 @@ public Q_SLOTS:
     void ModifyTouchScreen(void);
 
 private Q_SLOTS:
-    void AutoDetect(DataManager::CSubModule &SubModule);
+    void AutoDetect(ServiceDataManager::CSubModule &SubModule);
 
 private:
     void ModifySubModule(const QString &ModuleName,

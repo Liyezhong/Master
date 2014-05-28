@@ -121,7 +121,7 @@ bool CServiceDataManager::DeinitDataContainer()
     return true;
 }
 
-CModuleDataList *CServiceDataManager::GetModuleList(void)
+ServiceDataManager::CModuleDataList *CServiceDataManager::GetModuleList(void)
 {
     if (!m_IsInitialized)
     {

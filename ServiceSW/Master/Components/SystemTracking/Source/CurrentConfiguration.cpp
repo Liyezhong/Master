@@ -38,6 +38,8 @@ CCurrentConfiguration::CCurrentConfiguration(Core::CServiceGUIConnector *p_DataC
 {
     mp_Ui->setupUi(this);
 
+    RetranslateUI();
+
     mp_TableWidget = new MainMenu::CBaseTable;
     mp_TableWidget->resize(380, 380);
 
@@ -55,25 +57,6 @@ CCurrentConfiguration::CCurrentConfiguration(Core::CServiceGUIConnector *p_DataC
     connect(mp_Ui->showDetailsBtn, SIGNAL(clicked()), this, SLOT(ExecDialog()));
 }
 
-void CCurrentConfiguration::UpdateGUI(void)
-{
-    mp_ModuleList = mp_DataConnector->GetModuleListContainer();
-    if(mp_ModuleList)
-    {
-        for (int i = 0; i<mp_ModuleList->GetNumberofModules(); i++)
-        {
-            mp_Module = mp_ModuleList->GetModule(i);
-            QString Name = mp_Module->GetModuleName();
-            AddItem(Name);
-        }
-    }
-    else
-    {
-        qDebug()<<"Data container Module List is NULL!!!";
-    }
-}
-
-
 /****************************************************************************/
 /*!
  *  \brief Destructor
@@ -89,6 +72,29 @@ CCurrentConfiguration::~CCurrentConfiguration()
     }
     catch (...) {
 
+    }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Slot for updating the GUI
+ */
+/****************************************************************************/
+void CCurrentConfiguration::UpdateGUI(void)
+{
+    mp_ModuleList = mp_DataConnector->GetModuleListContainer();
+    if(mp_ModuleList)
+    {
+        for (int i = 0; i<mp_ModuleList->GetNumberofModules(); i++)
+        {
+            mp_Module = mp_ModuleList->GetModule(i);
+            QString Name = mp_Module->GetModuleName();
+            AddItem(Name);
+        }
+    }
+    else
+    {
+        qDebug()<<"Data container Module List is NULL!!!";
     }
 }
 
@@ -119,6 +125,25 @@ void CCurrentConfiguration::AddItem(const QString &ModuleName)
 
 /****************************************************************************/
 /*!
+ *  \brief Event handler for change events
+ *
+ *  \iparam p_Event = Change event
+ */
+/****************************************************************************/
+void CCurrentConfiguration::changeEvent(QEvent *p_Event)
+{
+    QWidget::changeEvent(p_Event);
+    switch (p_Event->type()) {
+    case QEvent::LanguageChange:
+        RetranslateUI();
+        break;
+    default:
+        break;
+    }
+}
+
+/****************************************************************************/
+/*!
  *  \brief  Pop's up a dialog for SubModuleList.
  */
 /****************************************************************************/
@@ -126,10 +151,10 @@ void CCurrentConfiguration::ExecDialog(void)
 {
     if(m_ModuleName.toString().isEmpty())
     {
-        mp_MessageDialog->SetTitle(tr("Select Module"));
-        mp_MessageDialog->SetButtonText(1, tr("OK"));
+        mp_MessageDialog->SetTitle(m_strSelectModuleTitle);
+        mp_MessageDialog->SetButtonText(1, m_strOk);
         mp_MessageDialog->HideButtons();
-        mp_MessageDialog->SetText(tr("Please select a Module.."));
+        mp_MessageDialog->SetText(m_strSelectModuleText);
         mp_MessageDialog->SetIcon(QMessageBox::Critical);
         mp_MessageDialog->show();
     }
@@ -138,10 +163,18 @@ void CCurrentConfiguration::ExecDialog(void)
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CURRENTCONFIG_MODULEINFO_REQUESTED,
                                                    Global::tTranslatableStringList() << m_ModuleName.toString());
         mp_Module =
-                const_cast<DataManager::CModule*>(mp_ModuleList->GetModule(m_ModuleName.toString()));
+                const_cast<ServiceDataManager::CModule*>(mp_ModuleList->GetModule(m_ModuleName.toString()));
         mp_ConfigDialog->InitDialog(mp_Module);
         mp_ConfigDialog->show();
     }
 }
+
+void CCurrentConfiguration::RetranslateUI()
+{
+     m_strOk                = QApplication::translate("SystemTracking::CCurrentConfiguration", "OK", 0, QApplication::UnicodeUTF8);
+     m_strSelectModuleTitle = QApplication::translate("SystemTracking::CCurrentConfiguration", "Select Module", 0, QApplication::UnicodeUTF8);
+     m_strSelectModuleText  = QApplication::translate("SystemTracking::CCurrentConfiguration", "Please select a Module..", 0, QApplication::UnicodeUTF8);
+}
+
 
 } // end namespace SystemTracking

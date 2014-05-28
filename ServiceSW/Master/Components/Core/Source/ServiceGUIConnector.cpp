@@ -92,7 +92,7 @@ CServiceGUIConnector::~CServiceGUIConnector()
  *  \brief This slot updates the Modulelist
  */
 /****************************************************************************/
-void CServiceGUIConnector::SetModuleListContainer(DataManager::CModuleDataList *ModuleList)
+void CServiceGUIConnector::SetModuleListContainer(ServiceDataManager::CModuleDataList *ModuleList)
 {
     mp_ModuleList = ModuleList;
     emit ModuleListChanged();
@@ -119,7 +119,7 @@ void CServiceGUIConnector::SetUserSettingInterface(
  *  \brief This slot updates the Modulelist
  */
 /****************************************************************************/
-void CServiceGUIConnector::SendModuleUpdate(DataManager::CModule &Module)
+void CServiceGUIConnector::SendModuleUpdate(ServiceDataManager::CModule &Module)
 {
     mp_ModuleList->UpdateModule(&Module);
     qDebug() << Module.GetSerialNumber() << endl;
@@ -131,7 +131,7 @@ void CServiceGUIConnector::SendModuleUpdate(DataManager::CModule &Module)
  *  \brief This slot updates the Modulelist
  */
 /****************************************************************************/
-void CServiceGUIConnector::SendAddModule(DataManager::CModule &Module)
+void CServiceGUIConnector::SendAddModule(ServiceDataManager::CModule &Module)
 {
     mp_ModuleList->AddModule(&Module);
     qDebug() << Module.GetSerialNumber() << endl;
@@ -328,7 +328,7 @@ void CServiceGUIConnector::OnEventReportAck(NetCommands::ClickedButton_t Clicked
     //m_NetworkObject.SendAckToMaster(CmdRef, NetCommands::CmdAcknEventReport(EventKey, ClickedButton));
 }
 
-DataManager::CModuleDataList* CServiceGUIConnector::GetModuleListContainer(void)
+ServiceDataManager::CModuleDataList* CServiceGUIConnector::GetModuleListContainer(void)
 {
     return mp_ModuleList;
 }

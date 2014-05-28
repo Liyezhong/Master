@@ -34,7 +34,7 @@ namespace SystemTracking {
  *  \iparam p_Parent = Parent widget
  */
 /****************************************************************************/
-CDlgModifySubModule::CDlgModifySubModule(DataManager::CSubModule &SubModule,
+CDlgModifySubModule::CDlgModifySubModule(ServiceDataManager::CSubModule &SubModule,
                                    bool HasBoard,
                                    QWidget *p_Parent)
     : MainMenu::CDialogFrame(p_Parent)
@@ -139,7 +139,7 @@ void CDlgModifySubModule::UpdateGUI(void)
     QString ModuleName = mp_SubModule->GetSubModuleName();
 
     const QString SerialNumberName("SerialNumber");
-    DataManager::Parameter_t *ParamSN =
+    ServiceDataManager::Parameter_t *ParamSN =
             mp_SubModule->GetParameterInfo(SerialNumberName);
     if (0 == ParamSN)
     {
@@ -150,7 +150,7 @@ void CDlgModifySubModule::UpdateGUI(void)
     }
 
     const QString DateOfProductionName("DateOfProduction");
-    DataManager::Parameter_t *ParamDOP =
+    ServiceDataManager::Parameter_t *ParamDOP =
             mp_SubModule->GetParameterInfo(DateOfProductionName);
     if (0 == ParamDOP)
     {

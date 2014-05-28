@@ -10,9 +10,13 @@
 
 TARGET = SystemTracking
 
-HEADERS *= ../Include/*.h   # header file location
+HEADERS *= ../Include/*.h \   # header file location
+    ../Include/CurrentConfigParameterDlg.h
 
-SOURCES *= ../Source/*.cpp  # source file location
+SOURCES *= ../Source/*.cpp \  # source file location
+    ../Source/CurrentConfigParameterDlg.cpp
 
-FORMS *= ../Forms/*.ui
+FORMS *= ../Forms/*.ui \
+    ../Forms/CurrentConfigurationDlg.ui \
+    ../Forms/CurrentConfigParameterDlg.ui
 

@@ -78,12 +78,12 @@ CMainControl::~CMainControl()
     catch (...) { }
 }
 
-void CMainControl::UpdateSubModule(DataManager::CSubModule &SubModule)
+void CMainControl::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 {
     qDebug() << "CMainControl::UpdateSubModule : "
              << SubModule.GetSubModuleName();
 
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -91,7 +91,7 @@ void CMainControl::UpdateSubModule(DataManager::CSubModule &SubModule)
         return;
     }
 
-    DataManager::CModule *pModule = pModuleList->GetModule(MODULE_MAINCONTROL);
+    ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_MAINCONTROL);
     if (0 == pModule)
     {
         qDebug() << "CMainControl::UpdateSubModule(): Invalid module : "
@@ -142,7 +142,7 @@ void CMainControl::ModifyTouchScreen(void)
     this->ModifySubModule(MODULE_MAINCONTROL, SUBMODULE_TOUCHSCREEN);
 }
 
-void CMainControl::AutoDetect(DataManager::CSubModule &SubModule)
+void CMainControl::AutoDetect(ServiceDataManager::CSubModule &SubModule)
 {
     qDebug() << "CMainControl::AutoDetect : " << SubModule.GetSubModuleName();
 
@@ -152,7 +152,7 @@ void CMainControl::AutoDetect(DataManager::CSubModule &SubModule)
 void CMainControl::ModifySubModule(const QString &ModuleName,
                                    const QString &SubModuleName)
 {
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -160,7 +160,7 @@ void CMainControl::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CModule *pModule = pModuleList->GetModule(ModuleName);
+    ServiceDataManager::CModule *pModule = pModuleList->GetModule(ModuleName);
     if (0 == pModule)
     {
         qDebug() << "CMainControl::ModifySubModule(): Invalid module : "
@@ -168,7 +168,7 @@ void CMainControl::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CSubModule *pSubModule =
+    ServiceDataManager::CSubModule *pSubModule =
             pModule->GetSubModuleInfo(SubModuleName);
     if (0 == pSubModule)
     {
@@ -177,7 +177,7 @@ void CMainControl::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CSubModule SubModule = *pSubModule;
+    ServiceDataManager::CSubModule SubModule = *pSubModule;
 
     CDlgModifySubModule *dlg = new CDlgModifySubModule(SubModule, true);
 

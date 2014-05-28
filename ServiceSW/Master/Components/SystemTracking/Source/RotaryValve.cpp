@@ -68,12 +68,12 @@ CRotaryValve::~CRotaryValve()
     catch (...) { }
 }
 
-void CRotaryValve::UpdateModule(DataManager::CModule &Module)
+void CRotaryValve::UpdateModule(ServiceDataManager::CModule &Module)
 {
     qDebug() << "CRotaryValve::UpdateModule !"
              << Module.GetModuleName();
 
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -88,12 +88,12 @@ void CRotaryValve::UpdateModule(DataManager::CModule &Module)
     emit ModuleListChanged();
 }
 
-void CRotaryValve::UpdateSubModule(DataManager::CSubModule &SubModule)
+void CRotaryValve::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 {
     qDebug() << "CRotaryValve::UpdateSubModule !"
              << SubModule.GetSubModuleName();
 
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -101,7 +101,7 @@ void CRotaryValve::UpdateSubModule(DataManager::CSubModule &SubModule)
         return;
     }
 
-    DataManager::CModule *pModule = pModuleList->GetModule(MODULE_ROTARYVALVE);
+    ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_ROTARYVALVE);
     if (0 == pModule)
     {
         qDebug() << "CRotaryValve::UpdateSubModule(): Invalid module : "
@@ -121,7 +121,7 @@ void CRotaryValve::ModifyRotaryValve(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_ROTARYVALVE_MODULE);
     qDebug() << "CRotaryValve::ModifyRotaryValve !";
 
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -129,7 +129,7 @@ void CRotaryValve::ModifyRotaryValve(void)
         return;
     }
 
-    DataManager::CModule *pModule = pModuleList->GetModule(MODULE_ROTARYVALVE);
+    ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_ROTARYVALVE);
     if (0 == pModule)
     {
         qDebug() << "CRotaryValve::ModifyRotaryValve(): Invalid module : "
@@ -137,7 +137,7 @@ void CRotaryValve::ModifyRotaryValve(void)
         return;
     }
 
-    DataManager::CModule Module = *pModule;
+    ServiceDataManager::CModule Module = *pModule;
 
     CDlgModifyModule *dlg = new CDlgModifyModule(Module);
 
@@ -172,7 +172,7 @@ void CRotaryValve::ModifyMotor(void)
 void CRotaryValve::ModifySubModule(const QString &ModuleName,
                                    const QString &SubModuleName)
 {
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -180,7 +180,7 @@ void CRotaryValve::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CModule *pModule = pModuleList->GetModule(ModuleName);
+    ServiceDataManager::CModule *pModule = pModuleList->GetModule(ModuleName);
     if (0 == pModule)
     {
         qDebug() << "CRotaryValve::ModifySubModule(): Invalid module : "
@@ -188,7 +188,7 @@ void CRotaryValve::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CSubModule *pSubModule =
+    ServiceDataManager::CSubModule *pSubModule =
             pModule->GetSubModuleInfo(SubModuleName);
     if (0 == pSubModule)
     {
@@ -197,16 +197,16 @@ void CRotaryValve::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CSubModule SubModule = *pSubModule;
+    ServiceDataManager::CSubModule SubModule = *pSubModule;
 
     CDlgModifySubModule *dlg = new CDlgModifySubModule(SubModule);
 
     dlg->UpdateGUI();
 
     (void)connect(dlg,
-                  SIGNAL(UpdateSubModule(DataManager::CSubModule&)),
+                  SIGNAL(UpdateSubModule(ServiceDataManager::CSubModule&)),
                   this,
-                  SLOT(UpdateSubModule(DataManager::CSubModule&)));
+                  SLOT(UpdateSubModule(ServiceDataManager::CSubModule&)));
 
     dlg->exec();
 

@@ -22,7 +22,7 @@
 
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationInterface.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
-#include "DataManager/Containers/InstrumentHistory/Include/ModuleDataList.h"
+#include "ServiceDataManager/Include/ModuleDataList.h"
 #include <ServiceDataManager/Include/ServiceParameters.h>
 
 #include "Global/Include/Translator.h"
@@ -75,7 +75,7 @@ class CServiceGUIConnector : public QObject
 
     MainMenu::CMsgBoxManager *mp_MesgBoxManager;        //!< Msg Box manager for CmdEventReport
 
-    DataManager::CModuleDataList                *mp_ModuleList;                     //!< Container for Instrument History
+    ServiceDataManager::CModuleDataList         *mp_ModuleList;                     //!< Container for Instrument History
     DataManager::CDeviceConfigurationInterface  *mp_DeviceConfigurationInterface;   //!< Container for Device configuration
     DataManager::CUserSettingsInterface         *mp_SettingsInterface;              //!< Provides interface to read the Settings info from xml
     DataManager::CServiceParameters             *mp_ServiceParameters;              //!< Container for Service Parameters
@@ -86,7 +86,7 @@ public:
 
     MainMenu::CWaitDialog* GetWaitDlgPtr() {return mp_WaitDialog;}
 
-    void SetModuleListContainer(DataManager::CModuleDataList *ModuleList);
+    void SetModuleListContainer(ServiceDataManager::CModuleDataList *ModuleList);
 
     void SetDeviceConfigurationInterface(
             DataManager::CDeviceConfigurationInterface *DeviceConfigInterface);
@@ -99,7 +99,7 @@ public:
     void ShowBusyDialog();
     void HideBusyDialog();
 
-    DataManager::CModuleDataList* GetModuleListContainer();
+    ServiceDataManager::CModuleDataList* GetModuleListContainer();
 
     DataManager::CDeviceConfigurationInterface *GetDeviceConfigInterface(void);
 
@@ -114,13 +114,13 @@ public slots:
 
     void onMessageDialogClosed();
 
-    void SendModuleUpdate(DataManager::CModule &Module);
+    void SendModuleUpdate(ServiceDataManager::CModule &Module);
 
-    void SendAddModule(DataManager::CModule &Module);
+    void SendAddModule(ServiceDataManager::CModule &Module);
     void ServiceParametersUpdates(DataManager::CServiceParameters *ServiceParameters);
     void HandleTimeout();
 signals:
-    void ModuleListContainerInitialized(DataManager::CModuleDataList& ModuleList);
+    void ModuleListContainerInitialized(ServiceDataManager::CModuleDataList& ModuleList);
 
     void ModuleListChanged(void);
 

@@ -68,12 +68,12 @@ COven::~COven()
     catch (...) { }
 }
 
-void COven::UpdateModule(DataManager::CModule &Module)
+void COven::UpdateModule(ServiceDataManager::CModule &Module)
 {
     qDebug() << "COven::UpdateModule !"
              << Module.GetModuleName();
 
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -88,12 +88,12 @@ void COven::UpdateModule(DataManager::CModule &Module)
     emit ModuleListChanged();
 }
 
-void COven::UpdateSubModule(DataManager::CSubModule &SubModule)
+void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 {
     qDebug() << "COven::UpdateSubModule !"
              << SubModule.GetSubModuleName();
 
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -101,7 +101,7 @@ void COven::UpdateSubModule(DataManager::CSubModule &SubModule)
         return;
     }
 
-    DataManager::CModule *pModule = pModuleList->GetModule(MODULE_OVEN);
+   ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_OVEN);
     if (0 == pModule)
     {
         qDebug() << "COven::UpdateSubModule(): Invalid module : "
@@ -121,7 +121,7 @@ void COven::ModifyOven(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_OVEN_MODULE);
     qDebug() << "COven::ModifyOven !";
 
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -129,7 +129,7 @@ void COven::ModifyOven(void)
         return;
     }
 
-    DataManager::CModule *pModule = pModuleList->GetModule(MODULE_OVEN);
+    ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_OVEN);
     if (0 == pModule)
     {
         qDebug() << "COven::ModifyOven(): Invalid module : "
@@ -137,7 +137,7 @@ void COven::ModifyOven(void)
         return;
     }
 
-    DataManager::CModule Module = *pModule;
+    ServiceDataManager::CModule Module = *pModule;
     CDlgModifyModule *dlg = new CDlgModifyModule(Module);
 
     dlg->UpdateGUI();
@@ -171,7 +171,7 @@ void COven::ModifyCoverSensor(void)
 void COven::ModifySubModule(const QString &ModuleName,
                             const QString &SubModuleName)
 {
-    DataManager::CModuleDataList *pModuleList =
+    ServiceDataManager::CModuleDataList *pModuleList =
             mp_DateConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
@@ -179,7 +179,7 @@ void COven::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CModule *pModule = pModuleList->GetModule(ModuleName);
+    ServiceDataManager::CModule *pModule = pModuleList->GetModule(ModuleName);
     if (0 == pModule)
     {
         qDebug() << "COven::ModifySubModule(): Invalid module : "
@@ -187,7 +187,7 @@ void COven::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CSubModule *pSubModule =
+    ServiceDataManager::CSubModule *pSubModule =
             pModule->GetSubModuleInfo(SubModuleName);
     if (0 == pSubModule)
     {
@@ -196,7 +196,7 @@ void COven::ModifySubModule(const QString &ModuleName,
         return;
     }
 
-    DataManager::CSubModule SubModule = *pSubModule;
+    ServiceDataManager::CSubModule SubModule = *pSubModule;
 
     CDlgModifySubModule *dlg = new CDlgModifySubModule(SubModule);
 

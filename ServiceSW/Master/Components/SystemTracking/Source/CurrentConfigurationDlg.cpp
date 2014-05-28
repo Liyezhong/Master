@@ -1,17 +1,17 @@
 /****************************************************************************/
-/*! \file CurrentConfigurationDlg.cpp
+/*! \file TestCase.h
  *
- *  \brief Current Configuration Dialog implementation.
+ *  \brief Definition file for class CTestCase.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 2013-05-02
- *   $Author:  $ Soumya. D
+ *   $Date:    $ 2014-5-21
+ *   $Author:  $ Dixiong.li
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Biosystems R&D Center Shanghai.
  *
- *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2010 by LBS R&D Center Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -36,13 +36,14 @@ CCurrentConfigurationDlg::CCurrentConfigurationDlg(QWidget *p_Parent) : MainMenu
 {
     mp_Ui->setupUi(GetContentFrame());
 
-    mp_Module = new DataManager::CModule;
-    mp_SubModule = new DataManager::CSubModule;
+    RetranslateUI();
+    mp_Module = new ServiceDataManager::CModule;
+    mp_SubModule = new ServiceDataManager::CSubModule;
 
     resize(550, 550);
 
     mp_TableWidget = new MainMenu::CBaseTable();
-    mp_TableWidget->resize(380, 280);
+    mp_TableWidget->resize(500, 300);
 
     mp_TableWidget->setModel(&m_Model);
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -50,11 +51,18 @@ CCurrentConfigurationDlg::CCurrentConfigurationDlg(QWidget *p_Parent) : MainMenu
     mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
     mp_Ui->widget->SetContent(mp_TableWidget);
 
-    mp_ExecDialog = new MainMenu::CTextDialog(this);
+    mp_ParameterDlg = new SystemTracking::CCurrentConfigParameterDlg(this);
+    mp_ParameterDlg->setModal(true);
+
     mp_MessageDialog = new MainMenu::CMessageDlg(this);
+    mp_MessageDialog->setModal(true);
+
+    mp_Ui->serialNumberEdit->setEnabled(false);
+    mp_Ui->opHrsEdit->setEnabled(false);
+    mp_Ui->DateOfProEdit->setEnabled(false);
 
     connect(mp_TableWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(SelectionChanged(QModelIndex)));
-    connect(mp_Ui->showDetailsBtn, SIGNAL(clicked()), this, SLOT(ExecDialog()));
+    connect(mp_Ui->detailBtn, SIGNAL(clicked()), this, SLOT(ExecDialog()));
     connect(mp_Ui->cancelBtn, SIGNAL(clicked()), this, SLOT(close()));
 }
 
@@ -69,7 +77,7 @@ CCurrentConfigurationDlg::~CCurrentConfigurationDlg()
     try {
         delete mp_Ui;
         delete mp_TableWidget;
-        delete mp_ExecDialog;
+        delete mp_ParameterDlg;
         delete mp_MessageDialog;
         delete mp_Module;
         delete mp_SubModule;
@@ -106,7 +114,20 @@ void CCurrentConfigurationDlg::AddItem(QString SubModuleName)
 /****************************************************************************/
 void CCurrentConfigurationDlg::SelectionChanged(QModelIndex Index)
 {
-    m_ModuleName = Index.data((int)Qt::DisplayRole);
+    m_SubModuleName = Index.data((int)Qt::DisplayRole);
+}
+
+void CCurrentConfigurationDlg::changeEvent(QEvent *p_Event)
+{
+    QWidget::changeEvent(p_Event);
+    switch (p_Event->type()) {
+    case QEvent::LanguageChange:
+        mp_Ui->retranslateUi(this);
+        RetranslateUI();
+        break;
+    default:
+        break;
+    }
 }
 
 /****************************************************************************/
@@ -116,37 +137,33 @@ void CCurrentConfigurationDlg::SelectionChanged(QModelIndex Index)
 /****************************************************************************/
 void CCurrentConfigurationDlg::ExecDialog()
 {
-    if(m_ModuleName.toString().isEmpty())
+    if(m_SubModuleName.toString().isEmpty())
     {
-        mp_MessageDialog->SetTitle(tr("Select SubModule"));
-        mp_MessageDialog->SetButtonText(1, tr("OK"));
+        mp_MessageDialog->SetTitle(m_strSelectSubModuleMsgTitle);
+        mp_MessageDialog->SetButtonText(1, m_strOk);
         mp_MessageDialog->HideButtons();
-        mp_MessageDialog->SetText(tr("Please select a SubModule.."));
+        mp_MessageDialog->SetText(m_strSelectSubModuleMsgText);
         mp_MessageDialog->SetIcon(QMessageBox::Critical);
         mp_MessageDialog->show();
     }
     else
     {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CURRENTCONFIG_SUBMODULEINFO_REQUESTED,
-                                                   Global::tTranslatableStringList() << m_ModuleName.toString());
-        mp_SubModule = const_cast<DataManager::CModule*>(mp_Module)->GetSubModuleInfo(m_ModuleName.toString());
+                                                   Global::tTranslatableStringList() << m_SubModuleName.toString());
+        mp_SubModule = const_cast<ServiceDataManager::CModule*>(mp_Module)->GetSubModuleInfo(m_SubModuleName.toString());
         int Count = mp_SubModule->GetNumberOfParameters();
-        QString Text;
-        DataManager::Parameter_t *Param;
+        ServiceDataManager::Parameter_t *Param;
+        mp_ParameterDlg->ClearModel();
 
         for(int i=0; i<Count; i++) {
             Param = mp_SubModule->GetParameterInfo(i);
-            Text.append(Param->ParameterName + "\t\t" + Param->ParameterValue + "\n");
+            mp_ParameterDlg->InitDialog(Param);
         }
 
-        QString Title(mp_SubModule->GetSubModuleName());
-        Title.append(tr(" Details"));
-
-        mp_ExecDialog->SetText(Text);
-        mp_ExecDialog->SetDialogTitle(Title);
-        mp_ExecDialog->SetCaption("");
-        mp_ExecDialog->resize(450, 450);
-        mp_ExecDialog->show();
+        mp_ParameterDlg->SetDialogTitle(const_cast<ServiceDataManager::CModule*>(mp_Module)->GetSubModuleInfo
+                                        (m_SubModuleName.toString())->GetSubModuleName());
+        mp_ParameterDlg->resize(380, 420);
+        mp_ParameterDlg->show();
     }
 }
 
@@ -156,42 +173,17 @@ void CCurrentConfigurationDlg::ExecDialog()
  *  \iparam Module = Module object
  */
 /****************************************************************************/
-void CCurrentConfigurationDlg::InitDialog(DataManager::CModule *p_Module)
+void CCurrentConfigurationDlg::InitDialog(ServiceDataManager::CModule *p_Module)
 {
     *mp_Module = *p_Module;
 
     QString Title(mp_Module->GetModuleName());
-    Title.append(tr(" Details"));
 
     SetDialogTitle(Title);
 
-    QString Text;
-
-    QString SerialNumber = p_Module->GetSerialNumber();
-    if (!SerialNumber.isEmpty())
-    {
-        QString SN = "Serial Number      : " + SerialNumber + "\n";
-        Text.append(SN);
-    }
-
-    QString OperatingHours = p_Module->GetOperatingHours();
-    if (!OperatingHours.isEmpty())
-    {
-        QString OH = "Operating Hours    : " + OperatingHours + "\n";
-        Text.append(OH);
-    }
-
-    /*QString DateOfProduction = p_Module->GetDateOfProduction();
-    if (!DateOfProduction.isEmpty())
-    {
-        QString DP = "Date of Production : " + DateOfProduction + "\n";
-        Text.append(DP);
-    }
-    */
-
-    mp_Ui->moduleInfoLabel->setText(Text);
-    mp_Ui->moduleInfoLabel->setWordWrap(true);
-    mp_Ui->moduleInfoLabel->setAlignment(Qt::AlignLeft);
+    mp_Ui->serialNumberEdit->setText(mp_Module->GetSerialNumber());
+    mp_Ui->opHrsEdit->setText(mp_Module->GetOperatingHours());
+    mp_Ui->DateOfProEdit->setText(mp_Module->GetDateOfProduction());
 
     if(m_Model.rowCount() > 0)
     {
@@ -204,6 +196,16 @@ void CCurrentConfigurationDlg::InitDialog(DataManager::CModule *p_Module)
         QString Name = mp_SubModule->GetSubModuleName();
         AddItem(Name);
     }
+}
+
+void CCurrentConfigurationDlg::RetranslateUI()
+{
+    m_strOk                      = QApplication::translate("SystemTracking::CCurrentConfigurationDlg", "OK",
+                                                            0, QApplication::UnicodeUTF8);
+    m_strSelectSubModuleMsgTitle = QApplication::translate("SystemTracking::CCurrentConfigurationDlg", "Select SubModule",
+                                                            0, QApplication::UnicodeUTF8);
+    m_strSelectSubModuleMsgText  = QApplication::translate("SystemTracking::CCurrentConfigurationDlg", "Please select a SubModule..",
+                                                            0, QApplication::UnicodeUTF8);
 }
 
 }    // end namespace SystemTracking
