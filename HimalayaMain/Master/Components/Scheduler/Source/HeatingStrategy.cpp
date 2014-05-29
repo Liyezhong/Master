@@ -284,6 +284,8 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
     {
         if (heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature <HWTemp)
         {
+            qreal maxTemperature = heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature;
+            mp_SchedulerController->LogDebug(QString("the sensor temperature is :%1, but the actual temperature :%2").arg(maxTemperature).arg(HWTemp));
             return false;
         }
     }
@@ -292,6 +294,8 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
     {
         if (heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature <HWTemp)
         {
+            qreal maxTemperature = heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature;
+            mp_SchedulerController->LogDebug(QString("the sensor temperature is :%1, but the actual temperature :%2").arg(maxTemperature).arg(HWTemp));
             return false;
         }
     }
