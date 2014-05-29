@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EventConfigure>
 	<Source Name="Himalaya">
+		<Event Code="" ErrorID="513010300" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE" EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_Standby_withTissue" NextStepOnFail="1" NextStepOnSuccess="1"/>
+			<Step ID="1" Type="MSG" StringID="103010300" RDStringID="113010300" ButtonType="OK" NextStepOnClickOK="2" ButtonEnableCondition="RT_LID_OPEN_CLOSE" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="2" Type="ACT" Action="RC_Levelsensor_heating_Overtime" NextStepOnFail="4" NextStepOnSuccess="3"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>
+			<Step ID="4" Type="MSG" StringID="103010300" RDStringID="113010300" ButtonType="OK" NextStepOnClickOK="5" ButtonEnableCondition="RT_LID_OPEN_CLOSE" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="5" Type="ACT" Action="RC_Report"/>
+		</Event>
 		<Event Code="" ErrorID="511030021" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_RV_GetOriginalPositionAgain" NextStepOnFail="1" NextStepOnSuccess="3"/>
 			<Step ID="1" Type="MSG" StringID="101030021" RDStringID="111030021" ButtonType="OK" NextStepOnClickOK="2" ButtonEnableCondition="RT_LID_OPEN_CLOSE" StatusBar="YES" LogLevel="High" UserLog="TRUE"/>
