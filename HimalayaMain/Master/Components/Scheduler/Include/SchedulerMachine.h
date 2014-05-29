@@ -1016,6 +1016,8 @@ signals:
      */
     /****************************************************************************/
     void sigOnRsRTTopStopTempCtrlAtRsStandByWithTissue();
+
+    void sigStateChange();
 };
 }
 

@@ -75,12 +75,11 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RS_Standby_WithTissue related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsStandByWithTissue()), mp_ErrorRSStandbyWithTissueState);
-    mp_ErrorRSStandbyWithTissueState->addTransition(mp_RSStandbyWithTissue, SIGNAL(TasksDone(bool)), mp_ErrorWaitState);
+    mp_ErrorRSStandbyWithTissueState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState);
 
     //RC_Levelsensor_Heating_Overtime related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcLevelsensorHeatingOvertime()), mp_ErrorRCLevelSensorHeatingOvertimeState);
-    mp_ErrorRCLevelSensorHeatingOvertimeState->addTransition(mp_RcLevelSensorHeatingOvertime, SIGNAL(TasksDone(bool)), mp_ErrorWaitState);
-
+    mp_ErrorRCLevelSensorHeatingOvertimeState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState);
 
     connect(this, SIGNAL(sigStInitOK()), mp_ProgramStepStates, SIGNAL(StInitOK()));
     connect(this, SIGNAL(sigStTempOK()), mp_ProgramStepStates, SIGNAL(StTempOK()));
@@ -212,6 +211,7 @@ void CSchedulerStateMachine::OnRestartLevelSensorTempControl()
 void CSchedulerStateMachine::OnTasksDone(bool flag)
 {
     Global::EventObject::Instance().RaiseEvent(mp_SchedulerThreadController->GetEventKey(), 0, 0, flag);
+    emit sigStateChange();
 }
 
 /****************************************************************************/

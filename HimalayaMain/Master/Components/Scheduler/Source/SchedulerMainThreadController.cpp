@@ -224,8 +224,6 @@ void SchedulerMainThreadController::OnTickTimer()
         break;
     case SM_ERROR:
         HardwareMonitor( "ERROR" );
-        //qDebug()<<"DBG"<<"Scheduler main controller state: ERROR";
-        //refuse any main controller request if there is any
         HandleErrorState(newControllerCmd, cmd, currentState);
         break;
     default:
@@ -329,7 +327,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         cmdName = cmd->GetName();
     }
-
+#if 0
+    //just for testing
+    if (200 ==Scenario)
+    {
+        RaiseError(0, 500010301, 200, false);
+        m_SchedulerMachine->SendErrorSignal();
+    }
+#endif
     if(CTRL_CMD_ABORT == ctrlCmd)
     {
         LogDebug(QString("Scheduler received command: ABORT"));
@@ -1075,7 +1080,8 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
 {
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
     QString cmdName = "";
-    if(false == cmd.isNull())
+
+    if (false == cmd.isNull())
     {
         if(!(cmd->GetResult(retCode)))
         {
@@ -1083,14 +1089,10 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         }
         cmdName = cmd->GetName();
     }
-    else
-    {
-        retCode = DCL_ERR_FCT_CALL_SUCCESS;
-    }
 
     if (SM_ERR_WAIT == currentState && CTRL_CMD_NONE != ctrlCmd)
     {
-        //LogDebug("Scheduler waitting event handler give instruction!");
+        LogDebug("####Scheduler waitting event handler give instruction!");
         if(CTRL_CMD_RC_RESTART == ctrlCmd)
         {
             if(((m_SchedulerMachine->GetPreviousState()) & 0xFFFF)==PSSM_ST)
