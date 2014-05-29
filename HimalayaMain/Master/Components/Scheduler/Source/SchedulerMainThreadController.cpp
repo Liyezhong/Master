@@ -335,6 +335,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         m_SchedulerMachine->SendErrorSignal();
     }
 #endif
+
     if(CTRL_CMD_ABORT == ctrlCmd)
     {
         LogDebug(QString("Scheduler received command: ABORT"));
@@ -1270,7 +1271,7 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             return CTRL_CMD_RS_STANDBY_WITHTISSUE;
         }
-        if (cmd == "rs_levelsensor_heating_overtime")
+        if (cmd == "rc_levelsensor_heating_overtime")
         {
             return CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME;
         }
