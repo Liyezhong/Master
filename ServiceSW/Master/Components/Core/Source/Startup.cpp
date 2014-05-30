@@ -801,7 +801,6 @@ void CStartup::ShowErrorMessage(const QString &Message)
 /****************************************************************************/
 void CStartup::RefreshTestStatus(const QString &Message, const Service::ModuleTestStatus &Status)
 {
-    qDebug()<<"CStartup::RefreshTestStatus --"<<Message;
     Service::ModuleTestCaseID Id = DataManager::CTestCaseGuide::Instance().GetTestCaseId(Message);
 
     if (Id == Service::OVEN_HEATING_EMPTY || Id == Service::OVEN_HEATING_WITH_WATER ) {

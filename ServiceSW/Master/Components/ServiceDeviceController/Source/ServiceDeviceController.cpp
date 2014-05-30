@@ -269,7 +269,7 @@ void ServiceDeviceController::GetUnInitializedDevices(QList<quint32> &)
  */
 /****************************************************************************/
 void ServiceDeviceController::SendCommand(Global::tRefType Ref, const Global::CommandShPtr_t &Cmd){
-    qDebug() << "ServiceDeviceController::SendCommand" << Ref;
+//    qDebug() << "ServiceDeviceController::SendCommand" << Ref;
     Threads::ThreadController::SendCommand(Ref, Cmd);
 }
 
@@ -356,7 +356,7 @@ void ServiceDeviceController::ReturnCalibrationInitMessagetoMain(const QString &
 void ServiceDeviceController::RefreshTestStatustoMain(const QString &Message, const Service::ModuleTestStatus &Status)
 {
 
-    qDebug()<<"ServiceDeviceController::RefreshTestStatustoMain()  --Message="<<Message << " Status:"<<Status;
+//    qDebug()<<"ServiceDeviceController::RefreshTestStatustoMain()  --Message="<<Message << " Status:"<<Status;
 
     DeviceCommandProcessor::CmdReturnMessage* commandPtr(new DeviceCommandProcessor::CmdReturnMessage(Message));
     commandPtr->m_MessageType = Service::GUIMSGTYPE_HEATINGSTATUS;

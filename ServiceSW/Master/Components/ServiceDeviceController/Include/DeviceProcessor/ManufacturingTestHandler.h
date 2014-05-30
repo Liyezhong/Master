@@ -26,6 +26,7 @@
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Core/Include/ServiceDefines.h"
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalInput.h>
+#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalOutput.h>
 
 
 class WrapperUtils;
@@ -196,6 +197,7 @@ private:
     WrapperFmTempControl*       mp_TempOvenBottom;
 
     WrapperFmDigitalInput*      mp_DigitalInpputOven;
+    WrapperFmDigitalOutput*     mp_DigitalOutputMainRelay;
 
 
 };

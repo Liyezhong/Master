@@ -76,6 +76,16 @@ void ManufacturingTestHandler::CreateWrappers()
     if ( NULL != pDigitalInput ) {
         mp_DigitalInpputOven = new WrapperFmDigitalInput("digitalinput_oven", pDigitalInput, this);
     }
+
+    CDigitalOutput *pDigitalOutput = NULL;
+    pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerMainRelayDOKey));
+    if ( NULL != pDigitalOutput ) {
+        mp_DigitalOutputMainRelay = new WrapperFmDigitalOutput("heater_relay", pDigitalOutput, this);
+    }
+    else {
+        qDebug()<<"new WrapperFmDigitalOutput for MainRelay failed !!!!";
+    }
+
 }
 
 /****************************************************************************/
@@ -131,6 +141,7 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     QTime DurationTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
     qreal TargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureLow").toDouble();
+    qreal MaxTargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureHigh").toDouble();
     qreal TopTargetTemp = p_TestCase->GetParameter("TopTargetTemp").toDouble();
     qreal BottomTargetTemp = p_TestCase->GetParameter("BottomTargetTemp").toDouble();
 
@@ -167,13 +178,13 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
         Status.insert("CurrentTempBottom1", BottomValue1);
         Status.insert("CurrentTempBottom2", BottomValue2);
         if (WaitSec == SumSec) {
-            QString TargetTemp = QString("%1").arg(Service::TEST_OVEN_HEATING_MIN_TEMP);
-            Status.insert("TargetTemp", TargetTemp);
+            QString TargetTempStr = QString("%1~%2").arg(TargetTemp).arg(MaxTargetTemp);
+            Status.insert("TargetTemp", TargetTempStr);
 
             QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
             Status.insert("Duration", Duration);
             p_TestCase->AddResult("Duration", Duration);
-            p_TestCase->AddResult("TargetTemp", TargetTemp);
+            p_TestCase->AddResult("TargetTemp", TargetTempStr);
         }
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
@@ -222,6 +233,7 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     QTime DurationTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
     qreal TargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureLow").toDouble();
+    qreal MaxTargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureHigh").toDouble();
     qreal TopTargetTemp = p_TestCase->GetParameter("TopTargetTemp").toDouble();
     qreal BottomTargetTemp = p_TestCase->GetParameter("BottomTargetTemp").toDouble();
 
@@ -231,8 +243,13 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
 
     SumSec = WaitSec;
 
-    mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
-    mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
+    qDebug()<<"Main Relay SetHigh return : "<<mp_DigitalOutputMainRelay->SetHigh();
+
+
+    qDebug() << "TopTargetTemp="<<TopTargetTemp<<" BottomTargetTemp="<<BottomTargetTemp;
+
+    qDebug()<<"Oven Top StartTemperatureControl return :" << mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
+    qDebug()<<"Oven Bottom StartTemperatureControl return :" << mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
 
     while (!m_UserAbort && WaitSec)
     {
@@ -241,7 +258,10 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
 
         if (CurrentTempTop == -1 || CurrentTempBottom1 == -1 || CurrentTempBottom2 == -1) {
-            mp_Utils->Pause(10);
+            qDebug()<<"Top="<<CurrentTempTop<<" Bot1="<<CurrentTempBottom1<<" Bot2="<<CurrentTempBottom2;
+
+            mp_Utils->Pause(1000);
+            WaitSec--;
             continue;
         }
 
@@ -265,13 +285,15 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         Status.insert("CurrentTempBottom1", BottomValue1);
         Status.insert("CurrentTempBottom2", BottomValue2);
         if (WaitSec == SumSec) {
-            QString TargetTemp = QString("%1").arg(Service::TEST_OVEN_HEATING_MIN_TEMP);
-            Status.insert("TargetTemp", TargetTemp);
+            QString TargetTempStr = QString("%1~%2").arg(TargetTemp).arg(MaxTargetTemp);
+            Status.insert("TargetTemp", TargetTempStr);
+
+            qDebug()<<"TargetTemp="<<TargetTempStr;
 
             QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
             Status.insert("Duration", Duration);
             p_TestCase->AddResult("Duration", Duration);
-            p_TestCase->AddResult("TargetTemp", TargetTemp);
+            p_TestCase->AddResult("TargetTemp", TargetTempStr);
         }
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
@@ -313,6 +335,10 @@ qint32 ManufacturingTestHandler::TestOvenCoverSensor()
     qDebug()<<"Slave 3 voltage = " << m_rIdevProc.IDGetSlaveVoltage(DeviceControl::Slave_3);
     qDebug()<<"Slave 5 voltage = " << m_rIdevProc.IDGetSlaveVoltage(DeviceControl::Slave_5);
     qDebug()<<"Slave 15 voltage = " << m_rIdevProc.IDGetSlaveVoltage(DeviceControl::Slave_15);
+
+    qDebug()<<"Slave 3 current = " << m_rIdevProc.IDGetSlaveCurrent(DeviceControl::Slave_3);
+    qDebug()<<"Slave 5 current = " << m_rIdevProc.IDGetSlaveCurrent(DeviceControl::Slave_5);
+    qDebug()<<"Slave 15 current = " << m_rIdevProc.IDGetSlaveCurrent(DeviceControl::Slave_15);
 
 
     if (mp_DigitalInpputOven == NULL) {
@@ -361,7 +387,7 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         }
         break;
     case Service::OVEN_HEATING_EMPTY:
-        if ( NULL == mp_TempOvenTop || NULL == mp_TempOvenBottom )
+        if ( NULL == mp_TempOvenTop || NULL == mp_TempOvenBottom || NULL == mp_DigitalOutputMainRelay)
         {
             SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
             emit ReturnManufacturingTestMsg(false);

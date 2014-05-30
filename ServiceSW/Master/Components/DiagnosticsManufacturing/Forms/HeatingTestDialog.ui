@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>248</height>
+    <height>262</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -50,7 +50,7 @@
      <x>20</x>
      <y>20</y>
      <width>341</width>
-     <height>171</height>
+     <height>181</height>
     </rect>
    </property>
    <property name="title">
@@ -62,7 +62,7 @@
       <x>10</x>
       <y>30</y>
       <width>321</width>
-      <height>131</height>
+      <height>141</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -97,21 +97,21 @@
      <item row="2" column="0">
       <widget class="QLabel" name="labelTargetTempName">
        <property name="text">
-        <string>Target Temprature:</string>
+        <string>Target Temperature:</string>
        </property>
       </widget>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="labelCurTempTopName">
        <property name="text">
-        <string>Current Temprature (Top):</string>
+        <string>Current Temperature (Top):</string>
        </property>
       </widget>
      </item>
      <item row="4" column="0">
       <widget class="QLabel" name="labelCurTempBottom1Name">
        <property name="text">
-        <string>Current Temprature (Bottom 1):</string>
+        <string>Current Temeprature (Bottom 1):</string>
        </property>
       </widget>
      </item>
@@ -139,7 +139,7 @@
      <item row="5" column="0">
       <widget class="QLabel" name="labelCurTempBottom2Name">
        <property name="text">
-        <string>Current Temprature (Bottom 2):</string>
+        <string>Current Temperature (Bottom 2):</string>
        </property>
       </widget>
      </item>
@@ -153,7 +153,7 @@
      <item row="6" column="0">
       <widget class="QLabel" name="labelExtTempName">
        <property name="text">
-        <string>External Test Temprature:</string>
+        <string>External Test Temperature:</string>
        </property>
       </widget>
      </item>
@@ -170,8 +170,8 @@
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>190</y>
+     <x>240</x>
+     <y>200</y>
      <width>151</width>
      <height>51</height>
     </rect>

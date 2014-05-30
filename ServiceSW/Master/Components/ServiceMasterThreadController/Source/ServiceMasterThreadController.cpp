@@ -641,7 +641,7 @@ CommandChannel *ServiceMasterThreadController::GetComponentRouteChannel(Global::
 void ServiceMasterThreadController::OnExecuteCommand(Global::tRefType Ref, const Global::CommandShPtr_t &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
     try {
-        qDebug() << "MasterThreadController::OnExecuteCommand" << Ref << Cmd.GetPointerToUserData()->GetName();
+//        qDebug() << "MasterThreadController::OnExecuteCommand" << Ref << Cmd.GetPointerToUserData()->GetName();
 
         if (!IsCommandAllowed(Cmd))
         {
@@ -1409,7 +1409,7 @@ void ServiceMasterThreadController::OnGetDataContainersCommand(Global::tRefType 
 /****************************************************************************/
 void ServiceMasterThreadController::OnReturnMessageCommand(Global::tRefType Ref, const DeviceCommandProcessor::CmdReturnMessage &Cmd, Threads::CommandChannel &AckCommandChannel)
 {
-    qDebug()<<" ServiceMasterThreadController::OnReturnMessageCommand CmdType="<<Cmd.m_MessageType;
+//    qDebug()<<" ServiceMasterThreadController::OnReturnMessageCommand CmdType="<<Cmd.m_MessageType;
 
     SendAcknowledgeOK(Ref, AckCommandChannel);
     switch(Cmd.m_MessageType)

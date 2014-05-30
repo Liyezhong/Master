@@ -97,7 +97,6 @@ void CHeatingTestDialog::SetText(QString Text)
 /****************************************************************************/
 void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
 {
-    qDebug()<<Status;
 
     mp_Ui->labelUsedTime->setText(Status.value("UsedTime"));
     mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempTop"));
