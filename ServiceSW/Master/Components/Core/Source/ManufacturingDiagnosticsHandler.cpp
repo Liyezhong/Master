@@ -47,15 +47,17 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
     //Diagnostics Manufacturing
     mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
     mp_OvenManuf = new DiagnosticsManufacturing::COven(mp_ServiceConnector, mp_MainWindow);
-
     mp_MainControlManuf = new DiagnosticsManufacturing::CMainControl(mp_ServiceConnector, mp_MainWindow);
+    mp_LaSystemManuf = new DiagnosticsManufacturing::CLaSystem(mp_ServiceConnector, mp_MainWindow);
 
     CONNECTSIGNALSLOTGUI(mp_OvenManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
     CONNECTSIGNALSLOTGUI(mp_MainControlManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
+    CONNECTSIGNALSLOTGUI(mp_LaSystemManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
 
     /* Manufacturing SW Reset status */
     CONNECTSIGNALSLOTGUI(mp_DiagnosticsManufGroup, PanelChanged(), mp_OvenManuf, ResetTestStatus());
     CONNECTSIGNALSLOTGUI(mp_DiagnosticsManufGroup, PanelChanged(), mp_MainControlManuf, ResetTestStatus());
+    CONNECTSIGNALSLOTGUI(mp_DiagnosticsManufGroup, PanelChanged(), mp_LaSystemManuf, ResetTestStatus());
 
 }
 
@@ -89,7 +91,9 @@ void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
                                        "Oven", 0, QApplication::UnicodeUTF8), mp_OvenManuf);
     if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
         mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                       "MainControl", 0, QApplication::UnicodeUTF8), mp_MainControlManuf);
+                                       "Main Control", 0, QApplication::UnicodeUTF8), mp_MainControlManuf);
+        mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                       "LA System", 0, QApplication::UnicodeUTF8), mp_LaSystemManuf);
     }
     mp_MainWindow->AddMenuGroup(mp_DiagnosticsManufGroup, QApplication::translate
                    ("Core::CManufacturingDiagnosticsHandler", "Diagnostics", 0, QApplication::UnicodeUTF8));
@@ -110,6 +114,8 @@ void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::Module
         break;
     case Service::EBOX:
         PerformManufEBoxTests(TestCaseList);
+        break;
+    case Service::LA_SYSTEM:
         break;
     default:
         break;

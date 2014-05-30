@@ -19,19 +19,34 @@
 			<Step>Please fill water into paraffin baths to maximum level</Step>
 		</Guide>
 	</OvenHeatingWater>
-	<EBoxASB3 Description="ASB3 test">
+	<MCASB3 Description="ASB3 test">
 		<Guide>
 			<Step>asb3 test step</Step>
 		</Guide>
-	</EBoxASB3>
-	<EBoxASB5 Description="ASB5 test">
+	</MCASB3>
+	<MCASB5 Description="ASB5 test">
 		<Guide>
 			<Step>asb5 test step</Step>
 		</Guide>
-	</EBoxASB5>
-	<EBoxASB15 Description="ASB15 test">
+	</MCASB5>
+	<MCASB15 Description="ASB15 test">
 		<Guide>
 			<Step>asb15 test step</Step>
 		</Guide>
-	</EBoxASB15>
+	</MCASB15>
+	<LAHeatingBelt1 Description="Heating belt test (liquid)">
+		<Guide>
+			<Step>heating belt test with liquid</Step>
+		</Guide>
+	</LAHeatingBelt1>
+	<LAHeatingBelt2 Description="Heating belt test (air)">
+		<Guide>
+			<Step>heating belt test with air</Step>
+		</Guide>
+	</LAHeatingBelt2>
+	<LAAirSystem Description="vacuum test">
+		<Guide>
+			<Step>vacuum test</Step>
+		</Guide>
+	</LAAirSystem>
 </TestCaseGuide>

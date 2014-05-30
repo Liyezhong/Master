@@ -161,14 +161,23 @@ void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
     else if (TestCaseName == "OvenCoverSensor") {
         Id = Service::OVEN_COVER_SENSOR;
     }
-    else if (TestCaseName == "EBoxASB3") {
+    else if (TestCaseName == "MCASB3") {
         Id = Service::EBOX_ASB3;
     }
-    else if (TestCaseName == "EBoxASB5") {
+    else if (TestCaseName == "MCASB5") {
         Id = Service::EBOX_ASB5;
     }
-    else if (TestCaseName == "EBoxASB15") {
+    else if (TestCaseName == "MCASB15") {
         Id = Service::EBOX_ASB15;
+    }
+    else if (TestCaseName == "LAHeatingBelt1") {
+        Id = Service::LA_SYSTEM_HEATING_LIQUID_TUBE;
+    }
+    else if (TestCaseName == "LAHeatingBelt2") {
+        Id = Service::LA_SYSTEM_HEATING_AIR_TUBE;
+    }
+    else if (TestCaseName == "LAAirSystem") {
+        Id = Service::LA_SYSTEM_PUMP_VALVE_CONTROL;
     }
 
     m_TestCaseIDHash.insert(Id, TestCaseName);

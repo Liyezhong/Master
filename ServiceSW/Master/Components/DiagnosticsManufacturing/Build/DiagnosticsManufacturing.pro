@@ -14,10 +14,12 @@ HEADERS *= ../Include/*.h \          # header file location
     ../Include/MainControlManufacturing.h
 
 SOURCES *= ../Source/*.cpp \         # source file location
-    ../Source/MainControlManufacturing.cpp
+    ../Source/MainControlManufacturing.cpp \
+    ../Source/LaSystemManufacturing.cpp
 
 FORMS += ../Forms/*.ui \
-    ../Forms/MainControlManufacturing.ui
+    ../Forms/MainControlManufacturing.ui \
+    ../Forms/LaSystemManufacturing.ui
 
 RESOURCES *= ../Resource/*.qrc   # resource file location
 

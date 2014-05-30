@@ -11,4 +11,16 @@
 		<RVSelectionTestM Position="0" Pressure="30" />
 		<RVSelectionTestS Position="7" Pressure="30" />
 	</RotaryValve>
+	<MainControl>
+		<MCASB3 Parameter="N/A"/>
+		<MCASB5 Parameter="N/A"/>
+		<MCASB15 Parameter="N/A"/>
+		<MCEBox Parameter="N/A"/>
+		<MCTouchScreen Parameter="N/A"/>
+	</MainControl>
+	<LaSystem>
+		<LAHeatingBelt1 Parameter="N/A"/>
+		<LAHeatingBelt2 Parameter="N/A"/>
+		<LAAirSystem Parameter="N/A"/>
+	</LaSystem>
 </TestCaseConfig>
