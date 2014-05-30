@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DiagnosticsManufacturing::CMainControlManufacturing</class>
+ <widget class="QWidget" name="DiagnosticsManufacturing::CMainControlManufacturing">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>603</width>
+    <height>455</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>0</y>
+     <width>561</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Serial Number</string>
+   </property>
+   <widget class="QLineEdit" name="eboxSNEdit">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>25</y>
+      <width>241</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>25</y>
+      <width>91</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Main Control</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>55</y>
+      <width>91</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Touch Screen</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="tsSNEdit">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>55</y>
+      <width>241</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>85</y>
+      <width>66</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ASB3</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="asb3SNEdit">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>85</y>
+      <width>241</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>115</y>
+      <width>66</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ASB5</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="asb5SNEdit">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>115</y>
+      <width>241</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>145</y>
+      <width>66</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ASB15</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="asb15SNEdit">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>145</y>
+      <width>241</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="MainMenu::CScrollTable" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>180</y>
+     <width>561</width>
+     <height>100</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>400</y>
+     <width>571</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="sendTestReportBtn">
+      <property name="text">
+       <string>Send Test Report</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QPushButton" name="beginTestBtn">
+      <property name="text">
+       <string>Begin Test</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MainMenu::CScrollTable</class>
+   <extends>QWidget</extends>
+   <header>MainMenu/Include/ScrollTable.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

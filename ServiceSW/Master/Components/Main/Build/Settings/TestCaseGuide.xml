@@ -19,4 +19,19 @@
 			<Step>Please fill water into paraffin baths to maximum level</Step>
 		</Guide>
 	</OvenHeatingWater>
+	<EBoxASB3 Description="ASB3 test">
+		<Guide>
+			<Step>asb3 test step</Step>
+		</Guide>
+	</EBoxASB3>
+	<EBoxASB5 Description="ASB5 test">
+		<Guide>
+			<Step>asb5 test step</Step>
+		</Guide>
+	</EBoxASB5>
+	<EBoxASB15 Description="ASB15 test">
+		<Guide>
+			<Step>asb15 test step</Step>
+		</Guide>
+	</EBoxASB15>
 </TestCaseGuide>

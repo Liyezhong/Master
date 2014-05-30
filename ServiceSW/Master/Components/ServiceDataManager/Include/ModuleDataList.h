@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file DataManager/Containers/InstrumentHistory/Include/ModuleDataList.h
+/*! \file ServiceDataManager/Include/ModuleDataList.h
  *
  *  \brief Definition file for class CModuleDataList.
  *  Reads all Module information from XML, stores in a container (QHash) and also writes

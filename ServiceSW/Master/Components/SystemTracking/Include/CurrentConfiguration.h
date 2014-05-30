@@ -103,8 +103,8 @@ private:
     QStandardItemModel m_Model;                                 //!< Model for the table
     SystemTracking::CCurrentConfigurationDlg *mp_ConfigDialog;  //!< Current configuration dialog
     Core::CServiceGUIConnector *mp_DataConnector;               //!< Global data connector
-    ServiceDataManager::CModuleDataList *mp_ModuleList;                //!< Current list of modules
-    ServiceDataManager::CModule *mp_Module;                            //!< Selected Module
+    ServiceDataManager::CModuleDataList *mp_ModuleList;         //!< Current list of modules
+    ServiceDataManager::CModule *mp_Module;                     //!< Selected Module
     QVariant m_ModuleName;                                      //!< Stores Module name
     MainMenu::CMessageDlg *mp_MessageDialog;                    //!< Information message dialog
 

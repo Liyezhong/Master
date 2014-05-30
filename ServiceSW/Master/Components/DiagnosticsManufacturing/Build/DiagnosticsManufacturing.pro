@@ -11,10 +11,13 @@
 TARGET = DiagnosticsManufacturing
 
 HEADERS *= ../Include/*.h \          # header file location
+    ../Include/MainControlManufacturing.h
 
 SOURCES *= ../Source/*.cpp \         # source file location
+    ../Source/MainControlManufacturing.cpp
 
-FORMS += ../Forms/*.ui
+FORMS += ../Forms/*.ui \
+    ../Forms/MainControlManufacturing.ui
 
 RESOURCES *= ../Resource/*.qrc   # resource file location
 

@@ -18,7 +18,7 @@
  */
 /****************************************************************************/
 #include <QApplication>
-#include "Global/Include/UITranslator.h"
+#include "Core/Include/SelectTestOptions.h"
 #include "Core/Include/ManufacturingDiagnosticsHandler.h"
 #include "Core/Include/CMessageString.h"
 #include "DiagnosticsManufacturing/Include/OvenManufacturing.h"
@@ -48,11 +48,14 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
     mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
     mp_OvenManuf = new DiagnosticsManufacturing::COven(mp_ServiceConnector, mp_MainWindow);
 
-    CONNECTSIGNALSLOTGUI(mp_OvenManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
+    mp_MainControlManuf = new DiagnosticsManufacturing::CMainControl(mp_ServiceConnector, mp_MainWindow);
 
+    CONNECTSIGNALSLOTGUI(mp_OvenManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
+    CONNECTSIGNALSLOTGUI(mp_MainControlManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
 
     /* Manufacturing SW Reset status */
     CONNECTSIGNALSLOTGUI(mp_DiagnosticsManufGroup, PanelChanged(), mp_OvenManuf, ResetTestStatus());
+    CONNECTSIGNALSLOTGUI(mp_DiagnosticsManufGroup, PanelChanged(), mp_MainControlManuf, ResetTestStatus());
 
 }
 
@@ -65,6 +68,7 @@ CManufacturingDiagnosticsHandler::~CManufacturingDiagnosticsHandler()
 {
     try {
         delete mp_OvenManuf;
+        delete mp_MainControlManuf;
         delete mp_DiagnosticsManufGroup;
     }
     catch (...) {
@@ -83,6 +87,10 @@ void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
     //Diagnostics
     mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                        "Oven", 0, QApplication::UnicodeUTF8), mp_OvenManuf);
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
+        mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                       "MainControl", 0, QApplication::UnicodeUTF8), mp_MainControlManuf);
+    }
     mp_MainWindow->AddMenuGroup(mp_DiagnosticsManufGroup, QApplication::translate
                    ("Core::CManufacturingDiagnosticsHandler", "Diagnostics", 0, QApplication::UnicodeUTF8));
 }
@@ -99,6 +107,9 @@ void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::Module
     switch(ModuleName) {
     case Service::OVEN:
         PerformManufOvenTests(TestCaseList);
+        break;
+    case Service::EBOX:
+        PerformManufEBoxTests(TestCaseList);
         break;
     default:
         break;
@@ -263,6 +274,11 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service
         mp_OvenManuf->SetTestResult(Id, Result);
     }
     mp_OvenManuf->EnableButton(true);
+}
+
+void CManufacturingDiagnosticsHandler::PerformManufEBoxTests(const QList<Service::ModuleTestCaseID> &TestCaseList)
+{
+    mp_MainControlManuf->EnableButton(true);
 }
 
 

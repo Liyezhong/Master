@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file DataManager/Containers/InstrumentHistory/Include/Module.h
+/*! \file ServiceDataManager/Include/Module.h
  *
  *  \brief Definition file for class CModule.
  *  This class implements functionalities to read module information

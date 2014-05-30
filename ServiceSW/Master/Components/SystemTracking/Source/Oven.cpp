@@ -143,9 +143,9 @@ void COven::ModifyOven(void)
     dlg->UpdateGUI();
 
     (void)connect(dlg,
-                  SIGNAL(UpdateModule(DataManager::CModule&)),
+                  SIGNAL(UpdateModule(ServiceDataManager::CModule&)),
                   this,
-                  SLOT(UpdateModule(DataManager::CModule&)));
+                  SLOT(UpdateModule(ServiceDataManager::CModule&)));
 
     dlg->exec();
 
@@ -203,9 +203,9 @@ void COven::ModifySubModule(const QString &ModuleName,
     dlg->UpdateGUI();
 
     (void)connect(dlg,
-                  SIGNAL(UpdateSubModule(DataManager::CSubModule&)),
+                  SIGNAL(UpdateSubModule(ServiceDataManager::CSubModule&)),
                   this,
-                  SLOT(UpdateSubModule(DataManager::CSubModule&)));
+                  SLOT(UpdateSubModule(ServiceDataManager::CSubModule&)));
 
     dlg->exec();
 

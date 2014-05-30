@@ -28,6 +28,7 @@
 #include "Global/Include/SystemPaths.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "ServiceDataManager/Include/ModuleDataList.h"
 
 namespace DataManager {
 
@@ -85,6 +86,13 @@ private slots:
     /****************************************************************************/
     void TestTestCaseFactory();
 
+    /****************************************************************************/
+    /**
+     * \brief Test read Mode data container
+     */
+    /****************************************************************************/
+    void TestModuleDataList();
+
 }; // end class CTestServiceDataManager
 
 /****************************************************************************/
@@ -122,8 +130,8 @@ void CTestServiceDataManager::TestTestCaseGuide()
 
     GuideSteps OvenEmptyGuideSteps =  CTestCaseGuide::Instance().GetGuideSteps("OvenHeatingEmpty", 0);
 
-    QVERIFY(OvenEmptyGuideSteps.length() == 2);
-    QCOMPARE(OvenEmptyGuideSteps[0], QString("the empty first step"));
+    QVERIFY(OvenEmptyGuideSteps.length() == 1);
+    QCOMPARE(OvenEmptyGuideSteps[0], QString("Please take out the wax baths."));
 }
 
 void CTestServiceDataManager::TestTestCaseFactory()
@@ -137,6 +145,24 @@ void CTestServiceDataManager::TestTestCaseFactory()
 
     QCOMPARE(CTestCaseFactory::Instance().GetParameter("OvenHeatingWater", "TargetTemp"), QString("55"));
 
+}
+
+void CTestServiceDataManager::TestModuleDataList()
+{
+    ServiceDataManager::CModuleDataList* p_ModuleList = new ServiceDataManager::CModuleDataList;
+    QString FilenameModuleList = Global::SystemPaths::Instance().GetSettingsPath() + "/InstrumentHistory.xml";
+    QVERIFY(p_ModuleList->ReadFile(FilenameModuleList));
+
+    QVERIFY(p_ModuleList->GetNumberofModules() == 5);
+
+    ServiceDataManager::CModule* p_Oven = p_ModuleList->GetModule("Oven");
+    QVERIFY(p_Oven);
+    QCOMPARE(p_Oven->GetSerialNumber(), QString("14-HIM-WB-05000"));
+
+    ServiceDataManager::CSubModule* p_Oven_Heater = p_Oven->GetSubModuleInfo("Heater");
+    QVERIFY(p_Oven_Heater);
+    QCOMPARE(p_Oven_Heater->GetSubModuleType(), QString("Heater"));
+    QVERIFY(p_Oven_Heater->GetNumberOfParameters() == 7);
 }
 
 } // end namespace ImportExport

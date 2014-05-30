@@ -144,9 +144,9 @@ void CRotaryValve::ModifyRotaryValve(void)
     dlg->UpdateGUI();
 
     (void)connect(dlg,
-                  SIGNAL(UpdateModule(DataManager::CModule&)),
+                  SIGNAL(UpdateModule(ServiceDataManager::CModule&)),
                   this,
-                  SLOT(UpdateModule(DataManager::CModule&)));
+                  SLOT(UpdateModule(ServiceDataManager::CModule&)));
 
     dlg->exec();
 

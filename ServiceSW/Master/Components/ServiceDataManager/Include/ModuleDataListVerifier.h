@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file ModuleDataListVerifier.h
+/*! \file ServiceDataManager/Include/ModuleDataListVerifier.h
  *
  *  \brief Definition for CModuleDataListVerifier class.
  *

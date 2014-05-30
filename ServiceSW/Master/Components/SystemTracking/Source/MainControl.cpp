@@ -184,14 +184,14 @@ void CMainControl::ModifySubModule(const QString &ModuleName,
     dlg->UpdateGUI();
 
     (void)connect(dlg,
-                  SIGNAL(AutoDetect(DataManager::CSubModule&)),
+                  SIGNAL(AutoDetect(ServiceDataManager::CSubModule&)),
                   this,
-                  SLOT(AutoDetect(DataManager::CSubModule&)) );
+                  SLOT(AutoDetect(ServiceDataManager::CSubModule&)) );
 
     (void)connect(dlg,
-                  SIGNAL(UpdateSubModule(DataManager::CSubModule&)),
+                  SIGNAL(UpdateSubModule(ServiceDataManager::CSubModule&)),
                   this,
-                  SLOT(UpdateSubModule(DataManager::CSubModule&)) );
+                  SLOT(UpdateSubModule(ServiceDataManager::CSubModule&)) );
 
     dlg->exec();
 
