@@ -227,8 +227,8 @@ void CMainControl::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     ItemList << item;
 
     m_Model.setHorizontalHeaderLabels(QStringList() << ""
-                                                    << QApplication::translate("DiagnosticsManufacturing::COven", "Nr.", 0, QApplication::UnicodeUTF8)
-                                                    << QApplication::translate("DiagnosticsManufacturing::COven", "Tests", 0, QApplication::UnicodeUTF8)
+                                                    << QApplication::translate("DiagnosticsManufacturing::CMainControl", "Nr.", 0, QApplication::UnicodeUTF8)
+                                                    << QApplication::translate("DiagnosticsManufacturing::CMainControl", "Tests", 0, QApplication::UnicodeUTF8)
                                                     << "");
     m_Model.appendRow(ItemList);
 }
