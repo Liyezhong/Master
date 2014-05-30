@@ -25,7 +25,7 @@
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 
 namespace Scheduler{
-
+/*lint -e1401 */
 /****************************************************************************/
 /*!
  *  \brief  Definition/Declaration of class CmdALAllStop
@@ -59,6 +59,7 @@ public:
      *  \return from GetResult
      */
     /****************************************************************************/
+    /*lint -e1411 */
     DeviceControl::ReturnCode_t GetResult()const {return m_result;}
 	/****************************************************************************/
 	/*!
@@ -71,7 +72,7 @@ public:
 	/****************************************************************************/
 	void SetResult(DeviceControl::ReturnCode_t result) { m_result = result;}
 	/****************************************************************************/
-	/*!
+    /*!
 	 *  \brief  Definition/Declaration of function GetResult
 	 *
 	 *  \param result = DeviceControl::ReturnCode_t type parameter
@@ -96,7 +97,7 @@ public:
 	 *  \return from GetStrResult
 	 */
 	/****************************************************************************/
-	QString GetStrResult()const{ return QString("%1").arg(m_result);}
+    QString GetStrResult()const{ return QString("%1").arg((qint32)m_result);}
 
 private:
     CmdALAllStop();                                                    ///< Not implemented.

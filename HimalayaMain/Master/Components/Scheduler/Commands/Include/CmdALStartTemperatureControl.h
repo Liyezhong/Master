@@ -142,7 +142,7 @@ public:
 	 *  \return from GetParameters
 	 */
 	/****************************************************************************/
-	QString GetParameters()const{ return GetName() + QString("(%1,%2,%3)").arg(m_Type).arg(m_NominalTemperature).arg(m_SlopeTempChange);}
+    QString GetParameters()const{ return GetName() + QString("(%1,%2,%3)").arg((qint32)m_Type).arg(m_NominalTemperature).arg(m_SlopeTempChange);}
 	/****************************************************************************/
 	/*!
 	 *  \brief  Definition/Declaration of function GetStrResult
@@ -150,7 +150,7 @@ public:
 	 *  \return from GetStrResult
 	 */
 	/****************************************************************************/
-	QString GetStrResult()const{ return QString("%1").arg(m_result);}
+    QString GetStrResult()const{ return QString("%1").arg((qint32)m_result);}
 
 private:
     CmdALStartTemperatureControl();                                                    ///< Not implemented.

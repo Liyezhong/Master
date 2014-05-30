@@ -45,6 +45,7 @@ CmdSchedulerCommandBase::CmdSchedulerCommandBase(int Timeout, SchedulerMainThrea
 /****************************************************************************/
 CmdSchedulerCommandBase::~CmdSchedulerCommandBase()
 {
+    /*lint -e1540 */
 }
 
 

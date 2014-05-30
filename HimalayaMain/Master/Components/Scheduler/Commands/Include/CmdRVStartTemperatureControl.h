@@ -132,7 +132,7 @@ public:
 	 *  \return from GetStrResult
 	 */
 	/****************************************************************************/
-	QString GetStrResult()const{ return QString("%1").arg(m_result);}
+    QString GetStrResult()const{ return QString("%1").arg((qint32)m_result);}
 
 private:
     CmdRVStartTemperatureControl();                                                    ///< Not implemented.
