@@ -14,7 +14,7 @@
             <nodeindex>0</nodeindex>
             <functionmodules>
                 <functionmodule type="steppermotor" key="motor_rv" name="motor_rv" interface="1">
-                    <rotation type="lin" direction="ccw" steps_revolution="200" position_min="-200" position_max="5000" speed_min="50" speed_max="1000" run_cs="30" stop_cs="3" stop_cs_delay="500"/>
+                    <rotation type="lin" direction="ccw" steps_revolution="400" position_min="-200" position_max="5000" speed_min="50" speed_max="1000" run_cs="30" stop_cs="3" stop_cs_delay="500"/>
                     <reference_run ref_position="1" max_distance="15000" timeout="60000" reverse_distance="0" slow_speed="50" high_speed="150" refpos_offset="0"/>
                     <position_coverage>
                         <encoder type="0" resolution="400" rotation="cw"/>
@@ -54,14 +54,14 @@
             <functionmodules>
 
                 <functionmodule type="temperature_control" key="temp_oven_top" name="temp_oven_top" interface="1">
-                    <configuration temp_tolerance="2" sampling_period="500" current_gain="13022" heater_current="498" heater_threshold="314" current_deviation="200" current_min_230_serial="438" current_max_230_serial="871" current_min_100_serial="199" current_max_100_serial="437" current_min_100_parallel="597" current_max_100_parallel="1600"/>
+                    <configuration temp_tolerance="2" sampling_period="500" current_gain="13022" heater_current="498" heater_threshold="314" current_deviation="200" current_min_230_serial="402" current_max_230_serial="816" current_min_100_serial="183" current_max_100_serial="401" current_min_100_parallel="530" current_max_100_parallel="1484"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
                 </functionmodule>
 
                 <functionmodule type="temperature_control" key="temp_oven_bottom" name="temp_oven_bottom" interface="2">
-                    <configuration temp_tolerance="2" sampling_period="500" current_gain="13022" heater_current="1314" heater_threshold="532" current_deviation="200" current_min_230_serial="986" current_max_230_serial="1877" current_min_100_serial="388" current_max_100_serial="985" current_min_100_parallel="1792" current_max_100_parallel="3700"/>
+                    <configuration temp_tolerance="2" sampling_period="500" current_gain="13022" heater_current="1314" heater_threshold="532" current_deviation="200" current_min_230_serial="953" current_max_230_serial="1822" current_min_100_serial="375" current_max_100_serial="952" current_min_100_parallel="1725" current_max_100_parallel="3585"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
