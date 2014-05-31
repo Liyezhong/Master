@@ -70,8 +70,8 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     CONNECTSIGNALSLOT(mp_Ui->pageService, ServiceSettingsChanged(DataManager::CUserSettings &),
                       mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
 
-    CONNECTSIGNALSLOT(mp_Ui->pageService, AppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t),
-                      mp_Data, SendAppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t));
+    CONNECTSIGNALSLOT(mp_Ui->pageService, AppQuitSystemPrepareShutdown(DataManager::QuitAppShutdownActionType_t),
+                      mp_Data, SendAppQuitSystemPrepareShutdown(DataManager::QuitAppShutdownActionType_t));
 
     CONNECTSIGNALSLOT(mp_Ui->pageService, ResetOperationDays(DataManager::ResetOperationHoursType_t),
                       mp_Data, SendResetOperationDays(DataManager::ResetOperationHoursType_t));

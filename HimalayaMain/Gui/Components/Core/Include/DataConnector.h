@@ -292,10 +292,10 @@ public slots:
     void OnCurrentTabChanged(int CurrentTabIndex);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of SendAppQuitSystemShutdown
+     *  \brief  Definition/Declaration of SendAppQuitSystemPrepareShutdown
      */
     /****************************************************************************/
-    void SendAppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);
+    void SendAppQuitSystemPrepareShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SendResetOperationDays

@@ -87,6 +87,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_OvenLidStatus(UNDEFINED_VALUE)
         , m_RetortLockStatus(UNDEFINED_VALUE)
         , mp_HeatingStrategy(NULL)
+        , m_RefCleanup(Global::RefManager<Global::tRefType>::INVALID)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
 }
@@ -134,6 +135,9 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, DCLConfigurationFinished(ReturnCode_t),
                       this,OnDCLConfigurationFinished(ReturnCode_t))
 
+    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, DeviceProcessDestroyed(),
+                      this, DevProcDestroyed())
+
     m_TickTimer.setInterval(500);
 
     //Set SchedulerCommand Processor for State machine
@@ -176,6 +180,13 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     m_SchedulerMachine->Start();
 }
 
+void SchedulerMainThreadController::DevProcDestroyed()
+{
+    if (Global::RefManager<Global::tRefType>::INVALID != m_RefCleanup) {
+          SendAcknowledgeOK(m_RefCleanup);
+      }
+}
+
 void SchedulerMainThreadController::CleanupAndDestroyObjects()
 {
 }
@@ -200,6 +211,14 @@ void SchedulerMainThreadController::OnPowerFail(const Global::PowerFailStages Po
 void SchedulerMainThreadController::OnTickTimer()
 {
     ControlCommandType_t newControllerCmd = PeekNonDeviceCommand();
+
+    if (CTRL_CMD_SHUTDOWN == newControllerCmd)
+    {
+        m_SchedulerCommandProcessor->ShutDownDevice();
+        DequeueNonDeviceCommand();
+        return;
+    }
+
     SchedulerCommandShPtr_t cmd;
     PopDeviceControlCmdQueue(cmd);
 
@@ -1209,15 +1228,8 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
     Global::CommandShPtr_t pt = m_SchedulerCmdQueue.head();
     MsgClasses::CmdQuitAppShutdown* pCmdShutdown = dynamic_cast<MsgClasses::CmdQuitAppShutdown*>(pt.GetPointerToUserData());
     if(pCmdShutdown)
-    {
-        if (pCmdShutdown->QuitAppShutdownActionType() == DataManager::QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN)
-        {
-            return CTRL_CMD_SHUTDOWN;
-        }
-        if (pCmdShutdown->QuitAppShutdownActionType() == DataManager::QUITAPPSHUTDOWNACTIONTYPE_QUITAPP)
-        {
-            return CTRL_CMD_QUITAPP;
-        }
+    {	
+		return CTRL_CMD_SHUTDOWN;
     }
 
     MsgClasses::CmdProgramAction* pCmdProgramAction = dynamic_cast<MsgClasses::CmdProgramAction*>(pt.GetPointerToUserData());
@@ -1870,7 +1882,7 @@ void SchedulerMainThreadController::OnQuitAppShutdown(Global::tRefType Ref, cons
     m_Mutex.lock();
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdQuitAppShutdown(Cmd.GetTimeout(), Cmd.QuitAppShutdownActionType())));
     m_Mutex.unlock();
-    this->SendAcknowledgeOK(Ref);
+    m_RefCleanup = Ref;
 }
 
 bool SchedulerMainThreadController::IsCleaningReagent(const QString& ReagentID)

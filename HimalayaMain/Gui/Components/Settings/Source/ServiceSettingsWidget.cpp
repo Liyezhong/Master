@@ -48,7 +48,7 @@ CServiceSettingsWidget::CServiceSettingsWidget(QWidget *p_Parent) :  MainMenu::C
     CONNECTSIGNALSLOT(mp_Ui->btnResetCarbonFilter, clicked(), this, OnResetCarbonFilter());
     CONNECTSIGNALSLOT(mp_Ui->checkBoxUseExhaustSystem, clicked(bool), this, OnCheckBoxUseExhaustSystem(bool));
     CONNECTSIGNALSLOT(mp_Ui->btnSave, clicked(), this, OnSaveSetting());
-    CONNECTSIGNALSLOT(mp_Ui->btnShutdown, clicked(), this, OnShutdown());
+    CONNECTSIGNALSLOT(mp_Ui->btnShutdown, clicked(), this, OnPrepareShutdown());
     CONNECTSIGNALSLOT(mp_Ui->btnStartServiceApp, clicked(), this, OnStartServiceApp());
 
     if (mp_UserSettings)
@@ -255,7 +255,7 @@ void CServiceSettingsWidget::OnSaveSetting()
     emit ServiceSettingsChanged(m_UserSettingsTemp);
 }
 
-void CServiceSettingsWidget::OnShutdown()
+void CServiceSettingsWidget::OnPrepareShutdown()
 {
     MainMenu::CMessageDlg ConfirmationMessageDlg;
     ConfirmationMessageDlg.SetTitle(CommonString::strInforMsg);
@@ -264,15 +264,16 @@ void CServiceSettingsWidget::OnShutdown()
     ConfirmationMessageDlg.SetButtonText(1, CommonString::strYes);//right
     ConfirmationMessageDlg.SetButtonText(3, CommonString::strCancel);//left
     ConfirmationMessageDlg.HideCenterButton();
-    (void)ConfirmationMessageDlg.exec();
-
-    //send command to scheduler to shut Down
-    emit AppQuitSystemShutdown(DataManager::QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN);
+    if (ConfirmationMessageDlg.exec())
+    {
+        //send command to scheduler to shut Down
+        emit AppQuitSystemPrepareShutdown(DataManager::QUITAPPSHUTDOWNACTIONTYPE_PREPARESHUTDOWN);
+    }
 }
 
 void CServiceSettingsWidget::OnStartServiceApp()
 {
-    emit AppQuitSystemShutdown(DataManager::QUITAPPSHUTDOWNACTIONTYPE_QUITAPP);
+    emit AppQuitSystemPrepareShutdown(DataManager::QUITAPPSHUTDOWNACTIONTYPE_QUITAPP);
 }
 
 /****************************************************************************/

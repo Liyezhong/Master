@@ -28,7 +28,6 @@
 #include <Global/Include/SystemPaths.h>
 #include <Global/Include/Utils.h>
 #include <Global/Include/GlobalDefines.h>
-#include <DeviceCommandProcessor/Include/Commands/CmdDeviceProcessingCleanup.h>
 
 #include <NetCommands/Include/CmdScheduledStations.h>
 #include <NetCommands/Include/CmdProcessState.h>
@@ -81,12 +80,12 @@
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdownReply.h"
-#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 
 #include <SWUpdateManager/Include/SWUpdateManager.h>
 #include <DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImportFiles.h>
 #include <Global/Include/Commands/CmdShutDown.h>
+#include <Global/Include/Commands/Command.h>
 
 namespace Himalaya {
 const quint32 ERROR_CODE_HIMALAYA_CONSTRUCTION_FAILED = 1;       ///<  Definition/Declaration of variable ERROR_CODE_HIMALAYA_CONSTRUCTION_FAILED
@@ -115,8 +114,9 @@ HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     m_CurrentUserActionState(NORMAL_USER_ACTION_STATE),
     mp_SWUpdateManager(NULL),
     m_ExportTargetFileName(""),
-    mp_SchdCmdProcessor(NULL)
-
+    mp_SchdCmdProcessor(NULL),
+    m_ExpectedShutDownRef(Global::RefManager<Global::tRefType>::INVALID),
+    m_bQuitApp(false)
 {
 }
 catch (...) {
@@ -306,22 +306,59 @@ void HimalayaMasterThreadController::OnGoReceived() {
 
 }
 
+/****************************************************************************/
+void HimalayaMasterThreadController::Shutdown() {
+    if (m_bQuitApp) {
+        MasterThreadController::Shutdown();
+    }
+    else
+    {
+        //write buffered data to disk-> refer man pages for sync
+        system("sync &");
+        system("lcd off");
+
+        //send shutdown signal to RemoteCarecontroller
+        /*if(mp_RemoteCareManager) {
+            mp_RemoteCareManager->SendCommandToRemoteCare(
+                        Global::CommandShPtr_t(new NetCommands::CmdRCNotifyShutdown(Global::Command::NOTIMEOUT)));
+        }*/
+
+        //Reply GUI
+        (void)SendCommand(Global::CommandShPtr_t(new MsgClasses::CmdQuitAppShutdownReply(5000, DataManager::QUITAPPSHUTDOWNACTIONTYPE_PREPARESHUTDOWN)),
+                    m_CommandChannelGui);
+    }
+    m_bQuitApp = false;
+}
+
 /************************************************************************************************************************************/
 void HimalayaMasterThreadController::InitiateShutdown(bool Reboot) {
-
-    Q_UNUSED(Reboot)
+    qDebug() << "ColoradoMasterThreadController::InitiateShutdown";
     //save data to the file system
     if(!m_PowerFailed && mp_DataManager) { //if power fails we would have already written the data
         mp_DataManager->SaveDataOnShutdown();
     }
-//    if (!Reboot) {
-//            m_RebootFileContent.insert("Main_Rebooted", "No");
-//            m_RebootFileContent.insert("Reboot_Count", "0");
-//            UpdateRebootFile();
-//    }
-    Shutdown();
 
+    if (!Reboot) {
+        m_RebootFileContent.insert("Main_Rebooted", "No");
+        m_RebootFileContent.insert("Reboot_Count", "0");
+        UpdateRebootFile();
+    }
+    if (!m_PowerFailed && mp_DataManager && mp_DataManager->IsInitialized()) {
+        // shutdown device command processor
+        m_ExpectedShutDownRef = SendCommand(Global::CommandShPtr_t(new MsgClasses::CmdQuitAppShutdown(Global::Command::MAXTIMEOUT, DataManager::QUITAPPSHUTDOWNACTIONTYPE_UNDEFINED)),
+                                            m_CommandChannelSchedulerMain);
+       //! \note Shutdown() is called when ShutDownDevice() is completed
+    }
+
+    //! \todo Remove this once Command channels are allocated on heap-> Added by N.Kamath
+    m_CommandChannelExport.setParent(NULL);
+    m_CommandChannelImportExport.setParent(NULL);
+
+    if (m_ExpectedShutDownRef == 0) { //!< In case DCP was not created, the Dev clean up command wont be sent, hence we shutdown here !
+        Shutdown();
+    }
 }
+
 /****************************************************************************/
 void HimalayaMasterThreadController::SetDateTime(Global::tRefType Ref, const Global::CmdDateAndTime &Cmd,
                                                  Threads::CommandChannel &AckCommandChannel) {
@@ -364,8 +401,7 @@ void HimalayaMasterThreadController::RegisterCommands() {
     RegisterCommandForRouting<MsgClasses::CmdProgramAcknowledge>(&m_CommandChannelGui);
     RegisterCommandForRouting<MsgClasses::CmdProgramSelected>(&m_CommandChannelSchedulerMain);
     RegisterCommandForRouting<MsgClasses::CmdKeepCassetteCount>(&m_CommandChannelSchedulerMain);
-    RegisterCommandForRouting<MsgClasses::CmdQuitAppShutdown>(&m_CommandChannelSchedulerMain);
-    RegisterCommandForRouting<MsgClasses::CmdQuitAppShutdownReply>(&m_CommandChannelGui);
+    //RegisterCommandForRouting<MsgClasses::CmdQuitAppShutdownReply>(&m_CommandChannelGui);
 
 //    RegisterCommandForRouting<NetCommands::CmdCriticalActionStatus>(&m_CommandChannelSoftSwitch);
 
@@ -409,6 +445,9 @@ void HimalayaMasterThreadController::RegisterCommands() {
 
    RegisterCommandForProcessing<MsgClasses::CmdResetOperationHours, HimalayaMasterThreadController>
            (&HimalayaMasterThreadController::ResetOperationHoursHandler, this);//for remover maintainance reminder warning
+
+   RegisterCommandForProcessing<MsgClasses::CmdQuitAppShutdown, HimalayaMasterThreadController>
+           (&HimalayaMasterThreadController::PrepareShutdownHandler, this);
 }
 
 /****************************************************************************/
@@ -431,8 +470,9 @@ void HimalayaMasterThreadController::InitializeGUI() {
 
 /****************************************************************************/
 void HimalayaMasterThreadController::OnAckOKNOK(Global::tRefType Ref, const Global::AckOKNOK &Ack) {
-    Q_UNUSED(Ref);
-    Q_UNUSED(Ack);
+    if (m_ExpectedShutDownRef == Ref && Ack.GetStatus()) {
+        Shutdown();
+    }
 }
 
 
@@ -1090,6 +1130,22 @@ void HimalayaMasterThreadController::ShutdownHandler(Global::tRefType Ref, const
     Q_UNUSED(Cmd)
     SendAcknowledgeOK(Ref, AckCommandChannel);
     //! \todo Call initiate Shutdown
+    InitiateShutdown();
+}
+
+void HimalayaMasterThreadController::PrepareShutdownHandler(Global::tRefType Ref,
+                                                            const MsgClasses::CmdQuitAppShutdown &Cmd,
+                                                            Threads::CommandChannel &AckCommandChannel)
+{
+    Q_UNUSED(Cmd)
+    SendAcknowledgeOK(Ref, AckCommandChannel);
+
+    m_bQuitApp = (DataManager::QUITAPPSHUTDOWNACTIONTYPE_QUITAPP == Cmd.QuitAppShutdownActionType());
+    if (m_bQuitApp)
+    {
+        m_RebootFileContent.insert("Start_Process", "Service");
+        UpdateRebootFile();
+    }
     InitiateShutdown();
 }
 

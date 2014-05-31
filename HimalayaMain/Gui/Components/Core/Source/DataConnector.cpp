@@ -570,7 +570,7 @@ void CDataConnector::SendProgramRemove(QString &ProgramID)
     mp_WaitDialog->show();
 }
 
-void CDataConnector::SendAppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType)
+void CDataConnector::SendAppQuitSystemPrepareShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType)
 {
     MsgClasses::CmdQuitAppShutdown Command(COMMAND_TIME_OUT, quitAppShutdownActionType);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
@@ -1732,7 +1732,7 @@ void CDataConnector::RetortLockStatusHandler(Global::tRefType Ref, const MsgClas
 void CDataConnector::AppQuitSystemShutdownRelyHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdownReply & Command)
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
-    if (DataManager::QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN == Command.QuitAppShutdownActionType())
+    if (DataManager::QUITAPPSHUTDOWNACTIONTYPE_PREPARESHUTDOWN == Command.QuitAppShutdownActionType())
     {
         mp_MessageDlg->SetTitle(m_strInformation);
         mp_MessageDlg->SetText(m_strTurnOffSwitch);
@@ -1740,13 +1740,6 @@ void CDataConnector::AppQuitSystemShutdownRelyHandler(Global::tRefType Ref, cons
         mp_MessageDlg->HideButtons();
         mp_MessageDlg->HideButtonsOneAndTwo();
         mp_MessageDlg->show();
-    }
-    else
-    {
-        QString str = Global::SystemPaths::Instance().GetComponentTestPath()
-                + "/bin_dbg/prototest";
-        m_pServiceProcess->start(str);
-        //qApp->quit();
     }
 }
 

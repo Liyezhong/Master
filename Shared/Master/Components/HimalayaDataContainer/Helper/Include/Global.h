@@ -122,7 +122,7 @@ typedef enum {
 /****************************************************************************/
 typedef enum {
     QUITAPPSHUTDOWNACTIONTYPE_QUITAPP = 0,
-    QUITAPPSHUTDOWNACTIONTYPE_SHUTDOWN,
+    QUITAPPSHUTDOWNACTIONTYPE_PREPARESHUTDOWN,
     QUITAPPSHUTDOWNACTIONTYPE_UNDEFINED
 } QuitAppShutdownActionType_t;
 

@@ -130,10 +130,10 @@ private slots:
     void OnSaveSetting();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of OnShutdown
+     *  \brief  Definition/Declaration of OnPrepareShutdown
      */
     /****************************************************************************/
-    void OnShutdown();
+    void OnPrepareShutdown();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnStartServiceApp
@@ -155,10 +155,10 @@ signals:
     void ResetOperationDays(DataManager::ResetOperationHoursType_t resetOperationHoursType);
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal AppQuitSystemShutdown
+     *  \brief  Definition/Declaration of signal AppQuitSystemPrepareShutdown
      */
     /****************************************************************************/
-    void AppQuitSystemShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);
+    void AppQuitSystemPrepareShutdown(DataManager::QuitAppShutdownActionType_t quitAppShutdownActionType);
 };
 
 } // end namespace Settings

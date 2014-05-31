@@ -53,6 +53,8 @@
 #include <HimalayaMasterThread/Include/ThreadIDs.h>
 #include <ImportExport/Include/ImportExportThreadController.h>
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h>
+#include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
+
 //lint -e1536
 
 namespace EventHandler {
@@ -144,6 +146,8 @@ private:
     SWUpdate::SWUpdateManager        *mp_SWUpdateManager;                    ///< The SWUpdate Manager
     QString                          m_ExportTargetFileName;                 ///< Target file name of the export
     Scheduler::SchedulerCommandProcessorBase *mp_SchdCmdProcessor;           ///< Scheduler Command Process for IDeviceProcessing 
+    Global::tRefType                m_ExpectedShutDownRef;                  //!< Expected Shutdown acknowledge reference.
+    bool                            m_bQuitApp;
     /****************************************************************************/
     HimalayaMasterThreadController(const HimalayaMasterThreadController &);                     ///< Not implemented.
     const HimalayaMasterThreadController & operator = (const HimalayaMasterThreadController &); ///< Not implemented.
@@ -440,6 +444,21 @@ private:
     void ShutdownHandler(Global::tRefType Ref, const Global::CmdShutDown &Cmd,
                          Threads::CommandChannel &AckCommandChannel);
 
+
+    /****************************************************************************/
+    /*!
+     *  \brief   This handler is called on reception of "CmdQuitAppShutdown" & will
+     *           prepare shutdown of the Main S/W, the software will not quit until
+     *           user switch the machine off
+     *
+     *  \iparam Ref = Command reference
+     *  \iparam Cmd = Prepare Shudown Command
+     *  \iparam AckCommandChannel = Command channel to send acknowledge
+     */
+    /****************************************************************************/
+    void PrepareShutdownHandler(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdown &Cmd,
+                                Threads::CommandChannel &AckCommandChannel);
+
     /****************************************************************************/
     /*!
      *  \brief  Initiates reboot of the Main S/W
@@ -472,6 +491,7 @@ protected:
      */
     /****************************************************************************/
     virtual void OnPowerFail(const Global::PowerFailStages PowerFailStage);
+
     /****************************************************************************/
     /**
      * \brief Initiate the shutdown process.
@@ -640,6 +660,13 @@ public:
         delete p_ByteArray;
         return true;
     }
+    /****************************************************************************/
+    /**
+     * \brief Shutdown or prepare Shutdown.
+     *
+     */
+    /****************************************************************************/
+    void Shutdown();
 
 private slots:
     /****************************************************************************/

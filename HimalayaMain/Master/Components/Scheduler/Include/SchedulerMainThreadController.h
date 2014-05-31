@@ -171,7 +171,7 @@ typedef struct
         QThread* m_SchedulerCommandProcessorThread;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessorThread
         SchedulerCommandProcessorBase*  m_SchedulerCommandProcessor;       ///<  Definition/Declaration of variable m_SchedulerCommandProcessor
         CSchedulerStateMachine* m_SchedulerMachine;       ///<  Definition/Declaration of variable m_SchedulerMachine
-        DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;       ///<  Definition/Declaration of variable mp_IDeviceProcessing
+        //DeviceControl::IDeviceProcessing *mp_IDeviceProcessing;       ///<  Definition/Declaration of variable mp_IDeviceProcessing
         DataManager::CDataManager       *mp_DataManager;       ///<  Definition/Declaration of variable mp_DataManager
         int m_CurProgramStepIndex;        ///<  Definition/Declaration of variable m_CurProgramStepIndex
         int m_FirstProgramStepIndex;      ///<  Definition/Declaration of variable m_CurProgramStepIndex
@@ -200,6 +200,7 @@ typedef struct
         int m_ProcessCassetteCount;       ///<  Definition/Declaration of variable m_ProcessCassetteCount
         quint32 m_EventKey; ///<  \todo: add mechanism to cash the key
         QSharedPointer<HeatingStrategy> mp_HeatingStrategy;       ///<  Definition/Declaration of variable mp_HeatingStrategy
+        Global::tRefType    m_RefCleanup;   ///!< command reference of the cleanup command
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         const SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
@@ -670,6 +671,7 @@ private slots:
           */
          /****************************************************************************/
          void ReleasePressure();
+         void DevProcDestroyed();
 protected:
 
         /****************************************************************************/

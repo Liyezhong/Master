@@ -72,57 +72,6 @@
 #include "Scheduler/Commands/Include/CmdALStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdIDBottleCheck.h"
 #include "Scheduler/Commands/Include/CmdALAllStop.h"
-#include "Scheduler/Commands/Include/CmdRestartConfigurationService.h"
-#include "Scheduler/Commands/Include/CmdStartDiagnosticService.h"
-#include "Scheduler/Commands/Include/CmdCloseDiagnosticService.h"
-#include "Scheduler/Commands/Include/CmdStartAdjustmentService.h"
-#include "Scheduler/Commands/Include/CmdALSetPressureCtrlON.h"
-#include "Scheduler/Commands/Include/CmdALSetPressureCtrlOFF.h"
-#include "Scheduler/Commands/Include/CmdALReleasePressure.h"
-#include "Scheduler/Commands/Include/CmdALPressure.h"
-#include "Scheduler/Commands/Include/CmdALVaccum.h"
-#include "Scheduler/Commands/Include/CmdALDraining.h"
-#include "Scheduler/Commands/Include/CmdALFilling.h"
-#include "Scheduler/Commands/Include/CmdALGetRecentPressure.h"
-#include "Scheduler/Commands/Include/CmdALSetTempCtrlON.h"
-#include "Scheduler/Commands/Include/CmdALSetTempCtrlOFF.h"
-#include "Scheduler/Commands/Include/CmdALSetTemperaturePid.h"
-#include "Scheduler/Commands/Include/CmdALStartTemperatureControl.h"
-#include "Scheduler/Commands/Include/CmdALGetRecentTemperature.h"
-#include "Scheduler/Commands/Include/CmdALGetTemperatureControlState.h"
-#include "Scheduler/Commands/Include/CmdALTurnOnFan.h"
-#include "Scheduler/Commands/Include/CmdALTurnOffFan.h"
-#include "Scheduler/Commands/Include/CmdRVSetTempCtrlON.h"
-#include "Scheduler/Commands/Include/CmdRVSetTempCtrlOFF.h"
-#include "Scheduler/Commands/Include/CmdRVSetTemperaturePid.h"
-#include "Scheduler/Commands/Include/CmdRVStartTemperatureControl.h"
-#include "Scheduler/Commands/Include/CmdRVGetRecentTemperature.h"
-#include "Scheduler/Commands/Include/CmdRVGetTemperatureControlState.h"
-#include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
-#include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
-#include "Scheduler/Commands/Include/CmdRVReqActRVPosition.h"
-#include "Scheduler/Commands/Include/CmdOvenSetTempCtrlON.h"
-#include "Scheduler/Commands/Include/CmdOvenSetTempCtrlOFF.h"
-#include "Scheduler/Commands/Include/CmdOvenSetTemperaturePid.h"
-#include "Scheduler/Commands/Include/CmdOvenStartTemperatureControl.h"
-#include "Scheduler/Commands/Include/CmdOvenGetRecentTemperature.h"
-#include "Scheduler/Commands/Include/CmdOvenGetTemperatureControlState.h"
-#include "Scheduler/Commands/Include/CmdRTSetTempCtrlON.h"
-#include "Scheduler/Commands/Include/CmdRTSetTempCtrlOFF.h"
-#include "Scheduler/Commands/Include/CmdRTSetTemperaturePid.h"
-#include "Scheduler/Commands/Include/CmdRTStartTemperatureControl.h"
-#include "Scheduler/Commands/Include/CmdRTGetRecentTemperature.h"
-#include "Scheduler/Commands/Include/CmdRTGetTemperatureControlState.h"
-#include "Scheduler/Commands/Include/CmdRTUnlock.h"
-#include "Scheduler/Commands/Include/CmdRTLock.h"
-#include "Scheduler/Commands/Include/CmdPerTurnOffMainRelay.h"
-#include "Scheduler/Commands/Include/CmdPerTurnOnMainRelay.h"
-#include "Scheduler/Commands/Include/CmdRVStartTemperatureControlWithPID.h"
-#include "Scheduler/Commands/Include/CmdOvenStartTemperatureControlWithPID.h"
-#include "Scheduler/Commands/Include/CmdRTStartTemperatureControlWithPID.h"
-#include "Scheduler/Commands/Include/CmdALStartTemperatureControlWithPID.h"
-#include "Scheduler/Commands/Include/CmdIDBottleCheck.h"
-#include "Scheduler/Commands/Include/CmdALAllStop.h"
 #include "Scheduler/Commands/Include/CmdIDSealingCheck.h"
 #ifdef GOOGLE_MOCK
 #include <gmock/gmock.h>
@@ -194,10 +143,11 @@ void SchedulerCommandProcessor<DP>::run4Slot()
                       this, DevProcStartNormalOpModeAckn(quint32, ReturnCode_t));
     CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportError(quint32, quint16, quint16, quint16, const QDateTime &),
                       this, ThrowError(quint32, quint16, quint16, quint16, const QDateTime &));
-    CONNECTSIGNALSLOT(mp_IDeviceProcessing, ReportDestroyFinished(), this, DevProcDestroyAckn());
+    CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportDestroyFinished(), this, DeviceProcessDestroyed());
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportLevelSensorStatus1(), this, ReportLevelSensorStatus1());
 
     CONNECTSIGNALSLOT(this, NewCmdAdded(), this, OnNewCmdAdded());
+    CONNECTSIGNALSLOT(this, SigShutDownDevice(), this, OnShutDownDevice());
 
 }
 
@@ -299,11 +249,6 @@ void SchedulerCommandProcessor<DP>::ThrowError4Slot(quint32 instanceID, quint16 
      //                       ", Data:"   +  QString().setNum(usErrorData, 16) +
      //                       ", TimeStamp:" + TimeStamp.toString()
      //                       );
-}
-
-template <class DP>
-void SchedulerCommandProcessor<DP>::DevProcDestroyAckn4Slot()
-{
 }
 
 template <class DP>
@@ -588,6 +533,47 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd()
         m_currentCmd->SetResult( mp_IDeviceProcessing->IDSealingCheck(qSharedPointerDynamicCast<CmdIDSealingCheck>(m_currentCmd)->GetThresholdPressure()));
     }
 }
+
+template <class DP>
+void SchedulerCommandProcessor<DP>::ShutDownDevice()
+{
+    emit SigShutDownDevice();
+}
+
+/****************************************************************************/
+/**
+ * \brief Command of type CmdDeviceProcessingCleanup received.
+ *
+ * \iparam       Ref                 Reference of command.
+ * \iparam       Cmd                 Command.
+ */
+/****************************************************************************/
+template <class DP>
+void SchedulerCommandProcessor<DP>::OnShutDownDevice4Slot()
+{
+    if (mp_IDeviceProcessing) {
+        mp_IDeviceProcessing->RVSetTempCtrlOFF();
+        mp_IDeviceProcessing->OvenSetTempCtrlOFF(OVEN_TOP);
+        mp_IDeviceProcessing->OvenSetTempCtrlOFF(OVEN_BOTTOM);
+        mp_IDeviceProcessing->ALSetTempCtrlOFF(AL_TUBE1);
+        mp_IDeviceProcessing->ALSetTempCtrlOFF(AL_TUBE2);
+        mp_IDeviceProcessing->ALSetTempCtrlOFF(AL_LEVELSENSOR);
+        mp_IDeviceProcessing->RTSetTempCtrlOFF(RT_BOTTOM);
+        mp_IDeviceProcessing->RTSetTempCtrlOFF(RT_SIDE);
+        mp_IDeviceProcessing->PerTurnOffMainRelay();
+
+        mp_IDeviceProcessing->RVGetTemperatureControlState();
+        mp_IDeviceProcessing->OvenGetTemperatureControlState(OVEN_TOP);
+        mp_IDeviceProcessing->OvenGetTemperatureControlState(OVEN_BOTTOM);
+        mp_IDeviceProcessing->ALGetTemperatureControlState(AL_TUBE1);
+        mp_IDeviceProcessing->ALGetTemperatureControlState(AL_TUBE2);
+        mp_IDeviceProcessing->ALGetTemperatureControlState(AL_LEVELSENSOR);
+        mp_IDeviceProcessing->RTGetTemperatureControlState(RT_BOTTOM);
+        mp_IDeviceProcessing->RTGetTemperatureControlState(RT_SIDE);
+        mp_IDeviceProcessing->Destroy();     // trigger shutdown of device processing layer
+    }
+}
+
 
 }// end of namespace Scheduler
 

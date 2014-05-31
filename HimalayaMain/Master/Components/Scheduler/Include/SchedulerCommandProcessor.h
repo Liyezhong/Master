@@ -138,6 +138,7 @@ public:
      */
     /****************************************************************************/
     virtual void ALSetPressureDrift(qreal pressureDrift) = 0;
+    virtual void ShutDownDevice() = 0;
 
 signals:
     /****************************************************************************/
@@ -162,12 +163,19 @@ signals:
     /****************************************************************************/
     void NewCmdAdded();
 
+    void SigShutDownDevice();
     /************************************************************************************/
     /*!
      *  \brief  Forward AirLiquid's 'level sensor status change to 1' to Heating strategy
      */
     /************************************************************************************/
     void ReportLevelSensorStatus1();
+    /************************************************************************************/
+    /*!
+     *  \brief  report device process has been shutdown
+     */
+    /************************************************************************************/
+    void DeviceProcessDestroyed();
 
 public slots:
     /****************************************************************************/
@@ -232,15 +240,7 @@ public slots:
     {
         this->ThrowError4Slot(instanceID, usErrorGroup, usErrorID, usErrorData, TimeStamp);
     }
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of slot DevProcDestroyAckn
-     */
-    /****************************************************************************/
-    virtual void DevProcDestroyAckn()
-    {
-        this->DevProcDestroyAckn4Slot();
-    }
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of slot OnNewCmdAdded
@@ -249,6 +249,11 @@ public slots:
     virtual void OnNewCmdAdded()
     {
         this->OnNewCmdAdded4Slot();
+    }
+
+    virtual void OnShutDownDevice()
+    {
+        this->OnShutDownDevice4Slot();
     }
 
 private:
@@ -325,14 +330,7 @@ private:
      */
     /****************************************************************************/
     virtual void ThrowError4Slot(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp) = 0;
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function DevProcDestroyAckn4Slot
-     *
-     *  \return from DevProcDestroyAckn4Slot
-     */
-    /****************************************************************************/
-    virtual void DevProcDestroyAckn4Slot() = 0;
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function OnNewCmdAdded4Slot
@@ -341,6 +339,7 @@ private:
      */
     /****************************************************************************/
     virtual void OnNewCmdAdded4Slot() = 0;
+    virtual void OnShutDownDevice4Slot()= 0 ;
     SchedulerCommandProcessorBase(const SchedulerCommandProcessorBase&);              			///< Not implemented.
     const SchedulerCommandProcessorBase& operator=(const SchedulerCommandProcessorBase&);		///< Not implemented.
 };
@@ -402,7 +401,7 @@ public:
 #ifdef GOOGLE_MOCK
     void SetIDeviceProcessing(DP* IDeviceProcessing) { mp_IDeviceProcessing = IDeviceProcessing; }
 #endif
-
+    virtual void ShutDownDevice();
 private:
 
     /****************************************************************************/
@@ -477,14 +476,7 @@ private:
      */
     /****************************************************************************/
     virtual void ThrowError4Slot(quint32 instanceID, quint16 usErrorGroup, quint16 usErrorID, quint16 usErrorData,const QDateTime & TimeStamp);
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function DevProcDestroyAckn4Slot
-     *
-     *  \return from DevProcDestroyAckn4Slot
-     */
-    /****************************************************************************/
-    virtual void DevProcDestroyAckn4Slot();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function OnNewCmdAdded4Slot
@@ -493,7 +485,7 @@ private:
      */
     /****************************************************************************/
     virtual void OnNewCmdAdded4Slot();
-
+    virtual void OnShutDownDevice4Slot();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ExecuteCmd
@@ -513,6 +505,7 @@ private:
     QQueue<Scheduler::SchedulerCommandShPtr_t> m_Cmds;       ///<  Definition/Declaration of variable m_Cmds
     Scheduler::SchedulerCommandShPtr_t m_currentCmd;       ///<  Definition/Declaration of variable m_currentCmd
     QMutex m_CmdMutex;       ///<  Definition/Declaration of variable m_CmdMutex
+
 };
 
 } // end of namespace Scheduler
