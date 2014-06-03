@@ -95,9 +95,16 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 
     mp_TableWidget->horizontalHeader()->show();
 
-    AddItem(1, Service::EBOX_ASB3);
-    AddItem(2, Service::EBOX_ASB5);
-    AddItem(3, Service::EBOX_ASB15);
+    /*if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
+        AddItem(1, Service::OVEN_COVER_SENSOR);
+        AddItem(2, Service::OVEN_HEATING_WITH_WATER);
+    }
+    else {
+        AddItem(1, Service::OVEN_HEATING_EMPTY);
+    }*/
+    AddItem(1, Service::MAINCONTROL_ASB3);
+    AddItem(2, Service::MAINCONTROL_ASB5);
+    AddItem(3, Service::MAINCONTROL_ASB15);
 
     mp_TableWidget->setModel(&m_Model);
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size

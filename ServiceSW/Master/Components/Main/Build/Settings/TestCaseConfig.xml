@@ -13,10 +13,9 @@
 		<RVHeatingProperty Parameter="N/A"/>
 	</RotaryValve>
 	<MainControl>
-		<MCASB3 Parameter="N/A"/>
-		<MCASB5 Parameter="N/A"/>
-		<MCASB15 Parameter="N/A"/>
-		<MCEBox Parameter="N/A"/>
+		<MCASB3 Voltage="24" VolTolerance="10%" CurrentLow="0" CurrentHigh="200"/>
+		<MCASB5 Voltage="24" VolTolerance="10%" CurrentLow="0" CurrentHigh="200"/>
+		<MCASB15 Voltage="24" VolTolerance="10%" CurrentLow="0" CurrentHigh="700"/>
 		<MCTouchScreen Parameter="N/A"/>
 	</MainControl>
 	<LaSystem>

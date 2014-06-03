@@ -120,7 +120,7 @@ void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::Module
         PerformManufOvenTests(TestCaseList);
         break;
     case Service::EBOX:
-        PerformManufEBoxTests(TestCaseList);
+        PerformManufMainControlTests(TestCaseList);
         break;
     case Service::LA_SYSTEM:
         break;
@@ -290,8 +290,69 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service
     mp_OvenManuf->EnableButton(true);
 }
 
-void CManufacturingDiagnosticsHandler::PerformManufEBoxTests(const QList<Service::ModuleTestCaseID> &TestCaseList)
+void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<Service::ModuleTestCaseID> &TestCaseList)
 {
+    quint32 FailureId(0);
+    quint32 OkId(0);
+    quint32 EventId(0);
+    quint8  ASBIndex = 0;
+    qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufMainControlTests ---" << TestCaseList;
+    for(int i=0; i<TestCaseList.size(); i++) {
+        Service::ModuleTestCaseID Id = TestCaseList.at(i);
+        bool NextFlag = ShowGuide(Id, 0);
+        if (NextFlag == false) {
+            break;
+        }
+
+        switch( Id ) {
+        case Service::MAINCONTROL_ASB3:
+            EventId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_SUCCESS;
+            ASBIndex = 3;
+            break;
+        case Service::MAINCONTROL_ASB5:
+            EventId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_SUCCESS;
+            ASBIndex = 5;
+            break;
+        case Service::MAINCONTROL_ASB15:
+            EventId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST_SUCCESS;
+            ASBIndex = 15;
+            break;
+        }
+
+        Global::EventObject::Instance().RaiseEvent(EventId);
+        emit PerformManufacturingTest(Id);
+
+        bool Result = GetTestResponse();
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+        p_TestCase->SetStatus(Result);
+
+        if (Result == false) {
+            Global::EventObject::Instance().RaiseEvent(FailureId);
+
+            qreal Voltage = p_TestCase->GetResult().value("Voltage").toDouble();
+            qreal Current = p_TestCase->GetResult().value("Current").toDouble();
+            QString Text = QString("ASB %1 DC output voltage is failed (%2 V), and current is failed (%3 mA).").arg(ASBIndex)
+                    .arg(Voltage).arg(Current);
+
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
+        }
+        else {
+            Global::EventObject::Instance().RaiseEvent(OkId);
+            qreal Voltage = p_TestCase->GetResult().value("Voltage").toDouble();
+            qreal Current = p_TestCase->GetResult().value("Current").toDouble();
+            QString Text = QString("ASB %1 DC output voltage is Ok (%2 V), and current is Ok (%3 mA).").arg(ASBIndex)
+                    .arg(Voltage).arg(Current);
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+        }
+        mp_MainControlManuf->SetTestResult(Id, Result);
+    }
     mp_MainControlManuf->EnableButton(true);
 }
 

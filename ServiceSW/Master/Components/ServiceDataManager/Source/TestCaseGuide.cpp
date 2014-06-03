@@ -162,13 +162,13 @@ void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
         Id = Service::OVEN_COVER_SENSOR;
     }
     else if (TestCaseName == "MCASB3") {
-        Id = Service::EBOX_ASB3;
+        Id = Service::MAINCONTROL_ASB3;
     }
     else if (TestCaseName == "MCASB5") {
-        Id = Service::EBOX_ASB5;
+        Id = Service::MAINCONTROL_ASB5;
     }
     else if (TestCaseName == "MCASB15") {
-        Id = Service::EBOX_ASB15;
+        Id = Service::MAINCONTROL_ASB15;
     }
     else if (TestCaseName == "LAHeatingBelt1") {
         Id = Service::LA_SYSTEM_HEATING_LIQUID_TUBE;

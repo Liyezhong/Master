@@ -63,7 +63,7 @@ private:
     bool ShowGuide(Service::ModuleTestCaseID Id, int Index = 0);
     void ShowHeatingFailedResult(Service::ModuleTestCaseID Id);
     void PerformManufOvenTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
-    void PerformManufEBoxTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
+    void PerformManufMainControlTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     bool GetTestResponse();
 
 signals:

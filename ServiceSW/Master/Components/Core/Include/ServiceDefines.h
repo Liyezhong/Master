@@ -164,9 +164,9 @@ enum DeviceCalibrationCmdType {
  */
 /****************************************************************************/
 typedef enum ModuleTestCaseID {
-    EBOX_ASB3,                          ///< ASB3 test
-    EBOX_ASB5,                          ///< ASB5 test
-    EBOX_ASB15,                         ///< ASB15 test
+    MAINCONTROL_ASB3,                          ///< ASB3 test
+    MAINCONTROL_ASB5,                          ///< ASB5 test
+    MAINCONTROL_ASB15,                         ///< ASB15 test
     RETORT_LEVEL_SENSOR_DETECTING,      ///< Retort level sensor detecting test
     RETORT_HEATING_WITH_LIQUID,         ///< Retort heating test with liquid
     RETORT_HEATING_EMPTY,               ///< Retort heating test (empty)

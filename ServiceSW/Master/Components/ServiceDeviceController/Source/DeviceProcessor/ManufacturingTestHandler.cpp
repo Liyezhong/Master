@@ -395,15 +395,6 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
 
 qint32 ManufacturingTestHandler::TestOvenCoverSensor()
 {
-    qDebug()<<"Slave 3 voltage = " << m_rIdevProc.IDGetSlaveVoltage(DeviceControl::Slave_3);
-    qDebug()<<"Slave 5 voltage = " << m_rIdevProc.IDGetSlaveVoltage(DeviceControl::Slave_5);
-    qDebug()<<"Slave 15 voltage = " << m_rIdevProc.IDGetSlaveVoltage(DeviceControl::Slave_15);
-
-    qDebug()<<"Slave 3 current = " << m_rIdevProc.IDGetSlaveCurrent(DeviceControl::Slave_3);
-    qDebug()<<"Slave 5 current = " << m_rIdevProc.IDGetSlaveCurrent(DeviceControl::Slave_5);
-    qDebug()<<"Slave 15 current = " << m_rIdevProc.IDGetSlaveCurrent(DeviceControl::Slave_15);
-
-
     if (mp_DigitalInpputOven == NULL) {
         SetFailReason(Service::OVEN_COVER_SENSOR, Service::MSG_DEVICE_NOT_INITIALIZED);
         emit ReturnManufacturingTestMsg(false);
@@ -434,6 +425,16 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
     }
 
     switch (TestId) {
+    case Service::MAINCONTROL_ASB3:
+    case Service::MAINCONTROL_ASB5:
+    case Service::MAINCONTROL_ASB15:
+        if (TestMainControlASB(TestId) != 0) {
+            emit ReturnManufacturingTestMsg(false);
+        }
+        else {
+            emit ReturnManufacturingTestMsg(true);
+        }
+        break;
     case Service::OVEN_COVER_SENSOR :
         TestOvenCoverSensor();
         break;
@@ -467,6 +468,50 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         break;
     default:
         break;
+    }
+}
+
+qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t Id)
+{
+    DeviceControl::HimSlaveType_t Slave ;
+    mp_DigitalOutputMainRelay->SetLow();
+    if (Id == Service::MAINCONTROL_ASB3) {
+       Slave = DeviceControl::Slave_3;
+    }
+    else if (Id == Service::MAINCONTROL_ASB5) {
+       Slave = DeviceControl::Slave_5;
+    }
+    else if (Id == Service::MAINCONTROL_ASB15) {
+       Slave = DeviceControl::Slave_15;
+    }
+    else {
+       qDebug()<<"Error : Wrong Parameter !";
+       return -1;
+    }
+
+    quint16 ActualVoltage = m_rIdevProc.IDGetSlaveVoltage(Slave);
+    quint16 ActualCurrent = m_rIdevProc.IDGetSlaveCurrent(Slave);
+
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    qreal Voltage = p_TestCase->GetParameter("Voltage").toDouble();
+    qreal VoltageTolerance = p_TestCase->GetParameter("VolTolerance").toDouble();
+    qreal VolLow = Voltage - Voltage*VoltageTolerance;
+    qreal VolHigh = Voltage + Voltage*VoltageTolerance;
+    qreal CurrentLow = p_TestCase->GetParameter("CurrentLow").toDouble();
+    qreal CurrentHigh = p_TestCase->GetParameter("CurrentHigh").toDouble();
+
+    p_TestCase->AddResult("Voltage", QString("%1").arg(ActualVoltage));
+    p_TestCase->AddResult("Current", QString("%1").arg(ActualCurrent));
+
+    if (ActualVoltage<=VolLow && ActualVoltage>= VolHigh &&
+            ActualCurrent<=CurrentLow && ActualCurrent>= CurrentHigh) {
+
+        return 0;
+    }
+    else {
+        return 1;
     }
 }
 
