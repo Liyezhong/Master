@@ -39,7 +39,8 @@ namespace DiagnosticsManufacturing {
 /****************************************************************************/
 CHeatingTestDialog::CHeatingTestDialog(Service::ModuleTestCaseID TestCaseId, QWidget *p_Parent) :
     MainMenu::CDialogFrame(p_Parent),
-    mp_Ui(new Ui::CHeatingTestDialog)
+    mp_Ui(new Ui::CHeatingTestDialog),
+    m_TestCaseId(TestCaseId)
 {
     mp_Ui->setupUi(GetContentFrame());
 //    layout()->setSizeConstraint(QLayout::SetFixedSize);
@@ -102,10 +103,26 @@ void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
     mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempTop"));
     mp_Ui->labelCurTempBottom1->setText(Status.value("CurrentTempBottom1"));
     mp_Ui->labelCurTempBottom2->setText(Status.value("CurrentTempBottom2"));
-    if (Status.value("ExternalTemp") != NULL) {
-        mp_Ui->labelExtTemp->show();
-        mp_Ui->labelExtTempName->show();
-        mp_Ui->labelExtTemp->setText(Status.value("ExternalTemp"));
+
+    if (m_TestCaseId == Service::OVEN_HEATING_WITH_WATER) {
+        if (Status.value("LeftSensorTemp") != NULL) {
+            QString Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
+                                                   "Left Sensor Temperature:", 0, QApplication::UnicodeUTF8);
+            mp_Ui->labelCurTempTopName->setText(Text);
+            mp_Ui->labelCurTempTop->setText(Status.value("LeftSensorTemp"));
+        }
+        if (Status.value("MiddleSensorTemp") != NULL) {
+            QString Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
+                                                   "Middle Sensor Temperature:", 0, QApplication::UnicodeUTF8);
+            mp_Ui->labelCurTempBottom1Name->setText(Text);
+            mp_Ui->labelCurTempBottom1->setText(Status.value("MiddleSensorTemp"));
+        }
+        if (Status.value("RightSensorTemp") != NULL) {
+            QString Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
+                                                   "Right Sensor Temperature:", 0, QApplication::UnicodeUTF8);
+            mp_Ui->labelCurTempBottom2Name->setText(Text);
+            mp_Ui->labelCurTempBottom2->setText(Status.value("RightSensorTemp"));
+        }
     }
     if (Status.value("Duration") != NULL) {
         mp_Ui->labelDuration->setText(Status.value("Duration"));

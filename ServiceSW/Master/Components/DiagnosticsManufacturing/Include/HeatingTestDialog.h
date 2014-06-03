@@ -149,6 +149,7 @@ private:
     bool m_DialogHide;          //!< Should the dialog be closed?
     QTimer m_Timer;             //!< Timeout timer
     bool m_IsBlgProcessStarted; //!< Bathlayout process indicator flag
+    Service::ModuleTestCaseID m_TestCaseId;  //!< Test case id
     /****************************************************************************/
     /*!
      *  \brief Disable copy and assignment operator.

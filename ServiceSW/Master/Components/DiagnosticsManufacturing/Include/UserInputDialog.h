@@ -79,15 +79,6 @@ public:
     /****************************************************************************/
     void UpdateLabel(const Service::ModuleTestStatus &Status);
 
-    /****************************************************************************/
-    /*!
-     *  \brief  Sets the Line edit string text
-     *  \iparam Value = Serial number of the module
-     */
-    /****************************************************************************/
-    void SetLineEditText(QString Value) {
-        m_LineEditString = Value;
-    }
 
     /****************************************************************************/
     /*!
@@ -96,9 +87,20 @@ public:
      */
     /****************************************************************************/
 
-    QString GetInputValue()
+    QString GetInputValue( quint8 index)
     {
-        return m_LineEditString;
+        if (index == 0) {
+            return m_LineEditStringLeft;
+        }
+        else if (index == 1) {
+            return m_LineEditStringMiddle;
+        }
+        else if (index == 2) {
+            return m_LineEditStringRight;
+        }
+        else {
+            return "";
+        }
     }
 
 private slots:
@@ -137,7 +139,9 @@ protected:
 private:
     Ui::CUserInputDialog *mp_Ui;     //!< User interface
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;     //!< Keyboard widget
-    QString m_LineEditString;                   //!< Stores serial number string
+    QString m_LineEditStringLeft;                   //!< Stores user input value
+    QString m_LineEditStringMiddle;                   //!< Stores user input value
+    QString m_LineEditStringRight;                   //!< Stores user input value
 
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();

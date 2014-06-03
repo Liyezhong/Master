@@ -41,14 +41,18 @@ const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9.]{1,5}$"; //!< Reg expression f
  */
 /****************************************************************************/
 CUserInputDialog::CUserInputDialog(QWidget *p_Parent) : MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CUserInputDialog),
-    m_LineEditString("")
+    m_LineEditStringLeft(""),
+    m_LineEditStringMiddle(""),
+    m_LineEditStringRight("")
 {
     mp_Ui->setupUi(GetContentFrame());
     setModal(true);
 
     this->SetDialogTitle("User Input");
 
-    mp_Ui->InputValue->installEventFilter(this);
+    mp_Ui->lineEdit->installEventFilter(this);
+    mp_Ui->lineEdit_2->installEventFilter(this);
+    mp_Ui->lineEdit_3->installEventFilter(this);
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
 
@@ -112,7 +116,8 @@ void CUserInputDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
 /****************************************************************************/
 bool CUserInputDialog::eventFilter(QObject *p_Object, QEvent *p_Event)
 {
-    if (p_Object == mp_Ui->InputValue && p_Event->type() == QEvent::MouseButtonPress)
+    if ((p_Object == mp_Ui->lineEdit || p_Object == mp_Ui->lineEdit_2 || p_Object == mp_Ui->lineEdit_3)
+            && p_Event->type() == QEvent::MouseButtonPress)
     {
         ConnectKeyBoardSignalSlots();
         mp_KeyBoardWidget->setModal(true);
@@ -149,9 +154,19 @@ void CUserInputDialog::OnOkClicked(QString EnteredString)
 {
     mp_KeyBoardWidget->hide();
 
-    m_LineEditString = EnteredString.simplified();
-
-    mp_Ui->InputValue->setText(m_LineEditString);
+    QWidget *p_Obj = this->focusWidget();
+    if (p_Obj == mp_Ui->lineEdit) {
+        m_LineEditStringLeft = EnteredString.simplified();
+        mp_Ui->lineEdit->setText(m_LineEditStringLeft);
+    }
+    else if (p_Obj == mp_Ui->lineEdit_2) {
+        m_LineEditStringMiddle = EnteredString.simplified();
+        mp_Ui->lineEdit_2->setText(m_LineEditStringMiddle);
+    }
+    else if (p_Obj == mp_Ui->lineEdit_3) {
+        m_LineEditStringRight = EnteredString.simplified();
+        mp_Ui->lineEdit_3->setText(m_LineEditStringRight);
+    }
 
     DisconnectKeyBoardSignalSlots();
 }
@@ -201,13 +216,29 @@ void CUserInputDialog::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void CUserInputDialog::AbortDialog()
 {
-    if (m_LineEditString == "" || m_LineEditString.at(0)=='.') {
+    bool flag = false;
+    QString Text;
+    if (m_LineEditStringLeft == "" || m_LineEditStringLeft.at(0)=='.' ) {
+        Text = QApplication::translate("DiagnosticsManufacturing::CUserInputDialog",
+                                       "The value of Left sensor is wrong", 0, QApplication::UnicodeUTF8);
+        flag = true;
+    }
+    else if (m_LineEditStringMiddle == "" || m_LineEditStringMiddle.at(0)=='.') {
+        Text = QApplication::translate("DiagnosticsManufacturing::CUserInputDialog",
+                                       "The value of Middle sensor is wrong", 0, QApplication::UnicodeUTF8);
+        flag = true;
+    }
+    else if ( m_LineEditStringRight == "" || m_LineEditStringRight.at(0)=='.') {
+        Text = QApplication::translate("DiagnosticsManufacturing::CUserInputDialog",
+                                       "The value of Right sensor is wrong", 0, QApplication::UnicodeUTF8);
+        flag = true;
+    }
+    if (flag) {
         // display success message
         MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(this);
         //dlg->SetTitle(TestCaseDescription);
         dlg->SetIcon(QMessageBox::Warning);
-        dlg->SetText(QApplication::translate("DiagnosticsManufacturing::CUserInputDialog",
-                                             "Please enter the right value", 0, QApplication::UnicodeUTF8));
+        dlg->SetText(Text);
         dlg->HideButtons();
         dlg->SetButtonText(1, tr("Ok"));
 

@@ -793,6 +793,91 @@ void CStartup::ShowErrorMessage(const QString &Message)
     mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Message);
 }
 
+void CStartup::RefreshTestStatus4OvenCoverSensor(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    static bool OpenFlag = true;
+    QString TestStatus;
+    DiagnosticsManufacturing::CStatusConfirmDialog *dlg = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
+
+    if (OpenFlag) {
+        TestStatus ="Open";
+    }
+    else {
+        TestStatus = "Close";
+    }
+    dlg->SetText(QString("Do you see the coven sensor status shows '%1' ?").arg(TestStatus));
+
+    dlg->UpdateLabel(Status);
+    int result = dlg->exec();
+    qDebug()<<"StatusconfirmDlg return : "<<result;
+    delete dlg;
+    if (result == 0) { // yes
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
+        OpenFlag = !OpenFlag;
+    }
+    else {
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(false);
+        OpenFlag = true; // initial to open status.
+    }
+}
+
+void CStartup::RefreshTestStatus4OvenHeatingEmpty(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    if (mp_HeatingStatusDlg == NULL) {
+        mp_HeatingStatusDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Id, mp_MainWindow);
+        mp_HeatingStatusDlg->HideAbort();
+        mp_HeatingStatusDlg->show();
+        mp_HeatingStatusDlg->UpdateLabel(Status);
+    }
+    else {
+        mp_HeatingStatusDlg->UpdateLabel(Status);
+    }
+}
+
+void CStartup::RefreshTestStatus4OvenHeatingWater(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    if (mp_HeatingStatusDlg == NULL) {
+        mp_HeatingStatusDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Id, mp_MainWindow);
+        mp_HeatingStatusDlg->HideAbort();
+        mp_HeatingStatusDlg->show();
+        mp_HeatingStatusDlg->UpdateLabel(Status);
+    }
+    else if (Status.value("OvenHeatingWaterStatus")=="Finished") {
+        mp_HeatingStatusDlg->close();
+        mp_HeatingStatusDlg = NULL;
+        DiagnosticsManufacturing::CUserInputDialog *dlg = new DiagnosticsManufacturing::CUserInputDialog(mp_MainWindow);
+        dlg->exec();
+        QString LeftInputValueStr = dlg->GetInputValue(0);
+        QString MiddleInputValueStr = dlg->GetInputValue(1);
+        QString RightInputValueStr = dlg->GetInputValue(2);
+
+        delete dlg;
+
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+        DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+        p_TestCase->AddResult("LeftSensorTemp", LeftInputValueStr);
+        p_TestCase->AddResult("MiddleSensorTemp", MiddleInputValueStr);
+        p_TestCase->AddResult("RightSensorTemp", RightInputValueStr);
+        qreal MinValue = p_TestCase->GetParameter("TargetTemp").toDouble()+p_TestCase->GetParameter("DepartureLow").toDouble();
+        qreal MaxValue = p_TestCase->GetParameter("TargetTemp").toDouble()+p_TestCase->GetParameter("DepartureHigh").toDouble();
+        qreal LeftInputValue = LeftInputValueStr.toDouble();
+        qreal MiddleInputValue = MiddleInputValueStr.toDouble();
+        qreal RightInputValue = RightInputValueStr.toDouble();
+
+        int result = false;
+        if (LeftInputValue >= MinValue && LeftInputValue <= MaxValue &&
+            MiddleInputValue >= MinValue && MiddleInputValue <= MaxValue &&
+            RightInputValue >= MinValue && RightInputValue <= MaxValue) {
+            result = true;
+        }
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(result);
+
+    }
+    else {
+        mp_HeatingStatusDlg->UpdateLabel(Status);
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Refresh heating status for heating test.
@@ -803,73 +888,19 @@ void CStartup::RefreshTestStatus(const QString &Message, const Service::ModuleTe
 {
     Service::ModuleTestCaseID Id = DataManager::CTestCaseGuide::Instance().GetTestCaseId(Message);
 
-    if (Id == Service::OVEN_HEATING_EMPTY || Id == Service::OVEN_HEATING_WITH_WATER ) {
-        if (mp_HeatingStatusDlg == NULL) {
-            mp_HeatingStatusDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Id, mp_MainWindow);
-            mp_HeatingStatusDlg->HideAbort();
-            mp_HeatingStatusDlg->show();
-            mp_HeatingStatusDlg->UpdateLabel(Status);
-        }
-        else {
-            if ( Id == Service::OVEN_HEATING_WITH_WATER && Status.value("OvenHeatingWaterStatus")=="Finished" ) {
-                mp_HeatingStatusDlg->close();
-                mp_HeatingStatusDlg = NULL;
-                DiagnosticsManufacturing::CUserInputDialog *dlg = new DiagnosticsManufacturing::CUserInputDialog(mp_MainWindow);
-                dlg->exec();
-                QString InputValueStr = dlg->GetInputValue();
-
-                delete dlg;
-
-                QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
-                DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-                p_TestCase->AddResult("ExternalTemp", InputValueStr);
-                qreal MinValue = p_TestCase->GetParameter("TargetTemp").toDouble()+p_TestCase->GetParameter("DepartureLow").toDouble();
-                qreal MaxValue = p_TestCase->GetParameter("TargetTemp").toDouble()+p_TestCase->GetParameter("DepartureHigh").toDouble();
-                qreal InputValue = InputValueStr.toDouble();
-
-                qDebug()<<"MinValue="<<MinValue<<" MaxValue="<<MaxValue<<" InputValue="<<InputValue;
-
-                int result = false;
-                if (InputValue >= MinValue && InputValue <= MaxValue) {
-                    result = true;
-                }
-                mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(result);
-
-            }
-            else {
-                mp_HeatingStatusDlg->UpdateLabel(Status);
-            }
-        }
+    switch(Id) {
+    case Service::OVEN_COVER_SENSOR:
+        RefreshTestStatus4OvenCoverSensor(Id, Status);
+        break;
+    case Service::OVEN_HEATING_EMPTY:
+        RefreshTestStatus4OvenHeatingEmpty(Id, Status);
+        break;
+    case Service::OVEN_HEATING_WITH_WATER:
+        RefreshTestStatus4OvenHeatingWater(Id, Status);
+        break;
+    default:
+        break;
     }
-    else if (Id == Service::OVEN_COVER_SENSOR) {
-        static bool OpenFlag = true;
-        QString TestStatus;
-        DiagnosticsManufacturing::CStatusConfirmDialog *dlg = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
-
-        if (OpenFlag) {
-            TestStatus ="Open";
-        }
-        else {
-            TestStatus = "Close";
-        }
-        dlg->SetText(QString("Do you see the coven sensor status shows '%1' ?").arg(TestStatus));
-
-        dlg->UpdateLabel(Status);
-        int result = dlg->exec();
-        qDebug()<<"StatusconfirmDlg return : "<<result;
-        delete dlg;
-        if (result == 0) { // yes
-            mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
-            OpenFlag = !OpenFlag;
-        }
-        else {
-            mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(false);
-            OpenFlag = true; // initial to open status.
-        }
-    }
-
-//    mp_ServiceConnector->HideBusyDialog();
-//    mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Message);
 }
 
 /****************************************************************************/
