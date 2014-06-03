@@ -471,11 +471,11 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
     return (TimeActual + TimeDelta);//seconds
 }
 
-void CDashboardWidget::CheckPreConditionsToRunProgram()
+bool CDashboardWidget::IsOKPreConditionsToRunProgram()
 {
 
     if ("" == m_SelectedProgramId)
-        return;
+        return false;
 
     if (!m_bRetortLocked){
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
@@ -484,7 +484,7 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
         mp_MessageDlg->SetButtonText(1, CommonString::strOK);
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
-        return;
+        return false;
     }
 
     //Check if Leica program and RMS OFF?
@@ -514,7 +514,7 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
         mp_MessageDlg->SetButtonText(1, CommonString::strOK);
         mp_MessageDlg->HideButtons();
         if (mp_MessageDlg->exec())
-        return;
+        return false;
     }
 
     DataManager::ReagentStatusType_t reagentStatus = DataManager::REAGENT_STATUS_NORMAL;
@@ -550,7 +550,7 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
             mp_MessageDlg->SetButtonText(1, CommonString::strOK);
             mp_MessageDlg->HideButtons();
             if (mp_MessageDlg->exec())
-                return;
+                return false;
         }
         else if(userRole == MainMenu::CMainWindow::Admin ||
             userRole == MainMenu::CMainWindow::Service)
@@ -563,7 +563,7 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
             mp_MessageDlg->HideCenterButton();    // Hiding First Two Buttons in the Message Dialog
 
             if (!mp_MessageDlg->exec())
-                return;
+                return false;
         }
     }
 
@@ -580,7 +580,7 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
         mp_MessageDlg->HideCenterButton();
         if (!mp_MessageDlg->exec())
         {
-            return;
+            return false;
         }
     }
 
@@ -602,9 +602,9 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
             mp_MessageDlg->HideButtons();
             if (mp_MessageDlg->exec())
             {
-                return;
+                return false;
             }
-            return;
+            return false;
         }
     }
 
@@ -620,23 +620,34 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
 
             int cassetteNumber = pCassetteInput->CassetteNumber();
             if (-1 == cassetteNumber)
-                return;//clicked Cancel button
+                return false;//clicked Cancel button
 
             mp_DataConnector->SendKeepCassetteCount(cassetteNumber);
             delete pCassetteInput;
         }
     }
+    return true;
+}
 
-    QString strTempProgramId(m_SelectedProgramId);
-    if (m_SelectedProgramId.at(0) == 'C')
+void CDashboardWidget::CheckPreConditionsToRunProgram()
+{
+    if (IsOKPreConditionsToRunProgram())
     {
-        strTempProgramId.append("_");
-        QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
-        strTempProgramId.append(strReagentIDOfLastStep);
-    }
+        QString strTempProgramId(m_SelectedProgramId);
+        if (m_SelectedProgramId.at(0) == 'C')
+        {
+            strTempProgramId.append("_");
+            QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
+            strTempProgramId.append(strReagentIDOfLastStep);
+        }
 
-    mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
-    ui->programPanelWidget->ChangeStartButtonToStopState();
+        mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
+        ui->programPanelWidget->ChangeStartButtonToStopState();
+    }
+    else
+    {
+        ui->programPanelWidget->EnableStartButton(true);
+    }
 }
 
 void CDashboardWidget::PrepareSelectedProgramChecking(const QString& selectedProgramId)

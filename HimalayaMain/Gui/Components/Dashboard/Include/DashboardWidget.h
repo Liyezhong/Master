@@ -119,6 +119,7 @@ private:
     /****************************************************************************/
     void TakeOutSpecimenAndWaitRunCleaning();
     void SetCassetteNumber();
+    bool IsOKPreConditionsToRunProgram();
     Ui::CDashboardWidget *ui;       ///<  Definition/Declaration of variable ui
     Core::CDataConnector *mp_DataConnector;          //!< Data object
     MainMenu::CMainWindow *mp_MainWindow;           //!< Reference to main window.
@@ -253,6 +254,11 @@ private slots:
      */
     /****************************************************************************/
     void OnProcessStateChanged();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of CheckPreConditionsToRunProgram
+     */
+    /****************************************************************************/
     void CheckPreConditionsToRunProgram();
  signals:
     void ResetFocus(bool reset);

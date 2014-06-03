@@ -63,6 +63,7 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_BottleBoundingRectWidth(61),
     m_BottleBoundingRectHeight(139),
     m_BottleCoverHeight(38),
+    m_CurrentBoundingRectReagentHeight(0),
     m_ReagentExpiredFlag(false),
     m_StationSelected(false),
     m_ContainerStatusType(DataManager::CONTAINER_STATUS_FULL),
@@ -392,7 +393,7 @@ void CDashboardStationItem::DrawStationItemImage()
     {
         DrawReagentName(Painter);
     }
-    DrawStationItemLabel(Painter);
+    //DrawStationItemLabel(Painter);
     update();
 }
 
@@ -490,7 +491,7 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
     int fillRetortWidth;
     int fillRetortHeight;
     QString reagentColorValue;
-	bool isCleaningReagent = false;
+    bool isCleaningReagent = false;
 
     if(mp_DashboardStation)
     {

@@ -98,6 +98,13 @@ void CFavoriteProgramsPanelWidget::UpdateProgram(DataManager::CProgram &Program)
 
 void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaningProgram)
 {
+    if (!bOnlyAddCleaningProgram && mp_DataConnector)
+    {
+        //check again
+        QString strReagentIDOfLastStep = mp_DataConnector->SettingsInterface->GetUserSettings()->GetReagentIdOfLastStep();
+        bOnlyAddCleaningProgram = strReagentIDOfLastStep != "";
+    }
+
     UndoProgramSelection();
     //loop all program buttons
     for(int i = 0; i < 5; i++)
