@@ -132,3 +132,4 @@ LIBS += -Wl,--end-group
 #HEADERS   *= ../Include/*.h      # header file location
 
 HEADERS +=
+LIBS += -ldl

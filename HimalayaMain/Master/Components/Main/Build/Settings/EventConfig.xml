@@ -199,7 +199,7 @@
 			<Step ID="0" Type="MSG" StringID="33817101" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="33818114" ErrorType="" AlarmType="" Name="EVENT_DM_INCOMPATIBLE_STEP_REAGENT_GROUP">
-			<Step ID="0" Type="MSG" StringID="33818114" ButtonType="OK" LogLevel="" UserLog="TRUE" StatusBar=""/>
+			<Step ID="0" Type="MSG" StringID="33818114" ButtonType="" LogLevel="" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="33817861" ErrorType="" AlarmType="" Name="EVENT_DM_INFO_SOUND_LEVEL_OUT_OF_RANGE">
 			<Step ID="0" Type="MSG" StringID="33817861" ButtonType="" LogLevel="" UserLog="TRUE" StatusBar=""/>
