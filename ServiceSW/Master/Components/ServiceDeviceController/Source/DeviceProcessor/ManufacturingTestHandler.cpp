@@ -145,11 +145,45 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
     qreal TopTargetTemp = p_TestCase->GetParameter("TopTargetTemp").toDouble();
     qreal BottomTargetTemp = p_TestCase->GetParameter("BottomTargetTemp").toDouble();
 
-    qDebug()<<"DurationTime="<<p_TestCase->GetParameter("DurationTime")<<" TargetTemp="<<TargetTemp;
+    qreal AmbTempLow = p_TestCase->GetParameter("AmbTempLow").toDouble();
+    qreal AmbTempHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
 
     WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
 
     SumSec = WaitSec;
+
+    CurrentTempTop = mp_TempOvenTop->GetTemperature(0);
+    CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
+    CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
+
+    if (CurrentTempTop<AmbTempLow || CurrentTempTop>AmbTempHigh ||
+            CurrentTempBottom1<AmbTempLow || CurrentTempBottom1>AmbTempHigh ||
+            CurrentTempBottom2<AmbTempLow || CurrentTempBottom2>AmbTempHigh ){
+        QString FailureMsg = QString("Oven Current Temperature is (%1 %2 %3) which is not in (%4~%5)").arg(CurrentTempTop).arg(CurrentTempBottom1)
+                .arg(CurrentTempBottom2).arg(AmbTempLow).arg(AmbTempHigh);
+        SetFailReason(Service::OVEN_HEATING_WITH_WATER, FailureMsg);
+        p_TestCase->SetStatus(false);
+
+        QString TargetTempStr = QString("%1~%2").arg(TargetTemp).arg(MaxTargetTemp);
+
+        QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
+
+        TopValue = QString("%1").arg(CurrentTempTop);
+        BottomValue1 = QString("%1").arg(CurrentTempBottom1);
+        BottomValue2 = QString("%1").arg(CurrentTempBottom2);
+
+        p_TestCase->AddResult("Duration", Duration);
+        p_TestCase->AddResult("TargetTemp", TargetTempStr);
+        p_TestCase->AddResult("UsedTime", "00:00:00");
+        p_TestCase->AddResult("CurrentTempTop", TopValue);
+        p_TestCase->AddResult("CurrentTempBottom1", BottomValue1);
+        p_TestCase->AddResult("CurrentTempBottom2", BottomValue2);
+
+        return -1;
+    }
+
+
+    qDebug()<<"Main Relay SetHigh return : "<<mp_DigitalOutputMainRelay->SetHigh();
 
     mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
     mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
@@ -236,17 +270,47 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
     qreal MaxTargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureHigh").toDouble();
     qreal TopTargetTemp = p_TestCase->GetParameter("TopTargetTemp").toDouble();
     qreal BottomTargetTemp = p_TestCase->GetParameter("BottomTargetTemp").toDouble();
+    qreal AmbTempLow = p_TestCase->GetParameter("AmbTempLow").toDouble();
+    qreal AmbTempHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
 
-    qDebug()<<"DurationTime="<<p_TestCase->GetParameter("DurationTime")<<" TargetTemp="<<TargetTemp;
+    Service::ModuleTestStatus Status;
 
     WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
 
     SumSec = WaitSec;
 
-    qDebug()<<"Main Relay SetHigh return : "<<mp_DigitalOutputMainRelay->SetHigh();
+    CurrentTempTop = mp_TempOvenTop->GetTemperature(0);
+    CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
+    CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
 
+    if (CurrentTempTop<AmbTempLow || CurrentTempTop>AmbTempHigh ||
+            CurrentTempBottom1<AmbTempLow || CurrentTempBottom1>AmbTempHigh ||
+            CurrentTempBottom2<AmbTempLow || CurrentTempBottom2>AmbTempHigh ){
+        QString FailureMsg = QString("Oven Current Temperature is (%1 %2 %3) which is not in (%4~%5)").arg(CurrentTempTop).arg(CurrentTempBottom1)
+                .arg(CurrentTempBottom2).arg(AmbTempLow).arg(AmbTempHigh);
+        SetFailReason(Service::OVEN_HEATING_EMPTY, FailureMsg);
+        p_TestCase->SetStatus(false);
 
-    qDebug() << "TopTargetTemp="<<TopTargetTemp<<" BottomTargetTemp="<<BottomTargetTemp;
+        QString TargetTempStr = QString("%1~%2").arg(TargetTemp).arg(MaxTargetTemp);
+
+        QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
+
+        TopValue = QString("%1").arg(CurrentTempTop);
+        BottomValue1 = QString("%1").arg(CurrentTempBottom1);
+        BottomValue2 = QString("%1").arg(CurrentTempBottom2);
+
+        p_TestCase->AddResult("Duration", Duration);
+        p_TestCase->AddResult("TargetTemp", TargetTempStr);
+
+        p_TestCase->AddResult("UsedTime", "00:00:00");
+        p_TestCase->AddResult("CurrentTempTop", TopValue);
+        p_TestCase->AddResult("CurrentTempBottom1", BottomValue1);
+        p_TestCase->AddResult("CurrentTempBottom2", BottomValue2);
+
+        return -1;
+    }
+
+    mp_DigitalOutputMainRelay->SetHigh();
 
     qDebug()<<"Oven Top StartTemperatureControl return :" << mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
     qDebug()<<"Oven Bottom StartTemperatureControl return :" << mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
@@ -274,7 +338,6 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         }
 
         mp_Utils->Pause(1000);
-        Service::ModuleTestStatus Status;
         TopValue = QString("%1").arg(CurrentTempTop);
         BottomValue1 = QString("%1").arg(CurrentTempBottom1);
         BottomValue2 = QString("%1").arg(CurrentTempBottom2);

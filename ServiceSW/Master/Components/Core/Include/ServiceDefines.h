@@ -381,7 +381,6 @@ const QString MSG_DEVICEDATACONTAINERS_MISSING("ERROR: ProcessSettings.xml or Ad
 
 
 /****************************************************************************/
-const QString MSG_HEATING_FAIL("Error: Heating Fail");
 const QString MSG_DEVICE_NOT_INITIALIZED("ERROR: Device Not Initialized!!!");
 const QString MSG_TEST_ABORT_FAILUE("ERROR: Test Aborted!!!");
 const QString MSG_LSENSOR_DETECTING_FAILURE("ERROR: Level Sensor Detecting Test Failed!!!");

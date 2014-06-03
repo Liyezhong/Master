@@ -202,7 +202,8 @@ void CManufacturingDiagnosticsHandler::ShowHeatingFailedResult(Service::ModuleTe
     dlg->SetDialogTitle("Error");
     dlg->SetText(Text);
     dlg->HideAbort(false);
-    dlg->show();
+    dlg->exec();
+    delete dlg;
 }
 
 /****************************************************************************/
