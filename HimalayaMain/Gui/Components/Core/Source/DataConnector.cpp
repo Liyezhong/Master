@@ -1626,7 +1626,7 @@ void CDataConnector::ShowMessageDialog(Global::GUIMessageType MessageType, QStri
             break;
         case Global::GUIMSGTYPE_INFO:
             mp_MessageDlg->SetIcon(QMessageBox::Information);
-            mp_MessageDlg->SetTitle(m_strInformation);
+	    mp_MessageDlg->SetTitle(m_strInformation);
             break;
         case Global::GUIMSGTYPE_WARNING:
             mp_MessageDlg->SetIcon(QMessageBox::Warning);
@@ -1636,15 +1636,9 @@ void CDataConnector::ShowMessageDialog(Global::GUIMessageType MessageType, QStri
             break;
         }
         mp_MessageDlg->SetText(MessageText);
-        //mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+	mp_MessageDlg->SetButtonText(1, m_strOK);
         mp_MessageDlg->show();
     }
-//    else {
-//        mp_MessageDlg->SetTitle(m_strCommunicationError);
-//        mp_MessageDlg->SetText(m_strCommunicationError);
-//        mp_MessageDlg->SetIcon(QMessageBox::Critical);
-//    }
-
 }
 
 void CDataConnector::CurrentProgramStepInfoHandler(Global::tRefType Ref, const MsgClasses::CmdCurrentProgramStepInfor & Command)
