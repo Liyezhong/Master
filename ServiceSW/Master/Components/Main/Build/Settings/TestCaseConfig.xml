@@ -8,8 +8,9 @@
 	</Oven>
 	<RotaryValve>
 		<RVInitialize Parameter="N/A"/>
-		<RVSelectionTestM Position="0" Pressure="30" />
-		<RVSelectionTestS Position="7" Pressure="30" />
+		<RVSelectionTest Position="7" Pressure="30"/>
+		<RVSealingTest Parameter="N/A"/>
+		<RVHeatingProperty Parameter="N/A"/>
 	</RotaryValve>
 	<MainControl>
 		<MCASB3 Parameter="N/A"/>

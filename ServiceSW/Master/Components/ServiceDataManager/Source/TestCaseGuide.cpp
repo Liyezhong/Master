@@ -179,6 +179,18 @@ void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
     else if (TestCaseName == "LAAirSystem") {
         Id = Service::LA_SYSTEM_PUMP_VALVE_CONTROL;
     }
+    else if (TestCaseName == "RVInitialize") {
+        Id = Service::ROTARY_VALVE_INITIALIZING;
+    }
+    else if (TestCaseName == "RVSealingTest") {
+        Id = Service::ROTARY_VALVE_SEALING_FUNCTION;
+    }
+    else if (TestCaseName == "RVSelectingTest") {
+        Id = Service::ROTARY_VALVE_SELECTION_FUNCTION;
+    }
+    else if (TestCaseName == "RVHeatingProperty") {
+        Id = Service::ROTARY_VALVE_HEATING_PROPERTY;
+    }
 
     m_TestCaseIDHash.insert(Id, TestCaseName);
 }

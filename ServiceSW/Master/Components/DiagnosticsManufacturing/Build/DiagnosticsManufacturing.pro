@@ -19,7 +19,8 @@ SOURCES *= ../Source/*.cpp \         # source file location
 
 FORMS += ../Forms/*.ui \
     ../Forms/MainControlManufacturing.ui \
-    ../Forms/LaSystemManufacturing.ui
+    ../Forms/LaSystemManufacturing.ui \
+    ../Forms/RotaryValveManufacturing.ui
 
 RESOURCES *= ../Resource/*.qrc   # resource file location
 

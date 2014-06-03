@@ -1,10 +1,10 @@
 /****************************************************************************/
-/*! \file LaSystemManufacturing.cpp
+/*! \file RotaryValveManufacturing.cpp
  *
- *  \brief CLaSystem class definition for Manufacturing SW
+ *  \brief CRotaryValve class definition for Rotary valve SW
  *
  *   $Version: $ 0.1
- *   $Date:    $ 2014-05-30
+ *   $Date:    $ 2014-06-03
  *   $Author:  $ Dixiong Li
  *
  *  \b Company:
@@ -18,8 +18,8 @@
  */
 /****************************************************************************/
 
-#ifndef LASYSTEM_DIAGNOSTICSMANUFACTURING_H
-#define LASYSTEM_DIAGNOSTICSMANUFACTURING_H
+#ifndef ROTARYVALVE_DIAGNOSTICSMANUFACTURING_H
+#define ROTARYVALVE_DIAGNOSTICSMANUFACTURING_H
 
 #include "DiagnosticsManufacturing/Include/TestReportGeneration.h"
 #include "Core/Include/ServiceGUIConnector.h"
@@ -36,15 +36,15 @@
 namespace DiagnosticsManufacturing {
 
 namespace Ui {
-    class CLaSystemManufacturing;
+    class CRotaryValveManufacturing;
 }
 
 /****************************************************************************/
 /**
- * \brief This widget lists all the tests to be performed for L&A System
+ * \brief This widget lists all the tests to be performed for Rotary valve
  */
 /****************************************************************************/
-class CLaSystem : public QWidget
+class CRotaryValve : public QWidget
 {
     Q_OBJECT
 
@@ -56,14 +56,14 @@ public:
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
-    explicit CLaSystem(Core::CServiceGUIConnector *p_DataConnector = NULL, MainMenu::CMainWindow *p_Parent = NULL);
+    explicit CRotaryValve(Core::CServiceGUIConnector *p_DataConnector = NULL, MainMenu::CMainWindow *p_Parent = NULL);
 
     /****************************************************************************/
     /*!
      *  \brief Destructor
      */
     /****************************************************************************/
-    ~CLaSystem();
+    ~CRotaryValve();
 
     /****************************************************************************/
     /*!
@@ -109,14 +109,15 @@ protected:
 private:
     Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
     MainMenu::CMainWindow *mp_MainWindow;       //!< Main window object
-    Ui::CLaSystemManufacturing *mp_Ui;          //!< User Interface
+    Ui::CRotaryValveManufacturing *mp_Ui;       //!< User Interface
     MainMenu::CBaseTable *mp_TableWidget;       //!< Base Table widget
     QStandardItemModel m_Model;                 //!< Model for the table
     QString m_LineEditString;                   //!< Stores serial number string
-    QString m_LaSNString;                       //!< Stores serial number of L&A System module
-    QString m_HeaterLiquidSNString;             //!< Stores serial number of Heater with liquid sub-module
-    QString m_HeaterAirSNString;                //!< Stores serial number of Heater with air sub-module
-    QString m_AirSystemSNString;                //!< Stroes serial number of vacuum test sub-module
+    QString m_RVSNString;                       //!< Stores serial number of Rotary valve module
+    QString m_InitializeSNString;               //!< Stores serial number of Initialize sub-module
+    QString m_SelectingSNString;                //!< Stores serial number of Selecting function sub-module
+    QString m_SealingSNString;                  //!< Stores serial number of Sealing function sub-module
+    QString m_HeaterPropertySNString;           //!< Stores serial number of Heater property function sub-module
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;     //!< Keyboard widget
     QHash<QString, QString> m_TestReport;       //!< Test report
     QList<QString> m_TestNames;                 //!< List of test names   
@@ -168,4 +169,4 @@ public slots:
 } // end namespace DiagnosticsManufacturing
 
 
-#endif // DIAGNOSTICSMANUFACTURING_OVEN_H
+#endif // ROTARYVALVE_DIAGNOSTICSMANUFACTURING_H

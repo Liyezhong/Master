@@ -26,6 +26,7 @@
 #include "DiagnosticsManufacturing/Include/OvenManufacturing.h"
 #include "DiagnosticsManufacturing/Include/MainControlManufacturing.h"
 #include "DiagnosticsManufacturing/Include/LaSystemManufacturing.h"
+#include "DiagnosticsManufacturing/Include/RotaryValveManufacturing.h"
 #include "Core/Include/ServiceDefines.h"
 
 namespace Core {
@@ -55,6 +56,7 @@ private:
     DiagnosticsManufacturing::COven             *mp_OvenManuf;              //!< Oven object provides tests for oven
     DiagnosticsManufacturing::CMainControl      *mp_MainControlManuf;       //!< Main Control object provides tests for main control
     DiagnosticsManufacturing::CLaSystem         *mp_LaSystemManuf;          //!< LaSystem object provides tests for Liquid and Air System
+    DiagnosticsManufacturing::CRotaryValve      *mp_RotaryValveManuf;       //!< Rotary Valve object provides tests for rotary valve
 
     QEventLoop                                   m_LoopManufacturingTest;    //!< Loop for blocking Manufacturing Test command
 

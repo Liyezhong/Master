@@ -49,4 +49,24 @@
 			<Step>vacuum test</Step>
 		</Guide>
 	</LAAirSystem>
+	<RVInitialize Description="Initialize test">
+		<Guide>
+			<Step>rotary valve initialize test</Step>
+		</Guide>
+	</RVInitialize>
+	<RVSelectingTest Description="Selecting function test">
+		<Guide>
+			<Step>rotary valve selecting function test</Step>
+		</Guide>
+	</RVSelectingTest>
+	<RVSealingTest Description="Sealing function test">
+		<Guide>
+			<Step>rotary valve sealing function test</Step>
+		</Guide>
+	</RVSealingTest>
+	<RVHeatingProperty Description="Heating property function test">
+		<Guide>
+			<Step>rotary valve heating property function test</Step>
+		</Guide>
+	</RVHeatingProperty>
 </TestCaseGuide>
