@@ -268,6 +268,7 @@ void CUserPrivilegeWidget::OnESCClicked()
 void CUserPrivilegeWidget::OnOkClicked(QString EnteredString)
 {
     QString LineEditString = EnteredString;
+    qDebug() << "ok clicked:" << LineEditString;
     if (mp_KeyBoardWidget) {
         mp_KeyBoardWidget->hide();
 
@@ -379,6 +380,7 @@ void CUserPrivilegeWidget::ChangeInAdminPassword(const QString &PasswordType)
                 // if the authentication fails then change the user level to operator
                 m_UserLevel = MainMenu::CMainWindow::Operator;
                 if (mp_MainWindow) {
+		    mp_MainWindow->SetUserRole(m_UserLevel);
                     mp_MainWindow->SetUserIcon(MainMenu::CMainWindow::Operator);
                 }
             }
