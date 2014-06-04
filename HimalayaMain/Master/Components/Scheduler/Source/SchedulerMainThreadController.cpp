@@ -304,7 +304,7 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
 {
     MsgClasses::CmdUpdateStationReagentStatus* commandPtr = NULL;
     DataManager::CHimalayaUserSettings* pUserSetting = mp_DataManager->GetUserSettings();
-    if (m_CurProgramID.at(0) != 'C')//process cleaning reagent
+    if (m_CurProgramID.at(0) == 'C')//process cleaning reagent
     {
         Global::RMSOptions_t rmsMode = pUserSetting->GetModeRMSCleaning();
         if (rmsMode == Global::RMS_CYCLES)
@@ -1823,6 +1823,7 @@ void SchedulerMainThreadController::OnActionCommandReceived(Global::tRefType Ref
 
 void SchedulerMainThreadController::OnKeepCassetteCount(Global::tRefType Ref, const MsgClasses::CmdKeepCassetteCount & Cmd)
 {
+
     m_ProcessCassetteCount = Cmd.CassetteCount();
     this->SendAcknowledgeOK(Ref);
 }
