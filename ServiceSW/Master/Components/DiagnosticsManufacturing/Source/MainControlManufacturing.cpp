@@ -47,6 +47,11 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     , mp_TestReport(NULL)
     , mp_MessageDlg(NULL)
     , m_FinalTestResult("NA")
+    , m_ASB3SNString("SN_ASB3_XXXXX")
+    , m_ASB5SNString("SN_ASB5_XXXXX")
+    , m_ASB15SNString("SN_ASB15_XXXXX")
+    , m_EBoxSNString("14-HIM-MC-XXXXX")
+    , m_TouchScreenSNString("SN_TOUCHSCREEN_XXXXX")
 {
     mp_Ui->setupUi(this);
     mp_Ui->asb3SNEdit->installEventFilter(this);
@@ -65,13 +70,13 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     mp_Ui->tsSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
-    SetLineEditText(QString("14-HIM-WB-XXXXX"));
+    //SetLineEditText(QString("14-HIM-WB-XXXXX"));
 
-    mp_Ui->asb3SNEdit->setText("SN_ASB3_0860");
-    mp_Ui->asb5SNEdit->setText("SN_ASB5_0001");
-    mp_Ui->asb15SNEdit->setText("SN_ASB15_0001");
-    mp_Ui->eboxSNEdit->setText("14-HIM-MC-12345");
-    mp_Ui->tsSNEdit->setText("SN_TOUCHSCREEN_0001");
+    mp_Ui->asb3SNEdit->setText("SN_ASB3_XXXXX");
+    mp_Ui->asb5SNEdit->setText("SN_ASB5_XXXXX");
+    mp_Ui->asb15SNEdit->setText("SN_ASB15_XXXXX");
+    mp_Ui->eboxSNEdit->setText("14-HIM-MC-XXXXX");
+    mp_Ui->tsSNEdit->setText("SN_TOUCHSCREEN_XXXXX");
 
     m_TestReport.insert("ModuleName", "MainControl");
     m_TestNames.append("ModuleName");
@@ -90,13 +95,6 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 
     mp_TableWidget->horizontalHeader()->show();
 
-    /*if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
-        AddItem(1, Service::OVEN_COVER_SENSOR);
-        AddItem(2, Service::OVEN_HEATING_WITH_WATER);
-    }
-    else {
-        AddItem(1, Service::OVEN_HEATING_EMPTY);
-    }*/
     AddItem(1, Service::EBOX_ASB3);
     AddItem(2, Service::EBOX_ASB5);
     AddItem(3, Service::EBOX_ASB15);
@@ -243,15 +241,40 @@ void CMainControl::OnOkClicked(QString EnteredString)
 {
 
     mp_KeyBoardWidget->hide();
-    m_LineEditString.chop(5);
-    m_LineEditString.append(EnteredString.simplified());
 
-    mp_Ui->asb3SNEdit->setText(m_LineEditString);
+    QWidget *p_Obj = this->focusWidget();
+    if (p_Obj == mp_Ui->asb3SNEdit) {
+        m_ASB3SNString.chop(5);
+        m_ASB3SNString.append(EnteredString.simplified());
+        mp_Ui->asb3SNEdit->setText(m_ASB3SNString);
+    }
+    else if (p_Obj == mp_Ui->asb5SNEdit) {
+        m_ASB5SNString.chop(5);
+        m_ASB5SNString.append(EnteredString.simplified());
+        mp_Ui->asb5SNEdit->setText(m_ASB5SNString);
+    }
+    else if (p_Obj == mp_Ui->asb15SNEdit) {
+        m_ASB15SNString.chop(5);
+        m_ASB15SNString.append(EnteredString.simplified());
+        mp_Ui->asb15SNEdit->setText(m_ASB15SNString);
+    }
+    else if (p_Obj == mp_Ui->eboxSNEdit) {
+        m_EBoxSNString.chop(5);
+        m_EBoxSNString.append(EnteredString.simplified());
+        mp_Ui->eboxSNEdit->setText(m_EBoxSNString);
+    }
+    else if (p_Obj == mp_Ui->tsSNEdit) {
+        m_TouchScreenSNString.chop(5);
+        m_TouchScreenSNString.append(EnteredString.simplified());
+        mp_Ui->tsSNEdit->setText(m_TouchScreenSNString);
+    }
+
 
     if (m_TestNames.contains("SerialNumber")) {
         m_TestReport.remove("SerialNumber");
         m_TestReport.insert("SerialNumber", m_LineEditString);
-    } else {
+    }
+    else {
         m_TestNames.append("SerialNumber");
         m_TestReport.insert("SerialNumber", m_LineEditString);
     }
@@ -438,6 +461,21 @@ void CMainControl::SendTestReport()
 /****************************************************************************/
 void CMainControl::ResetTestStatus()
 {
+    if (this->isVisible() && (mp_Ui->asb3SNEdit->text().endsWith("XXXXX") ||
+                              mp_Ui->asb5SNEdit->text().endsWith("XXXXX") ||
+                              mp_Ui->asb15SNEdit->text().endsWith("XXXXX")||
+                              mp_Ui->eboxSNEdit->text().endsWith("XXXXX") ||
+                              mp_Ui->tsSNEdit->text().endsWith("XXXXX"))) {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CMainControl",
+                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CMainControl",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CMainControl",
+                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->exec();
+    }
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);
     mp_Ui->heaterSNEdit->setText("006XXXXX");

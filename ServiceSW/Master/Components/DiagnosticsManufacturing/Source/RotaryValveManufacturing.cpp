@@ -75,17 +75,6 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 
     mp_TableWidget->horizontalHeader()->show();
 
-    mp_TableWidget->setModel(&m_Model);
-    mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
-
-    mp_TableWidget->setSelectionMode(QAbstractItemView::NoSelection);
-    mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    mp_Ui->sendTestReportBtn->setEnabled(false);
-
     if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_STATIONTEST ) {
         AddItem(1, Service::ROTARY_VALVE_INITIALIZING);
         AddItem(2, Service::ROTARY_VALVE_SEALING_FUNCTION);
@@ -98,6 +87,18 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
         mp_Ui->widget->hide();
         mp_Ui->beginTestBtn->setEnabled(false);
     }
+
+    mp_TableWidget->setModel(&m_Model);
+    mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(1, 50);   // 1 => Index  50 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 350);  // 2 => Index  400 => Size
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 45);   // 3 => Index  45 => Size
+
+    mp_TableWidget->setSelectionMode(QAbstractItemView::NoSelection);
+    mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    mp_Ui->sendTestReportBtn->setEnabled(false);
+
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
 
@@ -284,7 +285,7 @@ void CRotaryValve::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void CRotaryValve::BeginTest()
 {
-    qDebug()<<"COven::BeginTest  ";
+    qDebug()<<"CRotaryValve::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
         QModelIndex ModelIndex = m_Model.index(i, 0);
@@ -319,7 +320,6 @@ void CRotaryValve::BeginTest()
         qDebug()<<"COven::BeginTest   --- emitted";
     }
     return ;
-
 //    ->HideAbort();
 }
 
@@ -419,6 +419,17 @@ void CRotaryValve::SendTestReport()
 /****************************************************************************/
 void CRotaryValve::ResetTestStatus()
 {
+    if (this->isVisible() && mp_Ui->rvSNEdit->text().endsWith("XXXXX")) {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
+                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
+                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->exec();
+    }
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);
     mp_Ui->heaterSNEdit->setText("006XXXXX");

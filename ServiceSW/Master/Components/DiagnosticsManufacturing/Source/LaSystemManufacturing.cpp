@@ -75,9 +75,9 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
 
     mp_TableWidget->horizontalHeader()->show();
 
-    AddItem(1, Service::LA_SYSTEM_PUMP_VALVE_CONTROL);
-    AddItem(2, Service::LA_SYSTEM_HEATING_LIQUID_TUBE);
-    AddItem(3, Service::LA_SYSTEM_HEATING_AIR_TUBE);
+    //AddItem(1, Service::LA_SYSTEM_PUMP_VALVE_CONTROL);
+    AddItem(1, Service::LA_SYSTEM_HEATING_LIQUID_TUBE);
+    AddItem(2, Service::LA_SYSTEM_HEATING_AIR_TUBE);
 
     mp_TableWidget->setModel(&m_Model);
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
@@ -279,7 +279,7 @@ void CLaSystem::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void CLaSystem::BeginTest()
 {
-    qDebug()<<"COven::BeginTest  ";
+    qDebug()<<"CLaSystem::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
         QModelIndex ModelIndex = m_Model.index(i, 0);
@@ -414,6 +414,19 @@ void CLaSystem::SendTestReport()
 /****************************************************************************/
 void CLaSystem::ResetTestStatus()
 {
+    if (this->isVisible() && mp_Ui->laSNEdit->text().endsWith("XXXXX")) {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        if (mp_MessageDlg->exec()) {
+            mp_Ui->laSNEdit->setFocus();
+        }
+    }
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);
     mp_Ui->heaterSNEdit->setText("006XXXXX");

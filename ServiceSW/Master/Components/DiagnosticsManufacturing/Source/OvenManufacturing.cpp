@@ -420,6 +420,17 @@ void COven::SendTestReport()
 /****************************************************************************/
 void COven::ResetTestStatus()
 {
+    if (this->isVisible() && mp_Ui->ovenSNEdit->text().endsWith("XXXXX")) {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::COven",
+                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::COven",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
+                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->exec();
+    }
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);
     mp_Ui->heaterSNEdit->setText("006XXXXX");
