@@ -37,9 +37,9 @@ public:
     ~CErrorHandlingSMBase();
     virtual SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
 protected:
-    QStateMachine* mp_StateMachine;       ///<  Definition/Declaration of variable mp_StateMachine       ///<  Definition/Declaration of variable mp_StateMachine       ///<  Definition/Declaration of variable mp_StateMachine       ///<  Definition/Declaration of variable mp_StateMachine       ///<  Definition/Declaration of variable mp_StateMachine       ///<  Definition/Declaration of variable mp_StateMachine       ///<  Definition/Declaration of variable mp_StateMachine
-    QState* mp_ParentState;       ///<  Definition/Declaration of variable mp_ParentState       ///<  Definition/Declaration of variable mp_ParentState       ///<  Definition/Declaration of variable mp_ParentState       ///<  Definition/Declaration of variable mp_ParentState       ///<  Definition/Declaration of variable mp_ParentState       ///<  Definition/Declaration of variable mp_ParentState       ///<  Definition/Declaration of variable mp_ParentState
-    QList<QState*> mp_StateList;       ///<  Definition/Declaration of variable mp_StateList       ///<  Definition/Declaration of variable mp_StateList       ///<  Definition/Declaration of variable mp_StateList       ///<  Definition/Declaration of variable mp_StateList       ///<  Definition/Declaration of variable mp_StateList       ///<  Definition/Declaration of variable mp_StateList       ///<  Definition/Declaration of variable mp_StateList
+    QStateMachine* mp_StateMachine;       ///<  Definition/Declaration of variable mp_StateMachine
+    QState* mp_ParentState;       ///<  Definition/Declaration of variable mp_ParentState
+    QList<QState*> mp_StateList;       ///<  Definition/Declaration of variable mp_StateList
 
 };
 }

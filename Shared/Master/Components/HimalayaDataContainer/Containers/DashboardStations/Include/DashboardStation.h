@@ -28,6 +28,7 @@
 #include "HimalayaDataContainer/Containers/Reagents/Include/Reagent.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 
+//lint -sem(DataManager::CDashboardStation::CopyFromOther, initializer)
 namespace DataManager {
 
 // forward declaration

@@ -29,7 +29,7 @@
 #include "HimalayaDataContainer/Helper/Include/HimalayaDataManagerEventCodes.h"
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 
-//lint -sem(DataManager::CDashboardStation::CopyFromOther, initializer)
+
 
 namespace DataManager {
 
@@ -338,29 +338,35 @@ DataManager::ReagentStatusType_t CDashboardStation::GetReagentStatus(const DataM
     CDashboardStation*  pDashboardStation = this;
     if (pDashboardStation->GetDashboardReagentID() == Reagent.GetReagentID())
     {
-		switch ( Option )
-		{
-		    case Global::RMS_OFF:
+        switch ( Option )
+        {
+            case Global::RMS_OFF:
                 ReagentStatus = DataManager::REAGENT_STATUS_NORMAL;
 				break;
 			case Global::RMS_CASSETTES:
 			{
                 int MaxCassettes = Reagent.GetMaxCassettes();
                 int ActualCassettes = pDashboardStation->GetDashboardReagentActualCassettes();
-                if ( (MaxCassettes - ActualCassettes) < 0 )
+                if ( (MaxCassettes - ActualCassettes) < 0 ){
                     ReagentStatus = DataManager::REAGENT_STATUS_EXPIRED;
-				else
+                }
+                else{
                     ReagentStatus = DataManager::REAGENT_STATUS_NORMAL;
+                /*lint -e525 */
+                }
+                /*lint -e539 */
 				break;
-			}
+            }
 			case Global::RMS_CYCLES:
 			{
                 int MaxCycles = Reagent.GetMaxCycles();
                 int ActualRecycles = pDashboardStation->GetDashboardReagentActualCycles();
-				if ( (MaxCycles - ActualRecycles) < 0 )
+                if ( (MaxCycles - ActualRecycles) < 0 ){
                     ReagentStatus = DataManager::REAGENT_STATUS_EXPIRED;
-				else
+                }
+                else{
                     ReagentStatus = DataManager::REAGENT_STATUS_NORMAL;
+                }
 				break;
 			}
 			case Global::RMS_DAYS:
@@ -368,11 +374,13 @@ DataManager::ReagentStatusType_t CDashboardStation::GetReagentStatus(const DataM
                 QDate CurDate;
                 QDate ReagentExchangeQDate = pDashboardStation->GetDashboardReagentExchangeDate();
                 QDate ReagentExpiryQDate = ReagentExchangeQDate.addDays(Reagent.GetMaxDays());
-                if(CurDate.currentDate() > ReagentExpiryQDate)
+                if(CurDate.currentDate() > ReagentExpiryQDate){
                     ReagentStatus = DataManager::REAGENT_STATUS_EXPIRED;
-                else
+                }
+                else{
                     ReagentStatus = DataManager::REAGENT_STATUS_NORMAL;
-				break;
+                }
+                break;
 			}
 			default:
 				break;

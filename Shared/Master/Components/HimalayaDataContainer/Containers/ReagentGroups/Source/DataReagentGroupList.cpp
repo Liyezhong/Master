@@ -573,6 +573,7 @@ bool CDataReagentGroupList::AddReagentGroup(const CReagentGroup* p_ReagentGroup)
         m_OrderedListOfReagentGroupIDs.append(ID);
         Result = true;
     }
+    /*lint -e593 */
     return Result;
 }
 

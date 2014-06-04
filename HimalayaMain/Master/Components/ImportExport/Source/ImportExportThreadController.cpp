@@ -171,6 +171,7 @@ ImportExportThreadController::ImportExportThreadController(Global::gSourceType T
     if (StringData.split("_").count() > 1) {
         m_NoOfLogFiles = StringData.split("_").value(1).toInt();
     }
+    /*lint -e1401 */
 }
 
 
@@ -270,9 +271,6 @@ void ImportExportThreadController::OnGoReceived() {
         }
         else {
             bool IsImported = false;
-            Q_UNUSED(IsImported);
-            bool IsSelectionRequested = false;
-            Q_UNUSED(IsSelectionRequested);
             // mount the USB device
             if (MountDevice(true)) {
                 // to store the files in the directory
@@ -285,7 +283,6 @@ void ImportExportThreadController::OnGoReceived() {
                         m_EventRaised = true;
                         Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_NO_FILES_TO_IMPORT);
                         m_EventCode = EVENT_IMPORT_NO_FILES_TO_IMPORT;
-                        IsImported = false;
                         emit ThreadFinished(false, QStringList(), m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
                         break;
                     case 1:
@@ -293,7 +290,6 @@ void ImportExportThreadController::OnGoReceived() {
                         StartImportingFiles(DirFileNames);
                         break;
                     default:
-                        IsSelectionRequested = true;
                         // sort the files
                         emit RequestFileSelectionToImport(DirFileNames);
                         emit ThreadFinished(false, QStringList(), m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
@@ -922,15 +918,15 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
         // if everything goes well then update the files and take a backup of the files
         if (!ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
             // before updating take a back-up of the configuration files
-            QStringList FileList;
-            FileList << FILENAME_PROGRAMS << FILENAME_REAGENTS << FILENAME_STATIONS
+            QStringList fileList;
+            fileList << FILENAME_PROGRAMS << FILENAME_REAGENTS << FILENAME_STATIONS
                      << FILENAME_USERSETTINGS;
             // check for the files updation error
             if (!CheckForFilesUpdateError()) {
                 IsImport = false;
             }
             // update the Rollback folder with latest files after the Import is successful
-            if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetRollbackPath()
+            if (!UpdateFolderWithFiles(fileList, Global::SystemPaths::Instance().GetRollbackPath()
                                        + QDir::separator() + DIRECTORY_SETTINGS + QDir::separator(),
                                        Global::SystemPaths::Instance().GetSettingsPath()
                                        + QDir::separator())) {
@@ -942,11 +938,11 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
         }
         if (ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE)) {
             // before updating take a back-up of the configuration files
-            QStringList FileList;
+            QStringList fileList;
             // store the file names in the list "Colorado_*.qm" , "ColoradoEventStrings_*.xml"
-            FileList << FILENAME_QM << FILENAME_EVENTSTRING;
+            fileList << FILENAME_QM << FILENAME_EVENTSTRING;
             // Update the rollback folder after the import is done
-            if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetRollbackPath()
+            if (!UpdateFolderWithFiles(fileList, Global::SystemPaths::Instance().GetRollbackPath()
                                        + QDir::separator() + DIRECTORY_TRANSLATIONS + QDir::separator(),
                                        Global::SystemPaths::Instance().GetTranslationsPath()
                                        + QDir::separator())) {
@@ -963,14 +959,14 @@ void ImportExportThreadController::StartImportingFiles(const QStringList FileLis
             (void)UpdateSettingsWithRollbackFolder();
         }
         if (ImportTypeList.contains(TYPEOFIMPORT_LANGUAGE) && m_TranslationsFolderUpdatedFiles) {
-            QStringList FileList;
+            QStringList fileList;
             // store the file names in the list "Colorado_*.qm" , "ColoradoEventStrings_*.xml"
-            FileList << FILENAME_QM << FILENAME_EVENTSTRING;
+            fileList << FILENAME_QM << FILENAME_EVENTSTRING;
             m_CurrentLanguageUpdated = false;
             m_NewLanguageAdded = false;
 
             // copy all the files from rollback folder
-            if (!UpdateFolderWithFiles(FileList, Global::SystemPaths::Instance().GetRollbackPath()
+            if (!UpdateFolderWithFiles(fileList, Global::SystemPaths::Instance().GetRollbackPath()
                                        + QDir::separator() + DIRECTORY_TRANSLATIONS + QDir::separator(),
                                        Global::SystemPaths::Instance().GetTranslationsPath()
                                        + QDir::separator())) {

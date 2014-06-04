@@ -28,7 +28,6 @@
 #include "HimalayaDataManager/Include/DataManagerDefinitions.h"
 #include "DataManager/Helper/Include/DataManagerEventCodes.h"
 
-//lint -sem(DataManager::CDataManager::DeinitializeDataContainer,cleanup)
 
 namespace DataManager {
 

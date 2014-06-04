@@ -23,6 +23,8 @@
 
 #include "../Include/DataContainer.h"
 #include "DataManager/Include/DataManagerBase.h"
+//lint -sem(DataManager::CDataManager::DeinitializeDataContainer,cleanup)
+//lint -sem(DataManager::CDataManager::InitializeDataContainer,initializer)
 
 namespace DataManager {
 class CProgramCommandInterface;
@@ -40,11 +42,11 @@ class CDataManager : public CDataManagerBase
 {
     Q_OBJECT
 private:
-    bool m_UpdateList;       ///<  Definition/Declaration of variable m_UpdateList
-    CDataContainer* mp_DataContainer;       ///<  Definition/Declaration of variable mp_DataContainer
+    bool m_UpdateList;       ///<  Definition/Declaration of variable m_UpdateList
+    CDataContainer* mp_DataContainer;       ///<  Definition/Declaration of variable mp_DataContainer
     CStationCommandInterface *mp_StationCommandInterface; //!< handles commands related to  Station container
     CReagentCommandInterface *mp_ReagentCommandInterface; //!< handles commands related to reagent container
-    CReagentGroupCommandInterface *mp_ReagentGroupCommandInterface;       ///<  Definition/Declaration of variable mp_ReagentGroupCommandInterface
+    CReagentGroupCommandInterface *mp_ReagentGroupCommandInterface;       ///<  Definition/Declaration of variable mp_ReagentGroupCommandInterface
 protected:
     /****************************************************************************/
     /*!

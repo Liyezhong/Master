@@ -393,7 +393,7 @@ bool CDataProgramList::AddProgram(const CProgram* p_Program)
                            );*/
          Result = false;
     }
-
+    /*lint -e593 */
     return Result;
 }
 
@@ -495,7 +495,7 @@ bool CDataProgramList::AddLeicaProgram(const CProgram* p_Program)
         }
         Result = true;
     }
-
+    /*lint -e593 */
     return Result;
 }
 
