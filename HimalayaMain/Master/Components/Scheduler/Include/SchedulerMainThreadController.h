@@ -201,6 +201,7 @@ typedef struct
         quint32 m_EventKey; ///<  \todo: add mechanism to cash the key
         QSharedPointer<HeatingStrategy> mp_HeatingStrategy;       ///<  Definition/Declaration of variable mp_HeatingStrategy
         Global::tRefType    m_RefCleanup;   ///!< command reference of the cleanup command
+        int m_delayTime;
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         const SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.

@@ -28,7 +28,7 @@
 
 namespace Dashboard {
 
-const int ONE_WEEK_TIME_OFFSET_VALUE = (7 * 24 * 60 * 60);       ///<  Definition/Declaration of variable ONE_WEEK_TIME_OFFSET_VALUE
+const int ONE_WEEK_TIME_OFFSET_VALUE = (7 * 24 * 60 * 60);       ///<  Definition/Declaration of variable ONE_WEEK_TIME_OFFSET_VALUE
 
 /****************************************************************************/
 /*!
@@ -98,7 +98,7 @@ CDashboardDateTimeWidget::CDashboardDateTimeWidget(QWidget *p_Parent, QMainWindo
 
 
     CONNECTSIGNALSLOT(mp_Ui->btnCancel, clicked(), this, OnCancel());
-    CONNECTSIGNALSLOT(mp_Ui->btnASAP, clicked(), this, OnSetASAPDateTime());
+    CONNECTSIGNALSLOT(mp_Ui->btnASAP, clicked(), this, OnRequestASAPDateTime());
     CONNECTSIGNALSLOT(mp_Ui->btnOK, clicked(), this, OnOK());
 }
 
@@ -217,7 +217,7 @@ void CDashboardDateTimeWidget::RefreshDateTime(Global::TimeFormat TimeFormat)
 void CDashboardDateTimeWidget::OnOK()
 {
     m_IsClickedOK = true;
-    emit RequstAsapDateTime();
+    emit RequestAsapDateTime();
 }
 
 
@@ -254,9 +254,9 @@ void CDashboardDateTimeWidget::OnCancel()
     reject();
 }
 
-void CDashboardDateTimeWidget::OnSetASAPDateTime()
+void CDashboardDateTimeWidget::OnRequestASAPDateTime()
 {
-    emit RequstAsapDateTime();
+    emit RequestAsapDateTime();
 }
 
 void CDashboardDateTimeWidget::OnGetASAPDateTime(int asapDateTime)

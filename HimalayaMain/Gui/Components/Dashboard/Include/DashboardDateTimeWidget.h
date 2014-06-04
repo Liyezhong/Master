@@ -134,10 +134,10 @@ public slots:
     void UpdateProgramName();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of slot OnSetASAPDateTime
+     *  \brief  Definition/Declaration of slot OnRequestASAPDateTime
      */
     /****************************************************************************/
-    void OnSetASAPDateTime();
+    void OnRequestASAPDateTime();
     void OnGetASAPDateTime(int);
 
 signals:
@@ -147,7 +147,7 @@ signals:
      */
     /****************************************************************************/
     void OnSelectDateTime(const QDateTime& selDateTime);
-    void RequstAsapDateTime();
+    void RequestAsapDateTime();
 
 };
 

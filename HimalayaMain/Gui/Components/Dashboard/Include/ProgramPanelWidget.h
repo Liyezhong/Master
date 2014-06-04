@@ -134,7 +134,7 @@ public:
     bool IsAbortEnabled();
 signals:
     void ResetFocus(bool reset);
-    void RequstAsapDateTime();
+    void RequestAsapDateTime();
     void SendAsapDateTime(int);
     /****************************************************************************/
     /*!
@@ -230,12 +230,7 @@ private slots:
      */
     /****************************************************************************/
     void OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of SelectEndDateTime
-     */
-    /****************************************************************************/
-    void SelectEndDateTime(const QDateTime &);
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnProgramActionStarted

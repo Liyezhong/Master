@@ -66,8 +66,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
 
     CONNECTSIGNALSIGNAL(this, SendAsapDateTime(int), ui->programPanelWidget, SendAsapDateTime(int));
 
-    CONNECTSIGNALSLOT(ui->programPanelWidget, RequstAsapDateTime(),
-                        this, RequstAsapDateTime());
+    CONNECTSIGNALSLOT(ui->programPanelWidget, RequestAsapDateTime(),
+                        this, RequestAsapDateTime());
 
     CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int, bool, QList<QString>&),
                        ui->programPanelWidget, ProgramSelected(QString&, int, bool, QList<QString>&));
@@ -428,8 +428,9 @@ bool CDashboardWidget::IsParaffinInProgram(const DataManager::CProgram* p_Progra
 //TimeDelta
 //EndTimeAsap = TimeActual + TimeDelta;
 int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
-                                  int timeBeforeUseParaffin,
+                                  int TimeBeforeUseParaffin,
                                   int TimeCostedParaffinMelting,
+                                  int& TimeDelta,
                                   bool& bCanotRun)
 {
     //IsParaffinInProgram()
@@ -443,7 +444,6 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
 
     //No Paraffin TimeDelta = 0;
     bCanotRun = false;
-    int TimeDelta; //seconds
     if (-1 == m_ParaffinStepIndex)//No Paraffin in all program steps
     {
         TimeDelta = 0;
@@ -453,14 +453,14 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
         //calculate the timeBeforeUseParraffin
         //RemainingTimeMeltParraffin = 12 hour - TimeCosted
         //int RemainingTimeMeltParaffin = 12 * 60 * 60 - TimeCostedParaffinMelting;
-         int RemainingTimeMeltParaffin = 6 * 60 - TimeCostedParaffinMelting;
+         int RemainingTimeMeltParaffin = 10 * 60 - TimeCostedParaffinMelting;
         if (RemainingTimeMeltParaffin > 0)
         {
-          if (RemainingTimeMeltParaffin <= timeBeforeUseParaffin)
+          if (RemainingTimeMeltParaffin <= TimeBeforeUseParaffin)
               TimeDelta = 0;
            else
            {
-              TimeDelta = RemainingTimeMeltParaffin - timeBeforeUseParaffin;
+              TimeDelta = RemainingTimeMeltParaffin - TimeBeforeUseParaffin;
               bCanotRun = true;
            }
         }
@@ -588,8 +588,9 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
     {
         bool bCanotRun = true;
         int paraffinMeltCostedTime = Global::AdjustedTime::Instance().GetCurrentDateTime().secsTo(m_ParaffinStartHeatingTime);
+        int TimeDelta = 0;
         int asapEndTime = GetASAPTime(m_TimeProposedForProgram,
-                                      m_CostedTimeBeforeParaffin, -paraffinMeltCostedTime, bCanotRun);
+                                      m_CostedTimeBeforeParaffin, -paraffinMeltCostedTime, TimeDelta, bCanotRun);
 
         asapEndTime = asapEndTime - 60;//60 seconds: buffer time for "select program" and "Run" operation.
         QDateTime newAsapEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
@@ -640,8 +641,9 @@ void CDashboardWidget::CheckPreConditionsToRunProgram()
             QString strReagentIDOfLastStep = m_pUserSetting->GetReagentIdOfLastStep();
             strTempProgramId.append(strReagentIDOfLastStep);
         }
-
-        mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
+        int EndTimeDelta = m_AsapEndDateTime.secsTo(m_EndDateTime);
+        int delayTime = EndTimeDelta + m_TimeDelta;
+        mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, delayTime);
         ui->programPanelWidget->ChangeStartButtonToStopState();
     }
     else
@@ -695,8 +697,9 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_CostedTimeBeforeParaffin = cmd.CostedTimeBeforeParaffin();
     m_iWhichStepHasNoSafeReagent = cmd.WhichStepHasNoSafeReagent();
     bool bCanotRun = true;
+    m_TimeDelta = 0;
     int asapEndTime = GetASAPTime(cmd.TimeProposed(),
-                                  cmd.CostedTimeBeforeParaffin(), cmd.ParaffinMeltCostedTime(), bCanotRun);
+                                  cmd.CostedTimeBeforeParaffin(), cmd.ParaffinMeltCostedTime(), m_TimeDelta, bCanotRun);
 
 
     //firstly check whether there is any station not existing for some program steps
@@ -752,7 +755,7 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
     m_StationList.clear();
     m_StationList = stationList;
 
-    m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+    m_AsapEndDateTime = m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 
 
     emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_StationList);
@@ -798,12 +801,16 @@ void CDashboardWidget::OnSelectEndDateTime(const QDateTime& dateTime)
     m_EndDateTime = dateTime;
 }
 
-void CDashboardWidget::RequstAsapDateTime()
+void CDashboardWidget::RequestAsapDateTime()
 {
     bool bCanotRun = true;
     int paraffinMeltCostedTime = Global::AdjustedTime::Instance().GetCurrentDateTime().secsTo(m_ParaffinStartHeatingTime);
+    m_TimeDelta = 0;
     int asapEndTime = GetASAPTime(m_TimeProposedForProgram,
-                                  m_CostedTimeBeforeParaffin, -paraffinMeltCostedTime, bCanotRun);
+                                  m_CostedTimeBeforeParaffin, -paraffinMeltCostedTime, m_TimeDelta, bCanotRun);
+
+    m_AsapEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
+
     emit SendAsapDateTime(asapEndTime);
 }
 

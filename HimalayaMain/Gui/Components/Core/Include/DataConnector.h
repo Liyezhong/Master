@@ -253,7 +253,7 @@ public slots:
      */
     /****************************************************************************/
     void SendProgramAction(const QString& ProgramID, DataManager::ProgramActionType_t ActionType,
-                           const QDateTime& ProgramEndDateTime = QDateTime::currentDateTime());
+                           int delayTime = 0);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SendKeepCassetteCount

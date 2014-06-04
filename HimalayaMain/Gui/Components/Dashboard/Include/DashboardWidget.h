@@ -101,7 +101,7 @@ private:
      *  \return from GetASAPTime
      */
     /****************************************************************************/
-    int GetASAPTime(int, int, int, bool&);
+    int GetASAPTime(int, int, int, int&, bool&);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function RetranslateUI
@@ -136,6 +136,8 @@ private:
     int m_TimeProposedForProgram;           //!< Time costed only for the whole program, exclude the time for the delayed time
     int m_CostedTimeBeforeParaffin;         //!< Time costed before the program step of paraffin.
     QDateTime m_EndDateTime;
+    int m_TimeDelta;
+    QDateTime m_AsapEndDateTime;
     QDateTime m_ParaffinStartHeatingTime;
     QString m_strResetEndTime;
     QString m_strInputCassetteBoxTitle;
@@ -181,7 +183,7 @@ private slots:
      */
     /****************************************************************************/
     void OnSelectEndDateTime(const QDateTime&);
-    void RequstAsapDateTime();
+    void RequestAsapDateTime();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of OnProgramStartReadyUpdated

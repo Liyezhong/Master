@@ -55,7 +55,7 @@ public:
      */
     /****************************************************************************/
     CmdProgramAction(int timeout, const QString& programID, DataManager::ProgramActionType_t actionType,
-                     const QDateTime programEndDateTime);
+                     int delayTime);
     ~CmdProgramAction();
     virtual QString GetName() const;
     /****************************************************************************/
@@ -81,14 +81,14 @@ public:
      *  \return from ProgramEndDateTime
      */
     /****************************************************************************/
-    inline const QDateTime& ProgramEndDateTime()const {return m_ProgramEndDateTime;}
+    inline int DelayTime()const {return m_DelayTime;}
 private:
     CmdProgramAction(const CmdProgramAction &);                     ///< Not implemented.
     const CmdProgramAction & operator = (const CmdProgramAction &); ///< Not implemented.
 private:
     QString      m_ProgramID;       ///<  Definition/Declaration of variable m_ProgramID
     DataManager::ProgramActionType_t m_ActionType;       ///<  Definition/Declaration of variable m_ActionType
-    QDateTime m_ProgramEndDateTime;       ///<  Definition/Declaration of variable m_ProgramEndDateTime
+    int m_DelayTime;       ///<  Definition/Declaration of variable m_DelayTime
 }; // end class CmdProgramAction
 
 /****************************************************************************/
@@ -107,7 +107,7 @@ inline QDataStream & operator << (QDataStream &Stream, const CmdProgramAction &C
     // copy internal data
     Stream << Cmd.m_ProgramID;
     Stream << (int)Cmd.m_ActionType;
-    Stream << Cmd.m_ProgramEndDateTime;
+    Stream << Cmd.m_DelayTime;
     return Stream;
 }
 
@@ -129,7 +129,7 @@ inline QDataStream & operator >> (QDataStream &Stream, CmdProgramAction &Cmd)
     int temp;
     Stream >> temp;
     Cmd.m_ActionType = (DataManager::ProgramActionType_t)temp;
-    Stream >> Cmd.m_ProgramEndDateTime;
+    Stream >> Cmd.m_DelayTime;
     return Stream;
 }
 } // end namespace MsgClasses

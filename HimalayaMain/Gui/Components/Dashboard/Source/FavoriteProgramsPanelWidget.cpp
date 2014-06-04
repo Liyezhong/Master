@@ -27,7 +27,7 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
     mp_wdgtDateTime = new Dashboard::CDashboardDateTimeWidget(this);
     mp_wdgtDateTime->setModal(true);
     CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectEndDateTime(const QDateTime &));
-    CONNECTSIGNALSIGNAL(mp_wdgtDateTime, RequstAsapDateTime(), this, RequstAsapDateTime());
+    CONNECTSIGNALSIGNAL(mp_wdgtDateTime, RequestAsapDateTime(), this, RequestAsapDateTime());
     CONNECTSIGNALSLOT(this, SendAsapDateTime(int), mp_wdgtDateTime, OnGetASAPDateTime(int));
     CONNECTSIGNALSLOT(ui->BtnProgram1, clicked(bool), this, OnEndTimeButtonClicked());
     CONNECTSIGNALSLOT(ui->BtnProgram2, clicked(bool), this, OnEndTimeButtonClicked());

@@ -88,6 +88,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_RetortLockStatus(UNDEFINED_VALUE)
         , mp_HeatingStrategy(NULL)
         , m_RefCleanup(Global::RefManager<Global::tRefType>::INVALID)
+        , m_delayTime(0)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
 }
@@ -1238,6 +1239,7 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_START)
         {
             m_NewProgramID = pCmdProgramAction->GetProgramID();
+            m_delayTime = pCmdProgramAction->DelayTime();
             return CTRL_CMD_START;
         }
         if (pCmdProgramAction->ProgramActionType() == DataManager::PROGRAM_PAUSE)
@@ -1391,7 +1393,12 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
     if (pProgramStep)
     {
         programStepInfor.stationID  = this->GetStationIDFromProgramStep(m_CurProgramStepIndex);
-        programStepInfor.durationInSeconds = pProgramStep->GetDurationInSeconds();
+        int soakTime = pProgramStep->GetDurationInSeconds();
+        if (0 == m_CurProgramStepIndex && m_delayTime > 0)
+        {
+            soakTime = soakTime + m_delayTime;
+        }
+        programStepInfor.durationInSeconds = soakTime;
         programStepInfor.temperature = pProgramStep->GetTemperature().toInt();
         programStepInfor.isPressure = (pProgramStep->GetPressure() == "On");
         programStepInfor.isVacuum = (pProgramStep->GetVacuum() == "On");
@@ -1756,7 +1763,7 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
 {
     m_Mutex.lock();
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdProgramAction(Cmd.GetTimeout(), Cmd.GetProgramID(), Cmd.ProgramActionType(),
-                                                                                        Cmd.ProgramEndDateTime())));
+                                                                                        Cmd.DelayTime())));
     m_Mutex.unlock();
     this->SendAcknowledgeOK(Ref);
 

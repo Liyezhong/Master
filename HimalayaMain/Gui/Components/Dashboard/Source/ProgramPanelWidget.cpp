@@ -33,7 +33,7 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&), this, OnSelectEndDateTime(const QDateTime &));
     CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&),
                       ui->programRunningPanel, OnUserSetEndDateTime(const QDateTime&));
-    CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, RequstAsapDateTime(), this, RequstAsapDateTime());
+    CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, RequestAsapDateTime(), this, RequestAsapDateTime());
     CONNECTSIGNALSIGNAL(this, SendAsapDateTime(int), ui->favoriteProgramsPanel, SendAsapDateTime(int));
 
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, QList<QString>&),
@@ -146,11 +146,6 @@ void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime,
     Core::CGlobalHelper::SetStationList(selectedStationList);
 }
 
-void CProgramPanelWidget::SelectEndDateTime(const QDateTime & dateTime)
-{
-    m_EndDateTime = dateTime;
-}
-
 bool CProgramPanelWidget::CheckPreConditionsToPauseProgram()
 {
     return true;
@@ -192,7 +187,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
                         strTempProgramId.append(strReagentIDOfLastStep);
                     }
 
-                    mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, m_EndDateTime);
+                    mp_DataConnector->SendProgramAction(strTempProgramId, DataManager::PROGRAM_START, 0);
                     ChangeStartButtonToStopState();
                     return;
                 }
