@@ -26,13 +26,14 @@
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "ProgramStepStateMachine.h"
 #include "RsRvGetOriginalPositionAgain.h"
-#include "RsStandby.h"
-#include "RsStandbyWithTissue.h"
-#include "RcLevelsensorHeatingOvertime.h"
-#include "RCReport.h"
 
 namespace Scheduler{
 
+class CRsStandby;
+class CRsStandbyWithTissue;
+class CRcLevelSensorHeatingOvertime;
+class CRcRestart;
+class CRcReport;
 class SchedulerMainThreadController;
 class SchedulerCommandProcessorBase;
 
@@ -50,15 +51,17 @@ private:
     QState* mp_IdleState;						///<  Idle state 
     QState* mp_BusyState;						///<  Busy state
     QState* mp_ErrorState;						///<  Error state 
-    QState* mp_ErrorWaitState;					///<  Error Sate's sub state: error wait state
-    QState* mp_ErrorRSStandbyWithTissueState;	///<  Error Sate's sub state: handle RS_STandby_WithTissue related logic
-    QState* mp_ErrorRCLevelSensorHeatingOvertimeState;                  ///<  Error Sate's sub state: handle RC_Levelsensor_Heating_Overtime related logic
+    QState* mp_ErrorWaitState;                                          ///<  Error State's sub state: error wait state
+    QState* mp_ErrorRsStandbyWithTissueState;                           ///<  Error State's sub state: handle RS_STandby_WithTissue related logic
+    QState* mp_ErrorRcLevelSensorHeatingOvertimeState;                  ///<  Error State's sub state: handle RC_Levelsensor_Heating_Overtime related logic
+    QState* mp_ErrorRcRestart;                                          ///<  Error State's sub state: handle RC_Restart related logic
     CProgramStepStateMachine *mp_ProgramStepStates;						///<  Definition/Declaration of variable mp_ProgramStepStates
-    CRsRvGetOriginalPositionAgain *mp_RSRvGetOriginalPositionAgain;		///<  Definition/Declaration of variable mp_RSRvGetOriginalPositionAgain
-    CRsStandby *mp_RSStandby;											///<  Definition/Declaration of variable mp_RSStandby
-    CRsStandbyWithTissue *mp_RSStandbyWithTissue;						///<  Definition/Declaration of variable mp_RSStandbyWithTissue
-    CRcLevelSensorHeatingOvertime *mp_RcLevelSensorHeatingOvertime;     ///<  Definition/Declaration of variable mp_RSStandbyWithTissue
-    CRCReport *mp_RCReport;												///<  Definition/Declaration of variable mp_RCReport
+    CRsRvGetOriginalPositionAgain *mp_RsRvGetOriginalPositionAgain;		///<  Definition/Declaration of variable mp_RSRvGetOriginalPositionAgain
+    CRsStandby *mp_RsStandby;											///<  Definition/Declaration of variable mp_RSStandby
+    CRsStandbyWithTissue *mp_RsStandbyWithTissue;						///<  Definition/Declaration of variable mp_RSStandbyWithTissue
+    CRcLevelSensorHeatingOvertime *mp_RcLevelSensorHeatingOvertime;     ///<  Definition/Declaration of variable mp_RcLevelSensorHeatingOvertime
+    CRcRestart *mp_RcRestart;                                           ///<  Definition/Declaration of variable mp_RcRestart
+    CRcReport *mp_RcReport;												///<  Definition/Declaration of variable mp_RcReport
     SchedulerStateMachine_t m_PreviousState;							///<  Definition/Declaration of variable m_PreviousState
     SchedulerStateMachine_t m_CurrentState;								///<  Definition/Declaration of variable m_CurrentState
 	SchedulerMainThreadController *mp_SchedulerThreadController;		///<  Definition/Declaration of variable mp_SchedulerThreadController
@@ -331,14 +334,7 @@ public:
      */
     /****************************************************************************/
     void NotifyPause(SchedulerStateMachine_t PreviousState);
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function NotifyResume
-     *
-     *  \return from NotifyResume
-     */
-    /****************************************************************************/
-    void NotifyResume();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyResumeDrain
@@ -355,14 +351,7 @@ public:
      */
     /****************************************************************************/
     void NotifyAbort();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function NotifyResumeToSelftest
-     *
-     *  \return from NotifyResumeToSelftest
-     */
-    /****************************************************************************/
-    void NotifyResumeToSelftest();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyRsRvMoveToInitPosition
@@ -381,12 +370,12 @@ public:
     void NotifyRsRvMoveToInitPositionFinished();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function NotifyRCReport
+     *  \brief  Definition/Declaration of function NotifyRcReport
      *
-     *  \return from NotifyRCReport
+     *  \return from NotifyRcReport
      */
     /****************************************************************************/
-    void NotifyRCReport();
+    void NotifyRcReport();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyRsReleasePressure
@@ -443,6 +432,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief Enter to Rc_Restart sub state machine
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void EnterRcRestart();
+
+    /****************************************************************************/
+    /*!
      *  \brief Handle the whole work flow for Rs_Standby_WithTissue 
      *
      *  \param flag - indicate if the execution succeeds or not
@@ -462,6 +460,18 @@ public:
      */
     /****************************************************************************/
     void HandleRcLevelSensorHeatingOvertimeWorkFlow(bool flag);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for Rc_Restart
+     *
+     *  \param flag - indicate if the execution succeeds or not
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRcRestart(bool flag);
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function GetCurrentState
@@ -525,6 +535,17 @@ private slots:
 
     /****************************************************************************/
     /*!
+     *  \brief  Slot to react for program resuming
+     *
+     *  \param  void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void OnNotifyResume();
+
+    /****************************************************************************/
+    /*!
      *  \brief	Slot to handle the actions when all the tasks are done.
      *  \param	bool flag to indicate if the whole execution succeeds or not
      *  \return	void
@@ -576,6 +597,13 @@ signals:
      */
     /****************************************************************************/
     void SigEnterRcLevelsensorHeatingOvertime();
+
+    /****************************************************************************/
+    /*!
+     *  \brief signal to enter RC_Restart
+     */
+    /****************************************************************************/
+    void SigEnterRcRestart();
 
 
     /****************************************************************************/
@@ -803,10 +831,10 @@ signals:
     void sigRsRvMoveToInitPositionFinished();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal sigRCReport
+     *  \brief  Definition/Declaration of signal sigRcReport
      */
     /****************************************************************************/
-    void sigRCReport();
+    void sigRcReport();
 
     /****************************************************************************/
     /*!
@@ -960,10 +988,10 @@ signals:
     void sigOnRsRvMoveToInitPosition();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal sigOnRCReport
+     *  \brief  Definition/Declaration of signal sigOnRcReport
      */
     /****************************************************************************/
-    void sigOnRCReport();
+    void sigOnRcReport();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal sigOnRsReleasePressure

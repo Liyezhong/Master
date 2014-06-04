@@ -1,10 +1,10 @@
 /****************************************************************************/
-/*! \file	RcLevelsensorHeatingOvertime.h
+/*! \file RCRestart.h
  *
- *  \brief	state machine class for recovery RC_LevelSensor_Heating_Overtime 
+ *  \brief CRCRestart class definition.
  *
  *   $Version: $ 0.1
- *   $Date:    $ May 23rd, 2014
+ *   $Date:    $ June 3rd, 2014
  *   $Author:  $ Songtao Yu
  *
  *  \b Company:
@@ -17,8 +17,9 @@
  *
  */
 /****************************************************************************/
-#ifndef RC_LEVELSENSOR_HEATING_OVERTIME_H
-#define RC_LEVELSENSOR_HEATING_OVERTIME_H
+#ifndef RCRESTART_H
+#define RCRESTART_H
+
 #include "ErrorHandlingSMBase.h"
 #include <QStateMachine>
 
@@ -26,39 +27,36 @@ namespace Scheduler{
 
 /****************************************************************************/
 /*!
- * \brief Error Handling State machine for RC_LevelSensor_Heating_Overtime 
+ * \brief Error Handling State Machine for RC_Restart
  */
 /****************************************************************************/
-class  CRcLevelSensorHeatingOvertime : public CErrorHandlingSMBase
+class  CRcRestart : public CErrorHandlingSMBase
 {
     Q_OBJECT
 public:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function CRcLevelSensorHeatingOvertime
+     *  \brief Constructor of class CRCRestart 
      *
      *  \param pStateMachine = pointer QStateMachine
      *  \param pParentState = pointer QState
      *
      */
     /****************************************************************************/
-     CRcLevelSensorHeatingOvertime(QStateMachine* pStateMachine, QState* pParentState);
+    CRcRestart(QStateMachine* pStateMachine, QState* pParentState);
 
-     /****************************************************************************/
-     /*!
-      *  \brief  Definition/Declaration of function ~CRcLevelSensorHeatingOvertime
+    /****************************************************************************/
+     /*! 
+      *  \brief Destructor of class CRCRestart 
       *
       */
      /****************************************************************************/
-    ~CRcLevelSensorHeatingOvertime();
+    ~CRcRestart();
 
-     /****************************************************************************/
-     /*!
-      *  \brief  Definition/Declaration of function GetCurrentState
+    /****************************************************************************/
+     /*! 
+      *  \brief Get current state of state machine 
       *
-      *  \param statesList = QSet<QAbstractState*>
-      *
-      *	\return SchedulerStateMachine_t
       */
      /****************************************************************************/
     SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
@@ -67,32 +65,30 @@ public:
     /*!
      *  \brief  Definition/Declaration of function OnHandleWorkFlow
      *
-     *  \param flag
      *
      */
     /****************************************************************************/
     void OnHandleWorkFlow(bool flag);
-
 signals:
     /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function RestartLevelSensorTempControl
+    /*! 
+     *  \brief send out recovery signal 
      *
      */
     /****************************************************************************/
-    void RestartLevelSensorTempControl();
-
+	void Recover();
     /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function TasksDone
+    /*! 
+     *  \brief send out Tasks Done signal 
      *
      */
     /****************************************************************************/
-    void TasksDone(bool);
+	void TasksDone(bool);
 
 private:
-    QState *mp_Initial;                         //!< Initial state
-    QState *mp_RestartLevelSensorTempControl;   //!< Restart levelSensor temperature control
+	QState *mp_Initial;		//!< Initial state
+	QState *mp_Recover;		//!< Recover to normal state 
 };
+
 }
-#endif // RC_LEVELSENSOR_HEATING_OVERTIME_H
+#endif // RCRESTART_H

@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file RCReport.cpp
+/*! \file RcReport.cpp
  *
- *  \brief CRCReport class definition.
+ *  \brief CRcReport class definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 02.01.2014
@@ -17,7 +17,7 @@
  *
  */
 /****************************************************************************/
-#include "../Include/RCReport.h"
+#include "Scheduler/Include/RcReport.h"
 
 namespace Scheduler{
 
@@ -28,14 +28,14 @@ namespace Scheduler{
  *  \iparam   pParentState: Pointer to parent state
  */
 /****************************************************************************/
-CRCReport::CRCReport(QStateMachine* pStateMachine, QState* pParentState) : CErrorHandlingSMBase(pStateMachine, pParentState)
+CRcReport::CRcReport(QStateMachine* pStateMachine, QState* pParentState) : CErrorHandlingSMBase(pStateMachine, pParentState)
 {
     if(pParentState)
     {
-        mp_RCReport = new QState(pParentState);
+        mp_RcReport = new QState(pParentState);
         QState *pInitState = (QState*)pParentState->initialState();
-        pInitState->addTransition(this, SIGNAL(RCReport()), mp_RCReport);
-        connect(mp_RCReport, SIGNAL(entered()), this, SIGNAL(OnRCReport()));
+        pInitState->addTransition(this, SIGNAL(RcReport()), mp_RcReport);
+        connect(mp_RcReport, SIGNAL(entered()), this, SIGNAL(OnRcReport()));
     }
 }
 
@@ -44,10 +44,10 @@ CRCReport::CRCReport(QStateMachine* pStateMachine, QState* pParentState) : CErro
  *  \brief    Destructor
  */
 /****************************************************************************/
-CRCReport::~CRCReport()
+CRcReport::~CRcReport()
 {
-    delete mp_RCReport;
-    mp_RCReport = NULL;
+    delete mp_RcReport;
+    mp_RcReport = NULL;
 }
 
 /****************************************************************************/
@@ -59,10 +59,10 @@ CRCReport::~CRCReport()
  *  \return The current state of the state machine
  */
 /****************************************************************************/
-SchedulerStateMachine_t CRCReport::GetCurrentState(QSet<QAbstractState*> statesList)
+SchedulerStateMachine_t CRcReport::GetCurrentState(QSet<QAbstractState*> statesList)
 {
     SchedulerStateMachine_t currentState = SM_UNDEF;
-    if(statesList.contains(mp_RCReport))
+    if(statesList.contains(mp_RcReport))
     {
         currentState = SM_ERR_RC_REPORT;
     }

@@ -162,7 +162,7 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnPause(), this, Pause());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnPauseDrain(), this, Pause());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsRvMoveToInitPosition(), this, MoveRVToInit());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRCReport(), this, ShutdownRetortHeater());
+    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRcReport(), this, ShutdownRetortHeater());
 
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsReleasePressure(), this, ReleasePressure());
     CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsShutdownFailedHeater(), this, ShutdownFailedHeater());
@@ -335,9 +335,11 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
 
 void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
+
     ReturnCode_t retCode;
     QString cmdName = "";
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
+
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
     if(cmd != NULL)
     {
@@ -347,14 +349,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         cmdName = cmd->GetName();
     }
-#if 0
+//#if 0
     //just for testing
     if (200 ==Scenario)
     {
         RaiseError(0, 500010301, 200, false);
         m_SchedulerMachine->SendErrorSignal();
     }
-#endif
+//#endif
 
     if(CTRL_CMD_ABORT == ctrlCmd)
     {
@@ -1028,7 +1030,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(CTRL_CMD_START == ctrlCmd)
             {
                 // resume the program
-                m_SchedulerMachine->NotifyResume();
+                emit NotifyResume();
                 DequeueNonDeviceCommand();
                 // tell the main controller the program is resuming
                 MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
@@ -1116,20 +1118,13 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         LogDebug("####Scheduler waitting event handler give instruction!");
         if(CTRL_CMD_RC_RESTART == ctrlCmd)
         {
-            if(((m_SchedulerMachine->GetPreviousState()) & 0xFFFF)==PSSM_ST)
-            {
-                m_SchedulerMachine->NotifyResumeToSelftest();
-            }
-            else
-            {
-                m_SchedulerMachine->NotifyResume();
-            }
+            m_SchedulerMachine->EnterRcRestart();
             DequeueNonDeviceCommand();
         }
         else if(CTRL_CMD_RC_REPORT == ctrlCmd)
         {
             LogDebug("Go to move to RC_Report");
-            m_SchedulerMachine->NotifyRCReport();
+            m_SchedulerMachine->NotifyRcReport();
             DequeueNonDeviceCommand();
         }
         else if(CTRL_CMD_RS_GET_ORIGINAL_POSITION_AGAIN == ctrlCmd)
@@ -1183,6 +1178,18 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         else
         {
             m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow(true);
+        }
+    }
+    else if (SM_ERR_RC_RESTART == currentState)
+    {
+        LogDebug(QString("RC_Restart Response: %1").arg(retCode));
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            m_SchedulerMachine->HandleRcRestart(false);
+        }
+        else
+        {
+            m_SchedulerMachine->HandleRcRestart(true);
         }
     }
     else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
@@ -1290,20 +1297,6 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
             return CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME;
         }
     }
-//    HimalayaErrorHandler::CmdRaiseAlarm* pCmdRaiseAlarm = dynamic_cast<HimalayaErrorHandler::CmdRaiseAlarm*>(pt.GetPointerToUserData());
-//    if (pCmdRaiseAlarm)
-//    {
-//        if(pCmdRaiseAlarm->m_localAlarm)
-//        {
-
-//        }
-//        else
-//        {
-
-//        }
-//        //todo temp. return set remote alarm, update later
-//        return CTRL_CMD_SET_REMOTE_ALARM;
-//    }
     return CTRL_CMD_UNKNOWN;
 
 }//When end of this function, the command in m_SchedulerCmdQueue will be destrory by share pointer (CommandShPtr_t) mechanism

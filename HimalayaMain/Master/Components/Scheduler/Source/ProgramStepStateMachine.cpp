@@ -48,7 +48,7 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         mp_PssmStStationChecking = new QState(mp_PssmSelfTest);
         mp_PssmStStationCheckFinish = new QState(mp_PssmSelfTest);
         mp_PssmStDone = new QState(mp_PssmSelfTest);
-        QHistoryState *stHistory = new QHistoryState(mp_PssmSelfTest);
+        //QHistoryState *stHistory = new QHistoryState(mp_PssmSelfTest);
 
         mp_PssmInit = new QState(pParentState);
         mp_PssmReadyToHeatLevelSensorS1 = new QState(pParentState);
@@ -83,9 +83,9 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         mp_PssmStStationCheckFinish->addTransition(this, SIGNAL(StStationOK()), mp_PssmStDone);
 
         mp_PssmSelfTest->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
-        mp_PssmPause->addTransition(this, SIGNAL(ResumeToSelftest()), stHistory);
+        //mp_PssmPause->addTransition(this, SIGNAL(ResumeToSelftest()), stHistory);
         mp_PssmSelfTest->addTransition(this, SIGNAL(Error()), pErrorState);
-        pErrorState->addTransition(this, SIGNAL(ResumeToSelftest()), stHistory);//verify later
+        pErrorState->addTransition(this, SIGNAL(ResumeToSelftest()), mp_PssmSelfTest);//verify later
         pErrorState->addTransition(this, SIGNAL(ResumeToSoak()), mp_PssmSoak);
         pErrorState->addTransition(this, SIGNAL(ResumeFromErrorToBegin()), mp_PssmInit);
         mp_PssmSelfTest->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);

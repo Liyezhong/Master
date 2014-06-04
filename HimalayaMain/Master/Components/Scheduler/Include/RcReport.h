@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file RCReport.h
+/*! \file RcReport.h
  *
- *  \brief CRCReport class definition.
+ *  \brief CRcReport class definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 02.01.2014
@@ -30,30 +30,30 @@ namespace Scheduler{
  * \brief Error Handling State Machine for RC_Report
  */
 /****************************************************************************/
-class  CRCReport : public CErrorHandlingSMBase
+class  CRcReport : public CErrorHandlingSMBase
 {
     Q_OBJECT
 public:
-    CRCReport (QStateMachine* pStateMachine, QState* pParentState);
-    ~CRCReport();
+    CRcReport (QStateMachine* pStateMachine, QState* pParentState);
+    ~CRcReport();
     SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
 
 signals:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal RCReport
+     *  \brief  Definition/Declaration of signal RcReport
      */
     /****************************************************************************/
-    void RCReport();
+    void RcReport();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal OnRCReport
+     *  \brief  Definition/Declaration of signal OnRcReport
      */
     /****************************************************************************/
-    void OnRCReport();
+    void OnRcReport();
 
 private:
-    QState *mp_RCReport;       ///<  Definition/Declaration of variable mp_RCReport
+    QState *mp_RcReport;       ///<  Definition/Declaration of variable mp_RcReport
 };
 }
 
