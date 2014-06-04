@@ -32,7 +32,7 @@ class CDlgWizardSelectTestOptions : public CDlgWizardBase
     Q_OBJECT
 
 public:
-    explicit CDlgWizardSelectTestOptions(QWidget *parent = 0, QMainWindow *pMainWindow = 0);
+    explicit CDlgWizardSelectTestOptions(QWidget *parent = 0, QWidget *pMainWindow = 0);
     ~CDlgWizardSelectTestOptions(void);
 signals:
 

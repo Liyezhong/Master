@@ -32,7 +32,7 @@ namespace Dashboard {
          *  \return from CCassetteNumberInputWidget
          */
         /****************************************************************************/
-        explicit CCassetteNumberInputWidget(QWidget *pParent = 0, QMainWindow *pMainWindow = 0);
+        explicit CCassetteNumberInputWidget(QWidget *pParent = 0, QWidget *pMainWindow = 0);
         ~CCassetteNumberInputWidget();
         /****************************************************************************/
         /*!

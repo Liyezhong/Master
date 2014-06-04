@@ -32,6 +32,7 @@
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "ServiceDataManager/Include/TestCase.h"
 #include "DiagnosticsManufacturing/Include/UserInputDialog.h"
+#include <QDesktopWidget>
 
 namespace Core {
 
@@ -518,7 +519,7 @@ void CStartup::InitializeGui(PlatformService::SoftwareModeType_t SoftwareMode, Q
     else if (SoftwareMode == PlatformService::MANUFACTURING_MODE)
     {
         mp_USBKeyValidator->HideKeyBoard();
-        MainMenu::CDlgWizardSelectTestOptions* pDlgWizardSelectTestOptions = new MainMenu::CDlgWizardSelectTestOptions(NULL, NULL);
+        MainMenu::CDlgWizardSelectTestOptions* pDlgWizardSelectTestOptions = new MainMenu::CDlgWizardSelectTestOptions(NULL, QApplication::desktop()->screen());
         CONNECTSIGNALSLOT(pDlgWizardSelectTestOptions, ClickedNextButton(int), this, OnSelectTestOptions(int));
         pDlgWizardSelectTestOptions->exec();
         if (QDialog::Rejected == pDlgWizardSelectTestOptions->result())
