@@ -62,6 +62,7 @@
 #include "Global/Include/EventObject.h"
 #include "Scheduler/Include/HeatingStrategy.h"
 #include <unistd.h>
+#include <Global/Include/SystemPaths.h>
 
 
 using namespace DataManager;
@@ -2110,9 +2111,20 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
 
         SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL, true);
 
-        bool ok;
-        qreal pressureDrift = mp_DataManager->GetProgramSettings()->GetParameterValue("LA", "Base", "PressureDrift", ok);
-        if((ok)&&(pressureDrift != 0)&&(pressureDrift<3)&&(pressureDrift>(-3)))//todo: verify this
+        bool isValueOK = false;
+        qreal pressureDrift = this->ReadPressureDrift();
+        if (qAbs(pressureDrift) < 2)
+            isValueOK = true;
+        else
+        {
+            bool ok = false;
+            pressureDrift = mp_DataManager->GetProgramSettings()->GetParameterValue("LA", "Base", "PressureDrift", ok);
+            if(ok && (pressureDrift != 0) && (qAbs(pressureDrift) < 2))
+            {
+                isValueOK = true;
+            }
+        }
+        if (isValueOK)
         {
             m_SchedulerCommandProcessor->ALSetPressureDrift(pressureDrift);
         }
@@ -3106,4 +3118,31 @@ qint64 SchedulerMainThreadController::GetFunctionModuleStartworkTime(QList<Funct
     }
     return 0;
 }
+
+float SchedulerMainThreadController::ReadPressureDrift()
+{
+    QString FileName = Global::SystemPaths::Instance().GetSettingsPath() + "/PressureNullDrift.txt";
+    float pressureDrift = 999999;
+    FILE* pFile;
+
+    if ((pFile = fopen(FileName.toStdString().c_str(), "r")) == NULL)
+    {
+        return pressureDrift;
+    }
+
+    char Buf[200];
+    memset(Buf, 0, sizeof(Buf));
+    if(fread(Buf, 1, 200, pFile) > 0 )
+    {
+        QString Content = QString::fromAscii(Buf, -1);
+        QStringList StrList = Content.split(";");
+        if(StrList.size() >= 1)
+        {
+            pressureDrift = StrList.at(0).toDouble();
+        }
+    }
+    fclose(pFile);
+    return pressureDrift;
+}
+
 }

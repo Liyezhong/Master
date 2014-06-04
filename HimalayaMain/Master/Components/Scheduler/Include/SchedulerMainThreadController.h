@@ -503,6 +503,12 @@ typedef struct
           */
          /****************************************************************************/
          qint64 GetFunctionModuleStartworkTime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
+         /****************************************************************************/
+         /*!
+          *  \brief  Definition/Declaration of function ReadPressureDrift
+          */
+         /****************************************************************************/
+         float ReadPressureDrift();
 signals:
          /****************************************************************************/
          /*!
