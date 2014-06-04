@@ -234,9 +234,13 @@ void CProgramRunningPanelWidget::UpdateDateTime()
     DateTimeStr.append(DateStr);
     m_DateTimeStr = "";
     m_DateTimeStr.append(TimeStr);
-    m_DateTimeStr.append(" ");
-    m_DateTimeStr.append(DateStr);
 
+    QDateTime CurDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+    uint TotalSecs = m_ProgramEndDateTime.toTime_t() - CurDateTime.toTime_t();
+    if (TotalSecs >= 24 * 3600) {
+        m_DateTimeStr.append(" ");
+        m_DateTimeStr.append(DateStr);
+    }
     ui->lblEndtime->setText(DateTimeStr);
 }
 
