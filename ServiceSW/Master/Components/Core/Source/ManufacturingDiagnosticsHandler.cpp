@@ -161,6 +161,10 @@ bool CManufacturingDiagnosticsHandler::ShowGuide(Service::ModuleTestCaseID Id, i
     QStringList Steps = DataManager::CTestCaseGuide::Instance().GetGuideSteps(TestCaseName, Index);
     QString GuideText;
 
+    if (Steps.size() == 0) {  // no guide
+        return true;
+    }
+
     for(int i=0; i<Steps.size(); i++) {
         GuideText.append(Steps.at(i));
         if (i <= Steps.size()-1 ) {
@@ -208,7 +212,7 @@ void CManufacturingDiagnosticsHandler::ShowHeatingFailedResult(Service::ModuleTe
     Text.append("Failed !");
     dlg->SetDialogTitle("Error");
     dlg->SetText(Text);
-    dlg->HideAbort(false);
+    dlg->HideAbort(true);
     dlg->exec();
     delete dlg;
 }
@@ -269,7 +273,14 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service
 
         if (Result == false) {
             Global::EventObject::Instance().RaiseEvent(FailureId);
+
             QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+
+            QString Reason = p_TestCase->GetResult().value("FailReason");
+            if (Reason == "Abort") {   // if user click abort, then the test routines for this modules will terminate.
+                mp_OvenManuf->EnableButton(true);
+                return ;
+            }
 
             QString Text = QString("%1 %2\n%3").arg(TestCaseDescription, "- Fail", p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
@@ -306,21 +317,21 @@ void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<
 
         switch( Id ) {
         case Service::MAINCONTROL_ASB3:
-            EventId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST;
-            FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_FAILURE;
-            OkId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_SUCCESS;
+            EventId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB3_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB3_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB3_TEST_SUCCESS;
             ASBIndex = 3;
             break;
         case Service::MAINCONTROL_ASB5:
-            EventId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST;
-            FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_FAILURE;
-            OkId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_SUCCESS;
+            EventId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST_SUCCESS;
             ASBIndex = 5;
             break;
         case Service::MAINCONTROL_ASB15:
-            EventId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST;
-            FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST_FAILURE;
-            OkId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_LIQUID_TEST_SUCCESS;
+            EventId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB15_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_MAINCONTROL_ASB5_TEST_SUCCESS;
             ASBIndex = 15;
             break;
         }
@@ -338,7 +349,7 @@ void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<
 
             qreal Voltage = p_TestCase->GetResult().value("Voltage").toDouble();
             qreal Current = p_TestCase->GetResult().value("Current").toDouble();
-            QString Text = QString("ASB %1 DC output voltage is failed (%2 V), and current is failed (%3 mA).").arg(ASBIndex)
+            QString Text = QString("ASB %1 DC output voltage is failed (%2 V), \nand current is failed (%3 mA).").arg(ASBIndex)
                     .arg(Voltage).arg(Current);
 
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
@@ -347,7 +358,7 @@ void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<
             Global::EventObject::Instance().RaiseEvent(OkId);
             qreal Voltage = p_TestCase->GetResult().value("Voltage").toDouble();
             qreal Current = p_TestCase->GetResult().value("Current").toDouble();
-            QString Text = QString("ASB %1 DC output voltage is Ok (%2 V), and current is Ok (%3 mA).").arg(ASBIndex)
+            QString Text = QString("ASB %1 DC output voltage is Ok (%2 V), \nand current is Ok (%3 mA).").arg(ASBIndex)
                     .arg(Voltage).arg(Current);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
@@ -356,6 +367,115 @@ void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<
     mp_MainControlManuf->EnableButton(true);
 }
 
+void CManufacturingDiagnosticsHandler::PerformManufRVTests(const QList<Service::ModuleTestCaseID> &TestCaseList)
+{
+    quint32 FailureId(0);
+    quint32 OkId(0);
+    quint32 EventId(0);
+    qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufRVTests ---" << TestCaseList;
+    for(int i=0; i<TestCaseList.size(); i++) {
+        Service::ModuleTestCaseID Id = TestCaseList.at(i);
+        bool NextFlag = ShowGuide(Id, 0);
+        if (NextFlag == false) {
+            break;
+        }
+
+        switch( Id ) {
+        case Service::ROTARY_VALVE_INITIALIZING:
+            EventId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST_SUCCESS;
+            break;
+        case Service::ROTARY_VALVE_SELECTION_FUNCTION:
+            EventId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST_SUCCESS;
+            break;
+        case Service::ROTARY_VALVE_SEALING_FUNCTION:
+            EventId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST_SUCCESS;
+        case Service::ROTARY_VALVE_HEATING_PROPERTY:
+            EventId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_TEST_SUCCESS;
+            break;
+        }
+
+        Global::EventObject::Instance().RaiseEvent(EventId);
+        emit PerformManufacturingTest(Id);
+
+        bool Result = GetTestResponse();
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+        p_TestCase->SetStatus(Result);
+
+        if (Result == false) {
+            Global::EventObject::Instance().RaiseEvent(FailureId);
+
+
+
+      //      mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
+        }
+        else {
+
+           // mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+        }
+        mp_RotaryValveManuf->SetTestResult(Id, Result);
+    }
+    mp_RotaryValveManuf->EnableButton(true);
+}
+
+void CManufacturingDiagnosticsHandler::PerformManufLATests(const QList<Service::ModuleTestCaseID> &TestCaseList)
+{
+    quint32 FailureId(0);
+    quint32 OkId(0);
+    quint32 EventId(0);
+    qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufLATests ---" << TestCaseList;
+    for(int i=0; i<TestCaseList.size(); i++) {
+        Service::ModuleTestCaseID Id = TestCaseList.at(i);
+        bool NextFlag = ShowGuide(Id, 0);
+        if (NextFlag == false) {
+            break;
+        }
+
+        switch( Id ) {
+        case Service::LA_SYSTEM_HEATING_LIQUID_TUBE:
+            EventId = EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT1_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT1_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT1_TEST_SUCCESS;
+            break;
+        case Service::LA_SYSTEM_HEATING_AIR_TUBE:
+            EventId = EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT2_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT2_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT2_TEST_SUCCESS;
+            break;
+
+        }
+
+        Global::EventObject::Instance().RaiseEvent(EventId);
+        emit PerformManufacturingTest(Id);
+
+        bool Result = GetTestResponse();
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+        p_TestCase->SetStatus(Result);
+
+        if (Result == false) {
+            Global::EventObject::Instance().RaiseEvent(FailureId);
+
+
+
+      //      mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
+        }
+        else {
+
+           // mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+        }
+        mp_RotaryValveManuf->SetTestResult(Id, Result);
+    }
+    mp_RotaryValveManuf->EnableButton(true);
+}
 
 /****************************************************************************/
 /*!

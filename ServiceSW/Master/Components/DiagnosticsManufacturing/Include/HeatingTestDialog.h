@@ -92,7 +92,7 @@ public:
      *  \brief Hides the abort button of the dialog
      */
     /****************************************************************************/
-    void HideAbort(bool HideFlag=true);
+    void HideAbort(bool HideFlag=false);
 
     /****************************************************************************/
     /*!
@@ -199,6 +199,14 @@ signals:
      */
     /****************************************************************************/
     void AbortBlgProcess(bool IsBLGProcessAborted);
+
+    /****************************************************************************/
+    /**
+       * \brief Signal emitted to perform manufacturing tests
+       * \iparam Test = Test name
+       */
+    /****************************************************************************/
+    void PerformManufacturingTest(Service::ModuleTestCaseID Test);
 };
 
 } // end namespace DiagnosticsManufacturing

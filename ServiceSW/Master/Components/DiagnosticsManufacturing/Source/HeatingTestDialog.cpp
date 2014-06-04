@@ -154,6 +154,8 @@ void CHeatingTestDialog::SetTimeout(qint32 Milliseconds)
 /****************************************************************************/
 void CHeatingTestDialog::AbortWaitDialog()
 {
+    PerformManufacturingTest(Service::TEST_ABORT);
+
     if (m_IsBlgProcessStarted) {
         m_IsBlgProcessStarted = false;
         //Send command to main to abort blg process and park the robot arms
@@ -184,10 +186,12 @@ void CHeatingTestDialog::BlgProcessProgress(bool IsBlgProcessStarted)
 void CHeatingTestDialog::HideAbort(bool HideFlag)
 {
     if (HideFlag) {
-        mp_Ui->abortButton->hide();
+        mp_Ui->abortButton->setText("Close");
+       // mp_Ui->abortButton->hide();
     }
     else {
-        mp_Ui->abortButton->show();
+        mp_Ui->abortButton->setText("Abort");
+       // mp_Ui->abortButton->show();
     }
     //m_AbortButtonVisible = false;
 }

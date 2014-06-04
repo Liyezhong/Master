@@ -2,8 +2,8 @@
 <!DOCTYPE TestCaseConfig>
 <TestCaseConfig Version="1">
 	<Oven>
-		<OvenHeatingEmpty AmbTempLow="10" AmbTempHigh="40" DurationTime="00:15:00" TopTargetTemp="60" BottomTargetTemp="60" TargetTemp="55" DepartureLow="-5" DepartureHigh="10"/>
-		<OvenHeatingWater AmbTempLow="10" AmbTempHigh="40" DurationTime="00:40:00" TopTargetTemp="60" BottomTargetTemp="60" TargetTemp="55" DepartureLow="-5" DepartureHigh="10"/>
+		<OvenHeatingEmpty PowerSupply="AC" AmbTempLow="10" AmbTempHigh="40" DurationTime="00:15:00" TopTargetTemp="60" BottomTargetTemp="60" TargetTemp="55" DepartureLow="-5" DepartureHigh="10"/>
+		<OvenHeatingWater PowerSupply="AC" AmbTempLow="10" AmbTempHigh="40" DurationTime="00:40:00" TopTargetTemp="60" BottomTargetTemp="60" TargetTemp="55" DepartureLow="-5" DepartureHigh="10"/>
 		<OvenCoverSensor Parameter="N/A"/>
 	</Oven>
 	<RotaryValve>
@@ -13,14 +13,14 @@
 		<RVHeatingProperty Parameter="N/A"/>
 	</RotaryValve>
 	<MainControl>
-		<MCASB3 Voltage="24" VolTolerance="10%" CurrentLow="0" CurrentHigh="200"/>
-		<MCASB5 Voltage="24" VolTolerance="10%" CurrentLow="0" CurrentHigh="200"/>
-		<MCASB15 Voltage="24" VolTolerance="10%" CurrentLow="0" CurrentHigh="700"/>
+		<MCASB3 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="200"/>
+		<MCASB5 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="200"/>
+		<MCASB15 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="700"/>
 		<MCTouchScreen Parameter="N/A"/>
 	</MainControl>
 	<LaSystem>
-		<LAHeatingBelt1 Parameter="N/A"/>
-		<LAHeatingBelt2 Parameter="N/A"/>
+		<LAHeatingBeltLiquid PowerSupply="DC" AmbTempLow="10" AmbTempHigh="40" DurationTime="00:20:00" TargetTemp="80" DepartureLow="-5" DepartureHigh="5"/>
+		<LAHeatingBeltAir PowerSupply="DC" AmbTempLow="10" AmbTempHigh="40" DurationTime="00:20:00" TargetTemp="80" DepartureLow="-5" DepartureHigh="5"/>
 		<LAAirSystem Parameter="N/A"/>
 	</LaSystem>
 </TestCaseConfig>

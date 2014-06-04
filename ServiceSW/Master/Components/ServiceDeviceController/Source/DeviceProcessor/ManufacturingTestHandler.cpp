@@ -47,6 +47,10 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
 
     mp_TempOvenTop = NULL;
     mp_TempOvenBottom = NULL;
+    mp_DigitalInpputOven = NULL;
+    mp_DigitalOutputMainRelay = NULL;
+    mp_TempTubeLiquid = NULL;
+    mp_TempTubeAir = NULL;
 }
 
 /****************************************************************************/
@@ -84,6 +88,20 @@ void ManufacturingTestHandler::CreateWrappers()
     }
     else {
         qDebug()<<"new WrapperFmDigitalOutput for MainRelay failed !!!!";
+    }
+
+    pTemperature = NULL;
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALTube1TempCtrlKey));
+    if (NULL != pTemperature)
+    {
+        mp_TempTubeLiquid = new WrapperFmTempControl("temp_tube1", pTemperature, this);
+    }
+
+    pTemperature = NULL;
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALTube2TempCtrlKey));
+    if (NULL != pTemperature)
+    {
+        mp_TempTubeAir = new WrapperFmTempControl("temp_tube2", pTemperature, this);
     }
 
 }
@@ -134,6 +152,7 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
     QString BottomValue2;
     QString UsedTime;
     Service::ModuleTestStatus Status;
+    bool NeedAC = false;
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::OVEN_HEATING_WITH_WATER);
 
@@ -147,6 +166,10 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
 
     qreal AmbTempLow = p_TestCase->GetParameter("AmbTempLow").toDouble();
     qreal AmbTempHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
+
+    if (p_TestCase->GetParameter("PowerSupply") == "AC") {
+        NeedAC = true;
+    }
 
     WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
 
@@ -182,8 +205,9 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
         return -1;
     }
 
-
-    qDebug()<<"Main Relay SetHigh return : "<<mp_DigitalOutputMainRelay->SetHigh();
+    if (NeedAC) {
+        mp_DigitalOutputMainRelay->SetHigh();
+    }
 
     mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
     mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
@@ -228,21 +252,24 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
 
     mp_TempOvenTop->StopTemperatureControl();
     mp_TempOvenBottom->StopTemperatureControl();
-
-    p_TestCase->AddResult("UsedTime", UsedTime);
-    p_TestCase->AddResult("CurrentTempTop", TopValue);
-    p_TestCase->AddResult("CurrentTempBottom1", BottomValue1);
-    p_TestCase->AddResult("CurrentTempBottom2", BottomValue2);
-
-    Status.clear();
-    Status.insert("OvenHeatingWaterStatus", "Finished");
-    emit RefreshTestStatustoMain(TestCaseName, Status);
+    if (NeedAC) {
+        mp_DigitalOutputMainRelay->SetLow();
+    }
 
     if (m_UserAbort) {
+        m_UserAbort = false;
+        p_TestCase->AddResult("FailReason", "Abort");
         return 1;
     }
     else {
+        p_TestCase->AddResult("UsedTime", UsedTime);
+        p_TestCase->AddResult("CurrentTempTop", TopValue);
+        p_TestCase->AddResult("CurrentTempBottom1", BottomValue1);
+        p_TestCase->AddResult("CurrentTempBottom2", BottomValue2);
 
+        Status.clear();
+        Status.insert("OvenHeatingWaterStatus", "Finished");
+        emit RefreshTestStatustoMain(TestCaseName, Status);
         return 0;
     }
 }
@@ -258,6 +285,7 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
     QString BottomValue1;
     QString BottomValue2;
     QString UsedTime;
+    bool NeedAC = false;
 
     Service::ModuleTestCaseID Id = Service::OVEN_HEATING_EMPTY;
 
@@ -273,6 +301,10 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
     qreal AmbTempLow = p_TestCase->GetParameter("AmbTempLow").toDouble();
     qreal AmbTempHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
 
+    if (p_TestCase->GetParameter("PowerSupply") == "AC") {
+        NeedAC = true;
+    }
+
     Service::ModuleTestStatus Status;
 
     WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
@@ -282,6 +314,7 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
     CurrentTempTop = mp_TempOvenTop->GetTemperature(0);
     CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
     CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
+    qDebug()<<"AmbTempLow="<<AmbTempLow<<" AmbTempHigh="<<AmbTempHigh<<" Top="<<CurrentTempTop<<" Bot1="<<CurrentTempBottom1<<" Bot2="<<CurrentTempBottom2;
 
     if (CurrentTempTop<AmbTempLow || CurrentTempTop>AmbTempHigh ||
             CurrentTempBottom1<AmbTempLow || CurrentTempBottom1>AmbTempHigh ||
@@ -310,10 +343,12 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         return -1;
     }
 
-    mp_DigitalOutputMainRelay->SetHigh();
+    if (NeedAC) {
+        mp_DigitalOutputMainRelay->SetHigh();
+    }
 
-    qDebug()<<"Oven Top StartTemperatureControl return :" << mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
-    qDebug()<<"Oven Bottom StartTemperatureControl return :" << mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
+    mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
+    mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
 
     while (!m_UserAbort && WaitSec)
     {
@@ -328,6 +363,8 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
             WaitSec--;
             continue;
         }
+
+        qDebug()<<"Target="<<TargetTemp<<" Top="<<CurrentTempTop<<" Bot1="<<CurrentTempBottom1<<" Bot2="<<CurrentTempBottom2;
 
         if ( CurrentTempTop >= TargetTemp &&
              CurrentTempBottom1 >= TargetTemp &&
@@ -366,6 +403,9 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
 
     mp_TempOvenTop->StopTemperatureControl();
     mp_TempOvenBottom->StopTemperatureControl();
+    if (NeedAC) {
+        mp_DigitalOutputMainRelay->SetLow();
+    }
 
     p_TestCase->AddResult("UsedTime", UsedTime);
     p_TestCase->AddResult("CurrentTempTop", TopValue);
@@ -378,6 +418,8 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
  //       p_TestCase->AddResult("FailReason", Service::MSG_HEATING_FAIL);
         if (m_UserAbort)
         {
+            m_UserAbort = false;
+            p_TestCase->AddResult("FailReason", "Abort");
             return 1;
         }
         else
@@ -417,14 +459,205 @@ qint32 ManufacturingTestHandler::TestOvenCoverSensor()
     return 0;
 }
 
+qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t Id)
+{
+    DeviceControl::HimSlaveType_t Slave ;
+    if (Id == Service::MAINCONTROL_ASB3) {
+       Slave = DeviceControl::Slave_3;
+    }
+    else if (Id == Service::MAINCONTROL_ASB5) {
+       Slave = DeviceControl::Slave_5;
+    }
+    else if (Id == Service::MAINCONTROL_ASB15) {
+       Slave = DeviceControl::Slave_15;
+    }
+    else {
+       qDebug()<<"Error : Wrong Parameter !";
+       return -1;
+    }
+
+    qreal ActualVoltage = m_rIdevProc.IDGetSlaveVoltage(Slave);
+    qreal ActualCurrent = m_rIdevProc.IDGetSlaveCurrent(Slave);
+
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    qreal Voltage = p_TestCase->GetParameter("Voltage").toDouble();
+    qreal VoltageTolerance = p_TestCase->GetParameter("VolTolerance").toDouble();
+    qreal VolLow = Voltage - Voltage*VoltageTolerance;
+    qreal VolHigh = Voltage + Voltage*VoltageTolerance;
+    qreal CurrentLow = p_TestCase->GetParameter("CurrentLow").toDouble();
+    qreal CurrentHigh = p_TestCase->GetParameter("CurrentHigh").toDouble();
+
+    p_TestCase->AddResult("Voltage", QString("%1").arg(ActualVoltage));
+    p_TestCase->AddResult("Current", QString("%1").arg(ActualCurrent));
+
+    if (ActualVoltage>=VolLow && ActualVoltage<= VolHigh &&
+            ActualCurrent>=CurrentLow && ActualCurrent<= CurrentHigh) {
+
+        return 0;
+    }
+    else {
+        return 1;
+    }
+}
+
+qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t Id)
+{
+    quint32 WaitSec(0);
+    quint32 SumSec(0);
+    qint32  LAStatus(-1);
+    qreal   CurrentTemp(0);
+    QString CurrentValue;
+    QString UsedTime;
+    bool NeedAC = false;
+    WrapperFmTempControl *p_TempCtrl = NULL;
+
+    if (Id == Service::LA_SYSTEM_HEATING_LIQUID_TUBE) {
+        p_TempCtrl = mp_TempTubeLiquid;
+    }
+    else if (Id == Service::LA_SYSTEM_HEATING_AIR_TUBE ) {
+        p_TempCtrl = mp_TempTubeAir;
+    }
+
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    QTime DurationTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
+    qreal TargetTemp = p_TestCase->GetParameter("TargetTemp").toDouble() ;
+    qreal MinTargetTemp = TargetTemp + p_TestCase->GetParameter("DepartureLow").toDouble();
+    qreal MaxTargetTemp = TargetTemp + p_TestCase->GetParameter("DepartureHigh").toDouble();
+
+    qreal AmbTempLow = p_TestCase->GetParameter("AmbTempLow").toDouble();
+    qreal AmbTempHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
+
+    if (p_TestCase->GetParameter("PowerSupply") == "AC") {
+        NeedAC = true;
+    }
+
+    Service::ModuleTestStatus Status;
+
+    WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
+
+    SumSec = WaitSec;
+
+    CurrentTemp = p_TempCtrl->GetTemperature(0);
+
+    if (CurrentTemp<AmbTempLow || CurrentTemp>AmbTempHigh) {
+        QString FailureMsg = QString("Tube Current Temperature is (%1) which is not in (%2~%3)").arg(CurrentTemp).arg(AmbTempLow).arg(AmbTempHigh);
+        SetFailReason(Id, FailureMsg);
+        p_TestCase->SetStatus(false);
+
+        QString TargetTempStr = QString("%1~%2").arg(MinTargetTemp).arg(MaxTargetTemp);
+
+        QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
+
+        CurrentValue = QString("%1").arg(CurrentTemp);
+
+        p_TestCase->AddResult("Duration", Duration);
+        p_TestCase->AddResult("TargetTemp", TargetTempStr);
+
+        p_TestCase->AddResult("UsedTime", "00:00:00");
+        p_TestCase->AddResult("CurrentTemp", CurrentValue);
+        return -1;
+    }
+
+    if (NeedAC) {
+        mp_DigitalOutputMainRelay->SetHigh();
+    }
+
+    p_TempCtrl->StartTemperatureControl(TargetTemp);
+
+    while (!m_UserAbort && WaitSec)
+    {
+        CurrentTemp = p_TempCtrl->GetTemperature(0);
+
+        if (CurrentTemp == -1) {
+            mp_Utils->Pause(1000);
+            WaitSec--;
+            continue;
+        }
+
+        if ( CurrentTemp >= TargetTemp )
+        {
+            LAStatus = 1;
+            break;
+        }
+
+        mp_Utils->Pause(1000);
+        CurrentValue = QString("%1").arg(CurrentTemp);
+        UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
+
+        Status.insert("UsedTime", UsedTime);
+        Status.insert("CurrentTemp", CurrentValue);
+        if (WaitSec == SumSec) {
+            QString TargetTempStr = QString("%1~%2").arg(MinTargetTemp).arg(MaxTargetTemp);
+            Status.insert("TargetTemp", TargetTempStr);
+
+            qDebug()<<"TargetTemp="<<TargetTempStr;
+
+            QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
+            Status.insert("Duration", Duration);
+            p_TestCase->AddResult("Duration", Duration);
+            p_TestCase->AddResult("TargetTemp", TargetTempStr);
+        }
+
+        emit RefreshTestStatustoMain(TestCaseName, Status);
+
+        WaitSec--;
+    }
+
+    p_TempCtrl->StopTemperatureControl();
+    if (NeedAC) {
+        mp_DigitalOutputMainRelay->SetLow();
+    }
+
+    p_TestCase->AddResult("UsedTime", UsedTime);
+    p_TestCase->AddResult("CurrentTemp", CurrentValue);
+
+    if ( LAStatus == -1 )  // failed.
+    {
+        p_TestCase->SetStatus(false);
+ //       p_TestCase->AddResult("FailReason", Service::MSG_HEATING_FAIL);
+        if (m_UserAbort)
+        {
+            m_UserAbort = false;
+            p_TestCase->AddResult("FailReason", "Abort");
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+    else  // success
+    {
+        p_TestCase->SetStatus(true);
+        return 0;
+    }
+}
+
+void ManufacturingTestHandler::SetFailReason(Service::ModuleTestCaseID Id, const QString &FailMsg)
+{
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    p_TestCase->AddResult("FailReason", FailMsg);
+    p_TestCase->SetStatus(false);
+
+}
+
 void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTestCaseID TestId)
 {
     qDebug()<<"ManufacturingTestHandler::PerformModuleManufacturingTest  test="<<TestId;
+
     if(!IsInitialized()){
         Initialize();
     }
 
     switch (TestId) {
+    case Service::TEST_ABORT:
+        OnAbortTest(0, TestId);
+        return ;
     case Service::MAINCONTROL_ASB3:
     case Service::MAINCONTROL_ASB5:
     case Service::MAINCONTROL_ASB15:
@@ -466,61 +699,15 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
             emit ReturnManufacturingTestMsg(false);
         }
         break;
+    case Service::LA_SYSTEM_HEATING_LIQUID_TUBE:
+        break;
+    case Service::LA_SYSTEM_HEATING_AIR_TUBE:
+        break;
     default:
         break;
     }
-}
 
-qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t Id)
-{
-    DeviceControl::HimSlaveType_t Slave ;
-    mp_DigitalOutputMainRelay->SetLow();
-    if (Id == Service::MAINCONTROL_ASB3) {
-       Slave = DeviceControl::Slave_3;
-    }
-    else if (Id == Service::MAINCONTROL_ASB5) {
-       Slave = DeviceControl::Slave_5;
-    }
-    else if (Id == Service::MAINCONTROL_ASB15) {
-       Slave = DeviceControl::Slave_15;
-    }
-    else {
-       qDebug()<<"Error : Wrong Parameter !";
-       return -1;
-    }
-
-    quint16 ActualVoltage = m_rIdevProc.IDGetSlaveVoltage(Slave);
-    quint16 ActualCurrent = m_rIdevProc.IDGetSlaveCurrent(Slave);
-
-    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
-    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-
-    qreal Voltage = p_TestCase->GetParameter("Voltage").toDouble();
-    qreal VoltageTolerance = p_TestCase->GetParameter("VolTolerance").toDouble();
-    qreal VolLow = Voltage - Voltage*VoltageTolerance;
-    qreal VolHigh = Voltage + Voltage*VoltageTolerance;
-    qreal CurrentLow = p_TestCase->GetParameter("CurrentLow").toDouble();
-    qreal CurrentHigh = p_TestCase->GetParameter("CurrentHigh").toDouble();
-
-    p_TestCase->AddResult("Voltage", QString("%1").arg(ActualVoltage));
-    p_TestCase->AddResult("Current", QString("%1").arg(ActualCurrent));
-
-    if (ActualVoltage<=VolLow && ActualVoltage>= VolHigh &&
-            ActualCurrent<=CurrentLow && ActualCurrent>= CurrentHigh) {
-
-        return 0;
-    }
-    else {
-        return 1;
-    }
-}
-
-void ManufacturingTestHandler::SetFailReason(Service::ModuleTestCaseID Id, const QString &FailMsg)
-{
-    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
-    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-    p_TestCase->AddResult("FailReason", FailMsg);
-    p_TestCase->SetStatus(false);
+    qDebug()<<"ManufacturingTestHandler::PerformModuleManufacturingTest  test="<<TestId<<"  End !!";
 
 }
 

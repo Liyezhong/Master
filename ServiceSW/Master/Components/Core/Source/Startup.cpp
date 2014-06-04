@@ -829,6 +829,8 @@ void CStartup::RefreshTestStatus4OvenHeatingEmpty(Service::ModuleTestCaseID Id, 
         mp_HeatingStatusDlg->HideAbort();
         mp_HeatingStatusDlg->show();
         mp_HeatingStatusDlg->UpdateLabel(Status);
+        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID));
+
     }
     else {
         mp_HeatingStatusDlg->UpdateLabel(Status);
@@ -842,6 +844,7 @@ void CStartup::RefreshTestStatus4OvenHeatingWater(Service::ModuleTestCaseID Id, 
         mp_HeatingStatusDlg->HideAbort();
         mp_HeatingStatusDlg->show();
         mp_HeatingStatusDlg->UpdateLabel(Status);
+        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID));
     }
     else if (Status.value("OvenHeatingWaterStatus")=="Finished") {
         mp_HeatingStatusDlg->close();

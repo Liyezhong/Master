@@ -187,7 +187,8 @@ typedef enum ModuleTestCaseID {
     SYSTEM_SPEARKER,                     ///< System speaker test
     SYSTEM_REMOTE_LOCAL_ALARM,           ///< System remote and local alarm test
     SYSTEM_USB,                          ///< System usb test
-    SYSTEM_FAN                           ///< System fan test
+    SYSTEM_FAN,                           ///< System fan test
+    TEST_ABORT                            ///< This is to abort a heating test case.
 } ModuleTestCaseID_t;
 
 /****************************************************************************/

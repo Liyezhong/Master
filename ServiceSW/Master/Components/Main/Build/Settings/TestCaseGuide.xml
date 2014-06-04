@@ -21,29 +21,26 @@
 	</OvenHeatingWater>
 	<MCASB3 Description="ASB3 test">
 		<Guide>
-			<Step>asb3 test step</Step>
 		</Guide>
 	</MCASB3>
 	<MCASB5 Description="ASB5 test">
 		<Guide>
-			<Step>asb5 test step</Step>
 		</Guide>
 	</MCASB5>
 	<MCASB15 Description="ASB15 test">
 		<Guide>
-			<Step>asb15 test step</Step>
 		</Guide>
 	</MCASB15>
-	<LAHeatingBelt1 Description="Heating belt test (liquid)">
+	<LAHeatingBeltLiquid Description="Heating belt test (liquid)">
 		<Guide>
 			<Step>heating belt test with liquid</Step>
 		</Guide>
-	</LAHeatingBelt1>
-	<LAHeatingBelt2 Description="Heating belt test (air)">
+	</LAHeatingBeltLiquid>
+	<LAHeatingBeltAir Description="Heating belt test (air)">
 		<Guide>
 			<Step>heating belt test with air</Step>
 		</Guide>
-	</LAHeatingBelt2>
+	</LAHeatingBeltAir>
 	<LAAirSystem Description="vacuum test">
 		<Guide>
 			<Step>vacuum test</Step>

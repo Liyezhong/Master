@@ -153,6 +153,12 @@ signals:
     /****************************************************************************/
     void ReturnManufacturingTestMsg(bool TestResult);
 private:
+    /****************************************************************************/
+    /**
+     * \brief To test heating for tubes (liquid, air).
+     */
+    /****************************************************************************/
+    qint32 TestLAHeatingTube(Service::ModuleTestCaseID_t Id);
 
     /****************************************************************************/
     /**
@@ -206,7 +212,8 @@ private:
     WrapperFmDigitalInput*      mp_DigitalInpputOven;
     WrapperFmDigitalOutput*     mp_DigitalOutputMainRelay;
 
-
+    WrapperFmTempControl*       mp_TempTubeLiquid;
+    WrapperFmTempControl*       mp_TempTubeAir;
 };
 
 } // end namespace DeviceCommandProcessor
