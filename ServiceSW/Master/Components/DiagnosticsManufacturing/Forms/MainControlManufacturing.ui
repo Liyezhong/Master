@@ -25,7 +25,7 @@
    <property name="title">
     <string>Serial Number</string>
    </property>
-   <widget class="QLineEdit" name="eboxSNEdit">
+   <widget class="QLineEdit" name="mcSNEdit">
     <property name="geometry">
      <rect>
       <x>210</x>

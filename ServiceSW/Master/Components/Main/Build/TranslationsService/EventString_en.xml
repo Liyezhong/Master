@@ -37,8 +37,8 @@
 		<string id="100728866" text1="Modify L&amp;A system pump module info" text2=""/>
 		<string id="100728867" text1="Modify L&amp;A system valve 1 module info" text2=""/>
 		<string id="100728868" text1="Modify L&amp;A system valve 2 module info" text2=""/>
-		<string id="100728869" text1="Modify L&amp;A system heating belt 1 module info" text2=""/>
-		<string id="100728870" text1="Modify L&amp;A system heating belt 2 module info" text2=""/>
+		<string id="100728869" text1="Modify L&amp;A system heating liquid module info" text2=""/>
+		<string id="100728870" text1="Modify L&amp;A system heating air module info" text2=""/>
 		<string id="100728871" text1="Modify L&amp;A system pressure sensor module info" text2=""/>
 		<string id="100728872" text1="Modify L&amp;A system carbon filter module info" text2=""/>
 		<string id="100728873" text1="Modify L&amp;A system fan module info" text2=""/>
@@ -79,12 +79,12 @@
 		<string id="100728908" text1="Rotary valve heating property test is requested" text2=""/>
 		<string id="100728909" text1="Rotary valve heating property test completed successfully" text2=""/>
 		<string id="100728910" text1="Rotary valve heating property test failed" text2=""/>
-		<string id="100728911" text1="L&amp;A system heating belt 1 test is requested" text2=""/>
-		<string id="100728912" text1="L&amp;A system heating belt 1 test completed successfully" text2=""/>
-		<string id="100728913" text1="L&amp;A system heating belt 1 test failed" text2=""/>
-		<string id="100728914" text1="L&amp;A system heating belt 2 test is requested" text2=""/>
-		<string id="100728915" text1="L&amp;A system heating belt 2 test completed successfully" text2=""/>
-		<string id="100728916" text1="L&amp;A system heating belt 2 test failed" text2=""/>
+		<string id="100728911" text1="L&amp;A system heating liquid test is requested" text2=""/>
+		<string id="100728912" text1="L&amp;A system heating liquid test completed successfully" text2=""/>
+		<string id="100728913" text1="L&amp;A system heating liquid test failed" text2=""/>
+		<string id="100728914" text1="L&amp;A system heating air test is requested" text2=""/>
+		<string id="100728915" text1="L&amp;A system heating air test completed successfully" text2=""/>
+		<string id="100728916" text1="L&amp;A system heating air test failed" text2=""/>
 		<string id="100728917" text1="L&amp;A system air system test is requested" text2=""/>
 		<string id="100728918" text1="L&amp;A system air system test completed successfully" text2=""/>
 		<string id="100728919" text1="L&amp;A system air system test failed" text2=""/>

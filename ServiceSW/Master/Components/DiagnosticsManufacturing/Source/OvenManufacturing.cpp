@@ -101,10 +101,12 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
 //    mp_Ui->testSuccessLabel->setPixmap(QPixmap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png")));
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
+    mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Oven");
 
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
     CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, ResetTestStatus());
+    CONNECTSIGNALSLOTGUI(this, UpdateModule(ServiceDataManager::CModule&), mp_DataConnector, SendModuleUpdate(ServiceDataManager::CModule&));
 }
 
 /****************************************************************************/
@@ -239,6 +241,11 @@ void COven::OnOkClicked(QString EnteredString)
     }
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
+
+    if (mp_Module) {
+        mp_Module->SetSerialNumber(m_LineEditString);
+        emit UpdateModule(*mp_Module);
+    }
 }
 
 /****************************************************************************/
@@ -429,7 +436,10 @@ void COven::ResetTestStatus()
         mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
                                              "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->exec();
+        if (mp_MessageDlg->exec()) {
+            mp_Ui->ovenSNEdit->setFocus();
+            mp_Ui->ovenSNEdit->selectAll();
+        }
     }
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);

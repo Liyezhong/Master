@@ -101,10 +101,12 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
+    mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Rotary Valve");
 
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
     CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, ResetTestStatus());
+    CONNECTSIGNALSLOTGUI(this, UpdateModule(ServiceDataManager::CModule&), mp_DataConnector, SendModuleUpdate(ServiceDataManager::CModule&));
 }
 
 /****************************************************************************/
@@ -239,6 +241,11 @@ void CRotaryValve::OnOkClicked(QString EnteredString)
     }
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
+
+    if (mp_Module) {
+        mp_Module->SetSerialNumber(m_LineEditString);
+        emit UpdateModule(*mp_Module);
+    }
 }
 
 /****************************************************************************/
@@ -428,7 +435,10 @@ void CRotaryValve::ResetTestStatus()
         mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
                                              "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->exec();
+        if (mp_MessageDlg->exec()) {
+            mp_Ui->rvSNEdit->setFocus();
+            mp_Ui->rvSNEdit->selectAll();
+        }
     }
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);

@@ -50,7 +50,7 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     , m_ASB3SNString("SN_ASB3_XXXXX")
     , m_ASB5SNString("SN_ASB5_XXXXX")
     , m_ASB15SNString("SN_ASB15_XXXXX")
-    , m_EBoxSNString("14-HIM-MC-XXXXX")
+    , m_MainControlSNString("14-HIM-MC-XXXXX")
     , m_TouchScreenSNString("SN_TOUCHSCREEN_XXXXX")
 {
     mp_Ui->setupUi(this);
@@ -63,8 +63,8 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     mp_Ui->asb15SNEdit->installEventFilter(this);
     mp_Ui->asb15SNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
-    mp_Ui->eboxSNEdit->installEventFilter(this);
-    mp_Ui->eboxSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
+    mp_Ui->mcSNEdit->installEventFilter(this);
+    mp_Ui->mcSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->tsSNEdit->installEventFilter(this);
     mp_Ui->tsSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
@@ -75,7 +75,7 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     mp_Ui->asb3SNEdit->setText("SN_ASB3_XXXXX");
     mp_Ui->asb5SNEdit->setText("SN_ASB5_XXXXX");
     mp_Ui->asb15SNEdit->setText("SN_ASB15_XXXXX");
-    mp_Ui->eboxSNEdit->setText("14-HIM-MC-XXXXX");
+    mp_Ui->mcSNEdit->setText("14-HIM-MC-XXXXX");
     mp_Ui->tsSNEdit->setText("SN_TOUCHSCREEN_XXXXX");
 
     m_TestReport.insert("ModuleName", "MainControl");
@@ -115,10 +115,12 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 //    mp_Ui->testSuccessLabel->setPixmap(QPixmap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png")));
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
+    mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Main Control");
 
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
     CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, ResetTestStatus());
+    CONNECTSIGNALSLOTGUI(this, UpdateModule(ServiceDataManager::CModule&), mp_DataConnector, SendModuleUpdate(ServiceDataManager::CModule&));
 }
 
 /****************************************************************************/
@@ -172,7 +174,7 @@ void CMainControl::changeEvent(QEvent *p_Event)
 bool CMainControl::eventFilter(QObject *p_Object, QEvent *p_Event)
 {
     bool IsSNEdit = (p_Object == mp_Ui->asb3SNEdit || p_Object == mp_Ui->asb5SNEdit || p_Object == mp_Ui->asb15SNEdit
-                     || p_Object == mp_Ui->tsSNEdit || p_Object == mp_Ui->eboxSNEdit);
+                     || p_Object == mp_Ui->tsSNEdit || p_Object == mp_Ui->mcSNEdit);
     if (IsSNEdit && p_Event->type() == QEvent::MouseButtonPress)
     {
         ConnectKeyBoardSignalSlots();
@@ -233,6 +235,23 @@ void CMainControl::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
 
 /****************************************************************************/
 /*!
+ *  \brief  Sets serial number for sub-module
+ *  \iparam SubMoudleName = the name of sub-module, SerialNumber = serial number of sub-module
+ */
+/****************************************************************************/
+void CMainControl::SetSubModuleSN(QString SubMoudleName, QString SerialNumber)
+{
+    if (mp_Module) {
+        ServiceDataManager::CSubModule* p_SubModule = mp_Module->GetSubModuleInfo(SubMoudleName);
+        if (p_SubModule) {
+            p_SubModule->UpdateParameterInfo("SerialNumber", SerialNumber);
+        }
+        emit UpdateModule(*mp_Module);
+    }
+}
+
+/****************************************************************************/
+/*!
  *  \brief This function is called when OK is clicked
  *  \iparam EnteredString = Stores line edit string
  */
@@ -247,26 +266,39 @@ void CMainControl::OnOkClicked(QString EnteredString)
         m_ASB3SNString.chop(5);
         m_ASB3SNString.append(EnteredString.simplified());
         mp_Ui->asb3SNEdit->setText(m_ASB3SNString);
+
+        SetSubModuleSN("ASB3", m_ASB3SNString);
     }
     else if (p_Obj == mp_Ui->asb5SNEdit) {
         m_ASB5SNString.chop(5);
         m_ASB5SNString.append(EnteredString.simplified());
         mp_Ui->asb5SNEdit->setText(m_ASB5SNString);
+
+        SetSubModuleSN("ASB5", m_ASB3SNString);
     }
     else if (p_Obj == mp_Ui->asb15SNEdit) {
         m_ASB15SNString.chop(5);
         m_ASB15SNString.append(EnteredString.simplified());
         mp_Ui->asb15SNEdit->setText(m_ASB15SNString);
-    }
-    else if (p_Obj == mp_Ui->eboxSNEdit) {
-        m_EBoxSNString.chop(5);
-        m_EBoxSNString.append(EnteredString.simplified());
-        mp_Ui->eboxSNEdit->setText(m_EBoxSNString);
+
+        SetSubModuleSN("ASB15", m_ASB3SNString);
     }
     else if (p_Obj == mp_Ui->tsSNEdit) {
         m_TouchScreenSNString.chop(5);
         m_TouchScreenSNString.append(EnteredString.simplified());
         mp_Ui->tsSNEdit->setText(m_TouchScreenSNString);
+
+        SetSubModuleSN("Touch Screen", m_TouchScreenSNString);
+    }
+    else if (p_Obj == mp_Ui->mcSNEdit) {
+        m_MainControlSNString.chop(5);
+        m_MainControlSNString.append(EnteredString.simplified());
+        mp_Ui->mcSNEdit->setText(m_MainControlSNString);
+
+        if (mp_Module) {
+            mp_Module->SetSerialNumber(m_MainControlSNString);
+            emit UpdateModule(*mp_Module);
+        }
     }
 
 
@@ -461,11 +493,12 @@ void CMainControl::SendTestReport()
 /****************************************************************************/
 void CMainControl::ResetTestStatus()
 {
-    if (this->isVisible() && (mp_Ui->asb3SNEdit->text().endsWith("XXXXX") ||
-                              mp_Ui->asb5SNEdit->text().endsWith("XXXXX") ||
-                              mp_Ui->asb15SNEdit->text().endsWith("XXXXX")||
-                              mp_Ui->eboxSNEdit->text().endsWith("XXXXX") ||
-                              mp_Ui->tsSNEdit->text().endsWith("XXXXX"))) {
+    QLineEdit *LineEdit = NULL;
+    if (this->isVisible() && ((LineEdit = mp_Ui->mcSNEdit, mp_Ui->mcSNEdit->text().endsWith("XXXXX"))    ||
+                              (LineEdit = mp_Ui->tsSNEdit, mp_Ui->tsSNEdit->text().endsWith("XXXXX"))    ||
+                              (LineEdit = mp_Ui->asb3SNEdit, mp_Ui->asb3SNEdit->text().endsWith("XXXXX"))||
+                              (LineEdit = mp_Ui->asb5SNEdit, mp_Ui->asb5SNEdit->text().endsWith("XXXXX"))||
+                              (LineEdit = mp_Ui->asb15SNEdit, mp_Ui->asb15SNEdit->text().endsWith("XXXXX")))) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CMainControl",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CMainControl",
@@ -474,7 +507,10 @@ void CMainControl::ResetTestStatus()
         mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CMainControl",
                                              "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->exec();
+        if (mp_MessageDlg->exec()) {
+            LineEdit->setFocus();
+            LineEdit->selectAll();
+        }
     }
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);

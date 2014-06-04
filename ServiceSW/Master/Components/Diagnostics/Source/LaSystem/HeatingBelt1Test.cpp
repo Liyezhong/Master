@@ -95,7 +95,7 @@ void CHeatingBelt1Test::SecondHeating(void)
 
 void CHeatingBelt1Test::Succeed(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT1_TEST_SUCCESS);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST_SUCCESS);
     qDebug() << "Heating belt 1 test succeeded!";
 
     // display success message
@@ -117,7 +117,7 @@ void CHeatingBelt1Test::Succeed(void)
 
 void CHeatingBelt1Test::Fail(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT1_TEST_FAILURE);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST_FAILURE);
     qDebug() << "Heating belt 1 test failed!";
 
     // display failure message

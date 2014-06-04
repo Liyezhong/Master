@@ -115,6 +115,7 @@ private:
     Ui::COvenManufacturing *mp_Ui;         //!< User Interface
     MainMenu::CBaseTable *mp_TableWidget;       //!< Base Table widget
     QStandardItemModel m_Model;                 //!< Model for the table
+    ServiceDataManager::CModule* mp_Module;     //!< Module information
     QString m_LineEditString;                   //!< Stores serial number string
     QString m_OvenSNString;                     //!< Stores serial number of Oven module
     QString m_HeaterSNString;                   //!< Stores serial number of Heater sub-module
@@ -137,6 +138,13 @@ signals:
      */
     /****************************************************************************/
     void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Signal emitted for update module
+     */
+    /****************************************************************************/
+    void UpdateModule(ServiceDataManager::CModule&);
 
 private slots:
     /****************************************************************************/

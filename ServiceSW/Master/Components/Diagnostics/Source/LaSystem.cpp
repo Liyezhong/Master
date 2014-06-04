@@ -61,7 +61,7 @@ CLaSystem::~CLaSystem()
 
 void CLaSystem::StartHeatingBelt1Test(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT1_TEST);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST);
     qDebug() << "L&&A System: start heating belt 1 test";
 
     //LaSystem::CHeatingBelt1Test test;
@@ -73,7 +73,7 @@ void CLaSystem::StartHeatingBelt1Test(void)
 
 void CLaSystem::StartHeatingBelt2Test(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT2_TEST);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_AIR_TEST);
     qDebug() << "L&&A System: start heating belt 2 test";
 
     //LaSystem::CHeatingBelt2Test test;

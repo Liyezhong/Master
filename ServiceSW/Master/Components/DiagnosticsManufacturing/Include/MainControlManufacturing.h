@@ -103,6 +103,14 @@ private:
         m_LineEditString = Value;
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Sets serial number for sub-module
+     *  \iparam SubMoudleName = the name of sub-module, SerialNumber = serial number of sub-module
+     */
+    /****************************************************************************/
+    void SetSubModuleSN(QString SubMoudleName, QString SerialNumber);
+
 protected:
     bool eventFilter(QObject *p_Object, QEvent *p_Event);
     void changeEvent(QEvent *p_Event);
@@ -113,8 +121,10 @@ private:
     Ui::CMainControlManufacturing *mp_Ui;         //!< User Interface
     MainMenu::CBaseTable *mp_TableWidget;        //!< Base Table widget
     QStandardItemModel m_Model;                  //!< Model for the table
+    ServiceDataManager::CModule* mp_Module;     //!< Module information
     QString m_LineEditString;                    //!< Stores serial number string
-    QString m_EBoxSNString;                      //!< Stores serial number of E Box module
+    QString m_MainControlSNString;               //!< Stores serial number of Main Control Moudule
+    QString m_EBoxSNString;                      //!< Stores serial number of E Box sub-module
     QString m_ASB3SNString;                      //!< Stores serial number of ASB3  sub-module
     QString m_ASB5SNString;                      //!< Stores serial number of ASB5  sub-module
     QString m_ASB15SNString;                     //!< Stores serial number of ASB15 sub-module
@@ -137,6 +147,13 @@ signals:
      */
     /****************************************************************************/
     void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Signal emitted for update module
+     */
+    /****************************************************************************/
+    void UpdateModule(ServiceDataManager::CModule&);
 
 private slots:
     /****************************************************************************/

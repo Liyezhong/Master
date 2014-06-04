@@ -112,6 +112,7 @@ private:
     Ui::CLaSystemManufacturing *mp_Ui;          //!< User Interface
     MainMenu::CBaseTable *mp_TableWidget;       //!< Base Table widget
     QStandardItemModel m_Model;                 //!< Model for the table
+    ServiceDataManager::CModule* mp_Module;     //!< Module information
     QString m_LineEditString;                   //!< Stores serial number string
     QString m_LaSNString;                       //!< Stores serial number of L&A System module
     QString m_HeaterLiquidSNString;             //!< Stores serial number of Heater with liquid sub-module
@@ -135,6 +136,13 @@ signals:
      */
     /****************************************************************************/
     void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Signal emitted for update module
+     */
+    /****************************************************************************/
+    void UpdateModule(ServiceDataManager::CModule&);
 
 private slots:
     /****************************************************************************/

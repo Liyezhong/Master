@@ -151,7 +151,7 @@ void CLaSystem::ModifyValve2(void)
 
 void CLaSystem::ModifyHeatingBelt1(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_LASYSTEM_HEATING_BELT1_MODULE);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_LASYSTEM_HEATING_LIQUID_MODULE);
     qDebug() << "CLaSystem::ModifyHeatingBelt1 !";
 
     this->ModifySubModule(MODULE_LASYSTEM, SUBMODULE_HEATINGBELT1);
@@ -159,7 +159,7 @@ void CLaSystem::ModifyHeatingBelt1(void)
 
 void CLaSystem::ModifyHeatingBelt2(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_LASYSTEM_HEATING_BELT2_MODULE);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_LASYSTEM_HEATING_AIR_MODULE);
     qDebug() << "CLaSystem::ModifyHeatingBelt2 !";
 
     this->ModifySubModule(MODULE_LASYSTEM, SUBMODULE_HEATINGBELT2);

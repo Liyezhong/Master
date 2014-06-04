@@ -112,6 +112,7 @@ private:
     Ui::CRotaryValveManufacturing *mp_Ui;       //!< User Interface
     MainMenu::CBaseTable *mp_TableWidget;       //!< Base Table widget
     QStandardItemModel m_Model;                 //!< Model for the table
+    ServiceDataManager::CModule* mp_Module;     //!< Module information
     QString m_LineEditString;                   //!< Stores serial number string
     QString m_RVSNString;                       //!< Stores serial number of Rotary valve module
     QString m_InitializeSNString;               //!< Stores serial number of Initialize sub-module
@@ -136,6 +137,13 @@ signals:
      */
     /****************************************************************************/
     void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Signal emitted for update module
+     */
+    /****************************************************************************/
+    void UpdateModule(ServiceDataManager::CModule&);
 
 private slots:
     /****************************************************************************/

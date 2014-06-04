@@ -109,10 +109,10 @@
 		<Event AlarmType="No" Code="" ErrorID="100728868" Name="EVENT_GUI_MODIFY_LASYSTEM_VALVE2_MODULE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728868" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728869" Name="EVENT_GUI_MODIFY_LASYSTEM_HEATING_BELT1_MODULE">
+		<Event AlarmType="No" Code="" ErrorID="100728869" Name="EVENT_GUI_MODIFY_LASYSTEM_HEATING_LIQUID_MODULE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728869" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728870" Name="EVENT_GUI_MODIFY_LASYSTEM_HEATING_BELT2_MODULE">
+		<Event AlarmType="No" Code="" ErrorID="100728870" Name="EVENT_GUI_MODIFY_LASYSTEM_HEATING_AIR_MODULE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728870" Type="MSG" UserLog="TRUE"/>
 		</Event>
 		<Event AlarmType="No" Code="" ErrorID="100728871" Name="EVENT_GUI_MODIFY_LASYSTEM_PRESSURE_SENSOR_MODULE">
@@ -235,22 +235,22 @@
 		<Event AlarmType="No" Code="" ErrorID="100728910" Name="EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728910" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728911" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT1_TEST">
+		<Event AlarmType="No" Code="" ErrorID="100728911" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728911" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728912" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT1_TEST_SUCCESS">
+		<Event AlarmType="No" Code="" ErrorID="100728912" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728912" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728913" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT1_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728913" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_LIQUID_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728913" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728914" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT2_TEST">
+		<Event AlarmType="No" Code="" ErrorID="100728914" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_AIR_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728914" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728915" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT2_TEST_SUCCESS">
+		<Event AlarmType="No" Code="" ErrorID="100728915" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_AIR_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728915" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728916" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_BELT2_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728916" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_HEATING_AIR_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728916" Type="MSG" UserLog="TRUE"/>
 		</Event>
 		<Event AlarmType="No" Code="" ErrorID="100728917" Name="EVENT_GUI_DIAGNOSTICS_LASYSTEM_AIR_SYSTEM_TEST">
