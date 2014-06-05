@@ -1776,11 +1776,11 @@ void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,
     int warningthreshold = 0;
     if (1 == usedExhaustSystem)
     {
-        warningthreshold = 5* 30 * 24;
+        warningthreshold = 10 * 30 * 24;
     }
     else
     {
-        warningthreshold = 10 * 30 * 24;
+        warningthreshold = 5 * 30 * 24;
     }
 
     if (activeCarbonHours >= warningthreshold)
