@@ -170,10 +170,10 @@ void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
     else if (TestCaseName == "MCASB15") {
         Id = Service::MAINCONTROL_ASB15;
     }
-    else if (TestCaseName == "LAHeatingBelt1") {
+    else if (TestCaseName == "LAHeatingBeltLiquid") {
         Id = Service::LA_SYSTEM_HEATING_LIQUID_TUBE;
     }
-    else if (TestCaseName == "LAHeatingBelt2") {
+    else if (TestCaseName == "LAHeatingBeltAir") {
         Id = Service::LA_SYSTEM_HEATING_AIR_TUBE;
     }
     else if (TestCaseName == "LAAirSystem") {
