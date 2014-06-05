@@ -337,7 +337,7 @@
 50331666,STR_DM_REAGENT_Ethanol_100,Info,,,,,,,,,,"Ethanol 100%",
 50331667,STR_DM_REAGENT_Xylene,Info,,,,,,,,,,Xylene,
 50331668,STR_DM_REAGENT_Paraffin,Info,,,,,,,,,,Paraffin,
-50331669,STR_DM_REAGENT_Procssing_Water,Info,,,,,,,,,,"Procssing Water",
+50331669,STR_DM_REAGENT_Procssing_Water,Info,,,,,,,,,,"Processing Water",
 50331670,STR_DM_REAGENT_Cleaningxylene,Info,,,,,,,,,,"Cleaning xylene",
 50331671,STR_DM_REAGENT_Cleaningalcohol,Info,,,,,,,,,,"Cleaning alcohol",
 50331672,STR_SCHDEULER_MAIN_CONTROLLER_STATE,Info,,,,SCHEDULERMAIN,,High,Auth_SERVICE,,,"Scheduler main controller state: %1",
