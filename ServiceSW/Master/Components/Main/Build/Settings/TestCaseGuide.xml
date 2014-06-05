@@ -33,12 +33,10 @@
 	</MCASB15>
 	<LAHeatingBeltLiquid Description="Heating belt test (liquid)">
 		<Guide>
-			<Step>heating belt test with liquid</Step>
 		</Guide>
 	</LAHeatingBeltLiquid>
 	<LAHeatingBeltAir Description="Heating belt test (air)">
 		<Guide>
-			<Step>heating belt test with air</Step>
 		</Guide>
 	</LAHeatingBeltAir>
 	<LAAirSystem Description="vacuum test">
