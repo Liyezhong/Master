@@ -350,14 +350,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         cmdName = cmd->GetName();
     }
-//#if 0
+#if 0
     //just for testing
     if (200 ==Scenario)
     {
         RaiseError(0, 500010301, 200, false);
         m_SchedulerMachine->SendErrorSignal();
     }
-//#endif
+#endif
 
     if(CTRL_CMD_ABORT == ctrlCmd)
     {
