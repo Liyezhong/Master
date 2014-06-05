@@ -882,6 +882,21 @@ void CStartup::RefreshTestStatus4OvenHeatingWater(Service::ModuleTestCaseID Id, 
     }
 }
 
+void CStartup::RefreshTestStatus4LAHeatingBelt(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    if (mp_HeatingStatusDlg == NULL) {
+        mp_HeatingStatusDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Id, mp_MainWindow);
+        mp_HeatingStatusDlg->HideAbort();
+        mp_HeatingStatusDlg->show();
+        mp_HeatingStatusDlg->UpdateLabel(Status);
+        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID));
+
+    }
+    else {
+        mp_HeatingStatusDlg->UpdateLabel(Status);
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Refresh heating status for heating test.
@@ -901,6 +916,10 @@ void CStartup::RefreshTestStatus(const QString &Message, const Service::ModuleTe
         break;
     case Service::OVEN_HEATING_WITH_WATER:
         RefreshTestStatus4OvenHeatingWater(Id, Status);
+        break;
+    case Service::LA_SYSTEM_HEATING_LIQUID_TUBE:
+    case Service::LA_SYSTEM_HEATING_AIR_TUBE:
+        RefreshTestStatus4LAHeatingBelt(Id, Status);
         break;
     default:
         break;

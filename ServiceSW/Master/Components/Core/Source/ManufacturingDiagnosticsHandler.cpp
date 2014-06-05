@@ -119,10 +119,11 @@ void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::Module
     case Service::OVEN:
         PerformManufOvenTests(TestCaseList);
         break;
-    case Service::EBOX:
+    case Service::MAIN_CONTROL:
         PerformManufMainControlTests(TestCaseList);
         break;
     case Service::LA_SYSTEM:
+        PerformManufLATests(TestCaseList);
         break;
     default:
         break;
@@ -360,7 +361,10 @@ void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<
             qreal Current = p_TestCase->GetResult().value("Current").toDouble();
             QString Text = QString("ASB %1 DC output voltage is Ok (%2 V), \nand current is Ok (%3 mA).").arg(ASBIndex)
                     .arg(Voltage).arg(Current);
+
+            qDebug()<<"Show MessageBox " << ASBIndex;
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+            qDebug()<<"End Show MessageBox "<<ASBIndex;
         }
         mp_MainControlManuf->SetTestResult(Id, Result);
     }
@@ -406,6 +410,8 @@ void CManufacturingDiagnosticsHandler::PerformManufRVTests(const QList<Service::
         emit PerformManufacturingTest(Id);
 
         bool Result = GetTestResponse();
+
+
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
         DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
         p_TestCase->SetStatus(Result);
@@ -413,7 +419,14 @@ void CManufacturingDiagnosticsHandler::PerformManufRVTests(const QList<Service::
         if (Result == false) {
             Global::EventObject::Instance().RaiseEvent(FailureId);
 
+            QString Reason = p_TestCase->GetResult().value("FailReason");
+            qDebug()<<"Faile Reason="<<Reason;
 
+
+            if (Reason == "Abort") {   // if user click abort, then the test routines for this modules will terminate.
+                mp_RotaryValveManuf->EnableButton(true);
+                return ;
+            }
 
       //      mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
         }
@@ -456,7 +469,12 @@ void CManufacturingDiagnosticsHandler::PerformManufLATests(const QList<Service::
         Global::EventObject::Instance().RaiseEvent(EventId);
         emit PerformManufacturingTest(Id);
 
+        qDebug()<<"GetTestResponse";
+
         bool Result = GetTestResponse();
+
+        qDebug()<<"GetTestResponse = "<<Result;
+
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
         DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
         p_TestCase->SetStatus(Result);
@@ -464,17 +482,31 @@ void CManufacturingDiagnosticsHandler::PerformManufLATests(const QList<Service::
         if (Result == false) {
             Global::EventObject::Instance().RaiseEvent(FailureId);
 
+            QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
 
+            QString Reason = p_TestCase->GetResult().value("FailReason");
+            if (Reason == "Abort") {   // if user click abort, then the test routines for this modules will terminate.
+                mp_LaSystemManuf->EnableButton(true);
+                return ;
+            }
 
-      //      mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
+            QString Text = QString("%1 %2\n%3").arg(TestCaseDescription, "- Fail", p_TestCase->GetResult().value("FailReason"));
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
+
+            if (Id != Service::OVEN_COVER_SENSOR) {
+                ShowHeatingFailedResult(Id);
+            }
+
         }
         else {
-
-           // mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+            Global::EventObject::Instance().RaiseEvent(OkId);
+            QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+            QString Text = QString("%1 %2").arg(TestCaseDescription, "- Success");
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
-        mp_RotaryValveManuf->SetTestResult(Id, Result);
+        mp_LaSystemManuf->SetTestResult(Id, Result);
     }
-    mp_RotaryValveManuf->EnableButton(true);
+    mp_LaSystemManuf->EnableButton(true);
 }
 
 /****************************************************************************/
@@ -492,6 +524,7 @@ void CManufacturingDiagnosticsHandler::OnReturnManufacturingMsg(bool Result)
     }
     if (m_LoopManufacturingTest.isRunning()) {
         m_LoopManufacturingTest.exit(ret);
+        qDebug()<<"m_LoopManufacturingTest exit = "<<ret;
     } else {
         qDebug()<<"NOTICE: Unexpected action acknowledgement";
     }

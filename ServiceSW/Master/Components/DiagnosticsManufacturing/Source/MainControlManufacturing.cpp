@@ -394,7 +394,7 @@ void CMainControl::BeginTest()
         EnableButton(false);
         mp_Ui->widget->setFocus();
 
-        emit BeginModuleTest(Service::EBOX, TestCaseList);
+        emit BeginModuleTest(Service::MAIN_CONTROL, TestCaseList);
 
 
         qDebug()<<"CMainControl::BeginTest   --- emitted";

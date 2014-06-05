@@ -227,7 +227,11 @@ void CServiceGUIConnector::onPopUpButtonClicked(qint32 button)
 /****************************************************************************/
 void CServiceGUIConnector::ShowMessageDialog(Global::GUIMessageType MessageType, QString MessageText, bool NeedClickFlag)
 {
+    qDebug()<<"ShowMessageDialog -- "<<MessageText;
+
     m_MessageDlg = true;
+    mp_MessageDlg->hide();
+
     if (MessageText.length() > 0) {
         switch (MessageType) {
         case Global::GUIMSGTYPE_ERROR:
@@ -252,10 +256,21 @@ void CServiceGUIConnector::ShowMessageDialog(Global::GUIMessageType MessageType,
     }
     mp_MessageDlg->SetButtonText(1, tr("OK"));
     //mp_MessageDlg->setModal(false);
-    mp_MessageDlg->show();
 
     if (NeedClickFlag) {
+        mp_MessageDlg->setModal(true);
         mp_MessageDlg->exec();
+        mp_MessageDlg->close();
+        delete mp_MessageDlg;
+        mp_MessageDlg = NULL;
+
+        mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+        mp_MessageDlg->SetButtonText(1, tr("Ok"));
+        mp_MessageDlg->setModal(true);
+        mp_MessageDlg->HideButtons();
+    }
+    else {
+        mp_MessageDlg->show();
     }
 }
 

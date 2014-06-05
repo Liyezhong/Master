@@ -57,6 +57,18 @@ CHeatingTestDialog::CHeatingTestDialog(Service::ModuleTestCaseID TestCaseId, QWi
     mp_Ui->labelExtTemp->hide();
     mp_Ui->labelExtTempName->hide();
 
+    if (TestCaseId == Service::LA_SYSTEM_HEATING_LIQUID_TUBE ||
+            TestCaseId == Service::LA_SYSTEM_HEATING_AIR_TUBE ) {
+        mp_Ui->labelCurTempBottom1Name->hide();
+        mp_Ui->labelCurTempBottom1->hide();
+        mp_Ui->labelCurTempBottom2Name->hide();
+        mp_Ui->labelCurTempBottom2->hide();
+
+        QString Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
+                                               "Current Temperature:", 0, QApplication::UnicodeUTF8);
+        mp_Ui->labelCurTempTopName->setText(Text);
+    }
+
     CONNECTSIGNALSLOTGUI(mp_Ui->abortButton, clicked(), this, AbortWaitDialog());
     CONNECTSIGNALSLOTGUI(&m_Timer, timeout(), this, reject());
     CONNECTSIGNALSIGNALGUI(&m_Timer, timeout(), this, Timeout());    
@@ -100,9 +112,15 @@ void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
 {
 
     mp_Ui->labelUsedTime->setText(Status.value("UsedTime"));
-    mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempTop"));
-    mp_Ui->labelCurTempBottom1->setText(Status.value("CurrentTempBottom1"));
-    mp_Ui->labelCurTempBottom2->setText(Status.value("CurrentTempBottom2"));
+    if (m_TestCaseId == Service::LA_SYSTEM_HEATING_LIQUID_TUBE ||
+            m_TestCaseId == Service::LA_SYSTEM_HEATING_AIR_TUBE ) {
+        mp_Ui->labelCurTempTop->setText(Status.value("CurrentTemp"));
+    }
+    else {
+        mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempTop"));
+        mp_Ui->labelCurTempBottom1->setText(Status.value("CurrentTempBottom1"));
+        mp_Ui->labelCurTempBottom2->setText(Status.value("CurrentTempBottom2"));
+    }
 
     if (m_TestCaseId == Service::OVEN_HEATING_WITH_WATER) {
         if (Status.value("LeftSensorTemp") != NULL) {

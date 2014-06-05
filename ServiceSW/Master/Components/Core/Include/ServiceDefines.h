@@ -197,7 +197,7 @@ typedef enum ModuleTestCaseID {
  */
 /****************************************************************************/
 typedef enum ModuleNames {
-    EBOX,                     ///< E Box
+    MAIN_CONTROL,                     ///< E Box
     RETORT,                 ///< Retort Module
     OVEN,                ///< Oven Module
     ROTARY_VALVE,                   ///< Rotary Valve Module

@@ -311,6 +311,13 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
 
     SumSec = WaitSec;
 
+    if (NeedAC) {
+        qDebug()<<"MainRelay SetHigh return :"<< mp_DigitalOutputMainRelay->SetHigh();
+    }
+
+    qDebug()<<"Start top return : "<<mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
+    qDebug()<<"Start bottom return :"<< mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
+
     CurrentTempTop = mp_TempOvenTop->GetTemperature(0);
     CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
     CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
@@ -340,15 +347,15 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         p_TestCase->AddResult("CurrentTempBottom1", BottomValue1);
         p_TestCase->AddResult("CurrentTempBottom2", BottomValue2);
 
+        mp_TempOvenTop->StopTemperatureControl();
+        mp_TempOvenBottom->StopTemperatureControl();
+        if (NeedAC) {
+            mp_DigitalOutputMainRelay->SetLow();
+        }
+
         return -1;
     }
 
-    if (NeedAC) {
-        mp_DigitalOutputMainRelay->SetHigh();
-    }
-
-    mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
-    mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
 
     while (!m_UserAbort && WaitSec)
     {
@@ -476,8 +483,10 @@ qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t 
        return -1;
     }
 
-    qreal ActualVoltage = m_rIdevProc.IDGetSlaveVoltage(Slave);
+    qreal ActualVoltage = m_rIdevProc.IDGetSlaveVoltage(Slave)/1000.0;
     qreal ActualCurrent = m_rIdevProc.IDGetSlaveCurrent(Slave);
+
+    qDebug()<<"voltage = "<<ActualVoltage <<" current = "<<ActualCurrent;
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
@@ -535,13 +544,15 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
         NeedAC = true;
     }
 
+    qDebug()<<"DurationTime="<<DurationTime<<" TargetTemp="<<TargetTemp<<" Min="<<MinTargetTemp<<" Max="<<MaxTargetTemp<<" AmbLow="<<AmbTempLow<<" AmbHigh="<<AmbTempHigh<<" NeedAc="<<NeedAC;
     Service::ModuleTestStatus Status;
 
     WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
 
     SumSec = WaitSec;
-
+#if 1
     CurrentTemp = p_TempCtrl->GetTemperature(0);
+
 
     if (CurrentTemp<AmbTempLow || CurrentTemp>AmbTempHigh) {
         QString FailureMsg = QString("Tube Current Temperature is (%1) which is not in (%2~%3)").arg(CurrentTemp).arg(AmbTempLow).arg(AmbTempHigh);
@@ -561,16 +572,19 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
         p_TestCase->AddResult("CurrentTemp", CurrentValue);
         return -1;
     }
+#endif
 
     if (NeedAC) {
         mp_DigitalOutputMainRelay->SetHigh();
     }
 
-    p_TempCtrl->StartTemperatureControl(TargetTemp);
+    qDebug()<<"Start Temperature control return : "<<p_TempCtrl->StartTemperatureControl(TargetTemp);
 
     while (!m_UserAbort && WaitSec)
     {
         CurrentTemp = p_TempCtrl->GetTemperature(0);
+
+        qDebug()<<"Current temp = "<<CurrentTemp;
 
         if (CurrentTemp == -1) {
             mp_Utils->Pause(1000);
@@ -578,7 +592,7 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
             continue;
         }
 
-        if ( CurrentTemp >= TargetTemp )
+        if ( CurrentTemp >= MinTargetTemp )
         {
             LAStatus = 1;
             break;
@@ -700,8 +714,18 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         }
         break;
     case Service::LA_SYSTEM_HEATING_LIQUID_TUBE:
-        break;
     case Service::LA_SYSTEM_HEATING_AIR_TUBE:
+        if (NULL == mp_TempTubeLiquid || NULL == mp_TempTubeAir) {
+            SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
+            emit ReturnManufacturingTestMsg(false);
+            return;
+        }
+        else if ( 0 == TestLAHeatingTube(TestId) ) {
+            emit ReturnManufacturingTestMsg(true);
+        }
+        else {
+            emit ReturnManufacturingTestMsg(false);
+        }
         break;
     default:
         break;

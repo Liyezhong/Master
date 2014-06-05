@@ -321,10 +321,10 @@ void CRotaryValve::BeginTest()
         EnableButton(false);
         mp_Ui->widget->setFocus();
 
-        emit BeginModuleTest(Service::OVEN, TestCaseList);
+        emit BeginModuleTest(Service::ROTARY_VALVE, TestCaseList);
 
 
-        qDebug()<<"COven::BeginTest   --- emitted";
+        qDebug()<<"CRotaryValve::BeginTest   --- emitted";
     }
     return ;
 //    ->HideAbort();

@@ -315,10 +315,10 @@ void CLaSystem::BeginTest()
         EnableButton(false);
         mp_Ui->widget->setFocus();
 
-        emit BeginModuleTest(Service::OVEN, TestCaseList);
+        emit BeginModuleTest(Service::LA_SYSTEM, TestCaseList);
 
 
-        qDebug()<<"COven::BeginTest   --- emitted";
+        qDebug()<<"CLaSystem::BeginTest   --- emitted";
     }
     return ;
 
