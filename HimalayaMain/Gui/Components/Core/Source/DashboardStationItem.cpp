@@ -393,7 +393,7 @@ void CDashboardStationItem::DrawStationItemImage()
     {
         DrawReagentName(Painter);
     }
-    //DrawStationItemLabel(Painter);
+    DrawStationItemLabel(Painter);
     update();
 }
 
