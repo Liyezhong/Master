@@ -445,7 +445,7 @@ void CModifyProgramDlg::OnDelete()
     }
     mp_MessageDlg = new MainMenu::CMessageDlg();
     mp_MessageDlg->SetTitle(m_strConfirmMsg);
-    mp_MessageDlg->SetIcon(QMessageBox::Question);
+    mp_MessageDlg->SetIcon(QMessageBox::Warning);
     mp_MessageDlg->SetButtonText(1, m_strYes);
     mp_MessageDlg->SetButtonText(3, m_strCancel);
     mp_MessageDlg->HideCenterButton();

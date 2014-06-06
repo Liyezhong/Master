@@ -249,7 +249,7 @@ void CProgramWidget::OnDelete()
 {
     MainMenu::CMessageDlg ConfirmationMessageDlg;
     ConfirmationMessageDlg.SetTitle(m_strConfirmMsg);
-    ConfirmationMessageDlg.SetIcon(QMessageBox::Question);
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
     ConfirmationMessageDlg.SetButtonText(1, m_strYes);
     ConfirmationMessageDlg.SetButtonText(3, m_strCancel);
     ConfirmationMessageDlg.HideCenterButton();

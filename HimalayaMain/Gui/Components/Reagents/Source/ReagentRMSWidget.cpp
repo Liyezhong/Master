@@ -311,7 +311,7 @@ void CReagentRMSWidget::OnNew()
 void CReagentRMSWidget::OnDelete()
 {
     m_MessageDlg.SetTitle(m_strConfirmMsg);
-    m_MessageDlg.SetIcon(QMessageBox::Information);
+    m_MessageDlg.SetIcon(QMessageBox::Warning);
     m_MessageDlg.SetButtonText(1, m_strYes);
     m_MessageDlg.SetButtonText(3, m_strCancel);
     m_MessageDlg.HideCenterButton();
