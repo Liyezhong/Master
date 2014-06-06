@@ -59,9 +59,14 @@
 			<Step>rotary valve sealing function test</Step>
 		</Guide>
 	</RVSealingTest>
-	<RVHeatingProperty Description="Heating property function test">
+	<RVHeatingStationTest Description="Heating property function test">
 		<Guide>
-			<Step>rotary valve heating property function test</Step>
+			<Step>rotary valve heating property function station test</Step>
 		</Guide>
-	</RVHeatingProperty>
+	</RVHeatingStationTest>
+	<RVHeatingEndtest Description="Heating property function test">
+		<Guide>
+			<Step>rotary valve heating property function end test</Step>
+		</Guide>
+	</RVHeatingEndtest>
 </TestCaseGuide>

@@ -136,7 +136,7 @@ void CRotaryValve::StartSealingTest(void)
 
 void CRotaryValve::StartHeatingTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_TEST);
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_TEST);
     qDebug() << "Rotary Valve: start heatint property test";
 
     // RotaryValve::CHeatingTest test;

@@ -368,6 +368,28 @@ void CMainControl::DisconnectKeyBoardSignalSlots()
 void CMainControl::BeginTest()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_MAINCONTROL_TEST_REQUESTED);
+
+    QLineEdit *LineEdit = NULL;
+    if ((LineEdit = mp_Ui->mcSNEdit, mp_Ui->mcSNEdit->text().endsWith("XXXXX"))        ||
+            (LineEdit = mp_Ui->tsSNEdit, mp_Ui->tsSNEdit->text().endsWith("XXXXX"))    ||
+            (LineEdit = mp_Ui->asb3SNEdit, mp_Ui->asb3SNEdit->text().endsWith("XXXXX"))||
+            (LineEdit = mp_Ui->asb5SNEdit, mp_Ui->asb5SNEdit->text().endsWith("XXXXX"))||
+            (LineEdit = mp_Ui->asb15SNEdit, mp_Ui->asb15SNEdit->text().endsWith("XXXXX"))) {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CMainControl",
+                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CMainControl",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CMainControl",
+                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        if (mp_MessageDlg->exec()) {
+            LineEdit->setFocus();
+            LineEdit->selectAll();
+        }
+        return;
+    }
+
     qDebug()<<"CMainControl::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
@@ -504,6 +526,7 @@ void CMainControl::SendTestReport()
 /****************************************************************************/
 void CMainControl::ResetTestStatus()
 {
+    /*
     QLineEdit *LineEdit = NULL;
     if (this->isVisible() && ((LineEdit = mp_Ui->mcSNEdit, mp_Ui->mcSNEdit->text().endsWith("XXXXX"))    ||
                               (LineEdit = mp_Ui->tsSNEdit, mp_Ui->tsSNEdit->text().endsWith("XXXXX"))    ||
@@ -523,6 +546,7 @@ void CMainControl::ResetTestStatus()
             LineEdit->selectAll();
         }
     }
+    */
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);
     mp_Ui->heaterSNEdit->setText("006XXXXX");

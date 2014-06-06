@@ -176,7 +176,8 @@ typedef enum ModuleTestCaseID {
     ROTARY_VALVE_INITIALIZING,          ///< Rotary valve initializing test
     ROTARY_VALVE_SELECTION_FUNCTION,    ///< Rotary valve selection function test
     ROTARY_VALVE_SEALING_FUNCTION,      ///< Rotary valve sealing function test
-    ROTARY_VALVE_HEATING_PROPERTY,            ///< Rotaty valve heating property function test
+    ROTARY_VALVE_HEATING_END,           ///< Rotary valve heating property end test
+    ROTARY_VALVE_HEATING_STATION,       ///< Rotary valve heating property station test
     LA_SYSTEM_PUMP_VALVE_CONTROL,       ///< LA System pump and valve control test
     LA_SYSTEM_HEATING_LIQUID_TUBE,      ///< LA System heating test for liquid tube
     LA_SYSTEM_HEATING_AIR_TUBE,         ///< LA System heating test for air tube

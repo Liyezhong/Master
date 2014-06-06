@@ -10,7 +10,8 @@
 		<RVInitialize Parameter="N/A"/>
 		<RVSelectionTest Position="7" Pressure="30"/>
 		<RVSealingTest Parameter="N/A"/>
-		<RVHeatingProperty Parameter="N/A"/>
+		<RVHeatingEndTest Parameter="N/A"/>
+		<RVHeatingStationTest Parameter="N/A"/>
 	</RotaryValve>
 	<MainControl>
 		<MCASB3 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="200"/>

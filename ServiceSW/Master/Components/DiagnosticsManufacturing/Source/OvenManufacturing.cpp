@@ -298,6 +298,23 @@ void COven::DisconnectKeyBoardSignalSlots()
 void COven::BeginTest()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_OVEN_TEST_REQUESTED);
+
+    if (mp_Ui->ovenSNEdit->text().endsWith("XXXXX")) {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::COven",
+                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::COven",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
+                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        if (mp_MessageDlg->exec()) {
+            mp_Ui->ovenSNEdit->setFocus();
+            mp_Ui->ovenSNEdit->selectAll();
+        }
+        return;
+    }
+
     qDebug()<<"COven::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
@@ -438,6 +455,7 @@ void COven::SendTestReport()
 /****************************************************************************/
 void COven::ResetTestStatus()
 {
+    /*
     if (this->isVisible() && mp_Ui->ovenSNEdit->text().endsWith("XXXXX")) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::COven",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
@@ -452,6 +470,7 @@ void COven::ResetTestStatus()
             mp_Ui->ovenSNEdit->selectAll();
         }
     }
+    */
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);
     mp_Ui->heaterSNEdit->setText("006XXXXX");

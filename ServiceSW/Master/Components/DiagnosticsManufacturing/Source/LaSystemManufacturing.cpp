@@ -280,6 +280,22 @@ void CLaSystem::DisconnectKeyBoardSignalSlots()
 void CLaSystem::BeginTest()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_TEST_REQUESTED);
+
+    if (mp_Ui->laSNEdit->text().endsWith("XXXXX")) {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        if (mp_MessageDlg->exec()) {
+            mp_Ui->laSNEdit->setFocus();
+            mp_Ui->laSNEdit->selectAll();
+        }
+        return;
+    }
     qDebug()<<"CLaSystem::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
@@ -407,6 +423,7 @@ void CLaSystem::SendTestReport()
 /****************************************************************************/
 void CLaSystem::ResetTestStatus()
 {
+    /*
     if (this->isVisible() && mp_Ui->laSNEdit->text().endsWith("XXXXX")) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
@@ -421,6 +438,7 @@ void CLaSystem::ResetTestStatus()
             mp_Ui->laSNEdit->selectAll();
         }
     }
+    */
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);
     mp_Ui->heaterSNEdit->setText("006XXXXX");

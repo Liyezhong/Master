@@ -80,14 +80,13 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
         AddItem(1, Service::ROTARY_VALVE_INITIALIZING);
         AddItem(2, Service::ROTARY_VALVE_SEALING_FUNCTION);
         AddItem(3, Service::ROTARY_VALVE_SELECTION_FUNCTION);
-        AddItem(4, Service::ROTARY_VALVE_HEATING_PROPERTY);
-        mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
-        mp_Ui->widget->SetContent(mp_TableWidget);
+        AddItem(4, Service::ROTARY_VALVE_HEATING_STATION);
     }
     else {
-        mp_Ui->widget->hide();
-        mp_Ui->beginTestBtn->setEnabled(false);
+        AddItem(1, Service::ROTARY_VALVE_HEATING_END);
     }
+    mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
+    mp_Ui->widget->SetContent(mp_TableWidget);
 
     mp_TableWidget->setModel(&m_Model);
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
@@ -294,6 +293,22 @@ void CRotaryValve::DisconnectKeyBoardSignalSlots()
 void CRotaryValve::BeginTest()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_ROTARYVALVE_TEST_REQUESTED);
+    if (mp_Ui->rvSNEdit->text().endsWith("XXXXX")) {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
+                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
+                                                                 "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
+                                              "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        if (mp_MessageDlg->exec()) {
+            mp_Ui->rvSNEdit->setFocus();
+            mp_Ui->rvSNEdit->selectAll();
+        }
+        return;
+    }
+
     qDebug()<<"CRotaryValve::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
@@ -429,7 +444,8 @@ void CRotaryValve::SendTestReport()
 /****************************************************************************/
 void CRotaryValve::ResetTestStatus()
 {
-    if (this->isVisible() && mp_Ui->rvSNEdit->text().endsWith("XXXXX")) {
+    /*
+   if (this->isVisible() && mp_Ui->rvSNEdit->text().endsWith("XXXXX")) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
@@ -443,6 +459,7 @@ void CRotaryValve::ResetTestStatus()
             mp_Ui->rvSNEdit->selectAll();
         }
     }
+   */
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);
     mp_Ui->heaterSNEdit->setText("006XXXXX");
