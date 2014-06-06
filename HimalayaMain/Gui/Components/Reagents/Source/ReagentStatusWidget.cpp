@@ -111,7 +111,7 @@ void CReagentStatusWidget::OnSetAsEmpty()
         ConfirmationMessageDlg.SetTitle(m_strConfirmMsg);
         QString strTemp = m_strSetAsEmpty.arg(m_CurrentStationName);
         ConfirmationMessageDlg.SetText(strTemp);
-        ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
+        ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
         ConfirmationMessageDlg.SetButtonText(1, m_strYes);
         ConfirmationMessageDlg.SetButtonText(3, m_strNo);
         ConfirmationMessageDlg.HideCenterButton();
@@ -144,7 +144,7 @@ void CReagentStatusWidget::OnResetData()
 
     ConfirmationMessageDlg.SetTitle(m_strConfirmMsg);
     ConfirmationMessageDlg.SetText(m_strResetData.arg(m_CurrentStationName));
-    ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
     ConfirmationMessageDlg.SetButtonText(1, m_strYes);
     ConfirmationMessageDlg.SetButtonText(3, m_strNo);
     ConfirmationMessageDlg.HideCenterButton();
@@ -175,7 +175,7 @@ void CReagentStatusWidget::OnSetAsFull()
 
     ConfirmationMessageDlg.SetTitle(m_strConfirmMsg);
     ConfirmationMessageDlg.SetText(m_strSetAsFull.arg(m_CurrentStationName));
-    ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Warning);
     ConfirmationMessageDlg.SetButtonText(1, m_strYes);
     ConfirmationMessageDlg.SetButtonText(3, m_strNo);
     ConfirmationMessageDlg.HideCenterButton();
