@@ -714,6 +714,8 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
             mp_MessageDlg->SetButtonText(1, CommonString::strOK);
             mp_MessageDlg->HideButtons();
 
+            ui->programPanelWidget->EnableStartButton(false);
+
             if (mp_MessageDlg->exec())
             {
                 emit ResetFocus(true);
