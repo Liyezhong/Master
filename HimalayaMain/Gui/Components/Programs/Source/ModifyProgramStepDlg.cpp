@@ -294,7 +294,7 @@ void CModifyProgramStepDlg::NewProgramStep()
     mp_ProgramStep = NULL;
     mp_ReagentList = mp_DataConnector->ReagentList;
 
-    mp_Ui->radioButton_50->setChecked(true);
+    mp_Ui->radioButton_75->setChecked(true);
 
     Duration = Duration.addSecs(0);
     mp_ScrollWheelHour->SetCurrentData(Duration.hour());
@@ -584,7 +584,6 @@ void CModifyProgramStepDlg::showEvent(QShowEvent *p_Event)
         mp_Ui->radioButton_25->setEnabled(true);
         mp_Ui->radioButton_50->setEnabled(true);
         mp_Ui->radioButton_75->setEnabled(true);
-        mp_Ui->radioButton_50->setChecked(true);
     }
 }
 
