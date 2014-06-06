@@ -51,6 +51,8 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
     mp_DigitalOutputMainRelay = NULL;
     mp_TempTubeLiquid = NULL;
     mp_TempTubeAir = NULL;
+    mp_MotorRV = NULL;
+    mp_PressPump = NULL;
 }
 
 /****************************************************************************/
@@ -104,6 +106,19 @@ void ManufacturingTestHandler::CreateWrappers()
         mp_TempTubeAir = new WrapperFmTempControl("temp_tube2", pTemperature, this);
     }
 
+    CStepperMotor *pMotor = NULL;
+    pMotor = static_cast<CStepperMotor *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_ROTARY_VALVE, CANObjectKeyLUT::m_RVMotorKey));
+    if (NULL != pMotor)
+    {
+        mp_MotorRV = new WrapperFmStepperMotor("motor_rv", pMotor, this);
+    }
+
+    CPressureControl *pPressure = NULL;
+    pPressure = static_cast<CPressureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_AIR_LIQUID, CANObjectKeyLUT::m_ALPressureCtrlKey));
+    if (NULL != pPressure)
+    {
+        mp_PressPump = new WrapperFmPressureControl("pressurectrl", pPressure, this);
+    }
 }
 
 /****************************************************************************/
@@ -632,7 +647,7 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
     if ( LAStatus == -1 )  // failed.
     {
         p_TestCase->SetStatus(false);
- //       p_TestCase->AddResult("FailReason", Service::MSG_HEATING_FAIL);
+
         if (m_UserAbort)
         {
             m_UserAbort = false;
@@ -649,6 +664,56 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
         p_TestCase->SetStatus(true);
         return 0;
     }
+}
+
+qint32 ManufacturingTestHandler::TestRVInitialization( )
+{
+    if ( !mp_MotorRV->MoveToInitialPosition() )
+    {
+        return -1;
+    }
+
+    return 0;
+}
+
+qint32 ManufacturingTestHandler::MoveRVToTubePos(qint32 Pos)
+{
+    if ( !mp_MotorRV->MoveToTubePosition(Pos) )
+    {
+        return -1;
+    }
+
+    mp_PressPump->SetTargetPressure(1, Service::TEST_RV_TUBEPOS_PRESS);
+
+    mp_Utils->Pause(Service::TEST_RV_TUBEPOS_PRESS_DURATION);
+
+    mp_PressPump->ReleasePressure();
+
+    return 0;
+}
+
+qint32 ManufacturingTestHandler::MoveRVToSealPos(qint32 Pos)
+{
+    if ( !mp_MotorRV->MoveToSealPosition(Pos) )
+    {
+        return -1;
+    }
+
+    mp_PressPump->SetTargetPressure(1, Service::TEST_RV_SEALPOS_PRESS);
+
+    mp_Utils->Pause(Service::TEST_RV_SEALPOS_PRESS_DURATION);
+
+    if ( mp_PressPump->GetPressure(0) > Service::TEST_RV_SEALPOS_PRESS - Service::TEST_RV_SEALPOS_PRESS_DROP )
+    {
+        mp_PressPump->ReleasePressure();
+        return 0;
+    }
+    else
+    {
+        mp_PressPump->ReleasePressure();
+        return -1;
+    }
+
 }
 
 void ManufacturingTestHandler::SetFailReason(Service::ModuleTestCaseID Id, const QString &FailMsg)
@@ -726,6 +791,25 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         else {
             emit ReturnManufacturingTestMsg(false);
         }
+        break;
+    case Service::ROTARY_VALVE_INITIALIZING:
+        if (NULL == mp_MotorRV) {
+            SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
+            emit ReturnManufacturingTestMsg(false);
+            return;
+        }
+        else if ( 0 ==  TestRVInitialization() ) {
+            emit ReturnManufacturingTestMsg(true);
+        }
+        else {
+            emit ReturnManufacturingTestMsg(false);
+        }
+        break;
+    case Service::ROTARY_VALVE_SELECTION_FUNCTION:
+        break;
+    case Service::ROTARY_VALVE_SEALING_FUNCTION:
+        break;
+    case Service::ROTARY_VALVE_HEATING_PROPERTY:
         break;
     default:
         break;

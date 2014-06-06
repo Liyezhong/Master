@@ -155,6 +155,29 @@ signals:
 private:
     /****************************************************************************/
     /**
+     * \brief To test Rotary Valve Initialization.
+     */
+    /****************************************************************************/
+    qint32 TestRVInitialization( );
+
+    /****************************************************************************/
+    /**
+     * \brief To move Rotary Valve to tube position.
+     */
+    /****************************************************************************/
+    qint32 MoveRVToTubePos(qint32 Pos);
+
+    /****************************************************************************/
+    /**
+     * \brief To move Rotary Valve to sealing position.
+     */
+    /****************************************************************************/
+    qint32 MoveRVToSealPos(qint32 Pos);
+
+
+
+    /****************************************************************************/
+    /**
      * \brief To test heating for tubes (liquid, air).
      */
     /****************************************************************************/
@@ -214,6 +237,9 @@ private:
 
     WrapperFmTempControl*       mp_TempTubeLiquid;
     WrapperFmTempControl*       mp_TempTubeAir;
+
+    WrapperFmStepperMotor*      mp_MotorRV;
+    WrapperFmPressureControl*   mp_PressPump;
 };
 
 } // end namespace DeviceCommandProcessor
