@@ -35,8 +35,8 @@
 
 namespace Programs {
 
-#define MAX_PROGRAMS    50 //!< Maximum number of programs
-#define MAX_USER_PROGRAMS 10 //!< Maximum number of User Programs
+#define MAX_PROGRAMS    12 //!< Maximum number of programs
+#define MAX_USER_PROGRAMS 9 //!< Maximum number of User Programs
 
 /****************************************************************************/
 /*!
@@ -501,14 +501,14 @@ void CProgramWidget::OnCancelClicked()
 /****************************************************************************/
 void CProgramWidget::ResetButtons()
 {
-    if (Core::CGlobalHelper::CheckIfCanEdit() == false) {
-        //View Mode
-        mp_Ui->btnEdit->setEnabled(false);
-        mp_Ui->btnDelete->setEnabled(false);
-        mp_Ui->btnCopy->setEnabled(false);
-        mp_Ui->btnNew->setEnabled(false);
-        return;
-    }
+//    if (Core::CGlobalHelper::CheckIfCanEdit() == false) {
+//        //View Mode
+//        mp_Ui->btnEdit->setEnabled(false);
+//        mp_Ui->btnDelete->setEnabled(false);
+//        mp_Ui->btnCopy->setEnabled(false);
+//        mp_Ui->btnNew->setEnabled(false);
+//        return;
+//    }
 
     if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
          m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
