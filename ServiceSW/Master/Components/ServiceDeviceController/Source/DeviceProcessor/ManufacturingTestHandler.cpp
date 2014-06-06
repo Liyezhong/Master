@@ -809,7 +809,9 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         break;
     case Service::ROTARY_VALVE_SEALING_FUNCTION:
         break;
-    case Service::ROTARY_VALVE_HEATING_PROPERTY:
+    case Service::ROTARY_VALVE_HEATING_STATION:
+        break;
+    case Service::ROTARY_VALVE_HEATING_END:
         break;
     default:
         break;
