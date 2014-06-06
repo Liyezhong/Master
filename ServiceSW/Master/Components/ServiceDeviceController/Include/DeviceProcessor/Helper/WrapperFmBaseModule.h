@@ -59,6 +59,7 @@ public slots:
     //quint8 ReqNodeState();
     QString GetHWInfo();
     QString GetSWInfo();
+    QString GetSerialNumber();
     void Reset();
 
 private slots:
@@ -66,6 +67,7 @@ private slots:
     void OnSetNodeState(quint32 InstanceID, ReturnCode_t ReturnCode, NodeState_t NodeState);
     void OnReportHWInfo(quint32 InstanceID, ReturnCode_t ReturnCode, quint8 VersionMajor, quint8 VersionMinor, quint8 Year, quint8 Month, quint8 Day);
     void OnReportSWInfo(quint32 InstanceID, ReturnCode_t ReturnCode, quint16 Version, quint8 Year, quint8 Month, quint8 Day);
+    void OnReportSerialNumber(quint32 /*InstanceID*/, ReturnCode_t ReturnCode, QString SerialNumber);
 
 private:
     typedef struct {
@@ -88,9 +90,12 @@ private:
     QEventLoop   m_LoopResetNode;   //!< Loop for blocking commands.
     QEventLoop   m_LoopGetHWInfo;   //!< Loop for blocking commands.
     QEventLoop   m_LoopGetSWInfo;   //!< Loop for blocking commands.
+    QEventLoop   m_LoopGetSerialNumber;   //!< Loop for blocking commands.
+
     HWInfo_t     m_HWInfo;          //!< hardware information
     SWInfo_t     m_SWInfo;          //!< software information
     NodeState_t  m_NodeState;           //!< actual node state
+    QString      m_SerailNumber;
 };
 
 #endif // WRAPPERFMBASEMODULE_H

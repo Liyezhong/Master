@@ -27,6 +27,7 @@
 #include "Core/Include/ServiceDefines.h"
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalInput.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalOutput.h>
+#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmBaseModule.h>
 
 
 class WrapperUtils;
@@ -240,6 +241,11 @@ private:
 
     WrapperFmStepperMotor*      mp_MotorRV;
     WrapperFmPressureControl*   mp_PressPump;
+
+    WrapperFmBaseModule*        mp_BaseModule3;
+    WrapperFmBaseModule*        mp_BaseModule5;
+    WrapperFmBaseModule*        mp_BaseModule15;
+
 };
 
 } // end namespace DeviceCommandProcessor

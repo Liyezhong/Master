@@ -54,6 +54,10 @@ WrapperFmBaseModule::WrapperFmBaseModule(QString Name, CBaseModule *pBaseModule,
 
     connect(m_pBaseModule, SIGNAL(ReportError(quint32, quint16, QDateTime)),
             this, SLOT(OnError(quint32, quint16, QDateTime)));
+
+    connect(m_pBaseModule, SIGNAL(ReportSerialNumber(quint32, ReturnCode_t, QString)),
+            this, SLOT(OnReportSerialNumber(quint32,ReturnCode_t,QString)));
+
 }
 
 /****************************************************************************/
@@ -315,6 +319,67 @@ void WrapperFmBaseModule::OnReportSWInfo(quint32 /*InstanceID*/, ReturnCode_t Re
         m_LoopGetSWInfo.exit(ret);
     } else {
         Log(tr("NOTICE: Unexpected action acknowledgement for GetSWInfo (version major: %1.").arg(m_HWInfo.VersionMajor));
+    }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Script-API: Get serial number
+ *
+ *  This method get the serial number of the node's base module.
+ *
+ *  \return string with serial number
+ *
+ */
+/****************************************************************************/
+QString WrapperFmBaseModule::GetSerialNumber()
+{
+    bool ok = HandleErrorCode(m_pBaseModule->ReqSerialNumber());
+    if (!ok) {
+        // TODO: use const String from BaseWrapper
+        return "request error";
+    }
+    qint32 ret = m_LoopGetSerialNumber.exec();
+
+    QString SerialNumber;
+    QTextStream out;
+    out.setString(&SerialNumber);
+
+    if (ret == 1) {
+        out << "<Base module> : Serial Number = " << SerialNumber;
+    }
+    else
+        out << "error";
+
+    return SerialNumber;
+}
+
+/****************************************************************************/
+/*!
+ *  \brief   slot for software info
+ *
+ *  \iparam InstanceID      ID of the FM (currently not needed)
+ *  \iparam ReturnCode      ReturnCode of DeviceControl Layer
+ *  \iparam Version         Version number
+ *  \iparam Year            production year
+ *  \iparam Month           production month
+ *  \iparam day             production day
+ *
+ */
+/****************************************************************************/
+void WrapperFmBaseModule::OnReportSerialNumber(quint32 /*InstanceID*/, ReturnCode_t ReturnCode, QString SerialNumber)
+{
+    qint32 ret = 1;
+    if (!HandleErrorCode(ReturnCode)) {
+        ret = -1;
+    } else {
+        m_SerailNumber = SerialNumber;
+    }
+
+    if (m_LoopGetSerialNumber.isRunning()) {
+        m_LoopGetSerialNumber.exit(ret);
+    } else {
+        Log(tr("NOTICE: Unexpected action acknowledgement for GetSerialNumber "));
     }
 }
 

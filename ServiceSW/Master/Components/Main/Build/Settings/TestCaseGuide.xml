@@ -33,10 +33,12 @@
 	</MCASB15>
 	<LAHeatingBeltLiquid Description="Heating belt test (liquid)">
 		<Guide>
+			<Step>Start test : heating belt (liquid)</Step>
 		</Guide>
 	</LAHeatingBeltLiquid>
 	<LAHeatingBeltAir Description="Heating belt test (air)">
 		<Guide>
+			<Step>Start test : heating belt (air)</Step>
 		</Guide>
 	</LAHeatingBeltAir>
 	<LAAirSystem Description="vacuum test">
@@ -44,29 +46,29 @@
 			<Step>vacuum test</Step>
 		</Guide>
 	</LAAirSystem>
-	<RVInitialize Description="Initialize test">
+	<RVInitialize Description="Get the initial position">
 		<Guide>
-			<Step>rotary valve initialize test</Step>
+			<Step>Make sure Rotary Valve is connected correctly to main control test fixture!</Step>
 		</Guide>
 	</RVInitialize>
-	<RVSelectingTest Description="Selecting function test">
+	<RVSelectingTest Description="Selecting function">
 		<Guide>
-			<Step>rotary valve selecting function test</Step>
+			<Step>Start test : selecting function</Step>
 		</Guide>
 	</RVSelectingTest>
-	<RVSealingTest Description="Sealing function test">
+	<RVSealingTest Description="Sealing function">
 		<Guide>
-			<Step>rotary valve sealing function test</Step>
+			<Step>Start test : sealing function</Step>
 		</Guide>
 	</RVSealingTest>
-	<RVHeatingStationTest Description="Heating property function test">
+	<RVHeatingStationTest Description="Heating property function">
 		<Guide>
-			<Step>rotary valve heating property function station test</Step>
+			<Step>Start test : heating property function</Step>
 		</Guide>
 	</RVHeatingStationTest>
 	<RVHeatingEndtest Description="Heating property function test">
 		<Guide>
-			<Step>rotary valve heating property function end test</Step>
+			<Step>Start test : heating property function</Step>
 		</Guide>
 	</RVHeatingEndtest>
 </TestCaseGuide>

@@ -78,8 +78,8 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 
     if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_STATIONTEST ) {
         AddItem(1, Service::ROTARY_VALVE_INITIALIZING);
-        AddItem(2, Service::ROTARY_VALVE_SEALING_FUNCTION);
-        AddItem(3, Service::ROTARY_VALVE_SELECTION_FUNCTION);
+        AddItem(2, Service::ROTARY_VALVE_SELECTION_FUNCTION);
+        AddItem(3, Service::ROTARY_VALVE_SEALING_FUNCTION);
         AddItem(4, Service::ROTARY_VALVE_HEATING_STATION);
     }
     else {

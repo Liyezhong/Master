@@ -53,6 +53,10 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
     mp_TempTubeAir = NULL;
     mp_MotorRV = NULL;
     mp_PressPump = NULL;
+
+    mp_BaseModule3 = NULL;
+    mp_BaseModule5 = NULL;
+    mp_BaseModule15 = NULL;
 }
 
 /****************************************************************************/
@@ -118,6 +122,22 @@ void ManufacturingTestHandler::CreateWrappers()
     if (NULL != pPressure)
     {
         mp_PressPump = new WrapperFmPressureControl("pressurectrl", pPressure, this);
+    }
+
+    CBaseModule *pBaseModule = NULL;
+    pBaseModule = static_cast<CBaseModule *> (m_rIdevProc.GetBaseModule(Slave_3));
+    if (NULL != pBaseModule) {
+        mp_BaseModule3 = new WrapperFmBaseModule("asb3_0", pBaseModule, this);
+    }
+
+    pBaseModule = static_cast<CBaseModule *> (m_rIdevProc.GetBaseModule(Slave_5));
+    if (NULL != pBaseModule) {
+        mp_BaseModule5 = new WrapperFmBaseModule("asb5_0", pBaseModule, this);
+    }
+
+    pBaseModule = static_cast<CBaseModule *> (m_rIdevProc.GetBaseModule(Slave_15));
+    if (NULL != pBaseModule) {
+        mp_BaseModule15 = new WrapperFmBaseModule("asb15_0", pBaseModule, this);
     }
 }
 
@@ -497,6 +517,10 @@ qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t 
        qDebug()<<"Error : Wrong Parameter !";
        return -1;
     }
+
+    qDebug()<<"Get SN for BaseModule 3:"<<mp_BaseModule3->GetSerialNumber();
+    qDebug()<<"Get SN for BaseModule 5:"<<mp_BaseModule5->GetSerialNumber();
+    qDebug()<<"Get SN for BaseModule 15:"<<mp_BaseModule15->GetSerialNumber();
 
     qreal ActualVoltage = m_rIdevProc.IDGetSlaveVoltage(Slave)/1000.0;
     qreal ActualCurrent = m_rIdevProc.IDGetSlaveCurrent(Slave);
