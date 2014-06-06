@@ -21,9 +21,11 @@
 
 #include "DiagnosticsManufacturing/Include/MainControlManufacturing.h"
 #include "ui_MainControlManufacturing.h"
+#include "Core/Include/SelectTestOptions.h"
 #include <QDebug>
 #include <QTableWidgetItem>
 #include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -248,7 +250,7 @@ void CMainControl::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
 /****************************************************************************/
 void CMainControl::SetSubModuleSN(QString SubMoudleName, QString SerialNumber)
 {
-    if (mp_Module) {
+    if (mp_Module && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
         ServiceDataManager::CSubModule* p_SubModule = mp_Module->GetSubModuleInfo(SubMoudleName);
         if (p_SubModule) {
             p_SubModule->UpdateParameterInfo("SerialNumber", SerialNumber);
@@ -302,7 +304,7 @@ void CMainControl::OnOkClicked(QString EnteredString)
         m_MainControlSNString.append(EnteredString.simplified());
         mp_Ui->mcSNEdit->setText(m_MainControlSNString);
 
-        if (mp_Module) {
+        if (mp_Module && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
             mp_Module->SetSerialNumber(m_MainControlSNString);
             emit UpdateModule(*mp_Module);
         }
@@ -365,6 +367,7 @@ void CMainControl::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void CMainControl::BeginTest()
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_MAINCONTROL_TEST_REQUESTED);
     qDebug()<<"CMainControl::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
@@ -447,6 +450,7 @@ void CMainControl::EnableButton(bool EnableFlag)
 /****************************************************************************/
 void CMainControl::SendTestReport()
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_MAINCONTROL_SENDTESTREPORT_REQUESTED);
 #if 0
 //    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_XAXIS_SENDTESTREPORT_REQUESTED);
 

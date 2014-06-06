@@ -22,6 +22,7 @@
 
 #include <QString>
 #include <QTextStream>
+#include <QFile>
 
 namespace DiagnosticsManufacturing {
 
@@ -49,6 +50,14 @@ public:
      */
     /****************************************************************************/
     bool GenReportFile();
+
+    /****************************************************************************/
+    /**
+     * \brief send report file to server.
+     * \retrun false if send file error.
+     */
+    /****************************************************************************/
+    bool SendReportFile();
 
 private:
 

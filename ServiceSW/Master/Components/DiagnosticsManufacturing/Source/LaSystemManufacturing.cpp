@@ -20,12 +20,14 @@
 /****************************************************************************/
 
 #include "DiagnosticsManufacturing/Include/LaSystemManufacturing.h"
+#include "DiagnosticsManufacturing/Include/TestCaseReporter.h"
 #include "Core/Include/SelectTestOptions.h"
 #include "ui_LaSystemManufacturing.h"
 #include <QDebug>
 #include <QTableWidgetItem>
 #include "Core/Include/ServiceDefines.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -46,7 +48,6 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
     : mp_DataConnector(p_DataConnector)
     , mp_MainWindow(p_Parent)
     , mp_Ui(new Ui::CLaSystemManufacturing)
-    , mp_TestReport(NULL)
     , mp_MessageDlg(NULL)
     , m_FinalTestResult("NA")
 {
@@ -58,14 +59,6 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
     SetLineEditText(QString("14-HIM-LA-XXXXX"));
 
     mp_Ui->laSNEdit->setText("14-HIM-LA-XXXXX");
-
-    m_TestReport.insert("ModuleName", "L&A System");
-    m_TestNames.append("ModuleName");
-
-    m_TestReport.insert("SerialNumber", "");
-    m_TestNames.append("SerialNumber");
-
-    m_TestResult << "NA" << "NA";
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
 
@@ -226,17 +219,17 @@ void CLaSystem::OnOkClicked(QString EnteredString)
 
     mp_Ui->laSNEdit->setText(m_LineEditString);
 
-    if (m_TestNames.contains("SerialNumber")) {
+    /*if (m_TestNames.contains("SerialNumber")) {
         m_TestReport.remove("SerialNumber");
         m_TestReport.insert("SerialNumber", m_LineEditString);
     } else {
         m_TestNames.append("SerialNumber");
         m_TestReport.insert("SerialNumber", m_LineEditString);
-    }
+    }*/
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 
-    if (mp_Module) {
+    if (mp_Module && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
         mp_Module->SetSerialNumber(m_LineEditString);
         emit UpdateModule(*mp_Module);
     }
@@ -286,6 +279,7 @@ void CLaSystem::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void CLaSystem::BeginTest()
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_TEST_REQUESTED);
     qDebug()<<"CLaSystem::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
@@ -368,10 +362,8 @@ void CLaSystem::EnableButton(bool EnableFlag)
 /****************************************************************************/
 void CLaSystem::SendTestReport()
 {
-#if 0
-//    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_XAXIS_SENDTESTREPORT_REQUESTED);
-
-    if (m_LineEditString.isEmpty()) {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_SENDTESTREPORT_REQUESTED);
+    if (m_LineEditString.endsWith("XXXXX")) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
@@ -380,38 +372,32 @@ void CLaSystem::SendTestReport()
         mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
                                              "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->show();
-    } else {
-
-        DataManager::ModuleNumbers_t *ModuleNumbers = mp_DataConnector->GetServiceParameters()->GetModuleNumbers();
-
-        mp_TestReport = new DiagnosticsManufacturing::CTestReportGeneration(ModuleNumbers->XAxis, m_LineEditString,
-                                                                            m_FinalTestResult);
-        bool Result = mp_TestReport->CreateTestReportFile(m_TestNames, m_TestReport);
-
-        if (Result) {
-            mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                            "Test Report", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                                    "Ok", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->HideButtons();
-            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                              "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->SetIcon(QMessageBox::Information);
-            mp_MessageDlg->show();
-        } else {
-            mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                            "Test Report", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                                    "Ok", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->HideButtons();
-            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                           "Test report save failed.", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->SetIcon(QMessageBox::Critical);
-            mp_MessageDlg->show();
-        }
+        mp_MessageDlg->exec();
     }
-#endif
+    else {
+        CTestCaseReporter* p_TestReporter = new CTestCaseReporter("LaSystem", m_LineEditString);
+
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+                                                    "Test Report", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+                                                            "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        if (p_TestReporter->GenReportFile()) {
+            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+                                          "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+        }
+        else {
+            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+                                                       "Test report save failed.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetIcon(QMessageBox::Critical);
+        }
+        mp_MessageDlg->exec();
+
+        delete p_TestReporter;
+        p_TestReporter = NULL;
+    }
+
 }
 
 /****************************************************************************/

@@ -130,5 +130,17 @@
 		<string id="100728959" text1="System 110V/220V switching test is requested" text2=""/>
 		<string id="100728960" text1="System 110V/220V switching test completed successfully" text2=""/>
 		<string id="100728961" text1="System 110V/220V switching test failed" text2=""/>
+		<string id="100728962" text1="Manufacturing: Retort module test is requested" text2=""/>
+		<string id="100728963" text1="Manufacturing: Retort send test report" text2=""/>
+		<string id="100728964" text1="Manufacturing: Oven module test is requested" text2=""/>
+		<string id="100728965" text1="Manufacturing: Oven send test report" text2=""/>
+		<string id="100728966" text1="Manufacturing: Retort valve module test is requested" text2=""/>
+		<string id="100728967" text1="Manufacturing: Retort valve send test report" text2=""/>
+		<string id="100728968" text1="Manufacturing: L&amp;A system module test is requested" text2=""/>
+		<string id="100728969" text1="Manufacturing: L&amp;A system send test report" text2=""/>
+		<string id="100728970" text1="Manufacturing: Main control module test is requested" text2=""/>
+		<string id="100728971" text1="Manufacturing: Main control send test report" text2=""/>
+		<string id="100728972" text1="Manufacturing: System module test is requested" text2=""/>
+		<string id="100728973" text1="Manufacturing: System send test report" text2=""/>
 	</language>
 </strings>

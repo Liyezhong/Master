@@ -21,7 +21,6 @@
 #ifndef LASYSTEM_DIAGNOSTICSMANUFACTURING_H
 #define LASYSTEM_DIAGNOSTICSMANUFACTURING_H
 
-#include "DiagnosticsManufacturing/Include/TestReportGeneration.h"
 #include "Core/Include/ServiceGUIConnector.h"
 #include "Core/Include/ServiceDefines.h"
 #include <MainMenu/Include/BaseTable.h>
@@ -121,8 +120,6 @@ private:
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;     //!< Keyboard widget
     QHash<QString, QString> m_TestReport;       //!< Test report
     QList<QString> m_TestNames;                 //!< List of test names   
-    DiagnosticsManufacturing::CTestReportGeneration *mp_TestReport;     //!< Test report generation object
-    QStringList m_TestResult;                                           //!< StringList stores test result
     MainMenu::CMessageDlg *mp_MessageDlg;                               //!< Information dialog
     QString m_FinalTestResult;                                          //!< Stores Final test result
 

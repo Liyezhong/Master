@@ -51,15 +51,23 @@ QString CTestCase::GetParameter(const QString& ParamName)
 QString CTestCase::GenReport()
 {
     QString StrReport;
+    QString StrResult;
+    if (m_Status) {
+        StrResult = "Pass";
+    }
+    else {
+        StrResult = "Fail";
+    }
     StrReport = m_CaseName + QString(":\n");
     StrReport.append(QString("\tName: %1\n").arg(m_CaseName));
-    StrReport.append(QString("\tResult: %1\n").arg(m_Status));
+    StrReport.append(QString("\tResult: %1\n").arg(StrResult));
 
     QMap<QString, QString>::iterator itr = m_Parameters.begin();
     for (; itr != m_Parameters.end(); ++itr) {
         StrReport.append(QString("\t%1 : %2\n").arg(itr.key()).arg(itr.value()));
     }
 
+    StrReport.append("\n");
     itr = m_Results.begin();
 
     for (; itr != m_Results.end(); ++itr) {

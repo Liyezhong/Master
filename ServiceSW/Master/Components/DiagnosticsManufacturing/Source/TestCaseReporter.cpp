@@ -59,6 +59,19 @@ bool CTestCaseReporter::GenReportFile()
     return true;
 }
 
+bool CTestCaseReporter::SendReportFile()
+{
+    if (QFile::exists(m_TestReportFile)) {
+        QFileInfo FileInfo(m_TestReportFile);
+        QString DestFile = FileInfo.absolutePath() + "/" + FileInfo.fileName().insert(0, "copy_");
+        return QFile::copy(m_TestReportFile, DestFile);
+    }
+    else {
+        qDebug()<<"CTestCaseReporter:: send report file failed.";
+        return false;
+    }
+}
+
 void CTestCaseReporter::FillReport(QTextStream& TextStream)
 {
     QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();

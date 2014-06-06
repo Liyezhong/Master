@@ -26,6 +26,7 @@
 #include <QTableWidgetItem>
 #include "Core/Include/ServiceDefines.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "Main/Include/HimalayaServiceEventCodes.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -242,7 +243,7 @@ void CRotaryValve::OnOkClicked(QString EnteredString)
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 
-    if (mp_Module) {
+    if (mp_Module && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
         mp_Module->SetSerialNumber(m_LineEditString);
         emit UpdateModule(*mp_Module);
     }
@@ -292,6 +293,7 @@ void CRotaryValve::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void CRotaryValve::BeginTest()
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_ROTARYVALVE_TEST_REQUESTED);
     qDebug()<<"CRotaryValve::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
@@ -373,6 +375,7 @@ void CRotaryValve::EnableButton(bool EnableFlag)
 /****************************************************************************/
 void CRotaryValve::SendTestReport()
 {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_ROTARYVALVE_SENDTESTREPORT_REQUESTED);
 #if 0
 //    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_XAXIS_SENDTESTREPORT_REQUESTED);
 

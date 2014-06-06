@@ -29,6 +29,7 @@
 #include <KeyBoard/Include/KeyBoard.h>
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/MainWindow.h"
+#include "MainMenu/Include/WaitDialog.h"
 #include <QStandardItemModel>
 #include <QWidget>
 #include <QPixmap>
@@ -126,6 +127,8 @@ private:
     DiagnosticsManufacturing::CTestReportGeneration *mp_TestReport;     //!< Test report generation object
     QStringList m_TestResult;                                           //!< StringList stores test result
     MainMenu::CMessageDlg *mp_MessageDlg;                               //!< Information dialog
+    MainMenu::CWaitDialog *mp_WaitDlg;                                  //!< Waiting dialog
+
     QString m_FinalTestResult;                                          //!< Stores Final test result
 
     void ConnectKeyBoardSignalSlots();

@@ -388,5 +388,41 @@
 		<Event AlarmType="No" Code="" ErrorID="100728961" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728961" Type="MSG" UserLog="TRUE"/>
 		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728962" Name="EVENT_GUI_MANUF_RETORT_TEST_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728962" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728963" Name="EVENT_GUI_MANUF_RETORT_SENDTESTREPORT_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728963" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728964" Name="EVENT_GUI_MANUF_OVEN_TEST_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728964" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728965" Name="EVENT_GUI_MANUF_OVEN_SENDTESTREPORT_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728965" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728966" Name="EVENT_GUI_MANUF_ROTARYVALVE_TEST_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728966" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728967" Name="EVENT_GUI_MANUF_ROTARYVALVE_SENDTESTREPORT_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728967" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728968" Name="EVENT_GUI_MANUF_LASYSTEM_TEST_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728968" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728969" Name="EVENT_GUI_MANUF_LASYSTEM_SENDTESTREPORT_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728969" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728970" Name="EVENT_GUI_MANUF_MAINCONTROL_TEST_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728970" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728971" Name="EVENT_GUI_MANUF_MAINCONTROL_SENDTESTREPORT_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728971" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728972" Name="EVENT_GUI_MANUF_SYSTEM_TEST_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728972" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728973" Name="EVENT_GUI_MANUF_SYSTEM_SENDTESTREPORT_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728973" Type="MSG" UserLog="TRUE"/>
+		</Event>
 	</Source>
 </EventConfigure>
