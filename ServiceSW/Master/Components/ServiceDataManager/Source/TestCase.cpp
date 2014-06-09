@@ -48,6 +48,11 @@ QString CTestCase::GetParameter(const QString& ParamName)
     }
 }
 
+void CTestCase::SetParameter(const QString& ParamName, const QString& ParamValue)
+{
+    m_Parameters[ParamName] = ParamValue;
+}
+
 QString CTestCase::GenReport()
 {
     QString StrReport;
@@ -79,17 +84,12 @@ QString CTestCase::GenReport()
 
 void CTestCase::AddResult(const QString& Key, const QString& Value)
 {
-    m_Results.insert(Key, Value);
+    m_Results[Key] = Value;
 }
 
 QMap<QString, QString>& CTestCase::GetResult()
 {
     return m_Results;
-}
-
-void CTestCase::AddParameter(const QString& ParamName, const QString& ParamValue)
-{
-    m_Parameters.insert(ParamName, ParamValue);
 }
 
 } //end of namespace Datamanager

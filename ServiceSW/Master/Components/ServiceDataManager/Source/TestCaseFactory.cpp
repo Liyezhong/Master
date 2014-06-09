@@ -139,7 +139,7 @@ bool CTestCaseFactory::DeserializeContent(QIODevice& IODevice)
                 for (int i = 0 ; i < XmlAttributes.size(); ++i)
                 {
                     QString AttributeName = XmlAttributes[i].name().toString();
-                    p_TestCase->AddParameter(AttributeName, XmlAttributes.value(AttributeName).toString());
+                    p_TestCase->SetParameter(AttributeName, XmlAttributes.value(AttributeName).toString());
                 }
                 m_TestCases.insert(CaseName, p_TestCase);
             }

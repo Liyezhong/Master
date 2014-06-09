@@ -44,6 +44,13 @@ public:
 
     /****************************************************************************/
     /**
+     * \brief Add parameter key-value for this test case.
+     * \param ParamName = parameter name , ParamValue = parameter value.
+     */
+    /****************************************************************************/
+    void SetParameter(const QString& ParamName, const QString& ParamValue);
+    /****************************************************************************/
+    /**
      * \brief Getnerate text for report.
      * \return Text of case information.
      */
@@ -95,14 +102,6 @@ private:
      */
     /****************************************************************************/
     ~CTestCase();
-
-    /****************************************************************************/
-    /**
-     * \brief Add parameter key-value for this test case.
-     * \param ParamName = parameter name , ParamValue = parameter value.
-     */
-    /****************************************************************************/
-    void AddParameter(const QString& ParamName, const QString& ParamValue);
 
 };
 
