@@ -453,7 +453,7 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
         //calculate the timeBeforeUseParraffin
         //RemainingTimeMeltParraffin = 12 hour - TimeCosted
         //int RemainingTimeMeltParaffin = 12 * 60 * 60 - TimeCostedParaffinMelting;
-         int RemainingTimeMeltParaffin = 10 * 60 - TimeCostedParaffinMelting;
+         int RemainingTimeMeltParaffin = 30 * 60 - TimeCostedParaffinMelting;
         if (RemainingTimeMeltParaffin > 0)
         {
           if (RemainingTimeMeltParaffin <= TimeBeforeUseParaffin)
