@@ -929,7 +929,7 @@ bool HimalayaMasterThreadController::UpdateSupportedGUILanguages() {
             Locale = FileNames[i];                  // "Himalaya_de.qm"
             Locale.truncate(Locale.lastIndexOf('.'));   // "Himalaya_de"
             (void)Locale.remove(0, Locale.indexOf('_') + 1);   // "de"
-            LanguageList << QLocale::languageToString(QLocale(Locale).language());
+            LanguageList << Global::LanguageToString(QLocale(Locale).language());
         }
         p_DeviceConfiguration->SetLanguageList(LanguageList);
         return true;

@@ -33,4 +33,4 @@ CONFIG += ordered
 TRANSLATIONS = ../Components/Main/Translation/Himalaya_de.ts \
                ../Components/Main/Translation/Himalaya_en.ts \
                ../Components/Main/Translation/Himalaya_zh.ts \
-
+               ../Components/Main/Translation/Himalaya_ja.ts

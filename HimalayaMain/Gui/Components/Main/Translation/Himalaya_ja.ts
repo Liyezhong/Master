@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="zh_CN">
+<TS version="2.0" language="ja_JP">
 <context>
     <name>CAlarmSettingsDlg</name>
     <message>
@@ -16,27 +16,27 @@
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="56"/>
         <source>Periodic Time</source>
-        <translation>发生暂停时间</translation>
+        <translation>周期時間</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="58"/>
         <source>Minute</source>
-        <translation>分钟</translation>
+        <translation>分</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="164"/>
         <source>Edit Information</source>
-        <translation>编辑信息</translation>
+        <translation>情報の編集</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="186"/>
         <source>Edit Warning</source>
-        <translation>编辑警告</translation>
+        <translation>警告の編集</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="208"/>
         <source>Edit Error</source>
-        <translation>编辑错误</translation>
+        <translation>エラーの編集</translation>
     </message>
 </context>
 <context>
@@ -44,7 +44,7 @@
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="41"/>
         <source>Alarm</source>
-        <translation>报警</translation>
+        <translation>アラーム</translation>
     </message>
 </context>
 <context>
@@ -59,7 +59,7 @@
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="13"/>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="100"/>
         <source>OK</source>
-        <translation>确定</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="98"/>
@@ -72,37 +72,37 @@
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="32"/>
         <source>Warning</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="33"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="40"/>
         <source>Program</source>
-        <translation type="unfinished">程序</translation>
+        <translation>プログラム</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="41"/>
         <source>Information</source>
-        <translation type="unfinished">信息</translation>
+        <translation>情報</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="42"/>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="43"/>
         <source>No</source>
-        <translation type="unfinished">否</translation>
+        <translation>いいえ</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="44"/>
@@ -115,12 +115,12 @@
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="80"/>
         <source>Date</source>
-        <translation>日期</translation>
+        <translation>日付</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="82"/>
         <source>Day</source>
-        <translation>天</translation>
+        <translation>日</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="85"/>
@@ -135,17 +135,17 @@
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="91"/>
         <source>Time</source>
-        <translation>时间</translation>
+        <translation>時間</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="93"/>
         <source>Hour</source>
-        <translation>小时</translation>
+        <translation>時間</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="96"/>
         <source>Minute</source>
-        <translation>分钟</translation>
+        <translation>分</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="311"/>
@@ -155,7 +155,7 @@
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="313"/>
         <source>OK</source>
-        <translation>确定</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -163,7 +163,7 @@
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="62"/>
         <source>Communication Error</source>
-        <translation>通信错误</translation>
+        <translation>通信エラー</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="63"/>
@@ -173,32 +173,32 @@
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="64"/>
         <source>Startup</source>
-        <translation>安装</translation>
+        <translation>スタートアップ</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="65"/>
         <source>Initializing device communication ...</source>
-        <translation>正在初始化设备通信...</translation>
+        <translation>機器の通信を初期化しています...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="66"/>
         <source>Disconnect</source>
-        <translation>断开</translation>
+        <translation>切断</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="67"/>
         <source>Reinitializing device communication ...</source>
-        <translation>正在重新初始化设备通信...</translation>
+        <translation>機器の通信を再度初期化しています...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="68"/>
         <source>Error</source>
-        <translation>错误</translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="69"/>
         <source>Information</source>
-        <translation>信息</translation>
+        <translation>情報</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="70"/>
@@ -208,42 +208,42 @@
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="71"/>
         <source>Device Communication</source>
-        <translation>设备通信</translation>
+        <translation>機器の通信</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="72"/>
         <source>Saving Settings ...</source>
-        <translation>正在保存设置...</translation>
+        <translation>設定を保存しています...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="73"/>
         <source>User Export</source>
-        <translation>用户导出</translation>
+        <translation>ユーザーエクスポート</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="74"/>
         <source>Exporting user data ...</source>
-        <translation>正在导出用户数据...</translation>
+        <translation>ユーザーデータをエクスポートしています...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="75"/>
         <source>Service Export</source>
-        <translation>维修数据导出</translation>
+        <translation>サービスエクスポート</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="76"/>
         <source>Exporting service data ...</source>
-        <translation>正在导出维修数据...</translation>
+        <translation>サービスデータをエクスポートしています...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="79"/>
         <source>Log Files</source>
-        <translation>日志文件</translation>
+        <translation>ログファイル</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="80"/>
         <source>Getting Daily run Log file ...</source>
-        <translation>正在获取每日运行日志文件...</translation>
+        <translation>毎日の実行ログファイルを取得しています...</translation>
     </message>
 </context>
 <context>
@@ -251,7 +251,7 @@
     <message>
         <location filename="../../Settings/Source/DataManagementWidget.cpp" line="47"/>
         <source>Data Management</source>
-        <translation>数据管理</translation>
+        <translation>データ管理</translation>
     </message>
 </context>
 <context>
@@ -265,17 +265,17 @@
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="62"/>
         <location filename="../../Settings/Source/DateTimeWidget.cpp" line="41"/>
         <source>Date/Time</source>
-        <translation>日期/时间</translation>
+        <translation>日付/時刻</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="157"/>
         <source>Date</source>
-        <translation>日期</translation>
+        <translation>日付</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="253"/>
         <source>Day</source>
-        <translation>天</translation>
+        <translation>日</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="269"/>
@@ -290,22 +290,22 @@
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="341"/>
         <source>Time</source>
-        <translation>时间</translation>
+        <translation>時間</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="405"/>
         <source>Hour</source>
-        <translation>小时</translation>
+        <translation>時間</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="421"/>
         <source>Minute</source>
-        <translation>分钟</translation>
+        <translation>分</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="464"/>
         <source>Apply</source>
-        <translation>应用</translation>
+        <translation>適用</translation>
     </message>
 </context>
 <context>
@@ -318,7 +318,7 @@
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelectionModel.cpp" line="206"/>
         <source>File Name</source>
-        <translation type="unfinished">文件名</translation>
+        <translation>ファイル名</translation>
     </message>
 </context>
 <context>
@@ -327,7 +327,7 @@
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="52"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="209"/>
         <source>File Name</source>
-        <translation>文件名</translation>
+        <translation>ファイル名</translation>
     </message>
 </context>
 <context>
@@ -345,22 +345,22 @@
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="45"/>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>編集</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="46"/>
         <source>Installation</source>
-        <translation>安装</translation>
+        <translation>インストール</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="250"/>
         <source>Enter Instrument Name</source>
-        <translation>输入仪器名称</translation>
+        <translation>装置名の入力</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="254"/>
         <source>Instrument Name</source>
-        <translation>仪器名称</translation>
+        <translation>装置名称</translation>
     </message>
 </context>
 <context>
@@ -368,7 +368,7 @@
     <message>
         <location filename="../../Settings/Source/LanguageModel.cpp" line="159"/>
         <source>Language</source>
-        <translation type="unfinished">语言</translation>
+        <translation>言語</translation>
     </message>
 </context>
 <context>
@@ -384,42 +384,42 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="67"/>
         <source>Select Icon</source>
-        <translation>选择图标</translation>
+        <translation>アイコンの選択</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="68"/>
         <source>Confirmation Message</source>
-        <translation>确认消息</translation>
+        <translation>確認メッセージ</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="69"/>
         <source>Yes</source>
-        <translation>是</translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="70"/>
         <source>OK</source>
-        <translation>确定</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="71"/>
         <source>Close</source>
-        <translation>关闭</translation>
+        <translation>閉じる</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="72"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="73"/>
         <source>Do you really want to delete the selected program step?</source>
-        <translation>确定要删除所选的程序步骤吗？</translation>
+        <translation>選択したプログラムステップを本当に削除しますか?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="74"/>
         <source>Please enter a valid Program Name</source>
-        <translation>请输入一个有效的程序名称。</translation>
+        <translation>有効なプログラム名を入力してください</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="227"/>
@@ -431,18 +431,18 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="361"/>
         <source>Enter Program Name</source>
-        <translation>输入程序名称</translation>
+        <translation>プログラム名の入力</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="388"/>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="423"/>
         <source>Edit Program Step</source>
-        <translation>编辑程序步骤</translation>
+        <translation>プログラムステップの編集</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="408"/>
         <source>New Program Step</source>
-        <translation>新程序步骤</translation>
+        <translation>新規プログラムステップ</translation>
     </message>
 </context>
 <context>
@@ -450,7 +450,7 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="39"/>
         <source>Information Message</source>
-        <translation>信息消息</translation>
+        <translation>情報メッセージ</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="40"/>
@@ -460,12 +460,12 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="40"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="40"/>
         <source>Close</source>
-        <translation>关闭</translation>
+        <translation>閉じる</translation>
     </message>
 </context>
 <context>
@@ -473,27 +473,27 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="68"/>
         <source>Information Message</source>
-        <translation>信息消息</translation>
+        <translation>情報メッセージ</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="69"/>
         <source>OK</source>
-        <translation>确定</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="163"/>
         <source>Time</source>
-        <translation>时间</translation>
+        <translation>時間</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="165"/>
         <source>Hour</source>
-        <translation>小时</translation>
+        <translation>時間</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="168"/>
         <source>Minute</source>
-        <translation>分钟</translation>
+        <translation>分</translation>
     </message>
     <message utf8="true">
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="184"/>
@@ -511,12 +511,12 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="40"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="41"/>
         <source>Close</source>
-        <translation>关闭</translation>
+        <translation>閉じる</translation>
     </message>
 </context>
 <context>
@@ -524,22 +524,22 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="43"/>
         <source>Cassettes until change</source>
-        <translation>更换前的包埋盒</translation>
+        <translation>変更までのカセット数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="44"/>
         <source>Cycles until change</source>
-        <translation>更换前的循环</translation>
+        <translation>変更までのサイクル数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="45"/>
         <source>Days until change</source>
-        <translation>更换期限 (天数)</translation>
+        <translation>変更までの日数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="46"/>
         <source>Please enter valid data</source>
-        <translation>请输入有效的数据</translation>
+        <translation>有効なデータを入力してください</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="47"/>
@@ -559,47 +559,26 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="50"/>
         <source>Enter Cassette Value</source>
-        <translation>输入包埋盒值</translation>
+        <translation>カセット数の入力</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="51"/>
         <source>Enter Cycle Value</source>
-        <translation>输入循环值</translation>
+        <translation>サイクル数の入力</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="52"/>
         <source>Enter Day Value</source>
-        <translation>输入天数值</translation>
+        <translation>日数の入力</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="458"/>
         <source>Enter Reagent Name</source>
-        <translation>输入试剂名称</translation>
+        <translation>試薬名の入力</translation>
     </message>
 </context>
 <context>
     <name>CMsgBoxManager</name>
-    <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="123"/>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="491"/>
-        <source>Yes</source>
-        <translation>是</translation>
-    </message>
-    <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="492"/>
-        <source>No</source>
-        <translation>否</translation>
-    </message>
-    <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="496"/>
-        <source>Continue</source>
-        <translation>继续</translation>
-    </message>
-    <message>
-        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="497"/>
-        <source>Stop</source>
-        <translation>停止</translation>
-    </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="113"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="211"/>
@@ -610,9 +589,30 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="123"/>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="491"/>
+        <source>Yes</source>
+        <translation>はい</translation>
+    </message>
+    <message>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="492"/>
+        <source>No</source>
+        <translation>いいえ</translation>
+    </message>
+    <message>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="496"/>
+        <source>Continue</source>
+        <translation>続行</translation>
+    </message>
+    <message>
+        <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="497"/>
+        <source>Stop</source>
+        <translation>停止</translation>
+    </message>
+    <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="502"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
 </context>
 <context>
@@ -620,27 +620,27 @@
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="45"/>
         <source>Enter Proxy User Name</source>
-        <translation>输入代理用户名</translation>
+        <translation>プロキシユーザー名の入力</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="46"/>
         <source>Enter Proxy Password</source>
-        <translation>输入代理密码</translation>
+        <translation>プロキシパスワードの入力</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="47"/>
         <source>Enter Proxy IP Address</source>
-        <translation>输入代理 IP 地址</translation>
+        <translation>プロキシ IP アドレスの入力</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="48"/>
         <source>Enter Proxy Port</source>
-        <translation>输入代理端口</translation>
+        <translation>プロキシポートの入力</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="51"/>
         <source>Network</source>
-        <translation>网络</translation>
+        <translation>ネットワーク</translation>
     </message>
 </context>
 <context>
@@ -648,7 +648,7 @@
     <message>
         <location filename="../../Settings/Source/ParametersWidget.cpp" line="39"/>
         <source>Parameter</source>
-        <translation>参数</translation>
+        <translation>パラメータ</translation>
     </message>
 </context>
 <context>
@@ -656,27 +656,27 @@
     <message>
         <location filename="../../Programs/Source/ProgramModel.cpp" line="246"/>
         <source>Number</source>
-        <translation>编号</translation>
+        <translation>番号</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramModel.cpp" line="248"/>
         <source>Apply</source>
-        <translation type="unfinished">应用</translation>
+        <translation>適用</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramModel.cpp" line="250"/>
         <source>Name</source>
-        <translation>名称</translation>
+        <translation>名前</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramModel.cpp" line="252"/>
         <source>Duration</source>
-        <translation>持续时间</translation>
+        <translation>処理時間</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramModel.cpp" line="254"/>
         <source>Icon</source>
-        <translation>图标</translation>
+        <translation>アイコン</translation>
     </message>
 </context>
 <context>
@@ -684,12 +684,12 @@
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="28"/>
         <source>Programs</source>
-        <translation type="unfinished">程序</translation>
+        <translation>プログラム</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="227"/>
         <source>Abort</source>
-        <translation type="unfinished">终止</translation>
+        <translation>中止</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="234"/>
@@ -702,12 +702,12 @@
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="22"/>
         <source>Aborted.</source>
-        <translation type="unfinished">已终止。</translation>
+        <translation>中止されました。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="23"/>
         <source>Completed!</source>
-        <translation type="unfinished">已完成！</translation>
+        <translation>完了しました!</translation>
     </message>
 </context>
 <context>
@@ -715,22 +715,22 @@
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="59"/>
         <source>Edit Program</source>
-        <translation>编辑程序</translation>
+        <translation>プログラムの編集</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="60"/>
         <source>View Program</source>
-        <translation>查看程序</translation>
+        <translation>プログラムの表示</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="61"/>
         <source>New Program</source>
-        <translation>新程序</translation>
+        <translation>新規プログラム</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="62"/>
         <source>Do you really want to delete the selected program?</source>
-        <translation>确定要删除所选的程序吗？</translation>
+        <translation>選択したプログラムを本当に削除しますか?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="63"/>
@@ -740,17 +740,17 @@
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="64"/>
         <source>View</source>
-        <translation>查看</translation>
+        <translation>表示</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="65"/>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>編集</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="74"/>
         <source>Programs</source>
-        <translation>程序</translation>
+        <translation>プログラム</translation>
     </message>
 </context>
 <context>
@@ -758,12 +758,12 @@
     <message>
         <location filename="../../Core/Source/ReagentGroupModel.cpp" line="202"/>
         <source>Reagent Group</source>
-        <translation>试剂组</translation>
+        <translation>試薬グループ</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentGroupModel.cpp" line="204"/>
         <source>Color</source>
-        <translation>颜色</translation>
+        <translation>カラー</translation>
     </message>
 </context>
 <context>
@@ -771,7 +771,7 @@
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="30"/>
         <source>Select Color</source>
-        <translation type="unfinished">选择颜色</translation>
+        <translation>カラーの選択</translation>
     </message>
 </context>
 <context>
@@ -779,29 +779,29 @@
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="285"/>
         <source>Reagent</source>
-        <translation>试剂</translation>
+        <translation>試薬</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="287"/>
         <source>Reagent Group</source>
-        <translation>试剂组</translation>
+        <translation>試薬グループ</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="294"/>
         <source>Cassettes until change</source>
-        <translation>更换前的包埋盒</translation>
+        <translation>変更までのカセット数</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="296"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="306"/>
         <source>Cycles until change</source>
-        <translation>更换前的循环</translation>
+        <translation>変更までのサイクル数</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="298"/>
         <location filename="../../Core/Source/ReagentRMSModel.cpp" line="308"/>
         <source>Days until change</source>
-        <translation>更换期限 (天数)</translation>
+        <translation>変更までの日数</translation>
     </message>
 </context>
 <context>
@@ -817,12 +817,12 @@
     <message>
         <location filename="../../Core/Source/ReagentStationEditModel.cpp" line="260"/>
         <source>Reagent</source>
-        <translation>试剂</translation>
+        <translation>試薬</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStationEditModel.cpp" line="262"/>
         <source>Group</source>
-        <translation>组</translation>
+        <translation>グループ</translation>
     </message>
 </context>
 <context>
@@ -830,12 +830,12 @@
     <message>
         <location filename="../../Core/Source/ReagentStationModel.cpp" line="246"/>
         <source>Station</source>
-        <translation>站点</translation>
+        <translation>ステーション</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStationModel.cpp" line="248"/>
         <source>Reagent</source>
-        <translation>试剂</translation>
+        <translation>試薬</translation>
     </message>
 </context>
 <context>
@@ -843,7 +843,7 @@
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="32"/>
         <source>Select Reagent</source>
-        <translation>选择试剂</translation>
+        <translation>試薬の選択</translation>
     </message>
 </context>
 <context>
@@ -851,19 +851,19 @@
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="363"/>
         <source>Station</source>
-        <translation>站点</translation>
+        <translation>ステーション</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="365"/>
         <source>Reagent</source>
-        <translation>试剂</translation>
+        <translation>試薬</translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="371"/>
         <source>Cassettes
 since
 change</source>
-        <translation type="unfinished">盒子</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="373"/>
@@ -889,7 +889,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/ReagentStatusModel.cpp" line="390"/>
         <source>Status</source>
-        <translation>状态</translation>
+        <translation>状態</translation>
     </message>
 </context>
 <context>
@@ -897,7 +897,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="35"/>
         <source>Status</source>
-        <translation>状态</translation>
+        <translation>状態</translation>
     </message>
 </context>
 <context>
@@ -905,7 +905,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/RegionalSettingsWidget.cpp" line="44"/>
         <source>Regional Settings</source>
-        <translation>区域设置</translation>
+        <translation>地域設定</translation>
     </message>
 </context>
 <context>
@@ -913,23 +913,23 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="306"/>
         <source>Step</source>
-        <translation>步骤</translation>
+        <translation>ステップ</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="308"/>
         <source>Reagent</source>
-        <translation>试剂</translation>
+        <translation>試薬</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="312"/>
         <location filename="../../Programs/Source/StepModel.cpp" line="317"/>
         <source>Duration</source>
-        <translation>持续时间</translation>
+        <translation>処理時間</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="313"/>
         <source>Station</source>
-        <translation>站点</translation>
+        <translation>ステーション</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="316"/>
@@ -940,7 +940,7 @@ Date</source>
         <location filename="../../Programs/Source/StepModel.cpp" line="321"/>
         <location filename="../../Programs/Source/StepModel.cpp" line="327"/>
         <source>P/V</source>
-        <translation>压力/真空</translation>
+        <translation>P/V</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/StepModel.cpp" line="322"/>
@@ -971,42 +971,42 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/CommonString.cpp" line="16"/>
         <source>OK</source>
-        <translation>确定</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CommonString.cpp" line="17"/>
         <source>Yes</source>
-        <translation>是</translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CommonString.cpp" line="18"/>
         <source>No</source>
-        <translation type="unfinished">否</translation>
+        <translation>いいえ</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CommonString.cpp" line="19"/>
         <source>Close</source>
-        <translation>关闭</translation>
+        <translation>閉じる</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CommonString.cpp" line="20"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CommonString.cpp" line="21"/>
         <source>Information Message</source>
-        <translation>信息消息</translation>
+        <translation>情報メッセージ</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CommonString.cpp" line="22"/>
         <source>Confirmation Message</source>
-        <translation>确认消息</translation>
+        <translation>確認メッセージ</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CommonString.cpp" line="23"/>
         <source>Warning</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
 </context>
 <context>
@@ -1014,7 +1014,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1066"/>
         <source>Communication Error</source>
-        <translation>通信错误</translation>
+        <translation>通信エラー</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1067"/>
@@ -1024,32 +1024,32 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1068"/>
         <source>Startup</source>
-        <translation>安装</translation>
+        <translation>スタートアップ</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1069"/>
         <source>Initializing device communication ...</source>
-        <translation>正在初始化设备通信...</translation>
+        <translation>機器の通信を初期化しています...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1070"/>
         <source>Disconnect</source>
-        <translation>断开</translation>
+        <translation>切断</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1071"/>
         <source>Reinitializing device communication ...</source>
-        <translation>正在重新初始化设备通信...</translation>
+        <translation>機器の通信を再度初期化しています...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1072"/>
         <source>Error</source>
-        <translation>错误</translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1073"/>
         <source>Information</source>
-        <translation>信息</translation>
+        <translation>情報</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1075"/>
@@ -1059,62 +1059,62 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1076"/>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1077"/>
         <source>Device Communication</source>
-        <translation>设备通信</translation>
+        <translation>機器の通信</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1078"/>
         <source>Saving Settings ...</source>
-        <translation>正在保存设置...</translation>
+        <translation>設定を保存しています...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1079"/>
         <source>User Export</source>
-        <translation>用户导出</translation>
+        <translation>ユーザーエクスポート</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1080"/>
         <source>Exporting user data ...</source>
-        <translation>正在导出用户数据...</translation>
+        <translation>ユーザーデータをエクスポートしています...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1082"/>
         <source>Service Export</source>
-        <translation>维修数据导出</translation>
+        <translation>サービスエクスポート</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1083"/>
         <source>Exporting service data ...</source>
-        <translation>正在导出维修数据...</translation>
+        <translation>サービスデータをエクスポートしています...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1085"/>
         <source>Import</source>
-        <translation>导入</translation>
+        <translation>インポート</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1086"/>
         <source>Importing data ...</source>
-        <translation>正在导入数据...</translation>
+        <translation>データをインポートしています...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1088"/>
         <source>Log Files</source>
-        <translation>日志文件</translation>
+        <translation>ログファイル</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1089"/>
         <source>Getting Daily run Log file ...</source>
-        <translation>正在获取每日运行日志文件...</translation>
+        <translation>毎日の実行ログファイルを取得しています...</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1091"/>
         <source>Please turn off the switch on the back of machine to shutdown the machine.</source>
-        <translation>请关闭机器背面的开关，以关闭机器。</translation>
+        <translation>機械背面にあるスイッチをオフにして機械をシャットダウンしてください。</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1239"/>
@@ -1132,7 +1132,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/GlobalHelper.cpp" line="227"/>
         <source>Warning</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../../Core/Source/GlobalHelper.cpp" line="228"/>
@@ -1142,12 +1142,12 @@ Date</source>
     <message>
         <location filename="../../Core/Source/GlobalHelper.cpp" line="229"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../../Core/Source/GlobalHelper.cpp" line="230"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>キャンセル</translation>
     </message>
 </context>
 <context>
@@ -1155,12 +1155,12 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="194"/>
         <source>Reagent Group</source>
-        <translation type="unfinished">试剂组</translation>
+        <translation>試薬グループ</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="196"/>
         <source>Color</source>
-        <translation type="unfinished">颜色</translation>
+        <translation>カラー</translation>
     </message>
 </context>
 <context>
@@ -1169,7 +1169,7 @@ Date</source>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="549"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="571"/>
         <source>Reagent</source>
-        <translation>试剂</translation>
+        <translation>試薬</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="551"/>
@@ -1180,19 +1180,19 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="556"/>
         <source>Cassettes until change</source>
-        <translation type="unfinished">更换前的包埋盒</translation>
+        <translation>変更までのカセット数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="559"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="578"/>
         <source>Cycles until change</source>
-        <translation type="unfinished">更换前的循环</translation>
+        <translation>変更までのサイクル数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="562"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="581"/>
         <source>Days until change</source>
-        <translation type="unfinished">更换期限 (天数)</translation>
+        <translation>変更までの日数</translation>
     </message>
 </context>
 <context>
@@ -1200,12 +1200,12 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="204"/>
         <source>Reagent</source>
-        <translation>试剂</translation>
+        <translation>試薬</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="206"/>
         <source>Group</source>
-        <translation>组</translation>
+        <translation>グループ</translation>
     </message>
 </context>
 <context>
@@ -1213,12 +1213,12 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="230"/>
         <source>Station</source>
-        <translation type="unfinished">站点</translation>
+        <translation>ステーション</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="233"/>
         <source>Reagent</source>
-        <translation type="unfinished">试剂</translation>
+        <translation>試薬</translation>
     </message>
 </context>
 <context>
@@ -1226,19 +1226,19 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="497"/>
         <source>Station</source>
-        <translation>站点</translation>
+        <translation>ステーション</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="500"/>
         <source>Reagent</source>
-        <translation>试剂</translation>
+        <translation>試薬</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="508"/>
         <source>Cassettes
 since
 change</source>
-        <translation type="unfinished">盒子</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="511"/>
@@ -1264,7 +1264,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="535"/>
         <source>Status</source>
-        <translation>状态</translation>
+        <translation>状態</translation>
     </message>
 </context>
 <context>
@@ -1272,17 +1272,17 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/CassetteNumberInputWidget.ui" line="14"/>
         <source>Dialog</source>
-        <translation>对话框</translation>
+        <translation>ダイアログ</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/CassetteNumberInputWidget.ui" line="36"/>
         <source>OK</source>
-        <translation>确定</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/CassetteNumberInputWidget.ui" line="49"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
 </context>
 <context>
@@ -1296,42 +1296,42 @@ Date</source>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="47"/>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="113"/>
         <source>Dashboard</source>
-        <translation type="unfinished">界面</translation>
+        <translation>ダッシュボート</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="114"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="115"/>
         <source>No</source>
-        <translation type="unfinished">否</translation>
+        <translation>いいえ</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="116"/>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="117"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="118"/>
         <source>Warning</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="119"/>
         <source>Program</source>
-        <translation type="unfinished">程序</translation>
+        <translation>プログラム</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="120"/>
         <source>Information</source>
-        <translation type="unfinished">信息</translation>
+        <translation>情報</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="121"/>
@@ -1349,33 +1349,33 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="32"/>
         <source>Selected Time</source>
-        <translation>所选时间</translation>
+        <translation>選択した時間</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="55"/>
         <source>ASAP</source>
-        <translation>尽快</translation>
+        <translation>ASAP</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="142"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="162"/>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="247"/>
         <source>OK</source>
-        <translation>确定</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="231"/>
         <source>Date</source>
-        <translation>日期</translation>
+        <translation>日付</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="232"/>
         <source>Day</source>
-        <translation>天</translation>
+        <translation>日</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="233"/>
@@ -1390,17 +1390,17 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="237"/>
         <source>Time</source>
-        <translation>时间</translation>
+        <translation>時間</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="238"/>
         <source>Hour</source>
-        <translation>小时</translation>
+        <translation>時間</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="239"/>
         <source>Minute</source>
-        <translation>分钟</translation>
+        <translation>分</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="241"/>
@@ -1415,12 +1415,12 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="244"/>
         <source>Program End Date Time cannot be earlier than the ASAP End Date Time.</source>
-        <translation>程序结束日期时间不得早于尽快结束日期时间。</translation>
+        <translation>プログラム終了の日付と時刻は ASAP 終了の日付と時刻より前に設定できません。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="245"/>
         <source>Program End Date Time cannot be later than one week.</source>
-        <translation>程序结束日期时间不得晚于一周。</translation>
+        <translation>プログラム終了の日付と時刻は 1 週間以内で設定してください。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardDateTimeWidget.cpp" line="248"/>
@@ -1433,22 +1433,22 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="20"/>
         <source>Dialog</source>
-        <translation>对话框</translation>
+        <translation>ダイアログ</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="75"/>
         <source>Program remaining time:</source>
-        <translation>程序剩余时间：</translation>
+        <translation>プログラム残り時間:</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="88"/>
         <source>Program end time:</source>
-        <translation>程序结束时间：</translation>
+        <translation>プログラム終了時間:</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="149"/>
         <source>Step remaining time:</source>
-        <translation>步骤剩余时间：</translation>
+        <translation>ステップ残り時間:</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="172"/>
@@ -1458,12 +1458,12 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="189"/>
         <source>Abort Program</source>
-        <translation>终止程序</translation>
+        <translation>プログラムの中止</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="209"/>
         <source>Close</source>
-        <translation>关闭</translation>
+        <translation>閉じる</translation>
     </message>
 </context>
 <context>
@@ -1474,29 +1474,39 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="796"/>
-        <source>Do you want to Start the Program with Expired Reagents?</source>
-        <translation>是否要启动带过期试剂的程序？</translation>
-    </message>
-    <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="784"/>
         <source>No safe reagent for Program step &quot;%1&quot; of &quot;%2&quot; in case of error happen.Would you like to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="785"/>
+        <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.</source>
+        <translation>プログラムステップ  &quot;%1&quot;/ &quot;%2&quot; の対応する試薬ステーションが見つかりません。プログラムでは、1 つのステーションを 1 度しか使用できません。本ステップで使用する試薬ステーションを設定してください。</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="786"/>
+        <source>The Station &quot;%1&quot; status is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;, it can not be executed.</source>
+        <translation>プログラムステップ &quot;%1&quot; で使われる、ステーション &quot;%2&quot;/&quot;%3&quot; の試薬が空に設定されているため実行できません。</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="787"/>
+        <source>Please re-set the End Date&amp;Time of the current selected program.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="788"/>
         <source>Please enter cassette number:</source>
-        <translation>请输入包埋盒编号：</translation>
+        <translation>カセット数を入力してください:</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="789"/>
         <source>Program &quot;%1&quot; is complete! Would you like to drain the retort?</source>
-        <translation>程序&quot;%1&quot;已完成！是否排空脱水缸？</translation>
+        <translation>プログラム &quot;%1&quot; が完了しました! レトルトを排出しますか?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="790"/>
         <source>Please take out your specimen!</source>
-        <translation>请取出您的样品！</translation>
+        <translation>試料を取り出してください!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="791"/>
@@ -1506,7 +1516,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="792"/>
         <source>Program &quot;%1&quot; is aborted!</source>
-        <translation>程序&quot;%1&quot;已终止！</translation>
+        <translation>プログラム &quot;%1&quot; が中止されました!</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="793"/>
@@ -1516,12 +1526,17 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="794"/>
         <source>Leica Program can&apos;t be operated with RMS OFF.</source>
-        <translation>无法在 RMS 关闭的情况下操作徕卡程序。</translation>
+        <translation>ライカプログラムは RMS をオフにして動作できません。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="795"/>
         <source>Reagents needed for this program are expired! You can&apos;t operate this program.</source>
-        <translation>该程序所需的试剂已过期！您无法操作该程序。</translation>
+        <translation>本プログラムに必要な試薬は期限切れです! 本プログラムは実行できません。</translation>
+    </message>
+    <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="796"/>
+        <source>Do you want to Start the Program with Expired Reagents?</source>
+        <translation>期限切れの試薬を使用して本当にプログラムを開始しますか?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="797"/>
@@ -1532,21 +1547,6 @@ Date</source>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="798"/>
         <source>Did you add new cassetts?</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="787"/>
-        <source>Please re-set the End Date&amp;Time of the current selected program.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="785"/>
-        <source>Program step &quot;%1&quot; of &quot;%2&quot; can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.</source>
-        <translation>无法为&quot;%2&quot;的程序步骤&quot;%1&quot;找到对应的试剂站点，一个站点在程序中只能使用一次，请为该步骤中的试剂设置一个站点。</translation>
-    </message>
-    <message>
-        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="786"/>
-        <source>The Station &quot;%1&quot; status is set as Empty in Program step &quot;%2&quot; of &quot;%3&quot;, it can not be executed.</source>
-        <translation>站点&quot;%1&quot;的状态在&quot;%3&quot;的程序步骤&quot;%2&quot;中设置为空，其无法执行。</translation>
     </message>
 </context>
 <context>
@@ -1593,52 +1593,52 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="107"/>
         <source>Programs</source>
-        <translation type="unfinished">程序</translation>
+        <translation>プログラム</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="109"/>
         <source>Confirmation Message</source>
-        <translation type="unfinished">确认消息</translation>
+        <translation>確認メッセージ</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="110"/>
         <source>Do you want to abort the program?</source>
-        <translation type="unfinished">是否要终止程序？</translation>
+        <translation>プログラムを中止しますか?</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="113"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="114"/>
         <source>No</source>
-        <translation type="unfinished">否</translation>
+        <translation>いいえ</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="115"/>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="116"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="117"/>
         <source>Warning</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="118"/>
         <source>Program</source>
-        <translation type="unfinished">程序</translation>
+        <translation>プログラム</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="119"/>
         <source>Information</source>
-        <translation type="unfinished">信息</translation>
+        <translation>情報</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="120"/>
@@ -1682,17 +1682,17 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="159"/>
         <source>Aborting...</source>
-        <translation type="unfinished">正在终止...</translation>
+        <translation>中止しています...</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="160"/>
         <source>Aborted.</source>
-        <translation type="unfinished">已终止。</translation>
+        <translation>中止されました。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="161"/>
         <source>Completed!</source>
-        <translation type="unfinished">已完成！</translation>
+        <translation>完了しました!</translation>
     </message>
 </context>
 <context>
@@ -1700,7 +1700,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1034"/>
         <source>Information Message</source>
-        <translation type="unfinished">信息消息</translation>
+        <translation>情報メッセージ</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/KeyBoard/Source/KeyBoardWidget.cpp" line="1037"/>
@@ -1741,43 +1741,43 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="36"/>
         <source>User Export</source>
-        <translation>用户导出</translation>
+        <translation>ユーザーエクスポート</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="69"/>
         <source>Service Export</source>
-        <translation>维修数据导出</translation>
+        <translation>サービスエクスポート</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="105"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DataManagement.cpp" line="292"/>
         <source>Import</source>
-        <translation>导入</translation>
+        <translation>インポート</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="138"/>
         <source>SW Update</source>
-        <translation>软件更新</translation>
+        <translation>ソフトウェアーアップデート</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="171"/>
         <source>Remote SW Update</source>
-        <translation>远程软件更新</translation>
+        <translation>リモートソフトウェアーアップデート</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DataManagement.cpp" line="294"/>
         <source>Export</source>
-        <translation>导出</translation>
+        <translation>エクスポート</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DataManagement.cpp" line="296"/>
         <source>Importing data ...</source>
-        <translation>正在导入数据...</translation>
+        <translation>データをインポートしています...</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DataManagement.cpp" line="298"/>
         <source>Exporting data ...</source>
-        <translation>正在导出数据...</translation>
+        <translation>データをエクスポートしています...</translation>
     </message>
 </context>
 <context>
@@ -1790,19 +1790,19 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DateTime.ui" line="116"/>
         <source>Save</source>
-        <translation type="unfinished">保存</translation>
+        <translation>保存</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="71"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="224"/>
         <source>Date</source>
-        <translation>日期</translation>
+        <translation>日付</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="73"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="225"/>
         <source>Day</source>
-        <translation>天</translation>
+        <translation>日</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="76"/>
@@ -1820,19 +1820,19 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="82"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="229"/>
         <source>Time</source>
-        <translation>时间</translation>
+        <translation>時間</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="84"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="230"/>
         <source>Hour</source>
-        <translation>小时</translation>
+        <translation>時間</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="87"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="231"/>
         <source>Minute</source>
-        <translation>分钟</translation>
+        <translation>分</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="211"/>
@@ -1845,7 +1845,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DialogFrame.ui" line="14"/>
         <source>Dialog</source>
-        <translation>对话框</translation>
+        <translation>ダイアログ</translation>
     </message>
 </context>
 <context>
@@ -1858,7 +1858,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/ErrorMsgDlg.ui" line="51"/>
         <source>Close</source>
-        <translation>关闭</translation>
+        <translation>閉じる</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="168"/>
@@ -1866,7 +1866,7 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="191"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ErrorMsgDlg.cpp" line="193"/>
         <source>Error Messages</source>
-        <translation>错误消息</translation>
+        <translation>エラーメッセージ</translation>
     </message>
 </context>
 <context>
@@ -1879,7 +1879,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/FileSelection.ui" line="25"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/FileSelection.ui" line="45"/>
@@ -1900,7 +1900,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelection.cpp" line="232"/>
         <source>File Name</source>
-        <translation type="unfinished">文件名</translation>
+        <translation>ファイル名</translation>
     </message>
 </context>
 <context>
@@ -1913,7 +1913,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/FileView.ui" line="61"/>
         <source>Open</source>
-        <translation>打开</translation>
+        <translation>開く</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="165"/>
@@ -1924,7 +1924,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="285"/>
         <source>File Name</source>
-        <translation type="unfinished">文件名</translation>
+        <translation>ファイル名</translation>
     </message>
 </context>
 <context>
@@ -1933,17 +1933,17 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="14"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MainWindow.cpp" line="511"/>
         <source>MainWindow</source>
-        <translation>主窗口</translation>
+        <translation>メインウィンドウ</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="75"/>
         <source>1970-01-01</source>
-        <translation type="unfinished">12h {1970-01-01?}</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="217"/>
         <source>00:00</source>
-        <translation type="unfinished">12h {00:00?}</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="373"/>
@@ -1979,7 +1979,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="86"/>
         <source>Information Message</source>
-        <translation type="unfinished">信息消息</translation>
+        <translation>情報メッセージ</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="93"/>
@@ -2007,7 +2007,7 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ServiceExportDlg.cpp" line="44"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ServiceExportDlg.cpp" line="100"/>
         <source>Service Export</source>
-        <translation type="unfinished">维修数据导出</translation>
+        <translation>サービスエクスポート</translation>
     </message>
 </context>
 <context>
@@ -2066,7 +2066,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/TextDialog.ui" line="46"/>
         <source>Close</source>
-        <translation>关闭</translation>
+        <translation>閉じる</translation>
     </message>
 </context>
 <context>
@@ -2079,7 +2079,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/WaitDialog.ui" line="58"/>
         <source>Abort</source>
-        <translation>终止</translation>
+        <translation>中止</translation>
     </message>
 </context>
 <context>
@@ -2092,7 +2092,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/WarningMsgDlg.ui" line="51"/>
         <source>Close</source>
-        <translation>关闭</translation>
+        <translation>閉じる</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="168"/>
@@ -2100,7 +2100,7 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="192"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/WarningMsgDlg.cpp" line="194"/>
         <source>Warning Messages</source>
-        <translation>警告消息</translation>
+        <translation>警告メッセージ</translation>
     </message>
 </context>
 <context>
@@ -2118,7 +2118,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="44"/>
         <source>Program Name:</source>
-        <translation>程序名称：</translation>
+        <translation>プログラム名:</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="67"/>
@@ -2128,48 +2128,48 @@ Date</source>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="93"/>
         <source>Icon</source>
-        <translation>图标</translation>
+        <translation>アイコン</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="173"/>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="904"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="198"/>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>編集</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="221"/>
         <source>New</source>
-        <translation>新建</translation>
+        <translation>新規</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="244"/>
         <source>Copy</source>
-        <translation>复制</translation>
+        <translation>コピー</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="267"/>
         <source>Delete</source>
-        <translation>删除</translation>
+        <translation>削除</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="889"/>
         <source>Edit Program Step</source>
-        <translation>编辑程序步骤</translation>
+        <translation>プログラムステップの編集</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="890"/>
         <source>New Program Step</source>
-        <translation>新程序步骤</translation>
+        <translation>新規プログラムステップ</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="891"/>
         <source>Enter Program Name</source>
-        <translation>输入程序名称</translation>
+        <translation>プログラム名の入力</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="892"/>
@@ -2179,32 +2179,32 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="901"/>
         <source>Select Icon</source>
-        <translation>选择图标</translation>
+        <translation>アイコンの選択</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="902"/>
         <source>Confirmation Message</source>
-        <translation>确认消息</translation>
+        <translation>確認メッセージ</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="903"/>
         <source>Yes</source>
-        <translation>是</translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="905"/>
         <source>Do you really want to delete the selected program step?</source>
-        <translation>确定要删除所选的程序步骤吗？</translation>
+        <translation>選択したプログラムステップを本当に削除しますか?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="906"/>
         <source>Please enter a valid Program Name</source>
-        <translation>请输入一个有效的程序名称。</translation>
+        <translation>有効なプログラム名を入力してください</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="907"/>
         <source>Close</source>
-        <translation>关闭</translation>
+        <translation>閉じる</translation>
     </message>
 </context>
 <context>
@@ -2218,7 +2218,7 @@ Date</source>
         <location filename="../../Programs/Forms/ModifyProgramIconDlg.ui" line="341"/>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="202"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramIconDlg.ui" line="361"/>
@@ -2229,12 +2229,12 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="200"/>
         <source>Information Message</source>
-        <translation>信息消息</translation>
+        <translation>情報メッセージ</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="203"/>
         <source>Close</source>
-        <translation>关闭</translation>
+        <translation>閉じる</translation>
     </message>
 </context>
 <context>
@@ -2242,7 +2242,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="104"/>
         <source>Pressure/Vacuum type</source>
-        <translation>压力/真空类型</translation>
+        <translation>加圧/減圧タイプ</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="110"/>
@@ -2252,22 +2252,22 @@ Date</source>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="117"/>
         <source>NONE</source>
-        <translation>无</translation>
+        <translation>なし</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="124"/>
         <source>P/V</source>
-        <translation>压力/真空</translation>
+        <translation>P/V</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="131"/>
         <source>V</source>
-        <translation>真空</translation>
+        <translation>V</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="150"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="173"/>
@@ -2277,28 +2277,28 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="637"/>
         <source>Time</source>
-        <translation>时间</translation>
+        <translation>時間</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="639"/>
         <source>Hour</source>
-        <translation>小时</translation>
+        <translation>時間</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="641"/>
         <source>Minute</source>
-        <translation>分钟</translation>
+        <translation>分</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="644"/>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="652"/>
         <source>Information Message</source>
-        <translation>信息消息</translation>
+        <translation>情報メッセージ</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="646"/>
         <source>OK</source>
-        <translation>确定</translation>
+        <translation>OK</translation>
     </message>
     <message utf8="true">
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="649"/>
@@ -2308,12 +2308,12 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="653"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="654"/>
         <source>No</source>
-        <translation type="unfinished">否</translation>
+        <translation>いいえ</translation>
     </message>
 </context>
 <context>
@@ -2321,27 +2321,27 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="585"/>
         <source>Number</source>
-        <translation>编号</translation>
+        <translation>番号</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="587"/>
         <source>Apply</source>
-        <translation type="unfinished">应用</translation>
+        <translation>適用</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="589"/>
         <source>Name</source>
-        <translation>名称</translation>
+        <translation>名前</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="591"/>
         <source>Duration</source>
-        <translation>持续时间</translation>
+        <translation>処理時間</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="593"/>
         <source>Icon</source>
-        <translation>图标</translation>
+        <translation>アイコン</translation>
     </message>
 </context>
 <context>
@@ -2350,47 +2350,47 @@ Date</source>
         <location filename="../../Programs/Forms/ProgramWidget.ui" line="20"/>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="615"/>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>編集</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ProgramWidget.ui" line="30"/>
         <source>New</source>
-        <translation>新建</translation>
+        <translation>新規</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ProgramWidget.ui" line="40"/>
         <source>Delete</source>
-        <translation>删除</translation>
+        <translation>削除</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ProgramWidget.ui" line="157"/>
         <source>Copy</source>
-        <translation>复制</translation>
+        <translation>コピー</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="582"/>
         <source>Programs</source>
-        <translation>程序</translation>
+        <translation>プログラム</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="596"/>
         <source>Edit Program</source>
-        <translation>编辑程序</translation>
+        <translation>プログラムの編集</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="599"/>
         <source>View Program</source>
-        <translation>查看程序</translation>
+        <translation>プログラムの表示</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="602"/>
         <source>New Program</source>
-        <translation>新程序</translation>
+        <translation>新規プログラム</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="605"/>
         <source>Do you really want to delete the selected program?</source>
-        <translation>确定要删除所选的程序吗？</translation>
+        <translation>選択したプログラムを本当に削除しますか?</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="608"/>
@@ -2400,22 +2400,22 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="612"/>
         <source>View</source>
-        <translation>查看</translation>
+        <translation>表示</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="617"/>
         <source>Confirmation Message</source>
-        <translation type="unfinished">确认消息</translation>
+        <translation>確認メッセージ</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="619"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="620"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>キャンセル</translation>
     </message>
 </context>
 <context>
@@ -2423,17 +2423,17 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="895"/>
         <source>Step</source>
-        <translation>步骤</translation>
+        <translation>ステップ</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="896"/>
         <source>Reagent</source>
-        <translation>试剂</translation>
+        <translation>試薬</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="897"/>
         <source>Duration</source>
-        <translation>持续时间</translation>
+        <translation>処理時間</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="898"/>
@@ -2443,7 +2443,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="899"/>
         <source>P/V</source>
-        <translation>压力/真空</translation>
+        <translation>P/V</translation>
     </message>
 </context>
 <context>
@@ -2451,7 +2451,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="228"/>
         <source>Stations</source>
-        <translation>站点</translation>
+        <translation>ステーション</translation>
     </message>
 </context>
 <context>
@@ -2459,7 +2459,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="480"/>
         <source>Status</source>
-        <translation>状态</translation>
+        <translation>状態</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="483"/>
@@ -2488,7 +2488,7 @@ Date</source>
         <location filename="../../Reagents/Forms/ModifyReagentGroupColorDlg.ui" line="285"/>
         <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="139"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentGroupColorDlg.ui" line="305"/>
@@ -2499,12 +2499,12 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="142"/>
         <source>Close</source>
-        <translation>关闭</translation>
+        <translation>閉じる</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="144"/>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -2527,7 +2527,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="94"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="117"/>
@@ -2542,22 +2542,32 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="174"/>
         <source>500</source>
-        <translation type="unfinished">12h {500?}</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="544"/>
+        <source>Information Message</source>
+        <translation>情報メッセージ</translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="545"/>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="550"/>
         <source>Cassettes until change</source>
-        <translation>更换前的包埋盒</translation>
+        <translation>変更までのカセット数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="553"/>
         <source>Cycles until change</source>
-        <translation>更换前的循环</translation>
+        <translation>変更までのサイクル数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="556"/>
         <source>Days until change</source>
-        <translation>更换期限 (天数)</translation>
+        <translation>変更までの日数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="559"/>
@@ -2570,16 +2580,6 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="544"/>
-        <source>Information Message</source>
-        <translation type="unfinished">信息消息</translation>
-    </message>
-    <message>
-        <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="545"/>
-        <source>OK</source>
-        <translation type="unfinished">确定</translation>
-    </message>
-    <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="565"/>
         <source>The same reagent name is in use, please change the reagent name.</source>
         <translation type="unfinished"></translation>
@@ -2587,7 +2587,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="568"/>
         <source>Please enter valid data</source>
-        <translation>请输入有效的数据</translation>
+        <translation>有効なデータを入力してください</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="571"/>
@@ -2607,22 +2607,22 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="580"/>
         <source>Enter Cassette Value</source>
-        <translation>输入包埋盒值</translation>
+        <translation>カセット数の入力</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="583"/>
         <source>Enter Cycle Value</source>
-        <translation>输入循环值</translation>
+        <translation>サイクル数の入力</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="586"/>
         <source>Enter Day Value</source>
-        <translation>输入天数值</translation>
+        <translation>日数の入力</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="589"/>
         <source>Enter Reagent Name</source>
-        <translation>输入试剂名称</translation>
+        <translation>試薬名の入力</translation>
     </message>
 </context>
 <context>
@@ -2636,7 +2636,7 @@ Date</source>
         <location filename="../../Reagents/Forms/ModifyReagentStatusDlg.ui" line="38"/>
         <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="200"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentStatusDlg.ui" line="45"/>
@@ -2646,17 +2646,17 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="201"/>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>閉じる</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="202"/>
         <source>Information Message</source>
-        <translation type="unfinished">信息消息</translation>
+        <translation>情報メッセージ</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="203"/>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -2669,12 +2669,12 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentGroupWidget.ui" line="38"/>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>編集</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="198"/>
         <source>Select Color</source>
-        <translation type="unfinished">选择颜色</translation>
+        <translation>カラーの選択</translation>
     </message>
 </context>
 <context>
@@ -2687,50 +2687,55 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="42"/>
         <source>Processing Reagents</source>
-        <translation>脱水试剂</translation>
+        <translation>処理試薬</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="57"/>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="130"/>
         <source>Off</source>
-        <translation>关闭</translation>
+        <translation>オフ</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="64"/>
         <source>Cassettes</source>
-        <translation>包埋盒</translation>
+        <translation>カセット</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="71"/>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="137"/>
         <source>Cycles</source>
-        <translation>循环</translation>
+        <translation>サイクル</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="78"/>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="144"/>
         <source>Days</source>
-        <translation>天数</translation>
+        <translation>日数</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="115"/>
         <source>Cleaning Reagents</source>
-        <translation>清洁试剂</translation>
+        <translation>クリーニング試薬</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="192"/>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>編集</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="215"/>
         <source>New</source>
-        <translation>新建</translation>
+        <translation>新規</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="238"/>
         <source>Delete</source>
-        <translation>删除</translation>
+        <translation>削除</translation>
+    </message>
+    <message>
+        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="192"/>
+        <source>Groups</source>
+        <translation>グループ</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="533"/>
@@ -2740,37 +2745,32 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="536"/>
         <source>Edit Reagent</source>
-        <translation>编辑试剂</translation>
+        <translation>試薬の編集</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="539"/>
         <source>New Reagent</source>
-        <translation>新试剂</translation>
+        <translation>新規試薬</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="542"/>
         <source>Do you really want to delete the selected reagent</source>
-        <translation>确定要删除所选的试剂吗？</translation>
+        <translation>選択した試薬を本当に削除しますか?</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="545"/>
         <source>Confirmation Message</source>
-        <translation type="unfinished">确认消息</translation>
+        <translation>確認メッセージ</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="546"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="547"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
-    </message>
-    <message>
-        <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="192"/>
-        <source>Groups</source>
-        <translation type="unfinished">分组</translation>
+        <translation>キャンセル</translation>
     </message>
 </context>
 <context>
@@ -2783,12 +2783,12 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentStationWidget.ui" line="49"/>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>編集</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="236"/>
         <source>Select Reagent</source>
-        <translation>选择试剂</translation>
+        <translation>試薬の選択</translation>
     </message>
 </context>
 <context>
@@ -2801,32 +2801,32 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentStatusWidget.ui" line="66"/>
         <source>Set as Empty</source>
-        <translation>设置为空</translation>
+        <translation>空に設定</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentStatusWidget.ui" line="73"/>
         <source>Set as Full</source>
-        <translation>设置为满</translation>
+        <translation>満杯に設定</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentStatusWidget.ui" line="80"/>
         <source>Reset Data</source>
-        <translation>重置数据</translation>
+        <translation>データのリセット</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="492"/>
         <source>Confirmation Message</source>
-        <translation type="unfinished">确认消息</translation>
+        <translation>確認メッセージ</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="493"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="494"/>
         <source>No</source>
-        <translation type="unfinished">否</translation>
+        <translation>いいえ</translation>
     </message>
 </context>
 <context>
@@ -2839,7 +2839,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="102"/>
         <source>Status</source>
-        <translation>状态</translation>
+        <translation>状態</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="116"/>
@@ -2875,7 +2875,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="125"/>
         <source>On</source>
-        <translation>开</translation>
+        <translation>オン</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="145"/>
@@ -2885,12 +2885,12 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="152"/>
         <source>Periodic</source>
-        <translation>发生暂停</translation>
+        <translation>周期</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="185"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="205"/>
@@ -2915,27 +2915,27 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="265"/>
         <source>Periodic Time</source>
-        <translation>发生暂停时间</translation>
+        <translation>周期時間</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="266"/>
         <source>Minute</source>
-        <translation>分钟</translation>
+        <translation>分</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="268"/>
         <source>Edit Information</source>
-        <translation>编辑信息</translation>
+        <translation>情報の編集</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="269"/>
         <source>Edit Error</source>
-        <translation>编辑错误</translation>
+        <translation>エラーの編集</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="270"/>
         <source>Edit Warning</source>
-        <translation>编辑警告</translation>
+        <translation>警告の編集</translation>
     </message>
 </context>
 <context>
@@ -2949,7 +2949,7 @@ Date</source>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="33"/>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="282"/>
         <source>Information</source>
-        <translation>信息</translation>
+        <translation>情報</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="39"/>
@@ -2975,7 +2975,7 @@ Date</source>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="285"/>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="287"/>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>編集</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="96"/>
@@ -2999,12 +2999,12 @@ Date</source>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="159"/>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="286"/>
         <source>Error</source>
-        <translation>错误</translation>
+        <translation>エラー</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="281"/>
         <source>Alarm</source>
-        <translation>报警</translation>
+        <translation>アラーム</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="289"/>
@@ -3019,7 +3019,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="296"/>
         <source>Periodic: Off</source>
-        <translation>发生暂停：关闭</translation>
+        <translation>周期: オフ</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="300"/>
@@ -3037,32 +3037,32 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="36"/>
         <source>Save to USB</source>
-        <translation>保存至 USB</translation>
+        <translation>USB へ保存</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="69"/>
         <source>Service Export</source>
-        <translation>维修数据导出</translation>
+        <translation>サービスエクスポート</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="105"/>
         <source>Import</source>
-        <translation>导入</translation>
+        <translation>インポート</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="141"/>
         <source>SW Update</source>
-        <translation type="unfinished">软件更新</translation>
+        <translation>ソフトウェアーアップデート</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="177"/>
         <source>Remote SW Update</source>
-        <translation type="unfinished">远程软件更新</translation>
+        <translation>リモートソフトウェアーアップデート</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/DataManagementWidget.cpp" line="190"/>
         <source>Data Management</source>
-        <translation>数据管理</translation>
+        <translation>データ管理</translation>
     </message>
 </context>
 <context>
@@ -3070,7 +3070,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/DateTimeWidget.cpp" line="126"/>
         <source>Date/Time</source>
-        <translation>日期/时间</translation>
+        <translation>日付/時刻</translation>
     </message>
 </context>
 <context>
@@ -3078,7 +3078,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/FileViewWidget.cpp" line="89"/>
         <source>Event View</source>
-        <translation type="unfinished">事件视图</translation>
+        <translation>イベント表示</translation>
     </message>
 </context>
 <context>
@@ -3091,37 +3091,37 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="20"/>
         <source>Instrument Name</source>
-        <translation>仪器名称</translation>
+        <translation>装置名称</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="46"/>
         <source>Undefined instrument</source>
-        <translation>未定义的仪器</translation>
+        <translation>定義されていない装置</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="56"/>
         <source>Serial Number</source>
-        <translation>序列号</translation>
+        <translation>シリアル番号</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="68"/>
         <source>0000-0000-0000-0000</source>
-        <translation type="unfinished">12h {0000-0000-0000-0000?}</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="79"/>
         <source>Software Version</source>
-        <translation>软件版本</translation>
+        <translation>ソフトウェアバージョン</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="133"/>
         <source>Installation</source>
-        <translation>安装</translation>
+        <translation>インストール</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="134"/>
         <source>Edit</source>
-        <translation>编辑</translation>
+        <translation>編集</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="138"/>
@@ -3131,7 +3131,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/InstallationSettingsWidget.cpp" line="142"/>
         <source>Driver Version : </source>
-        <translation>驱动程序版本：</translation>
+        <translation>ドライバーバージョン: </translation>
     </message>
 </context>
 <context>
@@ -3139,7 +3139,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/LanguageWidget.cpp" line="217"/>
         <source>Language</source>
-        <translation type="unfinished">语言</translation>
+        <translation>言語</translation>
     </message>
 </context>
 <context>
@@ -3157,7 +3157,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/LanguageWidget.cpp" line="216"/>
         <source>Languages</source>
-        <translation type="unfinished">语言</translation>
+        <translation>言語</translation>
     </message>
 </context>
 <context>
@@ -3170,19 +3170,19 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="20"/>
         <source>Remote Care</source>
-        <translation>远程维护</translation>
+        <translation>リモートケア</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="26"/>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="169"/>
         <source>Enable Remote Care</source>
-        <translation>启用远程维护</translation>
+        <translation>リモートケアの有効化</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="33"/>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="170"/>
         <source>Direct Connection</source>
-        <translation>直接连接</translation>
+        <translation>直接接続</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="53"/>
@@ -3215,7 +3215,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="114"/>
         <source>123.456.789.012</source>
-        <translation type="unfinished">12h {123.456.789.012?}</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="134"/>
@@ -3237,27 +3237,27 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="168"/>
         <source>Network</source>
-        <translation>网络</translation>
+        <translation>ネットワーク</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="176"/>
         <source>Enter Proxy User Name</source>
-        <translation>输入代理用户名</translation>
+        <translation>プロキシユーザー名の入力</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="177"/>
         <source>Enter Proxy Password</source>
-        <translation>输入代理密码</translation>
+        <translation>プロキシパスワードの入力</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="178"/>
         <source>Enter Proxy IP Address</source>
-        <translation>输入代理 IP 地址</translation>
+        <translation>プロキシ IP アドレスの入力</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/NetworkSettingsWidget.cpp" line="179"/>
         <source>Enter Proxy Port</source>
-        <translation>输入代理端口</translation>
+        <translation>プロキシポートの入力</translation>
     </message>
 </context>
 <context>
@@ -3270,57 +3270,57 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="92"/>
         <source>Languages</source>
-        <translation type="unfinished">语言</translation>
+        <translation>言語</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="103"/>
         <source>Regional Settings</source>
-        <translation>区域设置</translation>
+        <translation>地域設定</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="114"/>
         <source>Date/Time</source>
-        <translation>日期/时间</translation>
+        <translation>日付/時刻</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="125"/>
         <source>Alarm</source>
-        <translation>报警</translation>
+        <translation>アラーム</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="136"/>
         <source>Installation</source>
-        <translation>安装</translation>
+        <translation>インストール</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="147"/>
         <source>System Setup</source>
-        <translation>系统设置</translation>
+        <translation>システム設定</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="158"/>
         <source>Data Mgm.</source>
-        <translation>数据管理</translation>
+        <translation>データ管理</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="169"/>
         <source>Maintenance</source>
-        <translation>维护</translation>
+        <translation>保守</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="180"/>
         <source>Event View</source>
-        <translation>事件视图</translation>
+        <translation>イベント表示</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="191"/>
         <source>Network</source>
-        <translation>网络</translation>
+        <translation>ネットワーク</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/ParametersWidget.cpp" line="88"/>
         <source>Parameter</source>
-        <translation>参数</translation>
+        <translation>パラメータ</translation>
     </message>
 </context>
 <context>
@@ -3348,37 +3348,37 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="109"/>
         <source>24h</source>
-        <translation>24h</translation>
+        <translation>24 時間</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="119"/>
         <source>12h</source>
-        <translation>12h</translation>
+        <translation>12 時間</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="155"/>
         <source>Time Format:</source>
-        <translation>时间格式：</translation>
+        <translation>時間フォーマット:</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="201"/>
         <source>Date Format:</source>
-        <translation>日期格式：</translation>
+        <translation>日付フォーマット:</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="211"/>
         <source>International: dd.mm.yyyy</source>
-        <translation>国际制：dd.mm.yyyy</translation>
+        <translation>国外: dd.mm.yyyy</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="218"/>
         <source>ISO: yyyy-mm-dd</source>
-        <translation>ISO：yyyy-mm-dd</translation>
+        <translation>ISO: yyyy-mm-dd</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="225"/>
         <source>US: mm/dd/yyyy</source>
-        <translation>美制：mm/dd/yyyy</translation>
+        <translation>US: mm/dd/yyyy</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="263"/>
@@ -3388,7 +3388,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/RegionalSettingsWidget.cpp" line="212"/>
         <source>Regional Settings</source>
-        <translation>区域设置</translation>
+        <translation>地域設定</translation>
     </message>
 </context>
 <context>
@@ -3407,7 +3407,7 @@ Date</source>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="34"/>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="100"/>
         <source>Reset</source>
-        <translation>重置</translation>
+        <translation>リセット</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="47"/>
@@ -3423,17 +3423,17 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="73"/>
         <source>365</source>
-        <translation type="unfinished">12h {365?}</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="81"/>
         <source>Use exhausting system</source>
-        <translation>使用排气系统</translation>
+        <translation>排気システムを使用する</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="88"/>
         <source>Active carbon filter [Days]</source>
-        <translation>活性炭滤网 [天]</translation>
+        <translation>活性炭フィルター [日間]</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="126"/>
@@ -3443,7 +3443,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="139"/>
         <source>150</source>
-        <translation type="unfinished">12h {150?}</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="152"/>
@@ -3453,7 +3453,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="165"/>
         <source>240</source>
-        <translation type="unfinished">12h {240?}</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="192"/>
@@ -3463,22 +3463,22 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="205"/>
         <source>Shutdown</source>
-        <translation>关机</translation>
+        <translation>シャットダウン</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="228"/>
         <source>Start Service App</source>
-        <translation>启动维修应用</translation>
+        <translation>サービスアプリの起動</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="328"/>
         <source>Maintenance</source>
-        <translation>维护</translation>
+        <translation>保守</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/ServiceSettingsWidget.cpp" line="329"/>
         <source>If shut down now, 12 hours will be needed for melt paraffin in next startup! really shut down?</source>
-        <translation>如果现在关闭，在下次启动时需要 12 小时熔化石蜡！确定要关闭？</translation>
+        <translation>シャットダウンすると、次回スタートアップ時にパラフィンが溶けるまでに 12 時間必要です! 本当にシャットダウンしますか?</translation>
     </message>
 </context>
 <context>
@@ -3491,7 +3491,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/SettingsWidget.cpp" line="150"/>
         <source>Parameter</source>
-        <translation>参数</translation>
+        <translation>パラメータ</translation>
     </message>
 </context>
 <context>
@@ -3514,7 +3514,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/SystemSetupSettingsWidget.cpp" line="262"/>
         <source>System Setup</source>
-        <translation>系统设置</translation>
+        <translation>システム設定</translation>
     </message>
 </context>
 <context>
@@ -3539,20 +3539,20 @@ Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Users/Forms/UserPrivilegeWidget.ui" line="144"/>
+        <source>Change Password</source>
+        <translation>パスワードの変更</translation>
+    </message>
+    <message>
         <location filename="../../Users/Forms/UserPrivilegeWidget.ui" line="201"/>
         <source>Ctrl+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Users/Forms/UserPrivilegeWidget.ui" line="144"/>
-        <source>Change Password</source>
-        <translation>更改密码</translation>
-    </message>
-    <message>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="77"/>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="442"/>
         <source>User</source>
-        <translation>用户</translation>
+        <translation>ユーザー</translation>
     </message>
     <message>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="178"/>
@@ -3560,19 +3560,19 @@ Please wait...</source>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="231"/>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="447"/>
         <source>Enter Password</source>
-        <translation>输入密码</translation>
+        <translation>パスワードの入力</translation>
     </message>
     <message>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="366"/>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="451"/>
         <source>Enter New Password</source>
-        <translation>输入新密码</translation>
+        <translation>新しいパスワードの入力</translation>
     </message>
     <message>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="373"/>
         <location filename="../../Users/Source/UserPrivilegeWidget.cpp" line="456"/>
         <source>Confirm New Password</source>
-        <translation>确认新密码</translation>
+        <translation>新しいパスワードの確認</translation>
     </message>
 </context>
 </TS>
