@@ -251,6 +251,12 @@ private slots:
     /****************************************************************************/
     void SwitchToFavoritePanel();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of SwitchToFavoritePanel
+     */
+    /****************************************************************************/
+    void OnResumeProgramReminder();
 private:
     /****************************************************************************/
     /*!
@@ -293,6 +299,7 @@ private:
 
     QString m_strConfirmation;       ///<  Definition/Declaration of variable m_strConfirmation
     QString m_strAbortProgram;       ///<  Definition/Declaration of variable m_strAbortProgram
+    QString m_strPauseProgram;       ///<  Definition/Declaration of variable m_strPauseProgram
 
     QString m_strWarning;       ///<  Definition/Declaration of variable m_strWarning
     QString m_strYes;       ///<  Definition/Declaration of variable m_strYes
@@ -302,6 +309,7 @@ private:
     QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
     QString m_strNo;       ///<  Definition/Declaration of variable m_strNo
     QString m_strNeedMeltParaffin;       ///<  Definition/Declaration of variable m_strNeedMeltParaffin
+    QTimer* m_Timer;       ///<  Definition/Declaration of program resume remider m_Timer
 };
 
 }// end namespace Dashboard

@@ -1830,6 +1830,11 @@ Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="195"/>
+        <source>The program should be resumed in two minutes!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="196"/>
         <source>Program &quot;%1&quot; is complete! Would you like to drain the retort?</source>
         <translation type="unfinished"></translation>

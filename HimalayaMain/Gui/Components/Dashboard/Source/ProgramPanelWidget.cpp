@@ -75,6 +75,10 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     CONNECTSIGNALSLOT(ui->programRunningPanel, AbortClicked(int), this, OnButtonClicked(int));
 
     CONNECTSIGNALSLOT(this, UpdateProgram(DataManager::CProgram&), ui->favoriteProgramsPanel, UpdateProgram(DataManager::CProgram&));
+
+    m_Timer = new QTimer(this);
+    m_Timer->setInterval(2*60*1000);
+    (void)connect(m_Timer, SIGNAL(timeout()), this, SLOT(OnResumeProgramReminder()));
 }
 
 CProgramPanelWidget::~CProgramPanelWidget()
@@ -108,7 +112,7 @@ void CProgramPanelWidget::RetranslateUI()
                                                                  0, QApplication::UnicodeUTF8));
     m_strConfirmation = QApplication::translate("Dashboard::CProgramPanelWidget", "Confirmation Message", 0, QApplication::UnicodeUTF8);
     m_strAbortProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Do you want to abort the program?", 0, QApplication::UnicodeUTF8);
-
+    m_strPauseProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "The program should be resumed in two minutes!", 0, QApplication::UnicodeUTF8);
 
     m_strYes = QApplication::translate("Dashboard::CProgramPanelWidget", "Yes", 0, QApplication::UnicodeUTF8);
     m_strNo = QApplication::translate("Dashboard::CProgramPanelWidget", "No", 0, QApplication::UnicodeUTF8);
@@ -148,6 +152,9 @@ void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime,
 
 bool CProgramPanelWidget::CheckPreConditionsToPauseProgram()
 {
+    m_Timer->stop();
+    OnResumeProgramReminder();
+    m_Timer->start();
     return true;
 }
 
@@ -169,6 +176,7 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
     if ( whichBtn == Dashboard::firstButton ) {
         Core::CGlobalHelper::SetProgramPaused(false);
         ui->startButton->setEnabled(false);//protect to click twice in a short time
+        m_Timer->stop();
 
         switch(m_ProgramNextAction)
         {      
@@ -294,6 +302,18 @@ void CProgramPanelWidget::OnProgramActionStopped(DataManager::ProgramStatusType_
 void CProgramPanelWidget::SwitchToFavoritePanel()
 {
     ui->stackedWidget->setCurrentIndex(0);
+}
+
+void CProgramPanelWidget::OnResumeProgramReminder()
+{
+    MainMenu::CMessageDlg ConfirmationMessageDlg;
+
+    ConfirmationMessageDlg.SetTitle(m_strConfirmation);
+    ConfirmationMessageDlg.SetText(m_strPauseProgram);
+    ConfirmationMessageDlg.SetIcon(QMessageBox::Information);
+    ConfirmationMessageDlg.SetButtonText(1, CommonString::strOK);
+    ConfirmationMessageDlg.HideButtons();
+    (void)ConfirmationMessageDlg.exec();
 }
 
 }
