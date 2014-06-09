@@ -77,8 +77,7 @@ CUserPrivilegeWidget::CUserPrivilegeWidget(QWidget *p_Parent,
     SetPanelTitle(QApplication::translate("Users::CUserPrivilegeWidget", "User", 0, QApplication::UnicodeUTF8));
 	
 	m_Timer = new QTimer(this);
-    m_Timer->setInterval(600000);//10 minutes
-    //m_Timer->setInterval(3000);//test
+    m_Timer->setInterval(8*60*1000);//8 minutes, enter idle;
     (void)connect(m_Timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
     m_Timer->start();
 }
@@ -281,11 +280,13 @@ void CUserPrivilegeWidget::OnOkClicked(QString EnteredString)
             m_SupervisorBtnClicked = false;
             m_ChangePasswdBtnClicked = false;
             m_PwdType = "Old";
+            m_Timer->setInterval(10*60*1000); //10 minutes timeout for supervisor;
         }
         else if (m_ServiceUserBtnClicked){
             m_ServiceUserBtnClicked = false;
             m_ChangePasswdBtnClicked = false;
             m_PwdType = "Old";
+            m_Timer->setInterval(20*60*1000); //20 minutes timeout for service;
         }
         else if (m_ChangePasswdBtnClicked) {
             /// don't reset the change password button flag
