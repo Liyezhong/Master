@@ -1178,7 +1178,14 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         }
         else
         {
-            m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow(true);
+            if ( true == mp_HeatingStrategy->GetCmdResult())
+            {
+                m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow(true);
+            }
+            else
+            {
+                m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow(false);
+            }
         }
     }
     else if (SM_ERR_RC_RESTART == currentState)
@@ -1748,7 +1755,7 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
 void SchedulerMainThreadController::RestartLevelSensorTempCtrlInError()
 {
     HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
-    mp_HeatingStrategy->ReStartLevelSensorTemperatureControlInError(strctHWMonitor);
+    mp_HeatingStrategy->StartLevelSensorTemperatureControl(strctHWMonitor);
 }
 
 //client-->master

@@ -187,15 +187,22 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  Restart level sensor temperature control for recovery RC_LevelSensor_Heating_Overtime when
-     *          Scheduler is in Error state
-     *
-     *  \param  strctHWMonitor - current temperature of level sensor
-     *
+     *  \brief set the retort level sensor temperature
+     *  \param strctHWMonitor = struct HardwareMnotior
+     *  \return form ReturnCode_t
+     */
+    /****************************************************************************/
+    DeviceControl::ReturnCode_t StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  set the retort level sensor temperature
+     *  \param  void
      *  \return void
      */
     /****************************************************************************/
-    void ReStartLevelSensorTemperatureControlInError(const HardwareMonitor_t& strctHWMonitor);
+    bool GetCmdResult() const { return m_CmdResult; }
+
 
 private slots:
     /****************************************************************************/
@@ -219,6 +226,7 @@ private:
     RVOutlet							m_RVOutlet;                     //!< rotary valve of outlet
     LASensor                            m_LARVTube;                     //!< LA of tube heat sensor
     LASensor                            m_LAWaxTrap;                    //!< LA of waxTrap
+    bool                                m_CmdResult;                    //!< flag to indicate command result
 
     /****************************************************************************/
     /*!
@@ -247,15 +255,6 @@ private:
      */
     /****************************************************************************/
 	inline bool CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp);
-
-    /****************************************************************************/
-    /*!
-     *  \brief set the retort level sensor temperature
-     *  \param strctHWMonitor = struct HardwareMnotior
-     *  \return form ReturnCode_t
-     */
-    /****************************************************************************/
-    DeviceControl::ReturnCode_t StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor);
 
     /****************************************************************************/
     /*!

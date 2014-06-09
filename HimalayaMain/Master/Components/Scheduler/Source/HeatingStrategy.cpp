@@ -38,6 +38,7 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
 {
     CONNECTSIGNALSLOT(mp_SchedulerCommandProcessor, ReportLevelSensorStatus1(), this, OnReportLevelSensorStatus1());
     m_CurScenario = 0;
+    m_CmdResult = true;
     this->ConstructHeatingSensorList();
 }
 DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMonitor_t& strctHWMonitor, qint32 scenario)
@@ -221,56 +222,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
-void HeatingStrategy::ReStartLevelSensorTemperatureControlInError(const HardwareMonitor_t& strctHWMonitor)
-{
-    QMap<QString, FunctionModule>::iterator iter = m_RTLevelSensor.functionModuleList.begin();
-    for (; iter!=m_RTLevelSensor.functionModuleList.end(); ++iter)
-    {
-        // Current(new) scenario belongs to the specific scenario list
-        if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
-        {
-            // Check for High or Low speed
-            if (m_RTLevelSensor.ExchangePIDTempList[iter->Id] >= strctHWMonitor.TempALLevelSensor)
-            {
-                if ("High" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
-                {
-                    break;
-                }
-                else
-                {
-                    continue;
-                }
-            }
-            else if (m_RTLevelSensor.ExchangePIDTempList[iter->Id] < strctHWMonitor.TempALLevelSensor)
-            {
-                if ("Low" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
-                {
-                    break;
-                }
-                else
-                {
-                    continue;
-                }
-            }
-
-        }
-    }
-
-    // Found out the level sensor's function module
-    if (iter != m_RTLevelSensor.functionModuleList.end())
-    {
-        CmdALStartTemperatureControlWithPID* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
-        pHeatingCmd->SetType(AL_LEVELSENSOR);
-        pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset);
-        pHeatingCmd->SetSlopeTempChange(iter->SlopTempChange);
-        pHeatingCmd->SetMaxTemperature(iter->MaxTemperature);
-        pHeatingCmd->SetControllerGain(iter->ControllerGain);
-        pHeatingCmd->SetResetTime(iter->ResetTime);
-        pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
-    }
-}
-
 bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)
 {
     if (true == heatingSensor.curModuleId.isEmpty())
@@ -356,10 +307,12 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
 
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
+            m_CmdResult = false;
             return retCode;
         }
         else
         {
+            m_CmdResult = true;
             m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             m_RTLevelSensor.curModuleId = iter->Id;
             m_RTLevelSensor.OTCheckPassed = false;
