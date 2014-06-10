@@ -274,7 +274,7 @@ void ImportExportThreadController::OnGoReceived() {
             bool IsSelectionRequested = false;
             Q_UNUSED(IsSelectionRequested);
             // mount the USB device
-            if (MountDevice(true)) {
+            if (MountDevice(true, "*.lpkg")) {
                 // to store the files in the directory
                 QStringList DirFileNames;
                 QDir Dir(Global::DIRECTORY_MNT_STORAGE + QDir::separator() + DIRECTORY_IMPORT);
@@ -1540,11 +1540,10 @@ bool ImportExportThreadController::ImportLeicaUserReagents(const DataManager::CD
 
 
 /****************************************************************************/
-bool ImportExportThreadController::MountDevice(bool IsImport) {
+bool ImportExportThreadController::MountDevice(bool IsImport, QString FileExtensionName) {
     QString FileName("");
-
     if (IsImport) {
-        FileName = Global::DIRECTORY_MNT_STORAGE + QDir::separator() + DIRECTORY_IMPORT + QDir::separator() + "*.lpkg";
+        FileName = m_DeviceName + DELIMITER_STRING_UNDERSCORE + FileExtensionName;
     }
 
     // check for the file existence in the mounted device.

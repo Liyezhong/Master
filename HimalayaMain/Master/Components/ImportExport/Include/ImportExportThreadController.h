@@ -373,13 +373,13 @@ private:
     /**
      * \brief Mounts the USB device.
      *
-     *
+     * \iparam      FileExtensionName  file extension
      * \iparam     IsImport     Import flag
      *
      * \return On successful (true) or not (false)
      */
     /****************************************************************************/
-    bool MountDevice(bool IsImport = false);
+    bool MountDevice(bool IsImport = false, QString FileExtensionName = "");
 
 
     /****************************************************************************/
