@@ -194,16 +194,6 @@ public:
     /****************************************************************************/
     DeviceControl::ReturnCode_t StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor);
 
-    /****************************************************************************/
-    /*!
-     *  \brief  set the retort level sensor temperature
-     *  \param  void
-     *  \return void
-     */
-    /****************************************************************************/
-    bool GetCmdResult() const { return m_CmdResult; }
-
-
 private slots:
     /****************************************************************************/
     /*!

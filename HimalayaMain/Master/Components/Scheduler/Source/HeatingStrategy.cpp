@@ -307,12 +307,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
 
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
-            m_CmdResult = false;
             return retCode;
         }
         else
         {
-            m_CmdResult = true;
             m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             m_RTLevelSensor.curModuleId = iter->Id;
             m_RTLevelSensor.OTCheckPassed = false;
