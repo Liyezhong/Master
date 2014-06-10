@@ -124,6 +124,8 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
 
     //EventHandlercomamnds
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdEventReport>(&CDataConnector::EventReportHandler, this);
+
+    m_NetworkObject.RegisterNetMessage<MsgClasses::CmdDataImportFiles>(&CDataConnector::OnImportFileSelection, this);
     //user menu functions
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdChangeUserLevelReply>(&CDataConnector::UserAuthenticationHandler, this);
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdChangeAdminPasswordReply>(&CDataConnector::AdminPasswordChangeHandler, this);
@@ -1149,6 +1151,40 @@ void CDataConnector::SendSWUpdate(bool USBUpdate)
     NetCommands::CmdSWUpdate Command(Global::Command::MAXTIMEOUT, USBUpdate);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
 }
+
+
+/****************************************************************************/
+/*!
+ *  \brief Handler for selection to import files
+ *
+ *  \iparam Ref = Command reference
+ *  \iparam Command = CmdDataImportFiles class object
+ */
+/****************************************************************************/
+void CDataConnector::OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command)
+{
+    m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
+    emit DisplaySelectionDialog(Command.GetCommandData());
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Send command to Main to import the required files
+ *  \iparam FileList = List of files
+ */
+/****************************************************************************/
+void CDataConnector::SendRequestedFilesToImport(QStringList FileList)
+{
+    // For the file selection cancel no need of displaying the wait dialog.
+    if (FileList.count() > 0) {
+        mp_WaitDialog->SetDialogTitle(tr(m_strImport.toAscii()));
+        mp_WaitDialog->SetText(tr(m_strImportData.toAscii()));
+        mp_WaitDialog->show();
+    }
+    MsgClasses::CmdDataImportFiles Command(120000, FileList);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+}
+
 /****************************************************************************/
 /*!
  *  \brief Handles incoming Event String command

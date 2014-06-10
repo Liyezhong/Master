@@ -86,6 +86,8 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     CONNECTSIGNALSLOT(mp_Data, UserSettingsUpdated(), this, UserSettingsUpdated());
     CONNECTSIGNALSLOT(mp_Ui->pageDataManagement, ExecSending(const QString, const QStringList &), mp_Data, SendDataImportExport(const QString , const QStringList &));
     CONNECTSIGNALSLOT(mp_Ui->pageDataManagement, EmitSWUpdate(bool), mp_Data, SendSWUpdate(bool));
+    CONNECTSIGNALSLOT(p_Data, DisplaySelectionDialog(QStringList), mp_Ui->pageDataManagement, DisplaySelectionDialog(QStringList));
+    CONNECTSIGNALSLOT(mp_Ui->pageDataManagement, SelectedImportFileList(QStringList), p_Data, SendRequestedFilesToImport(QStringList));
 
     CONNECTSIGNALSLOT(mp_Ui->settingsStack, currentChanged(int), this, PanelSelected(int));
     CONNECTSIGNALSLOT(mp_Ui->pageEventView, SelectedLogFile(const QString &), mp_Data, SendSelectedDayRunLogFile(const QString &));

@@ -54,7 +54,7 @@
 #include <ImportExport/Include/ImportExportThreadController.h>
 #include <HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdResetOperationHours.h>
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
-
+#include <DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImportFiles.h>
 //lint -e1536
 
 namespace EventHandler {
@@ -237,6 +237,13 @@ private:
             try {
                 // connect the siganl slot mechanism to create the process.
 				ImportExportThreadController->SetEventLogFileName(GetEventLoggerBaseFileName());
+                CONNECTSIGNALSLOT(ImportExportThreadController,
+                                  RequestFileSelectionToImport(QStringList), this,
+                                  SendFileSelectionToGUI(QStringList));
+                // connect the siganl slot mechanism to set directory name.
+                CONNECTSIGNALSLOT(this,
+                                  ImportSelectedFiles(QStringList), ImportExportThreadController,
+                                  StartImportingFiles(QStringList));
                 CONNECTSIGNALSLOT(ImportExportThreadController, StartExportProcess(QString), this, StartExportProcess(QString));
             }
             catch (...){
@@ -418,6 +425,19 @@ private:
      */
     /****************************************************************************/
     void OnCmdGuiInitHandler(Global::tRefType Ref, const NetCommands::CmdGuiInit &Cmd, Threads::CommandChannel &AckCommandChannel);
+
+    /****************************************************************************/
+    /**
+     * \brief Start to import the files to local system.
+     *
+     * \iparam Ref - Refernce of the command argument
+     * \iparam Cmd - Command class
+     * \iparam AckCommandChannel - Channel class for the command
+     *
+     */
+    /****************************************************************************/
+    void ImportFilesHandler(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Cmd,
+                                     Threads::CommandChannel &AckCommandChannel);
 
     /****************************************************************************/
     /*!

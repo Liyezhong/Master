@@ -269,10 +269,6 @@ void ImportExportThreadController::OnGoReceived() {
             }
         }
         else {
-            bool IsImported = false;
-            Q_UNUSED(IsImported);
-            bool IsSelectionRequested = false;
-            Q_UNUSED(IsSelectionRequested);
             // mount the USB device
             if (MountDevice(true, "*.lpkg")) {
                 // to store the files in the directory
@@ -285,7 +281,6 @@ void ImportExportThreadController::OnGoReceived() {
                         m_EventRaised = true;
                         Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_NO_FILES_TO_IMPORT);
                         m_EventCode = EVENT_IMPORT_NO_FILES_TO_IMPORT;
-                        IsImported = false;
                         emit ThreadFinished(false, QStringList(), m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
                         break;
                     case 1:
@@ -293,29 +288,15 @@ void ImportExportThreadController::OnGoReceived() {
                         StartImportingFiles(DirFileNames);
                         break;
                     default:
-                        IsSelectionRequested = true;
                         // sort the files
                         emit RequestFileSelectionToImport(DirFileNames);
-                        emit ThreadFinished(false, QStringList(), m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
                         break;
                 }
 
             }
             else{
-                emit ThreadFinished(IsImported, QStringList() << TypeOfImport, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
+                emit ThreadFinished(false, QStringList() << TypeOfImport, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
             }
-//            if (!IsSelectionRequested) {
-//                // if the import is not successful then raise event
-//                if (!IsImported) {
-//                    // if the event is not raised then display an error due to any reason
-//                    if (!m_EventRaised) {
-//                        Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_FAILED, true);
-//                        m_EventCode = EVENT_IMPORT_FAILED;
-//                    }
-//                }
-//                // emit the thread finished flag
-//                emit ThreadFinished(IsImported, QStringList() << TypeOfImport, m_EventCode, m_CurrentLanguageUpdated, m_NewLanguageAdded);
-//            }
         }
     }
     else {

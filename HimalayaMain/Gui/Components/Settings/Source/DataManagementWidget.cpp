@@ -22,6 +22,7 @@
 #include "Global/Include/Utils.h"
 #include "Global/Include/Exception.h"
 #include "ui_DataManagementWidget.h"
+#include "MainMenu/Include/FileSelection.h"
 #include <QEvent>
 #include "Core/Include/GlobalHelper.h"
 
@@ -116,6 +117,28 @@ void CDataManagementWidget:: RemoteSWUpdate()
 {
     emit EmitSWUpdate(false);
 }
+
+
+/****************************************************************************/
+/*!
+ *  \brief Display the selection dialog to select required files
+ *
+ *  \iparam FileList    List of files
+ */
+/****************************************************************************/
+void CDataManagementWidget::DisplaySelectionDialog(QStringList FileList)
+{
+    MainMenu::CFileSelection FileSelection;
+
+    CONNECTSIGNALSIGNAL(&FileSelection, SelectedFileList(QStringList), this, SelectedImportFileList(QStringList));
+    FileSelection.SetData(3, "_", 1, QStringList() << "Leica" << "Language" << "Service" << "User",
+                          QStringList() << "Service" << "User");
+    FileSelection.SetFileList(FileList);
+    FileSelection.setModal(true);
+    FileSelection.SetFileSelectionPanelSize(800, 600);
+    (void) FileSelection.exec();
+}
+
 /****************************************************************************/
 /*!
  *  \brief Enables/Disables the button based on the user role/process

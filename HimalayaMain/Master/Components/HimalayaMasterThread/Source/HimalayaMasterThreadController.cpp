@@ -83,7 +83,6 @@
 #include "HimalayaDataContainer/Helper/Include/Global.h"
 
 #include <SWUpdateManager/Include/SWUpdateManager.h>
-#include <DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImportFiles.h>
 #include <Global/Include/Commands/CmdShutDown.h>
 #include <Global/Include/Commands/Command.h>
 
@@ -428,6 +427,8 @@ void HimalayaMasterThreadController::RegisterCommands() {
             (&HimalayaMasterThreadController::ImportExportDataFileHandler, this);
     RegisterCommandForProcessing<MsgClasses::CmdDataImport, HimalayaMasterThreadController>
             (&HimalayaMasterThreadController::ImportExportDataFileHandler, this);
+    RegisterCommandForProcessing<MsgClasses::CmdDataImportFiles, HimalayaMasterThreadController>
+                (&HimalayaMasterThreadController::ImportFilesHandler, this);
 
     //User level functions
     RegisterCommandForProcessing<NetCommands::CmdChangeAdminPassword, HimalayaMasterThreadController>
@@ -524,6 +525,12 @@ void HimalayaMasterThreadController:: OnCmdGuiInitHandler(Global::tRefType Ref, 
     }
 }
 
+void HimalayaMasterThreadController::ImportFilesHandler(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Cmd,
+                                                        Threads::CommandChannel &AckCommandChannel) {
+    Q_UNUSED(AckCommandChannel);
+    m_ImportExportCommandRef = Ref;
+    emit ImportSelectedFiles(Cmd.GetCommandData());
+}
 /****************************************************************************/
 void HimalayaMasterThreadController::SendXML() {
     Q_ASSERT(mp_DataManager);

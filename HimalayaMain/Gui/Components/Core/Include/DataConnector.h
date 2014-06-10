@@ -41,6 +41,7 @@
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsEmpty.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationSetAsFull.h"
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdUpdateStationReagentStatus.h"
+#include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImportFiles.h"
 
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdCurrentProgramStepInfor.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
@@ -302,6 +303,7 @@ public slots:
      */
     /****************************************************************************/
     void SendResetOperationDays(DataManager::ResetOperationHoursType_t);
+    void SendRequestedFilesToImport(QStringList FileList);
 
 signals:
 
@@ -652,6 +654,20 @@ signals:
      */
     /****************************************************************************/
     void StationSuckDrain(const MsgClasses::CmdStationSuckDrain& Command);
+
+    /****************************************************************************/
+    /*!
+     *  \brief This signal is emitted when
+     *         GUI receives to import multiple files
+     *
+     *  \iparam FileList    List of files
+     */
+    /****************************************************************************/
+    void DisplaySelectionDialog(QStringList FileList);
+
+protected:
+    void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);
+
 private:
     void ConfFileHandler(Global::tRefType Ref, const NetCommands::CmdConfigurationFile &Command);
     void ProcessStateHandler(Global::tRefType ref, const NetCommands::CmdProcessState &Command);

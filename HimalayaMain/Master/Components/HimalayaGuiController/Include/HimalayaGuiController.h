@@ -24,6 +24,7 @@
 #include <ExternalProcessController/Include/ExternalProcessController.h>
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataExport.h"
 #include "DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImport.h"
+#include <DataManager/Containers/ExportConfiguration/Commands/Include/CmdDataImportFiles.h>
 
 
 

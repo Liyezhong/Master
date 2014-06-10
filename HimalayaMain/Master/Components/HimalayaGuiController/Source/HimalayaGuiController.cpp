@@ -292,6 +292,10 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdDataExport>, this);
     RegisterExternalMessage<MsgClasses::CmdDataImport, HimalayaGui::HimalayaGuiController>
             (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdDataImport>, this);
+    RegisterExternalMessage<MsgClasses::CmdDataImportFiles, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::ForwardCmdFromExternalProcess<MsgClasses::CmdDataImportFiles>, this);
+    RegisterCommandForProcessing<MsgClasses::CmdDataImportFiles, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<MsgClasses::CmdDataImportFiles>, this);
 
     // User level functions for the different users
     RegisterExternalMessage<NetCommands::CmdChangeAdminPassword, HimalayaGui::HimalayaGuiController>

@@ -90,6 +90,7 @@ private slots:
      */
     /****************************************************************************/
     void RemoteSWUpdate();
+    void DisplaySelectionDialog(QStringList FileList);
 
 signals:
 
@@ -105,6 +106,16 @@ signals:
      */
     /****************************************************************************/
     void EmitSWUpdate(bool);
+
+    /****************************************************************************/
+    /**
+     * \brief This signal is emitted when file selection window pop-up and clicks ok.
+     *
+     *  \iparam FileList = List of files which needs to be imported.
+     *
+     */
+    /****************************************************************************/
+    void SelectedImportFileList(QStringList FileList);
 };
 
 } //end of namespace
