@@ -6,7 +6,7 @@
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="52"/>
         <source>Sound</source>
-        <translation type="unfinished"></translation>
+        <translation>声音</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="53"/>
@@ -64,7 +64,7 @@
     <message>
         <location filename="../../Dashboard/Source/CassetteNumberInputWidget.cpp" line="98"/>
         <source>The entered cassette number should be between 1 and 200.</source>
-        <translation type="unfinished"></translation>
+        <translation>输入的包埋盒编号必须在 1 至 200 之间</translation>
     </message>
 </context>
 <context>
@@ -72,42 +72,42 @@
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="32"/>
         <source>Warning</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="33"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>是</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="40"/>
         <source>Program</source>
-        <translation type="unfinished">程序</translation>
+        <translation>程序</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="41"/>
         <source>Information</source>
-        <translation type="unfinished">信息</translation>
+        <translation>信息</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="42"/>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="43"/>
         <source>No</source>
-        <translation type="unfinished">否</translation>
+        <translation>否</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="44"/>
         <source>Still it will cost some time to melt paraffin, the current selected program can not run now.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="63"/>
         <source>The changes could not be saved.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="64"/>
@@ -259,7 +259,7 @@
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DateTimeWidget.ui" line="62"/>
@@ -318,7 +318,7 @@
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelectionModel.cpp" line="206"/>
         <source>File Name</source>
-        <translation type="unfinished">文件名</translation>
+        <translation>文件名</translation>
     </message>
 </context>
 <context>
@@ -337,7 +337,7 @@
         <location filename="../../Dashboard/Source/IconTitlePanelFrame.cpp" line="106"/>
         <location filename="../../Dashboard/Source/IconTitlePanelFrame.cpp" line="107"/>
         <source>%1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -368,7 +368,7 @@
     <message>
         <location filename="../../Settings/Source/LanguageModel.cpp" line="159"/>
         <source>Language</source>
-        <translation type="unfinished">语言</translation>
+        <translation>语言</translation>
     </message>
 </context>
 <context>
@@ -376,7 +376,7 @@
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MenuGroup.cpp" line="42"/>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -426,7 +426,7 @@
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="262"/>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="669"/>
         <source>%1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="361"/>
@@ -455,7 +455,7 @@
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="40"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="40"/>
@@ -544,17 +544,17 @@
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="47"/>
         <source>Please Select reagent group</source>
-        <translation type="unfinished"></translation>
+        <translation>请选择试剂组</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="48"/>
         <source>Reagent add failed</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="49"/>
         <source>Reagent copy failed</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="50"/>
@@ -607,7 +607,7 @@
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="501"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="509"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="502"/>
@@ -661,7 +661,7 @@
     <message>
         <location filename="../../Programs/Source/ProgramModel.cpp" line="248"/>
         <source>Apply</source>
-        <translation type="unfinished">应用</translation>
+        <translation>应用</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramModel.cpp" line="250"/>
@@ -684,12 +684,12 @@
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="28"/>
         <source>Programs</source>
-        <translation type="unfinished">程序</translation>
+        <translation>程序</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="227"/>
         <source>Abort</source>
-        <translation type="unfinished">终止</translation>
+        <translation>终止</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="234"/>
@@ -702,12 +702,12 @@
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="22"/>
         <source>Aborted.</source>
-        <translation type="unfinished">已终止。</translation>
+        <translation>已终止。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="23"/>
         <source>Completed!</source>
-        <translation type="unfinished">已完成！</translation>
+        <translation>已完成！</translation>
     </message>
 </context>
 <context>
@@ -771,7 +771,7 @@
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="30"/>
         <source>Select Color</source>
-        <translation type="unfinished">选择颜色</translation>
+        <translation>选择颜色</translation>
     </message>
 </context>
 <context>
@@ -981,7 +981,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/CommonString.cpp" line="18"/>
         <source>No</source>
-        <translation type="unfinished">否</translation>
+        <translation>否</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/CommonString.cpp" line="19"/>
@@ -1006,7 +1006,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/CommonString.cpp" line="23"/>
         <source>Warning</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
 </context>
 <context>
@@ -1059,7 +1059,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1076"/>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1077"/>
@@ -1119,7 +1119,7 @@ Date</source>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1239"/>
         <source>Software Update</source>
-        <translation type="unfinished"></translation>
+        <translation>软件更新</translation>
     </message>
     <message>
         <location filename="../../Core/Source/DataConnector.cpp" line="1241"/>
@@ -1132,22 +1132,22 @@ Date</source>
     <message>
         <location filename="../../Core/Source/GlobalHelper.cpp" line="227"/>
         <source>Warning</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../../Core/Source/GlobalHelper.cpp" line="228"/>
         <source>As the program &quot;%1&quot; is selected, this operation will result in an incorrect program result, if you click &quot;Yes&quot;, the selected program will unselect.</source>
-        <translation type="unfinished"></translation>
+        <translation>当选中程序&quot;%1&quot;时，该操作将导致错误的程序结果；如果您单击&quot;是&quot;，将会取消选择所选的程序。</translation>
     </message>
     <message>
         <location filename="../../Core/Source/GlobalHelper.cpp" line="229"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>是</translation>
     </message>
     <message>
         <location filename="../../Core/Source/GlobalHelper.cpp" line="230"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -1155,12 +1155,12 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="194"/>
         <source>Reagent Group</source>
-        <translation type="unfinished">试剂组</translation>
+        <translation>试剂组</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="196"/>
         <source>Color</source>
-        <translation type="unfinished">颜色</translation>
+        <translation>颜色</translation>
     </message>
 </context>
 <context>
@@ -1180,19 +1180,19 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="556"/>
         <source>Cassettes until change</source>
-        <translation type="unfinished">更换前的包埋盒</translation>
+        <translation>更换前的包埋盒</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="559"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="578"/>
         <source>Cycles until change</source>
-        <translation type="unfinished">更换前的循环</translation>
+        <translation>更换前的循环</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="562"/>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="581"/>
         <source>Days until change</source>
-        <translation type="unfinished">更换期限 (天数)</translation>
+        <translation>更换期限 (天数)</translation>
     </message>
 </context>
 <context>
@@ -1213,12 +1213,12 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="230"/>
         <source>Station</source>
-        <translation type="unfinished">站点</translation>
+        <translation>站点</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStationWidget.cpp" line="233"/>
         <source>Reagent</source>
-        <translation type="unfinished">试剂</translation>
+        <translation>试剂</translation>
     </message>
 </context>
 <context>
@@ -1238,7 +1238,7 @@ Date</source>
         <source>Cassettes
 since
 change</source>
-        <translation type="unfinished">盒子</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="511"/>
@@ -1290,48 +1290,48 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/ContainerPanelWidget.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="47"/>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="113"/>
         <source>Dashboard</source>
-        <translation type="unfinished">界面</translation>
+        <translation>界面</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="114"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>是</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="115"/>
         <source>No</source>
-        <translation type="unfinished">否</translation>
+        <translation>否</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="116"/>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="117"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="118"/>
         <source>Warning</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="119"/>
         <source>Program</source>
-        <translation type="unfinished">程序</translation>
+        <translation>程序</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="120"/>
         <source>Information</source>
-        <translation type="unfinished">信息</translation>
+        <translation>信息</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ContainerPanelWidget.cpp" line="121"/>
@@ -1344,7 +1344,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardDateTimeWidget.ui" line="32"/>
@@ -1453,7 +1453,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="172"/>
         <source>PushButton</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/DashboardProgramStatusWidget.ui" line="189"/>
@@ -1471,7 +1471,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/DashboardWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/DashboardWidget.cpp" line="796"/>
@@ -1554,12 +1554,12 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="48"/>
         <source>Program1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="96"/>
@@ -1567,7 +1567,7 @@ Date</source>
         <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="180"/>
         <location filename="../../Dashboard/Forms/FavoriteProgramsPanelWidget.ui" line="225"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1575,7 +1575,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/IconTitlePanelFrame.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1583,7 +1583,7 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/ProgramPanelWidget.ui" line="32"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/ProgramPanelWidget.ui" line="106"/>
@@ -1593,52 +1593,52 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="107"/>
         <source>Programs</source>
-        <translation type="unfinished">程序</translation>
+        <translation>程序</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="109"/>
         <source>Confirmation Message</source>
-        <translation type="unfinished">确认消息</translation>
+        <translation>确认消息</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="110"/>
         <source>Do you want to abort the program?</source>
-        <translation type="unfinished">是否要终止程序？</translation>
+        <translation>是否要终止程序？</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="113"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>是</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="114"/>
         <source>No</source>
-        <translation type="unfinished">否</translation>
+        <translation>否</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="115"/>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="116"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="117"/>
         <source>Warning</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="118"/>
         <source>Program</source>
-        <translation type="unfinished">程序</translation>
+        <translation>程序</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="119"/>
         <source>Information</source>
-        <translation type="unfinished">信息</translation>
+        <translation>信息</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramPanelWidget.cpp" line="120"/>
@@ -1651,23 +1651,23 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="59"/>
         <source>Remaining Time:</source>
-        <translation type="unfinished"></translation>
+        <translation>程序剩余时间：</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="73"/>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="105"/>
         <source>Reagent:</source>
-        <translation type="unfinished"></translation>
+        <translation>试剂:</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="80"/>
         <source>Step Time:</source>
-        <translation type="unfinished"></translation>
+        <translation>步骤时间：</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/ProgramRunningPanelWidget.ui" line="139"/>
@@ -1682,17 +1682,17 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="159"/>
         <source>Aborting...</source>
-        <translation type="unfinished">正在终止...</translation>
+        <translation>正在终止...</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="160"/>
         <source>Aborted.</source>
-        <translation type="unfinished">已终止。</translation>
+        <translation>已终止。</translation>
     </message>
     <message>
         <location filename="../../Dashboard/Source/ProgramRunningPanelWidget.cpp" line="161"/>
         <source>Completed!</source>
-        <translation type="unfinished">已完成！</translation>
+        <translation>已完成！</translation>
     </message>
 </context>
 <context>
@@ -1728,7 +1728,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/ContentScroller.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1736,7 +1736,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DataManagement.ui" line="36"/>
@@ -1785,12 +1785,12 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DateTime.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/DateTime.ui" line="116"/>
         <source>Save</source>
-        <translation type="unfinished">保存</translation>
+        <translation>保存</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="71"/>
@@ -1837,7 +1837,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/DateTime.cpp" line="211"/>
         <source>Saving settings ...</source>
-        <translation type="unfinished"></translation>
+        <translation>正在保存设置...</translation>
     </message>
 </context>
 <context>
@@ -1853,7 +1853,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/ErrorMsgDlg.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/ErrorMsgDlg.ui" line="51"/>
@@ -1874,17 +1874,17 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/FileSelection.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/FileSelection.ui" line="25"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/FileSelection.ui" line="45"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelection.cpp" line="48"/>
@@ -1900,7 +1900,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileSelection.cpp" line="232"/>
         <source>File Name</source>
-        <translation type="unfinished">文件名</translation>
+        <translation>文件名</translation>
     </message>
 </context>
 <context>
@@ -1908,7 +1908,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/FileView.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/FileView.ui" line="61"/>
@@ -1919,12 +1919,12 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="165"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="287"/>
         <source>Event Viewer</source>
-        <translation type="unfinished"></translation>
+        <translation>事件视图</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/FileView.cpp" line="285"/>
         <source>File Name</source>
-        <translation type="unfinished">文件名</translation>
+        <translation>文件名</translation>
     </message>
 </context>
 <context>
@@ -1933,27 +1933,27 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="14"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MainWindow.cpp" line="511"/>
         <source>MainWindow</source>
-        <translation>主窗口</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="75"/>
         <source>1970-01-01</source>
-        <translation type="unfinished">12h {1970-01-01?}</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="217"/>
         <source>00:00</source>
-        <translation type="unfinished">12h {00:00?}</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="373"/>
         <source>Tab 2</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MainWindow.ui" line="378"/>
         <source>Tab 1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1961,7 +1961,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MenuGroup.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1971,7 +1971,7 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MessageDlg.ui" line="62"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/MessageDlg.ui" line="82"/>
         <source>PushButton</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1979,18 +1979,18 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="86"/>
         <source>Information Message</source>
-        <translation type="unfinished">信息消息</translation>
+        <translation>信息消息</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="93"/>
         <source>Warning Message</source>
-        <translation type="unfinished"></translation>
+        <translation>警告消息</translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="100"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/MsgBoxManager.cpp" line="105"/>
         <source>Error Message</source>
-        <translation type="unfinished"></translation>
+        <translation>错误消息</translation>
     </message>
 </context>
 <context>
@@ -1998,7 +1998,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/PanelFrame.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2007,7 +2007,7 @@ Date</source>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ServiceExportDlg.cpp" line="44"/>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Source/ServiceExportDlg.cpp" line="100"/>
         <source>Service Export</source>
-        <translation type="unfinished">维修数据导出</translation>
+        <translation>维修数据导出</translation>
     </message>
 </context>
 <context>
@@ -2015,37 +2015,37 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/ServiceExportDlg.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/ServiceExportDlg.ui" line="20"/>
         <source>Select number of event log files for export</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/ServiceExportDlg.ui" line="27"/>
         <source>5 files</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/ServiceExportDlg.ui" line="34"/>
         <source>10 files</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/ServiceExportDlg.ui" line="41"/>
         <source>15 files</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/ServiceExportDlg.ui" line="48"/>
         <source>30 files</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/ServiceExportDlg.ui" line="70"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -2053,7 +2053,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/TableMoving.ui" line="14"/>
         <source>Move</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2061,7 +2061,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/TextDialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/TextDialog.ui" line="46"/>
@@ -2074,7 +2074,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/WaitDialog.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/WaitDialog.ui" line="58"/>
@@ -2087,7 +2087,7 @@ Date</source>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/WarningMsgDlg.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../../../../../Platform/Gui/Components/MainMenu/Forms/WarningMsgDlg.ui" line="51"/>
@@ -2108,7 +2108,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="29"/>
@@ -2123,7 +2123,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="67"/>
         <source>PushButton</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramDlg.ui" line="93"/>
@@ -2174,7 +2174,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="892"/>
         <source>Enter Program Short Name</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramDlg.cpp" line="901"/>
@@ -2212,7 +2212,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramIconDlg.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramIconDlg.ui" line="341"/>
@@ -2224,7 +2224,7 @@ Date</source>
         <location filename="../../Programs/Forms/ModifyProgramIconDlg.ui" line="361"/>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="201"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramIconDlg.cpp" line="200"/>
@@ -2247,7 +2247,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="110"/>
         <source>P</source>
-        <translation type="unfinished"></translation>
+        <translation>压力</translation>
     </message>
     <message>
         <location filename="../../Programs/Forms/ModifyProgramStepDlg.ui" line="117"/>
@@ -2308,12 +2308,12 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="653"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>是</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ModifyProgramStepDlg.cpp" line="654"/>
         <source>No</source>
-        <translation type="unfinished">否</translation>
+        <translation>否</translation>
     </message>
 </context>
 <context>
@@ -2326,7 +2326,7 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="587"/>
         <source>Apply</source>
-        <translation type="unfinished">应用</translation>
+        <translation>应用</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="589"/>
@@ -2405,17 +2405,17 @@ Date</source>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="617"/>
         <source>Confirmation Message</source>
-        <translation type="unfinished">确认消息</translation>
+        <translation>确认消息</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="619"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>是</translation>
     </message>
     <message>
         <location filename="../../Programs/Source/ProgramWidget.cpp" line="620"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -2482,7 +2482,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentGroupColorDlg.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentGroupColorDlg.ui" line="285"/>
@@ -2494,7 +2494,7 @@ Date</source>
         <location filename="../../Reagents/Forms/ModifyReagentGroupColorDlg.ui" line="305"/>
         <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="136"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="142"/>
@@ -2504,7 +2504,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentGroupColorDlg.cpp" line="144"/>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -2512,17 +2512,17 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="28"/>
         <source>Reagent name:</source>
-        <translation type="unfinished"></translation>
+        <translation>试剂名称：</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="48"/>
         <source>Alcohol 100 %</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="94"/>
@@ -2532,17 +2532,17 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="117"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="154"/>
         <source>Cassettes until change:</source>
-        <translation type="unfinished"></translation>
+        <translation>更换前的包埋盒：</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentDlg.ui" line="174"/>
         <source>500</source>
-        <translation type="unfinished">12h {500?}</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="550"/>
@@ -2572,12 +2572,12 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="544"/>
         <source>Information Message</source>
-        <translation type="unfinished">信息消息</translation>
+        <translation>信息消息</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="545"/>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentRMSDlg.cpp" line="565"/>
@@ -2630,7 +2630,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentStatusDlg.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentStatusDlg.ui" line="38"/>
@@ -2641,22 +2641,22 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ModifyReagentStatusDlg.ui" line="45"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="201"/>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="202"/>
         <source>Information Message</source>
-        <translation type="unfinished">信息消息</translation>
+        <translation>信息消息</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ModifyReagentStationDlg.cpp" line="203"/>
         <source>OK</source>
-        <translation type="unfinished">确定</translation>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -2664,7 +2664,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentGroupWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentGroupWidget.ui" line="38"/>
@@ -2674,7 +2674,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="198"/>
         <source>Select Color</source>
-        <translation type="unfinished">选择颜色</translation>
+        <translation>选择颜色</translation>
     </message>
 </context>
 <context>
@@ -2682,7 +2682,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="26"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentsWidget.ui" line="42"/>
@@ -2755,22 +2755,22 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="545"/>
         <source>Confirmation Message</source>
-        <translation type="unfinished">确认消息</translation>
+        <translation>确认消息</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="546"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>是</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentRMSWidget.cpp" line="547"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentGroupWidget.cpp" line="192"/>
         <source>Groups</source>
-        <translation type="unfinished">分组</translation>
+        <translation>分组</translation>
     </message>
 </context>
 <context>
@@ -2778,7 +2778,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentStationWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentStationWidget.ui" line="49"/>
@@ -2796,7 +2796,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentStatusWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentStatusWidget.ui" line="66"/>
@@ -2816,17 +2816,17 @@ Date</source>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="492"/>
         <source>Confirmation Message</source>
-        <translation type="unfinished">确认消息</translation>
+        <translation>确认消息</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="493"/>
         <source>Yes</source>
-        <translation type="unfinished">是</translation>
+        <translation>是</translation>
     </message>
     <message>
         <location filename="../../Reagents/Source/ReagentStatusWidget.cpp" line="494"/>
         <source>No</source>
-        <translation type="unfinished">否</translation>
+        <translation>否</translation>
     </message>
 </context>
 <context>
@@ -2834,7 +2834,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="26"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="102"/>
@@ -2844,17 +2844,17 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="116"/>
         <source> Groups</source>
-        <translation type="unfinished"></translation>
+        <translation>分组</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="130"/>
         <source> Stations</source>
-        <translation type="unfinished"></translation>
+        <translation>站点</translation>
     </message>
     <message>
         <location filename="../../Reagents/Forms/ReagentSubMenuWidget.ui" line="143"/>
         <source> RMS</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2862,7 +2862,7 @@ Date</source>
     <message>
         <location filename="../../Reagents/Forms/ReagentWidget.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2870,7 +2870,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="125"/>
@@ -2880,7 +2880,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="145"/>
         <source>   Off  </source>
-        <translation type="unfinished"></translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsDlg.ui" line="152"/>
@@ -2905,7 +2905,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="263"/>
         <source>Sound</source>
-        <translation type="unfinished"></translation>
+        <translation>声音</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsDlg.cpp" line="264"/>
@@ -2943,7 +2943,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="33"/>
@@ -2955,7 +2955,7 @@ Date</source>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="39"/>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="129"/>
         <source>Periodic : Off</source>
-        <translation type="unfinished"></translation>
+        <translation>发生暂停：关闭</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="46"/>
@@ -2993,7 +2993,7 @@ Date</source>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="109"/>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="185"/>
         <source>Volume: 7</source>
-        <translation type="unfinished"></translation>
+        <translation>音量: 7</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/AlarmSettingsWidget.ui" line="159"/>
@@ -3009,12 +3009,12 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="289"/>
         <source>Sound: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>声音: %1</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="292"/>
         <source>Volume: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>音量: %1</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="296"/>
@@ -3024,7 +3024,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/AlarmSettingsWidget.cpp" line="300"/>
         <source>Periodic time (Min.): %1</source>
-        <translation type="unfinished"></translation>
+        <translation>发生暂停时间(分钟):%1</translation>
     </message>
 </context>
 <context>
@@ -3032,7 +3032,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="36"/>
@@ -3052,12 +3052,12 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="141"/>
         <source>SW Update</source>
-        <translation type="unfinished">软件更新</translation>
+        <translation>软件更新</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/DataManagementWidget.ui" line="177"/>
         <source>Remote SW Update</source>
-        <translation type="unfinished">远程软件更新</translation>
+        <translation>远程软件更新</translation>
     </message>
     <message>
         <location filename="../../Settings/Source/DataManagementWidget.cpp" line="190"/>
@@ -3078,7 +3078,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/FileViewWidget.cpp" line="89"/>
         <source>Event View</source>
-        <translation type="unfinished">事件视图</translation>
+        <translation>事件视图</translation>
     </message>
 </context>
 <context>
@@ -3086,7 +3086,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="20"/>
@@ -3106,7 +3106,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="68"/>
         <source>0000-0000-0000-0000</source>
-        <translation type="unfinished">12h {0000-0000-0000-0000?}</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/InstallationSettingsWidget.ui" line="79"/>
@@ -3139,7 +3139,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/LanguageWidget.cpp" line="217"/>
         <source>Language</source>
-        <translation type="unfinished">语言</translation>
+        <translation>语言</translation>
     </message>
 </context>
 <context>
@@ -3147,7 +3147,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/LanguageWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/LanguageWidget.ui" line="84"/>
@@ -3157,7 +3157,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Source/LanguageWidget.cpp" line="216"/>
         <source>Languages</source>
-        <translation type="unfinished">语言</translation>
+        <translation>语言</translation>
     </message>
 </context>
 <context>
@@ -3165,7 +3165,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="20"/>
@@ -3204,7 +3204,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="87"/>
         <source>****************</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="107"/>
@@ -3215,7 +3215,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="114"/>
         <source>123.456.789.012</source>
-        <translation type="unfinished">12h {123.456.789.012?}</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="134"/>
@@ -3226,7 +3226,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="141"/>
         <source>XXXX</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/NetworkSettingsWidget.ui" line="179"/>
@@ -3265,12 +3265,12 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="26"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="92"/>
         <source>Languages</source>
-        <translation type="unfinished">语言</translation>
+        <translation>语言</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ParametersWidget.ui" line="103"/>
@@ -3328,7 +3328,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message utf8="true">
         <location filename="../../Settings/Forms/RegionalSettingsWidget.ui" line="33"/>
@@ -3396,7 +3396,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="22"/>
@@ -3413,17 +3413,17 @@ Date</source>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="47"/>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="113"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="60"/>
         <source>Warning threshold:</source>
-        <translation type="unfinished"></translation>
+        <translation>警告阈值</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="73"/>
         <source>365</source>
-        <translation type="unfinished">12h {365?}</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="81"/>
@@ -3438,22 +3438,22 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="126"/>
         <source>Warning threshold :</source>
-        <translation type="unfinished"></translation>
+        <translation>警告阈值 :</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="139"/>
         <source>150</source>
-        <translation type="unfinished">12h {150?}</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="152"/>
         <source>Alarm threshold :</source>
-        <translation type="unfinished"></translation>
+        <translation>警报阈值</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="165"/>
         <source>240</source>
-        <translation type="unfinished">12h {240?}</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/ServiceSettingsWidget.ui" line="192"/>
@@ -3486,7 +3486,7 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/SettingsWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Source/SettingsWidget.cpp" line="150"/>
@@ -3499,12 +3499,12 @@ Date</source>
     <message>
         <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="46"/>
         <source>Melting point for paraffin:</source>
-        <translation type="unfinished"></translation>
+        <translation>石蜡熔点：</translation>
     </message>
     <message>
         <location filename="../../Settings/Forms/SystemSetupSettingsWidget.ui" line="124"/>
@@ -3522,13 +3522,13 @@ Date</source>
     <message>
         <location filename="../../Dashboard/Forms/SplashWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Dashboard/Forms/SplashWidget.ui" line="37"/>
         <source>System is self-testing
 Please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>系统正在自检，请等待...</translation>
     </message>
 </context>
 <context>
@@ -3536,12 +3536,12 @@ Please wait...</source>
     <message>
         <location filename="../../Users/Forms/UserPrivilegeWidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Users/Forms/UserPrivilegeWidget.ui" line="201"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../Users/Forms/UserPrivilegeWidget.ui" line="144"/>
