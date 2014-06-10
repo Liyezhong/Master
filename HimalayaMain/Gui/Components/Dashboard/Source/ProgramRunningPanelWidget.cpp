@@ -213,7 +213,7 @@ void CProgramRunningPanelWidget::UpdateDateTime()
     switch(m_CurTimeFormat) {
         case Global::TIME_12:
         {
-            TimeStr = QString("%1").arg(m_ProgramEndDateTime.time().toString("hh:mm p.m"));
+            TimeStr = QString("%1").arg(m_ProgramEndDateTime.time().toString("hh:mm ap"));
         }
             break;
         case Global::TIME_24:

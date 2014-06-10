@@ -253,7 +253,7 @@ private slots:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of SwitchToFavoritePanel
+     *  \brief  Definition/Declaration of OnResumeProgramReminder
      */
     /****************************************************************************/
     void OnResumeProgramReminder();
