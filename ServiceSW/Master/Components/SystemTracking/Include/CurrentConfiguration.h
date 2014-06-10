@@ -113,6 +113,12 @@ private:
     QString m_strSelectModuleText;
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief To get the index of selected row from the table
+     *  \iparam Index = Index of the row
+     */
+    /****************************************************************************/
      void SelectionChanged(QModelIndex Index);
 
      /****************************************************************************/

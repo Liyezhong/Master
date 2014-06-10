@@ -21,19 +21,10 @@
 
 #include <QtTest/QTest>
 #include <QDebug>
-#include <SystemTracking/Include/AddModifyConfiguration.h>
-//#include <SystemTracking/Include/AddModifyConfigurationTwo.h>
-//#include <SystemTracking/Include/CoverSlipper.h>
-//#include <SystemTracking/Include/CurrentConfigParameterDlg.h>
-#include <SystemTracking/Include/CurrentConfiguration.h>
-#include <SystemTracking/Include/CurrentConfigurationDlg.h>
-//#include <SystemTracking/Include/ModuleWithBoardDlg.h>
-//#include <SystemTracking/Include/ModuleWithoutBoardDlg.h>
-#include <SystemTracking/Include/ViewHistory.h>
-//#include <SystemTracking/Include/ViewHistoryDiffDlg.h>
-#include <SystemTracking/Include/ViewHistoryDlg.h>
-//#include <ServiceDataManager/Include/ModuleDataListArchive.h>
 #include <QObject>
+#include "SystemTracking/Include/CurrentConfiguration.h"
+#include "SystemTracking/Include/CurrentConfigurationDlg.h"
+#include "SystemTracking/Include/CurrentConfigParameterDlg.h"
 
 namespace SystemTracking {
 
@@ -76,6 +67,13 @@ private slots:
      */
     /****************************************************************************/
     void utTestSystemTracking();
+
+    /****************************************************************************/
+    /**
+     * \brief Test CurrentConfiguration
+     */
+    /****************************************************************************/
+    void utTestCurrentConfiguration();
 
 }; // end class CTestSystemTracking
 
@@ -177,6 +175,42 @@ void CTestSystemTracking::utTestSystemTracking() {
 ////    p_ModuleDataListArchive = p_ServiceGUIConnector->GetModuleListArchiveContainer()->GetModuleList(0);
 ////    p_ViewHistoryDlg->InitDialog(p_ModuleDataListArchive);
 ////    p_ViewHistoryDlg->AddItem(p_ModuleDataListArchive);
+
+}
+
+void CTestSystemTracking::utTestCurrentConfiguration()
+{
+    MainMenu::CMainWindow *p_MainWindow = new MainMenu::CMainWindow();
+    Core::CServiceGUIConnector *p_ServiceGUIConnector = new Core::CServiceGUIConnector(p_MainWindow);
+
+    SystemTracking::CCurrentConfiguration *p_CurrentConfiguration = new
+            SystemTracking::CCurrentConfiguration(p_ServiceGUIConnector, p_MainWindow);
+
+    SystemTracking::CCurrentConfigParameterDlg *p_CurrentConfigParameterDlg = new
+            SystemTracking::CCurrentConfigParameterDlg(p_MainWindow);
+
+    SystemTracking::CCurrentConfigurationDlg *p_CurrentConfigDlg = new
+            SystemTracking::CCurrentConfigurationDlg(p_MainWindow);
+
+    ServiceDataManager::CModule* p_Module = new ServiceDataManager::CModule("Main Control", "Main Control",
+                                                                            "14-HIM-MC-12345", "25");
+    ServiceDataManager::Parameter_t* p_Parameter = new ServiceDataManager::Parameter_t;
+    p_Parameter->ParameterName = "SoftwareVersion";
+    p_Parameter->ParameterUnit = "quint16";
+    p_Parameter->ParameterValue = "1.0";
+
+    p_CurrentConfiguration->AddItem("Main Control");
+    p_CurrentConfiguration->UpdateGUI();
+    p_CurrentConfiguration->ExecDialog();
+
+
+    p_CurrentConfigDlg->AddItem("ASB3");
+    p_CurrentConfigDlg->InitDialog(p_Module);
+    p_CurrentConfigDlg->ExecDialog();
+
+    p_CurrentConfigParameterDlg->AddItem("SoftwareVersion", "1.0");
+    p_CurrentConfigParameterDlg->InitDialog(p_Parameter);
+    p_CurrentConfigParameterDlg->ClearModel();
 
 }
 

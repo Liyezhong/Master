@@ -53,8 +53,8 @@ CCurrentConfiguration::CCurrentConfiguration(Core::CServiceGUIConnector *p_DataC
     mp_ConfigDialog = new SystemTracking::CCurrentConfigurationDlg(this);
     mp_MessageDialog = new MainMenu::CMessageDlg(this);
 
-    connect(mp_TableWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(SelectionChanged(QModelIndex)));
-    connect(mp_Ui->showDetailsBtn, SIGNAL(clicked()), this, SLOT(ExecDialog()));
+    CONNECTSIGNALSLOTGUI(mp_TableWidget, clicked(QModelIndex), this, SelectionChanged(QModelIndex));
+    CONNECTSIGNALSLOTGUI(mp_Ui->showDetailsBtn, clicked(), this, ExecDialog());
 }
 
 /****************************************************************************/
@@ -162,10 +162,16 @@ void CCurrentConfiguration::ExecDialog(void)
     {
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CURRENTCONFIG_MODULEINFO_REQUESTED,
                                                    Global::tTranslatableStringList() << m_ModuleName.toString());
-        mp_Module =
-                const_cast<ServiceDataManager::CModule*>(mp_ModuleList->GetModule(m_ModuleName.toString()));
-        mp_ConfigDialog->InitDialog(mp_Module);
-        mp_ConfigDialog->show();
+        if (mp_ModuleList) {
+            mp_Module =
+                    const_cast<ServiceDataManager::CModule*>(mp_ModuleList->GetModule(m_ModuleName.toString()));
+            mp_ConfigDialog->InitDialog(mp_Module);
+            mp_ConfigDialog->show();
+        }
+        else
+        {
+            qDebug()<<"ExecDialog error :Module List is NULL!!!";
+        }
     }
 }
 

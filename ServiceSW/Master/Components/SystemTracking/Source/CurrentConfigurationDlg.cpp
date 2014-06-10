@@ -32,13 +32,15 @@ namespace SystemTracking {
  *  \iparam p_Parent = Parent widget
  */
 /****************************************************************************/
-CCurrentConfigurationDlg::CCurrentConfigurationDlg(QWidget *p_Parent) : MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CCurrentConfigurationDlg)
+CCurrentConfigurationDlg::CCurrentConfigurationDlg(QWidget *p_Parent) :
+    MainMenu::CDialogFrame(p_Parent)
+  , mp_Ui(new Ui::CCurrentConfigurationDlg)
+  , mp_Module(NULL)
+  , mp_SubModule(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
 
     RetranslateUI();
-    mp_Module = new ServiceDataManager::CModule;
-    mp_SubModule = new ServiceDataManager::CSubModule;
 
     resize(550, 550);
 
@@ -61,9 +63,9 @@ CCurrentConfigurationDlg::CCurrentConfigurationDlg(QWidget *p_Parent) : MainMenu
     mp_Ui->opHrsEdit->setEnabled(false);
     mp_Ui->DateOfProEdit->setEnabled(false);
 
-    connect(mp_TableWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(SelectionChanged(QModelIndex)));
-    connect(mp_Ui->detailBtn, SIGNAL(clicked()), this, SLOT(ExecDialog()));
-    connect(mp_Ui->cancelBtn, SIGNAL(clicked()), this, SLOT(close()));
+    CONNECTSIGNALSLOTGUI(mp_TableWidget, clicked(QModelIndex), this, SelectionChanged(QModelIndex));
+    CONNECTSIGNALSLOTGUI(mp_Ui->detailBtn, clicked(), this, ExecDialog());
+    CONNECTSIGNALSLOTGUI(mp_Ui->cancelBtn, clicked(), this, close());
 }
 
 
@@ -79,8 +81,6 @@ CCurrentConfigurationDlg::~CCurrentConfigurationDlg()
         delete mp_TableWidget;
         delete mp_ParameterDlg;
         delete mp_MessageDialog;
-        delete mp_Module;
-        delete mp_SubModule;
     }
     catch (...) {
         // to please Lint
@@ -160,8 +160,7 @@ void CCurrentConfigurationDlg::ExecDialog()
             mp_ParameterDlg->InitDialog(Param);
         }
 
-        mp_ParameterDlg->SetDialogTitle(const_cast<ServiceDataManager::CModule*>(mp_Module)->GetSubModuleInfo
-                                        (m_SubModuleName.toString())->GetSubModuleName());
+        mp_ParameterDlg->SetDialogTitle(mp_SubModule->GetSubModuleName());
         mp_ParameterDlg->resize(380, 420);
         mp_ParameterDlg->show();
     }
@@ -175,7 +174,7 @@ void CCurrentConfigurationDlg::ExecDialog()
 /****************************************************************************/
 void CCurrentConfigurationDlg::InitDialog(ServiceDataManager::CModule *p_Module)
 {
-    *mp_Module = *p_Module;
+    mp_Module = p_Module;
 
     QString Title(mp_Module->GetModuleName());
 
