@@ -55,6 +55,9 @@
 		<Guide>
 			<Step>Start test : selecting function</Step>
 		</Guide>
+		<Guide>
+			<Step>Please connect the gas source (with pressure meter) to common channel of RV to confirm selected position manually.</Step>
+		</Guide>
 	</RVSelectingTest>
 	<RVSealingTest Description="Sealing function">
 		<Guide>

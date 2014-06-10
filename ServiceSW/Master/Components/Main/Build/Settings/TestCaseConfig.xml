@@ -8,8 +8,8 @@
 	</Oven>
 	<RotaryValve>
 		<RVInitialize Parameter="N/A"/>
-		<RVSelectionTest Position="7" Pressure="30"/>
-		<RVSealingTest Parameter="N/A"/>
+		<RVSelectingTest Position="7" TubeFlag="1" Pressure="30"/>
+		<RVSealingTest Position1="3" Position2="10" Position="7" TubeFlag="0"/>
 		<RVHeatingEndTest Parameter="N/A"/>
 		<RVHeatingStationTest Parameter="N/A"/>
 	</RotaryValve>

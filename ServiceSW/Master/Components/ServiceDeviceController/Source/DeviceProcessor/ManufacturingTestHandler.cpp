@@ -700,18 +700,38 @@ qint32 ManufacturingTestHandler::TestRVInitialization( )
     return 0;
 }
 
+qint32 ManufacturingTestHandler::TestRVSelectingAndSealing(Service::ModuleTestCaseID Id)
+{
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    qint32 Position = p_TestCase->GetParameter("Position").toInt();
+    qint32 TubeFlag = p_TestCase->GetParameter("TubeFlag").toInt();
+
+    quint32 Result(-1);
+
+    qDebug()<<"Position = "<<Position;
+
+    if (TubeFlag == 1) {
+        Result = mp_MotorRV->MoveToTubePosition(Position);
+    }
+    else {
+        Result = mp_MotorRV->MoveToSealPosition(Position);
+    }
+    if (Result == 0) {
+        return -1;
+    }
+
+    return 0;
+}
+
 qint32 ManufacturingTestHandler::MoveRVToTubePos(qint32 Pos)
 {
     if ( !mp_MotorRV->MoveToTubePosition(Pos) )
     {
         return -1;
     }
-
-    mp_PressPump->SetTargetPressure(1, Service::TEST_RV_TUBEPOS_PRESS);
-
-    mp_Utils->Pause(Service::TEST_RV_TUBEPOS_PRESS_DURATION);
-
-    mp_PressPump->ReleasePressure();
 
     return 0;
 }
@@ -723,21 +743,7 @@ qint32 ManufacturingTestHandler::MoveRVToSealPos(qint32 Pos)
         return -1;
     }
 
-    mp_PressPump->SetTargetPressure(1, Service::TEST_RV_SEALPOS_PRESS);
-
-    mp_Utils->Pause(Service::TEST_RV_SEALPOS_PRESS_DURATION);
-
-    if ( mp_PressPump->GetPressure(0) > Service::TEST_RV_SEALPOS_PRESS - Service::TEST_RV_SEALPOS_PRESS_DROP )
-    {
-        mp_PressPump->ReleasePressure();
-        return 0;
-    }
-    else
-    {
-        mp_PressPump->ReleasePressure();
-        return -1;
-    }
-
+    return 0;
 }
 
 void ManufacturingTestHandler::SetFailReason(Service::ModuleTestCaseID Id, const QString &FailMsg)
@@ -830,8 +836,18 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         }
         break;
     case Service::ROTARY_VALVE_SELECTION_FUNCTION:
-        break;
     case Service::ROTARY_VALVE_SEALING_FUNCTION:
+        if (NULL == mp_MotorRV) {
+            SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
+            emit ReturnManufacturingTestMsg(false);
+            return;
+        }
+        else if ( 0 ==  TestRVSelectingAndSealing(TestId) ) {
+            emit ReturnManufacturingTestMsg(true);
+        }
+        else {
+            emit ReturnManufacturingTestMsg(false);
+        }
         break;
     case Service::ROTARY_VALVE_HEATING_STATION:
         break;

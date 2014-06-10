@@ -60,8 +60,13 @@ private:
 
     QEventLoop                                   m_LoopManufacturingTest;    //!< Loop for blocking Manufacturing Test command
 
+    QString                                      m_FailStr;                  //!< - Fail
+    QString                                      m_SuccessStr;              //!< - Success
+
     bool ShowGuide(Service::ModuleTestCaseID Id, int Index = 0);
     void ShowHeatingFailedResult(Service::ModuleTestCaseID Id);
+    quint8 GetPositionForRVTest(Service::ModuleTestCaseID Id, int Index);
+    bool ShowConfirmDlgForRVSelecting(quint8 Position);
     void PerformManufOvenTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufMainControlTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufRVTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
@@ -83,6 +88,7 @@ public slots:
 
     /* Return Message Slots */
     void ShowMessage(const QString &Message);
+    void HideMessage();
     void ShowErrorMessage(const QString &Message);
 
 };

@@ -163,6 +163,15 @@ private:
 
     /****************************************************************************/
     /**
+     * \brief To test Rotary Valve Selecting function and Sealing Function.
+     * \iparam   Id = Test case id
+     */
+    /****************************************************************************/
+    qint32 TestRVSelectingAndSealing( Service::ModuleTestCaseID Id );
+
+
+    /****************************************************************************/
+    /**
      * \brief To move Rotary Valve to tube position.
      */
     /****************************************************************************/

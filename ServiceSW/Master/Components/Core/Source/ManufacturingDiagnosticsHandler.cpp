@@ -26,6 +26,8 @@
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "ServiceDataManager/Include/TestCase.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "DiagnosticsManufacturing/Include/SelectPositionDialog.h"
+#include "DiagnosticsManufacturing/Include/PressureInputDialog.h"
 
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
@@ -43,7 +45,10 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
     mp_ServiceConnector(p_ServiceGUIConnector),
     mp_MainWindow(p_MainWindow)
 {
-
+    m_FailStr = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                        "Fail", 0, QApplication::UnicodeUTF8);
+    m_SuccessStr = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                           "Success", 0, QApplication::UnicodeUTF8);
     //Diagnostics Manufacturing
     mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
     mp_OvenManuf             = new DiagnosticsManufacturing::COven(mp_ServiceConnector, mp_MainWindow);
@@ -124,6 +129,9 @@ void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::Module
         break;
     case Service::LA_SYSTEM:
         PerformManufLATests(TestCaseList);
+        break;
+    case Service::ROTARY_VALVE:
+        PerformManufRVTests(TestCaseList);
         break;
     default:
         break;
@@ -218,6 +226,86 @@ void CManufacturingDiagnosticsHandler::ShowHeatingFailedResult(Service::ModuleTe
     delete dlg;
 }
 
+quint8 CManufacturingDiagnosticsHandler::GetPositionForRVTest(Service::ModuleTestCaseID Id, int Index)
+{
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    quint8 Position = 0;
+    bool TubeFlag = true;
+    if ( p_TestCase->GetParameter("TubeFlag").toInt() == 1 ) {
+        TubeFlag = true;
+    }
+    else {
+        TubeFlag = false;
+    }
+
+    if (Id == Service::ROTARY_VALVE_SELECTION_FUNCTION) {
+        Position = p_TestCase->GetParameter("Position").toInt()-1;
+    }
+    else if ( Id == Service::ROTARY_VALVE_SEALING_FUNCTION ) {
+        if ( Index == 1 ) {
+            Position = p_TestCase->GetParameter("Position1").toInt()-1;
+        }
+        else {
+            Position = p_TestCase->GetParameter("Position2").toInt()-1;
+        }
+    }
+
+    DiagnosticsManufacturing::CSelectPositionDialog *p_Dlg = new DiagnosticsManufacturing::CSelectPositionDialog(Id, Position, TubeFlag, mp_MainWindow);
+    p_Dlg->exec();
+
+    Position = p_Dlg->GetPosition()+1;
+    TubeFlag = p_Dlg->GetTubeFlag();
+
+    qDebug()<<"Position = " << Position;
+    delete p_Dlg;
+
+    return Position;
+}
+
+bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSelecting(quint8 Position)
+{
+    Service::ModuleTestCaseID Id = Service::ROTARY_VALVE_SELECTION_FUNCTION;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+    QStringList Steps = DataManager::CTestCaseGuide::Instance().GetGuideSteps(TestCaseName, 1);
+    QString GuideText;
+
+
+    for(int i=0; i<Steps.size(); i++) {
+        GuideText.append(Steps.at(i));
+        if (i <= Steps.size()-1 ) {
+            GuideText.append("\n");
+        }
+    }
+
+    QString ReadyText = QString("Positon %1 is ready.").arg(Position);
+    QString ResultConfirm = "Is the test pass ?";
+    QString Text = QString("%1 %2 %3").arg(ReadyText).arg(GuideText).arg(ResultConfirm);
+    // display success message
+    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    dlg->SetTitle(TestCaseDescription);
+    dlg->SetIcon(QMessageBox::Information);
+    dlg->SetText(Text);
+    dlg->HideCenterButton();
+    dlg->SetButtonText(3, tr("Pass"));
+    dlg->SetButtonText(1, tr("Fail"));
+
+
+    int ret = dlg->exec();
+
+    qDebug()<<"return code = "<<ret;
+
+    delete dlg;
+
+    if ( ret == 0 )
+        return true;
+
+    return false;
+}
+
+
 /****************************************************************************/
 /*!
  *  \brief Function called for Module tests for manufacturing SW
@@ -283,7 +371,7 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service
                 return ;
             }
 
-            QString Text = QString("%1 %2\n%3").arg(TestCaseDescription, "- Fail", p_TestCase->GetResult().value("FailReason"));
+            QString Text = QString("%1 - %2\n%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
             if (Id != Service::OVEN_COVER_SENSOR) {
@@ -294,7 +382,7 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service
         else {
             Global::EventObject::Instance().RaiseEvent(OkId);
             QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-            QString Text = QString("%1 %2").arg(TestCaseDescription, "- Success");
+            QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
         mp_OvenManuf->SetTestResult(Id, Result);
@@ -376,6 +464,8 @@ void CManufacturingDiagnosticsHandler::PerformManufRVTests(const QList<Service::
     quint32 FailureId(0);
     quint32 OkId(0);
     quint32 EventId(0);
+    QString Text;
+    quint8 Position(0);
     qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufRVTests ---" << TestCaseList;
     for(int i=0; i<TestCaseList.size(); i++) {
         Service::ModuleTestCaseID Id = TestCaseList.at(i);
@@ -384,21 +474,31 @@ void CManufacturingDiagnosticsHandler::PerformManufRVTests(const QList<Service::
             break;
         }
 
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
         switch( Id ) {
         case Service::ROTARY_VALVE_INITIALIZING:
             EventId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST_SUCCESS;
+            Text = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                           "Initializing rotary valve in progress...", 0, QApplication::UnicodeUTF8);
+            ShowMessage(Text);
             break;
         case Service::ROTARY_VALVE_SELECTION_FUNCTION:
             EventId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST_SUCCESS;
+            Text = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                           "Rotary valve selecting test in progress ...", 0, QApplication::UnicodeUTF8);
             break;
         case Service::ROTARY_VALVE_SEALING_FUNCTION:
             EventId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST_SUCCESS;
+            Text = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                           "Rotary valve sealing test in progress ...", 0, QApplication::UnicodeUTF8);
             break;
         case Service::ROTARY_VALVE_HEATING_END:
             EventId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_END_TEST;
@@ -412,15 +512,26 @@ void CManufacturingDiagnosticsHandler::PerformManufRVTests(const QList<Service::
             break;
         }
 
+
+        if ( Id == Service::ROTARY_VALVE_SELECTION_FUNCTION ||
+             Id == Service::ROTARY_VALVE_SEALING_FUNCTION ) {
+            Position = GetPositionForRVTest(Id, 1);
+
+            ShowMessage(Text);
+        }
+
         Global::EventObject::Instance().RaiseEvent(EventId);
         emit PerformManufacturingTest(Id);
 
         bool Result = GetTestResponse();
-
-
-        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
-        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
         p_TestCase->SetStatus(Result);
+
+        if (Id == Service::ROTARY_VALVE_INITIALIZING ||
+            Id == Service::ROTARY_VALVE_SELECTION_FUNCTION ||
+            Id == Service::ROTARY_VALVE_SEALING_FUNCTION) {
+            HideMessage();
+        }
+
 
         if (Result == false) {
             Global::EventObject::Instance().RaiseEvent(FailureId);
@@ -428,17 +539,29 @@ void CManufacturingDiagnosticsHandler::PerformManufRVTests(const QList<Service::
             QString Reason = p_TestCase->GetResult().value("FailReason");
             qDebug()<<"Faile Reason="<<Reason;
 
+            QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+            Text = QString("%1 - %2").arg(TestCaseDescription).arg(m_FailStr);
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
-            if (Reason == "Abort") {   // if user click abort, then the test routines for this modules will terminate.
-                mp_RotaryValveManuf->EnableButton(true);
-                return ;
-            }
-
-      //      mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
+            mp_RotaryValveManuf->EnableButton(true);
+            return ;
         }
         else {
+            if ( Id == Service::ROTARY_VALVE_INITIALIZING) {
+                QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+                Text = QString("%1 - %2").arg(TestCaseDescription).arg(m_SuccessStr);
+                mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+            }
+            else if ( Id == Service::ROTARY_VALVE_SELECTION_FUNCTION ) {
+                Result = ShowConfirmDlgForRVSelecting(Position);
+                p_TestCase->SetStatus(Result);
 
-           // mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+                if (Result == false) {
+                    mp_RotaryValveManuf->SetTestResult(Id, Result);
+                    mp_RotaryValveManuf->EnableButton(true);
+                    return ;
+                }
+            }
         }
         mp_RotaryValveManuf->SetTestResult(Id, Result);
     }
@@ -496,7 +619,7 @@ void CManufacturingDiagnosticsHandler::PerformManufLATests(const QList<Service::
                 return ;
             }
 
-            QString Text = QString("%1 %2\n%3").arg(TestCaseDescription, "- Fail", p_TestCase->GetResult().value("FailReason"));
+            QString Text = QString("%1 - %2\n%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
             if (Id != Service::OVEN_COVER_SENSOR) {
@@ -507,7 +630,7 @@ void CManufacturingDiagnosticsHandler::PerformManufLATests(const QList<Service::
         else {
             Global::EventObject::Instance().RaiseEvent(OkId);
             QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-            QString Text = QString("%1 %2").arg(TestCaseDescription, "- Success");
+            QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
         mp_LaSystemManuf->SetTestResult(Id, Result);
@@ -544,8 +667,17 @@ void CManufacturingDiagnosticsHandler::OnReturnManufacturingMsg(bool Result)
 /****************************************************************************/
 void CManufacturingDiagnosticsHandler::ShowMessage(const QString &Message)
 {
+    mp_ServiceConnector->ShowBusyDialog(Message, true);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Hide the Pop Up Message Dialog
+ */
+/****************************************************************************/
+void CManufacturingDiagnosticsHandler::HideMessage()
+{
     mp_ServiceConnector->HideBusyDialog();
-    mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Message);
 }
 
 /****************************************************************************/

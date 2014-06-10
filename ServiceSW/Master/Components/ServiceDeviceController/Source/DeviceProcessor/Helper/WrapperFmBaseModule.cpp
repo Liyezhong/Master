@@ -341,7 +341,7 @@ QString WrapperFmBaseModule::GetSerialNumber()
     }
     qint32 ret = m_LoopGetSerialNumber.exec();
 
-    QString SerialNumber;
+    QString SerialNumber = m_SerailNumber;
     QTextStream out;
     out.setString(&SerialNumber);
 
@@ -370,6 +370,7 @@ QString WrapperFmBaseModule::GetSerialNumber()
 void WrapperFmBaseModule::OnReportSerialNumber(quint32 /*InstanceID*/, ReturnCode_t ReturnCode, QString SerialNumber)
 {
     qint32 ret = 1;
+
     if (!HandleErrorCode(ReturnCode)) {
         ret = -1;
     } else {
