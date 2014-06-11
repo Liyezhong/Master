@@ -936,26 +936,26 @@ bool HimalayaMasterThreadController::UpdateSupportedGUILanguages() {
     DataManager::CDeviceConfigurationInterface *p_DeviceConfigInterface = mp_DataManager->GetDeviceConfigurationInterface();
     if (p_DeviceConfigInterface) {
         DataManager::CDeviceConfiguration *p_DeviceConfiguration = p_DeviceConfigInterface->GetDeviceConfiguration();
-    if (p_DeviceConfiguration) {
-        QStringList LanguageList;
-        for (int i = 0; i < FileNames.size(); ++i)
-        {
-            // get locale extracted by filename
-            QString Locale;
-            Locale = FileNames[i];                  // "Himalaya_de.qm"
-            Locale.truncate(Locale.lastIndexOf('.'));   // "Himalaya_de"
-            (void)Locale.remove(0, Locale.indexOf('_') + 1);   // "de"
-            LanguageList << Global::LanguageToString(QLocale(Locale).language());
-         }
-         p_DeviceConfiguration->SetLanguageList(LanguageList);
-         return true;
+        if (p_DeviceConfiguration) {
+            QStringList LanguageList;
+            for (int i = 0; i < FileNames.size(); ++i)
+            {
+                // get locale extracted by filename
+                QString Locale;
+                Locale = FileNames[i];                  // "Himalaya_de.qm"
+                Locale.truncate(Locale.lastIndexOf('.'));   // "Himalaya_de"
+                (void)Locale.remove(0, Locale.indexOf('_') + 1);   // "de"
+                LanguageList << Global::LanguageToString(QLocale(Locale).language());
+             }
+             p_DeviceConfiguration->SetLanguageList(LanguageList);
+             return true;
+        }
+        else {
+            return false;
+        }
     }
     else {
         return false;
-    }
-    else {
-        return false;
-    }
     }
 }
 
