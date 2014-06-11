@@ -29,6 +29,9 @@
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "DiagnosticsManufacturing/Include/TestCaseReporter.h"
 #include "DiagnosticsManufacturing/Include/OvenManufacturing.h"
+#include "DiagnosticsManufacturing/Include/LaSystemManufacturing.h"
+#include "DiagnosticsManufacturing/Include/RotaryValveManufacturing.h"
+#include "DiagnosticsManufacturing/Include/MainControlManufacturing.h"
 #include "DiagnosticsManufacturing/Include/HeatingTestDialog.h"
 //#include "Core/Include/ManufacturingDiagnosticsHandler.h"
 
@@ -76,10 +79,10 @@ private slots:
 
     /****************************************************************************/
     /**
-     * \brief Test Oven manufacturing
+     * \brief Test  manufacturing
      */
     /****************************************************************************/
-    void utTestOvenManufacturing();
+    void utTestManufacturing();
 
 }; // end class CTestDiagnosticsManufacturing
 
@@ -113,17 +116,31 @@ void CTestDiagnosticsManufacturing::utTestTestCaseReporter()
     TestCase->AddResult("CurrentTemp", "40");
 
     CTestCaseReporter Reporter("Oven", "123456");
-    Reporter.GenReportFile();
+    //Reporter.GenReportFile();
 }
 
-void CTestDiagnosticsManufacturing::utTestOvenManufacturing()
+void CTestDiagnosticsManufacturing::utTestManufacturing()
 {
     MainMenu::CMainWindow MainWindow;
     Core::CServiceGUIConnector *p_ServiceConnector = new Core::CServiceGUIConnector(&MainWindow);
 
     COven* p_OvenManf = new COven(p_ServiceConnector, &MainWindow);
+    CLaSystem * p_LaSystemManf = new CLaSystem(p_ServiceConnector, &MainWindow);
+    CMainControl* p_MainControlManf = new CMainControl(p_ServiceConnector, &MainWindow);
+    CRotaryValve* p_RvManf = new CRotaryValve(p_ServiceConnector, &MainWindow);
 
     p_OvenManf->SetTestResult(Service::OVEN_COVER_SENSOR, true);
+    //p_OvenManf->BeginTest();
+    p_OvenManf->ResetTestStatus();
+
+    p_LaSystemManf->SetTestResult(Service::LA_SYSTEM_HEATING_LIQUID_TUBE, false);
+    p_LaSystemManf->ResetTestStatus();
+
+    p_MainControlManf->SetTestResult(Service::MAINCONTROL_ASB3, true);
+    p_MainControlManf->ResetTestStatus();
+
+    p_RvManf->SetTestResult(Service::ROTARY_VALVE_HEATING_END, true);
+    p_RvManf->ResetTestStatus();
 
     CHeatingTestDialog* p_HeatingDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Service::OVEN_COVER_SENSOR, &MainWindow);
     p_HeatingDlg->BlgProcessProgress(true);

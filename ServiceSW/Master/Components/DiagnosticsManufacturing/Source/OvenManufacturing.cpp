@@ -52,6 +52,7 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
     , mp_TestReport(NULL)
     , mp_MessageDlg(NULL)
     , mp_WaitDlg(NULL)
+    , mp_Module(NULL)
     , m_FinalTestResult("NA")
 {
     mp_Ui->setupUi(this);
@@ -71,9 +72,8 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
 
     m_TestResult << "NA" << "NA";
 
-
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
-    mp_WaitDlg    = new MainMenu::CWaitDialog;
+    mp_WaitDlg    = new MainMenu::CWaitDialog(mp_MainWindow);
     mp_WaitDlg->setModal(true);
 
     mp_TableWidget = new MainMenu::CBaseTable;
@@ -106,7 +106,10 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
 //    mp_Ui->testSuccessLabel->setPixmap(QPixmap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png")));
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
-    mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Oven");
+
+    if (mp_DataConnector->GetModuleListContainer()) {
+        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Oven");
+    }
 
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
@@ -125,7 +128,8 @@ COven::~COven()
         delete mp_KeyBoardWidget;
         delete mp_TableWidget;
         delete mp_Ui;
-
+        delete mp_MessageDlg;
+        delete mp_WaitDlg;
      }
      catch (...) {
          // to please Lint
@@ -401,14 +405,17 @@ void COven::SendTestReport()
 
     CTestCaseReporter* p_TestReporter = new CTestCaseReporter("Oven", m_LineEditString);
 
+    //CONNECTSIGNALSIGNAL(mp_WaitDlg, rejected(), p_TestReporter, StopSend());
+
     if (p_TestReporter->GenReportFile()) {
-        mp_WaitDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
-                                                    "Sending...", 0, QApplication::UnicodeUTF8));
-        //mp_WaitDlg->SetTimeout(10000);
-        mp_WaitDlg->show();
+        //QEventLoop loop;
+        //loop.connect(mp_WaitDlg, SIGNAL(setVisible(bool)), &loop, SLOT(quit()));
+        //mp_WaitDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
+                                                    //"Sending...", 0, QApplication::UnicodeUTF8));
+        //mp_WaitDlg->show();
+        //loop.exec();
 
         if (p_TestReporter->SendReportFile()) {
-            (void)mp_WaitDlg->close();
             mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::COven",
                                                             "Send Report", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::COven",
@@ -417,10 +424,9 @@ void COven::SendTestReport()
             mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
                                                            "Send test report ok.", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetIcon(QMessageBox::Information);
-            mp_MessageDlg->exec();
+            (void)mp_MessageDlg->exec();
         }
         else {
-            (void)mp_WaitDlg->close();
             mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::COven",
                                                             "Send Report", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::COven",
@@ -429,7 +435,7 @@ void COven::SendTestReport()
             mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
                                                            "Send test report failed.", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetIcon(QMessageBox::Critical);
-            mp_MessageDlg->exec();
+            (void)mp_MessageDlg->exec();
         }
     }
     else {
@@ -441,11 +447,10 @@ void COven::SendTestReport()
         mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
                                                        "Test report save failed.", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetIcon(QMessageBox::Critical);
-        mp_MessageDlg->exec();
+        (void)mp_MessageDlg->exec();
     }
 
     delete p_TestReporter;
-    p_TestReporter = NULL;
 }
 
 /****************************************************************************/
@@ -455,22 +460,6 @@ void COven::SendTestReport()
 /****************************************************************************/
 void COven::ResetTestStatus()
 {
-    /*
-    if (this->isVisible() && mp_Ui->ovenSNEdit->text().endsWith("XXXXX")) {
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::COven",
-                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::COven",
-                                                                "Ok", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",
-                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        if (mp_MessageDlg->exec()) {
-            mp_Ui->ovenSNEdit->setFocus();
-            mp_Ui->ovenSNEdit->selectAll();
-        }
-    }
-    */
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);
     mp_Ui->heaterSNEdit->setText("006XXXXX");

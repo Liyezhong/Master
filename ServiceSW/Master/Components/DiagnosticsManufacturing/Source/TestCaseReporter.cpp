@@ -19,28 +19,40 @@
 /****************************************************************************/
 #include <QList>
 #include <QDateTime>
+#include <QApplication>
 #include "DiagnosticsManufacturing/Include/TestCaseReporter.h"
+#include "Global/Include/Utils.h"
 #include "Global/Include/SystemPaths.h"
 #include "Global/Include/AdjustedTime.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 
 namespace DiagnosticsManufacturing {
 
-CTestCaseReporter::CTestCaseReporter(QString ModuleName, QString SerialNumber):
+CTestCaseReporter::CTestCaseReporter(const QString ModuleName, const QString SerialNumber):
     m_ModuleName(ModuleName),
     m_SerialNumber(SerialNumber)
 {
+    mp_Process = new QProcess;
+
+    CONNECTSIGNALSLOT(this, StopSend(), mp_Process, terminate());
 }
 
 CTestCaseReporter::~CTestCaseReporter()
 {
+    try {
+        delete mp_Process;
+    }
+    catch(...) {
 
+    }
 }
 
 bool CTestCaseReporter::GenReportFile()
 {
     QString TempFilePath = Global::SystemPaths::Instance().GetTempPath();
-    QString ReportName = m_SerialNumber + "_" + m_ModuleName;
+    QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+    QString CurrentDateTime = DateTime.toString("yyyyMMddhhmmss");
+    QString ReportName = m_SerialNumber + "_" + m_ModuleName + "_" + CurrentDateTime;
     QString FileName = TempFilePath + "/" + ReportName + ".txt";
     QFile File(FileName);
 
@@ -61,6 +73,20 @@ bool CTestCaseReporter::GenReportFile()
 
 bool CTestCaseReporter::SendReportFile()
 {
+    QStringList Params;
+
+    Params<<"-c"<<"1"<<"192.168.25.33";
+    mp_Process->start("ping", Params);
+    if (mp_Process->waitForFinished(2000) && mp_Process->exitCode()) {
+        qDebug()<<"ping error.";
+    }
+    else {
+        qDebug()<<"The exit code is "<<mp_Process->exitCode();//0 ok, 1 fail
+        return false;
+    }
+    return true;
+
+    /*
     if (QFile::exists(m_TestReportFile)) {
         QFileInfo FileInfo(m_TestReportFile);
         QString DestFile = FileInfo.absolutePath() + "/" + FileInfo.fileName().insert(0, "copy_");
@@ -70,6 +96,7 @@ bool CTestCaseReporter::SendReportFile()
         qDebug()<<"CTestCaseReporter:: send report file failed.";
         return false;
     }
+    */
 }
 
 void CTestCaseReporter::FillReport(QTextStream& TextStream)

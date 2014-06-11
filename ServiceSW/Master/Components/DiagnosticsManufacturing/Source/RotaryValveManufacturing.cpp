@@ -49,6 +49,7 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     , mp_Ui(new Ui::CRotaryValveManufacturing)
     , mp_TestReport(NULL)
     , mp_MessageDlg(NULL)
+    , mp_Module(NULL)
     , m_FinalTestResult("NA")
 {
     mp_Ui->setupUi(this);
@@ -101,7 +102,10 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
-    mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Rotary Valve");
+
+    if (mp_DataConnector->GetModuleListContainer()) {
+        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Rotary Valve");
+    }
 
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
@@ -444,22 +448,6 @@ void CRotaryValve::SendTestReport()
 /****************************************************************************/
 void CRotaryValve::ResetTestStatus()
 {
-    /*
-   if (this->isVisible() && mp_Ui->rvSNEdit->text().endsWith("XXXXX")) {
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                                                "Ok", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        if (mp_MessageDlg->exec()) {
-            mp_Ui->rvSNEdit->setFocus();
-            mp_Ui->rvSNEdit->selectAll();
-        }
-    }
-   */
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);
     mp_Ui->heaterSNEdit->setText("006XXXXX");

@@ -23,18 +23,21 @@
 #include <QString>
 #include <QTextStream>
 #include <QFile>
+#include <QProcess>
+#include "MainMenu/Include/WaitDialog.h"
 
 namespace DiagnosticsManufacturing {
 
-class CTestCaseReporter
+class CTestCaseReporter: public QObject
 {
+    Q_OBJECT
 public:
     /****************************************************************************/
     /**
      * \brief Default constructor.
      */
     /****************************************************************************/
-    CTestCaseReporter(QString ModuleName, QString SerialNumber);
+    CTestCaseReporter(const QString ModuleName, const QString SerialNumber);
 
     /****************************************************************************/
     /**
@@ -46,7 +49,7 @@ public:
     /****************************************************************************/
     /**
      * \brief Generate report file.
-     * \retrun false if generate file error.
+     * \return false if generate file error.
      */
     /****************************************************************************/
     bool GenReportFile();
@@ -54,11 +57,13 @@ public:
     /****************************************************************************/
     /**
      * \brief send report file to server.
-     * \retrun false if send file error.
+     * \return false if send file error.
      */
     /****************************************************************************/
     bool SendReportFile();
+signals:
 
+    void StopSend();
 private:
 
     void FillReport(QTextStream& TextStream);
@@ -66,6 +71,11 @@ private:
     QString m_TestReportFile;               //!< Stores Test report file name.
     QString m_ModuleName;                   //!< Stores module name
     QString m_SerialNumber;                 //!< Stores serial number
+
+    QProcess* mp_Process;
+    //MainMenu::CWaitDialog *mp_WaitDlg;
+
+
 };
 
 } // end namespace DiagnosticsManufacturing

@@ -270,10 +270,10 @@ ServiceMasterThreadController::~ServiceMasterThreadController() {
             mp_ImportExportThread = 0;
         }
 
-        if (0 != mp_DataManager)
+        if (0 != mp_ServiceDataManager)
         {
-            delete mp_DataManager;
-            mp_DataManager = 0;
+            delete mp_ServiceDataManager;
+            mp_ServiceDataManager = 0;
         }
 
     } catch(...) {

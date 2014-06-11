@@ -141,7 +141,7 @@ bool CUserInputDialog::eventFilter(QObject *p_Object, QEvent *p_Event)
         // standard event processing
         return QObject::eventFilter(p_Object, p_Event);
     }
-    return false;
+    //return false;
 }
 
 /****************************************************************************/
@@ -242,7 +242,7 @@ void CUserInputDialog::AbortDialog()
         dlg->HideButtons();
         dlg->SetButtonText(1, tr("Ok"));
 
-        dlg->exec();
+        (void)dlg->exec();
         delete dlg;
     }
     else {

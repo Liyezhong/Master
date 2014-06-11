@@ -102,7 +102,23 @@ private:
     }
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief Filters all mouse events
+     *  \iparam p_Object = Object that is watched
+     *  \iparam p_Event = Current event
+     *  \return True if an event should be filtered
+     */
+    /****************************************************************************/
     bool eventFilter(QObject *p_Object, QEvent *p_Event);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function changeEvent
+     *  \param p_Event = QEvent type parameter
+     *  \return from changeEvent
+     */
+    /****************************************************************************/
     void changeEvent(QEvent *p_Event);
 
 private:
@@ -123,7 +139,18 @@ private:
     MainMenu::CMessageDlg *mp_MessageDlg;                               //!< Information dialog
     QString m_FinalTestResult;                                          //!< Stores Final test result
 
+    /****************************************************************************/
+    /*!
+     *  \brief Connects signals and slots of keyboard.
+     */
+    /****************************************************************************/
     void ConnectKeyBoardSignalSlots();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Disconnects signals and slots of keyboard.
+     */
+    /****************************************************************************/
     void DisconnectKeyBoardSignalSlots();
 
 signals:
@@ -164,8 +191,25 @@ private slots:
     /****************************************************************************/
     void RetranslateUI();
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief Slot called for agitator tests
+     */
+    /****************************************************************************/
     void BeginTest();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot called for sending the test report to server
+     */
+    /****************************************************************************/
     void SendTestReport();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot called to reset the test status
+     */
+    /****************************************************************************/
     void ResetTestStatus();
 
 };

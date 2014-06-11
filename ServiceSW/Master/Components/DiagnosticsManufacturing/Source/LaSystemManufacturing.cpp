@@ -49,6 +49,7 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
     , mp_MainWindow(p_Parent)
     , mp_Ui(new Ui::CLaSystemManufacturing)
     , mp_MessageDlg(NULL)
+    , mp_Module(NULL)
     , m_FinalTestResult("NA")
 {
     mp_Ui->setupUi(this);
@@ -88,7 +89,10 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
 //    mp_Ui->testSuccessLabel->setPixmap(QPixmap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png")));
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
-    mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("L&A System");
+
+    if (mp_DataConnector->GetModuleListContainer()) {
+        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("L&A System");
+    }
 
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
@@ -388,7 +392,7 @@ void CLaSystem::SendTestReport()
         mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
                                              "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->exec();
+        (void)mp_MessageDlg->exec();
     }
     else {
         CTestCaseReporter* p_TestReporter = new CTestCaseReporter("LaSystem", m_LineEditString);
@@ -408,10 +412,9 @@ void CLaSystem::SendTestReport()
                                                        "Test report save failed.", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetIcon(QMessageBox::Critical);
         }
-        mp_MessageDlg->exec();
+        (void)mp_MessageDlg->exec();
 
         delete p_TestReporter;
-        p_TestReporter = NULL;
     }
 
 }
@@ -423,22 +426,6 @@ void CLaSystem::SendTestReport()
 /****************************************************************************/
 void CLaSystem::ResetTestStatus()
 {
-    /*
-    if (this->isVisible() && mp_Ui->laSNEdit->text().endsWith("XXXXX")) {
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                                "Ok", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        if (mp_MessageDlg->exec()) {
-            mp_Ui->laSNEdit->setFocus();
-            mp_Ui->laSNEdit->selectAll();
-        }
-    }
-    */
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);
     mp_Ui->heaterSNEdit->setText("006XXXXX");

@@ -48,6 +48,7 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     , mp_Ui(new Ui::CMainControlManufacturing)
     , mp_TestReport(NULL)
     , mp_MessageDlg(NULL)
+    , mp_Module(NULL)
     , m_FinalTestResult("NA")
     , m_ASB3SNString("SN_ASB3_XXXXX")
     , m_ASB5SNString("SN_ASB5_XXXXX")
@@ -97,13 +98,6 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 
     mp_TableWidget->horizontalHeader()->show();
 
-    /*if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
-        AddItem(1, Service::OVEN_COVER_SENSOR);
-        AddItem(2, Service::OVEN_HEATING_WITH_WATER);
-    }
-    else {
-        AddItem(1, Service::OVEN_HEATING_EMPTY);
-    }*/
     AddItem(1, Service::MAINCONTROL_ASB3);
     AddItem(2, Service::MAINCONTROL_ASB5);
     AddItem(3, Service::MAINCONTROL_ASB15);
@@ -124,7 +118,10 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 //    mp_Ui->testSuccessLabel->setPixmap(QPixmap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png")));
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
-    mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Main Control");
+
+    if (mp_DataConnector->GetModuleListContainer()) {
+        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Main Control");
+    }
 
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
@@ -252,10 +249,12 @@ void CMainControl::SetSubModuleSN(QString SubMoudleName, QString SerialNumber)
 {
     if (mp_Module && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
         ServiceDataManager::CSubModule* p_SubModule = mp_Module->GetSubModuleInfo(SubMoudleName);
-        if (p_SubModule) {
-            p_SubModule->UpdateParameterInfo("SerialNumber", SerialNumber);
+        if (p_SubModule && p_SubModule->UpdateParameterInfo("SerialNumber", SerialNumber)) {
+            emit UpdateModule(*mp_Module);
         }
-        emit UpdateModule(*mp_Module);
+        else {
+            qDebug()<<"CMainControl :Set submodule serial number error.";
+        }
     }
 }
 
@@ -526,27 +525,6 @@ void CMainControl::SendTestReport()
 /****************************************************************************/
 void CMainControl::ResetTestStatus()
 {
-    /*
-    QLineEdit *LineEdit = NULL;
-    if (this->isVisible() && ((LineEdit = mp_Ui->mcSNEdit, mp_Ui->mcSNEdit->text().endsWith("XXXXX"))    ||
-                              (LineEdit = mp_Ui->tsSNEdit, mp_Ui->tsSNEdit->text().endsWith("XXXXX"))    ||
-                              (LineEdit = mp_Ui->asb3SNEdit, mp_Ui->asb3SNEdit->text().endsWith("XXXXX"))||
-                              (LineEdit = mp_Ui->asb5SNEdit, mp_Ui->asb5SNEdit->text().endsWith("XXXXX"))||
-                              (LineEdit = mp_Ui->asb15SNEdit, mp_Ui->asb15SNEdit->text().endsWith("XXXXX")))) {
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CMainControl",
-                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CMainControl",
-                                                                "Ok", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CMainControl",
-                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        if (mp_MessageDlg->exec()) {
-            LineEdit->setFocus();
-            LineEdit->selectAll();
-        }
-    }
-    */
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);
     mp_Ui->heaterSNEdit->setText("006XXXXX");

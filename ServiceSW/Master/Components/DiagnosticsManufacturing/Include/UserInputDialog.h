@@ -87,15 +87,15 @@ public:
      */
     /****************************************************************************/
 
-    QString GetInputValue( quint8 index)
+    QString GetInputValue( quint8 Index)
     {
-        if (index == 0) {
+        if (Index == 0) {
             return m_LineEditStringLeft;
         }
-        else if (index == 1) {
+        else if (Index == 1) {
             return m_LineEditStringMiddle;
         }
-        else if (index == 2) {
+        else if (Index == 2) {
             return m_LineEditStringRight;
         }
         else {
