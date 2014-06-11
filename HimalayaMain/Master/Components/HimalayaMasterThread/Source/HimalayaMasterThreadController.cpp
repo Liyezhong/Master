@@ -315,7 +315,6 @@ void HimalayaMasterThreadController::Shutdown() {
     {
         //write buffered data to disk-> refer man pages for sync
         system("sync &");
-        system("lcd off");
 
         //send shutdown signal to RemoteCarecontroller
         /*if(mp_RemoteCareManager) {
