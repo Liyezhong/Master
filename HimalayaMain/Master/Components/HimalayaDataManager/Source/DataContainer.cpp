@@ -36,7 +36,6 @@
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupD.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaSettingsVerifier.h"
 
-//lint -sem(DataManager::CDataContainer::DeinitializeContainers, cleanup)
 
 namespace DataManager {
 

@@ -827,7 +827,7 @@ bool CDataReagentList::AddReagent(const CReagent* p_Reagent)
 
         Result = true;
     }
-
+    /*lint -e831 */
     return Result;
 }
 

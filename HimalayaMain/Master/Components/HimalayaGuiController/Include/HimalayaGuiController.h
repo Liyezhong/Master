@@ -66,6 +66,7 @@ protected:
      *  \return from OnStopWorking
      */
     /****************************************************************************/
+    /*lint -e1411 */
     virtual void OnStopWorking();
 
 

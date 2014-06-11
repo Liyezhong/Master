@@ -104,6 +104,7 @@ void CReagentCommandInterface::AddReagent(Global::tRefType Ref, const MsgClasses
         MsgClasses::CmdReagentAdd* p_Command = new MsgClasses::CmdReagentAdd(1000, ReagentDataStream);
         mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
         qDebug()<<"\n\n\n Adding New Reagent Success";
+        /*lint -e429 */
     }
     (void)static_cast<DataManager::CDataContainer*>(mp_DataContainer)->ReagentList->Write();
 
@@ -212,6 +213,7 @@ void CReagentCommandInterface::UpdateReagent(CReagent &Reagent)
             ReagentDataStream << Reagent;
             MsgClasses::CmdReagentUpdate* p_Command = new MsgClasses::CmdReagentUpdate(1000, ReagentDataStream);
             mp_MasterThreadController->BroadcastCommand(Global::CommandShPtr_t(p_Command));
+            /*lint -e429 */
         }
         catch (...) {
             qDebug()<<" \n\n Update Reaget Failed";

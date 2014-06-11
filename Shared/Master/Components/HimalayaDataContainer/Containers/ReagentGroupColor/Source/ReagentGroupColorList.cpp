@@ -456,7 +456,7 @@ bool CReagentGroupColorList::AddReagentColorGroup(const CReagentGroupColor* p_Re
   bool Result = true;
 
     m_DataVerificationMode = false;
-     if ((m_DataVerificationMode)) {
+    if ((m_DataVerificationMode)) {
         CReagentGroupColorList* p_DSPL_Verification = new CReagentGroupColorList();
 
         // first lock current state for reading
@@ -503,7 +503,7 @@ bool CReagentGroupColorList::AddReagentColorGroup(const CReagentGroupColor* p_Re
     else {
         QWriteLocker locker(mp_ReadWriteLock);
         m_ReagentGroupColorList.insert(ID, p_TempReagentGroupColor);
-     m_OrderedListOfReagentGroupColorIDs.append(ID);
+        m_OrderedListOfReagentGroupColorIDs.append(ID);
         Result = true;
     }
     return Result;
@@ -646,15 +646,15 @@ bool CReagentGroupColorList::ReadCompleteData(QXmlStreamReader& XmlStreamReader)
 /****************************************************************************/
 const CReagentGroupColor* CReagentGroupColorList::GetCReagentGroupColor(const unsigned int Index)// uses order index
 {
-      if (Index < (unsigned int)m_OrderedListOfReagentGroupColorIDs.count()) {
-           QString Key = m_OrderedListOfReagentGroupColorIDs.value(Index);
-           CReagentGroupColor* p_ReagentGroupColor = m_ReagentGroupColorList.value(Key, NULL);
-           return p_ReagentGroupColor;
-       }
-      else {
-      return NULL;
+    if (Index < (unsigned int)m_OrderedListOfReagentGroupColorIDs.count()) {
+        QString Key = m_OrderedListOfReagentGroupColorIDs.value(Index);
+        CReagentGroupColor* p_ReagentGroupColor = m_ReagentGroupColorList.value(Key, NULL);
+        return p_ReagentGroupColor;
     }
- }
+    else {
+        return NULL;
+    }
+}
 
 } // namespace DataManager
 

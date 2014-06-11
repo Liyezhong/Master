@@ -125,8 +125,9 @@ catch (...) {
 
 /****************************************************************************/
 HimalayaMasterThreadController::~HimalayaMasterThreadController() {
-    delete mp_SchdCmdProcessor;
-    mp_SchdCmdProcessor = NULL;
+        /*lint -e1551 */
+        delete mp_SchdCmdProcessor;
+        mp_SchdCmdProcessor = NULL;
 }
 
 
@@ -187,21 +188,21 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
 //        m_RebootFileContent.insert("PowerFailed", "No");
 //        Global::EventObject::Instance().RaiseEvent(EVENT_RECOVERED_FROM_POWER_FAIL);
 //    }
-      if (mp_DataManager && mp_DataManager->IsInitialized()) {
+    if (mp_DataManager && mp_DataManager->IsInitialized()) {
 
-          if (m_SWUpdateStatus == "Success" || m_UpdateRollBackFailed) {
-              m_UpdatingRollback = true;
-              mp_SWUpdateManager->UpdateSoftware("-updateRollback", "");
-          }
+        if (m_SWUpdateStatus == "Success" || m_UpdateRollBackFailed) {
+            m_UpdatingRollback = true;
+            mp_SWUpdateManager->UpdateSoftware("-updateRollback", "");
+        }
 
-          if (m_SWUpdateStatus == "Failure") {
-              Global::EventObject::Instance().RaiseEvent(SWUpdate::EVENT_SW_UPDATE_FAILED);
-          }
+        if (m_SWUpdateStatus == "Failure") {
+            Global::EventObject::Instance().RaiseEvent(SWUpdate::EVENT_SW_UPDATE_FAILED);
+        }
 
-          if (m_SWUpdateCheckStatus == "Failure") {
+        if (m_SWUpdateCheckStatus == "Failure") {
               //Clean any temporary folders
-              mp_SWUpdateManager->UpdateSoftware("-Clean", "");
-          }
+            mp_SWUpdateManager->UpdateSoftware("-Clean", "");
+        }
     }
 
     //Initialize program Startable manager
@@ -712,6 +713,7 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
         // raise the event code
         Global::EventObject::Instance().RaiseEvent(Global::EVENT_EXPORT_SUCCESS);
         // send acknowledgement to GUI
+        /*lint -e613 */
         SendAcknowledgeOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
     }
     else {
@@ -806,6 +808,7 @@ void HimalayaMasterThreadController::ExportProcessExited(const QString &Name, in
         // this raise event code will be informed to GUI, that Export is failed
         Global::EventObject::Instance().RaiseEvent(EventCode, false);
         // send acknowledgement to GUI
+        /*lint -e613 */
         SendAcknowledgeNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
 
     }
@@ -853,11 +856,17 @@ void HimalayaMasterThreadController::ImportExportThreadFinished(const bool IsImp
         if ((ImportTypeList.contains("User") == 0) || (ImportTypeList.contains("Service") == 0) || (ImportTypeList.contains("Leica") == 0)) {
 
             // send configuration files to GUI
+            /*lint -e534 */
             SendConfigurationFile(mp_DataManager->GetUserSettingsInterface(), NetCommands::USER_SETTING);
+            /*lint -e534 */
             SendConfigurationFile(mp_DataManager->GetReagentList(), NetCommands::REAGENT);
+            /*lint -e534 */
             SendConfigurationFile(mp_DataManager->GetReagentGroupList(), NetCommands::REAGENTGROUP);
+            /*lint -e534 */
             SendConfigurationFile(mp_DataManager->GetReagentGroupColorList(), NetCommands::REAGENTGROUPCOLOR);
+            /*lint -e534 */
             SendConfigurationFile(mp_DataManager->GetProgramList(), NetCommands::PROGRAM);
+            /*lint -e534 */
             SendConfigurationFile(mp_DataManager->GetStationList(), NetCommands::STATION);
             // inform the event handler
             Global::EventObject::Instance().RaiseEvent(EVENT_IMPORT_SUCCESS);
@@ -937,16 +946,16 @@ bool HimalayaMasterThreadController::UpdateSupportedGUILanguages() {
             Locale.truncate(Locale.lastIndexOf('.'));   // "Himalaya_de"
             (void)Locale.remove(0, Locale.indexOf('_') + 1);   // "de"
             LanguageList << Global::LanguageToString(QLocale(Locale).language());
-        }
-        p_DeviceConfiguration->SetLanguageList(LanguageList);
-        return true;
+         }
+         p_DeviceConfiguration->SetLanguageList(LanguageList);
+         return true;
     }
     else {
         return false;
     }
-}
     else {
         return false;
+    }
     }
 }
 
@@ -1209,6 +1218,7 @@ void HimalayaMasterThreadController::ExportDayRunLogHandler(Global::tRefType Ref
 
 /****************************************************************************/
 void HimalayaMasterThreadController::RequestDayRunLogFileNames(QString FolderPath) {
+    /*lint -e641*/
     (void)SendCommand(Global::CommandShPtr_t(new NetCommands::CmdExportDayRunLogRequest(m_AuthenticatedLevel,FolderPath)),
                                             m_CommandChannelDataLogging);
 
@@ -1305,7 +1315,7 @@ void HimalayaMasterThreadController::SendFileSelectionToGUI(QStringList FileList
 {
     // send ack is OK
     SendAcknowledgeOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel);
-
+    /*lint -e534 */
     SendCommand(Global::CommandShPtr_t(new MsgClasses::CmdDataImportFiles(3000, FileList)),
                 m_CommandChannelGui);
 

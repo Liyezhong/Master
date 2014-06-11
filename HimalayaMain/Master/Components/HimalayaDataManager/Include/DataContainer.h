@@ -30,7 +30,7 @@
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "DataManager/Include/DataContainerCollectionBase.h"
 #include "HimalayaDataContainer/Containers/ProgramSettings/Include/ProgramSettings.h"
-
+//lint -sem(DataManager::CDataContainer::DeinitializeContainers, cleanup)
 
 namespace Himalaya {
     class HimalayaMasterThreadController;

@@ -45,6 +45,7 @@ public:
      *  \return from MApplication
      */
     /****************************************************************************/
+    /*lint -e578 */
     MApplication (int &argc, char ** argv )
         : QCoreApplication ( argc, argv )
     {};
@@ -63,6 +64,7 @@ public:
      *  \return from notify
      */
     /****************************************************************************/
+    /*lint -e578 */
     virtual bool notify(QObject * object, QEvent * event)
     {
         try
