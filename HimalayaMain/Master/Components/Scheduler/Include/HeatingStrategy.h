@@ -81,6 +81,8 @@ struct RTLevelSensor : public HeatingSensor
 {
     QMap<QString, QString>	CurrentSpeedList;       //!< the current of speed map
     QMap<QString, qreal>	ExchangePIDTempList;    //!< temperature of exchange PID parameter map
+    bool                    SetTemp4High;
+    bool                    SetTemp4Low;
 };
 
 /****************************************************************************/

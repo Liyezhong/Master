@@ -201,7 +201,8 @@ typedef struct
         QSharedPointer<HeatingStrategy> mp_HeatingStrategy;   ///< Definition/Declaration of variable mp_HeatingStrategy
         Global::tRefType    m_RefCleanup;                     ///< Command reference of the cleanup command
         int m_delayTime;
-        quint32 RetCodeStartLevelSensorTempCtrlInErr;         ///< Return code of starting up Level sensor temperature control in Error Handling
+        quint32 m_RetCodeStartLevelSensorTempCtrlInErr;       ///< Return code of starting up Level sensor temperature control in Error Handling
+        bool m_TempCheck;                                     ///< Temperature check passed or not
     private:
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -930,6 +931,14 @@ protected:
          */
         /****************************************************************************/
         void RestartLevelSensorTempCtrlInError();
+
+        /****************************************************************************/
+        /**
+         *  \brief Set temperature check flag
+         *  \return void
+         */
+        /****************************************************************************/
+        void SetTempCheck(bool flag) { m_TempCheck = flag; }
     public slots:
 
         /****************************************************************************/

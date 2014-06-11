@@ -98,15 +98,18 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     Set temperature for each sensor
     *
     ***************************************************/
+    // For Level Sensor, we need set two times (high and low) in each scenario
+    retCode = this->StartLevelSensorTemperatureControl(strctHWMonitor);
+    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+    {
+        return retCode;
+    }
+
     if (scenario != m_CurScenario)
     {
         m_CurScenario = scenario;
-        // For Level Sensor
-        retCode = this->StartLevelSensorTemperatureControl(strctHWMonitor);
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            return retCode;
-        }
+        m_RTLevelSensor.SetTemp4High = false; //for each scenario, set the initial value is false
+        m_RTLevelSensor.SetTemp4Low = false;  //for each scenario, set the initial value is false
         //For RTTop
         retCode = StartRTTemperatureControl(m_RTTop, RT_SIDE);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -264,8 +267,9 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
             // Check for High or Low speed
             if (m_RTLevelSensor.ExchangePIDTempList[iter->Id] >= strctHWMonitor.TempALLevelSensor)
             {
-                if ("High" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
+                if ("High" == m_RTLevelSensor.CurrentSpeedList[iter->Id] && (false == m_RTLevelSensor.SetTemp4High))
                 {
+                    m_RTLevelSensor.SetTemp4High = true;
                     break;
                 }
                 else
@@ -275,8 +279,9 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
             }
             else if (m_RTLevelSensor.ExchangePIDTempList[iter->Id] < strctHWMonitor.TempALLevelSensor)
             {
-                if ("Low" == m_RTLevelSensor.CurrentSpeedList[iter->Id])
+                if ("Low" == m_RTLevelSensor.CurrentSpeedList[iter->Id] && (false == m_RTLevelSensor.SetTemp4Low))
                 {
+                    m_RTLevelSensor.SetTemp4Low = true;
                     break;
                 }
                 else
@@ -580,6 +585,8 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RTLevelSensor.heatingStartTime = 0;
     m_RTLevelSensor.curModuleId = "";
     m_RTLevelSensor.OTCheckPassed = false;
+    m_RTLevelSensor.SetTemp4High = false;
+    m_RTLevelSensor.SetTemp4Low = false;
     QStringList sequenceList = {"11", "12", "21", "22"};
     if (false == this->ConstructHeatingSensor(m_RTLevelSensor, sequenceList))
     {
@@ -883,6 +890,7 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, q
     if (HWTemp >= heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
     {
         heatingSensor.OTCheckPassed = true;
+        mp_SchedulerController->SetTempCheck(true);
     }
 
     qint64 now = QDateTime::currentMSecsSinceEpoch();
