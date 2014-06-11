@@ -315,7 +315,7 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd()
 	}
 	else if  ("Scheduler::ALSetTempCtrlOFF" == cmdName)
 	{
-        //m_currentCmd->SetResult(mp_IDeviceProcessing->ALSetTempCtrlOFF(dynamic_cast<CmdALSetTempCtrlOFF*>(m_currentCmd)->GetType()));
+        m_currentCmd->SetResult(mp_IDeviceProcessing->ALSetTempCtrlOFF(qSharedPointerDynamicCast<CmdALSetTempCtrlOFF>(m_currentCmd)->Gettype()));
 	}
 	else if  ("Scheduler::ALSetTemperaturePid" == cmdName)
 	{

@@ -125,6 +125,22 @@ public:
     void SendRunSignal();
     /****************************************************************************/
     /*!
+    *  \brief  Definition/Declaration of function SendRunSignal
+    *
+    *  \return from SendRunSignal
+    */
+   /****************************************************************************/
+   void SendRunCleaning();
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of function SendRunSelfTest
+    *
+    *  \return from SendRunSelfTest
+    */
+   /****************************************************************************/
+   void SendRunSelfTest();
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function SendRunComplete
      *
      *  \return from SendRunComplete
@@ -565,6 +581,18 @@ signals:
      */
     /****************************************************************************/
     void RunSignal();
+    /****************************************************************************/
+    /*!
+    *  \brief  Definition/Declaration of signal RunCleaning
+    */
+   /****************************************************************************/
+   void RunCleaning();
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of signal RunSelfTest
+    */
+   /****************************************************************************/
+   void RunSelfTest();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal RunComplete

@@ -67,10 +67,13 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         mp_PssmAborted = new QState(pParentState);
         mp_PssmProgramFinish = new QFinalState(pParentState);
 
-        pParentState->setInitialState(mp_PssmSelfTest);
+        //pParentState->setInitialState(mp_PssmSelfTest);
+        pParentState->setInitialState(mp_PssmInit);
         mp_PssmSelfTest->setInitialState(mp_PssmStInit);
 
+        mp_PssmInit->addTransition(this, SIGNAL(SelfTestSig()), mp_PssmSelfTest);
         mp_PssmSelfTest->addTransition(this, SIGNAL(StDone()), mp_PssmInit);
+
         mp_PssmStInit->addTransition(this, SIGNAL(StInitOK()), mp_PssmStTempChecking);
         mp_PssmStTempChecking->addTransition(this, SIGNAL(StTempOK()), mp_PssmStCurrentChecking);
         mp_PssmStCurrentChecking->addTransition(this, SIGNAL(StCurrentOK()), mp_PssmStVoltageChecking);

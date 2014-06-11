@@ -95,6 +95,9 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcRestart()), mp_ErrorRcRestart);
     mp_ErrorRcRestart->addTransition(this, SIGNAL(sigStateChange()), mp_BusyState);
 
+    connect(this, SIGNAL(RunCleaning()), mp_ProgramStepStates, SIGNAL(TempsReady()));
+    connect(this, SIGNAL(RunSelfTest()), mp_ProgramStepStates, SIGNAL(SelfTestSig()));
+
     connect(this, SIGNAL(sigStInitOK()), mp_ProgramStepStates, SIGNAL(StInitOK()));
     connect(this, SIGNAL(sigStTempOK()), mp_ProgramStepStates, SIGNAL(StTempOK()));
     connect(this, SIGNAL(sigStCurrentOK()), mp_ProgramStepStates, SIGNAL(StCurrentOK()));
@@ -626,6 +629,16 @@ void CSchedulerStateMachine::EnterRcRestart()
 void CSchedulerStateMachine::HandleRcRestart(bool flag)
 {
     mp_RcRestart->OnHandleWorkFlow(flag);
+}
+
+void CSchedulerStateMachine::SendRunSelfTest()
+{
+    emit RunSelfTest();
+}
+
+void CSchedulerStateMachine::SendRunCleaning()
+{
+    emit RunCleaning();
 }
 
 }

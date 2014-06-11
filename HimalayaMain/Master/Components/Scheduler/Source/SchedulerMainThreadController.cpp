@@ -298,6 +298,15 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
             DequeueNonDeviceCommand();
+
+            //wether cleaning program
+            if ( 'C' == ProgramName.at(0) ){
+                m_SchedulerMachine->SendRunCleaning();
+                LogDebug("cleaning program Send cmd to DCL to let RV move to init position.");
+                m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, this));
+            }else{
+                m_SchedulerMachine->SendRunSelfTest();
+            }
         }
         break;
     default:
