@@ -237,6 +237,17 @@ private:
     void AddPathRightTopArc(QPainterPath& path, QPointF& pnt);
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function AddPathRightBottomArc
+     *
+     *  \param path = QPainterPath type parameter
+     *  \param pnt =  QPointF type parameter
+     *
+     *  \return from AddPathLeftTopArc
+     */
+    /****************************************************************************/
+    void AddPathRightBottomArc(QPainterPath& path, QPointF& pnt);
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function MakeHorizontalPipePath
      *
      *  \param stationID =  QString type parameter
