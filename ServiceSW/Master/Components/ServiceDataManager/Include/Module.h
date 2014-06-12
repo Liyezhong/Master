@@ -69,8 +69,8 @@ class CModule
 
 public:
     CModule();
-    CModule( QString );
-    CModule(QString, QString, QString, QString); //!< To Set ModuleName, Description, SerialNumber, Operating hrs
+    CModule(const QString& );
+    CModule(const QString&, const QString&, const QString&, const QString&); //!< To Set ModuleName, Description, SerialNumber, Operating hrs
     CModule(const CModule&);    //!< Copy Constructor
     void CopyFromOther(const CModule &ModuleInfo);
     ~CModule();
@@ -216,7 +216,7 @@ public:
      *  \return true - delete success , false - delete failure
      */
     /****************************************************************************/
-    bool DeleteSubModule(const QString SubModuleName);
+    bool DeleteSubModule(const QString& SubModuleName);
 
     /****************************************************************************/
     /*!

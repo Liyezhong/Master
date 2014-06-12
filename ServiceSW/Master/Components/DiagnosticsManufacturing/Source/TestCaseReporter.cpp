@@ -28,13 +28,10 @@
 
 namespace DiagnosticsManufacturing {
 
-CTestCaseReporter::CTestCaseReporter(const QString ModuleName, const QString SerialNumber):
-    m_ModuleName(ModuleName),
-    m_SerialNumber(SerialNumber)
+CTestCaseReporter::CTestCaseReporter(const QString ModuleName):
+    m_ModuleName(ModuleName)
 {
     mp_Process = new QProcess;
-
-    CONNECTSIGNALSLOT(this, StopSend(), mp_Process, terminate());
 }
 
 CTestCaseReporter::~CTestCaseReporter()
@@ -52,6 +49,10 @@ bool CTestCaseReporter::GenReportFile()
     QString TempFilePath = Global::SystemPaths::Instance().GetTempPath();
     QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
     QString CurrentDateTime = DateTime.toString("yyyyMMddhhmmss");
+    if (m_SerialNumber.isEmpty()) {
+        qDebug()<<"CTestCaseReportermp_TestCaseReporter : the serial number is empty";
+        return false;
+    }
     QString ReportName = m_SerialNumber + "_" + m_ModuleName + "_" + CurrentDateTime;
     QString FileName = TempFilePath + "/" + ReportName + ".txt";
     QFile File(FileName);
@@ -62,7 +63,7 @@ bool CTestCaseReporter::GenReportFile()
     }
 
     QTextStream TestStream(&File);
-    FillReport(TestStream);
+    FillReportFile(TestStream);
 
     m_TestReportFile = FileName;
 
@@ -74,32 +75,32 @@ bool CTestCaseReporter::GenReportFile()
 bool CTestCaseReporter::SendReportFile()
 {
     QStringList Params;
-
-    Params<<"-c"<<"1"<<"192.168.25.33";
+    Params<<"-c"<<"4"<<"192.168.25.32";
     mp_Process->start("ping", Params);
-    if (mp_Process->waitForFinished(2000) && mp_Process->exitCode()) {
+
+    QEventLoop loop;
+    loop.connect(mp_Process, SIGNAL(finished(int)), &loop, SLOT(quit()));
+    loop.exec();
+    if (mp_Process->exitCode() || mp_Process->exitStatus()) {
         qDebug()<<"ping error.";
-    }
-    else {
-        qDebug()<<"The exit code is "<<mp_Process->exitCode();//0 ok, 1 fail
         return false;
     }
-    return true;
-
-    /*
     if (QFile::exists(m_TestReportFile)) {
         QFileInfo FileInfo(m_TestReportFile);
         QString DestFile = FileInfo.absolutePath() + "/" + FileInfo.fileName().insert(0, "copy_");
+        //QCoreApplication::processEvents();
         return QFile::copy(m_TestReportFile, DestFile);
     }
     else {
         qDebug()<<"CTestCaseReporter:: send report file failed.";
         return false;
     }
-    */
+
+    return true;
+
 }
 
-void CTestCaseReporter::FillReport(QTextStream& TextStream)
+void CTestCaseReporter::FillReportFile(QTextStream& TextStream)
 {
     QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
     QString CurrentDateTime = DateTime.toString("yyyy/MM/dd-hh:mm:ss");
@@ -113,6 +114,14 @@ void CTestCaseReporter::FillReport(QTextStream& TextStream)
     for (; itr != TestCases.end(); ++itr) {
         TextStream<<(*itr)->GenReport();
     }
+}
+
+void CTestCaseReporter::StopSend()
+{
+    if (mp_Process->isOpen()) {
+        mp_Process->terminate();
+    }
+
 }
 
 }  // end of namespace DiagnosticsManufacturing

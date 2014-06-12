@@ -24,7 +24,7 @@
 #include <QTextStream>
 #include <QFile>
 #include <QProcess>
-#include "MainMenu/Include/WaitDialog.h"
+//#include "MainMenu/Include/WaitDialog.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -37,7 +37,7 @@ public:
      * \brief Default constructor.
      */
     /****************************************************************************/
-    CTestCaseReporter(const QString ModuleName, const QString SerialNumber);
+    CTestCaseReporter(const QString ModuleName);
 
     /****************************************************************************/
     /**
@@ -61,21 +61,29 @@ public:
      */
     /****************************************************************************/
     bool SendReportFile();
-signals:
 
-    void StopSend();
+    /****************************************************************************/
+    /**
+     * \brief Set the Module serial number.
+     * \param SerialNumber = the serial number.
+     */
+    /****************************************************************************/
+    void SetSerialNumber(const QString SerialNumber) {
+        m_SerialNumber = SerialNumber;
+    }
+
 private:
 
-    void FillReport(QTextStream& TextStream);
+    void FillReportFile(QTextStream& TextStream);
 
     QString m_TestReportFile;               //!< Stores Test report file name.
     QString m_ModuleName;                   //!< Stores module name
     QString m_SerialNumber;                 //!< Stores serial number
 
-    QProcess* mp_Process;
-    //MainMenu::CWaitDialog *mp_WaitDlg;
+    QProcess* mp_Process;                   //!< The Process for run external command
 
-
+public slots:
+    void StopSend();
 };
 
 } // end namespace DiagnosticsManufacturing

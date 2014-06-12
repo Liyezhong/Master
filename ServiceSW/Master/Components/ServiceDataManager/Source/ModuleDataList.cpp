@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file DataManager/Containers/InstrumentHistory/Source/ModuleDataList.cpp
+/*! \file ModuleDataList.cpp
  *
  *  \brief Implementation file for class CModuleDataList.
  *
@@ -210,7 +210,7 @@ CModuleDataList::~CModuleDataList()
  *  \return true on success, false on failure
  */
 /****************************************************************************/
-bool CModuleDataList::ReadFile(const QString FileName)
+bool CModuleDataList::ReadFile(const QString& FileName)
 {
 
     SetFileName(FileName);
@@ -237,8 +237,8 @@ bool CModuleDataList::ReadFile(const QString FileName)
         Result = true;
         if (!p_MDL_Verification->ReadFile(FileName)) {
             Result = false;
-        } else {
-
+        }
+        else {
             // now check new content => call all active verifiers
             if (DoLocalVerification(p_MDL_Verification)) {
                 // if content ok, clone backwards
@@ -266,6 +266,7 @@ bool CModuleDataList::ReadFile(const QString FileName)
 
         if (!DeserializeContent(File, false)) {
             qDebug() << " CModuleDataList::Read failed for file during deserializing: " << FileName;
+            File.close();
             return false;
         }
 
@@ -425,8 +426,6 @@ bool CModuleDataList::SerializeContent(QIODevice& IODevice, bool CompleteData)
 /****************************************************************************/
 bool CModuleDataList::ReadModules(QXmlStreamReader &XmlStreamReader, bool CompleteData)
 {
-    bool Result = true;
-
     // Look for node <Module>
     while(!XmlStreamReader.atEnd())
     {
@@ -457,7 +456,7 @@ bool CModuleDataList::ReadModules(QXmlStreamReader &XmlStreamReader, bool Comple
             break; // exit from while loop
         }
     }
-    return Result;
+    return true;
 }
 
 /****************************************************************************/
@@ -527,7 +526,6 @@ bool CModuleDataList::AddModule(CModule const* p_Module)
 
         // delete test clone
         delete p_MDL_Verification;
-        delete p_TempModule;
 
     } else {
 
@@ -537,6 +535,8 @@ bool CModuleDataList::AddModule(CModule const* p_Module)
 
         Result = true;
     }
+
+    delete p_TempModule;
 
     return Result;
 }
@@ -563,13 +563,12 @@ bool CModuleDataList::UpdateModule(CModule const* p_Module)
     if (m_DataVerificationMode) {
 
         //CModuleDataList* p_MDL_Verification = new CModuleDataList();
-        CModuleDataList MDL_Verification;
         //p_MDL_Verification = NULL;
         //        CModule* p_ModuleData = new CModule();
         //        CHECKPTR(p_ModuleData);
 
         //CModule* p_ModuleData = m_ModuleList.value(ModuleName, NULL);
-
+        //CModuleDataList MDL_Verification;
         //QString SerialNumber = p_Module->GetSerialNumber();
         //        QString DateOfProd = p_Module->GetDateOfProduction();
         //QString OperatingHrs = p_Module->GetOperatingHours();
@@ -580,7 +579,7 @@ bool CModuleDataList::UpdateModule(CModule const* p_Module)
             QReadLocker locker(mp_ReadWriteLock);
 
             // create clone from current state
-            MDL_Verification = *this;
+            CModuleDataList MDL_Verification = *this;
 
             // disable verification in clone
             MDL_Verification.SetDataVerificationMode(false);
@@ -673,7 +672,7 @@ CModule* CModuleDataList::GetModule(const unsigned int Index)
  *  \return true - success , false - failure
  */
 /****************************************************************************/
-bool CModuleDataList::GetModule(const QString ModuleName, CModule& Module)
+bool CModuleDataList::GetModule(const QString& ModuleName, CModule& Module)
 {
     QReadLocker locker(mp_ReadWriteLock);
 
@@ -710,7 +709,7 @@ bool CModuleDataList::DeleteModule(const unsigned int Index)
  *  \return true - delete success , false - delete failure
  */
 /****************************************************************************/
-bool CModuleDataList::DeleteModule(const QString ModuleName)
+bool CModuleDataList::DeleteModule(const QString& ModuleName)
 {
     if(m_ModuleList.contains(ModuleName)) {
         //get Module from ModuleList and free memory

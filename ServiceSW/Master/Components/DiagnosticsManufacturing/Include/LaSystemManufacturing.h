@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file LaSystemManufacturing.cpp
+/*! \file LaSystemManufacturing.h
  *
  *  \brief CLaSystem class definition for Manufacturing SW
  *
@@ -175,7 +175,7 @@ private slots:
      *  \iparam EnteredString = Stores line edit string
      */
     /****************************************************************************/
-    void OnOkClicked(QString EnteredString);
+    void OnOkClicked(const QString& EnteredString);
 
     /****************************************************************************/
     /*!

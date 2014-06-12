@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file DataManager/Containers/InstrumentHistory/Source/Module.cpp
+/*! \file Module.cpp
  *
  *  \brief Implementation file for class CModule.
  *
@@ -55,7 +55,7 @@ CModule::CModule() :m_ModuleName(""),
  *  \iparam ModuleName
  */
 /****************************************************************************/
-CModule::CModule(QString ModuleName)
+CModule::CModule(const QString& ModuleName)
 {
     m_ModuleName = ModuleName;
 }
@@ -65,7 +65,7 @@ CModule::CModule(QString ModuleName)
  *  \brief Parameterized Constructor
  */
 /****************************************************************************/
-CModule::CModule(QString ModuleName, QString Description, QString SerialNumber, QString OperatingHrs)
+CModule::CModule(const QString& ModuleName, const QString& Description, const QString& SerialNumber, const QString& OperatingHrs)
 {
     m_ModuleName = ModuleName;
     m_ModuleDescription = Description;
@@ -275,7 +275,7 @@ bool CModule::DeleteSubModule(const unsigned int Index)
  *  \return true - delete success , false - delete failure
  */
 /****************************************************************************/
-bool CModule::DeleteSubModule(const QString SubModuleName)
+bool CModule::DeleteSubModule(const QString& SubModuleName)
 {
     if (m_SubModuleList.contains(SubModuleName)) {
         //get Module from ModuleList and free memory

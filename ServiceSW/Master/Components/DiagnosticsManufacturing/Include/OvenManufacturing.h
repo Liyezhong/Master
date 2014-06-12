@@ -22,6 +22,7 @@
 #define OVEN_DIAGNOSTICSMANUFACTURING_H
 
 #include "DiagnosticsManufacturing/Include/TestReportGeneration.h"
+#include "DiagnosticsManufacturing/Include/TestCaseReporter.h"
 #include "DiagnosticsManufacturing/Include/OvenManufacturing.h"
 #include "Core/Include/ServiceGUIConnector.h"
 #include "Core/Include/ServiceDefines.h"
@@ -141,6 +142,7 @@ private:
     QHash<QString, QString> m_TestReport;       //!< Test report
     QList<QString> m_TestNames;                 //!< List of test names   
     DiagnosticsManufacturing::CTestReportGeneration *mp_TestReport;     //!< Test report generation object
+    DiagnosticsManufacturing::CTestCaseReporter* mp_TestReporter;       //!< Test report generation object
     QStringList m_TestResult;                                           //!< StringList stores test result
     MainMenu::CMessageDlg *mp_MessageDlg;                               //!< Information dialog
     MainMenu::CWaitDialog *mp_WaitDlg;                                  //!< Waiting dialog
@@ -183,7 +185,7 @@ private slots:
      *  \iparam EnteredString = Stores line edit string
      */
     /****************************************************************************/
-    void OnOkClicked(QString EnteredString);
+    void OnOkClicked(const QString& EnteredString);
 
     /****************************************************************************/
     /*!

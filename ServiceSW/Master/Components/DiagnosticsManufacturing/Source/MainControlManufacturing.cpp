@@ -264,7 +264,7 @@ void CMainControl::SetSubModuleSN(QString SubMoudleName, QString SerialNumber)
  *  \iparam EnteredString = Stores line edit string
  */
 /****************************************************************************/
-void CMainControl::OnOkClicked(QString EnteredString)
+void CMainControl::OnOkClicked(const QString& EnteredString)
 {
 
     mp_KeyBoardWidget->hide();
@@ -423,8 +423,6 @@ void CMainControl::BeginTest()
 
         qDebug()<<"CMainControl::BeginTest   --- emitted";
     }
-    return ;
-
 //    ->HideAbort();
 }
 

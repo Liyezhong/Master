@@ -214,7 +214,7 @@ void CLaSystem::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
  *  \iparam EnteredString = Stores line edit string
  */
 /****************************************************************************/
-void CLaSystem::OnOkClicked(QString EnteredString)
+void CLaSystem::OnOkClicked(const QString& EnteredString)
 {
 
     mp_KeyBoardWidget->hide();
@@ -334,8 +334,6 @@ void CLaSystem::BeginTest()
 
         qDebug()<<"CLaSystem::BeginTest   --- emitted";
     }
-    return ;
-
 //    ->HideAbort();
 }
 
@@ -395,7 +393,8 @@ void CLaSystem::SendTestReport()
         (void)mp_MessageDlg->exec();
     }
     else {
-        CTestCaseReporter* p_TestReporter = new CTestCaseReporter("LaSystem", m_LineEditString);
+        /*
+        CTestCaseReporter* p_TestReporter = new CTestCaseReporter(mp_MainWindow, "LaSystem", m_LineEditString);
 
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
                                                     "Test Report", 0, QApplication::UnicodeUTF8));
@@ -413,8 +412,7 @@ void CLaSystem::SendTestReport()
             mp_MessageDlg->SetIcon(QMessageBox::Critical);
         }
         (void)mp_MessageDlg->exec();
-
-        delete p_TestReporter;
+        */
     }
 
 }

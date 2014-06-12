@@ -9,7 +9,7 @@
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Biosystems R&D Center Shanghai.
  *
  *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
@@ -163,8 +163,7 @@ void CCurrentConfiguration::ExecDialog(void)
         Global::EventObject::Instance().RaiseEvent(EVENT_GUI_CURRENTCONFIG_MODULEINFO_REQUESTED,
                                                    Global::tTranslatableStringList() << m_ModuleName.toString());
         if (mp_ModuleList) {
-            mp_Module =
-                    const_cast<ServiceDataManager::CModule*>(mp_ModuleList->GetModule(m_ModuleName.toString()));
+            mp_Module = const_cast<ServiceDataManager::CModule*>(mp_ModuleList->GetModule(m_ModuleName.toString()));
             mp_ConfigDialog->InitDialog(mp_Module);
             mp_ConfigDialog->show();
         }

@@ -13,7 +13,7 @@
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Biosystems R&D Center Shanghai.
  *
  *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
@@ -109,7 +109,7 @@ void CCurrentConfigParameterDlg::InitDialog(ServiceDataManager::Parameter_t *p_P
  *  \iparam ParamValue = Value of the Parameter
  */
 /****************************************************************************/
-void CCurrentConfigParameterDlg::AddItem(QString ParamName, QString ParamValue)
+void CCurrentConfigParameterDlg::AddItem(const QString& ParamName, const QString& ParamValue)
 {
 
     QList<QStandardItem *> ItemList;

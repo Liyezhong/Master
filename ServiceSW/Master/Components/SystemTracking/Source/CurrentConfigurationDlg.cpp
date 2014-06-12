@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file TestCase.h
+/*! \file CurrentConfigurationDlg.h
  *
- *  \brief Definition file for class CTestCase.
+ *  \brief Definition file for class CCurrentConfigurationDlg.
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2014-5-21

@@ -227,7 +227,7 @@ void CRotaryValve::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
  *  \iparam EnteredString = Stores line edit string
  */
 /****************************************************************************/
-void CRotaryValve::OnOkClicked(QString EnteredString)
+void CRotaryValve::OnOkClicked(const QString& EnteredString)
 {
 
     mp_KeyBoardWidget->hide();
@@ -347,7 +347,6 @@ void CRotaryValve::BeginTest()
 
         qDebug()<<"CRotaryValve::BeginTest   --- emitted";
     }
-    return ;
 //    ->HideAbort();
 }
 

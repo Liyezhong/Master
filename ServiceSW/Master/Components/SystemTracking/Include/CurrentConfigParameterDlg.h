@@ -66,7 +66,7 @@ public:
      *  \iparam ParamValue = Value of the Parameter
      */
     /****************************************************************************/
-    void AddItem(QString ParamName, QString ParamValue);
+    void AddItem(const QString& ParamName, const QString& ParamValue);
 
     /****************************************************************************/
     /*!

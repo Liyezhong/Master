@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file DataManager/Containers/InstrumentHistory/Source/SubModule.cpp
+/*! \file SubModule.cpp
  *
  *  \brief Implementation file for class CSubModule.
  *
@@ -50,7 +50,7 @@ CSubModule::CSubModule() :m_SubModuleName(""),
  *  \iparam SubModuleName
  */
 /****************************************************************************/
-CSubModule::CSubModule(QString SubModuleName)
+CSubModule::CSubModule(const QString& SubModuleName)
 {
     m_SubModuleName = SubModuleName;
 }
@@ -63,7 +63,7 @@ CSubModule::CSubModule(QString SubModuleName)
  *  \iparam SubModuleDescription = Description of the SubModule
  */
 /****************************************************************************/
-CSubModule::CSubModule(QString SubModuleName, QString SubModuleType, QString SubModuleDescription)
+CSubModule::CSubModule(const QString& SubModuleName, const QString& SubModuleType, const QString& SubModuleDescription)
 {
     m_SubModuleName = SubModuleName;
     m_SubModuleType = SubModuleType;

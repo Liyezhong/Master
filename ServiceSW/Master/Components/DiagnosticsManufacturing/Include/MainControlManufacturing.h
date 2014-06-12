@@ -189,7 +189,7 @@ private slots:
      *  \iparam EnteredString = Stores line edit string
      */
     /****************************************************************************/
-    void OnOkClicked(QString EnteredString);
+    void OnOkClicked(const QString& EnteredString);
 
     /****************************************************************************/
     /*!

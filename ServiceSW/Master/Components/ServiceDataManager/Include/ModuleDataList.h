@@ -145,7 +145,7 @@ public:
      *  \return Module info
      */
     /****************************************************************************/
-    CModule* GetModule(const QString ModuleName) const {
+    CModule* GetModule(const QString& ModuleName) const {
             return m_ModuleList.value(ModuleName, NULL);
     }
 
@@ -166,7 +166,7 @@ public:
      *  \return Module info
      */
     /****************************************************************************/
-    bool GetModule(const QString ModuleName, CModule& Module);
+    bool GetModule(const QString& ModuleName, CModule& Module);
 
     /****************************************************************************/
     /*!
@@ -175,7 +175,7 @@ public:
      *  \return true on success, false on failure
      */
     /****************************************************************************/
-    bool ReadFile(const QString FileName);
+    bool ReadFile(const QString& FileName);
 
     /****************************************************************************/
     /*!
@@ -202,7 +202,7 @@ public:
      *  \return true - delete success , false - delete failure
      */
     /****************************************************************************/
-    bool DeleteModule(const QString ModuleName);
+    bool DeleteModule(const QString& ModuleName);
 
     /****************************************************************************/
     /*!

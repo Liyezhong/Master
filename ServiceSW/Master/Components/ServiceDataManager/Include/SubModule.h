@@ -73,8 +73,8 @@ class CSubModule
 
 public:
     CSubModule();
-    CSubModule(QString);
-    CSubModule(QString, QString, QString);
+    CSubModule(const QString&);
+    CSubModule(const QString&, const QString&, const QString&);
     CSubModule(const CSubModule&);  //!< Copy Constructor
     void CopyFromOther(const CSubModule &SubModuleInfo);
     ~CSubModule();
