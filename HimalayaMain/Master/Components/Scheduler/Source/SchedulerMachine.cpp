@@ -226,7 +226,7 @@ void CSchedulerStateMachine::OnRsReleasePressure()
 }
 void CSchedulerStateMachine::OnRestartLevelSensorTempControl()
 {
-   mp_SchedulerThreadController->RestartLevelSensorTempCtrlInError();
+    mp_SchedulerThreadController->RestartLevelSensorTempCtrlInError();
 }
 
 void CSchedulerStateMachine::OnTasksDone(bool flag)

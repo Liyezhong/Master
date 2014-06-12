@@ -225,6 +225,22 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
+void HeatingStrategy::ReStartTemperatureControlInError(const QString& HeaterName)
+{
+    if ("LevelSensor" == HeaterName)
+    {
+        CmdALStartTemperatureControlWithPID* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
+        pHeatingCmd->SetType(AL_LEVELSENSOR);
+        pHeatingCmd->SetNominalTemperature(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].TemperatureOffset);
+        pHeatingCmd->SetSlopeTempChange(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].SlopTempChange);
+        pHeatingCmd->SetMaxTemperature(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature);
+        pHeatingCmd->SetControllerGain(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].ControllerGain);
+        pHeatingCmd->SetResetTime(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].ResetTime);
+        pHeatingCmd->SetDerivativeTime(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].DerivativeTime);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+}
+
 bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)
 {
     if (true == heatingSensor.curModuleId.isEmpty())

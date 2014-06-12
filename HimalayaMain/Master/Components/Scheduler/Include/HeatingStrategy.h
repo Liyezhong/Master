@@ -189,12 +189,12 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief set the retort level sensor temperature
-     *  \param strctHWMonitor = struct HardwareMnotior
-     *  \return form ReturnCode_t
+     *  \brief  Restart the specific sensor's temperature control in Error state 
+     *  \param 	HeaterName - sensor's name 
+     *  \return void 
      */
     /****************************************************************************/
-    DeviceControl::ReturnCode_t StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor);
+    void ReStartTemperatureControlInError(const QString& HeaterName);
 
 private slots:
     /****************************************************************************/
@@ -247,6 +247,15 @@ private:
      */
     /****************************************************************************/
 	inline bool CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Start Level Sensor Temperature control
+     *  \param  strctHWMonitor - structure of hardware parameters
+     *  \return ReturnCode_t
+     */
+    /****************************************************************************/
+    DeviceControl::ReturnCode_t StartLevelSensorTemperatureControl(const HardwareMonitor_t& strctHWMonitor);
 
     /****************************************************************************/
     /*!

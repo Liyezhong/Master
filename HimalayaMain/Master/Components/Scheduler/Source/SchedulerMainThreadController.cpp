@@ -92,9 +92,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_delayTime(0)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
-
-    //Initialize return code for error handling
-    m_RetCodeStartLevelSensorTempCtrlInErr = DCL_ERR_FCT_CALL_SUCCESS;
+    m_CurEventID = 0;
     m_TempCheck = false;
 }
 
@@ -1185,7 +1183,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if (SM_ERR_RC_LEVELSENSOR_HEATING_OVERTIME == currentState)
     {
         LogDebug(QString("RC_Levelsensor_Heating_Overtime Response: %1").arg(retCode));
-        if (DCL_ERR_FCT_CALL_SUCCESS == retCode && DCL_ERR_FCT_CALL_SUCCESS == m_RetCodeStartLevelSensorTempCtrlInErr)
+        if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
         {
             m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow(true);
         }
@@ -1760,12 +1758,7 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
 
 void SchedulerMainThreadController::RestartLevelSensorTempCtrlInError()
 {
-    HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
-    ReturnCode_t retCode = mp_HeatingStrategy->StartLevelSensorTemperatureControl(strctHWMonitor);
-    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-    {
-        m_RetCodeStartLevelSensorTempCtrlInErr = retCode;
-    }
+    mp_HeatingStrategy->ReStartTemperatureControlInError("LevelSensor");
 }
 
 //client-->master

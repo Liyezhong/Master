@@ -197,11 +197,11 @@ typedef struct
         QString m_ReagentIdOfLastStep;       ///<  Definition/Declaration of variable m_ReagentIdOfLastStep
         bool m_PauseToBeProcessed;       ///<  Definition/Declaration of variable m_PauseToBeProcessed
         int m_ProcessCassetteCount;       ///<  Definition/Declaration of variable m_ProcessCassetteCount
-        quint32 m_EventKey; ///<  \todo: add mechanism to cash the key
+        quint32 m_EventKey;                                   ///< Current Event key
+        quint32 m_CurEventID;                                 ///< Current Event ID
         QSharedPointer<HeatingStrategy> mp_HeatingStrategy;   ///< Definition/Declaration of variable mp_HeatingStrategy
         Global::tRefType    m_RefCleanup;                     ///< Command reference of the cleanup command
         int m_delayTime;
-        quint32 m_RetCodeStartLevelSensorTempCtrlInErr;       ///< Return code of starting up Level sensor temperature control in Error Handling
         bool m_TempCheck;                                     ///< Temperature check passed or not
     private:
         SchedulerMainThreadController();                                             ///< Not implemented.
@@ -813,6 +813,7 @@ protected:
         {
             if(EventKey == 0)
             {
+                m_CurEventID = EventID;
                 Global::EventObject::Instance().RaiseEvent(EventKey, EventID, Scenario, ActionResult,Active,
                                                        Global::tTranslatableStringList()<<QString("(%1 %2)").arg(EventID).arg(Scenario));
             }
@@ -927,6 +928,7 @@ protected:
         /****************************************************************************/
         /**
          *  \brief Restart Level sensor's temperature in case of RC_Levelsensor_Heating_Overtime
+         *  \param HeaterName - name of the sensor
          *  \return void
          */
         /****************************************************************************/
