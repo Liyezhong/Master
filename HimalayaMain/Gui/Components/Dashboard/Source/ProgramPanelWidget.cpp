@@ -155,7 +155,6 @@ void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime,
 bool CProgramPanelWidget::CheckPreConditionsToPauseProgram()
 {
     m_Timer->stop();
-    OnResumeProgramReminder();
     m_Timer->start();
     return true;
 }
