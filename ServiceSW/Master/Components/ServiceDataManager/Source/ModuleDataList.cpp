@@ -526,6 +526,7 @@ bool CModuleDataList::AddModule(CModule const* p_Module)
 
         // delete test clone
         delete p_MDL_Verification;
+        delete p_TempModule;
 
     } else {
 
@@ -535,8 +536,6 @@ bool CModuleDataList::AddModule(CModule const* p_Module)
 
         Result = true;
     }
-
-    delete p_TempModule;
 
     return Result;
 }
