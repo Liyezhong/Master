@@ -43,7 +43,8 @@ namespace Core {
 CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUIConnector *p_ServiceGUIConnector,
                                                                    MainMenu::CMainWindow *p_MainWindow) :
     mp_ServiceConnector(p_ServiceGUIConnector),
-    mp_MainWindow(p_MainWindow)
+    mp_MainWindow(p_MainWindow),
+    mp_WaitDialog(NULL)
 {
     m_FailStr = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                         "Fail", 0, QApplication::UnicodeUTF8);
@@ -258,6 +259,15 @@ quint8 CManufacturingDiagnosticsHandler::GetPositionForRVTest(Service::ModuleTes
     Position = p_Dlg->GetPosition()+1;
     TubeFlag = p_Dlg->GetTubeFlag();
 
+    QString PositionStr = QString("%1").arg(Position);
+    p_TestCase->SetParameter("Position", PositionStr);
+    if (TubeFlag == true) {
+        p_TestCase->SetParameter("TubeFlag", "1");
+    }
+    else {
+        p_TestCase->SetParameter("TubeFlag", "0");
+    }
+
     qDebug()<<"Position = " << Position;
     delete p_Dlg;
 
@@ -280,7 +290,7 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSelecting(quint8 Posit
         }
     }
 
-    QString ReadyText = QString("Positon %1 is ready.").arg(Position);
+    QString ReadyText = QString("Positon %1# is ready.").arg(Position);
     QString ResultConfirm = "Is the test pass ?";
     QString Text = QString("%1 %2 %3").arg(ReadyText).arg(GuideText).arg(ResultConfirm);
     // display success message
@@ -303,6 +313,19 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSelecting(quint8 Posit
         return true;
 
     return false;
+}
+
+bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSealing(quint8 Position)
+{
+    DiagnosticsManufacturing::CPressureInputDialog *p_Dlg = new DiagnosticsManufacturing::CPressureInputDialog(Service::ROTARY_VALVE_SEALING_FUNCTION, mp_MainWindow);
+
+    p_Dlg->exec();
+
+    bool Result = p_Dlg->GetResult();
+
+    delete p_Dlg;
+
+    return Result;
 }
 
 
@@ -466,6 +489,7 @@ void CManufacturingDiagnosticsHandler::PerformManufRVTests(const QList<Service::
     quint32 EventId(0);
     QString Text;
     quint8 Position(0);
+    quint8 SealingTestNum(0);
     qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufRVTests ---" << TestCaseList;
     for(int i=0; i<TestCaseList.size(); i++) {
         Service::ModuleTestCaseID Id = TestCaseList.at(i);
@@ -473,6 +497,8 @@ void CManufacturingDiagnosticsHandler::PerformManufRVTests(const QList<Service::
         if (NextFlag == false) {
             break;
         }
+
+Sealing_Test_Twice:
 
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
         DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
@@ -492,13 +518,21 @@ void CManufacturingDiagnosticsHandler::PerformManufRVTests(const QList<Service::
             OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST_SUCCESS;
             Text = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                            "Rotary valve selecting test in progress ...", 0, QApplication::UnicodeUTF8);
+
+            Position = GetPositionForRVTest(Id, 1);
+            ShowMessage(Text);
             break;
         case Service::ROTARY_VALVE_SEALING_FUNCTION:
+            SealingTestNum++;
             EventId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST_SUCCESS;
             Text = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                            "Rotary valve sealing test in progress ...", 0, QApplication::UnicodeUTF8);
+
+            Position = GetPositionForRVTest(Id, SealingTestNum);
+
+            ShowMessage(Text);
             break;
         case Service::ROTARY_VALVE_HEATING_END:
             EventId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_END_TEST;
@@ -510,14 +544,6 @@ void CManufacturingDiagnosticsHandler::PerformManufRVTests(const QList<Service::
             FailureId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_STATION_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_HEATING_STATION_TEST_SUCCESS;
             break;
-        }
-
-
-        if ( Id == Service::ROTARY_VALVE_SELECTION_FUNCTION ||
-             Id == Service::ROTARY_VALVE_SEALING_FUNCTION ) {
-            Position = GetPositionForRVTest(Id, 1);
-
-            ShowMessage(Text);
         }
 
         Global::EventObject::Instance().RaiseEvent(EventId);
@@ -536,18 +562,30 @@ void CManufacturingDiagnosticsHandler::PerformManufRVTests(const QList<Service::
         if (Result == false) {
             Global::EventObject::Instance().RaiseEvent(FailureId);
 
+
             QString Reason = p_TestCase->GetResult().value("FailReason");
-            qDebug()<<"Faile Reason="<<Reason;
+            if (Reason == "Abort") {   // if user click abort, then the test routines for this modules will terminate.
+                mp_RotaryValveManuf->EnableButton(true);
+                return ;
+            }
 
             QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
             Text = QString("%1 - %2").arg(TestCaseDescription).arg(m_FailStr);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
+            if (Id == Service::ROTARY_VALVE_HEATING_END ||
+                    Id == Service::ROTARY_VALVE_HEATING_STATION ) {
+                if (Reason != "NOT-IN-HEATING")
+                    ShowHeatingFailedResult(Id);
+            }
+
             mp_RotaryValveManuf->EnableButton(true);
             return ;
         }
         else {
-            if ( Id == Service::ROTARY_VALVE_INITIALIZING) {
+            if ( Id == Service::ROTARY_VALVE_INITIALIZING ||
+                 Id == Service::ROTARY_VALVE_HEATING_STATION ||
+                 Id == Service::ROTARY_VALVE_HEATING_END ) {
                 QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
                 Text = QString("%1 - %2").arg(TestCaseDescription).arg(m_SuccessStr);
                 mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
@@ -560,6 +598,31 @@ void CManufacturingDiagnosticsHandler::PerformManufRVTests(const QList<Service::
                     mp_RotaryValveManuf->SetTestResult(Id, Result);
                     mp_RotaryValveManuf->EnableButton(true);
                     return ;
+                }
+            }
+            else if ( Id == Service::ROTARY_VALVE_SEALING_FUNCTION ) {
+                Result = ShowConfirmDlgForRVSealing(Position);
+               // qDebug()<<"ShowConfirmDlgForRVSealing result = " << Result;
+                if (Result == false) {
+                    p_TestCase->SetStatus(Result);
+
+                    QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+                    Text = QString("%1 - %2").arg(TestCaseDescription).arg(m_FailStr);
+                    mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
+
+                    mp_RotaryValveManuf->SetTestResult(Id, Result);
+                    mp_RotaryValveManuf->EnableButton(true);
+                    return ;
+                }
+                else {
+                    if (SealingTestNum == 1) {
+                        goto Sealing_Test_Twice;
+                    }
+                    else {
+                        QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+                        Text = QString("%1 - %2").arg(TestCaseDescription).arg(m_SuccessStr);
+                        mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+                    }
                 }
             }
         }
@@ -622,9 +685,8 @@ void CManufacturingDiagnosticsHandler::PerformManufLATests(const QList<Service::
             QString Text = QString("%1 - %2\n%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
-            if (Id != Service::OVEN_COVER_SENSOR) {
-                ShowHeatingFailedResult(Id);
-            }
+
+            ShowHeatingFailedResult(Id);
 
         }
         else {
@@ -667,7 +729,20 @@ void CManufacturingDiagnosticsHandler::OnReturnManufacturingMsg(bool Result)
 /****************************************************************************/
 void CManufacturingDiagnosticsHandler::ShowMessage(const QString &Message)
 {
-    mp_ServiceConnector->ShowBusyDialog(Message, true);
+    if (mp_WaitDialog != NULL) {
+        mp_WaitDialog->close();
+        delete mp_WaitDialog;
+        mp_WaitDialog = NULL;
+    }
+    mp_WaitDialog = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_WaitDialog->SetDialogTitle(tr("Please Wait"));
+    mp_WaitDialog->SetText(Message);
+    mp_WaitDialog->HideAllButtons();
+    mp_WaitDialog->setMinimumWidth(200);
+    mp_WaitDialog->setMinimumHeight(150);
+
+    mp_WaitDialog->show();
+    mp_WaitDialog->setModal(false);
 }
 
 /****************************************************************************/
@@ -677,7 +752,11 @@ void CManufacturingDiagnosticsHandler::ShowMessage(const QString &Message)
 /****************************************************************************/
 void CManufacturingDiagnosticsHandler::HideMessage()
 {
-    mp_ServiceConnector->HideBusyDialog();
+    if (mp_WaitDialog != NULL) {
+        mp_WaitDialog->close();
+        delete mp_WaitDialog;
+        mp_WaitDialog = NULL;
+    }
 }
 
 /****************************************************************************/

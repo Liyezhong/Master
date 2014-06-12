@@ -45,6 +45,7 @@ void WrapperBase::Log(const QString& Message)
         + " " + Name() + ": " + Message
     );
 #else
+
     emit LogMessageAdded(
         QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
         + " " + Message

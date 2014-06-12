@@ -612,7 +612,7 @@ void WrapperFmPressureControl::AgitationTimerCB(void)
 #define SUCKING_INSUFFICIENT_4SAMPLE_DELTASUM (1)
 
 #define SUCKING_MAX_DELAY_TIME        (10000)
-#define SUCKING_POOLING_TIME          (400)
+#define SUCKING_POOLING_TIME          (1000*30)
 #define SUCKING_SETUP_WARNING_TIME    (120*1000)
 #define SUCKING_MAX_SETUP_TIME        (240*1000)
 #define SUCKING_OVERFLOW_SAMPLE_SIZE    (4) //used to be 4 with old pump
@@ -672,6 +672,9 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
     while(!stop)
     {
         levelSensorState = m_LoopSuckingLevelSensor.exec();
+
+        qDebug() <<"levelSensorState = "<<levelSensorState;
+
         counter++;
         qint64 nowMs = QDateTime::currentDateTime().toMSecsSinceEpoch();
         if(levelSensorState == 1)
@@ -872,6 +875,7 @@ void WrapperFmPressureControl::SuckingTimerCB(void)
 
     if(m_LoopSuckingLevelSensor.isRunning())
     {
+        qDebug()<<"m_LoopSuckingLevelSensor exit 3 (SuckingTimerCB)";
          m_LoopSuckingLevelSensor.exit(3);
     }
 }
@@ -1155,6 +1159,7 @@ void WrapperFmPressureControl::VaccumTimerCB(void)
 /****************************************************************************/
 bool WrapperFmPressureControl::ReleasePressure(void)
 {
+    qDebug()<<QDateTime::currentDateTime().toString("hh:mm:ss.zzz")<<" "<<"Start release pressure procedure";
     Log(tr("Start release pressure procedure"));
     QTimer timer;
     quint32 TimeSlotPassed = 0;
@@ -1170,6 +1175,7 @@ bool WrapperFmPressureControl::ReleasePressure(void)
     }
     if(m_LoopSuckingLevelSensor.isRunning())
     {
+        qDebug()<<"m_LoopSuckingLevelSensor exit -1 (ReleasePressure)";
         m_LoopSuckingLevelSensor.exit(RELEASE_PRESSURE_PROCEDURE_INTERRUPT);
     }
     if( m_LoopPressureTimer.isRunning())
@@ -1189,6 +1195,10 @@ bool WrapperFmPressureControl::ReleasePressure(void)
         m_LoopAgitationTimer.exit(RELEASE_PRESSURE_PROCEDURE_INTERRUPT);
     }
     connect(&timer, SIGNAL(timeout()), this, SLOT(ReleasePressureTimerCB()));
+
+    m_PressureDrift = GetPressure(0);
+
+    qDebug()<<"##############" << m_PressureDrift;
     //close both valve
     StopCompressor();
     SetFan(0);
@@ -1238,7 +1248,7 @@ bool WrapperFmPressureControl::ReleasePressure(void)
 void WrapperFmPressureControl::StopCompressor(void)
 {
     Log(tr("Shut down compressor"));
-    SetPressure(0, UNDEFINED - m_PressureDrift);
+    SetPressure(0, 1);
 }
 
 
@@ -1939,8 +1949,11 @@ void WrapperFmPressureControl::OnLevelSensorState(quint32, ReturnCode_t ReturnCo
 
     if(State == 1)
     {
+        qDebug()<<"OnLevelSensorState m_LoopSuckingLevelSensor.isRunning:  " <<m_LoopSuckingLevelSensor.isRunning();
+
         if(m_LoopSuckingLevelSensor.isRunning())
         {
+             qDebug()<<"m_LoopSuckingLevelSensor exit 1 (OnLevelSensorState)";
             m_LoopSuckingLevelSensor.exit(State);
         }
     }

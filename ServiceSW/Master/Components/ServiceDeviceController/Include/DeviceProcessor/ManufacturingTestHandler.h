@@ -184,6 +184,33 @@ private:
     /****************************************************************************/
     qint32 MoveRVToSealPos(qint32 Pos);
 
+    /****************************************************************************/
+    /**
+     * \brief To test Rotary Valve heating at station-test
+     */
+    /****************************************************************************/
+    qint32 TestRVHeatingStation( );
+
+    /****************************************************************************/
+    /**
+     * \brief To test Rotary Valve heating at end-test
+     */
+    /****************************************************************************/
+    qint32 TestRVHeatingEnd( );
+
+    /****************************************************************************/
+    /**
+     * \brief To test Rotary Valve heating at end-test
+     */
+    /****************************************************************************/
+    qint32 TestLSensorDetecting(qint32 Pos);
+
+    /****************************************************************************/
+    /**
+     * \brief To heat level sensor for other test (i.e rotary valve heating end)
+     */
+    /****************************************************************************/
+    qint32 HeatingLevelSensor();
 
 
     /****************************************************************************/
@@ -249,7 +276,10 @@ private:
     WrapperFmTempControl*       mp_TempTubeAir;
 
     WrapperFmStepperMotor*      mp_MotorRV;
+    WrapperFmTempControl*       mp_TempRV;
     WrapperFmPressureControl*   mp_PressPump;
+
+    WrapperFmTempControl*       mp_TempLSensor;
 
     WrapperFmBaseModule*        mp_BaseModule3;
     WrapperFmBaseModule*        mp_BaseModule5;

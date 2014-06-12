@@ -68,6 +68,18 @@ CHeatingTestDialog::CHeatingTestDialog(Service::ModuleTestCaseID TestCaseId, QWi
                                                "Current Temperature:", 0, QApplication::UnicodeUTF8);
         mp_Ui->labelCurTempTopName->setText(Text);
     }
+    else if ( TestCaseId == Service::ROTARY_VALVE_HEATING_END ||
+              TestCaseId == Service::ROTARY_VALVE_HEATING_STATION ) {
+        mp_Ui->labelCurTempBottom2->hide();
+        mp_Ui->labelCurTempBottom2Name->hide();
+
+        QString Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
+                                               "Current Temperature (Sensor 1):", 0, QApplication::UnicodeUTF8);
+        mp_Ui->labelCurTempTopName->setText(Text);
+        Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
+                                               "Current Temperature (Sensor 2):", 0, QApplication::UnicodeUTF8);
+        mp_Ui->labelCurTempBottom1Name->setText(Text);
+    }
 
     CONNECTSIGNALSLOTGUI(mp_Ui->abortButton, clicked(), this, AbortWaitDialog());
     CONNECTSIGNALSLOTGUI(&m_Timer, timeout(), this, reject());
@@ -115,6 +127,11 @@ void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
     if (m_TestCaseId == Service::LA_SYSTEM_HEATING_LIQUID_TUBE ||
             m_TestCaseId == Service::LA_SYSTEM_HEATING_AIR_TUBE ) {
         mp_Ui->labelCurTempTop->setText(Status.value("CurrentTemp"));
+    }
+    else if (m_TestCaseId == Service::ROTARY_VALVE_HEATING_END ||
+             m_TestCaseId == Service::ROTARY_VALVE_HEATING_STATION ) {
+        mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempSensor1"));
+        mp_Ui->labelCurTempBottom1->setText(Status.value("CurrentTempSensor2"));
     }
     else {
         mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempTop"));

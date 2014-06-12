@@ -188,7 +188,7 @@ void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
     else if (TestCaseName == "RVSelectingTest") {
         Id = Service::ROTARY_VALVE_SELECTION_FUNCTION;
     }
-    else if (TestCaseName == "RVHeatingEndtest") {
+    else if (TestCaseName == "RVHeatingEndTest") {
         Id = Service::ROTARY_VALVE_HEATING_END;
     }
     else if (TestCaseName == "RVHeatingStationTest") {

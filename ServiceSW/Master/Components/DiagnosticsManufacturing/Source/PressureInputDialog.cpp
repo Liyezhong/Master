@@ -41,12 +41,14 @@ const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9.]{1,5}$"; //!< Reg expression f
  *  \iparam p_Parent = Parent widget
  */
 /****************************************************************************/
-CPressureInputDialog::CPressureInputDialog(QWidget *p_Parent) : MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CPressureInputDialog),
+CPressureInputDialog::CPressureInputDialog(Service::ModuleTestCaseID Id, QWidget *p_Parent) : MainMenu::CDialogFrame(p_Parent), mp_Ui(new Ui::CPressureInputDialog),
     m_LineEditStringLeft(""),
     m_LineEditStringMiddle(""),
     m_LineEditStringRight(""),
     m_Seconds(0),
-    m_PassFlag(false)
+    m_WaitSeconds(0),
+    m_PassFlag(false),
+    m_TestCaseId(Id)
 {
     mp_Ui->setupUi(GetContentFrame());
     setModal(true);
@@ -64,7 +66,6 @@ CPressureInputDialog::CPressureInputDialog(QWidget *p_Parent) : MainMenu::CDialo
 
     m_Timer = new QTimer(this);
     CONNECTSIGNALSLOTGUI(m_Timer, timeout(), this, OnTimeout());
-
 }
 
 /****************************************************************************/
@@ -170,14 +171,20 @@ void CPressureInputDialog::OnOkClicked(QString EnteredString)
         m_LineEditStringLeft = EnteredString.simplified();
         mp_Ui->lineEdit->setText(m_LineEditStringLeft);
 
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(m_TestCaseId);
+        DataManager::CTestCase *mp_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
         int OrigValue = mp_Ui->lineEdit->text().toInt();
-        if (OrigValue < 95 || OrigValue > 105) {
+        qreal PressureLow = mp_TestCase->GetParameter("PressureLow").toDouble();
+        qreal PressureHigh = mp_TestCase->GetParameter("PressureHigh").toDouble();
+        if (OrigValue < PressureLow || OrigValue > PressureHigh) {
             // display success message
             MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(this);
-            QString Text = QApplication::translate("DiagnosticsManufacturing::CPressureInputDialog",
-                                           "The value of Original Pressure should be in 95~105 kpa", 0, QApplication::UnicodeUTF8);
+            QString PromptText = QApplication::translate("DiagnosticsManufacturing::CPressureInputDialog",
+                                           "The value of Original Pressure should be in", 0, QApplication::UnicodeUTF8);
+            QString DisplayText = QString("%1 %2~%3 kpa").arg(PromptText).arg(PressureLow).arg(PressureHigh);
             dlg->SetIcon(QMessageBox::Warning);
-            dlg->SetText(Text);
+            dlg->SetText(DisplayText);
             dlg->HideButtons();
             dlg->SetButtonText(1, tr("Ok"));
 
@@ -189,6 +196,10 @@ void CPressureInputDialog::OnOkClicked(QString EnteredString)
             mp_Ui->lineEdit->selectAll();
         }
         else {
+
+            QTime DurationTime = QTime::fromString(mp_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
+            m_WaitSeconds  = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
+            qDebug()<<"Wait Seconds = "<<m_WaitSeconds;
             m_Timer->stop();
             m_Seconds = 0;
             m_Timer->start(1000);
@@ -249,10 +260,17 @@ void CPressureInputDialog::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void CPressureInputDialog::AbortDialog()
 {
-    int OrigValue = mp_Ui->lineEdit->text().toFloat();
-    int CurrentValue = mp_Ui->lineEdit_2->text().toFloat();
+    qreal OrigValue = mp_Ui->lineEdit->text().toFloat();
+    qreal CurrentValue = mp_Ui->lineEdit_2->text().toFloat();
 
-    if (qFabs(OrigValue-CurrentValue) <= 5.0) {
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(m_TestCaseId);
+    DataManager::CTestCase *mp_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    qreal Departure = mp_TestCase->GetParameter("Departure").toDouble();
+
+    qDebug() <<"qFabs="<<qFabs(OrigValue-CurrentValue)<<" Departure="<<Departure;
+
+    if (qFabs(OrigValue-CurrentValue) <= Departure) {
         m_PassFlag = true;
     }
     else {
@@ -274,7 +292,7 @@ void CPressureInputDialog::RetranslateUI()
 void CPressureInputDialog::OnTimeout()
 {
     m_Seconds++;
-    if (m_Seconds > 10) {
+    if (m_Seconds > m_WaitSeconds) {
         mp_Ui->lineEdit_2->setDisabled(false);
         m_Timer->stop();
         m_Seconds = 0;

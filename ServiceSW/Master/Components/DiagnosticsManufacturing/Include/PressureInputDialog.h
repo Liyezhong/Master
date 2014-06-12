@@ -26,6 +26,10 @@
 #include <QTimer>
 #include <KeyBoard/Include/KeyBoard.h>
 
+#include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "ServiceDataManager/Include/TestCase.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
+
 namespace DiagnosticsManufacturing {
 
 namespace Ui {
@@ -51,7 +55,7 @@ public:
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
-    explicit CPressureInputDialog(QWidget *p_Parent = 0);
+    explicit CPressureInputDialog(Service::ModuleTestCaseID Id, QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /*!
@@ -105,6 +109,7 @@ public:
 
     bool GetResult( )
     {
+   //     qDebug() <<"GetResult = " << m_PassFlag;
         return m_PassFlag;
     }
 
@@ -156,7 +161,10 @@ private:
     QString m_LineEditStringRight;                   //!< Stores user input value
     QTimer   *m_Timer;                    //!< Timer to remind user input current pressure.
     int     m_Seconds ;
+    int     m_WaitSeconds;
     bool    m_PassFlag;                   //!< Test result.
+    Service::ModuleTestCaseID m_TestCaseId; //!< Test case Id
+
 
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();

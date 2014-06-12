@@ -47,6 +47,9 @@ public:
 
     void LoadManufDiagnosticsComponents();
 
+    void ShowMessage(const QString &Message);
+    void HideMessage();
+
 private:
     Core::CServiceGUIConnector                  *mp_ServiceConnector;       //!< Service GUI connector object
     MainMenu::CMainWindow                       *mp_MainWindow;             //!< The main window of the application
@@ -60,6 +63,9 @@ private:
 
     QEventLoop                                   m_LoopManufacturingTest;    //!< Loop for blocking Manufacturing Test command
 
+    MainMenu::CMessageDlg                       *mp_WaitDialog;             //!< Displayed when busy
+
+
     QString                                      m_FailStr;                  //!< - Fail
     QString                                      m_SuccessStr;              //!< - Success
 
@@ -67,6 +73,7 @@ private:
     void ShowHeatingFailedResult(Service::ModuleTestCaseID Id);
     quint8 GetPositionForRVTest(Service::ModuleTestCaseID Id, int Index);
     bool ShowConfirmDlgForRVSelecting(quint8 Position);
+    bool ShowConfirmDlgForRVSealing(quint8 Position);
     void PerformManufOvenTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufMainControlTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufRVTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
@@ -87,8 +94,7 @@ public slots:
     void OnReturnManufacturingMsg(bool Result);
 
     /* Return Message Slots */
-    void ShowMessage(const QString &Message);
-    void HideMessage();
+
     void ShowErrorMessage(const QString &Message);
 
 };
