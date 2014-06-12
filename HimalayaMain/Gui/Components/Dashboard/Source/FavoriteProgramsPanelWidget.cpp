@@ -93,6 +93,9 @@ void CFavoriteProgramsPanelWidget::UpdateProgram(DataManager::CProgram &Program)
 
             break;
         }
+        else {
+             emit UpdateFavProgram();
+        }
     }
 }
 

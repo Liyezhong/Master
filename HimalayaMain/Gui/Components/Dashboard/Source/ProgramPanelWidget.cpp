@@ -34,6 +34,8 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, OnSelectEndDateTime(const QDateTime&),
                       ui->programRunningPanel, OnUserSetEndDateTime(const QDateTime&));
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, RequestAsapDateTime(), this, RequestAsapDateTime());
+    CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, UpdateFavProgram(), this, OnUpdatePanelProgram());
+
     CONNECTSIGNALSIGNAL(this, SendAsapDateTime(int), ui->favoriteProgramsPanel, SendAsapDateTime(int));
 
     CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, QList<QString>&),
@@ -314,6 +316,11 @@ void CProgramPanelWidget::OnResumeProgramReminder()
     ConfirmationMessageDlg.SetButtonText(1, CommonString::strOK);
     ConfirmationMessageDlg.HideButtons();
     (void)ConfirmationMessageDlg.exec();
+}
+
+void CProgramPanelWidget::OnUpdatePanelProgram()
+{
+    EnableStartButton(false);
 }
 
 }

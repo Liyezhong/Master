@@ -124,6 +124,7 @@ namespace Dashboard {
         void OnSelectEndDateTime(const QDateTime &);
         void RequestAsapDateTime();
         void SendAsapDateTime(int);
+        void UpdateFavProgram();
     private:
         /****************************************************************************/
         /*!
