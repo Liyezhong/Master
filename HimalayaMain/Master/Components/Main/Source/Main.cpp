@@ -237,7 +237,7 @@ int main(int argc, char *argv[]) {
         system("sync");
         std::cout << "\n\n\n Sync in Main" << Global::AdjustedTime::Instance().GetCurrentTime().toString().toStdString();
         // and exit
-        return ReturnCode;
+        return 0;
     }
     catch(const std::exception &E) {
         // send error message
