@@ -65,7 +65,7 @@ CCurrentConfigurationDlg::CCurrentConfigurationDlg(QWidget *p_Parent) :
 
     CONNECTSIGNALSLOTGUI(mp_TableWidget, clicked(QModelIndex), this, SelectionChanged(QModelIndex));
     CONNECTSIGNALSLOTGUI(mp_Ui->detailBtn, clicked(), this, ExecDialog());
-    CONNECTSIGNALSLOTGUI(mp_Ui->cancelBtn, clicked(), this, close());
+    CONNECTSIGNALSLOTGUI(mp_Ui->cancelBtn, clicked(), this, OnCancel());
 }
 
 
@@ -93,7 +93,7 @@ CCurrentConfigurationDlg::~CCurrentConfigurationDlg()
  *  \iparam SubModuleName = Name of the module
  */
 /****************************************************************************/
-void CCurrentConfigurationDlg::AddItem(QString SubModuleName)
+void CCurrentConfigurationDlg::AddItem(const QString& SubModuleName)
 {
 
     QList<QStandardItem *> ItemList;
@@ -166,10 +166,16 @@ void CCurrentConfigurationDlg::ExecDialog()
     }
 }
 
+void CCurrentConfigurationDlg::OnCancel()
+{
+    m_SubModuleName = "";
+    (void)this->close();
+}
+
 /****************************************************************************/
 /*!
  *  \brief  To initialize the pop up dialog
- *  \iparam Module = Module object
+ *  \iparam Module = Module objectCCurrentConfigurationDlg
  */
 /****************************************************************************/
 void CCurrentConfigurationDlg::InitDialog(ServiceDataManager::CModule *p_Module)

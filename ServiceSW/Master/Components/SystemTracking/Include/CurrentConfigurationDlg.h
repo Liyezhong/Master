@@ -65,7 +65,7 @@ public:
      *  \iparam SubModuleName = Name of the module
      */
     /****************************************************************************/
-    void AddItem(QString SubModuleName);
+    void AddItem(const QString& SubModuleName);
 
     /****************************************************************************/
     /*!
@@ -95,13 +95,20 @@ public slots:
     /****************************************************************************/
     void ExecDialog();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of OnCancel
+     */
+    /****************************************************************************/
+    void OnCancel();
+
 private:
     Ui::CCurrentConfigurationDlg *mp_Ui;                         //!< Userinterface
     MainMenu::CBaseTable *mp_TableWidget;                        //!< Table for submodule list
     QStandardItemModel m_Model;                                  //!< Model for the table
 
-    ServiceDataManager::CModule *mp_Module;                             //!< Selected module name
-    ServiceDataManager::CSubModule *mp_SubModule;                       //!< Selected Submodule name
+    ServiceDataManager::CModule *mp_Module;                      //!< Selected module name
+    ServiceDataManager::CSubModule *mp_SubModule;                //!< Selected Submodule name
     QVariant m_SubModuleName;                                    //!< Stores sub module name
     MainMenu::CMessageDlg *mp_MessageDialog;                     //!< Information message dialog
     SystemTracking::CCurrentConfigParameterDlg *mp_ParameterDlg; //!< Current Configuration parameter dialog
