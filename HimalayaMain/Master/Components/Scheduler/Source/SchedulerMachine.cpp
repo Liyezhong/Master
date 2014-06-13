@@ -296,16 +296,14 @@ CSchedulerStateMachine::~CSchedulerStateMachine()
     delete mp_ErrorRsStandbyWithTissueState;
     mp_ErrorRsStandbyWithTissueState = NULL;
 
-
-
     delete mp_RcLevelSensorHeatingOvertime;
     mp_RcLevelSensorHeatingOvertime = NULL;
 
-    delete mp_ErrorRsHeatingErr30SRetry;
-    mp_ErrorRsHeatingErr30SRetry = NULL;
-
     delete mp_RsHeatingErr30SRetry;
     mp_RsHeatingErr30SRetry = NULL;
+
+    delete mp_ErrorRsHeatingErr30SRetry;
+    mp_ErrorRsHeatingErr30SRetry = NULL;
 
     delete mp_ErrorRcLevelSensorHeatingOvertimeState;
     mp_ErrorRcLevelSensorHeatingOvertimeState = NULL;
