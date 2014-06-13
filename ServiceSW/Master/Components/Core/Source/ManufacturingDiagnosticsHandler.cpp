@@ -570,7 +570,7 @@ Sealing_Test_Twice:
             }
 
             QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-            Text = QString("%1 - %2").arg(TestCaseDescription).arg(m_FailStr);
+            Text = QString("%1 - %2\n%3").arg(TestCaseDescription).arg(m_FailStr).arg(Reason);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
             if (Id == Service::ROTARY_VALVE_HEATING_END ||
@@ -578,7 +578,7 @@ Sealing_Test_Twice:
                 if (Reason != "NOT-IN-HEATING")
                     ShowHeatingFailedResult(Id);
             }
-
+            mp_RotaryValveManuf->SetTestResult(Id, Result);
             mp_RotaryValveManuf->EnableButton(true);
             return ;
         }

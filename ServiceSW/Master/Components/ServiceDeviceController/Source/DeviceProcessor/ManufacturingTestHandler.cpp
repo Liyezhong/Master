@@ -1000,6 +1000,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     qreal AmbTempLow = p_TestCase->GetParameter("AmbTempLow").toDouble();
     qreal AmbTempHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
 
+    int KeepSeconds = 0;
+
     if (p_TestCase->GetParameter("PowerSupply") == "AC") {
         NeedAC = true;
     }
@@ -1019,7 +1021,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 
     CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
     CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
-#if 1
+
     if (CurrentTempSensor1<AmbTempLow || CurrentTempSensor1>AmbTempHigh ||
             CurrentTempSensor2<AmbTempLow || CurrentTempSensor2>AmbTempHigh  ){
         QString FailureMsg = QString("Rotary Valve Current Temperature is (%1 %2) which is not in (%3~%4)").arg(CurrentTempSensor1).arg(CurrentTempSensor2)
@@ -1048,7 +1050,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 
         return -1;
     }
-#endif
+
 
     // heating level sensor
     qDebug()<<"Heating level sensor....";
@@ -1213,12 +1215,21 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
              WaitSec--;
              continue;
          }
+         qDebug()<<"Target="<<TargetTempSensor2<<" Sensor1="<<CurrentTempSensor1<<" Sensor2="<<CurrentTempSensor2;
+
          if ( CurrentTempSensor2 >= TargetTempSensor2 ) {
-             RVStatus = 1;
-             break;
+             if ( KeepSeconds > 60 ) {
+                 RVStatus = 1;
+                 break;
+             }
+             else {
+                 KeepSeconds++;
+             }
+         }
+         else {
+             KeepSeconds = 0;
          }
 
-         qDebug()<<"Target="<<TargetTempSensor2<<" Sensor1="<<CurrentTempSensor1<<" Sensor2="<<CurrentTempSensor2;
 
          mp_Utils->Pause(1000);
          Sensor1Value = QString("%1").arg(CurrentTempSensor1);
@@ -1230,7 +1241,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
          Status.insert("CurrentTempSensor1", Sensor1Value);
          Status.insert("CurrentTempSensor2", Sensor2Value);
          if (WaitSec == SumSec) {
-             QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSensor2);//.arg(DepartureLow).arg(DepartureHigh);
+             QString TargetTempStr = QString("%1").arg(TargetTempSensor2);//.arg(DepartureLow).arg(DepartureHigh);
              Status.insert("TargetTemp", TargetTempStr);
 
              qDebug()<<"TargetTemp="<<TargetTempStr;
