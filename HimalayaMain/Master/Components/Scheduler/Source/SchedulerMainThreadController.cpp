@@ -1672,16 +1672,6 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
         const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
         quint32 soakTime = pProgramStep->GetDurationInSeconds();
         leftTime += soakTime;
-        bool isPressure = (pProgramStep->GetPressure() == "On");
-        bool isVaccum = (pProgramStep->GetVacuum() == "On");
-        if (isPressure ^ isVaccum)
-        {
-            leftTime += 30;//suppose pressure or vaccum need 30 seconds to build up
-        }
-        else if(isPressure && isVaccum)
-        {
-            leftTime += 30 * (soakTime / 60); //suppose P/V take turns in 1 min, and each takes 30 seconds to build up
-        }
         leftTime += 5 +  2 * 2; //suppose RV need 5 seconds to move to the target station, and movment between tube and its seal need 2 seconds.
         leftTime += 60; //suppose need 60 seconds to fill
         leftTime += 40; //suppose need 40 seconds to drain
@@ -1723,16 +1713,6 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
     {
         quint32 soakTime = pProgramStep->GetDurationInSeconds();
         leftTime += soakTime;
-        bool isPressure = (pProgramStep->GetPressure() == "On");
-        bool isVaccum = (pProgramStep->GetVacuum() == "On");
-        if (isPressure ^ isVaccum)
-        {
-            leftTime += 30;//suppose pressure or vaccum need 30 seconds to build up
-        }
-        else if(isPressure && isVaccum)
-        {
-            leftTime += 30 * (soakTime / 60); //suppose P/V take turns in 1 min, and each takes 30 seconds to build up
-        }
         leftTime += 5 +  2 * 2; //suppose RV need 5 seconds to move to the target station, and movment between tube and its seal need 2 seconds.
         leftTime += 60; //suppose need 60 seconds to fill
         leftTime += 40; //suppose need 40 seconds to drain
