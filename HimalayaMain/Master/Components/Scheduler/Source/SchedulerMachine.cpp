@@ -187,8 +187,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_RcRestart, Recover(), this, OnNotifyResume());
     CONNECTSIGNALSLOT(mp_RcRestart, TasksDone(bool), this, OnTasksDone(bool));
 
-    CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry, StopTemCtrl(), this, OnStopDeviceTempCtrl());
-    CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry, StartTemCtrl(), this, OnStartDeviceTempCtrl());
+    CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry, StopTempCtrl(), this, OnStopDeviceTempCtrl());
+    CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry, StartTempCtrl(), this, OnStartDeviceTempCtrl());
     CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry, CheckDevStatus(), this, OnCheckDeviceStatus());
     CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry, TasksDone(bool), this, OnTasksDone(bool));
 }
