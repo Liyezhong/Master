@@ -30,6 +30,7 @@
 #include "Scheduler/Include/RcLevelsensorHeatingOvertime.h"
 #include "Scheduler/Include/RcRestart.h"
 #include "Scheduler/Include/RcReport.h"
+#include "Scheduler/Include/RsHeatingErr30SRetry.h"
 #include <QDebug>
 #include <QDateTime>
 
@@ -58,6 +59,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorRsStandbyWithTissueState = new QState(mp_ErrorState);
     mp_ErrorRcLevelSensorHeatingOvertimeState = new QState(mp_ErrorState);
     mp_ErrorRcRestart = new QState(mp_ErrorState);
+    mp_ErrorRsHeatingErr30SRetry = new QState(mp_ErrorState);
 
     mp_SchedulerMachine->setInitialState(mp_InitState);
     mp_ErrorState->setInitialState(mp_ErrorWaitState);
@@ -70,6 +72,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_RsStandbyWithTissue = new CRsStandbyWithTissue(mp_SchedulerMachine, mp_ErrorRsStandbyWithTissueState);
     mp_RcLevelSensorHeatingOvertime = new CRcLevelSensorHeatingOvertime(mp_SchedulerMachine, mp_ErrorRcLevelSensorHeatingOvertimeState);
     mp_RcRestart = new CRcRestart(mp_SchedulerMachine, mp_ErrorRcRestart);
+    mp_RsHeatingErr30SRetry = new CRsHeatingErr30SRetry(mp_SchedulerMachine, mp_ErrorRsHeatingErr30SRetry);
 
     mp_InitState->addTransition(this, SIGNAL(SchedulerInitComplete()), mp_IdleState);
     mp_IdleState->addTransition(this, SIGNAL(RunSignal()), mp_BusyState);
@@ -94,6 +97,10 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     //RC_Restart related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcRestart()), mp_ErrorRcRestart);
     mp_ErrorRcRestart->addTransition(this, SIGNAL(sigStateChange()), mp_BusyState);
+
+    //RS_HeatingErr30SRetry related logic
+    mp_ErrorState->addTransition(this, SIGNAL(SigEnterRSHeatingErr30SRetry()), mp_ErrorRsHeatingErr30SRetry);
+    mp_ErrorRsHeatingErr30SRetry->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState);
 
     connect(this, SIGNAL(RunCleaning()), mp_ProgramStepStates, SIGNAL(TempsReady()));
     connect(this, SIGNAL(RunSelfTest()), mp_ProgramStepStates, SIGNAL(SelfTestSig()));
@@ -179,6 +186,11 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     CONNECTSIGNALSLOT(mp_RcRestart, Recover(), this, OnNotifyResume());
     CONNECTSIGNALSLOT(mp_RcRestart, TasksDone(bool), this, OnTasksDone(bool));
+
+    CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry, StopTemCtrl(), this, OnStopDeviceTempCtrl());
+    CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry, StartTemCtrl(), this, OnStartDeviceTempCtrl());
+    CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry, CheckDevStatus(), this, OnCheckDeviceStatus());
+    CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry, TasksDone(bool), this, OnTasksDone(bool));
 }
 
 void CSchedulerStateMachine::OnStateChanged()
@@ -229,6 +241,21 @@ void CSchedulerStateMachine::OnRestartLevelSensorTempControl()
     mp_SchedulerThreadController->RestartLevelSensorTempCtrlInError();
 }
 
+void CSchedulerStateMachine::OnStopDeviceTempCtrl()
+{
+
+}
+
+void CSchedulerStateMachine::OnStartDeviceTempCtrl()
+{
+
+}
+
+void CSchedulerStateMachine::OnCheckDeviceStatus()
+{
+
+}
+
 void CSchedulerStateMachine::OnTasksDone(bool flag)
 {
     Global::EventObject::Instance().RaiseEvent(mp_SchedulerThreadController->GetEventKey(), 0, 0, flag);
@@ -274,6 +301,12 @@ CSchedulerStateMachine::~CSchedulerStateMachine()
 
     delete mp_RsStandbyWithTissue;
     mp_RsStandbyWithTissue = NULL;
+
+    delete mp_ErrorRsHeatingErr30SRetry;
+    mp_ErrorRsHeatingErr30SRetry = NULL;
+
+    delete mp_RsHeatingErr30SRetry;
+    mp_RsHeatingErr30SRetry = NULL;
 
     delete mp_ErrorRcLevelSensorHeatingOvertimeState;
     mp_ErrorRcLevelSensorHeatingOvertimeState = NULL;
@@ -604,10 +637,21 @@ void CSchedulerStateMachine::EnterRsStandByWithTissue()
     emit SigEnterRsStandByWithTissue();
 }
 
+void CSchedulerStateMachine::EnterRsHeatingErr30SRetry()
+{
+    emit SigEnterRSHeatingErr30SRetry();
+}
+
 void CSchedulerStateMachine::HandleRsStandByWithTissueWorkFlow(bool flag)
 {
     mp_RsStandbyWithTissue->OnHandleWorkFlow(flag);
 }
+
+void CSchedulerStateMachine::HandleRsHeatingErr30SRetry(bool flag)
+{
+    mp_RsHeatingErr30SRetry->OnHandleWorkFlow(flag);
+}
+
 
 void CSchedulerStateMachine::EnterRcLevelsensorHeatingOvertime()
 {
@@ -639,6 +683,53 @@ void CSchedulerStateMachine::SendRunSelfTest()
 void CSchedulerStateMachine::SendRunCleaning()
 {
     emit RunCleaning();
+}
+
+
+QString CSchedulerStateMachine::GetDeviceName()
+{
+    ReturnCode_t EventID = mp_SchedulerThreadController->GetCurErrEventID();
+
+    QString DevName = "";
+    switch (EventID)
+    {
+    case DCL_ERR_DEV_RETORT_BOTTOM_SIDELOW_HEATING_ELEMENT_FAILED:
+    case DCL_ERR_DEV_RETORT_SIDTOP_SIDEMID_HEATING_ELEMENT_FAILED:
+    case DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERANGE:
+    case DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL:
+    case DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE:
+    case DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL:
+    case DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_OVERRANGE:
+    case DCL_ERR_DEV_RETORT_TSENSOR3_TEMPERATURE_NOSIGNAL:
+    case DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED:
+        DevName = "Retort";
+        break;
+    case DCL_ERR_DEV_RETORT_LEVELSENSOR_TEMPERATURE_OVERRANGE:
+        DevName = "LevelSensor";
+        break;
+    case DCL_ERR_DEV_WAXBATH_TOP_HEATINGPAD_CURRENT_OUTOFRANGE:
+    case DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE:
+    case DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_OUTOFRANGE:
+    case DCL_ERR_DEV_WAXBATH_TSENSORDOWN2_OUTOFRANGE:
+        DevName = "Oven";
+        break;
+    case DCL_ERR_DEV_RV_HEATING_TEMPSENSOR1_OUTOFRANGE:
+    case DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_OUTOFRANGE:
+    case DCL_ERR_DEV_RV_HEATING_CURRENT_OUTOFRANGE:
+        DevName = "Rotary Valve";
+        break;
+    case DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE:
+    case DCL_ERR_DEV_LA_STATUS_EXHAUSTFAN:
+    case DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL:
+    case DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL:
+    case DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE:
+    case DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE:
+        DevName = "LA";
+        break;
+    default:
+        break;
+    }
+    return DevName;
 }
 
 }

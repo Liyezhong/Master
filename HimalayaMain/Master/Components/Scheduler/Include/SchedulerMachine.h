@@ -34,6 +34,7 @@ class CRsStandbyWithTissue;
 class CRcLevelSensorHeatingOvertime;
 class CRcRestart;
 class CRcReport;
+class CRsHeatingErr30SRetry;
 class SchedulerMainThreadController;
 class SchedulerCommandProcessorBase;
 
@@ -55,6 +56,7 @@ private:
     QState* mp_ErrorRsStandbyWithTissueState;                           ///<  Error State's sub state: handle RS_STandby_WithTissue related logic
     QState* mp_ErrorRcLevelSensorHeatingOvertimeState;                  ///<  Error State's sub state: handle RC_Levelsensor_Heating_Overtime related logic
     QState* mp_ErrorRcRestart;                                          ///<  Error State's sub state: handle RC_Restart related logic
+    QState* mp_ErrorRsHeatingErr30SRetry;                                 ///<  Error State's sub state: handle Rs_HeatingErr30SRetry related logic
     CProgramStepStateMachine *mp_ProgramStepStates;						///<  Definition/Declaration of variable mp_ProgramStepStates
     CRsRvGetOriginalPositionAgain *mp_RsRvGetOriginalPositionAgain;		///<  Definition/Declaration of variable mp_RSRvGetOriginalPositionAgain
     CRsStandby *mp_RsStandby;											///<  Definition/Declaration of variable mp_RSStandby
@@ -62,11 +64,13 @@ private:
     CRcLevelSensorHeatingOvertime *mp_RcLevelSensorHeatingOvertime;     ///<  Definition/Declaration of variable mp_RcLevelSensorHeatingOvertime
     CRcRestart *mp_RcRestart;                                           ///<  Definition/Declaration of variable mp_RcRestart
     CRcReport *mp_RcReport;												///<  Definition/Declaration of variable mp_RcReport
+    CRsHeatingErr30SRetry *mp_RsHeatingErr30SRetry;                     ///<  Definition/Declaration of variable mp_RsHeatingErr30SRetry
     SchedulerStateMachine_t m_PreviousState;							///<  Definition/Declaration of variable m_PreviousState
     SchedulerStateMachine_t m_CurrentState;								///<  Definition/Declaration of variable m_CurrentState
 	SchedulerMainThreadController *mp_SchedulerThreadController;		///<  Definition/Declaration of variable mp_SchedulerThreadController
     SchedulerCommandProcessorBase* mp_SchedulerCommandProcessor;         ///< Pointer of SchedulerMainThreadController's SchedulerCommandProcessor
-
+private:
+    QString GetDeviceName();
 
 
 public:
@@ -439,6 +443,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief Enter to Rs_HeatingErr30SRetry sub state machine
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void EnterRsHeatingErr30SRetry();
+
+    /****************************************************************************/
+    /*!
      *  \brief Enter to Rc_Levelsensor_Heating_Overtime sub state machine
      *
      *  \return void
@@ -465,6 +478,17 @@ public:
      */
     /****************************************************************************/
     void HandleRsStandByWithTissueWorkFlow(bool flag);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for Rs_HeatingERR30SRetry
+     *
+     *  \param flag - indicate if the execution succeeds or not
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRsHeatingErr30SRetry(bool flag);
 
     /****************************************************************************/
     /*!
@@ -538,6 +562,33 @@ private slots:
      */
     /****************************************************************************/
     void OnRsReleasePressure(); 
+
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to stop all the temperature control for the specific device
+     *  \param	void
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnStopDeviceTempCtrl();
+
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to start all the temperature control for the specific device
+     *  \param	void
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnStartDeviceTempCtrl();
+
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to check the status of the specific device
+     *  \param	void
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnCheckDeviceStatus();
 
     /****************************************************************************/
     /*!
@@ -633,6 +684,12 @@ signals:
     /****************************************************************************/
     void SigEnterRcRestart();
 
+    /****************************************************************************/
+    /*!
+     *  \brief signal to enter RS_HeatingErr30SRetry
+     */
+    /****************************************************************************/
+    void SigEnterRSHeatingErr30SRetry();
 
     /****************************************************************************/
     /*!
@@ -1073,6 +1130,11 @@ signals:
     /****************************************************************************/
     void sigOnRsRTTopStopTempCtrlAtRsStandByWithTissue();
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigStateChange
+     */
+    /****************************************************************************/
     void sigStateChange();
 };
 }

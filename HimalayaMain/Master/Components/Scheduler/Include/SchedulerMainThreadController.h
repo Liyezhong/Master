@@ -87,10 +87,11 @@ typedef enum
     CTRL_CMD_QUITAPP,
     CTRL_CMD_SHUTDOWN,
     CTRL_CMD_RS_GET_ORIGINAL_POSITION_AGAIN,
-    CTRL_CMD_RC_REPORT,
-    CTRL_CMD_RC_RESTART,
     CTRL_CMD_RS_STANDBY,
     CTRL_CMD_RS_STANDBY_WITHTISSUE,
+    CTRL_CMD_RS_HEATINGERR30SRETRY,
+    CTRL_CMD_RC_REPORT,
+    CTRL_CMD_RC_RESTART,
     CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME,
     CTRL_CMD_NONE,
     CTRL_CMD_UNKNOWN
@@ -198,7 +199,7 @@ typedef struct
         bool m_PauseToBeProcessed;       ///<  Definition/Declaration of variable m_PauseToBeProcessed
         int m_ProcessCassetteCount;       ///<  Definition/Declaration of variable m_ProcessCassetteCount
         quint32 m_EventKey;                                   ///< Current Event key
-        quint32 m_CurEventID;                                 ///< Current Event ID
+        ReturnCode_t m_CurErrEventID;                         ///< Current Event ID
         QSharedPointer<HeatingStrategy> mp_HeatingStrategy;   ///< Definition/Declaration of variable mp_HeatingStrategy
         Global::tRefType    m_RefCleanup;                     ///< Command reference of the cleanup command
         int m_delayTime;
@@ -797,6 +798,15 @@ protected:
          */
         /****************************************************************************/
         quint32 GetEventKey(){ return m_EventKey; }
+
+        /****************************************************************************/
+        /**
+         * @brief   return current Event ID when an error occurs
+         *
+         * @return  void
+         */
+        /****************************************************************************/
+        ReturnCode_t GetCurErrEventID(){ return m_CurErrEventID; }
         /****************************************************************************/
         /**
          * @brief raise error to event handler
@@ -808,12 +818,12 @@ protected:
          *  \iparam    Active
          */
          /****************************************************************************/
-        virtual void RaiseError(const quint32 EventKey, const quint32 EventID, const quint32 Scenario,
+        virtual void RaiseError(const quint32 EventKey, ReturnCode_t EventID, const quint32 Scenario,
                                   const bool ActionResult, const bool Active = true)
         {
             if(EventKey == 0)
             {
-                m_CurEventID = EventID;
+                m_CurErrEventID = EventID;
                 Global::EventObject::Instance().RaiseEvent(EventKey, EventID, Scenario, ActionResult,Active,
                                                        Global::tTranslatableStringList()<<QString("(%1 %2)").arg(EventID).arg(Scenario));
             }

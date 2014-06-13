@@ -1,7 +1,7 @@
 /****************************************************************************/
 /*! \file RsHeatingErr3SRetry.h
  *
- *  \brief RsHeatingErr3SRetry class definition.
+ *  \brief CRsHeatingErr3SRetry class definition.
  *
  *   $Version: $ 0.1
  *   $Date:    $ June 6th, 2014
@@ -31,7 +31,7 @@ namespace Scheduler{
  * \brief Error Handling State machine for RS_HeatingErr_3S_Retry
  */
 /****************************************************************************/
-class  CRsHeatingErr3SRetry : public CErrorHandlingSMBase
+class  CRsHeatingErr30SRetry : public CErrorHandlingSMBase
 {
     Q_OBJECT
 public:
@@ -44,14 +44,14 @@ public:
      *
      */
     /****************************************************************************/
-    CRsHeatingErr3SRetry(QStateMachine* pStateMachine, QState* pParentState);
+    CRsHeatingErr30SRetry(QStateMachine* pStateMachine, QState* pParentState);
 
     /****************************************************************************/
     /*!
      *  \brief  desctruction CRsHeatingErr3SRetry
      */
     /****************************************************************************/
-    ~CRsHeatingErr3SRetry();
+    ~CRsHeatingErr30SRetry();
 
     /****************************************************************************/
     /*!
@@ -77,6 +77,14 @@ public:
 signals:
     /****************************************************************************/
     /*!
+     *  \brief	signal to stop temperature control	 
+     *
+     */
+    /****************************************************************************/
+    void StopTempCtrl();
+
+    /****************************************************************************/
+    /*!
      *  \brief	signal to start temperature control 
      *
      */
@@ -85,11 +93,20 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief	signal to start temperature control	 
+     *  \brief	signal to check the related device's status 
      *
      */
     /****************************************************************************/
-    void StoptempCtrl();
+    void CheckDevStatus();
+
+    /****************************************************************************/
+    /*!
+     *  \brief	signal to retry above 3 steps
+     *
+     */
+    /****************************************************************************/
+    void Retry();
+
 
     /****************************************************************************/
     /*!
@@ -98,11 +115,13 @@ signals:
      */
     /****************************************************************************/
     void TasksDone(bool);
-
 private:
-    QState *mp_Initial;                 //!< Initial state
-    QState *mp_StartTempCtrl;			//!< Start tempature control state
-    QState *mp_StopTempCtrl;			//!< Stop tempature control state
+    QState *mp_Initial;                 							//!< Initial state
+    QState *mp_StopTempCtrl;										//!< Stop tempature control state
+    QState *mp_StartTempCtrl;										//!< Start tempature control state
+    QState *mp_CheckDevStatus;										//!< Check Device Status
+    QState *mp_Retry;                                               //!< Retry (at most 10)
+	quint32 m_counter;												//!< counter for retry times
 };
 }
 #endif // RS_HEATING_ERR_3S_RETRY

@@ -92,7 +92,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_delayTime(0)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
-    m_CurEventID = 0;
+    m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
     m_TempCheck = false;
 }
 
@@ -438,19 +438,19 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
                 {
                     LogDebug("Precheck Position Check exceed upper limit");
-                    RaiseError(0, 500030021, Scenario, false);
+                    RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT, Scenario, false);
                     m_SchedulerMachine->SendErrorSignal();
                 }
                 else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
                 {
                     LogDebug("Precheck Position Check internal step retry");
-                    RaiseError(0, 500030011, Scenario, false);
+                    RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, Scenario, false);
                     m_SchedulerMachine->SendErrorSignal();
                 }
                 else
                 {
                     LogDebug("Precheck Position Check Failed");
-                    RaiseError(0, 500030001, Scenario, false);
+                    RaiseError(0, DCL_ERR_DEV_RV_MOTOR_CANNOTGET_ORIGINALPOSITION, Scenario, false);
                     m_SchedulerMachine->SendErrorSignal();
                 }
             }
@@ -628,25 +628,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
-                //check heating time
-                qint64 lsHeatStartTime = GetFunctionModuleStartworkTime(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_LEVELSENSORTEMPCTRL);
-                bool ok;
-                CProgramSettings *pProgramSetting = NULL;
-                mp_DataManager->GetProgramSettings(pProgramSetting);
-                if(pProgramSetting)
-                {
-                    qint64 overtime = pProgramSetting->GetParameterValue("Retort", "level sensor", "HeatingOvertime", ok);
-                    if((lsHeatStartTime != 0)&&(ok))
-                    {
-                        if(QDateTime::currentMSecsSinceEpoch() > (lsHeatStartTime + overtime*1000))
-                        {
-                            LogDebug("Program Step Heating Level sensor stage 1 timeout");
-                            //level sensor heating overtime
-                            RaiseError(0, 513015312, GetScenarioBySchedulerState(stepState, GetReagentGroupID(m_CurReagnetName)), true);
-                            m_SchedulerMachine->SendErrorSignal();
-                        }
-                    }
-                }
+
             }
         }
         else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2 == stepState)
@@ -664,25 +646,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
-                //check heating time
-                qint64 lsHeatStartTime = GetFunctionModuleStartworkTime(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_LEVELSENSORTEMPCTRL);
-                bool ok;
-                CProgramSettings *pProgramSetting = NULL;
-                mp_DataManager->GetProgramSettings(pProgramSetting);
-                if(pProgramSetting)
-                {
-                    qint64 overtime = pProgramSetting->GetParameterValue("Retort", "level sensor", "HeatingOvertime", ok);
-                    if((lsHeatStartTime != 0)&&(ok))
-                    {
-                        if(QDateTime::currentMSecsSinceEpoch() > (lsHeatStartTime + overtime*1000))
-                        {
-                            //level sensor heating overtime
-                            LogDebug("Program Step Heating Level sensor stage 2 timeout");
-                            RaiseError(0, 513015312, GetScenarioBySchedulerState(stepState, GetReagentGroupID(m_CurReagnetName)), true);
-                            m_SchedulerMachine->SendErrorSignal();
-                        }
-                    }
-                }
+
             }
         }
         else if(PSSM_READY_TO_TUBE_BEFORE == stepState)
@@ -711,13 +675,13 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     {
                         //fail to move to seal, raise event here
                         LogDebug(QString("Program Step Move to tube(before)%1 internal steps retry").arg(targetPos));
-                        RaiseError(0, 500030011, Scenario, true);
+                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, Scenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                     else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
                     {
                         LogDebug(QString("Program Step Move to tube(before)%1 exceed upper limit").arg(targetPos));
-                        RaiseError(0, 500030021, Scenario, true);
+                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT, Scenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                 }
@@ -747,7 +711,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else if( DCL_ERR_DEV_LA_FILLING_INSUFFICIENT == retCode)
                 {
                     LogDebug(QString("Program Step Filling Insufficient"));
-                    RaiseError(0, 500040161, Scenario, true);
+                    RaiseError(0, DCL_ERR_DEV_LA_FILLING_INSUFFICIENT, Scenario, true);
                     m_SchedulerMachine->SendErrorSignal();
                 }
             }
@@ -786,7 +750,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     {
                         //fail to move to seal, raise event here
                         LogDebug(QString("Program Step Move to Seal %1 internal step retry").arg(targetPos));
-                        RaiseError(0, 500030011, Scenario, true);
+                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, Scenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                 }
@@ -902,7 +866,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     {
                         //fail to move to seal, raise event here
                         LogDebug(QString("Program Step Move to Tube(after) %1 Internal Steps Failed").arg(targetPos));
-                        RaiseError(0, 500030011, Scenario, true);
+                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, Scenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                     else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
@@ -969,7 +933,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else if(DCL_ERR_DEV_LA_DRAINING_TIMEOUT_BUILDPRESSURE == retCode)
                 {
                     LogDebug(QString("Program Step Draining Build Pressure timeout"));
-                    RaiseError(0, 500040201, Scenario, true);
+                    RaiseError(0, DCL_ERR_DEV_LA_DRAINING_TIMEOUT_BUILDPRESSURE, Scenario, true);
                     m_SchedulerMachine->SendErrorSignal();
                 }
             }
@@ -1157,6 +1121,10 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             m_SchedulerMachine->EnterRsStandByWithTissue();
             DequeueNonDeviceCommand();
         }
+        else if (CTRL_CMD_RS_HEATINGERR30SRETRY == ctrlCmd)
+        {
+            LogDebug("Go to RS_HeatingErr30Retry");
+        }
         else if(CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME == ctrlCmd)
         {
             LogDebug("Go to RC_Levelsensor_Heating_Overtime");
@@ -1178,6 +1146,18 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         else
         {
             m_SchedulerMachine->HandleRsStandByWithTissueWorkFlow(true);
+        }
+    }
+    else if (SM_ERR_RS_HEATINGERR30SRETRY == currentState)
+    {
+        LogDebug(QString("RS_STandBy_WithTissue Response: %1").arg(retCode));
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+        {
+            m_SchedulerMachine->HandleRsHeatingErr30SRetry(false);
+        }
+        else
+        {
+            m_SchedulerMachine->HandleRsHeatingErr30SRetry(true);
         }
     }
     else if (SM_ERR_RC_LEVELSENSOR_HEATING_OVERTIME == currentState)
@@ -1212,20 +1192,20 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             if( DCL_ERR_FCT_CALL_SUCCESS == retCode )
             {
                 LogDebug("Response Move to initial position again succeed!");
-                RaiseError(m_EventKey, 0, 0, true);
+                RaiseError(m_EventKey, DCL_ERR_FCT_CALL_SUCCESS, 0, true);
                 m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
             }
             else
             {
                 LogDebug("Response Move to initial position again failed!");
-                RaiseError(m_EventKey, 0, 0, false);
+                RaiseError(m_EventKey, DCL_ERR_FCT_CALL_SUCCESS, 0, false);
                 m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
             }
         }
     }
     else if(SM_ERR_RC_REPORT == currentState)
     {
-        RaiseError(m_EventKey, 0, 0, true);
+        RaiseError(m_EventKey, DCL_ERR_FCT_CALL_SUCCESS, 0, true);
         m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
     }
     else if(SM_ERR_RS_RELEASE_PRESSURE == currentState)
@@ -1235,7 +1215,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if(SM_ERR_RS_SHUTDOWN_FAILED_HEATER == currentState)
     {
         m_SchedulerMachine->NotifyRsShutdownFailedHeaterFinished();
-        RaiseError(m_EventKey, 0, 0, true);
+        RaiseError(m_EventKey, DCL_ERR_FCT_CALL_SUCCESS, 0, true);
     }
 }
 
@@ -1303,6 +1283,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if(cmd == "rs_standby_withtissue")
         {
             return CTRL_CMD_RS_STANDBY_WITHTISSUE;
+        }
+        if (cmd == "rs_heatingerr30sretry")
+        {
+            return CTRL_CMD_RS_HEATINGERR30SRETRY;
         }
         if (cmd == "rc_levelsensor_heating_overtime")
         {
@@ -1758,7 +1742,7 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
 
 void SchedulerMainThreadController::RestartLevelSensorTempCtrlInError()
 {
-    mp_HeatingStrategy->ReStartTemperatureControlInError("LevelSensor");
+    mp_HeatingStrategy->StartTemperatureControlInError("LevelSensor");
 }
 
 //client-->master
@@ -2292,7 +2276,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
             if(((currentState & 0xF) == SM_BUSY)&&(currentState != PSSM_PAUSE)&&(currentState != PSSM_PAUSE_DRAIN))
             {
-                RaiseError(0, 500010461, Scenario, true);
+                RaiseError(0, DCL_ERR_DEV_RETORT_LIDLOCK_CLOSE_STATUS_ERROR, Scenario, true);
                 m_SchedulerMachine->SendErrorSignal();
             }
             MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, false));

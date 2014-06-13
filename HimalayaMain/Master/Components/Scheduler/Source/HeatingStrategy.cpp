@@ -26,7 +26,11 @@
 #include "Scheduler/Commands/Include/CmdOvenStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdRTStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdALStartTemperatureControlWithPID.h"
+#include "Scheduler/Commands/Include/CmdRTSetTempCtrlON.h"
+#include "Scheduler/Commands/Include/CmdRTSetTempCtrlOFF.h"
 #include "Scheduler/Commands/Include/CmdALSetTempCtrlOFF.h"
+#include "Scheduler/Commands/Include/CmdOvenSetTempCtrlOFF.h"
+#include "Scheduler/Commands/Include/CmdRVSetTempCtrlOFF.h"
 
 namespace Scheduler{
 HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
@@ -98,12 +102,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     Set temperature for each sensor
     *
     ***************************************************/
-    // For Level Sensor, we need set two times (high and low) in each scenario
-    retCode = this->StartLevelSensorTemperatureControl(strctHWMonitor);
-    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-    {
-        return retCode;
-    }
 
     if (scenario != m_CurScenario)
     {
@@ -159,6 +157,13 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
             return retCode;
         }
 
+    }
+
+    // For Level Sensor, we need set two times (high and low) in each scenario
+    retCode = this->StartLevelSensorTemperatureControl(strctHWMonitor);
+    if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+    {
+        return retCode;
     }
 
 
@@ -225,7 +230,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
-void HeatingStrategy::ReStartTemperatureControlInError(const QString& HeaterName)
+void HeatingStrategy::StartTemperatureControlInError(const QString& HeaterName)
 {
     if ("LevelSensor" == HeaterName)
     {
@@ -237,6 +242,159 @@ void HeatingStrategy::ReStartTemperatureControlInError(const QString& HeaterName
         pHeatingCmd->SetControllerGain(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].ControllerGain);
         pHeatingCmd->SetResetTime(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].ResetTime);
         pHeatingCmd->SetDerivativeTime(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].DerivativeTime);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("RTSide" == HeaterName)
+    {
+        qreal userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
+            ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
+        CmdRTStartTemperatureControlWithPID* pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
+        pHeatingCmd->SetType(RT_SIDE);
+        pHeatingCmd->SetNominalTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].TemperatureOffset+userInputTemp);
+        pHeatingCmd->SetSlopeTempChange(m_RTTop.functionModuleList[m_RTTop.curModuleId].SlopTempChange);
+        pHeatingCmd->SetMaxTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].MaxTemperature);
+        pHeatingCmd->SetControllerGain(m_RTTop.functionModuleList[m_RTTop.curModuleId].ControllerGain);
+        pHeatingCmd->SetResetTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].ResetTime);
+        pHeatingCmd->SetDerivativeTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].DerivativeTime);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("RTBottom" == HeaterName)
+    {
+        qreal userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
+            ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
+        CmdRTStartTemperatureControlWithPID* pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
+        pHeatingCmd->SetType(RT_BOTTOM);
+        pHeatingCmd->SetNominalTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].TemperatureOffset+userInputTemp);
+        pHeatingCmd->SetSlopeTempChange(m_RTTop.functionModuleList[m_RTTop.curModuleId].SlopTempChange);
+        pHeatingCmd->SetMaxTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].MaxTemperature);
+        pHeatingCmd->SetControllerGain(m_RTTop.functionModuleList[m_RTTop.curModuleId].ControllerGain);
+        pHeatingCmd->SetResetTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].ResetTime);
+        pHeatingCmd->SetDerivativeTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].DerivativeTime);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("OvenTop" == HeaterName)
+    {
+        //Firstly, get the Parrifin melting point (user input)
+        qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+        CmdOvenStartTemperatureControlWithPID* pHeatingCmd  = new CmdOvenStartTemperatureControlWithPID(500, mp_SchedulerController);
+        pHeatingCmd->SetType(OVEN_TOP);
+        pHeatingCmd->SetNominalTemperature(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].TemperatureOffset+userInputMeltingPoint);
+        pHeatingCmd->SetSlopeTempChange(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].SlopTempChange);
+        pHeatingCmd->SetMaxTemperature(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].MaxTemperature);
+        pHeatingCmd->SetControllerGain(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].ControllerGain);
+        pHeatingCmd->SetResetTime(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].ResetTime);
+        pHeatingCmd->SetDerivativeTime(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].DerivativeTime);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("OvenBottom" == HeaterName)
+    {
+        //Firstly, get the Parrifin melting point (user input)
+        qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+        CmdOvenStartTemperatureControlWithPID* pHeatingCmd  = new CmdOvenStartTemperatureControlWithPID(500, mp_SchedulerController);
+        pHeatingCmd->SetType(OVEN_BOTTOM);
+        pHeatingCmd->SetNominalTemperature(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].TemperatureOffset+userInputMeltingPoint);
+        pHeatingCmd->SetSlopeTempChange(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].SlopTempChange);
+        pHeatingCmd->SetMaxTemperature(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].MaxTemperature);
+        pHeatingCmd->SetControllerGain(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].ControllerGain);
+        pHeatingCmd->SetResetTime(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].ResetTime);
+        pHeatingCmd->SetDerivativeTime(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].DerivativeTime);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("RV" == HeaterName)
+    {
+        //Firstly, get the Parrifin melting point (user input)
+        qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+        CmdRVStartTemperatureControlWithPID* pHeatingCmd  = new CmdRVStartTemperatureControlWithPID(500, mp_SchedulerController);
+            if (true == m_RVRod.UserInputFlagList[m_RVRod.curModuleId])
+            {
+                pHeatingCmd->SetNominalTemperature(m_RVRod.functionModuleList[m_RVRod.curModuleId].TemperatureOffset+userInputMeltingPoint);
+            }
+            else
+            {
+                pHeatingCmd->SetNominalTemperature(m_RVRod.functionModuleList[m_RVRod.curModuleId].TemperatureOffset);
+            }
+            pHeatingCmd->SetSlopeTempChange(m_RVRod.functionModuleList[m_RVRod.curModuleId].SlopTempChange);
+            pHeatingCmd->SetMaxTemperature(m_RVRod.functionModuleList[m_RVRod.curModuleId].MaxTemperature);
+            pHeatingCmd->SetControllerGain(m_RVRod.functionModuleList[m_RVRod.curModuleId].ControllerGain);
+            pHeatingCmd->SetResetTime(m_RVRod.functionModuleList[m_RVRod.curModuleId].ResetTime);
+            pHeatingCmd->SetDerivativeTime(m_RVRod.functionModuleList[m_RVRod.curModuleId].DerivativeTime);
+            mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("LA_Tube1" == HeaterName)
+    {
+        CmdALStartTemperatureControlWithPID* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
+        pHeatingCmd->SetType(AL_TUBE1);
+        pHeatingCmd->SetNominalTemperature(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].TemperatureOffset);
+        pHeatingCmd->SetSlopeTempChange(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].SlopTempChange);
+        pHeatingCmd->SetMaxTemperature(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].MaxTemperature);
+        pHeatingCmd->SetControllerGain(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].ControllerGain);
+        pHeatingCmd->SetResetTime(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].ResetTime);
+        pHeatingCmd->SetDerivativeTime(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].DerivativeTime);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("LA_Tube2" == HeaterName)
+    {
+        CmdALStartTemperatureControlWithPID* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
+        pHeatingCmd->SetType(AL_TUBE2);
+        pHeatingCmd->SetNominalTemperature(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].TemperatureOffset);
+        pHeatingCmd->SetSlopeTempChange(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].SlopTempChange);
+        pHeatingCmd->SetMaxTemperature(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].MaxTemperature);
+        pHeatingCmd->SetControllerGain(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].ControllerGain);
+        pHeatingCmd->SetResetTime(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].ResetTime);
+        pHeatingCmd->SetDerivativeTime(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].DerivativeTime);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+}
+
+void HeatingStrategy::StopTemperatureControlInError(const QString& HeaterName)
+{
+    if ("LevelSensor" == HeaterName)
+    {
+        CmdALSetTempCtrlOFF* pHeatingCmd  = new CmdALSetTempCtrlOFF(500, mp_SchedulerController);
+        pHeatingCmd->Settype(AL_LEVELSENSOR);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("RTSide" == HeaterName)
+    {
+        CmdRTSetTempCtrlOFF* pHeatingCmd  = new CmdRTSetTempCtrlOFF(500, mp_SchedulerController);
+        pHeatingCmd->SetType(RT_SIDE);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("RTBottom" == HeaterName)
+    {
+
+        CmdRTSetTempCtrlOFF* pHeatingCmd  = new CmdRTSetTempCtrlOFF(500, mp_SchedulerController);
+        pHeatingCmd->SetType(RT_BOTTOM);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("OvenTop" == HeaterName)
+    {
+
+        CmdOvenSetTempCtrlOFF* pHeatingCmd  = new CmdOvenSetTempCtrlOFF(500, mp_SchedulerController);
+        pHeatingCmd->Settype(OVEN_TOP);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("OvenBottom" == HeaterName)
+    {
+        CmdOvenSetTempCtrlOFF* pHeatingCmd  = new CmdOvenSetTempCtrlOFF(500, mp_SchedulerController);
+        pHeatingCmd->Settype(OVEN_BOTTOM);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("RV" == HeaterName)
+    {
+        CmdRVSetTempCtrlOFF* pHeatingCmd  = new CmdRVSetTempCtrlOFF(500, mp_SchedulerController);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("LA_Tube1" == HeaterName)
+    {
+        CmdALSetTempCtrlOFF* pHeatingCmd  = new CmdALSetTempCtrlOFF(500, mp_SchedulerController);
+        pHeatingCmd->Settype(AL_TUBE1);
+        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+    }
+    if ("LA_Tube2" == HeaterName)
+    {
+        CmdALSetTempCtrlOFF* pHeatingCmd  = new CmdALSetTempCtrlOFF(500, mp_SchedulerController);
+        pHeatingCmd->Settype(AL_TUBE2);
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
     }
 }

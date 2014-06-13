@@ -189,12 +189,21 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  Restart the specific sensor's temperature control in Error state 
+     *  \brief  Start the specific sensor's temperature control in Error state
      *  \param 	HeaterName - sensor's name 
      *  \return void 
      */
     /****************************************************************************/
-    void ReStartTemperatureControlInError(const QString& HeaterName);
+    void StartTemperatureControlInError(const QString& HeaterName);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Stop the specific sensor's temperature control in Error state
+     *  \param 	HeaterName - sensor's name
+     *  \return void
+     */
+    /****************************************************************************/
+    void StopTemperatureControlInError(const QString& HeaterName);
 
 private slots:
     /****************************************************************************/
