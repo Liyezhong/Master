@@ -269,8 +269,8 @@ void CSchedulerStateMachine::OnTasksDone(bool flag)
 /****************************************************************************/
 CSchedulerStateMachine::~CSchedulerStateMachine()
 {
-    delete mp_SchedulerMachine;
-    mp_SchedulerMachine = NULL;
+    delete mp_ProgramStepStates;
+    mp_ProgramStepStates = NULL;
 
     delete mp_InitState;
     mp_InitState = NULL;
@@ -281,14 +281,8 @@ CSchedulerStateMachine::~CSchedulerStateMachine()
     delete mp_BusyState;
     mp_BusyState = NULL;
 
-    delete mp_ErrorState;
-    mp_ErrorState = NULL;
-
     delete mp_ErrorWaitState;
     mp_ErrorWaitState = NULL;
-
-    delete mp_ProgramStepStates;
-    mp_ProgramStepStates = NULL;
 
     delete mp_RsRvGetOriginalPositionAgain;
     mp_RsRvGetOriginalPositionAgain = NULL;
@@ -296,11 +290,16 @@ CSchedulerStateMachine::~CSchedulerStateMachine()
     delete mp_RsStandby;
     mp_RsStandby = NULL;
 
+    delete mp_RsStandbyWithTissue;
+    mp_RsStandbyWithTissue = NULL;
+
     delete mp_ErrorRsStandbyWithTissueState;
     mp_ErrorRsStandbyWithTissueState = NULL;
 
-    delete mp_RsStandbyWithTissue;
-    mp_RsStandbyWithTissue = NULL;
+
+
+    delete mp_RcLevelSensorHeatingOvertime;
+    mp_RcLevelSensorHeatingOvertime = NULL;
 
     delete mp_ErrorRsHeatingErr30SRetry;
     mp_ErrorRsHeatingErr30SRetry = NULL;
@@ -311,11 +310,14 @@ CSchedulerStateMachine::~CSchedulerStateMachine()
     delete mp_ErrorRcLevelSensorHeatingOvertimeState;
     mp_ErrorRcLevelSensorHeatingOvertimeState = NULL;
 
-    delete mp_RcLevelSensorHeatingOvertime;
-    mp_RcLevelSensorHeatingOvertime = NULL;
-
     delete mp_RcReport;
     mp_RcReport = NULL;
+
+    delete mp_ErrorState;
+    mp_ErrorState = NULL;
+
+    delete mp_SchedulerMachine;
+    mp_SchedulerMachine = NULL;
 }
 
 //mp_SelfTestStateMachine

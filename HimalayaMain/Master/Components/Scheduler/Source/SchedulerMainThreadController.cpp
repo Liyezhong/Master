@@ -218,6 +218,7 @@ void SchedulerMainThreadController::OnTickTimer()
 
     if (CTRL_CMD_SHUTDOWN == newControllerCmd)
     {
+        m_TickTimer.stop();
         m_SchedulerCommandProcessor->ShutDownDevice();
         DequeueNonDeviceCommand();
         return;
