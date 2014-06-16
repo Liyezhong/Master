@@ -123,15 +123,11 @@ struct RVSensor : public HeatingSensor
  * \brief struct of Rotray valve outlet
  */
 /****************************************************************************/
-struct RVOutlet 
+struct RVOutlet : public HeatingSensor
 {
-    QString				devName;            //!< RV device name
-    QString				sensorName;         //!< RV sensor name
-    qreal				HeatingOverTime;    //!< RV the over time of heating
-    qint64				heatingStartTime;   //!< RV the begin time of heating
-    QVector<qint32>		ScenarioList;       //!< RV scenarioList
-    bool				needCheckOT;        //!< if need check OT or not
-    bool                OTCheckPassed;      //!< flag to indicate if OT checking is passed or not
+    bool		needCheckOT;			//!< if need check OT or not
+    qreal		HeatingOverTime;    	//!< RV the over time of heating
+    QString 	needCheckOTModuleId;	//!< whether need check OT module Id
 };
 
 /****************************************************************************/
@@ -231,8 +227,8 @@ private:
     RTBottomSensor                      m_RTBottom;                     //!< retort of bottom of heating sensor
     OvenSensor                          m_OvenTop;                      //!< oven of top heat sensor
     OvenSensor                          m_OvenBottom;                   //!< oven of bottom heat sensor
-    RVSensor                            m_RVRod;                        //!< rotary valve of heat rod
-    RVOutlet							m_RVOutlet;                     //!< rotary valve of outlet
+    RVSensor                            m_RV_1_HeatingRod;              //!< rotary valve of heat rod
+    RVOutlet							m_RV_2_Outlet;                  //!< rotary valve of outlet
     LASensor                            m_LARVTube;                     //!< LA of tube heat sensor
     LASensor                            m_LAWaxTrap;                    //!< LA of waxTrap
     bool                                m_CmdResult;                    //!< flag to indicate command result

@@ -82,9 +82,14 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         return DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_HEATING_OUTOFTARGETRANGE;
     }
     //For Rotary Valve Rod
-    if (false == this->CheckSensorCurrentTemperature(m_RVRod, strctHWMonitor.TempRV1))
+    if (false == this->CheckSensorCurrentTemperature(m_RV_1_HeatingRod, strctHWMonitor.TempRV1))
     {
         return DCL_ERR_DEV_RV_HEATING_TEMPSENSOR1_OUTOFRANGE;
+    }
+    //For Rotary Valve outlet
+    if (false == this->CheckSensorCurrentTemperature(m_RV_2_Outlet, strctHWMonitor.TempRV2))
+    {
+        return DCL_ERR_DEV_RV_HEATING_TEMPSENSOR2_OUTOFRANGE;
     }
 
     //For LA RV Tube
@@ -137,7 +142,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
         }
 
         //For RVRod
-        retCode = StartRVTemperatureControl(m_RVRod);
+        retCode = StartRVTemperatureControl(m_RV_1_HeatingRod);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             return retCode;
@@ -307,19 +312,19 @@ void HeatingStrategy::StartTemperatureControlInError(const QString& HeaterName)
         //Firstly, get the Parrifin melting point (user input)
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
         CmdRVStartTemperatureControlWithPID* pHeatingCmd  = new CmdRVStartTemperatureControlWithPID(500, mp_SchedulerController);
-            if (true == m_RVRod.UserInputFlagList[m_RVRod.curModuleId])
+            if (true == m_RV_1_HeatingRod.UserInputFlagList[m_RV_1_HeatingRod.curModuleId])
             {
-                pHeatingCmd->SetNominalTemperature(m_RVRod.functionModuleList[m_RVRod.curModuleId].TemperatureOffset+userInputMeltingPoint);
+                pHeatingCmd->SetNominalTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].TemperatureOffset+userInputMeltingPoint);
             }
             else
             {
-                pHeatingCmd->SetNominalTemperature(m_RVRod.functionModuleList[m_RVRod.curModuleId].TemperatureOffset);
+                pHeatingCmd->SetNominalTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].TemperatureOffset);
             }
-            pHeatingCmd->SetSlopeTempChange(m_RVRod.functionModuleList[m_RVRod.curModuleId].SlopTempChange);
-            pHeatingCmd->SetMaxTemperature(m_RVRod.functionModuleList[m_RVRod.curModuleId].MaxTemperature);
-            pHeatingCmd->SetControllerGain(m_RVRod.functionModuleList[m_RVRod.curModuleId].ControllerGain);
-            pHeatingCmd->SetResetTime(m_RVRod.functionModuleList[m_RVRod.curModuleId].ResetTime);
-            pHeatingCmd->SetDerivativeTime(m_RVRod.functionModuleList[m_RVRod.curModuleId].DerivativeTime);
+            pHeatingCmd->SetSlopeTempChange(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].SlopTempChange);
+            pHeatingCmd->SetMaxTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].MaxTemperature);
+            pHeatingCmd->SetControllerGain(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].ControllerGain);
+            pHeatingCmd->SetResetTime(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].ResetTime);
+            pHeatingCmd->SetDerivativeTime(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].DerivativeTime);
             mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
     }
     if ("LA_Tube1" == HeaterName)
@@ -744,17 +749,28 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSe
 
 void HeatingStrategy::StartRVOutletHeatingOTCalculation()
 {
-    // Current(new) scenario belongs to the specific scenario list
-    int index = m_RVOutlet.ScenarioList.indexOf(m_CurScenario);
-    if ( -1 == index)
+    QMap<QString, FunctionModule>::iterator iter = m_RV_2_Outlet.functionModuleList.begin();
+    for (; iter != m_RV_2_Outlet.functionModuleList.end(); ++iter)
     {
-        m_RVOutlet.needCheckOT = false;
-        return;
+        // Current(new) scenario belongs to the specific scenario list
+        if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
+        {
+            break;
+        }
     }
-    m_RVOutlet.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
-    m_RVOutlet.needCheckOT = true;
-    m_RVOutlet.OTCheckPassed = false;
 
+    if (iter != m_RV_2_Outlet.functionModuleList.end())
+    {
+        m_RV_2_Outlet.curModuleId = iter->Id;
+        //find whether to need to check over time
+        QMap<QString, FunctionModule>::iterator iter1 = m_RV_2_Outlet.functionModuleList.find(m_RV_2_Outlet.needCheckOTModuleId);
+        if (iter1 != m_RV_2_Outlet.functionModuleList.end() )
+        {
+            m_RV_2_Outlet.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+            m_RV_2_Outlet.OTCheckPassed = false;
+            m_RV_2_Outlet.needCheckOT = true;
+        }
+    }
 }
 
 bool HeatingStrategy::ConstructHeatingSensorList()
@@ -925,13 +941,13 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     }
 
     //For Rotary Valve Rod
-    m_RVRod.devName = "Rotary Valve";
-    m_RVRod.sensorName = "RVRod";
-    m_RVRod.heatingStartTime = 0;
-    m_RVRod.curModuleId = "";
-    m_RVRod.OTCheckPassed = false;
+    m_RV_1_HeatingRod.devName = "Rotary Valve";
+    m_RV_1_HeatingRod.sensorName = "RVRod";
+    m_RV_1_HeatingRod.heatingStartTime = 0;
+    m_RV_1_HeatingRod.curModuleId = "";
+    m_RV_1_HeatingRod.OTCheckPassed = false;
     sequenceList = {"1", "2", "3", "4"};
-    if (false == this->ConstructHeatingSensor(m_RVRod, sequenceList))
+    if (false == this->ConstructHeatingSensor(m_RV_1_HeatingRod, sequenceList))
     {
         return false;
     }
@@ -942,42 +958,73 @@ bool HeatingStrategy::ConstructHeatingSensorList()
        //For checking if user input temperature is needed
         DataManager::FunctionKey_t funcKey;
         funcKey.key = "Heating";
-        funcKey.name = m_RVRod.sensorName;
+        funcKey.name = m_RV_1_HeatingRod.sensorName;
         funcKey.sequence = *iter;
-        QString userInput = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_RVRod.devName, funcKey, "UserInput");
+        QString userInput = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_RV_1_HeatingRod.devName, funcKey, "UserInput");
         if ("false" == userInput)
         {
-            m_RVRod.UserInputFlagList.insert(*iter, false);
+            m_RV_1_HeatingRod.UserInputFlagList.insert(*iter, false);
         }
         else
         {
-            m_RVRod.UserInputFlagList.insert(*iter, true);
+            m_RV_1_HeatingRod.UserInputFlagList.insert(*iter, true);
         }
     }
 
-    //For Rotary Valve Outlet
-    m_RVOutlet.devName = "Rotary Valve";
-    m_RVOutlet.sensorName = "RVOutlet";
-    m_RVOutlet.heatingStartTime = 0;
-    m_RVOutlet.needCheckOT = false;
-    m_RVOutlet.OTCheckPassed = false;
+    m_RV_2_Outlet.devName = "Rotary Valve";
+    m_RV_2_Outlet.sensorName = "RV_2_Outlet";
+    m_RV_2_Outlet.heatingStartTime = 0;
+    m_RV_2_Outlet.curModuleId = "";
+    m_RV_2_Outlet.OTCheckPassed = false;
+    m_RV_2_Outlet.needCheckOT = false;
+    m_RV_2_Outlet.needCheckOTModuleId = "";
+    m_RV_2_Outlet.HeatingOverTime = 0;
+    sequenceList = {"1", "2", "3", "4"};
 
-    DataManager::FunctionKey_t funcKey;
-    funcKey.key = "Heating";
-    funcKey.name = m_RVOutlet.sensorName;
-    funcKey.sequence = "1";
-    bool ok = false;
-    qreal heatingOvertime = mp_DataManager->GetProgramSettings()->GetParameterValue(m_RVOutlet.devName, funcKey, "HeatingOverTime", ok);
-    if (false == ok)
+    iter = sequenceList.begin();
+    for (; iter!=sequenceList.end(); ++iter)
     {
-        return false;
-    }
-    m_RVOutlet.HeatingOverTime = heatingOvertime;
-    QString scenarioList = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_RVOutlet.devName, funcKey, "ScenarioList");
-    QStringList strList = scenarioList.split(",");
-    for (int i=0; i<strList.size(); ++i)
-    {
-        m_RVOutlet.ScenarioList.push_back(strList.at(i).toInt(&ok));
+        FunctionModule funcModule;
+        funcModule.Id = *iter;
+        DataManager::FunctionKey_t funcKey;
+        funcKey.key = "Heating";
+        funcKey.name = m_RV_2_Outlet.sensorName;
+
+        // Firstly, get the scenario list
+        funcKey.sequence = *iter;
+        QString strScenarioList = mp_DataManager->GetProgramSettings()->GetParameterStrValue(m_RV_2_Outlet.devName, funcKey, "ScenarioList");
+        QStringList  strList = strScenarioList.split(",");
+        QStringList::const_iterator strIter = strList.begin();
+        qint32 scenario = 0;
+        bool ok = false;
+        for (; strIter != strList.end(); ++strIter)
+        {
+            scenario = (*strIter).toInt(&ok);
+            if (false == ok)
+            {
+                return false;
+            }
+            funcModule.ScenarioList.push_back(scenario);
+        }
+
+       qreal maxTemperature= mp_DataManager->GetProgramSettings()->GetParameterValue(m_RV_2_Outlet.devName, funcKey, "MaxTemperature", ok);
+        if (false == ok)
+        {
+            return false;
+        }
+        funcModule.MaxTemperature = maxTemperature;
+
+        qreal heatingOverTime= mp_DataManager->GetProgramSettings()->GetParameterValue(m_RV_2_Outlet.devName, funcKey, "HeatingOverTime", ok);
+        if (false == ok)
+        {
+            return false;
+        }
+        if (heatingOverTime > 0){
+            m_RV_2_Outlet.needCheckOTModuleId = *iter;
+            m_RV_2_Outlet.HeatingOverTime = heatingOverTime;
+        }
+
+        m_RV_2_Outlet.functionModuleList.insert(*iter, funcModule);
     }
 
     //For LA RV Tube
@@ -1100,18 +1147,18 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, q
 
 bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
 {
-    if (true == m_RVOutlet.OTCheckPassed)
+    if (true == m_RV_2_Outlet.OTCheckPassed)
     {
         return true;
     }
 
     if (HWTemp >= mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath())
     {
-        m_RVOutlet.OTCheckPassed = true;
+        m_RV_2_Outlet.OTCheckPassed = true;
     }
     qint64 now = QDateTime::currentMSecsSinceEpoch();
-    if (true == m_RVOutlet.needCheckOT &&
-            now-m_RVOutlet.heatingStartTime >= m_RVOutlet.HeatingOverTime*1000)
+    if (true == m_RV_2_Outlet.needCheckOT &&
+            now-m_RV_2_Outlet.heatingStartTime >= m_RV_2_Outlet.HeatingOverTime*1000)
     {
         if (HWTemp < mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath())
         {
