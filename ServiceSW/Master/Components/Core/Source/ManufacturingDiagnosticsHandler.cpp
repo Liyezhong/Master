@@ -595,20 +595,26 @@ Sealing_Test_Twice:
                 p_TestCase->SetStatus(Result);
 
                 if (Result == false) {
+                    Global::EventObject::Instance().RaiseEvent(FailureId);
                     mp_RotaryValveManuf->SetTestResult(Id, Result);
                     mp_RotaryValveManuf->EnableButton(true);
                     return ;
+                }
+                else {
+                    Global::EventObject::Instance().RaiseEvent(OkId);
                 }
             }
             else if ( Id == Service::ROTARY_VALVE_SEALING_FUNCTION ) {
                 Result = ShowConfirmDlgForRVSealing(Position);
                // qDebug()<<"ShowConfirmDlgForRVSealing result = " << Result;
                 if (Result == false) {
+                    Global::EventObject::Instance().RaiseEvent(FailureId);
                     p_TestCase->SetStatus(Result);
 
                     QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
                     Text = QString("%1 - %2").arg(TestCaseDescription).arg(m_FailStr);
                     mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
+
 
                     mp_RotaryValveManuf->SetTestResult(Id, Result);
                     mp_RotaryValveManuf->EnableButton(true);
@@ -616,9 +622,11 @@ Sealing_Test_Twice:
                 }
                 else {
                     if (SealingTestNum == 1) {
+                        Global::EventObject::Instance().RaiseEvent(OkId);
                         goto Sealing_Test_Twice;
                     }
                     else {
+                        Global::EventObject::Instance().RaiseEvent(OkId);
                         QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
                         Text = QString("%1 - %2").arg(TestCaseDescription).arg(m_SuccessStr);
                         mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);

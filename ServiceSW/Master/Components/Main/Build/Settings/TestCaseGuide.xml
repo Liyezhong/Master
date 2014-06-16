@@ -71,7 +71,7 @@
 	</RVHeatingStationTest>
 	<RVHeatingEndTest Description="Heating property function test">
 		<Guide>
-			<Step>Start test : heating property function</Step>
+			<Step>Please put the foam filled block to retort, close the retort cover, and then put the bottle filled with water to station 11#</Step>
 		</Guide>
 	</RVHeatingEndTest>
 </TestCaseGuide>
