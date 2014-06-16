@@ -205,6 +205,14 @@ public:
     /****************************************************************************/
     void StopTemperatureControlInError(const QString& HeaterName);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  get the oven heating begin Time
+     *  \return qint64
+     */
+    /****************************************************************************/
+    inline const qint64 getOvenHeatingBeginTime() const;
+
 private slots:
     /****************************************************************************/
     /*!
@@ -228,6 +236,8 @@ private:
     LASensor                            m_LARVTube;                     //!< LA of tube heat sensor
     LASensor                            m_LAWaxTrap;                    //!< LA of waxTrap
     bool                                m_CmdResult;                    //!< flag to indicate command result
+    qint64                              m_IsOvenHeatingStarted;         //!< flag to read the oven heating begin
+    qint64                              m_OvenStartHeatingTime;         //!< the value of oven start heating time
 
     /****************************************************************************/
     /*!
@@ -351,5 +361,11 @@ private:
     /****************************************************************************/
     HeatingStrategy& operator=(const HeatingStrategy& rhs);
 };
+
+const qint64 HeatingStrategy::getOvenHeatingBeginTime() const
+{
+    return m_OvenStartHeatingTime;
+}
+
 }
 #endif // SCHEDULERMACHINE_H

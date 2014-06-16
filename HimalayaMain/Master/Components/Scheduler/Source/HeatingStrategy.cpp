@@ -38,7 +38,9 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
                                 DataManager::CDataManager* DataManager)
 								:mp_SchedulerController(schedController),
 								mp_SchedulerCommandProcessor(SchedCmdProcessor),
-                                mp_DataManager(DataManager)
+                                mp_DataManager(DataManager),
+                                m_IsOvenHeatingStarted(0),
+                                m_OvenStartHeatingTime(0)
 {
     CONNECTSIGNALSLOT(mp_SchedulerCommandProcessor, ReportLevelSensorStatus1(), this, OnReportLevelSensorStatus1());
     m_CurScenario = 0;
@@ -612,6 +614,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
         }
         else
         {
+            m_IsOvenHeatingStarted ++;
+            if ( 2 == m_IsOvenHeatingStarted){
+                m_OvenStartHeatingTime = QDateTime::currentMSecsSinceEpoch();
+            }
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             heatingSensor.OTCheckPassed = false;

@@ -2884,14 +2884,13 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
 
 qint64 SchedulerMainThreadController::GetOvenHeatingTime()
 {
-    if(m_TimeStamps.OvenStartHeatingTime != 0)
+    qint64 tmpTime = mp_HeatingStrategy->getOvenHeatingBeginTime();
+    qint64 retTime = 0;
+    if (0 != tmpTime)
     {
-        return  (QDateTime::currentDateTime().toMSecsSinceEpoch() - m_TimeStamps.OvenStartHeatingTime)/1000;
+        tmpTime = QDateTime::currentDateTime().toMSecsSinceEpoch() - tmpTime;
     }
-    else
-    {
-        return 0;
-    }
+    return tmpTime;
 }
 
 bool SchedulerMainThreadController::IsLastStep(int currentStepIndex, const QString& currentProgramID)
