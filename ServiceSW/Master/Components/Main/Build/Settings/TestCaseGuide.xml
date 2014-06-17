@@ -33,12 +33,10 @@
 	</MCASB15>
 	<LAHeatingBeltLiquid Description="Heating belt test (liquid)">
 		<Guide>
-			<Step>Start test : heating belt (liquid)</Step>
 		</Guide>
 	</LAHeatingBeltLiquid>
 	<LAHeatingBeltAir Description="Heating belt test (air)">
 		<Guide>
-			<Step>Start test : heating belt (air)</Step>
 		</Guide>
 	</LAHeatingBeltAir>
 	<LAAirSystem Description="vacuum test">
@@ -46,32 +44,99 @@
 			<Step>vacuum test</Step>
 		</Guide>
 	</LAAirSystem>
-	<RVInitialize Description="Get the initial position">
+	<RVInitialize Description="Initialize test">
 		<Guide>
-			<Step>Make sure Rotary Valve is connected correctly to main control test fixture!</Step>
+			<Step>rotary valve initialize test</Step>
 		</Guide>
 	</RVInitialize>
-	<RVSelectingTest Description="Selecting function">
+	<RVSelectingTest Description="Selecting function test">
 		<Guide>
-			<Step>Start test : selecting function</Step>
-		</Guide>
-		<Guide>
-			<Step>Please connect the gas source (with pressure meter) to common channel of RV to confirm selected position manually.</Step>
+			<Step>rotary valve selecting function test</Step>
 		</Guide>
 	</RVSelectingTest>
-	<RVSealingTest Description="Sealing function">
+	<RVSealingTest Description="Sealing function test">
 		<Guide>
-			<Step>Start test : sealing function</Step>
+			<Step>rotary valve sealing function test</Step>
 		</Guide>
 	</RVSealingTest>
-	<RVHeatingStationTest Description="Heating property function">
+	<RVHeatingStationTest Description="Heating property function test">
 		<Guide>
-			<Step>Start test : heating property function</Step>
+			<Step>rotary valve heating property function station test</Step>
 		</Guide>
 	</RVHeatingStationTest>
-	<RVHeatingEndTest Description="Heating property function test">
+	<RVHeatingEndtest Description="Heating property function test">
+		<Guide>
+			<Step>rotary valve heating property function end test</Step>
+		</Guide>
+	</RVHeatingEndtest>
+	<System110v220vSwitch Description="110V/220V switch">
+		<Guide>
+			<Step>System 110V/220V System test</Step>
+		</Guide>
+	</System110v220vSwitch>
+	<SystemSealing Description="Sealing function test">
+		<Guide>
+			<Step>System sealing function test</Step>
+		</Guide>
+	</SystemSealing>
+	<SystemOverflow Description="Overflow test">
+		<Guide>
+			<Step>System overflow test</Step>
+		</Guide>
+	</SystemOverflow>
+	<SystemSpeaker Description="Speaker test">
+		<Guide>
+			<Step>System Speaker test</Step>
+		</Guide>
+	</SystemSpeaker>
+	<SystemExhaustFan Description="Exhaust fan test">
+		<Guide>
+			<Step>System Exhaust fan test</Step>
+		</Guide>
+	</SystemExhaustFan>
+	<SystemVentilationFan Description="Ventilation fan test">
+		<Guide>
+			<Step>System Ventilation fan test</Step>
+		</Guide>
+	</SystemVentilationFan>
+	<SystemRemoteLocalAlarm Description="Remote/Local alarm test">
+		<Guide>
+			<Step>System Remote/Local alarm test</Step>
+		</Guide>
+	</SystemRemoteLocalAlarm>
+	<SystemMainsRelay Description="Mains relay test">
+		<Guide>
+			<Step>System mains relay test</Step>
+		</Guide>
+	</SystemMainsRelay>
+	<SystemFillingDraining Description="Filling and draining test">
+		<Guide>
+			<Step>System Filling and Draining test</Step>
+		</Guide>
+	</SystemFillingDraining>
+	<RetortLidLock Description="Lid lock test">
+		<Guide>
+			<Step>Retort lid lock test</Step>
+		</Guide>
+	</RetortLidLock>
+	<RetortLevelSensorHeating Description="Level sensor heating test">
+		<Guide>
+			<Step>Retort Level sensor heating test </Step>
+		</Guide>
+	</RetortLevelSensorHeating>
+	<RetortLevelSensorDetecting Description="Level sensor detecting test">
+		<Guide>
+			<Step>Retort Level sensor detecting test </Step>
+		</Guide>
+	</RetortLevelSensorDetecting>
+	<RetortHeatingEmpty Description="Heating test (empty)">
+		<Guide>
+			<Step>Retort heating with empty test </Step>
+		</Guide>
+	</RetortHeatingEmpty>
+	<RetortHeatingWater Description="Heating test (with water)">
 		<Guide>
 			<Step>Please put the foam filled block to retort, close the retort cover, and then put the bottle filled with water to station 11#</Step>
 		</Guide>
-	</RVHeatingEndTest>
+	</RetortHeatingWater>
 </TestCaseGuide>

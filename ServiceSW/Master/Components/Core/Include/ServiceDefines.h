@@ -167,8 +167,10 @@ typedef enum ModuleTestCaseID {
     MAINCONTROL_ASB3,                          ///< ASB3 test
     MAINCONTROL_ASB5,                          ///< ASB5 test
     MAINCONTROL_ASB15,                         ///< ASB15 test
+    RETORT_LID_LOCK,                    ///< Retort lid lock test
+    RETORT_LEVEL_SENSOR_HEATING,        ///< Retort level sensor heating test
     RETORT_LEVEL_SENSOR_DETECTING,      ///< Retort level sensor detecting test
-    RETORT_HEATING_WITH_LIQUID,         ///< Retort heating test with liquid
+    RETORT_HEATING_WITH_WATER,          ///< Retort heating test with water
     RETORT_HEATING_EMPTY,               ///< Retort heating test (empty)
     OVEN_COVER_SENSOR,                  ///< Oven cover sensor test
     OVEN_HEATING_EMPTY,                 ///< Oven heating test (empty)
@@ -188,8 +190,11 @@ typedef enum ModuleTestCaseID {
     SYSTEM_SPEARKER,                     ///< System speaker test
     SYSTEM_REMOTE_LOCAL_ALARM,           ///< System remote and local alarm test
     SYSTEM_USB,                          ///< System usb test
-    SYSTEM_FAN,                           ///< System fan test
-    TEST_ABORT                            ///< This is to abort a heating test case.
+    SYSTEM_MAINS_RELAY,                  ///< System Mains relay test
+    SYSTEM_EXHAUST_FAN,                  ///< System exhaust fan test
+    SYSTEM_VENTILATION_FAN,              ///< System ventilation fan test
+    SYSTEM_110V_220V_SWITCH,             ///< System 110V/220V switch test
+    TEST_ABORT                           ///< This is to abort a heating test case.
 } ModuleTestCaseID_t;
 
 /****************************************************************************/

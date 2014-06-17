@@ -8,10 +8,10 @@
 	</Oven>
 	<RotaryValve>
 		<RVInitialize Parameter="N/A"/>
-		<RVSelectingTest Position="7" TubeFlag="1" Pressure="30"/>
-		<RVSealingTest Position1="3" Position2="10" Position="7" TubeFlag="0" PressureLow="95" PressureHigh="105" Departure="2" DurationTime="00:01:00"/>
-		<RVHeatingStationTest PowerSupply="AC" AmbTempLow="10" AmbTempHigh="40" Sensor1TargetTemp="100" DepartureLow="-2" DepartureHigh="2" Sensor1Duration="01:00:00" Sensor2TargetTemp="70" Sensor2Duration="02:00:00"/>
-		<RVHeatingEndTest PowerSupply="AC" AmbTempLow="10" AmbTempHigh="40" Sensor1TargetTemp="100" DepartureLow="-2" DepartureHigh="2" Sensor1Duration="01:00:00" Sensor1TargetTemp2="110" Sensor2TargetTemp="70" Sensor2Duration="00:15:00" Position="11" />
+		<RVSelectionTest Position="7" Pressure="30"/>
+		<RVSealingTest Parameter="N/A"/>
+		<RVHeatingEndTest Parameter="N/A"/>
+		<RVHeatingStationTest Parameter="N/A"/>
 	</RotaryValve>
 	<MainControl>
 		<MCASB3 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="200"/>
@@ -24,4 +24,22 @@
 		<LAHeatingBeltAir PowerSupply="DC" AmbTempLow="10" AmbTempHigh="40" DurationTime="00:20:00" TargetTemp="80" DepartureLow="-5" DepartureHigh="5"/>
 		<LAAirSystem Parameter="N/A"/>
 	</LaSystem>
+	<System>
+		<System110v220vSwitch Parameter="N/A">
+		<SystemSealing Parameter="N/A">
+		<SystemOverflow Parameter="N/A">
+		<SystemSpeaker Parameter="N/A">
+		<SystemExhaustFan Parameter="N/A">
+		<SystemVentilationFan Parameter="N/A">
+		<SystemRemoteLocalAlarm Parameter="N/A">
+		<SystemMainsRelay Parameter="N/A">
+		<SystemFillingDraining Parameter="N/A">
+	</System>
+	<Retort>
+		<RetortLidLock Parameter="N/A">
+		<RetortLevelSensorHeating Parameter="N/A">
+		<RetortLevelSensorDetecting Parameter="N/A">
+		<RetortHeatingEmpty Parameter="N/A">
+		<RetortHeatingWater Parameter="N/A">
+	</Retort>
 </TestCaseConfig>

@@ -1,7 +1,7 @@
 /****************************************************************************/
-/*! \file DiagnosticsManufacturing/Source/LaSystemManufacturing.cpp
+/*! \file DiagnosticsManufacturing/Source/RetortManufacturing.cpp
  *
- *  \brief CLaSystem class implementation
+ *  \brief CRetort class implementation
  *
  *
  *   $Version: $ 0.1
@@ -19,10 +19,10 @@
  */
 /****************************************************************************/
 
-#include "DiagnosticsManufacturing/Include/LaSystemManufacturing.h"
+#include "DiagnosticsManufacturing/Include/RetortManufacturing.h"
 #include "DiagnosticsManufacturing/Include/TestCaseReporter.h"
 #include "Core/Include/SelectTestOptions.h"
-#include "ui_LaSystemManufacturing.h"
+#include "ui_RetortManufacturing.h"
 #include <QDebug>
 #include <QTableWidgetItem>
 #include "Core/Include/ServiceDefines.h"
@@ -44,22 +44,22 @@ const int VISIBLE_TABLE_ROWS = 4;               ///< Visible table rows
  *  \iparam p_Parent = Parent widget
  */
 /****************************************************************************/
-CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent)
+CRetort::CRetort(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow *p_Parent)
     : mp_DataConnector(p_DataConnector)
     , mp_MainWindow(p_Parent)
-    , mp_Ui(new Ui::CLaSystemManufacturing)
+    , mp_Ui(new Ui::CRetortManufacturing)
     , mp_MessageDlg(NULL)
     , mp_Module(NULL)
     , m_FinalTestResult("NA")
 {
     mp_Ui->setupUi(this);
-    mp_Ui->laSNEdit->installEventFilter(this);
-    mp_Ui->laSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
+    mp_Ui->retortSNEdit->installEventFilter(this);
+    mp_Ui->retortSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
-    SetLineEditText(QString("14-HIM-LA-XXXXX"));
+    SetLineEditText(QString("14-HIM-RT-XXXXX"));
 
-    mp_Ui->laSNEdit->setText("14-HIM-LA-XXXXX");
+    mp_Ui->retortSNEdit->setText("14-HIM-RT-XXXXX");
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
 
@@ -69,9 +69,15 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
 
     mp_TableWidget->horizontalHeader()->show();
 
-    //AddItem(1, Service::LA_SYSTEM_PUMP_VALVE_CONTROL);
-    AddItem(1, Service::LA_SYSTEM_HEATING_LIQUID_TUBE);
-    AddItem(2, Service::LA_SYSTEM_HEATING_AIR_TUBE);
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
+        AddItem(1, Service::RETORT_LID_LOCK);
+        AddItem(2, Service::RETORT_LEVEL_SENSOR_DETECTING);
+        AddItem(3, Service::RETORT_HEATING_WITH_WATER);
+    }
+    else {
+        AddItem(1, Service::RETORT_LEVEL_SENSOR_HEATING);
+        AddItem(2, Service::RETORT_HEATING_EMPTY);
+    }
 
     mp_TableWidget->setModel(&m_Model);
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
@@ -91,7 +97,7 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
 
     if (mp_DataConnector->GetModuleListContainer()) {
-        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("L&A System");
+        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Retort");
     }
 
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
@@ -105,7 +111,7 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
  *  \brief Destructor
  */
 /****************************************************************************/
-CLaSystem::~CLaSystem()
+CRetort::~CRetort()
 {
      try {
         delete mp_KeyBoardWidget;
@@ -125,7 +131,7 @@ CLaSystem::~CLaSystem()
  *  \iparam p_Event = Change event
  */
 /****************************************************************************/
-void CLaSystem::changeEvent(QEvent *p_Event)
+void CRetort::changeEvent(QEvent *p_Event)
 {
     QWidget::changeEvent(p_Event);
     switch (p_Event->type()) {
@@ -148,13 +154,13 @@ void CLaSystem::changeEvent(QEvent *p_Event)
  *  \return true when event is triggered
  */
 /****************************************************************************/
-bool CLaSystem::eventFilter(QObject *p_Object, QEvent *p_Event)
+bool CRetort::eventFilter(QObject *p_Object, QEvent *p_Event)
 {
-    if (p_Object == mp_Ui->laSNEdit && p_Event->type() == QEvent::MouseButtonPress)
+    if (p_Object == mp_Ui->retortSNEdit && p_Event->type() == QEvent::MouseButtonPress)
     {
         ConnectKeyBoardSignalSlots();
         mp_KeyBoardWidget->setModal(true);
-        mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+        mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                            "Enter Serial Number", 0, QApplication::UnicodeUTF8));
         mp_KeyBoardWidget->SetPasswordMode(false);
         mp_KeyBoardWidget->SetValidation(true);
@@ -177,7 +183,7 @@ bool CLaSystem::eventFilter(QObject *p_Object, QEvent *p_Event)
  *  \iparam
  */
 /****************************************************************************/
-void CLaSystem::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
+void CRetort::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
 {
     QList<QStandardItem *> ItemList;
 
@@ -202,8 +208,8 @@ void CLaSystem::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     ItemList << item;
 
     m_Model.setHorizontalHeaderLabels(QStringList() << ""
-                                                    << QApplication::translate("DiagnosticsManufacturing::CLaSystem", "Nr.", 0, QApplication::UnicodeUTF8)
-                                                    << QApplication::translate("DiagnosticsManufacturing::CLaSystem", "Tests", 0, QApplication::UnicodeUTF8)
+                                                    << QApplication::translate("DiagnosticsManufacturing::CRetort", "Nr.", 0, QApplication::UnicodeUTF8)
+                                                    << QApplication::translate("DiagnosticsManufacturing::CRetort", "Tests", 0, QApplication::UnicodeUTF8)
                                                     << "");
     m_Model.appendRow(ItemList);
 }
@@ -214,14 +220,14 @@ void CLaSystem::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
  *  \iparam EnteredString = Stores line edit string
  */
 /****************************************************************************/
-void CLaSystem::OnOkClicked(const QString& EnteredString)
+void CRetort::OnOkClicked(const QString& EnteredString)
 {
 
     mp_KeyBoardWidget->hide();
     m_LineEditString.chop(5);
     m_LineEditString.append(EnteredString.simplified());
 
-    mp_Ui->laSNEdit->setText(m_LineEditString);
+    mp_Ui->retortSNEdit->setText(m_LineEditString);
 
     /*if (m_TestNames.contains("SerialNumber")) {
         m_TestReport.remove("SerialNumber");
@@ -244,7 +250,7 @@ void CLaSystem::OnOkClicked(const QString& EnteredString)
  *  \brief This function hides the keyboard when Esc is clicked
  */
 /****************************************************************************/
-void CLaSystem::OnESCClicked()
+void CRetort::OnESCClicked()
 {
     // Disconnect signals and slots connected to keyboard.
     DisconnectKeyBoardSignalSlots();
@@ -256,7 +262,7 @@ void CLaSystem::OnESCClicked()
  *  \brief Connects signals and slots of keyboard.
  */
 /****************************************************************************/
-void CLaSystem::ConnectKeyBoardSignalSlots()
+void CRetort::ConnectKeyBoardSignalSlots()
 {
     // Connect signals and slots to keyboard.
     CONNECTSIGNALSLOT(mp_KeyBoardWidget, OkButtonClicked(QString), this, OnOkClicked(QString));
@@ -268,7 +274,7 @@ void CLaSystem::ConnectKeyBoardSignalSlots()
  *  \brief Disconnects signals and slots of keyboard.
  */
 /****************************************************************************/
-void CLaSystem::DisconnectKeyBoardSignalSlots()
+void CRetort::DisconnectKeyBoardSignalSlots()
 {
     // Disconnect signals and slots connected to keyboard.
     (void) disconnect(mp_KeyBoardWidget, SIGNAL(OkButtonClicked(QString)), this, SLOT(OnOkClicked(QString)));
@@ -281,26 +287,26 @@ void CLaSystem::DisconnectKeyBoardSignalSlots()
  *  \brief Slot called for agitator tests
  */
 /****************************************************************************/
-void CLaSystem::BeginTest()
+void CRetort::BeginTest()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_TEST_REQUESTED);
 
-    if (mp_Ui->laSNEdit->text().endsWith("XXXXX")) {
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+    if (mp_Ui->retortSNEdit->text().endsWith("XXXXX")) {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                                 "Ok", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                              "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         if (mp_MessageDlg->exec()) {
-            mp_Ui->laSNEdit->setFocus();
-            mp_Ui->laSNEdit->selectAll();
+            mp_Ui->retortSNEdit->setFocus();
+            mp_Ui->retortSNEdit->selectAll();
         }
         return;
     }
-    qDebug()<<"CLaSystem::BeginTest  ";
+    qDebug()<<"CRetort::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
         QModelIndex ModelIndex = m_Model.index(i, 0);
@@ -315,12 +321,12 @@ void CLaSystem::BeginTest()
         }
     }
     if (TestCaseList.count() == 0) {
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                         "Error", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                                 "Ok", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                        "Please select a test case.", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetIcon(QMessageBox::Critical);
         mp_MessageDlg->show();
@@ -344,7 +350,7 @@ void CLaSystem::BeginTest()
  *  \iparam Result = Result of the test
  */
 /****************************************************************************/
-void CLaSystem::SetTestResult(Service::ModuleTestCaseID Id, bool Result)
+void CRetort::SetTestResult(Service::ModuleTestCaseID Id, bool Result)
 {
     QPixmap PixMapPass(QString(":/Large/CheckBoxLarge/CheckBox-Checked_large_green.png"));
     QPixmap PixMapFail(QString(":/Large/CheckBoxLarge/CheckBox-Crossed_large_red.png"));
@@ -368,7 +374,7 @@ void CLaSystem::SetTestResult(Service::ModuleTestCaseID Id, bool Result)
 
 }
 
-void CLaSystem::EnableButton(bool EnableFlag)
+void CRetort::EnableButton(bool EnableFlag)
 {
     mp_Ui->beginTestBtn->setEnabled(EnableFlag);
 }
@@ -378,36 +384,36 @@ void CLaSystem::EnableButton(bool EnableFlag)
  *  \brief Slot called for sending the test report to server
  */
 /****************************************************************************/
-void CLaSystem::SendTestReport()
+void CRetort::SendTestReport()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_SENDTESTREPORT_REQUESTED);
     if (m_LineEditString.endsWith("XXXXX")) {
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                                 "Ok", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                              "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         (void)mp_MessageDlg->exec();
     }
     else {
         /*
-        CTestCaseReporter* p_TestReporter = new CTestCaseReporter(mp_MainWindow, "LaSystem", m_LineEditString);
+        CTestCaseReporter* p_TestReporter = new CTestCaseReporter(mp_MainWindow, "CRetort", m_LineEditString);
 
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                     "Test Report", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
                                                             "Ok", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
         if (p_TestReporter->GenReportFile()) {
-            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                           "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetIcon(QMessageBox::Information);
         }
         else {
-            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                        "Test report save failed.", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetIcon(QMessageBox::Critical);
         }
@@ -422,7 +428,7 @@ void CLaSystem::SendTestReport()
  *  \brief Slot called to reset the test status
  */
 /****************************************************************************/
-void CLaSystem::ResetTestStatus()
+void CRetort::ResetTestStatus()
 {
 #if 0
     mp_Ui->beginTestBtn->setEnabled(false);
@@ -446,44 +452,45 @@ void CLaSystem::ResetTestStatus()
  *  \brief Translates the strings in UI to the selected language
  */
 /****************************************************************************/
-void CLaSystem::RetranslateUI()
+void CRetort::RetranslateUI()
 {
 #if 0
-    m_Model.setHorizontalHeaderLabels(QStringList() << QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+    m_Model.setHorizontalHeaderLabels(QStringList() << QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                                                "Nr.", 0, QApplication::UnicodeUTF8)
-                                                    << QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+                                                    << QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                                                "Tests", 0, QApplication::UnicodeUTF8)
                                                     << "");
 
     m_Model.clear();
 
-    AddItem("1", QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+    AddItem("1", QApplication::translate("DiagnosticsManufacturing::CRetort",
                                          "X1 Reference Run", 0, QApplication::UnicodeUTF8));
-    AddItem("2", QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+    AddItem("2", QApplication::translate("DiagnosticsManufacturing::CRetort",
                                          "X2 Reference Run", 0, QApplication::UnicodeUTF8));
 
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
     mp_TableWidget->horizontalHeader()->resizeSection(1, 400);  // 1 => Index  400 => Size
     mp_TableWidget->horizontalHeader()->resizeSection(2, 45);   // 2 => Index  45 => Size
 
-    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+    mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                              "Enter Serial Number", 0, QApplication::UnicodeUTF8));
 
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                     "Serial Number", 0, QApplication::UnicodeUTF8));
 
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
                            "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
 
-    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+    mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                     "Test Report", 0, QApplication::UnicodeUTF8));
 
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                   "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
 
-    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
+    mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                    "Test report save failed.", 0, QApplication::UnicodeUTF8));
 #endif
 }
 
 }  // end namespace DiagnosticsManufacturing
+

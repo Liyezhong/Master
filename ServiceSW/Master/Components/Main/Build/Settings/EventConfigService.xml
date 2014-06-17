@@ -316,122 +316,131 @@
 		<Event AlarmType="No" Code="" ErrorID="100728937" Name="EVENT_GUI_DIAGNOSTICS_MAINCONTROL_TOUCH_SCREEN_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728937" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728938" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_BOTTLE_CHECKING_TEST">
+		<Event AlarmType="No" Code="" ErrorID="100728938" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728938" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728939" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_BOTTLE_CHECKING_TEST_SUCCESS">
+		<Event AlarmType="No" Code="" ErrorID="100728939" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728939" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728940" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_BOTTLE_CHECKING_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728940" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728940" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728941" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST">
+		<Event AlarmType="No" Code="" ErrorID="100728941" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728941" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728942" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_SUCCESS">
+		<Event AlarmType="No" Code="" ErrorID="100728942" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728942" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728943" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728943" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728943" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728944" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST">
+		<Event AlarmType="No" Code="" ErrorID="100728944" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728944" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728945" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_SUCCESS">
+		<Event AlarmType="No" Code="" ErrorID="100728945" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728945" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728946" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728946" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728946" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728947" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST">
+		<Event AlarmType="No" Code="" ErrorID="100728947" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728947" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728948" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_SUCCESS">
+		<Event AlarmType="No" Code="" ErrorID="100728948" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728948" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728949" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728949" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728949" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728950" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST">
+		<Event AlarmType="No" Code="" ErrorID="100728950" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728950" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728951" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS">
+		<Event AlarmType="No" Code="" ErrorID="100728951" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728951" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728952" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728952" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728952" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728953" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ETHERNET_TEST">
+		<Event AlarmType="No" Code="" ErrorID="100728953" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728953" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728954" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ETHERNET_TEST_SUCCESS">
+		<Event AlarmType="No" Code="" ErrorID="100728954" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728954" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728955" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ETHERNET_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728955" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728955" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728956" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST">
+		<Event AlarmType="No" Code="" ErrorID="100728956" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728956" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728957" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST_SUCCESS">
+		<Event AlarmType="No" Code="" ErrorID="100728957" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728957" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728958" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728958" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728958" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728959" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST">
+		<Event AlarmType="No" Code="" ErrorID="100728959" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728959" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728960" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_SUCCESS">
+		<Event AlarmType="No" Code="" ErrorID="100728960" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728960" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728961" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728961" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_USB_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728961" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728962" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST">
+		<Event AlarmType="No" Code="" ErrorID="100728962" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728962" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728963" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST_SUCCESS">
+		<Event AlarmType="No" Code="" ErrorID="100728963" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728963" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728964" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728964" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728964" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728965" Name="EVENT_GUI_MANUF_RETORT_TEST_REQUESTED">
+		<Event AlarmType="No" Code="" ErrorID="100728965" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728965" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728966" Name="EVENT_GUI_MANUF_RETORT_SENDTESTREPORT_REQUESTED">
+		<Event AlarmType="No" Code="" ErrorID="100728966" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728966" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728967" Name="EVENT_GUI_MANUF_OVEN_TEST_REQUESTED">
+		<Event AlarmType="No" Code="" ErrorID="100728967" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728967" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728968" Name="EVENT_GUI_MANUF_OVEN_SENDTESTREPORT_REQUESTED">
+		<Event AlarmType="No" Code="" ErrorID="100728968" Name="EVENT_GUI_MANUF_RETORT_TEST_REQUESTED">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728968" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728969" Name="EVENT_GUI_MANUF_ROTARYVALVE_TEST_REQUESTED">
+		<Event AlarmType="No" Code="" ErrorID="100728969" Name="EVENT_GUI_MANUF_RETORT_SENDTESTREPORT_REQUESTED">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728969" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728970" Name="EVENT_GUI_MANUF_ROTARYVALVE_SENDTESTREPORT_REQUESTED">
+		<Event AlarmType="No" Code="" ErrorID="100728970" Name="EVENT_GUI_MANUF_OVEN_TEST_REQUESTED">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728970" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728971" Name="EVENT_GUI_MANUF_LASYSTEM_TEST_REQUESTED">
+		<Event AlarmType="No" Code="" ErrorID="100728971" Name="EVENT_GUI_MANUF_OVEN_SENDTESTREPORT_REQUESTED">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728971" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728972" Name="EVENT_GUI_MANUF_LASYSTEM_SENDTESTREPORT_REQUESTED">
+		<Event AlarmType="No" Code="" ErrorID="100728972" Name="EVENT_GUI_MANUF_ROTARYVALVE_TEST_REQUESTED">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728972" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728973" Name="EVENT_GUI_MANUF_MAINCONTROL_TEST_REQUESTED">
+		<Event AlarmType="No" Code="" ErrorID="100728973" Name="EVENT_GUI_MANUF_ROTARYVALVE_SENDTESTREPORT_REQUESTED">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728973" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728974" Name="EVENT_GUI_MANUF_MAINCONTROL_SENDTESTREPORT_REQUESTED">
+		<Event AlarmType="No" Code="" ErrorID="100728974" Name="EVENT_GUI_MANUF_LASYSTEM_TEST_REQUESTED">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728974" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728975" Name="EVENT_GUI_MANUF_SYSTEM_TEST_REQUESTED">
+		<Event AlarmType="No" Code="" ErrorID="100728975" Name="EVENT_GUI_MANUF_LASYSTEM_SENDTESTREPORT_REQUESTED">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728975" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728976" Name="EVENT_GUI_MANUF_SYSTEM_SENDTESTREPORT_REQUESTED">
+		<Event AlarmType="No" Code="" ErrorID="100728976" Name="EVENT_GUI_MANUF_MAINCONTROL_TEST_REQUESTED">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728976" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728977" Name="EVENT_GUI_MANUF_MAINCONTROL_SENDTESTREPORT_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728977" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728978" Name="EVENT_GUI_MANUF_SYSTEM_TEST_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728978" Type="MSG" UserLog="TRUE"/>
+		</Event>
+		<Event AlarmType="No" Code="" ErrorID="100728979" Name="EVENT_GUI_MANUF_SYSTEM_SENDTESTREPORT_REQUESTED">
+			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728979" Type="MSG" UserLog="TRUE"/>
 		</Event>
 	</Source>
 </EventConfigure>

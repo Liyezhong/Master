@@ -194,6 +194,48 @@ void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
     else if (TestCaseName == "RVHeatingStationTest") {
         Id = Service::ROTARY_VALVE_HEATING_STATION;
     }
+    else if (TestCaseName == "System110v220vSwitch") {
+        Id = Service::SYSTEM_110V_220V_SWITCH;
+    }
+    else if (TestCaseName == "SystemSealing") {
+        Id = Service::SYSTEM_SEALING_TEST;
+    }
+    else if (TestCaseName == "SystemOverflow") {
+        Id = Service::SYSTEM_OVERFLOW;
+    }
+    else if (TestCaseName == "SystemSpeaker") {
+        Id = Service::SYSTEM_SPEARKER;
+    }
+    else if (TestCaseName == "SystemExhaustFan") {
+        Id = Service::SYSTEM_EXHAUST_FAN;
+    }
+    else if (TestCaseName == "SystemVentilationFan") {
+        Id = Service::SYSTEM_VENTILATION_FAN;
+    }
+    else if (TestCaseName == "SystemRemoteLocalAlarm") {
+        Id = Service::SYSTEM_REMOTE_LOCAL_ALARM;
+    }
+    else if (TestCaseName == "SystemMainsRelay") {
+        Id = Service::SYSTEM_MAINS_RELAY;
+    }
+    else if (TestCaseName == "SystemFillingDraining") {
+        Id = Service::SYSTEM_FILL_DRAINING;
+    }
+    else if (TestCaseName == "RetortLidLock") {
+        Id = Service::RETORT_LID_LOCK;
+    }
+    else if (TestCaseName == "RetortLevelSensorHeating") {
+        Id = Service::RETORT_LEVEL_SENSOR_HEATING;
+    }
+    else if (TestCaseName == "RetortLevelSensorDetecting") {
+        Id = Service::RETORT_LEVEL_SENSOR_DETECTING;
+    }
+    else if (TestCaseName == "RetortHeatingEmpty") {
+        Id = Service::RETORT_HEATING_EMPTY;
+    }
+    else if (TestCaseName == "RetortHeatingWater") {
+        Id = Service::RETORT_HEATING_WITH_WATER;
+    }
 
     m_TestCaseIDHash.insert(Id, TestCaseName);
 }
