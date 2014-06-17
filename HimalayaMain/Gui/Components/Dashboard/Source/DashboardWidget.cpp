@@ -424,6 +424,21 @@ bool CDashboardWidget::IsParaffinInProgram(const DataManager::CProgram* p_Progra
     return false;
 }
 
+int CDashboardWidget::GetParaffinHeatingDuration()
+{
+    if (!mp_DataConnector)
+        return 0;
+    DataManager::CHimalayaUserSettings* userSetting = mp_DataConnector->SettingsInterface->GetUserSettings();
+    int paraffinMeltingPoint = userSetting->GetTemperatureParaffinBath();
+    if (paraffinMeltingPoint <= 64)
+    {
+        return 12;
+    } else
+    {
+        return 15;
+    }
+}
+
 //TimeActual--- get from Scheduler
 //TimeDelta
 //EndTimeAsap = TimeActual + TimeDelta;
@@ -453,7 +468,8 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
         //calculate the timeBeforeUseParraffin
         //RemainingTimeMeltParraffin = 12 hour - TimeCosted
         //int RemainingTimeMeltParaffin = 12 * 60 * 60 - TimeCostedParaffinMelting;
-         int RemainingTimeMeltParaffin = 30 * 60 - TimeCostedParaffinMelting;
+        int meltingDuration= GetParaffinHeatingDuration();
+        int RemainingTimeMeltParaffin = 30 * 60 - TimeCostedParaffinMelting;
         if (RemainingTimeMeltParaffin > 0)
         {
           if (RemainingTimeMeltParaffin <= TimeBeforeUseParaffin)

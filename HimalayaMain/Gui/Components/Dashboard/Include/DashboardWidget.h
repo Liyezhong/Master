@@ -96,6 +96,14 @@ private:
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function GetParaffinHeatingDuration
+     *
+     *  \return the paraffin heating duration
+     */
+    /****************************************************************************/
+    int GetParaffinHeatingDuration();
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function GetASAPTime
      *
      *  \return from GetASAPTime
