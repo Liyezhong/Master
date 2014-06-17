@@ -91,7 +91,7 @@ signals:
        * \iparam Test = Test name
        */
     /****************************************************************************/
-    void PerformManufacturingTest(Service::ModuleTestCaseID Test);
+    void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortId=Service::TEST_CASE_ID_UNUSED);
 
 public slots:
     void BeginManufacturingSWTests(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);

@@ -26,9 +26,10 @@ QString CmdModuleManufacturingTest::NAME             = "DeviceCommandProcessor::
 int     CmdModuleManufacturingTest::m_CmdTimeout     = 3000;
 
 /****************************************************************************/
-CmdModuleManufacturingTest::CmdModuleManufacturingTest(Service::ModuleTestCaseID CmdType)
+CmdModuleManufacturingTest::CmdModuleManufacturingTest(Service::ModuleTestCaseID CmdType, Service::ModuleTestCaseID AbortId)
     : Global::Command(m_CmdTimeout)
     , m_CommandType(CmdType)
+    , m_AbortTestCaseId(AbortId)
 {
 }
 

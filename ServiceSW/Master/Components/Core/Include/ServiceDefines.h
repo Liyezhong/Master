@@ -164,6 +164,7 @@ enum DeviceCalibrationCmdType {
  */
 /****************************************************************************/
 typedef enum ModuleTestCaseID {
+    TEST_CASE_ID_UNUSED = 0,
     MAINCONTROL_ASB3,                          ///< ASB3 test
     MAINCONTROL_ASB5,                          ///< ASB5 test
     MAINCONTROL_ASB15,                         ///< ASB15 test

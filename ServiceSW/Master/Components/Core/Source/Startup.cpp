@@ -572,7 +572,7 @@ void CStartup::InitManufacturingDiagnostic()
     mp_ManaufacturingDiagnosticsHandler = new Core::CManufacturingDiagnosticsHandler(mp_ServiceConnector, mp_MainWindow);
 
     /* Manufacturing Tests */
-    CONNECTSIGNALSIGNAL(mp_ManaufacturingDiagnosticsHandler, PerformManufacturingTest(Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID));
+    CONNECTSIGNALSIGNAL(mp_ManaufacturingDiagnosticsHandler, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
     ManufacturingGuiInit();
 }
 
@@ -829,7 +829,7 @@ void CStartup::RefreshTestStatus4OvenHeatingEmpty(Service::ModuleTestCaseID Id, 
         mp_HeatingStatusDlg->HideAbort();
         mp_HeatingStatusDlg->show();
         mp_HeatingStatusDlg->UpdateLabel(Status);
-        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID));
+        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
 
     }
     else {
@@ -844,7 +844,7 @@ void CStartup::RefreshTestStatus4OvenHeatingWater(Service::ModuleTestCaseID Id, 
         mp_HeatingStatusDlg->HideAbort();
         mp_HeatingStatusDlg->show();
         mp_HeatingStatusDlg->UpdateLabel(Status);
-        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID));
+        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
     }
     else if (Status.value("OvenHeatingWaterStatus")=="Finished") {
         mp_HeatingStatusDlg->close();
@@ -889,7 +889,7 @@ void CStartup::RefreshTestStatus4LAHeatingBelt(Service::ModuleTestCaseID Id, con
         mp_HeatingStatusDlg->HideAbort();
         mp_HeatingStatusDlg->show();
         mp_HeatingStatusDlg->UpdateLabel(Status);
-        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID));
+        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
 
     }
     else {
@@ -924,7 +924,7 @@ void CStartup::RefreshTestStatus4RVHeating(Service::ModuleTestCaseID Id, const S
         mp_HeatingStatusDlg->HideAbort();
         mp_HeatingStatusDlg->show();
         mp_HeatingStatusDlg->UpdateLabel(Status);
-        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID));
+        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
 
     }
     else {

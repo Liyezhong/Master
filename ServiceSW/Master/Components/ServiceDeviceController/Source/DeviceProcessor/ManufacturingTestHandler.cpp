@@ -175,7 +175,7 @@ bool ManufacturingTestHandler::IsInitialized()
 
 
 /****************************************************************************/
-void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id)
+void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, quint32 AbortTestCaseId)
 {
     qDebug()<<"ManufacturingTestHandler::OnAbortTest";
     if(!IsInitialized()){
@@ -1402,58 +1402,6 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
 
     return 1;
 
-
-#if 0
-    // Heating level sensor
-    LSensorTemp = GetDesiredLSensorTemp(ReagentName);
-    LSensorTempHigh = LSensorTemp + 10;
-    LSensorInterval = GetLSensorSlopeInterval(ReagentName);
-    LSensorTempChange = GetLSensorSlopeTempChange(ReagentName);
-
-    /////////////////////////////////////////////
-       // Set PID for fast heating
-
-       utils.Log("*****************************************************");
-       TestMsg =     "*        Heating Level Sensor [Fast]...";
-       utils.Log(TestMsg);
-       utils.Log("*****************************************************");
-
-       F_LSensor.StopTemperatureControl();
-       F_LSensor.SetTemperaturePid(LSENSOR_PID_MAXTEMP_NORMAL, LSENSOR_PID_KC_NORMAL,
-           LSENSOR_PID_TI_NORMAL, LSENSOR_PID_TD_NORMAL);
-       TestMsg = "Set PID -- Kc: " + LSENSOR_PID_KC_NORMAL + ", Ti: " + LSENSOR_PID_TI_NORMAL + ", Td: " + LSENSOR_PID_TD_NORMAL;
-       utils.Log(TestMsg);
-       F_LSensor.StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
-       //TestMsg = "Set Temp. slope to " + LSensorTempChange;
-       //utils.Log(TestMsg);
-
-
-
-       // Wait for level sensor reaching desired temperature
-       LSensorStatus = WaitLSensorReady(LSensorTemp);
-       if (LSensorStatus == -1)
-       {
-           return Ret;
-       }
-
-       F_LSensor.StopTemperatureControl();
-       F_LSensor.SetTemperaturePid(LSENSOR_PID_MAXTEMP_SLOW, LSENSOR_PID_KC_SLOW,
-           LSENSOR_PID_TI_SLOW, LSENSOR_PID_TD_SLOW);
-       TestMsg = "Set PID -- Kc: " + LSENSOR_PID_KC_SLOW + ", Ti: " + LSENSOR_PID_TI_SLOW + ", Td: " + LSENSOR_PID_TD_SLOW;
-       utils.Log(TestMsg);
-       F_LSensor.StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
-
-       utils.Pause(3000);
-
-       // Wait for level sensor reaching desired temperature again
-       LSensorStatus = WaitLSensorReady(LSensorTemp);
-       if (LSensorStatus == -1)
-       {
-           return Ret;
-       }
-
-       F_LSensor.StopTemperatureControl();
-#endif
 }
 
 
@@ -1466,7 +1414,7 @@ void ManufacturingTestHandler::SetFailReason(Service::ModuleTestCaseID Id, const
 
 }
 
-void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTestCaseID TestId)
+void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTestCaseID TestId, Service::ModuleTestCaseID AbortTestCaseId)
 {
     qDebug()<<"ManufacturingTestHandler::PerformModuleManufacturingTest  test="<<TestId;
 
@@ -1476,7 +1424,7 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
 
     switch (TestId) {
     case Service::TEST_ABORT:
-        OnAbortTest(0, TestId);
+        OnAbortTest(0, TestId, AbortTestCaseId);
         return ;
     case Service::MAINCONTROL_ASB3:
     case Service::MAINCONTROL_ASB5:

@@ -378,7 +378,7 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service
         }
 
         Global::EventObject::Instance().RaiseEvent(EventId);
-        emit PerformManufacturingTest(Id);
+        emit PerformManufacturingTest(Id, Service::TEST_CASE_ID_UNUSED);
 
         bool Result = GetTestResponse();
 
@@ -386,7 +386,7 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service
             NextFlag = ShowGuide(Id, 1);
             if (NextFlag == false)
                 break;
-            emit PerformManufacturingTest(Service::OVEN_COVER_SENSOR);
+            emit PerformManufacturingTest(Service::OVEN_COVER_SENSOR, Service::TEST_CASE_ID_UNUSED);
             Result = GetTestResponse();
         }
 

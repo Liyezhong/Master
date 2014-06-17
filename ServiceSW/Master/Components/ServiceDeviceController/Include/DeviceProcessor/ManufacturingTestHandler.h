@@ -101,10 +101,11 @@ public slots:
      * \brief Handle Command of type CmdAbortTest received.
      *
      * \param[in]       Ref                 Reference of command.
-     * \param[in]       Cmd                 Command.
+     * \param[in]       id                 Test case id.
+     * \param[in]       AbortTestCaseId                It is only for abort
      */
     /****************************************************************************/
-    void OnAbortTest(Global::tRefType Ref, quint32 id);
+    void OnAbortTest(Global::tRefType Ref, quint32 id, quint32 AbortTestCaseIds=0);
 
     /****************************************************************************/
     /**
@@ -113,7 +114,7 @@ public slots:
      * \iparam       TestId            Module Test Case Id
      */
     /****************************************************************************/
-    void PerformModuleManufacturingTest(Service::ModuleTestCaseID TestId);
+    void PerformModuleManufacturingTest(Service::ModuleTestCaseID TestId, Service::ModuleTestCaseID AbortTestCaseId = Service::TEST_CASE_ID_UNUSED);
 
 
 signals:

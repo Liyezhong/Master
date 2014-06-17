@@ -145,7 +145,7 @@ public slots:
      * \iparam       TestName            Module Test Name
      */
     /****************************************************************************/
-    void OnModuleManufacturingTest(Service::ModuleTestCaseID TestName);
+    void OnModuleManufacturingTest(Service::ModuleTestCaseID TestName, Service::ModuleTestCaseID AbortTestCaseId=Service::TEST_CASE_ID_UNUSED);
 
 
 signals:

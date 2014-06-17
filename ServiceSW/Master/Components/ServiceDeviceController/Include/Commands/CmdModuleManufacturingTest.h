@@ -54,6 +54,7 @@ public:
     static QString  NAME;                                   ///< Command name.
 
     Service::ModuleTestCaseID m_CommandType;              ///< Type of end test requested
+    Service::ModuleTestCaseID m_AbortTestCaseId;
     /****************************************************************************/
     /**
      * \brief Constructor.
@@ -61,7 +62,7 @@ public:
      * \iparam CmdType = Command type
      */
     /****************************************************************************/
-    CmdModuleManufacturingTest(Service::ModuleTestCaseID CmdType);
+    CmdModuleManufacturingTest(Service::ModuleTestCaseID CmdType, Service::ModuleTestCaseID AbortId);
     /****************************************************************************/
     /**
      * \brief Destructor.

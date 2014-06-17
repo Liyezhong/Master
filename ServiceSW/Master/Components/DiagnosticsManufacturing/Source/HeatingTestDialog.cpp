@@ -189,7 +189,7 @@ void CHeatingTestDialog::SetTimeout(qint32 Milliseconds)
 /****************************************************************************/
 void CHeatingTestDialog::AbortWaitDialog()
 {
-    PerformManufacturingTest(Service::TEST_ABORT);
+    PerformManufacturingTest(Service::TEST_ABORT, m_TestCaseId);
 
     if (m_IsBlgProcessStarted) {
         m_IsBlgProcessStarted = false;

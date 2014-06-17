@@ -165,8 +165,8 @@ void ServiceDeviceController::ConnectSignalsnSlots()
     }
 
     // for Manufacturing Diagnostic
-    if (!connect(this, SIGNAL(ModuleManufacturingTest(Service::ModuleTestCaseID)),
-                 mp_DeviceProcessor, SLOT(OnModuleManufacturingTest(Service::ModuleTestCaseID)))) {
+    if (!connect(this, SIGNAL(ModuleManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID)),
+                 mp_DeviceProcessor, SLOT(OnModuleManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID)))) {
         qDebug() << "ServiceDeviceController::ConnectSignalsnSlots cannot connect 'ModuleManufacturingTest' signal";
     }
     if (!connect(mp_DeviceProcessor, SIGNAL(RefreshTestStatustoMain(QString,Service::ModuleTestStatus)),
@@ -465,7 +465,7 @@ void ServiceDeviceController::OnCmdModuleManufacturingTest(Global::tRefType Ref,
 
     qDebug()<<"ServiceDeviceController::OnCmdModuleManufacturingTest CmdType="<<Cmd.m_CommandType;
 
-    emit ModuleManufacturingTest(Cmd.m_CommandType);
+    emit ModuleManufacturingTest(Cmd.m_CommandType, Cmd.m_AbortTestCaseId);
 }
 
 } //End Of namespace DeviceControl

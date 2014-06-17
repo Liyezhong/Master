@@ -288,7 +288,7 @@ signals:
      * \iparam       CmdType         Module Test Name
      */
     /****************************************************************************/
-    void ModuleManufacturingTest(Service::ModuleTestCaseID TestName);
+    void ModuleManufacturingTest(Service::ModuleTestCaseID TestName, Service::ModuleTestCaseID AbortTestCaseId=Service::TEST_CASE_ID_UNUSED);
 
 protected:
     /**

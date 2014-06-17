@@ -206,7 +206,7 @@ signals:
        * \iparam Test = Test name
        */
     /****************************************************************************/
-    void PerformManufacturingTest(Service::ModuleTestCaseID Test);
+    void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestCaseId);
 };
 
 } // end namespace DiagnosticsManufacturing

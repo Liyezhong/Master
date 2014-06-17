@@ -844,7 +844,7 @@ void DeviceProcessor::OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdTyp
 
 }
 
-void DeviceProcessor::OnModuleManufacturingTest(Service::ModuleTestCaseID TestName)
+void DeviceProcessor::OnModuleManufacturingTest(Service::ModuleTestCaseID TestName, Service::ModuleTestCaseID AbortId)
 {
     qDebug()<<"DeviceProcessor::OnModuleManufacturingTest  test="<<TestName;
     if(!IsInitialized()){
@@ -852,7 +852,7 @@ void DeviceProcessor::OnModuleManufacturingTest(Service::ModuleTestCaseID TestNa
     }
 
     if (mp_ManufacturingTestHandler) {
-        mp_ManufacturingTestHandler->PerformModuleManufacturingTest(TestName);
+        mp_ManufacturingTestHandler->PerformModuleManufacturingTest(TestName, AbortId);
     }
 
 }

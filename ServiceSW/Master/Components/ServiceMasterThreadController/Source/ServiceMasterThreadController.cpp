@@ -202,7 +202,7 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     }
 
     // Manufacturing Tests
-    if (!connect(mp_GUIStartup, SIGNAL(PerformManufacturingTest(Service::ModuleTestCaseID)), this, SLOT(sendManufacturingTestCommand(Service::ModuleTestCaseID)))) {
+    if (!connect(mp_GUIStartup, SIGNAL(PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID)), this, SLOT(sendManufacturingTestCommand(Service::ModuleTestCaseID, Service::ModuleTestCaseID)))) {
         qDebug() << "CStartup: cannot connect 'PerformManufacturingTest' signal";
     }
 
@@ -1523,10 +1523,10 @@ void ServiceMasterThreadController::sendPressureSensorCalibrationCommand()
 
 
 /****************************************************************************/
-void ServiceMasterThreadController::sendManufacturingTestCommand(Service::ModuleTestCaseID Test)
+void ServiceMasterThreadController::sendManufacturingTestCommand(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestCaseId)
 {
     qDebug()<<"ServiceMasterThreadController::sendManufacturingTestCommand -- modulename="<<Test;
-    (void) SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdModuleManufacturingTest(Test)), m_CommandChannelDeviceThread);
+    (void) SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdModuleManufacturingTest(Test, AbortTestCaseId)), m_CommandChannelDeviceThread);
 
 }
 
