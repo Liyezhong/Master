@@ -96,7 +96,7 @@ CSystem::~CSystem()
 
 void CSystem::StartBottleCheckingTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_BOTTLE_CHECKING_TEST);
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_BOTTLE_CHECKING_TEST);
     qDebug() << "System: start bottle checking test";
 
     System::CBottleCheckingTest test;
@@ -142,7 +142,7 @@ void CSystem::StartAlarmTest(void)
 
 void CSystem::StartEthernetTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ETHERNET_TEST);
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_ETHERNET_TEST);
     qDebug() << "System: start ethernet test";
 }
 
@@ -168,7 +168,7 @@ void CSystem::StartMainsRelayTest(void)
 
 void CSystem::StartVoltageTest(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST);
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST);
     qDebug() << "System: start 110V/220V switching test";
 
     System::CVoltageTest test;

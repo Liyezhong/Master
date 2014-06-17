@@ -72,7 +72,7 @@ void CVoltageTest::FirstConfirmVoltage(void)
 
 void CVoltageTest::Succeed(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST_SUCCESS);
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST_SUCCESS);
     qDebug() << "110V/220V Switching Test succeeded!";
 
     // display success message
@@ -94,7 +94,7 @@ void CVoltageTest::Succeed(void)
 
 void CVoltageTest::Fail(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST_FAILURE);
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_SYSTEM_VOLTAGE_TEST_FAILURE);
     qDebug() << "110V/220V Switching Test failed!";
 
     // display failure message

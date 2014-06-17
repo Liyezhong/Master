@@ -145,6 +145,9 @@ void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::Module
     case Service::ROTARY_VALVE:
         PerformManufRVTests(TestCaseList);
         break;
+    case Service::SYSTEM:
+        PerformManufSystemTests(TestCaseList);
+        break;
     default:
         break;
     }
@@ -717,6 +720,81 @@ void CManufacturingDiagnosticsHandler::PerformManufLATests(const QList<Service::
         mp_LaSystemManuf->SetTestResult(Id, Result);
     }
     mp_LaSystemManuf->EnableButton(true);
+}
+
+void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Service::ModuleTestCaseID> &TestCaseList)
+{
+    quint32 FailureId(0);
+    quint32 OkId(0);
+    quint32 EventId(0);
+    qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufSystemTests ---" << TestCaseList;
+    for(int i=0; i<TestCaseList.size(); i++) {
+        Service::ModuleTestCaseID Id = TestCaseList.at(i);
+        bool NextFlag = ShowGuide(Id, 0);
+        if (NextFlag == false) {
+            break;
+        }
+
+        switch(Id) {
+        case Service::SYSTEM_110V_220V_SWITCH:
+            EventId    = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_FAILURE;
+            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_SUCCESS;
+            break;
+        case Service::SYSTEM_EXHAUST_FAN:
+            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_FAILURE;
+            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_SUCCESS;
+            break;
+        case Service::SYSTEM_VENTILATION_FAN:
+            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_FAILURE;
+            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_SUCCESS;
+            break;
+        case Service::SYSTEM_FILL_DRAINING:
+            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_FAILURE;
+            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_SUCCESS;
+            break;
+        case Service::SYSTEM_OVERFLOW:
+            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_FAILURE;
+            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_SUCCESS;
+            break;
+        case Service::SYSTEM_SPEARKER:
+            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_FAILURE;
+            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_SUCCESS;
+            break;
+        case Service::SYSTEM_MAINS_RELAY:
+            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_FAILURE;
+            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_SUCCESS;
+            break;
+        case Service::SYSTEM_SEALING_TEST:
+            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_FAILURE;
+            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_SUCCESS;
+            break;
+        case Service::SYSTEM_REMOTE_LOCAL_ALARM:
+            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE;
+            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS;
+            break;
+        }
+
+        Global::EventObject::Instance().RaiseEvent(EventId);
+        emit PerformManufacturingTest(Id);
+        bool Result = GetTestResponse();
+
+        if (Id == Service::SYSTEM_SPEARKER && Result == true) {
+
+        }
+
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+        p_TestCase->SetStatus(Result);
+    }
 }
 
 /****************************************************************************/

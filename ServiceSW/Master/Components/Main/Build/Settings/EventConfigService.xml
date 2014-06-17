@@ -322,7 +322,7 @@
 		<Event AlarmType="No" Code="" ErrorID="100728939" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_SUCCESS">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728939" Type="MSG" UserLog="TRUE"/>
 		</Event>
-		<Event AlarmType="No" Code="" ErrorID="100728940" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_FAILURE">
+		<Event AlarmType="No" Code="" ErrorID="100728940" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_FAILURE">
 			<Step ButtonType="" ID="0" LogLevel="Low" StatusBar="No" StringID="100728940" Type="MSG" UserLog="TRUE"/>
 		</Event>
 		<Event AlarmType="No" Code="" ErrorID="100728941" Name="EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST">
