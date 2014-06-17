@@ -1621,11 +1621,20 @@
 		<Event Code="" ErrorID="19595266" ErrorType="Warning" AlarmType="No" Name="EVENT_STOP_ACCEPT_NEW_RACK">
 			<Step ID="0" Type="MSG" StringID="19595266" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="19005443" ErrorType="Error" AlarmType="Yes" Name="EVENT_SW_UPDATE_FAILED">
+		<Event Code="" ErrorID="19005441" ErrorType="Error" AlarmType="No" Name="EVENT_SW_UPDATE_STARTER_FAILED">
+			<Step ID="0" Type="MSG" StringID="19005441" ButtonType="Ok" LogLevel="High" UserLog="TRUE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19005442" ErrorType="Error" AlarmType="No" Name="EVENT_SW_UPDATE_FAILED">
+			<Step ID="0" Type="MSG" StringID="19005442" ButtonType="Ok" LogLevel="High" UserLog="TRUE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19005443" ErrorType="Error" AlarmType="No" Name="EVENT_SW_UPDATE_ROLLBACK_UPDATE_FAILED">
 			<Step ID="0" Type="MSG" StringID="19005443" ButtonType="Ok" LogLevel="High" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19005447" ErrorType="Info" AlarmType="No" Name="EVENT_SW_UPDATE_SUCCESS">
 			<Step ID="0" Type="MSG" StringID="19005447" ButtonType="Ok" LogLevel="HIGH" UserLog="TRUE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19005448" ErrorType="Info" AlarmType="No" Name="EVENT_SW_UPDATE_NOT_PERFORMED">
+			<Step ID="0" Type="MSG" StringID="19005448" ButtonType="Ok" LogLevel="HIGH" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="18874369" ErrorType="Error" AlarmType="No" Name="EVENT_SWVERSION_RELEASE_DATE_VERION_EMPTY">
 			<Step ID="0" Type="MSG" StringID="18874369" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>

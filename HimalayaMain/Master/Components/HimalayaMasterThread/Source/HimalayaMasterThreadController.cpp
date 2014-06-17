@@ -111,7 +111,6 @@ HimalayaMasterThreadController::HimalayaMasterThreadController() try:
     m_AuthenticatedLevel(Global::OPERATOR),
     m_ControllerCreationFlag(false),
     m_CurrentUserActionState(NORMAL_USER_ACTION_STATE),
-    mp_SWUpdateManager(NULL),
     m_ExportTargetFileName(""),
     mp_SchdCmdProcessor(NULL),
     m_ExpectedShutDownRef(Global::RefManager<Global::tRefType>::INVALID),
@@ -182,28 +181,6 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
                       this, ShowWaitDialog(bool,Global::WaitDialogText_t));
     CONNECTSIGNALSLOT(mp_SWUpdateManager, SWUpdateStatus(bool),
                       this, SWUpdateProgress(bool))
-
-//    if (m_RebootFileContent.value("PowerFailed") == "Yes") {
-//        //Now that we know power had failed previously , revert it back to No
-//        m_RebootFileContent.insert("PowerFailed", "No");
-//        Global::EventObject::Instance().RaiseEvent(EVENT_RECOVERED_FROM_POWER_FAIL);
-//    }
-    if (mp_DataManager && mp_DataManager->IsInitialized()) {
-
-        if (m_SWUpdateStatus == "Success" || m_UpdateRollBackFailed) {
-            m_UpdatingRollback = true;
-            mp_SWUpdateManager->UpdateSoftware("-updateRollback", "");
-        }
-
-        if (m_SWUpdateStatus == "Failure") {
-            Global::EventObject::Instance().RaiseEvent(SWUpdate::EVENT_SW_UPDATE_FAILED);
-        }
-
-        if (m_SWUpdateCheckStatus == "Failure") {
-              //Clean any temporary folders
-            mp_SWUpdateManager->UpdateSoftware("-Clean", "");
-        }
-    }
 
     //Initialize program Startable manager
     m_ProgramStartableManager.Init();
@@ -338,9 +315,9 @@ void HimalayaMasterThreadController::InitiateShutdown(bool Reboot) {
     }
 
     if (!Reboot) {
-        m_RebootFileContent.insert("Main_Rebooted", "No");
-        m_RebootFileContent.insert("Reboot_Count", "0");
-        UpdateRebootFile();
+        m_BootConfigFileContent.insert("Main_Rebooted", "No");
+        m_BootConfigFileContent.insert("Reboot_Count", "0");
+        Global::UpdateRebootFile(m_BootConfigFileContent);
     }
     if (!m_PowerFailed && mp_DataManager && mp_DataManager->IsInitialized()) {
         // shutdown device command processor
@@ -1158,22 +1135,22 @@ void HimalayaMasterThreadController::PrepareShutdownHandler(Global::tRefType Ref
     m_bQuitApp = (DataManager::QUITAPPSHUTDOWNACTIONTYPE_QUITAPP == Cmd.QuitAppShutdownActionType());
     if (m_bQuitApp)
     {
-        m_RebootFileContent.insert("Start_Process", "Service");
-        UpdateRebootFile();
+        m_BootConfigFileContent.insert("Start_Process", "Service");
+        Global::UpdateRebootFile(m_BootConfigFileContent);
     }
     InitiateShutdown();
 }
 
 void HimalayaMasterThreadController::Reboot()
 {
-    m_RebootFileContent.insert("Main_Rebooted", "Yes");
-    QString RebootCountStr = m_RebootFileContent.value("Reboot_Count");
+    m_BootConfigFileContent.insert("Main_Rebooted", "Yes");
+    QString RebootCountStr = m_BootConfigFileContent.value("Reboot_Count");
     qint32  RebootCount = RebootCountStr.toInt();
     RebootCount++;
     RebootCountStr = QString::number(RebootCount);
-    m_RebootFileContent.insert("Reboot_Count", RebootCountStr);
-    UpdateRebootFile();
-    InitiateShutdown();
+    m_BootConfigFileContent.insert("Reboot_Count", RebootCountStr);
+    Global::UpdateRebootFile(m_BootConfigFileContent);
+    InitiateShutdown(true);
 }
 /****************************************************************************/
 void HimalayaMasterThreadController::ExternalProcessConnectionHandler(Global::tRefType Ref, const NetCommands::CmdExternalProcessState &Cmd, Threads::CommandChannel &AckCommandChannel)

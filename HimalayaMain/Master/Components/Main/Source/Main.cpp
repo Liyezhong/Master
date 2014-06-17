@@ -27,7 +27,7 @@
 /// \todo Norbert's debug output
 #include <DeviceControl/Include/Global/dcl_log.h>
 
-
+#include "Threads/Include/SingletonThreadObject.h"
 #include "Global/Include/SignalHandler.h"
 #include "Global/Include/AlarmPlayer.h"
 #include "EventHandler/Include/StateHandler.h"
@@ -147,10 +147,6 @@ int main(int argc, char *argv[]) {
 //    FILE_LOG_L(laDEVPROC, llINFO) << "DEBUG DEVPROC";
     //=========================================================
 
-    // catch unexpected signals
-    Global::SignalHandler signalHandler;
-    signalHandler.init();
-
     // create application object
     //QCoreApplication App(argc, argv);
     MApplication App(argc, argv);
@@ -169,6 +165,7 @@ int main(int argc, char *argv[]) {
     Global::SystemPaths::Instance().SetLogfilesPath("../Logfiles");
     Global::SystemPaths::Instance().SetManualPath("../Manual");
     Global::SystemPaths::Instance().SetSettingsPath("../Settings");
+    Global::SystemPaths::Instance().SetInstrumentSettingsPath("../Settings/Instrument");
     Global::SystemPaths::Instance().SetUpdatePath("../Update");
     Global::SystemPaths::Instance().SetUploadsPath("../Uploads");
     Global::SystemPaths::Instance().SetTempPath("../Temporary");
@@ -176,6 +173,44 @@ int main(int argc, char *argv[]) {
     Global::SystemPaths::Instance().SetTranslationsPath("../Translations");
     Global::SystemPaths::Instance().SetSoundPath("../Sounds");
     Global::SystemPaths::Instance().SetRemoteCarePath("../RemoteCare");
+    Global::SystemPaths::Instance().SetScriptsPath("../Scripts");
+
+    Threads::SingletonThreadObject SingletonObjThread;
+
+    Global::EventObject::Instance().setParent(&SingletonObjThread);
+    (void)Global::AdjustedTime::Instance();
+    Global::AlarmPlayer::Instance().setParent(&SingletonObjThread);
+    EventHandler::StateHandler::Instance().setParent(&SingletonObjThread);
+
+    QThread ThreadForSingletonObjects;
+    SingletonObjThread.moveToThread(&ThreadForSingletonObjects);
+    (void)QObject::connect(&ThreadForSingletonObjects, SIGNAL(started()), &SingletonObjThread, SLOT(Run()));
+    ThreadForSingletonObjects.start();
+    //=========================================================
+    // WARNING: uncomment following lines to switch on
+    //          the DeviceControl layer debug logging.
+//    FILE* pFile = fopen ( "colorado_app.log", "w" );
+//    Output2FILE::Stream() = pFile;
+//    FILE_LOG_L(laFCT, llINFO) << "DEBUG FCT";
+//    FILE_LOG_L(laDEV, llINFO) << "DEBUG DEV";
+//    FILE_LOG_L(laDEVPROC, llINFO) << "DEBUG DEVPROC";
+    //=========================================================
+
+    // catch unexpected signals
+    Global::SignalHandler signalHandler;
+    signalHandler.init();
+
+    for (int i=1; i< argc; i++) {
+        if ((QString(argv[i]) == "-rolledback")) {
+            Global::AppSettings::SettingsRolledBack = true;
+        }
+    }
+
+    //#ifdef QT_DEBUG
+////    SchedulerSimulation::MainWindow::getInstance().show();
+//#endif
+
+
 
     // create master thread
     QThread thrMasterThread;
