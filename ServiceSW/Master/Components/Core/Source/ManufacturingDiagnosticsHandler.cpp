@@ -27,6 +27,7 @@
 #include "ServiceDataManager/Include/TestCase.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "DiagnosticsManufacturing/Include/SelectPositionDialog.h"
+#include "DiagnosticsManufacturing/Include/Select110v220vDialog.h"
 #include "DiagnosticsManufacturing/Include/PressureInputDialog.h"
 
 #include "Main/Include/HimalayaServiceEventCodes.h"
@@ -298,6 +299,29 @@ quint8 CManufacturingDiagnosticsHandler::GetPositionForRVTest(Service::ModuleTes
     delete p_Dlg;
 
     return Position;
+}
+
+void CManufacturingDiagnosticsHandler::SelectOptionFor110v220Switch()
+{
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_110V_220V_SWITCH);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    bool Is110V = (p_TestCase->GetParameter("Option") == "110");
+
+    DiagnosticsManufacturing::CSelect110v220vDialog* p_Dlg = new DiagnosticsManufacturing::CSelect110v220vDialog(Is110V, mp_MainWindow);
+    (void)p_Dlg->exec();
+    Is110V = p_Dlg->GetOptionFlag();
+
+    if (Is110V) {
+        p_TestCase->SetParameter("Option", "110");
+    }
+    else {
+        p_TestCase->SetParameter("Option", "220");
+    }
+
+    qDebug()<<"Is110v:"<<Is110V;
+    delete p_Dlg;
+
 }
 
 bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSelecting(quint8 Position)
@@ -773,6 +797,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             EventId    = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_SUCCESS;
+            SelectOptionFor110v220Switch();
             break;
         case Service::SYSTEM_EXHAUST_FAN:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST;
@@ -820,14 +845,34 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
         emit PerformManufacturingTest(Id);
         bool Result = GetTestResponse();
 
-        if (Id == Service::SYSTEM_SPEARKER && Result == true) {
-
-        }
-
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
         DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
         p_TestCase->SetStatus(Result);
+
+        if (!Result) {
+            Global::EventObject::Instance().RaiseEvent(FailureId);
+
+            QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+
+            QString Reason = p_TestCase->GetResult().value("FailReason");
+            if (Reason == "Abort") {   // if user click abort, then the test routines for this modules will terminate.
+                mp_SystemManuf->EnableButton(true);
+                return ;
+            }
+
+            QString Text = QString("%1 - %2\n%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
+
+        }
+        else {
+            Global::EventObject::Instance().RaiseEvent(OkId);
+            QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+            QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+        }
+        mp_SystemManuf->SetTestResult(Id, Result);
     }
+    mp_SystemManuf->EnableButton(true);
 }
 
 /****************************************************************************/

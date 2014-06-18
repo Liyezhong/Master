@@ -25,7 +25,7 @@
 		<LAAirSystem Parameter="N/A"/>
 	</LaSystem>
 	<System>
-		<System110v220vSwitch Parameter="N/A">
+		<System110v220vSwitch Option="110">
 		<SystemSealing Parameter="N/A">
 		<SystemOverflow Parameter="N/A">
 		<SystemSpeaker Parameter="N/A">

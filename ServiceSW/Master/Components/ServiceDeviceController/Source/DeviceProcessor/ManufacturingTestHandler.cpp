@@ -60,6 +60,7 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
     mp_BaseModule15 = NULL;
 
     mp_TempLSensor = NULL;
+    mp_SpeakProc  = NULL;
 }
 
 /****************************************************************************/
@@ -187,8 +188,19 @@ void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, qui
         emit ReturnErrorMessagetoMain(Service::MSG_DEVICE_NOT_INITIALIZED);
         return;
     }
-
-    mp_Utils->AbortPause();
+    switch (AbortTestCaseId) {
+    case Service::SYSTEM_SPEARKER:
+        qDebug()<<"abort the system speaker test";
+        if (mp_SpeakProc) {
+            mp_SpeakProc->kill();
+        }
+        break;
+    case Service::OVEN_COVER_SENSOR:
+        qDebug()<<"abort the oven cover sensor test";
+        break;
+    default:
+        mp_Utils->AbortPause();
+    }
 
     m_UserAbort = true;
 
@@ -535,6 +547,42 @@ qint32 ManufacturingTestHandler::TestOvenCoverSensor()
     emit RefreshTestStatustoMain(TestCaseName, Status);
 
     return 0;
+}
+
+qint32 ManufacturingTestHandler::TestSystemSpeaker()
+{
+    Service::ModuleTestStatus Status;
+
+    if (!mp_SpeakProc) {
+        mp_SpeakProc = new QProcess;
+    }
+
+    QEventLoop loop;
+    QStringList Params;
+    Params<<"-r"<<"/home/ldx/workspaces/Himalaya/HimalayaMain/Master/Components/Main/Build/Sounds/Note1.ogg";
+    mp_SpeakProc->start("ogg123", Params);
+
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_SPEARKER);
+    emit RefreshTestStatustoMain(TestCaseName, Status);
+
+    loop.connect(mp_SpeakProc, SIGNAL(finished(int)), &loop, SLOT(quit()));
+    loop.exec();
+    return 0;
+}
+
+qint32 ManufacturingTestHandler::TestSystem110v220vSwitch()
+{
+    qint32 VoltageValue = 110;
+
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_110V_220V_SWITCH);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    //if (VoltageValue == p_TestCase->GetParameter("Option").toInt()) {
+        //return 1
+    //}
+
+    //return 0;
+    return VoltageValue == p_TestCase->GetParameter("Option").toInt();
 }
 
 qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t Id)
@@ -1533,6 +1581,12 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         else {
             emit ReturnManufacturingTestMsg(false);
         }
+        break;
+    case Service::SYSTEM_SPEARKER:
+        TestSystemSpeaker();
+        break;
+    case Service::SYSTEM_110V_220V_SWITCH:
+        TestSystem110v220vSwitch();
         break;
     default:
         break;

@@ -79,6 +79,7 @@ private:
     bool ShowGuide(Service::ModuleTestCaseID Id, int Index = 0);
     void ShowHeatingFailedResult(Service::ModuleTestCaseID Id);
     quint8 GetPositionForRVTest(Service::ModuleTestCaseID Id, int Index);
+    void SelectOptionFor110v220Switch();
     bool ShowConfirmDlgForRVSelecting(quint8 Position);
     bool ShowConfirmDlgForRVSealing(quint8 Position);
     void PerformManufDisplayTests(const QList<Service::ModuleTestCaseID> &TestCaseList);

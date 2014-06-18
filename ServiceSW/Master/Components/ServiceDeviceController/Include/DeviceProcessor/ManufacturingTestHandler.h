@@ -23,6 +23,7 @@
 
 
 #include <Global/Include/GlobalDefines.h>
+#include <QProcess>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Core/Include/ServiceDefines.h"
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalInput.h>
@@ -251,6 +252,20 @@ private:
     /****************************************************************************/
     qint32 TestOvenCoverSensor();
 
+    /****************************************************************************/
+    /**
+     * \brief To Test speaker of system
+     */
+    /****************************************************************************/
+    qint32 TestSystemSpeaker();
+
+    /****************************************************************************/
+    /**
+     * \brief To Test 110V/220V switch of system
+     */
+    /****************************************************************************/
+    qint32 TestSystem110v220vSwitch();
+
 
     /****************************************************************************/
     /**
@@ -285,6 +300,8 @@ private:
     WrapperFmBaseModule*        mp_BaseModule3;
     WrapperFmBaseModule*        mp_BaseModule5;
     WrapperFmBaseModule*        mp_BaseModule15;
+
+    QProcess*   mp_SpeakProc;
 
 };
 

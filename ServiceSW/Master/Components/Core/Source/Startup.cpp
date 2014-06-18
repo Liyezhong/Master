@@ -938,6 +938,25 @@ void CStartup::RefreshTestStatus4RVHeating(Service::ModuleTestCaseID Id, const S
     }
 }
 
+void CStartup::RefreshTestStatus4SystemSpeaker(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+
+    mp_MessageBox->SetTitle("System speaker test");
+    mp_MessageBox->SetText(QString("Do you hear the system speak noice?"));
+    mp_MessageBox->SetButtonText(1, "YES");
+    mp_MessageBox->SetButtonText(3, "NO");
+    mp_MessageBox->HideCenterButton();
+
+    if (mp_MessageBox->exec()) { // yes
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
+    }
+    else {
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(false);
+    }
+
+    emit PerformManufacturingTest(Service::TEST_ABORT, Id);
+}
+
 /****************************************************************************/
 /*!
  *  \brief Refresh heating status for heating test.
@@ -965,6 +984,9 @@ void CStartup::RefreshTestStatus(const QString &Message, const Service::ModuleTe
     case Service::ROTARY_VALVE_HEATING_STATION:
     case Service::ROTARY_VALVE_HEATING_END:
         RefreshTestStatus4RVHeating(Id, Status);
+        break;
+    case Service::SYSTEM_SPEARKER:
+        RefreshTestStatus4SystemSpeaker(Id, Status);
         break;
     default:
         break;

@@ -312,7 +312,7 @@ void CSystem::BeginTest()
         }
         return;
     }
-    qDebug()<<"CLaSystem::BeginTest  ";
+    qDebug()<<"CSystem::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
         QModelIndex ModelIndex = m_Model.index(i, 0);
@@ -341,7 +341,7 @@ void CSystem::BeginTest()
         EnableButton(false);
         mp_Ui->widget->setFocus();
 
-        emit BeginModuleTest(Service::LA_SYSTEM, TestCaseList);
+        emit BeginModuleTest(Service::SYSTEM, TestCaseList);
 
 
         qDebug()<<"CLaSystem::BeginTest   --- emitted";

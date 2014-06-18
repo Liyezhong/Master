@@ -13,20 +13,23 @@ TARGET = DiagnosticsManufacturing
 HEADERS *= ../Include/*.h \          # header file location
     ../Include/MainControlManufacturing.h \
     ../Include/SystemManufacturing.h \
-    ../Include/RetortManufacturing.h
+    ../Include/RetortManufacturing.h \
+    ../Include/Select110v220vDialog.h
 
 SOURCES *= ../Source/*.cpp \         # source file location
     ../Source/MainControlManufacturing.cpp \
     ../Source/LaSystemManufacturing.cpp \
     ../Source/SystemManufacturing.cpp \
-    ../Source/RetortManufacturing.cpp
+    ../Source/RetortManufacturing.cpp \
+    ../Source/Select110v220vDialog.cpp
 
 FORMS += ../Forms/*.ui \
     ../Forms/MainControlManufacturing.ui \
     ../Forms/LaSystemManufacturing.ui \
     ../Forms/RotaryValveManufacturing.ui \
     ../Forms/SystemManufacturing.ui \
-    ../Forms/RetortManufacturing.ui
+    ../Forms/RetortManufacturing.ui \
+    ../Forms/Select110v220vDialog.ui
 
 RESOURCES *= ../Resource/*.qrc   # resource file location
 
