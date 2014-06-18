@@ -220,7 +220,7 @@ void CServiceGUIConnector::ShowBasicColorTestDialog()
 {
     if(mp_ColorTestDialog != NULL) {
         delete mp_ColorTestDialog;
-        mp_ColorTestDialog = new MainMenu::CBasicColorTestDlg();
+        mp_ColorTestDialog = new MainMenu::CBasicColorTestDlg(mp_MainWindow);
         mp_ColorTestDialog->setModal(true);
         mp_ColorTestDialog->show();
     }

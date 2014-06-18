@@ -179,7 +179,7 @@ void CBasicColorTestDlg::BasicColorTest()
         mp_Ui->cancelBtn->hide();
         mp_Ui->groupBox->setGeometry(40, 40, 411, 150);
 
-        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_DISPLAY_BASICCOLOR_TEST_SUCCESS);
+        //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_DISPLAY_BASICCOLOR_TEST_SUCCESS);
 
         if(!connect(mp_Ui->nextBtn, SIGNAL(clicked()), this, SLOT(close()))) {
             qDebug() << "CBasicColorTestDlg: cannot connect 'clicked' signal";
@@ -213,7 +213,7 @@ void CBasicColorTestDlg::TestCancelButton()
     mp_MessageDlg->HideButtons();
     mp_MessageDlg->Show();
 
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_DISPLAY_BASICCOLOR_TEST_SUCCESS);
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_DIAGNOSTICS_DISPLAY_BASICCOLOR_TEST_SUCCESS);
 
     int Result = mp_MessageDlg->exec();
 
