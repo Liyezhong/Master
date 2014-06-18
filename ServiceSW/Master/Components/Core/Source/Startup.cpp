@@ -141,6 +141,7 @@ CStartup::CStartup() : QObject(),
 
     //Diagnostics
     mp_DiagnosticsGroup = new MainMenu::CMenuGroup;
+    mp_Display          = new Diagnostics::CDisplay;
     mp_Retort           = new Diagnostics::CRetort;
     mp_Oven             = new Diagnostics::COven;
     mp_RotaryValve      = new Diagnostics::CRotaryValve;
@@ -195,6 +196,11 @@ CStartup::CStartup() : QObject(),
     if (!connect(mp_RotaryValve, SIGNAL(GuiRVSealTest(qint32)),
                  this, SLOT(OnGuiRVSealTest(qint32)))) {
         qDebug() << "CStartup: cannot connect 'GuiRVSealTest' signal";
+    }
+
+    if (!connect(mp_Display, SIGNAL(BasicColorTest()),
+                 this, SLOT(OnBasicColorTest()))) {
+        qDebug() << "CStartup: cannot connect 'BasicColorTest' signal";
     }
 
     if (!connect(mp_Retort, SIGNAL(GuiLevelSensorDetectingTest(qint32)),
@@ -271,6 +277,7 @@ CStartup::~CStartup()
         delete mp_LaSystem;
         delete mp_RotaryValve;
         delete mp_Oven;
+        delete mp_Display;
         delete mp_Retort;
         delete mp_DiagnosticsGroup;
 
@@ -550,13 +557,13 @@ void CStartup::ServiceGuiInit()
     mp_MainWindow->SetUserMode("SERVICE");
     emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
 
-
     //Diagnostics
     mp_MainWindow->AddMenuGroup(mp_DiagnosticsGroup, "Diagnostics");
+    mp_DiagnosticsGroup->AddPanel("Display",      mp_Display);
     mp_DiagnosticsGroup->AddPanel("Retort",       mp_Retort);
     mp_DiagnosticsGroup->AddPanel("Oven",         mp_Oven);
     mp_DiagnosticsGroup->AddPanel("Rotary Valve", mp_RotaryValve);
-    mp_DiagnosticsGroup->AddPanel("L&&A System",   mp_LaSystem);
+    mp_DiagnosticsGroup->AddPanel("L&&A System",  mp_LaSystem);
     mp_DiagnosticsGroup->AddPanel("System",       mp_System);
 
     emit SetSettingsButtonStatus();
@@ -584,7 +591,6 @@ void CStartup::InitManufacturingDiagnostic()
 void CStartup::ManufacturingGuiInit()
 {
     qDebug()<<"CStartup::ManufacturingGuiInit";
-
 
     Global::EventObject::Instance().RaiseEvent(EVENT_LOGIN_MANUFACTURING, Global::tTranslatableStringList() << GetCurrentUserMode());
     LoadCommonComponenetsOne();
@@ -1092,6 +1098,17 @@ void CStartup::OnGuiRVSealTest(qint32 Position)
 
     mp_ServiceConnector->ShowBusyDialog("Rotary valve sealing test in progress...", true);
     emit RotaryValveTest(Position, Service::RV_MOVE_TO_SEAL_POS);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Basic color test
+ *
+ */
+/****************************************************************************/
+void CStartup::OnBasicColorTest()
+{
+    mp_ServiceConnector->ShowBasicColorTestDialog();
 }
 
 

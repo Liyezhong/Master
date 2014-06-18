@@ -23,6 +23,7 @@
 #include "Core/Include/ServiceGUIConnector.h"
 #include "MainMenu/Include/MainWindow.h"
 #include "MainMenu/Include/MenuGroup.h"
+#include "Diagnostics/Include/Display.h"
 #include "DiagnosticsManufacturing/Include/OvenManufacturing.h"
 #include "DiagnosticsManufacturing/Include/MainControlManufacturing.h"
 #include "DiagnosticsManufacturing/Include/LaSystemManufacturing.h"
@@ -58,6 +59,8 @@ private:
 
     MainMenu::CMenuGroup                        *mp_DiagnosticsManufGroup;  //!< Menu group containing Diagnostics 1 for Manuacturing Sub menu's
 
+
+    Diagnostics::CDisplay                       *mp_DisplayManuf;                //!< Display tests
     DiagnosticsManufacturing::COven             *mp_OvenManuf;              //!< Oven object provides tests for oven
     DiagnosticsManufacturing::CMainControl      *mp_MainControlManuf;       //!< Main Control object provides tests for main control
     DiagnosticsManufacturing::CLaSystem         *mp_LaSystemManuf;          //!< LaSystem object provides tests for Liquid and Air System
@@ -78,6 +81,7 @@ private:
     quint8 GetPositionForRVTest(Service::ModuleTestCaseID Id, int Index);
     bool ShowConfirmDlgForRVSelecting(quint8 Position);
     bool ShowConfirmDlgForRVSealing(quint8 Position);
+    void PerformManufDisplayTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufOvenTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufMainControlTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufRVTests(const QList<Service::ModuleTestCaseID> &TestCaseList);

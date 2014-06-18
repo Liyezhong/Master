@@ -52,6 +52,7 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
                                            "Success", 0, QApplication::UnicodeUTF8);
     //Diagnostics Manufacturing
     mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
+    mp_DisplayManuf          = new Diagnostics::CDisplay(mp_MainWindow);
     mp_OvenManuf             = new DiagnosticsManufacturing::COven(mp_ServiceConnector, mp_MainWindow);
     mp_MainControlManuf      = new DiagnosticsManufacturing::CMainControl(mp_ServiceConnector, mp_MainWindow);
     mp_LaSystemManuf         = new DiagnosticsManufacturing::CLaSystem(mp_ServiceConnector, mp_MainWindow);
@@ -59,6 +60,7 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
     mp_SystemManuf           = new DiagnosticsManufacturing::CSystem(mp_ServiceConnector, mp_MainWindow);
     mp_RetortManuf           = new DiagnosticsManufacturing::CRetort(mp_ServiceConnector, mp_MainWindow);
 
+    CONNECTSIGNALSLOTGUI(mp_DisplayManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
     CONNECTSIGNALSLOTGUI(mp_OvenManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
     CONNECTSIGNALSLOTGUI(mp_MainControlManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
     CONNECTSIGNALSLOTGUI(mp_LaSystemManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
@@ -87,6 +89,7 @@ CManufacturingDiagnosticsHandler::~CManufacturingDiagnosticsHandler()
     try {
         delete mp_OvenManuf;
         delete mp_MainControlManuf;
+        delete mp_DisplayManuf;
         delete mp_LaSystemManuf;
         delete mp_RotaryValveManuf;
         delete mp_DiagnosticsManufGroup;
@@ -105,6 +108,12 @@ void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
 {
 //    mp_DiagnosticsManufGroup->Clear();
     //Diagnostics
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
+        //yuan@note:tr?
+        mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                       "Display", 0, QApplication::UnicodeUTF8), mp_DisplayManuf);
+    }
+
     mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                        "Oven", 0, QApplication::UnicodeUTF8), mp_OvenManuf);
     mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
@@ -133,6 +142,9 @@ void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::Module
 {
     qDebug()<<"CManufacturingDiagnosticsHandler::BeginManufacturingSWTests : ModuleName="<<ModuleName;
     switch(ModuleName) {
+    case Service::DISPLAY:
+        PerformManufDisplayTests(TestCaseList);
+        break;
     case Service::OVEN:
         PerformManufOvenTests(TestCaseList);
         break;
@@ -340,6 +352,27 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSealing(quint8 Positio
     delete p_Dlg;
 
     return Result;
+}
+
+void CManufacturingDiagnosticsHandler::PerformManufDisplayTests(const QList<Service::ModuleTestCaseID> &TestCaseList)
+{
+//    quint32 EventId(0);
+//    quint32 OkId(0);
+//    quint32 FailureId(0);
+
+    qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufDisplayTests ---" << TestCaseList;
+    for(int i = 0; i < TestCaseList.size(); i ++) {
+        Service::ModuleTestCaseID id = TestCaseList.at(i);
+        switch ( id ) {
+        case Service::DISPLAY_BASIC_COLOR:
+//            EventId = EVENT_GUI_DIAGNOSTICS_DISPLAY_BASICCOLOR_TEST;
+//            OkId = EVENT_GUI_DIAGNOSTICS_DISPLAY_BASICCOLOR_TEST_FAILURE;
+//            FailureId = EVENT_GUI_DIAGNOSTICS_DISPLAY_BASICCOLOR_TEST_SUCCESS;
+            mp_ServiceConnector->ShowBasicColorTestDialog();
+            break;
+        }
+    }
+
 }
 
 

@@ -173,6 +173,7 @@ typedef enum ModuleTestCaseID {
     RETORT_LEVEL_SENSOR_DETECTING,      ///< Retort level sensor detecting test
     RETORT_HEATING_WITH_WATER,          ///< Retort heating test with water
     RETORT_HEATING_EMPTY,               ///< Retort heating test (empty)
+    DISPLAY_BASIC_COLOR,                ///< Display basic color test
     OVEN_COVER_SENSOR,                  ///< Oven cover sensor test
     OVEN_HEATING_EMPTY,                 ///< Oven heating test (empty)
     OVEN_HEATING_WITH_WATER,            ///< Oven heating test with water
@@ -206,6 +207,7 @@ typedef enum ModuleTestCaseID {
 typedef enum ModuleNames {
     MAIN_CONTROL,                     ///< E Box
     RETORT,                 ///< Retort Module
+    DISPLAY,              ///< Display Module
     OVEN,                ///< Oven Module
     ROTARY_VALVE,                   ///< Rotary Valve Module
     LA_SYSTEM,              ///< L&A System Module

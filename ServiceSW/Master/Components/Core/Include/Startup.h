@@ -55,6 +55,7 @@
 #include "ServiceUpdates/Include/DataManagement.h"
 #include "ServiceUpdates/Include/Settings.h"
 
+#include "Diagnostics/Include/Display.h"
 #include "Diagnostics/Include/Retort.h"
 #include "Diagnostics/Include/Oven.h"
 #include "Diagnostics/Include/RotaryValve.h"
@@ -151,6 +152,7 @@ private:
 
     //Diagnostics
     MainMenu::CMenuGroup                    *mp_DiagnosticsGroup;
+    Diagnostics::CDisplay                   *mp_Display;                    //!< Display tests
     Diagnostics::CRetort                    *mp_Retort;                     //!< Retort tests
     Diagnostics::COven                      *mp_Oven;                       //!< Oven tests
     Diagnostics::CRotaryValve               *mp_RotaryValve;                //!< Rotary Valve tests
@@ -226,6 +228,9 @@ public slots:
     void OnGuiRVInitTest();
     void OnGuiRVSelectTest(qint32);
     void OnGuiRVSealTest(qint32);
+
+    /* Display slots*/
+    void OnBasicColorTest();
 
     /* Retort slots */
     void OnGuiLevelSensorDetectingTest(qint32);
