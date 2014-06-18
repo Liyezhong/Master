@@ -112,6 +112,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
 
     if (scenario != m_CurScenario)
     {
+        mp_SchedulerController->LogDebug(QString("the coming scenario is:%1, but the last scenario is:%2").arg(scenario).arg(m_CurScenario));
         m_CurScenario = scenario;
         m_RTLevelSensor.SetTemp4High = false; //for each scenario, set the initial value is false
         m_RTLevelSensor.SetTemp4Low = false;  //for each scenario, set the initial value is false
@@ -427,6 +428,9 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
     {
         if (heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature <HWTemp)
         {
+            mp_SchedulerController->LogDebug(QString("For Scenarios NON-related sensor,The hope maxtemp:%1, but the actual temp:%2")
+                                                      .arg(heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature)
+                                                      .arg(HWTemp));
             return false;
         }
     }
@@ -435,6 +439,9 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
     {
         if (heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature <HWTemp)
         {
+            mp_SchedulerController->LogDebug(QString("For Scenarios related sensors,The hope maxtemp:%1, but the actual temp:%2")
+                                             .arg(heatingSensor.functionModuleList[heatingSensor.curModuleId].MaxTemperature)
+                                             .arg(HWTemp));
             return false;
         }
     }
@@ -505,6 +512,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         }
         else
         {
+            mp_SchedulerController->LogDebug(QString("the level sensor heating module:%1, scenario:%2").arg(iter->Id).arg(m_CurScenario));
             m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             m_RTLevelSensor.curModuleId = iter->Id;
             m_RTLevelSensor.OTCheckPassed = false;
@@ -566,6 +574,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         }
         else
         {
+            mp_SchedulerController->LogDebug(QString("start RT heating, the senario:%1").arg(m_CurScenario));
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             heatingSensor.OTCheckPassed = false;
@@ -627,6 +636,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
         }
         else
         {
+            mp_SchedulerController->LogDebug(QString("start oven heating,the scenario:%1").arg(m_CurScenario));
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             heatingSensor.OTCheckPassed = false;
@@ -684,6 +694,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRVTemperatureControl(RVSensor&
         }
         else
         {
+            mp_SchedulerController->LogDebug(QString("start RV heating, scenario:%1").arg(m_CurScenario));
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             heatingSensor.OTCheckPassed = false;
@@ -1134,6 +1145,7 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, q
         {
             if (HWTemp < heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
             {
+                mp_SchedulerController->LogDebug(QString("For Scenarios NON-related sensors heating overtime, the current temp:%1").arg(HWTemp));
                 return false;
             }
         }
@@ -1142,6 +1154,7 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, q
         {
             if (HWTemp < heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
             {
+                mp_SchedulerController->LogDebug(QString("For Scenarios related Sensors heating overtime, the current temp:%1").arg(HWTemp));
                 return false;
             }
         }
@@ -1166,6 +1179,7 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
     {
         if (HWTemp < mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath())
         {
+            mp_SchedulerController->LogDebug(QString("RVoutlet heaint over time, the current temp:%1").arg(HWTemp));
             return false;
         }
     }
