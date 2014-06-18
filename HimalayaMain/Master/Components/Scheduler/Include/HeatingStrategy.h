@@ -232,7 +232,7 @@ private:
     LASensor                            m_LARVTube;                     //!< LA of tube heat sensor
     LASensor                            m_LAWaxTrap;                    //!< LA of waxTrap
     bool                                m_CmdResult;                    //!< flag to indicate command result
-    qint64                              m_IsOvenHeatingStarted;         //!< flag to read the oven heating begin
+    bool                                m_IsOvenHeatingStarted;         //!< flag to read the oven heating begin
     qint64                              m_OvenStartHeatingTime;         //!< the value of oven start heating time
 
     /****************************************************************************/

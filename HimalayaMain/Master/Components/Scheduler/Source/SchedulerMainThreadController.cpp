@@ -2888,9 +2888,9 @@ qint64 SchedulerMainThreadController::GetOvenHeatingTime()
     qint64 retTime = 0;
     if (0 != tmpTime)
     {
-        tmpTime = (QDateTime::currentDateTime().toMSecsSinceEpoch() - tmpTime)/1000;
+        retTime = (QDateTime::currentDateTime().toMSecsSinceEpoch() - tmpTime)/1000;
     }
-    return tmpTime;
+    return retTime;
 }
 
 bool SchedulerMainThreadController::IsLastStep(int currentStepIndex, const QString& currentProgramID)

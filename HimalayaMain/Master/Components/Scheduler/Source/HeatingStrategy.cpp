@@ -38,13 +38,13 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
                                 DataManager::CDataManager* DataManager)
 								:mp_SchedulerController(schedController),
 								mp_SchedulerCommandProcessor(SchedCmdProcessor),
-                                mp_DataManager(DataManager),
-                                m_IsOvenHeatingStarted(0),
-                                m_OvenStartHeatingTime(0)
+                                mp_DataManager(DataManager)
 {
     CONNECTSIGNALSLOT(mp_SchedulerCommandProcessor, ReportLevelSensorStatus1(), this, OnReportLevelSensorStatus1());
     m_CurScenario = 0;
     m_CmdResult = true;
+    m_IsOvenHeatingStarted = false;
+    m_OvenStartHeatingTime = 0;
     this->ConstructHeatingSensorList();
 }
 DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMonitor_t& strctHWMonitor, qint32 scenario)
@@ -141,6 +141,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
             return retCode;
         }
 
+        if ( false == m_IsOvenHeatingStarted){
+            m_OvenStartHeatingTime = QDateTime::currentMSecsSinceEpoch();
+            m_IsOvenHeatingStarted = true;
+        }
         //For RVRod
         retCode = StartRVTemperatureControl(m_RV_1_HeatingRod);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -413,6 +417,10 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
         return true;
     }
 
+    if (UNDEFINED_VALUE ==HWTemp || UNDEFINED_1_BYTE == HWTemp || UNDEFINED_2_BYTE == HWTemp || UNDEFINED_4_BYTE == HWTemp)
+    {
+        return true;
+    }
     //For Scenarios NON-related sensors(Oven and LA)
     if (1 == heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.size()
             && 0 == heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.at(0))
@@ -619,10 +627,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
         }
         else
         {
-            m_IsOvenHeatingStarted ++;
-            if ( 2 == m_IsOvenHeatingStarted){
-                m_OvenStartHeatingTime = QDateTime::currentMSecsSinceEpoch();
-            }
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             heatingSensor.OTCheckPassed = false;
