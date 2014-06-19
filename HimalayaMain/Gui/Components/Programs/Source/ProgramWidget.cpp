@@ -367,6 +367,15 @@ void CProgramWidget::showEvent(QShowEvent *)
 /****************************************************************************/
 void CProgramWidget::SelectionChanged(QModelIndex Index)
 {
+    if (!Index.isValid()) {
+        Index = mp_TableWidget->currentIndex();
+        if (!Index.isValid()) {
+            mp_TableWidget->clearSelection();
+            ResetButtons();
+            return;
+        }
+    }
+
     if (Index.column() == 1)  // apply column
     {
         Qt::ItemFlags flags = m_ProgramModel.flags(Index);
