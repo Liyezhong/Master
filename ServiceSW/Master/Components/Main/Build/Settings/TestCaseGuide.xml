@@ -64,11 +64,11 @@
 			<Step>rotary valve heating property function station test</Step>
 		</Guide>
 	</RVHeatingStationTest>
-	<RVHeatingEndtest Description="Heating property function test">
+	<RVHeatingEndTest Description="Heating property function test">
 		<Guide>
 			<Step>rotary valve heating property function end test</Step>
 		</Guide>
-	</RVHeatingEndtest>
+	</RVHeatingEndTest>
 	<System110v220vSwitch Description="110V/220V switch">
 		<Guide>
 			<Step>System 110V/220V System test</Step>

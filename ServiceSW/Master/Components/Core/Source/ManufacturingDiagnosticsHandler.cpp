@@ -859,6 +859,8 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
     quint32 FailureId(0);
     quint32 OkId(0);
     quint32 EventId(0);
+    QString CurrentVoltage;
+    QString StrResult;
     qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufSystemTests ---" << TestCaseList;
     for(int i=0; i<TestCaseList.size(); i++) {
         Service::ModuleTestCaseID Id = TestCaseList.at(i);
@@ -924,6 +926,10 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
         DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
         p_TestCase->SetStatus(Result);
 
+        if (Id == Service::SYSTEM_110V_220V_SWITCH) {
+            CurrentVoltage = p_TestCase->GetResult().value("CurrentVoltage");
+            StrResult = "(Current Voltage:" + CurrentVoltage + "V)";
+        }
         if (!Result) {
             Global::EventObject::Instance().RaiseEvent(FailureId);
 
@@ -936,6 +942,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             }
 
             QString Text = QString("%1 - %2\n%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            Text.append(StrResult);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
         }
@@ -943,6 +950,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             Global::EventObject::Instance().RaiseEvent(OkId);
             QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
             QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
+            Text.append(StrResult);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
         mp_SystemManuf->SetTestResult(Id, Result);

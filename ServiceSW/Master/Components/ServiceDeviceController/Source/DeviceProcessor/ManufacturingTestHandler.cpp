@@ -217,7 +217,7 @@ void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, qui
     case Service::SYSTEM_SPEARKER:
         qDebug()<<"abort the system speaker test";
         if (mp_SpeakProc) {
-            mp_SpeakProc->kill();
+            mp_SpeakProc->terminate();
         }
         break;
     case Service::OVEN_COVER_SENSOR:
@@ -765,11 +765,7 @@ qint32 ManufacturingTestHandler::TestSystem110v220vSwitch()
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_110V_220V_SWITCH);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
-    //if (VoltageValue == p_TestCase->GetParameter("Option").toInt()) {
-        //return 1
-    //}
-
-    //return 0;
+    p_TestCase->AddResult("CurrentVoltage", QString("%1").arg(VoltageValue));
     return VoltageValue == p_TestCase->GetParameter("Option").toInt();
 }
 
@@ -1832,7 +1828,7 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         TestSystemSpeaker();
         break;
     case Service::SYSTEM_110V_220V_SWITCH:
-        TestSystem110v220vSwitch();
+        emit ReturnManufacturingTestMsg(TestSystem110v220vSwitch());
         break;
     default:
         break;
