@@ -34,6 +34,7 @@
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "ServiceDataManager/Include/TestCase.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "Global/Include/SystemPaths.h"
 
 namespace DeviceControl {
 
@@ -559,7 +560,8 @@ qint32 ManufacturingTestHandler::TestSystemSpeaker()
 
     QEventLoop loop;
     QStringList Params;
-    Params<<"-r"<<"/home/ldx/workspaces/Himalaya/HimalayaMain/Master/Components/Main/Build/Sounds/Note1.ogg";
+    Params<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Note1.ogg";
+
     mp_SpeakProc->start("ogg123", Params);
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_SPEARKER);
