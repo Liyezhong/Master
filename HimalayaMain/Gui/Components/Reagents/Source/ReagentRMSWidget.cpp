@@ -362,6 +362,14 @@ void CReagentRMSWidget::SelectionChanged(QModelIndex Index)
     {
         mp_TableWidgetCleaning->clearSelection();
     }
+    if (!Index.isValid()) {
+        Index = mp_TableWidget->currentIndex();
+        if (!Index.isValid()) {
+            mp_TableWidget->clearSelection();
+            ResetButtons();
+            return;
+        }
+    }
     QString Id = m_ReagentRMSModel.data(Index, (int)Qt::UserRole).toString();
     UpdateButtons(Id);
 }
@@ -376,6 +384,14 @@ void CReagentRMSWidget::SelectionChanged(QModelIndex Index)
 void CReagentRMSWidget::SelectionChangedCleaningTable(QModelIndex Index)
 {
     mp_TableWidget->clearSelection();
+    if (!Index.isValid()) {
+        Index = mp_TableWidgetCleaning->currentIndex();
+        if (!Index.isValid()) {
+            mp_TableWidgetCleaning->clearSelection();
+            ResetButtons();
+            return;
+        }
+    }
     QString Id = m_ReagentCleaningModel.data(Index, (int)Qt::UserRole).toString();
     UpdateButtons(Id);
 }
