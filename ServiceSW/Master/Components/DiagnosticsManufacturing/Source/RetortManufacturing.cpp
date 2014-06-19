@@ -334,6 +334,7 @@ void CRetort::BeginTest()
         EnableButton(false);
         mp_Ui->widget->setFocus();
         emit BeginModuleTest(Service::RETORT, TestCaseList);
+
         qDebug()<<"CLaSystem::BeginTest   --- emitted";
     }
 //    ->HideAbort();
