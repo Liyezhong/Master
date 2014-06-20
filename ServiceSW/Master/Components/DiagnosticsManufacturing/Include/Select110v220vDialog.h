@@ -43,7 +43,7 @@ public:
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
-    explicit CSelect110v220vDialog(bool Is110V, QWidget *p_Parent = 0);
+    explicit CSelect110v220vDialog(int DefaultVoltage, QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /*!
@@ -52,9 +52,9 @@ public:
     /****************************************************************************/
     virtual ~CSelect110v220vDialog();
 
-    bool GetOptionFlag()
+    int GetSelectedVoltage() const
     {
-        return m_Is110V;
+        return m_SelectedVoltage;
     }
 
 private slots:
@@ -81,7 +81,7 @@ private:
     //MainMenu::CScrollWheel *mp_ScrollWheel;         //!< Temperature scroll wheel
 
     QButtonGroup* mp_ButtonGroup;
-    bool m_Is110V;                      //!< true -- tube position, falsle -- sealing position
+    int m_SelectedVoltage;             //!< selected voltage test 110v or 220v
 
 
     /****************************************************************************/

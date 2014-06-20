@@ -28,8 +28,8 @@
 
 namespace DiagnosticsManufacturing {
 
-CSelect110v220vDialog::CSelect110v220vDialog(bool Is110V, QWidget *p_Parent):
-    m_Is110V(Is110V),
+CSelect110v220vDialog::CSelect110v220vDialog(int DefaultVoltage, QWidget *p_Parent):
+    m_SelectedVoltage(DefaultVoltage),
     mp_Ui(new Ui::CSelect110v220vDialog),
     MainMenu::CDialogFrame(p_Parent)
 {
@@ -40,8 +40,8 @@ CSelect110v220vDialog::CSelect110v220vDialog(bool Is110V, QWidget *p_Parent):
     mp_ButtonGroup->addButton(mp_Ui->radioButton110, 0);
     mp_ButtonGroup->addButton(mp_Ui->radioButton220, 1);
 
-    mp_Ui->radioButton110->setChecked(m_Is110V);
-    mp_Ui->radioButton220->setChecked(!m_Is110V);
+    mp_Ui->radioButton110->setChecked(m_SelectedVoltage == 110);
+    mp_Ui->radioButton220->setChecked(m_SelectedVoltage == 220);
     this->SetDialogTitle("110V/220V switch test");
     CONNECTSIGNALSLOTGUI(mp_ButtonGroup, buttonClicked(int), this, OnRadioBtnSelected(int));
     CONNECTSIGNALSLOTGUI(mp_Ui->okButton, clicked(), this, close());
@@ -58,10 +58,10 @@ CSelect110v220vDialog::~CSelect110v220vDialog()
 void CSelect110v220vDialog::OnRadioBtnSelected(int radioBtnIndex)
 {
     if (radioBtnIndex == 0) {
-        m_Is110V = true;
+        m_SelectedVoltage = 110;
     }
     else {
-        m_Is110V = false;
+        m_SelectedVoltage = 220;
     }
 }
 

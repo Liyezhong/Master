@@ -738,6 +738,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
 
 qint32 ManufacturingTestHandler::TestSystemSpeaker(bool IsLowVolume)
 {
+    static bool VolumeFlag = true;
     Service::ModuleTestStatus Status;
 
     if (!mp_SpeakProc) {
@@ -746,7 +747,8 @@ qint32 ManufacturingTestHandler::TestSystemSpeaker(bool IsLowVolume)
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_SPEARKER);
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-    QString VolumeLevel = IsLowVolume ? QString("LowVolume") : QString("HighVolume");
+
+    QString VolumeLevel = VolumeFlag ? QString("LowVolume") : QString("HighVolume");
     VolumeLevel = p_TestCase->GetParameter(VolumeLevel);
 
     qDebug()<<"System Speaker test Volume Level : "<<VolumeLevel;
@@ -761,8 +763,24 @@ qint32 ManufacturingTestHandler::TestSystemSpeaker(bool IsLowVolume)
 
     mp_SpeakProc->start("ogg123", PlayParams);
 
+    VolumeFlag = !VolumeFlag;
     emit RefreshTestStatustoMain(TestCaseName, Status);
 
+    return 0;
+}
+
+qint32 ManufacturingTestHandler::TestSystemAlarm()
+{
+    /*
+    static bool PositionFlag = false;
+    static bool StatusFlag   = false;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_REMOTE_LOCAL_ALARM);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    if (StatusFlag) {
+        PositionFlag = !PositionFlag;
+    }
+    StatusFlag = !StatusFlag;*/
     return 0;
 }
 
@@ -774,8 +792,7 @@ qint32 ManufacturingTestHandler::TestSystem110v220vSwitch()
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     QString ConnectedVoltage = p_TestCase->GetParameter("ConnectedVoltage");
 
-    p_TestCase->AddResult("ConnectedVoltage", ConnectedVoltage+"V");
-    p_TestCase->AddResult("CurrentVoltage", QString("%1V").arg(CurrentVoltage));
+    p_TestCase->AddResult("CurrentVoltage", QString::number(CurrentVoltage));
 
     return CurrentVoltage == ConnectedVoltage.toInt();
 }
@@ -1836,10 +1853,13 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         }
         break;
     case Service::SYSTEM_SPEARKER:
-        TestSystemSpeaker(AbortTestCaseId == Service::TEST_CASE_ID_UNUSED);
+        TestSystemSpeaker();
         break;
     case Service::SYSTEM_110V_220V_SWITCH:
         emit ReturnManufacturingTestMsg(TestSystem110v220vSwitch());
+        break;
+    case Service::SYSTEM_REMOTE_LOCAL_ALARM:
+        TestSystemAlarm();
         break;
     default:
         break;

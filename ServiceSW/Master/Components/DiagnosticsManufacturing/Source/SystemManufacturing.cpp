@@ -91,7 +91,6 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     for (; i < 9; i++) {
         mp_TableWidget->setRowHeight(i, 29);
     }
-    //mp_TableWidget->setRowHeight(1, 35);
 
     mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
     mp_Ui->widget->SetContent(mp_TableWidget);

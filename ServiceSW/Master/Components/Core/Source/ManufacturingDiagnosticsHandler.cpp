@@ -302,22 +302,15 @@ void CManufacturingDiagnosticsHandler::SelectOptionFor110v220Switch()
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_110V_220V_SWITCH);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
-    bool Is110V = (p_TestCase->GetParameter("ConnectedVoltage") == "110");
+    int DefaultVoltage = p_TestCase->GetParameter("ConnectedVoltage").toInt();
 
-    DiagnosticsManufacturing::CSelect110v220vDialog* p_Dlg = new DiagnosticsManufacturing::CSelect110v220vDialog(Is110V, mp_MainWindow);
+    DiagnosticsManufacturing::CSelect110v220vDialog* p_Dlg = new DiagnosticsManufacturing::CSelect110v220vDialog(DefaultVoltage, mp_MainWindow);
     (void)p_Dlg->exec();
-    Is110V = p_Dlg->GetOptionFlag();
 
-    if (Is110V) {
-        p_TestCase->SetParameter("ConnectedVoltage", "110");
-    }
-    else {
-        p_TestCase->SetParameter("ConnectedVoltage", "220");
-    }
+    p_TestCase->SetParameter("ConnectedVoltage", QString::number(p_Dlg->GetSelectedVoltage()));
 
-    qDebug()<<"Is110v:"<<Is110V;
+    qDebug()<<"Selected voltage:"<<p_Dlg->GetSelectedVoltage();
     delete p_Dlg;
-
 }
 
 bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSelecting(quint8 Position)
@@ -923,19 +916,29 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
 
         if (Id == Service::SYSTEM_SPEARKER && Result) {
             NextFlag = ShowGuide(Id, 1);
-            if (NextFlag == false)
+            if (!NextFlag)
                 break;
-            emit PerformManufacturingTest(Id, Id);
+            emit PerformManufacturingTest(Id);
             Result = GetTestResponse();
         }
-
+/*
+        if (Id == Service::SYSTEM_REMOTE_LOCAL_ALARM && Result) {
+            for (int n = 1; n < 4 && Result; n++) {
+                NextFlag = ShowGuide(Id, n);
+                if (!NextFlag)
+                    break;
+                emit PerformManufacturingTest(Id);
+                Result = GetTestResponse();
+            }
+        }
+*/
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
         DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
         p_TestCase->SetStatus(Result);
 
         if (Id == Service::SYSTEM_110V_220V_SWITCH) {
-            StrResult = "(Connected Voltage:"+p_TestCase->GetResult().value("ConnectedVoltage")
-                    +"; Current Voltage:"+p_TestCase->GetResult().value("CurrentVoltage")+")";
+            StrResult = "(Connected Voltage:"+p_TestCase->GetParameter("ConnectedVoltage")
+                    +"V; Current Voltage:"+p_TestCase->GetResult().value("CurrentVoltage")+"V)";
         }
         if (!Result) {
             Global::EventObject::Instance().RaiseEvent(FailureId);
