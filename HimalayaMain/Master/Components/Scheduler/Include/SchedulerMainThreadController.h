@@ -166,8 +166,9 @@ typedef struct
     private:
         QTimer m_TickTimer;       ///<  Definition/Declaration of variable m_TickTimer
         QMutex m_Mutex;       ///<  Definition/Declaration of variable m_Mutex
-        QQueue<Global::CommandShPtr_t> m_SchedulerCmdQueue;       ///<  Definition/Declaration of variable m_SchedulerCmdQueue
-        QMutex m_MutexDeviceControlCmdQueue;                                        ///< mutex for accessing m_DeviceControlCmdQueue
+        QQueue<Global::CommandShPtr_t> m_SchedulerCmdQueue;       ///< Definition/Declaration of variable m_SchedulerCmdQueue
+        QMutex m_MutexDeviceControlCmdQueue;                      ///< mutex for accessing m_DeviceControlCmdQueue
+        QWaitCondition m_WaitCondition;                           ///< condition variable for DeviceControlCmdQueue
         QQueue<Scheduler::SchedulerCommandShPtr_t> m_DeviceControlCmdQueue;                     ///< Queue(Q2) for receive respond from SechedulerCommandProcessor
         QQueue<ProgramStationInfo_t> m_ProgramStationList;       ///<  Definition/Declaration of variable m_ProgramStationList
         QList<FunctionModuleStatus_t> m_FunctionModuleStatusList;       ///<  Definition/Declaration of variable m_FunctionModuleStatusList
@@ -955,10 +956,10 @@ protected:
          *  \brief Definition/Declaration of function PopDeviceControlCmdQueue
          *  \iparam PtrCmd
          *  \iparam CmdName
-         *  \return from PopDeviceControlCmdQueue
+         *  \return void
          */
         /****************************************************************************/
-         bool PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd, const QString& CmdName);
+         void PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd, const QString& CmdName);
         /****************************************************************************/
         /**
          *  \brief Get the time(in seconds) that Oven has been heated
@@ -990,7 +991,7 @@ protected:
          *  \param pSchedCmdProcessor
          */
         /****************************************************************************/
-        void SetSchedCommandProcessor( Scheduler::SchedulerCommandProcessorBase* pSchedCmdProcessor ) { m_SchedulerCommandProcessor = pSchedCmdProcessor; }
+        void SetSchedCommandProcessor( SchedulerCommandProcessorBase* pSchedCmdProcessor ) { m_SchedulerCommandProcessor = pSchedCmdProcessor; }
 
         /****************************************************************************/
         /**
@@ -1007,7 +1008,23 @@ protected:
          *  \return void
          */
         /****************************************************************************/
-        void SetTempCheck(bool flag) { m_TempCheck = flag; }
+        void SetTempCheck(bool flag) { m_TempCheck = flag; }     
+
+        /****************************************************************************/
+        /**
+         *  \brief Get Scheduler Commnad Processor
+         *  \return pointer to SchedulerCommandProcessor
+         */
+        /****************************************************************************/
+        SchedulerCommandProcessorBase* GetSchedCommandProcessor() const { return m_SchedulerCommandProcessor; }
+
+        /****************************************************************************/
+        /**
+         *  \brief Get Heating Strategy
+         *  \return pointer to SchedulerCommandProcessor
+         */
+        /****************************************************************************/
+        QSharedPointer<HeatingStrategy> GetHeatingStrategy() const { return mp_HeatingStrategy; }
     public slots:
 
         /****************************************************************************/

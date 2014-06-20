@@ -209,9 +209,6 @@ SchedulerMainThreadController::~SchedulerMainThreadController()
 
 void SchedulerMainThreadController::RegisterCommands()
 {
-    // register commands
-//    RegisterCommandForProcessing<HimalayaErrorHandler::CmdRaiseAlarm,
-//                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnRaiseAlarmLocalRemote, this);
 
     RegisterCommandForProcessing<MsgClasses::CmdProgramAction,
                     SchedulerMainThreadController>(&SchedulerMainThreadController::OnProgramAction, this);
@@ -252,32 +249,6 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&),
                      this, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&));
     m_TickTimer.setInterval(500);
-
-    //Set SchedulerCommand Processor for State machine
-    m_SchedulerMachine->SetSchedCommandProcessor(m_SchedulerCommandProcessor);
-
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRVPositionCheck(), this, MoveRVToInit());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnSealingCheck(), this, SealingCheck());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnInit(), this, StepStart());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnHeatLevelSensorTempS1(), this, HeatLevelSensor());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnHeatLevelSensorTempS2(), this, HeatLevelSensor());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnMoveToTubeBefore(), this, MoveRV());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnMoveToTubeAfter(), this, MoveRV());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnMoveToSeal(), this, MoveRV());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnFill(), this, Fill());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnSoak(), this, Soak());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnDrain(), this, Drain());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnAborting(), this, Abort());
-
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnStopFill(), this, StopFill());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnStopDrain(), this, StopDrain());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnPause(), this, Pause());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnPauseDrain(), this, Pause());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsRvMoveToInitPosition(), this, MoveRVToInit());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRcReport(), this, ShutdownRetortHeater());
-
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsReleasePressure(), this, ReleasePressure());
-    CONNECTSIGNALSLOT(m_SchedulerMachine, sigOnRsShutdownFailedHeater(), this, ShutdownFailedHeater());
 
     //command queue reset
     m_SchedulerCmdQueue.clear();
@@ -510,210 +481,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     {
         SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
         //qDebug()<<"DBG" << "Scheduler step statemachine: "<<stepState;
-        if(PSSM_ST_INIT == stepState)
+        if (PSSM_PRETEST == stepState)
         {
-            LogDebug("Precheck Init done");
-            m_SchedulerMachine->NotifyStInitOK(); //todo: update later
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                m_SchedulerMachine->NotifyPause(PSSM_INIT);
-                DequeueNonDeviceCommand();
-            }
-        }
-        else if(PSSM_ST_TEMP_CHECKING == stepState)
-        {
-            LogDebug("Precheck Temp Check OK");
-            m_SchedulerMachine->NotifyStTempOK(); //todo: update later
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                m_SchedulerMachine->NotifyPause(PSSM_INIT);
-                DequeueNonDeviceCommand();
-            }
-        }
-        else if(PSSM_ST_CURRENT_CHECKING == stepState)
-        {
-            LogDebug("Precheck Current Check OK");
-            m_SchedulerMachine->NotifyStCurrentOK(); //todo: update later
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                m_SchedulerMachine->NotifyPause(PSSM_INIT);
-                DequeueNonDeviceCommand();
-            }
-        }
-        else if(PSSM_ST_VOLTAGE_CHECKING == stepState)
-        {
-            LogDebug("Precheck Voltage Check OK");
-            m_SchedulerMachine->NotifyStVoltageOK(); //todo: update later
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                m_SchedulerMachine->NotifyPause(PSSM_INIT);
-                DequeueNonDeviceCommand();
-            }
-        }
-        else if(PSSM_ST_RV_POSITION_CHECKING == stepState)
-        {
-
-            if((cmdName == "Scheduler::RVReqMoveToInitialPosition"))
-            {
-                if(( DCL_ERR_FCT_CALL_SUCCESS == retCode))
-                {
-                    LogDebug("Precheck Position Check OK");
-                    m_SchedulerMachine->NotifyStRVPositionOK(); /////< precheck done move rvtodo: update later
-                }
-                else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
-                {
-                    LogDebug("Precheck Position Check exceed upper limit");
-                    RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT, Scenario, false);
-                    m_SchedulerMachine->SendErrorSignal();
-                }
-                else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
-                {
-                    LogDebug("Precheck Position Check internal step retry");
-                    RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, Scenario, false);
-                    m_SchedulerMachine->SendErrorSignal();
-                }
-                else
-                {
-                    LogDebug("Precheck Position Check Failed");
-                    RaiseError(0, DCL_ERR_DEV_RV_MOTOR_CANNOTGET_ORIGINALPOSITION, Scenario, false);
-                    m_SchedulerMachine->SendErrorSignal();
-                }
-            }
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                m_SchedulerMachine->NotifyPause(PSSM_INIT);
-                DequeueNonDeviceCommand();///< precheck done move rv
-            }
-        }
-        else if(PSSM_ST_PRESSURE_CHECKING == stepState)
-        {
-            HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
-            qreal currentPressure = strctHWMonitor.PressureAL;
-            Q_UNUSED(currentPressure);
-           // if((currentPressure < 0.0000001)&&(currentPressure > (-0.00000001))) //todo: verify pressure tolerence later
-           // {
-           //     RaiseError(0, 513040020, GetScenarioBySchedulerState(stepState, GetReagentGroupID(m_CurReagnetName)), true);
-           //     m_SchedulerMachine->SendErrorSignal();
-           // }
-           // else
-            {
-                LogDebug("Precheck Pressure Check OK");
-                m_SchedulerMachine->NotifyStPressureOK(); //todo: update later
-            }
-
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                AllStop();
-                m_SchedulerMachine->NotifyPause(PSSM_INIT);
-                DequeueNonDeviceCommand();
-            }
-        }
-        else if(PSSM_ST_SEALING_CHECKING == stepState)
-        {
-            if(( DCL_ERR_FCT_CALL_SUCCESS == retCode)&&(cmdName == "Scheduler::IDSealingCheck"))
-            {
-                LogDebug("Precheck Sealing Check OK");
-                ProgramStationInfo_t stationInfo = m_ProgramStationList.dequeue();
-                RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
-                QString reagentGrpId = stationInfo.ReagentGroupID;
-
-                CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, this);
-                //todo: get delay time here
-                cmd->SetReagentGrpID(reagentGrpId);
-                cmd->SetTubePos(tubePos);
-                m_SchedulerCommandProcessor->pushCmd(cmd);
-                //LOG_STR_ARG(STR_PROGRAM_SELFTEST_CHECK_BOTTLE, Global::FmtArgs()<<stationInfo.StationID);
-                m_SchedulerMachine->NotifyStSealingOK(); //todo: update later
-            }
-            else if(( DCL_ERR_FCT_CALL_SUCCESS != retCode)&&(cmdName == "Scheduler::IDSealingCheck"))
-            {
-                //Sealing check failed, raise event here
-                LogDebug("Precheck Sealing Check Fail");
-                //todo: raise event here
-                m_SchedulerMachine->SendErrorSignal();
-
-            }
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                AllStop();
-                m_SchedulerMachine->NotifyPause(PSSM_INIT);
-                DequeueNonDeviceCommand();
-            }
-        }
-        else if(PSSM_ST_STATION_CHECKING == stepState)
-        {
-            if(DCL_ERR_UNDEFINED != retCode)
-            {
-                quint32 resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
-                Q_UNUSED(resid);
-                if(( DCL_ERR_FCT_CALL_SUCCESS == retCode)&&(cmdName == "Scheduler::IDBottleCheck"))
-                {
-                    LogDebug("Precheck Station Check OK");
-                    m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
-                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_OK;
-                }
-                else if( DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_INSUFFICIENT == retCode)
-                {
-                    LogDebug("Precheck Station Check Insufficient");
-                    m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
-                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_NOT_FULL;
-                }
-                else if( DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_BLOCKAGE == retCode)
-                {
-                    LogDebug("Precheck Station Check Blockage");
-                    m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
-                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_BLOCKAGE;
-                }
-                else if(DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_EMPTY == retCode)
-                {
-                    LogDebug("Precheck Station Check Empty or Leakage");
-                    m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
-                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_EMPTY;
-                }
-                else if(DCL_ERR_DEV_LA_BOTTLECHECK_PRESSUREBUILD_FAILED == retCode)
-                {
-                    LogDebug("Precheck Station Check Failed");
-                    m_SchedulerMachine->NotifyStGetStationcheckResult(); //todo: update later
-                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_TIMEOUT;
-                }
-                else if(DCL_ERR_UNDEFINED != retCode)
-                {
-                    //LogDebug(QString("Unexpected ret code: %1").arg(retCode));
-                    resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
-                }
-                //LOG_STR_ARG(STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT, Global::tTranslatableStringList()<<Global::TranslatableString(resid));
-            }
-        }
-        else if(PSSM_ST_STATION_CHECK_FINISH == stepState)
-        {
-            if(m_ProgramStationList.size() > 0)
-            {
-                ProgramStationInfo_t stationInfo = m_ProgramStationList.dequeue();
-                LogDebug(QString("Precheck Station Check: %1").arg(stationInfo.StationID));
-                RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
-                QString reagentGrpId = stationInfo.ReagentGroupID;
-
-                CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, this);
-                cmd->SetReagentGrpID(reagentGrpId);
-                cmd->SetTubePos(tubePos);
-                m_SchedulerCommandProcessor->pushCmd(cmd);
-                m_SchedulerMachine->NotifyStStationLeft(); //todo: update later
-            }
-            else
-            {
-                m_SchedulerMachine->NotifyStStationOK(); //todo: update later
-                LogDebug("Precheck Station Check All OK");
-                //LOG_STR(STR_PROGRAM_SELFTEST_FINISH);
-            }
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                m_SchedulerMachine->NotifyPause(PSSM_INIT);
-                DequeueNonDeviceCommand();
-            }
-        }
-        else if(PSSM_ST_DONE == stepState)
-        {
-            RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
 
             if(!m_IsPrecheckMoveRV)
             {
@@ -733,11 +502,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else if(m_PositionRV == targetPos)
             {
-                if(CTRL_CMD_PAUSE == ctrlCmd)
-                {
-                    m_SchedulerMachine->NotifyPause(PSSM_INIT);
-                    DequeueNonDeviceCommand();
-                }
                 else
                 {
                     m_IsPrecheckMoveRV = false;
@@ -2227,38 +1991,8 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
     case PSSM_ABORTED:
         scenario = 206;
         break;
-    case PSSM_ST:
+    case PSSM_PRETEST:
         scenario = 200;
-        break;
-    case PSSM_ST_INIT:
-        scenario = 200;
-        break;
-    case PSSM_ST_TEMP_CHECKING:
-        scenario = 200;
-        break;
-    case PSSM_ST_CURRENT_CHECKING:
-        scenario = 200;
-        break;
-    case PSSM_ST_VOLTAGE_CHECKING:
-        scenario = 200;
-        break;
-    case PSSM_ST_RV_POSITION_CHECKING:
-        scenario = 200;
-        break;
-    case PSSM_ST_PRESSURE_CHECKING:
-        scenario = 200;
-        break;
-    case PSSM_ST_SEALING_CHECKING:
-        scenario = 200;
-        break;
-    case PSSM_ST_STATION_CHECKING:
-        scenario = 200;
-        break;
-    case PSSM_ST_STATION_CHECK_FINISH:
-        scenario = 200;
-        break;
-    case PSSM_ST_DONE:
-        //scenario = 200;
         break;
     default:
         break;
@@ -2546,22 +2280,37 @@ bool SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::Schedule
     return ret;
 }
 
-bool SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd, const QString& CmdName)
+void SchedulerMainThreadController::PopDeviceControlCmdQueue(Scheduler::SchedulerCommandShPtr_t& PtrCmd, const QString& CmdName)
 {
-    bool ret = false;
+    QQueue<Scheduler::SchedulerCommandShPtr_t>::iterator iter = m_DeviceControlCmdQueue.begin();
     m_MutexDeviceControlCmdQueue.lock();
-    for (int i=0; i<m_DeviceControlCmdQueue.size(); ++i)
+    while (true)
     {
-        if (CmdName == m_DeviceControlCmdQueue.at(i)->GetName())
+        if (m_DeviceControlCmdQueue.isEmpty())
         {
-            PtrCmd = m_DeviceControlCmdQueue.at(i);
-            m_DeviceControlCmdQueue.removeAt(i);
-			m_MutexDeviceControlCmdQueue.unlock();
-            return true;
+            m_WaitCondition.wait(&m_MutexDeviceControlCmdQueue);
+        }
+        for (iter=m_DeviceControlCmdQueue.begin(); iter!=m_DeviceControlCmdQueue.end(); ++iter)
+        {
+            if ((*iter)->GetName() == CmdName)
+            {
+                break;
+            }
+        }
+        if (iter == m_DeviceControlCmdQueue.end())
+        {
+            m_WaitCondition.wait(&m_MutexDeviceControlCmdQueue);
+        }
+        else
+        {
+            break;
         }
     }
+
+    // Get the command
+    PtrCmd = *iter;
+    m_DeviceControlCmdQueue.removeOne(*iter);
     m_MutexDeviceControlCmdQueue.unlock();
-    return ret;
 }
 
 
@@ -2569,6 +2318,7 @@ void SchedulerMainThreadController::PushDeviceControlCmdQueue(Scheduler::Schedul
 {
     m_MutexDeviceControlCmdQueue.lock();
     m_DeviceControlCmdQueue.push_back(CmdPtr);
+    m_WaitCondition.wakeAll();
     m_MutexDeviceControlCmdQueue.unlock();
 }
 
@@ -3142,13 +2892,13 @@ bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
 
 qint64 SchedulerMainThreadController::GetOvenHeatingTime()
 {
-    qint64 tmpTime = mp_HeatingStrategy->getOvenHeatingBeginTime();
-    qint64 retTime = 0;
-    if (0 != tmpTime)
+    qint64 OvenStartTime = mp_HeatingStrategy->GetOvenHeatingBeginTime();
+    qint64 RetTime = 0;
+    if (0 != OvenStartTime)
     {
-        retTime = (QDateTime::currentDateTime().toMSecsSinceEpoch() - tmpTime)/1000;
+        RetTime = (QDateTime::currentDateTime().toMSecsSinceEpoch() - OvenStartTime)/1000;
     }
-    return retTime;
+    return RetTime;
 }
 
 bool SchedulerMainThreadController::IsLastStep(int currentStepIndex, const QString& currentProgramID)

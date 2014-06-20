@@ -23,6 +23,7 @@
 #define SCHEDULERMACHINE_H
 
 #include <QStateMachine>
+#include <QSharedPointer>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "ProgramStepStateMachine.h"
 #include "RsRvGetOriginalPositionAgain.h"
@@ -31,10 +32,11 @@ namespace Scheduler{
 
 class CRsStandby;
 class CRsStandbyWithTissue;
+class CRsHeatingErr30SRetry;
 class CRcLevelSensorHeatingOvertime;
 class CRcRestart;
 class CRcReport;
-class CRsHeatingErr30SRetry;
+class CProgramSelfTest;
 class SchedulerMainThreadController;
 class SchedulerCommandProcessorBase;
 
@@ -47,28 +49,54 @@ class CSchedulerStateMachine : public QObject
 {
     Q_OBJECT
 private:
-    QStateMachine* mp_SchedulerMachine;			///<  Scheduler state machine 
-    QState* mp_InitState;       				///<  Initial state  
-    QState* mp_IdleState;						///<  Idle state 
-    QState* mp_BusyState;						///<  Busy state
-    QState* mp_ErrorState;						///<  Error state 
-    QState* mp_ErrorWaitState;                                          ///<  Error State's sub state: error wait state
-    QState* mp_ErrorRsStandbyWithTissueState;                           ///<  Error State's sub state: handle RS_STandby_WithTissue related logic
-    QState* mp_ErrorRcLevelSensorHeatingOvertimeState;                  ///<  Error State's sub state: handle RC_Levelsensor_Heating_Overtime related logic
-    QState* mp_ErrorRcRestart;                                          ///<  Error State's sub state: handle RC_Restart related logic
-    QState* mp_ErrorRsHeatingErr30SRetry;                                 ///<  Error State's sub state: handle Rs_HeatingErr30SRetry related logic
-    CProgramStepStateMachine *mp_ProgramStepStates;						///<  Definition/Declaration of variable mp_ProgramStepStates
-    CRsRvGetOriginalPositionAgain *mp_RsRvGetOriginalPositionAgain;		///<  Definition/Declaration of variable mp_RSRvGetOriginalPositionAgain
-    CRsStandby *mp_RsStandby;											///<  Definition/Declaration of variable mp_RSStandby
-    CRsStandbyWithTissue *mp_RsStandbyWithTissue;						///<  Definition/Declaration of variable mp_RSStandbyWithTissue
-    CRcLevelSensorHeatingOvertime *mp_RcLevelSensorHeatingOvertime;     ///<  Definition/Declaration of variable mp_RcLevelSensorHeatingOvertime
-    CRcRestart *mp_RcRestart;                                           ///<  Definition/Declaration of variable mp_RcRestart
-    CRcReport *mp_RcReport;												///<  Definition/Declaration of variable mp_RcReport
-    CRsHeatingErr30SRetry *mp_RsHeatingErr30SRetry;                     ///<  Definition/Declaration of variable mp_RsHeatingErr30SRetry
-    SchedulerStateMachine_t m_PreviousState;							///<  Definition/Declaration of variable m_PreviousState
-    SchedulerStateMachine_t m_CurrentState;								///<  Definition/Declaration of variable m_CurrentState
-	SchedulerMainThreadController *mp_SchedulerThreadController;		///<  Definition/Declaration of variable mp_SchedulerThreadController
-    SchedulerCommandProcessorBase* mp_SchedulerCommandProcessor;         ///< Pointer of SchedulerMainThreadController's SchedulerCommandProcessor
+     SchedulerMainThreadController *mp_SchedulerThreadController;                       ///<  Definition/Declaration of variable mp_SchedulerThreadController
+    SchedulerStateMachine_t m_CurrentState;                                             ///<  Definition/Declaration of variable m_CurrentState
+    QSharedPointer<QStateMachine> mp_SchedulerMachine;                                  ///<  Scheduler state machine
+    SchedulerStateMachine_t m_PreviousState;                                            ///<  Definition/Declaration of variable m_PreviousState
+
+	// Layer one states
+    QSharedPointer<QState> mp_InitState;                                                ///<  Initial state
+    QSharedPointer<QState> mp_IdleState;                                                ///<  Idle state
+    QSharedPointer<QState> mp_BusyState;                                                ///<  Busy state
+    QSharedPointer<QState> mp_ErrorState;                                               ///<  Error state
+
+	// Layer two states (for Busy state)
+    QSharedPointer<QState> mp_PssmInit;                                                 ///<  Busy State's sub state: Init state
+    QSharedPointer<QState> mp_PssmPreTest;                                              ///<  Busy State's sub state: Pre-test state
+    QSharedPointer<QState> mp_PssmReadyToHeatLevelSensorS1;                             ///<  Busy State's sub state: Level sensor 1 state
+    QSharedPointer<QState> mp_PssmReadyToHeatLevelSensorS2;                             ///<  Busy State's sub state: Level sensor 2 state
+    QSharedPointer<QState> mp_PssmReadyToTubeBefore;                                    ///<  Busy State's sub state: Ready to tube before state
+    QSharedPointer<QState> mp_PssmReadyToTubeAfter;                                     ///<  Busy State's sub state: Ready to tube after state
+    QSharedPointer<QState> mp_PssmReadyToSeal;                                          ///<  Busy State's sub state: Ready to seal state
+    QSharedPointer<QState> mp_PssmReadyToFill;                                          ///<  Busy State's sub state: Ready to fill state
+    QSharedPointer<QState> mp_PssmReadyToDrain;                                         ///<  Busy State's sub state: Ready to drain state
+    QSharedPointer<QState> mp_PssmSoak;                                                 ///<  Busy State's sub state: Soak state
+    QSharedPointer<QState> mp_PssmStepFinish;                                           ///<  Busy State's sub state: Step finish state
+    QSharedPointer<QState> mp_PssmError;                                                ///<  Busy State's sub state: Step error state
+    QSharedPointer<QState> mp_PssmPause;                                                ///<  Busy State's sub state: Pause state
+    QSharedPointer<QState> mp_PssmPauseDrain;                                           ///<  Busy State's sub state: Pause drain state
+    QSharedPointer<QState> mp_PssmAborting;                                             ///<  Busy State's sub state: Aborting state
+    QSharedPointer<QState> mp_PssmAborted;                                              ///<  Busy State's sub state: Aborted state
+    QSharedPointer<QFinalState> mp_PssmProgramFinish;                                   ///<  Busy State's sub state: Program Finished state
+
+	// Layer two states (for Error State)
+    QSharedPointer<QState> mp_ErrorWaitState;                                           ///<  Error State's sub state: error wait state
+    QSharedPointer<QState> mp_ErrorRsStandbyWithTissueState;                            ///<  Error State's sub state: handle RS_STandby_WithTissue related logic
+    QSharedPointer<QState> mp_ErrorRcLevelSensorHeatingOvertimeState;                   ///<  Error State's sub state: handle RC_Levelsensor_Heating_Overtime related logic
+    QSharedPointer<QState> mp_ErrorRcRestartState;                                      ///<  Error State's sub state: handle RC_Restart related logic
+    QSharedPointer<QState> mp_ErrorRsHeatingErr30SRetryState;                           ///<  Error State's sub state: handle Rs_HeatingErr30S_Retry related logic
+
+    //State machines for Run handling
+    QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< State for Pre-test
+
+    // State machines for Error handling
+    QSharedPointer<CRsRvGetOriginalPositionAgain> mp_RsRvGetOriginalPositionAgain;		///<  State machine for RS_RV_GetOriginalPositionAgain
+    QSharedPointer<CRsStandby> mp_RsStandby;											///<  State machine for RS_Standby
+    QSharedPointer<CRsStandbyWithTissue> mp_RsStandbyWithTissue;						///<  State machine for RS_StandbyWithTissue
+    QSharedPointer<CRsHeatingErr30SRetry> mp_RsHeatingErr30SRetry;                      ///<  State machine for RS_HeatingErr_30S_Retry
+    QSharedPointer<CRcLevelSensorHeatingOvertime> mp_RcLevelSensorHeatingOvertime;      ///<  State machine for RC_LevelSensor_Heating_Overtime
+    QSharedPointer<CRcRestart> mp_RcRestart;                                            ///<  State machine for RC_Restart
+    QSharedPointer<CRcReport> mp_RcReport;												///<  State machine for RC_Report
 private:
     QString GetDeviceName();
 
@@ -85,16 +113,7 @@ public:
     /****************************************************************************/
     CSchedulerStateMachine(SchedulerMainThreadController* SchedulerThreadController);
     ~CSchedulerStateMachine();
-    /****************************************************************************/
-    /*!
-     *  \brief  Set Scheduler Command Processor
-     *
-     *  \param  pSchedCmdProcessor
-     *
-     *  \return from void
-     */
-    /****************************************************************************/
-     void SetSchedCommandProcessor( Scheduler::SchedulerCommandProcessorBase* pSchedCmdProcessor ) { mp_SchedulerCommandProcessor = pSchedCmdProcessor; }
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function Start
@@ -530,47 +549,6 @@ public:
     SchedulerStateMachine_t GetPreviousState();
 
 private slots:
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of slot OnstateChanged()
-     */
-    /****************************************************************************/
-    void OnStateChanged();
-    /****************************************************************************/
-    /*!
-     *  \brief	Slot to stop Retort temperature control 
-     *  \param	Retort temperature sensor type (RT_SIDE or RT_BOTTOM) 
-     *  \return	void
-     */
-    /****************************************************************************/
-    void OnRsRTStopTempCtrl(DeviceControl::RTTempCtrlType_t type);
-
-    /****************************************************************************/
-    /*!
-     *  \brief	Slot to stop the failed heating element or ASB 
-     *  \param	void
-     *  \return	void
-     */
-    /****************************************************************************/
-    void OnRsShutdownFailedHeater(); 
-
-    /****************************************************************************/
-    /*!
-     *  \brief	Slot to release the pressure
-     *  \param	void
-     *  \return	void
-     */
-    /****************************************************************************/
-    void OnRsReleasePressure(); 
-
-    /****************************************************************************/
-    /*!
-     *  \brief	Slot to stop all the temperature control for the specific device
-     *  \param	void
-     *  \return	void
-     */
-    /****************************************************************************/
-    void OnStopDeviceTempCtrl();
 
     /****************************************************************************/
     /*!
@@ -590,15 +568,6 @@ private slots:
     /****************************************************************************/
     void OnCheckDeviceStatus();
 
-    /****************************************************************************/
-    /*!
-     *  \brief	Slot to restart Level sensor temperature control in case of
-     *          RC_Levelsensor_Heating_Overtime
-     *  \param	void
-     *  \return	void
-     */
-    /****************************************************************************/
-    void OnRestartLevelSensorTempControl();
 
     /****************************************************************************/
     /*!
@@ -847,7 +816,7 @@ signals:
      *  \brief  Definition/Declaration of signal sigResumeToSelftest
      */
     /****************************************************************************/
-    void sigResumeToSelftest();
+    void sigResumeToPreTest();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal sigResumeToInit

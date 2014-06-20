@@ -144,7 +144,8 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
             return retCode;
         }
 
-        if ( false == m_IsOvenHeatingStarted){
+        if (false == m_IsOvenHeatingStarted)
+        {
             m_OvenStartHeatingTime = QDateTime::currentMSecsSinceEpoch();
             m_IsOvenHeatingStarted = true;
         }
@@ -509,7 +510,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
         SchedulerCommandShPtr_t pResHeatingCmd;
-        while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName()));
+        mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
         pResHeatingCmd->GetResult(retCode);
 
 
@@ -576,7 +577,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
         SchedulerCommandShPtr_t pResHeatingCmd;
-        while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName()));
+        mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
         pResHeatingCmd->GetResult(retCode);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
@@ -640,7 +641,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
         pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
         SchedulerCommandShPtr_t pResHeatingCmd;
-        while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName()));
+        mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
         pResHeatingCmd->GetResult(retCode);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
@@ -703,7 +704,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRVTemperatureControl(RVSensor&
         pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
         SchedulerCommandShPtr_t pResHeatingCmd;
-        while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName()));
+        mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
         pResHeatingCmd->GetResult(retCode);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
@@ -745,7 +746,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSe
         pHeatingCmd->SetDerivativeTime(iter->DerivativeTime);
         mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
         SchedulerCommandShPtr_t pResHeatingCmd;
-        while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName()));
+        mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
         pResHeatingCmd->GetResult(retCode);
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
@@ -1305,7 +1306,7 @@ void HeatingStrategy::OnReportLevelSensorStatus1()
     mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
 
     SchedulerCommandShPtr_t pResHeatingCmd;
-    while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName()));
+    mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
     pResHeatingCmd->GetResult(retCode);
 }

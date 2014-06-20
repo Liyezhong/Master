@@ -37,20 +37,8 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
     {
         m_PreviousState = SM_UNDEF;
 
-        mp_PssmSelfTest = new QState(pParentState);
-        mp_PssmStInit = new QState(mp_PssmSelfTest);
-        mp_PssmStTempChecking = new QState(mp_PssmSelfTest);
-        mp_PssmStCurrentChecking = new QState(mp_PssmSelfTest);
-        mp_PssmStVoltageChecking = new QState(mp_PssmSelfTest);
-        mp_PssmStRVPositionChecking = new QState(mp_PssmSelfTest);
-        mp_PssmStPressureChecking = new QState(mp_PssmSelfTest);
-        mp_PssmStSealingChecking = new QState(mp_PssmSelfTest);
-        mp_PssmStStationChecking = new QState(mp_PssmSelfTest);
-        mp_PssmStStationCheckFinish = new QState(mp_PssmSelfTest);
-        mp_PssmStDone = new QState(mp_PssmSelfTest);
-        //QHistoryState *stHistory = new QHistoryState(mp_PssmSelfTest);
-
         mp_PssmInit = new QState(pParentState);
+        mp_PssmPreTest = new QState(pParentState);
         mp_PssmReadyToHeatLevelSensorS1 = new QState(pParentState);
         mp_PssmReadyToHeatLevelSensorS2 = new QState(pParentState);
         mp_PssmReadyToTubeBefore = new QState(pParentState);
@@ -67,13 +55,13 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         mp_PssmAborted = new QState(pParentState);
         mp_PssmProgramFinish = new QFinalState(pParentState);
 
-        //pParentState->setInitialState(mp_PssmSelfTest);
         pParentState->setInitialState(mp_PssmInit);
-        mp_PssmSelfTest->setInitialState(mp_PssmStInit);
+        mp_PssmInit->addTransition(this, SIGNAL(PreTestSig()), mp_PssmPreTest);
+        mp_PssmPreTest->addTransition(this, SIGNAL(StDone()), mp_PssmInit);
+        mp_PssmPreTest->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+        mp_PssmPreTest->addTransition(this, SIGNAL(Error()), pErrorState);
 
-        mp_PssmInit->addTransition(this, SIGNAL(SelfTestSig()), mp_PssmSelfTest);
-        mp_PssmSelfTest->addTransition(this, SIGNAL(StDone()), mp_PssmInit);
-
+<<<<<<< HEAD
         mp_PssmInit->addTransition(this, SIGNAL(CleaningMoveRVPosSig()), mp_PssmStDone);
 
         mp_PssmStInit->addTransition(this, SIGNAL(StInitOK()), mp_PssmStTempChecking);
@@ -91,9 +79,28 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         //mp_PssmPause->addTransition(this, SIGNAL(ResumeToSelftest()), stHistory);
         mp_PssmSelfTest->addTransition(this, SIGNAL(Error()), pErrorState);
         pErrorState->addTransition(this, SIGNAL(ResumeToSelftest()), mp_PssmSelfTest);//verify later
+||||||| merged common ancestors
+        mp_PssmStInit->addTransition(this, SIGNAL(StInitOK()), mp_PssmStTempChecking);
+        mp_PssmStTempChecking->addTransition(this, SIGNAL(StTempOK()), mp_PssmStCurrentChecking);
+        mp_PssmStCurrentChecking->addTransition(this, SIGNAL(StCurrentOK()), mp_PssmStVoltageChecking);
+        mp_PssmStVoltageChecking->addTransition(this, SIGNAL(StVoltageOK()), mp_PssmStRVPositionChecking);
+        mp_PssmStRVPositionChecking->addTransition(this, SIGNAL(StRVPositionOK()), mp_PssmStPressureChecking);
+        mp_PssmStPressureChecking->addTransition(this, SIGNAL(StPressureOK()), mp_PssmStSealingChecking);
+        mp_PssmStSealingChecking->addTransition(this, SIGNAL(StSealingOK()), mp_PssmStStationChecking);
+        mp_PssmStStationChecking->addTransition(this, SIGNAL(StGetStationcheckResult()), mp_PssmStStationCheckFinish);
+        mp_PssmStStationCheckFinish->addTransition(this, SIGNAL(StStationLeft()), mp_PssmStStationChecking);
+        mp_PssmStStationCheckFinish->addTransition(this, SIGNAL(StStationOK()), mp_PssmStDone);
+
+        mp_PssmSelfTest->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
+        //mp_PssmPause->addTransition(this, SIGNAL(ResumeToSelftest()), stHistory);
+        mp_PssmSelfTest->addTransition(this, SIGNAL(Error()), pErrorState);
+        pErrorState->addTransition(this, SIGNAL(ResumeToSelftest()), mp_PssmSelfTest);//verify later
+=======
+        pErrorState->addTransition(this, SIGNAL(ResumeToSelftest()), mp_PssmPreTest);//verify later
+>>>>>>> Initial version of Refacting Scheduler
         pErrorState->addTransition(this, SIGNAL(ResumeToSoak()), mp_PssmSoak);
         pErrorState->addTransition(this, SIGNAL(ResumeFromErrorToBegin()), mp_PssmInit);
-        mp_PssmSelfTest->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
+        mp_PssmPreTest->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
 
         mp_PssmInit->addTransition(this, SIGNAL(TempsReady()), mp_PssmReadyToHeatLevelSensorS1);
         mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(LevelSensorTempS1Ready()), mp_PssmReadyToHeatLevelSensorS2);
@@ -168,20 +175,7 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         connect(mp_PssmPause, SIGNAL(entered()), this, SIGNAL(OnPause()));
         connect(mp_PssmPauseDrain, SIGNAL(entered()), this, SIGNAL(OnPauseDrain()));
 
-        connect(mp_PssmStRVPositionChecking, SIGNAL(entered()), this, SIGNAL(OnRVPositionCheck()));
-        connect(mp_PssmStSealingChecking, SIGNAL(entered()), this, SIGNAL(OnSealingCheck()));
-
-        connect(mp_PssmSelfTest, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
-        connect(mp_PssmStInit, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
-        connect(mp_PssmStTempChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
-        connect(mp_PssmStCurrentChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
-        connect(mp_PssmStVoltageChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
-        connect(mp_PssmStRVPositionChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
-        connect(mp_PssmStPressureChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
-        connect(mp_PssmStSealingChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
-        connect(mp_PssmStStationChecking, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
-        connect(mp_PssmStStationCheckFinish, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
-        connect(mp_PssmStDone, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
+        connect(mp_PssmPreTest, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
 
         connect(mp_PssmInit, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
         connect(mp_PssmReadyToHeatLevelSensorS1, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
@@ -213,6 +207,7 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
 CProgramStepStateMachine::~CProgramStepStateMachine()
 {
     delete  mp_PssmInit;
+    delete  mp_PssmPreTest;
     delete  mp_PssmReadyToHeatLevelSensorS1;
     delete  mp_PssmReadyToHeatLevelSensorS2;
     delete  mp_PssmReadyToTubeBefore;
@@ -244,6 +239,10 @@ SchedulerStateMachine_t CProgramStepStateMachine::GetCurrentState(QSet<QAbstract
     if(statesList.contains(mp_PssmInit))
     {
         return PSSM_INIT;
+    }
+    else if(statesList.contains(mp_PssmPreTest))
+    {
+        return PSSM_PRETEST;
     }
     else if(statesList.contains(mp_PssmReadyToHeatLevelSensorS1))
     {
@@ -300,49 +299,6 @@ SchedulerStateMachine_t CProgramStepStateMachine::GetCurrentState(QSet<QAbstract
     else if(statesList.contains(mp_PssmAborted))
     {
         return PSSM_ABORTED;
-    }
-    else if(statesList.contains(mp_PssmSelfTest))
-    {
-        if(statesList.contains(mp_PssmStInit))
-        {
-            return PSSM_ST_INIT;
-        }
-        else if(statesList.contains(mp_PssmStTempChecking))
-        {
-            return PSSM_ST_TEMP_CHECKING;
-        }
-        else if(statesList.contains(mp_PssmStCurrentChecking))
-        {
-            return PSSM_ST_CURRENT_CHECKING;
-        }
-        else if(statesList.contains(mp_PssmStVoltageChecking))
-        {
-            return PSSM_ST_VOLTAGE_CHECKING;
-        }
-        else if(statesList.contains(mp_PssmStRVPositionChecking))
-        {
-            return PSSM_ST_RV_POSITION_CHECKING;
-        }
-        else if(statesList.contains(mp_PssmStPressureChecking))
-        {
-            return PSSM_ST_PRESSURE_CHECKING;
-        }
-        else if(statesList.contains(mp_PssmStSealingChecking))
-        {
-            return PSSM_ST_SEALING_CHECKING;
-        }
-        else if(statesList.contains(mp_PssmStStationChecking))
-        {
-            return PSSM_ST_STATION_CHECKING;
-        }
-        else if(statesList.contains(mp_PssmStStationCheckFinish))
-        {
-            return PSSM_ST_STATION_CHECK_FINISH;
-        }
-        else if(statesList.contains(mp_PssmStDone))
-        {
-            return PSSM_ST_DONE;
-        }
     }
     else
     {

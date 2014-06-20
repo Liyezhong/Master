@@ -11,7 +11,7 @@
  *
  *       Leica Biosystems SH CN.
  *
- *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2014 by Leica Biosystems Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -143,7 +143,7 @@ signals:
      *  \brief  Definition/Declaration of signal SelfTestSig
      */
     /****************************************************************************/
-    void SelfTestSig();
+    void PreTestSig();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal CleaningMoveRVPosSig
@@ -399,6 +399,7 @@ signals:
     void OnRVPositionCheck();
 
 private:
+<<<<<<< HEAD
     QState* mp_PssmSelfTest;    ///<  Definition/Declaration of variable mp_PssmSelfTest
     QState* mp_PssmStInit;       ///<  Definition/Declaration of variable mp_PssmStInit
     QState* mp_PssmStTempChecking;       ///<  Definition/Declaration of variable mp_PssmStTempChecking
@@ -427,6 +428,55 @@ private:
     QFinalState* mp_PssmProgramFinish;       ///<  Definition/Declaration of variable mp_PssmProgramFinish
     QState* mp_PssmError;       ///<  Definition/Declaration of variable mp_PssmError
     SchedulerStateMachine_t m_PreviousState;       ///<  Definition/Declaration of variable m_PreviousState
+||||||| merged common ancestors
+    QState* mp_PssmSelfTest;
+    QState* mp_PssmStInit;       ///<  Definition/Declaration of variable mp_PssmStInit
+    QState* mp_PssmStTempChecking;       ///<  Definition/Declaration of variable mp_PssmStTempChecking
+    QState* mp_PssmStCurrentChecking;       ///<  Definition/Declaration of variable mp_PssmStCurrentChecking
+    QState* mp_PssmStVoltageChecking;       ///<  Definition/Declaration of variable mp_PssmStVoltageChecking
+    QState* mp_PssmStRVPositionChecking;       ///<  Definition/Declaration of variable mp_PssmStRVPositionChecking
+    QState* mp_PssmStPressureChecking;       ///<  Definition/Declaration of variable mp_PssmStPressureChecking
+    QState* mp_PssmStSealingChecking;       ///<  Definition/Declaration of variable mp_PssmStSealingChecking
+    QState* mp_PssmStStationChecking;       ///<  Definition/Declaration of variable mp_PssmStStationChecking
+    QState* mp_PssmStStationCheckFinish;       ///<  Definition/Declaration of variable mp_PssmStStationCheckFinish
+    QState* mp_PssmStDone;       ///<  Definition/Declaration of variable mp_PssmStDone
+    QState* mp_PssmInit;       ///<  Definition/Declaration of variable mp_PssmInit
+    QState* mp_PssmReadyToHeatLevelSensorS1;       ///<  Definition/Declaration of variable mp_PssmReadyToHeatLevelSensorS1
+    QState* mp_PssmReadyToHeatLevelSensorS2;       ///<  Definition/Declaration of variable mp_PssmReadyToHeatLevelSensorS2
+    QState* mp_PssmReadyToTubeBefore;       ///<  Definition/Declaration of variable mp_PssmReadyToTubeBefore
+    QState* mp_PssmReadyToTubeAfter;       ///<  Definition/Declaration of variable mp_PssmReadyToTubeAfter
+    QState* mp_PssmReadyToSeal;       ///<  Definition/Declaration of variable mp_PssmReadyToSeal
+    QState* mp_PssmReadyToFill;       ///<  Definition/Declaration of variable mp_PssmReadyToFill
+    QState* mp_PssmReadyToDrain;       ///<  Definition/Declaration of variable mp_PssmReadyToDrain
+    QState* mp_PssmSoak;       ///<  Definition/Declaration of variable mp_PssmSoak
+    QState* mp_PssmPause;       ///<  Definition/Declaration of variable mp_PssmPause
+    QState* mp_PssmPauseDrain;       ///<  Definition/Declaration of variable mp_PssmPauseDrain
+    QState* mp_PssmAborting;       ///<  Definition/Declaration of variable mp_PssmAborting
+    QState* mp_PssmAborted;       ///<  Definition/Declaration of variable mp_PssmAborted
+    QState* mp_PssmStepFinish;       ///<  Definition/Declaration of variable mp_PssmStepFinish
+    QFinalState* mp_PssmProgramFinish;       ///<  Definition/Declaration of variable mp_PssmProgramFinish
+    QState* mp_PssmError;       ///<  Definition/Declaration of variable mp_PssmError
+    SchedulerStateMachine_t m_PreviousState;       ///<  Definition/Declaration of variable m_PreviousState
+=======
+    QState* mp_PssmInit;                        ///< Program state Init
+    QState* mp_PssmPreTest;                     ///< program state PreTest
+    QState* mp_PssmReadyToHeatLevelSensorS1;    ///<  Definition/Declaration of variable mp_PssmReadyToHeatLevelSensorS1
+    QState* mp_PssmReadyToHeatLevelSensorS2;    ///<  Definition/Declaration of variable mp_PssmReadyToHeatLevelSensorS2
+    QState* mp_PssmReadyToTubeBefore;           ///<  Definition/Declaration of variable mp_PssmReadyToTubeBefore
+    QState* mp_PssmReadyToTubeAfter;            ///<  Definition/Declaration of variable mp_PssmReadyToTubeAfter
+    QState* mp_PssmReadyToSeal;                 ///<  Definition/Declaration of variable mp_PssmReadyToSeal
+    QState* mp_PssmReadyToFill;                 ///<  Definition/Declaration of variable mp_PssmReadyToFill
+    QState* mp_PssmReadyToDrain;                ///<  Definition/Declaration of variable mp_PssmReadyToDrain
+    QState* mp_PssmSoak;                        ///<  Definition/Declaration of variable mp_PssmSoak
+    QState* mp_PssmPause;                       ///<  Definition/Declaration of variable mp_PssmPause
+    QState* mp_PssmPauseDrain;                  ///<  Definition/Declaration of variable mp_PssmPauseDrain
+    QState* mp_PssmAborting;                    ///<  Definition/Declaration of variable mp_PssmAborting
+    QState* mp_PssmAborted;                     ///<  Definition/Declaration of variable mp_PssmAborted
+    QState* mp_PssmStepFinish;                  ///<  Definition/Declaration of variable mp_PssmStepFinish
+    QFinalState* mp_PssmProgramFinish;          ///<  Definition/Declaration of variable mp_PssmProgramFinish
+    QState* mp_PssmError;                       ///<  Definition/Declaration of variable mp_PssmError
+    SchedulerStateMachine_t m_PreviousState;    ///<  Definition/Declaration of variable m_PreviousState
+>>>>>>> Initial version of Refacting Scheduler
 
 };
 

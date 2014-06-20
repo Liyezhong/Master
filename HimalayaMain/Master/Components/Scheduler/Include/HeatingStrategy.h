@@ -207,7 +207,7 @@ public:
      *  \return qint64
      */
     /****************************************************************************/
-    inline const qint64 getOvenHeatingBeginTime() const {return m_OvenStartHeatingTime;}
+    inline  qint64 GetOvenHeatingBeginTime() const { return m_OvenStartHeatingTime; }
 
     /****************************************************************************/
     /*!
@@ -250,7 +250,7 @@ private:
     LASensor                            m_LAWaxTrap;                    //!< LA of waxTrap
     bool                                m_CmdResult;                    //!< flag to indicate command result
     bool                                m_IsOvenHeatingStarted;         //!< flag to read the oven heating begin
-    qint64                              m_OvenStartHeatingTime;         //!< the value of oven start heating time
+    qint64                              m_OvenStartHeatingTime;         //!< the value of oven starting heating time
 
     /****************************************************************************/
     /*!
@@ -384,6 +384,5 @@ private:
     /****************************************************************************/
     HeatingStrategy& operator=(const HeatingStrategy& rhs);
 };
-
 }
 #endif // SCHEDULERMACHINE_H

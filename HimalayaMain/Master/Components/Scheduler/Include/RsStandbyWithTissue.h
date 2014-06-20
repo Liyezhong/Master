@@ -4,7 +4,7 @@
  *  \brief RsStandby class definition.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 22.04.2014
+ *   $Date:    $ April 22nd, 014
  *   $Author:  $ Songtao Yu
  *
  *  \b Company:
@@ -19,32 +19,43 @@
 /****************************************************************************/
 #ifndef RSSTANDBY_WITH_TISSUE_H
 #define RSSTANDBY_WITH_TISSUE_H
-#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
-#include "ErrorHandlingSMBase.h"
 #include <QStateMachine>
-
+#include <QSharedPointer>
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 
 namespace Scheduler{
+
+class SchedulerMainThreadController;
 
 /****************************************************************************/
 /*!
  * \brief Error Handling State machine for RS_Standby_WithTissue
  */
 /****************************************************************************/
-class  CRsStandbyWithTissue : public CErrorHandlingSMBase
+class  CRsStandbyWithTissue : public QObject
 {
     Q_OBJECT
+
+    //!< state list of the state machine
+    typedef enum
+    {
+        UNDEF,
+        INIT,
+        RTBOTTOM_STOP_TEMPCTRL,
+        RTSIDE_STOP_TEMPCTRL,
+        SHUTDOWN_FAILD_HEATER,
+        RELEASE_PRESSURE
+    } StateList_t;
 public:
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function HeatingStrategy
      *
-     *  \param pStateMachine = pointer QStateMachine
-     *  \param pParentState = pointer QState
+     *  \param SchedController = pointer SchedulerMainThreadController
      *
      */
     /****************************************************************************/
-    CRsStandbyWithTissue (QStateMachine* pStateMachine, QState* pParentState);
+    CRsStandbyWithTissue (SchedulerMainThreadController* SchedController);
 
     /****************************************************************************/
     /*!
@@ -62,17 +73,17 @@ public:
      *	\return SchedulerStateMachine_t
      */
     /****************************************************************************/
-    SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
+    CRsStandbyWithTissue::StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function OnHandleWorkFlow
+     *  \brief  Definition/Declaration of function HandleWorkFlow
      *
      *  \param flag = bool
      *
      */
     /****************************************************************************/
-    void OnHandleWorkFlow(bool flag);
+    void HandleWorkFlow(bool flag);
 
 signals:
     /****************************************************************************/
@@ -108,11 +119,13 @@ signals:
     void TasksDone(bool);
 
 private:
-    QState *mp_Initial;                 //!< the current state
-    QState *mp_RTBottomStopTempCtrl;    //!< RT Bottom stop tempature control state
-    QState *mp_RTSideStopTempCtrl;      //!< RT Top stop tempatrue control state
-    QState *mp_ShutdownFailedHeater;    //!< shutdown failed heater state
-    QState *mp_ReleasePressure;         //!< release pressure
+    SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
+    QSharedPointer<QStateMachine>   mp_StateMachine;        //!< State machine for RS_Standby_WithTissue
+    QSharedPointer<QState> mp_Initial;                      //!< Initial state
+    QSharedPointer<QState> mp_RTBottomStopTempCtrl;         //!< RT Bottom stop tempature control state
+    QSharedPointer<QState> mp_RTSideStopTempCtrl;           //!< RT Top stop tempatrue control state
+    QSharedPointer<QState> mp_ShutdownFailedHeater;         //!< Shutdown failed heater state
+    QSharedPointer<QState> mp_ReleasePressure;              //!< Release pressure
 };
 }
 #endif // RSSTANDBY_WITH_TISSUE_H
