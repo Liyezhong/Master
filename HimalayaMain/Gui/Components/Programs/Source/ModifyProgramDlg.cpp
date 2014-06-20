@@ -662,18 +662,24 @@ void CModifyProgramDlg::OnOkClicked(QString EnteredText)
     mp_KeyBoardWidget->hide();
     if (m_ProgNameBtnClicked) {
         m_ProgNameBtnClicked = false;
-	if (EnteredText.contains("Leica", Qt::CaseInsensitive)) {
-		if (mp_MessageDlg) {
-		    delete mp_MessageDlg;
-		}
-		mp_MessageDlg = new MainMenu::CMessageDlg();
-		mp_MessageDlg->SetTitle(tr("Program Name"));
-		mp_MessageDlg->SetIcon(QMessageBox::Warning);
-		mp_MessageDlg->SetButtonText(1, m_strOK);
-		 mp_MessageDlg->HideButtons();
-		 mp_MessageDlg->SetText(tr("The Program name shall not contain \"Leica\""));
-		(void) mp_MessageDlg->exec();
-		return;
+
+        if (mp_MessageDlg) {
+            delete mp_MessageDlg;
+        }
+        mp_MessageDlg = new MainMenu::CMessageDlg();
+        mp_MessageDlg->SetTitle(tr("Program Name"));
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetButtonText(1, m_strOK);
+        mp_MessageDlg->HideButtons();
+
+        if (EnteredText.trimmed().isEmpty()){
+            mp_MessageDlg->SetText(tr("The Program name shall not be whitespace!"));
+            (void) mp_MessageDlg->exec();
+            return;
+        }else if (EnteredText.contains("Leica", Qt::CaseInsensitive)) {
+                mp_MessageDlg->SetText(tr("The Program name shall not contain \"Leica\""));
+                (void) mp_MessageDlg->exec();
+                return;
         }
         mp_Ui->btnPrgName->setText(tr("%1").arg(EnteredText));
     }

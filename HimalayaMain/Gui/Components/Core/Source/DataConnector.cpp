@@ -1051,7 +1051,7 @@ void CDataConnector::SendCmdPlayTestToneAlarm(quint8 Volume, quint8 Sound, bool 
 {
     qDebug()<< Volume << Sound << Type;
 
-    MsgClasses::CmdAlarmToneTest Command(COMMAND_TIME_OUT, Volume, Sound, Type);
+    MsgClasses::CmdAlarmToneTest Command(COMMAND_TIME_OUT, Sound, Volume, Type);
     (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
     mp_WaitDialog->SetDialogTitle(m_strDeviceCommunication);
     mp_WaitDialog->SetText(m_strSavingSettings);

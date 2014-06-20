@@ -166,7 +166,7 @@ void CReagentStationWidget::SelectionChanged(QModelIndex Index)
         if ((m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
              m_CurrentUserRole == MainMenu::CMainWindow::Service) &&
                 (!m_ProcessRunning)) {
-            if (Core::CGlobalHelper::CheckIfCanEdit(Id, 4) == false) {
+            if (Core::CGlobalHelper::CheckIfCanEdit(Id, 4) == false || mp_DashStation->IsParaffinBath()) {
                 mp_Ui->btnEdit->setEnabled(false);
             }
             else {

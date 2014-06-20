@@ -414,8 +414,16 @@ void CModifyReagentRMSDlg::OnOk()
         QString Id = m_ReagentCloneList.GetNextFreeReagentID(true);
         m_Reagent.SetReagentID(Id);
         m_Reagent.SetReagentName(mp_Ui->buttonReagentName->text());
-
-        switch (m_RMSOption) {
+        Global::RMSOptions_t option;
+        if (mp_DataConnector->ReagentGroupList->GetReagentGroup(m_Reagent.GetGroupID())->IsCleaningReagentGroup())
+        {
+             option = Reagents::CReagentRMSWidget::RMSCLEANINGOPTIONS;
+        }
+        else
+        {
+            option = m_RMSOption;
+        }
+        switch (option) {
             case Global::RMS_CASSETTES:
                 m_Reagent.SetMaxCassettes(mp_Ui->buttonValue->text().toInt());
                 break;

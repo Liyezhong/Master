@@ -237,7 +237,6 @@ void CProgramWidget::OnCopy()
     mp_ModifyProgramDlg->SetButtonType(COPY_BTN_CLICKED);
     mp_ModifyProgramDlg->InitDialog(mp_Program);
     mp_ModifyProgramDlg->show();
-    ResetButtons();
 }
 
 /****************************************************************************/
@@ -499,8 +498,6 @@ void CProgramWidget::CloseDialogs()
 /****************************************************************************/
 void CProgramWidget::OnCancelClicked()
 {
-    mp_TableWidget->clearSelection();
-    ResetButtons();
 }
 
 /****************************************************************************/
