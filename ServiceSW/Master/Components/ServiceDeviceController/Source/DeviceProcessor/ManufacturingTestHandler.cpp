@@ -736,7 +736,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
     return -1;
 }
 
-qint32 ManufacturingTestHandler::TestSystemSpeaker()
+qint32 ManufacturingTestHandler::TestSystemSpeaker(bool IsLowVolume)
 {
     Service::ModuleTestStatus Status;
 
@@ -744,29 +744,40 @@ qint32 ManufacturingTestHandler::TestSystemSpeaker()
         mp_SpeakProc = new QProcess;
     }
 
-    QEventLoop loop;
-    QStringList Params;
-    Params<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Note1.ogg";
-
-    mp_SpeakProc->start("ogg123", Params);
-
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_SPEARKER);
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    QString VolumeLevel = IsLowVolume ? QString("LowVolume") : QString("HighVolume");
+    VolumeLevel = p_TestCase->GetParameter(VolumeLevel);
+
+    qDebug()<<"System Speaker test Volume Level : "<<VolumeLevel;
+    QString SetVolume;
+    QStringList PlayParams;
+
+    SetVolume = "amixer set PCM " + VolumeLevel + " %";
+    PlayParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Note1.ogg";
+
+    mp_SpeakProc->start(SetVolume);
+    mp_SpeakProc->waitForFinished();
+
+    mp_SpeakProc->start("ogg123", PlayParams);
+
     emit RefreshTestStatustoMain(TestCaseName, Status);
 
-    loop.connect(mp_SpeakProc, SIGNAL(finished(int)), &loop, SLOT(quit()));
-    loop.exec();
     return 0;
 }
 
 qint32 ManufacturingTestHandler::TestSystem110v220vSwitch()
 {
-    qint32 VoltageValue = 110;
+    qint32 CurrentVoltage = 110;
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_110V_220V_SWITCH);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    QString ConnectedVoltage = p_TestCase->GetParameter("ConnectedVoltage");
 
-    p_TestCase->AddResult("CurrentVoltage", QString("%1").arg(VoltageValue));
-    return VoltageValue == p_TestCase->GetParameter("Option").toInt();
+    p_TestCase->AddResult("ConnectedVoltage", ConnectedVoltage+"V");
+    p_TestCase->AddResult("CurrentVoltage", QString("%1V").arg(CurrentVoltage));
+
+    return CurrentVoltage == ConnectedVoltage.toInt();
 }
 
 qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t Id)
@@ -1825,7 +1836,7 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         }
         break;
     case Service::SYSTEM_SPEARKER:
-        TestSystemSpeaker();
+        TestSystemSpeaker(AbortTestCaseId == Service::TEST_CASE_ID_UNUSED);
         break;
     case Service::SYSTEM_110V_220V_SWITCH:
         emit ReturnManufacturingTestMsg(TestSystem110v220vSwitch());

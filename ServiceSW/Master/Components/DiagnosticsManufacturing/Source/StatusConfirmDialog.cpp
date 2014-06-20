@@ -47,7 +47,7 @@ CStatusConfirmDialog::CStatusConfirmDialog(QWidget *p_Parent) : MainMenu::CDialo
     m_IsBlgProcessStarted = false;
     setModal(true);
 
-    this->SetDialogTitle("Oven Cover Sensor");
+    //this->SetDialogTitle("Oven Cover Sensor");
 
     CONNECTSIGNALSLOTGUI(mp_Ui->pushButtonNo, clicked(), this, AbortWaitDialog());
 //    CONNECTSIGNALSLOTGUI(mp_Ui->pushButtonYes, clicked(), this, AbortWaitDialog());
@@ -77,7 +77,7 @@ CStatusConfirmDialog::~CStatusConfirmDialog()
  *  \iparam Text = Label text
  */
 /****************************************************************************/
-void CStatusConfirmDialog::SetText(QString Text)
+void CStatusConfirmDialog::SetText(const QString& Text)
 {
     mp_Ui->labelConfirm->setText(Text);
 //    mp_Ui->contentLabel->setText(QString("%1").arg(Text));
@@ -108,6 +108,12 @@ void CStatusConfirmDialog::UpdateRetortLabel(const Service::ModuleTestStatus &st
 {
     QString CoverSensorStatus = status.value("LidLockerStatus");
     mp_Ui->labelStatusValue->setText(CoverSensorStatus);
+}
+
+void CStatusConfirmDialog::UpdateLabel(const QString& Status, const QString& Value)
+{
+    mp_Ui->labelStatus->setText(Status);
+    mp_Ui->labelStatusValue->setText(Value);
 }
 
 /****************************************************************************/

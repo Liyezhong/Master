@@ -66,8 +66,7 @@ public:
      *  \iparam Text = Label text
      */
     /****************************************************************************/
-    void SetText(QString Text);
-
+    void SetText(const QString& Text);
 
     /****************************************************************************/
     /*!
@@ -85,6 +84,15 @@ public:
      */
     /****************************************************************************/
     void UpdateRetortLabel(const Service::ModuleTestStatus &status);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Update label status
+     *
+     *  \iparam Status = Label test status name, Value = status value
+     */
+    /****************************************************************************/
+    void UpdateLabel(const QString& Status, const QString& Value);
 
     /****************************************************************************/
     /*!

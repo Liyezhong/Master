@@ -826,6 +826,7 @@ void CStartup::RefreshTestStatus4OvenCoverSensor(Service::ModuleTestCaseID Id, c
     static bool OpenFlag = true;
     QString TestStatus;
     DiagnosticsManufacturing::CStatusConfirmDialog *dlg = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
+    dlg->SetDialogTitle(DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id));
 
     if (OpenFlag) {
         TestStatus ="Open";

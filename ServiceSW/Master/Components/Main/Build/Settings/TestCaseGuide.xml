@@ -68,7 +68,7 @@
 		<Guide>
 			<Step>rotary valve heating property function end test</Step>
 		</Guide>
-	</RVHeatingEndTest>
+	</RVHeatingEndTest> 
 	<System110v220vSwitch Description="110V/220V switch">
 		<Guide>
 			<Step>System 110V/220V System test</Step>
@@ -86,7 +86,10 @@
 	</SystemOverflow>
 	<SystemSpeaker Description="Speaker test">
 		<Guide>
-			<Step>System Speaker test</Step>
+			<Step>Please listen the system speak (low volume)</Step>
+		</Guide>
+		<Guide>
+			<Step>Please listen the system speak (high volume)</Step>
 		</Guide>
 	</SystemSpeaker>
 	<SystemExhaustFan Description="Exhaust fan test">

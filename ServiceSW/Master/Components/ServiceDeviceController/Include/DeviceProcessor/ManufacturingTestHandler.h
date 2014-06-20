@@ -257,7 +257,7 @@ private:
      * \brief To Test speaker of system
      */
     /****************************************************************************/
-    qint32 TestSystemSpeaker();
+    qint32 TestSystemSpeaker(bool IsLowVolume);
 
     /****************************************************************************/
     /**
