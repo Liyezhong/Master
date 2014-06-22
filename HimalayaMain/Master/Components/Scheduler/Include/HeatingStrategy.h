@@ -332,9 +332,19 @@ private:
     /*!
      *  \brief check Rotary valve outlet heating over time or not
      *  \param HWTemp = qreal temperature
+     *  \return bool
      */
     /****************************************************************************/
 	inline bool CheckRVOutletHeatingOverTime(qreal HWTemp);
+
+    /****************************************************************************/
+    /*!
+     *  \brief check the temperature wether effective
+     *  \param HWTemp = qreal temperature
+     *  \return bool
+     */
+    /****************************************************************************/
+    inline bool isEffectiveTemp(qreal HWTemp);
 private:
     /****************************************************************************/
     /*!

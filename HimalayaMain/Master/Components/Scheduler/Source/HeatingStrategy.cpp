@@ -187,9 +187,13 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     if (false == m_RTBottom.curModuleId.isEmpty() &&
             -1!= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].ScenarioList.indexOf(m_CurScenario))
     {
-        if (std::abs(strctHWMonitor.TempRTBottom1 - strctHWMonitor.TempRTBottom2) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
+        if ( isEffectiveTemp(strctHWMonitor.TempRTBottom1) || isEffectiveTemp(strctHWMonitor.TempRTBottom2))
         {
-            return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
+            if (std::abs(strctHWMonitor.TempRTBottom1 - strctHWMonitor.TempRTBottom2) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
+            {
+                mp_SchedulerController->LogDebug(QString("the difference of two retort bottom sensor over range."));
+                return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
+            }
         }
     }
 
@@ -418,10 +422,11 @@ bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heating
         return true;
     }
 
-    if (UNDEFINED_VALUE ==HWTemp || UNDEFINED_1_BYTE == HWTemp || UNDEFINED_2_BYTE == HWTemp || UNDEFINED_4_BYTE == HWTemp)
+    if ( !isEffectiveTemp(HWTemp) )
     {
         return true;
     }
+
     //For Scenarios NON-related sensors(Oven and LA)
     if (1 == heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.size()
             && 0 == heatingSensor.functionModuleList[heatingSensor.curModuleId].ScenarioList.at(0))
@@ -1287,6 +1292,15 @@ void HeatingStrategy::OnReportLevelSensorStatus1()
     while (!mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName()));
     ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
     pResHeatingCmd->GetResult(retCode);
+}
+
+bool HeatingStrategy::isEffectiveTemp(qreal HWTemp)
+{
+    if (UNDEFINED_VALUE == HWTemp || UNDEFINED_1_BYTE == HWTemp || UNDEFINED_2_BYTE == HWTemp || UNDEFINED_4_BYTE == HWTemp)
+    {
+        return false;
+    }
+    return true;
 }
 
 }// end of namespace Scheduler
