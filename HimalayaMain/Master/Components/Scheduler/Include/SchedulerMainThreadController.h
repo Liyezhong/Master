@@ -207,7 +207,6 @@ typedef struct
         QSharedPointer<HeatingStrategy> mp_HeatingStrategy;   ///< Definition/Declaration of variable mp_HeatingStrategy
         Global::tRefType    m_RefCleanup;                     ///< Command reference of the cleanup command
         int m_delayTime;
-        bool m_TempCheck;                                     ///< Temperature check passed or not
         bool m_IsInSoakDelay;                                 ///< Delay in Soak
         bool m_AllProgramCount;                            ///< count the all program
         bool m_IsPrecheckMoveRV;                            ///< precheck done move rv
@@ -610,14 +609,7 @@ private slots:
           */
          /****************************************************************************/
          void StepStart();
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot CheckStepTemperature
-          *
-          *  \return return from CheckStepTemperature
-          */
-         /****************************************************************************/
-         bool CheckStepTemperature();
+
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of slot CheckLevelSensorTemperature
@@ -993,14 +985,6 @@ protected:
          */
         /****************************************************************************/
         void RestartLevelSensorTempCtrlInError();
-
-        /****************************************************************************/
-        /**
-         *  \brief Set temperature check flag
-         *  \return void
-         */
-        /****************************************************************************/
-        void SetTempCheck(bool flag) { m_TempCheck = flag; }     
 
         /****************************************************************************/
         /**

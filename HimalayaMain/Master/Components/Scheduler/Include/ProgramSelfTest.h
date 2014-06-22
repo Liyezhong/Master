@@ -25,6 +25,8 @@
 
 namespace Scheduler{
 
+class SchedulerMainThreadController;
+
 /****************************************************************************/
 /*!
  * \brief Program running State machine for Self Test 
@@ -42,7 +44,7 @@ public:
      *
      */
     /****************************************************************************/
-    CProgramSelfTest();
+    CProgramSelfTest(SchedulerMainThreadController* SchedController);
 
     /****************************************************************************/
     /*!
@@ -56,23 +58,23 @@ public:
     /*!
      *  \brief  Handle the sub steps for Self Test 
      *
-     *  \param  flag = bool
+     *  \param  void
 	 *
      *  \return void
      *
      */
     /****************************************************************************/
-    void HandleWorkFlow(bool flag);
+    void HandleWorkFlow();
 
 signals:
 
     /****************************************************************************/
     /*!
-     *  \brief Signal for level sensor temperature checking
+     *  \brief Signal for checking the status of all temperature sensors
      *
      */
     /****************************************************************************/
-    void LevelSensorChecking();
+    void TemperatureSensorsChecking();
 
     /****************************************************************************/
     /*!
@@ -100,45 +102,47 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief Signal fo current status checking
-     *
-     */
-    /****************************************************************************/
-    void CurrentChecking();
-
-    /****************************************************************************/
-    /*!
      *  \brief Signal fo bottles status checking
      *
      */
     /****************************************************************************/
     void BottlesChecking();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Signal for current and voltage status checking
+     *
+     */
+    /****************************************************************************/
+    void CurrentVoltageChecking();
 
     /****************************************************************************/
     /*!
-     *  \brief Signal for tasks done 
+     *  \brief Signal for tasks done
      *
      */
     /****************************************************************************/
     void TasksDone(bool);
 
 private:
-    QSharedPointer<QStateMachine>   mp_SchedulerMachine;    //!< State machine for Pre-Test
-    QSharedPointer<QState> mp_Initial;                      //!< Initial state
-    QSharedPointer<QState> mp_LevelSensorChecking;          //!< Level Sensor temperature checking state
-    QSharedPointer<QState> mp_RVPositionChecking;           //!< Rotary Valve position checking state
-    QSharedPointer<QState> mp_PressureChecking;             //!< Pressure checking state
-    QSharedPointer<QState> mp_SealingChecking;              //!< Sealing checking state
-    QSharedPointer<QState> mp_CurrentChecking;              //!< Current checking state
-    QSharedPointer<QState> mp_BottlesChecking;              //!< Bottle checking state
+    SchedulerMainThreadController *mp_SchedulerThreadController;    //!< Pointer to Scheduler Thread Controller
+    QSharedPointer<QStateMachine>   mp_StateMachine;                //!< State machine for Pre-Test
+    QSharedPointer<QState> mp_Initial;                              //!< Initial state
+    QSharedPointer<QState> mp_TemperatureSensorsChecking;           //!< Temperature sensors status checking state
+    QSharedPointer<QState> mp_CurrentVoltageChecking;               //!< Current checking state
+    QSharedPointer<QState> mp_RVPositionChecking;                   //!< Rotary Valve position checking state
+    QSharedPointer<QState> mp_PressureChecking;                     //!< Pressure checking state
+    QSharedPointer<QState> mp_SealingChecking;                      //!< Sealing checking state
+    QSharedPointer<QState> mp_BottlesChecking;                      //!< Bottle checking state
+
 
     //!< state list of the state machine
     typedef enum
     {
         PRETEST_UNDEF,
         PRETEST_INIT,
-        LEVELSENSOR_CHECKING,
+        TEMPSENSORS_CHECKING,
+        CURRENTVOLTAGE_CHECKING,
         RV_POSITION_CHECKING,
         PRESSURE_CHECKING,
         SEALING_CHECKING,

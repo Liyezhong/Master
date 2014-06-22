@@ -105,7 +105,6 @@ SchedulerMainThreadController::SchedulerMainThreadController(
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
-    m_TempCheck = false;
     m_AllProgramCount = false;
     m_IsPrecheckMoveRV = false;
 
@@ -366,10 +365,12 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             m_ReagentIdOfLastStep = m_NewProgramID.right(m_NewProgramID.count()- sep -1);
         }
         else
+        {
             m_CurProgramID = m_NewProgramID;
+        }
 
-        m_NewProgramID = "";
-        m_CurProgramStepIndex = -1;
+        //m_NewProgramID = "";
+        //m_CurProgramStepIndex = -1;
         this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
         if(m_CurProgramStepIndex != -1)
         {
@@ -396,7 +397,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             DequeueNonDeviceCommand();
 
             //wether cleaning program
-            if (isCleaningProgram)
+            if ( 'C' == ProgramName.at(0) )
             {
                 QString LastPosition = getTheProgramStatus("LastRVPosition");
                 CmdRVReqMoveToInitialPosition* cmdSet = new CmdRVReqMoveToInitialPosition(500, this);
@@ -409,7 +410,6 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             }
             else
             {
-                m_SchedulerMachine->SendRunSelfTest();
             }
         }
         break;
@@ -491,7 +491,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         //qDebug()<<"DBG" << "Scheduler step statemachine: "<<stepState;
         if (PSSM_PRETEST == stepState)
         {
-
+           m_SchedulerMachine->HandlePssmPreTestWorkFlow();
             if(!m_IsPrecheckMoveRV)
             {
                 if(RV_UNDEF != targetPos)
@@ -554,11 +554,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
+                m_SchedulerMachine->SendRunPreTest();
+                /*
                 if(CheckStepTemperature()) //todo: verify later
                 {
                     LogDebug("Program Step Init OK");
                     m_SchedulerMachine->NotifyTempsReady();
                 }
+                */
             }
         }
         else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1 == stepState)
@@ -2645,18 +2648,6 @@ void SchedulerMainThreadController::Pause()
     SendCommand(fRef, Global::CommandShPtr_t(commandPtrPauseFinish));
 }
 
-bool SchedulerMainThreadController::CheckStepTemperature()
-{
-    if (true == m_TempCheck)
-    {
-        m_TempCheck = false;
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
 
 bool SchedulerMainThreadController::CheckLevelSensorTemperature(qreal targetTemperature)
 {

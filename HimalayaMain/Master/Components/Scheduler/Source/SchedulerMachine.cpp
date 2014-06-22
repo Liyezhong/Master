@@ -58,8 +58,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorState = QSharedPointer<QState>(new QState(mp_SchedulerMachine.data()));
 
     // Layer two states (for Busy state)
-    mp_PssmInit = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    mp_PssmPreTest = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    mp_PssmInitState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    mp_PssmPreTestState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmReadyToHeatLevelSensorS1 = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmReadyToHeatLevelSensorS2 = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmReadyToTubeBefore = QSharedPointer<QState>(new QState(mp_BusyState.data()));
@@ -85,7 +85,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     // Set Initial states
     mp_SchedulerMachine->setInitialState(mp_InitState.data());
-    mp_BusyState->setInitialState(mp_PssmInit.data());
+    mp_BusyState->setInitialState(mp_PssmInitState.data());
     mp_ErrorState->setInitialState(mp_ErrorWaitState.data());
 
     // Add transition
@@ -97,9 +97,11 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_BusyState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState.data());
 
     // Sate machines for Run handling
-    mp_ProgramSelfTest = QSharedPointer<CProgramSelfTest>(new CProgramSelfTest());
-    mp_BusyState->addTransition(this, SIGNAL(SigEnterProgramSelfTest()), mp_PssmPreTest.data());
-    mp_PssmPreTest->addTransition(mp_ProgramSelfTest.data(), SIGNAL(TasksDone(bool)), mp_BusyState.data());
+    mp_ProgramSelfTest = QSharedPointer<CProgramSelfTest>(new CProgramSelfTest(mp_SchedulerThreadController));
+
+    //Program Pre-Test related logic
+    mp_PssmInitState->addTransition(this, SIGNAL(RunPreTest()), mp_PssmPreTestState.data());
+    mp_PssmPreTestState->addTransition(mp_ProgramSelfTest.data(), SIGNAL(TasksDone(bool)), mp_PssmInitState.data());
 
     // State machines for Error handling
     mp_RsRvGetOriginalPositionAgain = QSharedPointer<CRsRvGetOriginalPositionAgain>(new CRsRvGetOriginalPositionAgain(mp_SchedulerMachine.data(), mp_ErrorState.data()));
@@ -238,11 +240,11 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
     }
     else if(mp_SchedulerMachine->configuration().contains(mp_BusyState.data()))
     {
-        if(mp_SchedulerMachine->configuration().contains(mp_PssmInit.data()))
+        if(mp_SchedulerMachine->configuration().contains(mp_PssmInitState.data()))
         {
             return PSSM_INIT;
         }
-        else if(mp_SchedulerMachine->configuration().contains(mp_PssmPreTest.data()))
+        else if(mp_SchedulerMachine->configuration().contains(mp_PssmPreTestState.data()))
         {
             return PSSM_PRETEST;
         }
@@ -549,6 +551,11 @@ void CSchedulerStateMachine::EnterRsHeatingErr30SRetry()
     emit SigEnterRSHeatingErr30SRetry();
 }
 
+void CSchedulerStateMachine::HandlePssmPreTestWorkFlow()
+{
+    mp_ProgramSelfTest->HandleWorkFlow();
+}
+
 void CSchedulerStateMachine::HandleRsStandByWithTissueWorkFlow(bool flag)
 {
     mp_RsStandbyWithTissue->HandleWorkFlow(flag);
@@ -582,9 +589,9 @@ void CSchedulerStateMachine::HandleRcRestart(bool flag)
     mp_RcRestart->OnHandleWorkFlow(flag);
 }
 
-void CSchedulerStateMachine::SendRunSelfTest()
+void CSchedulerStateMachine::SendRunPreTest()
 {
-    emit RunSelfTest();
+    emit RunPreTest();
 }
 
 void CSchedulerStateMachine::SendRunCleaning()

@@ -139,8 +139,29 @@ public:
      */
     /****************************************************************************/
     virtual void ALSetPressureDrift(qreal pressureDrift) = 0;
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ShutDownDevice
+     *
+     *  \param void
+     *
+     *  \return from void
+     */
+    /****************************************************************************/
     virtual void ShutDownDevice() = 0;
     virtual void NotifySavedServiceInfor(const QString& deviceType) = 0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetCurrentVoltageStatus
+     *
+     *  \param void
+     *
+     *  \return bool
+     */
+    /****************************************************************************/
+    virtual bool GetCurrentVoltageStatus() = 0;
+
 signals:
     /****************************************************************************/
     /**
@@ -420,8 +441,29 @@ public:
 #ifdef GOOGLE_MOCK
     void SetIDeviceProcessing(DP* IDeviceProcessing) { mp_IDeviceProcessing = IDeviceProcessing; }
 #endif
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ShutDownDevice
+     *
+     *  \param void
+     *
+     *  \return from void
+     */
+    /****************************************************************************/
     virtual void ShutDownDevice();
     virtual void NotifySavedServiceInfor(const QString& deviceType);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetCurrentVoltageStatus
+     *
+     *  \param void
+     *
+     *  \return bool
+     */
+    /****************************************************************************/
+    virtual bool GetCurrentVoltageStatus();
 private:
 
     /****************************************************************************/

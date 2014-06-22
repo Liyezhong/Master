@@ -49,7 +49,7 @@ class CSchedulerStateMachine : public QObject
 {
     Q_OBJECT
 private:
-     SchedulerMainThreadController *mp_SchedulerThreadController;                       ///<  Definition/Declaration of variable mp_SchedulerThreadController
+    SchedulerMainThreadController *mp_SchedulerThreadController;                        ///<  Definition/Declaration of variable mp_SchedulerThreadController
     SchedulerStateMachine_t m_CurrentState;                                             ///<  Definition/Declaration of variable m_CurrentState
     QSharedPointer<QStateMachine> mp_SchedulerMachine;                                  ///<  Scheduler state machine
     SchedulerStateMachine_t m_PreviousState;                                            ///<  Definition/Declaration of variable m_PreviousState
@@ -61,8 +61,8 @@ private:
     QSharedPointer<QState> mp_ErrorState;                                               ///<  Error state
 
 	// Layer two states (for Busy state)
-    QSharedPointer<QState> mp_PssmInit;                                                 ///<  Busy State's sub state: Init state
-    QSharedPointer<QState> mp_PssmPreTest;                                              ///<  Busy State's sub state: Pre-test state
+    QSharedPointer<QState> mp_PssmInitState;                                            ///<  Busy State's sub state: Init state
+    QSharedPointer<QState> mp_PssmPreTestState;                                         ///<  Busy State's sub state: Pre-test state
     QSharedPointer<QState> mp_PssmReadyToHeatLevelSensorS1;                             ///<  Busy State's sub state: Level sensor 1 state
     QSharedPointer<QState> mp_PssmReadyToHeatLevelSensorS2;                             ///<  Busy State's sub state: Level sensor 2 state
     QSharedPointer<QState> mp_PssmReadyToTubeBefore;                                    ///<  Busy State's sub state: Ready to tube before state
@@ -154,14 +154,16 @@ public:
     */
    /****************************************************************************/
    void SendRunCleaning();
+
    /****************************************************************************/
    /*!
-    *  \brief  Definition/Declaration of function SendRunSelfTest
+    *  \brief  Send signal "RunPreTest" to Scheduler
     *
-    *  \return from SendRunSelfTest
+    *  \return void
     */
    /****************************************************************************/
-   void SendRunSelfTest();
+   void SendRunPreTest();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendRunComplete
@@ -489,6 +491,17 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief Handle the whole work flow for Program Pre-Test
+     *
+     *  \param void
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandlePssmPreTestWorkFlow();
+
+    /****************************************************************************/
+    /*!
      *  \brief Handle the whole work flow for Rs_Standby_WithTissue 
      *
      *  \param flag - indicate if the execution succeeds or not
@@ -612,7 +625,7 @@ signals:
     *  \brief  Definition/Declaration of signal RunSelfTest
     */
    /****************************************************************************/
-   void RunSelfTest();
+   void RunPreTest();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal RunComplete

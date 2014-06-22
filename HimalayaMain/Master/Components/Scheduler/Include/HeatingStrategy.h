@@ -4,7 +4,7 @@
  *  \brief HeatingStrategy class definition.
  *
  *   $Version: $ 0.1
- *   $Date:    $ 04.03.2014
+ *   $Date:    $ April 3rd,2014
  *   $Author:  $ Songtao Yu 
  *
  *  \b Company:
@@ -208,6 +208,15 @@ public:
      */
     /****************************************************************************/
     inline  qint64 GetOvenHeatingBeginTime() const { return m_OvenStartHeatingTime; }
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Check the status of all the temperature sensors
+     *  \param  void
+     *  \return bool
+     */
+    /****************************************************************************/
+    bool CheckTemperatureSenseorsStatus() const;
 
     /****************************************************************************/
     /*!

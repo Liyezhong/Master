@@ -5,7 +5,7 @@
  *  Implementation of class Scheduler::HeatingStrategy.
  *
  *  $Version:   $ 0.1
- *  $Date:      $ 04.03.2014 
+ *  $Date:      $ April 3rd, 2014
  *  $Author:    $ Songtao Yu 
  *
  *  @b Company:
@@ -418,6 +418,19 @@ void HeatingStrategy::StopTemperatureControlInError(const QString& HeaterName)
     }
 }
 
+bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
+{
+    bool result = m_RTLevelSensor.OTCheckPassed
+            && m_RTTop.OTCheckPassed
+            && m_RTBottom.OTCheckPassed
+            && m_OvenTop.OTCheckPassed
+            && m_OvenBottom.OTCheckPassed
+            && m_RV_1_HeatingRod.OTCheckPassed
+            && m_RV_2_Outlet.OTCheckPassed
+            && m_LARVTube.OTCheckPassed
+            && m_LAWaxTrap.OTCheckPassed;
+    return result;
+}
 bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)
 {
     if (true == heatingSensor.curModuleId.isEmpty())
@@ -1152,7 +1165,6 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, q
     if (HWTemp >= heatingSensor.functionModuleList[heatingSensor.curModuleId].OTTargetTemperature)
     {
         heatingSensor.OTCheckPassed = true;
-        mp_SchedulerController->SetTempCheck(true);
     }
 
     qint64 now = QDateTime::currentMSecsSinceEpoch();
