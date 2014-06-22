@@ -987,14 +987,6 @@ protected:
 
         /****************************************************************************/
         /**
-         *  \brief Set Scheduler Command processor
-         *  \param pSchedCmdProcessor
-         */
-        /****************************************************************************/
-        void SetSchedCommandProcessor( SchedulerCommandProcessorBase* pSchedCmdProcessor ) { m_SchedulerCommandProcessor = pSchedCmdProcessor; }
-
-        /****************************************************************************/
-        /**
          *  \brief Restart Level sensor's temperature in case of RC_Levelsensor_Heating_Overtime
          *  \param HeaterName - name of the sensor
          *  \return void

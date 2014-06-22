@@ -61,6 +61,9 @@
 #include "Scheduler/Commands/Include/CmdSavedServiceInfor.h"
 #include "DataManager/Containers/InstrumentHistory/Commands/Include/CmdModuleListUpdate.h"
 #include "NetCommands/Include/CmdSystemAction.h"
+#ifdef GOOGLE_MOCK
+#include "Scheduler/Test/Mock/MockIDeviceProcessing.h"
+#endif
 #include "float.h"
 #include "Global/Include/EventObject.h"
 #include "Scheduler/Include/HeatingStrategy.h"
@@ -79,6 +82,11 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         : Threads::ThreadController(TheHeartBeatSource, "SchedulerMainThread")
         , m_TickTimer(this)
         , m_SchedulerCommandProcessorThread(new QThread())
+        #ifdef GOOGLE_MOCK
+        , m_SchedulerCommandProcessor(new SchedulerCommandProcessor<MockIDeviceProcessing>(this))
+        #else
+        , m_SchedulerCommandProcessor(new SchedulerCommandProcessor<IDeviceProcessing>(this))
+        #endif
         , m_SchedulerMachine(new CSchedulerStateMachine(this))
         , mp_DataManager(NULL)
         , m_CurProgramStepIndex(-1)
