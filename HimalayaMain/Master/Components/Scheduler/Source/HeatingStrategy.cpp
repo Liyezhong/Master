@@ -187,7 +187,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     if (false == m_RTBottom.curModuleId.isEmpty() &&
             -1!= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].ScenarioList.indexOf(m_CurScenario))
     {
-        if ( isEffectiveTemp(strctHWMonitor.TempRTBottom1) || isEffectiveTemp(strctHWMonitor.TempRTBottom2))
+        if ( isEffectiveTemp(strctHWMonitor.TempRTBottom1) && isEffectiveTemp(strctHWMonitor.TempRTBottom2))
         {
             if (std::abs(strctHWMonitor.TempRTBottom1 - strctHWMonitor.TempRTBottom2) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
             {
