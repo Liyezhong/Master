@@ -30,6 +30,18 @@
 namespace Programs {
     class CModifyProgramStepDlg;
 }
+
+/****************************************************************************/
+/*!
+ *  \brief  Definition of enum StationGroupType_t
+ */
+/****************************************************************************/
+typedef enum {
+    ONLY_PARAFFIN_REAGENT,
+    NON_PARAFFINBATH_REAGENT,
+    NON_CLEANING_REAGENT
+}SpecialReagentType_t;
+
 namespace Core {
 
 
@@ -83,9 +95,9 @@ public:
      * \iparam Status
      */
     /****************************************************************************/
-    void SetModifiedProgramStepDlg(bool Status)
+    void SetReagentType(SpecialReagentType_t reagentType)
     {
-      m_ModifiedProgramStepDlg = Status;
+        m_ReagentType = reagentType;
     }
 
     /****************************************************************************/
@@ -143,7 +155,7 @@ private:
     qint32 m_VisibleRowCount;                           //!< Number of rows visible in the table
     QStringList m_VisibleReagentIds;                    //!< Reagent Ids list
     DataManager::CUserSettings m_UserSettings;          //!< UserSettings object    
-    bool m_ModifiedProgramStepDlg;       ///<  Definition/Declaration of variable m_ModifiedProgramStepDlg
+    SpecialReagentType_t m_ReagentType;   ///<  Definition/Declaration of variable m_ReagentType
 };
 
 } // end namespace Core

@@ -138,6 +138,10 @@ void CReagentStationModel::UpdateReagent(const QString &StationId)
                     ReagentName =  p_Reagent->GetReagentName();
                     m_ReagentNames.replace(i, ReagentName);
                 }
+                else
+                {
+                    m_ReagentNames.replace(i, "");
+                }
             }
         }
     }

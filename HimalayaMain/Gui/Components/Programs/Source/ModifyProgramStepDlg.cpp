@@ -76,7 +76,7 @@ CModifyProgramStepDlg::CModifyProgramStepDlg(QWidget *p_Parent, MainMenu::CMainW
     mp_TableWidget->horizontalHeader()->show();
     mp_Ui->scrollTable->SetContent(mp_TableWidget);
     mp_TableWidget->SetVisibleRows(8);
-    m_ReagentEditModel.SetModifiedProgramStepDlg(true);
+    m_ReagentEditModel.SetReagentType(NON_CLEANING_REAGENT);
 
     mp_ScrollWheelHour = new MainMenu::CScrollWheel();
     mp_ScrollWheelMin =  new MainMenu::CScrollWheel();

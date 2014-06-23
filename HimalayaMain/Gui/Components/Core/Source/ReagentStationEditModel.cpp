@@ -47,7 +47,7 @@ CReagentStationEditModel::CReagentStationEditModel(QObject *p_Parent) :
     mp_Parent(NULL),
     m_FilterLeicaReagent(false),
     m_VisibleRowCount(7),
-    m_ModifiedProgramStepDlg(false)
+    m_ReagentType(NON_CLEANING_REAGENT)
 {
 
 }
@@ -94,14 +94,19 @@ void CReagentStationEditModel::UpdateReagentList()
             DataManager::CReagent *p_Reagent = NULL;
             p_Reagent = const_cast<DataManager::CReagent*>(mp_ReagentList->GetReagent(i));
             if (p_Reagent && mp_ReagentGroupList) {
-                if (m_ModifiedProgramStepDlg)
+                if (m_ReagentType == NON_CLEANING_REAGENT)
                 {
                     if (mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->IsCleaningReagentGroup())
                     continue;//Cleaning reagents could not be displayed in new step dialog.
                 }
-                else //Stations edit
+                else if (m_ReagentType == NON_PARAFFINBATH_REAGENT)
                 {
                     if (mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->IsParraffin())
+                    continue;
+                }
+                else if (m_ReagentType == ONLY_PARAFFIN_REAGENT)
+                {
+                    if (!mp_ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID())->IsParraffin())
                     continue;
                 }
 
@@ -115,7 +120,7 @@ void CReagentStationEditModel::UpdateReagentList()
                 }
             }
         }
-        if(!m_ModifiedProgramStepDlg) {
+        if(m_ReagentType != NON_CLEANING_REAGENT) {
             m_ReagentNames.append("");
             m_ReagentID.append("");
         }

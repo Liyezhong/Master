@@ -86,6 +86,16 @@ CModifyReagentStationDlg::~CModifyReagentStationDlg()
 void CModifyReagentStationDlg::SetEditedDashboardStation(DataManager::CDashboardStation* p_Station)
 {
     m_EditedStation = *p_Station;
+
+    if (m_EditedStation.IsParaffinBath())
+    {
+        m_ReagentsDataModel.SetReagentType(ONLY_PARAFFIN_REAGENT);
+    }
+    else
+    {
+        m_ReagentsDataModel.SetReagentType(NON_PARAFFINBATH_REAGENT);
+    }
+
     m_ReagentsDataModel.UpdateReagentList();
     //Check if it is a valid
     const DataManager::CReagent* pReagent = mp_DataConnector->ReagentList->GetReagent(m_EditedStation.GetDashboardReagentID());
