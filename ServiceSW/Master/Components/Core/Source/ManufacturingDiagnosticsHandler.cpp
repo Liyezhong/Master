@@ -921,7 +921,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             emit PerformManufacturingTest(Id);
             Result = GetTestResponse();
         }
-/*
+
         if (Id == Service::SYSTEM_REMOTE_LOCAL_ALARM && Result) {
             for (int n = 1; n < 4 && Result; n++) {
                 NextFlag = ShowGuide(Id, n);
@@ -931,7 +931,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
                 Result = GetTestResponse();
             }
         }
-*/
+
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
         DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
         p_TestCase->SetStatus(Result);

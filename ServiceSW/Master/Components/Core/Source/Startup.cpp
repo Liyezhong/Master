@@ -979,6 +979,37 @@ void CStartup::RefreshTestStatus4SystemSpeaker(Service::ModuleTestCaseID Id, con
     emit PerformManufacturingTest(Service::TEST_ABORT, Id);
 }
 
+void CStartup::RefreshTestStatus4SystemAlarm(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    QString TestStatus;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    DiagnosticsManufacturing::CStatusConfirmDialog *dlg = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
+    dlg->SetDialogTitle(DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id));
+
+    if (p_TestCase->GetParameter("ConnectFlag").toInt()) {
+        TestStatus = "Connected";
+    }
+    else {
+        TestStatus = "DisConnected";
+    }
+    dlg->SetText(QString("Please confirm the alarm status '%1' ?").arg(TestStatus));
+
+    dlg->UpdateLabel("Alarm Status", Status.value("AlarmStatus"));
+    int result = dlg->exec();
+    qDebug()<<"StatusconfirmDlg return : "<<result;
+    delete dlg;
+    if (result == 0) { // yes
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
+    }
+    else {
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(false);
+    }
+
+    emit PerformManufacturingTest(Service::TEST_ABORT, Id);
+}
+
 /****************************************************************************/
 /*!
  *  \brief Refresh heating status for heating test.
@@ -1015,6 +1046,9 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
         break;
     case Service::SYSTEM_SPEARKER:
         RefreshTestStatus4SystemSpeaker(id, status);
+        break;
+    case Service::SYSTEM_REMOTE_LOCAL_ALARM:
+        RefreshTestStatus4SystemAlarm(Id, Status);
         break;
     default:
         break;

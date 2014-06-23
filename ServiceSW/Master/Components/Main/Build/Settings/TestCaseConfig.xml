@@ -25,15 +25,15 @@
 		<LAAirSystem Parameter="N/A"/>
 	</LaSystem>
 	<System>
-		<System110v220vSwitch Option="110" />
-		<SystemSealing Parameter="N/A" />
-		<SystemOverflow Parameter="N/A" />
-		<SystemSpeaker Parameter="N/A" />
-		<SystemExhaustFan Parameter="N/A" />
-		<SystemVentilationFan Parameter="N/A" />
-		<SystemRemoteLocalAlarm Parameter="N/A" />
-		<SystemMainsRelay Parameter="N/A" />
-		<SystemFillingDraining Parameter="N/A" />
+		<System110v220vSwitch ConnectedVoltage="110"/>
+		<SystemSealing Parameter="N/A"/>
+		<SystemOverflow Parameter="N/A"/>
+		<SystemSpeaker VolumeFlag="0" LowVolume="60" HighVolume="120"/>
+		<SystemExhaustFan Parameter="N/A"/>
+		<SystemVentilationFan Parameter="N/A"/>
+		<SystemRemoteLocalAlarm PositionFlag="1" ConnectFlag="1"/>
+		<SystemMainsRelay Parameter="N/A"/>
+		<SystemFillingDraining Parameter="N/A"/>
 	</System>
 	<Retort>
 		<RetortLidLock Parameter="N/A" />

@@ -215,6 +215,7 @@ void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, qui
     }
     switch (AbortTestCaseId) {
     case Service::SYSTEM_SPEARKER:
+    case Service::SYSTEM_REMOTE_LOCAL_ALARM:
         qDebug()<<"abort the system speaker test";
         if (mp_SpeakProc) {
             mp_SpeakProc->terminate();
@@ -738,9 +739,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
 
 qint32 ManufacturingTestHandler::TestSystemSpeaker(bool IsLowVolume)
 {
-    static bool VolumeFlag = true;
     Service::ModuleTestStatus Status;
-
     if (!mp_SpeakProc) {
         mp_SpeakProc = new QProcess;
     }
@@ -748,7 +747,8 @@ qint32 ManufacturingTestHandler::TestSystemSpeaker(bool IsLowVolume)
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_SPEARKER);
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
-    QString VolumeLevel = VolumeFlag ? QString("LowVolume") : QString("HighVolume");
+    bool VolumeFlag = p_TestCase->GetParameter("VolumeFlag").toInt();
+    QString VolumeLevel = VolumeFlag ? QString("HighVolume") : QString("LowVolume");
     VolumeLevel = p_TestCase->GetParameter(VolumeLevel);
 
     qDebug()<<"System Speaker test Volume Level : "<<VolumeLevel;
@@ -763,7 +763,7 @@ qint32 ManufacturingTestHandler::TestSystemSpeaker(bool IsLowVolume)
 
     mp_SpeakProc->start("ogg123", PlayParams);
 
-    VolumeFlag = !VolumeFlag;
+    p_TestCase->SetParameter("VolumeFlag", QString::number(!VolumeFlag));
     emit RefreshTestStatustoMain(TestCaseName, Status);
 
     return 0;
@@ -771,16 +771,46 @@ qint32 ManufacturingTestHandler::TestSystemSpeaker(bool IsLowVolume)
 
 qint32 ManufacturingTestHandler::TestSystemAlarm()
 {
-    /*
-    static bool PositionFlag = false;
-    static bool StatusFlag   = false;
+    Service::ModuleTestStatus Status;
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_REMOTE_LOCAL_ALARM);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
-    if (StatusFlag) {
-        PositionFlag = !PositionFlag;
+    bool PositionFlag = p_TestCase->GetParameter("PositionFlag").toInt();
+    bool ConnectFlag  = p_TestCase->GetParameter("ConnectFlag").toInt();
+
+    QStringList AlarmParams;
+    if (ConnectFlag) {
+        if (PositionFlag) {
+            // remote connect test
+            AlarmParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Alarm1.ogg";
+        }
+        else {
+            // local connect test
+            AlarmParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Alarm2.ogg";
+        }
+        Status.insert("AlarmStatus", "Connected");
     }
-    StatusFlag = !StatusFlag;*/
+    else {
+        if (PositionFlag) {
+            // remote disconnect test
+            AlarmParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Alarm3.ogg";
+        }
+        else {
+            // local disconnect test
+            AlarmParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Alarm4.ogg";
+        }
+        p_TestCase->SetParameter("PostionFlag", QString::number(!PositionFlag));
+        Status.insert("AlarmStatus", "disConnected");
+    }
+
+    p_TestCase->SetParameter("ConnectFlag", QString::number(!ConnectFlag));
+
+    if (!mp_SpeakProc) {
+        mp_SpeakProc = new QProcess;
+    }
+    mp_SpeakProc->start("ogg123", AlarmParams);
+
+    emit RefreshTestStatustoMain(TestCaseName, Status);
     return 0;
 }
 

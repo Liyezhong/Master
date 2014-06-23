@@ -104,7 +104,16 @@
 	</SystemVentilationFan>
 	<SystemRemoteLocalAlarm Description="Remote/Local alarm test">
 		<Guide>
-			<Step>System Remote/Local alarm test</Step>
+			<Step>Please connect the alarm (remote)</Step>
+		</Guide>
+		<Guide>
+			<Step>Please disconnect the alarm (remote)</Step>
+		</Guide>
+		<Guide>
+			<Step>Please connect the alarm (local)</Step>
+		</Guide>
+		<Guide>
+			<Step>Please disconnect the alarm (local)</Step>
 		</Guide>
 	</SystemRemoteLocalAlarm>
 	<SystemMainsRelay Description="Mains relay test">
