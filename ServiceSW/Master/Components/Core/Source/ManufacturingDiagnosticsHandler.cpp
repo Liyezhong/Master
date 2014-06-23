@@ -60,6 +60,7 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
     mp_RotaryValveManuf      = new DiagnosticsManufacturing::CRotaryValve(mp_ServiceConnector, mp_MainWindow);
     mp_SystemManuf           = new DiagnosticsManufacturing::CSystem(mp_ServiceConnector, mp_MainWindow);
     mp_RetortManuf           = new DiagnosticsManufacturing::CRetort(mp_ServiceConnector, mp_MainWindow);
+    mp_CleaningManuf         = new DiagnosticsManufacturing::CCleaning(mp_ServiceConnector, mp_MainWindow);
 
     CONNECTSIGNALSLOTGUI(mp_DisplayManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
     CONNECTSIGNALSLOTGUI(mp_OvenManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
@@ -68,6 +69,8 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
     CONNECTSIGNALSLOTGUI(mp_RotaryValveManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
     CONNECTSIGNALSLOTGUI(mp_SystemManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
     CONNECTSIGNALSLOTGUI(mp_RetortManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
+    CONNECTSIGNALSLOTGUI(mp_CleaningManuf, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), this, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
+
 
     /* Manufacturing SW Reset status */
     CONNECTSIGNALSLOTGUI(mp_DiagnosticsManufGroup, PanelChanged(), mp_OvenManuf, ResetTestStatus());
@@ -76,6 +79,9 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
     CONNECTSIGNALSLOTGUI(mp_DiagnosticsManufGroup, PanelChanged(), mp_RotaryValveManuf, ResetTestStatus());
     CONNECTSIGNALSLOTGUI(mp_DiagnosticsManufGroup, PanelChanged(), mp_SystemManuf, ResetTestStatus());
     CONNECTSIGNALSLOTGUI(mp_DiagnosticsManufGroup, PanelChanged(), mp_RetortManuf, ResetTestStatus());
+    CONNECTSIGNALSLOTGUI(mp_DiagnosticsManufGroup, PanelChanged(), mp_CleaningManuf, ResetTestStatus());
+
+
 }
 
 /****************************************************************************/
@@ -91,6 +97,9 @@ CManufacturingDiagnosticsHandler::~CManufacturingDiagnosticsHandler()
         delete mp_DisplayManuf;
         delete mp_LaSystemManuf;
         delete mp_RotaryValveManuf;
+        delete mp_SystemManuf;
+        delete mp_RetortManuf;
+        delete mp_CleaningManuf;
         delete mp_DiagnosticsManufGroup;
     }
     catch (...) {
@@ -125,6 +134,8 @@ void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
                                        "LA System", 0, QApplication::UnicodeUTF8), mp_LaSystemManuf);
         mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                        "System", 0, QApplication::UnicodeUTF8), mp_SystemManuf);
+        mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                       "Cleaning", 0, QApplication::UnicodeUTF8), mp_CleaningManuf);
     }
     mp_MainWindow->AddMenuGroup(mp_DiagnosticsManufGroup, QApplication::translate
                    ("Core::CManufacturingDiagnosticsHandler", "Diagnostics", 0, QApplication::UnicodeUTF8));
@@ -213,7 +224,7 @@ bool CManufacturingDiagnosticsHandler::ShowGuide(Service::ModuleTestCaseID Id, i
     dlg->HideCenterButton();
     dlg->SetButtonText(3, tr("Next"));
     dlg->SetButtonText(1, tr("Cancel"));
-    if (Index == 1) {
+    if (Index > 0) {
         dlg->EnableButton(1, false);
     }
 

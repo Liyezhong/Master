@@ -196,6 +196,7 @@ typedef enum ModuleTestCaseID {
     SYSTEM_EXHAUST_FAN,                  ///< System exhaust fan test
     SYSTEM_VENTILATION_FAN,              ///< System ventilation fan test
     SYSTEM_110V_220V_SWITCH,             ///< System 110V/220V switch test
+    CLEANING_SYSTEM_TEST,                ///< Cleaning system test
     TEST_ABORT                           ///< This is to abort a heating test case.
 } ModuleTestCaseID_t;
 
@@ -211,7 +212,8 @@ typedef enum ModuleNames {
     OVEN,                ///< Oven Module
     ROTARY_VALVE,                   ///< Rotary Valve Module
     LA_SYSTEM,              ///< L&A System Module
-    SYSTEM            ///< System
+    SYSTEM,            ///< System Module
+    CLEANING_SYSTEM       ///< Cleaning system Module
 } ModuleNames_t;
 
 typedef QMap<QString, QString>  ModuleTestStatus;

@@ -163,18 +163,23 @@ const quint32 EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_FAILURE           = 
 const quint32 EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST                      = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0088;  ///< 100728968 System 110V/220V switching test is requested
 const quint32 EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_SUCCESS              = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0089;  ///< 100728969 System 110V/220V switching test completed successfully
 const quint32 EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_FAILURE              = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x008A;  ///< 100728970 System 110V/220V switching test failed
-const quint32 EVENT_GUI_MANUF_RETORT_TEST_REQUESTED                           = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x008B;  ///< 100728971 Manufacturing: Retort module test is requested
-const quint32 EVENT_GUI_MANUF_RETORT_SENDTESTREPORT_REQUESTED                 = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x008C;  ///< 100728972 Manufacturing: Retort send test report
-const quint32 EVENT_GUI_MANUF_OVEN_TEST_REQUESTED                             = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x008D;  ///< 100728973 Manufacturing: Oven module test is requested
-const quint32 EVENT_GUI_MANUF_OVEN_SENDTESTREPORT_REQUESTED                   = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x008E;  ///< 100728974 Manufacturing: Oven send test report
-const quint32 EVENT_GUI_MANUF_ROTARYVALVE_TEST_REQUESTED                      = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x008F;  ///< 100728975 Manufacturing: Retort valve module test is requested
-const quint32 EVENT_GUI_MANUF_ROTARYVALVE_SENDTESTREPORT_REQUESTED            = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0090;  ///< 100728976 Manufacturing: Retort valve send test report
-const quint32 EVENT_GUI_MANUF_LASYSTEM_TEST_REQUESTED                         = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0091;  ///< 100728977 Manufacturing: L&A system module test is requested
-const quint32 EVENT_GUI_MANUF_LASYSTEM_SENDTESTREPORT_REQUESTED               = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0092;  ///< 100728978 Manufacturing: L&A system send test report
-const quint32 EVENT_GUI_MANUF_MAINCONTROL_TEST_REQUESTED                      = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0093;  ///< 100728979 Manufacturing: Main control module test is requested
-const quint32 EVENT_GUI_MANUF_MAINCONTROL_SENDTESTREPORT_REQUESTED            = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0094;  ///< 100728980 Manufacturing: Main control send test report
-const quint32 EVENT_GUI_MANUF_SYSTEM_TEST_REQUESTED                           = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0095;  ///< 100728981 Manufacturing: System module test is requested
-const quint32 EVENT_GUI_MANUF_SYSTEM_SENDTESTREPORT_REQUESTED                 = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0096;  ///< 100728982 Manufacturing: System send test report
+const quint32 EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST                      = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x008B;  ///< 100728971 Cleaning system test is requested
+const quint32 EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_SUCCESS              = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x008C;  ///< 100728972 Cleaning system test completed successfully
+const quint32 EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_FAILURE              = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x008D;  ///< 100728973 Cleaning system test failed
+const quint32 EVENT_GUI_MANUF_RETORT_TEST_REQUESTED                           = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x008E;  ///< 100728974 Manufacturing: Retort module test is requested
+const quint32 EVENT_GUI_MANUF_RETORT_SENDTESTREPORT_REQUESTED                 = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x008F;  ///< 100728975 Manufacturing: Retort send test report
+const quint32 EVENT_GUI_MANUF_OVEN_TEST_REQUESTED                             = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0090;  ///< 100728976 Manufacturing: Oven module test is requested
+const quint32 EVENT_GUI_MANUF_OVEN_SENDTESTREPORT_REQUESTED                   = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0091;  ///< 100728977 Manufacturing: Oven send test report
+const quint32 EVENT_GUI_MANUF_ROTARYVALVE_TEST_REQUESTED                      = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0092;  ///< 100728978 Manufacturing: Retort valve module test is requested
+const quint32 EVENT_GUI_MANUF_ROTARYVALVE_SENDTESTREPORT_REQUESTED            = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0093;  ///< 100728979 Manufacturing: Retort valve send test report
+const quint32 EVENT_GUI_MANUF_LASYSTEM_TEST_REQUESTED                         = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0094;  ///< 100728980 Manufacturing: L&A system module test is requested
+const quint32 EVENT_GUI_MANUF_LASYSTEM_SENDTESTREPORT_REQUESTED               = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0095;  ///< 100728981 Manufacturing: L&A system send test report
+const quint32 EVENT_GUI_MANUF_MAINCONTROL_TEST_REQUESTED                      = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0096;  ///< 100728982 Manufacturing: Main control module test is requested
+const quint32 EVENT_GUI_MANUF_MAINCONTROL_SENDTESTREPORT_REQUESTED            = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0097;  ///< 100728983 Manufacturing: Main control send test report
+const quint32 EVENT_GUI_MANUF_SYSTEM_TEST_REQUESTED                           = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0098;  ///< 100728984 Manufacturing: System module test is requested
+const quint32 EVENT_GUI_MANUF_SYSTEM_SENDTESTREPORT_REQUESTED                 = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x0099;  ///< 100728985 Manufacturing: System send test report
+const quint32 EVENT_GUI_MANUF_CLEANING_SYSTEM_TEST_REQUESTED                  = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x009A;  ///< 100728986 Manufacturing: Cleaning system test is requested
+const quint32 EVENT_GUI_MANUF_CLEANING_SYSTEM_SENDTESTREPORT_REQUESTED        = EVENT_GROUP_HIMALAYASERVICE_MAIN + 0x009B;  ///< 100728987 Manufacturing: Cleaning system send test report
 
 
 #endif

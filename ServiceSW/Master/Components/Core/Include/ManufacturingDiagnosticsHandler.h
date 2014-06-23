@@ -29,6 +29,7 @@
 #include "DiagnosticsManufacturing/Include/LaSystemManufacturing.h"
 #include "DiagnosticsManufacturing/Include/RotaryValveManufacturing.h"
 #include "DiagnosticsManufacturing/Include/SystemManufacturing.h"
+#include "DiagnosticsManufacturing/Include/CleaningManufacturing.h"
 #include "DiagnosticsManufacturing/Include/RetortManufacturing.h"
 #include "Core/Include/ServiceDefines.h"
 
@@ -67,6 +68,7 @@ private:
     DiagnosticsManufacturing::CRotaryValve      *mp_RotaryValveManuf;       //!< Rotary Valve object provides tests for rotary valve
     DiagnosticsManufacturing::CSystem           *mp_SystemManuf;            //!< System object provides tests for system
     DiagnosticsManufacturing::CRetort           *mp_RetortManuf;            //!< Retort object provides tests for retort
+    DiagnosticsManufacturing::CCleaning         *mp_CleaningManuf;          //!< Cleaning system object provides test for clean system
 
     QEventLoop                                   m_LoopManufacturingTest;    //!< Loop for blocking Manufacturing Test command
 

@@ -294,7 +294,7 @@ void CSystem::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void CSystem::BeginTest()
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_TEST_REQUESTED);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_SYSTEM_TEST_REQUESTED);
 
     if (mp_Ui->systemSNEdit->text().endsWith("XXXXX")) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CSystem",

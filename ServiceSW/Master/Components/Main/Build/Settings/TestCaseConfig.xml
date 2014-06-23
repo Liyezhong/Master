@@ -35,6 +35,9 @@
 		<SystemMainsRelay Parameter="N/A"/>
 		<SystemFillingDraining Parameter="N/A"/>
 	</System>
+	<Cleaning>
+		<CleaningSystem Parameter="N/A"/>
+	</Cleaning>
 	<Retort>
 		<RetortLidLock Parameter="N/A" />
 		<RetortLevelSensorHeating Parameter="N/A" />

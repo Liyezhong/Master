@@ -799,7 +799,7 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
             // local disconnect test
             AlarmParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Alarm4.ogg";
         }
-        p_TestCase->SetParameter("PostionFlag", QString::number(!PositionFlag));
+        p_TestCase->SetParameter("PositionFlag", QString::number(!PositionFlag));
         Status.insert("AlarmStatus", "disConnected");
     }
 

@@ -126,6 +126,11 @@
 			<Step>System Filling and Draining test</Step>
 		</Guide>
 	</SystemFillingDraining>
+	<CleaningSystem Description="Cleaning system test">
+		<Guide>
+			<Step>Cleaning system test</Step>
+		</Guide>
+	</CleaningSystem>
 	<RetortLidLock Description="Lid lock test">
 		<Guide>
 			<Step>Please unlock the retort lid.</Step>

@@ -236,6 +236,9 @@ void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
     else if (TestCaseName == "RetortHeatingWater") {
         Id = Service::RETORT_HEATING_WITH_WATER;
     }
+    else if (TestCaseName == "CleaningSystem") {
+        Id = Service::CLEANING_SYSTEM_TEST;
+    }
 
     m_TestCaseIDHash.insert(Id, TestCaseName);
 }
