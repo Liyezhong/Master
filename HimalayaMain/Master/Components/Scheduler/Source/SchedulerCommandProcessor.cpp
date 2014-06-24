@@ -543,12 +543,8 @@ void SchedulerCommandProcessor<DP>::ShutDownDevice()
     emit SigShutDownDevice();
 }
 
-template <class DP>
 void SchedulerCommandProcessor<DP>::NotifySavedServiceInfor(const QString& deviceType)
-{
     emit SigNotifySavedServiceInfor(deviceType);
-}
-
 template <class DP>
 void SchedulerCommandProcessor<DP>::OnShutDownDevice4Slot()
 {

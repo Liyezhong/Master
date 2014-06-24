@@ -551,9 +551,9 @@ void CSchedulerStateMachine::EnterRsHeatingErr30SRetry()
     emit SigEnterRSHeatingErr30SRetry();
 }
 
-void CSchedulerStateMachine::HandlePssmPreTestWorkFlow()
+void CSchedulerStateMachine::HandlePssmPreTestWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
-    mp_ProgramSelfTest->HandleWorkFlow();
+    mp_ProgramSelfTest->HandleWorkFlow(cmdName, retCode);
 }
 
 void CSchedulerStateMachine::HandleRsStandByWithTissueWorkFlow(bool flag)

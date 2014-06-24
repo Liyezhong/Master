@@ -493,12 +493,13 @@ public:
     /*!
      *  \brief Handle the whole work flow for Program Pre-Test
      *
-     *  \param void
+     *  \param cmdName - command name
+     *  \param retCode - return code
      *
      *  \return void
      */
     /****************************************************************************/
-    void HandlePssmPreTestWorkFlow();
+    void HandlePssmPreTestWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!

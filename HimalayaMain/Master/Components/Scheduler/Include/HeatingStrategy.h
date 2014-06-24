@@ -194,12 +194,12 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  Stop the specific sensor's temperature control in Error state
+     *  \brief  Stop the specific sensor's temperature control
      *  \param 	HeaterName - sensor's name
-     *  \return void
+     *  \return ReturnCode_t
      */
     /****************************************************************************/
-    void StopTemperatureControlInError(const QString& HeaterName);
+    ReturnCode_t StopTemperatureControl(const QString& HeaterName);
 
     /****************************************************************************/
     /*!

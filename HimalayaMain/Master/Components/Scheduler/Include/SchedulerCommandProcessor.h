@@ -151,17 +151,6 @@ public:
     /****************************************************************************/
     virtual void ShutDownDevice() = 0;
     virtual void NotifySavedServiceInfor(const QString& deviceType) = 0;
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function GetCurrentVoltageStatus
-     *
-     *  \param void
-     *
-     *  \return bool
-     */
-    /****************************************************************************/
-    virtual bool GetCurrentVoltageStatus() = 0;
-
 signals:
     /****************************************************************************/
     /**
@@ -453,17 +442,6 @@ public:
     /****************************************************************************/
     virtual void ShutDownDevice();
     virtual void NotifySavedServiceInfor(const QString& deviceType);
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function GetCurrentVoltageStatus
-     *
-     *  \param void
-     *
-     *  \return bool
-     */
-    /****************************************************************************/
-    virtual bool GetCurrentVoltageStatus();
 private:
 
     /****************************************************************************/

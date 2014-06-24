@@ -204,6 +204,7 @@ typedef struct
         int m_ProcessCassetteCount;       ///<  Definition/Declaration of variable m_ProcessCassetteCount
         quint32 m_EventKey;                                   ///< Current Event key
         ReturnCode_t m_CurErrEventID;                         ///< Current Event ID
+        quint32 m_CurrentScenario;                            ///< Current Scenario
         QSharedPointer<HeatingStrategy> mp_HeatingStrategy;   ///< Definition/Declaration of variable mp_HeatingStrategy
         Global::tRefType    m_RefCleanup;                     ///< Command reference of the cleanup command
         int m_delayTime;
@@ -434,7 +435,7 @@ typedef struct
           *  \return from GetRVTubePositionByStationID
           */
          /****************************************************************************/
-         RVPosition_t GetRVTubePositionByStationID(const QString stationID);
+         RVPosition_t GetRVTubePositionByStationID(const QString& stationID);
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function GetRVSealPositionByStationID
@@ -444,7 +445,7 @@ typedef struct
           *  \return from GetRVSealPositionByStationID
           */
          /****************************************************************************/
-         RVPosition_t GetRVSealPositionByStationID(const QString stationID);
+         RVPosition_t GetRVSealPositionByStationID(const QString& stationID);
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function IsLastStep
@@ -620,12 +621,7 @@ private slots:
           */
          /****************************************************************************/
          bool CheckLevelSensorTemperature(qreal targetTemperature);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot SealingCheck
-          */
-         /****************************************************************************/
-         void SealingCheck();
+
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of slot HeatLevelSensor
@@ -1001,6 +997,52 @@ protected:
          */
         /****************************************************************************/
         QSharedPointer<HeatingStrategy> GetHeatingStrategy() const { return mp_HeatingStrategy; }
+
+
+        /****************************************************************************/
+        /**
+         *  \brief  Send out Error message
+         *  \param  Event Id
+         *  \return void
+         */
+        /****************************************************************************/
+        void SendOutErrMsg(ReturnCode_t EventId)
+        {
+            RaiseError(0,EventId, m_CurrentScenario, true);
+            m_SchedulerMachine->SendErrorSignal();
+
+        }
+
+        /****************************************************************************/
+        /**
+         *  \brief  Get Sealing position of current step
+         *  \param  void
+         *  \return Sealing position
+         */
+        /****************************************************************************/
+        RVPosition_t GetSealingPosition()
+        {
+            return this->GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+        }
+        /****************************************************************************/
+        /**
+         *  \brief  Get Sealing position of current step
+         *  \param  void
+         *  \return Sealing position
+         */
+        /****************************************************************************/
+        qreal GetRecentPressure() { return m_PressureAL; }
+
+
+        /****************************************************************************/
+        /**
+         *  \brief  Bottle check for each station
+         *  \param  void
+         *  \return bool, true - continue; false - done;
+         */
+        /****************************************************************************/
+        bool BottleCheck();
+
     public slots:
 
         /****************************************************************************/

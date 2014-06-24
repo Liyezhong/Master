@@ -365,57 +365,57 @@ void HeatingStrategy::StartTemperatureControlInError(const QString& HeaterName)
     }
 }
 
-void HeatingStrategy::StopTemperatureControlInError(const QString& HeaterName)
+ReturnCode_t HeatingStrategy::StopTemperatureControl(const QString& HeaterName)
 {
+    CmdSchedulerCommandBase* pHeatingCmd = NULL;
     if ("LevelSensor" == HeaterName)
     {
-        CmdALSetTempCtrlOFF* pHeatingCmd  = new CmdALSetTempCtrlOFF(500, mp_SchedulerController);
-        pHeatingCmd->Settype(AL_LEVELSENSOR);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdALSetTempCtrlOFF(500, mp_SchedulerController);
+        dynamic_cast<CmdALSetTempCtrlOFF*>(pHeatingCmd)->Settype(AL_LEVELSENSOR);
     }
     if ("RTSide" == HeaterName)
     {
-        CmdRTSetTempCtrlOFF* pHeatingCmd  = new CmdRTSetTempCtrlOFF(500, mp_SchedulerController);
-        pHeatingCmd->SetType(RT_SIDE);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdRTSetTempCtrlOFF(500, mp_SchedulerController);
+        dynamic_cast<CmdRTSetTempCtrlOFF*>(pHeatingCmd)->SetType(RT_SIDE);
     }
     if ("RTBottom" == HeaterName)
     {
 
-        CmdRTSetTempCtrlOFF* pHeatingCmd  = new CmdRTSetTempCtrlOFF(500, mp_SchedulerController);
-        pHeatingCmd->SetType(RT_BOTTOM);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdRTSetTempCtrlOFF(500, mp_SchedulerController);
+        dynamic_cast<CmdRTSetTempCtrlOFF*>(pHeatingCmd)->SetType(RT_BOTTOM);
     }
     if ("OvenTop" == HeaterName)
     {
 
-        CmdOvenSetTempCtrlOFF* pHeatingCmd  = new CmdOvenSetTempCtrlOFF(500, mp_SchedulerController);
-        pHeatingCmd->Settype(OVEN_TOP);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdOvenSetTempCtrlOFF(500, mp_SchedulerController);
+        dynamic_cast<CmdOvenSetTempCtrlOFF*>(pHeatingCmd)->Settype(OVEN_TOP);
     }
     if ("OvenBottom" == HeaterName)
     {
-        CmdOvenSetTempCtrlOFF* pHeatingCmd  = new CmdOvenSetTempCtrlOFF(500, mp_SchedulerController);
-        pHeatingCmd->Settype(OVEN_BOTTOM);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdOvenSetTempCtrlOFF(500, mp_SchedulerController);
+        dynamic_cast<CmdOvenSetTempCtrlOFF*>(pHeatingCmd)->Settype(OVEN_BOTTOM);
     }
     if ("RV" == HeaterName)
     {
-        CmdRVSetTempCtrlOFF* pHeatingCmd  = new CmdRVSetTempCtrlOFF(500, mp_SchedulerController);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdRVSetTempCtrlOFF(500, mp_SchedulerController);
     }
     if ("LA_Tube1" == HeaterName)
     {
-        CmdALSetTempCtrlOFF* pHeatingCmd  = new CmdALSetTempCtrlOFF(500, mp_SchedulerController);
-        pHeatingCmd->Settype(AL_TUBE1);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdALSetTempCtrlOFF(500, mp_SchedulerController);
+        dynamic_cast<CmdALSetTempCtrlOFF*>(pHeatingCmd)->Settype(AL_TUBE1);
     }
     if ("LA_Tube2" == HeaterName)
     {
-        CmdALSetTempCtrlOFF* pHeatingCmd  = new CmdALSetTempCtrlOFF(500, mp_SchedulerController);
-        pHeatingCmd->Settype(AL_TUBE2);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
-    }
+        pHeatingCmd  = new CmdALSetTempCtrlOFF(500, mp_SchedulerController);
+        dynamic_cast<CmdALSetTempCtrlOFF*>(pHeatingCmd)->Settype(AL_TUBE2);
+    }  
+    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+
+    SchedulerCommandShPtr_t pResHeatingCmd;
+    mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
+    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+    pResHeatingCmd->GetResult(retCode);
+    return retCode;
 }
 
 bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
@@ -425,7 +425,6 @@ bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
             && m_RTBottom.OTCheckPassed
             && m_OvenTop.OTCheckPassed
             && m_OvenBottom.OTCheckPassed
-            && m_RV_1_HeatingRod.OTCheckPassed
             && m_RV_2_Outlet.OTCheckPassed
             && m_LARVTube.OTCheckPassed
             && m_LAWaxTrap.OTCheckPassed;

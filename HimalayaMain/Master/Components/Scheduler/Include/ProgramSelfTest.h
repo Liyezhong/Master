@@ -22,6 +22,7 @@
 
 #include <QStateMachine>
 #include <QSharedPointer>
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 
 namespace Scheduler{
 
@@ -58,13 +59,14 @@ public:
     /*!
      *  \brief  Handle the sub steps for Self Test 
      *
-     *  \param  void
+     *  \param  cmdName - command name
+     *  \param  retCode - return code
 	 *
      *  \return void
      *
      */
     /****************************************************************************/
-    void HandleWorkFlow();
+    void HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
 signals:
 
@@ -75,6 +77,15 @@ signals:
      */
     /****************************************************************************/
     void TemperatureSensorsChecking();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Signal for current and voltage status checking
+     *
+     */
+    /****************************************************************************/
+    void RTTemperatureControlOff();
+
 
     /****************************************************************************/
     /*!
@@ -108,13 +119,6 @@ signals:
     /****************************************************************************/
     void BottlesChecking();
 
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for current and voltage status checking
-     *
-     */
-    /****************************************************************************/
-    void CurrentVoltageChecking();
 
     /****************************************************************************/
     /*!
@@ -129,7 +133,7 @@ private:
     QSharedPointer<QStateMachine>   mp_StateMachine;                //!< State machine for Pre-Test
     QSharedPointer<QState> mp_Initial;                              //!< Initial state
     QSharedPointer<QState> mp_TemperatureSensorsChecking;           //!< Temperature sensors status checking state
-    QSharedPointer<QState> mp_CurrentVoltageChecking;               //!< Current checking state
+    QSharedPointer<QState> mp_RTTempCtrlOff;                        //!< Current checking state
     QSharedPointer<QState> mp_RVPositionChecking;                   //!< Rotary Valve position checking state
     QSharedPointer<QState> mp_PressureChecking;                     //!< Pressure checking state
     QSharedPointer<QState> mp_SealingChecking;                      //!< Sealing checking state
@@ -142,12 +146,19 @@ private:
         PRETEST_UNDEF,
         PRETEST_INIT,
         TEMPSENSORS_CHECKING,
-        CURRENTVOLTAGE_CHECKING,
+        RT_TEMCTRL_OFF,
         RV_POSITION_CHECKING,
         PRESSURE_CHECKING,
         SEALING_CHECKING,
         BOTTLES_CHECKING
     } StateList_t;
+	
+	quint32	m_RTTempOffSeq;											//!< Sequence of RT sensors temperature off
+	quint32	m_RVPositioinChkSeq;									//!< Sequence of RV position checking 
+    quint32	m_PressureChkSeq;										//!< Sequence of Pressure checking
+    qint64  m_SetPrressureTime;                                     //!< Time for pressure checking
+    quint32 m_SealingChkSeq;                                        //!< Sequence of Sealing checking
+    bool    m_BottleChkFlag;                                        //!< Flag to indicate sending out command or geting command response.
 private:
     /****************************************************************************/
     /*!

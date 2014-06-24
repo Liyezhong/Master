@@ -452,11 +452,11 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
 
 void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
-    ReturnCode_t retCode;
+    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
     QString cmdName = "";
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
 
-    quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
+    quint32 m_CurrentScenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
     if(cmd != NULL)
     {
         if(!(cmd->GetResult(retCode)))
@@ -489,9 +489,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     {
         SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
         //qDebug()<<"DBG" << "Scheduler step statemachine: "<<stepState;
-        if (PSSM_PRETEST == stepState)
-        {
-           m_SchedulerMachine->HandlePssmPreTestWorkFlow();
+
+        if(PSSM_INIT == stepState)
             if(!m_IsPrecheckMoveRV)
             {
                 if(RV_UNDEF != targetPos)
@@ -543,8 +542,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     DequeueNonDeviceCommand();
                 }
             }
-        }
-        else if(PSSM_INIT == stepState)
         {
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
@@ -555,14 +552,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             else
             {
                 m_SchedulerMachine->SendRunPreTest();
-                /*
-                if(CheckStepTemperature()) //todo: verify later
-                {
-                    LogDebug("Program Step Init OK");
-                    m_SchedulerMachine->NotifyTempsReady();
-                }
-                */
             }
+        }
+        else if (PSSM_PRETEST == stepState)
+        {
+           m_SchedulerMachine->HandlePssmPreTestWorkFlow(cmdName, retCode);
         }
         else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1 == stepState)
         {
@@ -635,13 +629,13 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     {
                         //fail to move to seal, raise event here
                         LogDebug(QString("Program Step Move to tube(before)%1 internal steps retry").arg(targetPos));
-                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, Scenario, true);
+                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, m_CurrentScenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                     else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
                     {
                         LogDebug(QString("Program Step Move to tube(before)%1 exceed upper limit").arg(targetPos));
-                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT, Scenario, true);
+                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT, m_CurrentScenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                 }
@@ -671,7 +665,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else if( DCL_ERR_DEV_LA_FILLING_INSUFFICIENT == retCode)
                 {
                     LogDebug(QString("Program Step Filling Insufficient"));
-                    RaiseError(0, DCL_ERR_DEV_LA_FILLING_INSUFFICIENT, Scenario, true);
+                    RaiseError(0, DCL_ERR_DEV_LA_FILLING_INSUFFICIENT, m_CurrentScenario, true);
                     m_SchedulerMachine->SendErrorSignal();
                 }
             }
@@ -711,7 +705,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     {
                         //fail to move to seal, raise event here
                         LogDebug(QString("Program Step Move to Seal %1 internal step retry").arg(targetPos));
-                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, Scenario, true);
+                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, m_CurrentScenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                 }
@@ -845,7 +839,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     {
                         //fail to move to seal, raise event here
                         LogDebug(QString("Program Step Move to Tube(after) %1 Internal Steps Failed").arg(targetPos));
-                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, Scenario, true);
+                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, m_CurrentScenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                     else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
@@ -912,7 +906,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else if(DCL_ERR_DEV_LA_DRAINING_TIMEOUT_BUILDPRESSURE == retCode)
                 {
                     LogDebug(QString("Program Step Draining Build Pressure timeout"));
-                    RaiseError(0, DCL_ERR_DEV_LA_DRAINING_TIMEOUT_BUILDPRESSURE, Scenario, true);
+                    RaiseError(0, DCL_ERR_DEV_LA_DRAINING_TIMEOUT_BUILDPRESSURE, m_CurrentScenario, true);
                     m_SchedulerMachine->SendErrorSignal();
                 }
             }
@@ -1946,6 +1940,9 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
         break;
     case PSSM_INIT:
         break;
+    case PSSM_PRETEST:
+        scenario = 200;
+        break;
     case PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1:
         if(ReagentGroup == "RG6")
         {
@@ -2001,9 +1998,6 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
         break;
     case PSSM_ABORTED:
         scenario = 206;
-        break;
-    case PSSM_PRETEST:
-        scenario = 200;
         break;
     default:
         break;
@@ -2374,12 +2368,23 @@ void SchedulerMainThreadController::HeatLevelSensor()
     }
 }
 
-void SchedulerMainThreadController::SealingCheck()
+bool SchedulerMainThreadController::BottleCheck()
 {
-    LogDebug("Send cmd to DCL to start sealing test. ");
-    CmdIDSealingCheck* cmd = new CmdIDSealingCheck(500, this);
-    cmd->SetThresholdPressure(10);
+    if (m_ProgramStationList.empty())
+    {
+        return false;
+    }
+
+    ProgramStationInfo_t stationInfo = m_ProgramStationList.dequeue();
+    RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
+    QString reagentGrpId = stationInfo.ReagentGroupID;
+
+    LogDebug(QString("Bottle check for tube %1").arg(tubePos));
+    CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, this);
+    cmd->SetReagentGrpID(reagentGrpId);
+    cmd->SetTubePos(tubePos);
     m_SchedulerCommandProcessor->pushCmd(cmd);
+    return true;
 }
 
 void SchedulerMainThreadController::MoveRVToInit()
@@ -2682,7 +2687,7 @@ void SchedulerMainThreadController::Abort()
 }
 
 
-RVPosition_t SchedulerMainThreadController::GetRVTubePositionByStationID(const QString stationID)
+RVPosition_t SchedulerMainThreadController::GetRVTubePositionByStationID(const QString& stationID)
 {
     RVPosition_t ret = RV_UNDEF;
     bool ok;
@@ -2704,7 +2709,7 @@ RVPosition_t SchedulerMainThreadController::GetRVTubePositionByStationID(const Q
     return ret;
 }
 
-RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const QString stationID)
+RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const QString& stationID)
 {
     RVPosition_t ret = RV_UNDEF;
     bool ok;
