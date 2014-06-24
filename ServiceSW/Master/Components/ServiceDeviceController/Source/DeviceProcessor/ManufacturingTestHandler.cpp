@@ -732,12 +732,8 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
     return exitStat;
 }
 
-qint32 ManufacturingTestHandler::TestRetortHeatingWater()
-{
-    return -1;
-}
 
-qint32 ManufacturingTestHandler::TestSystemSpeaker(bool IsLowVolume)
+qint32 ManufacturingTestHandler::TestSystemSpeaker()
 {
     Service::ModuleTestStatus Status;
     if (!mp_SpeakProc) {

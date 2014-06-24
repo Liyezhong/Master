@@ -1074,10 +1074,10 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
         RefreshTestStatus4SystemSpeaker(id, status);
         break;
     case Service::SYSTEM_REMOTE_LOCAL_ALARM:
-        RefreshTestStatus4SystemAlarm(Id, Status);
+        RefreshTestStatus4SystemAlarm(id, status);
         break;
     case ::Service::SYSTEM_MAINS_RELAY:
-        RefreshTestStatus4SystemMainsRelay(Id, Status);
+        RefreshTestStatus4SystemMainsRelay(id, status);
         break;
     default:
         break;
