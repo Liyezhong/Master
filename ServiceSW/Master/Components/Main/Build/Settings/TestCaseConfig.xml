@@ -31,9 +31,8 @@
 		<SystemSpeaker VolumeFlag="0" LowVolume="60" HighVolume="120"/>
 		<SystemExhaustFan Parameter="N/A"/>
 		<SystemVentilationFan Parameter="N/A"/>
-		<SystemRemoteLocalAlarm PositionFlag="1" ConnectFlag="1"/>
-		<SystemMainsRelay Parameter="N/A"/>
-		<SystemFillingDraining Parameter="N/A"/>
+		<SystemRemoteLocalAlarm AlarmFlag="1" ConnectFlag="1"/>
+		<SystemMainsRelay RelaySwitchStatus="1"/>
 	</System>
 	<Cleaning>
 		<CleaningSystem Parameter="N/A"/>

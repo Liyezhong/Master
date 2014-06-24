@@ -34,7 +34,7 @@ namespace DiagnosticsManufacturing {
 const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,5}$"; //!< Reg expression for the validator
 const int FIXED_LINEEDIT_WIDTH = 241;           ///< Fixed line edit width
 const int SET_FIXED_TABLE_WIDTH = 500;          ///< Set table width
-const int SET_FIXED_TABLE_HEIGHT = 375;         ///< Set table height
+const int SET_FIXED_TABLE_HEIGHT = 360;         ///< Set table height
 const int VISIBLE_TABLE_ROWS = 4;               ///< Visible table rows
 
 /****************************************************************************/
@@ -77,7 +77,6 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     AddItem(6, Service::SYSTEM_VENTILATION_FAN);
     AddItem(7, Service::SYSTEM_REMOTE_LOCAL_ALARM);
     AddItem(8, Service::SYSTEM_MAINS_RELAY);
-    AddItem(9, Service::SYSTEM_FILL_DRAINING);
 
     mp_TableWidget->setModel(&m_Model);
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
@@ -88,8 +87,8 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     mp_TableWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     int i = 0;
-    for (; i < 9; i++) {
-        mp_TableWidget->setRowHeight(i, 29);
+    for (; i < 8; i++) {
+        mp_TableWidget->setRowHeight(i, 31);
     }
 
     mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());

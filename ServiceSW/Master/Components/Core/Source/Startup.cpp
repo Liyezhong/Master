@@ -962,7 +962,6 @@ void CStartup::RefreshTestStatus4RVHeating(Service::ModuleTestCaseID Id, const S
 
 void CStartup::RefreshTestStatus4SystemSpeaker(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
-
     mp_MessageBox->SetTitle("System speaker test");
     mp_MessageBox->SetText(QString("Do you hear the system speak noice?"));
     mp_MessageBox->SetButtonText(1, "YES");
@@ -1007,7 +1006,34 @@ void CStartup::RefreshTestStatus4SystemAlarm(Service::ModuleTestCaseID Id, const
         mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(false);
     }
 
-    emit PerformManufacturingTest(Service::TEST_ABORT, Id);
+    //emit PerformManufacturingTest(Service::TEST_ABORT, Id);
+}
+
+void CStartup::RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    QString MessagetText;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    mp_MessageBox->SetTitle("Mains relay test");
+    mp_MessageBox->SetButtonText(3, "OK");
+    mp_MessageBox->HideButtonsOneAndTwo();
+
+    bool RelaySwitchStatus = p_TestCase->GetParameter("RelaySwitchStatus").toInt();
+
+    p_TestCase->SetParameter("RelaySwitchStatus", QString::number(!RelaySwitchStatus));
+    if (RelaySwitchStatus) {
+        MessagetText = "relay switch on Spec.0.3A-1.3A";
+    }
+    else {
+        MessagetText = "relay switch off Spec.&lt;0.1A";
+    }
+
+    MessagetText.append(QString("<br>ASB3 current:%1<br>Result:%2").arg(p_TestCase->GetResult().value("ASB3Current"), Status.value("Result")));
+
+    mp_MessageBox->SetText(MessagetText);
+    (void)mp_MessageBox->exec();
+
 }
 
 /****************************************************************************/
@@ -1049,6 +1075,9 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
         break;
     case Service::SYSTEM_REMOTE_LOCAL_ALARM:
         RefreshTestStatus4SystemAlarm(Id, Status);
+        break;
+    case ::Service::SYSTEM_MAINS_RELAY:
+        RefreshTestStatus4SystemMainsRelay(Id, Status);
         break;
     default:
         break;

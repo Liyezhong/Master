@@ -775,12 +775,12 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_REMOTE_LOCAL_ALARM);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
-    bool PositionFlag = p_TestCase->GetParameter("PositionFlag").toInt();
+    bool AlarmFlag = p_TestCase->GetParameter("AlarmFlag").toInt();
     bool ConnectFlag  = p_TestCase->GetParameter("ConnectFlag").toInt();
 
     QStringList AlarmParams;
     if (ConnectFlag) {
-        if (PositionFlag) {
+        if (AlarmFlag) {
             // remote connect test
             AlarmParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Alarm1.ogg";
         }
@@ -791,7 +791,7 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
         Status.insert("AlarmStatus", "Connected");
     }
     else {
-        if (PositionFlag) {
+        if (AlarmFlag) {
             // remote disconnect test
             AlarmParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Alarm3.ogg";
         }
@@ -799,16 +799,16 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
             // local disconnect test
             AlarmParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Alarm4.ogg";
         }
-        p_TestCase->SetParameter("PositionFlag", QString::number(!PositionFlag));
+        p_TestCase->SetParameter("AlarmFlag", QString::number(!AlarmFlag));
         Status.insert("AlarmStatus", "disConnected");
     }
 
     p_TestCase->SetParameter("ConnectFlag", QString::number(!ConnectFlag));
 
-    if (!mp_SpeakProc) {
-        mp_SpeakProc = new QProcess;
-    }
-    mp_SpeakProc->start("ogg123", AlarmParams);
+    //if (!mp_SpeakProc) {
+        //mp_SpeakProc = new QProcess;
+    //}
+    //mp_SpeakProc->start("ogg123", AlarmParams);
 
     emit RefreshTestStatustoMain(TestCaseName, Status);
     return 0;
@@ -816,15 +816,67 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
 
 qint32 ManufacturingTestHandler::TestSystem110v220vSwitch()
 {
+    bool Result = false;
     qint32 CurrentVoltage = 110;
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_110V_220V_SWITCH);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     QString ConnectedVoltage = p_TestCase->GetParameter("ConnectedVoltage");
 
+    Result = (CurrentVoltage == ConnectedVoltage.toInt());
+    p_TestCase->SetStatus(Result);
     p_TestCase->AddResult("CurrentVoltage", QString::number(CurrentVoltage));
 
-    return CurrentVoltage == ConnectedVoltage.toInt();
+    return Result;
+}
+
+qint32 ManufacturingTestHandler::TestSystemMainsRelay()
+{
+    bool Result = false;
+    Service::ModuleTestStatus Status;
+    float ASB3Current = 1.1;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_MAINS_RELAY);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    bool RelaySwitchStatus = p_TestCase->GetParameter("RelaySwitchStatus").toInt();
+
+    p_TestCase->AddResult("ASB3Current", QString("%1V").arg(ASB3Current));
+
+    if (RelaySwitchStatus) {
+         // switch on
+        qDebug()<<"System mains relay switch on";
+        Result = (ASB3Current>0.3 && ASB3Current<1.3);
+    }
+    else {
+         // switch off
+        ASB3Current = 0.1;
+        qDebug()<<"System mains relay switch off";
+        Result = (ASB3Current<0.3);
+        p_TestCase->AddResult("ASB3Current", QString("%1V").arg(ASB3Current));
+    }
+    p_TestCase->SetStatus(Result);
+    if (Result) {
+        Status.insert("Result", "PASS");
+    }
+    else {
+        Status.insert("Result", "FAIL");
+    }
+
+    emit RefreshTestStatustoMain(TestCaseName, Status);
+
+    //p_TestCase->SetParameter("RelaySwitchStatus", QString::number(!RelaySwitchStatus));
+
+    return Result;
+
+}
+
+qint32 ManufacturingTestHandler::TestSystemVentilationFan()
+{
+    return 0;
+}
+
+qint32 ManufacturingTestHandler::TestSystemExhaustFan()
+{
+    return 0;
 }
 
 qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t Id)
@@ -1890,6 +1942,9 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         break;
     case Service::SYSTEM_REMOTE_LOCAL_ALARM:
         TestSystemAlarm();
+        break;
+    case Service::SYSTEM_MAINS_RELAY:
+        emit ReturnManufacturingTestMsg(TestSystemMainsRelay());
         break;
     default:
         break;

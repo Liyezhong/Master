@@ -863,6 +863,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
     quint32 FailureId(0);
     quint32 OkId(0);
     quint32 EventId(0);
+    quint8 VentilationFanTestNum(0);
     QString StrResult;
     qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufSystemTests ---" << TestCaseList;
     for(int i=0; i<TestCaseList.size(); i++) {
@@ -872,9 +873,14 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             break;
         }
 
+        emit PerformManufacturingTest(Id);
+        bool Result = GetTestResponse();
+
+//Ventilation_Fan_Test_Twice:
+
         switch(Id) {
         case Service::SYSTEM_110V_220V_SWITCH:
-            EventId    = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST;
+            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_SUCCESS;
             SelectOptionFor110v220Switch();
@@ -889,11 +895,6 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_SUCCESS;
             break;
-        case Service::SYSTEM_FILL_DRAINING:
-            EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST;
-            FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_FAILURE;
-            OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_FILLING_DRAINING_TEST_SUCCESS;
-            break;
         case Service::SYSTEM_OVERFLOW:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_FAILURE;
@@ -903,11 +904,25 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_SUCCESS;
+            if (Result) {
+                NextFlag = ShowGuide(Id, 1);
+                if (!NextFlag)
+                    break;
+                emit PerformManufacturingTest(Id);
+                Result = GetTestResponse();
+            }
             break;
         case Service::SYSTEM_MAINS_RELAY:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_SUCCESS;
+            if (Result) {
+                NextFlag = ShowGuide(Id, 1);
+                if (!NextFlag)
+                    break;
+                emit PerformManufacturingTest(Id);
+                Result = GetTestResponse();
+            }
             break;
         case Service::SYSTEM_SEALING_TEST:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST;
@@ -918,43 +933,32 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS;
-            break;
-        }
-
-        Global::EventObject::Instance().RaiseEvent(EventId);
-        emit PerformManufacturingTest(Id);
-        bool Result = GetTestResponse();
-
-        if (Id == Service::SYSTEM_SPEARKER && Result) {
-            NextFlag = ShowGuide(Id, 1);
-            if (!NextFlag)
-                break;
-            emit PerformManufacturingTest(Id);
-            Result = GetTestResponse();
-        }
-
-        if (Id == Service::SYSTEM_REMOTE_LOCAL_ALARM && Result) {
-            for (int n = 1; n < 4 && Result; n++) {
+            int n = 1;
+            while (Result && n < 4) {
                 NextFlag = ShowGuide(Id, n);
                 if (!NextFlag)
                     break;
                 emit PerformManufacturingTest(Id);
                 Result = GetTestResponse();
+                n += 1;
             }
+            break;
         }
+
+        Global::EventObject::Instance().RaiseEvent(EventId);
 
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
         DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
         p_TestCase->SetStatus(Result);
 
+        QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
         if (Id == Service::SYSTEM_110V_220V_SWITCH) {
-            StrResult = "(Connected Voltage:"+p_TestCase->GetParameter("ConnectedVoltage")
-                    +"V; Current Voltage:"+p_TestCase->GetResult().value("CurrentVoltage")+"V)";
+            TestCaseDescription = p_TestCase->GetParameter("ConnectedVoltage") + "V test";
+            StrResult = "(Current Voltage:"+p_TestCase->GetResult().value("CurrentVoltage")+"V)";
         }
+
         if (!Result) {
             Global::EventObject::Instance().RaiseEvent(FailureId);
-
-            QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
 
             QString Reason = p_TestCase->GetResult().value("FailReason");
             if (Reason == "Abort") {   // if user click abort, then the test routines for this modules will terminate.
@@ -969,11 +973,13 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
         }
         else {
             Global::EventObject::Instance().RaiseEvent(OkId);
-            QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
             QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
             Text.append(StrResult);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
+        //if (VentilationFanTestNum == 1) {
+            //goto Ventilation_Fan_Test_Twice;
+        //}
         mp_SystemManuf->SetTestResult(Id, Result);
     }
     mp_SystemManuf->EnableButton(true);

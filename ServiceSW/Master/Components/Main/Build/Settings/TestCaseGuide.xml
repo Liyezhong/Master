@@ -118,17 +118,15 @@
 	</SystemRemoteLocalAlarm>
 	<SystemMainsRelay Description="Mains relay test">
 		<Guide>
-			<Step>System mains relay test</Step>
+			<Step>System mains relay switch on</Step>
+		</Guide>
+		<Guide>
+			<Step>System mains relay switch off</Step>
 		</Guide>
 	</SystemMainsRelay>
-	<SystemFillingDraining Description="Filling and draining test">
+	<CleaningSystem Description="Cleaning system">
 		<Guide>
-			<Step>System Filling and Draining test</Step>
-		</Guide>
-	</SystemFillingDraining>
-	<CleaningSystem Description="Cleaning system test">
-		<Guide>
-			<Step>Cleaning system test</Step>
+			<Step>Cleaning system</Step>
 		</Guide>
 	</CleaningSystem>
 	<RetortLidLock Description="Lid lock test">
