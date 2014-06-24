@@ -50,6 +50,11 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
     mp_TempOvenBottom = NULL;
     mp_DigitalInpputOven = NULL;
     mp_DigitalOutputMainRelay = NULL;
+
+    mp_TempRetortSide = NULL;
+    mp_TempRetortBttom = NULL;
+    mp_TempRetortInputLid = NULL;
+
     mp_TempTubeLiquid = NULL;
     mp_TempTubeAir = NULL;
     mp_MotorRV = NULL;
@@ -86,10 +91,30 @@ void ManufacturingTestHandler::CreateWrappers()
         mp_TempOvenBottom = new WrapperFmTempControl("temp_oven_bottom", pTemperature, this);
     }
 
+    pTemperature = NULL;
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortSideTempCtrlKey));
+    if (NULL != pTemperature)
+    {
+        mp_TempRetortSide = new WrapperFmTempControl("temp_retort_side", pTemperature, this);
+    }
+
+    pTemperature = NULL;
+    pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortBottomTempCtrlKey));
+    if (NULL != pTemperature)
+    {
+        mp_TempRetortBttom = new WrapperFmTempControl("temp_retort_bottom", pTemperature, this);
+    }
+
     CDigitalInput *pDigitalInput = NULL;
     pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenLidDIKey));
     if ( NULL != pDigitalInput ) {
         mp_DigitalInpputOven = new WrapperFmDigitalInput("digitalinput_oven", pDigitalInput, this);
+    }
+
+    pDigitalInput = NULL;
+    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortLockDIKey));
+    if ( NULL != pDigitalInput ) {
+        mp_TempRetortInputLid = new WrapperFmDigitalInput("digitalinput_retortlid", pDigitalInput, this);
     }
 
     CDigitalOutput *pDigitalOutput = NULL;
@@ -180,12 +205,11 @@ bool ManufacturingTestHandler::IsInitialized()
 void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, quint32 AbortTestCaseId)
 {
     qDebug()<<"ManufacturingTestHandler::OnAbortTest";
-    if(!IsInitialized()){
+
+    if(!IsInitialized()) {
         Initialize();
     }
-
-    if(NULL == mp_Utils)
-    {
+    if(NULL == mp_Utils) {
         emit ReturnErrorMessagetoMain(Service::MSG_DEVICE_NOT_INITIALIZED);
         return;
     }
@@ -199,12 +223,13 @@ void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, qui
     case Service::OVEN_COVER_SENSOR:
         qDebug()<<"abort the oven cover sensor test";
         break;
+    case Service::RETORT_LID_LOCK:
+        qDebug()<<"abort the retort lid test";
+        break;
     default:
         mp_Utils->AbortPause();
     }
-
     m_UserAbort = true;
-
 }
 
 qint32 ManufacturingTestHandler::TestOvenHeatingWater()
@@ -548,6 +573,167 @@ qint32 ManufacturingTestHandler::TestOvenCoverSensor()
     emit RefreshTestStatustoMain(TestCaseName, Status);
 
     return 0;
+}
+
+qint32 ManufacturingTestHandler::TestLidLocker()
+{
+    if (NULL == mp_TempRetortInputLid) {
+        SetFailReason(Service::RETORT_LID_LOCK, Service::MSG_DEVICE_NOT_INITIALIZED);
+        emit ReturnManufacturingTestMsg(false);
+        return 0;
+    }
+
+    Service::ModuleTestStatus status;
+    qint32 value = mp_TempRetortInputLid->GetValue();
+    if (value == 0) { //  Lid locker status : close
+        status.insert("LidLockerStatus", "Close");
+    }
+    else {
+        status.insert("LidLockerStatus", "Open");
+    }
+
+    QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::RETORT_LID_LOCK);
+    emit RefreshTestStatustoMain(testCaseName, status);
+    return 0;
+}
+
+qint32 ManufacturingTestHandler::TestRetortHeating()
+{
+    QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::RETORT_HEATING_EMPTY);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(testCaseName);
+
+    QTime durTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
+    qreal tgtTemp = p_TestCase->GetParameter("TargetTemp").toDouble();
+    qreal deptLow = p_TestCase->GetParameter("DepartureLow").toDouble();
+    qreal deptHigh = p_TestCase->GetParameter("DepartureHigh").toDouble();
+    qreal minTgtTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureLow").toDouble();
+    //qreal maxTgtTemp = p_TestCase->GetParameter("TargetTemp").toDouble() + p_TestCase->GetParameter("DepartureHigh").toDouble();
+
+    qreal sideTgtTemp = p_TestCase->GetParameter("SideTargetTemp").toDouble();
+    qreal btmTgtTemp  = p_TestCase->GetParameter("BottomTargetTemp").toDouble();
+    qreal ambLow  = p_TestCase->GetParameter("AmbTempLow").toDouble();
+    qreal ambHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
+
+    bool needAC = false;
+    if (p_TestCase->GetParameter("PowerSupply") == "AC") {
+        needAC = true;
+        bool acRet = mp_DigitalOutputMainRelay->SetHigh();
+        qDebug() << "MainRelay SetHigh return :"<< acRet << "\n";
+    }
+
+    bool sideCtrlRet = mp_TempRetortSide->StartTemperatureControl(sideTgtTemp);
+    bool btmCtrlRet  = mp_TempRetortBttom->StartTemperatureControl(btmTgtTemp);
+    qDebug() << "Start top return : "<< sideCtrlRet << "\n";
+    qDebug() << "Start bottom return :"<< btmCtrlRet << "\n";
+
+    qreal curSideTemp   = mp_TempRetortSide->GetTemperature(0);
+    qreal curBottomTemp = mp_TempRetortBttom->GetTemperature(0);
+    qDebug() << "AmbTempLow= " << ambLow << " AmbTempHigh= " << ambHigh <<" Side= " << curSideTemp <<" Bottom= " << curBottomTemp << "\n";
+
+    const quint32 sumSec = durTime.hour() * 60 * 60 + durTime.minute() * 60 + durTime.second();
+    quint32 waitSec = sumSec;
+
+    QString sideTemp, btmTemp;
+    if (curSideTemp < ambLow || curSideTemp > ambHigh || curBottomTemp < ambLow || curBottomTemp > ambHigh) {
+        QString failMsg = QString("Retort current temperature is (%1 %2) which is not in (%4~%5)")\
+                .arg(curSideTemp).arg(curBottomTemp).arg(ambLow).arg(ambHigh);
+        SetFailReason(Service::RETORT_HEATING_EMPTY, failMsg);
+        p_TestCase->SetStatus(false);
+
+        QString target = QString("%1 (%2~%3)").arg(tgtTemp).arg(deptLow).arg(deptHigh);
+        QString duration = QTime().addSecs(sumSec).toString("hh:mm:ss");
+        p_TestCase->AddResult("Duration", duration);
+        p_TestCase->AddResult("TargetTemp", target);
+
+        sideTemp = QString("%1").arg(curSideTemp);
+        btmTemp  = QString("%1").arg(curBottomTemp);
+        p_TestCase->AddResult("UsedTime", "00:00:00");
+        p_TestCase->AddResult("CurrentTempSide", sideTemp);
+        p_TestCase->AddResult("CurrentTempBottom", btmTemp);
+
+        mp_TempOvenTop->StopTemperatureControl();
+        mp_TempOvenBottom->StopTemperatureControl();
+        if (needAC) {
+            mp_DigitalOutputMainRelay->SetLow();
+        }
+        return -1;
+    }
+
+    Service::ModuleTestStatus testStat;
+    QString target = QString("%1 (%2~%3)").arg(tgtTemp).arg(deptLow).arg(deptHigh);
+    testStat.insert("TargetTemp", target);
+    qDebug() << "TargetTemp=" << target;
+
+    QString duration = QTime().addSecs(sumSec).toString("hh:mm:ss");
+    testStat.insert("Duration", duration);
+    p_TestCase->AddResult("Duration", duration);
+    p_TestCase->AddResult("TargetTemp", target);
+
+    QString usedTime;
+    qint32  keepSec  = 0, progStat = -1;
+    while (!m_UserAbort && waitSec) {
+        curSideTemp   = mp_TempRetortSide->GetTemperature(0);
+        curBottomTemp = mp_TempRetortBttom->GetTemperature(0);
+        if (curSideTemp == -1 || curBottomTemp == -1) {
+            qDebug() << "Side=" << curSideTemp << " Bottom=" << curBottomTemp << "\n";
+            mp_Utils->Pause(1000);
+            -- waitSec;
+            continue;
+        }
+        qDebug() << "Target=" << tgtTemp << " Side=" << curSideTemp << " Bottom=" << curBottomTemp << "\n";
+
+        if (curSideTemp >= minTgtTemp && curBottomTemp >= minTgtTemp) {
+            if (keepSec > 60) {
+                progStat = 1;
+                break;
+            }
+            ++ keepSec;
+        }
+        else {
+            keepSec = 0;
+        }
+
+        mp_Utils->Pause(1000);
+        -- waitSec;
+
+        sideTemp = QString("%1").arg(curSideTemp);
+        btmTemp  = QString("%1").arg(curBottomTemp);
+        usedTime = QTime().addSecs(sumSec - waitSec + 1).toString("hh:mm:ss");
+
+        testStat.insert("UsedTime", usedTime);
+        testStat.insert("CurrentTempSide", sideTemp);
+        testStat.insert("CurrentTempBottom", btmTemp);
+        emit RefreshTestStatustoMain(testCaseName, testStat);
+    }
+
+    mp_TempOvenTop->StopTemperatureControl();
+    mp_TempOvenBottom->StopTemperatureControl();
+    if (needAC) {
+        mp_DigitalOutputMainRelay->SetLow();
+    }
+
+    p_TestCase->AddResult("UsedTime", usedTime);
+    p_TestCase->AddResult("CurrentTempSide", sideTemp);
+    p_TestCase->AddResult("CurrentTempBottom", btmTemp);
+
+    int exitStat = -1;
+    if (m_UserAbort) {
+        p_TestCase->AddResult("FailReason", "Abort");
+        m_UserAbort = false;
+        exitStat = 1;
+    }
+    if (progStat == 1) {
+        p_TestCase->SetStatus(true);
+        exitStat = 0;
+    }
+    p_TestCase->SetStatus(exitStat == 0 ? true : false);
+
+    return exitStat;
+}
+
+qint32 ManufacturingTestHandler::TestRetortHeatingWater()
+{
+    return -1;
 }
 
 qint32 ManufacturingTestHandler::TestSystemSpeaker()
@@ -1464,7 +1650,7 @@ void ManufacturingTestHandler::SetFailReason(Service::ModuleTestCaseID Id, const
 
 }
 
-void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTestCaseID TestId, Service::ModuleTestCaseID AbortTestCaseId)
+void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTestCaseID_t TestId, Service::ModuleTestCaseID_t AbortTestCaseId)
 {
     qDebug()<<"ManufacturingTestHandler::PerformModuleManufacturingTest  test="<<TestId;
 
@@ -1531,6 +1717,64 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
             emit ReturnManufacturingTestMsg(false);
         }
         break;
+
+    case Service::RETORT_LID_LOCK:
+        TestLidLocker();
+        break;
+
+    case Service::RETORT_LEVEL_SENSOR_HEATING:
+        if (0) {
+            SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
+            emit ReturnManufacturingTestMsg(false);
+            return;
+        }
+        else if (0) {
+        }
+        else {
+            emit ReturnManufacturingTestMsg(false);
+        }
+        break;
+    case Service::RETORT_LEVEL_SENSOR_DETECTING:
+        if (NULL == mp_TempRetortSide) {
+            SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
+            emit ReturnManufacturingTestMsg(false);
+            return;
+        }
+        else if (0) {
+        }
+        else {
+            emit ReturnManufacturingTestMsg(false);
+        }
+        break;
+
+    case Service::RETORT_HEATING_WITH_WATER:
+        if (NULL == mp_TempRetortSide && NULL == mp_TempRetortBttom) {
+            SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
+            emit ReturnManufacturingTestMsg(false);
+            return;
+        }
+        else if (0 == TestRetortHeatingWater()) {
+            emit ReturnManufacturingTestMsg(true);
+        }
+        else {
+            emit ReturnManufacturingTestMsg(false);
+        }
+        break;
+
+    case Service::RETORT_HEATING_EMPTY:
+        if (NULL == mp_TempRetortSide && NULL == mp_TempRetortBttom) {
+            SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
+            emit ReturnManufacturingTestMsg(false);
+            return;
+        }
+        else if (0 == TestRetortHeating()) {
+            ReturnManufacturingTestMsg(true);
+        }
+        else {
+            emit ReturnManufacturingTestMsg(false);
+        }
+        break;
+
     case Service::ROTARY_VALVE_INITIALIZING:
         if (NULL == mp_MotorRV) {
             SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
@@ -1595,7 +1839,6 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
     }
 
     qDebug()<<"ManufacturingTestHandler::PerformModuleManufacturingTest  test="<<TestId<<"  End !!";
-
 }
 
 } // end namespace DeviceControl

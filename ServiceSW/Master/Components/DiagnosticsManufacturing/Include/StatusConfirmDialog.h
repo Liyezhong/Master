@@ -76,7 +76,15 @@ public:
      *  \iparam Status = Label test status
      */
     /****************************************************************************/
-    void UpdateLabel(const Service::ModuleTestStatus &Status);
+    void UpdateOvenLabel(const Service::ModuleTestStatus &status);
+    /****************************************************************************/
+    /*!
+     *  \brief Update retort label status
+     *
+     *  \iparam Status = Label test status
+     */
+    /****************************************************************************/
+    void UpdateRetortLabel(const Service::ModuleTestStatus &status);
 
     /****************************************************************************/
     /*!

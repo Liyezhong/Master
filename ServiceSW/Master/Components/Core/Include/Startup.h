@@ -193,6 +193,8 @@ private slots:
     int FileExistanceCheck();
 private:
     bool CurrentlyActive(MainMenu::CMenuGroup *p_Group, QWidget *p_Panel);
+    void RefreshTestStatus4RetortCoverSensor(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);
+
     void RefreshTestStatus4OvenCoverSensor(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);
     void RefreshTestStatus4OvenHeatingEmpty(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);
     void RefreshTestStatus4OvenHeatingWater(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);

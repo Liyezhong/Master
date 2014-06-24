@@ -265,7 +265,27 @@ private:
      */
     /****************************************************************************/
     qint32 TestSystem110v220vSwitch();
+    /****************************************************************************/
+    /**
+     * \brief To Test detecting of cover sensor of Oven
+     */
+    /****************************************************************************/
+    qint32 TestLidLocker();
 
+    /****************************************************************************/
+    /**
+     * \brief To Test heating of retort
+     *
+     */
+    /****************************************************************************/
+    qint32 TestRetortHeating();
+
+    /****************************************************************************/
+    /**
+     * \brief To Test heating of retort with water
+     */
+    /****************************************************************************/
+    qint32 TestRetortHeatingWater( );
 
     /****************************************************************************/
     /**
@@ -284,6 +304,11 @@ private:
     // Temperature control modules
     WrapperFmTempControl*       mp_TempOvenTop;
     WrapperFmTempControl*       mp_TempOvenBottom;
+
+    WrapperFmTempControl*       mp_TempRetortSide;
+    WrapperFmTempControl*       mp_TempRetortBttom;
+
+    WrapperFmDigitalInput*      mp_TempRetortInputLid;
 
     WrapperFmDigitalInput*      mp_DigitalInpputOven;
     WrapperFmDigitalOutput*     mp_DigitalOutputMainRelay;

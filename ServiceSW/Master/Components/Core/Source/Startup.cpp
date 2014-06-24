@@ -690,7 +690,7 @@ int CStartup::FileExistanceCheck()
 void CStartup::ResetWindowStatusTimer()
 {
 //    Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_RESET_WINDOW_TIMER);
-    qDebug() << "ResetWindowStatusTimer";
+    //qDebug() << "ResetWindowStatusTimer";
     if (!mp_MainWindow->isHidden())
     {
         m_WindowStatusResetTimer.start();
@@ -800,6 +800,27 @@ void CStartup::ShowErrorMessage(const QString &Message)
     mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Message);
 }
 
+void CStartup::RefreshTestStatus4RetortCoverSensor(Service::ModuleTestCaseID id, const Service::ModuleTestStatus &status)
+{
+    static bool openFlag = true;
+    DiagnosticsManufacturing::CStatusConfirmDialog *dlg = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
+
+    dlg->SetText(QString("Do you see the retort lid '%1' ?").arg(openFlag ? "Open" : "Close"));
+    dlg->UpdateRetortLabel(status);
+
+    int result = dlg->exec();
+    qDebug()<<"StatusconfirmDlg return : " << result;
+    delete dlg;
+    if (result == 0) { // yes
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
+        openFlag = !openFlag;
+    }
+    else {
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(false);
+        openFlag = true; // initial to open status.
+    }
+}
+
 void CStartup::RefreshTestStatus4OvenCoverSensor(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
     static bool OpenFlag = true;
@@ -814,7 +835,7 @@ void CStartup::RefreshTestStatus4OvenCoverSensor(Service::ModuleTestCaseID Id, c
     }
     dlg->SetText(QString("Do you see the coven sensor status shows '%1' ?").arg(TestStatus));
 
-    dlg->UpdateLabel(Status);
+    dlg->UpdateOvenLabel(Status);
     int result = dlg->exec();
     qDebug()<<"StatusconfirmDlg return : "<<result;
     delete dlg;
@@ -963,30 +984,36 @@ void CStartup::RefreshTestStatus4SystemSpeaker(Service::ModuleTestCaseID Id, con
  *
  */
 /****************************************************************************/
-void CStartup::RefreshTestStatus(const QString &Message, const Service::ModuleTestStatus &Status)
+void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTestStatus &status)
 {
-    Service::ModuleTestCaseID Id = DataManager::CTestCaseGuide::Instance().GetTestCaseId(Message);
+    Service::ModuleTestCaseID id = DataManager::CTestCaseGuide::Instance().GetTestCaseId(message);
 
-    switch(Id) {
+    switch(id) {
     case Service::OVEN_COVER_SENSOR:
-        RefreshTestStatus4OvenCoverSensor(Id, Status);
+        RefreshTestStatus4OvenCoverSensor(id, status);
         break;
     case Service::OVEN_HEATING_EMPTY:
-        RefreshTestStatus4OvenHeatingEmpty(Id, Status);
+        RefreshTestStatus4OvenHeatingEmpty(id, status);
         break;
     case Service::OVEN_HEATING_WITH_WATER:
-        RefreshTestStatus4OvenHeatingWater(Id, Status);
+        RefreshTestStatus4OvenHeatingWater(id, status);
         break;
     case Service::LA_SYSTEM_HEATING_LIQUID_TUBE:
     case Service::LA_SYSTEM_HEATING_AIR_TUBE:
-        RefreshTestStatus4LAHeatingBelt(Id, Status);
+        RefreshTestStatus4LAHeatingBelt(id, status);
         break;
     case Service::ROTARY_VALVE_HEATING_STATION:
     case Service::ROTARY_VALVE_HEATING_END:
-        RefreshTestStatus4RVHeating(Id, Status);
+        RefreshTestStatus4RVHeating(id, status);
+        break;
+    case Service::RETORT_HEATING_EMPTY:
+    case Service::RETORT_HEATING_WITH_WATER:
+        break;
+    case Service::RETORT_LID_LOCK:
+        RefreshTestStatus4RetortCoverSensor(id, status);
         break;
     case Service::SYSTEM_SPEARKER:
-        RefreshTestStatus4SystemSpeaker(Id, Status);
+        RefreshTestStatus4SystemSpeaker(id, status);
         break;
     default:
         break;
@@ -1130,7 +1157,7 @@ void CStartup::OnGuiRVSealTest(qint32 Position)
 /****************************************************************************/
 void CStartup::OnBasicColorTest()
 {
-    mp_ServiceConnector->ShowBasicColorTestDialog();
+    mp_Display->DoBasicColorTest();
 }
 
 

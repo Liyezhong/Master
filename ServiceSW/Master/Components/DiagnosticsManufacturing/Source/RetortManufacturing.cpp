@@ -289,7 +289,7 @@ void CRetort::DisconnectKeyBoardSignalSlots()
 /****************************************************************************/
 void CRetort::BeginTest()
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_TEST_REQUESTED);
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_RETORT_TEST_REQUESTED);
 
     if (mp_Ui->retortSNEdit->text().endsWith("XXXXX")) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
@@ -315,7 +315,6 @@ void CRetort::BeginTest()
         qDebug()<<"checkable="<<item->checkState()<<" selected="<<item->isSelectable()<<" tooltip="<<item->toolTip();
 
         if (State == Qt::Checked) {
-
             Service::ModuleTestCaseID Id = DataManager::CTestCaseGuide::Instance().GetTestCaseId(item->toolTip());
             TestCaseList.append(Id);
         }
@@ -334,10 +333,7 @@ void CRetort::BeginTest()
     else {
         EnableButton(false);
         mp_Ui->widget->setFocus();
-
-        emit BeginModuleTest(Service::LA_SYSTEM, TestCaseList);
-
-
+        emit BeginModuleTest(Service::RETORT, TestCaseList);
         qDebug()<<"CLaSystem::BeginTest   --- emitted";
     }
 //    ->HideAbort();

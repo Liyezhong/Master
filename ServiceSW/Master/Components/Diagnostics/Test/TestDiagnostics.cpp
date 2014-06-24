@@ -26,7 +26,7 @@
 //#include <Diagnostics/Include/AirExhaust.h>
 //#include <Diagnostics/Include/Consumables.h>
 //#include <Diagnostics/Include/CoverHood.h>
-//#include <Diagnostics/Include/Display.h>
+//#include "Diagnostics/Include/Display.h"
 //#include <Diagnostics/Include/DrawerLoader.h>
 //#include <Diagnostics/Include/DrawerUnloader.h>
 //#include <Diagnostics/Include/HeatedCuvettes.h>
@@ -35,6 +35,8 @@
 //#include <Diagnostics/Include/WaterStations.h>
 //#include <Diagnostics/Include/XMovement.h>
 #include <QObject>
+#include <QMessageBox>
+#include <QMainWindow>
 
 namespace Diagnostics {
 
@@ -78,6 +80,10 @@ private slots:
     /****************************************************************************/
     void utTestDiagnostics();
 
+//private:
+//    QEventLoop m_LoopTest;
+//    int eventLoop();
+
 }; // end class CTestDiagnostics
 
 /****************************************************************************/
@@ -96,9 +102,22 @@ void CTestDiagnostics::cleanup() {
 void CTestDiagnostics::cleanupTestCase() {
 }
 
+
+//int CTestDiagnostics::eventLoop() {
+
+//    QTimer timer;
+//    qint32 ret;
+//    quint32 interval = 1000 * 3 * 60 * 60; // for GUI test
+//    timer.setSingleShot(true);
+//    timer.setInterval(interval);
+//    timer.start();
+//    CONNECTSIGNALSLOT(&timer, timeout(), &m_LoopTest, quit());
+//    ret = m_LoopTest.exec();
+//}
+
 /****************************************************************************/
 void CTestDiagnostics::utTestDiagnostics() {
-    MainMenu::CMainWindow *p_MainWindow = new MainMenu::CMainWindow();
+//    MainMenu::CMainWindow *p_MainWindow = new MainMenu::CMainWindow();
 
 //    Diagnostics::CAgitator *p_Agitator = new Diagnostics::CAgitator(p_MainWindow);
 
@@ -137,7 +156,8 @@ void CTestDiagnostics::utTestDiagnostics() {
 //    p_Coverhood->DisplayStatus();
 //    p_Coverhood->HoodStatusDialog("Cover Hood Status", true);
 
-//    p_Display->OnBasicColorTest();
+//     p_Display->DoBasicColorTest();
+//     eventLoop();
 
 //    p_DrawerLoader->AddItem("1", "Drawer loader reference run");
 //    p_DrawerLoader->TestRun();

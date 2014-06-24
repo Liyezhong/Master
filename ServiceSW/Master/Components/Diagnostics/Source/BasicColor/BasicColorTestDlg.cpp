@@ -21,13 +21,13 @@
  */
 /****************************************************************************/
 
-#include "Diagnostics/Include/Display/BasicColorTestDlg.h"
+#include "Diagnostics/Include/BasicColor/BasicColorTestDlg.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 #include "Global/Include/Utils.h"
 #include "ui_BasicColorTestDlg.h"
 #include <QDebug>
 
-namespace MainMenu {
+namespace Diagnostics {
 
 const int FIXED_DIALOG_WIDTH= 500;          ///< Basic color test dialog width
 const int FIXED_DIALOG_HEIGHT = 350;        ///< Basic color test dialog height
@@ -44,9 +44,9 @@ CBasicColorTestDlg::CBasicColorTestDlg(QWidget *p_Parent) : MainMenu::CDialogFra
 {
     m_ColorCount = 0;   
     mp_Ui->setupUi(GetContentFrame());
-    SetDialogTitle(QApplication::translate("MainMenu::CBasicColorTestDlg", "Basic Color Test",
+    SetDialogTitle(QApplication::translate("Diagnostics::CBasicColorTestDlg", "Basic Color Test",
                                            0, QApplication::UnicodeUTF8));
-    mp_Ui->instructionLabel->setText(QApplication::translate("MainMenu::CBasicColorTestDlg",
+    mp_Ui->instructionLabel->setText(QApplication::translate("Diagnostics::CBasicColorTestDlg",
                              "Press Yes button if you see Black color.", 0, QApplication::UnicodeUTF8));
     mp_Ui->colorLabel->setFrameStyle((int)QFrame::WinPanel);
     mp_Ui->colorLabel->setStyleSheet(" QLabel { background-color:rgb(10,10,13); } ");
@@ -277,4 +277,4 @@ void CBasicColorTestDlg::RetranslateUI()
 
 }
 
-}   // end of namespace MainMenu
+}   // end of namespace Diagnostics

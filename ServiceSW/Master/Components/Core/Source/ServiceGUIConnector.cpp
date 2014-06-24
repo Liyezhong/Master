@@ -62,9 +62,6 @@ CServiceGUIConnector::CServiceGUIConnector(MainMenu::CMainWindow *p_Parent)
 
     CONNECTSIGNALSLOT(mp_WaitDialog, Timeout(), mp_MessageDlg, Show());
 
-    mp_ColorTestDialog = new MainMenu::CBasicColorTestDlg(mp_MainWindow);
-    mp_ColorTestDialog->setModal(true);
-
     // MsgBox Manager
     mp_MesgBoxManager  = new MainMenu::CMsgBoxManager(mp_MainWindow, mp_SettingsInterface);
     (void)connect(mp_MesgBoxManager, SIGNAL(EventReportAck(NetCommands::ClickedButton_t,Global::tRefType, quint64)),
@@ -209,21 +206,6 @@ void CServiceGUIConnector::ShowBusyDialog()
 void CServiceGUIConnector::HideBusyDialog()
 {
      mp_WaitDialog->close();
-}
-
-/****************************************************************************/
-/*!
- *  \brief Show ShowBasicColorTestDialog
- */
-/****************************************************************************/
-void CServiceGUIConnector::ShowBasicColorTestDialog()
-{
-    if(mp_ColorTestDialog != NULL) {
-        delete mp_ColorTestDialog;
-        mp_ColorTestDialog = new MainMenu::CBasicColorTestDlg(mp_MainWindow);
-        mp_ColorTestDialog->setModal(true);
-        mp_ColorTestDialog->show();
-    }
 }
 
 /****************************************************************************/

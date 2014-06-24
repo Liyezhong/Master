@@ -85,18 +85,28 @@ void CStatusConfirmDialog::SetText(QString Text)
 
 /****************************************************************************/
 /*!
- *  \brief Update label status
+ *  \brief Update oven label status
  *
  *  \iparam Status = Label test status
  */
 /****************************************************************************/
-void CStatusConfirmDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
+void CStatusConfirmDialog::UpdateOvenLabel(const Service::ModuleTestStatus &Status)
 {
     qDebug()<<Status;
     QString CoverSensorStatus = Status.value("OvenCoverSensorStatus");
-//    QString ConfirmText = QString("Do you see the cover sensor status shows '%1' ?").arg(CoverSensorStatus);
+    mp_Ui->labelStatusValue->setText(CoverSensorStatus);
+}
 
-//    SetText(ConfirmText);
+/****************************************************************************/
+/*!
+ *  \brief Update retort label status
+ *
+ *  \iparam Status = Label test status
+ */
+/****************************************************************************/
+void CStatusConfirmDialog::UpdateRetortLabel(const Service::ModuleTestStatus &status)
+{
+    QString CoverSensorStatus = status.value("LidLockerStatus");
     mp_Ui->labelStatusValue->setText(CoverSensorStatus);
 }
 

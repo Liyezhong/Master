@@ -115,7 +115,8 @@ void CTestDiagnosticsManufacturing::utTestTestCaseReporter()
     TestCase->AddResult("Heating Time", "00:30");
     TestCase->AddResult("CurrentTemp", "40");
 
-    CTestCaseReporter Reporter("Oven", "123456");
+    //CTestCaseReporter Reporter("Oven", "123456");
+    CTestCaseReporter Reporter("Oven");
     //Reporter.GenReportFile();
 }
 

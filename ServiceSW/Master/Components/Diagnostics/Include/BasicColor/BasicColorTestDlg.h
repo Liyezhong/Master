@@ -25,7 +25,7 @@
 #include "MainMenu/Include/MessageDlg.h"
 #include <QEvent>
 
-namespace MainMenu {
+namespace Diagnostics {
 
 namespace Ui {
 class CBasicColorTestDlg;
@@ -61,6 +61,6 @@ public slots:
 
 };
 
-}   // end of namespace MainMenu
+}   // end of namespace Diagnostics
 
 #endif // MAINMENU_BASICCOLORTESTDLG_H

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainMenu::CBasicColorTestDlg</class>
+ <class>Diagnostics::CBasicColorTestDlg</class>
  <widget class="QWidget" name="MainMenu::CBasicColorTestDlg">
   <property name="geometry">
    <rect>

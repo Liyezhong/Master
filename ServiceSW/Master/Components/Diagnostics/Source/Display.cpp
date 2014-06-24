@@ -43,8 +43,11 @@ CDisplay::CDisplay(QWidget *p_Parent) : QWidget(p_Parent),
     mp_Ui->instructionLabel->setText(QApplication::translate("Diagnostics::CDisplay",
                                      "Press Start button to start Basic Color Test.",
                                                              0, QApplication::UnicodeUTF8));
-
+    // for service
     CONNECTSIGNALSLOTGUI(mp_Ui->startBtn, clicked(), this, OnBasicColorTest());
+    // for factory
+    CONNECTSIGNALSLOTGUI(mp_Ui->startBtn, clicked(), this, OnFactoryBasicColorTest());
+    mp_ColorTestDialog = NULL;
 }
 
 /****************************************************************************/
@@ -88,12 +91,36 @@ void CDisplay::changeEvent(QEvent *p_Event)
  */
 /****************************************************************************/
 void CDisplay::OnBasicColorTest()
-{    
+{
     emit BasicColorTest();
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Slot is called for factory basic color test
+ */
+/****************************************************************************/
+void CDisplay::OnFactoryBasicColorTest()
+{
     QList<Service::ModuleTestCaseID> TestCaseList;
     Service::ModuleTestCaseID Id = Service::DISPLAY_BASIC_COLOR;
     TestCaseList.append(Id);
     emit BeginModuleTest(Service::DISPLAY, TestCaseList);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Basic color test
+ */
+/****************************************************************************/
+void CDisplay::DoBasicColorTest()
+{
+    if (mp_ColorTestDialog) {
+        delete mp_ColorTestDialog;
+    }
+    mp_ColorTestDialog = new CBasicColorTestDlg(this);
+    mp_ColorTestDialog->setModal(true);
+    mp_ColorTestDialog->show();
 }
 
 /****************************************************************************/

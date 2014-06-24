@@ -32,7 +32,7 @@
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/MsgBoxManager.h"
 
-#include "Diagnostics/Include/Display/BasicColorTestDlg.h"
+#include "Diagnostics/Include/BasicColor/BasicColorTestDlg.h"
 
 #include <QEventLoop>
 
@@ -81,7 +81,8 @@ class CServiceGUIConnector : public QObject
     DataManager::CDeviceConfigurationInterface  *mp_DeviceConfigurationInterface;   //!< Container for Device configuration
     DataManager::CUserSettingsInterface         *mp_SettingsInterface;              //!< Provides interface to read the Settings info from xml
     DataManager::CServiceParameters             *mp_ServiceParameters;              //!< Container for Service Parameters
-    MainMenu::CBasicColorTestDlg                *mp_ColorTestDialog;                //!< Displayed when ColorTest needs to be done
+    //Diagnostics::CBasicColorTestDlg             *mp_ColorTestDialog;                //!< Displayed when ColorTest needs to be done
+    //MainMenu::CBasicColorTestDlg                 *mp_ColorTestDialog;                //!< Displayed when ColorTest needs to be done
 
 public:
     CServiceGUIConnector(MainMenu::CMainWindow *p_Parent);
@@ -101,8 +102,6 @@ public:
     void ShowBusyDialog(QString MessageText, bool HideAbort = true);
     void ShowBusyDialog();
     void HideBusyDialog();
-
-    void ShowBasicColorTestDialog();
 
     ServiceDataManager::CModuleDataList* GetModuleListContainer();
 

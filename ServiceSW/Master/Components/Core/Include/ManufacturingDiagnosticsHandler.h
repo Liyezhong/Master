@@ -86,6 +86,7 @@ private:
     void PerformManufOvenTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufMainControlTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufRVTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
+    void PerformManufRetortTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufLATests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufSystemTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     bool GetTestResponse();

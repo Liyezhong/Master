@@ -116,7 +116,10 @@
 	</SystemFillingDraining>
 	<RetortLidLock Description="Lid lock test">
 		<Guide>
-			<Step>Retort lid lock test</Step>
+			<Step>Please unlock the retort lid.</Step>
+		</Guide>
+		<Guide>
+			<Step>Please lock the retort lid.</Step>
 		</Guide>
 	</RetortLidLock>
 	<RetortLevelSensorHeating Description="Level sensor heating test">

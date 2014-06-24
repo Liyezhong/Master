@@ -141,6 +141,9 @@ bool CTestCaseFactory::DeserializeContent(QIODevice& IODevice)
                     QString AttributeName = XmlAttributes[i].name().toString();
                     p_TestCase->SetParameter(AttributeName, XmlAttributes.value(AttributeName).toString());
                 }
+
+                qDebug()<<"-------------------------------------Case Name="<<CaseName;
+
                 m_TestCases.insert(CaseName, p_TestCase);
             }
         }
@@ -149,5 +152,4 @@ bool CTestCaseFactory::DeserializeContent(QIODevice& IODevice)
     return true;
 }
 
-
-};// end of namespace DataManager
+}// end of namespace DataManager

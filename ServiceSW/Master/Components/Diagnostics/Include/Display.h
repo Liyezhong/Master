@@ -26,6 +26,7 @@
 #include <QEvent>
 
 #include "Core/Include/ServiceDefines.h"
+#include "Diagnostics/Include/BasicColor/BasicColorTestDlg.h"
 
 namespace Diagnostics {
 
@@ -51,6 +52,8 @@ protected:
 
 private:
     Ui::CDisplay *mp_Ui;        //!< User Interface
+private:
+    CBasicColorTestDlg *mp_ColorTestDialog;
 
 signals:
     /**********************************************************************************/
@@ -62,7 +65,7 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief Signal emitted for module test
+     *  \brief Signal emitted for module(factory) test
      */
     /****************************************************************************/
     void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
@@ -71,7 +74,11 @@ private slots:
     void RetranslateUI();
 
 public slots:
-    void OnBasicColorTest();   
+    void OnBasicColorTest();
+    void OnFactoryBasicColorTest();
+
+public:
+    void DoBasicColorTest(); //!< Perform color test
 };
 
 } // end namespace Diagnostics
