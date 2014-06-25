@@ -456,7 +456,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     QString cmdName = "";
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
 
-    quint32 m_CurrentScenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
+    m_CurrentScenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
     if(cmd != NULL)
     {
         if(!(cmd->GetResult(retCode)))

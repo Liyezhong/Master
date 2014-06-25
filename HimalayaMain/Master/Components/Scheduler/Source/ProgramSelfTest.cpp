@@ -37,17 +37,15 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     mp_TemperatureSensorsChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_RTTempCtrlOff = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_RVPositionChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_PressureChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
-    mp_SealingChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+    mp_PressureSealingChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_BottlesChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
     mp_StateMachine->setInitialState(mp_Initial.data());
     mp_Initial->addTransition(this, SIGNAL(TemperatureSensorsChecking()), mp_TemperatureSensorsChecking.data());
-    mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(CurrentVoltageChecking()), mp_RTTempCtrlOff.data());
+    mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(RTTemperatureControlOff()), mp_RTTempCtrlOff.data());
     mp_RTTempCtrlOff->addTransition(this,SIGNAL(RVPositionChecking()), mp_RVPositionChecking.data());
-    mp_RVPositionChecking->addTransition(this, SIGNAL(PressureChecking()), mp_PressureChecking.data());
-    mp_PressureChecking->addTransition(this, SIGNAL(SealingChecking()), mp_SealingChecking.data());
-    mp_SealingChecking->addTransition(this, SIGNAL(BottlesChecking()), mp_BottlesChecking.data());
+    mp_RVPositionChecking->addTransition(this, SIGNAL(PressureSealingChecking()), mp_PressureSealingChecking.data());
+    mp_PressureSealingChecking->addTransition(this, SIGNAL(BottlesChecking()), mp_BottlesChecking.data());
     mp_BottlesChecking->addTransition(this,SIGNAL(TasksDone(bool)), mp_Initial.data());
 
 
@@ -55,8 +53,7 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
     mp_RTTempCtrlOff->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
     mp_RVPositionChecking->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-    mp_PressureChecking->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-    mp_SealingChecking->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
+    mp_PressureSealingChecking->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
 
     // Start up state machine
     mp_StateMachine->start();
@@ -65,6 +62,7 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     m_RVPositioinChkSeq = 0;
     m_PressureChkSeq = 0;
     m_SetPrressureTime = 0;
+    m_PressureSealingChkSeq = 0;
     m_BottleChkFlag = true;
 }
 
@@ -93,13 +91,9 @@ CProgramSelfTest::StateList_t CProgramSelfTest::GetCurrentState(QSet<QAbstractSt
     {
         currentState = RV_POSITION_CHECKING;
     }
-    else if(statesList.contains(mp_PressureChecking.data()))
+    else if(statesList.contains(mp_PressureSealingChecking.data()))
     {
-        currentState = PRESSURE_CHECKING;
-    }
-    else if(statesList.contains(mp_SealingChecking.data()))
-    {
-        currentState = SEALING_CHECKING;
+        currentState = PRESSURE_SEALING_CHECKING;
     }
     else if(statesList.contains(mp_BottlesChecking.data()))
     {
@@ -167,7 +161,7 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             {
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
-                    emit PressureChecking();
+                    emit PressureSealingChecking();
                 }
                 else
                 {
@@ -180,99 +174,14 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             }
         }
         break;
-    case PRESSURE_CHECKING:
-        if (0 == m_PressureChkSeq)
-        {
-            RVPosition_t sealPos = mp_SchedulerThreadController->GetSealingPosition();
-            CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, mp_SchedulerThreadController);
-            cmd->SetRVPosition(sealPos);
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
-            m_PressureChkSeq++;
-        }
-        else if (1 == m_PressureChkSeq)
-        {
-            if ("Scheduler::RVReqMoveToRVPosition" == cmdName)
-            {
-                if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                {
-                    m_PressureChkSeq++;
-                }
-                else
-                {
-                   mp_SchedulerThreadController->SendOutErrMsg(retCode);
-                }
-            }
-            else
-            {
-                // Do nothing, just wait for the command response.
-            }
-        }
-        else if (2 == m_PressureChkSeq)
-        {
-            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALPressure(500, mp_SchedulerThreadController));
-            m_SetPrressureTime = QDateTime::currentMSecsSinceEpoch();
-            m_PressureChkSeq++;
-        }
-        else if (3 == m_PressureChkSeq)
-        {
-            if ("Scheduler::ALPressure" == cmdName)
-            {
-                if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                {
-                    m_PressureChkSeq++;
-                }
-                else
-                {
-                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
-                }
-            }
-            else
-            {
-                // Do nothing, just wait for the command response
-            }
-        }
-        else if (4 == m_PressureChkSeq) // Check if building pressure reaches 30KPa(5KPa drift) in 30 seconds.
-        {
-            if (std::abs(mp_SchedulerThreadController->GetRecentPressure()-30.0) >= 5.0)
-            {
-                qint64 now = QDateTime::currentMSecsSinceEpoch();
-                if ((now - m_SetPrressureTime) > 30*1000) // time out 30 seconds
-                {
-                    mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURESENSOR_PRECHECK_FAILED);
-                }
-            }
-            else
-            {
-                m_SetPrressureTime = QDateTime::currentMSecsSinceEpoch();
-                m_PressureChkSeq++;
-            }
-        }
-        else if (5 == m_PressureChkSeq) // Pressure check - threshold time 5 seconds
-        {
-            qint64 now = QDateTime::currentMSecsSinceEpoch();
-            if ((now - m_SetPrressureTime) <= 5*1000)
-            {
-                if (std::abs(mp_SchedulerThreadController->GetRecentPressure()-30.0) >= 5.0)
-                {
-                   mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_LA_PRESSURESENSOR_PRECHECK_FAILED);
-                }
-                else
-                {
-                    // Do nothing, just wait for next tick
-                }
-            }
-            else
-            {
-                emit SealingChecking();
-            }
-        }
-        break;
-    case SEALING_CHECKING:
-        if (0 == m_SealingChkSeq)
+
+    case PRESSURE_SEALING_CHECKING:
+        if (0 == m_PressureSealingChkSeq)
         {
             CmdIDSealingCheck* cmd = new CmdIDSealingCheck(500, mp_SchedulerThreadController);
             cmd->SetThresholdPressure(5.0);
             mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(cmd);
+            m_PressureSealingChkSeq++;
         }
         else
         {

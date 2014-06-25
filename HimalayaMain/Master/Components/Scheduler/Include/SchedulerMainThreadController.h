@@ -1015,27 +1015,6 @@ protected:
 
         /****************************************************************************/
         /**
-         *  \brief  Get Sealing position of current step
-         *  \param  void
-         *  \return Sealing position
-         */
-        /****************************************************************************/
-        RVPosition_t GetSealingPosition()
-        {
-            return this->GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
-        }
-        /****************************************************************************/
-        /**
-         *  \brief  Get Sealing position of current step
-         *  \param  void
-         *  \return Sealing position
-         */
-        /****************************************************************************/
-        qreal GetRecentPressure() { return m_PressureAL; }
-
-
-        /****************************************************************************/
-        /**
          *  \brief  Bottle check for each station
          *  \param  void
          *  \return bool, true - continue; false - done;

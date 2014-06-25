@@ -101,15 +101,7 @@ signals:
      *
      */
     /****************************************************************************/
-    void PressureChecking();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal for sealing checking
-     *
-     */
-    /****************************************************************************/
-    void SealingChecking();
+    void PressureSealingChecking();
 
     /****************************************************************************/
     /*!
@@ -135,8 +127,7 @@ private:
     QSharedPointer<QState> mp_TemperatureSensorsChecking;           //!< Temperature sensors status checking state
     QSharedPointer<QState> mp_RTTempCtrlOff;                        //!< Current checking state
     QSharedPointer<QState> mp_RVPositionChecking;                   //!< Rotary Valve position checking state
-    QSharedPointer<QState> mp_PressureChecking;                     //!< Pressure checking state
-    QSharedPointer<QState> mp_SealingChecking;                      //!< Sealing checking state
+    QSharedPointer<QState> mp_PressureSealingChecking;              //!< Pressure test and sealing checking state
     QSharedPointer<QState> mp_BottlesChecking;                      //!< Bottle checking state
 
 
@@ -148,16 +139,15 @@ private:
         TEMPSENSORS_CHECKING,
         RT_TEMCTRL_OFF,
         RV_POSITION_CHECKING,
-        PRESSURE_CHECKING,
-        SEALING_CHECKING,
+        PRESSURE_SEALING_CHECKING,
         BOTTLES_CHECKING
     } StateList_t;
 	
 	quint32	m_RTTempOffSeq;											//!< Sequence of RT sensors temperature off
 	quint32	m_RVPositioinChkSeq;									//!< Sequence of RV position checking 
-    quint32	m_PressureChkSeq;										//!< Sequence of Pressure checking
+    quint32	m_PressureChkSeq;										//!< Sequence of Pressure test and Sealing checking
     qint64  m_SetPrressureTime;                                     //!< Time for pressure checking
-    quint32 m_SealingChkSeq;                                        //!< Sequence of Sealing checking
+    quint32 m_PressureSealingChkSeq;                                 //!< Sequence of Sealing checking
     bool    m_BottleChkFlag;                                        //!< Flag to indicate sending out command or geting command response.
 private:
     /****************************************************************************/
