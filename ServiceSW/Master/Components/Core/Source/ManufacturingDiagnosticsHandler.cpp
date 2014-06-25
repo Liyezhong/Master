@@ -634,10 +634,9 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
         }
         else if (Id == Service::RETORT_HEATING_WITH_WATER) {
             // popup a message to inform operator to put the external sensor into retort.
-            QString Text = QString("ASB %1 DC output voltage is Ok (%2 V), \nand current is Ok (%3 mA).").arg(ASBIndex)
-                    .arg(Voltage).arg(Current);
+            QString Text = QString("Please put the sensor into the retort, and then close the retort lid lock.");
 
-            qDebug()<<"Show MessageBox " << ASBIndex;
+
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
 

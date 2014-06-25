@@ -1810,6 +1810,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
     int Position = 0;
     int Ret = 0;
     Service::ModuleTestStatus Status;
+    bool NeedAC(false);
 
     Position = p_TestCase->GetParameter("Position").toInt();
 
@@ -1824,6 +1825,10 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
     if (Ret == -1) {
         qDebug()<<"Fail to heat level sensor";
         return -1;
+    }
+
+    if (NeedAC) {
+        qDebug()<<"Main Relay Set hight : " << mp_DigitalOutputMainRelay->SetHigh();
     }
 
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
@@ -1929,9 +1934,9 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         }
 
         p_TestCase->AddResult("UsedTime", UsedTime);
-        p_TestCase->AddResult("CurrentTempSide", CurrentTempSide);
-        p_TestCase->AddResult("CurrentTempBottom1", CurrentTempBottom1);
-        p_TestCase->AddResult("CurrentTempBottom2", CurrentTempBottom2);
+        p_TestCase->AddResult("CurrentTempSide", CurrentTempSideValue);
+        p_TestCase->AddResult("CurrentTempBottom1", CurrentTempBottomValue1);
+        p_TestCase->AddResult("CurrentTempBottom2", CurrentTempBottomValue2);
 
 
 
