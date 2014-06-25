@@ -987,7 +987,9 @@ void CStartup::RefreshTestStatus4SystemAlarm(Service::ModuleTestCaseID Id, const
     DiagnosticsManufacturing::CStatusConfirmDialog *dlg = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
     dlg->SetDialogTitle(DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id));
 
-    if (p_TestCase->GetParameter("ConnectFlag").toInt()) {
+    bool ConnectFlag = p_TestCase->GetParameter("ConnectFlag").toInt();
+    p_TestCase->SetParameter("ConnectFlag", QString::number(!ConnectFlag));
+    if (ConnectFlag) {
         TestStatus = "Connected";
     }
     else {

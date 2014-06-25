@@ -799,8 +799,6 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
         Status.insert("AlarmStatus", "disConnected");
     }
 
-    p_TestCase->SetParameter("ConnectFlag", QString::number(!ConnectFlag));
-
     //if (!mp_SpeakProc) {
         //mp_SpeakProc = new QProcess;
     //}
@@ -858,8 +856,6 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
     }
 
     emit RefreshTestStatustoMain(TestCaseName, Status);
-
-    //p_TestCase->SetParameter("RelaySwitchStatus", QString::number(!RelaySwitchStatus));
 
     return Result;
 
