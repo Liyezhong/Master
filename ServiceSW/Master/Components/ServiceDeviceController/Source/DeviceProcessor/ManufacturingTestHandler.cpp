@@ -67,6 +67,8 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
 
     mp_TempLSensor = NULL;
     mp_SpeakProc  = NULL;
+
+    m_Continue = false;
 }
 
 /****************************************************************************/
@@ -1389,32 +1391,22 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     // heating level sensor
     qDebug()<<"Heating level sensor....";
 
-    Status.clear();
-    Status.insert("CurrentStatus", "Heating level sensor ...");
-    emit RefreshTestStatustoMain(TestCaseName, Status);
-
+    EmitRefreshTestStatustoMain(TestCaseName, LS_HEATING);
     Ret = HeatingLevelSensor();
     if (Ret == -1) {
         goto RV_HEATING_END_EXIT;
     }
 
     // set rotary valve to initial position.
-    qDebug()<<"Rotary Value is initializing...........";
-    Status.clear();
-    Status.insert("CurrentStatus", "Rotary Valve Initializing ...");
     emit RefreshTestStatustoMain(TestCaseName, Status);
+    EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
     if ( TestRVInitialization() == -1 ) {
         goto RV_HEATING_END_EXIT;
     }
     // set rotary valve to tube positon
 
     Position =  p_TestCase->GetParameter("Position").toInt();
-    qDebug()<<"Rotary Valve is turning to Tube #"<<Position;
-    Status.clear();
-    Status.insert("CurrentStatus", "Moving Rotary Valve to tube position 11# ...");
-    emit RefreshTestStatustoMain(TestCaseName, Status);
-
-    mp_Utils->Pause(1000);
+    EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
 
     if ( !mp_MotorRV->MoveToTubePosition(Position) ) {
         goto RV_HEATING_END_EXIT;
@@ -1422,17 +1414,12 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 
     // sucking
     qDebug()<<"Begin sucking....";
-    Status.clear();
-    Status.insert("CurrentStatus", "Sucking water to retort...");
-    emit RefreshTestStatustoMain(TestCaseName, Status);
 
-    mp_Utils->Pause(1000);
-
+    EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
     Ret = m_rIdevProc.ALFilling(0, true);
 //    Ret = mp_PressPump->Sucking(0, Position, false);
     if ( Ret != 0 ) {
         qDebug()<<"Sucking failed......... Ret = "<<Ret;
-        //Ret = mp_PressPump->Draining(1000, Position);
         Ret = m_rIdevProc.ALDraining(0);
 
         qDebug()<<"Draining return : "<<Ret;
@@ -1443,11 +1430,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 
     // set rotary valve to sealing position
     qDebug()<<"Rotary Valve is turning to Sealing #"<<Position;
-    Status.clear();
-    Status.insert("CurrentStatus", "Moving rotary valve to sealing position ...");
-    emit RefreshTestStatustoMain(TestCaseName, Status);
-    mp_Utils->Pause(1000);
-
+    EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, Position);
     if (!mp_MotorRV->MoveToSealPosition(Position)) {
         goto RV_HEATING_END_EXIT;
     }
@@ -1500,24 +1483,15 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 
     // set rotary valve to tube position
     qDebug()<<"Rotary Valve is turning to Tube #"<<Position;
-    Status.clear();
-    Status.insert("CurrentStatus", "Moving rotary valve to tube position 11# ...");
-    emit RefreshTestStatustoMain(TestCaseName, Status);
 
-    mp_Utils->Pause(1000);
-
+    EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
     if ( !mp_MotorRV->MoveToTubePosition(Position) ) {
         goto RV_HEATING_END_EXIT;
     }
 
     // draining
     qDebug()<<"Begin draining.........";
-    Status.clear();
-    Status.insert("CurrentStatus", "Draining water from retort...");
-    emit RefreshTestStatustoMain(TestCaseName, Status);
-
-    mp_Utils->Pause(1000);
-
+    EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
      Ret = m_rIdevProc.ALDraining(0);
      //Ret = mp_PressPump->Draining(1000, Position);
      if ( Ret != 0 || m_UserAbort ) {
@@ -1525,13 +1499,9 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     //     goto RV_HEATING_END_EXIT;
      }
 
-     Status.clear();
-     Status.insert("CurrentStatus", "HideMessage");
-     emit RefreshTestStatustoMain(TestCaseName, Status);
+     EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
      qDebug()<<"Begin heating (at second stage).....";
-//     Status.insert("CurrentStatus", "Heating rotary valve at second stage ...");
-//     emit RefreshTestStatustoMain(TestCaseName, Status);
      // heating at second stage.
      TargetTempSensor1 = p_TestCase->GetParameter("Sensor1TargetTemp2").toFloat();
      mp_TempRV->StopTemperatureControl();
@@ -1592,9 +1562,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
      }
 
 RV_HEATING_END_EXIT:
-     Status.clear();
-     Status.insert("CurrentStatus", "HideMessage");
-     emit RefreshTestStatustoMain(TestCaseName, Status);
+
+     EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
      qDebug()<<"RV heating test exit......";
      mp_TempLSensor->StopTemperatureControl();
@@ -1751,34 +1720,43 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
 
     Position = p_TestCase->GetParameter("Position").toInt();
 
-    // initialize RV
+    EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
     mp_MotorRV->MoveToInitialPosition();
-    // move to position
+
+    EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
     mp_MotorRV->MoveToTubePosition(Position);
-    // heating level sensor
+
+    EmitRefreshTestStatustoMain(TestCaseName, LS_HEATING);
     Ret = HeatingLevelSensor();
     if (Ret == -1) {
         qDebug()<<"Fail to heat level sensor";
         return -1;
     }
+
+    EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
     Ret = m_rIdevProc.ALFilling(0, true);
+
     mp_TempLSensor->StopTemperatureControl();
 
     if (Ret != DCL_ERR_FCT_CALL_SUCCESS) {
         // if failed, then draining
+        EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
         m_rIdevProc.ALDraining(0);
         return -1;
     }
     else {
         // move to sealing positioin
+        EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, Position);
         mp_MotorRV->MoveToSealPosition(Position);
 
         // tell operator to put the external sensor to retort.
-
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+        EmitRefreshTestStatustoMain(TestCaseName, WAIT_CONFIRM);
         // wait for the confirm of operator
-        while(1) {
-
+        while(!m_Continue) {
+            mp_Utils->Pause(100);
         }
+        m_Continue = true;
 
         // begin heating.
         qreal TargetTempSide = p_TestCase->GetParameter("TargetTempSide").toFloat();
@@ -1794,30 +1772,36 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
 
         int SumSec = WaitSec;
 
-        while(!m_UserAbort && WaitSec) {
-#if 0
-            CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
-            CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
+        mp_TempRetortSide->StartTemperatureControl(TargetTempSide);
+        mp_TempRetortBttom->StartTemperatureControl(TargetTempBottom);
 
-            if (CurrentTempSensor1 == -1 || CurrentTempSensor1 == -1 ) {
+        while(!m_UserAbort && WaitSec) {
+
+            CurrentTempSide = mp_TempRetortSide->GetTemperature(0);
+            CurrentTempBottom1 = mp_TempRetortBttom->GetTemperature(0);
+            CurrentTempBottom2 = mp_TempRetortBttom->GetTemperature(1);
+
+            if (CurrentTempSide == -1 || CurrentTempBottom1 == -1 ||
+                    CurrentTempBottom1 == -1) {
                 mp_Utils->Pause(1000);
                 WaitSec--;
                 continue;
             }
 
-            qDebug()<<"Target="<<TargetTempSensor1<<" Sensor1="<<CurrentTempSensor1<<" Sensor2="<<CurrentTempSensor2;
-
             mp_Utils->Pause(1000);
-            Sensor1Value = QString("%1").arg(CurrentTempSensor1);
-            Sensor2Value = QString("%1").arg(CurrentTempSensor2);
-            UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
+            QString CurrentTempSideValue = QString("%1").arg(CurrentTempSide);
+            QString CurrentTempBottomValue1 = QString("%1").arg(CurrentTempBottom1);
+            QString CurrentTempBottomValue2 = QString("%1").arg(CurrentTempBottom2);
+            QString UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
 
             Status.clear();
             Status.insert("UsedTime", UsedTime);
-            Status.insert("CurrentTempSensor1", Sensor1Value);
-            Status.insert("CurrentTempSensor2", Sensor2Value);
+            Status.insert("CurrentTempSide", CurrentTempSideValue);
+            Status.insert("CurrentTempBottom1", CurrentTempBottomValue1);
+            Status.insert("CurrentTempBottom2", CurrentTempBottomValue2);
+
             if (WaitSec == SumSec) {
-                QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSensor1).arg(DepartureLow).arg(DepartureHigh);
+                QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSide).arg(DepartureLow).arg(DepartureHigh);
                 Status.insert("TargetTemp", TargetTempStr);
 
                 qDebug()<<"TargetTemp="<<TargetTempStr;
@@ -1827,16 +1811,14 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
                 p_TestCase->AddResult("Duration", Duration);
                 p_TestCase->AddResult("TargetTemp", TargetTempStr);
             }
-#endif
+
             emit RefreshTestStatustoMain(TestCaseName, Status);
+
+            mp_Utils->Pause(1000);
 
             WaitSec--;
         }
-
     }
-
-
-
 }
 
 
@@ -1847,6 +1829,45 @@ void ManufacturingTestHandler::SetFailReason(Service::ModuleTestCaseID Id, const
     p_TestCase->AddResult("FailReason", FailMsg);
     p_TestCase->SetStatus(false);
 
+}
+
+void ManufacturingTestHandler::EmitRefreshTestStatustoMain(const QString& TestCaseName, TestCurStatus_t CurStatus, int Position)
+{
+    Service::ModuleTestStatus Status;
+    QString Msg;
+    Status.clear();
+    switch (CurStatus) {
+    case RV_INITIALIZING:
+        Msg = "Rotary valve is initializing ...";
+        break;
+    case RV_MOVE_TO_TUBE_POSITION:
+        Msg = QString("Rotate rotary valve to tube position #%1").arg(Position);
+        break;
+    case RV_MOVE_TO_SEALING_POSITION:
+        Msg = QString("Rotate rotary valve to sealing position #%1").arg(Position);
+        break;
+    case LS_HEATING:
+        Msg = "Heating level sensor ...";
+        break;
+    case RETORT_FILLING:
+        Msg = "Filling ...";
+        break;
+    case RETORT_DRAINING:
+        Msg = "Draining ...";
+        break;
+    case WAIT_CONFIRM:
+        Msg = "WaitConfirm";
+        break;
+    case HIDE_MESSAGE:
+        Msg = "HideMessage";
+        break;
+    default:
+        break;
+    }
+
+    Status.insert("CurrentStatus", Msg);
+    emit RefreshTestStatustoMain(TestCaseName, Status);
+    mp_Utils->Pause(1000);
 }
 
 void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTestCaseID_t TestId, Service::ModuleTestCaseID_t AbortTestCaseId)

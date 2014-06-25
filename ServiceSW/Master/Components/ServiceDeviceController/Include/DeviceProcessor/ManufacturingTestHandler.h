@@ -52,6 +52,17 @@ typedef enum {
     TEST_OTHER_RUNS
 }TestState_t;
 
+typedef enum {
+    RV_INITIALIZING = 0,
+    RV_MOVE_TO_TUBE_POSITION,
+    RV_MOVE_TO_SEALING_POSITION,
+    LS_HEATING,
+    RETORT_FILLING,
+    RETORT_DRAINING,
+    WAIT_CONFIRM,
+    HIDE_MESSAGE
+} TestCurStatus_t;
+
 /****************************************************************************/
 /**
  * \brief This class is a helper to do handle device processing related commands.
@@ -322,6 +333,17 @@ private:
     /****************************************************************************/
     void SetFailReason(Service::ModuleTestCaseID Id, const QString& FailMsg);
 
+    /****************************************************************************/
+    /**
+     * \brief RefreshTestStatustoMain
+     * \param[in] TestCaseName      Test case name
+     * \param[in] CurStatus         Current status
+     * \param[in] param             paramater
+     */
+    /****************************************************************************/
+    void EmitRefreshTestStatustoMain(const QString& TestCaseName, TestCurStatus_t CurStatus, int Position=0);
+
+
 
     IDeviceProcessing           &m_rIdevProc;           //!< IDeviceProcessing reference to interact with device
     bool                        m_IsConfigured;         //!< Indicates if configuration is successfully completed
@@ -353,6 +375,8 @@ private:
     WrapperFmBaseModule*        mp_BaseModule15;
 
     QProcess*   mp_SpeakProc;
+
+    bool        m_Continue;
 
 };
 
