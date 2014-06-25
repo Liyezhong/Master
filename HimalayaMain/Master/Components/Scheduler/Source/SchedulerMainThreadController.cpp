@@ -30,6 +30,7 @@
 #include "Scheduler/Commands/Include/CmdRVStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdRTStartTemperatureControlWithPID.h"
 #include "Scheduler/Commands/Include/CmdOvenStartTemperatureControlWithPID.h"
+#include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 #include "Scheduler/Commands/Include/CmdPerTurnOnMainRelay.h"
 #include "Scheduler/Commands/Include/CmdPerTurnOffMainRelay.h"
 #include "Scheduler/Commands/Include/CmdALTurnOnFan.h"
@@ -2559,6 +2560,7 @@ void SchedulerMainThreadController::Soak()
     if(m_TimeStamps.CurStepSoakStartTime == 0)
     {
         m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+		m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
         LogDebug(QString("Start to soak, start time stamp is: %1").arg(m_TimeStamps.CurStepSoakStartTime));
     }
     if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
