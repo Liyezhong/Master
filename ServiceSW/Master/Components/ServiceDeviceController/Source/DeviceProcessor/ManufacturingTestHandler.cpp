@@ -1835,9 +1835,16 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         // if failed, then draining
         EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
         m_rIdevProc.ALDraining(0);
+
+        p_TestCase->SetStatus(false);
         return -1;
     }
     else {
+        QString CurrentTempSideValue;
+        QString CurrentTempBottomValue1;
+        QString CurrentTempBottomValue2;
+        QString UsedTime;
+
         // move to sealing positioin
         EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, Position);
         mp_MotorRV->MoveToSealPosition(Position);
@@ -1882,10 +1889,10 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
             }
 
             mp_Utils->Pause(1000);
-            QString CurrentTempSideValue = QString("%1").arg(CurrentTempSide);
-            QString CurrentTempBottomValue1 = QString("%1").arg(CurrentTempBottom1);
-            QString CurrentTempBottomValue2 = QString("%1").arg(CurrentTempBottom2);
-            QString UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
+            CurrentTempSideValue = QString("%1").arg(CurrentTempSide);
+            CurrentTempBottomValue1 = QString("%1").arg(CurrentTempBottom1);
+            CurrentTempBottomValue2 = QString("%1").arg(CurrentTempBottom2);
+            UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
 
             Status.clear();
             Status.insert("UsedTime", UsedTime);
@@ -1911,6 +1918,38 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
 
             WaitSec--;
         }
+
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+
+        mp_TempRetortSide->StopTemperatureControl();
+        mp_TempRetortBttom->StopTemperatureControl();
+
+        if (NeedAC) {
+           mp_DigitalOutputMainRelay->SetLow();
+        }
+
+        p_TestCase->AddResult("UsedTime", UsedTime);
+        p_TestCase->AddResult("CurrentTempSide", CurrentTempSide);
+        p_TestCase->AddResult("CurrentTempBottom1", CurrentTempBottom1);
+        p_TestCase->AddResult("CurrentTempBottom2", CurrentTempBottom2);
+
+
+
+        EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
+        mp_MotorRV->MoveToTubePosition(Position);
+
+        EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
+        m_rIdevProc.ALDraining(0);
+
+        if (m_UserAbort) {
+            m_UserAbort = false;
+            p_TestCase->AddResult("FailReason", "Abort");
+            p_TestCase->SetStatus(false);
+            return 1;
+        }
+
+        p_TestCase->SetStatus(true);
+        return 0;
     }
 }
 
@@ -1921,7 +1960,6 @@ void ManufacturingTestHandler::SetFailReason(Service::ModuleTestCaseID Id, const
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     p_TestCase->AddResult("FailReason", FailMsg);
     p_TestCase->SetStatus(false);
-
 }
 
 void ManufacturingTestHandler::EmitRefreshTestStatustoMain(const QString& TestCaseName, TestCurStatus_t CurStatus, int Position)

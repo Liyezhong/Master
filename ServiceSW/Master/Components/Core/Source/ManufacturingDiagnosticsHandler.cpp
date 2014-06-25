@@ -611,6 +611,11 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
 //            FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_FAILURE;
 //            OkId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_SUCCESS;
             break;
+        case Service::RETORT_HEATING_WITH_WATER:
+            EventId = EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_FAILURE;
+            OkId = EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_SUCCESS;
+            break;
         default:
             break;
         }
@@ -626,6 +631,14 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
                 break;
             emit PerformManufacturingTest(Service::RETORT_LID_LOCK, Service::TEST_CASE_ID_UNUSED);
             Result = GetTestResponse();
+        }
+        else if (Id == Service::RETORT_HEATING_WITH_WATER) {
+            // popup a message to inform operator to put the external sensor into retort.
+            QString Text = QString("ASB %1 DC output voltage is Ok (%2 V), \nand current is Ok (%3 mA).").arg(ASBIndex)
+                    .arg(Voltage).arg(Current);
+
+            qDebug()<<"Show MessageBox " << ASBIndex;
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
 
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);

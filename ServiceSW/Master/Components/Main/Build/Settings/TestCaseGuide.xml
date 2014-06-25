@@ -158,7 +158,10 @@
 	</RetortHeatingEmpty>
 	<RetortHeatingWater Description="Heating test (with water)">
 		<Guide>
-			<Step>Please put the foam filled block to retort, close the retort cover, and then put the bottle filled with water to station 11#</Step>
+			<Step>Please put the foam filled block to retort, close the retort lid lock, and then put the bottle filled with water to station 11#</Step>
+		</Guide>
+		<Guide>
+			<Step>Please put the external sensor into retort, and then close the retort lid lock.</Step>
 		</Guide>
 	</RetortHeatingWater>
 </TestCaseGuide>
