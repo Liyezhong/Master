@@ -229,6 +229,12 @@ void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, qui
     case Service::RETORT_LID_LOCK:
         qDebug()<<"abort the retort lid test";
         break;
+    case Service::SYSTEM_VENTILATION_FAN:
+        qDebug()<<"abort ventilation fan test : switch off stepper motor on rotary valve.";
+        break;
+    case Service::SYSTEM_EXHAUST_FAN:
+        qDebug()<<"abort exhaust fan test";
+        break;
     default:
         mp_Utils->AbortPause();
     }
@@ -865,11 +871,42 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
 
 qint32 ManufacturingTestHandler::TestSystemVentilationFan()
 {
+    Service::ModuleTestStatus Status;
+
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_VENTILATION_FAN);
+
+    // to switch ON stepper motor on rotary valve
+    emit RefreshTestStatustoMain(TestCaseName, Status);
+
     return 0;
 }
 
 qint32 ManufacturingTestHandler::TestSystemExhaustFan()
 {
+    Service::ModuleTestStatus Status;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_EXHAUST_FAN);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    quint8 Position = p_TestCase->GetParameter("Position").toInt();
+    switch (Position) {
+    case 1:
+        //make R/V turn position 1 tube
+        qDebug()<<"Exhaust Fan: run filling function test";
+        break;
+    case 2:
+        //filling function stop
+        qDebug()<<"Exhaust Fan: run draining function test";
+        break;
+    case 3:
+        //draining function stop
+        qDebug()<<"Exhaust Fan: run pressure function test";
+        break;
+    case 4:
+        //pressure function stop
+        qDebug()<<"Exhaust Fan: run vacuum function test";
+        break;
+    }
+
+    emit RefreshTestStatustoMain(TestCaseName, Status);
     return 0;
 }
 
@@ -2059,6 +2096,12 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         break;
     case Service::SYSTEM_MAINS_RELAY:
         emit ReturnManufacturingTestMsg(TestSystemMainsRelay());
+        break;
+    case Service::SYSTEM_VENTILATION_FAN:
+        TestSystemVentilationFan();
+        break;
+    case Service::SYSTEM_EXHAUST_FAN:
+        TestSystemExhaustFan();
         break;
     default:
         break;

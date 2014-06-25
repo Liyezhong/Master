@@ -378,6 +378,37 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSealing(quint8 Positio
     return Result;
 }
 
+bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForSystemFan(Service::ModuleTestCaseID Id)
+{
+    QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+    QString Text;
+
+    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    dlg->SetTitle(TestCaseDescription);
+    dlg->SetIcon(QMessageBox::Information);
+
+    if (Id == Service::SYSTEM_VENTILATION_FAN) {
+        Text = "Please check if the ventilation fan is runing";
+    }
+    else if (Id == Service::SYSTEM_EXHAUST_FAN) {
+        Text = "Please open the retort lid, and check if the exhaust fan is runing.";
+    }
+
+    dlg->SetText(Text);
+    dlg->HideCenterButton();
+    dlg->SetButtonText(3, tr("Pass"));
+    dlg->SetButtonText(1, tr("Fail"));
+
+    int ret = dlg->exec();
+
+    delete dlg;
+
+    if ( ret == 0 )
+        return true;
+
+    return false;
+}
+
 void CManufacturingDiagnosticsHandler::PerformManufDisplayTests(const QList<Service::ModuleTestCaseID> &TestCaseList)
 {
 //    quint32 EventId(0);
@@ -863,37 +894,67 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
     quint32 FailureId(0);
     quint32 OkId(0);
     quint32 EventId(0);
-    quint8 VentilationFanTestNum(0);
     QString StrResult;
     qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufSystemTests ---" << TestCaseList;
     for(int i=0; i<TestCaseList.size(); i++) {
         Service::ModuleTestCaseID Id = TestCaseList.at(i);
-        bool NextFlag = ShowGuide(Id, 0);
-        if (NextFlag == false) {
-            break;
-        }
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+        QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
 
-        emit PerformManufacturingTest(Id);
-        bool Result = GetTestResponse();
-
-//Ventilation_Fan_Test_Twice:
+        bool Result   = true;
+        bool NextFlag = true;
 
         switch(Id) {
         case Service::SYSTEM_110V_220V_SWITCH:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST_SUCCESS;
+            NextFlag = ShowGuide(Id, 0);
+            if (!NextFlag) {
+                break;
+            }
             SelectOptionFor110v220Switch();
+            emit PerformManufacturingTest(Id);
+            Result = GetTestResponse();
+
+            TestCaseDescription = p_TestCase->GetParameter("ConnectedVoltage") + "V test";
+            StrResult = "(Current Voltage:"+p_TestCase->GetResult().value("CurrentVoltage")+"V)";
+
             break;
         case Service::SYSTEM_EXHAUST_FAN:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_EXHAUST_FUN_TEST_SUCCESS;
+
+            NextFlag = ShowGuide(Id, 0);
+            if (!NextFlag) {
+                break;
+            }
+
+            Result    = ShowConfirmDlgForSystemFan(Id);
+            for (int j = 1; j <= 4 && Result && NextFlag; ++j) {
+                NextFlag = ShowGuide(Id, j);
+                if (!NextFlag) {
+                    break;
+                }
+                emit PerformManufacturingTest(Id);
+                Result = GetTestResponse();
+            }
             break;
         case Service::SYSTEM_VENTILATION_FAN:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_SUCCESS;
+            Result    = ShowConfirmDlgForSystemFan(Id);
+            if (Result) {
+                QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
+                mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+
+                TestCaseDescription = "power supply fan test";
+                emit PerformManufacturingTest(Id);
+                Result = GetTestResponse();
+            }
             break;
         case Service::SYSTEM_OVERFLOW:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST;
@@ -904,10 +965,11 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_SUCCESS;
-            if (Result) {
-                NextFlag = ShowGuide(Id, 1);
-                if (!NextFlag)
+            for (int j = 0; j < 2 && Result && NextFlag; ++j) {
+                NextFlag = ShowGuide(Id, j);
+                if (!NextFlag) {
                     break;
+                }
                 emit PerformManufacturingTest(Id);
                 Result = GetTestResponse();
             }
@@ -916,10 +978,12 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_SUCCESS;
-            if (Result) {
-                NextFlag = ShowGuide(Id, 1);
-                if (!NextFlag)
+
+            for (int j = 0; j < 2 && Result && NextFlag; ++j) {
+                NextFlag = ShowGuide(Id, j);
+                if (!NextFlag) {
                     break;
+                }
                 emit PerformManufacturingTest(Id);
                 Result = GetTestResponse();
             }
@@ -933,29 +997,25 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS;
-            int n = 1;
-            while (Result && n < 4) {
-                NextFlag = ShowGuide(Id, n);
-                if (!NextFlag)
+
+            for (int j = 0; j < 4 && Result && NextFlag; ++j) {
+                NextFlag = ShowGuide(Id, j);
+                if (!NextFlag) {
                     break;
+                }
                 emit PerformManufacturingTest(Id);
                 Result = GetTestResponse();
-                n += 1;
             }
+            break;
+        }
+
+        if (!NextFlag) {
             break;
         }
 
         Global::EventObject::Instance().RaiseEvent(EventId);
 
-        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
-        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
         p_TestCase->SetStatus(Result);
-
-        QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-        if (Id == Service::SYSTEM_110V_220V_SWITCH) {
-            TestCaseDescription = p_TestCase->GetParameter("ConnectedVoltage") + "V test";
-            StrResult = "(Current Voltage:"+p_TestCase->GetResult().value("CurrentVoltage")+"V)";
-        }
 
         if (!Result) {
             Global::EventObject::Instance().RaiseEvent(FailureId);
@@ -977,9 +1037,6 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             Text.append(StrResult);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
         }
-        //if (VentilationFanTestNum == 1) {
-            //goto Ventilation_Fan_Test_Twice;
-        //}
         mp_SystemManuf->SetTestResult(Id, Result);
     }
     mp_SystemManuf->EnableButton(true);

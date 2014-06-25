@@ -94,7 +94,10 @@
 	</SystemSpeaker>
 	<SystemExhaustFan Description="Exhaust fan test">
 		<Guide>
-			<Step>System Exhaust fan test</Step>
+			<Step>Exhaust fan test</Step>
+		</Guide>
+		<Guide>
+			<Step>Please close the retort lid</Step>
 		</Guide>
 	</SystemExhaustFan>
 	<SystemVentilationFan Description="Ventilation fan test">

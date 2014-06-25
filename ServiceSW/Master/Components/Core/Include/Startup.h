@@ -203,6 +203,7 @@ private:
     void RefreshTestStatus4SystemSpeaker(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);
     void RefreshTestStatus4SystemAlarm(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);
     void RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);
+    void RefreshTestStatus4SystemFan(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);
 
 public slots:
     void DisplayLogInformation(QString FileName, QString FilePath);

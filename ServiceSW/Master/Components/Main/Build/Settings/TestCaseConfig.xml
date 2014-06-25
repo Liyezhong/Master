@@ -29,7 +29,7 @@
 		<SystemSealing Parameter="N/A"/>
 		<SystemOverflow Parameter="N/A"/>
 		<SystemSpeaker VolumeFlag="0" LowVolume="60" HighVolume="120"/>
-		<SystemExhaustFan Parameter="N/A"/>
+		<SystemExhaustFan Position="1"/>
 		<SystemVentilationFan Parameter="N/A"/>
 		<SystemRemoteLocalAlarm AlarmFlag="1" ConnectFlag="1"/>
 		<SystemMainsRelay RelaySwitchStatus="1"/>

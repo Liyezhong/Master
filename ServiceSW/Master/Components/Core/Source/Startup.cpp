@@ -1038,6 +1038,60 @@ void CStartup::RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, 
 
 }
 
+void CStartup::RefreshTestStatus4SystemFan(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+    QString Text;
+
+    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    dlg->SetTitle(TestCaseDescription);
+    dlg->SetIcon(QMessageBox::Information);
+
+    if (Id == Service::SYSTEM_VENTILATION_FAN) {
+        Text = "Please check if the power supply fan is runing";
+    }
+    else if (Id == Service::SYSTEM_EXHAUST_FAN) {
+        quint8 Position = p_TestCase->GetParameter("Position").toInt();
+        switch (Position) {
+        case 1:
+            Text = "run filling function test";
+            break;
+        case 2:
+            Text = "run draining function test";
+            break;
+        case 3:
+            Text = "run pressure function test";
+            break;
+        case 4:
+            Text = "run vacuum function test";
+            break;
+        default:
+            return;
+        }
+        Text.append(" ,and check if the exhaust fan is runing.");
+        p_TestCase->SetParameter("Position", QString::number(Position+1));
+    }
+
+    dlg->SetText(Text);
+    dlg->HideCenterButton();
+    dlg->SetButtonText(3, tr("Pass"));
+    dlg->SetButtonText(1, tr("Fail"));
+
+    int ret = dlg->exec();
+
+    delete dlg;
+
+    if ( ret == 0 ) {
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
+        emit PerformManufacturingTest(Service::TEST_ABORT, Id);
+    }
+    else {
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(false);
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Refresh heating status for heating test.
@@ -1078,9 +1132,12 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
     case Service::SYSTEM_REMOTE_LOCAL_ALARM:
         RefreshTestStatus4SystemAlarm(id, status);
         break;
-    case ::Service::SYSTEM_MAINS_RELAY:
+    case Service::SYSTEM_MAINS_RELAY:
         RefreshTestStatus4SystemMainsRelay(id, status);
         break;
+    case Service::SYSTEM_EXHAUST_FAN:
+    case Service::SYSTEM_VENTILATION_FAN:
+        RefreshTestStatus4SystemFan(id, status);
     default:
         break;
     }
