@@ -119,6 +119,7 @@ typedef struct
     qint64 DelayProgramStartTime;       ///<  Definition/Declaration of variable DelayProgramStartTime
     qint64 PauseStartTime;       ///<  Definition/Declaration of variable PauseStartTime
     qint64 CurStepSoakStartTime;       ///<  Definition/Declaration of variable CurStepSoakStartTime
+    qint64 ProposeSoakStartTime;       ///<  Definition/Declaration of variable ProposeSoakStartTime
 }SchedulerTimeStamps_t;
 
 /****************************************************************************/
@@ -204,6 +205,7 @@ typedef struct
         Global::tRefType    m_RefCleanup;                     ///< Command reference of the cleanup command
         int m_delayTime;
         bool m_TempCheck;                                     ///< Temperature check passed or not
+        bool m_IsInSoakDelay;                                 ///< Delay in Soak
     private:
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.

@@ -91,6 +91,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , mp_HeatingStrategy(NULL)
         , m_RefCleanup(Global::RefManager<Global::tRefType>::INVALID)
         , m_delayTime(0)
+        , m_IsInSoakDelay(false)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
@@ -813,20 +814,37 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
                 else
                 {
-                    if(m_CurProgramStepInfo.isPressure && m_CurProgramStepInfo.isVacuum)
+                    if (now > m_TimeStamps.ProposeSoakStartTime)
                     {
-                        // P/V take turns in 1 minute
-                        if((now - lastPVTime)>60000)
+                        if(m_IsInSoakDelay)
                         {
-                            if(((now - m_TimeStamps.CurStepSoakStartTime)/60000)%2 == 0)
+                            if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
                             {
-                                Pressure();
+                                if(m_CurProgramStepInfo.isPressure)
+                                {
+                                    Pressure();
+                                }else if(m_CurProgramStepInfo.isVacuum)
+                                {
+                                    Vaccum();
+                                }
                             }
-                            else
+                            m_IsInSoakDelay = false;
+                        }
+                        else if(m_CurProgramStepInfo.isPressure && m_CurProgramStepInfo.isVacuum)
+                        {
+                            // P/V take turns in 1 minute
+                            if((now - lastPVTime)>60000)
                             {
-                                Vaccum();
+                                if(((now - m_TimeStamps.CurStepSoakStartTime)/60000)%2 == 0)
+                                {
+                                    Pressure();
+                                }
+                                else
+                                {
+                                    Vaccum();
+                                }
+                                lastPVTime = now;
                             }
-                            lastPVTime = now;
                         }
                     }
                 }
@@ -1677,6 +1695,10 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
         leftTime += 60; //suppose need 60 seconds to fill
         leftTime += 40; //suppose need 40 seconds to drain
         leftTime += 20; //suppose need 20 seconds to heat level sensor
+        if (0 == i)
+        {
+            leftTime += m_delayTime;
+        }
     }
     return leftTime;
 }
@@ -1718,6 +1740,10 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
         leftTime += 60; //suppose need 60 seconds to fill
         leftTime += 40; //suppose need 40 seconds to drain
         leftTime += 20; //suppose need 20 seconds to heat level sensor
+        if (0 == programStepIDIndex)
+        {
+            leftTime += m_delayTime;
+        }
     }
     return leftTime;
 }
@@ -2560,11 +2586,20 @@ void SchedulerMainThreadController::Soak()
     if(m_TimeStamps.CurStepSoakStartTime == 0)
     {
         m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
+        m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
 		m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
         LogDebug(QString("Start to soak, start time stamp is: %1").arg(m_TimeStamps.CurStepSoakStartTime));
     }
+
+    if ((0 == m_CurProgramStepIndex) && (m_delayTime > 0))
+    {
+        m_IsInSoakDelay = true;
+        return;
+    }
+
     if(m_CurProgramStepInfo.isPressure ^ m_CurProgramStepInfo.isVacuum)
     {
+        m_IsInSoakDelay = false;
         if(m_CurProgramStepInfo.isPressure)
         {
             Pressure();
