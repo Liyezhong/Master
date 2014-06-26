@@ -397,9 +397,7 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
         p_TestCase->AddResult("CurrentTempBottom1", BottomValue1);
         p_TestCase->AddResult("CurrentTempBottom2", BottomValue2);
 
-        Status.clear();
-        Status.insert("OvenHeatingWaterStatus", "Finished");
-        emit RefreshTestStatustoMain(TestCaseName, Status);
+        EmitRefreshTestStatustoMain(TestCaseName, INFORM_DONE);
         return 0;
     }
 }
@@ -1802,7 +1800,7 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
 
 qint32 ManufacturingTestHandler::TestRetortHeatingWater()
 {
-    Service::ModuleTestCaseID Id = Service::SYSTEM_FILL_DRAINING;
+    Service::ModuleTestCaseID Id = Service::RETORT_HEATING_WITH_WATER;
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
@@ -1858,17 +1856,19 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         EmitRefreshTestStatustoMain(TestCaseName, WAIT_CONFIRM);
         // wait for the confirm of operator
-        while(!m_Continue) {
+        while(!m_Continue && !m_UserAbort) {
             mp_Utils->Pause(100);
         }
-        m_Continue = true;
+        if (m_Continue == true) {
+            m_Continue = false;
+        }
 
         // begin heating.
-        qreal TargetTempSide = p_TestCase->GetParameter("TargetTempSide").toFloat();
-        qreal TargetTempBottom = p_TestCase->GetParameter("TargetTempBottom").toFloat();
+        qreal TargetTempSide = p_TestCase->GetParameter("SideTargetTemp").toFloat();
+        qreal TargetTempBottom = p_TestCase->GetParameter("BottomTargetTemp").toFloat();
         qreal DepartureLow = p_TestCase->GetParameter("DepartureLow").toFloat();
         qreal DepartureHigh = p_TestCase->GetParameter("DepartureHigh").toFloat();
-        QTime DurationTime = QTime::fromString(p_TestCase->GetParameter("Sensor2Duration"), "hh:mm:ss");
+        QTime DurationTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
         qreal CurrentTempSide(0);
         qreal CurrentTempBottom1(0);
         qreal CurrentTempBottom2(0);
@@ -1876,11 +1876,28 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         int WaitSec = DurationTime.hour()*60*60 + DurationTime.minute()*60 + DurationTime.second();
 
         int SumSec = WaitSec;
+        qDebug()<<"UserAbort="<<m_UserAbort<<" WaitSec="<<WaitSec;
+        if (m_UserAbort == true) {
+            goto EXIT_TEST_RETORT_HEATING_WATER;
+        }
 
         mp_TempRetortSide->StartTemperatureControl(TargetTempSide);
         mp_TempRetortBttom->StartTemperatureControl(TargetTempBottom);
 
         while(!m_UserAbort && WaitSec) {
+
+            if (WaitSec == SumSec) {
+                Status.clear();
+                QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSide).arg(DepartureLow).arg(DepartureHigh);
+                Status.insert("TargetTemp", TargetTempStr);
+
+                qDebug()<<"TargetTemp="<<TargetTempStr;
+
+                QString Duration = p_TestCase->GetParameter("DurationTime");
+                Status.insert("Duration", Duration);
+                p_TestCase->AddResult("Duration", Duration);
+                p_TestCase->AddResult("TargetTemp", TargetTempStr);
+            }
 
             CurrentTempSide = mp_TempRetortSide->GetTemperature(0);
             CurrentTempBottom1 = mp_TempRetortBttom->GetTemperature(0);
@@ -1899,23 +1916,11 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
             CurrentTempBottomValue2 = QString("%1").arg(CurrentTempBottom2);
             UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
 
-            Status.clear();
+
             Status.insert("UsedTime", UsedTime);
             Status.insert("CurrentTempSide", CurrentTempSideValue);
             Status.insert("CurrentTempBottom1", CurrentTempBottomValue1);
             Status.insert("CurrentTempBottom2", CurrentTempBottomValue2);
-
-            if (WaitSec == SumSec) {
-                QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSide).arg(DepartureLow).arg(DepartureHigh);
-                Status.insert("TargetTemp", TargetTempStr);
-
-                qDebug()<<"TargetTemp="<<TargetTempStr;
-
-                QString Duration = QTime().addSecs(SumSec).toString("hh:mm:ss");
-                Status.insert("Duration", Duration);
-                p_TestCase->AddResult("Duration", Duration);
-                p_TestCase->AddResult("TargetTemp", TargetTempStr);
-            }
 
             emit RefreshTestStatustoMain(TestCaseName, Status);
 
@@ -1938,13 +1943,24 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         p_TestCase->AddResult("CurrentTempBottom1", CurrentTempBottomValue1);
         p_TestCase->AddResult("CurrentTempBottom2", CurrentTempBottomValue2);
 
+        // wait operator input value of external sensor
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+        EmitRefreshTestStatustoMain(TestCaseName, WAIT_CONFIRM2);
+        while( !m_Continue && !m_UserAbort) {
+            mp_Utils->Pause(1000);
+        }
+        if (m_Continue == true) {
+            m_Continue = false;
+        }
 
 
+EXIT_TEST_RETORT_HEATING_WATER:
         EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
         mp_MotorRV->MoveToTubePosition(Position);
 
         EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
         m_rIdevProc.ALDraining(0);
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
         if (m_UserAbort) {
             m_UserAbort = false;
@@ -1953,7 +1969,8 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
             return 1;
         }
 
-        p_TestCase->SetStatus(true);
+        EmitRefreshTestStatustoMain(TestCaseName, INFORM_DONE);
+
         return 0;
     }
 }
@@ -1994,8 +2011,14 @@ void ManufacturingTestHandler::EmitRefreshTestStatustoMain(const QString& TestCa
     case WAIT_CONFIRM:
         Msg = "WaitConfirm";
         break;
+    case WAIT_CONFIRM2:
+        Msg = "WaitConfirm2";
+        break;
     case HIDE_MESSAGE:
         Msg = "HideMessage";
+        break;
+    case INFORM_DONE:
+        Msg = "InformDone";
         break;
     default:
         break;
@@ -2104,18 +2127,29 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         break;
 
     case Service::RETORT_HEATING_WITH_WATER:
-        if (NULL == mp_TempRetortSide && NULL == mp_TempRetortBttom) {
-            SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
-            emit ReturnManufacturingTestMsg(false);
+    {
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(TestId);
+        DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+        int CurStep = p_TestCase->GetParameter("CurStep").toInt();
+        if (CurStep == 1) {
+            if (NULL == mp_TempRetortSide && NULL == mp_TempRetortBttom) {
+                SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
+                emit ReturnManufacturingTestMsg(false);
+                return;
+            }
+            if (0 == TestRetortHeatingWater()) {
+                return;
+            }
+            else {
+                emit ReturnManufacturingTestMsg(false);
+            }
+        }
+        else if (CurStep == 2 || CurStep == 3) {
+            m_Continue = true;
             return;
         }
-        else if (0 == TestRetortHeatingWater()) {
-            emit ReturnManufacturingTestMsg(true);
-        }
-        else {
-            emit ReturnManufacturingTestMsg(false);
-        }
         break;
+    }
 
     case Service::RETORT_HEATING_EMPTY:
         if (NULL == mp_TempRetortSide && NULL == mp_TempRetortBttom) {

@@ -163,5 +163,8 @@
 		<Guide>
 			<Step>Please put the external sensor into retort, and then close the retort lid lock.</Step>
 		</Guide>
+		<Guide>
+			<Step>Please take out the external sensor from the retort.</Step>
+		</Guide>
 	</RetortHeatingWater>
 </TestCaseGuide>

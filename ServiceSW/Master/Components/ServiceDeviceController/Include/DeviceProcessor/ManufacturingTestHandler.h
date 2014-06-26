@@ -60,7 +60,9 @@ typedef enum {
     RETORT_FILLING,
     RETORT_DRAINING,
     WAIT_CONFIRM,
-    HIDE_MESSAGE
+    WAIT_CONFIRM2,
+    HIDE_MESSAGE,
+    INFORM_DONE,
 } TestCurStatus_t;
 
 /****************************************************************************/

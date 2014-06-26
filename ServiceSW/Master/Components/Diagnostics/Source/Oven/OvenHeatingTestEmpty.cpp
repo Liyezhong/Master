@@ -59,7 +59,7 @@ void CHeatingTestEmpty::StartHeating(void)
     // inform the customer of the test running status
     MainMenu::CDlgWaitingStatus *dlg = new MainMenu::CDlgWaitingStatus;
     dlg->SetDialogTitle(tr("Oven Heating Test - empty"));
-    dlg->SetText(tr("Testing..."));
+    dlg->SetText(tr("Heating..."));
     dlg->SetAbortLabel(tr("Stop"));
     dlg->SetTimeout(5000); /// \todo: change time out
     dlg->SetStatus(tr("Target Temperature: %1°C"

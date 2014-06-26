@@ -51,7 +51,7 @@ public:
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
-    explicit CUserInputDialog(QWidget *p_Parent = 0);
+    explicit CUserInputDialog(Service::ModuleTestCaseID TestCaseId, QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /*!
@@ -142,6 +142,7 @@ private:
     QString m_LineEditStringLeft;                   //!< Stores user input value
     QString m_LineEditStringMiddle;                   //!< Stores user input value
     QString m_LineEditStringRight;                   //!< Stores user input value
+    Service::ModuleTestCaseID m_TestCaseId;
 
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();

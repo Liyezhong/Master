@@ -80,6 +80,18 @@ CHeatingTestDialog::CHeatingTestDialog(Service::ModuleTestCaseID TestCaseId, QWi
                                                "Current Temperature (Sensor 2):", 0, QApplication::UnicodeUTF8);
         mp_Ui->labelCurTempBottom1Name->setText(Text);
     }
+    else if (TestCaseId == Service::RETORT_HEATING_EMPTY ||
+             TestCaseId == Service::RETORT_HEATING_WITH_WATER ) {
+        QString Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
+                                               "Current Temperature (Side):", 0, QApplication::UnicodeUTF8);
+        mp_Ui->labelCurTempTopName->setText(Text);
+        Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
+                                               "Current Temperature (Bottom 1):", 0, QApplication::UnicodeUTF8);
+        mp_Ui->labelCurTempBottom1Name->setText(Text);
+        Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
+                                               "Current Temperature (Bottom 2):", 0, QApplication::UnicodeUTF8);
+        mp_Ui->labelCurTempBottom1Name->setText(Text);
+    }
 
     CONNECTSIGNALSLOTGUI(mp_Ui->abortButton, clicked(), this, AbortWaitDialog());
     CONNECTSIGNALSLOTGUI(&m_Timer, timeout(), this, reject());
@@ -132,6 +144,12 @@ void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
              m_TestCaseId == Service::ROTARY_VALVE_HEATING_STATION ) {
         mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempSensor1"));
         mp_Ui->labelCurTempBottom1->setText(Status.value("CurrentTempSensor2"));
+    }
+    else if (m_TestCaseId == Service::RETORT_HEATING_EMPTY ||
+             m_TestCaseId == Service::RETORT_HEATING_WITH_WATER ) {
+        mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempSide"));
+        mp_Ui->labelCurTempBottom1->setText(Status.value("CurrentTempBottom1"));
+        mp_Ui->labelCurTempBottom2->setText(Status.value("CurrentTempBottom2"));
     }
     else {
         mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempTop"));

@@ -821,6 +821,78 @@ void CStartup::RefreshTestStatus4RetortCoverSensor(Service::ModuleTestCaseID id,
     }
 }
 
+void CStartup::RefreshTestStatus4RetortHeatingWithWater(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    QString CurStatus ;
+    if (Status.value("CurrentStatus") != NULL) {
+        if ( mp_HeatingStatusDlg != NULL ) {
+            mp_HeatingStatusDlg->close();
+            delete mp_HeatingStatusDlg ;
+            mp_HeatingStatusDlg = NULL;
+        }
+        qDebug()<<"Get Message: "<<Status.value("CurrentStatus");
+
+        CurStatus = Status.value("CurrentStatus");
+        if (CurStatus == "WaitConfirm") {
+            mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
+            return;
+        }
+        else if (CurStatus == "WaitConfirm2") {
+            if (mp_HeatingStatusDlg) {
+                mp_HeatingStatusDlg->close();
+                delete mp_HeatingStatusDlg;
+                mp_HeatingStatusDlg = NULL;
+            }
+            DiagnosticsManufacturing::CUserInputDialog *dlg = new DiagnosticsManufacturing::CUserInputDialog(Id, mp_MainWindow);
+            dlg->exec();
+            QString InputValueStr = dlg->GetInputValue(0);
+
+            delete dlg;
+
+            QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+            DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+            p_TestCase->AddResult("RetortTemp", InputValueStr);
+            qreal MinValue = p_TestCase->GetParameter("TargetTemp").toDouble()+p_TestCase->GetParameter("DepartureLow").toDouble();
+            qreal MaxValue = p_TestCase->GetParameter("TargetTemp").toDouble()+p_TestCase->GetParameter("DepartureHigh").toDouble();
+            qreal InputValue = InputValueStr.toDouble();
+
+            int result = false;
+            if (InputValue >= MinValue && InputValue <= MaxValue) {
+                result = true;
+            }
+            mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(result);
+        }
+        else if (CurStatus == "HideMessage") {
+            mp_ManaufacturingDiagnosticsHandler->HideMessage();
+            return ;
+        }
+        else if (CurStatus =="InformDone") {
+
+            mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
+        }
+        else {
+            mp_ManaufacturingDiagnosticsHandler->HideMessage();
+            mp_ManaufacturingDiagnosticsHandler->ShowMessage(Status.value("CurrentStatus"));
+        }
+
+        return ;
+    }
+
+    if (mp_HeatingStatusDlg == NULL) {
+        mp_ManaufacturingDiagnosticsHandler->HideMessage();
+
+        mp_HeatingStatusDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Id, mp_MainWindow);
+        mp_HeatingStatusDlg->HideAbort();
+        mp_HeatingStatusDlg->show();
+        mp_HeatingStatusDlg->UpdateLabel(Status);
+        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+
+    }
+    else {
+        mp_HeatingStatusDlg->UpdateLabel(Status);
+    }
+}
+
 void CStartup::RefreshTestStatus4OvenCoverSensor(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
     static bool OpenFlag = true;
@@ -874,10 +946,13 @@ void CStartup::RefreshTestStatus4OvenHeatingWater(Service::ModuleTestCaseID Id, 
         mp_HeatingStatusDlg->UpdateLabel(Status);
         CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
     }
-    else if (Status.value("OvenHeatingWaterStatus")=="Finished") {
-        mp_HeatingStatusDlg->close();
-        mp_HeatingStatusDlg = NULL;
-        DiagnosticsManufacturing::CUserInputDialog *dlg = new DiagnosticsManufacturing::CUserInputDialog(mp_MainWindow);
+    else if (Status.value("CurrentStatus")=="InformDone") {
+        if (mp_HeatingStatusDlg) {
+            mp_HeatingStatusDlg->close();
+            delete mp_HeatingStatusDlg;
+            mp_HeatingStatusDlg = NULL;
+        }
+        DiagnosticsManufacturing::CUserInputDialog *dlg = new DiagnosticsManufacturing::CUserInputDialog(Id, mp_MainWindow);
         dlg->exec();
         QString LeftInputValueStr = dlg->GetInputValue(0);
         QString MiddleInputValueStr = dlg->GetInputValue(1);
@@ -1122,10 +1197,12 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
         RefreshTestStatus4RVHeating(id, status);
         break;
     case Service::RETORT_HEATING_EMPTY:
-    case Service::RETORT_HEATING_WITH_WATER:
         break;
     case Service::RETORT_LID_LOCK:
         RefreshTestStatus4RetortCoverSensor(id, status);
+        break;
+    case Service::RETORT_HEATING_WITH_WATER:
+        RefreshTestStatus4RetortHeatingWithWater(id, status);
         break;
     case Service::SYSTEM_SPEARKER:
         RefreshTestStatus4SystemSpeaker(id, status);
