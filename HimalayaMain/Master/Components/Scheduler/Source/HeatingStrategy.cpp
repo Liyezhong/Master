@@ -740,7 +740,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSe
         }
         else
         {
-            mp_SchedulerController->LogDebug(QString("Start LA tube(%1) heating, the scenario:%1").arg(LAType).arg(m_CurScenario));
+            mp_SchedulerController->LogDebug(QString("Start LA tube(%1) heating, the scenario:%2").arg(LAType).arg(m_CurScenario));
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
 
