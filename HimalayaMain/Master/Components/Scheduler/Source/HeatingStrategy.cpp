@@ -45,7 +45,9 @@ HeatingStrategy::HeatingStrategy(SchedulerMainThreadController* schedController,
     m_CmdResult = true;
     m_IsOvenHeatingStarted = false;
     m_OvenStartHeatingTime = 0;
-    this->ConstructHeatingSensorList();
+    if (!this->ConstructHeatingSensorList()){
+        mp_SchedulerController->LogDebug(QString("Initialize the heatingStrategy failed!"));
+    }
 }
 DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMonitor_t& strctHWMonitor, qint32 scenario)
 {
@@ -517,7 +519,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         }
         else
         {
-            mp_SchedulerController->LogDebug(QString("the level sensor heating module:%1, scenario:%2").arg(iter->Id).arg(m_CurScenario));
+            mp_SchedulerController->LogDebug(QString("start level sensor heating, scenario:%1").arg(m_CurScenario));
             m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             m_RTLevelSensor.curModuleId = iter->Id;
             m_RTLevelSensor.OTCheckPassed = false;
@@ -579,7 +581,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         }
         else
         {
-            mp_SchedulerController->LogDebug(QString("start RT heating, the senario:%1").arg(m_CurScenario));
+            mp_SchedulerController->LogDebug(QString("start RT(%1) heating, the senario:%2").arg(RTType).arg(m_CurScenario));
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             heatingSensor.OTCheckPassed = false;
@@ -641,7 +643,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
         }
         else
         {
-            mp_SchedulerController->LogDebug(QString("start oven heating,the scenario:%1").arg(m_CurScenario));
+            mp_SchedulerController->LogDebug(QString("start oven(%1) heating,the scenario:%2").arg(OvenType).arg(m_CurScenario));
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             heatingSensor.OTCheckPassed = false;
@@ -720,7 +722,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSe
     // Found out the heating sensor's function module
     if (iter != heatingSensor.functionModuleList.end())
     {
-
         CmdALStartTemperatureControlWithPID* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
         pHeatingCmd->SetType(LAType);
         pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset);
@@ -739,6 +740,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSe
         }
         else
         {
+            mp_SchedulerController->LogDebug(QString("Start LA tube(%1) heating, the scenario:%1").arg(LAType).arg(m_CurScenario));
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
 
@@ -962,7 +964,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
 
     //For Rotary Valve Rod
     m_RV_1_HeatingRod.devName = "Rotary Valve";
-    m_RV_1_HeatingRod.sensorName = "RVRod";
+    m_RV_1_HeatingRod.sensorName = "RV_1_HeatingRod";
     m_RV_1_HeatingRod.heatingStartTime = 0;
     m_RV_1_HeatingRod.curModuleId = "";
     m_RV_1_HeatingRod.OTCheckPassed = false;
