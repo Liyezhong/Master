@@ -212,7 +212,7 @@ bool CManufacturingDiagnosticsHandler::ShowGuide(Service::ModuleTestCaseID Id, i
     for(int i=0; i<Steps.size(); i++) {
         GuideText.append(Steps.at(i));
         if (i <= Steps.size()-1 ) {
-            GuideText.append("\n");
+            GuideText.append("<br>");
         }
     }
 
@@ -895,6 +895,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
     quint32 OkId(0);
     quint32 EventId(0);
     QString StrResult;
+    QString RotatingMsg;
     qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufSystemTests ---" << TestCaseList;
     for(int i=0; i<TestCaseList.size(); i++) {
         Service::ModuleTestCaseID Id = TestCaseList.at(i);
@@ -952,15 +953,16 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_SUCCESS;
-
+            RotatingMsg = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                                "RV is rotating to tube #1", 0, QApplication::UnicodeUTF8);
             NextFlag = ShowGuide(Id, 0);
             if (!NextFlag) {
                 break;
             }
-
+            ShowMessage(RotatingMsg);
             emit PerformManufacturingTest(Id);
             Result = GetTestResponse();
-
+            HideMessage();
             break;
         case Service::SYSTEM_SPEARKER:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST;

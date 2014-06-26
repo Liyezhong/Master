@@ -81,7 +81,8 @@
 	</SystemSealing>
 	<SystemOverflow Description="Overflow test">
 		<Guide>
-			<Step>System overflow test</Step>
+			<Step>Please put a filling-block into block, cover the level sensor with tape and close the retort lid.</Step>
+			<Step>Please insert position 1# with reagent bottle filled with water.</Step>
 		</Guide>
 	</SystemOverflow>
 	<SystemSpeaker Description="Speaker test">
@@ -94,7 +95,7 @@
 	</SystemSpeaker>
 	<SystemExhaustFan Description="Exhaust fan test">
 		<Guide>
-			<Step>Exhaust fan test</Step>
+			<Step>Please check there is no reagent bottle on position 1#</Step>
 		</Guide>
 		<Guide>
 			<Step>Please close the retort lid</Step>
@@ -102,7 +103,7 @@
 	</SystemExhaustFan>
 	<SystemVentilationFan Description="Ventilation fan test">
 		<Guide>
-			<Step>System Ventilation fan test</Step>
+			<Step>Ventilation fan test</Step>
 		</Guide>
 	</SystemVentilationFan>
 	<SystemRemoteLocalAlarm Description="Remote/Local alarm test">

@@ -1066,6 +1066,8 @@ void CStartup::RefreshTestStatus4SystemExhaustFan(Service::ModuleTestCaseID Id, 
     case 4:
         Text = "run vacuum function test";
         Position = 1; //reset position
+
+
         break;
     default:
         return;
@@ -1136,6 +1138,11 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
         break;
     case Service::SYSTEM_EXHAUST_FAN:
         RefreshTestStatus4SystemExhaustFan(id, status);
+        break;
+    case Service::SYSTEM_OVERFLOW:
+        mp_ManaufacturingDiagnosticsHandler->HideMessage();
+        mp_ManaufacturingDiagnosticsHandler->ShowMessage("System is filling liquid to retort");
+        break;
     default:
         break;
     }
