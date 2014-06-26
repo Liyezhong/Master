@@ -947,19 +947,20 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_SUCCESS;
             Result    = ShowConfirmDlgForSystemFan(Id);
-            if (Result) {
-                QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
-                mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
-
-                TestCaseDescription = "power supply fan test";
-                emit PerformManufacturingTest(Id);
-                Result = GetTestResponse();
-            }
             break;
         case Service::SYSTEM_OVERFLOW:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_SUCCESS;
+
+            NextFlag = ShowGuide(Id, 0);
+            if (!NextFlag) {
+                break;
+            }
+
+            emit PerformManufacturingTest(Id);
+            Result = GetTestResponse();
+
             break;
         case Service::SYSTEM_SPEARKER:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST;

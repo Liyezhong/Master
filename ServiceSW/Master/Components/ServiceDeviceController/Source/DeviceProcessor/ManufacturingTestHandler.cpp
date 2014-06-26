@@ -229,16 +229,36 @@ void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, qui
     case Service::RETORT_LID_LOCK:
         qDebug()<<"abort the retort lid test";
         break;
-    case Service::SYSTEM_VENTILATION_FAN:
-        qDebug()<<"abort ventilation fan test : switch off stepper motor on rotary valve.";
-        break;
     case Service::SYSTEM_EXHAUST_FAN:
+        AbortExhaustFanOperation();
         qDebug()<<"abort exhaust fan test";
         break;
     default:
         mp_Utils->AbortPause();
     }
     m_UserAbort = true;
+}
+
+void ManufacturingTestHandler::AbortExhaustFanOperation()
+{
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_EXHAUST_FAN);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    quint8 Position = p_TestCase->GetParameter("Position").toInt();
+
+    switch (Position) {
+    case 1:
+        //vacuum function stop
+        break;
+    case 2:
+        //filling function stop
+        break;
+    case 3:
+        //draining function stop
+        break;
+    case 4:
+        //pressure function stop
+        break;
+    }
 }
 
 qint32 ManufacturingTestHandler::TestOvenHeatingWater()
@@ -869,44 +889,49 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
 
 }
 
-qint32 ManufacturingTestHandler::TestSystemVentilationFan()
-{
-    Service::ModuleTestStatus Status;
-
-    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_VENTILATION_FAN);
-
-    // to switch ON stepper motor on rotary valve
-    emit RefreshTestStatustoMain(TestCaseName, Status);
-
-    return 0;
-}
-
 qint32 ManufacturingTestHandler::TestSystemExhaustFan()
 {
     Service::ModuleTestStatus Status;
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_EXHAUST_FAN);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     quint8 Position = p_TestCase->GetParameter("Position").toInt();
+    int Ret = 0;
     switch (Position) {
     case 1:
-        //make R/V turn position 1 tube
-        qDebug()<<"Exhaust Fan: run filling function test";
+        if (mp_MotorRV->MoveToTubePosition(1)) {
+            qDebug()<<"Exhaust Fan test: move RV to tube position 1 failed.";
+        }
+        Ret = m_rIdevProc.ALFilling(0, true);
+        if (Ret != 0) {
+            qDebug()<<"Exhaust Fan test: run filling failed, error code :"<<Ret;
+        }
         break;
     case 2:
-        //filling function stop
-        qDebug()<<"Exhaust Fan: run draining function test";
+        Ret = m_rIdevProc.ALDraining(0);
+        if (Ret != 0) {
+            qDebug()<<"Exhaust Fan test: run draining function failed, error code :"<<Ret;
+        }
         break;
     case 3:
-        //draining function stop
-        qDebug()<<"Exhaust Fan: run pressure function test";
+        Ret = m_rIdevProc.ALPressure();
+        if (Ret != 0) {
+            qDebug()<<"Exhaust Fan test: run pressure function failed, error code :"<<Ret;
+        }
         break;
     case 4:
-        //pressure function stop
-        qDebug()<<"Exhaust Fan: run vacuum function test";
+        Ret = m_rIdevProc.ALVaccum();
+        if (Ret != 0) {
+            qDebug()<<"Exhaust Fan test: run vacuum function failed, error code :"<<Ret;
+        }
         break;
     }
 
     emit RefreshTestStatustoMain(TestCaseName, Status);
+    return 0;
+}
+
+qint32 ManufacturingTestHandler::TestSystemOverflow()
+{
     return 0;
 }
 
@@ -2097,11 +2122,11 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
     case Service::SYSTEM_MAINS_RELAY:
         emit ReturnManufacturingTestMsg(TestSystemMainsRelay());
         break;
-    case Service::SYSTEM_VENTILATION_FAN:
-        TestSystemVentilationFan();
-        break;
     case Service::SYSTEM_EXHAUST_FAN:
         TestSystemExhaustFan();
+        break;
+    case Service::SYSTEM_OVERFLOW:
+        emit ReturnManufacturingTestMsg(TestSystemOverflow());
         break;
     default:
         break;
