@@ -63,12 +63,9 @@ private:
 	// Layer two states (for Busy state)
     QSharedPointer<QState> mp_PssmInitState;                                            ///<  Busy State's sub state: Init state
     QSharedPointer<QState> mp_PssmPreTestState;                                         ///<  Busy State's sub state: Pre-test state
-    QSharedPointer<QState> mp_PssmReadyToHeatLevelSensorS1;                             ///<  Busy State's sub state: Level sensor 1 state
-    QSharedPointer<QState> mp_PssmReadyToHeatLevelSensorS2;                             ///<  Busy State's sub state: Level sensor 2 state
-    QSharedPointer<QState> mp_PssmReadyToTubeBefore;                                    ///<  Busy State's sub state: Ready to tube before state
-    QSharedPointer<QState> mp_PssmReadyToTubeAfter;                                     ///<  Busy State's sub state: Ready to tube after state
+    QSharedPointer<QState> mp_PssmFillingLevelSensorHeatingState;                       ///<  Busy State's sub state: Filling-LevelSensor_Heating
+    QSharedPointer<QState> mp_PssmFillingState;                                         ///<  Busy State's sub state: Filling
     QSharedPointer<QState> mp_PssmReadyToSeal;                                          ///<  Busy State's sub state: Ready to seal state
-    QSharedPointer<QState> mp_PssmReadyToFill;                                          ///<  Busy State's sub state: Ready to fill state
     QSharedPointer<QState> mp_PssmReadyToDrain;                                         ///<  Busy State's sub state: Ready to drain state
     QSharedPointer<QState> mp_PssmSoak;                                                 ///<  Busy State's sub state: Soak state
     QSharedPointer<QState> mp_PssmStepFinish;                                           ///<  Busy State's sub state: Step finish state
@@ -87,7 +84,7 @@ private:
     QSharedPointer<QState> mp_ErrorRsHeatingErr30SRetryState;                           ///<  Error State's sub state: handle Rs_HeatingErr30S_Retry related logic
 
     //State machines for Run handling
-    QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< State for Pre-test
+    QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
 
     // State machines for Error handling
     QSharedPointer<CRsRvGetOriginalPositionAgain> mp_RsRvGetOriginalPositionAgain;		///<  State machine for RS_RV_GetOriginalPositionAgain
@@ -97,6 +94,18 @@ private:
     QSharedPointer<CRcLevelSensorHeatingOvertime> mp_RcLevelSensorHeatingOvertime;      ///<  State machine for RC_LevelSensor_Heating_Overtime
     QSharedPointer<CRcRestart> mp_RcRestart;                                            ///<  State machine for RC_Restart
     QSharedPointer<CRcReport> mp_RcReport;												///<  State machine for RC_Report
+
+    // enum for filling stages
+    enum
+    {
+        MOVE_TUBE_POSITION,
+        GET_MOVETUBE_RESPONSE,
+        IN_FILLING,
+        MOVE_SEALING_POSITION,
+        GET_MOVESEALING_RESPONSE
+    };
+
+    quint16 m_Filling_CurrentStage;                                                     ///< Current stage of protocol filling
 private:
     QString GetDeviceName();
 
@@ -277,22 +286,16 @@ public:
      */
     /****************************************************************************/
     void NotifyTempsReady();
+
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function NotifyLevelSensorTempS1Ready
-     *
-     *  \return from NotifyLevelSensorTempS1Ready
+     *  \brief  Notify level sensor heating is ready
+     *  \param  void
+     *  \return void
      */
     /****************************************************************************/
-    void NotifyLevelSensorTempS1Ready();
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function NotifyLevelSensorTempS2Ready
-     *
-     *  \return from NotifyLevelSensorTempS2Ready
-     */
-    /****************************************************************************/
-    void NotifyLevelSensorTempS2Ready();
+    void NotifyLevelSensorHeatingReady();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyHitTubeBefore
@@ -499,7 +502,19 @@ public:
      *  \return void
      */
     /****************************************************************************/
-    void HandlePssmPreTestWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void HandlePssmPreTestWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode); 
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for Protocol Filling
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleProtocolFillingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -581,18 +596,6 @@ private slots:
      */
     /****************************************************************************/
     void OnCheckDeviceStatus();
-
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Slot to react for program resuming
-     *
-     *  \param  void
-     *
-     *  \return void
-     */
-    /****************************************************************************/
-    void OnNotifyResume();
 
     /****************************************************************************/
     /*!
@@ -753,18 +756,21 @@ signals:
      */
     /****************************************************************************/
     void sigTempsReady();
+
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal sigLevelSensorTempS1Ready
+     *  \brief  Signal for level sensor heating ready
      */
     /****************************************************************************/
-    void sigLevelSensorTempS1Ready();
+    void sigLevelSensorHeatingReady();
+
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal sigLevelSensorTempS2Ready
+     *  \brief  Signal for filling completes
      */
     /****************************************************************************/
-    void sigLevelSensorTempS2Ready();
+    void sigFillingComplete();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal sigHitTubeBefore

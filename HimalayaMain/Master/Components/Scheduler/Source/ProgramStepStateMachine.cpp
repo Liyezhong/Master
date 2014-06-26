@@ -244,17 +244,9 @@ SchedulerStateMachine_t CProgramStepStateMachine::GetCurrentState(QSet<QAbstract
     {
         return PSSM_PRETEST;
     }
-    else if(statesList.contains(mp_PssmReadyToHeatLevelSensorS1))
-    {
-        return PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1;
-    }
-    else if(statesList.contains(mp_PssmReadyToHeatLevelSensorS2))
-    {
-        return PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2;
-    }
     else if(statesList.contains(mp_PssmReadyToTubeBefore))
     {
-        return PSSM_READY_TO_TUBE_BEFORE;
+        return PSSM_INIT;
     }
     else if(statesList.contains(mp_PssmReadyToTubeAfter))
     {
@@ -262,7 +254,7 @@ SchedulerStateMachine_t CProgramStepStateMachine::GetCurrentState(QSet<QAbstract
     }
     else if(statesList.contains(mp_PssmReadyToFill))
     {
-        return PSSM_READY_TO_FILL;
+        return PSSM_FILLING;
     }
     else if(statesList.contains(mp_PssmReadyToSeal))
     {

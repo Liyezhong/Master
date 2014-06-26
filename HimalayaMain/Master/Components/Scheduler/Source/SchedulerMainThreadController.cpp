@@ -558,24 +558,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
            m_SchedulerMachine->HandlePssmPreTestWorkFlow(cmdName, retCode);
         }
-        else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1 == stepState)
+        else if (PSSM_FILLING_LEVELSENSOR_HEATING == stepState)
         {
-            //todo: get data here
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                m_SchedulerMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1);
-                DequeueNonDeviceCommand();
-            }
+            if (mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
             else if(m_CurProgramStepInfo.reagentGroup != "RG6")
             {
                 if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
-                {
-                    LogDebug("Program Step Heating Level sensor stage 1 OK");
-                    m_SchedulerMachine->NotifyLevelSensorTempS1Ready();
-                }
             }
             else if(m_CurProgramStepInfo.reagentGroup == "RG6")
-            {
                 if(mp_HeatingStrategy->CheckRVHeatingStatus())
                 {
                     LogDebug("Program Step Heating Rotary Valve heating rod OK");
@@ -583,96 +573,20 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
 
             }//end RG6
-        }
-        else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2 == stepState)
-        {
-            //todo: get data here
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                m_SchedulerMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2);
-                DequeueNonDeviceCommand();
-            }
             else if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
-            {
-                LogDebug("Program Step Heating Level sensor stage 2 OK");
-                m_SchedulerMachine->NotifyLevelSensorTempS2Ready();
-            }
-            else
-            {
-
-            }
-        }
-        else if(PSSM_READY_TO_TUBE_BEFORE == stepState)
-        {
-            // get current step tube position here
             RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
-            if(m_PositionRV == targetPos)
             {
-                if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
-                {
-                    m_SchedulerMachine->NotifyPause(PSSM_READY_TO_TUBE_BEFORE);
-                    m_PauseToBeProcessed = false;
-                    DequeueNonDeviceCommand();
-                }
-                else
-                {
-                    LogDebug(QString("Program Step Hit Tube(before) %1").arg(targetPos));
+                m_SchedulerMachine->NotifyLevelSensorHeatingReady();
                     UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
-                    m_SchedulerMachine->NotifyHitTubeBefore();
-                }
             }
             else
             {
-                if("Scheduler::RVReqMoveToRVPosition" == cmdName)
-                {
-                    if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
-                    {
-                        //fail to move to seal, raise event here
-                        LogDebug(QString("Program Step Move to tube(before)%1 internal steps retry").arg(targetPos));
-                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, m_CurrentScenario, true);
-                        m_SchedulerMachine->SendErrorSignal();
-                    }
-                    else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
-                    {
-                        LogDebug(QString("Program Step Move to tube(before)%1 exceed upper limit").arg(targetPos));
-                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT, m_CurrentScenario, true);
-                        m_SchedulerMachine->SendErrorSignal();
-                    }
-                }
-
-                if(CTRL_CMD_PAUSE == ctrlCmd)
-                {
-                    m_PauseToBeProcessed = true;
-                }
+                // Do nothing, just wait for status of level sensor
             }
         }
-        else if(PSSM_READY_TO_FILL == stepState)
+        else if(PSSM_FILLING == stepState)
         {
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                LogDebug(QString("Scheduler step: READY_TO_FILL is abort to PAUSE"));
-                AllStop();
-                m_SchedulerMachine->NotifyPause(PSSM_READY_TO_FILL);
-                DequeueNonDeviceCommand();
-            }
-            else if( "Scheduler::ALFilling" == cmdName)
-            {
-                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                {
-                    LogDebug(QString("Program Step Filling OK"));
-                    m_SchedulerMachine->NotifyFillFinished();
-                }
-                else if( DCL_ERR_DEV_LA_FILLING_INSUFFICIENT == retCode)
-                {
-                    LogDebug(QString("Program Step Filling Insufficient"));
-                    RaiseError(0, DCL_ERR_DEV_LA_FILLING_INSUFFICIENT, m_CurrentScenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
-                }
-            }
-            else if(retCode != DCL_ERR_UNDEFINED)
-            {
-                //todo: error handling here
-            }
+            m_SchedulerMachine->HandleProtocolFillingWorkFlow(cmdName, retCode);
         }
         else if(PSSM_READY_TO_SEAL == stepState)
         {
@@ -1943,7 +1857,7 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
     case PSSM_PRETEST:
         scenario = 200;
         break;
-    case PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1:
+    case PSSM_PAUSE:
         if(ReagentGroup == "RG6")
         {
             scenario = 260;
@@ -1955,15 +1869,20 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
             reagentRelated = true;
         }
         break;
-    case PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2:
+    case PSSM_PAUSE_DRAIN:
+        scenario = 206;
+        break;
+    case PSSM_ABORTING:
+        scenario = 206;
+        break;
+    case PSSM_ABORTED:
+        scenario = 206;
+        break;
+    case PSSM_FILLING_LEVELSENSOR_HEATING:
         scenario = 211;
         reagentRelated = true;
         break;
-    case PSSM_READY_TO_TUBE_BEFORE:
-        scenario = 217;
-        reagentRelated = true;
-        break;
-    case PSSM_READY_TO_FILL:
+    case PSSM_FILLING:
         scenario = 212;
         reagentRelated = true;
         break;
@@ -1986,18 +1905,6 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
     case PSSM_STEP_FINISH:
         break;
     case PSSM_PROGRAM_FINISH:
-        break;
-    case PSSM_PAUSE:
-        scenario = 206;
-        break;
-    case PSSM_PAUSE_DRAIN:
-        scenario = 206;
-        break;
-    case PSSM_ABORTING:
-        scenario = 206;
-        break;
-    case PSSM_ABORTED:
-        scenario = 206;
         break;
     default:
         break;
@@ -2332,42 +2239,6 @@ void SchedulerMainThreadController::StepStart()
 
 }
 
-void SchedulerMainThreadController::HeatLevelSensor()
-{
-    SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
-    if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1 == stepState)
-    {
-#if 0
-        CmdALStartTemperatureControlWithPID* cmd  = new CmdALStartTemperatureControlWithPID(500, this);
-        cmd->SetType(AL_LEVELSENSOR);
-        //todo: get temperature here
-        cmd->SetNominalTemperature(90);
-        cmd->SetSlopeTempChange(10);
-        cmd->SetMaxTemperature(120);
-        cmd->SetControllerGain(1212);
-        cmd->SetResetTime(1000);
-        cmd->SetDerivativeTime(80);
-        m_SchedulerCommandProcessor->pushCmd(cmd);
-#endif
-        SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_LEVELSENSORTEMPCTRL, true);
-    }
-    else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2 == stepState)
-    {
-#if 0
-        CmdALStartTemperatureControlWithPID* cmd  = new CmdALStartTemperatureControlWithPID(500, this);
-        cmd->SetType(AL_LEVELSENSOR);
-        //todo: get temperature here
-        cmd->SetNominalTemperature(90);
-        cmd->SetSlopeTempChange(10);
-        cmd->SetMaxTemperature(120);
-        cmd->SetControllerGain(200);
-        cmd->SetResetTime(1000);
-        cmd->SetDerivativeTime(0);
-        m_SchedulerCommandProcessor->pushCmd(cmd);
-#endif
-    }
-}
-
 bool SchedulerMainThreadController::BottleCheck()
 {
     if (m_ProgramStationList.empty())
@@ -2475,54 +2346,30 @@ void SchedulerMainThreadController::MoveRV()
 {
     SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
+    RVPosition_t targetPos = RV_UNDEF;
 
-    if(PSSM_READY_TO_TUBE_BEFORE == stepState)
+    if(PSSM_FILLING == stepState || PSSM_READY_TO_TUBE_AFTER == stepState)
     {
         //get target position here
-        RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
-        if(RV_UNDEF != targetPos)
-        {
-            LogDebug(QString("Move to RV tube position(before): %1").arg(targetPos));
-            cmd->SetRVPosition(targetPos);
-            m_SchedulerCommandProcessor->pushCmd(cmd);
-        }
-        else
-        {
-           //todo: error handling
-           LogDebug(QString("Get invalid RV position: %1").arg(m_CurProgramStepInfo.stationID));
-        }
-    }
-    else if(PSSM_READY_TO_TUBE_AFTER == stepState)
-    {
-        //get target position here
-        RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
-        if(RV_UNDEF != targetPos)
-        {
-            LogDebug(QString("Move to RV tube position(after): %1").arg(targetPos));
-            cmd->SetRVPosition(targetPos);
-            m_SchedulerCommandProcessor->pushCmd(cmd);
-        }
-        else
-        {
-           //todo: error handling
-           LogDebug(QString("Get invalid RV position: %1").arg(m_CurProgramStepInfo.stationID));
-        }
+        targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
     }
     else if(PSSM_READY_TO_SEAL == stepState)
     {
         //get target position here
-        RVPosition_t targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
-        if(RV_UNDEF != targetPos)
-        {
-            LogDebug(QString("Move to RV seal position: %1").arg(targetPos));
-            cmd->SetRVPosition(targetPos);
-            m_SchedulerCommandProcessor->pushCmd(cmd);
-        }
-        else
-        {
-           //todo: error handling
-           LogDebug(QString("Get invalid RV position: %1").arg(m_CurProgramStepInfo.stationID));
-        }
+        targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+    }
+
+    if(RV_UNDEF != targetPos)
+    {
+        LogDebug(QString("Move to RV seal position: %1").arg(targetPos));
+        cmd->SetRVPosition(targetPos);
+        m_SchedulerCommandProcessor->pushCmd(cmd);
+    }
+    else
+    {
+       LogDebug(QString("Get invalid RV position: %1").arg(m_CurProgramStepInfo.stationID));
+       RaiseError(0, DCL_ERR_INVALID_PARAM, m_CurrentScenario, true);
+       m_SchedulerMachine->SendErrorSignal();
     }
 }
 
@@ -2530,8 +2377,9 @@ void SchedulerMainThreadController::Fill()
 {
     LogDebug("Send cmd to DCL to Fill");
     CmdALFilling* cmd  = new CmdALFilling(500, this);
-    //todo: get delay time here
-    if(!m_CurProgramID.isEmpty() && m_CurProgramID.at(0) == 'C')// only cleaning program need to suck another 2 seconds after level sensor triggering.
+
+    // only cleaning program need to suck another 2 seconds after level sensor triggering.
+    if(!m_CurProgramID.isEmpty() && m_CurProgramID.at(0) == 'C')
     {
         cmd->SetDelayTime(2000);
     }

@@ -9,10 +9,8 @@ namespace Scheduler{
 
 #define L2_PRO_INIT                           (0x1)
 #define L2_PRO_PRETEST                        (0x2)
-#define L2_PRO_READY_TO_HEAT_LEVEL_SENSOR_S1  (0x3)
-#define L2_PRO_READY_TO_HEAT_LEVEL_SENSOR_S2  (0x4)
-#define L2_PRO_READY_TO_TUBE_BEFORE           (0x5)
-#define L2_PRO_READY_TO_FILL                  (0x6)
+#define L2_PRO_FILLING_LEVELSENSOR_HEATING    (0x5)
+#define L2_PRO_FILLING                        (0x6)
 #define L2_PRO_READY_TO_SEAL                  (0x7)
 #define L2_PRO_SOAK                           (0x8)
 #define L2_PRO_READY_TO_TUBE_AFTER            (0x9)
@@ -61,10 +59,8 @@ typedef enum
     // Layer two states (for SM_BUSY)
     PSSM_INIT = ((L2_PRO_INIT << 8) | L1_BUSY),
     PSSM_PRETEST = ((L2_PRO_PRETEST << 8) | L1_BUSY),
-    PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1 = ((L2_PRO_READY_TO_HEAT_LEVEL_SENSOR_S1 << 8) | L1_BUSY),
-    PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2 = ((L2_PRO_READY_TO_HEAT_LEVEL_SENSOR_S2 << 8) | L1_BUSY),
-    PSSM_READY_TO_TUBE_BEFORE = ((L2_PRO_READY_TO_TUBE_BEFORE << 8) | L1_BUSY),
-    PSSM_READY_TO_FILL = ((L2_PRO_READY_TO_FILL << 8) | L1_BUSY),
+    PSSM_FILLING_LEVELSENSOR_HEATING = ((L2_PRO_FILLING_LEVELSENSOR_HEATING << 8) | L1_BUSY),
+    PSSM_FILLING = ((L2_PRO_FILLING << 8) | L1_BUSY),
     PSSM_READY_TO_SEAL = ((L2_PRO_READY_TO_SEAL << 8) | L1_BUSY),
     PSSM_SOAK = ((L2_PRO_SOAK << 8) | L1_BUSY),
     PSSM_READY_TO_TUBE_AFTER = ((L2_PRO_READY_TO_TUBE_AFTER << 8) | L1_BUSY),

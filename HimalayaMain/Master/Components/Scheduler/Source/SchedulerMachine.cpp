@@ -60,12 +60,9 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     // Layer two states (for Busy state)
     mp_PssmInitState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmPreTestState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    mp_PssmReadyToHeatLevelSensorS1 = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    mp_PssmReadyToHeatLevelSensorS2 = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    mp_PssmReadyToTubeBefore = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    mp_PssmReadyToTubeAfter = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    mp_PssmFillingLevelSensorHeatingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    mp_PssmFillingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmReadyToSeal = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    mp_PssmReadyToFill = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmReadyToDrain = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmSoak = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmStepFinish = QSharedPointer<QState>(new QState(mp_BusyState.data()));
@@ -101,7 +98,9 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //Program Pre-Test related logic
     mp_PssmInitState->addTransition(this, SIGNAL(RunPreTest()), mp_PssmPreTestState.data());
-    mp_PssmPreTestState->addTransition(mp_ProgramSelfTest.data(), SIGNAL(TasksDone(bool)), mp_PssmInitState.data());
+    mp_PssmPreTestState->addTransition(mp_ProgramSelfTest.data(), SIGNAL(TasksDone()), mp_PssmFillingLevelSensorHeatingState.data());
+    mp_PssmFillingLevelSensorHeatingState->addTransition(this, SIGNAL(sigLevelSensorHeatingReady()), mp_PssmFillingState.data());
+    mp_PssmFillingState->addTransition(this, SIGNAL(sigFillingComplete()), mp_PssmReadyToSeal.data());
 
     // State machines for Error handling
     mp_RsRvGetOriginalPositionAgain = QSharedPointer<CRsRvGetOriginalPositionAgain>(new CRsRvGetOriginalPositionAgain(mp_SchedulerMachine.data(), mp_ErrorState.data()));
@@ -131,6 +130,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcRestart()), mp_ErrorRcRestartState.data());
     CONNECTSIGNALSLOT(mp_RcRestart.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRcRestartState->addTransition(this, SIGNAL(sigStateChange()), mp_BusyState.data());
+
+    m_Filling_CurrentStage = MOVE_TUBE_POSITION;
 }
 
 
@@ -248,25 +249,13 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         {
             return PSSM_PRETEST;
         }
-        else if(mp_SchedulerMachine->configuration().contains(mp_PssmReadyToHeatLevelSensorS1.data()))
+        else if(mp_SchedulerMachine->configuration().contains(mp_PssmFillingLevelSensorHeatingState.data()))
         {
-            return PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1;
+            return PSSM_FILLING_LEVELSENSOR_HEATING;
         }
-        else if(mp_SchedulerMachine->configuration().contains(mp_PssmReadyToHeatLevelSensorS2.data()))
+        else if(mp_SchedulerMachine->configuration().contains(mp_PssmFillingState.data()))
         {
-            return PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2;
-        }
-        else if(mp_SchedulerMachine->configuration().contains(mp_PssmReadyToTubeBefore.data()))
-        {
-            return PSSM_READY_TO_TUBE_BEFORE;
-        }
-        else if(mp_SchedulerMachine->configuration().contains(mp_PssmReadyToTubeAfter.data()))
-        {
-            return PSSM_READY_TO_TUBE_AFTER;
-        }
-        else if(mp_SchedulerMachine->configuration().contains(mp_PssmReadyToFill.data()))
-        {
-            return PSSM_READY_TO_FILL;
+            return PSSM_FILLING;
         }
         else if(mp_SchedulerMachine->configuration().contains(mp_PssmReadyToSeal.data()))
         {
@@ -373,14 +362,9 @@ void CSchedulerStateMachine::NotifyTempsReady()
     emit sigTempsReady();
 }
 
-void CSchedulerStateMachine::NotifyLevelSensorTempS1Ready()
+void CSchedulerStateMachine::NotifyLevelSensorHeatingReady()
 {
-    emit sigLevelSensorTempS1Ready();
-}
-
-void CSchedulerStateMachine::NotifyLevelSensorTempS2Ready()
-{
-    emit sigLevelSensorTempS2Ready();
+    emit sigLevelSensorHeatingReady();
 }
 
 void CSchedulerStateMachine::NotifyHitTubeBefore()
@@ -470,65 +454,6 @@ void CSchedulerStateMachine::NotifyRsShutdownFailedHeaterFinished()
     emit sigShutdownFailedHeaterFinished();
 }
 
-void CSchedulerStateMachine::OnNotifyResume()
-{
-    if( this->GetPreviousState() == (PSSM_INIT))
-    {
-           emit sigResumeToInit();
-    }
-    else if((this->GetPreviousState() & 0xFFFF) == PSSM_PRETEST)
-    {
-        emit sigResumeToPreTest();
-    }
-    else if( this->GetPreviousState()== (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1))
-    {
-        emit sigResumeToHeatLevelSensorS1();
-    }
-    else if( this->GetPreviousState() == (PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2))
-    {
-        emit sigResumeToHeatLevelSensorS2();
-    }
-    else if( this->GetPreviousState() == (PSSM_READY_TO_TUBE_BEFORE))
-    {
-        if(((this->GetCurrentState())&0xFF) == (SM_ERROR))
-        {
-            emit sigResumeFromErrorToBegin();
-        }
-        else
-        {
-            emit sigResumeToReadyToFill();
-        }
-    }
-    else if( this->GetPreviousState() == (PSSM_READY_TO_FILL))
-    {
-        emit sigResumeToReadyToFill();
-    }
-    else if( this->GetPreviousState() == (PSSM_READY_TO_SEAL))
-    {
-
-        if(((this->GetCurrentState())&0xFF) == (SM_ERROR))
-        {
-            emit sigResumeFromErrorToBegin();
-        }
-        else
-        {
-            emit sigResumeToSoak();
-        }
-    }
-    else if( this->GetPreviousState() == (PSSM_SOAK))
-    {
-        emit sigResumeToSoak();
-    }
-    else if( this->GetPreviousState() == (PSSM_STEP_FINISH))
-    {
-        emit sigResumeToStepFinished();
-    }
-    else
-    {
-        //should not enter here
-    }
-}
-
 void CSchedulerStateMachine::NotifyResumeDrain()
 {
     if(this->GetPreviousState() == (PSSM_READY_TO_TUBE_AFTER))
@@ -554,6 +479,56 @@ void CSchedulerStateMachine::EnterRsHeatingErr30SRetry()
 void CSchedulerStateMachine::HandlePssmPreTestWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
     mp_ProgramSelfTest->HandleWorkFlow(cmdName, retCode);
+}
+
+void CSchedulerStateMachine::HandleProtocolFillingWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+{
+   switch (m_Filling_CurrentStage)
+   {
+   case MOVE_TUBE_POSITION:
+       mp_SchedulerThreadController->MoveRV();
+       m_Filling_CurrentStage = GET_MOVETUBE_RESPONSE;
+       break;
+   case GET_MOVETUBE_RESPONSE:
+       if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+       {
+           if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+           {
+               m_Filling_CurrentStage = MOVE_TUBE_POSITION;
+               mp_SchedulerThreadController->SendOutErrMsg(retCode);
+           }
+           else
+           {
+               m_Filling_CurrentStage = IN_FILLING;
+           }
+       }
+       else
+       {
+           // Do nothing, just wait for the response
+       }
+       break;
+   case IN_FILLING:
+       mp_SchedulerThreadController->Fill();
+       m_Filling_CurrentStage = GET_MOVESEALING_RESPONSE;
+       break;
+   case GET_MOVESEALING_RESPONSE:
+       if( "Scheduler::ALFilling" == cmdName)
+       {
+           if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+           {
+               m_Filling_CurrentStage = MOVE_TUBE_POSITION;
+               mp_SchedulerThreadController->SendOutErrMsg(retCode);
+           }
+           else
+           {
+               emit sigFillingComplete();
+               m_Filling_CurrentStage = MOVE_TUBE_POSITION;
+           }
+       }
+       break;
+   default:
+       break;
+   }
 }
 
 void CSchedulerStateMachine::HandleRsStandByWithTissueWorkFlow(bool flag)

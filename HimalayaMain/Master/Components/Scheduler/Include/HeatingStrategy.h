@@ -203,11 +203,21 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  get the oven heating begin Time
+     *  \brief  Get the oven heating begin Time
+     *  \param  void
      *  \return qint64
      */
     /****************************************************************************/
-    inline  qint64 GetOvenHeatingBeginTime() const { return m_OvenStartHeatingTime; }
+    qint64 GetOvenHeatingBeginTime() const { return m_OvenStartHeatingTime; }
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Check if level sensor heating reaches target temperature or not
+     *  \param  void
+     *  \return bool, ture - passed, false - not yet
+     */
+    /****************************************************************************/
+    bool CheckLevelSensorHeatingStatus() const { return m_RTLevelSensor.OTCheckPassed; }
 
     /****************************************************************************/
     /*!

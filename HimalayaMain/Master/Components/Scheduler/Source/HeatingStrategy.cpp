@@ -425,7 +425,7 @@ bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
             && m_RTBottom.OTCheckPassed
             && m_OvenTop.OTCheckPassed
             && m_OvenBottom.OTCheckPassed
-            && m_RV_2_Outlet.OTCheckPassed
+            //&& m_RV_2_Outlet.OTCheckPassed
             && m_LARVTube.OTCheckPassed
             && m_LAWaxTrap.OTCheckPassed;
     return result;

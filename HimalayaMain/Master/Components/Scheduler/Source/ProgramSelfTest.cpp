@@ -211,7 +211,7 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             }
             else
             {
-                emit TasksDone(true);
+                emit TasksDone();
             }
         }
         else // Wait for command response

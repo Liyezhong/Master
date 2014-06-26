@@ -118,7 +118,7 @@ signals:
      *
      */
     /****************************************************************************/
-    void TasksDone(bool);
+    void TasksDone();
 
 private:
     SchedulerMainThreadController *mp_SchedulerThreadController;    //!< Pointer to Scheduler Thread Controller
