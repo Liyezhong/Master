@@ -122,7 +122,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string/>
    </property>
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">

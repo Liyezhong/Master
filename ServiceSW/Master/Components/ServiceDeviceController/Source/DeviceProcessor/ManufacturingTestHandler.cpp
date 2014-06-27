@@ -1943,14 +1943,16 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         p_TestCase->AddResult("CurrentTempBottom1", CurrentTempBottomValue1);
         p_TestCase->AddResult("CurrentTempBottom2", CurrentTempBottomValue2);
 
-        // wait operator input value of external sensor
-        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
-        EmitRefreshTestStatustoMain(TestCaseName, WAIT_CONFIRM2);
-        while( !m_Continue && !m_UserAbort) {
-            mp_Utils->Pause(1000);
-        }
-        if (m_Continue == true) {
-            m_Continue = false;
+        if (!m_UserAbort) {
+            // wait operator input value of external sensor
+            EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+            EmitRefreshTestStatustoMain(TestCaseName, WAIT_CONFIRM2);
+            while( !m_Continue && !m_UserAbort) {
+                mp_Utils->Pause(1000);
+            }
+            if (m_Continue == true) {
+                m_Continue = false;
+            }
         }
 
 
