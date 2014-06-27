@@ -250,7 +250,7 @@ SchedulerStateMachine_t CProgramStepStateMachine::GetCurrentState(QSet<QAbstract
     }
     else if(statesList.contains(mp_PssmReadyToTubeAfter))
     {
-        return PSSM_READY_TO_TUBE_AFTER;
+        return PSSM_DRAINING;
     }
     else if(statesList.contains(mp_PssmReadyToFill))
     {
@@ -258,15 +258,15 @@ SchedulerStateMachine_t CProgramStepStateMachine::GetCurrentState(QSet<QAbstract
     }
     else if(statesList.contains(mp_PssmReadyToSeal))
     {
-        return PSSM_READY_TO_SEAL;
+        return PSSM_RV_MOVE_TO_SEAL;
     }
     else if(statesList.contains(mp_PssmSoak))
     {
-        return PSSM_SOAK;
+        return PSSM_PROCESSING;
     }
     else if(statesList.contains(mp_PssmReadyToDrain))
     {
-        return PSSM_READY_TO_DRAIN;
+        return PSSM_DRAINING;
     }
     else if(statesList.contains(mp_PssmStepFinish))
     {

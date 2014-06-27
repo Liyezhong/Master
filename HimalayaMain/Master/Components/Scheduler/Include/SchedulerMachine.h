@@ -65,10 +65,12 @@ private:
     QSharedPointer<QState> mp_PssmPreTestState;                                         ///<  Busy State's sub state: Pre-test state
     QSharedPointer<QState> mp_PssmFillingLevelSensorHeatingState;                       ///<  Busy State's sub state: Filling-LevelSensor_Heating
     QSharedPointer<QState> mp_PssmFillingState;                                         ///<  Busy State's sub state: Filling
-    QSharedPointer<QState> mp_PssmReadyToSeal;                                          ///<  Busy State's sub state: Ready to seal state
-    QSharedPointer<QState> mp_PssmReadyToDrain;                                         ///<  Busy State's sub state: Ready to drain state
-    QSharedPointer<QState> mp_PssmSoak;                                                 ///<  Busy State's sub state: Soak state
-    QSharedPointer<QState> mp_PssmStepFinish;                                           ///<  Busy State's sub state: Step finish state
+    QSharedPointer<QState> mp_PssmRVMoveToSealState;                                    ///<  Busy State's sub state: RV move to Seal position
+    QSharedPointer<QState> mp_PssmProcessingState;                                      ///<  Busy State's sub state: Processing or Soak state
+    QSharedPointer<QState> mp_PssmRVMoveToTubeState;                                    ///<  Busy State's sub state: RV move to tube position state
+    QSharedPointer<QState> mp_PssmDrainingState;                                        ///<  Busy State's sub state: Draining state
+    QSharedPointer<QState> mp_PssmRVPosChangeState;                                     ///<  Busy State's sub state: RV move to next tube state
+    QSharedPointer<QState> mp_PssmStepFinishState;                                      ///<  Busy State's sub state: Current Step finished state
     QSharedPointer<QState> mp_PssmError;                                                ///<  Busy State's sub state: Step error state
     QSharedPointer<QState> mp_PssmPause;                                                ///<  Busy State's sub state: Pause state
     QSharedPointer<QState> mp_PssmPauseDrain;                                           ///<  Busy State's sub state: Pause drain state
@@ -298,6 +300,24 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Notify RV moving to Sealing position is ready
+     *  \param  void
+     *  \return void
+     */
+    /****************************************************************************/
+    void NotifyRVMoveToSealReady();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Notify RV moving to tube position is ready
+     *  \param  void
+     *  \return void
+     */
+    /****************************************************************************/
+    void NotifyRVMoveToTubeReady();
+
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function NotifyHitTubeBefore
      *
      *  \return from NotifyHitTubeBefore
@@ -322,12 +342,12 @@ public:
     void NotifyHitSeal();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function NotifySoakFinished
-     *
-     *  \return from NotifySoakFinished
+     *  \brief  Notify processing finished
+     *  \param  void
+     *  \return void
      */
     /****************************************************************************/
-    void NotifySoakFinished();
+    void NotifyProcessingFinished();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyHitTubeAfter
@@ -336,14 +356,25 @@ public:
      */
     /****************************************************************************/
     void NotifyHitTubeAfter();
+
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function NotifyDrainFinished
-     *
-     *  \return from NotifyDrainFinished
+     *  \brief  Notify Drain finished
+     *  \param  void
+     *  \return void
      */
     /****************************************************************************/
     void NotifyDrainFinished();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Notify RV postion change ready
+     *  \param  void
+     *  \return void
+     */
+    /****************************************************************************/
+    void NotifyRVPosChangeReady();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyStepFinished
@@ -605,6 +636,32 @@ private slots:
      */
     /****************************************************************************/
     void OnTasksDone(bool flag);
+
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to enter RV_Move_To_Seal state.
+     *  \param	void
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnRVMoveToSeal();
+
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to enter RV_Move_To_Tube state.
+     *  \param	void
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnRVMoveToTube();
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to enter RV_Pos_Change state.
+     *  \param	void
+     *  \return	void
+     */
+    /****************************************************************************/
+    void OnRVPostionChange();
 signals:
     /****************************************************************************/
     /*!
@@ -766,6 +823,20 @@ signals:
 
     /****************************************************************************/
     /*!
+     *  \brief  Signal for RV moving to Sealing position ready
+     */
+    /****************************************************************************/
+    void sigRVMoveToSealReady();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Signal for RV moving to tube position ready
+     */
+    /****************************************************************************/
+    void sigRVMoveToTubeReady();
+
+    /****************************************************************************/
+    /*!
      *  \brief  Signal for filling completes
      */
     /****************************************************************************/
@@ -791,10 +862,10 @@ signals:
     void sigHitSeal();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal sigSoakFinished
+     *  \brief  Signal for Processing(soak) finished
      */
     /****************************************************************************/
-    void sigSoakFinished();
+    void sigProcessingFinished();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal sigHitTubeAfter
@@ -803,10 +874,18 @@ signals:
     void sigHitTubeAfter();
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal sigDrainFinished
+     *  \brief  Signal for Draining finished
      */
     /****************************************************************************/
     void sigDrainFinished();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Signal for RV position change ready
+     */
+    /****************************************************************************/
+    void sigRVPosChangeReady();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal sigStepFinished

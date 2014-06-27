@@ -62,10 +62,12 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmPreTestState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmFillingLevelSensorHeatingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmFillingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    mp_PssmReadyToSeal = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    mp_PssmReadyToDrain = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    mp_PssmSoak = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    mp_PssmStepFinish = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    mp_PssmRVMoveToSealState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    mp_PssmProcessingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    mp_PssmRVMoveToTubeState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    mp_PssmDrainingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    mp_PssmRVPosChangeState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
+    mp_PssmStepFinishState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmError = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmPause = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmPauseDrain = QSharedPointer<QState>(new QState(mp_BusyState.data()));
@@ -96,11 +98,23 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     // Sate machines for Run handling
     mp_ProgramSelfTest = QSharedPointer<CProgramSelfTest>(new CProgramSelfTest(mp_SchedulerThreadController));
 
-    //Program Pre-Test related logic
+    // Run Handling related logic
     mp_PssmInitState->addTransition(this, SIGNAL(RunPreTest()), mp_PssmPreTestState.data());
     mp_PssmPreTestState->addTransition(mp_ProgramSelfTest.data(), SIGNAL(TasksDone()), mp_PssmFillingLevelSensorHeatingState.data());
     mp_PssmFillingLevelSensorHeatingState->addTransition(this, SIGNAL(sigLevelSensorHeatingReady()), mp_PssmFillingState.data());
-    mp_PssmFillingState->addTransition(this, SIGNAL(sigFillingComplete()), mp_PssmReadyToSeal.data());
+    mp_PssmFillingState->addTransition(this, SIGNAL(sigFillingComplete()), mp_PssmRVMoveToSealState.data());
+    CONNECTSIGNALSLOT(mp_PssmFillingState.data(), exited(), mp_SchedulerThreadController, OnStopFill());
+    CONNECTSIGNALSLOT(mp_PssmRVMoveToSealState.data(), entered(), this, OnRVMoveToSeal());
+    mp_PssmRVMoveToSealState->addTransition(this, SIGNAL(sigRVMoveToSealReady()), mp_PssmProcessingState.data());
+    CONNECTSIGNALSLOT(mp_PssmProcessingState.data(), entered(), mp_SchedulerThreadController, OnEnterPssmProcessing());
+    mp_PssmProcessingState->addTransition(this,SIGNAL(sigProcessingFinished()), mp_PssmRVMoveToTubeState.data());
+    CONNECTSIGNALSLOT(mp_PssmRVMoveToTubeState.data(), entered(), this, OnRVMoveToTube());
+    mp_PssmRVMoveToTubeState->addTransition(this,SIGNAL(sigRVMoveToTubeReady()), mp_PssmDrainingState.data());
+    CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), entered(), mp_SchedulerThreadController, Drain());
+    CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), exited(), mp_SchedulerThreadController, OnStopDrain());
+    mp_PssmDrainingState->addTransition(this, SIGNAL(sigDrainFinished()), mp_PssmRVPosChangeState.data());
+    CONNECTSIGNALSLOT(mp_PssmRVPosChangeState.data(), entered(), this, OnRVPostionChange());
+    mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigRVPosChangeReady()), mp_PssmStepFinishState.data());
 
     // State machines for Error handling
     mp_RsRvGetOriginalPositionAgain = QSharedPointer<CRsRvGetOriginalPositionAgain>(new CRsRvGetOriginalPositionAgain(mp_SchedulerMachine.data(), mp_ErrorState.data()));
@@ -149,6 +163,21 @@ void CSchedulerStateMachine::OnTasksDone(bool flag)
 {
     Global::EventObject::Instance().RaiseEvent(mp_SchedulerThreadController->GetEventKey(), 0, 0, flag);
     emit sigStateChange();
+}
+
+void CSchedulerStateMachine::OnRVMoveToSeal()
+{
+    mp_SchedulerThreadController->MoveRV(1);
+}
+
+void CSchedulerStateMachine::OnRVMoveToTube()
+{
+    mp_SchedulerThreadController->MoveRV(0);
+}
+
+void CSchedulerStateMachine::OnRVPostionChange()
+{
+     mp_SchedulerThreadController->MoveRV(2);
 }
 
 /****************************************************************************/
@@ -257,19 +286,24 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         {
             return PSSM_FILLING;
         }
-        else if(mp_SchedulerMachine->configuration().contains(mp_PssmReadyToSeal.data()))
+        else if(mp_SchedulerMachine->configuration().contains(mp_PssmProcessingState.data()))
         {
-            return PSSM_READY_TO_SEAL;
+            return PSSM_PROCESSING;
         }
-        else if(mp_SchedulerMachine->configuration().contains(mp_PssmSoak.data()))
+        else if(mp_SchedulerMachine->configuration().contains(mp_PssmRVMoveToSealState.data()))
         {
-            return PSSM_SOAK;
+            return PSSM_RV_MOVE_TO_SEAL;
         }
-        else if(mp_SchedulerMachine->configuration().contains(mp_PssmReadyToDrain.data()))
+
+        else if(mp_SchedulerMachine->configuration().contains(mp_PssmDrainingState.data()))
         {
-            return PSSM_READY_TO_DRAIN;
+            return PSSM_DRAINING;
         }
-        else if(mp_SchedulerMachine->configuration().contains(mp_PssmStepFinish.data()))
+        else if(mp_SchedulerMachine->configuration().contains(mp_PssmRVPosChangeState.data()))
+        {
+            return PSSM_RV_POS_CHANGE;
+        }
+        else if(mp_SchedulerMachine->configuration().contains(mp_PssmStepFinishState.data()))
         {
             return PSSM_STEP_FINISH;
         }
@@ -367,6 +401,15 @@ void CSchedulerStateMachine::NotifyLevelSensorHeatingReady()
     emit sigLevelSensorHeatingReady();
 }
 
+void CSchedulerStateMachine::NotifyRVMoveToSealReady()
+{
+    emit sigRVMoveToSealReady();
+}
+void CSchedulerStateMachine::NotifyRVMoveToTubeReady()
+{
+    emit sigRVMoveToTubeReady();
+}
+
 void CSchedulerStateMachine::NotifyHitTubeBefore()
 {
     emit sigHitTubeBefore();
@@ -382,9 +425,9 @@ void CSchedulerStateMachine::NotifyHitSeal()
     emit sigHitSeal();
 }
 
-void CSchedulerStateMachine::NotifySoakFinished()
+void CSchedulerStateMachine::NotifyProcessingFinished()
 {
-    emit sigSoakFinished();
+    emit sigProcessingFinished();
 }
 
 void CSchedulerStateMachine::NotifyHitTubeAfter()
@@ -395,6 +438,11 @@ void CSchedulerStateMachine::NotifyHitTubeAfter()
 void CSchedulerStateMachine::NotifyDrainFinished()
 {
     emit sigDrainFinished();
+}
+
+void CSchedulerStateMachine::NotifyRVPosChangeReady()
+{
+    emit sigRVPosChangeReady();
 }
 
 void CSchedulerStateMachine::NotifyStepFinished()
@@ -456,13 +504,13 @@ void CSchedulerStateMachine::NotifyRsShutdownFailedHeaterFinished()
 
 void CSchedulerStateMachine::NotifyResumeDrain()
 {
-    if(this->GetPreviousState() == (PSSM_READY_TO_TUBE_AFTER))
+    if(this->GetPreviousState() == (PSSM_RV_MOVE_TO_TUBE))
     {
-        emit sigResumeToReadyToTubeAfter();
+        emit sigRVMoveToTubeReady();
     }
-    else if(this->GetPreviousState() == (PSSM_READY_TO_DRAIN))
+    else if(this->GetPreviousState() == (PSSM_DRAINING))
     {
-        emit sigResumeToReadyToTubeAfter();
+        emit sigDrainFinished();
     }
 }
 
@@ -486,7 +534,7 @@ void CSchedulerStateMachine::HandleProtocolFillingWorkFlow(const QString& cmdNam
    switch (m_Filling_CurrentStage)
    {
    case MOVE_TUBE_POSITION:
-       mp_SchedulerThreadController->MoveRV();
+       mp_SchedulerThreadController->MoveRV(0);
        m_Filling_CurrentStage = GET_MOVETUBE_RESPONSE;
        break;
    case GET_MOVETUBE_RESPONSE:
