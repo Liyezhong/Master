@@ -315,7 +315,7 @@ void SchedulerMainThreadController::OnTickTimer()
     {
         m_TickTimer.stop();
         m_SchedulerCommandProcessor->ShutDownDevice();
-        DequeueNonDeviceCommand();
+        //DequeueNonDeviceCommand();
         return;
     }
 
@@ -324,7 +324,7 @@ void SchedulerMainThreadController::OnTickTimer()
 
     SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
     m_SchedulerMachine->UpdateCurrentState(currentState);
-    //LogDebug(QString("%1 Scheduler state: %2").arg(QDateTime::currentDateTime().toString()).arg(currentState,0,16));
+
     switch(currentState & 0xFF)
     {
     case SM_INIT:
@@ -334,7 +334,7 @@ void SchedulerMainThreadController::OnTickTimer()
     case SM_IDLE:
         //qDebug()<<"DBG"<<"Scheduler main controller state: IDLE";
         HardwareMonitor( "IDLE" );
-        HandleIdleState(newControllerCmd);
+        HandleIdleState(newControllerCmd,cmd);
         break;
     case SM_BUSY:
         //qDebug()<<"DBG"<<"Scheduler main controller state: RUN";
@@ -350,7 +350,7 @@ void SchedulerMainThreadController::OnTickTimer()
     }
 }
 
-void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd)
+void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
     bool isCleaningProgram = false;
     switch (ctrlCmd)
@@ -381,12 +381,12 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             Q_ASSERT(commandPtrFinish);
             Global::tRefType fRef = GetNewCommandRef();
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
-            QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
-            //LOG_STR_ARG(STR_START_PROGRAM, Global::FmtArgs()<<ProgramName);
 
+            //LOG_STR_ARG(STR_START_PROGRAM, Global::FmtArgs()<<ProgramName);
+            QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
             LogDebug(QString("Start Program: %1").arg(ProgramName));
             LogDebug(QString("Start Step: %1").arg(m_CurProgramStepIndex));
-            m_SchedulerMachine->SendRunSignal();
+            //m_SchedulerMachine->SendRunSignal();
             //send command to main controller to tell the left time
             quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
             //LOG_STR_ARG(STR_CURRENT_PROGRAM_NAME_STEP_REAGENT_LEFTTIME,Global::FmtArgs()<< ProgramName << m_CurProgramStepIndex +1 << m_CurReagnetName << leftSeconds);
@@ -396,7 +396,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-            DequeueNonDeviceCommand();
+            //DequeueNonDeviceCommand();
 
             //wether cleaning program
             if ( 'C' == ProgramName.at(0) )
@@ -407,16 +407,43 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
                 m_SchedulerCommandProcessor->pushCmd(cmdSet);
                 LogDebug(QString("cleaning program set the rv position to:%1").arg(LastPosition));
 
-                m_SchedulerMachine->SendRunCleaning();
                 m_AllProgramCount = true;
             }
             else
             {
             }
+            else
+            {
+                m_SchedulerMachine->SendRunSignal();
+            }
         }
         break;
     default:
-          DequeueNonDeviceCommand();
+        break;
+          //DequeueNonDeviceCommand();
+    }
+
+    // For Cleaning program, we will wait until "RVReqMoveToInitialPositon" response is got.
+    if ("" != m_CurProgramID && 'C' == m_CurProgramID.at(0) && NULL != cmd)
+    {
+        if ("Scheduler::RVReqMoveToInitialPosition" == cmd->GetName())
+        {
+            ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+            cmd->GetResult(retCode);
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                m_SchedulerMachine->SendRunSignal();
+            }
+            else
+            {
+                this->SendOutErrMsg(retCode);
+            }
+        }
+        else
+        {
+            // just ignore this.
+        }
+
     }
 }
 
@@ -480,7 +507,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     {
         LogDebug(QString("Scheduler received command: ABORT"));
         m_SchedulerMachine->NotifyAbort();
-        DequeueNonDeviceCommand();
+        //DequeueNonDeviceCommand();
         //tell main controller scheduler is starting to abort
         MsgClasses::CmdProgramAcknowledge* commandPtrAbortBegin(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_ABORT_BEGIN));
         Q_ASSERT(commandPtrAbortBegin);
@@ -490,7 +517,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     else
     {
         SchedulerStateMachine_t stepState = m_SchedulerMachine->GetCurrentState();
-        //qDebug()<<"DBG" << "Scheduler step statemachine: "<<stepState;
 
         if(PSSM_INIT == stepState)
             if(!m_IsPrecheckMoveRV)
@@ -549,11 +575,19 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 AllStop();
                 m_SchedulerMachine->NotifyPause(PSSM_INIT);
-                DequeueNonDeviceCommand();
+                //DequeueNonDeviceCommand();
             }
             else
             {
-                m_SchedulerMachine->SendRunPreTest();
+                QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
+                if ('C' != ProgramName.at(0))
+                {
+                    m_SchedulerMachine->SendRunPreTest();
+                }
+                else
+                {
+                    m_SchedulerMachine->SendRunCleaning();
+                }
             }
         }
         else if (PSSM_PRETEST == stepState)
@@ -624,7 +658,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_lastPVTime = 0;
                 }
                 m_SchedulerMachine->NotifyPause(PSSM_PROCESSING);
-                DequeueNonDeviceCommand();
+                //DequeueNonDeviceCommand();
             }
             else
             {
@@ -723,37 +757,36 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_DRAINING == stepState)
         {
-            if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
+            if(m_PauseToBeProcessed)
             {
-                if(m_PauseToBeProcessed)
+                RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+                if(m_PositionRV == sealPos)
                 {
-                    RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
-                    if(m_PositionRV == sealPos)
-                    {
-                        //release pressure
-                        AllStop();
-                        m_PauseToBeProcessed = false;
-                        m_SchedulerMachine->NotifyPause(PSSM_DRAINING);
-                        DequeueNonDeviceCommand();
-                    }
-                }
-                else
-                {
-                    m_PauseToBeProcessed = true;
-                    RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
-                    if(RV_UNDEF != sealPos)
-                    {
-                        CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
-                        cmd->SetRVPosition(sealPos);
-                        m_SchedulerCommandProcessor->pushCmd(cmd);
-                    }
-                    else
-                    {
-                        //todo: error handling
-                        LogDebug(QString("Get invalid RV position: %1").arg(m_CurProgramStepInfo.stationID));
-                    }
-                }
-            }
+                    //release pressure
+                    AllStop();
+                    m_PauseToBeProcessed = false;
+                    m_SchedulerMachine->NotifyPause(PSSM_DRAINING);
+                    //DequeueNonDeviceCommand();
+                 }
+             }
+
+             if (CTRL_CMD_PAUSE == ctrlCmd)
+             {
+                 m_PauseToBeProcessed = true;
+                 RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+                 if(RV_UNDEF != sealPos)
+                 {
+                     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
+                     cmd->SetRVPosition(sealPos);
+                     m_SchedulerCommandProcessor->pushCmd(cmd);
+                  }
+                  else
+                  {
+                     //todo: error handling
+                     LogDebug(QString("Get invalid RV position: %1").arg(m_CurProgramStepInfo.stationID));
+                 }
+             }
+
             if( "Scheduler::ALDraining"== cmdName)
             {
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
@@ -798,8 +831,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
             LogDebug(QString("Program Step Finished"));
             this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
-            QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
-            if(m_CurProgramStepIndex != -1)
+            if(m_CurProgramStepIndex != -1) // Not the last step
             {
                 //start next step
                 LogDebug(QString("Start Step %1").arg(m_CurProgramStepIndex));
@@ -813,11 +845,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 Q_ASSERT(commandPtr);
                 Global::tRefType Ref = GetNewCommandRef();
                 SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-
-                //log
-                //LOG_STR_ARG(STR_CURRENT_PROGRAM_NAME_STEP_REAGENT_LEFTTIME,Global::FmtArgs()<< ProgramName << m_CurProgramStepIndex + 1 << m_CurReagnetName << leftSeconds);
             }
-            else
+            else // Has been the last step
             {
                 LogDebug(QString("All Steps finished."));
                 m_SchedulerMachine->NotifyProgramFinished();
@@ -828,7 +857,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         {
             //program finished
             QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
-            LogDebug(QString("Program finished!"));
+            LogDebug(QString("Program %1 finished!").arg(ProgramName));
             m_SchedulerMachine->SendRunComplete();
             //m_SchedulerMachine->Stop();
             //todo: tell main controller that program is complete
@@ -851,9 +880,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             Q_ASSERT(commandPtrFinish);
             Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtrFinish));
-
-            //LOG
-            //LOG_STR_ARG(STR_FINISH_PROGRAM, Global::FmtArgs()<<ProgramName);
         }
         else if(PSSM_PAUSE == stepState)
         {
@@ -861,7 +887,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 // resume the program
                 emit NotifyResume();
-                DequeueNonDeviceCommand();
+                //DequeueNonDeviceCommand();
                 // tell the main controller the program is resuming
                 MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
                 Q_ASSERT(commandPtrFinish);
@@ -874,7 +900,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(CTRL_CMD_START == ctrlCmd)
             {
                 m_SchedulerMachine->NotifyResumeDrain();
-                DequeueNonDeviceCommand();
+                //DequeueNonDeviceCommand();
                 // tell the main controller the program is resuming
                 MsgClasses::CmdProgramAcknowledge* commandPtrFinish(new MsgClasses::CmdProgramAcknowledge(5000,DataManager::PROGRAM_RUN_BEGIN));
                 Q_ASSERT(commandPtrFinish);
@@ -923,7 +949,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
     {
         if((PSSM_PAUSE != stepState)&&(PSSM_PAUSE_DRAIN != stepState))
         {
-            DequeueNonDeviceCommand();
+            //DequeueNonDeviceCommand();
         }
     }
 #endif
@@ -949,31 +975,31 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         if(CTRL_CMD_RC_RESTART == ctrlCmd)
         {
             m_SchedulerMachine->EnterRcRestart();
-            DequeueNonDeviceCommand();
+            //DequeueNonDeviceCommand();
         }
         else if(CTRL_CMD_RC_REPORT == ctrlCmd)
         {
             LogDebug("Go to move to RC_Report");
             m_SchedulerMachine->NotifyRcReport();
-            DequeueNonDeviceCommand();
+            //DequeueNonDeviceCommand();
         }
         else if(CTRL_CMD_RS_GET_ORIGINAL_POSITION_AGAIN == ctrlCmd)
         {
             LogDebug("Go to RS RV Move To Initial Position!");
             m_SchedulerMachine->NotifyRsRvMoveToInitPosition();
-            DequeueNonDeviceCommand();
+            //DequeueNonDeviceCommand();
         }
         else if(CTRL_CMD_RS_STANDBY == ctrlCmd)
         {
             LogDebug("Go to RS_STANDBY!");
             m_SchedulerMachine->NotifyRsReleasePressure();
-            DequeueNonDeviceCommand();
+            //DequeueNonDeviceCommand();
         }
         else if(CTRL_CMD_RS_STANDBY_WITHTISSUE == ctrlCmd)
         {
             LogDebug("Go to RS_STandby_withTissue");
             m_SchedulerMachine->EnterRsStandByWithTissue();
-            DequeueNonDeviceCommand();
+            //DequeueNonDeviceCommand();
         }
         else if (CTRL_CMD_RS_HEATINGERR30SRETRY == ctrlCmd)
         {
@@ -983,7 +1009,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         {
             LogDebug("Go to RC_Levelsensor_Heating_Overtime");
             m_SchedulerMachine->EnterRcLevelsensorHeatingOvertime();
-            DequeueNonDeviceCommand();
+            //DequeueNonDeviceCommand();
         }
         else
         {
@@ -992,15 +1018,8 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     }
     else if (SM_ERR_RS_STANDBY_WITH_TISSUE == currentState)
     {
-        LogDebug(QString("RS_STandBy_WithTissue Response: %1").arg(retCode));
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            m_SchedulerMachine->HandleRsStandByWithTissueWorkFlow(false);
-        }
-        else
-        {
-            m_SchedulerMachine->HandleRsStandByWithTissueWorkFlow(true);
-        }
+        LogDebug(QString("In RS_STandBy_WithTissue state"));
+        m_SchedulerMachine->HandleRsStandByWithTissueWorkFlow(cmdName, retCode);
     }
     else if (SM_ERR_RS_HEATINGERR30SRETRY == currentState)
     {
@@ -1078,8 +1097,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
 
     if(m_SchedulerCmdQueue.isEmpty())
         return CTRL_CMD_NONE;
+    m_Mutex.lock();
+    Global::CommandShPtr_t pt = m_SchedulerCmdQueue.dequeue();
+    m_Mutex.unlock();
 
-    Global::CommandShPtr_t pt = m_SchedulerCmdQueue.head();
     MsgClasses::CmdQuitAppShutdown* pCmdShutdown = dynamic_cast<MsgClasses::CmdQuitAppShutdown*>(pt.GetPointerToUserData());
     if(pCmdShutdown)
     {	
@@ -1151,6 +1172,7 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
 
 }//When end of this function, the command in m_SchedulerCmdQueue will be destrory by share pointer (CommandShPtr_t) mechanism
 
+#if 0
 void SchedulerMainThreadController::DequeueNonDeviceCommand()
 {
         if(!m_SchedulerCmdQueue.isEmpty())
@@ -1158,6 +1180,7 @@ void SchedulerMainThreadController::DequeueNonDeviceCommand()
             m_SchedulerCmdQueue.dequeue();
         }
 }
+#endif
 
 bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString& ProgramID,
                                                                   ProgramStepInfor& programStepInfor,
@@ -2353,6 +2376,7 @@ void SchedulerMainThreadController::MoveRV(qint16 type)
         targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
         (RVPosition_t)(targetPos+1);
     }
+
     if(RV_UNDEF != targetPos)
     {
         LogDebug(QString("Move to RV seal position: %1").arg(targetPos));

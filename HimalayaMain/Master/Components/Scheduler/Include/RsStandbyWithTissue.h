@@ -40,7 +40,6 @@ class  CRsStandbyWithTissue : public QObject
     typedef enum
     {
         UNDEF,
-        INIT,
         RTBOTTOM_STOP_TEMPCTRL,
         RTSIDE_STOP_TEMPCTRL,
         SHUTDOWN_FAILD_HEATER,
@@ -49,9 +48,9 @@ class  CRsStandbyWithTissue : public QObject
 public:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function HeatingStrategy
+     *  \brief  Constructor of class CRsStandbyWithTissue
      *
-     *  \param SchedController = pointer SchedulerMainThreadController
+     *  \param SchedController = pointer to SchedulerMainThreadController
      *
      */
     /****************************************************************************/
@@ -59,44 +58,45 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  desctruction CRsStandbyWithTissue
+     *  \brief  Desctruction of class CRsStandbyWithTissue
      */
     /****************************************************************************/
     ~CRsStandbyWithTissue();
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function GetCurrentState
+     *  \brief  Get current state
      *
      *  \param statesList = QSet<QAbstractState*>
      *
-     *	\return SchedulerStateMachine_t
+     *	\return Internal state list
      */
     /****************************************************************************/
     CRsStandbyWithTissue::StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function HandleWorkFlow
+     *  \brief Handle the whole work flow for RS_Standby_WithTissue
      *
-     *  \param flag = bool
+     *  \param cmdName - command name
+     *  \param retCode - return code
      *
      */
     /****************************************************************************/
-    void HandleWorkFlow(bool flag);
+    void HandleWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
 signals:
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function RTStopTempCtrl
+     *  \brief  Signal for stopping RTSide temperature control
      *
      */
     /****************************************************************************/
-    void RTStopTempCtrl(DeviceControl::RTTempCtrlType_t);
+    void StopRTSideTempCtrl();
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function ShutdownFailedHeater
+     *  \brief  Signal for shutting down failer heaters
      *
      */
     /****************************************************************************/
@@ -104,7 +104,7 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function ReleasePressure
+     *  \brief  Signal for releasing pressure
      *
      */
     /****************************************************************************/
@@ -112,7 +112,8 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function TasksDone
+     *  \brief  Signal for Tasks done
+     *  \param  bool ture- tasks done successfully, false - tasks failed
      *
      */
     /****************************************************************************/
@@ -121,7 +122,6 @@ signals:
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
     QSharedPointer<QStateMachine>   mp_StateMachine;        //!< State machine for RS_Standby_WithTissue
-    QSharedPointer<QState> mp_Initial;                      //!< Initial state
     QSharedPointer<QState> mp_RTBottomStopTempCtrl;         //!< RT Bottom stop tempature control state
     QSharedPointer<QState> mp_RTSideStopTempCtrl;           //!< RT Top stop tempatrue control state
     QSharedPointer<QState> mp_ShutdownFailedHeater;         //!< Shutdown failed heater state

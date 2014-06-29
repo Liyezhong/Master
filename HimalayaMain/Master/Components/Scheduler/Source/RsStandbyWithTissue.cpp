@@ -21,6 +21,7 @@
 
 #include "Scheduler/Include/RsStandbyWithTissue.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
+#include "Scheduler/Include/HeatingStrategy.h"
 
 namespace Scheduler{
 
@@ -29,39 +30,35 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(SchedulerMainThreadController* SchedC
     qRegisterMetaType<DeviceControl::RTTempCtrlType_t>("DeviceControl::RTTempCtrlType_t");
     mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
 
-    mp_Initial = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_RTBottomStopTempCtrl = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_RTSideStopTempCtrl = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_ShutdownFailedHeater = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_ReleasePressure = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
-    mp_StateMachine->setInitialState(mp_Initial.data());
-    mp_Initial->addTransition(this, SIGNAL(RTStopTempCtrl(DeviceControl::RTTempCtrlType_t)), mp_RTBottomStopTempCtrl.data());
+    mp_StateMachine->setInitialState(mp_RTBottomStopTempCtrl.data());
     mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(RTStopTempCtrl(DeviceControl::RTTempCtrlType_t)), mp_RTSideStopTempCtrl.data());
     mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(ShutdownFailedHeater()), mp_ShutdownFailedHeater.data());
     mp_ShutdownFailedHeater->addTransition(this, SIGNAL(ReleasePressure()), mp_ReleasePressure.data());
-    mp_ReleasePressure->addTransition(this,SIGNAL(TasksDone(bool)), mp_Initial.data());
+    mp_ReleasePressure->addTransition(this,SIGNAL(TasksDone(bool)), mp_RTBottomStopTempCtrl.data());
 
 	//For error cases
-    mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-    mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-    mp_ShutdownFailedHeater->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
+
+    mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_RTBottomStopTempCtrl.data());
+    mp_ShutdownFailedHeater->addTransition(this, SIGNAL(TasksDone(bool)), mp_RTBottomStopTempCtrl.data());
+
+    mp_StateMachine->start();
 }
 
 CRsStandbyWithTissue::~CRsStandbyWithTissue()
 {
-
+    mp_StateMachine->stop();
 }
 
 CRsStandbyWithTissue::StateList_t CRsStandbyWithTissue::GetCurrentState(QSet<QAbstractState*> statesList)
 {
     StateList_t currentState = UNDEF;
 
-    if (statesList.contains(mp_Initial.data()))
-    {
-        currentState = INIT;
-    }
-    else if (statesList.contains(mp_RTBottomStopTempCtrl.data()))
+    if (statesList.contains(mp_RTBottomStopTempCtrl.data()))
     {
         currentState = RTBOTTOM_STOP_TEMPCTRL;
     }
@@ -81,24 +78,31 @@ CRsStandbyWithTissue::StateList_t CRsStandbyWithTissue::GetCurrentState(QSet<QAb
     return currentState;
 }
 
-void CRsStandbyWithTissue::HandleWorkFlow(bool flag)
+void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
-    if (false == flag)
-    {
-        emit TasksDone(false);
-        return;
-    }
+
     StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
 	switch (currentState)
 	{
-    case INIT:
-        emit RTStopTempCtrl(DeviceControl::RT_BOTTOM);
-        break;
     case RTBOTTOM_STOP_TEMPCTRL:
-        emit RTStopTempCtrl(DeviceControl::RT_SIDE);
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("RTBottom"))
+        {
+            emit StopRTSideTempCtrl();
+        }
+        else
+        {
+            emit TasksDone(false);
+        }
         break;
     case RTSIDE_STOP_TEMPCTRL:
-        emit ShutdownFailedHeater();
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("RTSide"))
+        {
+            emit ShutdownFailedHeater();
+        }
+        else
+        {
+            emit TasksDone(false);
+        }
         break;
     case SHUTDOWN_FAILD_HEATER:
         emit ReleasePressure();

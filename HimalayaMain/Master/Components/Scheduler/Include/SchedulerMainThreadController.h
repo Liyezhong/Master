@@ -285,6 +285,7 @@ typedef struct
          */
         /****************************************************************************/
         ControlCommandType_t PeekNonDeviceCommand();
+#if 0
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function DequeueNonDeviceCommand
@@ -293,6 +294,7 @@ typedef struct
          */
         /****************************************************************************/
         void DequeueNonDeviceCommand();
+#endif
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of function GetReagentName
@@ -590,14 +592,15 @@ private slots:
           *  \brief  Definition/Declaration of slot HandleIdleState
           */
          /****************************************************************************/
-         void HandleIdleState(ControlCommandType_t ctrlCmd);
+         void HandleIdleState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
+
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of slot HandleRunState
           */
          /****************************************************************************/
-         //void HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
          void HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd);
+
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of slot HandleErrorState

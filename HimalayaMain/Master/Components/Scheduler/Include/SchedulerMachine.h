@@ -98,16 +98,16 @@ private:
     QSharedPointer<CRcReport> mp_RcReport;												///<  State machine for RC_Report
 
     // enum for filling stages
-    enum
+    typedef enum
     {
         MOVE_TUBE_POSITION,
         GET_MOVETUBE_RESPONSE,
         IN_FILLING,
         MOVE_SEALING_POSITION,
         GET_MOVESEALING_RESPONSE
-    };
+    } FILLING_STAGE_t;
 
-    quint16 m_Filling_CurrentStage;                                                     ///< Current stage of protocol filling
+    FILLING_STAGE_t m_FillingCurrentStage;                                              ///< Current stage of protocol filling
 private:
     QString GetDeviceName();
 
@@ -157,14 +157,15 @@ public:
      */
     /****************************************************************************/
     void SendRunSignal();
+
     /****************************************************************************/
     /*!
-    *  \brief  Definition/Declaration of function SendRunSignal
-    *
-    *  \return from SendRunSignal
-    */
-   /****************************************************************************/
-   void SendRunCleaning();
+     *  \brief  Definition/Declaration of function SendRunSignal
+     *
+     *  \return from SendRunSignal
+     */
+    /****************************************************************************/
+    void SendRunCleaning();
 
    /****************************************************************************/
    /*!
@@ -551,12 +552,13 @@ public:
     /*!
      *  \brief Handle the whole work flow for Rs_Standby_WithTissue 
      *
-     *  \param flag - indicate if the execution succeeds or not
+     *  \param cmdName - command name
+     *  \param retCode - return code
      *
      *  \return void
      */
     /****************************************************************************/
-    void HandleRsStandByWithTissueWorkFlow(bool flag);
+    void HandleRsStandByWithTissueWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -669,18 +671,21 @@ signals:
      */
     /****************************************************************************/
     void SchedulerInitComplete();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal RunSignal
      */
     /****************************************************************************/
     void RunSignal();
+
     /****************************************************************************/
     /*!
-    *  \brief  Definition/Declaration of signal RunCleaning
-    */
-   /****************************************************************************/
-   void RunCleaning();
+     *  \brief  Definition/Declaration of signal RunCleaning
+     */
+    /****************************************************************************/
+    void RunCleaning();
+
    /****************************************************************************/
    /*!
     *  \brief  Definition/Declaration of signal RunSelfTest
