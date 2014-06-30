@@ -800,10 +800,11 @@ void CStartup::ShowErrorMessage(const QString &Message)
     mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Message);
 }
 
-void CStartup::RefreshTestStatus4RetortCoverSensor(Service::ModuleTestCaseID id, const Service::ModuleTestStatus &status)
+void CStartup::RefreshTestStatus4RetortCoverSensor(Service::ModuleTestCaseID /*id*/, const Service::ModuleTestStatus &status)
 {
     static bool openFlag = true;
     DiagnosticsManufacturing::CStatusConfirmDialog *dlg = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
+    dlg->SetDialogTitle("Retort lid lock test");
 
     dlg->SetText(QString("Do you see the retort lid '%1' ?").arg(openFlag ? "Open" : "Close"));
     dlg->UpdateRetortLabel(status);
@@ -922,6 +923,66 @@ void CStartup::RefreshTestStatus4OvenCoverSensor(Service::ModuleTestCaseID Id, c
     }
 }
 
+void CStartup::RefreshTestStatus4RetortHeatingEmpty(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    if (mp_HeatingStatusDlg == NULL) {
+        mp_HeatingStatusDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Id, mp_MainWindow);
+        mp_HeatingStatusDlg->HideAbort();
+        mp_HeatingStatusDlg->show();
+        mp_HeatingStatusDlg->UpdateLabel(Status);
+        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+    }
+    else {
+        mp_HeatingStatusDlg->UpdateLabel(Status);
+    }
+}
+
+void CStartup::RefreshTestStatus4RetortLevelSensorHeating(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    if (mp_HeatingStatusDlg == NULL) {
+        mp_HeatingStatusDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Id, mp_MainWindow);
+        mp_HeatingStatusDlg->DisplayLSensorLabel();
+        mp_HeatingStatusDlg->HideAbort();
+        mp_HeatingStatusDlg->show();
+        mp_HeatingStatusDlg->UpdateLabel(Status);
+        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+    }
+    else {
+        mp_HeatingStatusDlg->UpdateLabel(Status);
+    }
+}
+
+void CStartup::RefreshTestStatus4RetortLevelSensorDetecting(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &status)
+{
+    qDebug() << "RefreshTestStatus4RetortLevelSensorDetecting";
+    //yuan@TODO: provide information of detecting procedure ...
+
+    // At test end prompt comfirm dialog;
+    if (status.value("CurrentStatus") == "WaitConfirm") {
+        mp_ManaufacturingDiagnosticsHandler->HideMessage();
+        DiagnosticsManufacturing::CStatusConfirmDialog *prompt = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
+        prompt->SetDialogTitle("Confirm water level");
+        prompt->SetText(QString("Open the retort lid, do you see water cover the level sensor?"));
+        prompt->UpdateRetortLabel(status);
+        int ret = prompt->exec();
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(ret == 0 ? true : false);
+        delete prompt;
+        return ;
+    }
+
+    if (mp_HeatingStatusDlg == NULL) {
+        mp_HeatingStatusDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Id, mp_MainWindow);
+        mp_HeatingStatusDlg->DisplayLSensorLabel();
+        mp_HeatingStatusDlg->HideAbort();
+        mp_HeatingStatusDlg->show();
+        mp_HeatingStatusDlg->UpdateLabel(status);
+        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+    }
+    else {
+        mp_HeatingStatusDlg->UpdateLabel(status);
+    }
+}
+
 void CStartup::RefreshTestStatus4OvenHeatingEmpty(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
     if (mp_HeatingStatusDlg == NULL) {
@@ -930,7 +991,6 @@ void CStartup::RefreshTestStatus4OvenHeatingEmpty(Service::ModuleTestCaseID Id, 
         mp_HeatingStatusDlg->show();
         mp_HeatingStatusDlg->UpdateLabel(Status);
         CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
-
     }
     else {
         mp_HeatingStatusDlg->UpdateLabel(Status);
@@ -1208,6 +1268,15 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
         RefreshTestStatus4RVHeating(id, status);
         break;
     case Service::RETORT_HEATING_EMPTY:
+        RefreshTestStatus4RetortHeatingEmpty(id, status);
+        break;
+    case Service::RETORT_HEATING_WITH_WATER:
+        break;
+    case Service::RETORT_LEVEL_SENSOR_HEATING:
+        RefreshTestStatus4RetortLevelSensorHeating(id, status);
+        break;
+    case Service::RETORT_LEVEL_SENSOR_DETECTING:
+        RefreshTestStatus4RetortLevelSensorDetecting(id, status);
         break;
     case Service::RETORT_LID_LOCK:
         RefreshTestStatus4RetortCoverSensor(id, status);

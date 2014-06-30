@@ -80,6 +80,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief Update label status
+     *
+     *  \iparam Status = Label test status
+     */
+    /****************************************************************************/
+    void DisplayLSensorLabel(void);
+
+    /****************************************************************************/
+    /*!
      *  \brief Activates a timeout timer
      *
      *  \iparam Milliseconds = Timeout in milliseconds

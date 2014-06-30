@@ -251,6 +251,9 @@ void CManufacturingDiagnosticsHandler::ShowHeatingFailedResult(Service::ModuleTe
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     Service::ModuleTestStatus Status = p_TestCase->GetResult();
+    if (Service::RETORT_LEVEL_SENSOR_HEATING) {
+        dlg->DisplayLSensorLabel();
+    }
     dlg->UpdateLabel(Status);
 
     Text.append(" ");
@@ -587,33 +590,38 @@ void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<
 
 void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Service::ModuleTestCaseID> &TestCaseList)
 {
-    quint32 FailureId(0);
-    quint32 OkId(0);
-    quint32 EventId(0);
+    quint32 failureId(0);
+    quint32 okId(0);
+    quint32 eventId(0);
 
     qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufRetortTests ---" << TestCaseList;
 
     for(int i=0; i<TestCaseList.size(); i++) {
-        Service::ModuleTestCaseID Id = TestCaseList.at(i);
-        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
-        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-
-
-        bool NextFlag = ShowGuide(Id, 0);
-        if (NextFlag == false) {
+        Service::ModuleTestCaseID id = TestCaseList.at(i);
+        bool nextFlag = ShowGuide(id, 0);
+        if (nextFlag == false) {
             break;
         }
-
-        switch( Id ) {
+        switch(id) {
         case Service::RETORT_LID_LOCK:
-//            EventId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST;
-//            FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_FAILURE;
-//            OkId = EVENT_GUI_DIAGNOSTICS_OVEN_COVER_SENSOR_TEST_SUCCESS;
+            eventId = EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST;
+            failureId = EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST_FAILURE;
+            okId = EVENT_GUI_DIAGNOSTICS_RETORT_LIDLOCK_TEST_SUCCESS;
             break;
         case Service::RETORT_HEATING_EMPTY:
-//            EventId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST;
-//            FailureId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_FAILURE;
-//            OkId = EVENT_GUI_DIAGNOSTICS_OVEN_HEATING_EMPTY_TEST_SUCCESS;
+            eventId = EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST;
+            failureId = EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST_FAILURE;
+            okId = EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST_SUCCESS;
+            break;
+        case Service::RETORT_LEVEL_SENSOR_HEATING:
+            eventId = EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST;
+            failureId = EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST_FAILURE;
+            okId = EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_HEATING_TEST_SUCCESS;
+            break;
+        case Service::RETORT_LEVEL_SENSOR_DETECTING:
+            eventId = EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST;
+            failureId = EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_FAILURE;
+            okId = EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_SUCCESS;
             break;
         case Service::RETORT_HEATING_WITH_WATER:
             EventId = EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST;
@@ -625,18 +633,16 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             break;
         }
 
+        Global::EventObject::Instance().RaiseEvent(eventId);
+        emit PerformManufacturingTest(id, Service::TEST_CASE_ID_UNUSED);
 
-        //Global::EventObject::Instance().RaiseEvent(EventId);
-        emit PerformManufacturingTest(Id, Service::TEST_CASE_ID_UNUSED);
-
-        bool Result = GetTestResponse();
-
-        if (Id == Service::RETORT_LID_LOCK && Result == true) {
-            NextFlag = ShowGuide(Id, 1);
-            if (NextFlag == false)
+        bool result = GetTestResponse();
+        if (id == Service::RETORT_LID_LOCK && result == true) {
+            nextFlag = ShowGuide(id, 1);
+            if (nextFlag == false)
                 break;
             emit PerformManufacturingTest(Service::RETORT_LID_LOCK, Service::TEST_CASE_ID_UNUSED);
-            Result = GetTestResponse();
+            result = GetTestResponse();
         }
         else if (Id == Service::RETORT_HEATING_WITH_WATER) {
             // popup a message to inform operator to put the external sensor into retort.
@@ -661,34 +667,34 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
 
         }
 
-        p_TestCase->SetStatus(Result);
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(id);
+        qDebug() << "[yuan-debug] test case name: " << TestCaseName << "\n";
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+        p_TestCase->SetStatus(result);
 
-        if (Result == false) {
-            Global::EventObject::Instance().RaiseEvent(FailureId);
-
-            QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-
-            QString Reason = p_TestCase->GetResult().value("FailReason");
-            if (Reason == "Abort") {   // if user click abort, then the test routines for this modules will terminate.
+        if (result == false) {
+            Global::EventObject::Instance().RaiseEvent(failureId);
+            QString testCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(id);
+            QString reason = p_TestCase->GetResult().value("FailReason");
+            if (reason == "Abort") {   // if user click abort, then the test routines for this modules will terminate.
                 mp_RetortManuf->EnableButton(true);
                 return ;
             }
 
-            QString Text = QString("%1 - %2\n%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
-            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
+            QString text = QString("%1 - %2\n%3").arg(testCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, text, true);
 
-            if (Id == Service::RETORT_HEATING_EMPTY) {
-                ShowHeatingFailedResult(Id);
+            if (id != Service::RETORT_LID_LOCK) {
+                ShowHeatingFailedResult(id);
             }
-
         }
         else {
-            Global::EventObject::Instance().RaiseEvent(OkId);
-            QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-            QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
-            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+            Global::EventObject::Instance().RaiseEvent(okId);
+            QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(id);
+            QString text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, text, true);
         }
-        mp_RetortManuf->SetTestResult(Id, Result);
+        mp_RetortManuf->SetTestResult(id, result);
     }
     mp_RetortManuf->EnableButton(true);
 }

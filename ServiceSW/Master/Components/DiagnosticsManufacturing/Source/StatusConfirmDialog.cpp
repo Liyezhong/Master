@@ -107,7 +107,12 @@ void CStatusConfirmDialog::UpdateOvenLabel(const Service::ModuleTestStatus &Stat
 void CStatusConfirmDialog::UpdateRetortLabel(const Service::ModuleTestStatus &status)
 {
     QString CoverSensorStatus = status.value("LidLockerStatus");
-    mp_Ui->labelStatusValue->setText(CoverSensorStatus);
+    if (CoverSensorStatus != "") {
+        mp_Ui->labelStatusValue->setText(CoverSensorStatus);
+    }
+    else {
+        mp_Ui->labelStatusValue->hide(); //yuan@TODO: level sensor was detected, prompt message here!
+    }
 }
 
 void CStatusConfirmDialog::UpdateLabel(const QString& Status, const QString& Value)

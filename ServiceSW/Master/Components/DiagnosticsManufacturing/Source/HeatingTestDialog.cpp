@@ -145,14 +145,16 @@ void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
         mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempSensor1"));
         mp_Ui->labelCurTempBottom1->setText(Status.value("CurrentTempSensor2"));
     }
-    else if (m_TestCaseId == Service::RETORT_HEATING_EMPTY ||
-             m_TestCaseId == Service::RETORT_HEATING_WITH_WATER ) {
+    else if (m_TestCaseId == Service::RETORT_HEATING_EMPTY) {
         mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempSide"));
         mp_Ui->labelCurTempBottom1->setText(Status.value("CurrentTempBottom1"));
         mp_Ui->labelCurTempBottom2->setText(Status.value("CurrentTempBottom2"));
     }
+    else if (m_TestCaseId == Service::RETORT_LEVEL_SENSOR_HEATING) {
+        mp_Ui->labelCurTempTop->setText(Status.value("CurrentTemp"));
+    }
     else {
-        mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempTop"));
+        mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempSide"));
         mp_Ui->labelCurTempBottom1->setText(Status.value("CurrentTempBottom1"));
         mp_Ui->labelCurTempBottom2->setText(Status.value("CurrentTempBottom2"));
     }
@@ -185,8 +187,22 @@ void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
     }
 }
 
-
-
+/****************************************************************************/
+/*!
+ *  \brief Level sensor label re-layout
+ *
+ *  \iparam void
+ */
+/****************************************************************************/
+void CHeatingTestDialog::DisplayLSensorLabel(void)
+{
+    mp_Ui->labelCurTempBottom1Name->hide();
+    mp_Ui->labelCurTempBottom1->hide();
+    mp_Ui->labelCurTempBottom2Name->hide();
+    mp_Ui->labelCurTempBottom2->hide();
+    mp_Ui->labelExtTempName->hide();
+    mp_Ui->labelExtTempName->hide();
+}
 
 /****************************************************************************/
 /*!
