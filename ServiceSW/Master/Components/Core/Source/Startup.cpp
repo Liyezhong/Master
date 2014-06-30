@@ -955,31 +955,17 @@ void CStartup::RefreshTestStatus4RetortLevelSensorHeating(Service::ModuleTestCas
 void CStartup::RefreshTestStatus4RetortLevelSensorDetecting(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &status)
 {
     qDebug() << "RefreshTestStatus4RetortLevelSensorDetecting";
-    //yuan@TODO: provide information of detecting procedure ...
 
-    // At test end prompt comfirm dialog;
-    if (status.value("CurrentStatus") == "WaitConfirm") {
-        mp_ManaufacturingDiagnosticsHandler->HideMessage();
-        DiagnosticsManufacturing::CStatusConfirmDialog *prompt = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
-        prompt->SetDialogTitle("Confirm water level");
-        prompt->SetText(QString("Open the retort lid, do you see water cover the level sensor?"));
-        prompt->UpdateRetortLabel(status);
-        int ret = prompt->exec();
-        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(ret == 0 ? true : false);
-        delete prompt;
-        return ;
+    mp_ManaufacturingDiagnosticsHandler->HideMessage();
+    QString msg = status.value("CurrentStatus");
+    if (msg.compare("WaitConfirm") == 0) {
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
     }
-
-    if (mp_HeatingStatusDlg == NULL) {
-        mp_HeatingStatusDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Id, mp_MainWindow);
-        mp_HeatingStatusDlg->DisplayLSensorLabel();
-        mp_HeatingStatusDlg->HideAbort();
-        mp_HeatingStatusDlg->show();
-        mp_HeatingStatusDlg->UpdateLabel(status);
-        CONNECTSIGNALSIGNAL(mp_HeatingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+    else if (msg.compare("InformDone") == 0) {
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
     }
     else {
-        mp_HeatingStatusDlg->UpdateLabel(status);
+        mp_ManaufacturingDiagnosticsHandler->ShowMessage(status.value("CurrentStatus"));
     }
 }
 

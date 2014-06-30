@@ -150,12 +150,6 @@
 		<Guide>
 			<Step>Please insert position 1# with reagent bottle filled with water, then close the retort lid.</Step>
 		</Guide>
-		<Guide>
-			<Step>Open the retort lid, do you see the water covers the level sensor level?</Step>
-		</Guide>
-		<Guide>
-			<Step>Please close the retort lid.</Step>
-		</Guide>
 	</RetortLevelSensorDetecting>
 	<RetortHeatingEmpty Description="Heating test (empty)">
 		<Guide>

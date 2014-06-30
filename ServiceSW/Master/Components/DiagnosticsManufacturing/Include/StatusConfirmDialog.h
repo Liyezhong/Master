@@ -87,6 +87,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief Hide retort label status
+     *
+     *  \iparam Status = Label test status
+     */
+    /****************************************************************************/
+    void HideLabel();
+
+    /****************************************************************************/
+    /*!
      *  \brief Update label status
      *
      *  \iparam Status = Label test status name, Value = status value

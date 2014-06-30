@@ -80,6 +80,7 @@ CStatusConfirmDialog::~CStatusConfirmDialog()
 void CStatusConfirmDialog::SetText(const QString& Text)
 {
     mp_Ui->labelConfirm->setText(Text);
+    mp_Ui->labelConfirm->adjustSize();
 //    mp_Ui->contentLabel->setText(QString("%1").arg(Text));
 }
 
@@ -110,9 +111,12 @@ void CStatusConfirmDialog::UpdateRetortLabel(const Service::ModuleTestStatus &st
     if (CoverSensorStatus != "") {
         mp_Ui->labelStatusValue->setText(CoverSensorStatus);
     }
-    else {
-        mp_Ui->labelStatusValue->hide(); //yuan@TODO: level sensor was detected, prompt message here!
-    }
+}
+
+void CStatusConfirmDialog::HideLabel()
+{
+    mp_Ui->labelStatus->hide();
+    mp_Ui->labelStatusValue->hide();
 }
 
 void CStatusConfirmDialog::UpdateLabel(const QString& Status, const QString& Value)

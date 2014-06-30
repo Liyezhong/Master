@@ -23,6 +23,7 @@
 #include "Core/Include/CMessageString.h"
 #include "DiagnosticsManufacturing/Include/OvenManufacturing.h"
 #include "DiagnosticsManufacturing/Include/HeatingTestDialog.h"
+#include "DiagnosticsManufacturing/Include/StatusConfirmDialog.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "ServiceDataManager/Include/TestCase.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
@@ -599,7 +600,6 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
     for(int i=0; i<TestCaseList.size(); i++) {
         Service::ModuleTestCaseID id = TestCaseList.at(i);
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(id);
-        qDebug() << "[yuan-debug] test case name: " << TestCaseName << "\n";
         DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
         bool nextFlag = ShowGuide(id, 0);
@@ -626,6 +626,7 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             eventId = EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST;
             failureId = EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_FAILURE;
             okId = EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_SUCCESS;
+            p_TestCase->SetParameter("CurStep", "1");
             break;
         case Service::RETORT_HEATING_WITH_WATER:
             eventId = EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST;
@@ -648,6 +649,22 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             emit PerformManufacturingTest(Service::RETORT_LID_LOCK, Service::TEST_CASE_ID_UNUSED);
             result = GetTestResponse();
         }
+        else if (id == Service::RETORT_LEVEL_SENSOR_DETECTING) {
+            // user operation finished!
+            p_TestCase->SetParameter("CurStep", "2");
+
+            MainMenu::CMessageDlg messageBox;
+            messageBox.setModal(true);
+            messageBox.SetTitle(tr("Confirm water level"));
+            messageBox.SetButtonText(1, "No");
+            messageBox.SetButtonText(3, "Yes");
+            messageBox.HideCenterButton();
+            messageBox.SetText("Open the retort lid, do you see water cover the level sensor?");
+            messageBox.show();
+            result = messageBox.exec() == 0 ? true : false;
+            emit PerformManufacturingTest(id, Service::TEST_CASE_ID_UNUSED);
+            (void)GetTestResponse();
+        }
         else if (id == Service::RETORT_HEATING_WITH_WATER) {
             // popup a message to inform operator to put the external sensor into retort.
             nextFlag = ShowGuide(id, 1);
@@ -668,7 +685,6 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
                 emit PerformManufacturingTest(Service::TEST_ABORT, id);
                 result = GetTestResponse();
             }
-
         }
 
         p_TestCase->SetStatus(result);
@@ -685,7 +701,7 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             QString text = QString("%1 - %2\n%3").arg(testCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, text, true);
 
-            if (id != Service::RETORT_LID_LOCK) {
+            if (id != Service::RETORT_LID_LOCK && id != Service::RETORT_LEVEL_SENSOR_DETECTING) {
                 ShowHeatingFailedResult(id);
             }
         }

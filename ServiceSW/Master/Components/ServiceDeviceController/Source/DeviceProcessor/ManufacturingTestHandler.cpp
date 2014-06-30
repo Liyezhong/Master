@@ -872,7 +872,7 @@ EXIT:
 qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
 {
 #define LS_DETECT_TEMP  20.0
-    QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_FILL_DRAINING);
+    QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::RETORT_LEVEL_SENSOR_DETECTING);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(testCaseName);
 
     int result = 0;
@@ -887,7 +887,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     if (-1 == HeatingLevelSensor()) {
         qDebug() << "Fail to heat level sensor";
         result = -1;
-        goto EXIT1;
+        goto EXIT;
     }
 
     // retort filling will be blocked 2 ~ 4 mintus,
@@ -897,33 +897,36 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
         result = -1;
     }
     else {
+        // Level sensor detected!
         result = 0;
     }
-
     mp_TempLSensor->StopTemperatureControl();
-    if (result == -1) {
-        goto EXIT2;
-    }
 
-EXIT2:
-    EmitRefreshTestStatustoMain(testCaseName, RETORT_DRAINING);
-    if (DCL_ERR_FCT_CALL_SUCCESS == m_rIdevProc.ALDraining(0)) {
-
-    }
-    else {
-
-    }
-EXIT1:
+EXIT:
     if (result == 0) {
-        //Tell the operator to comfirm the water level;
-        EmitRefreshTestStatustoMain(testCaseName, WAIT_CONFIRM);
         EmitRefreshTestStatustoMain(testCaseName, RV_MOVE_TO_SEALING_POSITION, bottlePos);
         mp_MotorRV->MoveToSealPosition(bottlePos);
+
+        //Tell the operator to comfirm the water level;
+        EmitRefreshTestStatustoMain(testCaseName, WAIT_CONFIRM);
+        while(!m_Continue && !m_UserAbort) {
+            mp_Utils->Pause(100);
+        }
+        if (m_Continue == true) {
+            m_Continue = false;
+        }
         p_TestCase->AddResult("TestResult", "Level sensor self-test is OK.");
     }
     else {
         p_TestCase->AddResult("TestResult", "Level sensor self-test is failed.");
     }
+
+    // draing
+    EmitRefreshTestStatustoMain(testCaseName, RETORT_DRAINING);
+    m_rIdevProc.ALDraining(0);
+
+    // prompt result
+    EmitRefreshTestStatustoMain(testCaseName, INFORM_DONE);
     // Tell the operator to close the retort lid
     return result;
 }
@@ -2291,18 +2294,28 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         }
         break;
     case Service::RETORT_LEVEL_SENSOR_DETECTING:
-        if (NULL == mp_TempRetortSide) {
-            SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
-            emit ReturnManufacturingTestMsg(false);
-            return;
-        }
-        else if (0 == TestRetortLevelSensorDetecting()) {
-            emit ReturnManufacturingTestMsg(true);
+    {
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(TestId);
+        DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+        if (1 == p_TestCase->GetParameter("CurStep").toInt()) {
+            if (NULL == mp_TempLSensor) {
+                SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
+                emit ReturnManufacturingTestMsg(false);
+                return ;
+            }
+            else if (0 == TestRetortLevelSensorDetecting()) {
+                return ;
+            }
+            else {
+                emit ReturnManufacturingTestMsg(false);
+            }
         }
         else {
-            emit ReturnManufacturingTestMsg(false);
+            m_Continue = true;
+            return ;
         }
         break;
+    }
 
     case Service::RETORT_HEATING_WITH_WATER:
     {
