@@ -1083,7 +1083,6 @@ void CStartup::RefreshTestStatus4SystemAlarm(Service::ModuleTestCaseID Id, const
         mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(false);
     }
 
-    //emit PerformManufacturingTest(Service::TEST_ABORT, Id);
 }
 
 void CStartup::RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
@@ -1168,6 +1167,18 @@ void CStartup::RefreshTestStatus4SystemExhaustFan(Service::ModuleTestCaseID Id, 
     }
 }
 
+void CStartup::RefreshTestStatus4SystemOverflow(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    mp_ManaufacturingDiagnosticsHandler->HideMessage();
+    QString OverflowStatus = Status.value("OverflowStatus");
+    if (OverflowStatus == "filling") {
+        mp_ManaufacturingDiagnosticsHandler->ShowMessage("System is filling liquid to retort");
+    }
+    else if (OverflowStatus == "draining") {
+        mp_ManaufacturingDiagnosticsHandler->ShowMessage("System is draining liquid from retort");
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Refresh heating status for heating test.
@@ -1217,8 +1228,7 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
         RefreshTestStatus4SystemExhaustFan(id, status);
         break;
     case Service::SYSTEM_OVERFLOW:
-        mp_ManaufacturingDiagnosticsHandler->HideMessage();
-        mp_ManaufacturingDiagnosticsHandler->ShowMessage("System is filling liquid to retort");
+        RefreshTestStatus4SystemOverflow(id, status);
         break;
     default:
         break;

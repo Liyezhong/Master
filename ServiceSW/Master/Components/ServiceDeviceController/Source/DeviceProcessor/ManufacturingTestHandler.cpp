@@ -233,9 +233,6 @@ void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, qui
         AbortExhaustFanOperation();
         qDebug()<<"abort exhaust fan test";
         break;
-    case Service::SYSTEM_OVERFLOW:
-        m_rIdevProc.ALDraining(0);
-        break;
     default:
         mp_Utils->AbortPause();
     }
@@ -262,6 +259,7 @@ void ManufacturingTestHandler::AbortExhaustFanOperation()
         qDebug()<<"stop draining function";
         break;
     case 4:
+        m_rIdevProc.ALReleasePressure();
         qDebug()<<"stop pressure function";
         //pressure function stop
         break;
@@ -903,6 +901,7 @@ qint32 ManufacturingTestHandler::TestSystemExhaustFan()
     int Ret = 0;
     switch (Position) {
     case 1:
+        mp_MotorRV->MoveToInitialPosition();
         if (!mp_MotorRV->MoveToTubePosition(1)) {
             qDebug()<<"Exhaust Fan test: rotating RV to tube position 1 failed.";
         }
@@ -937,31 +936,42 @@ qint32 ManufacturingTestHandler::TestSystemExhaustFan()
 
 qint32 ManufacturingTestHandler::TestSystemOverflow()
 {
+    int ret = 0;
+    bool result = false;
     Service::ModuleTestStatus Status;
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_OVERFLOW);
+    mp_MotorRV->MoveToInitialPosition();
     if (mp_MotorRV->MoveToTubePosition(1)) {
-        m_rIdevProc.ALFilling(0, true);
+        Status["OverflowStatus"] = "filling";
+        emit RefreshTestStatustoMain(TestCaseName, Status);
+        ret = m_rIdevProc.ALFilling(SUCKING_MAX_DELAY_TIME, true);
+        if (ret == DCL_ERR_DEV_LA_FILLING_OVERFLOW) {
+            result = true;
+        }
+        else {
+            qDebug()<<"Overflow test failed, fill function return code:"<<ret;
+        }
     }
     else {
         qDebug()<<"Overflow test: rotating RV to tube position 1 failed.";
-        return false;
-    }
-    emit RefreshTestStatustoMain(TestCaseName, Status);
-
+        return result;
+     }
+/*
     quint32 waitSec = 70;
     while (!m_UserAbort && waitSec) {
         //to check overflow position.
         mp_Utils->Pause(1000);
         -- waitSec;
     }
+*/
+    Status["OverflowStatus"] = "draining";
+    emit RefreshTestStatustoMain(TestCaseName, Status);
+    ret = m_rIdevProc.ALDraining(0);
+    if (ret != 0) {
+        qDebug()<<"Overflow test: run draining function failed, error code :"<<ret;
+    }
 
-    /*int Ret = m_rIdevProc.ALDraining(0);
-    if (Ret != 0) {
-        qDebug()<<"Overflow test: run draining function failed, error code :"<<Ret;
-        return -1;
-    }*/
-
-    return true;
+    return result;
 }
 
 qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t Id)
