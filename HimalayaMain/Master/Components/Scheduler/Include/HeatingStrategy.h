@@ -185,12 +185,12 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  Start the specific sensor's temperature control in Error state
+     *  \brief  Start the specific sensor's temperature control
      *  \param 	HeaterName - sensor's name 
      *  \return void 
      */
     /****************************************************************************/
-    void StartTemperatureControlInError(const QString& HeaterName);
+    void StartTemperatureControl(const QString& HeaterName);
 
     /****************************************************************************/
     /*!

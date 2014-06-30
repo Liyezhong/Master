@@ -23,6 +23,7 @@
 #include "Scheduler/Include/HimalayaDeviceEventCodes.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
+#include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Commands/Include/CmdRTSetTempCtrlOFF.h"
 #include "Scheduler/Commands/Include/CmdALAllStop.h"
 #include "Scheduler/Include/RsStandby.h"
@@ -95,6 +96,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_IdleState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState.data());
     mp_InitState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState.data());
     mp_BusyState->addTransition(this, SIGNAL(ErrorSignal()), mp_ErrorState.data());
+    mp_ErrorState->addTransition(this, SIGNAL(SigEnterRcRestart()), mp_BusyState.data());
 
     // Sate machines for Run handling
     mp_ProgramSelfTest = QSharedPointer<CProgramSelfTest>(new CProgramSelfTest(mp_SchedulerThreadController));
@@ -143,13 +145,9 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RC_Levelsensor_Heating_Overtime related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcLevelsensorHeatingOvertime()), mp_ErrorRcLevelSensorHeatingOvertimeState.data());
-    CONNECTSIGNALSLOT(mp_RcLevelSensorHeatingOvertime.data(), TasksDone(bool), this, OnTasksDone(bool));
+    CONNECTSIGNALSLOT(mp_ErrorRcLevelSensorHeatingOvertimeState.data(), entered(), this, RestartLevelSensorTempControl());
     mp_ErrorRcLevelSensorHeatingOvertimeState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
-    //RC_Restart related logic
-    mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcRestart()), mp_ErrorRcRestartState.data());
-    CONNECTSIGNALSLOT(mp_RcRestart.data(), TasksDone(bool), this, OnTasksDone(bool));
-    mp_ErrorRcRestartState->addTransition(this, SIGNAL(sigStateChange()), mp_BusyState.data());
 
     m_FillingCurrentStage = MOVE_TUBE_POSITION;
 }
@@ -184,6 +182,11 @@ void CSchedulerStateMachine::OnRVMoveToTube()
 void CSchedulerStateMachine::OnRVPostionChange()
 {
      mp_SchedulerThreadController->MoveRV(2);
+}
+
+void CSchedulerStateMachine::RestartLevelSensorTempControl()
+{
+    mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControl("LevelSensor");
 }
 
 /****************************************************************************/
@@ -610,20 +613,28 @@ void CSchedulerStateMachine::EnterRcLevelsensorHeatingOvertime()
 }
 
 
-void CSchedulerStateMachine::HandleRcLevelSensorHeatingOvertimeWorkFlow(bool flag)
+void CSchedulerStateMachine::HandleRcLevelSensorHeatingOvertimeWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
-    mp_RcLevelSensorHeatingOvertime->OnHandleWorkFlow(flag);
+    if ("Scheduler::ALStartTemperatureControlWithPID" == cmdName)
+    {
+        if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+        {
+            this->OnTasksDone(true);
+        }
+        else
+        {
+            this->OnTasksDone(false);
+        }
+    }
+    else
+    {
+        // Do nothing, just wait for the command response
+    }
 }
 
 void CSchedulerStateMachine::EnterRcRestart()
 {
     emit SigEnterRcRestart();
-}
-
-
-void CSchedulerStateMachine::HandleRcRestart(bool flag)
-{
-    mp_RcRestart->OnHandleWorkFlow(flag);
 }
 
 void CSchedulerStateMachine::SendRunPreTest()

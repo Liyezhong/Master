@@ -18,16 +18,17 @@
  */
 /****************************************************************************/
 
-
+#include "Global/Include/Utils.h"
 #include "Scheduler/Include/RsStandbyWithTissue.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
+#include "Scheduler/Include/SchedulerCommandProcessor.h"
 #include "Scheduler/Include/HeatingStrategy.h"
+#include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 
 namespace Scheduler{
 
 CRsStandbyWithTissue::CRsStandbyWithTissue(SchedulerMainThreadController* SchedController): mp_SchedulerController(SchedController)
 {
-    qRegisterMetaType<DeviceControl::RTTempCtrlType_t>("DeviceControl::RTTempCtrlType_t");
     mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
 
     mp_RTBottomStopTempCtrl = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
@@ -36,10 +37,12 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(SchedulerMainThreadController* SchedC
     mp_ReleasePressure = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
     mp_StateMachine->setInitialState(mp_RTBottomStopTempCtrl.data());
-    mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(RTStopTempCtrl(DeviceControl::RTTempCtrlType_t)), mp_RTSideStopTempCtrl.data());
+    mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(StopRTSideTempCtrl()), mp_RTSideStopTempCtrl.data());
     mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(ShutdownFailedHeater()), mp_ShutdownFailedHeater.data());
     mp_ShutdownFailedHeater->addTransition(this, SIGNAL(ReleasePressure()), mp_ReleasePressure.data());
     mp_ReleasePressure->addTransition(this,SIGNAL(TasksDone(bool)), mp_RTBottomStopTempCtrl.data());
+
+    CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), this, OnReleasePressure());
 
 	//For error cases
 
@@ -52,6 +55,12 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(SchedulerMainThreadController* SchedC
 CRsStandbyWithTissue::~CRsStandbyWithTissue()
 {
     mp_StateMachine->stop();
+}
+
+void CRsStandbyWithTissue::OnReleasePressure()
+{
+    mp_SchedulerController->LogDebug("In RS_Standby_WithTissue, begin to run CmdALReleasePressure");
+    mp_SchedulerController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerController));
 }
 
 CRsStandbyWithTissue::StateList_t CRsStandbyWithTissue::GetCurrentState(QSet<QAbstractState*> statesList)
@@ -108,10 +117,25 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
         emit ReleasePressure();
         break;
     case RELEASE_PRESSURE:
-        emit TasksDone(true);
+        if ("Scheduler::ALReleasePressure" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                emit TasksDone(true);
+            }
+            else
+            {
+                emit TasksDone(false);
+            }
+        }
+        else
+        {
+            // Do nothing, just wait for the command response
+        }
         break;
     default:
         break;
 	}
 }
 }
+

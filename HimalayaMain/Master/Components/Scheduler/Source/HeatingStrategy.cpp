@@ -249,7 +249,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
-void HeatingStrategy::StartTemperatureControlInError(const QString& HeaterName)
+void HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
 {
     if ("LevelSensor" == HeaterName)
     {

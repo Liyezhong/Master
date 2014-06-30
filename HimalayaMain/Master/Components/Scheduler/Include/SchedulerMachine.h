@@ -575,23 +575,13 @@ public:
     /*!
      *  \brief Handle the whole work flow for Rc_Levelsensor_Heating_Overtime
      *
-     *  \param flag - indicate if the execution succeeds or not
+     *  \param cmdName - command name
+     *  \param retCode - return code
      *
      *  \return void
      */
     /****************************************************************************/
-    void HandleRcLevelSensorHeatingOvertimeWorkFlow(bool flag);
-
-    /****************************************************************************/
-    /*!
-     *  \brief Handle the whole work flow for Rc_Restart
-     *
-     *  \param flag - indicate if the execution succeeds or not
-     *
-     *  \return void
-     */
-    /****************************************************************************/
-    void HandleRcRestart(bool flag);
+    void HandleRcLevelSensorHeatingOvertimeWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -656,6 +646,7 @@ private slots:
      */
     /****************************************************************************/
     void OnRVMoveToTube();
+
     /****************************************************************************/
     /*!
      *  \brief	Slot to enter RV_Pos_Change state.
@@ -664,6 +655,15 @@ private slots:
      */
     /****************************************************************************/
     void OnRVPostionChange();
+
+    /****************************************************************************/
+    /*!
+     *  \brief	Slot to restart level sensor temperature control
+     *  \param	void
+     *  \return	void
+     */
+    /****************************************************************************/
+    void RestartLevelSensorTempControl();
 signals:
     /****************************************************************************/
     /*!

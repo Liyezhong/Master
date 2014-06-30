@@ -118,6 +118,17 @@ signals:
      */
     /****************************************************************************/
     void TasksDone(bool);
+private slots:
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Slot for releasing pressure
+     *  \param  void
+     *  \return void
+     *
+     */
+    /****************************************************************************/
+    void OnReleasePressure();
 
 private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController

@@ -1023,7 +1023,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     }
     else if (SM_ERR_RS_HEATINGERR30SRETRY == currentState)
     {
-        LogDebug(QString("RS_STandBy_WithTissue Response: %1").arg(retCode));
+        LogDebug(QString("RS_HeatingErr_30SRetry Response: %1").arg(retCode));
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
             m_SchedulerMachine->HandleRsHeatingErr30SRetry(false);
@@ -1036,26 +1036,8 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if (SM_ERR_RC_LEVELSENSOR_HEATING_OVERTIME == currentState)
     {
         LogDebug(QString("RC_Levelsensor_Heating_Overtime Response: %1").arg(retCode));
-        if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-        {
-            m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow(true);
-        }
-        else
-        {
-            m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow(false);
-        }
-    }
-    else if (SM_ERR_RC_RESTART == currentState)
-    {
-        LogDebug(QString("RC_Restart Response: %1").arg(retCode));
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            m_SchedulerMachine->HandleRcRestart(false);
-        }
-        else
-        {
-            m_SchedulerMachine->HandleRcRestart(true);
-        }
+        m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow(cmdName, retCode);
+
     }
     else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
     {
@@ -1624,10 +1606,6 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
     return leftTime;
 }
 
-void SchedulerMainThreadController::RestartLevelSensorTempCtrlInError()
-{
-    mp_HeatingStrategy->StartTemperatureControlInError("LevelSensor");
-}
 
 //client-->master
 void SchedulerMainThreadController::OnProgramAction(Global::tRefType Ref,

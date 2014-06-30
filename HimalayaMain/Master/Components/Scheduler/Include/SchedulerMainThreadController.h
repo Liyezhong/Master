@@ -937,15 +937,6 @@ protected:
 
         /****************************************************************************/
         /**
-         *  \brief Restart Level sensor's temperature in case of RC_Levelsensor_Heating_Overtime
-         *  \param HeaterName - name of the sensor
-         *  \return void
-         */
-        /****************************************************************************/
-        void RestartLevelSensorTempCtrlInError();
-
-        /****************************************************************************/
-        /**
          *  \brief Get Scheduler Commnad Processor
          *  \return pointer to SchedulerCommandProcessor
          */
