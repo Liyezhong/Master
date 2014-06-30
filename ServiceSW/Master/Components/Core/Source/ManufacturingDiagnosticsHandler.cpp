@@ -173,6 +173,9 @@ void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::Module
     case Service::SYSTEM:
         PerformManufSystemTests(TestCaseList);
         break;
+    case Service::CLEANING_SYSTEM:
+        PerformManufCleaningSystem(TestCaseList);
+        break;
     default:
         break;
     }
@@ -199,7 +202,7 @@ bool CManufacturingDiagnosticsHandler::GetTestResponse()
     return ret == 1 ? true : false;
 }
 
-bool CManufacturingDiagnosticsHandler::ShowGuide(Service::ModuleTestCaseID Id, int Index)
+bool CManufacturingDiagnosticsHandler::ShowGuide(Service::ModuleTestCaseID Id, int Index, bool haveNext)
 {
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
@@ -222,9 +225,15 @@ bool CManufacturingDiagnosticsHandler::ShowGuide(Service::ModuleTestCaseID Id, i
     dlg->SetTitle(TestCaseDescription);
     dlg->SetIcon(QMessageBox::Information);
     dlg->SetText(GuideText);
-    dlg->HideCenterButton();
-    dlg->SetButtonText(3, tr("Next"));
-    dlg->SetButtonText(1, tr("Cancel"));
+    if (haveNext) {
+        dlg->HideCenterButton();
+        dlg->SetButtonText(3, tr("Next"));
+        dlg->SetButtonText(1, tr("Cancel"));
+    }
+    else {
+        dlg->HideButtonsOneAndTwo();
+        dlg->SetButtonText(3, tr("Ok"));
+    }
     if (Index == 1 && Id == Service::OVEN_COVER_SENSOR ||
             Index == 2 && Id == Service::RETORT_HEATING_WITH_WATER ) {
         dlg->EnableButton(1, false);
@@ -1096,6 +1105,67 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
         mp_SystemManuf->SetTestResult(Id, Result);
     }
     mp_SystemManuf->EnableButton(true);
+}
+
+void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Service::ModuleTestCaseID> &TestCaseList)
+{
+    quint32 FailureId(0);
+    quint32 OkId(0);
+    quint32 EventId(0);
+    qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufCleaningSystem ---" << TestCaseList;
+
+    for(int i=0; i<TestCaseList.size(); i++) {
+        Service::ModuleTestCaseID Id = TestCaseList.at(i);
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+        QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
+
+        bool Result = false;
+        bool NextFlag = ShowGuide(Id, 0);
+        if (!NextFlag) {
+            break;
+        }
+
+        switch(Id) {
+        case Service::CLEANING_SYSTEM_TEST:
+            EventId   = EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST;
+            FailureId = EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_FAILURE;
+            OkId      = EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_SUCCESS;
+
+            ShowMessage(tr("begin cleaning..."));
+            emit PerformManufacturingTest(Id);
+            Result = GetTestResponse();
+            HideMessage();
+
+            break;
+        }
+
+        Global::EventObject::Instance().RaiseEvent(EventId);
+
+        p_TestCase->SetStatus(Result);
+
+        if (!Result) {
+            Global::EventObject::Instance().RaiseEvent(FailureId);
+
+            QString Reason = p_TestCase->GetResult().value("FailReason");
+            if (Reason == "Abort") {   // if user click abort, then the test routines for this modules will terminate.
+                mp_CleaningManuf->EnableButton(true);
+                return ;
+            }
+
+            QString Text = QString("%1 - %2\n%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
+
+        }
+        else {
+            Global::EventObject::Instance().RaiseEvent(OkId);
+            QString Text = QString("%1 - %2").arg(TestCaseDescription, m_SuccessStr);
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Text, true);
+        }
+        (void)ShowGuide(Id, 1, false);
+        mp_CleaningManuf->SetTestResult(Id, Result);
+    }
+    mp_CleaningManuf->EnableButton(true);
 }
 
 /****************************************************************************/

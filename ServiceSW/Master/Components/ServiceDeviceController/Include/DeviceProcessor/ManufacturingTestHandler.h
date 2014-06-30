@@ -353,6 +353,20 @@ private:
 
     /****************************************************************************/
     /**
+     * \brief To cleaning system
+     */
+    /****************************************************************************/
+    qint32 CleaningSystem();
+
+    /****************************************************************************/
+    /**
+     * \brief Create Pressure
+     */
+    /****************************************************************************/
+    bool CreatePressure(int waitSecond, int targetPressureLow, int targetPressureHigh);
+
+    /****************************************************************************/
+    /**
      * \brief Set fail reason for test case
      * \param[in] Id                Test case id
      * \param[in] FailMsg           Fail message

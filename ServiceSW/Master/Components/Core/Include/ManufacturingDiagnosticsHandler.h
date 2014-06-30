@@ -78,7 +78,7 @@ private:
     QString                                      m_FailStr;                  //!< - Fail
     QString                                      m_SuccessStr;              //!< - Success
 
-    bool ShowGuide(Service::ModuleTestCaseID Id, int Index = 0);
+    bool ShowGuide(Service::ModuleTestCaseID Id, int Index = 0, bool haveNext = true);
     void ShowHeatingFailedResult(Service::ModuleTestCaseID Id);
     quint8 GetPositionForRVTest(Service::ModuleTestCaseID Id, int Index);
     void SelectOptionFor110v220Switch();
@@ -92,6 +92,7 @@ private:
     void PerformManufRetortTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufLATests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufSystemTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
+    void PerformManufCleaningSystem(const QList<Service::ModuleTestCaseID> &TestCaseList);
     bool GetTestResponse();
 
 signals:

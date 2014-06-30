@@ -1225,6 +1225,13 @@ void CStartup::RefreshTestStatus4SystemOverflow(Service::ModuleTestCaseID Id, co
     }
 }
 
+void CStartup::RefreshTestStatus4CleaningSystem(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    mp_ManaufacturingDiagnosticsHandler->HideMessage();
+    QString CleaningStatus = Status.value("CleaningStatus");
+    mp_ManaufacturingDiagnosticsHandler->ShowMessage(CleaningStatus);
+}
+
 /****************************************************************************/
 /*!
  *  \brief Refresh heating status for heating test.
@@ -1282,6 +1289,9 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
         break;
     case Service::SYSTEM_OVERFLOW:
         RefreshTestStatus4SystemOverflow(id, status);
+        break;
+    case Service::CLEANING_SYSTEM_TEST:
+        RefreshTestStatus4CleaningSystem(id, status);
         break;
     default:
         break;

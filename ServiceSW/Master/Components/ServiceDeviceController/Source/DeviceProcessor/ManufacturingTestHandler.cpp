@@ -1026,7 +1026,7 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
 {
     bool Result = false;
     Service::ModuleTestStatus Status;
-    float ASB3Current = 1.1;
+    float ASB3Current = 0.0;
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_MAINS_RELAY);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     bool RelaySwitchStatus = p_TestCase->GetParameter("RelaySwitchStatus").toInt();
@@ -1035,13 +1035,16 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
 
     if (RelaySwitchStatus) {
          // switch on
+        mp_DigitalOutputMainRelay->SetHigh();
         qDebug()<<"System mains relay switch on";
+        ASB3Current = m_rIdevProc.IDGetSlaveVoltage(DeviceControl::Slave_3)/1000.0;
         Result = (ASB3Current>0.3 && ASB3Current<1.3);
     }
     else {
          // switch off
-        ASB3Current = 0.1;
+        mp_DigitalOutputMainRelay->SetLow();
         qDebug()<<"System mains relay switch off";
+        ASB3Current = m_rIdevProc.IDGetSlaveVoltage(DeviceControl::Slave_3)/1000.0;
         Result = (ASB3Current<0.3);
         p_TestCase->AddResult("ASB3Current", QString("%1V").arg(ASB3Current));
     }
@@ -1138,6 +1141,83 @@ qint32 ManufacturingTestHandler::TestSystemOverflow()
         qDebug()<<"Overflow test: run draining function failed, error code :"<<ret;
     }
 
+    return result;
+}
+
+qint32 ManufacturingTestHandler::CleaningSystem()
+{
+    Service::ModuleTestStatus Status;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::CLEANING_SYSTEM_TEST);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    mp_MotorRV->MoveToInitialPosition();
+
+    Status["CleaningStatus"] = "move to sealing position 1";
+    emit RefreshTestStatustoMain(TestCaseName, Status);
+    if (!mp_MotorRV->MoveToSealPosition(1)) {
+        p_TestCase->AddResult("FailReason", "move RV to sealing position 1 failed");
+        return false;
+    }
+
+    Status["CleaningStatus"] = "create pressure";
+    emit RefreshTestStatustoMain(TestCaseName, Status);
+    QTime time = QTime::fromString(p_TestCase->GetParameter("Time"), "hh:mm:ss");
+    int waitSec = time.hour()*60*60 + time.minute()*60 + time.second();
+    int targetPressure = p_TestCase->GetParameter("TargetPressure").toInt();
+    int departure = p_TestCase->GetParameter("Departure").toInt();
+    mp_PressPump->SetFan(1);
+    if (!CreatePressure(waitSec, targetPressure, departure)) {
+        p_TestCase->AddResult("FailReason", "create pressure failed.");
+        return false;
+    }
+    for (int i = 1; i <= 16; ++i) {
+        Status["CleaningStatus"] = QString("move to tube position %1").arg(i);
+        emit RefreshTestStatustoMain(TestCaseName, Status);
+        if (!mp_MotorRV->MoveToTubePosition(i)) {
+            p_TestCase->AddResult("FailReason", QString("move RV to tube position %1 failed").arg(i));
+            return false;
+        }
+        mp_Utils->Pause(60*1000);
+
+        if (i == 16) {
+            break;
+        }
+
+        Status["CleaningStatus"] = QString("move to sealing position %1").arg(i);
+        emit RefreshTestStatustoMain(TestCaseName, Status);
+        if (!mp_MotorRV->MoveToSealPosition(i)) {
+            p_TestCase->AddResult("FailReason", QString("move RV to sealing position 1 failed").arg(i));
+            return false;
+        }
+
+        Status["CleaningStatus"] = "create pressure";
+        emit RefreshTestStatustoMain(TestCaseName, Status);
+        if (!CreatePressure(waitSec, targetPressure, departure)) {
+            p_TestCase->AddResult("FailReason", "create pressure failed.");
+            return false;
+        }
+    }
+
+    mp_PressPump->SetFan(0);
+    mp_PressPump->ReleasePressure();
+
+    return true;
+}
+
+bool ManufacturingTestHandler::CreatePressure(int waitSecond, int targetPressure, int departure)
+{
+    bool result = false;
+    mp_PressPump->SetTargetPressure(17, targetPressure);
+    while (waitSecond) {
+        qreal pressure = mp_PressPump->GetPressure();
+        //qreal pressure = m_rIdevProc.ALGetRecentPressure();
+        qDebug()<<"current pressure :"<<pressure;
+        if (pressure >= (targetPressure - departure) && pressure <= (targetPressure + departure)) {
+            result = true;
+            break;
+        }
+        mp_Utils->Pause(1000);
+        --waitSecond;
+    }
     return result;
 }
 
@@ -2426,6 +2506,9 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         break;
     case Service::SYSTEM_OVERFLOW:
         emit ReturnManufacturingTestMsg(TestSystemOverflow());
+        break;
+    case Service::CLEANING_SYSTEM_TEST:
+        emit ReturnManufacturingTestMsg(CleaningSystem());
         break;
     default:
         break;

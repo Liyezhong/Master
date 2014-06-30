@@ -130,7 +130,13 @@
 	</SystemMainsRelay>
 	<CleaningSystem Description="Cleaning system">
 		<Guide>
-			<Step>Cleaning system</Step>
+			<Step>Confirm that retort is empty and locked well.And all reagent bottles and paraffin bathes have been pulled out.</Step>
+		</Guide>
+		<Guide>
+			<Step>1.Please wipe the liquid residue on both stories of reagent cabinet and clean up reagent drip tray.</Step>
+			<Step>2.Please wipe the liquid residue in paraffin oven and on oven door, and clean up paraffin drip tray.</Step>
+			<Step>3.Please wipe the liquid residue in retort and on retort lid. Please screw off retort sieve to clean up it. After all the actions done, please lock retort lid well.</Step>
+			<Step>4.Please check all the appearance surface and wipe any liquid residue.</Step>
 		</Guide>
 	</CleaningSystem>
 	<RetortLidLock Description="Lid lock test">
