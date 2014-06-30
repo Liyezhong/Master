@@ -1015,6 +1015,17 @@ qint32 ManufacturingTestHandler::TestSystem110v220vSwitch()
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     QString ConnectedVoltage = p_TestCase->GetParameter("ConnectedVoltage");
 
+    QString VoltageValue = mp_TempRV->GetMainsVoltageState();
+    if ( VoltageValue == "110V") {
+        CurrentVoltage = 110;
+    }
+    else if (VoltageValue == "220V") {
+        CurrentVoltage = 220;
+    }
+    else {
+        CurrentVoltage = 0;
+    }
+
     Result = (CurrentVoltage == ConnectedVoltage.toInt());
     p_TestCase->SetStatus(Result);
     p_TestCase->AddResult("CurrentVoltage", QString::number(CurrentVoltage));
