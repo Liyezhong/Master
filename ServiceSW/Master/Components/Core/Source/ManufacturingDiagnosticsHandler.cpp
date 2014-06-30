@@ -598,6 +598,10 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
 
     for(int i=0; i<TestCaseList.size(); i++) {
         Service::ModuleTestCaseID id = TestCaseList.at(i);
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(id);
+        qDebug() << "[yuan-debug] test case name: " << TestCaseName << "\n";
+        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
         bool nextFlag = ShowGuide(id, 0);
         if (nextFlag == false) {
             break;
@@ -624,9 +628,9 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             okId = EVENT_GUI_DIAGNOSTICS_RETORT_LEVELSENSOR_DETECT_TEST_SUCCESS;
             break;
         case Service::RETORT_HEATING_WITH_WATER:
-            EventId = EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST;
-            FailureId = EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_FAILURE;
-            OkId = EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_SUCCESS;
+            eventId = EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST;
+            failureId = EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_FAILURE;
+            okId = EVENT_GUI_DIAGNOSTICS_RETORT_HEATING_LIQUID_TEST_SUCCESS;
             p_TestCase->SetParameter("CurStep", "1");
             break;
         default:
@@ -644,32 +648,29 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             emit PerformManufacturingTest(Service::RETORT_LID_LOCK, Service::TEST_CASE_ID_UNUSED);
             result = GetTestResponse();
         }
-        else if (Id == Service::RETORT_HEATING_WITH_WATER) {
+        else if (id == Service::RETORT_HEATING_WITH_WATER) {
             // popup a message to inform operator to put the external sensor into retort.
-            NextFlag = ShowGuide(Id, 1);
-            if (NextFlag == true) {
+            nextFlag = ShowGuide(id, 1);
+            if (nextFlag == true) {
                 p_TestCase->SetParameter("CurStep", "2");
-                emit PerformManufacturingTest(Id, Service::TEST_CASE_ID_UNUSED);
-                Result = GetTestResponse();
+                emit PerformManufacturingTest(id, Service::TEST_CASE_ID_UNUSED);
+                result = GetTestResponse();
 
                 QString Reason = p_TestCase->GetResult().value("FailReason");
                 if (Reason != "Abort" ) {
                     p_TestCase->SetParameter("CurStep", "3");
-                    emit PerformManufacturingTest(Id, Service::TEST_CASE_ID_UNUSED);
+                    emit PerformManufacturingTest(id, Service::TEST_CASE_ID_UNUSED);
                     GetTestResponse();
                 }
-                ShowGuide(Id, 2);
+                ShowGuide(id, 2);
             }
             else {
-                emit PerformManufacturingTest(Service::TEST_ABORT, Id);
-                Result = GetTestResponse();
+                emit PerformManufacturingTest(Service::TEST_ABORT, id);
+                result = GetTestResponse();
             }
 
         }
 
-        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(id);
-        qDebug() << "[yuan-debug] test case name: " << TestCaseName << "\n";
-        DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
         p_TestCase->SetStatus(result);
 
         if (result == false) {

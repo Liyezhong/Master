@@ -1270,8 +1270,6 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
     case Service::RETORT_HEATING_EMPTY:
         RefreshTestStatus4RetortHeatingEmpty(id, status);
         break;
-    case Service::RETORT_HEATING_WITH_WATER:
-        break;
     case Service::RETORT_LEVEL_SENSOR_HEATING:
         RefreshTestStatus4RetortLevelSensorHeating(id, status);
         break;
