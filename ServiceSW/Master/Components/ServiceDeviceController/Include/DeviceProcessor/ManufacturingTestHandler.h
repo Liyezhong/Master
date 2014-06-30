@@ -59,6 +59,8 @@ typedef enum {
     LS_HEATING,
     RETORT_FILLING,
     RETORT_DRAINING,
+    PUMP_CREATE_PRESSURE,
+    PUMP_RELEASE_PRESSURE,
     WAIT_CONFIRM,
     WAIT_CONFIRM2,
     HIDE_MESSAGE,
@@ -353,17 +355,26 @@ private:
 
     /****************************************************************************/
     /**
+     * \brief To test system sealing test
+     */
+    /****************************************************************************/
+    qint32 TestSystemSealing(int CurStep);
+
+
+    /****************************************************************************/
+    /**
      * \brief To cleaning system
      */
     /****************************************************************************/
     qint32 CleaningSystem();
+
 
     /****************************************************************************/
     /**
      * \brief Create Pressure
      */
     /****************************************************************************/
-    bool CreatePressure(int waitSecond, int targetPressureLow, int targetPressureHigh);
+    bool CreatePressure(int waitSecond, qreal targetPressure, qreal departure);
 
     /****************************************************************************/
     /**
