@@ -893,7 +893,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     // retort filling will be blocked 2 ~ 4 mintus,
     // refresh UI;
     EmitRefreshTestStatustoMain(testCaseName, RETORT_FILLING);
-    if (DCL_ERR_FCT_CALL_SUCCESS != m_rIdevProc.ALFilling(0, true)) {
+    if (DCL_ERR_FCT_CALL_SUCCESS != m_rIdevProc.ALFillingForService(0, true)) {
         result = -1;
     }
     else {
