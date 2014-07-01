@@ -822,11 +822,11 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     const quint16 LSENSOR_PID_TI_SLOW = 1000;
     const quint16 LSENSOR_PID_TD_SLOW = 0;
 
-    const int TEST_LSENSOR_TIMEOUT = 60;
-    const qreal TEST_LSENSOR_TEMP_TOLERANCE = 2;
-    const qreal LSensorTemp = 95;  // target temperture
-    const qreal LSensorTempHigh = LSensorTemp + 10;
-    const quint8 LSensorTempChange = 10;   // Slope temp
+//    const int TEST_LSENSOR_TIMEOUT = 60;
+//    const qreal TEST_LSENSOR_TEMP_TOLERANCE = 2;
+//    const qreal LSensorTemp = 95;  // target temperture
+//    const qreal LSensorTempHigh = LSensorTemp + 10;
+//    const quint8 LSensorTempChange = 10;   // Slope temp
 
     int remainHeatCount = 2;
     int totalTime = 0;
@@ -835,14 +835,36 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::RETORT_LEVEL_SENSOR_HEATING);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(testCaseName);
 
+    QTime durTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
+    qreal tgtTemp = p_TestCase->GetParameter("TargetTemp").toDouble();
+    //qreal deptLow = p_TestCase->GetParameter("DepartureLow").toDouble();
+    //qreal deptHigh = p_TestCase->GetParameter("DepartureHigh").toDouble();
+    qreal ambLow  = p_TestCase->GetParameter("AmbTempLow").toDouble();
+    qreal ambHigh = p_TestCase->GetParameter("AmbTempHigh").toDouble();
+
+
     Service::ModuleTestStatus testStat;
-    testStat.insert("TargetTemp", QString("%1").arg(LSensorTemp));
-    testStat.insert("Duration", QTime().addSecs(TEST_LSENSOR_TIMEOUT * 2 + 3).toString("hh:mm:ss"));
+//    testStat.insert("TargetTemp", QString("%1").arg(LSensorTemp));
+//    testStat.insert("Duration", QTime().addSecs(TEST_LSENSOR_TIMEOUT).toString("hh:mm:ss"));
+    testStat.insert("TargetTemp", QString("%1").arg(tgtTemp));
+    testStat.insert("Duration", durTime.toString());
+
+    int duration = durTime.hour() * 60 * 60 + durTime.minute() * 60 + durTime.second();
+    int waitSeconds = 0;
+    int readyStatus = -1;
+    qreal curTemp = 0;
+    qreal prevTemp = 0;
+
+    qreal temp = mp_TempLSensor->GetTemperature();
+    if (temp < ambLow || temp > ambHigh) {
+        ret = -1;
+        goto EXIT;
+    }
+
+    p_TestCase->AddResult("UsedTime", "00:00:00");
+    p_TestCase->AddResult("TargetTemp", QString("%1").arg(tgtTemp));
 
 HEATING_START:
-    p_TestCase->AddResult("UsedTime", "00:00:00");
-    p_TestCase->AddResult("TargetTemp", QString("%1").arg(LSensorTemp));
-
     mp_TempLSensor->StopTemperatureControl();
     if (remainHeatCount == 2) {
         mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_NORMAL, LSENSOR_PID_KC_NORMAL,
@@ -852,27 +874,32 @@ HEATING_START:
         mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_SLOW, LSENSOR_PID_KC_SLOW,
                                       LSENSOR_PID_TI_SLOW, LSENSOR_PID_TD_SLOW);
     }
-    mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
-    if (remainHeatCount == 1) {
-        mp_Utils->Pause(3000);
-        totalTime += 3;
-    }
+    //mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
+    mp_TempLSensor->StartTemperatureControl(tgtTemp, 10);
 
-    int waitSeconds = TEST_LSENSOR_TIMEOUT;
-    int readyStatus = -1;
-    qreal curTemp = 0;
+    waitSeconds = duration;
+    readyStatus = -1;
+    curTemp  = 0;
+    prevTemp = 0;
+
+    if (remainHeatCount == 1) {
+        waitSeconds -= totalTime;
+    }
 
     while (!m_UserAbort && waitSeconds) {
         ++ totalTime;
         curTemp = mp_TempLSensor->GetTemperature();
-        if (curTemp > (LSensorTemp - TEST_LSENSOR_TEMP_TOLERANCE)) {
+        if (curTemp > tgtTemp) {
             readyStatus = 1;
             break;
         }
 
-        testStat.insert("UsedTime", QTime().addSecs(totalTime).toString("hh:mm:ss"));
-        testStat.insert("CurrentTemp", QString("%1").arg(curTemp));
-        emit RefreshTestStatustoMain(testCaseName, testStat);
+        if (curTemp != -1) {
+            prevTemp = curTemp;
+            testStat.insert("UsedTime", QTime().addSecs(totalTime).toString("hh:mm:ss"));
+            testStat.insert("CurrentTemp", QString("%1").arg(curTemp));
+            emit RefreshTestStatustoMain(testCaseName, testStat);
+        }
 
         mp_Utils->Pause(1000);
         -- waitSeconds;
@@ -885,8 +912,8 @@ HEATING_START:
             remainHeatCount = 0;
         }
         else {
-            QString failMsg = QString("Retort level sensor current temperature is (%1) which is less than target (%2, %3) in %4 seconds")\
-                    .arg(curTemp).arg(LSensorTemp - TEST_LSENSOR_TEMP_TOLERANCE).arg(LSensorTemp).arg(TEST_LSENSOR_TIMEOUT * 2 + 3);
+            QString failMsg = QString("Retort level sensor current temperature is (%1) which is less than target (%2) in %3 seconds")\
+                    .arg(curTemp).arg(tgtTemp).arg(duration);
             SetFailReason(Service::RETORT_LEVEL_SENSOR_HEATING, failMsg);
             p_TestCase->SetStatus(false);
             qDebug() << "Level Sensor heating error!";
@@ -901,9 +928,9 @@ HEATING_START:
     }
 
 EXIT:
-    p_TestCase->AddResult("TargetTemp", QString("%1").arg(LSensorTemp));
-    p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp));
-    p_TestCase->AddResult("Duration", QTime().addSecs(TEST_LSENSOR_TIMEOUT * 2 + 3).toString("hh:mm:ss"));
+    p_TestCase->AddResult("TargetTemp", QString("%1").arg(tgtTemp));
+    p_TestCase->AddResult("CurrentTemp", QString("%1").arg(curTemp == -1 ? prevTemp : curTemp));
+    p_TestCase->AddResult("Duration", durTime.toString());
     p_TestCase->AddResult("UsedTime", QTime().addSecs(totalTime).toString("hh:mm:ss"));
     return ret;
 }
@@ -925,8 +952,8 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     EmitRefreshTestStatustoMain(testCaseName, LS_HEATING);
     if (-1 == HeatingLevelSensor()) {
         qDebug() << "Fail to heat level sensor";
-        result = -1;
-        goto EXIT;
+         p_TestCase->AddResult("TestResult", "Level sensor self-test is failed.");
+         return -1;
     }
 
     // retort filling will be blocked 2 ~ 4 mintus,
@@ -934,14 +961,15 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     EmitRefreshTestStatustoMain(testCaseName, RETORT_FILLING);
     if (DCL_ERR_FCT_CALL_SUCCESS != m_rIdevProc.ALFillingForService(0, true)) {
         result = -1;
+        qDebug() << "[yuan-yuan]: level sensor detecting 'FILLING' failed!\n";
     }
     else {
         // Level sensor detected!
+        qDebug() << "[yuan-yuan]: level sensor detecting 'FILLING' successed!\n";
         result = 0;
     }
     mp_TempLSensor->StopTemperatureControl();
 
-EXIT:
     if (result == 0) {
         EmitRefreshTestStatustoMain(testCaseName, RV_MOVE_TO_SEALING_POSITION, bottlePos);
         mp_MotorRV->MoveToSealPosition(bottlePos);
@@ -961,11 +989,16 @@ EXIT:
     }
 
     // draing
+    qDebug() << "[yuan-yuan]: level sensor detecting 'Draining'\n";
     EmitRefreshTestStatustoMain(testCaseName, RETORT_DRAINING);
     m_rIdevProc.ALDraining(0);
+    EmitRefreshTestStatustoMain(testCaseName, HIDE_MESSAGE);
 
     // prompt result
-    EmitRefreshTestStatustoMain(testCaseName, INFORM_DONE);
+    if (result == 0) {
+        qDebug() << "[yuan-yuan]: level sensor detecting 'DONE'!\n";
+        EmitRefreshTestStatustoMain(testCaseName, INFORM_DONE);
+    }
     // Tell the operator to close the retort lid
     return result;
 }
@@ -2215,10 +2248,12 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
     int LSensorTempChange = LSENSOR_SLOPE_TEMPCHANGE_NORMAL;   // Slope temp
 
     mp_TempLSensor->StopTemperatureControl();
-    mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_NORMAL, LSENSOR_PID_KC_NORMAL,
+    bool ret = mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_NORMAL, LSENSOR_PID_KC_NORMAL,
                                       LSENSOR_PID_TI_NORMAL, LSENSOR_PID_TD_NORMAL);
+    qDebug() << "[yuan-yuan] SetTemperaturePid1: " << ret;
 
-    mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
+    ret = mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
+    qDebug() << "[yuan-yuan] StartTemperatureControl1: " << ret;
 
     int WaitSeconds = TEST_LSENSOR_TIMEOUT;
     int ReadyStatus(-1);
@@ -2240,11 +2275,15 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
     }
 
     mp_TempLSensor->StopTemperatureControl();
-    mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_SLOW, LSENSOR_PID_KC_SLOW,
+    ret = mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_SLOW, LSENSOR_PID_KC_SLOW,
                                       LSENSOR_PID_TI_SLOW, LSENSOR_PID_TD_SLOW);
-    mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
+    qDebug() << "[yuan-yuan] SetTemperaturePid2: " << ret;
 
-    mp_Utils->Pause(3000);
+    ret = mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
+
+    qDebug() << "[yuan-yuan] StartTemperatureControl 2: " << ret;
+
+//    mp_Utils->Pause(3000);
 
     WaitSeconds = TEST_LSENSOR_TIMEOUT;
     i = 0;

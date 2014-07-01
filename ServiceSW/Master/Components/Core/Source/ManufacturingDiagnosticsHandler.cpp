@@ -678,10 +678,9 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             emit PerformManufacturingTest(Service::RETORT_LID_LOCK, Service::TEST_CASE_ID_UNUSED);
             result = GetTestResponse();
         }
-        else if (id == Service::RETORT_LEVEL_SENSOR_DETECTING) {
+        else if (result == true && id == Service::RETORT_LEVEL_SENSOR_DETECTING) {
             // user operation finished!
             p_TestCase->SetParameter("CurStep", "2");
-
             MainMenu::CMessageDlg messageBox;
             messageBox.setModal(true);
             messageBox.SetTitle(tr("Confirm water level"));
@@ -691,6 +690,9 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             messageBox.SetText("Open the retort lid, do you see water cover the level sensor?");
             messageBox.show();
             result = messageBox.exec() == 0 ? true : false;
+
+            qDebug() << "[yuan-yuan] result: " << result;
+
             emit PerformManufacturingTest(id, Service::TEST_CASE_ID_UNUSED);
             (void)GetTestResponse();
         }
