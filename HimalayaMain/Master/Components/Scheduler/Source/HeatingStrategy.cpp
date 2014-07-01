@@ -788,6 +788,7 @@ void HeatingStrategy::StartRVOutletHeatingOTCalculation()
         QMap<QString, FunctionModule>::iterator iter1 = m_RV_2_Outlet.functionModuleList.find(m_RV_2_Outlet.needCheckOTModuleId);
         if (iter1 != m_RV_2_Outlet.functionModuleList.end() )
         {
+            mp_SchedulerController->LogDebug(QString("statrt RV sensor2 heating Calculation scenario:%1").arg(m_CurScenario));
             m_RV_2_Outlet.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             m_RV_2_Outlet.OTCheckPassed = false;
             m_RV_2_Outlet.needCheckOT = true;
@@ -1175,7 +1176,6 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
     {
         return true;
     }
-
     if (HWTemp >= mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath())
     {
         m_RV_2_Outlet.OTCheckPassed = true;
@@ -1186,7 +1186,8 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
     {
         if (HWTemp < mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath())
         {
-            mp_SchedulerController->LogDebug(QString("RVoutlet heaint over time, the current temp:%1").arg(HWTemp));
+            int retTmp = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+            mp_SchedulerController->LogDebug(QString("RVoutlet heaint over time, the current temp:%1, but the hope temp:%2").arg(HWTemp).arg(retTmp));
             return false;
         }
     }

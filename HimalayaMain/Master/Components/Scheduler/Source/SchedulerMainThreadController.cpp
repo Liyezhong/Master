@@ -624,15 +624,23 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1);
                 DequeueNonDeviceCommand();
             }
-            else if(CheckLevelSensorTemperature(85))
+            else if(m_CurProgramStepInfo.reagentGroup != "RG6")
             {
-                LogDebug("Program Step Heating Level sensor stage 1 OK");
-                m_SchedulerMachine->NotifyLevelSensorTempS1Ready();
+                if(CheckLevelSensorTemperature(85))
+                {
+                    LogDebug("Program Step Heating Level sensor stage 1 OK");
+                    m_SchedulerMachine->NotifyLevelSensorTempS1Ready();
+                }
             }
-            else
+            else if(m_CurProgramStepInfo.reagentGroup == "RG6")
             {
+                if(mp_HeatingStrategy->CheckRVHeatingStatus())
+                {
+                    LogDebug("Program Step Heating Rotary Valve heating rod OK");
+                    m_SchedulerMachine->NotifyLevelSensorTempS1Ready();
+                }
 
-            }
+            }//end RG6
         }
         else if(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2 == stepState)
         {
@@ -1695,6 +1703,12 @@ quint32 SchedulerMainThreadController::GetLeftProgramStepsNeededTime(const QStri
         leftTime += 60; //suppose need 60 seconds to fill
         leftTime += 40; //suppose need 40 seconds to drain
         leftTime += 20; //suppose need 20 seconds to heat level sensor
+        QString reagent;
+        reagent = pProgramStep->GetReagentID();
+        if (reagent == "L8")
+        {
+            leftTime += 10 * 60;
+        }
         if (0 == i)
         {
             leftTime += m_delayTime;
@@ -1740,6 +1754,10 @@ quint32 SchedulerMainThreadController::GetCurrentProgramStepNeededTime(const QSt
         leftTime += 60; //suppose need 60 seconds to fill
         leftTime += 40; //suppose need 40 seconds to drain
         leftTime += 20; //suppose need 20 seconds to heat level sensor
+        if (m_CurProgramStepInfo.reagentGroup == "RG6")
+        {
+            leftTime += 10 * 60;
+        }
         if (0 == programStepIDIndex)
         {
             leftTime += m_delayTime;
@@ -1959,8 +1977,16 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
     case PSSM_INIT:
         break;
     case PSSM_READY_TO_HEAT_LEVEL_SENSOR_S1:
-        scenario = 211;
-        reagentRelated = true;
+        if(ReagentGroup == "RG6")
+        {
+            scenario = 260;
+            reagentRelated = false;
+        }
+        else
+        {
+            scenario = 211;
+            reagentRelated = true;
+        }
         break;
     case PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2:
         scenario = 211;

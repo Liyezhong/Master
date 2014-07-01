@@ -207,7 +207,15 @@ public:
      *  \return qint64
      */
     /****************************************************************************/
-    inline const qint64 getOvenHeatingBeginTime() const;
+    inline const qint64 getOvenHeatingBeginTime() const {return m_OvenStartHeatingTime;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief  get the oven heating begin Time
+     *  \return qint64
+     */
+    /****************************************************************************/
+    bool CheckRVHeatingStatus() const {return m_RV_2_Outlet.OTCheckPassed;}
 
 private slots:
     /****************************************************************************/
@@ -367,11 +375,6 @@ private:
     /****************************************************************************/
     HeatingStrategy& operator=(const HeatingStrategy& rhs);
 };
-
-const qint64 HeatingStrategy::getOvenHeatingBeginTime() const
-{
-    return m_OvenStartHeatingTime;
-}
 
 }
 #endif // SCHEDULERMACHINE_H
