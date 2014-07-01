@@ -154,7 +154,7 @@ void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
         mp_Ui->labelCurTempTop->setText(Status.value("CurrentTemp"));
     }
     else {
-        mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempSide"));
+        mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempTop"));
         mp_Ui->labelCurTempBottom1->setText(Status.value("CurrentTempBottom1"));
         mp_Ui->labelCurTempBottom2->setText(Status.value("CurrentTempBottom2"));
     }
