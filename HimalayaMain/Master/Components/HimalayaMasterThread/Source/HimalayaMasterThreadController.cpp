@@ -283,29 +283,6 @@ void HimalayaMasterThreadController::OnGoReceived() {
 
 }
 
-/****************************************************************************/
-void HimalayaMasterThreadController::Shutdown() {
-    if (m_bQuitApp) {
-        MasterThreadController::Shutdown();
-    }
-    else
-    {
-        //write buffered data to disk-> refer man pages for sync
-        system("sync &");
-
-        //send shutdown signal to RemoteCarecontroller
-        /*if(mp_RemoteCareManager) {
-            mp_RemoteCareManager->SendCommandToRemoteCare(
-                        Global::CommandShPtr_t(new NetCommands::CmdRCNotifyShutdown(Global::Command::NOTIMEOUT)));
-        }*/
-
-        //Reply GUI
-        (void)SendCommand(Global::CommandShPtr_t(new MsgClasses::CmdQuitAppShutdownReply(5000, DataManager::QUITAPPSHUTDOWNACTIONTYPE_PREPARESHUTDOWN)),
-                    m_CommandChannelGui);
-    }
-    m_bQuitApp = false;
-}
-
 /************************************************************************************************************************************/
 void HimalayaMasterThreadController::InitiateShutdown(bool Reboot) {
     qDebug() << "ColoradoMasterThreadController::InitiateShutdown";
@@ -1133,11 +1110,13 @@ void HimalayaMasterThreadController::PrepareShutdownHandler(Global::tRefType Ref
     SendAcknowledgeOK(Ref, AckCommandChannel);
 
     m_bQuitApp = (DataManager::QUITAPPSHUTDOWNACTIONTYPE_QUITAPP == Cmd.QuitAppShutdownActionType());
-    if (m_bQuitApp)
-    {
+    if (m_bQuitApp){
         m_BootConfigFileContent.insert("Start_Process", "Service");
-        Global::UpdateRebootFile(m_BootConfigFileContent);
     }
+    else{
+        m_BootConfigFileContent.insert("Start_Process", "DisplayPowerOffImage");
+    }
+    Global::UpdateRebootFile(m_BootConfigFileContent);
     InitiateShutdown();
 }
 
