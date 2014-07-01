@@ -48,7 +48,7 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
 
     mp_TempOvenTop = NULL;
     mp_TempOvenBottom = NULL;
-    mp_DigitalInpputOven = NULL;
+    mp_DigitalInputOven = NULL;
     mp_DigitalOutputMainRelay = NULL;
 
     mp_TempRetortSide = NULL;
@@ -60,6 +60,12 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
     mp_MotorRV = NULL;
     mp_PressPump = NULL;
     mp_TempRV = NULL;
+
+    mp_DIRemoteAlarm = NULL;
+    mp_DILocalAlarm = NULL;
+
+    mp_DORemoteAlarm = NULL;
+    mp_DOLocalAlarm = NULL;
 
     mp_BaseModule3 = NULL;
     mp_BaseModule5 = NULL;
@@ -110,13 +116,25 @@ void ManufacturingTestHandler::CreateWrappers()
     CDigitalInput *pDigitalInput = NULL;
     pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_OVEN, CANObjectKeyLUT::m_OvenLidDIKey));
     if ( NULL != pDigitalInput ) {
-        mp_DigitalInpputOven = new WrapperFmDigitalInput("digitalinput_oven", pDigitalInput, this);
+        mp_DigitalInputOven = new WrapperFmDigitalInput("digitalinput_oven", pDigitalInput, this);
     }
 
     pDigitalInput = NULL;
     pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortLockDIKey));
     if ( NULL != pDigitalInput ) {
         mp_TempRetortInputLid = new WrapperFmDigitalInput("digitalinput_retortlid", pDigitalInput, this);
+    }
+
+    pDigitalInput = NULL;
+    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerRemoteAlarmDIKey));
+    if ( NULL != pDigitalInput ) {
+        mp_DIRemoteAlarm = new WrapperFmDigitalInput("remote_alarm_digital_input", pDigitalInput, this);
+    }
+
+    pDigitalInput = NULL;
+    pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerLocalAlarmDIKey));
+    if ( NULL != pDigitalInput ) {
+        mp_DILocalAlarm = new WrapperFmDigitalInput("local_alarm_digital_input", pDigitalInput, this);
     }
 
     CDigitalOutput *pDigitalOutput = NULL;
@@ -126,6 +144,24 @@ void ManufacturingTestHandler::CreateWrappers()
     }
     else {
         qDebug()<<"new WrapperFmDigitalOutput for MainRelay failed !!!!";
+    }
+
+    pDigitalOutput = NULL;
+    pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerRemoteAlarmCtrlDOKey));
+    if ( NULL != pDigitalOutput ) {
+        mp_DORemoteAlarm = new WrapperFmDigitalOutput("remote_alarm_digital_output", pDigitalOutput, this);
+    }
+    else {
+        qDebug()<<"new WrapperFmDigitalOutput for remote_alarm_digital_output failed !!!!";
+    }
+
+    pDigitalOutput = NULL;
+    pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerLocalAlarmCtrlDOKey));
+    if ( NULL != pDigitalOutput ) {
+        mp_DOLocalAlarm = new WrapperFmDigitalOutput("local_alarm_digital_output", pDigitalOutput, this);
+    }
+    else {
+        qDebug()<<"new WrapperFmDigitalOutput for remote_alarm_digital_output failed !!!!";
     }
 
     pTemperature = NULL;
@@ -217,11 +253,14 @@ void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, qui
     }
     switch (AbortTestCaseId) {
     case Service::SYSTEM_SPEARKER:
-    case Service::SYSTEM_REMOTE_LOCAL_ALARM:
         qDebug()<<"abort the system speaker test";
         if (mp_SpeakProc) {
             mp_SpeakProc->terminate();
         }
+        break;
+    case Service::SYSTEM_REMOTE_LOCAL_ALARM:
+        mp_DOLocalAlarm->SetLow();
+        mp_DORemoteAlarm->SetLow();
         break;
     case Service::OVEN_COVER_SENSOR:
         qDebug()<<"abort the oven cover sensor test";
@@ -585,14 +624,14 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
 
 qint32 ManufacturingTestHandler::TestOvenCoverSensor()
 {
-    if (mp_DigitalInpputOven == NULL) {
+    if (mp_DigitalInputOven == NULL) {
         SetFailReason(Service::OVEN_COVER_SENSOR, Service::MSG_DEVICE_NOT_INITIALIZED);
         emit ReturnManufacturingTestMsg(false);
         return 0;
     }
 
     Service::ModuleTestStatus Status;
-    qint32 Value = mp_DigitalInpputOven->GetValue();
+    qint32 Value = mp_DigitalInputOven->GetValue();
 
     if ( Value == 0) { //  oven cover sensor status : close
         Status.insert("OvenCoverSensorStatus", "Close");
@@ -972,35 +1011,38 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
     bool AlarmFlag = p_TestCase->GetParameter("AlarmFlag").toInt();
     bool ConnectFlag  = p_TestCase->GetParameter("ConnectFlag").toInt();
 
-    QStringList AlarmParams;
+    qDebug()<<"Remote alarm value = "<<mp_DIRemoteAlarm->GetValue();
+    qDebug()<<"Local alarm value = "<<mp_DILocalAlarm->GetValue();
+
+    qint32 RetValue(0);
+    if (AlarmFlag) {
+        RetValue = mp_DIRemoteAlarm->GetValue();
+    }
+    else {
+        RetValue = mp_DILocalAlarm->GetValue();
+    }
+
     if (ConnectFlag) {
         if (AlarmFlag) {
             // remote connect test
-            AlarmParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Alarm1.ogg";
+            mp_DORemoteAlarm->SetHigh();
         }
         else {
             // local connect test
-            AlarmParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Alarm2.ogg";
+            mp_DOLocalAlarm->SetHigh();
         }
-        Status.insert("AlarmStatus", "Connected");
     }
     else {
-        if (AlarmFlag) {
-            // remote disconnect test
-            AlarmParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Alarm3.ogg";
-        }
-        else {
-            // local disconnect test
-            AlarmParams<<"-r"<<Global::SystemPaths::Instance().GetSoundPath() + "/Alarm4.ogg";
-        }
+
         p_TestCase->SetParameter("AlarmFlag", QString::number(!AlarmFlag));
+
+    }
+    if (RetValue == 0) {
         Status.insert("AlarmStatus", "disConnected");
     }
-
-    //if (!mp_SpeakProc) {
-        //mp_SpeakProc = new QProcess;
-    //}
-    //mp_SpeakProc->start("ogg123", AlarmParams);
+    else {
+        Status.insert("AlarmStatus", "Connected");
+    }
 
     emit RefreshTestStatustoMain(TestCaseName, Status);
     return 0;

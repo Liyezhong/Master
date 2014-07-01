@@ -410,7 +410,7 @@ private:
 
     WrapperFmDigitalInput*      mp_TempRetortInputLid;
 
-    WrapperFmDigitalInput*      mp_DigitalInpputOven;
+    WrapperFmDigitalInput*      mp_DigitalInputOven;
     WrapperFmDigitalOutput*     mp_DigitalOutputMainRelay;
 
     WrapperFmTempControl*       mp_TempTubeLiquid;
@@ -421,6 +421,12 @@ private:
     WrapperFmPressureControl*   mp_PressPump;
 
     WrapperFmTempControl*       mp_TempLSensor;
+
+    WrapperFmDigitalInput*      mp_DIRemoteAlarm;
+    WrapperFmDigitalInput*      mp_DILocalAlarm;
+
+    WrapperFmDigitalOutput*      mp_DORemoteAlarm;
+    WrapperFmDigitalOutput*      mp_DOLocalAlarm;
 
     WrapperFmBaseModule*        mp_BaseModule3;
     WrapperFmBaseModule*        mp_BaseModule5;
