@@ -15,7 +15,9 @@ HEADERS *= ../Include/*.h \          # header file location
     ../Include/SystemManufacturing.h \
     ../Include/RetortManufacturing.h \
     ../Include/Select110v220vDialog.h \
-    ../Include/CleaningManufacturing.h
+    ../Include/CleaningManufacturing.h \
+    ../Include/SelectSealingDialog.h \
+    ../Include/SealingTestReportDialog.h
 
 SOURCES *= ../Source/*.cpp \         # source file location
     ../Source/MainControlManufacturing.cpp \
@@ -23,7 +25,9 @@ SOURCES *= ../Source/*.cpp \         # source file location
     ../Source/SystemManufacturing.cpp \
     ../Source/RetortManufacturing.cpp \
     ../Source/Select110v220vDialog.cpp \
-    ../Source/CleaningManufacturing.cpp
+    ../Source/CleaningManufacturing.cpp \
+    ../Source/SelectSealingDialog.cpp \
+    ../Source/SealingTestReportDialog.cpp
 
 FORMS += ../Forms/*.ui \
     ../Forms/MainControlManufacturing.ui \
@@ -32,7 +36,9 @@ FORMS += ../Forms/*.ui \
     ../Forms/SystemManufacturing.ui \
     ../Forms/RetortManufacturing.ui \
     ../Forms/Select110v220vDialog.ui \
-    ../Forms/CleaningManufacturing.ui
+    ../Forms/CleaningManufacturing.ui \
+    ../Forms/SelectSealingDialog.ui \
+    ../Forms/SealingTestReportDialog.ui
 
 RESOURCES *= ../Resource/*.qrc   # resource file location
 

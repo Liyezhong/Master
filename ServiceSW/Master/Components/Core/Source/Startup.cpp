@@ -1225,6 +1225,24 @@ void CStartup::RefreshTestStatus4SystemOverflow(Service::ModuleTestCaseID Id, co
     }
 }
 
+void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    if (mp_SealingStatusDlg == NULL) {
+        mp_SealingStatusDlg = new DiagnosticsManufacturing::CSealingTestReportDialog(mp_MainWindow);
+        mp_SealingStatusDlg->UpdateLabel(Status);
+        mp_SealingStatusDlg->show();
+    }
+    else {
+        mp_SealingStatusDlg->UpdateLabel(Status);
+    }
+    if (mp_SealingStatusDlg->IsAbort()) {
+        emit PerformManufacturingTest(Service::TEST_ABORT, Id);
+    }
+}
+
 void CStartup::RefreshTestStatus4CleaningSystem(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
     mp_ManaufacturingDiagnosticsHandler->HideMessage();
@@ -1289,6 +1307,9 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
         break;
     case Service::SYSTEM_OVERFLOW:
         RefreshTestStatus4SystemOverflow(id, status);
+        break;
+    case Service::SYSTEM_SEALING_TEST:
+        RefreshTestStatus4SystemSealing(id, status);
         break;
     case Service::CLEANING_SYSTEM_TEST:
         RefreshTestStatus4CleaningSystem(id, status);

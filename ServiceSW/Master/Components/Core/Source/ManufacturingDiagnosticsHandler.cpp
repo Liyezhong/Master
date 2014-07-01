@@ -29,6 +29,7 @@
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "DiagnosticsManufacturing/Include/SelectPositionDialog.h"
 #include "DiagnosticsManufacturing/Include/Select110v220vDialog.h"
+#include "DiagnosticsManufacturing/Include/SelectSealingDialog.h"
 #include "DiagnosticsManufacturing/Include/PressureInputDialog.h"
 
 #include "Main/Include/HimalayaServiceEventCodes.h"
@@ -420,6 +421,25 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForSystemFan(Service::Modul
     if ( ret == 0 )
         return true;
 
+    return false;
+}
+
+bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForSystemSealing()
+{
+    QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Service::SYSTEM_SEALING_TEST);
+    MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    dlg->SetTitle(TestCaseDescription);
+    dlg->SetIcon(QMessageBox::Information);
+    dlg->SetText("Please adjust retort lid lock assembly then re-test...");
+    dlg->HideCenterButton();
+    dlg->SetButtonText(3, tr("retest"));
+    dlg->SetButtonText(1, tr("abort"));
+
+    int ret = dlg->exec();
+
+    if (ret == 0) {
+        return true;
+    }
     return false;
 }
 
@@ -958,6 +978,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
     quint32 EventId(0);
     QString StrResult;
     QString RotatingMsg;
+    DiagnosticsManufacturing::CSelectSealingDialog* p_Dlg = new DiagnosticsManufacturing::CSelectSealingDialog(mp_MainWindow);
     qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufSystemTests ---" << TestCaseList;
     for(int i=0; i<TestCaseList.size(); i++) {
         Service::ModuleTestCaseID Id = TestCaseList.at(i);
@@ -1057,6 +1078,48 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_SEALING_TEST_SUCCESS;
+
+            NextFlag = ShowGuide(Id, 0);
+            if (!NextFlag) {
+                break;
+            }
+
+            // the first sealing test
+            p_TestCase->SetParameter("CurrentStep", "1");
+            while(1) {
+                emit PerformManufacturingTest(Id);
+                Result = GetTestResponse();
+                if (Result == false) {
+                    if (ShowConfirmDlgForSystemSealing() == false ) {
+                        break;
+                    }
+                }
+            }
+            if (Result == false) {
+                continue;
+            }
+
+            // the second sealing test
+            p_TestCase->SetParameter("CurrentStep", "2");
+            while(1) {
+                emit PerformManufacturingTest(Id);
+                Result = GetTestResponse();
+                if (Result == false) {
+                    if (ShowConfirmDlgForSystemSealing() == false ) {
+                        break;
+                    }
+                }
+            }
+            if (Result == false) {
+                continue;
+            }
+
+            // select test mode
+            (void)p_Dlg->exec();
+            p_TestCase->SetParameter("TestMode", QString::number(p_Dlg->GetSelectedMode()));
+            emit PerformManufacturingTest(Id);
+            Result = GetTestResponse();
+
             break;
         case Service::SYSTEM_REMOTE_LOCAL_ALARM:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST;
@@ -1104,6 +1167,8 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
         }
         mp_SystemManuf->SetTestResult(Id, Result);
     }
+
+    delete p_Dlg;
     mp_SystemManuf->EnableButton(true);
 }
 

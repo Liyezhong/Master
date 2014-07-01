@@ -63,6 +63,7 @@
 #include "Diagnostics/Include/System.h"
 #include "Core/Include/CalibrationHandler.h"
 #include "Core/Include/ManufacturingDiagnosticsHandler.h"
+#include "DiagnosticsManufacturing/Include/SealingTestReportDialog.h"
 #include <QTimer>
 
 namespace ServiceKeyValidator {
@@ -184,6 +185,7 @@ private:
     QTimer m_WindowStatusResetTimer;                                        //!< Timer for Window status reset
 
     DiagnosticsManufacturing::CHeatingTestDialog *mp_HeatingStatusDlg;
+    DiagnosticsManufacturing::CSealingTestReportDialog* mp_SealingStatusDlg;
 
 private slots:
     void SetDateTime(QDateTime DateTime);
@@ -209,6 +211,7 @@ private:
     void RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);
     void RefreshTestStatus4SystemExhaustFan(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);
     void RefreshTestStatus4SystemOverflow(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);
+    void RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);
     void RefreshTestStatus4CleaningSystem(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status);
 
 public slots:
