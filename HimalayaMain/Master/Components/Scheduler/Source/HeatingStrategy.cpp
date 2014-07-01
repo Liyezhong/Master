@@ -1030,14 +1030,14 @@ bool HeatingStrategy::ConstructHeatingSensorList()
             funcModule.ScenarioList.push_back(scenario);
         }
 
-       qreal maxTemperature= mp_DataManager->GetProgramSettings()->GetParameterValue(m_RV_2_Outlet.devName, funcKey, "MaxTemperature", ok);
+       qreal maxTemperature = mp_DataManager->GetProgramSettings()->GetParameterValue(m_RV_2_Outlet.devName, funcKey, "MaxTemperature", ok);
         if (false == ok)
         {
             return false;
         }
         funcModule.MaxTemperature = maxTemperature;
 
-        qreal heatingOverTime= mp_DataManager->GetProgramSettings()->GetParameterValue(m_RV_2_Outlet.devName, funcKey, "HeatingOverTime", ok);
+        qreal heatingOverTime = mp_DataManager->GetProgramSettings()->GetParameterValue(m_RV_2_Outlet.devName, funcKey, "HeatingOverTime", ok);
         if (false == ok)
         {
             return false;
@@ -1181,14 +1181,16 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
         m_RV_2_Outlet.OTCheckPassed = true;
     }
     qint64 now = QDateTime::currentMSecsSinceEpoch();
-    if (true == m_RV_2_Outlet.needCheckOT &&
-            now-m_RV_2_Outlet.heatingStartTime >= m_RV_2_Outlet.HeatingOverTime*1000)
+    if ( (true == m_RV_2_Outlet.needCheckOT) && (now - m_RV_2_Outlet.heatingStartTime >= m_RV_2_Outlet.HeatingOverTime*1000) )
     {
-        if (HWTemp < mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath())
+        if (-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario))
         {
-            int retTmp = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-            mp_SchedulerController->LogDebug(QString("RVoutlet heaint over time, the current temp:%1, but the hope temp:%2").arg(HWTemp).arg(retTmp));
-            return false;
+            if (HWTemp < mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath())
+            {
+                int retTmp = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
+                mp_SchedulerController->LogDebug(QString("RVoutlet heat over time, the current temp:%1, but the hope temp:%2").arg(HWTemp).arg(retTmp));
+                return false;
+            }
         }
     }
     return true;
