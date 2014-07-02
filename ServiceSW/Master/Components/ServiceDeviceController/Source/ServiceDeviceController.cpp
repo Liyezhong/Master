@@ -302,7 +302,10 @@ void ServiceDeviceController::OnAcknowledge(Global::tRefType, const Global::AckO
 /****************************************************************************/
 void ServiceDeviceController::ConnectDevices()
 {
-    qDebug()<<"ServiceDeviceController::ConnectDevices()";
+    qDebug()<<"---------------- ServiceDeviceController::ConnectDevices()";
+
+  //  mp_DeviceProcessor->InitialDevice();
+
 //    m_pXYZSet->Connect();
 //    m_pDrawerSet->Connect();
 //    m_pHoodSet->Connect();
@@ -319,6 +322,7 @@ void ServiceDeviceController::ConnectDevices()
 void ServiceDeviceController::InitDevices()
 {
     qDebug()<<"ServiceDeviceController::InitDevices()";
+    mp_DeviceProcessor->InitialDevice();
 }
 
 /****************************************************************************/

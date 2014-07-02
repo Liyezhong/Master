@@ -62,11 +62,21 @@ DeviceProcessor::DeviceProcessor(IDeviceProcessing &iDevProc)
     mp_TempOvenBottom = NULL;
 
     mp_MotorRV = NULL;
+
 }
 
 /****************************************************************************/
+
 void DeviceProcessor::Connect()
 {
+
+}
+
+void DeviceProcessor::InitialDevice()
+{
+    qDebug()<<"Switch On MainRelay " << m_rIdevProc.PerTurnOnMainRelay();
+    qDebug()<<"Switch Off Remote Alarm " << m_rIdevProc.PerControlAlarm(false, true);
+    qDebug()<<"Switch Off Local Alarm " << m_rIdevProc.PerControlAlarm(false, false);
 }
 
 /****************************************************************************/

@@ -516,6 +516,7 @@ void ServiceMasterThreadController::AttachControllersAndStartThreads(bool BasicT
         it.value().second->start();
     }
     // start heartbeat check timer only if m_HeartbeatCheckTimeout > 0
+    m_HeartbeatCheckTimeout = 10*1000;
    if(m_HeartbeatCheckTimeout > 0) {
        m_HeartbeatCheckTimer.setInterval(m_HeartbeatCheckTimeout);
        m_HeartbeatCheckTimer.setSingleShot(false);
@@ -918,8 +919,9 @@ void ServiceMasterThreadController::Shutdown() {
 
 /****************************************************************************/
 void ServiceMasterThreadController::HeartbeatCheck() {
-//    qDebug() << "MasterThreadController::HeartbeatCheck";
-
+    qDebug() << "MasterThreadController::HeartbeatCheck";
+    mp_DeviceThreadController->InitDevices();
+    m_HeartbeatCheckTimer.stop();
 }
 
 /****************************************************************************/

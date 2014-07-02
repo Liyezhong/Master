@@ -1128,6 +1128,8 @@ void CStartup::RefreshTestStatus4SystemAlarm(Service::ModuleTestCaseID Id, const
     int result = dlg->exec();
     qDebug()<<"StatusconfirmDlg return : "<<result;
     delete dlg;
+    emit PerformManufacturingTest(Service::TEST_ABORT, Id);
+
     if (result == 0) { // yes
         mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
     }

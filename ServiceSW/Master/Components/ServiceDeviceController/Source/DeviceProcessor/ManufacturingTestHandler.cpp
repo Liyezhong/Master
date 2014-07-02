@@ -43,6 +43,8 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
     : m_IsConfigured(false)
     , m_rIdevProc(iDevProc)
 {
+    qDebug()<<"----------------- ManufacturingTestHandler::ManufacturingTestHandler ----------------";
+
     m_UserAbort = false;
     mp_Utils = NULL;
 
@@ -80,7 +82,7 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
 /****************************************************************************/
 void ManufacturingTestHandler::CreateWrappers()
 {
-    qDebug()<<"ManufacturingTestHandler::CreateWrappers" ;
+    qDebug()<<"---------------- ManufacturingTestHandler::CreateWrappers ----------------" ;
 
     // Temperature control
     CTemperatureControl *pTemperature;
@@ -150,6 +152,7 @@ void ManufacturingTestHandler::CreateWrappers()
     pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerRemoteAlarmCtrlDOKey));
     if ( NULL != pDigitalOutput ) {
         mp_DORemoteAlarm = new WrapperFmDigitalOutput("remote_alarm_digital_output", pDigitalOutput, this);
+        //qDebug()<<"Remote Alarm set high return : " <<mp_DORemoteAlarm->SetHigh();
     }
     else {
         qDebug()<<"new WrapperFmDigitalOutput for remote_alarm_digital_output failed !!!!";
@@ -159,6 +162,7 @@ void ManufacturingTestHandler::CreateWrappers()
     pDigitalOutput = static_cast<CDigitalOutput*>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_MAIN_CONTROL, CANObjectKeyLUT::m_PerLocalAlarmCtrlDOKey));
     if ( NULL != pDigitalOutput ) {
         mp_DOLocalAlarm = new WrapperFmDigitalOutput("local_alarm_digital_output", pDigitalOutput, this);
+        //qDebug()<<"Local Alarm set high return : "<< mp_DOLocalAlarm->SetHigh();
     }
     else {
         qDebug()<<"new WrapperFmDigitalOutput for remote_alarm_digital_output failed !!!!";
@@ -259,9 +263,11 @@ void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, qui
         }
         break;
     case Service::SYSTEM_REMOTE_LOCAL_ALARM:
-        mp_DOLocalAlarm->SetLow();
-        mp_DORemoteAlarm->SetLow();
+    {
+        mp_DORemoteAlarm->SetHigh();
+        mp_DOLocalAlarm->SetHigh();
         break;
+    }
     case Service::OVEN_COVER_SENSOR:
         qDebug()<<"abort the oven cover sensor test";
         break;
@@ -1058,6 +1064,7 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
     qDebug()<<"Remote alarm value = "<<mp_DIRemoteAlarm->GetValue();
     qDebug()<<"Local alarm value = "<<mp_DILocalAlarm->GetValue();
 
+
     qint32 RetValue(0);
     if (AlarmFlag) {
         RetValue = mp_DIRemoteAlarm->GetValue();
@@ -1067,13 +1074,16 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
     }
 
     if (ConnectFlag) {
+        qDebug()<<"Remote Set low .....";
         if (AlarmFlag) {
             // remote connect test
-            mp_DORemoteAlarm->SetHigh();
+            mp_DORemoteAlarm->SetLow();
+
         }
         else {
+            qDebug()<<"Local Set low .....";
             // local connect test
-            mp_DOLocalAlarm->SetHigh();
+            mp_DOLocalAlarm->SetLow();
         }
     }
     else {
