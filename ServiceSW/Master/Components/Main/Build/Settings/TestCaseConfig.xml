@@ -26,7 +26,7 @@
 	</LaSystem>
 	<System>
 		<System110v220vSwitch ConnectedVoltage="110"/>
-		<SystemSealing SealTargetPressure1="42" SealTargetPressure2="-42" SealDuration="00:01:00" SealKeepDuration="00:01:00" TubeTargetPressure="30" TubeDuration="00:02:00" TubeKeepDuration="00:00:30" Departure="5" />
+		<SystemSealing SealTargetPressure1="22" SealTargetPressure2="-22" SealDuration="00:01:00" SealKeepDuration="00:01:00" TubeTargetPressure="20" TubeDuration="00:02:00" TubeKeepDuration="00:00:30" Departure="5" />
 		<SystemOverflow Parameter="N/A"/>
 		<SystemSpeaker VolumeFlag="0" LowVolume="60" HighVolume="120"/>
 		<SystemExhaustFan Position="1"/>

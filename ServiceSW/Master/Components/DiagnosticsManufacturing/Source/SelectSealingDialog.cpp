@@ -42,7 +42,7 @@ CSelectSealingDialog::CSelectSealingDialog(QWidget *p_Parent):
     m_SelectedMode = 0;//auto test
     mp_Ui->radioButtonAuto->setChecked(true);
     mp_Ui->radioButtonManual->setChecked(false);
-    this->SetDialogTitle("110V/220V switch test");
+    this->SetDialogTitle("Sealing test");
     CONNECTSIGNALSLOTGUI(mp_ButtonGroup, buttonClicked(int), this, OnRadioBtnSelected(int));
     CONNECTSIGNALSLOTGUI(mp_Ui->okButton, clicked(), this, close());
 }

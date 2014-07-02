@@ -1086,7 +1086,6 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
                 break;
             }
 
-            /*
             // the first sealing test
             p_TestCase->SetParameter("CurStep", "1");
             while(1) {
@@ -1114,7 +1113,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             if (Result == false) {
                 break;
             }
-*/
+
             p_TestCase->SetParameter("CurStep", "3");
             // select test mode
             (void)p_Dlg->exec();

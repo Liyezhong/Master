@@ -980,6 +980,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
         mp_MotorRV->MoveToSealPosition(bottlePos);
 
         //Tell the operator to comfirm the water level;
+        mp_PressPump->ReleasePressure();
         EmitRefreshTestStatustoMain(testCaseName, WAIT_CONFIRM);
         while(!m_Continue && !m_UserAbort) {
             mp_Utils->Pause(100);
@@ -1122,7 +1123,7 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
 {
     bool Result = false;
     Service::ModuleTestStatus Status;
-    float ASB3Current = 0.0;
+    float ASB3Current = 0.00;
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_MAINS_RELAY);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     bool RelaySwitchStatus = p_TestCase->GetParameter("RelaySwitchStatus").toInt();
@@ -1133,10 +1134,8 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
          // switch on
         qDebug()<<"System mains relay switch on";
         mp_DigitalOutputMainRelay->SetHigh();
-        qDebug()<<"temperature result :"<<mp_TempRV->StartTemperatureControl(80);
-        qDebug()<<"temperature value1 :"<<mp_TempRV->GetTemperature();
-        mp_Utils->Pause(5000);
-        qDebug()<<"temperature value2 :"<<mp_TempRV->GetTemperature();
+        mp_TempRV->StartTemperatureControl(80);
+        mp_Utils->Pause(3000);
 
         ASB3Current = mp_TempRV->GetCurrent()/1000.0;
 
@@ -1154,8 +1153,8 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
         qDebug()<<"ASB3 current :"<<ASB3Current;
 
         qDebug()<<"System mains relay switch off";
-        ASB3Current = mp_TempRV->GetCurrent();
-        Result = (ASB3Current<0.3)/1000.0;
+        ASB3Current = mp_TempRV->GetCurrent()/1000.0;
+        Result = (ASB3Current<0.3);
         p_TestCase->AddResult("ASB3Current", QString("%1A").arg(ASB3Current));
     }
     p_TestCase->SetStatus(Result);
@@ -1222,8 +1221,7 @@ qint32 ManufacturingTestHandler::TestSystemOverflow()
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_OVERFLOW);
     mp_MotorRV->MoveToInitialPosition();
     if (mp_MotorRV->MoveToTubePosition(1)) {
-        Status["OverflowStatus"] = "filling";
-        emit RefreshTestStatustoMain(TestCaseName, Status);
+        EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
         ret = m_rIdevProc.ALFillingForService(20, true);
         if (ret == DCL_ERR_DEV_LA_FILLING_OVERFLOW) {
             result = true;
@@ -1244,8 +1242,7 @@ qint32 ManufacturingTestHandler::TestSystemOverflow()
         -- waitSec;
     }
 */
-    Status["OverflowStatus"] = "draining";
-    emit RefreshTestStatustoMain(TestCaseName, Status);
+    EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
     ret = m_rIdevProc.ALDraining(0);
     if (ret != 0) {
         qDebug()<<"Overflow test: run draining function failed, error code :"<<ret;
@@ -1277,13 +1274,15 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
         QTime KeepDuration = QTime::fromString(p_TestCase->GetParameter("SealKeepDuration"), "hh:mm:ss");
         qreal Departure = p_TestCase->GetParameter("Departure").toFloat();
 
+        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE);
         int WaitSec = Duration.hour()*60*60 + Duration.minute()*60 + Duration.second();
         mp_PressPump->SetFan(1);
-        bool result = CreatePressure(WaitSec, TargetPressure, 3);
+        bool result = CreatePressure(WaitSec, TargetPressure, 0);
         if (result == false) {
             RetValue = -1;
         }
         else {
+            EmitRefreshTestStatustoMain(TestCaseName, PUMP_KEEP_PRESSURE);
             mp_PressPump->StopCompressor();
             WaitSec = KeepDuration.hour()*60*60 + KeepDuration.minute()*60 + KeepDuration.second();
             mp_Utils->Pause(WaitSec*1000);
@@ -1357,6 +1356,9 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
                 }
             }
             else {
+                LabelStr = QString("Keep pressure ...");
+                Status.insert("Label", LabelStr);
+                emit RefreshTestStatustoMain(TestCaseName, Status);
                 mp_PressPump->StopCompressor();
                 WaitSec = KeepDuration.hour()*60*60 + KeepDuration.minute()*60 + KeepDuration.second();
 
@@ -1388,13 +1390,15 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
                 emit RefreshTestStatustoMain(TestCaseName, Status);
             }
         }
-        EmitRefreshTestStatustoMain(TestCaseName, PUMP_RELEASE_PRESSURE);
+        LabelStr = QString("Releasing pressure ...");
+        Status.clear();
+        Status.insert("Label", LabelStr);
+        emit RefreshTestStatustoMain(TestCaseName, Status);
         mp_PressPump->ReleasePressure();
         if (m_UserAbort) {
             m_UserAbort = false;
             p_TestCase->AddResult("FailReason", "Abort");
         }
-        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         return RetValue ;
     }
     else {
@@ -2561,6 +2565,9 @@ void ManufacturingTestHandler::EmitRefreshTestStatustoMain(const QString& TestCa
         break;
     case PUMP_CREATE_PRESSURE:
         Msg = "Creating pressure ...";
+        break;
+    case PUMP_KEEP_PRESSURE:
+        Msg = "Keep pressure ...";
         break;
     case PUMP_RELEASE_PRESSURE:
         Msg = "Releasing pressure ...";

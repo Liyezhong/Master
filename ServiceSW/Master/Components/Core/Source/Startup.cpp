@@ -1222,13 +1222,7 @@ void CStartup::RefreshTestStatus4SystemExhaustFan(Service::ModuleTestCaseID Id, 
 void CStartup::RefreshTestStatus4SystemOverflow(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
     mp_ManaufacturingDiagnosticsHandler->HideMessage();
-    QString OverflowStatus = Status.value("OverflowStatus");
-    if (OverflowStatus == "filling") {
-        mp_ManaufacturingDiagnosticsHandler->ShowMessage("System is filling liquid to retort");
-    }
-    else if (OverflowStatus == "draining") {
-        mp_ManaufacturingDiagnosticsHandler->ShowMessage("System is draining liquid from retort");
-    }
+    mp_ManaufacturingDiagnosticsHandler->ShowMessage(Status.value("CurrentStatu"));
 }
 
 void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
@@ -1252,7 +1246,7 @@ void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, con
     }
     else if (Status.value("CurrentStatus") != NULL) {
         if (mp_SealingStatusDlg != NULL) {
-            mp_SealingStatusDlg->close();
+            mp_SealingStatusDlg->OnClose();
             delete mp_SealingStatusDlg ;
             mp_SealingStatusDlg = NULL;
         }

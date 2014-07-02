@@ -29,7 +29,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Please select connected voltage:</string>
+    <string>Please select test mode:</string>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>

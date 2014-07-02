@@ -39,7 +39,7 @@ CSealingTestReportDialog::CSealingTestReportDialog(QWidget *p_Parent):
     if (mp_Ui->pushButton == NULL) {
         qDebug()<<"push null";
     }
-    CONNECTSIGNALSLOT(mp_Ui->pushButton, clicked(), this, OnClicked());
+    CONNECTSIGNALSLOT(mp_Ui->pushButton, clicked(), this, OnClose());
 }
 
 CSealingTestReportDialog::~CSealingTestReportDialog()
@@ -79,7 +79,7 @@ void CSealingTestReportDialog::UpdateLabel(const Service::ModuleTestStatus &Stat
     }
 }
 
-void CSealingTestReportDialog::OnClicked()
+void CSealingTestReportDialog::OnClose()
 {
     m_Index = 1;
     if (!m_IsOkButton) {
