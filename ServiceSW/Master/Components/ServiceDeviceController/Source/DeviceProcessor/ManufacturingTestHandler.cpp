@@ -1411,6 +1411,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
             RetValue = -1;
             goto CLEANING_EXIT;
         }
+        EmitRefreshTestStatustoMain(TestCaseName, SYSTEM_FLUSH);
         mp_Utils->Pause(60*1000);
 
         if (i == 16) {
@@ -2524,6 +2525,9 @@ void ManufacturingTestHandler::EmitRefreshTestStatustoMain(const QString& TestCa
         break;
     case PUMP_RELEASE_PRESSURE:
         Msg = "Releasing pressure ...";
+        break;
+    case SYSTEM_FLUSH:
+        Msg = "Air Blowing ...";
         break;
     case WAIT_CONFIRM:
         Msg = "WaitConfirm";

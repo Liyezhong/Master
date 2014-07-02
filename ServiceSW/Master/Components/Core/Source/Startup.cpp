@@ -1248,7 +1248,7 @@ void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, con
 void CStartup::RefreshTestStatus4CleaningSystem(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
     mp_ManaufacturingDiagnosticsHandler->HideMessage();
-    QString CleaningStatus = Status.value("CleaningStatus");
+    QString CleaningStatus = Status.value("CurrentStatus");
     mp_ManaufacturingDiagnosticsHandler->ShowMessage(CleaningStatus);
 }
 
