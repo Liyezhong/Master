@@ -1127,22 +1127,36 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     bool RelaySwitchStatus = p_TestCase->GetParameter("RelaySwitchStatus").toInt();
 
-    p_TestCase->AddResult("ASB3Current", QString("%1V").arg(ASB3Current));
+    p_TestCase->AddResult("ASB3Current", QString("%1A").arg(ASB3Current));
 
     if (RelaySwitchStatus) {
          // switch on
-        mp_DigitalOutputMainRelay->SetHigh();
         qDebug()<<"System mains relay switch on";
-        ASB3Current = m_rIdevProc.IDGetSlaveVoltage(DeviceControl::Slave_3)/1000.0;
+        mp_DigitalOutputMainRelay->SetHigh();
+        qDebug()<<"temperature result :"<<mp_TempRV->StartTemperatureControl(80);
+        qDebug()<<"temperature value1 :"<<mp_TempRV->GetTemperature();
+        mp_Utils->Pause(5000);
+        qDebug()<<"temperature value2 :"<<mp_TempRV->GetTemperature();
+
+        ASB3Current = mp_TempRV->GetCurrent()/1000.0;
+
+        qDebug()<<"ASB3 current :"<<ASB3Current;
         Result = (ASB3Current>0.3 && ASB3Current<1.3);
+        mp_TempRV->StopTemperatureControl();
+        mp_DigitalOutputMainRelay->SetLow();
+
+        p_TestCase->AddResult("ASB3Current", QString("%1A").arg(ASB3Current));
     }
     else {
          // switch off
         mp_DigitalOutputMainRelay->SetLow();
+
+        qDebug()<<"ASB3 current :"<<ASB3Current;
+
         qDebug()<<"System mains relay switch off";
-        ASB3Current = m_rIdevProc.IDGetSlaveVoltage(DeviceControl::Slave_3)/1000.0;
-        Result = (ASB3Current<0.3);
-        p_TestCase->AddResult("ASB3Current", QString("%1V").arg(ASB3Current));
+        ASB3Current = mp_TempRV->GetCurrent();
+        Result = (ASB3Current<0.3)/1000.0;
+        p_TestCase->AddResult("ASB3Current", QString("%1A").arg(ASB3Current));
     }
     p_TestCase->SetStatus(Result);
     if (Result) {
@@ -1210,7 +1224,7 @@ qint32 ManufacturingTestHandler::TestSystemOverflow()
     if (mp_MotorRV->MoveToTubePosition(1)) {
         Status["OverflowStatus"] = "filling";
         emit RefreshTestStatustoMain(TestCaseName, Status);
-        ret = m_rIdevProc.ALFilling(SUCKING_MAX_DELAY_TIME, true);
+        ret = m_rIdevProc.ALFillingForService(20, true);
         if (ret == DCL_ERR_DEV_LA_FILLING_OVERFLOW) {
             result = true;
         }
@@ -1327,7 +1341,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
 
             Status.clear();
             LabelStr = QString("Creating pressure ...");
-            Status.insert("label", LabelStr);
+            Status.insert("Label", LabelStr);
             emit RefreshTestStatustoMain(TestCaseName, Status);
             int WaitSec = Duration.hour()*60*60 + Duration.minute()*60 + Duration.second();
             bool result = CreatePressure(WaitSec, TargetPressure, 3);
@@ -1368,7 +1382,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
                 else {
                     Status.insert("Result", "Pass");
                 }
-                if (i==PositionList.count()) {
+                if (i==PositionList.count()-1) {
                     Status.insert("Finish", "1");
                 }
                 emit RefreshTestStatustoMain(TestCaseName, Status);
@@ -2808,7 +2822,12 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         break;
     }
     case Service::CLEANING_SYSTEM_TEST:
-        emit ReturnManufacturingTestMsg(CleaningSystem());
+        if (0 == CleaningSystem()) {
+            emit ReturnManufacturingTestMsg(true);
+        }
+        else {
+            emit ReturnManufacturingTestMsg(false);
+        }
         break;
     default:
         break;

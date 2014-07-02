@@ -83,8 +83,9 @@ void CSealingTestReportDialog::OnClicked()
 {
     m_Index = 1;
     if (!m_IsOkButton) {
-        m_IsAbort = true;
+        PerformManufacturingTest(Service::TEST_ABORT, Service::SYSTEM_SEALING_TEST);
     }
+
     this->close();
 }
 

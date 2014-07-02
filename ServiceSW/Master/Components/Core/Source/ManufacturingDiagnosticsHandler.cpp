@@ -1085,7 +1085,8 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             if (!NextFlag) {
                 break;
             }
-/*
+
+            /*
             // the first sealing test
             p_TestCase->SetParameter("CurStep", "1");
             while(1) {

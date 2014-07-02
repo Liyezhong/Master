@@ -1241,17 +1241,22 @@ void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, con
         mp_ManaufacturingDiagnosticsHandler->HideMessage();
         if (mp_SealingStatusDlg == NULL) {
             mp_SealingStatusDlg = new DiagnosticsManufacturing::CSealingTestReportDialog(mp_MainWindow);
+
+            CONNECTSIGNALSIGNAL(mp_SealingStatusDlg, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
             mp_SealingStatusDlg->UpdateLabel(Status);
             mp_SealingStatusDlg->show();
         }
         else {
             mp_SealingStatusDlg->UpdateLabel(Status);
         }
-        if (mp_SealingStatusDlg->IsAbort()) {
-            emit PerformManufacturingTest(Service::TEST_ABORT, Id);
-        }
     }
     else if (Status.value("CurrentStatus") != NULL) {
+        if (mp_SealingStatusDlg != NULL) {
+            mp_SealingStatusDlg->close();
+            delete mp_SealingStatusDlg ;
+            mp_SealingStatusDlg = NULL;
+        }
+
         if (Status.value("CurrentStatus") == "HideMessage") {
             mp_ManaufacturingDiagnosticsHandler->HideMessage();
         }

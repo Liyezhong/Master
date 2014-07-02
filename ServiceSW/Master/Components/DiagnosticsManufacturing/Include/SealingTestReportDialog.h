@@ -72,10 +72,6 @@ public:
     /****************************************************************************/
     void UpdateLabel(const Service::ModuleTestStatus &Status);
 
-    bool IsAbort() {
-        return m_IsAbort;
-    }
-
 private slots:
 
     /****************************************************************************/
@@ -86,6 +82,16 @@ private slots:
     void RetranslateUI();
 
     void OnClicked();
+
+signals:
+    /****************************************************************************/
+    /**
+       * \brief Signal emitted to perform manufacturing tests
+       * \iparam Test = Test name
+       */
+    /****************************************************************************/
+    void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestCaseId);
+
 protected:
     bool eventFilter(QObject *p_Object, QEvent *p_Event);
 
