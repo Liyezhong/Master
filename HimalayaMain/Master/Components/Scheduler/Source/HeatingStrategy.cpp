@@ -777,21 +777,16 @@ void HeatingStrategy::StartRVOutletHeatingOTCalculation()
         // Current(new) scenario belongs to the specific scenario list
         if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
         {
+            m_RV_2_Outlet.curModuleId = iter->Id;
+            //find whether to need to check over time
+            if( -1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario) )
+            {
+                mp_SchedulerController->LogDebug(QString("statrt RV sensor2 heating Calculation scenario:%1").arg(m_CurScenario));
+                m_RV_2_Outlet.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+                m_RV_2_Outlet.OTCheckPassed = false;
+                m_RV_2_Outlet.needCheckOT = true;
+            }
             break;
-        }
-    }
-
-    if (iter != m_RV_2_Outlet.functionModuleList.end())
-    {
-        m_RV_2_Outlet.curModuleId = iter->Id;
-        //find whether to need to check over time
-        QMap<QString, FunctionModule>::iterator iter1 = m_RV_2_Outlet.functionModuleList.find(m_RV_2_Outlet.needCheckOTModuleId);
-        if (iter1 != m_RV_2_Outlet.functionModuleList.end() )
-        {
-            mp_SchedulerController->LogDebug(QString("statrt RV sensor2 heating Calculation scenario:%1").arg(m_CurScenario));
-            m_RV_2_Outlet.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
-            m_RV_2_Outlet.OTCheckPassed = false;
-            m_RV_2_Outlet.needCheckOT = true;
         }
     }
 }
