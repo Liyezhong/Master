@@ -697,24 +697,26 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             (void)GetTestResponse();
         }
         else if (id == Service::RETORT_HEATING_WITH_WATER) {
-            // popup a message to inform operator to put the external sensor into retort.
-            nextFlag = ShowGuide(id, 1);
-            if (nextFlag == true) {
-                p_TestCase->SetParameter("CurStep", "2");
-                emit PerformManufacturingTest(id, Service::TEST_CASE_ID_UNUSED);
-                result = GetTestResponse();
-
-                QString Reason = p_TestCase->GetResult().value("FailReason");
-                if (Reason != "Abort" ) {
-                    p_TestCase->SetParameter("CurStep", "3");
+            if (result == true) {
+                // popup a message to inform operator to put the external sensor into retort.
+                nextFlag = ShowGuide(id, 1);
+                if (nextFlag == true) {
+                    p_TestCase->SetParameter("CurStep", "2");
                     emit PerformManufacturingTest(id, Service::TEST_CASE_ID_UNUSED);
-                    GetTestResponse();
+                    result = GetTestResponse();
+
+                    QString Reason = p_TestCase->GetResult().value("FailReason");
+                    if (Reason != "Abort" ) {
+                        p_TestCase->SetParameter("CurStep", "3");
+                        emit PerformManufacturingTest(id, Service::TEST_CASE_ID_UNUSED);
+                        GetTestResponse();
+                    }
+                    ShowGuide(id, 2);
                 }
-                ShowGuide(id, 2);
-            }
-            else {
-                emit PerformManufacturingTest(Service::TEST_ABORT, id);
-                result = GetTestResponse();
+                else {
+                    emit PerformManufacturingTest(Service::TEST_ABORT, id);
+                    result = GetTestResponse();
+                }
             }
         }
 
@@ -732,7 +734,7 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             QString text = QString("%1 - %2\n%3").arg(testCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, text, true);
 
-            if (id != Service::RETORT_LID_LOCK && id != Service::RETORT_LEVEL_SENSOR_DETECTING) {
+            if (id == Service::RETORT_HEATING_EMPTY) {
                 ShowHeatingFailedResult(id);
             }
         }

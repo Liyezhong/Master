@@ -2375,6 +2375,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
     Ret = HeatingLevelSensor();
     if (Ret == -1) {
         qDebug()<<"Fail to heat level sensor";
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         return -1;
     }
 
@@ -2404,6 +2405,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         // move to sealing positioin
         EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, Position);
         mp_MotorRV->MoveToSealPosition(Position);
+        mp_PressPump->ReleasePressure();
 
         // tell operator to put the external sensor to retort.
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);

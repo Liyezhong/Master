@@ -145,7 +145,8 @@ void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
         mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempSensor1"));
         mp_Ui->labelCurTempBottom1->setText(Status.value("CurrentTempSensor2"));
     }
-    else if (m_TestCaseId == Service::RETORT_HEATING_EMPTY) {
+    else if (m_TestCaseId == Service::RETORT_HEATING_EMPTY ||
+             m_TestCaseId == Service::RETORT_HEATING_WITH_WATER ) {
         mp_Ui->labelCurTempTop->setText(Status.value("CurrentTempSide"));
         mp_Ui->labelCurTempBottom1->setText(Status.value("CurrentTempBottom1"));
         mp_Ui->labelCurTempBottom2->setText(Status.value("CurrentTempBottom2"));
