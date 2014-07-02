@@ -967,6 +967,9 @@ void CStartup::RefreshTestStatus4RetortLevelSensorDetecting(Service::ModuleTestC
     else if (msg.compare("InformDone") == 0) {
         mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
     }
+    else if (msg.compare("HideMessage") == 0) {
+        mp_ManaufacturingDiagnosticsHandler->HideMessage();
+    }
     else {
         mp_ManaufacturingDiagnosticsHandler->ShowMessage(status.value("CurrentStatus"));
     }

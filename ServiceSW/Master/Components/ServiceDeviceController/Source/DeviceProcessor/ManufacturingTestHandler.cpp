@@ -946,6 +946,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     const int bottlePos = 1;
     EmitRefreshTestStatustoMain(testCaseName, RV_INITIALIZING);
     mp_MotorRV->MoveToInitialPosition();
+
     EmitRefreshTestStatustoMain(testCaseName, RV_MOVE_TO_TUBE_POSITION, bottlePos);
     mp_MotorRV->MoveToTubePosition(bottlePos);
 
@@ -953,7 +954,11 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     if (-1 == HeatingLevelSensor()) {
         qDebug() << "Fail to heat level sensor";
          p_TestCase->AddResult("TestResult", "Level sensor self-test is failed.");
+         EmitRefreshTestStatustoMain(testCaseName, HIDE_MESSAGE);
          return -1;
+    }
+    else {
+        qDebug() << "Level sensor heating OK!";
     }
 
     // retort filling will be blocked 2 ~ 4 mintus,
@@ -982,6 +987,9 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
         if (m_Continue == true) {
             m_Continue = false;
         }
+        if (m_UserAbort == true) {
+            m_UserAbort = false;
+        }
         p_TestCase->AddResult("TestResult", "Level sensor self-test is OK.");
     }
     else {
@@ -990,8 +998,10 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
 
     // draing
     qDebug() << "[yuan-yuan]: level sensor detecting 'Draining'\n";
+    mp_MotorRV->MoveToTubePosition(bottlePos);
     EmitRefreshTestStatustoMain(testCaseName, RETORT_DRAINING);
     m_rIdevProc.ALDraining(0);
+
     EmitRefreshTestStatustoMain(testCaseName, HIDE_MESSAGE);
 
     // prompt result
