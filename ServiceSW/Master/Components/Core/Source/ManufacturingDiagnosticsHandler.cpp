@@ -1083,40 +1083,49 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             if (!NextFlag) {
                 break;
             }
-
+/*
             // the first sealing test
-            p_TestCase->SetParameter("CurrentStep", "1");
+            p_TestCase->SetParameter("CurStep", "1");
             while(1) {
                 emit PerformManufacturingTest(Id);
                 Result = GetTestResponse();
-                if (Result == false) {
-                    if (ShowConfirmDlgForSystemSealing() == false ) {
-                        break;
-                    }
+                if (!Result && ShowConfirmDlgForSystemSealing()) {
+                    continue;
                 }
+                break;
             }
             if (Result == false) {
-                continue;
+                break;
             }
 
             // the second sealing test
-            p_TestCase->SetParameter("CurrentStep", "2");
+            p_TestCase->SetParameter("CurStep", "2");
             while(1) {
                 emit PerformManufacturingTest(Id);
                 Result = GetTestResponse();
-                if (Result == false) {
-                    if (ShowConfirmDlgForSystemSealing() == false ) {
-                        break;
-                    }
+                if (!Result && ShowConfirmDlgForSystemSealing()) {
+                    continue;
                 }
+                break;
             }
             if (Result == false) {
-                continue;
+                break;
             }
-
+*/
+            p_TestCase->SetParameter("CurStep", "3");
             // select test mode
             (void)p_Dlg->exec();
-            p_TestCase->SetParameter("TestMode", QString::number(p_Dlg->GetSelectedMode()));
+            if (p_Dlg->GetSelectedMode() == 0) {
+                p_TestCase->SetParameter("TestMode", "0");
+            }
+            else {
+                DiagnosticsManufacturing::CSelectPositionDialog *p_Dlg = new DiagnosticsManufacturing::CSelectPositionDialog(Id, 1, true, mp_MainWindow);
+                p_Dlg->exec();
+
+                p_TestCase->SetParameter("TestMode", "1");
+                p_TestCase->SetParameter("Position", QString::number(p_Dlg->GetPosition() + 1));
+            }
+
             emit PerformManufacturingTest(Id);
             Result = GetTestResponse();
 

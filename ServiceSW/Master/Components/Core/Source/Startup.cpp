@@ -48,7 +48,8 @@ CStartup::CStartup() : QObject(),
     m_WindowStatusResetTimer(this),
     m_CurrentUserMode(""),
     mp_ManaufacturingDiagnosticsHandler(NULL),
-    mp_HeatingStatusDlg(NULL)
+    mp_HeatingStatusDlg(NULL),
+    mp_SealingStatusDlg(NULL)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");
@@ -1229,25 +1230,36 @@ void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, con
 {
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    int CurStep = p_TestCase->GetParameter("CurStep").toInt();
 
-    if (mp_SealingStatusDlg == NULL) {
-        mp_SealingStatusDlg = new DiagnosticsManufacturing::CSealingTestReportDialog(mp_MainWindow);
-        mp_SealingStatusDlg->UpdateLabel(Status);
-        mp_SealingStatusDlg->show();
+    if (CurStep == 3) {
+        mp_ManaufacturingDiagnosticsHandler->HideMessage();
+        if (mp_SealingStatusDlg == NULL) {
+            mp_SealingStatusDlg = new DiagnosticsManufacturing::CSealingTestReportDialog(mp_MainWindow);
+            mp_SealingStatusDlg->UpdateLabel(Status);
+            mp_SealingStatusDlg->show();
+        }
+        else {
+            mp_SealingStatusDlg->UpdateLabel(Status);
+        }
+        if (mp_SealingStatusDlg->IsAbort()) {
+            emit PerformManufacturingTest(Service::TEST_ABORT, Id);
+        }
     }
-    else {
-        mp_SealingStatusDlg->UpdateLabel(Status);
-    }
-    if (mp_SealingStatusDlg->IsAbort()) {
-        emit PerformManufacturingTest(Service::TEST_ABORT, Id);
+    else if (Status.value("CurrentStatus") != NULL) {
+        if (Status.value("CurrentStatus") == "HideMessage") {
+            mp_ManaufacturingDiagnosticsHandler->HideMessage();
+        }
+        else {
+            mp_ManaufacturingDiagnosticsHandler->ShowMessage(Status.value("CurrentStatus"));
+        }
     }
 }
 
 void CStartup::RefreshTestStatus4CleaningSystem(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
     mp_ManaufacturingDiagnosticsHandler->HideMessage();
-    QString CleaningStatus = Status.value("CleaningStatus");
-    mp_ManaufacturingDiagnosticsHandler->ShowMessage(CleaningStatus);
+    mp_ManaufacturingDiagnosticsHandler->ShowMessage(Status.value("CurrentStatus"));
 }
 
 /****************************************************************************/

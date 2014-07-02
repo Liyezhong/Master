@@ -69,7 +69,7 @@ CSelectPositionDialog::CSelectPositionDialog(Service::ModuleTestCaseID Id, quint
 
     CONNECTSIGNALSLOTGUI(mp_Ui->pushButtonOk, clicked(), this, AbortDialog());
 
-    if (Id == Service::ROTARY_VALVE_SELECTION_FUNCTION) {
+    if (Id == Service::ROTARY_VALVE_SELECTION_FUNCTION || Id == Service::SYSTEM_SEALING_TEST) {
         mp_Ui->radioButtonSealing->setDisabled(true);
     }
     else if (Id == Service::ROTARY_VALVE_SEALING_FUNCTION) {

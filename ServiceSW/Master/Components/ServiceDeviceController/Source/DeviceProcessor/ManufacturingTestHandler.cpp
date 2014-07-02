@@ -1158,7 +1158,7 @@ qint32 ManufacturingTestHandler::TestSystemOverflow()
 qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
 {
     qint32 RetValue(0);
-    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_EXHAUST_FAN);
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_SEALING_TEST);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     if (CurStep == 1 || CurStep == 2) {
         qreal TargetPressure(0);
@@ -1176,11 +1176,11 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
         }
         QTime Duration = QTime::fromString(p_TestCase->GetParameter("SealDuration"), "hh:mm:ss");
         QTime KeepDuration = QTime::fromString(p_TestCase->GetParameter("SealKeepDuration"), "hh:mm:ss");
-        qreal Departure = p_TestCase->GetParameter("Depature").toFloat();
+        qreal Departure = p_TestCase->GetParameter("Departure").toFloat();
 
         int WaitSec = Duration.hour()*60*60 + Duration.minute()*60 + Duration.second();
         mp_PressPump->SetFan(1);
-        bool result = CreatePressure(WaitSec, TargetPressure, 0);
+        bool result = CreatePressure(WaitSec, TargetPressure, 3);
         if (result == false) {
             RetValue = -1;
         }
@@ -1200,6 +1200,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
 
         EmitRefreshTestStatustoMain(TestCaseName, PUMP_RELEASE_PRESSURE);
         mp_PressPump->ReleasePressure();
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         return RetValue ;
     }
     else if (CurStep == 3) {
@@ -1208,13 +1209,13 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
         qreal TargetPressure = p_TestCase->GetParameter("TubeTargetPressure").toFloat();
         QTime Duration = QTime::fromString(p_TestCase->GetParameter("TubeDuration"), "hh:mm:ss");
         QTime KeepDuration = QTime::fromString(p_TestCase->GetParameter("TubeKeepDuration"), "hh:mm:ss");
-        qreal Departure = p_TestCase->GetParameter("Depature").toFloat();
+        qreal Departure = p_TestCase->GetParameter("Departure").toFloat();
         QString LabelStr;
 
         QList<int> PositionList;
         int Position(0);
         PositionList.clear();
-        if (p_TestCase->GetParameter("TestMode") == "1") {
+        if (p_TestCase->GetParameter("TestMode") == "0") {
             for(int i=0; i<=16; i++) {
                 PositionList.append(i);
             }
@@ -1294,6 +1295,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
             m_UserAbort = false;
             p_TestCase->AddResult("FailReason", "Abort");
         }
+        EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         return RetValue ;
     }
     else {
@@ -1372,6 +1374,7 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressu
     else if (targetPressure < 0) {
         mp_PressPump->SetTargetPressure(25, targetPressure);
     }
+    waitSecond += 1;
     while (waitSecond) {
         if (m_UserAbort) {
             result = false;
@@ -1381,7 +1384,19 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressu
         //qreal pressure = m_rIdevProc.ALGetRecentPressure();
         qDebug()<<"current pressure :"<<pressure;
 
-        if (pressure >= (targetPressure - departure) && pressure <= (targetPressure + departure)) {
+        if (departure == 0) {
+            if (targetPressure > 0 && pressure >= targetPressure) {
+                result = true;
+                break;
+            }
+
+            if (targetPressure < 0 && pressure <= targetPressure) {
+                result = true;
+                break;
+            }
+
+        }
+        else if (pressure >= (targetPressure - departure) && pressure <= (targetPressure + departure)) {
             result = true;
             break;
         }

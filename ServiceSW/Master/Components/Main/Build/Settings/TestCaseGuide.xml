@@ -76,7 +76,7 @@
 	</System110v220vSwitch>
 	<SystemSealing Description="Sealing function test">
 		<Guide>
-			<Step>System sealing function test</Step>
+			<Step>Please insert the sealing fixtures to the position of bottles and paraffin bathes.</Step>
 		</Guide>
 	</SystemSealing>
 	<SystemOverflow Description="Overflow test">

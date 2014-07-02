@@ -28,14 +28,18 @@
 namespace DiagnosticsManufacturing {
 
 CSealingTestReportDialog::CSealingTestReportDialog(QWidget *p_Parent):
-    mp_Ui(new Ui::CSealingTestReportDialog),
     MainMenu::CDialogFrame(p_Parent),
+    mp_Ui(new Ui::CSealingTestReportDialog),
     m_Index(1),
     m_IsOkButton(false),
     m_IsAbort(false)
 {
+    mp_Ui->setupUi(GetContentFrame());
     InitLableGroup();
-    CONNECTSIGNALSLOTGUI(mp_Ui->pushButton, clicked(), this, OnClicked());
+    if (mp_Ui->pushButton == NULL) {
+        qDebug()<<"push null";
+    }
+    CONNECTSIGNALSLOT(mp_Ui->pushButton, clicked(), this, OnClicked());
 }
 
 CSealingTestReportDialog::~CSealingTestReportDialog()
