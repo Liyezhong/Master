@@ -1465,6 +1465,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
 CLEANING_EXIT:
     mp_PressPump->SetFan(0);
     mp_PressPump->ReleasePressure();
+    EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
     return RetValue;
 }
