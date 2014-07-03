@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CSelectSealingDialog.h
+/*! \file SelectSealingDialog.h
  *
  *  \brief Header file for class CSelectSealingDialog.
  *
@@ -52,6 +52,11 @@ public:
     /****************************************************************************/
     virtual ~CSelectSealingDialog();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Get the selected mode
+     */
+    /****************************************************************************/
     int GetSelectedMode() const
     {
         return m_SelectedMode;
@@ -62,6 +67,7 @@ private slots:
     /****************************************************************************/
     /*!
      *  \brief This function is called when radio button is clicked
+     *  \iparam radioBtnIndex = button index
      */
     /****************************************************************************/
     void OnRadioBtnSelected(int radioBtnIndex);

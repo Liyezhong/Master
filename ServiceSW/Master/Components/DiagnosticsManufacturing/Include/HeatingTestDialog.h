@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file WaitDialog.h
+/*! \file HeatingTestDialog.h
  *
  *  \brief Header file for class CHeatingTestDialog.
  *
@@ -47,6 +47,8 @@ public:
     /*!
      *  \brief Constructor
      *
+     * \iparam TestCaseId = Test case id
+     *
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
@@ -81,8 +83,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Update label status
-     *
-     *  \iparam Status = Label test status
      */
     /****************************************************************************/
     void DisplayLSensorLabel(void);
@@ -213,6 +213,7 @@ signals:
     /**
        * \brief Signal emitted to perform manufacturing tests
        * \iparam Test = Test name
+       * \iparam AbortTestCaseId = Abort test case id
        */
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestCaseId);

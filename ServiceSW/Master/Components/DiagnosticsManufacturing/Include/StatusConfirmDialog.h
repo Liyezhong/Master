@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file WaitDialog.h
+/*! \file StatusConfirmDialog.h
  *
  *  \brief Header file for class CStatusConfirmDialog.
  *
@@ -72,7 +72,7 @@ public:
     /*!
      *  \brief Update label status
      *
-     *  \iparam Status = Label test status
+     *  \iparam status = Label test status
      */
     /****************************************************************************/
     void UpdateOvenLabel(const Service::ModuleTestStatus &status);
@@ -80,7 +80,7 @@ public:
     /*!
      *  \brief Update retort label status
      *
-     *  \iparam Status = Label test status
+     *  \iparam status = Label test status
      */
     /****************************************************************************/
     void UpdateRetortLabel(const Service::ModuleTestStatus &status);
@@ -88,8 +88,6 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Hide retort label status
-     *
-     *  \iparam Status = Label test status
      */
     /****************************************************************************/
     void HideLabel();
@@ -99,6 +97,7 @@ public:
      *  \brief Update label status
      *
      *  \iparam Status = Label test status name, Value = status value
+     *  \iparam Value = display content
      */
     /****************************************************************************/
     void UpdateLabel(const QString& Status, const QString& Value);

@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CSelect110v220vDialog.cpp
+/*! \file Select110v220vDialog.cpp
  *
  *  \brief Header file for class CSelect110v220vDialog.
  *

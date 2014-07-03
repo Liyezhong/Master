@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CSelectPositionDialog.h
+/*! \file SelectPositionDialog.h
  *
  *  \brief Header file for class CSelectPositionDialog.
  *
@@ -50,6 +50,9 @@ public:
     /*!
      *  \brief Constructor
      *
+     *  \iparam Id = test case id
+     *  \iparam Position = position
+     *  \iparam TubeFlag = tube flag
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
@@ -62,11 +65,21 @@ public:
     /****************************************************************************/
     virtual ~CSelectPositionDialog();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Get position
+     */
+    /****************************************************************************/
     quint8 GetPosition()
     {
         return m_Position;
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief Get tube flag
+     */
+    /****************************************************************************/
     bool GetTubeFlag()
     {
         return m_TubeFlag;

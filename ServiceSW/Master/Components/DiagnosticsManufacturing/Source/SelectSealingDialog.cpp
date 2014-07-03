@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CSelectSealingDialog.cpp
+/*! \file SelectSealingDialog.cpp
  *
  *  \brief Header file for class CSelectSealingDialog.
  *

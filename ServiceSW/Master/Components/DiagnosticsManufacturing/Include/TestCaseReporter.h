@@ -73,7 +73,11 @@ public:
     }
 
 private:
-
+    /****************************************************************************/
+    /**
+     * \brief Fill report to file.
+     */
+    /****************************************************************************/
     void FillReportFile(QTextStream& TextStream);
 
     QString m_TestReportFile;               //!< Stores Test report file name.
@@ -83,6 +87,11 @@ private:
     QProcess* mp_Process;                   //!< The Process for run external command
 
 public slots:
+    /****************************************************************************/
+    /**
+     * \brief Stop send report.
+     */
+    /****************************************************************************/
     void StopSend();
 };
 

@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file DiagnosticsManufacturing/Source/CleanSystemManufacturing.cpp
+/*! \file CleaningManufacturing.cpp
  *
  *  \brief CCleanSystem class implementation
  *

@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CPressureInputDialog.h
+/*! \file PressureInputDialog.h
  *
  *  \brief Header file for class CPressureInputDialog.
  *
@@ -51,6 +51,8 @@ public:
     /****************************************************************************/
     /*!
      *  \brief Constructor
+     *
+     *  \iparam Id = module test id
      *
      *  \iparam p_Parent = Parent widget
      */
@@ -107,6 +109,12 @@ public:
         }
     }
 
+    /****************************************************************************/
+    /*!
+     *  \brief Get result
+     *
+     */
+    /****************************************************************************/
     bool GetResult( )
     {
    //     qDebug() <<"GetResult = " << m_PassFlag;

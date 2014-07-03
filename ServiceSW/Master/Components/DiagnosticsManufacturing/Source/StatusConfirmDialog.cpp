@@ -169,6 +169,7 @@ void CStatusConfirmDialog::BlgProcessProgress(bool IsBlgProcessStarted)
 /****************************************************************************/
 /*!
  *  \brief Hides the abort button of the dialog
+ *  \iparam HideFlag = hide flag
  */
 /****************************************************************************/
 void CStatusConfirmDialog::HideAbort(bool HideFlag)

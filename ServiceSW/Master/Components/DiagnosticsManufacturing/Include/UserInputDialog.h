@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CUserInputDialog.h
+/*! \file UserInputDialog.h
  *
  *  \brief Header file for class CUserInputDialog.
  *

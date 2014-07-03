@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CSealingTestReportDialog.h
+/*! \file SealingTestReportDialog.h
  *
  *  \brief Header file for class CSealingTestReportDialog.
  *
@@ -81,6 +81,11 @@ private slots:
     /****************************************************************************/
     void RetranslateUI();
 
+    /****************************************************************************/
+    /*!
+     *  \brief OnButtonClicked
+     */
+    /****************************************************************************/
     void OnButtonClicked();
 signals:
     /****************************************************************************/
@@ -92,15 +97,27 @@ signals:
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestCaseId);
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief Event filter
+     *  \iparam p_Object = QObject
+     *  \iparam p_Event = event object
+     */
+    /****************************************************************************/
     bool eventFilter(QObject *p_Object, QEvent *p_Event);
 
 private:
     Ui::CSealingTestReportDialog *mp_Ui;     //!< User interface
-    QList<LabelGroup*> m_LabelGroups;
+    QList<LabelGroup*> m_LabelGroups;     //!< label group
     int m_Index;
     bool m_IsOkButton;
     bool m_IsAbort;
 
+    /****************************************************************************/
+    /*!
+     *  \brief label init
+     */
+    /****************************************************************************/
     void InitLableGroup();
     /****************************************************************************/
     /*!

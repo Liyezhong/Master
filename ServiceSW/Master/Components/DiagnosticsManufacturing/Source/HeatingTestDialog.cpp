@@ -191,8 +191,6 @@ void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
 /****************************************************************************/
 /*!
  *  \brief Level sensor label re-layout
- *
- *  \iparam void
  */
 /****************************************************************************/
 void CHeatingTestDialog::DisplayLSensorLabel(void)

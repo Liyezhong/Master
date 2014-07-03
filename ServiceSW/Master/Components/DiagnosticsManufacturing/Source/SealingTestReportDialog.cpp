@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CSealingTestReportDialog.cpp
+/*! \file SealingTestReportDialog.cpp
  *
  *  \brief Header file for class CSealingTestReportDialog.
  *

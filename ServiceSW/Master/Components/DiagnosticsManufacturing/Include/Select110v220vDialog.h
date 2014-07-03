@@ -1,5 +1,5 @@
 /****************************************************************************/
-/*! \file CSelect110v220vDialog.h
+/*! \file Select110v220vDialog.h
  *
  *  \brief Header file for class CSelect110v220vDialog.
  *
@@ -40,6 +40,8 @@ public:
     /*!
      *  \brief Constructor
      *
+     *  \iparam DefaultVoltage = default voltage
+     *
      *  \iparam p_Parent = Parent widget
      */
     /****************************************************************************/
@@ -52,6 +54,11 @@ public:
     /****************************************************************************/
     virtual ~CSelect110v220vDialog();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Get selected voltage
+     */
+    /****************************************************************************/
     int GetSelectedVoltage() const
     {
         return m_SelectedVoltage;
@@ -74,6 +81,13 @@ private slots:
     void RetranslateUI();
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief Event filter
+     *  \iparam p_Object = object
+     *  \iparam p_Event = event
+     */
+    /****************************************************************************/
     bool eventFilter(QObject *p_Object, QEvent *p_Event);
 
 private:
