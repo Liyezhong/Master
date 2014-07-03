@@ -40,21 +40,20 @@ CRsStandbyWithTissue::CRsStandbyWithTissue(SchedulerMainThreadController* SchedC
     mp_ReleasePressure = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
     mp_StateMachine->setInitialState(mp_ShutdownFailedHeater.data());
-    mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(StopRTBottomTempCtrl()), mp_RTBottomStopTempCtrl.data());
+    mp_ShutdownFailedHeater->addTransition(this, SIGNAL(StopRTBottomTempCtrl()), mp_RTBottomStopTempCtrl.data());
     mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(StopRTSideTempCtrl()), mp_RTSideStopTempCtrl.data());
     mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(CheckTempModuleCurrernt()), mp_CheckTempModuleCurrent.data());
     mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(ReleasePressure()), mp_ReleasePressure.data());
-    mp_ReleasePressure->addTransition(this,SIGNAL(TasksDone(bool)), mp_RTBottomStopTempCtrl.data());
+    mp_ReleasePressure->addTransition(this,SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
 
     CONNECTSIGNALSLOT(mp_ShutdownFailedHeater.data(), exited(), this, OnShutdownHeaters());
     CONNECTSIGNALSLOT(mp_CheckTempModuleCurrent.data(), entered(), this, OnEnterCheckingTempModuleCurrent());
     CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), this, OnReleasePressure());
 
 	//For error cases
-    mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_RTBottomStopTempCtrl.data());
-    mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_RTBottomStopTempCtrl.data());
-    mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(TasksDone(bool)), mp_RTBottomStopTempCtrl.data());
-    mp_ShutdownFailedHeater->addTransition(this, SIGNAL(TasksDone(bool)), mp_RTBottomStopTempCtrl.data());
+    mp_RTBottomStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
+    mp_RTSideStopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
+    mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
 
     mp_StateMachine->start();
     m_ShutdownHeatersTime = 0;
@@ -248,6 +247,7 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
 	switch (currentState)
 	{
     case SHUTDOWN_FAILD_HEATER:
+        mp_SchedulerController->LogDebug("RS_Standby_WithTissue, in state SHUTDOWN_FAILD_HEATER");
         if (true == this->ShutdownHeaters())
         {
             emit StopRTBottomTempCtrl();
@@ -258,6 +258,7 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
         }
         break;
     case RTBOTTOM_STOP_TEMPCTRL:
+        mp_SchedulerController->LogDebug("RS_Standby_WithTissue, in state RTBOTTOM_STOP_TEMPCTRL");
         if (DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("RTBottom"))
         {
             emit StopRTSideTempCtrl();
@@ -268,6 +269,7 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
         }
         break;
     case RTSIDE_STOP_TEMPCTRL:
+        mp_SchedulerController->LogDebug("RS_Standby_WithTissue, in state RTSIDE_STOP_TEMPCTRL");
         if (DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("RTSide"))
         {
             emit CheckTempModuleCurrernt();
@@ -278,6 +280,7 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
         }
         break;
     case CHECK_TEMPMODULE_CURRENT:
+        mp_SchedulerController->LogDebug("RS_Standby_WithTissue, in state CHECK_TEMPMODULE_CURRENT");
         now = QDateTime::currentMSecsSinceEpoch();
         if ((now - m_StartCheckingTime) > 3*1000)
         {
@@ -296,6 +299,7 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
         }
         break;
     case RELEASE_PRESSURE:
+        mp_SchedulerController->LogDebug("RS_Standby_WithTissue, in state RELEASE_PRESSURE");
         if ("Scheduler::ALReleasePressure" == cmdName)
         {
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)

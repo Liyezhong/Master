@@ -1035,8 +1035,8 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     }
     else if (SM_ERR_RC_LEVELSENSOR_HEATING_OVERTIME == currentState)
     {
-        LogDebug(QString("RC_Levelsensor_Heating_Overtime Response: %1").arg(retCode));
-        m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow(cmdName, retCode);
+        LogDebug(QString("In RC_Levelsensor_Heating_Overtime State"));
+        m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow();
 
     }
     else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)

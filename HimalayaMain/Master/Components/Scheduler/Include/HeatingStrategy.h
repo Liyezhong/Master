@@ -187,10 +187,10 @@ public:
     /*!
      *  \brief  Start the specific sensor's temperature control
      *  \param 	HeaterName - sensor's name 
-     *  \return void 
+     *  \return ReturnCode_t
      */
     /****************************************************************************/
-    void StartTemperatureControl(const QString& HeaterName);
+    ReturnCode_t StartTemperatureControl(const QString& HeaterName);
 
     /****************************************************************************/
     /*!
@@ -200,6 +200,16 @@ public:
      */
     /****************************************************************************/
     ReturnCode_t StopTemperatureControl(const QString& HeaterName);
+
+    /****************************************************************************/
+    /*!
+     *  \brief check the sensor heat over time
+     *  \param HeaterName - sensor's name
+     *  \param HWTemp = qreal temperature
+     *  \return 0 - have not get the time out; 1 - failed; 2 - pass
+     */
+    /****************************************************************************/
+    quint16 CheckTemperatureOverTime(const QString& HeaterName, qreal HWTemp);
 
     /****************************************************************************/
     /*!

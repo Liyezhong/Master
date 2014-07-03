@@ -249,120 +249,136 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     return DCL_ERR_FCT_CALL_SUCCESS;
 }
 
-void HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
+ReturnCode_t HeatingStrategy::StartTemperatureControl(const QString& HeaterName)
 {
+    CmdSchedulerCommandBase* pHeatingCmd = NULL;
     if ("LevelSensor" == HeaterName)
     {
-        CmdALStartTemperatureControlWithPID* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
-        pHeatingCmd->SetType(AL_LEVELSENSOR);
-        pHeatingCmd->SetNominalTemperature(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].TemperatureOffset);
-        pHeatingCmd->SetSlopeTempChange(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].SlopTempChange);
-        pHeatingCmd->SetMaxTemperature(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature);
-        pHeatingCmd->SetControllerGain(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].ControllerGain);
-        pHeatingCmd->SetResetTime(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].ResetTime);
-        pHeatingCmd->SetDerivativeTime(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].DerivativeTime);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_LEVELSENSOR);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].TemperatureOffset);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].SlopTempChange);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].MaxTemperature);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].ControllerGain);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].ResetTime);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].DerivativeTime);
+        m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_RTLevelSensor.OTCheckPassed = false;
     }
     if ("RTSide" == HeaterName)
     {
         qreal userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
             ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
-        CmdRTStartTemperatureControlWithPID* pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
-        pHeatingCmd->SetType(RT_SIDE);
-        pHeatingCmd->SetNominalTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].TemperatureOffset+userInputTemp);
-        pHeatingCmd->SetSlopeTempChange(m_RTTop.functionModuleList[m_RTTop.curModuleId].SlopTempChange);
-        pHeatingCmd->SetMaxTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].MaxTemperature);
-        pHeatingCmd->SetControllerGain(m_RTTop.functionModuleList[m_RTTop.curModuleId].ControllerGain);
-        pHeatingCmd->SetResetTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].ResetTime);
-        pHeatingCmd->SetDerivativeTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].DerivativeTime);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_SIDE);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].TemperatureOffset+userInputTemp);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_RTTop.functionModuleList[m_RTTop.curModuleId].SlopTempChange);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].MaxTemperature);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_RTTop.functionModuleList[m_RTTop.curModuleId].ControllerGain);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].ResetTime);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].DerivativeTime);
+        m_RTTop.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_RTTop.OTCheckPassed = false;
     }
     if ("RTBottom" == HeaterName)
     {
         qreal userInputTemp = mp_DataManager->GetProgramList()->GetProgram(mp_SchedulerController->GetCurProgramID())
             ->GetProgramStep(mp_SchedulerController->GetCurProgramStepIndex())->GetTemperature().toDouble();
-        CmdRTStartTemperatureControlWithPID* pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
-        pHeatingCmd->SetType(RT_BOTTOM);
-        pHeatingCmd->SetNominalTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].TemperatureOffset+userInputTemp);
-        pHeatingCmd->SetSlopeTempChange(m_RTTop.functionModuleList[m_RTTop.curModuleId].SlopTempChange);
-        pHeatingCmd->SetMaxTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].MaxTemperature);
-        pHeatingCmd->SetControllerGain(m_RTTop.functionModuleList[m_RTTop.curModuleId].ControllerGain);
-        pHeatingCmd->SetResetTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].ResetTime);
-        pHeatingCmd->SetDerivativeTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].DerivativeTime);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdRTStartTemperatureControlWithPID(500, mp_SchedulerController);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(RT_BOTTOM);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].TemperatureOffset+userInputTemp);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_RTTop.functionModuleList[m_RTTop.curModuleId].SlopTempChange);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_RTTop.functionModuleList[m_RTTop.curModuleId].MaxTemperature);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_RTTop.functionModuleList[m_RTTop.curModuleId].ControllerGain);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].ResetTime);
+        dynamic_cast<CmdRTStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_RTTop.functionModuleList[m_RTTop.curModuleId].DerivativeTime);
+        m_RTBottom.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_RTBottom.OTCheckPassed = false;
     }
     if ("OvenTop" == HeaterName)
     {
         //Firstly, get the Parrifin melting point (user input)
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-        CmdOvenStartTemperatureControlWithPID* pHeatingCmd  = new CmdOvenStartTemperatureControlWithPID(500, mp_SchedulerController);
-        pHeatingCmd->SetType(OVEN_TOP);
-        pHeatingCmd->SetNominalTemperature(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].TemperatureOffset+userInputMeltingPoint);
-        pHeatingCmd->SetSlopeTempChange(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].SlopTempChange);
-        pHeatingCmd->SetMaxTemperature(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].MaxTemperature);
-        pHeatingCmd->SetControllerGain(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].ControllerGain);
-        pHeatingCmd->SetResetTime(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].ResetTime);
-        pHeatingCmd->SetDerivativeTime(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].DerivativeTime);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdOvenStartTemperatureControlWithPID(500, mp_SchedulerController);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(OVEN_TOP);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].TemperatureOffset+userInputMeltingPoint);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].SlopTempChange);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].MaxTemperature);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].ControllerGain);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].ResetTime);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_OvenTop.functionModuleList[m_OvenTop.curModuleId].DerivativeTime);
+        m_OvenTop.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_OvenTop.OTCheckPassed = false;
     }
     if ("OvenBottom" == HeaterName)
     {
         //Firstly, get the Parrifin melting point (user input)
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-        CmdOvenStartTemperatureControlWithPID* pHeatingCmd  = new CmdOvenStartTemperatureControlWithPID(500, mp_SchedulerController);
-        pHeatingCmd->SetType(OVEN_BOTTOM);
-        pHeatingCmd->SetNominalTemperature(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].TemperatureOffset+userInputMeltingPoint);
-        pHeatingCmd->SetSlopeTempChange(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].SlopTempChange);
-        pHeatingCmd->SetMaxTemperature(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].MaxTemperature);
-        pHeatingCmd->SetControllerGain(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].ControllerGain);
-        pHeatingCmd->SetResetTime(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].ResetTime);
-        pHeatingCmd->SetDerivativeTime(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].DerivativeTime);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdOvenStartTemperatureControlWithPID(500, mp_SchedulerController);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(OVEN_BOTTOM);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].TemperatureOffset+userInputMeltingPoint);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].SlopTempChange);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].MaxTemperature);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].ControllerGain);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].ResetTime);
+        dynamic_cast<CmdOvenStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_OvenBottom.functionModuleList[m_OvenBottom.curModuleId].DerivativeTime);
+        m_OvenBottom.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_OvenBottom.OTCheckPassed = false;
     }
     if ("RV" == HeaterName)
     {
         //Firstly, get the Parrifin melting point (user input)
         qreal userInputMeltingPoint = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
-        CmdRVStartTemperatureControlWithPID* pHeatingCmd  = new CmdRVStartTemperatureControlWithPID(500, mp_SchedulerController);
-            if (true == m_RV_1_HeatingRod.UserInputFlagList[m_RV_1_HeatingRod.curModuleId])
-            {
-                pHeatingCmd->SetNominalTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].TemperatureOffset+userInputMeltingPoint);
-            }
-            else
-            {
-                pHeatingCmd->SetNominalTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].TemperatureOffset);
-            }
-            pHeatingCmd->SetSlopeTempChange(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].SlopTempChange);
-            pHeatingCmd->SetMaxTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].MaxTemperature);
-            pHeatingCmd->SetControllerGain(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].ControllerGain);
-            pHeatingCmd->SetResetTime(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].ResetTime);
-            pHeatingCmd->SetDerivativeTime(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].DerivativeTime);
-            mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdRVStartTemperatureControlWithPID(500, mp_SchedulerController);
+        if (true == m_RV_1_HeatingRod.UserInputFlagList[m_RV_1_HeatingRod.curModuleId])
+        {
+            dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].TemperatureOffset+userInputMeltingPoint);
+        }
+        else
+        {
+            dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].TemperatureOffset);
+        }
+        dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].SlopTempChange);
+        dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].MaxTemperature);
+        dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].ControllerGain);
+        dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].ResetTime);
+        dynamic_cast<CmdRVStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_RV_1_HeatingRod.functionModuleList[m_RV_1_HeatingRod.curModuleId].DerivativeTime);
+        m_RV_1_HeatingRod.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_RV_1_HeatingRod.OTCheckPassed = false;
     }
     if ("LA_Tube1" == HeaterName)
     {
-        CmdALStartTemperatureControlWithPID* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
-        pHeatingCmd->SetType(AL_TUBE1);
-        pHeatingCmd->SetNominalTemperature(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].TemperatureOffset);
-        pHeatingCmd->SetSlopeTempChange(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].SlopTempChange);
-        pHeatingCmd->SetMaxTemperature(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].MaxTemperature);
-        pHeatingCmd->SetControllerGain(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].ControllerGain);
-        pHeatingCmd->SetResetTime(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].ResetTime);
-        pHeatingCmd->SetDerivativeTime(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].DerivativeTime);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_TUBE1);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].TemperatureOffset);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].SlopTempChange);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].MaxTemperature);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].ControllerGain);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].ResetTime);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_LARVTube.functionModuleList[m_LARVTube.curModuleId].DerivativeTime);
+        m_LARVTube.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_LARVTube.OTCheckPassed = false;
     }
     if ("LA_Tube2" == HeaterName)
     {
-        CmdALStartTemperatureControlWithPID* pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
-        pHeatingCmd->SetType(AL_TUBE2);
-        pHeatingCmd->SetNominalTemperature(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].TemperatureOffset);
-        pHeatingCmd->SetSlopeTempChange(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].SlopTempChange);
-        pHeatingCmd->SetMaxTemperature(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].MaxTemperature);
-        pHeatingCmd->SetControllerGain(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].ControllerGain);
-        pHeatingCmd->SetResetTime(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].ResetTime);
-        pHeatingCmd->SetDerivativeTime(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].DerivativeTime);
-        mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+        pHeatingCmd  = new CmdALStartTemperatureControlWithPID(500, mp_SchedulerController);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetType(AL_TUBE2);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetNominalTemperature(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].TemperatureOffset);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetSlopeTempChange(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].SlopTempChange);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetMaxTemperature(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].MaxTemperature);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetControllerGain(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].ControllerGain);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetResetTime(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].ResetTime);
+        dynamic_cast<CmdALStartTemperatureControlWithPID*>(pHeatingCmd)->SetDerivativeTime(m_LAWaxTrap.functionModuleList[m_LAWaxTrap.curModuleId].DerivativeTime);
+        m_LAWaxTrap.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_LAWaxTrap.OTCheckPassed = false;
     }
+    mp_SchedulerCommandProcessor->pushCmd(pHeatingCmd);
+
+    SchedulerCommandShPtr_t pResHeatingCmd;
+    mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
+    ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+    pResHeatingCmd->GetResult(retCode);
+    return retCode;
 }
 
 ReturnCode_t HeatingStrategy::StopTemperatureControl(const QString& HeaterName)
@@ -418,6 +434,24 @@ ReturnCode_t HeatingStrategy::StopTemperatureControl(const QString& HeaterName)
     return retCode;
 }
 
+quint16 HeatingStrategy::CheckTemperatureOverTime(const QString& HeaterName, qreal HWTemp)
+{
+    qint64 now = QDateTime::currentMSecsSinceEpoch();
+    if ("LevelSensor" == HeaterName)
+    {
+        if ((now-m_RTLevelSensor.heatingStartTime) >= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].HeatingOverTime*1000)
+        {
+            return 1; //failed
+        }
+
+        if (HWTemp <= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].OTTargetTemperature)
+        {
+            return 2; //pass
+        }
+    }
+    return 0; // Have not got the time out
+}
+
 bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
 {
     bool result = m_RTLevelSensor.OTCheckPassed
@@ -432,12 +466,12 @@ bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
 }
 bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)
 {
-#if 0
+
     if (HWTemp >= 299)
     {
         return true;
     }
-#endif
+
     if (true == heatingSensor.curModuleId.isEmpty())
     {
         return true;
@@ -530,7 +564,6 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         SchedulerCommandShPtr_t pResHeatingCmd;
         mp_SchedulerController->PopDeviceControlCmdQueue(pResHeatingCmd, pHeatingCmd->GetName());
         pResHeatingCmd->GetResult(retCode);
-
 
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {

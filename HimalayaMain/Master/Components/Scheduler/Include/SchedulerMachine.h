@@ -107,6 +107,14 @@ private:
     } FILLING_STAGE_t;
 
     FILLING_STAGE_t m_FillingCurrentStage;                                              ///< Current stage of protocol filling
+
+    typedef enum
+    {
+        RESTART_LEVELSENSOR,
+        CHECK_TEMPERATURE
+    } LEVELSENSOR_RESTART_STAGE_t;
+
+    LEVELSENSOR_RESTART_STAGE_t m_RestartLevelSensor;
 private:
     QString GetDeviceName();
 
@@ -574,13 +582,12 @@ public:
     /*!
      *  \brief Handle the whole work flow for Rc_Levelsensor_Heating_Overtime
      *
-     *  \param cmdName - command name
-     *  \param retCode - return code
+     *  \param void
      *
      *  \return void
      */
     /****************************************************************************/
-    void HandleRcLevelSensorHeatingOvertimeWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void HandleRcLevelSensorHeatingOvertimeWorkFlow();
 
     /****************************************************************************/
     /*!
@@ -655,14 +662,6 @@ private slots:
     /****************************************************************************/
     void OnRVPostionChange();
 
-    /****************************************************************************/
-    /*!
-     *  \brief	Slot to restart level sensor temperature control
-     *  \param	void
-     *  \return	void
-     */
-    /****************************************************************************/
-    void RestartLevelSensorTempControl();
 signals:
     /****************************************************************************/
     /*!

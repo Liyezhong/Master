@@ -150,6 +150,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
 
     m_FillingCurrentStage = MOVE_TUBE_POSITION;
+    m_RestartLevelSensor = RESTART_LEVELSENSOR;
 }
 
 
@@ -182,11 +183,6 @@ void CSchedulerStateMachine::OnRVMoveToTube()
 void CSchedulerStateMachine::OnRVPostionChange()
 {
      mp_SchedulerThreadController->MoveRV(2);
-}
-
-void CSchedulerStateMachine::RestartLevelSensorTempControl()
-{
-    mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControl("LevelSensor");
 }
 
 /****************************************************************************/
@@ -613,24 +609,44 @@ void CSchedulerStateMachine::EnterRcLevelsensorHeatingOvertime()
 }
 
 
-void CSchedulerStateMachine::HandleRcLevelSensorHeatingOvertimeWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+void CSchedulerStateMachine::HandleRcLevelSensorHeatingOvertimeWorkFlow()
 {
-    if ("Scheduler::ALStartTemperatureControlWithPID" == cmdName)
+    qreal tempLevelSensor = 0.0;
+    quint16 retValue = 0;
+
+    switch (m_RestartLevelSensor)
     {
-        if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-        {
-            this->OnTasksDone(true);
-        }
-        else
+    case RESTART_LEVELSENSOR:
+        if (DCL_ERR_FCT_CALL_SUCCESS != mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControl("LevelSensor"))
         {
             this->OnTasksDone(false);
         }
+        else
+        {
+            m_RestartLevelSensor = CHECK_TEMPERATURE;
+        }
+        break;
+    case CHECK_TEMPERATURE:
+        tempLevelSensor = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempALLevelSensor;
+        retValue = mp_SchedulerThreadController->GetHeatingStrategy()->CheckTemperatureOverTime("LevelSensor",tempLevelSensor);
+        if (0 == retValue)
+        {
+            // Do nothing
+        }
+        else if (1 == retValue)
+        {
+            this->OnTasksDone(false);
+        }
+        else if (2 == retValue)
+        {
+            this->OnTasksDone(true);
+        }
+        break;
+    default:
+        break;
     }
-    else
-    {
-        // Do nothing, just wait for the command response
-    }
-}
+
+ }
 
 void CSchedulerStateMachine::EnterRcRestart()
 {
