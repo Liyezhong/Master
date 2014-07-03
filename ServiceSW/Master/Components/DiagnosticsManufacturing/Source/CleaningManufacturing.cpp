@@ -129,7 +129,7 @@ void CCleaning::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CCleaning::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
 {
-    QList<QStandardItem *> ItemList;
+    QList<QStandardItem *> itemList;
 
     QStandardItem *itemCheckFlag = new QStandardItem;
     //itemCheckFlag->setData(Qt::Checked, (int)Qt::CheckStateRole);
@@ -139,10 +139,10 @@ void CCleaning::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     itemCheckFlag->setCheckable(true);
     itemCheckFlag->setSizeHint(QSize(30,30));
     itemCheckFlag->setToolTip(DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id));
-    ItemList << itemCheckFlag;
+    itemList << itemCheckFlag;
 
-    ItemList << new QStandardItem(QString("%1").arg(Index));
-    ItemList << new QStandardItem(DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id));
+    itemList << new QStandardItem(QString("%1").arg(Index));
+    itemList << new QStandardItem(DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id));
 
     QPixmap SetPixmap;
     QPixmap PixMap(QString(":/Large/CheckBoxLarge/CheckBox-enabled-large.png"));
@@ -151,13 +151,13 @@ void CCleaning::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
 
     QStandardItem *item = new QStandardItem;
     item->setData(SetPixmap, (int) Qt::DecorationRole);
-    ItemList << item;
+    itemList << item;
 
     m_Model.setHorizontalHeaderLabels(QStringList() << ""
                                                     << QApplication::translate("DiagnosticsManufacturing::CCleaning", "Nr.", 0, QApplication::UnicodeUTF8)
                                                     << QApplication::translate("DiagnosticsManufacturing::CCleaning", "Tests", 0, QApplication::UnicodeUTF8)
                                                     << "");
-    m_Model.appendRow(ItemList);
+    m_Model.appendRow(itemList);
 }
 
 /****************************************************************************/

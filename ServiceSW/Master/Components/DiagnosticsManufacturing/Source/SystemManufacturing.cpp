@@ -86,8 +86,7 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
 
     mp_TableWidget->setSelectionMode(QAbstractItemView::NoSelection);
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    int i = 0;
-    for (; i < 8; i++) {
+    for (int i = 0; i < 8; i++) {
         mp_TableWidget->setRowHeight(i, 31);
     }
 
