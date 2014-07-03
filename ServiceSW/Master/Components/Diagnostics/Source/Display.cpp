@@ -58,6 +58,9 @@ CDisplay::CDisplay(QWidget *p_Parent) : QWidget(p_Parent),
 CDisplay::~CDisplay()
 {
     try {
+        if (mp_ColorTestDialog != NULL) {
+            delete mp_ColorTestDialog;
+        }
         delete mp_Ui;
     }
     catch (...) {

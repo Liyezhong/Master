@@ -22,7 +22,7 @@
 /****************************************************************************/
 
 #include "Diagnostics/Include/BasicColor/BasicColorTestDlg.h"
-#include "Main/Include/HimalayaServiceEventCodes.h"
+//#include "Main/Include/HimalayaServiceEventCodes.h"
 #include "Global/Include/Utils.h"
 #include "ui_BasicColorTestDlg.h"
 #include <QDebug>
@@ -42,7 +42,7 @@ const int FIXED_DIALOG_HEIGHT = 350;        ///< Basic color test dialog height
 CBasicColorTestDlg::CBasicColorTestDlg(QWidget *p_Parent) : MainMenu::CDialogFrame(p_Parent)
   , mp_Ui(new Ui::CBasicColorTestDlg)
 {
-    m_ColorCount = 0;
+    m_ColorCount = 1;
     mp_Ui->setupUi(GetContentFrame());
     SetDialogTitle(QApplication::translate("Diagnostics::CBasicColorTestDlg", "Basic Color Test",
                                            0, QApplication::UnicodeUTF8));
@@ -51,7 +51,6 @@ CBasicColorTestDlg::CBasicColorTestDlg(QWidget *p_Parent) : MainMenu::CDialogFra
     mp_Ui->colorLabel->setFrameStyle((int)QFrame::WinPanel);
     mp_Ui->colorLabel->setStyleSheet(" QLabel { background-color:rgb(10,10,13); } ");
     resize(FIXED_DIALOG_WIDTH, FIXED_DIALOG_HEIGHT);
-    m_ColorCount++;
 
     mp_MessageDlg = new MainMenu::CMessageDlg;
     mp_MessageDlg->setModal(true);

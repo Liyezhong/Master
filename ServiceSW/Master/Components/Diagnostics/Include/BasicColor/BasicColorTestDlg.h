@@ -23,7 +23,6 @@
 
 #include "MainMenu/Include/DialogFrame.h"
 #include "MainMenu/Include/MessageDlg.h"
-#include <QEvent>
 
 namespace Diagnostics {
 

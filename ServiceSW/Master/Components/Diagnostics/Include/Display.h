@@ -21,9 +21,9 @@
 #ifndef DIAGNOSTICS_DISPLAY_H
 #define DIAGNOSTICS_DISPLAY_H
 
-#include <QWidget>
-#include <QTranslator>
-#include <QEvent>
+//#include <QWidget>
+//#include <QTranslator>
+//#include <QEvent>
 
 #include "Core/Include/ServiceDefines.h"
 #include "Diagnostics/Include/BasicColor/BasicColorTestDlg.h"
