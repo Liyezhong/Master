@@ -90,7 +90,7 @@ CHeatingTestDialog::CHeatingTestDialog(Service::ModuleTestCaseID TestCaseId, QWi
         mp_Ui->labelCurTempBottom1Name->setText(Text);
         Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
                                                "Current Temperature (Bottom 2):", 0, QApplication::UnicodeUTF8);
-        mp_Ui->labelCurTempBottom1Name->setText(Text);
+        mp_Ui->labelCurTempBottom2Name->setText(Text);
     }
 
     CONNECTSIGNALSLOTGUI(mp_Ui->abortButton, clicked(), this, AbortWaitDialog());
