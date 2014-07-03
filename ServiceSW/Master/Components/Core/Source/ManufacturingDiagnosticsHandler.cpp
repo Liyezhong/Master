@@ -406,7 +406,7 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForSystemFan(Service::Modul
         Text = "Please check if the ventilation fan is runing";
     }
     else if (Id == Service::SYSTEM_EXHAUST_FAN) {
-        Text = "Please open the retort lid, and check if the exhaust fan is runing.";
+        Text = "Please check if the exhaust fan is runing.";
     }
 
     dlg->SetText(Text);
@@ -681,7 +681,7 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
         else if (result == true && id == Service::RETORT_LEVEL_SENSOR_DETECTING) {
             // user operation finished!
             p_TestCase->SetParameter("CurStep", "2");
-            MainMenu::CMessageDlg messageBox;
+            MainMenu::CMessageDlg messageBox(mp_MainWindow);
             messageBox.setModal(true);
             messageBox.SetTitle(tr("Confirm water level"));
             messageBox.SetButtonText(1, "No");
@@ -737,6 +737,7 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             if (id == Service::RETORT_HEATING_EMPTY) {
                 ShowHeatingFailedResult(id);
             }
+
         }
         else {
             Global::EventObject::Instance().RaiseEvent(okId);
@@ -1020,16 +1021,8 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             if (!NextFlag) {
                 break;
             }
-
-            Result    = ShowConfirmDlgForSystemFan(Id);
-            for (int j = 1; j <= 4 && Result && NextFlag; ++j) {
-                NextFlag = ShowGuide(Id, j);
-                if (!NextFlag) {
-                    break;
-                }
-                emit PerformManufacturingTest(Id);
-                Result = GetTestResponse();
-            }
+            emit PerformManufacturingTest(Id);
+            Result = GetTestResponse();
             break;
         case Service::SYSTEM_VENTILATION_FAN:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST;
@@ -1070,6 +1063,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_MAINS_RELAY_TEST_SUCCESS;
 
+
             for (int j = 0; j < 2 && Result && NextFlag; ++j) {
                 NextFlag = ShowGuide(Id, j);
                 if (!NextFlag) {
@@ -1091,6 +1085,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
 
             // the first sealing test
             p_TestCase->SetParameter("CurStep", "1");
+            p_TestCase->SetParameter("RVMove", "1");
             while(1) {
                 emit PerformManufacturingTest(Id);
                 Result = GetTestResponse();
@@ -1102,10 +1097,6 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             if (Result == false) {
                 break;
             }
-
-            //while(QTime::currentTime() < delayTime) {
-                //QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-            //}
 
             // the second sealing test
             p_TestCase->SetParameter("CurStep", "2");
@@ -1144,6 +1135,8 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_ALARM_TEST_SUCCESS;
 
+            p_TestCase->SetParameter("ConnectFlag", "1");
+            p_TestCase->SetParameter("AlarmFlag", "1");
             for (int j = 0; j < 4 && Result && NextFlag; ++j) {
                 NextFlag = ShowGuide(Id, j);
                 if (!NextFlag) {

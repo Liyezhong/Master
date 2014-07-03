@@ -76,11 +76,13 @@
 	</System110v220vSwitch>
 	<SystemSealing Description="Sealing function test">
 		<Guide>
+			<Step>Begin Sealing function test.</Step>
 			<Step>Please insert the sealing fixtures to the position of bottles and paraffin bathes.</Step>
 		</Guide>
 	</SystemSealing>
 	<SystemOverflow Description="Overflow test">
 		<Guide>
+			<Step>Begin Overflow test.</Step>
 			<Step>Please put a filling-block into block, cover the level sensor with tape and close the retort lid.</Step>
 			<Step>Please insert position 1# with reagent bottle filled with water.</Step>
 		</Guide>
@@ -95,15 +97,12 @@
 	</SystemSpeaker>
 	<SystemExhaustFan Description="Exhaust fan test">
 		<Guide>
-			<Step>Please check there is no reagent bottle on position 1#</Step>
-		</Guide>
-		<Guide>
-			<Step>Please close the retort lid</Step>
+			<Step>Begin Exhaust fan test</Step>
 		</Guide>
 	</SystemExhaustFan>
 	<SystemVentilationFan Description="Ventilation fan test">
 		<Guide>
-			<Step>Ventilation fan test</Step>
+			<Step>Begin Ventilation fan test</Step>
 		</Guide>
 	</SystemVentilationFan>
 	<SystemRemoteLocalAlarm Description="Remote/Local alarm test">
@@ -164,7 +163,7 @@
 	</RetortHeatingEmpty>
 	<RetortHeatingWater Description="Heating test (with water)">
 		<Guide>
-			<Step>Please put the foam filled block to retort, close the retort lid lock, and then put the bottle filled with water to station 11#</Step>
+			<Step>Please clean the level sensor, put the foam filled block to retort, close the retort lid lock, and then put the bottle filled with water to station 11#</Step>
 		</Guide>
 		<Guide>
 			<Step>Please put the external sensor into retort, and then close the retort lid lock.</Step>

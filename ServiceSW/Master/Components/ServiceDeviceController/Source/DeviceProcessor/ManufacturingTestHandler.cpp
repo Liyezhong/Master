@@ -286,29 +286,7 @@ void ManufacturingTestHandler::OnAbortTest(Global::tRefType Ref, quint32 id, qui
 
 void ManufacturingTestHandler::AbortExhaustFanOperation()
 {
-    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_EXHAUST_FAN);
-    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-    quint8 Position = p_TestCase->GetParameter("Position").toInt();
-
-    switch (Position) {
-    case 1:
-        //vacuum function stop
-        qDebug()<<"stop vacuum function";
-        break;
-    case 2:
-        //filling function stop
-        qDebug()<<"stop filling functing";
-        break;
-    case 3:
-        //draining function stop
-        qDebug()<<"stop draining function";
-        break;
-    case 4:
-        m_rIdevProc.ALReleasePressure();
-        qDebug()<<"stop pressure function";
-        //pressure function stop
-        break;
-    }
+    mp_PressPump->SetFan(0);
 }
 
 qint32 ManufacturingTestHandler::TestOvenHeatingWater()
@@ -862,8 +840,21 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     qreal prevTemp = 0;
 
     qreal temp = mp_TempLSensor->GetTemperature();
-    if (temp < ambLow || temp > ambHigh) {
+    int num = 10;
+    bool flag = false;
+    while(num) {
+        mp_Utils->Pause(100);
+        if (temp >= ambLow && temp <= ambHigh) {
+            flag = true;
+            break;
+        }
+        num--;
+    }
+    if (flag == false) {
         ret = -1;
+        QString FailureMsg = QString("Level Sensor Current Temperature is (%1) which is not in (%2~%3)").arg(temp).arg(ambLow).arg(ambHigh);
+        SetFailReason(Service::RETORT_LEVEL_SENSOR_HEATING, FailureMsg);
+        p_TestCase->SetStatus(false);
         goto EXIT;
     }
 
@@ -1185,39 +1176,7 @@ qint32 ManufacturingTestHandler::TestSystemExhaustFan()
 {
     Service::ModuleTestStatus Status;
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_EXHAUST_FAN);
-    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-    quint8 Position = p_TestCase->GetParameter("Position").toInt();
-    int Ret = 0;
-    switch (Position) {
-    case 1:
-        mp_MotorRV->MoveToInitialPosition();
-        if (!mp_MotorRV->MoveToTubePosition(1)) {
-            qDebug()<<"Exhaust Fan test: rotating RV to tube position 1 failed.";
-        }
-        Ret = m_rIdevProc.ALFilling(0, true);
-        if (Ret != 0) {
-            qDebug()<<"Exhaust Fan test: run filling failed, error code :"<<Ret;
-        }
-        break;
-    case 2:
-        Ret = m_rIdevProc.ALDraining(0);
-        if (Ret != 0) {
-            qDebug()<<"Exhaust Fan test: run draining function failed, error code :"<<Ret;
-        }
-        break;
-    case 3:
-        Ret = m_rIdevProc.ALPressure();
-        if (Ret != 0) {
-            qDebug()<<"Exhaust Fan test: run pressure function failed, error code :"<<Ret;
-        }
-        break;
-    case 4:
-        Ret = m_rIdevProc.ALVaccum();
-        if (Ret != 0) {
-            qDebug()<<"Exhaust Fan test: run vacuum function failed, error code :"<<Ret;
-        }
-        break;
-    }
+    mp_PressPump->SetFan(1);
 
     emit RefreshTestStatustoMain(TestCaseName, Status);
     return 0;
@@ -1275,12 +1234,14 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
         qreal TargetPressure(0);
         if (CurStep == 1 ){
             TargetPressure = p_TestCase->GetParameter("SealTargetPressure1").toFloat();
+            if (p_TestCase->GetParameter("RVMove") == "1") {
+                EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
+                mp_MotorRV->MoveToInitialPosition();
 
-            EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
-            mp_MotorRV->MoveToInitialPosition();
-
-            EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, 1);
-            mp_MotorRV->MoveToSealPosition(1);
+                EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, 1);
+                mp_MotorRV->MoveToSealPosition(1);
+                p_TestCase->SetParameter("RVMove", "0");
+            }
         }
         else {
             TargetPressure = p_TestCase->GetParameter("SealTargetPressure2").toFloat();
@@ -1457,11 +1418,17 @@ qint32 ManufacturingTestHandler::CleaningSystem()
 
 
     QTime time = QTime::fromString(p_TestCase->GetParameter("Time"), "hh:mm:ss");
+    QTime blowTime = QTime::fromString(p_TestCase->GetParameter("BlowTime"), "hh:mm:ss");
     int waitSec = time.hour()*60*60 + time.minute()*60 + time.second();
+    int blowSec = blowTime.hour()*60*60 + blowTime.minute()*60 + blowTime.second();
     int targetPressure = p_TestCase->GetParameter("TargetPressure").toInt();
     int departure = p_TestCase->GetParameter("Departure").toInt();
+    mp_PressPump->ReleasePressure();
     mp_PressPump->SetFan(1);
     EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure);
+
+    qDebug()<<"Blow time ==== "<<blowSec;
+
     if (!CreatePressure(waitSec, targetPressure, departure)) {
         p_TestCase->AddResult("FailReason", "create pressure failed.");
         RetValue = -1;
@@ -1475,7 +1442,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
             goto CLEANING_EXIT;
         }
         EmitRefreshTestStatustoMain(TestCaseName, SYSTEM_FLUSH);
-        mp_Utils->Pause(60*1000);
+        mp_Utils->Pause(blowSec*1000);
 
         if (i == 16) {
             break;
@@ -1498,7 +1465,6 @@ qint32 ManufacturingTestHandler::CleaningSystem()
 CLEANING_EXIT:
     mp_PressPump->SetFan(0);
     mp_PressPump->ReleasePressure();
-    EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
     return RetValue;
 }
@@ -2410,6 +2376,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
     if (Ret == -1) {
         qDebug()<<"Fail to heat level sensor";
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
+        p_TestCase->AddResult("FailReason", "<br>Level sensor heating is failed.");
         return -1;
     }
 
@@ -2470,8 +2437,8 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
             goto EXIT_TEST_RETORT_HEATING_WATER;
         }
 
-        mp_TempRetortSide->StartTemperatureControl(TargetTempSide);
-        mp_TempRetortBttom->StartTemperatureControl(TargetTempBottom);
+        mp_TempRetortSide->StartTemperatureControl(TargetTempSide+7);
+        mp_TempRetortBttom->StartTemperatureControl(TargetTempBottom+2);
 
         while(!m_UserAbort && WaitSec) {
 

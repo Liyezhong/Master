@@ -1089,8 +1089,17 @@ void CStartup::RefreshTestStatus4RVHeating(Service::ModuleTestCaseID Id, const S
 
 void CStartup::RefreshTestStatus4SystemSpeaker(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
     mp_MessageBox->SetTitle("System speaker test");
-    mp_MessageBox->SetText(QString("Do you hear the system speak noice?"));
+
+    if (p_TestCase->GetParameter("VolumeFlag").toInt()) {
+        mp_MessageBox->SetText(QString("Do you hear the system speak noice?"));
+    }
+    else {
+        mp_MessageBox->SetText(QString("Do you hear the system speak noice which is higher than the previous ?"));
+    }
     mp_MessageBox->SetButtonText(1, "YES");
     mp_MessageBox->SetButtonText(3, "NO");
     mp_MessageBox->HideCenterButton();
@@ -1177,31 +1186,7 @@ void CStartup::RefreshTestStatus4SystemExhaustFan(Service::ModuleTestCaseID Id, 
     dlg->SetTitle(TestCaseDescription);
     dlg->SetIcon(QMessageBox::Information);
 
-    quint8 Position = p_TestCase->GetParameter("Position").toInt();
-    switch (Position) {
-    case 1:
-        Text = "run filling function test";
-        Position += 1;
-        break;
-    case 2:
-        Text = "run draining function test";
-        Position += 1;
-        break;
-    case 3:
-        Text = "run pressure function test";
-        Position += 1;
-        break;
-    case 4:
-        Text = "run vacuum function test";
-        Position = 1; //reset position
-
-
-        break;
-    default:
-        return;
-    }
-    Text.append(" ,and check if the exhaust fan is runing.");
-    p_TestCase->SetParameter("Position", QString::number(Position));
+    Text = QString("Please check if the exhaust fan is runing.");
 
     dlg->SetText(Text);
     dlg->HideCenterButton();
@@ -1214,11 +1199,12 @@ void CStartup::RefreshTestStatus4SystemExhaustFan(Service::ModuleTestCaseID Id, 
 
     if ( ret == 0 ) {
         mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
-        emit PerformManufacturingTest(Service::TEST_ABORT, Id);
+
     }
     else {
         mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(false);
     }
+    emit PerformManufacturingTest(Service::TEST_ABORT, Id);
 }
 
 void CStartup::RefreshTestStatus4SystemOverflow(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
