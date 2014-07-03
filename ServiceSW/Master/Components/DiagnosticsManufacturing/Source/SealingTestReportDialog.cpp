@@ -81,7 +81,7 @@ void CSealingTestReportDialog::UpdateLabel(const Service::ModuleTestStatus &Stat
 
 void CSealingTestReportDialog::OnButtonClicked()
 {
-    m_Index = 1;
+    m_Index = 0;
     if (!m_IsOkButton) {
         PerformManufacturingTest(Service::TEST_ABORT, Service::SYSTEM_SEALING_TEST);
     }
