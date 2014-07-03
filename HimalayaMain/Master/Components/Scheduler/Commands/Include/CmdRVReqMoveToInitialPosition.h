@@ -80,25 +80,6 @@ public:
 	 */
 	/****************************************************************************/
 
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function GetType
-     *
-     *  \return from GetType
-     */
-    /****************************************************************************/
-    DeviceControl::RVPosition_t GetPosition(){return m_Possition;}
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function SetType
-     *
-     *  \param Type = DeviceControl::RTTempCtrlType_t type parameter
-     *
-     *  \return from SetType
-     */
-    /****************************************************************************/
-    void SetPosition(DeviceControl::RVPosition_t Pos){m_Possition = Pos;}
-
 	bool GetResult(DeviceControl::ReturnCode_t& result) const{result = m_result; return true;}
 	
 	/****************************************************************************/
