@@ -32,6 +32,9 @@
 #include "DiagnosticsManufacturing/Include/LaSystemManufacturing.h"
 #include "DiagnosticsManufacturing/Include/RotaryValveManufacturing.h"
 #include "DiagnosticsManufacturing/Include/MainControlManufacturing.h"
+#include "DiagnosticsManufacturing/Include/CleaningManufacturing.h"
+#include "DiagnosticsManufacturing/Include/RetortManufacturing.h"
+#include "DiagnosticsManufacturing/Include/SystemManufacturing.h"
 #include "DiagnosticsManufacturing/Include/HeatingTestDialog.h"
 //#include "Core/Include/ManufacturingDiagnosticsHandler.h"
 
@@ -129,6 +132,9 @@ void CTestDiagnosticsManufacturing::utTestManufacturing()
     CLaSystem * p_LaSystemManf = new CLaSystem(p_ServiceConnector, &MainWindow);
     CMainControl* p_MainControlManf = new CMainControl(p_ServiceConnector, &MainWindow);
     CRotaryValve* p_RvManf = new CRotaryValve(p_ServiceConnector, &MainWindow);
+    CSystem* p_SystemManf = new CSystem(p_ServiceConnector, &MainWindow);
+    CRetort* p_RetortManf = new CRetort(p_ServiceConnector, &MainWindow);
+    CCleaning* p_CleanManf = new CCleaning(p_ServiceConnector, &MainWindow);
 
     p_OvenManf->SetTestResult(Service::OVEN_COVER_SENSOR, true);
     //p_OvenManf->BeginTest();
@@ -142,6 +148,17 @@ void CTestDiagnosticsManufacturing::utTestManufacturing()
 
     p_RvManf->SetTestResult(Service::ROTARY_VALVE_HEATING_END, true);
     p_RvManf->ResetTestStatus();
+
+    p_SystemManf->SetTestResult(Service::SYSTEM_OVERFLOW, true);
+    p_SystemManf->SetTestResult(Service::SYSTEM_SEALING_TEST, false);
+    p_SystemManf->SetTestResult(Service::SYSTEM_SPEARKER, true);
+    p_SystemManf->EnableButton(true);
+
+    p_RetortManf->SetTestResult(Service::RETORT_LID_LOCK, true);
+    p_RetortManf->SetTestResult(Service::RETORT_HEATING_EMPTY, false);
+
+    p_CleanManf->SetTestResult(Service::CLEANING_SYSTEM_TEST, true);
+    p_CleanManf->EnableButton(false);
 
     CHeatingTestDialog* p_HeatingDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Service::OVEN_COVER_SENSOR, &MainWindow);
     p_HeatingDlg->BlgProcessProgress(true);
