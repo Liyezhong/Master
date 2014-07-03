@@ -115,6 +115,7 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
     case TEMPSENSORS_CHECKING:
         if (true == mp_SchedulerThreadController->GetHeatingStrategy()->CheckTemperatureSenseorsStatus())
         {
+            mp_SchedulerThreadController->LogDebug("Pre-Test: Temperature checking of sensors passed");
             emit RTTemperatureControlOff();
         }
         else

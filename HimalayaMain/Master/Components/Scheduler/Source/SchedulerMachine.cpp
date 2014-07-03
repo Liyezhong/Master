@@ -574,9 +574,9 @@ void CSchedulerStateMachine::HandleProtocolFillingWorkFlow(const QString& cmdNam
        break;
    case IN_FILLING:
        mp_SchedulerThreadController->Fill();
-       m_FillingCurrentStage = GET_MOVESEALING_RESPONSE;
+       m_FillingCurrentStage = GET_FILLING_RESPONSE;
        break;
-   case GET_MOVESEALING_RESPONSE:
+   case GET_FILLING_RESPONSE:
        if( "Scheduler::ALFilling" == cmdName)
        {
            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
@@ -649,9 +649,9 @@ QString CSchedulerStateMachine::GetDeviceName()
     QString DevName = "";
     switch (EventID)
     {
-    case DCL_ERR_DEV_RETORT_BOTTOM_SIDELOW_HEATING_ELEMENT_FAILED:
-    case DCL_ERR_DEV_RETORT_SIDTOP_SIDEMID_HEATING_ELEMENT_FAILED:
-    case DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERANGE:
+    case DCL_ERR_DEV_RETORT_BOTTOM_HEATING_ELEMENT_FAILED:
+    case DCL_ERR_DEV_RETORT_SIDETOP_HEATING_ELEMENT_FAILED:
+    case DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE:
     case DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_NOSIGNAL:
     case DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_OVERRANGE:
     case DCL_ERR_DEV_RETORT_TSENSOR2_TEMPERATURE_NOSIGNAL:
@@ -660,7 +660,7 @@ QString CSchedulerStateMachine::GetDeviceName()
     case DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED:
         DevName = "Retort";
         break;
-    case DCL_ERR_DEV_RETORT_LEVELSENSOR_TEMPERATURE_OVERRANGE:
+    case DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE:
         DevName = "LevelSensor";
         break;
     case DCL_ERR_DEV_WAXBATH_TOP_HEATINGPAD_CURRENT_OUTOFRANGE:

@@ -103,8 +103,7 @@ private:
         MOVE_TUBE_POSITION,
         GET_MOVETUBE_RESPONSE,
         IN_FILLING,
-        MOVE_SEALING_POSITION,
-        GET_MOVESEALING_RESPONSE
+        GET_FILLING_RESPONSE
     } FILLING_STAGE_t;
 
     FILLING_STAGE_t m_FillingCurrentStage;                                              ///< Current stage of protocol filling

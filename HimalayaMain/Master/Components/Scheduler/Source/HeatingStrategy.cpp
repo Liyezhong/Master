@@ -61,12 +61,12 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     //For Level Sensor
     if (false == this->CheckSensorCurrentTemperature(m_RTLevelSensor, strctHWMonitor.TempALLevelSensor))
     {
-        return DCL_ERR_DEV_RETORT_LEVELSENSOR_TEMPERATURE_OVERRANGE;
+        return DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE;
     }
     //For Retort Top Sensor
     if (false == this->CheckSensorCurrentTemperature(m_RTTop, strctHWMonitor.TempRTSide))
     {
-        return DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERANGE;
+        return DCL_ERR_DEV_RETORT_TSENSOR1_TEMPERATURE_OVERRANGE;
     }
     //For Retort Bottom Sensor
     if (false == this->CheckSensorCurrentTemperature(m_RTBottom, strctHWMonitor.TempRTBottom1))
@@ -76,12 +76,12 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     //For Oven Top
     if (false == this->CheckSensorCurrentTemperature(m_OvenTop, strctHWMonitor.TempOvenTop))
     {
-        return DCL_ERR_DEV_WAXBATH_TSENSORUP_HEATING_OUTOFTARGETRANGE;
+        return DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_OUTOFTARGETRANGE;
     }
     //For Oven Bottom
     if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, strctHWMonitor.TempOvenBottom1))
     {
-        return DCL_ERR_DEV_WAXBATH_TSENSORDOWN1_HEATING_OUTOFTARGETRANGE;
+        return DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_OUTOFTARGETRANGE;
     }
     //For Rotary Valve Rod
     if (false == this->CheckSensorCurrentTemperature(m_RV_1_HeatingRod, strctHWMonitor.TempRV1))
@@ -213,22 +213,22 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     // For Retort Top
     if (false == this->CheckSensorHeatingOverTime(m_RTTop, strctHWMonitor.TempRTSide))
     {
-        return DCL_ERR_DEV_RETORT_SIDTOP_SIDEMID_HEATING_ELEMENT_FAILED;
+        return DCL_ERR_DEV_RETORT_SIDETOP_HEATING_ELEMENT_FAILED;
     }
     // For Retort Bottom
     if (false == this->CheckSensorHeatingOverTime(m_RTBottom, strctHWMonitor.TempRTBottom1))
     {
-        return DCL_ERR_DEV_RETORT_BOTTOM_SIDELOW_HEATING_ELEMENT_FAILED;
+        return DCL_ERR_DEV_RETORT_BOTTOM_HEATING_ELEMENT_FAILED;
     }
     //For Oven Top
     if (false == this->CheckSensorHeatingOverTime(m_OvenTop, strctHWMonitor.TempOvenTop))
     {
-        return DCL_ERR_DEV_WAXBATH_TSENSORUP_HEATING_ABNORMAL;
+        return DCL_ERR_DEV_WAXBATH_SENSORUP_HEATING_ABNORMAL;
     }
     //For Oven Bottom
     if (false == this->CheckSensorHeatingOverTime(m_OvenBottom, strctHWMonitor.TempOvenBottom1))
     {
-        return DCL_ERR_DEV_WAXBATH_TSENSORUP_HEATING_ABNORMAL;
+        return DCL_ERR_DEV_WAXBATH_SENSORDOWN1_HEATING_ABNORMAL;
     }
     //For RV Outlet, Please note RV Rod(sensor 1) is NOT needed to check Heating overtime.
     if (false == this->CheckRVOutletHeatingOverTime(strctHWMonitor.TempRV2))
@@ -432,6 +432,12 @@ bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
 }
 bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)
 {
+#if 0
+    if (HWTemp >= 299)
+    {
+        return true;
+    }
+#endif
     if (true == heatingSensor.curModuleId.isEmpty())
     {
         return true;

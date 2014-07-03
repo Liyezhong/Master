@@ -151,6 +151,18 @@ public:
     /****************************************************************************/
     virtual void ShutDownDevice() = 0;
     virtual void NotifySavedServiceInfor(const QString& deviceType) = 0;
+    /****************************************************************************/
+    /*!
+     *  \brief  Get report error from salve module
+     *
+     *  \param  Qstring devname - device name
+     *  \param  quint32 sensor name
+     *
+     *  \return ReportError_t
+     */
+    /****************************************************************************/
+    virtual ReportError_t GetSlaveModuleReportError(const QString& devName, quint32 sensorName=0) = 0;
+
 signals:
     /****************************************************************************/
     /**
@@ -442,6 +454,17 @@ public:
     /****************************************************************************/
     virtual void ShutDownDevice();
     virtual void NotifySavedServiceInfor(const QString& deviceType);
+    /****************************************************************************/
+    /*!
+     *  \brief  Get report error from salve module
+     *
+     *  \param  Qstring devname - device name
+     *  \param  quint32 sensor name
+     *
+     *  \return ReportError_t
+     */
+    /****************************************************************************/
+    virtual ReportError_t GetSlaveModuleReportError(const QString& devName, quint32 sensorName=0);
 private:
 
     /****************************************************************************/

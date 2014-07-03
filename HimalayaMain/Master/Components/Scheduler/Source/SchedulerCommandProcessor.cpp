@@ -546,6 +546,12 @@ void SchedulerCommandProcessor<DP>::ShutDownDevice()
 void SchedulerCommandProcessor<DP>::NotifySavedServiceInfor(const QString& deviceType)
     emit SigNotifySavedServiceInfor(deviceType);
 template <class DP>
+ReportError_t SchedulerCommandProcessor<DP>::GetSlaveModuleReportError(const QString& devName, quint32 sensorName)
+{
+    return mp_IDeviceProcessing->GetSlaveModuleReportError(devName, sensorName);
+}
+
+template <class DP>
 void SchedulerCommandProcessor<DP>::OnShutDownDevice4Slot()
 {
     if (mp_IDeviceProcessing) {

@@ -2118,7 +2118,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
             if(((currentState & 0xF) == SM_BUSY)&&(currentState != PSSM_PAUSE)&&(currentState != PSSM_PAUSE_DRAIN))
             {
-                RaiseError(0, DCL_ERR_DEV_RETORT_LIDLOCK_CLOSE_STATUS_ERROR, Scenario, true);
+                RaiseError(0, DCL_ERR_DEV_LIDLOCK_CLOSE_STATUS_ERROR, Scenario, true);
                 m_SchedulerMachine->SendErrorSignal();
             }
             MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, false));

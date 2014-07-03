@@ -831,7 +831,12 @@ protected:
         {
             if(EventKey == 0)
             {
-                m_CurErrEventID = EventID;
+                // We only update current event ID when current status is NOT error.
+                SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
+                if (SM_ERROR != (currentState & 0xFF))
+                {
+                    m_CurErrEventID = EventID;
+                }
                 Global::EventObject::Instance().RaiseEvent(EventKey, EventID, Scenario, ActionResult,Active,
                                                        Global::tTranslatableStringList()<<QString("(%1 %2)").arg(EventID).arg(Scenario));
             }
