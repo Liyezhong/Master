@@ -1224,7 +1224,7 @@ void CStartup::RefreshTestStatus4SystemExhaustFan(Service::ModuleTestCaseID Id, 
 void CStartup::RefreshTestStatus4SystemOverflow(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
     mp_ManaufacturingDiagnosticsHandler->HideMessage();
-    mp_ManaufacturingDiagnosticsHandler->ShowMessage(Status.value("CurrentStatu"));
+    mp_ManaufacturingDiagnosticsHandler->ShowMessage(Status.value("CurrentStatus"));
 }
 
 void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
@@ -1248,7 +1248,7 @@ void CStartup::RefreshTestStatus4SystemSealing(Service::ModuleTestCaseID Id, con
     }
     else if (Status.value("CurrentStatus") != NULL) {
         if (mp_SealingStatusDlg != NULL) {
-            mp_SealingStatusDlg->OnClose();
+            mp_SealingStatusDlg->close();
             delete mp_SealingStatusDlg ;
             mp_SealingStatusDlg = NULL;
         }

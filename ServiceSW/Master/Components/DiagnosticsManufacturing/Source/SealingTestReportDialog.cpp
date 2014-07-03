@@ -30,7 +30,7 @@ namespace DiagnosticsManufacturing {
 CSealingTestReportDialog::CSealingTestReportDialog(QWidget *p_Parent):
     MainMenu::CDialogFrame(p_Parent),
     mp_Ui(new Ui::CSealingTestReportDialog),
-    m_Index(1),
+    m_Index(0),
     m_IsOkButton(false),
     m_IsAbort(false)
 {
@@ -39,7 +39,7 @@ CSealingTestReportDialog::CSealingTestReportDialog(QWidget *p_Parent):
     if (mp_Ui->pushButton == NULL) {
         qDebug()<<"push null";
     }
-    CONNECTSIGNALSLOT(mp_Ui->pushButton, clicked(), this, OnClose());
+    CONNECTSIGNALSLOT(mp_Ui->pushButton, clicked(), this, OnButtonClicked());
 }
 
 CSealingTestReportDialog::~CSealingTestReportDialog()
@@ -79,7 +79,7 @@ void CSealingTestReportDialog::UpdateLabel(const Service::ModuleTestStatus &Stat
     }
 }
 
-void CSealingTestReportDialog::OnClose()
+void CSealingTestReportDialog::OnButtonClicked()
 {
     m_Index = 1;
     if (!m_IsOkButton) {

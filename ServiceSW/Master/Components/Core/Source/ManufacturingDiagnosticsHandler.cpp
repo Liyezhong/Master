@@ -993,6 +993,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
         bool Result   = true;
         bool NextFlag = true;
 
+        QTime delayTime = QTime::currentTime().addSecs(20);
         switch(Id) {
         case Service::SYSTEM_110V_220V_SWITCH:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST;
@@ -1101,6 +1102,10 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             if (Result == false) {
                 break;
             }
+
+            //while(QTime::currentTime() < delayTime) {
+                //QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+            //}
 
             // the second sealing test
             p_TestCase->SetParameter("CurStep", "2");

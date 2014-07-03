@@ -395,7 +395,7 @@ private:
      * \param[in] param             paramater
      */
     /****************************************************************************/
-    void EmitRefreshTestStatustoMain(const QString& TestCaseName, TestCurStatus_t CurStatus, int Position=0);
+    void EmitRefreshTestStatustoMain(const QString& TestCaseName, TestCurStatus_t CurStatus, qreal Param=0);
 
 
 

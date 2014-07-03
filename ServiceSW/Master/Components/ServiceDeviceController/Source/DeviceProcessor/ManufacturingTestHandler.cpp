@@ -1229,10 +1229,15 @@ qint32 ManufacturingTestHandler::TestSystemOverflow()
     bool result = false;
     Service::ModuleTestStatus Status;
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_OVERFLOW);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+    QTime delayTime = QTime::fromString(p_TestCase->GetParameter("DelayTime"), "hh:mm:ss");
+    int delay = delayTime.hour() * 60 * 60 + delayTime.minute() * 60 + delayTime.second();
+    EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
     mp_MotorRV->MoveToInitialPosition();
+    EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, 1);
     if (mp_MotorRV->MoveToTubePosition(1)) {
         EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
-        ret = m_rIdevProc.ALFillingForService(20, true);
+        ret = m_rIdevProc.ALFillingForService(delay, true);
         if (ret == DCL_ERR_DEV_LA_FILLING_OVERFLOW) {
             result = true;
         }
@@ -1280,21 +1285,24 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
         else {
             TargetPressure = p_TestCase->GetParameter("SealTargetPressure2").toFloat();
         }
+
         QTime Duration = QTime::fromString(p_TestCase->GetParameter("SealDuration"), "hh:mm:ss");
         QTime KeepDuration = QTime::fromString(p_TestCase->GetParameter("SealKeepDuration"), "hh:mm:ss");
         qreal Departure = p_TestCase->GetParameter("Departure").toFloat();
 
-        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE);
+        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, TargetPressure);
         int WaitSec = Duration.hour()*60*60 + Duration.minute()*60 + Duration.second();
+        mp_PressPump->ReleasePressure();
         mp_PressPump->SetFan(1);
         bool result = CreatePressure(WaitSec, TargetPressure, 0);
         if (result == false) {
+            mp_PressPump->StopCompressor();
             RetValue = -1;
         }
         else {
-            EmitRefreshTestStatustoMain(TestCaseName, PUMP_KEEP_PRESSURE);
-            mp_PressPump->StopCompressor();
             WaitSec = KeepDuration.hour()*60*60 + KeepDuration.minute()*60 + KeepDuration.second();
+            EmitRefreshTestStatustoMain(TestCaseName, PUMP_KEEP_PRESSURE, WaitSec);
+            mp_PressPump->StopCompressor();
             mp_Utils->Pause(WaitSec*1000);
 
             qreal CurrentPressure = mp_PressPump->GetPressure();
@@ -1307,7 +1315,12 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
         }
 
         EmitRefreshTestStatustoMain(TestCaseName, PUMP_RELEASE_PRESSURE);
-        mp_PressPump->ReleasePressure();
+        qDebug()<<"before release pressure : "<<mp_PressPump->GetPressure();
+        mp_PressPump->SetFan(0);
+        mp_PressPump->SetValve(0, 0);
+        mp_PressPump->SetValve(1, 0);
+        mp_Utils->Pause(20*1000);
+        qDebug()<<"after release pressure : "<<mp_PressPump->GetPressure();
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
         return RetValue ;
     }
@@ -1324,7 +1337,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
         int Position(0);
         PositionList.clear();
         if (p_TestCase->GetParameter("TestMode") == "0") {
-            for(int i=0; i<=16; i++) {
+            for(int i=1; i<=16; i++) {
                 PositionList.append(i);
             }
         }
@@ -1342,35 +1355,40 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
             Position = PositionList.at(i);
 
             LabelStr = QString("Rotate rotary valve to tube position #%1").arg(Position);
+            Status.clear();
             Status.insert("Label", LabelStr);
             emit RefreshTestStatustoMain(TestCaseName, Status);
             mp_MotorRV->MoveToTubePosition(Position);
 
             mp_PressPump->SetFan(1);
-
             Status.clear();
-            LabelStr = QString("Creating pressure ...");
+            LabelStr = QString("Creating pressure to %1Kpa...").arg(TargetPressure);
             Status.insert("Label", LabelStr);
             emit RefreshTestStatustoMain(TestCaseName, Status);
             int WaitSec = Duration.hour()*60*60 + Duration.minute()*60 + Duration.second();
             bool result = CreatePressure(WaitSec, TargetPressure, 3);
+            qreal CurrentPressure = mp_PressPump->GetPressure();
             if (result == false) {
                 Status.clear();
                 Status.insert("Position", QString("%1").arg(Position));
-                Status.insert("Pressure", "0");
+                Status.insert("Pressure", QString("%1").arg(CurrentPressure));
                 Status.insert("Result", "Fail");
-                emit RefreshTestStatustoMain(TestCaseName, Status);
                 RetValue = -1;
                 if (m_UserAbort) {
+                    mp_PressPump->StopCompressor();
                     break;
+                }
+                if (i == PositionList.count()-1) {
+                    mp_PressPump->StopCompressor();
                 }
             }
             else {
-                LabelStr = QString("Keep pressure ...");
+                WaitSec = KeepDuration.hour()*60*60 + KeepDuration.minute()*60 + KeepDuration.second();
+                LabelStr = QString("Keep pressure for %1 seconds").arg(WaitSec);
+                Status.clear();
                 Status.insert("Label", LabelStr);
                 emit RefreshTestStatustoMain(TestCaseName, Status);
                 mp_PressPump->StopCompressor();
-                WaitSec = KeepDuration.hour()*60*60 + KeepDuration.minute()*60 + KeepDuration.second();
 
                 while(WaitSec) {
                     if (m_UserAbort) {
@@ -1383,7 +1401,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
                     break;
                 }
 
-                qreal CurrentPressure = mp_PressPump->GetPressure();
+                CurrentPressure = mp_PressPump->GetPressure();
                 Status.clear();
                 Status.insert("Position", QString("%1").arg(Position));
                 Status.insert("Pressure", QString("%1").arg(CurrentPressure));
@@ -1394,21 +1412,26 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
                 else {
                     Status.insert("Result", "Pass");
                 }
-                if (i==PositionList.count()-1) {
-                    Status.insert("Finish", "1");
-                }
-                emit RefreshTestStatustoMain(TestCaseName, Status);
             }
+
+            emit RefreshTestStatustoMain(TestCaseName, Status);
         }
         LabelStr = QString("Releasing pressure ...");
         Status.clear();
         Status.insert("Label", LabelStr);
-        emit RefreshTestStatustoMain(TestCaseName, Status);
-        mp_PressPump->ReleasePressure();
+        emit RefreshTestStatustoMain(TestCaseName, Status);     
+        mp_PressPump->SetFan(0);
+        mp_PressPump->SetValve(0, 0);
+        mp_PressPump->SetValve(1, 0);
+        mp_Utils->Pause(20*1000);
         if (m_UserAbort) {
             m_UserAbort = false;
             p_TestCase->AddResult("FailReason", "Abort");
         }
+        LabelStr = QString("Test is finished.");
+        Status.insert("Label", LabelStr);
+        Status.insert("Finish", "1");
+        emit RefreshTestStatustoMain(TestCaseName, Status);
         return RetValue ;
     }
     else {
@@ -1438,7 +1461,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
     int targetPressure = p_TestCase->GetParameter("TargetPressure").toInt();
     int departure = p_TestCase->GetParameter("Departure").toInt();
     mp_PressPump->SetFan(1);
-    EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE);
+    EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure);
     if (!CreatePressure(waitSec, targetPressure, departure)) {
         p_TestCase->AddResult("FailReason", "create pressure failed.");
         RetValue = -1;
@@ -1465,7 +1488,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
             goto CLEANING_EXIT;
         }
 
-        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE);
+        EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure);
         if (!CreatePressure(waitSec, targetPressure, departure)) {
             p_TestCase->AddResult("FailReason", "create pressure failed.");
             RetValue = -1;
@@ -1482,6 +1505,7 @@ CLEANING_EXIT:
 
 bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressure, qreal departure)
 {
+    qDebug()<<"Create target pressure:"<<targetPressure;
     bool result = false;
     if (targetPressure > 0) {
         mp_PressPump->SetTargetPressure(17, targetPressure);
@@ -1496,7 +1520,6 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressu
             break;
         }
         qreal pressure = mp_PressPump->GetPressure();
-        //qreal pressure = m_rIdevProc.ALGetRecentPressure();
         qDebug()<<"current pressure :"<<pressure;
 
         if (departure == 0) {
@@ -2552,7 +2575,7 @@ void ManufacturingTestHandler::SetFailReason(Service::ModuleTestCaseID Id, const
     p_TestCase->SetStatus(false);
 }
 
-void ManufacturingTestHandler::EmitRefreshTestStatustoMain(const QString& TestCaseName, TestCurStatus_t CurStatus, int Position)
+void ManufacturingTestHandler::EmitRefreshTestStatustoMain(const QString& TestCaseName, TestCurStatus_t CurStatus, qreal Param)
 {
     Service::ModuleTestStatus Status;
     QString Msg;
@@ -2562,10 +2585,10 @@ void ManufacturingTestHandler::EmitRefreshTestStatustoMain(const QString& TestCa
         Msg = "Rotary valve is initializing ...";
         break;
     case RV_MOVE_TO_TUBE_POSITION:
-        Msg = QString("Rotate rotary valve to tube position #%1").arg(Position);
+        Msg = QString("Rotate rotary valve to tube position #%1").arg(Param);
         break;
     case RV_MOVE_TO_SEALING_POSITION:
-        Msg = QString("Rotate rotary valve to sealing position #%1").arg(Position);
+        Msg = QString("Rotate rotary valve to sealing position #%1").arg(Param);
         break;
     case LS_HEATING:
         Msg = "Heating level sensor ...";
@@ -2577,10 +2600,10 @@ void ManufacturingTestHandler::EmitRefreshTestStatustoMain(const QString& TestCa
         Msg = "Draining ...";
         break;
     case PUMP_CREATE_PRESSURE:
-        Msg = "Creating pressure ...";
+        Msg = QString("Creating pressure to %1kPa...").arg(Param);
         break;
     case PUMP_KEEP_PRESSURE:
-        Msg = "Keep pressure ...";
+        Msg = QString("Keep pressure for %1 seconds...").arg(Param);
         break;
     case PUMP_RELEASE_PRESSURE:
         Msg = "Releasing pressure ...";
