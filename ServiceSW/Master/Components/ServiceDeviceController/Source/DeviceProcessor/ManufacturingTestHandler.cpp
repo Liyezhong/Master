@@ -698,8 +698,8 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
         qDebug() << "MainRelay SetHigh return :"<< acRet << "\n";
     }
 
-    bool sideCtrlRet = mp_TempRetortSide->StartTemperatureControl(sideTgtTemp);
-    bool btmCtrlRet  = mp_TempRetortBttom->StartTemperatureControl(btmTgtTemp);
+    bool sideCtrlRet = mp_TempRetortSide->StartTemperatureControl(sideTgtTemp+7);
+    bool btmCtrlRet  = mp_TempRetortBttom->StartTemperatureControl(btmTgtTemp+2);
     qDebug() << "Start top return : "<< sideCtrlRet << "\n";
     qDebug() << "Start bottom return :"<< btmCtrlRet << "\n";
 
