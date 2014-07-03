@@ -132,7 +132,8 @@ void CCleaning::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     QList<QStandardItem *> ItemList;
 
     QStandardItem *itemCheckFlag = new QStandardItem;
-    itemCheckFlag->setData(Qt::Checked, (int)Qt::CheckStateRole);
+    //itemCheckFlag->setData(Qt::Checked, (int)Qt::CheckStateRole);
+    itemCheckFlag->setData(QVariant(Qt::Checked), (int)Qt::CheckStateRole); //PC-lint
     itemCheckFlag->setEditable(true);
     itemCheckFlag->setSelectable(true);
     itemCheckFlag->setCheckable(true);
@@ -174,7 +175,8 @@ void CCleaning::BeginTest()
         QModelIndex ModelIndex = m_Model.index(i, 0);
         QStandardItem* item = m_Model.itemFromIndex(ModelIndex);
         Qt::CheckState State = item->checkState();
-        qDebug()<<"checkable="<<item->checkState()<<" selected="<<item->isSelectable()<<" tooltip="<<item->toolTip();
+        //qDebug()<<"checkable="<<item->checkState()<<" selected="<<item->isSelectable()<<" tooltip="<<item->toolTip();
+        qDebug()<<"checkable="<<(int)State<<" selected="<<item->isSelectable()<<" tooltip="<<item->toolTip(); //PC-lint
 
         if (State == Qt::Checked) {
             Service::ModuleTestCaseID Id = DataManager::CTestCaseGuide::Instance().GetTestCaseId(item->toolTip());

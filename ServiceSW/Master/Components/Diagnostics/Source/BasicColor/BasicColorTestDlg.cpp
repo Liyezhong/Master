@@ -42,7 +42,7 @@ const int FIXED_DIALOG_HEIGHT = 350;        ///< Basic color test dialog height
 CBasicColorTestDlg::CBasicColorTestDlg(QWidget *p_Parent) : MainMenu::CDialogFrame(p_Parent)
   , mp_Ui(new Ui::CBasicColorTestDlg)
 {
-    m_ColorCount = 0;   
+    m_ColorCount = 0;
     mp_Ui->setupUi(GetContentFrame());
     SetDialogTitle(QApplication::translate("Diagnostics::CBasicColorTestDlg", "Basic Color Test",
                                            0, QApplication::UnicodeUTF8));
