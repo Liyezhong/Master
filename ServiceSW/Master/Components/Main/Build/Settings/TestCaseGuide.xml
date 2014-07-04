@@ -76,50 +76,71 @@
 	</System110v220vSwitch>
 	<SystemSealing Description="Sealing function test">
 		<Guide>
-			<Step>System sealing function test</Step>
+			<Step>Begin Sealing function test.</Step>
+			<Step>Please insert the sealing fixtures to the position of bottles and paraffin bathes.</Step>
 		</Guide>
 	</SystemSealing>
 	<SystemOverflow Description="Overflow test">
 		<Guide>
-			<Step>System overflow test</Step>
+			<Step>Begin Overflow test.</Step>
+			<Step>Please put a filling-block into block, cover the level sensor with tape and close the retort lid.</Step>
+			<Step>Please insert position 1# with reagent bottle filled with water.</Step>
 		</Guide>
 	</SystemOverflow>
 	<SystemSpeaker Description="Speaker test">
 		<Guide>
-			<Step>Please listen the system speak (low volume)</Step>
-		</Guide>
-		<Guide>
-			<Step>Please listen the system speak (high volume)</Step>
+			<Step>Begin Speaker test</Step>
 		</Guide>
 	</SystemSpeaker>
 	<SystemExhaustFan Description="Exhaust fan test">
 		<Guide>
-			<Step>System Exhaust fan test</Step>
+			<Step>Begin Exhaust fan test</Step>
 		</Guide>
 	</SystemExhaustFan>
 	<SystemVentilationFan Description="Ventilation fan test">
 		<Guide>
-			<Step>System Ventilation fan test</Step>
+			<Step>Begin Ventilation fan test</Step>
 		</Guide>
 	</SystemVentilationFan>
 	<SystemRemoteLocalAlarm Description="Remote/Local alarm test">
 		<Guide>
-			<Step>System Remote/Local alarm test</Step>
+			<Step>Please connect the alarm (remote)</Step>
+		</Guide>
+		<Guide>
+			<Step>Please disconnect the alarm (remote)</Step>
+		</Guide>
+		<Guide>
+			<Step>Please connect the alarm (local)</Step>
+		</Guide>
+		<Guide>
+			<Step>Please disconnect the alarm (local)</Step>
 		</Guide>
 	</SystemRemoteLocalAlarm>
 	<SystemMainsRelay Description="Mains relay test">
 		<Guide>
-			<Step>System mains relay test</Step>
+			<Step>System mains relay switch on</Step>
+		</Guide>
+		<Guide>
+			<Step>System mains relay switch off</Step>
 		</Guide>
 	</SystemMainsRelay>
-	<SystemFillingDraining Description="Filling and draining test">
+	<CleaningSystem Description="Cleaning system">
 		<Guide>
-			<Step>System Filling and Draining test</Step>
+			<Step>Confirm that retort is empty and locked well.And all reagent bottles and paraffin bathes have been pulled out.</Step>
 		</Guide>
-	</SystemFillingDraining>
+		<Guide>
+			<Step>1.Please wipe the liquid residue on both stories of reagent cabinet and clean up reagent drip tray.</Step>
+			<Step>2.Please wipe the liquid residue in paraffin oven and on oven door, and clean up paraffin drip tray.</Step>
+			<Step>3.Please wipe the liquid residue in retort and on retort lid. Please screw off retort sieve to clean up it. After all the actions done, please lock retort lid well.</Step>
+			<Step>4.Please check all the appearance surface and wipe any liquid residue.</Step>
+		</Guide>
+	</CleaningSystem>
 	<RetortLidLock Description="Lid lock test">
 		<Guide>
-			<Step>Retort lid lock test</Step>
+			<Step>Please unlock the retort lid.</Step>
+		</Guide>
+		<Guide>
+			<Step>Please lock the retort lid.</Step>
 		</Guide>
 	</RetortLidLock>
 	<RetortLevelSensorHeating Description="Level sensor heating test">
@@ -129,7 +150,7 @@
 	</RetortLevelSensorHeating>
 	<RetortLevelSensorDetecting Description="Level sensor detecting test">
 		<Guide>
-			<Step>Retort Level sensor detecting test </Step>
+			<Step>Please insert position 1# with reagent bottle filled with water, then close the retort lid.</Step>
 		</Guide>
 	</RetortLevelSensorDetecting>
 	<RetortHeatingEmpty Description="Heating test (empty)">
@@ -139,7 +160,13 @@
 	</RetortHeatingEmpty>
 	<RetortHeatingWater Description="Heating test (with water)">
 		<Guide>
-			<Step>Please put the foam filled block to retort, close the retort cover, and then put the bottle filled with water to station 11#</Step>
+			<Step>Please clean the level sensor, put the foam filled block to retort, close the retort lid lock, and then put the bottle filled with water to station 11#</Step>
+		</Guide>
+		<Guide>
+			<Step>Please put the external sensor into retort, and then close the retort lid lock.</Step>
+		</Guide>
+		<Guide>
+			<Step>Please take out the external sensor from the retort.</Step>
 		</Guide>
 	</RetortHeatingWater>
 </TestCaseGuide>
