@@ -99,6 +99,26 @@ public:
 	/****************************************************************************/
     QString GetStrResult()const{ return QString("%1").arg((qint32)m_result);}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetRVPosition
+     *
+     *  \return from GetRVPosition
+     */
+    /****************************************************************************/
+    DeviceControl::RVPosition_t GetRVPosition(){return m_RVPosition;}
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetRVPosition
+     *
+     *  \param RVPosition = DeviceControl::RVPosition_t type parameter
+     *
+     *  \return from SetRVPosition
+     */
+    /****************************************************************************/
+    void SetRVPosition(DeviceControl::RVPosition_t RVPosition){m_RVPosition = RVPosition;}
+
 private:
     CmdRVReqMoveToInitialPosition();                                                    ///< Not implemented.
     CmdRVReqMoveToInitialPosition(const CmdRVReqMoveToInitialPosition &);                     ///< Not implemented.
@@ -106,7 +126,7 @@ private:
 
 
 	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
-	
+    mutable DeviceControl::RVPosition_t m_RVPosition;   ///<  Definition/Declaration of variable m_RVPosition
 };
 
 

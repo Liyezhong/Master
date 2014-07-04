@@ -102,7 +102,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorState->addTransition(this, SIGNAL(SigEnterRSHeatingErr30SRetry()), mp_ErrorRsHeatingErr30SRetry);
     mp_ErrorRsHeatingErr30SRetry->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState);
 
-    connect(this, SIGNAL(RunCleaning()), mp_ProgramStepStates, SIGNAL(TempsReady()));
+    connect(this, SIGNAL(RunCleaning()), mp_ProgramStepStates, SIGNAL(CleaningMoveRVPosSig()));
     connect(this, SIGNAL(RunSelfTest()), mp_ProgramStepStates, SIGNAL(SelfTestSig()));
 
     connect(this, SIGNAL(sigStInitOK()), mp_ProgramStepStates, SIGNAL(StInitOK()));

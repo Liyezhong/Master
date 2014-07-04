@@ -74,6 +74,8 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         mp_PssmInit->addTransition(this, SIGNAL(SelfTestSig()), mp_PssmSelfTest);
         mp_PssmSelfTest->addTransition(this, SIGNAL(StDone()), mp_PssmInit);
 
+        mp_PssmInit->addTransition(this, SIGNAL(CleaningMoveRVPosSig()), mp_PssmStDone);
+
         mp_PssmStInit->addTransition(this, SIGNAL(StInitOK()), mp_PssmStTempChecking);
         mp_PssmStTempChecking->addTransition(this, SIGNAL(StTempOK()), mp_PssmStCurrentChecking);
         mp_PssmStCurrentChecking->addTransition(this, SIGNAL(StCurrentOK()), mp_PssmStVoltageChecking);
@@ -95,13 +97,13 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
 
         mp_PssmInit->addTransition(this, SIGNAL(TempsReady()), mp_PssmReadyToHeatLevelSensorS1);
         mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(LevelSensorTempS1Ready()), mp_PssmReadyToHeatLevelSensorS2);
-        mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(LevelSensorTempS2Ready()), mp_PssmReadyToTubeBefore);
-        mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(HitTubeBefore()), mp_PssmReadyToFill);
+        mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(LevelSensorTempS2Ready()), mp_PssmReadyToFill);
         mp_PssmReadyToFill->addTransition(this, SIGNAL(FillFinished()), mp_PssmReadyToSeal);
         mp_PssmReadyToSeal->addTransition(this, SIGNAL(HitSeal()), mp_PssmSoak);
         mp_PssmSoak->addTransition(this, SIGNAL(SoakFinished()), mp_PssmReadyToTubeAfter);
         mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(HitTubeAfter()), mp_PssmReadyToDrain);
-        mp_PssmReadyToDrain->addTransition(this, SIGNAL(DrainFinished()), mp_PssmStepFinish);
+        mp_PssmReadyToDrain->addTransition(this, SIGNAL(DrainFinished()), mp_PssmReadyToTubeBefore);
+        mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(HitTubeBefore()), mp_PssmStepFinish);
         mp_PssmStepFinish->addTransition(this, SIGNAL(ProgramFinished()), mp_PssmProgramFinish);
         mp_PssmStepFinish->addTransition(this, SIGNAL(StepFinished()), mp_PssmInit);
 

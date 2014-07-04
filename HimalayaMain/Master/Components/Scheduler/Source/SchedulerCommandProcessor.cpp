@@ -383,7 +383,7 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd()
 	}
 	else if  ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
 	{
-		m_currentCmd->SetResult( mp_IDeviceProcessing->RVReqMoveToInitialPosition() );
+        m_currentCmd->SetResult( mp_IDeviceProcessing->RVReqMoveToInitialPosition( qSharedPointerDynamicCast<CmdRVReqMoveToInitialPosition>(m_currentCmd)->GetRVPosition() ) );
 	}
 	else if  ("Scheduler::RVReqMoveToRVPosition" == cmdName)
 	{

@@ -146,6 +146,12 @@ signals:
     void SelfTestSig();
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of signal CleaningMoveRVPosSig
+     */
+    /****************************************************************************/
+    void CleaningMoveRVPosSig();
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of signal TempsReady
      */
     /****************************************************************************/
@@ -393,7 +399,7 @@ signals:
     void OnRVPositionCheck();
 
 private:
-    QState* mp_PssmSelfTest;
+    QState* mp_PssmSelfTest;    ///<  Definition/Declaration of variable mp_PssmSelfTest
     QState* mp_PssmStInit;       ///<  Definition/Declaration of variable mp_PssmStInit
     QState* mp_PssmStTempChecking;       ///<  Definition/Declaration of variable mp_PssmStTempChecking
     QState* mp_PssmStCurrentChecking;       ///<  Definition/Declaration of variable mp_PssmStCurrentChecking

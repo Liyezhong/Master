@@ -96,6 +96,106 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
     m_TempCheck = false;
+    m_AllProgramCount = false;
+
+    QString ProgramStatusFilePath = "../Settings/ProgramStatus.txt";
+    QFile ProgramStatusFile(ProgramStatusFilePath);
+
+    if(!ProgramStatusFile.exists())
+        CreateProgramStatusFile(&ProgramStatusFile);
+    ReadProgramStatusFile(&ProgramStatusFile);
+}
+
+void SchedulerMainThreadController::CreateProgramStatusFile(QFile *p_StatusFile)
+{
+    if(p_StatusFile)
+    {
+        if(!p_StatusFile->open(QIODevice::ReadWrite | QIODevice::Text))
+        {
+            LogDebug("ProgramStatus file open failed");
+        }
+        QTextStream FileStream(p_StatusFile);
+        FileStream.setFieldAlignment(QTextStream::AlignLeft);
+        FileStream << "LastRVPosition:" << "1" << "\n" << left;
+        FileStream << "ProgramFinished:" << "No" << "\n" << left;
+        p_StatusFile->close();
+    }
+}
+
+void SchedulerMainThreadController::ReadProgramStatusFile(QFile *p_StatusFile)
+{
+    if(p_StatusFile)
+    {
+        if(!p_StatusFile->open(QIODevice::ReadWrite | QIODevice::Text))
+        {
+            LogDebug("Read programStatus file open failed");
+        }
+        QString Line;
+        QTextStream FileStream(p_StatusFile);
+        do{
+            Line = FileStream.readLine().simplified();
+            QString tmpString("0");
+            if(Line.contains("ProgramFinished", Qt::CaseInsensitive))
+            {
+                QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
+                if(LineFields.count() == 2)
+                {
+                    m_ProgramStatusFileMap.insert("ProgramFinished", LineFields[1]);
+                }
+            }
+            else if(Line.contains("LastRVPosition", Qt::CaseInsensitive))
+            {
+                QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
+                if(LineFields.count() == 2)
+                {
+                    m_ProgramStatusFileMap.insert("LastRVPosition", LineFields[1]);
+                }
+            }
+
+        }while(!Line.isNull());
+    }
+}
+
+void SchedulerMainThreadController::UpdateProgramStatusFile(const QString& key, const QString& value)
+{
+    QMap<QString, QString>::iterator iter = m_ProgramStatusFileMap.find(key);
+    if(iter != m_ProgramStatusFileMap.end())
+    {
+        iter.value() = value;
+    }
+
+    const QString ProgramStatusFilePath = Global::SystemPaths::Instance().GetSettingsPath() + "/ProgramStatus.txt";
+    QFile ProgramStatusFile(ProgramStatusFilePath);
+    if(!ProgramStatusFile.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Truncate))
+    {
+        LogDebug("open the ProgramStatusFilePath failed");
+    }
+    QTextStream FileStream(&ProgramStatusFile);
+    FileStream.setFieldAlignment(QTextStream::AlignLeft);
+
+    QMapIterator<QString, QString> StatusfileItr(m_ProgramStatusFileMap);
+    while (StatusfileItr.hasNext()) {
+        StatusfileItr.next();
+        QString Key1 = StatusfileItr.key();
+        QString Value1 = m_ProgramStatusFileMap.value(Key1);
+        FileStream << Key1 << ":" << Value1 << "\n" << left;
+    }
+    ProgramStatusFile.flush();
+    fsync(ProgramStatusFile.handle());
+    ProgramStatusFile.close();
+}
+
+QString SchedulerMainThreadController::getTheProgramStatus(const QString& key)
+{
+    QMap<QString, QString>::iterator iter = m_ProgramStatusFileMap.find(key);
+    if(iter != m_ProgramStatusFileMap.end())
+    {
+        return iter.value();
+    }
+    else
+    {
+        return "";
+    }
 }
 
 SchedulerMainThreadController::~SchedulerMainThreadController()
@@ -259,6 +359,7 @@ void SchedulerMainThreadController::OnTickTimer()
 
 void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd)
 {
+    bool isCleaningProgram = false;
     switch (ctrlCmd)
     {
     case CTRL_CMD_START:
@@ -267,6 +368,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
         //Check if it is a Cleaning Program or not?
         if (m_NewProgramID.at(0) == 'C')
         {
+            isCleaningProgram = false;
             int sep = m_NewProgramID.indexOf('_');
             m_CurProgramID = m_NewProgramID.left(sep);
             m_ReagentIdOfLastStep = m_NewProgramID.right(m_NewProgramID.count()- sep -1);
@@ -302,11 +404,19 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             DequeueNonDeviceCommand();
 
             //wether cleaning program
-            if ( 'C' == ProgramName.at(0) ){
+            if (isCleaningProgram)
+            {
+                QString LastPosition = getTheProgramStatus("LastRVPosition");
+                CmdRVReqMoveToInitialPosition* cmdSet = new CmdRVReqMoveToInitialPosition(500, this);
+                cmdSet->SetRVPosition( (RVPosition_t)LastPosition.toUInt() );
+                m_SchedulerCommandProcessor->pushCmd(cmdSet);
+                LogDebug(QString("cleaning program set the rv position to:%1").arg(LastPosition));
+
                 m_SchedulerMachine->SendRunCleaning();
-                LogDebug("cleaning program Send cmd to DCL to let RV move to init position.");
-                m_SchedulerCommandProcessor->pushCmd(new CmdRVReqMoveToInitialPosition(500, this));
-            }else{
+                m_AllProgramCount = true;
+            }
+            else
+            {
                 m_SchedulerMachine->SendRunSelfTest();
             }
         }
@@ -350,7 +460,6 @@ void SchedulerMainThreadController::UpdateStationReagentStatus()
 
 void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd, SchedulerCommandShPtr_t cmd)
 {
-
     ReturnCode_t retCode;
     QString cmdName = "";
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
@@ -591,7 +700,19 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_ST_DONE == stepState)
         {
-            LogDebug("Precheck DONE");
+            RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+            if(RV_UNDEF != targetPos)
+            {
+                if((m_PositionRV != targetPos))
+                {
+                    LogDebug(QString("Precheck Program move RV to next tube position %1").arg(targetPos));
+                    CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
+                    cmd->SetRVPosition(targetPos);
+                    m_SchedulerCommandProcessor->pushCmd(cmd);
+                    UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
+                }
+            }
+            LogDebug("Precheck DONE, if cleaning program it just move RV");
             m_SchedulerMachine->NotifyStDone(); //todo: update later
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
@@ -675,6 +796,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else
                 {
                     LogDebug(QString("Program Step Hit Tube(before) %1").arg(targetPos));
+                    RVPosition_t targetPosition = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
+                    UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPosition));
                     m_SchedulerMachine->NotifyHitTubeBefore();
                 }
             }
@@ -745,6 +868,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
                 else
                 {
+                    UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
                     m_SchedulerMachine->NotifyHitSeal();
                 }
             }
@@ -883,6 +1007,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
                 else
                 {
+                    UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
                     m_SchedulerMachine->NotifyHitTubeAfter();
                 }
             }
@@ -985,7 +1110,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 //send command to main controller to tell the left time
                 quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
 
-
                 QTime leftTime(0,0,0);
                 leftTime = leftTime.addSecs(leftSeconds);
                 MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
@@ -1013,6 +1137,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             //todo: tell main controller that program is complete
             UpdateStationReagentStatus();
 
+            if(m_AllProgramCount)
+            {
+                m_AllProgramCount = false;
+                UpdateProgramStatusFile("ProgramFinished", "Yes");
+            }
             //send command to main controller to tell the left time
             QTime leftTime(0,0,0);
             MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, "", m_CurProgramStepIndex, 0));
@@ -1410,6 +1539,15 @@ bool SchedulerMainThreadController::GetNextProgramStepInformation(const QString&
     if (pProgramStep)
     {
         programStepInfor.stationID  = this->GetStationIDFromProgramStep(m_CurProgramStepIndex);
+        //cleaning program
+        if((m_CurProgramStepIndex + 1) == count)
+        {
+            programStepInfor.nextStationID = programStepInfor.stationID;
+        }
+        else
+        {
+            programStepInfor.nextStationID = this->GetStationIDFromProgramStep(m_CurProgramStepIndex + 1);
+        }
         int soakTime = pProgramStep->GetDurationInSeconds();
         if (0 == m_CurProgramStepIndex && m_delayTime > 0)
         {
@@ -2063,7 +2201,7 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
         scenario = 200;
         break;
     case PSSM_ST_DONE:
-        scenario = 200;
+        //scenario = 200;
         break;
     default:
         break;
@@ -2518,10 +2656,10 @@ void SchedulerMainThreadController::MoveRV()
     if(PSSM_READY_TO_TUBE_BEFORE == stepState)
     {
         //get target position here
-        RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+        RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
         if(RV_UNDEF != targetPos)
         {
-            LogDebug(QString("Move to RV tubeposition: %1").arg(targetPos));
+            LogDebug(QString("Move to RV tube position(before): %1").arg(targetPos));
             cmd->SetRVPosition(targetPos);
             m_SchedulerCommandProcessor->pushCmd(cmd);
         }
@@ -2537,7 +2675,7 @@ void SchedulerMainThreadController::MoveRV()
         RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
         if(RV_UNDEF != targetPos)
         {
-            LogDebug(QString("Move to RV tube position: %1").arg(targetPos));
+            LogDebug(QString("Move to RV tube position(after): %1").arg(targetPos));
             cmd->SetRVPosition(targetPos);
             m_SchedulerCommandProcessor->pushCmd(cmd);
         }

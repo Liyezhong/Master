@@ -65,6 +65,7 @@ class HeatingStrategy;
 
 typedef struct {
     QString stationID;       ///<  Definition/Declaration of variable stationID
+    QString nextStationID;   ///< Definition/Declaration of variable stationID
     int durationInSeconds;       ///<  Definition/Declaration of variable durationInSeconds
     int temperature;       ///<  Definition/Declaration of variable temperature
     bool isPressure;       ///<  Definition/Declaration of variable isPressure
@@ -206,10 +207,48 @@ typedef struct
         int m_delayTime;
         bool m_TempCheck;                                     ///< Temperature check passed or not
         bool m_IsInSoakDelay;                                 ///< Delay in Soak
+        bool m_AllProgramCount;                            ///< count the all program
+        QMap<QString, QString> m_ProgramStatusFileMap;        ///< the map of program status
     private:
         SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
         const SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
+
+        /****************************************************************************/
+        /**
+         * \brief CreateRebootFile.
+         * \param p_StatusFile = QFile
+         */
+        /****************************************************************************/
+        void CreateProgramStatusFile(QFile *p_StatusFile);
+
+        /****************************************************************************/
+        /**
+         * \brief ReadProgramStatusFile
+         * \param p_StatusFile = QFile
+         */
+        /****************************************************************************/
+        void ReadProgramStatusFile(QFile *p_StatusFile);
+
+        /****************************************************************************/
+        /**
+         * \brief UpdateProgramStatusFile
+         * \param key = QString
+         * \param value = QString
+         */
+        /****************************************************************************/
+        void UpdateProgramStatusFile(const QString& key, const QString& value);
+
+        /****************************************************************************/
+        /**
+         * \brief UpdateProgramStatusFile
+         * \param key = QString
+         * \param value = QString
+         * \return from QString
+         */
+        /****************************************************************************/
+        QString getTheProgramStatus(const QString& key);
+
         /****************************************************************************/
         /**
          * @brief Register commands.
