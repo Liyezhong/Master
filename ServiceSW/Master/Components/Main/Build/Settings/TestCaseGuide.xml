@@ -89,10 +89,7 @@
 	</SystemOverflow>
 	<SystemSpeaker Description="Speaker test">
 		<Guide>
-			<Step>Please listen the system speak (low volume)</Step>
-		</Guide>
-		<Guide>
-			<Step>Please listen the system speak (high volume)</Step>
+			<Step>Begin Speaker test</Step>
 		</Guide>
 	</SystemSpeaker>
 	<SystemExhaustFan Description="Exhaust fan test">

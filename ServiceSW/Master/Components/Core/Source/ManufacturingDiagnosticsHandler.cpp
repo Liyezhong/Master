@@ -1049,11 +1049,12 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_SPEAKER_TEST_SUCCESS;
-            for (int j = 0; j < 2 && Result && NextFlag; ++j) {
-                NextFlag = ShowGuide(Id, j);
-                if (!NextFlag) {
-                    break;
-                }
+            NextFlag = ShowGuide(Id, 0);
+            if (!NextFlag) {
+                break;
+            }
+            for (int j = 0; j < 2 && Result; ++j) {
+
                 emit PerformManufacturingTest(Id);
                 Result = GetTestResponse();
             }
