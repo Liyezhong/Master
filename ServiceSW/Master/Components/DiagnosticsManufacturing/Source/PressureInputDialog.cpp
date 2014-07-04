@@ -75,8 +75,8 @@ CPressureInputDialog::CPressureInputDialog(Service::ModuleTestCaseID Id, QWidget
 /****************************************************************************/
 CPressureInputDialog::~CPressureInputDialog()
 {
-    m_Timer->stop();
     try {
+        m_Timer->stop();
         delete m_Timer;
         delete mp_KeyBoardWidget;
         delete mp_Ui;
@@ -153,7 +153,6 @@ bool CPressureInputDialog::eventFilter(QObject *p_Object, QEvent *p_Event)
         // standard event processing
         return QObject::eventFilter(p_Object, p_Event);
     }
-    return false;
 }
 
 /****************************************************************************/
@@ -188,7 +187,7 @@ void CPressureInputDialog::OnOkClicked(QString EnteredString)
             dlg->HideButtons();
             dlg->SetButtonText(1, tr("Ok"));
 
-            dlg->exec();
+            (void)dlg->exec();
             delete dlg;
 
             mp_Ui->lineEdit->setFocus();

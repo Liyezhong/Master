@@ -1100,11 +1100,11 @@ void CStartup::RefreshTestStatus4SystemSpeaker(Service::ModuleTestCaseID Id, con
     else {
         mp_MessageBox->SetText(QString("Do you hear the system speak noice which is higher than the previous ?"));
     }
-    mp_MessageBox->SetButtonText(1, "YES");
-    mp_MessageBox->SetButtonText(3, "NO");
+    mp_MessageBox->SetButtonText(1, "No");
+    mp_MessageBox->SetButtonText(3, "Yes");
     mp_MessageBox->HideCenterButton();
 
-    if (mp_MessageBox->exec()) { // yes
+    if (!mp_MessageBox->exec()) { // yes
         mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
     }
     else {

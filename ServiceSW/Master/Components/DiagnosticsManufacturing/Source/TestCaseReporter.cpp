@@ -79,8 +79,8 @@ bool CTestCaseReporter::SendReportFile()
     mp_Process->start("ping", Params);
 
     QEventLoop loop;
-    loop.connect(mp_Process, SIGNAL(finished(int)), &loop, SLOT(quit()));
-    loop.exec();
+    (void)loop.connect(mp_Process, SIGNAL(finished(int)), &loop, SLOT(quit()));
+    (void)loop.exec();
     if (mp_Process->exitCode() || mp_Process->exitStatus()) {
         qDebug()<<"ping error.";
         return false;
@@ -95,9 +95,6 @@ bool CTestCaseReporter::SendReportFile()
         qDebug()<<"CTestCaseReporter:: send report file failed.";
         return false;
     }
-
-    return true;
-
 }
 
 void CTestCaseReporter::FillReportFile(QTextStream& TextStream)

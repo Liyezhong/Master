@@ -86,7 +86,7 @@ void CSealingTestReportDialog::OnButtonClicked()
         PerformManufacturingTest(Service::TEST_ABORT, Service::SYSTEM_SEALING_TEST);
     }
 
-    this->close();
+    (void)this->close();
 }
 
 void CSealingTestReportDialog::InitLableGroup()

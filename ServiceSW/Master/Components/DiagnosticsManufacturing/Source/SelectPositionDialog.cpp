@@ -118,7 +118,6 @@ bool CSelectPositionDialog::eventFilter(QObject *p_Object, QEvent *p_Event)
         // standard event processing
         return QObject::eventFilter(p_Object, p_Event);
     }
-    return false;
 }
 
 /****************************************************************************/
