@@ -846,7 +846,6 @@ void HeatingStrategy::StartRVOutletHeatingOTCalculation()
         if (iter->ScenarioList.indexOf(m_CurScenario) != -1)
         {
             m_RV_2_Outlet.curModuleId = iter->Id;
-            //find whether to need to check over time
             if( -1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario) )
             {
                 mp_SchedulerController->LogDebug(QString("statrt RV sensor2 heating Calculation scenario:%1").arg(m_CurScenario));
@@ -1247,11 +1246,14 @@ bool HeatingStrategy::CheckRVOutletHeatingOverTime(qreal HWTemp)
     {
         if (-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario))
         {
+        if(-1 != m_RV_2_Outlet.functionModuleList[m_RV_2_Outlet.needCheckOTModuleId].ScenarioList.indexOf(m_CurScenario) )
+        {
             if (HWTemp < mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath())
             {
                 int retTmp = mp_DataManager->GetUserSettings()->GetTemperatureParaffinBath();
                 mp_SchedulerController->LogDebug(QString("RVoutlet heat over time, the current temp:%1, but the hope temp:%2").arg(HWTemp).arg(retTmp));
                 return false;
+            }
             }
         }
     }
