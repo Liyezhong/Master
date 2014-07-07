@@ -189,7 +189,12 @@ void CRetort::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     QList<QStandardItem *> itemList;
 
     QStandardItem *itemCheckFlag = new QStandardItem;
-    itemCheckFlag->setData(Qt::Checked, (int)Qt::CheckStateRole);
+    if (Id == Service::RETORT_LEVEL_SENSOR_HEATING) {
+        itemCheckFlag->setData(Qt::Unchecked, (int)Qt::CheckStateRole);
+    }
+    else {
+        itemCheckFlag->setData(Qt::Checked, (int)Qt::CheckStateRole);
+    }
     itemCheckFlag->setEditable(true);
     itemCheckFlag->setSelectable(true);
     itemCheckFlag->setCheckable(true);

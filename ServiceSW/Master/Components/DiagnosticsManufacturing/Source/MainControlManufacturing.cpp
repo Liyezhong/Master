@@ -58,7 +58,6 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     mp_Ui->eboxSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
-    //SetLineEditText(QString("14-HIM-WB-XXXXX"));
     mp_Ui->eboxSNEdit->setText(m_MainControlSNString);
 
     m_TestReport.insert("ModuleName", "MainControl");
@@ -215,25 +214,6 @@ void CMainControl::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
                                                     << QApplication::translate("DiagnosticsManufacturing::CMainControl", "Tests", 0, QApplication::UnicodeUTF8)
                                                     << "");
     m_Model.appendRow(ItemList);
-}
-
-/****************************************************************************/
-/*!
- *  \brief  Sets serial number for sub-module
- *  \iparam SubMoudleName = the name of sub-module, SerialNumber = serial number of sub-module
- */
-/****************************************************************************/
-void CMainControl::SetSubModuleSN(QString SubMoudleName, QString SerialNumber)
-{
-    if (mp_Module && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
-        ServiceDataManager::CSubModule* p_SubModule = mp_Module->GetSubModuleInfo(SubMoudleName);
-        if (p_SubModule && p_SubModule->UpdateParameterInfo("SerialNumber", SerialNumber)) {
-            emit UpdateModule(*mp_Module);
-        }
-        else {
-            qDebug()<<"CMainControl :Set submodule serial number error.";
-        }
-    }
 }
 
 /****************************************************************************/

@@ -93,24 +93,6 @@ private:
     /****************************************************************************/
     void AddItem(quint8 Index, Service::ModuleTestCaseID_t Id);
 
-    /****************************************************************************/
-    /*!
-     *  \brief  Sets the Line edit string text
-     *  \iparam Value = Serial number of the module
-     */
-    /****************************************************************************/
-    void SetLineEditText(QString Value) {
-        m_LineEditString = Value;
-    }
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Sets serial number for sub-module
-     *  \iparam SubMoudleName = the name of sub-module, SerialNumber = serial number of sub-module
-     */
-    /****************************************************************************/
-    void SetSubModuleSN(QString SubMoudleName, QString SerialNumber);
-
 protected:
     /****************************************************************************/
     /*!
