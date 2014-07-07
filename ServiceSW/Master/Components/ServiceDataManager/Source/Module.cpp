@@ -404,7 +404,7 @@ bool CModule::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Complet
     SetOperatingHours(XmlStreamReader.readElementText());
 
     //Operating Hrs
-    if (!DataManager::Helper::ReadNode(XmlStreamReader, "DateOfProduction")) {
+    if (!DataManager::Helper::ReadNode(XmlStreamReader, "DateOfExchange")) {
         qDebug() << "DeserializeContent: abort reading. Node not found: DateOfProduction";
         return false;
     }
@@ -441,7 +441,7 @@ bool CModule::SerializeContent(QXmlStreamWriter &XmlStreamWriter, bool CompleteD
     XmlStreamWriter.writeCharacters(GetOperatingHours());
     XmlStreamWriter.writeEndElement(); // OperatingHours
 
-    XmlStreamWriter.writeStartElement("DateOfProduction");
+    XmlStreamWriter.writeStartElement("DateOfExchange");
     XmlStreamWriter.writeCharacters(GetDateOfProduction());
     XmlStreamWriter.writeEndElement(); // DateOfProduction
 

@@ -99,7 +99,12 @@ void CCurrentConfigParameterDlg::changeEvent(QEvent *p_Event)
 /****************************************************************************/
 void CCurrentConfigParameterDlg::InitDialog(ServiceDataManager::Parameter_t *p_Parameter)
 {
-    AddItem(p_Parameter->ParameterName, p_Parameter->ParameterValue);
+    if (p_Parameter->ParameterName == "OperationTime" || p_Parameter->ParameterName == "OperationCycles") {
+        AddItem(p_Parameter->ParameterName, p_Parameter->ParameterValue + " " + p_Parameter->ParameterUnit);
+    }
+    else {
+        AddItem(p_Parameter->ParameterName, p_Parameter->ParameterValue);
+    }
 }
 
 /****************************************************************************/

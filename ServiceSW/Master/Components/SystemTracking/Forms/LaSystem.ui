@@ -83,14 +83,14 @@
       <item row="1" column="3">
        <widget class="QPushButton" name="modifyHeatingBelt2">
         <property name="text">
-         <string>Heating Belt 2</string>
+         <string>Air Heating Tube</string>
         </property>
        </widget>
       </item>
       <item row="7" column="1">
        <widget class="QPushButton" name="modifyHeatingBelt1">
         <property name="text">
-         <string>Heating Belt 1</string>
+         <string>Liquid Heating Tube</string>
         </property>
        </widget>
       </item>

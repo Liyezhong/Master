@@ -149,7 +149,7 @@ void CDlgModifySubModule::UpdateGUI(void)
         return;
     }
 
-    const QString DateOfProductionName("DateOfProduction");
+    const QString DateOfProductionName("DateOfExchange");
     ServiceDataManager::Parameter_t *ParamDOP =
             mp_SubModule->GetParameterInfo(DateOfProductionName);
     if (0 == ParamDOP)
@@ -172,6 +172,9 @@ void CDlgModifySubModule::UpdateGUI(const QString &SerialNumber,
                                     const QDate &DateOfProduction)
 {
     mp_Ui->pushSerialNumber->setText(SerialNumber);
+    if (SerialNumber == "N/A") {
+        mp_Ui->pushSerialNumber->setEnabled(false);
+    }
 
     mp_DayWheel->SetCurrentData(DateOfProduction.day());
     mp_MonthWheel->SetCurrentData(DateOfProduction.month());
@@ -232,7 +235,7 @@ void CDlgModifySubModule::OnSave(void)
     }
 
     const QString SerialNumberName("SerialNumber");
-    const QString DateOfProductionName("DateOfProduction");
+    const QString DateOfProductionName("DateOfExchange");
 
     mp_SubModule->UpdateParameterInfo(SerialNumberName, SerialNumber);
     mp_SubModule->UpdateParameterInfo(DateOfProductionName,

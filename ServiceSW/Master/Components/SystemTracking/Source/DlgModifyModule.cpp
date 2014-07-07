@@ -148,6 +148,10 @@ void CDlgModifyModule::UpdateGUI(const QString &SerialNumber,
                                  const QDate &DateOfProduction)
 {
     mp_Ui->pushSerialNumber->setText(SerialNumber);
+    qDebug() << "[yuan-yuan] serial number: " << SerialNumber;
+    if (SerialNumber == "N/A") {
+        mp_Ui->pushSerialNumber->setEnabled(false);
+    }
 
     mp_DayWheel->SetCurrentData(DateOfProduction.day());
     mp_MonthWheel->SetCurrentData(DateOfProduction.month());
@@ -168,7 +172,7 @@ void CDlgModifyModule::OnSave(void)
 
     if (!Date.isValid())
     {
-        mp_MessageDlg->SetTitle(tr("Date of Production"));
+        mp_MessageDlg->SetTitle(tr("Date of Exchange"));
         mp_MessageDlg->SetButtonText(1, tr("OK"));
         mp_MessageDlg->HideButtons();
         mp_MessageDlg->SetText(tr("Date is invalid."
@@ -182,10 +186,10 @@ void CDlgModifyModule::OnSave(void)
     QDate Now = QDate::currentDate();
     if (Date > Now)
     {
-        mp_MessageDlg->SetTitle(tr("Date of Production"));
+        mp_MessageDlg->SetTitle(tr("Date of Exchange"));
         mp_MessageDlg->SetButtonText(1, tr("OK"));
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(tr("Date of Production shall not be later "
+        mp_MessageDlg->SetText(tr("Date of Exchange shall not be later "
                                   "than %1").arg(Now.toString(Qt::ISODate)));
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         mp_MessageDlg->show();
