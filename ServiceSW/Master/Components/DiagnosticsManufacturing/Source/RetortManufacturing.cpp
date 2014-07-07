@@ -50,6 +50,7 @@ CRetort::CRetort(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     , mp_Ui(new Ui::CRetortManufacturing)
     , mp_MessageDlg(NULL)
     , mp_Module(NULL)
+    , m_RetortSNString("041/XXXX")
     , m_FinalTestResult("NA")
 {
     mp_Ui->setupUi(this);
@@ -57,9 +58,8 @@ CRetort::CRetort(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     mp_Ui->retortSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
-    SetLineEditText(QString("14-HIM-RT-XXXXX"));
 
-    mp_Ui->retortSNEdit->setText("14-HIM-RT-XXXXX");
+    mp_Ui->retortSNEdit->setText(m_RetortSNString);
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
 
@@ -165,8 +165,8 @@ bool CRetort::eventFilter(QObject *p_Object, QEvent *p_Event)
                                                            "Enter Serial Number", 0, QApplication::UnicodeUTF8));
         mp_KeyBoardWidget->SetPasswordMode(false);
         mp_KeyBoardWidget->SetValidation(true);
-        mp_KeyBoardWidget->SetMinCharLength(5);
-        mp_KeyBoardWidget->SetMaxCharLength(5);
+        mp_KeyBoardWidget->SetMinCharLength(4);
+        mp_KeyBoardWidget->SetMaxCharLength(4);
         mp_KeyBoardWidget->DisplayNumericKeyBoard();
         // ^ and $ is used for any character. * is used to enter multiple characters
         // [0-9] is used to allow user to enter only 0 to 9 digits
@@ -189,7 +189,7 @@ void CRetort::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     QList<QStandardItem *> itemList;
 
     QStandardItem *itemCheckFlag = new QStandardItem;
-    if (Id == Service::RETORT_LEVEL_SENSOR_HEATING) {
+    if (Id == Service::RETORT_LEVEL_SENSOR_HEATING && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_STATIONTEST) {
         itemCheckFlag->setData(Qt::Unchecked, (int)Qt::CheckStateRole);
     }
     else {
@@ -230,23 +230,16 @@ void CRetort::OnOkClicked(const QString& EnteredString)
 {
 
     mp_KeyBoardWidget->hide();
-    m_LineEditString.chop(5);
-    m_LineEditString.append(EnteredString.simplified());
+    m_RetortSNString.chop(4);
+    m_RetortSNString.append(EnteredString.simplified());
 
-    mp_Ui->retortSNEdit->setText(m_LineEditString);
+    mp_Ui->retortSNEdit->setText(m_RetortSNString);
 
-    /*if (m_TestNames.contains("SerialNumber")) {
-        m_TestReport.remove("SerialNumber");
-        m_TestReport.insert("SerialNumber", m_LineEditString);
-    } else {
-        m_TestNames.append("SerialNumber");
-        m_TestReport.insert("SerialNumber", m_LineEditString);
-    }*/
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 
     if (mp_Module && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
-        mp_Module->SetSerialNumber(m_LineEditString);
+        mp_Module->SetSerialNumber(m_RetortSNString);
         emit UpdateModule(*mp_Module);
     }
 }
@@ -297,7 +290,7 @@ void CRetort::BeginTest()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_RETORT_TEST_REQUESTED);
 
-    if (mp_Ui->retortSNEdit->text().endsWith("XXXXX")) {
+    if (mp_Ui->retortSNEdit->text().endsWith("XXXX")) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRetort",
@@ -390,7 +383,7 @@ void CRetort::EnableButton(bool EnableFlag)
 void CRetort::SendTestReport()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_SENDTESTREPORT_REQUESTED);
-    if (m_LineEditString.endsWith("XXXXX")) {
+    if (m_RetortSNString.endsWith("XXXX")) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRetort",

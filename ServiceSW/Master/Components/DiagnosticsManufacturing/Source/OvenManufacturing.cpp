@@ -31,7 +31,7 @@
 
 namespace DiagnosticsManufacturing {
 
-const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,5}$"; //!< Reg expression for the validator
+const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,4}$"; //!< Reg expression for the validator
 const int FIXED_LINEEDIT_WIDTH = 241;           ///< Fixed line edit width
 const int SET_FIXED_TABLE_WIDTH = 500;          ///< Set table width
 const int SET_FIXED_TABLE_HEIGHT = 280;         ///< Set table height
@@ -48,10 +48,10 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
     : mp_DataConnector(p_DataConnector)
     , mp_MainWindow(p_Parent)
     , mp_Ui(new Ui::COvenManufacturing)
-    , mp_TestReport(NULL)
     , mp_MessageDlg(NULL)
     , mp_WaitDlg(NULL)
     , mp_Module(NULL)
+    , m_OvenSNString("042/XXXX")
     , m_FinalTestResult("NA")
 {
     mp_Ui->setupUi(this);
@@ -59,15 +59,8 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
     mp_Ui->ovenSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
-    SetLineEditText(QString("14-HIM-WB-XXXXX"));
 
-    mp_Ui->ovenSNEdit->setText("14-HIM-WB-XXXXX");
-
-    m_TestReport.insert("ModuleName", "Oven");
-    m_TestNames.append("ModuleName");
-
-    m_TestReport.insert("SerialNumber", "");
-    m_TestNames.append("SerialNumber");
+    mp_Ui->ovenSNEdit->setText(m_OvenSNString);
 
     m_TestResult << "NA" << "NA";
 
@@ -177,8 +170,8 @@ bool COven::eventFilter(QObject *p_Object, QEvent *p_Event)
                                                            "Enter Serial Number", 0, QApplication::UnicodeUTF8));
         mp_KeyBoardWidget->SetPasswordMode(false);
         mp_KeyBoardWidget->SetValidation(true);
-        mp_KeyBoardWidget->SetMinCharLength(5);
-        mp_KeyBoardWidget->SetMaxCharLength(5);
+        mp_KeyBoardWidget->SetMinCharLength(4);
+        mp_KeyBoardWidget->SetMaxCharLength(4);
         mp_KeyBoardWidget->DisplayNumericKeyBoard();
         // ^ and $ is used for any character. * is used to enter multiple characters
         // [0-9] is used to allow user to enter only 0 to 9 digits
@@ -237,23 +230,16 @@ void COven::OnOkClicked(const QString& EnteredString)
 {
 
     mp_KeyBoardWidget->hide();
-    m_LineEditString.chop(5);
-    m_LineEditString.append(EnteredString.simplified());
+    m_OvenSNString.chop(4);
+    m_OvenSNString.append(EnteredString.simplified());
 
-    mp_Ui->ovenSNEdit->setText(m_LineEditString);
+    mp_Ui->ovenSNEdit->setText(m_OvenSNString);
 
-    if (m_TestNames.contains("SerialNumber")) {
-        m_TestReport.remove("SerialNumber");
-        m_TestReport.insert("SerialNumber", m_LineEditString);
-    } else {
-        m_TestNames.append("SerialNumber");
-        m_TestReport.insert("SerialNumber", m_LineEditString);
-    }
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 
     if (mp_Module && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
-        mp_Module->SetSerialNumber(m_LineEditString);
+        mp_Module->SetSerialNumber(m_OvenSNString);
         emit UpdateModule(*mp_Module);
     }
 }
@@ -304,7 +290,7 @@ void COven::BeginTest()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_OVEN_TEST_REQUESTED);
 
-    if (mp_Ui->ovenSNEdit->text().endsWith("XXXXX")) {
+    if (mp_Ui->ovenSNEdit->text().endsWith("XXXX")) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::COven",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::COven",
@@ -402,7 +388,7 @@ void COven::SendTestReport()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_OVEN_SENDTESTREPORT_REQUESTED);
 
-    mp_TestReporter->SetSerialNumber(m_LineEditString);
+    mp_TestReporter->SetSerialNumber(m_OvenSNString);
 
     if (mp_TestReporter->GenReportFile()) {
         mp_WaitDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",

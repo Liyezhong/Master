@@ -97,16 +97,6 @@ private:
     /****************************************************************************/
     void AddItem(quint8 Index, Service::ModuleTestCaseID_t Id);
 
-    /****************************************************************************/
-    /*!
-     *  \brief  Sets the Line edit string text
-     *  \iparam Value = Serial number of the module
-     */
-    /****************************************************************************/
-    void SetLineEditText(QString Value) {
-        m_LineEditString = Value;
-    }
-
 protected:
     /****************************************************************************/
     /*!
@@ -134,14 +124,8 @@ private:
     MainMenu::CBaseTable *mp_TableWidget;       //!< Base Table widget
     QStandardItemModel m_Model;                 //!< Model for the table
     ServiceDataManager::CModule* mp_Module;     //!< Module information
-    QString m_LineEditString;                   //!< Stores serial number string
     QString m_OvenSNString;                     //!< Stores serial number of Oven module
-    QString m_HeaterSNString;                   //!< Stores serial number of Heater sub-module
-    QString m_CoverSensorSNString;              //!< Stores serial number of Cover sensor sub-module
-    KeyBoard::CKeyBoard *mp_KeyBoardWidget;     //!< Keyboard widget
-    QHash<QString, QString> m_TestReport;       //!< Test report
-    QList<QString> m_TestNames;                 //!< List of test names   
-    DiagnosticsManufacturing::CTestReportGeneration *mp_TestReport;     //!< Test report generation object
+    KeyBoard::CKeyBoard *mp_KeyBoardWidget;     //!< Keyboard widget 
     DiagnosticsManufacturing::CTestCaseReporter* mp_TestReporter;       //!< Test report generation object
     QStringList m_TestResult;                                           //!< StringList stores test result
     MainMenu::CMessageDlg *mp_MessageDlg;                               //!< Information dialog

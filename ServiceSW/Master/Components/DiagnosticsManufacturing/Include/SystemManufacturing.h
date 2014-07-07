@@ -91,16 +91,6 @@ private:
     /****************************************************************************/
     void AddItem(quint8 Index, Service::ModuleTestCaseID_t Id);
 
-    /****************************************************************************/
-    /*!
-     *  \brief  Sets the Line edit string text
-     *  \iparam Value = Serial number of the module
-     */
-    /****************************************************************************/
-    void SetLineEditText(QString Value) {
-        m_LineEditString = Value;
-    }
-
 protected:
     /****************************************************************************/
     /*!
@@ -127,12 +117,8 @@ private:
     Ui::CSystemManufacturing *mp_Ui;            //!< User Interface
     MainMenu::CBaseTable *mp_TableWidget;       //!< Base Table widget
     QStandardItemModel m_Model;                 //!< Model for the table
-    ServiceDataManager::CModule* mp_Module;     //!< Module information
-    QString m_LineEditString;                   //!< Stores serial number string
     QString m_SystemSNString;                   //!< Stores serial number of System module
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;     //!< Keyboard widget
-    QHash<QString, QString> m_TestReport;       //!< Test report
-    QList<QString> m_TestNames;                 //!< List of test names
     MainMenu::CMessageDlg *mp_MessageDlg;                               //!< Information dialog
     QString m_FinalTestResult;                                          //!< Stores Final test result
 
@@ -160,10 +146,10 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief Signal emitted for update module
+     *  \brief Signal emitted for update serial number to device configuration
      */
     /****************************************************************************/
-    void UpdateModule(ServiceDataManager::CModule&);
+    void UpdateDeviceConfiguration();
 
 private slots:
     /****************************************************************************/

@@ -121,17 +121,16 @@ void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
     if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
         mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                        "Display", 0, QApplication::UnicodeUTF8), mp_DisplayManuf);
-    }
-
-    mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                       "Oven", 0, QApplication::UnicodeUTF8), mp_OvenManuf);
-    mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                                               "Rotary Valve", 0, QApplication::UnicodeUTF8), mp_RotaryValveManuf);
-    mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                       "Retort", 0, QApplication::UnicodeUTF8), mp_RetortManuf);
-    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
         mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                        "Main Control", 0, QApplication::UnicodeUTF8), mp_MainControlManuf);
+    }
+    mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                       "Retort", 0, QApplication::UnicodeUTF8), mp_RetortManuf);
+    mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                       "Paraffin Oven", 0, QApplication::UnicodeUTF8), mp_OvenManuf);
+    mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                                               "Rotary Valve", 0, QApplication::UnicodeUTF8), mp_RotaryValveManuf);
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
         mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                        "System", 0, QApplication::UnicodeUTF8), mp_SystemManuf);
         mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",

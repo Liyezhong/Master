@@ -31,7 +31,7 @@
 
 namespace DiagnosticsManufacturing {
 
-const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,5}$"; //!< Reg expression for the validator
+const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,4}$"; //!< Reg expression for the validator
 const int FIXED_LINEEDIT_WIDTH = 241;           ///< Fixed line edit width
 const int SET_FIXED_TABLE_WIDTH = 500;          ///< Set table width
 const int SET_FIXED_TABLE_HEIGHT = 360;         ///< Set table height
@@ -49,7 +49,7 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     , mp_MainWindow(p_Parent)
     , mp_Ui(new Ui::CSystemManufacturing)
     , mp_MessageDlg(NULL)
-    , mp_Module(NULL)
+    , m_SystemSNString("XXXX/MM.YYYY")
     , m_FinalTestResult("NA")
 {
     mp_Ui->setupUi(this);
@@ -57,9 +57,8 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     mp_Ui->systemSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
-    SetLineEditText(QString("14-HIM-LA-XXXXX"));
 
-    mp_Ui->systemSNEdit->setText("14-HIM-LA-XXXXX");
+    mp_Ui->systemSNEdit->setText(m_SystemSNString);
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
 
@@ -98,14 +97,10 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
 
-    if (mp_DataConnector->GetModuleListContainer()) {
-        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("System");
-    }
-
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
     CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, ResetTestStatus());
-    CONNECTSIGNALSLOTGUI(this, UpdateModule(ServiceDataManager::CModule&), mp_DataConnector, SendModuleUpdate(ServiceDataManager::CModule&));
+    CONNECTSIGNALSIGNALGUI(this, UpdateDeviceConfiguration(), mp_DataConnector, DeviceConfigurationInterfaceChanged());
 }
 
 /****************************************************************************/
@@ -166,8 +161,8 @@ bool CSystem::eventFilter(QObject *p_Object, QEvent *p_Event)
                                                            "Enter Serial Number", 0, QApplication::UnicodeUTF8));
         mp_KeyBoardWidget->SetPasswordMode(false);
         mp_KeyBoardWidget->SetValidation(true);
-        mp_KeyBoardWidget->SetMinCharLength(5);
-        mp_KeyBoardWidget->SetMaxCharLength(5);
+        mp_KeyBoardWidget->SetMinCharLength(4);
+        mp_KeyBoardWidget->SetMaxCharLength(4);
         mp_KeyBoardWidget->DisplayNumericKeyBoard();
         // ^ and $ is used for any character. * is used to enter multiple characters
         // [0-9] is used to allow user to enter only 0 to 9 digits
@@ -227,25 +222,25 @@ void CSystem::OnOkClicked(const QString& EnteredString)
 {
 
     mp_KeyBoardWidget->hide();
-    m_LineEditString.chop(5);
-    m_LineEditString.append(EnteredString.simplified());
+    QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
+    QString CurrentDateTime = DateTime.toString("MM.yyyy");
+    m_SystemSNString = EnteredString + "/" + CurrentDateTime;
 
-    mp_Ui->systemSNEdit->setText(m_LineEditString);
+    mp_Ui->systemSNEdit->setText(m_SystemSNString);
 
-    /*if (m_TestNames.contains("SerialNumber")) {
-        m_TestReport.remove("SerialNumber");
-        m_TestReport.insert("SerialNumber", m_LineEditString);
-    } else {
-        m_TestNames.append("SerialNumber");
-        m_TestReport.insert("SerialNumber", m_LineEditString);
-    }*/
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 
-    if (mp_Module && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
-        mp_Module->SetSerialNumber(m_LineEditString);
-        emit UpdateModule(*mp_Module);
+    /*
+    DataManager::CDeviceConfigurationInterface* DevConfigurationInterface = mp_DataConnector->GetDeviceConfigInterface();
+    if (DevConfigurationInterface) {
+        DataManager::CDeviceConfiguration* DevConfiguration = DevConfigurationInterface->GetDeviceConfiguration();
+        if (DevConfiguration) {
+            DevConfiguration->SetValue("SERIALNUMBER", m_SystemSNString);
+            emit UpdateDeviceConfiguration();
+        }
     }
+    */
 }
 
 /****************************************************************************/
@@ -294,7 +289,7 @@ void CSystem::BeginTest()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_SYSTEM_TEST_REQUESTED);
 
-    if (mp_Ui->systemSNEdit->text().endsWith("XXXXX")) {
+    if (mp_Ui->systemSNEdit->text().startsWith("XXXX")) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CSystem",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CSystem",
@@ -390,7 +385,7 @@ void CSystem::EnableButton(bool EnableFlag)
 void CSystem::SendTestReport()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_SENDTESTREPORT_REQUESTED);
-    if (m_LineEditString.endsWith("XXXXX")) {
+    if (m_SystemSNString.startsWith("XXXX")) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CSystem",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CSystem",

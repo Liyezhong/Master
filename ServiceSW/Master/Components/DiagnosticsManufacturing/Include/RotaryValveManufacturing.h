@@ -92,16 +92,6 @@ private:
     /****************************************************************************/
     void AddItem(quint8 Index, Service::ModuleTestCaseID_t Id);
 
-    /****************************************************************************/
-    /*!
-     *  \brief  Sets the Line edit string text
-     *  \iparam Value = Serial number of the module
-     */
-    /****************************************************************************/
-    void SetLineEditText(QString Value) {
-        m_LineEditString = Value;
-    }
-
 protected:
     /****************************************************************************/
     /*!
@@ -129,15 +119,8 @@ private:
     MainMenu::CBaseTable *mp_TableWidget;       //!< Base Table widget
     QStandardItemModel m_Model;                 //!< Model for the table
     ServiceDataManager::CModule* mp_Module;     //!< Module information
-    QString m_LineEditString;                   //!< Stores serial number string
     QString m_RVSNString;                       //!< Stores serial number of Rotary valve module
-    QString m_InitializeSNString;               //!< Stores serial number of Initialize sub-module
-    QString m_SelectingSNString;                //!< Stores serial number of Selecting function sub-module
-    QString m_SealingSNString;                  //!< Stores serial number of Sealing function sub-module
-    QString m_HeaterPropertySNString;           //!< Stores serial number of Heater property function sub-module
-    KeyBoard::CKeyBoard *mp_KeyBoardWidget;     //!< Keyboard widget
-    QHash<QString, QString> m_TestReport;       //!< Test report
-    QList<QString> m_TestNames;                 //!< List of test names   
+    KeyBoard::CKeyBoard *mp_KeyBoardWidget;     //!< Keyboard widget   
     DiagnosticsManufacturing::CTestReportGeneration *mp_TestReport;     //!< Test report generation object
     QStringList m_TestResult;                                           //!< StringList stores test result
     MainMenu::CMessageDlg *mp_MessageDlg;                               //!< Information dialog

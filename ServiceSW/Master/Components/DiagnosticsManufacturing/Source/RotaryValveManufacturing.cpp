@@ -30,7 +30,7 @@
 
 namespace DiagnosticsManufacturing {
 
-const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,5}$"; //!< Reg expression for the validator
+const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,4}$"; //!< Reg expression for the validator
 const int FIXED_LINEEDIT_WIDTH = 241;           ///< Fixed line edit width
 const int SET_FIXED_TABLE_WIDTH = 500;          ///< Set table width
 const int SET_FIXED_TABLE_HEIGHT = 280;         ///< Set table height
@@ -50,6 +50,7 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     , mp_TestReport(NULL)
     , mp_MessageDlg(NULL)
     , mp_Module(NULL)
+    , m_RVSNString("043/XXXX")
     , m_FinalTestResult("NA")
 {
     mp_Ui->setupUi(this);
@@ -57,17 +58,8 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     mp_Ui->rvSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
-    SetLineEditText(QString("14-HIM-RV-XXXXX"));
 
-    mp_Ui->rvSNEdit->setText("14-HIM-RV-XXXXX");
-
-    m_TestReport.insert("ModuleName", "Rotary Valve");
-    m_TestNames.append("ModuleName");
-
-    m_TestReport.insert("SerialNumber", "");
-    m_TestNames.append("SerialNumber");
-
-    m_TestResult << "NA" << "NA";
+    mp_Ui->rvSNEdit->setText(m_RVSNString);
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
 
@@ -171,8 +163,8 @@ bool CRotaryValve::eventFilter(QObject *p_Object, QEvent *p_Event)
                                                            "Enter Serial Number", 0, QApplication::UnicodeUTF8));
         mp_KeyBoardWidget->SetPasswordMode(false);
         mp_KeyBoardWidget->SetValidation(true);
-        mp_KeyBoardWidget->SetMinCharLength(5);
-        mp_KeyBoardWidget->SetMaxCharLength(5);
+        mp_KeyBoardWidget->SetMinCharLength(4);
+        mp_KeyBoardWidget->SetMaxCharLength(4);
         mp_KeyBoardWidget->DisplayNumericKeyBoard();
         // ^ and $ is used for any character. * is used to enter multiple characters
         // [0-9] is used to allow user to enter only 0 to 9 digits
@@ -231,23 +223,16 @@ void CRotaryValve::OnOkClicked(const QString& EnteredString)
 {
 
     mp_KeyBoardWidget->hide();
-    m_LineEditString.chop(5);
-    m_LineEditString.append(EnteredString.simplified());
+    m_RVSNString.chop(4);
+    m_RVSNString.append(EnteredString.simplified());
 
-    mp_Ui->rvSNEdit->setText(m_LineEditString);
+    mp_Ui->rvSNEdit->setText(m_RVSNString);
 
-    if (m_TestNames.contains("SerialNumber")) {
-        m_TestReport.remove("SerialNumber");
-        m_TestReport.insert("SerialNumber", m_LineEditString);
-    } else {
-        m_TestNames.append("SerialNumber");
-        m_TestReport.insert("SerialNumber", m_LineEditString);
-    }
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 
     if (mp_Module && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
-        mp_Module->SetSerialNumber(m_LineEditString);
+        mp_Module->SetSerialNumber(m_RVSNString);
         emit UpdateModule(*mp_Module);
     }
 }
@@ -297,7 +282,7 @@ void CRotaryValve::DisconnectKeyBoardSignalSlots()
 void CRotaryValve::BeginTest()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_ROTARYVALVE_TEST_REQUESTED);
-    if (mp_Ui->rvSNEdit->text().endsWith("XXXXX")) {
+    if (mp_Ui->rvSNEdit->text().endsWith("XXXX")) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
                                                          "Serial Number", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRotaryValve",

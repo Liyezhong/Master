@@ -16,7 +16,7 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>10</y>
      <width>561</width>
      <height>71</height>
@@ -52,19 +52,19 @@
      <rect>
       <x>10</x>
       <y>31</y>
-      <width>39</width>
+      <width>101</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>Oven:</string>
+     <string>Paraffin Oven:</string>
     </property>
    </widget>
   </widget>
   <widget class="MainMenu::CScrollTable" name="widget" native="true">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>130</y>
      <width>561</width>
      <height>111</height>
@@ -76,7 +76,7 @@
     <rect>
      <x>10</x>
      <y>400</y>
-     <width>571</width>
+     <width>561</width>
      <height>41</height>
     </rect>
    </property>
