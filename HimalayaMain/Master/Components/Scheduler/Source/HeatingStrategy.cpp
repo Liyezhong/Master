@@ -444,7 +444,7 @@ quint16 HeatingStrategy::CheckTemperatureOverTime(const QString& HeaterName, qre
             return 1; //failed
         }
 
-        if (HWTemp <= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].OTTargetTemperature)
+        if (HWTemp >= m_RTLevelSensor.functionModuleList[m_RTLevelSensor.curModuleId].OTTargetTemperature)
         {
             return 2; //pass
         }

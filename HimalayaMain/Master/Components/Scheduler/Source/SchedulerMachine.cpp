@@ -145,7 +145,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RC_Levelsensor_Heating_Overtime related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcLevelsensorHeatingOvertime()), mp_ErrorRcLevelSensorHeatingOvertimeState.data());
-    CONNECTSIGNALSLOT(mp_ErrorRcLevelSensorHeatingOvertimeState.data(), entered(), this, RestartLevelSensorTempControl());
     mp_ErrorRcLevelSensorHeatingOvertimeState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
 

@@ -212,6 +212,10 @@ bool CRsStandbyWithTissue::CheckTempModulesCurrent()
     default:
         break;
     }
+
+    mp_SchedulerController->LogDebug(QString("Report Error 1instance ID is %1").arg(reportError1.instanceID));
+    mp_SchedulerController->LogDebug(QString("Report Error 1instance ID is %1").arg(reportError2.instanceID));
+
     if (reportError1.instanceID != 0 && reportError1.errorTime.toMSecsSinceEpoch() >= m_ShutdownHeatersTime)
     {
         return false;
@@ -221,12 +225,17 @@ bool CRsStandbyWithTissue::CheckTempModulesCurrent()
     {
         return false;
     }
+
 
     // For Retort Bottom and Side
     memset(&reportError1, 0, sizeof(reportError1));
     memset(&reportError2, 0, sizeof(reportError2));
     reportError1 = mp_SchedulerController->GetSchedCommandProcessor()->GetSlaveModuleReportError("Retort", RT_BOTTOM);
     reportError2 = mp_SchedulerController->GetSchedCommandProcessor()->GetSlaveModuleReportError("Retort", RT_SIDE);
+
+    mp_SchedulerController->LogDebug(QString("Retort Report Error 1instance ID is %1").arg(reportError1.instanceID));
+    mp_SchedulerController->LogDebug(QString("Retort Report Error 1instance ID is %1").arg(reportError2.instanceID));
+
     if (reportError1.instanceID != 0 && reportError1.errorTime.toMSecsSinceEpoch() >= m_ShutdownHeatersTime)
     {
         return false;
@@ -236,6 +245,8 @@ bool CRsStandbyWithTissue::CheckTempModulesCurrent()
     {
         return false;
     }
+
+
     return true;
 }
 
