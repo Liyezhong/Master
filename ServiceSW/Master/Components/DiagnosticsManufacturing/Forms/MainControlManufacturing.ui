@@ -17,19 +17,31 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>0</y>
+     <y>10</y>
      <width>561</width>
-     <height>181</height>
+     <height>71</height>
     </rect>
+   </property>
+   <property name="locale">
+    <locale language="English" country="UnitedStates"/>
    </property>
    <property name="title">
     <string>Serial Number</string>
    </property>
-   <widget class="QLineEdit" name="mcSNEdit">
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <widget class="QLineEdit" name="eboxSNEdit">
     <property name="geometry">
      <rect>
       <x>210</x>
-      <y>25</y>
+      <y>30</y>
       <width>241</width>
       <height>27</height>
      </rect>
@@ -39,105 +51,13 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>25</y>
+      <y>31</y>
       <width>101</width>
-      <height>27</height>
+      <height>17</height>
      </rect>
     </property>
     <property name="text">
      <string>Main Control:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>55</y>
-      <width>101</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Touch Screen:</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="tsSNEdit">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>55</y>
-      <width>241</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>85</y>
-      <width>66</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>ASB3:</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="asb3SNEdit">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>85</y>
-      <width>241</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>115</y>
-      <width>66</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>ASB5:</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="asb5SNEdit">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>115</y>
-      <width>241</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>145</y>
-      <width>66</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>ASB15:</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="asb15SNEdit">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>145</y>
-      <width>241</width>
-      <height>27</height>
-     </rect>
     </property>
    </widget>
   </widget>
@@ -145,13 +65,13 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>180</y>
+     <y>130</y>
      <width>561</width>
-     <height>100</height>
+     <height>111</height>
     </rect>
    </property>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="horizontalLayoutWidget_3">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -160,7 +80,7 @@
      <height>41</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
     <item>
      <widget class="QPushButton" name="sendTestReportBtn">
       <property name="text">
@@ -169,7 +89,7 @@
      </widget>
     </item>
     <item>
-     <spacer name="horizontalSpacer">
+     <spacer name="horizontalSpacer_4">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>

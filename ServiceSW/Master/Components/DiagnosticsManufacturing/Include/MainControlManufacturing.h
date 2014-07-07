@@ -141,10 +141,6 @@ private:
     QString m_LineEditString;                    //!< Stores serial number string
     QString m_MainControlSNString;               //!< Stores serial number of Main Control Moudule
     QString m_EBoxSNString;                      //!< Stores serial number of E Box sub-module
-    QString m_ASB3SNString;                      //!< Stores serial number of ASB3  sub-module
-    QString m_ASB5SNString;                      //!< Stores serial number of ASB5  sub-module
-    QString m_ASB15SNString;                     //!< Stores serial number of ASB15 sub-module
-    QString m_TouchScreenSNString;               //!< Stores serial number of Touch Screen sub-module
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;      //!< Keyboard widget
     QHash<QString, QString> m_TestReport;        //!< Test report
     QList<QString> m_TestNames;                  //!< List of test names
