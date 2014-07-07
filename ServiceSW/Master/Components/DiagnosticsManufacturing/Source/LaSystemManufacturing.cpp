@@ -31,7 +31,6 @@
 
 namespace DiagnosticsManufacturing {
 
-const QString REGEXP_NUMERIC_VALIDATOR  = "^[0-9]{1,5}$"; //!< Reg expression for the validator
 const int FIXED_LINEEDIT_WIDTH = 241;           ///< Fixed line edit width
 const int SET_FIXED_TABLE_WIDTH = 500;          ///< Set table width
 const int SET_FIXED_TABLE_HEIGHT = 280;         ///< Set table height
@@ -49,17 +48,11 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
     , mp_MainWindow(p_Parent)
     , mp_Ui(new Ui::CLaSystemManufacturing)
     , mp_MessageDlg(NULL)
-    , mp_Module(NULL)
     , m_FinalTestResult("NA")
 {
     mp_Ui->setupUi(this);
-    mp_Ui->laSNEdit->installEventFilter(this);
-    mp_Ui->laSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
-    SetLineEditText(QString("14-HIM-LA-XXXXX"));
-
-    mp_Ui->laSNEdit->setText("14-HIM-LA-XXXXX");
 
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
 
@@ -69,7 +62,6 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
 
     mp_TableWidget->horizontalHeader()->show();
 
-    //AddItem(1, Service::LA_SYSTEM_PUMP_VALVE_CONTROL);
     AddItem(1, Service::LA_SYSTEM_HEATING_LIQUID_TUBE);
     AddItem(2, Service::LA_SYSTEM_HEATING_AIR_TUBE);
 
@@ -88,16 +80,9 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
 
 //    mp_Ui->testSuccessLabel->setPixmap(QPixmap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png")));
 
-    mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
-
-    if (mp_DataConnector->GetModuleListContainer()) {
-        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("L&A System");
-    }
-
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
     CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, ResetTestStatus());
-    CONNECTSIGNALSLOTGUI(this, UpdateModule(ServiceDataManager::CModule&), mp_DataConnector, SendModuleUpdate(ServiceDataManager::CModule&));
 }
 
 /****************************************************************************/
@@ -108,7 +93,6 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMai
 CLaSystem::~CLaSystem()
 {
      try {
-        delete mp_KeyBoardWidget;
         delete mp_TableWidget;
         delete mp_Ui;
 
@@ -136,38 +120,6 @@ void CLaSystem::changeEvent(QEvent *p_Event)
     default:
         break;
     }
-}
-
-/****************************************************************************/
-/*!
- *  \brief  Method will be called,when an event triggered on the object
- *
- *  \iparam p_Object = object of the widget
- *  \iparam p_Event = Event object
- *
- *  \return true when event is triggered
- */
-/****************************************************************************/
-bool CLaSystem::eventFilter(QObject *p_Object, QEvent *p_Event)
-{
-    if (p_Object == mp_Ui->laSNEdit && p_Event->type() == QEvent::MouseButtonPress)
-    {
-        ConnectKeyBoardSignalSlots();
-        mp_KeyBoardWidget->setModal(true);
-        mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                           "Enter Serial Number", 0, QApplication::UnicodeUTF8));
-        mp_KeyBoardWidget->SetPasswordMode(false);
-        mp_KeyBoardWidget->SetValidation(true);
-        mp_KeyBoardWidget->SetMinCharLength(5);
-        mp_KeyBoardWidget->SetMaxCharLength(5);
-        mp_KeyBoardWidget->DisplayNumericKeyBoard();
-        // ^ and $ is used for any character. * is used to enter multiple characters
-        // [0-9] is used to allow user to enter only 0 to 9 digits
-        mp_KeyBoardWidget->SetLineEditValidatorExpression(REGEXP_NUMERIC_VALIDATOR);
-        mp_KeyBoardWidget->show();
-        return true;
-    }
-    return false;
 }
 
 /****************************************************************************/
@@ -210,74 +162,6 @@ void CLaSystem::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
 
 /****************************************************************************/
 /*!
- *  \brief This function is called when OK is clicked
- *  \iparam EnteredString = Stores line edit string
- */
-/****************************************************************************/
-void CLaSystem::OnOkClicked(const QString& EnteredString)
-{
-
-    mp_KeyBoardWidget->hide();
-    m_LineEditString.chop(5);
-    m_LineEditString.append(EnteredString.simplified());
-
-    mp_Ui->laSNEdit->setText(m_LineEditString);
-
-    /*if (m_TestNames.contains("SerialNumber")) {
-        m_TestReport.remove("SerialNumber");
-        m_TestReport.insert("SerialNumber", m_LineEditString);
-    } else {
-        m_TestNames.append("SerialNumber");
-        m_TestReport.insert("SerialNumber", m_LineEditString);
-    }*/
-    mp_Ui->beginTestBtn->setEnabled(true);
-    DisconnectKeyBoardSignalSlots();
-
-    if (mp_Module && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
-        mp_Module->SetSerialNumber(m_LineEditString);
-        emit UpdateModule(*mp_Module);
-    }
-}
-
-/****************************************************************************/
-/*!
- *  \brief This function hides the keyboard when Esc is clicked
- */
-/****************************************************************************/
-void CLaSystem::OnESCClicked()
-{
-    // Disconnect signals and slots connected to keyboard.
-    DisconnectKeyBoardSignalSlots();
-    mp_KeyBoardWidget->hide();
-}
-
-/****************************************************************************/
-/*!
- *  \brief Connects signals and slots of keyboard.
- */
-/****************************************************************************/
-void CLaSystem::ConnectKeyBoardSignalSlots()
-{
-    // Connect signals and slots to keyboard.
-    CONNECTSIGNALSLOT(mp_KeyBoardWidget, OkButtonClicked(QString), this, OnOkClicked(QString));
-    CONNECTSIGNALSLOT(mp_KeyBoardWidget, EscButtonClicked(), this, OnESCClicked());
-}
-
-/****************************************************************************/
-/*!
- *  \brief Disconnects signals and slots of keyboard.
- */
-/****************************************************************************/
-void CLaSystem::DisconnectKeyBoardSignalSlots()
-{
-    // Disconnect signals and slots connected to keyboard.
-    (void) disconnect(mp_KeyBoardWidget, SIGNAL(OkButtonClicked(QString)), this, SLOT(OnOkClicked(QString)));
-    (void) disconnect(mp_KeyBoardWidget, SIGNAL(EscButtonClicked()), this, SLOT(OnESCClicked()));
-
-}
-
-/****************************************************************************/
-/*!
  *  \brief Slot called for agitator tests
  */
 /****************************************************************************/
@@ -285,21 +169,6 @@ void CLaSystem::BeginTest()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_TEST_REQUESTED);
 
-    if (mp_Ui->laSNEdit->text().endsWith("XXXXX")) {
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                                "Ok", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        if (mp_MessageDlg->exec()) {
-            mp_Ui->laSNEdit->setFocus();
-            mp_Ui->laSNEdit->selectAll();
-        }
-        return;
-    }
     qDebug()<<"CLaSystem::BeginTest  ";
     QList<Service::ModuleTestCaseID> TestCaseList;
     for(int i=0; i<m_Model.rowCount(); i++) {
@@ -381,18 +250,6 @@ void CLaSystem::EnableButton(bool EnableFlag)
 void CLaSystem::SendTestReport()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_SENDTESTREPORT_REQUESTED);
-    if (m_LineEditString.endsWith("XXXXX")) {
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                                "Ok", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        (void)mp_MessageDlg->exec();
-    }
-    else {
         /*
         CTestCaseReporter* p_TestReporter = new CTestCaseReporter(mp_MainWindow, "LaSystem", m_LineEditString);
 
@@ -413,7 +270,6 @@ void CLaSystem::SendTestReport()
         }
         (void)mp_MessageDlg->exec();
         */
-    }
 
 }
 

@@ -24,7 +24,6 @@
 #include "Core/Include/ServiceGUIConnector.h"
 #include "Core/Include/ServiceDefines.h"
 #include <MainMenu/Include/BaseTable.h>
-#include <KeyBoard/Include/KeyBoard.h>
 #include "MainMenu/Include/MessageDlg.h"
 #include "MainMenu/Include/MainWindow.h"
 #include <QStandardItemModel>
@@ -91,27 +90,7 @@ private:
     /****************************************************************************/
     void AddItem(quint8 Index, Service::ModuleTestCaseID_t Id);
 
-    /****************************************************************************/
-    /*!
-     *  \brief  Sets the Line edit string text
-     *  \iparam Value = Serial number of the module
-     */
-    /****************************************************************************/
-    void SetLineEditText(QString Value) {
-        m_LineEditString = Value;
-    }
-
 protected:
-    /****************************************************************************/
-    /*!
-     *  \brief Filters all mouse events
-     *  \iparam p_Object = Object that is watched
-     *  \iparam p_Event = Current event
-     *  \return True if an event should be filtered
-     */
-    /****************************************************************************/
-    bool eventFilter(QObject *p_Object, QEvent *p_Event);
-
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function changeEvent
@@ -127,31 +106,11 @@ private:
     Ui::CLaSystemManufacturing *mp_Ui;          //!< User Interface
     MainMenu::CBaseTable *mp_TableWidget;       //!< Base Table widget
     QStandardItemModel m_Model;                 //!< Model for the table
-    ServiceDataManager::CModule* mp_Module;     //!< Module information
-    QString m_LineEditString;                   //!< Stores serial number string
-    QString m_LaSNString;                       //!< Stores serial number of L&A System module
-    QString m_HeaterLiquidSNString;             //!< Stores serial number of Heater with liquid sub-module
-    QString m_HeaterAirSNString;                //!< Stores serial number of Heater with air sub-module
-    QString m_AirSystemSNString;                //!< Stroes serial number of vacuum test sub-module
-    KeyBoard::CKeyBoard *mp_KeyBoardWidget;     //!< Keyboard widget
     QHash<QString, QString> m_TestReport;       //!< Test report
     QList<QString> m_TestNames;                 //!< List of test names   
     MainMenu::CMessageDlg *mp_MessageDlg;                               //!< Information dialog
     QString m_FinalTestResult;                                          //!< Stores Final test result
 
-    /****************************************************************************/
-    /*!
-     *  \brief Connects signals and slots of keyboard.
-     */
-    /****************************************************************************/
-    void ConnectKeyBoardSignalSlots();
-
-    /****************************************************************************/
-    /*!
-     *  \brief Disconnects signals and slots of keyboard.
-     */
-    /****************************************************************************/
-    void DisconnectKeyBoardSignalSlots();
 
 signals:
     /****************************************************************************/
@@ -171,25 +130,11 @@ signals:
 private slots:
     /****************************************************************************/
     /*!
-     *  \brief This function is called when OK is clicked
-     *  \iparam EnteredString = Stores line edit string
-     */
-    /****************************************************************************/
-    void OnOkClicked(const QString& EnteredString);
-
-    /****************************************************************************/
-    /*!
-     *  \brief This function hides the keyboard when Esc is clicked
-     */
-    /****************************************************************************/
-    void OnESCClicked();
-
-    /****************************************************************************/
-    /*!
      *  \brief Connects signals and slots of keyboard.
      */
     /****************************************************************************/
     void RetranslateUI();
+
 public slots:
     /****************************************************************************/
     /*!

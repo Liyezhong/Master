@@ -133,9 +133,9 @@ void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
         mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                        "Main Control", 0, QApplication::UnicodeUTF8), mp_MainControlManuf);
         mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                       "LA System", 0, QApplication::UnicodeUTF8), mp_LaSystemManuf);
-        mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                        "System", 0, QApplication::UnicodeUTF8), mp_SystemManuf);
+        mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                       "LA System", 0, QApplication::UnicodeUTF8), mp_LaSystemManuf);
         mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                        "Cleaning", 0, QApplication::UnicodeUTF8), mp_CleaningManuf);
     }
