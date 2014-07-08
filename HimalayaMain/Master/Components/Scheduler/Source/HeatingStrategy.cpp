@@ -519,7 +519,10 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLevelSensorTemperatureControl(
         }
         else
         {
-            mp_SchedulerController->LogDebug(QString("start level sensor heating, scenario:%1").arg(m_CurScenario));
+            mp_SchedulerController->LogDebug(
+                        QString("start level sensor heating, scenario:%1, tmpoffset %2, slop %3, maxtemp %4, gain %5,resettime %6, derivativetime %7")
+                        .arg(m_CurScenario).arg(iter->TemperatureOffset).arg(iter->SlopTempChange).arg(iter->MaxTemperature)
+                        .arg(iter->ControllerGain).arg(iter->ResetTime).arg(iter->DerivativeTime));
             m_RTLevelSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             m_RTLevelSensor.curModuleId = iter->Id;
             m_RTLevelSensor.OTCheckPassed = false;
