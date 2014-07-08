@@ -264,7 +264,7 @@ private:
      *
      */
     /****************************************************************************/
-    virtual bool newCmdComing() =0;
+    virtual bool newCmdComing(Scheduler::SchedulerCommandShPtr_t& scmd) =0;
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function run4Slot
@@ -410,7 +410,7 @@ private:
      *
      */
     /****************************************************************************/
-    virtual bool newCmdComing();
+    virtual bool newCmdComing(Scheduler::SchedulerCommandShPtr_t& scmd);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function run4Slot
@@ -493,7 +493,7 @@ private:
      *  \return from ExecuteCmd
      */
     /****************************************************************************/
-    void ExecuteCmd();
+    void ExecuteCmd(Scheduler::SchedulerCommandShPtr_t& scmd);
     SchedulerCommandProcessor(const SchedulerCommandProcessor&);                      ///< Not implemented.
     const SchedulerCommandProcessor& operator=(const SchedulerCommandProcessor&);     ///< Not implemented.
 

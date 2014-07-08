@@ -154,10 +154,11 @@ void SchedulerCommandProcessor<DP>::run4Slot()
 template <class DP>
 void SchedulerCommandProcessor<DP>::OnNewCmdAdded4Slot()
 {
-    if(newCmdComing())
+    Scheduler::SchedulerCommandShPtr_t scmd;
+    if(newCmdComing(scmd))
     {
-        this->ExecuteCmd();
-        mp_SchedulerThreadController->PushDeviceControlCmdQueue(m_currentCmd);
+        this->ExecuteCmd(scmd);
+        mp_SchedulerThreadController->PushDeviceControlCmdQueue(scmd);
     }
 }
 
@@ -171,14 +172,14 @@ void SchedulerCommandProcessor<DP>:: pushCmd4Slot(CmdSchedulerCommandBase* cmd)
 }
 
 template <class DP>
-bool SchedulerCommandProcessor<DP>::newCmdComing()
+bool SchedulerCommandProcessor<DP>::newCmdComing(Scheduler::SchedulerCommandShPtr_t& scmd)
 {
     bool ret = false;
     m_CmdMutex.lock();
     if(!m_Cmds.isEmpty())
     {
         ret = true;
-       m_currentCmd =  m_Cmds.dequeue();
+       scmd =  m_Cmds.dequeue();
     }
     m_CmdMutex.unlock();
     return ret;
@@ -252,285 +253,285 @@ void SchedulerCommandProcessor<DP>::ThrowError4Slot(quint32 instanceID, quint16 
 }
 
 template <class DP>
-void SchedulerCommandProcessor<DP>::ExecuteCmd()
+void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_t& scmd)
 {
-	QString cmdName = m_currentCmd->GetName();
+    QString cmdName = scmd->GetName();
 
 	if ("Scheduler::StartConfigurationService" == cmdName)
 	{
-		m_currentCmd->SetResult(mp_IDeviceProcessing->StartConfigurationService());
+        scmd->SetResult(mp_IDeviceProcessing->StartConfigurationService());
 	}
 	else if ("Scheduler::RestartConfigurationService" == cmdName)
 	{
-		m_currentCmd->SetResult(mp_IDeviceProcessing->RestartConfigurationService());
+        scmd->SetResult(mp_IDeviceProcessing->RestartConfigurationService());
 	}
 	else if  ("Scheduler::StartDiagnosticService" == cmdName)
 	{
-		m_currentCmd->SetResult(mp_IDeviceProcessing->StartDiagnosticService());
+        scmd->SetResult(mp_IDeviceProcessing->StartDiagnosticService());
 	}
 	else if  ("Scheduler::CloseDiagnosticService" == cmdName)
 	{
-		m_currentCmd->SetResult(mp_IDeviceProcessing->CloseDiagnosticService());
+        scmd->SetResult(mp_IDeviceProcessing->CloseDiagnosticService());
 	}
 	else if  ("Scheduler::StartAdjustmentService" == cmdName)
 	{
-		m_currentCmd->SetResult(mp_IDeviceProcessing->StartAdjustmentService());
+        scmd->SetResult(mp_IDeviceProcessing->StartAdjustmentService());
 	}
 	else if  ("Scheduler::ALSetPressureCtrlON" == cmdName)
 	{
-		m_currentCmd->SetResult(mp_IDeviceProcessing->ALSetPressureCtrlON());
+        scmd->SetResult(mp_IDeviceProcessing->ALSetPressureCtrlON());
 	}
 	else if  ("Scheduler::ALSetPressureCtrlOFF" == cmdName)
 	{
-		m_currentCmd->SetResult(mp_IDeviceProcessing->ALSetPressureCtrlOFF());
+        scmd->SetResult(mp_IDeviceProcessing->ALSetPressureCtrlOFF());
 	}
 	else if  ("Scheduler::ALReleasePressure" == cmdName)
 	{
-		m_currentCmd->SetResult(mp_IDeviceProcessing->ALReleasePressure());
+        scmd->SetResult(mp_IDeviceProcessing->ALReleasePressure());
 	}
 	else if  ("Scheduler::ALPressure" == cmdName)
 	{
-		m_currentCmd->SetResult(mp_IDeviceProcessing->ALPressure());
+        scmd->SetResult(mp_IDeviceProcessing->ALPressure());
 	}
 	else if  ("Scheduler::ALVaccum" == cmdName)
 	{
-		m_currentCmd->SetResult(mp_IDeviceProcessing->ALVaccum());
+        scmd->SetResult(mp_IDeviceProcessing->ALVaccum());
 	}
 	else if  ("Scheduler::ALDraining" == cmdName)
 	{
-        m_currentCmd->SetResult(mp_IDeviceProcessing->ALDraining(qSharedPointerDynamicCast<CmdALDraining>(m_currentCmd)->GetDelayTime()));
+        scmd->SetResult(mp_IDeviceProcessing->ALDraining(qSharedPointerDynamicCast<CmdALDraining>(scmd)->GetDelayTime()));
 	}
 	else if  ("Scheduler::ALFilling" == cmdName)
 	{
-        m_currentCmd->SetResult(mp_IDeviceProcessing->ALFilling(qSharedPointerDynamicCast<CmdALFilling>(m_currentCmd)->GetDelayTime(),
-                                                                qSharedPointerDynamicCast<CmdALFilling>(m_currentCmd)->GetEnableInsufficientCheck()));
+        scmd->SetResult(mp_IDeviceProcessing->ALFilling(qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetDelayTime(),
+                                                                qSharedPointerDynamicCast<CmdALFilling>(scmd)->GetEnableInsufficientCheck()));
 	}
 	else if  ("Scheduler::ALGetRecentPressure" == cmdName)
 	{
-        m_currentCmd->SetResult(mp_IDeviceProcessing->ALGetRecentPressure());
+        scmd->SetResult(mp_IDeviceProcessing->ALGetRecentPressure());
 	}
 	else if  ("Scheduler::ALSetTempCtrlON" == cmdName)
 	{
-        m_currentCmd->SetResult(mp_IDeviceProcessing->ALSetTempCtrlON(qSharedPointerDynamicCast<CmdALSetTempCtrlON>(m_currentCmd)->GetType()));
+        scmd->SetResult(mp_IDeviceProcessing->ALSetTempCtrlON(qSharedPointerDynamicCast<CmdALSetTempCtrlON>(scmd)->GetType()));
 	}
 	else if  ("Scheduler::ALSetTempCtrlOFF" == cmdName)
 	{
-        m_currentCmd->SetResult(mp_IDeviceProcessing->ALSetTempCtrlOFF(qSharedPointerDynamicCast<CmdALSetTempCtrlOFF>(m_currentCmd)->Gettype()));
+        scmd->SetResult(mp_IDeviceProcessing->ALSetTempCtrlOFF(qSharedPointerDynamicCast<CmdALSetTempCtrlOFF>(scmd)->Gettype()));
 	}
 	else if  ("Scheduler::ALSetTemperaturePid" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->ALSetTemperaturePid( qSharedPointerDynamicCast<CmdALSetTemperaturePid>(m_currentCmd)->GetType(),
-                                                                            qSharedPointerDynamicCast<CmdALSetTemperaturePid>(m_currentCmd)->GetMaxTemperature(),
-                                                                            qSharedPointerDynamicCast<CmdALSetTemperaturePid>(m_currentCmd)->GetControllerGain(),
-                                                                            qSharedPointerDynamicCast<CmdALSetTemperaturePid>(m_currentCmd)->GetResetTime(),
-                                                                            qSharedPointerDynamicCast<CmdALSetTemperaturePid>(m_currentCmd)->GetDerivativeTime()
+        scmd->SetResult( mp_IDeviceProcessing->ALSetTemperaturePid( qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetType(),
+                                                                            qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetMaxTemperature(),
+                                                                            qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetControllerGain(),
+                                                                            qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetResetTime(),
+                                                                            qSharedPointerDynamicCast<CmdALSetTemperaturePid>(scmd)->GetDerivativeTime()
 																		   ) );
 	}
 	else if  ("Scheduler::ALStartTemperatureControl" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->ALStartTemperatureControl( qSharedPointerDynamicCast<CmdALStartTemperatureControl>(m_currentCmd)->GetType(),
-                                                                                  qSharedPointerDynamicCast<CmdALStartTemperatureControl>(m_currentCmd)->GetNominalTemperature(),
-                                                                                  qSharedPointerDynamicCast<CmdALStartTemperatureControl>(m_currentCmd)->GetSlopeTempChange()
+        scmd->SetResult( mp_IDeviceProcessing->ALStartTemperatureControl( qSharedPointerDynamicCast<CmdALStartTemperatureControl>(scmd)->GetType(),
+                                                                                  qSharedPointerDynamicCast<CmdALStartTemperatureControl>(scmd)->GetNominalTemperature(),
+                                                                                  qSharedPointerDynamicCast<CmdALStartTemperatureControl>(scmd)->GetSlopeTempChange()
 																				) );
 	}
 	else if  ("Scheduler::ALGetRecentTemperature" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->ALGetRecentTemperature( qSharedPointerDynamicCast<CmdALGetRecentTemperature>(m_currentCmd)->GetType(),
-                                                                               qSharedPointerDynamicCast<CmdALGetRecentTemperature>(m_currentCmd)->GetIndex()
+        scmd->SetResult( mp_IDeviceProcessing->ALGetRecentTemperature( qSharedPointerDynamicCast<CmdALGetRecentTemperature>(scmd)->GetType(),
+                                                                               qSharedPointerDynamicCast<CmdALGetRecentTemperature>(scmd)->GetIndex()
 																			 ) );
 	}
 	else if  ("Scheduler::ALGetTemperatureControlState" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->ALGetTemperatureControlState( qSharedPointerDynamicCast<CmdALGetTemperatureControlState>(m_currentCmd)->GetType() ) );
+        scmd->SetResult( mp_IDeviceProcessing->ALGetTemperatureControlState( qSharedPointerDynamicCast<CmdALGetTemperatureControlState>(scmd)->GetType() ) );
 	}
 	else if  ("Scheduler::ALTurnOnFan" == cmdName)
 	{
-		m_currentCmd->SetResult( mp_IDeviceProcessing->ALTurnOnFan() );
+        scmd->SetResult( mp_IDeviceProcessing->ALTurnOnFan() );
 	}
 	else if  ("Scheduler::ALTurnOffFan" == cmdName)
 	{
-		m_currentCmd->SetResult( mp_IDeviceProcessing->ALTurnOffFan() );
+        scmd->SetResult( mp_IDeviceProcessing->ALTurnOffFan() );
 	}
 	else if  ("Scheduler::RVSetTempCtrlON" == cmdName)
 	{
-		m_currentCmd->SetResult( mp_IDeviceProcessing->RVSetTempCtrlON() );
+        scmd->SetResult( mp_IDeviceProcessing->RVSetTempCtrlON() );
 	}
 	else if  ("Scheduler::RVSetTempCtrlOFF" == cmdName)
 	{
-		m_currentCmd->SetResult( mp_IDeviceProcessing->RVSetTempCtrlOFF() );
+        scmd->SetResult( mp_IDeviceProcessing->RVSetTempCtrlOFF() );
 	}
 	else if  ("Scheduler::RVSetTemperaturePid" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->RVSetTemperaturePid( qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(m_currentCmd)->GetMaxTemperature(),
-                                                                            qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(m_currentCmd)->GetControllerGain(),
-                                                                            qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(m_currentCmd)->GetResetTime(),
-                                                                            qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(m_currentCmd)->GetDerivativeTime()
+        scmd->SetResult( mp_IDeviceProcessing->RVSetTemperaturePid( qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(scmd)->GetMaxTemperature(),
+                                                                            qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(scmd)->GetControllerGain(),
+                                                                            qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(scmd)->GetResetTime(),
+                                                                            qSharedPointerDynamicCast<CmdRVSetTemperaturePid>(scmd)->GetDerivativeTime()
 																		  ) );
 	}
 	else if  ("Scheduler::RVStartTemperatureControl" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->RVStartTemperatureControl( qSharedPointerDynamicCast<CmdRVStartTemperatureControl>(m_currentCmd)->GetNominalTemperature(),
-                                                                                  qSharedPointerDynamicCast<CmdRVStartTemperatureControl>(m_currentCmd)->GetSlopeTempChange()
+        scmd->SetResult( mp_IDeviceProcessing->RVStartTemperatureControl( qSharedPointerDynamicCast<CmdRVStartTemperatureControl>(scmd)->GetNominalTemperature(),
+                                                                                  qSharedPointerDynamicCast<CmdRVStartTemperatureControl>(scmd)->GetSlopeTempChange()
 																				) );
 	}
 	else if  ("Scheduler::RVGetRecentTemperature" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->RVGetRecentTemperature( qSharedPointerDynamicCast<CmdRVGetRecentTemperature>(m_currentCmd)->GetIndex() ) );
+        scmd->SetResult( mp_IDeviceProcessing->RVGetRecentTemperature( qSharedPointerDynamicCast<CmdRVGetRecentTemperature>(scmd)->GetIndex() ) );
 	}
 	else if  ("Scheduler::RVGetTemperatureControlState" == cmdName)
 	{
-		m_currentCmd->SetResult( mp_IDeviceProcessing->RVGetTemperatureControlState() );
+        scmd->SetResult( mp_IDeviceProcessing->RVGetTemperatureControlState() );
 	}
 	else if  ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->RVReqMoveToInitialPosition( qSharedPointerDynamicCast<CmdRVReqMoveToInitialPosition>(m_currentCmd)->GetRVPosition() ) );
+        scmd->SetResult( mp_IDeviceProcessing->RVReqMoveToInitialPosition( qSharedPointerDynamicCast<CmdRVReqMoveToInitialPosition>(scmd)->GetRVPosition() ) );
 	}
 	else if  ("Scheduler::RVReqMoveToRVPosition" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->RVReqMoveToRVPosition( qSharedPointerDynamicCast<CmdRVReqMoveToRVPosition>(m_currentCmd)->GetRVPosition() ) );
+        scmd->SetResult( mp_IDeviceProcessing->RVReqMoveToRVPosition( qSharedPointerDynamicCast<CmdRVReqMoveToRVPosition>(scmd)->GetRVPosition() ) );
 	}
 	else if  ("Scheduler::RVReqActRVPosition" == cmdName)
 	{
-		m_currentCmd->SetResult( mp_IDeviceProcessing->RVReqActRVPosition() );
+        scmd->SetResult( mp_IDeviceProcessing->RVReqActRVPosition() );
 	}
 	else if  ("Scheduler::OvenSetTempCtrlON" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->OvenSetTempCtrlON(qSharedPointerDynamicCast<CmdOvenSetTempCtrlON>(m_currentCmd)->GetType() ) );
+        scmd->SetResult( mp_IDeviceProcessing->OvenSetTempCtrlON(qSharedPointerDynamicCast<CmdOvenSetTempCtrlON>(scmd)->GetType() ) );
 	}
 	else if  ("Scheduler::OvenSetTempCtrlOFF" == cmdName)
 	{
-      //  m_currentCmd->SetResult( mp_IDeviceProcessing->OvenSetTempCtrlOFF(dynamic_cast<CmdOvenSetTempCtrlOFF*>(m_currentCmd)->GetType() ) );
+      //  scmd->SetResult( mp_IDeviceProcessing->OvenSetTempCtrlOFF(dynamic_cast<CmdOvenSetTempCtrlOFF*>(scmd)->GetType() ) );
 	}
 	else if  ("Scheduler::OvenSetTemperaturePid" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->OvenSetTemperaturePid( qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(m_currentCmd)->GetType(),
-                                                                              qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(m_currentCmd)->GetMaxTemperature(),
-                                                                              qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(m_currentCmd)->GetControllerGain(),
-                                                                              qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(m_currentCmd)->GetResetTime(),
-                                                                              qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(m_currentCmd)->GetDerivativeTime()
+        scmd->SetResult( mp_IDeviceProcessing->OvenSetTemperaturePid( qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetType(),
+                                                                              qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetMaxTemperature(),
+                                                                              qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetControllerGain(),
+                                                                              qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetResetTime(),
+                                                                              qSharedPointerDynamicCast<CmdOvenSetTemperaturePid>(scmd)->GetDerivativeTime()
 																			) );
 	}
 	else if  ("Scheduler::OvenStartTemperatureControl" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->OvenStartTemperatureControl( qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(m_currentCmd)->GetType(),
-                                                                                    qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(m_currentCmd)->GetNominalTemperature(),
-                                                                                    qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(m_currentCmd)->GetSlopeTempChange()
+        scmd->SetResult( mp_IDeviceProcessing->OvenStartTemperatureControl( qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(scmd)->GetType(),
+                                                                                    qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(scmd)->GetNominalTemperature(),
+                                                                                    qSharedPointerDynamicCast<CmdOvenStartTemperatureControl>(scmd)->GetSlopeTempChange()
                                                                                   ) );
 	}
 	else if  ("Scheduler::OvenGetRecentTemperature" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->OvenGetRecentTemperature( qSharedPointerDynamicCast<CmdOvenGetRecentTemperature>(m_currentCmd)->GetType(),
-                                                                                 qSharedPointerDynamicCast<CmdOvenGetRecentTemperature>(m_currentCmd)->GetIndex() ) );
+        scmd->SetResult( mp_IDeviceProcessing->OvenGetRecentTemperature( qSharedPointerDynamicCast<CmdOvenGetRecentTemperature>(scmd)->GetType(),
+                                                                                 qSharedPointerDynamicCast<CmdOvenGetRecentTemperature>(scmd)->GetIndex() ) );
 	}
 	else if  ("Scheduler::OvenGetTemperatureControlState" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->OvenGetTemperatureControlState( qSharedPointerDynamicCast<CmdOvenGetTemperatureControlState>(m_currentCmd)->GetType() ) );
+        scmd->SetResult( mp_IDeviceProcessing->OvenGetTemperatureControlState( qSharedPointerDynamicCast<CmdOvenGetTemperatureControlState>(scmd)->GetType() ) );
 	}
 	else if  ("Scheduler::RTSetTempCtrlON" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->RTSetTempCtrlON( qSharedPointerDynamicCast<CmdRTSetTempCtrlON>(m_currentCmd)->GetType() ) );
+        scmd->SetResult( mp_IDeviceProcessing->RTSetTempCtrlON( qSharedPointerDynamicCast<CmdRTSetTempCtrlON>(scmd)->GetType() ) );
 	}
 	else if  ("Scheduler::RTSetTempCtrlOFF" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->RTSetTempCtrlOFF( qSharedPointerDynamicCast<CmdRTSetTempCtrlOFF>(m_currentCmd)->GetType() ) );
+        scmd->SetResult( mp_IDeviceProcessing->RTSetTempCtrlOFF( qSharedPointerDynamicCast<CmdRTSetTempCtrlOFF>(scmd)->GetType() ) );
 	}
 	else if  ("Scheduler::RTSetTemperaturePid" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->RTSetTemperaturePid( qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(m_currentCmd)->GetType(),
-                                                                            qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(m_currentCmd)->GetMaxTemperature(),
-                                                                            qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(m_currentCmd)->GetControllerGain(),
-                                                                            qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(m_currentCmd)->GetResetTime(),
-                                                                            qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(m_currentCmd)->GetDerivativeTime()
+        scmd->SetResult( mp_IDeviceProcessing->RTSetTemperaturePid( qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetType(),
+                                                                            qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetMaxTemperature(),
+                                                                            qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetControllerGain(),
+                                                                            qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetResetTime(),
+                                                                            qSharedPointerDynamicCast<CmdRTSetTemperaturePid>(scmd)->GetDerivativeTime()
 																		  ) );
 	}
 	else if  ("Scheduler::RTStartTemperatureControl" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->RTStartTemperatureControl( qSharedPointerDynamicCast<CmdRTStartTemperatureControl>(m_currentCmd)->GetType(),
-                                                                                  qSharedPointerDynamicCast<CmdRTStartTemperatureControl>(m_currentCmd)->GetNominalTemperature(),
-                                                                                  qSharedPointerDynamicCast<CmdRTStartTemperatureControl>(m_currentCmd)->GetSlopeTempChange()
+        scmd->SetResult( mp_IDeviceProcessing->RTStartTemperatureControl( qSharedPointerDynamicCast<CmdRTStartTemperatureControl>(scmd)->GetType(),
+                                                                                  qSharedPointerDynamicCast<CmdRTStartTemperatureControl>(scmd)->GetNominalTemperature(),
+                                                                                  qSharedPointerDynamicCast<CmdRTStartTemperatureControl>(scmd)->GetSlopeTempChange()
 																				) );
 	}
 	else if  ("Scheduler::RTGetRecentTemperature" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->RTGetRecentTemperature( qSharedPointerDynamicCast<CmdRTGetRecentTemperature>(m_currentCmd)->GetType(),
-                                                                               qSharedPointerDynamicCast<CmdRTGetRecentTemperature>(m_currentCmd)->GetIndex()
+        scmd->SetResult( mp_IDeviceProcessing->RTGetRecentTemperature( qSharedPointerDynamicCast<CmdRTGetRecentTemperature>(scmd)->GetType(),
+                                                                               qSharedPointerDynamicCast<CmdRTGetRecentTemperature>(scmd)->GetIndex()
 																			 ) );
 	}
 	else if  ("Scheduler::RTGetTemperatureControlState" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->RTGetTemperatureControlState( qSharedPointerDynamicCast<CmdRTGetTemperatureControlState>(m_currentCmd)->GetType()) );
+        scmd->SetResult( mp_IDeviceProcessing->RTGetTemperatureControlState( qSharedPointerDynamicCast<CmdRTGetTemperatureControlState>(scmd)->GetType()) );
 	}
 	else if  ("Scheduler::RTUnlock" == cmdName)
 	{
-		m_currentCmd->SetResult( mp_IDeviceProcessing->RTUnlock() );
+        scmd->SetResult( mp_IDeviceProcessing->RTUnlock() );
 	}
 	else if  ("Scheduler::RTLock" == cmdName)
 	{
-		m_currentCmd->SetResult( mp_IDeviceProcessing->RTLock() );
+        scmd->SetResult( mp_IDeviceProcessing->RTLock() );
 	}
 	else if  ("Scheduler::PerTurnOffMainRelay" == cmdName)
 	{
-		m_currentCmd->SetResult( mp_IDeviceProcessing->PerTurnOffMainRelay() );
+        scmd->SetResult( mp_IDeviceProcessing->PerTurnOffMainRelay() );
 	}
 	else if  ("Scheduler::PerTurnOnMainRelay" == cmdName)
 	{
-		m_currentCmd->SetResult( mp_IDeviceProcessing->PerTurnOnMainRelay() );
+        scmd->SetResult( mp_IDeviceProcessing->PerTurnOnMainRelay() );
 	}
 	else if  ("Scheduler::RVStartTemperatureControlWithPID" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->RVStartTemperatureControlWithPID( qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(m_currentCmd)->GetNominalTemperature(),
-                                                                                         qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(m_currentCmd)->GetSlopeTempChange(),
-                                                                                         qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(m_currentCmd)->GetMaxTemperature(),
-                                                                                         qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(m_currentCmd)->GetControllerGain(),
-                                                                                         qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(m_currentCmd)->GetResetTime(),
-                                                                                         qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(m_currentCmd)->GetDerivativeTime()
+        scmd->SetResult( mp_IDeviceProcessing->RVStartTemperatureControlWithPID( qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetNominalTemperature(),
+                                                                                         qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetSlopeTempChange(),
+                                                                                         qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetMaxTemperature(),
+                                                                                         qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetControllerGain(),
+                                                                                         qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetResetTime(),
+                                                                                         qSharedPointerDynamicCast<CmdRVStartTemperatureControlWithPID>(scmd)->GetDerivativeTime()
 																					   ) );
 	}
 	else if  ("Scheduler::OvenStartTemperatureControlWithPID" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->OvenStartTemperatureControlWithPID( qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(m_currentCmd)->GetType(),
-                                                                                           qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(m_currentCmd)->GetNominalTemperature(),
-                                                                                           qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(m_currentCmd)->GetSlopeTempChange(),
-                                                                                           qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(m_currentCmd)->GetMaxTemperature(),
-                                                                                           qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(m_currentCmd)->GetControllerGain(),
-                                                                                           qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(m_currentCmd)->GetResetTime(),
-                                                                                           qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(m_currentCmd)->GetDerivativeTime()
+        scmd->SetResult( mp_IDeviceProcessing->OvenStartTemperatureControlWithPID( qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetType(),
+                                                                                           qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetNominalTemperature(),
+                                                                                           qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetSlopeTempChange(),
+                                                                                           qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetMaxTemperature(),
+                                                                                           qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetControllerGain(),
+                                                                                           qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetResetTime(),
+                                                                                           qSharedPointerDynamicCast<CmdOvenStartTemperatureControlWithPID>(scmd)->GetDerivativeTime()
 																						) );
 	}
 	else if  ("Scheduler::RTStartTemperatureControlWithPID" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->RTStartTemperatureControlWithPID( qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(m_currentCmd)->GetType(),
-                                                                                         qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(m_currentCmd)->GetNominalTemperature(),
-                                                                                         qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(m_currentCmd)->GetSlopeTempChange(),
-                                                                                         qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(m_currentCmd)->GetMaxTemperature(),
-                                                                                         qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(m_currentCmd)->GetControllerGain(),
-                                                                                         qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(m_currentCmd)->GetResetTime(),
-                                                                                         qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(m_currentCmd)->GetDerivativeTime()
+        scmd->SetResult( mp_IDeviceProcessing->RTStartTemperatureControlWithPID( qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetType(),
+                                                                                         qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetNominalTemperature(),
+                                                                                         qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetSlopeTempChange(),
+                                                                                         qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetMaxTemperature(),
+                                                                                         qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetControllerGain(),
+                                                                                         qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetResetTime(),
+                                                                                         qSharedPointerDynamicCast<CmdRTStartTemperatureControlWithPID>(scmd)->GetDerivativeTime()
 																						) );
 	}
 	else if  ("Scheduler::ALStartTemperatureControlWithPID" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->ALStartTemperatureControlWithPID( qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(m_currentCmd)->GetType(),
-                                                                                         qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(m_currentCmd)->GetNominalTemperature(),
-                                                                                         qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(m_currentCmd)->GetSlopeTempChange(),
-                                                                                         qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(m_currentCmd)->GetMaxTemperature(),
-                                                                                         qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(m_currentCmd)->GetControllerGain(),
-                                                                                         qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(m_currentCmd)->GetResetTime(),
-                                                                                         qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(m_currentCmd)->GetDerivativeTime()
+        scmd->SetResult( mp_IDeviceProcessing->ALStartTemperatureControlWithPID( qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetType(),
+                                                                                         qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetNominalTemperature(),
+                                                                                         qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetSlopeTempChange(),
+                                                                                         qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetMaxTemperature(),
+                                                                                         qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetControllerGain(),
+                                                                                         qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetResetTime(),
+                                                                                         qSharedPointerDynamicCast<CmdALStartTemperatureControlWithPID>(scmd)->GetDerivativeTime()
 																					   ) );
 	}
 	else if  ("Scheduler::IDBottleCheck" == cmdName)
 	{
-        m_currentCmd->SetResult( mp_IDeviceProcessing->IDBottleCheck( qSharedPointerDynamicCast<CmdIDBottleCheck>(m_currentCmd)->GetReagentGrpID(),
-                                                                      qSharedPointerDynamicCast<CmdIDBottleCheck>(m_currentCmd)->GetTubePos() ) );
+        scmd->SetResult( mp_IDeviceProcessing->IDBottleCheck( qSharedPointerDynamicCast<CmdIDBottleCheck>(scmd)->GetReagentGrpID(),
+                                                                      qSharedPointerDynamicCast<CmdIDBottleCheck>(scmd)->GetTubePos() ) );
 	}
 	else if  ("Scheduler::ALAllStop" == cmdName)
 	{
-		m_currentCmd->SetResult( mp_IDeviceProcessing->ALAllStop() );
+        scmd->SetResult( mp_IDeviceProcessing->ALAllStop() );
 	}
     else if ("Scheduler::IDSealingCheck" == cmdName)
     {
-        m_currentCmd->SetResult( mp_IDeviceProcessing->IDSealingCheck(qSharedPointerDynamicCast<CmdIDSealingCheck>(m_currentCmd)->GetThresholdPressure()));
+        scmd->SetResult( mp_IDeviceProcessing->IDSealingCheck(qSharedPointerDynamicCast<CmdIDSealingCheck>(scmd)->GetThresholdPressure()));
     }
 }
 
