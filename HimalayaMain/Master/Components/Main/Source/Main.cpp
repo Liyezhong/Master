@@ -19,116 +19,30 @@
 /****************************************************************************/
 
 #include <Main/Include/Main.h>
-#include <HimalayaMasterThread/Include/HimalayaMasterThreadController.h>
+#include <Global/Source/GlobalDefines.cpp>
 #include <Global/Include/SystemPaths.h>
 #include <Global/Include/Utils.h>
-#include <DataManager/Helper/Include/XmlConfigFileTimeOffset.h>
-
-/// \todo Norbert's debug output
-#include <DeviceControl/Include/Global/dcl_log.h>
-
-#include "Threads/Include/SingletonThreadObject.h"
+#include <EventHandler/Include/StateHandler.h>
 #include "Global/Include/SignalHandler.h"
+#include "Global/Include/GlobalDefines.h"
+#include "Global/Include/Utils.h"
+/// \todo Norbert's debug output
+
+#include <DeviceControl/Include/Global/dcl_log.h>
 #include "Global/Include/AlarmPlayer.h"
-#include "EventHandler/Include/StateHandler.h"
 
-class MApplication : public QCoreApplication
-{
-public:
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function MApplication
-     *
-     *  \param argc
-     *  \param argv
-     *
-     *  \return from MApplication
-     */
-    /****************************************************************************/
-    /*lint -e578 */
-    MApplication (int &argc, char ** argv )
-        : QCoreApplication ( argc, argv )
-    {};
 
-    ~MApplication() {};
-
-    Himalaya::HimalayaMasterThreadController TheMasterThreadController;       ///<  Definition/Declaration of variable TheMasterThreadController
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function notify
-     *
-     *  \param object
-     *  \param event
-     *
-     *  \return from notify
-     */
-    /****************************************************************************/
-    /*lint -e578 */
-    virtual bool notify(QObject * object, QEvent * event)
-    {
-        try
-        {
-            return QCoreApplication::notify(object, event);
-        }
-        catch(std::exception& e)
-        {
-            qWarning() << "Exception thrown:" << e.what();
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_UNCAUGHT_EXCEPTION, Global::FmtArgs() << e.what());
-            TheMasterThreadController.Shutdown();
-            QCoreApplication::exit();
-        }
-        catch(Global::Exception& e)
-        {
-            qWarning() << "Exception thrown:" << e.what();
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_UNCAUGHT_EXCEPTION, Global::FmtArgs() << e.what());
-            TheMasterThreadController.Shutdown();
-            QCoreApplication::exit();
-        }
-        catch (...)
-        {
-            qWarning() << "Exception thrown";
-            Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_ERROR_UNKNOWN_EXCEPTION);
-            TheMasterThreadController.Shutdown();
-            QCoreApplication::exit();
-        }
-        return false;
-    }
-};
+//bool Global::AppSettings::SimulationEnabled = false;
+//bool Global::AppSettings::ExtendedLoggingEnabled = false;
 
 /****************************************************************************/
-/*!
- *  \brief  Definition/Declaration of function myMessageOutput
+/**
+ * \brief main
  *
- *  \param type = QtMsgType type parameter
- *  \param msg =  char type parameter
+ * \iparam argc
+ * \iparam argv
  *
- *  \return from myMessageOutput
  */
-/****************************************************************************/
-void myMessageOutput(QtMsgType type, const char *msg)
- {
-     switch (type) {
-     case QtDebugMsg:
-     {
-         QString str(msg);
-         if(str.left(3).compare("999") == 0)
-         fprintf(stderr, "Debug: %s\n", msg);
-     }
-         break;
-     case QtWarningMsg:
-         //fprintf(stderr, "Warning: %s\n", msg);
-         break;
-     case QtCriticalMsg:
-         fprintf(stderr, "Critical: %s\n", msg);
-         break;
-     case QtFatalMsg:
-         fprintf(stderr, "Fatal: %s\n", msg);
-         abort();
-     }
- }
-
-
 /****************************************************************************/
 int main(int argc, char *argv[]) {
 
@@ -136,28 +50,7 @@ int main(int argc, char *argv[]) {
     Global::AdjustedTime::Instance();
     Global::AlarmPlayer::Instance();
     EventHandler::StateHandler::Instance();
-   // qInstallMsgHandler(myMessageOutput);
-    //=========================================================
-    // WARNING: uncomment following lines to switch on
-    //          the DeviceControl layer debug logging.
-//    FILE* pFile = fopen ( "himalaya_app.log", "w" );
-//    Output2FILE::Stream() = pFile;
-//    FILE_LOG_L(laFCT, llINFO) << "DEBUG FCT";
-//    FILE_LOG_L(laDEV, llINFO) << "DEBUG DEV";
-//    FILE_LOG_L(laDEVPROC, llINFO) << "DEBUG DEVPROC";
-    //=========================================================
-
-    // create application object
-    //QCoreApplication App(argc, argv);
     MApplication App(argc, argv);
-//    QApplication App(argc, argv);
-
-//#ifdef QT_DEBUG
-////    SchedulerSimulation::MainWindow::getInstance().show();
-//#endif
-
-    // initialize supported languages
-   // Global::InitSupportedLanguages();
 
     // set global directories.
     Global::SystemPaths::Instance().SetComponentTestPath("../Tests");
@@ -233,13 +126,19 @@ int main(int argc, char *argv[]) {
         }
         qDebug()<<"TIME \n\n" << Global::AdjustedTime::Instance().GetCurrentDateTime();
         // add code to quit Master thread if its controller requests it
-        if(!QObject::connect(&App.TheMasterThreadController, SIGNAL(RequestFinish()), &thrMasterThread, SLOT(quit()))) {
-            Global::ToConsole("Connecting TheMasterThreadController::RequestFinish() and thrMasterThread::quit() failed");
+        if(!QObject::connect(&App.TheMasterThreadController, SIGNAL(RequestFinish()), &App, SLOT(ProcessAnyPendingEvents()))) {
+            Global::ToConsole("Connecting TheMasterThreadController::RequestFinish() and App::ProcessAnyPendingEvents() failed");
+            // exit with error code
+            return Global::RETCODE_CONNECT_FAILED;
+        }
+        // add code to quit Master thread if its controller requests it
+        if(!QObject::connect(&App, SIGNAL(InitializeThreadStop()), &App.TheMasterThreadController, SLOT(Stop()))) {
+            Global::ToConsole("Connecting App::InitializeThreadStop() and TheMasterThreadController::Stop() failed");
             // exit with error code
             return Global::RETCODE_CONNECT_FAILED;
         }
         // add code to close application when Master thread stops
-        if(!QObject::connect(&thrMasterThread, SIGNAL(finished()), &App, SLOT(quit()))) {
+        if(!QObject::connect(&thrMasterThread, SIGNAL(finished()), &ThreadForSingletonObjects, SLOT(quit()))) {
             Global::ToConsole("Connecting thrMasterThread::finished() and App::quit() failed");
             // exit with error code
             return Global::RETCODE_CONNECT_FAILED;
@@ -250,10 +149,10 @@ int main(int argc, char *argv[]) {
             // exit with error code
             return Global::RETCODE_CONNECT_FAILED;
         }
-
+        (void)QObject::connect(&ThreadForSingletonObjects, SIGNAL(finished()), &App, SLOT(quit()));
         // now push controller to master thread
         App.TheMasterThreadController.moveToThread(&thrMasterThread);
-        // and start the Master thread
+        // and start the Master thread        
         thrMasterThread.start();
 
         // start application
@@ -269,9 +168,13 @@ int main(int argc, char *argv[]) {
         // cleanup controller for master thread.
         App.TheMasterThreadController.CleanupAndDestroyObjects();
         //write buffered data to disk-> refer man pages for sync
-        system("sync");
+        (void)system("sync &");
         std::cout << "\n\n\n Sync in Main" << Global::AdjustedTime::Instance().GetCurrentTime().toString().toStdString();
         // and exit
+        //Remove parents for singleton
+        Global::EventObject::Instance().setParent(NULL);
+        Global::AlarmPlayer::Instance().setParent(NULL);
+        EventHandler::StateHandler::Instance().setParent(NULL);
         return ReturnCode;
     }
     catch(const std::exception &E) {
