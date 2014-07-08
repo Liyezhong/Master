@@ -100,7 +100,6 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
     CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, ResetTestStatus());
-    CONNECTSIGNALSIGNALGUI(this, UpdateDeviceConfiguration(), mp_DataConnector, DeviceConfigurationInterfaceChanged());
 }
 
 /****************************************************************************/
@@ -231,16 +230,17 @@ void CSystem::OnOkClicked(const QString& EnteredString)
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 
-    /*
     DataManager::CDeviceConfigurationInterface* DevConfigurationInterface = mp_DataConnector->GetDeviceConfigInterface();
     if (DevConfigurationInterface) {
-        DataManager::CDeviceConfiguration* DevConfiguration = DevConfigurationInterface->GetDeviceConfiguration();
-        if (DevConfiguration) {
-            DevConfiguration->SetValue("SERIALNUMBER", m_SystemSNString);
-            emit UpdateDeviceConfiguration();
+        DataManager::CDeviceConfiguration* DeviceConfiguration = DevConfigurationInterface->GetDeviceConfiguration();
+        if (DeviceConfiguration) {
+            DeviceConfiguration->SetValue("SERIALNUMBER", m_SystemSNString);
+            DevConfigurationInterface->UpdateDeviceConfiguration(DeviceConfiguration);
+            if (!DevConfigurationInterface->Write()) {
+                qDebug()<<"CSystem: UpdateDeviceConfiguration to file failed.";
+            }
         }
     }
-    */
 }
 
 /****************************************************************************/

@@ -112,15 +112,15 @@ protected:
     void changeEvent(QEvent *p_Event);
 
 private:
-    Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
-    MainMenu::CMainWindow *mp_MainWindow;       //!< Main window object
-    Ui::CSystemManufacturing *mp_Ui;            //!< User Interface
-    MainMenu::CBaseTable *mp_TableWidget;       //!< Base Table widget
-    QStandardItemModel m_Model;                 //!< Model for the table
-    QString m_SystemSNString;                   //!< Stores serial number of System module
-    KeyBoard::CKeyBoard *mp_KeyBoardWidget;     //!< Keyboard widget
-    MainMenu::CMessageDlg *mp_MessageDlg;                               //!< Information dialog
-    QString m_FinalTestResult;                                          //!< Stores Final test result
+    Core::CServiceGUIConnector *mp_DataConnector;                //!< Data Connector object
+    MainMenu::CMainWindow *mp_MainWindow;                        //!< Main window object
+    Ui::CSystemManufacturing *mp_Ui;                             //!< User Interface
+    MainMenu::CBaseTable *mp_TableWidget;                        //!< Base Table widget
+    QStandardItemModel m_Model;                                  //!< Model for the table
+    QString m_SystemSNString;                                    //!< Stores serial number of System module
+    KeyBoard::CKeyBoard *mp_KeyBoardWidget;                      //!< Keyboard widget
+    MainMenu::CMessageDlg *mp_MessageDlg;                        //!< Information dialog
+    QString m_FinalTestResult;                                   //!< Stores Final test result
 
     /****************************************************************************/
     /*!
@@ -143,13 +143,6 @@ signals:
      */
     /****************************************************************************/
     void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
-
-    /****************************************************************************/
-    /*!
-     *  \brief Signal emitted for update serial number to device configuration
-     */
-    /****************************************************************************/
-    void UpdateDeviceConfiguration();
 
 private slots:
     /****************************************************************************/
