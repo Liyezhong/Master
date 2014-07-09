@@ -1186,7 +1186,7 @@ void CStartup::RefreshTestStatus4SystemExhaustFan(Service::ModuleTestCaseID Id, 
     dlg->SetTitle(TestCaseDescription);
     dlg->SetIcon(QMessageBox::Information);
 
-    Text = QString("Please check if the exhaust fan is runing.");
+    Text = QString("Please check if the exhaust fan is runing, and check if the air flow direction is out of device.");
 
     dlg->SetText(Text);
     dlg->HideCenterButton();

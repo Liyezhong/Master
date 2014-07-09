@@ -402,10 +402,10 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForSystemFan(Service::Modul
     dlg->SetIcon(QMessageBox::Information);
 
     if (Id == Service::SYSTEM_VENTILATION_FAN) {
-        Text = "Please check if the ventilation fan is runing";
+        Text = "Please check if the ventilation fan is runing, and check if the air flow direction is out of device";
     }
     else if (Id == Service::SYSTEM_EXHAUST_FAN) {
-        Text = "Please check if the exhaust fan is runing.";
+        Text = "Please check if the exhaust fan is runing, and check if the air flow direction is out of device";
     }
 
     dlg->SetText(Text);
