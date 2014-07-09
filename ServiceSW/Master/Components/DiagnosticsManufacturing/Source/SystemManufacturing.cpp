@@ -49,7 +49,7 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     , mp_MainWindow(p_Parent)
     , mp_Ui(new Ui::CSystemManufacturing)
     , mp_DeviceConfiguration(NULL)
-    , m_SystemSNString("XXXX/MM.YYYY")
+    , m_SystemSNString("")
     , m_FinalTestResult("NA")
     , m_TestFlag(false)
 {
@@ -58,6 +58,13 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     mp_Ui->systemSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
+
+    if (mp_DataConnector->GetDeviceConfigInterface()) {
+        mp_DeviceConfiguration = mp_DataConnector->GetDeviceConfigInterface()->GetDeviceConfiguration();
+        if (mp_DeviceConfiguration) {
+            m_SystemSNString = mp_DeviceConfiguration->GetValue("SERIALNUMBER");
+        }
+    }
 
     mp_Ui->systemSNEdit->setText(m_SystemSNString);
 
@@ -100,10 +107,6 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
 //    mp_Ui->testSuccessLabel->setPixmap(QPixmap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png")));
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
-
-    if (mp_DataConnector->GetDeviceConfigInterface()) {
-        mp_DeviceConfiguration = mp_DataConnector->GetDeviceConfigInterface()->GetDeviceConfiguration();
-    }
 
     CONNECTSIGNALSLOTGUI(mp_WaitDlg, rejected(), mp_TestReporter, StopSend());
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
@@ -221,6 +224,7 @@ void CSystem::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
                                                     << QApplication::translate("DiagnosticsManufacturing::CSystem", "Tests", 0, QApplication::UnicodeUTF8)
                                                     << "");
     m_Model.appendRow(ItemList);
+    mp_TestReporter->AddTestCaseId(Id);
 }
 
 /****************************************************************************/

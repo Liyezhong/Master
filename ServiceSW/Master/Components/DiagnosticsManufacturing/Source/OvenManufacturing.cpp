@@ -217,6 +217,7 @@ void COven::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
                                                     << QApplication::translate("DiagnosticsManufacturing::COven", "Tests", 0, QApplication::UnicodeUTF8)
                                                     << "");
     m_Model.appendRow(ItemList);
+    mp_TestReporter->AddTestCaseId(Id);
 }
 
 /****************************************************************************/
@@ -335,7 +336,6 @@ void COven::BeginTest()
         mp_Ui->widget->setFocus();
 
         emit BeginModuleTest(Service::OVEN, TestCaseList);
-
         if (m_TestFlag) {
             mp_Ui->sendTestReportBtn->setEnabled(true);
         }

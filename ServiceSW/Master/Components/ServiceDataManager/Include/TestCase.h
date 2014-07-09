@@ -79,13 +79,18 @@ public:
      */
     /****************************************************************************/
     void SetStatus(bool Status){
-        m_Status = Status;
+        if (Status) {
+            m_Status = 1;
+        }
+        else {
+            m_Status = 0;
+        }
     }
 
 private:
     QString m_ModuleName;                  ///< Store module name
     QString m_CaseName;                    ///< Store test case name
-    bool m_Status;                         ///< Store test case Status true-PASS or false-FAIL
+    int m_Status;                          ///< Store test case Status 1-PASS or false-FAIL
     QMap<QString, QString> m_Parameters;   ///< Store test case parameters
     QMap<QString, QString> m_Results;      ///< Store test Case results
 

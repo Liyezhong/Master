@@ -164,6 +164,7 @@ void CCleaning::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
                                                     << QApplication::translate("DiagnosticsManufacturing::CCleaning", "Tests", 0, QApplication::UnicodeUTF8)
                                                     << "");
     m_Model.appendRow(itemList);
+    mp_TestReporter->AddTestCaseId(Id);
 }
 
 /****************************************************************************/

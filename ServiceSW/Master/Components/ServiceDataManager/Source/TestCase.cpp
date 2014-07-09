@@ -25,7 +25,7 @@ namespace DataManager {
 CTestCase::CTestCase(QString ModuleName, QString CaseName, bool Status):
     m_ModuleName(ModuleName),
     m_CaseName(CaseName),
-    m_Status(false)
+    m_Status(-1)
 {
 
 }
@@ -57,26 +57,30 @@ QString CTestCase::GenReport()
 {
     QString StrReport;
     QString StrResult;
-    if (m_Status) {
+    if (m_Status == 1) {
         StrResult = "Pass";
     }
-    else {
+    else if (m_Status == 0) {
         StrResult = "Fail";
+    }
+    else {
+        StrResult = "Skip";
     }
     StrReport = m_CaseName + QString(":\n");
     StrReport.append(QString("\tName: %1\n").arg(m_CaseName));
     StrReport.append(QString("\tResult: %1\n").arg(StrResult));
+    StrReport.append(QString("\tParameters:\n"));
 
     QMap<QString, QString>::iterator itr = m_Parameters.begin();
     for (; itr != m_Parameters.end(); ++itr) {
-        StrReport.append(QString("\t%1 : %2\n").arg(itr.key()).arg(itr.value()));
+        StrReport.append(QString("\t\t%1 : %2\n").arg(itr.key()).arg(itr.value()));
     }
 
-    StrReport.append("\n");
+    StrReport.append("\tResults:\n");
     itr = m_Results.begin();
 
     for (; itr != m_Results.end(); ++itr) {
-        StrReport.append(QString("\t%1 : %2\n").arg(itr.key()).arg(itr.value()));
+        StrReport.append(QString("\t\t%1 : %2\n").arg(itr.key()).arg(itr.value()));
     }
 
     return StrReport;

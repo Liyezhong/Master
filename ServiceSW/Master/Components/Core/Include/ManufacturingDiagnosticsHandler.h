@@ -84,7 +84,7 @@ private:
     void SelectOptionFor110v220Switch();
     bool ShowConfirmDlgForRVSelecting(quint8 Position);
     bool ShowConfirmDlgForRVSealing(quint8 Position);
-    bool ShowConfirmDlgForSystemFan(Service::ModuleTestCaseID Id);
+    bool ShowConfirmDlgForSystemVentilationFan();
     bool ShowConfirmDlgForSystemSealing();
     void PerformManufDisplayTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufOvenTests(const QList<Service::ModuleTestCaseID> &TestCaseList);

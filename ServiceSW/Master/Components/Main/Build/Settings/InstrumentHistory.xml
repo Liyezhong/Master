@@ -78,7 +78,7 @@
             </SubModule>
         </Module>
         <Module name="Retort" description="Retort">
-            <SerialNumber>14-HIM-RT-00009</SerialNumber>
+            <SerialNumber>041/1212</SerialNumber>
             <OperatingHours>N/A</OperatingHours>
             <DateOfExchange>2013-05-23</DateOfExchange>
             <SubModule name="Heater" type="Heater" description="Heater">
@@ -108,7 +108,7 @@
             </SubModule>
         </Module>
         <Module name="Paraffine Oven" description="Paraffine Oven">
-            <SerialNumber>042/1222</SerialNumber>
+            <SerialNumber>042/1121</SerialNumber>
             <OperatingHours>N/A</OperatingHours>
             <DateOfExchange>2012-07-06</DateOfExchange>
             <SubModule name="Heater" type="Heater" description="Heater">

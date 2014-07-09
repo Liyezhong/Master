@@ -216,6 +216,7 @@ void CRotaryValve::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
                                                     << QApplication::translate("DiagnosticsManufacturing::CRotaryValve", "Tests", 0, QApplication::UnicodeUTF8)
                                                     << "");
     m_Model.appendRow(ItemList);
+    mp_TestReporter->AddTestCaseId(Id);
 }
 
 /****************************************************************************/

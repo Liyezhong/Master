@@ -23,8 +23,9 @@
 #include <QString>
 #include <QTextStream>
 #include <QFile>
+#include <QList>
 #include <QProcess>
-//#include "MainMenu/Include/WaitDialog.h"
+#include "Core/Include/ServiceDefines.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -72,6 +73,10 @@ public:
         m_SerialNumber = SerialNumber;
     }
 
+    void AddTestCaseId(Service::ModuleTestCaseID Id) {
+        m_TestCaseList.append(Id);
+    }
+
 private:
     /****************************************************************************/
     /**
@@ -80,9 +85,10 @@ private:
     /****************************************************************************/
     void FillReportFile(QTextStream& TextStream);
 
-    QString m_TestReportFile;               //!< Stores Test report file name.
-    QString m_ModuleName;                   //!< Stores module name
-    QString m_SerialNumber;                 //!< Stores serial number
+    QList<Service::ModuleTestCaseID> m_TestCaseList; //!< Stores test case list;
+    QString m_TestReportFile;                        //!< Stores Test report file name.
+    QString m_ModuleName;                            //!< Stores module name
+    QString m_SerialNumber;                          //!< Stores serial number
 
     QProcess* mp_Process;                   //!< The Process for run external command
 

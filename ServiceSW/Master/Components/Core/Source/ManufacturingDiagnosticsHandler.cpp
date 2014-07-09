@@ -392,23 +392,17 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSealing(quint8 Positio
     return Result;
 }
 
-bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForSystemFan(Service::ModuleTestCaseID Id)
+bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForSystemVentilationFan()
 {
-    QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-    QString Text;
+    QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Service::SYSTEM_VENTILATION_FAN);
 
     MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_MainWindow);
     dlg->SetTitle(TestCaseDescription);
     dlg->SetIcon(QMessageBox::Information);
 
-    if (Id == Service::SYSTEM_VENTILATION_FAN) {
-        Text = "Please check if the ventilation fan is runing, and check if the air flow direction is out of device";
-    }
-    else if (Id == Service::SYSTEM_EXHAUST_FAN) {
-        Text = "Please check if the exhaust fan is runing, and check if the air flow direction is out of device";
-    }
-
-    dlg->SetText(Text);
+    dlg->SetText(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                         "Please check if the ventilation fan is runing, and check if the air flow direction is out of device",
+                                         0, QApplication::UnicodeUTF8));
     dlg->HideCenterButton();
     dlg->SetButtonText(3, tr("Pass"));
     dlg->SetButtonText(1, tr("Fail"));
@@ -1031,7 +1025,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             if (!NextFlag) {
                 break;
             }
-            Result    = ShowConfirmDlgForSystemFan(Id);
+            Result    = ShowConfirmDlgForSystemVentilationFan();
             break;
         case Service::SYSTEM_OVERFLOW:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST;

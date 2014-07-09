@@ -25,6 +25,7 @@
 #include "Global/Include/SystemPaths.h"
 #include "Global/Include/AdjustedTime.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "ServiceDataManager/Include/TestCaseGuide.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -46,11 +47,16 @@ CTestCaseReporter::~CTestCaseReporter()
 
 bool CTestCaseReporter::GenReportFile()
 {
+    QDir TempDir;
     QString TempFilePath = Global::SystemPaths::Instance().GetTempPath();
+    if (!TempDir.exists(TempFilePath) && !TempDir.mkdir(TempFilePath)) {
+        qDebug()<<"CTestCaseReporter: create temp dir failed";
+        return false;
+    }
     QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
     QString CurrentDateTime = DateTime.toString("yyyyMMddhhmmss");
     if (m_SerialNumber.isEmpty()) {
-        qDebug()<<"CTestCaseReportermp_TestCaseReporter : the serial number is empty";
+        qDebug()<<"CTestCaseReporter: the serial number is empty";
         return false;
     }
     QString serialNumber = m_SerialNumber;
@@ -107,12 +113,18 @@ void CTestCaseReporter::FillReportFile(QTextStream& TextStream)
     TextStream<<QString("Time Stamp: %1\n").arg(CurrentDateTime);
     TextStream<<QString("Serial Number: %1\n").arg(m_SerialNumber);
 
-    QList<DataManager::CTestCase*> TestCases = DataManager::CTestCaseFactory::Instance().GetModuleTestCase(m_ModuleName);
-    QList<DataManager::CTestCase*>::iterator itr = TestCases.begin();
-
-    for (; itr != TestCases.end(); ++itr) {
-        TextStream<<(*itr)->GenReport();
+    QList<Service::ModuleTestCaseID>::iterator itr = m_TestCaseList.begin();
+    for (; itr != m_TestCaseList.end(); ++itr) {
+        QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(*itr);
+        DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+        if (p_TestCase) {
+            TextStream<<p_TestCase->GenReport();
+        }
+        else {
+            qDebug()<<"CTestCaseReporter:: get test case failed the name is "<<TestCaseName;
+        }
     }
+
 }
 
 void CTestCaseReporter::StopSend()

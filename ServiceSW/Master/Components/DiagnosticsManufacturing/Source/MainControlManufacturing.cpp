@@ -212,6 +212,7 @@ void CMainControl::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
                                                     << QApplication::translate("DiagnosticsManufacturing::CMainControl", "Tests", 0, QApplication::UnicodeUTF8)
                                                     << "");
     m_Model.appendRow(ItemList);
+    mp_TestReporter->AddTestCaseId(Id);
 }
 
 /****************************************************************************/
@@ -330,7 +331,6 @@ void CMainControl::BeginTest()
         mp_Ui->widget->setFocus();
 
         emit BeginModuleTest(Service::MAIN_CONTROL, TestCaseList);
-
         if (m_TestFlag) {
             mp_Ui->sendTestReportBtn->setEnabled(true);
         }

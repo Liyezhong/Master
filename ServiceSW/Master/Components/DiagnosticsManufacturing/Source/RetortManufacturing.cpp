@@ -224,6 +224,7 @@ void CRetort::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
                                                     << QApplication::translate("DiagnosticsManufacturing::CRetort", "Tests", 0, QApplication::UnicodeUTF8)
                                                     << "");
     m_Model.appendRow(itemList);
+    mp_TestReporter->AddTestCaseId(Id);
 }
 
 /****************************************************************************/
