@@ -217,6 +217,15 @@ public:
     /****************************************************************************/
     bool CheckRVHeatingStatus() const {return m_RV_2_Outlet.OTCheckPassed;}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Check if level sensor heating reaches target temperature or not
+     *  \param  void
+     *  \return bool, ture - passed, false - not yet
+     */
+    /****************************************************************************/
+    bool CheckLevelSensorHeatingStatus() const { return m_RTLevelSensor.OTCheckPassed; }
+
 private slots:
     /****************************************************************************/
     /*!

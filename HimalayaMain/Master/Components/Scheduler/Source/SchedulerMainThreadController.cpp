@@ -368,7 +368,7 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
         //Check if it is a Cleaning Program or not?
         if (m_NewProgramID.at(0) == 'C')
         {
-            isCleaningProgram = false;
+            isCleaningProgram = true;
             int sep = m_NewProgramID.indexOf('_');
             m_CurProgramID = m_NewProgramID.left(sep);
             m_ReagentIdOfLastStep = m_NewProgramID.right(m_NewProgramID.count()- sep -1);
@@ -747,7 +747,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else if(m_CurProgramStepInfo.reagentGroup != "RG6")
             {
-                if(CheckLevelSensorTemperature(85))
+                if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
                 {
                     LogDebug("Program Step Heating Level sensor stage 1 OK");
                     m_SchedulerMachine->NotifyLevelSensorTempS1Ready();
@@ -771,7 +771,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 m_SchedulerMachine->NotifyPause(PSSM_READY_TO_HEAT_LEVEL_SENSOR_S2);
                 DequeueNonDeviceCommand();
             }
-            else if(CheckLevelSensorTemperature(85))
+            else if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
             {
                 LogDebug("Program Step Heating Level sensor stage 2 OK");
                 m_SchedulerMachine->NotifyLevelSensorTempS2Ready();
