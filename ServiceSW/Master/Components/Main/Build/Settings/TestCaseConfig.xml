@@ -8,10 +8,10 @@
 	</Oven>
 	<RotaryValve>
 		<RVInitialize Parameter="N/A"/>
-		<RVSelectionTest Position="7" Pressure="30"/>
-		<RVSealingTest Parameter="N/A"/>
-		<RVHeatingEndTest Parameter="N/A"/>
-		<RVHeatingStationTest Parameter="N/A"/>
+		<RVSelectingTest Position="7" TubeFlag="1" Pressure="30"/>
+		<RVSealingTest Position1="3" Position2="10" Position="7" TubeFlag="0" PressureLow="95" PressureHigh="105" Departure="2" DurationTime="00:01:00" />
+		<RVHeatingStationTest PowerSupply="AC" AmbTempLow="10" AmbTempHigh="40" Sensor1TargetTemp="100" DepartureLow="-2" DepartureHigh="2" Sensor1Duration="01:00:00" Sensor2TargetTemp="70" Sensor2Duration="02:00:00" />
+		<RVHeatingEndTest PowerSupply="AC" AmbTempLow="10" AmbTempHigh="40" Sensor1TargetTemp="30" DepartureLow="-2" DepartureHigh="2" Sensor1Duration="00:02:00" Sensor1TargetTemp2="35" Sensor2TargetTemp="30" Sensor2Duration="00:15:00" Position="11" />
 	</RotaryValve>
 	<MainControl>
 		<MCASB3 Voltage="24" VolTolerance="0.1" CurrentLow="0" CurrentHigh="200"/>
