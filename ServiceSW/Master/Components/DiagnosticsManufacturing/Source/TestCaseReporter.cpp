@@ -53,7 +53,9 @@ bool CTestCaseReporter::GenReportFile()
         qDebug()<<"CTestCaseReportermp_TestCaseReporter : the serial number is empty";
         return false;
     }
-    QString ReportName = m_SerialNumber + "_" + m_ModuleName + "_" + CurrentDateTime;
+    QString serialNumber = m_SerialNumber;
+    serialNumber.replace(QRegExp("[/.]"), "_");
+    QString ReportName = m_ModuleName + "_" + serialNumber + "_" + CurrentDateTime;
     QString FileName = TempFilePath + "/" + ReportName + ".txt";
     QFile File(FileName);
 

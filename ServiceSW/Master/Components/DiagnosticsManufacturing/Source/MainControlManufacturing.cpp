@@ -46,11 +46,11 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     : mp_DataConnector(p_DataConnector)
     , mp_MainWindow(p_Parent)
     , mp_Ui(new Ui::CMainControlManufacturing)
-    , mp_TestReport(NULL)
-    , mp_MessageDlg(NULL)
     , mp_Module(NULL)
     , m_FinalTestResult("NA")
     , m_MainControlSNString("040/XXXX")
+    , m_SystemSNString("")
+    , m_TestFlag(true)
 {
     mp_Ui->setupUi(this);
 
@@ -60,16 +60,10 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     mp_Ui->beginTestBtn->setEnabled(true);
     mp_Ui->eboxSNEdit->setText(m_MainControlSNString);
 
-    m_TestReport.insert("ModuleName", "MainControl");
-    m_TestNames.append("ModuleName");
-
-    m_TestReport.insert("SerialNumber", "");
-    m_TestNames.append("SerialNumber");
-
-    m_TestResult << "NA" << "NA";
-
-
-    mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_TestReporter = new CTestCaseReporter("MainControl");
+    mp_MessageDlg   = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_WaitDlg      = new MainMenu::CWaitDialog(mp_MainWindow);
+    mp_WaitDlg->setModal(true);
 
     mp_TableWidget = new MainMenu::CBaseTable;
 
@@ -102,6 +96,7 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
         mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Main Control");
     }
 
+    CONNECTSIGNALSLOTGUI(mp_WaitDlg, rejected(), mp_TestReporter, StopSend());
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
     CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, ResetTestStatus());
@@ -119,6 +114,9 @@ CMainControl::~CMainControl()
         delete mp_KeyBoardWidget;
         delete mp_TableWidget;
         delete mp_Ui;
+        delete mp_MessageDlg;
+        delete mp_WaitDlg;
+        delete mp_TestReporter;
 
      }
      catch (...) {
@@ -231,14 +229,6 @@ void CMainControl::OnOkClicked(const QString& EnteredString)
     m_MainControlSNString.append(EnteredString.simplified());
     mp_Ui->eboxSNEdit->setText(m_MainControlSNString);
 
-    if (m_TestNames.contains("SerialNumber")) {
-        m_TestReport.remove("SerialNumber");
-        m_TestReport.insert("SerialNumber", m_LineEditString);
-    }
-    else {
-        m_TestNames.append("SerialNumber");
-        m_TestReport.insert("SerialNumber", m_LineEditString);
-    }
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 
@@ -341,6 +331,9 @@ void CMainControl::BeginTest()
 
         emit BeginModuleTest(Service::MAIN_CONTROL, TestCaseList);
 
+        if (m_TestFlag) {
+            mp_Ui->sendTestReportBtn->setEnabled(true);
+        }
 
         qDebug()<<"CMainControl::BeginTest   --- emitted";
     }
@@ -375,7 +368,7 @@ void CMainControl::SetTestResult(Service::ModuleTestCaseID Id, bool Result)
             break;
         }
     }
-
+    m_TestFlag = true;
 }
 
 void CMainControl::EnableButton(bool EnableFlag)
@@ -391,50 +384,71 @@ void CMainControl::EnableButton(bool EnableFlag)
 void CMainControl::SendTestReport()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_MAINCONTROL_SENDTESTREPORT_REQUESTED);
-#if 0
-//    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_XAXIS_SENDTESTREPORT_REQUESTED);
 
-    if (m_LineEditString.isEmpty()) {
+    QString systemSN;
+    DataManager::CDeviceConfigurationInterface* DevConfigurationInterface = mp_DataConnector->GetDeviceConfigInterface();
+    if (DevConfigurationInterface) {
+        DataManager::CDeviceConfiguration* DeviceConfiguration = DevConfigurationInterface->GetDeviceConfiguration();
+        if (DeviceConfiguration) {
+            systemSN = DeviceConfiguration->GetValue("SERIALNUMBER");
+        }
+    }
+
+    if (systemSN.startsWith("XXXX")) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CMainControl",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CMainControl",
                                                                 "Ok", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
         mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CMainControl",
-                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
+                                             "Please enter the system serial number.", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->show();
-    } else {
+        (void)mp_MessageDlg->exec();
+        return;
+    }
 
-        DataManager::ModuleNumbers_t *ModuleNumbers = mp_DataConnector->GetServiceParameters()->GetModuleNumbers();
+    mp_TestReporter->SetSerialNumber(systemSN);
 
-        mp_TestReport = new DiagnosticsManufacturing::CTestReportGeneration(ModuleNumbers->XAxis, m_LineEditString,
-                                                                            m_FinalTestResult);
-        bool Result = mp_TestReport->CreateTestReportFile(m_TestNames, m_TestReport);
-
-        if (Result) {
+    if (mp_TestReporter->GenReportFile()) {
+        mp_WaitDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CMainControl",
+                                                    "Sending...", 0, QApplication::UnicodeUTF8));
+        mp_WaitDlg->show();
+        if (mp_TestReporter->SendReportFile()) {
+            mp_WaitDlg->accept();
             mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CMainControl",
-                                                            "Test Report", 0, QApplication::UnicodeUTF8));
+                                                            "Send Report", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CMainControl",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();
             mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CMainControl",
-                                              "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
+                                                           "Send test report ok.", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetIcon(QMessageBox::Information);
-            mp_MessageDlg->show();
-        } else {
+            (void)mp_MessageDlg->exec();
+        }
+        else {
+            mp_WaitDlg->accept();
             mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CMainControl",
-                                                            "Test Report", 0, QApplication::UnicodeUTF8));
+                                                            "Send Report", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CMainControl",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();
             mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CMainControl",
-                                                           "Test report save failed.", 0, QApplication::UnicodeUTF8));
+                                                           "Send test report failed.", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetIcon(QMessageBox::Critical);
-            mp_MessageDlg->show();
+            (void)mp_MessageDlg->exec();
         }
     }
-#endif
+    else {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CMainControl",
+                                                        "Test Report", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CMainControl",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CMainControl",
+                                                       "Test report save failed.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Critical);
+        (void)mp_MessageDlg->exec();
+    }
 }
 
 /****************************************************************************/

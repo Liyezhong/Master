@@ -48,9 +48,10 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     : mp_DataConnector(p_DataConnector)
     , mp_MainWindow(p_Parent)
     , mp_Ui(new Ui::CSystemManufacturing)
-    , mp_MessageDlg(NULL)
+    , mp_DeviceConfiguration(NULL)
     , m_SystemSNString("XXXX/MM.YYYY")
     , m_FinalTestResult("NA")
+    , m_TestFlag(false)
 {
     mp_Ui->setupUi(this);
     mp_Ui->systemSNEdit->installEventFilter(this);
@@ -60,7 +61,10 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
 
     mp_Ui->systemSNEdit->setText(m_SystemSNString);
 
+    mp_TestReporter = new CTestCaseReporter("System");
     mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_WaitDlg      = new MainMenu::CWaitDialog(mp_MainWindow);
+    mp_WaitDlg->setModal(true);
 
     mp_TableWidget = new MainMenu::CBaseTable;
 
@@ -97,9 +101,15 @@ CSystem::CSystem(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
 
+    if (mp_DataConnector->GetDeviceConfigInterface()) {
+        mp_DeviceConfiguration = mp_DataConnector->GetDeviceConfigInterface()->GetDeviceConfiguration();
+    }
+
+    CONNECTSIGNALSLOTGUI(mp_WaitDlg, rejected(), mp_TestReporter, StopSend());
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
     CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, ResetTestStatus());
+    CONNECTSIGNALSLOTGUI(this, UpdateDeviceConfiguration(DataManager::CDeviceConfiguration*), mp_DataConnector, SendDeviceConfigurationUpdate(DataManager::CDeviceConfiguration*));
 }
 
 /****************************************************************************/
@@ -113,7 +123,9 @@ CSystem::~CSystem()
         delete mp_KeyBoardWidget;
         delete mp_TableWidget;
         delete mp_Ui;
-
+        delete mp_MessageDlg;
+        delete mp_WaitDlg;
+        delete mp_TestReporter;
      }
      catch (...) {
          // to please Lint
@@ -230,16 +242,9 @@ void CSystem::OnOkClicked(const QString& EnteredString)
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 
-    DataManager::CDeviceConfigurationInterface* DevConfigurationInterface = mp_DataConnector->GetDeviceConfigInterface();
-    if (DevConfigurationInterface) {
-        DataManager::CDeviceConfiguration* DeviceConfiguration = DevConfigurationInterface->GetDeviceConfiguration();
-        if (DeviceConfiguration) {
-            DeviceConfiguration->SetValue("SERIALNUMBER", m_SystemSNString);
-            DevConfigurationInterface->UpdateDeviceConfiguration(DeviceConfiguration);
-            if (!DevConfigurationInterface->Write()) {
-                qDebug()<<"CSystem: UpdateDeviceConfiguration to file failed.";
-            }
-        }
+    if (mp_DeviceConfiguration) {
+        mp_DeviceConfiguration->SetValue("SERIALNUMBER", m_SystemSNString);
+        emit UpdateDeviceConfiguration(mp_DeviceConfiguration);
     }
 }
 
@@ -335,6 +340,9 @@ void CSystem::BeginTest()
 
         emit BeginModuleTest(Service::SYSTEM, TestCaseList);
 
+        if (m_TestFlag) {
+            mp_Ui->sendTestReportBtn->setEnabled(true);
+        }
 
         qDebug()<<"CLaSystem::BeginTest   --- emitted";
     }
@@ -369,7 +377,7 @@ void CSystem::SetTestResult(Service::ModuleTestCaseID Id, bool Result)
             break;
         }
     }
-
+    m_TestFlag = true;
 }
 
 void CSystem::EnableButton(bool EnableFlag)
@@ -384,41 +392,49 @@ void CSystem::EnableButton(bool EnableFlag)
 /****************************************************************************/
 void CSystem::SendTestReport()
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_SENDTESTREPORT_REQUESTED);
-    if (m_SystemSNString.startsWith("XXXX")) {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_SYSTEM_SENDTESTREPORT_REQUESTED);
+    mp_TestReporter->SetSerialNumber(m_SystemSNString);
+
+    if (mp_TestReporter->GenReportFile()) {
+        mp_WaitDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CSystem",
+                                                    "Sending...", 0, QApplication::UnicodeUTF8));
+        mp_WaitDlg->show();
+        if (mp_TestReporter->SendReportFile()) {
+            mp_WaitDlg->accept();
+            mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CSystem",
+                                                            "Send Report", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CSystem",
+                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->HideButtons();
+            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CSystem",
+                                                           "Send test report ok.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+            (void)mp_MessageDlg->exec();
+        }
+        else {
+            mp_WaitDlg->accept();
+            mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CSystem",
+                                                            "Send Report", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CSystem",
+                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->HideButtons();
+            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CSystem",
+                                                           "Send test report failed.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetIcon(QMessageBox::Critical);
+            (void)mp_MessageDlg->exec();
+        }
+    }
+    else {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CSystem",
-                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
+                                                        "Test Report", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CSystem",
                                                                 "Ok", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
         mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CSystem",
-                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        (void)mp_MessageDlg->exec();
-    }
-    else {
-        /*
-        CTestCaseReporter* p_TestReporter = new CTestCaseReporter(mp_MainWindow, "CSystem", m_LineEditString);
-
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CSystem",
-                                                    "Test Report", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                            "Ok", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->HideButtons();
-        if (p_TestReporter->GenReportFile()) {
-            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CSystem",
-                                          "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->SetIcon(QMessageBox::Information);
-        }
-        else {
-            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CSystem",
                                                        "Test report save failed.", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->SetIcon(QMessageBox::Critical);
-        }
+        mp_MessageDlg->SetIcon(QMessageBox::Critical);
         (void)mp_MessageDlg->exec();
-        */
     }
-
 }
 
 /****************************************************************************/

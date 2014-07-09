@@ -10,10 +10,10 @@
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="EndTestResult" unit="TestResult_t">Pass</parameter>
                 <parameter name="SerialNumber" unit="QString">SN_ASB3_0860</parameter>
-                <parameter name="DateOfExchange" unit="QString">2012-03-08</parameter>
                 <parameter name="BootLoaderReleaseDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="BootLoaderMajorVersion" unit="QString">02</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2012-03-08</parameter>
                 <parameter name="OperationTime" unit="hours">5000</parameter>
                 <parameter name="SoftwareReleaseDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
@@ -25,10 +25,10 @@
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="EndTestResult" unit="TestResult_t">Pass</parameter>
                 <parameter name="SerialNumber" unit="QString">SN_ASB5_0001</parameter>
-                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="BootLoaderReleaseDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="BootLoaderMajorVersion" unit="QString">02</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="OperationTime" unit="hours">5000</parameter>
                 <parameter name="SoftwareReleaseDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
@@ -40,10 +40,10 @@
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="EndTestResult" unit="TestResult_t">Pass</parameter>
                 <parameter name="SerialNumber" unit="QString">SN_ASB15_0001</parameter>
-                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="BootLoaderReleaseDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="BootLoaderMajorVersion" unit="QString">02</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="OperationTime" unit="hours">5000</parameter>
                 <parameter name="SoftwareReleaseDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
@@ -54,9 +54,9 @@
                 <parameter name="SoftwareVersion" unit="quint16">1.0</parameter>
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">SN_EBOX_0001</parameter>
-                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="BootLoaderReleaseDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="BootLoaderMajorVersion" unit="QString">02</parameter>
+                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="OperationTime" unit="hours">5000</parameter>
                 <parameter name="SoftwareReleaseDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
@@ -85,66 +85,66 @@
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="EndTestResult" unit="TestResult_t">Pass</parameter>
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="DateOfExchange" unit="QString">2012-10-01</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2012-10-01</parameter>
                 <parameter name="OperationTime" unit="hours">6000</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
             <SubModule name="Lid Lock" type="Lock" description="Lid Lock">
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="DateOfExchange" unit="QString">2013-08-24</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2013-08-24</parameter>
                 <parameter name="OperationCycles" unit="cycles">600</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
             <SubModule name="Level Sensor" type="Sensor" description="Level Sensor">
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="DateOfExchange" unit="QString">2007-04-28</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2007-04-28</parameter>
                 <parameter name="OperationTime" unit="hours">5000</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
         </Module>
         <Module name="Paraffine Oven" description="Paraffine Oven">
-            <SerialNumber>14-HIM-WB-05000</SerialNumber>
+            <SerialNumber>042/1222</SerialNumber>
             <OperatingHours>N/A</OperatingHours>
             <DateOfExchange>2012-07-06</DateOfExchange>
             <SubModule name="Heater" type="Heater" description="Heater">
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="OperationTime" unit="hours">6000</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
             <SubModule name="Cover Sensor" type="Sensor" description="Cover Sensor">
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="DateOfExchange" unit="QString">2012-06-04</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2012-06-04</parameter>
                 <parameter name="OperationCycles" unit="cycles">60</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
         </Module>
         <Module name="Rotary Valve" description="Rotary Valve">
-            <SerialNumber>14-HIM-RV-00001</SerialNumber>
+            <SerialNumber>043/2121</SerialNumber>
             <OperatingHours>N/A</OperatingHours>
             <DateOfExchange>2013-06-06</DateOfExchange>
             <SubModule name="Motor" type="Step Motor" description="Motor">
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="DateOfExchange" unit="QString">2013-06-03</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2013-06-03</parameter>
                 <parameter name="OperationTime" unit="minutes">800</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">02</parameter>
             </SubModule>
             <SubModule name="Heater" type="Heater" description="Heater">
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="OperationTime" unit="hours">4000</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
@@ -156,32 +156,32 @@
             <SubModule name="Pump" type="Pump" description="Pump">
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">SN_PUMP_0006</parameter>
-                <parameter name="DateOfExchange" unit="QString">2093-06-05</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2093-06-05</parameter>
                 <parameter name="OperationTime" unit="hours">8000</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
             <SubModule name="Valve 1" type="Valve" description="Valve 1">
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">SN_VALVE1_0001</parameter>
-                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="OperationCycles" unit="cycles">900</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
             <SubModule name="Valve 2" type="Valve" description="Valve 2">
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">SN_VALVE2_0001</parameter>
-                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="OperationCycles" unit="cycles">700</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
             <SubModule name="Liquid Heating Tube" type="Heater" description="Heating Belt 1 (Liquid)">
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="OperationTime" unit="hours">5000</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
@@ -189,8 +189,8 @@
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="EndTestResult" unit="TestResult_t">Pass</parameter>
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="DateOfExchange" unit="QString">2003-06-05</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2003-06-05</parameter>
                 <parameter name="OperationTime" unit="hours">6000</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
@@ -206,16 +206,16 @@
             <SubModule name="Carbon Filter" type="Filter" description="Carbon Filter">
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="DateOfExchange" unit="QString">2013-03-03</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2013-03-03</parameter>
                 <parameter name="OperationTime" unit="hours">6000</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
             <SubModule name="Exhaust Fan" type="Fan" description="Fan">
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="OperationTime" unit="hours">10000</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>

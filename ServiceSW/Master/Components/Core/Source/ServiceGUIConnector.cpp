@@ -129,6 +129,16 @@ void CServiceGUIConnector::SendModuleUpdate(ServiceDataManager::CModule &Module)
     qDebug() << "Module Updated";
 }
 
+void CServiceGUIConnector::SendDeviceConfigurationUpdate(DataManager::CDeviceConfiguration* DeviceConfiguration)
+{
+    if (mp_DeviceConfigurationInterface) {
+        mp_DeviceConfigurationInterface->UpdateDeviceConfiguration(DeviceConfiguration);
+        if (!mp_DeviceConfigurationInterface->Write()) {
+            qDebug()<<"CServiceGUIConnector: UpdateDeviceConfigurationSN to file failed.";
+        }
+   }
+}
+
 /****************************************************************************/
 /*!
  *  \brief This slot updates the Modulelist

@@ -48,10 +48,10 @@ CRetort::CRetort(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     : mp_DataConnector(p_DataConnector)
     , mp_MainWindow(p_Parent)
     , mp_Ui(new Ui::CRetortManufacturing)
-    , mp_MessageDlg(NULL)
     , mp_Module(NULL)
     , m_RetortSNString("041/XXXX")
     , m_FinalTestResult("NA")
+    , m_TestFlag(false)
 {
     mp_Ui->setupUi(this);
     mp_Ui->retortSNEdit->installEventFilter(this);
@@ -61,7 +61,10 @@ CRetort::CRetort(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
 
     mp_Ui->retortSNEdit->setText(m_RetortSNString);
 
-    mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_TestReporter = new CTestCaseReporter("Retort");
+    mp_MessageDlg   = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_WaitDlg      = new MainMenu::CWaitDialog(mp_MainWindow);
+    mp_WaitDlg->setModal(true);
 
     mp_TableWidget = new MainMenu::CBaseTable;
 
@@ -101,6 +104,7 @@ CRetort::CRetort(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
         mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Retort");
     }
 
+    CONNECTSIGNALSLOTGUI(mp_WaitDlg, rejected(), mp_TestReporter, StopSend());
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
     CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, ResetTestStatus());
@@ -118,7 +122,9 @@ CRetort::~CRetort()
         delete mp_KeyBoardWidget;
         delete mp_TableWidget;
         delete mp_Ui;
-
+        delete mp_MessageDlg;
+        delete mp_WaitDlg;
+        delete mp_TestReporter;
      }
      catch (...) {
          // to please Lint
@@ -334,6 +340,10 @@ void CRetort::BeginTest()
         mp_Ui->widget->setFocus();
         emit BeginModuleTest(Service::RETORT, TestCaseList);
 
+        if (m_TestFlag) {
+            mp_Ui->sendTestReportBtn->setEnabled(true);
+        }
+
         qDebug()<<"CLaSystem::BeginTest   --- emitted";
     }
 //    ->HideAbort();
@@ -367,7 +377,7 @@ void CRetort::SetTestResult(Service::ModuleTestCaseID Id, bool Result)
             break;
         }
     }
-
+    m_TestFlag = true;
 }
 
 void CRetort::EnableButton(bool EnableFlag)
@@ -382,41 +392,84 @@ void CRetort::EnableButton(bool EnableFlag)
 /****************************************************************************/
 void CRetort::SendTestReport()
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_LASYSTEM_SENDTESTREPORT_REQUESTED);
-    if (m_RetortSNString.endsWith("XXXX")) {
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_RETORT_SENDTESTREPORT_REQUESTED);
+    QString serialNumber;
+    QString MessageText;
+    bool isInvalidSN = false;
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
+        DataManager::CDeviceConfigurationInterface* DevConfigurationInterface = mp_DataConnector->GetDeviceConfigInterface();
+        if (DevConfigurationInterface) {
+            DataManager::CDeviceConfiguration* DeviceConfiguration = DevConfigurationInterface->GetDeviceConfiguration();
+            if (DeviceConfiguration) {
+                serialNumber = DeviceConfiguration->GetValue("SERIALNUMBER");
+                isInvalidSN = serialNumber.startsWith("XXXX");
+                MessageText = QApplication::translate("DiagnosticsManufacturing::CRetort",
+                                                      "Please enter the system serial number.", 0, QApplication::UnicodeUTF8);
+            }
+        }
+
+    }
+    else {
+        serialNumber = m_RetortSNString;
+        isInvalidSN  = serialNumber.endsWith("XXXX");
+        MessageText = QApplication::translate("DiagnosticsManufacturing::CRetort",
+                                              "Please enter the serial number.", 0, QApplication::UnicodeUTF8);
+    }
+
+    if (isInvalidSN) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRetort",
                                                                 "Ok", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
-                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetText(MessageText);
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         (void)mp_MessageDlg->exec();
+        return;
     }
-    else {
-        /*
-        CTestCaseReporter* p_TestReporter = new CTestCaseReporter(mp_MainWindow, "CRetort", m_LineEditString);
 
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
-                                                    "Test Report", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CLaSystem",
-                                                            "Ok", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->HideButtons();
-        if (p_TestReporter->GenReportFile()) {
+    mp_TestReporter->SetSerialNumber(serialNumber);
+
+    if (mp_TestReporter->GenReportFile()) {
+        mp_WaitDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
+                                                    "Sending...", 0, QApplication::UnicodeUTF8));
+        mp_WaitDlg->show();
+        if (mp_TestReporter->SendReportFile()) {
+            mp_WaitDlg->accept();
+            mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
+                                                            "Send Report", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRetort",
+                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->HideButtons();
             mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
-                                          "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
+                                                           "Send test report ok.", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetIcon(QMessageBox::Information);
+            (void)mp_MessageDlg->exec();
         }
         else {
+            mp_WaitDlg->accept();
+            mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
+                                                            "Send Report", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRetort",
+                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->HideButtons();
             mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
-                                                       "Test report save failed.", 0, QApplication::UnicodeUTF8));
+                                                           "Send test report failed.", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetIcon(QMessageBox::Critical);
+            (void)mp_MessageDlg->exec();
         }
-        (void)mp_MessageDlg->exec();
-        */
     }
-
+    else {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRetort",
+                                                        "Test Report", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRetort",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRetort",
+                                                       "Test report save failed.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Critical);
+        (void)mp_MessageDlg->exec();
+    }
 }
 
 /****************************************************************************/

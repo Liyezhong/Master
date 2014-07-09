@@ -47,11 +47,10 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     : mp_DataConnector(p_DataConnector)
     , mp_MainWindow(p_Parent)
     , mp_Ui(new Ui::CRotaryValveManufacturing)
-    , mp_TestReport(NULL)
-    , mp_MessageDlg(NULL)
     , mp_Module(NULL)
     , m_RVSNString("043/XXXX")
     , m_FinalTestResult("NA")
+    , m_TestFlag(false)
 {
     mp_Ui->setupUi(this);
     mp_Ui->rvSNEdit->installEventFilter(this);
@@ -61,7 +60,10 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 
     mp_Ui->rvSNEdit->setText(m_RVSNString);
 
-    mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_TestReporter = new CTestCaseReporter("RotaryValve");
+    mp_MessageDlg   = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_WaitDlg      = new MainMenu::CWaitDialog(mp_MainWindow);
+    mp_WaitDlg->setModal(true);
 
     mp_TableWidget = new MainMenu::CBaseTable;
 
@@ -99,6 +101,7 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
         mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Rotary Valve");
     }
 
+    CONNECTSIGNALSLOTGUI(mp_WaitDlg, rejected(), mp_TestReporter, StopSend());
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
     CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, ResetTestStatus());
@@ -116,7 +119,9 @@ CRotaryValve::~CRotaryValve()
         delete mp_KeyBoardWidget;
         delete mp_TableWidget;
         delete mp_Ui;
-
+        delete mp_MessageDlg;
+        delete mp_WaitDlg;
+        delete mp_TestReporter;
      }
      catch (...) {
          // to please Lint
@@ -329,6 +334,9 @@ void CRotaryValve::BeginTest()
 
         emit BeginModuleTest(Service::ROTARY_VALVE, TestCaseList);
 
+        if (m_TestFlag) {
+            mp_Ui->sendTestReportBtn->setEnabled(true);
+        }
 
         qDebug()<<"CRotaryValve::BeginTest   --- emitted";
     }
@@ -363,7 +371,7 @@ void CRotaryValve::SetTestResult(Service::ModuleTestCaseID Id, bool Result)
             break;
         }
     }
-
+    m_TestFlag = true;
 }
 
 void CRotaryValve::EnableButton(bool EnableFlag)
@@ -379,50 +387,82 @@ void CRotaryValve::EnableButton(bool EnableFlag)
 void CRotaryValve::SendTestReport()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_ROTARYVALVE_SENDTESTREPORT_REQUESTED);
-#if 0
-//    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_XAXIS_SENDTESTREPORT_REQUESTED);
+    QString serialNumber;
+    QString MessageText;
+    bool isInvalidSN = false;
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
+        DataManager::CDeviceConfigurationInterface* DevConfigurationInterface = mp_DataConnector->GetDeviceConfigInterface();
+        if (DevConfigurationInterface) {
+            DataManager::CDeviceConfiguration* DeviceConfiguration = DevConfigurationInterface->GetDeviceConfiguration();
+            if (DeviceConfiguration) {
+                serialNumber = DeviceConfiguration->GetValue("SERIALNUMBER");
+                isInvalidSN = serialNumber.startsWith("XXXX");
+                MessageText = QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
+                                                      "Please enter the system serial number.", 0, QApplication::UnicodeUTF8);
+            }
+        }
+    }
+    else {
+        serialNumber = m_RVSNString;
+        isInvalidSN  = serialNumber.endsWith("XXXX");
+        MessageText = QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
+                                              "Please enter the serial number.", 0, QApplication::UnicodeUTF8);
+    }
 
-    if (m_LineEditString.isEmpty()) {
+    if (isInvalidSN) {
         mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
                                                         "Serial Number", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
                                                                 "Ok", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                             "Please enter the serial number.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetText(MessageText);
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
-        mp_MessageDlg->show();
-    } else {
+        (void)mp_MessageDlg->exec();
+        return;
+    }
 
-        DataManager::ModuleNumbers_t *ModuleNumbers = mp_DataConnector->GetServiceParameters()->GetModuleNumbers();
+    mp_TestReporter->SetSerialNumber(serialNumber);
 
-        mp_TestReport = new DiagnosticsManufacturing::CTestReportGeneration(ModuleNumbers->XAxis, m_LineEditString,
-                                                                            m_FinalTestResult);
-        bool Result = mp_TestReport->CreateTestReportFile(m_TestNames, m_TestReport);
-
-        if (Result) {
+    if (mp_TestReporter->GenReportFile()) {
+        mp_WaitDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
+                                                    "Sending...", 0, QApplication::UnicodeUTF8));
+        mp_WaitDlg->show();
+        if (mp_TestReporter->SendReportFile()) {
+            mp_WaitDlg->accept();
             mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                                            "Test Report", 0, QApplication::UnicodeUTF8));
+                                                            "Send Report", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();
             mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                              "Test report saved successfully.", 0, QApplication::UnicodeUTF8));
+                                                           "Send test report ok.", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetIcon(QMessageBox::Information);
-            mp_MessageDlg->show();
-        } else {
+            (void)mp_MessageDlg->exec();
+        }
+        else {
+            mp_WaitDlg->accept();
             mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                                            "Test Report", 0, QApplication::UnicodeUTF8));
+                                                            "Send Report", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();
             mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
-                                                           "Test report save failed.", 0, QApplication::UnicodeUTF8));
+                                                           "Send test report failed.", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->SetIcon(QMessageBox::Critical);
-            mp_MessageDlg->show();
+            (void)mp_MessageDlg->exec();
         }
     }
-#endif
+    else {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
+                                                        "Test Report", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CRotaryValve",
+                                                       "Test report save failed.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Critical);
+        (void)mp_MessageDlg->exec();
+    }
 }
 
 /****************************************************************************/

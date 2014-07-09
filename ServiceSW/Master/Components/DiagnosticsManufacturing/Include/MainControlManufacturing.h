@@ -21,7 +21,7 @@
 #ifndef MAINCONTROL_DIAGNOSTICSMANUFACTURING_H
 #define MAINCONTROL_DIAGNOSTICSMANUFACTURING_H
 
-#include "DiagnosticsManufacturing/Include/TestReportGeneration.h"
+#include "DiagnosticsManufacturing/Include/TestCaseReporter.h"
 #include "Core/Include/ServiceGUIConnector.h"
 #include "Core/Include/ServiceDefines.h"
 #include <MainMenu/Include/BaseTable.h>
@@ -114,22 +114,20 @@ protected:
     void changeEvent(QEvent *p_Event);
 
 private:
-    Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
-    MainMenu::CMainWindow *mp_MainWindow;       //!< Main window object
-    Ui::CMainControlManufacturing *mp_Ui;         //!< User Interface
-    MainMenu::CBaseTable *mp_TableWidget;        //!< Base Table widget
-    QStandardItemModel m_Model;                  //!< Model for the table
-    ServiceDataManager::CModule* mp_Module;     //!< Module information
-    QString m_LineEditString;                    //!< Stores serial number string
-    QString m_MainControlSNString;               //!< Stores serial number of Main Control Moudule
-    QString m_EBoxSNString;                      //!< Stores serial number of E Box sub-module
-    KeyBoard::CKeyBoard *mp_KeyBoardWidget;      //!< Keyboard widget
-    QHash<QString, QString> m_TestReport;        //!< Test report
-    QList<QString> m_TestNames;                  //!< List of test names
-    DiagnosticsManufacturing::CTestReportGeneration *mp_TestReport;     //!< Test report generation object
-    QStringList m_TestResult;                                           //!< StringList stores test result
-    MainMenu::CMessageDlg *mp_MessageDlg;                               //!< Information dialog
-    QString m_FinalTestResult;                                          //!< Stores Final test result
+    Core::CServiceGUIConnector *mp_DataConnector;  //!< Data Connector object
+    MainMenu::CMainWindow *mp_MainWindow;          //!< Main window object
+    Ui::CMainControlManufacturing *mp_Ui;          //!< User Interface
+    MainMenu::CBaseTable *mp_TableWidget;          //!< Base Table widget
+    QStandardItemModel m_Model;                    //!< Model for the table
+    ServiceDataManager::CModule* mp_Module;        //!< Module information
+    QString m_MainControlSNString;                 //!< Stores serial number of Main Control Moudule
+    QString m_SystemSNString;                      //!< Stores serial number of System
+    KeyBoard::CKeyBoard *mp_KeyBoardWidget;        //!< Keyboard widget
+    CTestCaseReporter* mp_TestReporter;            //!< Test report generation object
+    MainMenu::CMessageDlg *mp_MessageDlg;          //!< Information dialog
+    MainMenu::CWaitDialog *mp_WaitDlg;             //!< Waiting dialog
+    QString m_FinalTestResult;                     //!< Stores Final test result
+    bool m_TestFlag;                               //!< ture if have test case finished
 
     /****************************************************************************/
     /*!

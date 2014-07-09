@@ -864,8 +864,11 @@ void ServiceMasterThreadController::OnGoReceived()
     // signal/slot mechanism in this event loop.
 
     mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
+
     mp_GUIStartup->mp_ServiceConnector->SetModuleListContainer(
                 mp_ServiceDataManager->GetModuleList());
+    mp_GUIStartup->mp_ServiceConnector->SetDeviceConfigurationInterface(
+                mp_ServiceDataManager->GetDataContainer()->DeviceConfigurationInterface);
 
     try {
         // Initialize controllers

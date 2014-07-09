@@ -53,6 +53,7 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
     , mp_Module(NULL)
     , m_OvenSNString("042/XXXX")
     , m_FinalTestResult("NA")
+    , m_TestFlag(false)
 {
     mp_Ui->setupUi(this);
     mp_Ui->ovenSNEdit->installEventFilter(this);
@@ -62,11 +63,9 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
 
     mp_Ui->ovenSNEdit->setText(m_OvenSNString);
 
-    m_TestResult << "NA" << "NA";
-
-    mp_TestReporter = new CTestCaseReporter("Oven");
-    mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
-    mp_WaitDlg    = new MainMenu::CWaitDialog(mp_MainWindow);
+    mp_TestReporter = new CTestCaseReporter("ParaffineOven");
+    mp_MessageDlg   = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_WaitDlg      = new MainMenu::CWaitDialog(mp_MainWindow);
     mp_WaitDlg->setModal(true);
 
     mp_TableWidget = new MainMenu::CBaseTable;
@@ -75,7 +74,7 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
 
     mp_TableWidget->horizontalHeader()->show();
 
-    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
         AddItem(1, Service::OVEN_COVER_SENSOR);
         AddItem(2, Service::OVEN_HEATING_WITH_WATER);
     }
@@ -103,7 +102,7 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
     if (mp_DataConnector->GetModuleListContainer()) {
         mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Paraffine Oven");
     }
-    CONNECTSIGNALSLOT(mp_WaitDlg, rejected(), mp_TestReporter, StopSend());
+    CONNECTSIGNALSLOTGUI(mp_WaitDlg, rejected(), mp_TestReporter, StopSend());
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());
     CONNECTSIGNALSLOTGUI(mp_MainWindow, CurrentTabChanged(int), this, ResetTestStatus());
@@ -337,6 +336,9 @@ void COven::BeginTest()
 
         emit BeginModuleTest(Service::OVEN, TestCaseList);
 
+        if (m_TestFlag) {
+            mp_Ui->sendTestReportBtn->setEnabled(true);
+        }
 
         qDebug()<<"COven::BeginTest   --- emitted";
     }
@@ -371,7 +373,7 @@ void COven::SetTestResult(Service::ModuleTestCaseID Id, bool Result)
             break;
         }
     }
-
+    m_TestFlag = true;
 }
 
 void COven::EnableButton(bool EnableFlag)
@@ -388,7 +390,42 @@ void COven::SendTestReport()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MANUF_OVEN_SENDTESTREPORT_REQUESTED);
 
-    mp_TestReporter->SetSerialNumber(m_OvenSNString);
+    QString serialNumber;
+    QString MessageText;
+    bool isInvalidSN = false;
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
+        DataManager::CDeviceConfigurationInterface* DevConfigurationInterface = mp_DataConnector->GetDeviceConfigInterface();
+        if (DevConfigurationInterface) {
+            DataManager::CDeviceConfiguration* DeviceConfiguration = DevConfigurationInterface->GetDeviceConfiguration();
+            if (DeviceConfiguration) {
+                serialNumber = DeviceConfiguration->GetValue("SERIALNUMBER");
+                isInvalidSN = serialNumber.startsWith("XXXX");
+                MessageText = QApplication::translate("DiagnosticsManufacturing::COven",
+                                                      "Please enter the system serial number.", 0, QApplication::UnicodeUTF8);
+            }
+        }
+
+    }
+    else {
+        serialNumber = m_OvenSNString;
+        isInvalidSN  = serialNumber.endsWith("XXXX");
+        MessageText = QApplication::translate("DiagnosticsManufacturing::COven",
+                                              "Please enter the serial number.", 0, QApplication::UnicodeUTF8);
+    }
+
+    if (isInvalidSN) {
+        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::COven",
+                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::COven",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(MessageText);
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        (void)mp_MessageDlg->exec();
+        return;
+    }
+
+    mp_TestReporter->SetSerialNumber(serialNumber);
 
     if (mp_TestReporter->GenReportFile()) {
         mp_WaitDlg->SetText(QApplication::translate("DiagnosticsManufacturing::COven",

@@ -123,6 +123,8 @@ public slots:
     void SendAddModule(ServiceDataManager::CModule &Module);
     void ServiceParametersUpdates(DataManager::CServiceParameters *ServiceParameters);
     void HandleTimeout();
+
+    void SendDeviceConfigurationUpdate(DataManager::CDeviceConfiguration* DeviceConfiguration);
 signals:
     void ModuleListContainerInitialized(ServiceDataManager::CModuleDataList& ModuleList);
 

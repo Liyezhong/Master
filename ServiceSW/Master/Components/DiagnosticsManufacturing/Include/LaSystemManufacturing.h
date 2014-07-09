@@ -21,6 +21,7 @@
 #ifndef LASYSTEM_DIAGNOSTICSMANUFACTURING_H
 #define LASYSTEM_DIAGNOSTICSMANUFACTURING_H
 
+#include "DiagnosticsManufacturing/Include/TestCaseReporter.h"
 #include "Core/Include/ServiceGUIConnector.h"
 #include "Core/Include/ServiceDefines.h"
 #include <MainMenu/Include/BaseTable.h>
@@ -101,16 +102,16 @@ protected:
     void changeEvent(QEvent *p_Event);
 
 private:
-    Core::CServiceGUIConnector *mp_DataConnector;   //!< Data Connector object
-    MainMenu::CMainWindow *mp_MainWindow;       //!< Main window object
-    Ui::CLaSystemManufacturing *mp_Ui;          //!< User Interface
-    MainMenu::CBaseTable *mp_TableWidget;       //!< Base Table widget
-    QStandardItemModel m_Model;                 //!< Model for the table
-    QHash<QString, QString> m_TestReport;       //!< Test report
-    QList<QString> m_TestNames;                 //!< List of test names   
-    MainMenu::CMessageDlg *mp_MessageDlg;                               //!< Information dialog
-    QString m_FinalTestResult;                                          //!< Stores Final test result
-
+    Core::CServiceGUIConnector *mp_DataConnector; //!< Data Connector object
+    MainMenu::CMainWindow *mp_MainWindow;         //!< Main window object
+    Ui::CLaSystemManufacturing *mp_Ui;            //!< User Interface
+    MainMenu::CBaseTable *mp_TableWidget;         //!< Base Table widget
+    QStandardItemModel m_Model;                   //!< Model for the table
+    CTestCaseReporter* mp_TestReporter;           //!< Test report generation object
+    MainMenu::CMessageDlg *mp_MessageDlg;         //!< Information dialog
+    MainMenu::CWaitDialog *mp_WaitDlg;            //!< Waiting dialog
+    QString m_FinalTestResult;                    //!< Stores Final test result
+    bool m_TestFlag;                              //!< ture if have test case finished
 
 signals:
     /****************************************************************************/

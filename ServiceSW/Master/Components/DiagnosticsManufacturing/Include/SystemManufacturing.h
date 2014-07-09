@@ -21,6 +21,7 @@
 #ifndef SYSTEMMANUFACTURING_H
 #define SYSTEMMANUFACTURING_H
 
+#include "DiagnosticsManufacturing/Include/TestCaseReporter.h"
 #include "Core/Include/ServiceGUIConnector.h"
 #include "Core/Include/ServiceDefines.h"
 #include <MainMenu/Include/BaseTable.h>
@@ -118,9 +119,13 @@ private:
     MainMenu::CBaseTable *mp_TableWidget;                        //!< Base Table widget
     QStandardItemModel m_Model;                                  //!< Model for the table
     QString m_SystemSNString;                                    //!< Stores serial number of System module
+    CTestCaseReporter* mp_TestReporter;                          //!< Test report generation object
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;                      //!< Keyboard widget
     MainMenu::CMessageDlg *mp_MessageDlg;                        //!< Information dialog
+    MainMenu::CWaitDialog *mp_WaitDlg;                           //!< Waiting dialog
+    DataManager::CDeviceConfiguration* mp_DeviceConfiguration;   //!< Device Configuration object
     QString m_FinalTestResult;                                   //!< Stores Final test result
+    bool m_TestFlag;                                             //!< ture if have test case finished
 
     /****************************************************************************/
     /*!
@@ -143,6 +148,8 @@ signals:
      */
     /****************************************************************************/
     void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
+
+    void UpdateDeviceConfiguration(DataManager::CDeviceConfiguration*);
 
 private slots:
     /****************************************************************************/
