@@ -1027,6 +1027,10 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_VENTILATION_FUN_TEST_SUCCESS;
+            NextFlag = ShowGuide(Id, 0);
+            if (!NextFlag) {
+                break;
+            }
             Result    = ShowConfirmDlgForSystemFan(Id);
             break;
         case Service::SYSTEM_OVERFLOW:
