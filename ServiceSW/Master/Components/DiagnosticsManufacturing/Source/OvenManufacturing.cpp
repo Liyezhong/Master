@@ -63,7 +63,7 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
 
     mp_Ui->ovenSNEdit->setText(m_OvenSNString);
 
-    mp_TestReporter = new CTestCaseReporter("ParaffineOven");
+    mp_TestReporter = new CTestCaseReporter("Paraffine Oven");
     mp_MessageDlg   = new MainMenu::CMessageDlg(mp_MainWindow);
     mp_WaitDlg      = new MainMenu::CWaitDialog(mp_MainWindow);
     mp_WaitDlg->setModal(true);

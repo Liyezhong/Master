@@ -104,6 +104,7 @@ void CSettings::UpdateGUIConnector(Core::CServiceGUIConnector *DataConnector, Ma
     mp_ServiceDataConnector = DataConnector;
     mp_MainWindow = MainWindow;
     mp_Ui->pageNetworkSettings->SetPtrToMainWindow(mp_MainWindow);
+    mp_Ui->pageDateTimeSettings->SetPtrToMainWindow(mp_MainWindow);
     mp_Ui->pageLanguageSettings->SetPtrToMainWindow(mp_MainWindow);
 }
 
