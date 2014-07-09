@@ -6,7 +6,7 @@
         <ErrorTone Number="1" Level="9"/>
         <WarningTone Number="2" Level="9"/>
     </Sound>
-    <Network RemoteCare="On" DirectConnection="Off" ProxyUserName="Himalaya" ProxyPassword="Himalaya" ProxyIPAddress="012.126.123.123" ProxyIPPort="1234"/>
+    <Network RemoteCare="Off" DirectConnection="On" ProxyUserName="Himalaya" ProxyPassword="Himalaya" ProxyIPAddress="012.126.123.123" ProxyIPPort="1234"/>
     <ERRORTONE PERIODIC="on"/>
     <ERRORTONE PERIODICTIME="10m"/>
     <INFORMATIONTONE LEVEL="9"/>
