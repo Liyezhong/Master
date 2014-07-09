@@ -473,10 +473,19 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
     qDebug()<<"Start top return : "<<mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
     qDebug()<<"Start bottom return :"<< mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
 
-    CurrentTempTop = mp_TempOvenTop->GetTemperature(0);
-    CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
-    CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
-    qDebug()<<"AmbTempLow="<<AmbTempLow<<" AmbTempHigh="<<AmbTempHigh<<" Top="<<CurrentTempTop<<" Bot1="<<CurrentTempBottom1<<" Bot2="<<CurrentTempBottom2;
+    int num = 10;
+    while(num) {
+        CurrentTempTop = mp_TempOvenTop->GetTemperature(0);
+        CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
+        CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
+        if (CurrentTempTop==-1 || CurrentTempBottom1==-1 || CurrentTempBottom2==-1) {
+            mp_Utils->Pause(100);
+            num--;
+        }
+        else {
+            break;
+        }
+    }
 
     if (CurrentTempTop<AmbTempLow || CurrentTempTop>AmbTempHigh ||
             CurrentTempBottom1<AmbTempLow || CurrentTempBottom1>AmbTempHigh ||
@@ -681,10 +690,24 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
     qDebug() << "Start top return : "<< sideCtrlRet << "\n";
     qDebug() << "Start bottom return :"<< btmCtrlRet << "\n";
 
-    qreal curSideTemp   = mp_TempRetortSide->GetTemperature(0);
-    qreal curBottomTemp1 = mp_TempRetortBttom->GetTemperature(0);
-    qreal curBottomTemp2 = mp_TempRetortBttom->GetTemperature(1);
-    qDebug() << "AmbTempLow= " << ambLow << " AmbTempHigh= " << ambHigh <<" Side= " << curSideTemp <<" Bottom1= " << curBottomTemp1<<" Bottom2= " << curBottomTemp2 << "\n";
+    qreal curSideTemp   = 0;
+    qreal curBottomTemp1 = 0;
+    qreal curBottomTemp2 = 0;
+
+    int num = 10;
+    while(num) {
+        curSideTemp   = mp_TempRetortSide->GetTemperature(0);
+        curBottomTemp1 = mp_TempRetortBttom->GetTemperature(0);
+        curBottomTemp2 = mp_TempRetortBttom->GetTemperature(1);
+
+        if (curSideTemp==-1 || curBottomTemp1==-1 || curBottomTemp2==-1) {
+            mp_Utils->Pause(100);
+            num--;
+        }
+        else {
+            break;
+        }
+    }
 
     const quint32 sumSec = durTime.hour() * 60 * 60 + durTime.minute() * 60 + durTime.second();
     quint32 waitSec = sumSec;
@@ -839,18 +862,20 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     qreal curTemp = 0;
     qreal prevTemp = 0;
 
-    qreal temp = mp_TempLSensor->GetTemperature();
+    qreal temp = 0;
     int num = 10;
-    bool flag = false;
     while(num) {
-        mp_Utils->Pause(100);
-        if (temp >= ambLow && temp <= ambHigh) {
-            flag = true;
+        temp = mp_TempLSensor->GetTemperature();
+        if (temp == -1) {
+            mp_Utils->Pause(100);
+            num--;
+        }
+        else {
             break;
         }
-        num--;
     }
-    if (flag == false) {
+
+    if (temp <ambLow || temp > ambHigh) {
         ret = -1;
         QString FailureMsg = QString("Level Sensor Current Temperature is (%1) which is not in (%2~%3)").arg(temp).arg(ambLow).arg(ambHigh);
         SetFailReason(Service::RETORT_LEVEL_SENSOR_HEATING, FailureMsg);
@@ -1818,8 +1843,21 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 
     qDebug()<<"Start top return : "<<mp_TempRV->StartTemperatureControl(TargetTempSensor1);
 
-    CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
-    CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
+    int num=10;
+    while(num) {
+        CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
+        CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
+        qDebug()<<"Sensor1 = "<<CurrentTempSensor1<<"  Sensor2="<<CurrentTempSensor2;
+
+        if (CurrentTempSensor1==-1 || CurrentTempSensor2==-1 ||
+                CurrentTempSensor1==0 || CurrentTempSensor2==0) {
+            mp_Utils->Pause(100);
+            num--;
+        }
+        else {
+            break;
+        }
+    }
 
     if (CurrentTempSensor1<AmbTempLow || CurrentTempSensor1>AmbTempHigh ||
             CurrentTempSensor2<AmbTempLow || CurrentTempSensor2>AmbTempHigh  ){
