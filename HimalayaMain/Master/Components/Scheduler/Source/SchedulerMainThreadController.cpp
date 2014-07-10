@@ -770,6 +770,14 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_SchedulerMachine->NotifyPause(PSSM_INIT);
                     DequeueNonDeviceCommand();
                 }
+                else
+                {
+                    m_IsPrecheckMoveRV = false;
+                    LogDebug(QString("Program Step Hit tube(precheck) %1").arg(targetPos));
+                    UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
+                    LogDebug("Precheck DONE, if cleaning program it just move RV");
+                    m_SchedulerMachine->NotifyStDone(); //todo: update later
+                }
             }
         }
         else if(PSSM_INIT == stepState)
