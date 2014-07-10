@@ -55,6 +55,8 @@ public Q_SLOTS:
 
     void ModifyTouchScreen(void);
 
+    void ModifyVentFan(void);
+
 private Q_SLOTS:
     void AutoDetect(ServiceDataManager::CSubModule &SubModule);
 

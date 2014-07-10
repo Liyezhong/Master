@@ -117,7 +117,7 @@
       <item row="7" column="3">
        <widget class="QPushButton" name="modifyFan">
         <property name="text">
-         <string>Fan</string>
+         <string>Exhaust Fan</string>
         </property>
        </widget>
       </item>

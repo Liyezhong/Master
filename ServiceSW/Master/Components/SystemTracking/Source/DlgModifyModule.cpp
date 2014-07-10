@@ -127,9 +127,10 @@ void CDlgModifyModule::OnEditSerialNumber(void)
 {
     mp_KeyBoardWidget->setModal(true);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("ENTER SERIAL NUMBER"));
-    mp_KeyBoardWidget->SetLineEditContent(mp_Ui->pushSerialNumber->text());
+    //mp_KeyBoardWidget->SetLineEditContent(mp_Ui->pushSerialNumber->text());
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetValidation(true);
+    mp_KeyBoardWidget->SetLineEditValidatorExpression("^[0-9]{1,4}$"); //yuan@note: for SN;
     mp_KeyBoardWidget->DisplayNumericKeyBoard();
     mp_KeyBoardWidget->show();
 }
@@ -234,7 +235,13 @@ void CDlgModifyModule::OnAutoDetect(void)
 void CDlgModifyModule::OnOkClicked(QString EnteredString)
 {
     mp_KeyBoardWidget->hide();
-    mp_Ui->pushSerialNumber->setText(EnteredString.simplified());
+    QString sn = mp_Ui->pushSerialNumber->text();
+    int index = sn.indexOf('/');
+    if (index != -1) {
+        sn.remove(index + 1, sn.length() - index);
+        sn += EnteredString;
+    }
+    mp_Ui->pushSerialNumber->setText(sn.simplified());
 }
 
 /****************************************************************************/

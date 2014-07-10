@@ -39,6 +39,7 @@ const QString SUBMODULE_ASB3("ASB3");
 const QString SUBMODULE_ASB5("ASB5");
 const QString SUBMODULE_ASB15("ASB15");
 const QString SUBMODULE_TOUCHSCREEN("Touch Screen");
+const QString SUBMODULE_VENTFAN("Ventilation Fan");
 
 CMainControl::CMainControl(Core::CServiceGUIConnector &DataConnector,
                            QWidget *parent)
@@ -67,6 +68,11 @@ CMainControl::CMainControl(Core::CServiceGUIConnector &DataConnector,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyTouchScreen()) );
+
+    (void)connect(ui->modifyVentFan,
+                  SIGNAL(clicked()),
+                  this,
+                  SLOT(ModifyVentFan()) );
 }
 
 CMainControl::~CMainControl()
@@ -140,6 +146,15 @@ void CMainControl::ModifyTouchScreen(void)
     qDebug() << "CMainControl::ModifyTouchScreen !";
 
     this->ModifySubModule(MODULE_MAINCONTROL, SUBMODULE_TOUCHSCREEN);
+}
+
+void CMainControl::ModifyVentFan(void)
+{
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_MAIN_CONTROL_SUBMODULE,
+                                               Global::tTranslatableStringList()<<"Ventilation Fan");
+
+    this->ModifySubModule(MODULE_MAINCONTROL, SUBMODULE_VENTFAN);
+    qDebug() << "CMainControl::ModifyVentFan !";
 }
 
 void CMainControl::AutoDetect(ServiceDataManager::CSubModule &SubModule)

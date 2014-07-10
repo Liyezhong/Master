@@ -90,6 +90,9 @@ CDlgModifySubModule::CDlgModifySubModule(ServiceDataManager::CSubModule &SubModu
 
     ConnectKeyBoardSignalSlots();
 
+    mp_Ui->pushSerialNumber->setEnabled(false);
+    mp_Ui->pushSerialNumber->setText("N/A");
+
     connect(mp_Ui->pushSerialNumber,
             SIGNAL(clicked()),
             this,
@@ -171,10 +174,13 @@ void CDlgModifySubModule::UpdateGUI(void)
 void CDlgModifySubModule::UpdateGUI(const QString &SerialNumber,
                                     const QDate &DateOfProduction)
 {
-    mp_Ui->pushSerialNumber->setText(SerialNumber);
-    if (SerialNumber == "N/A") {
-        mp_Ui->pushSerialNumber->setEnabled(false);
+    if (SerialNumber != "N/A") {
+        mp_Ui->pushSerialNumber->setText("N/A");
     }
+
+//    if (SerialNumber == "N/A") {
+//        mp_Ui->pushSerialNumber->setEnabled(false);
+//    }
 
     mp_DayWheel->SetCurrentData(DateOfProduction.day());
     mp_MonthWheel->SetCurrentData(DateOfProduction.month());

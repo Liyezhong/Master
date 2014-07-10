@@ -37,7 +37,7 @@ const QString SUBMODULE_HEATINGBELT1("Liquid Heating Tube");
 const QString SUBMODULE_HEATINGBELT2("Air Heating Tube");
 const QString SUBMODULE_PRESSURESENSOR("Pressure Sensor");
 const QString SUBMODULE_CARBONFILTER("Carbon Filter");
-const QString SUBMODULE_FAN("Fan");
+const QString SUBMODULE_FAN("Exhaust Fan");
 
 CLaSystem::CLaSystem(Core::CServiceGUIConnector &DataConnector,
                            QWidget *parent)
