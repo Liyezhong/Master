@@ -40,7 +40,7 @@ class  CRsStandbyWithTissue : public QObject
     typedef enum
     {
         UNDEF,
-        SHUTDOWN_FAILD_HEATER,
+        SHUTDOWN_FAILED_HEATER,
         RTBOTTOM_STOP_TEMPCTRL,
         RTSIDE_STOP_TEMPCTRL,
         CHECK_TEMPMODULE_CURRENT,

@@ -26,6 +26,7 @@
 #include "Scheduler/Include/HeatingStrategy.h"
 #include "Scheduler/Commands/Include/CmdRTSetTempCtrlOFF.h"
 #include "Scheduler/Commands/Include/CmdALAllStop.h"
+#include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Include/RsStandby.h"
 #include "Scheduler/Include/RsStandbyWithTissue.h"
 #include "Scheduler/Include/RsHeatingErr30SRetry.h"
@@ -84,6 +85,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorRcLevelSensorHeatingOvertimeState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRcRestartState= QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsHeatingErr30SRetryState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_ErrorRsRVGetOriginalPositionAgainState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
 
     // Set Initial states
     mp_SchedulerMachine->setInitialState(mp_InitState.data());
@@ -128,12 +130,9 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     // State machines for Error handling
     mp_RsRvGetOriginalPositionAgain = QSharedPointer<CRsRvGetOriginalPositionAgain>(new CRsRvGetOriginalPositionAgain(mp_SchedulerMachine.data(), mp_ErrorState.data()));
     mp_RsStandby = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController, 1));
-    mp_RsHeatingErr30SRetry = QSharedPointer<CRsHeatingErr30SRetry>(new CRsHeatingErr30SRetry(mp_SchedulerMachine.data(), mp_ErrorRsHeatingErr30SRetryState.data()));
+    mp_RsHeatingErr30SRetry = QSharedPointer<CRsHeatingErr30SRetry>(new CRsHeatingErr30SRetry(SchedulerThreadController));
     mp_RsStandbyWithTissue = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController));
-    mp_RcLevelSensorHeatingOvertime = QSharedPointer<CRcLevelSensorHeatingOvertime>(new CRcLevelSensorHeatingOvertime(mp_SchedulerMachine.data(), mp_ErrorRcLevelSensorHeatingOvertimeState.data()));
     mp_RcRestart = QSharedPointer<CRcRestart>(new CRcRestart(mp_SchedulerMachine.data(), mp_ErrorRcRestartState.data()));
-    mp_RcReport = QSharedPointer<CRcReport>(new CRcReport(mp_SchedulerMachine.data(), mp_ErrorState.data()));
-
 
     //RS_Standby related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsStandBy()), mp_ErrorRsStandbyState.data());
@@ -146,7 +145,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorRsStandbyWithTissueState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RS_HeatingErr30SRetry related logic
-    mp_ErrorState->addTransition(this, SIGNAL(SigEnterRSHeatingErr30SRetry()), mp_ErrorRsHeatingErr30SRetryState.data());
+    mp_ErrorState->addTransition(this, SIGNAL(SigEnterRsHeatingErr30SRetry()), mp_ErrorRsHeatingErr30SRetryState.data());
     CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRsHeatingErr30SRetryState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
@@ -154,9 +153,13 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcLevelsensorHeatingOvertime()), mp_ErrorRcLevelSensorHeatingOvertimeState.data());
     mp_ErrorRcLevelSensorHeatingOvertimeState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
+    //RS_RV_GetOriginalPositionAgain related logic
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsRVGetOriginalPositionAgain()), mp_ErrorRsRVGetOriginalPositionAgainState.data());
+    mp_ErrorRsRVGetOriginalPositionAgainState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     m_FillingCurrentStage = MOVE_TUBE_POSITION;
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
+    m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
 }
 
 
@@ -499,11 +502,6 @@ void CSchedulerStateMachine::NotifyRsRvMoveToInitPositionFinished()
     emit sigRsRvMoveToInitPositionFinished();
 }
 
-void CSchedulerStateMachine::NotifyRsRvMoveToInitPosition()
-{
-    emit sigRsRvMoveToInitPosition();
-}
-
 void CSchedulerStateMachine::NotifyRcReport()
 {
     emit sigRcReport();
@@ -543,7 +541,7 @@ void CSchedulerStateMachine::EnterRsStandBy()
 
 void CSchedulerStateMachine::EnterRsHeatingErr30SRetry()
 {
-    emit SigEnterRSHeatingErr30SRetry();
+    emit SigEnterRsHeatingErr30SRetry();
 }
 
 void CSchedulerStateMachine::EnterRsStandByWithTissue()
@@ -611,9 +609,9 @@ void CSchedulerStateMachine::HandleRsStandByWorkFlow(const QString& cmdName, Ret
     mp_RsStandby->HandleWorkFlow(cmdName, retCode);
 }
 
-void CSchedulerStateMachine::HandleRsHeatingErr30SRetry(bool flag)
+void CSchedulerStateMachine::HandleRsHeatingErr30SRetry()
 {
-    mp_RsHeatingErr30SRetry->OnHandleWorkFlow(flag);
+    mp_RsHeatingErr30SRetry->HandleWorkFlow();
 }
 
 void CSchedulerStateMachine::HandleRsStandByWithTissueWorkFlow(const QString& cmdName, ReturnCode_t retCode)
@@ -666,11 +664,38 @@ void CSchedulerStateMachine::HandleRcLevelSensorHeatingOvertimeWorkFlow()
 
  }
 
+void CSchedulerStateMachine::HandleRsRVGetOriginalPositionAgainWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+{
+    switch (m_RVGetOriginalPosition)
+    {
+    case MOVE_TO_INITIAL_POS:
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
+        m_RVGetOriginalPosition = CHECK_INITIAL_POS_RESULT;
+        break;
+    case CHECK_INITIAL_POS_RESULT:
+        if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                this->OnTasksDone(true);
+            }
+            else
+            {
+                this->OnTasksDone(false);
+            }
+        }
+    }
+}
+
 void CSchedulerStateMachine::EnterRcRestart()
 {
     emit SigEnterRcRestart();
 }
 
+void CSchedulerStateMachine::EnterRsRVGetOriginalPositionAgain()
+{
+    emit SigEnterRsRVGetOriginalPositionAgain();
+}
 void CSchedulerStateMachine::SendRunPreTest()
 {
     emit RunPreTest();

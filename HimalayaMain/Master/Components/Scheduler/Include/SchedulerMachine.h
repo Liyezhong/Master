@@ -85,6 +85,7 @@ private:
     QSharedPointer<QState> mp_ErrorRcLevelSensorHeatingOvertimeState;                   ///<  Error State's sub state: handle RC_Levelsensor_Heating_Overtime related logic
     QSharedPointer<QState> mp_ErrorRcRestartState;                                      ///<  Error State's sub state: handle RC_Restart related logic
     QSharedPointer<QState> mp_ErrorRsHeatingErr30SRetryState;                           ///<  Error State's sub state: handle Rs_HeatingErr30S_Retry related logic
+    QSharedPointer<QState> mp_ErrorRsRVGetOriginalPositionAgainState;                   ///<  Error State's sub state: handle Rs_RV_GetOriginalPositionAgain related logic
 
     //State machines for Run handling
     QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
@@ -116,6 +117,14 @@ private:
     } LEVELSENSOR_RESTART_STAGE_t;
 
     LEVELSENSOR_RESTART_STAGE_t m_RestartLevelSensor;
+
+    typedef enum
+    {
+        MOVE_TO_INITIAL_POS,
+        CHECK_INITIAL_POS_RESULT
+    } GET_RV_ORIGINALPOS_t;
+
+    GET_RV_ORIGINALPOS_t m_RVGetOriginalPosition;
 private:
     QString GetDeviceName();
 
@@ -438,12 +447,13 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function NotifyRsRvMoveToInitPosition
+     *  \brief Enter RS_RV_GetOriginalPostionAgain
      *
-     *  \return from NotifyRsRvMoveToInitPosition
+     *  \return void
      */
     /****************************************************************************/
-    void NotifyRsRvMoveToInitPosition();
+    void EnterRsRVGetOriginalPositionAgain();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function NotifyRsRvMoveToInitPositionFinished
@@ -581,12 +591,12 @@ public:
     /*!
      *  \brief Handle the whole work flow for Rs_HeatingERR30SRetry
      *
-     *  \param flag - indicate if the execution succeeds or not
+     *  \param void
      *
      *  \return void
      */
     /****************************************************************************/
-    void HandleRsHeatingErr30SRetry(bool flag);
+    void HandleRsHeatingErr30SRetry();
 
 
     /****************************************************************************/
@@ -611,6 +621,18 @@ public:
      */
     /****************************************************************************/
     void HandleRcLevelSensorHeatingOvertimeWorkFlow();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for Rs_RV_GetOriginalPositionAgain
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRsRVGetOriginalPositionAgainWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -753,6 +775,12 @@ signals:
     /****************************************************************************/
     void SigEnterRsStandByWithTissue();
 
+    /****************************************************************************/
+    /*!
+     *  \brief signal to enter RS_RV_GetOriginalPositionAgain state
+     */
+    /****************************************************************************/
+    void SigEnterRsRVGetOriginalPositionAgain();
 
     /****************************************************************************/
     /*!
@@ -766,7 +794,7 @@ signals:
      *  \brief signal to enter RS_HeatingErr30SRetry
      */
     /****************************************************************************/
-    void SigEnterRSHeatingErr30SRetry();
+    void SigEnterRsHeatingErr30SRetry();
 
     /****************************************************************************/
     /*!

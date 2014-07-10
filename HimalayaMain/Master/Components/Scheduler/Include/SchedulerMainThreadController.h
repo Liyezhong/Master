@@ -88,11 +88,10 @@ typedef enum
     CTRL_CMD_DRAIN,
     CTRL_CMD_QUITAPP,
     CTRL_CMD_SHUTDOWN,
-    CTRL_CMD_RS_GET_ORIGINAL_POSITION_AGAIN,
+    CTRL_CMD_RS_RV_GET_ORIGINAL_POSITION_AGAIN,
     CTRL_CMD_RS_STANDBY,
     CTRL_CMD_RS_STANDBY_WITHTISSUE,
     CTRL_CMD_RS_HEATINGERR30SRETRY,
-    CTRL_CMD_RC_REPORT,
     CTRL_CMD_RC_RESTART,
     CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME,
     CTRL_CMD_NONE,
@@ -1022,6 +1021,17 @@ protected:
          */
         /****************************************************************************/
         bool ShutdownFailedHeaters();
+
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Restart failed heaters
+         *  \param  void
+         *  \return bool, ture - success, false -failure
+         *
+         */
+        /****************************************************************************/
+        bool RestartFailedHeaters();
 
         /****************************************************************************/
         /*!

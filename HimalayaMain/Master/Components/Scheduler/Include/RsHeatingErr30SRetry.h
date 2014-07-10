@@ -19,12 +19,14 @@
 /****************************************************************************/
 #ifndef RS_HEATING_ERR_30S_RETRY_H
 #define RS_HEATING_ERR_30S_RETRY_H
-#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
-#include "ErrorHandlingSMBase.h"
+#include <QSharedPointer>
 #include <QStateMachine>
+#include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 
 
 namespace Scheduler{
+
+class SchedulerMainThreadController;
 
 /****************************************************************************/
 /*!
@@ -34,17 +36,27 @@ namespace Scheduler{
 class  CRsHeatingErr30SRetry : public QObject
 {
     Q_OBJECT
+
+    //!< state list of the state machine
+    typedef enum
+    {
+        UNDEF,
+        SHUTDOWN_FAILD_HEATER,
+        WAIT_FOR_3SECONDS,
+        RESTART_FAILED_HEATER,
+        CHECK_MODULE_CURRENT
+    } StateList_t;
+
 public:
     /****************************************************************************/
     /*!
-     *  \brief Constructor of class CRsHeatingErr4SRetry 
+     *  \brief Constructor of class CRsHeatingErr30SRetry
      *
-     *  \param pStateMachine = pointer QStateMachine
-     *  \param pParentState = pointer QState
+     *  \param SchedController = pointer to SchedulerMainThreadController
      *
      */
     /****************************************************************************/
-    CRsHeatingErr30SRetry(QStateMachine* pStateMachine, QState* pParentState);
+    CRsHeatingErr30SRetry(SchedulerMainThreadController* SchedController);
 
     /****************************************************************************/
     /*!
@@ -59,45 +71,45 @@ public:
      *
      *  \param statesList = QSet<QAbstractState*>
      *
-     *	\return SchedulerStateMachine_t
+     *	\return StateList_t
      */
     /****************************************************************************/
-    SchedulerStateMachine_t GetCurrentState(QSet<QAbstractState*> statesList);
+    StateList_t GetCurrentState(QSet<QAbstractState*> statesList);
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function OnHandleWorkFlow
+     *  \brief Handle the whole work flow for RS_Standby_WithTissue
      *
-     *  \param flag = bool
+     *  \param void
      *
      */
     /****************************************************************************/
-    void OnHandleWorkFlow(bool flag);
+    void HandleWorkFlow();
 
 signals:
     /****************************************************************************/
     /*!
-     *  \brief	signal to stop temperature control	 
+     *  \brief	signal to wait for 3 seconds
      *
      */
     /****************************************************************************/
-    void StopTempCtrl();
+    void WaitFor3Seconds();
 
     /****************************************************************************/
     /*!
-     *  \brief	signal to start temperature control 
+     *  \brief	signal to restart failed heater
      *
      */
     /****************************************************************************/
-    void StartTempCtrl();
+    void RestartFailedHeater();
 
     /****************************************************************************/
     /*!
-     *  \brief	signal to check the related device's status 
+     *  \brief  Signal for checking RTBottom temperature
      *
      */
     /****************************************************************************/
-    void CheckDevStatus();
+    void CheckTempModuleCurrernt();
 
     /****************************************************************************/
     /*!
@@ -116,12 +128,14 @@ signals:
     /****************************************************************************/
     void TasksDone(bool);
 private:
-    QState *mp_Initial;                 							//!< Initial state
-    QState *mp_StopTempCtrl;										//!< Stop tempature control state
-    QState *mp_StartTempCtrl;										//!< Start tempature control state
-    QState *mp_CheckDevStatus;										//!< Check Device Status
-    QState *mp_Retry;                                               //!< Retry (at most 10)
-	quint32 m_counter;												//!< counter for retry times
+    SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
+    QSharedPointer<QStateMachine>  mp_StateMachine;         //!< State machine for RS_Standby_WithTissue
+    QSharedPointer<QState> mp_ShutdownFailedHeater;         //!< Shutdown failed heater state
+    QSharedPointer<QState> mp_WaitFor3Seconds;              //!< Wait for 3 seconds state
+    QSharedPointer<QState> mp_RestartFailedHeater;          //!< Restart failed heater
+    QSharedPointer<QState> mp_CheckTempModuleCurrent;       //!< Check current of the temperature module
+    qint64  m_StartTime;                                    //!< Start up time
+    quint32 m_Counter;                                      //!< counter for retry times
 };
 }
 #endif // RS_HEATING_ERR_3S_RETRY

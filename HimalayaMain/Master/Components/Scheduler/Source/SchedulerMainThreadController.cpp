@@ -976,10 +976,10 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to RC_Restart");
             m_SchedulerMachine->EnterRcRestart();
         }
-        else if(CTRL_CMD_RS_GET_ORIGINAL_POSITION_AGAIN == ctrlCmd)
+        else if(CTRL_CMD_RS_RV_GET_ORIGINAL_POSITION_AGAIN == ctrlCmd)
         {
-            LogDebug("Go to RS RV Move To Initial Position!");
-            m_SchedulerMachine->NotifyRsRvMoveToInitPosition();
+            LogDebug("Go to RS_RV_GetOriginalPositionAgain");
+            m_SchedulerMachine->EnterRsRVGetOriginalPositionAgain();
         }
         else if(CTRL_CMD_RS_STANDBY == ctrlCmd)
         {
@@ -994,6 +994,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         else if (CTRL_CMD_RS_HEATINGERR30SRETRY == ctrlCmd)
         {
             LogDebug("Go to RS_HeatingErr30Retry");
+            m_SchedulerMachine->EnterRsHeatingErr30SRetry();
         }
         else if(CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME == ctrlCmd)
         {
@@ -1012,15 +1013,8 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     }
     else if (SM_ERR_RS_HEATINGERR30SRETRY == currentState)
     {
-        LogDebug(QString("RS_HeatingErr_30SRetry Response: %1").arg(retCode));
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
-        {
-            m_SchedulerMachine->HandleRsHeatingErr30SRetry(false);
-        }
-        else
-        {
-            m_SchedulerMachine->HandleRsHeatingErr30SRetry(true);
-        }
+        LogDebug(QString("In RS_HeatingErr_30SRetry state"));
+        m_SchedulerMachine->HandleRsHeatingErr30SRetry();
     }
     else if (SM_ERR_RS_STANDBY_WITH_TISSUE == currentState)
     {
@@ -1033,24 +1027,10 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow();
 
     }
-    else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS_AGAIN == currentState)
+    else if(SM_ERR_RS_RV_GETORIGINALPOSITIONAGAIN == currentState)
     {
-        LogDebug(QString("RS_RV_GET_ORIGINAL_POSITION_AGAIN Response: %1").arg(retCode));
-        if( "Scheduler::RVReqMoveToInitialPosition" == cmdName)
-        {
-            if( DCL_ERR_FCT_CALL_SUCCESS == retCode )
-            {
-                LogDebug("Response Move to initial position again succeed!");
-                RaiseError(m_EventKey, DCL_ERR_FCT_CALL_SUCCESS, 0, true);
-                m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
-            }
-            else
-            {
-                LogDebug("Response Move to initial position again failed!");
-                RaiseError(m_EventKey, DCL_ERR_FCT_CALL_SUCCESS, 0, false);
-                m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
-            }
-        }
+        LogDebug(QString("In RS_RV_GET_ORIGINAL_POSITION_AGAIN state"));
+        m_SchedulerMachine->HandleRsRVGetOriginalPositionAgainWorkFlow(cmdName, retCode);
     }
 }
 
@@ -1103,15 +1083,11 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
 
         if(cmd == "rs_rv_getoriginalpositionagain")
         {
-            return CTRL_CMD_RS_GET_ORIGINAL_POSITION_AGAIN;
+            return CTRL_CMD_RS_RV_GET_ORIGINAL_POSITION_AGAIN;
         }
         if(cmd == "rc_restart")
         {
             return CTRL_CMD_RC_RESTART;
-        }
-        if(cmd == "rc_report")
-        {
-            return CTRL_CMD_RC_REPORT;
         }
         if(cmd == "rs_standby")
         {
@@ -2354,6 +2330,55 @@ bool SchedulerMainThreadController::ShutdownFailedHeaters()
         break;
     case RV:
         if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("RV"))
+        {
+            return true;
+        }
+        break;
+    default:
+        break;
+    }
+
+    return false;
+}
+
+bool SchedulerMainThreadController::RestartFailedHeaters()
+{
+    HeaterType_t heaterType = this->GetFailerHeaterType();
+    switch (heaterType)
+    {
+    case LEVELSENSOR:
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("LevelSensor"))
+        {
+            return true;
+        }
+        break;
+    case LATUBE1:
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("LA_Tube1"))
+        {
+            return true;
+        }
+        break;
+    case LATUBE2:
+        if (DCL_ERR_FCT_CALL_SUCCESS ==mp_HeatingStrategy->StartTemperatureControl("LA_Tube2"))
+        {
+            return true;
+        }
+        break;
+    case RETORT:
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("RTBottom") &&
+                DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("RTSide"))
+        {
+            return true;
+        }
+    case OVEN:
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("OvenTop") &&
+                DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("OvenBottom"))
+        {
+            return true;
+        }
+        break;
+    case RV:
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("RV"))
         {
             return true;
         }

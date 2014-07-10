@@ -80,7 +80,7 @@ CRsStandbyWithTissue::StateList_t CRsStandbyWithTissue::GetCurrentState(QSet<QAb
 
     if(statesList.contains(mp_ShutdownFailedHeater.data()))
     {
-           currentState = SHUTDOWN_FAILD_HEATER;
+           currentState = SHUTDOWN_FAILED_HEATER;
     }
     else if (statesList.contains(mp_RTBottomStopTempCtrl.data()))
     {
@@ -114,8 +114,8 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
     memset(&reportError2, 0, sizeof(reportError2));
 
 	switch (currentState)
-	{
-    case SHUTDOWN_FAILD_HEATER:
+    {
+    case SHUTDOWN_FAILED_HEATER:
         mp_SchedulerController->LogDebug("RS_Standby_WithTissue or RS_Standby, in state SHUTDOWN_FAILD_HEATER");
         if (true == mp_SchedulerController->ShutdownFailedHeaters())
         {
@@ -127,11 +127,13 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
                 }
                 else
                 {
+					m_StartCheckingTime = QDateTime::currentMSecsSinceEpoch();
                     emit CheckTempModuleCurrernt();
                 }
             }
             else //RS_Standby
             {
+				m_StartCheckingTime = QDateTime::currentMSecsSinceEpoch();
                 emit CheckTempModuleCurrernt();
             }
         }
@@ -155,6 +157,7 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
         mp_SchedulerController->LogDebug("RS_Standby_WithTissue or RS_Standby, in state RTSIDE_STOP_TEMPCTRL");
         if (DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("RTSide"))
         {
+			m_StartCheckingTime = QDateTime::currentMSecsSinceEpoch();
             emit CheckTempModuleCurrernt();
         }
         else

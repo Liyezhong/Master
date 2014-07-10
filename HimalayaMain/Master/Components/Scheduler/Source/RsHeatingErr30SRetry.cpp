@@ -20,6 +20,9 @@
 
 
 #include "Scheduler/Include/RsHeatingErr30SRetry.h"
+#include "Scheduler/Include/SchedulerMainThreadController.h"
+#include "Scheduler/Include/SchedulerCommandProcessor.h"
+#include "Scheduler/Include/HeatingStrategy.h"
 
 namespace Scheduler{
 
@@ -30,33 +33,30 @@ namespace Scheduler{
  *  \iparam   pParentState: Pointer to parent state
  */
 /****************************************************************************/
-CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(QStateMachine* pStateMachine, QState* pParentState)
+CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(SchedulerMainThreadController* SchedController)
+    :mp_SchedulerController(SchedController)
 {
-    m_counter = 0;
+    mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
+    mp_ShutdownFailedHeater = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+    mp_WaitFor3Seconds = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+    mp_RestartFailedHeater = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+    mp_CheckTempModuleCurrent = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
-    if(pParentState)
-    {
-        mp_Initial = new QState(pParentState);
-        mp_StopTempCtrl = new QState(pParentState);
-        mp_StartTempCtrl = new QState(pParentState);
-        mp_CheckDevStatus = new QState(pParentState);
-        pParentState->setInitialState(mp_Initial);
+    mp_StateMachine->setInitialState(mp_ShutdownFailedHeater.data());
 
-        mp_Initial->addTransition(this, SIGNAL(StopTempCtrl()), mp_StopTempCtrl);
-        mp_StopTempCtrl->addTransition(this, SIGNAL(StartTempCtrl()), mp_StartTempCtrl);
-        mp_StartTempCtrl->addTransition(this, SIGNAL(CheckDevStatus()), mp_CheckDevStatus);
-        mp_CheckDevStatus->addTransition(this,SIGNAL(TasksDone(bool)), mp_Initial);
+    mp_ShutdownFailedHeater->addTransition(this, SIGNAL(WaitFor3Seconds()), mp_WaitFor3Seconds.data());
+    mp_WaitFor3Seconds->addTransition(this, SIGNAL(RestartFailedHeater()), mp_RestartFailedHeater.data());
+    mp_RestartFailedHeater->addTransition(this, SIGNAL(CheckTempModuleCurrernt()), mp_CheckTempModuleCurrent.data());
+    mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(Retry()), mp_RestartFailedHeater.data());
+    mp_CheckTempModuleCurrent->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
 
-        //For Retry
-        mp_StopTempCtrl->addTransition(this, SIGNAL(Retry()), mp_Initial);
-        mp_StartTempCtrl->addTransition(this, SIGNAL(Retry()), mp_Initial);
-        mp_CheckDevStatus->addTransition(this,SIGNAL(Retry()), mp_Initial);
+    // For error cases
+    mp_WaitFor3Seconds->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
+    mp_RestartFailedHeater->addTransition(this, SIGNAL(TasksDone(bool)), mp_ShutdownFailedHeater.data());
+    m_StartTime = 0;
+    m_Counter = 0;
 
-		//For error cases
-        mp_StopTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial);
-        mp_StartTempCtrl->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial);
-        mp_CheckDevStatus->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial);
-    }
+    mp_StateMachine->start();
 }
 
 /****************************************************************************/
@@ -66,17 +66,7 @@ CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(QStateMachine* pStateMachine, QStat
 /****************************************************************************/
 CRsHeatingErr30SRetry::~CRsHeatingErr30SRetry()
 {
-    delete mp_Initial;
-    mp_Initial = NULL;
-
-    delete mp_StopTempCtrl;
-    mp_StopTempCtrl = NULL;
-
-    delete mp_StartTempCtrl;
-    mp_StartTempCtrl = NULL;
-
-    delete mp_CheckDevStatus;
-    mp_CheckDevStatus = NULL;
+    mp_StateMachine->stop();
 }
 
 /****************************************************************************/
@@ -88,23 +78,90 @@ CRsHeatingErr30SRetry::~CRsHeatingErr30SRetry()
  *  \return The current state of the state machine
  */
 /****************************************************************************/
-SchedulerStateMachine_t CRsHeatingErr30SRetry::GetCurrentState(QSet<QAbstractState*> statesList)
+CRsHeatingErr30SRetry::StateList_t CRsHeatingErr30SRetry::GetCurrentState(QSet<QAbstractState*> statesList)
 {
-    SchedulerStateMachine_t currentState = SM_ERR_RS_HEATINGERR30SRETRY;
-
-    if (statesList.contains(mp_Initial))
+    StateList_t currentState = UNDEF;
+    if(statesList.contains(mp_ShutdownFailedHeater.data()))
     {
-        currentState = SM_ERR_RS_HEATINGERR30SRETRY;
+        currentState = SHUTDOWN_FAILD_HEATER;
+    }
+    else if(statesList.contains(mp_WaitFor3Seconds.data()))
+    {
+        currentState = WAIT_FOR_3SECONDS;
+    }
+    else if(statesList.contains(mp_RestartFailedHeater.data()))
+    {
+        currentState = RESTART_FAILED_HEATER;
+    }
+    else if (statesList.contains(mp_CheckTempModuleCurrent.data()))
+    {
+        currentState = CHECK_MODULE_CURRENT;
     }
     return currentState;
 }
 
-void CRsHeatingErr30SRetry::OnHandleWorkFlow(bool flag)
+void CRsHeatingErr30SRetry::HandleWorkFlow()
 {
-    if (false == flag)
+    StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
+    qint64 now = 0;
+
+    switch (currentState)
     {
-        emit TasksDone(false);
-        return;
+    case SHUTDOWN_FAILD_HEATER:
+        mp_SchedulerController->LogDebug("RS_HeatingErr_30SRetry, in state SHUTDOWN_FAILD_HEATER");
+        if (true == mp_SchedulerController->ShutdownFailedHeaters())
+        {
+            m_StartTime = QDateTime::currentMSecsSinceEpoch();
+            emit WaitFor3Seconds();
+        }
+        else
+        {
+            emit TasksDone(false);
+        }
+        break;
+    case WAIT_FOR_3SECONDS:
+        now = QDateTime::currentMSecsSinceEpoch();
+        if ((now - m_StartTime) >= 3*1000)
+        {
+            emit RestartFailedHeater();
+        }
+        break;
+    case RESTART_FAILED_HEATER:
+        if (true == mp_SchedulerController->RestartFailedHeaters())
+        {
+            m_StartTime = QDateTime::currentMSecsSinceEpoch();
+            emit CheckTempModuleCurrernt();
+        }
+        else
+        {
+            emit TasksDone(false);
+        }
+        break;
+    case CHECK_MODULE_CURRENT:
+        now = QDateTime::currentMSecsSinceEpoch();
+        if ((now - m_StartTime) > 3*1000)
+        {
+            emit TasksDone(true);
+        }
+        else
+        {
+            if (false ==  mp_SchedulerController->CheckTempModulesCurrent(3))
+            {
+                m_Counter++;
+                if (10 == m_Counter)
+                {
+                    emit TasksDone(false);
+                }
+                else
+                {
+                    emit Retry();
+                }
+            }
+        }
+        break;
+    default:
+        break;
     }
 }
+
 }
