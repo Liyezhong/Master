@@ -146,8 +146,8 @@
 		<string id="100728975" text1="Manufacturing: Retort send test report" text2=""/>
 		<string id="100728976" text1="Manufacturing: Oven module test is requested" text2=""/>
 		<string id="100728977" text1="Manufacturing: Oven send test report" text2=""/>
-		<string id="100728978" text1="Manufacturing: Retort valve module test is requested" text2=""/>
-		<string id="100728979" text1="Manufacturing: Retort valve send test report" text2=""/>
+		<string id="100728978" text1="Manufacturing: Rotary valve module test is requested" text2=""/>
+		<string id="100728979" text1="Manufacturing: Rotary valve send test report" text2=""/>
 		<string id="100728980" text1="Manufacturing: L&amp;A system module test is requested" text2=""/>
 		<string id="100728981" text1="Manufacturing: L&amp;A system send test report" text2=""/>
 		<string id="100728982" text1="Manufacturing: Main control module test is requested" text2=""/>
