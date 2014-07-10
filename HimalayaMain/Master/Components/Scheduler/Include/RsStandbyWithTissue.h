@@ -47,16 +47,6 @@ class  CRsStandbyWithTissue : public QObject
         RELEASE_PRESSURE
     } StateList_t;
 
-    typedef enum
-    {
-        UNKNOWN,
-        LEVELSENSOR,
-        LATUBE1,
-        LATUBE2,
-        RETORT,
-        OVEN,
-        RV
-    } HeaterType_t;
 public:
     /****************************************************************************/
     /*!
@@ -66,7 +56,7 @@ public:
      *
      */
     /****************************************************************************/
-    CRsStandbyWithTissue (SchedulerMainThreadController* SchedController);
+    CRsStandbyWithTissue (SchedulerMainThreadController* SchedController, quint8 type=0);
 
     /****************************************************************************/
     /*!
@@ -179,39 +169,9 @@ private:
     QSharedPointer<QState> mp_RTSideStopTempCtrl;           //!< RT Top stop tempatrue control state
     QSharedPointer<QState> mp_CheckTempModuleCurrent;       //!< Check the current of temperature module status (if error message was raised not not)
     QSharedPointer<QState> mp_ReleasePressure;              //!< Release pressure
-    qint64                m_ShutdownHeatersTime;           //!< Time when the failed heaters have been down
-    qint64                m_StartCheckingTime;             //!< start-up time for checking temperature module current status
-private:
-    /****************************************************************************/
-    /*!
-     *  \brief  Get the tpe of failed heater
-     *  \param  void
-     *  \return Heater type
-     *
-     */
-    /****************************************************************************/
-    CRsStandbyWithTissue::HeaterType_t GetFailerHeaterType();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Shutting down failed heaters
-     *  \param  void
-     *  \return bool, ture - success, false -failure
-     *
-     */
-    /****************************************************************************/
-    bool ShutdownHeaters();
-
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Check temperature modules current
-     *  \param  void
-     *  \return bool, ture - success, false -failure
-     *
-     */
-    /****************************************************************************/
-    bool CheckTempModulesCurrent();
+    qint64                m_ShutdownHeatersTime;            //!< Time when the failed heaters have been down
+    qint64                m_StartCheckingTime;              //!< start-up time for checking temperature module current status
+    quint8                m_StandbyType;                    //!< RS_Sandby_WithTissue or RS_Standby.
 };
 }
 #endif // RSSTANDBY_WITH_TISSUE_H

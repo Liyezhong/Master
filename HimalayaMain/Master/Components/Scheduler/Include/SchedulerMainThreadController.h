@@ -151,6 +151,21 @@ typedef struct
     qint64 StopTime;       ///<  Definition/Declaration of variable StopTime
 }FunctionModuleStatus_t;
 
+/****************************************************************************/
+/*!
+ *  \brief  Definition of Heater Type
+ */
+/****************************************************************************/
+typedef enum
+{
+    UNKNOWN,
+    LEVELSENSOR,
+    LATUBE1,
+    LATUBE2,
+    RETORT,
+    OVEN,
+    RV
+} HeaterType_t;
 
     /****************************************************************************/
     /**
@@ -213,9 +228,8 @@ typedef struct
         bool m_IsPrecheckMoveRV;                            ///< precheck done move rv
         QMap<QString, QString> m_ProgramStatusFileMap;        ///< the map of program status
     private:
-        SchedulerMainThreadController();                                             ///< Not implemented.
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
-        const SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
+        SchedulerMainThreadController& operator=(const SchedulerMainThreadController&);     ///< Not implemented.
 
         /****************************************************************************/
         /**
@@ -531,16 +545,7 @@ typedef struct
           */
          /****************************************************************************/
          bool SetFunctionModuleStoptime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function GetFailedFunctionModuleList
-          *
-          *  \param pList = QList<FunctionModuleStatus_t> type parameter
-          *
-          *  \return from GetFailedFunctionModuleList
-          */
-         /****************************************************************************/
-         QList<FunctionModuleStatus_t> GetFailedFunctionModuleList(QList<FunctionModuleStatus_t>* pList);
+
          /****************************************************************************/
          /*!
           *  \brief  Definition/Declaration of function GetFunctionModuleStartworkTime
@@ -998,6 +1003,36 @@ protected:
         /****************************************************************************/
         void Fill();
 
+        /****************************************************************************/
+        /*!
+         *  \brief  Get the tpe of failed heater
+         *  \param  void
+         *  \return Heater type
+         *
+         */
+        /****************************************************************************/
+        HeaterType_t GetFailerHeaterType();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Shutting down failed heaters
+         *  \param  void
+         *  \return bool, ture - success, false -failure
+         *
+         */
+        /****************************************************************************/
+        bool ShutdownFailedHeaters();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Check temperature modules current
+         *  \param  interval - interval of time (in seconds)
+         *  \return bool, ture - success, false -failure
+         *
+         */
+        /****************************************************************************/
+        bool CheckTempModulesCurrent(quint8 interval);
+
     public slots:
 
         /****************************************************************************/
@@ -1016,14 +1051,6 @@ protected:
          */
         /****************************************************************************/
         void OnDCLConfigurationFinished(ReturnCode_t RetCode);
-
-        /****************************************************************************/
-        /*!
-         *  \brief  slot to shut down all the failed heaters
-         */
-        /****************************************************************************/
-        void ShutdownFailedHeater();
-
 
         /****************************************************************************/
         /*!

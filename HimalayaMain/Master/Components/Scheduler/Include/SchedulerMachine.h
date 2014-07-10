@@ -80,6 +80,7 @@ private:
 
 	// Layer two states (for Error State)
     QSharedPointer<QState> mp_ErrorWaitState;                                           ///<  Error State's sub state: error wait state
+    QSharedPointer<QState> mp_ErrorRsStandbyState;                                      ///<  Error State's sub state: handle RS_STandby related logic
     QSharedPointer<QState> mp_ErrorRsStandbyWithTissueState;                            ///<  Error State's sub state: handle RS_STandby_WithTissue related logic
     QSharedPointer<QState> mp_ErrorRcLevelSensorHeatingOvertimeState;                   ///<  Error State's sub state: handle RC_Levelsensor_Heating_Overtime related logic
     QSharedPointer<QState> mp_ErrorRcRestartState;                                      ///<  Error State's sub state: handle RC_Restart related logic
@@ -90,7 +91,7 @@ private:
 
     // State machines for Error handling
     QSharedPointer<CRsRvGetOriginalPositionAgain> mp_RsRvGetOriginalPositionAgain;		///<  State machine for RS_RV_GetOriginalPositionAgain
-    QSharedPointer<CRsStandby> mp_RsStandby;											///<  State machine for RS_Standby
+    QSharedPointer<CRsStandbyWithTissue> mp_RsStandby;                                  ///<  State machine for RS_Standby
     QSharedPointer<CRsStandbyWithTissue> mp_RsStandbyWithTissue;						///<  State machine for RS_StandbyWithTissue
     QSharedPointer<CRsHeatingErr30SRetry> mp_RsHeatingErr30SRetry;                      ///<  State machine for RS_HeatingErr_30S_Retry
     QSharedPointer<CRcLevelSensorHeatingOvertime> mp_RcLevelSensorHeatingOvertime;      ///<  State machine for RC_LevelSensor_Heating_Overtime
@@ -497,12 +498,12 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief Enter to Rs_Standby_WithTissue sub state machine 
+     *  \brief Enter to Rs_Standby sub state machine
      *
      *  \return void
      */
     /****************************************************************************/
-    void EnterRsStandByWithTissue();
+    void EnterRsStandBy();
 
     /****************************************************************************/
     /*!
@@ -512,6 +513,15 @@ public:
      */
     /****************************************************************************/
     void EnterRsHeatingErr30SRetry();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Enter to Rs_Standby_WithTissue sub state machine
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void EnterRsStandByWithTissue();
 
     /****************************************************************************/
     /*!
@@ -557,7 +567,7 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief Handle the whole work flow for Rs_Standby_WithTissue 
+     *  \brief Handle the whole work flow for Rs_Standby
      *
      *  \param cmdName - command name
      *  \param retCode - return code
@@ -565,7 +575,7 @@ public:
      *  \return void
      */
     /****************************************************************************/
-    void HandleRsStandByWithTissueWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void HandleRsStandByWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -577,6 +587,19 @@ public:
      */
     /****************************************************************************/
     void HandleRsHeatingErr30SRetry(bool flag);
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for Rs_Standby_WithTissue
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRsStandByWithTissueWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -711,10 +734,10 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief signal to enter RS_StandBy_WithTissue state 
+     *  \brief signal to enter RS_StandBy state
      */
     /****************************************************************************/
-    void SigEnterRsStandByWithTissue();
+    void SigEnterRsStandBy();
 
     /****************************************************************************/
     /*!
@@ -722,6 +745,14 @@ signals:
      */
     /****************************************************************************/
     void SigEnterRcLevelsensorHeatingOvertime();
+
+    /****************************************************************************/
+    /*!
+     *  \brief signal to enter RS_StandBy_WithTissue state
+     */
+    /****************************************************************************/
+    void SigEnterRsStandByWithTissue();
+
 
     /****************************************************************************/
     /*!

@@ -74,10 +74,6 @@ SchedulerStateMachine_t CRcRestart::GetCurrentState(QSet<QAbstractState*> states
     {
         currentState = SM_ERR_RC_RESTART;
     }
-    else if (statesList.contains(mp_Recover))
-    {
-        currentState = SM_ERR_RC_RESTART_RECOVERY;
-    }
 
     return currentState;
 }
@@ -93,9 +89,6 @@ void CRcRestart::OnHandleWorkFlow(bool flag)
     {
     case SM_ERR_RC_RESTART:
         emit Recover();
-        break;
-    case SM_ERR_RC_RESTART_RECOVERY:
-        emit TasksDone(true);
         break;
     default:
         break;

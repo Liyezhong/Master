@@ -17,8 +17,8 @@
  *
  */
 /****************************************************************************/
-#ifndef RS_HEATING_ERR_3S_RETRY_H
-#define RS_HEATING_ERR_3S_RETRY_H
+#ifndef RS_HEATING_ERR_30S_RETRY_H
+#define RS_HEATING_ERR_30S_RETRY_H
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "ErrorHandlingSMBase.h"
 #include <QStateMachine>
@@ -28,10 +28,10 @@ namespace Scheduler{
 
 /****************************************************************************/
 /*!
- * \brief Error Handling State machine for RS_HeatingErr_3S_Retry
+ * \brief Error Handling State machine for RS_HeatingErr_30S_Retry
  */
 /****************************************************************************/
-class  CRsHeatingErr30SRetry : public CErrorHandlingSMBase
+class  CRsHeatingErr30SRetry : public QObject
 {
     Q_OBJECT
 public:

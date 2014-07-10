@@ -64,7 +64,7 @@ SchedulerStateMachine_t CRcReport::GetCurrentState(QSet<QAbstractState*> statesL
     SchedulerStateMachine_t currentState = SM_UNDEF;
     if(statesList.contains(mp_RcReport))
     {
-        currentState = SM_ERR_RC_REPORT;
+        currentState = SM_UNDEF;
     }
 
     return currentState;

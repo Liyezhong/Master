@@ -31,7 +31,6 @@ namespace Scheduler{
  */
 /****************************************************************************/
 CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(QStateMachine* pStateMachine, QState* pParentState)
-: CErrorHandlingSMBase(pStateMachine, pParentState)
 {
     m_counter = 0;
 
@@ -97,19 +96,6 @@ SchedulerStateMachine_t CRsHeatingErr30SRetry::GetCurrentState(QSet<QAbstractSta
     {
         currentState = SM_ERR_RS_HEATINGERR30SRETRY;
     }
-    else if (statesList.contains(mp_StopTempCtrl))
-    {
-        currentState = SM_ERR_RS_HEATINGERR30SRETRY_STOPTEMPCTRL;
-    }
-    else if (statesList.contains(mp_StartTempCtrl))
-    {
-        currentState =SM_ERR_RS_HEATINGERR30SRETRY_STARTTEMPCTRL;
-    }
-    else if(statesList.contains(mp_CheckDevStatus))
-    {
-        currentState =SM_ERR_RS_HEATINGERR30SRETRY_CHECKDEVSTATUS;
-    }
-
     return currentState;
 }
 
@@ -120,23 +106,5 @@ void CRsHeatingErr30SRetry::OnHandleWorkFlow(bool flag)
         emit TasksDone(false);
         return;
     }
-	SchedulerStateMachine_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
-	switch (currentState)
-	{
-    case SM_ERR_RS_HEATINGERR30SRETRY:
-        emit StopTempCtrl();
-        break;
-    case SM_ERR_RS_HEATINGERR30SRETRY_STOPTEMPCTRL:
-        emit StartTempCtrl();
-        break;
-    case SM_ERR_RS_HEATINGERR30SRETRY_STARTTEMPCTRL:
-        emit CheckDevStatus();
-        break;
-    case SM_ERR_RS_HEATINGERR30SRETRY_CHECKDEVSTATUS:
-        emit  TasksDone(true);
-        break;
-    default:
-        break;
-	}
 }
 }

@@ -971,35 +971,25 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
 
     if (SM_ERR_WAIT == currentState && CTRL_CMD_NONE != ctrlCmd)
     {
-        LogDebug("####Scheduler waitting event handler give instruction!");
         if(CTRL_CMD_RC_RESTART == ctrlCmd)
         {
+            LogDebug("Go to RC_Restart");
             m_SchedulerMachine->EnterRcRestart();
-            //DequeueNonDeviceCommand();
-        }
-        else if(CTRL_CMD_RC_REPORT == ctrlCmd)
-        {
-            LogDebug("Go to move to RC_Report");
-            m_SchedulerMachine->NotifyRcReport();
-            //DequeueNonDeviceCommand();
         }
         else if(CTRL_CMD_RS_GET_ORIGINAL_POSITION_AGAIN == ctrlCmd)
         {
             LogDebug("Go to RS RV Move To Initial Position!");
             m_SchedulerMachine->NotifyRsRvMoveToInitPosition();
-            //DequeueNonDeviceCommand();
         }
         else if(CTRL_CMD_RS_STANDBY == ctrlCmd)
         {
             LogDebug("Go to RS_STANDBY!");
-            m_SchedulerMachine->NotifyRsReleasePressure();
-            //DequeueNonDeviceCommand();
+            m_SchedulerMachine->EnterRsStandBy();
         }
         else if(CTRL_CMD_RS_STANDBY_WITHTISSUE == ctrlCmd)
         {
             LogDebug("Go to RS_STandby_withTissue");
             m_SchedulerMachine->EnterRsStandByWithTissue();
-            //DequeueNonDeviceCommand();
         }
         else if (CTRL_CMD_RS_HEATINGERR30SRETRY == ctrlCmd)
         {
@@ -1009,17 +999,16 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         {
             LogDebug("Go to RC_Levelsensor_Heating_Overtime");
             m_SchedulerMachine->EnterRcLevelsensorHeatingOvertime();
-            //DequeueNonDeviceCommand();
         }
         else
         {
             LogDebug(QString("Unknown Command: %1").arg(ctrlCmd, 0, 16));
         }
     }
-    else if (SM_ERR_RS_STANDBY_WITH_TISSUE == currentState)
+    else if (SM_ERR_RS_STANDBY == currentState)
     {
-        LogDebug(QString("In RS_STandBy_WithTissue state"));
-        m_SchedulerMachine->HandleRsStandByWithTissueWorkFlow(cmdName, retCode);
+        LogDebug(QString("In RS_STandBy state"));
+        m_SchedulerMachine->HandleRsStandByWorkFlow(cmdName, retCode);
     }
     else if (SM_ERR_RS_HEATINGERR30SRETRY == currentState)
     {
@@ -1033,13 +1022,18 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             m_SchedulerMachine->HandleRsHeatingErr30SRetry(true);
         }
     }
+    else if (SM_ERR_RS_STANDBY_WITH_TISSUE == currentState)
+    {
+        LogDebug(QString("In RS_STandBy_WithTissue state"));
+        m_SchedulerMachine->HandleRsStandByWithTissueWorkFlow(cmdName, retCode);
+    }
     else if (SM_ERR_RC_LEVELSENSOR_HEATING_OVERTIME == currentState)
     {
         LogDebug(QString("In RC_Levelsensor_Heating_Overtime State"));
         m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow();
 
     }
-    else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS == currentState)
+    else if(SM_ERR_RS_RV_MOVING_TO_INIT_POS_AGAIN == currentState)
     {
         LogDebug(QString("RS_RV_GET_ORIGINAL_POSITION_AGAIN Response: %1").arg(retCode));
         if( "Scheduler::RVReqMoveToInitialPosition" == cmdName)
@@ -1057,20 +1051,6 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
                 m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
             }
         }
-    }
-    else if(SM_ERR_RC_REPORT == currentState)
-    {
-        RaiseError(m_EventKey, DCL_ERR_FCT_CALL_SUCCESS, 0, true);
-        m_SchedulerMachine->NotifyRsRvMoveToInitPositionFinished();
-    }
-    else if(SM_ERR_RS_RELEASE_PRESSURE == currentState)
-    {
-        m_SchedulerMachine->NotifyRsShutdownFailedHeater();
-    }
-    else if(SM_ERR_RS_SHUTDOWN_FAILED_HEATER == currentState)
-    {
-        m_SchedulerMachine->NotifyRsShutdownFailedHeaterFinished();
-        RaiseError(m_EventKey, DCL_ERR_FCT_CALL_SUCCESS, 0, true);
     }
 }
 
@@ -2243,72 +2223,6 @@ void SchedulerMainThreadController::ReleasePressure()
     this->AllStop();
 }
 
-void SchedulerMainThreadController::ShutdownFailedHeater()
-{
-   QList<FunctionModuleStatus_t> failList =  this->GetFailedFunctionModuleList(&m_FunctionModuleStatusList);
-   if(failList.count() > 0)
-   {
-       QListIterator<FunctionModuleStatus_t> iter(failList);
-       FunctionModuleStatus_t fmStatus;
-       while(iter.hasNext())
-       {
-           CmdSchedulerCommandBase* cmd;
-           fmStatus = iter.next();
-           switch (fmStatus.FctModID)
-           {
-           case CANObjectKeyLUT::FCTMOD_RV_TEMPCONTROL:
-               m_SchedulerCommandProcessor->pushCmd(new CmdRVSetTempCtrlOFF(500, this));
-               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RV_TEMPCONTROL, false);
-               break;
-           case CANObjectKeyLUT::FCTMOD_AL_LEVELSENSORTEMPCTRL:
-               cmd = new CmdALSetTempCtrlOFF(500, this);
-               (dynamic_cast<CmdALSetTempCtrlOFF*>(cmd))->Settype(AL_LEVELSENSOR);
-               m_SchedulerCommandProcessor->pushCmd(cmd);
-               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_LEVELSENSORTEMPCTRL, false);
-               break;
-           case CANObjectKeyLUT::FCTMOD_AL_TUBE1TEMPCTRL:
-               cmd = new CmdALSetTempCtrlOFF(500, this);
-               (dynamic_cast<CmdALSetTempCtrlOFF*>(cmd))->Settype(AL_TUBE1);
-               m_SchedulerCommandProcessor->pushCmd(cmd);
-               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE1TEMPCTRL, false);
-               break;
-           case CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL:
-               cmd = new CmdALSetTempCtrlOFF(500, this);
-               (dynamic_cast<CmdALSetTempCtrlOFF*>(cmd))->Settype(AL_TUBE2);
-               m_SchedulerCommandProcessor->pushCmd(cmd);
-               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL, false);
-               break;
-           case CANObjectKeyLUT::FCTMOD_OVEN_TOPTEMPCTRL:
-               cmd = new CmdOvenSetTempCtrlOFF(500, this);
-               (dynamic_cast<CmdOvenSetTempCtrlOFF*>(cmd))->Settype(OVEN_TOP);
-               m_SchedulerCommandProcessor->pushCmd(cmd);
-               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_TOPTEMPCTRL, false);
-               break;
-           case CANObjectKeyLUT::FCTMOD_OVEN_BOTTOMTEMPCTRL:
-               cmd = new CmdOvenSetTempCtrlOFF(500, this);
-               (dynamic_cast<CmdOvenSetTempCtrlOFF*>(cmd))->Settype(OVEN_BOTTOM);
-               m_SchedulerCommandProcessor->pushCmd(cmd);
-               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_OVEN_BOTTOMTEMPCTRL, false);
-               break;
-           case CANObjectKeyLUT::FCTMOD_RETORT_BOTTOMTEMPCTRL:
-               cmd = new CmdRTSetTempCtrlOFF(500, this);
-               (dynamic_cast<CmdRTSetTempCtrlOFF*>(cmd))->SetType(RT_BOTTOM);
-               m_SchedulerCommandProcessor->pushCmd(cmd);
-               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_BOTTOMTEMPCTRL, false);
-               break;
-           case CANObjectKeyLUT::FCTMOD_RETORT_SIDETEMPCTRL:
-               cmd = new CmdRTSetTempCtrlOFF(500, this);
-               (dynamic_cast<CmdRTSetTempCtrlOFF*>(cmd))->SetType(RT_SIDE);
-               m_SchedulerCommandProcessor->pushCmd(cmd);
-               SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_RETORT_SIDETEMPCTRL, false);
-               break;
-           default:
-               break;
-           }
-        }
-   }
-}
-
 void SchedulerMainThreadController::OnEnterPssmProcessing()
 {
     if(m_TimeStamps.CurStepSoakStartTime == 0)
@@ -2401,6 +2315,128 @@ void SchedulerMainThreadController::Fill()
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+}
+bool SchedulerMainThreadController::ShutdownFailedHeaters()
+{
+    HeaterType_t heaterType = this->GetFailerHeaterType();
+    switch (heaterType)
+    {
+    case LEVELSENSOR:
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("LevelSensor"))
+        {
+            return true;
+        }
+        break;
+    case LATUBE1:
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("LA_Tube1"))
+        {
+            return true;
+        }
+        break;
+    case LATUBE2:
+        if (DCL_ERR_FCT_CALL_SUCCESS ==mp_HeatingStrategy->StopTemperatureControl("LA_Tube2"))
+        {
+            return true;
+        }
+        break;
+    case RETORT:
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("RTBottom") &&
+                DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("RTSide"))
+        {
+            return true;
+        }
+    case OVEN:
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("OvenTop") &&
+                DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("OvenBottom"))
+        {
+            return true;
+        }
+        break;
+    case RV:
+        if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("RV"))
+        {
+            return true;
+        }
+        break;
+    default:
+        break;
+    }
+
+    return false;
+}
+
+bool SchedulerMainThreadController::CheckTempModulesCurrent(quint8 interval)
+{
+    ReportError_t reportError1;
+    memset(&reportError1, 0, sizeof(reportError1));
+    ReportError_t reportError2;
+    memset(&reportError2, 0, sizeof(reportError2));
+    ReportError_t reportError3;
+    memset(&reportError3, 0, sizeof(reportError3));
+    ReportError_t reportError4;
+    memset(&reportError4, 0, sizeof(reportError4));
+
+    qint64 now = QDateTime::currentMSecsSinceEpoch();
+
+    HeaterType_t heaterType = this->GetFailerHeaterType();
+    switch (heaterType)
+    {
+    case LEVELSENSOR:
+        reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("LA", AL_LEVELSENSOR);
+        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        {
+            return false;
+        }
+        break;
+    case LATUBE1:
+         reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("LA", AL_TUBE1);
+         if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+         {
+             return false;
+         }
+         break;
+    case LATUBE2:
+        reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("LA", AL_TUBE2);
+        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        {
+            return false;
+        }
+        break;
+    case RV:
+        reportError1 =  m_SchedulerCommandProcessor->GetSlaveModuleReportError("RV");
+        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        {
+            return false;
+        }
+        break;
+        // Retort and Oven are in the same card, so any heater goes wrong, we will stop all the others.
+    case RETORT:
+    case OVEN:
+        reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("Retort", RT_BOTTOM);
+        reportError2 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("Retort", RT_SIDE);
+        reportError3 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("Oven", OVEN_TOP);
+        reportError4 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("Oven", OVEN_BOTTOM);
+        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        {
+            return false;
+        }
+        if (reportError2.instanceID != 0 && (now-reportError2.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        {
+            return false;
+        }
+        if (reportError3.instanceID != 0 && (now-reportError3.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        {
+            return false;
+        }
+        if (reportError4.instanceID != 0 && (now-reportError4.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        {
+            return false;
+        }
+        break;
+    default:
+        break;
+    }
+    return true;
 }
 
 void SchedulerMainThreadController::OnStopFill()
@@ -2896,24 +2932,39 @@ bool SchedulerMainThreadController::SetFunctionModuleStoptime(QList<FunctionModu
     return false;
 }
 
-QList<FunctionModuleStatus_t> SchedulerMainThreadController::GetFailedFunctionModuleList(QList<FunctionModuleStatus_t>* pList)
+HeaterType_t SchedulerMainThreadController::GetFailerHeaterType()
 {
-    //Failed: isWorking == true + isHealth == false
-    QList<FunctionModuleStatus_t> unhealthFMList;
-    if(pList)
+    if (DCL_ERR_DEV_RETORT_LEVELSENSOR_HEATING_OVERTIME == m_CurErrEventID
+            || DCL_ERR_DEV_LEVELSENSOR_TEMPERATURE_OVERRANGE == m_CurErrEventID)
     {
-        QListIterator<FunctionModuleStatus_t> iter(*pList);
-        FunctionModuleStatus_t fmStatus;
-        while(iter.hasNext())
-        {
-            fmStatus = iter.next();
-            if((fmStatus.IsWorking)&&(!fmStatus.IsHealth))
-            {
-                unhealthFMList.push_back(fmStatus);
-            }
-        }
+        return LEVELSENSOR;
     }
-    return unhealthFMList;
+    else if (DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_ABNORMAL == m_CurErrEventID
+             || DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR1_OUTOFRANGE == m_CurErrEventID
+             || DCL_ERR_DEV_LA_TUBEHEATING_TUBE1_NOTREACHTARGETTEMP == m_CurErrEventID)
+    {
+        return LATUBE1;
+    }
+    else if (DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_ABNORMAL == m_CurErrEventID
+             || DCL_ERR_DEV_LA_TUBEHEATING_TSENSOR2_OUTOFRANGE == m_CurErrEventID
+             || DCL_ERR_DEV_LA_TUBEHEATING_TUBE2_NOTREACHTARGETTEMP == m_CurErrEventID)
+    {
+        return LATUBE1;
+    }
+    else if ("50001" == QString::number(m_CurErrEventID).left(5))
+    {
+        return RETORT;
+    }
+    else if ("50002" == QString::number(m_CurErrEventID).left(5))
+    {
+        return OVEN;
+    }
+    else if ("50003" == QString::number(m_CurErrEventID).left(5))
+    {
+        return RV;
+    }
+
+    return UNKNOWN;
 }
 
 qint64 SchedulerMainThreadController::GetFunctionModuleStartworkTime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID)

@@ -70,14 +70,7 @@ CRsStandby::~CRsStandby()
 SchedulerStateMachine_t CRsStandby::GetCurrentState(QSet<QAbstractState*> statesList)
 {
     SchedulerStateMachine_t currentState = SM_UNDEF;
-    if(statesList.contains(mp_ReleasePressure))
-    {
-        currentState = SM_ERR_RS_RELEASE_PRESSURE;
-    }
-    else if(statesList.contains(mp_ShutdownFailedHeater))
-    {
-        currentState = SM_ERR_RS_SHUTDOWN_FAILED_HEATER;
-    }
+
 
     return currentState;
 }

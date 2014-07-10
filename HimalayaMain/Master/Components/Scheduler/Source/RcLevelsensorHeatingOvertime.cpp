@@ -76,7 +76,7 @@ SchedulerStateMachine_t CRcLevelSensorHeatingOvertime::GetCurrentState(QSet<QAbs
     }
     else if (statesList.contains(mp_RestartLevelSensorTempControl))
     {
-        currentState = SM_ERR_RC_LEVELSENSOR_HEATING_OVERTIME_RESTART_LEVELSENSOR_TEMPCTRL;
+        currentState = SM_ERR_RC_LEVELSENSOR_HEATING_OVERTIME;
     }
 
     return currentState;
@@ -94,9 +94,6 @@ void CRcLevelSensorHeatingOvertime::OnHandleWorkFlow(bool flag)
 	{
     case SM_ERR_RC_LEVELSENSOR_HEATING_OVERTIME:
         emit RestartLevelSensorTempControl();
-        break;
-	case SM_ERR_RC_LEVELSENSOR_HEATING_OVERTIME_RESTART_LEVELSENSOR_TEMPCTRL:
-        emit TasksDone(true);
         break;
     default:
         break;
