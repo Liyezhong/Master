@@ -24,6 +24,7 @@
 #include "Global/Include/Utils.h"
 #include "Global/Include/SystemPaths.h"
 #include "Global/Include/AdjustedTime.h"
+#include "Core/Include/SelectTestOptions.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 
@@ -48,9 +49,21 @@ CTestCaseReporter::~CTestCaseReporter()
 bool CTestCaseReporter::GenReportFile()
 {
     QDir TempDir;
-    QString TempFilePath = Global::SystemPaths::Instance().GetTempPath();
-    if (!TempDir.exists(TempFilePath) && !TempDir.mkdir(TempFilePath)) {
-        qDebug()<<"CTestCaseReporter: create temp dir failed";
+    QString TempPath = Global::SystemPaths::Instance().GetTempPath();
+    if (!TempDir.exists(TempPath) && !TempDir.mkdir(TempPath)) {
+        qDebug()<<"CTestCaseReporter: create temp dir failed:"<<TempPath;
+        return false;
+    }
+
+    if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
+        TempPath.append("/EndTest");
+    }
+    else {
+        TempPath.append("/StationTest");
+    }
+
+    if (!TempDir.exists(TempPath) && !TempDir.mkdir(TempPath)) {
+        qDebug()<<"CTestCaseReporter: create temp dir failed"<<TempPath;
         return false;
     }
     QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
@@ -62,7 +75,7 @@ bool CTestCaseReporter::GenReportFile()
     QString serialNumber = m_SerialNumber;
     serialNumber.replace(QRegExp("[/.]"), "_");
     QString ReportName = m_ModuleName + "_" + serialNumber + "_" + CurrentDateTime;
-    QString FileName = TempFilePath + "/" + ReportName + ".txt";
+    QString FileName = TempPath + "/" + ReportName + ".txt";
     QFile File(FileName);
 
     if (!File.open(QFile::WriteOnly | QFile::Text )) {
@@ -71,7 +84,7 @@ bool CTestCaseReporter::GenReportFile()
     }
 
     QTextStream TestStream(&File);
-    FillReportFile(TestStream);
+    WriteReportFile(TestStream);
 
     m_TestReportFile = FileName;
 
@@ -94,10 +107,11 @@ bool CTestCaseReporter::SendReportFile()
         return false;
     }
     if (QFile::exists(m_TestReportFile)) {
-        QFileInfo FileInfo(m_TestReportFile);
-        QString DestFile = FileInfo.absolutePath() + "/" + FileInfo.fileName().insert(0, "copy_");
+        //QFileInfo FileInfo(m_TestReportFile);
+        //QString DestFile = FileInfo.absolutePath() + "/" + FileInfo.fileName().insert(0, "copy_");
         //QCoreApplication::processEvents();
-        return QFile::copy(m_TestReportFile, DestFile);
+        //return QFile::copy(m_TestReportFile, DestFile);
+        return true;
     }
     else {
         qDebug()<<"CTestCaseReporter:: send report file failed.";
@@ -105,7 +119,7 @@ bool CTestCaseReporter::SendReportFile()
     }
 }
 
-void CTestCaseReporter::FillReportFile(QTextStream& TextStream)
+void CTestCaseReporter::WriteReportFile(QTextStream& TextStream)
 {
     QDateTime DateTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
     QString CurrentDateTime = DateTime.toString("yyyy/MM/dd-hh:mm:ss");

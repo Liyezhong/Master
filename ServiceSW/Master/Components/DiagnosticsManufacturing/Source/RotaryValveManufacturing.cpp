@@ -53,12 +53,15 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     , m_TestFlag(false)
 {
     mp_Ui->setupUi(this);
+
+    if (mp_DataConnector->GetModuleListContainer()) {
+        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Rotary Valve");
+    }
+
     mp_Ui->rvSNEdit->installEventFilter(this);
     mp_Ui->rvSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
-
-    mp_Ui->rvSNEdit->setText(m_RVSNString);
 
     mp_TestReporter = new CTestCaseReporter("RotaryValve");
     mp_MessageDlg   = new MainMenu::CMessageDlg(mp_MainWindow);
@@ -79,7 +82,13 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     }
     else {
         AddItem(1, Service::ROTARY_VALVE_HEATING_END);
+        if (mp_Module) {
+            m_RVSNString = mp_Module->GetSerialNumber();
+        }
     }
+
+    mp_Ui->rvSNEdit->setText(m_RVSNString);
+
     mp_Ui->widget->setMinimumSize(mp_TableWidget->width(), mp_TableWidget->height());
     mp_Ui->widget->SetContent(mp_TableWidget);
 
@@ -96,10 +105,6 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
-
-    if (mp_DataConnector->GetModuleListContainer()) {
-        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Rotary Valve");
-    }
 
     CONNECTSIGNALSLOTGUI(mp_WaitDlg, rejected(), mp_TestReporter, StopSend());
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());

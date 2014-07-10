@@ -2,7 +2,7 @@
 <InstrumentHistory name="Himalaya">
     <ModuleList timestamp="2013-06-26 05:08:58.194">
         <Module name="Main Control" description="Main Control">
-            <SerialNumber>14-HIM-MC-12345</SerialNumber>
+            <SerialNumber>040/1221</SerialNumber>
             <OperatingHours>N/A</OperatingHours>
             <DateOfExchange>2014-05-26</DateOfExchange>
             <SubModule name="ASB3" type="Board" description="ASB3">
@@ -108,7 +108,7 @@
             </SubModule>
         </Module>
         <Module name="Paraffine Oven" description="Paraffine Oven">
-            <SerialNumber>042/1121</SerialNumber>
+            <SerialNumber>042/1133</SerialNumber>
             <OperatingHours>N/A</OperatingHours>
             <DateOfExchange>2012-07-06</DateOfExchange>
             <SubModule name="Heater" type="Heater" description="Heater">
@@ -129,7 +129,7 @@
             </SubModule>
         </Module>
         <Module name="Rotary Valve" description="Rotary Valve">
-            <SerialNumber>043/2121</SerialNumber>
+            <SerialNumber>043/1213</SerialNumber>
             <OperatingHours>N/A</OperatingHours>
             <DateOfExchange>2013-06-06</DateOfExchange>
             <SubModule name="Motor" type="Step Motor" description="Motor">

@@ -54,12 +54,14 @@ CRetort::CRetort(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
     , m_TestFlag(false)
 {
     mp_Ui->setupUi(this);
+
+    if (mp_DataConnector->GetModuleListContainer()) {
+        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Retort");
+    }
     mp_Ui->retortSNEdit->installEventFilter(this);
     mp_Ui->retortSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
-
-    mp_Ui->retortSNEdit->setText(m_RetortSNString);
 
     mp_TestReporter = new CTestCaseReporter("Retort");
     mp_MessageDlg   = new MainMenu::CMessageDlg(mp_MainWindow);
@@ -77,11 +79,15 @@ CRetort::CRetort(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
         AddItem(2, Service::RETORT_LEVEL_SENSOR_HEATING);
         AddItem(3, Service::RETORT_LEVEL_SENSOR_DETECTING);
         AddItem(4, Service::RETORT_HEATING_WITH_WATER);
+        if (mp_Module) {
+            m_RetortSNString = mp_Module->GetSerialNumber();
+        }
     }
     else {
         AddItem(1, Service::RETORT_LEVEL_SENSOR_HEATING);
         AddItem(2, Service::RETORT_HEATING_EMPTY);
     }
+    mp_Ui->retortSNEdit->setText(m_RetortSNString);
 
     mp_TableWidget->setModel(&m_Model);
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
@@ -99,10 +105,6 @@ CRetort::CRetort(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWin
 //    mp_Ui->testSuccessLabel->setPixmap(QPixmap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png")));
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
-
-    if (mp_DataConnector->GetModuleListContainer()) {
-        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Retort");
-    }
 
     CONNECTSIGNALSLOTGUI(mp_WaitDlg, rejected(), mp_TestReporter, StopSend());
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());

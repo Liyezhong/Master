@@ -56,14 +56,16 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
     , m_TestFlag(false)
 {
     mp_Ui->setupUi(this);
+
+    if (mp_DataConnector->GetModuleListContainer()) {
+        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Paraffine Oven");
+    }
     mp_Ui->ovenSNEdit->installEventFilter(this);
     mp_Ui->ovenSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
 
-    mp_Ui->ovenSNEdit->setText(m_OvenSNString);
-
-    mp_TestReporter = new CTestCaseReporter("Paraffine Oven");
+    mp_TestReporter = new CTestCaseReporter("ParaffineOven");
     mp_MessageDlg   = new MainMenu::CMessageDlg(mp_MainWindow);
     mp_WaitDlg      = new MainMenu::CWaitDialog(mp_MainWindow);
     mp_WaitDlg->setModal(true);
@@ -77,10 +79,14 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
     if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
         AddItem(1, Service::OVEN_COVER_SENSOR);
         AddItem(2, Service::OVEN_HEATING_WITH_WATER);
+        if (mp_Module) {
+            m_OvenSNString = mp_Module->GetSerialNumber();
+        }
     }
     else {
         AddItem(1, Service::OVEN_HEATING_EMPTY);
     }
+    mp_Ui->ovenSNEdit->setText(m_OvenSNString);
 
     mp_TableWidget->setModel(&m_Model);
     mp_TableWidget->horizontalHeader()->resizeSection(0, 50);   // 0 => Index  50 => Size
@@ -99,9 +105,6 @@ COven::COven(Core::CServiceGUIConnector *p_DataConnector, MainMenu::CMainWindow 
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
 
-    if (mp_DataConnector->GetModuleListContainer()) {
-        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Paraffine Oven");
-    }
     CONNECTSIGNALSLOTGUI(mp_WaitDlg, rejected(), mp_TestReporter, StopSend());
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());
     CONNECTSIGNALSLOTGUI(mp_Ui->sendTestReportBtn, clicked(), this, SendTestReport());

@@ -1152,7 +1152,11 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
     float ASB3Current = 0.00;
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::SYSTEM_MAINS_RELAY);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
-    bool RelaySwitchStatus = p_TestCase->GetParameter("RelaySwitchStatus").toInt();
+
+    bool RelaySwitchStatus    = p_TestCase->GetParameter("RelaySwitchStatus").toInt();
+    float SwitchOnCurrentLow  = p_TestCase->GetParameter("SwitchOnCurrentLow").toFloat();
+    float SwitchOnCurrentHigh = p_TestCase->GetParameter("SwitchOnCurrentHigh").toFloat();
+    float SWitchOffCurrentLow = p_TestCase->GetParameter("SwitchOffCurrentLow").toFloat();
 
     p_TestCase->AddResult("ASB3Current", QString("%1A").arg(ASB3Current));
 
@@ -1161,12 +1165,12 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
         qDebug()<<"System mains relay switch on";
         mp_DigitalOutputMainRelay->SetHigh();
         mp_TempRV->StartTemperatureControl(80);
-        mp_Utils->Pause(3000);
+        mp_Utils->Pause(1000);
 
         ASB3Current = mp_TempRV->GetCurrent()/1000.0;
 
         qDebug()<<"ASB3 current :"<<ASB3Current;
-        Result = (ASB3Current>0.3 && ASB3Current<1.3);
+        Result = (ASB3Current > SwitchOnCurrentLow && ASB3Current < SwitchOnCurrentHigh);
         mp_TempRV->StopTemperatureControl();
         mp_DigitalOutputMainRelay->SetLow();
 
@@ -1180,7 +1184,7 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
 
         qDebug()<<"System mains relay switch off";
         ASB3Current = mp_TempRV->GetCurrent()/1000.0;
-        Result = (ASB3Current<0.3);
+        Result = (ASB3Current < SWitchOffCurrentLow);
         p_TestCase->AddResult("ASB3Current", QString("%1A").arg(ASB3Current));
     }
     p_TestCase->SetStatus(Result);

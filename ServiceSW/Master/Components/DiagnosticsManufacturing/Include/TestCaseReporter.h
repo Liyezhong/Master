@@ -80,10 +80,10 @@ public:
 private:
     /****************************************************************************/
     /**
-     * \brief Fill report to file.
+     * \brief write report file.
      */
     /****************************************************************************/
-    void FillReportFile(QTextStream& TextStream);
+    void WriteReportFile(QTextStream& TextStream);
 
     QList<Service::ModuleTestCaseID> m_TestCaseList; //!< Stores test case list;
     QString m_TestReportFile;                        //!< Stores Test report file name.

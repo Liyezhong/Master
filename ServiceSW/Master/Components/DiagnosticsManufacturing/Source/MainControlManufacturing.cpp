@@ -54,6 +54,12 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 {
     mp_Ui->setupUi(this);
 
+    if (mp_DataConnector->GetModuleListContainer()) {
+        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Main Control");
+    }
+    if (mp_Module) {
+        m_MainControlSNString = mp_Module->GetSerialNumber();
+    }
     mp_Ui->eboxSNEdit->installEventFilter(this);
     mp_Ui->eboxSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
@@ -91,10 +97,6 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
 //    mp_Ui->testSuccessLabel->setPixmap(QPixmap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png")));
 
     mp_KeyBoardWidget = new KeyBoard::CKeyBoard(KeyBoard::SIZE_1, KeyBoard::QWERTY_KEYBOARD);
-
-    if (mp_DataConnector->GetModuleListContainer()) {
-        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Main Control");
-    }
 
     CONNECTSIGNALSLOTGUI(mp_WaitDlg, rejected(), mp_TestReporter, StopSend());
     CONNECTSIGNALSLOTGUI(mp_Ui->beginTestBtn, clicked(), this, BeginTest());

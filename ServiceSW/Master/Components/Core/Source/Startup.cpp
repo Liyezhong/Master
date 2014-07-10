@@ -1165,7 +1165,7 @@ void CStartup::RefreshTestStatus4SystemMainsRelay(Service::ModuleTestCaseID Id, 
         MessagetText = "relay switch on Spec.0.3A-1.3A";
     }
     else {
-        MessagetText = "relay switch off Spec.&lt;0.1A";
+        MessagetText = "relay switch off Spec.&lt;0.15A";
     }
 
     MessagetText.append(QString("<br>ASB3 current:%1<br>Result:%2").arg(p_TestCase->GetResult().value("ASB3Current"), Status.value("Result")));

@@ -979,6 +979,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
     DiagnosticsManufacturing::CSelectSealingDialog* p_Dlg = new DiagnosticsManufacturing::CSelectSealingDialog(mp_MainWindow);
     qDebug()<<"CManufacturingDiagnosticsHandler::PerformManufSystemTests ---" << TestCaseList;
     for(int i=0; i<TestCaseList.size(); i++) {
+        StrResult.clear();
         Service::ModuleTestCaseID Id = TestCaseList.at(i);
         QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
         DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
@@ -987,7 +988,6 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
         bool Result   = true;
         bool NextFlag = true;
 
-        QTime delayTime = QTime::currentTime().addSecs(20);
         switch(Id) {
         case Service::SYSTEM_110V_220V_SWITCH:
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_110V220V_TEST;
