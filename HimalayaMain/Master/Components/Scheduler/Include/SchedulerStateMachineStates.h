@@ -16,20 +16,19 @@ namespace Scheduler{
 #define L2_PRO_RV_MOVE_TO_TUBE                (0x9)
 #define L2_PRO_DRAINING                       (0xA)
 #define L2_PRO_RV_POS_CHANGE                  (0xB)
-#define L2_PRO_STEP_FINISH                    (0xC)
-#define L2_PRO_PROGRAM_FINISH                 (0xD)
-#define L2_PRO_PAUSE                          (0xE)
-#define L2_PRO_PAUSE_DRAIN                    (0xF)
-#define L2_PRO_ABORTING                       (0x10)
-#define L2_PRO_ABORTED                        (0x11)
+#define L2_PRO_PROGRAM_FINISH                 (0xC)
+#define L2_PRO_PAUSE                          (0xD)
+#define L2_PRO_PAUSE_DRAIN                    (0xE)
+#define L2_PRO_ABORTING                       (0xF)
+#define L2_PRO_ABORTED                        (0x10)
 
-#define L2_ERR_WAIT                             (0x1)
-#define L2_ERR_RS_RV_GETORIGINALPOSITIONAGAIN      (0x2)
-#define L2_ERR_RS_STANDBY                       (0x3)
-#define L2_ERR_RC_LEVELSENSOR_HEATING_OVERTIME  (0x4)
-#define L2_ERR_RS_STANDBY_WITHTISSUE            (0x5)
-#define L2_ERR_RC_RESTART                       (0x6)
-#define L2_ERR_RS_HEATINGERR30SRETRY      		(0x7)
+#define L2_ERR_WAIT                                 (0x1)
+#define L2_ERR_RS_RV_GETORIGINALPOSITIONAGAIN       (0x2)
+#define L2_ERR_RS_STANDBY                           (0x3)
+#define L2_ERR_RC_LEVELSENSOR_HEATING_OVERTIME      (0x4)
+#define L2_ERR_RS_STANDBY_WITHTISSUE                (0x5)
+#define L2_ERR_RC_RESTART                           (0x6)
+#define L2_ERR_RS_HEATINGERR30SRETRY                (0x7)
 
 
 typedef enum
@@ -51,7 +50,6 @@ typedef enum
     PSSM_RV_MOVE_TO_TUBE = ((L2_PRO_RV_MOVE_TO_TUBE << 8) | L1_BUSY),
     PSSM_DRAINING = ((L2_PRO_DRAINING << 8) | L1_BUSY),
     PSSM_RV_POS_CHANGE = ((L2_PRO_RV_POS_CHANGE << 8) | L1_BUSY),
-    PSSM_STEP_FINISH = ((L2_PRO_STEP_FINISH << 8) | L1_BUSY),
     PSSM_PROGRAM_FINISH = ((L2_PRO_PROGRAM_FINISH << 8) | L1_BUSY),
     PSSM_PAUSE = ((L2_PRO_PAUSE << 8) | L1_BUSY),
     PSSM_PAUSE_DRAIN = ((L2_PRO_PAUSE_DRAIN << 8) | L1_BUSY),

@@ -39,6 +39,7 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     mp_RVPositionChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_PressureSealingChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_BottlesChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+    mp_MoveToTube = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
     mp_StateMachine->setInitialState(mp_Initial.data());
     mp_Initial->addTransition(this, SIGNAL(TemperatureSensorsChecking()), mp_TemperatureSensorsChecking.data());
@@ -46,14 +47,8 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     mp_RTTempCtrlOff->addTransition(this,SIGNAL(RVPositionChecking()), mp_RVPositionChecking.data());
     mp_RVPositionChecking->addTransition(this, SIGNAL(PressureSealingChecking()), mp_PressureSealingChecking.data());
     mp_PressureSealingChecking->addTransition(this, SIGNAL(BottlesChecking()), mp_BottlesChecking.data());
-    mp_BottlesChecking->addTransition(this,SIGNAL(TasksDone(bool)), mp_Initial.data());
-
-
-    // For error cases
-    mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-    mp_RTTempCtrlOff->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-    mp_RVPositionChecking->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
-    mp_PressureSealingChecking->addTransition(this, SIGNAL(TasksDone(bool)), mp_Initial.data());
+    mp_BottlesChecking->addTransition(this,SIGNAL(MoveToTube()), mp_MoveToTube.data());
+    mp_MoveToTube->addTransition(this, SIGNAL(TasksDone()), mp_Initial.data());
 
     // Start up state machine
     mp_StateMachine->start();
@@ -64,6 +59,7 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     m_SetPrressureTime = 0;
     m_PressureSealingChkSeq = 0;
     m_BottleChkFlag = true;
+    m_MoveToTubeSeq = 0;
 }
 
 CProgramSelfTest::~CProgramSelfTest()
@@ -98,6 +94,10 @@ CProgramSelfTest::StateList_t CProgramSelfTest::GetCurrentState(QSet<QAbstractSt
     else if(statesList.contains(mp_BottlesChecking.data()))
     {
         currentState = BOTTLES_CHECKING;
+    }
+    else if (statesList.contains(mp_MoveToTube.data()))
+    {
+        currentState = MOVE_TO_TUBE;
     }
 
     return currentState;
@@ -162,6 +162,7 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             {
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
+                    mp_SchedulerThreadController->LogDebug("Pre-Test: RVReqMoveToInitialPosition passed");
                     emit PressureSealingChecking();
                 }
                 else
@@ -190,6 +191,7 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             {
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
+                    mp_SchedulerThreadController->LogDebug("Pre-Test: IDSealingCheck passed");
                     emit BottlesChecking();
                 }
                 else
@@ -210,9 +212,10 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             {
                 m_BottleChkFlag = false;
             }
-            else
+            else // all the bottle check (for 16 bottles) has been done
             {
-                emit TasksDone();
+                mp_SchedulerThreadController->LogDebug("Pre-Test: IDBottleCheck passed");
+                emit MoveToTube();
             }
         }
         else // Wait for command response
@@ -226,6 +229,29 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 else
                 {
                     m_BottleChkFlag = true;
+                }
+            }
+        }
+        break;
+    case MOVE_TO_TUBE:
+        if (0 == m_MoveToTubeSeq)
+        {
+            mp_SchedulerThreadController->MoveRV(0);
+            m_MoveToTubeSeq++;
+        }
+        else
+        {
+            if ("Scheduler::RVReqMoveToRVPosition" == cmdName)
+            {
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                }
+                else
+                {
+                    mp_SchedulerThreadController->LogDebug("Pre-Test: Moving to tube passed");
+                    mp_SchedulerThreadController->LogDebug("Pre-Test Done");
+                    emit TasksDone();
                 }
             }
         }

@@ -472,7 +472,6 @@ private:
     QState* mp_PssmPauseDrain;                  ///<  Definition/Declaration of variable mp_PssmPauseDrain
     QState* mp_PssmAborting;                    ///<  Definition/Declaration of variable mp_PssmAborting
     QState* mp_PssmAborted;                     ///<  Definition/Declaration of variable mp_PssmAborted
-    QState* mp_PssmStepFinish;                  ///<  Definition/Declaration of variable mp_PssmStepFinish
     QFinalState* mp_PssmProgramFinish;          ///<  Definition/Declaration of variable mp_PssmProgramFinish
     QState* mp_PssmError;                       ///<  Definition/Declaration of variable mp_PssmError
     SchedulerStateMachine_t m_PreviousState;    ///<  Definition/Declaration of variable m_PreviousState

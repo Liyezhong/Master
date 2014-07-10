@@ -69,7 +69,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_PssmRVMoveToTubeState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmDrainingState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmRVPosChangeState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
-    mp_PssmStepFinishState = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmProgramFinish = QSharedPointer<QFinalState>(new QFinalState(mp_BusyState.data()));
     mp_PssmError = QSharedPointer<QState>(new QState(mp_BusyState.data()));
     mp_PssmPause = QSharedPointer<QState>(new QState(mp_BusyState.data()));
@@ -121,11 +120,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), entered(), mp_SchedulerThreadController, Drain());
     CONNECTSIGNALSLOT(mp_PssmDrainingState.data(), exited(), mp_SchedulerThreadController, OnStopDrain());
     mp_PssmDrainingState->addTransition(this, SIGNAL(sigDrainFinished()), mp_PssmRVPosChangeState.data());
-    CONNECTSIGNALSLOT(mp_PssmRVPosChangeState.data(), entered(), this, OnRVPostionChange());
-    mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigRVPosChangeReady()), mp_PssmStepFinishState.data());
-
-    mp_PssmStepFinishState->addTransition(this, SIGNAL(sigStepFinished()), mp_PssmFillingLevelSensorHeatingState.data());
-    mp_PssmStepFinishState->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
+    mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigStepFinished()), mp_PssmFillingLevelSensorHeatingState.data());
+    mp_PssmRVPosChangeState->addTransition(this, SIGNAL(sigProgramFinished()), mp_PssmProgramFinish.data());
 
     // State machines for Error handling
     mp_RsRvGetOriginalPositionAgain = QSharedPointer<CRsRvGetOriginalPositionAgain>(new CRsRvGetOriginalPositionAgain(mp_SchedulerMachine.data(), mp_ErrorState.data()));
@@ -157,7 +153,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsRVGetOriginalPositionAgain()), mp_ErrorRsRVGetOriginalPositionAgainState.data());
     mp_ErrorRsRVGetOriginalPositionAgainState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
-    m_FillingCurrentStage = MOVE_TUBE_POSITION;
+    m_FillingCurrentStage = IN_FILLING;
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
     m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
 }
@@ -189,10 +185,6 @@ void CSchedulerStateMachine::OnRVMoveToTube()
     mp_SchedulerThreadController->MoveRV(0);
 }
 
-void CSchedulerStateMachine::OnRVPostionChange()
-{
-     mp_SchedulerThreadController->MoveRV(2);
-}
 
 /****************************************************************************/
 /*!
@@ -328,10 +320,6 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         {
             return PSSM_RV_POS_CHANGE;
         }
-        else if(mp_SchedulerMachine->configuration().contains(mp_PssmStepFinishState.data()))
-        {
-            return PSSM_STEP_FINISH;
-        }
         else if(mp_SchedulerMachine->configuration().contains(mp_PssmProgramFinish.data()))
         {
             return PSSM_PROGRAM_FINISH;
@@ -465,11 +453,6 @@ void CSchedulerStateMachine::NotifyDrainFinished()
     emit sigDrainFinished();
 }
 
-void CSchedulerStateMachine::NotifyRVPosChangeReady()
-{
-    emit sigRVPosChangeReady();
-}
-
 void CSchedulerStateMachine::NotifyStepFinished()
 {
     emit sigStepFinished();
@@ -558,28 +541,6 @@ void CSchedulerStateMachine::HandleProtocolFillingWorkFlow(const QString& cmdNam
 {
    switch (m_FillingCurrentStage)
    {
-   case MOVE_TUBE_POSITION:
-       mp_SchedulerThreadController->MoveRV(0);
-       m_FillingCurrentStage = GET_MOVETUBE_RESPONSE;
-       break;
-   case GET_MOVETUBE_RESPONSE:
-       if("Scheduler::RVReqMoveToRVPosition" == cmdName)
-       {
-           if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
-           {
-               m_FillingCurrentStage = MOVE_TUBE_POSITION;
-               mp_SchedulerThreadController->SendOutErrMsg(retCode);
-           }
-           else
-           {
-               m_FillingCurrentStage = IN_FILLING;
-           }
-       }
-       else
-       {
-           // Do nothing, just wait for the response
-       }
-       break;
    case IN_FILLING:
        mp_SchedulerThreadController->Fill();
        m_FillingCurrentStage = GET_FILLING_RESPONSE;
@@ -589,13 +550,13 @@ void CSchedulerStateMachine::HandleProtocolFillingWorkFlow(const QString& cmdNam
        {
            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
            {
-               m_FillingCurrentStage = MOVE_TUBE_POSITION;
+
                mp_SchedulerThreadController->SendOutErrMsg(retCode);
            }
            else
            {
+               m_FillingCurrentStage = IN_FILLING;
                emit sigFillingComplete();
-               m_FillingCurrentStage = MOVE_TUBE_POSITION;
            }
        }
        break;
@@ -651,10 +612,12 @@ void CSchedulerStateMachine::HandleRcLevelSensorHeatingOvertimeWorkFlow()
         }
         else if (1 == retValue)
         {
+            m_RestartLevelSensor = RESTART_LEVELSENSOR;
             this->OnTasksDone(false);
         }
         else if (2 == retValue)
         {
+            m_RestartLevelSensor = RESTART_LEVELSENSOR;
             this->OnTasksDone(true);
         }
         break;
@@ -675,6 +638,7 @@ void CSchedulerStateMachine::HandleRsRVGetOriginalPositionAgainWorkFlow(const QS
     case CHECK_INITIAL_POS_RESULT:
         if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
         {
+            m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
                 this->OnTasksDone(true);

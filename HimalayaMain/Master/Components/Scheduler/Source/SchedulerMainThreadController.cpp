@@ -111,6 +111,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_lastPVTime = 0;
     m_completionNotifierSent = false;
     QString ProgramStatusFilePath = "../Settings/ProgramStatus.txt";
+    m_RVPostionChange_Step = 0;
     QFile ProgramStatusFile(ProgramStatusFilePath);
 
     if(!ProgramStatusFile.exists())
@@ -802,49 +803,54 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
             }
         }
-        else if (PSSM_RV_POS_CHANGE == stepState)
-        {
-            if("Scheduler::RVReqMoveToRVPosition" == cmdName)
-            {
-                if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                {
-                    RaiseError(0, retCode, m_CurrentScenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
-                }
-                else
-                {
-                    m_SchedulerMachine->NotifyRVPosChangeReady();
-                }
-            }
-            else
-            {
-               // Do nothing, just wait for the command response
-            }
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                m_PauseToBeProcessed = true;
-            }
-        }
-        else if(PSSM_STEP_FINISH == stepState)
+        else if(PSSM_RV_POS_CHANGE == stepState)
         {
             //todo: start next program step or finish all program
             m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
-            LogDebug(QString("Program Step Finished"));
+            LogDebug(QString("RV position changes to next tube"));
             this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
             if(m_CurProgramStepIndex != -1) // Not the last step
             {
-                //start next step
-                LogDebug(QString("Start Step %1").arg(m_CurProgramStepIndex));
-                m_SchedulerMachine->NotifyStepFinished();
-                //send command to main controller to tell the left time
-                quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
+                if (0 == m_RVPostionChange_Step)
+                {
+                    this->MoveRV(0);
+                    m_RVPostionChange_Step++;
+                }
+                else if (1 == m_RVPostionChange_Step)
+                {
+                    if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+                    {
+                        if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                        {
+                            m_RVPostionChange_Step++;
+                        }
+                        else
+                        {
+                            RaiseError(0, retCode, m_CurrentScenario, true);
+                            m_SchedulerMachine->SendErrorSignal();
+                        }
+                    }
+                    else
+                    {
+                        // Do nothing, just wait for the command response.
+                    }
+                }
+                else
+                {
+                    // Reset the value
+                    m_RVPostionChange_Step =  0;
 
-                QTime leftTime(0,0,0);
-                leftTime = leftTime.addSecs(leftSeconds);
-                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
-                Q_ASSERT(commandPtr);
-                Global::tRefType Ref = GetNewCommandRef();
-                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+                    //start next step
+                    m_SchedulerMachine->NotifyStepFinished();
+                    //send command to main controller to tell the left time
+                    quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
+                    QTime leftTime(0,0,0);
+                    leftTime = leftTime.addSecs(leftSeconds);
+                    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
+                    Q_ASSERT(commandPtr);
+                    Global::tRefType Ref = GetNewCommandRef();
+                    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+                }
             }
             else // Has been the last step
             {
@@ -1825,8 +1831,6 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
     case PSSM_RV_POS_CHANGE:
         scenario = 217;
         reagentRelated = true;
-    case PSSM_STEP_FINISH:
-        break;
     case PSSM_PROGRAM_FINISH:
         break;
     default:
@@ -2237,12 +2241,6 @@ void SchedulerMainThreadController::MoveRV(qint16 type)
     {
         //get target position here
         targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
-    }
-    else if (2 == type) //next tube position
-    {
-        //get target position here
-        targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
-        (RVPosition_t)(targetPos+1);
     }
 
     if(RV_UNDEF != targetPos)

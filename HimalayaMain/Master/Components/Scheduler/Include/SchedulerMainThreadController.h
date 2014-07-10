@@ -225,6 +225,7 @@ typedef enum
         bool m_IsInSoakDelay;                                 ///< Delay in Soak
         bool m_AllProgramCount;                            ///< count the all program
         bool m_IsPrecheckMoveRV;                            ///< precheck done move rv
+        quint8 m_RVPostionChange_Step;                        ///< Step for RV Postion change
         QMap<QString, QString> m_ProgramStatusFileMap;        ///< the map of program status
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.

@@ -70,7 +70,6 @@ private:
     QSharedPointer<QState> mp_PssmRVMoveToTubeState;                                    ///<  Busy State's sub state: RV move to tube position state
     QSharedPointer<QState> mp_PssmDrainingState;                                        ///<  Busy State's sub state: Draining state
     QSharedPointer<QState> mp_PssmRVPosChangeState;                                     ///<  Busy State's sub state: RV move to next tube state
-    QSharedPointer<QState> mp_PssmStepFinishState;                                      ///<  Busy State's sub state: Current Step finished state
     QSharedPointer<QState> mp_PssmError;                                                ///<  Busy State's sub state: Step error state
     QSharedPointer<QState> mp_PssmPause;                                                ///<  Busy State's sub state: Pause state
     QSharedPointer<QState> mp_PssmPauseDrain;                                           ///<  Busy State's sub state: Pause drain state
@@ -102,8 +101,6 @@ private:
     // enum for filling stages
     typedef enum
     {
-        MOVE_TUBE_POSITION,
-        GET_MOVETUBE_RESPONSE,
         IN_FILLING,
         GET_FILLING_RESPONSE
     } FILLING_STAGE_t;
@@ -383,15 +380,6 @@ public:
      */
     /****************************************************************************/
     void NotifyDrainFinished();
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Notify RV postion change ready
-     *  \param  void
-     *  \return void
-     */
-    /****************************************************************************/
-    void NotifyRVPosChangeReady();
 
     /****************************************************************************/
     /*!
@@ -697,15 +685,6 @@ private slots:
      */
     /****************************************************************************/
     void OnRVMoveToTube();
-
-    /****************************************************************************/
-    /*!
-     *  \brief	Slot to enter RV_Pos_Change state.
-     *  \param	void
-     *  \return	void
-     */
-    /****************************************************************************/
-    void OnRVPostionChange();
 
 signals:
     /****************************************************************************/

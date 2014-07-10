@@ -47,7 +47,6 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         mp_PssmReadyToFill = new QState(pParentState);
         mp_PssmReadyToDrain = new QState(pParentState);
         mp_PssmSoak = new QState(pParentState);
-        mp_PssmStepFinish = new QState(pParentState);
         mp_PssmError = new QState(pParentState);
         mp_PssmPause = new QState(pParentState);
         mp_PssmPauseDrain = new QState(pParentState);
@@ -109,10 +108,7 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         mp_PssmReadyToSeal->addTransition(this, SIGNAL(HitSeal()), mp_PssmSoak);
         mp_PssmSoak->addTransition(this, SIGNAL(SoakFinished()), mp_PssmReadyToTubeAfter);
         mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(HitTubeAfter()), mp_PssmReadyToDrain);
-        mp_PssmReadyToDrain->addTransition(this, SIGNAL(DrainFinished()), mp_PssmReadyToTubeBefore);
         mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(HitTubeBefore()), mp_PssmStepFinish);
-        mp_PssmStepFinish->addTransition(this, SIGNAL(ProgramFinished()), mp_PssmProgramFinish);
-        mp_PssmStepFinish->addTransition(this, SIGNAL(StepFinished()), mp_PssmInit);
 
         mp_PssmInit->addTransition(this, SIGNAL(Error()), pErrorState);
         mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(Error()), pErrorState);
@@ -131,7 +127,6 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         mp_PssmReadyToSeal->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
         mp_PssmReadyToFill->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
         mp_PssmSoak->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
-        mp_PssmStepFinish->addTransition(this, SIGNAL(Pause()), mp_PssmPause);
 
         mp_PssmReadyToTubeAfter->addTransition(this, SIGNAL(Pause()), mp_PssmPauseDrain);
         mp_PssmReadyToDrain->addTransition(this, SIGNAL(Pause()), mp_PssmPauseDrain);
@@ -140,7 +135,6 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         mp_PssmReadyToHeatLevelSensorS1->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
         mp_PssmReadyToHeatLevelSensorS2->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
         mp_PssmReadyToTubeBefore->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
-        mp_PssmStepFinish->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
         mp_PssmAborting->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
 
         mp_PssmReadyToFill->addTransition(this, SIGNAL(Abort()), mp_PssmAborting);
@@ -155,7 +149,6 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         mp_PssmPause->addTransition(this, SIGNAL(ResumeToHeatLevelSensorS2()), mp_PssmReadyToHeatLevelSensorS2);
         mp_PssmPause->addTransition(this, SIGNAL(ResumeToReadyToFill()), mp_PssmReadyToFill);
         mp_PssmPause->addTransition(this, SIGNAL(ResumeToSoak()), mp_PssmSoak);
-        mp_PssmPause->addTransition(this, SIGNAL(ResumeToStepFinished()), mp_PssmStepFinish);
         mp_PssmPause->addTransition(this, SIGNAL(Abort()), mp_PssmAborted);
 
         mp_PssmPauseDrain->addTransition(this, SIGNAL(ResumeToReadyToTubeAfter()), mp_PssmReadyToTubeAfter);
@@ -186,7 +179,6 @@ CProgramStepStateMachine::CProgramStepStateMachine(QState* pParentState, QState*
         connect(mp_PssmReadyToFill, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
         connect(mp_PssmSoak, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
         connect(mp_PssmReadyToDrain, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
-        connect(mp_PssmStepFinish, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
         connect(mp_PssmProgramFinish, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
         connect(mp_PssmError, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
         connect(mp_PssmPause, SIGNAL(exited()), this, SIGNAL(OnStateExited()));
@@ -216,7 +208,6 @@ CProgramStepStateMachine::~CProgramStepStateMachine()
     delete  mp_PssmReadyToFill;
     delete  mp_PssmReadyToDrain;
     delete  mp_PssmSoak;
-    delete  mp_PssmStepFinish;
     delete  mp_PssmProgramFinish;
     delete  mp_PssmError;
     delete  mp_PssmPause;
@@ -267,10 +258,6 @@ SchedulerStateMachine_t CProgramStepStateMachine::GetCurrentState(QSet<QAbstract
     else if(statesList.contains(mp_PssmReadyToDrain))
     {
         return PSSM_DRAINING;
-    }
-    else if(statesList.contains(mp_PssmStepFinish))
-    {
-        return PSSM_STEP_FINISH;
     }
     else if(statesList.contains(mp_PssmProgramFinish))
     {

@@ -105,12 +105,19 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief Signal fo bottles status checking
+     *  \brief Signal for bottles status checking
      *
      */
     /****************************************************************************/
     void BottlesChecking();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Signal for moving to tube position
+     *
+     */
+    /****************************************************************************/
+    void MoveToTube();
 
     /****************************************************************************/
     /*!
@@ -129,6 +136,7 @@ private:
     QSharedPointer<QState> mp_RVPositionChecking;                   //!< Rotary Valve position checking state
     QSharedPointer<QState> mp_PressureSealingChecking;              //!< Pressure test and sealing checking state
     QSharedPointer<QState> mp_BottlesChecking;                      //!< Bottle checking state
+    QSharedPointer<QState> mp_MoveToTube;                           //!< Moving to tube state
 
 
     //!< state list of the state machine
@@ -140,7 +148,8 @@ private:
         RT_TEMCTRL_OFF,
         RV_POSITION_CHECKING,
         PRESSURE_SEALING_CHECKING,
-        BOTTLES_CHECKING
+        BOTTLES_CHECKING,
+        MOVE_TO_TUBE
     } StateList_t;
 	
 	quint32	m_RTTempOffSeq;											//!< Sequence of RT sensors temperature off
@@ -149,6 +158,7 @@ private:
     qint64  m_SetPrressureTime;                                     //!< Time for pressure checking
     quint32 m_PressureSealingChkSeq;                                 //!< Sequence of Sealing checking
     bool    m_BottleChkFlag;                                        //!< Flag to indicate sending out command or geting command response.
+    quint32 m_MoveToTubeSeq;                                        //!< Sequence of moving to tube
 private:
     /****************************************************************************/
     /*!
