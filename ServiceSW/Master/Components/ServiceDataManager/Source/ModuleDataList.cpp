@@ -380,6 +380,10 @@ bool CModuleDataList::SerializeContent(QIODevice& IODevice, bool CompleteData)
     XmlStreamWriter.writeStartElement("ModuleList");
 
     // write attribute timestamp
+    QDateTime DateTime = QDateTime::currentDateTime();
+    QString CurrentDateTime = DateTime.toString("yyyy-MM-dd hh:mm:ss.zzz");
+    this->SetModuleTimeStamp(CurrentDateTime);
+
     XmlStreamWriter.writeAttribute("timestamp", GetModuleTimeStamp());
 
     // write all modules

@@ -61,7 +61,7 @@ private:
 
     Ui::COven *ui;
 
-    Core::CServiceGUIConnector *mp_DateConnector;
+    Core::CServiceGUIConnector *mp_DataConnector;
 };
 
 

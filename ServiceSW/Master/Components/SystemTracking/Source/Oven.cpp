@@ -38,7 +38,7 @@ const QString SUBMODULE_COVERSENSOR("Cover Sensor");
 COven::COven(Core::CServiceGUIConnector &DataConnector,
              QWidget *parent)
     : QWidget(parent)
-    , mp_DateConnector(&DataConnector)
+    , mp_DataConnector(&DataConnector)
     , ui(new Ui::COven)
 {
     ui->setupUi(this);
@@ -75,7 +75,7 @@ void COven::UpdateModule(ServiceDataManager::CModule &Module)
              << Module.GetModuleName();
 
     ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DateConnector->GetModuleListContainer();
+            mp_DataConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
         qDebug() << "COven::UpdateModule(): Invalid module list!";
@@ -95,7 +95,7 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
              << SubModule.GetSubModuleName();
 
     ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DateConnector->GetModuleListContainer();
+            mp_DataConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
         qDebug() << "COven::UpdateSubModule(): Invalid module list!";
@@ -123,7 +123,7 @@ void COven::ModifyOven(void)
     qDebug() << "COven::ModifyOven !";
 
     ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DateConnector->GetModuleListContainer();
+            mp_DataConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
         qDebug() << "COven::ModifyOven(): Invalid module list!";
@@ -173,7 +173,7 @@ void COven::ModifySubModule(const QString &ModuleName,
                             const QString &SubModuleName)
 {
     ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DateConnector->GetModuleListContainer();
+            mp_DataConnector->GetModuleListContainer();
     if (0 == pModuleList)
     {
         qDebug() << "COven::ModifySubModule(): Invalid module list!";

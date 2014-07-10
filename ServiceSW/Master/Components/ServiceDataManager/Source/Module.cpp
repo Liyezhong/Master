@@ -377,7 +377,7 @@ bool CModule::UpdateSubModule(const CSubModule* p_SubModule)
     else {
         return false;
     }
-    //    }
+
     return Result;
 }
 
