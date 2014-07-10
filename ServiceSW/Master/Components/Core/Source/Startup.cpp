@@ -957,8 +957,6 @@ void CStartup::RefreshTestStatus4RetortLevelSensorDetecting(Service::ModuleTestC
 {
     qDebug() << "RefreshTestStatus4RetortLevelSensorDetecting";
 
-    qDebug() << "[yuan-yuan]: refresh...detecting: " << status.value("CurrentStatus");
-
     mp_ManaufacturingDiagnosticsHandler->HideMessage();
     QString msg = status.value("CurrentStatus");
     if (msg.compare("WaitConfirm") == 0) {

@@ -684,8 +684,6 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             messageBox.show();
             result = messageBox.exec() == 0 ? true : false;
 
-            qDebug() << "[yuan-yuan] result: " << result;
-
             emit PerformManufacturingTest(id, Service::TEST_CASE_ID_UNUSED);
             (void)GetTestResponse();
         }

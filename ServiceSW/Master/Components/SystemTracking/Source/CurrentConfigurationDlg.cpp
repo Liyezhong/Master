@@ -154,7 +154,6 @@ void CCurrentConfigurationDlg::ExecDialog()
         int Count = mp_SubModule->GetNumberOfParameters();
         ServiceDataManager::Parameter_t *Param;
         mp_ParameterDlg->ClearModel();
-        qDebug() << "[yuan-yuan] module name: " << mp_SubModule->GetSubModuleName();
 
         for(int i=0; i<Count; i++) {
             Param = mp_SubModule->GetParameterInfo(i);
@@ -200,7 +199,6 @@ void CCurrentConfigurationDlg::InitDialog(ServiceDataManager::CModule *p_Module)
     {
         mp_SubModule = p_Module->GetSubModuleInfo(i);
         QString Name = mp_SubModule->GetSubModuleName();
-        qDebug() << "[yuan-yuan] row name: " << Name;
         AddItem(Name);
     }
 }

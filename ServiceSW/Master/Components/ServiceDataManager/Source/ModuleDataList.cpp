@@ -473,6 +473,8 @@ bool CModuleDataList::AddModule(CModule const* p_Module)
     if(p_Module == NULL) return false;
 
     QString name = const_cast<CModule*>(p_Module)->GetModuleName();
+    qDebug() << "[yuna----------------] add module: " << name;
+
     if(m_ListofModules.contains(name)) {
         qDebug() << "Name already exists";
         return false;

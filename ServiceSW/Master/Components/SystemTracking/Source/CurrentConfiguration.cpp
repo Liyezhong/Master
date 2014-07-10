@@ -119,8 +119,6 @@ void CCurrentConfiguration::AddItem(const QString &ModuleName)
 {
     QList<QStandardItem *> ItemList;
     ItemList << new QStandardItem(ModuleName);
-
-    qDebug() << "[yuan-yuan] module name: " << ModuleName;
     m_Model.appendRow(ItemList);
 }
 

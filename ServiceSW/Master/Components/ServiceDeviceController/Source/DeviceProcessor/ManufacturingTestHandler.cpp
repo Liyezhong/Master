@@ -988,11 +988,9 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     EmitRefreshTestStatustoMain(testCaseName, RETORT_FILLING);
     if (DCL_ERR_FCT_CALL_SUCCESS != m_rIdevProc.ALFillingForService(0, true)) {
         result = -1;
-        qDebug() << "[yuan-yuan]: level sensor detecting 'FILLING' failed!\n";
     }
     else {
         // Level sensor detected!
-        qDebug() << "[yuan-yuan]: level sensor detecting 'FILLING' successed!\n";
         result = 0;
     }
     mp_TempLSensor->StopTemperatureControl();
@@ -1020,7 +1018,6 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     }
 
     // draing
-    qDebug() << "[yuan-yuan]: level sensor detecting 'Draining'\n";
     mp_MotorRV->MoveToTubePosition(bottlePos);
     EmitRefreshTestStatustoMain(testCaseName, RETORT_DRAINING);
     m_rIdevProc.ALDraining(0);
@@ -1029,7 +1026,6 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
 
     // prompt result
     if (result == 0) {
-        qDebug() << "[yuan-yuan]: level sensor detecting 'DONE'!\n";
         EmitRefreshTestStatustoMain(testCaseName, INFORM_DONE);
     }
     // Tell the operator to close the retort lid
@@ -2336,10 +2332,7 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
     mp_TempLSensor->StopTemperatureControl();
     bool ret = mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_NORMAL, LSENSOR_PID_KC_NORMAL,
                                       LSENSOR_PID_TI_NORMAL, LSENSOR_PID_TD_NORMAL);
-    qDebug() << "[yuan-yuan] SetTemperaturePid1: " << ret;
-
     ret = mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
-    qDebug() << "[yuan-yuan] StartTemperatureControl1: " << ret;
 
     int WaitSeconds = TEST_LSENSOR_TIMEOUT;
     int ReadyStatus(-1);
@@ -2363,11 +2356,7 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
     mp_TempLSensor->StopTemperatureControl();
     ret = mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_SLOW, LSENSOR_PID_KC_SLOW,
                                       LSENSOR_PID_TI_SLOW, LSENSOR_PID_TD_SLOW);
-    qDebug() << "[yuan-yuan] SetTemperaturePid2: " << ret;
-
     ret = mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
-
-    qDebug() << "[yuan-yuan] StartTemperatureControl 2: " << ret;
 
 //    mp_Utils->Pause(3000);
 

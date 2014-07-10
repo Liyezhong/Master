@@ -266,6 +266,7 @@ bool CSubModule::SerializeContent(QXmlStreamWriter &XmlStreamWriter, bool Comple
         XmlStreamWriter.writeStartElement("parameter");
         Parameter_t* StructParam;
         StructParam = i.value();
+
         XmlStreamWriter.writeAttribute("name", StructParam->ParameterName);
         XmlStreamWriter.writeAttribute("unit", StructParam->ParameterUnit);
         XmlStreamWriter.writeCharacters(StructParam->ParameterValue);

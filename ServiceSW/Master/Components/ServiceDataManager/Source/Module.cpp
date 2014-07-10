@@ -337,6 +337,7 @@ bool CModule::DeleteAllSubModule()
 /****************************************************************************/
 bool CModule::UpdateSubModule(const CSubModule* p_SubModule)
 {
+#if 0 //update code from colorad...
     bool Result = true;
     QString Name = const_cast<CSubModule*>(p_SubModule)->GetSubModuleName();
     CSubModule* p_CurrentSubModuleData = GetSubModuleInfo(Name);
@@ -358,6 +359,25 @@ bool CModule::UpdateSubModule(const CSubModule* p_SubModule)
             return false;
         }
     }
+    return Result;
+#endif
+
+    bool Result = true;
+    QString Name = const_cast<CSubModule*>(p_SubModule)->GetSubModuleName();
+    CSubModule* p_SubModuleData = new CSubModule();
+    if (p_SubModule == NULL || p_SubModuleData == NULL) {
+        return false;
+    }
+
+    *p_SubModuleData = *p_SubModule;
+    if (m_SubModuleList.contains(Name)) {
+        m_SubModuleList.insert(Name, p_SubModuleData);
+        return Result;
+    }
+    else {
+        return false;
+    }
+    //    }
     return Result;
 }
 
@@ -403,7 +423,7 @@ bool CModule::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool Complet
     }
     SetOperatingHours(XmlStreamReader.readElementText());
 
-    //Operating Hrs
+    //Exchange date
     if (!DataManager::Helper::ReadNode(XmlStreamReader, "DateOfExchange")) {
         qDebug() << "DeserializeContent: abort reading. Node not found: DateOfProduction";
         return false;

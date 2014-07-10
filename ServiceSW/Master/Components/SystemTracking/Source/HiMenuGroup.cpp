@@ -219,7 +219,6 @@ void CHiMenuGroup::changeEvent(QEvent *p_Event)
 void CHiMenuGroup::ButtonPressed(int Number)
 {
     mp_ButtonGroup->button(Number)->setChecked(true);
-
     mp_ContentStack->setCurrentIndex(Number);
 }
 
