@@ -164,6 +164,7 @@ void CCurrentConfiguration::ExecDialog(void)
         if (mp_ModuleList) {
             mp_Module = const_cast<ServiceDataManager::CModule*>(mp_ModuleList->GetModule(m_ModuleName.toString()));
             mp_ConfigDialog->InitDialog(mp_Module);
+            mp_ConfigDialog->setModal(true);
             mp_ConfigDialog->show();
         }
         else

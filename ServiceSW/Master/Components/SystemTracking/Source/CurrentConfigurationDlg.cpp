@@ -162,6 +162,7 @@ void CCurrentConfigurationDlg::ExecDialog()
 
         mp_ParameterDlg->SetDialogTitle(mp_SubModule->GetSubModuleName());
         mp_ParameterDlg->resize(380, 420);
+        mp_ParameterDlg->setModal(true);
         mp_ParameterDlg->show();
     }
 }

@@ -86,7 +86,7 @@
                 <parameter name="EndTestResult" unit="TestResult_t">Pass</parameter>
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
-                <parameter name="DateOfExchange" unit="QString">2011-11-11</parameter>
+                <parameter name="DateOfExchange" unit="QString">2012-11-11</parameter>
                 <parameter name="OperationTime" unit="hours">6000</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
@@ -102,7 +102,7 @@
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
-                <parameter name="DateOfExchange" unit="QString">2007-04-28</parameter>
+                <parameter name="DateOfExchange" unit="QString">2008-04-28</parameter>
                 <parameter name="OperationTime" unit="hours">5000</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
             </SubModule>
