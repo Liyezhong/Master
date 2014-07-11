@@ -34,7 +34,7 @@ SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaMasterThread/Build/Himala
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaGuiController/Build/HimalayaGuiController.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaDataManager/Build/HimalayaDataManager.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Build/Scheduler.pro
-SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Test/Scheduler.pro
+#SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Test/Scheduler.pro
 
 SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro
 
