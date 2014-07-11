@@ -208,6 +208,7 @@ typedef struct
         bool m_TempCheck;                                     ///< Temperature check passed or not
         bool m_IsInSoakDelay;                                 ///< Delay in Soak
         bool m_AllProgramCount;                            ///< count the all program
+        bool m_IsPrecheckMoveRV;                            ///< precheck done move rv
         QMap<QString, QString> m_ProgramStatusFileMap;        ///< the map of program status
     private:
         SchedulerMainThreadController();                                             ///< Not implemented.

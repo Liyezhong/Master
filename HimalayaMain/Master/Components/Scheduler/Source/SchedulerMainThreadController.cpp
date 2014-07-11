@@ -97,6 +97,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
     m_TempCheck = false;
     m_AllProgramCount = false;
+    m_IsPrecheckMoveRV = false;
 
     QString ProgramStatusFilePath = "../Settings/ProgramStatus.txt";
     QFile ProgramStatusFile(ProgramStatusFilePath);
@@ -545,7 +546,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 if(( DCL_ERR_FCT_CALL_SUCCESS == retCode))
                 {
                     LogDebug("Precheck Position Check OK");
-                    m_SchedulerMachine->NotifyStRVPositionOK(); //todo: update later
+                    m_SchedulerMachine->NotifyStRVPositionOK(); /////< precheck done move rvtodo: update later
                 }
                 else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
                 {
@@ -569,7 +570,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
                 m_SchedulerMachine->NotifyPause(PSSM_INIT);
-                DequeueNonDeviceCommand();
+                DequeueNonDeviceCommand();///< precheck done move rv
             }
         }
         else if(PSSM_ST_PRESSURE_CHECKING == stepState)
@@ -701,23 +702,62 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         else if(PSSM_ST_DONE == stepState)
         {
             RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
-            if(RV_UNDEF != targetPos)
+
+            if(!m_IsPrecheckMoveRV)
             {
-                if((m_PositionRV != targetPos))
+                if(RV_UNDEF != targetPos)
                 {
-                    LogDebug(QString("Precheck Program move RV to next tube position %1").arg(targetPos));
+                    m_IsPrecheckMoveRV = true;
                     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
                     cmd->SetRVPosition(targetPos);
                     m_SchedulerCommandProcessor->pushCmd(cmd);
-                    UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
+                    LogDebug(QString("Move to RV tube position(first): %1").arg(targetPos));
+                }
+                else
+                {
+                   //todo: error handling
+                   LogDebug(QString("Get invalid RV position: %1").arg(m_CurProgramStepInfo.stationID));
                 }
             }
-            LogDebug("Precheck DONE, if cleaning program it just move RV");
-            m_SchedulerMachine->NotifyStDone(); //todo: update later
-            if(CTRL_CMD_PAUSE == ctrlCmd)
+            else if(m_PositionRV == targetPos)
             {
-                m_SchedulerMachine->NotifyPause(PSSM_INIT);
-                DequeueNonDeviceCommand();
+                if(CTRL_CMD_PAUSE == ctrlCmd)
+                {
+                    m_SchedulerMachine->NotifyPause(PSSM_INIT);
+                    DequeueNonDeviceCommand();
+                }
+                else
+                {
+                    m_IsPrecheckMoveRV = false;
+                    LogDebug(QString("Program Step Hit tube(precheck) %1").arg(targetPos));
+                    UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
+                    LogDebug("Precheck DONE, if cleaning program it just move RV");
+                    m_SchedulerMachine->NotifyStDone(); //todo: update later
+                }
+            }
+            else
+            {
+                if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+                {
+                    if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
+                    {
+                        //fail to move to tube, raise event here
+                        LogDebug(QString("Program Step Move to tube(first)%1 internal steps retry").arg(targetPos));
+                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, Scenario, true);
+                        m_SchedulerMachine->SendErrorSignal();
+                    }
+                    else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
+                    {
+                        LogDebug(QString("Program Step Move to tube(first)%1 exceed upper limit").arg(targetPos));
+                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT, Scenario, true);
+                        m_SchedulerMachine->SendErrorSignal();
+                    }
+                }
+                else if(CTRL_CMD_PAUSE == ctrlCmd)
+                {
+                    m_SchedulerMachine->NotifyPause(PSSM_INIT);
+                    DequeueNonDeviceCommand();
+                }
             }
         }
         else if(PSSM_INIT == stepState)

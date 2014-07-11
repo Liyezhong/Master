@@ -585,9 +585,9 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
         else
         {
             mp_SchedulerController->LogDebug(
-                        QString("start Retort heating, scenario:%1, tmpoffset %2, slop %3, maxtemp %4, gain %5,resettime %6, derivativetime %7")
+                        QString("start Retort(%8) heating, scenario:%1, tmpoffset %2, slop %3, maxtemp %4, gain %5,resettime %6, derivativetime %7")
                         .arg(m_CurScenario).arg(iter->TemperatureOffset+userInputTemp).arg(iter->SlopTempChange).arg(iter->MaxTemperature)
-                        .arg(iter->ControllerGain).arg(iter->ResetTime).arg(iter->DerivativeTime));
+                        .arg(iter->ControllerGain).arg(iter->ResetTime).arg(iter->DerivativeTime).arg(RTType));
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             heatingSensor.OTCheckPassed = false;
@@ -649,9 +649,9 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartOvenTemperatureControl(OvenSen
         else
         {
             mp_SchedulerController->LogDebug(
-                        QString("start oven heating, scenario:%1, tmpoffset %2, slop %3, maxtemp %4, gain %5,resettime %6, derivativetime %7")
+                        QString("start Oven(%8) heating, scenario:%1, tmpoffset %2, slop %3, maxtemp %4, gain %5,resettime %6, derivativetime %7")
                         .arg(m_CurScenario).arg(iter->TemperatureOffset+userInputMeltingPoint).arg(iter->SlopTempChange).arg(iter->MaxTemperature)
-                        .arg(iter->ControllerGain).arg(iter->ResetTime).arg(iter->DerivativeTime));
+                        .arg(iter->ControllerGain).arg(iter->ResetTime).arg(iter->DerivativeTime).arg(OvenType));
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
             heatingSensor.OTCheckPassed = false;
@@ -754,9 +754,9 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartLATemperatureControl(HeatingSe
         else
         {
             mp_SchedulerController->LogDebug(
-                        QString("start LA heating, scenario:%1, tmpoffset %2, slop %3, maxtemp %4, gain %5,resettime %6, derivativetime %7")
+                        QString("start LA(%8) heating, scenario:%1, tmpoffset %2, slop %3, maxtemp %4, gain %5,resettime %6, derivativetime %7")
                         .arg(m_CurScenario).arg(iter->TemperatureOffset).arg(iter->SlopTempChange).arg(iter->MaxTemperature)
-                        .arg(iter->ControllerGain).arg(iter->ResetTime).arg(iter->DerivativeTime));
+                        .arg(iter->ControllerGain).arg(iter->ResetTime).arg(iter->DerivativeTime).arg(LAType));
             heatingSensor.heatingStartTime = QDateTime::currentMSecsSinceEpoch();
             heatingSensor.curModuleId = iter->Id;
 
