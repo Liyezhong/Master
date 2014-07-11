@@ -25,17 +25,18 @@ SUBDIRS += $${PLATFORM}/Master/Components/GPIOManager/Build/GPIOManager.pro
 SUBDIRS += $${PLATFORM}/Master/Components/ExportController/Build/ExportController.pro
 SUBDIRS += $${PLATFORM}/Master/Components/HeartBeatManager/Build/HeartBeatManager.pro
 SUBDIRS += $${PLATFORM}/Master/Components/SWUpdateManager/Build/SWUpdateManager.pro
-SUBDIRS += $${PLATFORM}/Master/Components/DeviceControl/Test/DeviceControl.pro
-SUBDIRS += $${PLATFORM}/Master/Components/DataManager/Test/DataManager.pro
-SUBDIRS += $${PLATFORM}/Master/Components/DataLogging/Test/DataLogging.pro
-SUBDIRS += $${PLATFORM}/Master/Components/EventHandler/Test/EventHandler.pro
-
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaMasterThread/Build/HimalayaMasterThread.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaGuiController/Build/HimalayaGuiController.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/HimalayaDataManager/Build/HimalayaDataManager.pro
 SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Build/Scheduler.pro
+SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro
+
+SUBDIRS += $${PLATFORM}/Master/Components/DeviceControl/Test/DeviceControl.pro
+SUBDIRS += $${PLATFORM}/Master/Components/DataManager/Test/DataManager.pro
+SUBDIRS += $${PLATFORM}/Master/Components/DataLogging/Test/DataLogging.pro
+SUBDIRS += $${PLATFORM}/Master/Components/EventHandler/Test/EventHandler.pro
 #SUBDIRS += $${HIMALAYA_MAIN}/Master/Components/Scheduler/Test/Scheduler.pro
 
-SUBDIRS += $${SHARED}/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro
+
 
 CONFIG += ordered
