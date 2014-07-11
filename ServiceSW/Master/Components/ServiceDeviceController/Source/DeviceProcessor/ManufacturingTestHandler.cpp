@@ -2275,6 +2275,44 @@ RV_HEATING_END_EXIT:
     }
 }
 
+bool ManufacturingTestHandler::UpdateFirmware()
+{
+    Service::ModuleTestCaseID Id = Service::FIRMWARE_UPDATE;
+
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    HimSlaveType_t SlaveType = (HimSlaveType_t) p_TestCase->GetParameter("SlaveType").toInt();
+    QString BinPath = p_TestCase->GetParameter("Path");
+
+    qDebug()<<"GetHWInfo for Slave3............."<< mp_BaseModule3->GetHWInfo();
+
+    qDebug()<<"GetHWInfo for Slave5............."<< mp_BaseModule5->GetHWInfo();
+
+    qDebug()<<"GetHWInfo for Slave15............."<< mp_BaseModule15->GetHWInfo();
+
+
+
+    CBaseModule *pBaseModule = m_rIdevProc.GetBaseModule(SlaveType);
+
+    if (pBaseModule == NULL) {
+        return false;
+    }
+
+
+    CBootLoader *pBootLoader = pBaseModule->GetBootLoader();
+
+    if (pBootLoader == NULL) {
+        return false;
+    }
+
+    bool RetValue = pBootLoader->UpdateFirmware(BinPath);
+
+    mp_Utils->Pause(2000);
+
+    return RetValue;
+}
+
 qint32 ManufacturingTestHandler::TestLSensorDetecting(qint32 Pos)
 {
     qint32 Ret;

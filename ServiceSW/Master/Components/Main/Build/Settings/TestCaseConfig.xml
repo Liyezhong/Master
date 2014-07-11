@@ -44,4 +44,7 @@
 		<RetortHeatingEmpty PowerSupply="AC" AmbTempLow="10" AmbTempHigh="40" DurationTime="00:15:00" SideTargetTemp="70" BottomTargetTemp="70" TargetTemp="70" DepartureLow="0" DepartureHigh="10"/>
 		<RetortHeatingWater PowerSupply="AC" AmbTempLow="10" AmbTempHigh="40" Position="11" DurationTime="03:00:00" SideTargetTemp="70" BottomTargetTemp="70" TargetTemp="70" DepartureLow="0" DepartureHigh="6"/>
 	</Retort>
+	<Firmware>
+		<FirmwareUpdate SlaveType="3" PATH="" />
+	</Firmware>
 </TestCaseConfig>

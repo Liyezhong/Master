@@ -239,6 +239,9 @@ void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
     else if (TestCaseName == "CleaningSystem") {
         Id = Service::CLEANING_SYSTEM_TEST;
     }
+    else if (TestCaseName == "FirmwareUpdate") {
+        Id = Service::FIRMWARE_UPDATE;
+    }
 
     m_TestCaseIDHash.insert(Id, TestCaseName);
 }
