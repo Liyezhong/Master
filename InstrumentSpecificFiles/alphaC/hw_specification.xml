@@ -1,7 +1,6 @@
-<!-- AlphaC -->
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hw_specification>
-<hwconfig version="1.0">
+<hwconfig version="1.0" Instrument="AlphaC">
     <parameter_master folded="yes">
         <can_interface interface="can0"> </can_interface> 
         <tcp_interface usage="0"> </tcp_interface> 
