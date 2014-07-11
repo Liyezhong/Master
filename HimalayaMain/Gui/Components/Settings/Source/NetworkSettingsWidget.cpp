@@ -223,6 +223,10 @@ void CNetworkSettingsWidget::OnProxyUserName()
 {
     if (!mp_KeyBoardWidget)
         return;
+
+    mp_KeyBoardWidget->SetLineEditInputMask("");
+    mp_KeyBoardWidget->GetLineEditPtr()->clear();
+
     m_ButtonType = USERNAME_BTN_CLICKED;
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyName);
     mp_KeyBoardWidget->SetPasswordMode(false);
@@ -246,11 +250,17 @@ void CNetworkSettingsWidget::OnProxyPassword()
 {
     if (!mp_KeyBoardWidget)
         return;
+
+    mp_KeyBoardWidget->SetLineEditInputMask("");
+    mp_KeyBoardWidget->GetLineEditPtr()->clear();
+
+
     m_ButtonType = PASSWORD_BTN_CLICKED;
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyPassword);
     mp_KeyBoardWidget->SetPasswordMode(true);
     mp_KeyBoardWidget->SetMaxCharLength(16);
     mp_KeyBoardWidget->SetMinCharLength(4);
+    mp_KeyBoardWidget->DisplayNumericKeyBoard();
     mp_KeyBoardWidget->show();
     // Connect signals and slots to keyboard.
     ConnectKeyBoardSignalSlots();
@@ -265,6 +275,10 @@ void CNetworkSettingsWidget::OnProxyIPAddress()
 {
     if (!mp_KeyBoardWidget)
         return;
+    mp_KeyBoardWidget->SetLineEditInputMask("");
+    mp_KeyBoardWidget->GetLineEditPtr()->clear();
+
+
     m_ButtonType = IP_ADDRESS_BTN_CLICKED;
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyIP);
     mp_KeyBoardWidget->SetPasswordMode(false);
@@ -273,6 +287,7 @@ void CNetworkSettingsWidget::OnProxyIPAddress()
     mp_KeyBoardWidget->SetMinCharLength(2);
     // enable the input mask so that user can easily fill the ip address
     mp_KeyBoardWidget->SetLineEditInputMask(IPADDRESS_INPUT_MASK_);
+    mp_KeyBoardWidget->DisplayNumericKeyBoard();
     mp_KeyBoardWidget->show();
     // Connect signals and slots to keyboard.
     ConnectKeyBoardSignalSlots();
@@ -287,6 +302,10 @@ void CNetworkSettingsWidget::OnProxyPort()
 {
     if (!mp_KeyBoardWidget)
         return;
+    mp_KeyBoardWidget->SetLineEditInputMask("");
+    mp_KeyBoardWidget->GetLineEditPtr()->clear();
+
+
     m_ButtonType = PORT_BTN_CLICKED;
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyPort);
     mp_KeyBoardWidget->SetPasswordMode(false);
@@ -296,6 +315,7 @@ void CNetworkSettingsWidget::OnProxyPort()
     // ^ and $ is used for any character. * is used to enter multiple characters
     // [0-9] is used to allow user to enter only 0 to 9 digits
     mp_KeyBoardWidget->SetLineEditValidatorExpression(REGEXP_NUMERIC_VALIDATOR);
+    mp_KeyBoardWidget->DisplayNumericKeyBoard();
     mp_KeyBoardWidget->show();
     // Connect signals and slots to keyboard.
     ConnectKeyBoardSignalSlots();
