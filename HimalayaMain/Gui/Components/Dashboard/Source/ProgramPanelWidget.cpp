@@ -212,6 +212,10 @@ void CProgramPanelWidget::OnButtonClicked(int whichBtn)
                     m_ProgramNextAction = DataManager::PROGRAM_START;
 
                 }
+                else {
+                    // cancel button pressed.
+                    ui->startButton->setEnabled(true);
+                }
             }
             break;
         }
