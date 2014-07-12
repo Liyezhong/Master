@@ -53,15 +53,6 @@ public:
     /****************************************************************************/
     void AddItem(QString& Slave, QString& CurrentVersion, QString& LatestVersion);
 
-    /****************************************************************************/
-    /*!
-     *  \brief  Get slave version info from xml file
-     *  \iparam Slave = ASB name
-     *  \return Slave version info
-     */
-    /****************************************************************************/
-    QString GetVersionInfo(QString& Slave);
-
 protected:
     /****************************************************************************/
     /*!
@@ -82,17 +73,34 @@ private Q_SLOTS:
     /****************************************************************************/
     void RetranslateUI();
 
+public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief slot for Refresh latest version from firmware config file
+     */
+    /****************************************************************************/
+    void RefreshLatestVersion();
+
 private:
-    Ui::CFirmwareUpdate *mp_Ui;
-    MainMenu::CBaseTable *mp_TableWidget;
-    QStandardItemModel m_Model;
+    Ui::CFirmwareUpdate *mp_Ui;             //!< User Interface
+    MainMenu::CBaseTable *mp_TableWidget;   //!< Base Table widget
+    QStandardItemModel m_Model;             //!< Model for the table
 
     /****************************************************************************/
     /*!
-     *  \brief Initialization firmware version info from config file.
+     *  \brief Initialization data from config file.
      */
     /****************************************************************************/
     void InitData();
+
+    /****************************************************************************/
+    /*!
+     *  \brief To find item by slave name
+     *  \iparam Slave = slave name
+     *  \result pointer of QStandardIterm
+     */
+    /****************************************************************************/
+    QStandardItem* FindLastVersionItem(QString& Slave);
 
 };
 

@@ -92,25 +92,23 @@ void CFirmwareUpdate::InitData()
 {
     DataManager::CSWVersionList SWVersionList;
     SWVersionList.SetDataVerificationMode(false);
-    QString FirmWarePath = Global::SystemPaths::Instance().GetFirmwarePath();
-    if (!SWVersionList.Read(FirmWarePath + QDir::separator() + "SW_Version.xml")) {
+    if (!SWVersionList.Read(Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator() + "SW_Version.xml")) {
         qDebug()<<"CFirmwareUpdate:GetVersionInfo read SW_Version.xml file failed.";
         return;
     }
 
+    QString latestVersion = "";
     for(int i = 0; i < SWVersionList.GetNumberOfSWDetails(); ++i) {
         DataManager::CSWDetails SlaveInfo;
         SWVersionList.GetSWDetails(i, SlaveInfo);
         QString Slave = SlaveInfo.GetSWName().remove(".bin");
-        QString CurrentVersion = "CurrentVersion";
-        QString LatestVersion = SlaveInfo.GetSWVersion();
+        QString CurrentVersion = SlaveInfo.GetSWVersion();
         if (SlaveInfo.GetSWType() == FIRMWARE) {
-            QDir tempDir;
-            if (tempDir.exists(FirmWarePath + QDir::separator() + SlaveInfo.GetSWName())) {
-                AddItem(Slave, CurrentVersion, LatestVersion);
-            }
+            AddItem(Slave, CurrentVersion, latestVersion);
         }
     }
+
+    RefreshLatestVersion();
 }
 
 void CFirmwareUpdate::AddItem(QString& Slave, QString& CurrentVersion, QString& LatestVersion)
@@ -123,22 +121,47 @@ void CFirmwareUpdate::AddItem(QString& Slave, QString& CurrentVersion, QString& 
     m_Model.appendRow(ItemList);
 }
 
-QString CFirmwareUpdate::GetVersionInfo(QString& Slave)
+QStandardItem* CFirmwareUpdate::FindLastVersionItem(QString& Slave)
+{
+    QStandardItem* item = NULL;
+    for(int i=0; i<m_Model.rowCount(); i++) {
+        if (m_Model.item(i, 0)->text() == Slave) {
+            item = m_Model.item(i, 2);
+            break;
+        }
+    }
+    return item;
+}
+
+void CFirmwareUpdate::RefreshLatestVersion()
 {
     DataManager::CSWVersionList SWVersionList;
     SWVersionList.SetDataVerificationMode(false);
-    QString VersionConfigFile = Global::SystemPaths::Instance().GetFirmwarePath() + QDir::separator() + "SW_Version.xml";
-    if (!SWVersionList.Read(VersionConfigFile)) {
-        qDebug()<<"CFirmwareUpdate:GetVersionInfo read SW_Version.xml file failed.";
-        return "";
+    QString FirmWarePath = Global::SystemPaths::Instance().GetFirmwarePath();
+
+    if (!SWVersionList.Read(FirmWarePath + QDir::separator() + "FW_Version.xml")) {
+        qDebug()<<"CFirmwareUpdate:GetVersionInfo read config file failed. the file is"<<FirmWarePath + QDir::separator() + "FW_Version.xml";
+        return;
     }
-    DataManager::CSWDetails* SlaveInfo =  SWVersionList.GetSWDetails(Slave);
-    if (SlaveInfo) {
-        return SlaveInfo->GetSWVersion();
-    }
-    else {
-        qDebug()<<"CFirmwareUpdate:GetVersionInfo failed for "<<Slave;
-        return "";
+
+    QString CurrentVersion = "";
+    for(int i = 0; i < SWVersionList.GetNumberOfSWDetails(); ++i) {
+        DataManager::CSWDetails SlaveInfo;
+        SWVersionList.GetSWDetails(i, SlaveInfo);
+        QString Slave = SlaveInfo.GetSWName().remove(".bin");
+        QString LatestVersion = SlaveInfo.GetSWVersion();
+        if (SlaveInfo.GetSWType() == FIRMWARE) {
+            QDir tempDir;
+            if (tempDir.exists(FirmWarePath + QDir::separator() + SlaveInfo.GetSWName())) {
+                QStandardItem* item = FindLastVersionItem(Slave);
+                if (item) {
+                    item->setText(LatestVersion);
+                }
+                else {
+                    AddItem(Slave, CurrentVersion, LatestVersion);
+                }
+            }
+        }
     }
 }
 
@@ -146,6 +169,10 @@ void CFirmwareUpdate::UpdateFirmware(void)
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SERVICEUPDATES_FIRMWARE_UPDATE);
     // to update firmware
+
+    for(int i=0; i<m_Model.rowCount(); i++) {
+        m_Model.item(i, 1)->setText(m_Model.item(i, 2)->text());
+    }
 }
 
 void CFirmwareUpdate::RetranslateUI()
