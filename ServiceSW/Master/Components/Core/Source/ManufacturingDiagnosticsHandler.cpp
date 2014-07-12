@@ -33,6 +33,7 @@
 #include "DiagnosticsManufacturing/Include/PressureInputDialog.h"
 
 #include "Main/Include/HimalayaServiceEventCodes.h"
+#include "Global/Include/SystemPaths.h"
 
 namespace Core {
 
@@ -175,6 +176,9 @@ void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::Module
         break;
     case Service::CLEANING_SYSTEM:
         PerformManufCleaningSystem(TestCaseList);
+        break;
+    case Service::FIRMWARE:
+        PerformFirmwareUpdate(TestCaseList);
         break;
     default:
         break;
@@ -1240,6 +1244,25 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
     mp_CleaningManuf->EnableButton(true);
 }
 
+void CManufacturingDiagnosticsHandler::PerformFirmwareUpdate(const QList<Service::ModuleTestCaseID> &TestCaseList)
+{
+    Service::ModuleTestCaseID Id = Service::FIRMWARE_UPDATE;
+
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    QString Msg = QString(tr("Update Firmware for Slave %1, please wait ...").arg(p_TestCase->GetParameter("SlaveType")));
+
+    ShowMessage(Msg);
+    emit PerformManufacturingTest(Id);
+
+    bool Result = GetTestResponse();
+    HideMessage();
+
+    qDebug()<<"Update Firmware result = "<<Result;
+
+}
+
 /****************************************************************************/
 /*!
  *  \brief Returns message for manufacturing tests
@@ -1282,7 +1305,7 @@ void CManufacturingDiagnosticsHandler::ShowMessage(const QString &Message)
     mp_WaitDialog->setMinimumHeight(150);
 
     mp_WaitDialog->show();
-    mp_WaitDialog->setModal(false);
+    mp_WaitDialog->setModal(true);
 }
 
 /****************************************************************************/

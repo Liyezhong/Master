@@ -24,6 +24,8 @@
 #include <QWidget>
 #include "MainMenu/Include/BaseTable.h"
 #include <QStandardItemModel>
+#include "Core/Include/ServiceDefines.h"
+
 
 namespace ServiceUpdates {
 
@@ -52,6 +54,25 @@ public:
      */
     /****************************************************************************/
     void AddItem(QString& Slave, QString& CurrentVersion, QString& LatestVersion);
+
+    void SetUpdateResult(int Index, bool Result);
+
+signals:
+
+    /****************************************************************************/
+    /*!
+     *  \brief Signal emitted for module test
+     */
+    /****************************************************************************/
+    void BeginModuleTest(Service::ModuleNames_t, const QList<Service::ModuleTestCaseID> &TestCaseList);
+
+    /****************************************************************************/
+    /**
+       * \brief Signal emitted to perform manufacturing tests
+       * \iparam Test = Test name
+       */
+    /****************************************************************************/
+    void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortId=Service::TEST_CASE_ID_UNUSED);
 
 protected:
     /****************************************************************************/
@@ -85,6 +106,7 @@ private:
     Ui::CFirmwareUpdate *mp_Ui;             //!< User Interface
     MainMenu::CBaseTable *mp_TableWidget;   //!< Base Table widget
     QStandardItemModel m_Model;             //!< Model for the table
+    bool m_Result;
 
     /****************************************************************************/
     /*!

@@ -252,6 +252,9 @@ CStartup::CStartup() : QObject(),
 
     CONNECTSIGNALSLOT(mp_MainWindow, onChangeEvent(), this, RetranslateUI());
     CONNECTSIGNALSLOT(mp_ServiceConnector, ServiceParametersChanged(), this, UpdateParameters());
+
+    CONNECTSIGNALSIGNAL(mp_FirmwareUpdate, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+
     m_DateTime.setTime_t(0);
     mp_Clock->start(60000);
 }
@@ -581,6 +584,8 @@ void CStartup::InitManufacturingDiagnostic()
 
     /* Manufacturing Tests */
     CONNECTSIGNALSIGNAL(mp_ManaufacturingDiagnosticsHandler, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+    CONNECTSIGNALSLOTGUI(mp_FirmwareUpdate, BeginModuleTest(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>), mp_ManaufacturingDiagnosticsHandler, BeginManufacturingSWTests(Service::ModuleNames_t, QList<Service::ModuleTestCaseID>));
+
     ManufacturingGuiInit();
 }
 
@@ -1253,6 +1258,19 @@ void CStartup::RefreshTestStatus4CleaningSystem(Service::ModuleTestCaseID Id, co
     mp_ManaufacturingDiagnosticsHandler->ShowMessage(CleaningStatus);
 }
 
+void CStartup::RefreshTestStatus4FirmwareUpdate(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    int Index = Status.value("Index").toInt();
+    if (Status.value("Result") == "true") {
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
+        mp_FirmwareUpdate->SetUpdateResult(Index, true);
+    }
+    else {
+        mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(false);
+        mp_FirmwareUpdate->SetUpdateResult(Index, false);
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Refresh heating status for heating test.
@@ -1316,6 +1334,9 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
         break;
     case Service::CLEANING_SYSTEM_TEST:
         RefreshTestStatus4CleaningSystem(id, status);
+        break;
+    case Service::FIRMWARE_UPDATE:
+        RefreshTestStatus4FirmwareUpdate(id, status);
         break;
     default:
         break;

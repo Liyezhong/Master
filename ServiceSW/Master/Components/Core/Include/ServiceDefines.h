@@ -208,6 +208,7 @@ typedef enum ModuleTestCaseID {
  */
 /****************************************************************************/
 typedef enum ModuleNames {
+    FIRMWARE,
     MAIN_CONTROL,                     ///< E Box
     RETORT,                 ///< Retort Module
     DISPLAY,              ///< Display Module

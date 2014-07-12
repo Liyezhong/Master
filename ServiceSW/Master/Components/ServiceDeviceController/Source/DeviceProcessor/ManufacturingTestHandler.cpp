@@ -2330,18 +2330,7 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
 
     HimSlaveType_t SlaveType = (HimSlaveType_t) p_TestCase->GetParameter("SlaveType").toInt();
     QString BinPath = p_TestCase->GetParameter("Path");
-
-    qDebug()<<"Get SN for Slave3 ............" << mp_BaseModule3->ReqSerialNumber();
-
-    qDebug()<<"GetHWInfo for Slave3............."<< mp_BaseModule3->GetHWInfo();
-
-    qDebug()<<"GetSWInfo for Slave3............."<< mp_BaseModule3->GetSWInfo();
-
-    qDebug()<<"GetSWVersion for Slave3............."<< mp_BaseModule3->GetSWVersions();
-    qDebug()<<"GetHardwareVersion for Slave3............."<<mp_BaseModule3->GetHardwareVersion();
-
-
-    qDebug() << "GetLoaderInfo for Slave3 ..........." << mp_BaseModule3->GetBootloaderInfo();
+    QString Index = p_TestCase->GetParameter("Index");
 
     CBaseModule *pBaseModule = m_rIdevProc.GetBaseModule(SlaveType);
 
@@ -2356,18 +2345,50 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
         return false;
     }
 
-    qint32 RetValue = pBootLoader->UpdateFirmware(BinPath);
+    WrapperFmBootLoader* p_WrapperBootLoader = new WrapperFmBootLoader("asb_bootloader", pBootLoader, this);
+
+    qDebug()<<"Path = " << BinPath;
+
+    if (p_WrapperBootLoader == NULL) {
+        Service::ModuleTestStatus Status;
+        Status.insert("Result", "false");
+        Status.insert("Index", Index);
+        emit RefreshTestStatustoMain(TestCaseName, Status);
+
+        qDebug()<<"--------------- Fail to create bootloader wrapper !!!!";
+
+        return -1;
+    }
+
+    qint32 RetValue = p_WrapperBootLoader->UpdateFirmware(BinPath);
+
+    qDebug()<<"Update Firmware return "<<RetValue;
 
     if (RetValue == DCL_ERR_FCT_CALL_SUCCESS) {
         mp_Utils->Pause(2000);
 
-        pBootLoader->BootFirmware();
+        qDebug()<<"BootFirmware return : " << p_WrapperBootLoader->BootFirmware();
 
         mp_Utils->Pause(2000);
+
+        Service::ModuleTestStatus Status;
+
+        Status.insert("Result", "true");
+        Status.insert("Index", Index);
+        emit RefreshTestStatustoMain(TestCaseName, Status);
+        delete p_WrapperBootLoader;
 
         return 0;
     }
     else {
+        delete p_WrapperBootLoader;
+
+        mp_Utils->Pause(2000);
+        Service::ModuleTestStatus Status;
+        Status.insert("Result", "false");
+        Status.insert("Index", Index);
+        emit RefreshTestStatustoMain(TestCaseName, Status);
+
         return -1;
     }
 }
@@ -3019,12 +3040,7 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         }
         break;
     case Service::FIRMWARE_UPDATE:
-        if (0 == UpdateFirmware()) {
-            emit ReturnManufacturingTestMsg(true);
-        }
-        else {
-            emit ReturnManufacturingTestMsg(false);
-        }
+        UpdateFirmware();
         break;
     case Service::FIRMWARE_GET_SLAVE_INFO:
         GetSlaveInformation();
