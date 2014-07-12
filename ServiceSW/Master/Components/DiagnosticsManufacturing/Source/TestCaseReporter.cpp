@@ -95,6 +95,7 @@ bool CTestCaseReporter::GenReportFile()
 
 bool CTestCaseReporter::SendReportFile()
 {
+    /*
     QStringList Params;
     Params<<"-c"<<"4"<<"192.168.25.32";
     mp_Process->start("ping", Params);
@@ -106,6 +107,7 @@ bool CTestCaseReporter::SendReportFile()
         qDebug()<<"ping error.";
         return false;
     }
+    */
     if (QFile::exists(m_TestReportFile)) {
         //QFileInfo FileInfo(m_TestReportFile);
         //QString DestFile = FileInfo.absolutePath() + "/" + FileInfo.fileName().insert(0, "copy_");

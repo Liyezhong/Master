@@ -1,0 +1,23 @@
+Module Name: ParaffineOven
+Time Stamp: 2014/07/11-07:24:07
+Serial Number: 1212/07.2014
+OvenCoverSensor:
+	Name: OvenCoverSensor
+	Result: Pass
+	Parameters:
+		Parameter : N/A
+	Results:
+OvenHeatingWater:
+	Name: OvenHeatingWater
+	Result: Skip
+	Parameters:
+		AmbTempHigh : 40
+		AmbTempLow : 10
+		BottomTargetTemp : 60
+		DepartureHigh : 10
+		DepartureLow : -5
+		DurationTime : 00:40:00
+		PowerSupply : AC
+		TargetTemp : 55
+		TopTargetTemp : 60
+	Results:
