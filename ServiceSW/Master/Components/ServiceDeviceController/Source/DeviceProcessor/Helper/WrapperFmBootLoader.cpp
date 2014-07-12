@@ -21,7 +21,7 @@
  */
 /****************************************************************************/
 
-#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmBootLoader.h"
+#include "WrapperFmBootLoader.h"
 
 /****************************************************************************/
 
@@ -134,13 +134,49 @@ void WrapperFmBootLoader::OnUpdateFirmware(quint32 InstanceID, ReturnCode_t Retu
  *  reads info block from the script file and forwards it to the boot loader
  *  component of the base module.
  *
+ *  Board info block:
+ *      quint32 Signature;          Signature to detect info block
+ *      quint8  NodeType;           Node type
+ *      quint8  NodeClass;          Node class
+ *      quint8  VersionMajor;       Major hardware version number
+ *      quint8  VersionMinor;       Minor hardware version number
+ *      quint8  ProductionYear;     Year of production
+ *      quint8  ProductionMonth;    Month of production
+ *      quint8  ProductionDay;      Day of production
+ *      quint8  EndTestYear;        Year of end-test
+ *      quint8  EndTestMonth;       Month of end-test
+ *      quint8  EndTestDay;         Day of end-test
+ *      quint8  EndTestResult;      End-test result (ok, failed, open)
+ *      char    BoardName[16];      Board name string
+ *      char    SerialNum[32];      Serial number string
+ *      quint32 Checksum;           Checksum to verfiy info block
+ *
+ *  Bootloader info block:
+ *      quint32 Signature;          Signature for valid info block
+ *      quint8  VersionMajor;       Major hardware version number
+ *      quint8  VersionMinor;       Minor hardware version number
+ *      quint8  CreationYear;       Year of production
+ *      quint8  CreationMonth;      Month of production
+ *      quint8  CreationDay;        Day of production
+ *      quint32 Checksum;           Checksum to verfiy info block
+ *
+ *  Board options block:
+ *      One data structure for each module, may contain multiple structures.
+ *      Example:
+ *      quint32 Module ID
+ *      quint32 Option count
+ *      quint32 Option 1
+ *      quint32 Option 2
+ *      ...
+ *
  *  Examples:
  *  \dontinclude bootloader.js
  *  \skipline [BootLoader.UpdateInfo]
  *  \until    [BootLoader.UpdateInfo]
  *
  *  \iparam Info The string array including all settings for info block
- *  \iparam UpdateType The type of updated info block
+ *  \iparam UpdateType = The type of updated info block (0 = board info, 1 =
+ *                       bootloader info, 2 = board options)
  *
  *  \return true, if the setting value is success else false
  *
@@ -227,9 +263,11 @@ bool WrapperFmBootLoader::UpdateInfo(const QStringList &Info, quint8 UpdateType)
         if (!ok) {
             return false;
         }
+
     }
     break;
-
+    default:
+        return false;
     }
 
     qint32 ret = m_LoopUpdateInfo.exec();

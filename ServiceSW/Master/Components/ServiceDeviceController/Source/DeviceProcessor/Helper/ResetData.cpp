@@ -21,8 +21,8 @@
  */
 /****************************************************************************/
 
-#include <ServiceDeviceController/Include/DeviceProcessor/Helper/ResetData.h>
-#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperBase.h>
+#include "ResetData.h"
+#include "WrapperBase.h"
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
 #include <QDebug>
@@ -54,7 +54,6 @@ CResetData::CResetData(CModule &Module, QObject *p_Parent) :
 /****************************************************************************/
 ReturnCode_t CResetData::ReqDataReset()
 {
-#if 0
     ReturnCode_t ReturnCode = m_Module.ReqDataReset();
     if (DCL_ERR_FCT_CALL_SUCCESS != ReturnCode) {
         return ReturnCode;
@@ -64,7 +63,7 @@ ReturnCode_t CResetData::ReqDataReset()
     if (ret == 1) {
         return DCL_ERR_FCT_CALL_SUCCESS;
     }
-#endif
+
     return DCL_ERR_FCT_CALL_FAILED;
 }
 

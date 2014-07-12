@@ -837,7 +837,8 @@ void DeviceProcessor::OnCalibrateDevice(Service::DeviceCalibrationCmdType CmdTyp
        return;
     }
 
-    float CurrentPressure = mp_PressPump->GetPressureFromSensor(0);
+    //float CurrentPressure = mp_PressPump->GetPressureFromSensor(0);
+    float CurrentPressure = mp_PressPump->GetPressure(0);
     if (CurrentPressure < 2 && CurrentPressure > -2)
     {
         //Calibration to 0 (+/-0.2Kpa) and save to the config file;

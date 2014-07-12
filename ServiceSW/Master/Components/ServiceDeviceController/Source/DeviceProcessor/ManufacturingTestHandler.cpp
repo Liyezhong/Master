@@ -29,6 +29,8 @@
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmPressureControl.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperUtils.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalInput.h>
+#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmBootLoader.h>
+
 #include "Core/Include/CMessageString.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
@@ -225,6 +227,7 @@ void ManufacturingTestHandler::CreateWrappers()
     if (NULL != pBaseModule) {
         mp_BaseModule15 = new WrapperFmBaseModule("asb15_0", pBaseModule, this);
     }
+
 }
 
 /****************************************************************************/
@@ -359,11 +362,15 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
         mp_DigitalOutputMainRelay->SetHigh();
     }
 
+    mp_TempOvenTop->StopTemperatureControl();
+    mp_TempOvenBottom->StopTemperatureControl();
     mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
     mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
 
     while (!m_UserAbort && WaitSec)
     {
+        QTime EndTime = QTime().currentTime().addSecs(1);
+
         CurrentTempTop = mp_TempOvenTop->GetTemperature(0);
         CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
         CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
@@ -374,7 +381,6 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
             continue;
         }
 
-        mp_Utils->Pause(1000);
         TopValue = QString("%1").arg(CurrentTempTop);
         BottomValue1 = QString("%1").arg(CurrentTempBottom1);
         BottomValue2 = QString("%1").arg(CurrentTempBottom2);
@@ -397,6 +403,8 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
         }
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        mp_Utils->Pause(MSec);
 
         WaitSec--;
     }
@@ -470,6 +478,8 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         qDebug()<<"MainRelay SetHigh return :"<< mp_DigitalOutputMainRelay->SetHigh();
     }
 
+    mp_TempOvenTop->StopTemperatureControl();
+    mp_TempOvenBottom->StopTemperatureControl();
     qDebug()<<"Start top return : "<<mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
     qDebug()<<"Start bottom return :"<< mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
 
@@ -520,9 +530,10 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         return -1;
     }
 
-
     while (!m_UserAbort && WaitSec)
     {
+        QTime EndTime = QTime().currentTime().addSecs(1);
+
         CurrentTempTop = mp_TempOvenTop->GetTemperature(0);
         CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
         CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
@@ -535,7 +546,7 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
             continue;
         }
 
-        qDebug()<<"Target="<<TargetTemp<<" Top="<<CurrentTempTop<<" Bot1="<<CurrentTempBottom1<<" Bot2="<<CurrentTempBottom2;
+  //      qDebug()<<"Target="<<TargetTemp<<" Top="<<CurrentTempTop<<" Bot1="<<CurrentTempBottom1<<" Bot2="<<CurrentTempBottom2;
 
         if ( CurrentTempTop >= MinTargetTemp &&
              CurrentTempBottom1 >= MinTargetTemp &&
@@ -553,11 +564,12 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
             KeepSeconds = 0;
         }
 
-        mp_Utils->Pause(1000);
         TopValue = QString("%1").arg(CurrentTempTop);
         BottomValue1 = QString("%1").arg(CurrentTempBottom1);
         BottomValue2 = QString("%1").arg(CurrentTempBottom2);
+
         UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
+
 
         Status.insert("UsedTime", UsedTime);
         Status.insert("CurrentTempTop", TopValue);
@@ -578,7 +590,10 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
 
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        mp_Utils->Pause(MSec);
         WaitSec--;
+
     }
 
     mp_TempOvenTop->StopTemperatureControl();
@@ -685,6 +700,8 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
         qDebug() << "MainRelay SetHigh return :"<< acRet << "\n";
     }
 
+    mp_TempRetortSide->StopTemperatureControl();
+    mp_TempRetortBttom->StopTemperatureControl();
     bool sideCtrlRet = mp_TempRetortSide->StartTemperatureControl(sideTgtTemp+7);
     bool btmCtrlRet  = mp_TempRetortBttom->StartTemperatureControl(btmTgtTemp+2);
     qDebug() << "Start top return : "<< sideCtrlRet << "\n";
@@ -754,6 +771,8 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
     QString usedTime;
     qint32  keepSec  = 0, progStat = -1;
     while (!m_UserAbort && waitSec) {
+        QTime EndTime = QTime().currentTime().addSecs(1);
+
         curSideTemp   = mp_TempRetortSide->GetTemperature(0);
         curBottomTemp1 = mp_TempRetortBttom->GetTemperature(0);
         curBottomTemp2 = mp_TempRetortBttom->GetTemperature(1);
@@ -776,9 +795,6 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
             keepSec = 0;
         }
 
-        mp_Utils->Pause(1000);
-        -- waitSec;
-
         sideTemp = QString("%1").arg(curSideTemp);
         btmTemp1  = QString("%1").arg(curBottomTemp1);
         btmTemp2  = QString("%1").arg(curBottomTemp2);
@@ -789,6 +805,11 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
         testStat.insert("CurrentTempBottom1", btmTemp1);
         testStat.insert("CurrentTempBottom2", btmTemp2);
         emit RefreshTestStatustoMain(testCaseName, testStat);
+
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        mp_Utils->Pause(MSec);
+
+        -- waitSec;
     }
 
     mp_TempOvenTop->StopTemperatureControl();
@@ -856,7 +877,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     testStat.insert("TargetTemp", QString("%1").arg(tgtTemp));
     testStat.insert("Duration", durTime.toString());
 
-    int duration = durTime.hour() * 60 * 60 + durTime.minute() * 60 + durTime.second();
+    int duration = durTime.hour() * 60 * 60 + durTime.minute() * 60 + durTime.second()+1;
     int waitSeconds = 0;
     int readyStatus = -1;
     qreal curTemp = 0;
@@ -891,13 +912,16 @@ HEATING_START:
     if (remainHeatCount == 2) {
         mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_NORMAL, LSENSOR_PID_KC_NORMAL,
                                       LSENSOR_PID_TI_NORMAL, LSENSOR_PID_TD_NORMAL);
+        mp_TempLSensor->StartTemperatureControl(tgtTemp, 10);
     }
     else {
         mp_TempLSensor->SetTemperaturePid(LSENSOR_PID_MAXTEMP_SLOW, LSENSOR_PID_KC_SLOW,
                                       LSENSOR_PID_TI_SLOW, LSENSOR_PID_TD_SLOW);
+        mp_TempLSensor->StartTemperatureControl(tgtTemp, 10);
+        mp_Utils->Pause(1000);
     }
     //mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
-    mp_TempLSensor->StartTemperatureControl(tgtTemp, 10);
+
 
     waitSeconds = duration;
     readyStatus = -1;
@@ -909,6 +933,8 @@ HEATING_START:
     }
 
     while (!m_UserAbort && waitSeconds) {
+        QTime EndTime = QTime().currentTime().addSecs(1);
+
         ++ totalTime;
         curTemp = mp_TempLSensor->GetTemperature();
         if (curTemp > tgtTemp) {
@@ -923,7 +949,10 @@ HEATING_START:
             emit RefreshTestStatustoMain(testCaseName, testStat);
         }
 
-        mp_Utils->Pause(1000);
+
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        mp_Utils->Pause(MSec);
+
         -- waitSeconds;
     }
     if (readyStatus == -1) {
@@ -1539,16 +1568,17 @@ bool ManufacturingTestHandler::CreatePressure(int waitSecond, qreal targetPressu
 qint32 ManufacturingTestHandler::TestMainControlASB(Service::ModuleTestCaseID_t Id)
 {
     DeviceControl::HimSlaveType_t Slave ;
+
     if (Id == Service::MAINCONTROL_ASB3) {
        Slave = DeviceControl::Slave_3;
-       qDebug()<<"Get SN for BaseModule 3:"<<mp_BaseModule3->GetSerialNumber();
+      qDebug()<<"Get SN for BaseModule 3:"<<mp_BaseModule3->ReqSerialNumber();
     }
     else if (Id == Service::MAINCONTROL_ASB5) {
-       qDebug()<<"Get SN for BaseModule 5:"<<mp_BaseModule5->GetSerialNumber();
+       qDebug()<<"Get SN for BaseModule 5:"<<mp_BaseModule5->ReqSerialNumber();
        Slave = DeviceControl::Slave_5;
     }
     else if (Id == Service::MAINCONTROL_ASB15) {
-        qDebug()<<"Get SN for BaseModule 15:"<<mp_BaseModule15->GetSerialNumber();
+        qDebug()<<"Get SN for BaseModule 15:"<<mp_BaseModule15->ReqSerialNumber();
        Slave = DeviceControl::Slave_15;
     }
     else {
@@ -1659,10 +1689,13 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
         mp_DigitalOutputMainRelay->SetHigh();
     }
 
+    p_TempCtrl->StopTemperatureControl();
     qDebug()<<"Start Temperature control return : "<<p_TempCtrl->StartTemperatureControl(TargetTemp);
 
     while (!m_UserAbort && WaitSec)
     {
+        QTime EndTime = QTime().currentTime().addSecs(1);
+
         CurrentTemp = p_TempCtrl->GetTemperature(0);
 
         qDebug()<<"Current temp = "<<CurrentTemp <<" Target=" << MinTargetTemp;
@@ -1688,7 +1721,6 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
             KeepSeconds = 0;
         }
 
-        mp_Utils->Pause(1000);
         CurrentValue = QString("%1").arg(CurrentTemp);
         UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
 
@@ -1707,6 +1739,9 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
         }
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
+
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        mp_Utils->Pause(MSec);
 
         WaitSec--;
     }
@@ -1841,6 +1876,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
         mp_DigitalOutputMainRelay->SetHigh();
     }
 
+    mp_TempRV->StopTemperatureControl();
     qDebug()<<"Start top return : "<<mp_TempRV->StartTemperatureControl(TargetTempSensor1);
 
     int num=10;
@@ -1891,6 +1927,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 
     while (!m_UserAbort && WaitSec)
     {
+        QTime EndTime = QTime().currentTime().addSecs(1);
+
         CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
         CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
 
@@ -1924,8 +1962,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
             }
         }
 
-
-        mp_Utils->Pause(1000);
         Sensor1Value = QString("%1").arg(CurrentTempSensor1);
         Sensor2Value = QString("%1").arg(CurrentTempSensor2);
         UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
@@ -1947,6 +1983,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
 
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        mp_Utils->Pause(MSec);
         WaitSec--;
     }
 
@@ -2116,10 +2154,13 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
  //   Status.insert("CurrentStatus", "Heating rotary valve at first stage ...");
  //   emit RefreshTestStatustoMain(TestCaseName, Status);
 
+    mp_TempRV->StopTemperatureControl();
     qDebug()<<"Start top return : "<<mp_TempRV->StartTemperatureControl(TargetTempSensor1);
 
     while (!m_UserAbort && WaitSec)
     {
+        QTime EndTime = QTime().currentTime().addSecs(1);
+
         CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
         CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
 
@@ -2131,7 +2172,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 
         qDebug()<<"Target="<<TargetTempSensor1<<" Sensor1="<<CurrentTempSensor1<<" Sensor2="<<CurrentTempSensor2;
 
-        mp_Utils->Pause(1000);
         Sensor1Value = QString("%1").arg(CurrentTempSensor1);
         Sensor2Value = QString("%1").arg(CurrentTempSensor2);
         UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
@@ -2153,6 +2193,9 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         }
 
         emit RefreshTestStatustoMain(TestCaseName, Status);
+
+        int MSec = QTime().currentTime().msecsTo(EndTime);
+        mp_Utils->Pause(MSec);
 
         WaitSec--;
     }
@@ -2187,6 +2230,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
      SumSec = WaitSec;
      while (!m_UserAbort && WaitSec)
      {
+         QTime EndTime = QTime().currentTime().addSecs(1);
+
          CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
          CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
 
@@ -2210,8 +2255,6 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
              KeepSeconds = 0;
          }
 
-
-         mp_Utils->Pause(1000);
          Sensor1Value = QString("%1").arg(CurrentTempSensor1);
          Sensor2Value = QString("%1").arg(CurrentTempSensor2);
          UsedTime = QTime().addSecs(SumSec-WaitSec+1).toString("hh:mm:ss");
@@ -2233,6 +2276,9 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
          }
 
          emit RefreshTestStatustoMain(TestCaseName, Status);
+
+         int MSec = QTime().currentTime().msecsTo(EndTime);
+         mp_Utils->Pause(MSec);
 
          WaitSec--;
      }
@@ -2285,13 +2331,17 @@ bool ManufacturingTestHandler::UpdateFirmware()
     HimSlaveType_t SlaveType = (HimSlaveType_t) p_TestCase->GetParameter("SlaveType").toInt();
     QString BinPath = p_TestCase->GetParameter("Path");
 
+    qDebug()<<"Get SN for Slave3 ............" << mp_BaseModule3->ReqSerialNumber();
+
     qDebug()<<"GetHWInfo for Slave3............."<< mp_BaseModule3->GetHWInfo();
 
-    qDebug()<<"GetHWInfo for Slave5............."<< mp_BaseModule5->GetHWInfo();
+    qDebug()<<"GetSWInfo for Slave3............."<< mp_BaseModule3->GetSWInfo();
 
-    qDebug()<<"GetHWInfo for Slave15............."<< mp_BaseModule15->GetHWInfo();
+    qDebug()<<"GetSWVersion for Slave3............."<< mp_BaseModule3->GetSWVersions();
+    qDebug()<<"GetHardwareVersion for Slave3............."<<mp_BaseModule3->GetHardwareVersion();
 
 
+    qDebug() << "GetLoaderInfo for Slave3 ..........." << mp_BaseModule3->GetBootloaderInfo();
 
     CBaseModule *pBaseModule = m_rIdevProc.GetBaseModule(SlaveType);
 
@@ -2305,6 +2355,10 @@ bool ManufacturingTestHandler::UpdateFirmware()
     if (pBootLoader == NULL) {
         return false;
     }
+
+
+
+    return true;
 
     bool RetValue = pBootLoader->UpdateFirmware(BinPath);
 
@@ -2396,7 +2450,7 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
                                       LSENSOR_PID_TI_SLOW, LSENSOR_PID_TD_SLOW);
     ret = mp_TempLSensor->StartTemperatureControl(LSensorTempHigh, LSensorTempChange);
 
-//    mp_Utils->Pause(3000);
+    mp_Utils->Pause(3000);
 
     WaitSeconds = TEST_LSENSOR_TIMEOUT;
     i = 0;
@@ -2510,6 +2564,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         mp_TempRetortBttom->StartTemperatureControl(TargetTempBottom+2);
 
         while(!m_UserAbort && WaitSec) {
+            QTime EndTime = QTime().currentTime().addSecs(1);
 
             if (WaitSec == SumSec) {
                 Status.clear();
@@ -2549,7 +2604,8 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
 
             emit RefreshTestStatustoMain(TestCaseName, Status);
 
-            mp_Utils->Pause(1000);
+            int MSec = QTime().currentTime().msecsTo(EndTime);
+            mp_Utils->Pause(MSec);
 
             WaitSec--;
         }
@@ -2683,6 +2739,7 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
     case Service::MAINCONTROL_ASB3:
     case Service::MAINCONTROL_ASB5:
     case Service::MAINCONTROL_ASB15:
+        UpdateFirmware();
         if (TestMainControlASB(TestId) != 0) {
             emit ReturnManufacturingTestMsg(false);
         }

@@ -20,7 +20,7 @@
  *  does not evidence any actual or intended publication.
  */
 /****************************************************************************/
-#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmTempControl.h"
+#include "WrapperFmTempControl.h"
 
 const qint32 UNDEFINED = -1; //!< undefined value for temperature and control status
 const qint32 TOLERANCE = 10; //!< tolerance value for calculating inside and outside range
@@ -70,6 +70,11 @@ WrapperFmTempControl::WrapperFmTempControl(QString Name, CTemperatureControl *pT
             this, SLOT(OnSetTempPid(quint32, ReturnCode_t, quint16, quint16, quint16, quint16)));
     connect(m_pTempControl, SIGNAL(ReportError(quint32, quint16, quint16, quint16, QDateTime)),
             this, SLOT(OnError(quint32,quint16,quint16,quint16,QDateTime)));
+    connect(m_pTempControl, SIGNAL(ReportSetSwitchState(quint32, ReturnCode_t, qint8, qint8)),
+            this, SLOT(OnSetSwitchState(quint32,ReturnCode_t,qint8,qint8)));
+
+
+
     memset( &m_LastGetTempTime, 0 , sizeof(m_LastGetTempTime));
 #endif
 }
@@ -91,6 +96,7 @@ WrapperFmTempControl::WrapperFmTempControl(QString Name, CTemperatureControl *pT
 /****************************************************************************/
 bool WrapperFmTempControl::StartTemperatureControl(qreal NominalTemperature, quint8 SlopeTempChange)
 {
+#if 0
 #ifndef PRE_ALFA_TEST
     Log(tr("StartTemperatureControl"));
 #endif
@@ -116,6 +122,21 @@ bool WrapperFmTempControl::StartTemperatureControl(qreal NominalTemperature, qui
             }
     }
     return true;
+#else //refer to Brandon's request to combine "set temp" with "enable temp control"
+    m_TargetTemperature = NominalTemperature;
+    m_TargetTempCtrlStatus = TEMPCTRL_STATUS_ON;
+    if (GetTemperatureControlState() == "Error")
+    {
+        Log(tr("Not able to read the temperature control status"));
+        return false;
+    }
+            //Set the nominal temperature
+            if (!SetTemperature(NominalTemperature, SlopeTempChange)) {
+            Log(tr("Not able to set temperature"));
+            return false;
+            }
+    return true;
+#endif
 }
 
 /****************************************************************************/
@@ -675,6 +696,15 @@ quint16 WrapperFmTempControl::GetCurrent()
     }
 }
 
+quint8 WrapperFmTempControl::GetHeaterSwitchType()
+{
+    if ( GetHardwareStatus() != NULL ) {
+        return m_HardwareStatus.HeaterSwitchType;
+    }
+    else {
+        return 0;
+    }
+}
 
 /****************************************************************************/
 /*!
@@ -973,5 +1003,28 @@ bool WrapperFmTempControl::SetTemperaturePid(quint16 MaxTemperature, quint16 Con
     }
     qint32 ret = m_LoopSetTemperaturePid.exec();
     return (ret == 1);
+}
+bool WrapperFmTempControl::SetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch)
+{
+    Log(tr("SetTemperatureSwitchState"));
+    bool ok = HandleErrorCode(m_pTempControl->SetSwitchState(SwitchState, AutoSwitch));
+    if (!ok) {
+        return false;
+    }
+    qint32 ret = m_LoopSetSwitchState.exec();
+    return (ret == 1);
+}
+
+void WrapperFmTempControl::OnSetSwitchState(quint32, ReturnCode_t ReturnCode, qint8 SwitchState, qint8 AutoSwitch)
+{
+    qint32 ret = 1;
+    if (!HandleErrorCode(ReturnCode)) {
+        ret = UNDEFINED;
+    }
+    if (m_LoopSetSwitchState.isRunning()) {
+        m_LoopSetSwitchState.exit(ret);
+    } else {
+        Log(tr("NOTICE: Unexpected action acknowledgement."));
+    }
 }
 #endif

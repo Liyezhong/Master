@@ -25,8 +25,7 @@
 #define WRAPPERUTILS_H
 
 #include <QObject>
-#include <QEventLoop>
-#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperBase.h"
+#include "WrapperBase.h"
 
 
 /****************************************************************************/
@@ -37,8 +36,6 @@
 class WrapperUtils : public WrapperBase
 {
     Q_OBJECT
-
-    QEventLoop m_loop;
 
 public:
     /****************************************************************************/
@@ -51,10 +48,10 @@ public:
     inline WrapperUtils(QObject *Parent): WrapperBase("Script", Parent) {};
 
 public slots:
-    qint32 Pause(quint32 MilliSeconds);
-    void   AbortPause();
-    void   Stop();
-    void   SendTestSignal(qint32 value);
+    void Pause(quint32 MilliSeconds);
+    void AbortPause();
+    void Stop();
+    void SendTestSignal(qint32 value);
 #ifdef PRE_ALFA_TEST
     void SetMonitorT(quint32 MilliSeconds);
     void PlaySound(quint8 SoundType);

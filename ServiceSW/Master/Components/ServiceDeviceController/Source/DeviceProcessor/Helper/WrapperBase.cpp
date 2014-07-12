@@ -24,7 +24,7 @@
 #include <QtDebug>
 #include <QDateTime>
 #include <QMetaProperty>
-#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperBase.h"
+#include "WrapperBase.h"
 
 /****************************************************************************/
 /*!
@@ -45,7 +45,6 @@ void WrapperBase::Log(const QString& Message)
         + " " + Name() + ": " + Message
     );
 #else
-
     emit LogMessageAdded(
         QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
         + " " + Message

@@ -21,7 +21,7 @@
  */
 /****************************************************************************/
 
-#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalInput.h"
+#include"WrapperFmDigitalInput.h"
 
 const qint32 UNDEFINED = -1; //!< undefined digital in value
 

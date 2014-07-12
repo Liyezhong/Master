@@ -21,7 +21,8 @@
  */
 /****************************************************************************/
 #include <QTimer>
-#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperUtils.h"
+#include <QEventLoop>
+#include "WrapperUtils.h"
 #include <QProcess>
 #include "Global/Include/SystemPaths.h"
 #include <QtDebug>
@@ -36,11 +37,9 @@
  *
  *  \iparam   MilliSeconds   timespan in ms
  *
- *  \return   0:timeout, 1:abort, -1:already running
- *
  */
 /****************************************************************************/
-qint32 WrapperUtils::Pause(quint32 MilliSeconds)
+void WrapperUtils::Pause(quint32 MilliSeconds)
 {
 #ifdef PRE_ALFA_TEST
     Log(tr(">>>"));
@@ -48,36 +47,18 @@ qint32 WrapperUtils::Pause(quint32 MilliSeconds)
     Log(tr("Pausing for %1 ms...").arg(MilliSeconds));
 #endif
 
-    if(m_loop.isRunning())
-    {
-        return -1;
-    }
-
     QTimer timer;
     timer.setSingleShot(true);
     timer.setInterval(MilliSeconds);
     timer.start();
-    //QEventLoop loop;
-    //connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-    //return loop.exec();
-
-    connect(&timer, SIGNAL(timeout()), &m_loop, SLOT(quit()));
-    return m_loop.exec();
+    QEventLoop loop;
+    connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    loop.exec();
 }
 
-/****************************************************************************/
-/*!
- *   \brief Script-API: pause for a timespan given in ms
- *
- *   pause for 2 seconds: utils.Pause(2000)
- *
- *  \iparam   MilliSeconds   timespan in ms
- *
- */
-/****************************************************************************/
 void WrapperUtils::AbortPause()
 {
-    m_loop.exit(1);
+//    m_loop.exit(1);
 }
 
 /****************************************************************************/
@@ -138,30 +119,38 @@ void WrapperUtils::PlaySound(quint8 SoundType)
 
     Proc.waitForFinished();
 }
+
 void WrapperUtils::LogToFile(const QString &FolderName,  const QString &FileName, bool Clear)
 {
-    if((FolderName.length() != 0)&&(FileName.length() != 0))
+    if((Clear)&&((FileName == "NA")||(FolderName == "NA")))
     {
-        QString Path = QCoreApplication::applicationDirPath();
-        //Log(tr("current path...:%1").arg(Path));
-        Path += "/"+FolderName;
-        QString BashCmd="mkdir "+ Path;
-        system(BashCmd.toStdString().c_str());
-
-        //QString FileName = FolderName + "/Log_" + QDateTime::currentDateTime().toString("MM_dd_hh_mm_ss");
-        QString FullName = Path + "/" + FileName;
-        emit OnWriteLogToFileUtils(FullName);
-        if(Clear)
-        {
-            emit OnClearLogUtils();
-        }
+        emit OnClearLogUtils();
     }
     else
     {
-        Log(tr("You input empty folder name, please re-enter"));
-    }
+        if((FolderName.length() != 0)&&(FileName.length() != 0))
+        {
+            QString Path = QCoreApplication::applicationDirPath();
+            //Log(tr("current path...:%1").arg(Path));
+            Path += "/"+FolderName;
+            QString BashCmd="mkdir "+ Path;
+            system(BashCmd.toStdString().c_str());
 
+            //QString FileName = FolderName + "/Log_" + QDateTime::currentDateTime().toString("MM_dd_hh_mm_ss");
+            QString FullName = Path + "/" + FileName;
+            emit OnWriteLogToFileUtils(FullName);
+            if(Clear)
+            {
+                emit OnClearLogUtils();
+            }
+        }
+        else
+        {
+            Log(tr("You input empty folder name, please re-enter"));
+        }
+    }
 }
+
 void WrapperUtils::SwitchMonitor(bool Enable)
 {
     emit OnSwitchMonitor(Enable);
@@ -222,6 +211,7 @@ void WrapperUtils::WriteLoop(quint32 loopIndex, quint32 loopCounter)
     fprintf(pFile, "%s", msg.toStdString().c_str());
     fflush(pFile);
     fclose(pFile);
+    system("sync");
 }
 
 

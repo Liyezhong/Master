@@ -20,14 +20,14 @@
 
 
 #ifdef PRE_ALFA_TEST
-#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmPressureControl.h"
-#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperUtils.h"
+#include "WrapperFmPressureControl.h"
+#include "WrapperUtils.h"
 #include <QTimer>
 #include "Global/Include/SystemPaths.h"
 #include <QtDebug>
 #include <unistd.h>
 
-const qint32 UNDEFINED = -999999; //!< undefined value for pressure and control status
+const qint32 UNDEFINED = -1; //!< undefined value for pressure and control status
 const qint32 TOLERANCE = 10; //!< tolerance value for calculating inside and outside range
 
 /****************************************************************************/
@@ -61,7 +61,7 @@ WrapperFmPressureControl::WrapperFmPressureControl(QString Name, CPressureContro
     connect(m_pPressureControl, SIGNAL(ReportHardwareStatus(quint32, ReturnCode_t, quint8, quint8, quint8, quint8, quint16)),
             this, SLOT(OnGetHardwareStatus(quint32, ReturnCode_t, quint8, quint8, quint8, quint8, quint16)));
     connect(m_pPressureControl, SIGNAL(ReportPressureRange(quint32, ReturnCode_t, bool, float)),
-            this, SIGNAL(OnPressureRange(quint32, ReturnCode_t, bool, float)));
+            this, SLOT(OnPressureRange(quint32, ReturnCode_t, bool, float)));
 
     connect(m_pPressureControl, SIGNAL(ReportRefValveState(quint32,ReturnCode_t,quint8,quint8)),
             this, SLOT(OnSetValve(quint32,ReturnCode_t,quint8,quint8)));
@@ -193,7 +193,7 @@ void WrapperFmPressureControl::OnSetFan(quint32 /*InstanceID*/, ReturnCode_t Ret
  *
  */
 /****************************************************************************/
-float WrapperFmPressureControl::GetPressure(quint8 sensorIndex)
+float WrapperFmPressureControl::GetPressure(quint8 Index)
 {
 
     float RetValue;
@@ -202,7 +202,7 @@ float WrapperFmPressureControl::GetPressure(quint8 sensorIndex)
 
     if((Now - LastTime) > 200)
     {
-        bool ok = HandleErrorCode(m_pPressureControl->ReqActPressure(sensorIndex));
+        bool ok = HandleErrorCode(m_pPressureControl->ReqActPressure(Index));
         if (!ok)
         {
             RetValue = UNDEFINED;
@@ -224,56 +224,6 @@ float WrapperFmPressureControl::GetPressure(quint8 sensorIndex)
     else
     {
         RetValue = m_CurrentPressure - m_PressureDrift;
-    }
-    return RetValue;
-}
-
-/****************************************************************************/
-/*!
- *  \brief Script-API:Get actual pressure from pressure sensor
- *
- * This method performs reading of actual pressure
- *
- *  Examples:
- *  \dontinclude pressurecontrol.js
- *  \skipline [PressureControl.GetPressure]
- *  \until    [PressureControl.GetPressure]
- *
- *  \return actualpressure, else UNDEFINED in caseof error
- *
- */
-/****************************************************************************/
-float WrapperFmPressureControl::GetPressureFromSensor(quint8 sensorIndex)
-{
-
-    float RetValue = UNDEFINED;
-    static qint64 LastTime = 0;
-    qint64 Now = QDateTime::currentMSecsSinceEpoch();
-
-    if((Now - LastTime) > 200)
-    {
-        bool ok = HandleErrorCode(m_pPressureControl->ReqActPressure(sensorIndex));
-        if (!ok)
-        {
-            RetValue = UNDEFINED;
-        }
-        else
-        {
-            qint32 ret = m_LoopGetPressure.exec();
-            if (ret != 1)
-            {
-                RetValue = UNDEFINED;
-            }
-            else
-            {
-                RetValue = m_CurrentPressure;
-            }
-        }
-        LastTime = QDateTime::currentMSecsSinceEpoch();
-    }
-    else
-    {
-        RetValue = m_CurrentPressure;
     }
     return RetValue;
 }
@@ -612,7 +562,7 @@ void WrapperFmPressureControl::AgitationTimerCB(void)
 #define SUCKING_INSUFFICIENT_4SAMPLE_DELTASUM (1)
 
 #define SUCKING_MAX_DELAY_TIME        (10000)
-#define SUCKING_POOLING_TIME          (1000*30)
+#define SUCKING_POOLING_TIME          (400)
 #define SUCKING_SETUP_WARNING_TIME    (120*1000)
 #define SUCKING_MAX_SETUP_TIME        (240*1000)
 #define SUCKING_OVERFLOW_SAMPLE_SIZE    (4) //used to be 4 with old pump
@@ -650,6 +600,7 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
     int levelSensorState = 0xFF;
     bool stop = false;
     bool WarnShowed = false;
+    bool StopInsufficientCheck =false;
     QDateTime beforeSucking = QDateTime::currentDateTime();
 
     connect(&timer, SIGNAL(timeout()), this, SLOT(SuckingTimerCB()));
@@ -672,9 +623,6 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
     while(!stop)
     {
         levelSensorState = m_LoopSuckingLevelSensor.exec();
-
-        qDebug() <<"levelSensorState = "<<levelSensorState;
-
         counter++;
         qint64 nowMs = QDateTime::currentDateTime().toMSecsSinceEpoch();
         if(levelSensorState == 1)
@@ -708,6 +656,7 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
                     Log(tr("Sucking time is: %1 seconds").arg(seconds));
                 }
             }
+            StopInsufficientCheck = true;
         }
         else if(levelSensorState == 0)
         {
@@ -768,7 +717,7 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
                     }
                     goto SORTIE;
                 }
-                else if(((Sum/ PressureBuf.length()) < SUCKING_INSUFFICIENT_PRESSURE)&&(DeltaSum > SUCKING_INSUFFICIENT_4SAMPLE_DELTASUM))
+                else if(((Sum/ PressureBuf.length()) < SUCKING_INSUFFICIENT_PRESSURE)&&(DeltaSum > SUCKING_INSUFFICIENT_4SAMPLE_DELTASUM)&&(!StopInsufficientCheck))
                 {
                     if((TubePosition > 13) && (TubePosition <=16))
                     {
@@ -875,7 +824,6 @@ void WrapperFmPressureControl::SuckingTimerCB(void)
 
     if(m_LoopSuckingLevelSensor.isRunning())
     {
-        qDebug()<<"m_LoopSuckingLevelSensor exit 3 (SuckingTimerCB)";
          m_LoopSuckingLevelSensor.exit(3);
     }
 }
@@ -1159,7 +1107,6 @@ void WrapperFmPressureControl::VaccumTimerCB(void)
 /****************************************************************************/
 bool WrapperFmPressureControl::ReleasePressure(void)
 {
-    qDebug()<<QDateTime::currentDateTime().toString("hh:mm:ss.zzz")<<" "<<"Start release pressure procedure";
     Log(tr("Start release pressure procedure"));
     QTimer timer;
     quint32 TimeSlotPassed = 0;
@@ -1175,7 +1122,6 @@ bool WrapperFmPressureControl::ReleasePressure(void)
     }
     if(m_LoopSuckingLevelSensor.isRunning())
     {
-        qDebug()<<"m_LoopSuckingLevelSensor exit -1 (ReleasePressure)";
         m_LoopSuckingLevelSensor.exit(RELEASE_PRESSURE_PROCEDURE_INTERRUPT);
     }
     if( m_LoopPressureTimer.isRunning())
@@ -1195,10 +1141,6 @@ bool WrapperFmPressureControl::ReleasePressure(void)
         m_LoopAgitationTimer.exit(RELEASE_PRESSURE_PROCEDURE_INTERRUPT);
     }
     connect(&timer, SIGNAL(timeout()), this, SLOT(ReleasePressureTimerCB()));
-
-    m_PressureDrift = GetPressure(0);
-
-    qDebug()<<"##############" << m_PressureDrift;
     //close both valve
     StopCompressor();
     SetFan(0);
@@ -1248,7 +1190,7 @@ bool WrapperFmPressureControl::ReleasePressure(void)
 void WrapperFmPressureControl::StopCompressor(void)
 {
     Log(tr("Shut down compressor"));
-    SetPressure(0, 1);
+    SetPressure(0, UNDEFINED - m_PressureDrift);
 }
 
 
@@ -1949,11 +1891,8 @@ void WrapperFmPressureControl::OnLevelSensorState(quint32, ReturnCode_t ReturnCo
 
     if(State == 1)
     {
-        qDebug()<<"OnLevelSensorState m_LoopSuckingLevelSensor.isRunning:  " <<m_LoopSuckingLevelSensor.isRunning();
-
         if(m_LoopSuckingLevelSensor.isRunning())
         {
-             qDebug()<<"m_LoopSuckingLevelSensor exit 1 (OnLevelSensorState)";
             m_LoopSuckingLevelSensor.exit(State);
         }
     }

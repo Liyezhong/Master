@@ -21,7 +21,7 @@
  */
 /****************************************************************************/
 
-#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmAnalogOutput.h"
+#include "WrapperFmAnalogOutput.h"
 
 /****************************************************************************/
 /*!

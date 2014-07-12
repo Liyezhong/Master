@@ -20,7 +20,8 @@
  *  does not evidence any actual or intended publication.
  */
 /****************************************************************************/
-#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalOutput.h"
+#include "ResetData.h"
+#include "WrapperFmDigitalOutput.h"
 
 /****************************************************************************/
 /*!
@@ -33,14 +34,32 @@
  */
 /****************************************************************************/
 WrapperFmDigitalOutput::WrapperFmDigitalOutput(QString Name, CDigitalOutput *pDigitalOutput, QObject *pParent):
-    WrapperBase(Name, pParent), m_pDigitalOutput(pDigitalOutput)
+    WrapperBase(Name, pParent, pDigitalOutput), m_pDigitalOutput(pDigitalOutput)
 {
     Reset();
 
+    mp_ResetData = new CResetData(*pDigitalOutput, this);
     connect(m_pDigitalOutput, SIGNAL(ReportOutputValueAckn(quint32, ReturnCode_t, quint16)),
             this, SLOT(OnSetOutputValue(quint32, ReturnCode_t, quint16)));
     connect(m_pDigitalOutput, SIGNAL(ReportActOutputValue(quint32, ReturnCode_t, quint16)),
             this, SLOT(OnGetOutputValue(quint32, ReturnCode_t, quint16)) );
+    connect(m_pDigitalOutput, SIGNAL(ReportLifeTimeData(quint32, ReturnCode_t, quint32, quint32)),
+            this, SLOT(OnGetLifetimeData(quint32, ReturnCode_t, quint32, quint32)));
+    connect(m_pDigitalOutput, SIGNAL(ReportError(quint32, quint16, quint16, quint16, QDateTime)),
+            this, SLOT(OnError(quint32, quint16, QDateTime)));
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Destructor of class WrapperFmDigitalOutput
+ */
+/****************************************************************************/
+WrapperFmDigitalOutput::~WrapperFmDigitalOutput()
+{
+    try {
+        delete mp_ResetData;
+    }
+    catch(...) {}
 }
 
 /****************************************************************************/
@@ -205,6 +224,82 @@ void WrapperFmDigitalOutput::OnGetOutputValue(quint32 /*InstanceID*/, ReturnCode
         Log(tr("NOTICE: Unexpected action acknowledgement."));
     }
 }
+/****************************************************************************/
+/*!
+ *  \brief  Script-API: Read lifetime data
+ *
+ *  This method gets the time an digital output was switched on in minutes
+ *  and the number of times it was switched on or off.
+ *
+ *  Examples:
+ *  \dontinclude DigitalOutput.js
+ *  \skipline    [DigitalOut.GetLifetime]
+ *  \until       [DigitalOut.GetLifetime]
+ *
+ *  \todo needs to work on return value in case of error
+ *
+ *  \return Digital ouput value or 0 in case of any error
+ *
+ */
+/****************************************************************************/
+bool WrapperFmDigitalOutput::GetLifetimeData()
+{
+    bool ok = HandleErrorCode(m_pDigitalOutput->ReqLifeTimeData());
+    if (!ok) {
+        return false;
+    }
+    qint32 ret = m_LoopGetLifetimeData.exec();
+    return (ret == 1);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief   slot associated with lifetime reading
+ *
+ *  This slot is connected to the signal, ReportLifeTimeData
+ *
+ *  \iparam ReturnCode  ReturnCode of function level Layer
+ *  \iparam Lifetime    Active time in minutes
+ *  \iparam Lifecycles  Number of times the output was switched
+ */
+/****************************************************************************/
+void WrapperFmDigitalOutput::OnGetLifetimeData(quint32 /*InstanceID*/, ReturnCode_t ReturnCode,
+                                               quint32 Lifetime, quint32 Lifecycles)
+{
+    qint32 ret = 1;
+
+    m_Lifetime = Lifetime;
+    m_Lifecycles = Lifecycles;
+
+    if (!HandleErrorCode(ReturnCode)) {
+        ret = -1;
+    }
+    if (m_LoopGetLifetimeData.isRunning()) {
+        m_LoopGetLifetimeData.exit(ret);
+    } else {
+        Log(tr("NOTICE: Unexpected action acknowledgement."));
+    }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief  Script-API: Request a data reset
+ *
+ *      This method resets the non-volatile storage data of all partitions on
+ *      a Slave.
+ *
+ *  Examples:
+ *  \dontinclude DigitalOutput.js
+ *  \skipline [DigitalOut.ReqDataReset]
+ *  \until    [DigitalOut.ReqDataReset]
+ *
+ *  \return true, if the setting value is success else false
+ */
+/****************************************************************************/
+bool WrapperFmDigitalOutput::ReqDataReset()
+{
+    return HandleErrorCode(mp_ResetData->ReqDataReset());
+}
 
 /****************************************************************************/
 /*!
@@ -218,7 +313,30 @@ void WrapperFmDigitalOutput::OnGetOutputValue(quint32 /*InstanceID*/, ReturnCode
 /****************************************************************************/
 void WrapperFmDigitalOutput::Reset()
 {
-    m_TargetOutputValue  = 0;
-    m_CurrentOutputValue = 0;
+        m_TargetOutputValue  = 0;
+        m_CurrentOutputValue = 0;
 }
 
+quint32 WrapperFmDigitalOutput::GetLifetime()
+{
+    if(GetLifetimeData())
+    {
+        return m_Lifetime;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+quint32 WrapperFmDigitalOutput::GetLifecycles()
+{
+    if(GetLifetimeData())
+    {
+        return m_Lifecycles;
+    }
+    else
+    {
+        return 0;
+    }
+}

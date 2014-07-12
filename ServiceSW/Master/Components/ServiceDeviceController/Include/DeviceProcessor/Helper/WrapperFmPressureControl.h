@@ -54,8 +54,7 @@ class WrapperFmPressureControl : public WrapperBase
  public slots:
     bool StartPressureControl(quint8 flag, float NominalPressure);
     bool StopPressureControl();
-    float GetPressure(quint8 sensorIndex = 0);
-    float GetPressureFromSensor(quint8 sensorIndex);
+    float GetPressure(quint8 Index = 0);
     QString GetPressureControlState();
     QString GetMainsVoltageState();
     bool IsPressureControlOn();

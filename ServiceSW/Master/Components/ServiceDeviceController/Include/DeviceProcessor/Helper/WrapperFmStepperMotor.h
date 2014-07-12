@@ -318,12 +318,15 @@ private:
     qint32 MoveToNextPort(bool changeParameter, quint32 LowerLimit, quint32 UpperLimit);
     qint32 MoveToEDPosition(quint32 Position);
     quint32 GetEDPosition();
+    void SetPrevEDPosition(quint32 position);
+    quint32 GetPrevEDPosition();
     void SetEDPosition(quint32 position);
     void InitEDPosition();
     QString TranslateFromEDPosition(quint32 EDPosition);
     inline quint32 GetUpperLimit(quint32 CurrentEDPosition, DeviceControl::CANFctModuleStepperMotor::RotationDir_t Direction, bool ChangeDirection);
     inline quint32 GetLowerLimit(quint32 CurrentEDPosition, DeviceControl::CANFctModuleStepperMotor::RotationDir_t Direction, bool ChangeDirection);
     float m_EncoderDiskPosition;
+    float m_PrevEncoderDiskPosition;
     qint32 m_RefRunRetCode;
     QEventLoop m_LoopApplyNewParameter;
 #endif

@@ -73,9 +73,11 @@ class WrapperFmTempControl : public WrapperBase
     quint16 GetFanSpeed(quint8 Index);
     HardwareStatus_t *GetHardwareStatus();
     quint16 GetCurrent();
+    quint8 GetHeaterSwitchType();
     void Reset();
 #ifdef PRE_ALFA_TEST
     bool SetTemperaturePid(quint16 MaxTemperature, quint16 ControllerGain, quint16 ResetTime, quint16 DerivativeTime);
+    bool SetTemperatureSwitchState(qint8 SwitchState, qint8 AutoSwitch);
 #endif
 
 private slots:
@@ -95,6 +97,7 @@ private slots:
     void OnSetTempPid(quint32, ReturnCode_t ReturnCode, quint16 MaxTemperature,
                       quint16 ControllerGain, quint16 ResetTime, quint16 DerivativeTime);
     void OnError(quint32 InstanceID, quint16 ErrorGroup, quint16 ErrorCode, quint16 ErrorData, QDateTime ErrorTime);
+    void OnSetSwitchState(quint32, ReturnCode_t ReturnCode, qint8 SwitchState, qint8 AutoSwitch);
 #endif
     /****************************************************************************/
     /*!
@@ -130,6 +133,7 @@ private slots:
     QEventLoop m_LoopGetHardwareStatus;         //!< Loop for blocking commands.
 #ifdef PRE_ALFA_TEST
     QEventLoop m_LoopSetTemperaturePid;         //!< Loop for blocking commands.
+    QEventLoop m_LoopSetSwitchState;         //!< Loop for blocking commands.
 #endif
 
     CTemperatureControl *m_pTempControl;            //!< Pointer to the Temperature Control function module

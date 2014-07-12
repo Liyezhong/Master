@@ -29,6 +29,7 @@
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalInput.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmDigitalOutput.h>
 #include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmBaseModule.h>
+#include <ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmBootLoader.h>
 
 
 class WrapperUtils;
@@ -441,6 +442,10 @@ private:
     WrapperFmBaseModule*        mp_BaseModule3;
     WrapperFmBaseModule*        mp_BaseModule5;
     WrapperFmBaseModule*        mp_BaseModule15;
+
+    WrapperFmBootLoader*        mp_BootLoader3;
+    WrapperFmBootLoader*        mp_BootLoader5;
+    WrapperFmBootLoader*        mp_BootLoader15;
 
     QProcess*   mp_SpeakProc;
 

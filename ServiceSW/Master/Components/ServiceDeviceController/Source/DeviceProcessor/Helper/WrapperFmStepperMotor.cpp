@@ -22,8 +22,9 @@
 /****************************************************************************/
 
 #include <QTimer>
-#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperFmStepperMotor.h"
-#include "ServiceDeviceController/Include/DeviceProcessor/Helper/WrapperUtils.h"
+#include "WrapperFmStepperMotor.h"
+#include "WrapperUtils.h"
+#include <unistd.h>
 
 const QString WrapperFmStepperMotor::ROTATION = QString("rotation");
 const QString WrapperFmStepperMotor::LINEAR = QString("linear");
@@ -255,6 +256,14 @@ qint32 WrapperFmStepperMotor::DoReferenceRunWithStepCheck(quint32 LowerLimit, qu
             Log(tr("Warning: Get position error, wait 0.5 sec to read again."));
             Utils->Pause(500);
         }
+        if(GetPositionRetry == 5)
+        {
+            ret = REFER_RUN_RETRY_TIME;
+        }
+        else
+        {
+            GetPositionRetry = 0;
+        }
         if(Step < LowerLimit)
         {
             if((retry++) < REFER_RUN_RETRY_TIME)
@@ -386,6 +395,44 @@ void WrapperFmStepperMotor::SetEDPosition(quint32 position)
         m_EncoderDiskPosition = 0;
     }
 }
+
+/****************************************************************************/
+/*!
+ *  \brief  Helper function: Get previous encoder disk's position.
+ *
+ *  \return Encoder disk position.
+ */
+/****************************************************************************/
+quint32 WrapperFmStepperMotor::GetPrevEDPosition()
+{
+    if(m_PrevEncoderDiskPosition > 32)
+    {
+        m_PrevEncoderDiskPosition = 0;
+    }
+
+    return m_PrevEncoderDiskPosition;
+}
+
+/****************************************************************************/
+/*!
+ *  \brief  Helper function: Set previous encoder disk's position.
+ *
+ *  \iparam position = Encoder disk position.
+ */
+/****************************************************************************/
+void WrapperFmStepperMotor::SetPrevEDPosition(quint32 position)
+{
+
+    if((position < 33) && (position > 0))
+    {
+        m_PrevEncoderDiskPosition = position;
+    }
+    else
+    {
+        m_PrevEncoderDiskPosition = 0;
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Helper function, initialize the current encoder disk's position.
@@ -967,12 +1014,11 @@ qint32 WrapperFmStepperMotor::MoveToNextPort(bool changeParameter, quint32 Lower
     if(lsCode != "1")
     {
         quint32 Retry = 0;
-        WrapperUtils* Utils = new WrapperUtils(this);
         //while(((Retry++) < 3)&&(lsCode != "1"))  // 2013.3.8 Frank's request
         while(((Retry++) < 30)&&(lsCode != "1"))
         {
             Log(tr("Warning: Get unexpected LS Code: %1, wait 0.5 sec to read again. Retry time: %2").arg(lsCode).arg(Retry));
-            Utils->Pause(500);
+            (void)usleep(500*1000);
             lsCode = GetLimitSwitchCode();
         }
         if(Retry >= 30) // 2013.3.8 Frank's request
@@ -981,7 +1027,7 @@ qint32 WrapperFmStepperMotor::MoveToNextPort(bool changeParameter, quint32 Lower
             //RetValue = REFER_RUN_UNEXPECTED_POSITION; // 2013.3.8 Frank's request, add LS examine
                                                         // 2013.5.30 Frank's request, ignore LS return
         }
-    } 
+    }
     return RetValue;
 }
 #endif
@@ -1714,6 +1760,7 @@ bool WrapperFmStepperMotor::ApplyNewParameterSet()
     }
 #endif
 
+    delete timer;
     if (!SetState(true)) {
         return false;
     }

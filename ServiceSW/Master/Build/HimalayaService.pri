@@ -24,7 +24,8 @@ INCLUDEPATH += ../.. \
                ../../../../../Shared/Gui/Components  \
                ../../../../../../Platform/Master/Components/DeviceControl/Include/Devices \
                ../../../../../../Platform/Master/Components/DeviceControl/Include/Interface \
-               ../../../../../../Platform/ProtoTest/Include
+               ../../../../../../Platform/ProtoTest/Include \
+               ../../../../../../Himalaya/ServiceSW/Master/Components/ServiceDeviceController/Include/DeviceProcessor/Helper/
 DEPENDPATH +=  ../.. \
                ../../../../../../Platform/Master/Components \
                ../../../../../../Platform/ServiceSW/Components \
