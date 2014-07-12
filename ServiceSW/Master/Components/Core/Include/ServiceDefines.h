@@ -198,7 +198,8 @@ typedef enum ModuleTestCaseID {
     SYSTEM_110V_220V_SWITCH,             ///< System 110V/220V switch test
     CLEANING_SYSTEM_TEST,                ///< Cleaning system test
     TEST_ABORT,                           ///< This is to abort a heating test case.
-    FIRMWARE_UPDATE                       ///< This is to update firmware for manufacturing
+    FIRMWARE_UPDATE,                       ///< This is to update firmware for manufacturing
+    FIRMWARE_GET_SLAVE_INFO                ///< This is to get information from slave board.
 } ModuleTestCaseID_t;
 
 /****************************************************************************/

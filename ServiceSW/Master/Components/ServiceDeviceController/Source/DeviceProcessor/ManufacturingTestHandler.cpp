@@ -2321,7 +2321,7 @@ RV_HEATING_END_EXIT:
     }
 }
 
-bool ManufacturingTestHandler::UpdateFirmware()
+qint32 ManufacturingTestHandler::UpdateFirmware()
 {
     Service::ModuleTestCaseID Id = Service::FIRMWARE_UPDATE;
 
@@ -2356,15 +2356,69 @@ bool ManufacturingTestHandler::UpdateFirmware()
         return false;
     }
 
+    qint32 RetValue = pBootLoader->UpdateFirmware(BinPath);
+
+    if (RetValue == DCL_ERR_FCT_CALL_SUCCESS) {
+        mp_Utils->Pause(2000);
+
+        pBootLoader->BootFirmware();
+
+        mp_Utils->Pause(2000);
+
+        return 0;
+    }
+    else {
+        return -1;
+    }
+}
+
+void ManufacturingTestHandler::GetSlaveInformation()
+{
+    Service::ModuleTestCaseID Id = Service::FIRMWARE_UPDATE;
+
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    HimSlaveType_t SlaveType = (HimSlaveType_t) p_TestCase->GetParameter("SlaveType").toInt();
+
+    WrapperFmBaseModule *p_BaseModule = NULL;
+    Service::ModuleTestStatus Status;
 
 
-    return true;
+    if (SlaveType == Slave_3) {
+        p_BaseModule = mp_BaseModule3;
+        Status.insert("SlaveType", "3");
+    }
+    else if (SlaveType == Slave_5) {
+        p_BaseModule = mp_BaseModule5;
+        Status.insert("SlaveType", "5");
+    }
+    else if(SlaveType == Slave_15) {
+        p_BaseModule = mp_BaseModule15;
+        Status.insert("SlaveType", "15");
+    }
 
-    bool RetValue = pBootLoader->UpdateFirmware(BinPath);
+    QString Str = p_BaseModule->GetHWInfo();
+    if (Str != "error") {
+        QStringList HWInfo = Str.split("/");
 
-    mp_Utils->Pause(2000);
+        Status.insert("HardwareMajorVersion", HWInfo[0]);
+        Status.insert("HardwareMinorVersion", HWInfo[1]);
+        Status.insert("HardwareProductionDate", HWInfo[2]);
+    }
 
-    return RetValue;
+    Str = p_BaseModule->ReqSerialNumber();
+    Status.insert("SerialNumber", Str);
+
+    Str = p_BaseModule->GetBootloaderInfo();
+    if (Str != "error") {
+        QStringList SWInfo = Str.split("/");
+        Status.insert("BootLoaderMajorVersion", SWInfo[0]);
+        Status.insert("BootLoaderMinorVersion", SWInfo[1]);
+        Status.insert("BootLoaderReleaseDate", SWInfo[2]);
+    }
+
+    emit RefreshTestStatustoMain(TestCaseName, Status);
 }
 
 qint32 ManufacturingTestHandler::TestLSensorDetecting(qint32 Pos)
@@ -2739,7 +2793,6 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
     case Service::MAINCONTROL_ASB3:
     case Service::MAINCONTROL_ASB5:
     case Service::MAINCONTROL_ASB15:
-        UpdateFirmware();
         if (TestMainControlASB(TestId) != 0) {
             emit ReturnManufacturingTestMsg(false);
         }
@@ -2964,6 +3017,17 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         else {
             emit ReturnManufacturingTestMsg(false);
         }
+        break;
+    case Service::FIRMWARE_UPDATE:
+        if (0 == UpdateFirmware()) {
+            emit ReturnManufacturingTestMsg(true);
+        }
+        else {
+            emit ReturnManufacturingTestMsg(false);
+        }
+        break;
+    case Service::FIRMWARE_GET_SLAVE_INFO:
+        GetSlaveInformation();
         break;
     default:
         break;

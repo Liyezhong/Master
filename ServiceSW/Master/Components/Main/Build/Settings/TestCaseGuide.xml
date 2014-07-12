@@ -169,6 +169,6 @@
 			<Step>Please take out the external sensor from the retort.</Step>
 		</Guide>
 	</RetortHeatingWater>
-	<FirmwareUpdate>
-	</FirmwareUpdate>
+	<FirmwareUpdate></FirmwareUpdate>
+	<FirmwareGetSlaveInfo></FirmwareGetSlaveInfo>
 </TestCaseGuide>

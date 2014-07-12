@@ -46,5 +46,6 @@
 	</Retort>
 	<Firmware>
 		<FirmwareUpdate SlaveType="3" Path="" />
+		<FirmwareGetSlaveInfo SlaveType="3" />
 	</Firmware>
 </TestCaseConfig>

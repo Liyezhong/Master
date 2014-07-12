@@ -384,7 +384,14 @@ private:
      * \brief Update Firmware
      */
     /****************************************************************************/
-    bool UpdateFirmware();
+    qint32 UpdateFirmware();
+
+    /****************************************************************************/
+    /**
+     * \brief Get Slave Configuration Information
+     */
+    /****************************************************************************/
+    void GetSlaveInformation();
 
 
     /****************************************************************************/
@@ -443,9 +450,6 @@ private:
     WrapperFmBaseModule*        mp_BaseModule5;
     WrapperFmBaseModule*        mp_BaseModule15;
 
-    WrapperFmBootLoader*        mp_BootLoader3;
-    WrapperFmBootLoader*        mp_BootLoader5;
-    WrapperFmBootLoader*        mp_BootLoader15;
 
     QProcess*   mp_SpeakProc;
 
