@@ -175,7 +175,7 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 {
                     mp_SchedulerThreadController->LogDebug("Pre-Test: RVReqMoveToInitialPosition passed");
 					m_RVPositioinChkSeq = 0; //reset
-					emit PressureSealingChecking();
+                    emit PressureCalibration();
                 }
                 else
                 {
