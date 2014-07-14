@@ -154,9 +154,14 @@ CStartup::CStartup() : QObject(),
 
     // Software upate
     mp_ServiceUpdateGroup = new MainMenu::CMenuGroup;
-    mp_FirmwareUpdate = new ServiceUpdates::CFirmwareUpdate;
+    mp_FirmwareUpdate = new ServiceUpdates::CFirmwareUpdate(mp_ServiceConnector);
     mp_DataManagement = new ServiceUpdates::CDataManagement;
     mp_Setting = new ServiceUpdates::CSettings(mp_ServiceConnector, mp_MainWindow);
+
+    (void)connect(mp_ServiceConnector,
+                  SIGNAL(ModuleListChanged()),
+                  mp_FirmwareUpdate,
+                  SLOT(UpdateGUI()));
 
     (void)connect(mp_DataManagement,
                   SIGNAL(ServiceImportExportRequested(bool)),

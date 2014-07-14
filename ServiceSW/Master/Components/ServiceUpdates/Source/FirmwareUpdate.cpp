@@ -34,9 +34,10 @@
 
 namespace ServiceUpdates {
 
-CFirmwareUpdate::CFirmwareUpdate(QWidget *p_Parent)
+CFirmwareUpdate::CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector, QWidget *p_Parent)
     : QWidget(p_Parent)
     , mp_Ui(new Ui::CFirmwareUpdate)
+    , mp_DataConnector(p_DataConnector)
     , m_Result(false)
 {
     mp_Ui->setupUi(this);
@@ -62,7 +63,7 @@ CFirmwareUpdate::CFirmwareUpdate(QWidget *p_Parent)
 
     mp_Ui->widget->SetContent(mp_TableWidget);
 
-    InitData();
+    //InitData();
 
     CONNECTSIGNALSLOT(mp_Ui->updateBtn,
                       clicked(),
@@ -95,23 +96,23 @@ void CFirmwareUpdate::changeEvent(QEvent *p_Event)
     }
 }
 
-void CFirmwareUpdate::InitData()
+void CFirmwareUpdate::UpdateGUI()
 {
-    DataManager::CSWVersionList SWVersionList;
-    SWVersionList.SetDataVerificationMode(false);
-    if (!SWVersionList.Read(Global::SystemPaths::Instance().GetSettingsPath() + QDir::separator() + "SW_Version.xml")) {
-        qDebug()<<"CFirmwareUpdate:GetVersionInfo read SW_Version.xml file failed.";
-        return;
-    }
-
     QString latestVersion = "";
-    for(int i = 0; i < SWVersionList.GetNumberOfSWDetails(); ++i) {
-        DataManager::CSWDetails SlaveInfo;
-        SWVersionList.GetSWDetails(i, SlaveInfo);
-        QString Slave = SlaveInfo.GetSWName().remove(".bin");
-        QString CurrentVersion = SlaveInfo.GetSWVersion();
-        if (SlaveInfo.GetSWType() == FIRMWARE) {
-            AddItem(Slave, CurrentVersion, latestVersion);
+    ServiceDataManager::CModule* EboxModule = NULL;
+    ServiceDataManager::CSubModule* SlaveModule = NULL;
+
+    if (mp_DataConnector->GetModuleListContainer()) {
+        EboxModule = mp_DataConnector->GetModuleListContainer()->GetModule("Main Control");
+    }
+    if (EboxModule) {
+        for (int i = 0; i < EboxModule->GetNumberofSubModules(); ++i) {
+            SlaveModule = EboxModule->GetSubModuleInfo(i);
+            if (SlaveModule->GetSubModuleName().contains("ASB")) {
+                QString SlaveName = SlaveModule->GetSubModuleName();
+                QString SlaveVersion = SlaveModule->GetParameterInfo("SoftwareVersion")->ParameterValue;
+                AddItem(SlaveName, SlaveVersion, latestVersion);
+            }
         }
     }
 

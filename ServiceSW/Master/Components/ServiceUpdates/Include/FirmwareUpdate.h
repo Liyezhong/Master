@@ -25,7 +25,7 @@
 #include "MainMenu/Include/BaseTable.h"
 #include <QStandardItemModel>
 #include "Core/Include/ServiceDefines.h"
-
+#include "Core/Include/ServiceGUIConnector.h"
 
 namespace ServiceUpdates {
 
@@ -43,7 +43,7 @@ class CFirmwareUpdate : public QWidget
     Q_OBJECT
 
 public:
-    explicit CFirmwareUpdate(QWidget *p_Parent = 0);
+    explicit CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *p_Parent = 0);
     ~CFirmwareUpdate(void);
 
     /****************************************************************************/
@@ -102,18 +102,19 @@ public slots:
     /****************************************************************************/
     void RefreshLatestVersion();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for updating the GUI
+     */
+    /****************************************************************************/
+    void UpdateGUI();
+
 private:
     Ui::CFirmwareUpdate *mp_Ui;             //!< User Interface
+    Core::CServiceGUIConnector *mp_DataConnector;  //!< Data Connector object
     MainMenu::CBaseTable *mp_TableWidget;   //!< Base Table widget
     QStandardItemModel m_Model;             //!< Model for the table
     bool m_Result;
-
-    /****************************************************************************/
-    /*!
-     *  \brief Initialization data from config file.
-     */
-    /****************************************************************************/
-    void InitData();
 
     /****************************************************************************/
     /*!
