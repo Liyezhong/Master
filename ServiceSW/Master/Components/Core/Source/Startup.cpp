@@ -1274,8 +1274,45 @@ void CStartup::RefreshTestStatus4FirmwareUpdate(Service::ModuleTestCaseID Id, co
 void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
     qDebug()<<Status;
+    ServiceDataManager::CModule* EboxModule = NULL;
+    ServiceDataManager::CSubModule* SlaveModule = NULL;
     mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
 
+    if (mp_ServiceConnector->GetModuleListContainer()) {
+        EboxModule = mp_ServiceConnector->GetModuleListContainer()->GetModule("Main Control");
+    }
+
+    int SlaveType = Status.value("SlaveType").toInt();
+    //Status.remove("SlaveType");
+    QString SlaveName;
+    switch (SlaveType) {
+    case 3:
+        SlaveName = "ASB3";
+        break;
+    case 5:
+        SlaveName = "ASB5";
+        break;
+    case 15:
+        SlaveName = "ASB15";
+        break;
+    default:
+        qDebug()<<"CStartup:RefreshTestStatus4FirmwareGetSlaveInfo: error slave type :"<<SlaveType;
+        return;
+    }
+
+    if (EboxModule) {
+        SlaveModule = EboxModule->GetSubModuleInfo(Status.value(SlaveName));
+    }
+    if (SlaveModule) {
+        QMap<QString, QString>::const_iterator itr = Status.constBegin();
+        for (; itr != Status.constEnd(); ++itr) {
+            if (itr.key() != "SlaveType" && !SlaveModule->UpdateParameterInfo(itr.key(), itr.value())) {
+                qDebug()<<"Update "<<SlaveName<<" info "<<itr.key()
+                       <<"to "<<itr.value()<<" failed.";
+            }
+        }
+    }
+    mp_ServiceConnector->SendModuleUpdate(*EboxModule);
 }
 
 /****************************************************************************/
