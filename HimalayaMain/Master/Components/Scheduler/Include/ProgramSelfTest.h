@@ -143,6 +143,7 @@ private:
     QSharedPointer<QState> mp_TemperatureSensorsChecking;           //!< Temperature sensors status checking state
     QSharedPointer<QState> mp_RTTempCtrlOff;                        //!< Current checking state
     QSharedPointer<QState> mp_RVPositionChecking;                   //!< Rotary Valve position checking state
+    QSharedPointer<QState> mp_PressureCalibration;                  //!< Pressure Calibration state
     QSharedPointer<QState> mp_PressureSealingChecking;              //!< Pressure test and sealing checking state
     QSharedPointer<QState> mp_BottlesChecking;                      //!< Bottle checking state
     QSharedPointer<QState> mp_MoveToTube;                           //!< Moving to tube state

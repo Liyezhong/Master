@@ -248,7 +248,6 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             else //offset the calibration
             {
                 m_PressureDriftOffset = m_PressureDriftOffset - currentPressure;
-                mp_SchedulerThreadController->LogDebug(QString("Pre-Test: Pressure Calibration, offset the calibration and retry, %1").arg(
                 mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(-m_PressureDriftOffset);
                 m_PressureCalibrationSeq = 0;
             }
