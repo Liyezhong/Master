@@ -107,6 +107,14 @@ quint32 CServiceDataManager::InitDataContainer()
                 because mp_ServiceDataContainer->ModuleList->VerifyData failed.";
     }
 
+    QString FilenameServiceParameters = Global::SystemPaths::Instance().GetSettingsPath() + "/ServiceParameters.xml";
+    if (!mp_ServiceDataContainer->ServiceParameters->Read(FilenameServiceParameters)) {
+        qDebug() << "CServiceDataManager::InitDataContainer failed, \
+                    because mp_ServiceDataContainer->ServiceParameters->Read failed with filename: "
+                    <<  FilenameServiceParameters;
+         return EVENT_DM_PROCESS_SETTINGS_CONF_READ_FAILED;
+    }
+
     mp_ModuleCommandInterface = new CModuleCommandInterface(this, mp_MasterThreadController, mp_ServiceDataContainer);
 
     qDebug() << "CServiceDataManager::InitDataContainer successful !!!";

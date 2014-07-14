@@ -408,10 +408,14 @@ DataManager::CServiceParameters* CServiceGUIConnector::GetServiceParameters()
 /****************************************************************************/
 void CServiceGUIConnector::ServiceParametersUpdates(DataManager::CServiceParameters *ServiceParameters)
 {
-    if (ServiceParameters != NULL) {
+    if (ServiceParameters) {
+       //delete mp_ServiceParameters;
        mp_ServiceParameters = ServiceParameters;
+       if (!mp_ServiceParameters->Write()) {
+           qDebug()<<"CServiceGUIConnector: Service Parameter updates to file failed.";
+       }
     }
-    emit UpdateServiceParameters(mp_ServiceParameters);
+    //emit UpdateServiceParameters(mp_ServiceParameters);
 }
 
 /****************************************************************************/

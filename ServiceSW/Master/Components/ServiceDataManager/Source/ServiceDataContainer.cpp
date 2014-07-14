@@ -32,7 +32,8 @@ ServiceDataContainer::ServiceDataContainer(Threads::ServiceMasterThreadControlle
     mp_ServiceMasterThreadController(p_MasterThreadController),
     DeviceConfigurationInterface(NULL),
     SettingsInterface(NULL),
-    ModuleList(NULL)
+    ModuleList(NULL),
+    ServiceParameters(NULL)
 {
     if (!InitContainers()) {
         qDebug() << "ServiceDataContainer::ServiceDataContainer / InitContainers failed";
@@ -62,6 +63,7 @@ bool ServiceDataContainer::InitContainers()
     }
     DeviceConfigurationInterface = new CDeviceConfigurationInterface();
     ModuleList = new ServiceDataManager::CModuleDataList();
+    ServiceParameters = new CServiceParameters();
     m_IsInitialized = true;
     SettingsInterface->SetDataVerificationMode(false);
     DeviceConfigurationInterface->SetDataVerificationMode(false);
@@ -72,6 +74,7 @@ bool ServiceDataContainer::DeinitContainers()
 {
     delete DeviceConfigurationInterface;
     delete SettingsInterface;
+    delete ServiceParameters;
     delete ModuleList;
     m_IsDeInitialised = true;
     return true;

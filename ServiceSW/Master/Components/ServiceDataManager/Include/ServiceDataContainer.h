@@ -27,6 +27,7 @@
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationInterface.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "ServiceDataManager/Include/ModuleDataList.h"
+#include "ServiceDataManager/Include/ServiceParameters.h"
 #include <ServiceMasterThreadController/Include/ServiceMasterThreadController.h>
 
 namespace DataManager {
@@ -56,6 +57,7 @@ public:
     ServiceDataManager::CModuleDataList *ModuleList;                //!< Container for Instrument History
     CDeviceConfigurationInterface* DeviceConfigurationInterface;    //!< Container for Device configuration
     CUserSettingsInterface *SettingsInterface;                      //!< Provides interface to read the Settings info from xml
+    CServiceParameters *ServiceParameters;                          //!< Container for service parameters
 
 
 };

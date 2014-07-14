@@ -869,6 +869,8 @@ void ServiceMasterThreadController::OnGoReceived()
                 mp_ServiceDataManager->GetModuleList());
     mp_GUIStartup->mp_ServiceConnector->SetDeviceConfigurationInterface(
                 mp_ServiceDataManager->GetDataContainer()->DeviceConfigurationInterface);
+    mp_GUIStartup->mp_ServiceConnector->SetServiceParametersContainer(
+                mp_ServiceDataManager->GetDataContainer()->ServiceParameters);
 
     try {
         // Initialize controllers

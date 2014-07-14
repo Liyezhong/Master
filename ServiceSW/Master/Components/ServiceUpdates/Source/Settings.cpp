@@ -49,7 +49,7 @@ CSettings::CSettings(Core::CServiceGUIConnector *p_ServiceDataConnector, MainMen
     CONNECTSIGNALSLOTGUI(mp_Ui->pageDateTimeSettings->GetContent(), ApplyData(QDateTime), mp_ServiceDataConnector,
                          SetDateTime(QDateTime));
 
-    CONNECTSIGNALSLOTGUI(mp_Ui->pageNetworkSettings, SaveProxyIPAddress(QString), this, SaveProxyIPAddress(QString));
+    CONNECTSIGNALSLOTGUI(mp_Ui->pageNetworkSettings, SaveIPAddress(QString, IPType_t), this, SaveIPAddress(QString, IPType_t));
 
     CONNECTSIGNALSLOTGUI(this, ServiceParametersChanged(DataManager::CServiceParameters *),
                          mp_ServiceDataConnector, ServiceParametersUpdates(DataManager::CServiceParameters *));
@@ -82,14 +82,17 @@ CSettings::~CSettings()
  *  \iparam IPAddress = Proxy IP address to set
  */
 /*******************************************************************************/
-void CSettings::SaveProxyIPAddress(QString IPAddress) {
+void CSettings::SaveIPAddress(QString IPAddress, IPType_t IPType) {
     DataManager::CServiceParameters *ServiceParameters = mp_ServiceDataConnector->GetServiceParameters();
     if (ServiceParameters != NULL) {
-        ServiceParameters->SetProxyIPAddress(IPAddress);
+        if (IPType == PROXY_IP) {
+            ServiceParameters->SetProxyIPAddress(IPAddress);
+        }
+        else {
+            ServiceParameters->SetServerIPAddress(IPAddress);
+        }
         emit ServiceParametersChanged(ServiceParameters);
     }
-
-
 }
 
 /*******************************************************************************/

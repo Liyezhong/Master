@@ -44,6 +44,13 @@ typedef enum {
     INVALID
 }ButtonType_t;
 
+//!< Ip Type - proxy, server
+typedef enum {
+    UNDEFINE,
+    PROXY_IP,
+    SERVER_IP
+}IPType_t;
+
 /****************************************************************************/
 /**
  * \brief This class contains the proxy settings for remote care
@@ -80,12 +87,15 @@ private:
     QString m_Password;                                     //!< String to hold Password
     MainMenu::CMessageDlg *mp_MessageDlg;                   //!< Message dialog object.
     QString m_ProxyIp;                                    //!< To store the proxy Ip address
-    QString m_ServiceIp;                                    //!< To Store the service Ip address
+    QString m_ServerIp;                                    //!< To Store the server Ip address
     MainMenu::CBaseTable *mp_TableWidget;                   //!< Base Table widget
     QStandardItemModel m_Model;                             //!< Model for the table
+    IPType_t           m_IpType;                            //!< Ip Type
 
     void ConnectKeyBoardSignalSlots();
     void DisconnectKeyBoardSignalSlots();
+
+    void EnterIPAddress(IPType_t IpType);
 
 signals:
     /****************************************************************************/
@@ -95,7 +105,7 @@ signals:
      *  \iparam ServiceParameters = ServiceParameters reference.
      */
     /****************************************************************************/
-    void SaveIPAddress(QString);
+    void SaveIPAddress(QString, IPType_t);
 
     /****************************************************************************/
     /*!
@@ -114,9 +124,10 @@ signals:
     void DownloadFirmware();
 
 private slots:
-    void OnIPAddress();
+    void OnProxyIPAddress();
+    void OnServerIPAddress();
     void OnProxyIpSave();
-    void OnServiceIpSave();
+    void OnServerIpSave();
     void OnOkClicked(QString EnteredText);
     void OnESCClicked();
     void KeyBoardValidateEnteredString(QString);

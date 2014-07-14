@@ -27,6 +27,7 @@
 #include "KeyBoard/Include/KeyBoard.h"
 #include "MainMenu/Include/MessageDlg.h"
 #include "../Include/PlatformServiceDefines.h"
+#include "ServiceUpdates/Include/NetworkWidget.h"
 namespace ServiceUpdates {
 
 namespace Ui {
@@ -87,7 +88,7 @@ private slots:
      void OnCurrentTabChanged(int CurrentTabIndex);
 
 public slots:     
-     void SaveProxyIPAddress(QString);
+     void SaveIPAddress(QString, IPType_t);
      void ResetButtonStatus();
      void UpdateGUIConnector(Core::CServiceGUIConnector *DataConnector, MainMenu::CMainWindow *MainWindow);
      void SetInformwationText(QString Text, QString Color);

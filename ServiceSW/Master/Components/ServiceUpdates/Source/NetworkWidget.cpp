@@ -59,6 +59,7 @@ CNetworkWidget::CNetworkWidget(QWidget *p_Parent)
       m_CurrentUserRole(MainMenu::CMainWindow::Operator),
       mp_KeyBoardWidget(NULL),
       m_ButtonType(INVALID),
+      m_IpType(UNDEFINE),
       m_Password(""),
       mp_MessageDlg(NULL)
 {
@@ -99,17 +100,17 @@ CNetworkWidget::CNetworkWidget(QWidget *p_Parent)
     //mp_Ui->tableWidget->setMaximumSize(mp_TableWidget->width(), mp_TableWidget->height());
     mp_Ui->tableWidget->SetContent(mp_TableWidget);
 
-    mp_Ui->proxyIpAddressButton->setEnabled(false);
-    mp_Ui->saveProxyIpButton->setEnabled(false);
-    mp_Ui->serviceIpAddressButton->setEnabled(false);
-    mp_Ui->saveServiceIpButton->setEnabled(false);
+    mp_Ui->proxyIpAddressButton->setEnabled(true);
+    mp_Ui->saveProxyIpButton->setEnabled(true);
+    mp_Ui->serverIpAddressButton->setEnabled(true);
+    mp_Ui->saveServerIpButton->setEnabled(true);
 
     mp_Ui->firmwareCheckBoxLabel->setPixmap(QPixmap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png")));
 
-    CONNECTSIGNALSLOTGUI(mp_Ui->proxyIpAddressButton, clicked(), this, OnIPAddress());
-    CONNECTSIGNALSLOTGUI(mp_Ui->serviceIpAddressButton, clicked(), this, OnIPAddress());
+    CONNECTSIGNALSLOTGUI(mp_Ui->proxyIpAddressButton, clicked(), this, OnProxyIPAddress());
+    CONNECTSIGNALSLOTGUI(mp_Ui->serverIpAddressButton, clicked(), this, OnServerIPAddress());
     CONNECTSIGNALSLOTGUI(mp_Ui->saveProxyIpButton, clicked(), this, OnProxyIpSave());
-    CONNECTSIGNALSLOTGUI(mp_Ui->saveServiceIpButton, clicked(), this, OnServiceIpSave());
+    CONNECTSIGNALSLOTGUI(mp_Ui->saveServerIpButton, clicked(), this, OnServerIpSave());
     CONNECTSIGNALSLOTGUI(mp_Ui->downloadFirmwareBtn, clicked(), this, OnDownloadFirmware());
 
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
@@ -210,17 +211,40 @@ void CNetworkWidget::UpdateIpAddress(QString IpAddress)
 
 /****************************************************************************/
 /*!
- *  \brief Shows the on screen keyboard to Enter IP Address
+ *  \brief Shows the on screen keyboard to Enter Proxy IP Address
  */
 /****************************************************************************/
-void CNetworkWidget::OnIPAddress()
+void CNetworkWidget::OnProxyIPAddress()
+{
+    EnterIPAddress(PROXY_IP);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Shows the on screen keyboard to Enter Server IP Address
+ */
+/****************************************************************************/
+void CNetworkWidget::OnServerIPAddress()
+{
+    EnterIPAddress(SERVER_IP);
+}
+
+void CNetworkWidget::EnterIPAddress(IPType_t IpType)
 {
     m_ButtonType = IP_ADDRESS_BTN_CLICKED;
+    m_IpType = IpType;
     if (mp_KeyBoardWidget) {
-        mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("ServiceUpdates::CNetworkSettingsWidget",
-                                                  "Enter Proxy IP Address", 0, QApplication::UnicodeUTF8));
         mp_KeyBoardWidget->SetPasswordMode(false);
-        mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyIpAddressButton->text());
+        if (IpType == PROXY_IP) {
+            mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("ServiceUpdates::CNetworkSettingsWidget",
+                                                      "Enter Proxy IP Address", 0, QApplication::UnicodeUTF8));
+            mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyIpAddressButton->text());
+        }
+        else if (IpType == SERVER_IP){
+            mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("ServiceUpdates::CNetworkSettingsWidget",
+                                                      "Enter Server IP Address", 0, QApplication::UnicodeUTF8));
+            mp_KeyBoardWidget->SetLineEditContent(mp_Ui->serverIpAddressButton->text());
+        }
         mp_KeyBoardWidget->SetValidation(true);
         mp_KeyBoardWidget->DisplayNumericKeyBoard();
         // enable the input mask so that user can easily fill the ip address
@@ -254,10 +278,18 @@ void CNetworkWidget::OnOkClicked(QString EnteredText)
     switch(m_ButtonType) {
 
     case IP_ADDRESS_BTN_CLICKED:
-        if (m_ProxyIp.length() == 0) {
-           m_ProxyIp = EnteredText;
+        if (m_IpType == PROXY_IP) {
+            if (m_ProxyIp.length() == 0) {
+                m_ProxyIp = EnteredText;
+            }
+            mp_Ui->proxyIpAddressButton->setText(m_ProxyIp);
         }
-        mp_Ui->proxyIpAddressButton->setText(m_ProxyIp);
+        else if (m_IpType = SERVER_IP) {
+            if (m_ServerIp.length() == 0) {
+                m_ServerIp = EnteredText;
+            }
+            mp_Ui->serverIpAddressButton->setText(m_ServerIp);
+        }
         break;
 
     default:
@@ -275,7 +307,8 @@ void CNetworkWidget::OnOkClicked(QString EnteredText)
 void CNetworkWidget::OnProxyIpSave()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_IPADDRESS_UPDATED);
-    emit SaveIPAddress(mp_Ui->proxyIpAddressButton->text());
+    m_IpType = PROXY_IP;
+    emit SaveIPAddress(mp_Ui->proxyIpAddressButton->text(), PROXY_IP);
 }
 
 /****************************************************************************/
@@ -283,10 +316,11 @@ void CNetworkWidget::OnProxyIpSave()
  *  \brief This slot is called when Service ip Save button is clicked.
  */
 /****************************************************************************/
-void CNetworkWidget::OnServiceIpSave()
+void CNetworkWidget::OnServerIpSave()
 {
     Global::EventObject::Instance().RaiseEvent(EVENT_SERVICE_IPADDRESS_UPDATED);
-    emit SaveIPAddress(mp_Ui->serviceIpAddressButton->text());
+    m_IpType = SERVER_IP;
+    emit SaveIPAddress(mp_Ui->serverIpAddressButton->text(), SERVER_IP);
 }
 
 /****************************************************************************/
@@ -336,8 +370,7 @@ void CNetworkWidget::KeyBoardValidateEnteredString(QString Value)
     bool IsIPAddressValid = false;
     int IPAddressNotValidNumber = 0;
     EnteredString  = Value;
-    m_ProxyIp = "";
-    m_ServiceIp = "";
+    QString IPAddress = "";
     if (mp_MessageDlg) {
         delete mp_MessageDlg;
         mp_MessageDlg = NULL;
@@ -368,13 +401,13 @@ void CNetworkWidget::KeyBoardValidateEnteredString(QString Value)
                 // convert the value to integer
                 qint32 AddressNumber = AddressNumberString.trimmed().toInt(&Result, 10);
                 if (AddressNumberString.trimmed().length() == 1) {
-                    m_ProxyIp += "00" + AddressNumberString.trimmed();
+                    IPAddress += "00" + AddressNumberString.trimmed();
                 }
                 else if (AddressNumberString.trimmed().length() == 2) {
-                    m_ProxyIp += "0" + AddressNumberString.trimmed();
+                    IPAddress += "0" + AddressNumberString.trimmed();
                 }
                 else {
-                    m_ProxyIp += AddressNumberString.trimmed();
+                    IPAddress += AddressNumberString.trimmed();
                 }
                 if (Result) {
                     // check the ip address number
@@ -395,12 +428,19 @@ void CNetworkWidget::KeyBoardValidateEnteredString(QString Value)
             else {
                 // increment the count if the Ip number is zero
                 IPAddressNotValidNumber++;
-                m_ProxyIp += "000";
+                IPAddress += "000";
             }
             // append dot
             if ((SplitCount + 1) != EnteredString.split(".").length()) {
-                m_ProxyIp += ".";
+                IPAddress += ".";
             }
+        }
+
+        if (m_IpType == PROXY_IP) {
+            m_ProxyIp = IPAddress;
+        }
+        else if (m_IpType == SERVER_IP) {
+            m_ServerIp = IPAddress;
         }
 
         // first number should not be 0 (0.0.0.0)
@@ -441,15 +481,15 @@ void CNetworkWidget::SetSaveButtonStatus()
     if (mp_MainWindow->GetSaMUserMode() == QString("Service")) {
         mp_Ui->proxyIpAddressButton->setEnabled(false);
         mp_Ui->saveProxyIpButton->setEnabled(false);
-        mp_Ui->serviceIpAddressButton->setEnabled(false);
-        mp_Ui->saveServiceIpButton->setEnabled(false);
+        mp_Ui->serverIpAddressButton->setEnabled(false);
+        mp_Ui->saveServerIpButton->setEnabled(false);
         mp_Ui->downloadFirmwareBtn->setEnabled(false);
     }
     else if (mp_MainWindow->GetSaMUserMode() == QString("Manufacturing")) {
         mp_Ui->proxyIpAddressButton->setEnabled(true);
         mp_Ui->saveProxyIpButton->setEnabled(true);
-        mp_Ui->serviceIpAddressButton->setEnabled(true);
-        mp_Ui->saveServiceIpButton->setEnabled(true);
+        mp_Ui->serverIpAddressButton->setEnabled(true);
+        mp_Ui->saveServerIpButton->setEnabled(true);
         mp_Ui->downloadFirmwareBtn->setEnabled(true);
     }
 }
@@ -567,27 +607,21 @@ void CNetworkWidget::RetranslateUI()
                                              "Network", 0, QApplication::UnicodeUTF8));
     mp_Ui->saveProxyIpButton->setText(QApplication::translate("Settings::CNetworkSettingsWidget",
                                 "Save", 0, QApplication::UnicodeUTF8));
-    mp_Ui->saveServiceIpButton->setText(QApplication::translate("Settings::CNetworkSettingsWidget",
+    mp_Ui->saveServerIpButton->setText(QApplication::translate("Settings::CNetworkSettingsWidget",
                                 "Save", 0, QApplication::UnicodeUTF8));
 
     if (mp_KeyBoardWidget) {
         if (m_ButtonType == IP_ADDRESS_BTN_CLICKED) {
-            mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Settings::CNetworkSettingsWidget",
+            if (m_IpType == PROXY_IP) {
+                mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Settings::CNetworkSettingsWidget",
                                                                               "Enter Proxy IP Address", 0, QApplication::UnicodeUTF8));
+            }
+            else if (m_IpType == SERVER_IP) {
+                mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("Settings::CNetworkSettingsWidget",
+                                                                              "Enter Server IP Address", 0, QApplication::UnicodeUTF8));
+            }
         }
     }
-
-    //m_Model.clear();
-    //AddItem(QApplication::translate("ServiceUpdates::CNetworkSettingsWidget",
-    //                                     "Host reachable", 0, QApplication::UnicodeUTF8));
-    //AddItem(QApplication::translate("ServiceUpdates::CNetworkSettingsWidget",
-    //                                     "Service available", 0, QApplication::UnicodeUTF8));
-    //AddItem(QApplication::translate("ServiceUpdates::CNetworkSettingsWidget",
-     //                                    "Access rights", 0, QApplication::UnicodeUTF8));
-
-
-    //mp_TableWidget->horizontalHeader()->resizeSection(0, 230);       // 0 => Index  450 => Size
-    //mp_TableWidget->horizontalHeader()->resizeSection(1, 160);        // 1 => Index  50 => Size
 }
 
 } // end namespace Settings
