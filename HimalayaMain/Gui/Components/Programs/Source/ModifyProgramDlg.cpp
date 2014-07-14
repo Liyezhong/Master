@@ -71,7 +71,8 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
                                      m_strClose(tr("Close")),
                                      m_strCancel(tr("Cancel")),
                                      m_strDelProgramStep(tr("Do you really want to delete the selected program step?")),
-                                     m_strEnterValidName(tr("Please enter a valid Program Name"))
+                                     m_strEnterValidName(tr("Please enter a valid Program Name")),
+                                     m_strSeclectIcon(tr("Please select a Program Icon"))
 
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -508,21 +509,27 @@ void CModifyProgramDlg::OnSave()
         (void) mp_MessageDlg->exec();
         return;
     }
-
     m_Program.SetName(mp_Ui->btnPrgName->text());
+
     if (m_ButtonType == EDIT_BTN_CLICKED) {
         emit UpdateProgram(m_Program);
     }
     else if (m_ButtonType == COPY_BTN_CLICKED) {
-            m_Program.SetFavorite(false);
-            m_Program.SetID(m_ProgramListClone.GetNextFreeProgID(true));
-            emit AddProgram(m_Program);
+        m_Program.SetFavorite(false);
+        m_Program.SetID(m_ProgramListClone.GetNextFreeProgID(true));
+        emit AddProgram(m_Program);
     }
     else {
+        if (m_Icon.isEmpty()) {
+            mp_MessageDlg->SetText(m_strSeclectIcon);
+            (void) mp_MessageDlg->exec();
+            return;
+        }
+
         mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
         mp_NewProgram->SetIcon(m_Icon);
-            mp_NewProgram->SetID(m_ProgramListClone.GetNextFreeProgID(true));
-             emit AddProgram(*mp_NewProgram);
+        mp_NewProgram->SetID(m_ProgramListClone.GetNextFreeProgID(true));
+        emit AddProgram(*mp_NewProgram);
     }
 }
 
@@ -919,6 +926,7 @@ void CModifyProgramDlg::RetranslateUI()
    m_strCancel = QApplication::translate("Programs::CModifyProgramDlg", "Cancel", 0, QApplication::UnicodeUTF8);
    m_strDelProgramStep = QApplication::translate("Programs::CModifyProgramDlg", "Do you really want to delete the selected program step?", 0, QApplication::UnicodeUTF8);
    m_strEnterValidName = QApplication::translate("Programs::CModifyProgramDlg", "Please enter a valid Program Name", 0, QApplication::UnicodeUTF8);
+   m_strSeclectIcon = QApplication::translate("Programs::CModifyProgramDlg", "Please select a Program Icon", 0, QApplication::UnicodeUTF8);
    m_strClose = QApplication::translate("Programs::CModifyProgramDlg", "Close", 0, QApplication::UnicodeUTF8);
 
 }
