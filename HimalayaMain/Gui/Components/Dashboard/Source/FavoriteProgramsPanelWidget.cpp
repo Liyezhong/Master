@@ -5,6 +5,7 @@
 #include "Global/Include/Utils.h"
 #include "Dashboard/Include/DashboardDateTimeWidget.h"
 #include "Core/Include/Startup.h"
+#include "Core/Include/GlobalHelper.h"
 
 #include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
 
@@ -104,6 +105,7 @@ void CFavoriteProgramsPanelWidget::UpdateProgram(DataManager::CProgram &Program)
             break;
         }
         else {
+            Core::CGlobalHelper::UnselectProgram();
             emit UpdateFavProgram();
         }
     }
