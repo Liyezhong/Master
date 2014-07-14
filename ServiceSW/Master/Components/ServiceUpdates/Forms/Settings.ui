@@ -30,7 +30,7 @@
      </property>
      <widget class="Settings::CLanguageWidget" name="pageLanguageSettings"/>
      <widget class="Settings::CDateTimeWidget" name="pageDateTimeSettings"/>
-     <widget class="Settings::CNetworkSettingsWidget" name="pageNetworkSettings"/>
+     <widget class="CNetworkWidget" name="pageNetworkSettings"/>
     </widget>
    </item>
   </layout>
@@ -55,9 +55,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>Settings::CNetworkSettingsWidget</class>
+   <class>CNetworkWidget</class>
    <extends>QWidget</extends>
-   <header>Settings/Include/NetworkSettingsWidget.h</header>
+   <header>ServiceUpdates/Include/NetworkWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
