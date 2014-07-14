@@ -97,6 +97,15 @@ signals:
 
     /****************************************************************************/
     /*!
+     *  \brief Signal for pressure calibration
+     *
+     */
+    /****************************************************************************/
+    void PressureCalibration();
+
+
+    /****************************************************************************/
+    /*!
      *  \brief Signal for pressure checking
      *
      */
@@ -147,6 +156,7 @@ private:
         TEMPSENSORS_CHECKING,
         RT_TEMCTRL_OFF,
         RV_POSITION_CHECKING,
+		PRESSURE_CALIBRATION,
         PRESSURE_SEALING_CHECKING,
         BOTTLES_CHECKING,
         MOVE_TO_TUBE
@@ -156,6 +166,10 @@ private:
 	quint32	m_RVPositioinChkSeq;									//!< Sequence of RV position checking 
     quint32	m_PressureChkSeq;										//!< Sequence of Pressure test and Sealing checking
     qint64  m_SetPrressureTime;                                     //!< Time for pressure checking
+    quint32 m_PressureCalibrationSeq;                               //!< Sequence of Pressure Calibration
+    qreal   m_PressureDriftOffset;                                  //!< Pressure calibration offset
+    quint8  m_PressureCalibrationCounter;                           //!< Counter of Pressure Calibratoin
+    qint64  m_ReleasePressureTime;                                  //!< Time of releasing pressure
     quint32 m_PressureSealingChkSeq;                                 //!< Sequence of Sealing checking
     bool    m_BottleChkFlag;                                        //!< Flag to indicate sending out command or geting command response.
     quint32 m_MoveToTubeSeq;                                        //!< Sequence of moving to tube

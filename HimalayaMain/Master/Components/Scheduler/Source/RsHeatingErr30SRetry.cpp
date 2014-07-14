@@ -145,7 +145,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow()
         }
         else
         {
-            if (false ==  mp_SchedulerController->CheckTempModulesCurrent(3))
+            if (false ==  mp_SchedulerController->CheckSlaveTempModulesCurrentRange(3))
             {
                 m_Counter++;
                 if (10 == m_Counter)

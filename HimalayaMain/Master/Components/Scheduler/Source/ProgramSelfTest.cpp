@@ -23,6 +23,7 @@
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Commands/Include/CmdRVReqMoveToRVPosition.h"
 #include "Scheduler/Commands/Include/CmdALPressure.h"
+#include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 #include "Scheduler/Commands/Include/CmdIDSealingCheck.h"
 
 using namespace DeviceControl;
@@ -37,6 +38,7 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     mp_TemperatureSensorsChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_RTTempCtrlOff = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_RVPositionChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+	mp_PressureCalibration = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_PressureSealingChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_BottlesChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_MoveToTube = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
@@ -45,7 +47,8 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     mp_Initial->addTransition(this, SIGNAL(TemperatureSensorsChecking()), mp_TemperatureSensorsChecking.data());
     mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(RTTemperatureControlOff()), mp_RTTempCtrlOff.data());
     mp_RTTempCtrlOff->addTransition(this,SIGNAL(RVPositionChecking()), mp_RVPositionChecking.data());
-    mp_RVPositionChecking->addTransition(this, SIGNAL(PressureSealingChecking()), mp_PressureSealingChecking.data());
+	mp_RVPositionChecking->addTransition(this, SIGNAL(PressureCalibration()), mp_PressureCalibration.data());
+    mp_PressureCalibration->addTransition(this,SIGNAL(PressureSealingChecking()), mp_PressureSealingChecking.data());
     mp_PressureSealingChecking->addTransition(this, SIGNAL(BottlesChecking()), mp_BottlesChecking.data());
     mp_BottlesChecking->addTransition(this,SIGNAL(MoveToTube()), mp_MoveToTube.data());
     mp_MoveToTube->addTransition(this, SIGNAL(TasksDone()), mp_Initial.data());
@@ -57,6 +60,9 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     m_RVPositioinChkSeq = 0;
     m_PressureChkSeq = 0;
     m_SetPrressureTime = 0;
+    m_PressureCalibrationSeq = 0;
+    m_PressureCalibrationCounter = 0;
+	m_PressureDriftOffset = 0.0;
     m_PressureSealingChkSeq = 0;
     m_BottleChkFlag = true;
     m_MoveToTubeSeq = 0;
@@ -87,6 +93,10 @@ CProgramSelfTest::StateList_t CProgramSelfTest::GetCurrentState(QSet<QAbstractSt
     {
         currentState = RV_POSITION_CHECKING;
     }
+    else if(statesList.contains(mp_PressureCalibration.data()))
+    {
+        currentState = PRESSURE_CALIBRATION;
+    }
     else if(statesList.contains(mp_PressureSealingChecking.data()))
     {
         currentState = PRESSURE_SEALING_CHECKING;
@@ -106,6 +116,7 @@ CProgramSelfTest::StateList_t CProgramSelfTest::GetCurrentState(QSet<QAbstractSt
 void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
     StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
+	qreal currentPressure = 0.0;
 
 	switch (currentState)
 	{
@@ -163,7 +174,8 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     mp_SchedulerThreadController->LogDebug("Pre-Test: RVReqMoveToInitialPosition passed");
-                    emit PressureSealingChecking();
+					m_RVPositioinChkSeq = 0; //reset
+					emit PressureSealingChecking();
                 }
                 else
                 {
@@ -176,7 +188,72 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             }
         }
         break;
-
+    case PRESSURE_CALIBRATION:
+        if (0 == m_PressureCalibrationSeq)
+        {
+            mp_SchedulerThreadController->LogDebug(QString("Pre-Test: Enter Pressure Calibration"));
+            mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdALReleasePressure(500, mp_SchedulerThreadController));
+            m_PressureCalibrationSeq++;
+        }
+        else if (1 == m_PressureCalibrationSeq)
+        {
+            if ("Scheduler::ALReleasePressure" == cmdName)
+            {
+                if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                {
+                    m_PressureCalibrationSeq++;
+                    m_ReleasePressureTime = QDateTime::currentMSecsSinceEpoch();
+                }
+                else
+                {
+                    mp_SchedulerThreadController->SendOutErrMsg(retCode);
+                }
+            }
+        }
+        else if (2 == m_PressureCalibrationSeq)
+        {
+            if ((QDateTime::currentMSecsSinceEpoch() - m_ReleasePressureTime) >= 20*1000)
+            {
+                m_PressureCalibrationSeq++;
+            }
+            else
+            {
+                // Do nothing, just wait for time out
+            }
+        }
+        else if (3 == m_PressureCalibrationSeq)
+        {
+            currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->ALGetRecentPressure();
+            mp_SchedulerThreadController->LogDebug(QString("Pre-Test: Pressure Calibration, current pressure is :%1f").arg(currentPressure));
+            if (qAbs(currentPressure) > 1.5) //Reitry, at most 3 times
+            {
+                m_PressureCalibrationSeq = 0;
+                m_PressureCalibrationCounter++;
+                if (3 == m_PressureCalibrationCounter)
+                {
+                    mp_SchedulerThreadController->LogDebug("Pre-Test: Pressure Calibration failed");
+                    mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_INTERNAL_ERR);
+                }
+                else
+                {
+                    mp_SchedulerThreadController->LogDebug("Pre-Test: Pressure Calibration,  pressure value is too large, retry");
+                }
+            }
+            else if (qAbs(currentPressure) < 0.2) // Calibration is Not needed
+            {
+                mp_SchedulerThreadController->LogDebug("Pre-Test: Pressure Calibration passed");
+                m_PressureCalibrationSeq = 0;
+                emit PressureSealingChecking();
+            }
+            else //offset the calibration
+            {
+                m_PressureDriftOffset = m_PressureDriftOffset - currentPressure;
+                mp_SchedulerThreadController->LogDebug(QString("Pre-Test: Pressure Calibration, offset the calibration and retry, %1").arg(
+                mp_SchedulerThreadController->GetSchedCommandProcessor()->ALSetPressureDrift(-m_PressureDriftOffset);
+                m_PressureCalibrationSeq = 0;
+            }
+        }
+        break;
     case PRESSURE_SEALING_CHECKING:
         if (0 == m_PressureSealingChkSeq)
         {
@@ -192,10 +269,12 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
                     mp_SchedulerThreadController->LogDebug("Pre-Test: IDSealingCheck passed");
+					m_PressureSealingChkSeq = 0;
                     emit BottlesChecking();
                 }
                 else
                 {
+					mp_SchedulerThreadController->LogDebug(QString("Return code is: %1").arg(retCode));
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
             }
@@ -244,6 +323,7 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
 
             mp_SchedulerThreadController->LogDebug("Pre-Test: Moving to tube passed");
             mp_SchedulerThreadController->LogDebug("Pre-Test Done");
+			m_MoveToTubeSeq = 0;
             emit TasksDone();
         }
         else
@@ -258,6 +338,7 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         break;
     default:
+		mp_SchedulerThreadController->LogDebug("Pre-Test: Get the default branch");
         break;
 	}
 }

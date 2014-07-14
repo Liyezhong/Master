@@ -178,8 +178,8 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
             {
                 if (RETORT != mp_SchedulerController->GetFailerHeaterType())
                 {
-                    reportError1 = mp_SchedulerController->GetSchedCommandProcessor()->GetSlaveModuleReportError("Retort", RT_BOTTOM);
-                    reportError2 = mp_SchedulerController->GetSchedCommandProcessor()->GetSlaveModuleReportError("Retort", RT_SIDE);
+                    reportError1 = mp_SchedulerController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE,"Retort", RT_BOTTOM);
+                    reportError2 = mp_SchedulerController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE,"Retort", RT_SIDE);
                     if (reportError1.instanceID != 0 && (now - reportError1.errorTime.toMSecsSinceEpoch()) <= 3*1000)
                     {
                         emit TasksDone(false);
@@ -190,7 +190,7 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
                     }
                 }
             }
-            if (false == mp_SchedulerController->CheckTempModulesCurrent(3))
+            if (false == mp_SchedulerController->CheckSlaveTempModulesCurrentRange(3))
             {
                 emit TasksDone(false);
             }
