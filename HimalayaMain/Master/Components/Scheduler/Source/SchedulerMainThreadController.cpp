@@ -836,7 +836,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         else if(PSSM_READY_TO_TUBE_BEFORE == stepState)
         {
             // get current step tube position here
-            RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+            RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
             if(m_PositionRV == targetPos)
             {
                 if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
@@ -848,8 +848,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 else
                 {
                     LogDebug(QString("Program Step Hit Tube(before) %1").arg(targetPos));
-                    RVPosition_t targetPosition = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
-                    UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPosition));
+                    UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
                     m_SchedulerMachine->NotifyHitTubeBefore();
                 }
             }
