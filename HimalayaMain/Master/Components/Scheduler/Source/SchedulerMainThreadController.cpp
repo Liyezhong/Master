@@ -693,21 +693,19 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
                 else
                 {
-                    RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
                     if(!m_IsCleaningMoveRV)
                     {
+                        RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
                         if(RV_UNDEF != targetPos)
                         {
                             m_IsCleaningMoveRV = true;
                             this->MoveRV(0);
                         }
                     }
-                    else if(m_PositionRV == targetPos)
+                    else if(IsRVRightPosition(0))
                     {
                         m_IsCleaningMoveRV = false;
                         m_IsCleaningRun = true;
-                        LogDebug(QString("Cleaning Program Step Hit tube %1").arg(targetPos));
-                        UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
                         m_SchedulerMachine->SendRunCleaning();
                     }
                     else
@@ -778,9 +776,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         else if(PSSM_RV_MOVE_TO_SEAL == stepState)
         {
             RVPosition_t targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
-            if(m_PositionRV == targetPos)
+            if(IsRVRightPosition(1))
             {
-                LogDebug(QString("Program Step Hit Seal %1").arg(targetPos));
                 if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
                 {
                     m_SchedulerMachine->NotifyPause(PSSM_RV_MOVE_TO_SEAL);
@@ -789,7 +786,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
                 else
                 {
-                    UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
                     m_SchedulerMachine->NotifyRVMoveToSealReady();
                 }
             }
@@ -894,19 +890,15 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
         else if(PSSM_RV_MOVE_TO_TUBE == stepState)
         {
-            RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
-            if(m_PositionRV == targetPos)
+            if(IsRVRightPosition(0))
             {
                 if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
                 {
                     m_SchedulerMachine->NotifyPause(PSSM_RV_MOVE_TO_TUBE);
                     m_PauseToBeProcessed = false;
-                    //TODO DequeueNonDeviceCommand();
                 }
                 else
                 {
-                    LogDebug(QString("Program Step Hit Tube(%1)").arg(targetPos));
-                    UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
                     m_SchedulerMachine->NotifyRVMoveToTubeReady();
                 }
             }
@@ -975,20 +967,15 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_RV_POS_CHANGE == stepState)
         {
-            // get current step tube position here
-            RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
-            if(m_PositionRV == targetPos)
+            if(IsRVRightPosition(2))
             {
                 if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
                 {
                     m_SchedulerMachine->NotifyPause(PSSM_RV_POS_CHANGE);
                     m_PauseToBeProcessed = false;
-                    //TODO DequeueNonDeviceCommand();
                 }
                 else
                 {
-                    LogDebug(QString("Program Step Hit Tube(%1)").arg(targetPos));
-                    UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
                     m_SchedulerMachine->NotifyStepFinished();
                 }
             }
@@ -999,13 +986,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
                     {
                         //fail to move to seal, raise event here
-                        LogDebug(QString("Program Step Move to tube(before)%1 internal steps retry").arg(targetPos));
                         RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, m_CurrentScenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
                     else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
                     {
-                        LogDebug(QString("Program Step Move to tube(before)%1 exceed upper limit").arg(targetPos));
                         RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT, m_CurrentScenario, true);
                         m_SchedulerMachine->SendErrorSignal();
                     }
@@ -2436,6 +2421,40 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
     }
 }
 
+bool SchedulerMainThreadController::IsRVRightPosition(qint16 type)
+{
+    RVPosition_t targetPos = RV_UNDEF;
+    bool ret = false;
+
+    if(0 == type )
+    {
+        targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+    }
+    else if(1 == type)
+    {
+        targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+    }
+    else if(2 == type)
+    {
+        targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
+    }
+
+    if (m_PositionRV == targetPos)
+    {
+        ret = true;
+        if(1 == type)
+        {
+            LogDebug(QString("RV hit seal position: %1").arg(targetPos));
+        }
+        else
+        {
+            LogDebug(QString("RV hit tube position: %1").arg(targetPos));
+        }
+        UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
+    }
+    return ret;
+}
+
 void SchedulerMainThreadController::MoveRV(qint16 type)
 {
     CmdRVReqMoveToRVPosition* cmd = new CmdRVReqMoveToRVPosition(500, this);
@@ -2604,7 +2623,7 @@ bool SchedulerMainThreadController::RestartFailedHeaters()
     return false;
 }
 
-bool SchedulerMainThreadController::CheckTempModulesCurrent(quint8 interval)
+bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 interval)
 {
     ReportError_t reportError1;
     memset(&reportError1, 0, sizeof(reportError1));
@@ -2621,28 +2640,28 @@ bool SchedulerMainThreadController::CheckTempModulesCurrent(quint8 interval)
     switch (heaterType)
     {
     case LEVELSENSOR:
-        reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("LA", AL_LEVELSENSOR);
+        reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE,"LA", AL_LEVELSENSOR);
         if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
         {
             return false;
         }
         break;
     case LATUBE1:
-         reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("LA", AL_TUBE1);
+         reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE1);
          if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
          {
              return false;
          }
          break;
     case LATUBE2:
-        reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("LA", AL_TUBE2);
+        reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE2);
         if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
         {
             return false;
         }
         break;
     case RV:
-        reportError1 =  m_SchedulerCommandProcessor->GetSlaveModuleReportError("RV");
+        reportError1 =  m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV");
         if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
         {
             return false;
@@ -2651,10 +2670,10 @@ bool SchedulerMainThreadController::CheckTempModulesCurrent(quint8 interval)
         // Retort and Oven are in the same card, so any heater goes wrong, we will stop all the others.
     case RETORT:
     case OVEN:
-        reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("Retort", RT_BOTTOM);
-        reportError2 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("Retort", RT_SIDE);
-        reportError3 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("Oven", OVEN_TOP);
-        reportError4 = m_SchedulerCommandProcessor->GetSlaveModuleReportError("Oven", OVEN_BOTTOM);
+        reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_BOTTOM);
+        reportError2 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_SIDE);
+        reportError3 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_TOP);
+        reportError4 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_BOTTOM);
         if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
         {
             return false;
@@ -2828,169 +2847,6 @@ RVPosition_t SchedulerMainThreadController::GetRVSealPositionByStationID(const Q
         }
     }
     return ret;
-}
-
-bool SchedulerMainThreadController::SelfTest(ReturnCode_t RetCode)
-{
-    Q_UNUSED(RetCode);
-#if 0
-    bool retValue = false;
-    SelfTestStateMachine_t selfTestState = mp_SelfTestStateMachine->GetCurrentState();
-    if(SELF_TEST_INIT == selfTestState)
-    {
-        bool ok;
-        bool goon = false;
-		LOG_STR(STR_PROGRAM_SELFTEST_START);
-        LOG_STR(STR_PROGRAM_SELFTEST_CHECK_TEMP_PRESSURE);
-        // check oven heat time
-        qreal parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "Oven", "oven heating",  "HeatingOvertime", ok);
-        if(ok)
-        {
-             goon |= (GetOvenHeatingTime() > parameter);
-        }
-
-        // check temperature
-        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "Rotary Valve", "Heating",  "TemperatureOverrange", ok);
-        if(ok)
-        {
-             goon |= (m_TempRV1 < parameter);
-             goon |= (m_TempRV2 < parameter);
-        }
-        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "Oven", "oven heating",  "TemperatureOverrange", ok);
-        if(ok)
-        {
-             goon |= (m_TempOvenTop < parameter);
-             goon |= (m_TempOvenBottom < parameter);
-        }
-        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "Retort", "Retort heating",  "TemperatureOverrange", ok);
-        if(ok)
-        {
-             goon |= (m_TempRTBottom < parameter);
-             goon |= (m_TempRTSide < parameter);
-        }
-        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "Retort", "level sensor",  "TemperatureOverrange", ok);
-        if(ok)
-        {
-             goon |= (m_TempALLevelSensor < parameter);
-        }
-        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "LA", "HeatingOfRetortToRVTube",  "TemperatureOverrange", ok);
-        if(ok)
-        {
-             goon |= (m_TempALTube1 < parameter);
-        }
-        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "LA", "HeatingOfRetortToRVWaxTrap",  "TemperatureOverrange", ok);
-        if(ok)
-        {
-             goon |= (m_TempALTube2 < parameter);
-        }
-        // check pressure
-        parameter = mp_DataManager->GetProgramSettings()->GetParameterValue( "LA", "Release",  "AmbientThresholdPressure", ok);
-        if(ok)
-        {
-             goon |= (m_PressureAL < parameter);
-             goon |= (m_PressureAL > (parameter * (-1)));
-        }
-        // check Rotary valve's position
-        goon |= (m_PositionRV != RV_UNDEF);
-
-        if(goon)
-        {
-            mp_SelfTestStateMachine->NotifyTempsReady();
-        }
-        else
-        {
-            //todo: raise error
-        }
-    }
-    else if(SELF_TEST_TEMP_READY == selfTestState)
-    {
-        ProgramStationInfo_t stationInfo = m_ProgramStationList.dequeue();
-        RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
-        QString reagentGrpId = stationInfo.ReagentGroupID;
-
-        CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_IDeviceProcessing, this);
-        //todo: get delay time here
-        cmd->SetReagentGrpID(reagentGrpId);
-        cmd->SetTubePos(tubePos);
-        m_SchedulerCommandProcessor->pushCmd(cmd);
-        mp_SelfTestStateMachine->NotifyCheckStation();
-
-        LOG_STR_ARG(STR_PROGRAM_SELFTEST_CHECK_BOTTLE, Global::FmtArgs()<<stationInfo.StationID);
-
-    }
-    else if(SELF_TEST_BOTTLE_CHECKING == selfTestState)
-    {
-        quint32 resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
-        if( DCL_ERR_DEV_BOTTLE_CHECK_OK == RetCode)
-        {
-            mp_SelfTestStateMachine->NotifyGotCheckStationResult();
-            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_OK;
-        }
-        else if( DCL_ERR_DEV_BOTTLE_CHECK_NOT_FULL == RetCode)
-        {
-            mp_SelfTestStateMachine->NotifyGotCheckStationResult();
-            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_NOT_FULL;
-        }
-        else if( DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_BLOCKAGE == RetCode)
-        {
-            mp_SelfTestStateMachine->NotifyGotCheckStationResult();
-            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_BLOCKAGE;
-        }
-        else if(DCL_ERR_DEV_LA_BOTTLECHECK_FAILED_EMPTY == RetCode)
-        {
-            mp_SelfTestStateMachine->NotifyGotCheckStationResult();
-            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_EMPTY;
-        }
-        else if(DCL_ERR_DEV_BOTTLE_CHECK_ERROR == RetCode)
-        {
-            mp_SelfTestStateMachine->NotifyGotCheckStationResult();
-            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_ERROR;
-        }
-        else if(DCL_ERR_DEV_LA_BOTTLECHECK_PRESSUREBUILD_FAILED == RetCode)
-        {
-            mp_SelfTestStateMachine->NotifyGotCheckStationResult();
-            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_TIMEOUT;
-        }
-        else if(DCL_ERR_UNDEFINED != RetCode)
-        {
-            qDebug()<<"DBG" << "Unexpected ret code: "<< RetCode;
-            resid = STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT_UNEXPECTED;
-        }
-        LOG_STR_ARG(STR_PROGRAM_SELFTEST_BOTTLE_CHECK_RESULT, Global::tTranslatableStringList()<<Global::TranslatableString(resid));
-    }
-    else if(SELF_TEST_BOTTLE_CHECK_FINISH == selfTestState)
-    {
-        if(m_ProgramStationList.size() > 0)
-        {
-            ProgramStationInfo_t stationInfo = m_ProgramStationList.dequeue();
-            RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
-            QString reagentGrpId = stationInfo.ReagentGroupID;
-
-            CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, mp_IDeviceProcessing, this);
-            cmd->SetReagentGrpID(reagentGrpId);
-            cmd->SetTubePos(tubePos);
-            m_SchedulerCommandProcessor->pushCmd(cmd);
-            mp_SelfTestStateMachine->NotifyCheckStation();
-        }
-        else
-        {
-            mp_SelfTestStateMachine->NotifyCheckStaionFinished();
-            LOG_STR(STR_PROGRAM_SELFTEST_FINISH);
-        }
-    }
-    else if(SELF_TEST_FINISH == selfTestState)
-    {
-        retValue = true;
-    }
-    else
-    {
-        //should not get here
-        qDebug()<<"DBG"<<"error when run Selftest state machine";
-    }
-
-    return retValue;
-#endif
-    return true;
 }
 
 qint64 SchedulerMainThreadController::GetOvenHeatingTime()

@@ -239,6 +239,13 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             mp_SchedulerThreadController->MoveRV(0);
             m_MoveToTubeSeq++;
         }
+        else if(mp_SchedulerThreadController->IsRVRightPosition(0))
+        {
+
+            mp_SchedulerThreadController->LogDebug("Pre-Test: Moving to tube passed");
+            mp_SchedulerThreadController->LogDebug("Pre-Test Done");
+            emit TasksDone();
+        }
         else
         {
             if ("Scheduler::RVReqMoveToRVPosition" == cmdName)
@@ -246,12 +253,6 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
                 {
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
-                }
-                else
-                {
-                    mp_SchedulerThreadController->LogDebug("Pre-Test: Moving to tube passed");
-                    mp_SchedulerThreadController->LogDebug("Pre-Test Done");
-                    emit TasksDone();
                 }
             }
         }

@@ -454,15 +454,7 @@ quint16 HeatingStrategy::CheckTemperatureOverTime(const QString& HeaterName, qre
 
 bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
 {
-    bool result = m_RTLevelSensor.OTCheckPassed
-            && m_RTTop.OTCheckPassed
-            && m_RTBottom.OTCheckPassed
-            && m_OvenTop.OTCheckPassed
-            && m_OvenBottom.OTCheckPassed
-            //&& m_RV_2_Outlet.OTCheckPassed
-            && m_LARVTube.OTCheckPassed
-            && m_LAWaxTrap.OTCheckPassed;
-    return result;
+    return  m_RTLevelSensor.OTCheckPassed;
 }
 bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)
 {

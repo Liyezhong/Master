@@ -546,9 +546,9 @@ void SchedulerCommandProcessor<DP>::ShutDownDevice()
 void SchedulerCommandProcessor<DP>::NotifySavedServiceInfor(const QString& deviceType)
     emit SigNotifySavedServiceInfor(deviceType);
 template <class DP>
-ReportError_t SchedulerCommandProcessor<DP>::GetSlaveModuleReportError(const QString& devName, quint32 sensorName)
+ReportError_t SchedulerCommandProcessor<DP>::GetSlaveModuleReportError(quint8 CANErrCode, const QString& devName, quint32 sensorName)
 {
-    return mp_IDeviceProcessing->GetSlaveModuleReportError(devName, sensorName);
+    return mp_IDeviceProcessing->GetSlaveModuleReportError(CANErrCode, devName, sensorName);
 }
 
 template <class DP>

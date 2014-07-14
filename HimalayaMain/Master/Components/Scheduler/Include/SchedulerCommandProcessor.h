@@ -161,7 +161,7 @@ public:
      *  \return ReportError_t
      */
     /****************************************************************************/
-    virtual ReportError_t GetSlaveModuleReportError(const QString& devName, quint32 sensorName=0) = 0;
+    virtual ReportError_t GetSlaveModuleReportError(quint8 CANErrCode, const QString& devName, quint32 sensorName=0) = 0;
 
 signals:
     /****************************************************************************/
@@ -464,7 +464,7 @@ public:
      *  \return ReportError_t
      */
     /****************************************************************************/
-    virtual ReportError_t GetSlaveModuleReportError(const QString& devName, quint32 sensorName=0);
+    virtual ReportError_t GetSlaveModuleReportError(quint8 CANErrCode, const QString& devName, quint32 sensorName=0);
 private:
 
     /****************************************************************************/

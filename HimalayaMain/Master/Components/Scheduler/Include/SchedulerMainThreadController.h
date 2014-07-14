@@ -658,14 +658,6 @@ private slots:
          void Abort();
          /****************************************************************************/
          /*!
-          *  \brief  Definition/Declaration of slot SelfTest
-          *
-          *  \return return from SelfTest
-          */
-         /****************************************************************************/
-         bool SelfTest(ReturnCode_t RetCode);
-         /****************************************************************************/
-         /*!
           *  \brief  Definition/Declaration of slot Pause
           */
          /****************************************************************************/
@@ -997,6 +989,15 @@ protected:
 
         /****************************************************************************/
         /*!
+         *  \brief  IS Rotary Valve target position
+         *  \param  type - type of RV moving (tubue position or sealing position)
+         *  \return bool
+         */
+        /****************************************************************************/
+        bool IsRVRightPosition(qint16 type);
+
+        /****************************************************************************/
+        /*!
          *  \brief  Protocol filling
          *  \param  void
          *  \return void
@@ -1024,7 +1025,6 @@ protected:
         /****************************************************************************/
         bool ShutdownFailedHeaters();
 
-
         /****************************************************************************/
         /*!
          *  \brief  Restart failed heaters
@@ -1037,13 +1037,13 @@ protected:
 
         /****************************************************************************/
         /*!
-         *  \brief  Check temperature modules current
+         *  \brief  Check temperature modules current range
          *  \param  interval - interval of time (in seconds)
          *  \return bool, ture - success, false -failure
          *
          */
         /****************************************************************************/
-        bool CheckTempModulesCurrent(quint8 interval);
+        bool CheckSlaveTempModulesCurrentRange(quint8 interval);
 
     public slots:
 
