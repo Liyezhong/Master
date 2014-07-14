@@ -1505,7 +1505,6 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
 
     CProgram* pProgram = const_cast<CProgram*>(pDataProgramList->GetProgram(ProgramID));
 
-//    ListOfIDs_t* stepIDs = pProgram->OrderedListOfStepIDs();
     bool isLastStep = false;
 
     m_ProgramStationList.clear();
@@ -1514,10 +1513,11 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
     ListOfIDs_t unusedStationIDs = pDashboardDataStationList->GetOrderedListOfDashboardStationIDs();
     QList<StationUseRecord_t> usedStations;
 
+    ProgramStationInfo_t stationInfo;
     for (int i = beginStep; i < pProgram->GetNumberOfSteps(); i++)
     {
         const CProgramStep* pProgramStep = pProgram->GetProgramStep(i);//use order index
-        ProgramStationInfo_t stationInfo;
+
         isLastStep = (i == (pProgram->GetNumberOfSteps() - 1));
         QString reagentID = pProgramStep->GetReagentID();
         stationInfo.ReagentGroupID =GetReagentGroupID(reagentID);
@@ -1526,6 +1526,13 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
         m_StationList.push_back(stationInfo.StationID);
     }
 
+    // Add two cleaning bottles for bottle check
+    stationInfo.ReagentGroupID = "RG7";
+    stationInfo.StationID = "12";
+    m_ProgramStationList.enqueue(stationInfo);
+    stationInfo.ReagentGroupID = "RG8";
+    stationInfo.StationID = "13";
+    m_ProgramStationList.enqueue(stationInfo);
     return true;
 }
 
@@ -2101,44 +2108,6 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
 
         SetFunctionModuleWork(&m_FunctionModuleStatusList, CANObjectKeyLUT::FCTMOD_AL_TUBE2TEMPCTRL, true);
 
-        bool isValueOK = false;
-        qreal pressureDrift = this->ReadPressureDrift();
-        if (qAbs(pressureDrift) < 2)
-            isValueOK = true;
-        else
-        {
-            bool ok = false;
-            pressureDrift = mp_DataManager->GetProgramSettings()->GetParameterValue("LA", "Base", "PressureDrift", ok);
-            if(ok && (pressureDrift != 0) && (qAbs(pressureDrift) < 2))
-            {
-                isValueOK = true;
-            }
-        }
-        if (isValueOK)
-        {
-            m_SchedulerCommandProcessor->ALSetPressureDrift(pressureDrift);
-        }
-        else
-        {
-            quint32 counter = 0;
-            pressureDrift = UNDEFINED_4_BYTE;
-            while((pressureDrift == UNDEFINED_4_BYTE)&&(counter <50))
-            {
-                pressureDrift= m_SchedulerCommandProcessor->ALGetRecentPressure();
-                usleep(1000);
-                counter++;
-            }
-            if(UNDEFINED_4_BYTE != pressureDrift)
-            {
-                mp_DataManager->GetProgramSettings()->SetParameterValue("LA", "Base", "PressureDrift", pressureDrift);
-                m_SchedulerCommandProcessor->ALSetPressureDrift(pressureDrift);
-            }
-            else
-            {
-                mp_DataManager->GetProgramSettings()->SetParameterValue("LA", "Base", "PressureDrift", 0);
-                m_SchedulerCommandProcessor->ALSetPressureDrift(0);
-            }
-        }
         CreateFunctionModuleStatusList(&m_FunctionModuleStatusList);
 
         // set state machine "init" to "idle" (David)
