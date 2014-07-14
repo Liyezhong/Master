@@ -73,11 +73,22 @@ void CFavoriteProgramsPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_M
 
 void CFavoriteProgramsPanelWidget::UpdateProgram(DataManager::CProgram &Program)
 {
+    qDebug() << "CFavoriteProgramsPanelWidget::UpdateProgram";
+
     for ( int j = 0; j < m_FavProgramIDs.count(); j++)
     {
         QString ProgramId = m_FavProgramIDs.at(j);
+
+        if (ProgramId == Program.GetID()) {
+            const QString name = Program.GetName();
+            DataManager::CProgram *prog = const_cast<DataManager::CProgram *>(mp_ProgramList->GetProgram(ProgramId));
+            prog->SetName(name);
+            QLabel* label = m_mapLabel.value(j);
+            label->setText(name);
+        }
+
         QString ProgramName = mp_ProgramList->GetProgram(ProgramId)->GetName();
-        if ( ProgramName == Program.GetName())
+        if (ProgramName == Program.GetName())
         {
             QString strIconName;
             if (Program.GetIcon().isEmpty())
@@ -90,11 +101,10 @@ void CFavoriteProgramsPanelWidget::UpdateProgram(DataManager::CProgram &Program)
             }
 
             m_ButtonGroup.button(j)->setIcon(QIcon(strIconName));
-
             break;
         }
         else {
-             emit UpdateFavProgram();
+            emit UpdateFavProgram();
         }
     }
 }
