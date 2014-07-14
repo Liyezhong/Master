@@ -231,6 +231,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Check if RV heating reaches target temperature or not
+     *  \param  void
+     *  \return bool, ture - passed, false - not yet
+     */
+    /****************************************************************************/
+    bool CheckRVHeatingStatus() const { return m_RV_2_Outlet.OTCheckPassed; }
+
+    /****************************************************************************/
+    /*!
      *  \brief  Check the status of all the temperature sensors
      *  \param  void
      *  \return bool

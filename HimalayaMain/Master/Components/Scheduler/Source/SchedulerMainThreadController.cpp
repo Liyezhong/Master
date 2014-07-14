@@ -111,12 +111,124 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_lastPVTime = 0;
     m_completionNotifierSent = false;
     QString ProgramStatusFilePath = "../Settings/ProgramStatus.txt";
-    m_RVPostionChange_Step = 0;
+    m_IsCleaningMoveRV = false;
+    m_IsCleaningRun = false;
     QFile ProgramStatusFile(ProgramStatusFilePath);
 
     if(!ProgramStatusFile.exists())
         CreateProgramStatusFile(&ProgramStatusFile);
     ReadProgramStatusFile(&ProgramStatusFile);
+}
+
+void SchedulerMainThreadController::CreateProgramStatusFile(QFile *p_StatusFile)
+{
+    if(p_StatusFile)
+    {
+        if(!p_StatusFile->open(QIODevice::ReadWrite | QIODevice::Text))
+        {
+
+    QString ProgramStatusFilePath = "../Settings/ProgramStatus.txt";
+    QFile ProgramStatusFile(ProgramStatusFilePath);
+    if(!ProgramStatusFile.exists())
+    {
+        CreateProgramStatusFile(&ProgramStatusFile);
+        ReadProgramStatusFile(&ProgramStatusFile);
+    }
+    else
+    {
+        ReadProgramStatusFile(&ProgramStatusFile);
+        UpdateProgramStatusFile("ProgramFinished", "No");
+    }
+            LogDebug("ProgramStatus file open failed");
+        }
+        QTextStream FileStream(p_StatusFile);
+        FileStream.setFieldAlignment(QTextStream::AlignLeft);
+        FileStream << "LastRVPosition:" << "1" << "\n" << left;
+        FileStream << "ProgramFinished:" << "No" << "\n" << left;
+        p_StatusFile->close();
+    }
+}
+
+void SchedulerMainThreadController::ReadProgramStatusFile(QFile *p_StatusFile)
+{
+    if(p_StatusFile)
+    {
+        if(!p_StatusFile->open(QIODevice::ReadWrite | QIODevice::Text))
+        {
+            LogDebug("Read programStatus file open failed");
+        }
+        QString Line;
+        QTextStream FileStream(p_StatusFile);
+        do{
+            Line = FileStream.readLine().simplified();
+            QString tmpString("0");
+            if(Line.contains("ProgramFinished", Qt::CaseInsensitive))
+            {
+                QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
+                if(LineFields.count() == 2)
+                {
+                    m_ProgramStatusFileMap.insert("ProgramFinished", LineFields[1]);
+                }
+            }
+            else if(Line.contains("LastRVPosition", Qt::CaseInsensitive))
+            {
+                QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
+                if(LineFields.count() == 2)
+                {
+                    m_ProgramStatusFileMap.insert("LastRVPosition", LineFields[1]);
+                }
+            }
+
+        }while(!Line.isNull());
+    }
+}
+
+void SchedulerMainThreadController::UpdateProgramStatusFile(const QString& key, const QString& value)
+{
+    QMap<QString, QString>::iterator iter = m_ProgramStatusFileMap.find(key);
+    if(iter != m_ProgramStatusFileMap.end())
+    {
+        iter.value() = value;
+    }
+
+    const QString ProgramStatusFilePath = Global::SystemPaths::Instance().GetSettingsPath() + "/ProgramStatus.txt";
+    QFile ProgramStatusFile(ProgramStatusFilePath);
+    if(!ProgramStatusFile.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Truncate))
+    {
+        LogDebug("open the ProgramStatusFilePath failed");
+    }
+    QTextStream FileStream(&ProgramStatusFile);
+    FileStream.setFieldAlignment(QTextStream::AlignLeft);
+
+    QMapIterator<QString, QString> StatusfileItr(m_ProgramStatusFileMap);
+    while (StatusfileItr.hasNext()) {
+        StatusfileItr.next();
+        QString Key1 = StatusfileItr.key();
+        QString Value1 = m_ProgramStatusFileMap.value(Key1);
+        FileStream << Key1 << ":" << Value1 << "\n" << left;
+    }
+    ProgramStatusFile.flush();
+    fsync(ProgramStatusFile.handle());
+    ProgramStatusFile.close();
+}
+
+QString SchedulerMainThreadController::getTheProgramStatus(const QString& key)
+{
+    QMap<QString, QString>::iterator iter = m_ProgramStatusFileMap.find(key);
+    if(iter != m_ProgramStatusFileMap.end())
+    {
+        return iter.value();
+    }
+    else
+    {
+        return "";
+    }
+}
+
+SchedulerMainThreadController::~SchedulerMainThreadController()
+{
+    delete m_SchedulerMachine;
+    m_SchedulerMachine = NULL;
 }
 
 void SchedulerMainThreadController::CreateProgramStatusFile(QFile *p_StatusFile)
@@ -209,12 +321,6 @@ QString SchedulerMainThreadController::getTheProgramStatus(const QString& key)
     {
         return "";
     }
-}
-
-SchedulerMainThreadController::~SchedulerMainThreadController()
-{
-    delete m_SchedulerMachine;
-    m_SchedulerMachine = NULL;
 }
 
 void SchedulerMainThreadController::RegisterCommands()
@@ -587,17 +693,60 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 }
                 else
                 {
-                    m_SchedulerMachine->SendRunCleaning();
-                }
+                    RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+                    if(!m_IsCleaningMoveRV)
+                    {
+                        if(RV_UNDEF != targetPos)
+                        {
+                            m_IsCleaningMoveRV = true;
+                            this->MoveRV(0);
+                        }
+                    }
+                    else if(m_PositionRV == targetPos)
+                    {
+                        m_IsCleaningMoveRV = false;
+                        m_IsCleaningRun = true;
+                        LogDebug(QString("Cleaning Program Step Hit tube %1").arg(targetPos));
+                        UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
+                        m_SchedulerMachine->SendRunCleaning();
+                    }
+                    else
+                    {
+                        m_IsCleaningMoveRV = false;
+                        if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
+                        {
+                            if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                            {
+                                RaiseError(0, retCode, m_CurrentScenario, true);
+                                m_SchedulerMachine->SendErrorSignal();
+                            }
+                        }
+                    }
+                }//end cleaning program
             }
         }
         else if (PSSM_PRETEST == stepState)
         {
            m_SchedulerMachine->HandlePssmPreTestWorkFlow(cmdName, retCode);
         }
+        else if (PSSM_FILLING_RVROD_HEATING == stepState)
+        {
+            if(m_CurProgramStepInfo.reagentGroup == "RG6")
+            {
+                if(mp_HeatingStrategy->CheckRVHeatingStatus())
+                {
+                    LogDebug("Program Step Heating Rotary Valve heating rod OK");
+                    m_SchedulerMachine->NotifyRVRodHeatingReady();
+                }
+            }
+            else
+            {
+                m_SchedulerMachine->NotifyRVRodHeatingReady();
+            }
+        }
         else if (PSSM_FILLING_LEVELSENSOR_HEATING == stepState)
         {
-            if (mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
+            if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
             else if(m_CurProgramStepInfo.reagentGroup != "RG6")
             {
                 if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
@@ -613,6 +762,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             else if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
             RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
             {
+                LogDebug("Program Step Heating Level sensor stage OK");
                 m_SchedulerMachine->NotifyLevelSensorHeatingReady();
                     UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
             }
@@ -627,12 +777,15 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_RV_MOVE_TO_SEAL == stepState)
         {
-            if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+            RVPosition_t targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+            if(m_PositionRV == targetPos)
             {
-                if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                LogDebug(QString("Program Step Hit Seal %1").arg(targetPos));
+                if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
                 {
-                    RaiseError(0, retCode, m_CurrentScenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    m_SchedulerMachine->NotifyPause(PSSM_RV_MOVE_TO_SEAL);
+                    m_PauseToBeProcessed = false;
+                    //DequeueNonDeviceCommand();
                 }
                 else
                 {
@@ -642,11 +795,18 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
-               // Do nothing, just wait for the command response
-            }
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                m_PauseToBeProcessed = true;
+                if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
+                {
+                    if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                    {
+                        RaiseError(0, retCode, m_CurrentScenario, true);
+                        m_SchedulerMachine->SendErrorSignal();
+                    }
+                }
+                if (CTRL_CMD_PAUSE == ctrlCmd)
+                {
+                    m_PauseToBeProcessed = true;
+                }
             }
         }
         else if(PSSM_PROCESSING == stepState)
@@ -734,26 +894,36 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
         else if(PSSM_RV_MOVE_TO_TUBE == stepState)
         {
-            if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+            RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+            if(m_PositionRV == targetPos)
             {
-                if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
                 {
-                    RaiseError(0, retCode, m_CurrentScenario, true);
-                    m_SchedulerMachine->SendErrorSignal();
+                    m_SchedulerMachine->NotifyPause(PSSM_RV_MOVE_TO_TUBE);
+                    m_PauseToBeProcessed = false;
+                    //TODO DequeueNonDeviceCommand();
                 }
                 else
                 {
+                    LogDebug(QString("Program Step Hit Tube(%1)").arg(targetPos));
                     UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
                     m_SchedulerMachine->NotifyRVMoveToTubeReady();
                 }
             }
             else
             {
-               // Do nothing, just wait for the command response
-            }
-            if(CTRL_CMD_PAUSE == ctrlCmd)
-            {
-                m_PauseToBeProcessed = true;
+                if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
+                {
+                    if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                    {
+                        RaiseError(0, retCode, m_CurrentScenario, true);
+                        m_SchedulerMachine->SendErrorSignal();
+                    }
+                }
+                if (CTRL_CMD_PAUSE == ctrlCmd)
+                {
+                    m_PauseToBeProcessed = true;
+                }
             }
         }
         else if(PSSM_DRAINING == stepState)
@@ -795,7 +965,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     LogDebug(QString("Program Step Draining succeed!"));
                     m_SchedulerMachine->NotifyDrainFinished();
                 }
-                else
+                else if(DCL_ERR_DEV_LA_DRAINING_TIMEOUT_BULIDPRESSURE == retCode)
                 {
                     LogDebug(QString("Program Step Draining Build Pressure timeout"));
                     RaiseError(0, retCode, m_CurrentScenario, true);
@@ -805,54 +975,73 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_RV_POS_CHANGE == stepState)
         {
-            //todo: start next program step or finish all program
-            m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
-            LogDebug(QString("RV position changes to next tube"));
-            this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
-            if(m_CurProgramStepIndex != -1) // Not the last step
+            // get current step tube position here
+            RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
+            if(m_PositionRV == targetPos)
             {
-                if (0 == m_RVPostionChange_Step)
+                if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
                 {
-                    this->MoveRV(0);
-                    m_RVPostionChange_Step++;
-                }
-                else if (1 == m_RVPostionChange_Step)
-                {
-                    if("Scheduler::RVReqMoveToRVPosition" == cmdName)
-                    {
-                        if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-                        {
-                            m_RVPostionChange_Step++;
-                        }
-                        else
-                        {
-                            RaiseError(0, retCode, m_CurrentScenario, true);
-                            m_SchedulerMachine->SendErrorSignal();
-                        }
-                    }
-                    else
-                    {
-                        // Do nothing, just wait for the command response.
-                    }
+                    m_SchedulerMachine->NotifyPause(PSSM_RV_POS_CHANGE);
+                    m_PauseToBeProcessed = false;
+                    //TODO DequeueNonDeviceCommand();
                 }
                 else
                 {
-                    // Reset the value
-                    m_RVPostionChange_Step =  0;
-
-                    //start next step
+                    LogDebug(QString("Program Step Hit Tube(%1)").arg(targetPos));
+                    UpdateProgramStatusFile("LastRVPosition", QString("%1").arg(targetPos));
                     m_SchedulerMachine->NotifyStepFinished();
-                    //send command to main controller to tell the left time
-                    quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-                    QTime leftTime(0,0,0);
-                    leftTime = leftTime.addSecs(leftSeconds);
-                    MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
-                    Q_ASSERT(commandPtr);
-                    Global::tRefType Ref = GetNewCommandRef();
-                    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
                 }
             }
-            else // Has been the last step
+            else
+            {
+                if("Scheduler::RVReqMoveToRVPosition" == cmdName)
+                {
+                    if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY == retCode)
+                    {
+                        //fail to move to seal, raise event here
+                        LogDebug(QString("Program Step Move to tube(before)%1 internal steps retry").arg(targetPos));
+                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_RETRY, m_CurrentScenario, true);
+                        m_SchedulerMachine->SendErrorSignal();
+                    }
+                    else if(DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT == retCode)
+                    {
+                        LogDebug(QString("Program Step Move to tube(before)%1 exceed upper limit").arg(targetPos));
+                        RaiseError(0, DCL_ERR_DEV_RV_MOTOR_INTERNALSTEPS_EXCEEDUPPERLIMIT, m_CurrentScenario, true);
+                        m_SchedulerMachine->SendErrorSignal();
+                    }
+                }
+
+                if(CTRL_CMD_PAUSE == ctrlCmd)
+                {
+                    m_PauseToBeProcessed = true;
+                }
+            }
+        }
+        else if(PSSM_STEP_PROGRAM_FINISH == stepState)
+        {
+            m_UsedStationIDs.append(m_CurProgramStepInfo.stationID);
+            LogDebug(QString("Program Step Finished"));
+            this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
+            QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
+            if(m_CurProgramStepIndex != -1)
+            {
+                //start next step
+                LogDebug(QString("Start Step %1").arg(m_CurProgramStepIndex));
+                m_SchedulerMachine->NotifyStepProgramFinished();
+                //send command to main controller to tell the left time
+                quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
+
+                QTime leftTime(0,0,0);
+                leftTime = leftTime.addSecs(leftSeconds);
+                MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
+                Q_ASSERT(commandPtr);
+                Global::tRefType Ref = GetNewCommandRef();
+                SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+
+                //log
+                //LOG_STR_ARG(STR_CURRENT_PROGRAM_NAME_STEP_REAGENT_LEFTTIME,Global::FmtArgs()<< ProgramName << m_CurProgramStepIndex + 1 << m_CurReagnetName << leftSeconds);
+            }
+            else
             {
                 LogDebug(QString("All Steps finished."));
                 m_SchedulerMachine->NotifyProgramFinished();
@@ -868,6 +1057,11 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             //m_SchedulerMachine->Stop();
             //todo: tell main controller that program is complete
             UpdateStationReagentStatus();
+            if(m_IsCleaningRun)
+            {
+                m_IsCleaningRun = false;
+                UpdateProgramStatusFile("ProgramFinished", "Yes");
+            }
 
             if(m_AllProgramCount)
             {
@@ -1804,6 +1998,18 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
     case PSSM_ABORTED:
         scenario = 206;
         break;
+    case PSSM_FILLING_RVROD_HEATING:
+        if(ReagentGroup == "RG6")
+        {
+            scenario = 260;
+            reagentRelated = false;
+        }
+        else
+        {
+            scenario = 211;
+            reagentRelated = true;
+        }
+        break;
     case PSSM_FILLING_LEVELSENSOR_HEATING:
         scenario = 211;
         reagentRelated = true;
@@ -1831,6 +2037,9 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
     case PSSM_RV_POS_CHANGE:
         scenario = 217;
         reagentRelated = true;
+        break;
+    case PSSM_STEP_PROGRAM_FINISH:
+        break;
     case PSSM_PROGRAM_FINISH:
         break;
     default:
@@ -2236,16 +2445,23 @@ void SchedulerMainThreadController::MoveRV(qint16 type)
     {
         //get target position here
         targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
+        LogDebug(QString("Move to RV tube position: %1").arg(targetPos));
     }
     else if(1 == type) //seal positon
     {
         //get target position here
         targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
+        LogDebug(QString("Move to RV Seal position: %1").arg(targetPos));
+    }
+    else if(2 == type)
+    {
+        //get target position here
+        targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.nextStationID);
+        LogDebug(QString("Move to RV next tube position: %1").arg(targetPos));
     }
 
     if(RV_UNDEF != targetPos)
     {
-        LogDebug(QString("Move to RV seal position: %1").arg(targetPos));
         cmd->SetRVPosition(targetPos);
         m_SchedulerCommandProcessor->pushCmd(cmd);
     }

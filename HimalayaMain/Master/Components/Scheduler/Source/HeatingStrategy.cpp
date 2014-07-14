@@ -466,13 +466,12 @@ bool HeatingStrategy::CheckTemperatureSenseorsStatus() const
 }
 bool HeatingStrategy::CheckSensorCurrentTemperature(const HeatingSensor& heatingSensor, qreal HWTemp)
 {
-
-    if (HWTemp >= 299)
+    if (true == heatingSensor.curModuleId.isEmpty())
     {
         return true;
     }
 
-    if (true == heatingSensor.curModuleId.isEmpty())
+    if ( !isEffectiveTemp(HWTemp) )
     {
         return true;
     }
@@ -740,11 +739,13 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRVTemperatureControl(RVSensor&
         CmdRVStartTemperatureControlWithPID* pHeatingCmd  = new CmdRVStartTemperatureControlWithPID(500, mp_SchedulerController);
         if (true == heatingSensor.UserInputFlagList[iter->Id])
         {
+            tempOffset = iter->TemperatureOffset+userInputMeltingPoint;
             pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset+userInputMeltingPoint);
             tempOffset = iter->TemperatureOffset+userInputMeltingPoint;
         }
         else
         {
+            tempOffset = iter->TemperatureOffset;
             pHeatingCmd->SetNominalTemperature(iter->TemperatureOffset);
             tempOffset = iter->TemperatureOffset;
         }
