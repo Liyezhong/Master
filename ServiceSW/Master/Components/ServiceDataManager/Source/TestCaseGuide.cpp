@@ -242,6 +242,9 @@ void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
     else if (TestCaseName == "FirmwareUpdate") {
         Id = Service::FIRMWARE_UPDATE;
     }
+    else if (TestCaseName == "FirmwareGetSlaveInfo") {
+        Id = Service::FIRMWARE_GET_SLAVE_INFO;
+    }
 
     m_TestCaseIDHash.insert(Id, TestCaseName);
 }

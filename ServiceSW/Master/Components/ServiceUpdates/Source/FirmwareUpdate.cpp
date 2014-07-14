@@ -196,6 +196,9 @@ void CFirmwareUpdate::UpdateFirmware(void)
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
+    QString TestCaseName1 = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::FIRMWARE_GET_SLAVE_INFO);
+    DataManager::CTestCase* p_TestCase1 = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName1);
+
     for(int i=0; i<m_Model.rowCount(); i++) {
         QString FirmWarePath = Global::SystemPaths::Instance().GetFirmwarePath() + QDir::separator() + m_Model.item(i, 0)->text() + ".bin";
 
@@ -204,6 +207,8 @@ void CFirmwareUpdate::UpdateFirmware(void)
         p_TestCase->SetParameter("Path", FirmWarePath);
         p_TestCase->SetParameter("SlaveType", SlaveTypes[i]);
         p_TestCase->SetParameter("Index", QString("%1").arg(i));
+
+        p_TestCase1->SetParameter("SlaveType", SlaveTypes[i]);
 
         emit BeginModuleTest(Service::FIRMWARE, TestCaseList);
 

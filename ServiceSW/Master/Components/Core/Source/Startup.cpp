@@ -1271,6 +1271,13 @@ void CStartup::RefreshTestStatus4FirmwareUpdate(Service::ModuleTestCaseID Id, co
     }
 }
 
+void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
+{
+    qDebug()<<Status;
+    mp_ManaufacturingDiagnosticsHandler->OnReturnManufacturingMsg(true);
+
+}
+
 /****************************************************************************/
 /*!
  *  \brief Refresh heating status for heating test.
@@ -1337,6 +1344,9 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
         break;
     case Service::FIRMWARE_UPDATE:
         RefreshTestStatus4FirmwareUpdate(id, status);
+        break;
+    case Service::FIRMWARE_GET_SLAVE_INFO:
+        RefreshTestStatus4FirmwareGetSlaveInfo(id, status);
         break;
     default:
         break;

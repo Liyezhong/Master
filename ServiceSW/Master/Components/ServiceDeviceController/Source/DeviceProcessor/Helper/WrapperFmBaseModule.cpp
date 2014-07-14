@@ -361,7 +361,9 @@ QString WrapperFmBaseModule::GetHWInfo()
     out.setString(&hwInfo);
 
     if (ret == 1) {
-        out << dec << m_HWInfo.VersionMajor << "/" << m_HWInfo.VersionMinor << "/" << m_HWInfo.Date.toString("YYYY-MM-DD");
+        QString date = QString("%1-%2-%3").arg(m_HWInfo.Date.year()).arg(m_HWInfo.Date.month()).arg(m_HWInfo.Date.day());
+
+        out << dec << m_HWInfo.VersionMajor << "/" << m_HWInfo.VersionMinor << "/" << date;
 
         //out << "HW Info : version = " << dec << m_HWInfo.VersionMajor << "/" << m_HWInfo.VersionMinor;
         //out << ", production date = " << m_HWInfo.Date.toString();
@@ -427,7 +429,8 @@ QString WrapperFmBaseModule::GetSWInfo()
     out.setString(&swInfo);
 
     if (ret == 1) {
-        out << dec << m_SWInfo.Version << "/" << m_SWInfo.Date.toString("YYYY-MM-DD");
+        QString date = QString("%1-%2-%3").arg(m_SWInfo.Date.year()).arg(m_SWInfo.Date.month()).arg(m_SWInfo.Date.day());
+        out << dec << m_SWInfo.Version << "/" << date;
       //  out << "SW Info <Base module> : version = " << dec << m_SWInfo.Version;
       //  out << ", creation date = " << m_SWInfo.Date.toString();
     }
@@ -805,7 +808,8 @@ QString WrapperFmBaseModule::GetBootloaderInfo()
     out.setString(&loaderInfo);
 
     if (ret == 1) {
-        out << dec << m_BootloaderInfo.VersionMajor << "/" << m_BootloaderInfo.VersionMinor << "/" << m_BootloaderInfo.Date.toString("YYYY-MM-DD");
+        QString date = QString("%1-%2-%3").arg(m_BootloaderInfo.Date.year()).arg(m_BootloaderInfo.Date.month()).arg(m_BootloaderInfo.Date.day());
+        out << dec << m_BootloaderInfo.VersionMajor << "/" << m_BootloaderInfo.VersionMinor << "/" << date;
     }
     else
         out << "error";

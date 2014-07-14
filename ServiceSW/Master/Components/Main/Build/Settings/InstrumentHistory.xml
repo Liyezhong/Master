@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <InstrumentHistory name="Himalaya">
-    <ModuleList timestamp="2014-07-10 16:57:21.896">
+    <ModuleList timestamp="2014-07-14 14:17:55.587">
         <Module name="Main Control" description="Main Control">
             <SerialNumber>040/1221</SerialNumber>
             <OperatingHours>N/A</OperatingHours>
@@ -9,11 +9,11 @@
                 <parameter name="SoftwareVersion" unit="quint16">1.0</parameter>
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="EndTestResult" unit="TestResult_t">Pass</parameter>
-                <parameter name="SerialNumber" unit="QString">SN_ASB3_8888</parameter>
+                <parameter name="SerialNumber" unit="QString">N/A</parameter>
                 <parameter name="BootLoaderReleaseDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="BootLoaderMajorVersion" unit="QString">02</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
-                <parameter name="DateOfExchange" unit="QString">2014-02-04</parameter>
+                <parameter name="DateOfExchange" unit="QString">2014-07-14</parameter>
                 <parameter name="OperationTime" unit="hours">5000</parameter>
                 <parameter name="SoftwareReleaseDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>

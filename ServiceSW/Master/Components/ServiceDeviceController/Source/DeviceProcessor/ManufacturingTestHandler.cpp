@@ -2395,7 +2395,7 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
 
 void ManufacturingTestHandler::GetSlaveInformation()
 {
-    Service::ModuleTestCaseID Id = Service::FIRMWARE_UPDATE;
+    Service::ModuleTestCaseID Id = Service::FIRMWARE_GET_SLAVE_INFO;
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
@@ -2433,10 +2433,17 @@ void ManufacturingTestHandler::GetSlaveInformation()
 
     Str = p_BaseModule->GetBootloaderInfo();
     if (Str != "error") {
+        QStringList BootloaderInfo = Str.split("/");
+        Status.insert("BootLoaderMajorVersion", BootloaderInfo[0]);
+        Status.insert("BootLoaderMinorVersion", BootloaderInfo[1]);
+        Status.insert("BootLoaderReleaseDate", BootloaderInfo[2]);
+    }
+
+    Str = p_BaseModule->GetSWInfo();
+    if (Str != "error") {
         QStringList SWInfo = Str.split("/");
-        Status.insert("BootLoaderMajorVersion", SWInfo[0]);
-        Status.insert("BootLoaderMinorVersion", SWInfo[1]);
-        Status.insert("BootLoaderReleaseDate", SWInfo[2]);
+        Status.insert("SoftwareVersion", SWInfo[0]);
+        Status.insert("SoftwareReleaseDate", SWInfo[1]);
     }
 
     emit RefreshTestStatustoMain(TestCaseName, Status);

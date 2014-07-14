@@ -1259,6 +1259,9 @@ void CManufacturingDiagnosticsHandler::PerformFirmwareUpdate(const QList<Service
     bool Result = GetTestResponse();
     HideMessage();
 
+    emit PerformManufacturingTest(Service::FIRMWARE_GET_SLAVE_INFO);
+    Result = GetTestResponse();
+
     qDebug()<<"Update Firmware result = "<<Result;
 
 }
