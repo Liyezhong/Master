@@ -849,14 +849,66 @@ void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain 
 /****************************************************************************/
 void CDashboardWidget::OnUserRoleChanged()
 {
+#if 0
     m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
-    if (m_CurProgramStepIndex > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator)
-    {
+    if (m_CurProgramStepIndex > 2 && m_CurrentUserRole == MainMenu::CMainWindow::Operator) {
         ui->programPanelWidget->EnablePauseButton(false);//in fact, it will disable pause button when running
     }
-    else if (m_ProcessRunning && (m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service))
+    else if ((m_ProcessRunning || m_IsDraining) && (m_CurrentUserRole == MainMenu::CMainWindow::Admin ||
+                                  m_CurrentUserRole == MainMenu::CMainWindow::Service)) {
         ui->programPanelWidget->EnablePauseButton(true);
 
+    }
+
+    if (m_IsDraining == true && m_CurrentUserRole == MainMenu::CMainWindow::Operator) {
+         ui->programPanelWidget->EnableStartButton(false); // disable abort button
+    }
+#endif
+
+    // the matrix:
+    /*
+     *  user role               1st step        2nd~3rd step	after 3steps        Comment
+        --------------------------------------------------------------------------------------------------------------
+        Standard User
+                                Pause enable	Pause enable	Pause disable       the last step's draining,Pause&Abort is disable
+                                Abort enable	Abort disable	Abort disable       the last step's draining,Pause&Abort is disable
+
+        Supervisor& Service
+                                Pause enable	Pause enable	Pause enable        the last step's draining,Pause&Abort is disable
+                                Abort enable	Abort enable	Abort enable        the last step's draining,Pause&Abort is disable
+
+     * */
+    m_CurrentUserRole = MainMenu::CMainWindow::GetCurrentUserRole();
+    if (m_CurrentUserRole == MainMenu::CMainWindow::Operator) {
+        switch (m_CurProgramStepIndex) {
+        case 1:
+            ui->programPanelWidget->EnablePauseButton(true);
+            ui->programPanelWidget->EnableStartButton(true);
+            break;
+        case 2:
+            ui->programPanelWidget->EnablePauseButton(true);
+            ui->programPanelWidget->EnableStartButton(false);
+            break;
+        case 3:
+            ui->programPanelWidget->EnablePauseButton(false);
+            ui->programPanelWidget->EnableStartButton(false);
+            break;
+        default:
+            ui->programPanelWidget->EnablePauseButton(false);
+            ui->programPanelWidget->EnableStartButton(false);
+            break;
+        }
+
+    }
+    else if (m_CurrentUserRole == MainMenu::CMainWindow::Admin || m_CurrentUserRole == MainMenu::CMainWindow::Service) {
+        ui->programPanelWidget->EnablePauseButton(true);
+        ui->programPanelWidget->EnableStartButton(true);
+    }
+
+    if (m_IsDraining == true) {
+        ui->programPanelWidget->EnablePauseButton(false);
+        ui->programPanelWidget->EnableStartButton(false); // disable abort button
+    }
 }
 
 void CDashboardWidget::OnProcessStateChanged()
