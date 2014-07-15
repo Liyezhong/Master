@@ -32,6 +32,10 @@
 
 #include "ui_MainControl.h"
 
+#include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "ServiceDataManager/Include/TestCase.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
+
 namespace SystemTracking {
 
 const QString MODULE_MAINCONTROL("Main Control");
@@ -107,7 +111,7 @@ void CMainControl::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 
     pModule->UpdateSubModule(&SubModule);
 
-	pModuleList->Write();
+    //pModuleList->Write();
 
     emit ModuleListChanged();
 }
@@ -161,6 +165,15 @@ void CMainControl::AutoDetect(ServiceDataManager::CSubModule &SubModule)
 {
     qDebug() << "CMainControl::AutoDetect : " << SubModule.GetSubModuleName();
 
+    Service::ModuleTestCaseID Id = Service::FIRMWARE_GET_SLAVE_INFO;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    QString SubModuleName = SubModule.GetSubModuleName();
+    QString SlaveType = SubModuleName.remove("ASB");
+    p_TestCase->SetParameter("SlaveType", SlaveType);
+
+    emit PerformManufacturingTest(Id);
     /// \todo: add auto detect sub module information here.
 }
 
@@ -194,7 +207,7 @@ void CMainControl::ModifySubModule(const QString &ModuleName,
 
     ServiceDataManager::CSubModule SubModule = *pSubModule;
 
-    CDlgModifySubModule *dlg = new CDlgModifySubModule(SubModule, true);
+    CDlgModifySubModule *dlg = new CDlgModifySubModule(SubModule, SubModuleName.contains("ASB"));
 
     dlg->UpdateGUI();
 

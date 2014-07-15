@@ -359,7 +359,6 @@ void CStartup::LoadCommonComponenetsOne()
     mp_AddModifyConfigGroup->AddPanel("Oven", mp_OvenConfig);
     mp_AddModifyConfigGroup->AddPanel("Rotary Valve", mp_RotaryValveConfig);
     mp_AddModifyConfigGroup->AddPanel("L&&A System", mp_LaSystemConfig);
-    mp_AddModifyConfigGroup->AddPanel("Save to Configuration", mp_AddModifyConfig);
 
     mp_SystemTrackingGroup->AddPanel("Add/Modify Config",
                                      mp_AddModifyConfigGroup,

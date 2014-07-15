@@ -23,6 +23,7 @@
 
 #include <QWidget>
 
+#include "Core/Include/ServiceDefines.h"
 #include "Core/Include/ServiceGUIConnector.h"
 
 namespace SystemTracking {
@@ -43,6 +44,14 @@ public:
 
 Q_SIGNALS:
     void ModuleListChanged(void);
+
+    /****************************************************************************/
+    /**
+       * \brief Signal emitted to perform manufacturing tests
+       * \iparam Test = Test name
+       */
+    /****************************************************************************/
+    void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortId=Service::TEST_CASE_ID_UNUSED);
 
 public Q_SLOTS:
     void UpdateSubModule(ServiceDataManager::CSubModule &SubModule);

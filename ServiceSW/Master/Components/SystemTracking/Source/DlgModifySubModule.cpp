@@ -258,6 +258,10 @@ void CDlgModifySubModule::OnSave(void)
 void CDlgModifySubModule::OnAutoDetect(void)
 {
     emit AutoDetect(*mp_SubModule);
+
+    QString serialNumber = mp_SubModule->GetParameterInfo("SerialNumber")->ParameterValue;
+    mp_Ui->pushSerialNumber->setText(serialNumber);
+
 }
 
 /****************************************************************************/
