@@ -88,6 +88,12 @@ signals:
      */
     /****************************************************************************/
     void SettingsChanged(DataManager::CUserSettings &Settings);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal UserLevelChanged
+     */
+    /****************************************************************************/
+    void UserLevelChanged(QDataStream &);
 };
 
 } // end namespace Settings

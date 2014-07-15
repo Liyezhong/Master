@@ -139,6 +139,12 @@ void CDataManagementWidget::DisplaySelectionDialog(QStringList FileList)
     (void) FileSelection.exec();
 }
 
+void CDataManagementWidget::OnUserLevelChanged(QDataStream & ds)
+{
+    Q_UNUSED(ds);
+    ResetButtons();
+}
+
 /****************************************************************************/
 /*!
  *  \brief Enables/Disables the button based on the user role/process

@@ -92,6 +92,14 @@ private slots:
     void RemoteSWUpdate();
     void DisplaySelectionDialog(QStringList FileList);
 
+public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of slot OnUserLevelChanged
+     */
+    /****************************************************************************/
+    void OnUserLevelChanged(QDataStream &);
+
 signals:
 
     /****************************************************************************/

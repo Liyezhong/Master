@@ -100,6 +100,8 @@ CStartup::CStartup() : QObject()
     // Signals for the Users
     CONNECTSIGNALSLOT(mp_Users, UserLevelClicked(QDataStream &), mp_DataConnector,
                       SendUserLevel(QDataStream &));
+    CONNECTSIGNALSIGNAL(mp_Users, UserLevelClicked(QDataStream &), mp_Settings,
+                        UserLevelChanged(QDataStream &));
     CONNECTSIGNALSLOT(mp_Users, ChangePasswordClicked(QDataStream &), mp_DataConnector,
                       SendChangepassword(QDataStream &));
 
