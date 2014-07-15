@@ -50,16 +50,16 @@ CSettings::CSettings(Core::CServiceGUIConnector *p_ServiceDataConnector, MainMen
     CONNECTSIGNALSLOTGUI(mp_Ui->pageDateTimeSettings->GetContent(), ApplyData(QDateTime), mp_ServiceDataConnector,
                          SetDateTime(QDateTime));
 
-    CONNECTSIGNALSLOTGUI(mp_Ui->pageNetworkSettings, SaveIPAddress(QString, IPType_t), this, SaveIPAddress(QString, IPType_t));
-    CONNECTSIGNALSLOTGUI(mp_Ui->pageNetworkSettings0, SaveIPAddress(QString), this, SaveIPAddress(QString, IPType_t));
+    CONNECTSIGNALSLOTGUI(mp_Ui->pageMNetworkSettings, SaveIPAddress(QString, IPType_t), this, SaveIPAddress(QString, IPType_t));
+    CONNECTSIGNALSLOTGUI(mp_Ui->pageSNetworkSettings, SaveIPAddress(QString), this, SaveIPAddress(QString, IPType_t));
 
     CONNECTSIGNALSLOTGUI(this, ServiceParametersChanged(DataManager::CServiceParameters *),
                          mp_ServiceDataConnector, ServiceParametersUpdates(DataManager::CServiceParameters *));
 
     CONNECTSIGNALSIGNALGUI(mp_Ui->pageLanguageSettings, SetLanguage(PlatformService::Languages_t), this, SetLanguage(PlatformService::Languages_t));
 
-    CONNECTSIGNALSIGNALGUI(mp_Ui->pageNetworkSettings, DownloadFirmware(), this, DownloadFirmware());
-    CONNECTSIGNALSIGNALGUI(mp_Ui->pageNetworkSettings0, DownloadFirmware(), this, DownloadFirmware());
+    CONNECTSIGNALSIGNALGUI(mp_Ui->pageMNetworkSettings, DownloadFirmware(), this, DownloadFirmware());
+    CONNECTSIGNALSIGNALGUI(mp_Ui->pageSNetworkSettings, DownloadFirmware(), this, DownloadFirmware());
 
     mp_Ui->stackedWidget->setCurrentIndex(0);
 }
@@ -110,12 +110,12 @@ void CSettings::UpdateGUIConnector(Core::CServiceGUIConnector *DataConnector, Ma
     mp_ServiceDataConnector = DataConnector;
     mp_MainWindow = MainWindow;
     if (mp_MainWindow->GetSaMUserMode() == QString("Service")) {
-        mp_Ui->stackedWidget->removeWidget(mp_Ui->pageNetworkSettings);
-        mp_Ui->pageNetworkSettings0->SetPtrToMainWindow(mp_MainWindow);
+        mp_Ui->stackedWidget->removeWidget(mp_Ui->pageMNetworkSettings);
+        mp_Ui->pageSNetworkSettings->SetPtrToMainWindow(mp_MainWindow);
     }
     else {
-        mp_Ui->stackedWidget->removeWidget(mp_Ui->pageNetworkSettings0);
-        mp_Ui->pageNetworkSettings->SetPtrToMainWindow(mp_MainWindow);
+        mp_Ui->stackedWidget->removeWidget(mp_Ui->pageSNetworkSettings);
+        mp_Ui->pageMNetworkSettings->SetPtrToMainWindow(mp_MainWindow);
     }
     mp_Ui->pageDateTimeSettings->SetPtrToMainWindow(mp_MainWindow);
     mp_Ui->pageLanguageSettings->SetPtrToMainWindow(mp_MainWindow);
@@ -157,10 +157,10 @@ void CSettings::ResetButtonStatus()
     mp_Ui->pageDateTimeSettings->SetPtrToMainWindow(mp_MainWindow);
     mp_Ui->pageDateTimeSettings->SetButtonStatus();
     if (mp_MainWindow->GetSaMUserMode() == QString("Service")) {
-        mp_Ui->pageNetworkSettings0->SetSaveButtonStatus();
+        mp_Ui->pageSNetworkSettings->SetSaveButtonStatus();
     }
     else {
-        mp_Ui->pageNetworkSettings->SetSaveButtonStatus();
+        mp_Ui->pageMNetworkSettings->SetSaveButtonStatus();
     }
 }
 
@@ -174,10 +174,10 @@ void CSettings::ResetButtonStatus()
 void CSettings::SetInformwationText(QString Text, QString Color)
 {
     if (mp_MainWindow->GetSaMUserMode() == QString("Service")) {
-        mp_Ui->pageNetworkSettings0->SetInformwationText(Text, Color);
+        mp_Ui->pageSNetworkSettings->SetInformwationText(Text, Color);
     }
     else {
-        mp_Ui->pageNetworkSettings->SetInformwationText(Text, Color);
+        mp_Ui->pageMNetworkSettings->SetInformwationText(Text, Color);
     }
 }
 
@@ -191,10 +191,10 @@ void CSettings::SetInformwationText(QString Text, QString Color)
 void CSettings::SetNetworkSettingsResult(PlatformService::NetworkSettings_t NtService, bool Result)
 {
     if (mp_MainWindow->GetSaMUserMode() == QString("Service")) {
-        mp_Ui->pageNetworkSettings0->SetNetworkSettingsResult(NtService, Result);
+        mp_Ui->pageSNetworkSettings->SetNetworkSettingsResult(NtService, Result);
     }
     else {
-        mp_Ui->pageNetworkSettings->SetNetworkSettingsResult(NtService, Result);
+        mp_Ui->pageMNetworkSettings->SetNetworkSettingsResult(NtService, Result);
     }
 }
 
