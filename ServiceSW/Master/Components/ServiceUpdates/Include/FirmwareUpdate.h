@@ -74,6 +74,13 @@ signals:
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortId=Service::TEST_CASE_ID_UNUSED);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Signal emitted for update module
+     */
+    /****************************************************************************/
+    void UpdateModule(ServiceDataManager::CModule&);
+
 protected:
     /****************************************************************************/
     /*!
@@ -112,6 +119,7 @@ public slots:
 private:
     Ui::CFirmwareUpdate *mp_Ui;             //!< User Interface
     Core::CServiceGUIConnector *mp_DataConnector;  //!< Data Connector object
+    ServiceDataManager::CModule* mp_Module;        //!< EBox Module information
     MainMenu::CBaseTable *mp_TableWidget;   //!< Base Table widget
     QStandardItemModel m_Model;             //!< Model for the table
     bool m_Result;

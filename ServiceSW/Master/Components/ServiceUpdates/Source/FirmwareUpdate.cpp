@@ -38,6 +38,7 @@ CFirmwareUpdate::CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector, QW
     : QWidget(p_Parent)
     , mp_Ui(new Ui::CFirmwareUpdate)
     , mp_DataConnector(p_DataConnector)
+    , mp_Module(NULL)
     , m_Result(false)
 {
     mp_Ui->setupUi(this);
@@ -65,10 +66,8 @@ CFirmwareUpdate::CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector, QW
 
     //InitData();
 
-    CONNECTSIGNALSLOT(mp_Ui->updateBtn,
-                      clicked(),
-                      this,
-                      UpdateFirmware());
+    CONNECTSIGNALSLOT(mp_Ui->updateBtn, clicked(), this, UpdateFirmware());
+    CONNECTSIGNALSLOTGUI(this, UpdateModule(ServiceDataManager::CModule&), mp_DataConnector, SendModuleUpdate(ServiceDataManager::CModule&));
 }
 
 CFirmwareUpdate::~CFirmwareUpdate(void)
@@ -99,15 +98,14 @@ void CFirmwareUpdate::changeEvent(QEvent *p_Event)
 void CFirmwareUpdate::UpdateGUI()
 {
     QString latestVersion = "";
-    ServiceDataManager::CModule* EboxModule = NULL;
     ServiceDataManager::CSubModule* SlaveModule = NULL;
 
     if (mp_DataConnector->GetModuleListContainer()) {
-        EboxModule = mp_DataConnector->GetModuleListContainer()->GetModule("Main Control");
+        mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Main Control");
     }
-    if (EboxModule) {
-        for (int i = 0; i < EboxModule->GetNumberofSubModules(); ++i) {
-            SlaveModule = EboxModule->GetSubModuleInfo(i);
+    if (mp_Module) {
+        for (int i = 0; i < mp_Module->GetNumberofSubModules(); ++i) {
+            SlaveModule = mp_Module->GetSubModuleInfo(i);
             if (SlaveModule->GetSubModuleName().contains("ASB")) {
                 QString SlaveName = SlaveModule->GetSubModuleName();
                 QString SlaveVersion = SlaveModule->GetParameterInfo("SoftwareVersion")->ParameterValue;
@@ -216,6 +214,8 @@ void CFirmwareUpdate::UpdateFirmware(void)
         if (m_Result) {
             m_Model.item(i, 1)->setText(m_Model.item(i, 2)->text());
         }
+
+        emit UpdateModule(*mp_Module);
     }
 }
 
