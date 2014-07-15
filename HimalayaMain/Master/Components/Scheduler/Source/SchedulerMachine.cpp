@@ -30,6 +30,7 @@
 #include "Scheduler/Include/RsStandby.h"
 #include "Scheduler/Include/RsStandbyWithTissue.h"
 #include "Scheduler/Include/RsHeatingErr30SRetry.h"
+#include "Scheduler/Include/RsTSensorErr3MinRetry.h"
 #include "Scheduler/Include/RcLevelsensorHeatingOvertime.h"
 #include "Scheduler/Include/RcRestart.h"
 #include "Scheduler/Include/RcReport.h"
@@ -85,6 +86,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorRcLevelSensorHeatingOvertimeState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRcRestartState= QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsHeatingErr30SRetryState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_ErrorRsTSensorErr3MinRetryState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsRVGetOriginalPositionAgainState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
 
     // Set Initial states
@@ -131,6 +133,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_RsRvGetOriginalPositionAgain = QSharedPointer<CRsRvGetOriginalPositionAgain>(new CRsRvGetOriginalPositionAgain(mp_SchedulerMachine.data(), mp_ErrorState.data()));
     mp_RsStandby = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController, 1));
     mp_RsHeatingErr30SRetry = QSharedPointer<CRsHeatingErr30SRetry>(new CRsHeatingErr30SRetry(SchedulerThreadController));
+    mp_RsTSensorErr3MinRetry = QSharedPointer<CRsTSensorErr3MinRetry>(new CRsTSensorErr3MinRetry(SchedulerThreadController));
     mp_RsStandbyWithTissue = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController));
     mp_RcRestart = QSharedPointer<CRcRestart>(new CRcRestart(mp_SchedulerMachine.data(), mp_ErrorRcRestartState.data()));
 
@@ -148,6 +151,11 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorState->addTransition(this, SIGNAL(SigEnterRsHeatingErr30SRetry()), mp_ErrorRsHeatingErr30SRetryState.data());
     CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRsHeatingErr30SRetryState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
+    //Rs_TSensorErr3MinRetry
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRSTSensorErr3MinRetry()), mp_ErrorRsTSensorErr3MinRetryState.data());
+    CONNECTSIGNALSLOT(mp_RsTSensorErr3MinRetry.data(), TasksDone(bool), this, OnTasksDone(bool));
+    mp_ErrorRsTSensorErr3MinRetryState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RC_Levelsensor_Heating_Overtime related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcLevelsensorHeatingOvertime()), mp_ErrorRcLevelSensorHeatingOvertimeState.data());
@@ -276,6 +284,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsHeatingErr30SRetryState.data()))
         {
             return SM_ERR_RS_HEATINGERR30SRETRY;
+        }
+        else if(mp_SchedulerMachine->configuration().contains(mp_ErrorRsTSensorErr3MinRetryState.data()))
+        {
+            return SM_ERR_RS_TSENSORERR_3MINRETRY;
         }
         else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsStandbyWithTissueState.data()))
         {
@@ -553,6 +565,11 @@ void CSchedulerStateMachine::EnterRsHeatingErr30SRetry()
     emit SigEnterRsHeatingErr30SRetry();
 }
 
+void CSchedulerStateMachine::EnterRsTSensorErr3MinRetry()
+{
+    emit SigEnterRSTSensorErr3MinRetry();
+}
+
 void CSchedulerStateMachine::EnterRsStandByWithTissue()
 {
     emit SigEnterRsStandByWithTissue();
@@ -599,6 +616,11 @@ void CSchedulerStateMachine::HandleRsStandByWorkFlow(const QString& cmdName, Ret
 void CSchedulerStateMachine::HandleRsHeatingErr30SRetry()
 {
     mp_RsHeatingErr30SRetry->HandleWorkFlow();
+}
+
+void CSchedulerStateMachine::HandleRsTSensorErr3MinRetry(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
+{
+    mp_RsTSensorErr3MinRetry->HandleWorkFlow(cmdName, retCode);
 }
 
 void CSchedulerStateMachine::HandleRsStandByWithTissueWorkFlow(const QString& cmdName, ReturnCode_t retCode)

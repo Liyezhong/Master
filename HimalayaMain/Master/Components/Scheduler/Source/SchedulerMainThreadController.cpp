@@ -1181,6 +1181,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to RS_HeatingErr30Retry");
             m_SchedulerMachine->EnterRsHeatingErr30SRetry();
         }
+        else if(CTRL_CMD_RS_TSENSORERR3MINRETRY == ctrlCmd)
+        {
+            LogDebug(QString("Go to RS_TSensorErr_3MinRetry"));
+            m_SchedulerMachine->EnterRsTSensorErr3MinRetry();
+        }
         else if(CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME == ctrlCmd)
         {
             LogDebug("Go to RC_Levelsensor_Heating_Overtime");
@@ -1200,6 +1205,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         LogDebug(QString("In RS_HeatingErr_30SRetry state"));
         m_SchedulerMachine->HandleRsHeatingErr30SRetry();
+    }
+    else if(SM_ERR_RS_TSENSORERR_3MINRETRY == currentState)
+    {
+        LogDebug(QString("In Rs_TSensorErr_3MinRetry State"));
+        m_SchedulerMachine->HandleRsTSensorErr3MinRetry(cmdName, retCode);
     }
     else if (SM_ERR_RS_STANDBY_WITH_TISSUE == currentState)
     {
@@ -1285,6 +1295,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (cmd == "rs_heatingerr30sretry")
         {
             return CTRL_CMD_RS_HEATINGERR30SRETRY;
+        }
+        if (cmd == "rs_tsensorerr3minretry")
+        {
+            return CTRL_CMD_RS_TSENSORERR3MINRETRY;
         }
         if (cmd == "rc_levelsensor_heating_overtime")
         {

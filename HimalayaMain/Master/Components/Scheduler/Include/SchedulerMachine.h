@@ -33,6 +33,7 @@ namespace Scheduler{
 class CRsStandby;
 class CRsStandbyWithTissue;
 class CRsHeatingErr30SRetry;
+class CRsTSensorErr3MinRetry;
 class CRcLevelSensorHeatingOvertime;
 class CRcRestart;
 class CRcReport;
@@ -86,6 +87,7 @@ private:
     QSharedPointer<QState> mp_ErrorRcLevelSensorHeatingOvertimeState;                   ///<  Error State's sub state: handle RC_Levelsensor_Heating_Overtime related logic
     QSharedPointer<QState> mp_ErrorRcRestartState;                                      ///<  Error State's sub state: handle RC_Restart related logic
     QSharedPointer<QState> mp_ErrorRsHeatingErr30SRetryState;                           ///<  Error State's sub state: handle Rs_HeatingErr30S_Retry related logic
+    QSharedPointer<QState> mp_ErrorRsTSensorErr3MinRetryState;                          ///<  Error State's sub state: handle Rs_TSensorErr3Min_Retry related logic
     QSharedPointer<QState> mp_ErrorRsRVGetOriginalPositionAgainState;                   ///<  Error State's sub state: handle Rs_RV_GetOriginalPositionAgain related logic
 
     //State machines for Run handling
@@ -96,6 +98,7 @@ private:
     QSharedPointer<CRsStandbyWithTissue> mp_RsStandby;                                  ///<  State machine for RS_Standby
     QSharedPointer<CRsStandbyWithTissue> mp_RsStandbyWithTissue;						///<  State machine for RS_StandbyWithTissue
     QSharedPointer<CRsHeatingErr30SRetry> mp_RsHeatingErr30SRetry;                      ///<  State machine for RS_HeatingErr_30S_Retry
+    QSharedPointer<CRsTSensorErr3MinRetry> mp_RsTSensorErr3MinRetry;                    ///<  State machine for Rs_TSensorErr3MinRetry
     QSharedPointer<CRcLevelSensorHeatingOvertime> mp_RcLevelSensorHeatingOvertime;      ///<  State machine for RC_LevelSensor_Heating_Overtime
     QSharedPointer<CRcRestart> mp_RcRestart;                                            ///<  State machine for RC_Restart
     QSharedPointer<CRcReport> mp_RcReport;												///<  State machine for RC_Report
@@ -533,6 +536,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief Enter to Rs_TSensorErr_3min_Retry sub state machine
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void EnterRsTSensorErr3MinRetry();
+
+    /****************************************************************************/
+    /*!
      *  \brief Enter to Rs_Standby_WithTissue sub state machine
      *
      *  \return void
@@ -605,6 +617,15 @@ public:
     /****************************************************************************/
     void HandleRsHeatingErr30SRetry();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for RS_TSensorErr3MinRetry
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRsTSensorErr3MinRetry(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -805,10 +826,10 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief signal to enter RC_Levelsensor_Heating_Overtime state
+     *  \brief signal to enter Rs_TSensorErr3MinRetry
      */
     /****************************************************************************/
-    void sigEnterRcLevelsensorHeatingOvertime();
+    void SigEnterRSTSensorErr3MinRetry();
 
     /****************************************************************************/
     /*!

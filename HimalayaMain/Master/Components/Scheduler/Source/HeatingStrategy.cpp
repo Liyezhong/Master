@@ -1365,4 +1365,72 @@ bool HeatingStrategy::isEffectiveTemp(qreal HWTemp)
     return true;
 }
 
+bool HeatingStrategy::CheckSensorTempOverRange(const QString& HeatingName, const qreal& temperature)
+{
+    if ("LevelSensor" == HeatingName)
+    {
+        if (false == this->CheckSensorCurrentTemperature(m_RTLevelSensor, temperature))
+        {
+            return false;
+        }
+    }
+    else if ("RTSide" == HeatingName)
+    {
+        if (false == this->CheckSensorCurrentTemperature(m_RTTop, temperature))
+        {
+            return false;
+        }
+    }
+    else if ("RTBottom" == HeatingName)
+    {
+        if (false == this->CheckSensorCurrentTemperature(m_RTBottom, temperature))
+        {
+            return false;
+        }
+    }
+    else if ("OvenTop" == HeatingName)
+    {
+        if (false == this->CheckSensorCurrentTemperature(m_OvenTop, temperature))
+        {
+            return false;
+        }
+    }
+    else if ("OvenBottom" == HeatingName)
+    {
+        if (false == this->CheckSensorCurrentTemperature(m_OvenBottom, temperature))
+        {
+            return false;
+        }
+    }
+    else if ("RVRod" == HeatingName)
+    {
+        if (false == this->CheckSensorCurrentTemperature(m_RV_1_HeatingRod, temperature))
+        {
+            return false;
+        }
+    }
+    else if ("RVOutle" == HeatingName)
+    {
+        if (false == this->CheckSensorCurrentTemperature(m_RV_2_Outlet, temperature))
+        {
+            return false;
+        }
+    }
+    else if ("LA_Tube1" == HeatingName)
+    {
+        if (false == this->CheckSensorCurrentTemperature(m_LARVTube, temperature))
+        {
+            return false;
+        }
+    }
+    else if ("LA_Tube2" == HeatingName)
+    {
+        if (false == this->CheckSensorCurrentTemperature(m_LAWaxTrap, temperature))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 }// end of namespace Scheduler
