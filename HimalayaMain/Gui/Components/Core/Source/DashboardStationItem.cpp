@@ -287,6 +287,7 @@ void CDashboardStationItem::UpdateDashboardStationItemReagentWhenReagentUpdated(
 {
     if (!mp_DashboardStation)
         return;
+
     QString ReagentID = mp_DashboardStation->GetDashboardReagentID();
     DataManager::CReagent *p_Reagent = const_cast<DataManager::CReagent*>(mp_DataConnector->ReagentList->GetReagent(ReagentID));
 
@@ -352,14 +353,17 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent(bool RefreshFlag)
 {
     if (!mp_DashboardStation)
         return;
+
     QString ReagentID = mp_DashboardStation->GetDashboardReagentID();
     DataManager::CReagent *p_Reagent = const_cast<DataManager::CReagent*>(mp_DataConnector->ReagentList->GetReagent(ReagentID));
 
     if (p_Reagent)
     {
-        if(m_CurRMSMode != m_UserSettings.GetModeRMSProcessing())
+        //if(m_CurRMSMode != m_UserSettings.GetModeRMSProcessing())
         {
             m_CurRMSMode = m_UserSettings.GetModeRMSProcessing();
+
+
 
             DataManager::ReagentStatusType_t reagentStatus = mp_DashboardStation->GetReagentStatus(*p_Reagent, m_CurRMSMode);
 
