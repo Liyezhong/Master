@@ -102,10 +102,11 @@ SchedulerCommandProcessor<DP>::~SchedulerCommandProcessor()
 template <class DP>
 HardwareMonitor_t SchedulerCommandProcessor<DP>::HardwareMonitor()
 {
-    HardwareMonitor_t strctHWMonitor ={0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, RV_UNDEF, 0.0, 0.0, 0, 0};
+    HardwareMonitor_t strctHWMonitor ={0.0, 0.0, 0.0, 0.0, 0.0, 0.0, false, 0.0, 0.0, 0.0, 0.0, RV_UNDEF, 0.0, 0.0, 0, 0};
 
 	strctHWMonitor.PressureAL			= mp_IDeviceProcessing->ALGetRecentPressure();
 	strctHWMonitor.TempALLevelSensor	= mp_IDeviceProcessing->ALGetRecentTemperature(AL_LEVELSENSOR, 0);
+    strctHWMonitor.TempLevelSensorStatus = mp_IDeviceProcessing->ALGetTemperatureControlState(AL_LEVELSENSOR) != DeviceControl::TEMPCTRL_STATE_OFF? true : false;
 	strctHWMonitor.TempALTube1			= mp_IDeviceProcessing->ALGetRecentTemperature(AL_TUBE1,0);
 	strctHWMonitor.TempALTube2			= mp_IDeviceProcessing->ALGetRecentTemperature(AL_TUBE2,0);
 	strctHWMonitor.TempRV1				= mp_IDeviceProcessing->RVGetRecentTemperature(0);

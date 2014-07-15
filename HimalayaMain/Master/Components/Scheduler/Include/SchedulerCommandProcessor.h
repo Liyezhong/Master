@@ -59,6 +59,7 @@ typedef struct
     qreal			TempOvenBottom2;    ///<  Definition/Declaration of variable TempOvenBottom2
 	qreal			PressureAL;       ///<  Definition/Declaration of variable PressureAL
 	qreal			TempALLevelSensor;       ///<  Definition/Declaration of variable TempALLevelSensor
+    bool            TempLevelSensorStatus;   ///< on / off
 	qreal			TempALTube1;       ///<  Definition/Declaration of variable TempALTube1
 	qreal			TempALTube2;       ///<  Definition/Declaration of variable TempALTube2
 	qreal			TempRV1;       ///<  Definition/Declaration of variable TempRV1
@@ -80,7 +81,7 @@ typedef struct
         return QString("RTb1(%1)RTb2(%2)RTs(%3)RTl(%4)").arg(TempRTBottom1).arg(TempRTBottom2).arg(TempRTSide).arg(RetortLockStatus) +
                 QString("OVb1(%1)OVb2(%2)OVt(%3)OVl(%4)").arg(TempOvenBottom1).arg(TempOvenBottom2).arg(TempOvenTop).arg(OvenLidStatus) +
                 QString("RV1(%1)RV2(%2)RVp(%3)").arg(TempRV1).arg(TempRV2).arg(PositionRV) +
-                QString("ALp(%1)ALls(%2)ALt1(%3)ALt2(%4)").arg(PressureAL).arg(TempALLevelSensor).arg(TempALTube1).arg(TempALTube2);
+                QString("ALp(%1)ALls(%2-%3)ALt1(%4)ALt2(%5)").arg(PressureAL).arg(TempALLevelSensor).arg(TempLevelSensorStatus ? "on" : "off").arg(TempALTube1).arg(TempALTube2);
     }
 } HardwareMonitor_t;
 
