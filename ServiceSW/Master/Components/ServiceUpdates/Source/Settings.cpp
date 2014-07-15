@@ -23,6 +23,7 @@
 /****************************************************************************/
 
 #include "ServiceUpdates/Include/Settings.h"
+#include "Settings/Include/NetworkSettingsWidget.h"
 #include "ui_Settings.h"
 
 namespace ServiceUpdates {
@@ -50,6 +51,7 @@ CSettings::CSettings(Core::CServiceGUIConnector *p_ServiceDataConnector, MainMen
                          SetDateTime(QDateTime));
 
     CONNECTSIGNALSLOTGUI(mp_Ui->pageNetworkSettings, SaveIPAddress(QString, IPType_t), this, SaveIPAddress(QString, IPType_t));
+    CONNECTSIGNALSLOTGUI(mp_Ui->pageNetworkSettings0, SaveIPAddress(QString), this, SaveIPAddress(QString, IPType_t));
 
     CONNECTSIGNALSLOTGUI(this, ServiceParametersChanged(DataManager::CServiceParameters *),
                          mp_ServiceDataConnector, ServiceParametersUpdates(DataManager::CServiceParameters *));
@@ -57,6 +59,7 @@ CSettings::CSettings(Core::CServiceGUIConnector *p_ServiceDataConnector, MainMen
     CONNECTSIGNALSIGNALGUI(mp_Ui->pageLanguageSettings, SetLanguage(PlatformService::Languages_t), this, SetLanguage(PlatformService::Languages_t));
 
     CONNECTSIGNALSIGNALGUI(mp_Ui->pageNetworkSettings, DownloadFirmware(), this, DownloadFirmware());
+    CONNECTSIGNALSIGNALGUI(mp_Ui->pageNetworkSettings0, DownloadFirmware(), this, DownloadFirmware());
 
     mp_Ui->stackedWidget->setCurrentIndex(0);
 }
@@ -85,7 +88,7 @@ CSettings::~CSettings()
 void CSettings::SaveIPAddress(QString IPAddress, IPType_t IPType) {
     DataManager::CServiceParameters *ServiceParameters = mp_ServiceDataConnector->GetServiceParameters();
     if (ServiceParameters != NULL) {
-        if (IPType == PROXY_IP) {
+        if (mp_MainWindow->GetSaMUserMode() == QString("Service") || IPType == PROXY_IP) {
             ServiceParameters->SetProxyIPAddress(IPAddress);
         }
         else {
@@ -106,7 +109,14 @@ void CSettings::UpdateGUIConnector(Core::CServiceGUIConnector *DataConnector, Ma
 {
     mp_ServiceDataConnector = DataConnector;
     mp_MainWindow = MainWindow;
-    mp_Ui->pageNetworkSettings->SetPtrToMainWindow(mp_MainWindow);
+    if (mp_MainWindow->GetSaMUserMode() == QString("Service")) {
+        mp_Ui->stackedWidget->removeWidget(mp_Ui->pageNetworkSettings);
+        mp_Ui->pageNetworkSettings0->SetPtrToMainWindow(mp_MainWindow);
+    }
+    else {
+        mp_Ui->stackedWidget->removeWidget(mp_Ui->pageNetworkSettings0);
+        mp_Ui->pageNetworkSettings->SetPtrToMainWindow(mp_MainWindow);
+    }
     mp_Ui->pageDateTimeSettings->SetPtrToMainWindow(mp_MainWindow);
     mp_Ui->pageLanguageSettings->SetPtrToMainWindow(mp_MainWindow);
 }
@@ -146,7 +156,12 @@ void CSettings::ResetButtonStatus()
 {
     mp_Ui->pageDateTimeSettings->SetPtrToMainWindow(mp_MainWindow);
     mp_Ui->pageDateTimeSettings->SetButtonStatus();
-    mp_Ui->pageNetworkSettings->SetSaveButtonStatus();
+    if (mp_MainWindow->GetSaMUserMode() == QString("Service")) {
+        mp_Ui->pageNetworkSettings0->SetSaveButtonStatus();
+    }
+    else {
+        mp_Ui->pageNetworkSettings->SetSaveButtonStatus();
+    }
 }
 
 /****************************************************************************/
@@ -158,7 +173,12 @@ void CSettings::ResetButtonStatus()
 /****************************************************************************/
 void CSettings::SetInformwationText(QString Text, QString Color)
 {
-   mp_Ui->pageNetworkSettings->SetInformwationText(Text, Color);
+    if (mp_MainWindow->GetSaMUserMode() == QString("Service")) {
+        mp_Ui->pageNetworkSettings0->SetInformwationText(Text, Color);
+    }
+    else {
+        mp_Ui->pageNetworkSettings->SetInformwationText(Text, Color);
+    }
 }
 
 /****************************************************************************/
@@ -170,7 +190,12 @@ void CSettings::SetInformwationText(QString Text, QString Color)
 /****************************************************************************/
 void CSettings::SetNetworkSettingsResult(PlatformService::NetworkSettings_t NtService, bool Result)
 {
-    mp_Ui->pageNetworkSettings->SetNetworkSettingsResult(NtService, Result);
+    if (mp_MainWindow->GetSaMUserMode() == QString("Service")) {
+        mp_Ui->pageNetworkSettings0->SetNetworkSettingsResult(NtService, Result);
+    }
+    else {
+        mp_Ui->pageNetworkSettings->SetNetworkSettingsResult(NtService, Result);
+    }
 }
 
 } // end namespace ServiceUpdates

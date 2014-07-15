@@ -100,10 +100,10 @@ CNetworkWidget::CNetworkWidget(QWidget *p_Parent)
     //mp_Ui->tableWidget->setMaximumSize(mp_TableWidget->width(), mp_TableWidget->height());
     mp_Ui->tableWidget->SetContent(mp_TableWidget);
 
-    mp_Ui->proxyIpAddressButton->setEnabled(true);
-    mp_Ui->saveProxyIpButton->setEnabled(true);
-    mp_Ui->serverIpAddressButton->setEnabled(true);
-    mp_Ui->saveServerIpButton->setEnabled(true);
+    mp_Ui->proxyIpAddressButton->setEnabled(false);
+    mp_Ui->saveProxyIpButton->setEnabled(false);
+    mp_Ui->serverIpAddressButton->setEnabled(false);
+    mp_Ui->saveServerIpButton->setEnabled(false);
 
     mp_Ui->firmwareCheckBoxLabel->setPixmap(QPixmap(QString::fromUtf8(":/Large/CheckBoxLarge/CheckBox-enabled-large.png")));
 

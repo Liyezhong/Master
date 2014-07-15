@@ -26,10 +26,11 @@
    <item row="0" column="1">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="Settings::CLanguageWidget" name="pageLanguageSettings"/>
      <widget class="Settings::CDateTimeWidget" name="pageDateTimeSettings"/>
+     <widget class="Settings::CNetworkSettingsWidget" name="pageNetworkSettings0"/>
      <widget class="CNetworkWidget" name="pageNetworkSettings"/>
     </widget>
    </item>
@@ -58,6 +59,12 @@
    <class>CNetworkWidget</class>
    <extends>QWidget</extends>
    <header>ServiceUpdates/Include/NetworkWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Settings::CNetworkSettingsWidget</class>
+   <extends>QWidget</extends>
+   <header>Settings/Include/NetworkSettingsWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

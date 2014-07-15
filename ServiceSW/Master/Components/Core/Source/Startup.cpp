@@ -1306,7 +1306,7 @@ void CStartup::RefreshTestStatus4FirmwareGetSlaveInfo(Service::ModuleTestCaseID 
     }
 
     if (EboxModule) {
-        SlaveModule = EboxModule->GetSubModuleInfo(Status.value(SlaveName));
+        SlaveModule = EboxModule->GetSubModuleInfo(SlaveName);
     }
     if (SlaveModule) {
         QMap<QString, QString>::const_iterator itr = Status.constBegin();

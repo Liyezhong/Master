@@ -122,7 +122,7 @@ void CServiceGUIConnector::SetUserSettingInterface(
 void CServiceGUIConnector::SendModuleUpdate(ServiceDataManager::CModule &Module)
 {
     mp_ModuleList->UpdateModule(&Module);
-    if (mp_ModuleList->Write()) {
+    if (!mp_ModuleList->Write()) {
         qDebug()<<"CServiceGUIConnector: SendModuluUpdate to file failed.";
     }
     qDebug() << Module.GetSerialNumber() << endl;
