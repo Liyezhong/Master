@@ -2252,6 +2252,14 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         {
             // retort is open, turn on the fan
             m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOnFan(500, this));
+            SchedulerCommandShPtr_t pResHeatingCmd;
+            PopDeviceControlCmdQueue(pResHeatingCmd,"Scheduler::ALTurnOnFan");
+            ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+            pResHeatingCmd->GetResult(retCode);
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                RaiseError(0, retCode, Scenario, true);
+            }
             SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
             if(((currentState & 0xF) == SM_BUSY)&&(currentState != PSSM_PAUSE)&&(currentState != PSSM_PAUSE_DRAIN))
             {
@@ -2267,6 +2275,14 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 		{
            // retort is closed, turn off the fan
 			m_SchedulerCommandProcessor->pushCmd(new CmdALTurnOffFan(500, this));
+            SchedulerCommandShPtr_t pResHeatingCmd;
+            PopDeviceControlCmdQueue(pResHeatingCmd,"Scheduler::ALTurnOffFan");
+            ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+            pResHeatingCmd->GetResult(retCode);
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                RaiseError(0, retCode, Scenario, true);
+            }
             MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::RETORT_LOCK, true));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
