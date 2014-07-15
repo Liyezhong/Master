@@ -371,13 +371,14 @@ DataManager::ReagentStatusType_t CDashboardStation::GetReagentStatus(const DataM
 			}
 			case Global::RMS_DAYS:
 			{
-                QDate CurDate;
+                QDate CurDate = Global::AdjustedTime::Instance().GetCurrentDateTime().date();
                 QDate ReagentExchangeQDate = pDashboardStation->GetDashboardReagentExchangeDate();
                 QDate ReagentExpiryQDate = ReagentExchangeQDate.addDays(Reagent.GetMaxDays());
-                if(CurDate.currentDate() > ReagentExpiryQDate){
+
+                if(CurDate.currentDate() >= ReagentExpiryQDate) {
                     ReagentStatus = DataManager::REAGENT_STATUS_EXPIRED;
                 }
-                else{
+                else {
                     ReagentStatus = DataManager::REAGENT_STATUS_NORMAL;
                 }
                 break;
