@@ -154,6 +154,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow()
                 }
                 else
                 {
+                    m_StartTime = QDateTime::currentMSecsSinceEpoch();
                     emit Retry();
                 }
             }

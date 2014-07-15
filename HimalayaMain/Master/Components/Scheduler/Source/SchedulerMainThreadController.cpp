@@ -1528,10 +1528,10 @@ bool SchedulerMainThreadController::PrepareProgramStationList(const QString& Pro
 
     // Add two cleaning bottles for bottle check
     stationInfo.ReagentGroupID = "RG7";
-    stationInfo.StationID = "12";
+    stationInfo.StationID = "S12";
     m_ProgramStationList.enqueue(stationInfo);
     stationInfo.ReagentGroupID = "RG8";
-    stationInfo.StationID = "13";
+    stationInfo.StationID = "S13";
     m_ProgramStationList.enqueue(stationInfo);
     return true;
 }
