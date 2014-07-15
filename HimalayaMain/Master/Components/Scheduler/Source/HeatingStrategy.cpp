@@ -1358,7 +1358,7 @@ void HeatingStrategy::OnReportLevelSensorStatus1()
 
 bool HeatingStrategy::isEffectiveTemp(qreal HWTemp)
 {
-    if (UNDEFINED_VALUE == HWTemp || UNDEFINED_1_BYTE == HWTemp || UNDEFINED_2_BYTE == HWTemp || UNDEFINED_4_BYTE == HWTemp)
+    if (UNDEFINED_VALUE == HWTemp || UNDEFINED_1_BYTE == HWTemp || UNDEFINED_2_BYTE == HWTemp || UNDEFINED_4_BYTE == HWTemp || HWTemp >= 298)
     {
         return false;
     }

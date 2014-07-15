@@ -2657,19 +2657,19 @@ bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 int
         reportError2 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_SIDE);
         reportError3 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_TOP);
         reportError4 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_BOTTOM);
-        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) <= interval*1000)
         {
             return false;
         }
-        if (reportError2.instanceID != 0 && (now-reportError2.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        if (reportError2.instanceID != 0 && (now-reportError2.errorTime.toMSecsSinceEpoch()) <= interval*1000)
         {
             return false;
         }
-        if (reportError3.instanceID != 0 && (now-reportError3.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        if (reportError3.instanceID != 0 && (now-reportError3.errorTime.toMSecsSinceEpoch()) <= interval*1000)
         {
             return false;
         }
-        if (reportError4.instanceID != 0 && (now-reportError4.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        if (reportError4.instanceID != 0 && (now-reportError4.errorTime.toMSecsSinceEpoch()) <= interval*1000)
         {
             return false;
         }
