@@ -567,7 +567,6 @@ private:
     DP *mp_IDeviceProcessing;       ///<  Definition/Declaration of variable mp_IDeviceProcessing
 
     QQueue<Scheduler::SchedulerCommandShPtr_t> m_Cmds;       ///<  Definition/Declaration of variable m_Cmds
-    Scheduler::SchedulerCommandShPtr_t m_currentCmd;       ///<  Definition/Declaration of variable m_currentCmd
     QMutex m_CmdMutex;       ///<  Definition/Declaration of variable m_CmdMutex
 
 };

@@ -181,7 +181,13 @@ bool SchedulerCommandProcessor<DP>::newCmdComing(Scheduler::SchedulerCommandShPt
     if(!m_Cmds.isEmpty())
     {
         ret = true;
+<<<<<<< HEAD
        scmd =  m_Cmds.dequeue();
+||||||| merged common ancestors
+       m_currentCmd =  m_Cmds.dequeue();
+=======
+        scmd =  m_Cmds.dequeue();
+>>>>>>> support more than one cmds from scheduler
     }
     m_CmdMutex.unlock();
     return ret;
@@ -402,7 +408,13 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	}
 	else if  ("Scheduler::OvenSetTempCtrlOFF" == cmdName)
 	{
+<<<<<<< HEAD
       //  scmd->SetResult( mp_IDeviceProcessing->OvenSetTempCtrlOFF(dynamic_cast<CmdOvenSetTempCtrlOFF*>(scmd)->GetType() ) );
+||||||| merged common ancestors
+      //  m_currentCmd->SetResult( mp_IDeviceProcessing->OvenSetTempCtrlOFF(dynamic_cast<CmdOvenSetTempCtrlOFF*>(m_currentCmd)->GetType() ) );
+=======
+        scmd->SetResult( mp_IDeviceProcessing->OvenSetTempCtrlOFF(qSharedPointerDynamicCast<CmdOvenSetTempCtrlOFF>(scmd)->Gettype() ) );
+>>>>>>> support more than one cmds from scheduler
 	}
 	else if  ("Scheduler::OvenSetTemperaturePid" == cmdName)
 	{
