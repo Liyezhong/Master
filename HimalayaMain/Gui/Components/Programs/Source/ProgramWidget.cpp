@@ -301,6 +301,7 @@ void CProgramWidget::OnUserRoleChanged()
         //View Mode
         mp_Ui->btnEdit->setText(m_strView);
         mp_Ui->btnNew->setEnabled(false);
+        mp_Ui->btnDelete->setEnabled(false);
     }
     m_UserRoleChanged = true;
 
