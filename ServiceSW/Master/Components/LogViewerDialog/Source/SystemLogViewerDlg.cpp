@@ -210,7 +210,7 @@ void CSystemLogViewerDlg::SetTableModel()
 void CSystemLogViewerDlg::RetranslateUI()
 {
     m_strOK = QApplication::translate("LogViewer::CSystemLogViewerDlg", "OK", 0, QApplication::UnicodeUTF8);
-    m_strWarning = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Waring", 0, QApplication::UnicodeUTF8);
+    m_strWarning = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Warning", 0, QApplication::UnicodeUTF8);
     m_strMsgSelectRowText = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Please Select a row to continue..",
                                                     0, QApplication::UnicodeUTF8);
     m_strMsgRecoveryActionTitle = QApplication::translate("LogViewer::CSystemLogViewerDlg", "Recovery Action",

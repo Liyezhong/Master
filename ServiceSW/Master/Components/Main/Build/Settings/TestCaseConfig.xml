@@ -48,4 +48,7 @@
 		<FirmwareUpdate SlaveType="3" Path="" />
 		<FirmwareGetSlaveInfo SlaveType="3" />
 	</Firmware>
+	<PressureSensor>
+		<PressureSensorCalibrate TryNum="1" />
+	</PressureSensor>
 </TestCaseConfig>

@@ -62,6 +62,8 @@ signals:
 
 private slots:
     void RetranslateUI();
+public:
+    void SetButtonStatus(bool enable);
 
 };
 

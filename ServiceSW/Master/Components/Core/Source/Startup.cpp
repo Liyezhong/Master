@@ -261,7 +261,9 @@ CStartup::CStartup() : QObject(),
     CONNECTSIGNALSLOT(mp_MainWindow, onChangeEvent(), this, RetranslateUI());
     CONNECTSIGNALSLOT(mp_ServiceConnector, ServiceParametersChanged(), this, UpdateParameters());
 
-    CONNECTSIGNALSIGNAL(mp_FirmwareUpdate, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+//    CONNECTSIGNALSIGNAL(mp_FirmwareUpdate, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+
+    CONNECTSIGNALSIGNAL(mp_CalibrationHandler, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
 
     m_DateTime.setTime_t(0);
     mp_Clock->start(60000);
@@ -1391,6 +1393,9 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
         break;
     case Service::FIRMWARE_GET_SLAVE_INFO:
         RefreshTestStatus4FirmwareGetSlaveInfo(id, status);
+        break;
+    case Service::PRESSURE_CALIBRATION:
+        mp_CalibrationHandler->RefreshCalibrationMessagetoMain(status);
         break;
     default:
         break;

@@ -25,6 +25,7 @@
 #include "MainMenu/Include/MenuGroup.h"
 #include "Calibration/Include/PressureSensor.h"
 #include "Calibration/Include/Touchscreen.h"
+#include "Core/Include/ServiceDefines.h"
 
 
 namespace Core {
@@ -43,6 +44,8 @@ public:
 
     void LoadCalibrationGUIComponenets();
 
+    void RefreshCalibrationMessagetoMain(const Service::ModuleTestStatus &Status);
+
 private:
     Core::CServiceGUIConnector              *mp_ServiceConnector;           //!< Service GUI connector object
     QEventLoop                              m_LoopCalibrationStart;         //!< Loop for blocking Calibration commands.
@@ -55,6 +58,8 @@ private:
 
 
     bool PerformCalibration(QString Title, QString GBox, QString Instr);
+
+    bool GetCalibrationResponse();
 
 signals:
     /****************************************************************************/
@@ -69,6 +74,14 @@ signals:
      */
     /****************************************************************************/
     void PressureSensorCalibrationRequest();
+
+    /****************************************************************************/
+    /**
+       * \brief Signal emitted to perform manufacturing tests
+       * \iparam Test = Test name
+       */
+    /****************************************************************************/
+    void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestID=Service::TEST_CASE_ID_UNUSED);
 
 public slots:
 
@@ -85,6 +98,9 @@ public slots:
     void ShowCalibrationInitMessagetoMain(const QString &Message, bool OkStatus);
 
     void EnableCalibrationGroup(bool Status);
+
+private:
+    int m_Result;
 
 };
 

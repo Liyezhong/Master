@@ -562,6 +562,7 @@ void WrapperFmPressureControl::AgitationTimerCB(void)
 #define SUCKING_INSUFFICIENT_4SAMPLE_DELTASUM (1)
 
 #define SUCKING_MAX_DELAY_TIME        (10000)
+#define SUCKING_MAX_DELAY_TIME_FOR_OVERFLOW (70*1000)
 #define SUCKING_POOLING_TIME          (400)
 #define SUCKING_SETUP_WARNING_TIME    (120*1000)
 #define SUCKING_MAX_SETUP_TIME        (240*1000)
@@ -633,6 +634,7 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
                 if(DelayTime > 0)
                 {
                      //waiting for some time
+#if 0  // changed by Sunny on July, 15, 2014 to test overflow for manufacturing.
                      if(DelayTime < SUCKING_MAX_DELAY_TIME)
                      {
                           Log(tr("Delay for %1 milliseconds.").arg(DelayTime));
@@ -643,6 +645,18 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
                         Log(tr("Delay for %1 milliseconds.").arg(SUCKING_MAX_DELAY_TIME));
                         StopTimeMs = nowMs + SUCKING_MAX_DELAY_TIME;
                     }
+#else
+                    if(DelayTime < SUCKING_MAX_DELAY_TIME_FOR_OVERFLOW)
+                    {
+                         Log(tr("Delay for %1 milliseconds.").arg(DelayTime));
+                         StopTimeMs = nowMs + DelayTime;
+                    }
+                   else
+                   {
+                       Log(tr("Delay for %1 milliseconds.").arg(SUCKING_MAX_DELAY_TIME_FOR_OVERFLOW));
+                       StopTimeMs = nowMs + SUCKING_MAX_DELAY_TIME_FOR_OVERFLOW;
+                   }
+#endif //
                 }
                 else
                 {
@@ -671,6 +685,7 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
         else if(levelSensorState == 3)
         {
 
+#if 0  // changed by Sunny on Jul, 15, 2014. For manufacturing and service, no warning report, but report timeout in 2 minutes.
             if((counter > (SUCKING_SETUP_WARNING_TIME / SUCKING_POOLING_TIME)) && ( !WarnShowed ))
             {
                 Log(tr("Warning! Do not get level sensor data in %1 seconds!").arg(SUCKING_SETUP_WARNING_TIME / 1000));
@@ -682,6 +697,14 @@ qint32 WrapperFmPressureControl::Sucking(quint32 DelayTime, quint32 TubePosition
                 RetValue = SUCKING_RET_TIMEOUT;
                 goto SORTIE;
             }
+#else
+            if(counter > (SUCKING_SETUP_WARNING_TIME / SUCKING_POOLING_TIME))
+            {
+                Log(tr("Do not get level sensor data in %1 seconds, Time out! Exit!").arg(SUCKING_SETUP_WARNING_TIME / 1000));
+                RetValue = SUCKING_RET_TIMEOUT;
+                goto SORTIE;
+            }
+#endif  //
             if((StopTimeMs!=0)&&(nowMs >= StopTimeMs))
             {
                 Log(tr("Delay finished."));
@@ -1888,7 +1911,7 @@ QString WrapperFmPressureControl::GetMainsVoltageState()
 void WrapperFmPressureControl::OnLevelSensorState(quint32, ReturnCode_t ReturnCode, quint8 State)
 {
     Log(tr("New Level Sensor State is: %1").arg(State));
-
+    qDebug()<< "WrapperFmPressureControl::OnLevelSensorState -----"<< State;
     if(State == 1)
     {
         if(m_LoopSuckingLevelSensor.isRunning())

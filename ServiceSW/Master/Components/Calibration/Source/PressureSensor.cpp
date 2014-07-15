@@ -85,4 +85,9 @@ void CPressureSensor::StartCalibration(void)
     emit CalibrationPressureSensor();
 }
 
+void CPressureSensor::SetButtonStatus(bool enable)
+{
+    mp_Ui->startButton->setEnabled(enable);
+}
+
 } // namespace Calibration

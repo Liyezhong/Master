@@ -34,7 +34,8 @@ namespace Core {
 CCalibrationHanlder::CCalibrationHanlder(CServiceGUIConnector *p_ServiceGUIConnector,
                                          MainMenu::CMainWindow *p_MainWindow) :
     mp_ServiceConnector(p_ServiceGUIConnector),
-    mp_MainWindow(p_MainWindow)
+    mp_MainWindow(p_MainWindow),
+    m_Result(0)
 {
     mp_CalibrationGroup = new MainMenu::CMenuGroup;
     mp_PressureSensor = new Calibration::CPressureSensor();
@@ -67,8 +68,99 @@ CCalibrationHanlder::~CCalibrationHanlder()
 /****************************************************************************/
 void CCalibrationHanlder::OnPressureSensorCalibration()
 {
-    mp_ServiceConnector->ShowBusyDialog();
-    emit PressureSensorCalibrationRequest();
+    MainMenu::CMessageDlg *MsgDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    MsgDlg->HideAllButtons();
+    MsgDlg->SetTitle(QApplication::translate("Core::CCalibrationHanlder",
+                                             "Pressure sensor calibration",
+                                             0, QApplication::UnicodeUTF8));
+    MsgDlg->setModal(false);
+
+    mp_PressureSensor->SetButtonStatus(false);
+
+    for(int i=0; i<3; i++) {
+        QString Msg;
+        if (i==0) {
+            Msg = QApplication::translate("Core::CCalibrationHanlder",
+                                              "Executing the first calibration, please wait...",
+                                              0, QApplication::UnicodeUTF8);
+        }
+        else if (i==1) {
+            Msg = QApplication::translate("Core::CCalibrationHanlder",
+                                              "Executing the second calibration, please wait...",
+                                              0, QApplication::UnicodeUTF8);
+        }
+        else if (i==2) {
+            Msg = QApplication::translate("Core::CCalibrationHanlder",
+                                              "Executing the third calibration, please wait...",
+                                              0, QApplication::UnicodeUTF8);
+        }
+        MsgDlg->SetText(Msg);
+        MsgDlg->Show();
+
+        emit PerformManufacturingTest(Service::PRESSURE_CALIBRATION);
+
+        GetCalibrationResponse();
+
+        MsgDlg->hide();
+
+        if (m_Result == 0) {
+            QString Msg = QApplication::translate("Core::CCalibrationHanlder",
+                                                  "Pressure sensor calibration success.",
+                                                  0, QApplication::UnicodeUTF8);
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Msg, true);
+
+            break;
+        }
+        else if (m_Result == 2) {
+            if (i==3) {
+                break;
+            }
+            QString Msg = QApplication::translate("Core::CCalibrationHanlder",
+                                                  "Please open the retort lid, and then click 'OK' to retry.",
+                                                  0, QApplication::UnicodeUTF8);
+            mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_INFO, Msg, true);
+        }
+    }
+
+    if (m_Result != 0) {
+        QString Msg = QApplication::translate("Core::CCalibrationHanlder",
+                                              "Pressure sensor calibration failed.",
+                                              0, QApplication::UnicodeUTF8);
+        mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Msg, true);
+    }
+    mp_PressureSensor->SetButtonStatus(true);
+    delete MsgDlg;
+}
+
+/****************************************************************************/
+/*!
+ *  \brief GetCalibrationResponse
+ *
+ */
+/****************************************************************************/
+bool CCalibrationHanlder::GetCalibrationResponse()
+{
+    QTimer timer;
+    timer.setSingleShot(true);
+    timer.setInterval(30000);
+    timer.start();
+    // quit via timer is the same as exit(0)
+    CONNECTSIGNALSLOT(&timer, timeout(), &m_LoopCalibrationStart, quit());
+
+    qint32 ret = m_LoopCalibrationStart.exec();
+    if (ret == 0) {
+        ShowErrorMessage( QApplication::translate("Core::CCalibrationHanlder", "Timeout expired: ",
+                                                  0, QApplication::UnicodeUTF8));
+        return false;
+    }
+    if(ret != 1)
+    {
+        //ShowErrorMessage(Service::CMessageString::MSG_CALIBRATION_FAILURE);
+        return false;
+    }
+    mp_ServiceConnector->HideBusyDialog();
+
+    return true;
 }
 
 /****************************************************************************/
@@ -93,6 +185,8 @@ bool CCalibrationHanlder::PerformCalibration(QString Title, QString GBox, QStrin
     if (ret == 0) {
         ShowErrorMessage( QApplication::translate("Core::CCalibrationHanlder", "Timeout expired: ",
                                                   0, QApplication::UnicodeUTF8));
+
+        m_Result = -1;
         return false;
     }
     if(ret != 1)
@@ -159,7 +253,24 @@ void CCalibrationHanlder::ShowCalibrationInitMessagetoMain(const QString &Messag
     } else {
         qDebug()<<"NOTICE: Unexpected action acknowledgement for Calibration";
     }
+
 }
+
+void CCalibrationHanlder::RefreshCalibrationMessagetoMain(const Service::ModuleTestStatus &Status)
+{
+    qDebug()<<"RefreshCalibrationMessagetoMain ---------"<<Status;
+    m_Result = Status.value("Result").toInt();
+
+    if (m_LoopCalibrationStart.isRunning()) {
+        m_LoopCalibrationStart.exit(1);
+    } else {
+        qDebug()<<"NOTICE: Unexpected action acknowledgement for Calibration";
+    }
+
+
+}
+
+
 
 /****************************************************************************/
 /*!

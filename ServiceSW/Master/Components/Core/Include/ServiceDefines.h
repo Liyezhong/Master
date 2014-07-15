@@ -199,7 +199,8 @@ typedef enum ModuleTestCaseID {
     CLEANING_SYSTEM_TEST,                ///< Cleaning system test
     TEST_ABORT,                           ///< This is to abort a heating test case.
     FIRMWARE_UPDATE,                       ///< This is to update firmware for manufacturing
-    FIRMWARE_GET_SLAVE_INFO                ///< This is to get information from slave board.
+    FIRMWARE_GET_SLAVE_INFO,                ///< This is to get information from slave board.
+    PRESSURE_CALIBRATION                     ///< This is to calibrate pressure sensor
 } ModuleTestCaseID_t;
 
 /****************************************************************************/
@@ -208,7 +209,8 @@ typedef enum ModuleTestCaseID {
  */
 /****************************************************************************/
 typedef enum ModuleNames {
-    FIRMWARE,
+    PRESSURE_SENSOR,            ///< Pressure sensor
+    FIRMWARE,                   ///< Firmwaree
     MAIN_CONTROL,                     ///< E Box
     RETORT,                 ///< Retort Module
     DISPLAY,              ///< Display Module

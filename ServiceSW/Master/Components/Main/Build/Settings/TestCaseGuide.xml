@@ -171,4 +171,5 @@
 	</RetortHeatingWater>
 	<FirmwareUpdate></FirmwareUpdate>
 	<FirmwareGetSlaveInfo></FirmwareGetSlaveInfo>
+	<PressureSensorCalibrate></PressureSensorCalibrate>
 </TestCaseGuide>

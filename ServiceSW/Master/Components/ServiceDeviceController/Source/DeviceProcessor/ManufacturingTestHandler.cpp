@@ -203,6 +203,7 @@ void ManufacturingTestHandler::CreateWrappers()
     if (NULL != pTemperature)
     {
         mp_TempLSensor = new WrapperFmTempControl("temp_lsensor", pTemperature, this);
+
     }
 
     CPressureControl *pPressure = NULL;
@@ -210,6 +211,7 @@ void ManufacturingTestHandler::CreateWrappers()
     if (NULL != pPressure)
     {
         mp_PressPump = new WrapperFmPressureControl("pressurectrl", pPressure, this);
+        connect(pTemperature, SIGNAL(ReportLevelSensorState(quint32, ReturnCode_t, quint8)), mp_PressPump, SLOT(OnLevelSensorState(quint32,ReturnCode_t,quint8)));
     }
 
     CBaseModule *pBaseModule = NULL;
@@ -988,7 +990,7 @@ EXIT:
 
 qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
 {
-#define LS_DETECT_TEMP  20.0
+
     QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::RETORT_LEVEL_SENSOR_DETECTING);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(testCaseName);
 
@@ -1012,10 +1014,9 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
         qDebug() << "Level sensor heating OK!";
     }
 
-    // retort filling will be blocked 2 ~ 4 mintus,
-    // refresh UI;
     EmitRefreshTestStatustoMain(testCaseName, RETORT_FILLING);
-    if (DCL_ERR_FCT_CALL_SUCCESS != m_rIdevProc.ALFillingForService(0, true)) {
+    result = mp_PressPump->Sucking(0, bottlePos);
+    if (result != SUCKING_RET_OK ) {
         result = -1;
     }
     else {
@@ -1049,7 +1050,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorDetecting()
     // draing
     mp_MotorRV->MoveToTubePosition(bottlePos);
     EmitRefreshTestStatustoMain(testCaseName, RETORT_DRAINING);
-    m_rIdevProc.ALDraining(0);
+    mp_PressPump->Draining(0);
 
     EmitRefreshTestStatustoMain(testCaseName, HIDE_MESSAGE);
 
@@ -1250,8 +1251,9 @@ qint32 ManufacturingTestHandler::TestSystemOverflow()
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, 1);
     if (mp_MotorRV->MoveToTubePosition(1)) {
         EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
-        ret = m_rIdevProc.ALFillingForService(delay, true);
-        if (ret == DCL_ERR_DEV_LA_FILLING_OVERFLOW) {
+
+        ret = mp_PressPump->Sucking(delay, 1);
+        if (ret == SUCKING_RET_OVERFLOW) {
             result = true;
         }
         else {
@@ -1262,16 +1264,9 @@ qint32 ManufacturingTestHandler::TestSystemOverflow()
         qDebug()<<"Overflow test: rotating RV to tube position 1 failed.";
         return result;
      }
-/*
-    quint32 waitSec = 70;
-    while (!m_UserAbort && waitSec) {
-        //to check overflow position.
-        mp_Utils->Pause(1000);
-        -- waitSec;
-    }
-*/
+
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
-    ret = m_rIdevProc.ALDraining(0);
+    ret = mp_PressPump->Draining();
     if (ret != 0) {
         qDebug()<<"Overflow test: run draining function failed, error code :"<<ret;
     }
@@ -2130,12 +2125,10 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     qDebug()<<"Begin sucking....";
 
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
-    Ret = m_rIdevProc.ALFilling(0, true);
-//    Ret = mp_PressPump->Sucking(0, Position, false);
-    if ( Ret != 0 ) {
+    Ret = mp_PressPump->Sucking();
+    if ( Ret != SUCKING_RET_OK ) {
         qDebug()<<"Sucking failed......... Ret = "<<Ret;
-        Ret = m_rIdevProc.ALDraining(0);
-
+        Ret = mp_PressPump->Draining();
         qDebug()<<"Draining return : "<<Ret;
 
         p_TestCase->AddResult("FailReason", "NOT-IN-HEATING");
@@ -2211,10 +2204,9 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     // draining
     qDebug()<<"Begin draining.........";
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
-     Ret = m_rIdevProc.ALDraining(0);
-     //Ret = mp_PressPump->Draining(1000, Position);
+    Ret = mp_PressPump->Draining();
      if ( Ret != 0 || m_UserAbort ) {
-         qDebug()<<"ALDraining return : "<< Ret;
+         qDebug()<<"Draining return : "<< Ret;
     //     goto RV_HEATING_END_EXIT;
      }
 
@@ -2449,36 +2441,38 @@ void ManufacturingTestHandler::GetSlaveInformation()
     emit RefreshTestStatustoMain(TestCaseName, Status);
 }
 
-qint32 ManufacturingTestHandler::TestLSensorDetecting(qint32 Pos)
+void ManufacturingTestHandler::CalibratePressureSensor()
 {
-    qint32 Ret;
+    Service::ModuleTestStatus Status;
+    Service::ModuleTestCaseID Id = Service::PRESSURE_CALIBRATION;
 
-    if ( !mp_MotorRV->MoveToTubePosition(Pos) )
-    {
-        return -1;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+
+    mp_PressPump->SetValve(0, 0);
+    mp_PressPump->SetValve(1, 0);
+    mp_Utils->Pause(20*1000);
+
+    qreal Pressure = mp_PressPump->GetPressure();
+
+    float Drift(0);
+
+
+    if (qAbs(Pressure) > 1.5) {
+        Status.insert("Result", "2"); // open retort lid and retry
     }
-
-    Ret = mp_PressPump->Sucking(0, Pos, false);
-    switch(Ret)  //1=ok, -1=err, -2=time out, -3=overflow
-    {
-        case -1:
-            qDebug() << "Sucking return: [General]";
-            break;
-        case -2:
-            qDebug() << "Sucking return: [TimeOut]";
-            break;
-        case -3:
-            qDebug() << "Sucking return: [Overflow]";
-            mp_PressPump->Draining(1000, Pos);
-            break;
-        case -4:
-            qDebug() << "Sucking return: [Insufficient]";
-            break;
-        default:
-            break;
+    else if (qAbs(Pressure) < 0.2) {
+        Status.insert("Result", "0"); // success
     }
+    else {
+        Status.insert("Result", "1"); // Set drift and retry
+        Drift =  mp_PressPump->ReadPressureDrift();
+        mp_PressPump->WritePressureDrift(Drift+Pressure);
+    }
+    Drift =  mp_PressPump->ReadPressureDrift();
 
-    return Ret;
+    qDebug()<<"CalibratePressureSensor ----Drift="<<Drift<<"----Pressure="<<Pressure<<"---------"<<Status;
+
+    emit RefreshTestStatustoMain(TestCaseName, Status);
 }
 
 qint32 ManufacturingTestHandler::HeatingLevelSensor()
@@ -2590,14 +2584,14 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
     }
 
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
-    Ret = m_rIdevProc.ALFilling(0, true);
+    Ret = mp_PressPump->Sucking();
 
     mp_TempLSensor->StopTemperatureControl();
 
-    if (Ret != DCL_ERR_FCT_CALL_SUCCESS) {
+    if (Ret != SUCKING_RET_OK) {
         // if failed, then draining
         EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
-        m_rIdevProc.ALDraining(0);
+        mp_PressPump->Draining();
 
         p_TestCase->SetStatus(false);
         return -1;
@@ -2724,7 +2718,7 @@ EXIT_TEST_RETORT_HEATING_WATER:
         mp_MotorRV->MoveToTubePosition(Position);
 
         EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
-        m_rIdevProc.ALDraining(0);
+        mp_PressPump->Draining();
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
         if (m_UserAbort) {
@@ -3051,6 +3045,9 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         break;
     case Service::FIRMWARE_GET_SLAVE_INFO:
         GetSlaveInformation();
+        break;
+    case Service::PRESSURE_CALIBRATION:
+        CalibratePressureSensor();
         break;
     default:
         break;

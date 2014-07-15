@@ -245,6 +245,9 @@ void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
     else if (TestCaseName == "FirmwareGetSlaveInfo") {
         Id = Service::FIRMWARE_GET_SLAVE_INFO;
     }
+    else if (TestCaseName == "PressureSensorCalibrate") {
+        Id = Service::PRESSURE_CALIBRATION;
+    }
 
     m_TestCaseIDHash.insert(Id, TestCaseName);
 }
