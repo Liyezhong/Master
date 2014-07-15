@@ -771,7 +771,26 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_FILLING == stepState)
         {
-            m_SchedulerMachine->HandleProtocolFillingWorkFlow(cmdName, retCode);
+            if(CTRL_CMD_PAUSE == ctrlCmd)
+            {
+                LogDebug(QString("Scheduler step: READY_TO_FILL is abort to PAUSE"));
+                AllStop();
+                m_SchedulerMachine->NotifyPause(PSSM_FILLING);
+            }
+            else if( "Scheduler::ALFilling" == cmdName)
+            {
+                if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                {
+                    LogDebug(QString("Program Step Filling OK"));
+                    m_SchedulerMachine->NotifyFillFinished();
+                }
+                else if( DCL_ERR_DEV_LA_FILLING_INSUFFICIENT == retCode)
+                {
+                    LogDebug(QString("Program Step Filling Insufficient"));
+                    RaiseError(0, DCL_ERR_DEV_LA_FILLING_INSUFFICIENT, m_CurrentScenario, true);
+                    m_SchedulerMachine->SendErrorSignal();
+                }
+            }
         }
         else if(PSSM_RV_MOVE_TO_SEAL == stepState)
         {
@@ -1191,6 +1210,26 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to RC_Levelsensor_Heating_Overtime");
             m_SchedulerMachine->EnterRcLevelsensorHeatingOvertime();
         }
+        else if(CTRL_CMD_RC_PRESSURE == ctrlCmd)
+        {
+            LogDebug("Go to RC_Pressure");
+            m_SchedulerMachine->EnterRcPressure();
+        }
+        else if(CTRL_CMD_RC_VACUUM == ctrlCmd)
+        {
+            LogDebug("Go to RC_Vacuum");
+            m_SchedulerMachine->EnterRcVacuum();
+        }
+        else if(CTRL_CMD_RC_FILLING == ctrlCmd)
+        {
+            LogDebug("Go to RC_Filling");
+            m_SchedulerMachine->EnterRcFilling();
+        }
+        else if(CTRL_CMD_RC_DRAINING == ctrlCmd)
+        {
+            LogDebug("Go to RC_Draining");
+            m_SchedulerMachine->EnterRcDraining();
+        }
         else
         {
             LogDebug(QString("Unknown Command: %1").arg(ctrlCmd, 0, 16));
@@ -1226,6 +1265,22 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         LogDebug(QString("In RS_RV_GET_ORIGINAL_POSITION_AGAIN state"));
         m_SchedulerMachine->HandleRsRVGetOriginalPositionAgainWorkFlow(cmdName, retCode);
+    }
+    else if(SM_ERR_RC_PRESSURE == currentState)
+    {
+         m_SchedulerMachine->HandleRcPressureWorkFlow(cmdName, retCode);
+    }
+    else if(SM_ERR_RC_VACUUM == currentState)
+    {
+         m_SchedulerMachine->HandleRcVacuumWorkFlow(cmdName, retCode);
+    }
+    else if(SM_ERR_RC_FILLING == currentState)
+    {
+         m_SchedulerMachine->HandleRcFillingWorkFlow(cmdName, retCode);
+    }
+    else if(SM_ERR_RC_DRAINING == currentState)
+    {
+         m_SchedulerMachine->HandleRcDrainingWorkFlow(cmdName, retCode);
     }
 }
 
@@ -1303,6 +1358,22 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (cmd == "rc_levelsensor_heating_overtime")
         {
             return CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME;
+        }
+        if (cmd == "rc_pressure")
+        {
+            return CTRL_CMD_RC_PRESSURE;
+        }
+        if (cmd == "rc_vacuum")
+        {
+            return CTRL_CMD_RC_VACUUM;
+        }
+        if (cmd == "rc_filling")
+        {
+            return CTRL_CMD_RC_FILLING;
+        }
+        if (cmd == "rc_draining")
+        {
+            return CTRL_CMD_RC_DRAINING;
         }
     }
     return CTRL_CMD_UNKNOWN;

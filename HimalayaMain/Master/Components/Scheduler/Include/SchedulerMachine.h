@@ -89,6 +89,10 @@ private:
     QSharedPointer<QState> mp_ErrorRsHeatingErr30SRetryState;                           ///<  Error State's sub state: handle Rs_HeatingErr30S_Retry related logic
     QSharedPointer<QState> mp_ErrorRsTSensorErr3MinRetryState;                          ///<  Error State's sub state: handle Rs_TSensorErr3Min_Retry related logic
     QSharedPointer<QState> mp_ErrorRsRVGetOriginalPositionAgainState;                   ///<  Error State's sub state: handle Rs_RV_GetOriginalPositionAgain related logic
+    QSharedPointer<QState> mp_RcPressure;                                               ///<  State machine for RC_Pressure;
+    QSharedPointer<QState> mp_RcVacuum;                                                 ///<  State machine for RC_Vacuum;
+    QSharedPointer<QState> mp_RcFilling;                                                ///<  State machine for RC_Filling;
+    QSharedPointer<QState> mp_RcDraining;                                               ///<  State machine for RC_Draining;
 
     //State machines for Run handling
     QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
@@ -102,15 +106,6 @@ private:
     QSharedPointer<CRcLevelSensorHeatingOvertime> mp_RcLevelSensorHeatingOvertime;      ///<  State machine for RC_LevelSensor_Heating_Overtime
     QSharedPointer<CRcRestart> mp_RcRestart;                                            ///<  State machine for RC_Restart
     QSharedPointer<CRcReport> mp_RcReport;												///<  State machine for RC_Report
-
-    // enum for filling stages
-    typedef enum
-    {
-        IN_FILLING,
-        GET_FILLING_RESPONSE
-    } FILLING_STAGE_t;
-
-    FILLING_STAGE_t m_FillingCurrentStage;                                              ///< Current stage of protocol filling
 
     typedef enum
     {
@@ -569,6 +564,38 @@ public:
      */
     /****************************************************************************/
     void EnterRcRestart();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function NotifyRcPressure
+     *
+     *  \return from NotifyRcPressure
+     */
+    /****************************************************************************/
+    void EnterRcPressure();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function NotifyVacuum
+     *
+     *  \return from NotifyRcVacuum
+     */
+    /****************************************************************************/
+    void EnterRcVacuum();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function NotifyRcFilling
+     *
+     *  \return from NotifyRcFilling
+     */
+    /****************************************************************************/
+    void EnterRcFilling();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function NotifyRcDraining
+     *
+     *  \return from NotifyRcDraining
+     */
+    /****************************************************************************/
+    void EnterRcDraining();
 
     /****************************************************************************/
     /*!
@@ -581,18 +608,6 @@ public:
      */
     /****************************************************************************/
     void HandlePssmPreTestWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode); 
-
-    /****************************************************************************/
-    /*!
-     *  \brief Handle the whole work flow for Protocol Filling
-     *
-     *  \param cmdName - command name
-     *  \param retCode - return code
-     *
-     *  \return void
-     */
-    /****************************************************************************/
-    void HandleProtocolFillingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -661,6 +676,54 @@ public:
      */
     /****************************************************************************/
     void HandleRsRVGetOriginalPositionAgainWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for HandleRcPressureWorkFlow
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRcPressureWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for HandleRcVacuumWorkFlow
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRcVacuumWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for HandleRcFillingWorkFlow
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRcFillingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for HandleRcDrainingWorkFlow
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRcDrainingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -1302,6 +1365,34 @@ signals:
      */
     /****************************************************************************/
     void sigOnRsRTTopStopTempCtrlAtRsStandByWithTissue();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigEnterRcPressure
+     */
+    /****************************************************************************/
+    void SigEnterRcPressure();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigEnterRcVacuum
+     */
+    /****************************************************************************/
+    void SigEnterRcVacuum();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigEnterRcFilling
+     */
+    /****************************************************************************/
+    void SigEnterRcFilling();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal sigEnterRcDraining
+     */
+    /****************************************************************************/
+    void SigEnterRcDraining();
 
     /****************************************************************************/
     /*!
