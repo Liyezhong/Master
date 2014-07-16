@@ -42,7 +42,7 @@ class  CRsHeatingErr30SRetry : public QObject
     {
         UNDEF,
         SHUTDOWN_FAILD_HEATER,
-        WAIT_FOR_3SECONDS,
+        WAIT_FOR_10SECONDS,
         RESTART_FAILED_HEATER,
         CHECK_MODULE_CURRENT
     } StateList_t;
@@ -93,7 +93,7 @@ signals:
      *
      */
     /****************************************************************************/
-    void WaitFor3Seconds();
+    void WaitFor10Seconds();
 
     /****************************************************************************/
     /*!
@@ -131,9 +131,10 @@ private:
     SchedulerMainThreadController* mp_SchedulerController;  //!< Pointer to SchedulerMainThreadController
     QSharedPointer<QStateMachine>  mp_StateMachine;         //!< State machine for RS_Standby_WithTissue
     QSharedPointer<QState> mp_ShutdownFailedHeater;         //!< Shutdown failed heater state
-    QSharedPointer<QState> mp_WaitFor3Seconds;              //!< Wait for 3 seconds state
+    QSharedPointer<QState> mp_WaitFor10Seconds;              //!< Wait for 3 seconds state
     QSharedPointer<QState> mp_RestartFailedHeater;          //!< Restart failed heater
     QSharedPointer<QState> mp_CheckTempModuleCurrent;       //!< Check current of the temperature module
+    qint64 m_ShutdownHeaterTime;                            //!< Time of shutting down heater
     qint64  m_StartTime;                                    //!< Start up time
     quint32 m_Counter;                                      //!< counter for retry times
 };

@@ -121,13 +121,14 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
         {
             if (0 == m_StandbyType) // RS_Standby_WithTissue
             {
+                m_StartCheckingTime = QDateTime::currentMSecsSinceEpoch();
                 if (RETORT != mp_SchedulerController->GetFailerHeaterType())
                 {
                     emit StopRTBottomTempCtrl();
                 }
                 else
                 {
-					m_StartCheckingTime = QDateTime::currentMSecsSinceEpoch();
+                    ;
                     emit CheckTempModuleCurrernt();
                 }
             }
@@ -143,7 +144,7 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
         }
         break;
     case RTBOTTOM_STOP_TEMPCTRL:
-        mp_SchedulerController->LogDebug("RS_Standby_WithTissue or RS_Standby, in state RTBOTTOM_STOP_TEMPCTRL");
+        mp_SchedulerController->LogDebug("RS_Standby_WithTissue, in state RTBOTTOM_STOP_TEMPCTRL");
         if (DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("RTBottom"))
         {
             emit StopRTSideTempCtrl();
@@ -154,10 +155,9 @@ void CRsStandbyWithTissue::HandleWorkFlow(const QString& cmdName, ReturnCode_t r
         }
         break;
     case RTSIDE_STOP_TEMPCTRL:
-        mp_SchedulerController->LogDebug("RS_Standby_WithTissue or RS_Standby, in state RTSIDE_STOP_TEMPCTRL");
+        mp_SchedulerController->LogDebug("RS_Standby_WithTissue, in state RTSIDE_STOP_TEMPCTRL");
         if (DCL_ERR_FCT_CALL_SUCCESS == mp_SchedulerController->GetHeatingStrategy()->StopTemperatureControl("RTSide"))
         {
-			m_StartCheckingTime = QDateTime::currentMSecsSinceEpoch();
             emit CheckTempModuleCurrernt();
         }
         else
