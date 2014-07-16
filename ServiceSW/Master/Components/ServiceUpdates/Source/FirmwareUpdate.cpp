@@ -182,6 +182,8 @@ void CFirmwareUpdate::RefreshLatestVersion()
 
 void CFirmwareUpdate::UpdateFirmware(void)
 {
+    mp_Ui->updateBtn->setEnabled(false);
+
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_SERVICEUPDATES_FIRMWARE_UPDATE);
     // to update firmware
 
@@ -217,6 +219,8 @@ void CFirmwareUpdate::UpdateFirmware(void)
 
         emit UpdateModule(*mp_Module);
     }
+
+    mp_Ui->updateBtn->setEnabled(true);
 }
 
 /****************************************************************************/
@@ -231,6 +235,8 @@ void CFirmwareUpdate::SetUpdateResult(int Index, bool Result)
     QPixmap PixMapPass(QString(":/Large/CheckBoxLarge/CheckBox-Checked_large_green.png"));
     QPixmap PixMapFail(QString(":/Large/CheckBoxLarge/CheckBox-Crossed_large_red.png"));
     QPixmap SetPixMap;
+
+    m_Result = Result;
 
     if (Result) {
         if (!PixMapPass.isNull())

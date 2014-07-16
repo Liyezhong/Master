@@ -44,31 +44,36 @@
 			<Step>vacuum test</Step>
 		</Guide>
 	</LAAirSystem>
-	<RVInitialize Description="Initialize test">
+
+	<RVInitialize Description="Get the initial position">
 		<Guide>
-			<Step>rotary valve initialize test</Step>
+			<Step>Make sure Rotary Valve is connected correctly to main control test fixture!</Step>
 		</Guide>
 	</RVInitialize>
-	<RVSelectingTest Description="Selecting function test">
+	<RVSelectingTest Description="Selecting function">
 		<Guide>
-			<Step>rotary valve selecting function test</Step>
+			<Step>Begin selecting function test</Step>
+		</Guide>
+		<Guide>
+			<Step>Please connect the gas source (with pressure meter) to common channel of RV to confirm selected position manually.</Step>
 		</Guide>
 	</RVSelectingTest>
-	<RVSealingTest Description="Sealing function test">
+	<RVSealingTest Description="Sealing function">
 		<Guide>
-			<Step>rotary valve sealing function test</Step>
+			<Step>Begin sealing function test</Step>
 		</Guide>
 	</RVSealingTest>
-	<RVHeatingStationTest Description="Heating property function test">
+	<RVHeatingStationTest Description="Heating property function">
 		<Guide>
-			<Step>rotary valve heating property function station test</Step>
+			<Step>Begin heating property function test</Step>
 		</Guide>
 	</RVHeatingStationTest>
 	<RVHeatingEndTest Description="Heating property function test">
 		<Guide>
-			<Step>rotary valve heating property function end test</Step>
+			<Step>Please put the foam filled block to retort, close the retort cover, and then put the bottle filled with water to station 11#</Step>
 		</Guide>
-	</RVHeatingEndTest> 
+	</RVHeatingEndTest>
+
 	<System110v220vSwitch Description="110V/220V switch">
 		<Guide>
 			<Step>System 110V/220V System test</Step>

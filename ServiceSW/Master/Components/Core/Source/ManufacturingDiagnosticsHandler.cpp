@@ -527,7 +527,7 @@ void CManufacturingDiagnosticsHandler::PerformManufOvenTests(const QList<Service
                 return ;
             }
 
-            QString Text = QString("%1 - %2\n%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
             if (Id != Service::OVEN_COVER_SENSOR) {
@@ -726,7 +726,7 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
                 return ;
             }
 
-            QString text = QString("%1 - %2\n%3").arg(testCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            QString text = QString("%1 - %2<br>%3").arg(testCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, text, true);
 
             if (id == Service::RETORT_HEATING_EMPTY) {
@@ -833,12 +833,13 @@ Sealing_Test_Twice:
             }
 
             QString TestCaseDescription = DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id);
-            Text = QString("%1 - %2\n%3").arg(TestCaseDescription).arg(m_FailStr).arg(Reason);
+            Text = QString("%1 - %2<br>%3").arg(TestCaseDescription).arg(m_FailStr).arg(Reason);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
             if (Id == Service::ROTARY_VALVE_HEATING_END ||
                     Id == Service::ROTARY_VALVE_HEATING_STATION ) {
-                if (Reason != "NOT-IN-HEATING")
+                QString TestStatus = p_TestCase->GetResult().value("CurStatus");
+                if (TestStatus == "IN-HEATING")
                     ShowHeatingFailedResult(Id);
             }
             mp_RotaryValveManuf->SetTestResult(Id, Result);
@@ -953,7 +954,7 @@ void CManufacturingDiagnosticsHandler::PerformManufLATests(const QList<Service::
                 return ;
             }
 
-            QString Text = QString("%1 - %2\n%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
 
@@ -1165,7 +1166,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
                 return ;
             }
 
-            QString Text = QString("%1 - %2\n%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             Text.append(StrResult);
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
@@ -1229,7 +1230,7 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
                 return ;
             }
 
-            QString Text = QString("%1 - %2\n%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
+            QString Text = QString("%1 - %2<br>%3").arg(TestCaseDescription, m_FailStr, p_TestCase->GetResult().value("FailReason"));
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
 
         }
@@ -1250,6 +1251,7 @@ void CManufacturingDiagnosticsHandler::PerformFirmwareUpdate(const QList<Service
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
 
     QString Msg = QString(tr("Update Firmware for Slave %1, please wait ...").arg(p_TestCase->GetParameter("SlaveType")));
 

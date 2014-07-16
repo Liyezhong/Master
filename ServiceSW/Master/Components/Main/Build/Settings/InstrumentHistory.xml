@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <InstrumentHistory name="Himalaya">
-    <ModuleList timestamp="2014-07-14 14:17:55.587">
+    <ModuleList timestamp="2014-07-16 10:50:39.378">
         <Module name="Main Control" description="Main Control">
             <SerialNumber>040/1221</SerialNumber>
             <OperatingHours>N/A</OperatingHours>
             <DateOfExchange>2014-05-26</DateOfExchange>
             <SubModule name="ASB3" type="Board" description="ASB3">
-                <parameter name="SoftwareVersion" unit="quint16">1.0</parameter>
-                <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
+                <parameter name="SoftwareVersion" unit="quint16">10</parameter>
+                <parameter name="HardwareMinorVersion" unit="quint8">4</parameter>
                 <parameter name="EndTestResult" unit="TestResult_t">Pass</parameter>
-                <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="BootLoaderReleaseDate" unit="QDate">2013-06-05</parameter>
-                <parameter name="BootLoaderMajorVersion" unit="QString">02</parameter>
+                <parameter name="SerialNumber" unit="QString">SN:0307.12345.AB/9-4</parameter>
+                <parameter name="BootLoaderReleaseDate" unit="QDate">2010-7-12</parameter>
+                <parameter name="BootLoaderMajorVersion" unit="QString">1</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="DateOfExchange" unit="QString">2014-07-14</parameter>
                 <parameter name="OperationTime" unit="hours">5000</parameter>
-                <parameter name="SoftwareReleaseDate" unit="QDate">2013-06-05</parameter>
-                <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
-                <parameter name="BootLoaderMinorVersion" unit="QString">05</parameter>
-                <parameter name="HardwareProductionDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="SoftwareReleaseDate" unit="QDate">2014-7-15</parameter>
+                <parameter name="HardwareMajorVersion" unit="quint8">0</parameter>
+                <parameter name="BootLoaderMinorVersion" unit="QString">1</parameter>
+                <parameter name="HardwareProductionDate" unit="QDate">2014-5-9</parameter>
             </SubModule>
             <SubModule name="ASB5" type="Board" description="ASB5">
-                <parameter name="SoftwareVersion" unit="quint16">1.0</parameter>
-                <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
+                <parameter name="SoftwareVersion" unit="quint16">10</parameter>
+                <parameter name="HardwareMinorVersion" unit="quint8">4</parameter>
                 <parameter name="EndTestResult" unit="TestResult_t">Pass</parameter>
-                <parameter name="SerialNumber" unit="QString">SN_ASB5_0005</parameter>
-                <parameter name="BootLoaderReleaseDate" unit="QDate">2013-06-05</parameter>
-                <parameter name="BootLoaderMajorVersion" unit="QString">02</parameter>
+                <parameter name="SerialNumber" unit="QString">SN:0307.12345.AB/9-4</parameter>
+                <parameter name="BootLoaderReleaseDate" unit="QDate">2010-7-12</parameter>
+                <parameter name="BootLoaderMajorVersion" unit="QString">1</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="DateOfExchange" unit="QString">2014-07-07</parameter>
                 <parameter name="OperationTime" unit="hours">5000</parameter>
-                <parameter name="SoftwareReleaseDate" unit="QDate">2013-06-05</parameter>
-                <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
-                <parameter name="BootLoaderMinorVersion" unit="QString">05</parameter>
-                <parameter name="HardwareProductionDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="SoftwareReleaseDate" unit="QDate">2014-7-15</parameter>
+                <parameter name="HardwareMajorVersion" unit="quint8">0</parameter>
+                <parameter name="BootLoaderMinorVersion" unit="QString">1</parameter>
+                <parameter name="HardwareProductionDate" unit="QDate">2014-5-9</parameter>
             </SubModule>
             <SubModule name="ASB15" type="Board" description="ASB15">
-                <parameter name="SoftwareVersion" unit="quint16">1.0</parameter>
-                <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
+                <parameter name="SoftwareVersion" unit="quint16">10</parameter>
+                <parameter name="HardwareMinorVersion" unit="quint8">5</parameter>
                 <parameter name="EndTestResult" unit="TestResult_t">Pass</parameter>
-                <parameter name="SerialNumber" unit="QString">SN_ASB15_0001</parameter>
-                <parameter name="BootLoaderReleaseDate" unit="QDate">2013-06-05</parameter>
-                <parameter name="BootLoaderMajorVersion" unit="QString">02</parameter>
+                <parameter name="SerialNumber" unit="QString">SN:0307.12345.AB/9-4</parameter>
+                <parameter name="BootLoaderReleaseDate" unit="QDate">2010-7-12</parameter>
+                <parameter name="BootLoaderMajorVersion" unit="QString">1</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
                 <parameter name="OperationTime" unit="hours">5000</parameter>
-                <parameter name="SoftwareReleaseDate" unit="QDate">2013-06-05</parameter>
-                <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
-                <parameter name="BootLoaderMinorVersion" unit="QString">05</parameter>
-                <parameter name="HardwareProductionDate" unit="QDate">2013-06-05</parameter>
+                <parameter name="SoftwareReleaseDate" unit="QDate">2014-7-15</parameter>
+                <parameter name="HardwareMajorVersion" unit="quint8">0</parameter>
+                <parameter name="BootLoaderMinorVersion" unit="QString">1</parameter>
+                <parameter name="HardwareProductionDate" unit="QDate">2014-5-9</parameter>
             </SubModule>
             <SubModule name="E Box" type="Monitor" description="E Box">
                 <parameter name="SoftwareVersion" unit="quint16">1.0</parameter>

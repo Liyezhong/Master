@@ -1253,6 +1253,8 @@ qint32 ManufacturingTestHandler::TestSystemOverflow()
         EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
 
         ret = mp_PressPump->Sucking(delay, 1);
+
+        qDebug()<<"Sucking ------ return :"<<ret;
         if (ret == SUCKING_RET_OVERFLOW) {
             result = true;
         }
@@ -2103,6 +2105,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     EmitRefreshTestStatustoMain(TestCaseName, LS_HEATING);
     Ret = HeatingLevelSensor();
     if (Ret == -1) {
+        p_TestCase->AddResult("FailReason", "Level sensor heating is failed.");
+        p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
         goto RV_HEATING_END_EXIT;
     }
 
@@ -2110,6 +2114,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     emit RefreshTestStatustoMain(TestCaseName, Status);
     EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
     if ( TestRVInitialization() == -1 ) {
+        p_TestCase->AddResult("FailReason", "Rotary valve initializing is failed.");
+        p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
         goto RV_HEATING_END_EXIT;
     }
     // set rotary valve to tube positon
@@ -2118,6 +2124,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
 
     if ( !mp_MotorRV->MoveToTubePosition(Position) ) {
+        p_TestCase->AddResult("FailReason", "Rotary valve rotation is failed.");
+        p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
         goto RV_HEATING_END_EXIT;
     }
 
@@ -2131,7 +2139,8 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         Ret = mp_PressPump->Draining();
         qDebug()<<"Draining return : "<<Ret;
 
-        p_TestCase->AddResult("FailReason", "NOT-IN-HEATING");
+        p_TestCase->AddResult("FailReason", "Filling is failed.");
+        p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
         goto RV_HEATING_END_EXIT;
     }
 
@@ -2212,6 +2221,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
 
      EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
+     p_TestCase->AddResult("CurStatus", "IN-HEATING");
      qDebug()<<"Begin heating (at second stage).....";
      // heating at second stage.
      TargetTempSensor1 = p_TestCase->GetParameter("Sensor1TargetTemp2").toFloat();
@@ -2302,7 +2312,7 @@ RV_HEATING_END_EXIT:
             return 1;
         }
         else
-        {
+        {            
             return -1;
         }
     }
@@ -2326,42 +2336,69 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
 
     CBaseModule *pBaseModule = m_rIdevProc.GetBaseModule(SlaveType);
 
+    bool ret(false);
+
+    WrapperFmBootLoader* p_WrapperBootLoader(NULL);
+    bool RetValue(false);
+    CBootLoader *pBootLoader(NULL);
+
     if (pBaseModule == NULL) {
         return false;
     }
 
-
-    CBootLoader *pBootLoader = pBaseModule->GetBootLoader();
-
-    if (pBootLoader == NULL) {
-        return false;
+    WrapperFmBaseModule *p_WrapperBaseModule(NULL);
+    if (SlaveType == Slave_3) {
+        p_WrapperBaseModule = mp_BaseModule3;
+    }
+    else if (SlaveType == Slave_5) {
+        p_WrapperBaseModule = mp_BaseModule5;
+    }
+    else {
+        p_WrapperBaseModule = mp_BaseModule15;
     }
 
-    WrapperFmBootLoader* p_WrapperBootLoader = new WrapperFmBootLoader("asb_bootloader", pBootLoader, this);
+    qDebug()<<"WaitForUpdate....................";
+    p_WrapperBaseModule->WaitForUpdate(true);
+    qDebug()<<"ResetNode ------------------------";
+    ret = p_WrapperBaseModule->ResetNode();
+
+    qDebug()<<"RestNode return ---------"<<ret;
+
+    if (ret == false ){
+        goto ERROR_EXIT;
+    }
+
+    mp_Utils->Pause(2000);
+
+    pBootLoader = pBaseModule->GetBootLoader();
+
+    if (pBootLoader == NULL) {
+        goto ERROR_EXIT;
+    }
+
+    p_WrapperBootLoader = new WrapperFmBootLoader("asb_bootloader", pBootLoader, this);
 
     qDebug()<<"Path = " << BinPath;
 
     if (p_WrapperBootLoader == NULL) {
-        Service::ModuleTestStatus Status;
-        Status.insert("Result", "false");
-        Status.insert("Index", Index);
-        emit RefreshTestStatustoMain(TestCaseName, Status);
-
-        qDebug()<<"--------------- Fail to create bootloader wrapper !!!!";
-
-        return -1;
+        goto ERROR_EXIT;
     }
 
-    qint32 RetValue = p_WrapperBootLoader->UpdateFirmware(BinPath);
+
+    qDebug()<<"UpdateFirmware ........................";
+
+    RetValue = p_WrapperBootLoader->UpdateFirmware(BinPath);
 
     qDebug()<<"Update Firmware return "<<RetValue;
 
-    if (RetValue == DCL_ERR_FCT_CALL_SUCCESS) {
+
+    if (RetValue == true) {
         mp_Utils->Pause(2000);
 
         qDebug()<<"BootFirmware return : " << p_WrapperBootLoader->BootFirmware();
 
-        mp_Utils->Pause(2000);
+        qDebug()<<"Wait firmware boot for 5 seconds..............";
+        mp_Utils->Pause(5000);
 
         Service::ModuleTestStatus Status;
 
@@ -2373,16 +2410,22 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
         return 0;
     }
     else {
-        delete p_WrapperBootLoader;
 
-        mp_Utils->Pause(2000);
-        Service::ModuleTestStatus Status;
-        Status.insert("Result", "false");
-        Status.insert("Index", Index);
-        emit RefreshTestStatustoMain(TestCaseName, Status);
+        qDebug()<<"BootFirmware return : " << p_WrapperBootLoader->BootFirmware();
 
-        return -1;
+        mp_Utils->Pause(5000);
     }
+ERROR_EXIT:
+    if (p_WrapperBootLoader) {
+        delete p_WrapperBootLoader;
+    }
+
+    Service::ModuleTestStatus Status;
+    Status.insert("Result", "false");
+    Status.insert("Index", Index);
+    emit RefreshTestStatustoMain(TestCaseName, Status);
+
+    return -1;
 }
 
 void ManufacturingTestHandler::GetSlaveInformation()
@@ -2412,7 +2455,7 @@ void ManufacturingTestHandler::GetSlaveInformation()
     }
 
     QString Str = p_BaseModule->GetHWInfo();
-    if (Str != "error") {
+    if (Str != "error" && Str != "request error") {
         QStringList HWInfo = Str.split("/");
 
         Status.insert("HardwareMajorVersion", HWInfo[0]);
@@ -2424,7 +2467,7 @@ void ManufacturingTestHandler::GetSlaveInformation()
     Status.insert("SerialNumber", Str);
 
     Str = p_BaseModule->GetBootloaderInfo();
-    if (Str != "error") {
+    if (Str != "error" && Str != "request error") {
         QStringList BootloaderInfo = Str.split("/");
         Status.insert("BootLoaderMajorVersion", BootloaderInfo[0]);
         Status.insert("BootLoaderMinorVersion", BootloaderInfo[1]);
@@ -2432,7 +2475,7 @@ void ManufacturingTestHandler::GetSlaveInformation()
     }
 
     Str = p_BaseModule->GetSWInfo();
-    if (Str != "error") {
+    if (Str != "error" && Str != "request error") {
         QStringList SWInfo = Str.split("/");
         Status.insert("SoftwareVersion", SWInfo[0]);
         Status.insert("SoftwareReleaseDate", SWInfo[1]);
