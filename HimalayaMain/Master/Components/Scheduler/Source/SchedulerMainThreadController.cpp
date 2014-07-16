@@ -2698,28 +2698,28 @@ bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 int
     {
     case LEVELSENSOR:
         reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE,"LA", AL_LEVELSENSOR);
-        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) <= interval*1000)
         {
             return false;
         }
         break;
     case LATUBE1:
          reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE1);
-         if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+         if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) <= interval*1000)
          {
              return false;
          }
          break;
     case LATUBE2:
         reportError1 = m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "LA", AL_TUBE2);
-        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) <= interval*1000)
         {
             return false;
         }
         break;
     case RV:
         reportError1 =  m_SchedulerCommandProcessor->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "RV");
-        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) >= interval*1000)
+        if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) <= interval*1000)
         {
             return false;
         }
