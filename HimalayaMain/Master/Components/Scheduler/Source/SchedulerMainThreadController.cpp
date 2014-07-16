@@ -478,8 +478,6 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             m_CurProgramID = m_NewProgramID;
         }
 
-        //m_NewProgramID = "";
-        //m_CurProgramStepIndex = -1;
         this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
         if(m_CurProgramStepIndex != -1)
         {
@@ -512,12 +510,25 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
                 CmdRVReqMoveToInitialPosition* cmdSet = new CmdRVReqMoveToInitialPosition(500, this);
                 cmdSet->SetRVPosition( (RVPosition_t)LastPosition.toUInt() );
                 m_SchedulerCommandProcessor->pushCmd(cmdSet);
-                LogDebug(QString("cleaning program set the rv position to:%1").arg(LastPosition));
 
                 m_AllProgramCount = true;
             }
             else
             {
+
+                SchedulerCommandShPtr_t resCmdPtr;
+                PopDeviceControlCmdQueue(resCmdPtr,"Scheduler::RVReqMoveToInitialPosition");
+                ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
+                resCmdPtr->GetResult(retCode);
+                if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+                {
+                    RaiseError(0, retCode, 0, true);
+                }
+                else
+                {
+                    m_SchedulerMachine->SendRunSignal();
+                    LogDebug(QString("cleaning program set the rv position to:%1").arg(LastPosition));
+                }
             }
             else
             {
@@ -527,30 +538,6 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
         break;
     default:
         break;
-          //DequeueNonDeviceCommand();
-    }
-
-    // For Cleaning program, we will wait until "RVReqMoveToInitialPositon" response is got.
-    if ("" != m_CurProgramID && 'C' == m_CurProgramID.at(0) && NULL != cmd)
-    {
-        if ("Scheduler::RVReqMoveToInitialPosition" == cmd->GetName())
-        {
-            ReturnCode_t retCode = DCL_ERR_FCT_CALL_SUCCESS;
-            cmd->GetResult(retCode);
-            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-            {
-                m_SchedulerMachine->SendRunSignal();
-            }
-            else
-            {
-                this->SendOutErrMsg(retCode);
-            }
-        }
-        else
-        {
-            // just ignore this.
-        }
-
     }
 }
 
