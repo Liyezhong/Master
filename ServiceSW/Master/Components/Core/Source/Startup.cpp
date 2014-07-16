@@ -160,6 +160,7 @@ CStartup::CStartup() : QObject(),
     mp_FirmwareUpdate = new ServiceUpdates::CFirmwareUpdate(mp_ServiceConnector);
     mp_DataManagement = new ServiceUpdates::CDataManagement;
     mp_Setting = new ServiceUpdates::CSettings(mp_ServiceConnector, mp_MainWindow);
+    mp_UpdateSystem = new ServiceUpdates::CSystem;
 
     (void)connect(mp_ServiceConnector,
                   SIGNAL(ModuleListChanged()),
@@ -391,6 +392,7 @@ void CStartup::LoadCommonComponenetsTwo()
     // Service update
     mp_ServiceUpdateGroup->AddPanel("Firmware Update", mp_FirmwareUpdate);
     mp_ServiceUpdateGroup->AddPanel("Data Management", mp_DataManagement);
+    mp_ServiceUpdateGroup->AddPanel("System", mp_UpdateSystem);
     mp_ServiceUpdateGroup->AddSettingsPanel("Settings", mp_Setting);
     mp_MainWindow->AddMenuGroup(mp_ServiceUpdateGroup, "Service Updates");
 

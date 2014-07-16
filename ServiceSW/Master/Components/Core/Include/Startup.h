@@ -54,6 +54,7 @@
 #include "ServiceUpdates/Include/FirmwareUpdate.h"
 #include "ServiceUpdates/Include/DataManagement.h"
 #include "ServiceUpdates/Include/Settings.h"
+#include "ServiceUpdates/Include/System.h"
 
 #include "Diagnostics/Include/Display.h"
 #include "Diagnostics/Include/Retort.h"
@@ -168,6 +169,7 @@ private:
     ServiceUpdates::CFirmwareUpdate         *mp_FirmwareUpdate;             //!< Firmware update page
     ServiceUpdates::CDataManagement         *mp_DataManagement;             //!< Data management page
     ServiceUpdates::CSettings               *mp_Setting;                    //!< User settings sub menu
+    ServiceUpdates::CSystem                 *mp_UpdateSystem;                   //!< Shut down page
 
 
     //Message Box, Busy Box, Generic PoP Up.
