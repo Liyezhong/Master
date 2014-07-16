@@ -133,9 +133,9 @@ void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
                                                                "Rotary Valve", 0, QApplication::UnicodeUTF8), mp_RotaryValveManuf);
     if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
         mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                       "System", 0, QApplication::UnicodeUTF8), mp_SystemManuf);
-        mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                        "LA System", 0, QApplication::UnicodeUTF8), mp_LaSystemManuf);
+        mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
+                                       "System", 0, QApplication::UnicodeUTF8), mp_SystemManuf);
         mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
                                        "Cleaning", 0, QApplication::UnicodeUTF8), mp_CleaningManuf);
     }
