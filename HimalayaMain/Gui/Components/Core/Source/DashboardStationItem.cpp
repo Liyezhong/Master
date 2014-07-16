@@ -465,7 +465,8 @@ void CDashboardStationItem::DrawStationItemLabel(QPainter &painter)
     QRect rect;
     if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
        textFont.setBold(true);
-       rect.setRect(65,45,67,15);
+       //rect.setRect(65,45,67,15);
+       rect.setRect(71,45,67,15);
      } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
        rect.setRect(33,22,67,15);
      } else {//draw text in station label
@@ -604,7 +605,7 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
     }
     else if(STATIONS_GROUP_RETORT == m_DashboardStationGroup)
     {
-        fillRetortHeight = m_CurrentBoundingRectReagentHeight;
+        fillRetortHeight = m_CurrentBoundingRectReagentHeight - 6;
         fillRetortWidth =  m_RetortBoundingRectWidth;
 
         QPainterPath path;
@@ -616,14 +617,18 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
             path.addRect(fillRetortWidth - 5, m_RetortCoverHeight, 3, m_RetortBoundingRectHeight - m_RetortCoverHeight - 3);
         }
 
-        if (fillRetortHeight > 0)
-            path.addRoundedRect(QRect(4, m_RetortBoundingRectHeight - fillRetortHeight, fillRetortWidth - 6, fillRetortHeight - 3), 8, 8);
+        if (fillRetortHeight > 0) {
+            //path.addRoundedRect(QRect(4, m_RetortBoundingRectHeight - fillRetortHeight, fillRetortWidth - 6, fillRetortHeight - 3), 8, 8);
+            int y = m_RetortBoundingRectHeight - fillRetortHeight - 1;
+            path.addRoundedRect(QRect(4, (y > 0) ? y : 0 , fillRetortWidth - 6, fillRetortHeight), 8, 8);
+        }
 
-        int cornerHeight = 4;
+        //int cornerHeight = 4;
+        int cornerHeight = 10;
         if (fillRetortHeight > cornerHeight)
         {
-            path.addRect(QRect(4, m_RetortBoundingRectHeight - fillRetortHeight, 8, cornerHeight));// Top left corner not rounded
-            path.addRect(QRect(fillRetortWidth - 10, m_RetortBoundingRectHeight - fillRetortHeight, 8, cornerHeight));// Top right corner not rounded
+            path.addRect(QRect(4, m_RetortBoundingRectHeight - fillRetortHeight - 2, 8, cornerHeight));// Top left corner not rounded
+            path.addRect(QRect(fillRetortWidth - 10, m_RetortBoundingRectHeight - fillRetortHeight - 2, 8, cornerHeight));// Top right corner not rounded
         }
         Painter.drawPath(path);  // Only the Bottome Left and Bottom Right Corner
     }
