@@ -38,32 +38,38 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector &DataConnector,
              QWidget *parent)
     : QWidget(parent)
     , mp_DateConnector(&DataConnector)
-    , ui(new Ui::CRotaryValve)
+    , mp_Ui(new Ui::CRotaryValve)
 {
-    ui->setupUi(this);
+    mp_Ui->setupUi(this);
 
-    (void)connect(ui->modifyRotaryValve,
+    mp_Ui->finalizeConfigBtn->setEnabled(false);
+    (void)connect(mp_Ui->modifyRotaryValve,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyRotaryValve()) );
 
-    (void)connect(ui->modifyHeater,
+    (void)connect(mp_Ui->modifyHeater,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyHeater()) );
 
 
-    (void)connect(ui->modifyMotor,
+    (void)connect(mp_Ui->modifyMotor,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyMotor()) );
+    (void)connect(mp_Ui->finalizeConfigBtn,
+                  SIGNAL(clicked()),
+                  this,
+                  SLOT(OnFinalizeConfiguration()) );
+
 }
 
 CRotaryValve::~CRotaryValve()
 {
     try
     {
-        delete ui;
+        delete mp_Ui;
     }
     catch (...) { }
 }
@@ -83,9 +89,9 @@ void CRotaryValve::UpdateModule(ServiceDataManager::CModule &Module)
 
     pModuleList->UpdateModule(&Module);
 
-    pModuleList->Write();
-
     emit ModuleListChanged();
+
+    mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
 
 void CRotaryValve::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
@@ -167,6 +173,11 @@ void CRotaryValve::ModifyMotor(void)
     qDebug() << "CRotaryValve::ModifyMotor !";
 
     this->ModifySubModule(MODULE_ROTARYVALVE, SUBMODULE_MOTOR);
+}
+
+void CRotaryValve::OnFinalizeConfiguration(void)
+{
+
 }
 
 void CRotaryValve::ModifySubModule(const QString &ModuleName,

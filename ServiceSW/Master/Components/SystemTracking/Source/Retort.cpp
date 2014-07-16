@@ -39,26 +39,27 @@ CRetort::CRetort(Core::CServiceGUIConnector &DataConnector,
                  QWidget *parent)
     : QWidget(parent)
     , mp_DateConnector(&DataConnector)
-    , ui(new Ui::CRetort)
+    , mp_Ui(new Ui::CRetort)
 {
-    ui->setupUi(this);
+    mp_Ui->setupUi(this);
 
-    (void)connect(ui->modifyRetort,
+    mp_Ui->finalizeConfigBtn->setEnabled(false);
+    (void)connect(mp_Ui->modifyRetort,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyRetort()) );
 
-    (void)connect(ui->modifyHeater,
+    (void)connect(mp_Ui->modifyHeater,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyHeater()) );
 
-    (void)connect(ui->modifyLidLock,
+    (void)connect(mp_Ui->modifyLidLock,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyLidLock()) );
 
-    (void)connect(ui->modifyLevelSensor,
+    (void)connect(mp_Ui->modifyLevelSensor,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyLevelSensor()) );
@@ -68,7 +69,7 @@ CRetort::~CRetort()
 {
     try
     {
-        delete ui;
+        delete mp_Ui;
     }
     catch (...) { }
 }
@@ -116,9 +117,9 @@ void CRetort::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 
     pModule->UpdateSubModule(&SubModule);
 
-    pModuleList->Write();
-
     emit ModuleListChanged();
+
+    mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
 
 void CRetort::ModifyRetort(void)
@@ -180,6 +181,11 @@ void CRetort::ModifyLevelSensor(void)
     qDebug() << "CRetort::ModifyLevelSensor !";
 
     this->ModifySubModule(MODULE_RETORT, SUBMODULE_LEVELSENSOR);
+}
+
+void CRetort::OnFinalizeConfiguration(void)
+{
+
 }
 
 void CRetort::ModifySubModule(const QString &ModuleName,

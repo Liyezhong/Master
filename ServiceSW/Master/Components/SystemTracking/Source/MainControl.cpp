@@ -49,41 +49,55 @@ CMainControl::CMainControl(Core::CServiceGUIConnector &DataConnector,
                            QWidget *parent)
     : QWidget(parent)
     , mp_DateConnector(&DataConnector)
-    , ui(new Ui::CMainControl)
+    , mp_ModuleList(NULL)
+    , mp_Ui(new Ui::CMainControl)
 {
-    ui->setupUi(this);
+    mp_Ui->setupUi(this);
 
-    (void)connect(ui->modifyASB3,
+    mp_Ui->finalizeConfigBtn->setEnabled(false);
+
+    mp_MessageDlg = new MainMenu::CMessageDlg(this);
+    mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::CMainControl",
+                                                    "Finalize Configuration", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->setModal(true);
+
+    (void)connect(mp_Ui->modifyASB3,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyASB3()) );
 
-    (void)connect(ui->modifyASB5,
+    (void)connect(mp_Ui->modifyASB5,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyASB5()) );
 
-    (void)connect(ui->modifyASB15,
+    (void)connect(mp_Ui->modifyASB15,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyASB15()) );
 
-    (void)connect(ui->modifyTouchScreen,
+    (void)connect(mp_Ui->modifyTouchScreen,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyTouchScreen()) );
 
-    (void)connect(ui->modifyVentFan,
+    (void)connect(mp_Ui->modifyVentFan,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyVentFan()) );
+
+    (void)connect(mp_Ui->finalizeConfigBtn,
+                  SIGNAL(clicked()),
+                  this,
+                  SLOT(OnFinalizeConfiguration()) );
 }
 
 CMainControl::~CMainControl()
 {
     try
     {
-        delete ui;
+        delete mp_Ui;
+        delete mp_MessageDlg;
     }
     catch (...) { }
 }
@@ -93,15 +107,14 @@ void CMainControl::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     qDebug() << "CMainControl::UpdateSubModule : "
              << SubModule.GetSubModuleName();
 
-    ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DateConnector->GetModuleListContainer();
-    if (0 == pModuleList)
+    mp_ModuleList = mp_DateConnector->GetModuleListContainer();
+    if (0 == mp_ModuleList)
     {
         qDebug() << "CMainControl::UpdateSubModule(): Invalid module list!";
         return;
     }
 
-    ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_MAINCONTROL);
+    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_MAINCONTROL);
     if (0 == pModule)
     {
         qDebug() << "CMainControl::UpdateSubModule(): Invalid module : "
@@ -114,6 +127,8 @@ void CMainControl::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     //pModuleList->Write();
 
     emit ModuleListChanged();
+
+    mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
 
 void CMainControl::ModifyASB3(void)
@@ -161,6 +176,117 @@ void CMainControl::ModifyVentFan(void)
     qDebug() << "CMainControl::ModifyVentFan !";
 }
 
+void CMainControl::OnFinalizeConfiguration(void)
+{
+    //save config to file
+    mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CMainControl",
+                                                            "Ok", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->SetButtonText(3,QApplication::translate("SystemTracking::CMainControl",
+                                                           "Cancel", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->HideCenterButton();
+    QString Text = QApplication::translate("SystemTracking::CMainControl",
+                               "Do you want to finalize the configuration for the Main Control?",
+                                           0, QApplication::UnicodeUTF8);
+
+    mp_MessageDlg->SetText(Text);
+    mp_MessageDlg->SetIcon(QMessageBox::Warning);
+
+    int Result = mp_MessageDlg->exec();
+
+    if (Result)
+    {
+        //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_ADDMODIFY_SAVE_AND_OVERWRITE_CONFIGURATION_SUCCESS);
+
+        if(mp_ModuleList && mp_ModuleList->Write())
+        {
+            mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CMainControl",
+                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->HideButtons();
+            mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CMainControl",
+                                          "Configuration file updated successfully.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+            mp_MessageDlg->show();
+        }
+        else
+        {
+            mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CMainControl",
+                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->HideButtons();
+            mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CMainControl",
+                                          "Configuration file updation failed.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+            mp_MessageDlg->show();
+        }
+    }
+    else
+    {
+        //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_ADDMODIFY_SAVE_AND_OVERWRITE_CONFIGURATION_FAILURE);
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CMainControl",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CMainControl",
+                                             "Finalize Configuration Cancelled.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->show();
+    }
+
+    mp_Ui->finalizeConfigBtn->setEnabled(false);
+}
+
+void CMainControl::CurrentTabChanged(int Index)
+{
+    if (Index != 0 && mp_Ui->finalizeConfigBtn->isEnabled()) {
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CMainControl",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(3,QApplication::translate("SystemTracking::CMainControl",
+                                                               "Cancel", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideCenterButton();
+        QString Text = QApplication::translate("SystemTracking::CMainControl",
+                                               "Main Control Modules has been modified. Do you want to finalize the configuration?",
+                                               0, QApplication::UnicodeUTF8);
+
+        mp_MessageDlg->SetText(Text);
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->show();
+
+        if (mp_MessageDlg->exec())
+        {
+            if(mp_ModuleList && mp_ModuleList->Write())
+            {
+                mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CMainControl",
+                                                                        "Ok", 0, QApplication::UnicodeUTF8));
+                mp_MessageDlg->HideButtons();
+                mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CMainControl",
+                                              "Configuration file updated successfully.", 0, QApplication::UnicodeUTF8));
+                mp_MessageDlg->SetIcon(QMessageBox::Information);
+                mp_MessageDlg->show();
+            }
+            else
+            {
+                mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CMainControl",
+                                                                        "Ok", 0, QApplication::UnicodeUTF8));
+                mp_MessageDlg->HideButtons();
+                mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CMainControl",
+                                              "Configuration file updation failed.", 0, QApplication::UnicodeUTF8));
+                mp_MessageDlg->SetIcon(QMessageBox::Information);
+                mp_MessageDlg->show();
+            }
+        }
+        else
+        {
+            //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_ADDMODIFY_SAVE_AND_OVERWRITE_CONFIGURATION_FAILURE);
+            mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CMainControl",
+                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->HideButtons();
+            mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CMainControl",
+                                                 "Finalize Configuration Cancelled.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetIcon(QMessageBox::Warning);
+            mp_MessageDlg->show();
+        }
+        mp_Ui->finalizeConfigBtn->setEnabled(false);
+    }
+}
+
 void CMainControl::AutoDetect(ServiceDataManager::CSubModule &SubModule)
 {
     qDebug() << "CMainControl::AutoDetect : " << SubModule.GetSubModuleName();
@@ -174,7 +300,6 @@ void CMainControl::AutoDetect(ServiceDataManager::CSubModule &SubModule)
     p_TestCase->SetParameter("SlaveType", SlaveType);
 
     emit PerformManufacturingTest(Id);
-    /// \todo: add auto detect sub module information here.
 }
 
 void CMainControl::ModifySubModule(const QString &ModuleName,

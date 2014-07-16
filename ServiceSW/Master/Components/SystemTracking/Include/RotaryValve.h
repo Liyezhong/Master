@@ -55,11 +55,13 @@ public Q_SLOTS:
 
     void ModifyMotor(void);
 
+    void OnFinalizeConfiguration(void);
+
 private:
     void ModifySubModule(const QString &ModuleName,
                          const QString &SubModuleName);
 
-    Ui::CRotaryValve *ui;
+    Ui::CRotaryValve *mp_Ui;
 
     Core::CServiceGUIConnector *mp_DateConnector;
 };

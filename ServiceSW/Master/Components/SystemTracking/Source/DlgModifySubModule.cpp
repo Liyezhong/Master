@@ -163,8 +163,9 @@ void CDlgModifySubModule::UpdateGUI(void)
         return;
     }
 
-    QDate Date =
-            QDate::fromString(ParamDOP->ParameterValue, Qt::ISODate);
+    //QDate Date =
+            //QDate::fromString(ParamDOP->ParameterValue, Qt::ISODate);
+    QDate Date = QDate::currentDate();
 
     this->UpdateGUI(ParamSN->ParameterValue, Date);
 
@@ -248,6 +249,8 @@ void CDlgModifySubModule::OnSave(void)
                                       Date.toString(Qt::ISODate));
 
     emit UpdateSubModule(*mp_SubModule);
+
+    this->close();
 }
 
 /****************************************************************************/

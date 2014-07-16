@@ -137,7 +137,8 @@ void CDlgModifyModule::OnEditSerialNumber(void)
 
 void CDlgModifyModule::UpdateGUI(void)
 {
-    QDate Date = QDate::fromString(mp_Module->GetDateOfProduction(), Qt::ISODate);
+    //QDate Date = QDate::fromString(mp_Module->GetDateOfProduction(), Qt::ISODate);
+    QDate Date = QDate::currentDate();
     this->UpdateGUI(mp_Module->GetSerialNumber(), Date);
 
     this->SetDialogTitle(mp_Module->GetModuleName());
@@ -213,6 +214,8 @@ void CDlgModifyModule::OnSave(void)
     mp_Module->SetDateOfProduction(Date.toString(Qt::ISODate));
 
     emit UpdateModule(*mp_Module);
+
+    this->close();
 }
 
 /****************************************************************************/

@@ -57,11 +57,13 @@ public Q_SLOTS:
 
     void ModifyLevelSensor(void);
 
+    void OnFinalizeConfiguration(void);
+
 private:
     void ModifySubModule(const QString &ModuleName,
                          const QString &SubModuleName);
 
-    Ui::CRetort *ui;
+    Ui::CRetort *mp_Ui;
 
     Core::CServiceGUIConnector *mp_DateConnector;
 };

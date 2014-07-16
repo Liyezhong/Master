@@ -63,11 +63,13 @@ public Q_SLOTS:
 
     void ModifyFan(void);
 
+    void OnFinalizeConfiguration(void);
+
 private:
     void ModifySubModule(const QString &ModuleName,
                          const QString &SubModuleName);
 
-    Ui::CLaSystem *ui;
+    Ui::CLaSystem *mp_Ui;
 
     Core::CServiceGUIConnector *mp_DateConnector;
 };

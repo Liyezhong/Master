@@ -66,6 +66,10 @@ public Q_SLOTS:
 
     void ModifyVentFan(void);
 
+    void OnFinalizeConfiguration(void);
+
+    void CurrentTabChanged(int Index);
+
 private Q_SLOTS:
     void AutoDetect(ServiceDataManager::CSubModule &SubModule);
 
@@ -73,8 +77,9 @@ private:
     void ModifySubModule(const QString &ModuleName,
                          const QString &SubModuleName);
 
-    Ui::CMainControl *ui;
-
+    Ui::CMainControl *mp_Ui;
+    MainMenu::CMessageDlg *mp_MessageDlg;                                   //!< Information dialog
+    ServiceDataManager::CModuleDataList *mp_ModuleList;
     Core::CServiceGUIConnector *mp_DateConnector;
 };
 

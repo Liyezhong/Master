@@ -55,11 +55,13 @@ public Q_SLOTS:
 
     void ModifyCoverSensor(void);
 
+    void OnFinalizeConfiguration();
+
 private:
     void ModifySubModule(const QString &ModuleName,
                          const QString &SubModuleName);
 
-    Ui::COven *ui;
+    Ui::COven *mp_Ui;
 
     Core::CServiceGUIConnector *mp_DataConnector;
 };

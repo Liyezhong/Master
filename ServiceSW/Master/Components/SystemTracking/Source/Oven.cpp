@@ -39,32 +39,38 @@ COven::COven(Core::CServiceGUIConnector &DataConnector,
              QWidget *parent)
     : QWidget(parent)
     , mp_DataConnector(&DataConnector)
-    , ui(new Ui::COven)
+    , mp_Ui(new Ui::COven)
 {
-    ui->setupUi(this);
+    mp_Ui->setupUi(this);
 
-    (void)connect(ui->modifyOven,
+    mp_Ui->finalizeConfigBtn->setEnabled(false);
+    (void)connect(mp_Ui->modifyOven,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyOven()) );
 
-    (void)connect(ui->modifyHeater,
+    (void)connect(mp_Ui->modifyHeater,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyHeater()) );
 
 
-    (void)connect(ui->modifyCoverSensor,
+    (void)connect(mp_Ui->modifyCoverSensor,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyCoverSensor()) );
+
+    (void)connect(mp_Ui->finalizeConfigBtn,
+                  SIGNAL(clicked()),
+                  this,
+                  SLOT(OnFinalizeConfiguration()));
 }
 
 COven::~COven()
 {
     try
     {
-        delete ui;
+        delete mp_Ui;
     }
     catch (...) { }
 }
@@ -84,9 +90,9 @@ void COven::UpdateModule(ServiceDataManager::CModule &Module)
 
     pModuleList->UpdateModule(&Module);
 
-    pModuleList->Write();
-
     emit ModuleListChanged();
+
+    mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
 
 void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
@@ -167,6 +173,11 @@ void COven::ModifyCoverSensor(void)
     qDebug() << "COven::ModifyCoverSensor !";
 
     this->ModifySubModule(MODULE_OVEN, SUBMODULE_COVERSENSOR);
+}
+
+void COven::OnFinalizeConfiguration(void)
+{
+
 }
 
 void COven::ModifySubModule(const QString &ModuleName,

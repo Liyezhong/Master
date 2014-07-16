@@ -43,56 +43,62 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector &DataConnector,
                            QWidget *parent)
     : QWidget(parent)
     , mp_DateConnector(&DataConnector)
-    , ui(new Ui::CLaSystem)
+    , mp_Ui(new Ui::CLaSystem)
 {
-    ui->setupUi(this);
+    mp_Ui->setupUi(this);
 
-    (void)connect(ui->modifyPump,
+    mp_Ui->finalizeConfigBtn->setEnabled(false);
+    (void)connect(mp_Ui->modifyPump,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyPump()) );
 
-    (void)connect(ui->modifyValve1,
+    (void)connect(mp_Ui->modifyValve1,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyValve1()) );
 
-    (void)connect(ui->modifyValve2,
+    (void)connect(mp_Ui->modifyValve2,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyValve2()) );
 
-    (void)connect(ui->modifyHeatingBelt1,
+    (void)connect(mp_Ui->modifyHeatingBelt1,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyHeatingBelt1()) );
 
-    (void)connect(ui->modifyHeatingBelt2,
+    (void)connect(mp_Ui->modifyHeatingBelt2,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyHeatingBelt2()) );
 
-    (void)connect(ui->modifyPressureSensor,
+    (void)connect(mp_Ui->modifyPressureSensor,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyPressureSensor()) );
 
-    (void)connect(ui->modifyCarbonFilter,
+    (void)connect(mp_Ui->modifyCarbonFilter,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyCarbonFilter()) );
 
-    (void)connect(ui->modifyFan,
+    (void)connect(mp_Ui->modifyFan,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyFan()) );
+
+    (void)connect(mp_Ui->finalizeConfigBtn,
+                  SIGNAL(clicked()),
+                  this,
+                  SLOT(OnFinalizeConfiguration()));
 }
 
 CLaSystem::~CLaSystem()
 {
     try
     {
-        delete ui;
+        delete mp_Ui;
     }
     catch (...) { }
 }
@@ -120,9 +126,9 @@ void CLaSystem::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 
     pModule->UpdateSubModule(&SubModule);
 
-    pModuleList->Write();
-
     emit ModuleListChanged();
+
+    mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
 
 void CLaSystem::ModifyPump(void)
@@ -187,6 +193,11 @@ void CLaSystem::ModifyFan(void)
     qDebug() << "CLaSystem::ModifyFan !";
 
     this->ModifySubModule(MODULE_LASYSTEM, SUBMODULE_FAN);
+}
+
+void CLaSystem::OnFinalizeConfiguration(void)
+{
+
 }
 
 void CLaSystem::ModifySubModule(const QString &ModuleName,
