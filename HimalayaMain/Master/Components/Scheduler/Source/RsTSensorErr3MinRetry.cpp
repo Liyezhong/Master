@@ -113,17 +113,22 @@ void CRsTSensorErr3MinRetry::HandleWorkFlow(const QString& cmdName, DeviceContro
     case RS_TSENSORERR3MINRETRY_STARTTEMPCTRL:
         if( true == mp_SchedulerThreadController->RestartFailedHeaters() )
         {
+            mp_WaitBeginTime = QDateTime::currentMSecsSinceEpoch();
             emit CheckTSensorStatus();
         }
         break;
     case RS_TSENSORERR3MINRETRY_CHECKSTATUS:
-        if (true == CheckTSensorStatusIsRight())
+        nowTime = QDateTime::currentMSecsSinceEpoch();
+        if(nowTime - mp_WaitBeginTime > 3 * 1000)
         {
             emit TasksDone(true);
         }
         else
         {
-            emit TasksDone(false);
+            if (false == CheckTSensorCurrentStatus())
+            {
+                emit TasksDone(false);
+            }
         }
         break;
     default:
@@ -131,7 +136,7 @@ void CRsTSensorErr3MinRetry::HandleWorkFlow(const QString& cmdName, DeviceContro
     }
 }
 
-bool CRsTSensorErr3MinRetry::CheckTSensorStatusIsRight()
+bool CRsTSensorErr3MinRetry::CheckTSensorCurrentStatus()
 {
     bool ret = true;
     qreal temp1 = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempOvenTop;
@@ -146,7 +151,7 @@ bool CRsTSensorErr3MinRetry::CheckTSensorStatusIsRight()
         ret = false;
     }
 
-    if ( false == mp_SchedulerThreadController->CheckSlaveTempModulesCurrentRange(0) )
+    if ( false == mp_SchedulerThreadController->CheckSlaveTempModulesCurrentRange(3) )
     {
         ret = false;
     }

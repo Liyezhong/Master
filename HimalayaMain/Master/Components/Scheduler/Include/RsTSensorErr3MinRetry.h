@@ -132,7 +132,7 @@ private:
      *	\return bool
      */
     /****************************************************************************/
-    bool CheckTSensorStatusIsRight();
+    bool CheckTSensorCurrentStatus();
 
 private:
     SchedulerMainThreadController*  mp_SchedulerThreadController;    //!< Pointer to Scheduler Thread Controller
