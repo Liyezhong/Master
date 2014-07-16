@@ -1269,7 +1269,7 @@ qint32 ManufacturingTestHandler::TestSystemOverflow()
 
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
     ret = mp_PressPump->Draining();
-    if (ret != 0) {
+    if (ret != DRAINGING_RET_OK) {
         qDebug()<<"Overflow test: run draining function failed, error code :"<<ret;
     }
 
@@ -2214,7 +2214,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     qDebug()<<"Begin draining.........";
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_DRAINING);
     Ret = mp_PressPump->Draining();
-     if ( Ret != 0 || m_UserAbort ) {
+     if ( Ret != DRAINGING_RET_OK || m_UserAbort ) {
          qDebug()<<"Draining return : "<< Ret;
     //     goto RV_HEATING_END_EXIT;
      }
