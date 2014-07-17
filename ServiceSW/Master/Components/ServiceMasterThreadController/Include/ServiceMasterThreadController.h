@@ -256,6 +256,26 @@ private:
     void OnAckOKNOK(Global::tRefType Ref, const Global::AckOKNOK &Ack);
     /****************************************************************************/
 
+    /****************************************************************************/
+    /**
+     * \brief Reads Reboot file
+     *
+     * \iparam p_RebootFile Pointer to reboot file.
+     *
+     */
+    /****************************************************************************/
+    void ReadBootConfigFile(QFile *p_RebootFile);
+
+    /****************************************************************************/
+    /**
+     * \brief Write Reboot file
+     *
+     * \iparam RebootFileContent point to map containing .
+     *
+     */
+    /****************************************************************************/
+    void UpdateRebootFile(const QMap<QString, QString> RebootFileContent);
+
 signals:
     /****************************************************************************/
     /**
@@ -992,25 +1012,7 @@ public:
     void OnReturnMessageCommand(Global::tRefType Ref, const DeviceCommandProcessor::CmdReturnMessage &Cmd, Threads::CommandChannel &AckCommandChannel);
     /****************************************************************************/
 
-    /****************************************************************************/
-    /**
-     * \brief Reads Reboot file
-     *
-     * \iparam p_RebootFile Pointer to reboot file.
-     *
-     */
-    /****************************************************************************/
-    void ReadBootConfigFile(QFile *p_RebootFile);
 
-    /****************************************************************************/
-    /**
-     * \brief Write Reboot file
-     *
-     * \iparam RebootFileContent point to map containing .
-     *
-     */
-    /****************************************************************************/
-    void UpdateRebootFile(const QMap<QString, QString> RebootFileContent);
 public slots:
     /****************************************************************************/
     /**

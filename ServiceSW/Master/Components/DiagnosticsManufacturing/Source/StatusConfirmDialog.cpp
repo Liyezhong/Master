@@ -47,7 +47,6 @@ CStatusConfirmDialog::CStatusConfirmDialog(QWidget *p_Parent) : MainMenu::CDialo
     m_IsBlgProcessStarted = false;
     setModal(true);
 
-    //this->SetDialogTitle("Oven Cover Sensor");
 
     CONNECTSIGNALSLOTGUI(mp_Ui->pushButtonNo, clicked(), this, AbortWaitDialog());
 //    CONNECTSIGNALSLOTGUI(mp_Ui->pushButtonYes, clicked(), this, AbortWaitDialog());

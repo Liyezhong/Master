@@ -305,8 +305,9 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
     QString UsedTime;
     Service::ModuleTestStatus Status;
     bool NeedAC = false;
+    Service::ModuleTestCaseID Id = Service::OVEN_HEATING_WITH_WATER;
 
-    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::OVEN_HEATING_WITH_WATER);
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
 
 
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
@@ -334,12 +335,13 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
     CurrentTempBottom1 = mp_TempOvenBottom->GetTemperature(0);
     CurrentTempBottom2 = mp_TempOvenBottom->GetTemperature(1);
 
+    SetFailReason(Id, "");
     if (CurrentTempTop<AmbTempLow || CurrentTempTop>AmbTempHigh ||
             CurrentTempBottom1<AmbTempLow || CurrentTempBottom1>AmbTempHigh ||
             CurrentTempBottom2<AmbTempLow || CurrentTempBottom2>AmbTempHigh ){
         QString FailureMsg = QString("Oven Current Temperature is (%1 %2 %3) which is not in (%4~%5)").arg(CurrentTempTop).arg(CurrentTempBottom1)
                 .arg(CurrentTempBottom2).arg(AmbTempLow).arg(AmbTempHigh);
-        SetFailReason(Service::OVEN_HEATING_WITH_WATER, FailureMsg);
+        SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
 
         QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTemp).arg(DepartureLow).arg(DepartureHigh);
@@ -499,12 +501,13 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         }
     }
 
+    SetFailReason(Id, "");
     if (CurrentTempTop<AmbTempLow || CurrentTempTop>AmbTempHigh ||
             CurrentTempBottom1<AmbTempLow || CurrentTempBottom1>AmbTempHigh ||
             CurrentTempBottom2<AmbTempLow || CurrentTempBottom2>AmbTempHigh ){
         QString FailureMsg = QString("Oven Current Temperature is (%1 %2 %3) which is not in (%4~%5)").arg(CurrentTempTop).arg(CurrentTempBottom1)
                 .arg(CurrentTempBottom2).arg(AmbTempLow).arg(AmbTempHigh);
-        SetFailReason(Service::OVEN_HEATING_EMPTY, FailureMsg);
+        SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
 
         QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTemp).arg(DepartureLow).arg(DepartureHigh);
@@ -680,7 +683,8 @@ qint32 ManufacturingTestHandler::TestLidLocker()
 
 qint32 ManufacturingTestHandler::TestRetortHeating()
 {
-    QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::RETORT_HEATING_EMPTY);
+    Service::ModuleTestCaseID Id = Service::RETORT_HEATING_EMPTY;
+    QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(testCaseName);
 
     QTime durTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
@@ -732,11 +736,12 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
     quint32 waitSec = sumSec;
 
     QString sideTemp, btmTemp1, btmTemp2;
+    SetFailReason(Id, "");
     if (curSideTemp < ambLow || curSideTemp > ambHigh || curBottomTemp1 < ambLow || curBottomTemp1 > ambHigh\
             || curBottomTemp2 < ambLow || curBottomTemp2 > ambHigh) {
         QString failMsg = QString("Retort current temperature is (%1 %2 %3) which is not in (%4~%5)")\
                 .arg(curSideTemp).arg(curBottomTemp1).arg(curBottomTemp2).arg(ambLow).arg(ambHigh);
-        SetFailReason(Service::RETORT_HEATING_EMPTY, failMsg);
+        SetFailReason(Id, failMsg);
         p_TestCase->SetStatus(false);
 
         QString target = QString("%1 (%2~%3)").arg(tgtTemp).arg(deptLow).arg(deptHigh);
@@ -861,8 +866,9 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     int remainHeatCount = 2;
     int totalTime = 0;
     int ret = 0;
+    Service::ModuleTestCaseID Id = Service::RETORT_LEVEL_SENSOR_HEATING;
 
-    QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::RETORT_LEVEL_SENSOR_HEATING);
+    QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(testCaseName);
 
     QTime durTime = QTime::fromString(p_TestCase->GetParameter("DurationTime"), "hh:mm:ss");
@@ -898,10 +904,11 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
         }
     }
 
+    SetFailReason(Id, "");
     if (temp <ambLow || temp > ambHigh) {
         ret = -1;
         QString FailureMsg = QString("Level Sensor Current Temperature is (%1) which is not in (%2~%3)").arg(temp).arg(ambLow).arg(ambHigh);
-        SetFailReason(Service::RETORT_LEVEL_SENSOR_HEATING, FailureMsg);
+        SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
         goto EXIT;
     }
@@ -967,7 +974,7 @@ HEATING_START:
         else {
             QString failMsg = QString("Retort level sensor current temperature is (%1) which is less than target (%2) in %3 seconds")\
                     .arg(curTemp).arg(tgtTemp).arg(duration);
-            SetFailReason(Service::RETORT_LEVEL_SENSOR_HEATING, failMsg);
+            SetFailReason(Id, failMsg);
             p_TestCase->SetStatus(false);
             qDebug() << "Level Sensor heating error!";
         }
@@ -1662,6 +1669,7 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
 
     qDebug()<<"Current temp = "<<CurrentTemp;
 
+    SetFailReason(Id, "");
     if (CurrentTemp<AmbTempLow || CurrentTemp>AmbTempHigh) {
         QString FailureMsg = QString("Tube Current Temperature is (%1) which is not in (%2~%3)").arg(CurrentTemp).arg(AmbTempLow).arg(AmbTempHigh);
         SetFailReason(Id, FailureMsg);
@@ -1892,11 +1900,12 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
         }
     }
 
+    SetFailReason(Id, "");
     if (CurrentTempSensor1<AmbTempLow || CurrentTempSensor1>AmbTempHigh ||
             CurrentTempSensor2<AmbTempLow || CurrentTempSensor2>AmbTempHigh  ){
         QString FailureMsg = QString("Rotary Valve Current Temperature is (%1 %2) which is not in (%3~%4)").arg(CurrentTempSensor1).arg(CurrentTempSensor2)
                 .arg(AmbTempLow).arg(AmbTempHigh);
-        SetFailReason(Service::ROTARY_VALVE_HEATING_STATION, FailureMsg);
+        SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
 
         QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSensor1).arg(DepartureLow).arg(DepartureHigh);
@@ -2069,11 +2078,12 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     CurrentTempSensor1 = mp_TempRV->GetTemperature(0);
     CurrentTempSensor2 = mp_TempRV->GetTemperature(1);
 
+    SetFailReason(Id, "");
     if (CurrentTempSensor1<AmbTempLow || CurrentTempSensor1>AmbTempHigh ||
             CurrentTempSensor2<AmbTempLow || CurrentTempSensor2>AmbTempHigh  ){
         QString FailureMsg = QString("Rotary Valve Current Temperature is (%1 %2) which is not in (%3~%4)").arg(CurrentTempSensor1).arg(CurrentTempSensor2)
                 .arg(AmbTempLow).arg(AmbTempHigh);
-        SetFailReason(Service::ROTARY_VALVE_HEATING_STATION, FailureMsg);
+        SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
 
         QString TargetTempStr = QString("%1 (%2~%3)").arg(TargetTempSensor1).arg(DepartureLow).arg(DepartureHigh);

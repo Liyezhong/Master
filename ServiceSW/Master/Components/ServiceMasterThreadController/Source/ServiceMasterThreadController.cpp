@@ -1546,12 +1546,16 @@ void ServiceMasterThreadController::ShutdownSystem()
 {
     qDebug()<<"ServiceMasterThreadController::ShutdownSystem ----------------- ";
 
-    QString RebootPath =  "../Settings/BootConfig.txt";
+    QString RebootPath =  Global::SystemPaths::Instance().GetSettingsPath() + "/BootConfig.txt";
     QFile BootConfigFile(RebootPath);
 
-    ReadBootConfigFile(&BootConfigFile);
+    m_BootConfigFileContent.clear();
+    if (BootConfigFile.exists()) {
+        ReadBootConfigFile(&BootConfigFile);
+    }
 
     m_BootConfigFileContent.insert("Start_Process", "DisplayPowerOffImage");
+
 }
 
 void ServiceMasterThreadController::ReadBootConfigFile(QFile *p_BootConfigFile) {

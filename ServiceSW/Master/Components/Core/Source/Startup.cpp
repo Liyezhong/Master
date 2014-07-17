@@ -839,14 +839,14 @@ void CStartup::ShowErrorMessage(const QString &Message)
     mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Message);
 }
 
-void CStartup::RefreshTestStatus4RetortCoverSensor(Service::ModuleTestCaseID /*id*/, const Service::ModuleTestStatus &status)
+void CStartup::RefreshTestStatus4RetortCoverSensor(Service::ModuleTestCaseID Id, const Service::ModuleTestStatus &Status)
 {
     static bool openFlag = true;
     DiagnosticsManufacturing::CStatusConfirmDialog *dlg = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
-    dlg->SetDialogTitle("Retort lid lock test");
+    dlg->SetDialogTitle(DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id));
 
     dlg->SetText(QString("Do you see the retort lid '%1' ?").arg(openFlag ? "Open" : "Close"));
-    dlg->UpdateRetortLabel(status);
+    dlg->UpdateRetortLabel(Status);
 
     int result = dlg->exec();
     qDebug()<<"StatusconfirmDlg return : " << result;
@@ -938,7 +938,7 @@ void CStartup::RefreshTestStatus4OvenCoverSensor(Service::ModuleTestCaseID Id, c
     static bool OpenFlag = true;
     QString TestStatus;
     DiagnosticsManufacturing::CStatusConfirmDialog *dlg = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
-    dlg->SetDialogTitle(DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id));
+    dlg->SetDialogTitle(DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id));
 
     if (OpenFlag) {
         TestStatus ="Open";
@@ -1157,7 +1157,7 @@ void CStartup::RefreshTestStatus4SystemAlarm(Service::ModuleTestCaseID Id, const
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     DiagnosticsManufacturing::CStatusConfirmDialog *dlg = new DiagnosticsManufacturing::CStatusConfirmDialog(mp_MainWindow);
-    dlg->SetDialogTitle(DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id));
+    dlg->SetDialogTitle(DataManager::CTestCaseGuide::Instance().GetTestCaseDescription(Id));
 
     bool ConnectFlag = p_TestCase->GetParameter("ConnectFlag").toInt();
     p_TestCase->SetParameter("ConnectFlag", QString::number(!ConnectFlag));
