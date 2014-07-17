@@ -218,7 +218,9 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     }
 
     // Shut down
-
+    if (!connect(mp_GUIStartup, SIGNAL(ShutdownSystem()), this, SLOT(ShutdownSystem()))){
+        qDebug() <<"CStartup: cannot connect 'ShutDownSystem' signal";
+    }
 
     //mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
 
@@ -1538,6 +1540,83 @@ void ServiceMasterThreadController::sendManufacturingTestCommand(Service::Module
     qDebug()<<"ServiceMasterThreadController::sendManufacturingTestCommand -- modulename="<<Test;
     (void) SendCommand(Global::CommandShPtr_t(new DeviceCommandProcessor::CmdModuleManufacturingTest(Test, AbortTestCaseId)), m_CommandChannelDeviceThread);
 
+}
+
+void ServiceMasterThreadController::ShutdownSystem()
+{
+    qDebug()<<"ServiceMasterThreadController::ShutdownSystem ----------------- ";
+
+    QString RebootPath =  "../Settings/BootConfig.txt";
+    QFile BootConfigFile(RebootPath);
+
+    ReadBootConfigFile(&BootConfigFile);
+
+    m_BootConfigFileContent.insert("Start_Process", "DisplayPowerOffImage");
+}
+
+void ServiceMasterThreadController::ReadBootConfigFile(QFile *p_BootConfigFile) {
+    if (p_BootConfigFile) {
+        if(!p_BootConfigFile->open(QIODevice::ReadWrite | QIODevice::Text)) {
+            //!< todo raise event.
+            qDebug()<<"Reboot file open failed";
+        }
+        QString Line;
+        QTextStream BootConfigFileStream(p_BootConfigFile);
+        do {
+            Line = BootConfigFileStream.readLine().simplified();
+            QString RebootCount("0");
+            if (Line.contains("Main_Rebooted", Qt::CaseInsensitive)) {
+                QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
+
+                m_BootConfigFileContent.insert("Main_Rebooted", LineFields[1]);
+            }
+            else if (Line.contains("Reboot_Count", Qt::CaseInsensitive)) {
+                QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
+                if (LineFields.count() == 2) {
+                    RebootCount = LineFields[1];
+                    m_RebootCount = RebootCount.toUInt();
+                    m_BootConfigFileContent.insert("Reboot_Count", QString::number(m_RebootCount));
+                }
+
+            }
+            else if (Line.contains("Software_Update_Status", Qt::CaseInsensitive)) {
+                QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
+
+
+                m_BootConfigFileContent.insert("Software_Update_Status", "NA");
+
+            }
+            else if (Line.contains("PowerFailed", Qt::CaseInsensitive)) {
+                QStringList LineFields = Line.split(":", QString::SkipEmptyParts);
+
+                m_BootConfigFileContent.insert("PowerFailed", LineFields[1]);
+            }
+        } while (!Line.isNull());
+
+        p_BootConfigFile->close();
+    }
+}
+
+void ServiceMasterThreadController::UpdateRebootFile(const QMap<QString, QString> RebootFileContent)
+{
+    const QString RebootPath = Global::SystemPaths::Instance().GetSettingsPath() + "/BootConfig.txt";
+    QFile RebootFile(RebootPath);
+    if(!RebootFile.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Truncate)) {
+        //!< todo raise event.
+        qDebug()<<"Reboot file open failed";
+    }
+    QTextStream RebootFileStream(&RebootFile);
+    RebootFileStream.setFieldAlignment(QTextStream::AlignLeft);
+    QMapIterator<QString, QString> RebootfileItr(RebootFileContent);
+    while (RebootfileItr.hasNext()) {
+        RebootfileItr.next();
+        QString Key = RebootfileItr.key();
+        QString Value = RebootFileContent.value(Key);
+        RebootFileStream << Key << ":" << Value << "\n" << left;
+    }
+    RebootFile.flush();
+    fsync(RebootFile.handle());
+    RebootFile.close();
 }
 
 } // end namespace Threads

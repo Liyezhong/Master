@@ -170,6 +170,7 @@ private:
 
     bool                                         m_ImportExportThreadIsRunning;
     bool                                         m_ExportProcessIsFinished;
+    QMap<QString, QString>                      m_BootConfigFileContent;            //!< Map containing reboot file content.
 
     /****************************************************************************/
 
@@ -475,7 +476,15 @@ private slots:
     void sendManufacturingTestCommand(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestCaseId=Service::TEST_CASE_ID_UNUSED);
 
 
+    /****************************************************************************/
+    /**
+     * \brief ShutdownSystem.
+     */
+    /****************************************************************************/
     void ShutdownSystem();
+
+
+
 
 protected:
 
@@ -983,7 +992,25 @@ public:
     void OnReturnMessageCommand(Global::tRefType Ref, const DeviceCommandProcessor::CmdReturnMessage &Cmd, Threads::CommandChannel &AckCommandChannel);
     /****************************************************************************/
 
+    /****************************************************************************/
+    /**
+     * \brief Reads Reboot file
+     *
+     * \iparam p_RebootFile Pointer to reboot file.
+     *
+     */
+    /****************************************************************************/
+    void ReadBootConfigFile(QFile *p_RebootFile);
 
+    /****************************************************************************/
+    /**
+     * \brief Write Reboot file
+     *
+     * \iparam RebootFileContent point to map containing .
+     *
+     */
+    /****************************************************************************/
+    void UpdateRebootFile(const QMap<QString, QString> RebootFileContent);
 public slots:
     /****************************************************************************/
     /**

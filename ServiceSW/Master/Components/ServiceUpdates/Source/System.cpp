@@ -61,7 +61,7 @@ CSystem::~CSystem(void)
 
 void CSystem::OnShutDown(void)
 {
-
+    emit ShutdownSystem();
 }
 
 

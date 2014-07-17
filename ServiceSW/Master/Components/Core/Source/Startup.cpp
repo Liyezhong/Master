@@ -266,6 +266,8 @@ CStartup::CStartup() : QObject(),
 
     CONNECTSIGNALSIGNAL(mp_CalibrationHandler, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID), this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
 
+    CONNECTSIGNALSIGNAL(mp_UpdateSystem, ShutdownSystem(), this, ShutdownSystem());
+
     m_DateTime.setTime_t(0);
     mp_Clock->start(60000);
 }

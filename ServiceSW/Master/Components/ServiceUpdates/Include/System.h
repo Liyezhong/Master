@@ -48,6 +48,13 @@ public:
 private Q_SLOTS:
     void OnShutDown(void);
 
+signals:
+    /*******************************************************************************/
+    /*!
+     *  \brief Signal emitted to shut down system
+     */
+    /*******************************************************************************/
+    void ShutdownSystem();
 
 private:
     Ui::CSystem   *mp_Ui;
