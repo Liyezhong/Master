@@ -57,13 +57,24 @@ public Q_SLOTS:
 
     void OnFinalizeConfiguration(void);
 
+    void CurrentTabChanged(int Index);
+
+    void ConfirmModuleConfiguration();
+
 private:
     void ModifySubModule(const QString &ModuleName,
                          const QString &SubModuleName);
 
+    void ConfirmModuleConfiguration(QString& Text);
+
+    void ResetMessageBox();
+
     Ui::CRotaryValve *mp_Ui;
 
     Core::CServiceGUIConnector *mp_DateConnector;
+
+    MainMenu::CMessageDlg *mp_MessageDlg;                                   //!< Information dialog
+    ServiceDataManager::CModuleDataList *mp_ModuleList;
 };
 
 

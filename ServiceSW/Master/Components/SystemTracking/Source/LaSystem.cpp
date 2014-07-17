@@ -44,10 +44,16 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector &DataConnector,
     : QWidget(parent)
     , mp_DateConnector(&DataConnector)
     , mp_Ui(new Ui::CLaSystem)
+    , mp_ModuleList(NULL)
 {
     mp_Ui->setupUi(this);
 
     mp_Ui->finalizeConfigBtn->setEnabled(false);
+
+    mp_MessageDlg = new MainMenu::CMessageDlg(this);
+    mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::CMainControl",
+                                                    "Finalize Configuration", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->setModal(true);
     (void)connect(mp_Ui->modifyPump,
                   SIGNAL(clicked()),
                   this,
@@ -99,6 +105,7 @@ CLaSystem::~CLaSystem()
     try
     {
         delete mp_Ui;
+        delete mp_MessageDlg;
     }
     catch (...) { }
 }
@@ -197,7 +204,81 @@ void CLaSystem::ModifyFan(void)
 
 void CLaSystem::OnFinalizeConfiguration(void)
 {
+    QString Text = QApplication::translate("SystemTracking::CLaSystem",
+                                           "Do you want to finalize the configuration for the L&A System?",
+                                                       0, QApplication::UnicodeUTF8);
+    ConfirmModuleConfiguration(Text);
+}
 
+void CLaSystem::CurrentTabChanged(int Index)
+{
+    if (Index != 0) {
+        ConfirmModuleConfiguration();
+    }
+}
+
+void CLaSystem::ConfirmModuleConfiguration()
+{
+    QString Text = QApplication::translate("SystemTracking::CMainControl",
+                                           "L&A System Module has been modified. Do you want to finalize the configuration?",
+                                           0, QApplication::UnicodeUTF8);
+
+    if (mp_Ui->finalizeConfigBtn->isEnabled()) {
+        ConfirmModuleConfiguration(Text);
+    }
+}
+
+void CLaSystem::ConfirmModuleConfiguration(QString& Text)
+{
+    mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CLaSystem",
+                                                            "Ok", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->SetButtonText(3,QApplication::translate("SystemTracking::CLaSystem",
+                                                           "Cancel", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->HideCenterButton();
+
+    mp_MessageDlg->SetText(Text);
+    mp_MessageDlg->SetIcon(QMessageBox::Warning);
+    mp_MessageDlg->show();
+
+    int Result = mp_MessageDlg->exec();
+
+    ResetMessageBox();
+    if (Result)
+    {
+        if(mp_ModuleList && mp_ModuleList->Write())
+        {
+            mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CLaSystem",
+                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->HideButtons();
+            mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CLaSystem",
+                                          "Configuration file updated successfully.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+            mp_MessageDlg->show();
+        }
+        else
+        {
+            mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CLaSystem",
+                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->HideButtons();
+            mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CLaSystem",
+                                          "Configuration file updation failed.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+            mp_MessageDlg->show();
+        }
+    }
+    else
+    {
+        //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_ADDMODIFY_SAVE_AND_OVERWRITE_CONFIGURATION_FAILURE);
+        mp_DateConnector->ReloadModuleList();
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CLaSystem",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CLaSystem",
+                                             "Finalize Configuration Cancelled.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->show();
+    }
+    mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
 
 void CLaSystem::ModifySubModule(const QString &ModuleName,
@@ -244,5 +325,12 @@ void CLaSystem::ModifySubModule(const QString &ModuleName,
     delete dlg;
 }
 
+void CLaSystem::ResetMessageBox()
+{
+    if (mp_MessageDlg) {
+        delete mp_MessageDlg;
+        mp_MessageDlg = new MainMenu::CMessageDlg(this);
+    }
+}
 
 } // namespace SystemTracking

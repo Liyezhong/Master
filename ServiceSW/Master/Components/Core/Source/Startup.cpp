@@ -73,19 +73,20 @@ CStartup::CStartup() : QObject(),
     mp_CalibrationHandler = new Core::CCalibrationHanlder(mp_ServiceConnector, mp_MainWindow);
 
     // System tracking
-    mp_SystemTrackingGroup = new MainMenu::CHiMenuGroup;
+    //mp_SystemTrackingGroup = new MainMenu::CHiMenuGroup;
+    mp_SystemTrackingGroup = new MainMenu::CMenuGroup;
     mp_CurrentConfiguration =
-            new SystemTracking::CCurrentConfiguration(mp_ServiceConnector);
-    mp_AddModifyConfigGroup = new MainMenu::CHiMenuGroup;
-    mp_AddModifyConfig = new SystemTracking::CAddModifyConfig;
-    mp_ViewHistory = new SystemTracking::CViewHistory;
+            new SystemTracking::CCurrentConfiguration(mp_ServiceConnector, mp_MainWindow);
+    mp_AddModifyConfigGroup = new MainMenu::CMenuGroup;
+    //mp_AddModifyConfig = new SystemTracking::CAddModifyConfig;
+    mp_ViewHistory = new SystemTracking::CViewHistory(mp_MainWindow);
     mp_MainControlConfig =
-            new SystemTracking::CMainControl(*mp_ServiceConnector);
-    mp_RetortConfig = new SystemTracking::CRetort(*mp_ServiceConnector);
-    mp_OvenConfig = new SystemTracking::COven(*mp_ServiceConnector);
+            new SystemTracking::CMainControl(*mp_ServiceConnector, mp_MainWindow);
+    mp_RetortConfig = new SystemTracking::CRetort(*mp_ServiceConnector, mp_MainWindow);
+    mp_OvenConfig = new SystemTracking::COven(*mp_ServiceConnector, mp_MainWindow);
     mp_RotaryValveConfig =
-            new SystemTracking::CRotaryValve(*mp_ServiceConnector);
-    mp_LaSystemConfig = new SystemTracking::CLaSystem(*mp_ServiceConnector);
+            new SystemTracking::CRotaryValve(*mp_ServiceConnector, mp_MainWindow);
+    mp_LaSystemConfig = new SystemTracking::CLaSystem(*mp_ServiceConnector, mp_MainWindow);
 
     (void)connect(mp_ServiceConnector,
                   SIGNAL(ModuleListChanged()),
@@ -96,10 +97,6 @@ CStartup::CStartup() : QObject(),
                   SIGNAL(ModuleListChanged()),
                   mp_ViewHistory,
                   SLOT(UpdateGUI()));
-
-    CONNECTSIGNALSIGNAL(mp_MainControlConfig, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID),
-                        this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
-
     (void)connect(mp_RetortConfig,
                   SIGNAL(ModuleListChanged()),
                   mp_ViewHistory,
@@ -124,6 +121,29 @@ CStartup::CStartup() : QObject(),
                   SIGNAL(ModuleListChanged()),
                   mp_ViewHistory,
                   SLOT(UpdateGUI()));
+
+    CONNECTSIGNALSIGNAL(mp_MainControlConfig, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID),
+                        this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+
+    CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), mp_MainControlConfig, CurrentTabChanged(int));
+    CONNECTSIGNALSLOT(mp_SystemTrackingGroup, PanelChanged(), mp_MainControlConfig, ConfirmModuleConfiguration());
+    CONNECTSIGNALSLOT(mp_AddModifyConfigGroup, PanelChanged(), mp_MainControlConfig, ConfirmModuleConfiguration());
+
+    CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), mp_RetortConfig, CurrentTabChanged(int));
+    CONNECTSIGNALSLOT(mp_SystemTrackingGroup, PanelChanged(), mp_RetortConfig, ConfirmModuleConfiguration());
+    CONNECTSIGNALSLOT(mp_AddModifyConfigGroup, PanelChanged(), mp_RetortConfig, ConfirmModuleConfiguration());
+
+    CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), mp_OvenConfig, CurrentTabChanged(int));
+    CONNECTSIGNALSLOT(mp_SystemTrackingGroup, PanelChanged(), mp_OvenConfig, ConfirmModuleConfiguration());
+    CONNECTSIGNALSLOT(mp_AddModifyConfigGroup, PanelChanged(), mp_OvenConfig, ConfirmModuleConfiguration());
+
+    CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), mp_RotaryValveConfig, CurrentTabChanged(int));
+    CONNECTSIGNALSLOT(mp_SystemTrackingGroup, PanelChanged(), mp_RotaryValveConfig, ConfirmModuleConfiguration());
+    CONNECTSIGNALSLOT(mp_AddModifyConfigGroup, PanelChanged(), mp_RotaryValveConfig, ConfirmModuleConfiguration());
+
+    CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), mp_LaSystemConfig, CurrentTabChanged(int));
+    CONNECTSIGNALSLOT(mp_SystemTrackingGroup, PanelChanged(), mp_LaSystemConfig, ConfirmModuleConfiguration());
+    CONNECTSIGNALSLOT(mp_AddModifyConfigGroup, PanelChanged(), mp_LaSystemConfig, ConfirmModuleConfiguration());
 
     // Log Viewer
     mp_LogViewerGroup = new MainMenu::CMenuGroup;
@@ -285,6 +305,7 @@ CStartup::~CStartup()
 
         // Service Update
         delete mp_Setting;
+        delete mp_UpdateSystem;
         delete mp_DataManagement;
         delete mp_FirmwareUpdate;
         delete mp_ServiceUpdateGroup;
@@ -358,16 +379,14 @@ void CStartup::LoadCommonComponenetsOne()
     // System Tracking
     mp_SystemTrackingGroup->AddPanel("Current Config", mp_CurrentConfiguration);
 
-    mp_AddModifyConfigGroup->SetTitle("Add/Modify Config");
+    //mp_AddModifyConfigGroup->SetTitle("Add/Modify Config");
     mp_AddModifyConfigGroup->AddPanel("Main Control", mp_MainControlConfig);
     mp_AddModifyConfigGroup->AddPanel("Retort", mp_RetortConfig);
     mp_AddModifyConfigGroup->AddPanel("Oven", mp_OvenConfig);
     mp_AddModifyConfigGroup->AddPanel("Rotary Valve", mp_RotaryValveConfig);
     mp_AddModifyConfigGroup->AddPanel("L&&A System", mp_LaSystemConfig);
 
-    mp_SystemTrackingGroup->AddPanel("Add/Modify Config",
-                                     mp_AddModifyConfigGroup,
-                                     false);
+    mp_SystemTrackingGroup->AddPanel("Add/Modify Config", mp_AddModifyConfigGroup);
 
     mp_SystemTrackingGroup->AddPanel("View History", mp_ViewHistory);
 

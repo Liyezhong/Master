@@ -110,6 +110,7 @@ public:
     DataManager::CUserSettingsInterface *GetUserSettingInterface(void);
     DataManager::CServiceParameters* GetServiceParameters();
     void SetServiceParametersContainer(DataManager::CServiceParameters *ServiceParameters);
+    bool ReloadModuleList();
 
 public slots:
     void OnCurrentTabChanged(int CurrentTabIndex);

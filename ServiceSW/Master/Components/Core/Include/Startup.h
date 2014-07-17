@@ -129,11 +129,11 @@ private:
     ServiceKeyValidator::CUSBKeyValidator                  *mp_USBKeyValidator;
 
     // System Tracking
-    MainMenu::CHiMenuGroup                  *mp_SystemTrackingGroup;        //!< Menu group containing System Tracking data
+    MainMenu::CMenuGroup                  *mp_SystemTrackingGroup;        //!< Menu group containing System Tracking data
     SystemTracking::CCurrentConfiguration   *mp_CurrentConfiguration;       //!< Current Configuration information screen
     SystemTracking::CAddModifyConfig        *mp_AddModifyConfig;            //!< Add or Modify configuration screen
     SystemTracking::CViewHistory            *mp_ViewHistory;                //!< Module History
-    MainMenu::CHiMenuGroup                  *mp_AddModifyConfigGroup;       //!< Add or Modify configuration screen group
+    MainMenu::CMenuGroup                  *mp_AddModifyConfigGroup;       //!< Add or Modify configuration screen group
     SystemTracking::CMainControl            *mp_MainControlConfig;          //!< Configuration screen for Main control
     SystemTracking::CRetort                 *mp_RetortConfig;               //!< Configuration screen for Retort
     SystemTracking::COven                   *mp_OvenConfig;                 //!< Configuration screen for Oven

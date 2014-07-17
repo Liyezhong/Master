@@ -70,12 +70,18 @@ public Q_SLOTS:
 
     void CurrentTabChanged(int Index);
 
+    void ConfirmModuleConfiguration();
+
 private Q_SLOTS:
     void AutoDetect(ServiceDataManager::CSubModule &SubModule);
 
 private:
     void ModifySubModule(const QString &ModuleName,
                          const QString &SubModuleName);
+
+    void ConfirmModuleConfiguration(QString& Text);
+
+    void ResetMessageBox();
 
     Ui::CMainControl *mp_Ui;
     MainMenu::CMessageDlg *mp_MessageDlg;                                   //!< Information dialog

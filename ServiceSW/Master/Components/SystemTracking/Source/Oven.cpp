@@ -40,10 +40,16 @@ COven::COven(Core::CServiceGUIConnector &DataConnector,
     : QWidget(parent)
     , mp_DataConnector(&DataConnector)
     , mp_Ui(new Ui::COven)
+    , mp_ModuleList(NULL)
 {
     mp_Ui->setupUi(this);
 
     mp_Ui->finalizeConfigBtn->setEnabled(false);
+
+    mp_MessageDlg = new MainMenu::CMessageDlg(this);
+    mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::COven",
+                                                    "Finalize Configuration", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->setModal(true);
     (void)connect(mp_Ui->modifyOven,
                   SIGNAL(clicked()),
                   this,
@@ -71,6 +77,7 @@ COven::~COven()
     try
     {
         delete mp_Ui;
+        delete mp_MessageDlg;
     }
     catch (...) { }
 }
@@ -118,9 +125,9 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 
     pModule->UpdateSubModule(&SubModule);
 
-    pModuleList->Write();
-
     emit ModuleListChanged();
+
+    mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
 
 void COven::ModifyOven(void)
@@ -177,7 +184,81 @@ void COven::ModifyCoverSensor(void)
 
 void COven::OnFinalizeConfiguration(void)
 {
+    QString Text = QApplication::translate("SystemTracking::CMainControl",
+                                           "Do you want to finalize the configuration for the Oven?",
+                                                       0, QApplication::UnicodeUTF8);
+    ConfirmModuleConfiguration(Text);
+}
 
+void COven::CurrentTabChanged(int Index)
+{
+    if (Index != 0) {
+        ConfirmModuleConfiguration();
+    }
+}
+
+void COven::ConfirmModuleConfiguration()
+{
+    QString Text = QApplication::translate("SystemTracking::CMainControl",
+                                           "Oven Module has been modified. Do you want to finalize the configuration?",
+                                           0, QApplication::UnicodeUTF8);
+
+    if (mp_Ui->finalizeConfigBtn->isEnabled()) {
+        ConfirmModuleConfiguration(Text);
+    }
+}
+
+void COven::ConfirmModuleConfiguration(QString& Text)
+{
+    mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::COven",
+                                                            "Ok", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->SetButtonText(3,QApplication::translate("SystemTracking::COven",
+                                                           "Cancel", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->HideCenterButton();
+
+    mp_MessageDlg->SetText(Text);
+    mp_MessageDlg->SetIcon(QMessageBox::Warning);
+    mp_MessageDlg->show();
+
+    int Result = mp_MessageDlg->exec();
+
+    ResetMessageBox();
+    if (Result)
+    {
+        if(mp_ModuleList && mp_ModuleList->Write())
+        {
+            mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::COven",
+                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->HideButtons();
+            mp_MessageDlg->SetText(QApplication::translate("SystemTracking::COven",
+                                          "Configuration file updated successfully.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+            mp_MessageDlg->show();
+        }
+        else
+        {
+            mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::COven",
+                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->HideButtons();
+            mp_MessageDlg->SetText(QApplication::translate("SystemTracking::COven",
+                                          "Configuration file updation failed.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+            mp_MessageDlg->show();
+        }
+    }
+    else
+    {
+        //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_ADDMODIFY_SAVE_AND_OVERWRITE_CONFIGURATION_FAILURE);
+        mp_DataConnector->ReloadModuleList();
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::COven",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("SystemTracking::COven",
+                                             "Finalize Configuration Cancelled.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->show();
+    }
+    mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
 
 void COven::ModifySubModule(const QString &ModuleName,
@@ -222,6 +303,14 @@ void COven::ModifySubModule(const QString &ModuleName,
     dlg->exec();
 
     delete dlg;
+}
+
+void COven::ResetMessageBox()
+{
+    if (mp_MessageDlg) {
+        delete mp_MessageDlg;
+        mp_MessageDlg = new MainMenu::CMessageDlg(this);
+    }
 }
 
 } // namespace SystemTracking

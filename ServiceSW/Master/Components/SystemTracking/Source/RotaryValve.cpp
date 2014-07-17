@@ -39,10 +39,17 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector &DataConnector,
     : QWidget(parent)
     , mp_DateConnector(&DataConnector)
     , mp_Ui(new Ui::CRotaryValve)
+    , mp_ModuleList(NULL)
 {
     mp_Ui->setupUi(this);
 
     mp_Ui->finalizeConfigBtn->setEnabled(false);
+
+    mp_MessageDlg = new MainMenu::CMessageDlg(this);
+    mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::CRotaryValve",
+                                                    "Finalize Configuration", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->setModal(true);
+
     (void)connect(mp_Ui->modifyRotaryValve,
                   SIGNAL(clicked()),
                   this,
@@ -70,6 +77,7 @@ CRotaryValve::~CRotaryValve()
     try
     {
         delete mp_Ui;
+        delete mp_MessageDlg;
     }
     catch (...) { }
 }
@@ -117,9 +125,9 @@ void CRotaryValve::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 
     pModule->UpdateSubModule(&SubModule);
 
-    pModuleList->Write();
-
     emit ModuleListChanged();
+
+    mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
 
 void CRotaryValve::ModifyRotaryValve(void)
@@ -177,7 +185,81 @@ void CRotaryValve::ModifyMotor(void)
 
 void CRotaryValve::OnFinalizeConfiguration(void)
 {
+    QString Text = QApplication::translate("SystemTracking::CRotaryValve",
+                                           "Do you want to finalize the configuration for the Rotary valve?",
+                                                       0, QApplication::UnicodeUTF8);
+    ConfirmModuleConfiguration(Text);
+}
 
+void CRotaryValve::CurrentTabChanged(int Index)
+{
+    if (Index != 0) {
+        ConfirmModuleConfiguration();
+    }
+}
+
+void CRotaryValve::ConfirmModuleConfiguration()
+{
+    QString Text = QApplication::translate("SystemTracking::CRotaryValve",
+                                           "Rotary valve Module has been modified. Do you want to finalize the configuration?",
+                                           0, QApplication::UnicodeUTF8);
+
+    if (mp_Ui->finalizeConfigBtn->isEnabled()) {
+        ConfirmModuleConfiguration(Text);
+    }
+}
+
+void CRotaryValve::ConfirmModuleConfiguration(QString& Text)
+{
+    mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CRotaryValve",
+                                                            "Ok", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->SetButtonText(3,QApplication::translate("SystemTracking::CRotaryValve",
+                                                           "Cancel", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->HideCenterButton();
+
+    mp_MessageDlg->SetText(Text);
+    mp_MessageDlg->SetIcon(QMessageBox::Warning);
+    mp_MessageDlg->show();
+
+    int Result = mp_MessageDlg->exec();
+
+    ResetMessageBox();
+    if (Result)
+    {
+        if(mp_ModuleList && mp_ModuleList->Write())
+        {
+            mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CRotaryValve",
+                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->HideButtons();
+            mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CRotaryValve",
+                                          "Configuration file updated successfully.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+            mp_MessageDlg->show();
+        }
+        else
+        {
+            mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CRotaryValve",
+                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->HideButtons();
+            mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CRotaryValve",
+                                          "Configuration file updation failed.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetIcon(QMessageBox::Information);
+            mp_MessageDlg->show();
+        }
+    }
+    else
+    {
+        //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_ADDMODIFY_SAVE_AND_OVERWRITE_CONFIGURATION_FAILURE);
+        mp_DateConnector->ReloadModuleList();
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CRotaryValve",
+                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("SystemTracking::CRotaryValve",
+                                             "Finalize Configuration Cancelled.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->show();
+    }
+    mp_Ui->finalizeConfigBtn->setEnabled(false);
 }
 
 void CRotaryValve::ModifySubModule(const QString &ModuleName,
@@ -222,6 +304,14 @@ void CRotaryValve::ModifySubModule(const QString &ModuleName,
     dlg->exec();
 
     delete dlg;
+}
+
+void CRotaryValve::ResetMessageBox()
+{
+    if (mp_MessageDlg) {
+        delete mp_MessageDlg;
+        mp_MessageDlg = new MainMenu::CMessageDlg(this);
+    }
 }
 
 } // namespace SystemTracking

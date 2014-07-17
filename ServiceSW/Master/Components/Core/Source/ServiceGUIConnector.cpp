@@ -129,6 +129,21 @@ void CServiceGUIConnector::SendModuleUpdate(ServiceDataManager::CModule &Module)
     qDebug() << "Module Updated";
 }
 
+bool CServiceGUIConnector::ReloadModuleList()
+{
+    bool Result = false;
+    if (mp_ModuleList) {
+        Result = mp_ModuleList->DeleteAllModules();
+    }
+    if (Result) {
+        Result = mp_ModuleList->ReadFile(mp_ModuleList->GetFilename());
+    }
+    if (!Result) {
+        qDebug()<<"CServiceGUIConnector: reload module list failed.";
+    }
+    return Result;
+}
+
 void CServiceGUIConnector::SendDeviceConfigurationUpdate(DataManager::CDeviceConfiguration* DeviceConfiguration)
 {
     if (mp_DeviceConfigurationInterface) {
