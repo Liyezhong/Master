@@ -207,6 +207,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
     m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
+    m_RVOrgPosCmdTime = 0;
 }
 
 
@@ -750,19 +751,28 @@ void CSchedulerStateMachine::HandleRsRVGetOriginalPositionAgainWorkFlow(const QS
     case MOVE_TO_INITIAL_POS:
         mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
         m_RVGetOriginalPosition = CHECK_INITIAL_POS_RESULT;
+        m_RVOrgPosCmdTime = QDateTime::currentMSecsSinceEpoch();
         break;
     case CHECK_INITIAL_POS_RESULT:
-        if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+        if (1 == mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().PositionRV) //Initial position
         {
             m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
+            this->OnTasksDone(true);
+        }
+        else if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+        {
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
-                this->OnTasksDone(true);
+                // do nothing
             }
             else
             {
                 this->OnTasksDone(false);
             }
+        }
+        else if ((QDateTime::currentMSecsSinceEpoch()) - m_RVOrgPosCmdTime > 120*1000)
+        {
+            this->OnTasksDone(false);
         }
     }
 }

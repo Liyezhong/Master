@@ -124,6 +124,7 @@ private:
     } GET_RV_ORIGINALPOS_t;
 
     GET_RV_ORIGINALPOS_t m_RVGetOriginalPosition;
+    qint64                 m_RVOrgPosCmdTime;
 private:
     QString GetDeviceName();
 
