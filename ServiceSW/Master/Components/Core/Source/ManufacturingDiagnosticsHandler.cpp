@@ -265,7 +265,7 @@ void CManufacturingDiagnosticsHandler::ShowHeatingFailedResult(Service::ModuleTe
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     Service::ModuleTestStatus Status = p_TestCase->GetResult();
-    if (Service::RETORT_LEVEL_SENSOR_HEATING == Id) {
+    if (Id == Service::RETORT_LEVEL_SENSOR_HEATING) {
         dlg->DisplayLSensorLabel();
     }
     dlg->UpdateLabel(Status);
