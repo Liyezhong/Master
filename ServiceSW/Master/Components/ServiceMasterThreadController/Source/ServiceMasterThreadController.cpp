@@ -1556,6 +1556,50 @@ void ServiceMasterThreadController::ShutdownSystem()
 
     m_BootConfigFileContent.insert("Start_Process", "DisplayPowerOffImage");
 
+    UpdateRebootFile(m_BootConfigFileContent);
+
+#if 0  // disabled for test
+    const QString MD5sumGenerator = QString("%1%2").arg(Global::SystemPaths::Instance().GetScriptsPath()).
+                                    arg(QString("/EBox-Utils.sh update_md5sum_for_settings"));
+    (void)system(MD5sumGenerator.toStdString().c_str());
+
+
+    std::cout <<"\n\n Shutdown Start time " << Global::AdjustedTime::Instance().GetCurrentTime().toString().toStdString();
+    Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_TERMINATING, Global::tTranslatableStringList() <<"");
+    //write buffered data to disk-> refer man pages for sync
+    (void)system("sync &");
+    (void)system("lcd off");
+#endif
+
+    qDebug()<<"emit SendStop ----";
+
+    // send Stop signal to all thread controllers
+    emit SendStop();
+
+    qDebug()<<"WaitforThreads.........";
+    // stop all threads and wait for the
+    WaitForThreads();
+
+    qDebug()<<"CleanupControllers..........";
+    // Cleanup controllers
+    CleanupControllers();
+
+    qDebug()<<"DestroyControllerAndThreads ..........";
+    // destroy controllers and threads
+    DestroyControllersAndThreads();
+
+    // call own Stop method
+    //    Stop();
+    for (qint32 I = 0; I < m_BroadcastChannels.count(); I++ ) {
+        Threads::CommandChannel *p_Channel = m_BroadcastChannels.at(I);
+        p_Channel->setParent(NULL);
+    }
+
+    qDebug()<<"emit   RequestFinish..........";
+    // send request to finish master thread
+    emit RequestFinish();
+    qDebug() <<"Shutdown End time " << Global::AdjustedTime::Instance().GetCurrentTime().toString();
+
 }
 
 void ServiceMasterThreadController::ReadBootConfigFile(QFile *p_BootConfigFile) {

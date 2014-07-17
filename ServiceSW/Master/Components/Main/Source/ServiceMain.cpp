@@ -80,6 +80,8 @@ int main(int Argc, char *p_Argv[])
     Global::SystemPaths::Instance().SetSoundPath("../Sounds");
     Global::SystemPaths::Instance().SetInstrumentSettingsPath("../Settings/Instrument");
 
+    Global::SystemPaths::Instance().SetScriptsPath("../Scripts");
+
     Core::CStartup Startup;
     Threads::ServiceMasterThreadController TheMasterThreadController(&Startup);
     TheMasterThreadController.SetEventLoggerBaseFileName("Himalaya_Service");
@@ -109,7 +111,27 @@ int main(int Argc, char *p_Argv[])
         Global::ToConsole("Connecting thrMasterThread::started() and TheMasterThreadController::Go() failed");
     }
 
+    QObject::connect(&thrMasterThread, SIGNAL(finished()), &App, SLOT(quit()));
+
     thrMasterThread.start();
 
+#if 0
     return App.exec();
+#else
+    int ReturnCode = App.exec();
+
+    qDebug()<<"app exec return : "<<ReturnCode;
+
+    // wait for Master thread
+    if(!thrMasterThread.wait())
+    {
+        Global::ToConsole("Error waiting for thrMasterThread");
+        // set error code
+        ReturnCode = Global::RETCODE_MASTERTHREAD_WAIT;
+    }
+    // cleanup controller for master thread.
+    TheMasterThreadController.CleanupAndDestroyObjects();
+
+    return ReturnCode;
+#endif
 }
