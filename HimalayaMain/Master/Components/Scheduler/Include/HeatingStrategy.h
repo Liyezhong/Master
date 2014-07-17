@@ -262,7 +262,7 @@ public:
      *  \return bool, ture - passed, false - not yet
      */
     /****************************************************************************/
-    bool CheckSensorTempOverRange(const QString& devName, const qreal& temperature);
+    bool CheckSensorTempOverRange(const QString& devName, qreal temperature);
 
     /*!
      *  \brief  Check if level sensor heating reaches target temperature or not

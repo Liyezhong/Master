@@ -88,6 +88,12 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorRsHeatingErr30SRetryState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsTSensorErr3MinRetryState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsRVGetOriginalPositionAgainState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_RcPressure = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_RcVacuum = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_RcFilling = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_RcDraining = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_RsDrainAtOnce = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_RcBottleCheckI = QSharedPointer<QState>(new QState(mp_RcBottleCheckI.data()));
 
     // Set Initial states
     mp_SchedulerMachine->setInitialState(mp_InitState.data());
@@ -167,28 +173,37 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorRsRVGetOriginalPositionAgainState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RC_Pressure
-    mp_RcPressure = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
-    mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcPressure()), mp_RcPressure.data());
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRcPressure()), mp_RcPressure.data());
     CONNECTSIGNALSLOT(mp_RcPressure.data(), entered(), mp_SchedulerThreadController, Pressure());
     mp_RcPressure->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RC_Vacuum
-    mp_RcVacuum = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
-    mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcVacuum()), mp_RcVacuum.data());
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRcVacuum()), mp_RcVacuum.data());
     CONNECTSIGNALSLOT(mp_RcVacuum.data(), entered(), mp_SchedulerThreadController, Vaccum());
     mp_RcVacuum->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RC_Filling
-    mp_RcFilling = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
-    mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcFilling()), mp_RcFilling.data());
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRcFilling()), mp_RcFilling.data());
     CONNECTSIGNALSLOT(mp_RcFilling.data(), entered(), mp_SchedulerThreadController, Fill());
+    CONNECTSIGNALSLOT(mp_RcFilling.data(), exited(), mp_SchedulerThreadController, OnStopFill());
     mp_RcFilling->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //RC_Draining
-    mp_RcDraining = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
-    mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRcDraining()), mp_RcDraining.data());
-    CONNECTSIGNALSLOT(mp_RcDraining.data(), entered(), mp_SchedulerThreadController, Drain());
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRcDraining()), mp_RcDraining.data());
+    CONNECTSIGNALSLOT(mp_RcDraining.data(), entered(), mp_SchedulerThreadController, RCDrain());
+    CONNECTSIGNALSLOT(mp_RcDraining.data(), exited(), mp_SchedulerThreadController, OnStopDrain());
     mp_RcDraining->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
+    //RS_DrainAtOnce
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsDrainAtOnce()), mp_RsDrainAtOnce.data());
+    CONNECTSIGNALSLOT(mp_RsDrainAtOnce.data(), entered(), mp_SchedulerThreadController, Drain());
+    CONNECTSIGNALSLOT(mp_RsDrainAtOnce.data(), exited(), mp_SchedulerThreadController, OnStopDrain());
+    mp_RsDrainAtOnce->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
+    //RC_BottleCheck_I
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRcBottleCheckI()), mp_RcBottleCheckI.data());
+    CONNECTSIGNALSLOT(mp_RcBottleCheckI.data(), entered(), mp_SchedulerThreadController, RcBottleCheckI());
+    mp_RcBottleCheckI->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
     m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
@@ -301,6 +316,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         {
             return SM_ERR_WAIT;
         }
+        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsRVGetOriginalPositionAgainState.data()))
+        {
+            return SM_ERR_RS_RV_GETORIGINALPOSITIONAGAIN;
+        }
         else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsStandbyState.data()))
         {
             return SM_ERR_RS_STANDBY;
@@ -340,6 +359,14 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if (mp_SchedulerMachine->configuration().contains(mp_RcDraining.data()))
         {
             return SM_ERR_RC_DRAINING;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_RsDrainAtOnce.data()))
+        {
+            return SM_ERR_RS_DRAINATONCE;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_RcBottleCheckI.data()))
+        {
+            return SM_ERR_RS_BOTTLECHECK_I;
         }
     }
     else if(mp_SchedulerMachine->configuration().contains(mp_BusyState.data()))
@@ -617,24 +644,33 @@ void CSchedulerStateMachine::EnterRsStandByWithTissue()
 
 void CSchedulerStateMachine::EnterRcPressure()
 {
-    emit SigEnterRcPressure();
+    emit SigRcPressure();
 }
 
 void CSchedulerStateMachine::EnterRcVacuum()
 {
-    emit SigEnterRcVacuum();
+    emit SigRcVacuum();
 }
 
 void CSchedulerStateMachine::EnterRcFilling()
 {
-    emit SigEnterRcFilling();
+    emit SigRcFilling();
 }
 
 void CSchedulerStateMachine::EnterRcDraining()
 {
-    emit SigEnterRcDraining();
+    emit SigRcDraining();
 }
 
+void CSchedulerStateMachine::EnterRsDrainAtOnce()
+{
+    emit SigRsDrainAtOnce();
+}
+
+void CSchedulerStateMachine::EnterRcBottleCheckI()
+{
+    emit SigRcBottleCheckI();
+}
 
 void CSchedulerStateMachine::HandlePssmPreTestWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
@@ -707,6 +743,30 @@ void CSchedulerStateMachine::HandleRcLevelSensorHeatingOvertimeWorkFlow()
 
  }
 
+void CSchedulerStateMachine::HandleRsRVGetOriginalPositionAgainWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+{
+    switch (m_RVGetOriginalPosition)
+    {
+    case MOVE_TO_INITIAL_POS:
+        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
+        m_RVGetOriginalPosition = CHECK_INITIAL_POS_RESULT;
+        break;
+    case CHECK_INITIAL_POS_RESULT:
+        if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+        {
+            m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                this->OnTasksDone(true);
+            }
+            else
+            {
+                this->OnTasksDone(false);
+            }
+        }
+    }
+}
+
 void CSchedulerStateMachine::HandleRcPressureWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
     if( "Scheduler::ALPressure" == cmdName)
@@ -743,50 +803,41 @@ void CSchedulerStateMachine::HandleRcFillingWorkFlow(const QString& cmdName, Dev
     {
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
-            emit OnTasksDone(false);
+            OnTasksDone(false);
         }
         else
         {
-            emit OnTasksDone(true);
+            OnTasksDone(true);
         }
     }
 }
 
-void CSchedulerStateMachine::HandleRcDrainingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
+void CSchedulerStateMachine::HandleDrainingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
     if( "Scheduler::ALDraining" == cmdName)
     {
         if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
-            emit OnTasksDone(false);
+            OnTasksDone(false);
         }
         else
         {
-            emit OnTasksDone(true);
+            OnTasksDone(true);
         }
     }
 }
 
-void CSchedulerStateMachine::HandleRsRVGetOriginalPositionAgainWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+void CSchedulerStateMachine::HandleRcBottleCheckIWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
-    switch (m_RVGetOriginalPosition)
+    if ( "Scheduler::IDBottleCheck" == cmdName)
     {
-    case MOVE_TO_INITIAL_POS:
-        mp_SchedulerThreadController->GetSchedCommandProcessor()->pushCmd(new CmdRVReqMoveToInitialPosition(500, mp_SchedulerThreadController));
-        m_RVGetOriginalPosition = CHECK_INITIAL_POS_RESULT;
-        break;
-    case CHECK_INITIAL_POS_RESULT:
-        if ("Scheduler::RVReqMoveToInitialPosition" == cmdName)
+        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
-            m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
-            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
-            {
-                this->OnTasksDone(true);
-            }
-            else
-            {
-                this->OnTasksDone(false);
-            }
+            OnTasksDone(false);
+        }
+        else
+        {
+            OnTasksDone(true);
         }
     }
 }

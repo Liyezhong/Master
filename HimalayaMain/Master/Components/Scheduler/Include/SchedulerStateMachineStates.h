@@ -36,7 +36,8 @@ namespace Scheduler{
 #define L2_ERR_RC_VACUUM                            (0x10)
 #define L2_ERR_RC_FILLING                           (0x11)
 #define L2_ERR_RC_DRAINING                          (0x12)
-
+#define L2_ERR_RC_DRAINATONCE                       (0x13)
+#define L2_ERR_RC_BOTTLECHECK_I                     (0x14)
 
 typedef enum
 {
@@ -77,7 +78,9 @@ typedef enum
     SM_ERR_RC_PRESSURE = ((L2_ERR_RC_PRESSURE << 8) | L1_ERROR) ,
     SM_ERR_RC_VACUUM = ((L2_ERR_RC_VACUUM << 8) | L1_ERROR),
     SM_ERR_RC_FILLING = ((L2_ERR_RC_FILLING << 8) | L1_ERROR),
-    SM_ERR_RC_DRAINING = ((L2_ERR_RC_DRAINING << 8) | L1_ERROR)
+    SM_ERR_RC_DRAINING = ((L2_ERR_RC_DRAINING << 8) | L1_ERROR),
+    SM_ERR_RS_DRAINATONCE = ((L2_ERR_RC_DRAINATONCE << 8) | L1_ERROR),
+    SM_ERR_RS_BOTTLECHECK_I = ((L2_ERR_RC_BOTTLECHECK_I << 8) | L1_ERROR)
 } SchedulerStateMachine_t;
 }
 #endif // SCHEDULERSTATEMACHINESTATES_H

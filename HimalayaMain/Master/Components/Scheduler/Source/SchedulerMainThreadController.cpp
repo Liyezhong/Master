@@ -1217,6 +1217,16 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to RC_Draining");
             m_SchedulerMachine->EnterRcDraining();
         }
+        else if(CTRL_CMD_RS_DRAINATONCE == ctrlCmd)
+        {
+            LogDebug("Go to RS_DrainAtOnce");
+            m_SchedulerMachine->EnterRsDrainAtOnce();
+        }
+        else if(CTRL_CMD_RC_BOTTLECHECK_I == ctrlCmd)
+        {
+            LogDebug("Go to RC_BottleCheck_I");
+            m_SchedulerMachine->EnterRcBottleCheckI();
+        }
         else
         {
             LogDebug(QString("Unknown Command: %1").arg(ctrlCmd, 0, 16));
@@ -1224,50 +1234,68 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     }
     else if (SM_ERR_RS_STANDBY == currentState)
     {
-        LogDebug(QString("In RS_STandBy state"));
+        LogDebug("In RS_STandBy state");
         m_SchedulerMachine->HandleRsStandByWorkFlow(cmdName, retCode);
     }
     else if (SM_ERR_RS_HEATINGERR30SRETRY == currentState)
     {
-        LogDebug(QString("In RS_HeatingErr_30SRetry state"));
+        LogDebug("In RS_HeatingErr_30SRetry state");
         m_SchedulerMachine->HandleRsHeatingErr30SRetry();
     }
     else if(SM_ERR_RS_TSENSORERR_3MINRETRY == currentState)
     {
-        LogDebug(QString("In Rs_TSensorErr_3MinRetry State"));
+        LogDebug("In Rs_TSensorErr_3MinRetry State");
         m_SchedulerMachine->HandleRsTSensorErr3MinRetry(cmdName, retCode);
     }
     else if (SM_ERR_RS_STANDBY_WITH_TISSUE == currentState)
     {
-        LogDebug(QString("In RS_STandBy_WithTissue state"));
+        LogDebug("In RS_STandBy_WithTissue state");
         m_SchedulerMachine->HandleRsStandByWithTissueWorkFlow(cmdName, retCode);
     }
     else if (SM_ERR_RC_LEVELSENSOR_HEATING_OVERTIME == currentState)
     {
-        LogDebug(QString("In RC_Levelsensor_Heating_Overtime State"));
+        LogDebug("In RC_Levelsensor_Heating_Overtime State");
         m_SchedulerMachine->HandleRcLevelSensorHeatingOvertimeWorkFlow();
 
     }
     else if(SM_ERR_RS_RV_GETORIGINALPOSITIONAGAIN == currentState)
     {
-        LogDebug(QString("In RS_RV_GET_ORIGINAL_POSITION_AGAIN state"));
+        LogDebug("In RS_RV_GET_ORIGINAL_POSITION_AGAIN state");
         m_SchedulerMachine->HandleRsRVGetOriginalPositionAgainWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RC_PRESSURE == currentState)
     {
+        LogDebug("In RC_Pressure state");
          m_SchedulerMachine->HandleRcPressureWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RC_VACUUM == currentState)
     {
+        LogDebug("In RC_Vacuum state");
          m_SchedulerMachine->HandleRcVacuumWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RC_FILLING == currentState)
     {
+        LogDebug("In RC_Filling state");
          m_SchedulerMachine->HandleRcFillingWorkFlow(cmdName, retCode);
     }
     else if(SM_ERR_RC_DRAINING == currentState)
     {
-         m_SchedulerMachine->HandleRcDrainingWorkFlow(cmdName, retCode);
+        LogDebug("In RC_Draining state");
+         m_SchedulerMachine->HandleDrainingWorkFlow(cmdName, retCode);
+    }
+    else if(SM_ERR_RS_DRAINATONCE == currentState)
+    {
+        LogDebug("In RS_DrainAtOnce state");
+        m_SchedulerMachine->HandleDrainingWorkFlow(cmdName, retCode);
+    }
+    else if(SM_ERR_RS_BOTTLECHECK_I == currentState)
+    {
+        LogDebug("In RC_BottleCheck_I state");
+        m_SchedulerMachine->HandleRcBottleCheckIWorkFlow(cmdName, retCode);
+    }
+    else
+    {
+        LogDebug(QString("In ERROR state unknown currentState: %1").arg(currentState));
     }
 }
 
@@ -1361,6 +1389,14 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (cmd == "rc_draining")
         {
             return CTRL_CMD_RC_DRAINING;
+        }
+        if (cmd == "rs_drainatonce")
+        {
+            return CTRL_CMD_RS_DRAINATONCE;
+        }
+        if (cmd == "rc_bottlecheck_i")
+        {
+            return CTRL_CMD_RC_BOTTLECHECK_I;
         }
     }
     return CTRL_CMD_UNKNOWN;
@@ -1944,6 +1980,9 @@ void SchedulerMainThreadController::OnProgramSelected(Global::tRefType Ref, cons
         whichStep = WhichStepHasNoSafeReagent(curProgramID);
     }
 
+    m_CurrentBottlePosition.ReagentGrpId = "";
+    m_CurrentBottlePosition.RvPos = RV_UNDEF;
+
     //send back the proposed program end time
     MsgClasses::CmdProgramSelectedReply* commandPtr(new MsgClasses::CmdProgramSelectedReply(5000, timeProposed,
                                                                                 paraffinMeltCostedtime,
@@ -2428,12 +2467,31 @@ bool SchedulerMainThreadController::BottleCheck()
     RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
     QString reagentGrpId = stationInfo.ReagentGroupID;
 
+    m_CurrentBottlePosition.ReagentGrpId = reagentGrpId;
+    m_CurrentBottlePosition.RvPos = tubePos;
+
     LogDebug(QString("Bottle check for tube %1").arg(tubePos));
     CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, this);
     cmd->SetReagentGrpID(reagentGrpId);
     cmd->SetTubePos(tubePos);
     m_SchedulerCommandProcessor->pushCmd(cmd);
     return true;
+}
+
+void SchedulerMainThreadController::RcBottleCheckI()
+{
+    if(m_CurrentBottlePosition.RvPos != RV_UNDEF && !m_CurrentBottlePosition.ReagentGrpId.isEmpty())
+    {
+        LogDebug(QString("BottleCheckI check for tube %1").arg(m_CurrentBottlePosition.RvPos));
+        CmdIDBottleCheck* cmd  = new CmdIDBottleCheck(500, this);
+        cmd->SetReagentGrpID(m_CurrentBottlePosition.ReagentGrpId);
+        cmd->SetTubePos(m_CurrentBottlePosition.RvPos);
+        m_SchedulerCommandProcessor->pushCmd(cmd);
+    }
+    else
+    {
+        LogDebug(QString("BottleCheckI RvPosition:%1, ReagentGrpId is empty").arg(m_CurrentBottlePosition.RvPos));
+    }
 }
 
 void SchedulerMainThreadController::MoveRVToInit()
@@ -2758,6 +2816,21 @@ void SchedulerMainThreadController::OnStopFill()
 {
     // acknowledge to gui
     MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , false, true));
+    Q_ASSERT(commandPtr);
+    Global::tRefType Ref = GetNewCommandRef();
+    SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
+}
+
+void SchedulerMainThreadController::RCDrain()
+{
+    LogDebug("Send cmd to DCL to RcDrain");
+    CmdALDraining* cmd  = new CmdALDraining(500, this);
+    cmd->SetDelayTime(2000);
+    cmd->SetDrainPressure(40);
+    m_SchedulerCommandProcessor->pushCmd(cmd);
+
+    LogDebug("Notice GUI Draining started");
+    MsgClasses::CmdStationSuckDrain* commandPtr(new MsgClasses::CmdStationSuckDrain(5000,m_CurProgramStepInfo.stationID , true, false));
     Q_ASSERT(commandPtr);
     Global::tRefType Ref = GetNewCommandRef();
     SendCommand(Ref, Global::CommandShPtr_t(commandPtr));

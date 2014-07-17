@@ -89,10 +89,12 @@ private:
     QSharedPointer<QState> mp_ErrorRsHeatingErr30SRetryState;                           ///<  Error State's sub state: handle Rs_HeatingErr30S_Retry related logic
     QSharedPointer<QState> mp_ErrorRsTSensorErr3MinRetryState;                          ///<  Error State's sub state: handle Rs_TSensorErr3Min_Retry related logic
     QSharedPointer<QState> mp_ErrorRsRVGetOriginalPositionAgainState;                   ///<  Error State's sub state: handle Rs_RV_GetOriginalPositionAgain related logic
-    QSharedPointer<QState> mp_RcPressure;                                               ///<  State machine for RC_Pressure;
-    QSharedPointer<QState> mp_RcVacuum;                                                 ///<  State machine for RC_Vacuum;
-    QSharedPointer<QState> mp_RcFilling;                                                ///<  State machine for RC_Filling;
-    QSharedPointer<QState> mp_RcDraining;                                               ///<  State machine for RC_Draining;
+    QSharedPointer<QState> mp_RcPressure;                                               ///<  Error State's sub state: for RC_Pressure;
+    QSharedPointer<QState> mp_RcVacuum;                                                 ///<  Error State's sub state: for RC_Vacuum;
+    QSharedPointer<QState> mp_RcFilling;                                                ///<  Error State's sub state: for RC_Filling;
+    QSharedPointer<QState> mp_RcDraining;                                               ///<  Error State's sub state: for RC_Draining;
+    QSharedPointer<QState> mp_RsDrainAtOnce;                                            ///<  Error State's sub state: for RS_DrainAtOnce
+    QSharedPointer<QState> mp_RcBottleCheckI;                                           ///<  Error State's sub state: for RC_BottleCheck_I
 
     //State machines for Run handling
     QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
@@ -599,6 +601,24 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function EnterRsDrainAtOnce
+     *
+     *  \return from EnterRsDrainAtOnce
+     */
+    /****************************************************************************/
+    void EnterRsDrainAtOnce();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function EnterRcBottleCheckI
+     *
+     *  \return from EnterRcBottleCheckI
+     */
+    /****************************************************************************/
+    void EnterRcBottleCheckI();
+
+    /****************************************************************************/
+    /*!
      *  \brief Handle the whole work flow for Program Pre-Test
      *
      *  \param cmdName - command name
@@ -723,7 +743,19 @@ public:
      *  \return void
      */
     /****************************************************************************/
-    void HandleRcDrainingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+    void HandleDrainingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for HandleRcBottleCheckIWorkFlow
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRcBottleCheckIWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -1368,31 +1400,45 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal sigEnterRcPressure
+     *  \brief  Definition/Declaration of signal SigRcPressure
      */
     /****************************************************************************/
-    void SigEnterRcPressure();
+    void SigRcPressure();
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal sigEnterRcVacuum
+     *  \brief  Definition/Declaration of signal SigRcVacuum
      */
     /****************************************************************************/
-    void SigEnterRcVacuum();
+    void SigRcVacuum();
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal sigEnterRcFilling
+     *  \brief  Definition/Declaration of signal SigRcFilling
      */
     /****************************************************************************/
-    void SigEnterRcFilling();
+    void SigRcFilling();
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of signal sigEnterRcDraining
+     *  \brief  Definition/Declaration of signal SigRcDraining
      */
     /****************************************************************************/
-    void SigEnterRcDraining();
+    void SigRcDraining();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigRsDrainAtOnce
+     */
+    /****************************************************************************/
+    void SigRsDrainAtOnce();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigRcBottleCheckI
+     */
+    /****************************************************************************/
+    void SigRcBottleCheckI();
 
     /****************************************************************************/
     /*!

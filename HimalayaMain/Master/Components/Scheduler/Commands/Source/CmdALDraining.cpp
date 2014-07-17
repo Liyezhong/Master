@@ -28,7 +28,7 @@ namespace Scheduler{
 QString CmdALDraining::NAME = "Scheduler::ALDraining";
 
 CmdALDraining::CmdALDraining(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+    CmdSchedulerCommandBase(Timeout, controller),m_TargetPressure(30)
 {
 }
 

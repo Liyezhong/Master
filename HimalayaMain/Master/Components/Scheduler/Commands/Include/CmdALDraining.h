@@ -116,6 +116,25 @@ public:
 	/****************************************************************************/
     QString GetStrResult()const{ return QString("%1").arg((qint32)m_result);}
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function GetDelayTime
+     *
+     *  \return from GetDrainPressure
+     */
+    /****************************************************************************/
+    quint32 GetDrainPressure(){return m_TargetPressure;}
+    /***************************l*************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SetDelayTime
+     *
+     *  \param DelayTime = quint32 type parameter
+     *
+     *  \return from SetDrainPressure
+     */
+    /****************************************************************************/
+    void SetDrainPressure(qint32 tartgetPressure){m_TargetPressure = tartgetPressure;}
+
 private:
     CmdALDraining();                                                    ///< Not implemented.
     CmdALDraining(const CmdALDraining &);                     ///< Not implemented.
@@ -124,6 +143,7 @@ private:
 
 	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
 	mutable quint32 m_DelayTime;       ///<  Definition/Declaration of variable m_DelayTime
+    mutable qint32  m_TargetPressure;           ///< Defiinition/Declaration of variable m_TargetPressure
 	
 };
 

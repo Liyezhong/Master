@@ -99,6 +99,8 @@ typedef enum
     CTRL_CMD_RC_VACUUM,
     CTRL_CMD_RC_FILLING,
     CTRL_CMD_RC_DRAINING,
+    CTRL_CMD_RS_DRAINATONCE,
+    CTRL_CMD_RC_BOTTLECHECK_I,
     CTRL_CMD_NONE,
     CTRL_CMD_UNKNOWN
 }ControlCommandType_t;
@@ -139,6 +141,17 @@ typedef struct
     int UsedTimes;       ///<  Definition/Declaration of variable UsedTimes
 
 }StationUseRecord_t;
+
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of struct ProgramStepInfor
+ */
+/****************************************************************************/
+typedef struct
+{
+    QString         ReagentGrpId;
+    RVPosition_t    RvPos;
+}BottlePosition_t;
 
 /****************************************************************************/
 /*!
@@ -232,6 +245,7 @@ typedef enum
         bool m_IsPrecheckMoveRV;                            ///< precheck done move rv
         bool m_IsCleaningRun;                                 ///< cleaning program run or not
         QMap<QString, QString> m_ProgramStatusFileMap;        ///< the map of program status
+        BottlePosition_t    m_CurrentBottlePosition;          ///< the current BottlePosition for bottle check
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -1096,6 +1110,20 @@ protected:
          */
         /****************************************************************************/
         void Vaccum();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot RC_Drain
+         */
+        /****************************************************************************/
+        void RCDrain();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot RcBottleCheckI
+         */
+        /****************************************************************************/
+        void RcBottleCheckI();
 
     };
 

@@ -1365,7 +1365,7 @@ bool HeatingStrategy::isEffectiveTemp(qreal HWTemp)
     return true;
 }
 
-bool HeatingStrategy::CheckSensorTempOverRange(const QString& HeatingName, const qreal& temperature)
+bool HeatingStrategy::CheckSensorTempOverRange(const QString& HeatingName, qreal temperature)
 {
     if ("LevelSensor" == HeatingName)
     {
