@@ -2327,6 +2327,10 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     {
         if(((m_OvenLidStatus == 0) || (m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 1))
         {
+            if (m_CurrentScenario >= 211 && m_CurrentScenario <= 217 && m_CurrentScenario != 0)
+            {
+                LogDebug(QString("The oven is open,EventID:%1, Scenario:%2").arg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN).arg(m_CurrentScenario));
+            }
             //oven is open
             MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, false));
             Q_ASSERT(commandPtr);
@@ -2356,6 +2360,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
             {
                 RaiseError(0, retCode, Scenario, true);
+                m_SchedulerMachine->SendErrorSignal();
             }
             SchedulerStateMachine_t currentState = m_SchedulerMachine->GetCurrentState();
             if(((currentState & 0xF) == SM_BUSY)&&(currentState != PSSM_PAUSE)&&(currentState != PSSM_PAUSE_DRAIN))
@@ -2669,6 +2674,7 @@ bool SchedulerMainThreadController::ShutdownFailedHeaters()
         {
             return true;
         }
+        break;
     case OVEN:
         if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("OvenTop") &&
                 DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StopTemperatureControl("OvenBottom"))
