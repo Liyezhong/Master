@@ -73,7 +73,7 @@ void CCalibrationHanlder::OnPressureSensorCalibration()
     MsgDlg->SetTitle(QApplication::translate("Core::CCalibrationHanlder",
                                              "Pressure sensor calibration",
                                              0, QApplication::UnicodeUTF8));
-    MsgDlg->setModal(false);
+    MsgDlg->setModal(true);
 
     mp_PressureSensor->SetButtonStatus(false);
 

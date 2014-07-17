@@ -217,6 +217,9 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
         qDebug() << "CStartup: cannot connect 'ReturnManufacturingMsgtoMain' signal";
     }
 
+    // Shut down
+
+
     //mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
 
    /* mp_DataManager = new DataManager::CDataManager(this);

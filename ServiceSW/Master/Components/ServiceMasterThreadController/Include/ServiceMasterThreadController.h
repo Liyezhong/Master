@@ -474,6 +474,9 @@ private slots:
     /****************************************************************************/
     void sendManufacturingTestCommand(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortTestCaseId=Service::TEST_CASE_ID_UNUSED);
 
+
+    void ShutdownSystem();
+
 protected:
 
     /****************************************************************************/
