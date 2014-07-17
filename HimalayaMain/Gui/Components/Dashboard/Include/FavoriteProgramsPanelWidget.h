@@ -5,6 +5,7 @@
 #include <QButtonGroup>
 #include <QMap>
 #include <QDateTime>
+#include "Dashboard/Include/ProgramLabel.h"
 
 #include "HimalayaDataContainer/Containers/Programs/Include/Program.h"
 
@@ -134,11 +135,19 @@ namespace Dashboard {
          */
         /****************************************************************************/
         void SetButtonGroup();
-        QMap<int, QLabel*> m_mapLabel;///< (label Id <--> QLabel)
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function UpdateProgLabel
+         *
+         */
+        /****************************************************************************/
+        void UpdateProgLabel(void);
+
+        QMap<int, CProgramLabel*> m_mapLabel;///< (label Id <--> QLabel)
         Ui::CFavoriteProgramsPanelWidget *ui;       ///<  Definition/Declaration of variable ui
         QButtonGroup m_ButtonGroup;       ///<  Definition/Declaration of variable m_ButtonGroup
         Core::CDataConnector *mp_DataConnector;                     //!< Global data container
-	int m_LastCanBeSelectedButtonId;
+        int m_LastCanBeSelectedButtonId;
         QDateTime m_lastSetAsapDatetime;
         DataManager::CDataProgramList* mp_ProgramList;       ///<  Definition/Declaration of variable mp_ProgramList
         bool m_ProcessRunning;       ///<  Definition/Declaration of variable m_ProcessRunning

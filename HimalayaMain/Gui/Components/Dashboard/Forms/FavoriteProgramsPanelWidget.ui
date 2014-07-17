@@ -43,7 +43,7 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QLabel" name="lblPrg1">
+    <widget class="Dashboard::CProgramLabel" name="lblPrg1">
      <property name="text">
       <string>Program1</string>
      </property>
@@ -91,7 +91,7 @@
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QLabel" name="lblPrg2">
+    <widget class="Dashboard::CProgramLabel" name="lblPrg2">
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -133,7 +133,7 @@
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QLabel" name="lblPrg3">
+    <widget class="Dashboard::CProgramLabel" name="lblPrg3">
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -175,7 +175,7 @@
     </widget>
    </item>
    <item row="6" column="1">
-    <widget class="QLabel" name="lblPrg4">
+    <widget class="Dashboard::CProgramLabel" name="lblPrg4">
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -220,7 +220,7 @@
     </widget>
    </item>
    <item row="8" column="1">
-    <widget class="QLabel" name="lblPrg5">
+    <widget class="Dashboard::CProgramLabel" name="lblPrg5">
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -244,6 +244,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Dashboard::CProgramLabel</class>
+   <extends>QLabel</extends>
+   <header>Dashboard/Include/ProgramLabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

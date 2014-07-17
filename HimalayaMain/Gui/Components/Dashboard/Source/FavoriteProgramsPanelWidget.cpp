@@ -65,6 +65,17 @@ void CFavoriteProgramsPanelWidget ::SetButtonGroup()
     m_mapLabel.insert(4, ui->lblPrg5);
 }
 
+void CFavoriteProgramsPanelWidget::UpdateProgLabel()
+{
+    for (int i = 0; i < m_mapLabel.count(); ++ i) {
+        CProgramLabel* label = m_mapLabel.value(i);
+        label->setHighlight(false);
+    }
+
+    CProgramLabel* label = m_mapLabel.value(m_LastSelectedButtonId);
+    label->setText(SELECTED_PROGRAM_NAME, true);
+}
+
 void CFavoriteProgramsPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector)
 {
     mp_wdgtDateTime->SetMainWindow(p_MainWindow);
@@ -84,7 +95,7 @@ void CFavoriteProgramsPanelWidget::UpdateProgram(DataManager::CProgram &Program)
             const QString name = Program.GetName();
             DataManager::CProgram *prog = const_cast<DataManager::CProgram *>(mp_ProgramList->GetProgram(ProgramId));
             prog->SetName(name);
-            QLabel* label = m_mapLabel.value(j);
+            CProgramLabel* label = m_mapLabel.value(j);
             label->setText(name);
         }
 
@@ -130,7 +141,7 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
             btn->setEnabled(false);
             btn->setIcon(QIcon(""));
 
-            QLabel* label = m_mapLabel.value(i);
+            CProgramLabel* label = m_mapLabel.value(i);
             label->setText("");
         }
     }
@@ -167,7 +178,7 @@ void CFavoriteProgramsPanelWidget::AddItemsToFavoritePanel(bool bOnlyAddCleaning
         //enable this button and use it
         m_ButtonGroup.button(j)->setEnabled(true);
         m_ButtonGroup.button(j)->setIcon(QIcon(strIconName));
-        QLabel* label = m_mapLabel.value(j);
+        CProgramLabel* label = m_mapLabel.value(j);
         label->setText(ProgramName);
     }
 }
@@ -206,10 +217,11 @@ void CFavoriteProgramsPanelWidget::OnEndTimeButtonClicked()
         mp_wdgtDateTime->show();
     }
     else
-    {//on selected a program
+    {   //on selected a program
         m_LastSelectedButtonId = m_ButtonGroup.checkedId();
         m_NewSelectedProgramId = m_FavProgramIDs.at(m_LastSelectedButtonId);
         SELECTED_PROGRAM_NAME = mp_ProgramList->GetProgram(m_NewSelectedProgramId)->GetName();
+        UpdateProgLabel();
 
         emit PrepareSelectedProgramChecking(m_NewSelectedProgramId);
     }
