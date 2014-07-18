@@ -32,6 +32,7 @@ class CReagentCommandInterface;
 class CStationCommandInterface;
 class CReagentGroupCommandInterface;
 class CUserSettingsCommandInterface;
+class CModuleCommandInterface;
 
 /****************************************************************************/
 /*!
@@ -47,6 +48,7 @@ private:
     CStationCommandInterface *mp_StationCommandInterface; //!< handles commands related to  Station container
     CReagentCommandInterface *mp_ReagentCommandInterface; //!< handles commands related to reagent container
     CReagentGroupCommandInterface *mp_ReagentGroupCommandInterface;       ///<  Definition/Declaration of variable mp_ReagentGroupCommandInterface
+    CModuleCommandInterface *mp_ModuleCommandInterface;
 protected:
     /****************************************************************************/
     /*!

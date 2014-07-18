@@ -145,10 +145,11 @@ void SchedulerCommandProcessor<DP>::run4Slot()
                       this, ThrowError(quint32, quint16, quint16, quint16, const QDateTime &));
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportDestroyFinished(), this, DeviceProcessDestroyed());
     CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportLevelSensorStatus1(), this, ReportLevelSensorStatus1());
-
+    CONNECTSIGNALSIGNAL(mp_IDeviceProcessing, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&),
+                     this, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&));
     CONNECTSIGNALSLOT(this, NewCmdAdded(), this, OnNewCmdAdded());
     CONNECTSIGNALSLOT(this, SigShutDownDevice(), this, OnShutDownDevice());
-
+    CONNECTSIGNALSLOT(this, SigNotifySavedServiceInfor(const QString&), this, OnNotifySavedServiceInfor(const QString&));
 }
 
 template <class DP>
@@ -541,14 +542,12 @@ void SchedulerCommandProcessor<DP>::ShutDownDevice()
     emit SigShutDownDevice();
 }
 
-/****************************************************************************/
-/**
- * \brief Command of type CmdDeviceProcessingCleanup received.
- *
- * \iparam       Ref                 Reference of command.
- * \iparam       Cmd                 Command.
- */
-/****************************************************************************/
+template <class DP>
+void SchedulerCommandProcessor<DP>::NotifySavedServiceInfor(const QString& deviceType)
+{
+    emit SigNotifySavedServiceInfor(deviceType);
+}
+
 template <class DP>
 void SchedulerCommandProcessor<DP>::OnShutDownDevice4Slot()
 {
@@ -575,6 +574,11 @@ void SchedulerCommandProcessor<DP>::OnShutDownDevice4Slot()
     }
 }
 
+template <class DP>
+void SchedulerCommandProcessor<DP>::OnNotifySavedServiceInfor4Slot(const QString& deviceType)
+{
+    mp_IDeviceProcessing->NotifySavedServiceInfor(deviceType);
+}
 
 }// end of namespace Scheduler
 

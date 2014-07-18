@@ -865,6 +865,9 @@
 		<Event Code="" ErrorID="17236012" ErrorType="Info" AlarmType="No" Name="EVENT_DM_STATION_INVALID_STATION_TYPE">
 			<Step ID="0" Type="MSG" StringID="17236012" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar="No"/>
 		</Event>
+		<Event Code="" ErrorID="17236013" ErrorType="Info" AlarmType="No" Name="EVENT_DM_MODULE_CONF_READ_FAILED">
+			<Step ID="0" Type="MSG" StringID="17236013" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar="No"/>
+		</Event>
 		<Event Code="" ErrorID="17236002" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_INVALID_ZONE">
 			<Step ID="0" Type="MSG" StringID="17236002" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>

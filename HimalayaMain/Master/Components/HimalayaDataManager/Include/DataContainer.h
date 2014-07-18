@@ -36,6 +36,8 @@ namespace Himalaya {
     class HimalayaMasterThreadController;
 }
 namespace DataManager {
+class CInstrumentHistory;
+
 //!<  List containing macro steps and normal program steps
 typedef QList<CProgramStep*> ListOfExpandedSteps_t;
 
@@ -164,6 +166,7 @@ public:
     CDataReagentList* ReagentList;  //!< Container for reagents
     CReagentGroupColorList* ReagentGroupColorList; //!<//!< Container for reagentGroupColor
     CProgramSettings* ProgramSettings;         ///<! container for ProgramSettings
+    CInstrumentHistory *InstrumentHistory;                //!< Container for Instrument History
     IVerifierInterface* SpecialVerifierGroupA; //!< Special verifier for group A
     IVerifierInterface* SpecialVerifierGroupB; //!< Special verifier for group B
     IVerifierInterface* SpecialVerifierGroupC; //!< Special verifier for group C

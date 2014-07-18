@@ -2003,7 +2003,7 @@ void WrapperFmPressureControl::WritePressureDrift(float PressureDrift)
 
 void WrapperFmPressureControl::GetValveOperationTime(quint8 ValveIndex)
 {
-    quint32 value = m_pPressureControl->GetValveOperationTime(ValveIndex);
+    quint32 value = m_pPressureControl->GetValveLifeCycle(ValveIndex);
     Log(tr("The Valve %1's operation time is: %2").arg(ValveIndex).arg(value));
 }
 

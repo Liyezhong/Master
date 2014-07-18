@@ -58,6 +58,8 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAcknowledge.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdLockStatus.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Commands/Include/CmdQuitAppShutdown.h"
+#include "Scheduler/Commands/Include/CmdSavedServiceInfor.h"
+#include "DataManager/Containers/InstrumentHistory/Commands/Include/CmdModuleListUpdate.h"
 #include "NetCommands/Include/CmdSystemAction.h"
 #include "float.h"
 #include "Global/Include/EventObject.h"
@@ -226,6 +228,9 @@ void SchedulerMainThreadController::RegisterCommands()
     RegisterCommandForProcessing<MsgClasses::CmdQuitAppShutdown,
                     SchedulerMainThreadController>(&SchedulerMainThreadController::OnQuitAppShutdown, this);
 
+    RegisterCommandForProcessing<MsgClasses::CmdSavedServiceInfor,
+                    SchedulerMainThreadController>(&SchedulerMainThreadController::OnSavedServiceInfor, this);
+
 }
 
 void SchedulerMainThreadController::CreateAndInitializeObjects()
@@ -244,7 +249,8 @@ void SchedulerMainThreadController::CreateAndInitializeObjects()
 
     CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, DeviceProcessDestroyed(),
                       this, DevProcDestroyed())
-
+    CONNECTSIGNALSLOT(m_SchedulerCommandProcessor, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&),
+                     this, ReportGetServiceInfo(ReturnCode_t, const DataManager::CModule&, const QString&));
     m_TickTimer.setInterval(500);
 
     //Set SchedulerCommand Processor for State machine
@@ -292,6 +298,12 @@ void SchedulerMainThreadController::DevProcDestroyed()
     if (Global::RefManager<Global::tRefType>::INVALID != m_RefCleanup) {
           SendAcknowledgeOK(m_RefCleanup);
       }
+}
+
+void SchedulerMainThreadController::ReportGetServiceInfo(ReturnCode_t ReturnCode, const DataManager::CModule &ModuleInfo, const QString& DeviceType)
+{
+    //send command
+    SendCommand(GetNewCommandRef(), Global::CommandShPtr_t(new MsgClasses::CmdModuleListUpdate(3000, ModuleInfo, DeviceType, false)));
 }
 
 void SchedulerMainThreadController::CleanupAndDestroyObjects()
@@ -2083,6 +2095,12 @@ void SchedulerMainThreadController::OnQuitAppShutdown(Global::tRefType Ref, cons
     m_SchedulerCmdQueue.enqueue(Global::CommandShPtr_t(new MsgClasses::CmdQuitAppShutdown(Cmd.GetTimeout(), Cmd.QuitAppShutdownActionType())));
     m_Mutex.unlock();
     m_RefCleanup = Ref;
+}
+
+void SchedulerMainThreadController::OnSavedServiceInfor(Global::tRefType Ref, const MsgClasses::CmdSavedServiceInfor & Cmd)
+{
+    this->SendAcknowledgeOK(Ref);
+    m_SchedulerCommandProcessor->NotifySavedServiceInfor(Cmd.DeviceType());
 }
 
 bool SchedulerMainThreadController::IsCleaningReagent(const QString& ReagentID)

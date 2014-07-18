@@ -82,7 +82,7 @@ void CModuleCommandInterface::ModuleUpdateHandler(Global::tRefType Ref, const Ms
 
         // Function to be added to rearrange the module list
         RearrangeModuleListInfo(mp_InstrumentHistory);
-        mp_InstrumentHistory->Write("FilePath");
+        //mp_InstrumentHistory->Write("FilePath");
         delete mp_InstrumentHistory;
     }
 }

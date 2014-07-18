@@ -44,6 +44,7 @@ namespace MsgClasses
     class CmdKeepCassetteCount;
     class CmdProgramSelected;
     class CmdQuitAppShutdown;
+    class CmdSavedServiceInfor;
 }
 
 namespace DataManager
@@ -730,7 +731,10 @@ private slots:
           */
          /****************************************************************************/
          void ReleasePressure();
+
          void DevProcDestroyed();
+
+         void ReportGetServiceInfo(ReturnCode_t ReturnCode, const DataManager::CModule &ModuleInfo, const QString& deviceName);
 protected:
 
         /****************************************************************************/
@@ -807,6 +811,17 @@ protected:
          */
         /****************************************************************************/
         void OnQuitAppShutdown(Global::tRefType Ref, const MsgClasses::CmdQuitAppShutdown& Cmd);
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of function OnSavedServiceInfor
+         *
+         *  \param Ref = Global::tRefType type parameter
+         *  \param Cmd =  MsgClasses::CmdSavedServiceInfor type parameter
+         *
+         *  \return from OnSavedServiceInfor
+         */
+        /****************************************************************************/
+        void OnSavedServiceInfor(Global::tRefType Ref, const MsgClasses::CmdSavedServiceInfor & Cmd);
     public:
         /****************************************************************************/
         /**

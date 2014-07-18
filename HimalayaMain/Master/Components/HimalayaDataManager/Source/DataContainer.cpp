@@ -35,7 +35,7 @@
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupC.h"
 #include "HimalayaDataContainer/SpecialVerifiers/Include/SpecialVerifierGroupD.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaSettingsVerifier.h"
-
+#include "DataManager/Containers/InstrumentHistory/Include/InstrumentHistory.h"
 
 namespace DataManager {
 
@@ -47,6 +47,7 @@ CDataContainer::CDataContainer(Threads::MasterThreadController *p_MasterThreadCo
     ReagentList(NULL),
     ReagentGroupColorList(NULL),
     ProgramSettings(NULL),
+    InstrumentHistory(NULL),
     SpecialVerifierGroupA(NULL),
     SpecialVerifierGroupB(NULL),
     SpecialVerifierGroupC(NULL),
@@ -114,7 +115,7 @@ bool CDataContainer::InitializeContainers()
         return false;
     }
 
-
+    InstrumentHistory = new CInstrumentHistory();
 
       // create special verifier for reagents and programs
 //    IVerifierInterface *p_SpecialVerifier = new CSpecialVerifierGroupA(ProgramList, ReagentList, StationList);
@@ -165,6 +166,7 @@ bool CDataContainer::DeinitializeContainers()
     delete ReagentList;
     delete ReagentGroupList;
     delete ReagentGroupColorList;
+    delete InstrumentHistory;
     delete SpecialVerifierGroupA;
     delete SpecialVerifierGroupB;
     delete SpecialVerifierGroupC;

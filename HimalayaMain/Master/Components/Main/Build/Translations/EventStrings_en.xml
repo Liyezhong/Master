@@ -721,6 +721,7 @@
 		<string id="19202053" text1="Invalid Station Id&apos;s received in CmdDrawerUpdate for unloader racks." text2=""/>
 		<string id="17236003" text1="Station Matrix Station %1 type is invalid." text2=""/>
 		<string id="17236012" text1="Verifying StationGrid.xml failed." text2=""/>
+		<string id="17236013" text1="Reading InstrumentHistory.xml failed." text2="Internal Software Error. Please contact your Leica Service Organization."/>
 		<string id="17236002" text1="Station Matrix Station %1 zone is invalid." text2=""/>
 		<string id="17236000" text1="Station Matrix Number of rows %1 does not match with maximum limit." text2=""/>
 		<string id="17236010" text1="Reading Stations.xml failed." text2=""/>
@@ -1028,6 +1029,7 @@
 		<string id="33817860" text1="" text2=""/>
 		<string id="33817859" text1="" text2=""/>
 		<string id="33816577" text1="%1&amp;apos; is not a valid Program ID." text2=""/>
+		<string id="33816578" text1="Error in retrieving service information for device %1" text2=""/>
 		<string id="33816608" text1="Step ID %2 in Program %1 is invalid" text2=""/>
 		<string id="33817862" text1="" text2=""/>
 		<string id="33816626" text1="Internal Software Error. Adding rogram failed. Please contact service." text2=""/>

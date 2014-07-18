@@ -1,0 +1,45 @@
+<DeviceLifeCycles Version="0">
+    <DeviceList>
+        <Device Key="LA">
+            <Functionmodules>
+                <Functionmodule Key="AL_level_sensor_temp_ctrl">
+                    <Parameter Key="level_sensor_LifeCycle" Value="0"/>
+                </Functionmodule>
+                <Functionmodule Key="AL_pressure_ctrl">
+                    <Parameter Key="Valve1_LifeCycle" Value="888"/>
+                    <Parameter Key="Valve2_LifeCycle" Value="0"/>
+                </Functionmodule>
+            </Functionmodules>
+        </Device>
+        <Device Key="OtherDevice">
+            <Functionmodules>
+                <Functionmodule Key="EBox">
+                    <Parameter Key="EBox_LifeTime" Value="456"/>
+                </Functionmodule>
+                <Functionmodule Key="PressureSensor">
+                    <Parameter Key="Pressure_Sensor_LifeTime" Value="456"/>
+                </Functionmodule>
+                <Functionmodule Key="TouchScreen">
+                    <Parameter Key="Touch_Screen_LifeTime" Value="456"/>
+                </Functionmodule>
+                <Functionmodule Key="VentilationFan">
+                    <Parameter Key="Ventilation_Fan_LifeTime" Value="456"/>
+                </Functionmodule>
+            </Functionmodules>
+        </Device>
+        <Device Key="OvenDevice">
+            <Functionmodules>
+                <Functionmodule Key="Oven_Cover_Sensor">
+                    <Parameter Key="Oven_Cover_Sensor_LifeCycle" Value="0"/>
+                </Functionmodule>
+            </Functionmodules>
+        </Device>
+        <Device Key="RetortDevice">
+            <Functionmodules>
+                <Functionmodule Key="Retort_Lid_Lock">
+                    <Parameter Key="Retort_Lid_Lock_LifeCycle" Value="123"/>
+                </Functionmodule>
+            </Functionmodules>
+        </Device>
+    </DeviceList>
+</DeviceLifeCycles>

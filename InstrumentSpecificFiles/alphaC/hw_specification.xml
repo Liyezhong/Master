@@ -154,7 +154,16 @@
                 </functionmodule>
             </functionmodules>
         </slave>
-
+		<slave type="base" key="asb126_0" name="asb 126 0" virtual="1">
+            <nodetype>126</nodetype>
+            <nodeindex>0</nodeindex>
+            <functionmodules>
+              <functionmodule type="Other_device" key="EBox" name="EBox" interface="1"/>
+              <functionmodule type="Other_device" key="Ventilation_Fan" name="Ventilation_Fan" interface="2"/>
+              <functionmodule type="Other_device" key="Touch_Screen" name="Touch_Screen" interface="3"/>
+	      <functionmodule type="Other_device" key="Pressure_Sensor" name="Pressure_Sensor" interface="4"/>
+            </functionmodules>
+        </slave>
 <!-- ************************************************************************************************* -->
 
     </parameter_slaves>
@@ -168,12 +177,14 @@
 ************************************************************************************************* -->
         <device type="RotaryValveDevice" dev_instanceID="0x000080C0" optional="0">
             <functionmodules>
+				<functionmodule key="RV_Base" fct_instanceID="0x00003"/>
                 <functionmodule key="RV_motor" fct_instanceID="0x10003"/>
                 <functionmodule key="RV_temp_ctrl" fct_instanceID="0x20003"/>
             </functionmodules>
         </device>
         <device type="AirLiquidDevice" dev_instanceID="0x000080C1" optional="0">
             <functionmodules>
+				<functionmodule key="AL_Base" fct_instanceID="0x0000D"/>
                 <functionmodule key="AL_pressure_ctrl" fct_instanceID="0x1000F"/>
                 <functionmodule key="AL_level_sensor_temp_ctrl" fct_instanceID="0x2000F"/>
                 <functionmodule key="AL_tube1_temp_ctrl" fct_instanceID="0x3000F"/>
@@ -183,6 +194,7 @@
         </device>
         <device type="OvenDevice" dev_instanceID="0x000080C2" optional="0">
             <functionmodules>
+				<functionmodule key="OVEN_Base" fct_instanceID="0x00005"/>
                 <functionmodule key="OVEN_top_temp_ctrl" fct_instanceID="0x10005"/>
                 <functionmodule key="OVEN_bottom_temp_ctrl" fct_instanceID="0x20005"/>
                 <functionmodule key="OVEN_lid_digital_input" fct_instanceID="0xA000F"/>
@@ -190,6 +202,7 @@
         </device>
         <device type="RetortDevice" dev_instanceID="0x000080C3" optional="0">
             <functionmodules>
+				<functionmodule key="RETORT_Base" fct_instanceID="0x00005"/>
                 <functionmodule key="RETORT_bottom_temp_ctrl" fct_instanceID="0x30005"/>
                 <functionmodule key="RETORT_side_temp_ctrl" fct_instanceID="0x40005"/>
                 <functionmodule key="RETORT_lock_digital_output" fct_instanceID="0x6000F"/>
@@ -198,11 +211,20 @@
         </device>
         <device type="PeripheryDevice" dev_instanceID="0x000080C4" optional="0">
             <functionmodules>
+				<functionmodule key="PeripheryDevice_Base" fct_instanceID="0x0000D"/>
                 <functionmodule key="PER_remote_alarm_ctrl_digital_output" fct_instanceID="0x7000F"/>
                 <functionmodule key="PER_local_alarm_ctrl_digital_output" fct_instanceID="0x8000F"/>
                 <functionmodule key="PER_main_relay_digital_output" fct_instanceID="0x6000F"/>
                 <functionmodule key="PER_local_alarm_digital_input" fct_instanceID="0xB000F"/>
                 <functionmodule key="PER_remote_alarm_digital_input" fct_instanceID="0xC000F"/>
+            </functionmodules>
+        </device>
+		 <device type="OtherDevice" dev_instanceID="0x000080C6" optional="0">
+            <functionmodules>
+                <functionmodule key="OtherDevice_EBox" fct_instanceID="0x1007E"/>
+                <functionmodule key="OtherDevice_Ventilation_Fan" fct_instanceID="0x2007E"/>
+                <functionmodule key="OtherDevice_Touch_Screen" fct_instanceID="0x3007E"/>
+                <functionmodule key="OtherDevice_Pressure_Sensor" fct_instanceID="0x4007E"/>				
             </functionmodules>
         </device>
     </devices>

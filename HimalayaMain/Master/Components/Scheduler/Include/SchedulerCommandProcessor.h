@@ -139,7 +139,7 @@ public:
     /****************************************************************************/
     virtual void ALSetPressureDrift(qreal pressureDrift) = 0;
     virtual void ShutDownDevice() = 0;
-
+    virtual void NotifySavedServiceInfor(const QString& deviceType) = 0;
 signals:
     /****************************************************************************/
     /**
@@ -164,6 +164,8 @@ signals:
     void NewCmdAdded();
 
     void SigShutDownDevice();
+
+    void SigNotifySavedServiceInfor(const QString& deviceType);
     /************************************************************************************/
     /*!
      *  \brief  Forward AirLiquid's 'level sensor status change to 1' to Heating strategy
@@ -176,6 +178,15 @@ signals:
      */
     /************************************************************************************/
     void DeviceProcessDestroyed();
+    /****************************************************************************/
+    /*!
+     *  \brief  Returns the service information of a device
+     *
+     *  \iparam ReturnCode = ReturnCode of Device Control Layer
+     *  \iparam ModuleInfo = Contains the service information
+     */
+    /****************************************************************************/
+    void ReportGetServiceInfo(ReturnCode_t ReturnCode, const DataManager::CModule &ModuleInfo, const QString& deviceType);
 
 public slots:
     /****************************************************************************/
@@ -255,6 +266,12 @@ public slots:
     {
         this->OnShutDownDevice4Slot();
     }
+
+    virtual void OnNotifySavedServiceInfor(const QString& deviceType)
+    {
+        this->OnNotifySavedServiceInfor4Slot(deviceType);
+    }
+
 
 private:
 
@@ -340,6 +357,7 @@ private:
     /****************************************************************************/
     virtual void OnNewCmdAdded4Slot() = 0;
     virtual void OnShutDownDevice4Slot()= 0 ;
+    virtual void OnNotifySavedServiceInfor4Slot(const QString& deviceType) = 0;
     SchedulerCommandProcessorBase(const SchedulerCommandProcessorBase&);              			///< Not implemented.
     const SchedulerCommandProcessorBase& operator=(const SchedulerCommandProcessorBase&);		///< Not implemented.
 };
@@ -402,6 +420,7 @@ public:
     void SetIDeviceProcessing(DP* IDeviceProcessing) { mp_IDeviceProcessing = IDeviceProcessing; }
 #endif
     virtual void ShutDownDevice();
+    virtual void NotifySavedServiceInfor(const QString& deviceType);
 private:
 
     /****************************************************************************/
@@ -486,6 +505,7 @@ private:
     /****************************************************************************/
     virtual void OnNewCmdAdded4Slot();
     virtual void OnShutDownDevice4Slot();
+    virtual void OnNotifySavedServiceInfor4Slot(const QString& deviceType);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function ExecuteCmd

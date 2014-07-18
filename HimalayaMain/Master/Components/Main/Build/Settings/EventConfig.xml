@@ -213,6 +213,9 @@
 		<Event Code="" ErrorID="33816577" ErrorType="Info" AlarmType="" Name="EVENT_DM_INVALID_PROGRAM_ID">
 			<Step ID="0" Type="MSG" StringID="33816577" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
+		<Event Code="" ErrorID="33816578" ErrorType="Info" AlarmType="" Name="EVENT_SERVICE_INFO_NOT_FOUND">
+			<Step ID="0" Type="MSG" StringID="33816578" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
+		</Event>
 		<Event Code="" ErrorID="33816608" ErrorType="info" AlarmType="" Name="EVENT_DM_INVALID_STEP_ID">
 			<Step ID="0" Type="MSG" StringID="33816608" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>

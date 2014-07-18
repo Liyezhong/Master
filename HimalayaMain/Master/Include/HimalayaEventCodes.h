@@ -47,6 +47,8 @@ const quint32 EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817859;	///<   
 
 const quint32 EVENT_DM_INVALID_PROGRAM_ID	= 33816577;	///< %1' is not a valid Program ID.
 
+const quint32 EVENT_SERVICE_INFO_NOT_FOUND	= 33816578;	///<  //!< Error in retrieving Service information
+
 
 const quint32 EVENT_DM_INVALID_STEP_ID	= 33816608;	///< Step ID %2 in Program %1 is invalid
 

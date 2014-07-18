@@ -80,6 +80,15 @@ const QString USER_SETTINGS_XML  ("HimalayaUserSettings.xml");
  */
 /****************************************************************************/
 const QString PROGRAM_SETTINGS_XML  ("HimalayaProgramSettings.xml");
+/****************************************************************************/
+/*!
+ *  \brief  Definition/Declaration of function INSTRUMENT_HISTORY_XML
+ *
+ *  \return from INSTRUMENT_HISTORY_XML
+ */
+/****************************************************************************/
+const QString INSTRUMENT_HISTORY_XML  ("InstrumentHistory.xml");
+
 }
 
 #endif // DATAMANAGER_DEFINITIONS_H

@@ -20,6 +20,7 @@
 
 #include <Global/Include/SystemPaths.h>
 #include "../Include/DataManager.h"
+#include "HimalayaDataManager/CommandInterface/Include/ModuleCommandInterface.h"
 #include "HimalayaDataManager/CommandInterface/Include/ProgramCommandInterface.h"
 #include "HimalayaDataManager/CommandInterface/Include/ReagentCommandInterface.h"
 #include "HimalayaDataManager/CommandInterface/Include/StationCommandInterface.h"
@@ -27,7 +28,7 @@
 #include "DataManager/CommandInterface/Include/UserSettingsCommandInterface.h"
 #include "HimalayaDataManager/Include/DataManagerDefinitions.h"
 #include "DataManager/Helper/Include/DataManagerEventCodes.h"
-
+#include "DataManager/Containers/InstrumentHistory/Include/InstrumentHistory.h"
 
 namespace DataManager {
 
@@ -38,7 +39,8 @@ CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThre
     mp_StationCommandInterface(NULL),
     mp_ReagentCommandInterface(NULL),
     mp_ReagentGroupCommandInterface(NULL),
-    mp_ProgramCommandInterface(NULL)
+    mp_ProgramCommandInterface(NULL),
+    mp_ModuleCommandInterface(NULL)
 {
     quint32 ReturnCode  = InitializeDataContainer();
     if (ReturnCode != INIT_OK) {
@@ -52,7 +54,8 @@ CDataManager::CDataManager(Threads::MasterThreadController *p_HimalayaMasterThre
     mp_StationCommandInterface(NULL),
     mp_ReagentCommandInterface(NULL),
     mp_ReagentGroupCommandInterface(NULL),
-    mp_ProgramCommandInterface(NULL)
+    mp_ProgramCommandInterface(NULL),
+    mp_ModuleCommandInterface(NULL)
 {
     Q_UNUSED(Path)
     quint32 ReturnCode = InitializeDataContainer();
@@ -126,6 +129,12 @@ quint32 CDataManager::InitializeDataContainer()
         return EVENT_DM_STATIONS_XML_READ_FAILED;
     }
 
+    mp_DataContainer->InstrumentHistory->SetDataVerificationMode(false);
+    QString FilenameModuleList = Global::SystemPaths::Instance().GetSettingsPath() + "/" + INSTRUMENT_HISTORY_XML;
+    if (!mp_DataContainer->InstrumentHistory->ReadFile(FilenameModuleList)) {
+        return EVENT_DM_MODULE_CONF_READ_FAILED;
+    }
+
     // when all containers are loaded, activate verification mode and verify there initial content
     mp_DataContainer->ProgramList->SetDataVerificationMode(true);
     mp_DataContainer->ReagentList->SetDataVerificationMode(true);
@@ -159,6 +168,9 @@ quint32 CDataManager::InitializeDataContainer()
         Global::EventObject::Instance().RaiseEvent(EVENT_DM_GV_FAILED);
     }
 
+
+
+    mp_ModuleCommandInterface = new CModuleCommandInterface(this, mp_MasterThreadController, mp_DataContainer);
     mp_ProgramCommandInterface = new CProgramCommandInterface(this, mp_MasterThreadController, mp_DataContainer);
     mp_StationCommandInterface = new CStationCommandInterface(this, mp_MasterThreadController, mp_DataContainer);
     mp_ReagentCommandInterface = new CReagentCommandInterface(this, mp_MasterThreadController, mp_DataContainer);
@@ -174,6 +186,7 @@ bool CDataManager::DeinitializeDataContainer()
     delete mp_ReagentCommandInterface;
     delete mp_ReagentGroupCommandInterface;
     delete mp_DataContainer;
+    delete mp_ModuleCommandInterface;
     return true;
 }
 
