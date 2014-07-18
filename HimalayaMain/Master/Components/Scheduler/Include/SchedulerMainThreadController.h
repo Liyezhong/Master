@@ -243,7 +243,7 @@ typedef enum
         bool m_IsInSoakDelay;                                 ///< Delay in Soak
         bool m_AllProgramCount;                            ///< count the all program
         bool m_IsPrecheckMoveRV;                            ///< precheck done move rv
-        bool m_IsCleaningRun;                                 ///< cleaning program run or not
+        bool m_IsCleaningProgram;                                 ///< cleaning program run or not
         QMap<QString, QString> m_ProgramStatusFileMap;        ///< the map of program status
         BottlePosition_t    m_CurrentBottlePosition;          ///< the current BottlePosition for bottle check
 
@@ -1045,12 +1045,20 @@ protected:
         /****************************************************************************/
         /*!
          *  \brief  Check temperature modules temperature
-         *  \param  interval - interval of time (in seconds)
          *  \return bool, ture - success, false -failure
          *
          */
         /****************************************************************************/
         bool CheckSensorTempOverange();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Check is cleaning progaram run
+         *  \return bool, ture - success, false -failure
+         *
+         */
+        /****************************************************************************/
+        inline bool IsCleaningProgram() const { return m_IsCleaningProgram; }
 
     public slots:
 

@@ -113,7 +113,6 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ProgramSelfTest = QSharedPointer<CProgramSelfTest>(new CProgramSelfTest(mp_SchedulerThreadController));
 
     // Run Handling related logic
-    mp_PssmInitState->addTransition(this, SIGNAL(RunCleaning()), mp_PssmFillingLevelSensorHeatingState.data());
     mp_PssmInitState->addTransition(this, SIGNAL(RunPreTest()), mp_PssmPreTestState.data());
 
     mp_PssmPreTestState->addTransition(mp_ProgramSelfTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
@@ -283,11 +282,6 @@ void CSchedulerStateMachine::SendSchedulerInitComplete()
 void CSchedulerStateMachine::SendRunSignal()
 {
     emit RunSignal();
-}
-
-void CSchedulerStateMachine::SendRunCleaning()
-{
-    emit RunCleaning();
 }
 
 void CSchedulerStateMachine::SendRunComplete()

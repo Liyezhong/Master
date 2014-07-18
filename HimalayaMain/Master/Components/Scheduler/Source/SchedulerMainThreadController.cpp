@@ -111,8 +111,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     m_lastPVTime = 0;
     m_completionNotifierSent = false;
     QString ProgramStatusFilePath = "../Settings/ProgramStatus.txt";
-    m_IsCleaningMoveRV = false;
-    m_IsCleaningRun = false;
+    m_IsCleaningProgram = false;
     QFile ProgramStatusFile(ProgramStatusFilePath);
 
     if(!ProgramStatusFile.exists())
@@ -472,10 +471,12 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             int sep = m_NewProgramID.indexOf('_');
             m_CurProgramID = m_NewProgramID.left(sep);
             m_ReagentIdOfLastStep = m_NewProgramID.right(m_NewProgramID.count()- sep -1);
+            m_IsCleaningProgram = true;
         }
         else
         {
             m_CurProgramID = m_NewProgramID;
+            m_IsCleaningProgram = false;
         }
 
         this->GetNextProgramStepInformation(m_CurProgramID, m_CurProgramStepInfo);
@@ -487,21 +488,19 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
             Global::tRefType fRef = GetNewCommandRef();
             SendCommand(fRef, Global::CommandShPtr_t(commandPtrFinish));
 
-            //LOG_STR_ARG(STR_START_PROGRAM, Global::FmtArgs()<<ProgramName);
             QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
             LogDebug(QString("Start Program: %1").arg(ProgramName));
             LogDebug(QString("Start Step: %1").arg(m_CurProgramStepIndex));
             //m_SchedulerMachine->SendRunSignal();
+
             //send command to main controller to tell the left time
             quint32 leftSeconds = GetCurrentProgramStepNeededTime(m_CurProgramID);
-            //LOG_STR_ARG(STR_CURRENT_PROGRAM_NAME_STEP_REAGENT_LEFTTIME,Global::FmtArgs()<< ProgramName << m_CurProgramStepIndex +1 << m_CurReagnetName << leftSeconds);
             QTime leftTime(0,0,0);
             leftTime = leftTime.addSecs(leftSeconds);
             MsgClasses::CmdCurrentProgramStepInfor* commandPtr(new MsgClasses::CmdCurrentProgramStepInfor(5000, m_CurReagnetName, m_CurProgramStepIndex, leftSeconds));
             Q_ASSERT(commandPtr);
             Global::tRefType Ref = GetNewCommandRef();
             SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-            //DequeueNonDeviceCommand();
 
             //wether cleaning program
             if ( 'C' == ProgramName.at(0) )
@@ -526,8 +525,8 @@ void SchedulerMainThreadController::HandleIdleState(ControlCommandType_t ctrlCmd
                 }
                 else
                 {
-                    m_SchedulerMachine->SendRunSignal();
                     LogDebug(QString("cleaning program set the rv position to:%1").arg(LastPosition));
+                    m_SchedulerMachine->SendRunSignal();
                 }
             }
             else
@@ -673,41 +672,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
-                QString ProgramName = mp_DataManager->GetProgramList()->GetProgram(m_CurProgramID)->GetName();
-                if ('C' != ProgramName.at(0))
-                {
-                    m_SchedulerMachine->SendRunPreTest();
-                }
-                else
-                {
-                    if(!m_IsCleaningMoveRV)
-                    {
-                        RVPosition_t targetPos = GetRVTubePositionByStationID(m_CurProgramStepInfo.stationID);
-                        if(RV_UNDEF != targetPos)
-                        {
-                            m_IsCleaningMoveRV = true;
-                            this->MoveRV(0);
-                        }
-                    }
-                    else if(IsRVRightPosition(0))
-                    {
-                        m_IsCleaningMoveRV = false;
-                        m_IsCleaningRun = true;
-                        m_SchedulerMachine->SendRunCleaning();
-                    }
-                    else
-                    {
-                        m_IsCleaningMoveRV = false;
-                        if(("Scheduler::RVReqMoveToRVPosition" == cmdName))
-                        {
-                            if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
-                            {
-                                RaiseError(0, retCode, m_CurrentScenario, true);
-                                m_SchedulerMachine->SendErrorSignal();
-                            }
-                        }
-                    }
-                }//end cleaning program
+                // if cleaning program just move RV, not precheck
+                m_SchedulerMachine->SendRunPreTest();
             }
         }
         else if (PSSM_PRETEST == stepState)
@@ -1048,9 +1014,9 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             //m_SchedulerMachine->Stop();
             //todo: tell main controller that program is complete
             UpdateStationReagentStatus();
-            if(m_IsCleaningRun)
+            if(m_IsCleaningProgram)
             {
-                m_IsCleaningRun = false;
+                m_IsCleaningProgram = false;
                 UpdateProgramStatusFile("ProgramFinished", "Yes");
             }
 
@@ -2078,7 +2044,14 @@ qint32 SchedulerMainThreadController::GetScenarioBySchedulerState(SchedulerState
     case PSSM_INIT:
         break;
     case PSSM_PRETEST:
-        scenario = 200;
+        if(m_IsCleaningProgram)
+        {
+            scenario = 0;
+        }
+        else
+        {
+            scenario = 200;
+        }
         break;
     case PSSM_PAUSE:
         if(ReagentGroup == "RG6")

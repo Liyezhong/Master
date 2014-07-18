@@ -136,6 +136,14 @@ signals:
     /****************************************************************************/
     void TasksDone();
 
+    /****************************************************************************/
+    /*!
+     *  \brief Signal for tasks done
+     *
+     */
+    /****************************************************************************/
+    void CleaningMoveToTube();
+
 private:
     SchedulerMainThreadController *mp_SchedulerThreadController;    //!< Pointer to Scheduler Thread Controller
     QSharedPointer<QStateMachine>   mp_StateMachine;                //!< State machine for Pre-Test

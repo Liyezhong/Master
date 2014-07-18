@@ -44,6 +44,8 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     mp_MoveToTube = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
     mp_StateMachine->setInitialState(mp_Initial.data());
+    mp_Initial->addTransition(this, SIGNAL(CleaningMoveToTube()), mp_MoveToTube.data());
+
     mp_Initial->addTransition(this, SIGNAL(TemperatureSensorsChecking()), mp_TemperatureSensorsChecking.data());
     mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(RTTemperatureControlOff()), mp_RTTempCtrlOff.data());
     mp_RTTempCtrlOff->addTransition(this,SIGNAL(RVPositionChecking()), mp_RVPositionChecking.data());
@@ -121,7 +123,14 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
 	switch (currentState)
 	{
     case PRETEST_INIT:
-        emit TemperatureSensorsChecking();
+        if(mp_SchedulerThreadController->IsCleaningProgram())
+        {
+            emit CleaningMoveToTube();
+        }
+        else
+        {
+            emit TemperatureSensorsChecking();
+        }
         break;
     case TEMPSENSORS_CHECKING:
         if (true == mp_SchedulerThreadController->GetHeatingStrategy()->CheckTemperatureSenseorsStatus())
@@ -319,7 +328,6 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         }
         else if(mp_SchedulerThreadController->IsRVRightPosition(0))
         {
-
             mp_SchedulerThreadController->LogDebug("Pre-Test: Moving to tube passed");
             mp_SchedulerThreadController->LogDebug("Pre-Test Done");
 			m_MoveToTubeSeq = 0;
