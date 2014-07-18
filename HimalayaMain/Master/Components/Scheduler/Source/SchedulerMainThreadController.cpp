@@ -2327,7 +2327,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
     {
         if(((m_OvenLidStatus == 0) || (m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 1))
         {
-            if (m_CurrentScenario >= 211 && m_CurrentScenario <= 217 && m_CurrentScenario != 0)
+            if (m_CurrentScenario < 260 || m_CurrentScenario > 277)
             {
                 LogDebug(QString("The oven is open,EventID:%1, Scenario:%2").arg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN).arg(m_CurrentScenario));
             }
@@ -2724,6 +2724,7 @@ bool SchedulerMainThreadController::RestartFailedHeaters()
         {
             return true;
         }
+        break;
     case OVEN:
         if (DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("OvenTop") &&
                 DCL_ERR_FCT_CALL_SUCCESS == mp_HeatingStrategy->StartTemperatureControl("OvenBottom"))
@@ -2742,6 +2743,59 @@ bool SchedulerMainThreadController::RestartFailedHeaters()
     }
 
     return false;
+}
+
+bool SchedulerMainThreadController::CheckSensorTempOverange()
+{
+    HeaterType_t heaterType = GetFailerHeaterType();
+    qreal temp = 0;
+
+    switch (heaterType)
+    {
+    case LEVELSENSOR:
+        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempALLevelSensor;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("LevelSensor", temp) )
+            return false;
+        break;
+    case LATUBE1:
+        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempALTube1;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("LA_Tube1", temp) )
+            return false;
+        break;
+    case LATUBE2:
+        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempALTube2;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("LA_Tube2", temp) )
+            return false;
+        break;
+    case RV:
+        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempRV1;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RVRod", temp) )
+            return false;
+        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempRV2;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RVOutle", temp) )
+            return false;
+        break;
+    case RETORT:
+        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempRTSide;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RTSide", temp) )
+            return false;
+        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RTBottom", temp) )
+            return false;
+        break;
+    case OVEN:
+        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenTop;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenTop", temp) )
+            return false;
+        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenBottom1;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp) )
+            return false;
+        break;
+    default:
+        break;
+    }
+    return true;
+
 }
 
 bool SchedulerMainThreadController::CheckSlaveTempModulesCurrentRange(quint8 interval)

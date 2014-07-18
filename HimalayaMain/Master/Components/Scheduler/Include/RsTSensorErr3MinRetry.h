@@ -127,7 +127,7 @@ private:
 
     /****************************************************************************/
     /*!
-     *  \brief  Definition/Declaration of function CheckTSensorStatusIsRight
+     *  \brief  Definition/Declaration of function CheckTSensorCurrentStatus
      *
      *	\return bool
      */

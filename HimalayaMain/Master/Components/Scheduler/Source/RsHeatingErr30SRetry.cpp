@@ -146,7 +146,8 @@ void CRsHeatingErr30SRetry::HandleWorkFlow()
         }
         else
         {
-            if (false ==  mp_SchedulerController->CheckSlaveTempModulesCurrentRange(3))
+            if (false ==  mp_SchedulerController->CheckSlaveTempModulesCurrentRange(3)
+                    || false == mp_SchedulerController->CheckSensorTempOverange())
             {
                 m_Counter++;
                 if (3 == m_Counter)
@@ -164,5 +165,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow()
         break;
     }
 }
+
+
 
 }

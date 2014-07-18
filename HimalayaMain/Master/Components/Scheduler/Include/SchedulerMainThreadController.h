@@ -1042,6 +1042,16 @@ protected:
         /****************************************************************************/
         bool CheckSlaveTempModulesCurrentRange(quint8 interval);
 
+        /****************************************************************************/
+        /*!
+         *  \brief  Check temperature modules temperature
+         *  \param  interval - interval of time (in seconds)
+         *  \return bool, ture - success, false -failure
+         *
+         */
+        /****************************************************************************/
+        bool CheckSensorTempOverange();
+
     public slots:
 
         /****************************************************************************/
