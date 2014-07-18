@@ -107,6 +107,7 @@ int main(int Argc, char *p_Argv[])
 
     TheMasterThreadController.moveToThread(&thrMasterThread);
 
+
     if(!QObject::connect(&thrMasterThread, SIGNAL(started()), &TheMasterThreadController, SLOT(Go()))) {
         Global::ToConsole("Connecting thrMasterThread::started() and TheMasterThreadController::Go() failed");
     }
@@ -115,23 +116,6 @@ int main(int Argc, char *p_Argv[])
 
     thrMasterThread.start();
 
-#if 0
     return App.exec();
-#else
-    int ReturnCode = App.exec();
 
-    qDebug()<<"app exec return : "<<ReturnCode;
-
-    // wait for Master thread
-    if(!thrMasterThread.wait())
-    {
-        Global::ToConsole("Error waiting for thrMasterThread");
-        // set error code
-        ReturnCode = Global::RETCODE_MASTERTHREAD_WAIT;
-    }
-    // cleanup controller for master thread.
-    TheMasterThreadController.CleanupAndDestroyObjects();
-
-    return ReturnCode;
-#endif
 }

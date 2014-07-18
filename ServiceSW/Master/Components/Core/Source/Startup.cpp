@@ -324,7 +324,7 @@ CStartup::~CStartup()
         delete mp_RetortConfig;
         delete mp_MainControlConfig;
         delete mp_ViewHistory;
-        delete mp_AddModifyConfig;
+//        delete mp_AddModifyConfig;
         delete mp_AddModifyConfigGroup;
         delete mp_CurrentConfiguration;
         delete mp_SystemTrackingGroup;

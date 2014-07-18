@@ -1596,10 +1596,9 @@ void ServiceMasterThreadController::ShutdownSystem()
         p_Channel->setParent(NULL);
     }
 
-    qDebug()<<"emit   RequestFinish..........";
-    // send request to finish master thread
-    emit RequestFinish();
-    qDebug() <<"Shutdown End time " << Global::AdjustedTime::Instance().GetCurrentTime().toString();
+    this->thread()->quit();
+
+//    qDebug() <<"Shutdown End time " << Global::AdjustedTime::Instance().GetCurrentTime().toString();
 
 }
 
