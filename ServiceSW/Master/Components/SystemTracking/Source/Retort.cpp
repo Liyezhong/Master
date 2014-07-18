@@ -70,6 +70,11 @@ CRetort::CRetort(Core::CServiceGUIConnector &DataConnector,
                   SIGNAL(clicked()),
                   this,
                   SLOT(ModifyLevelSensor()) );
+
+    (void)connect(mp_Ui->finalizeConfigBtn,
+                  SIGNAL(clicked()),
+                  this,
+                  SLOT(OnFinalizeConfiguration()));
 }
 
 CRetort::~CRetort()
@@ -87,15 +92,13 @@ void CRetort::UpdateModule(ServiceDataManager::CModule &Module)
     qDebug() << "CRetort::UpdateModule !"
              << Module.GetModuleName();
 
-    ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DateConnector->GetModuleListContainer();
-    if (0 == pModuleList)
+    if (0 == mp_ModuleList)
     {
         qDebug() << "CRetort::UpdateModule(): Invalid module list!";
         return;
     }
 
-    pModuleList->UpdateModule(&Module);
+    mp_ModuleList->UpdateModule(&Module);
 
     emit ModuleListChanged();
     mp_Ui->finalizeConfigBtn->setEnabled(true);
@@ -106,15 +109,14 @@ void CRetort::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     qDebug() << "CRetort::UpdateSubModule !"
              << SubModule.GetSubModuleName();
 
-    ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DateConnector->GetModuleListContainer();
-    if (0 == pModuleList)
+    mp_ModuleList = mp_DateConnector->GetModuleListContainer();
+    if (0 == mp_ModuleList)
     {
         qDebug() << "CRetort::UpdateSubModule(): Invalid module list!";
         return;
     }
 
-    ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_RETORT);
+    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_RETORT);
     if (0 == pModule)
     {
         qDebug() << "CRetort::UpdateSubModule(): Invalid module : "
@@ -124,8 +126,6 @@ void CRetort::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 
     pModule->UpdateSubModule(&SubModule);
 
-    emit ModuleListChanged();
-
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
 
@@ -134,15 +134,14 @@ void CRetort::ModifyRetort(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_RETORT_MODULE);
     qDebug() << "CRetort::ModifyRetort !";
 
-    ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DateConnector->GetModuleListContainer();
-    if (0 == pModuleList)
+    mp_ModuleList = mp_DateConnector->GetModuleListContainer();
+    if (0 == mp_ModuleList)
     {
         qDebug() << "CRetort::ModifyRetort(): Invalid module list!";
         return;
     }
 
-    ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_RETORT);
+    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_RETORT);
     if (0 == pModule)
     {
         qDebug() << "CRetort::ModifyRetort(): Invalid module : "
@@ -233,8 +232,9 @@ void CRetort::ConfirmModuleConfiguration(QString& Text)
     ResetMessageBox();
     if (Result)
     {
-        if(mp_ModuleList && mp_ModuleList->Write())
+        if(mp_DateConnector->UpdateInstrumentHistory())
         {
+            emit ModuleListChanged();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CRetort",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();

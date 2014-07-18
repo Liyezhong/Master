@@ -289,7 +289,6 @@ bool CModuleDataList::ReadFile(const QString& FileName)
 /****************************************************************************/
 bool CModuleDataList::DeserializeContent(QIODevice& IODevice, bool CompleteData)
 {   
-    bool Result = true;
     QXmlStreamReader XmlStreamReader;
     XmlStreamReader.setDevice(&IODevice);
 
@@ -312,6 +311,40 @@ bool CModuleDataList::DeserializeContent(QIODevice& IODevice, bool CompleteData)
         qDebug() << "DeserializeContent: abort reading. Node not found: ModuleList";
         return false;
     }
+
+    return DeserializeContent(XmlStreamReader, CompleteData);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Writes the CModuleDataList Data to QIODevice
+ *
+ *  \iparam IODevice = Instance of the IODevice might be Buffer or File
+ *  \iparam CompleteData = bool type if true writes Complete data of object
+ *
+ *  \return True or False
+ */
+/****************************************************************************/
+bool CModuleDataList::SerializeContent(QIODevice& IODevice, bool CompleteData)
+{
+    QXmlStreamWriter XmlStreamWriter;
+    XmlStreamWriter.setDevice(&IODevice);
+
+    XmlStreamWriter.setAutoFormatting(true);
+    XmlStreamWriter.writeStartDocument();
+
+    // XmlStreamWriter.writeDTD("<InstrumentHistory>");
+    XmlStreamWriter.writeStartElement("InstrumentHistory");
+
+    // write attribute name
+    XmlStreamWriter.writeAttribute("name", GetInstrumentName());
+
+    return SerializeContent(XmlStreamWriter, CompleteData);
+}
+
+bool CModuleDataList::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool CompleteData)
+{
+    bool Result = true;
 
     // Read Attribute TimeStamp
     if (!XmlStreamReader.attributes().hasAttribute("timestamp")) {
@@ -352,30 +385,8 @@ bool CModuleDataList::DeserializeContent(QIODevice& IODevice, bool CompleteData)
     return Result;
 }
 
-/****************************************************************************/
-/*!
- *  \brief Writes the CModuleDataList Data to QIODevice
- *
- *  \iparam IODevice = Instance of the IODevice might be Buffer or File
- *  \iparam CompleteData = bool type if true writes Complete data of object
- *
- *  \return True or False
- */
-/****************************************************************************/
-bool CModuleDataList::SerializeContent(QIODevice& IODevice, bool CompleteData)
+bool CModuleDataList::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool CompleteData)
 {
-    QXmlStreamWriter XmlStreamWriter;
-    XmlStreamWriter.setDevice(&IODevice);
-
-    XmlStreamWriter.setAutoFormatting(true);
-    XmlStreamWriter.writeStartDocument();
-
-    // XmlStreamWriter.writeDTD("<InstrumentHistory>");
-    XmlStreamWriter.writeStartElement("InstrumentHistory");
-
-    // write attribute name
-    XmlStreamWriter.writeAttribute("name", GetInstrumentName());
-
     // write section ModuleList
     XmlStreamWriter.writeStartElement("ModuleList");
 

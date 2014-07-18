@@ -115,15 +115,14 @@ void CLaSystem::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     qDebug() << "CLaSystem::UpdateSubModule : "
              << SubModule.GetSubModuleName();
 
-    ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DateConnector->GetModuleListContainer();
-    if (0 == pModuleList)
+    mp_ModuleList = mp_DateConnector->GetModuleListContainer();
+    if (0 == mp_ModuleList)
     {
         qDebug() << "CLaSystem::UpdateSubModule(): Invalid module list!";
         return;
     }
 
-    ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_LASYSTEM);
+    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_LASYSTEM);
     if (0 == pModule)
     {
         qDebug() << "CLaSystem::UpdateSubModule(): Invalid module : "
@@ -132,8 +131,6 @@ void CLaSystem::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     }
 
     pModule->UpdateSubModule(&SubModule);
-
-    emit ModuleListChanged();
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
@@ -245,8 +242,9 @@ void CLaSystem::ConfirmModuleConfiguration(QString& Text)
     ResetMessageBox();
     if (Result)
     {
-        if(mp_ModuleList && mp_ModuleList->Write())
+        if(mp_DateConnector->UpdateInstrumentHistory())
         {
+            emit ModuleListChanged();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CLaSystem",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();

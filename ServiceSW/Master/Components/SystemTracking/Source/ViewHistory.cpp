@@ -36,10 +36,11 @@ namespace SystemTracking {
  *  \iparam p_Parent = Parent widget
  */
 /****************************************************************************/
-CViewHistory::CViewHistory(QWidget *p_Parent)
+CViewHistory::CViewHistory(Core::CServiceGUIConnector *p_DataConnector, QWidget *p_Parent)
     : QWidget(p_Parent)
     , mp_Ui(new Ui::CViewHistory)
     , mp_TableWidget(new MainMenu::CBaseTable)
+    , mp_DataConnector(p_DataConnector)
     , mp_Model(new QStandardItemModel)
 {
     mp_Ui->setupUi(this);
@@ -101,46 +102,34 @@ CViewHistory::~CViewHistory()
 /****************************************************************************/
 void CViewHistory::SelectionChanged(QModelIndex Index)
 {
-    m_InstrumentHistoryName = Index.data(Qt::UserRole + 1).toString();
+    //m_ModuleTimeStamp = Index.data(Qt::UserRole + 1).toString();
+    m_ModuleTimeStamp = Index.data(Qt::DisplayRole).toString();
 }
 
-/****************************************************************************/
-/*!
- *  \brief  To add data item to the table
- *  \iparam FileName = XML file name
- *  \iparam FilePath = XML file path
- */
-/****************************************************************************/
-void CViewHistory::AddItem(const QString &FileName, const QString &FilePath)
+void CViewHistory::AddItem(QString InstrumentHistoryFileName)
 {
-    QStandardItem *Item = new QStandardItem;
-    Item->setText(FileName);
-    Item->setData(FilePath);
-
     QList<QStandardItem *> ItemList;
-    ItemList << Item;
+    ItemList << new QStandardItem(InstrumentHistoryFileName);
 
     mp_Model->appendRow(ItemList);
 }
 
 void CViewHistory::UpdateGUI(void)
 {
+    mp_ModuleList = mp_DataConnector->GetModuleListContainer();
+    mp_InstrumentHistoryArchive = mp_DataConnector->GetModuleListArchiveContainer();
+
     mp_Model->clear();
-
-    QDir LogDir(Global::SystemPaths::Instance().GetLogfilesPath());
-    LogDir.setFilter(QDir::Files);
-
-    QFileInfoList List = LogDir.entryInfoList();
-    for (QFileInfoList::iterator itr = List.begin();
-         List.end() != itr;
-         ++itr)
-    {
-        QString FileName = itr->baseName();
-        QString FilePath = itr->filePath();
-        if(FileName.startsWith("ModuleList"))
-        {
-            AddItem(FileName, FilePath);
+    if (mp_InstrumentHistoryArchive) {
+        for (int i = 0; i < mp_InstrumentHistoryArchive->GetNumberOfModuleLists(); i++) {
+            AddItem(mp_InstrumentHistoryArchive->GetModuleList(i)->GetModuleTimeStamp());
         }
+    } else {
+        qDebug()<<"Data container Instrument History Archive is NULL!!!";
+    }
+
+    if (mp_ModuleList != NULL) {
+        AddItem(mp_ModuleList->GetModuleTimeStamp());
     }
 }
 
@@ -151,7 +140,7 @@ void CViewHistory::UpdateGUI(void)
 /****************************************************************************/
 void CViewHistory::ExecDialog(void)
 {
-    if(m_InstrumentHistoryName.isEmpty())
+    if(m_ModuleTimeStamp.isEmpty())
     {
         mp_MessageDialog->SetTitle(tr("Select Module List"));
         mp_MessageDialog->SetButtonText(1, tr("OK"));
@@ -163,12 +152,19 @@ void CViewHistory::ExecDialog(void)
         return;
     }
 
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_VIEWHISTORY_INSTRUMENT_SHOWDETAILS,
-                                               Global::tTranslatableStringList()<<m_InstrumentHistoryName);
+    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_VIEWHISTORY_INSTRUMENT_SHOWDETAILS,
+                                               //Global::tTranslatableStringList()<<m_InstrumentHistoryName);
     mp_ViewHistoryDlg->SetDialogTitle(tr("Module History"));
     mp_ViewHistoryDlg->resize(600,550);
 
-    mp_ViewHistoryDlg->SetModuleListPath(m_InstrumentHistoryName);
+    ServiceDataManager::CModuleDataList *ModuleList = NULL;
+    if (mp_ModuleList->GetModuleTimeStamp() == m_ModuleTimeStamp) {
+        ModuleList = mp_ModuleList;
+    }
+    else {
+        ModuleList = mp_InstrumentHistoryArchive->GetModuleList(m_ModuleTimeStamp);
+    }
+    mp_ViewHistoryDlg->SetModuleList(ModuleList);
     mp_ViewHistoryDlg->UpdateGUI();
 
     mp_ViewHistoryDlg->show();

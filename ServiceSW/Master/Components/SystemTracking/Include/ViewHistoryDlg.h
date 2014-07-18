@@ -51,7 +51,7 @@ public:
     CViewHistoryDlg(QWidget *p_Parent = NULL);
     ~CViewHistoryDlg(void);
 
-    void SetModuleListPath(const QString &FilePath);
+    void SetModuleList(ServiceDataManager::CModuleDataList *ModuleList);
 
 public Q_SLOTS:
     void UpdateGUI(void);
@@ -63,14 +63,14 @@ private:
      *  \iparam ModuleList = Module List object
      */
     /****************************************************************************/
-    void AddItem(DataManager::CModuleDataList *p_ModuleList);
+    void AddItem(QStandardItem *RootItem, ServiceDataManager::CModule *Module);
 
     Ui::CViewHistoryDlg *mp_Ui;                     //!< User interface
 
     QTreeView *mp_TreeView;                         //!< Tree view for module list
     QStandardItemModel *mp_Model;                   //!< Model for tree
 
-    DataManager::CModuleDataList *mp_ModuleList;    //!< Selected modulelist
+    ServiceDataManager::CModuleDataList *mp_ModuleList;    //!< Selected modulelist
 
     QString m_ModuleListFilePath;
 };

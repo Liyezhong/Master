@@ -47,18 +47,17 @@ class CViewHistory : public QWidget
     Q_OBJECT
 
 public:
-    explicit CViewHistory(QWidget *p_Parent = 0);
+    explicit CViewHistory(Core::CServiceGUIConnector *p_DataConnector, QWidget *p_Parent = 0);
 
     ~CViewHistory(void);
 
     /****************************************************************************/
     /*!
      *  \brief  To add data item to the table
-     *  \iparam FileName = XML file name
-     *  \iparam FilePath = XML file path
+     *  \iparam InstrumentHistoryFileName = XML file name
      */
     /****************************************************************************/
-    void AddItem(const QString &FileName, const QString &FilePath);
+    void AddItem(QString InstrumentHistoryFileName);
 
 public Q_SLOTS:
     void UpdateGUI(void);
@@ -77,7 +76,11 @@ private:
     SystemTracking::CViewHistoryDlg *mp_ViewHistoryDlg; //!< Dialog to view module history
     MainMenu::CMessageDlg *mp_MessageDialog;            //!< Information message dialog
 
-    QString m_InstrumentHistoryName;
+    Core::CServiceGUIConnector *mp_DataConnector;                        //!< Global data connector
+    ServiceDataManager::CInstrumentHistory *mp_InstrumentHistoryArchive;        //!< Instrument History Archive
+    ServiceDataManager::CModuleDataList *mp_ModuleList;                         //!< Current module list object
+
+    QString m_ModuleTimeStamp;
 };
 
 } // end namespace SystemTracking

@@ -19,10 +19,12 @@ HEADERS +=  ../Include/*.h \
     ../Include/SubModule.h \
     ../Include/ModuleDataList.h \
     ../Include/Module.h \
-    ../Include/ModuleDataListVerifier.h
+    ../Include/ModuleDataListVerifier.h \
+    ../Include/InstrumentHistory.h
 
 SOURCES +=  ../Source/*.cpp \
     ../Source/TestCaseGuide.cpp \
     ../Source/TestCase.cpp \
-    ../Source/TestCaseFactory.cpp
+    ../Source/TestCaseFactory.cpp \
+    ../Source/InstrumentHistory.cpp
 

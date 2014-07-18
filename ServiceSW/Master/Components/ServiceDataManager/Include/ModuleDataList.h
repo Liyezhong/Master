@@ -52,6 +52,8 @@ typedef QList<QString> ListofOrderedModules_t; //!< List for module names
 /****************************************************************************/
 class CModuleDataList : public DataManager::CDataContainerBase
 {
+    friend class CInstrumentHistory;
+
     QString m_InstrumentName;   //!< name of the Instrument
     QString m_ModuleTimeStamp;  //!< Time Stamp of the Module
     bool m_DataVerificationMode; //!< Verification mode flag , verify the Container
@@ -64,6 +66,9 @@ class CModuleDataList : public DataManager::CDataContainerBase
 
     bool SerializeContent(QIODevice& IODevice, bool CompleteData);
     bool DeserializeContent(QIODevice& IODevice, bool CompleteData);
+
+    bool SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool CompleteData);
+    bool DeserializeContent(QXmlStreamReader& XmlStreamReader, bool CompleteData);
 
     /****************************************************************************/
     /*!

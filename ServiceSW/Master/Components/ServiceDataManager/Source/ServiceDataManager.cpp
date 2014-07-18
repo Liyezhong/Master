@@ -107,6 +107,15 @@ quint32 CServiceDataManager::InitDataContainer()
                 because mp_ServiceDataContainer->ModuleList->VerifyData failed.";
     }
 
+    mp_ServiceDataContainer->ModuleListArchive->SetDataVerificationMode(false);
+    QString FilenameModuleListArchive = Global::SystemPaths::Instance().GetSettingsPath() + "/InstrumentHistoryArchive.xml";
+    if (!mp_ServiceDataContainer->ModuleListArchive->ReadFile(FilenameModuleListArchive)) {
+        qDebug() << "CServiceDataManager::InitDataContainer failed, \
+                      because mp_ServiceDataContainer->ModuleListArchive->Read failed with filename: "
+                      <<  FilenameModuleListArchive;
+         return EVENT_DM_PROCESS_SETTINGS_CONF_READ_FAILED;
+    }
+
     QString FilenameServiceParameters = Global::SystemPaths::Instance().GetSettingsPath() + "/ServiceParameters.xml";
     if (!mp_ServiceDataContainer->ServiceParameters->Read(FilenameServiceParameters)) {
         qDebug() << "CServiceDataManager::InitDataContainer failed, \

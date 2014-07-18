@@ -124,8 +124,6 @@ void CMainControl::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 
     pModule->UpdateSubModule(&SubModule);
 
-    emit ModuleListChanged();
-
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
 
@@ -218,8 +216,9 @@ void CMainControl::ConfirmModuleConfiguration(QString& Text)
     ResetMessageBox();
     if (Result)
     {
-        if(mp_ModuleList && mp_ModuleList->Write())
+        if(mp_DateConnector->UpdateInstrumentHistory())
         {
+            emit ModuleListChanged();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CMainControl",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();

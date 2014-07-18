@@ -83,6 +83,7 @@ CCurrentConfiguration::~CCurrentConfiguration()
 void CCurrentConfiguration::UpdateGUI(void)
 {
     mp_ModuleList = mp_DataConnector->GetModuleListContainer();
+    m_Model.clear();
     if(mp_ModuleList)
     {
         for (int i = 0; i<mp_ModuleList->GetNumberofModules(); i++)

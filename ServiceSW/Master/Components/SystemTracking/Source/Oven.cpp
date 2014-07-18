@@ -87,17 +87,13 @@ void COven::UpdateModule(ServiceDataManager::CModule &Module)
     qDebug() << "COven::UpdateModule !"
              << Module.GetModuleName();
 
-    ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DataConnector->GetModuleListContainer();
-    if (0 == pModuleList)
+    if (0 == mp_ModuleList)
     {
         qDebug() << "COven::UpdateModule(): Invalid module list!";
         return;
     }
 
-    pModuleList->UpdateModule(&Module);
-
-    emit ModuleListChanged();
+    mp_ModuleList->UpdateModule(&Module);
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
@@ -107,15 +103,14 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     qDebug() << "COven::UpdateSubModule !"
              << SubModule.GetSubModuleName();
 
-    ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DataConnector->GetModuleListContainer();
-    if (0 == pModuleList)
+    mp_ModuleList = mp_DataConnector->GetModuleListContainer();
+    if (0 == mp_ModuleList)
     {
         qDebug() << "COven::UpdateSubModule(): Invalid module list!";
         return;
     }
 
-   ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_OVEN);
+   ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_OVEN);
     if (0 == pModule)
     {
         qDebug() << "COven::UpdateSubModule(): Invalid module : "
@@ -125,8 +120,6 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 
     pModule->UpdateSubModule(&SubModule);
 
-    emit ModuleListChanged();
-
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
 
@@ -135,15 +128,14 @@ void COven::ModifyOven(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_OVEN_MODULE);
     qDebug() << "COven::ModifyOven !";
 
-    ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DataConnector->GetModuleListContainer();
-    if (0 == pModuleList)
+    mp_ModuleList = mp_DataConnector->GetModuleListContainer();
+    if (0 == mp_ModuleList)
     {
         qDebug() << "COven::ModifyOven(): Invalid module list!";
         return;
     }
 
-    ServiceDataManager::CModule *pModule = pModuleList->GetModule(MODULE_OVEN);
+    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_OVEN);
     if (0 == pModule)
     {
         qDebug() << "COven::ModifyOven(): Invalid module : "
@@ -225,8 +217,9 @@ void COven::ConfirmModuleConfiguration(QString& Text)
     ResetMessageBox();
     if (Result)
     {
-        if(mp_ModuleList && mp_ModuleList->Write())
+        if(mp_DataConnector->UpdateInstrumentHistory())
         {
+            emit ModuleListChanged();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::COven",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();

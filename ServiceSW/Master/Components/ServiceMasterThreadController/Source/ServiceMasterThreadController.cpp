@@ -871,7 +871,8 @@ void ServiceMasterThreadController::OnGoReceived()
     mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
 
     mp_GUIStartup->mp_ServiceConnector->SetModuleListContainer(
-                mp_ServiceDataManager->GetModuleList());
+                mp_ServiceDataManager->GetDataContainer()->ModuleList,
+                mp_ServiceDataManager->GetDataContainer()->ModuleListArchive);
     mp_GUIStartup->mp_ServiceConnector->SetDeviceConfigurationInterface(
                 mp_ServiceDataManager->GetDataContainer()->DeviceConfigurationInterface);
     mp_GUIStartup->mp_ServiceConnector->SetServiceParametersContainer(

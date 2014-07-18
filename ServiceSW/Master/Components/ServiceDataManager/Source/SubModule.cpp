@@ -260,8 +260,8 @@ bool CSubModule::SerializeContent(QXmlStreamWriter &XmlStreamWriter, bool Comple
     XmlStreamWriter.writeAttribute("type", GetSubModuleType());
     XmlStreamWriter.writeAttribute("description", GetSubModuleDescription());
 
-    QHash<QString, Parameter_t*>::const_iterator i;
-    for(i = m_ListOfParameters.constBegin(); i != m_ListOfParameters.constEnd(); ++i)
+    QMap<QString, Parameter_t*>::const_iterator i;
+    for (i = m_ListOfParameters.constEnd()-1; i != m_ListOfParameters.constBegin()-1; --i)
     {
         XmlStreamWriter.writeStartElement("parameter");
         Parameter_t* StructParam;

@@ -23,6 +23,7 @@
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationInterface.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "ServiceDataManager/Include/ModuleDataList.h"
+#include "ServiceDataManager/Include/InstrumentHistory.h"
 #include <ServiceDataManager/Include/ServiceParameters.h>
 
 #include "Global/Include/Translator.h"
@@ -74,10 +75,12 @@ class CServiceGUIConnector : public QObject
     bool m_GuiInit;                                     //!< True - if Gui is getting initialized
     int  m_CurrentTabIndex;                             //!< To keep track of current tab selected
     bool m_MessageDlg;                                  //!< True if Message Dialog is displayed.
+    bool m_Archive;                                     //!< True to write InstrumentHistoryArchive.xml
 
     MainMenu::CMsgBoxManager *mp_MesgBoxManager;        //!< Msg Box manager for CmdEventReport
 
     ServiceDataManager::CModuleDataList         *mp_ModuleList;                     //!< Container for Instrument History
+    ServiceDataManager::CInstrumentHistory      *mp_ModuleListArchive;                 //!< Container for Instrument History Archive
     DataManager::CDeviceConfigurationInterface  *mp_DeviceConfigurationInterface;   //!< Container for Device configuration
     DataManager::CUserSettingsInterface         *mp_SettingsInterface;              //!< Provides interface to read the Settings info from xml
     DataManager::CServiceParameters             *mp_ServiceParameters;              //!< Container for Service Parameters
@@ -90,7 +93,7 @@ public:
 
     MainMenu::CWaitDialog* GetWaitDlgPtr() {return mp_WaitDialog;}
 
-    void SetModuleListContainer(ServiceDataManager::CModuleDataList *ModuleList);
+    void SetModuleListContainer(ServiceDataManager::CModuleDataList *ModuleList, ServiceDataManager::CInstrumentHistory *ModuleListArchive);
 
     void SetDeviceConfigurationInterface(
             DataManager::CDeviceConfigurationInterface *DeviceConfigInterface);
@@ -104,6 +107,7 @@ public:
     void HideBusyDialog();
 
     ServiceDataManager::CModuleDataList* GetModuleListContainer();
+    ServiceDataManager::CInstrumentHistory* GetModuleListArchiveContainer();
 
     DataManager::CDeviceConfigurationInterface *GetDeviceConfigInterface(void);
 
@@ -126,6 +130,13 @@ public slots:
     void HandleTimeout();
 
     void SendDeviceConfigurationUpdate(DataManager::CDeviceConfiguration* DeviceConfiguration);
+
+    /****************************************************************************/
+    /*!
+     *  \brief  To update the Instrument History xml file
+     */
+    /****************************************************************************/
+    bool UpdateInstrumentHistory();
 signals:
     void ModuleListContainerInitialized(ServiceDataManager::CModuleDataList& ModuleList);
 

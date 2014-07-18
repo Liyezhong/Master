@@ -27,6 +27,7 @@
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationInterface.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "ServiceDataManager/Include/ModuleDataList.h"
+#include "ServiceDataManager/Include/InstrumentHistory.h"
 #include "ServiceDataManager/Include/ServiceParameters.h"
 #include <ServiceMasterThreadController/Include/ServiceMasterThreadController.h>
 
@@ -55,6 +56,7 @@ public:
 
     // prefix mp_ left because members are intentially accessible from outside (public)
     ServiceDataManager::CModuleDataList *ModuleList;                //!< Container for Instrument History
+    ServiceDataManager::CInstrumentHistory* ModuleListArchive;      //!< Container for Instrument History Archive
     CDeviceConfigurationInterface* DeviceConfigurationInterface;    //!< Container for Device configuration
     CUserSettingsInterface *SettingsInterface;                      //!< Provides interface to read the Settings info from xml
     CServiceParameters *ServiceParameters;                          //!< Container for service parameters

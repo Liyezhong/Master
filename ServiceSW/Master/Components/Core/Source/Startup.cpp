@@ -79,7 +79,7 @@ CStartup::CStartup() : QObject(),
             new SystemTracking::CCurrentConfiguration(mp_ServiceConnector, mp_MainWindow);
     mp_AddModifyConfigGroup = new MainMenu::CMenuGroup;
     //mp_AddModifyConfig = new SystemTracking::CAddModifyConfig;
-    mp_ViewHistory = new SystemTracking::CViewHistory(mp_MainWindow);
+    mp_ViewHistory = new SystemTracking::CViewHistory(mp_ServiceConnector, mp_MainWindow);
     mp_MainControlConfig =
             new SystemTracking::CMainControl(*mp_ServiceConnector, mp_MainWindow);
     mp_RetortConfig = new SystemTracking::CRetort(*mp_ServiceConnector, mp_MainWindow);
@@ -88,33 +88,15 @@ CStartup::CStartup() : QObject(),
             new SystemTracking::CRotaryValve(*mp_ServiceConnector, mp_MainWindow);
     mp_LaSystemConfig = new SystemTracking::CLaSystem(*mp_ServiceConnector, mp_MainWindow);
 
+    CONNECTSIGNALSIGNAL(mp_MainControlConfig, ModuleListChanged(), mp_ServiceConnector, ModuleListChanged());
+    CONNECTSIGNALSIGNAL(mp_RetortConfig, ModuleListChanged(), mp_ServiceConnector, ModuleListChanged());
+    CONNECTSIGNALSIGNAL(mp_OvenConfig, ModuleListChanged(), mp_ServiceConnector, ModuleListChanged());
+    CONNECTSIGNALSIGNAL(mp_RotaryValveConfig, ModuleListChanged(), mp_ServiceConnector, ModuleListChanged());
+    CONNECTSIGNALSIGNAL(mp_LaSystemConfig, ModuleListChanged(), mp_ServiceConnector, ModuleListChanged());
+
     (void)connect(mp_ServiceConnector,
                   SIGNAL(ModuleListChanged()),
                   mp_CurrentConfiguration,
-                  SLOT(UpdateGUI()));
-
-    (void)connect(mp_MainControlConfig,
-                  SIGNAL(ModuleListChanged()),
-                  mp_ViewHistory,
-                  SLOT(UpdateGUI()));
-    (void)connect(mp_RetortConfig,
-                  SIGNAL(ModuleListChanged()),
-                  mp_ViewHistory,
-                  SLOT(UpdateGUI()));
-
-    (void)connect(mp_OvenConfig,
-                  SIGNAL(ModuleListChanged()),
-                  mp_ViewHistory,
-                  SLOT(UpdateGUI()));
-
-    (void)connect(mp_RotaryValveConfig,
-                  SIGNAL(ModuleListChanged()),
-                  mp_ViewHistory,
-                  SLOT(UpdateGUI()));
-
-    (void)connect(mp_LaSystemConfig,
-                  SIGNAL(ModuleListChanged()),
-                  mp_ViewHistory,
                   SLOT(UpdateGUI()));
 
     (void)connect(mp_ServiceConnector,

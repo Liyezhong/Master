@@ -46,7 +46,7 @@ typedef struct {
 class CSubModule;
 
 typedef QList<QString> ListOfParameterNames_t;              //!< QList of ParameterNames.
-typedef QHash<QString, Parameter_t*> ListOfParameters_t;    //!< QHash for List of Parameters.
+typedef QMap<QString, Parameter_t*> ListOfParameters_t;   //!< QMap for List of Parameters.
 
 /****************************************************************************/
 /*!

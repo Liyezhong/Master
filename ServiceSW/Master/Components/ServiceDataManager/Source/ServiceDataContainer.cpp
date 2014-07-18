@@ -63,6 +63,7 @@ bool ServiceDataContainer::InitContainers()
     }
     DeviceConfigurationInterface = new CDeviceConfigurationInterface();
     ModuleList = new ServiceDataManager::CModuleDataList();
+    ModuleListArchive = new ServiceDataManager::CInstrumentHistory();
     ServiceParameters = new CServiceParameters();
     m_IsInitialized = true;
     SettingsInterface->SetDataVerificationMode(false);
@@ -76,6 +77,7 @@ bool ServiceDataContainer::DeinitContainers()
     delete SettingsInterface;
     delete ServiceParameters;
     delete ModuleList;
+    delete ModuleListArchive;
     m_IsDeInitialised = true;
     return true;
 }

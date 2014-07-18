@@ -41,6 +41,7 @@ CServiceGUIConnector::CServiceGUIConnector(MainMenu::CMainWindow *p_Parent)
     , mp_OldFile(NULL)
     , m_GuiInit(true)
     , m_MessageDlg(false)
+    , m_Archive(true)
     , mp_ModuleList(0)
     , mp_SettingsInterface(0)
     , mp_ServiceParameters(NULL)
@@ -92,9 +93,10 @@ CServiceGUIConnector::~CServiceGUIConnector()
  *  \brief This slot updates the Modulelist
  */
 /****************************************************************************/
-void CServiceGUIConnector::SetModuleListContainer(ServiceDataManager::CModuleDataList *ModuleList)
+void CServiceGUIConnector::SetModuleListContainer(ServiceDataManager::CModuleDataList *ModuleList, ServiceDataManager::CInstrumentHistory *ModuleListArchive)
 {
     mp_ModuleList = ModuleList;
+    mp_ModuleListArchive = ModuleListArchive;
     emit ModuleListChanged();
 }
 
@@ -127,6 +129,38 @@ void CServiceGUIConnector::SendModuleUpdate(ServiceDataManager::CModule &Module)
     }
     qDebug() << Module.GetSerialNumber() << endl;
     qDebug() << "Module Updated";
+}
+
+bool CServiceGUIConnector::UpdateInstrumentHistory()
+{
+    bool Result(false);
+
+    if(mp_MainWindow->GetSaMUserMode() == "Service") {
+        try {
+            CHECKPTR(mp_ModuleList)
+            CHECKPTR(mp_ModuleListArchive)
+
+            if (m_Archive) {
+                (void) mp_ModuleListArchive->AddModuleListInfo(mp_ModuleList);
+                Result = mp_ModuleListArchive->Write();
+                m_Archive = false;
+            }
+            if (!m_Archive || (m_Archive && Result)) {
+                Result = mp_ModuleList->Write();
+            }
+        }
+        CATCHALL();
+    }
+    else if (mp_MainWindow->GetSaMUserMode() == "Manufacturing") {
+        try {
+            CHECKPTR(mp_ModuleList)
+
+            /* Emit a signal to update module list */
+            Result = mp_ModuleList->Write();
+        }
+        CATCHALL();
+    }
+    return Result;
 }
 
 bool CServiceGUIConnector::ReloadModuleList()
@@ -374,6 +408,11 @@ void CServiceGUIConnector::OnEventReportAck(NetCommands::ClickedButton_t Clicked
 ServiceDataManager::CModuleDataList* CServiceGUIConnector::GetModuleListContainer(void)
 {
     return mp_ModuleList;
+}
+
+ServiceDataManager::CInstrumentHistory* CServiceGUIConnector::GetModuleListArchiveContainer(void)
+{
+    return mp_ModuleListArchive;
 }
 
 DataManager::CDeviceConfigurationInterface *
