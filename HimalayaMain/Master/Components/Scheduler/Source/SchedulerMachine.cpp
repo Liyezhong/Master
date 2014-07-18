@@ -114,6 +114,14 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     // Run Handling related logic
     mp_PssmInitState->addTransition(this, SIGNAL(RunPreTest()), mp_PssmPreTestState.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(ResumeFillingRVRodHeating()), mp_PssmFillingHeatingRVState.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(ResumeFillingLevelSensorHeating()), mp_PssmFillingLevelSensorHeatingState.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(ResumeFiling()), mp_PssmFillingState.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVMoveToSeal()), mp_PssmRVMoveToSealState.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(ResumeProcessing()), mp_PssmProcessingState.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVMoveTube()), mp_PssmRVMoveToTubeState.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(ResumeDraining()), mp_PssmDrainingState.data());
+    mp_PssmInitState->addTransition(this, SIGNAL(ResumeRVPosChange()), mp_PssmRVPosChangeState.data());
 
     mp_PssmPreTestState->addTransition(mp_ProgramSelfTest.data(), SIGNAL(TasksDone()), mp_PssmFillingHeatingRVState.data());
     mp_PssmFillingHeatingRVState->addTransition(this, SIGNAL(sigRVRodHeatingReady()), mp_PssmFillingLevelSensorHeatingState.data());
@@ -287,6 +295,46 @@ void CSchedulerStateMachine::SendRunSignal()
 void CSchedulerStateMachine::SendRunComplete()
 {
     emit RunComplete();
+}
+
+void CSchedulerStateMachine::SendResumeFillingRVRodHeating()
+{
+    emit ResumeFillingRVRodHeating();
+}
+
+void CSchedulerStateMachine::SendResumeFillingLevelSensorHeating()
+{
+    emit ResumeFillingLevelSensorHeating();
+}
+
+void CSchedulerStateMachine::SendResumeFiling()
+{
+    emit ResumeFiling();
+}
+
+void CSchedulerStateMachine::SendResumeRVMoveToSeal()
+{
+    emit ResumeRVMoveToSeal();
+}
+
+void CSchedulerStateMachine::SendResumeProcessing()
+{
+    emit ResumeProcessing();
+}
+
+void CSchedulerStateMachine::SendResumeRVMoveTube()
+{
+    emit ResumeRVMoveTube();
+}
+
+void CSchedulerStateMachine::SendResumeDraining()
+{
+    emit ResumeDraining();
+}
+
+void CSchedulerStateMachine::SendResumeRVPosChange()
+{
+    emit ResumeRVPosChange();
 }
 
 void CSchedulerStateMachine::SendErrorSignal()

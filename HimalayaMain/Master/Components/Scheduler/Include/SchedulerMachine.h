@@ -192,6 +192,79 @@ public:
      */
     /****************************************************************************/
     void SendRunComplete();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SendResumeFillingRVRodHeating
+     *
+     *  \return from SendResumeFillingRVRodHeating
+     */
+    /****************************************************************************/
+    void SendResumeFillingRVRodHeating();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SendResumeFillingLevelSensorHeating
+     *
+     *  \return from SendResumeFillingLevelSensorHeating
+     */
+    /****************************************************************************/
+    void SendResumeFillingLevelSensorHeating();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SendResumeFiling
+     *
+     *  \return from SendResumeFiling
+     */
+    /****************************************************************************/
+    void SendResumeFiling();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SendResumeRVMoveToSeal
+     *
+     *  \return from SendResumeRVMoveToSeal
+     */
+    /****************************************************************************/
+    void SendResumeRVMoveToSeal();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SendResumeProcessing
+     *
+     *  \return from SendResumeProcessing
+     */
+    /****************************************************************************/
+    void SendResumeProcessing();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SendResumeRVMoveTube
+     *
+     *  \return from SendResumeRVMoveTube
+     */
+    /****************************************************************************/
+    void SendResumeRVMoveTube();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SendResumeDraining
+     *
+     *  \return from SendResumeDraining
+     */
+    /****************************************************************************/
+    void SendResumeDraining();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function SendResumeRVPosChange
+     *
+     *  \return from SendResumeRVPosChange
+     */
+    /****************************************************************************/
+    void SendResumeRVPosChange();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function SendErrorSignal
@@ -843,6 +916,23 @@ signals:
     */
    /****************************************************************************/
    void RunPreTest();
+
+   void ResumeFillingRVRodHeating();
+
+   void ResumeFillingLevelSensorHeating();
+
+   void ResumeFiling();
+
+   void ResumeRVMoveToSeal();
+
+   void ResumeProcessing();
+
+   void ResumeRVMoveTube();
+
+   void ResumeDraining();
+
+   void ResumeRVPosChange();
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal RunComplete

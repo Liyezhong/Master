@@ -113,6 +113,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
     QString ProgramStatusFilePath = "../Settings/ProgramStatus.txt";
     m_IsCleaningProgram = false;
     QFile ProgramStatusFile(ProgramStatusFilePath);
+    m_CurrentStepState = PSSM_INIT;
 
     if(!ProgramStatusFile.exists())
         CreateProgramStatusFile(&ProgramStatusFile);
@@ -674,14 +675,49 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 // if cleaning program just move RV, not precheck
                 m_SchedulerMachine->SendRunPreTest();
+                switch (m_CurrentStepState)
+                {
+                case PSSM_INIT:
+                    m_SchedulerMachine->SendRunPreTest();
+                    break;
+                case PSSM_FILLING_RVROD_HEATING:
+                    m_SchedulerMachine->SendResumeFillingRVRodHeating();
+                    break;
+                case PSSM_FILLING_LEVELSENSOR_HEATING:
+                    m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
+                    break;
+                case PSSM_FILLING:
+                    m_SchedulerMachine->SendResumeFiling();
+                    break;
+                case PSSM_RV_MOVE_TO_SEAL:
+                    m_SchedulerMachine->SendResumeRVMoveToSeal();
+                    break;
+               case PSSM_PROCESSING:
+                    m_SchedulerMachine->SendResumeProcessing();
+                    break;
+               case PSSM_RV_MOVE_TO_TUBE:
+                    m_SchedulerMachine->SendResumeRVMoveTube();
+                    break;
+                case PSSM_DRAINING:
+                    m_SchedulerMachine->SendResumeDraining();
+                    break;
+                case PSSM_RV_POS_CHANGE:
+                    m_SchedulerMachine->SendResumeRVPosChange();
+                    break;
+                default:
+                    break;
+                }
+
             }
         }
         else if (PSSM_PRETEST == stepState)
         {
+            m_CurrentStepState = PSSM_PRETEST;
            m_SchedulerMachine->HandlePssmPreTestWorkFlow(cmdName, retCode);
         }
         else if (PSSM_FILLING_RVROD_HEATING == stepState)
         {
+            m_CurrentStepState = PSSM_FILLING_RVROD_HEATING;
             if(m_CurProgramStepInfo.reagentGroup == "RG6")
             {
                 if(mp_HeatingStrategy->CheckRVHeatingStatus())
@@ -697,6 +733,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if (PSSM_FILLING_LEVELSENSOR_HEATING == stepState)
         {
+            m_CurrentStepState = PSSM_FILLING_LEVELSENSOR_HEATING;
             if(mp_HeatingStrategy->CheckLevelSensorHeatingStatus())
             else if(m_CurProgramStepInfo.reagentGroup != "RG6")
             {
@@ -724,6 +761,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_FILLING == stepState)
         {
+            m_CurrentStepState = PSSM_FILLING;
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
                 LogDebug(QString("Scheduler step: READY_TO_FILL is abort to PAUSE"));
@@ -747,6 +785,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_RV_MOVE_TO_SEAL == stepState)
         {
+            m_CurrentStepState = PSSM_RV_MOVE_TO_SEAL;
             RVPosition_t targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
             if(IsRVRightPosition(1))
             {
@@ -779,6 +818,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_PROCESSING == stepState)
         {
+            m_CurrentStepState = PSSM_PROCESSING;
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
                 if(m_CurProgramStepInfo.isPressure || m_CurProgramStepInfo.isVacuum)
@@ -862,6 +902,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
         else if(PSSM_RV_MOVE_TO_TUBE == stepState)
         {
+            m_CurrentStepState = PSSM_RV_MOVE_TO_TUBE;
             if(IsRVRightPosition(0))
             {
                 if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
@@ -892,6 +933,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_DRAINING == stepState)
         {
+            m_CurrentStepState = PSSM_DRAINING;
             if(m_PauseToBeProcessed)
             {
                 RVPosition_t sealPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
@@ -939,6 +981,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_RV_POS_CHANGE == stepState)
         {
+            m_CurrentStepState = PSSM_RV_POS_CHANGE;
             if(IsRVRightPosition(2))
             {
                 if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
@@ -2441,7 +2484,7 @@ bool SchedulerMainThreadController::BottleCheck()
         return false;
     }
 
-    ProgramStationInfo_t stationInfo = m_ProgramStationList.dequeue();
+    ProgramStationInfo_t stationInfo = m_ProgramStationList.head();
     RVPosition_t tubePos = GetRVTubePositionByStationID(stationInfo.StationID);
     QString reagentGrpId = stationInfo.ReagentGroupID;
 

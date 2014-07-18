@@ -315,6 +315,8 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 }
                 else
                 {
+                    //dequeue the current bottle
+                    mp_SchedulerThreadController->DequeueBottle();
                     m_BottleChkFlag = true;
                 }
             }

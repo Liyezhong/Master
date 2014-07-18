@@ -246,6 +246,7 @@ typedef enum
         bool m_IsCleaningProgram;                                 ///< cleaning program run or not
         QMap<QString, QString> m_ProgramStatusFileMap;        ///< the map of program status
         BottlePosition_t    m_CurrentBottlePosition;          ///< the current BottlePosition for bottle check
+        SchedulerStateMachine_t m_CurrentStepState;           ///< The current protocol(program) step, which is used to recovery from RC_Restart
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -983,6 +984,14 @@ protected:
          */
         /****************************************************************************/
         bool BottleCheck();
+        /****************************************************************************/
+        /**
+         *  \brief  Dequeue the bottle from station list
+         *  \param  void
+         *  \return void
+         */
+        /****************************************************************************/
+        void DequeueBottle() { m_ProgramStationList.dequeue(); }
 
         /****************************************************************************/
         /*!
