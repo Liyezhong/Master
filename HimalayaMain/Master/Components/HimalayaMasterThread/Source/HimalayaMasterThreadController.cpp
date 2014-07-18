@@ -180,7 +180,8 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
     CONNECTSIGNALSLOT(mp_SWUpdateManager, WaitDialog(bool, Global::WaitDialogText_t),
                       this, ShowWaitDialog(bool,Global::WaitDialogText_t));
     CONNECTSIGNALSLOT(mp_SWUpdateManager, SWUpdateStatus(bool),
-                      this, SWUpdateProgress(bool))
+                      this, SWUpdateProgress(bool));
+    CONNECTSIGNALSLOT(this, UpdateSoftwareFromRC(), mp_SWUpdateManager, OnSWUpdateFromRC());
 
     //Initialize program Startable manager
     m_ProgramStartableManager.Init();
@@ -199,6 +200,9 @@ void HimalayaMasterThreadController::CreateAndInitializeObjects() {
     RegisterCommandForProcessing<Global::CmdShutDown, HimalayaMasterThreadController>
                 (&HimalayaMasterThreadController::ShutdownHandler, this);
 		CONNECTSIGNALSLOT(this, RemoteCareExport(const quint8 &), this, RemoteCareExportData(const quint8 &));
+
+        CONNECTSIGNALSLOT(this, SendRCCmdToGui(const Global::CommandShPtr_t &),
+                                     this, SendRCCmdToGuiChannel(const Global::CommandShPtr_t &));
     }
     catch (...) {
         qDebug()<<"Create And Initialize Failed";
@@ -1310,6 +1314,8 @@ void HimalayaMasterThreadController::SWUpdateProgress(bool InProgress) {
     else if (GetCurrentIdleState() == Himalaya::SW_UPDATE_STATE) {
         SetUserActionState(Himalaya::NORMAL_USER_ACTION_STATE);
     }
+
+    emit InformRCSWUpdateStatus(InProgress);
 }
 
 /****************************************************************************/
@@ -1320,4 +1326,10 @@ void HimalayaMasterThreadController::ShowWaitDialog(bool Display, Global::WaitDi
     p_Command->m_WaitDialogText = WaitDialogText;
     SendCommand(Global::CommandShPtr_t(p_Command),m_CommandChannelGui);
 }
+
+void HimalayaMasterThreadController::SendRCCmdToGuiChannel(const Global::CommandShPtr_t &Cmd)
+{
+    (void)SendCommand(Cmd, m_CommandChannelGui);
+}
+
 } // end namespace Himalaya

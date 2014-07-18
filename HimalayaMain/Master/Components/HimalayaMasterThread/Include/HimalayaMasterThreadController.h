@@ -229,74 +229,14 @@ private:
             m_ImportExportThreadIsRunning = true;
 
             // create and connect scheduler controller
-            ImportExport::ImportExportThreadController *ImportExportThreadController
+            ImportExport::ImportExportThreadController *p_ImportExportThreadController
                     = new ImportExport::ImportExportThreadController(THREAD_ID_IMPORTEXPORT, *mp_DataManager,
                                                                      CommandData::NAME,
                                                                      (const_cast<CommandData&>(Cmd)).GetCommandData());
-            try {
-                // connect the siganl slot mechanism to create the process.
-				ImportExportThreadController->SetEventLogFileName(GetEventLoggerBaseFileName());
-                CONNECTSIGNALSLOT(ImportExportThreadController,
-                                  RequestFileSelectionToImport(QStringList), this,
-                                  SendFileSelectionToGUI(QStringList));
-                // connect the siganl slot mechanism to set directory name.
-                CONNECTSIGNALSLOT(this,
-                                  ImportSelectedFiles(QStringList), ImportExportThreadController,
-                                  StartImportingFiles(QStringList));
-                CONNECTSIGNALSLOT(ImportExportThreadController, StartExportProcess(QString), this, StartExportProcess(QString));
-            }
-            catch (...){
-                SendAcknowledgeNOK(Ref, AckCommandChannel, "Unable to connect to signal slot");
-                m_ImportExportThreadIsRunning = false;
-                return;
-            }
+            p_ImportExportThreadController->SetEventLogFileName(GetEventLoggerBaseFileName());
 
-            try {
-                // connect the siganl slot mechanism to create the containers for the Import.
-                CONNECTSIGNALSLOT(ImportExportThreadController,
-                              ThreadFinished(const bool, QStringList, quint32,bool, bool), this,
-                              ImportExportThreadFinished(const bool, QStringList, quint32, bool, bool));
-            }
-            catch (...){
-                SendAcknowledgeNOK(Ref, AckCommandChannel, "Unable to connect to signal slot");
-                m_ImportExportThreadIsRunning = false;
-                return;
-            }
-
-            try {
-                // connect the siganl slot mechanism to create the containers for the Import.
-                CONNECTSIGNALSLOT(ImportExportThreadController,
-                              RequestDayRunLogFileNames(QString), this,
-                              RequestDayRunLogFileNames(QString));
-            }
-            catch (...){
-                SendAcknowledgeNOK(Ref, AckCommandChannel, "Unable to connect to signal slot");
-                m_ImportExportThreadIsRunning = false;
-                return;
-            }
-
-            try {
-                // connect the siganl slot mechanism to set directory name.
-                CONNECTSIGNALSLOT(this,
-                              DayRunLogDirectoryName(const QString &), ImportExportThreadController,
-                              SetDayRunLogFilesDirectoryName(const QString &));
-            }
-            catch (...){
-                SendAcknowledgeNOK(Ref, AckCommandChannel, "Unable to connect to signal slot");
-                m_ImportExportThreadIsRunning = false;
-                return;
-            }
-
-
-
-
-            //ImportExportThreadController->setDataContainer(&mp_DataManager);
-            AddAndConnectController(ImportExportThreadController, &m_CommandChannelImportExport,
-                                    static_cast<int>(IMPORT_EXPORT_THREAD));            
-            // start the export process
-            StartSpecificThreadController(static_cast<int>(IMPORT_EXPORT_THREAD));
-        }
-        else {
+            RegisterImportExportSignalAndSlots(p_ImportExportThreadController, CommandData::NAME);
+        } else {
             // send negative acknowledge
             SendAcknowledgeNOK(Ref, AckCommandChannel, "Thread is already running");
         }
@@ -834,6 +774,90 @@ signals:
      */
     /****************************************************************************/
     void InitFailed();
+
+private slots:
+
+    /****************************************************************************/
+    /**
+     * \brief Slot for to send command to gui channel from RemoteCareManager.
+     *
+     */
+    /****************************************************************************/
+    void SendRCCmdToGuiChannel(const Global::CommandShPtr_t &);
+
+    /****************************************************************************/
+    /**
+     * \brief Register siganl slots of import export thread controller.
+     *
+     * \iparam p_ImportExportThreadController - pointer of ImportExportThreadController
+     *
+     * \iparam CommandName - Name of the command
+     *
+     */
+    /****************************************************************************/
+    void RegisterImportExportSignalAndSlots(ImportExport::ImportExportThreadController *p_ImportExportThreadController,
+                                            QString CommandName)
+    {
+        try {
+            // connect the signal slots which are belongs to import
+            if (CommandName.contains("Import")) {
+                // connect the siganl slot mechanism to create the containers for the Import.
+                CONNECTSIGNALSLOT(p_ImportExportThreadController,
+                                  RequestFileSelectionToImport(QStringList), this,
+                                  SendFileSelectionToGUI(QStringList));
+
+                // connect the siganl slot mechanism to set directory name.
+                CONNECTSIGNALSLOT(this,
+                                  ImportSelectedFiles(QStringList), p_ImportExportThreadController,
+                                  StartImportingFiles(QStringList));
+
+            }
+            else {
+                // connect the siganl slot mechanism to create the process.
+                CONNECTSIGNALSLOT(p_ImportExportThreadController, StartExportProcess(QString), this, StartExportProcess(QString));
+
+                // connect the siganl slot mechanism to create the containers for the Import.
+                CONNECTSIGNALSLOT(p_ImportExportThreadController,
+                                  RequestDayRunLogFileNames(QString), this, RequestDayRunLogFileNames(QString));
+
+                // connect the siganl slot mechanism to set directory name.
+                CONNECTSIGNALSLOT(this,
+                                  DayRunLogDirectoryName(const QString &), p_ImportExportThreadController,
+                                  SetDayRunLogFilesDirectoryName(const QString &));
+
+//                // connect the siganl slot mechanism to set directory name.
+//                CONNECTSIGNALSIGNAL(p_ImportExportThreadController,
+//                                    Export(QString), this, RemoteCareExportFinished(QString));
+            }
+
+            // connect the siganl slot mechanism to create the containers for the Import.
+            CONNECTSIGNALSLOT(p_ImportExportThreadController,
+                              ThreadFinished(const bool, QStringList, quint32, bool, bool), this,
+                              ImportExportThreadFinished(const bool, QStringList , quint32, bool, bool));
+        }
+        catch (...){
+            m_ImportExportThreadIsRunning = false;
+            if (m_RemoteCareExportRequest) {
+                SendImportExportAckNOK(m_ImportExportCommandRef, *mp_ImportExportAckChannel,
+                                       Global::UITranslator::TranslatorInstance().Translate(Global::TranslatableString(EVENT_IMPORTEXPORT_SIGNALSLOTERROR), true));
+
+                m_CurrentUserActionState = NORMAL_USER_ACTION_STATE;
+            }
+            else {
+                m_RemoteCareExportRequest = false;
+                // emit a siganl with empty string
+                emit RemoteCareExportFinished("");
+            }
+            return;
+        }
+
+        //ImportExportThreadController->setDataContainer(&mp_DataManager);
+        AddAndConnectController(p_ImportExportThreadController, &m_CommandChannelImportExport,
+                                THREAD_ID_IMPORTEXPORT);
+        // start the export process
+        StartSpecificThreadController(THREAD_ID_IMPORTEXPORT);
+    }
+
 }; // end class HimalayaMasterThreadController
 
 } // end namespace Himalaya

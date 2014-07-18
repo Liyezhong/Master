@@ -69,6 +69,9 @@
 #include <NetCommands/Include/CmdDayRunLogRequest.h>
 #include <NetCommands/Include/CmdDayRunLogRequestFile.h>
 #include <NetCommands/Include/CmdGuiInit.h>
+#include "NetCommands/Include/CmdRCSoftwareUpdate.h"
+#include "NetCommands/Include/CmdRCRequestRemoteSession.h"
+
 #include "MainMenu/Include/MsgBoxManager.h"
 
 namespace MsgClasses
@@ -217,7 +220,7 @@ public slots:
      */
     /****************************************************************************/
     void SendProgramUpdate(DataManager::CProgram &Program);
-    /****************************************************************************/
+    /******************const int RC_REQUEST_COMMAND_TIME_OUT = 30000;        //!< Remote Care Command Timeout**********************************************************/
     /*!
      *  \brief  Definition/Declaration of SendProgramAdd
      */
@@ -241,6 +244,12 @@ public slots:
      */
     /****************************************************************************/
     void SendSWUpdate(bool USBUpdate);
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of SendRCSWUpdate
+     */
+    /****************************************************************************/
+    void SendRCSWUpdate();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of SendProgramColorUpdate
@@ -664,6 +673,15 @@ signals:
      */
     /****************************************************************************/
     void DisplaySelectionDialog(QStringList FileList);
+    /****************************************************************************/
+    /*!
+     *  \brief This signal is emitted when GUI receives remote care software update.
+     *
+     *  \iparam Status = True for enabling the checkbox else False.
+     *
+     */
+    /****************************************************************************/
+    void EnableRemoteSWButton(bool Status);
 
 protected:
     void OnImportFileSelection(Global::tRefType Ref, const MsgClasses::CmdDataImportFiles &Command);
@@ -802,6 +820,9 @@ private:
     void DayRunLogReplyHandler(Global::tRefType Ref, const NetCommands::CmdDayRunLogReply &Command);
     void OnCmdGuiInit(Global::tRefType Ref, const NetCommands::CmdGuiInit &Command);
     void ShowMessageDialog(Global::GUIMessageType MessageType, QString MessageText);
+    void OnRCSoftwareUpdateHandler(Global::tRefType Ref, const RemoteCare::CmdRCSoftwareUpdate &Command);
+    void OnRCRequestRemoteSessionHandler(Global::tRefType Ref,
+                                          const RemoteCare::CmdRCRequestRemoteSession &Command);
 
     NetLayer::CMasterLinkDevice m_NetworkObject;    //!< The network layer
     MainMenu::CMainWindow *mp_MainWindow;           //!< Main window of the GUI

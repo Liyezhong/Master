@@ -86,6 +86,7 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     CONNECTSIGNALSLOT(mp_Data, UserSettingsUpdated(), this, UserSettingsUpdated());
     CONNECTSIGNALSLOT(mp_Ui->pageDataManagement, ExecSending(const QString, const QStringList &), mp_Data, SendDataImportExport(const QString , const QStringList &));
     CONNECTSIGNALSLOT(mp_Ui->pageDataManagement, EmitSWUpdate(bool), mp_Data, SendSWUpdate(bool));
+    CONNECTSIGNALSLOTGUI(mp_Ui->pageDataManagement, UpdateSoftwareFromRC(), mp_Data, SendRCSWUpdate());
     CONNECTSIGNALSLOT(p_Data, DisplaySelectionDialog(QStringList), mp_Ui->pageDataManagement, DisplaySelectionDialog(QStringList));
     CONNECTSIGNALSLOT(mp_Ui->pageDataManagement, SelectedImportFileList(QStringList), p_Data, SendRequestedFilesToImport(QStringList));
     CONNECTSIGNALSLOT(this, UserLevelChanged(QDataStream &), mp_Ui->pageDataManagement, OnUserLevelChanged(QDataStream &));
@@ -100,6 +101,7 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
     CONNECTSIGNALSLOT(mp_Ui->pageLanguage, UserSettingsChanged(DataManager::CUserSettings &), mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Ui->pageNetwork, SettingsChanged(DataManager::CUserSettings &), mp_Data, SendUpdatedSettings(DataManager::CUserSettings &));
     CONNECTSIGNALSLOT(mp_Data, RevertChangedUserSettings(), this, UserSettingsUpdated());
+    CONNECTSIGNALSLOTGUI(mp_Data, EnableRemoteSWButton(bool), mp_Ui->pageDataManagement, SetRemoteSWButtonState(bool));
 }
 
 /****************************************************************************/

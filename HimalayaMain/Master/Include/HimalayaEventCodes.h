@@ -133,6 +133,7 @@ const quint32 EVENT_IMPORT_ARCHIVE_FILE_FORMAT_NOT_PROPER	= 33947653;	///< Impor
 const quint32 EVENT_IMPORTEXPORT_NO_USB	= 33947649;	///< No USB devices found in the system to import files
 
 const quint32 EVENT_IMPORTEXPORT_THREADRUNNING	= 33947665;	///< ImportExport thread already running
+const quint32 EVENT_IMPORTEXPORT_SIGNALSLOTERROR = 33947668; ///< Not able to connect to signal slot
 
 const quint32 EVENT_IMPORT_FAILED	= 33947664;	///< Import failed
 

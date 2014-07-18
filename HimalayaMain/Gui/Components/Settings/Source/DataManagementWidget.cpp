@@ -95,12 +95,14 @@ void CDataManagementWidget:: ServiceExportDialog()
     Type << "Service";
     emit ExecSending("ServiceExport", Type);
 }
+
 void CDataManagementWidget:: SaveToUSBDialog()
 {
     QStringList Type;
     Type << "User";
     emit ExecSending("UserExport", Type);
 }
+
 void CDataManagementWidget:: ImportDialog()
 {
     QStringList Type;
@@ -115,6 +117,7 @@ void CDataManagementWidget:: SWUpdate()
 
 void CDataManagementWidget:: RemoteSWUpdate()
 {
+    emit UpdateSoftwareFromRC();
     emit EmitSWUpdate(false);
 }
 
@@ -228,7 +231,19 @@ void CDataManagementWidget::RetranslateUI()
 void CDataManagementWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow)
 {
     mp_MainWindow = p_MainWindow;
-   // mp_DataManagement->SetPtrToMainWindow(mp_MainWindow);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Sets the remote SW button state.
+ *
+ *  \iparam State = True for enable and False for disable.
+ *
+ */
+/****************************************************************************/
+void CDataManagementWidget::SetRemoteSWButtonState(bool State)
+{
+    mp_Ui->RemoteSWUpdateButton->setEnabled(State);
 }
 
 } //end of namespace

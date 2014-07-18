@@ -91,6 +91,7 @@ private slots:
     /****************************************************************************/
     void RemoteSWUpdate();
     void DisplaySelectionDialog(QStringList FileList);
+    void SetRemoteSWButtonState(bool State);
 
 public slots:
     /****************************************************************************/
@@ -124,6 +125,14 @@ signals:
      */
     /****************************************************************************/
     void SelectedImportFileList(QStringList FileList);
+
+    /****************************************************************************/
+    /**
+     * \brief This signal is emitted when RCsoftwre update button is clicked.
+     *
+     */
+    /****************************************************************************/
+    void UpdateSoftwareFromRC();
 };
 
 } //end of namespace

@@ -46,9 +46,9 @@
 #include <QDesktopWidget>
 #include <Core/Include/ReagentStatusModel.h>
 
-
 namespace Core {
 const int COMMAND_TIME_OUT = 5000;       ///<  Definition/Declaration of variable COMMAND_TIME_OUT
+const int RC_REQUEST_COMMAND_TIME_OUT = 30000;        //!< Remote Care Command Timeout
 
 /****************************************************************************/
 /*!
@@ -121,6 +121,9 @@ CDataConnector::CDataConnector(MainMenu::CMainWindow *p_Parent) : DataManager::C
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdLanguageFile>(&CDataConnector::LanguageFileHandler, this);
     m_NetworkObject.RegisterNetMessage<MsgClasses::CmdChangeUserSettings>(&CDataConnector::SettingsUpdateHandler, this);
 
+    // RemoteCare commands
+    m_NetworkObject.RegisterNetMessage<RemoteCare::CmdRCSoftwareUpdate>(&CDataConnector::OnRCSoftwareUpdateHandler, this);
+    m_NetworkObject.RegisterNetMessage<RemoteCare::CmdRCRequestRemoteSession>(&CDataConnector::OnRCRequestRemoteSessionHandler, this);
 
     //EventHandlercomamnds
     m_NetworkObject.RegisterNetMessage<NetCommands::CmdEventReport>(&CDataConnector::EventReportHandler, this);
@@ -1777,6 +1780,127 @@ void CDataConnector::StationParaffinBathStatusHandler(Global::tRefType Ref, cons
 {
     m_NetworkObject.SendAckToMaster(Ref, Global::AckOKNOK(true));
     emit StationSuckDrain(Command);
+}
+
+// RemoteCare / arthur 2014/07/14
+/****************************************************************************/
+/*!
+ *  \brief Handler for Remote Care software update.
+ *
+ *  \iparam Ref = Command reference
+ *  \iparam Command = CmdRCSoftwareUpdate class object
+ */
+/****************************************************************************/
+void CDataConnector::OnRCSoftwareUpdateHandler(Global::tRefType Ref, const RemoteCare::CmdRCSoftwareUpdate &Command)
+{
+    Q_UNUSED(Ref);
+    Q_UNUSED(Command);
+
+    if (mp_MessageDlg) {
+        delete mp_MessageDlg;
+        mp_MessageDlg = NULL;
+    }
+
+    bool EnableUpdateButton = false;
+
+    mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+    mp_MessageDlg->SetTitle(QApplication::translate("Core::CDataConnector", "Information",
+                                                    0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "Ok",
+                                                           0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->HideButtons();
+
+    if(RemoteCare::SWUpdate_Available == Command.GetUpdateType()) {
+        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
+                        "New SW is available. Click on Remote SW update to start the update.",
+                                                       0, QApplication::UnicodeUTF8));
+        EnableUpdateButton = true;
+    }
+    else if(RemoteCare::SWUpdate_NotAvailable == Command.GetUpdateType()) {
+        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
+                        "New SW is not available",
+                                                       0, QApplication::UnicodeUTF8));
+        EnableUpdateButton = false;
+    }
+    else if(RemoteCare::SWUpdate_DownloadFailed == Command.GetUpdateType()) {
+        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
+                        "Downloading the New SW from RCServer failed. Please contact service.",
+                                                       0, QApplication::UnicodeUTF8));
+        EnableUpdateButton = false;
+    }
+    else {
+        return;
+    }
+
+    mp_MessageDlg->HideButtons();
+    if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
+        emit EnableRemoteSWButton(EnableUpdateButton);
+    }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Send Software Update from RemoteCare command to Main.
+ */
+/****************************************************************************/
+void CDataConnector::SendRCSWUpdate()
+{
+    RemoteCare::CmdRCSoftwareUpdate Command(COMMAND_TIME_OUT, RemoteCare::SWUpdate_StartDownload);
+    (void)m_NetworkObject.SendCmdToMaster(Command, &CDataConnector::OnAckTwoPhase, this);
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Handler for Remote Care software update.
+ *
+ *  \iparam Ref = Command reference
+ *  \iparam Command = CmdRCRequestRemoteSession class object
+ */
+/****************************************************************************/
+void CDataConnector::OnRCRequestRemoteSessionHandler(Global::tRefType Ref, const RemoteCare::CmdRCRequestRemoteSession &Command)
+{
+    Q_UNUSED(Ref);
+    Q_UNUSED(Command);
+
+    if (mp_MessageDlg) {
+        delete mp_MessageDlg;
+        mp_MessageDlg = NULL;
+    }
+
+    if(RemoteCare::RemoteSession_Requested == Command.GetRequestType()) {
+        mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+        mp_MessageDlg->SetTitle(QApplication::translate("Core::CDataConnector", "Confirmation Message",
+                                                         0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "Ok",
+                                                               0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(3, QApplication::translate("Core::CDataConnector", "Cancel",
+                                                               0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideCenterButton();
+        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "Remote Session has been requested by remote user",
+                                                        0, QApplication::UnicodeUTF8));
+        if (mp_MessageDlg->exec() == (int)QDialog::Accepted) {
+            // Send command CmdRCRequestRemoteSession on "ok" pressed.
+            RemoteCare::CmdRCRequestRemoteSession Cmd(RC_REQUEST_COMMAND_TIME_OUT, RemoteCare::RemoteSession_Accepted);
+            (void)m_NetworkObject.SendCmdToMaster(Cmd, &CDataConnector::OnAckTwoPhase, this);
+        }
+        else {
+            // Send command CmdRCRequestRemoteSession on "Cancel" pressed.
+            RemoteCare::CmdRCRequestRemoteSession Cmd(RC_REQUEST_COMMAND_TIME_OUT, RemoteCare::RemoteSession_Denied);
+            (void)m_NetworkObject.SendCmdToMaster(Cmd, &CDataConnector::OnAckTwoPhase, this);
+        }
+    }
+    else if(RemoteCare::RemoteSession_Ended == Command.GetRequestType()) {
+
+        mp_MessageDlg = new MainMenu::CMessageDlg(mp_MainWindow);
+        mp_MessageDlg->SetTitle(QApplication::translate("Core::CDataConnector", "Information Message",
+                                                         0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetButtonText(1, QApplication::translate("Core::CDataConnector", "Ok",
+                                                               0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector", "Remote Session ended by remote user",
+                                                        0, QApplication::UnicodeUTF8));
+        (void)mp_MessageDlg->exec();
+    }
 }
 
 

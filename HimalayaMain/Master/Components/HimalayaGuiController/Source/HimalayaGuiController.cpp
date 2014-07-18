@@ -54,6 +54,10 @@
 #include <NetCommands/Include/CmdAcknEventReport.h>
 #include <NetCommands/Include/CmdGuiInit.h>
 #include <NetCommands/Include/CmdSWUpdate.h>
+#include <NetCommands/Include/CmdRCRequestRemoteSession.h>
+#include <NetCommands/Include/CmdRCSoftwareUpdate.h>
+#include <NetCommands/Include/CmdRemoteCareState.h>
+
 #include "DataManager/Containers/UserSettings/Commands/Include/CmdAlarmToneTest.h"
 
 #include "HimalayaDataContainer/Containers/ReagentStations/Commands/Include/CmdStationChangeReagent.h"
@@ -346,6 +350,18 @@ void HimalayaGuiController::RegisterThreadAcksAndTimeouts()
     //SW Update
     RegisterExternalMessage<NetCommands::CmdSWUpdate, HimalayaGui::HimalayaGuiController>
                 (&HimalayaGuiController::ForwardCmdFromExternalProcess<NetCommands::CmdSWUpdate>, this);
+
+    // RemoteCare arthur 2014/7/14
+    RegisterExternalMessage<RemoteCare::CmdRCRequestRemoteSession, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::ForwardCmdFromExternalProcess<RemoteCare::CmdRCRequestRemoteSession>, this);
+    RegisterExternalMessage<RemoteCare::CmdRCSoftwareUpdate, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::ForwardCmdFromExternalProcess<RemoteCare::CmdRCSoftwareUpdate>, this);
+    RegisterCommandForProcessing<NetCommands::CmdRemoteCareState, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<NetCommands::CmdRemoteCareState>, this);
+    RegisterCommandForProcessing<RemoteCare::CmdRCRequestRemoteSession, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<RemoteCare::CmdRCRequestRemoteSession>, this);
+    RegisterCommandForProcessing<RemoteCare::CmdRCSoftwareUpdate, HimalayaGui::HimalayaGuiController>
+            (&HimalayaGuiController::SendCmdToExternalProcess<RemoteCare::CmdRCSoftwareUpdate>, this);
 }
 
 /****************************************************************************/
