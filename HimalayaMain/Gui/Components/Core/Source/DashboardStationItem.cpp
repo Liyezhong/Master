@@ -86,9 +86,11 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
         //For Cleaning Reagent, generate the raw image used for BDiagpattern
         QPixmap pix(200, 200);
         pix.fill(Qt::transparent);
+
         QPainter painter(&pix);
         painter.setBrush(Qt::white);
         painter.setPen(Qt::white);
+
         for (int i=0; i<200; i+=8)
         {
             painter.drawRect(i,0,4,200);
@@ -96,7 +98,8 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
         QMatrix matrix;
         (void)matrix.rotate(45.0);
         QPixmap img = pix.transformed(matrix);
-        img = img.copy(200/2, 200/2, 200/2, 200/2);
+        //img = img.copy(200/2, 200/2, 200/2, 200/2);
+        img = img.copy(100, 100, 100, 98);
         m_RawImage4Cleaning = img;
     }
     UpdateImage();
@@ -524,6 +527,7 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
     {
         reagentColorValue = m_CurrentReagentColorValue;
     }
+
     if(m_StationSelected) {
         QColor color(reagentColorValue);
         if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup || STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
@@ -547,6 +551,7 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         Painter.setPen(QColor(Qt::gray));
         Painter.setBrush(QColor(Qt::gray));
     }
+
     if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
     {
         // Since the Painter is rotated, Width and Height Axis Changes.
@@ -572,7 +577,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         {
             path.addRect(QRect(4, m_BottleBoundingRectHeight - fillBottleHeight, 8, cornerHeight));// Top left corner not rounded
             path.addRect(QRect(fillBottleWidth - 4, m_BottleBoundingRectHeight - fillBottleHeight, 8, cornerHeight));// Top right corner not rounded
-
         }
         Painter.drawPath(path);  // Only the Bottome Left and Bottom Right Corner
     }
@@ -627,29 +631,31 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         int cornerHeight = 10;
         if (fillRetortHeight > cornerHeight)
         {
-            path.addRect(QRect(4, m_RetortBoundingRectHeight - fillRetortHeight - 2, 8, cornerHeight));// Top left corner not rounded
-            path.addRect(QRect(fillRetortWidth - 10, m_RetortBoundingRectHeight - fillRetortHeight - 2, 8, cornerHeight));// Top right corner not rounded
+            path.addRect(QRect(4, m_RetortBoundingRectHeight - fillRetortHeight - 1, 8, cornerHeight));// Top left corner not rounded
+            path.addRect(QRect(fillRetortWidth - 10, m_RetortBoundingRectHeight - fillRetortHeight - 1, 8, cornerHeight));// Top right corner not rounded
         }
         Painter.drawPath(path);  // Only the Bottome Left and Bottom Right Corner
     }
 
 	//For Cleaning Reagent, we add the BDiagPattern
-    /*if (isCleaningReagent == true)
+    if (isCleaningReagent == true)
 	{
 		qreal startx = 4.0;
         qreal starty = 38.0;
-        qreal bottleWidth = fillBottleWidth-47;
+
+        qreal bottleWidth = fillBottleWidth;
         qreal boottleHeight = fillBottleHeight+46;
+
         QPainterPath clipPath;
         clipPath.setFillRule(Qt::WindingFill);
-        clipPath.addRect(startx,starty, bottleWidth, boottleHeight-5);
-        clipPath.addRoundedRect(startx, starty+boottleHeight-8, bottleWidth, 10, 8, 8);
+        clipPath.addRect(startx, starty, bottleWidth, boottleHeight-5);
+        clipPath.addRoundedRect(startx, starty+boottleHeight-15, bottleWidth, 10, 8, 8);
         Painter.setClipPath(clipPath);
 
 		//draw the final result
         Painter.setBrush(Qt::white);
         Painter.drawPixmap(startx, starty, m_RawImage4Cleaning);
-    }*/
+    }
 }
 
 /****************************************************************************/
