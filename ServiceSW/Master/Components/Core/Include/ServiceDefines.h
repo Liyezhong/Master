@@ -200,7 +200,8 @@ typedef enum ModuleTestCaseID {
     TEST_ABORT,                           ///< This is to abort a heating test case.
     FIRMWARE_UPDATE,                       ///< This is to update firmware for manufacturing
     FIRMWARE_GET_SLAVE_INFO,                ///< This is to get information from slave board.
-    PRESSURE_CALIBRATION                     ///< This is to calibrate pressure sensor
+    PRESSURE_CALIBRATION,                     ///< This is to calibrate pressure sensor
+    SYSTEM_SHUTDOWN                         ///< This is to set slave to standby.
 } ModuleTestCaseID_t;
 
 /****************************************************************************/

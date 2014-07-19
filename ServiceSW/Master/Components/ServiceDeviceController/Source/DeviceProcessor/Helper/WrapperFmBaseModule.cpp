@@ -44,6 +44,10 @@ WrapperFmBaseModule::WrapperFmBaseModule(QString Name, CBaseModule *pBaseModule,
 
     mp_ResetData = new CResetData(*pBaseModule, this);
 
+    qRegisterMetaType<EmergencyStopReason_t>("EmergencyStopReason_t");
+    qRegisterMetaType<PowerState_t>("PowerState_t");
+    qRegisterMetaType<NodeState_t>("NodeState_t");
+
     CONNECTSIGNALSLOT(m_pBaseModule, ReportNodeState(quint32, ReturnCode_t, NodeState_t, EmergencyStopReason_t, PowerState_t),
             this, OnSetNodeState(quint32, ReturnCode_t, NodeState_t, EmergencyStopReason_t, PowerState_t));
     CONNECTSIGNALSLOT(m_pBaseModule, ReportHWInfo(quint32, ReturnCode_t, quint8, quint8, QDate),
@@ -150,6 +154,7 @@ QString WrapperFmBaseModule::SetNodeState(quint8 NodeState)
     if (!ok) {
         return "request error";
     }
+
     qint32 ret = m_LoopSetNodeState.exec();
 
     QString state;
@@ -218,6 +223,10 @@ void WrapperFmBaseModule::OnSetNodeState(quint32 InstanceID, ReturnCode_t Return
                                          EmergencyStopReason_t EmergencyStopReason, PowerState_t VoltageState)
 {
     Q_UNUSED(InstanceID)
+
+//    QString str = QString("%1 %2 %3 %4 %5").arg(InstanceID).arg(ReturnCode).arg(NodeState).arg(EmergencyStopReason).arg(VoltageState);
+
+//    qDebug()<< "OnSetNodeState ------- "<< str;
 
     qint32 ret = 1;
     if (!HandleErrorCode(ReturnCode)) {

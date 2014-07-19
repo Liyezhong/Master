@@ -2528,6 +2528,25 @@ void ManufacturingTestHandler::CalibratePressureSensor()
     emit RefreshTestStatustoMain(TestCaseName, Status);
 }
 
+void ManufacturingTestHandler::SetSlaveStandby()
+{
+
+//    qDebug() <<"Slave3 NodeState : "<< mp_BaseModule3->ReqNodeState();
+    qDebug() <<"Slave3 Set Shutdown return :" << mp_BaseModule3->SetNodeState(NODE_STATE_SHUTDOWN);
+
+//    qDebug() <<"Slave3 NodeState : "<< mp_BaseModule3->ReqNodeState();
+
+//    qDebug() <<"Slave5 NodeState : "<< mp_BaseModule5->ReqNodeState();
+    qDebug() <<"Slave5 Set Shutdown return :" << mp_BaseModule5->SetNodeState(NODE_STATE_SHUTDOWN);
+//    qDebug() <<"Slave5 NodeState : "<< mp_BaseModule5->ReqNodeState();
+
+//    qDebug() <<"Slave15 NodeState : "<< mp_BaseModule15->ReqNodeState();
+    qDebug() <<"Slave15 Set Shutdown return :" << mp_BaseModule15->SetNodeState(NODE_STATE_SHUTDOWN);
+//    qDebug() <<"Slave15 NodeState : "<< mp_BaseModule15->ReqNodeState();
+
+    mp_Utils->Pause(2000);
+}
+
 qint32 ManufacturingTestHandler::HeatingLevelSensor()
 {
     int LSENSOR_TEMP_WATER = 95;
@@ -3101,6 +3120,9 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         break;
     case Service::PRESSURE_CALIBRATION:
         CalibratePressureSensor();
+        break;
+    case Service::SYSTEM_SHUTDOWN:
+        SetSlaveStandby();
         break;
     default:
         break;

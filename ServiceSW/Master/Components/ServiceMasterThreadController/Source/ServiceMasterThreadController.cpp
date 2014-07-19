@@ -1547,6 +1547,16 @@ void ServiceMasterThreadController::ShutdownSystem()
 {
     qDebug()<<"ServiceMasterThreadController::ShutdownSystem ----------------- ";
 
+    sendManufacturingTestCommand(Service::SYSTEM_SHUTDOWN);
+
+    QTimer timer;
+    timer.setSingleShot(true);
+    timer.setInterval(4000);
+    timer.start();
+    QEventLoop loop;
+    connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    loop.exec();
+
     QString RebootPath =  Global::SystemPaths::Instance().GetSettingsPath() + "/BootConfig.txt";
     QFile BootConfigFile(RebootPath);
 
@@ -1559,7 +1569,7 @@ void ServiceMasterThreadController::ShutdownSystem()
 
     UpdateRebootFile(m_BootConfigFileContent);
 
-#if 0  // disabled for test
+#if 1  // disabled for test
     const QString MD5sumGenerator = QString("%1%2").arg(Global::SystemPaths::Instance().GetScriptsPath()).
                                     arg(QString("/EBox-Utils.sh update_md5sum_for_settings"));
     (void)system(MD5sumGenerator.toStdString().c_str());
