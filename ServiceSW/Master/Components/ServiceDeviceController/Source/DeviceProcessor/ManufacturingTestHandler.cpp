@@ -57,7 +57,7 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
 
     mp_TempRetortSide = NULL;
     mp_TempRetortBttom = NULL;
-    mp_TempRetortInputLid = NULL;
+    mp_DIRetortLid = NULL;
 
     mp_TempTubeLiquid = NULL;
     mp_TempTubeAir = NULL;
@@ -126,7 +126,7 @@ void ManufacturingTestHandler::CreateWrappers()
     pDigitalInput = NULL;
     pDigitalInput = static_cast<CDigitalInput *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortLockDIKey));
     if ( NULL != pDigitalInput ) {
-        mp_TempRetortInputLid = new WrapperFmDigitalInput("digitalinput_retortlid", pDigitalInput, this);
+        mp_DIRetortLid = new WrapperFmDigitalInput("digitalinput_retortlid", pDigitalInput, this);
     }
 
     pDigitalInput = NULL;
@@ -661,14 +661,14 @@ qint32 ManufacturingTestHandler::TestOvenCoverSensor()
 
 qint32 ManufacturingTestHandler::TestLidLocker()
 {
-    if (NULL == mp_TempRetortInputLid) {
+    if (NULL == mp_DIRetortLid) {
         SetFailReason(Service::RETORT_LID_LOCK, Service::MSG_DEVICE_NOT_INITIALIZED);
         emit ReturnManufacturingTestMsg(false);
         return 0;
     }
 
     Service::ModuleTestStatus status;
-    qint32 value = mp_TempRetortInputLid->GetValue();
+    qint32 value = mp_DIRetortLid->GetValue();
     if (value == 0) { //  Lid locker status : close
         status.insert("LidLockerStatus", "Close");
     }

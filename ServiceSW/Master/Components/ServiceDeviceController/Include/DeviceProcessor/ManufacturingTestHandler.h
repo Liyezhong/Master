@@ -434,7 +434,7 @@ private:
     WrapperFmTempControl*       mp_TempRetortSide;
     WrapperFmTempControl*       mp_TempRetortBttom;
 
-    WrapperFmDigitalInput*      mp_TempRetortInputLid;
+    WrapperFmDigitalInput*      mp_DIRetortLid;
 
     WrapperFmDigitalInput*      mp_DigitalInputOven;
     WrapperFmDigitalOutput*     mp_DigitalOutputMainRelay;
