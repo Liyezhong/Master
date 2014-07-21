@@ -25,6 +25,14 @@
 #include "SystemTracking/Include/CurrentConfiguration.h"
 #include "SystemTracking/Include/CurrentConfigurationDlg.h"
 #include "SystemTracking/Include/CurrentConfigParameterDlg.h"
+#include "SystemTracking/Include/LaSystem.h"
+#include "SystemTracking/Include/MainControl.h"
+#include "SystemTracking/Include/Oven.h"
+#include "SystemTracking/Include/Retort.h"
+#include "SystemTracking/Include/RotaryValve.h"
+#include "SystemTracking/Include/ViewHistory.h"
+#include "SystemTracking/Include/ViewHistoryDlg.h"
+#include "SystemTracking/Include/ViewHistoryDiffDlg.h"
 
 namespace SystemTracking {
 
@@ -35,6 +43,9 @@ namespace SystemTracking {
 /****************************************************************************/
 class CTestSystemTracking : public QObject {
     Q_OBJECT
+
+    MainMenu::CMainWindow *mp_MainWindow;
+    Core::CServiceGUIConnector *mp_ServiceGUIConnector;
 private slots:
     /****************************************************************************/
     /**
@@ -75,10 +86,26 @@ private slots:
     /****************************************************************************/
     void utTestCurrentConfiguration();
 
+    /****************************************************************************/
+    /**
+     * \brief Test ModifyConfiguration
+     */
+    /****************************************************************************/
+    void utTestModifyConfiguration();
+
+    /****************************************************************************/
+    /**
+     * \brief Test ViewHistory
+     */
+    /****************************************************************************/
+    void utTestViewHistory();
+
 }; // end class CTestSystemTracking
 
 /****************************************************************************/
 void CTestSystemTracking::initTestCase() {
+    mp_MainWindow = new MainMenu::CMainWindow();
+    mp_ServiceGUIConnector = new Core::CServiceGUIConnector(mp_MainWindow);
 }
 
 /****************************************************************************/
@@ -180,17 +207,14 @@ void CTestSystemTracking::utTestSystemTracking() {
 
 void CTestSystemTracking::utTestCurrentConfiguration()
 {
-    MainMenu::CMainWindow *p_MainWindow = new MainMenu::CMainWindow();
-    Core::CServiceGUIConnector *p_ServiceGUIConnector = new Core::CServiceGUIConnector(p_MainWindow);
-
     SystemTracking::CCurrentConfiguration *p_CurrentConfiguration = new
-            SystemTracking::CCurrentConfiguration(p_ServiceGUIConnector, p_MainWindow);
+            SystemTracking::CCurrentConfiguration(mp_ServiceGUIConnector, mp_MainWindow);
 
     SystemTracking::CCurrentConfigParameterDlg *p_CurrentConfigParameterDlg = new
-            SystemTracking::CCurrentConfigParameterDlg(p_MainWindow);
+            SystemTracking::CCurrentConfigParameterDlg(mp_MainWindow);
 
     SystemTracking::CCurrentConfigurationDlg *p_CurrentConfigDlg = new
-            SystemTracking::CCurrentConfigurationDlg(p_MainWindow);
+            SystemTracking::CCurrentConfigurationDlg(mp_MainWindow);
 
     ServiceDataManager::CModule* p_Module = new ServiceDataManager::CModule("Main Control", "Main Control",
                                                                             "14-HIM-MC-12345", "25");
@@ -212,6 +236,56 @@ void CTestSystemTracking::utTestCurrentConfiguration()
     p_CurrentConfigParameterDlg->InitDialog(p_Parameter);
     p_CurrentConfigParameterDlg->ClearModel();
 
+}
+
+void CTestSystemTracking::utTestModifyConfiguration()
+{
+    SystemTracking::CLaSystem *p_ModifyLaSystem = new SystemTracking::CLaSystem(*mp_ServiceGUIConnector, mp_MainWindow);
+    SystemTracking::COven *p_ModifyOven         = new SystemTracking::COven(*mp_ServiceGUIConnector, mp_MainWindow);
+    SystemTracking::CRetort *p_ModifyRetort     = new SystemTracking::CRetort(*mp_ServiceGUIConnector, mp_MainWindow);
+    SystemTracking::CRotaryValve *p_ModifyRV    = new SystemTracking::CRotaryValve(*mp_ServiceGUIConnector, mp_MainWindow);
+    SystemTracking::CMainControl *p_ModifyMC    = new SystemTracking::CMainControl(*mp_ServiceGUIConnector, mp_MainWindow);
+
+    p_ModifyLaSystem->ModifyPump();
+    p_ModifyLaSystem->ModifyFan();
+    p_ModifyLaSystem->ModifyValve1();
+    p_ModifyLaSystem->ModifyValve2();
+    p_ModifyLaSystem->ModifyHeatingBelt1();
+    p_ModifyLaSystem->ModifyHeatingBelt2();
+    p_ModifyLaSystem->ModifyCarbonFilter();
+
+    p_ModifyOven->ModifyOven();
+    p_ModifyOven->ModifyHeater();
+    p_ModifyOven->ModifyCoverSensor();
+
+    p_ModifyRetort->ModifyRetort();
+    p_ModifyRetort->ModifyHeater();
+    p_ModifyRetort->ModifyLidLock();
+    p_ModifyRetort->ModifyLevelSensor();
+
+    p_ModifyRV->ModifyRotaryValve();
+    p_ModifyRV->ModifyMotor();
+    p_ModifyRV->ModifyHeater();
+
+    p_ModifyMC->ModifyASB3();
+    p_ModifyMC->ModifyASB5();
+    p_ModifyMC->ModifyASB15();
+    p_ModifyMC->ModifyVentFan();
+    p_ModifyMC->ModifyTouchScreen();
+}
+
+void CTestSystemTracking::utTestViewHistory()
+{
+    SystemTracking::CViewHistory *p_History       = new SystemTracking::CViewHistory(mp_ServiceGUIConnector, mp_MainWindow);
+    SystemTracking::CViewHistoryDlg* p_HistoryDlg = new SystemTracking::CViewHistoryDlg(p_History);
+
+    p_History->ExecDialog();
+    p_History->ExecDiffDialog();
+
+    p_HistoryDlg->UpdateGUI();
+
+    ServiceDataManager::CModuleDataList ModuleListOne, ModuleListTwo;
+    SystemTracking::CViewHistoryDiffDlg::Instance(p_History).Show(ModuleListOne, ModuleListTwo);
 }
 
 } // end namespace SystemTracking

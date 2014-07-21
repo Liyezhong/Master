@@ -21,7 +21,9 @@
 
 #include <QtTest/QTest>
 #include <QDebug>
-#include <ServiceUpdates/Include/Settings.h>
+#include "ServiceUpdates/Include/Settings.h"
+#include "ServiceUpdates/Include/NetworkWidget.h"
+#include "ServiceUpdates/Include/FirmwareUpdate.h"
 #include <Settings/Include/FirmwareInformation.h>
 #include <Settings/Include/DataManagement.h>
 //#include <ServiceUpdates/Include/RFIDValues.h>
@@ -93,11 +95,23 @@ void CTestServiceUpdates::utTestServiceUpdates() {
     Core::CServiceGUIConnector *p_ServiceGUIConnector = new
             Core::CServiceGUIConnector(p_MainWindow);
 
-    ServiceUpdates::CSettings *p_Settings = new
-            ServiceUpdates::CSettings(p_ServiceGUIConnector, p_MainWindow);
-    p_Settings->UpdateGUIConnector(p_ServiceGUIConnector, p_MainWindow);
-    p_Settings->SaveProxyIPAddress("221.114.112.156");
+    ServiceUpdates::CNetworkWidget* p_Network = new ServiceUpdates::CNetworkWidget();
+    ServiceUpdates::CFirmwareUpdate* p_FirmwareUpdate = new ServiceUpdates::CFirmwareUpdate(p_ServiceGUIConnector);
+    ServiceUpdates::CSettings *p_Settings = new ServiceUpdates::CSettings(p_ServiceGUIConnector, p_MainWindow);
+    QString IpAddress("127.0.0.1");
 
+    p_Network->SetPtrToMainWindow(p_MainWindow);
+    p_Network->SetSaveButtonStatus();
+    p_Network->UpdateIpAddress(IpAddress);
+    p_Network->reset();
+
+    p_FirmwareUpdate->SetUpdateResult(0, true);
+    p_FirmwareUpdate->RefreshLatestVersion();
+    p_FirmwareUpdate->UpdateGUI();
+
+    p_Settings->UpdateGUIConnector(p_ServiceGUIConnector, p_MainWindow);
+    p_Settings->SaveIPAddress(IpAddress, PROXY_IP);
+    p_Settings->ResetButtonStatus();
 }
 
 } // end namespace ServiceUpdates
