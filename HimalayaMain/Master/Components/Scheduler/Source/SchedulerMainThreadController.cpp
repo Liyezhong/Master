@@ -775,10 +775,10 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     LogDebug(QString("Program Step Filling OK"));
                     m_SchedulerMachine->NotifyFillFinished();
                 }
-                else if( DCL_ERR_DEV_LA_FILLING_INSUFFICIENT == retCode)
+                else
                 {
-                    LogDebug(QString("Program Step Filling Insufficient"));
-                    RaiseError(0, DCL_ERR_DEV_LA_FILLING_INSUFFICIENT, m_CurrentScenario, true);
+                    LogDebug(QString("Program Step Filling failed"));
+                    RaiseError(0, retCode, m_CurrentScenario, true);
                     m_SchedulerMachine->SendErrorSignal();
                 }
             }
@@ -833,7 +833,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             {
                 qint64 now = QDateTime::currentDateTime().toMSecsSinceEpoch();
                 //todo: 1/10 the time
-                qint32 period = m_CurProgramStepInfo.durationInSeconds * 1000;
+                qint64 period = m_CurProgramStepInfo.durationInSeconds * 1000;
+                LogDebug(QString("period is %1 ms").arg(period));
                 if((now - m_TimeStamps.CurStepSoakStartTime ) > (period))
                 {
                     //if it is Cleaning program, need not notify user

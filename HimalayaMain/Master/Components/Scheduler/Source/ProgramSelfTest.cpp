@@ -282,7 +282,7 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 }
                 else
                 {
-					mp_SchedulerThreadController->LogDebug(QString("Return code is: %1").arg(retCode));
+                    mp_SchedulerThreadController->LogDebug(QString("Pre-Test, Return code is: %1").arg(retCode));
                     mp_SchedulerThreadController->SendOutErrMsg(retCode);
                 }
             }
