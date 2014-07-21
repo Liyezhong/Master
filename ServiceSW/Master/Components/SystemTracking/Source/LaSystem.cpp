@@ -51,7 +51,7 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector &DataConnector,
     mp_Ui->finalizeConfigBtn->setEnabled(false);
 
     mp_MessageDlg = new MainMenu::CMessageDlg(this);
-    mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::CMainControl",
+    mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::CLaSystem",
                                                     "Finalize Configuration", 0, QApplication::UnicodeUTF8));
     mp_MessageDlg->setModal(true);
     (void)connect(mp_Ui->modifyPump,
@@ -105,6 +105,7 @@ CLaSystem::~CLaSystem()
     try
     {
         delete mp_Ui;
+        delete mp_ModuleList;
         delete mp_MessageDlg;
     }
     catch (...) { }
@@ -115,11 +116,15 @@ void CLaSystem::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     qDebug() << "CLaSystem::UpdateSubModule : "
              << SubModule.GetSubModuleName();
 
-    mp_ModuleList = mp_DateConnector->GetModuleListContainer();
-    if (0 == mp_ModuleList)
-    {
-        qDebug() << "CLaSystem::UpdateSubModule(): Invalid module list!";
-        return;
+    if (!mp_ModuleList) {
+        mp_ModuleList = new ServiceDataManager::CModuleDataList;
+        ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
+        if (!ModuleList) {
+            qDebug() << "CLaSystem::UpdateSubModule(): Invalid module list!";
+            return;
+        }
+
+        *mp_ModuleList = *ModuleList;
     }
 
     ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_LASYSTEM);
@@ -216,7 +221,7 @@ void CLaSystem::CurrentTabChanged(int Index)
 
 void CLaSystem::ConfirmModuleConfiguration()
 {
-    QString Text = QApplication::translate("SystemTracking::CMainControl",
+    QString Text = QApplication::translate("SystemTracking::CLaSystem",
                                            "L&A System Module has been modified. Do you want to finalize the configuration?",
                                            0, QApplication::UnicodeUTF8);
 
@@ -242,7 +247,7 @@ void CLaSystem::ConfirmModuleConfiguration(QString& Text)
     ResetMessageBox();
     if (Result)
     {
-        if(mp_DateConnector->UpdateInstrumentHistory())
+        if(mp_DateConnector->UpdateInstrumentHistory(*mp_ModuleList))
         {
             emit ModuleListChanged();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CLaSystem",
@@ -267,7 +272,6 @@ void CLaSystem::ConfirmModuleConfiguration(QString& Text)
     else
     {
         //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_ADDMODIFY_SAVE_AND_OVERWRITE_CONFIGURATION_FAILURE);
-        mp_DateConnector->ReloadModuleList();
         mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CLaSystem",
                                                                 "Ok", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
@@ -282,15 +286,18 @@ void CLaSystem::ConfirmModuleConfiguration(QString& Text)
 void CLaSystem::ModifySubModule(const QString &ModuleName,
                                 const QString &SubModuleName)
 {
-    ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DateConnector->GetModuleListContainer();
-    if (0 == pModuleList)
-    {
-        qDebug() << "CLaSystem::ModifySubModule(): Invalid module list!";
-        return;
+    if (!mp_ModuleList) {
+        mp_ModuleList = new ServiceDataManager::CModuleDataList;
+        ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
+        if (!ModuleList) {
+            qDebug() << "CLaSystem::UpdateSubModule(): Invalid module list!";
+            return;
+        }
+
+        *mp_ModuleList = *ModuleList;
     }
 
-    ServiceDataManager::CModule *pModule = pModuleList->GetModule(ModuleName);
+    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(ModuleName);
     if (0 == pModule)
     {
         qDebug() << "CLaSystem::ModifySubModule(): Invalid module : "

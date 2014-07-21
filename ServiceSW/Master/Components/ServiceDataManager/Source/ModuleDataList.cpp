@@ -312,7 +312,35 @@ bool CModuleDataList::DeserializeContent(QIODevice& IODevice, bool CompleteData)
         return false;
     }
 
-    return DeserializeContent(XmlStreamReader, CompleteData);
+    bool Result = DeserializeContent(XmlStreamReader, CompleteData);
+    if (CompleteData && Result) {
+        if (!DataManager::Helper::ReadNode(XmlStreamReader, "NonXmlData")) {
+            return false;
+        }
+
+        if (!XmlStreamReader.attributes().hasAttribute("VerificationMode")) {
+            qDebug() << "### attribute <VerificationMode> is missing";
+            return false;
+        }
+
+        if (XmlStreamReader.attributes().value("VerificationMode").toString() == "true") {
+            SetDataVerificationMode(true);
+        }
+        else {
+            SetDataVerificationMode(false);
+        }
+
+        if (!XmlStreamReader.attributes().hasAttribute("FileName")) {
+            qDebug() << "### attribute <FileName> is missing";
+            return false;
+        }
+        SetFileName(XmlStreamReader.attributes().value("FileName").toString());
+
+    }
+
+    (void)XmlStreamReader.device()->reset();
+
+    return Result;
 }
 
 /****************************************************************************/
@@ -339,7 +367,24 @@ bool CModuleDataList::SerializeContent(QIODevice& IODevice, bool CompleteData)
     // write attribute name
     XmlStreamWriter.writeAttribute("name", GetInstrumentName());
 
-    return SerializeContent(XmlStreamWriter, CompleteData);
+    bool result = SerializeContent(XmlStreamWriter, CompleteData);
+
+    if (CompleteData) {
+        XmlStreamWriter.writeStartElement("NonXmlData");
+        if (GetDataVerificationMode()) {
+            XmlStreamWriter.writeAttribute("VerificationMode", "true");
+        } else {
+            XmlStreamWriter.writeAttribute("VerificationMode", "false");
+        }
+
+        XmlStreamWriter.writeAttribute("FileName", GetFilename());
+        XmlStreamWriter.writeEndElement();
+    }
+
+    XmlStreamWriter.writeEndElement(); // for Instrument History
+    XmlStreamWriter.writeEndDocument(); // End of Document
+
+    return result;
 }
 
 bool CModuleDataList::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool CompleteData)
@@ -356,32 +401,6 @@ bool CModuleDataList::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool
 
     Result = ReadModules(XmlStreamReader, CompleteData);
 
-    if (CompleteData && Result) {
-        if (!DataManager::Helper::ReadNode(XmlStreamReader, "NonXmlData")) {
-            return false;
-        }
-
-        if (!XmlStreamReader.attributes().hasAttribute("VerificationMode")) {
-            qDebug() << "### attribute <VerificationMode> is missing";
-            return false;
-        }
-
-        if (XmlStreamReader.attributes().value("VerificationMode").toString() == "true") {
-            SetDataVerificationMode(true);
-        }
-        else {
-            SetDataVerificationMode(false);
-        }
-
-        if (!XmlStreamReader.attributes().hasAttribute("FileName")) {
-            qDebug() << "### attribute <FileName> is missing";
-            return false;
-        }
-        SetFileName(XmlStreamReader.attributes().value("FileName").toString());
-
-    }
-    (void)XmlStreamReader.device()->reset();
-
     return Result;
 }
 
@@ -391,9 +410,9 @@ bool CModuleDataList::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool C
     XmlStreamWriter.writeStartElement("ModuleList");
 
     // write attribute timestamp
-    QDateTime DateTime = QDateTime::currentDateTime();
-    QString CurrentDateTime = DateTime.toString("yyyy-MM-dd hh:mm:ss.zzz");
-    this->SetModuleTimeStamp(CurrentDateTime);
+    //QDateTime DateTime = QDateTime::currentDateTime();
+    //QString CurrentDateTime = DateTime.toString("yyyy-MM-dd hh:mm:ss.zzz");
+    this->SetModuleTimeStamp(this->GetModuleTimeStamp());
 
     XmlStreamWriter.writeAttribute("timestamp", GetModuleTimeStamp());
 
@@ -410,21 +429,6 @@ bool CModuleDataList::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool C
     }
 
     XmlStreamWriter.writeEndElement(); // ModuleList
-
-    if (CompleteData) {
-        XmlStreamWriter.writeStartElement("NonXmlData");
-        if (GetDataVerificationMode()) {
-            XmlStreamWriter.writeAttribute("VerificationMode", "true");
-        } else {
-            XmlStreamWriter.writeAttribute("VerificationMode", "false");
-        }
-
-        XmlStreamWriter.writeAttribute("FileName", GetFilename());
-        XmlStreamWriter.writeEndElement();
-    }
-
-    XmlStreamWriter.writeEndElement(); // for Instrument History
-    XmlStreamWriter.writeEndDocument(); // End of Document
 
     return true;
 }

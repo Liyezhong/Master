@@ -42,119 +42,120 @@
 		<string id="100728871" text1="Modify L&amp;A system pressure sensor module info" text2=""/>
 		<string id="100728872" text1="Modify L&amp;A system carbon filter module info" text2=""/>
 		<string id="100728873" text1="Modify L&amp;A system fan module info" text2=""/>
-		<string id="100728874" text1="View history Module instrument %1 is selected for module details" text2=""/>
-		<string id="100728875" text1="Basic color display test is requested" text2=""/>
-		<string id="100728876" text1="Basic color display completed successfully" text2=""/>
-		<string id="100728877" text1="Basic color display test failed" text2=""/>
-		<string id="100728878" text1="Retort lid lock test is requested" text2=""/>
-		<string id="100728879" text1="Retort lid lock test completed successfully" text2=""/>
-		<string id="100728880" text1="Retort lid lock test failed" text2=""/>
-		<string id="100728881" text1="Retort level sensor heating test is requested" text2=""/>
-		<string id="100728882" text1="Retort level sensor heating test completed successfully" text2=""/>
-		<string id="100728883" text1="Retort level sensor heating test failed" text2=""/>
-		<string id="100728884" text1="Retort level sensor detecting test with bottle position %1 is requested" text2=""/>
-		<string id="100728885" text1="Retort level sensor detecting test completed successfully" text2=""/>
-		<string id="100728886" text1="Retort level sensor detecting test failed" text2=""/>
-		<string id="100728887" text1="Retort heating test empty is requested" text2=""/>
-		<string id="100728888" text1="Retort heating test empty completed successfully" text2=""/>
-		<string id="100728889" text1="Retort heating test empty failed" text2=""/>
-		<string id="100728890" text1="Retort heating test with liquid is requested" text2=""/>
-		<string id="100728891" text1="Retort heating test with liquid completed successfully" text2=""/>
-		<string id="100728892" text1="Retort heating test with liquid failed" text2=""/>
-		<string id="100728893" text1="Oven heating test empty is requested" text2=""/>
-		<string id="100728894" text1="Oven heating test empty completed successfully" text2=""/>
-		<string id="100728895" text1="Oven heating test empty failed" text2=""/>
-		<string id="100728896" text1="Oven heating test with liquid is requested" text2=""/>
-		<string id="100728897" text1="Oven heating test with liquid completed successfully" text2=""/>
-		<string id="100728898" text1="Oven heating test with liquid failed" text2=""/>
-		<string id="100728899" text1="Oven cover sensor test is requested" text2=""/>
-		<string id="100728900" text1="Oven cover sensor test completed successfully" text2=""/>
-		<string id="100728901" text1="Oven cover sensor test failed" text2=""/>
-		<string id="100728902" text1="Rotary valve initializing test is requested" text2=""/>
-		<string id="100728903" text1="Rotary valve initializing test completed successfully" text2=""/>
-		<string id="100728904" text1="Rotary valve initializing test failed" text2=""/>
-		<string id="100728905" text1="Rotary valve selecting test is requested" text2=""/>
-		<string id="100728906" text1="Rotary valve selecting test completed successfully" text2=""/>
-		<string id="100728907" text1="Rotary valve selecting test failed" text2=""/>
-		<string id="100728908" text1="Rotary valve sealing test is requested" text2=""/>
-		<string id="100728909" text1="Rotary valve sealing test completed successfully" text2=""/>
-		<string id="100728910" text1="Rotary valve sealing test failed" text2=""/>
-		<string id="100728911" text1="Rotary valve heating property end test is requested" text2=""/>
-		<string id="100728912" text1="Rotary valve heating property end test completed successfully" text2=""/>
-		<string id="100728913" text1="Rotary valve heating property end test failed" text2=""/>
-		<string id="100728914" text1="Rotary valve heating property station test is requested" text2=""/>
-		<string id="100728915" text1="Rotary valve heating property station test completed successfully" text2=""/>
-		<string id="100728916" text1="Rotary valve heating property station test failed" text2=""/>
-		<string id="100728917" text1="L&amp;A system heating liquid test is requested" text2=""/>
-		<string id="100728918" text1="L&amp;A system heating liquid test completed successfully" text2=""/>
-		<string id="100728919" text1="L&amp;A system heating liquid test failed" text2=""/>
-		<string id="100728920" text1="L&amp;A system heating air test is requested" text2=""/>
-		<string id="100728921" text1="L&amp;A system heating air test completed successfully" text2=""/>
-		<string id="100728922" text1="L&amp;A system heating air test failed" text2=""/>
-		<string id="100728923" text1="L&amp;A system air system test is requested" text2=""/>
-		<string id="100728924" text1="L&amp;A system air system test completed successfully" text2=""/>
-		<string id="100728925" text1="L&amp;A system air system test failed" text2=""/>
-		<string id="100728926" text1="Main control ASB3 test is requested" text2=""/>
-		<string id="100728927" text1="Main control ASB3 completed successfully" text2=""/>
-		<string id="100728928" text1="Main control ASB3 test failed" text2=""/>
-		<string id="100728929" text1="Main control ASB5 test is requested" text2=""/>
-		<string id="100728930" text1="Main control ASB5 completed successfully" text2=""/>
-		<string id="100728931" text1="Main control ASB5 test failed" text2=""/>
-		<string id="100728932" text1="Main control ASB15 test is requested" text2=""/>
-		<string id="100728933" text1="Main control ASB15 completed successfully" text2=""/>
-		<string id="100728934" text1="Main control ASB15 test failed" text2=""/>
-		<string id="100728935" text1="Main control EBox test is requested" text2=""/>
-		<string id="100728936" text1="Main control EBox completed successfully" text2=""/>
-		<string id="100728937" text1="Main control EBox test failed" text2=""/>
-		<string id="100728938" text1="Main control touch screen test is requested" text2=""/>
-		<string id="100728939" text1="Main control touch screen completed successfully" text2=""/>
-		<string id="100728940" text1="Main control touch screen test failed" text2=""/>
-		<string id="100728941" text1="System sealing function test is requested" text2=""/>
-		<string id="100728942" text1="System sealing function test completed successfully" text2=""/>
-		<string id="100728943" text1="System sealing function test failed" text2=""/>
-		<string id="100728944" text1="System exhaust fun test is requested" text2=""/>
-		<string id="100728945" text1="System exhaust fun test completed successfully" text2=""/>
-		<string id="100728946" text1="System exhaust fun test failed" text2=""/>
-		<string id="100728947" text1="System ventilation fun test is requested" text2=""/>
-		<string id="100728948" text1="System ventilation fun test completed successfully" text2=""/>
-		<string id="100728949" text1="System ventilation fun test failed" text2=""/>
-		<string id="100728950" text1="System filling and draining test is requested" text2=""/>
-		<string id="100728951" text1="System filling and draining test completed successfully" text2=""/>
-		<string id="100728952" text1="System filling and draining test failed" text2=""/>
-		<string id="100728953" text1="System overflow test is requested" text2=""/>
-		<string id="100728954" text1="System overflow test completed successfully" text2=""/>
-		<string id="100728955" text1="System overflow test failed" text2=""/>
-		<string id="100728956" text1="System speaker test is requested" text2=""/>
-		<string id="100728957" text1="System speaker test completed successfully" text2=""/>
-		<string id="100728958" text1="System speaker test failed" text2=""/>
-		<string id="100728959" text1="System remote local alarm test is requested" text2=""/>
-		<string id="100728960" text1="System remote local alarm test completed successfully" text2=""/>
-		<string id="100728961" text1="System remote local alarm test is failed" text2=""/>
-		<string id="100728962" text1="System usb test is requested" text2=""/>
-		<string id="100728963" text1="System usb test completed successfully" text2=""/>
-		<string id="100728964" text1="System usb test failed" text2=""/>
-		<string id="100728965" text1="System mains relay test is requested" text2=""/>
-		<string id="100728966" text1="System mains relay test completed successfully" text2=""/>
-		<string id="100728967" text1="System mains relay test is failed" text2=""/>
-		<string id="100728968" text1="System 110V/220V switching test is requested" text2=""/>
-		<string id="100728969" text1="System 110V/220V switching test completed successfully" text2=""/>
-		<string id="100728970" text1="System 110V/220V switching test failed" text2=""/>
-		<string id="100728971" text1="Cleaning system test is requested" text2=""/>
-		<string id="100728972" text1="Cleaning system test completed successfully" text2=""/>
-		<string id="100728973" text1="Cleaning system test failed" text2=""/>
-		<string id="100728974" text1="Manufacturing: Retort module test is requested" text2=""/>
-		<string id="100728975" text1="Manufacturing: Retort send test report" text2=""/>
-		<string id="100728976" text1="Manufacturing: Oven module test is requested" text2=""/>
-		<string id="100728977" text1="Manufacturing: Oven send test report" text2=""/>
-		<string id="100728978" text1="Manufacturing: Rotary valve module test is requested" text2=""/>
-		<string id="100728979" text1="Manufacturing: Rotary valve send test report" text2=""/>
-		<string id="100728980" text1="Manufacturing: L&amp;A system module test is requested" text2=""/>
-		<string id="100728981" text1="Manufacturing: L&amp;A system send test report" text2=""/>
-		<string id="100728982" text1="Manufacturing: Main control module test is requested" text2=""/>
-		<string id="100728983" text1="Manufacturing: Main control send test report" text2=""/>
-		<string id="100728984" text1="Manufacturing: System module test is requested" text2=""/>
-		<string id="100728985" text1="Manufacturing: System send test report" text2=""/>
-		<string id="100728986" text1="Manufacturing: Cleaning system test is requested" text2=""/>
-		<string id="100728987" text1="Manufacturing: Cleaning system send test report" text2=""/>
+		<string id="100728874" text1="Timestamp %1 and %2 is selected for module list show difference" text2=""/>
+		<string id="100728875" text1="View history Module TimeStamp %1 is selected for module details" text2=""/>
+		<string id="100728876" text1="Basic color display test is requested" text2=""/>
+		<string id="100728877" text1="Basic color display completed successfully" text2=""/>
+		<string id="100728878" text1="Basic color display test failed" text2=""/>
+		<string id="100728879" text1="Retort lid lock test is requested" text2=""/>
+		<string id="100728880" text1="Retort lid lock test completed successfully" text2=""/>
+		<string id="100728881" text1="Retort lid lock test failed" text2=""/>
+		<string id="100728882" text1="Retort level sensor heating test is requested" text2=""/>
+		<string id="100728883" text1="Retort level sensor heating test completed successfully" text2=""/>
+		<string id="100728884" text1="Retort level sensor heating test failed" text2=""/>
+		<string id="100728885" text1="Retort level sensor detecting test with bottle position %1 is requested" text2=""/>
+		<string id="100728886" text1="Retort level sensor detecting test completed successfully" text2=""/>
+		<string id="100728887" text1="Retort level sensor detecting test failed" text2=""/>
+		<string id="100728888" text1="Retort heating test empty is requested" text2=""/>
+		<string id="100728889" text1="Retort heating test empty completed successfully" text2=""/>
+		<string id="100728890" text1="Retort heating test empty failed" text2=""/>
+		<string id="100728891" text1="Retort heating test with liquid is requested" text2=""/>
+		<string id="100728892" text1="Retort heating test with liquid completed successfully" text2=""/>
+		<string id="100728893" text1="Retort heating test with liquid failed" text2=""/>
+		<string id="100728894" text1="Oven heating test empty is requested" text2=""/>
+		<string id="100728895" text1="Oven heating test empty completed successfully" text2=""/>
+		<string id="100728896" text1="Oven heating test empty failed" text2=""/>
+		<string id="100728897" text1="Oven heating test with liquid is requested" text2=""/>
+		<string id="100728898" text1="Oven heating test with liquid completed successfully" text2=""/>
+		<string id="100728899" text1="Oven heating test with liquid failed" text2=""/>
+		<string id="100728900" text1="Oven cover sensor test is requested" text2=""/>
+		<string id="100728901" text1="Oven cover sensor test completed successfully" text2=""/>
+		<string id="100728902" text1="Oven cover sensor test failed" text2=""/>
+		<string id="100728903" text1="Rotary valve initializing test is requested" text2=""/>
+		<string id="100728904" text1="Rotary valve initializing test completed successfully" text2=""/>
+		<string id="100728905" text1="Rotary valve initializing test failed" text2=""/>
+		<string id="100728906" text1="Rotary valve selecting test is requested" text2=""/>
+		<string id="100728907" text1="Rotary valve selecting test completed successfully" text2=""/>
+		<string id="100728908" text1="Rotary valve selecting test failed" text2=""/>
+		<string id="100728909" text1="Rotary valve sealing test is requested" text2=""/>
+		<string id="100728910" text1="Rotary valve sealing test completed successfully" text2=""/>
+		<string id="100728911" text1="Rotary valve sealing test failed" text2=""/>
+		<string id="100728912" text1="Rotary valve heating property end test is requested" text2=""/>
+		<string id="100728913" text1="Rotary valve heating property end test completed successfully" text2=""/>
+		<string id="100728914" text1="Rotary valve heating property end test failed" text2=""/>
+		<string id="100728915" text1="Rotary valve heating property station test is requested" text2=""/>
+		<string id="100728916" text1="Rotary valve heating property station test completed successfully" text2=""/>
+		<string id="100728917" text1="Rotary valve heating property station test failed" text2=""/>
+		<string id="100728918" text1="L&amp;A system heating liquid test is requested" text2=""/>
+		<string id="100728919" text1="L&amp;A system heating liquid test completed successfully" text2=""/>
+		<string id="100728920" text1="L&amp;A system heating liquid test failed" text2=""/>
+		<string id="100728921" text1="L&amp;A system heating air test is requested" text2=""/>
+		<string id="100728922" text1="L&amp;A system heating air test completed successfully" text2=""/>
+		<string id="100728923" text1="L&amp;A system heating air test failed" text2=""/>
+		<string id="100728924" text1="L&amp;A system air system test is requested" text2=""/>
+		<string id="100728925" text1="L&amp;A system air system test completed successfully" text2=""/>
+		<string id="100728926" text1="L&amp;A system air system test failed" text2=""/>
+		<string id="100728927" text1="Main control ASB3 test is requested" text2=""/>
+		<string id="100728928" text1="Main control ASB3 completed successfully" text2=""/>
+		<string id="100728929" text1="Main control ASB3 test failed" text2=""/>
+		<string id="100728930" text1="Main control ASB5 test is requested" text2=""/>
+		<string id="100728931" text1="Main control ASB5 completed successfully" text2=""/>
+		<string id="100728932" text1="Main control ASB5 test failed" text2=""/>
+		<string id="100728933" text1="Main control ASB15 test is requested" text2=""/>
+		<string id="100728934" text1="Main control ASB15 completed successfully" text2=""/>
+		<string id="100728935" text1="Main control ASB15 test failed" text2=""/>
+		<string id="100728936" text1="Main control EBox test is requested" text2=""/>
+		<string id="100728937" text1="Main control EBox completed successfully" text2=""/>
+		<string id="100728938" text1="Main control EBox test failed" text2=""/>
+		<string id="100728939" text1="Main control touch screen test is requested" text2=""/>
+		<string id="100728940" text1="Main control touch screen completed successfully" text2=""/>
+		<string id="100728941" text1="Main control touch screen test failed" text2=""/>
+		<string id="100728942" text1="System sealing function test is requested" text2=""/>
+		<string id="100728943" text1="System sealing function test completed successfully" text2=""/>
+		<string id="100728944" text1="System sealing function test failed" text2=""/>
+		<string id="100728945" text1="System exhaust fun test is requested" text2=""/>
+		<string id="100728946" text1="System exhaust fun test completed successfully" text2=""/>
+		<string id="100728947" text1="System exhaust fun test failed" text2=""/>
+		<string id="100728948" text1="System ventilation fun test is requested" text2=""/>
+		<string id="100728949" text1="System ventilation fun test completed successfully" text2=""/>
+		<string id="100728950" text1="System ventilation fun test failed" text2=""/>
+		<string id="100728951" text1="System filling and draining test is requested" text2=""/>
+		<string id="100728952" text1="System filling and draining test completed successfully" text2=""/>
+		<string id="100728953" text1="System filling and draining test failed" text2=""/>
+		<string id="100728954" text1="System overflow test is requested" text2=""/>
+		<string id="100728955" text1="System overflow test completed successfully" text2=""/>
+		<string id="100728956" text1="System overflow test failed" text2=""/>
+		<string id="100728957" text1="System speaker test is requested" text2=""/>
+		<string id="100728958" text1="System speaker test completed successfully" text2=""/>
+		<string id="100728959" text1="System speaker test failed" text2=""/>
+		<string id="100728960" text1="System remote local alarm test is requested" text2=""/>
+		<string id="100728961" text1="System remote local alarm test completed successfully" text2=""/>
+		<string id="100728962" text1="System remote local alarm test is failed" text2=""/>
+		<string id="100728963" text1="System usb test is requested" text2=""/>
+		<string id="100728964" text1="System usb test completed successfully" text2=""/>
+		<string id="100728965" text1="System usb test failed" text2=""/>
+		<string id="100728966" text1="System mains relay test is requested" text2=""/>
+		<string id="100728967" text1="System mains relay test completed successfully" text2=""/>
+		<string id="100728968" text1="System mains relay test is failed" text2=""/>
+		<string id="100728969" text1="System 110V/220V switching test is requested" text2=""/>
+		<string id="100728970" text1="System 110V/220V switching test completed successfully" text2=""/>
+		<string id="100728971" text1="System 110V/220V switching test failed" text2=""/>
+		<string id="100728972" text1="Cleaning system test is requested" text2=""/>
+		<string id="100728973" text1="Cleaning system test completed successfully" text2=""/>
+		<string id="100728974" text1="Cleaning system test failed" text2=""/>
+		<string id="100728975" text1="Manufacturing: Retort module test is requested" text2=""/>
+		<string id="100728976" text1="Manufacturing: Retort send test report" text2=""/>
+		<string id="100728977" text1="Manufacturing: Oven module test is requested" text2=""/>
+		<string id="100728978" text1="Manufacturing: Oven send test report" text2=""/>
+		<string id="100728979" text1="Manufacturing: Retort valve module test is requested" text2=""/>
+		<string id="100728980" text1="Manufacturing: Retort valve send test report" text2=""/>
+		<string id="100728981" text1="Manufacturing: L&amp;A system module test is requested" text2=""/>
+		<string id="100728982" text1="Manufacturing: L&amp;A system send test report" text2=""/>
+		<string id="100728983" text1="Manufacturing: Main control module test is requested" text2=""/>
+		<string id="100728984" text1="Manufacturing: Main control send test report" text2=""/>
+		<string id="100728985" text1="Manufacturing: System module test is requested" text2=""/>
+		<string id="100728986" text1="Manufacturing: System send test report" text2=""/>
+		<string id="100728987" text1="Manufacturing: Cleaning system test is requested" text2=""/>
+		<string id="100728988" text1="Manufacturing: Cleaning system send test report" text2=""/>
 	</language>
 </strings>

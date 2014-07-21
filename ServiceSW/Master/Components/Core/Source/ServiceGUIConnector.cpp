@@ -131,50 +131,38 @@ void CServiceGUIConnector::SendModuleUpdate(ServiceDataManager::CModule &Module)
     qDebug() << "Module Updated";
 }
 
-bool CServiceGUIConnector::UpdateInstrumentHistory()
+bool CServiceGUIConnector::UpdateInstrumentHistory(ServiceDataManager::CModuleDataList& ModuleList)
 {
     bool Result(false);
 
     if(mp_MainWindow->GetSaMUserMode() == "Service") {
         try {
-            CHECKPTR(mp_ModuleList)
             CHECKPTR(mp_ModuleListArchive)
 
             if (m_Archive) {
                 (void) mp_ModuleListArchive->AddModuleListInfo(mp_ModuleList);
                 Result = mp_ModuleListArchive->Write();
                 m_Archive = false;
-            }
-            if (!m_Archive || (m_Archive && Result)) {
-                Result = mp_ModuleList->Write();
+                if (!Result) {
+                    return Result;
+                }
             }
         }
         CATCHALL();
     }
-    else if (mp_MainWindow->GetSaMUserMode() == "Manufacturing") {
-        try {
-            CHECKPTR(mp_ModuleList)
+    try {
+        CHECKPTR(mp_ModuleList)
+
+        *mp_ModuleList = ModuleList;
+        QDateTime DateTime = QDateTime::currentDateTime();
+        QString CurrentDateTime = DateTime.toString("yyyy-MM-dd hh:mm:ss.zzz");
+        mp_ModuleList->SetModuleTimeStamp(CurrentDateTime);
 
             /* Emit a signal to update module list */
-            Result = mp_ModuleList->Write();
-        }
-        CATCHALL();
+        Result = mp_ModuleList->Write();
     }
-    return Result;
-}
+    CATCHALL();
 
-bool CServiceGUIConnector::ReloadModuleList()
-{
-    bool Result = false;
-    if (mp_ModuleList) {
-        Result = mp_ModuleList->DeleteAllModules();
-    }
-    if (Result) {
-        Result = mp_ModuleList->ReadFile(mp_ModuleList->GetFilename());
-    }
-    if (!Result) {
-        qDebug()<<"CServiceGUIConnector: reload module list failed.";
-    }
     return Result;
 }
 

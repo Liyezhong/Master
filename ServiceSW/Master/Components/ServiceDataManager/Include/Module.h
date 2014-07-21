@@ -76,6 +76,8 @@ public:
     ~CModule();
 
     CModule& operator=(const CModule& ModuleInfo);     //!< Assignment Operator Overloading
+    bool operator ==(const CModule& otherModule) const;
+    bool operator !=(const CModule& otherModule) const;
 
     /****************************************************************************/
     /*!

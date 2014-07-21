@@ -64,6 +64,8 @@ public Q_SLOTS:
 
     void ExecDialog(void);
 
+    void ExecDiffDialog(void);
+
 private Q_SLOTS:
      void SelectionChanged(QModelIndex Index);
 
@@ -79,8 +81,11 @@ private:
     Core::CServiceGUIConnector *mp_DataConnector;                        //!< Global data connector
     ServiceDataManager::CInstrumentHistory *mp_InstrumentHistoryArchive;        //!< Instrument History Archive
     ServiceDataManager::CModuleDataList *mp_ModuleList;                         //!< Current module list object
+    QModelIndexList m_SelectedRowValues;                                 //!< ModelListIndex for selected table rows
+    QModelIndex m_IndexofFirst;                                          //!< First row Model Index
+    QModelIndex m_IndexofLast;                                           //!< Last selected row index
 
-    QString m_ModuleTimeStamp;
+    //QString m_ModuleTimeStamp;
 };
 
 } // end namespace SystemTracking

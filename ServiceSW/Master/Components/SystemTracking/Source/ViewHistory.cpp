@@ -1,3 +1,4 @@
+
 /****************************************************************************/
 /*! \file ViewHistory.cpp
  *
@@ -24,6 +25,7 @@
 
 #include "Global/Include/SystemPaths.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
+#include "SystemTracking/Include/ViewHistoryDiffDlg.h"
 
 #include "ui_ViewHistory.h"
 
@@ -49,8 +51,9 @@ CViewHistory::CViewHistory(Core::CServiceGUIConnector *p_DataConnector, QWidget 
 
     mp_TableWidget->resize(380, 380);
     mp_TableWidget->SetVisibleRows(6);
-    mp_TableWidget->selectRow(0);
+    //mp_TableWidget->selectRow(0);
     mp_TableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mp_TableWidget->setSelectionMode(QAbstractItemView::MultiSelection);
 
     mp_Ui->widget->SetContent(mp_TableWidget);
     mp_Ui->widget->setMinimumSize(mp_TableWidget->width(),
@@ -59,16 +62,11 @@ CViewHistory::CViewHistory(Core::CServiceGUIConnector *p_DataConnector, QWidget 
     mp_ViewHistoryDlg = new SystemTracking::CViewHistoryDlg(this);
 
     mp_MessageDialog = new MainMenu::CMessageDlg(this);
+    mp_Ui->showDiffBtn->setEnabled(false);
 
-    (void)connect(mp_TableWidget,
-                  SIGNAL(clicked(QModelIndex)),
-                  this,
-                  SLOT(SelectionChanged(QModelIndex)));
-
-    (void)connect(mp_Ui->showDetailsBtn,
-                  SIGNAL(clicked()),
-                  this,
-                  SLOT(ExecDialog()));
+    CONNECTSIGNALSLOTGUI(mp_TableWidget, clicked(QModelIndex), this, SelectionChanged(QModelIndex));
+    CONNECTSIGNALSLOTGUI(mp_Ui->showDetailsBtn, clicked(), this, ExecDialog());
+    CONNECTSIGNALSLOTGUI(mp_Ui->showDiffBtn, clicked(), this, ExecDiffDialog());
 }
 
 
@@ -101,9 +99,36 @@ CViewHistory::~CViewHistory()
  */
 /****************************************************************************/
 void CViewHistory::SelectionChanged(QModelIndex Index)
-{
-    //m_ModuleTimeStamp = Index.data(Qt::UserRole + 1).toString();
-    m_ModuleTimeStamp = Index.data(Qt::DisplayRole).toString();
+{   
+    QItemSelectionModel* SelectionModel = mp_TableWidget->selectionModel();
+    m_SelectedRowValues = SelectionModel->selectedIndexes(); //!< list of "selected" items
+
+    if (m_SelectedRowValues.count() == 1) {
+        m_IndexofFirst = Index;
+        m_IndexofLast = Index;
+    }
+
+    if (m_SelectedRowValues.count() == 2)
+        m_IndexofLast = Index;
+
+    QCoreApplication::processEvents(QEventLoop::AllEvents);
+    if (m_SelectedRowValues.count() > 2) {
+        mp_TableWidget->selectionModel()->setCurrentIndex(m_IndexofFirst, QItemSelectionModel::Toggle);
+        m_IndexofFirst = m_IndexofLast;
+        m_IndexofLast = Index;
+        m_SelectedRowValues.removeAt(0);
+    }
+
+    if (m_SelectedRowValues.count() == 0)
+        mp_Ui->showDiffBtn->setEnabled(false);
+
+    if (m_SelectedRowValues.count() == 1) {
+        mp_Ui->showDetailsBtn->setEnabled(true);
+        mp_Ui->showDiffBtn->setEnabled(false);
+    } else {
+        mp_Ui->showDetailsBtn->setEnabled(false);
+        mp_Ui->showDiffBtn->setEnabled(true);
+    }
 }
 
 void CViewHistory::AddItem(QString InstrumentHistoryFileName)
@@ -140,7 +165,7 @@ void CViewHistory::UpdateGUI(void)
 /****************************************************************************/
 void CViewHistory::ExecDialog(void)
 {
-    if(m_ModuleTimeStamp.isEmpty())
+    if (m_SelectedRowValues.count() == 0)
     {
         mp_MessageDialog->SetTitle(tr("Select Module List"));
         mp_MessageDialog->SetButtonText(1, tr("OK"));
@@ -151,23 +176,64 @@ void CViewHistory::ExecDialog(void)
 
         return;
     }
-
-    //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_VIEWHISTORY_INSTRUMENT_SHOWDETAILS,
-                                               //Global::tTranslatableStringList()<<m_InstrumentHistoryName);
+    QString ModuleTimeStamp = m_SelectedRowValues.at(0).data((int)Qt::DisplayRole).toString();
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_VIEWHISTORY_TIMESTAMP_SHOWDETAILS,
+                                               Global::tTranslatableStringList()<<ModuleTimeStamp);
     mp_ViewHistoryDlg->SetDialogTitle(tr("Module History"));
     mp_ViewHistoryDlg->resize(600,550);
 
     ServiceDataManager::CModuleDataList *ModuleList = NULL;
-    if (mp_ModuleList->GetModuleTimeStamp() == m_ModuleTimeStamp) {
+    if (mp_ModuleList->GetModuleTimeStamp() == ModuleTimeStamp) {
         ModuleList = mp_ModuleList;
     }
     else {
-        ModuleList = mp_InstrumentHistoryArchive->GetModuleList(m_ModuleTimeStamp);
+        ModuleList = mp_InstrumentHistoryArchive->GetModuleList(ModuleTimeStamp);
     }
     mp_ViewHistoryDlg->SetModuleList(ModuleList);
     mp_ViewHistoryDlg->UpdateGUI();
 
     mp_ViewHistoryDlg->show();
+}
+
+void CViewHistory::ExecDiffDialog()
+{
+    if (m_SelectedRowValues.count() == 0) {
+        if (mp_MessageDialog != NULL) {
+            delete mp_MessageDialog;
+        }
+        mp_MessageDialog = new MainMenu::CMessageDlg();
+        mp_MessageDialog->SetTitle(QApplication::translate("SystemTracking::CViewHistory",
+                                                           "Select Rows", 0, QApplication::UnicodeUTF8));
+        mp_MessageDialog->SetButtonText(1, QApplication::translate("SystemTracking::CViewHistory",
+                                                                   "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDialog->HideButtons();
+        mp_MessageDialog->SetText(QApplication::translate("SystemTracking::CViewHistory",
+                                  "Please select two ModuleList timestamp.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDialog->SetIcon(QMessageBox::Critical);
+        mp_MessageDialog->show();
+    } else {
+
+        QString TimeStampOne = m_SelectedRowValues.at(0).data((int)Qt::DisplayRole).toString();
+        QString TimeStampTwo = m_SelectedRowValues.at(1).data((int)Qt::DisplayRole).toString();
+
+        Global::EventObject::Instance().RaiseEvent(EVENT_GUI_VIEWHISTORY_TIMESTAMP_SHOWDIFFERENCE,
+                                                   Global::tTranslatableStringList() << TimeStampOne << TimeStampTwo);
+
+
+        ServiceDataManager::CModuleDataList ModuleListOne, ModuleListTwo;
+
+        if (mp_ModuleList->GetModuleTimeStamp() == TimeStampOne) {
+            ModuleListOne = *mp_ModuleList;
+            (void) mp_InstrumentHistoryArchive->GetModuleList(TimeStampTwo, ModuleListTwo);
+        } else if (mp_ModuleList->GetModuleTimeStamp() == TimeStampTwo) {
+            (void) mp_InstrumentHistoryArchive->GetModuleList(TimeStampOne, ModuleListOne);
+            ModuleListTwo = *mp_ModuleList;
+        } else {
+            (void) mp_InstrumentHistoryArchive->GetModuleList(TimeStampOne, ModuleListOne);
+            (void) mp_InstrumentHistoryArchive->GetModuleList(TimeStampTwo, ModuleListTwo);
+        }
+        SystemTracking::CViewHistoryDiffDlg::Instance(this).Show(ModuleListOne, ModuleListTwo);
+    }
 }
 
 } // end namespace SystemTracking

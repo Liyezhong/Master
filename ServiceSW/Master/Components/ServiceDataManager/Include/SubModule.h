@@ -79,6 +79,8 @@ public:
     void CopyFromOther(const CSubModule &SubModuleInfo);
     ~CSubModule();
     CSubModule& operator=(const CSubModule&);   //!< Assignment Operator Overloading
+    bool operator ==(const CSubModule& otherSubModule) const;
+    bool operator !=(const CSubModule& otherSubModule) const;
 
     /****************************************************************************/
     /*!

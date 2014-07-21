@@ -103,11 +103,14 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     qDebug() << "COven::UpdateSubModule !"
              << SubModule.GetSubModuleName();
 
-    mp_ModuleList = mp_DataConnector->GetModuleListContainer();
-    if (0 == mp_ModuleList)
-    {
-        qDebug() << "COven::UpdateSubModule(): Invalid module list!";
-        return;
+    if (!mp_ModuleList) {
+        ServiceDataManager::CModuleDataList* ModuleList = mp_DataConnector->GetModuleListContainer();
+        if (!ModuleList) {
+            qDebug() << "COven::UpdateSubModule(): Invalid module list!";
+            return;
+        }
+
+        *mp_ModuleList = *ModuleList;
     }
 
    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_OVEN);
@@ -125,14 +128,15 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
 
 void COven::ModifyOven(void)
 {
-    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_OVEN_MODULE);
-    qDebug() << "COven::ModifyOven !";
+    if (!mp_ModuleList) {
+        mp_ModuleList = new ServiceDataManager::CModuleDataList;
+        ServiceDataManager::CModuleDataList* ModuleList = mp_DataConnector->GetModuleListContainer();
+        if (!ModuleList) {
+            qDebug() << "COven::ModifyOven(): Invalid module list!";
+            return;
+        }
 
-    mp_ModuleList = mp_DataConnector->GetModuleListContainer();
-    if (0 == mp_ModuleList)
-    {
-        qDebug() << "COven::ModifyOven(): Invalid module list!";
-        return;
+        *mp_ModuleList = *ModuleList;
     }
 
     ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_OVEN);
@@ -176,7 +180,7 @@ void COven::ModifyCoverSensor(void)
 
 void COven::OnFinalizeConfiguration(void)
 {
-    QString Text = QApplication::translate("SystemTracking::CMainControl",
+    QString Text = QApplication::translate("SystemTracking::COven",
                                            "Do you want to finalize the configuration for the Oven?",
                                                        0, QApplication::UnicodeUTF8);
     ConfirmModuleConfiguration(Text);
@@ -191,7 +195,7 @@ void COven::CurrentTabChanged(int Index)
 
 void COven::ConfirmModuleConfiguration()
 {
-    QString Text = QApplication::translate("SystemTracking::CMainControl",
+    QString Text = QApplication::translate("SystemTracking::COven",
                                            "Oven Module has been modified. Do you want to finalize the configuration?",
                                            0, QApplication::UnicodeUTF8);
 
@@ -217,7 +221,7 @@ void COven::ConfirmModuleConfiguration(QString& Text)
     ResetMessageBox();
     if (Result)
     {
-        if(mp_DataConnector->UpdateInstrumentHistory())
+        if(mp_DataConnector->UpdateInstrumentHistory(*mp_ModuleList))
         {
             emit ModuleListChanged();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::COven",
@@ -242,7 +246,6 @@ void COven::ConfirmModuleConfiguration(QString& Text)
     else
     {
         //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_ADDMODIFY_SAVE_AND_OVERWRITE_CONFIGURATION_FAILURE);
-        mp_DataConnector->ReloadModuleList();
         mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::COven",
                                                                 "Ok", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
@@ -257,15 +260,18 @@ void COven::ConfirmModuleConfiguration(QString& Text)
 void COven::ModifySubModule(const QString &ModuleName,
                             const QString &SubModuleName)
 {
-    ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DataConnector->GetModuleListContainer();
-    if (0 == pModuleList)
-    {
-        qDebug() << "COven::ModifySubModule(): Invalid module list!";
-        return;
+    if (!mp_ModuleList) {
+        mp_ModuleList = new ServiceDataManager::CModuleDataList;
+        ServiceDataManager::CModuleDataList* ModuleList = mp_DataConnector->GetModuleListContainer();
+        if (!ModuleList) {
+            qDebug() << "COven::UpdateSubModule(): Invalid module list!";
+            return;
+        }
+
+        *mp_ModuleList = *ModuleList;
     }
 
-    ServiceDataManager::CModule *pModule = pModuleList->GetModule(ModuleName);
+    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(ModuleName);
     if (0 == pModule)
     {
         qDebug() << "COven::ModifySubModule(): Invalid module : "

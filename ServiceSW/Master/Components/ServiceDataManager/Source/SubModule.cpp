@@ -167,6 +167,27 @@ CSubModule& CSubModule::operator=(const CSubModule& SubModuleInfo)
     return *this;
 }
 
+bool CSubModule::operator ==(const CSubModule& otherSubModule) const
+{
+    if (this->m_SubModuleName != otherSubModule.m_SubModuleName
+            || this->m_ListOfParameters.count() != otherSubModule.m_ListOfParameters.count()) {
+        return false;
+    }
+    for(int i = 0;i < GetNumberOfParameters(); ++i) {
+        Parameter_t* ThisParameter  = this->GetParameterInfo(i);
+        Parameter_t* OtherParameter = otherSubModule.GetParameterInfo(ThisParameter->ParameterName);
+        if(!OtherParameter || ThisParameter->ParameterValue != OtherParameter->ParameterValue) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool CSubModule::operator !=(const CSubModule& otherSubModule) const
+{
+    return !(*this == otherSubModule);
+}
+
 /****************************************************************************/
 /*!
  *  \brief Reads the CSubModule Data from QIODevice

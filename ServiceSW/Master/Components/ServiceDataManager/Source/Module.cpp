@@ -517,6 +517,37 @@ CModule& CModule::operator=(const CModule& ModuleInfo)
     return *this;
 }
 
+bool CModule::operator ==(const CModule& otherModule) const
+{
+    if (this->m_ModuleName == otherModule.m_ModuleName
+            && this->m_SerialNumber == otherModule.m_SerialNumber
+            && this->m_DateOfProduction == otherModule.m_DateOfProduction
+            && this->m_OperatingHours == otherModule.m_OperatingHours)
+    {
+        if (this->GetNumberofSubModules() != otherModule.GetNumberofSubModules()) {
+            return false;
+        }
+        else {
+            for (int i = 0; i < GetNumberofSubModules(); ++i) {
+                CSubModule* ThisSubModule  = GetSubModuleInfo(i);
+                CSubModule* OtherSubmodule = otherModule.GetSubModuleInfo(ThisSubModule->GetSubModuleName());
+                if (!OtherSubmodule || *ThisSubModule != *OtherSubmodule) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+bool CModule::operator !=(const CModule& otherModule) const
+{
+    return !(*this == otherModule);
+}
+
 /****************************************************************************/
 /*!
  *  \brief Output Stream Operator which streams data

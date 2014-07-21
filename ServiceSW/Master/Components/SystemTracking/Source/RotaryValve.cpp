@@ -87,10 +87,15 @@ void CRotaryValve::UpdateModule(ServiceDataManager::CModule &Module)
     qDebug() << "CRotaryValve::UpdateModule !"
              << Module.GetModuleName();
 
-    if (0 == mp_ModuleList)
-    {
-        qDebug() << "CRotaryValve::UpdateModule(): Invalid module list!";
-        return;
+    if (!mp_ModuleList) {
+        mp_ModuleList = new ServiceDataManager::CModuleDataList;
+        ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
+        if (!ModuleList) {
+            qDebug() << "CRotaryValve::UpdateModule(): Invalid module list!";
+            return;
+        }
+
+        *mp_ModuleList = *ModuleList;
     }
 
     mp_ModuleList->UpdateModule(&Module);
@@ -105,11 +110,15 @@ void CRotaryValve::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     qDebug() << "CRotaryValve::UpdateSubModule !"
              << SubModule.GetSubModuleName();
 
-    mp_ModuleList = mp_DateConnector->GetModuleListContainer();
-    if (0 == mp_ModuleList)
-    {
-        qDebug() << "CRotaryValve::UpdateSubModule(): Invalid module list!";
-        return;
+    if (!mp_ModuleList) {
+        mp_ModuleList = new ServiceDataManager::CModuleDataList;
+        ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
+        if (!ModuleList) {
+            qDebug() << "CRotaryValve::UpdateSubModule(): Invalid module list!";
+            return;
+        }
+
+        *mp_ModuleList = *ModuleList;
     }
 
     ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_ROTARYVALVE);
@@ -130,11 +139,15 @@ void CRotaryValve::ModifyRotaryValve(void)
     Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_ROTARYVALVE_MODULE);
     qDebug() << "CRotaryValve::ModifyRotaryValve !";
 
-    mp_ModuleList = mp_DateConnector->GetModuleListContainer();
-    if (0 == mp_ModuleList)
-    {
-        qDebug() << "CRotaryValve::ModifyRotaryValve(): Invalid module list!";
-        return;
+    if (!mp_ModuleList) {
+        mp_ModuleList = new ServiceDataManager::CModuleDataList;
+        ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
+        if (!ModuleList) {
+            qDebug() << "CRotaryValve::ModifyRotaryValve(): Invalid module list!";
+            return;
+        }
+
+        *mp_ModuleList = *ModuleList;
     }
 
     ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_ROTARYVALVE);
@@ -220,7 +233,7 @@ void CRotaryValve::ConfirmModuleConfiguration(QString& Text)
     ResetMessageBox();
     if (Result)
     {
-        if(mp_DateConnector->UpdateInstrumentHistory())
+        if(mp_DateConnector->UpdateInstrumentHistory(*mp_ModuleList))
         {
             emit ModuleListChanged();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CRotaryValve",
@@ -245,7 +258,6 @@ void CRotaryValve::ConfirmModuleConfiguration(QString& Text)
     else
     {
         //Global::EventObject::Instance().RaiseEvent(EVENT_GUI_ADDMODIFY_SAVE_AND_OVERWRITE_CONFIGURATION_FAILURE);
-        mp_DateConnector->ReloadModuleList();
         mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CRotaryValve",
                                                                 "Ok", 0, QApplication::UnicodeUTF8));
         mp_MessageDlg->HideButtons();
@@ -260,15 +272,18 @@ void CRotaryValve::ConfirmModuleConfiguration(QString& Text)
 void CRotaryValve::ModifySubModule(const QString &ModuleName,
                                    const QString &SubModuleName)
 {
-    ServiceDataManager::CModuleDataList *pModuleList =
-            mp_DateConnector->GetModuleListContainer();
-    if (0 == pModuleList)
-    {
-        qDebug() << "CRotaryValve::ModifySubModule(): Invalid module list!";
-        return;
+    if (!mp_ModuleList) {
+        mp_ModuleList = new ServiceDataManager::CModuleDataList;
+        ServiceDataManager::CModuleDataList* ModuleList = mp_DateConnector->GetModuleListContainer();
+        if (!ModuleList) {
+            qDebug() << "CRotaryValve::UpdateSubModule(): Invalid module list!";
+            return;
+        }
+
+        *mp_ModuleList = *ModuleList;
     }
 
-    ServiceDataManager::CModule *pModule = pModuleList->GetModule(ModuleName);
+    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(ModuleName);
     if (0 == pModule)
     {
         qDebug() << "CRotaryValve::ModifySubModule(): Invalid module : "

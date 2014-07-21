@@ -114,7 +114,6 @@ public:
     DataManager::CUserSettingsInterface *GetUserSettingInterface(void);
     DataManager::CServiceParameters* GetServiceParameters();
     void SetServiceParametersContainer(DataManager::CServiceParameters *ServiceParameters);
-    bool ReloadModuleList();
 
 public slots:
     void OnCurrentTabChanged(int CurrentTabIndex);
@@ -136,7 +135,7 @@ public slots:
      *  \brief  To update the Instrument History xml file
      */
     /****************************************************************************/
-    bool UpdateInstrumentHistory();
+    bool UpdateInstrumentHistory(ServiceDataManager::CModuleDataList& ModuleList);
 signals:
     void ModuleListContainerInitialized(ServiceDataManager::CModuleDataList& ModuleList);
 
