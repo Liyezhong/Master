@@ -248,6 +248,9 @@ void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
     else if (TestCaseName == "PressureSensorCalibrate") {
         Id = Service::PRESSURE_CALIBRATION;
     }
+    else if (TestCaseName == "SystemSelfTest") {
+        Id = Service::SYSTEM_SELF_TEST;
+    }
 
     m_TestCaseIDHash.insert(Id, TestCaseName);
 }

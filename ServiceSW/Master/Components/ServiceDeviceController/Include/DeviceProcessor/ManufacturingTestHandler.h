@@ -401,6 +401,20 @@ private:
     /****************************************************************************/
     void SetSlaveStandby();
 
+    /****************************************************************************/
+    /**
+     * \brief Auto set the heater switch type for ASB3 according to ASB5
+     */
+    /****************************************************************************/
+    qint32 AutoSetASB3HeaterSwitchType();
+
+    /****************************************************************************/
+    /**
+     * \brief Set initialization value when starting slave.
+     */
+    /****************************************************************************/
+    qint32 SystemSelfTest();
+
 
     /****************************************************************************/
     /**
@@ -432,7 +446,7 @@ private:
     WrapperFmTempControl*       mp_TempOvenBottom;
 
     WrapperFmTempControl*       mp_TempRetortSide;
-    WrapperFmTempControl*       mp_TempRetortBttom;
+    WrapperFmTempControl*       mp_TempRetortBottom;
 
     WrapperFmDigitalInput*      mp_DIRetortLid;
 

@@ -524,7 +524,7 @@ void ServiceMasterThreadController::AttachControllersAndStartThreads(bool BasicT
     m_HeartbeatCheckTimeout = 10*1000;
    if(m_HeartbeatCheckTimeout > 0) {
        m_HeartbeatCheckTimer.setInterval(m_HeartbeatCheckTimeout);
-       m_HeartbeatCheckTimer.setSingleShot(false);
+       m_HeartbeatCheckTimer.setSingleShot(true);
        m_HeartbeatCheckTimer.start();
    } else {
       // LOG_EVENT(Global::EVTTYPE_INFO, Global::LOG_ENABLED, EVENT_THREADS_INFO_NO_HEARTBEAT_CHECKING, Global::tTranslatableStringList()

@@ -56,7 +56,7 @@ ManufacturingTestHandler::ManufacturingTestHandler(IDeviceProcessing &iDevProc)
     mp_DigitalOutputMainRelay = NULL;
 
     mp_TempRetortSide = NULL;
-    mp_TempRetortBttom = NULL;
+    mp_TempRetortBottom = NULL;
     mp_DIRetortLid = NULL;
 
     mp_TempTubeLiquid = NULL;
@@ -114,7 +114,7 @@ void ManufacturingTestHandler::CreateWrappers()
     pTemperature = static_cast<CTemperatureControl *>(m_rIdevProc.GetFunctionModuleRef(DEVICE_INSTANCE_ID_RETORT, CANObjectKeyLUT::m_RetortBottomTempCtrlKey));
     if (NULL != pTemperature)
     {
-        mp_TempRetortBttom = new WrapperFmTempControl("temp_retort_bottom", pTemperature, this);
+        mp_TempRetortBottom = new WrapperFmTempControl("temp_retort_bottom", pTemperature, this);
     }
 
     CDigitalInput *pDigitalInput = NULL;
@@ -707,9 +707,9 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
     }
 
     mp_TempRetortSide->StopTemperatureControl();
-    mp_TempRetortBttom->StopTemperatureControl();
+    mp_TempRetortBottom->StopTemperatureControl();
     bool sideCtrlRet = mp_TempRetortSide->StartTemperatureControl(sideTgtTemp+7);
-    bool btmCtrlRet  = mp_TempRetortBttom->StartTemperatureControl(btmTgtTemp+2);
+    bool btmCtrlRet  = mp_TempRetortBottom->StartTemperatureControl(btmTgtTemp+2);
     qDebug() << "Start top return : "<< sideCtrlRet << "\n";
     qDebug() << "Start bottom return :"<< btmCtrlRet << "\n";
 
@@ -720,8 +720,8 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
     int num = 10;
     while(num) {
         curSideTemp   = mp_TempRetortSide->GetTemperature(0);
-        curBottomTemp1 = mp_TempRetortBttom->GetTemperature(0);
-        curBottomTemp2 = mp_TempRetortBttom->GetTemperature(1);
+        curBottomTemp1 = mp_TempRetortBottom->GetTemperature(0);
+        curBottomTemp2 = mp_TempRetortBottom->GetTemperature(1);
 
         if (curSideTemp==-1 || curBottomTemp1==-1 || curBottomTemp2==-1) {
             mp_Utils->Pause(100);
@@ -781,8 +781,8 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
         QTime EndTime = QTime().currentTime().addSecs(1);
 
         curSideTemp   = mp_TempRetortSide->GetTemperature(0);
-        curBottomTemp1 = mp_TempRetortBttom->GetTemperature(0);
-        curBottomTemp2 = mp_TempRetortBttom->GetTemperature(1);
+        curBottomTemp1 = mp_TempRetortBottom->GetTemperature(0);
+        curBottomTemp2 = mp_TempRetortBottom->GetTemperature(1);
         if (curSideTemp == -1 || curBottomTemp1 == -1) {
             qDebug() << "Side=" << curSideTemp << " Bottom1=" << curBottomTemp1 << " Bottom2=" << curBottomTemp2 << "\n";
             mp_Utils->Pause(1000);
@@ -1160,12 +1160,12 @@ qint32 ManufacturingTestHandler::TestSystem110v220vSwitch()
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
     QString ConnectedVoltage = p_TestCase->GetParameter("ConnectedVoltage");
 
-    QString VoltageValue = mp_TempRV->GetMainsVoltageState();
-    if ( VoltageValue == "110V") {
-        CurrentVoltage = 110;
-    }
-    else if (VoltageValue == "220V") {
+    quint8 SwitchType = mp_TempRetortBottom->GetHeaterSwitchType();
+    if (SwitchType == TEMPCTRL_VOLTAGE_220V) {
         CurrentVoltage = 220;
+    }
+    else if (SwitchType == TEMPCTRL_VOLTAGE_110V) {
+        CurrentVoltage = 110;
     }
     else {
         CurrentVoltage = 0;
@@ -2709,7 +2709,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         }
 
         mp_TempRetortSide->StartTemperatureControl(TargetTempSide+7);
-        mp_TempRetortBttom->StartTemperatureControl(TargetTempBottom+2);
+        mp_TempRetortBottom->StartTemperatureControl(TargetTempBottom+2);
 
         while(!m_UserAbort && WaitSec) {
             QTime EndTime = QTime().currentTime().addSecs(1);
@@ -2728,8 +2728,8 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
             }
 
             CurrentTempSide = mp_TempRetortSide->GetTemperature(0);
-            CurrentTempBottom1 = mp_TempRetortBttom->GetTemperature(0);
-            CurrentTempBottom2 = mp_TempRetortBttom->GetTemperature(1);
+            CurrentTempBottom1 = mp_TempRetortBottom->GetTemperature(0);
+            CurrentTempBottom2 = mp_TempRetortBottom->GetTemperature(1);
 
             if (CurrentTempSide == -1 || CurrentTempBottom1 == -1 ||
                     CurrentTempBottom1 == -1) {
@@ -2761,7 +2761,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
 
         mp_TempRetortSide->StopTemperatureControl();
-        mp_TempRetortBttom->StopTemperatureControl();
+        mp_TempRetortBottom->StopTemperatureControl();
 
         if (NeedAC) {
            mp_DigitalOutputMainRelay->SetLow();
@@ -2804,6 +2804,105 @@ EXIT_TEST_RETORT_HEATING_WATER:
 
         return 0;
     }
+}
+
+qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
+{
+    qint32 RetVal(0);
+
+    if (!mp_TempRV || !mp_TempRetortBottom || !mp_TempOvenBottom || !mp_DigitalOutputMainRelay || !mp_Utils) {
+        return -1;
+    }
+
+    qDebug()<<"RV SetTemperatureSwitchState AutoSwitch return :"<< mp_TempRV->SetTemperatureSwitchState(-1, 1);
+    qDebug()<<"Retort SetTemperatureSwitchState AutoSwitch return :"<< mp_TempRetortBottom->SetTemperatureSwitchState(-1, 1);
+
+    qDebug()<<"MainRelay SetHight return : "<<mp_DigitalOutputMainRelay->SetHigh();
+
+    qDebug()<<"RV Temp:"<<mp_TempRV->GetTemperature();
+    qDebug()<<"Retort Temp:"<<mp_TempRetortBottom->GetTemperature();
+    qDebug()<<"Oven Temp:"<<mp_TempOvenBottom->GetTemperature();
+
+    qDebug()<<"heat for 5 seconds...";
+
+    mp_TempRV->StartTemperatureControl(70);
+    mp_TempRetortBottom->StartTemperatureControl(70);
+    mp_TempRetortSide->StartTemperatureControl(70);
+    mp_TempOvenBottom->StartTemperatureControl(70);
+    mp_TempOvenTop->StartTemperatureControl(70);
+
+    mp_Utils->Pause(5000);
+
+    qDebug()<<"RV Temp:"<<mp_TempRV->GetTemperature();
+    qDebug()<<"Retort Temp:"<<mp_TempRetortBottom->GetTemperature();
+    qDebug()<<"Oven Temp:"<<mp_TempOvenBottom->GetTemperature();
+
+    qDebug()<<"RV current:" <<mp_TempRV->GetCurrent();
+    qDebug()<<"Retort current:"<<mp_TempRetortBottom->GetCurrent();
+    qDebug()<<"Oven current:"<<mp_TempOvenBottom->GetCurrent();
+
+    mp_TempRV->StopTemperatureControl();
+    mp_TempRetortBottom->StopTemperatureControl();
+    mp_TempRetortSide->StopTemperatureControl();
+    mp_TempOvenBottom->StopTemperatureControl();
+    mp_TempOvenTop->StopTemperatureControl();
+
+    mp_DigitalOutputMainRelay->SetLow();
+
+    quint8 ASB3SwitchType = mp_TempRV->GetHeaterSwitchType();
+    quint8 ASB5SwitchType = mp_TempRetortBottom->GetHeaterSwitchType();
+    qDebug()<<"Oven switch type:"<<mp_TempOvenBottom->GetHeaterSwitchType();
+
+
+    qDebug()<<"ASB3SwitchType=" << ASB3SwitchType<< "   ASB5SwitchType="<<ASB5SwitchType;
+
+    if (ASB3SwitchType != ASB5SwitchType) {
+        mp_TempRV->SetTemperatureSwitchState(ASB5SwitchType, -1);
+
+        ASB3SwitchType = mp_TempRV->GetHeaterSwitchType();
+
+        qDebug()<<"ASB3SwitchType=" << ASB3SwitchType;
+
+        if (ASB3SwitchType != ASB5SwitchType) {
+            RetVal = -1;
+        }
+    }
+
+    qDebug()<<"RV SetTemperatureSwitchState return :"<<mp_TempRV->SetTemperatureSwitchState(-1, 0);
+    qDebug()<<"Retort SetTemperatureSwitchState return :"<<mp_TempRetortBottom->SetTemperatureSwitchState(-1, 0);
+
+    return RetVal;
+}
+
+qint32 ManufacturingTestHandler::SystemSelfTest()
+{
+    Service::ModuleTestCaseID Id = Service::SYSTEM_SELF_TEST;
+
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+
+    Service::ModuleTestStatus Status;
+
+    Status.insert("CurState", "Begin");
+    emit RefreshTestStatustoMain(TestCaseName, Status);
+    // close remote alarm and local alarm.
+    if (mp_DORemoteAlarm) {
+        qDebug()<<"Close remote alarm return : "<<mp_DORemoteAlarm->SetHigh();
+    }
+    else {
+        qDebug()<<"Fail to init remote alarm";
+    }
+    if (mp_DOLocalAlarm) {
+        qDebug()<<"Close local alarm return : "<<mp_DOLocalAlarm->SetHigh();
+    }
+    else {
+        qDebug()<<"Fail to init local alarm";
+    }
+
+    qint32 RetVal = AutoSetASB3HeaterSwitchType();
+
+    Status.insert("CurState", "End");
+    emit RefreshTestStatustoMain(TestCaseName, Status);
+    return RetVal;
 }
 
 
@@ -2987,7 +3086,7 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
         int CurStep = p_TestCase->GetParameter("CurStep").toInt();
         if (CurStep == 1) {
-            if (NULL == mp_TempRetortSide && NULL == mp_TempRetortBttom) {
+            if (NULL == mp_TempRetortSide && NULL == mp_TempRetortBottom) {
                 SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
                 emit ReturnManufacturingTestMsg(false);
                 return;
@@ -3007,7 +3106,7 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
     }
 
     case Service::RETORT_HEATING_EMPTY:
-        if (NULL == mp_TempRetortSide && NULL == mp_TempRetortBttom) {
+        if (NULL == mp_TempRetortSide && NULL == mp_TempRetortBottom) {
             SetFailReason(TestId, Service::MSG_DEVICE_NOT_INITIALIZED);
             emit ReturnManufacturingTestMsg(false);
             return;
@@ -3123,6 +3222,12 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         break;
     case Service::SYSTEM_SHUTDOWN:
         SetSlaveStandby();
+        break;
+    case Service::SYSTEM_110V_220V_AUTO_SWITCH:
+        AutoSetASB3HeaterSwitchType();
+        break;
+    case Service::SYSTEM_SELF_TEST:
+        SystemSelfTest();
         break;
     default:
         break;

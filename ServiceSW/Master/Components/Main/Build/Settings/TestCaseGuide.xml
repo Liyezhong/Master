@@ -177,4 +177,5 @@
 	<FirmwareUpdate></FirmwareUpdate>
 	<FirmwareGetSlaveInfo></FirmwareGetSlaveInfo>
 	<PressureSensorCalibrate></PressureSensorCalibrate>
+	<SystemSelfTest></SystemSelfTest>
 </TestCaseGuide>

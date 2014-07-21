@@ -30,13 +30,9 @@ namespace ServiceUpdates {
 CSystem::CSystem(QWidget *p_Parent)
     : QWidget(p_Parent)
     , mp_Ui(new Ui::CSystem)
-    , mp_WaitDialog(new MainMenu::CWaitDialog)
-    , mp_MessageDlg(new MainMenu::CMessageDlg)
+    , mp_MessageDlg(new MainMenu::CMessageDlg(p_Parent))
 {
     mp_Ui->setupUi(this);
-
-    mp_WaitDialog->HideAbort();
-    mp_WaitDialog->setModal(true);
 
     mp_MessageDlg->SetButtonText(1, tr("Ok"));
     mp_MessageDlg->setModal(true);
@@ -51,8 +47,6 @@ CSystem::~CSystem(void)
     {
         delete mp_MessageDlg;
 
-        delete mp_WaitDialog;
-
         delete mp_Ui;
     }
     catch (...) { }
@@ -61,6 +55,10 @@ CSystem::~CSystem(void)
 
 void CSystem::OnShutDown(void)
 {
+    mp_MessageDlg->SetText(QApplication::translate("ServiceUpdates::CSystem", "System is shutting down ...\n", 0, QApplication::UnicodeUTF8));
+    mp_MessageDlg->HideAllButtons();
+    mp_MessageDlg->Show();
+
     emit ShutdownSystem();
 }
 

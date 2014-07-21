@@ -1309,8 +1309,8 @@ void CManufacturingDiagnosticsHandler::ShowMessage(const QString &Message)
     mp_WaitDialog->setMinimumWidth(200);
     mp_WaitDialog->setMinimumHeight(150);
 
-    mp_WaitDialog->show();
     mp_WaitDialog->setModal(true);
+    mp_WaitDialog->show();
 }
 
 /****************************************************************************/

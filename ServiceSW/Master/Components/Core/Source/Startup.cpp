@@ -49,7 +49,8 @@ CStartup::CStartup() : QObject(),
     m_CurrentUserMode(""),
     mp_ManaufacturingDiagnosticsHandler(NULL),
     mp_HeatingStatusDlg(NULL),
-    mp_SealingStatusDlg(NULL)
+    mp_SealingStatusDlg(NULL),
+    m_SelfTestFinished(false)
 {
     qRegisterMetaType<Service::ModuleNames>("Service::ModuleNames");
     qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");
@@ -162,7 +163,7 @@ CStartup::CStartup() : QObject(),
     mp_FirmwareUpdate = new ServiceUpdates::CFirmwareUpdate(mp_ServiceConnector);
     mp_DataManagement = new ServiceUpdates::CDataManagement;
     mp_Setting = new ServiceUpdates::CSettings(mp_ServiceConnector, mp_MainWindow);
-    mp_UpdateSystem = new ServiceUpdates::CSystem;
+    mp_UpdateSystem = new ServiceUpdates::CSystem(mp_MainWindow);
 
     (void)connect(mp_ServiceConnector,
                   SIGNAL(ModuleListChanged()),
@@ -618,10 +619,14 @@ void CStartup::ManufacturingGuiInit()
     mp_MainWindow->SetUserMode("MANUFACTURING");
     emit UpdateGUIConnector(mp_ServiceConnector, mp_MainWindow);
 
+
     mp_ManaufacturingDiagnosticsHandler->LoadManufDiagnosticsComponents();
 
     LoadCommonComponenetsTwo();
 
+    if (m_SelfTestFinished == false) {
+        mp_ManaufacturingDiagnosticsHandler->ShowMessage(QApplication::translate("Core::Startup", "System is initializing ...", 0, QApplication::UnicodeUTF8));
+    }
     qDebug()<<"CStartup::ManufacturingGuiInit finished";
 }
 
@@ -1402,6 +1407,19 @@ void CStartup::RefreshTestStatus(const QString &message, const Service::ModuleTe
     case Service::PRESSURE_CALIBRATION:
         mp_CalibrationHandler->RefreshCalibrationMessagetoMain(status);
         break;
+    case Service::SYSTEM_SELF_TEST:
+    {
+        if (status.value("CurState")=="Begin") {
+            m_SelfTestFinished = false;
+        }
+        else {
+            m_SelfTestFinished = true;
+            if (mp_ManaufacturingDiagnosticsHandler) {
+                mp_ManaufacturingDiagnosticsHandler->HideMessage();
+            }
+        }
+        break;
+    }
     default:
         break;
     }

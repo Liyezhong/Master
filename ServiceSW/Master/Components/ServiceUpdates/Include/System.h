@@ -59,7 +59,6 @@ signals:
 private:
     Ui::CSystem   *mp_Ui;
 
-    MainMenu::CWaitDialog *mp_WaitDialog;
     MainMenu::CMessageDlg *mp_MessageDlg;
 };
 

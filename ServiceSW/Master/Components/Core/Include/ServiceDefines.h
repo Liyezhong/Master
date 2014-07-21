@@ -201,6 +201,8 @@ typedef enum ModuleTestCaseID {
     FIRMWARE_UPDATE,                       ///< This is to update firmware for manufacturing
     FIRMWARE_GET_SLAVE_INFO,                ///< This is to get information from slave board.
     PRESSURE_CALIBRATION,                     ///< This is to calibrate pressure sensor
+    SYSTEM_110V_220V_AUTO_SWITCH,           ///< This is to auto switch voltage for ASB3 according to ASB5
+    SYSTEM_SELF_TEST,
     SYSTEM_SHUTDOWN                         ///< This is to set slave to standby.
 } ModuleTestCaseID_t;
 

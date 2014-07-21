@@ -121,6 +121,8 @@ public:
 
 private:
 
+    bool        m_SelfTestFinished;                     //!< Check if system self test is finished.
+
     QTimer      *mp_Clock;                                  //!< The main clock
     QDateTime   m_DateTime;                                 //!< The current date and time
 

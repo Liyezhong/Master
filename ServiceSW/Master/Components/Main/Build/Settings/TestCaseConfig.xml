@@ -51,4 +51,6 @@
 	<PressureSensor>
 		<PressureSensorCalibrate TryNum="1" />
 	</PressureSensor>
+	<SystemSelfTest>
+	</SystemSelfTest>
 </TestCaseConfig>
