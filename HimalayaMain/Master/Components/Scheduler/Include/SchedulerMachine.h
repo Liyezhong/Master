@@ -125,6 +125,14 @@ private:
 
     GET_RV_ORIGINALPOS_t m_RVGetOriginalPosition;
     qint64                 m_RVOrgPosCmdTime;
+
+    typedef enum
+    {
+        HEATING_LEVELSENSOR,
+        CHECK_FILLINGTEMP,
+        RC_FILLING
+    }RC_FILLING_t;
+    RC_FILLING_t m_RcFilling;
 private:
     QString GetDeviceName();
 
@@ -1493,6 +1501,13 @@ signals:
      */
     /****************************************************************************/
     void SigRcFilling();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigRcFillingBegin
+     */
+    /****************************************************************************/
+    void SigRcFillingBegin();
 
     /****************************************************************************/
     /*!

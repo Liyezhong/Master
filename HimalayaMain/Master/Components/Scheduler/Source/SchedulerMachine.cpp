@@ -191,7 +191,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
 
     //RC_Filling
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRcFilling()), mp_RcFilling.data());
-    CONNECTSIGNALSLOT(mp_RcFilling.data(), entered(), mp_SchedulerThreadController, Fill());
+    CONNECTSIGNALSLOT(this, SigRcFillingBegin(), mp_SchedulerThreadController, Fill());
     CONNECTSIGNALSLOT(mp_RcFilling.data(), exited(), mp_SchedulerThreadController, OnStopFill());
     mp_RcFilling->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
@@ -215,6 +215,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
     m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
     m_RVOrgPosCmdTime = 0;
+    m_RcFilling = HEATING_LEVELSENSOR;
 }
 
 
@@ -851,17 +852,56 @@ void CSchedulerStateMachine::HandleRcVacuumWorkFlow(const QString& cmdName, Devi
 
 void CSchedulerStateMachine::HandleRcFillingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
 {
-    if( "Scheduler::ALFilling" == cmdName)
+    qreal tempLevelSensor = 0.0;
+    quint16 retValue = 0;
+    switch(m_RcFilling)
     {
-        if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+    case HEATING_LEVELSENSOR:
+        if (DCL_ERR_FCT_CALL_SUCCESS != mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControl("LevelSensor"))
         {
-            OnTasksDone(false);
+            this->OnTasksDone(false);
         }
         else
         {
-            OnTasksDone(true);
+            m_RcFilling = CHECK_FILLINGTEMP;
         }
+        break;
+    case CHECK_FILLINGTEMP:
+        tempLevelSensor = mp_SchedulerThreadController->GetSchedCommandProcessor()->HardwareMonitor().TempALLevelSensor;
+        retValue = mp_SchedulerThreadController->GetHeatingStrategy()->CheckTemperatureOverTime("LevelSensor",tempLevelSensor);
+        if (0 == retValue)
+        {
+            // Do nothing
+        }
+        else if (1 == retValue)
+        {
+            m_RcFilling = CHECK_FILLINGTEMP;
+            this->OnTasksDone(false);
+        }
+        else if (2 == retValue)
+        {
+            m_RcFilling = RC_FILLING;
+            emit SigRcFillingBegin();
+        }
+        break;
+    case RC_FILLING:
+        if( "Scheduler::ALFilling" == cmdName)
+        {
+            if (DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                OnTasksDone(false);
+                m_RcFilling = HEATING_LEVELSENSOR;
+            }
+            else
+            {
+                OnTasksDone(true);
+                m_RcFilling = HEATING_LEVELSENSOR;
+            }
+        }
+    default:
+        break;
     }
+
 }
 
 void CSchedulerStateMachine::HandleDrainingWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode)
