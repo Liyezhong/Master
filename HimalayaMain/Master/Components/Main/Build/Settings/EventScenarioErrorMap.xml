@@ -969,7 +969,8 @@
             <scenario type="single" id="251"/>
         </error>
         <error errorid="513030033">
-            <scenario type="range" startid="281" endid="297"/>
+            <scenario type="range" startid="281" endid="286"/>
+            <scenario type="range" startid="291" endid="296"/>
         </error>
     </event>
     <event eventid="500030041">
