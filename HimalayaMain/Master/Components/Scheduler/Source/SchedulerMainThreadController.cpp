@@ -2294,16 +2294,19 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             m_SchedulerMachine->SendErrorSignal();
         }
     }
-    if(strctHWMonitor.PressureAL == UNDEFINED_VALUE)
+    if(strctHWMonitor.PressureAL != UNDEFINED_VALUE)
 	{
         m_PressureAL = strctHWMonitor.PressureAL;
 	}
-#if 0
-    if(m_PressureAL < -45 || m_PressureAL > 45){
-        quint32 EVENT_LA_PressureSensor_OutofRange = 34; //only for test
-        RaiseError(0,EVENT_LA_PressureSensor_OutofRange,Scenario,true);
+
+    if ("ERROR" != StepID && "IDLE" != StepID)
+    {
+        if(qAbs(m_PressureAL) >40.0 )
+        {
+            RaiseError(0,DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE,Scenario,true);
+            m_SchedulerMachine->SendErrorSignal();
+        }
     }
-#endif
 	if(strctHWMonitor.TempALLevelSensor != UNDEFINED_VALUE)
 	{
         m_TempALLevelSensor = strctHWMonitor.TempALLevelSensor;

@@ -117,6 +117,7 @@ void CRsHeatingErr30SRetry::HandleWorkFlow()
         }
         else
         {
+            mp_SchedulerController->LogDebug("RS_HeatingErr_30SRetry, SHUTDOWN_FAILD_HEATER failed");
             emit TasksDone(false);
         }
         break;
