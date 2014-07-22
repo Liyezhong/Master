@@ -13,7 +13,7 @@ ScreenSaverWidget::ScreenSaverWidget(QWidget *parent) :
     m_timer = new QTimer(this);
     m_timer->setInterval(1800000);//30 mintues
     (void)connect(m_timer, SIGNAL(timeout()), this, SLOT(AppIdleForLongTime()));
-    m_timer->start();
+    //m_timer->start();
 }
 
 ScreenSaverWidget::~ScreenSaverWidget()
