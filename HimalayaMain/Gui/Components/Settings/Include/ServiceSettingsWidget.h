@@ -41,6 +41,8 @@ class CServiceSettingsWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
 
+    friend class CTestSettings;
+
 public:
     explicit CServiceSettingsWidget(QWidget *p_Parent = 0);
     ~CServiceSettingsWidget();

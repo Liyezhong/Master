@@ -47,6 +47,8 @@ class CRegionalSettingsWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
 
+    friend class CTestSettings;
+
 private:
     Ui::CRegionalSettingsWidget *mp_Ui;             //!< User interface
     DataManager::CHimalayaUserSettings *mp_UserSettings;  //!< Data object

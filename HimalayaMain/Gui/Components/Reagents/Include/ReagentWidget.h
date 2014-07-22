@@ -48,6 +48,7 @@ class CReagentWidget : public QWidget
 {
     Q_OBJECT
 
+    friend class CTestReagents;
 
 private:
     Ui::CReagentWidget *mp_Ui;                     //!< User interface

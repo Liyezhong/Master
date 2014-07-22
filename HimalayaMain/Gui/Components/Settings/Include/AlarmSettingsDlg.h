@@ -43,6 +43,7 @@ class CAlarmSettingsDlg : public MainMenu::CDialogFrame
 {
     Q_OBJECT
 
+    friend class CTestSettings;
 public:
     /****************************************************************************/
     /*!

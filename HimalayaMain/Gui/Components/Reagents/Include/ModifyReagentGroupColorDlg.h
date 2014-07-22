@@ -43,6 +43,7 @@ namespace Ui {
 class CModifyReagentGroupColorDlg : public MainMenu::CDialogFrame
 {
     Q_OBJECT
+    friend class CTestReagents;
 
 private:
     Ui::CModifyReagentGroupColorDlg *mp_Ui;                   ///< User interface

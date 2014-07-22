@@ -44,6 +44,7 @@ class CInstallationSettingsWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
 
+    friend class CTestSettings;
 private:
     Ui::CInstallationSettingsWidget *mp_Ui;                 //!< User interface
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Reference to Keyboard widget

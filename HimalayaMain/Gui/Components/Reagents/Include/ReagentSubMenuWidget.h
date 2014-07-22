@@ -23,6 +23,7 @@ namespace Ui {
 class CReagentSubMenuWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
+    friend class CTestReagents;
 
 private:
     Ui::CReagentSubMenuWidget *mp_Ui;                     //!< User interface

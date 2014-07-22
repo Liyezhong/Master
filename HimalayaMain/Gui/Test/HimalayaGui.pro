@@ -19,6 +19,7 @@ SUBDIRS = ../../../../Platform/Master/Components/Global/Build/Global.pro \
           ../Components/Settings/Build/Settings.pro \
           ../Components/Users/Build/Users.pro \
           ../Components/Dashboard/Test/TestDashboard.pro \
-          ../Components/Reagents/Test/TestReagents.pro
+          ../Components/Reagents/Test/TestReagents.pro \
+          ../Components/Settings/Test/TestSettings.pro
 
 CONFIG += ordered

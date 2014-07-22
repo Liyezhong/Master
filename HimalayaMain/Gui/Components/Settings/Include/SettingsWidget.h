@@ -40,6 +40,8 @@ class CSettingsWidget : public QWidget
 {
     Q_OBJECT
 
+    friend class CTestSettings;
+
 public:
     explicit CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWindow *p_Parent,
                              KeyBoard::CKeyBoard *p_Keyboard);

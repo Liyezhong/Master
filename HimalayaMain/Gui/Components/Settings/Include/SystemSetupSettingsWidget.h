@@ -42,6 +42,7 @@ namespace Ui {
 class CSystemSetupSettingsWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
+    friend class CTestSettings;
 
 private:
     Ui::CSystemSetupSettingsWidget *mp_Ui;                 //!< User interface

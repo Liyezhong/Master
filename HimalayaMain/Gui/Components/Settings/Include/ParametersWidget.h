@@ -39,6 +39,8 @@ class CParametersWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
 
+    friend class CTestSettings;
+
 private:
     Ui::CParametersWidget *mp_Ui;   //!< User interface
     void RetranslateUI();

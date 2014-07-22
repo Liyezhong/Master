@@ -43,6 +43,7 @@ class CLanguageWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
 
+    friend class CTestSettings;
 private:
     Ui::CLanguageWidget *mp_Ui;                     //!< User interface
     MainMenu::CBaseTable *mp_TableWidget;           //!< Language table

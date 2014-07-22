@@ -37,6 +37,7 @@ class CFileViewWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
 
+    friend class CTestSettings;
 public:
     explicit CFileViewWidget(QWidget *p_Parent = 0);
     void SetPanelSize(const qint32 &Width, const qint32 &Height);

@@ -37,6 +37,7 @@ namespace Settings {
 class CDateTimeWidget : public MainMenu::CPanelFrame {
     Q_OBJECT
 
+    friend class CTestSettings;
 public:
     explicit CDateTimeWidget(QWidget *p_Parent = 0);
     virtual ~CDateTimeWidget();

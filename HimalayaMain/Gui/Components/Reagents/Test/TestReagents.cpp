@@ -22,8 +22,18 @@
 
 #include <QtTest>
 #include <QDebug>
-#include <Reagents/Include/ReagentWidget.h>
 #include <QObject>
+#include <QStringList>
+#include <QDataStream>
+#include <Reagents/Include/ReagentWidget.h>
+#include <Reagents/Include/ModifyReagentGroupColorDlg.h>
+#include <Reagents/Include/ModifyReagentRMSDlg.h>
+#include <Reagents/Include/ModifyReagentStationDlg.h>
+#include <Reagents/Include/ReagentGroupWidget.h>
+#include <Reagents/Include/ReagentRMSWidget.h>
+#include <Reagents/Include/ReagentStatusWidget.h>
+#include <Reagents/Include/ReagentSubMenuWidget.h>
+
 
 
 namespace Reagents {
@@ -93,47 +103,162 @@ void CTestReagents::utTestReagentWidget() {
     Core::CDataConnector *p_DataConnector = new Core::CDataConnector(&MainWindow);
     KeyBoard::CKeyBoard KeyBoard;
 
-    Reagents::CReagentWidget *p_ReagentWidget = new Reagents::CReagentWidget(p_DataConnector, &MainWindow, &KeyBoard);
-    /*Reagents::CModifyReagentDlg *p_ModifyReagentDlg = new
-           Reagents::CModifyReagentDlg(p_ReagentWidget, &KeyBoard, &MainWindow, p_DataConnector);
-    Reagents::CHeatedCuvette *p_HeatedCuvette = new
-           Reagents::CHeatedCuvette(p_ReagentWidget, &MainWindow, p_DataConnector);
-    DataManager::CReagent Reagent;
+    //*/
+    Reagents::CReagentWidget *ragtWgt = new Reagents::CReagentWidget(p_DataConnector, &MainWindow, &KeyBoard);
+    ragtWgt->changeEvent(new QEvent(QEvent::None));
+    //ragtWgt->SetUserSettings(new DataManager::CUserSettings);
+    ragtWgt->RetranslateUI();
+    DataManager::CUserSettings us;
+    ragtWgt->SettingsChanged(us);
+    ragtWgt->RMSValueChanged(Global::RMS_DAYS);
+    ragtWgt->UnselectProgram();
+    QStringList lst;
+    ragtWgt->UpdateSelectedStationList(lst);
+    ragtWgt->OnUserRoleChanged();
+    ragtWgt->PanelSelected(0);
+    delete ragtWgt;
 
-    //Set Reagent attributes
-    Reagent.SetID("U1");
-    Reagent.Set5RackMode(true);
-    Reagent.SetClass("3");
-    Reagent.SetLongName("Test Reagent");
-    Reagent.SetShortName("Test");
-    Reagent.SetVisibleState(false);
-    Reagent.SetLockState(false);
-    Reagent.SetMaxSlides(2000);
-    Reagent.SetMaxTime("2d");
-    Reagent.SetHeatingStartMode(AT_DEVICE_START);
-    Reagent.SetReagentTemp(0);
 
-    //changed method by setting the ProcessRunning to true in MainWindow
-    MainWindow.SetStatusIcons(MainMenu::CMainWindow::ProcessRunning);
+    CModifyReagentGroupColorDlg *mdyColorDlg = new CModifyReagentGroupColorDlg;
+    DataManager::CDataReagentGroupList ragtLst;
+    DataManager::CReagentGroup ragtGrp;
 
-    // Set User role to Administrator in MainWindow
-    MainWindow.SetUserRole(MainMenu::CMainWindow::Admin);
-    p_ReagentWidget->OnProcessStateChanged();
-    p_ReagentWidget->OnUserRoleChanged();
-    p_ReagentWidget->PopulateReagentList();
-    p_ReagentWidget->ResizeHorizontalSection();
+    mdyColorDlg->SetReagentGroupList(ragtLst, ragtGrp);
+    mdyColorDlg->SetReagentGroupColorListptr(new DataManager::CReagentGroupColorList);
+    mdyColorDlg->OnButtonGroup(0);
+    mdyColorDlg->OnProcessStateChanged();
+    //mdyColorDlg->UpdateReagentGroupColor();
+    mdyColorDlg->changeEvent(new QEvent(QEvent::None));
+    mdyColorDlg->CancelPressed();
+    mdyColorDlg->UpdateReagentGroup(ragtGrp);
+    mdyColorDlg->OnCancel();
+    mdyColorDlg->OnOk();
+    delete mdyColorDlg;
 
-    // Test ModifyReagentDlg class member functions
-    p_ModifyReagentDlg->SetButtonType(EDIT_BTN_CLICKED);
-    p_ModifyReagentDlg->SetDialogTitle("Edit Reagent");
-    p_ModifyReagentDlg->SetDialogTitle("New Reagent");
-    p_ModifyReagentDlg->Init();
-    p_ModifyReagentDlg->InitDialog(&Reagent);
 
-    // Test HeatedCuvette class member functions
-    p_HeatedCuvette->InitDialog(&Reagent);
-    p_HeatedCuvette->OnTemperatureFormatChanged();
-    p_HeatedCuvette->OnProcessStateChanged();*/
+    CModifyReagentRMSDlg * mdyRagtRmsDlg = new CModifyReagentRMSDlg;
+    mdyRagtRmsDlg->InitDialog(new DataManager::CReagent,
+                              new DataManager::CDataReagentGroupList,
+                              Global::RMS_DAYS);
+
+    mdyRagtRmsDlg->UpdateRmsLabel(Global::RMS_DAYS);
+    mdyRagtRmsDlg->SetButtonType(COPY_BTN_CLICKED);
+    mdyRagtRmsDlg->ResizeHorizontalSection();
+    mdyRagtRmsDlg->ShowReagentValue(Global::RMS_DAYS);
+    mdyRagtRmsDlg->ConnectKeyBoardSignalSlots();
+    mdyRagtRmsDlg->DisconnectKeyBoardSignalSlots();
+    mdyRagtRmsDlg->OnESCClicked();
+    DataManager::CReagent ragt;
+    mdyRagtRmsDlg->UpdateReagent(ragt);
+    mdyRagtRmsDlg->AddReagent(ragt);
+    mdyRagtRmsDlg->CancelPressed();
+    delete mdyRagtRmsDlg;
+
+    CModifyReagentStationDlg * mdyRagtStnDlg = new CModifyReagentStationDlg(NULL, &MainWindow, p_DataConnector);
+    mdyRagtStnDlg->SetEditedDashboardStation(new DataManager::CDashboardStation);
+    mdyRagtStnDlg->RetranslateUI();
+    mdyRagtStnDlg->ResizeHorizontalSection();
+    mdyRagtStnDlg->OnOk();
+    mdyRagtStnDlg->OnCancel();
+    mdyRagtStnDlg->OnProcessStateChanged();
+    mdyRagtStnDlg->changeEvent(new QEvent(QEvent::None));
+    mdyRagtStnDlg->CancelPressed();
+    mdyRagtStnDlg->UpdateStationSetAsEmpty("");
+    mdyRagtStnDlg->UpdateStationChangeReagent("", "");
+    mdyRagtStnDlg->UnselectProgram();
+    delete mdyRagtStnDlg;
+
+
+    CReagentGroupWidget * ragtGrpWgt = new CReagentGroupWidget;
+    ragtGrpWgt->ReagentGroupColorUpdated();
+    ragtGrpWgt->UpdateReagentGroupList();
+    DataManager::CReagentGroup ragtGrp2;
+    ragtGrpWgt->UpdateReagentGroup(ragtGrp2);
+    ragtGrpWgt->showEvent(new QShowEvent);
+    ragtGrpWgt->changeEvent(new QEvent(QEvent::None));
+    ragtGrpWgt->ResizeHorizontalSection();
+    ragtGrpWgt->RetranslateUI();
+    ragtGrpWgt->ResetButtons();
+    ragtGrpWgt->SetUserSettings(new DataManager::CUserSettings);
+    ragtGrpWgt->OnEdit();
+    ragtGrpWgt->OnUserRoleChanged();
+    ragtGrpWgt->OnProcessStateChanged();
+    ragtGrpWgt->OnUpdateReagentGroup(ragtGrp2);
+    delete ragtGrpWgt;
+
+    CReagentRMSWidget *ragtRmsWgt = new CReagentRMSWidget;
+    ragtRmsWgt->SetUserSettings(new DataManager::CUserSettings);
+
+    ragtRmsWgt->SetPtrToMainWindow(p_DataConnector, new DataManager::CDataReagentList,
+                                   &MainWindow);
+
+    ragtRmsWgt->PopulateReagentList();
+    ragtRmsWgt->ResizeHorizontalSection();
+    ragtRmsWgt->ResetButtons();
+    ragtRmsWgt->RetranslateUI();
+    ragtRmsWgt->UpdateButtons("");
+    ragtRmsWgt->changeEvent(new QEvent(QEvent::None));
+    ragtRmsWgt->showEvent((new QShowEvent));
+    ragtRmsWgt->UpdateReagentList();
+    DataManager::CReagent ragt2;
+    ragtRmsWgt->UpdateReagent(ragt2);
+    ragtRmsWgt->AddReagent(ragt);
+    ragtRmsWgt->RemoveReagent("");
+    ragtRmsWgt->RMSChanged(Global::RMS_OFF);
+    ragtRmsWgt->RMSCleaningChanged(Global::RMS_OFF);
+    ragtRmsWgt->OnUserRoleChanged();
+    ragtRmsWgt->OnProcessStateChanged();
+    ragtRmsWgt->CloseDialogs();
+    ragtRmsWgt->OnRMSOFF();
+    ragtRmsWgt->OnRMSCassettes();
+    ragtRmsWgt->OnRMSCycles();
+    ragtRmsWgt->OnRMSDays();
+    ragtRmsWgt->OnCancelPressed();
+    ragtRmsWgt->OnCleaningRMSOFF();
+    ragtRmsWgt->OnCleaningRMSCycles();
+    ragtRmsWgt->OnCleaningRMSDays();
+    ragtRmsWgt->UpdateUserSetting();
+    delete ragtRmsWgt;
+
+    CReagentStatusWidget *ragtStatWgt = new CReagentStatusWidget;
+    ragtStatWgt->showEvent(new QShowEvent);
+    ragtStatWgt->changeEvent(new QEvent(QEvent::None));
+    ragtStatWgt->PopulateReagentList();
+    ragtStatWgt->ResizeHorizontalSection();
+    ragtStatWgt->RetranslateUI();
+    ragtStatWgt->ResetButtons();
+    ragtStatWgt->ControlColumnShow();
+    ragtStatWgt->IsProcessReagentExpired();
+    ragtStatWgt->SetUserSettings(new DataManager::CUserSettings);
+    ragtStatWgt->SetPtrToMainWindow(p_DataConnector, new DataManager::CDataReagentList);
+//    ragtStatWgt->OnSetAsEmpty();
+//    ragtStatWgt->OnSetAsFull();
+//    ragtStatWgt->OnResetData();
+    ragtStatWgt->OnProcessStateChanged();
+    ragtStatWgt->OnUserRoleChanged();
+    ragtStatWgt->StationReagentUpdated("");
+    ragtStatWgt->RMSChanged(Global::RMS_DAYS);
+    ragtStatWgt->RMSCleaningChanged(Global::RMS_DAYS);
+    QList<QString> lst2;
+    ragtStatWgt->UpdateSelectedStationList(lst2);
+    ragtStatWgt->UpdateReagentList();
+    ragtStatWgt->UpdateStationChangeReagent("", "");
+    ragtStatWgt->UpdateStationSetAsEmpty("");
+    ragtStatWgt->UpdateStationSetAsFull("");
+    ragtStatWgt->UpdateStationResetData("");
+    ragtStatWgt->UnselectProgram();
+    delete ragtStatWgt;
+
+
+
+    CReagentSubMenuWidget * ragtSubWgt = new CReagentSubMenuWidget;
+    ragtSubWgt->RetranslateUI();
+    ragtSubWgt->changeEvent(new QEvent(QEvent::None));
+    ragtSubWgt->CurrentRowChanged(0);
+    delete ragtSubWgt;
+
+    //*/
+
  }
 
 } // end namespace Programs

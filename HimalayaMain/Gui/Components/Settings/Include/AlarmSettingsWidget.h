@@ -43,6 +43,7 @@ class CAlarmSettingsWidget : public MainMenu::CPanelFrame
 {
     Q_OBJECT
 
+    friend class CTestSettings;
 public:
     explicit CAlarmSettingsWidget(QWidget *p_Parent = 0);
     ~CAlarmSettingsWidget();
