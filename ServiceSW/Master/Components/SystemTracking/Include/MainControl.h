@@ -37,12 +37,28 @@ class CMainControl : public QWidget
     Q_OBJECT
     
 public:
+    /****************************************************************************/
+    /**
+     * \brief  Default constructor.
+     * \iparam p_DataConnector = service Gui connector, parent = parent of widget
+     */
+    /****************************************************************************/
     explicit CMainControl(Core::CServiceGUIConnector &DataConnector,
                           QWidget *parent = 0);
 
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CMainControl(void);
 
 Q_SIGNALS:
+    /****************************************************************************/
+    /*!
+     *  \brief  signal for module list changed.
+     */
+    /****************************************************************************/
     void ModuleListChanged(void);
 
     /****************************************************************************/
@@ -54,39 +70,110 @@ Q_SIGNALS:
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortId=Service::TEST_CASE_ID_UNUSED);
 
 public Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for update sub module.
+     *  \param  SubModule = sub module object
+     */
+    /****************************************************************************/
     void UpdateSubModule(ServiceDataManager::CSubModule &SubModule);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for modify ASB3.
+     */
+    /****************************************************************************/
     void ModifyASB3(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for modify ASB5.
+     */
+    /****************************************************************************/
     void ModifyASB5(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for modify ASB15.
+     */
+    /****************************************************************************/
     void ModifyASB15(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for modify Touch screen.
+     */
+    /****************************************************************************/
     void ModifyTouchScreen(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for modify Vent fan.
+     */
+    /****************************************************************************/
     void ModifyVentFan(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for finalize configuration.
+     */
+    /****************************************************************************/
     void OnFinalizeConfiguration(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  call slot when current tab changed.
+     *  \param  Index = tab index
+     */
+    /****************************************************************************/
     void CurrentTabChanged(int Index);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for confirm module configuration.
+     */
+    /****************************************************************************/
     void ConfirmModuleConfiguration();
 
 private Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for auto detect submodule info.
+     *  \param  SubModule = submodule object
+     */
+    /****************************************************************************/
     void AutoDetect(ServiceDataManager::CSubModule &SubModule);
 
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief  To modify sub module info.
+     *  \param  ModuleName    = the module name
+     *  \param  SubMoudleName = the sub module name
+     */
+    /****************************************************************************/
     void ModifySubModule(const QString &ModuleName,
                          const QString &SubModuleName);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Pop's up to confirm module configuration.
+     *  \param  Text = the message to confirm string.
+     */
+    /****************************************************************************/
     void ConfirmModuleConfiguration(QString& Text);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  reset message box.
+     */
+    /****************************************************************************/
     void ResetMessageBox();
 
-    Ui::CMainControl *mp_Ui;
-    MainMenu::CMessageDlg *mp_MessageDlg;                                   //!< Information dialog
-    ServiceDataManager::CModuleDataList *mp_ModuleList;
-    Core::CServiceGUIConnector *mp_DateConnector;
+    Ui::CMainControl *mp_Ui;                              //!< User Interface
+    MainMenu::CMessageDlg *mp_MessageDlg;                 //!< Information dialog
+    ServiceDataManager::CModuleDataList *mp_ModuleList;   //!< Current list of modules
+    Core::CServiceGUIConnector *mp_DateConnector;         //!< Global data connector
 };
 
 

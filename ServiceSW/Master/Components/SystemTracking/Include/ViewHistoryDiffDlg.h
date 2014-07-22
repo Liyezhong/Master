@@ -46,18 +46,50 @@ class CViewHistoryDiffDlg : public MainMenu::CDialogFrame
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief Get reference to instance.
+     * \return  Reference to instance.
+     */
+    /****************************************************************************/
     static CViewHistoryDiffDlg& Instance(QWidget *p_Parent) {
         static CViewHistoryDiffDlg m_ViewHistoryDiffDlg(p_Parent);
         return m_ViewHistoryDiffDlg;
     }
 
+    /****************************************************************************/
+    /**
+     * \brief To Show dialog diff two modulelists.
+     * \param ModuleListOne = first select Modulelist
+     * \param ModuleListTwo = second select ModuleList
+     */
+    /****************************************************************************/
     void Show(ServiceDataManager::CModuleDataList& ModuleListOne, ServiceDataManager::CModuleDataList& ModuleListTwo);
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function changeEvent
+     *  \param p_Event = QEvent type parameter
+     *  \return from changeEvent
+     */
+    /****************************************************************************/
     void changeEvent(QEvent *p_Event);
 
 private:
+    /****************************************************************************/
+    /**
+     * \brief  Constructor.
+     * \iparam p_Parent = parent of widget
+     */
+    /****************************************************************************/
     CViewHistoryDiffDlg(QWidget *p_Parent = NULL);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     virtual ~CViewHistoryDiffDlg();
 
     Q_DISABLE_COPY(CViewHistoryDiffDlg)

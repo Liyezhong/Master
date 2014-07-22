@@ -131,10 +131,10 @@ void CViewHistory::SelectionChanged(QModelIndex Index)
     }
 }
 
-void CViewHistory::AddItem(QString InstrumentHistoryFileName)
+void CViewHistory::AddItem(QString TimeStamp)
 {
     QList<QStandardItem *> ItemList;
-    ItemList << new QStandardItem(InstrumentHistoryFileName);
+    ItemList << new QStandardItem(TimeStamp);
 
     mp_Model->appendRow(ItemList);
 }

@@ -36,53 +36,149 @@ class CLaSystem : public QWidget
     Q_OBJECT
     
 public:
+    /****************************************************************************/
+    /**
+     * \brief  Default constructor.
+     * \iparam p_DataConnector = service Gui connector, parent = parent of widget
+     */
+    /****************************************************************************/
     explicit CLaSystem(Core::CServiceGUIConnector &DataConnector,
                        QWidget *parent = 0);
 
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CLaSystem(void);
 
 Q_SIGNALS:
+    /****************************************************************************/
+    /*!
+     *  \brief  signal for module list changed.
+     */
+    /****************************************************************************/
     void ModuleListChanged(void);
 
 public Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for update sub module.
+     *  \param  SubModule = sub module object
+     */
+    /****************************************************************************/
     void UpdateSubModule(ServiceDataManager::CSubModule &SubModule);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for modify pump.
+     */
+    /****************************************************************************/
     void ModifyPump(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for modify valve1.
+     */
+    /****************************************************************************/
     void ModifyValve1(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for modify valve2.
+     */
+    /****************************************************************************/
     void ModifyValve2(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for modify heating belt1.
+     */
+    /****************************************************************************/
     void ModifyHeatingBelt1(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for modify heating belt2.
+     */
+    /****************************************************************************/
     void ModifyHeatingBelt2(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for modify pressure sensor.
+     */
+    /****************************************************************************/
     void ModifyPressureSensor(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for modify carbon filter.
+     */
+    /****************************************************************************/
     void ModifyCarbonFilter(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for modify fan.
+     */
+    /****************************************************************************/
     void ModifyFan(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for finalize configuration.
+     */
+    /****************************************************************************/
     void OnFinalizeConfiguration(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  call slot when current tab changed.
+     *  \param  Index = tab index
+     */
+    /****************************************************************************/
     void CurrentTabChanged(int Index);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  slot for confirm module configuration.
+     */
+    /****************************************************************************/
     void ConfirmModuleConfiguration();
 
 private:
+    /****************************************************************************/
+    /*!
+     *  \brief  To modify sub module info.
+     *  \param  ModuleName    = the module name
+     *  \param  SubMoudleName = the sub module name
+     */
+    /****************************************************************************/
     void ModifySubModule(const QString &ModuleName,
                          const QString &SubModuleName);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Pop's up to confirm module configuration.
+     *  \param  Text = the message to confirm string.
+     */
+    /****************************************************************************/
     void ConfirmModuleConfiguration(QString& Text);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  reset message box.
+     */
+    /****************************************************************************/
     void ResetMessageBox();
 
-    Ui::CLaSystem *mp_Ui;
+    Ui::CLaSystem *mp_Ui;                                //!< User Interface
 
-    Core::CServiceGUIConnector *mp_DateConnector;
+    Core::CServiceGUIConnector *mp_DateConnector;        //!< Global data connector
 
-    MainMenu::CMessageDlg *mp_MessageDlg;                                   //!< Information dialog
-    ServiceDataManager::CModuleDataList *mp_ModuleList;
+    MainMenu::CMessageDlg *mp_MessageDlg;                //!< Information dialog
+    ServiceDataManager::CModuleDataList *mp_ModuleList;  //!< Current list of modules
 };
 
 

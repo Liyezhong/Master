@@ -48,12 +48,35 @@ class CViewHistoryDlg : public MainMenu::CDialogFrame
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief  Constructor.
+     * \iparam p_Parent = parent of widget
+     */
+    /****************************************************************************/
     CViewHistoryDlg(QWidget *p_Parent = NULL);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CViewHistoryDlg(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  To set Module list.
+     *  \param  ModuleList = module list object
+     */
+    /****************************************************************************/
     void SetModuleList(ServiceDataManager::CModuleDataList *ModuleList);
 
 public Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for updating the GUI
+     */
+    /****************************************************************************/
     void UpdateGUI(void);
 
 private:
@@ -71,8 +94,6 @@ private:
     QStandardItemModel *mp_Model;                   //!< Model for tree
 
     ServiceDataManager::CModuleDataList *mp_ModuleList;    //!< Selected modulelist
-
-    QString m_ModuleListFilePath;
 };
 
 

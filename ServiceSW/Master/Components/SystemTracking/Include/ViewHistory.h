@@ -47,23 +47,49 @@ class CViewHistory : public QWidget
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief  Default constructor.
+     * \iparam p_DataConnector = service Gui connector, parent = parent of widget
+     */
+    /****************************************************************************/
     explicit CViewHistory(Core::CServiceGUIConnector *p_DataConnector, QWidget *p_Parent = 0);
 
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CViewHistory(void);
 
     /****************************************************************************/
     /*!
      *  \brief  To add data item to the table
-     *  \iparam InstrumentHistoryFileName = XML file name
+     *  \iparam TimeStamp = time stamp
      */
     /****************************************************************************/
-    void AddItem(QString InstrumentHistoryFileName);
+    void AddItem(QString TimeStamp);
 
 public Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for updating the GUI
+     */
+    /****************************************************************************/
     void UpdateGUI(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Pop's up a dialog for show detail.
+     */
+    /****************************************************************************/
     void ExecDialog(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  Pop's up a dialog for show diff.
+     */
+    /****************************************************************************/
     void ExecDiffDialog(void);
 
 private Q_SLOTS:
@@ -85,7 +111,6 @@ private:
     QModelIndex m_IndexofFirst;                                          //!< First row Model Index
     QModelIndex m_IndexofLast;                                           //!< Last selected row index
 
-    //QString m_ModuleTimeStamp;
 };
 
 } // end namespace SystemTracking
