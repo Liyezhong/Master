@@ -97,7 +97,7 @@ namespace Dashboard {
          *  \brief  Definition/Declaration of ProgramSelected
          */
         /****************************************************************************/
-        void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady);
+        void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation);
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of UndoProgramSelection
@@ -124,7 +124,7 @@ namespace Dashboard {
         /****************************************************************************/
         void OnSelectEndDateTime(const QDateTime &);
         void RequestAsapDateTime();
-        void SendAsapDateTime(int);
+        void SendAsapDateTime(int, bool);
         void UpdateFavProgram();
     private:
         /****************************************************************************/

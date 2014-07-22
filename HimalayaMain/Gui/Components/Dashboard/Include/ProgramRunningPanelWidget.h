@@ -142,7 +142,7 @@ namespace Dashboard {
          *  \brief  Definition/Declaration of slot ProgramSelected
          */
         /****************************************************************************/
-        void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
+        void ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList);
         void OnUserSetEndDateTime(const QDateTime& dateTime);
         /****************************************************************************/
         /*!

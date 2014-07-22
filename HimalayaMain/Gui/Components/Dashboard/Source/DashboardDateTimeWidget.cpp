@@ -243,7 +243,7 @@ void CDashboardDateTimeWidget::RetranslateUI()
 
     m_strEarlierEndTime = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date Time cannot be earlier than the ASAP End Date Time.", 0, QApplication::UnicodeUTF8);
     m_strLaterEndTime = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date Time cannot be later than one week.", 0, QApplication::UnicodeUTF8);
-
+    m_strCannotDelay = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "Program End Date Time cannot be later than the ASAP End Date Time as the the first step is not Fxiation reagent.", 0, QApplication::UnicodeUTF8);
     mp_MessageDlg->SetButtonText(1, QApplication::translate("Dashboard::CDashboardDateTimeWidget", "OK", 0, QApplication::UnicodeUTF8));
     m_strEndTimeForProgram = QApplication::translate("Dashboard::CDashboardDateTimeWidget", "End Time of program", 0, QApplication::UnicodeUTF8);
 }
@@ -259,7 +259,7 @@ void CDashboardDateTimeWidget::OnRequestASAPDateTime()
     emit RequestAsapDateTime();
 }
 
-void CDashboardDateTimeWidget::OnGetASAPDateTime(int asapDateTime)
+void CDashboardDateTimeWidget::OnGetASAPDateTime(int asapDateTime, bool bIsFirstStepFixation)
 {
     m_ASAPDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapDateTime);
     if (m_IsClickedOK)
@@ -277,12 +277,31 @@ void CDashboardDateTimeWidget::OnGetASAPDateTime(int asapDateTime)
         // get adjusted time
         QDateTime CurTime = Global::AdjustedTime::Instance().GetCurrentDateTime();
         int secsDifference = CurTime.secsTo(m_selDateTime);
-        qDebug() << "Date Time Difference is" << secsDifference;
 
         QString strEndTime("");
-        if(secsDifference > ONE_WEEK_TIME_OFFSET_VALUE) {
-            strEndTime = m_strLaterEndTime;
-        } else {
+        int allowDiff = 0;
+        bool bTooLater = false;
+        if (bIsFirstStepFixation)
+        {
+           allowDiff = ONE_WEEK_TIME_OFFSET_VALUE;
+           if (secsDifference > allowDiff)
+           {
+               bTooLater = true;
+               strEndTime = m_strLaterEndTime;
+           }
+        }
+        else
+        {
+            allowDiff = m_ASAPDateTime.secsTo(m_selDateTime);
+            if (allowDiff > 100)
+            {
+                bTooLater = true;
+                strEndTime = m_strCannotDelay;
+            }
+        }
+
+        if(!bTooLater)
+        {
             QTime selTime = m_selDateTime.time();
             QTime asapTime = m_ASAPDateTime.time();
 

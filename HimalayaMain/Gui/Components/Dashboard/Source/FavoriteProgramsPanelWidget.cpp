@@ -29,7 +29,7 @@ CFavoriteProgramsPanelWidget::CFavoriteProgramsPanelWidget(QWidget *parent) :
     mp_wdgtDateTime->setModal(true);
     CONNECTSIGNALSIGNAL(mp_wdgtDateTime, OnSelectDateTime(const QDateTime &), this, OnSelectEndDateTime(const QDateTime &));
     CONNECTSIGNALSIGNAL(mp_wdgtDateTime, RequestAsapDateTime(), this, RequestAsapDateTime());
-    CONNECTSIGNALSLOT(this, SendAsapDateTime(int), mp_wdgtDateTime, OnGetASAPDateTime(int));
+    CONNECTSIGNALSLOT(this, SendAsapDateTime(int, bool), mp_wdgtDateTime, OnGetASAPDateTime(int, bool));
     CONNECTSIGNALSLOT(ui->BtnProgram1, clicked(bool), this, OnEndTimeButtonClicked());
     CONNECTSIGNALSLOT(ui->BtnProgram2, clicked(bool), this, OnEndTimeButtonClicked());
     CONNECTSIGNALSLOT(ui->BtnProgram3, clicked(bool), this, OnEndTimeButtonClicked());
@@ -189,11 +189,11 @@ void CFavoriteProgramsPanelWidget::OnProcessStateChanged()
    m_ProcessRunning = MainMenu::CMainWindow::GetProcessRunningStatus();
 }
 
-void CFavoriteProgramsPanelWidget::ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady)
+void CFavoriteProgramsPanelWidget::ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation)
 {
     Q_UNUSED(programId);
     Q_UNUSED(bProgramStartReady);
-    emit SendAsapDateTime(asapEndTime);
+    emit SendAsapDateTime(asapEndTime, bIsFirstStepFixation);
 }
 
 void CFavoriteProgramsPanelWidget::UndoProgramSelection()

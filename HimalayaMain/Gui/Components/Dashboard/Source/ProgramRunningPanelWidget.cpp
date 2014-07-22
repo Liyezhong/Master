@@ -244,11 +244,12 @@ void CProgramRunningPanelWidget::UpdateDateTime()
     ui->lblEndtime->setText(DateTimeStr);
 }
 
-void CProgramRunningPanelWidget::ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList)
+void CProgramRunningPanelWidget::ProgramSelected(QString& programId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList)
 {
     m_selectedProgramId = programId;
     m_selectedStationList = selectedStationList;
     Q_UNUSED(bProgramStartReady);
+    Q_UNUSED(bIsFirstStepFixation);
     m_ProgramEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
     UpdateDateTime();
 }

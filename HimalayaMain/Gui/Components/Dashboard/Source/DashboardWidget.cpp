@@ -44,7 +44,8 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     m_IsWaitingCleaningProgram(false),
     m_CurProgramStepIndex(-1),
     m_ProcessRunning(false),
-    m_IsDraining(false)
+    m_IsDraining(false),
+    m_bIsFirstStepFixation(false)
 {
     ui->setupUi(this);
     CONNECTSIGNALSLOT(mp_MainWindow, UserRoleChanged(), this, OnUserRoleChanged());
@@ -64,13 +65,13 @@ CDashboardWidget::CDashboardWidget(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(ui->programPanelWidget, OnSelectEndDateTime(const QDateTime&),
                         this, OnSelectEndDateTime(const QDateTime &));
 
-    CONNECTSIGNALSIGNAL(this, SendAsapDateTime(int), ui->programPanelWidget, SendAsapDateTime(int));
+    CONNECTSIGNALSIGNAL(this, SendAsapDateTime(int, bool), ui->programPanelWidget, SendAsapDateTime(int, bool));
 
     CONNECTSIGNALSLOT(ui->programPanelWidget, RequestAsapDateTime(),
                         this, RequestAsapDateTime());
 
-    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int, bool, QList<QString>&),
-                       ui->programPanelWidget, ProgramSelected(QString&, int, bool, QList<QString>&));
+    CONNECTSIGNALSIGNAL(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&),
+                       ui->programPanelWidget, ProgramSelected(QString&, int, bool, bool, QList<QString>&));
 
     CONNECTSIGNALSIGNAL(this, UndoProgramSelection(),
                        ui->programPanelWidget, UndoProgramSelection());
@@ -396,7 +397,7 @@ void CDashboardWidget::OnUnselectProgram()
         int asapEndTime = 0;
 
         emit ProgramSelected(m_SelectedProgramId, m_StationList);
-        emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_StationList);
+        emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_bIsFirstStepFixation, m_StationList);
         emit UpdateSelectedStationList(m_StationList);
         emit UndoProgramSelection();
     }
@@ -446,7 +447,7 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
                                   int TimeBeforeUseParaffin,
                                   int TimeCostedParaffinMelting,
                                   int& TimeDelta,
-                                  bool& bCanotRun)
+                                  bool& bCanNotRun)
 {
     //IsParaffinInProgram()
     //Yes
@@ -458,7 +459,7 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
     //if RemainingTimeMeltParraffin <= 0 Paraffin is Melted, TDelta = 0;
 
     //No Paraffin TimeDelta = 0;
-    bCanotRun = false;
+    bCanNotRun = false;
     if (-1 == m_ParaffinStepIndex)//No Paraffin in all program steps
     {
         TimeDelta = 0;
@@ -477,7 +478,7 @@ int CDashboardWidget::GetASAPTime(int TimeActual,//TimeActual is seconds
            else
            {
               TimeDelta = RemainingTimeMeltParaffin - TimeBeforeUseParaffin;
-              bCanotRun = true;
+              bCanNotRun = true;
            }
         }
         else
@@ -600,13 +601,13 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
         }
     }
 
+    bool bCanNotRun = true;
     if (m_SelectedProgramId.at(0) != 'C')
     {
-        bool bCanotRun = true;
         int paraffinMeltCostedTime = Global::AdjustedTime::Instance().GetCurrentDateTime().secsTo(m_ParaffinStartHeatingTime);
         int TimeDelta = 0;
         int asapEndTime = GetASAPTime(m_TimeProposedForProgram,
-                                      m_CostedTimeBeforeParaffin, -paraffinMeltCostedTime, TimeDelta, bCanotRun);
+                                      m_CostedTimeBeforeParaffin, -paraffinMeltCostedTime, TimeDelta, bCanNotRun);
 
         asapEndTime = asapEndTime - 60;//60 seconds: buffer time for "select program" and "Run" operation.
         QDateTime newAsapEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
@@ -621,6 +622,19 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
             {
                 return false;
             }
+            return false;
+        }
+    }
+
+    if (!m_bIsFirstStepFixation && bCanNotRun)
+    {
+        mp_MessageDlg->SetIcon(QMessageBox::Warning);
+        mp_MessageDlg->SetTitle(CommonString::strWarning);
+        mp_MessageDlg->SetText(m_strCannotStartParaffinMelt);
+        mp_MessageDlg->SetButtonText(1, CommonString::strOK);
+        mp_MessageDlg->HideButtons();
+        if (mp_MessageDlg->exec())
+        {
             return false;
         }
     }
@@ -775,10 +789,26 @@ void CDashboardWidget::OnProgramSelectedReply(const MsgClasses::CmdProgramSelect
 
     m_AsapEndDateTime = m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 
-
-    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_StationList);
+    m_bIsFirstStepFixation = IsFixationInFirstStep();
+    emit ProgramSelected(m_SelectedProgramId, asapEndTime, m_ProgramStartReady, m_bIsFirstStepFixation, m_StationList);
     emit ProgramSelected(m_SelectedProgramId, m_StationList);
     emit UpdateSelectedStationList(m_StationList);
+}
+
+bool CDashboardWidget::IsFixationInFirstStep()
+{
+    bool bIsFixationInFirstStep = true;
+    QString stationID = m_StationList.at(0);
+    DataManager::CDashboardStation *p_Station = mp_DataConnector->DashboardStationList->GetDashboardStation(stationID);
+    QString reagentID = p_Station->GetDashboardReagentID();
+    DataManager::CReagent const *p_Reagent = mp_DataConnector->ReagentList->GetReagent(reagentID);
+
+    DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(p_Reagent->GetGroupID());
+    if ("RG1" != p_ReagentGroup->GetGroupID())
+    {
+        bIsFixationInFirstStep = false;
+    }
+    return bIsFixationInFirstStep;
 }
 
 void CDashboardWidget::changeEvent(QEvent *p_Event)
@@ -801,6 +831,8 @@ void CDashboardWidget::RetranslateUI()
     m_strNotFoundStation = QApplication::translate("Dashboard::CDashboardWidget", "Program step \"%1\" of \"%2\" can not find the corresponding reagent station, one station only can be used once in the program, please set a station for the reagent in this step.", 0, QApplication::UnicodeUTF8);
     m_strCheckEmptyStation = QApplication::translate("Dashboard::CDashboardWidget", "The Station \"%1\" status is set as Empty in Program step \"%2\" of \"%3\", it can not be executed.", 0, QApplication::UnicodeUTF8);
     m_strResetEndTime = QApplication::translate("Dashboard::CDashboardWidget", "Please re-set the End Date&Time of the current selected program.", 0, QApplication::UnicodeUTF8);
+    m_strCannotStartParaffinMelt = QApplication::translate("Dashboard::CDashboardWidget", "Program cannot start as the first program step is not fixation reagent, paraffin is not melted completely.", 0, QApplication::UnicodeUTF8);
+    m_strCannotStartResetEndtime = QApplication::translate("Dashboard::CDashboardWidget", "Please re-set the End Date&Time of the current selected program. as the first program step is not fixation reagent, paraffin is not melted completely.", 0, QApplication::UnicodeUTF8);
     m_strInputCassetteBoxTitle = QApplication::translate("Dashboard::CDashboardWidget", "Please enter cassette number:", 0, QApplication::UnicodeUTF8);
     m_strProgramComplete = QApplication::translate("Dashboard::CDashboardWidget", "Program \"%1\" is complete! Would you like to drain the retort?", 0, QApplication::UnicodeUTF8);
     m_strTakeOutSpecimen = QApplication::translate("Dashboard::CDashboardWidget", "Please take out your specimen!", 0, QApplication::UnicodeUTF8);
@@ -829,7 +861,7 @@ void CDashboardWidget::RequestAsapDateTime()
 
     m_AsapEndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
 
-    emit SendAsapDateTime(asapEndTime);
+    emit SendAsapDateTime(asapEndTime, m_bIsFirstStepFixation);
 }
 
 void CDashboardWidget::OnStationSuckDrain(const MsgClasses::CmdStationSuckDrain & cmd)

@@ -97,6 +97,7 @@ private:
     QString m_strEndTimeForProgram;
     QString m_strEarlierEndTime;
     QString m_strLaterEndTime;
+    QString m_strCannotDelay;
     bool m_IsClickedOK;
     void RetranslateUI();
 
@@ -138,7 +139,7 @@ public slots:
      */
     /****************************************************************************/
     void OnRequestASAPDateTime();
-    void OnGetASAPDateTime(int);
+    void OnGetASAPDateTime(int, bool);
 
 signals:
     /****************************************************************************/

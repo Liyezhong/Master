@@ -96,6 +96,14 @@ private:
     bool IsParaffinInProgram(const DataManager::CProgram* p_Program);
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function IsFixationInFirstStep
+     *
+     *  \return true if the first program step is fixation reagent group
+     */
+    /****************************************************************************/
+    bool IsFixationInFirstStep();
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function GetParaffinHeatingDuration
      *
      *  \return the paraffin heating duration
@@ -148,6 +156,8 @@ private:
     QDateTime m_AsapEndDateTime;
     QDateTime m_ParaffinStartHeatingTime;
     QString m_strResetEndTime;
+    QString m_strCannotStartParaffinMelt;
+    QString m_strCannotStartResetEndtime;
     QString m_strInputCassetteBoxTitle;
     bool m_ProgramStartReady;
     QString m_strProgramComplete;
@@ -168,6 +178,7 @@ private:
     QString m_strStartExpiredReagent;
     QString m_strChangeCassetteBoxTitle;
     QString m_strAddCassete;
+    bool m_bIsFirstStepFixation;
 public slots:
     /****************************************************************************/
     /*!
@@ -289,7 +300,7 @@ private slots:
      *  \brief  Definition/Declaration of signal ProgramSelected
      */
     /****************************************************************************/
-    void ProgramSelected(QString & programId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
+    void ProgramSelected(QString & programId, int asapEndTime, bool bProgramStartReady, bool , QList<QString>& selectedStationList);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal UpdateSelectedStationList
@@ -338,7 +349,8 @@ private slots:
      */
     /****************************************************************************/
     void UpdateProgram(DataManager::CProgram &);
-    void SendAsapDateTime(int asapDateTime);
+
+    void SendAsapDateTime(int asapDateTime, bool bIsFirstStepFixation);
 
 };
 

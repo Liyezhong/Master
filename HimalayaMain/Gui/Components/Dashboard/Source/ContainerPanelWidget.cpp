@@ -40,8 +40,7 @@ CContainerPanelWidget::CContainerPanelWidget(QWidget *p_Parent): MainMenu::CPane
                                    m_strProgram(tr("Program")),
                                    m_strInformation(tr("Information")),
                                    m_strOK(tr("OK")),
-                                   m_strNo(tr("No")),
-                                   m_strNeedMeltParaffin(tr("Still it will cost some time to melt paraffin, the current selected program can not run now."))
+                                   m_strNo(tr("No"))
 {
      mp_Ui->setupUi(GetContentFrame());
      SetPanelTitle(QApplication::translate("Dashboard::CContainerPanelWidget", "Dashboard", 0, QApplication::UnicodeUTF8));
@@ -118,7 +117,6 @@ void CContainerPanelWidget::RetranslateUI()
     m_strWarning = QApplication::translate("Dashboard::CContainerPanelWidget", "Warning", 0, QApplication::UnicodeUTF8);
     m_strProgram = QApplication::translate("Dashboard::CContainerPanelWidget", "Program", 0, QApplication::UnicodeUTF8);
     m_strInformation = QApplication::translate("Dashboard::CContainerPanelWidget", "Information", 0, QApplication::UnicodeUTF8);
-    m_strNeedMeltParaffin  = QApplication::translate("Dashboard::CContainerPanelWidget", "Still it will cost some time to melt paraffin, the current selected program can not run now.", 0, QApplication::UnicodeUTF8);
 }
 
 void CContainerPanelWidget::UpdateRetortStatus(DataManager::ContainerStatusType_t retortStatusType)

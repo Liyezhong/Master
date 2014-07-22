@@ -135,7 +135,7 @@ public:
 signals:
     void ResetFocus(bool reset);
     void RequestAsapDateTime();
-    void SendAsapDateTime(int);
+    void SendAsapDateTime(int, bool bIsFirstStepFixation);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal AddItemsToFavoritePanel
@@ -159,7 +159,7 @@ signals:
      *  \brief  Definition/Declaration of signal ProgramSelected
      */
     /****************************************************************************/
-    void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
+    void ProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList);
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of signal ProgramActionStopped
@@ -229,7 +229,7 @@ private slots:
      *  \brief  Definition/Declaration of OnProgramSelected
      */
     /****************************************************************************/
-    void OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList);
+    void OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList);
 
     /****************************************************************************/
     /*!
@@ -313,7 +313,6 @@ private:
     QString m_strInformation;       ///<  Definition/Declaration of variable m_strInformation
     QString m_strOK;       ///<  Definition/Declaration of variable m_strOK
     QString m_strNo;       ///<  Definition/Declaration of variable m_strNo
-    QString m_strNeedMeltParaffin;       ///<  Definition/Declaration of variable m_strNeedMeltParaffin
     QTimer* m_Timer;       ///<  Definition/Declaration of program resume remider m_Timer
 };
 

@@ -36,16 +36,16 @@ CProgramPanelWidget::CProgramPanelWidget(QWidget *parent) :
     CONNECTSIGNALSIGNAL(ui->favoriteProgramsPanel, RequestAsapDateTime(), this, RequestAsapDateTime());
     CONNECTSIGNALSLOT(ui->favoriteProgramsPanel, UpdateFavProgram(), this, OnUpdatePanelProgram());
 
-    CONNECTSIGNALSIGNAL(this, SendAsapDateTime(int), ui->favoriteProgramsPanel, SendAsapDateTime(int));
+    CONNECTSIGNALSIGNAL(this, SendAsapDateTime(int, bool), ui->favoriteProgramsPanel, SendAsapDateTime(int, bool));
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, QList<QString>&),
-                      ui->favoriteProgramsPanel, ProgramSelected(QString&, int, bool));
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&),
+                      ui->favoriteProgramsPanel, ProgramSelected(QString&, int, bool, bool));
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, QList<QString>&),
-                      ui->programRunningPanel, ProgramSelected(QString&, int, bool, QList<QString>&));
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&),
+                      ui->programRunningPanel, ProgramSelected(QString&, int, bool, bool, QList<QString>&));
 
-    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, QList<QString>&),
-                      this, OnProgramSelected(QString&, int, bool, QList<QString>&));
+    CONNECTSIGNALSLOT(this, ProgramSelected(QString&, int, bool, bool, QList<QString>&),
+                      this, OnProgramSelected(QString&, int, bool, bool, QList<QString>&));
 
     CONNECTSIGNALSLOT(this, UndoProgramSelection(),
                       ui->favoriteProgramsPanel, UndoProgramSelection());
@@ -123,8 +123,6 @@ void CProgramPanelWidget::RetranslateUI()
     m_strWarning = QApplication::translate("Dashboard::CProgramPanelWidget", "Warning", 0, QApplication::UnicodeUTF8);
     m_strProgram = QApplication::translate("Dashboard::CProgramPanelWidget", "Program", 0, QApplication::UnicodeUTF8);
     m_strInformation = QApplication::translate("Dashboard::CProgramPanelWidget", "Information", 0, QApplication::UnicodeUTF8);
-    m_strNeedMeltParaffin  = QApplication::translate("Dashboard::CProgramPanelWidget", "Still it will cost some time to melt paraffin, the current selected program can not run now.", 0, QApplication::UnicodeUTF8);
-
 }
 
 void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow, Core::CDataConnector *p_DataConnector)
@@ -141,8 +139,9 @@ void CProgramPanelWidget::SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow
     CONNECTSIGNALSLOT(p_MainWindow, ProcessStateChanged(), ui->programRunningPanel, OnProcessStateChanged());
 }
 
-void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, QList<QString>& selectedStationList)
+void CProgramPanelWidget::OnProgramSelected(QString& ProgramId, int asapEndTime, bool bProgramStartReady, bool bIsFirstStepFixation, QList<QString>& selectedStationList)
 {
+    Q_UNUSED(bIsFirstStepFixation);
     m_SelectedProgramId = ProgramId;
     m_EndDateTime = Global::AdjustedTime::Instance().GetCurrentDateTime().addSecs(asapEndTime);
     if (bProgramStartReady)
