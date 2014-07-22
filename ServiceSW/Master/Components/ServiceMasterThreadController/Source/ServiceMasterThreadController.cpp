@@ -1579,7 +1579,7 @@ void ServiceMasterThreadController::ShutdownSystem()
     Global::EventObject::Instance().RaiseEvent(Global::EVENT_GLOBAL_STRING_TERMINATING, Global::tTranslatableStringList() <<"");
     //write buffered data to disk-> refer man pages for sync
     (void)system("sync &");
-    (void)system("lcd off");
+    //(void)system("lcd off");
 #endif
 
     qDebug()<<"emit SendStop ----";

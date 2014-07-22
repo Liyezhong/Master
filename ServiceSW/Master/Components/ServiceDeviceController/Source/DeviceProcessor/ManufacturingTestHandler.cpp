@@ -2831,7 +2831,15 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
     mp_TempOvenBottom->StartTemperatureControl(70);
     mp_TempOvenTop->StartTemperatureControl(70);
 
-    mp_Utils->Pause(5000);
+    int i=0;
+    while(i<10)
+    {
+        qDebug()<<i/2.0<<"  RV Current:"<<mp_TempRV->GetCurrent() <<"   Retort Current:"<<mp_TempRetortBottom->GetCurrent();
+        i++;
+        mp_Utils->Pause(500);
+    }
+
+    //mp_Utils->Pause(5000);
 
     qDebug()<<"RV Temp:"<<mp_TempRV->GetTemperature();
     qDebug()<<"Retort Temp:"<<mp_TempRetortBottom->GetTemperature();
