@@ -478,14 +478,6 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
 
     SumSec = WaitSec;
 
-    if (NeedAC) {
-        qDebug()<<"MainRelay SetHigh return :"<< mp_DigitalOutputMainRelay->SetHigh();
-    }
-
-    mp_TempOvenTop->StopTemperatureControl();
-    mp_TempOvenBottom->StopTemperatureControl();
-    qDebug()<<"Start top return : "<<mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
-    qDebug()<<"Start bottom return :"<< mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
 
     int num = 10;
     while(num) {
@@ -526,14 +518,18 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
         p_TestCase->AddResult("CurrentTempBottom1", BottomValue1);
         p_TestCase->AddResult("CurrentTempBottom2", BottomValue2);
 
-        mp_TempOvenTop->StopTemperatureControl();
-        mp_TempOvenBottom->StopTemperatureControl();
-        if (NeedAC) {
-            mp_DigitalOutputMainRelay->SetLow();
-        }
-
         return -1;
     }
+
+    if (NeedAC) {
+        qDebug()<<"MainRelay SetHigh return :"<< mp_DigitalOutputMainRelay->SetHigh();
+    }
+
+    mp_TempOvenTop->StopTemperatureControl();
+    mp_TempOvenBottom->StopTemperatureControl();
+    qDebug()<<"Target top:"<<TopTargetTemp<<"  Start top return : "<<mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
+    qDebug()<<"Target bottom:"<<BottomTargetTemp<<"Start bottom return :"<< mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
+
 
     while (!m_UserAbort && WaitSec)
     {
@@ -551,7 +547,7 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
             continue;
         }
 
-  //      qDebug()<<"Target="<<TargetTemp<<" Top="<<CurrentTempTop<<" Bot1="<<CurrentTempBottom1<<" Bot2="<<CurrentTempBottom2;
+        qDebug()<<"Target="<<TargetTemp<<" Top="<<CurrentTempTop<<" Bot1="<<CurrentTempBottom1<<" Bot2="<<CurrentTempBottom2;
 
         if ( CurrentTempTop >= MinTargetTemp &&
              CurrentTempBottom1 >= MinTargetTemp &&
@@ -601,8 +597,8 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
 
     }
 
-    mp_TempOvenTop->StopTemperatureControl();
-    mp_TempOvenBottom->StopTemperatureControl();
+    qDebug()<<"Oven top stop return :" << mp_TempOvenTop->StopTemperatureControl();
+    qDebug()<<"Oven bottom stop return :" << mp_TempOvenBottom->StopTemperatureControl();
     if (NeedAC) {
         mp_DigitalOutputMainRelay->SetLow();
     }
@@ -757,8 +753,8 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
         p_TestCase->AddResult("CurrentTempBottom1", btmTemp1);
         p_TestCase->AddResult("CurrentTempBottom2", btmTemp2);
 
-        mp_TempOvenTop->StopTemperatureControl();
-        mp_TempOvenBottom->StopTemperatureControl();
+        mp_TempRetortSide->StopTemperatureControl();
+        mp_TempRetortBottom->StopTemperatureControl();
         if (needAC) {
             mp_DigitalOutputMainRelay->SetLow();
         }
@@ -819,8 +815,8 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
         -- waitSec;
     }
 
-    mp_TempOvenTop->StopTemperatureControl();
-    mp_TempOvenBottom->StopTemperatureControl();
+    mp_TempRetortSide->StopTemperatureControl();
+    mp_TempRetortBottom->StopTemperatureControl();
     if (needAC) {
         mp_DigitalOutputMainRelay->SetLow();
     }
@@ -2815,7 +2811,7 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
     }
 
     qDebug()<<"RV SetTemperatureSwitchState AutoSwitch return :"<< mp_TempRV->SetTemperatureSwitchState(-1, 1);
-    qDebug()<<"Retort SetTemperatureSwitchState AutoSwitch return :"<< mp_TempRetortBottom->SetTemperatureSwitchState(-1, 1);
+    qDebug()<<"Retort SetTemperatureSwitchState AutoSwitch return :"<< mp_TempRetortSide->SetTemperatureSwitchState(-1, 1);
 
     qDebug()<<"MainRelay SetHight return : "<<mp_DigitalOutputMainRelay->SetHigh();
 
@@ -2832,9 +2828,16 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
     mp_TempOvenTop->StartTemperatureControl(70);
 
     int i=0;
-    while(i<10)
+    while(i<5)
     {
         qDebug()<<i/2.0<<"  RV Current:"<<mp_TempRV->GetCurrent() <<"   Retort Current:"<<mp_TempRetortBottom->GetCurrent();
+#if 0
+        qDebug()<<"RV="<<mp_TempRV->GetTemperature()
+               <<" RetortB="<<mp_TempRetortBottom->GetTemperature(0)
+              <<" RetortS="<<mp_TempRetortSide->GetTemperature()
+             <<" OvenB="<<mp_TempOvenBottom->GetTemperature(0)
+            <<" OvenT="<<mp_TempOvenTop->GetTemperature();
+#endif
         i++;
         mp_Utils->Pause(500);
     }
@@ -2877,7 +2880,7 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
     }
 
     qDebug()<<"RV SetTemperatureSwitchState return :"<<mp_TempRV->SetTemperatureSwitchState(-1, 0);
-    qDebug()<<"Retort SetTemperatureSwitchState return :"<<mp_TempRetortBottom->SetTemperatureSwitchState(-1, 0);
+    qDebug()<<"Retort SetTemperatureSwitchState return :"<<mp_TempRetortSide->SetTemperatureSwitchState(-1, 0);
 
     return RetVal;
 }
