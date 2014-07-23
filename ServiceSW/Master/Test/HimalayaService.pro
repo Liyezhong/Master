@@ -43,7 +43,7 @@ SUBDIRS = ../Components/Calibration/Build/Calibration.pro \
           ../Components/ServiceUpdates/Test/TestServiceUpdates.pro \
           ../Components/ImportExport/Test/TestServiceImportExportHandler.pro \
           ../Components/ServiceDataManager/Test/TestServiceDataManager.pro \
-          #../Components/ServiceDeviceController/Test/TestServiceDeviceController.pro
+          ../Components/ServiceDeviceController/Test/TestServiceDeviceController.pro
 
 CONFIG += ordered
 

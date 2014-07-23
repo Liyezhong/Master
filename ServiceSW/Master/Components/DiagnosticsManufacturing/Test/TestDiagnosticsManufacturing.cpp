@@ -27,6 +27,7 @@
 #include <QObject>
 #include "Global/Include/SystemPaths.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
+#include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationInterface.h"
 #include "DiagnosticsManufacturing/Include/TestCaseReporter.h"
 #include "DiagnosticsManufacturing/Include/OvenManufacturing.h"
 #include "DiagnosticsManufacturing/Include/LaSystemManufacturing.h"
@@ -36,7 +37,7 @@
 #include "DiagnosticsManufacturing/Include/RetortManufacturing.h"
 #include "DiagnosticsManufacturing/Include/SystemManufacturing.h"
 #include "DiagnosticsManufacturing/Include/HeatingTestDialog.h"
-//#include "Core/Include/ManufacturingDiagnosticsHandler.h"
+#include "Core/Include/ManufacturingDiagnosticsHandler.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -87,12 +88,39 @@ private slots:
     /****************************************************************************/
     void utTestManufacturing();
 
+    /****************************************************************************/
+    /**
+     * \brief Test manufacturing diagnostics handler
+     */
+    /****************************************************************************/
+    void utTestManufacturingHandler();
+
+private:
+    MainMenu::CMainWindow *mp_MainWindow;
+    Core::CServiceGUIConnector *mp_ServiceConnector;
+    ServiceDataManager::CModuleDataList *mp_ModuleList;
+    ServiceDataManager::CInstrumentHistory* mp_ModuleListArchive;
+    DataManager::CDeviceConfigurationInterface* mp_DeviceConfig;
+
 }; // end class CTestDiagnosticsManufacturing
 
 /****************************************************************************/
 void CTestDiagnosticsManufacturing::initTestCase() {
     Global::SystemPaths::Instance().SetSettingsPath("../../../Main/Build/Settings");
-    Global::SystemPaths::Instance().SetTempPath("../Temporary");
+    Global::SystemPaths::Instance().SetTempPath("../../../Main/Build/Temporary");
+
+    mp_ModuleList = new ServiceDataManager::CModuleDataList;
+    mp_ModuleListArchive = new ServiceDataManager::CInstrumentHistory;
+    mp_DeviceConfig = new DataManager::CDeviceConfigurationInterface;
+
+    QVERIFY(mp_ModuleList->ReadFile(Global::SystemPaths::Instance().GetSettingsPath()+"/InstrumentHistory.xml"));
+    QVERIFY(mp_ModuleListArchive->ReadFile(Global::SystemPaths::Instance().GetSettingsPath()+"/InstrumentHistoryArchive.xml"));
+    QVERIFY(mp_DeviceConfig->Read(Global::SystemPaths::Instance().GetSettingsPath()+"/DeviceConfiguration.xml"));
+
+    mp_MainWindow = new MainMenu::CMainWindow;
+    mp_ServiceConnector = new Core::CServiceGUIConnector(mp_MainWindow);
+    mp_ServiceConnector->SetModuleListContainer(mp_ModuleList, mp_ModuleListArchive);
+    mp_ServiceConnector->SetDeviceConfigurationInterface(mp_DeviceConfig);
 }
 
 /****************************************************************************/
@@ -120,24 +148,27 @@ void CTestDiagnosticsManufacturing::utTestTestCaseReporter()
 
     //CTestCaseReporter Reporter("Oven", "123456");
     CTestCaseReporter Reporter("Oven");
+    Reporter.AddTestCaseId(Service::OVEN_COVER_SENSOR);
+    Reporter.AddTestCaseId(Service::OVEN_HEATING_EMPTY);
+    Reporter.AddTestCaseId(Service::OVEN_HEATING_WITH_WATER);
+
+    Reporter.SetSerialNumber("12121212");
+    QVERIFY(Reporter.GenReportFile());
     //Reporter.GenReportFile();
 }
 
 void CTestDiagnosticsManufacturing::utTestManufacturing()
 {
-    MainMenu::CMainWindow MainWindow;
-    Core::CServiceGUIConnector *p_ServiceConnector = new Core::CServiceGUIConnector(&MainWindow);
+    COven* p_OvenManf = new COven(mp_ServiceConnector, mp_MainWindow);
+    CLaSystem * p_LaSystemManf = new CLaSystem(mp_ServiceConnector, mp_MainWindow);
+    CMainControl* p_MainControlManf = new CMainControl(mp_ServiceConnector, mp_MainWindow);
+    CRotaryValve* p_RvManf = new CRotaryValve(mp_ServiceConnector, mp_MainWindow);
+    CSystem* p_SystemManf = new CSystem(mp_ServiceConnector, mp_MainWindow);
+    CRetort* p_RetortManf = new CRetort(mp_ServiceConnector, mp_MainWindow);
+    CCleaning* p_CleanManf = new CCleaning(mp_ServiceConnector, mp_MainWindow);
 
-    COven* p_OvenManf = new COven(p_ServiceConnector, &MainWindow);
-    CLaSystem * p_LaSystemManf = new CLaSystem(p_ServiceConnector, &MainWindow);
-    CMainControl* p_MainControlManf = new CMainControl(p_ServiceConnector, &MainWindow);
-    CRotaryValve* p_RvManf = new CRotaryValve(p_ServiceConnector, &MainWindow);
-    CSystem* p_SystemManf = new CSystem(p_ServiceConnector, &MainWindow);
-    CRetort* p_RetortManf = new CRetort(p_ServiceConnector, &MainWindow);
-    CCleaning* p_CleanManf = new CCleaning(p_ServiceConnector, &MainWindow);
 
     p_OvenManf->SetTestResult(Service::OVEN_COVER_SENSOR, true);
-    //p_OvenManf->BeginTest();
     p_OvenManf->ResetTestStatus();
 
     p_LaSystemManf->SetTestResult(Service::LA_SYSTEM_HEATING_LIQUID_TUBE, false);
@@ -160,9 +191,14 @@ void CTestDiagnosticsManufacturing::utTestManufacturing()
     p_CleanManf->SetTestResult(Service::CLEANING_SYSTEM_TEST, true);
     p_CleanManf->EnableButton(false);
 
-    CHeatingTestDialog* p_HeatingDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Service::OVEN_COVER_SENSOR, &MainWindow);
+    CHeatingTestDialog* p_HeatingDlg = new DiagnosticsManufacturing::CHeatingTestDialog(Service::OVEN_COVER_SENSOR, mp_MainWindow);
     p_HeatingDlg->BlgProcessProgress(true);
 
+}
+
+void CTestDiagnosticsManufacturing::utTestManufacturingHandler()
+{
+    Core::CManufacturingDiagnosticsHandler* p_MDH = new Core::CManufacturingDiagnosticsHandler(mp_ServiceConnector, mp_MainWindow);
 }
 
 } // end namespace DiagnosticsManufacturing

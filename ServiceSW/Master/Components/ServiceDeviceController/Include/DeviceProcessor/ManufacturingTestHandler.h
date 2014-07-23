@@ -83,7 +83,7 @@ typedef enum {
 class ManufacturingTestHandler : public QObject
 {
     Q_OBJECT
-
+    friend class CTestServiceDeviceController;
 public:
     /**
      * \brief Constructor.

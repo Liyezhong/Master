@@ -17,7 +17,7 @@ DEPENDPATH += ../../../../
 
 QT += testcase
 
-UseLibs(Core ServiceDataManager DiagnosticsManufacturing)
+UseLibs(Core ServiceDataManager DiagnosticsManufacturing Diagnostics)
 UsePlatformGUILibs(KeyBoard MainMenu Application)
 UsePlatformLibs(DataManager Global)
 UsePlatformScroller(QtScroller)
