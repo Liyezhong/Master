@@ -183,10 +183,10 @@ void CViewHistory::ExecDialog(void)
     mp_ViewHistoryDlg->resize(600,550);
 
     ServiceDataManager::CModuleDataList *ModuleList = NULL;
-    if (mp_ModuleList->GetModuleTimeStamp() == ModuleTimeStamp) {
+    if (mp_ModuleList && mp_ModuleList->GetModuleTimeStamp() == ModuleTimeStamp) {
         ModuleList = mp_ModuleList;
     }
-    else {
+    else if (mp_InstrumentHistoryArchive){
         ModuleList = mp_InstrumentHistoryArchive->GetModuleList(ModuleTimeStamp);
     }
     mp_ViewHistoryDlg->SetModuleList(ModuleList);
@@ -222,6 +222,10 @@ void CViewHistory::ExecDiffDialog()
 
         ServiceDataManager::CModuleDataList ModuleListOne, ModuleListTwo;
 
+        if (!mp_ModuleList || !mp_InstrumentHistoryArchive) {
+            qDebug()<<"SystemTracking::CViewHistory: invalid ModuleList or InstrumentHistoryArchive";
+            return;
+        }
         if (mp_ModuleList->GetModuleTimeStamp() == TimeStampOne) {
             ModuleListOne = *mp_ModuleList;
             (void) mp_InstrumentHistoryArchive->GetModuleList(TimeStampTwo, ModuleListTwo);

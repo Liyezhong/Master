@@ -172,7 +172,7 @@ bool CInstrumentHistory::ReadModuleLists(QXmlStreamReader& XmlStreamReader, bool
             if (XmlStreamReader.name() == "ModuleList") {
                 ServiceDataManager::CModuleDataList ModuleList;
 
-                if (!ModuleList.DeserializeContent(XmlStreamReader, CompleteData)) {
+                if (!ModuleList.DeserializeContentXML(XmlStreamReader, CompleteData)) {
                     qDebug() << "second " << "CModuleDataListArchive Deserialize failed!";
                     return false;
                 }
@@ -279,7 +279,7 @@ bool CInstrumentHistory::SerializeContent(QIODevice &IODevice, bool CompleteData
     {
         ServiceDataManager::CModuleDataList *p_ModuleList = GetModuleList(i);
         if (p_ModuleList != NULL) {
-            if (!p_ModuleList->SerializeContent(XmlStreamWriter, CompleteData)) {
+            if (!p_ModuleList->SerializeContentXML(XmlStreamWriter, CompleteData)) {
                 qDebug("DataManager::CModuleDataListArchive SerializeContent failed ");
                 return false;
             }

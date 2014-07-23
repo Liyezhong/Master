@@ -67,8 +67,8 @@ class CModuleDataList : public DataManager::CDataContainerBase
     bool SerializeContent(QIODevice& IODevice, bool CompleteData);
     bool DeserializeContent(QIODevice& IODevice, bool CompleteData);
 
-    bool SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool CompleteData);
-    bool DeserializeContent(QXmlStreamReader& XmlStreamReader, bool CompleteData);
+    bool SerializeContentXML(QXmlStreamWriter& XmlStreamWriter, bool CompleteData);
+    bool DeserializeContentXML(QXmlStreamReader& XmlStreamReader, bool CompleteData);
 
     /****************************************************************************/
     /*!

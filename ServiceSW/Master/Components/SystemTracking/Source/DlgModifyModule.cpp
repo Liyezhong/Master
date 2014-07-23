@@ -90,16 +90,16 @@ CDlgModifyModule::CDlgModifyModule(ServiceDataManager::CModule &Module,
 
     ConnectKeyBoardSignalSlots();
 
-    connect(mp_Ui->pushSerialNumber,
+    (void)connect(mp_Ui->pushSerialNumber,
             SIGNAL(clicked()),
             this,
             SLOT(OnEditSerialNumber()));
-    connect(mp_Ui->pushAutoDetect,
+    (void)connect(mp_Ui->pushAutoDetect,
             SIGNAL(clicked()),
             this,
             SLOT(OnAutoDetect()));
-    connect(mp_Ui->pushSave, SIGNAL(clicked()), this, SLOT(OnSave()));
-    connect(mp_Ui->pushClose, SIGNAL(clicked()), this, SLOT(close()));
+    (void)connect(mp_Ui->pushSave, SIGNAL(clicked()), this, SLOT(OnSave()));
+    (void)connect(mp_Ui->pushClose, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 
@@ -215,7 +215,7 @@ void CDlgModifyModule::OnSave(void)
 
     emit UpdateModule(*mp_Module);
 
-    this->close();
+    (void)this->close();
 }
 
 /****************************************************************************/
@@ -239,9 +239,9 @@ void CDlgModifyModule::OnOkClicked(QString EnteredString)
 {
     mp_KeyBoardWidget->hide();
     QString sn = mp_Ui->pushSerialNumber->text();
-    int index = sn.indexOf('/');
-    if (index != -1) {
-        sn.remove(index + 1, sn.length() - index);
+    int Index = sn.indexOf('/');
+    if (Index != -1) {
+        (void)sn.remove(Index + 1, sn.length() - Index);
         sn += EnteredString;
     }
     mp_Ui->pushSerialNumber->setText(sn.simplified());

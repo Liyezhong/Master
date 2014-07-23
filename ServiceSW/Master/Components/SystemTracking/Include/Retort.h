@@ -43,7 +43,7 @@ public:
      */
     /****************************************************************************/
     explicit CRetort(Core::CServiceGUIConnector &DataConnector,
-                     QWidget *parent = 0);
+                     QWidget *p_Parent = 0);
 
     /****************************************************************************/
     /**

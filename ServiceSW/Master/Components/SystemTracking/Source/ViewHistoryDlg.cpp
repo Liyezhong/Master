@@ -34,7 +34,7 @@ CViewHistoryDlg::CViewHistoryDlg(QWidget *p_Parent)
     : MainMenu::CDialogFrame(p_Parent)
     , mp_Ui(new Ui::CViewHistoryDlg)
     , mp_Model(new QStandardItemModel)
-    , mp_ModuleList(new ServiceDataManager::CModuleDataList)
+    , mp_ModuleList(NULL)
 {
     mp_Ui->setupUi(GetContentFrame());
     mp_Model->setColumnCount(1);
@@ -48,9 +48,9 @@ CViewHistoryDlg::CViewHistoryDlg(QWidget *p_Parent)
 
     mp_Ui->widget->SetContent(mp_TreeView);
 
-    connect(mp_Ui->closeBtn, SIGNAL(clicked()), this, SLOT(close()));
-    connect(mp_Ui->expandBtn, SIGNAL(clicked()), mp_TreeView, SLOT(expandAll()));
-    connect(mp_Ui->collapseBtn, SIGNAL(clicked()), mp_TreeView, SLOT(collapseAll()));
+    (void)connect(mp_Ui->closeBtn, SIGNAL(clicked()), this, SLOT(close()));
+    (void)connect(mp_Ui->expandBtn, SIGNAL(clicked()), mp_TreeView, SLOT(expandAll()));
+    (void)connect(mp_Ui->collapseBtn, SIGNAL(clicked()), mp_TreeView, SLOT(collapseAll()));
 }
 
 void CViewHistoryDlg::SetModuleList(ServiceDataManager::CModuleDataList *ModuleList)
@@ -77,6 +77,8 @@ void CViewHistoryDlg::UpdateGUI(void)
     }
 
     mp_Model->setItem(0, RootItem);
+
+    delete RootItem;
 }
 
 /****************************************************************************/

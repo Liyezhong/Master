@@ -93,16 +93,16 @@ CDlgModifySubModule::CDlgModifySubModule(ServiceDataManager::CSubModule &SubModu
     mp_Ui->pushSerialNumber->setEnabled(false);
     mp_Ui->pushSerialNumber->setText("N/A");
 
-    connect(mp_Ui->pushSerialNumber,
+    (void)connect(mp_Ui->pushSerialNumber,
             SIGNAL(clicked()),
             this,
             SLOT(OnEditSerialNumber()));
-    connect(mp_Ui->pushAutoDetect,
+    (void)connect(mp_Ui->pushAutoDetect,
             SIGNAL(clicked()),
             this,
             SLOT(OnAutoDetect()));
-    connect(mp_Ui->pushSave, SIGNAL(clicked()), this, SLOT(OnSave()));
-    connect(mp_Ui->pushClose, SIGNAL(clicked()), this, SLOT(close()));
+    (void)connect(mp_Ui->pushSave, SIGNAL(clicked()), this, SLOT(OnSave()));
+    (void)connect(mp_Ui->pushClose, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 
@@ -244,13 +244,13 @@ void CDlgModifySubModule::OnSave(void)
     const QString SerialNumberName("SerialNumber");
     const QString DateOfProductionName("DateOfExchange");
 
-    mp_SubModule->UpdateParameterInfo(SerialNumberName, SerialNumber);
-    mp_SubModule->UpdateParameterInfo(DateOfProductionName,
+    (void)mp_SubModule->UpdateParameterInfo(SerialNumberName, SerialNumber);
+    (void)mp_SubModule->UpdateParameterInfo(DateOfProductionName,
                                       Date.toString(Qt::ISODate));
 
     emit UpdateSubModule(*mp_SubModule);
 
-    this->close();
+    (void)this->close();
 }
 
 /****************************************************************************/

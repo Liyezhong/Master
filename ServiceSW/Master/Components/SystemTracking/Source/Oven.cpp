@@ -36,8 +36,8 @@ const QString SUBMODULE_HEATER("Heater");
 const QString SUBMODULE_COVERSENSOR("Cover Sensor");
 
 COven::COven(Core::CServiceGUIConnector &DataConnector,
-             QWidget *parent)
-    : QWidget(parent)
+             QWidget *p_Parent)
+    : QWidget(p_Parent)
     , mp_DataConnector(&DataConnector)
     , mp_Ui(new Ui::COven)
     , mp_ModuleList(NULL)
@@ -93,7 +93,7 @@ void COven::UpdateModule(ServiceDataManager::CModule &Module)
         return;
     }
 
-    mp_ModuleList->UpdateModule(&Module);
+    (void)mp_ModuleList->UpdateModule(&Module);
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
@@ -104,6 +104,7 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
              << SubModule.GetSubModuleName();
 
     if (!mp_ModuleList) {
+        mp_ModuleList = new ServiceDataManager::CModuleDataList;
         ServiceDataManager::CModuleDataList* ModuleList = mp_DataConnector->GetModuleListContainer();
         if (!ModuleList) {
             qDebug() << "COven::UpdateSubModule(): Invalid module list!";
@@ -113,7 +114,7 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
         *mp_ModuleList = *ModuleList;
     }
 
-   ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_OVEN);
+    ServiceDataManager::CModule *pModule = mp_ModuleList->GetModule(MODULE_OVEN);
     if (0 == pModule)
     {
         qDebug() << "COven::UpdateSubModule(): Invalid module : "
@@ -121,7 +122,7 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
         return;
     }
 
-    pModule->UpdateSubModule(&SubModule);
+    (void)pModule->UpdateSubModule(&SubModule);
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
@@ -157,7 +158,7 @@ void COven::ModifyOven(void)
                   this,
                   SLOT(UpdateModule(ServiceDataManager::CModule&)));
 
-    dlg->exec();
+    (void)dlg->exec();
 
     delete dlg;
 }
@@ -299,7 +300,7 @@ void COven::ModifySubModule(const QString &ModuleName,
                   this,
                   SLOT(UpdateSubModule(ServiceDataManager::CSubModule&)));
 
-    dlg->exec();
+    (void)dlg->exec();
 
     delete dlg;
 }

@@ -36,8 +36,8 @@ const QString SUBMODULE_LIDLOCK("Lid Lock");
 const QString SUBMODULE_LEVELSENSOR("Level Sensor");
 
 CRetort::CRetort(Core::CServiceGUIConnector &DataConnector,
-                 QWidget *parent)
-    : QWidget(parent)
+                 QWidget *p_Parent)
+    : QWidget(p_Parent)
     , mp_DateConnector(&DataConnector)
     , mp_Ui(new Ui::CRetort)
     , mp_ModuleList(NULL)
@@ -133,7 +133,7 @@ void CRetort::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
         return;
     }
 
-    pModule->UpdateSubModule(&SubModule);
+    (void)pModule->UpdateSubModule(&SubModule);
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
@@ -173,7 +173,7 @@ void CRetort::ModifyRetort(void)
                   this,
                   SLOT(UpdateModule(ServiceDataManager::CModule&)));
 
-    dlg->exec();
+    (void)dlg->exec();
 
     delete dlg;
 }
@@ -323,7 +323,7 @@ void CRetort::ModifySubModule(const QString &ModuleName,
                   this,
                   SLOT(UpdateSubModule(ServiceDataManager::CSubModule&)));
 
-    dlg->exec();
+    (void)dlg->exec();
 
     delete dlg;
 }

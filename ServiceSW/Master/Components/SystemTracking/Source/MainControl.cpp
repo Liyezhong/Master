@@ -42,8 +42,8 @@ const QString SUBMODULE_TOUCHSCREEN("Touch Screen");
 const QString SUBMODULE_VENTFAN("Ventilation Fan");
 
 CMainControl::CMainControl(Core::CServiceGUIConnector &DataConnector,
-                           QWidget *parent)
-    : QWidget(parent)
+                           QWidget *p_Parent)
+    : QWidget(p_Parent)
     , mp_DateConnector(&DataConnector)
     , mp_ModuleList(NULL)
     , mp_Ui(new Ui::CMainControl)
@@ -119,7 +119,7 @@ void CMainControl::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
         return;
     }
 
-    pModule->UpdateSubModule(&SubModule);
+    (void)pModule->UpdateSubModule(&SubModule);
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
@@ -311,7 +311,7 @@ void CMainControl::ModifySubModule(const QString &ModuleName,
                   this,
                   SLOT(UpdateSubModule(ServiceDataManager::CSubModule&)) );
 
-    dlg->exec();
+    (void)dlg->exec();
 
     delete dlg;
 }

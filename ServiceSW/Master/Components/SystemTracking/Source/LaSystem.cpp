@@ -40,11 +40,11 @@ const QString SUBMODULE_CARBONFILTER("Carbon Filter");
 const QString SUBMODULE_FAN("Exhaust Fan");
 
 CLaSystem::CLaSystem(Core::CServiceGUIConnector &DataConnector,
-                           QWidget *parent)
-    : QWidget(parent)
+                           QWidget *p_Parent)
+    : QWidget(p_Parent)
     , mp_DateConnector(&DataConnector)
-    , mp_Ui(new Ui::CLaSystem)
     , mp_ModuleList(NULL)
+    , mp_Ui(new Ui::CLaSystem)
 {
     mp_Ui->setupUi(this);
 
@@ -135,7 +135,7 @@ void CLaSystem::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
         return;
     }
 
-    pModule->UpdateSubModule(&SubModule);
+    (void)pModule->UpdateSubModule(&SubModule);
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
@@ -325,7 +325,7 @@ void CLaSystem::ModifySubModule(const QString &ModuleName,
                   this,
                   SLOT(UpdateSubModule(ServiceDataManager::CSubModule&)) );
 
-    dlg->exec();
+    (void)dlg->exec();
 
     delete dlg;
 }

@@ -152,8 +152,8 @@ void CViewHistoryDiffDlg::Show(ServiceDataManager::CModuleDataList &ModuleListOn
         }
 
         for (int k = 0; k < SameSubModule.count(); ++k) {
-            ModuleOne.DeleteSubModule(SameSubModule.at(k));
-            ModuleTwo.DeleteSubModule(SameSubModule.at(k));
+            (void)ModuleOne.DeleteSubModule(SameSubModule.at(k));
+            (void)ModuleTwo.DeleteSubModule(SameSubModule.at(k));
         }
 
         if (ModuleOne.GetNumberofSubModules() == 0) {

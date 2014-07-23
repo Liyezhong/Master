@@ -312,7 +312,7 @@ bool CModuleDataList::DeserializeContent(QIODevice& IODevice, bool CompleteData)
         return false;
     }
 
-    bool Result = DeserializeContent(XmlStreamReader, CompleteData);
+    bool Result = DeserializeContentXML(XmlStreamReader, CompleteData);
     if (CompleteData && Result) {
         if (!DataManager::Helper::ReadNode(XmlStreamReader, "NonXmlData")) {
             return false;
@@ -367,7 +367,7 @@ bool CModuleDataList::SerializeContent(QIODevice& IODevice, bool CompleteData)
     // write attribute name
     XmlStreamWriter.writeAttribute("name", GetInstrumentName());
 
-    bool result = SerializeContent(XmlStreamWriter, CompleteData);
+    bool result = SerializeContentXML(XmlStreamWriter, CompleteData);
 
     if (CompleteData) {
         XmlStreamWriter.writeStartElement("NonXmlData");
@@ -387,7 +387,7 @@ bool CModuleDataList::SerializeContent(QIODevice& IODevice, bool CompleteData)
     return result;
 }
 
-bool CModuleDataList::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool CompleteData)
+bool CModuleDataList::DeserializeContentXML(QXmlStreamReader& XmlStreamReader, bool CompleteData)
 {
     bool Result = true;
 
@@ -404,7 +404,7 @@ bool CModuleDataList::DeserializeContent(QXmlStreamReader& XmlStreamReader, bool
     return Result;
 }
 
-bool CModuleDataList::SerializeContent(QXmlStreamWriter& XmlStreamWriter, bool CompleteData)
+bool CModuleDataList::SerializeContentXML(QXmlStreamWriter& XmlStreamWriter, bool CompleteData)
 {
     // write section ModuleList
     XmlStreamWriter.writeStartElement("ModuleList");

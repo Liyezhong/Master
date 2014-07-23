@@ -147,7 +147,7 @@ public:
         StructParameter->ParameterValue = value;
 
         m_ParameterNames.append(StructParameter->ParameterName);
-        m_ListOfParameters.insert(StructParameter->ParameterName, StructParameter);
+        (void)m_ListOfParameters.insert(StructParameter->ParameterName, StructParameter);
 
     }
 
@@ -167,7 +167,7 @@ public:
         StructParameter->ParameterValue = value;
 
         m_ParameterNames.append(StructParameter->ParameterName);
-        m_ListOfParameters.insert(StructParameter->ParameterName, StructParameter);
+        (void)m_ListOfParameters.insert(StructParameter->ParameterName, StructParameter);
 
     }
 
@@ -186,7 +186,7 @@ public:
         if (m_ListOfParameters.contains(ParameterName)) {
             Parameter_t* Param = m_ListOfParameters.value(ParameterName);
             Param->ParameterValue = ParameterValue;
-            m_ListOfParameters.insert(ParameterName, Param);
+            (void)m_ListOfParameters.insert(ParameterName, Param);
             Result = true;
             return Result;
         }
