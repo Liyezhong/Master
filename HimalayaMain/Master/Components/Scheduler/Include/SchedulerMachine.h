@@ -40,6 +40,7 @@ class CRcReport;
 class CProgramSelfTest;
 class SchedulerMainThreadController;
 class SchedulerCommandProcessorBase;
+class CRsFillingAfterFlush;
 
 /****************************************************************************/
 /*!
@@ -95,6 +96,7 @@ private:
     QSharedPointer<QState> mp_RcDraining;                                               ///<  Error State's sub state: for RC_Draining;
     QSharedPointer<QState> mp_RsDrainAtOnce;                                            ///<  Error State's sub state: for RS_DrainAtOnce
     QSharedPointer<QState> mp_RcBottleCheckI;                                           ///<  Error State's sub state: for RC_BottleCheck_I
+    QSharedPointer<QState> mp_ErrorRsFillingAfterFlushState;                            ///<  Error State's sub state: for RS_FillingAfterFlush
 
     //State machines for Run handling
     QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
@@ -108,6 +110,7 @@ private:
     QSharedPointer<CRcLevelSensorHeatingOvertime> mp_RcLevelSensorHeatingOvertime;      ///<  State machine for RC_LevelSensor_Heating_Overtime
     QSharedPointer<CRcRestart> mp_RcRestart;                                            ///<  State machine for RC_Restart
     QSharedPointer<CRcReport> mp_RcReport;												///<  State machine for RC_Report
+    QSharedPointer<CRsFillingAfterFlush> mp_RsFillingAfterFlush;                        ///<  State machine for Rs_FillingAfterFlush
 
     typedef enum
     {
@@ -692,6 +695,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function EnterRsFillingAfterFlush
+     *
+     *  \return from EnterRsFillingAfterFlush
+     */
+    /****************************************************************************/
+    void EnterRsFillingAfterFlush();
+
+    /****************************************************************************/
+    /*!
      *  \brief Handle the whole work flow for Program Pre-Test
      *
      *  \param cmdName - command name
@@ -829,6 +841,18 @@ public:
      */
     /****************************************************************************/
     void HandleRcBottleCheckIWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for HandleRsFillingAfterFlushWorkFlow
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRsFillingAfterFlushWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -1529,6 +1553,13 @@ signals:
      */
     /****************************************************************************/
     void SigRcBottleCheckI();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigRsFillingAfterFlush
+     */
+    /****************************************************************************/
+    void SigRsFillingAfterFlush();
 
     /****************************************************************************/
     /*!

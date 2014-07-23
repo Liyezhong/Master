@@ -123,7 +123,7 @@ public:
      *  \return from GetDrainPressure
      */
     /****************************************************************************/
-    quint32 GetDrainPressure(){return m_TargetPressure;}
+    float GetDrainPressure(){return m_TargetPressure;}
     /***************************l*************************************************/
     /*!
      *  \brief  Definition/Declaration of function SetDelayTime
@@ -133,7 +133,7 @@ public:
      *  \return from SetDrainPressure
      */
     /****************************************************************************/
-    void SetDrainPressure(qint32 tartgetPressure){m_TargetPressure = tartgetPressure;}
+    void SetDrainPressure(float tartgetPressure){m_TargetPressure = tartgetPressure;}
 
 private:
     CmdALDraining();                                                    ///< Not implemented.
@@ -143,7 +143,7 @@ private:
 
 	mutable DeviceControl::ReturnCode_t m_result;       ///<  Definition/Declaration of variable m_result
 	mutable quint32 m_DelayTime;       ///<  Definition/Declaration of variable m_DelayTime
-    mutable qint32  m_TargetPressure;           ///< Defiinition/Declaration of variable m_TargetPressure
+    mutable float  m_TargetPressure;           ///< Defiinition/Declaration of variable m_TargetPressure
 	
 };
 

@@ -1237,6 +1237,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to RC_BottleCheck_I");
             m_SchedulerMachine->EnterRcBottleCheckI();
         }
+        else if(CTRL_CMD_RS_FILLINGAFTERFLUSH == ctrlCmd)
+        {
+            LogDebug("Go to Rs_FillingAfterFlush");
+            m_SchedulerMachine->EnterRsFillingAfterFlush();
+        }
         else
         {
             LogDebug(QString("Unknown Command: %1").arg(ctrlCmd, 0, 16));
@@ -1302,6 +1307,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         LogDebug("In RC_BottleCheck_I state");
         m_SchedulerMachine->HandleRcBottleCheckIWorkFlow(cmdName, retCode);
+    }
+    else if(SM_ERR_RS_FILLINGAFTERFFLUSH == currentState)
+    {
+        LogDebug("In Rs_FillingAfterFlush");
+        m_SchedulerMachine->HandleRsFillingAfterFlushWorkFlow(cmdName, retCode);
     }
     else
     {
@@ -1407,6 +1417,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (cmd == "rc_bottlecheck_i")
         {
             return CTRL_CMD_RC_BOTTLECHECK_I;
+        }
+        if (cmd == "rs_fillingafterflush")
+        {
+            return CTRL_CMD_RS_FILLINGAFTERFLUSH;
         }
     }
     return CTRL_CMD_UNKNOWN;
@@ -2906,7 +2920,7 @@ void SchedulerMainThreadController::RCDrain()
     LogDebug("Send cmd to DCL to RcDrain");
     CmdALDraining* cmd  = new CmdALDraining(500, this);
     cmd->SetDelayTime(2000);
-    cmd->SetDrainPressure(40);
+    cmd->SetDrainPressure(40.0);
     m_SchedulerCommandProcessor->pushCmd(cmd);
 
     LogDebug("Notice GUI Draining started");
@@ -2956,6 +2970,14 @@ void SchedulerMainThreadController::Pressure()
 {
     LogDebug("Send cmd to DCL to Pressure");
     m_SchedulerCommandProcessor->pushCmd(new CmdALPressure(500, this));
+}
+
+void SchedulerMainThreadController::HighPressure()
+{
+    LogDebug("Send cmd to DCL to Pressure");
+    CmdALPressure* cmd = new CmdALPressure(500, this);
+    cmd->SetTargetPressure(40.0);
+    m_SchedulerCommandProcessor->pushCmd(cmd);
 }
 
 void SchedulerMainThreadController::Vaccum()

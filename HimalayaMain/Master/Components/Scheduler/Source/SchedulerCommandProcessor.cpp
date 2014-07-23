@@ -299,7 +299,7 @@ void SchedulerCommandProcessor<DP>::ExecuteCmd(Scheduler::SchedulerCommandShPtr_
 	}
 	else if  ("Scheduler::ALPressure" == cmdName)
 	{
-        scmd->SetResult(mp_IDeviceProcessing->ALPressure());
+        scmd->SetResult(mp_IDeviceProcessing->ALPressure(qSharedPointerDynamicCast<CmdALPressure>(scmd)->GetTargetPressure()));
 	}
 	else if  ("Scheduler::ALVaccum" == cmdName)
 	{

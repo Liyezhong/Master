@@ -35,6 +35,7 @@
 #include "Scheduler/Include/RcRestart.h"
 #include "Scheduler/Include/RcReport.h"
 #include "Scheduler/Include/ProgramSelfTest.h"
+#include "Scheduler/Include/RsFillingAfterFlush.h"
 #include <QDebug>
 #include <QDateTime>
 
@@ -94,6 +95,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_RcDraining = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_RsDrainAtOnce = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_RcBottleCheckI = QSharedPointer<QState>(new QState(mp_RcBottleCheckI.data()));
+    mp_ErrorRsFillingAfterFlushState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
 
     // Set Initial states
     mp_SchedulerMachine->setInitialState(mp_InitState.data());
@@ -150,6 +152,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_RsTSensorErr3MinRetry = QSharedPointer<CRsTSensorErr3MinRetry>(new CRsTSensorErr3MinRetry(SchedulerThreadController));
     mp_RsStandbyWithTissue = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController));
     mp_RcRestart = QSharedPointer<CRcRestart>(new CRcRestart(mp_SchedulerMachine.data(), mp_ErrorRcRestartState.data()));
+    mp_RsFillingAfterFlush = QSharedPointer<CRsFillingAfterFlush>(new CRsFillingAfterFlush(SchedulerThreadController));
 
     //RS_Standby related logic
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsStandBy()), mp_ErrorRsStandbyState.data());
@@ -211,6 +214,11 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigRcBottleCheckI()), mp_RcBottleCheckI.data());
     CONNECTSIGNALSLOT(mp_RcBottleCheckI.data(), entered(), mp_SchedulerThreadController, RcBottleCheckI());
     mp_RcBottleCheckI->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
+    //RS_FillingAfterFlush
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsFillingAfterFlush()), mp_ErrorRsFillingAfterFlushState.data());
+    CONNECTSIGNALSLOT(mp_RsFillingAfterFlush.data(), TasksDone(bool), this, OnTasksDone(bool));
+    mp_ErrorRsFillingAfterFlushState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
     m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
@@ -411,6 +419,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if (mp_SchedulerMachine->configuration().contains(mp_RcBottleCheckI.data()))
         {
             return SM_ERR_RS_BOTTLECHECK_I;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsFillingAfterFlushState.data()))
+        {
+            return SM_ERR_RS_FILLINGAFTERFFLUSH;
         }
     }
     else if(mp_SchedulerMachine->configuration().contains(mp_BusyState.data()))
@@ -716,6 +728,11 @@ void CSchedulerStateMachine::EnterRcBottleCheckI()
     emit SigRcBottleCheckI();
 }
 
+void CSchedulerStateMachine::EnterRsFillingAfterFlush()
+{
+    emit SigRsFillingAfterFlush();
+}
+
 void CSchedulerStateMachine::HandlePssmPreTestWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
     mp_ProgramSelfTest->HandleWorkFlow(cmdName, retCode);
@@ -932,6 +949,11 @@ void CSchedulerStateMachine::HandleRcBottleCheckIWorkFlow(const QString& cmdName
             OnTasksDone(true);
         }
     }
+}
+
+void CSchedulerStateMachine::HandleRsFillingAfterFlushWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+{
+    mp_RsFillingAfterFlush->HandleWorkFlow(cmdName, retCode);
 }
 
 void CSchedulerStateMachine::EnterRcRestart()

@@ -101,6 +101,7 @@ typedef enum
     CTRL_CMD_RC_DRAINING,
     CTRL_CMD_RS_DRAINATONCE,
     CTRL_CMD_RC_BOTTLECHECK_I,
+    CTRL_CMD_RS_FILLINGAFTERFLUSH,
     CTRL_CMD_NONE,
     CTRL_CMD_UNKNOWN
 }ControlCommandType_t;
@@ -1131,6 +1132,14 @@ protected:
          */
         /****************************************************************************/
         void Pressure();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot Pressure
+         */
+        /****************************************************************************/
+        void HighPressure();
+
         /****************************************************************************/
         /*!
          *  \brief  Definition/Declaration of slot Vaccum

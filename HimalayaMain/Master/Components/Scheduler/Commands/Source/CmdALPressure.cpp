@@ -28,7 +28,7 @@ namespace Scheduler{
 QString CmdALPressure::NAME = "Scheduler::ALPressure";
 
 CmdALPressure::CmdALPressure(int Timeout, SchedulerMainThreadController *controller):
-    CmdSchedulerCommandBase(Timeout, controller)
+    CmdSchedulerCommandBase(Timeout, controller),m_pressure(AL_TARGET_PRESSURE_POSITIVE)
 {
 }
 
