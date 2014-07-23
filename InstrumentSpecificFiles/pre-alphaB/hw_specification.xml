@@ -54,14 +54,14 @@
             <functionmodules>
 
                 <functionmodule type="temperature_control" key="temp_oven_top" name="temp_oven_top" interface="1">
-                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="498" heater_threshold="314" current_deviation="200" current_min_230_serial="438" current_max_230_serial="871" current_min_100_serial="199" current_max_100_serial="437" current_min_100_parallel="597" current_max_100_parallel="1600"/>
+                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="498" heater_threshold="314" current_deviation="200" current_min_230_serial="219" current_max_230_serial="535" current_min_100_serial="100" current_max_100_serial="218" current_min_100_parallel="198" current_max_100_parallel="900"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
                 </functionmodule>
 
                 <functionmodule type="temperature_control" key="temp_oven_bottom" name="temp_oven_bottom" interface="2">
-                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="1314" heater_threshold="532" current_deviation="200" current_min_230_serial="986" current_max_230_serial="1877" current_min_100_serial="388" current_max_100_serial="985" current_min_100_parallel="1792" current_max_100_parallel="3700"/>
+                    <configuration temp_tolerance="2" sampling_period="500" current_gain="7813" heater_current="1314" heater_threshold="532" current_deviation="200" current_min_230_serial="494" current_max_230_serial="1039" current_min_100_serial="194" current_max_100_serial="493" current_min_100_parallel="796" current_max_100_parallel="1950"/>
                     <pid_controllers>
                         <pid_controller max_temperature="100" controller_gain="6000" reset_time="1000" derivative_time="80"/>
                     </pid_controllers>
