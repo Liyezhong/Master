@@ -43,7 +43,19 @@ class CSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit CSettings(Core::CServiceGUIConnector *p_ServiceDataConnector, MainMenu::CMainWindow *p_Parent = 0);    
+    /****************************************************************************/
+    /**
+     * \brief  Default constructor.
+     * \iparam p_DataConnector = service Gui connector, parent = parent of widget
+     */
+    /****************************************************************************/
+    explicit CSettings(Core::CServiceGUIConnector *p_ServiceDataConnector, MainMenu::CMainWindow *p_Parent = 0);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CSettings();
 
 private:
@@ -87,12 +99,46 @@ private slots:
      void TabIndexChanged(int);
      void OnCurrentTabChanged(int CurrentTabIndex);
 
-public slots:     
-     void SaveIPAddress(QString, IPType_t);
+public slots:
+     /****************************************************************************/
+     /*!
+      *  \brief Slot for save Ip address.
+      *  \param IPAddress = ip address, IPType = ip type of server or proxy
+      */
+     /****************************************************************************/
+     void SaveIPAddress(QString IPAddress, IPType_t IPType);
+
+     /****************************************************************************/
+     /*!
+      *  \brief Slot for reset Ui button status
+      */
+     /****************************************************************************/
      void ResetButtonStatus();
+
+     /****************************************************************************/
+     /*!
+      *  \brief Slot for update GUi by user model
+      *  \DataConnector = service Gui connector, MainWindow = this Ui Main window
+      */
+     /****************************************************************************/
      void UpdateGUIConnector(Core::CServiceGUIConnector *DataConnector, MainMenu::CMainWindow *MainWindow);
+
+     /****************************************************************************/
+     /*!
+      *  \brief Slot for set information text to pop' up.
+      *  \param Text = information text, Color = color of this information
+      */
+     /****************************************************************************/
      void SetInformwationText(QString Text, QString Color);
-     void SetNetworkSettingsResult(PlatformService::NetworkSettings_t, bool);
+
+     /****************************************************************************/
+     /*!
+      *  \brief To Set net work setting result.
+      *  \param NtService = Enum for Network settings
+      *  \param Result = setting result
+      */
+     /****************************************************************************/
+     void SetNetworkSettingsResult(PlatformService::NetworkSettings_t NtService, bool Result);
 };
 
 } // end namespace ServiceUpdates

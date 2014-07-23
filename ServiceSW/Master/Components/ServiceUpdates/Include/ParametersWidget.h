@@ -40,14 +40,39 @@ class CParametersWidget : public MainMenu::CPanelFrame
     Q_OBJECT  
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief  Default constructor.
+     * \iparam parent = parent of widget
+     */
+    /****************************************************************************/
     explicit CParametersWidget(QWidget *p_Parent = NULL);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     virtual ~CParametersWidget();
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function changeEvent
+     *  \param p_Event = QEvent type parameter
+     *  \return from changeEvent
+     */
+    /****************************************************************************/
     void changeEvent(QEvent *p_Event);
 
 private:
     Ui::CParametersWidget *mp_Ui;   //!< User interface
+
+    /****************************************************************************/
+    /*!
+     *  \brief To retranslate ui.
+     */
+    /****************************************************************************/
     void RetranslateUI();
 
 signals:

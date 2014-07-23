@@ -42,10 +42,28 @@ class CSystem : public QWidget
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief  Default constructor.
+     * \iparam parent = parent of widget
+     */
+    /****************************************************************************/
     explicit CSystem(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CSystem(void);
 
 private Q_SLOTS:
+
+    /****************************************************************************/
+    /**
+     * \brief Slot for shut down.
+     */
+    /****************************************************************************/
     void OnShutDown(void);
 
 signals:
@@ -57,9 +75,9 @@ signals:
     void ShutdownSystem();
 
 private:
-    Ui::CSystem   *mp_Ui;
+    Ui::CSystem   *mp_Ui;                   //!< User Interface
 
-    MainMenu::CMessageDlg *mp_MessageDlg;
+    MainMenu::CMessageDlg *mp_MessageDlg;   //!< Information dialog
 };
 
 } // end namespace ServiceUpdates

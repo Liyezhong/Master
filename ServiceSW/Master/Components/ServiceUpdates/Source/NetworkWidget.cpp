@@ -364,7 +364,7 @@ void CNetworkWidget::DisconnectKeyBoardSignalSlots()
  *  \iparam Value = Entered string
  */
 /****************************************************************************/
-void CNetworkWidget::KeyBoardValidateEnteredString(QString Value)
+void CNetworkWidget::KeyBoardValidateEnteredString(QString& Value)
 {
     QString EnteredString("");
     bool IsIPAddressValid = false;

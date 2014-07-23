@@ -43,7 +43,19 @@ class CFirmwareUpdate : public QWidget
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief  Default constructor.
+     * \iparam p_DataConnector = service Gui connector, parent = parent of widget
+     */
+    /****************************************************************************/
     explicit CFirmwareUpdate(Core::CServiceGUIConnector *p_DataConnector = NULL, QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CFirmwareUpdate(void);
 
     /****************************************************************************/
@@ -55,6 +67,13 @@ public:
     /****************************************************************************/
     void AddItem(QString& Slave, QString& CurrentVersion, QString& LatestVersion);
 
+    /****************************************************************************/
+    /*!
+     *  \brief  To set firmware update result on gui.
+     *  \param Index = row index
+     *  \param Result = update result
+     */
+    /****************************************************************************/
     void SetUpdateResult(int Index, bool Result);
 
 signals:
@@ -122,7 +141,7 @@ private:
     ServiceDataManager::CModule* mp_Module;        //!< EBox Module information
     MainMenu::CBaseTable *mp_TableWidget;   //!< Base Table widget
     QStandardItemModel m_Model;             //!< Model for the table
-    bool m_Result;
+    bool m_Result;                      //!< Firmware Update result
 
     /****************************************************************************/
     /*!

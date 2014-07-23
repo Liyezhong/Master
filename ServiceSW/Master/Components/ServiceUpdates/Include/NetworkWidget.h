@@ -61,9 +61,34 @@ class CNetworkWidget : public MainMenu::CPanelFrame
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief  Default constructor.
+     * \iparam parent = parent of widget
+     */
+    /****************************************************************************/
     explicit CNetworkWidget(QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CNetworkWidget();
+
+    /****************************************************************************/
+    /**
+     * \brief Set this Ui to main window.
+     *  \param p_MainWindow = MainWindow object
+     */
+    /****************************************************************************/
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
+
+    /****************************************************************************/
+    /**
+     * \brief To set Save Button status.
+     */
+    /****************************************************************************/
     void SetSaveButtonStatus();
 
     /****************************************************************************/
@@ -75,6 +100,13 @@ public:
     void AddItem(QString TestName);
 
 protected:
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function changeEvent
+     *  \param p_Event = QEvent type parameter
+     *  \return from changeEvent
+     */
+    /****************************************************************************/
     void changeEvent(QEvent *p_Event);
 
 private:
@@ -92,9 +124,26 @@ private:
     QStandardItemModel m_Model;                             //!< Model for the table
     IPType_t           m_IpType;                            //!< Ip Type
 
+    /****************************************************************************/
+    /*!
+     *  \brief Connects signals and slots of keyboard.
+     */
+    /****************************************************************************/
     void ConnectKeyBoardSignalSlots();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Disconnects signals and slots of keyboard.
+     */
+    /****************************************************************************/
     void DisconnectKeyBoardSignalSlots();
 
+    /****************************************************************************/
+    /*!
+     *  \brief To enter ip adress.
+     *  \param IpType = ip type of server and proxy
+     */
+    /****************************************************************************/
     void EnterIPAddress(IPType_t IpType);
 
 signals:
@@ -124,20 +173,102 @@ signals:
     void DownloadFirmware();
 
 private slots:
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for enter Proxy ip address.
+     */
+    /****************************************************************************/
     void OnProxyIPAddress();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for enter Server Ip address.
+     */
+    /****************************************************************************/
     void OnServerIPAddress();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for save Proxy Ip address.
+     */
+    /****************************************************************************/
     void OnProxyIpSave();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for save Server Ip address.
+     */
+    /****************************************************************************/
     void OnServerIpSave();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for clicked ok button.
+     *  \param EnterendText = entered ip address
+     */
+    /****************************************************************************/
     void OnOkClicked(QString EnteredText);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for clicked esc button.
+     */
+    /****************************************************************************/
     void OnESCClicked();
-    void KeyBoardValidateEnteredString(QString);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To check entered string.
+     *  \param Valve = entered string
+     */
+    /****************************************************************************/
+    void KeyBoardValidateEnteredString(QString& Value);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To retranslate ui.
+     */
+    /****************************************************************************/
     void RetranslateUI();
 
 public slots:
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for download firmware.
+     */
+    /****************************************************************************/
     void OnDownloadFirmware();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for Update Ip address.
+     *  \param IpAddress = ip address string
+     */
+    /****************************************************************************/
     void UpdateIpAddress(QString IpAddress);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for set information text to pop' up.
+     *  \param Text = information text, Color = color of this information
+     */
+    /****************************************************************************/
     void SetInformwationText(QString Text, QString Color);
-    void SetNetworkSettingsResult(PlatformService::NetworkSettings_t, bool);
+
+    /****************************************************************************/
+    /*!
+     *  \brief To Set net work setting result.
+     *  \param NtService = Enum for Network settings
+     *  \param Result = setting result
+     */
+    /****************************************************************************/
+    void SetNetworkSettingsResult(PlatformService::NetworkSettings_t NtService, bool Result);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for reset this ui.
+     */
+    /****************************************************************************/
     void reset();
 
 };
