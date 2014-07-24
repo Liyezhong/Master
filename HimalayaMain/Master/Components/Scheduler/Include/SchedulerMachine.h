@@ -23,10 +23,11 @@
 #define SCHEDULERMACHINE_H
 
 #include <QStateMachine>
+#include <QFinalState>
 #include <QSharedPointer>
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
-#include "ProgramStepStateMachine.h"
-#include "RsRvGetOriginalPositionAgain.h"
+#include "Scheduler/Include/SchedulerStateMachineStates.h"
+
 
 namespace Scheduler{
 
@@ -102,14 +103,10 @@ private:
     QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
 
     // State machines for Error handling
-    QSharedPointer<CRsRvGetOriginalPositionAgain> mp_RsRvGetOriginalPositionAgain;		///<  State machine for RS_RV_GetOriginalPositionAgain
     QSharedPointer<CRsStandbyWithTissue> mp_RsStandby;                                  ///<  State machine for RS_Standby
     QSharedPointer<CRsStandbyWithTissue> mp_RsStandbyWithTissue;						///<  State machine for RS_StandbyWithTissue
     QSharedPointer<CRsHeatingErr30SRetry> mp_RsHeatingErr30SRetry;                      ///<  State machine for RS_HeatingErr_30S_Retry
     QSharedPointer<CRsTSensorErr3MinRetry> mp_RsTSensorErr3MinRetry;                    ///<  State machine for Rs_TSensorErr3MinRetry
-    QSharedPointer<CRcLevelSensorHeatingOvertime> mp_RcLevelSensorHeatingOvertime;      ///<  State machine for RC_LevelSensor_Heating_Overtime
-    QSharedPointer<CRcRestart> mp_RcRestart;                                            ///<  State machine for RC_Restart
-    QSharedPointer<CRcReport> mp_RcReport;												///<  State machine for RC_Report
     QSharedPointer<CRsFillingAfterFlush> mp_RsFillingAfterFlush;                        ///<  State machine for Rs_FillingAfterFlush
 
     typedef enum
