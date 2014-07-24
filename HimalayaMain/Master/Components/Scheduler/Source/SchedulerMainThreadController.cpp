@@ -25,6 +25,7 @@
 #include "Scheduler/Commands/Include/CmdALFilling.h"
 #include "Scheduler/Commands/Include/CmdALDraining.h"
 #include "Scheduler/Commands/Include/CmdALPressure.h"
+#include "Scheduler/Commands/Include/CmdALReleasePressure.h"
 #include "Scheduler/Commands/Include/CmdALVaccum.h"
 #include "Scheduler/Commands/Include/CmdALAllStop.h"
 #include "Scheduler/Commands/Include/CmdRVStartTemperatureControlWithPID.h"
@@ -674,7 +675,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             else
             {
                 // if cleaning program just move RV, not precheck
-                m_SchedulerMachine->SendRunPreTest();
+                //m_SchedulerMachine->SendRunPreTest();
                 switch (m_CurrentStepState)
                 {
                 case PSSM_INIT:
@@ -2584,7 +2585,7 @@ void SchedulerMainThreadController::ShutdownRetortHeater()
 void SchedulerMainThreadController::ReleasePressure()
 {
     LogDebug("Send cmd to DCL to let Release Pressure.");
-    this->AllStop();
+    m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500, this));
 }
 
 void SchedulerMainThreadController::OnEnterPssmProcessing()

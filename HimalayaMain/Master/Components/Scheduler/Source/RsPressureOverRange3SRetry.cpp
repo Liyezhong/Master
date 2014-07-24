@@ -104,7 +104,7 @@ void CRsPressureOverRange3SRetry::HandleWorkFlow(const QString& cmdName, ReturnC
     {
     case CHECK_PRESSURE:
         mp_SchedulerController->LogDebug("RS_PressureOverRange_3SRetry, in state CHECK_PRESSURE");
-        if (mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL >= 40.0)
+        if (qAbs(mp_SchedulerController->GetSchedCommandProcessor()->HardwareMonitor().PressureAL) >= 40.0)
         {
             m_CheckPressureTime = QDateTime::currentMSecsSinceEpoch();
             m_Counter++;
@@ -116,6 +116,7 @@ void CRsPressureOverRange3SRetry::HandleWorkFlow(const QString& cmdName, ReturnC
         }
         break;
     case WAIT_FOR_1S:
+        mp_SchedulerController->LogDebug("RS_PressureOverRange_3SRetry, in state WAIT_FOR_1S");
         now = QDateTime::currentMSecsSinceEpoch();
         if ((now - m_CheckPressureTime) >= 1*1000)
         {
@@ -130,6 +131,7 @@ void CRsPressureOverRange3SRetry::HandleWorkFlow(const QString& cmdName, ReturnC
         }
         break;
     case RELEASE_PRESSURE:
+        mp_SchedulerController->LogDebug("RS_PressureOverRange_3SRetry, in state RELEASE_PRESSURE");
         if ("Scheduler::ALReleasePressure" == cmdName)
         {
             // We always return failure
