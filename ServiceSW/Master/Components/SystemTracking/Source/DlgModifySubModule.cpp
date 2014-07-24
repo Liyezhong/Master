@@ -26,14 +26,6 @@
 
 namespace SystemTracking {
 
-
-/****************************************************************************/
-/*!
- *  \brief Constructor
- *
- *  \iparam p_Parent = Parent widget
- */
-/****************************************************************************/
 CDlgModifySubModule::CDlgModifySubModule(ServiceDataManager::CSubModule &SubModule,
                                    bool HasBoard,
                                    QWidget *p_Parent)
@@ -110,12 +102,6 @@ CDlgModifySubModule::CDlgModifySubModule(ServiceDataManager::CSubModule &SubModu
     (void)connect(mp_Ui->pushClose, SIGNAL(clicked()), this, SLOT(close()));
 }
 
-
-/****************************************************************************/
-/*!
- *  \brief Destructor
- */
-/****************************************************************************/
 CDlgModifySubModule::~CDlgModifySubModule()
 {
     try {
@@ -249,6 +235,10 @@ void CDlgModifySubModule::OnSave(void)
     const QString SerialNumberName("SerialNumber");
     const QString DateOfProductionName("DateOfExchange");
 
+    if (!mp_SubModule) {
+        qDebug()<<"CDlgModifySubModule::OnSave():invalid sub module";
+        return;
+    }
     (void)mp_SubModule->UpdateParameterInfo(SerialNumberName, SerialNumber);
     (void)mp_SubModule->UpdateParameterInfo(DateOfProductionName,
                                       Date.toString(Qt::ISODate));

@@ -31,6 +31,11 @@ namespace Ui {
 class COven;
 }
 
+/****************************************************************************/
+/**
+ * \brief This is the widget displaying to modify Oven config.
+ */
+/****************************************************************************/
 class COven : public QWidget
 {
     Q_OBJECT
@@ -39,7 +44,8 @@ public:
     /****************************************************************************/
     /**
      * \brief  Default constructor.
-     * \iparam p_DataConnector = service Gui connector, parent = parent of widget
+     * \iparam DataConnector = service Gui connector
+     * \iparam p_Parent = parent of widget
      */
     /****************************************************************************/
     explicit COven(Core::CServiceGUIConnector &DataConnector,

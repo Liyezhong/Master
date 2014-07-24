@@ -1,0 +1,13 @@
+digraph G
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="SystemTracking::CMainControl::ConfirmModuleConfiguration",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="SystemTracking::CMainControl::CurrentTabChanged",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CMainControl.html#a40d476648b94f3b5cc8892cbfe130f61",tooltip="call slot when current tab changed."];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="SystemTracking::CMainControl::OnFinalizeConfiguration",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CMainControl.html#a341ffbc353fc0bac77318eae146bf4d1",tooltip="slot for finalize configuration."];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="SystemTracking::CMainControl::CMainControl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CMainControl.html#a71967298fb2e9f843c8e58051883e6e4",tooltip="Default constructor."];
+}

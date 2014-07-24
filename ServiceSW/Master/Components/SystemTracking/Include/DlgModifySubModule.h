@@ -37,7 +37,7 @@ class CDlgModifyModule;
 }
 /****************************************************************************/
 /**
- * \brief This class provides facility to add/modify module configuration
+ * \brief This class provides facility to add/modify submodule configuration
  */
 /****************************************************************************/
 class CDlgModifySubModule : public MainMenu::CDialogFrame
@@ -45,36 +45,94 @@ class CDlgModifySubModule : public MainMenu::CDialogFrame
     Q_OBJECT
 
 public:
+    /****************************************************************************/
+    /**
+     * \brief  Default constructor.
+     * \iparam SubModule = Reference of SubModule object
+     * \iparam HasBoard = flag of Board
+     * \iparam p_Parent = parent of widget
+     */
+    /****************************************************************************/
     explicit CDlgModifySubModule(ServiceDataManager::CSubModule &SubModule,
                                  bool HasBoard = false,
                                  QWidget *p_Parent = 0);
+
+    /****************************************************************************/
+    /**
+     * \brief Destructor.
+     */
+    /****************************************************************************/
     ~CDlgModifySubModule();
 
 Q_SIGNALS:
     /****************************************************************************/
     /*!
      *  \brief This signal is emitted when a program is updated.
-     *  \iparam Module = Modified Module.
+     *  \iparam SubModule = Modified SubModule.
      */
     /****************************************************************************/
     void UpdateSubModule(ServiceDataManager::CSubModule &SubModule);
 
+    /****************************************************************************/
+    /*!
+     *  \brief This signal is emitted when clicked Auto detect button .
+     *  \iparam SubModule = Modified SubModule.
+     */
+    /****************************************************************************/
     void AutoDetect(ServiceDataManager::CSubModule &SubModule);
 
 public Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for updating the GUI
+     */
+    /****************************************************************************/
     void UpdateGUI(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for updating the GUI
+     *  \iparam SerialNumber = Module serial number
+     *  \iparam DateOfProduction = the Date of production
+     */
+    /****************************************************************************/
     void UpdateGUI(const QString &SerialNumber, const QDate &DateOfProduction);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for Edit serial number
+     */
+    /****************************************************************************/
     void OnEditSerialNumber(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for auto detect
+     */
+    /****************************************************************************/
     void OnAutoDetect(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for save button
+     */
+    /****************************************************************************/
     void OnSave(void);
 
 private Q_SLOTS:
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for Ok button
+     *  \iparam EnteredString = entered string of serial number
+     */
+    /****************************************************************************/
     void OnOkClicked(QString EnteredString);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Slot for esc button
+     */
+    /****************************************************************************/
     void OnESCClicked(void);
 
 private:
@@ -87,8 +145,18 @@ private:
     MainMenu::CScrollWheel  *mp_MonthWheel;          //!< Month scroll wheel
     MainMenu::CScrollWheel  *mp_YearWheel;           //!< Year scroll wheel
 
+    /****************************************************************************/
+    /*!
+     *  \brief Connects signals and slots of keyboard.
+     */
+    /****************************************************************************/
     void ConnectKeyBoardSignalSlots(void);
 
+    /****************************************************************************/
+    /*!
+     *  \brief Disconnects signals and slots of keyboard.
+     */
+    /****************************************************************************/
     void DisconnectKeyBoardSignalSlots(void);
 
 

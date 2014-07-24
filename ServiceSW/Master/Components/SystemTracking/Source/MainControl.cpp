@@ -34,13 +34,13 @@
 
 namespace SystemTracking {
 
-const QString MODULE_MAINCONTROL("Main Control");
-const QString SUBMODULE_EBOX("E Box");
-const QString SUBMODULE_ASB3("ASB3");
-const QString SUBMODULE_ASB5("ASB5");
-const QString SUBMODULE_ASB15("ASB15");
-const QString SUBMODULE_TOUCHSCREEN("Touch Screen");
-const QString SUBMODULE_VENTFAN("Ventilation Fan");
+const QString MODULE_MAINCONTROL("Main Control");    //!< Main Control name
+const QString SUBMODULE_EBOX("E Box");               //!< name of E box submodule
+const QString SUBMODULE_ASB3("ASB3");                //!< name of ASB3 submodule
+const QString SUBMODULE_ASB5("ASB5");                //!< name of ASB5 submodule
+const QString SUBMODULE_ASB15("ASB15");              //!< name of ASB15 submodule
+const QString SUBMODULE_TOUCHSCREEN("Touch Screen"); //!< name of touch screen submodule
+const QString SUBMODULE_VENTFAN("Ventilation Fan");  //!< name of ventilation fan submodule
 
 CMainControl::CMainControl(Core::CServiceGUIConnector &DataConnector,
                            QWidget *p_Parent)

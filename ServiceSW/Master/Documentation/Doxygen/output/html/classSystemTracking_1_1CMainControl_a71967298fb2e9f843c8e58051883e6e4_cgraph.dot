@@ -1,0 +1,23 @@
+digraph G
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="SystemTracking::CMainControl::CMainControl",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="SystemTracking::CMainControl::ModifyASB15",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CMainControl.html#abed872e022218b735429921ff01e975e",tooltip="slot for modify ASB15."];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="SystemTracking::CMainControl::ModifyASB3",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CMainControl.html#a4af4a3c0a79d59b6fc3edb7952928a1f",tooltip="slot for modify ASB3."];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="SystemTracking::CMainControl::ModifyASB5",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CMainControl.html#ade32f77c4473db0eef5998fe1ab83fe9",tooltip="slot for modify ASB5."];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="SystemTracking::CMainControl::ModifyEBox",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CMainControl.html#a424c87c626dd641ff3df7fc3c9aa6a4e",tooltip="slot for modify E box."];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 [label="SystemTracking::CMainControl::ModifyTouchScreen",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CMainControl.html#aee506e100f3fff5b3a83b2090de9b859",tooltip="slot for modify Touch screen."];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node7 [label="SystemTracking::CMainControl::ModifyVentFan",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CMainControl.html#ac56412bf8e60d469b8b32b563c33d437",tooltip="slot for modify Vent fan."];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node8 [label="SystemTracking::CMainControl::OnFinalizeConfiguration",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CMainControl.html#a341ffbc353fc0bac77318eae146bf4d1",tooltip="slot for finalize configuration."];
+  Node8 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node9 [label="SystemTracking::CMainControl::ConfirmModuleConfiguration",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CMainControl.html#ae3a35ef6c557bc66707db334a50a5280",tooltip="slot for confirm module configuration."];
+}

@@ -1,0 +1,13 @@
+digraph G
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="SystemTracking::CRotaryValve::ConfirmModuleConfiguration",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="SystemTracking::CRotaryValve::CurrentTabChanged",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CRotaryValve.html#a6094f1e47effa3e2d9566969c31fab3e",tooltip="call slot when current tab changed."];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="SystemTracking::CRotaryValve::OnFinalizeConfiguration",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CRotaryValve.html#a6235f04376fe6edea28504749487fc6c",tooltip="slot for finalize configuration."];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="SystemTracking::CRotaryValve::CRotaryValve",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classSystemTracking_1_1CRotaryValve.html#ad1ba1c8baaa57a937e855a27159c70d7",tooltip="Default constructor."];
+}

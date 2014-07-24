@@ -29,15 +29,15 @@
 
 namespace SystemTracking {
 
-const QString MODULE_LASYSTEM("L&A System");
-const QString SUBMODULE_PUMP("Pump");
-const QString SUBMODULE_VALVE1("Valve 1");
-const QString SUBMODULE_VALVE2("Valve 2");
-const QString SUBMODULE_HEATINGBELT1("Liquid Heating Tube");
-const QString SUBMODULE_HEATINGBELT2("Air Heating Tube");
-const QString SUBMODULE_PRESSURESENSOR("Pressure Sensor");
-const QString SUBMODULE_CARBONFILTER("Carbon Filter");
-const QString SUBMODULE_FAN("Exhaust Fan");
+const QString MODULE_LASYSTEM("L&A System");                 //!< LA system name
+const QString SUBMODULE_PUMP("Pump");                        //!< name of Pump submodule
+const QString SUBMODULE_VALVE1("Valve 1");                   //!< name of valve1 submodule
+const QString SUBMODULE_VALVE2("Valve 2");                   //!< name of valve2 submodule
+const QString SUBMODULE_HEATINGBELT1("Liquid Heating Tube"); //!< name of heating tube submodule
+const QString SUBMODULE_HEATINGBELT2("Air Heating Tube");    //!< name of air heating tube submodule
+const QString SUBMODULE_PRESSURESENSOR("Pressure Sensor");   //!< name of pressure sensor submodule
+const QString SUBMODULE_CARBONFILTER("Carbon Filter");       //!< name of carbon filter submodule
+const QString SUBMODULE_FAN("Exhaust Fan");                  //!< name of exhaust fan submodule
 
 CLaSystem::CLaSystem(Core::CServiceGUIConnector &DataConnector,
                            QWidget *p_Parent)

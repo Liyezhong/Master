@@ -30,9 +30,9 @@
 
 namespace SystemTracking {
 
-const QString MODULE_ROTARYVALVE("Rotary Valve");
-const QString SUBMODULE_HEATER("Heater");
-const QString SUBMODULE_MOTOR("Motor");
+const QString MODULE_ROTARYVALVE("Rotary Valve"); //!< Rotary valve name
+const QString SUBMODULE_HEATER("Heater");         //!< name of heater submodule
+const QString SUBMODULE_MOTOR("Motor");           //!< name of motor submodule
 
 CRotaryValve::CRotaryValve(Core::CServiceGUIConnector &DataConnector,
              QWidget *p_Parent)

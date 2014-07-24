@@ -49,6 +49,7 @@ public:
     /****************************************************************************/
     /**
      * \brief Get reference to instance.
+     * \iparam p_Parent = parent of widget
      * \return  Reference to instance.
      */
     /****************************************************************************/

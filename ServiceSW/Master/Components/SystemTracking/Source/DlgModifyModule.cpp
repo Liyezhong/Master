@@ -26,14 +26,6 @@
 
 namespace SystemTracking {
 
-
-/****************************************************************************/
-/*!
- *  \brief Constructor
- *
- *  \iparam p_Parent = Parent widget
- */
-/****************************************************************************/
 CDlgModifyModule::CDlgModifyModule(ServiceDataManager::CModule &Module,
                                    bool HasBoard,
                                    QWidget *p_Parent)
@@ -102,12 +94,6 @@ CDlgModifyModule::CDlgModifyModule(ServiceDataManager::CModule &Module,
     (void)connect(mp_Ui->pushClose, SIGNAL(clicked()), this, SLOT(close()));
 }
 
-
-/****************************************************************************/
-/*!
- *  \brief Destructor
- */
-/****************************************************************************/
 CDlgModifyModule::~CDlgModifyModule(void)
 {
     try {

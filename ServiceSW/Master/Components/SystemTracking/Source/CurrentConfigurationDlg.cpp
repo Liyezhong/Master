@@ -176,7 +176,7 @@ void CCurrentConfigurationDlg::OnCancel()
 /****************************************************************************/
 /*!
  *  \brief  To initialize the pop up dialog
- *  \iparam Module = Module object
+ *  \iparam p_Module = pointer of Module object
  */
 /****************************************************************************/
 void CCurrentConfigurationDlg::InitDialog(ServiceDataManager::CModule *p_Module)

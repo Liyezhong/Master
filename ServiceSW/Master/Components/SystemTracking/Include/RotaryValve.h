@@ -31,6 +31,11 @@ namespace Ui {
 class CRotaryValve;
 }
 
+/****************************************************************************/
+/**
+ * \brief This is the widget displaying to modify Rotary valve config.
+ */
+/****************************************************************************/
 class CRotaryValve : public QWidget
 {
     Q_OBJECT
@@ -39,7 +44,8 @@ public:
     /****************************************************************************/
     /**
      * \brief  Default constructor.
-     * \iparam p_DataConnector = service Gui connector, parent = parent of widget
+     * \iparam DataConnector = service Gui connector
+     * \iparam p_Parent = parent of widget
      */
     /****************************************************************************/
     explicit CRotaryValve(Core::CServiceGUIConnector &DataConnector,

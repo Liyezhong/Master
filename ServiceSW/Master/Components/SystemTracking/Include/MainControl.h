@@ -32,6 +32,11 @@ namespace Ui {
 class CMainControl;
 }
 
+/****************************************************************************/
+/**
+ * \brief This is the widget displaying to modify main control config.
+ */
+/****************************************************************************/
 class CMainControl : public QWidget
 {
     Q_OBJECT
@@ -40,7 +45,8 @@ public:
     /****************************************************************************/
     /**
      * \brief  Default constructor.
-     * \iparam p_DataConnector = service Gui connector, parent = parent of widget
+     * \iparam DataConnector = service Gui connector
+     * \iparam p_Parent = parent of widget
      */
     /****************************************************************************/
     explicit CMainControl(Core::CServiceGUIConnector &DataConnector,
@@ -65,6 +71,7 @@ Q_SIGNALS:
     /**
        * \brief Signal emitted to perform manufacturing tests
        * \iparam Test = Test name
+       * \iparam AbortId = Test abort id
        */
     /****************************************************************************/
     void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortId=Service::TEST_CASE_ID_UNUSED);

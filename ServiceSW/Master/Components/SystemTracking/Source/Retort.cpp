@@ -30,10 +30,10 @@
 
 namespace SystemTracking {
 
-const QString MODULE_RETORT("Retort");
-const QString SUBMODULE_HEATER("Heater");
-const QString SUBMODULE_LIDLOCK("Lid Lock");
-const QString SUBMODULE_LEVELSENSOR("Level Sensor");
+const QString MODULE_RETORT("Retort");                //!< Retort name
+const QString SUBMODULE_HEATER("Heater");             //!< name of heater submodule
+const QString SUBMODULE_LIDLOCK("Lid Lock");          //!< name of lid lock submodule
+const QString SUBMODULE_LEVELSENSOR("Level Sensor");  //!< name of level sensor submodule
 
 CRetort::CRetort(Core::CServiceGUIConnector &DataConnector,
                  QWidget *p_Parent)

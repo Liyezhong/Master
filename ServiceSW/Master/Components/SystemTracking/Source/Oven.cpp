@@ -30,10 +30,9 @@
 
 namespace SystemTracking {
 
-//const QString MODULE_OVEN("Oven");
-const QString MODULE_OVEN("Paraffine Oven");
-const QString SUBMODULE_HEATER("Heater");
-const QString SUBMODULE_COVERSENSOR("Cover Sensor");
+const QString MODULE_OVEN("Paraffine Oven");         //!< Paraffine oven name
+const QString SUBMODULE_HEATER("Heater");            //!< name of heater submodule
+const QString SUBMODULE_COVERSENSOR("Cover Sensor"); //!< name of cover sensor submodule
 
 COven::COven(Core::CServiceGUIConnector &DataConnector,
              QWidget *p_Parent)

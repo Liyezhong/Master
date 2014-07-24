@@ -31,6 +31,11 @@ namespace Ui {
 class CLaSystem;
 }
 
+/****************************************************************************/
+/**
+ * \brief This is the widget displaying to modify LA system config.
+ */
+/****************************************************************************/
 class CLaSystem : public QWidget
 {
     Q_OBJECT
@@ -39,7 +44,8 @@ public:
     /****************************************************************************/
     /**
      * \brief  Default constructor.
-     * \iparam p_DataConnector = service Gui connector, parent = parent of widget
+     * \iparam DataConnector = service Gui connector
+     * \iparam p_Parent = parent of widget
      */
     /****************************************************************************/
     explicit CLaSystem(Core::CServiceGUIConnector &DataConnector,
@@ -64,7 +70,7 @@ public Q_SLOTS:
     /****************************************************************************/
     /*!
      *  \brief  slot for update sub module.
-     *  \param  SubModule = sub module object
+     *  \param  SubModule = reference sub module object
      */
     /****************************************************************************/
     void UpdateSubModule(ServiceDataManager::CSubModule &SubModule);

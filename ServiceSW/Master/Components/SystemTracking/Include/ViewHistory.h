@@ -50,7 +50,8 @@ public:
     /****************************************************************************/
     /**
      * \brief  Default constructor.
-     * \iparam p_DataConnector = service Gui connector, parent = parent of widget
+     * \iparam p_DataConnector = service Gui connector
+     * \iparam p_Parent = parent of widget
      */
     /****************************************************************************/
     explicit CViewHistory(Core::CServiceGUIConnector *p_DataConnector, QWidget *p_Parent = 0);
