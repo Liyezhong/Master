@@ -1197,7 +1197,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to RS_HeatingErr30Retry");
             m_SchedulerMachine->EnterRsHeatingErr30SRetry();
         }
-        else if(CTRL_CMD_RS_TSENSORERR3MINRETRY == ctrlCmd)
+        else if(CTRL_CMD_RS_TSENSORERR_3MIN_RETRY == ctrlCmd)
         {
             LogDebug(QString("Go to RS_TSensorErr_3MinRetry"));
             m_SchedulerMachine->EnterRsTSensorErr3MinRetry();
@@ -1239,8 +1239,13 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         }
         else if(CTRL_CMD_RS_FILLINGAFTERFLUSH == ctrlCmd)
         {
-            LogDebug("Go to Rs_FillingAfterFlush");
+            LogDebug("Go to RS_FillingAfterFlush");
             m_SchedulerMachine->EnterRsFillingAfterFlush();
+        }
+        else if(CTRL_CMD_RS_CHECK_BLOCKAGE == ctrlCmd)
+        {
+            LogDebug("Go to RS_Check_Blockage");
+            m_SchedulerMachine->EnterRsCheckBlockage();;
         }
         else
         {
@@ -1310,8 +1315,13 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     }
     else if(SM_ERR_RS_FILLINGAFTERFFLUSH == currentState)
     {
-        LogDebug("In Rs_FillingAfterFlush");
+        LogDebug("In RS_FillingAfterFlush State");
         m_SchedulerMachine->HandleRsFillingAfterFlushWorkFlow(cmdName, retCode);
+    }
+    else if(SM_ERR_RS_CHECK_BLOCKAGE == currentState)
+    {
+        LogDebug("In RS_CHECK_BLOCKAGE state");
+        m_SchedulerMachine->HandleRsCheckBlockageWorkFlow(cmdName, retCode);
     }
     else
     {
@@ -1386,9 +1396,9 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             return CTRL_CMD_RS_HEATINGERR30SRETRY;
         }
-        if (cmd == "rs_tsensorerr3minretry")
+        if (cmd == "rs_tsensorerr_3min_retry")
         {
-            return CTRL_CMD_RS_TSENSORERR3MINRETRY;
+            return CTRL_CMD_RS_TSENSORERR_3MIN_RETRY;
         }
         if (cmd == "rc_levelsensor_heating_overtime")
         {
@@ -1421,6 +1431,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (cmd == "rs_fillingafterflush")
         {
             return CTRL_CMD_RS_FILLINGAFTERFLUSH;
+        }
+        if (cmd == "rs_check_blockage")
+        {
+            return CTRL_CMD_RS_CHECK_BLOCKAGE;
         }
     }
     return CTRL_CMD_UNKNOWN;

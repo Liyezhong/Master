@@ -92,6 +92,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_RsDrainAtOnce = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_RcBottleCheckI = QSharedPointer<QState>(new QState(mp_RcBottleCheckI.data()));
     mp_ErrorRsFillingAfterFlushState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_ErrorRsCheckBlockageState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
 
     // Set Initial states
     mp_SchedulerMachine->setInitialState(mp_InitState.data());
@@ -214,10 +215,17 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_RsFillingAfterFlush.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRsFillingAfterFlushState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
+    //RS_Check_Blockage
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsCheckBlockage()), mp_ErrorRsCheckBlockageState.data());
+    CONNECTSIGNALSLOT(mp_ErrorRsCheckBlockageState.data(), entered(), mp_SchedulerThreadController, HighPressure());
+    mp_ErrorRsCheckBlockageState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
     m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
     m_RVOrgPosCmdTime = 0;
     m_RcFilling = HEATING_LEVELSENSOR;
+    m_RsCheckBlockage = BUILD_HIGHPRESSURE;
+    m_RsCheckBlockageStartTime = 0;
 }
 
 
@@ -417,6 +425,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsFillingAfterFlushState.data()))
         {
             return SM_ERR_RS_FILLINGAFTERFFLUSH;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsCheckBlockageState.data()))
+        {
+            return SM_ERR_RS_CHECK_BLOCKAGE;
         }
     }
     else if(mp_SchedulerMachine->configuration().contains(mp_BusyState.data()))
@@ -727,6 +739,11 @@ void CSchedulerStateMachine::EnterRsFillingAfterFlush()
     emit SigRsFillingAfterFlush();
 }
 
+void CSchedulerStateMachine::EnterRsCheckBlockage()
+{
+    emit SigRsCheckBlockage();
+}
+
 void CSchedulerStateMachine::HandlePssmPreTestWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
     mp_ProgramSelfTest->HandleWorkFlow(cmdName, retCode);
@@ -948,6 +965,53 @@ void CSchedulerStateMachine::HandleRcBottleCheckIWorkFlow(const QString& cmdName
 void CSchedulerStateMachine::HandleRsFillingAfterFlushWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
     mp_RsFillingAfterFlush->HandleWorkFlow(cmdName, retCode);
+}
+
+void CSchedulerStateMachine::HandleRsCheckBlockageWorkFlow(const QString& cmdName, ReturnCode_t retCode)
+{
+    qint64 nowTime = 0;
+    qreal currentPressure = 0.0;
+
+    switch(m_RsCheckBlockage)
+    {
+    case BUILD_HIGHPRESSURE:
+        if("Scheduler::ALPressure" == cmdName)
+        {
+            if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
+            {
+                m_RsCheckBlockage = BUILD_HIGHPRESSURE;
+                OnTasksDone(false);
+            }
+            else
+            {
+                m_RsCheckBlockageStartTime = QDateTime::currentMSecsSinceEpoch();
+                m_RsCheckBlockage = WAIT_30S;
+            }
+        }
+        break;
+    case WAIT_30S:
+        nowTime = QDateTime::currentMSecsSinceEpoch();
+        if(nowTime - m_RsCheckBlockageStartTime >= 30 * 1000)
+        {
+            m_RsCheckBlockage = CHECK_PRESSURE;
+        }
+        break;
+    case CHECK_PRESSURE:
+        currentPressure = mp_SchedulerThreadController->GetSchedCommandProcessor()->ALGetRecentPressure();
+        if(currentPressure < 8)
+        {
+            m_RsCheckBlockage = BUILD_HIGHPRESSURE;
+            OnTasksDone(true);
+        }
+        else
+        {
+            m_RsCheckBlockage = BUILD_HIGHPRESSURE;
+            OnTasksDone(false);
+        }
+        break;
+    default:
+        break;
+    }
 }
 
 void CSchedulerStateMachine::EnterRcRestart()

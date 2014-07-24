@@ -98,6 +98,7 @@ private:
     QSharedPointer<QState> mp_RsDrainAtOnce;                                            ///<  Error State's sub state: for RS_DrainAtOnce
     QSharedPointer<QState> mp_RcBottleCheckI;                                           ///<  Error State's sub state: for RC_BottleCheck_I
     QSharedPointer<QState> mp_ErrorRsFillingAfterFlushState;                            ///<  Error State's sub state: for RS_FillingAfterFlush
+    QSharedPointer<QState> mp_ErrorRsCheckBlockageState;                                ///<  Error State's sub state: for RS_Check_Blockage
 
     //State machines for Run handling
     QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
@@ -133,6 +134,16 @@ private:
         RC_FILLING
     }RC_FILLING_t;
     RC_FILLING_t m_RcFilling;
+
+    typedef enum
+    {
+        BUILD_HIGHPRESSURE,
+        WAIT_30S,
+        CHECK_PRESSURE
+    }RS_CHECK_BLOCKAGE_t;
+    RS_CHECK_BLOCKAGE_t m_RsCheckBlockage;                                              ///<  The Rs_Check_Blockage sub state
+    qint64              m_RsCheckBlockageStartTime;                                     ///<  The Rs_Check_Blockage begin time
+
 private:
     QString GetDeviceName();
 
@@ -701,6 +712,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function EnterRsCheckBlockage
+     *
+     *  \return from EnterRsCheckBlockage
+     */
+    /****************************************************************************/
+    void EnterRsCheckBlockage();
+
+    /****************************************************************************/
+    /*!
      *  \brief Handle the whole work flow for Program Pre-Test
      *
      *  \param cmdName - command name
@@ -850,6 +870,18 @@ public:
      */
     /****************************************************************************/
     void HandleRsFillingAfterFlushWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for HandleRsCheckBlockageWorkFlow
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRsCheckBlockageWorkFlow(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -1557,6 +1589,13 @@ signals:
      */
     /****************************************************************************/
     void SigRsFillingAfterFlush();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigRsCheckBlockage
+     */
+    /****************************************************************************/
+    void SigRsCheckBlockage();
 
     /****************************************************************************/
     /*!

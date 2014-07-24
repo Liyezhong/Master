@@ -33,12 +33,13 @@ namespace Scheduler{
 #define L2_ERR_RS_HEATINGERR30SRETRY                (0x7)
 #define L2_ERR_RS_TSENSORERR3MINRETRY               (0x8)
 #define L2_ERR_RC_PRESSURE                          (0x9)
-#define L2_ERR_RC_VACUUM                            (0x10)
-#define L2_ERR_RC_FILLING                           (0x11)
-#define L2_ERR_RC_DRAINING                          (0x12)
-#define L2_ERR_RC_DRAINATONCE                       (0x13)
-#define L2_ERR_RC_BOTTLECHECK_I                     (0x14)
-#define L2_ERR_RS_FILLINGAFTERFLUSH                 (0x15)
+#define L2_ERR_RC_VACUUM                            (0xA)
+#define L2_ERR_RC_FILLING                           (0xB)
+#define L2_ERR_RC_DRAINING                          (0xC)
+#define L2_ERR_RC_DRAINATONCE                       (0xD)
+#define L2_ERR_RC_BOTTLECHECK_I                     (0xE)
+#define L2_ERR_RS_FILLINGAFTERFLUSH                 (0xF)
+#define L2_ERR_RS_CHECK_BLOCKAGE                    (0x10)
 
 typedef enum
 {
@@ -82,7 +83,8 @@ typedef enum
     SM_ERR_RC_DRAINING = ((L2_ERR_RC_DRAINING << 8) | L1_ERROR),
     SM_ERR_RS_DRAINATONCE = ((L2_ERR_RC_DRAINATONCE << 8) | L1_ERROR),
     SM_ERR_RS_BOTTLECHECK_I = ((L2_ERR_RC_BOTTLECHECK_I << 8) | L1_ERROR),
-    SM_ERR_RS_FILLINGAFTERFFLUSH = ((L2_ERR_RS_FILLINGAFTERFLUSH << 8) | L1_ERROR)
+    SM_ERR_RS_FILLINGAFTERFFLUSH = ((L2_ERR_RS_FILLINGAFTERFLUSH << 8) | L1_ERROR),
+    SM_ERR_RS_CHECK_BLOCKAGE = ((L2_ERR_RS_CHECK_BLOCKAGE << 8) | L1_ERROR)
 
 } SchedulerStateMachine_t;
 }
