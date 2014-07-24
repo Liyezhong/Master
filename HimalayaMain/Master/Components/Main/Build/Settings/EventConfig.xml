@@ -130,6 +130,18 @@
 			<Step ID="2" Type="ACT" Action="RC_Report" NextStepOnFail="2" NextStepOnSuccess="2"/>
 			<Step ID="3" Type="ACT" Action="RC_Restart"/>
 		</Event>
+		<Event Code="" ErrorID="513040005" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_PressureOverRange_3SRetry" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="MSG" StringID="103040005" RDStringID="113040005" ButtonType="OK" StatusBar="YES" NextStepOnClickOK="2"/>
+			<Step ID="2" Type="ACT" Action="RC_Report"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>
+		</Event>
+		<Event Code="" ErrorID="513040006" ErrorType="ERROR" AuthorityType="Auth_OPERATOR" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_PressureOverRange_3SRetry" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="MSG" StringID="103040006" RDStringID="113040006" ButtonType="OK" StatusBar="YES" NextStepOnClickOK="2"/>
+			<Step ID="2" Type="ACT" Action="RC_Report"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>
+		</Event>
 		<Event Code="" ErrorID="513040020" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
 			<Step ID="0" Type="ACT" Action="RS_Standby" NextStepOnFail="1" NextStepOnSuccess="3"/>
 			<Step ID="1" Type="MSG" StringID="103040020" RDStringID="113040020" ButtonType="OK" StatusBar="YES" ButtonEnableCondition="RT_LID_OPEN_CLOSE" NextStepOnClickOK="2"  LogLevel="High" UserLog="TRUE"/>

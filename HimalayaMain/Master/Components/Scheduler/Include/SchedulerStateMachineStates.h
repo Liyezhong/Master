@@ -32,14 +32,16 @@ namespace Scheduler{
 #define L2_ERR_RC_RESTART                           (0x6)
 #define L2_ERR_RS_HEATINGERR30SRETRY                (0x7)
 #define L2_ERR_RS_TSENSORERR3MINRETRY               (0x8)
-#define L2_ERR_RC_PRESSURE                          (0x9)
-#define L2_ERR_RC_VACUUM                            (0xA)
-#define L2_ERR_RC_FILLING                           (0xB)
-#define L2_ERR_RC_DRAINING                          (0xC)
-#define L2_ERR_RC_DRAINATONCE                       (0xD)
-#define L2_ERR_RC_BOTTLECHECK_I                     (0xE)
-#define L2_ERR_RS_FILLINGAFTERFLUSH                 (0xF)
-#define L2_ERR_RS_CHECK_BLOCKAGE                    (0x10)
+#define L2_ERR_RS_PRESSUREOVERRANGE3SRETRY          (0x8)
+#define L2_ERR_RS_TSENSORERR3MINRETRY               (0x9)
+#define L2_ERR_RC_PRESSURE                          (0xA)
+#define L2_ERR_RC_VACUUM                            (0xB)
+#define L2_ERR_RC_FILLING                           (0xC)
+#define L2_ERR_RC_DRAINING                          (0xD)
+#define L2_ERR_RC_DRAINATONCE                       (0xE)
+#define L2_ERR_RC_BOTTLECHECK_I                     (0xF)
+#define L2_ERR_RS_FILLINGAFTERFLUSH                 (0x10)
+#define L2_ERR_RS_CHECK_BLOCKAGE                    (0x11)
 
 typedef enum
 {
@@ -76,6 +78,7 @@ typedef enum
     SM_ERR_RS_STANDBY_WITH_TISSUE = ((L2_ERR_RS_STANDBY_WITHTISSUE << 8) | L1_ERROR),
     SM_ERR_RC_RESTART = ((L2_ERR_RC_RESTART << 8) | L1_ERROR),
     SM_ERR_RS_HEATINGERR30SRETRY = ((L2_ERR_RS_HEATINGERR30SRETRY << 8 ) | L1_ERROR),
+    SM_ERR_RS_PRESSUREOVERRANGE3SRETRY = ((L2_ERR_RS_PRESSUREOVERRANGE3SRETRY << 8) | L1_ERROR),
     SM_ERR_RS_TSENSORERR_3MINRETRY = ((L2_ERR_RS_TSENSORERR3MINRETRY << 8) | L1_ERROR),
     SM_ERR_RC_PRESSURE = ((L2_ERR_RC_PRESSURE << 8) | L1_ERROR) ,
     SM_ERR_RC_VACUUM = ((L2_ERR_RC_VACUUM << 8) | L1_ERROR),

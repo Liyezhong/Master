@@ -29,6 +29,7 @@
 #include "Scheduler/Commands/Include/CmdRVReqMoveToInitialPosition.h"
 #include "Scheduler/Include/RsStandbyWithTissue.h"
 #include "Scheduler/Include/RsHeatingErr30SRetry.h"
+#include "Scheduler/Include/RsPressureOverRange3SRetry.h"
 #include "Scheduler/Include/RsTSensorErr3MinRetry.h"
 #include "Scheduler/Include/ProgramSelfTest.h"
 #include "Scheduler/Include/RsFillingAfterFlush.h"
@@ -83,6 +84,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorRcLevelSensorHeatingOvertimeState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRcRestartState= QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsHeatingErr30SRetryState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_ErrorRsPressureOverRange3SRetryState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsTSensorErr3MinRetryState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsRVGetOriginalPositionAgainState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_RcPressure = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
@@ -145,6 +147,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     // State machines for Error handling
     mp_RsStandby = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController, 1));
     mp_RsHeatingErr30SRetry = QSharedPointer<CRsHeatingErr30SRetry>(new CRsHeatingErr30SRetry(SchedulerThreadController));
+    mp_RsPressureOverRange3SRetry = QSharedPointer<CRsPressureOverRange3SRetry>(new CRsPressureOverRange3SRetry(SchedulerThreadController));
     mp_RsTSensorErr3MinRetry = QSharedPointer<CRsTSensorErr3MinRetry>(new CRsTSensorErr3MinRetry(SchedulerThreadController));
     mp_RsStandbyWithTissue = QSharedPointer<CRsStandbyWithTissue>(new CRsStandbyWithTissue(SchedulerThreadController));
     mp_RsFillingAfterFlush = QSharedPointer<CRsFillingAfterFlush>(new CRsFillingAfterFlush(SchedulerThreadController));
@@ -163,6 +166,11 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsHeatingErr30SRetry()), mp_ErrorRsHeatingErr30SRetryState.data());
     CONNECTSIGNALSLOT(mp_RsHeatingErr30SRetry.data(), TasksDone(bool), this, OnTasksDone(bool));
     mp_ErrorRsHeatingErr30SRetryState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
+    //RS_PressureOverRange_3SRetry related logic
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRsPressureOverRange3SRetry()), mp_ErrorRsPressureOverRange3SRetryState.data());
+    CONNECTSIGNALSLOT(mp_RsPressureOverRange3SRetry.data(), TasksDone(bool), this, OnTasksDone(bool));
+    mp_ErrorRsPressureOverRange3SRetryState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     //Rs_TSensorErr3MinRetry
     mp_ErrorWaitState->addTransition(this, SIGNAL(SigEnterRSTSensorErr3MinRetry()), mp_ErrorRsTSensorErr3MinRetryState.data());
@@ -381,6 +389,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsHeatingErr30SRetryState.data()))
         {
             return SM_ERR_RS_HEATINGERR30SRETRY;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsPressureOverRange3SRetryState.data()))
+        {
+            return SM_ERR_RS_PRESSUREOVERRANGE3SRETRY;
         }
         else if(mp_SchedulerMachine->configuration().contains(mp_ErrorRsTSensorErr3MinRetryState.data()))
         {
@@ -694,6 +706,11 @@ void CSchedulerStateMachine::EnterRsHeatingErr30SRetry()
     emit SigEnterRsHeatingErr30SRetry();
 }
 
+void CSchedulerStateMachine::EnterRsPressureOverRange3SRetry()
+{
+    emit SigEnterRsPressureOverRange3SRetry();
+}
+
 void CSchedulerStateMachine::EnterRsTSensorErr3MinRetry()
 {
     emit SigEnterRSTSensorErr3MinRetry();
@@ -757,6 +774,11 @@ void CSchedulerStateMachine::HandleRsStandByWorkFlow(const QString& cmdName, Ret
 void CSchedulerStateMachine::HandleRsHeatingErr30SRetry()
 {
     mp_RsHeatingErr30SRetry->HandleWorkFlow();
+}
+
+void CSchedulerStateMachine::HandleRsPressureOverRange3SRetry(const QString& cmdName, ReturnCode_t retCode)
+{
+    mp_RsPressureOverRange3SRetry->HandleWorkFlow(cmdName,retCode);
 }
 
 void CSchedulerStateMachine::HandleRsTSensorErr3MinRetry(const QString& cmdName, DeviceControl::ReturnCode_t retCode)

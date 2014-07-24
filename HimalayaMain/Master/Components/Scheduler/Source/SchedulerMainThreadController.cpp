@@ -1177,6 +1177,10 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to RC_Restart");
             m_SchedulerMachine->EnterRcRestart();
         }
+        if (CTRL_CMD_RC_REPORT == ctrlCmd)
+        {
+            LogDebug("Go to RC_Report");
+        }
         else if(CTRL_CMD_RS_RV_GET_ORIGINAL_POSITION_AGAIN == ctrlCmd)
         {
             LogDebug("Go to RS_RV_GetOriginalPositionAgain");
@@ -1197,7 +1201,12 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to RS_HeatingErr30Retry");
             m_SchedulerMachine->EnterRsHeatingErr30SRetry();
         }
-        else if(CTRL_CMD_RS_TSENSORERR_3MIN_RETRY == ctrlCmd)
+        else if (CTRL_CMD_RS_PRESSUREOVERRANGE_3SRETRY == ctrlCmd)
+        {
+            LogDebug("Go to RS_PressureOverRange_3SRetry");
+            m_SchedulerMachine->EnterRsPressureOverRange3SRetry();
+        }
+        else if(CTRL_CMD_RS_TSENSORERR3MINRETRY == ctrlCmd)
         {
             LogDebug(QString("Go to RS_TSensorErr_3MinRetry"));
             m_SchedulerMachine->EnterRsTSensorErr3MinRetry();
@@ -1261,6 +1270,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         LogDebug("In RS_HeatingErr_30SRetry state");
         m_SchedulerMachine->HandleRsHeatingErr30SRetry();
+    }
+    else if (SM_ERR_RS_PRESSUREOVERRANGE3SRETRY == currentState)
+    {
+        LogDebug("In RS_PressureOverRange_3SRetry");
+        m_SchedulerMachine->HandleRsPressureOverRange3SRetry(cmdName, retCode);
     }
     else if(SM_ERR_RS_TSENSORERR_3MINRETRY == currentState)
     {
@@ -1384,6 +1398,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             return CTRL_CMD_RC_RESTART;
         }
+        if (cmd == "rc_report")
+        {
+            return CTRL_CMD_RC_REPORT;
+        }
         if(cmd == "rs_standby")
         {
             return CTRL_CMD_RS_STANDBY;
@@ -1396,7 +1414,11 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         {
             return CTRL_CMD_RS_HEATINGERR30SRETRY;
         }
-        if (cmd == "rs_tsensorerr_3min_retry")
+        if (cmd == "rs_pressureoverrange_3sretry")
+        {
+            return CTRL_CMD_RS_PRESSUREOVERRANGE_3SRETRY;
+        }
+        if (cmd == "rs_tsensorerr3minretry")
         {
             return CTRL_CMD_RS_TSENSORERR_3MIN_RETRY;
         }

@@ -92,8 +92,10 @@ typedef enum
     CTRL_CMD_RS_STANDBY,
     CTRL_CMD_RS_STANDBY_WITHTISSUE,
     CTRL_CMD_RS_HEATINGERR30SRETRY,
-    CTRL_CMD_RS_TSENSORERR_3MIN_RETRY,
+    CTRL_CMD_RS_PRESSUREOVERRANGE_3SRETRY,
+    CTRL_CMD_RS_TSENSORERR3MINRETRY,
     CTRL_CMD_RC_RESTART,
+    CTRL_CMD_RC_REPORT,
     CTRL_CMD_RC_LEVELSENSOR_HEATING_OVERTIME,
     CTRL_CMD_RC_PRESSURE,
     CTRL_CMD_RC_VACUUM,
@@ -683,12 +685,7 @@ private slots:
           */
          /****************************************************************************/
          void ShutdownRetortHeater();
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of slot ReleasePressure
-          */
-         /****************************************************************************/
-         void ReleasePressure();
+
 
          void DevProcDestroyed();
 
@@ -1161,6 +1158,13 @@ protected:
          */
         /****************************************************************************/
         void RcBottleCheckI();
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Definition/Declaration of slot ReleasePressure
+         */
+        /****************************************************************************/
+        void ReleasePressure();
 
     };
 

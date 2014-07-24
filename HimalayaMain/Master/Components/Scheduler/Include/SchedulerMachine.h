@@ -34,6 +34,7 @@ namespace Scheduler{
 class CRsStandby;
 class CRsStandbyWithTissue;
 class CRsHeatingErr30SRetry;
+class CRsPressureOverRange3SRetry;
 class CRsTSensorErr3MinRetry;
 class CRcLevelSensorHeatingOvertime;
 class CRcRestart;
@@ -89,6 +90,7 @@ private:
     QSharedPointer<QState> mp_ErrorRcLevelSensorHeatingOvertimeState;                   ///<  Error State's sub state: handle RC_Levelsensor_Heating_Overtime related logic
     QSharedPointer<QState> mp_ErrorRcRestartState;                                      ///<  Error State's sub state: handle RC_Restart related logic
     QSharedPointer<QState> mp_ErrorRsHeatingErr30SRetryState;                           ///<  Error State's sub state: handle Rs_HeatingErr30S_Retry related logic
+    QSharedPointer<QState> mp_ErrorRsPressureOverRange3SRetryState;                     ///<  Error State's sub state: handle Rs_PressureOverRange_3SRetry related logic
     QSharedPointer<QState> mp_ErrorRsTSensorErr3MinRetryState;                          ///<  Error State's sub state: handle Rs_TSensorErr3Min_Retry related logic
     QSharedPointer<QState> mp_ErrorRsRVGetOriginalPositionAgainState;                   ///<  Error State's sub state: handle Rs_RV_GetOriginalPositionAgain related logic
     QSharedPointer<QState> mp_RcPressure;                                               ///<  Error State's sub state: for RC_Pressure;
@@ -107,6 +109,7 @@ private:
     QSharedPointer<CRsStandbyWithTissue> mp_RsStandby;                                  ///<  State machine for RS_Standby
     QSharedPointer<CRsStandbyWithTissue> mp_RsStandbyWithTissue;						///<  State machine for RS_StandbyWithTissue
     QSharedPointer<CRsHeatingErr30SRetry> mp_RsHeatingErr30SRetry;                      ///<  State machine for RS_HeatingErr_30S_Retry
+    QSharedPointer<CRsPressureOverRange3SRetry> mp_RsPressureOverRange3SRetry;          ///<  State machine for RS_PressureOverRange_3SRetry
     QSharedPointer<CRsTSensorErr3MinRetry> mp_RsTSensorErr3MinRetry;                    ///<  State machine for Rs_TSensorErr3MinRetry
     QSharedPointer<CRsFillingAfterFlush> mp_RsFillingAfterFlush;                        ///<  State machine for Rs_FillingAfterFlush
 
@@ -617,6 +620,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief Enter to Rs_PressureOverRange_3SRetry sub state machine
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void EnterRsPressureOverRange3SRetry();
+
+    /****************************************************************************/
+    /*!
      *  \brief Enter to Rs_TSensorErr_3min_Retry sub state machine
      *
      *  \return void
@@ -753,6 +765,19 @@ public:
      */
     /****************************************************************************/
     void HandleRsHeatingErr30SRetry();
+
+
+    /****************************************************************************/
+    /*!
+     *  \brief Handle the whole work flow for Rs_PressureOverRange_3SRetry
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRsPressureOverRange3SRetry(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
     /****************************************************************************/
     /*!
@@ -1054,6 +1079,13 @@ signals:
      */
     /****************************************************************************/
     void SigEnterRsHeatingErr30SRetry();
+
+    /****************************************************************************/
+    /*!
+     *  \brief signal to enter RS_PressureOverRange_3SRetry
+     */
+    /****************************************************************************/
+    void SigEnterRsPressureOverRange3SRetry();
 
     /****************************************************************************/
     /*!
