@@ -90,7 +90,12 @@ CDlgModifySubModule::CDlgModifySubModule(ServiceDataManager::CSubModule &SubModu
 
     ConnectKeyBoardSignalSlots();
 
-    mp_Ui->pushSerialNumber->setEnabled(false);
+    if (mp_SubModule->GetSubModuleName() == "E Box") {
+        mp_Ui->pushSerialNumber->setEnabled(true);
+    }
+    else {
+        mp_Ui->pushSerialNumber->setEnabled(false);
+    }
     mp_Ui->pushSerialNumber->setText("N/A");
 
     (void)connect(mp_Ui->pushSerialNumber,
@@ -127,12 +132,12 @@ CDlgModifySubModule::~CDlgModifySubModule()
 }
 
 void CDlgModifySubModule::OnEditSerialNumber(void)
-{
+{  
     mp_KeyBoardWidget->setModal(true);
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(tr("ENTER SERIAL NUMBER"));
-    mp_KeyBoardWidget->SetLineEditContent(mp_Ui->pushSerialNumber->text());
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetValidation(true);
+    mp_KeyBoardWidget->SetLineEditValidatorExpression("^[0-9]{1,4}$"); //yuan@note: for SN;
     mp_KeyBoardWidget->DisplayNumericKeyBoard();
     mp_KeyBoardWidget->show();
 }
@@ -179,9 +184,9 @@ void CDlgModifySubModule::UpdateGUI(const QString &SerialNumber,
         mp_Ui->pushSerialNumber->setText("N/A");
     }
 
-//    if (SerialNumber == "N/A") {
-//        mp_Ui->pushSerialNumber->setEnabled(false);
-//    }
+    if (mp_SubModule && mp_SubModule->GetSubModuleName() == "E Box") {
+        mp_Ui->pushSerialNumber->setText(SerialNumber);
+    }
 
     mp_DayWheel->SetCurrentData(DateOfProduction.day());
     mp_MonthWheel->SetCurrentData(DateOfProduction.month());
@@ -277,7 +282,13 @@ void CDlgModifySubModule::OnAutoDetect(void)
 void CDlgModifySubModule::OnOkClicked(QString EnteredString)
 {
     mp_KeyBoardWidget->hide();
-    mp_Ui->pushSerialNumber->setText(EnteredString.simplified());
+    QString sn = mp_Ui->pushSerialNumber->text();
+    int Index = sn.indexOf('/');
+    if (Index != -1) {
+        (void)sn.remove(Index + 1, sn.length() - Index);
+        sn += EnteredString;
+    }
+    mp_Ui->pushSerialNumber->setText(sn.simplified());
 }
 
 /****************************************************************************/

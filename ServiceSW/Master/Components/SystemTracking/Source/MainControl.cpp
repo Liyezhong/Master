@@ -35,6 +35,7 @@
 namespace SystemTracking {
 
 const QString MODULE_MAINCONTROL("Main Control");
+const QString SUBMODULE_EBOX("E Box");
 const QString SUBMODULE_ASB3("ASB3");
 const QString SUBMODULE_ASB5("ASB5");
 const QString SUBMODULE_ASB15("ASB15");
@@ -56,6 +57,11 @@ CMainControl::CMainControl(Core::CServiceGUIConnector &DataConnector,
     mp_MessageDlg->SetTitle(QApplication::translate("SystemTracking::CMainControl",
                                                     "Finalize Configuration", 0, QApplication::UnicodeUTF8));
     mp_MessageDlg->setModal(true);
+
+    (void)connect(mp_Ui->modifyEBox,
+                  SIGNAL(clicked()),
+                  this,
+                  SLOT(ModifyEBox()) );
 
     (void)connect(mp_Ui->modifyASB3,
                   SIGNAL(clicked()),
@@ -122,6 +128,15 @@ void CMainControl::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     (void)pModule->UpdateSubModule(&SubModule);
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
+}
+
+void CMainControl::ModifyEBox()
+{
+    Global::EventObject::Instance().RaiseEvent(EVENT_GUI_MODIFY_MAIN_CONTROL_SUBMODULE,
+                                               Global::tTranslatableStringList()<<"EBox");
+    qDebug() << "CMainControl::ModifyEBox !";
+
+    this->ModifySubModule(MODULE_MAINCONTROL, SUBMODULE_EBOX);
 }
 
 void CMainControl::ModifyASB3(void)

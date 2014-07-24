@@ -120,7 +120,8 @@ private:
     MainMenu::CBaseTable *mp_TableWidget;          //!< Base Table widget
     QStandardItemModel m_Model;                    //!< Model for the table
     ServiceDataManager::CModule* mp_Module;        //!< Module information
-    QString m_MainControlSNString;                 //!< Stores serial number of Main Control Moudule
+    ServiceDataManager::CSubModule* mp_EboxModule;    //!< Ebox sub module information
+    QString m_EboxSNString;                        //!< Stores serial number of E Box SubMoudule
     QString m_SystemSNString;                      //!< Stores serial number of System
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;        //!< Keyboard widget
     CTestCaseReporter* mp_TestReporter;            //!< Test report generation object

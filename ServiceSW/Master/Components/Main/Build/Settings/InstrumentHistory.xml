@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <InstrumentHistory name="Himalaya">
-    <ModuleList timestamp="2014-07-18 16:49:08.087">
+    <ModuleList timestamp="2014-07-24 08:57:13.082">
         <Module name="Main Control" description="Main Control">
-            <SerialNumber>040/1221</SerialNumber>
+            <SerialNumber>N/A</SerialNumber>
             <OperatingHours>N/A</OperatingHours>
             <DateOfExchange>2014-05-26</DateOfExchange>
             <SubModule name="ASB3" type="Board" description="ASB3">
@@ -53,12 +53,12 @@
             <SubModule name="E Box" type="Monitor" description="E Box">
                 <parameter name="SoftwareVersion" unit="quint16">1.0</parameter>
                 <parameter name="SoftwareReleaseDate" unit="QDate">2013-06-05</parameter>
-                <parameter name="SerialNumber" unit="QString">SN_EBOX_0001</parameter>
+                <parameter name="SerialNumber" unit="QString">040/1234</parameter>
                 <parameter name="OperationTime" unit="hours">5000</parameter>
                 <parameter name="HardwareProductionDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
-                <parameter name="DateOfExchange" unit="QString">2013-06-05</parameter>
+                <parameter name="DateOfExchange" unit="QString">2014-07-24</parameter>
                 <parameter name="CalibrationDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="BootLoaderReleaseDate" unit="QDate">2013-06-05</parameter>
                 <parameter name="BootLoaderMinorVersion" unit="QString">05</parameter>

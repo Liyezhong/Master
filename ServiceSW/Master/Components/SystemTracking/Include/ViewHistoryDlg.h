@@ -83,10 +83,10 @@ private:
     /****************************************************************************/
     /*!
      *  \brief  To add data item to the table
-     *  \iparam ModuleList = Module List object
+     *  \iparam p_ModuleList = pointer of Module List
      */
     /****************************************************************************/
-    void AddItem(QStandardItem *RootItem, ServiceDataManager::CModule *Module);
+    void AddItem(ServiceDataManager::CModuleDataList *p_ModuleList);
 
     Ui::CViewHistoryDlg *mp_Ui;                     //!< User interface
 

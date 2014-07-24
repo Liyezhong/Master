@@ -62,23 +62,14 @@ void CViewHistoryDlg::UpdateGUI(void)
 {
     mp_Model->clear();
 
-    mp_Model->setColumnCount(1);
+    //mp_Model->setColumnCount(1);
     mp_Model->setHorizontalHeaderItem(0,new QStandardItem(tr("Module List")));
 
     if (mp_ModuleList == NULL) {
         qDebug()<<"invalid module list";
         return;
     }
-    QStandardItem *RootItem = new QStandardItem(mp_ModuleList->GetModuleTimeStamp());
-
-    for(int i=0; i<mp_ModuleList->GetNumberofModules(); i++)
-    {
-        AddItem(RootItem, mp_ModuleList->GetModule(i));
-    }
-
-    mp_Model->setItem(0, RootItem);
-
-    delete RootItem;
+    AddItem(mp_ModuleList);
 }
 
 /****************************************************************************/
@@ -106,74 +97,70 @@ CViewHistoryDlg::~CViewHistoryDlg()
  *  \iparam ModuleList = Module List object
  */
 /****************************************************************************/
-void CViewHistoryDlg::AddItem(QStandardItem *RootItem, ServiceDataManager::CModule *Module)
+void CViewHistoryDlg::AddItem(ServiceDataManager::CModuleDataList *p_ModuleList)
 {
-    //ServiceDataManager::CModule *p_Module = mp_ModuleList->GetModule(i);
-    if (0 == Module)
-    {
-        return;
-    }
+    mp_Model->setColumnCount(2);
+    mp_TreeView->setColumnWidth(0, 300);
+    mp_TreeView->setWordWrap(true);
+    QStandardItem *RootItem = new QStandardItem(p_ModuleList->GetModuleTimeStamp());
+    ServiceDataManager::CModule *Module;
+    ServiceDataManager::CSubModule *SubModule;
 
-    QString ModuleName = Module->GetModuleName();
-    if (ModuleName.isEmpty())
-    {
-        return;
-    }
+    for (int i = 0; i < p_ModuleList->GetNumberofModules(); i++) {
+        Module = p_ModuleList->GetModule(i);
+        QString ModuleName = Module->GetModuleName();
 
-    QStandardItem *ModuleItem = new QStandardItem(ModuleName);
-    RootItem->appendRow(ModuleItem);
+        QStandardItem *ModuleItem = new QStandardItem(ModuleName);
+        RootItem->appendRow(ModuleItem);
 
-    QString SerialNumber = Module->GetSerialNumber();
-    if (!SerialNumber.isEmpty())
-    {
-        QStandardItem *SN = new QStandardItem(SerialNumber);
-        ModuleItem->appendRow(SN);
-    }
+        QStandardItem *SerialNumber     = new QStandardItem(QApplication::translate
+                                            ("SystemTracking::CViewHistoryDlg", "Serial Number",
+                                             0, QApplication::UnicodeUTF8));
+        QStandardItem *OperatingHours   = new QStandardItem(QApplication::translate
+                                            ("SystemTracking::CViewHistoryDlg", "Operating Hours",
+                                             0, QApplication::UnicodeUTF8));
+        QStandardItem *DateOfProduction = new QStandardItem(QApplication::translate
+                                            ("SystemTracking::CViewHistoryDlg", "Date Of Production",
+                                             0, QApplication::UnicodeUTF8));
 
-    QString OperatingHours = Module->GetOperatingHours();
-    if (!OperatingHours.isEmpty())
-    {
-        QStandardItem *Hours = new QStandardItem(OperatingHours);
-        ModuleItem->appendRow(Hours);
-    }
 
-    QString DateOfProduction = Module->GetDateOfProduction();
-    if (!DateOfProduction.isEmpty())
-    {
-        QStandardItem *DOP = new QStandardItem(DateOfProduction);
-        ModuleItem->appendRow(DOP);
-    }
+        QStandardItem *SN    = new QStandardItem(Module->GetSerialNumber());
+        QStandardItem *Hours = new QStandardItem(Module->GetOperatingHours());
+        QStandardItem *DOP   = new QStandardItem(Module->GetDateOfProduction());
 
-    for(int i=0; i<Module->GetNumberofSubModules(); i++)
-    {
-        ServiceDataManager::CSubModule *p_SubModule =
-                Module->GetSubModuleInfo(i);
-        if (0 == p_SubModule)
-        {
-            continue;
-        }
+        ModuleItem->setChild(0, 0, SerialNumber);
+        ModuleItem->setChild(0, 1, SN);
 
-        QString SubModuleName = p_SubModule->GetSubModuleName();
-        if (SubModuleName.isEmpty())
-        {
-            continue;
-        }
+        ModuleItem->setChild(1, 0, OperatingHours);
+        ModuleItem->setChild(1, 1, Hours);
 
-        QStandardItem *SubModuleItem = new QStandardItem(SubModuleName);
-        ModuleItem->appendRow(SubModuleItem);
+        ModuleItem->setChild(2, 0, DateOfProduction);
+        ModuleItem->setChild(2, 1, DOP);
 
-        for(int j=0; j<p_SubModule->GetNumberOfParameters(); j++)
-        {
-            ServiceDataManager::Parameter_t *Param =
-                    p_SubModule->GetParameterInfo(j);
 
-            if (!(Param->ParameterName.isEmpty()))
-            {
+        for (int j = 0; j < Module->GetNumberofSubModules(); j++) {
+            SubModule = const_cast<ServiceDataManager::CModule*>(Module)->GetSubModuleInfo(j);
+            QStandardItem *SubModuleName = new QStandardItem(SubModule->GetSubModuleName());
+
+            ModuleItem->appendRow(SubModuleName);
+
+            ServiceDataManager::Parameter_t *Param;
+
+            for (int k = 0; k < SubModule->GetNumberOfParameters(); k++) {
+                int Count = 0;
+                Param = SubModule->GetParameterInfo(k);
+
                 QStandardItem *ParamName = new QStandardItem(Param->ParameterName);
-                SubModuleItem->appendRow(ParamName);
+                QStandardItem *ParamValue = new QStandardItem(Param->ParameterValue);
+
+                SubModuleName->setChild(k, Count++, ParamName);
+                SubModuleName->setChild(k, Count++, ParamValue);
+
             }
         }
     }
+
+    mp_Model->setItem(0, RootItem);
 }
 
 } // end of namespace SystemTracking

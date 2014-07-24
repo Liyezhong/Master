@@ -47,24 +47,27 @@ CMainControl::CMainControl(Core::CServiceGUIConnector *p_DataConnector, MainMenu
     , mp_MainWindow(p_Parent)
     , mp_Ui(new Ui::CMainControlManufacturing)
     , mp_Module(NULL)
+    , mp_EboxModule(NULL)
     , m_FinalTestResult("NA")
-    , m_MainControlSNString("040/XXXX")
-    , m_SystemSNString("")
+    , m_EboxSNString("040/XXXX")
     , m_TestFlag(true)
 {
     mp_Ui->setupUi(this);
 
     if (mp_DataConnector->GetModuleListContainer()) {
         mp_Module = mp_DataConnector->GetModuleListContainer()->GetModule("Main Control");
+        if (mp_Module) {
+            mp_EboxModule = mp_Module->GetSubModuleInfo("E Box");
+        }
     }
-    if (mp_Module) {
-        m_MainControlSNString = mp_Module->GetSerialNumber();
+    if (mp_EboxModule) {
+        m_EboxSNString = mp_EboxModule->GetParameterInfo("SerialNumber")->ParameterValue;
     }
     mp_Ui->eboxSNEdit->installEventFilter(this);
     mp_Ui->eboxSNEdit->setFixedWidth(FIXED_LINEEDIT_WIDTH);
 
     mp_Ui->beginTestBtn->setEnabled(true);
-    mp_Ui->eboxSNEdit->setText(m_MainControlSNString);
+    mp_Ui->eboxSNEdit->setText(m_EboxSNString);
 
     mp_TestReporter = new CTestCaseReporter("MainControl");
     mp_MessageDlg   = new MainMenu::CMessageDlg(mp_MainWindow);
@@ -228,15 +231,15 @@ void CMainControl::OnOkClicked(const QString& EnteredString)
 
     mp_KeyBoardWidget->hide();
 
-    m_MainControlSNString.chop(4);
-    m_MainControlSNString.append(EnteredString.simplified());
-    mp_Ui->eboxSNEdit->setText(m_MainControlSNString);
+    m_EboxSNString.chop(4);
+    m_EboxSNString.append(EnteredString.simplified());
+    mp_Ui->eboxSNEdit->setText(m_EboxSNString);
 
     mp_Ui->beginTestBtn->setEnabled(true);
     DisconnectKeyBoardSignalSlots();
 
-    if (mp_Module && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
-        mp_Module->SetSerialNumber(m_MainControlSNString);
+    if (mp_EboxModule && Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST) {
+        mp_EboxModule->UpdateParameterInfo(QString("SerialNumber"), m_EboxSNString);
         emit UpdateModule(*mp_Module);
     }
 }
