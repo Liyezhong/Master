@@ -1,7 +1,7 @@
 /****************************************************************************/
 /*! \file System.h
  *
- *  \brief
+ *  \brief CSystem class definition file
  *
  *   $Version: $ 0.1
  *   $Date:    $ 2014-07-16
@@ -23,7 +23,6 @@
 
 #include <QWidget>
 
-#include "MainMenu/Include/WaitDialog.h"
 #include "MainMenu/Include/MessageDlg.h"
 
 

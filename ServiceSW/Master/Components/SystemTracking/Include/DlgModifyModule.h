@@ -126,7 +126,7 @@ private Q_SLOTS:
      *  \param EnteredString = entered string of serial number
      */
     /****************************************************************************/
-    void OnOkClicked(QString EnteredString);
+    void OnOkClicked(QString& EnteredString);
 
     /****************************************************************************/
     /*!

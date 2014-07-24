@@ -9,9 +9,9 @@
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Biosystems R&D Center Shanghai.
  *
- *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2010 by Leica Biosystems R&D Center Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -52,6 +52,7 @@ CCalibrationHanlder::~CCalibrationHanlder()
 {
     try {
         // Calibration
+        delete mp_Touchscreen;
         delete mp_PressureSensor;
         delete mp_CalibrationGroup;
     }
@@ -172,7 +173,7 @@ bool CCalibrationHanlder::GetCalibrationResponse()
  *  \return True or falses
  */
 /****************************************************************************/
-bool CCalibrationHanlder::PerformCalibration(QString Title, QString GBox, QString Instr)
+bool CCalibrationHanlder::PerformCalibration(QString& Title, QString& GBox, QString& Instr)
 {
     QTimer timer;
     timer.setSingleShot(true);

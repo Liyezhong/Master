@@ -10,9 +10,9 @@
  *
  *  \b Company:
  *
- *       Leica Biosystems Nussloch GmbH.
+ *       Leica Biosystems R&D Center Shanghai.
  *
- *  (C) Copyright 2010 by Leica Biosystems Nussloch GmbH. All rights reserved.
+ *  (C) Copyright 2010 by Leica Biosystems R&D Center Shanghai. All rights reserved.
  *  This is unpublished proprietary source code of Leica. The copyright notice
  *  does not evidence any actual or intended publication.
  *
@@ -83,7 +83,7 @@ CViewHistory::~CViewHistory()
 
         delete mp_Model;
         delete mp_TableWidget;
-
+        delete mp_MessageDialog;
         delete mp_Ui;
     }
     catch (...)
@@ -98,7 +98,7 @@ CViewHistory::~CViewHistory()
  *  \iparam Index = Index of the row
  */
 /****************************************************************************/
-void CViewHistory::SelectionChanged(QModelIndex Index)
+void CViewHistory::SelectionChanged(QModelIndex& Index)
 {   
     QItemSelectionModel* SelectionModel = mp_TableWidget->selectionModel();
     m_SelectedRowValues = SelectionModel->selectedIndexes(); //!< list of "selected" items

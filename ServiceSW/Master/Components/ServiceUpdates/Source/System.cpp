@@ -18,7 +18,6 @@
  */
 /****************************************************************************/
 
-#include "Main/Include/HimalayaServiceEventCodes.h"
 #include "ServiceUpdates/Include/System.h"
 
 #include "Global/Include/Utils.h"

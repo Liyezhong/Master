@@ -269,16 +269,16 @@ void CDlgModifySubModule::OnAutoDetect(void)
  *  \iparam EnteredString = Entered String from keyboard.
  */
 /****************************************************************************/
-void CDlgModifySubModule::OnOkClicked(QString EnteredString)
+void CDlgModifySubModule::OnOkClicked(QString& EnteredString)
 {
     mp_KeyBoardWidget->hide();
-    QString sn = mp_Ui->pushSerialNumber->text();
-    int Index = sn.indexOf('/');
+    QString SerialNumber = mp_Ui->pushSerialNumber->text();
+    int Index = SerialNumber.indexOf('/');
     if (Index != -1) {
-        (void)sn.remove(Index + 1, sn.length() - Index);
-        sn += EnteredString;
+        (void)SerialNumber.remove(Index + 1, SerialNumber.length() - Index);
+        SerialNumber += EnteredString;
     }
-    mp_Ui->pushSerialNumber->setText(sn.simplified());
+    mp_Ui->pushSerialNumber->setText(SerialNumber.simplified());
 }
 
 /****************************************************************************/
