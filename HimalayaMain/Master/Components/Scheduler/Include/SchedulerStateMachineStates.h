@@ -31,7 +31,6 @@ namespace Scheduler{
 #define L2_ERR_RS_STANDBY_WITHTISSUE                (0x5)
 #define L2_ERR_RC_RESTART                           (0x6)
 #define L2_ERR_RS_HEATINGERR30SRETRY                (0x7)
-#define L2_ERR_RS_TSENSORERR3MINRETRY               (0x8)
 #define L2_ERR_RS_PRESSUREOVERRANGE3SRETRY          (0x8)
 #define L2_ERR_RS_TSENSORERR3MINRETRY               (0x9)
 #define L2_ERR_RC_PRESSURE                          (0xA)

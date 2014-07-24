@@ -1420,7 +1420,7 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         }
         if (cmd == "rs_tsensorerr3minretry")
         {
-            return CTRL_CMD_RS_TSENSORERR_3MIN_RETRY;
+            return CTRL_CMD_RS_TSENSORERR3MINRETRY;
         }
         if (cmd == "rc_levelsensor_heating_overtime")
         {
