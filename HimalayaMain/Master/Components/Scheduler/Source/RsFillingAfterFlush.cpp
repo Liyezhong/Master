@@ -167,6 +167,9 @@ void CRsFillingAfterFlush::HandleWorkFlow(const QString& cmdName, DeviceControl:
             }
         }
         break;
+    default:
+        mp_SchedulerThreadController->LogDebug("RsFillingAfterFlush: Get the default branch");
+        break;
     }
 }
 
