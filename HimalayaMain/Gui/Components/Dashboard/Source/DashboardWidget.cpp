@@ -625,6 +625,10 @@ bool CDashboardWidget::IsOKPreConditionsToRunProgram()
             return false;
         }
     }
+    else
+    {
+        bCanNotRun = false;
+    }
 
     if (!m_bIsFirstStepFixation && bCanNotRun)
     {
