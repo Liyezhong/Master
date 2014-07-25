@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SystemTracking::CMainControl</class>
- <widget class="QWidget" name="SystemTracking::CMainControl">
+ <class>SystemTracking::CMainControlConfiguration</class>
+ <widget class="QWidget" name="SystemTracking::CMainControlConfiguration">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>327</width>
-    <height>292</height>
+    <height>315</height>
    </rect>
   </property>
   <property name="windowTitle">

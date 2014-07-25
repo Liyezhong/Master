@@ -28,7 +28,7 @@
 namespace SystemTracking {
 
 namespace Ui {
-class COven;
+class COvenConfiguration;
 }
 
 /****************************************************************************/
@@ -152,7 +152,7 @@ private:
     /****************************************************************************/
     void ResetMessageBox();
 
-    Ui::COven *mp_Ui;                                    //!< User Interface
+    Ui::COvenConfiguration *mp_Ui;                                    //!< User Interface
     Core::CServiceGUIConnector *mp_DataConnector;        //!< Global data connector
     MainMenu::CMessageDlg *mp_MessageDlg;                //!< Information dialog
     ServiceDataManager::CModuleDataList *mp_ModuleList;  //!< Current list of modules

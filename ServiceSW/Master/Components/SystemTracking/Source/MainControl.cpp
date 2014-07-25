@@ -26,7 +26,7 @@
 #include "Main/Include/HimalayaServiceEventCodes.h"
 #include "Global/Include/Utils.h"
 
-#include "ui_MainControl.h"
+#include "ui_MainControlConfiguration.h"
 
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "ServiceDataManager/Include/TestCase.h"
@@ -47,7 +47,7 @@ CMainControl::CMainControl(Core::CServiceGUIConnector &DataConnector,
     : QWidget(p_Parent)
     , mp_DateConnector(&DataConnector)
     , mp_ModuleList(NULL)
-    , mp_Ui(new Ui::CMainControl)
+    , mp_Ui(new Ui::CMainControlConfiguration)
 {
     mp_Ui->setupUi(this);
 

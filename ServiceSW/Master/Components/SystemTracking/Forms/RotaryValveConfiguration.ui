@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SystemTracking::CRotaryValve</class>
- <widget class="QWidget" name="SystemTracking::CRotaryValve">
+ <class>SystemTracking::CRotaryValveConfiguration</class>
+ <widget class="QWidget" name="SystemTracking::CRotaryValveConfiguration">
   <property name="geometry">
    <rect>
     <x>0</x>

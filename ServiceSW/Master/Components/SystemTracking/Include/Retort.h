@@ -28,7 +28,7 @@
 namespace SystemTracking {
 
 namespace Ui {
-class CRetort;
+class CRetortConfiguration;
 }
 
 /****************************************************************************/
@@ -159,7 +159,7 @@ private:
     /****************************************************************************/
     void ResetMessageBox();
 
-    Ui::CRetort *mp_Ui;                                  //!< User Interface
+    Ui::CRetortConfiguration *mp_Ui;                                  //!< User Interface
     Core::CServiceGUIConnector *mp_DateConnector;        //!< Global data connector
     MainMenu::CMessageDlg *mp_MessageDlg;                //!< Information dialog
     ServiceDataManager::CModuleDataList *mp_ModuleList;  //!< Current list of modules

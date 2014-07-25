@@ -26,7 +26,7 @@
 #include "SystemTracking/Include/DlgModifySubModule.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
-#include "ui_RotaryValve.h"
+#include "ui_RotaryValveConfiguration.h"
 
 namespace SystemTracking {
 
@@ -38,7 +38,7 @@ CRotaryValve::CRotaryValve(Core::CServiceGUIConnector &DataConnector,
              QWidget *p_Parent)
     : QWidget(p_Parent)
     , mp_DateConnector(&DataConnector)
-    , mp_Ui(new Ui::CRotaryValve)
+    , mp_Ui(new Ui::CRotaryValveConfiguration)
     , mp_ModuleList(NULL)
 {
     mp_Ui->setupUi(this);
@@ -311,7 +311,7 @@ void CRotaryValve::ModifySubModule(const QString &ModuleName,
                   this,
                   SLOT(UpdateSubModule(ServiceDataManager::CSubModule&)));
 
-    dlg->exec();
+    (void)dlg->exec();
 
     delete dlg;
 }

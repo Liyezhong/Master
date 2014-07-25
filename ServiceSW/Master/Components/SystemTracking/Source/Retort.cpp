@@ -26,7 +26,7 @@
 #include "SystemTracking/Include/DlgModifySubModule.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
-#include "ui_Retort.h"
+#include "ui_RetortConfiguration.h"
 
 namespace SystemTracking {
 
@@ -39,7 +39,7 @@ CRetort::CRetort(Core::CServiceGUIConnector &DataConnector,
                  QWidget *p_Parent)
     : QWidget(p_Parent)
     , mp_DateConnector(&DataConnector)
-    , mp_Ui(new Ui::CRetort)
+    , mp_Ui(new Ui::CRetortConfiguration)
     , mp_ModuleList(NULL)
 {
     mp_Ui->setupUi(this);
@@ -103,7 +103,7 @@ void CRetort::UpdateModule(ServiceDataManager::CModule &Module)
         *mp_ModuleList = *ModuleList;
     }
 
-    mp_ModuleList->UpdateModule(&Module);
+    (void)mp_ModuleList->UpdateModule(&Module);
 
     emit ModuleListChanged();
     mp_Ui->finalizeConfigBtn->setEnabled(true);

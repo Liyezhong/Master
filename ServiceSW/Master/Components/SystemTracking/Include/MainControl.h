@@ -29,7 +29,7 @@
 namespace SystemTracking {
 
 namespace Ui {
-class CMainControl;
+class CMainControlConfiguration;
 }
 
 /****************************************************************************/
@@ -184,7 +184,7 @@ private:
     /****************************************************************************/
     void ResetMessageBox();
 
-    Ui::CMainControl *mp_Ui;                              //!< User Interface
+    Ui::CMainControlConfiguration *mp_Ui;                              //!< User Interface
     MainMenu::CMessageDlg *mp_MessageDlg;                 //!< Information dialog
     ServiceDataManager::CModuleDataList *mp_ModuleList;   //!< Current list of modules
     Core::CServiceGUIConnector *mp_DateConnector;         //!< Global data connector

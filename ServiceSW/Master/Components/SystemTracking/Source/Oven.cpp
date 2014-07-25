@@ -26,7 +26,7 @@
 #include "SystemTracking/Include/DlgModifySubModule.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
-#include "ui_Oven.h"
+#include "ui_OvenConfiguration.h"
 
 namespace SystemTracking {
 
@@ -38,7 +38,7 @@ COven::COven(Core::CServiceGUIConnector &DataConnector,
              QWidget *p_Parent)
     : QWidget(p_Parent)
     , mp_DataConnector(&DataConnector)
-    , mp_Ui(new Ui::COven)
+    , mp_Ui(new Ui::COvenConfiguration)
     , mp_ModuleList(NULL)
 {
     mp_Ui->setupUi(this);

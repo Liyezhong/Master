@@ -28,7 +28,7 @@
 namespace SystemTracking {
 
 namespace Ui {
-class CRotaryValve;
+class CRotaryValveConfiguration;
 }
 
 /****************************************************************************/
@@ -152,7 +152,7 @@ private:
     /****************************************************************************/
     void ResetMessageBox();
 
-    Ui::CRotaryValve *mp_Ui;                            //!< User Interface
+    Ui::CRotaryValveConfiguration *mp_Ui;                            //!< User Interface
     Core::CServiceGUIConnector *mp_DateConnector;       //!< Global data connector
     MainMenu::CMessageDlg *mp_MessageDlg;               //!< Information dialog
     ServiceDataManager::CModuleDataList *mp_ModuleList; //!< Current list of modules

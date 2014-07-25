@@ -28,7 +28,7 @@
 namespace SystemTracking {
 
 namespace Ui {
-class CLaSystem;
+class CLaSystemConfiguration;
 }
 
 /****************************************************************************/
@@ -179,7 +179,7 @@ private:
     /****************************************************************************/
     void ResetMessageBox();
 
-    Ui::CLaSystem *mp_Ui;                                //!< User Interface
+    Ui::CLaSystemConfiguration *mp_Ui;                   //!< User Interface
 
     Core::CServiceGUIConnector *mp_DateConnector;        //!< Global data connector
 

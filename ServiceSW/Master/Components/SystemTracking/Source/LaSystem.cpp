@@ -25,7 +25,7 @@
 #include "SystemTracking/Include/DlgModifySubModule.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
 
-#include "ui_LaSystem.h"
+#include "ui_LaSystemConfiguration.h"
 
 namespace SystemTracking {
 
@@ -44,7 +44,7 @@ CLaSystem::CLaSystem(Core::CServiceGUIConnector &DataConnector,
     : QWidget(p_Parent)
     , mp_DateConnector(&DataConnector)
     , mp_ModuleList(NULL)
-    , mp_Ui(new Ui::CLaSystem)
+    , mp_Ui(new Ui::CLaSystemConfiguration)
 {
     mp_Ui->setupUi(this);
 
