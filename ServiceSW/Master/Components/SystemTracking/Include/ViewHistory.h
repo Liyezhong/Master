@@ -94,7 +94,7 @@ public Q_SLOTS:
     void ExecDiffDialog(void);
 
 private Q_SLOTS:
-     void SelectionChanged(QModelIndex& Index);
+     void SelectionChanged(QModelIndex Index);
 
 private:
     Ui::CViewHistory *mp_Ui;                            //!< User Interface

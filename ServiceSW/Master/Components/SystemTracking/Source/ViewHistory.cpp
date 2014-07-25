@@ -98,7 +98,7 @@ CViewHistory::~CViewHistory()
  *  \iparam Index = Index of the row
  */
 /****************************************************************************/
-void CViewHistory::SelectionChanged(QModelIndex& Index)
+void CViewHistory::SelectionChanged(QModelIndex Index)
 {   
     QItemSelectionModel* SelectionModel = mp_TableWidget->selectionModel();
     m_SelectedRowValues = SelectionModel->selectedIndexes(); //!< list of "selected" items

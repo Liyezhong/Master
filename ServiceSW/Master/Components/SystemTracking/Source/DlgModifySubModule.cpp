@@ -269,7 +269,7 @@ void CDlgModifySubModule::OnAutoDetect(void)
  *  \iparam EnteredString = Entered String from keyboard.
  */
 /****************************************************************************/
-void CDlgModifySubModule::OnOkClicked(QString& EnteredString)
+void CDlgModifySubModule::OnOkClicked(QString EnteredString)
 {
     mp_KeyBoardWidget->hide();
     QString SerialNumber = mp_Ui->pushSerialNumber->text();
