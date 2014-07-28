@@ -933,7 +933,7 @@ void CStartup::RefreshTestStatus4OvenCoverSensor(Service::ModuleTestCaseID Id, c
     else {
         TestStatus = "Close";
     }
-    dlg->SetText(QString("Do you see the coven sensor status shows '%1' ?").arg(TestStatus));
+    dlg->SetText(QString("Do you see the cover sensor status shows '%1' ?").arg(TestStatus));
 
     dlg->UpdateOvenLabel(Status);
     int result = dlg->exec();
