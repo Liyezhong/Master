@@ -222,21 +222,11 @@ public:
 
     /****************************************************************************/
     /*!
-     *  \brief  Check if level sensor heating reaches target temperature or not
-     *  \param  void
-     *  \return bool, ture - passed, false - not yet
+     *  \brief  get the oven heating begin Time
+     *  \return qint64
      */
     /****************************************************************************/
-    bool CheckLevelSensorHeatingStatus() const { return m_RTLevelSensor.OTCheckPassed; }
-
-    /****************************************************************************/
-    /*!
-     *  \brief  Check if RV heating reaches target temperature or not
-     *  \param  void
-     *  \return bool, ture - passed, false - not yet
-     */
-    /****************************************************************************/
-    bool CheckRVHeatingStatus() const { return m_RV_2_Outlet.OTCheckPassed; }
+    bool CheckRVHeatingStatus() const {return m_RV_2_Outlet.OTCheckPassed;}
 
     /****************************************************************************/
     /*!
@@ -246,14 +236,6 @@ public:
      */
     /****************************************************************************/
     bool CheckTemperatureSenseorsStatus() const;
-
-    /****************************************************************************/
-    /*!
-     *  \brief  get the oven heating begin Time
-     *  \return qint64
-     */
-    /****************************************************************************/
-    bool CheckRVHeatingStatus() const {return m_RV_2_Outlet.OTCheckPassed;}
 
     /****************************************************************************/
      /*!

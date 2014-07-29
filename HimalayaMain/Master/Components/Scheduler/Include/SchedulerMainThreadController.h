@@ -32,7 +32,6 @@
 #include "HimalayaDataContainer/Containers/DashboardStations/Commands/Include/CmdProgramAction.h"
 #include "NetCommands/Include/CmdSystemAction.h"
 #include "SchedulerMachine.h"
-#include "ProgramStepStateMachine.h"
 #include "DeviceControl/Include/Global/DeviceControlGlobal.h"
 #include "Scheduler/Commands/Include/CmdSchedulerCommandBase.h"
 #include "DataManager/Helper/Include/Types.h"
@@ -247,7 +246,9 @@ typedef enum
         bool m_IsInSoakDelay;                                 ///< Delay in Soak
         bool m_AllProgramCount;                            ///< count the all program
         bool m_IsPrecheckMoveRV;                            ///< precheck done move rv
-        bool m_IsCleaningProgram;                                 ///< cleaning program run or not
+        qint64 m_lastPVTime;                                  ///< Time for last PV operation
+        bool m_completionNotifierSent;                        ///< Flag to indication if program completion is sent to Gui.
+        bool m_IsCleaningProgram;                             ///< cleaning program run or not
         QMap<QString, QString> m_ProgramStatusFileMap;        ///< the map of program status
         BottlePosition_t    m_CurrentBottlePosition;          ///< the current BottlePosition for bottle check
         SchedulerStateMachine_t m_CurrentStepState;           ///< The current protocol(program) step, which is used to recovery from RC_Restart
@@ -582,12 +583,6 @@ typedef enum
           */
          /****************************************************************************/
          qint64 GetFunctionModuleStartworkTime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
-         /****************************************************************************/
-         /*!
-          *  \brief  Definition/Declaration of function ReadPressureDrift
-          */
-         /****************************************************************************/
-         float ReadPressureDrift();
 signals:
          /****************************************************************************/
          /*!
