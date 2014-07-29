@@ -93,8 +93,8 @@
     </property>
     <property name="icon">
      <iconset>
-      <normalon>:/HimalayaImages/Icons/Configuration/Configuration_Language.png</normalon>
-      <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Language_act.png</selectedon>
+      <normalon>:/Large/Icons/Configuration/Configuration_Language.png</normalon>
+      <selectedon>:/Large/Icons/Configuration/Configuration_Language_act.png</selectedon>
      </iconset>
     </property>
    </item>
@@ -104,8 +104,8 @@
     </property>
     <property name="icon">
      <iconset>
-      <normalon>:/HimalayaImages/Icons/Configuration/Configuration_CountrySpecific.png</normalon>
-      <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_CountrySpecific_act.png</selectedon>
+      <normalon>:/Large/Icons/Configuration/Configuration_CountrySpecific.png</normalon>
+      <selectedon>:/Large/Icons/Configuration/Configuration_CountrySpecific_act.png</selectedon>
      </iconset>
     </property>
    </item>
@@ -115,7 +115,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normalon>:/HimalayaImages/Icons/Configuration/Configuration_DateTime.png</normalon>
+      <normalon>:/Large/Icons/Configuration/Configuration_DateTime.png</normalon>
       <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_DateTime_act.png</selectedon>
      </iconset>
     </property>
@@ -126,8 +126,8 @@
     </property>
     <property name="icon">
      <iconset>
-      <normalon>:/HimalayaImages/Icons/Configuration/Configuration_Alarm.png</normalon>
-      <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Alarm_act.png</selectedon>
+      <normalon>:/Large/Icons/Configuration/Configuration_Alarm.png</normalon>
+      <selectedon>:/Large/Icons/Configuration/Configuration_Alarm_act.png</selectedon>
      </iconset>
     </property>
    </item>
@@ -159,8 +159,8 @@
     </property>
     <property name="icon">
      <iconset>
-      <normalon>:/HimalayaImages/Icons/Configuration/Configuration_DataManagement.png</normalon>
-      <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_DataManagement_act.png</selectedon>
+      <normalon>:/Large/Icons/Configuration/Configuration_DataManagement.png</normalon>
+      <selectedon>:/Large/Icons/Configuration/Configuration_DataManagement_act.png</selectedon>
      </iconset>
     </property>
    </item>
@@ -170,8 +170,8 @@
     </property>
     <property name="icon">
      <iconset>
-      <normalon>:/HimalayaImages/Icons/Configuration/Configuration_Service.png</normalon>
-      <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Service_act.png</selectedon>
+      <normalon>:/Large/Icons/Configuration/Configuration_Service.png</normalon>
+      <selectedon>:/Large/Icons/Configuration/Configuration_Service_act.png</selectedon>
      </iconset>
     </property>
    </item>
@@ -192,8 +192,8 @@
     </property>
     <property name="icon">
      <iconset>
-      <normalon>:/HimalayaImages/Icons/Configuration/Configuration_Network.png</normalon>
-      <selectedon>:/HimalayaImages/Icons/Configuration/Configuration_Network_act.png</selectedon>
+      <normalon>:/Large/Icons/Configuration/Configuration_Network.png</normalon>
+      <selectedon>:/Large/Icons/Configuration/Configuration_Network_act.png</selectedon>
      </iconset>
     </property>
    </item>

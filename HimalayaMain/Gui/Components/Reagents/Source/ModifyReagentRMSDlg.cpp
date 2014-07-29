@@ -525,6 +525,7 @@ void CModifyReagentRMSDlg::OnEditCassetteValue()
 /****************************************************************************/
 void CModifyReagentRMSDlg::OnOkClicked(QString EnteredText)
 {
+    Q_UNUSED(EnteredText);
     QString LineEditString;
     mp_KeyBoardWidget->hide();
     if (m_ReagentNameBtnClicked){

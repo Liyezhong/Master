@@ -14,7 +14,6 @@ SUBDIRS = ../../../../Platform/Master/Components/Global/Build/Global.pro \
           ../../../../Platform/Gui/Components/KeyBoard/Build/KeyBoard.pro \
           ../../../../Platform/Gui/Components/MainMenu/Build/MainMenu.pro \
           ../../../../Platform/Gui/Components/kineticscroller/qtscroller.pro \
-          ../../../Shared/Gui/Components/Images/Build/Images.pro \
           ../../../Shared/Master/Components/HimalayaDataContainer/Build/HimalayaDataContainer.pro \
           ../../../../Platform/Master/Components/NetCommands/Build/NetCommands.pro \
           #../../../Shared/Master/Components/RMSCommands/Build/RMSCommands.pro \
