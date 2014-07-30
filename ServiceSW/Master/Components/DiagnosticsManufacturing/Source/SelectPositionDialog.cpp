@@ -63,7 +63,7 @@ CSelectPositionDialog::CSelectPositionDialog(Service::ModuleTestCaseID Id, quint
     mp_ScrollWheel->SetThreeDigitMode(true);
     mp_Ui->scrollPanelWidget->SetThreeDigitMode(true);
     mp_ScrollWheel->SetCurrentData(m_Position);
-    mp_Ui->scrollPanelWidget->SetSubtitle(QApplication::translate("CSelectPositionDialog", "Position", 0, QApplication::UnicodeUTF8), 0);
+    mp_Ui->scrollPanelWidget->SetSubtitle(Service::CMessageString::MSG_DIAGNOSTICS_POSITION, 0);
 
     CONNECTSIGNALSLOTGUI(m_pButtonGroup, buttonClicked(int), this, OnRadioBtnSelected(int));
 

@@ -131,8 +131,7 @@ bool CPressureInputDialog::eventFilter(QObject *p_Object, QEvent *p_Event)
     {
         ConnectKeyBoardSignalSlots();
         mp_KeyBoardWidget->setModal(true);
-        mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("DiagnosticsManufacturing::CPressureInputDialog",
-                                                           "Enter Value", 0, QApplication::UnicodeUTF8));
+        mp_KeyBoardWidget->SetKeyBoardDialogTitle(Service::CMessageString::MSG_TITLE_ENTER_VALVE);
         mp_KeyBoardWidget->SetPasswordMode(false);
         mp_KeyBoardWidget->SetValidation(true);
         mp_KeyBoardWidget->SetMinCharLength(1);
@@ -179,13 +178,12 @@ void CPressureInputDialog::OnOkClicked(QString EnteredString)
         if (OrigValue < PressureLow || OrigValue > PressureHigh) {
             // display success message
             MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(this);
-            QString PromptText = QApplication::translate("DiagnosticsManufacturing::CPressureInputDialog",
-                                           "The value of Original Pressure should be in", 0, QApplication::UnicodeUTF8);
+            QString PromptText = Service::CMessageString::MSG_DIAGNOSTICS_USER_INPUT_PRESSURE;
             QString DisplayText = QString("%1 %2~%3 kpa").arg(PromptText).arg(PressureLow).arg(PressureHigh);
             dlg->SetIcon(QMessageBox::Warning);
             dlg->SetText(DisplayText);
             dlg->HideButtons();
-            dlg->SetButtonText(1, tr("Ok"));
+            dlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
 
             (void)dlg->exec();
             delete dlg;

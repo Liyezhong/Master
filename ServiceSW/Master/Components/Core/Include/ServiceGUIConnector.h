@@ -24,7 +24,8 @@
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "ServiceDataManager/Include/ModuleDataList.h"
 #include "ServiceDataManager/Include/InstrumentHistory.h"
-#include <ServiceDataManager/Include/ServiceParameters.h>
+#include "ServiceDataManager/Include/ServiceParameters.h"
+#include "../Include/PlatformServiceDefines.h"
 
 #include "Global/Include/Translator.h"
 #include "MainMenu/Include/MainWindow.h"
@@ -36,6 +37,7 @@
 #include "Diagnostics/Include/BasicColor/BasicColorTestDlg.h"
 
 #include <QEventLoop>
+#include <QTranslator>
 
 namespace Core {
 
@@ -68,6 +70,9 @@ class CServiceGUIConnector : public QObject
 
     QFile *mp_LanguageFile;                             //!< Lanugage file object (qm file)
     QFile *mp_OldFile;                                  //!< Old/Previous language file(qm file)
+
+    PlatformService::Languages_t m_Language;            //!< Language enu object
+    QTranslator m_Translator;                           //!< Language translator object
 
     QEventLoop m_LoopSetAction;                         //!< Loop for blocking commands.
 
@@ -116,6 +121,14 @@ public:
     void SetServiceParametersContainer(DataManager::CServiceParameters *ServiceParameters);
 
 public slots:
+    /****************************************************************************/
+    /**
+     * \brief Sets the current language
+     * \iparam  SelectedLanguage = Current language selected
+     */
+    /****************************************************************************/
+    void SetLanguage(PlatformService::Languages_t SelectedLanguage);
+
     void OnCurrentTabChanged(int CurrentTabIndex);
 
     void onPopUpButtonClicked(qint32 button);

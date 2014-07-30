@@ -25,6 +25,7 @@
 #include "ui_SelectSealingDialog.h"
 #include <QDebug>
 #include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "Core/Include/CMessageString.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -42,7 +43,7 @@ CSelectSealingDialog::CSelectSealingDialog(QWidget *p_Parent):
     m_SelectedMode = 0;//auto test
     mp_Ui->radioButtonAuto->setChecked(true);
     mp_Ui->radioButtonManual->setChecked(false);
-    this->SetDialogTitle("Sealing test");
+    this->SetDialogTitle(Service::CMessageString::MSG_TITLE_SEALING_TEST);
     CONNECTSIGNALSLOTGUI(mp_ButtonGroup, buttonClicked(int), this, OnRadioBtnSelected(int));
     CONNECTSIGNALSLOTGUI(mp_Ui->okButton, clicked(), this, close());
 }

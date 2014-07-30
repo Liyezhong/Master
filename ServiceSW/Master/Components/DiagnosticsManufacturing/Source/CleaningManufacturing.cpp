@@ -28,6 +28,7 @@
 #include "Core/Include/ServiceDefines.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "Main/Include/HimalayaServiceEventCodes.h"
+#include "Core/Include/CMessageString.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -160,8 +161,8 @@ void CCleaning::AddItem(quint8 Index, Service::ModuleTestCaseID_t Id)
     itemList << item;
 
     m_Model.setHorizontalHeaderLabels(QStringList() << ""
-                                                    << QApplication::translate("DiagnosticsManufacturing::CCleaning", "Nr.", 0, QApplication::UnicodeUTF8)
-                                                    << QApplication::translate("DiagnosticsManufacturing::CCleaning", "Tests", 0, QApplication::UnicodeUTF8)
+                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NUMBER
+                                                    << Service::CMessageString::MSG_DIAGNOSTICS_TEST_NAME
                                                     << "");
     m_Model.appendRow(itemList);
     mp_TestReporter->AddTestCaseId(Id);
@@ -191,13 +192,10 @@ void CCleaning::BeginTest()
         }
     }
     if (TestCaseList.count() == 0) {
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                        "Error", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_ERROR);
+        mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                       "Please select a test case.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SELECT_TEST_CASE);
         mp_MessageDlg->SetIcon(QMessageBox::Critical);
         mp_MessageDlg->show();
     }
@@ -271,13 +269,10 @@ void CCleaning::SendTestReport()
     }
 
     if (systemSN.startsWith("XXXX")) {
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                        "Serial Number", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SERIAL_NUMBER);
+        mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                             "Please enter the system serial number.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_ENTER_SYSTEM_SN);
         mp_MessageDlg->SetIcon(QMessageBox::Warning);
         (void)mp_MessageDlg->exec();
         return;
@@ -286,42 +281,32 @@ void CCleaning::SendTestReport()
     mp_TestReporter->SetSerialNumber(systemSN);
 
     if (mp_TestReporter->GenReportFile()) {
-        mp_WaitDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                    "Sending...", 0, QApplication::UnicodeUTF8));
+        mp_WaitDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SENDING);
         mp_WaitDlg->show();
         if (mp_TestReporter->SendReportFile()) {
             mp_WaitDlg->accept();
-            mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                            "Send Report", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SEND_REPORT);
+            mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
             mp_MessageDlg->HideButtons();
-            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                           "Send test report ok.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SEND_REPORT_OK);
             mp_MessageDlg->SetIcon(QMessageBox::Information);
             (void)mp_MessageDlg->exec();
         }
         else {
             mp_WaitDlg->accept();
-            mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                            "Send Report", 0, QApplication::UnicodeUTF8));
-            mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                                    "Ok", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SEND_REPORT);
+            mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
             mp_MessageDlg->HideButtons();
-            mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                           "Send test report failed.", 0, QApplication::UnicodeUTF8));
+            mp_MessageDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SEND_REPORT_FAILED);
             mp_MessageDlg->SetIcon(QMessageBox::Critical);
             (void)mp_MessageDlg->exec();
         }
     }
     else {
-        mp_MessageDlg->SetTitle(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                        "Test Report", 0, QApplication::UnicodeUTF8));
-        mp_MessageDlg->SetButtonText(1, QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                                "Ok", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetTitle(Service::CMessageString::MSG_TITLE_SEND_REPORT);
+        mp_MessageDlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
         mp_MessageDlg->HideButtons();
-        mp_MessageDlg->SetText(QApplication::translate("DiagnosticsManufacturing::CCleaning",
-                                                       "Test report save failed.", 0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_SEND_REPORT_FAILED);
         mp_MessageDlg->SetIcon(QMessageBox::Critical);
         (void)mp_MessageDlg->exec();
     }

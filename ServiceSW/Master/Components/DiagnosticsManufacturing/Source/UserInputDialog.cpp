@@ -57,10 +57,8 @@ CUserInputDialog::CUserInputDialog(Service::ModuleTestCaseID TestCaseId, QWidget
     this->SetDialogTitle(Description);
 
     if (TestCaseId == Service::RETORT_HEATING_WITH_WATER) {
-        mp_Ui->label->setText(QApplication::translate("DiagnosticsManufacturing::CUserInputDialog",
-                                                      "External sensor value:", 0, QApplication::UnicodeUTF8));
-        mp_Ui->label_2->setText(QApplication::translate("DiagnosticsManufacturing::CUserInputDialog",
-                                                        "External sensor value (again):", 0, QApplication::UnicodeUTF8));
+        mp_Ui->label->setText(Service::CMessageString::MSG_DIAGNOSTICS_EXTERNAL_SENSOR);
+        mp_Ui->label_2->setText(Service::CMessageString::MSG_DIAGNOSTICS_EXTERNAL_SENSOR_AGAIN);
         mp_Ui->label_3->hide();
         mp_Ui->lineEdit_3->hide();
     }
@@ -136,8 +134,7 @@ bool CUserInputDialog::eventFilter(QObject *p_Object, QEvent *p_Event)
     {
         ConnectKeyBoardSignalSlots();
         mp_KeyBoardWidget->setModal(true);
-        mp_KeyBoardWidget->SetKeyBoardDialogTitle(QApplication::translate("DiagnosticsManufacturing::CUserInputDialog",
-                                                           "Enter Value", 0, QApplication::UnicodeUTF8));
+        mp_KeyBoardWidget->SetKeyBoardDialogTitle(Service::CMessageString::MSG_TITLE_ENTER_VALVE);
         mp_KeyBoardWidget->SetPasswordMode(false);
         mp_KeyBoardWidget->SetValidation(true);
         mp_KeyBoardWidget->SetMinCharLength(1);
@@ -237,12 +234,11 @@ void CUserInputDialog::AbortDialog()
     if (m_TestCaseId == Service::RETORT_HEATING_WITH_WATER &&
             m_LineEditStringLeft != m_LineEditStringMiddle ) {
         MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(this);
-        Text = QApplication::translate("DiagnosticsManufacturing::CUserInputDialog",
-                                       "The two values you input are not same. Please check again.", 0, QApplication::UnicodeUTF8);
+        Text = Service::CMessageString::MSG_DIAGNOSTICS_ENTER_VALVES_NOT_SAME;
         dlg->SetIcon(QMessageBox::Warning);
         dlg->SetText(Text);
         dlg->HideButtons();
-        dlg->SetButtonText(1, tr("Ok"));
+        dlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
 
         (void)dlg->exec();
         delete dlg;
@@ -251,29 +247,24 @@ void CUserInputDialog::AbortDialog()
 
     if (m_LineEditStringLeft == "" || m_LineEditStringLeft.at(0)=='.' ) {
         if (m_TestCaseId == Service::OVEN_HEATING_WITH_WATER) {
-            Text = QApplication::translate("DiagnosticsManufacturing::CUserInputDialog",
-                                       "The value of Left sensor is wrong", 0, QApplication::UnicodeUTF8);
+            Text = Service::CMessageString::MSG_DIAGNOSTICS_LEFT_SENSOR_VALVE_WRONG;
         }
         else {
-            Text = QApplication::translate("DiagnosticsManufacturing::CUserInputDialog",
-                                       "The external sensor value is wrong", 0, QApplication::UnicodeUTF8);
+            Text = Service::CMessageString::MSG_DIAGNOSTICS_EXTERNAL_SENSOR_VALVE_WRONG;
         }
         flag = true;
     }
     else if (m_LineEditStringMiddle == "" || m_LineEditStringMiddle.at(0)=='.') {
         if (m_TestCaseId == Service::OVEN_HEATING_WITH_WATER) {
-            Text = QApplication::translate("DiagnosticsManufacturing::CUserInputDialog",
-                                       "The value of Middle sensor is wrong", 0, QApplication::UnicodeUTF8);
+            Text = Service::CMessageString::MSG_DIAGNOSTICS_MIDDLE_SENSOR_VALVE_WRONG;
         }
         else {
-            Text = QApplication::translate("DiagnosticsManufacturing::CUserInputDialog",
-                                           "The external sensor value (again) is wrong", 0, QApplication::UnicodeUTF8);
+            Text = Service::CMessageString::MSG_DIAGNOSTICS_EXTERNAL_SENSOR_VALVE_WRONG_AGAIN;
         }
         flag = true;
     }
     if ( m_TestCaseId == Service::OVEN_HEATING_WITH_WATER && (m_LineEditStringRight == "" || m_LineEditStringRight.at(0)=='.')) {
-        Text = QApplication::translate("DiagnosticsManufacturing::CUserInputDialog",
-                                       "The value of Right sensor is wrong", 0, QApplication::UnicodeUTF8);
+        Text = Service::CMessageString::MSG_DIAGNOSTICS_RIGHT_SENSOR_VALVE_WRONG;
         flag = true;
     }
     if (flag) {
@@ -283,7 +274,7 @@ void CUserInputDialog::AbortDialog()
         dlg->SetIcon(QMessageBox::Warning);
         dlg->SetText(Text);
         dlg->HideButtons();
-        dlg->SetButtonText(1, tr("Ok"));
+        dlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_OK);
 
         (void)dlg->exec();
         delete dlg;

@@ -27,6 +27,7 @@
 #include "ui_HeatingTestDialog.h"
 #include <QDebug>
 #include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "Core/Include/CMessageString.h"
 
 namespace DiagnosticsManufacturing {
 
@@ -64,8 +65,7 @@ CHeatingTestDialog::CHeatingTestDialog(Service::ModuleTestCaseID TestCaseId, QWi
         mp_Ui->labelCurTempBottom2Name->hide();
         mp_Ui->labelCurTempBottom2->hide();
 
-        QString Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
-                                               "Current Temperature:", 0, QApplication::UnicodeUTF8);
+        QString Text = Service::CMessageString::MSG_DIAGNOSTICS_CURRENT_TEMP;
         mp_Ui->labelCurTempTopName->setText(Text);
     }
     else if ( TestCaseId == Service::ROTARY_VALVE_HEATING_END ||
@@ -73,23 +73,18 @@ CHeatingTestDialog::CHeatingTestDialog(Service::ModuleTestCaseID TestCaseId, QWi
         mp_Ui->labelCurTempBottom2->hide();
         mp_Ui->labelCurTempBottom2Name->hide();
 
-        QString Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
-                                               "Current Temperature (Sensor 1):", 0, QApplication::UnicodeUTF8);
+        QString Text = Service::CMessageString::MSG_DIAGNOSTICS_CURRENT_TEMP_SENSOR1;
         mp_Ui->labelCurTempTopName->setText(Text);
-        Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
-                                               "Current Temperature (Sensor 2):", 0, QApplication::UnicodeUTF8);
+        Text = Service::CMessageString::MSG_DIAGNOSTICS_CURRENT_TEMP_SENSOR2;
         mp_Ui->labelCurTempBottom1Name->setText(Text);
     }
     else if (TestCaseId == Service::RETORT_HEATING_EMPTY ||
              TestCaseId == Service::RETORT_HEATING_WITH_WATER ) {
-        QString Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
-                                               "Current Temperature (Side):", 0, QApplication::UnicodeUTF8);
+        QString Text = Service::CMessageString::MSG_DIAGNOSTICS_CURRENT_TEMP_SIDE;
         mp_Ui->labelCurTempTopName->setText(Text);
-        Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
-                                               "Current Temperature (Bottom 1):", 0, QApplication::UnicodeUTF8);
+        Text = Service::CMessageString::MSG_DIAGNOSTICS_CURRENT_TEMP_BOTTOM1;
         mp_Ui->labelCurTempBottom1Name->setText(Text);
-        Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
-                                               "Current Temperature (Bottom 2):", 0, QApplication::UnicodeUTF8);
+        Text = Service::CMessageString::MSG_DIAGNOSTICS_CURRENT_TEMP_BOTTOM2;
         mp_Ui->labelCurTempBottom2Name->setText(Text);
     }
 
@@ -162,20 +157,17 @@ void CHeatingTestDialog::UpdateLabel(const Service::ModuleTestStatus &Status)
 
     if (m_TestCaseId == Service::OVEN_HEATING_WITH_WATER) {
         if (Status.value("LeftSensorTemp") != NULL) {
-            QString Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
-                                                   "Left Sensor Temperature:", 0, QApplication::UnicodeUTF8);
+            QString Text = Service::CMessageString::MSG_DIAGNOSTICS_LEFT_SENSOR_TEMP;
             mp_Ui->labelCurTempTopName->setText(Text);
             mp_Ui->labelCurTempTop->setText(Status.value("LeftSensorTemp"));
         }
         if (Status.value("MiddleSensorTemp") != NULL) {
-            QString Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
-                                                   "Middle Sensor Temperature:", 0, QApplication::UnicodeUTF8);
+            QString Text = Service::CMessageString::MSG_DIAGNOSTICS_MIDDLE_SENSOR_TEMP;
             mp_Ui->labelCurTempBottom1Name->setText(Text);
             mp_Ui->labelCurTempBottom1->setText(Status.value("MiddleSensorTemp"));
         }
         if (Status.value("RightSensorTemp") != NULL) {
-            QString Text = QApplication::translate("DiagnosticsManufacturing::CHeatingTestDialog",
-                                                   "Right Sensor Temperature:", 0, QApplication::UnicodeUTF8);
+            QString Text = Service::CMessageString::MSG_DIAGNOSTICS_RIGHT_SENSOR_TEMP;
             mp_Ui->labelCurTempBottom2Name->setText(Text);
             mp_Ui->labelCurTempBottom2->setText(Status.value("RightSensorTemp"));
         }
@@ -254,11 +246,11 @@ void CHeatingTestDialog::BlgProcessProgress(bool IsBlgProcessStarted)
 void CHeatingTestDialog::HideAbort(bool HideFlag)
 {
     if (HideFlag) {
-        mp_Ui->abortButton->setText("Close");
+        mp_Ui->abortButton->setText(Service::CMessageString::MSG_BUTTON_CLOSE);
        // mp_Ui->abortButton->hide();
     }
     else {
-        mp_Ui->abortButton->setText("Abort");
+        mp_Ui->abortButton->setText(Service::CMessageString::MSG_BUTTON_ABORT);
        // mp_Ui->abortButton->show();
     }
     //m_AbortButtonVisible = false;

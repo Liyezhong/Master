@@ -627,6 +627,7 @@ void CStartup::ManufacturingGuiInit()
     if (m_SelfTestFinished == false) {
         mp_ManaufacturingDiagnosticsHandler->ShowMessage(QApplication::translate("Core::Startup", "System is initializing ...", 0, QApplication::UnicodeUTF8));
     }
+
     qDebug()<<"CStartup::ManufacturingGuiInit finished";
 }
 

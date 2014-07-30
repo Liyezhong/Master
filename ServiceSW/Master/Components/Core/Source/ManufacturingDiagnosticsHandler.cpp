@@ -50,10 +50,8 @@ CManufacturingDiagnosticsHandler::CManufacturingDiagnosticsHandler(CServiceGUICo
     mp_MainWindow(p_MainWindow),
     mp_WaitDialog(NULL)
 {
-    m_FailStr = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                        "Fail", 0, QApplication::UnicodeUTF8);
-    m_SuccessStr = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                           "Success", 0, QApplication::UnicodeUTF8);
+    m_FailStr = Service::CMessageString::MSG_DIAGNOSTICS_FAILED;
+    m_SuccessStr = Service::CMessageString::MSG_DIAGNOSTICS_SUCCESS;
     //Diagnostics Manufacturing
     mp_DiagnosticsManufGroup = new MainMenu::CMenuGroup;
     mp_DisplayManuf          = new Diagnostics::CDisplay;//(mp_MainWindow);//issue: Never add parent window here!
@@ -120,27 +118,18 @@ void CManufacturingDiagnosticsHandler::LoadManufDiagnosticsComponents()
 //    mp_DiagnosticsManufGroup->Clear();
     //Diagnostics
     if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
-        mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                       "Display", 0, QApplication::UnicodeUTF8), mp_DisplayManuf);
-        mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                       "Main Control", 0, QApplication::UnicodeUTF8), mp_MainControlManuf);
+        mp_DiagnosticsManufGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_DISPLAY, mp_DisplayManuf);
+        mp_DiagnosticsManufGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_MC, mp_MainControlManuf);
     }
-    mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                       "Retort", 0, QApplication::UnicodeUTF8), mp_RetortManuf);
-    mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                       "Paraffin Oven", 0, QApplication::UnicodeUTF8), mp_OvenManuf);
-    mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                                               "Rotary Valve", 0, QApplication::UnicodeUTF8), mp_RotaryValveManuf);
+    mp_DiagnosticsManufGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RETORT, mp_RetortManuf);
+    mp_DiagnosticsManufGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_OVEN, mp_OvenManuf);
+    mp_DiagnosticsManufGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_RV, mp_RotaryValveManuf);
     if (Core::CSelectTestOptions::GetCurTestMode() == Core::MANUFACTURAL_ENDTEST ) {
-        mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                       "LA System", 0, QApplication::UnicodeUTF8), mp_LaSystemManuf);
-        mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                       "System", 0, QApplication::UnicodeUTF8), mp_SystemManuf);
-        mp_DiagnosticsManufGroup->AddPanel(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                       "Cleaning", 0, QApplication::UnicodeUTF8), mp_CleaningManuf);
+        mp_DiagnosticsManufGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_LA, mp_LaSystemManuf);
+        mp_DiagnosticsManufGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_SYSTEM, mp_SystemManuf);
+        mp_DiagnosticsManufGroup->AddPanel(Service::CMessageString::MSG_DIAGNOSTICS_CLEANING, mp_CleaningManuf);
     }
-    mp_MainWindow->AddMenuGroup(mp_DiagnosticsManufGroup, QApplication::translate
-                   ("Core::CManufacturingDiagnosticsHandler", "Diagnostics", 0, QApplication::UnicodeUTF8));
+    mp_MainWindow->AddMenuGroup(mp_DiagnosticsManufGroup, Service::CMessageString::MSG_DIAGNOSTICS_DIAGNOSTICS);
 }
 
 /****************************************************************************/
@@ -234,12 +223,12 @@ bool CManufacturingDiagnosticsHandler::ShowGuide(Service::ModuleTestCaseID Id, i
     dlg->SetText(GuideText);
     if (haveNext) {
         dlg->HideCenterButton();
-        dlg->SetButtonText(3, tr("Next"));
-        dlg->SetButtonText(1, tr("Cancel"));
+        dlg->SetButtonText(3, Service::CMessageString::MSG_BUTTON_NEXT);
+        dlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_CANCEL);
     }
     else {
         dlg->HideButtonsOneAndTwo();
-        dlg->SetButtonText(3, tr("Ok"));
+        dlg->SetButtonText(3, Service::CMessageString::MSG_BUTTON_OK);
     }
     if (Index == 1 && Id == Service::OVEN_COVER_SENSOR ||
             Index == 2 && Id == Service::RETORT_HEATING_WITH_WATER ) {
@@ -274,8 +263,8 @@ void CManufacturingDiagnosticsHandler::ShowHeatingFailedResult(Service::ModuleTe
     dlg->UpdateLabel(Status);
 
     Text.append(" ");
-    Text.append("Failed !");
-    dlg->SetDialogTitle("Error");
+    Text.append(Service::CMessageString::MSG_DIAGNOSTICS_FAILED);
+    dlg->SetDialogTitle(Service::CMessageString::MSG_TITLE_ERROR);
     dlg->SetText(Text);
     dlg->HideAbort(true);
     dlg->exec();
@@ -361,8 +350,8 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSelecting(quint8 Posit
         }
     }
 
-    QString ReadyText = QString("Positon %1# is ready.").arg(Position);
-    QString ResultConfirm = "Is the test pass ?";
+    QString ReadyText = Service::CMessageString::MSG_DIAGNOSTICS_POSITION_READY.arg(Position);
+    QString ResultConfirm = Service::CMessageString::MSG_DIAGNOSTICS_IF_TEST_PASS;
     QString Text = QString("%1 %2 %3").arg(ReadyText).arg(GuideText).arg(ResultConfirm);
     // display success message
     MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_MainWindow);
@@ -370,8 +359,8 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForRVSelecting(quint8 Posit
     dlg->SetIcon(QMessageBox::Information);
     dlg->SetText(Text);
     dlg->HideCenterButton();
-    dlg->SetButtonText(3, tr("Pass"));
-    dlg->SetButtonText(1, tr("Fail"));
+    dlg->SetButtonText(3, Service::CMessageString::MSG_BUTTON_PASS);
+    dlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_FAIL);
 
 
     int ret = dlg->exec();
@@ -407,12 +396,10 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForSystemVentilationFan()
     dlg->SetTitle(TestCaseDescription);
     dlg->SetIcon(QMessageBox::Information);
 
-    dlg->SetText(QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                         "Please check if the ventilation fan is runing, and check if the air flow direction is out of device",
-                                         0, QApplication::UnicodeUTF8));
+    dlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_CHECK_VENRILATION_FAN);
     dlg->HideCenterButton();
-    dlg->SetButtonText(3, tr("Pass"));
-    dlg->SetButtonText(1, tr("Fail"));
+    dlg->SetButtonText(3, Service::CMessageString::MSG_BUTTON_PASS);
+    dlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_FAIL);
 
     int ret = dlg->exec();
 
@@ -430,10 +417,10 @@ bool CManufacturingDiagnosticsHandler::ShowConfirmDlgForSystemSealing()
     MainMenu::CMessageDlg *dlg = new MainMenu::CMessageDlg(mp_MainWindow);
     dlg->SetTitle(TestCaseDescription);
     dlg->SetIcon(QMessageBox::Information);
-    dlg->SetText("Please adjust retort lid lock assembly then re-test...");
+    dlg->SetText(Service::CMessageString::MSG_DIAGNOSTICS_ADJUST_LID_LOCK);
     dlg->HideCenterButton();
-    dlg->SetButtonText(3, tr("retest"));
-    dlg->SetButtonText(1, tr("abort"));
+    dlg->SetButtonText(3, Service::CMessageString::MSG_BUTTON_RETEST);
+    dlg->SetButtonText(1, Service::CMessageString::MSG_BUTTON_ABORT);
 
     int ret = dlg->exec();
 
@@ -597,7 +584,7 @@ void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<
 
             qreal Voltage = p_TestCase->GetResult().value("Voltage").toDouble();
             qreal Current = p_TestCase->GetResult().value("Current").toDouble();
-            QString Text = QString("ASB %1 DC output voltage is failed (%2 V), \nand current is failed (%3 mA).").arg(ASBIndex)
+            QString Text = Service::CMessageString::MSG_DIAGNOSTICS_ASB_OUPUT_VOLTAGE_FAILED.arg(ASBIndex)
                     .arg(Voltage).arg(Current);
 
             mp_ServiceConnector->ShowMessageDialog(Global::GUIMSGTYPE_ERROR, Text, true);
@@ -606,7 +593,7 @@ void CManufacturingDiagnosticsHandler::PerformManufMainControlTests(const QList<
             Global::EventObject::Instance().RaiseEvent(OkId);
             qreal Voltage = p_TestCase->GetResult().value("Voltage").toDouble();
             qreal Current = p_TestCase->GetResult().value("Current").toDouble();
-            QString Text = QString("ASB %1 DC output voltage is Ok (%2 V), \nand current is Ok (%3 mA).").arg(ASBIndex)
+            QString Text = Service::CMessageString::MSG_DIAGNOSTICS_ASB_OUPUT_VOLTAGE_OK.arg(ASBIndex)
                     .arg(Voltage).arg(Current);
 
             qDebug()<<"Show MessageBox " << ASBIndex;
@@ -683,11 +670,11 @@ void CManufacturingDiagnosticsHandler::PerformManufRetortTests(const QList<Servi
             p_TestCase->SetParameter("CurStep", "2");
             MainMenu::CMessageDlg messageBox(mp_MainWindow);
             messageBox.setModal(true);
-            messageBox.SetTitle(tr("Confirm water level"));
-            messageBox.SetButtonText(1, "No");
-            messageBox.SetButtonText(3, "Yes");
+            messageBox.SetTitle(Service::CMessageString::MSG_TITLE_CONFIRM_WATER_LEVEL);
+            messageBox.SetButtonText(1, Service::CMessageString::MSG_BUTTON_NO);
+            messageBox.SetButtonText(3, Service::CMessageString::MSG_BUTTON_YES);
             messageBox.HideCenterButton();
-            messageBox.SetText("Open the retort lid, do you see water cover the level sensor?");
+            messageBox.SetText(Service::CMessageString::MSG_DIAGNOSTICS_TEST_COVER_SENSOR);
             messageBox.show();
             result = messageBox.exec() == 0 ? true : false;
 
@@ -774,16 +761,14 @@ Sealing_Test_Twice:
             EventId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_INITIALIZING_TEST_SUCCESS;
-            Text = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                           "Initializing rotary valve in progress...", 0, QApplication::UnicodeUTF8);
+            Text = Service::CMessageString::MSG_DIAGNOSTICS_INIT_RV;
             ShowMessage(Text);
             break;
         case Service::ROTARY_VALVE_SELECTION_FUNCTION:
             EventId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SELECTING_TEST_SUCCESS;
-            Text = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                           "Rotary valve selecting test in progress ...", 0, QApplication::UnicodeUTF8);
+            Text =Service::CMessageString::MSG_DIAGNOSTICS_RV_SELECT_TEST;
 
             Position = GetPositionForRVTest(Id, 1);
             ShowMessage(Text);
@@ -793,8 +778,7 @@ Sealing_Test_Twice:
             EventId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST_FAILURE;
             OkId = EVENT_GUI_DIAGNOSTICS_ROTARYVALVE_SEALING_TEST_SUCCESS;
-            Text = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                           "Rotary valve sealing test in progress ...", 0, QApplication::UnicodeUTF8);
+            Text = Service::CMessageString::MSG_DIAGNOSTICS_RV_SEALINT_TEST;
 
             Position = GetPositionForRVTest(Id, SealingTestNum);
 
@@ -1007,8 +991,8 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             emit PerformManufacturingTest(Id);
             Result = GetTestResponse();
 
-            TestCaseDescription = p_TestCase->GetParameter("ConnectedVoltage") + "V test";
-            StrResult = "(Current Voltage:"+p_TestCase->GetResult().value("CurrentVoltage")+"V)";
+            TestCaseDescription = Service::CMessageString::MSG_DIAGNOSTICS_VOLTAGE_TEST.arg(p_TestCase->GetParameter("ConnectedVoltage"));
+            StrResult = Service::CMessageString::MSG_DIAGNOSTICS_CURRENT_VOLTAGE.arg(p_TestCase->GetResult().value("CurrentVoltage"));
 
             break;
         case Service::SYSTEM_EXHAUST_FAN:
@@ -1037,8 +1021,7 @@ void CManufacturingDiagnosticsHandler::PerformManufSystemTests(const QList<Servi
             EventId   = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST;
             FailureId = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_SYSTEM_OVERFLOW_TEST_SUCCESS;
-            RotatingMsg = QApplication::translate("Core::CManufacturingDiagnosticsHandler",
-                                                "RV is rotating to tube #1", 0, QApplication::UnicodeUTF8);
+            RotatingMsg = Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE.arg("1");
             NextFlag = ShowGuide(Id, 0);
             if (!NextFlag) {
                 break;
@@ -1212,7 +1195,7 @@ void CManufacturingDiagnosticsHandler::PerformManufCleaningSystem(const QList<Se
             FailureId = EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_FAILURE;
             OkId      = EVENT_GUI_DIAGNOSTICS_CLEANING_SYSTEM_TEST_SUCCESS;
 
-            ShowMessage(tr("begin cleaning..."));
+            ShowMessage(Service::CMessageString::MSG_DIAGNOSTICS_CLEANING_BEGIN);
             emit PerformManufacturingTest(Id);
             Result = GetTestResponse();
             HideMessage();
@@ -1256,7 +1239,7 @@ void CManufacturingDiagnosticsHandler::PerformFirmwareUpdate(const QList<Service
     DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
 
-    QString Msg = QString(tr("Update Firmware for Slave %1, please wait ...").arg(p_TestCase->GetParameter("SlaveType")));
+    QString Msg = Service::CMessageString::MSG_DIAGNOSTICS_UPDATE_FIRMWARE_SLAVE.arg(p_TestCase->GetParameter("SlaveType"));
 
     ShowMessage(Msg);
     emit PerformManufacturingTest(Id);
@@ -1317,7 +1300,7 @@ void CManufacturingDiagnosticsHandler::ShowMessage(const QString &Message)
         mp_WaitDialog = NULL;
     }
     mp_WaitDialog = new MainMenu::CMessageDlg(mp_MainWindow);
-    mp_WaitDialog->SetDialogTitle(tr("Please Wait"));
+    mp_WaitDialog->SetDialogTitle(Service::CMessageString::MSG_TITLE_WAIT);
     mp_WaitDialog->SetText(Message);
     mp_WaitDialog->HideAllButtons();
     mp_WaitDialog->setMinimumWidth(200);

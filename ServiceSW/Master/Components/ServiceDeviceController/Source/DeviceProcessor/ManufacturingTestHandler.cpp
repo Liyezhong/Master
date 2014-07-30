@@ -340,7 +340,7 @@ qint32 ManufacturingTestHandler::TestOvenHeatingWater()
     if (CurrentTempTop<AmbTempLow || CurrentTempTop>AmbTempHigh ||
             CurrentTempBottom1<AmbTempLow || CurrentTempBottom1>AmbTempHigh ||
             CurrentTempBottom2<AmbTempLow || CurrentTempBottom2>AmbTempHigh ){
-        QString FailureMsg = QString("Oven Current Temperature is (%1 %2 %3) which is not in (%4~%5)").arg(CurrentTempTop).arg(CurrentTempBottom1)
+        QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_OVEN_TEMP_NO_MATCH.arg(CurrentTempTop).arg(CurrentTempBottom1)
                 .arg(CurrentTempBottom2).arg(AmbTempLow).arg(AmbTempHigh);
         SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
@@ -498,7 +498,7 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
     if (CurrentTempTop<AmbTempLow || CurrentTempTop>AmbTempHigh ||
             CurrentTempBottom1<AmbTempLow || CurrentTempBottom1>AmbTempHigh ||
             CurrentTempBottom2<AmbTempLow || CurrentTempBottom2>AmbTempHigh ){
-        QString FailureMsg = QString("Oven Current Temperature is (%1 %2 %3) which is not in (%4~%5)").arg(CurrentTempTop).arg(CurrentTempBottom1)
+        QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_OVEN_TEMP_NO_MATCH.arg(CurrentTempTop).arg(CurrentTempBottom1)
                 .arg(CurrentTempBottom2).arg(AmbTempLow).arg(AmbTempHigh);
         SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
@@ -644,10 +644,10 @@ qint32 ManufacturingTestHandler::TestOvenCoverSensor()
     qint32 Value = mp_DigitalInputOven->GetValue();
 
     if ( Value == 0) { //  oven cover sensor status : close
-        Status.insert("OvenCoverSensorStatus", "Close");
+        Status.insert("OvenCoverSensorStatus", Service::CMessageString::MSG_DIAGNOSTICS_STATUS_CLOSE);
     }
     else {
-        Status.insert("OvenCoverSensorStatus", "Open");
+        Status.insert("OvenCoverSensorStatus", Service::CMessageString::MSG_DIAGNOSTICS_STATUS_OPEN);
     }
 
     QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::OVEN_COVER_SENSOR);
@@ -667,10 +667,10 @@ qint32 ManufacturingTestHandler::TestLidLocker()
     Service::ModuleTestStatus status;
     qint32 value = mp_DIRetortLid->GetValue();
     if (value == 0) { //  Lid locker status : close
-        status.insert("LidLockerStatus", "Close");
+        status.insert("LidLockerStatus", Service::CMessageString::MSG_DIAGNOSTICS_STATUS_CLOSE);
     }
     else {
-        status.insert("LidLockerStatus", "Open");
+        status.insert("LidLockerStatus", Service::CMessageString::MSG_DIAGNOSTICS_STATUS_OPEN);
     }
 
     QString testCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Service::RETORT_LID_LOCK);
@@ -736,8 +736,8 @@ qint32 ManufacturingTestHandler::TestRetortHeating()
     SetFailReason(Id, "");
     if (curSideTemp < ambLow || curSideTemp > ambHigh || curBottomTemp1 < ambLow || curBottomTemp1 > ambHigh\
             || curBottomTemp2 < ambLow || curBottomTemp2 > ambHigh) {
-        QString failMsg = QString("Retort current temperature is (%1 %2 %3) which is not in (%4~%5)")\
-                .arg(curSideTemp).arg(curBottomTemp1).arg(curBottomTemp2).arg(ambLow).arg(ambHigh);
+        QString failMsg = Service::CMessageString::MSG_DIAGNOSTICS_RETORT_TEMP_NO_MATCH.arg(curSideTemp)
+                .arg(curBottomTemp1).arg(curBottomTemp2).arg(ambLow).arg(ambHigh);
         SetFailReason(Id, failMsg);
         p_TestCase->SetStatus(false);
 
@@ -904,7 +904,7 @@ qint32 ManufacturingTestHandler::TestRetortLevelSensorHeating()
     SetFailReason(Id, "");
     if (temp <ambLow || temp > ambHigh) {
         ret = -1;
-        QString FailureMsg = QString("Level Sensor Current Temperature is (%1) which is not in (%2~%3)").arg(temp).arg(ambLow).arg(ambHigh);
+        QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_LEVEL_SENSOR_TEMP_NO_MATCH.arg(temp).arg(ambLow).arg(ambHigh);
         SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
         goto EXIT;
@@ -969,8 +969,7 @@ HEATING_START:
             remainHeatCount = 0;
         }
         else {
-            QString failMsg = QString("Retort level sensor current temperature is (%1) which is less than target (%2) in %3 seconds")\
-                    .arg(curTemp).arg(tgtTemp).arg(duration);
+            QString failMsg = Service::CMessageString::MSG_DIAGNOSTICS_RETORT_TEMP_NO_MATCH.arg(curTemp).arg(tgtTemp).arg(duration);
             SetFailReason(Id, failMsg);
             p_TestCase->SetStatus(false);
             qDebug() << "Level Sensor heating error!";
@@ -1138,10 +1137,10 @@ qint32 ManufacturingTestHandler::TestSystemAlarm()
 
     }
     if (RetValue == 0) {
-        Status.insert("AlarmStatus", "disConnected");
+        Status.insert("AlarmStatus", Service::CMessageString::MSG_DIAGNOSTICS_STATUS_DISCONNECTED);
     }
     else {
-        Status.insert("AlarmStatus", "Connected");
+        Status.insert("AlarmStatus", Service::CMessageString::MSG_DIAGNOSTICS_STATUS_CONNECTED);
     }
 
     emit RefreshTestStatustoMain(TestCaseName, Status);
@@ -1219,10 +1218,10 @@ qint32 ManufacturingTestHandler::TestSystemMainsRelay()
     }
     p_TestCase->SetStatus(Result);
     if (Result) {
-        Status.insert("Result", "PASS");
+        Status.insert("Result", Service::CMessageString::MSG_BUTTON_PASS);
     }
     else {
-        Status.insert("Result", "FAIL");
+        Status.insert("Result", Service::CMessageString::MSG_BUTTON_FAIL);
     }
 
     emit RefreshTestStatustoMain(TestCaseName, Status);
@@ -1370,7 +1369,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
 
             Position = PositionList.at(i);
 
-            LabelStr = QString("Rotate rotary valve to tube position #%1").arg(Position);
+            LabelStr = Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE.arg(Position);
             Status.clear();
             Status.insert("Label", LabelStr);
             emit RefreshTestStatustoMain(TestCaseName, Status);
@@ -1378,7 +1377,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
 
             mp_PressPump->SetFan(1);
             Status.clear();
-            LabelStr = QString("Creating pressure to %1Kpa...").arg(TargetPressure);
+            LabelStr = Service::CMessageString::MSG_DIAGNOSTICS_CREATING_PRESSURE.arg(TargetPressure);
             Status.insert("Label", LabelStr);
             emit RefreshTestStatustoMain(TestCaseName, Status);
             int WaitSec = Duration.hour()*60*60 + Duration.minute()*60 + Duration.second();
@@ -1400,7 +1399,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
             }
             else {
                 WaitSec = KeepDuration.hour()*60*60 + KeepDuration.minute()*60 + KeepDuration.second();
-                LabelStr = QString("Keep pressure for %1 seconds").arg(WaitSec);
+                LabelStr = Service::CMessageString::MSG_DIAGNOSTICS_KEEP_PRESSURE.arg(WaitSec);
                 Status.clear();
                 Status.insert("Label", LabelStr);
                 emit RefreshTestStatustoMain(TestCaseName, Status);
@@ -1422,17 +1421,17 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
                 Status.insert("Position", QString("%1").arg(Position));
                 Status.insert("Pressure", QString("%1").arg(CurrentPressure));
                 if (CurrentPressure<(TargetPressure-Departure)) {
-                    Status.insert("Result", "Fail");
+                    Status.insert("Result", Service::CMessageString::MSG_BUTTON_FAIL);
                     RetValue = -1;
                 }
                 else {
-                    Status.insert("Result", "Pass");
+                    Status.insert("Result", Service::CMessageString::MSG_BUTTON_PASS);
                 }
             }
 
             emit RefreshTestStatustoMain(TestCaseName, Status);
         }
-        LabelStr = QString("Releasing pressure ...");
+        LabelStr = Service::CMessageString::MSG_DIAGNOSTICS_RELEASING_PRESSURE;
         Status.clear();
         Status.insert("Label", LabelStr);
         emit RefreshTestStatustoMain(TestCaseName, Status);     
@@ -1444,7 +1443,7 @@ qint32 ManufacturingTestHandler::TestSystemSealing(int CurStep)
             m_UserAbort = false;
             p_TestCase->AddResult("FailReason", "Abort");
         }
-        LabelStr = QString("Test is finished.");
+        LabelStr = Service::CMessageString::MSG_DIAGNOSTICS_TEST_FINISH;
         Status.insert("Label", LabelStr);
         Status.insert("Finish", "1");
         emit RefreshTestStatustoMain(TestCaseName, Status);
@@ -1467,7 +1466,7 @@ qint32 ManufacturingTestHandler::CleaningSystem()
 
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, 1);
     if (!mp_MotorRV->MoveToSealPosition(1)) {
-        p_TestCase->AddResult("FailReason", "move RV to sealing position 1 failed");
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg("1"));
         return -1;
     }
 
@@ -1485,14 +1484,14 @@ qint32 ManufacturingTestHandler::CleaningSystem()
     qDebug()<<"Blow time ==== "<<blowSec;
 
     if (!CreatePressure(waitSec, targetPressure, departure)) {
-        p_TestCase->AddResult("FailReason", "create pressure failed.");
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
         RetValue = -1;
         goto CLEANING_EXIT;
     }
     for (int i = 1; i <= 16; ++i) {
         EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, i);
         if (!mp_MotorRV->MoveToTubePosition(i)) {
-            p_TestCase->AddResult("FailReason", QString("move RV to tube position %1 failed").arg(i));
+            p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(i));
             RetValue = -1;
             goto CLEANING_EXIT;
         }
@@ -1505,14 +1504,14 @@ qint32 ManufacturingTestHandler::CleaningSystem()
 
         EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_SEALING_POSITION, i);
         if (!mp_MotorRV->MoveToSealPosition(i)) {
-            p_TestCase->AddResult("FailReason", QString("move RV to sealing position 1 failed").arg(i));
+            p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALING_FAILED.arg(i));
             RetValue = -1;
             goto CLEANING_EXIT;
         }
 
         EmitRefreshTestStatustoMain(TestCaseName, PUMP_CREATE_PRESSURE, targetPressure);
         if (!CreatePressure(waitSec, targetPressure, departure)) {
-            p_TestCase->AddResult("FailReason", "create pressure failed.");
+            p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_CREATE_PRESSURE_FALIED);
             RetValue = -1;
             goto CLEANING_EXIT;
         }
@@ -1668,7 +1667,7 @@ qint32 ManufacturingTestHandler::TestLAHeatingTube(Service::ModuleTestCaseID_t I
 
     SetFailReason(Id, "");
     if (CurrentTemp<AmbTempLow || CurrentTemp>AmbTempHigh) {
-        QString FailureMsg = QString("Tube Current Temperature is (%1) which is not in (%2~%3)").arg(CurrentTemp).arg(AmbTempLow).arg(AmbTempHigh);
+        QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_TUBE_TEMP_NO_MATCH.arg(CurrentTemp).arg(AmbTempLow).arg(AmbTempHigh);
         SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
 
@@ -1900,7 +1899,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
     SetFailReason(Id, "");
     if (CurrentTempSensor1<AmbTempLow || CurrentTempSensor1>AmbTempHigh ||
             CurrentTempSensor2<AmbTempLow || CurrentTempSensor2>AmbTempHigh  ){
-        QString FailureMsg = QString("Rotary Valve Current Temperature is (%1 %2) which is not in (%3~%4)").arg(CurrentTempSensor1).arg(CurrentTempSensor2)
+        QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_RV_TEMP_NO_MATCH.arg(CurrentTempSensor1).arg(CurrentTempSensor2)
                 .arg(AmbTempLow).arg(AmbTempHigh);
         SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
@@ -2078,7 +2077,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     SetFailReason(Id, "");
     if (CurrentTempSensor1<AmbTempLow || CurrentTempSensor1>AmbTempHigh ||
             CurrentTempSensor2<AmbTempLow || CurrentTempSensor2>AmbTempHigh  ){
-        QString FailureMsg = QString("Rotary Valve Current Temperature is (%1 %2) which is not in (%3~%4)").arg(CurrentTempSensor1).arg(CurrentTempSensor2)
+        QString FailureMsg = Service::CMessageString::MSG_DIAGNOSTICS_RV_TEMP_NO_MATCH.arg(CurrentTempSensor1).arg(CurrentTempSensor2)
                 .arg(AmbTempLow).arg(AmbTempHigh);
         SetFailReason(Id, FailureMsg);
         p_TestCase->SetStatus(false);
@@ -2112,7 +2111,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     EmitRefreshTestStatustoMain(TestCaseName, LS_HEATING);
     Ret = HeatingLevelSensor();
     if (Ret == -1) {
-        p_TestCase->AddResult("FailReason", "Level sensor heating is failed.");
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_HEATING_LEVEL_SENSOR_FAILED);
         p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
         goto RV_HEATING_END_EXIT;
     }
@@ -2121,7 +2120,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     emit RefreshTestStatustoMain(TestCaseName, Status);
     EmitRefreshTestStatustoMain(TestCaseName, RV_INITIALIZING);
     if ( TestRVInitialization() == -1 ) {
-        p_TestCase->AddResult("FailReason", "Rotary valve initializing is failed.");
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_INIT_RV_FAILED);
         p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
         goto RV_HEATING_END_EXIT;
     }
@@ -2131,7 +2130,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     EmitRefreshTestStatustoMain(TestCaseName, RV_MOVE_TO_TUBE_POSITION, Position);
 
     if ( !mp_MotorRV->MoveToTubePosition(Position) ) {
-        p_TestCase->AddResult("FailReason", "Rotary valve rotation is failed.");
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE_FAILED.arg(Position));
         p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
         goto RV_HEATING_END_EXIT;
     }
@@ -2146,7 +2145,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
         Ret = mp_PressPump->Draining();
         qDebug()<<"Draining return : "<<Ret;
 
-        p_TestCase->AddResult("FailReason", "Filling is failed.");
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_FILLING_FAILED);
         p_TestCase->AddResult("FailStatus", "NOT-IN-HEATING");
         goto RV_HEATING_END_EXIT;
     }
@@ -2636,7 +2635,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
     if (Ret == -1) {
         qDebug()<<"Fail to heat level sensor";
         EmitRefreshTestStatustoMain(TestCaseName, HIDE_MESSAGE);
-        p_TestCase->AddResult("FailReason", "<br>Level sensor heating is failed.");
+        p_TestCase->AddResult("FailReason", Service::CMessageString::MSG_DIAGNOSTICS_HEATING_LEVEL_SENSOR_FAILED);
         return -1;
     }
 
@@ -3053,34 +3052,34 @@ void ManufacturingTestHandler::EmitRefreshTestStatustoMain(const QString& TestCa
     Status.clear();
     switch (CurStatus) {
     case RV_INITIALIZING:
-        Msg = "Rotary valve is initializing ...";
+        Msg = Service::CMessageString::MSG_DIAGNOSTICS_INIT_RV;
         break;
     case RV_MOVE_TO_TUBE_POSITION:
-        Msg = QString("Rotate rotary valve to tube position #%1").arg(Param);
+        Msg = Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_TUBE.arg(Param);
         break;
     case RV_MOVE_TO_SEALING_POSITION:
-        Msg = QString("Rotate rotary valve to sealing position #%1").arg(Param);
+        Msg = Service::CMessageString::MSG_DIAGNOSTICS_ROTATE_RV_TO_SEALINT.arg(Param);
         break;
     case LS_HEATING:
-        Msg = "Heating level sensor ...";
+        Msg = Service::CMessageString::MSG_DIAGNOSTICS_HEATING_LEVEL_SENSOR;
         break;
     case RETORT_FILLING:
-        Msg = "Filling ...";
+        Msg = Service::CMessageString::MSG_DIAGNOSTICS_FILLING;
         break;
     case RETORT_DRAINING:
-        Msg = "Draining ...";
+        Msg = Service::CMessageString::MSG_DIAGNOSTICS_DRAINING;
         break;
     case PUMP_CREATE_PRESSURE:
-        Msg = QString("Creating pressure to %1kPa...").arg(Param);
+        Msg = Service::CMessageString::MSG_DIAGNOSTICS_CREATING_PRESSURE.arg(Param);
         break;
     case PUMP_KEEP_PRESSURE:
-        Msg = QString("Keep pressure for %1 seconds...").arg(Param);
+        Msg = Service::CMessageString::MSG_DIAGNOSTICS_KEEP_PRESSURE.arg(Param);
         break;
     case PUMP_RELEASE_PRESSURE:
-        Msg = "Releasing pressure ...";
+        Msg = Service::CMessageString::MSG_DIAGNOSTICS_RELEASING_PRESSURE;
         break;
     case SYSTEM_FLUSH:
-        Msg = "Air Blowing ...";
+        Msg = Service::CMessageString::MSG_DIAGNOSTICS_AIR_BLOWING;
         break;
     case WAIT_CONFIRM:
         Msg = "WaitConfirm";

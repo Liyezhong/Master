@@ -342,6 +342,55 @@ void CServiceGUIConnector::RetranslateUI()
    mp_MessageDlg->SetButtonText(1,QApplication::translate("Core::CDataConnector", "Ok", 0, QApplication::UnicodeUTF8));
 }
 
+void CServiceGUIConnector::SetLanguage(PlatformService::Languages_t SelectedLanguage)
+{
+    QDir Directory(Global::SystemPaths::Instance().GetTranslationsPath());
+    Directory.setFilter(QDir::AllEntries);
+    QStringList FileNames;
+    QFileInfoList List = Directory.entryInfoList();
+    for (int i = 0; i < List.size(); i++) {
+        QFileInfo fileInfo = List.at(i);
+        FileNames.append(fileInfo.fileName());
+    }
+
+    if (m_Language != SelectedLanguage) {
+        if (SelectedLanguage == PlatformService::US_ENGLISH) {
+            if (FileNames.contains("HimalayaService_en.qm")) {
+                QString FilePath = Global::SystemPaths::Instance().GetTranslationsPath() + "/HimalayaService_en.qm";
+                (void) m_Translator.load(FilePath);
+                qApp->installTranslator(&m_Translator);
+            } else {
+                mp_MessageDlg->SetTitle(QApplication::translate("ServiceUpdates::CLanguageWidget", "Language files",
+                                                                0, QApplication::UnicodeUTF8));
+                mp_MessageDlg->SetText(QApplication::translate("ServiceUpdates::CLanguageWidget",
+                                       "Translation files are missing.", 0, QApplication::UnicodeUTF8));
+                mp_MessageDlg->SetButtonText(1, QApplication::translate("ServiceUpdates::CLanguageWidget", "Ok",
+                                                                        0, QApplication::UnicodeUTF8));
+                mp_MessageDlg->HideButtons();
+                mp_MessageDlg->SetIcon(QMessageBox::Critical);
+                mp_MessageDlg->Show();
+            }
+        } else {
+            if (FileNames.contains("HimalayaService_zh.qm")) {
+                QString FilePath = Global::SystemPaths::Instance().GetTranslationsPath() + "/HimalayaService_zh.qm";
+                (void) m_Translator.load(FilePath);
+                qApp->installTranslator(&m_Translator);
+            } else {
+                mp_MessageDlg->SetTitle(QApplication::translate("ServiceUpdates::CLanguageWidget", "Language files",
+                                                                0, QApplication::UnicodeUTF8));
+                mp_MessageDlg->SetText(QApplication::translate("ServiceUpdates::CLanguageWidget",
+                                       "Translation files are missing.", 0, QApplication::UnicodeUTF8));
+                mp_MessageDlg->SetButtonText(1, QApplication::translate("ServiceUpdates::CLanguageWidget",
+                                                                        "Ok", 0, QApplication::UnicodeUTF8));
+                mp_MessageDlg->HideButtons();
+                mp_MessageDlg->SetIcon(QMessageBox::Critical);
+                mp_MessageDlg->Show();
+            }
+        }
+        m_Language = SelectedLanguage;
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Sets time and and date of the program
