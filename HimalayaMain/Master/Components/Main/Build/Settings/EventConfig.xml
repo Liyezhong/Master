@@ -22,8 +22,26 @@
 			<Step ID="3" Type="ACT" Action="RC_Restart"/>
 		</Event>
 		<Event Code="" ErrorID="513010000" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
-			<Step ID="0" Type="ACT" Action="RS_HeatingErr_3S_Retry" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="1" NextStepOnSuccess="3"/>
 			<Step ID="1" Type="MSG" StringID="103010000" RDStringID="113010000" ButtonType="OK" StatusBar="YES" NextStepOnClickOK="2" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="2" Type="ACT" Action="RC_Report"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>
+		</Event>
+		<Event Code="" ErrorID="513010213" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="MSG" StringID="103010213" RDStringID="113010213" ButtonType="OK" StatusBar="YES" NextStepOnClickOK="2" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="2" Type="ACT" Action="RC_Report"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>
+		</Event>
+		<Event Code="" ErrorID="513010233" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="MSG" StringID="103010233" RDStringID="113010233" ButtonType="OK" StatusBar="YES" NextStepOnClickOK="2" LogLevel="High" UserLog="TRUE"/>
+			<Step ID="2" Type="ACT" Action="RC_Report"/>
+			<Step ID="3" Type="ACT" Action="RC_Restart"/>
+		</Event>
+		<Event Code="" ErrorID="513010253" ErrorType="ERROR" AuthorityType="Auth_USER" AlarmType="AL_REMOTE"  EventSource="SCHEDULER">
+			<Step ID="0" Type="ACT" Action="RS_HeatingErr30sRetry" NextStepOnFail="1" NextStepOnSuccess="3"/>
+			<Step ID="1" Type="MSG" StringID="103010253" RDStringID="113010253" ButtonType="OK" StatusBar="YES" NextStepOnClickOK="2" LogLevel="High" UserLog="TRUE"/>
 			<Step ID="2" Type="ACT" Action="RC_Report"/>
 			<Step ID="3" Type="ACT" Action="RC_Restart"/>
 		</Event>

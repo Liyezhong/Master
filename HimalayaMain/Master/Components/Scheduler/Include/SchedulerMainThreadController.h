@@ -583,6 +583,8 @@ typedef enum
           */
          /****************************************************************************/
          qint64 GetFunctionModuleStartworkTime(QList<FunctionModuleStatus_t>* pList, CANObjectKeyLUT::CANObjectIdentifier_t ID);
+
+         bool CheckRetortTempSensorNoSignal(quint32 Scenario, qreal HWTemp);
 signals:
          /****************************************************************************/
          /*!

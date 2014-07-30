@@ -310,6 +310,52 @@
             <scenario type="range" startid="281" endid="297"/>
         </error>
     </event>
+	<event eventid="500010231">
+        <error errorid="513010230">
+            <scenario type="single" id="200"/>
+        </error>
+        <error errorid="513010231">
+            <scenario type="single" id="205"/>
+            <scenario type="range" startid="211" endid="217"/>
+            <scenario type="single" id="221"/>
+            <scenario type="range" startid="252" endid="257"/>
+            <scenario type="single" id="260"/>
+            <scenario type="range" startid="271" endid="277"/>
+        </error>
+        <error errorid="513010232">
+            <scenario type="range" startid="222" endid="227"/>
+            <scenario type="range" startid="231" endid="237"/>
+            <scenario type="range" startid="241" endid="247"/>
+            <scenario type="single" id="251"/>
+        </error>
+        <error errorid="513010233">
+            <scenario type="single" id="002"/>
+            <scenario type="range" startid="281" endid="297"/>
+        </error>
+    </event>
+	<event eventid="500010251">
+        <error errorid="513010250">
+            <scenario type="single" id="200"/>
+        </error>
+        <error errorid="513010251">
+            <scenario type="single" id="205"/>
+            <scenario type="range" startid="211" endid="217"/>
+            <scenario type="single" id="221"/>
+            <scenario type="range" startid="252" endid="257"/>
+            <scenario type="single" id="260"/>
+            <scenario type="range" startid="271" endid="277"/>
+        </error>
+        <error errorid="513010252">
+            <scenario type="range" startid="222" endid="227"/>
+            <scenario type="range" startid="231" endid="237"/>
+            <scenario type="range" startid="241" endid="247"/>
+            <scenario type="single" id="251"/>
+        </error>
+        <error errorid="513010253">
+            <scenario type="single" id="002"/>
+            <scenario type="range" startid="281" endid="297"/>
+        </error>
+    </event>
     <event eventid="500010221">
         <error errorid="513010220">
             <scenario type="single" id="200"/>
