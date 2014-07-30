@@ -423,13 +423,12 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
             }
             else
             {
-                // if cleaning program just move RV, not precheck
-                //m_SchedulerMachine->SendRunPreTest();
                 switch (m_CurrentStepState)
                 {
                 case PSSM_INIT:
+                case PSSM_PRETEST:
                     m_SchedulerMachine->SendRunPreTest();
-                    break;
+                    break;  
                 case PSSM_FILLING_RVROD_HEATING:
                     m_SchedulerMachine->SendResumeFillingRVRodHeating();
                     break;
@@ -2573,51 +2572,58 @@ bool SchedulerMainThreadController::RestartFailedHeaters()
 bool SchedulerMainThreadController::CheckSensorTempOverange()
 {
     HeaterType_t heaterType = GetFailerHeaterType();
-    qreal temp = 0;
+    qreal temp1 = 0;
+    qreal temp2 = 0;
 
     switch (heaterType)
     {
     case LEVELSENSOR:
-        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempALLevelSensor;
-        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("LevelSensor", temp) )
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempALLevelSensor;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("LevelSensor", temp1) )
             return false;
         break;
     case LATUBE1:
-        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempALTube1;
-        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("LA_Tube1", temp) )
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempALTube1;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("LA_Tube1", temp1) )
             return false;
         break;
     case LATUBE2:
-        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempALTube2;
-        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("LA_Tube2", temp) )
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempALTube2;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("LA_Tube2", temp1) )
             return false;
         break;
     case RV:
-        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempRV1;
-        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RVRod", temp) )
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempRV1;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RVRod", temp1) )
             return false;
-        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempRV2;
-        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RVOutle", temp) )
+        temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempRV2;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RVOutle", temp2) )
             return false;
         break;
     case RETORT:
-        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempRTSide;
-        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RTSide", temp) )
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTSide;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RTSide", temp1) )
             return false;
-        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
-        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RTBottom", temp) )
+        temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RTBottom", temp2) )
             return false;
         break;
     case OVEN:
-        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenTop;
-        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenTop", temp) )
+        temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenTop;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenTop", temp1) )
             return false;
-        temp = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenBottom1;
-        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp) )
+        temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenBottom1;
+        if( false == mp_HeatingStrategy->CheckSensorTempOverRange("OvenBottom", temp2) )
             return false;
         break;
     default:
         break;
+    }
+
+    //Check No-Signal error
+    if (qAbs(temp1 - 299) <= 0.000000000001 || qAbs(temp2 - 299) <= 0.000000000001)
+    {
+        return false;
     }
     return true;
 
@@ -3101,11 +3107,13 @@ bool SchedulerMainThreadController::CheckRetortTempSensorNoSignal(quint32 Scenar
             || (Scenario >= 241 && Scenario <=247) || 251 == Scenario || 002 == Scenario
             || (Scenario >= 218 && Scenario <= 297) )
     {
-        if (qFuzzyCompare((qAbs(HWTemp-299+1)), 0.0+1))
+        //if (qFuzzyCompare((qAbs(HWTemp-299+1)), 0.0+1))
+        if (qAbs(HWTemp-299) < 0.000000000001)
         {
             return false;
         }
     }
+    return true;
 }
 
 void SchedulerMainThreadController::CreateProgramStatusFile(QFile *p_StatusFile)
