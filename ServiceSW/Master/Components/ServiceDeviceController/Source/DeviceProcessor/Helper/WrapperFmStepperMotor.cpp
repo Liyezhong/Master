@@ -22,6 +22,7 @@
 /****************************************************************************/
 
 #include <QTimer>
+#include "ResetData.h"
 #include "WrapperFmStepperMotor.h"
 #include "WrapperUtils.h"
 #include <unistd.h>
@@ -45,6 +46,8 @@ WrapperFmStepperMotor::WrapperFmStepperMotor(QString Name,
     : WrapperBase(Name, pParent), m_pStepperMotor(pStepperMotor)
 { 
     Reset();
+
+    mp_ResetData = new CResetData(*pStepperMotor, this);
 
     connect(
         m_pStepperMotor, 
@@ -94,6 +97,19 @@ WrapperFmStepperMotor::WrapperFmStepperMotor(QString Name,
     InitEDPosition();
 #endif
 
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Destructor of class WrapperFmStepperMotor
+ */
+/****************************************************************************/
+WrapperFmStepperMotor::~WrapperFmStepperMotor()
+{
+    try {
+        delete mp_ResetData;
+    }
+    catch(...) {}
 }
 
 /****************************************************************************/
@@ -1674,6 +1690,26 @@ void WrapperFmStepperMotor::OnSetState(quint32 /*InstanceID*/, ReturnCode_t Retu
     } else {
         Log(tr("NOTICE: Unexpected action acknowledgement for SetState."));
     }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief  Script-API: Request a data reset
+ *
+ *      This method resets the operation time of stepper motor
+ *
+ *
+ *  Examples:
+ *  \dontinclude steppermotor.js
+ *  \skipline [DigitalOut.ReqDataReset]
+ *  \until    [DigitalOut.ReqDataReset]
+ *
+ *  \return true, if the setting value is success else false
+ */
+/****************************************************************************/
+bool WrapperFmStepperMotor::ReqDataReset()
+{
+    return HandleErrorCode(m_pStepperMotor->ReqDataReset());
 }
 
 /****************************************************************************/

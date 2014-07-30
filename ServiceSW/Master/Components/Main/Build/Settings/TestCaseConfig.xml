@@ -53,4 +53,5 @@
 	</PressureSensor>
 	<SystemSelfTest>
 	</SystemSelfTest>
+	<ResetOperationTime Module="MainControl" SubModule="Ebox"></ResetOperationTime>
 </TestCaseConfig>

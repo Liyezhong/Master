@@ -202,7 +202,8 @@ typedef enum ModuleTestCaseID {
     FIRMWARE_GET_SLAVE_INFO,                ///< This is to get information from slave board.
     PRESSURE_CALIBRATION,                     ///< This is to calibrate pressure sensor
     SYSTEM_110V_220V_AUTO_SWITCH,           ///< This is to auto switch voltage for ASB3 according to ASB5
-    SYSTEM_SELF_TEST,
+    SYSTEM_SELF_TEST,                       ///< This is to self test for manufacturing startup.
+    RESET_OPERATION_TIME,                   ///< This is to reset operation time for some modules.
     SYSTEM_SHUTDOWN                         ///< This is to set slave to standby.
 } ModuleTestCaseID_t;
 
@@ -213,7 +214,8 @@ typedef enum ModuleTestCaseID {
 /****************************************************************************/
 typedef enum ModuleNames {
     PRESSURE_SENSOR,            ///< Pressure sensor
-    FIRMWARE,                   ///< Firmwaree
+    FIRMWARE,                   ///< Firmware
+    OPERATION_TIME,             ///< Operation time for all modules.
     MAIN_CONTROL,                     ///< E Box
     RETORT,                 ///< Retort Module
     DISPLAY,              ///< Display Module

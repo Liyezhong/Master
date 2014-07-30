@@ -32,6 +32,8 @@
 
 using namespace DeviceControl;
 
+class CResetData;
+
 /****************************************************************************/
 /*! \brief Wrapper for function module StepperMotor.
  *
@@ -116,6 +118,7 @@ public:
     static const QString LINEAR;    ///< WorkingMode: linear, requires appropriate configuration
 
     WrapperFmStepperMotor(QString Name, CStepperMotor *pStepperMotor, QObject *pParent);
+    ~WrapperFmStepperMotor();
 
 public slots:
     bool DoReferenceRun();
@@ -129,6 +132,7 @@ public slots:
     qint8 GetProfile();
     bool Wait(qint32 Timeout = -1);
     void Reset();
+    bool ReqDataReset();
     bool Enable();
     bool Disable();
     bool ApplyNewParameterSet();
@@ -332,6 +336,7 @@ private:
 #endif
 
     CStepperMotor *m_pStepperMotor;  //!< Pointer to the StepperMotor FM
+    CResetData *mp_ResetData;           //!< Support for the reset data command
     CANFctModuleStepperMotor m_Config;      //!< Copy of configuration.
 
     QEventLoop m_LoopReferenceRun;   //!< Loop for blocking commands.

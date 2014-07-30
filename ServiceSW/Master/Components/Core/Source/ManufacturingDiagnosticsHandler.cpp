@@ -180,6 +180,9 @@ void CManufacturingDiagnosticsHandler::BeginManufacturingSWTests(Service::Module
     case Service::FIRMWARE:
         PerformFirmwareUpdate(TestCaseList);
         break;
+    case Service::OPERATION_TIME:
+        PerformOperationTimeReset(TestCaseList);
+        break;
     default:
         break;
     }
@@ -1266,6 +1269,17 @@ void CManufacturingDiagnosticsHandler::PerformFirmwareUpdate(const QList<Service
 
     qDebug()<<"Update Firmware result = "<<Result;
 
+}
+
+void CManufacturingDiagnosticsHandler::PerformOperationTimeReset(const QList<Service::ModuleTestCaseID> &TestCaseList)
+{
+    Service::ModuleTestCaseID Id = Service::RESET_OPERATION_TIME;
+
+    emit PerformManufacturingTest(Id);
+
+    bool Result = GetTestResponse();
+
+    qDebug()<<"Update Firmware result = "<<Result;
 }
 
 /****************************************************************************/

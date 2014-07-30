@@ -178,4 +178,5 @@
 	<FirmwareGetSlaveInfo></FirmwareGetSlaveInfo>
 	<PressureSensorCalibrate></PressureSensorCalibrate>
 	<SystemSelfTest></SystemSelfTest>
+	<ResetOperationTime></ResetOperationTime>
 </TestCaseGuide>

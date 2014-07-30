@@ -418,6 +418,20 @@ private:
 
     /****************************************************************************/
     /**
+     * \brief Reset operation time for some modules.
+     */
+    /****************************************************************************/
+    qint32 ResetOperationTime();
+
+    /****************************************************************************/
+    /**
+     * \brief Reset operation time to DeviceLifeCycleRecord.xml.
+     */
+    /****************************************************************************/
+    qint32 ResetOperationTime2Ebox(const QString& ModuleName, const QString& SubModuleName, const QString& ParamName );
+
+    /****************************************************************************/
+    /**
      * \brief Set fail reason for test case
      * \param[in] Id                Test case id
      * \param[in] FailMsg           Fail message

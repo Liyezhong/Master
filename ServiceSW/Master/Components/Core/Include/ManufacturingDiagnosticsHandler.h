@@ -95,6 +95,8 @@ private:
     void PerformManufSystemTests(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformManufCleaningSystem(const QList<Service::ModuleTestCaseID> &TestCaseList);
     void PerformFirmwareUpdate(const QList<Service::ModuleTestCaseID> &TestCaseList);
+    void PerformOperationTimeReset(const QList<Service::ModuleTestCaseID> &TestCaseList);
+
 
     bool GetTestResponse();
 

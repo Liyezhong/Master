@@ -37,6 +37,7 @@
 #include "ServiceDataManager/Include/TestCase.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 #include "Global/Include/SystemPaths.h"
+#include "DeviceControl/Include/DeviceProcessing/DeviceLifeCycleRecord.h"
 
 namespace DeviceControl {
 
@@ -522,13 +523,13 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
     }
 
     if (NeedAC) {
-        qDebug()<<"MainRelay SetHigh return :"<< mp_DigitalOutputMainRelay->SetHigh();
+        mp_DigitalOutputMainRelay->SetHigh();
     }
 
     mp_TempOvenTop->StopTemperatureControl();
     mp_TempOvenBottom->StopTemperatureControl();
-    qDebug()<<"Target top:"<<TopTargetTemp<<"  Start top return : "<<mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
-    qDebug()<<"Target bottom:"<<BottomTargetTemp<<"Start bottom return :"<< mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
+    mp_TempOvenTop->StartTemperatureControl(TopTargetTemp);
+    mp_TempOvenBottom->StartTemperatureControl(BottomTargetTemp);
 
 
     while (!m_UserAbort && WaitSec)
@@ -597,8 +598,8 @@ qint32 ManufacturingTestHandler::TestOvenHeating()
 
     }
 
-    qDebug()<<"Oven top stop return :" << mp_TempOvenTop->StopTemperatureControl();
-    qDebug()<<"Oven bottom stop return :" << mp_TempOvenBottom->StopTemperatureControl();
+    mp_TempOvenTop->StopTemperatureControl();
+    mp_TempOvenBottom->StopTemperatureControl();
     if (NeedAC) {
         mp_DigitalOutputMainRelay->SetLow();
     }
@@ -1878,7 +1879,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingStation()
     }
 
     mp_TempRV->StopTemperatureControl();
-    qDebug()<<"Start top return : "<<mp_TempRV->StartTemperatureControl(TargetTempSensor1);
+    mp_TempRV->StartTemperatureControl(TargetTempSensor1);
 
     int num=10;
     while(num) {
@@ -2067,7 +2068,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
     SumSec = WaitSec;
 
     if (NeedAC) {
-        qDebug()<<"Main Relay Set hight : " << mp_DigitalOutputMainRelay->SetHigh();
+        mp_DigitalOutputMainRelay->SetHigh();
     }
 
 
@@ -2163,7 +2164,7 @@ qint32 ManufacturingTestHandler::TestRVHeatingEnd()
  //   emit RefreshTestStatustoMain(TestCaseName, Status);
 
     mp_TempRV->StopTemperatureControl();
-    qDebug()<<"Start top return : "<<mp_TempRV->StartTemperatureControl(TargetTempSensor1);
+    mp_TempRV->StartTemperatureControl(TargetTempSensor1);
 
     while (!m_UserAbort && WaitSec)
     {
@@ -2401,8 +2402,9 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
     if (RetValue == true) {
         mp_Utils->Pause(2000);
 
-        qDebug()<<"BootFirmware return : " << p_WrapperBootLoader->BootFirmware();
+        RetValue = p_WrapperBootLoader->BootFirmware();
 
+        qDebug()<<"BootFirmware return : " << RetValue;
         qDebug()<<"Wait firmware boot for 5 seconds..............";
         mp_Utils->Pause(5000);
 
@@ -2417,8 +2419,9 @@ qint32 ManufacturingTestHandler::UpdateFirmware()
     }
     else {
 
-        qDebug()<<"BootFirmware return : " << p_WrapperBootLoader->BootFirmware();
+        RetValue = p_WrapperBootLoader->BootFirmware();
 
+        qDebug()<<"BootFirmware return : " << RetValue;
         mp_Utils->Pause(5000);
     }
 ERROR_EXIT:
@@ -2526,19 +2529,9 @@ void ManufacturingTestHandler::CalibratePressureSensor()
 
 void ManufacturingTestHandler::SetSlaveStandby()
 {
-
-//    qDebug() <<"Slave3 NodeState : "<< mp_BaseModule3->ReqNodeState();
-    qDebug() <<"Slave3 Set Shutdown return :" << mp_BaseModule3->SetNodeState(NODE_STATE_SHUTDOWN);
-
-//    qDebug() <<"Slave3 NodeState : "<< mp_BaseModule3->ReqNodeState();
-
-//    qDebug() <<"Slave5 NodeState : "<< mp_BaseModule5->ReqNodeState();
-    qDebug() <<"Slave5 Set Shutdown return :" << mp_BaseModule5->SetNodeState(NODE_STATE_SHUTDOWN);
-//    qDebug() <<"Slave5 NodeState : "<< mp_BaseModule5->ReqNodeState();
-
-//    qDebug() <<"Slave15 NodeState : "<< mp_BaseModule15->ReqNodeState();
-    qDebug() <<"Slave15 Set Shutdown return :" << mp_BaseModule15->SetNodeState(NODE_STATE_SHUTDOWN);
-//    qDebug() <<"Slave15 NodeState : "<< mp_BaseModule15->ReqNodeState();
+    mp_BaseModule3->SetNodeState(NODE_STATE_SHUTDOWN);
+    mp_BaseModule5->SetNodeState(NODE_STATE_SHUTDOWN);
+    mp_BaseModule15->SetNodeState(NODE_STATE_SHUTDOWN);
 
     mp_Utils->Pause(2000);
 }
@@ -2547,7 +2540,7 @@ qint32 ManufacturingTestHandler::HeatingLevelSensor()
 {
     int LSENSOR_TEMP_WATER = 95;
     int LSENSOR_SLOPE_TEMPCHANGE_NORMAL = 10;
-    int TEST_LSENSOR_TIMEOUT = 300;        //Sec.
+    int TEST_LSENSOR_TIMEOUT = 60;        //Sec.
     int TEST_LSENSOR_TEMP_TOLERANCE = 2;
 
     int LSENSOR_PID_MAXTEMP_NORMAL = 120;  //Degrees
@@ -2648,7 +2641,7 @@ qint32 ManufacturingTestHandler::TestRetortHeatingWater()
     }
 
     if (NeedAC) {
-        qDebug()<<"Main Relay Set hight : " << mp_DigitalOutputMainRelay->SetHigh();
+        mp_DigitalOutputMainRelay->SetHigh();
     }
 
     EmitRefreshTestStatustoMain(TestCaseName, RETORT_FILLING);
@@ -2810,10 +2803,12 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
         return -1;
     }
 
-    qDebug()<<"RV SetTemperatureSwitchState AutoSwitch return :"<< mp_TempRV->SetTemperatureSwitchState(-1, 1);
-    qDebug()<<"Retort SetTemperatureSwitchState AutoSwitch return :"<< mp_TempRetortSide->SetTemperatureSwitchState(-1, 1);
 
-    qDebug()<<"MainRelay SetHight return : "<<mp_DigitalOutputMainRelay->SetHigh();
+    mp_TempRV->SetTemperatureSwitchState(-1, 1);
+
+    mp_TempRetortSide->SetTemperatureSwitchState(-1, 1);
+
+    mp_DigitalOutputMainRelay->SetHigh();
 
     qDebug()<<"RV Temp:"<<mp_TempRV->GetTemperature();
     qDebug()<<"Retort Temp:"<<mp_TempRetortBottom->GetTemperature();
@@ -2842,8 +2837,6 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
         mp_Utils->Pause(500);
     }
 
-    //mp_Utils->Pause(5000);
-
     qDebug()<<"RV Temp:"<<mp_TempRV->GetTemperature();
     qDebug()<<"Retort Temp:"<<mp_TempRetortBottom->GetTemperature();
     qDebug()<<"Oven Temp:"<<mp_TempOvenBottom->GetTemperature();
@@ -2867,7 +2860,7 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
 
     qDebug()<<"ASB3SwitchType=" << ASB3SwitchType<< "   ASB5SwitchType="<<ASB5SwitchType;
 
-    if (ASB3SwitchType != ASB5SwitchType) {
+    if (ASB3SwitchType != ASB5SwitchType && ASB5SwitchType != 0) {
         mp_TempRV->SetTemperatureSwitchState(ASB5SwitchType, -1);
 
         ASB3SwitchType = mp_TempRV->GetHeaterSwitchType();
@@ -2879,8 +2872,8 @@ qint32 ManufacturingTestHandler::AutoSetASB3HeaterSwitchType()
         }
     }
 
-    qDebug()<<"RV SetTemperatureSwitchState return :"<<mp_TempRV->SetTemperatureSwitchState(-1, 0);
-    qDebug()<<"Retort SetTemperatureSwitchState return :"<<mp_TempRetortSide->SetTemperatureSwitchState(-1, 0);
+    mp_TempRV->SetTemperatureSwitchState(-1, 0);
+    mp_TempRetortSide->SetTemperatureSwitchState(-1, 0);
 
     return RetVal;
 }
@@ -2897,13 +2890,13 @@ qint32 ManufacturingTestHandler::SystemSelfTest()
     emit RefreshTestStatustoMain(TestCaseName, Status);
     // close remote alarm and local alarm.
     if (mp_DORemoteAlarm) {
-        qDebug()<<"Close remote alarm return : "<<mp_DORemoteAlarm->SetHigh();
+        mp_DORemoteAlarm->SetHigh();
     }
     else {
         qDebug()<<"Fail to init remote alarm";
     }
     if (mp_DOLocalAlarm) {
-        qDebug()<<"Close local alarm return : "<<mp_DOLocalAlarm->SetHigh();
+        mp_DOLocalAlarm->SetHigh();
     }
     else {
         qDebug()<<"Fail to init local alarm";
@@ -2916,6 +2909,134 @@ qint32 ManufacturingTestHandler::SystemSelfTest()
     return RetVal;
 }
 
+qint32 ManufacturingTestHandler::ResetOperationTime()
+{
+    Service::ModuleTestCaseID Id = Service::RESET_OPERATION_TIME;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    QString Module = p_TestCase->GetParameter("Module");
+    QString SubModule = p_TestCase->GetParameter("SubModule");
+
+    bool Ret = true;
+
+    if (Module == "MainControl") {
+        if (SubModule == "ASB3") {
+            Ret = mp_BaseModule3->ReqDataReset();
+        }
+        else if (SubModule == "ASB5") {
+            Ret = mp_BaseModule5->ReqDataReset();
+        }
+        else if (SubModule == "ASB15") {
+            Ret = mp_BaseModule15->ReqDataReset();
+        }
+        else {
+            QString ParamName;
+
+            if (SubModule == "EBox") {
+                ParamName = "EBox_LifeTime";
+            }
+            else if (SubModule == "TouchScreen") {
+                ParamName = "Touch_Screen_LifeTime";
+            }
+            else if (SubModule == "VentilationFan") {
+                ParamName = "Ventilation_Fan_LifeTime";
+            }
+
+            return ResetOperationTime2Ebox("OtherDevice", SubModule, ParamName);
+        }
+    }
+    else if (Module =="Retort") {
+        if (SubModule == "Heater") {
+            Ret = mp_TempRetortSide->ResetHeaterOperatingTime(0);
+            Ret &= mp_TempRetortBottom->ResetHeaterOperatingTime(0);
+            Ret &= mp_TempRetortBottom->ResetHeaterOperatingTime(1);
+        }
+        else if (SubModule == "LidLock") {
+            return ResetOperationTime2Ebox("RetortDevice", "Retort_Lid_Lock", "Retort_Lid_Lock_LifeCycle");
+        }
+        else if (SubModule == "LevelSensor") {
+            return ResetOperationTime2Ebox("LA", "AL_level_sensor_temp_ctrl", "temp_lsensor_LifeCycle");
+        }
+    }
+    else if (Module =="Oven"){
+        if (SubModule == "Heater") {
+            Ret = mp_TempOvenTop->ResetHeaterOperatingTime(0);
+            Ret |= mp_TempOvenBottom->ResetHeaterOperatingTime(0);
+            Ret |= mp_TempOvenBottom->ResetHeaterOperatingTime(1);
+        }
+        else if (SubModule == "CoverSensor") {
+            return ResetOperationTime2Ebox("OvenDevice", "Oven_Cover_Sensor", "oven_door_status_LifeCycle");
+        }
+    }
+    else if (Module == "RotaryValve"){
+        if (SubModule == "Heater") {
+            Ret = mp_TempRV->ResetHeaterOperatingTime(0);
+        }
+        else if (SubModule == "Motor") {
+            Ret = mp_MotorRV->ReqDataReset();
+        }
+    }
+    else if (Module == "LASystem") {
+        if (SubModule == "Pump") {
+            Ret = mp_PressPump->ResetPumpOperatingTime(0);
+        }
+        else if (SubModule == "Valve1") {
+            return ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "Valve1_LifeCycle");
+        }
+        else if (SubModule == "Valve2") {
+            return ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "Valve2_LifeCycle");
+        }
+        else if (SubModule == "AirTube") {
+            Ret = mp_TempTubeAir->ResetHeaterOperatingTime(0);
+        }
+        else if (SubModule == "LiquidTube") {
+            Ret = mp_TempTubeLiquid->ResetHeaterOperatingTime(0);
+        }
+        else if (SubModule == "PressureSensor") {
+            return ResetOperationTime2Ebox("OtherDevice", "PressureSensor", "Pressure_Sensor_LifeTime");
+        }
+        else if (SubModule == "CarbonFilter") {
+            // TBD
+        }
+        else if (SubModule == "ExhaustFan") {
+            // TBD
+        }
+    }
+
+    if (Ret) {
+        return 0;
+    }
+
+    return -1;
+}
+
+qint32 ManufacturingTestHandler::ResetOperationTime2Ebox(const QString &ModuleName, const QString &SubModuleName, const QString &ParamName)
+{
+    DeviceLifeCycleRecord *p_DeviceRecord = new DeviceLifeCycleRecord();
+    if (p_DeviceRecord == NULL) {
+        return -1;
+    }
+    p_DeviceRecord->ReadRecord();
+
+    ModuleLifeCycleRecord* p_ModuleRecord = p_DeviceRecord->m_ModuleLifeCycleMap.value(ModuleName);
+
+    if (p_ModuleRecord == NULL) {
+        delete p_DeviceRecord;
+        return -1;
+    }
+
+    PartLifeCycleRecord* p_PartRecord = p_ModuleRecord->m_PartLifeCycleMap.value(SubModuleName);
+    if (p_PartRecord == NULL) {
+        delete p_DeviceRecord;
+        return -1;
+    }
+
+    p_PartRecord->m_ParamMap[ParamName] = "0";
+    p_DeviceRecord->WriteRecord();
+    delete p_DeviceRecord;
+    return 0;
+}
 
 void ManufacturingTestHandler::SetFailReason(Service::ModuleTestCaseID Id, const QString &FailMsg)
 {
@@ -3239,6 +3360,14 @@ void ManufacturingTestHandler::PerformModuleManufacturingTest(Service::ModuleTes
         break;
     case Service::SYSTEM_SELF_TEST:
         SystemSelfTest();
+        break;
+    case Service::RESET_OPERATION_TIME:
+        if (0 == ResetOperationTime()) {
+            emit ReturnManufacturingTestMsg(true);
+        }
+        else {
+            emit ReturnManufacturingTestMsg(false);
+        }
         break;
     default:
         break;

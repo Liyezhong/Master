@@ -251,6 +251,9 @@ void CTestCaseGuide::SavetoIDHash(const QString &TestCaseName)
     else if (TestCaseName == "SystemSelfTest") {
         Id = Service::SYSTEM_SELF_TEST;
     }
+    else if (TestCaseName == "ResetOperationTime") {
+        Id = Service::RESET_OPERATION_TIME;
+    }
 
     m_TestCaseIDHash.insert(Id, TestCaseName);
 }
