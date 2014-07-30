@@ -45,8 +45,8 @@ CModifyReagentRMSDlg::CModifyReagentRMSDlg(QWidget *p_Parent, KeyBoard::CKeyBoar
     m_strDaysUntilChange(tr("Days until change")),
     m_strEnterValidData(tr("Please enter valid data")),
     m_strSelectReagentGroup(tr("Please Select reagent group")),
-    m_strReagentAddFailed(tr("Reagent add failed")),
-    m_strReagentCopyFailed(tr("Reagent copy failed")),
+    m_strReagentAddFailed(tr("")),
+    m_strReagentCopyFailed(tr("")),
     m_strEnterCassetteValue(tr("Enter Cassette Value")),
     m_strEnterCycleValue(tr("Enter Cycle Value")),
     m_strEnterDayValue(tr("Enter Day Value"))
@@ -581,10 +581,10 @@ void CModifyReagentRMSDlg::RetranslateUI()
                                                "Please Select ReagentGroup", 0, QApplication::UnicodeUTF8);
 
     m_strReagentAddFailed =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                               "Reagent add failed", 0, QApplication::UnicodeUTF8);
+                                               "Fail to add reagent. Please contact service", 0, QApplication::UnicodeUTF8);
 
     m_strReagentCopyFailed =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
-                                               "Reagent copy failed", 0, QApplication::UnicodeUTF8);
+                                               "Fail to copy reagent. Please contact service", 0, QApplication::UnicodeUTF8);
 
     m_strEnterCassetteValue =  QApplication::translate("Reagents::CModifyReagentRMSDlg",
                                                        "Enter Cassette Value", 0, QApplication::UnicodeUTF8);

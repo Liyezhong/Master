@@ -75,7 +75,7 @@
             </SubModule>
             <SubModule name="oven_door_status" type="Digital Input" description="">
                 <parameter name="SoftwareVersion" unit="">3</parameter>
-                <parameter name="LifeCycle" unit="">1</parameter>
+                <parameter name="LifeCycle" unit="">7</parameter>
             </SubModule>
         </Module>
         <Module name="RotaryValveDevice" description="RotaryValveDevice">
@@ -144,7 +144,9 @@
                 <parameter name="SoftwareVersion" unit="">1</parameter>
                 <parameter name="Valve1OperationCycle" unit="">907</parameter>
                 <parameter name="Valve2OperationCycle" unit="">19</parameter>
-                <parameter name="PumpOperationTime" unit="Hours">0</parameter>
+                <parameter name="PumpOperationTime" unit="seconds">0</parameter>
+                <parameter name="ActiveCarbonFilterLifeTime" unit="">0</parameter>
+                <parameter name="ExhaustFanLifeTime" unit="">0</parameter>
             </SubModule>
             <SubModule name="temp_tube1" type="Temperature Control" description="">
                 <parameter name="SoftwareVersion" unit="">1</parameter>
@@ -170,16 +172,16 @@
             <TestDate></TestDate>
             <TestResult></TestResult>
             <SubModule name="EBox" type="Other Module" description="">
-                <parameter name="LifeTime" unit="Seconds">2044</parameter>
+                <parameter name="LifeTime" unit="Seconds">32577</parameter>
             </SubModule>
             <SubModule name="Pressure_Sensor" type="Other Module" description="">
-                <parameter name="LifeTime" unit="Seconds">2044</parameter>
+                <parameter name="LifeTime" unit="Seconds">32576</parameter>
             </SubModule>
             <SubModule name="Touch_Screen" type="Other Module" description="">
-                <parameter name="LifeTime" unit="Seconds">2044</parameter>
+                <parameter name="LifeTime" unit="Seconds">32576</parameter>
             </SubModule>
             <SubModule name="Ventilation_Fan" type="Other Module" description="">
-                <parameter name="LifeTime" unit="Seconds">2044</parameter>
+                <parameter name="LifeTime" unit="Seconds">32577</parameter>
             </SubModule>
         </Module>
     </ModuleList>

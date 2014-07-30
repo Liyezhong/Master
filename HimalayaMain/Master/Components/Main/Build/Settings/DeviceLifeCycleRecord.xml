@@ -6,6 +6,8 @@
                     <Parameter Key="temp_lsensor_LifeCycle" Value="502"/>
                 </Functionmodule>
                 <Functionmodule Key="AL_pressure_ctrl">
+                    <Parameter Key="ActiveCarbonFilter_LifeTime" Value="0"/>
+                    <Parameter Key="Exhaust_Fan_LifeTime" Value="0"/>
                     <Parameter Key="Valve1_LifeCycle" Value="907"/>
                     <Parameter Key="Valve2_LifeCycle" Value="19"/>
                 </Functionmodule>
@@ -14,23 +16,23 @@
         <Device Key="OtherDevice">
             <Functionmodules>
                 <Functionmodule Key="EBox">
-                    <Parameter Key="EBox_LifeTime" Value="1925"/>
+                    <Parameter Key="EBox_LifeTime" Value="32457"/>
                 </Functionmodule>
                 <Functionmodule Key="PressureSensor">
-                    <Parameter Key="Pressure_Sensor_LifeTime" Value="1925"/>
+                    <Parameter Key="Pressure_Sensor_LifeTime" Value="32456"/>
                 </Functionmodule>
                 <Functionmodule Key="TouchScreen">
-                    <Parameter Key="Touch_Screen_LifeTime" Value="1925"/>
+                    <Parameter Key="Touch_Screen_LifeTime" Value="32456"/>
                 </Functionmodule>
                 <Functionmodule Key="VentilationFan">
-                    <Parameter Key="Ventilation_Fan_LifeTime" Value="1925"/>
+                    <Parameter Key="Ventilation_Fan_LifeTime" Value="32457"/>
                 </Functionmodule>
             </Functionmodules>
         </Device>
         <Device Key="OvenDevice">
             <Functionmodules>
                 <Functionmodule Key="Oven_Cover_Sensor">
-                    <Parameter Key="oven_door_status_LifeCycle" Value="1"/>
+                    <Parameter Key="oven_door_status_LifeCycle" Value="7"/>
                 </Functionmodule>
             </Functionmodules>
         </Device>

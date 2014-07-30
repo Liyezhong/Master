@@ -260,10 +260,8 @@ void CDashboardStationItem::LoadStationImages(QPainter& Painter)
     } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
         if (m_StationSelected) {
             Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png"));
-            //Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover.png"));
         } else {
             Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png"));
-            //Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Cover_Grayed.png"));
         }
     } else {
         if(m_StationSelected) {

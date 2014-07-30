@@ -680,7 +680,7 @@ void CModifyProgramDlg::OnOkClicked(QString EnteredText)
         mp_MessageDlg->HideButtons();
 
         if (EnteredText.trimmed().isEmpty()){
-            mp_MessageDlg->SetText(tr("The Program name shall not be whitespace!"));
+            mp_MessageDlg->SetText(tr("The Program name shall not be empty!"));
             (void) mp_MessageDlg->exec();
             return;
         }else if (EnteredText.contains("Leica", Qt::CaseInsensitive)) {
