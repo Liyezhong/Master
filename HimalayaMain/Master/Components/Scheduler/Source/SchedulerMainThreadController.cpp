@@ -495,6 +495,7 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         }
         else if(PSSM_FILLING == stepState)
         {
+            LogDebug("Program Step Filling In Progress");
             m_CurrentStepState = PSSM_FILLING;
             if(CTRL_CMD_PAUSE == ctrlCmd)
             {
