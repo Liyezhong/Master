@@ -892,7 +892,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RTTop.heatingStartTime = 0;
     m_RTTop.curModuleId = "";
     m_RTTop.OTCheckPassed = false;
-    sequenceList = {"1", "2", "3"};
+    sequenceList = {"1", "2", "3", "4"};
     if (false == this->ConstructHeatingSensor(m_RTTop, sequenceList))
     {
         return false;
@@ -904,7 +904,7 @@ bool HeatingStrategy::ConstructHeatingSensorList()
     m_RTBottom.heatingStartTime = 0;
     m_RTBottom.curModuleId = "";
     m_RTBottom.OTCheckPassed = false;
-    sequenceList = {"1", "2", "3"};
+    sequenceList = {"1", "2", "3", "4"};
     if (false == this->ConstructHeatingSensor(m_RTBottom, sequenceList))
     {
         return false;
@@ -1196,7 +1196,11 @@ bool HeatingStrategy::CheckSensorHeatingOverTime(HeatingSensor& heatingSensor, q
     {
         heatingSensor.OTCheckPassed = true;
     }
-
+    //heating over time less than ,it need check heating over time
+    if(heatingSensor.functionModuleList[heatingSensor.curModuleId].HeatingOverTime < 0)
+    {
+        return true;
+    }
     qint64 now = QDateTime::currentMSecsSinceEpoch();
     if (false== heatingSensor.curModuleId.isEmpty() &&
             now-heatingSensor.heatingStartTime >= heatingSensor.functionModuleList[heatingSensor.curModuleId].HeatingOverTime*1000)

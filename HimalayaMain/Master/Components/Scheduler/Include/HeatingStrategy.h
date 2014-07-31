@@ -254,6 +254,15 @@ public:
     /****************************************************************************/
     bool CheckLevelSensorHeatingStatus() const { return m_RTLevelSensor.OTCheckPassed; }
 
+    /****************************************************************************/
+    /*!
+     *  \brief check the temperature wether effective
+     *  \param HWTemp = qreal temperature
+     *  \return bool
+     */
+    /****************************************************************************/
+    bool isEffectiveTemp(qreal HWTemp);
+
 private slots:
     /****************************************************************************/
     /*!
@@ -382,14 +391,6 @@ private:
     /****************************************************************************/
 	inline bool CheckRVOutletHeatingOverTime(qreal HWTemp);
 
-    /****************************************************************************/
-    /*!
-     *  \brief check the temperature wether effective
-     *  \param HWTemp = qreal temperature
-     *  \return bool
-     */
-    /****************************************************************************/
-    inline bool isEffectiveTemp(qreal HWTemp);
 private:
     /****************************************************************************/
     /*!
