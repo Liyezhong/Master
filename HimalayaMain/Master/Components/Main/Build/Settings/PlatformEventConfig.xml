@@ -196,51 +196,6 @@
 		<Event Code="" ErrorID="17236017" ErrorType="Info" AlarmType="No" Name="EVENT_DM_PROCESS_SETTINGS_VERIFICATION_FAILED">
 			<Step ID="0" Type="MSG" StringID="17236017" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="18808846" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RACK_COLORADO_ENDTIME_INVALID">
-			<Step ID="0" Type="MSG" StringID="18808846" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808844" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RACK_COLOR_INVALID">
-			<Step ID="0" Type="MSG" StringID="18808844" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808837" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RACK_COUNT_EXCEEDS_LIMIT">
-			<Step ID="0" Type="MSG" StringID="18808837" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808836" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RACK_DELETE_FAILED_ID_NOT_FOUND">
-			<Step ID="0" Type="MSG" StringID="18808836" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808838" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RACK_ID_BIG">
-			<Step ID="0" Type="MSG" StringID="18808838" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808834" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RACK_ID_NOT_FOUND">
-			<Step ID="0" Type="MSG" StringID="18808834" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808833" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RACK_ID_NOT_UNIQUE">
-			<Step ID="0" Type="MSG" StringID="18808833" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17236018" ErrorType="Info" AlarmType="No" Name="EVENT_DM_RACK_INSERTED">
-			<Step ID="0" Type="MSG" StringID="17236018" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808835" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RACK_INVALID_INDEX">
-			<Step ID="0" Type="MSG" StringID="18808835" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808848" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RACK_INVALID_SIZE">
-			<Step ID="0" Type="MSG" StringID="18808848" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808841" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RACK_PARAMSET_NOT_WITHIN_RANGE">
-			<Step ID="0" Type="MSG" StringID="18808841" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17236019" ErrorType="Info" AlarmType="No" Name="EVENT_DM_RACK_REMOVED">
-			<Step ID="0" Type="MSG" StringID="17236019" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808847" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RACK_SEPIA_ENDTIME_INVALID">
-			<Step ID="0" Type="MSG" StringID="18808847" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808845" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RACK_STARTTIME_INVALID">
-			<Step ID="0" Type="MSG" StringID="18808845" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="18808843" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RACK_STATIONID_LENGHT_EXCEEDS_LIMIT">
-			<Step ID="0" Type="MSG" StringID="18808843" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="19070983" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RC_CERT_FILENAME_LENGHT_OUTOF_RANGE">
 			<Step ID="0" Type="MSG" StringID="19070983" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>

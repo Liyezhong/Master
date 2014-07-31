@@ -15,9 +15,6 @@
 const quint32 EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS	= 33619990;	///< Can not change the date and time more than 24 hours of the current system date time is %1.
 
 
-const quint32 EVENT_DM_ERROR_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817857;	///<        ///<  Definition/Declaration of variable EVENT_DM_ERROR_SOUND_PERIODIC_TIME_OUT_OF_RANGE
-
-
 const quint32 EVENT_DM_GV_BASE_CONTAINER_IS_NOT_INITIALIZED	= 33817094;	///< Group verification failed. Base container is not initialized.
 
 
@@ -43,7 +40,7 @@ const quint32 EVENT_DM_INFO_SOUND_LEVEL_OUT_OF_RANGE	= 33817861;	///<        ///
 
 const quint32 EVENT_DM_INFO_SOUND_NUMBER_OUT_OF_RANGE	= 33817860;	///<        ///<  Definition/Declaration of variable EVENT_DM_INFO_SOUND_NUMBER_OUT_OF_RANGE
 
-const quint32 EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817859;	///<        ///<  Definition/Declaration of variable EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE
+const quint32 EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817859;	///<        ///<  Sound periodic parameter is out of range
 
 const quint32 EVENT_DM_INVALID_PROGRAM_ID	= 33816577;	///< %1' is not a valid Program ID.
 
@@ -100,9 +97,6 @@ const quint32 EVENT_DM_RMS_PROCESSING_OUT_OF_RANGE	= 33817863;	///<        ///< 
 
 
 const quint32 EVENT_DM_USER_PROGRAM_NAME_CONTAINS_LEICA	= 33818115;	///< User Program name can not contain 'leica' word.
-
-
-const quint32 EVENT_DM_WARN_SOUND_PERIODIC_TIME_OUT_OF_RANGE	= 33817858;	///<        ///<  Definition/Declaration of variable EVENT_DM_WARN_SOUND_PERIODIC_TIME_OUT_OF_RANGE
 
 const quint32 EVENT_EXPORT_NO_ENOUGH_SPACE_ON_SD_CARD	= 50331649;	///< Export failed. No enough space on SD card.
 

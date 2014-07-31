@@ -93,10 +93,10 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
               (SoundPeriodicTimeError <= MAX_PERIODIC_TIME)))
         {
             qDebug() << "Unknown error periodic time is detected";
-            m_ErrorMap.insert(EVENT_DM_ERROR_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
+            m_ErrorMap.insert(EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
                                Global::tTranslatableStringList() << "");
             Global::EventObject::Instance().
-                    RaiseEvent(EVENT_DM_ERROR_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
+                    RaiseEvent(EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
                                Global::tTranslatableStringList() << "", true);
             VerifiedData = false;
         }
@@ -107,10 +107,10 @@ bool CHimalayaSettingsVerifier::VerifyData(CDataContainerBase *p_UserSettingsInt
               (SoundPeriodicTimeWarning <= MAX_PERIODIC_TIME)))
         {
             qDebug() << "Unknown warning periodic time is detected";
-            m_ErrorMap.insert(EVENT_DM_WARN_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
+            m_ErrorMap.insert(EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
                                Global::tTranslatableStringList() << "");
             Global::EventObject::Instance().
-                    RaiseEvent(EVENT_DM_WARN_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
+                    RaiseEvent(EVENT_DM_INFO_SOUND_PERIODIC_TIME_OUT_OF_RANGE,
                                Global::tTranslatableStringList() << "", true);
             VerifiedData = false;
         }

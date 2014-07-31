@@ -204,9 +204,6 @@
 		<Event Code="" ErrorID="33619990" ErrorType="Error" AlarmType="" Name="EVENT_DATE_TIME_CANNOT_BE_MORE_THAN_24_HOURS">
 			<Step ID="0" Type="MSG" StringID="33619990" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="33817857" ErrorType="" AlarmType="" Name="EVENT_DM_ERROR_SOUND_PERIODIC_TIME_OUT_OF_RANGE">
-			<Step ID="0" Type="MSG" StringID="33817857" ButtonType="" LogLevel="" UserLog="TRUE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="33817094" ErrorType="Error" AlarmType="" Name="EVENT_DM_GV_BASE_CONTAINER_IS_NOT_INITIALIZED">
 			<Step ID="0" Type="MSG" StringID="33817094" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
@@ -323,9 +320,6 @@
 		</Event>
 		<Event Code="" ErrorID="33818115" ErrorType="" AlarmType="" Name="EVENT_DM_USER_PROGRAM_NAME_CONTAINS_LEICA">
 			<Step ID="0" Type="MSG" StringID="33818115" ButtonType="" LogLevel="" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="33817858" ErrorType="" AlarmType="" Name="EVENT_DM_WARN_SOUND_PERIODIC_TIME_OUT_OF_RANGE">
-			<Step ID="0" Type="MSG" StringID="33817858" ButtonType="" LogLevel="" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="50331649" ErrorType="Error" AlarmType="" Name="EVENT_EXPORT_NO_ENOUGH_SPACE_ON_SD_CARD">
 			<Step ID="0" Type="MSG" StringID="50331649" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
