@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings version="1">
         <language name="en">
-		<string id="103010000" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="103010000" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
 		<string id="103010300" text1="Level sensor failed, please open retort lid and clean level sensor by recommend tool in user manual page XX, then close retort lid and press &quot;retry&quot; button." text2=""/>
 		<string id="103010312" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="103015312" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103015332" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103015336" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103015337" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="103015312" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="103015332" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="103015336" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="103015337" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
 		<string id="113015337" text1="Retort: Please check whether there is any dirt or residue on the level sensor and clean if necessary. If nothing is found, please check O-ring of level sensor or exchange level sensor sub-module." text2=""/>
 		<string id="103010462" text1="Please close retort lid and confirm the retry button." text2=""/>
-		<string id="103015462" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103020050" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="103020060" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="103020070" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="103030001" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
-		<string id="103030011" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="103015462" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="103020050" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
+		<string id="103020060" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
+		<string id="103020070" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
+		<string id="103030001" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="103030011" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
 		<string id="103030012" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="101030021" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="101030021" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
 		<string id="101030022" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="103030091" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="103030091" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
 		<string id="103030092" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
-		<string id="103040005" text1="Error ID %1! Please call for sevice!\nThe instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
+		<string id="103040005" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not finalize the protocol, Please remove the specimen." text2=""/>
 		<string id="103040006" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
 		<string id="103040020" text1="Pressure test failed! Please remove paraffin residual at the sealing ring as well as on the upper part of the retort and closed the retort by confirming." text2=""/>
 		<string id="103045020" text1="Retry failed, Error ID %1! Please call for sevice and remove the specimen!" text2=""/>
 		<string id="103040163" text1="The station no X is filled insufficent! Please check filling level and correct them." text2=""/>
 		<string id="103040203" text1="Draining of Retort has failed! Please remove paraffin residual at the sealing ring as well as on the upper part of the retort and closed the retort by confirming &quot;OK&quot; button." text2=""/>
-		<string id="113040203" text1="Draining of retort to station 1% failed during cleaning! The max pressure is 2%Kpa. Potential reasons are sealing issues and malpositioning of rotary valve.\nCheck for leakages on retort lid seal (e.g. through paraffin residues). Also check proper positioning of rotary valve." text2=""/>
+		<string id="113040203" text1="Draining of retort to station 1% failed during cleaning! The max pressure is 2%Kpa. Potential reasons are sealing issues and malpositioning of rotary valve. Check for leakages on retort lid seal (e.g. through paraffin residues). Also check proper positioning of rotary valve." text2=""/>
 		<string id="103045203" text1="Error ID %1! Please call for sevice! The instrument have met some technical issue and can not conduct tissue processing." text2=""/>
 		<string id="16843520" text1="Sound files for alarm are missing" text2=""/>
 		<string id="19398660" text1="ConnectionManager: Authentication of Client %1 with version failed." text2=""/>
@@ -59,36 +59,36 @@
 		<string id="17760267" text1="%1 is not a valid RemoteCare on/off state." text2=""/>
 		<string id="17956872" text1="Unknown module information found in settings" text2=""/>
 		<string id="17760259" text1="%1 is not a valid water type" text2=""/>
-		<string id="17235976" text1="Translations for language &apos;%1&apos; not found." text2=""/>
-		<string id="17235973" text1="%1&apos; is not a supported language." text2=""/>
-		<string id="17235972" text1="%1&apos; is not a valid number." text2=""/>
+		<string id="17235976" text1="Translations for language  %1  not found." text2=""/>
+		<string id="17235973" text1="%1  is not a supported language." text2=""/>
+		<string id="17235972" text1="%1  is not a valid number." text2=""/>
 		<string id="17235977" text1="Password does not fit requirements. Length between 4 and 16 characters." text2=""/>
-		<string id="17235969" text1="Error reading xml start element &apos;%1&apos; in &apos;%2&apos;." text2=""/>
+		<string id="17235969" text1="Error reading xml start element  %1  in  %2 ." text2=""/>
 		<string id="17760264" text1="Error Sound Level values are Out Of Range" text2=""/>
 		<string id="17760263" text1="Error Sound Number values are Out Of Range" text2=""/>
-		<string id="17235970" text1="Unexpected xml start element &apos;%1&apos;. Expected: &apos;%2&apos; in &apos;%3&apos;" text2=""/>
-		<string id="17235975" text1="Unsupported version &apos;%1&apos; in &apos;%2&apos;." text2=""/>
-		<string id="17235971" text1="xml attribute not found: &apos;%1&apos; in &apos;%2&apos;." text2=""/>
+		<string id="17235970" text1="Unexpected xml start element  %1 . Expected:  %2  in  %3 " text2=""/>
+		<string id="17235975" text1="Unsupported version  %1  in  %2 ." text2=""/>
+		<string id="17235971" text1="xml attribute not found:  %1  in  %2 ." text2=""/>
 		<string id="17235988" text1="%1 file open operation failed" text2=""/>
 		<string id="17235995" text1="Group verification failed" text2=""/>
 		<string id="17235987" text1="%1 Initialization Error" text2=""/>
 		<string id="17956870" text1="Camera Slide Id data is invalid." text2=""/>
 		<string id="17956867" text1="Coverslipper instrument name character count is invalid." text2=""/>
-		<string id="17235979" text1="%1&apos; is not a valid date format." text2=""/>
+		<string id="17235979" text1="%1  is not a valid date format." text2=""/>
 		<string id="17956865" text1="Instrument name character count is invalid." text2=""/>
 		<string id="17956866" text1="Instrument serial number character count is invalid." text2=""/>
 		<string id="17956869" text1="Heated Cuvettes mode data is invalid." text2=""/>
 		<string id="17760260" text1="%1 is not a valid Leica agitation speed" text2=""/>
 		<string id="17760261" text1="%1 is not a valid Leica oven temperature" text2=""/>
-		<string id="17760262" text1="Invalid Reagent Id in Loader station &apos;%1&apos;" text2=""/>
-		<string id="17235982" text1="%1&apos; is not a valid oven start mode." text2=""/>
+		<string id="17760262" text1="Invalid Reagent Id in Loader station  %1 " text2=""/>
+		<string id="17235982" text1="%1  is not a valid oven start mode." text2=""/>
 		<string id="19136516" text1="CV ParameterSets with ParameterSet id %1 is invalid" text2=""/>
 		<string id="17760270" text1="%1 is not a valid Proxy Password." text2=""/>
 		<string id="17760269" text1="%1 is not a valid Proxy UserName." text2=""/>
-		<string id="17235974" text1="%1&apos; is not a valid on/off state." text2=""/>
+		<string id="17235974" text1="%1  is not a valid on/off state." text2=""/>
 		<string id="17956871" text1="Stainer instrument name character count is invalid." text2=""/>
-		<string id="17235981" text1="%1&apos; is not a valid temperature format ." text2=""/>
-		<string id="17235980" text1="%1&apos; is not a valid time format." text2=""/>
+		<string id="17235981" text1="%1  is not a valid temperature format ." text2=""/>
+		<string id="17235980" text1="%1  is not a valid time format." text2=""/>
 		<string id="17956868" text1="Workstation mode data is invalid." text2=""/>
 		<string id="17235996" text1="NULL pointer error in DataManager component" text2=""/>
 		<string id="19136513" text1="ParameterSet list count %1 exceeds the limit .Maximum 10 racks allowed." text2=""/>
@@ -97,18 +97,18 @@
 		<string id="19070983" text1="RCConfig: Certificate FileName %1 length is out of range min %2 max %3." text2=""/>
 		<string id="17236007" text1="Verifying RCConfig.xml failed." text2=""/>
 		<string id="17236006" text1="Reading RCConfig.xml failed." text2=""/>
-		<string id="19071009" text1="RCCOnfig: &apos;%1&apos; data item has invalid quality." text2=""/>
-		<string id="19071008" text1="RCCOnfig: &apos;%1&apos; data item has invalid type." text2=""/>
+		<string id="19071009" text1="RCCOnfig:  %1  data item has invalid quality." text2=""/>
+		<string id="19071008" text1="RCCOnfig:  %1  data item has invalid type." text2=""/>
 		<string id="19070991" text1="RCConfig: Device Id %1 is out of range min %2 max %3." text2=""/>
 		<string id="19070992" text1="RCConfig: Device type %1 is out of range min %2 max %3." text2=""/>
 		<string id="19070981" text1="RCConfig: Encryption level size %1 is out of range min %2 max %3." text2=""/>
 		<string id="19070984" text1="RCConfig: Exec Time is out of range min %2 max %3." text2=""/>
-		<string id="19070982" text1="RCConfig: &apos;%1&apos; is not a valid Authentication on/off state." text2=""/>
-		<string id="19071007" text1="RCConfig: &apos;%1&apos; is not a valid Compression on/off state." text2=""/>
-		<string id="19070979" text1="RCConfig: &apos;%1&apos; is not a valid Debug on/off state." text2=""/>
-		<string id="19070978" text1="RCConfig: &apos;%1&apos; is not a valid HTTP connection persistence on/off state." text2=""/>
-		<string id="19070980" text1="RCConfig: &apos;%1&apos; is not a valid HTTP secure connection on/off state." text2=""/>
-		<string id="19071004" text1="RCConfig: &apos;%1&apos; is not a valid remote session IP address." text2=""/>
+		<string id="19070982" text1="RCConfig:  %1  is not a valid Authentication on/off state." text2=""/>
+		<string id="19071007" text1="RCConfig:  %1  is not a valid Compression on/off state." text2=""/>
+		<string id="19070979" text1="RCConfig:  %1  is not a valid Debug on/off state." text2=""/>
+		<string id="19070978" text1="RCConfig:  %1  is not a valid HTTP connection persistence on/off state." text2=""/>
+		<string id="19070980" text1="RCConfig:  %1  is not a valid HTTP secure connection on/off state." text2=""/>
+		<string id="19071004" text1="RCConfig:  %1  is not a valid remote session IP address." text2=""/>
 		<string id="19071006" text1="RCConfig: MaxChunkSize %1 is out of range min %2 max %3." text2=""/>
 		<string id="19070994" text1="RCConfig: Proxy protocol %1 is out of range min %2 max %3." text2=""/>
 		<string id="19070977" text1="RCConfig: Queue size %1 is out of range min %2 max %3." text2=""/>
@@ -124,7 +124,7 @@
 		<string id="19267588" text1="Reagent ID %1 of reagent %2 does not exists in the list." text2=""/>
 		<string id="19267587" text1="Reagent ID %1 of reagent %2 already in use." text2=""/>
 		<string id="19267601" text1="Internal Software Error. Reagent data invalid %1" text2=""/>
-		<string id="19267590" text1="Reagent ID %1 for the reagent %2 doesn&apos;t start with S or L or U" text2=""/>
+		<string id="19267590" text1="Reagent ID %1 for the reagent %2 doesn t start with S or L or U" text2=""/>
 		<string id="19267592" text1="Reagent Name %1 is too long (max 32 characters)" text2=""/>
 		<string id="19267593" text1="Value for Slides max of reagent %1 must be greater than 0 and less than 4000." text2=""/>
 		<string id="19267585" text1="Reagent name %1 already in use. Please choose different reagent name." text2=""/>
@@ -151,7 +151,7 @@
 		<string id="19202055" text1="Station %1 Best Before Date %2 not valid." text2=""/>
 		<string id="19202054" text1="Station %1 Expiry Date %2 not valid." text2=""/>
 		<string id="19202059" text1="Invalid first usage date for station %1" text2=""/>
-		<string id="19202053" text1="Invalid Station Id&apos;s received in CmdDrawerUpdate for unloader racks." text2=""/>
+		<string id="19202053" text1="Invalid Station Id s received in CmdDrawerUpdate for unloader racks." text2=""/>
 		<string id="17236003" text1="Station Matrix Station %1 type is invalid." text2=""/>
 		<string id="17236012" text1="Verifying StationGrid.xml failed." text2=""/>
 		<string id="17236013" text1="Reading InstrumentHistory.xml failed." text2="Internal Software Error. Please contact your Leica Service Organization."/>
@@ -162,10 +162,10 @@
 		<string id="17236011" text1="Verifying Station.xml failed." text2=""/>
 		<string id="17235990" text1="%1 Stream In Operation failed" text2=""/>
 		<string id="17235991" text1="%1 Stream Out Operation failed" text2=""/>
-		<string id="19136517" text1="CV ParameterSets: &apos;%1&apos; is not a valid Color." text2=""/>
-		<string id="19136521" text1="CV ParameterSets: &apos;%1&apos; is not a valid Coverslip Length." text2=""/>
-		<string id="19136518" text1="CV ParameterSets: &apos;%1&apos; is not a valid Mountant Name." text2=""/>
-		<string id="19136519" text1="CV ParameterSets: &apos;%1&apos; is not a valid Mountant Volume." text2=""/>
+		<string id="19136517" text1="CV ParameterSets:  %1  is not a valid Color." text2=""/>
+		<string id="19136521" text1="CV ParameterSets:  %1  is not a valid Coverslip Length." text2=""/>
+		<string id="19136518" text1="CV ParameterSets:  %1  is not a valid Mountant Name." text2=""/>
+		<string id="19136519" text1="CV ParameterSets:  %1  is not a valid Mountant Volume." text2=""/>
 		<string id="17760266" text1="Warning Sound Level values are Out Of Range" text2=""/>
 		<string id="17760265" text1="Warning Sound Number values are Out Of Range" text2=""/>
 		<string id="17235994" text1="%1 XML De Serialization failed" text2=""/>
@@ -226,23 +226,23 @@
 		<string id="17629215" text1="Export failed. Zip command not found in the system" text2=""/>
 		<string id="17629214" text1="Export failed. Unable to zip the files" text2=""/>
 		<string id="17629216" text1="Export failed. Zip is taking long time to complete the request" text2=""/>
-		<string id="17498118" text1="Creator functor already registered for: &apos;%1&apos;." text2=""/>
+		<string id="17498118" text1="Creator functor already registered for:  %1 ." text2=""/>
 		<string id="17498114" text1="Error initializing external process device." text2=""/>
 		<string id="17498116" text1="Error initializing full state machine." text2=""/>
 		<string id="17498117" text1="Error initializing process manager." text2=""/>
 		<string id="17498115" text1="Error initializing simple state machine." text2=""/>
 		<string id="17498113" text1="Error loading settings." text2=""/>
-		<string id="17498119" text1="Error no creator functor registered for class: &apos;%1&apos;." text2=""/>
-		<string id="17498120" text1="Error reference already registered &apos;%1&apos; for command &apos;%2&apos;." text2=""/>
+		<string id="17498119" text1="Error no creator functor registered for class:  %1 ." text2=""/>
+		<string id="17498120" text1="Error reference already registered  %1  for command  %2 ." text2=""/>
 		<string id="17498121" text1="External Process Controller: Unknown Command Reference %1. File %2 Line %3" text2=""/>
-		<string id="16846859" text1="Current time offset is &apos;%1&apos; seconds" text2=""/>
+		<string id="16846859" text1="Current time offset is  %1  seconds" text2=""/>
 		<string id="16842774" text1="Unable to compute new command ref." text2=""/>
 		<string id="16842765" text1="Error creating file %1." text2=""/>
 		<string id="16842766" text1="Error opening file %1." text2=""/>
 		<string id="16842755" text1="Std exception (Memory allocation error) caught: file: %1 line: %2." text2=""/>
 		<string id="16842763" text1="Error reading monotonic clock." text2=""/>
 		<string id="16842756" text1="NULL_POINTER: %1 file: %2 line: %3." text2=""/>
-		<string id="16842758" text1="Command or acknowledgement has no receiver (command &apos;%1&apos; - channel &apos;%2&apos;)" text2=""/>
+		<string id="16842758" text1="Command or acknowledgement has no receiver (command  %1  - channel  %2 )" text2=""/>
 		<string id="16842775" text1="Unexpected signal received" text2=""/>
 		<string id="16842760" text1="Signal is not connected to any signal" text2=""/>
 		<string id="16842759" text1="Signal is not connected to any slot" text2=""/>
@@ -251,7 +251,7 @@
 		<string id="16843280" text1="Station DC updated by RMS" text2=""/>
 		<string id="16842778" text1="Std exception (%1) caught in %2 at line %3" text2=""/>
 		<string id="16846862" text1="User acknowledged by pressing button" text2=""/>
-		<string id="16846848" text1="Debug message: &apos;%1&apos;" text2=""/>
+		<string id="16846848" text1="Debug message:  %1 " text2=""/>
 		<string id="16846854" text1="Debug" text2=""/>
 		<string id="16846851" text1="Error" text2=""/>
 		<string id="16846850" text1="FatalError" text2=""/>
@@ -313,10 +313,10 @@
 		<string id="19398669" text1="MessageChecker: cannot load messages at %1. Error %2." text2=""/>
 		<string id="19398671" text1="MessageChecker ERROR: incoming MSG document is invalid." text2=""/>
 		<string id="19398670" text1="MessageChecker ERROR: validator is NULL." text2=""/>
-		<string id="19398665" text1="MasterLinkController: IP %1. Connecting LinkDevice&apos;signal &quot;&quot;%2&quot;&quot; failed." text2=""/>
+		<string id="19398665" text1="MasterLinkController: IP %1. Connecting LinkDevice signal &quot;&quot;%2&quot;&quot; failed." text2=""/>
 		<string id="19398664" text1="MasterLinkController: IP %1. Cannot create/initialise MasterClient at %2." text2=""/>
 		<string id="19398666" text1="MasterLinkController: IP %1. message emitting signal is not connected." text2=""/>
-		<string id="19398667" text1="MasterLinkDevice: Connecting LinkDevice&apos;signal &quot;&quot;%1&quot;&quot; failed." text2=""/>
+		<string id="19398667" text1="MasterLinkDevice: Connecting LinkDevice signal &quot;&quot;%1&quot;&quot; failed." text2=""/>
 		<string id="19398668" text1="MasterLinkDevice: Cannot initialise network object." text2=""/>
 		<string id="19398675" text1="MessageLoader::ParseCommands:No valid messages." text2=""/>
 		<string id="19398672" text1="MessageLoader: Opening of file %1 failed." text2=""/>
@@ -398,15 +398,15 @@
 		<string id="17825796" text1="Shutdown is not possible at the moment. System is in initialization phase. Please wait till initialization completes" text2=""/>
 		<string id="17825797" text1="Shutdown is not possible at the moment. %1 is in progress. Please wait till %1 completes" text2=""/>
 		<string id="17891330" text1="SoftSwitch pressed for the first time after bootup" text2=""/>
-		<string id="17367045" text1="Error adding state &apos;%1&apos;." text2=""/>
-		<string id="17367042" text1="Error adding transition between states &apos;%1&apos; and &apos;%2&apos; for index %3." text2=""/>
-		<string id="17367044" text1="Error removing all state transitions between states &apos;%1&apos; and &apos;%2&apos;." text2=""/>
-		<string id="17367047" text1="Can not remove state &apos;%1&apos;. It is the current state." text2=""/>
-		<string id="17367046" text1="Error removing state &apos;%1&apos;." text2=""/>
-		<string id="17367043" text1="Error removing transition between states &apos;%1&apos; and &apos;%2&apos; for index %3." text2=""/>
-		<string id="17367041" text1="Transition between states &apos;%1&apos; and &apos;%2&apos; for index %3 already exists." text2=""/>
-		<string id="17367048" text1="Unknown state &apos;%1&apos;." text2=""/>
-		<string id="19595266" text1="File writing failed for RMS/Data logging/Configuration files. Don&apos;t accept any racks" text2=""/>
+		<string id="17367045" text1="Error adding state  %1 ." text2=""/>
+		<string id="17367042" text1="Error adding transition between states  %1  and  %2  for index %3." text2=""/>
+		<string id="17367044" text1="Error removing all state transitions between states  %1  and  %2 ." text2=""/>
+		<string id="17367047" text1="Can not remove state  %1 . It is the current state." text2=""/>
+		<string id="17367046" text1="Error removing state  %1 ." text2=""/>
+		<string id="17367043" text1="Error removing transition between states  %1  and  %2  for index %3." text2=""/>
+		<string id="17367041" text1="Transition between states  %1  and  %2  for index %3 already exists." text2=""/>
+		<string id="17367048" text1="Unknown state  %1 ." text2=""/>
+		<string id="19595266" text1="File writing failed for RMS/Data logging/Configuration files. Don t accept any racks" text2=""/>
 		<string id="19005441" text1="Software update could not started due to error" text2=""/>
 		<string id="19005442" text1="Software update failed" text2=""/>
 		<string id="19005443" text1="Software update rollback failed" text2=""/>
@@ -421,16 +421,16 @@
 		<string id="19595269" text1="Debug message: Specific thread controller %1 is started(For Device command processor-0x0101:Gui-0x0102:Scheduler-0x0103:ImportExport Thread-0x0104:Export-0x0105:Sepia-0x0106:BLG-0x0107)" text2=""/>
 		<string id="19595268" text1="Debug message: %1 thread create and initialize is called" text2=""/>
 		<string id="19595267" text1="Debug message: %1 thread on go received" text2=""/>
-		<string id="16908300" text1="Functor already registered for acknowledge: &apos;%1&apos;." text2=""/>
-		<string id="16908299" text1="Functor already registered for command: &apos;%1&apos;." text2=""/>
+		<string id="16908300" text1="Functor already registered for acknowledge:  %1 ." text2=""/>
+		<string id="16908299" text1="Functor already registered for command:  %1 ." text2=""/>
 		<string id="16908304" text1="Error: Command %1 has a timeout." text2=""/>
-		<string id="16908302" text1="Command timeout &apos;%1&apos; (ref %2)" text2=""/>
+		<string id="16908302" text1="Command timeout  %1  (ref %2)" text2=""/>
 		<string id="16908291" text1="Heartbeat not received from thread with ID: %1" text2=""/>
 		<string id="16908305" text1="Heartbeat missing count for %1 crossed %2: restarting the thread." text2=""/>
 		<string id="16908306" text1="Heartbeat missing count for %1 crossed %2: shutting down the system." text2=""/>
-		<string id="16908295" text1="Error sending acknowledge &apos;%1&apos; with reference %2" text2=""/>
+		<string id="16908295" text1="Error sending acknowledge  %1  with reference %2" text2=""/>
 		<string id="16908290" text1="Thread %1 did not stop within %2 milliseconds" text2=""/>
-		<string id="16908301" text1="Functor already registered for timeout: &apos;%1&apos;." text2=""/>
+		<string id="16908301" text1="Functor already registered for timeout:  %1 ." text2=""/>
 		<string id="16908296" text1="Unknown command reference %1 from thread ID %2 and the command name %3" text2=""/>
 		<string id="16908293" text1="Heartbeat with ID: %1 was received from unknown source" text2=""/>
 		<string id="16908298" text1="Unsupported acknowledgement %1" text2=""/>
@@ -443,9 +443,6 @@
 		<string id="16973841" text1="Stop" text2=""/>
 		<string id="16973838" text1="Yes" text2=""/>
 		<string id="17891333" text1="Warning: %1" text2=""/>
-
-
-
 		<string id="33619990" text1="Can not change the date and time more than 24 hours of the current system date time is %1." text2=""/>
 		<string id="33817094" text1="Group verification failed. Base container is not initialized." text2=""/>
 		<string id="33817095" text1="Group verification failed. Container type is not valid." text2=""/>
@@ -456,11 +453,11 @@
 		<string id="33817093" text1="Station ID exist in Station list but not in Station matrix : %1" text2=""/>
 		<string id="33817098" text1="Group verification failed. Station container is not initialized." text2=""/>
 		<string id="33817101" text1="Group verification failed. User settings container is not initialized." text2=""/>
-		<string id="33818114" text1="Program &amp;apos;%1&amp;apos; Reagents  for Step %2 and Step %3 are not compatible." text2=""/>
+		<string id="33818114" text1="Program  %1  Reagents  for Step %2 and Step %3 are not compatible." text2=""/>
 		<string id="33817861" text1="The sound level parameter is out of range" text2=""/>
 		<string id="33817860" text1="The sound volume parameter is out of range" text2=""/>
 		<string id="33817859" text1="The sound periodic parameter is out of range" text2=""/>
-		<string id="33816577" text1="%1&amp;apos; is not a valid Program ID." text2=""/>
+		<string id="33816577" text1="%1  is not a valid Program ID." text2=""/>
 		<string id="33816578" text1="Error in retrieving service information for device %1" text2=""/>
 		<string id="33816608" text1="Step ID %2 in Program %1 is invalid" text2=""/>
 		<string id="33817862" text1="The Parafin temperature is out of range" text2=""/>
@@ -470,32 +467,32 @@
 		<string id="33816631" text1="Internal Software Error. Program delete failed. Please contact service." text2=""/>
 		<string id="33816623" text1="Program ID %1 associated with Program %2 is not unique ." text2=""/>
 		<string id="33816620" text1="Program step(s) in Program %1 contains invalid duration format" text2=""/>
-		<string id="33818117" text1="Length of the Program name exceeds limit for the program &amp;apos;%1&amp;apos;. Valid Range &amp;apos;%2&amp;apos; - &amp;apos;%3&amp;apos; characters." text2=""/>
-		<string id="33818113" text1="Program name &amp;apos;%1&amp;apos; already in use. Please choose different Program name." text2=""/>
+		<string id="33818117" text1="Length of the Program name exceeds limit for the program  %1 . Valid Range  %2  -  %3  characters." text2=""/>
+		<string id="33818113" text1="Program name  %1  already in use. Please choose different Program name." text2=""/>
 		<string id="33816596" text1="Invalid Index in program hash table." text2=""/>
 		<string id="33816592" text1="Verifying Programs.xml failed." text2=""/>
 		<string id="33816584" text1="Reading Programs.xml failed." text2=""/>
 		<string id="33816605" text1="Number of steps in Program %1 exceeds limit. Max 14 steps allowed." text2=""/>
-		<string id="33818116" text1="Program &amp;apos;%1&amp;apos; must have &amp;apos;%2&amp;apos; step(s) at least." text2=""/>
-		<string id="33818118" text1="Duration in Step &amp;apos;%1&amp;apos; of Program &amp;apos;%2&amp;apos; exceeds limits, validated range : &amp;apos;%3&amp;apos; - &amp;apos;%4&amp;apos;." text2=""/>
-		<string id="33818119" text1="Temperature in Step &amp;apos;%1&amp;apos; of Program &amp;apos;%2&amp;apos; exceeds limits, validated range : &amp;apos;%3&amp;apos; - &amp;apos;%4&amp;apos; (Celsius)." text2=""/>
+		<string id="33818116" text1="Program  %1  must have  %2  step(s) at least." text2=""/>
+		<string id="33818118" text1="Duration in Step  %1  of Program  %2  exceeds limits, validated range :  %3  -  %4 ." text2=""/>
+		<string id="33818119" text1="Temperature in Step  %1  of Program  %2  exceeds limits, validated range :  %3  -  %4  (Celsius)." text2=""/>
 		<string id="33816606" text1="Program Verifier found invalid Reagent ID %2 in the program %1." text2=""/>
-		<string id="33816846" text1="ReagentList reading failed &amp;apos;%1&amp;apos; reagents" text2=""/>
-		<string id="33816845" text1="ReagentList writing failed &amp;apos;%1&amp;apos; reagents" text2=""/>
-		<string id="33816840" text1="Reagent &amp;apos;%1&amp;apos; Name is too long (max 32 Characters)" text2=""/>
+		<string id="33816846" text1="ReagentList reading failed  %1  reagents" text2=""/>
+		<string id="33816845" text1="ReagentList writing failed  %1  reagents" text2=""/>
+		<string id="33816840" text1="Reagent  %1  Name is too long (max 32 Characters)" text2=""/>
 		<string id="33817864" text1="unknow RMS cleaning model" text2=""/>
 		<string id="33817863" text1="unknown RMS processing model" text2=""/>
-		<string id="33818115" text1="User Program name can not contain &amp;apos;leica&amp;apos; word." text2=""/>
+		<string id="33818115" text1="User Program name can not contain  leica  word." text2=""/>
 		<string id="50331649" text1="Export failed. No enough space on SD card." text2=""/>
 		<string id="50331672" text1="Export failed. No enough space on USB storage." text2=""/>
-		<string id="16842764" text1="Could not set fallback language to &amp;apos;%1&amp;apos;." text2=""/>
+		<string id="16842764" text1="Could not set fallback language to  %1 ." text2=""/>
 		<string id="16842767" text1="Error deleting file %1." text2=""/>
 		<string id="16842771" text1="Error seeking in file %1." text2=""/>
 		<string id="16842768" text1="Error writing data: File %1. %2 bytes of %3 written." text2=""/>
 		<string id="16842762" text1="Error reading config file %1." text2=""/>
-		<string id="16842772" text1="Time offset is too large &amp;apos;%1&amp;apos; seconds. Allowed: &amp;apos;%2&amp;apos; seconds." text2=""/>
+		<string id="16842772" text1="Time offset is too large  %1  seconds. Allowed:  %2  seconds." text2=""/>
 		<string id="16846860" text1="Power fail." text2=""/>
-		<string id="16846858" text1="Setting date / time to &amp;apos;%1&amp;apos;." text2=""/>
+		<string id="16846858" text1="Setting date / time to  %1 ." text2=""/>
 		<string id="16908287" text1="undefined. Used for initialisations" text2=""/>
 		<string id="33619971" text1="Stainer started (serial number is %1 and type is %2)" text2=""/>
 		<string id="33947653" text1="Import failed. Format of import file is wrong" text2=""/>
