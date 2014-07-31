@@ -520,7 +520,6 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
         else if(PSSM_RV_MOVE_TO_SEAL == stepState)
         {
             m_CurrentStepState = PSSM_RV_MOVE_TO_SEAL;
-            RVPosition_t targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
             if(IsRVRightPosition(1))
             {
                 if((CTRL_CMD_PAUSE == ctrlCmd)||(m_PauseToBeProcessed))
@@ -2074,56 +2073,57 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             m_SchedulerMachine->SendErrorSignal();
         }
     }
-    if(strctHWMonitor.PressureAL != UNDEFINED_VALUE)
+    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.PressureAL))
 	{
         m_PressureAL = strctHWMonitor.PressureAL;
+        if ("ERROR" != StepID && "IDLE" != StepID)
+        {
+            if(qAbs(m_PressureAL) >40.0 )
+            {
+                RaiseError(0,DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE,Scenario,true);
+                m_SchedulerMachine->SendErrorSignal();
+            }
+        }
 	}
 
-    if ("ERROR" != StepID && "IDLE" != StepID)
-    {
-        if(qAbs(m_PressureAL) >40.0 )
-        {
-            RaiseError(0,DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE,Scenario,true);
-            m_SchedulerMachine->SendErrorSignal();
-        }
-    }
-	if(strctHWMonitor.TempALLevelSensor != UNDEFINED_VALUE)
+
+    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempALLevelSensor))
 	{
         m_TempALLevelSensor = strctHWMonitor.TempALLevelSensor;
 	}
-	if(strctHWMonitor.TempALTube1 != UNDEFINED_VALUE)
+    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempALTube1))
 	{
         m_TempALTube1 = strctHWMonitor.TempALTube1;
 	}
-	if(strctHWMonitor.TempALTube2 != UNDEFINED_VALUE)
+    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempALTube2))
 	{
         m_TempALTube2 = strctHWMonitor.TempALTube2;
 	}
-	if(strctHWMonitor.TempRV1 != UNDEFINED_VALUE)
+    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRV1))
 	{
         m_TempRV1 = strctHWMonitor.TempRV1;
 	}
-	if(strctHWMonitor.TempRV2 != UNDEFINED_VALUE)
+    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRV2))
 	{
         m_TempRV2 = strctHWMonitor.TempRV2;
 	}
-    if(strctHWMonitor.TempRTBottom1 != UNDEFINED_VALUE)
+    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRTBottom1))
 	{
         m_TempRTBottom = strctHWMonitor.TempRTBottom1;
 	}
-	if(strctHWMonitor.TempRTSide!= UNDEFINED_VALUE)
+    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempRTSide))
 	{
         m_TempRTSide = strctHWMonitor.TempRTSide;
 	}
-    if(strctHWMonitor.TempOvenBottom1 != UNDEFINED_VALUE)
+    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempOvenBottom1))
 	{
         m_TempOvenBottom = strctHWMonitor.TempOvenBottom1;
 	}
-	if(strctHWMonitor.TempOvenTop != UNDEFINED_VALUE)
+    if(mp_HeatingStrategy->isEffectiveTemp(strctHWMonitor.TempOvenTop))
 	{
         m_TempOvenTop = strctHWMonitor.TempOvenTop;
 	}
-	if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
+    if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
     {
         if(((m_OvenLidStatus == 0) || (m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 1))
         {
@@ -2339,6 +2339,7 @@ void SchedulerMainThreadController::OnEnterPssmProcessing()
 {
     if(m_TimeStamps.CurStepSoakStartTime == 0)
     {
+        m_SchedulerCommandProcessor->pushCmd(new CmdALReleasePressure(500,  this));
         m_TimeStamps.CurStepSoakStartTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
         m_TimeStamps.ProposeSoakStartTime = QDateTime::currentDateTime().addSecs(m_delayTime).toMSecsSinceEpoch();
         LogDebug(QString("Start to soak, start time stamp is: %1").arg(m_TimeStamps.CurStepSoakStartTime));
