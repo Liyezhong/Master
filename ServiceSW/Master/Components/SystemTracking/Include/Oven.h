@@ -23,6 +23,7 @@
 
 #include <QWidget>
 
+#include "Core/Include/ServiceDefines.h"
 #include "Core/Include/ServiceGUIConnector.h"
 
 namespace SystemTracking {
@@ -65,6 +66,15 @@ Q_SIGNALS:
      */
     /****************************************************************************/
     void ModuleListChanged(void);
+
+    /****************************************************************************/
+    /**
+       * \brief Signal emitted to perform manufacturing tests
+       * \iparam Test = Test name
+       * \iparam AbortId = Test abort id
+       */
+    /****************************************************************************/
+    void PerformManufacturingTest(Service::ModuleTestCaseID Test, Service::ModuleTestCaseID AbortId=Service::TEST_CASE_ID_UNUSED);
 
 public Q_SLOTS:
     /****************************************************************************/
@@ -152,10 +162,18 @@ private:
     /****************************************************************************/
     void ResetMessageBox();
 
-    Ui::COvenConfiguration *mp_Ui;                                    //!< User Interface
+    /****************************************************************************/
+    /*!
+     *  \brief  To reset sub module life cycle.
+     */
+    /****************************************************************************/
+    void ResetSubModuleLifeCycle();
+
+    Ui::COvenConfiguration *mp_Ui;                       //!< User Interface
     Core::CServiceGUIConnector *mp_DataConnector;        //!< Global data connector
     MainMenu::CMessageDlg *mp_MessageDlg;                //!< Information dialog
     ServiceDataManager::CModuleDataList *mp_ModuleList;  //!< Current list of modules
+    QStringList  m_SubModuleNames;                       //!< Store Updated sub moudule names
 };
 
 

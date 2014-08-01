@@ -2915,11 +2915,11 @@ qint32 ManufacturingTestHandler::ResetOperationTime()
     DataManager::CTestCase *p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
 
     QString Module = p_TestCase->GetParameter("Module");
-    QString SubModule = p_TestCase->GetParameter("SubModule");
+    QString SubModule = p_TestCase->GetParameter("SubModule").remove(" ");
 
     bool Ret = true;
 
-    if (Module == "MainControl") {
+    if (Module == "Main Control") {
         if (SubModule == "ASB3") {
             Ret = mp_BaseModule3->ReqDataReset();
         }
@@ -2958,7 +2958,7 @@ qint32 ManufacturingTestHandler::ResetOperationTime()
             return ResetOperationTime2Ebox("LA", "AL_level_sensor_temp_ctrl", "temp_lsensor_LifeCycle");
         }
     }
-    else if (Module =="Oven"){
+    else if (Module =="Paraffine Oven"){
         if (SubModule == "Heater") {
             Ret = mp_TempOvenTop->ResetHeaterOperatingTime(0);
             Ret |= mp_TempOvenBottom->ResetHeaterOperatingTime(0);
@@ -2968,7 +2968,7 @@ qint32 ManufacturingTestHandler::ResetOperationTime()
             return ResetOperationTime2Ebox("OvenDevice", "Oven_Cover_Sensor", "oven_door_status_LifeCycle");
         }
     }
-    else if (Module == "RotaryValve"){
+    else if (Module == "Rotary Valve"){
         if (SubModule == "Heater") {
             Ret = mp_TempRV->ResetHeaterOperatingTime(0);
         }
@@ -2976,7 +2976,7 @@ qint32 ManufacturingTestHandler::ResetOperationTime()
             Ret = mp_MotorRV->ReqDataReset();
         }
     }
-    else if (Module == "LASystem") {
+    else if (Module == "L&A System") {
         if (SubModule == "Pump") {
             Ret = mp_PressPump->ResetPumpOperatingTime(0);
         }
@@ -2986,10 +2986,10 @@ qint32 ManufacturingTestHandler::ResetOperationTime()
         else if (SubModule == "Valve2") {
             return ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "Valve2_LifeCycle");
         }
-        else if (SubModule == "AirTube") {
+        else if (SubModule == "AirHeatingTube") {
             Ret = mp_TempTubeAir->ResetHeaterOperatingTime(0);
         }
-        else if (SubModule == "LiquidTube") {
+        else if (SubModule == "LiquidHeatingTube") {
             Ret = mp_TempTubeLiquid->ResetHeaterOperatingTime(0);
         }
         else if (SubModule == "PressureSensor") {
@@ -2997,9 +2997,11 @@ qint32 ManufacturingTestHandler::ResetOperationTime()
         }
         else if (SubModule == "CarbonFilter") {
             // TBD
+            return ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "ActiveCarbonFilter_LifeTime");
         }
         else if (SubModule == "ExhaustFan") {
             // TBD
+            return ResetOperationTime2Ebox("LA", "AL_pressure_ctrl", "Exhaust_Fan_LifeTime");
         }
     }
 

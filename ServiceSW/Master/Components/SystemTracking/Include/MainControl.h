@@ -184,10 +184,18 @@ private:
     /****************************************************************************/
     void ResetMessageBox();
 
-    Ui::CMainControlConfiguration *mp_Ui;                              //!< User Interface
+    /****************************************************************************/
+    /*!
+     *  \brief  To reset sub module life cycle.
+     */
+    /****************************************************************************/
+    void ResetSubModuleLifeCycle();
+
+    Ui::CMainControlConfiguration *mp_Ui;                 //!< User Interface
     MainMenu::CMessageDlg *mp_MessageDlg;                 //!< Information dialog
     ServiceDataManager::CModuleDataList *mp_ModuleList;   //!< Current list of modules
     Core::CServiceGUIConnector *mp_DateConnector;         //!< Global data connector
+    QStringList  m_SubModuleNames;                        //!< Store Updated sub moudule names
 };
 
 

@@ -28,6 +28,10 @@
 
 #include "ui_OvenConfiguration.h"
 
+#include "ServiceDataManager/Include/TestCaseGuide.h"
+#include "ServiceDataManager/Include/TestCase.h"
+#include "ServiceDataManager/Include/TestCaseFactory.h"
+
 namespace SystemTracking {
 
 const QString MODULE_OVEN("Paraffine Oven");         //!< Paraffine oven name
@@ -122,6 +126,7 @@ void COven::UpdateSubModule(ServiceDataManager::CSubModule &SubModule)
     }
 
     (void)pModule->UpdateSubModule(&SubModule);
+    m_SubModuleNames<<SubModule.GetSubModuleName();
 
     mp_Ui->finalizeConfigBtn->setEnabled(true);
 }
@@ -309,6 +314,22 @@ void COven::ResetMessageBox()
     if (mp_MessageDlg) {
         delete mp_MessageDlg;
         mp_MessageDlg = new MainMenu::CMessageDlg(this);
+    }
+}
+
+void COven::ResetSubModuleLifeCycle()
+{
+    qDebug() << "COven::ResetSubModuleLifeCycle";
+
+    Service::ModuleTestCaseID Id = Service::RESET_OPERATION_TIME;
+    QString TestCaseName = DataManager::CTestCaseGuide::Instance().GetTestCaseName(Id);
+    DataManager::CTestCase* p_TestCase = DataManager::CTestCaseFactory::Instance().GetTestCase(TestCaseName);
+
+    p_TestCase->SetParameter("Module", MODULE_OVEN);
+
+    for (int i = 0; i < m_SubModuleNames.count(); ++i) {
+        p_TestCase->SetParameter("SubModule", m_SubModuleNames.at(i));
+        emit PerformManufacturingTest(Id);
     }
 }
 

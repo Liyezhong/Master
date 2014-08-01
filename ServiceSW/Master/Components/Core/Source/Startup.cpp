@@ -95,6 +95,17 @@ CStartup::CStartup() : QObject(),
     CONNECTSIGNALSIGNAL(mp_RotaryValveConfig, ModuleListChanged(), mp_ServiceConnector, ModuleListChanged());
     CONNECTSIGNALSIGNAL(mp_LaSystemConfig, ModuleListChanged(), mp_ServiceConnector, ModuleListChanged());
 
+    CONNECTSIGNALSIGNAL(mp_MainControlConfig, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID),
+                        this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+    CONNECTSIGNALSIGNAL(mp_RetortConfig, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID),
+                        this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+    CONNECTSIGNALSIGNAL(mp_OvenConfig, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID),
+                        this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+    CONNECTSIGNALSIGNAL(mp_RotaryValveConfig, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID),
+                        this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+    CONNECTSIGNALSIGNAL(mp_RotaryValveConfig, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID),
+                        this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
+
     (void)connect(mp_ServiceConnector,
                   SIGNAL(ModuleListChanged()),
                   mp_CurrentConfiguration,
@@ -104,9 +115,6 @@ CStartup::CStartup() : QObject(),
                   SIGNAL(ModuleListChanged()),
                   mp_ViewHistory,
                   SLOT(UpdateGUI()));
-
-    CONNECTSIGNALSIGNAL(mp_MainControlConfig, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID),
-                        this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
 
     CONNECTSIGNALSLOT(mp_MainWindow, CurrentTabChanged(int), mp_MainControlConfig, CurrentTabChanged(int));
     CONNECTSIGNALSLOT(mp_SystemTrackingGroup, PanelChanged(), mp_MainControlConfig, ConfirmModuleConfiguration());
