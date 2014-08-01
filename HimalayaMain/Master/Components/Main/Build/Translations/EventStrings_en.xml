@@ -38,7 +38,6 @@
 		<string id="19398662" text1="ConnectionManager: Client %1. outgoing QByteArray is empty." text2=""/>
 		<string id="19398663" text1="ConnectionManager: Client %1. writing outgoing data to Socket failed !." text2=""/>
 		<string id="17039371" text1="Event %1 is not properly configured in column %2" text2=""/>
-		<string id="19595265" text1="Please refill coverglass and/or mountant medium" text2=""/>
 		<string id="17825795" text1="Switch off not allowed. Wait until transportation is completed." text2=""/>
 		<string id="16973834" text1="Data logging is disabled. Please contact yor service specialist." text2=""/>
 		<string id="16973828" text1="Event Id %1 does not exist in the event string xml file" text2=""/>
@@ -51,14 +50,10 @@
 		<string id="17235997" text1="Check user log for more info." text2=""/>
 		<string id="17235986" text1="DeviceConfiguration Verification Failed" text2=""/>
 		<string id="17235984" text1="Device Configuration XML file Read failed" text2=""/>
-		<string id="17760257" text1="%1 is not a valid agitation Speed" text2=""/>
 		<string id="17760268" text1="%1 is not a valid DirectConnection on/off state" text2=""/>
-		<string id="17760258" text1="%1 is not a valid oven temperature" text2=""/>
 		<string id="17760271" text1="%1 is not a valid Proxy IP Address." text2=""/>
 		<string id="17760272" text1="%1 is not a valid Proxy IP Port." text2=""/>
 		<string id="17760267" text1="%1 is not a valid RemoteCare on/off state." text2=""/>
-		<string id="17956872" text1="Unknown module information found in settings" text2=""/>
-		<string id="17760259" text1="%1 is not a valid water type" text2=""/>
 		<string id="17235976" text1="Translations for language  %1  not found." text2=""/>
 		<string id="17235973" text1="%1  is not a supported language." text2=""/>
 		<string id="17235972" text1="%1  is not a valid number." text2=""/>
@@ -72,28 +67,13 @@
 		<string id="17235988" text1="%1 file open operation failed" text2=""/>
 		<string id="17235995" text1="Group verification failed" text2=""/>
 		<string id="17235987" text1="%1 Initialization Error" text2=""/>
-		<string id="17956870" text1="Camera Slide Id data is invalid." text2=""/>
-		<string id="17956867" text1="Coverslipper instrument name character count is invalid." text2=""/>
 		<string id="17235979" text1="%1  is not a valid date format." text2=""/>
-		<string id="17956865" text1="Instrument name character count is invalid." text2=""/>
-		<string id="17956866" text1="Instrument serial number character count is invalid." text2=""/>
-		<string id="17956869" text1="Heated Cuvettes mode data is invalid." text2=""/>
-		<string id="17760260" text1="%1 is not a valid Leica agitation speed" text2=""/>
-		<string id="17760261" text1="%1 is not a valid Leica oven temperature" text2=""/>
-		<string id="17760262" text1="Invalid Reagent Id in Loader station  %1 " text2=""/>
-		<string id="17235982" text1="%1  is not a valid oven start mode." text2=""/>
-		<string id="19136516" text1="CV ParameterSets with ParameterSet id %1 is invalid" text2=""/>
 		<string id="17760270" text1="%1 is not a valid Proxy Password." text2=""/>
 		<string id="17760269" text1="%1 is not a valid Proxy UserName." text2=""/>
 		<string id="17235974" text1="%1  is not a valid on/off state." text2=""/>
-		<string id="17956871" text1="Stainer instrument name character count is invalid." text2=""/>
 		<string id="17235981" text1="%1  is not a valid temperature format ." text2=""/>
 		<string id="17235980" text1="%1  is not a valid time format." text2=""/>
-		<string id="17956868" text1="Workstation mode data is invalid." text2=""/>
 		<string id="17235996" text1="NULL pointer error in DataManager component" text2=""/>
-		<string id="19136513" text1="ParameterSet list count %1 exceeds the limit .Maximum 10 racks allowed." text2=""/>
-		<string id="17236016" text1="Reading ProcessSettings.xml failed." text2=""/>
-		<string id="17236017" text1="Verifying ProcessSettings.xml failed." text2=""/>
 		<string id="19070983" text1="RCConfig: Certificate FileName %1 length is out of range min %2 max %3." text2=""/>
 		<string id="17236007" text1="Verifying RCConfig.xml failed." text2=""/>
 		<string id="17236006" text1="Reading RCConfig.xml failed." text2=""/>
@@ -117,55 +97,22 @@
 		<string id="19070985" text1="RCConfig: Server type %1 is out of range min %2 max %3." text2=""/>
 		<string id="19070987" text1="RCConfig: Server URL %1 length is out of range min %2 max %3." text2=""/>
 		<string id="19070986" text1="RCConfig: Target Database %1 length is out of range min %2 max %3." text2=""/>
-		<string id="19267598" text1="Internal Software Error. Reagent Add failed. " text2=""/>
-		<string id="19267600" text1="Internal Software Error. Reagent Delete failed. " text2=""/>
 		<string id="19267589" text1="Reagents count exceeds the limit. Max 100 allowed." text2=""/>
-		<string id="19267596" text1="Heating Start mode for heated reagent %1 undefined" text2=""/>
 		<string id="19267588" text1="Reagent ID %1 of reagent %2 does not exists in the list." text2=""/>
 		<string id="19267587" text1="Reagent ID %1 of reagent %2 already in use." text2=""/>
-		<string id="19267601" text1="Internal Software Error. Reagent data invalid %1" text2=""/>
-		<string id="19267590" text1="Reagent ID %1 for the reagent %2 doesn t start with S or L or U" text2=""/>
-		<string id="19267592" text1="Reagent Name %1 is too long (max 32 characters)" text2=""/>
-		<string id="19267593" text1="Value for Slides max of reagent %1 must be greater than 0 and less than 4000." text2=""/>
 		<string id="19267585" text1="Reagent name %1 already in use. Please choose different reagent name." text2=""/>
 		<string id="19267599" text1="Internal Software Error. %1 failed." text2=""/>
-		<string id="19267591" text1="Reagent  Abbreviation %1 is too long (max 10 characters)" text2=""/>
-		<string id="19267586" text1="Reagent Abbreviation %1 already in use. Please choose different Reagent  Abbreviation." text2=""/>
-		<string id="19267595" text1="Temperature of reagent %1 not within limit. Range is between 37C and 75C." text2=""/>
-		<string id="19267597" text1="Internal Software Error. Reagent update failed. " text2=""/>
-		<string id="19267594" text1="Value for Days max of reagent %1 must be greater than 0 and less than 100." text2=""/>
 		<string id="17236009" text1="Verifying Reagents.xml failed." text2=""/>
 		<string id="17236008" text1="Reading Reagents.xml failed." text2=""/>
 		<string id="17760274" text1="Saving user settings failed. Please contact service." text2=""/>
 		<string id="17235985" text1="UserSettings Verification Failed" text2=""/>
 		<string id="17235983" text1="UserSettings XML File Read failed" text2=""/>
 		<string id="17235998" text1="Writing the XML %1 failed during shutdown." text2=""/>
-		<string id="17236001" text1="Station Matrix Number of columns %1 does not match with maximum limit." text2=""/>
-		<string id="17236005" text1="Verifying StationGrid.xml failed." text2=""/>
-		<string id="17236004" text1="Reading StationGrid.xml failed." text2=""/>
-		<string id="19202052" text1="Station %1 is not dry/heated/load/oven/park/reagent/slide/transfer/unload/water station." text2=""/>
-		<string id="19202057" text1="Station ID is missing" text2=""/>
-		<string id="19202050" text1="Station ID %1 does not exists in the list." text2=""/>
-		<string id="19202049" text1="Station ID %1 already in use. Please choose different ID." text2=""/>
-		<string id="19202051" text1="Station ID %1 size is more than 3 characters." text2=""/>
-		<string id="19202055" text1="Station %1 Best Before Date %2 not valid." text2=""/>
-		<string id="19202054" text1="Station %1 Expiry Date %2 not valid." text2=""/>
-		<string id="19202059" text1="Invalid first usage date for station %1" text2=""/>
-		<string id="19202053" text1="Invalid Station Id s received in CmdDrawerUpdate for unloader racks." text2=""/>
-		<string id="17236003" text1="Station Matrix Station %1 type is invalid." text2=""/>
-		<string id="17236012" text1="Verifying StationGrid.xml failed." text2=""/>
 		<string id="17236013" text1="Reading InstrumentHistory.xml failed." text2="Internal Software Error. Please contact your Leica Service Organization."/>
-		<string id="17236002" text1="Station Matrix Station %1 zone is invalid." text2=""/>
-		<string id="17236000" text1="Station Matrix Number of rows %1 does not match with maximum limit." text2=""/>
 		<string id="17236010" text1="Reading Stations.xml failed." text2=""/>
-		<string id="19202060" text1="Invalid data found for station %1" text2=""/>
 		<string id="17236011" text1="Verifying Station.xml failed." text2=""/>
 		<string id="17235990" text1="%1 Stream In Operation failed" text2=""/>
 		<string id="17235991" text1="%1 Stream Out Operation failed" text2=""/>
-		<string id="19136517" text1="CV ParameterSets:  %1  is not a valid Color." text2=""/>
-		<string id="19136521" text1="CV ParameterSets:  %1  is not a valid Coverslip Length." text2=""/>
-		<string id="19136518" text1="CV ParameterSets:  %1  is not a valid Mountant Name." text2=""/>
-		<string id="19136519" text1="CV ParameterSets:  %1  is not a valid Mountant Volume." text2=""/>
 		<string id="17760266" text1="Warning Sound Level values are Out Of Range" text2=""/>
 		<string id="17760265" text1="Warning Sound Number values are Out Of Range" text2=""/>
 		<string id="17235994" text1="%1 XML De Serialization failed" text2=""/>
@@ -183,8 +130,6 @@
 		<string id="17498129" text1="EPD. Process %1: ExternalProcess login timedout." text2=""/>
 		<string id="17498127" text1="EPD. Process %1: Missing input." text2=""/>
 		<string id="17498128" text1="EPD. Process %1: NetworkServerDevicewas could not be started." text2=""/>
-		<string id="17891332" text1="Error: %1" text2=""/>
-		<string id="19529734" text1="Error starting Service Software. Service Software not found" text2=""/>
 		<string id="17039361" text1="Colorado has switched to error state" text2=""/>
 		<string id="17039364" text1="Internal software error: EventId is missing %1" text2=""/>
 		<string id="17629209" text1="Export failed. Advance Encryption Standard is not initialized" text2=""/>
@@ -213,12 +158,10 @@
 		<string id="17629197" text1="Export failed. Log directory does not exist" text2=""/>
 		<string id="17629211" text1="Export failed. Most significant bit not set for calculations" text2=""/>
 		<string id="17629195" text1="Export failed. Source directory does not exist" text2=""/>
-		<string id="17629217" text1="Export failed. Stopped working" text2=""/>
 		<string id="17629193" text1="Export successful." text2=""/>
 		<string id="17629196" text1="Export failed. Target directory does not exist" text2=""/>
 		<string id="17629198" text1="Export failed. Target file name format is wrong" text2=""/>
 		<string id="17629192" text1="Export failed. Unable to archive the files" text2=""/>
-		<string id="17629218" text1="Export failed. Unable create CMS file" text2=""/>
 		<string id="17629187" text1="Export failed. Unable to create the RMS_Status.csv file" text2=""/>
 		<string id="17629188" text1="Export failed. Unable to create the TempConfiguration.xml file" text2=""/>
 		<string id="17629189" text1="Export failed. Unable to read the TempConfiguration.xml file" text2=""/>
@@ -248,7 +191,6 @@
 		<string id="16842759" text1="Signal is not connected to any slot" text2=""/>
 		<string id="16842754" text1="Unknown exception caught: file: %1 line: %2." text2=""/>
 		<string id="16842777" text1="Global exception (EventCode %1 thrown in %2) caught in %3 at line %4" text2=""/>
-		<string id="16843280" text1="Station DC updated by RMS" text2=""/>
 		<string id="16842778" text1="Std exception (%1) caught in %2 at line %3" text2=""/>
 		<string id="16846862" text1="User acknowledged by pressing button" text2=""/>
 		<string id="16846848" text1="Debug message:  %1 " text2=""/>
@@ -262,21 +204,10 @@
 		<string id="16846857" text1="Shutting down device" text2=""/>
 		<string id="16842776" text1="Unhandled exception caught" text2=""/>
 		<string id="16842753" text1="Unknown String ID" text2=""/>
-		<string id="16843277" text1="Administrator Login" text2=""/>
-		<string id="16843283" text1="Bathlayout changed by user" text2=""/>
-		<string id="16843282" text1="Bathlayout change by user failed" text2=""/>
 		<string id="16843278" text1="User Login" text2=""/>
-		<string id="16843264" text1="Program %1 added" text2=""/>
-		<string id="16843268" text1="Color for program %1 changed" text2=""/>
-		<string id="16843265" text1="Program %1 deleted" text2=""/>
-		<string id="16843267" text1="Leica Program %1 updated" text2=""/>
-		<string id="16843266" text1="Program %1 updated" text2=""/>
-		<string id="16843269" text1="Reagent %1 added" text2=""/>
-		<string id="16843270" text1="Reagent %1 deleted" text2=""/>
 		<string id="16843304" text1="Heated cuvette is %1 for the Reagent %2 and temperature is %3" text2=""/>
 		<string id="16843302" text1="Heated cuvette start mode is changed to %1 for the Reagent %2" text2=""/>
 		<string id="16843303" text1="Heated cuvette temperature is changed to %1 for the Reagent %2" text2=""/>
-		<string id="16843271" text1="Reagent %1 updated" text2=""/>
 		<string id="16843295" text1="OFF" text2=""/>
 		<string id="16843294" text1="On" text2=""/>
 		<string id="16843289" text1="Agitation speed changed to %1" text2=""/>
@@ -285,9 +216,7 @@
 		<string id="16843291" text1="Alarm warning sound note changed" text2=""/>
 		<string id="16843300" text1="Alarm warning volume note tone changed" text2=""/>
 		<string id="16843288" text1="Date format changed to %1" text2=""/>
-		<string id="16843273" text1="Date/ Time changed: %1" text2=""/>
 		<string id="16843272" text1="Language set to %1" text2=""/>
-		<string id="16843290" text1="Loader reagent %1 changed to %2" text2=""/>
 		<string id="16843275" text1="Network Settings changed" text2=""/>
 		<string id="16843285" text1="Oven start mode changed to %1" text2=""/>
 		<string id="16843298" text1="Permanent" text2=""/>
@@ -299,11 +228,9 @@
 		<string id="16843284" text1="Water type changed to %1" text2=""/>
 		<string id="16843297" text1="Distilled" text2=""/>
 		<string id="16843296" text1="Tap" text2=""/>
-		<string id="16843276" text1="White rack assigned to program %1" text2=""/>
 		<string id="17825801" text1="GPIO Error: %1." text2=""/>
 		<string id="17825802" text1="GPIO:Info:%1" text2=""/>
 		<string id="17039363" text1="GUI is available" text2=""/>
-		<string id="17891334" text1="Info: %1" text2=""/>
 		<string id="17039365" text1="Initialization of instrument failed" text2=""/>
 		<string id="17039370" text1="Initialization stage %1 completed with restrictions." text2=""/>
 		<string id="17039369" text1="Initialization of instrument completed with restrictions. Staining is possible though." text2=""/>
@@ -372,7 +299,6 @@
 		<string id="19398682" text1="NetSettings: Novalid client connections." text2=""/>
 		<string id="19398680" text1="NetSettings: Pointer null at %1." text2=""/>
 		<string id="19529731" text1="Password changed successfully." text2=""/>
-		<string id="19529733" text1="Password file is corrupted or not available. Login to administrator mode not possible." text2=""/>
 		<string id="19529729" text1="Login failed. Incorrect password. Valid password consists of 4 to 16 characters." text2=""/>
 		<string id="17694727" text1="Service authentication failed. Service User is not trained for this instrument." text2=""/>
 		<string id="17694724" text1="Service authentication failed. Service Key file is invalid." text2=""/>
@@ -418,7 +344,6 @@
 		<string id="18874370" text1="The release date or version of component %1 is empty in SW_Version.xml." text2=""/>
 		<string id="18874371" text1="Empty SW component name in SW_Version.xml." text2=""/>
 		<string id="17891331" text1="System initialization complete" text2=""/>
-		<string id="19595269" text1="Debug message: Specific thread controller %1 is started(For Device command processor-0x0101:Gui-0x0102:Scheduler-0x0103:ImportExport Thread-0x0104:Export-0x0105:Sepia-0x0106:BLG-0x0107)" text2=""/>
 		<string id="19595268" text1="Debug message: %1 thread create and initialize is called" text2=""/>
 		<string id="19595267" text1="Debug message: %1 thread on go received" text2=""/>
 		<string id="16908300" text1="Functor already registered for acknowledge:  %1 ." text2=""/>
@@ -442,7 +367,6 @@
 		<string id="16973836" text1="OK" text2=""/>
 		<string id="16973841" text1="Stop" text2=""/>
 		<string id="16973838" text1="Yes" text2=""/>
-		<string id="17891333" text1="Warning: %1" text2=""/>
 		<string id="33619990" text1="Can not change the date and time more than 24 hours of the current system date time is %1." text2=""/>
 		<string id="33817094" text1="Group verification failed. Base container is not initialized." text2=""/>
 		<string id="33817095" text1="Group verification failed. Container type is not valid." text2=""/>
@@ -485,21 +409,15 @@
 		<string id="33818115" text1="User Program name can not contain  leica  word." text2=""/>
 		<string id="50331649" text1="Export failed. No enough space on SD card." text2=""/>
 		<string id="50331672" text1="Export failed. No enough space on USB storage." text2=""/>
-		<string id="16842764" text1="Could not set fallback language to  %1 ." text2=""/>
 		<string id="16842767" text1="Error deleting file %1." text2=""/>
-		<string id="16842771" text1="Error seeking in file %1." text2=""/>
-		<string id="16842768" text1="Error writing data: File %1. %2 bytes of %3 written." text2=""/>
 		<string id="16842762" text1="Error reading config file %1." text2=""/>
 		<string id="16842772" text1="Time offset is too large  %1  seconds. Allowed:  %2  seconds." text2=""/>
-		<string id="16846860" text1="Power fail." text2=""/>
 		<string id="16846858" text1="Setting date / time to  %1 ." text2=""/>
-		<string id="16908287" text1="undefined. Used for initialisations" text2=""/>
 		<string id="33619971" text1="Stainer started (serial number is %1 and type is %2)" text2=""/>
 		<string id="33947653" text1="Import failed. Format of import file is wrong" text2=""/>
 		<string id="50331760" text1="Import failed. SW versions are not matching to Import the files" text2=""/>
 		<string id="50331763" text1="No USB devices found in the system to export files" text2=""/>
 		<string id="50331762" text1="No USB devices found in the system to import files" text2=""/>
-		<string id="33947649" text1="No USB devices found in the system to import files" text2=""/>
 		<string id="33947665" text1="ImportExport thread already running" text2=""/>
 		<string id="33947664" text1="Import failed" text2=""/>
 		<string id="33947657" text1="Import failed. Container initialization failed" text2=""/>
