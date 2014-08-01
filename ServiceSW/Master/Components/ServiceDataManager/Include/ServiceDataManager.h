@@ -60,6 +60,7 @@ private:
     Threads::ServiceMasterThreadController *mp_MasterThreadController; //!< This is passed to DataContainer
 
     virtual bool DeinitDataContainer();
+
 };
 }// namespace DataManager
 

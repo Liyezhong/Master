@@ -628,6 +628,7 @@ void CStartup::ManufacturingGuiInit()
         mp_ManaufacturingDiagnosticsHandler->ShowMessage(QApplication::translate("Core::Startup", "System is initializing ...", 0, QApplication::UnicodeUTF8));
     }
 
+    //mp_ServiceConnector->SetLanguage(PlatformService::DEUTSCH);
     qDebug()<<"CStartup::ManufacturingGuiInit finished";
 }
 

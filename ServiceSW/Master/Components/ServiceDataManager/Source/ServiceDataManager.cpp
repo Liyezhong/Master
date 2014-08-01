@@ -24,6 +24,7 @@
 #include "HimalayaDataContainer/Helper/Include/HimalayaDataManagerEventCodes.h"
 
 #include "ServiceDataManager/Include/ServiceDataManager.h"
+#include "ServiceDataManager/Include/ModuleDateListAdapter.h"
 
 #include "ServiceDataManager/CommandInterface/Include/ModuleCommandInterface.h"
 
@@ -107,6 +108,11 @@ quint32 CServiceDataManager::InitDataContainer()
                 because mp_ServiceDataContainer->ModuleList->VerifyData failed.";
     }
 
+    ServiceDataManager::CModuleDateListAdapter ModuleListAdapter(mp_ServiceDataContainer->ModuleList);
+    if (!ModuleListAdapter.run()) {
+        qDebug()<<"CServiceDataManager::run module list adapter failed.";
+    }
+
     mp_ServiceDataContainer->ModuleListArchive->SetDataVerificationMode(false);
     QString FilenameModuleListArchive = Global::SystemPaths::Instance().GetSettingsPath() + "/InstrumentHistoryArchive.xml";
     if (!mp_ServiceDataContainer->ModuleListArchive->ReadFile(FilenameModuleListArchive)) {
@@ -162,7 +168,5 @@ CModuleCommandInterface* CServiceDataManager::GetModuleDataListInterface()
 {
     return mp_ModuleCommandInterface;
 }
-
-
 
 } // namespace DataManager
