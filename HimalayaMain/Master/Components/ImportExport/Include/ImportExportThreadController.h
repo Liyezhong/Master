@@ -34,8 +34,8 @@
 #include "DataManager/Containers/UserSettings/Include/UserSettingsVerifier.h"
 #include "DataManager/Containers/SWVersions/Include/SWVersionListVerifier.h"
 #include "Global/Include/SystemPaths.h"
-#include "ImportExport/WriteArchive/Include/WriteArchive.h"
-#include "ImportExport/ReadArchive/Include/ReadArchive.h"
+#include "EncryptionDecryption/WriteArchive/Include/WriteArchive.h"
+#include "EncryptionDecryption/ReadArchive/Include/ReadArchive.h"
 #include "HimalayaDataContainer/Containers/DashboardStations/Include/DashboardDataStationList.h"
 
 
@@ -260,7 +260,7 @@ private:
      */
     /****************************************************************************/
     bool WriteFilesAndImportData(const QString &TypeOfImport, const QStringList &FileList,
-                                 const ImportExport::RAMFile &RamFile);
+                                 const EncryptionDecryption::RAMFile &RamFile);
 
     /****************************************************************************/
     /**

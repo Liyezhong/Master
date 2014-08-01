@@ -28,7 +28,7 @@ PLATFORM_COMPONENTS = NetworkComponents \
                       ExternalProcessController \
                       GPIOManager \
                       ExportController \
-                      ImportExport \
+                      EncryptionDecryption \
                       PasswordManager \
                       Global
 

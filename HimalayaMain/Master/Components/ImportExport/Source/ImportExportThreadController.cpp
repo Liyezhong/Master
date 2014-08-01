@@ -976,10 +976,10 @@ bool ImportExportThreadController::ImportArchiveFiles(const QString &ImportType,
     // this is used for Import command
     bool IsImported = true;
     // we use different keys for Leica and Viewer (Viewer with value 1)
-    QByteArray KeyBytes(ImportExport::Constants::KEYFILESIZE, 0);
-    KeyBytes[2 * ImportExport::Constants::HASH_SIZE - 1] = 1;
+    QByteArray KeyBytes(EncryptionDecryption::Constants::KEYFILESIZE, 0);
+    KeyBytes[2 * EncryptionDecryption::Constants::HASH_SIZE - 1] = 1;
     // create the RAM file
-    ImportExport::RAMFile RFile;
+    EncryptionDecryption::RAMFile RFile;
     // to store the file list
     QStringList FileList;
     QDir Dir(Global::DIRECTORY_MNT_STORAGE + QDir::separator() + DIRECTORY_IMPORT);
@@ -1064,9 +1064,9 @@ bool ImportExportThreadController::AddFilesForImportType(const QString &TypeOfIm
 
 /****************************************************************************/
 bool ImportExportThreadController::WriteFilesAndImportData(const QString &TypeOfImport, const QStringList &FileList,
-                                                           const ImportExport::RAMFile &RamFile) {
+                                                           const EncryptionDecryption::RAMFile &RamFile) {
     bool RequiredFilesImported = false;
-    ImportExport::RAMFile RFile = const_cast<ImportExport::RAMFile&>(RamFile);
+    EncryptionDecryption::RAMFile RFile = const_cast<EncryptionDecryption::RAMFile&>(RamFile);
     // check the type of Import
     if (TypeOfImport.compare(TYPEOFIMPORT_LANGUAGE, Qt::CaseInsensitive) == 0) {
         if (RFile.getFiles().count() >= 2) {
@@ -1091,7 +1091,7 @@ bool ImportExportThreadController::WriteFilesAndImportData(const QString &TypeOf
                         // try to create the files
                         try {
                             // remove the full file path
-                            ImportExport::FailSafeOpen FileWrite(KeyName, FILEMODE_WRITE);
+                            EncryptionDecryption::FailSafeOpen FileWrite(KeyName, FILEMODE_WRITE);
                             FileWrite.write(FileData);
                             FileWrite.close();
                         }

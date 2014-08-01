@@ -28,7 +28,7 @@ PLATFORM_COMPONENTS = DataLogging \
                       StateMachines \
                       ExternalProcessController \
                       ExportController \
-                      ImportExport \
+                      EncryptionDecryption \
                       Threads \
                       PasswordManager \
                       GPIOManager \

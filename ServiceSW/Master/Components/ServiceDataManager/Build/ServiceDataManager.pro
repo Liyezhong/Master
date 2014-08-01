@@ -11,8 +11,7 @@ INCLUDEPATH += ../../../../../../Platform/Common/Components \
                ../../../../../../Himalaya/HimalayaMain/Master/Include \
                ../../../../../../Himalaya/HimalayaMain/Master/Components
 
-HEADERS +=  ../Include/*.h \
-    ../Include/TestCaseParameters.h \
+HEADERS +=  ../Include/*.h  \
     ../Include/TestCaseGuide.h \
     ../Include/TestCaseFactory.h \
     ../Include/TestCase.h \
