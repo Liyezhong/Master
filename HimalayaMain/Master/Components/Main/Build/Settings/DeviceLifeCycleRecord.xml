@@ -16,16 +16,16 @@
         <Device Key="OtherDevice">
             <Functionmodules>
                 <Functionmodule Key="EBox">
-                    <Parameter Key="EBox_LifeTime" Value="32457"/>
+                    <Parameter Key="EBox_LifeTime" Value="32465"/>
                 </Functionmodule>
                 <Functionmodule Key="PressureSensor">
-                    <Parameter Key="Pressure_Sensor_LifeTime" Value="32456"/>
+                    <Parameter Key="Pressure_Sensor_LifeTime" Value="32465"/>
                 </Functionmodule>
                 <Functionmodule Key="TouchScreen">
-                    <Parameter Key="Touch_Screen_LifeTime" Value="32456"/>
+                    <Parameter Key="Touch_Screen_LifeTime" Value="32466"/>
                 </Functionmodule>
                 <Functionmodule Key="VentilationFan">
-                    <Parameter Key="Ventilation_Fan_LifeTime" Value="32457"/>
+                    <Parameter Key="Ventilation_Fan_LifeTime" Value="32467"/>
                 </Functionmodule>
             </Functionmodules>
         </Device>
