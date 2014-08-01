@@ -172,16 +172,16 @@
             <TestDate></TestDate>
             <TestResult></TestResult>
             <SubModule name="EBox" type="Other Module" description="">
-                <parameter name="LifeTime" unit="Seconds">43726</parameter>
+                <parameter name="LifeTime" unit="seconds">44325</parameter>
             </SubModule>
             <SubModule name="Pressure_Sensor" type="Other Module" description="">
-                <parameter name="LifeTime" unit="Seconds">43725</parameter>
+                <parameter name="LifeTime" unit="seconds">44324</parameter>
             </SubModule>
             <SubModule name="Touch_Screen" type="Other Module" description="">
-                <parameter name="LifeTime" unit="Seconds">43725</parameter>
+                <parameter name="LifeTime" unit="seconds">44324</parameter>
             </SubModule>
             <SubModule name="Ventilation_Fan" type="Other Module" description="">
-                <parameter name="LifeTime" unit="Seconds">43726</parameter>
+                <parameter name="LifeTime" unit="seconds">44325</parameter>
             </SubModule>
         </Module>
     </ModuleList>
