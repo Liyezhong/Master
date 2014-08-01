@@ -56,8 +56,6 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
                        m_CurTabIndex(0)
 
 {
-    QRectF Rect;
-
     m_pPipeAnimationTimer = new QTimer(this);
     CONNECTSIGNALSLOT(m_pPipeAnimationTimer, timeout(), this, PipeSuckDrainAnimation());
 

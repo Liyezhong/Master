@@ -72,7 +72,7 @@ void CDashboardProgramStatusWidget::ResizeHorizontalSection()
 {
     mp_TableWidget->horizontalHeader()->resizeSection(0, 45);
     mp_TableWidget->horizontalHeader()->resizeSection(1, 180);
-    mp_TableWidget->horizontalHeader()->resizeSection(2, 55);
+    mp_TableWidget->horizontalHeader()->resizeSection(2, 100);
     mp_TableWidget->horizontalHeader()->resizeSection(3, 100);
     mp_TableWidget->horizontalHeader()->resizeSection(4, 55);
     mp_TableWidget->horizontalHeader()->resizeSection(5, 65);

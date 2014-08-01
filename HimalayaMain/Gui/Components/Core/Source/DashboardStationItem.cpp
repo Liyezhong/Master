@@ -362,20 +362,25 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent(bool RefreshFlag)
     {
         //if(m_CurRMSMode != m_UserSettings.GetModeRMSProcessing())
         {
-            m_CurRMSMode = m_UserSettings.GetModeRMSProcessing();
-
-
+            QString ReagentGroupId = p_Reagent->GetGroupID();
+            DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupId);
+            if (p_ReagentGroup->IsCleaningReagentGroup()) {
+                m_CurRMSMode = m_UserSettings.GetModeRMSCleaning();
+            }
+            else {
+                m_CurRMSMode = m_UserSettings.GetModeRMSProcessing();
+            }
 
             DataManager::ReagentStatusType_t reagentStatus = mp_DashboardStation->GetReagentStatus(*p_Reagent, m_CurRMSMode);
 
-            if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
+            if (reagentStatus == DataManager::REAGENT_STATUS_EXPIRED)
                 m_ReagentExpiredFlag = true;
             else
                 m_ReagentExpiredFlag = false;
         }
     }
 
-    if ( RefreshFlag )
+    if (RefreshFlag)
         DrawStationItemImage();
 }
 
