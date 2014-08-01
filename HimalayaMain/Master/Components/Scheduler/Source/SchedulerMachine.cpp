@@ -771,9 +771,9 @@ void CSchedulerStateMachine::HandleRsStandByWorkFlow(const QString& cmdName, Ret
     mp_RsStandby->HandleWorkFlow(cmdName, retCode);
 }
 
-void CSchedulerStateMachine::HandleRsHeatingErr30SRetry()
+void CSchedulerStateMachine::HandleRsHeatingErr30SRetry(const QString& cmdName, ReturnCode_t retCode)
 {
-    mp_RsHeatingErr30SRetry->HandleWorkFlow();
+    mp_RsHeatingErr30SRetry->HandleWorkFlow(cmdName, retCode);
 }
 
 void CSchedulerStateMachine::HandleRsPressureOverRange3SRetry(const QString& cmdName, ReturnCode_t retCode)

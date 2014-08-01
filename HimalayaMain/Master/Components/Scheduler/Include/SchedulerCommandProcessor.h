@@ -69,6 +69,14 @@ typedef struct
 	qreal			TempOvenTop;       ///<  Definition/Declaration of variable TempOvenTop
 	quint16			OvenLidStatus;       ///<  Definition/Declaration of variable OvenLidStatus
 	quint16			RetortLockStatus;       ///<  Definition/Declaration of variable RetortLockStatus
+    qreal           CurrentRTSide;          ///< Current of Retort Side
+    qreal           CurrentRTBottom;        ///< Current of Retort Bottom
+    qreal           CurrentOvenTop;         ///< Current of Oven Top
+    qreal           CurrentOvenBottom;      ///< Current of Oven Bottom
+    qreal           CurrentLALevelSensor;   ///< Current of LA Level Sensor
+    qreal           CurrentLATube1;         ///< Current of LA Tube1
+    qreal           CurrentLATube2;         ///< Current of LA Tube2
+    qreal           CurrentRVTemp;          ///< Current of Rotary Valve temperautre module
 
     /****************************************************************************/
     /*!
@@ -81,7 +89,9 @@ typedef struct
         return QString("RTb1(%1)RTb2(%2)RTs(%3)RTl(%4)").arg(TempRTBottom1).arg(TempRTBottom2).arg(TempRTSide).arg(RetortLockStatus) +
                 QString("OVb1(%1)OVb2(%2)OVt(%3)OVl(%4)").arg(TempOvenBottom1).arg(TempOvenBottom2).arg(TempOvenTop).arg(OvenLidStatus) +
                 QString("RV1(%1)RV2(%2)RVp(%3)").arg(TempRV1).arg(TempRV2).arg(PositionRV) +
-                QString("ALp(%1)ALls(%2-%3)ALt1(%4)ALt2(%5)").arg(PressureAL).arg(TempALLevelSensor).arg(TempLevelSensorStatus ? "on" : "off").arg(TempALTube1).arg(TempALTube2);
+                QString("ALp(%1)ALls(%2-%3)ALt1(%4)ALt2(%5)").arg(PressureAL).arg(TempALLevelSensor).arg(TempLevelSensorStatus ? "on" : "off").arg(TempALTube1).arg(TempALTube2)+
+                QString("RTSideCurrent(%1)RTBottomCurrent(%2)OvenTop(%3)OvenBottom(%4)ALLSCurrent(%5)ALTube1Current(%6)ALTube2Current(%7)RVTempCurrent(%8)").arg(CurrentRTSide).arg(CurrentRTBottom)
+                .arg(CurrentOvenTop).arg(CurrentOvenBottom).arg(CurrentLALevelSensor).arg(CurrentLATube1).arg(CurrentLATube2).arg(CurrentRVTemp);
     }
 } HardwareMonitor_t;
 

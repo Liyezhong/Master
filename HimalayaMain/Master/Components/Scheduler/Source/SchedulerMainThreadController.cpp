@@ -433,10 +433,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                     m_SchedulerMachine->SendResumeFillingRVRodHeating();
                     break;
                 case PSSM_FILLING_LEVELSENSOR_HEATING:
-                    m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
-                    break;
                 case PSSM_FILLING:
-                    m_SchedulerMachine->SendResumeFiling();
+                    m_SchedulerMachine->SendResumeFillingLevelSensorHeating();
                     break;
                 case PSSM_RV_MOVE_TO_SEAL:
                     m_SchedulerMachine->SendResumeRVMoveToSeal();
@@ -999,7 +997,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     else if (SM_ERR_RS_HEATINGERR30SRETRY == currentState)
     {
         LogDebug("In RS_HeatingErr_30SRetry state");
-        m_SchedulerMachine->HandleRsHeatingErr30SRetry();
+        m_SchedulerMachine->HandleRsHeatingErr30SRetry(cmdName, retCode);
     }
     else if (SM_ERR_RS_PRESSUREOVERRANGE3SRETRY == currentState)
     {
@@ -1992,7 +1990,7 @@ void SchedulerMainThreadController::OnDCLConfigurationFinished(ReturnCode_t RetC
         //hardware not ready yet
         m_SchedulerCommandProcessor->pushCmd(new CmdPerTurnOnMainRelay(500, this));
         SchedulerCommandShPtr_t resPerTurnOnRelay;
-        while(!PopDeviceControlCmdQueue(resPerTurnOnRelay));
+        PopDeviceControlCmdQueue(resPerTurnOnRelay, "Scheduler::PerTurnOnMainRelay");
         resPerTurnOnRelay->GetResult(retCode);
         if(DCL_ERR_FCT_CALL_SUCCESS != retCode)
         {
@@ -2081,6 +2079,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
         {
             if(qAbs(m_PressureAL) >40.0 )
             {
+                LogDebug(QString("The pressure in the error case is: %1").arg(m_PressureAL));
                 RaiseError(0,DCL_ERR_DEV_LA_PRESSURESENSOR_OUTOFRANGE,Scenario,true);
                 m_SchedulerMachine->SendErrorSignal();
             }
@@ -2415,6 +2414,7 @@ void SchedulerMainThreadController::MoveRV(qint16 type)
     else if(1 == type) //seal positon
     {
         //get target position here
+        LogDebug(QString("The pressure in the error case is: %1").arg(m_PressureAL));
         targetPos = GetRVSealPositionByStationID(m_CurProgramStepInfo.stationID);
         LogDebug(QString("Move to RV Seal position: %1").arg(targetPos));
     }
@@ -2609,6 +2609,11 @@ bool SchedulerMainThreadController::CheckSensorTempOverange()
         temp2 = m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1;
         if( false == mp_HeatingStrategy->CheckSensorTempOverRange("RTBottom", temp2) )
             return false;
+        if (false == mp_HeatingStrategy->CheckRTBottomsDifference(m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom1,
+                                                         m_SchedulerCommandProcessor->HardwareMonitor().TempRTBottom2))
+        {
+            return false;
+        }
         break;
     case OVEN:
         temp1 = m_SchedulerCommandProcessor->HardwareMonitor().TempOvenTop;

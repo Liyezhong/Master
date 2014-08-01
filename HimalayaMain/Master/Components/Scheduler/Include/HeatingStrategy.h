@@ -203,6 +203,16 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Check temperature difference of the two Retort bottom sensors
+     *  \param  qreal temp1 - temperature of RT Bottom1
+     *  \param  qreal temp2 - temperature of RT Bottom2
+     *  \return bool true - success, false - failed
+     */
+    /****************************************************************************/
+    bool CheckRTBottomsDifference(qreal temp1, qreal temp2);
+
+    /****************************************************************************/
+    /*!
      *  \brief check the sensor heat over time
      *  \param HeaterName - sensor's name
      *  \param HWTemp = qreal temperature

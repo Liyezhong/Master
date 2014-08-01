@@ -18,7 +18,6 @@
  */
 /****************************************************************************/
 
-
 #include "Scheduler/Include/RsHeatingErr30SRetry.h"
 #include "Scheduler/Include/SchedulerMainThreadController.h"
 #include "Scheduler/Include/SchedulerCommandProcessor.h"
@@ -37,13 +36,16 @@ CRsHeatingErr30SRetry::CRsHeatingErr30SRetry(SchedulerMainThreadController* Sche
     :mp_SchedulerController(SchedController)
 {
     mp_StateMachine = QSharedPointer<QStateMachine>(new QStateMachine());
+    mp_ReleasePressure = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_ShutdownFailedHeater = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_WaitFor10Seconds = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_RestartFailedHeater = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_CheckTempModuleCurrent = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 
-    mp_StateMachine->setInitialState(mp_ShutdownFailedHeater.data());
 
+    mp_StateMachine->setInitialState(mp_ReleasePressure.data());
+    CONNECTSIGNALSLOT(mp_ReleasePressure.data(), entered(), mp_SchedulerController,ReleasePressure());
+    mp_ReleasePressure->addTransition(this, SIGNAL(ShutdownFailedHeaters), mp_ShutdownFailedHeater.data());
     mp_ShutdownFailedHeater->addTransition(this, SIGNAL(WaitFor10Seconds()), mp_WaitFor10Seconds.data());
     mp_WaitFor10Seconds->addTransition(this, SIGNAL(RestartFailedHeater()), mp_RestartFailedHeater.data());
     mp_RestartFailedHeater->addTransition(this, SIGNAL(CheckTempModuleCurrernt()), mp_CheckTempModuleCurrent.data());
@@ -101,13 +103,28 @@ CRsHeatingErr30SRetry::StateList_t CRsHeatingErr30SRetry::GetCurrentState(QSet<Q
     return currentState;
 }
 
-void CRsHeatingErr30SRetry::HandleWorkFlow()
+void CRsHeatingErr30SRetry::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
     StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
     qint64 now = 0;
 
     switch (currentState)
     {
+    case RELEASE_PRESSURE:
+        mp_SchedulerController->LogDebug("RS_HeatingErr_30SRetry, in state RELEASE_PRESSURE");
+        if ("Scheduler::ALReleasePressure" == cmdName)
+        {
+            // We always return failure
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                emit TasksDone(false);
+            }
+            else
+            {
+                emit ShutdownFailedHeaters();
+            }
+        }
+        break;
     case SHUTDOWN_FAILD_HEATER:
         mp_SchedulerController->LogDebug("RS_HeatingErr_30SRetry, in state SHUTDOWN_FAILD_HEATER");
         if (true == mp_SchedulerController->ShutdownFailedHeaters())

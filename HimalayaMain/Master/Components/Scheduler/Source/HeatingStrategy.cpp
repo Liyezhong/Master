@@ -437,6 +437,19 @@ ReturnCode_t HeatingStrategy::StopTemperatureControl(const QString& HeaterName)
     return retCode;
 }
 
+bool HeatingStrategy:: CheckRTBottomsDifference(qreal temp1, qreal temp2)
+{
+    if ( isEffectiveTemp(temp1) && isEffectiveTemp(temp2))
+    {
+        if (std::abs(temp1 - temp2) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
+        {
+            mp_SchedulerController->LogDebug(QString("the difference of two retort bottom sensor over range."));
+            return false;
+        }
+    }
+    return true;
+}
+
 quint16 HeatingStrategy::CheckTemperatureOverTime(const QString& HeaterName, qreal HWTemp)
 {
     qint64 now = QDateTime::currentMSecsSinceEpoch();
@@ -608,7 +621,7 @@ DeviceControl::ReturnCode_t HeatingStrategy::StartRTTemperatureControl(HeatingSe
 		{
 			return DCL_ERR_FCT_CALL_SUCCESS;
 		}
-        if (qFuzzyCompare(userInputTemp+1, 0.0+1))
+        if (qAbs(userInputTemp) <= 0.000000000001)
         {   
             return DCL_ERR_FCT_CALL_SUCCESS;
         }  

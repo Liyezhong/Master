@@ -759,12 +759,13 @@ public:
     /*!
      *  \brief Handle the whole work flow for Rs_HeatingERR30SRetry
      *
-     *  \param void
+     *  \param cmdName - command name
+     *  \param retCode - return code
      *
      *  \return void
      */
     /****************************************************************************/
-    void HandleRsHeatingErr30SRetry();
+    void HandleRsHeatingErr30SRetry(const QString& cmdName, DeviceControl::ReturnCode_t retCode);
 
 
     /****************************************************************************/
