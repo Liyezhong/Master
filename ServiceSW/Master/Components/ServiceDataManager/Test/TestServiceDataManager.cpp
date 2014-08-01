@@ -155,14 +155,14 @@ void CTestServiceDataManager::TestModuleDataList()
 
     QVERIFY(p_ModuleList->GetNumberofModules() == 5);
 
-    ServiceDataManager::CModule* p_Oven = p_ModuleList->GetModule("Oven");
+    ServiceDataManager::CModule* p_Oven = p_ModuleList->GetModule("Paraffine Oven");
     QVERIFY(p_Oven);
-    QCOMPARE(p_Oven->GetSerialNumber(), QString("14-HIM-WB-05000"));
+    //QCOMPARE(p_Oven->GetSerialNumber(), QString("14-HIM-WB-05000"));
 
     ServiceDataManager::CSubModule* p_Oven_Heater = p_Oven->GetSubModuleInfo("Heater");
     QVERIFY(p_Oven_Heater);
     QCOMPARE(p_Oven_Heater->GetSubModuleType(), QString("Heater"));
-    QVERIFY(p_Oven_Heater->GetNumberOfParameters() == 7);
+    QVERIFY(p_Oven_Heater->GetNumberOfParameters() == 6);
 }
 
 } // end namespace ImportExport

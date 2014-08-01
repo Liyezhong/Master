@@ -263,7 +263,7 @@ void CTestServiceDeviceController::caseTestManufacturingTestHandler()
     mp_ManufacturingHandler->Initialize();
     ASSERT_TRUE(mp_ManufacturingHandler->IsInitialized());
     //mp_ManufacturingHandler->PerformModuleManufacturingTest(Service::MAINCONTROL_ASB3);
-    mp_ManufacturingHandler->TestRVInitialization();
+    //mp_ManufacturingHandler->TestRVInitialization();
     //QCOREAPPLICATION_EXEC(500);
 
     //EXPECT_CALL(*mp_IDevProc, StartConfigurationService())
