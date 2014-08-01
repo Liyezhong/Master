@@ -327,17 +327,8 @@
 		<Event Code="" ErrorID="50331672" ErrorType="Error" AlarmType="" Name="EVENT_EXPORT_NO_ENOUGH_SPACE_ON_USB_CARD">
 			<Step ID="0" Type="MSG" StringID="50331672" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="16842764" ErrorType="Error" AlarmType="" Name="EVENT_GLOBAL_ERROR_FALLBACK_LANGUAGE">
-			<Step ID="0" Type="MSG" StringID="16842764" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="16842767" ErrorType="Error" AlarmType="" Name="EVENT_GLOBAL_ERROR_FILE_REMOVE">
 			<Step ID="0" Type="MSG" StringID="16842767" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16842771" ErrorType="Error" AlarmType="" Name="EVENT_GLOBAL_ERROR_FILE_SEEK">
-			<Step ID="0" Type="MSG" StringID="16842771" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16842768" ErrorType="Error" AlarmType="" Name="EVENT_GLOBAL_ERROR_FILE_WRITE">
-			<Step ID="0" Type="MSG" StringID="16842768" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16842762" ErrorType="Error" AlarmType="" Name="EVENT_GLOBAL_ERROR_READ_CONFIG_FILE">
 			<Step ID="0" Type="MSG" StringID="16842762" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
@@ -345,14 +336,8 @@
 		<Event Code="" ErrorID="16842772" ErrorType="Error" AlarmType="" Name="EVENT_GLOBAL_ERROR_TIME_OFFSET_TOO_LARGE">
 			<Step ID="0" Type="MSG" StringID="16842772" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="16846860" ErrorType="Info" AlarmType="" Name="EVENT_GLOBAL_POWER_FAIL">
-			<Step ID="0" Type="MSG" StringID="16846860" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="16846858" ErrorType="Info" AlarmType="" Name="EVENT_GLOBAL_SET_DATE_TIME">
 			<Step ID="0" Type="MSG" StringID="16846858" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16908287" ErrorType="Info" AlarmType="" Name="EVENT_GLOBAL_UNDEFINED">
-			<Step ID="0" Type="MSG" StringID="16908287" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="33619971" ErrorType="" AlarmType="" Name="EVENT_HIMALAYA_START">
 			<Step ID="0" Type="MSG" StringID="33619971" ButtonType="" LogLevel="" UserLog="TRUE" StatusBar=""/>
@@ -368,9 +353,6 @@
 		</Event>
 		<Event Code="" ErrorID="50331762" ErrorType="Error" AlarmType="" Name="EVENT_IMPORTEXPORT_IMPORT_NO_USB">
 			<Step ID="0" Type="MSG" StringID="50331762" ButtonType="OK" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="33947649" ErrorType="Error" AlarmType="" Name="EVENT_IMPORTEXPORT_NO_USB">
-			<Step ID="0" Type="MSG" StringID="33947649" ButtonType="Ok" LogLevel="High" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="33947665" ErrorType="Error" AlarmType="" Name="EVENT_IMPORTEXPORT_THREADRUNNING">
 			<Step ID="0" Type="MSG" StringID="33947665" ButtonType="Ok" LogLevel="High" UserLog="TRUE" StatusBar=""/>

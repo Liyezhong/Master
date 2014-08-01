@@ -28,9 +28,6 @@
 		<Event Code="" ErrorID="17039371" ErrorType="Error" AlarmType="No" Name="EVENT_CONFIG_FILE">
 			<Step ID="0" Type="MSG" StringID="17039371" ButtonType="" LogLevel="HIGH" UserLog="FALSE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="19595265" ErrorType="Warning" AlarmType="Yes" Name="EVENT_COVERGLASS_REFILL">
-			<Step ID="0" Type="MSG" StringID="19595265" ButtonType="Ok" LogLevel="HIGH" UserLog="TRUE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17825795" ErrorType="Warning" AlarmType="Yes" Name="EVENT_CRITICAL_ACTION_WARNING_MESG">
 			<Step ID="0" Type="MSG" StringID="17825795" ButtonType="Ok" LogLevel="High" UserLog="TRUE" StatusBar=""/>
 		</Event>
@@ -67,14 +64,8 @@
 		<Event Code="" ErrorID="17235984" ErrorType="Info" AlarmType="No" Name="EVENT_DM_DEVICE_CONFIG_XML_READ_FAILED">
 			<Step ID="0" Type="MSG" StringID="17235984" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17760257" ErrorType="Info" AlarmType="No" Name="EVENT_DM_ERROR_INVALID_AGITAION_SPEED">
-			<Step ID="0" Type="MSG" StringID="17760257" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17760268" ErrorType="Info" AlarmType="No" Name="EVENT_DM_ERROR_INVALID_DIRECT_CONNECTION_ONOFFSTATE">
 			<Step ID="0" Type="MSG" StringID="17760268" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17760258" ErrorType="Info" AlarmType="No" Name="EVENT_DM_ERROR_INVALID_OVENTEMP">
-			<Step ID="0" Type="MSG" StringID="17760258" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17760271" ErrorType="Info" AlarmType="No" Name="EVENT_DM_ERROR_INVALID_PROXY_IP_ADDRESS">
 			<Step ID="0" Type="MSG" StringID="17760271" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
@@ -84,12 +75,6 @@
 		</Event>
 		<Event Code="" ErrorID="17760267" ErrorType="Info" AlarmType="No" Name="EVENT_DM_ERROR_INVALID_REMOTECARE_ONOFFSTATE">
 			<Step ID="0" Type="MSG" StringID="17760267" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17956872" ErrorType="Info" AlarmType="No" Name="EVENT_DM_ERROR_INVALID_SETTINGS_XML_DATA_FOUND">
-			<Step ID="0" Type="MSG" StringID="17956872" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17760259" ErrorType="Info" AlarmType="No" Name="EVENT_DM_ERROR_INVALID_WATERTYPE">
-			<Step ID="0" Type="MSG" StringID="17760259" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17235976" ErrorType="Error" AlarmType="No" Name="EVENT_DM_ERROR_LANG_NOT_FOUND">
 			<Step ID="0" Type="MSG" StringID="17235976" ButtonType="Ok" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
@@ -130,38 +115,8 @@
 		<Event Code="" ErrorID="17235987" ErrorType="Info" AlarmType="No" Name="EVENT_DM_INITIALIZATION_ERROR">
 			<Step ID="0" Type="MSG" StringID="17235987" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17956870" ErrorType="Info" AlarmType="No" Name="EVENT_DM_INVALID_CAMERA_SLIDEID_DATA">
-			<Step ID="0" Type="MSG" StringID="17956870" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17956867" ErrorType="Info" AlarmType="No" Name="EVENT_DM_INVALID_COVERSLIPPER_NAME_WIDTH">
-			<Step ID="0" Type="MSG" StringID="17956867" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17235979" ErrorType="Error" AlarmType="No" Name="EVENT_DM_INVALID_DATEFORMAT">
 			<Step ID="0" Type="MSG" StringID="17235979" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17956865" ErrorType="Info" AlarmType="No" Name="EVENT_DM_INVALID_DEVICE_NAME_CHAR_COUNT">
-			<Step ID="0" Type="MSG" StringID="17956865" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17956866" ErrorType="Info" AlarmType="No" Name="EVENT_DM_INVALID_DEVICE_NUMBER_CHAR_COUNT">
-			<Step ID="0" Type="MSG" StringID="17956866" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17956869" ErrorType="Info" AlarmType="No" Name="EVENT_DM_INVALID_HEATED_CUEVETTES_DATA">
-			<Step ID="0" Type="MSG" StringID="17956869" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17760260" ErrorType="Info" AlarmType="No" Name="EVENT_DM_INVALID_LEICA_AGITAION_SPEED">
-			<Step ID="0" Type="MSG" StringID="17760260" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17760261" ErrorType="Info" AlarmType="No" Name="EVENT_DM_INVALID_LEICA_OVENTEMP">
-			<Step ID="0" Type="MSG" StringID="17760261" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17760262" ErrorType="Info" AlarmType="No" Name="EVENT_DM_INVALID_LOADER_REAGENTID">
-			<Step ID="0" Type="MSG" StringID="17760262" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17235982" ErrorType="Error" AlarmType="No" Name="EVENT_DM_INVALID_OVENSTARTMODE">
-			<Step ID="0" Type="MSG" StringID="17235982" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19136516" ErrorType="Error" AlarmType="No" Name="EVENT_DM_INVALID_PARAMSETS_ID">
-			<Step ID="0" Type="MSG" StringID="19136516" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17760270" ErrorType="Info" AlarmType="No" Name="EVENT_DM_INVALID_PROXY_PASSWORD_CHAR_COUNT">
 			<Step ID="0" Type="MSG" StringID="17760270" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
@@ -172,29 +127,14 @@
 		<Event Code="" ErrorID="17235974" ErrorType="Error" AlarmType="No" Name="EVENT_DM_INVALID_RMS_ONOFFSTATE">
 			<Step ID="0" Type="MSG" StringID="17235974" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17956871" ErrorType="Info" AlarmType="No" Name="EVENT_DM_INVALID_STAINER_DEV_NAME_WIDTH">
-			<Step ID="0" Type="MSG" StringID="17956871" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17235981" ErrorType="Error" AlarmType="No" Name="EVENT_DM_INVALID_TEMPFORMAT">
 			<Step ID="0" Type="MSG" StringID="17235981" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17235980" ErrorType="Error" AlarmType="No" Name="EVENT_DM_INVALID_TIMEFORMAT">
 			<Step ID="0" Type="MSG" StringID="17235980" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17956868" ErrorType="Info" AlarmType="No" Name="EVENT_DM_INVALID_WSMODE_DATA">
-			<Step ID="0" Type="MSG" StringID="17956868" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17235996" ErrorType="Info" AlarmType="No" Name="EVENT_DM_NULL_PTR">
 			<Step ID="0" Type="MSG" StringID="17235996" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19136513" ErrorType="Error" AlarmType="No" Name="EVENT_DM_PARAMSETS_COUNT_EXCEEDS_LIMIT">
-			<Step ID="0" Type="MSG" StringID="19136513" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17236016" ErrorType="Info" AlarmType="No" Name="EVENT_DM_PROCESS_SETTINGS_CONF_READ_FAILED">
-			<Step ID="0" Type="MSG" StringID="17236016" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17236017" ErrorType="Info" AlarmType="No" Name="EVENT_DM_PROCESS_SETTINGS_VERIFICATION_FAILED">
-			<Step ID="0" Type="MSG" StringID="17236017" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19070983" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RC_CERT_FILENAME_LENGHT_OUTOF_RANGE">
 			<Step ID="0" Type="MSG" StringID="19070983" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
@@ -265,17 +205,8 @@
 		<Event Code="" ErrorID="19070986" ErrorType="Error" AlarmType="No" Name="EVENT_DM_RC_TARGET_DATABASE_LENGHT_OUTOF_RANGE">
 			<Step ID="0" Type="MSG" StringID="19070986" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="19267598" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_ADD_FAILED_INTERNAL_ERR">
-			<Step ID="0" Type="MSG" StringID="19267598" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19267600" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_DEL_FAILED_INTERNAL_ERR">
-			<Step ID="0" Type="MSG" StringID="19267600" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="19267589" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_EXCEEDS_LIMIT">
 			<Step ID="0" Type="MSG" StringID="19267589" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19267596" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_HEATING_MODE_UNDEF">
-			<Step ID="0" Type="MSG" StringID="19267596" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19267588" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_ID_DOESTNOT_EXISTS">
 			<Step ID="0" Type="MSG" StringID="19267588" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
@@ -283,38 +214,11 @@
 		<Event Code="" ErrorID="19267587" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_ID_NOT_UNIQUE">
 			<Step ID="0" Type="MSG" StringID="19267587" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="19267601" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_INVALID_COLORADO_XML_DATA_FOUND">
-			<Step ID="0" Type="MSG" StringID="19267601" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19267590" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_INVALID_PREFIX">
-			<Step ID="0" Type="MSG" StringID="19267590" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19267592" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_LONGNAME_LENGTH_CHECK_FAILED">
-			<Step ID="0" Type="MSG" StringID="19267592" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19267593" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_MAXSLIDES_EXCEEDS_LIMIT">
-			<Step ID="0" Type="MSG" StringID="19267593" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="19267585" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_NAME_NOT_UNIQUE">
 			<Step ID="0" Type="MSG" StringID="19267585" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="19267599" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_OPERATION_FAILED">
 			<Step ID="0" Type="MSG" StringID="19267599" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19267591" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_SHORTNAME_LENGTH_CHECK_FAILED">
-			<Step ID="0" Type="MSG" StringID="19267591" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19267586" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_SHORT_NAME_NOT_UNIQUE">
-			<Step ID="0" Type="MSG" StringID="19267586" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19267595" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_TEMP_NOTIN_LIMIT">
-			<Step ID="0" Type="MSG" StringID="19267595" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19267597" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_UPDATE_FAILED_INTERNAL_ERR">
-			<Step ID="0" Type="MSG" StringID="19267597" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19267594" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_USE_DAYS_EXCEEDS_LIMIT">
-			<Step ID="0" Type="MSG" StringID="19267594" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17236009" ErrorType="Info" AlarmType="No" Name="EVENT_DM_REAGENT_VERIFICATION_FAILED">
 			<Step ID="0" Type="MSG" StringID="17236009" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar="No"/>
@@ -334,62 +238,11 @@
 		<Event Code="" ErrorID="17235998" ErrorType="Warning" AlarmType="No" Name="EVENT_DM_SHUTDOWN_XML_WRITE_FAILED">
 			<Step ID="0" Type="MSG" StringID="17235998" ButtonType="" LogLevel="High" UserLog="TRUE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17236001" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_COL_COUNT_DOESNOT_MACTH_MAX">
-			<Step ID="0" Type="MSG" StringID="17236001" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17236005" ErrorType="Info" AlarmType="No" Name="EVENT_DM_STATIONGRID_VERIFICATION_FAILED">
-			<Step ID="0" Type="MSG" StringID="17236005" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17236004" ErrorType="Info" AlarmType="No" Name="EVENT_DM_STATIONGRID_XML_READ_FAILED">
-			<Step ID="0" Type="MSG" StringID="17236004" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19202052" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_ID_INVALID_TYPE">
-			<Step ID="0" Type="MSG" StringID="19202052" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19202057" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_ID_MISSING">
-			<Step ID="0" Type="MSG" StringID="19202057" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19202050" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_ID_NOT_FOUND">
-			<Step ID="0" Type="MSG" StringID="19202050" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19202049" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_ID_NOT_UNIQUE">
-			<Step ID="0" Type="MSG" StringID="19202049" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19202051" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_ID_SIZE_EXCEEDS_LIMIT">
-			<Step ID="0" Type="MSG" StringID="19202051" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19202055" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_INVALID_BESTBEFOREDATE">
-			<Step ID="0" Type="MSG" StringID="19202055" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19202054" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_INVALID_EXPIRYDATE">
-			<Step ID="0" Type="MSG" StringID="19202054" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19202059" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_INVALID_FIRST_USAGEDATE">
-			<Step ID="0" Type="MSG" StringID="19202059" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19202053" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_INVALID_ID">
-			<Step ID="0" Type="MSG" StringID="19202053" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17236003" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_INVALID_ITEM_TYPE">
-			<Step ID="0" Type="MSG" StringID="17236003" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17236012" ErrorType="Info" AlarmType="No" Name="EVENT_DM_STATION_INVALID_STATION_TYPE">
-			<Step ID="0" Type="MSG" StringID="17236012" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar="No"/>
-		</Event>
 		<Event Code="" ErrorID="17236013" ErrorType="Info" AlarmType="No" Name="EVENT_DM_MODULE_CONF_READ_FAILED">
 			<Step ID="0" Type="MSG" StringID="17236013" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar="No"/>
 		</Event>
-		<Event Code="" ErrorID="17236002" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_INVALID_ZONE">
-			<Step ID="0" Type="MSG" StringID="17236002" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17236000" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_ROWS_COUNT_DOESNOT_MACTH_MAX">
-			<Step ID="0" Type="MSG" StringID="17236000" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17236010" ErrorType="Info" AlarmType="No" Name="EVENT_DM_STATIONS_XML_READ_FAILED">
 			<Step ID="0" Type="MSG" StringID="17236010" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar="No"/>
-		</Event>
-		<Event Code="" ErrorID="19202060" ErrorType="Error" AlarmType="No" Name="EVENT_DM_STATION_UKNOWN_COLORADO_XML_DATA_FOUND">
-			<Step ID="0" Type="MSG" StringID="19202060" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17236011" ErrorType="Info" AlarmType="No" Name="EVENT_DM_STATION_VERIFICATION_FAILED">
 			<Step ID="0" Type="MSG" StringID="17236011" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar="No"/>
@@ -399,18 +252,6 @@
 		</Event>
 		<Event Code="" ErrorID="17235991" ErrorType="Info" AlarmType="No" Name="EVENT_DM_STREAMOUT_FAILED">
 			<Step ID="0" Type="MSG" StringID="17235991" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19136517" ErrorType="Error" AlarmType="No" Name="EVENT_DM_UKNOWN_PARAM_COLOUR">
-			<Step ID="0" Type="MSG" StringID="19136517" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19136521" ErrorType="Error" AlarmType="No" Name="EVENT_DM_UKNOWN_PARAM_COVERGLASS_LENGTH">
-			<Step ID="0" Type="MSG" StringID="19136521" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19136518" ErrorType="Error" AlarmType="No" Name="EVENT_DM_UKNOWN_PARAM_MOUNTANT_NAME">
-			<Step ID="0" Type="MSG" StringID="19136518" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19136519" ErrorType="Error" AlarmType="No" Name="EVENT_DM_UKNOWN_PARAM_MOUNTANT_VOLUME">
-			<Step ID="0" Type="MSG" StringID="19136519" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17760266" ErrorType="Info" AlarmType="No" Name="EVENT_DM_WARN_SOUND_LEVEL_OUT_OF_RANGE">
 			<Step ID="0" Type="MSG" StringID="17760266" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
@@ -462,12 +303,6 @@
 		</Event>
 		<Event Code="" ErrorID="17498128" ErrorType="Error" AlarmType="No" Name="EVENT_EPD_NETWORK_DEVICE_NOT_STARTED">
 			<Step ID="0" Type="MSG" StringID="17498128" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17891332" ErrorType="Error" AlarmType="No" Name="EVENT_ERROR">
-			<Step ID="0" Type="MSG" StringID="17891332" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="19529734" ErrorType="Error" AlarmType="Yes" Name="EVENT_ERROR_CANNOT_START_SERVICE">
-			<Step ID="0" Type="MSG" StringID="19529734" ButtonType="Ok" LogLevel="HIGH" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17039361" ErrorType="Info" AlarmType="No" Name="EVENT_ERROR_STATE">
 			<Step ID="0" Type="MSG" StringID="17039361" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
@@ -553,9 +388,6 @@
 		<Event Code="" ErrorID="17629195" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_SOURCE_DIRECTORY_NOT_EXISTS">
 			<Step ID="0" Type="MSG" StringID="17629195" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="17629217" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_STOPPED_FOREVER">
-			<Step ID="0" Type="MSG" StringID="17629217" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17629193" ErrorType="Info" AlarmType="No" Name="EVENT_EXPORT_SUCCESS">
 			<Step ID="0" Type="MSG" StringID="17629193" ButtonType="Ok" LogLevel="High" UserLog="TRUE" StatusBar=""/>
 		</Event>
@@ -567,9 +399,6 @@
 		</Event>
 		<Event Code="" ErrorID="17629192" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_UNABLE_TO_ARCHIVE_FILES">
 			<Step ID="0" Type="MSG" StringID="17629192" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17629218" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_UNABLE_TO_CREATE_FILE_CMS_STATUS">
-			<Step ID="0" Type="MSG" StringID="17629218" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17629187" ErrorType="Error" AlarmType="No" Name="EVENT_EXPORT_UNABLE_TO_CREATE_FILE_RMS_STATUS">
 			<Step ID="0" Type="MSG" StringID="17629187" ButtonType="OK" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
@@ -658,9 +487,6 @@
 		<Event Code="" ErrorID="16842777" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_EXCEPTION">
 			<Step ID="0" Type="MSG" StringID="16842777" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="16843280" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_RMS_ACTIVITY_STATION_DC_UPDATED">
-			<Step ID="0" Type="MSG" StringID="16843280" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="16842778" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_STD_EXCEPTION">
 			<Step ID="0" Type="MSG" StringID="16842778" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
@@ -700,38 +526,8 @@
 		<Event Code="" ErrorID="16842753" ErrorType="Warning" AlarmType="No" Name="EVENT_GLOBAL_UNKNOWN_STRING_ID">
 			<Step ID="0" Type="MSG" StringID="16842753" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="16843277" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_ADMIN_LOGIN">
-			<Step ID="0" Type="MSG" StringID="16843277" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843283" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_BATHLAYOUT_CHANGED">
-			<Step ID="0" Type="MSG" StringID="16843283" ButtonType="" LogLevel="HIGH" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843282" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_BATHLAYOUT_CHANGE_FAILED">
-			<Step ID="0" Type="MSG" StringID="16843282" ButtonType="" LogLevel="HIGH" UserLog="TRUE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="16843278" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_OPERATOR_LOGIN">
 			<Step ID="0" Type="MSG" StringID="16843278" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843264" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_PROGRAM_ADDED">
-			<Step ID="0" Type="MSG" StringID="16843264" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843268" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_PROGRAM_COLOR">
-			<Step ID="0" Type="MSG" StringID="16843268" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843265" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_PROGRAM_DELETED">
-			<Step ID="0" Type="MSG" StringID="16843265" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843267" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_PROGRAM_MODIFY_LEICA">
-			<Step ID="0" Type="MSG" StringID="16843267" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843266" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_PROGRAM_UPDATE">
-			<Step ID="0" Type="MSG" StringID="16843266" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843269" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_REAGENT_ADDED">
-			<Step ID="0" Type="MSG" StringID="16843269" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843270" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_REAGENT_DELETED">
-			<Step ID="0" Type="MSG" StringID="16843270" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16843304" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_REAGENT_HC">
 			<Step ID="0" Type="MSG" StringID="16843304" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
@@ -741,9 +537,6 @@
 		</Event>
 		<Event Code="" ErrorID="16843303" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_REAGENT_HC_TEMPERATURE">
 			<Step ID="0" Type="MSG" StringID="16843303" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843271" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_REAGENT_UPDATED">
-			<Step ID="0" Type="MSG" StringID="16843271" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16843295" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_STATE_CHANGED_OFF">
 			<Step ID="0" Type="MSG" StringID="16843295" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
@@ -769,14 +562,8 @@
 		<Event Code="" ErrorID="16843288" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_DATE_FORMAT_CHANGED">
 			<Step ID="0" Type="MSG" StringID="16843288" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="16843273" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_DATE_TIME_CHANGED">
-			<Step ID="0" Type="MSG" StringID="16843273" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="16843272" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_LANGUAGE_CHANGED">
 			<Step ID="0" Type="MSG" StringID="16843272" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="16843290" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_LOADER_REAGENT_CHANGED">
-			<Step ID="0" Type="MSG" StringID="16843290" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="16843275" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_NETWORK_SETTINGS_ADDED">
 			<Step ID="0" Type="MSG" StringID="16843275" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
@@ -811,9 +598,6 @@
 		<Event Code="" ErrorID="16843296" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_US_WATER_TYPE_CHANGED_TAP">
 			<Step ID="0" Type="MSG" StringID="16843296" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="16843276" ErrorType="Info" AlarmType="No" Name="EVENT_GLOBAL_USER_ACTIVITY_WHITE_RACK_PROGRAM_ASSOCIATED">
-			<Step ID="0" Type="MSG" StringID="16843276" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="17825801" ErrorType="Error" AlarmType="No" Name="EVENT_GPIO_ERROR">
 			<Step ID="0" Type="MSG" StringID="17825801" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
 		</Event>
@@ -822,9 +606,6 @@
 		</Event>
 		<Event Code="" ErrorID="17039363" ErrorType="Info" AlarmType="No" Name="EVENT_GUI_AVAILABLE">
 			<Step ID="0" Type="MSG" StringID="17039363" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17891334" ErrorType="Info" AlarmType="No" Name="EVENT_INFO">
-			<Step ID="0" Type="MSG" StringID="17891334" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
 		<Event Code="" ErrorID="17039365" ErrorType="Error" AlarmType="No" Name="EVENT_INIT_FAILED">
 			<Step ID="0" Type="MSG" StringID="17039365" ButtonType="" LogLevel="High" UserLog="TRUE" StatusBar=""/>
@@ -1030,9 +811,6 @@
 		<Event Code="" ErrorID="19529731" ErrorType="Info" AlarmType="No" Name="EVENT_PASSWORD_CHANGED_SUCCESSFULLY">
 			<Step ID="0" Type="MSG" StringID="19529731" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="19529733" ErrorType="Error" AlarmType="Yes" Name="EVENT_PASSWORD_FILE_CORRUPTED">
-			<Step ID="0" Type="MSG" StringID="19529733" ButtonType="Ok" LogLevel="High" UserLog="TRUE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="19529729" ErrorType="Error" AlarmType="No" Name="EVENT_PASSWORD_INCORRECT">
 			<Step ID="0" Type="MSG" StringID="19529729" ButtonType="Ok" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
@@ -1168,9 +946,6 @@
 		<Event Code="" ErrorID="17891331" ErrorType="Info" AlarmType="No" Name="EVENT_SYSTEM_INIT_COMPLETE">
 			<Step ID="0" Type="MSG" StringID="17891331" ButtonType="" LogLevel="Medium" UserLog="TRUE" StatusBar=""/>
 		</Event>
-		<Event Code="" ErrorID="19595269" ErrorType="Info" AlarmType="No" Name="EVENT_THREAD_CONTROL_STARTED">
-			<Step ID="0" Type="MSG" StringID="19595269" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
-		</Event>
 		<Event Code="" ErrorID="19595268" ErrorType="Info" AlarmType="No" Name="EVENT_THREAD_CREATE_AND_INITIALIZE">
 			<Step ID="0" Type="MSG" StringID="19595268" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
 		</Event>
@@ -1239,9 +1014,6 @@
 		</Event>
 		<Event Code="" ErrorID="16973838" ErrorType="Info" AlarmType="No" Name="EVENT_USER_ACK_BUTTON_YES">
 			<Step ID="0" Type="MSG" StringID="16973838" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
-		</Event>
-		<Event Code="" ErrorID="17891333" ErrorType="Warning" AlarmType="No" Name="EVENT_WARNING">
-			<Step ID="0" Type="MSG" StringID="17891333" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
 		</Event>
 	</Source>
 </EventConfigure>
