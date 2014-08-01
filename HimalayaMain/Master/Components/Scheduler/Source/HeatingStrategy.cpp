@@ -187,15 +187,18 @@ DeviceControl::ReturnCode_t HeatingStrategy::RunHeatingStrategy(const HardwareMo
     Check temperature difference of two Retort bottom sensors
     *
     ***********************************************************/
-    if (false == m_RTBottom.curModuleId.isEmpty() &&
-            -1!= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].ScenarioList.indexOf(m_CurScenario))
+    if ( !QFile::exists("TEST_RETORT") )
     {
-        if ( isEffectiveTemp(strctHWMonitor.TempRTBottom1) && isEffectiveTemp(strctHWMonitor.TempRTBottom2))
+        if (false == m_RTBottom.curModuleId.isEmpty() &&
+                -1!= m_RTBottom.functionModuleList[m_RTBottom.curModuleId].ScenarioList.indexOf(m_CurScenario))
         {
-            if (std::abs(strctHWMonitor.TempRTBottom1 - strctHWMonitor.TempRTBottom2) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
+            if ( isEffectiveTemp(strctHWMonitor.TempRTBottom1) && isEffectiveTemp(strctHWMonitor.TempRTBottom2))
             {
-                mp_SchedulerController->LogDebug(QString("the difference of two retort bottom sensor over range."));
-                return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
+                if (std::abs(strctHWMonitor.TempRTBottom1 - strctHWMonitor.TempRTBottom2) >= m_RTBottom.TemperatureDiffList[m_RTBottom.curModuleId])
+                {
+                    mp_SchedulerController->LogDebug(QString("the difference of two retort bottom sensor over range."));
+                    return DCL_ERR_DEV_RETORT_TSENSOR1_TO_2_SELFCALIBRATION_FAILED;
+                }
             }
         }
     }
