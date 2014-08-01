@@ -48,6 +48,7 @@ private:
 
     void SetSubModuleLifeCycle(ServiceDataManager::CSubModule* SubModule, DataManager::CSubModule* SubMouleRef, LifeCycleType Type);
     void SetSubModuleLifeCycle(ServiceDataManager::CSubModule* SubModule, int LifeCycle, LifeCycleType Type);
+    int GetLAPressureCycle(QString ParamName, LifeCycleType Type);
 
     ServiceDataManager::CModuleDataList* mp_ModuleList;
     DataManager::CInstrumentHistory* mp_InstrumentHistoryRef;

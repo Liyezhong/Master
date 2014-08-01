@@ -205,7 +205,7 @@
             </SubModule>
             <SubModule name="Carbon Filter" type="Filter" description="Carbon Filter">
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="OperationTime" unit="hours">6000</parameter>
+                <parameter name="OperationTime" unit="hours">0</parameter>
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>
@@ -213,7 +213,7 @@
             </SubModule>
             <SubModule name="Exhaust Fan" type="Fan" description="Fan">
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="OperationTime" unit="hours">10000</parameter>
+                <parameter name="OperationTime" unit="hours">0</parameter>
                 <parameter name="HardwareMinorVersion" unit="quint8">03</parameter>
                 <parameter name="HardwareMajorVersion" unit="quint8">01</parameter>
                 <parameter name="EndTestDate" unit="QDate">2013-06-05</parameter>

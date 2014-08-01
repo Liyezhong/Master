@@ -167,35 +167,11 @@ void CModuleDateListAdapter::SetLaSystemLifeCycle()
     SetSubModuleLifeCycle(LAModule->GetSubModuleInfo("Pressure Sensor"),
                           mp_OtherRef->GetSubModuleInfo("Pressure_Sensor"), TIME);
 
-    int CycleValve1 = 0;
-    int CycleValve2 = 0;
-    int CyclePump   = 0;
-    DataManager::CSubModule* PressureRef = mp_LaRef->GetSubModuleInfo("pressurectrl");
-    DataManager::Parameter_t* Param = NULL;
-    if (PressureRef) {
-        Param = PressureRef->GetParameterInfo("Valve1OperationCycle");
-        if (Param) {
-            CycleValve1 = Param->ParameterValue.toInt();
-        }
-
-        Param = PressureRef->GetParameterInfo("Valve2OperationCycle");
-        if (Param) {
-            CycleValve2 = Param->ParameterValue.toInt();
-        }
-
-        Param = PressureRef->GetParameterInfo("PumpOperationTime");
-        if (Param) {
-            CyclePump = Param->ParameterValue.toInt();
-            if (Param->ParameterUnit == "seconds") {
-                CyclePump = CyclePump/(60*60);
-            }
-        }
-
-        SetSubModuleLifeCycle(LAModule->GetSubModuleInfo("Valve 1"), CycleValve1, CYCLE);
-        SetSubModuleLifeCycle(LAModule->GetSubModuleInfo("Valve 2"), CycleValve2, CYCLE);
-        SetSubModuleLifeCycle(LAModule->GetSubModuleInfo("Pump"), CyclePump, TIME);
-
-    }
+    SetSubModuleLifeCycle(LAModule->GetSubModuleInfo("Valve 1"), GetLAPressureCycle("Valve1OperationCycle", CYCLE), CYCLE);
+    SetSubModuleLifeCycle(LAModule->GetSubModuleInfo("Valve 2"), GetLAPressureCycle("Valve2OperationCycle", CYCLE), CYCLE);
+    SetSubModuleLifeCycle(LAModule->GetSubModuleInfo("Pump"), GetLAPressureCycle("PumpOperationTime", TIME), TIME);
+    SetSubModuleLifeCycle(LAModule->GetSubModuleInfo("Carbon Filter"), GetLAPressureCycle("ActiveCarbonFilterLifeTime", TIME), TIME);
+    SetSubModuleLifeCycle(LAModule->GetSubModuleInfo("Exhaust Fan"), GetLAPressureCycle("ExhaustFanLifeTime", TIME), TIME);
 }
 
 void CModuleDateListAdapter::SetRetortLifeCycle()
@@ -239,8 +215,13 @@ void CModuleDateListAdapter::SetSubModuleLifeCycle(ServiceDataManager::CSubModul
 
     if (Param) {
         LifeCycle = Param->ParameterValue.toInt();
-        if (Type == TIME && Param->ParameterUnit == "seconds") {
-            LifeCycle = LifeCycle/(60*60); //to hours
+        if (Type == TIME ) {
+            if (Param->ParameterUnit == "seconds") {
+                LifeCycle = LifeCycle/(60*60); //to hours
+            }
+            else if (Param->ParameterUnit == "minutes") {
+                LifeCycle = LifeCycle/60; //to hours
+            }
         }
     }
 
@@ -260,4 +241,26 @@ void CModuleDateListAdapter::SetSubModuleLifeCycle(CSubModule *SubModule, int Li
         SubModule->UpdateParameterInfo("OperationCycles", QString::number(LifeCycle));
     }
 }
+
+int CModuleDateListAdapter::GetLAPressureCycle(QString ParamName, LifeCycleType Type)
+{
+    int Cycle = 0;
+    DataManager::CSubModule* PressureRef = mp_LaRef->GetSubModuleInfo("pressurectrl");
+    DataManager::Parameter_t* Param = PressureRef->GetParameterInfo(ParamName);
+
+    if (Param) {
+        Cycle = Param->ParameterValue.toInt();
+
+        if (Type == TIME) {
+            if (Param->ParameterUnit == "seconds") {
+                Cycle = Cycle/(60*60);
+            }
+            else if (Param->ParameterUnit == "minutes") {
+                Cycle = Cycle/60;
+            }
+        }
+    }
+    return Cycle;
+}
+
 }// namespace ServiceDataManager
