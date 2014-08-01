@@ -185,13 +185,14 @@ private:
     QTimer* m_pPipeAnimationTimer;       ///<  Definition/Declaration of variable m_pPipeAnimationTimer
     QTimer* m_pBlinkingIntervalTimer;       ///<  Definition/Declaration of variable m_pBlinkingIntervalTimer
     QTimer* m_pStartBlinkingTimer;       ///<  Definition/Declaration of variable m_pStartBlinkingTimer
-    QGraphicsPathItem* m_pWorkingPipeGraphicsRectItem;       ///<  Definition/Declaration of variable m_pWorkingPipeGraphicsRectItem
     QList<QGraphicsPathItem*> m_pGraphicsPathItemPipeList;       ///<  Definition/Declaration of variable m_pGraphicsPathItemPipeList
     QGraphicsPathItem* m_WholePipeGraphicsRectItem;       ///<  Definition/Declaration of variable m_WholePipeGraphicsRectItem
     QGraphicsPathItem* m_UsedPipeGraphicsRectItem;       ///<  Definition/Declaration of variable m_UsedPipeGraphicsRectItem
     int m_currentTimerOrder;       ///<  Definition/Declaration of variable m_currentTimerOrder
     QString m_SuckDrainStationId;       ///<  Definition/Declaration of variable m_SuckDrainStationId
     QList<QString> m_SelectedStationList;       ///<  Definition/Declaration of variable m_SelectedStationList
+    QBrush* m_BrushArray[3][4];
+    QPixmap m_PixMapFlowFrame1, m_PixMapFlowFrame2, m_PixMapFlowFrame3;
     void InitDashboardStationIDs();
     void InitDashboardStationItemsPositions();
     /****************************************************************************/
@@ -347,6 +348,8 @@ private:
      */
     /****************************************************************************/
     void EnableBlink(bool bEnable);
+    void BuildBrushArray();
+    void DestroyBrushArray();
 private slots:
     /****************************************************************************/
     /*!

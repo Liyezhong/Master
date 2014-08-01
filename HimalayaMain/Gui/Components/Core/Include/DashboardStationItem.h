@@ -91,6 +91,9 @@ private:
     bool m_IsRetortContaminated;       ///<  Definition/Declaration of variable m_IsRetortContaminated
     bool m_RetortLocked;								 //!< Indicates if the retort is locked or not
     QPixmap m_RawImage4Cleaning;                         //!< Big Image with customized BDiagPattern for Cleaning reagent
+    QPixmap m_PixmapRetortUnlocked, m_PixmapRetortLocked01, m_PixmapRetortLocked02;
+    QPixmap m_PixmapParaffinbathBackground, m_PixmapBottleBackground, m_PixmapBottleHandle;
+
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function OnCompletedSuckDrain

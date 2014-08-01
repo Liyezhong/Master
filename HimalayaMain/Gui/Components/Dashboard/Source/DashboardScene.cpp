@@ -76,6 +76,17 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     InitStationConnectedPipeList();
     AddDashboardStationItemsToScene();
 
+    m_PixMapFlowFrame1.load(":/HimalayaImages/Icons/Dashboard/Pipe/flow1.png");
+    m_PixMapFlowFrame2.load(":/HimalayaImages/Icons/Dashboard/Pipe/flow2.png");
+    m_PixMapFlowFrame3.load(":/HimalayaImages/Icons/Dashboard/Pipe/flow3.png");
+
+    for (int r = 0; r < 3; r++)
+    {
+        for(int c = 0; c < 4; c++)
+        {
+            m_BrushArray[r][c] = NULL;
+        }
+    }
 
     // update the stations whenenver the stations.xml is sent
     CONNECTSIGNALSLOT(mp_DataConnector, DashboardStationsUpdated(), this, UpdateDashboardStations());
@@ -508,26 +519,122 @@ void CDashboardScene::RepresentCurrentWorkingPipe(const QString& StationID)
         m_pGraphicsPathItemPipeList.append(pWorkingPipeGraphicsRectItem);
     }
 
-    //this->RepresentUsedPipe(m_SelectedStationList, true);
+    DestroyBrushArray();
+    BuildBrushArray();
 }
 
+void CDashboardScene::BuildBrushArray()
+{
+    QPainter painter;
+    QColor color(m_CurrentReagentColorValue);
+    color.setAlpha(150);
+
+    QMatrix matrix;
+    (void)matrix.rotate(-90.0);
+    QPixmap pixMapUp = m_PixMapFlowFrame1.transformed(matrix);//up
+
+    (void)painter.begin(&pixMapUp);
+    painter.fillRect(0, 0, 20, 20, color);
+    (void)painter.end();
+    m_BrushArray[0][0] = new QBrush(pixMapUp);
+
+    pixMapUp = m_PixMapFlowFrame2.transformed(matrix);//up
+    (void)painter.begin(&pixMapUp);
+    painter.fillRect(0, 0, 20, 20, color);
+    (void)painter.end();
+    m_BrushArray[1][0] = new QBrush(pixMapUp);
+
+    pixMapUp = m_PixMapFlowFrame3.transformed(matrix);//up
+    (void)painter.begin(&pixMapUp);
+    painter.fillRect(0, 0, 20, 20, color);
+    (void)painter.end();
+    m_BrushArray[2][0] = new QBrush(pixMapUp);
+
+    (void)matrix.rotate(-90.0);
+    QPixmap pixMapLeft = m_PixMapFlowFrame1.transformed(matrix);//left
+    (void)painter.begin(&pixMapLeft);
+    painter.fillRect(0, 0, 20, 20, color);
+    (void)painter.end();
+    m_BrushArray[0][2] = new QBrush(pixMapLeft);
+
+    pixMapLeft = m_PixMapFlowFrame2.transformed(matrix);//left
+    (void)painter.begin(&pixMapLeft);
+    painter.fillRect(0, 0, 20, 20, color);
+    (void)painter.end();
+    m_BrushArray[1][2] = new QBrush(pixMapLeft);
+
+    pixMapLeft = m_PixMapFlowFrame3.transformed(matrix);//left
+    (void)painter.begin(&pixMapLeft);
+    painter.fillRect(0, 0, 20, 20, color);
+    (void)painter.end();
+    m_BrushArray[2][2] = new QBrush(pixMapLeft);
+
+    (void)matrix.rotate(-90.0);
+    QPixmap pixMapDown = m_PixMapFlowFrame1.transformed(matrix);//down
+    (void)painter.begin(&pixMapDown);
+    painter.fillRect(0, 0, 20, 20, color);
+    (void)painter.end();
+    m_BrushArray[0][1] = new QBrush(pixMapDown);
+
+    pixMapDown = m_PixMapFlowFrame2.transformed(matrix);//down
+    (void)painter.begin(&pixMapDown);
+    painter.fillRect(0, 0, 20, 20, color);
+    (void)painter.end();
+    m_BrushArray[1][1] = new QBrush(pixMapDown);
+
+    pixMapDown = m_PixMapFlowFrame3.transformed(matrix);//down
+    (void)painter.begin(&pixMapDown);
+    painter.fillRect(0, 0, 20, 20, color);
+    (void)painter.end();
+    m_BrushArray[2][1] = new QBrush(pixMapDown);
+
+    QPixmap frame1 = m_PixMapFlowFrame1;
+    (void)painter.begin(&frame1);
+    painter.fillRect(0, 0, 20, 20, color);
+    (void)painter.end();
+    m_BrushArray[0][3] = new QBrush(frame1);//right
+
+    QPixmap frame2 = m_PixMapFlowFrame2;
+    (void)painter.begin(&frame2);
+    painter.fillRect(0, 0, 20, 20, color);
+    (void)painter.end();
+    m_BrushArray[1][3] = new QBrush(frame2);//right
+
+    QPixmap frame3 = m_PixMapFlowFrame3;
+    (void)painter.begin(&frame3);
+    painter.fillRect(0, 0, 20, 20, color);
+    (void)painter.end();
+    m_BrushArray[2][3] = new QBrush(frame3);//right
+}
+
+void CDashboardScene::DestroyBrushArray()
+{
+    for (int r = 0; r < 3; r++)
+    {
+        for(int c = 0; c < 4; c++)
+        {
+            if (m_BrushArray[r][c] != NULL)
+                delete m_BrushArray[r][c];
+        }
+    }
+}
 
 void CDashboardScene::PipeSuckDrainAnimation()
 {
-    QString pixmapName;
+    int rowIndex = 0;
     if (0 == m_currentTimerOrder)
     {
-        pixmapName = ":/HimalayaImages/Icons/Dashboard/Pipe/flow1.png";
+        rowIndex = m_currentTimerOrder;
         m_currentTimerOrder++;
     }
     else if(1 == m_currentTimerOrder)
     {
-        pixmapName = ":/HimalayaImages/Icons/Dashboard/Pipe/flow2.png";
+        rowIndex = m_currentTimerOrder;
         m_currentTimerOrder++;
     }
     else if(2 == m_currentTimerOrder)
     {
-        pixmapName = ":/HimalayaImages/Icons/Dashboard/Pipe/flow3.png";
+        rowIndex = m_currentTimerOrder;
         m_currentTimerOrder = 0;
     }
 
@@ -536,47 +643,41 @@ void CDashboardScene::PipeSuckDrainAnimation()
     {
         QString pipeOrientation = m_PipeOrientationList.at(j);
         j++;
-        QPixmap pixMap;
-        (void)pixMap.load(pixmapName);
 
-        QMatrix matrix;
-        qreal angle = 0.0;
+        int colIndex = 0;
         if ("up" == pipeOrientation)
         {
             if (m_IsSuck)
             {
-                angle = -90.0;
+                colIndex = 0;
             }
             else
-               angle = 90.0;
+            {
+               colIndex = 1;
+            }
         }
         else if ("left" == pipeOrientation)
         {
             if (m_IsSuck)
-             angle = 180.0;
+            {
+                colIndex = 2;
+            }
+			else
+			{
+                colIndex = 3;
+			}
         }
         else if ("right" == pipeOrientation)
         {
             if (!m_IsSuck)
             {
-                angle = 180.0;
+                colIndex = 2;
             }
+			else
+			  colIndex = 3;
         }
 
-        if (abs(angle) > 0)
-        {
-            (void)matrix.rotate(angle);
-            pixMap = pixMap.transformed(matrix);
-        }
-
-        QPainter painter;
-        (void)painter.begin(&pixMap);
-        QColor color(m_CurrentReagentColorValue);
-        color.setAlpha(150);
-        painter.fillRect(0, 0, 20, 20, color);
-        (void)painter.end();
-
-        m_pGraphicsPathItemPipeList.at(i)->setBrush(QBrush(pixMap));
+        m_pGraphicsPathItemPipeList.at(i)->setBrush(*(m_BrushArray[rowIndex][colIndex]));
     }
 }
 
@@ -966,11 +1067,13 @@ void CDashboardScene::OnStationSuckDrain(const QString& StationId, bool IsStart,
 
                   m_CurrentReagentColorValue = p_ReagentGroup->GetGroupColor();
                   (void)m_CurrentReagentColorValue.prepend("#");
+                   RepresentCurrentWorkingPipe(StationId);
+                   m_pPipeAnimationTimer->start(200);
               }
           }
       }
 
-     m_pPipeAnimationTimer->start(500);
+
    }
    else
    {

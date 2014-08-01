@@ -98,10 +98,17 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
         QMatrix matrix;
         (void)matrix.rotate(45.0);
         QPixmap img = pix.transformed(matrix);
-        //img = img.copy(200/2, 200/2, 200/2, 200/2);
         img = img.copy(100, 100, 100, 98);
         m_RawImage4Cleaning = img;
     }
+
+    m_PixmapRetortUnlocked.load(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Unlocked.png");
+    m_PixmapRetortLocked01.load(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Locked01.png");
+    m_PixmapRetortLocked02.load(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Locked02.png");
+    m_PixmapParaffinbathBackground.load(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png");
+    m_PixmapBottleBackground.load(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png");
+    m_PixmapBottleHandle.load(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Handle.png");
+
     UpdateImage();
 
     mp_SuckDrainTimer = new QTimer(this);
@@ -250,26 +257,22 @@ void CDashboardStationItem::LoadStationImages(QPainter& Painter)
     if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
 		if (false == m_RetortLocked)
 		{
-                Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Unlocked.png"));
+            Painter.drawPixmap(0, 0, m_PixmapRetortUnlocked);
 		}
 		else
 		{
-                Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Locked01.png"));
-                Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Locked02.png"));
+            Painter.drawPixmap(0, 0, m_PixmapRetortLocked01);
+            Painter.drawPixmap(0, 0, m_PixmapRetortLocked02);
 		}
     } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
-        if (m_StationSelected) {
-            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png"));
-        } else {
-            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Paraffinbath/Paraffinbath_Background.png"));
-        }
+            Painter.drawPixmap(0, 0, m_PixmapParaffinbathBackground);
     } else {
         if(m_StationSelected) {
-            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png"));
-            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Handle.png"));
+            Painter.drawPixmap(0, 0, m_PixmapBottleBackground);
+            Painter.drawPixmap(0, 0, m_PixmapBottleHandle);
         } else {
-            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png"));
-            Painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Handle.png"));
+            Painter.drawPixmap(0, 0, m_PixmapBottleBackground);
+            Painter.drawPixmap(0, 0, m_PixmapBottleHandle);
         }
 
     }
@@ -476,14 +479,9 @@ void CDashboardStationItem::DrawStationItemLabel(QPainter &painter)
      } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
        rect.setRect(33,22,67,15);
      } else {//draw text in station label
-        if(m_StationSelected) {
-           painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Handle.png"));
-        } else {
-            painter.drawPixmap(0, 0, QPixmap(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Handle.png"));
-        }
+        painter.drawPixmap(0, 0, m_PixmapBottleHandle);
         rect.setRect(23,9,33,16);
      }
-
      DrawGlowBoundaryText(textFont, m_StationItemLabel, rect, painter);
 }
 
