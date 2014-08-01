@@ -21,11 +21,12 @@
 #include "Settings/Include/NetworkSettingsWidget.h"
 #include "Global/Include/Exception.h"
 #include "Global/Include/Utils.h"
+#include "Dashboard/Include/CommonString.h"
 #include "ui_NetworkSettingsWidget.h"
 
 namespace Settings {
-
-const QString REGEXP_NUMERIC_VALIDATOR = "^[0-9]*$"; //!< Reg expression for the validator
+//const QString REGEXP_NUMERIC_VALIDATOR = "^[0-9]*$"; //!< Reg expression for the validator
+const QString REGEXP_NUMERIC_VALIDATOR = "^[0-9]{1,5}$"; //!< Reg expression for the validator
 const QString IPADDRESS_INPUT_MASK_    = "000.000.000.000; "; //!< Mask for the Ip address
 
 /****************************************************************************/
@@ -35,6 +36,7 @@ const QString IPADDRESS_INPUT_MASK_    = "000.000.000.000; "; //!< Mask for the 
  *  \iparam p_Parent = Parent object
  */
 /****************************************************************************/
+
 CNetworkSettingsWidget::CNetworkSettingsWidget(QWidget *p_Parent) :
     MainMenu::CPanelFrame(p_Parent), mp_Ui(new Ui::CNetworkSettingsWidget),
     mp_MainWindow(NULL),m_ProcessRunning(false),
@@ -45,11 +47,16 @@ CNetworkSettingsWidget::CNetworkSettingsWidget(QWidget *p_Parent) :
     m_strEnterProxyName(tr("Enter Proxy User Name")),
     m_strEnterProxyPassword(tr("Enter Proxy Password")),
     m_strEnterProxyIP(tr("Enter Proxy IP Address")),
-    m_strEnterProxyPort(tr("Enter Proxy Port"))
+    m_strEnterProxyPort(tr("Enter Proxy Port")),
+    m_strErrIP(tr("IP address not correct")),
+    m_strErrPort(tr("Network port not correct"))
 {
     mp_Ui->setupUi(GetContentFrame());
     SetPanelTitle(tr("Network"));
     mp_Ui->checkBox_RemoteCare->setChecked(true);
+
+    mp_MessageDlg = NULL;
+
     CONNECTSIGNALSLOT(mp_Ui->checkBox_DirectConnection, stateChanged(int),
                       this, OnDirectConnectionStateChanged(int));
     CONNECTSIGNALSLOT(mp_Ui->proxyUserNameButton, clicked(), this, OnProxyUserName());
@@ -57,6 +64,18 @@ CNetworkSettingsWidget::CNetworkSettingsWidget(QWidget *p_Parent) :
     CONNECTSIGNALSLOT(mp_Ui->proxyIpAddressButton, clicked(), this, OnProxyIPAddress());
     CONNECTSIGNALSLOT(mp_Ui->proxyPortButton, clicked(), this, OnProxyPort());
     CONNECTSIGNALSLOT(mp_Ui->saveButton, clicked(), this, OnSave());   
+}
+
+void CNetworkSettingsWidget::showInformation(QString &msg)
+{
+    mp_MessageDlg = new MainMenu::CMessageDlg;
+    mp_MessageDlg->HideAllButtons();
+    mp_MessageDlg->SetIcon(QMessageBox::Information);
+    mp_MessageDlg->SetTitle(CommonString::strInforMsg);
+    mp_MessageDlg->SetButtonText(2, CommonString::strOK);
+    mp_MessageDlg->SetText(msg);
+    mp_MessageDlg->exec();
+    delete mp_MessageDlg;
 }
 
 /****************************************************************************/
@@ -158,6 +177,52 @@ void CNetworkSettingsWidget::ResetButtons()
     mp_Ui->proxyPortButton->setText(QString::number(m_UserSettings.GetProxyIPPort()));
 }
 
+bool CNetworkSettingsWidget::validator(QString &input, SettingType_t type)
+{
+    switch (type)
+    {
+        case IP_ADDRESS:
+        {
+            // range: 000.000.000.001 to 255.255.255.255
+            QStringList list = input.split('.');
+            if (list.size() != 4) {
+                return false;
+            }
+
+            bool ret = (list[3].compare("001") >= 0 && list[3].compare("255") <= 0);
+            if (!ret) {
+                return false;
+            }
+
+            QString val;
+            for (int i = 0; i < 3; ++ i) {
+                val = list[i];
+                if (val.compare("000") >= 0 && val.compare("255") <= 0) {
+                    continue;
+                }
+                else {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        case NETWORK_PORT:
+        {
+            // 0001 to 65535
+            quint32 port = input.toUInt();
+            qDebug() << "input port: " << port;
+            if (port >= 1 && port <= 65535) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+    return false;
+}
+
 /****************************************************************************/
 /*!
  *  \brief Translates the strings in UI to the selected language
@@ -177,6 +242,8 @@ void CNetworkSettingsWidget::RetranslateUI()
     m_strEnterProxyPassword = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy Password", 0, QApplication::UnicodeUTF8);
     m_strEnterProxyIP = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy IP Address", 0, QApplication::UnicodeUTF8);
     m_strEnterProxyPort = QApplication::translate("Settings::CNetworkSettingsWidget", "Enter Proxy Port", 0, QApplication::UnicodeUTF8);
+    m_strErrIP = QApplication::translate("Settings::CNetworkSettingsWidget", "IP address not correct", 0, QApplication::UnicodeUTF8);
+    m_strErrPort = QApplication::translate("Settings::CNetworkSettingsWidget", "Network port not correct", 0, QApplication::UnicodeUTF8);
 }
 
 /****************************************************************************/
@@ -310,7 +377,7 @@ void CNetworkSettingsWidget::OnProxyPort()
     mp_KeyBoardWidget->SetKeyBoardDialogTitle(m_strEnterProxyPort);
     mp_KeyBoardWidget->SetPasswordMode(false);
     mp_KeyBoardWidget->SetLineEditContent(mp_Ui->proxyPortButton->text());
-    mp_KeyBoardWidget->SetMaxCharLength(32);
+    mp_KeyBoardWidget->SetMaxCharLength(5);
     mp_KeyBoardWidget->SetMinCharLength(2);
     // ^ and $ is used for any character. * is used to enter multiple characters
     // [0-9] is used to allow user to enter only 0 to 9 digits
@@ -407,10 +474,18 @@ void CNetworkSettingsWidget::OnOkClicked(QString EnteredText)
         break;
 
     case IP_ADDRESS_BTN_CLICKED:
+        if (!validator(EnteredString, IP_ADDRESS)) {
+            showInformation(m_strErrIP);
+            break;
+        }
         mp_Ui->proxyIpAddressButton->setText(EnteredText);
         break;
 
     case PORT_BTN_CLICKED:
+        if (!validator(EnteredString, NETWORK_PORT)) {
+            showInformation(m_strErrPort);
+            break;
+        }
         mp_Ui->proxyPortButton->setText(EnteredText);
         break;
     default:

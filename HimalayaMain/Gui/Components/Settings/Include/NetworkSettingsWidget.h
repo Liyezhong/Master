@@ -23,6 +23,7 @@
 
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/MainWindow.h"
+#include "MainMenu/Include/MessageDlg.h"
 #include "KeyBoard/Include/KeyBoard.h"
 #include "DataManager/Containers/UserSettings/Include/UserSettings.h"
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
@@ -39,7 +40,15 @@ typedef enum {
     PASSWORD_BTN_CLICKED,
     IP_ADDRESS_BTN_CLICKED,
     PORT_BTN_CLICKED
-}ButtonType_t;
+} ButtonType_t;
+
+//!< Setting type
+typedef enum {
+    IP_ADDRESS = 1,
+    NETWORK_PORT
+} SettingType_t;
+
+
 /****************************************************************************/
 /**
  * \brief This class contains the proxy settings for remote care
@@ -72,6 +81,19 @@ private:
     QString m_strEnterProxyIP;       ///<  Definition/Declaration of variable m_strEnterProxyIP
     QString m_strEnterProxyPort;       ///<  Definition/Declaration of variable m_strEnterProxyPort
 
+    QString m_strErrIP; ///<  Definition/Declaration of variable m_strErrIP
+    QString m_strErrPort; ///<  Definition/Declaration of variable m_strErrPort
+    MainMenu::CMessageDlg *mp_MessageDlg; ///<  Definition/Declaration of variable mp_MessageDlg
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of InputValidator
+     *  \iparam input = content need to be checked
+     *  \iparam type = setting/content type
+     */
+    /****************************************************************************/
+    bool validator(QString &input, SettingType_t type);
+
     void RetranslateUI();
     void ResetButtons();
     void ConnectKeyBoardSignalSlots();
@@ -82,7 +104,7 @@ protected:
 
 public:
      void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
-
+     void showInformation(QString &msg);
 private slots:    
      /****************************************************************************/
      /*!
