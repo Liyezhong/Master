@@ -363,6 +363,22 @@ signals:
      */
     /*******************************************************************************/
     void ShutdownSystem();
+
+    /****************************************************************************/
+    /**
+     * \brief Signal is emitted to set network settings result
+     * \iparam Param = PlatformService::NetworkSettings_t
+     * \iparam Result  = bool
+     */
+    /****************************************************************************/
+    void SetNetworkSettingsResult(PlatformService::NetworkSettings_t Param, bool Result);
+
+    /*******************************************************************************/
+    /*!
+     *  \brief Signal is emitted to perform network tests.
+     */
+    /*******************************************************************************/
+    void PerformNetworkTests();
 };
 
 } // end namespace Core

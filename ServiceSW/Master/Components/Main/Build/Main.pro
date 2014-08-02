@@ -42,7 +42,9 @@ PLATFORM_GUI_COMPONENTS = Application \
 PLATFORM_SERVICESW_COMPONENTS_DIR = ../../../../../../Platform/ServiceSW/Components
 PLATFORM_SERVICESW_COMPONENTS = LogViewer \
                                 Settings \
-                      ServiceKeyValidator
+                                IENetworkClient \
+                                ServiceKeyValidator \
+                                ServiceImportExport
 
 
 ################# list used shared libraries #################

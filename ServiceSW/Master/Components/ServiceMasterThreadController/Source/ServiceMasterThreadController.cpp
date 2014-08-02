@@ -45,6 +45,10 @@
 
 #include "ExportController/Include/ExportController.h"
 
+#include "IENetworkClient/Include/IENetworkClient.h"
+
+#include "Core/Include/ServiceUtils.h"
+
 namespace Threads {
 using namespace Global;
 
@@ -220,6 +224,16 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     // Shut down
     if (!connect(mp_GUIStartup, SIGNAL(ShutdownSystem()), this, SLOT(ShutdownSystem()))){
         qDebug() <<"CStartup: cannot connect 'ShutDownSystem' signal";
+    }
+
+    // Network settings
+    if (!QObject::connect(this, SIGNAL(SetNetworkSettingsResult(PlatformService::NetworkSettings_t , bool )),
+                          mp_GUIStartup, SIGNAL(SetNetworkSettingsResult(PlatformService::NetworkSettings_t , bool )))) {
+        qDebug() << "CStartup: cannot connect 'SetNetworkSettingsResult' signal";
+    }
+    if (!QObject::connect(mp_GUIStartup, SIGNAL(PerformNetworkTests()),
+                          this , SLOT(PerformNetworkTests()))) {
+        qDebug() << "CStartup: cannot connect 'PerformNetworkTests' signal";
     }
 
     //mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
@@ -869,6 +883,8 @@ void ServiceMasterThreadController::OnGoReceived()
     // signal/slot mechanism in this event loop.
 
     mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
+
+    mp_ServiceDataContainer = const_cast<DataManager::ServiceDataContainer *>(mp_ServiceDataManager->GetDataContainer());
 
     mp_GUIStartup->mp_ServiceConnector->SetModuleListContainer(
                 mp_ServiceDataManager->GetDataContainer()->ModuleList,
@@ -1675,6 +1691,62 @@ void ServiceMasterThreadController::UpdateRebootFile(const QMap<QString, QString
     RebootFile.flush();
     fsync(RebootFile.handle());
     RebootFile.close();
+}
+
+void ServiceMasterThreadController::PerformNetworkChecks()
+{
+    try
+    {
+        QString IPAddress = mp_ServiceDataContainer->ServiceParameters->GetProxyIPAddress();
+        NetworkClient::IENetworkClient *IEClient(NULL);
+        IEClient = new NetworkClient::IENetworkClient(IPAddress, qApp->applicationDirPath());
+
+        if(IEClient->PerformHostReachableTest())
+        {
+            emit SetNetworkSettingsResult(PlatformService::HOST_REACHABLE , true);
+            qDebug() << " ServiceMasterThreadController::PerformHostReachableTest Successful for ip "<<IPAddress;
+        }
+        else
+        {
+            emit SetNetworkSettingsResult(PlatformService::HOST_REACHABLE , false);
+            qDebug() << " ServiceMasterThreadController::PerformHostReachableTest Failed for ip "<<IPAddress;
+        }
+
+        if(IEClient->PerformServiceAvailableTest())
+        {
+            emit SetNetworkSettingsResult(PlatformService::SERVICE_AVAILABLE , true);
+            qDebug() << " ServiceMasterThreadController::PerformServiceAvailableTest Successful for ip "<<IPAddress;
+        }
+        else
+        {
+            emit SetNetworkSettingsResult(PlatformService::SERVICE_AVAILABLE , false);
+            qDebug() << " ServiceMasterThreadController::PerformServiceAvailableTest Failed for ip "<<IPAddress;
+        }
+
+        if(IEClient->PerformAccessRightsCheck())
+        {
+            emit SetNetworkSettingsResult(PlatformService::ACCESS_RIGHTS , true);
+            qDebug() << " ServiceMasterThreadController::PerformAccessRightsCheck Successful for ip "<<IPAddress;
+        }
+        else
+        {
+            emit SetNetworkSettingsResult(PlatformService::ACCESS_RIGHTS , false);
+            qDebug() << " ServiceMasterThreadController::PerformAccessRightsCheck Failed for ip "<<IPAddress;
+        }
+
+        if(NULL != IEClient)
+        {
+            delete IEClient;
+            IEClient = NULL;
+        }
+    }
+    CATCHALL();
+}
+
+void ServiceMasterThreadController::PerformNetworkTests()
+{
+    Core::CServiceUtils::delay(500);
+    (void) PerformNetworkChecks();
 }
 
 } // end namespace Threads

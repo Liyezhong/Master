@@ -279,6 +279,11 @@ CStartup::CStartup() : QObject(),
 
     CONNECTSIGNALSIGNAL(mp_UpdateSystem, ShutdownSystem(), this, ShutdownSystem());
 
+    /* Network Settings */
+    CONNECTSIGNALSLOT(this, SetNetworkSettingsResult(PlatformService::NetworkSettings_t, bool), mp_Setting , SetNetworkSettingsResult(PlatformService::NetworkSettings_t, bool));
+    CONNECTSIGNALSIGNAL(mp_Setting, PerformNetworkTests(), this , PerformNetworkTests());
+
+
     m_DateTime.setTime_t(0);
     mp_Clock->start(60000);
 }

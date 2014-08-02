@@ -157,6 +157,7 @@ private:
 
     DataManager::CServiceDataManager            *mp_ServiceDataManager;         //!< The ServiceDataManager.\warning Dont delete this, Pointer points to address in stack.
     DataManager::CDataManager                   *mp_DataManager;
+    DataManager::ServiceDataContainer           *mp_ServiceDataContainer;       //!< The ServiceDataContainer.
 
     Core::CStartup                              *mp_GUIStartup;                 //!< Handler for GUI components.
 
@@ -376,6 +377,16 @@ signals:
        */
       /****************************************************************************/
       void ReturnManufacturingMsgtoMain(bool TestResult);
+
+      /****************************************************************************/
+      /**
+       * \brief Signal is emitted to set network settings result
+       * \iparam Param  = PlatformService::NetworkSettings_t
+       * \iparam Result = bool
+       */
+      /****************************************************************************/
+      void SetNetworkSettingsResult(PlatformService::NetworkSettings_t Param, bool Result);
+
 private slots:
     /****************************************************************************/
     /**
@@ -1012,8 +1023,16 @@ public:
     void OnReturnMessageCommand(Global::tRefType Ref, const DeviceCommandProcessor::CmdReturnMessage &Cmd, Threads::CommandChannel &AckCommandChannel);
     /****************************************************************************/
 
+    /****************************************************************************/
+    /**
+     * \brief To perform network checks.
+     *
+     */
+    /****************************************************************************/
+    void PerformNetworkChecks();
 
 public slots:
+
     /****************************************************************************/
     /**
      * \brief Receive a heartbeat signals.
@@ -1022,6 +1041,14 @@ public slots:
      */
     /****************************************************************************/
     void HeartbeatSlot(const Global::gSourceType &TheHeartBeatSource);
+
+    /****************************************************************************/
+    /**
+     * \brief To Perform Network Tests.
+     *
+     */
+    /****************************************************************************/
+    void PerformNetworkTests();
 
 }; // end class ServiceMasterThreadController
 

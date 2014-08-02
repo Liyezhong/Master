@@ -27,7 +27,6 @@
 #include "Core/Include/ServiceDefines.h"
 #include "ServiceDeviceController/Include/DeviceProcessor/ManufacturingTestHandler.h"
 
-
 class WrapperUtils;
 class WrapperFmTempControl;
 class WrapperFmStepperMotor;
