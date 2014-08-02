@@ -22,7 +22,7 @@
 
 namespace Core {
 
-ManufacturalTestMode_t CSelectTestOptions::m_TestMod = MANUFACTURAL_UNDEFINED_TEST;
+ManufacturalTestMode_t CSelectTestOptions::m_TestMod = MANUFACTURAL_ENDTEST;
 
 CSelectTestOptions::CSelectTestOptions()
 {
