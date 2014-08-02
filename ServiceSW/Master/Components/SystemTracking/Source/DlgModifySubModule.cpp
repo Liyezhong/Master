@@ -232,16 +232,24 @@ void CDlgModifySubModule::OnSave(void)
         return;
     }
 
-    const QString SerialNumberName("SerialNumber");
-    const QString DateOfProductionName("DateOfExchange");
-
     if (!mp_SubModule) {
         qDebug()<<"CDlgModifySubModule::OnSave():invalid sub module";
         return;
     }
-    (void)mp_SubModule->UpdateParameterInfo(SerialNumberName, SerialNumber);
-    (void)mp_SubModule->UpdateParameterInfo(DateOfProductionName,
+    (void)mp_SubModule->UpdateParameterInfo("SerialNumber", SerialNumber);
+    (void)mp_SubModule->UpdateParameterInfo("DateOfExchange",
                                       Date.toString(Qt::ISODate));
+
+    if (!mp_SubModule->UpdateParameterInfo("OperationTime", "0")) {
+        (void)mp_SubModule->UpdateParameterInfo("OperationCycles", "0");
+    }
+
+    if (mp_SubModule->GetSubModuleName() == QString("Pressure Sensor")) {
+        (void)mp_SubModule->UpdateParameterInfo("CalibrationDate", "N/A");
+    }
+    else {
+        (void)mp_SubModule->UpdateParameterInfo("EndTestDate", "N/A");
+    }
 
     emit UpdateSubModule(*mp_SubModule);
 

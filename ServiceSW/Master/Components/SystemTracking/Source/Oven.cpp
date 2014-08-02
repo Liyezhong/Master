@@ -229,6 +229,7 @@ void COven::ConfirmModuleConfiguration(QString& Text)
         if(mp_DataConnector->UpdateInstrumentHistory(*mp_ModuleList))
         {
             emit ModuleListChanged();
+            ResetSubModuleLifeCycle();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::COven",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();

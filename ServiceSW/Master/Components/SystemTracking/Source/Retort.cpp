@@ -253,6 +253,7 @@ void CRetort::ConfirmModuleConfiguration(QString& Text)
         if(mp_DateConnector->UpdateInstrumentHistory(*mp_ModuleList))
         {
             emit ModuleListChanged();
+            ResetSubModuleLifeCycle();
             mp_MessageDlg->SetButtonText(1, QApplication::translate("SystemTracking::CRetort",
                                                                     "Ok", 0, QApplication::UnicodeUTF8));
             mp_MessageDlg->HideButtons();
