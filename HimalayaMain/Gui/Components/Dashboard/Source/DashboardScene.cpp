@@ -692,7 +692,7 @@ void CDashboardScene::BlinkingStation()
          Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
          if (item)
          {
-             if (item->IsReagentExpired())
+             if (item->IsReagentExpired() && item->isVisible())
              {
                  item->DrawStationItemImage();
              }
@@ -711,7 +711,7 @@ void CDashboardScene::EnableBlink(bool bEnable)
          Core::CDashboardStationItem* item = mp_DashboardStationItems.at(i);
          if (item)
          {
-             if (item->IsReagentExpired())
+             if (item->IsReagentExpired() && item->isVisible())
              {
                  item->EnableBlink(bEnable);
                  item->DrawStationItemImage();
@@ -949,7 +949,6 @@ void CDashboardScene::UpdateDashboardStations()
         pListItem->SetDashboardStation(p_DashboardStation);
         pListItem->StationSelected(true);
     }
-    this->update();
 }
 
 void CDashboardScene::UpdateDashboardStation(const QString& strStationId)
@@ -1005,7 +1004,6 @@ void CDashboardScene::UpdateDashboardSceneReagentsForProgram(QString &programId,
                 pListItem->setVisible(false);
             }
         }
-        pListItem->UpdateDashboardStationItemReagent();
     }
 }
 

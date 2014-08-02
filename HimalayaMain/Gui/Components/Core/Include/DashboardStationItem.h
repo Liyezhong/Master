@@ -94,9 +94,8 @@ private:
     QPixmap m_PixmapRetortUnlocked, m_PixmapRetortLocked01, m_PixmapRetortLocked02;
     QPixmap m_PixmapParaffinbathBackground, m_PixmapBottleBackground, m_PixmapBottleHandle;
     QPixmap m_PixmapLabel, m_PixmapReagentName;
-    /****************************************************************************/
-    /*!
-     *  \brief  Definition/Declaration of function OnCompletedSuckDrain
+    bool m_bRefreshDashboard;
+     /*  \brief  Definition/Declaration of function OnCompletedSuckDrain
      *
      *  \param isSuck = bool type parameter
      *

@@ -72,7 +72,8 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_IsRetortContaminated(false),
     m_RetortLocked(false),
     m_PixmapLabel(100, 50),
-    m_PixmapReagentName(60, 145)
+    m_PixmapReagentName(60, 145),
+    m_bRefreshDashboard(true)
 {
     setFlag(QGraphicsItem::ItemIsSelectable);
 
@@ -178,8 +179,6 @@ void CDashboardStationItem::UpdateImage()
     CONNECTSIGNALSLOT(mp_DataConnector, ReagentsUpdated(), this, UpdateDashboardStationItemReagentWhenReagentUpdated());
     CONNECTSIGNALSLOT(mp_DataConnector, UserSettingsUpdated(), this, UpdateUserSettings());
     CONNECTSIGNALSLOT(mp_DataConnector, ReagentGroupUpdated(), this, UpdateDashboardStationItemWhenReagentGroupUpdated());
-
-
 }
 
 /****************************************************************************/
@@ -354,7 +353,8 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent(bool RefreshFlag)
             DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupId);
             if (p_ReagentGroup->IsCleaningReagentGroup()) {
                 m_CurRMSMode = m_UserSettings.GetModeRMSCleaning();
-                PrepareCleaningReagentStrip();
+                if (RefreshFlag)
+                    PrepareCleaningReagentStrip();
             }
             else {
                 m_CurRMSMode = m_UserSettings.GetModeRMSProcessing();
@@ -367,7 +367,8 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent(bool RefreshFlag)
             else
                 m_ReagentExpiredFlag = false;
         }
-        PrepareReagentName();
+        if (RefreshFlag)
+            PrepareReagentName();
     }
 
     if (RefreshFlag)
@@ -567,7 +568,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         reagentColorValue = m_CurrentReagentColorValue;
     }
 
-    if(m_StationSelected) {
         QColor color(reagentColorValue);
         if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup || STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
         {
@@ -586,10 +586,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         }
         Painter.setPen(color);
         Painter.setBrush(color);
-    } else {
-        Painter.setPen(QColor(Qt::gray));
-        Painter.setBrush(QColor(Qt::gray));
-    }
 
     if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
     {
@@ -725,7 +721,8 @@ void CDashboardStationItem::UpdateDashboardScene(QString StationID)
 void CDashboardStationItem::UpdateUserSettings()
 {
     m_UserSettings = *(mp_DataConnector->SettingsInterface->GetUserSettings());
-    UpdateDashboardStationItemReagent(false);
+    UpdateDashboardStationItemReagent(m_bRefreshDashboard);
+    m_bRefreshDashboard = false;
 }
 
 void CDashboardStationItem::SuckDrain(bool isStart, bool isSuck, const QString& ReagentColorValue)
