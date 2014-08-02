@@ -13,11 +13,9 @@ TARGET = ServiceMasterThreadController
 
 HEADERS +=  ../Include/*.h \
             ../../ServiceDataManager/CommandInterface/Include/*.h \
-            ../../ServiceDataManager/Include/*.h \
-            ../../ImportExport/Include/*.h
+            ../../ServiceDataManager/Include/*.h
 
 SOURCES +=  ../Source/*.cpp \
             ../../ServiceDataManager/CommandInterface/Source/*.cpp \
-            ../../ServiceDataManager/Source/*.cpp \
-            ../../ImportExport/Source/*.cpp
+            ../../ServiceDataManager/Source/*.cpp
 
