@@ -87,7 +87,7 @@ const QString PROGRAM_SETTINGS_XML  ("HimalayaProgramSettings.xml");
  *  \return from INSTRUMENT_HISTORY_XML
  */
 /****************************************************************************/
-const QString INSTRUMENT_HISTORY_XML  ("InstrumentHistory.xml");
+const QString INSTRUMENT_HISTORY_XML  ("InstrumentHistoryRef.xml");
 
 }
 
