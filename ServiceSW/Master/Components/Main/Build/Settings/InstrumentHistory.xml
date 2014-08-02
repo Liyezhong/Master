@@ -167,7 +167,7 @@
             </SubModule>
             <SubModule name="Pressure Sensor" type="Sensor" description="Pressure Sensor">
                 <parameter name="SerialNumber" unit="QString">N/A</parameter>
-                <parameter name="OperationTime" unit="hours">0</parameter>
+                <parameter name="OperationTime" unit="hours">9</parameter>
                 <parameter name="DateOfExchange" unit="QString">2014-08-01</parameter>
                 <parameter name="CalibrationDate" unit="QDate">N/A</parameter>
             </SubModule>
