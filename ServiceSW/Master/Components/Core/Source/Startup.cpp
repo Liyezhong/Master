@@ -103,7 +103,7 @@ CStartup::CStartup() : QObject(),
                         this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
     CONNECTSIGNALSIGNAL(mp_RotaryValveConfig, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID),
                         this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
-    CONNECTSIGNALSIGNAL(mp_RotaryValveConfig, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID),
+    CONNECTSIGNALSIGNAL(mp_LaSystemConfig, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID),
                         this, PerformManufacturingTest(Service::ModuleTestCaseID, Service::ModuleTestCaseID));
 
     (void)connect(mp_ServiceConnector,
