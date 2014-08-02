@@ -30,7 +30,7 @@ const int PipeWidth = 5;       ///<  Definition/Declaration of variable PipeWidt
 const int JointHeight = 10;
 
 //!< Timing interval for the water animation in milliseconds
-#define ANIMATION_INTERVAL 500     ///<  Definition/Declaration of macro ANIMATION_INTERVAL
+#define PIPE_ANIMATION_INTERVAL 100     ///<  Definition/Declaration of macro ANIMATION_INTERVAL
 /****************************************************************************/
 /*!
  *  \brief Constructor
@@ -1068,7 +1068,7 @@ void CDashboardScene::OnStationSuckDrain(const QString& StationId, bool IsStart,
                   m_CurrentReagentColorValue = p_ReagentGroup->GetGroupColor();
                   (void)m_CurrentReagentColorValue.prepend("#");
                    RepresentCurrentWorkingPipe(StationId);
-                   m_pPipeAnimationTimer->start(200);
+                   m_pPipeAnimationTimer->start(PIPE_ANIMATION_INTERVAL);
               }
           }
       }

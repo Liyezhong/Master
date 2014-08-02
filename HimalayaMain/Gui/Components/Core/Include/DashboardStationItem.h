@@ -93,7 +93,7 @@ private:
     QPixmap m_RawImage4Cleaning;                         //!< Big Image with customized BDiagPattern for Cleaning reagent
     QPixmap m_PixmapRetortUnlocked, m_PixmapRetortLocked01, m_PixmapRetortLocked02;
     QPixmap m_PixmapParaffinbathBackground, m_PixmapBottleBackground, m_PixmapBottleHandle;
-
+    QPixmap m_PixmapLabel, m_PixmapReagentName;
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function OnCompletedSuckDrain
@@ -129,6 +129,9 @@ public:
     bool IsEmpty();
     void LoadStationImages(QPainter & Painter);
     void DrawReagentName(QPainter & Painter);
+    void PrepareStationItemLabel();
+    void PrepareReagentName();
+    void PrepareCleaningReagentStrip();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function DrawStationItemLabel

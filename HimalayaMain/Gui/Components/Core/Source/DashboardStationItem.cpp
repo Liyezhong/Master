@@ -70,7 +70,9 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_ExpiredColorRed(true),
     m_EnableBlink(true),
     m_IsRetortContaminated(false),
-    m_RetortLocked(false)
+    m_RetortLocked(false),
+    m_PixmapLabel(100, 50),
+    m_PixmapReagentName(60, 145)
 {
     setFlag(QGraphicsItem::ItemIsSelectable);
 
@@ -82,24 +84,6 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
         m_Image = QPixmap(m_ParaffinbathBoundingRectWidth, m_ParaffinbathBoundingRectHeight);
     } else {
         m_Image = QPixmap(m_BottleBoundingRectWidth, m_BottleBoundingRectHeight);
-
-        //For Cleaning Reagent, generate the raw image used for BDiagpattern
-        QPixmap pix(200, 200);
-        pix.fill(Qt::transparent);
-
-        QPainter painter(&pix);
-        painter.setBrush(Qt::white);
-        painter.setPen(Qt::white);
-
-        for (int i=0; i<200; i+=8)
-        {
-            painter.drawRect(i,0,4,200);
-        }
-        QMatrix matrix;
-        (void)matrix.rotate(45.0);
-        QPixmap img = pix.transformed(matrix);
-        img = img.copy(100, 100, 100, 98);
-        m_RawImage4Cleaning = img;
     }
 
     m_PixmapRetortUnlocked.load(":/HimalayaImages/Icons/Dashboard/Retort/Retort_Unlocked.png");
@@ -109,6 +93,7 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_PixmapBottleBackground.load(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Background.png");
     m_PixmapBottleHandle.load(":/HimalayaImages/Icons/Dashboard/Bottle/Bottle_Handle.png");
 
+    PrepareStationItemLabel();
     UpdateImage();
 
     mp_SuckDrainTimer = new QTimer(this);
@@ -186,6 +171,7 @@ void CDashboardStationItem::UpdateImage()
         QPainter Painter(&m_Image);
         Painter.fillRect(this->boundingRect(), QColor(226, 227, 228));
         LoadStationImages(Painter);
+        DrawStationItemLabel(Painter);
         return;
     }
 
@@ -276,7 +262,6 @@ void CDashboardStationItem::LoadStationImages(QPainter& Painter)
         }
 
     }
-    DrawStationItemLabel(Painter);
 }
 
 
@@ -369,6 +354,7 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent(bool RefreshFlag)
             DataManager::CReagentGroup const *p_ReagentGroup = mp_DataConnector->ReagentGroupList->GetReagentGroup(ReagentGroupId);
             if (p_ReagentGroup->IsCleaningReagentGroup()) {
                 m_CurRMSMode = m_UserSettings.GetModeRMSCleaning();
+                PrepareCleaningReagentStrip();
             }
             else {
                 m_CurRMSMode = m_UserSettings.GetModeRMSProcessing();
@@ -381,6 +367,7 @@ void CDashboardStationItem::UpdateDashboardStationItemReagent(bool RefreshFlag)
             else
                 m_ReagentExpiredFlag = false;
         }
+        PrepareReagentName();
     }
 
     if (RefreshFlag)
@@ -410,27 +397,45 @@ void CDashboardStationItem::DrawStationItemImage()
     update();
 }
 
-/****************************************************************************/
-/*!
- *  \brief Draw Reagent Name on the Bottle Image
- *
- */
-/****************************************************************************/
-
-void CDashboardStationItem::DrawReagentName(QPainter & Painter)
+void CDashboardStationItem::PrepareCleaningReagentStrip()
 {
-    QFont TextFont;
+    //For Cleaning Reagent, generate the raw image used for BDiagpattern
+    QPixmap pix(200, 200);
+    pix.fill(Qt::transparent);
+
+    QPainter painter(&pix);
+    painter.setBrush(Qt::white);
+    painter.setPen(Qt::white);
+
+    for (int i=0; i<200; i+=8)
+    {
+        painter.drawRect(i, 0, 4, 200);
+    }
+    QMatrix matrix;
+    (void)matrix.rotate(45.0);
+    QPixmap img = pix.transformed(matrix);
+    img = img.copy(100, 100, 100, 98);
+    m_RawImage4Cleaning = img;
+}
+
+void CDashboardStationItem::PrepareReagentName()
+{
+    m_PixmapReagentName.fill(Qt::transparent);
+    QPainter Painter;
+    (void)Painter.begin(&m_PixmapReagentName);
+
+    QFont textFont;
     Painter.setRenderHint(QPainter::Antialiasing);
     Painter.setPen(Qt::black);
-    TextFont.setPointSize(8);
+    textFont.setPointSize(8);
 
     if(m_StationSelected) {
-        TextFont.setBold(true);
+        textFont.setBold(true);
     }
+    Painter.setFont(textFont);
 
     if (mp_DashboardStation)
     {
-        //Now Paint Reagent Names
         QString ReagentID = mp_DashboardStation->GetDashboardReagentID();
         DataManager::CReagent const *p_Reagent = mp_DataConnector->ReagentList->GetReagent(ReagentID);
         if (p_Reagent)
@@ -438,10 +443,22 @@ void CDashboardStationItem::DrawReagentName(QPainter & Painter)
             Painter.rotate(270.0);
             QString reagentName = p_Reagent->GetReagentName();
             QRect rect(-130, 23, 75, 60 );
-            DrawGlowBoundaryText(TextFont, reagentName, rect, Painter);
+            DrawGlowBoundaryText(textFont, reagentName, rect, Painter);
             Painter.rotate(-270.0);
         }
     }
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Draw Reagent Name on the Bottle Image
+ *
+ */
+/****************************************************************************/
+void CDashboardStationItem::DrawReagentName(QPainter & Painter)
+{
+    QRect rect(0, 0, 60, 145);
+    Painter.drawPixmap(rect, m_PixmapReagentName, rect);
 }
 
 void CDashboardStationItem::DrawGlowBoundaryText(QFont& textFont, QString& text, QRect& rect, QPainter& painter)
@@ -461,8 +478,12 @@ void CDashboardStationItem::DrawGlowBoundaryText(QFont& textFont, QString& text,
    painter.drawText(rect.x(), rect.y()+ fm.height() -1 - fm.descent(), text);
 }
 
-void CDashboardStationItem::DrawStationItemLabel(QPainter &painter)
+void CDashboardStationItem::PrepareStationItemLabel()
 {
+    m_PixmapLabel.fill(Qt::transparent);
+    QPainter painter;
+    (void)painter.begin(&m_PixmapLabel);
+
     QFont textFont;
     textFont.setPointSize(8);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -474,15 +495,32 @@ void CDashboardStationItem::DrawStationItemLabel(QPainter &painter)
     QRect rect;
     if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
        textFont.setBold(true);
-       //rect.setRect(65,45,67,15);
-       rect.setRect(71,45,67,15);
+       rect.setRect(0,0,67,15);
      } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
-       rect.setRect(33,22,67,15);
-     } else {//draw text in station label
-        painter.drawPixmap(0, 0, m_PixmapBottleHandle);
-        rect.setRect(23,9,33,16);
+       rect.setRect(0,0,67,15);
+     } else {
+        rect.setRect(0,0,33,16);
      }
      DrawGlowBoundaryText(textFont, m_StationItemLabel, rect, painter);
+     (void)painter.end();
+}
+
+void CDashboardStationItem::DrawStationItemLabel(QPainter& painter)
+{
+    QRect rectDest, rectSource;
+    if(STATIONS_GROUP_RETORT == m_DashboardStationGroup) {
+       rectDest.setRect(71, 45, 67, 15);
+       rectSource.setRect(0, 0, 67, 15);
+     } else if( STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup) {
+       rectDest.setRect(33, 22, 67, 15);
+       rectSource.setRect(0, 0, 67, 15);
+     } else {
+        painter.drawPixmap(0, 0, m_PixmapBottleHandle);
+        rectDest.setRect(23, 9, 33, 16);
+        rectSource.setRect(0, 0, 33, 16);
+     }
+	 
+     painter.drawPixmap(rectDest, m_PixmapLabel, rectSource);
 }
 
 void CDashboardStationItem::EnableBlink(bool bEnable)
