@@ -27,7 +27,6 @@
 #include "KeyBoard/Include/KeyBoard.h"
 #include "MainMenu/Include/MessageDlg.h"
 #include "../Include/PlatformServiceDefines.h"
-#include "ServiceUpdates/Include/NetworkWidget.h"
 namespace ServiceUpdates {
 
 namespace Ui {
@@ -106,7 +105,7 @@ public slots:
       *  \param IPAddress = ip address, IPType = ip type of server or proxy
       */
      /****************************************************************************/
-     void SaveIPAddress(QString IPAddress, IPType_t IPType);
+     void SaveIPAddress(QString IPAddress);
 
      /****************************************************************************/
      /*!
