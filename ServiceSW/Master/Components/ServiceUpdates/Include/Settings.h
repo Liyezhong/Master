@@ -94,6 +94,12 @@ signals:
     /****************************************************************************/
     void ServiceParametersChanged(DataManager::CServiceParameters *ServiceParameters);
 
+    /****************************************************************************/
+    /**
+     * \brief Perform Network tests signal
+     */
+    /****************************************************************************/
+    void PerformNetworkTests();
 private slots:
      void TabIndexChanged(int);
      void OnCurrentTabChanged(int CurrentTabIndex);

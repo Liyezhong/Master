@@ -89,6 +89,9 @@ void CSettings::SaveIPAddress(QString IPAddress) {
         ServiceParameters->SetServerIPAddress(IPAddress);
         emit ServiceParametersChanged(ServiceParameters);
     }
+
+    mp_Ui->pageNetworkSettings->reset();
+    emit PerformNetworkTests();
 }
 
 /*******************************************************************************/
