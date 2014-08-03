@@ -73,7 +73,8 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_RetortLocked(false),
     m_PixmapLabel(100, 50),
     m_PixmapReagentName(60, 145),
-    m_bRefreshDashboard(true)
+    m_bRefreshDashboard(true),
+    m_ReagentName("")
 {
     setFlag(QGraphicsItem::ItemIsSelectable);
 
@@ -276,19 +277,23 @@ void CDashboardStationItem::UpdateDashboardStationItemReagentWhenReagentUpdated(
 
     if (p_Reagent)
     {
-        bool flag = false ;
         DataManager::ReagentStatusType_t reagentStatus = mp_DashboardStation->GetReagentStatus(*p_Reagent, m_CurRMSMode);
-
-        if ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
-            flag = true;
-        else
-            flag = false;
-
+        bool flag = ( reagentStatus == DataManager::REAGENT_STATUS_EXPIRED );
+        bool bRedraw = false;
         if ( flag != m_ReagentExpiredFlag )
         {
             m_ReagentExpiredFlag = flag;
-            DrawStationItemImage();
+            bRedraw = true;
         }
+
+        if (p_Reagent->GetReagentName() != m_ReagentName)
+        {
+            bRedraw = true;
+            PrepareReagentName();
+        }
+
+        if (bRedraw)
+            DrawStationItemImage();
     }
 
 }
@@ -424,10 +429,7 @@ void CDashboardStationItem::PrepareReagentName()
     Painter.setRenderHint(QPainter::Antialiasing);
     Painter.setPen(Qt::black);
     textFont.setPointSize(8);
-
-    if(m_StationSelected) {
-        textFont.setBold(true);
-    }
+    textFont.setBold(true);
     Painter.setFont(textFont);
 
     if (mp_DashboardStation)
@@ -437,9 +439,9 @@ void CDashboardStationItem::PrepareReagentName()
         if (p_Reagent)
         {
             Painter.rotate(270.0);
-            QString reagentName = p_Reagent->GetReagentName();
+            m_ReagentName = p_Reagent->GetReagentName();
             QRect rect(-130, 23, 75, 60 );
-            DrawGlowBoundaryText(textFont, reagentName, rect, Painter);
+            DrawGlowBoundaryText(textFont, m_ReagentName, rect, Painter);
             Painter.rotate(-270.0);
         }
     }

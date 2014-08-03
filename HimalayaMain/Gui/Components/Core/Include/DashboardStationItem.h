@@ -95,6 +95,7 @@ private:
     QPixmap m_PixmapParaffinbathBackground, m_PixmapBottleBackground, m_PixmapBottleHandle;
     QPixmap m_PixmapLabel, m_PixmapReagentName;
     bool m_bRefreshDashboard;
+    QString m_ReagentName;
      /*  \brief  Definition/Declaration of function OnCompletedSuckDrain
      *
      *  \param isSuck = bool type parameter
