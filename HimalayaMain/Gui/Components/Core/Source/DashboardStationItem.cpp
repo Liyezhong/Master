@@ -148,13 +148,8 @@ QRectF CDashboardStationItem::boundingRect() const
 void CDashboardStationItem::paint(QPainter *p_Painter, const QStyleOptionGraphicsItem *,
                                   QWidget *)
 {
-
-    p_Painter->drawPixmap(0, 0, m_Image);
-
-    if (!mp_DashboardStation) {
-        return;
-    }
-
+    if (this->isVisible())
+        p_Painter->drawPixmap(0, 0, m_Image);
 }
 
 /****************************************************************************/
@@ -613,7 +608,19 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
             path.addRect(QRect(4, top, 8, cornerHeight));// Top left corner not rounded
             path.addRect(QRect(fillBottleWidth - 4, top, 8, cornerHeight));// Top right corner not rounded
         }
-        Painter.drawPath(path);  // Only the Bottome Left and Bottom Right Corner
+
+        Painter.drawPath(path);
+        if (isCleaningReagent)
+        {
+            qreal startx = 4.0;
+            qreal starty = 38.0;
+            Painter.setClipPath(path);
+
+            //draw the final result
+            Painter.setBrush(Qt::white);
+            Painter.drawPixmap(startx, starty, m_RawImage4Cleaning);
+            Painter.setClipPath(path, Qt::NoClip);
+        }
     }
     else if(STATIONS_GROUP_PARAFFINBATH == m_DashboardStationGroup)
     {
@@ -671,26 +678,6 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
             path.addRect(QRect(fillRetortWidth - 10, m_RetortBoundingRectHeight - fillRetortHeight - 1, 8, cornerHeight));// Top right corner not rounded
         }
         Painter.drawPath(path);  // Only the Bottome Left and Bottom Right Corner
-    }
-
-	//For Cleaning Reagent, we add the BDiagPattern
-    if (isCleaningReagent == true)
-	{
-		qreal startx = 4.0;
-        qreal starty = 38.0;
-
-        qreal bottleWidth = fillBottleWidth;
-        qreal boottleHeight = fillBottleHeight + 46;
-
-        QPainterPath clipPath;
-        clipPath.setFillRule(Qt::WindingFill);
-        clipPath.addRect(startx, starty, bottleWidth, boottleHeight-5);
-        clipPath.addRoundedRect(startx, starty + boottleHeight - 15, bottleWidth, 10, 8, 8);
-        Painter.setClipPath(clipPath);
-
-		//draw the final result
-        Painter.setBrush(Qt::white);
-        Painter.drawPixmap(startx, starty, m_RawImage4Cleaning);
     }
 }
 
