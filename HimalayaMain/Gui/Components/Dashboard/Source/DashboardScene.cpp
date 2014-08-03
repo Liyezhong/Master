@@ -60,7 +60,7 @@ CDashboardScene::CDashboardScene(Core::CDataConnector *p_DataConnector,
     CONNECTSIGNALSLOT(m_pPipeAnimationTimer, timeout(), this, PipeSuckDrainAnimation());
 
     m_pBlinkingIntervalTimer = new QTimer(this);
-    m_pBlinkingIntervalTimer->setInterval(2000);
+    m_pBlinkingIntervalTimer->setInterval(1200);
     CONNECTSIGNALSLOT(m_pBlinkingIntervalTimer, timeout(), this, BlinkingStation());
 
     m_pStartBlinkingTimer = new QTimer(this);
@@ -725,7 +725,8 @@ void CDashboardScene::OnInteractStart()
     if (!m_bProcessRunning)
     {
         ExpiredReagentStationBlinking(false);
-        m_pStartBlinkingTimer->start();
+        if (!(m_pStartBlinkingTimer->isActive()))
+            m_pStartBlinkingTimer->start();
     }
 }
 
@@ -740,7 +741,11 @@ void CDashboardScene::ExpiredReagentStationBlinking(bool bStart)
     }
     else//stop blink
     {
-        m_pStartBlinkingTimer->stop();
+        if (m_pStartBlinkingTimer->isActive())
+        {
+            m_pStartBlinkingTimer->stop();
+        }
+
         if (m_pBlinkingIntervalTimer->isActive())
         {
             m_pBlinkingIntervalTimer->stop();

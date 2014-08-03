@@ -60,7 +60,7 @@ CDashboardStationItem::CDashboardStationItem(Core::CDataConnector *p_DataConnect
     m_ParaffinbathBoundingRectWidth(120),
     m_ParaffinbathBoundingRectHeight(65),
     m_ParaffinbathCoverHeight(11),
-    m_BottleBoundingRectWidth(61),
+    m_BottleBoundingRectWidth(62),
     m_BottleBoundingRectHeight(139),
     m_BottleCoverHeight(38),
     m_CurrentBoundingRectReagentHeight(0),
@@ -590,7 +590,7 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
     if(STATIONS_GROUP_BOTTLE == m_DashboardStationGroup)
     {
         // Since the Painter is rotated, Width and Height Axis Changes.
-        fillBottleWidth = m_BottleBoundingRectWidth - 10;  // Manual Pixel Calculation
+        fillBottleWidth = m_BottleBoundingRectWidth - 12;  // Manual Pixel Calculation
         fillBottleHeight = m_BottleBoundingRectHeight - m_BottleCoverHeight;  // Manual Pixel Calculation
         if (m_ContainerStatusType == DataManager::CONTAINER_STATUS_SCUKING
         || m_ContainerStatusType == DataManager::CONTAINER_STATUS_DRAINING)
@@ -601,17 +601,17 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         {
             m_CurrentBoundingRectReagentHeight = fillBottleHeight;
         }
-
+        int top = m_BottleBoundingRectHeight - fillBottleHeight;
         QPainterPath path;
         path.setFillRule( Qt::WindingFill );
-        path.addRoundedRect(QRect(4, m_BottleBoundingRectHeight - fillBottleHeight, fillBottleWidth,
-                                  fillBottleHeight -1), 8, 4);
+        path.addRoundedRect(QRect(4, top, fillBottleWidth,
+                                  fillBottleHeight -2), 8, 4);
 
         int cornerHeight = 8;
         if (fillBottleHeight > cornerHeight && fillBottleHeight < m_BottleBoundingRectHeight - 25 - cornerHeight + 4)
         {
-            path.addRect(QRect(4, m_BottleBoundingRectHeight - fillBottleHeight, 8, cornerHeight));// Top left corner not rounded
-            path.addRect(QRect(fillBottleWidth - 4, m_BottleBoundingRectHeight - fillBottleHeight, 8, cornerHeight));// Top right corner not rounded
+            path.addRect(QRect(4, top, 8, cornerHeight));// Top left corner not rounded
+            path.addRect(QRect(fillBottleWidth - 4, top, 8, cornerHeight));// Top right corner not rounded
         }
         Painter.drawPath(path);  // Only the Bottome Left and Bottom Right Corner
     }
@@ -629,15 +629,16 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
             m_CurrentBoundingRectReagentHeight = fillParaffinbathHeight;
         }
 
+        int top = m_ParaffinbathBoundingRectHeight - fillParaffinbathHeight;
         QPainterPath path;
         path.setFillRule( Qt::WindingFill);
-        path.addRoundedRect(QRect(4, m_ParaffinbathBoundingRectHeight - fillParaffinbathHeight, fillParaffinbathWidth,
-                                  fillParaffinbathHeight -1), 8, 4);
+        path.addRoundedRect(QRect(4,  top, fillParaffinbathWidth,
+                                  fillParaffinbathHeight -3), 6, 4);
         int cornerHeight = 8;
         if (fillParaffinbathHeight > cornerHeight)
         {
-            path.addRect(QRect(4, m_ParaffinbathBoundingRectHeight - fillParaffinbathHeight, 8, cornerHeight));// Top left corner not rounded
-            path.addRect(QRect(fillParaffinbathWidth - 4, m_ParaffinbathBoundingRectHeight - fillParaffinbathHeight, 8, cornerHeight));// Top right corner not rounded
+            path.addRect(QRect(4, top, 8, cornerHeight));// Top left corner not rounded
+            path.addRect(QRect(fillParaffinbathWidth - 4, top, 8, cornerHeight));// Top right corner not rounded
         }
         Painter.drawPath(path);  // Only the Bottome Left and Bottom Right Corner
 
@@ -659,7 +660,7 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         if (fillRetortHeight > 0) {
             //path.addRoundedRect(QRect(4, m_RetortBoundingRectHeight - fillRetortHeight, fillRetortWidth - 6, fillRetortHeight - 3), 8, 8);
             int y = m_RetortBoundingRectHeight - fillRetortHeight - 1;
-            path.addRoundedRect(QRect(4, (y > 0) ? y : 0 , fillRetortWidth - 6, fillRetortHeight), 8, 8);
+            path.addRoundedRect(QRect(4, (y > 0) ? y : 0 , fillRetortWidth - 6, fillRetortHeight -1), 8, 8);
         }
 
         //int cornerHeight = 4;
@@ -679,12 +680,12 @@ void CDashboardStationItem::FillReagentColor(QPainter & Painter)
         qreal starty = 38.0;
 
         qreal bottleWidth = fillBottleWidth;
-        qreal boottleHeight = fillBottleHeight+46;
+        qreal boottleHeight = fillBottleHeight + 46;
 
         QPainterPath clipPath;
         clipPath.setFillRule(Qt::WindingFill);
         clipPath.addRect(startx, starty, bottleWidth, boottleHeight-5);
-        clipPath.addRoundedRect(startx, starty+boottleHeight-15, bottleWidth, 10, 8, 8);
+        clipPath.addRoundedRect(startx, starty + boottleHeight - 15, bottleWidth, 10, 8, 8);
         Painter.setClipPath(clipPath);
 
 		//draw the final result
