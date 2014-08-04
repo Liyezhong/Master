@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE ServiceParameters>
 <ServiceParameters Version="1">
-    <Network ProxyIPAddress="121.211.212.122" ServerIPAddress="222.222.222.222"/>
+    <Network ProxyIPAddress="192.168.25.32" UserName="sunny"/>
+    <TestReportFolder TestReportFolderPath="/home/sunny/manufacturing-line-server/test-reports/"/>
+    <FirmwareFolder FirmwareFolderPath="/home/sunny/manufacturing-line-server/software/Firmware/"/>
 </ServiceParameters>

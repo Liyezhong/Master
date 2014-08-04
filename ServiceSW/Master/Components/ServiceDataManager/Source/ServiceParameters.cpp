@@ -33,9 +33,12 @@ namespace DataManager {
 CServiceParameters::CServiceParameters()  : CDataContainerBase(),
     m_Version(1),
     m_ProxyIPAddress("000.000.000.001"),
-    m_ServerIPAddress("000.000.000.002"),
     m_DataVerificationMode(true),
-    m_FileName("") {
+    m_FileName(""),
+    m_UserName(""),
+    m_TestReportFolderPath(""),
+    m_FirmwarefolderPath("")
+{
 
 }
 
@@ -57,9 +60,11 @@ CServiceParameters::~CServiceParameters() {
 CServiceParameters::CServiceParameters(const CServiceParameters& ServiceParameters) : CDataContainerBase(),
     m_Version(1),
     m_ProxyIPAddress("000.000.000.001"),
-    m_ServerIPAddress("000.000.000.002"),
     m_DataVerificationMode(true),
-    m_FileName("")
+    m_FileName(""),
+    m_UserName(""),
+    m_TestReportFolderPath(""),
+    m_FirmwarefolderPath("")
 {
     *this = ServiceParameters;
 }
@@ -139,6 +144,20 @@ bool CServiceParameters::DeserializeContent(QIODevice &IODevice, bool CompleteDa
                     return false;
                 }
             }
+            else if (XmlStreamReader.name() == "TestReportFolder")
+            {
+                if (!ReadTestReportFolderPath(XmlStreamReader)) {
+                    qDebug() << "CServiceParameters::DeserializeContent: Read TestReportFolder path is failed";
+                    return false;
+                }
+            }
+            else if (XmlStreamReader.name() == "FirmwareFolder")
+            {
+                if (!ReadFirmwareFolderPath(XmlStreamReader)) {
+                    qDebug() << "CServiceParameters::DeserializeContent: Read FirmwareFolder Path is failed";
+                    return false;
+                }
+            }
         }
     }
 
@@ -173,14 +192,25 @@ bool CServiceParameters::SerializeContent(QIODevice &IODevice, bool CompleteData
 
     QString StringValue; ///< to store the version number
     // write version number
-    (void) StringValue.setNum(GetVersion());  //to suppress lint-534
+    (void) StringValue.setNum(m_Version);  //to suppress lint-534
     XmlStreamWriter.writeAttribute("Version", StringValue);
 
     //write network settings realted details
     XmlStreamWriter.writeStartElement("Network");
-    XmlStreamWriter.writeAttribute("ProxyIPAddress", GetProxyIPAddress());
-    XmlStreamWriter.writeAttribute("ServerIPAddress", GetServerIPAddress());
+    XmlStreamWriter.writeAttribute("ProxyIPAddress", m_ProxyIPAddress);
+    XmlStreamWriter.writeAttribute("UserName", m_UserName);
     XmlStreamWriter.writeEndElement();
+
+    // write Test report folder path
+    XmlStreamWriter.writeStartElement("TestReportFolder");
+    XmlStreamWriter.writeAttribute("TestReportFolderPath", m_TestReportFolderPath);
+    XmlStreamWriter.writeEndElement();
+
+    // write Firmware folder path
+    XmlStreamWriter.writeStartElement("FirmwareFolder");
+    XmlStreamWriter.writeAttribute("FirmwareFolderPath", m_FirmwarefolderPath);
+    XmlStreamWriter.writeEndElement();
+
 
     if(CompleteData) {
 
@@ -211,11 +241,47 @@ bool CServiceParameters::ReadNetworkSettings(QXmlStreamReader &XmlStreamReader)
     }
     SetProxyIPAddress(XmlStreamReader.attributes().value("ProxyIPAddress").toString());
 
-    if (!XmlStreamReader.attributes().hasAttribute("ServerIPAddress")) {
-        qDebug() << "CServiceParameters::ReadNetworkSettings:### attribute <ServerIPAddress> is missing => abort reading";
+    if (!XmlStreamReader.attributes().hasAttribute("UserName")) {
+        qDebug() << "CServiceParameters::ReadNetworkSettings:### attribute <UserName> is missing => abort reading";
         return false;
     }
-    SetServerIPAddress(XmlStreamReader.attributes().value("ServerIPAddress").toString());
+    SetUserName(XmlStreamReader.attributes().value("UserName").toString());
+
+    return true;
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Reads Test report folder path from xml
+ *  \iparam XmlStreamReader = Xml reader to read the XML contents
+ *  \return True or False
+ */
+/****************************************************************************/
+bool CServiceParameters::ReadTestReportFolderPath(QXmlStreamReader &XmlStreamReader)
+{
+    if (!XmlStreamReader.attributes().hasAttribute("TestReportFolderPath")) {
+        qDebug() << "CServiceParameters::ReadTestReportFolderPath:### attribute <TestReportFolderPath> is missing => abort reading";
+        return false;
+    }
+    SetTestReportFolderPath(XmlStreamReader.attributes().value("TestReportFolderPath").toString());
+
+    return true;
+}
+
+/****************************************************************************/
+/*!
+ *  \brief Reads firmware folder path from xml
+ *  \iparam XmlStreamReader = Xml reader to read the XML contents
+ *  \return True or False
+ */
+/****************************************************************************/
+bool CServiceParameters::ReadFirmwareFolderPath(QXmlStreamReader &XmlStreamReader)
+{
+    if (!XmlStreamReader.attributes().hasAttribute("FirmwareFolderPath")) {
+        qDebug() << "CServiceParameters::ReadFirmwareFolderPath:### attribute <FirmwareFolderPath> is missing => abort reading";
+        return false;
+    }
+    SetFirmwareFolderPath(XmlStreamReader.attributes().value("FirmwareFolderPath").toString());
 
     return true;
 }
@@ -232,12 +298,16 @@ CServiceParameters& CServiceParameters::operator=(const CServiceParameters& Serv
     if (this != &ServiceParameters) {
 
         int Version = const_cast<CServiceParameters&>(ServiceParameters).GetVersion();
-        QString ProxyIPAddress  = const_cast<CServiceParameters&>(ServiceParameters).GetProxyIPAddress();
-        QString ServerIPAddress = const_cast<CServiceParameters&>(ServiceParameters).GetServerIPAddress();
+        QString ProxyIPAddress       = const_cast<CServiceParameters&>(ServiceParameters).GetProxyIPAddress();
+        QString UserName             = const_cast<CServiceParameters&>(ServiceParameters).GetUserName();
+        QString TestReportFolderPath = const_cast<CServiceParameters&>(ServiceParameters).GetTestReportFolderPath();
+        QString FirmwareFolderPath   = const_cast<CServiceParameters&>(ServiceParameters).GetFirmwareFolderPath();
 
         this->SetVerion(Version);
         this->SetProxyIPAddress(ProxyIPAddress);
-        this->SetServerIPAddress(ServerIPAddress);
+        this->SetUserName(UserName);
+        this->SetTestReportFolderPath(TestReportFolderPath);
+        this->SetFirmwareFolderPath(FirmwareFolderPath);
     }
     return *this;
 }

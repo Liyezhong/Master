@@ -86,7 +86,7 @@ CSettings::~CSettings()
 void CSettings::SaveIPAddress(QString IPAddress) {
     DataManager::CServiceParameters *ServiceParameters = mp_ServiceDataConnector->GetServiceParameters();
     if (ServiceParameters != NULL) {
-        ServiceParameters->SetServerIPAddress(IPAddress);
+        ServiceParameters->SetProxyIPAddress(IPAddress);
         emit ServiceParametersChanged(ServiceParameters);
     }
 

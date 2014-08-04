@@ -121,5 +121,5 @@ check_if_SaM_server_has_new_firmware()
     [ $? -eq 0 ] && return 1 || return 0
 }
 
-
+$@
 

@@ -197,22 +197,62 @@ public:
 
     /****************************************************************************/
     /**
-     * \brief Sets proxy IP address
-     * \iparam Value = Value to set
+     * \brief Sets user name
+     * \iparam Value = Value to user name
      */
     /****************************************************************************/
-    void SetServerIPAddress(QString Value) {
-        m_ServerIPAddress = Value;
+    void SetUserName(QString Value) {
+        m_UserName = Value;
     }
 
     /****************************************************************************/
     /**
-     * \brief Gets proxy IP address
-     * \return proxy IP address
+     * \brief Gets user name
+     * \return user name
      */
     /****************************************************************************/
-    QString GetServerIPAddress() {
-        return m_ServerIPAddress;
+    QString GetUserName() {
+        return m_UserName;
+    }
+
+    /****************************************************************************/
+    /**
+     * \brief Returns Test report folder path.
+     * \return Test report folder path.
+     */
+    /****************************************************************************/
+    QString GetTestReportFolderPath() {
+        return m_TestReportFolderPath;
+    }
+
+    /****************************************************************************/
+    /**
+     * \brief Sets Test report folder path.
+     * \iparam  Value = Test report folder path.
+     */
+    /****************************************************************************/
+    void SetTestReportFolderPath(QString Value) {
+        m_TestReportFolderPath = Value;
+    }
+
+    /****************************************************************************/
+    /**
+     * \brief Returns Firmware folder path.
+     * \return Firmware folder path.
+     */
+    /****************************************************************************/
+    QString GetFirmwareFolderPath() {
+        return m_FirmwarefolderPath;
+    }
+
+    /****************************************************************************/
+    /**
+     * \brief Sets Firmware folder path.
+     * \iparam Value = Firmware folder path.
+     */
+    /****************************************************************************/
+    void SetFirmwareFolderPath(QString Value) {
+        m_FirmwarefolderPath = Value;
     }
 
     /****************************************************************************/
@@ -274,8 +314,10 @@ public:
 
 private:
     int m_Version;                                  //!< Stores the version number of the file
-    QString m_ProxyIPAddress;                       //!< Pro)xy IP address
-    QString m_ServerIPAddress;                      //!< Server IP address
+    QString m_ProxyIPAddress;                       //!< Proxy IP address
+    QString m_UserName;                             //!< User name
+    QString m_TestReportFolderPath;                 //!< Test report folder path
+    QString m_FirmwarefolderPath;                   //!< Firmware folder path
 
     bool m_DataVerificationMode;                    //!< Store the Date verification mode flag
     QString m_FileName;                             //!< Store the file name
@@ -284,6 +326,8 @@ private:
     bool DeserializeContent(QIODevice& IODevice, bool CompleteData);
 
     bool ReadNetworkSettings(QXmlStreamReader& XmlStreamReader);
+    bool ReadTestReportFolderPath(QXmlStreamReader& XmlStreamReader);
+    bool ReadFirmwareFolderPath(QXmlStreamReader& XmlStreamReader);
 };
 
 

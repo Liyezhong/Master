@@ -88,6 +88,7 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
     // register the metytype for gSourceType
     qRegisterMetaType<Global::gSourceType>("Global::gSourceType");
     qRegisterMetaType<Service::ModuleTestCaseID>("Service::ModuleTestCaseID");
+    qRegisterMetaType<PlatformService::NetworkSettings_t>("PlatformService::NetworkSettings_t");
     CONNECTSIGNALSLOT(&m_ShutdownSharedMemTimer, timeout(), this, ExternalMemShutdownCheck());
     m_ShutdownSharedMemTimer.setInterval(500);
     m_ShutdownSharedMemTimer.setSingleShot(false);
@@ -1697,9 +1698,11 @@ void ServiceMasterThreadController::PerformNetworkChecks()
 {
     try
     {
-        QString IPAddress = mp_ServiceDataContainer->ServiceParameters->GetProxyIPAddress();
+        QString UserName   = mp_ServiceDataContainer->ServiceParameters->GetUserName();
+        QString IPAddress  = mp_ServiceDataContainer->ServiceParameters->GetProxyIPAddress();
+        QString ReportPath = mp_ServiceDataContainer->ServiceParameters->GetTestReportFolderPath();
         NetworkClient::IENetworkClient *IEClient(NULL);
-        IEClient = new NetworkClient::IENetworkClient(IPAddress, qApp->applicationDirPath());
+        IEClient = new NetworkClient::IENetworkClient(IPAddress, UserName, Global::SystemPaths::Instance().GetScriptsPath());
 
         if(IEClient->PerformHostReachableTest())
         {
@@ -1712,6 +1715,17 @@ void ServiceMasterThreadController::PerformNetworkChecks()
             qDebug() << " ServiceMasterThreadController::PerformHostReachableTest Failed for ip "<<IPAddress;
         }
 
+        if(IEClient->PerformAccessRightsCheck(ReportPath))
+        {
+            emit SetNetworkSettingsResult(PlatformService::SERVICE_AVAILABLE , true);
+            emit SetNetworkSettingsResult(PlatformService::ACCESS_RIGHTS , true);
+        }
+        else
+        {
+            emit SetNetworkSettingsResult(PlatformService::SERVICE_AVAILABLE , false);
+            emit SetNetworkSettingsResult(PlatformService::ACCESS_RIGHTS , false);
+        }
+#if 0
         if(IEClient->PerformServiceAvailableTest())
         {
             emit SetNetworkSettingsResult(PlatformService::SERVICE_AVAILABLE , true);
@@ -1733,7 +1747,7 @@ void ServiceMasterThreadController::PerformNetworkChecks()
             emit SetNetworkSettingsResult(PlatformService::ACCESS_RIGHTS , false);
             qDebug() << " ServiceMasterThreadController::PerformAccessRightsCheck Failed for ip "<<IPAddress;
         }
-
+#endif
         if(NULL != IEClient)
         {
             delete IEClient;
