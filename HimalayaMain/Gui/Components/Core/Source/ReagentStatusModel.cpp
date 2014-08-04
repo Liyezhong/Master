@@ -172,9 +172,7 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
 {
     DataManager::CReagent *p_Reagent = NULL;
     DataManager::CDashboardStation *p_Station = NULL;
-    QDate t_Date;
-    QDate Expiry_Date;
-    bool Expired ;
+    bool Expired;
     if (mp_ReagentList == NULL || mp_StationList == NULL) {
         return QVariant();
     }
@@ -193,7 +191,6 @@ QVariant CReagentStatusModel::data(const QModelIndex &Index, int Role) const
 
     if (Index.row() < m_ReagentNames.count())
     {
-
             DataManager::ReagentStatusType_t ReagentStatus = p_Station->GetReagentStatus(*p_Reagent, RMSPROCESSINGOPTION);
             if ( ReagentStatus == DataManager::REAGENT_STATUS_EXPIRED )
                 Expired = true;
