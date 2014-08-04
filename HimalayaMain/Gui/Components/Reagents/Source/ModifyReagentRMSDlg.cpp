@@ -426,11 +426,17 @@ void CModifyReagentRMSDlg::OnOk()
         switch (option) {
             case Global::RMS_CASSETTES:
                 m_Reagent.SetMaxCassettes(mp_Ui->buttonValue->text().toInt());
+                m_Reagent.SetMaxCycles(0);
+                m_Reagent.SetMaxDays(0);
                 break;
             case Global::RMS_CYCLES:
+                m_Reagent.SetMaxCassettes(0);
                 m_Reagent.SetMaxCycles(mp_Ui->buttonValue->text().toInt());
+                m_Reagent.SetMaxDays(0);
                 break;
             case Global::RMS_DAYS:
+                m_Reagent.SetMaxCassettes(0);
+                m_Reagent.SetMaxCycles(0);
                 m_Reagent.SetMaxDays(mp_Ui->buttonValue->text().toInt());
                 break;
             default:
