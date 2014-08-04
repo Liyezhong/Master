@@ -46,7 +46,7 @@ void CDashboardProgramStatusWidget::InitDialog(DataManager::CProgram *p_Program,
     if (!p_Program || !pDataConnector)
         return;
 
-    SetDialogTitle(QString("\"%1\"").arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME));
+    SetDialogTitle(QString("%1").arg(CFavoriteProgramsPanelWidget::SELECTED_PROGRAM_NAME));
 
     m_StepModel.SetVisibleRowCount(6);
     m_StepModel.ShowStation(true);
