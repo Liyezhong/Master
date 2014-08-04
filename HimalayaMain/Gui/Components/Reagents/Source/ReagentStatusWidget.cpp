@@ -268,7 +268,7 @@ void CReagentStatusWidget::ResizeHorizontalSection()
     mp_TableWidget->horizontalHeader()->resizeSection(0, 80);
     mp_TableWidget->horizontalHeader()->resizeSection(1, 120);
     mp_TableWidget->horizontalHeader()->resizeSection(2, 85);
-    mp_TableWidget->horizontalHeader()->resizeSection(3, 75);
+    mp_TableWidget->horizontalHeader()->resizeSection(3, 100);
     mp_TableWidget->horizontalHeader()->resizeSection(4, 110);
     mp_TableWidget->horizontalHeader()->resizeSection(5, 50);
 }
