@@ -16,23 +16,23 @@
         <Device Key="OtherDevice">
             <Functionmodules>
                 <Functionmodule Key="EBox">
-                    <Parameter Key="EBox_LifeTime" Value="32465"/>
+                    <Parameter Key="EBox_LifeTime" Value="34678"/>
                 </Functionmodule>
                 <Functionmodule Key="PressureSensor">
-                    <Parameter Key="Pressure_Sensor_LifeTime" Value="32465"/>
+                    <Parameter Key="Pressure_Sensor_LifeTime" Value="34678"/>
                 </Functionmodule>
                 <Functionmodule Key="TouchScreen">
-                    <Parameter Key="Touch_Screen_LifeTime" Value="32466"/>
+                    <Parameter Key="Touch_Screen_LifeTime" Value="34679"/>
                 </Functionmodule>
                 <Functionmodule Key="VentilationFan">
-                    <Parameter Key="Ventilation_Fan_LifeTime" Value="32467"/>
+                    <Parameter Key="Ventilation_Fan_LifeTime" Value="34680"/>
                 </Functionmodule>
             </Functionmodules>
         </Device>
         <Device Key="OvenDevice">
             <Functionmodules>
                 <Functionmodule Key="Oven_Cover_Sensor">
-                    <Parameter Key="oven_door_status_LifeCycle" Value="7"/>
+                    <Parameter Key="oven_door_status_LifeCycle" Value="16"/>
                 </Functionmodule>
             </Functionmodules>
         </Device>

@@ -72,7 +72,8 @@ CModifyProgramDlg::CModifyProgramDlg(QWidget *p_Parent,
                                      m_strCancel(tr("Cancel")),
                                      m_strDelProgramStep(tr("Do you really want to delete the selected program step?")),
                                      m_strEnterValidName(tr("Please enter a valid Program Name")),
-                                     m_strSeclectIcon(tr("Please select a Program Icon"))
+                                     m_strSeclectIcon(tr("Please select a Program Icon")),
+                                     m_bIconSelected(false)
 
 {
     mp_Ui->setupUi(GetContentFrame());
@@ -126,6 +127,7 @@ CModifyProgramDlg::~CModifyProgramDlg()
 
 void CModifyProgramDlg::UpdateProgramIcon(DataManager::CProgram *Program)
 {
+    m_bIconSelected = true;
     m_Icon = Program->GetIcon();
     m_Program.SetIcon(m_Icon);
     mp_Ui->btnPrgIcon->setIcon(QIcon(":/HimalayaImages/Icons/Program/"+m_Icon+".png"));
@@ -499,6 +501,7 @@ void CModifyProgramDlg::OnSave()
     if (mp_MessageDlg) {
         delete mp_MessageDlg;
     }
+
     mp_MessageDlg = new MainMenu::CMessageDlg();
     mp_MessageDlg->SetTitle(m_strConfirmMsg);
     mp_MessageDlg->SetIcon(QMessageBox::Information);
@@ -520,12 +523,11 @@ void CModifyProgramDlg::OnSave()
         emit AddProgram(m_Program);
     }
     else {
-        if (m_Icon.isEmpty()) {
+        if (m_bIconSelected == false || m_Icon.isEmpty()) {
             mp_MessageDlg->SetText(m_strSeclectIcon);
             (void) mp_MessageDlg->exec();
             return;
         }
-
         mp_NewProgram->SetName(mp_Ui->btnPrgName->text());
         mp_NewProgram->SetIcon(m_Icon);
         mp_NewProgram->SetID(m_ProgramListClone.GetNextFreeProgID(true));
@@ -896,6 +898,8 @@ void CModifyProgramDlg::OnIconClicked()
 {
     /*m_MessageDlg.SetText(tr("Staining Process has started, Editing is no longer possible."
                             "\nPlease close the dialog with \"Close\""));*/
+
+    m_bIconSelected = false;
     mp_ModifyProgramIconDlg->SetDialogTitle(m_strSelectIcon);
     mp_ModifyProgramIconDlg->EnableAvailableIcon(&m_ProgramListClone);
     mp_ModifyProgramIconDlg->show();

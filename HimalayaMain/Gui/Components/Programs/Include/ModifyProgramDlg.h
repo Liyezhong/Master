@@ -95,6 +95,7 @@ private:
     QString m_strDelProgramStep;       ///<  Definition/Declaration of variable m_strDelProgramStep
     QString m_strEnterValidName;       ///<  Definition/Declaration of variable m_strEnterValidName
     QString m_strSeclectIcon;       ///<  Definition/Declaration of variable m_strSeclectIcon
+    bool    m_bIconSelected;        ///<  Definition/Declaration of variable m_bIconSelected
 
 protected:
     void showEvent(QShowEvent *p_Event);
