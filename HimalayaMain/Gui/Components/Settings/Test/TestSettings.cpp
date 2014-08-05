@@ -207,9 +207,9 @@ void CTestSettings::utTestSettingsWidget() {
     instSetWgt->RetranslateUI();
     instSetWgt->ResetButtons();
     instSetWgt->changeEvent(new QEvent(QEvent::None));
-    instSetWgt->showEvent(new QShowEvent);
+    //instSetWgt->showEvent(new QShowEvent);
     instSetWgt->OnEditclicked();
-    instSetWgt->OnOkClicked("");
+    //instSetWgt->OnOkClicked("");
     instSetWgt->OnESCClicked();
     delete instSetWgt;
 
