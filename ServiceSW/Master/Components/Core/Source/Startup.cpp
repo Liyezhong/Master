@@ -281,7 +281,8 @@ CStartup::CStartup() : QObject(),
 
     /* Network Settings */
     CONNECTSIGNALSLOT(this, SetNetworkSettingsResult(PlatformService::NetworkSettings_t, bool), mp_Setting , SetNetworkSettingsResult(PlatformService::NetworkSettings_t, bool));
-    CONNECTSIGNALSIGNAL(mp_Setting, PerformNetworkTests(), this , PerformNetworkTests());
+    CONNECTSIGNALSIGNAL(mp_Setting, PerformNetworkTests(), this, PerformNetworkTests());
+    CONNECTSIGNALSIGNAL(mp_Setting, DownloadFirmware(), this, DownloadFirmware());
 
 
     m_DateTime.setTime_t(0);

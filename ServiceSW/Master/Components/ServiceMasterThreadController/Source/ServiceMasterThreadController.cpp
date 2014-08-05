@@ -236,6 +236,10 @@ ServiceMasterThreadController::ServiceMasterThreadController(Core::CStartup *sta
                           this , SLOT(PerformNetworkTests()))) {
         qDebug() << "CStartup: cannot connect 'PerformNetworkTests' signal";
     }
+    if (!QObject::connect(mp_GUIStartup, SIGNAL(DownloadFirmware()),
+                          this , SLOT(OnDownloadFirmware()))) {
+        qDebug() << "CStartup: cannot connect 'DownloadFirmware' signal";
+    }
 
     //mp_ServiceDataManager = new DataManager::CServiceDataManager(this);
 
@@ -1757,10 +1761,58 @@ void ServiceMasterThreadController::PerformNetworkChecks()
     CATCHALL();
 }
 
+void ServiceMasterThreadController::DownloadFirmware()
+{
+    bool ret = false;
+    try {
+        QString UserName   = mp_ServiceDataContainer->ServiceParameters->GetUserName();
+        QString IPAddress  = mp_ServiceDataContainer->ServiceParameters->GetProxyIPAddress();
+        QString FirmFolder = mp_ServiceDataContainer->ServiceParameters->GetFirmwareFolderPath();
+        NetworkClient::IENetworkClient *IEClient(NULL);
+        IEClient = new NetworkClient::IENetworkClient(IPAddress, UserName, Global::SystemPaths::Instance().GetScriptsPath());
+
+        if (!IEClient->PerformHostReachableTest())
+        {
+            qDebug() << " ServiceMasterThreadController::Download firmware failed: the ip can't reachable :"<<IPAddress;
+            goto Download_Finished;
+        }
+
+        if (!IEClient->PerformAccessRightsCheck(FirmFolder))
+        {
+            qDebug() << " ServiceMasterThreadController::Download firmware failed: the folder can't access :"<<FirmFolder;
+            goto Download_Finished;
+        }
+
+        if (!IEClient->CheckForNewFiles(FirmFolder))
+        {
+            ret = true;
+            goto Download_Finished;
+        }
+
+        if (!IEClient->DownloadFiles(FirmFolder))
+        {
+            qDebug() << " ServiceMasterThreadController::Download firmware failed: download files failed :"<<FirmFolder;
+            goto Download_Finished;
+        }
+        ret = true;
+    }
+    CATCHALL();
+Download_Finished:
+
+    emit SetNetworkSettingsResult(PlatformService::DOWNLOAD_FIRMWARE , ret);
+    qDebug()<<"ServiceMasterThreadController::Download firmware ok.";
+}
+
 void ServiceMasterThreadController::PerformNetworkTests()
 {
     Core::CServiceUtils::delay(500);
-    (void) PerformNetworkChecks();
+    PerformNetworkChecks();
+}
+
+void ServiceMasterThreadController::OnDownloadFirmware()
+{
+    Core::CServiceUtils::delay(500);
+    DownloadFirmware();
 }
 
 } // end namespace Threads
