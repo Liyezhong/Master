@@ -45,6 +45,8 @@ CSettingsWidget::CSettingsWidget(Core::CDataConnector *p_Data, MainMenu::CMainWi
         mp_Ui->pageAlarm->SetUserSettings(p_Settings);
         mp_Ui->pageDateTime->SetUserSettings(p_Settings);
         mp_Ui->pageInstallation->SetUserSettings(p_Settings);
+        mp_Ui->pageInstallation->SetDeviceConfig(mp_Data->DeviceConfigurationInterface->GetDeviceConfiguration());
+        mp_Ui->pageInstallation->SetSWConfig(mp_Data->SWVersionList);
         mp_Ui->pageInstallation->SetKeyBoardInstance(mp_KeyBoardWidget);
         mp_Ui->pageRegionalSettings->SetUserSettings(p_Settings);
         mp_Ui->pageService->SetUserSettings(p_Settings);

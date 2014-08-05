@@ -104,9 +104,16 @@ bool CDataContainer::InitContainers()
         return false;
     }
 
+    SWVersionList = new CSWVersionList();
+    if (!ResetSWVersionList()) {
+        qDebug() << "CDataContainer::InitContainers failed, because ResetSWVersionList failed.";
+        return false;
+    }
+
     ProgramList->SetDataVerificationMode(false);
     ReagentList->SetDataVerificationMode(false);
     SettingsInterface->SetDataVerificationMode(false);
+    SWVersionList->SetDataVerificationMode(false);
     DeviceConfigurationInterface->SetDataVerificationMode(false);
     m_IsInitialized = true;
     return true;
@@ -126,6 +133,7 @@ bool CDataContainer::DeinitContainers()
         delete DashboardStationList;
         delete SettingsInterface;
         delete DeviceConfigurationInterface;
+        delete SWVersionList;
         return true;
     } catch (...) {
         return false;
@@ -210,6 +218,15 @@ bool CDataContainer::ResetDCDeviceConfiguration()
 {
     if (m_IsInitialized == true) {
         qDebug() << "CDataContainer::ResetDCDeviceConfiguration was already called";
+        return false;
+    }
+    return true;
+}
+
+bool CDataContainer::ResetSWVersionList()
+{
+    if (m_IsInitialized == true) {
+        qDebug() << "CDataContainer::ResetSWVersionList was already called";
         return false;
     }
     return true;

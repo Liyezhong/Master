@@ -22,6 +22,8 @@
 #define SETTINGS_INSTALLATIONSETTINGSWIDGET_H
 
 #include "HimalayaDataContainer/Containers/UserSettings/Include/HimalayaUserSettings.h"
+#include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfiguration.h"
+#include "DataManager/Containers/SWVersions/Include/SWVersionList.h"
 #include "KeyBoard/Include/KeyBoard.h"
 #include "MainMenu/Include/PanelFrame.h"
 #include "MainMenu/Include/ScrollWheel.h"
@@ -49,6 +51,8 @@ private:
     Ui::CInstallationSettingsWidget *mp_Ui;                 //!< User interface
     KeyBoard::CKeyBoard *mp_KeyBoardWidget;         //!< Reference to Keyboard widget
     DataManager::CHimalayaUserSettings *mp_UserSettings;    //!< Data object
+    DataManager::CDeviceConfiguration *mp_DeviceConfig;    //!< Device configuration object
+    DataManager::CSWVersionList *mp_SWVersion;          //!< Software version object
     DataManager::CHimalayaUserSettings m_UserSettingsTemp;  //!< Temporary copy of User Settings
     MainMenu::CMainWindow *mp_MainWindow;           //!< Pointer to MainWindow
     //Flags
@@ -61,6 +65,8 @@ public:
     explicit CInstallationSettingsWidget(QWidget *p_Parent = NULL);
     ~CInstallationSettingsWidget();
     void SetUserSettings(DataManager::CHimalayaUserSettings *p_UserSettings);
+    void SetDeviceConfig(DataManager::CDeviceConfiguration *p_DeviceConfig);
+    void SetSWConfig(DataManager::CSWVersionList *p_SWVersion);
     void SetPtrToMainWindow(MainMenu::CMainWindow *p_MainWindow);
     void SetKeyBoardInstance(KeyBoard::CKeyBoard *p_KeyBoard);
 
@@ -68,6 +74,7 @@ public:
 private:
     void RetranslateUI();
     void ResetButtons();
+    void RefreshSetting();
 
 
 protected:

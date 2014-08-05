@@ -23,7 +23,7 @@
 #include "Global/Include/Utils.h"
 #include "Settings/Include/InstallationSettingsWidget.h"
 #include "ui_InstallationSettingsWidget.h"
-
+#include <Global/Include/SystemPaths.h>
 
 namespace Settings {
 
@@ -38,13 +38,18 @@ namespace Settings {
 CInstallationSettingsWidget::CInstallationSettingsWidget(QWidget *p_Parent) : MainMenu::CPanelFrame(p_Parent),
     mp_Ui(new Ui::CInstallationSettingsWidget), mp_KeyBoardWidget(NULL),
     mp_UserSettings(NULL),
+    mp_DeviceConfig(NULL),
+    mp_SWVersion(NULL),
     mp_MainWindow(NULL), m_ProcessRunning(false),
     m_CurrentUserRole(MainMenu::CMainWindow::Operator)
 {
     mp_Ui->setupUi(GetContentFrame());
     mp_Ui->btnEdit->setText(tr("Edit"));
+    mp_Ui->btnEdit->hide();
+    mp_Ui->driverversion->hide();
     SetPanelTitle(tr("Installation"));
     mp_Ui->serialnumber->setText("0000-0000-0000-0000");
+    Global::SystemPaths::Instance().SetSettingsPath("../Settings");
     CONNECTSIGNALSLOT(mp_Ui->btnEdit,clicked(),this,OnEditclicked());
 }
 
@@ -95,6 +100,7 @@ void CInstallationSettingsWidget::showEvent(QShowEvent *p_Event)
 {
     Q_UNUSED(p_Event)
     ResetButtons();
+    RefreshSetting();
 }
 /****************************************************************************/
 /*!
@@ -121,6 +127,19 @@ void CInstallationSettingsWidget::ResetButtons()
     {
         mp_Ui->btnEdit->setEnabled(false);
     }
+}
+
+void CInstallationSettingsWidget::RefreshSetting()
+{
+    QString name = mp_DeviceConfig->GetValue("DEVICENAME");
+    mp_Ui->instrumentname->setText(name);
+
+    QString serial = mp_DeviceConfig->GetValue("SERIALNUMBER");
+    mp_Ui->serialnumber->setText(serial);
+
+    QString softVer = mp_Ui->softwareversion->text();
+    softVer += mp_SWVersion->GetSWReleaseVersion();
+    mp_Ui->softwareversion->setText(softVer);
 }
 
 /****************************************************************************/
@@ -157,6 +176,21 @@ void CInstallationSettingsWidget::SetUserSettings(DataManager::CHimalayaUserSett
     mp_UserSettings = p_UserSettings;
 }
 
+void CInstallationSettingsWidget::SetDeviceConfig(DataManager::CDeviceConfiguration *p_DeviceConfig)
+{
+    mp_DeviceConfig = p_DeviceConfig;
+}
+
+void CInstallationSettingsWidget::SetSWConfig(DataManager::CSWVersionList *p_SWVersion)
+{
+    mp_SWVersion = p_SWVersion;
+
+    if (mp_SWVersion != NULL) {
+        QString FilenameSWVersion = Global::SystemPaths::Instance().GetSettingsPath() + "/SW_Version.xml";
+        mp_SWVersion->Read(FilenameSWVersion);
+    }
+}
+
 /****************************************************************************/
 /*!
  *  \brief Sets KeyBoard object instance
@@ -178,7 +212,6 @@ void CInstallationSettingsWidget::ConnectKeyBoardSignalSlots()
         CONNECTSIGNALSLOTGUI(mp_KeyBoardWidget, OkButtonClicked(QString), this, OnOkClicked(QString));
         CONNECTSIGNALSLOTGUI(mp_KeyBoardWidget, EscButtonClicked(), this, OnESCClicked());
     }
-
 }
 
 /****************************************************************************/
@@ -224,6 +257,7 @@ void CInstallationSettingsWidget::OnOkClicked(QString EnteredText)
 
     mp_KeyBoardWidget->hide();
     mp_Ui->instrumentname->setText(EnteredText);
+    mp_DeviceConfig->SetValue("DEVICENAME", EnteredText);
 }
 
 /****************************************************************************/

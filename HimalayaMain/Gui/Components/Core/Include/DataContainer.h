@@ -30,6 +30,7 @@
 #include "DataManager/Containers/UserSettings/Include/UserSettingsInterface.h"
 #include "DataManager/Containers/ContainerBase/Include/VerifierInterface.h"
 #include "DataManager/Containers/DeviceConfiguration/Include/DeviceConfigurationInterface.h"
+#include "DataManager/Containers/SWVersions/Include/SWVersionList.h"
 #include "HimalayaDataContainer/Containers/ReagentGroupColor/Include/ReagentGroupColorList.h"
 namespace DataManager {
 //!<  List containing macro steps and normal program steps
@@ -45,7 +46,7 @@ class CDataContainer: public QObject
     Q_OBJECT
 private:
     ListOfExpandedSteps_t m_ExpandedStepList;   //!< Normal steps + Macro steps
-    bool m_IsInitialized;       ///<  Definition/Declaration of variable m_IsInitialized
+    bool m_IsInitialized;       ///<  Definition/Declaration of variable m_IsInitialized
 
     /****************************************************************************/
     /*!
@@ -109,6 +110,14 @@ private:
      */
     /****************************************************************************/
     bool ResetDCDeviceConfiguration();
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of function ResetSWVersionList
+     *
+     *  \return from ResetSWVersionList
+     */
+    /****************************************************************************/
+    bool ResetSWVersionList();
     /****************************************************************************/
     /*!
      *  \brief  Definition/Declaration of function CompareSteps
@@ -177,7 +186,8 @@ public:
     CDashboardDataStationList* DashboardStationList;  //!< Container for Dashboard stations
     CUserSettingsInterface *SettingsInterface; //!< Provides interface to read the Settings info from xml
     CDeviceConfigurationInterface *DeviceConfigurationInterface;  //!< Provides interface to read the Device configuration from xml
-    CReagentGroupColorList *ReagentGroupColorList;       ///<  Definition/Declaration of variable ReagentGroupColorList
+    CSWVersionList *SWVersionList;  //!< Container for software version
+    CReagentGroupColorList *ReagentGroupColorList;       ///<  Definition/Declaration of variable ReagentGroupColorList
 };
 
 } // namespace DataManager
