@@ -23,6 +23,7 @@
 #include "Core/Include/Startup.h"
 #include <Global/Include/AlarmPlayer.h>
 #include <EventHandler/Include/StateHandler.h>
+#include "Global/Include/SignalHandler.h"
 #include "ServiceDataManager/Include/TestCaseFactory.h"
 #include "ServiceDataManager/Include/TestCaseGuide.h"
 
@@ -37,6 +38,11 @@
 int main(int Argc, char *p_Argv[])
 {
     Global::ToConsole("Service Sotware execution started..");
+
+    // catch unexpected signals
+    Global::SignalHandler signalHandler;
+    signalHandler.init();
+
     //************Create all the singleton objects.********************//
     //! \warning changing order of below function call an cause ugly bugs & deadlocks!!
     Global::EventObject::Instance();
@@ -95,7 +101,7 @@ int main(int Argc, char *p_Argv[])
 
     QThread thrMasterThread;
 
-    if(Argc>=2)
+    if(Argc>=2 && p_Argv[1] != "-qws")
     {
         Global::ToConsole("Software in Debug Mode");
         Startup.GuiInit(p_Argv[1]);

@@ -429,7 +429,7 @@ void CStartup::LoadCommonComponenetsTwo()
 /****************************************************************************/
 void CStartup::GuiInit()
 {
-    mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("Himalaya");
+    mp_USBKeyValidator = new ServiceKeyValidator::CUSBKeyValidator("Primaris");
 
     CONNECTSIGNALSLOT(mp_USBKeyValidator, SetSoftwareMode(PlatformService::SoftwareModeType_t,QString),
                        this, InitializeGui(PlatformService::SoftwareModeType_t,QString));
@@ -749,7 +749,7 @@ void CStartup::UpdateParameters()
         //m_WindowStatusResetTimer.setInterval(mp_ServiceConnector->GetServiceParameters()->GetSystemLogOffTime());
         m_WindowStatusResetTimer.setInterval(60000);
         //m_DeviceName = mp_ServiceConnector->GetDeviceConfigurationInterface()->GetDeviceConfiguration()->GetValue("DEVICENAME");
-        m_DeviceName = "Himalaya";
+        m_DeviceName = "Primaris";
     }
     emit SetDeviceName(m_DeviceName);
 }
