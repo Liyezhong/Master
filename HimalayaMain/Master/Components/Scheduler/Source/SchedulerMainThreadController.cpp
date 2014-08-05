@@ -2125,31 +2125,23 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 	}
     if(strctHWMonitor.OvenLidStatus != UNDEFINED_VALUE)
     {
-        if(((m_OvenLidStatus == 0) || (m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 1))
+        if(strctHWMonitor.OvenLidStatus == 1)
         {
             //oven is open
-            if ("ERROR" != StepID && "IDLE" != StepID)
+            if ( (m_CurrentScenario >= 2 && m_CurrentScenario <= 205) || (m_CurrentScenario >= 211 && m_CurrentScenario <= 257)
+                 || (m_CurrentScenario >= 281 && m_CurrentScenario <= 297) )
             {
-                if ( (m_CurrentScenario >= 2 && m_CurrentScenario <= 205) || (m_CurrentScenario >= 211 && m_CurrentScenario <= 257)
-                     || (m_CurrentScenario >= 271 && m_CurrentScenario <= 277) || (m_CurrentScenario >= 281 && m_CurrentScenario <= 297) )
+                LogDebug(QString("The oven lock is opened, EventID:%1, Scenario:%2").arg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN).arg(m_CurrentScenario));
+                RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, m_CurrentScenario, true);
+            }
+            if(m_CurrentScenario >= 271 && m_CurrentScenario <= 277)
+            {
+                if ("ERROR" != StepID && "IDLE" != StepID)
                 {
-                    LogDebug(QString("The oven lock is opened, EventID:%1, Scenario:%2").arg(DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN).arg(m_CurrentScenario));
                     RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, m_CurrentScenario, true);
                     m_SchedulerMachine->SendErrorSignal();
                 }
             }
-            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, false));
-            Q_ASSERT(commandPtr);
-            Global::tRefType Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
-        }
-        if(((m_OvenLidStatus == 1) || (m_OvenLidStatus == UNDEFINED_VALUE))&&(strctHWMonitor.OvenLidStatus == 0))
-        {
-            //oven is closed
-            MsgClasses::CmdLockStatus* commandPtr(new MsgClasses::CmdLockStatus(5000, DataManager::PARAFFIN_BATH_LOCK, true));
-            Q_ASSERT(commandPtr);
-            Global::tRefType Ref = GetNewCommandRef();
-            SendCommand(Ref, Global::CommandShPtr_t(commandPtr));
         }
         m_OvenLidStatus = strctHWMonitor.OvenLidStatus;
 	}
