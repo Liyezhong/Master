@@ -1017,6 +1017,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             LogDebug("Go to RS_Check_Blockage");
             m_SchedulerMachine->EnterRsCheckBlockage();;
         }
+        else if(CTRL_CMD_RS_PAUSE == ctrlCmd)
+        {
+            LogDebug("Go to RS_Pause");
+            m_SchedulerMachine->EnterRsPause();
+        }
         else
         {
             LogDebug(QString("Unknown Command: %1").arg(ctrlCmd, 0, 16));
@@ -1097,6 +1102,11 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
     {
         LogDebug("In RS_CHECK_BLOCKAGE state");
         m_SchedulerMachine->HandleRsCheckBlockageWorkFlow(cmdName, retCode);
+    }
+    else if(SM_ERR_RS_PS_PAUSE == currentState)
+    {
+        LogDebug("In RS_Pause state");
+        m_SchedulerMachine->HandleRsPauseWorkFlow();
     }
     else
     {
@@ -1218,6 +1228,10 @@ ControlCommandType_t SchedulerMainThreadController::PeekNonDeviceCommand()
         if (cmd == "rs_check_blockage")
         {
             return CTRL_CMD_RS_CHECK_BLOCKAGE;
+        }
+        if (cmd == "rs_pause")
+        {
+            return CTRL_CMD_RS_PAUSE;
         }
     }
     return CTRL_CMD_UNKNOWN;
@@ -2090,6 +2104,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
 {
     QString ReagentGroup = m_CurProgramStepInfo.reagentGroup;
     quint32 Scenario = GetScenarioBySchedulerState(m_SchedulerMachine->GetCurrentState(),ReagentGroup);
+    m_CurrentScenario = Scenario;
        // if(StepID == "IDLE")
 	HardwareMonitor_t strctHWMonitor = m_SchedulerCommandProcessor->HardwareMonitor();
     LogDebug(strctHWMonitor.toLogString());
@@ -2171,6 +2186,7 @@ void SchedulerMainThreadController::HardwareMonitor(const QString& StepID)
             {
                 if ("ERROR" != StepID && "IDLE" != StepID)
                 {
+                    ReleasePressure();
                     RaiseError(0, DCL_ERR_DEV_WAXBATH_OVENCOVER_STATUS_OPEN, m_CurrentScenario, true);
                     m_SchedulerMachine->SendErrorSignal();
                 }

@@ -104,6 +104,7 @@ typedef enum
     CTRL_CMD_RC_BOTTLECHECK_I,
     CTRL_CMD_RS_FILLINGAFTERFLUSH,
     CTRL_CMD_RS_CHECK_BLOCKAGE,
+    CTRL_CMD_RS_PAUSE,
     CTRL_CMD_NONE,
     CTRL_CMD_UNKNOWN
 }ControlCommandType_t;
@@ -974,6 +975,21 @@ protected:
         /****************************************************************************/
         QSharedPointer<HeatingStrategy> GetHeatingStrategy() const { return mp_HeatingStrategy; }
 
+        /****************************************************************************/
+        /**
+         *  \brief Get Heating Strategy
+         *  \return pointer to quint32
+         */
+        /****************************************************************************/
+        qint32 GetTheCurrentScenario() const {  return m_CurrentScenario; }
+
+        /****************************************************************************/
+        /*!
+         *  \brief  Check the oven lock status
+         *  \return qint16, 0 - lose, 1 - open
+         */
+        /****************************************************************************/
+        inline quint16 GetTheOvenLockStatus() const {    return m_OvenLidStatus; }
 
         /****************************************************************************/
         /**

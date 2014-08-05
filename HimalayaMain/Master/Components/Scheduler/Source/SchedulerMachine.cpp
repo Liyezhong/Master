@@ -95,6 +95,7 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_RcBottleCheckI = QSharedPointer<QState>(new QState(mp_RcBottleCheckI.data()));
     mp_ErrorRsFillingAfterFlushState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
     mp_ErrorRsCheckBlockageState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
+    mp_ErrorRsPauseState = QSharedPointer<QState>(new QState(mp_ErrorState.data()));
 
     // Set Initial states
     mp_SchedulerMachine->setInitialState(mp_InitState.data());
@@ -228,6 +229,10 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     CONNECTSIGNALSLOT(mp_ErrorRsCheckBlockageState.data(), entered(), mp_SchedulerThreadController, HighPressure());
     mp_ErrorRsCheckBlockageState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
+    //RS_Pause
+    mp_ErrorWaitState->addTransition(this, SIGNAL(SigRsPause()), mp_ErrorRsPauseState.data());
+    mp_ErrorRsPauseState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
+
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
     m_LevelSensorWaitTime = 0;
 
@@ -236,6 +241,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     m_RcFilling = HEATING_LEVELSENSOR;
     m_RsCheckBlockage = BUILD_HIGHPRESSURE;
     m_RsCheckBlockageStartTime = 0;
+    m_RsPauseStartTime = 0;
+    m_RsPauseCount = 0;
 }
 
 
@@ -443,6 +450,10 @@ SchedulerStateMachine_t CSchedulerStateMachine::GetCurrentState()
         else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsCheckBlockageState.data()))
         {
             return SM_ERR_RS_CHECK_BLOCKAGE;
+        }
+        else if (mp_SchedulerMachine->configuration().contains(mp_ErrorRsPauseState.data()))
+        {
+            return SM_ERR_RS_PS_PAUSE;
         }
     }
     else if(mp_SchedulerMachine->configuration().contains(mp_BusyState.data()))
@@ -763,6 +774,11 @@ void CSchedulerStateMachine::EnterRsCheckBlockage()
     emit SigRsCheckBlockage();
 }
 
+void CSchedulerStateMachine::EnterRsPause()
+{
+    emit SigRsPause();
+}
+
 void CSchedulerStateMachine::HandlePssmPreTestWorkFlow(const QString& cmdName, ReturnCode_t retCode)
 {
     mp_ProgramSelfTest->HandleWorkFlow(cmdName, retCode);
@@ -1045,16 +1061,84 @@ void CSchedulerStateMachine::HandleRsCheckBlockageWorkFlow(const QString& cmdNam
         if(currentPressure < 8)
         {
             m_RsCheckBlockage = BUILD_HIGHPRESSURE;
-            OnTasksDone(true);
+            OnTasksDone(false);
         }
         else
         {
             m_RsCheckBlockage = BUILD_HIGHPRESSURE;
-            OnTasksDone(false);
+            OnTasksDone(true);
         }
         break;
     default:
         break;
+    }
+}
+
+void CSchedulerStateMachine::HandleRsPauseWorkFlow()
+{
+    qint32 scenario = 0;
+    qint64 nowTime = 0;
+    if(0 == m_RsPauseCount)
+    {
+        m_RsPauseStartTime = QDateTime::currentMSecsSinceEpoch();
+        m_RsPauseCount++;
+    }
+    scenario = mp_SchedulerThreadController->GetTheCurrentScenario();
+    if(273 == scenario)//move seal position
+    {
+        if( !mp_SchedulerThreadController->IsRVRightPosition(1) )
+        {
+            nowTime = QDateTime::currentMSecsSinceEpoch();
+            if(nowTime - m_RsPauseStartTime >= 5 * 1000)
+            {
+                m_RsPauseCount = 0;
+                OnTasksDone(false);
+            }
+        }
+        else
+        {
+            OnTasksDone(true);
+            m_RsPauseCount =0;
+        }
+    }
+    else if(275 == scenario)//move tube position
+    {
+        if( !mp_SchedulerThreadController->IsRVRightPosition(0) )
+        {
+            nowTime = QDateTime::currentMSecsSinceEpoch();
+            if(nowTime - m_RsPauseStartTime >= 5 * 1000)
+            {
+                OnTasksDone(false);
+                m_RsPauseCount =0;
+            }
+        }
+        else
+        {
+            OnTasksDone(true);
+            m_RsPauseCount =0;
+        }
+    }
+    else if(277 == scenario)//move next tube position
+    {
+        if( !mp_SchedulerThreadController->IsRVRightPosition(2) )
+        {
+            nowTime = QDateTime::currentMSecsSinceEpoch();
+            if(nowTime - m_RsPauseStartTime >= 5 * 1000)
+            {
+                OnTasksDone(false);
+                m_RsPauseCount =0;
+            }
+        }
+        else
+        {
+            OnTasksDone(true);
+            m_RsPauseCount =0;
+        }
+    }
+    else
+    {
+        OnTasksDone(true);
+        m_RsPauseCount =0;
     }
 }
 

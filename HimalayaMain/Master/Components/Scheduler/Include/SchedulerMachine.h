@@ -101,6 +101,7 @@ private:
     QSharedPointer<QState> mp_RcBottleCheckI;                                           ///<  Error State's sub state: for RC_BottleCheck_I
     QSharedPointer<QState> mp_ErrorRsFillingAfterFlushState;                            ///<  Error State's sub state: for RS_FillingAfterFlush
     QSharedPointer<QState> mp_ErrorRsCheckBlockageState;                                ///<  Error State's sub state: for RS_Check_Blockage
+    QSharedPointer<QState> mp_ErrorRsPauseState;                                        ///<  Error State's sub state: for RS_Pause
 
     //State machines for Run handling
     QSharedPointer<CProgramSelfTest> mp_ProgramSelfTest;                                ///< state machine for Pre-test
@@ -149,6 +150,9 @@ private:
     }RS_CHECK_BLOCKAGE_t;
     RS_CHECK_BLOCKAGE_t m_RsCheckBlockage;                                              ///<  The Rs_Check_Blockage sub state
     qint64              m_RsCheckBlockageStartTime;                                     ///<  The Rs_Check_Blockage begin time
+
+    qint64              m_RsPauseCount;                                                 ///<  The number of RS_Pause
+    qint64              m_RsPauseStartTime;                                             ///<  The RS_Pause begint time
 
 private:
     QString GetDeviceName();
@@ -736,6 +740,15 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief  Definition/Declaration of function EnterRsPause
+     *
+     *  \return from EnterRsPause
+     */
+    /****************************************************************************/
+    void EnterRsPause();
+
+    /****************************************************************************/
+    /*!
      *  \brief Handle the whole work flow for Program Pre-Test
      *
      *  \param cmdName - command name
@@ -914,6 +927,18 @@ public:
 
     /****************************************************************************/
     /*!
+     *  \brief Handle the whole work flow for HandleRsPauseWorkFlow
+     *
+     *  \param cmdName - command name
+     *  \param retCode - return code
+     *
+     *  \return void
+     */
+    /****************************************************************************/
+    void HandleRsPauseWorkFlow();
+
+    /****************************************************************************/
+    /*!
      *  \brief  Definition/Declaration of function GetCurrentState
      *
      *  \return from GetCurrentState
@@ -1007,20 +1032,60 @@ signals:
    /****************************************************************************/
    void RunPreTest();
 
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of signal ResumeFillingRVRodHeating
+    */
+   /****************************************************************************/
    void ResumeFillingRVRodHeating();
 
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of signal ResumeFillingLevelSensorHeating
+    */
+   /****************************************************************************/
    void ResumeFillingLevelSensorHeating();
 
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of signal ResumeFiling
+    */
+   /****************************************************************************/
    void ResumeFiling();
 
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of signal ResumeRVMoveToSeal
+    */
+   /****************************************************************************/
    void ResumeRVMoveToSeal();
 
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of signal ResumeProcessing
+    */
+   /****************************************************************************/
    void ResumeProcessing();
 
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of signal ResumeRVMoveTube
+    */
+   /****************************************************************************/
    void ResumeRVMoveTube();
 
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of signal ResumeDraining
+    */
+   /****************************************************************************/
    void ResumeDraining();
 
+   /****************************************************************************/
+   /*!
+    *  \brief  Definition/Declaration of signal ResumeRVPosChange
+    */
+   /****************************************************************************/
    void ResumeRVPosChange();
 
     /****************************************************************************/
@@ -1632,6 +1697,13 @@ signals:
      */
     /****************************************************************************/
     void SigRsCheckBlockage();
+
+    /****************************************************************************/
+    /*!
+     *  \brief  Definition/Declaration of signal SigRsPause
+     */
+    /****************************************************************************/
+    void SigRsPause();
 
     /****************************************************************************/
     /*!
