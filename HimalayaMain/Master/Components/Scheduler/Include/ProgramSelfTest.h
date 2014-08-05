@@ -80,7 +80,23 @@ signals:
 
     /****************************************************************************/
     /*!
-     *  \brief Signal for current and voltage status checking
+     *  \brief Signal to turn on RT Side and Bottom
+     *
+     */
+    /****************************************************************************/
+    void RTTemperatureControlOn();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Signal to wait to 3 seconds
+     *
+     */
+    /****************************************************************************/
+    void Wait3SecondsRTCurrent();
+
+    /****************************************************************************/
+    /*!
+     *  \brief Signal to turn off RT Side and Bottom
      *
      */
     /****************************************************************************/
@@ -149,7 +165,9 @@ private:
     QSharedPointer<QStateMachine>   mp_StateMachine;                //!< State machine for Pre-Test
     QSharedPointer<QState> mp_Initial;                              //!< Initial state
     QSharedPointer<QState> mp_TemperatureSensorsChecking;           //!< Temperature sensors status checking state
-    QSharedPointer<QState> mp_RTTempCtrlOff;                        //!< Current checking state
+    QSharedPointer<QState> mp_RTTempCtrlOn;                         //!< Turn on Retort Side and Bottom
+    QSharedPointer<QState> mp_Wait3SRTCurrent;                      //!< Wait for 3 seconds to see if current error was raised
+    QSharedPointer<QState> mp_RTTempCtrlOff;                        //!< Turn off Retort Side and Bottom
     QSharedPointer<QState> mp_RVPositionChecking;                   //!< Rotary Valve position checking state
     QSharedPointer<QState> mp_PressureCalibration;                  //!< Pressure Calibration state
     QSharedPointer<QState> mp_PressureSealingChecking;              //!< Pressure test and sealing checking state
@@ -163,6 +181,8 @@ private:
         PRETEST_UNDEF,
         PRETEST_INIT,
         TEMPSENSORS_CHECKING,
+        RT_TEMCTRL_ON,
+        WAIT3S_RT_CURRENT,
         RT_TEMCTRL_OFF,
         RV_POSITION_CHECKING,
 		PRESSURE_CALIBRATION,
@@ -171,6 +191,8 @@ private:
         MOVE_TO_TUBE
     } StateList_t;
 	
+    qint64  m_RTTempStartTime;                                      //!< Start time for turning on RT Tempeture control On
+    quint32 m_RTTempOnSeq;                                          //!< Sequence of RT sensors temperature on
 	quint32	m_RTTempOffSeq;											//!< Sequence of RT sensors temperature off
 	quint32	m_RVPositioinChkSeq;									//!< Sequence of RV position checking 
     quint32	m_PressureChkSeq;										//!< Sequence of Pressure test and Sealing checking

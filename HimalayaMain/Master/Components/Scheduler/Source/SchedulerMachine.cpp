@@ -229,6 +229,8 @@ CSchedulerStateMachine::CSchedulerStateMachine(SchedulerMainThreadController* Sc
     mp_ErrorRsCheckBlockageState->addTransition(this, SIGNAL(sigStateChange()), mp_ErrorWaitState.data());
 
     m_RestartLevelSensor = RESTART_LEVELSENSOR;
+    m_LevelSensorWaitTime = 0;
+
     m_RVGetOriginalPosition = MOVE_TO_INITIAL_POS;
     m_RVOrgPosCmdTime = 0;
     m_RcFilling = HEATING_LEVELSENSOR;
@@ -827,8 +829,28 @@ void CSchedulerStateMachine::HandleRcLevelSensorHeatingOvertimeWorkFlow()
         }
         else if (2 == retValue)
         {
+            m_RestartLevelSensor = STOP_LEVELSENSOR; // Move to next step
+        }
+        break;
+    case STOP_LEVELSENSOR:
+        if (DCL_ERR_FCT_CALL_SUCCESS != mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("LevelSensor"))
+        {
+            this->OnTasksDone(false);
+        }
+        else
+        {
+            m_RestartLevelSensor = WAIT2SECONDS;
+        }
+        break;
+    case WAIT2SECONDS:
+        if ((QDateTime::currentMSecsSinceEpoch() - m_LevelSensorWaitTime) >= 2*1000)
+        {
             m_RestartLevelSensor = RESTART_LEVELSENSOR;
             this->OnTasksDone(true);
+        }
+        else
+        {
+            // Do nothing, just wait for time out
         }
         break;
     default:

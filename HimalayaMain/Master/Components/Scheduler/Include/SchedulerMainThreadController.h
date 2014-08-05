@@ -187,6 +187,17 @@ typedef enum
     RV
 } HeaterType_t;
 
+/****************************************************************************/
+/*!
+ *  \brief struct for Received command
+ */
+/****************************************************************************/
+typedef struct
+{
+    DeviceControl::ReturnCode_t retCode;
+    QString                     cmdName;
+} RecvCommand_t;
+
     /****************************************************************************/
     /**
      * @brief Controller class for the main scheduler thread.
@@ -252,6 +263,8 @@ typedef enum
         QMap<QString, QString> m_ProgramStatusFileMap;        ///< the map of program status
         BottlePosition_t    m_CurrentBottlePosition;          ///< the current BottlePosition for bottle check
         SchedulerStateMachine_t m_CurrentStepState;           ///< The current protocol(program) step, which is used to recovery from RC_Restart
+        QVector<RecvCommand_t> m_RecvCommandList;             ///< Recevied command list, which were from DeviceControl
+        bool                   m_RecoveryFromError;           ///< Flag to indicate if Scheduler was recovred from error
 
     private:
         SchedulerMainThreadController(const SchedulerMainThreadController&);                      ///< Not implemented.
@@ -838,6 +851,10 @@ protected:
                 {
                     m_CurErrEventID = EventID;
                 }
+                // For filling and draining states, we need clean up the command list container at first.
+                QVector<RecvCommand_t> emptyVector;
+                m_RecvCommandList.swap(emptyVector);
+
                 Global::EventObject::Instance().RaiseEvent(EventKey, EventID, Scenario, ActionResult,Active,
                                                        Global::tTranslatableStringList()<<QString("(%1 %2)").arg(EventID).arg(Scenario));
             }

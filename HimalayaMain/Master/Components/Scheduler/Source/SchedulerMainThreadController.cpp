@@ -103,6 +103,7 @@ SchedulerMainThreadController::SchedulerMainThreadController(
         , m_RefCleanup(Global::RefManager<Global::tRefType>::INVALID)
         , m_delayTime(0)
         , m_IsInSoakDelay(false)
+        , m_RecoveryFromError(false)
 {
     memset(&m_TimeStamps, 0, sizeof(m_TimeStamps));
     m_CurErrEventID = DCL_ERR_FCT_NOT_IMPLEMENTED;
@@ -426,6 +427,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 switch (m_CurrentStepState)
                 {
                 case PSSM_INIT:
+                    m_SchedulerMachine->SendRunPreTest();
+                    break;
                 case PSSM_PRETEST:
                     m_SchedulerMachine->SendRunPreTest();
                     break;  
@@ -501,7 +504,8 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                 AllStop();
                 m_SchedulerMachine->NotifyPause(PSSM_FILLING);
             }
-            else if( "Scheduler::ALFilling" == cmdName)
+
+            if( "Scheduler::ALFilling" == cmdName)
             {
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
                 {
@@ -697,6 +701,28 @@ void SchedulerMainThreadController::HandleRunState(ControlCommandType_t ctrlCmd,
                  }
              }
 
+             //In case that Scheduler was recovered from Error
+             if (true == m_RecoveryFromError)
+             {
+                 m_RecoveryFromError = false; //Reset
+                 for (int i=0; i<m_RecvCommandList.size(); ++i)
+                 {
+                     if ("Scheduler::ALDraining" == m_RecvCommandList[i].cmdName)
+                     {
+                         if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
+                         {
+                             LogDebug(QString("Program Step Filling OK"));
+                             m_SchedulerMachine->NotifyFillFinished();
+                         }
+                         else
+                         {
+                             LogDebug(QString("Program Step Filling failed"));
+                             RaiseError(0, retCode, m_CurrentScenario, true);
+                             m_SchedulerMachine->SendErrorSignal();
+                         }
+                     }
+                 }
+             }
             if( "Scheduler::ALDraining"== cmdName)
             {
                 if(DCL_ERR_FCT_CALL_SUCCESS == retCode)
@@ -896,6 +922,12 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
             retCode = DCL_ERR_UNDEFINED;
         }
         cmdName = cmd->GetName();
+
+        // During HandleErrorState, we need also record the commands recevied from DeviceControl
+        RecvCommand_t recvCommand;
+        recvCommand.retCode = retCode;
+        recvCommand.cmdName = cmdName;
+        m_RecvCommandList.push_back(recvCommand);
     }
 
     if (SM_ERR_WAIT == currentState && CTRL_CMD_NONE != ctrlCmd)
@@ -903,6 +935,7 @@ void SchedulerMainThreadController::HandleErrorState(ControlCommandType_t ctrlCm
         if(CTRL_CMD_RC_RESTART == ctrlCmd)
         {
             LogDebug("Go to RC_Restart");
+            m_RecoveryFromError = true;
             m_SchedulerMachine->EnterRcRestart();
         }
         if (CTRL_CMD_RC_REPORT == ctrlCmd)
@@ -2734,6 +2767,10 @@ void SchedulerMainThreadController::RCDrain()
 
 void SchedulerMainThreadController::Drain()
 {
+    if (true == m_RecoveryFromError)
+    {
+        return;
+    }
     LogDebug("Send cmd to DCL to Drain");
     CmdALDraining* cmd  = new CmdALDraining(500, this);
     //todo: get delay time here

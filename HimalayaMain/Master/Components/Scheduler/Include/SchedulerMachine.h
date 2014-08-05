@@ -116,10 +116,13 @@ private:
     typedef enum
     {
         RESTART_LEVELSENSOR,
-        CHECK_TEMPERATURE
+        CHECK_TEMPERATURE,
+        STOP_LEVELSENSOR,
+        WAIT2SECONDS
     } LEVELSENSOR_RESTART_STAGE_t;
 
     LEVELSENSOR_RESTART_STAGE_t m_RestartLevelSensor;
+    qint64                      m_LevelSensorWaitTime;
 
     typedef enum
     {
@@ -128,7 +131,7 @@ private:
     } GET_RV_ORIGINALPOS_t;
 
     GET_RV_ORIGINALPOS_t m_RVGetOriginalPosition;
-    qint64                 m_RVOrgPosCmdTime;
+    qint64               m_RVOrgPosCmdTime;
 
     typedef enum
     {

@@ -36,6 +36,8 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
 
     mp_Initial = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_TemperatureSensorsChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+    mp_RTTempCtrlOn = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
+    mp_Wait3SRTCurrent = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_RTTempCtrlOff = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
     mp_RVPositionChecking = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
 	mp_PressureCalibration = QSharedPointer<QState>(new QState(mp_StateMachine.data()));
@@ -47,7 +49,9 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     mp_Initial->addTransition(this, SIGNAL(CleaningMoveToTube()), mp_MoveToTube.data());
 
     mp_Initial->addTransition(this, SIGNAL(TemperatureSensorsChecking()), mp_TemperatureSensorsChecking.data());
-    mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(RTTemperatureControlOff()), mp_RTTempCtrlOff.data());
+    mp_TemperatureSensorsChecking->addTransition(this, SIGNAL(RTTemperatureContrlOn()), mp_RTTempCtrlOn.data());
+    mp_RTTempCtrlOn->addTransition(this, SIGNAL(Wait3SecondsRTCurrent()),mp_Wait3SRTCurrent.data());
+    mp_Wait3SRTCurrent->addTransition(this, SIGNAL(RTTemperatureControlOff()), mp_RTTempCtrlOff.data());
     mp_RTTempCtrlOff->addTransition(this,SIGNAL(RVPositionChecking()), mp_RVPositionChecking.data());
 	mp_RVPositionChecking->addTransition(this, SIGNAL(PressureCalibration()), mp_PressureCalibration.data());
     mp_PressureCalibration->addTransition(this,SIGNAL(PressureSealingChecking()), mp_PressureSealingChecking.data());
@@ -58,6 +62,8 @@ CProgramSelfTest::CProgramSelfTest(SchedulerMainThreadController* SchedControlle
     // Start up state machine
     mp_StateMachine->start();
 
+    m_RTTempStartTime = 0;
+    m_RTTempOnSeq = 0;
     m_RTTempOffSeq = 0;
     m_RVPositioinChkSeq = 0;
     m_PressureChkSeq = 0;
@@ -86,6 +92,14 @@ CProgramSelfTest::StateList_t CProgramSelfTest::GetCurrentState(QSet<QAbstractSt
     else if (statesList.contains(mp_TemperatureSensorsChecking.data()))
     {
         currentState = TEMPSENSORS_CHECKING;
+    }
+    else if (statesList.contains(mp_RTTempCtrlOn.data()))
+    {
+        currentState = RT_TEMCTRL_ON;
+    }
+    else if (statesList.contains(mp_Wait3SRTCurrent.data()))
+    {
+        currentState = WAIT3S_RT_CURRENT;
     }
     else if (statesList.contains(mp_RTTempCtrlOff.data()))
     {
@@ -120,6 +134,16 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
     StateList_t currentState = this->GetCurrentState(mp_StateMachine->configuration());
 	qreal currentPressure = 0.0;
 
+    qint64 now = 0;
+    ReportError_t reportError1;
+    memset(&reportError1, 0, sizeof(reportError1));
+    ReportError_t reportError2;
+    memset(&reportError2, 0, sizeof(reportError2));
+    ReportError_t reportError3;
+    memset(&reportError3, 0, sizeof(reportError3));
+    ReportError_t reportError4;
+    memset(&reportError4, 0, sizeof(reportError4));
+
 	switch (currentState)
 	{
     case PRETEST_INIT:
@@ -136,13 +160,70 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
         if (true == mp_SchedulerThreadController->GetHeatingStrategy()->CheckTemperatureSenseorsStatus())
         {
             mp_SchedulerThreadController->LogDebug("Pre-Test: Temperature checking of sensors passed");
-            emit RTTemperatureControlOff();
+            emit RTTemperatureControlOn();
         }
         else
         {
             // Do nothing - Heating Strategy has handled all related error cases.
         }
         break;
+    case RT_TEMCTRL_ON:
+        if (0 == m_RTTempOnSeq)
+        {
+            ReturnCode_t ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControl("RTSide");
+            if (DCL_ERR_FCT_CALL_SUCCESS == ret)
+            {
+                m_RTTempOnSeq = 1;
+            }
+            else
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(ret); // Send out error message
+            }
+        }
+        else
+        {
+            ReturnCode_t ret = mp_SchedulerThreadController->GetHeatingStrategy()->StartTemperatureControl("RTBottom");
+            if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
+            {
+                m_RTTempOnSeq = 0;
+                m_RTTempStartTime = QDateTime::currentMSecsSinceEpoch();
+                emit Wait3SecondsRTCurrent();
+            }
+            else
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(ret); // Send out error mesage
+            }
+        }
+        break;
+    case WAIT3S_RT_CURRENT:
+        now = QDateTime::currentMSecsSinceEpoch();
+        if ((now - m_RTTempStartTime) >= 3*1000)
+        {
+            emit RTTemperatureControlOff();
+        }
+        else
+        {
+            reportError1 = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_BOTTOM);
+            reportError2 = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Retort", RT_SIDE);
+            reportError3 = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_TOP);
+            reportError4 = mp_SchedulerThreadController->GetSchedCommandProcessor()->GetSlaveModuleReportError(TEMP_CURRENT_OUT_OF_RANGE, "Oven", OVEN_BOTTOM);
+            if (reportError1.instanceID != 0 && (now-reportError1.errorTime.toMSecsSinceEpoch()) <= 3*1000)
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_RETORT_BOTTOM_HEATING_ELEMENT_FAILED);
+            }
+            if (reportError2.instanceID != 0 && (now-reportError2.errorTime.toMSecsSinceEpoch()) <= 3*1000)
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_RETORT_SIDETOP_HEATING_ELEMENT_FAILED);
+            }
+            if (reportError3.instanceID != 0 && (now-reportError3.errorTime.toMSecsSinceEpoch()) <= 3*1000)
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_WAXBATH_TOP_HEATINGPAD_CURRENT_OUTOFRANGE);
+            }
+            if (reportError4.instanceID != 0 && (now-reportError4.errorTime.toMSecsSinceEpoch()) <= 3*1000)
+            {
+                mp_SchedulerThreadController->SendOutErrMsg(DCL_ERR_DEV_WAXBATH_BOTTOM_HEATINGPAD_CURRENT_OUTOFRANGE);
+            }
+        }
     case RT_TEMCTRL_OFF:
         if (0 == m_RTTempOffSeq)
         {
@@ -161,6 +242,7 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
             ReturnCode_t ret = mp_SchedulerThreadController->GetHeatingStrategy()->StopTemperatureControl("RTBottom");
             if (DCL_ERR_FCT_CALL_SUCCESS == retCode)
             {
+                m_RTTempOffSeq = 0;
                 emit RVPositionChecking();
             }
             else
@@ -168,7 +250,6 @@ void CProgramSelfTest::HandleWorkFlow(const QString& cmdName, ReturnCode_t retCo
                 mp_SchedulerThreadController->SendOutErrMsg(ret); // Send out error mesage
             }
         }
-
         break;
     case RV_POSITION_CHECKING:
         if (0 == m_RVPositioinChkSeq)
