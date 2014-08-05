@@ -1015,5 +1015,54 @@
 		<Event Code="" ErrorID="16973838" ErrorType="Info" AlarmType="No" Name="EVENT_USER_ACK_BUTTON_YES">
 			<Step ID="0" Type="MSG" StringID="16973838" ButtonType="" LogLevel="Low" UserLog="TRUE" StatusBar=""/>
 		</Event>
+		<Event Code="" ErrorID="17891333" ErrorType="Warning" AlarmType="No" Name="EVENT_WARNING">
+			<Step ID="0" Type="MSG" StringID="17891333" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19464198" ErrorType="Error" AlarmType="No" Name="EVENT_RCMANAGER_DATAITEM_INAVLID">
+			<Step ID="0" Type="MSG" StringID="19464198" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19464199" ErrorType="Error" AlarmType="No" Name="EVENT_RCMANAGER_DATAITEM_VALUE_INVALID">
+			<Step ID="0" Type="MSG" StringID="19464199" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19464200" ErrorType="Error" AlarmType="No" Name="EVENT_RCMANAGER_DATAITEM_TYPE_INVALID">
+			<Step ID="0" Type="MSG" StringID="19464200" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19464201" ErrorType="Error" AlarmType="No" Name="EVENT_RCMANAGER_INVALID_REQUEST_SUBSCRIPTION_NOTSET">
+			<Step ID="0" Type="MSG" StringID="19464201" ButtonType="" LogLevel="Medium" UserLog="FALSE" StatusBar=""/>
+		</Event>
+
+		<Event Code="" ErrorID="19333634" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_WEB_ACCESS">
+			<Step ID="0" Type="MSG" StringID="19333634" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333713" ErrorType="Info" AlarmType="No" Name="EVENT_REMOTECARE_INFO_DEVICE_REGISTERED">
+			<Step ID="0" Type="MSG" StringID="19333713" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333714" ErrorType="Info" AlarmType="No" Name="EVENT_REMOTECARE_INFO_SET_TAG_RECEIVED">
+			<Step ID="0" Type="MSG" StringID="19333714" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333715" ErrorType="Info" AlarmType="No" Name="EVENT_REMOTECARE_INFO_SUBMITEVENT_SEVERITY_CONVERSION">
+			<Step ID="0" Type="MSG" StringID="19333715" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333716" ErrorType="Info" AlarmType="No" Name="EVENT_REMOTECARE_INFO_START_REMOTESESSION">
+			<Step ID="0" Type="MSG" StringID="19333716" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333717" ErrorType="Info" AlarmType="No" Name="EVENT_REMOTECARE_INFO_END_REMOTESESSION">
+			<Step ID="0" Type="MSG" StringID="19333717" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333718" ErrorType="Info" AlarmType="No" Name="EVENT_REMOTECARE_INFO_START_DOWNLOAD">
+			<Step ID="0" Type="MSG" StringID="19333718" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333719" ErrorType="Info" AlarmType="No" Name="EVENT_REMOTECARE_INFO_END_DOWNLOAD">
+			<Step ID="0" Type="MSG" StringID="19333719" ButtonType="" LogLevel="Low" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333889" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_READ_SETTINGS_DEVICE">
+			<Step ID="0" Type="MSG" StringID="19333889" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333890" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_READ_SETTINGS_USER">
+			<Step ID="0" Type="MSG" StringID="19333890" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
+		<Event Code="" ErrorID="19333891" ErrorType="Error" AlarmType="No" Name="EVENT_REMOTECARE_ERROR_READ_SETTINGS_RC">
+			<Step ID="0" Type="MSG" StringID="19333891" ButtonType="" LogLevel="High" UserLog="FALSE" StatusBar=""/>
+		</Event>
 	</Source>
 </EventConfigure>

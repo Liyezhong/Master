@@ -74,29 +74,50 @@
 		<string id="17235981" text1="%1  is not a valid temperature format ." text2=""/>
 		<string id="17235980" text1="%1  is not a valid time format." text2=""/>
 		<string id="17235996" text1="NULL pointer error in DataManager component" text2=""/>
+		<string id="19136513" text1="ParameterSet list count %1 exceeds the limit .Maximum 10 racks allowed." text2=""/>
+		<string id="17236016" text1="Reading ProcessSettings.xml failed." text2=""/>
+		<string id="17236017" text1="Verifying ProcessSettings.xml failed." text2=""/>
+		<string id="18808846" text1="Rack %1 colorado end time %2 is invalid. Time should not be zero and should be in MMddyyyyyhh:mm:ss format." text2=""/>
+		<string id="18808844" text1="Rack %1 color %2 in invalid. Only white-yellow-lightblue-darkblue-pink-red-green-black-grey are allowed." text2=""/>
+		<string id="18808837" text1="Rack list count %1 exceeds the limit .Maximum 100 racks allowed." text2=""/>
+		<string id="18808836" text1="Deleting rack failed .Rack with rfid %1 not found in the list." text2=""/>
+		<string id="18808838" text1="Rack RF ID %1 is too big. Maximum 9999999999 allowed." text2=""/>
+		<string id="18808834" text1="Rack with rfid %1 not found in the list." text2=""/>
+		<string id="18808833" text1="Rack with rfid %1 already exists in the list." text2=""/>
+		<string id="17236018" text1="Rack %1 has been inserted into drawer %2 and consists of %3 slides" text2=""/>
+		<string id="18808835" text1="Deleting rack failed. Invalid rack index." text2=""/>
+		<string id="18808848" text1="Invalid rack size: %1. Valid rack size : 30/20/5." text2=""/>
+		<string id="18808841" text1=" Invalid Parameter Set ID for Rack %1. Valid range for Parameter Set ID is 1-8. Current Value is %2." text2=""/>
+		<string id="17236019" text1="Rack %1 has been removed from instrument." text2=""/>
+		<string id="18808847" text1="Rack %1 coverslipper end time %2 is invalid. Time should not be zero and should be in MMddyyyyyhh:mm:ss format." text2=""/>
+		<string id="18808845" text1="Rack %1 start time %2 is invalid. Time should not be zero and should be in MMddyyyyyhh:mm:ss format." text2=""/>
+		<string id="18808843" text1="Rack %1 Station ID %2 is too big. Max 10 characters are allowed." text2=""/>
+
 		<string id="19070983" text1="RCConfig: Certificate FileName %1 length is out of range min %2 max %3." text2=""/>
 		<string id="17236007" text1="Verifying RCConfig.xml failed." text2=""/>
 		<string id="17236006" text1="Reading RCConfig.xml failed." text2=""/>
-		<string id="19071009" text1="RCCOnfig:  %1  data item has invalid quality." text2=""/>
-		<string id="19071008" text1="RCCOnfig:  %1  data item has invalid type." text2=""/>
+		<string id="19071008" text1="RCCOnfig: %1 data item has invalid type." text2=""/>
+		<string id="19071009" text1="RCCOnfig: %1 data item has invalid quality." text2=""/>
+		<string id="19070981" text1="RCConfig: Encryption level size %1 is out of range min %2 max %3." text2=""/>
+		<string id="19070982" text1="RCConfig: %1 is not a valid Authentication on/off state." text2=""/>
+		<string id="19070984" text1="RCConfig: Exec Time is out of range min %2 max %3." text2=""/>
+		<string id="19070985" text1="RCConfig: Server type %1 is out of range min %2 max %3." text2=""/>
+		<string id="19070986" text1="RCConfig: Target Database %1 length is out of range min %2 max %3." text2=""/>
+		<string id="19070987" text1="RCConfig: Server URL %1 length is out of range min %2 max %3." text2=""/>
+		<string id="19070988" text1="RCConfig: Server Id %1 is out of range min %2 max %3." text2=""/>
+		<string id="19071007" text1="RCConfig: %1 is not a valid Compression on/off state." text2=""/>
+		<string id="19070978" text1="RCConfig: %1 is not a valid HTTP connection persistence on/off state." text2=""/>
+		<string id="19070979" text1="RCConfig: %1 is not a valid Debug on/off state." text2=""/>
+		<string id="19070980" text1="RCConfig: %1 is not a valid HTTP secure connection on/off state." text2=""/>
+		<string id="19071004" text1="RCConfig: %1 is not a valid remote session IP address." text2=""/>
+		<string id="19071006" text1="RCConfig: MaxChunkSize %1 is out of range min %2 max %3." text2=""/>
 		<string id="19070991" text1="RCConfig: Device Id %1 is out of range min %2 max %3." text2=""/>
 		<string id="19070992" text1="RCConfig: Device type %1 is out of range min %2 max %3." text2=""/>
-		<string id="19070981" text1="RCConfig: Encryption level size %1 is out of range min %2 max %3." text2=""/>
-		<string id="19070984" text1="RCConfig: Exec Time is out of range min %2 max %3." text2=""/>
-		<string id="19070982" text1="RCConfig:  %1  is not a valid Authentication on/off state." text2=""/>
-		<string id="19071007" text1="RCConfig:  %1  is not a valid Compression on/off state." text2=""/>
-		<string id="19070979" text1="RCConfig:  %1  is not a valid Debug on/off state." text2=""/>
-		<string id="19070978" text1="RCConfig:  %1  is not a valid HTTP connection persistence on/off state." text2=""/>
-		<string id="19070980" text1="RCConfig:  %1  is not a valid HTTP secure connection on/off state." text2=""/>
-		<string id="19071004" text1="RCConfig:  %1  is not a valid remote session IP address." text2=""/>
-		<string id="19071006" text1="RCConfig: MaxChunkSize %1 is out of range min %2 max %3." text2=""/>
 		<string id="19070994" text1="RCConfig: Proxy protocol %1 is out of range min %2 max %3." text2=""/>
 		<string id="19070977" text1="RCConfig: Queue size %1 is out of range min %2 max %3." text2=""/>
 		<string id="19071002" text1="RCConfig: remote session name %1 length is out of range min %2 max %3." text2=""/>
-		<string id="19070988" text1="RCConfig: Server Id %1 is out of range min %2 max %3." text2=""/>
-		<string id="19070985" text1="RCConfig: Server type %1 is out of range min %2 max %3." text2=""/>
-		<string id="19070987" text1="RCConfig: Server URL %1 length is out of range min %2 max %3." text2=""/>
-		<string id="19070986" text1="RCConfig: Target Database %1 length is out of range min %2 max %3." text2=""/>
+		<string id="19267598" text1="Internal Software Error. Reagent Add failed. " text2=""/>
+		<string id="19267600" text1="Internal Software Error. Reagent Delete failed. " text2=""/>
 		<string id="19267589" text1="Reagents count exceeds the limit. Max 100 allowed." text2=""/>
 		<string id="19267588" text1="Reagent ID %1 of reagent %2 does not exists in the list." text2=""/>
 		<string id="19267587" text1="Reagent ID %1 of reagent %2 already in use." text2=""/>
@@ -314,11 +335,15 @@
 		<string id="17825799" text1="Power failed! Shutting down system." text2=""/>
 		<string id="17825793" text1="To switch off press button again" text2=""/>
 		<string id="17825794" text1="Staining procedure is still in progress.To switch off press button again." text2=""/>
-		<string id="19464197" text1="RCManager.RCA Stopped Working" text2=""/>
-		<string id="19464193" text1="RCManager.Received command %1 with data %n from RCA." text2=""/>
-		<string id="19464195" text1="RCManager.Remote Session request accepted by user." text2=""/>
-		<string id="19464194" text1="RCManager.Remote Session request denied. %1." text2=""/>
-		<string id="19464196" text1="RCManager.Sent command %1 with data %n to RCA." text2=""/>
+        <string id="19464193" text1="RCManager.Received command %1 with data %n from RCA." text2=""/>
+        <string id="19464194" text1="RCManager.Remote Session request denied. %1." text2=""/>
+        <string id="19464195" text1="RCManager.Remote Session request accepted by user." text2=""/>
+        <string id="19464196" text1="RCManager.Sent command %1 with data %n to RCA." text2=""/>
+        <string id="19464197" text1="Connection to RemoteCare client failed" text2=""/>
+        <string id="19464198" text1="RCManager.Data item name %1 is invalid." text2=""/>
+        <string id="19464199" text1="RCManager.Value %1 of data item %2 is invalid." text2=""/>
+        <string id="19464200" text1="RCManager.Type %1 of data item %2 is invalid." text2=""/>
+        <string id="19464201" text1="RCManager.RemoteCare subscription is not set." text2=""/>
 		<string id="17825803" text1="Shutdown will take some seconds." text2=""/>
 		<string id="17891329" text1="SoftSwitch monitor started" text2=""/>
 		<string id="17825796" text1="Shutdown is not possible at the moment. System is in initialization phase. Please wait till initialization completes" text2=""/>
@@ -508,5 +533,29 @@
 		<string id="50331680" text1="Scheduler receive action command from GUI: %1" text2=""/>
 		<string id="50331682" text1="Start program %1" text2=""/>
 		<string id="50331679" text1="unexpected state" text2=""/>
+        <string id="19333634" text1="Web access error" text2=""/>
+        <string id="19333713" text1="Device was successfully registered" text2=""/>
+
+        <string id="19333714" text1="Received command for setting a tag" text2=""/>
+        <string id="19333715" text1="Conversion of severity was OK" text2=""/>
+        <string id="19333716" text1="Start of RemoteSession" text2=""/>
+        <string id="19333717" text1="End of RemoteSession" text2=""/>
+        <string id="19333718" text1="Start of download" text2=""/>
+        <string id="19333719" text1="End of download" text2=""/>
+        <string id="19333889" text1="Failed to read device settings" text2=""/>
+        <string id="19333890" text1="Failed to read user settings" text2=""/>
+        <string id="19333891" text1="Failed to read RemoteCare settings" text2=""/>
+        <string id="19333892" text1="Error during AgentEmbedded initialization" text2=""/>
+        <string id="19333893" text1="Error modelnumber in the configuration is empty" text2=""/>
+        <string id="19333894" text1="Error on registering device on Remote Enterprise server" text2=""/>
+        <string id="19333895" text1="Error on setting the server configuration" text2=""/>
+        <string id="19333896" text1="Error on SSL setup" text2=""/>
+        <string id="19333897" text1="Error on setting remote session" text2=""/>
+        <string id="19333898" text1="Error on setting the proxy server" text2=""/>
+        <string id="19333899" text1="Analog data item conversion failed" text2=""/>
+        <string id="19333900" text1="Digital dataitem conversion failed" text2=""/>
+        <string id="19333901" text1="Dataitem was not found" text2=""/>
+        <string id="19333902" text1="Not able to post the item" text2=""/>
+        <string id="19333903" text1="Not able to set persistent HTTP connection" text2=""/>
 	</language>
 </strings>

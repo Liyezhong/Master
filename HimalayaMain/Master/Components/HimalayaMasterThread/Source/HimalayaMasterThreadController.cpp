@@ -284,7 +284,7 @@ void HimalayaMasterThreadController::OnGoReceived() {
 
 /************************************************************************************************************************************/
 void HimalayaMasterThreadController::InitiateShutdown(bool Reboot) {
-    qDebug() << "ColoradoMasterThreadController::InitiateShutdown";
+    qDebug() << "HimalayaMasterThreadController::InitiateShutdown";
     //save data to the file system
     if(!m_PowerFailed && mp_DataManager) { //if power fails we would have already written the data
         mp_DataManager->SaveDataOnShutdown();

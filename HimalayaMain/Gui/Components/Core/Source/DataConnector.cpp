@@ -1827,8 +1827,14 @@ void CDataConnector::OnRCSoftwareUpdateHandler(Global::tRefType Ref, const Remot
                         "Downloading the New SW from RCServer failed. Please contact service.",
                                                        0, QApplication::UnicodeUTF8));
         EnableUpdateButton = false;
-    }
-    else {
+    } else if (RemoteCare::SWUpdate_DownloadSuccess == Command.GetUpdateType()) {
+        mp_MessageDlg->SetText(QApplication::translate("Core::CDataConnector",
+                        "Downloading the New SW from remote server successful, now start to update.",
+                                                       0, QApplication::UnicodeUTF8));
+        mp_MessageDlg->HideButtons();
+        mp_MessageDlg->exec();
+       return;
+    } else {
         return;
     }
 

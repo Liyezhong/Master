@@ -118,7 +118,14 @@ void CDataManagementWidget:: SWUpdate()
 void CDataManagementWidget:: RemoteSWUpdate()
 {
     emit UpdateSoftwareFromRC();
-    emit EmitSWUpdate(false);
+
+    MainMenu::CWaitDialog *mp_WaitDialog =  new MainMenu::CWaitDialog(mp_MainWindow);
+    mp_WaitDialog->SetDialogTitle(tr("software update from remote server"));
+    mp_WaitDialog->SetText(tr("Now downloading update package from remote server, please waiting..."));
+    mp_WaitDialog->HideAbort();
+    mp_WaitDialog->SetTimeout(15000);
+    mp_WaitDialog->exec();
+    delete mp_WaitDialog;
 }
 
 
